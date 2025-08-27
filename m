@@ -1,113 +1,167 @@
-Return-Path: <stable+bounces-176517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71DE7B38723
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 17:57:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5C9B3873D
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 18:01:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F0299813B7
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 15:56:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 875CD189D02B
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 16:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4351A2F0671;
-	Wed, 27 Aug 2025 15:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E5030FC29;
+	Wed, 27 Aug 2025 16:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fSUeez9F"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="joSbDcAx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC822116E7;
-	Wed, 27 Aug 2025 15:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9F420C00E
+	for <stable@vger.kernel.org>; Wed, 27 Aug 2025 16:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756310182; cv=none; b=MEgs1ZRTlsPGHSmd+Vjkj8p6qzAOoxOEFztsAgeF62/WhTkxYGE1mKiqtGbPU67QnjvlBbyw70aFWH4GQSJbh4E4pVoDPuYxnZTNYBn4QGMWlpQ0ePKMiTvFDzny+/6uEml+eWm3xW63IMuCSeJ8mB64WKmkJkJoq2Jr23tToPk=
+	t=1756310491; cv=none; b=t8fKghBXYN34aNjgJB6RA/pjbUZKDSDJ43TcsiHv9TelPPfToFqZxg9bQsBZtGZ3QHiGG9YD8oTph1Oi9tCL8wuTv9T2kKA5hNHb+FgHlV5o9GpYYaew0tMcRwabW0ysUqgBnXt6Ieoa9ZTR5Ph/Ae19mWnY2WccSnLdweYeL4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756310182; c=relaxed/simple;
-	bh=E332t6OVei1PrXs7bFwzaapdIzJ0sL3jKj74PlWIlNc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kEyK2Tw6v+Zf6B5CJF9GEJU6k8FtybROWxnrLe/UiI7vxM8yJ2hSaQNsfWXd8GSOC2xi2s32X5lehCiVXNxUWszkh6HrYKTHcus6TpVrjYj7QfS9lpBqS3KECvt0r2Ko9SDF9nb4j2hQSooSQUQgKTwhQ+CSlKhjMxuzefAvfCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fSUeez9F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C40C4CEEB;
-	Wed, 27 Aug 2025 15:56:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756310181;
-	bh=E332t6OVei1PrXs7bFwzaapdIzJ0sL3jKj74PlWIlNc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fSUeez9F4689JhIn/zNJgSBVr/BIUJ0t0c4aHmJt4a4KaOhKCmpEBvBn9gxuEd6UJ
-	 xhOqVMxqtp0sf3crCyZXMKBf0v9cRo3lKtH98H4zjBpy7+M8uuompTFOxy39VjJI4n
-	 B1pbHCT4T76BmQVVhFSkA1quvUANG3oIxFoKOR7x423GwQiuzFQykN4z0dqUm1bg5F
-	 EPaFNpJg7yVrTWxhlTQmQMicA/JJr40bKIeM238yG8QjzMSJkzbneTbiDoPFKJe3I7
-	 6E9e2NOWR/p6BVHiuk4rDZREcajFdvptFiIXtyoe1s8pwpCJyJJK31phQ2dWp2Wurl
-	 jovnmcOYd9PIQ==
-Date: Wed, 27 Aug 2025 08:56:20 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Eric Sandeen <sandeen@redhat.com>,
-	"linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
-	Donald Douwsma <ddouwsma@redhat.com>,
-	Dave Chinner <dchinner@redhat.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] xfs: do not propagate ENODATA disk errors into xattr code
-Message-ID: <20250827155620.GA8117@frogsfrogsfrogs>
-References: <a896ce2b-1c3b-4298-a90c-c2c0e18de4cb@redhat.com>
- <20250822152137.GE7965@frogsfrogsfrogs>
- <aKwW2gEnQdIdDONk@infradead.org>
- <20250825153414.GC812310@frogsfrogsfrogs>
- <aK61FCz0wgz1s2Ab@infradead.org>
+	s=arc-20240116; t=1756310491; c=relaxed/simple;
+	bh=nc3e8kEsbLpVLgiGqT6OlZiM0Ugt7rKJ9+rmdukZ9n8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=p+Z7853ZK/yZoYH2t3xdN9pgA4aOWz+U0otw/pmQvXhQ1HdUSQQ3QlTZNwrVbUgZZOj4tm5YuvLC6ZRVA7jjhA6XXEi7VWoqYU5LYuvXU/DGrpdFKLCZw1ubRrgsWZZVbFeOPA5BTFsadDFgzIqLrQeygAsm3l0PlYSsYHqWSOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=joSbDcAx; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-771e43782aaso14224b3a.1
+        for <stable@vger.kernel.org>; Wed, 27 Aug 2025 09:01:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756310489; x=1756915289; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XNn3oBnzUviCor8j9vwLNJGK9RvbnNRy8Itw1smJX24=;
+        b=joSbDcAxybJJukKD7AdJFODHjeCvmlYILNrq3QC+TAmju1lELCZkWXCmdn8cXmQiY7
+         DMu2jyVONiqTE2anoEkylHPSMSU5IViq94b/OhkTVcwK7PmlEw5JGm0sDEl27m8KBeo8
+         +QNaCfxzR4CDHsLQkKFV5ruiBL7c9JYHaZLRr3SmyDEy0BW/nnsEkzIQXawsB9/cJBLd
+         tKxA7Hin9qFBehhjlPc8PtzcSVkGGrdLExELMQvLRfk2r7wPS8fXI/ezFH58iyAkSlKY
+         Kft4SYI8+1O2IplyQ46Uwxh1W7qnevTnWxucKKV/OgV/S6YfzlmzmChOSql+lsneriiC
+         1tYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756310489; x=1756915289;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XNn3oBnzUviCor8j9vwLNJGK9RvbnNRy8Itw1smJX24=;
+        b=ruG4S9C+RMYQnwo5+O3CtcS4rXoOBJJwRoqWNGxw93vU3wEA1ercVXLWX68aOzJ9Z9
+         NzMCcEqJT66hBp5dZevKHgpUxDbeYKuUjyJNI/msqdkAebbuJbm7m31CuLwEPe5hy2wj
+         f06wp5TfF12wL6MsBjEkFpOIq1DtXi3q3+WcE1qjg81ku/f1SuDo18xWdSv7sXUPf+vc
+         fjdadeH1DfQ87PTgXE/b/CN33XPZIA1p3hH005NEJmKrobBIboa/VeNkx1XRqd1SXHy5
+         NJJN2m+4R38lEkSdzUVc/zkmyOTF3T6Kig39uBHAjDX8Uy5UblgOsFuuWz9jkKVyunvT
+         xiug==
+X-Forwarded-Encrypted: i=1; AJvYcCX8LH4wj0G2tCeupKpW5SfeL9Iijmm2h+hcr1NHSvQXnL/TCOX5WyK3FBhwH5pBcPMPqLuc07A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEpO2ou7IltOYIxR1MpQ8pZWzGWxuUJRu7XfTjXuxu7yrF2KWz
+	H5td0f8wU1fAzbDRyNBoNsykxduhHcP4m/LsvB8vDNb8ew9p63yim1C3X+KfxEp3v+De0eqzKyi
+	P3fSM6Q==
+X-Google-Smtp-Source: AGHT+IGfXcW+ZtXZL+XK3iEVs8Sxo/zDD1i/skcxqmUfvEK+HLI/XM5vZ3/WKZOmNWWC6w3e8UGwRabmkGA=
+X-Received: from pfwz26.prod.google.com ([2002:a05:6a00:1d9a:b0:772:13b2:f328])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b4e:b0:771:ed83:557c
+ with SMTP id d2e1a72fcca58-771ed835a5dmr11874598b3a.2.1756310488667; Wed, 27
+ Aug 2025 09:01:28 -0700 (PDT)
+Date: Wed, 27 Aug 2025 09:01:27 -0700
+In-Reply-To: <20250827152754.12481-1-lifei.shirley@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aK61FCz0wgz1s2Ab@infradead.org>
+Mime-Version: 1.0
+References: <20250827152754.12481-1-lifei.shirley@bytedance.com>
+Message-ID: <aK8r11trXDjBnRON@google.com>
+Subject: Re: [PATCH] KVM: x86: Latch INITs only in specific CPU states in KVM_SET_VCPU_EVENTS
+From: Sean Christopherson <seanjc@google.com>
+To: Fei Li <lifei.shirley@bytedance.com>
+Cc: pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, liran.alon@oracle.com, hpa@zytor.com, 
+	wanpeng.li@hotmail.com, kvm@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Aug 27, 2025 at 12:34:44AM -0700, Christoph Hellwig wrote:
-> On Mon, Aug 25, 2025 at 08:34:14AM -0700, Darrick J. Wong wrote:
-> > > +	case BLK_STS_NOSPC:
-> > > +		return -ENOSPC;
-> > > +	case BLK_STS_OFFLINE:
-> > > +		return -ENODEV;
-> > > +	default:
-> > > +		return -EIO;
-> > 
-> > Well as I pointed out earlier, one interesting "quality" of the current
-> > behavior is that online fsck captures the ENODATA and turns that into a
-> > metadata corruption report.  I'd like to keep that behavior.
+On Wed, Aug 27, 2025, Fei Li wrote:
+> Commit ff90afa75573 ("KVM: x86: Evaluate latched_init in
+> KVM_SET_VCPU_EVENTS when vCPU not in SMM") changes KVM_SET_VCPU_EVENTS
+> handler to set pending LAPIC INIT event regardless of if vCPU is in
+> SMM mode or not.
 > 
-> -EIO is just as much of a metadata corruption, so if you only catch
-> ENODATA you're missing most of them.
-
-Hrmm, well an EIO (or an ENODATA) coming from the block layer causes the
-scrub code to return to userspace with EIO, and xfs_scrub will complain
-about the IO error and exit.
-
-It doesn't explicitly mark the data structure as corrupt, but scrub
-failing should be enough to conclude that the fs is corrupt.
-
-I could patch the kernel to set the CORRUPT flag on the data structure
-and keep going, since the likelihood of random bit errors causing media
-errors is pretty high now that we have disks that store more than 1e15
-bits.
-
-> > >  	if (bio->bi_status)
-> > > -		xfs_buf_ioerror(bp, blk_status_to_errno(bio->bi_status));
-> > > +		xfs_buf_ioerror(bp, xfs_buf_bio_status(bio));
-> > 
-> > I think you'd also want to wrap all the submit_bio_wait here too, right?
-> > 
-> > Hrm, only discard bios, log writes, and zonegc use that function.  Maybe
-> > not?  I think a failed log write takes down the system no matter what
-> > error code, nobody cares about failing discard, and I think zonegc write
-> > failures just lead to the gc ... aborting?
+> However, latch INIT without checking CPU state exists race condition,
+> which causes the loss of INIT event. This is fatal during the VM
+> startup process because it will cause some AP to never switch to
+> non-root mode. Just as commit f4ef19108608 ("KVM: X86: Fix loss of
+> pending INIT due to race") said:
+>       BSP                          AP
+>                      kvm_vcpu_ioctl_x86_get_vcpu_events
+>                        events->smi.latched_init = 0
 > 
-> Yes.  In Linux -EIO means an unrecoverable I/O error that the lower
-> layers gave up retrying. Not much we can do about that.
+>                      kvm_vcpu_block
+>                        kvm_vcpu_check_block
+>                          schedule
+> 
+> send INIT to AP
+>                      kvm_vcpu_ioctl_x86_set_vcpu_events
+>                      (e.g. `info registers -a` when VM starts/reboots)
+>                        if (events->smi.latched_init == 0)
+>                          clear INIT in pending_events
 
-<nod>
+This is a QEMU bug, no?  IIUC, it's invoking kvm_vcpu_ioctl_x86_set_vcpu_events()
+with stale data.  I'm also a bit confused as to how QEMU is even gaining control
+of the vCPU to emit KVM_SET_VCPU_EVENTS if the vCPU is in kvm_vcpu_block().
 
---D
+>                      kvm_apic_accept_events
+>                        test_bit(KVM_APIC_INIT, &pe) == false
+>                          vcpu->arch.mp_state maintains UNINITIALIZED
+> 
+> send SIPI to AP
+>                      kvm_apic_accept_events
+>                        test_bit(KVM_APIC_SIPI, &pe) == false
+>                          vcpu->arch.mp_state will never change to RUNNABLE
+>                          (defy: UNINITIALIZED => INIT_RECEIVED => RUNNABLE)
+>                            AP will never switch to non-root operation
+> 
+> In such race result, VM hangs. E.g., BSP loops in SeaBIOS's SMPLock and
+> AP will never be reset, and qemu hmp "info registers -a" shows:
+> CPU#0
+> EAX=00000002 EBX=00000002 ECX=00000000 EDX=00020000
+> ESI=00000000 EDI=00000000 EBP=00000008 ESP=00006c6c
+> EIP=000ef570 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=0
+> ......
+> CPU#1
+> EAX=00000000 EBX=00000000 ECX=00000000 EDX=00080660
+> ESI=00000000 EDI=00000000 EBP=00000000 ESP=00000000
+> EIP=0000fff0 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=0
+> ES =0000 00000000 0000ffff 00009300
+> CS =f000 ffff0000 0000ffff 00009b00
+> ......
+> 
+> Fix this by handling latched INITs only in specific CPU states (SMM,
+> VMX non-root mode, SVM with GIF=0) in KVM_SET_VCPU_EVENTS.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: ff90afa75573 ("KVM: x86: Evaluate latched_init in KVM_SET_VCPU_EVENTS when vCPU not in SMM")
+> Signed-off-by: Fei Li <lifei.shirley@bytedance.com>
+> ---
+>  arch/x86/kvm/x86.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index a1c49bc681c46..7001b2af00ed1 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -5556,7 +5556,7 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
+>  			return -EINVAL;
+>  #endif
+>  
+> -		if (lapic_in_kernel(vcpu)) {
+> +		if (!kvm_apic_init_sipi_allowed(vcpu) && lapic_in_kernel(vcpu)) {
+>  			if (events->smi.latched_init)
+>  				set_bit(KVM_APIC_INIT, &vcpu->arch.apic->pending_events);
+>  			else
+> -- 
+> 2.39.2 (Apple Git-143)
+> 
 
