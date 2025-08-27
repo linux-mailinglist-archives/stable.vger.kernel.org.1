@@ -1,93 +1,45 @@
-Return-Path: <stable+bounces-176509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07A30B384CE
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 16:20:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C9B2B384EC
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 16:27:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE9DD7B047F
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 14:18:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 152C83AA547
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 14:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A3C303CB6;
-	Wed, 27 Aug 2025 14:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GdMNXlzc"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BDA3570D4;
+	Wed, 27 Aug 2025 14:27:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EA82777FD
-	for <stable@vger.kernel.org>; Wed, 27 Aug 2025 14:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67551C1F12;
+	Wed, 27 Aug 2025 14:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756304416; cv=none; b=eU5UI+Yh2SQRlswMypxbr6R+aIKJ6lkigF3CKZeaVPp9ZP+GhpxIYMnW+1wJPEvVN+GJ1vfyRpo7br9FkXICn+H/Z+kerVH4XfFg1ozPUezrxjurZ8gsKp/HbgZ9Ko1Jr+Xvcn5FyjPjnu5tsMpdG+s/n48Qshc6A6pi0tI73jA=
+	t=1756304822; cv=none; b=NgXekyzNSjv5Tle/m0eqYsyXdCBftQnzxTqYi8Dq8jqwGDmPewOfoyeLGIcIl67Ak+pakd8o0NaT+BCZgm5HgDTd+RM9uB7b2pBUJzEBG62vrqnNX2Cs5MiPP0L7FCtS/4hCnk0e9f7EGUOnoDwYjL3M1yg5JmjrR+Mrnf9ppmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756304416; c=relaxed/simple;
-	bh=HHk2BSgl9+A5isTV0Es7jKwwEf6+byROFUjgpG/p04U=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=u/w5IeP+x4qIM7EQ1RRvucdh8NQH9bKor4g59JiH0SQt/K404VBkxMMy3lvkbIUj1W4Nx3Xd5fGA74k/uR2msCtv8vpEY2s8yEKcxdV6j3oWHnCnst2k8P09IDuTMTWcJZqnpWMClx+rzG8c3jsAsr9s5jD/vET5uVNoTEG47P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GdMNXlzc; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756304414;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=opDJ3bmxpJeKk5jilIGi+lkf0qL9GQCfD0EA1RSLjbc=;
-	b=GdMNXlzc8HSPin13LZ9rhDc1ie7zm7Lxnpp0+JBN/LJdyxj6ytR0H9wON2xQfNW7iJ/vC8
-	p/0+zlZ10kK3EcGrcaCffXQ7zaMM+xJ9X8qObgyDSCLlDORi80aRmabbdei3E0ZDS6+gti
-	2pZ2WewKG6LVskk6WYHyBzbKeuAm1Uo=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-85-h0F-gKFUMJWOUUqc3TDetw-1; Wed, 27 Aug 2025 10:20:11 -0400
-X-MC-Unique: h0F-gKFUMJWOUUqc3TDetw-1
-X-Mimecast-MFC-AGG-ID: h0F-gKFUMJWOUUqc3TDetw_1756304410
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45a1b0bd6a9so38283445e9.2
-        for <stable@vger.kernel.org>; Wed, 27 Aug 2025 07:20:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756304410; x=1756909210;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=opDJ3bmxpJeKk5jilIGi+lkf0qL9GQCfD0EA1RSLjbc=;
-        b=Tne8hZddPiGAG/IVmoOA4eLKXSjvKnhr1NrfjtQ9oIZI5DBhhi1JJFKPwokMZ2oSbi
-         TwLESC1KROUDPwnnDjQTCM+kqjLEe3h3rJCa2VEuDnUTeqT9RGDbewpaK4kGy0C++4vI
-         ZPmdlZSsNx+an0WCufkJ2g5khlL33Up1GhiubLZik7vCTHG0INbGSMnNt6rzASDxSdyP
-         Avyc78pJdstFQ33ML3Z4YBhJY++ApYndG+I9HqKvWyc6bCYbTGbPMEsj9QDb9dSCxCz0
-         BdAu7VsMuIyrVpbBF7c5qZmF25BvL+5jbJPFAJhTa1dqVJwgXvOLzRdk/FiMOPVs5qCr
-         UYQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVku1NQ1bF5HAf6lWty8Pdzg93NEI8Fa/+mqK9W2ZWwfXrJPsQem1DsREKvQYzK5lZAa2IQVQg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJVyAo/YVR4Fh+3WP18rXRc3/S+QBlh+ThuQBnLCUWN2xWrDXJ
-	OflgkGC+qwr6HzUQkj6x+Fm3hNBdeqykNoPM+yEei8MfOfFGGac2IqDPYi6kqBxL80ATVKOHRcW
-	gTifZOWH9v/m8iOmopYVL3tqzy87IPl/sC2+r36z+7e0u7zBpyb/LU9k2hQ==
-X-Gm-Gg: ASbGnctNDA28JpnrIh093i+bDIG6xNSgEQWiSgpR/UUR6f1ztWwiQfk7CXIx/8bzUtA
-	X6ua9/6iujCbTno1dLiugshIqUmRaFOHNm55xStLrvy3rzi4E6fryTm6G8/2YYNcZ8Zt+zdK3Hx
-	jBqjBacHIE06i+vkErYABUpumTfO8KoQPPd5hp1snZHxW7akVz5kYOQfHZ/dZIrNdJm+S8OUVgO
-	26Qesh+OYvgzEcKlS+lbkDyYH3DSCj6oomRmTYMq41eDN5a/rGZnjrDxLr01zcib6PaGfP+qmY1
-	QPLl8XgxlIVN3dldrb36n12BcTwCsqQ=
-X-Received: by 2002:a05:600c:4746:b0:459:d494:faf9 with SMTP id 5b1f17b1804b1-45b517a0bacmr187068685e9.10.1756304409964;
-        Wed, 27 Aug 2025 07:20:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHFKNOtqoYfcFfl5BN6DYFKW7ddCHHcODDT/GXLs1RNGvAT7ubO6RW2Y1yIY5L1Dbp0HoJT5Q==
-X-Received: by 2002:a05:600c:4746:b0:459:d494:faf9 with SMTP id 5b1f17b1804b1-45b517a0bacmr187068355e9.10.1756304409549;
-        Wed, 27 Aug 2025 07:20:09 -0700 (PDT)
-Received: from redhat.com ([185.137.39.233])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f3125ccsm32582585e9.19.2025.08.27.07.20.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Aug 2025 07:20:09 -0700 (PDT)
-Date: Wed, 27 Aug 2025 10:20:04 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	arbn@yandex-team.com, igor.torrente@collabora.com,
-	junnan01.wu@samsung.com, kniv@yandex-team.ru, leiyang@redhat.com,
-	liming.wu@jaguarmicro.com, mst@redhat.com, namhyung@kernel.org,
-	stable@vger.kernel.org, ying01.gao@samsung.com,
-	ying123.xu@samsung.com
-Subject: [GIT PULL] virtio,vhost: fixes
-Message-ID: <20250827102004-mutt-send-email-mst@kernel.org>
+	s=arc-20240116; t=1756304822; c=relaxed/simple;
+	bh=QpuHB39nAGQwyhSesxsgKIlahRSa5eB803jWfbfWbxA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DwJkRfz7At+8vHDgvNe50O/S6Nd6iqM7UG/Cy1PFpCkhbrdvY9Zm8wHAXpWr5dRVfDNkTA0ectvddeqxGy3nvhwBzFPEpbsozG7nctszUPQNnh9x4ARloHe4FliI3qqCSkhj9mer9QlEhrFo7A4vc2bHFzwA7C/RbibSfOhua2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+Date: Wed, 27 Aug 2025 14:26:47 +0000
+From: Brett A C Sheffield <bacs@librecast.net>
+To: Oscar Maes <oscmaes92@gmail.com>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, davem@davemloft.net,
+	dsahern@kernel.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v3 2/2] selftests: net: add test for destination in
+ broadcast packets
+Message-ID: <aK8Vp6yrrIoQEmxr@auntie>
+References: <20250827062322.4807-1-oscmaes92@gmail.com>
+ <20250827062322.4807-2-oscmaes92@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,54 +48,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mutt-Fcc: =sent
+In-Reply-To: <20250827062322.4807-2-oscmaes92@gmail.com>
 
-The following changes since commit 1b237f190eb3d36f52dffe07a40b5eb210280e00:
+On 2025-08-27 08:23, Oscar Maes wrote:
+> Add test to check the broadcast ethernet destination field is set
+> correctly.
+> 
+> This test sends a broadcast ping, captures it using tcpdump and
+> ensures that all bits of the 6 octet ethernet destination address
+> are correctly set by examining the output capture file.
+> 
+> Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+> ---
+> Link to discussion:
+> https://lore.kernel.org/netdev/20250822165231.4353-4-bacs@librecast.net/
+> 
+> Thanks to Brett Sheffield for writing the initial version of this
+> selftest!
 
-  Linux 6.17-rc3 (2025-08-24 12:04:12 -0400)
+Thanks for leaving my author name in the file.  Perhaps you might consider
+adding:
 
-are available in the Git repository at:
+Co-Authored-By: Brett A C Sheffield <bacs@librecast.net>
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+to your commit message. I spend quite a bit of my Saturday bisecting and
+diagnosing,  and writing the patch and test.
 
-for you to fetch changes up to 45d8ef6322b8a828d3b1e2cfb8893e2ff882cb23:
+>  tools/testing/selftests/net/Makefile          |  1 +
+>  .../selftests/net/broadcast_ether_dst.sh      | 82 +++++++++++++++++++
+>  2 files changed, 83 insertions(+)
+>  create mode 100755 tools/testing/selftests/net/broadcast_ether_dst.sh
+> 
+> diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+> index b31a71f2b372..56ad10ea6628 100644
+> --- a/tools/testing/selftests/net/Makefile
+> +++ b/tools/testing/selftests/net/Makefile
+> @@ -115,6 +115,7 @@ TEST_PROGS += skf_net_off.sh
+>  TEST_GEN_FILES += skf_net_off
+>  TEST_GEN_FILES += tfo
+>  TEST_PROGS += tfo_passive.sh
+> +TEST_PROGS += broadcast_ether_dst.sh
+>  TEST_PROGS += broadcast_pmtu.sh
+>  TEST_PROGS += ipv6_force_forwarding.sh
+>  
+> diff --git a/tools/testing/selftests/net/broadcast_ether_dst.sh b/tools/testing/selftests/net/broadcast_ether_dst.sh
+> new file mode 100755
+> index 000000000000..865b5c7c8c8a
+> --- /dev/null
+> +++ b/tools/testing/selftests/net/broadcast_ether_dst.sh
+> @@ -0,0 +1,82 @@
+> +#!/bin/bash
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Author: Brett A C Sheffield <bacs@librecast.net>
+> +# Author: Oscar Maes <oscmaes92@gmail.com>
+> +#
+> +# Ensure destination ethernet field is correctly set for
+> +# broadcast packets
+> +
+> +source lib.sh
+> +
+> +CLIENT_IP4="192.168.0.1"
+> +GW_IP4="192.168.0.2"
+> +
+> +setup() {
+> +	setup_ns CLIENT_NS SERVER_NS
+> +
+> +	ip -net "${SERVER_NS}" link add link1 type veth \
+> +		peer name link0 netns "${CLIENT_NS}"
+> +
+> +	ip -net "${CLIENT_NS}" link set link0 up
+> +	ip -net "${CLIENT_NS}" addr add "${CLIENT_IP4}"/24 dev link0
+> +
+> +	ip -net "${SERVER_NS}" link set link1 up
+> +
+> +	ip -net "${CLIENT_NS}" route add default via "${GW_IP4}"
+> +	ip netns exec "${CLIENT_NS}" arp -s "${GW_IP4}" 00:11:22:33:44:55
+> +}
+> +
+> +cleanup() {
+> +	rm -f "${CAPFILE}"
+> +	ip -net "${SERVER_NS}" link del link1
+> +	cleanup_ns "${CLIENT_NS}" "${SERVER_NS}"
+> +}
+> +
+> +test_broadcast_ether_dst() {
+> +	local rc=0
+> +	CAPFILE=$(mktemp -u cap.XXXXXXXXXX)
+> +
+> +	echo "Testing ethernet broadcast destination"
+> +
+> +	# start tcpdump listening for icmp
+> +	# tcpdump will exit after receiving a single packet
+> +	# timeout will kill tcpdump if it is still running after 2s
+> +	timeout 2s ip netns exec "${CLIENT_NS}" \
+> +		tcpdump -i link0 -c 1 -w "${CAPFILE}" icmp &> /dev/null &
+> +	pid=$!
+> +	sleep 0.1 # let tcpdump wake up
+> +
+> +	# send broadcast ping
+> +	ip netns exec "${CLIENT_NS}" \
+> +		ping -W0.01 -c1 -b 255.255.255.255 &> /dev/null
+> +
+> +	# wait for tcpdump for exit after receiving packet
+> +	wait "${pid}"
+> +
+> +	# compare ethernet destination field to ff:ff:ff:ff:ff:ff
+> +	ether_dst=$(tcpdump -r "${CAPFILE}" -tnne 2>/dev/null | \
+> +			awk '{sub(/,/,"",$3); print $3}')
+> +	if [[ "${ether_dst}" == "ff:ff:ff:ff:ff:ff" ]]; then
+> +		echo "[ OK ]"
+> +		rc="${ksft_pass}"
+> +	else
+> +		echo "[FAIL] expected dst ether addr to be ff:ff:ff:ff:ff:ff," \
+> +			"got ${ether_dst}"
+> +		rc="${ksft_fail}"
+> +	fi
+> +
+> +	return "${rc}"
+> +}
+> +
+> +if [ ! -x "$(command -v tcpdump)" ]; then
+> +	echo "SKIP: Could not run test without tcpdump tool"
+> +	exit "${ksft_skip}"
+> +fi
+> +
+> +trap cleanup EXIT
+> +
+> +setup
+> +test_broadcast_ether_dst
+> +
+> +exit $?
+> -- 
+> 2.39.5
+> 
+> 
 
-  virtio_net: adjust the execution order of function `virtnet_close` during freeze (2025-08-26 03:38:20 -0400)
-
-----------------------------------------------------------------
-virtio,vhost: fixes
-
-More small fixes. Most notably this fixes a messed up ioctl #,
-and a regression in shmem affecting drm users.
-
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
-----------------------------------------------------------------
-Igor Torrente (1):
-      Revert "virtio: reject shm region if length is zero"
-
-Junnan Wu (1):
-      virtio_net: adjust the execution order of function `virtnet_close` during freeze
-
-Liming Wu (1):
-      virtio_pci: Fix misleading comment for queue vector
-
-Namhyung Kim (1):
-      vhost: Fix ioctl # for VHOST_[GS]ET_FORK_FROM_OWNER
-
-Nikolay Kuratov (1):
-      vhost/net: Protect ubufs with rcu read lock in vhost_net_ubuf_put()
-
-Ying Gao (1):
-      virtio_input: Improve freeze handling
-
- drivers/net/virtio_net.c               | 7 ++++---
- drivers/vhost/net.c                    | 9 +++++++--
- drivers/virtio/virtio_input.c          | 4 ++++
- drivers/virtio/virtio_pci_legacy_dev.c | 4 ++--
- drivers/virtio/virtio_pci_modern_dev.c | 4 ++--
- include/linux/virtio_config.h          | 2 --
- include/uapi/linux/vhost.h             | 4 ++--
- 7 files changed, 21 insertions(+), 13 deletions(-)
-
+-- 
 
