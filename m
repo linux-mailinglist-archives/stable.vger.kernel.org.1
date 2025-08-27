@@ -1,153 +1,141 @@
-Return-Path: <stable+bounces-176526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A162FB3893A
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 20:03:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF60B3885D
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 19:14:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8AF17B9A79
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 18:01:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 495411B620AB
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 17:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF432D73BB;
-	Wed, 27 Aug 2025 18:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CF130100E;
+	Wed, 27 Aug 2025 17:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="t+gFtHFp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mqVvXkDk"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0526E2C031E;
-	Wed, 27 Aug 2025 18:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B641494D9;
+	Wed, 27 Aug 2025 17:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756317774; cv=none; b=HZh3N5lAdKn+FTWaklCpl1CIv7puNOz23/uIiYkkip0z9SjxDLA1KM90s5pvjaTPgm+ufXkpW4AJtoGNyJjHUwyixJnYWoeWVS8skWpOHmc61bpILiu2+510Y9ZutpU0PUHh2cYuPCgM6vlMdk2yS7jrA8zRoF3rI8TgGkLUxZM=
+	t=1756314864; cv=none; b=otVZ6Z5/4qtM0XB5chYnS0DJoABzoqWzPQupOb8T8HHI6S89AdkjNdbtVRnKR0sDRv2nKRHpj9VSSA/Db94qJmfIC5Q8Aj670B0WeaYWGy3pV4/pLjk7gACnRxtZeHufMlzI9/Wff2eUdyfrVJEdUKGJrIVTUmJDyangXrJoY2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756317774; c=relaxed/simple;
-	bh=3CJtJ5vFXngowMKB7Bdgd6eKQKDaN0DObWec9lgfDkk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tAQDeG6xrlvr8NP6KpanU5IYTjKiQ2Zn+8HlWSP+Y7TmPztgXmLPfl/CaEKeqSMoU7kIBpBoBZouo6+syQxYnTZmkJb5SVYKfLNhS1GXQ1SK2oQ/Z/tl8/5UWJDndS0wxcgsB5ttSaXlxltA7rWr4Ne8S5OiXQ37J7uXNRXAUIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=t+gFtHFp; arc=none smtp.client-ip=212.227.17.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1756317765; x=1756922565; i=christian@heusel.eu;
-	bh=4BgvfIWpq1zAjrUiinTpJPpwIdUp6H5Arkv0i8oX8Sw=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=t+gFtHFptdj9AoV+fP72sKXRAYCt8RvCPuFyvXys2sS46UNEmwzrKmfDNak7eVue
-	 FiMQSio83rfR0p4W6/TlxOFGh78diBboxJ05mPt6K4gfPaYqQTomcpduexY9fgGU4
-	 J360f5LMrG4W9GjwTCu5027kDfz8lqyo68aHKks4w7XA8Xl6yUMiXRBo2Vo5js5Ff
-	 oSx5o5JRjHisr+g+wqYePdvILGRyWOTPMWOziAzUYQ3q7YgAWREgy6nG9kCafTTwf
-	 wTdyxifKwLJLJX9/RRlQMKPxcihl9ObU0++j1LlJqmxfV3yLn1Q6rY8tOZnRmbAJL
-	 Fb7XDXQXevxCKcPkaQ==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([94.31.75.247]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1N1gWU-1uOtQN1H2m-00vn2N; Wed, 27 Aug 2025 18:45:43 +0200
-Date: Wed, 27 Aug 2025 18:45:41 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-Subject: Re: [PATCH 6.16 000/457] 6.16.4-rc1 review
-Message-ID: <f51c8113-d240-472a-9231-81deaaf95e54@heusel.eu>
-References: <20250826110937.289866482@linuxfoundation.org>
+	s=arc-20240116; t=1756314864; c=relaxed/simple;
+	bh=vmhM1axZcbMDQQRdbX1XROyyy+ppYZsADnhf5UWlfBY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iIvfs9gVhxbQfrA+Gkd8CFMVB9aBnqBngbbGnk0eXMmPxGNuetTb0i28GULWbqfxvoRKvSiJHzgBfKqBUSrDUSqCVUYxSnO3e//0w9824o+0f/sWzq4K5NdAeYgfxkMRjXRt7HZ0fW+4Pnpgq+fwFY66KcMzNWa8ibDj6+TZbKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mqVvXkDk; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-45b49f7aaf5so146685e9.2;
+        Wed, 27 Aug 2025 10:14:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756314861; x=1756919661; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=scSioPZgaBWmEVFJ4bgMUeN7W+hZwLguTW+C4ze8WMo=;
+        b=mqVvXkDk0ocalfOblQOQ5G8TwyHKwis2fBCoMMd1V/vy2u+qUAQpbXclb30Gg1du3h
+         1dpPuJ6zF75DR5S/YXhsPyLclTw/ciKtPSENbq7iSEPYumWiiP9BHrkNhkIR3YvlBnRs
+         /6+YS+VUaPOc+yy6BKCBpvVxdXMfm4hoERXXVzLNnQM8XwOCXoV33XdNscceI096vIiP
+         V/JV4PIgX2UludeBMgBSOPDy650oss3qkbip7XF5+fc4mkP8qAbFi6mIzUIzhrijixvn
+         jj/J2vphdkwSlRowFhODDB3TcQsKrQiTFxG1HaYQWhs4tyBlxVZbT8hrXmsuDEGYujM1
+         ZRiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756314861; x=1756919661;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=scSioPZgaBWmEVFJ4bgMUeN7W+hZwLguTW+C4ze8WMo=;
+        b=n2SsrDN3EfZodalPMdVOvyzR7HzSeAu0DmfUd15TSJ+p5YQ8hnQIRoK9DzWJTSLlz/
+         0JHyu9W5wHv8u9m8u1PoARfLK/g2CLH195GXPmRE2nwumj6KWIYlOLSg4gI8TDck5zVM
+         NS4Yhjg8OkQpk8hBXbm4T+eCknlpk4HtVbiCzcSwMeIchnw9Ifqg9FbBFdu4FTY3cEs7
+         i4XgaKazj6yjQnRp4h1jLRmMAUcgFD78N4+yvHB8Wo5hR/r5vdM9r/N5xpz1FI8Y7EnL
+         pf999OFcUAz2FydbRF9cY4AsC4mh8wOEsgR3m/w2sRKBA6tx9dmF+pH8A9clnEU7CO6u
+         Sxhw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2bzueEfNDCtUIBD7c5HM5h4Uvuxlz9nwRdul40CUdeg6/xM61aqh1gCxIlp0D/imglfwbIdZR8kE=@vger.kernel.org, AJvYcCWTi9Hx2Fpbb5eOwBE5EZVGcqil6LTMjSw+V8oHE3nEmjVcpynqt1e8jCe4g/cOz+m5J+ztsxgt@vger.kernel.org, AJvYcCXlO+0yu+E2AH6zwpcIP8RDup3PsXsTzYiWjjOUNiqZ6uoAdgQMePhwnYktfZXTuhz6VykXeGKM2lwo39wV@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVep6RckkYcj1aIFdyQsMO3go9rleYr9Xz014vKb4iDDQLsuTj
+	LwY17yuGdWzK1QDgM4wPXQNLYO2vKCMnZzRmTmXJ79HWz34GMo+6nA3b
+X-Gm-Gg: ASbGncuE1iChN11pFGzvJwtzGJCucIGD9nykBlbXckMgZoplreUjj70BGzlmvbPgas+
+	6WI0EwyYIq9rIVS0hOPXBHzQTzzugSnSl0VvM6vnf6m+8cTtOuyDAEK6MkUA1Cd+ZBpkIOUuSLr
+	7zRW7pOsH7+6FIUeKZ1jmxiiVB2KE3KNkUj15pzpCePVXt5kgmvZhNfF0pUuFxvLm8D164HVYn4
+	KjI87O+VR8jYY2zq9QmuLKgsbpSdbXLuBU5yF3Coq6IkHL0mAcOYjRhel0BNjc+lAWGNX7G0C3+
+	eWKZkKH7djn9TnUNyZGcBlfHdFN80F7CP6ylSqacoL6pxJXgcfiS8K9CnZ/u+s283DAdpN6Qjne
+	f7omz8G9ZLsdO0ypiOemDCnTWaYTcD4DXWrsdSS6N7DZKmWl2Wo0=
+X-Google-Smtp-Source: AGHT+IGgJZpfwG160OMwKEQBo65DWFs20A2jVte44M8RtyboFyzwUBOR1kqkVxkJxvfq6Bn3mVaojQ==
+X-Received: by 2002:a05:600c:5247:b0:45b:7580:6f46 with SMTP id 5b1f17b1804b1-45b75807d2fmr9107245e9.20.1756314860766;
+        Wed, 27 Aug 2025 10:14:20 -0700 (PDT)
+Received: from [192.168.0.253] (5D59A51C.catv.pool.telekom.hu. [93.89.165.28])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3c7113fdacfsm21272365f8f.35.2025.08.27.10.14.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Aug 2025 10:14:20 -0700 (PDT)
+From: Gabor Juhos <j4g8y7@gmail.com>
+Subject: [PATCH v3 0/2] i2c: pxa: fix I2C communication on Armada 3700
+Date: Wed, 27 Aug 2025 19:13:57 +0200
+Message-Id: <20250827-i2c-pxa-fix-i2c-communication-v3-0-052c9b1966a2@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nbtzd3b2lmwkf4dz"
-Content-Disposition: inline
-In-Reply-To: <20250826110937.289866482@linuxfoundation.org>
-X-Provags-ID: V03:K1:0C3SdLhtqc3V/gIlldVy2ea9maxR/9RwiMUFRqJrB3uMF9g0vam
- ijbpq/1+3eANieFhnV2mTunH5VmSHCKp68DdfDJ/HfqHJa/Mh9vXvQMXdoPHRLPBKiLCmqB
- f1Ct6zB8j+FPg9uQNS6Qn256sFswHWBQdsVfU557MXWrIavG0upziNxpp1Ps9xYI107Inld
- n4xjN/SLfeOyIP3uJY9DQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:76cPjcPL7Vc=;F8vSAOKAuBDnvgsOakKu20vLiTJ
- QeiHeQt1nxMgrb86MBSLB9fGQEXK7ldj48cQLcbxee1YxjdH0dTk65BMlTV+tBIKVuHTUxp08
- bz28RxG2cD+rQsUwBGGiONYmPYs3ffVu5v0J306ti4mdqBmWBJOVfkf6LKwViiIdqiFoi4zur
- SVni9dgwbN304Tv/Tu65bJ+nTnYPi5KoJrf5E0xkr6DcovpO74SsJ4Znc9ootfKAqar15diSS
- cwbLeZ7IEVbaO6Zc8GzpMCgoLr0WpQf3yytN4iCigo+csZgETEFMtyNVwyshWua9gPT+lr+te
- /VNJSfIYr1MnUR6UO0bB0I4Jw/1O5ivIvXeqswWYvvYxBcQ2sXZClYjA7aZ08pblpWKLN6dFO
- fSSVVIk+FLd8mEeZSgoBBba1wsMbKnme/AyeiC71Sebewbn9CJZgUvYTn8F4NVNnzHf/gzbFF
- 8AOq3vOIJG2B1RJxvmp+a4NBYy/+V7OUmu3wXVjRXEqcaTIGDUakCCjQCmzqyqmmkWo0dRm+p
- ycgexEsE3TO7LxopzB16WJGprCKA30eixCNXiBjWZn9tqEw6gkMRBF6xkorjz31aGeela/j4n
- r5FS/+yiRExytrGlI6UbkyJIGGEQPNQwdRpQrX/Vc5DGlVRB7XKrtMJIcW+Gb3bLp0bmHuaoL
- MWq/qEUAhOwprTP4btar1QN9rZLKtr9QFCEE6OyPoWrPopJEQQtoghLpe0xe1v8lIB3m1GZuA
- u/A0JPUF4O7TJvJukZEu8lTKPuX3gkxHg0GFlEXFmMfIso5uHPxpC+78NJLb/67+sOprTyxtK
- Es1ySywyl7CNpvMCjW3I1M1uEtFzyXdXiqdZwYimct6ECYmTWsb4YW6tsHcUjYdzNH9Rm4M/g
- OPB++kRgPmOxCY3W1zQvyNesjaGQYEoBIgGTXkk2Jn2jlcby31j1gbdfa7Ff8A0xKprK2sdMf
- JdzxkptqHjKj8XqaeLgeCZa4zAlMJB2O8HpQ70ZbnejYyc9+Pp1G2VgKhXVYZcyZXKKIWEMG3
- TJUlak713/5ItPJK7kByy7e9/iAW/eOHGSJ/waYRA/ftMqrA46EmU5aTif6pnpH/RgbhqfQI4
- YB0B6SvzlD0Z931B7G3mwnmNlMTHxJAS4L70WPVE9XxU1OAjRBSir5aHcIqGmgYIxB2q689xc
- peKC6DY3pjRuKeefKhizvzL6De563+WKnVxHyHLDx9RgBbWRlkL6pT9BM2qErnyAA5o0S4llt
- 3UaawfSD9Y/ayj+yM1SJ9fM5DMPmZQJdNBUWQgVPh/GXCaXaApyA9mqYt1aaJNKkeVWuqoMEI
- huvrbbI1HxooaxZJ6JIWyLMVk1X6LPJLBKiiwETgHT6vYsKoZ+ufQbpo4YpM+CXU6jzeDt+ka
- nFTIPDDn+ep7XpjhxX8TJF0z2USwE5kP2vMAnUsmI33TPeiJoayLNLY65/WBOay5HsAlfcGLS
- oR+acnKtyxfq0LqIWALSsZtyRmEcYydE9Qgdsq5kdzw2rpo8jDCLDOGc5KEvmfAczoRqT3tbQ
- NI5lt1XT19OhOtBjqWYPV/TfXUiyIA1YpMpIm0NPKa6v6/qVoqvdX0q7z/K86NL1ifKalZXwJ
- neIQtandN/sEB7C+3TdxdHYYFRVnB62Z4RFlrknHp6dt5pzDX/ltlZQS57eaZmzEZ4vJ5APJu
- 4juuDvfP3f9OuwsoEQupDwp5gOSQoSRuIg+9M9TQGq+GZ7g/KxAnVt7d7SB/z2eFU6dXlRb6i
- R6X33QOGL4Wj3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANU8r2gC/4XNzw6CMAwG8FchOzvTDUHmyfcwHpatQhP5kw0XD
+ OHdLSRGb9z6NV9/nUXEQBjFJZtFwESR+o5DfsiEa2xXoyTPWWjQBRQKJGknh8nKB03b7Pq2fXX
+ k7MiXMsfSo8LcgysFG0NALm7+7c65oTj24b29S2rdfmW1IyclQaIBc/ZgLKjiWreWnkduiVVO+
+ qdV+5pmzdmTRlupyjvzry3L8gHumdmkGAEAAA==
+X-Change-ID: 20250510-i2c-pxa-fix-i2c-communication-3e6de1e3d0c6
+To: Wolfram Sang <wsa@kernel.org>, 
+ Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+ Andi Shyti <andi.shyti@kernel.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Russell King <rmk+kernel@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
+ Hanna Hawa <hhhawa@amazon.com>
+Cc: Robert Marko <robert.marko@sartura.hr>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Russell King <rmk+kernel@armlinux.org.uk>, linux-i2c@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Gabor Juhos <j4g8y7@gmail.com>, stable@vger.kernel.org, 
+ Imre Kaloz <kaloz@openwrt.org>
+X-Mailer: b4 0.14.2
 
+There is a long standing bug which causes I2C communication not to
+work on the Armada 3700 based boards. The first patch in the series
+fixes that regression. The second patch improves recovery to make it
+more robust which helps to avoid communication problems with certain
+SFP modules.
 
---nbtzd3b2lmwkf4dz
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 6.16 000/457] 6.16.4-rc1 review
-MIME-Version: 1.0
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+---
+Changes in v3:
+  - rebase on tip of i2c/for-current
+  - remove Imre's tag from the cover letter, and replace his SoB tag to
+    Reviewed-by in the individual patches
+  - rework the second patch so it does not need changes in the I2C core code,
+    and drop the first one as it is not needed now
+  - Link to v2: https://lore.kernel.org/r/20250811-i2c-pxa-fix-i2c-communication-v2-0-ca42ea818dc9@gmail.com
 
-On 25/08/26 01:04PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.16.4 release.
-> There are 457 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
-> Responses should be made by Thu, 28 Aug 2025 11:08:27 +0000.
-> Anything received after that time might be too late.
->=20
+Changes in v2:
+  - collect offered tags
+  - rebase and retest on tip of i2c/for-current
+  - Link to v1: https://lore.kernel.org/r/20250511-i2c-pxa-fix-i2c-communication-v1-0-e9097d09a015@gmail.com
 
-Tested-by: Christian Heusel <christian@heusel.eu>
+---
+Gabor Juhos (2):
+      i2c: pxa: defer reset on Armada 3700 when recovery is used
+      i2c: pxa: handle 'Early Bus Busy' condition on Armada 3700
 
-Tested on the following hardware:
+ drivers/i2c/busses/i2c-pxa.c | 35 ++++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
+---
+base-commit: 3dd22078026c7cad4d4a3f32c5dc5452c7180de8
+change-id: 20250510-i2c-pxa-fix-i2c-communication-3e6de1e3d0c6
 
-* a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU
-* a Framework Laptop with a Ryzen AI 5 340=20
-* a Framework Desktop
-* a Steam Deck (LCD Edition)
+Best regards,
+-- 
+Gabor Juhos <j4g8y7@gmail.com>
 
---nbtzd3b2lmwkf4dz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmivNjUACgkQwEfU8yi1
-JYVSkQ/7BD60GKc9qzitZRgqv6jNdOen75IdoZ5yEVl/p2B/fZKMz7N8dj9t1cz6
-wdHk2xhwWxpf5DxoiMDFO1cMBLWDz5RvYroBJDfr6PrmMqOoAtqJnmsiryHvHPyK
-FVZzD6bO9WJb3SWjBhMYMWBNxUIu8jY/NlBGaJoaqhR2W2w529S4pZpcXVtsPAHz
-CEQSrEuU10JHX0JdvhE3cz0npm6AMl9sPshfgxAuSOr8HTFSpyvd8r387bU0d38X
-HXPFqG7Yj/uxDUs7p2WDQW6w2HV1BYd9Bgi/1dykDzUJ3MEO9iCzG9lkm/rtE7NE
-Q0nQlFkLoQexyemyYD2iC3igFFQjq1A2j9MYWnj/MpJ4orZL386rP2oslcr7rOws
-C6BS6kPVY+IN59GrrdQ6u7kZUgkbzqaWGYICepR25mrzm2vTYoSAIkxZsUwp4soZ
-Oi60JPutKFXcBDE4o2Adzp24ru2vj7xZQ8uj03NQc9nxWD8UH7Sf074gc1Q8c1mm
-UwWQMBa6zZW1aW44fEUw/7cAv5QWrgVFggH92qYfKbhbCM2OStjkrfFDPV5qr7cz
-ueH7OYTL8IkuysikP7cqsDLXHkgPo40WEbJJS4zgVbScp/mwnRja7iz5nnPXsIjH
-QyeYMDOyzF4yMPispVHhB/1HsryEGdUvakptBJjn8VmEVhA4Svk=
-=UNhW
------END PGP SIGNATURE-----
-
---nbtzd3b2lmwkf4dz--
 
