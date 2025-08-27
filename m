@@ -1,154 +1,220 @@
-Return-Path: <stable+bounces-176493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB72B3804B
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 12:49:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB24B3806D
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 12:58:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14E22364BCB
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 10:49:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A79251B67B38
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 10:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB0525B1DA;
-	Wed, 27 Aug 2025 10:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2DBF34DCCA;
+	Wed, 27 Aug 2025 10:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="beM2Q4Sw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cjp7TGjY"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BDC239E8B
-	for <stable@vger.kernel.org>; Wed, 27 Aug 2025 10:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C4530CD9F;
+	Wed, 27 Aug 2025 10:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756291766; cv=none; b=bStA+W/kIkiSd8ThzAO48BB6cnU4HduxZ7TJ4/a3R/WciqyXI2NmSREdrV9iXWzNm/wymVHiNMp5T23DLFdt+ns4IUAUhA94dG7FbPXyZ5fvj2Q+VW34okulsMouP3UmGNHn5zQGgBG/I2nLxx3cVP5Fp7bde7CZ8W7LiVjZo3o=
+	t=1756292291; cv=none; b=ta1XZSbpfB+8zDVZ/74zedW+Xc2aJoS6IT3u/sUbA6QQhWq+mDc3mg2Eej+QMnRob4vNqLo2X16EerDSZ5Rwd4Y2bFP14QYz5/OnO/rfNCOX0SvLZ1ysfDDEL5wf1TausFQYV9KvRETA+FLDrz03/nnqVmqSwpI30mqsZFa9mVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756291766; c=relaxed/simple;
-	bh=IC7fCUvyHICjYQqihsUvTpBaupm1KvP3zRZoT8zc5As=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RWKwBSgFRZ6j1pCfRbrYtkUG0DANUf4Cbep6PrPHXRdtZ3WdMwcpGzGbg3DvbHXh2uj/vzoXigFe5nkSMUa45kYxVeIRXNeyhvRrXP1Y6thwU7zzQBnIgFoK/ToUeRkuEIg477bRzK9RBONTgO4wSbUbX/zILWNYcItCq+70Ugk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=beM2Q4Sw; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756291763;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h5RFPwfFP+Eg1oHSanrF7jLQgxXPAmT3vCxZYmVFSSs=;
-	b=beM2Q4Sw+uwef4K8TFdI1B1+/M/Q5UufuPq9dj9ZNzUJ3xfHCheD0WAAM5EjvizGEqAV8b
-	Z+A9w7pn026ZKCTpxzYZJmSzhiyMjucD3KkIo+D3Ks6IiUG24pLmf796ibSnHXtlVlQYhc
-	akkzG0Qnq/pZ8kiW4ryGuSC5vsnLwwo=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-25-jnF6ywXPOlGMiZ3NGSGcrg-1; Wed, 27 Aug 2025 06:49:22 -0400
-X-MC-Unique: jnF6ywXPOlGMiZ3NGSGcrg-1
-X-Mimecast-MFC-AGG-ID: jnF6ywXPOlGMiZ3NGSGcrg_1756291761
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3c6abcfd218so3106023f8f.3
-        for <stable@vger.kernel.org>; Wed, 27 Aug 2025 03:49:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756291761; x=1756896561;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h5RFPwfFP+Eg1oHSanrF7jLQgxXPAmT3vCxZYmVFSSs=;
-        b=lHVSiglY2w8kO/Z8vMv0rfD/63vgPUKloRmocKNQJH1pz4CDoPPbHJI2tQZCr27wnx
-         GKhxKUvpaaENn6e+r9k3t+lyBYC38+FJ7U4ZyjOwocxe/lMZHWU9Po7PX/it71NHKfre
-         pNMDlR2X5Pkq6lISIP0BWdLDV5jdVJ6iCZde6gXpf4vVFAaLQGCfKK1d5X7Pm5aHXCJl
-         PqrDt4nTFdtr6xms4LAU6Zz6zDZjFZ6lHP94uNBewnhFWslmz+DkscFeft+qZ9Yvgcwy
-         CnYETzDAsPKHWQ7tF/6sHjUpYIYrnykmMxQcu4om7vzj3aeryuCWA0podKbniCWLILFP
-         7VPA==
-X-Forwarded-Encrypted: i=1; AJvYcCVyYwUgBycAIOB0vzqHk3vVmFkRsQcmf2m2q3CW8ud5s3yzkaWo5AQ0ncTg+5gzwFF/7RBxElQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFP297bwZfvyo2/dgvL5v/5FKDw8kz4V78sWDFQTt+RfsWUzlH
-	O4evZ89FM0PaInqXY9F2HotmifGnXIU6yp++vBJN1dw69rTHjpyKlrxJSbVPisFni4tjrZm61aO
-	dq4S0Oda7ugSaHz4k+MokMXcTfzi9kltzCD+MA+AneuFHuPAWTtHVGsEH3g==
-X-Gm-Gg: ASbGnctTdKAA6Tup2ep+bbJxGs9vydQqTn5fh/ZpatjEt2x9ngjFbZlt4GBuelsBbFW
-	tpUOrR6T6flvu5BgVBum3/1mG/AkXrsJV9bg37IeuQm1U4jYGOYFmLq8a7CnS713MjotqYZo2vQ
-	K0OuWEp+m3us1NpthcbwzfINv/xqLUHhbIv/TTU3WUblHk2Rzuj5qBTifPuhclc57sBfhRikugv
-	KxMa5tU+Ztol1mwE8BzRMhdOD/KsDH7KCy5j47Nz2AQTUpOhU1gKRPnEYcuXN95iQkPoJVuP6k2
-	XSCpS3yO8VlMtyOf6/mOIMXcwLvWzLI=
-X-Received: by 2002:a05:6000:250f:b0:3cd:6477:a3ad with SMTP id ffacd0b85a97d-3cd6486e9c6mr178772f8f.26.1756291760796;
-        Wed, 27 Aug 2025 03:49:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHf0+K6BppvH8Hb/OqhP9C5oAmG47R8bj5G86xkmW64GR6L8venV4qa54EUuuubVB9HOzRqag==
-X-Received: by 2002:a05:6000:250f:b0:3cd:6477:a3ad with SMTP id ffacd0b85a97d-3cd6486e9c6mr178741f8f.26.1756291760292;
-        Wed, 27 Aug 2025 03:49:20 -0700 (PDT)
-Received: from redhat.com ([185.137.39.233])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cc98998781sm2603758f8f.49.2025.08.27.03.49.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Aug 2025 03:49:19 -0700 (PDT)
-Date: Wed, 27 Aug 2025 06:49:16 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Parav Pandit <parav@nvidia.com>
-Cc: "NBU-Contact-Li Rongqing (EXTERNAL)" <lirongqing@baidu.com>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"jasowang@redhat.com" <jasowang@redhat.com>,
-	"stefanha@redhat.com" <stefanha@redhat.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Max Gurtovoy <mgurtovoy@nvidia.com>
-Subject: Re: [PATCH] Revert "virtio_pci: Support surprise removal of virtio
- pci device"
-Message-ID: <20250827064404-mutt-send-email-mst@kernel.org>
-References: <0cfe1ccf662346a2a6bc082b91ce9704@baidu.com>
- <CY8PR12MB7195996E1181A80D5890B9F1DC3DA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250822090407-mutt-send-email-mst@kernel.org>
- <CY8PR12MB7195425BDE79592BA24645C1DC3DA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250822095948-mutt-send-email-mst@kernel.org>
- <CY8PR12MB71954425100362FBA7E29F15DC3FA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250824102542-mutt-send-email-mst@kernel.org>
- <CY8PR12MB7195EC4A075009871C937664DC39A@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250827061925-mutt-send-email-mst@kernel.org>
+	s=arc-20240116; t=1756292291; c=relaxed/simple;
+	bh=pYvi/sEdWDfStM+WfuWaVdKOo1EwYnq9HgrErqhuzmY=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=O6wf1190t4ow/D09X/IOIdY+QlxYEbPSqM6v/gw40CJXnwqC8Rfaua0A8T49yX5qKC9YetUQ7CD57UPWnb8hjDwb8FN6lGaD21efXwnDWv8zEx83q9o3a4nned+Gn4hz5T3sVybfCz7JoOKgv5eNn+Tm/be2TOGTXOCHmfxufnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cjp7TGjY; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756292290; x=1787828290;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=pYvi/sEdWDfStM+WfuWaVdKOo1EwYnq9HgrErqhuzmY=;
+  b=cjp7TGjYwKjGQ4eWqPo2s/zyWpOvt8119Y4tibvkjwdV1lGbtqe2Byy7
+   kj3+3bcZ7kvRVdd1bN1kUxpmaIYwy2hk2SVz2HEdEMUvolhKpFne9/7DI
+   yIK7HwR0e8+Kw2KWIpdkUpIqmUlsPXCuy3ZUXXyA4v8jIg6KSSPnI3t3n
+   IrbiCVI0+mxmVk1u21/QBMsdzY97nyUnFkev0iUyISG62f0JQkBM5Mxlr
+   9NvWyWoX1wsUu8QP18hnQb6SHW+UJoa/f4/ezQYTJTcXVfeoQju1ksSyK
+   W2YBUMIysoNs9u2IqL4LH0HPNzJdG0UOb4xTTc1uOkHzMQTD4pFrBUEma
+   w==;
+X-CSE-ConnectionGUID: GdnC5Ec6TyK9NU6PBXpwpQ==
+X-CSE-MsgGUID: 9sTVCYSWRs6BJClQhDM/HQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11534"; a="62186473"
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
+   d="scan'208";a="62186473"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 03:58:10 -0700
+X-CSE-ConnectionGUID: asZwBnRZTEGvodt2Q26vlg==
+X-CSE-MsgGUID: yxrkhQoCRG6hWGFVl9RDaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,214,1751266800"; 
+   d="scan'208";a="173977483"
+Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.233.96]) ([10.124.233.96])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 03:58:04 -0700
+Message-ID: <c69950ee-660b-4f51-9277-522470d0ce5d@linux.intel.com>
+Date: Wed, 27 Aug 2025 18:58:02 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250827061925-mutt-send-email-mst@kernel.org>
+User-Agent: Mozilla Thunderbird
+Cc: baolu.lu@linux.intel.com, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
+ Alistair Popple <apopple@nvidia.com>, Peter Zijlstra <peterz@infradead.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Lutomirski <luto@kernel.org>, "Lai, Yi1" <yi1.lai@intel.com>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "security@kernel.org" <security@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>, vishal.moola@gmail.com,
+ Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v3 1/1] iommu/sva: Invalidate KVA range on kernel TLB
+ flush
+To: Dave Hansen <dave.hansen@intel.com>, "Tian, Kevin"
+ <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>
+References: <20250806052505.3113108-1-baolu.lu@linux.intel.com>
+ <d646d434-f680-47a3-b6b9-26f4538c1209@intel.com>
+ <20250806155223.GV184255@nvidia.com>
+ <d02cb97a-7cea-4ad3-82b3-89754c5278ad@intel.com>
+ <20250806160904.GX184255@nvidia.com>
+ <62d21545-9e75-41e3-89a3-f21dda15bf16@intel.com>
+ <4a8df0e8-bd5a-44e4-acce-46ba75594846@linux.intel.com>
+ <20250807195154.GO184255@nvidia.com>
+ <BN9PR11MB52762A47B347C99F0C0E4C288C2FA@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <87bfc80e-258e-4193-a56c-3096608aec30@linux.intel.com>
+ <BN9PR11MB52766165393F7DD8209DA45A8C32A@BN9PR11MB5276.namprd11.prod.outlook.com>
+ <e321d374-38a7-4f60-b991-58458a2761b9@linux.intel.com>
+ <9a649ff4-55fe-478a-bfd7-f3287534499a@intel.com>
+ <b0f613ce-7aad-4b1d-b6a1-4acc1d6c489e@linux.intel.com>
+ <dde6d861-daa3-49ed-ad4f-ff9dcaf1f2b8@linux.intel.com>
+ <b57d7b97-8110-47c5-9c7a-516b7b535ce9@intel.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <b57d7b97-8110-47c5-9c7a-516b7b535ce9@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 27, 2025 at 06:21:28AM -0400, Michael S. Tsirkin wrote:
-> On Tue, Aug 26, 2025 at 06:52:11PM +0000, Parav Pandit wrote:
-> > > > > If it does not, and a user pull out the working device, how does
-> > > > > your patch help?
-> > > > >
-> > > > A driver must tell that it will not follow broken ancient behaviour and at that
-> > > point device would stop its ancient backward compatibility mode.
-> > > 
-> > > 
-> > > 
-> > > I don't know what is "ancient backward compatibility mode".
-> > > 
-> > Let me explain.
-> > Sadly, CSPs virtio pci device implementation is done such a way that, it works with ancient Linux kernel which does not have commit 43bb40c5b9265.
+On 8/26/2025 10:22 PM, Dave Hansen wrote:
+> On 8/25/25 19:49, Baolu Lu wrote:
+>>> The three separate lists are needed because we're handling three
+>>> distinct types of page deallocation. Grouping the pages this way allows
+>>> the workqueue handler to free each type using the correct function.
+>>
+>> Please allow me to add more details.
 > 
+> Right, I know why it got added this way: it was the quickest way to hack
+> together a patch that fixes the IOMMU issue without refactoring anything.
 > 
-> OK we are getting new information here.
+> I agree that you have three cases:
+> 1. A full on 'struct ptdesc' that needs its destructor run
+> 2. An order-0 'struct page'
+> 3. A higher-order 'struct page'
 > 
-> So let me summarize. There's a virtual system that pretends, to the
-> guest, that device was removed by surprise removal, but actually
-> device is there and is still doing DMA.
-> Is that a fair summary?
+> Long-term, #2 and #3 probably need to get converted over to 'struct
+> ptdesc'. They don't look _that_ hard to convert to me. Willy, Vishal,
+> any other mm folks: do you agree?
+> 
+> Short-term, I'd just consolidate your issue down to a single list.
+> 
+> #1: For 'struct ptdesc', modify pte_free_kernel() to pass information in
+>      to pagetable_dtor_free() to tell it to use the deferred page table
+>      free list. Do this with a bit in the ptdesc or a new argument to
+>      pagetable_dtor_free().
+> #2. Just append these to the deferred page table free list. Easy.
+> #3. The biggest hacky way to do this is to just treat the higher-order
+>      non-compound page and put the pages on the deferred page table
+>      free list one at a time. The other way to do it is to track down how
+>      this thing got allocated in the first place and make sure it's got
+>      __GFP_COMP metadata. If so, you can just use __free_pages() for
+>      everything.
+> 
+> Yeah, it'll take a couple patches up front to refactor some things. But
+> that refactoring will make things more consistent instead of adding
+> adding complexity to deal with the inconsistency.
 
-If that is the case, the thing to do would be to try and detect the fake
-removal and then work with device as usual - device not doing DMA
-after removal is pretty fundamental, after all.
+Following the insights above, I wrote the code as follows. Does it look
+good?
 
-For example, how about reading device control+status?
+mm/pgtable-generic.c:
 
-If we get all ones device has been removed
-If we get 0 in bus master: device has been removed but re-inserted
-Anything else is a fake removal
+#ifdef CONFIG_ASYNC_PGTABLE_FREE
+/* a 'struct ptdesc' that needs its destructor run */
+#define ASYNC_PGTABLE_FREE_DTOR	BIT(NR_PAGEFLAGS)
 
-Hmm?
+static void kernel_pgtable_work_func(struct work_struct *work);
 
+static struct {
+	struct list_head list;
+	/* protect above ptdesc lists */
+	spinlock_t lock;
+	struct work_struct work;
+} kernel_pgtable_work = {
+	.list = LIST_HEAD_INIT(kernel_pgtable_work.list),
+	.lock = __SPIN_LOCK_UNLOCKED(kernel_pgtable_work.lock),
+	.work = __WORK_INITIALIZER(kernel_pgtable_work.work, 
+kernel_pgtable_work_func),
+};
 
+static void kernel_pgtable_work_func(struct work_struct *work)
+{
+	struct ptdesc *ptdesc, *next;
+	LIST_HEAD(page_list);
 
-> -- 
-> MST
+	spin_lock(&kernel_pgtable_work.lock);
+	list_splice_tail_init(&kernel_pgtable_work.list, &page_list);
+	spin_unlock(&kernel_pgtable_work.lock);
 
+	iommu_sva_invalidate_kva_range(0, TLB_FLUSH_ALL);
+
+	list_for_each_entry_safe(ptdesc, next, &page_list, pt_list) {
+		list_del(&ptdesc->pt_list);
+		if (ptdesc->__page_flags & ASYNC_PGTABLE_FREE_DTOR)
+			pagetable_dtor_free(ptdesc);
+		else
+			__free_page(ptdesc_page(ptdesc));
+	}
+}
+
+void kernel_pgtable_async_free_dtor(struct ptdesc *ptdesc)
+{
+	spin_lock(&kernel_pgtable_work.lock);
+	ptdesc->__page_flags |= ASYNC_PGTABLE_FREE_DTOR;
+	list_add(&ptdesc->pt_list, &kernel_pgtable_work.list);
+	spin_unlock(&kernel_pgtable_work.lock);
+
+	schedule_work(&kernel_pgtable_work.work);
+}
+
+void kernel_pgtable_async_free_page_list(struct list_head *list)
+{
+	spin_lock(&kernel_pgtable_work.lock);
+	list_splice_tail(list, &kernel_pgtable_work.list);
+	spin_unlock(&kernel_pgtable_work.lock);
+
+	schedule_work(&kernel_pgtable_work.work);
+}
+
+void kernel_pgtable_async_free_page(struct page *page)
+{
+	spin_lock(&kernel_pgtable_work.lock);
+	list_add(&page_ptdesc(page)->pt_list, &kernel_pgtable_work.list);
+	spin_unlock(&kernel_pgtable_work.lock);
+
+	schedule_work(&kernel_pgtable_work.work);
+}
+#endif
+
+Thanks,
+baolu
 
