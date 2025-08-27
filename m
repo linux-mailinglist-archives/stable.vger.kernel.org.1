@@ -1,131 +1,192 @@
-Return-Path: <stable+bounces-176451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D931B3784A
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 04:45:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E78B37892
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 05:31:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78F5C1BA0904
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 02:45:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB0626866B2
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 03:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802842E22A5;
-	Wed, 27 Aug 2025 02:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50D3219A89;
+	Wed, 27 Aug 2025 03:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+kmSNd0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ReOlTIS4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCCA25BF13;
-	Wed, 27 Aug 2025 02:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECFB1FF1A1;
+	Wed, 27 Aug 2025 03:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756262720; cv=none; b=jDcKdymRc7D6yVF1tLRgIlkCRrx4V5fCoo97PCUp5EDmTy/Idv4SOzUaqImiggba7HUwba/I5tx7FY6ufthpFQoNLKx3Dy/pf7WAe9i54PxHJxNEOtPH0gDy3ZjeWulPf0hb19GgZ+NPV8tQ3q66y7imLJFy9MLZybowdJ0YxyU=
+	t=1756265467; cv=none; b=DzYh9ixJbgB9f14avvMwWrvViuH4Jl0x7J+nupUNmFr+j8BHJSXF9HTbQZooBPuPSrDqgdPRvKlw3XCk5e6qQiMTear0n4iNsNkehLPb6NUW4YDo1Uw48KEgrXK4PguSG+vg5aBnWoOkP7gNdQopDGYqeS127KH+S8LRna/5w1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756262720; c=relaxed/simple;
-	bh=WYZjGVhbi9PZZbObUWGRV+CpiiLKNvQiFfF1DJ0PfbY=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=gsj0YPx1a2FBXvYaeohAhjPczpYegpVm7fmh6C3jnBdrpvDGMCqte0vkO01Ghj8apEryI5feGNBqhtloBTMXc+0OI+FeVdzJsxRwXVfjP7dwcYsuOYQ/m2mFezkpSq7KTJ43Hm22n5AteNj6iTtqa0kvW4BMNz88kCOSwpt32Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+kmSNd0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A6AC4CEF1;
-	Wed, 27 Aug 2025 02:45:18 +0000 (UTC)
+	s=arc-20240116; t=1756265467; c=relaxed/simple;
+	bh=e7xVinN1DKv/LfINZQZ99Qeb7FvC2LDy5qAEZGht7s0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ta6DVi0EWqjhR4T8UGS7xUXKhcZ1heDaBurVOo9Qm1LEZz9Y9ET7GUa3AuCktLup3ZfdRBFBn+KJtv6g1PX0WI/znWaUhRisq+DosR6KHlkKI7rX4D3P/skY2x+/uDt4CwKw+4qcY5U9d5e3S87q0ra1oqfPOHAZ2B5hZZKpCic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ReOlTIS4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2110FC4CEEB;
+	Wed, 27 Aug 2025 03:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756262719;
-	bh=WYZjGVhbi9PZZbObUWGRV+CpiiLKNvQiFfF1DJ0PfbY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=F+kmSNd0hNr6jyE/chTdjU47XA4mRJCURDLzABpP6xhbx+WXqS2wQQjqmDRUZWUt7
-	 6BvTuZC7ewzl7kUp2GtsBv9TrZUP24nb2FWLWRFQGdtzqRaHSaWPh1o6F7nSZRjw23
-	 YqjhV73izlUONt8YCkiO7mT4b1HEvCzUPXFEJhK70MZXZtGLoPcnpdSP08eWFesebx
-	 JuEfuheaKTDfFmAhXE7rfjIoZq+KIOhyOf3P1S5NL1ddkQgsDZ0/9de5cPxZYrhAM6
-	 /RMytj8ppv/cdoGDKQt/rAuiLgSgu0Dr24Vlwxn0db6sBLo7Ai1Sfgd5rG0o6MTuhC
-	 LbL7pX0BgE9aA==
-Date: Wed, 27 Aug 2025 11:45:16 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Finn Thain <fthain@linux-m68k.org>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Lance Yang"
- <lance.yang@linux.dev>, "Geert Uytterhoeven" <geert@linux-m68k.org>,
- "Masami Hiramatsu" <mhiramat@kernel.org>, "Eero Tamminen"
- <oak@helsinkinet.fi>, "Peter Zijlstra" <peterz@infradead.org>,
- "Will Deacon" <will@kernel.org>, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
-Message-Id: <20250827114516.efd544acda4e3c0492d893e7@kernel.org>
-In-Reply-To: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
-References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=k20201202; t=1756265467;
+	bh=e7xVinN1DKv/LfINZQZ99Qeb7FvC2LDy5qAEZGht7s0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ReOlTIS4pMklpwdQBIe7Tyr2QKilJmSpzeQ0FkTdLiBDXVMwKUJyJCdOkpOyx1pc1
+	 GEfnrgPSXHrUKGoeW1g86KZZgRUCteslZ99xPYU+FasTlFkDslCVAo1QA8vUAVV/R8
+	 Z9b16xMHBJmCSvbN0HYhGT8MCbDwjVtWEugeOXGTz3bGVy6FperQ+qchp4GhIiOMLh
+	 tfg8jYLpu6o1X5wPIX6Qsn65zPJ6Y7Vb6poAACsUpIZWLetFhrWSdo8lYOzY2DmOKO
+	 1HM4auazOt3cZUas0zluo89/Sl/MXiqVwEJm8LBGmMusgzlAl2J6iFubvm6zt/JZ0g
+	 3MWWJEO2k5V9g==
+Date: Tue, 26 Aug 2025 23:31:05 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH 6.6 028/587] fs: Prevent file descriptor table
+ allocations exceeding INT_MAX
+Message-ID: <aK57-fMeclMVck7S@laps>
+References: <20250826110952.942403671@linuxfoundation.org>
+ <20250826110953.666871765@linuxfoundation.org>
+ <aK355BFz6ErdVI7j@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <aK355BFz6ErdVI7j@eldamar.lan>
 
-On Mon, 25 Aug 2025 12:03:05 +1000
-Finn Thain <fthain@linux-m68k.org> wrote:
+On Tue, Aug 26, 2025 at 08:16:04PM +0200, Salvatore Bonaccorso wrote:
+>Hi Greg,
+>
+>On Tue, Aug 26, 2025 at 01:02:57PM +0200, Greg Kroah-Hartman wrote:
+>> 6.6-stable review patch.  If anyone has any objections, please let me know.
+>>
+>> ------------------
+>>
+>> From: Sasha Levin <sashal@kernel.org>
+>>
+>> commit 04a2c4b4511d186b0fce685da21085a5d4acd370 upstream.
+>>
+>> When sysctl_nr_open is set to a very high value (for example, 1073741816
+>> as set by systemd), processes attempting to use file descriptors near
+>> the limit can trigger massive memory allocation attempts that exceed
+>> INT_MAX, resulting in a WARNING in mm/slub.c:
+>>
+>>   WARNING: CPU: 0 PID: 44 at mm/slub.c:5027 __kvmalloc_node_noprof+0x21a/0x288
+>>
+>> This happens because kvmalloc_array() and kvmalloc() check if the
+>> requested size exceeds INT_MAX and emit a warning when the allocation is
+>> not flagged with __GFP_NOWARN.
+>>
+>> Specifically, when nr_open is set to 1073741816 (0x3ffffff8) and a
+>> process calls dup2(oldfd, 1073741880), the kernel attempts to allocate:
+>> - File descriptor array: 1073741880 * 8 bytes = 8,589,935,040 bytes
+>> - Multiple bitmaps: ~400MB
+>> - Total allocation size: > 8GB (exceeding INT_MAX = 2,147,483,647)
+>>
+>> Reproducer:
+>> 1. Set /proc/sys/fs/nr_open to 1073741816:
+>>    # echo 1073741816 > /proc/sys/fs/nr_open
+>>
+>> 2. Run a program that uses a high file descriptor:
+>>    #include <unistd.h>
+>>    #include <sys/resource.h>
+>>
+>>    int main() {
+>>        struct rlimit rlim = {1073741824, 1073741824};
+>>        setrlimit(RLIMIT_NOFILE, &rlim);
+>>        dup2(2, 1073741880);  // Triggers the warning
+>>        return 0;
+>>    }
+>>
+>> 3. Observe WARNING in dmesg at mm/slub.c:5027
+>>
+>> systemd commit a8b627a introduced automatic bumping of fs.nr_open to the
+>> maximum possible value. The rationale was that systems with memory
+>> control groups (memcg) no longer need separate file descriptor limits
+>> since memory is properly accounted. However, this change overlooked
+>> that:
+>>
+>> 1. The kernel's allocation functions still enforce INT_MAX as a maximum
+>>    size regardless of memcg accounting
+>> 2. Programs and tests that legitimately test file descriptor limits can
+>>    inadvertently trigger massive allocations
+>> 3. The resulting allocations (>8GB) are impractical and will always fail
+>>
+>> systemd's algorithm starts with INT_MAX and keeps halving the value
+>> until the kernel accepts it. On most systems, this results in nr_open
+>> being set to 1073741816 (0x3ffffff8), which is just under 1GB of file
+>> descriptors.
+>>
+>> While processes rarely use file descriptors near this limit in normal
+>> operation, certain selftests (like
+>> tools/testing/selftests/core/unshare_test.c) and programs that test file
+>> descriptor limits can trigger this issue.
+>>
+>> Fix this by adding a check in alloc_fdtable() to ensure the requested
+>> allocation size does not exceed INT_MAX. This causes the operation to
+>> fail with -EMFILE instead of triggering a kernel warning and avoids the
+>> impractical >8GB memory allocation request.
+>>
+>> Fixes: 9cfe015aa424 ("get rid of NR_OPEN and introduce a sysctl_nr_open")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> Link: https://lore.kernel.org/20250629074021.1038845-1-sashal@kernel.org
+>> Signed-off-by: Christian Brauner <brauner@kernel.org>
+>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> ---
+>>  fs/file.c |   15 +++++++++++++++
+>>  1 file changed, 15 insertions(+)
+>>
+>> --- a/fs/file.c
+>> +++ b/fs/file.c
+>> @@ -126,6 +126,21 @@ static struct fdtable * alloc_fdtable(un
+>>  	if (unlikely(nr > sysctl_nr_open))
+>>  		nr = ((sysctl_nr_open - 1) | (BITS_PER_LONG - 1)) + 1;
+>>
+>> +	/*
+>> +	 * Check if the allocation size would exceed INT_MAX. kvmalloc_array()
+>> +	 * and kvmalloc() will warn if the allocation size is greater than
+>> +	 * INT_MAX, as filp_cachep objects are not __GFP_NOWARN.
+>> +	 *
+>> +	 * This can happen when sysctl_nr_open is set to a very high value and
+>> +	 * a process tries to use a file descriptor near that limit. For example,
+>> +	 * if sysctl_nr_open is set to 1073741816 (0x3ffffff8) - which is what
+>> +	 * systemd typically sets it to - then trying to use a file descriptor
+>> +	 * close to that value will require allocating a file descriptor table
+>> +	 * that exceeds 8GB in size.
+>> +	 */
+>> +	if (unlikely(nr > INT_MAX / sizeof(struct file *)))
+>> +		return ERR_PTR(-EMFILE);
+>> +
+>>  	fdt = kmalloc(sizeof(struct fdtable), GFP_KERNEL_ACCOUNT);
+>>  	if (!fdt)
+>>  		goto out;
+>
+>I see you picked this commit for the current stable series, but TTBOMK
+>this introduces a regression as it was as well present in 6.12.43:
+>
+>https://lore.kernel.org/regressions/20250825152725.43133-1-zcgao@amazon.com/
+>
+>and the current 6.12.44 contains a followup. If I'm not mistaken Sasha
+>has picked up 1d3b4bec3ce5 ("alloc_fdtable(): change calling
+>conventions.") to fix that.
+>
+>So unless I'm wrong, if you pick up 04a2c4b4511d ("fs: Prevent file
+>descriptor table allocations exceeding INT_MAX"), then as well
+>1d3b4bec3ce5 ("alloc_fdtable(): change calling conventions.")  is
+>needed.
 
-> Some recent commits incorrectly assumed the natural alignment of locks.
-> That assumption fails on Linux/m68k (and, interestingly, would have failed
-> on Linux/cris also). This leads to spurious warnings from the hang check
-> code. Fix this bug by adding the necessary 'aligned' attribute.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Cc: Masami Hiramatsu <mhiramat@kernel.org>
-> Cc: Eero Tamminen <oak@helsinkinet.fi>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: stable@vger.kernel.org
-> Reported-by: Eero Tamminen <oak@helsinkinet.fi>
-> Closes: https://lore.kernel.org/lkml/CAMuHMdW7Ab13DdGs2acMQcix5ObJK0O2dG_Fxzr8_g58Rc1_0g@mail.gmail.com/
-> Fixes: e711faaafbe5 ("hung_task: replace blocker_mutex with encoded blocker")
-> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-
-This seems good anyway because unaligned atomic memory access
-sounds insane. So looks good to me.
-
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-
-Anyway, Lance's patch[1] is still needed. We'd better gracefully
-ignore if the blocker is not aligned, because hung_task blocker
-detection is an optional for debugging and not necessary for
-the kernel operation.
-
-[1] https://lore.kernel.org/all/20250823050036.7748-1-lance.yang@linux.dev/ 
-
-
-Thank you,
-
-> ---
-> I tested this on m68k using GCC and it fixed the problem for me. AFAIK,
-> the other architectures naturally align ints already so I'm expecting to
-> see no effect there.
-> ---
->  include/linux/types.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/types.h b/include/linux/types.h
-> index 6dfdb8e8e4c3..cd5b2b0f4b02 100644
-> --- a/include/linux/types.h
-> +++ b/include/linux/types.h
-> @@ -179,7 +179,7 @@ typedef phys_addr_t resource_size_t;
->  typedef unsigned long irq_hw_number_t;
->  
->  typedef struct {
-> -	int counter;
-> +	int counter __aligned(sizeof(int));
->  } atomic_t;
->  
->  #define ATOMIC_INIT(i) { (i) }
-> -- 
-> 2.49.1
-> 
-
+I've just queued it up for the rest of the trees too, thanks!
 
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Thanks,
+Sasha
 
