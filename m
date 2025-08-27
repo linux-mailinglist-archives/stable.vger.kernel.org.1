@@ -1,112 +1,109 @@
-Return-Path: <stable+bounces-176445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C19B3760D
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 02:20:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 304B1B37668
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 03:03:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F6391BA0B54
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 00:20:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 347BD1B657A2
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 01:04:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AEF71487F6;
-	Wed, 27 Aug 2025 00:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83AD415E5C2;
+	Wed, 27 Aug 2025 01:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gIcHo2Au"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HfNGlcAi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4015F219EB;
-	Wed, 27 Aug 2025 00:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37583186A;
+	Wed, 27 Aug 2025 01:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756254002; cv=none; b=iLbjFyBe6t8s7/RScs7PwlEIy7v0C4riPKqLL5HehximiZXqqK+xSmfnOGSUZp3nxGzJf3hYGv1EatkWhreccq6uw+VWPlXYUikb5haFpW5f4gIP2hVSG+JDy0kB6ppGJvB1EJWMZiYFaR62q+Qj16zU/B0FzRrncVz2nRnPFVo=
+	t=1756256627; cv=none; b=L+wMliMo4yRgXC08QbF0bPN93StjPKZEKfsb+Y5KC3Wo5ZPmG4Nk8tyav2HJUOo6JVCVI4DQ648sN/b9/XrrWCuxgqdJkIissvQu1IJwqjq2kFqwkUzsNjoaFU3RUcVdxB4AECrew9MlLjwfIBJW2ZErJpIegBp5ARHlIDNV9Yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756254002; c=relaxed/simple;
-	bh=CUqjJTDn42AU9aihGGGRqwzymVVnZVgyspIVU6cz4BI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BYLpszm5INdeUQxiY37c9M6/sVt9r/MFvOgKyRL9Gy5GeQ2ZtMtETOk96g6Ma1g8gpSMbVOBNE0C8Opnp2coc9hF4ge3hLQhY28tw+U4lrZdfIZJQKfR+OVFDQhGYYKXmu6W7KjWUSTaWVnvQxgfx7eeFREK56774w73niracCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gIcHo2Au; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEBE4C4CEF1;
-	Wed, 27 Aug 2025 00:20:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756254000;
-	bh=CUqjJTDn42AU9aihGGGRqwzymVVnZVgyspIVU6cz4BI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=gIcHo2AuyWKJotZssrpdk7L0eZ//QzifIcYL1GhIYtAT+NmjTdCss/9jH7ZtQsUXE
-	 o6IjhM+plquBwmvTNt6T7LTAuyYXhtQ1+FujMHDleuQfEeUdh5z2m4FVtxQmEd+AhL
-	 Ch9kum+n9fBfRIRYccnpjcPQSX6csSKMP43oAyI5NkzE9vLODPhdaTUVkja8eZ/A/O
-	 xfCGsBlTqhUWn0duEHZTHfNXqAQc8QsWX70DBgch7fYNPLZoGagn9bwpZz1/HxkSSr
-	 gNX1sQyWV31vjgBDj7OTrWSIJp1LVx+unxAE/yeyTWiBFpSDktvNC3MKrg/vKog0qz
-	 1BOmAYRinKD3g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB5A9383BF70;
-	Wed, 27 Aug 2025 00:20:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1756256627; c=relaxed/simple;
+	bh=e8Sz3nQRGFP1ivd+uPtYZfxaLImhYXmcP1SPjGhWlvI=;
+	h=Date:To:From:Subject:Message-Id; b=cFOk6Zcr6TGjRsjTbFKPIDXjPAtN4T62DJjS662MGvSamOPNWurzei45tuRLQDSpmjdJrgtvVVaUA3AHC+56KV5NKGzYDVQ46h8gwEuCvQ+rnwBxg5hxB8FTa8Rl3/sPXRhMXYdQQIBvAcpo/g5gWv6GMV/ph/IWl2WoQ5xTmxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HfNGlcAi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB861C4CEF1;
+	Wed, 27 Aug 2025 01:03:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756256626;
+	bh=e8Sz3nQRGFP1ivd+uPtYZfxaLImhYXmcP1SPjGhWlvI=;
+	h=Date:To:From:Subject:From;
+	b=HfNGlcAioejw44e4VPJGWHpquzWQRAJ9Yz/kQr0qOGR3Lri956r0fyHpFpb7PFiZ7
+	 skecEC0O5bTcRfaO0TUxGNE0zRoGCVHCU8ut2bv/+kUhsCKGLmmWUHH2NCfkPsDl7h
+	 r8uXeWgUdpXai5HcS5po2opGXqX1PA3lbOw4z48M=
+Date: Tue, 26 Aug 2025 18:03:46 -0700
+To: mm-commits@vger.kernel.org,vkuznets@redhat.com,stable@vger.kernel.org,ryncsn@gmail.com,okozina@redhat.com,mark.rutland@arm.com,kernelfans@gmail.com,gmazyland@gmail.com,dyoung@redhat.com,dave.hansen@intel.com,coxu@redhat.com,bhe@redhat.com,berrange@redhat.com,leitao@debian.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] kexec-arm64-initialize-the-random-field-of-kbuf-to-zero-in-the-image-loader.patch removed from -mm tree
+Message-Id: <20250827010346.AB861C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: usb: qmi_wwan: add Telit Cinterion LE910C4-WWX new
- compositions
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175625400775.147674.147296191175890132.git-patchwork-notify@kernel.org>
-Date: Wed, 27 Aug 2025 00:20:07 +0000
-References: <20250822091324.39558-1-Fabio.Porcedda@telit.com>
-In-Reply-To: <20250822091324.39558-1-Fabio.Porcedda@telit.com>
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: bjorn@mork.no, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org, dnlplm@gmail.com,
- stable@vger.kernel.org
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+The quilt patch titled
+     Subject: kexec/arm64: initialize the random field of kbuf to zero in the image loader
+has been removed from the -mm tree.  Its filename was
+     kexec-arm64-initialize-the-random-field-of-kbuf-to-zero-in-the-image-loader.patch
 
-On Fri, 22 Aug 2025 11:13:24 +0200 you wrote:
-> From: Fabio Porcedda <fabio.porcedda@gmail.com>
-> 
-> Add the following Telit Cinterion LE910C4-WWX new compositions:
-> 
-> 0x1034: tty (AT) + tty (AT) + rmnet
-> T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
-> D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-> P:  Vendor=1bc7 ProdID=1034 Rev=00.00
-> S:  Manufacturer=Telit
-> S:  Product=LE910C4-WWX
-> S:  SerialNumber=93f617e7
-> C:  #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
-> I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-> E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-> E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-> E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-> I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
-> E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-> E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-> E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-> I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-> E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-> E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-> E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-> 
-> [...]
+This patch was dropped because an updated version will be issued
 
-Here is the summary with links:
-  - net: usb: qmi_wwan: add Telit Cinterion LE910C4-WWX new compositions
-    https://git.kernel.org/netdev/net/c/e81a7f65288c
+------------------------------------------------------
+From: Breno Leitao <leitao@debian.org>
+Subject: kexec/arm64: initialize the random field of kbuf to zero in the image loader
+Date: Thu Aug 21 04:11:21 2025 -0700
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Add an explicit initialization for the random member of the kbuf structure
+within the image_load function in arch/arm64/kernel/kexec_image.c. 
+Setting kbuf.random to zero ensures a deterministic and clean starting
+state for the buffer used during kernel image loading, avoiding this UBSAN
+issue later, when kbuf.random is read.
+
+  [   32.362488] UBSAN: invalid-load in ./include/linux/kexec.h:210:10
+  [   32.362649] load of value 252 is not a valid value for type '_Bool'
+
+Link: https://lkml.kernel.org/r/oninomspajhxp4omtdapxnckxydbk2nzmrix7rggmpukpnzadw@c67o7njgdgm3
+Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Coiby Xu <coxu@redhat.com>
+Cc: "Daniel P. Berrange" <berrange@redhat.com>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Kairui Song <ryncsn@gmail.com>
+Cc: Liu Pingfan <kernelfans@gmail.com>
+Cc: Milan Broz <gmazyland@gmail.com>
+Cc: Ondrej Kozina <okozina@redhat.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ arch/arm64/kernel/kexec_image.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/arch/arm64/kernel/kexec_image.c~kexec-arm64-initialize-the-random-field-of-kbuf-to-zero-in-the-image-loader
++++ a/arch/arm64/kernel/kexec_image.c
+@@ -76,6 +76,7 @@ static void *image_load(struct kimage *i
+ 	kbuf.buf_min = 0;
+ 	kbuf.buf_max = ULONG_MAX;
+ 	kbuf.top_down = false;
++	kbuf.random = 0;
+ 
+ 	kbuf.buffer = kernel;
+ 	kbuf.bufsz = kernel_len;
+_
+
+Patches currently in -mm which might be from leitao@debian.org are
 
 
 
