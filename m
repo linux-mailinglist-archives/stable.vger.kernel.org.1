@@ -1,192 +1,146 @@
-Return-Path: <stable+bounces-176456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5144B379E3
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 07:33:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 714DAB37A47
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 08:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD6571B615C5
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 05:33:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28C537219F9
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 06:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DFE30AD01;
-	Wed, 27 Aug 2025 05:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1793F2D6E77;
+	Wed, 27 Aug 2025 06:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=polynomial-c@gmx.de header.b="cOJOcbXu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vnhp/UV4"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A34C30E855;
-	Wed, 27 Aug 2025 05:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0BC205E2F;
+	Wed, 27 Aug 2025 06:24:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756272780; cv=none; b=JYAN02MYyX23DL+rVUrSU2jMynfAIjwgPV8h/6Sk+YZujcrqp3a6PbQVliSDX5WAufxwjXz3ZTek5OMkg2QjWhiDVeyIQXUAheIAzwr6VK+6sOVekpq8F/2r9XN/67LHaB46QEPjiqP3voSLKKTEI0b/G1SJDEjPdylpMySTg5w=
+	t=1756275856; cv=none; b=PJe9MC8j2iLviIkJRcfRTwOSrTAlA3C63XlntSZSAiHKp4eon/IzEv3xJD/9T0lCYkB8dzASLYGwVp8fBKc3349GrL6NQ8tKf3yAiu6z3uIMBAHbwJwpuN5ZPhNxicm7m6VI2mIMXygHdHpiVHQcx6VCqXhOArZjrFgicrZMZBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756272780; c=relaxed/simple;
-	bh=84LVWU4cpEOLxd0MXw2tC84Lgj/ODwkRX+iuySfFOGE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SZ3NUbE6RgS9NCrfap6Z8RBmx/lxySk08Kowv+31KIEbnaPfMt0Z1o4giwShKHq+7cJTjaF2qjnaJ295Gn+NjHqBdzs85DDIk0mIPCtvXMYOQY0E8zGIvo9hKMyx0js32+NVVEmh05LxkXbGqcsrQ3qihZk1peCRBiV7KQC6KBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=polynomial-c@gmx.de header.b=cOJOcbXu; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1756272751; x=1756877551; i=polynomial-c@gmx.de;
-	bh=84LVWU4cpEOLxd0MXw2tC84Lgj/ODwkRX+iuySfFOGE=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=cOJOcbXuK0fr9nRCtH3S7ORSCBDB0UOoHCdOr2y5T82ACk6GRHtWVtCwW2NWHp5t
-	 Ilg+6XjBhT7R9tLXEPPlQTH2C58QQpnM225IlEUEh0iJ5tdK2jnGWmMieEp736V6f
-	 FS3mev8MQQ8VII5du719JgZPFwFoTcMDcpFVf391TaABUG6h+KGsDDxlJu2bkfg+y
-	 1Sh87XPdrnOvL8Olk0bHaCmnWMeBvuKLXc7WPT2FhgwQUXthAZjhsoRhtOpTc971P
-	 zoCFukT5z/7zwnwFojPFwEXLl7e+Au/d0LNVkuEjBxQQK6DG8vP73tvM13oMY44dH
-	 PhMOXmJ1KqLZ3w0XMg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from chagall.paradoxon.rec ([79.234.222.21]) by mail.gmx.net
- (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1M26r3-1upCxa27rd-00HNMm; Wed, 27 Aug 2025 07:32:31 +0200
-Date: Wed, 27 Aug 2025 07:32:28 +0200
-From: Lars Wendler <polynomial-c@gmx.de>
-To: Petr =?UTF-8?B?VmFuxJtr?= <pv@excello.cz>
-Cc: wangzijie <wangzijie1@honor.com>, akpm@linux-foundation.org,
- brauner@kernel.org, viro@zeniv.linux.org.uk, adobriyan@gmail.com,
- rick.p.edgecombe@intel.com, ast@kernel.org, k.shutemov@gmail.com,
- jirislaby@kernel.org, linux-fsdevel@vger.kernel.org,
- gregkh@linuxfoundation.org, stable@vger.kernel.org,
- regressions@lists.linux.dev
-Subject: Re: [PATCH v3] proc: fix missing pde_set_flags() for net proc files
-Message-ID: <20250827073228.0fb7be05@chagall.paradoxon.rec>
-In-Reply-To: <20258249055-aKrUxz36A3Yw6qDd-pv@excello.cz>
-References: <20250821105806.1453833-1-wangzijie1@honor.com>
-	<20258249055-aKrUxz36A3Yw6qDd-pv@excello.cz>
-Organization: privat
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1756275856; c=relaxed/simple;
+	bh=kVlyh+9zjWrWkE9IzWbt9j+Kdlbna7+U0ZjUEEug9Ws=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=q+88EJ3ie3g7N2yw/9ObOzRYu22qTSVN5KktXcZD0DqNkRONXIhIx6zawTTCxVep/fus8f5zMnyigyITmmm3vAkw4hS1kdjkHgtYU0DbAjdFeXQdVzCMVL+AlXLJk+zohqDW0ZRHUswDG0DXnqxLWuTTP0vGLnnBxSGdPUMscHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vnhp/UV4; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3c7aa4ce85dso2002886f8f.3;
+        Tue, 26 Aug 2025 23:24:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756275853; x=1756880653; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MTffp2Une9psOpkE9avAK28pF5DJdZIHIrhlvCx9OY4=;
+        b=Vnhp/UV4YV0x4CesOAQb/1cx2gEDz61xBWBs99nRCb9BXFIU9mEFCY+dIFLIIR5upl
+         XgxOo6ZsegZog+LYp2g1uriX0ZE8LFg7CAkRlhUGUVm2L3QGhYCoYfuN2hlldj3CKQnJ
+         yotEw4r81w/uVrlUWkBVSdp8lvxu9AZaZ5yiYM3Vd4VG0/9e0OzsB5hh+JQqknz7CxWj
+         Sc06dyoF5TGxcqGTIxKC7OOb2Dt0h1UzMDA0Nya+axJ7tMoQMuoWp0gRVW2J/O1CdcXW
+         cTDz/w4nZJHR3TPu1/k12mSmqfEAFvH9cHslmXwxCTAJ1qlsKAeoRFLRmTJPMyOQ6P96
+         6o8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756275853; x=1756880653;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MTffp2Une9psOpkE9avAK28pF5DJdZIHIrhlvCx9OY4=;
+        b=jiRPVVJPhc4VhDlAGphkd9xlW0JXhDblvvO1hCLSbu0Og2MEPIMFAScHKR++gBqmIN
+         Hyy86TsWRocfkeHvEbbos269rT2M48M9VU3SVvKQIEHqZoNbHlEuMPHNtFh3vxz3VdRy
+         mxTRoy1+zCahGJ4RLrGMS6NANHG1xMTm9uGlTsRNEn2sA3yz9+Kjvn9aVOUXIQgIkUwk
+         3XwcQGT7HuLbBs13S/emvwRwz5r+Ge6bwwntiwtYKG02TPW2aJbW4gMOHOd7Cq1gzac7
+         5Z8Ki3M2ixhVzUG6Ymz3Gs8q+0y0f6XEDR8IwSrPaX5Tts4L3CSDKPh0S4hKopOgInIK
+         WGMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV6qa6j+il7YIjCv5JXp3Yp6LrzBkHBzvuLXZPQydLmbkp9ipwh96FHLE4TIDhgmD4iNzWDaOo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/DhqdOs3SqCTAnn0G8HC4Qj07OL6r4mLz/hgfru7j3wKWsN0j
+	/4q2Adodn3Gp3vCZIG5uu7NdpZYeu7ayZv23syt467dcTidTCEdVfkuqKNF2QQ==
+X-Gm-Gg: ASbGncunupLG/rycFw0/I1slejqYNd+N4zOLr68EVczohzNrNWg8Q6mh0Duyz0szGym
+	9NVytzFdaH/SIhtlYMeKvKUdtjiGphyY46a3V5d7jYM4DhPKPouLCPwell894zunDI+v5fT3Hpg
+	3T1CR0AqaKtcwjQXHsMaqmEPsJxIAj5xMfX8e+nELmXMLQ9tibDkdgSjJCLYLl4TAAdTAI3Yago
+	ioefMGIfg89nJsQnb9FEW3MVvRQtFdbtuOv5rTnCZJ8b4HZ4w6c+rAZuvPy327cTjGCxuXzKEzf
+	k7FsWAQYXmUrCPpyt+Dm6LxTSHvkKqG/4jNdZyvnEwD8EaHkA/9WVPdwJR/+nuoSTwXTnuwOq0a
+	0xCExX/aqqfFIUfEqKZZ4suNJFg==
+X-Google-Smtp-Source: AGHT+IHEgklavUSzLPlc+ZOoflTsrIRZ3Z3NKnpJ7OaHAYLP706fmxXS169Z9AHTmsJOGYiGuWM+EQ==
+X-Received: by 2002:a05:6000:22c5:b0:3b8:d15e:ed35 with SMTP id ffacd0b85a97d-3c5daff6b01mr13806088f8f.23.1756275853378;
+        Tue, 26 Aug 2025 23:24:13 -0700 (PDT)
+Received: from oscar-xps.. ([45.128.133.230])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b66c383b1sm29749875e9.3.2025.08.26.23.24.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Aug 2025 23:24:12 -0700 (PDT)
+From: Oscar Maes <oscmaes92@gmail.com>
+To: netdev@vger.kernel.org,
+	bacs@librecast.net,
+	brett@librecast.net,
+	kuba@kernel.org
+Cc: davem@davemloft.net,
+	dsahern@kernel.org,
+	regressions@lists.linux.dev,
+	stable@vger.kernel.org,
+	Oscar Maes <oscmaes92@gmail.com>
+Subject: [PATCH net v3 1/2] net: ipv4: fix regression in local-broadcast routes
+Date: Wed, 27 Aug 2025 08:23:21 +0200
+Message-Id: <20250827062322.4807-1-oscmaes92@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:aEaOPrZ06QX15tiv/TUPv5tE4O6b2kpbL3ZBN3cswoGvBpmzSv7
- hcoNyftRPLNa4/4oUAjdsN8BTSPP7zlgg7kxpl6D54J4kivlOb0ewgbdEg0+hHw75eM0HaX
- RKXuTuWRf9WDSmlxQo3rhZxagnQas/xAKp3Qamwj7KqV+XJXRJSW4xppVoYPFfGurWBPfvg
- WEefmsugiEgaXsg2Yf/yQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:sPOKET8lcnU=;4lXMB7h4ZRwI5FoqgvPTApjs5zI
- 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
- HFmPVoAQiM
+Content-Transfer-Encoding: 8bit
 
-Am Sun, 24 Aug 2025 11:00:55 +0200
-schrieb Petr Van=C4=9Bk <pv@excello.cz>:
+Commit 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
+introduced a regression where local-broadcast packets would have their
+gateway set in __mkroute_output, which was caused by fi = NULL being
+removed.
 
-> On Thu, Aug 21, 2025 at 06:58:06PM +0800, wangzijie wrote:
-> > To avoid potential UAF issues during module removal races, we use
-> > pde_set_flags() to save proc_ops flags in PDE itself before
-> > proc_register(), and then use pde_has_proc_*() helpers instead of
-> > directly dereferencing pde->proc_ops->*.
-> >=20
-> > However, the pde_set_flags() call was missing when creating net
-> > related proc files. This omission caused incorrect behavior which
-> > FMODE_LSEEK was being cleared inappropriately in proc_reg_open()
-> > for net proc files. Lars reported it in this link[1].
-> >=20
-> > Fix this by ensuring pde_set_flags() is called when register proc
-> > entry, and add NULL check for proc_ops in pde_set_flags().
-> >=20
-> > [1]:
-> > https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.r=
-ec/
-> >=20
-> > Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check
-> > proc_lseek as ones for proc_read_iter et.al") Cc:
-> > stable@vger.kernel.org Reported-by: Lars Wendler
-> > <polynomial-c@gmx.de> Signed-off-by: wangzijie
-> > <wangzijie1@honor.com>
->=20
-> Tested-by: Petr Van=C4=9Bk <pv@excello.cz>
->=20
-> We have noticed lseek issue with /proc/self/net/sockstat file recently
-> and this patch fixes it for us.
->=20
-> Thanks,
-> Petr
+Fix this by resetting the fib_info for local-broadcast packets. This
+preserves the intended changes for directed-broadcast packets.
 
-Applied to linux-6.12.43 and it fixes the issue in linux-6.12.y branch.
-I have yet to test it in linux-6.6.y branch.
+Cc: stable@vger.kernel.org
+Fixes: 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
+Reported-by: Brett A C Sheffield <bacs@librecast.net>
+Closes: https://lore.kernel.org/regressions/20250822165231.4353-4-bacs@librecast.net
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+---
+Link to discussion:
+https://lore.kernel.org/netdev/20250822165231.4353-4-bacs@librecast.net/
 
-Tested by: Lars Wendler <polynomial-c@gmx.de>
+Thanks to Brett Sheffield for finding the regression and writing
+the initial fix!
 
-Thanks
-Lars
+ net/ipv4/route.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index f639a2ae881a..baa43e5966b1 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2575,12 +2575,16 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
+ 		    !netif_is_l3_master(dev_out))
+ 			return ERR_PTR(-EINVAL);
+ 
+-	if (ipv4_is_lbcast(fl4->daddr))
++	if (ipv4_is_lbcast(fl4->daddr)) {
+ 		type = RTN_BROADCAST;
+-	else if (ipv4_is_multicast(fl4->daddr))
++
++		/* reset fi to prevent gateway resolution */
++		fi = NULL;
++	} else if (ipv4_is_multicast(fl4->daddr)) {
+ 		type = RTN_MULTICAST;
+-	else if (ipv4_is_zeronet(fl4->daddr))
++	} else if (ipv4_is_zeronet(fl4->daddr)) {
+ 		return ERR_PTR(-EINVAL);
++	}
+ 
+ 	if (dev_out->flags & IFF_LOOPBACK)
+ 		flags |= RTCF_LOCAL;
+-- 
+2.39.5
+
 
