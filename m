@@ -1,167 +1,126 @@
-Return-Path: <stable+bounces-176518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5C9B3873D
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 18:01:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6856FB38745
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 18:04:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 875CD189D02B
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 16:02:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EFCC16C3B8
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 16:04:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E5030FC29;
-	Wed, 27 Aug 2025 16:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3902F3C0E;
+	Wed, 27 Aug 2025 16:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="joSbDcAx"
+	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="k0tCVVQy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9F420C00E
-	for <stable@vger.kernel.org>; Wed, 27 Aug 2025 16:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3FF139579
+	for <stable@vger.kernel.org>; Wed, 27 Aug 2025 16:04:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756310491; cv=none; b=t8fKghBXYN34aNjgJB6RA/pjbUZKDSDJ43TcsiHv9TelPPfToFqZxg9bQsBZtGZ3QHiGG9YD8oTph1Oi9tCL8wuTv9T2kKA5hNHb+FgHlV5o9GpYYaew0tMcRwabW0ysUqgBnXt6Ieoa9ZTR5Ph/Ae19mWnY2WccSnLdweYeL4o=
+	t=1756310664; cv=none; b=GvMiBo8tDAokionwwS/p2m0F/lVE6cdQTB3mZtLiDTWQp5MLMgM4FG4IiNDfpCvawKZfffBO+le3UfCescGTOX2UV9Z7O+wFdOKlbwuCP/S8NSsqE7JulvHHE2VqN+RX6utv6OMkkDtC7RnQwHNIbXmQaqYtGD6TcH4Xv7gZzc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756310491; c=relaxed/simple;
-	bh=nc3e8kEsbLpVLgiGqT6OlZiM0Ugt7rKJ9+rmdukZ9n8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=p+Z7853ZK/yZoYH2t3xdN9pgA4aOWz+U0otw/pmQvXhQ1HdUSQQ3QlTZNwrVbUgZZOj4tm5YuvLC6ZRVA7jjhA6XXEi7VWoqYU5LYuvXU/DGrpdFKLCZw1ubRrgsWZZVbFeOPA5BTFsadDFgzIqLrQeygAsm3l0PlYSsYHqWSOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=joSbDcAx; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-771e43782aaso14224b3a.1
-        for <stable@vger.kernel.org>; Wed, 27 Aug 2025 09:01:29 -0700 (PDT)
+	s=arc-20240116; t=1756310664; c=relaxed/simple;
+	bh=Q/95dte0FRIox+Mc0zMjJdCZnOlDTQ2BO+SbNB3I05A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=URMUqqo4na8k+17vj9ynj0PwbNY7VMsM1C7L1Hu6yVOPPTzTm4YoFTbG1qr7Xm9WEOWUZCvejLxvNqx2JovV0Ocn/QLNzQNEQZOiZhTP3bUM+M7dsGr5ZMsTNLoa8Uq6MbR4fZqa8EMePkM9o5MaU06vD3bm78LzNXB62v3SCys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=k0tCVVQy; arc=none smtp.client-ip=209.85.222.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7e872c3a0d5so8941485a.2
+        for <stable@vger.kernel.org>; Wed, 27 Aug 2025 09:04:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756310489; x=1756915289; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XNn3oBnzUviCor8j9vwLNJGK9RvbnNRy8Itw1smJX24=;
-        b=joSbDcAxybJJukKD7AdJFODHjeCvmlYILNrq3QC+TAmju1lELCZkWXCmdn8cXmQiY7
-         DMu2jyVONiqTE2anoEkylHPSMSU5IViq94b/OhkTVcwK7PmlEw5JGm0sDEl27m8KBeo8
-         +QNaCfxzR4CDHsLQkKFV5ruiBL7c9JYHaZLRr3SmyDEy0BW/nnsEkzIQXawsB9/cJBLd
-         tKxA7Hin9qFBehhjlPc8PtzcSVkGGrdLExELMQvLRfk2r7wPS8fXI/ezFH58iyAkSlKY
-         Kft4SYI8+1O2IplyQ46Uwxh1W7qnevTnWxucKKV/OgV/S6YfzlmzmChOSql+lsneriiC
-         1tYA==
+        d=ciq.com; s=s1; t=1756310662; x=1756915462; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0O01BKWKJMhnsa1JrRHWzprMGs/4GQnb9M6HdYZRlFI=;
+        b=k0tCVVQy0BGT6v/j/4Wz4bqPwb6y1GeVaDRqfdD6Wsq1/XWRD01/HSQa36nE/9s3vZ
+         dM79Nzco9S8w5llTw59rPgFYaVpC8ZYP5o7cdiQCT/bTxkoanLrWQcB+qqIMhMq945CU
+         H4XbQpc9ZzDhm8H0nPx0kH3Z/jE1vbtQMpKJYzUDkOsPFLp0lFFiWarjaQH7Gdnh0Uua
+         5WVs2/riy0EdVqJf8YkQ4caX1sce5MYfp/q27JUChJyij42LHiynyZ5wMgSbWmM2En8l
+         HiOXzlRtuiWAnzW5kBJS4SVUrEtPAkQWXLFJnpy2045H3SPi/XvZum+ea97ORmk5ndW5
+         XKnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756310489; x=1756915289;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XNn3oBnzUviCor8j9vwLNJGK9RvbnNRy8Itw1smJX24=;
-        b=ruG4S9C+RMYQnwo5+O3CtcS4rXoOBJJwRoqWNGxw93vU3wEA1ercVXLWX68aOzJ9Z9
-         NzMCcEqJT66hBp5dZevKHgpUxDbeYKuUjyJNI/msqdkAebbuJbm7m31CuLwEPe5hy2wj
-         f06wp5TfF12wL6MsBjEkFpOIq1DtXi3q3+WcE1qjg81ku/f1SuDo18xWdSv7sXUPf+vc
-         fjdadeH1DfQ87PTgXE/b/CN33XPZIA1p3hH005NEJmKrobBIboa/VeNkx1XRqd1SXHy5
-         NJJN2m+4R38lEkSdzUVc/zkmyOTF3T6Kig39uBHAjDX8Uy5UblgOsFuuWz9jkKVyunvT
-         xiug==
-X-Forwarded-Encrypted: i=1; AJvYcCX8LH4wj0G2tCeupKpW5SfeL9Iijmm2h+hcr1NHSvQXnL/TCOX5WyK3FBhwH5pBcPMPqLuc07A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEpO2ou7IltOYIxR1MpQ8pZWzGWxuUJRu7XfTjXuxu7yrF2KWz
-	H5td0f8wU1fAzbDRyNBoNsykxduhHcP4m/LsvB8vDNb8ew9p63yim1C3X+KfxEp3v+De0eqzKyi
-	P3fSM6Q==
-X-Google-Smtp-Source: AGHT+IGfXcW+ZtXZL+XK3iEVs8Sxo/zDD1i/skcxqmUfvEK+HLI/XM5vZ3/WKZOmNWWC6w3e8UGwRabmkGA=
-X-Received: from pfwz26.prod.google.com ([2002:a05:6a00:1d9a:b0:772:13b2:f328])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b4e:b0:771:ed83:557c
- with SMTP id d2e1a72fcca58-771ed835a5dmr11874598b3a.2.1756310488667; Wed, 27
- Aug 2025 09:01:28 -0700 (PDT)
-Date: Wed, 27 Aug 2025 09:01:27 -0700
-In-Reply-To: <20250827152754.12481-1-lifei.shirley@bytedance.com>
+        d=1e100.net; s=20230601; t=1756310662; x=1756915462;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0O01BKWKJMhnsa1JrRHWzprMGs/4GQnb9M6HdYZRlFI=;
+        b=nmO4DKsE8htmBVRtnyY4bx3zd6lx38UTBbVya6spZOk7zI8JKcG+17CX+2LefZoeXA
+         E6NWb7by6J9454+VngOFloYQ3XQUpFWNGOgA4moAiXe+PMpiby2yQgrJxVEab+ui9qPe
+         3tZcX8lxCgf6qRwARaiEnwY/tlmSW7vAxLJX9i/HnL/3xMbmSNLFxY5Z5sT6dBj1A3bF
+         h5l+I70XfdKgRNv/FCl19cEF1Cry7DAV9kcnEPKxGPRd8y2awppTPJUOoZZx71p6USNg
+         3gPdP/LgkTDLV78pZ83ZNqkPU6XCo5HSr7+hE9g0IY/jP9jNrjz2gg8AmTKpXsvX6cE0
+         B0Fw==
+X-Gm-Message-State: AOJu0YyeawKIq3MmlJAQQs8hMuAS6SODA1d3vrMnndEP4kwRiUhmw5hV
+	/cZ8jd0MNUzy71zbMFDJNAQ9a4nExXhiQdF+nOf6IoqWtREIer2vXeyltD9IpQ0HWiZarvFEe33
+	8yjHeyJP310yRImDNucIONfUYIiwlHGNHIsLLCrIorQ==
+X-Gm-Gg: ASbGnctj2OmbEXELxl1cIO3ANTuoSh4lr6eOolIC5Ay6AXKdMLDGdjdZ+G0ujY4POB8
+	0ttx7rpqbKfW1zBvvi/OJYkYfBAfgUF8pS3Ig1Tx3g9XorGim7+UYb9ckOGXf+KUBkzlGpmKJb8
+	afhCSVAan6ZRWrlhAyUaPdxNXyTz3/M4wdzh+MrMapNKAXMnozYEjWMkyEG77qovRdUWoyxiRRq
+	2kQAQQt
+X-Google-Smtp-Source: AGHT+IFs/mwXa9xjC6cm8maRYL98DbbuhF4eeMipGDRxTRqWXTH3hzFo9Xw+umP930+5MgqlefdPLnRTlR8sFlKKbSw=
+X-Received: by 2002:a05:620a:171f:b0:7e3:3065:a6b9 with SMTP id
+ af79cd13be357-7ea10fc7a86mr1947926085a.7.1756310661271; Wed, 27 Aug 2025
+ 09:04:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250827152754.12481-1-lifei.shirley@bytedance.com>
-Message-ID: <aK8r11trXDjBnRON@google.com>
-Subject: Re: [PATCH] KVM: x86: Latch INITs only in specific CPU states in KVM_SET_VCPU_EVENTS
-From: Sean Christopherson <seanjc@google.com>
-To: Fei Li <lifei.shirley@bytedance.com>
-Cc: pbonzini@redhat.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, liran.alon@oracle.com, hpa@zytor.com, 
-	wanpeng.li@hotmail.com, kvm@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20250826110915.169062587@linuxfoundation.org>
+In-Reply-To: <20250826110915.169062587@linuxfoundation.org>
+From: Brett Mastbergen <bmastbergen@ciq.com>
+Date: Wed, 27 Aug 2025 12:04:09 -0400
+X-Gm-Features: Ac12FXzyI1vWTwS2g7VCl4GpPis8V1-XUBHCDNtNCGs_MU3ZX-OEWDTPVk7Brps
+Message-ID: <CAOBMUvjsdK4G-eDqQksd2Nguuf-RmdiY7vmkYRLDrtPpwk5rOQ@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/322] 6.12.44-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 27, 2025, Fei Li wrote:
-> Commit ff90afa75573 ("KVM: x86: Evaluate latched_init in
-> KVM_SET_VCPU_EVENTS when vCPU not in SMM") changes KVM_SET_VCPU_EVENTS
-> handler to set pending LAPIC INIT event regardless of if vCPU is in
-> SMM mode or not.
-> 
-> However, latch INIT without checking CPU state exists race condition,
-> which causes the loss of INIT event. This is fatal during the VM
-> startup process because it will cause some AP to never switch to
-> non-root mode. Just as commit f4ef19108608 ("KVM: X86: Fix loss of
-> pending INIT due to race") said:
->       BSP                          AP
->                      kvm_vcpu_ioctl_x86_get_vcpu_events
->                        events->smi.latched_init = 0
-> 
->                      kvm_vcpu_block
->                        kvm_vcpu_check_block
->                          schedule
-> 
-> send INIT to AP
->                      kvm_vcpu_ioctl_x86_set_vcpu_events
->                      (e.g. `info registers -a` when VM starts/reboots)
->                        if (events->smi.latched_init == 0)
->                          clear INIT in pending_events
+On Tue, Aug 26, 2025 at 7:13=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.44 release.
+> There are 322 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 28 Aug 2025 11:08:26 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.44-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-This is a QEMU bug, no?  IIUC, it's invoking kvm_vcpu_ioctl_x86_set_vcpu_events()
-with stale data.  I'm also a bit confused as to how QEMU is even gaining control
-of the vCPU to emit KVM_SET_VCPU_EVENTS if the vCPU is in kvm_vcpu_block().
+Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
+Intel Core i7-12600H
 
->                      kvm_apic_accept_events
->                        test_bit(KVM_APIC_INIT, &pe) == false
->                          vcpu->arch.mp_state maintains UNINITIALIZED
-> 
-> send SIPI to AP
->                      kvm_apic_accept_events
->                        test_bit(KVM_APIC_SIPI, &pe) == false
->                          vcpu->arch.mp_state will never change to RUNNABLE
->                          (defy: UNINITIALIZED => INIT_RECEIVED => RUNNABLE)
->                            AP will never switch to non-root operation
-> 
-> In such race result, VM hangs. E.g., BSP loops in SeaBIOS's SMPLock and
-> AP will never be reset, and qemu hmp "info registers -a" shows:
-> CPU#0
-> EAX=00000002 EBX=00000002 ECX=00000000 EDX=00020000
-> ESI=00000000 EDI=00000000 EBP=00000008 ESP=00006c6c
-> EIP=000ef570 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=0
-> ......
-> CPU#1
-> EAX=00000000 EBX=00000000 ECX=00000000 EDX=00080660
-> ESI=00000000 EDI=00000000 EBP=00000000 ESP=00000000
-> EIP=0000fff0 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=0
-> ES =0000 00000000 0000ffff 00009300
-> CS =f000 ffff0000 0000ffff 00009b00
-> ......
-> 
-> Fix this by handling latched INITs only in specific CPU states (SMM,
-> VMX non-root mode, SVM with GIF=0) in KVM_SET_VCPU_EVENTS.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: ff90afa75573 ("KVM: x86: Evaluate latched_init in KVM_SET_VCPU_EVENTS when vCPU not in SMM")
-> Signed-off-by: Fei Li <lifei.shirley@bytedance.com>
-> ---
->  arch/x86/kvm/x86.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index a1c49bc681c46..7001b2af00ed1 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -5556,7 +5556,7 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
->  			return -EINVAL;
->  #endif
->  
-> -		if (lapic_in_kernel(vcpu)) {
-> +		if (!kvm_apic_init_sipi_allowed(vcpu) && lapic_in_kernel(vcpu)) {
->  			if (events->smi.latched_init)
->  				set_bit(KVM_APIC_INIT, &vcpu->arch.apic->pending_events);
->  			else
-> -- 
-> 2.39.2 (Apple Git-143)
-> 
+Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
+
+Thanks,
+Brett
 
