@@ -1,69 +1,96 @@
-Return-Path: <stable+bounces-176513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF0BB3866F
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 17:22:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A11B1B386A8
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 17:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6E861C21006
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 15:21:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DAE25E65F4
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 15:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978B2278143;
-	Wed, 27 Aug 2025 15:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A40285CB9;
+	Wed, 27 Aug 2025 15:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="EcscZGRo"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="KDVR+Z3K"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com [209.85.210.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DBE14F9FB;
-	Wed, 27 Aug 2025 15:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A888B27FD6D
+	for <stable@vger.kernel.org>; Wed, 27 Aug 2025 15:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756308082; cv=none; b=ubCvKkgDDGPvW+d89sufFz1WCz52IAOR1oyMmHAxsmZgNyO7tRQSaPCb4RN8iDpINUKKmRZpVXNwZjMMCnwipuC5ZdEu2D2u3hgKMYCKukpv9IkkgB4v+DF3FU+Cay5qXWzlNVyIardSF8vIONk6aySmG+usrJgPRweVbtxskTQ=
+	t=1756308487; cv=none; b=bC52XFspeoBqIszISmgrHtoJGJG9cPoXB5n9wuz3yZ1zysT8ZvuGO/7vOgxfY1uu6aDRx7kh18wUsUBt4GgbT0hSZ2gSU2xS+wgbZssun0wC971Pnl/nbt+bZFG+phV0/T7RkUKce/81w5MyD9sK72EPot1RzfPq3siEHcOKoTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756308082; c=relaxed/simple;
-	bh=9WL9h4EBmvUK8XGVE7GWN3wkJwzRORrd+h0CmUVwyEw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CZUgRUz5jgRQxChLPzABZc5dz6zQvxoP8h1mHQ+hIYXjVKkAw3PNejxuYpwZR8rGDSq8CACj63PhD8DNWX7BBd+7wgb33lgRwqy6oRWXwgsAquepvc1IIHHvy2znYVww4EMtvCFjgtPS2ymw+CgqsuE12DEA5picfR7uaUBL5o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=EcscZGRo; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from debian.intra.ispras.ru (unknown [10.10.165.10])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 9A701406C3E1;
-	Wed, 27 Aug 2025 15:21:18 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 9A701406C3E1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1756308078;
-	bh=02QJmS1dDrR4T+qTKViGS18HgwiGbUD6zmXE+BBvH9s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EcscZGRoCXK2oeKOxF7rUusSMur019GncOpUWsY+SCDR3yuOVgPcWve761DlQ7m9k
-	 +duxIVCwNsr1RNBmwoGYGG2PJgvoJQY8JtvZ7GFSWIeuqu68gtEXAckd+NbQJ9WH0M
-	 acVwhFuqk8GU9y4DLIKXXmRcO6/gI5AL4UvhinvI=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Alex Deucher <alexander.deucher@amd.com>,
-	Melissa Wen <mwen@igalia.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Hans de Goede <hansg@kernel.org>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
+	s=arc-20240116; t=1756308487; c=relaxed/simple;
+	bh=HSDP9rXntbbo/SzNMmXdiyg1N9BxuBhjXVJ/uBQBUrs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lcBelR5uUt1m1gm0YV8h36PmdbaUPzkZCXqAftG8Zs96PtAZ1TwqIIEIzzVF9ZCRgmmDi3cs46AYLBKBj+8YQfi0Mlbmm5Z961VtffwjzDsVytrYWDftiXwzzNKYcVo6ff4Ct2my28Qgc9LJtPXqWIAO8mLpdPdTbJSRtNUA9KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=KDVR+Z3K; arc=none smtp.client-ip=209.85.210.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pf1-f193.google.com with SMTP id d2e1a72fcca58-771eecebb09so3583943b3a.3
+        for <stable@vger.kernel.org>; Wed, 27 Aug 2025 08:28:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1756308484; x=1756913284; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HLD5dyrFNqX9W25nsuFMTaYiQlg+FPGuA0/e2agvvXA=;
+        b=KDVR+Z3Kqi1a7p3UAmc8wova5FRZgodWGOYGPCA2LDDfAdZ1lmzFgAMVjIsnmvGdep
+         nRa3EGwS18wK83sU99GqlFUp2W4ZU7RS8ogt2Cg01wvvY1j/1w9+BYUCq1AuShZIjuUL
+         hm/lKrQQUOQ3UliKPhaRZ0xN6mLSstflABfZl0uRn3R+InoN1NPFAEXlg21H/GQh0VxL
+         PPqyZkW4oua5+wjmDm55uAMRbSaVYaESIeuOkp51vfC/3YEc6Swlj0rS14/E6hYkiY/c
+         azuP13CVYdTGwTaplDT9s68WbF/rqKbruvJ/k8Ic62Copg6dCb6H7zHACzMVHqQKGBAS
+         pBRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756308484; x=1756913284;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HLD5dyrFNqX9W25nsuFMTaYiQlg+FPGuA0/e2agvvXA=;
+        b=L4EVSzqp5xaLMpakXcna+M6jEL2cRqGcFwKIhlnZDKWsyZdbNC7Ot3RS1Xidye1xFr
+         +nJc29zZwoPeFcOTsB7WQKm8ltIs4lltXZ39Q/39IO5GxQDDsnNkFWQKtQ0t1rXknkJC
+         eDPlQMDAxt+BAaVFCEtKUSDKaTs9B3XqiDYLmkCI6c9HvXC9KW4IdlImkyBYvvG4/npW
+         K05v/wpwvDfTkgHiaBYMCtggWrDgxIRKrYsIH3ik9ScM40MdGGi6RVyb02eQzijAyyPQ
+         KTwxwpL/h19MiYd2yOPGPtwbU0g8R9sAbofn10317F8LfXAx+bIE8aGUdZGPzLt3bML/
+         P62g==
+X-Forwarded-Encrypted: i=1; AJvYcCWnNHTyxqMbXhtJZUYXUjVXsecGvigNpxCjOGVYNs7+evbR70rBVBH557KBNUfsqg1tldWFUDU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXYrhbe89wAw/Otj49S1NXL2xthTdKEQ32PjrxCTAn1AJmDShe
+	+o3y4RgmYD7Wk29HKVw+VLPyhcluw0uUMh+WTytB9SJGswN3C1CTD3WeBmNeN9AQmzIbJ9HfBDc
+	j4zm6rYOBcySEEzhBDQ==
+X-Gm-Gg: ASbGncv3UXq+GFyyw/1jghi8z98wkSfggYSrH9WTdtWGCm6BophgnzKIsZEYyJFphvx
+	j3wRsMNNRkH5SWsB09yn6guBqA/GCTk5K9Khsm+hpWct1eTqFA+TgsXkIPAq1sxriHQn1jefXbb
+	7ODLebfNeH+fZb0a1iIZBtqkOMoOOfpx2yZqkrwnwMkNhoCHqcBcQm+B/CBglSzwhpPCdiHqjLf
+	1AhAUJZ1EL7j2m8rchv9+fwKHc2ePpp7NDMaVB+E+hUwmBNqkJx45ACCsq7E1WkocQdvnCIhQNw
+	MPa9GVyumNV1AGa5qXGWqVYo8/VyA8hQw2OlSumgeP9WbnIdR4Kj6tcXa9akiLmvyjl0fcA25jP
+	KgoEpOQSTfCfk1l8ixDfLPX+1p7J4X8MkpRlxzr5FRfzhIhIa+QgDBoy62mwn9iW2
+X-Google-Smtp-Source: AGHT+IFjVJzj3KAq04af7jyaKVQPUw7/lh0Km2Xbvr3GuzkxjwaVXH1UDcAoO+QMmNUmibC3628sRw==
+X-Received: by 2002:a17:903:3b83:b0:248:c96e:f46 with SMTP id d9443c01a7336-248c96e17f8mr4293005ad.60.1756308483845;
+        Wed, 27 Aug 2025 08:28:03 -0700 (PDT)
+Received: from localhost.localdomain ([139.177.225.238])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4c1b2f5a3csm7630507a12.4.2025.08.27.08.27.58
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 27 Aug 2025 08:28:03 -0700 (PDT)
+From: Fei Li <lifei.shirley@bytedance.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	liran.alon@oracle.com,
+	hpa@zytor.com,
+	wanpeng.li@hotmail.com
+Cc: kvm@vger.kernel.org,
+	x86@kernel.org,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
+	Fei Li <lifei.shirley@bytedance.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] drm/amd/display: fix leak of probed modes
-Date: Wed, 27 Aug 2025 18:21:05 +0300
-Message-ID: <20250827152107.785477-3-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250827152107.785477-1-pchelkin@ispras.ru>
-References: <20250827152107.785477-1-pchelkin@ispras.ru>
+Subject: [PATCH] KVM: x86: Latch INITs only in specific CPU states in KVM_SET_VCPU_EVENTS
+Date: Wed, 27 Aug 2025 23:27:54 +0800
+Message-Id: <20250827152754.12481-1-lifei.shirley@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,68 +99,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-amdgpu_dm_connector_ddc_get_modes() reinitializes a connector's probed
-modes list without cleaning it up. First time it is called during the
-driver's initialization phase, then via drm_mode_getconnector() ioctl.
-The leaks observed with Kmemleak are as following:
+Commit ff90afa75573 ("KVM: x86: Evaluate latched_init in
+KVM_SET_VCPU_EVENTS when vCPU not in SMM") changes KVM_SET_VCPU_EVENTS
+handler to set pending LAPIC INIT event regardless of if vCPU is in
+SMM mode or not.
 
-unreferenced object 0xffff88812f91b200 (size 128):
-  comm "(udev-worker)", pid 388, jiffies 4294695475
-  hex dump (first 32 bytes):
-    ac dd 07 00 80 02 70 0b 90 0b e0 0b 00 00 e0 01  ......p.........
-    0b 07 10 07 5c 07 00 00 0a 00 00 00 00 00 00 00  ....\...........
-  backtrace (crc 89db554f):
-    __kmalloc_cache_noprof+0x3a3/0x490
-    drm_mode_duplicate+0x8e/0x2b0
-    amdgpu_dm_create_common_mode+0x40/0x150 [amdgpu]
-    amdgpu_dm_connector_add_common_modes+0x336/0x488 [amdgpu]
-    amdgpu_dm_connector_get_modes+0x428/0x8a0 [amdgpu]
-    amdgpu_dm_initialize_drm_device+0x1389/0x17b4 [amdgpu]
-    amdgpu_dm_init.cold+0x157b/0x1a1e [amdgpu]
-    dm_hw_init+0x3f/0x110 [amdgpu]
-    amdgpu_device_ip_init+0xcf4/0x1180 [amdgpu]
-    amdgpu_device_init.cold+0xb84/0x1863 [amdgpu]
-    amdgpu_driver_load_kms+0x15/0x90 [amdgpu]
-    amdgpu_pci_probe+0x391/0xce0 [amdgpu]
-    local_pci_probe+0xd9/0x190
-    pci_call_probe+0x183/0x540
-    pci_device_probe+0x171/0x2c0
-    really_probe+0x1e1/0x890
+However, latch INIT without checking CPU state exists race condition,
+which causes the loss of INIT event. This is fatal during the VM
+startup process because it will cause some AP to never switch to
+non-root mode. Just as commit f4ef19108608 ("KVM: X86: Fix loss of
+pending INIT due to race") said:
+      BSP                          AP
+                     kvm_vcpu_ioctl_x86_get_vcpu_events
+                       events->smi.latched_init = 0
 
-Found by Linux Verification Center (linuxtesting.org).
+                     kvm_vcpu_block
+                       kvm_vcpu_check_block
+                         schedule
 
-Fixes: acc96ae0d127 ("drm/amd/display: set panel orientation before drm_dev_register")
+send INIT to AP
+                     kvm_vcpu_ioctl_x86_set_vcpu_events
+                     (e.g. `info registers -a` when VM starts/reboots)
+                       if (events->smi.latched_init == 0)
+                         clear INIT in pending_events
+
+                     kvm_apic_accept_events
+                       test_bit(KVM_APIC_INIT, &pe) == false
+                         vcpu->arch.mp_state maintains UNINITIALIZED
+
+send SIPI to AP
+                     kvm_apic_accept_events
+                       test_bit(KVM_APIC_SIPI, &pe) == false
+                         vcpu->arch.mp_state will never change to RUNNABLE
+                         (defy: UNINITIALIZED => INIT_RECEIVED => RUNNABLE)
+                           AP will never switch to non-root operation
+
+In such race result, VM hangs. E.g., BSP loops in SeaBIOS's SMPLock and
+AP will never be reset, and qemu hmp "info registers -a" shows:
+CPU#0
+EAX=00000002 EBX=00000002 ECX=00000000 EDX=00020000
+ESI=00000000 EDI=00000000 EBP=00000008 ESP=00006c6c
+EIP=000ef570 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=0
+......
+CPU#1
+EAX=00000000 EBX=00000000 ECX=00000000 EDX=00080660
+ESI=00000000 EDI=00000000 EBP=00000000 ESP=00000000
+EIP=0000fff0 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=0
+ES =0000 00000000 0000ffff 00009300
+CS =f000 ffff0000 0000ffff 00009b00
+......
+
+Fix this by handling latched INITs only in specific CPU states (SMM,
+VMX non-root mode, SVM with GIF=0) in KVM_SET_VCPU_EVENTS.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Fixes: ff90afa75573 ("KVM: x86: Evaluate latched_init in KVM_SET_VCPU_EVENTS when vCPU not in SMM")
+Signed-off-by: Fei Li <lifei.shirley@bytedance.com>
 ---
+ arch/x86/kvm/x86.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v3: drop INIT_LIST_HEAD and use drm_edid_connector_update() (Melissa Wen)
-v2: use exported drm_mode_remove() (Mario Limonciello)
-
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index a0ca3b2c6bd8..12685966186b 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8230,10 +8230,14 @@ static void amdgpu_dm_connector_ddc_get_modes(struct drm_connector *connector,
- {
- 	struct amdgpu_dm_connector *amdgpu_dm_connector =
- 			to_amdgpu_dm_connector(connector);
-+	struct drm_display_mode *mode, *t;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index a1c49bc681c46..7001b2af00ed1 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -5556,7 +5556,7 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
+ 			return -EINVAL;
+ #endif
  
- 	if (drm_edid) {
- 		/* empty probed_modes */
--		INIT_LIST_HEAD(&connector->probed_modes);
-+		list_for_each_entry_safe(mode, t, &connector->probed_modes, head)
-+			drm_mode_remove(connector, mode);
-+
-+		drm_edid_connector_update(connector, drm_edid);
- 		amdgpu_dm_connector->num_modes =
- 				drm_edid_connector_add_modes(connector);
- 
+-		if (lapic_in_kernel(vcpu)) {
++		if (!kvm_apic_init_sipi_allowed(vcpu) && lapic_in_kernel(vcpu)) {
+ 			if (events->smi.latched_init)
+ 				set_bit(KVM_APIC_INIT, &vcpu->arch.apic->pending_events);
+ 			else
 -- 
-2.50.1
+2.39.2 (Apple Git-143)
 
 
