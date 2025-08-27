@@ -1,212 +1,207 @@
-Return-Path: <stable+bounces-176491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 951B7B37FD3
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 12:25:38 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id B03FCB37FF4
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 12:34:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4638C204D0D
-	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 10:25:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5DE1D4E19DD
+	for <lists+stable@lfdr.de>; Wed, 27 Aug 2025 10:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0423E346A19;
-	Wed, 27 Aug 2025 10:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE8E27605A;
+	Wed, 27 Aug 2025 10:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QZDJAr+E"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="O9Qgak1A";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UMqebvip"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0943023D7EC;
-	Wed, 27 Aug 2025 10:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD9472610;
+	Wed, 27 Aug 2025 10:34:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756290330; cv=none; b=KF1z9BluPBdlpgAgFpagbj4JGbdJxaOkfcibN4tEXESUy1PaHjnfBbJwCREvpBwRPisDKxsm5qo2ND+j2iqCpiSZkrfu5IqWgknrj/HqTPSjQkkEL3aTFhtgfuP7CFjYCqED3Quwv2dUolSCRL+dXySKeM8w9hWATyBebD1bKTg=
+	t=1756290866; cv=none; b=bh2R5phUsUm18FPa5AXTHGcQFWoTjYpz7TT58poMJF9gPf0W2TxPvH6/+hiLbhSeS6xv398hIViS7XAOu/iUIBnrNXU4jKJaQz/1R17SUKsp/6WZllBeTG6898RUTxIHMFS6laB/OHkOoAIsQT4MRdeJ2PrlvGQYCi7Ed3ijCPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756290330; c=relaxed/simple;
-	bh=WECNxR80yEsMmZCFgrsq9NZC+dltMaq6d0aDT+T5ChM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BPncBZZLCcIIs6bJklqc0se1LLtQhv3H9tZeVDsvFc19kxaiVaFXtPlC/hkzNUasQMaLcHb5zykH82iwSoA2bQfKYbzad0GRu9HSFDrf1vNAo0DkY+vjkOMRcE4qT1uuOiJSg5+mzTHmckKWs9fu5ZHtw45AXylq5EHofG0pFZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QZDJAr+E; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57R6kMt2014895;
-	Wed, 27 Aug 2025 10:25:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=26cwR5fHeg9uh4+QfgnvTvxx3M1y6aiB9h3
-	YcFVNVzI=; b=QZDJAr+ENrf2gmCm4jgQ/j5ECoyNi1MKXf0h6WH7yXLzpGPKpdh
-	sPnyyVpUh0xB08/fuhtW5XQI9EX3vk+fApBP06mg7wfu4s/C6eXwREnKcyG7XUMF
-	7xSFqXpwZ3AtMFDPdUv+EU/iHjCTCEJBRtvvcn0dhloJxoZzscDrp+fm20LO9oFZ
-	dTdkSdg3jG+EqD8WDXM/9HcR4DSf0pQsUnERKAJ8GI58LtPIVz4J/8wfPhA4yxU9
-	LgK9tDMYNUy8UbTrRfqYcjitDxCiG+iV+Gu+HO3k2Nq+wtF5fucLFvmYQsIm7CFu
-	f7uNsX1WMhfnYeWAk6t864t/Hh9trw7pxkQ==
-Received: from aptaippmta02.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48q5we4437-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Aug 2025 10:25:25 +0000 (GMT)
-Received: from pps.filterd (APTAIPPMTA02.qualcomm.com [127.0.0.1])
-	by APTAIPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 57RAPMtL027536;
-	Wed, 27 Aug 2025 10:25:22 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 48q6qm0mb9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Aug 2025 10:25:22 +0000
-Received: from APTAIPPMTA02.qualcomm.com (APTAIPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57RAPMqT027530;
-	Wed, 27 Aug 2025 10:25:22 GMT
-Received: from bt-iot-sh02-lnx.ap.qualcomm.com (bt-iot-sh02-lnx.qualcomm.com [10.253.144.65])
-	by APTAIPPMTA02.qualcomm.com (PPS) with ESMTPS id 57RAPMtI027529
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Aug 2025 10:25:22 +0000
-Received: by bt-iot-sh02-lnx.ap.qualcomm.com (Postfix, from userid 4467449)
-	id E38A52291A; Wed, 27 Aug 2025 18:25:20 +0800 (CST)
-From: Shuai Zhang <quic_shuaz@quicinc.com>
-To: dmitry.baryshkov@oss.qualcomm.com, marcel@holtmann.org,
-        luiz.dentz@gmail.com
-Cc: linux-bluetooth@vger.kernel.org, stable@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        quic_chejiang@quicinc.com, Shuai Zhang <quic_shuaz@quicinc.com>
-Subject: [PATCH v11] Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail when BT_EN is pulled up by hw
-Date: Wed, 27 Aug 2025 18:25:19 +0800
-Message-Id: <20250827102519.195439-1-quic_shuaz@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1756290866; c=relaxed/simple;
+	bh=eCS5hfcdjbm9MfUiUc4bZbE/VT9m5NWcWjRKXD0X2sc=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=sXxmlQNTf9fZk/SViiI9Z1cNVtRF3wzt0foWjrW0FviwT6o9LLBsFWUTr0dpsEdgo1kez3GE5TQKGC1SCHe9cPN6bSY9RrqH1x6QigXNkb1clw0ikPQD6rvd+5myVfbeX2gZ6rXzMeaiN5qYEac7OWRBX22mamobHPWhbLRZqqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=O9Qgak1A; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UMqebvip; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 27 Aug 2025 10:34:20 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1756290862;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QvnPT4kzFsPVxOt5kvlxt5NOPOn31/A8mkcFHiFNlVw=;
+	b=O9Qgak1AVROpVDbGWi4x2Y6Mqx3w+vqYspv1MNlFVjA5hXKInfUSJ7kxWrtVBJjX2HpIls
+	A4xMKbq439I3vfle6tTTvrbI/SMsFpGFTGD9NxZCeo4D7V4+O3Q2p5zt6fV8XC7WXEDQcI
+	5bLGJcQNeCXpDYxlbpkhWH+Jc0arxmxGSpOqUUVdVu5etwmjxfmBp1pTYkSWMcJ88+H4Hr
+	i2s2dIuO/d6XFotg2q6y7UqpuFFqjkPyE0S5ZH8xLFW+8fNNbdK2dl9sIIRDivhbxIK70g
+	pPk6ickzkCV3HCs4jLJtNFmvOJBqbl70WUUBrngrqMem8boAN0M6lReGz5nBpw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1756290862;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QvnPT4kzFsPVxOt5kvlxt5NOPOn31/A8mkcFHiFNlVw=;
+	b=UMqebvipgte7Z9VhwLX8/d9RR9qcat/37YtXGiAgeGRpLjRadx0JKlBXqH4OCUmJSIUVjy
+	4nwOSGsb58O7SWDA==
+From: "tip-bot2 for K Prateek Nayak" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/cpu/topology: Use initial APIC ID from
+ XTOPOLOGY leaf on AMD/HYGON
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+ K Prateek Nayak <kprateek.nayak@amd.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>,
+ "Naveen N Rao (AMD)" <naveen@kernel.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250825075732.10694-2-kprateek.nayak@amd.com>
+References: <20250825075732.10694-2-kprateek.nayak@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 99Ic9prYyiajxWR3acTWL2IDkeaAXJdt
-X-Proofpoint-ORIG-GUID: 99Ic9prYyiajxWR3acTWL2IDkeaAXJdt
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAzMyBTYWx0ZWRfX9/GWBT3nlrOW
- slXO6gfBC01yuyjQWw+clKx0GXR5j+EGZ8o0mvO1LntjBLC9D+YtTILDJZ1gQ0xkjmJq2xh13SJ
- +J7l3eRBAMGRYgxZdusCXTXg8p428XBEfnquLhfesuylmKVNqq+nG1TWz505mOqXBJNS3LmIFBP
- 9RK/Ld/odBDhGWenbQg2G5kyFhCJbfZ4+MVMlFg+q8m+wxYzNHZsL28RFyX46zl+65eN5Kp1Ej0
- 0gLsI1KC67f9zESXer0WIzMI/2k6m+Zh5+fWIB9EPn0bzUX9lAAjPlzjYjaaa07UBvgKTP2ZFhi
- DcQdqVQQi8zstGsgm02WTEX+d6IyZJ06v+gUUp+20hIMW0/1gJ6I7azO0YvC6DipGC3QERXKFB4
- sxy4PUpC
-X-Authority-Analysis: v=2.4 cv=BJazrEQG c=1 sm=1 tr=0 ts=68aedd15 cx=c_pps
- a=nuhDOHQX5FNHPW3J6Bj6AA==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=Zh3eq0SbisOj6M6HGuUA:9
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-27_02,2025-08-26_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 priorityscore=1501 clxscore=1015 impostorscore=0
- bulkscore=0 phishscore=0 suspectscore=0 spamscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508230033
+Message-ID: <175629086019.1920.18385757222899714519.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-When the host actively triggers SSR and collects coredump data,
-the Bluetooth stack sends a reset command to the controller. However, due
-to the inability to clear the QCA_SSR_TRIGGERED and QCA_IBS_DISABLED bits,
-the reset command times out.
+The following commit has been merged into the x86/urgent branch of tip:
 
-To address this, this patch clears the QCA_SSR_TRIGGERED and
-QCA_IBS_DISABLED flags and adds a 50ms delay after SSR, but only when
-HCI_QUIRK_NON_PERSISTENT_SETUP is not set. This ensures the controller
-completes the SSR process when BT_EN is always high due to hardware.
+Commit-ID:     c2415c407a2cde01290d52ce2a1f81b0616379a3
+Gitweb:        https://git.kernel.org/tip/c2415c407a2cde01290d52ce2a1f81b0616=
+379a3
+Author:        K Prateek Nayak <kprateek.nayak@amd.com>
+AuthorDate:    Mon, 25 Aug 2025 07:57:29=20
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Wed, 27 Aug 2025 11:31:11 +02:00
 
-For the purpose of HCI_QUIRK_NON_PERSISTENT_SETUP, please refer to
-the comment in `include/net/bluetooth/hci.h`.
+x86/cpu/topology: Use initial APIC ID from XTOPOLOGY leaf on AMD/HYGON
 
-The HCI_QUIRK_NON_PERSISTENT_SETUP quirk is associated with BT_EN,
-and its presence can be used to determine whether BT_EN is defined in DTS.
+Prior to the topology parsing rewrite and the switchover to the new parsing
+logic for AMD processors in
 
-After SSR, host will not download the firmware, causing
-controller to remain in the IBS_WAKE state. Host needs
-to synchronize with the controller to maintain proper operation.
+  c749ce393b8f ("x86/cpu: Use common topology code for AMD"),
 
-Multiple triggers of SSR only first generate coredump file,
-due to memcoredump_flag no clear.
+the initial_apicid on these platforms was:
 
-add clear coredump flag when ssr completed.
+- First initialized to the LocalApicId from CPUID leaf 0x1 EBX[31:24].
 
-When the SSR duration exceeds 2 seconds, it triggers
-host tx_idle_timeout, which sets host TX state to sleep. due to the
-hardware pulling up bt_en, the firmware is not downloaded after the SSR.
-As a result, the controller does not enter sleep mode. Consequently,
-when the host sends a command afterward, it sends 0xFD to the controller,
-but the controller does not respond, leading to a command timeout.
+- Then overwritten by the ExtendedLocalApicId in CPUID leaf 0xb
+  EDX[31:0] on processors that supported topoext.
 
-So reset tx_idle_timer after SSR to prevent host enter TX IBS_Sleep mode.
+With the new parsing flow introduced in
 
----
-Changs since v10:
--- Update base patch to latest patch.
+  f7fb3b2dd92c ("x86/cpu: Provide an AMD/HYGON specific topology parser"),
 
-Changs since v8-v9:
--- Update base patch to latest patch.
--- add Cc stable@vger.kernel.org on signed-of.
+parse_8000_001e() now unconditionally overwrites the initial_apicid already
+parsed during cpu_parse_topology_ext().
 
-Changes since v6-7:
-- Merge the changes into a single patch.
-- Update commit.
+Although this has not been a problem on baremetal platforms, on virtualized A=
+MD
+guests that feature more than 255 cores, QEMU zeros out the CPUID leaf
+0x8000001e on CPUs with CoreID > 255 to prevent collision of these IDs in
+EBX[7:0] which can only represent a maximum of 255 cores [1].
 
-Changes since v1-5:
-- Add an explanation for HCI_QUIRK_NON_PERSISTENT_SETUP.
-- Add commments for msleep(50).
-- Update format and commit.
+This results in the following FW_BUG being logged when booting a guest
+with more than 255 cores:
 
-Signed-off-by: Shuai Zhang <quic_shuaz@quicinc.com>
+    [Firmware Bug]: CPU 512: APIC ID mismatch. CPUID: 0x0000 APIC: 0x0200
+
+AMD64 Architecture Programmer's Manual Volume 2: System Programming Pub.
+24593 Rev. 3.42 [2] Section 16.12 "x2APIC_ID" mentions the Extended
+Enumeration leaf 0xb (Fn0000_000B_EDX[31:0])(which was later superseded by the
+extended leaf 0x80000026) provides the full x2APIC ID under all circumstances
+unlike the one reported by CPUID leaf 0x8000001e EAX which depends on the mode
+in which APIC is configured.
+
+Rely on the APIC ID parsed during cpu_parse_topology_ext() from CPUID leaf
+0x80000026 or 0xb and only use the APIC ID from leaf 0x8000001e if
+cpu_parse_topology_ext() failed (has_topoext is false).
+
+On platforms that support the 0xb leaf (Zen2 or later, AMD guests on
+QEMU) or the extended leaf 0x80000026 (Zen4 or later), the
+initial_apicid is now set to the value parsed from EDX[31:0].
+
+On older AMD/Hygon platforms that do not support the 0xb leaf but support the
+TOPOEXT extension (families 0x15, 0x16, 0x17[Zen1], and Hygon), retain current
+behavior where the initial_apicid is set using the 0x8000001e leaf.
+
+Issue debugged by Naveen N Rao (AMD) <naveen@kernel.org> and Sairaj Kodilkar
+<sarunkod@amd.com>.
+
+  [ bp: Massage commit message. ]
+
+Fixes: c749ce393b8f ("x86/cpu: Use common topology code for AMD")
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Naveen N Rao (AMD) <naveen@kernel.org>
 Cc: stable@vger.kernel.org
+Link: https://github.com/qemu/qemu/commit/35ac5dfbcaa4b [1]
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D206537 [2]
+Link: https://lore.kernel.org/20250825075732.10694-2-kprateek.nayak@amd.com
 ---
- drivers/bluetooth/hci_qca.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ arch/x86/kernel/cpu/topology_amd.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 4cff4d9be..2d6560482 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -1653,6 +1653,39 @@ static void qca_hw_error(struct hci_dev *hdev, u8 code)
- 		skb_queue_purge(&qca->rx_memdump_q);
+diff --git a/arch/x86/kernel/cpu/topology_amd.c b/arch/x86/kernel/cpu/topolog=
+y_amd.c
+index 843b165..827dd0d 100644
+--- a/arch/x86/kernel/cpu/topology_amd.c
++++ b/arch/x86/kernel/cpu/topology_amd.c
+@@ -81,20 +81,25 @@ static bool parse_8000_001e(struct topo_scan *tscan, bool=
+ has_topoext)
+=20
+ 	cpuid_leaf(0x8000001e, &leaf);
+=20
+-	tscan->c->topo.initial_apicid =3D leaf.ext_apic_id;
+-
+ 	/*
+-	 * If leaf 0xb is available, then the domain shifts are set
+-	 * already and nothing to do here. Only valid for family >=3D 0x17.
++	 * If leaf 0xb/0x26 is available, then the APIC ID and the domain
++	 * shifts are set already.
+ 	 */
+-	if (!has_topoext && tscan->c->x86 >=3D 0x17) {
++	if (!has_topoext) {
++		tscan->c->topo.initial_apicid =3D leaf.ext_apic_id;
++
+ 		/*
+-		 * Leaf 0x80000008 set the CORE domain shift already.
+-		 * Update the SMT domain, but do not propagate it.
++		 * Leaf 0x8000008 sets the CORE domain shift but not the
++		 * SMT domain shift. On CPUs with family >=3D 0x17, there
++		 * might be hyperthreads.
+ 		 */
+-		unsigned int nthreads =3D leaf.core_nthreads + 1;
++		if (tscan->c->x86 >=3D 0x17) {
++			/* Update the SMT domain, but do not propagate it. */
++			unsigned int nthreads =3D leaf.core_nthreads + 1;
+=20
+-		topology_update_dom(tscan, TOPO_SMT_DOMAIN, get_count_order(nthreads), nth=
+reads);
++			topology_update_dom(tscan, TOPO_SMT_DOMAIN,
++					    get_count_order(nthreads), nthreads);
++		}
  	}
- 
-+	/*
-+	 * If the BT chip's bt_en pin is connected to a 3.3V power supply via
-+	 * hardware and always stays high, driver cannot control the bt_en pin.
-+	 * As a result, during SSR (SubSystem Restart), QCA_SSR_TRIGGERED and
-+	 * QCA_IBS_DISABLED flags cannot be cleared, which leads to a reset
-+	 * command timeout.
-+	 * Add an msleep delay to ensure controller completes the SSR process.
-+	 *
-+	 * Host will not download the firmware after SSR, controller to remain
-+	 * in the IBS_WAKE state, and the host needs to synchronize with it
-+	 *
-+	 * Since the bluetooth chip has been reset, clear the memdump state.
-+	 */
-+	if (!hci_test_quirk(hu->hdev, HCI_QUIRK_NON_PERSISTENT_SETUP)) {
-+		/*
-+		 * When the SSR (SubSystem Restart) duration exceeds 2 seconds,
-+		 * it triggers host tx_idle_delay, which sets host TX state
-+		 * to sleep. Reset tx_idle_timer after SSR to prevent
-+		 * host enter TX IBS_Sleep mode.
-+		 */
-+		mod_timer(&qca->tx_idle_timer, jiffies +
-+				  msecs_to_jiffies(qca->tx_idle_delay));
-+
-+		/* Controller reset completion time is 50ms */
-+		msleep(50);
-+
-+		clear_bit(QCA_SSR_TRIGGERED, &qca->flags);
-+		clear_bit(QCA_IBS_DISABLED, &qca->flags);
-+
-+		qca->tx_ibs_state = HCI_IBS_TX_AWAKE;
-+		qca->memdump_state = QCA_MEMDUMP_IDLE;
-+	}
-+
- 	clear_bit(QCA_HW_ERROR_EVENT, &qca->flags);
- }
- 
--- 
-2.34.1
-
+=20
+ 	store_node(tscan, leaf.nnodes_per_socket + 1, leaf.node_id);
 
