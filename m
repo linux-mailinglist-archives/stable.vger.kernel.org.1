@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-176554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB36BB39338
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 07:46:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2014B3933A
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 07:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B8A83B0BA3
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 05:46:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADE623AECC4
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 05:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D847D2765F3;
-	Thu, 28 Aug 2025 05:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB1827780D;
+	Thu, 28 Aug 2025 05:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="YZVuWO16"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jZfR2F04"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C7E13DDAA;
-	Thu, 28 Aug 2025 05:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4612773E3;
+	Thu, 28 Aug 2025 05:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756359982; cv=none; b=IvLFKNwF2lU8eraJfvAMWJMqtfNK8Eypjg29rkDsnBk3uN9rj87N4YeZqfcjrlpJ2B8ONizJRFmt8N/CVSfl5OyLpI5C8HKBaUL5nxepplR3x5VwYJj8sCnukq/+Y9EG0UD4mBkLW7bd64UovSY7JhEY3q9+qBHjuM8OOJR5HFY=
+	t=1756359985; cv=none; b=UrF5Dej8UTw35plBINL9xk3BTrIOq3JZOu5zR8jiOKPzssKhS3aB/38JHcl773MufhiyolIcW5EoEVKxSpQeE8a+ko3a01sNm4tL1j9zOnh12agrT3oRlczQrLgrCXGHgSv6vvf6dG0Bv5tccUDPlyYHsKMgctO20YtEbYS+YvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756359982; c=relaxed/simple;
-	bh=2bAGBP2ziuX2W1E04tKsFONmq8gPpepEi41uFrqWTdg=;
-	h=Date:To:From:Subject:Message-Id; b=Or3Wgw1/KTkzi6xDCcVSVRrnyxJMXGlESDJjRdEZAiPo3+EruDskw3A/91O4IvV9RgaBIUcd0yfqpY74BXIUhpEk30mWBhRz2QX06KjEEf6QGI97T7y9u/6H38R1guY2Of/sMT7OzZH2N7/YpDw2k1jLYQppNc+3fy+6SplI/h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=YZVuWO16; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC81C4CEEB;
-	Thu, 28 Aug 2025 05:46:21 +0000 (UTC)
+	s=arc-20240116; t=1756359985; c=relaxed/simple;
+	bh=DQa15gKoGUpiUB7H3al0tGembi5Vskv0d299cWatF1s=;
+	h=Date:To:From:Subject:Message-Id; b=Rf1F/9BrZe+1q1Z7OIwuqYPS/QdfrTzZe2MCK5xleG8E7qeIBbNzd11oGNBTuCU88lupfwNatJRWldrP+l47FmdFDxkWyxMNuiR1pu/K6E7//SUfwKwRhoUViQq2OHQ7YCziw3TTGiPzui+3bfjV3XkF0OcOUkm0xv6Y64aEuCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=jZfR2F04; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF42C4CEF6;
+	Thu, 28 Aug 2025 05:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1756359981;
-	bh=2bAGBP2ziuX2W1E04tKsFONmq8gPpepEi41uFrqWTdg=;
+	s=korg; t=1756359984;
+	bh=DQa15gKoGUpiUB7H3al0tGembi5Vskv0d299cWatF1s=;
 	h=Date:To:From:Subject:From;
-	b=YZVuWO169CIW+TRmv6LSBNNVG8B1HRQezyaE4h8/F56E7SIwQDPtv9Io6eWvSbmAZ
-	 8pWSixG9fN42wgwYTKwg3rlvGNcB4JekpSanXAFlBgDvt3OZ4Sndylhdm3SFY5Owqe
-	 QOh88O8dIXMozKq8MxaxH8fgyF6F3Ef+tOiQVjD4=
-Date: Wed, 27 Aug 2025 22:46:20 -0700
-To: mm-commits@vger.kernel.org,yeoreum.yun@arm.com,vincenzo.frascino@arm.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,nathan@kernel.org,mpe@ellerman.id.au,mark.rutland@arm.com,glider@google.com,elver@google.com,dvyukov@google.com,andreyknvl@gmail.com,ada.coupriediaz@arm.com,akpm@linux-foundation.org
+	b=jZfR2F04O3zHHpAfuredjCBfP6MtqNMlBrkJbKXChxr1B3BXEGm/xSHNEwf9WUjyy
+	 DC751c8xM6b6UY0yT+5zg7vAW9OO83l4PCSct1gV6/CdXtOJ5znMm0SeD92XXTaWdb
+	 LsKfJxQdIiqtkwv1Yp9ayhbTjfJ01h3I8cFgWJnw=
+Date: Wed, 27 Aug 2025 22:46:24 -0700
+To: mm-commits@vger.kernel.org,zuoze1@huawei.com,wangkefeng.wang@huawei.com,stable@vger.kernel.org,sj@kernel.org,apanyaki@amazon.com,yanquanmin1@huawei.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] kasan-fix-gcc-mem-intrinsic-prefix-with-sw-tags.patch removed from -mm tree
-Message-Id: <20250828054621.0FC81C4CEEB@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-damon-core-prevent-unnecessary-overflow-in-damos_set_effective_quota.patch removed from -mm tree
+Message-Id: <20250828054624.BEF42C4CEF6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,86 +50,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: kasan: fix GCC mem-intrinsic prefix with sw tags
+     Subject: mm/damon/core: prevent unnecessary overflow in damos_set_effective_quota()
 has been removed from the -mm tree.  Its filename was
-     kasan-fix-gcc-mem-intrinsic-prefix-with-sw-tags.patch
+     mm-damon-core-prevent-unnecessary-overflow-in-damos_set_effective_quota.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Subject: kasan: fix GCC mem-intrinsic prefix with sw tags
-Date: Thu, 21 Aug 2025 13:07:35 +0100
+From: Quanmin Yan <yanquanmin1@huawei.com>
+Subject: mm/damon/core: prevent unnecessary overflow in damos_set_effective_quota()
+Date: Thu, 21 Aug 2025 20:55:55 +0800
 
-GCC doesn't support "hwasan-kernel-mem-intrinsic-prefix", only
-"asan-kernel-mem-intrinsic-prefix"[0], while LLVM supports both.  This is
-already taken into account when checking
-"CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX", but not in the KASAN Makefile
-adding those parameters when "CONFIG_KASAN_SW_TAGS" is enabled.
+On 32-bit systems, the throughput calculation in
+damos_set_effective_quota() is prone to unnecessary multiplication
+overflow.  Using mult_frac() to fix it.
 
-Replace the version check with "CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX",
-which already validates that mem-intrinsic prefix parameter can be used,
-and choose the correct name depending on compiler.
+Andrew Paniakin also recently found and privately reported this issue, on
+64 bit systems.  This can also happen on 64-bit systems, once the charged
+size exceeds ~17 TiB.  On systems running for long time in production,
+this issue can actually happen.
 
-GCC 13 and above trigger "CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX" which
-prevents `mem{cpy,move,set}()` being redefined in "mm/kasan/shadow.c"
-since commit 36be5cba99f6 ("kasan: treat meminstrinsic as builtins in
-uninstrumented files"), as we expect the compiler to prefix those calls
-with `__(hw)asan_` instead.  But as the option passed to GCC has been
-incorrect, the compiler has not been emitting those prefixes, effectively
-never calling the instrumented versions of `mem{cpy,move,set}()` with
-"CONFIG_KASAN_SW_TAGS" enabled.
+More specifically, when a DAMOS scheme having the time quota run for
+longtime, throughput calculation can overflow and set esz too small.  As a
+result, speed of the scheme get unexpectedly slow.
 
-If "CONFIG_FORTIFY_SOURCES" is enabled, this issue would be mitigated as
-it redefines `mem{cpy,move,set}()` and properly aliases the
-`__underlying_mem*()` that will be called to the instrumented versions.
-
-Link: https://lkml.kernel.org/r/20250821120735.156244-1-ada.coupriediaz@arm.com
-Link: https://gcc.gnu.org/onlinedocs/gcc-13.4.0/gcc/Optimize-Options.html [0]
-Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Fixes: 36be5cba99f6 ("kasan: treat meminstrinsic as builtins in uninstrumented files")
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Marc Rutland <mark.rutland@arm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20250821125555.3020951-1-yanquanmin1@huawei.com
+Fixes: 1cd243030059 ("mm/damon/schemes: implement time quota")
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+Reported-by: Andrew Paniakin <apanyaki@amazon.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: ze zuo <zuoze1@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.16+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- scripts/Makefile.kasan |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ mm/damon/core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/scripts/Makefile.kasan~kasan-fix-gcc-mem-intrinsic-prefix-with-sw-tags
-+++ a/scripts/Makefile.kasan
-@@ -86,10 +86,14 @@ kasan_params += hwasan-instrument-stack=
- 		hwasan-use-short-granules=0 \
- 		hwasan-inline-all-checks=0
+--- a/mm/damon/core.c~mm-damon-core-prevent-unnecessary-overflow-in-damos_set_effective_quota
++++ a/mm/damon/core.c
+@@ -2073,8 +2073,8 @@ static void damos_set_effective_quota(st
  
--# Instrument memcpy/memset/memmove calls by using instrumented __hwasan_mem*().
--ifeq ($(call clang-min-version, 150000)$(call gcc-min-version, 130000),y)
--	kasan_params += hwasan-kernel-mem-intrinsic-prefix=1
--endif
-+# Instrument memcpy/memset/memmove calls by using instrumented __(hw)asan_mem*().
-+ifdef CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX
-+	ifdef CONFIG_CC_IS_GCC
-+		kasan_params += asan-kernel-mem-intrinsic-prefix=1
-+	else
-+		kasan_params += hwasan-kernel-mem-intrinsic-prefix=1
-+	endif
-+endif # CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX
- 
- endif # CONFIG_KASAN_SW_TAGS
- 
+ 	if (quota->ms) {
+ 		if (quota->total_charged_ns)
+-			throughput = quota->total_charged_sz * 1000000 /
+-				quota->total_charged_ns;
++			throughput = mult_frac(quota->total_charged_sz, 1000000,
++							quota->total_charged_ns);
+ 		else
+ 			throughput = PAGE_SIZE * 1024;
+ 		esz = min(throughput * quota->ms, esz);
 _
 
-Patches currently in -mm which might be from ada.coupriediaz@arm.com are
+Patches currently in -mm which might be from yanquanmin1@huawei.com are
 
+mm-damon-lru_sort-avoid-divide-by-zero-in-damon_lru_sort_apply_parameters.patch
+mm-damon-reclaim-avoid-divide-by-zero-in-damon_reclaim_apply_parameters.patch
 
 
