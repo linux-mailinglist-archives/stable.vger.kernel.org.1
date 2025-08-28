@@ -1,173 +1,196 @@
-Return-Path: <stable+bounces-176599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4800DB39C01
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 13:52:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 429A5B39CD5
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 14:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34203200CC8
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 11:52:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B96FD7BCD6F
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 12:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D9730F532;
-	Thu, 28 Aug 2025 11:52:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="FShbToC2";
-	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="ZY6yP+2N"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4671730FC26;
+	Thu, 28 Aug 2025 12:16:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [85.215.255.23])
+Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D038A30C61A;
-	Thu, 28 Aug 2025 11:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756381935; cv=pass; b=U03AAD3GU9XO/ql473tbQVrbGLOZDcGpugnW2b+dhs2iwWGSVRWwC5WKUBTgqXoXRVnVu3JalHvEMahT8XxYbySsYRsZCMfl/BVZps867kHNWge9UkY/YvLjl4tYFsUWAvTKk/phOLMvJHqFo7ClT+cMyKsEHPRk0IOZnFGXdGs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756381935; c=relaxed/simple;
-	bh=Kx4l3+xB1BSQ8qLi5aQcVgB8V8o2amSYdQIf+TG/czk=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=sCiPqTYpXY2CYBXGzoHEmX5Mq+eXRgZCyveXSelbfwG6I9y/QAdub1uJai46tLXd3afj3OTnzt4hMRIbEst4DckPeThAHhRRbWr+YVlZFiW3B9lC+fp6a7moJnNvqzekuE9SIirM8sia2YnZYjE/FXgiZtjxMbNzuQmlAfGYmro=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=FShbToC2; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=ZY6yP+2N; arc=pass smtp.client-ip=85.215.255.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goldelico.com
-ARC-Seal: i=1; a=rsa-sha256; t=1756381559; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=HW9nBCZm79N6/3lZiBIBb4oNVP9kUaaVmnjTuYubgdIKr5rMuKkjVkG3wCpdSJlJFn
-    s4dBpD2BubC5bWfWJEsfo30j0o4gNoBLhE+YY1njsotQqnsMi3DMG4zkyC6Kr3seK3uH
-    b9kyzjVwJJdHpz7PZYfeyyKyyF7+FuP/K7xMNWknwjfD/M5knzqZ6Fjc2Csazy/DrNS0
-    kB4OchwC8i0HgcOf29l8jwlYaZsU/Lx2Rk+Fmrfk9DTiNCtfkDRjWM0K4PTwrpPmdHRC
-    hcHASJYuRDA1QTKi6U0CUIUrl1YUKbBudJnlrRTtgLt8VGRG05o8GnMKP6Pgoen95qoM
-    8Urg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1756381559;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=MWefUO0OIHQqurX1Ir8EInMU5qzQRWl+IVu35PatAbo=;
-    b=Yu6249nvabFJ5RYXNlBYsx39cc4KZrKiYbJ9jT3eyPf3b95UWsugoEgQA6wJ8/ZNLP
-    2ePmozzO1duK7DJ6GsdObPF7j37gSTMoDax5miwrLYfDaHaq9IO20LN8lHxKMusnX8Fa
-    ATWYrA+CoPf/56ioGKhruj0J7FxEK/OzK6OnvPa7lsBfU9SZJQsTlshga9VFMi+/PF7m
-    pIGyeiDDuWY8F3mH0uoNCBHfzLidn3sZV0DV/lYufs182Y7/q328MMJrTBVGxatGn/f3
-    b2sJ4KothJW/UXMKHhMtwklfbnYI0Al+2uQ1FpUCyxU+8ukmctkHgtU9jaFFCm+fh6ys
-    Tfhw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1756381559;
-    s=strato-dkim-0002; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=MWefUO0OIHQqurX1Ir8EInMU5qzQRWl+IVu35PatAbo=;
-    b=FShbToC21WikuInf/t99VpikTtjdvsnOYD8Zj3hPA3Po04737lsI4QJ86sOlkG2scf
-    tjI3A9Bd8sPKuvJzKHASi9LuSKtOE4QYaian4ZzjIIGII1BsQ/wea9H0O2hy+9HHwgwu
-    G+q9H2XCcpSbudEhAjmHFsPbhEJsULPPXnVpeqS4E6Qth0I6DulxikE7Gk4Ky8qb+pAa
-    cly6/nUyTe1B/5sv9L6LJHHYGGoU+P79M8c3tidCpUkivNGDyXWzmUwduHiB//GzkG93
-    SQNd8K4vfb9U6hO2karL+lxaBu47dH/lGd4yeyS7esehLrekJLEiOxg01DFiyBVJIZAD
-    vQqQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1756381559;
-    s=strato-dkim-0003; d=goldelico.com;
-    h=To:References:Message-Id:Cc:Date:In-Reply-To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=MWefUO0OIHQqurX1Ir8EInMU5qzQRWl+IVu35PatAbo=;
-    b=ZY6yP+2NQbqb9OW//H9p8m+GSWe9pffRqxLaNPL91GNCtyv9ztcN4qAsO2lHHhc3O4
-    7OSfVauPQvB3hh8UFdDA==
-X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0lFzL1yeTsZ"
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 52.1.2 DYNA|AUTH)
-    with ESMTPSA id Q307a417SBjwmjN
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve X9_62_prime256v1 with 256 ECDH bits, eq. 3072 bits RSA))
-	(Client did not present a certificate);
-    Thu, 28 Aug 2025 13:45:58 +0200 (CEST)
-Content-Type: text/plain;
-	charset=us-ascii
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5C126A0B1;
+	Thu, 28 Aug 2025 12:16:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756383378; cv=none; b=EFjB5MdfYKmSHEhPuhK6kj+uS1lmyUbkw3oag6nbJON/mzeAk+RQDDtDIN0fY+5bJRnLRV+peWuvWTmKsRXikn5jtKsKJHU+aP/wL+SuY/Zfff4ijadWU83jhvsfTnPIY3v3O3EtJfVaNsqbf0UJZu/OXmJYaLg70Bkw917gOqo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756383378; c=relaxed/simple;
+	bh=NRr4p5UmjJ61u49YVbocEKwjrCogbDuH0kk3m6hJTFA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RaGUjD/KbBIXtp35u+pnluzmKl26A8qu0nRxvuIxUcCWDsMyf57oiUSxQVzayJD2UB7H6dw4d38OHTezJfZBS9PgwUOHslPsOS1RTp1q2+SQt0KSyk8hVJSEMpvzRwdEhHwBrTBQHE84iuHZSX3dWODd5tZwrl6eAor85P+r7RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+Date: Thu, 28 Aug 2025 12:16:07 +0000
+From: Brett A C Sheffield <bacs@librecast.net>
+To: Oscar Maes <oscmaes92@gmail.com>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	davem@davemloft.net, dsahern@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v4] selftests: net: add test for destination in
+ broadcast packets
+Message-ID: <aLBIh9HvqtXnUdQz@auntie>
+References: <20250828114242.6433-1-oscmaes92@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [Letux-kernel] [PATCH v2 2/2] power: supply: bq27xxx: restrict
- no-battery detection to bq27000
-From: "H. Nikolaus Schaller" <hns@goldelico.com>
-In-Reply-To: <6162e560-1b60-4e30-8d1e-210ba9e132cd@axis.com>
-Date: Thu, 28 Aug 2025 13:45:47 +0200
-Cc: Sebastian Reichel <sre@kernel.org>,
- Jerry Lv <Jerry.Lv@axis.com>,
- linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org,
- kernel@pyra-handheld.com,
- =?utf-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
- Discussions about the Letux Kernel <letux-kernel@openphoenux.org>,
- Andreas Kemnade <andreas@kemnade.info>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2CE9A923-2205-425D-81D0-DAFF8527C498@goldelico.com>
-References: <cover.1755945297.git.hns@goldelico.com>
- <dd979fa6855fd051ee5117016c58daaa05966e24.1755945297.git.hns@goldelico.com>
- <6162e560-1b60-4e30-8d1e-210ba9e132cd@axis.com>
-To: Discussions about the Letux Kernel <letux-kernel@openphoenux.org>
-X-Mailer: Apple Mail (2.3826.700.81)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250828114242.6433-1-oscmaes92@gmail.com>
 
+On 2025-08-28 13:42, Oscar Maes wrote:
+> Add test to check the broadcast ethernet destination field is set
+> correctly.
+> 
+> This test sends a broadcast ping, captures it using tcpdump and
+> ensures that all bits of the 6 octet ethernet destination address
+> are correctly set by examining the output capture file.
+> 
+> Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+> Co-authored-by: Brett A C Sheffield <bacs@librecast.net>
+> ---
+> v3 -> v4:
+>  - Added Brett as co-author
+>  - Wait for tcpdump to bind using slowwait
 
+Thanks Oscar.
 
-> Am 28.08.2025 um 09:33 schrieb Jerry Lv <jerrylv@axis.com>:
->=20
-> On 8/23/2025 6:34 PM, H. Nikolaus Schaller wrote:
->> There are fuel gauges in the bq27xxx series (e.g. bq27z561) which may =
-in some
->> cases report 0xff as the value of BQ27XXX_REG_FLAGS that should not =
-be
->> interpreted as "no battery" like for a disconnected battery with some =
-built
->> in bq27000 chip.
->>=20
->> So restrict the no-battery detection originally introduced by
->>=20
->>     commit 3dd843e1c26a ("bq27000: report missing device better.")
->>=20
->> to the bq27000.
->>=20
->> There is no need to backport further because this was hidden before
->>=20
->> 	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again =
-when busy")
->>=20
->> Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when =
-busy")
->> Suggested-by: Jerry Lv <Jerry.Lv@axis.com>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
->> ---
->>  drivers/power/supply/bq27xxx_battery.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/drivers/power/supply/bq27xxx_battery.c =
-b/drivers/power/supply/bq27xxx_battery.c
->> index dadd8754a73a8..3363af24017ae 100644
->> --- a/drivers/power/supply/bq27xxx_battery.c
->> +++ b/drivers/power/supply/bq27xxx_battery.c
->> @@ -1944,8 +1944,8 @@ static void =
-bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
->>  	bool has_singe_flag =3D di->opts & BQ27XXX_O_ZERO;
->>    	cache.flags =3D bq27xxx_read(di, BQ27XXX_REG_FLAGS, =
-has_singe_flag);
->> -	if ((cache.flags & 0xff) =3D=3D 0xff)
->> -		cache.flags =3D -ENODEV; /* read error */
->> +	if (di->chip =3D=3D BQ27000 && (cache.flags & 0xff) =3D=3D 0xff)
->> +		cache.flags =3D -ENODEV; /* bq27000 hdq read error */
->>  	if (cache.flags >=3D 0) {
->>  		cache.capacity =3D bq27xxx_battery_read_soc(di);
->> =20
->=20
-> This change works fine for BQ27z561
+I've tested the v4 selftest on a kernel with the regression and one without and
+it looks good.
 
-Thanks for testing!
+6.17.0-rc3
+Testing ethernet broadcast destination
+[FAIL] expected dst ether addr to be ff:ff:ff:ff:ff:ff, got 00:11:22:33:44:55
 
-So it appears we need a maintainer to pick up these patches...
+6.17.0-rc3-00002-g329af5eb13d7 (with v3 patch applied)
+Testing ethernet broadcast destination
+[ OK ]
 
-BR,
-Nikolaus
-
+> Links:
+>  - Discussion: https://lore.kernel.org/netdev/20250822165231.4353-4-bacs@librecast.net/
+>  - Previous version: https://lore.kernel.org/netdev/20250827062322.4807-2-oscmaes92@gmail.com/
+> 
+> Thanks to Brett Sheffield for writing the initial version of this
+> selftest!
+> 
+>  tools/testing/selftests/net/Makefile          |  1 +
+>  .../selftests/net/broadcast_ether_dst.sh      | 83 +++++++++++++++++++
+>  2 files changed, 84 insertions(+)
+>  create mode 100755 tools/testing/selftests/net/broadcast_ether_dst.sh
+> 
+> diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+> index b31a71f2b372..56ad10ea6628 100644
+> --- a/tools/testing/selftests/net/Makefile
+> +++ b/tools/testing/selftests/net/Makefile
+> @@ -115,6 +115,7 @@ TEST_PROGS += skf_net_off.sh
+>  TEST_GEN_FILES += skf_net_off
+>  TEST_GEN_FILES += tfo
+>  TEST_PROGS += tfo_passive.sh
+> +TEST_PROGS += broadcast_ether_dst.sh
+>  TEST_PROGS += broadcast_pmtu.sh
+>  TEST_PROGS += ipv6_force_forwarding.sh
+>  
+> diff --git a/tools/testing/selftests/net/broadcast_ether_dst.sh b/tools/testing/selftests/net/broadcast_ether_dst.sh
+> new file mode 100755
+> index 000000000000..334a7eca8a80
+> --- /dev/null
+> +++ b/tools/testing/selftests/net/broadcast_ether_dst.sh
+> @@ -0,0 +1,83 @@
+> +#!/bin/bash
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Author: Brett A C Sheffield <bacs@librecast.net>
+> +# Author: Oscar Maes <oscmaes92@gmail.com>
+> +#
+> +# Ensure destination ethernet field is correctly set for
+> +# broadcast packets
+> +
+> +source lib.sh
+> +
+> +CLIENT_IP4="192.168.0.1"
+> +GW_IP4="192.168.0.2"
+> +
+> +setup() {
+> +	setup_ns CLIENT_NS SERVER_NS
+> +
+> +	ip -net "${SERVER_NS}" link add link1 type veth \
+> +		peer name link0 netns "${CLIENT_NS}"
+> +
+> +	ip -net "${CLIENT_NS}" link set link0 up
+> +	ip -net "${CLIENT_NS}" addr add "${CLIENT_IP4}"/24 dev link0
+> +
+> +	ip -net "${SERVER_NS}" link set link1 up
+> +
+> +	ip -net "${CLIENT_NS}" route add default via "${GW_IP4}"
+> +	ip netns exec "${CLIENT_NS}" arp -s "${GW_IP4}" 00:11:22:33:44:55
+> +}
+> +
+> +cleanup() {
+> +	rm -f "${CAPFILE}" "${OUTPUT}"
+> +	ip -net "${SERVER_NS}" link del link1
+> +	cleanup_ns "${CLIENT_NS}" "${SERVER_NS}"
+> +}
+> +
+> +test_broadcast_ether_dst() {
+> +	local rc=0
+> +	CAPFILE=$(mktemp -u cap.XXXXXXXXXX)
+> +	OUTPUT=$(mktemp -u out.XXXXXXXXXX)
+> +
+> +	echo "Testing ethernet broadcast destination"
+> +
+> +	# start tcpdump listening for icmp
+> +	# tcpdump will exit after receiving a single packet
+> +	# timeout will kill tcpdump if it is still running after 2s
+> +	timeout 2s ip netns exec "${CLIENT_NS}" \
+> +		tcpdump -i link0 -c 1 -w "${CAPFILE}" icmp &> "${OUTPUT}" &
+> +	pid=$!
+> +	slowwait 1 grep -qs "listening" "${OUTPUT}"
+> +
+> +	# send broadcast ping
+> +	ip netns exec "${CLIENT_NS}" \
+> +		ping -W0.01 -c1 -b 255.255.255.255 &> /dev/null
+> +
+> +	# wait for tcpdump for exit after receiving packet
+> +	wait "${pid}"
+> +
+> +	# compare ethernet destination field to ff:ff:ff:ff:ff:ff
+> +	ether_dst=$(tcpdump -r "${CAPFILE}" -tnne 2>/dev/null | \
+> +			awk '{sub(/,/,"",$3); print $3}')
+> +	if [[ "${ether_dst}" == "ff:ff:ff:ff:ff:ff" ]]; then
+> +		echo "[ OK ]"
+> +		rc="${ksft_pass}"
+> +	else
+> +		echo "[FAIL] expected dst ether addr to be ff:ff:ff:ff:ff:ff," \
+> +			"got ${ether_dst}"
+> +		rc="${ksft_fail}"
+> +	fi
+> +
+> +	return "${rc}"
+> +}
+> +
+> +if [ ! -x "$(command -v tcpdump)" ]; then
+> +	echo "SKIP: Could not run test without tcpdump tool"
+> +	exit "${ksft_skip}"
+> +fi
+> +
+> +trap cleanup EXIT
+> +
+> +setup
+> +test_broadcast_ether_dst
+> +
+> +exit $?
+> -- 
+> 2.39.5
+> 
+> 
 
