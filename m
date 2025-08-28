@@ -1,177 +1,116 @@
-Return-Path: <stable+bounces-176672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B07B3AD90
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 00:34:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5AB9B3ADE2
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 00:53:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04719567D50
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 22:34:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5E71C80F05
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 22:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27396263F2D;
-	Thu, 28 Aug 2025 22:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B1D28BABB;
+	Thu, 28 Aug 2025 22:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="u9n2VQFe"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="lY3RW1nv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEBCDF72;
-	Thu, 28 Aug 2025 22:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8521923D7EC
+	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 22:53:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756420495; cv=none; b=g5IoCrpBGUNNFcuPJC3/FL63naGuX61wuYeH2I1G++tBpdKFHcFV5pfew42x4xlksKmG9zixW4FOxoFK975ZVuL3+dPO7ZpiMlK2HW3hJj6TkMizEp8uP7Vn/L4tgeG5GYk7gaxbgWfDOlqifPdtiz5V7tVHAZ5sEo78IM/enWA=
+	t=1756421622; cv=none; b=IK8wwfDMndfhem9iZHewn2BFLGP7u+QccP0aLPsYSHubt9JLMg23Wlj0xjKCmUk1aq91saCMzMZCn1LFrPkYK1wJqSALao+nhaIW6tCo739SEucUiVFAqWme215bCMOE/5PrjcfXLNFExc9VwLlLe69O5c4nIM9sq7apS7pVjSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756420495; c=relaxed/simple;
-	bh=XqWrO9VGVmaPbuXQJEbBm+Fp5yOKlBbsxG3xTPt9V6I=;
-	h=Date:To:From:Subject:Message-Id; b=OnqUf/3q1Z1GObDyq2E7Lu7cOtH+5oCArbyPbmaKjNjXlg0mzUiNrActkfYEOAhhjvNDvctlDmZrxI5MO08yEjfqFihPSs3Ts+QWFLZ068j/2oz2LWBZa88efaG7cbf+GCgbP9OI48DfGGtIM8XptfHh16NF9AZ1taXEAuVEs+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=u9n2VQFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45768C4CEEB;
-	Thu, 28 Aug 2025 22:34:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1756420495;
-	bh=XqWrO9VGVmaPbuXQJEbBm+Fp5yOKlBbsxG3xTPt9V6I=;
-	h=Date:To:From:Subject:From;
-	b=u9n2VQFewebwRfU6EUFJvOAjKAx5Yte3TK0K3WDQx70qGTICunARMY2FAORBhYhow
-	 XQRA1xW7IV4CBKqgiIPx3cks0p5xFXmsesCNJRgASMl9pb5JMqrTIj9P9WgKSYu90a
-	 XjdloAoEOxGKOYrOHdCr8IYzXy24EWJeu+pZ/qcM=
-Date: Thu, 28 Aug 2025 15:34:54 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,tony.luck@intel.com,surenb@google.com,stable@vger.kernel.org,russ.anderson@hpe.com,rppt@kernel.org,osalvador@suse.de,nao.horiguchi@gmail.com,mhocko@suse.com,lorenzo.stoakes@oracle.com,linmiaohe@huawei.com,liam.howlett@oracle.com,jiaqiyan@google.com,jane.chu@oracle.com,david@redhat.com,bp@alien8.de,kyle.meyer@hpe.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-memory-failure-fix-redundant-updates-for-already-poisoned-pages.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250828223455.45768C4CEEB@smtp.kernel.org>
+	s=arc-20240116; t=1756421622; c=relaxed/simple;
+	bh=bRiDCfz0S+U/QPTf4FoEVSczI7dQRwbekvj4mVUeptw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FfNJp+nGEqn05beRGW2mH5nv6WyO0MEW1MYzCJz7Injq8oxIO0PDVP4GiUsoLFIyc8/JOSCOmGp2nn3UHQo1ouPoIs8TI506suani/pXoqzCZ/r9+Bo1Z5fpyfNZrpJJ4lNA8Sn3DSgSe+gUXKM1vMkb3zzdVQ0oFKeuL2qtaN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=lY3RW1nv; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57SLV63b024128;
+	Thu, 28 Aug 2025 22:53:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=bRiDC
+	fz0S+U/QPTf4FoEVSczI7dQRwbekvj4mVUeptw=; b=lY3RW1nv7XZvNcZCb4zQs
+	r9BiJif5tOVo/uzCY9g6RDdqMntKqY94abDn17jD6rR+tRUYOvH0DXhMIY9d8DnD
+	QAF9wsggBsulOBdiecnEDM3N9QkCHb4dNxtt8aoiMPcCWTAlT6d73ECxd0eRzBx2
+	VD9/aT+fR9w5aTdcyBwm4R3a2fRkHCq/9ni1LJQubmJ9StpRulXsmoM0aygoWMs3
+	T9ac5VaJdC8jaB5r3YmYSIzrbwdQuMHFO8KJsx+D4J9quPAZ3lZ6cZaBF1rzTwva
+	SclK6UcpkS9h0P55Cgg3yQc5YZwEvADIsS3qOyku7F9yKIDYQktwdX8fNsCBj3YP
+	Q==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48q42t9c22-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 28 Aug 2025 22:53:26 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57SLoqcR012131;
+	Thu, 28 Aug 2025 22:53:25 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48q43cf9d2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 28 Aug 2025 22:53:25 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57SMrPPk008159;
+	Thu, 28 Aug 2025 22:53:25 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 48q43cf9cp-1;
+	Thu, 28 Aug 2025 22:53:25 +0000
+From: Sherry Yang <sherry.yang@oracle.com>
+To: gregkh@linuxfoundation.org
+Cc: johannes.berg@intel.com, patches@lists.linux.dev, repk@triplefau.lt,
+        sashal@kernel.org, stable@vger.kernel.org, sherry.yang@oracle.com
+Subject: Re: [PATCH 5.4 098/403] Reapply "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
+Date: Thu, 28 Aug 2025 15:53:23 -0700
+Message-ID: <20250828225323.725505-1-sherry.yang@oracle.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250826110909.381604948@linuxfoundation.org>
+References: <20250826110909.381604948@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-28_04,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 bulkscore=0
+ adultscore=0 mlxlogscore=632 spamscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
+ definitions=main-2508280191
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAxMyBTYWx0ZWRfX9RCrHox5HDeb
+ arWfj/IXaqdra3rbcO3mRXu0V0aydZmSdFZypgGDZMrH15+iD41VPAeYJfeqMInISBjcQRGIaTq
+ 3tGz0mpbgk4OUfV7F6OPI3yRsrduoHYZ4aiYWDA9cHkMpFWyVzrzqE6WK1FUyD+Y2X3qT72fP5v
+ 6F9bDi3J5lEd975GJ95Sj3zaw4wDhkxNwx7vOBov1765XK77Aj+Z0VRlXIhZcriEjYdtG1pS/Qr
+ fXvBckwNBYFsTrH//47/CeQpoylSVsnc9BE9/gJXiLpK6cO3dY/6TIzmcmIb4DByPg5LbHohH35
+ za8c3Vfgf03DpU08EUDU14JRRsKpUq4b1B7+12HkG0QSlO6B8Ptodg9JIbhGhjurPjKxfEpsFVM
+ dbFUXkfqE/pB5D2ndSjbX6+xPBQg+g==
+X-Proofpoint-ORIG-GUID: vQigp2RMFE0UusNMNVYTwLKfGw0zpDOU
+X-Authority-Analysis: v=2.4 cv=RqfFLDmK c=1 sm=1 tr=0 ts=68b0dde6 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=5S4kX0IQPxXMa9SJivYA:9 cc=ntf
+ awl=host:12069
+X-Proofpoint-GUID: vQigp2RMFE0UusNMNVYTwLKfGw0zpDOU
 
+Hi Greg,
 
-The patch titled
-     Subject: mm/memory-failure: fix redundant updates for already poisoned pages
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-memory-failure-fix-redundant-updates-for-already-poisoned-pages.patch
+I noticed that only [PATCH 2/2] from the series
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memory-failure-fix-redundant-updates-for-already-poisoned-pages.patch
+[PATCH wireless 0/2] Fix ieee80211_tx_h_select_key() for 802.11 encaps offloading [1]
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+was backported to 5.4-stable, while [PATCH 1/2] is missing.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+It looks like the 1st patch is the prerequisite patch to apply the 2nd patch.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+[1] https://lore.kernel.org/all/cover.1752765971.git.repk@triplefau.lt/
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Kyle Meyer <kyle.meyer@hpe.com>
-Subject: mm/memory-failure: fix redundant updates for already poisoned pages
-Date: Thu, 28 Aug 2025 13:38:20 -0500
-
-Duplicate memory errors can be reported by multiple sources.
-
-Passing an already poisoned page to action_result() causes issues:
-
-* The amount of hardware corrupted memory is incorrectly updated.
-* Per NUMA node MF stats are incorrectly updated.
-* Redundant "already poisoned" messages are printed.
-
-Avoid those issues by:
-
-* Skipping hardware corrupted memory updates for already poisoned pages.
-* Skipping per NUMA node MF stats updates for already poisoned pages.
-* Dropping redundant "already poisoned" messages.
-
-Make MF_MSG_ALREADY_POISONED consistent with other action_page_types and
-make calls to action_result() consistent for already poisoned normal pages
-and huge pages.
-
-Link: https://lkml.kernel.org/r/aLCiHMy12Ck3ouwC@hpe.com
-Fixes: b8b9488d50b7 ("mm/memory-failure: improve memory failure action_result messages")
-Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
-Reviewed-by: Jiaqi Yan <jiaqiyan@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Kyle Meyer <kyle.meyer@hpe.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Luck, Tony" <tony.luck@intel.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Russ Anderson <russ.anderson@hpe.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memory-failure.c |   13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
-
---- a/mm/memory-failure.c~mm-memory-failure-fix-redundant-updates-for-already-poisoned-pages
-+++ a/mm/memory-failure.c
-@@ -956,7 +956,7 @@ static const char * const action_page_ty
- 	[MF_MSG_BUDDY]			= "free buddy page",
- 	[MF_MSG_DAX]			= "dax page",
- 	[MF_MSG_UNSPLIT_THP]		= "unsplit thp",
--	[MF_MSG_ALREADY_POISONED]	= "already poisoned",
-+	[MF_MSG_ALREADY_POISONED]	= "already poisoned page",
- 	[MF_MSG_UNKNOWN]		= "unknown page",
- };
- 
-@@ -1349,9 +1349,10 @@ static int action_result(unsigned long p
- {
- 	trace_memory_failure_event(pfn, type, result);
- 
--	num_poisoned_pages_inc(pfn);
--
--	update_per_node_mf_stats(pfn, result);
-+	if (type != MF_MSG_ALREADY_POISONED) {
-+		num_poisoned_pages_inc(pfn);
-+		update_per_node_mf_stats(pfn, result);
-+	}
- 
- 	pr_err("%#lx: recovery action for %s: %s\n",
- 		pfn, action_page_types[type], action_name[result]);
-@@ -2094,12 +2095,11 @@ retry:
- 		*hugetlb = 0;
- 		return 0;
- 	} else if (res == -EHWPOISON) {
--		pr_err("%#lx: already hardware poisoned\n", pfn);
- 		if (flags & MF_ACTION_REQUIRED) {
- 			folio = page_folio(p);
- 			res = kill_accessing_process(current, folio_pfn(folio), flags);
--			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
- 		}
-+		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
- 		return res;
- 	} else if (res == -EBUSY) {
- 		if (!(flags & MF_NO_RETRY)) {
-@@ -2285,7 +2285,6 @@ try_again:
- 		goto unlock_mutex;
- 
- 	if (TestSetPageHWPoison(p)) {
--		pr_err("%#lx: already hardware poisoned\n", pfn);
- 		res = -EHWPOISON;
- 		if (flags & MF_ACTION_REQUIRED)
- 			res = kill_accessing_process(current, pfn, flags);
-_
-
-Patches currently in -mm which might be from kyle.meyer@hpe.com are
-
-mm-memory-failure-fix-redundant-updates-for-already-poisoned-pages.patch
-
+Thanks,
+Sherry
 
