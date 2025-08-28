@@ -1,244 +1,186 @@
-Return-Path: <stable+bounces-176587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53541B39935
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 12:11:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 490F4B398DE
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 11:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95D6C467D1B
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 10:11:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60EE41C23B73
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 09:54:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA933093A5;
-	Thu, 28 Aug 2025 10:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD7E2FE065;
+	Thu, 28 Aug 2025 09:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BgEGeRci"
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="N6Zg8vMn"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD723081CC;
-	Thu, 28 Aug 2025 10:09:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F352FD1D6;
+	Thu, 28 Aug 2025 09:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756375775; cv=none; b=HkJwA0nwq+eFwPqs/8GlbNO4MfFzdGWWSvF7IpuSNhdhO8Vuv7/jyajOewpMbfZKxCTIbCHFtr5mGQZR2C6dLgNbB34+AEK/EEPG6KHGiEwkYho8e8bgsUUwQ4WsaHw09MfGRbkzS8Mdo8LxsQrW1M0THNdKZbXl6t7mZM5Sum0=
+	t=1756374841; cv=none; b=LEU0DMalFbXdbU8PLP4SJoPUilyvzBBUifyODbnSNOY7kZIjKgeng+0XVKueZiTOoPDvbeTO6Ldc6WhDoOCOUYQTcCarR4q1/3Y+zj4LGteU6ggMNHYclXrBd8Pz9sA6LN9WzMLx0BJARzoCw4Zrg3EEadw9ZydoRN8ELxn6v3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756375775; c=relaxed/simple;
-	bh=BuV6sy7akWwvmoQthUGtP+SjNRnorhCutIFVwVeEMFI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Nyl95g7eVurLVu047zTU5kuSlal3I12lDTCOelRTB25Cf9gjXVY+eGemUu0lz6z2QhnzUd31/JPJnQ4cOo3JCWyRca5jG0lD8jklg2E6yKcoG0MJcBGcb0cmZLwvH16pfXqWvaTEhi0bmRN7VyX8p329gZFff535opdF4OO6Miw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BgEGeRci; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756375774; x=1787911774;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BuV6sy7akWwvmoQthUGtP+SjNRnorhCutIFVwVeEMFI=;
-  b=BgEGeRcibgRTXE1AiA49rp1wYOGgBccxWULsRYK4hsDMf/20u7W/PHFt
-   Og5gr7+45efQwBSjx+IHoNCdU7+UjYxbc1R8IK3QPW6He76TLQmraXS/x
-   sONmythNzi6ZAw0heqlJlvAK+l42NAkOVkuGleHq/prvCw9gm9E0hjBsf
-   rEmgdpjbJLztNfKynMplZJSNZw/wCxz5zjgWAADAmR07PVz5KGSoEYsMA
-   lwp8uHP9c2bXiNV/enZ44fU8WMU9Mj+VcFtBsD6Jva5vGQ3r5E8UfmGz2
-   thslSAZf8I0oVWtzOe60fGLf17LN29VzMONaYFktT5fU5YNTkjnBEvU8B
-   g==;
-X-CSE-ConnectionGUID: zQ1agZL2T4eJ6HRDFmylYg==
-X-CSE-MsgGUID: c5ZJQ7zmQdOH+KKtv6aRDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="61274914"
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
-   d="scan'208";a="61274914"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 03:09:33 -0700
-X-CSE-ConnectionGUID: cYLf9I0CSrmDdf3nrjOuJA==
-X-CSE-MsgGUID: F7U3BY01RVKBMdTqdkGklA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
-   d="scan'208";a="169972387"
-Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by orviesa007.jf.intel.com with ESMTP; 28 Aug 2025 03:09:31 -0700
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-net v1 4/4] ixgbe: handle IXGBE_VF_FEATURES_NEGOTIATE mbox cmd
-Date: Thu, 28 Aug 2025 11:52:27 +0200
-Message-Id: <20250828095227.1857066-5-jedrzej.jagielski@intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20250828095227.1857066-1-jedrzej.jagielski@intel.com>
-References: <20250828095227.1857066-1-jedrzej.jagielski@intel.com>
+	s=arc-20240116; t=1756374841; c=relaxed/simple;
+	bh=5Rv5C8k1jzRHy4/cxgOl7lPgfeqFs3kOHjyVxKxdfmU=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=PCEcLbX+cTt7cEv/KCWpISiVwlIiYkMJrcJQaLKQCD0xbGKoCLjXTWLM/IqGxEG2GIId+70jw1EMIKWpFMnAwcrtyGEsLyqX1w1r3hxvfY1s/Omjq3/j9OIJBd9z2bPOywnGrJQunfT/vsS45BhCRrjsDnmDR9H4W1bORhQ481M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=N6Zg8vMn; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id D2B251D000A8;
+	Thu, 28 Aug 2025 05:53:57 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 28 Aug 2025 05:53:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1756374837; x=1756461237; bh=3YH2nSJxyfGdYHWOcLtHzcrvKz8K1+OQsxu
+	/mr71K2k=; b=N6Zg8vMn6+DVRmfTGgN5E+uzke1Jmyhl3ybLDf0pBS48IhWbALV
+	4kA+ohseswrxG8jYrzH7oGxSbZatxbzyq5U+ELaPJSH6I+hb5JDGSmZq1XmHjPfN
+	QFGihd2xLObmwujm4wRLXCUgq43JqcJ5dKoxR8owNQvcOJL/Tnq93bZulmzxGgHe
+	HB9DtSpCcfsiRg9NrQSIVbGa7+24Z3S4HAiZP+BlUTME/XqsJ5LNXTbI1o+AnPu5
+	6KIbj6Aew9tkETApfCaQLlsddYZAh+yFLvgXe6NoIxz6vbOCaG52O1Es3gCIZngf
+	jyRfLkoFU/HNBGETmQ2lAtdCDOWrTcwI+3A==
+X-ME-Sender: <xms:NCewaL2uW3z2Ps7_peLqfWSIFyfLG7kcPXM88oCX6wmP9nQgtpUFwg>
+    <xme:NCewaEtkw88geyhiOh3ur7bnVEGF42XI-kP5Z3BzUYGl8vrxE9flUOksPSEQw9njn
+    SjvDiARWp9HHtpR0Rw>
+X-ME-Received: <xmr:NCewaB7MEpMHSXrT_NMBYygp-VCN9fpstwR9gF26zAmCJvunhJb3Vh7PDPPwh1RBuyYbtKOtwFjaDl2ffcHVoe01bLzx4eQ3s1U>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddukedtjedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
+    rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeelueehleehkefgueevtdevteejkefhffekfeffffdtgfejveekgeefvdeuheeu
+    leenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfth
+    hhrghinheslhhinhhugidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeelpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdroh
+    hrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhg
+    pdhrtghpthhtoheplhgrnhgtvgdrhigrnhhgsehlihhnuhigrdguvghvpdhrtghpthhtoh
+    epghgvvghrtheslhhinhhugidqmheikehkrdhorhhgpdhrtghpthhtohepmhhhihhrrghm
+    rghtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehorghksehhvghlshhinhhkihhnvg
+    htrdhfihdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    shhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugi
+    dqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:NCewaAfZEntjjSY8iiv0Mi_8SATXZ0tqDdASBnIoF-lOLUOB1UYjmw>
+    <xmx:NCewaOyYQvI5UdHjNQnZ6cl6J1FsJvOPOuiQuGtd_DZWL-nhA7i_Tg>
+    <xmx:NCewaF9d9RBV-co-h5bs8ALUidlh9uHW5XWOoCoS0RA6i__gtRzMrg>
+    <xmx:NCewaMwcZVDy5oI_SBDI71fAuT3QpuR1ORFVK84sC7Njxg_JnoGHJA>
+    <xmx:NSewaGdFrcidvN-OLX2Q8t_EUMODwC8mQt4wM7331z7pPzeC09ekS13s>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 28 Aug 2025 05:53:53 -0400 (EDT)
+Date: Thu, 28 Aug 2025 19:53:52 +1000 (AEST)
+From: Finn Thain <fthain@linux-m68k.org>
+To: Peter Zijlstra <peterz@infradead.org>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    Lance Yang <lance.yang@linux.dev>, 
+    Geert Uytterhoeven <geert@linux-m68k.org>, 
+    Masami Hiramatsu <mhiramat@kernel.org>, Eero Tamminen <oak@helsinkinet.fi>, 
+    Will Deacon <will@kernel.org>, stable@vger.kernel.org, 
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
+In-Reply-To: <20250827115447.GR3289052@noisy.programming.kicks-ass.net>
+Message-ID: <10b5aaae-5947-53a9-88bb-802daafd83d4@linux-m68k.org>
+References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org> <20250825071247.GO3245006@noisy.programming.kicks-ass.net> <58dac4d0-2811-182a-e2c1-4edfe4759759@linux-m68k.org> <20250825114136.GX3245006@noisy.programming.kicks-ass.net>
+ <9453560f-2240-ab6f-84f1-0bb99d118998@linux-m68k.org> <20250827115447.GR3289052@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
 
-Send to VF information about features supported by the PF driver.
 
-Increase API version to 1.7.
+On Wed, 27 Aug 2025, Peter Zijlstra wrote:
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h  | 10 +++++
- .../net/ethernet/intel/ixgbe/ixgbe_sriov.c    | 37 +++++++++++++++++++
- 2 files changed, 47 insertions(+)
+> On Wed, Aug 27, 2025 at 05:17:19PM +1000, Finn Thain wrote:
+> > 
+> > On Mon, 25 Aug 2025, Peter Zijlstra wrote:
+> > 
+> > > On Mon, Aug 25, 2025 at 06:03:23PM +1000, Finn Thain wrote:
+> > > > 
+> > > > On Mon, 25 Aug 2025, Peter Zijlstra wrote:
+> > > > 
+> > > > > 
+> > > > > And your architecture doesn't trap on unaligned atomic access ?!!?!
+> > > > > 
+> > > > 
+> > > > Right. This port doesn't do SMP.
+> > > 
+> > > There is RMW_INSN which seems to imply a compare-and-swap instruction of 
+> > > sorts. That is happy to work on unaligned storage?
+> > > 
+> > 
+> > Yes, the TAS and CAS instructions are happy to work on unaligned storage. 
+> > 
+> > However, these operations involve an indivisible bus cycle that hogs the 
+> > bus to the detriment of other processors, DMA controllers etc. So I 
+> > suspect lock alignment would tend to shorten read-modify-write cycles, and 
+> > improve efficiency, when CONFIG_RMW_INSN is enabled.
+> > 
+> > Most m68k platforms will have CONFIG_RMW_INSN disabled, or else simply 
+> > don't implement TAS and CAS. In this case, lock alignment might still 
+> > help, just because L1 cache entries are long words. I've not tried to 
+> > measure this.
+> 
+> Fair enough; this sounds a little like the x86 LOCK prefix, it will work
+> on unaligned memory, but at tremendous cost (recent chips have an
+> optional exception on unaligned).
+> 
+> Anyway, I'm not opposed to adding an explicit alignment to atomic_t.
+> Isn't s32 or __s32 already having this?
+> 
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h
-index be452856531a..8a2ba77d1493 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h
-@@ -52,6 +52,7 @@ enum ixgbe_pfvf_api_rev {
- 	ixgbe_mbox_api_14,	/* API version 1.4, linux/freebsd VF driver */
- 	ixgbe_mbox_api_15,	/* API version 1.5, linux/freebsd VF driver */
- 	ixgbe_mbox_api_16,	/* API version 1.6, linux/freebsd VF driver */
-+	ixgbe_mbox_api_17,	/* API version 1.7, linux/freebsd VF driver */
- 	/* This value should always be last */
- 	ixgbe_mbox_api_unknown,	/* indicates that API version is not known */
- };
-@@ -91,6 +92,9 @@ enum ixgbe_pfvf_api_rev {
- /* mailbox API, version 1.6 VF requests */
- #define IXGBE_VF_GET_PF_LINK_STATE	0x11 /* request PF to send link info */
- 
-+/* mailbox API, version 1.7 VF requests */
-+#define IXGBE_VF_FEATURES_NEGOTIATE	0x12 /* get features supported by PF */
+For Linux/m68k, __alignof__(__s32) == 2 and __alignof__(s32) == 2.
+
+> But I think it might make sense to have a DEBUG alignment check right
+> along with adding that alignment, just to make sure things are indeed /
+> stay aligned.
+> 
+
+A run-time assertion seems surperfluous as long as other architectures 
+already trap for misaligned locks. For m68k, perhaps we could have a 
+compile-time check:
+
+--- a/arch/m68k/kernel/setup_mm.c
++++ b/arch/m68k/kernel/setup_mm.c
+@@ -371,6 +371,12 @@ void __init setup_arch(char **cmdline_p)
+        }
+ #endif
+ #endif
 +
- /* length of permanent address message returned from PF */
- #define IXGBE_VF_PERMADDR_MSG_LEN 4
- /* word in permanent address message with the current multicast type */
-@@ -101,6 +105,12 @@ enum ixgbe_pfvf_api_rev {
- #define IXGBE_VF_MBX_INIT_TIMEOUT 2000 /* number of retries on mailbox */
- #define IXGBE_VF_MBX_INIT_DELAY   500  /* microseconds between retries */
- 
-+/* features negotiated between PF/VF */
-+#define IXGBEVF_PF_SUP_IPSEC		BIT(0)
-+#define IXGBEVF_PF_SUP_ESX_MBX		BIT(1)
-+
-+#define IXGBE_SUPPORTED_FEATURES	IXGBEVF_PF_SUP_IPSEC
-+
- struct ixgbe_hw;
- 
- int ixgbe_read_mbx(struct ixgbe_hw *, u32 *, u16, u16);
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-index 2d5584c36cd0..39cd0a9c9480 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-@@ -511,6 +511,7 @@ static int ixgbe_set_vf_lpe(struct ixgbe_adapter *adapter, u32 max_frame, u32 vf
- 		case ixgbe_mbox_api_13:
- 		case ixgbe_mbox_api_14:
- 		case ixgbe_mbox_api_16:
-+		case ixgbe_mbox_api_17:
- 			/* Version 1.1 supports jumbo frames on VFs if PF has
- 			 * jumbo frames enabled which means legacy VFs are
- 			 * disabled
-@@ -1048,6 +1049,7 @@ static int ixgbe_negotiate_vf_api(struct ixgbe_adapter *adapter,
- 	case ixgbe_mbox_api_13:
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		adapter->vfinfo[vf].vf_api = api;
- 		return 0;
- 	default:
-@@ -1075,6 +1077,7 @@ static int ixgbe_get_vf_queues(struct ixgbe_adapter *adapter,
- 	case ixgbe_mbox_api_13:
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return -1;
-@@ -1115,6 +1118,7 @@ static int ixgbe_get_vf_reta(struct ixgbe_adapter *adapter, u32 *msgbuf, u32 vf)
- 
- 	/* verify the PF is supporting the correct API */
- 	switch (adapter->vfinfo[vf].vf_api) {
-+	case ixgbe_mbox_api_17:
- 	case ixgbe_mbox_api_16:
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_13:
-@@ -1149,6 +1153,7 @@ static int ixgbe_get_vf_rss_key(struct ixgbe_adapter *adapter,
- 
- 	/* verify the PF is supporting the correct API */
- 	switch (adapter->vfinfo[vf].vf_api) {
-+	case ixgbe_mbox_api_17:
- 	case ixgbe_mbox_api_16:
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_13:
-@@ -1180,6 +1185,7 @@ static int ixgbe_update_vf_xcast_mode(struct ixgbe_adapter *adapter,
- 	case ixgbe_mbox_api_13:
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -1251,6 +1257,7 @@ static int ixgbe_get_vf_link_state(struct ixgbe_adapter *adapter,
- 	case ixgbe_mbox_api_13:
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -1278,6 +1285,7 @@ static int ixgbe_send_vf_link_status(struct ixgbe_adapter *adapter,
- 
- 	switch (adapter->vfinfo[vf].vf_api) {
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		if (hw->mac.type != ixgbe_mac_e610)
- 			return -EOPNOTSUPP;
- 		break;
-@@ -1293,6 +1301,32 @@ static int ixgbe_send_vf_link_status(struct ixgbe_adapter *adapter,
- 	return 0;
++       /*
++        * 680x0 CPUs don't require aligned storage for atomic ops.
++        * However, alignment assumptions may appear in core kernel code.
++        */
++       BUILD_BUG_ON(__alignof__(atomic_t) < sizeof(atomic_t));
  }
- 
-+/**
-+ * ixgbe_negotiate_vf_features -  negotiate supported features with VF driver
-+ * @adapter: pointer to adapter struct
-+ * @msgbuf: pointer to message buffers
-+ * @vf: VF identifier
-+ *
-+ * Return: 0 on success or -EOPNOTSUPP when operation is not supported.
-+ */
-+static int ixgbe_negotiate_vf_features(struct ixgbe_adapter *adapter,
-+				       u32 *msgbuf, u32 vf)
-+{
-+	u32 features = msgbuf[1];
-+
-+	switch (adapter->vfinfo[vf].vf_api) {
-+	case ixgbe_mbox_api_17:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	features &= IXGBE_SUPPORTED_FEATURES;
-+	msgbuf[1] = features;
-+
-+	return 0;
-+}
-+
- static int ixgbe_rcv_msg_from_vf(struct ixgbe_adapter *adapter, u32 vf)
- {
- 	u32 mbx_size = IXGBE_VFMAILBOX_SIZE;
-@@ -1370,6 +1404,9 @@ static int ixgbe_rcv_msg_from_vf(struct ixgbe_adapter *adapter, u32 vf)
- 	case IXGBE_VF_GET_PF_LINK_STATE:
- 		retval = ixgbe_send_vf_link_status(adapter, msgbuf, vf);
- 		break;
-+	case IXGBE_VF_FEATURES_NEGOTIATE:
-+		retval = ixgbe_negotiate_vf_features(adapter, msgbuf, vf);
-+		break;
- 	default:
- 		e_err(drv, "Unhandled Msg %8.8x\n", msgbuf[0]);
- 		retval = -EIO;
--- 
-2.31.1
 
+But I'm not sure that arch/m68k is a good place for that kind of thing -- 
+my inclination would be to place such compile-time assertions closer to 
+the code that rests on that assertion, like in hung_task.c or mutex.c. 
+E.g.
+
+--- a/kernel/locking/mutex.c
++++ b/kernel/locking/mutex.c
+@@ -54,8 +54,6 @@ __mutex_init(struct mutex *lock, const char *name, 
+struct lock_class_key *key)
+ #endif
+ 
+        debug_mutex_init(lock, name, key);
++
++       BUILD_BUG_ON(__alignof__(lock->owner) < sizeof(lock->owner));
+ }
+ EXPORT_SYMBOL(__mutex_init);
+
+
+Is that the kind of check you had in mind? I'm open to suggestions.
 
