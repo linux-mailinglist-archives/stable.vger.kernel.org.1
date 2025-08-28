@@ -1,161 +1,125 @@
-Return-Path: <stable+bounces-176638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6977B3A63A
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 18:27:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2519B3A6BE
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 18:45:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B225117DA85
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 16:27:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1582F18951E6
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 16:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3290322A00;
-	Thu, 28 Aug 2025 16:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3075B32BF20;
+	Thu, 28 Aug 2025 16:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ACc3dzC3"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J1d5MnBF"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F313D2E0915
-	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 16:27:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620C132A3CF
+	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 16:44:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756398455; cv=none; b=T7Mj/qfUcDy2pAzAke95CYFq5YztaQM9HikgJFz02VXQoDuBJSN/367BHqI8y0+aRlhZaQD1fHD20BG4vO+62TDP1GIoDxU7eXbRwXeqxPSq1vcCBku9wP/T2QZ6/dYL9LQgKceAylEkxACI5uQ8TgDyB2b5uHCEzkRPn/gYWbg=
+	t=1756399476; cv=none; b=NlQXOYOS/3z8rihBhc3PIrQm+stJMTDCzxEveXrmjJ3Zs1sIH1Lwe85xDpTMQ/K4Lpda4qAa+6wgasI1g0KprdFA1R1hRRnfhd0TZaeW50pITsGGtuEf6NM3mSK0v7Ohy8OvqtkLrrU1/ouyF46BvTl4yIRiEcBuBLPXJmZ9kJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756398455; c=relaxed/simple;
-	bh=Gzmlsz0c+uAb7yG+44ZDMHsMhRsRJFrqq/GsdUtnYFc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Pm1uRVuXnPk4kczTM1mAanWZnU/TDEYcXuwxBZ2aqQc2G1gzpnPIPiKj2RsKe8lh4qbm5xVwyQ+zKwKzXSchZxTmMHaDOhKlQqKO+cV8mRPN/eiCCwz99BsbOOoutmIInwaimxUZXXO1HYYFI4P3iaKkaLdqrDgPfc5JAEfm3VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ACc3dzC3; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756398454; x=1787934454;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Gzmlsz0c+uAb7yG+44ZDMHsMhRsRJFrqq/GsdUtnYFc=;
-  b=ACc3dzC3WleCpfEaVCi5n3UPVeleRJUjffd6znsPkErkINt92IWkFpSA
-   uIPwd6ml7LPopLsRIc6LClwbwoOI+e7gdAePaVB6GzSAiuyzz729sgntx
-   9hyV+s7k2KULU0ZbVsIKJarPYgXAUV3WDxoLtKNK15dkfi226IglPCsSh
-   9Wtpf0lYNQYqkb/hdosAlVQ+FoEvI/bVVM1SrBSUdQZcMIdMk/VflmXDU
-   aZZhMJvwaJs7X5SuOcoNfjRb5qZfMp6DIhUB/oJ0727yv/FvKpjA5y1Dg
-   6RncMP4RwSMO8rrCZ+v2RpV1RGm/+nfuPkhAaTN6iONSG0R19+d16d3gH
-   w==;
-X-CSE-ConnectionGUID: gpNnKlOYQN+p14rAoOSeNA==
-X-CSE-MsgGUID: pL6G4mQMQMKXzKYG1gEODQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11536"; a="76276379"
-X-IronPort-AV: E=Sophos;i="6.18,220,1751266800"; 
-   d="scan'208";a="76276379"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 09:27:32 -0700
-X-CSE-ConnectionGUID: ITO9GkawTg6J0OIi22IjKw==
-X-CSE-MsgGUID: S2lf7kAYSAS6sSuKOVvm4A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,220,1751266800"; 
-   d="scan'208";a="175432494"
-Received: from johunt-mobl9.ger.corp.intel.com (HELO [10.245.245.84]) ([10.245.245.84])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 09:27:31 -0700
-Message-ID: <45c42d43-658e-452f-8aeb-e7a32f4838b2@intel.com>
-Date: Thu, 28 Aug 2025 17:27:29 +0100
+	s=arc-20240116; t=1756399476; c=relaxed/simple;
+	bh=16g9F5woniiXrhsLLuxG1053++5xXv7LjCWoyLqXmvA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DUscNKMF37iYn3t4vBFX92pIQhQEEnjFLk9It3lYyjRIvpEnQbY48DeKQ8hT+0S0YGtPCa8025TovBdd7ffOYyX2LPvwGIzz0yxWJw7s7F9pT12mvBFZ4wsc7GmR1p0CKCakRCZ/4eHxTtPGPZdqcZa3W6ODXXNuZ6Tf9mh+TLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J1d5MnBF; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756399473;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=16g9F5woniiXrhsLLuxG1053++5xXv7LjCWoyLqXmvA=;
+	b=J1d5MnBFDJMwq2tBjjJyR7sKyY9Nzy9d8T91zDBH/irkmCetXUfNzZJamBQtq/kIhG/6U5
+	/6AaDJQbvxDJvMZD4MqkHP83jQ4bVseHnY2BziiZ3F0GjELNFBOtsYUhQwQYJcVNfb1fjb
+	+HbHXY/QElOG13SRnKGMPxIFA5FelLk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-380-eYTYd1e3OmKa_wmeWuFM3A-1; Thu, 28 Aug 2025 12:44:31 -0400
+X-MC-Unique: eYTYd1e3OmKa_wmeWuFM3A-1
+X-Mimecast-MFC-AGG-ID: eYTYd1e3OmKa_wmeWuFM3A_1756399471
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b7a0d1a71so7118655e9.2
+        for <stable@vger.kernel.org>; Thu, 28 Aug 2025 09:44:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756399470; x=1757004270;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=16g9F5woniiXrhsLLuxG1053++5xXv7LjCWoyLqXmvA=;
+        b=D6v5LpAYRxfwYJJnRdkzZ9TcURCgVV3gZMnBfqmsvQ16uZsOgbmMwME3c0GCnpApkV
+         FOZqWiTEqbpzIkikDTRD4phfRdGKV7aQl/88VC/10Ka5/QRvQi4gQ0V4FVBvFe22QGml
+         z9ZOOKDRnLt++DRkEtH65qv5IbeE+9DpuhNp0f/a36kC5vZeNEROrKMc3bE6Pq1KAUEt
+         8F7T7gvVFx5JMp6NhiqlEUuA7zmSch6UIdVckidBCqUIkUaNZElLQ2fcUBho7n7ZyJBa
+         PtHVCyBnqUgQlRFmetpbdW14Bf0qUZCajUpsKus7/rdL3lSrePjEGQ3k56XuJ0pd87TZ
+         bCXw==
+X-Forwarded-Encrypted: i=1; AJvYcCXUn32M2tuHA0QEe0/hV8h+VsVX5VNGMFTS/6hN0ZIGCoiXJyPq2lJCkc2JAuccFrcfw1W4OqY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0yXeaGRKgfVW2zf/Si81S6K+4HfVz8n+h3mIVQ30OMVfCzQoI
+	7uWkAfse8uEaxClD68UB7uwGlBcFvn7uKwD8/rE8LuhJW4Vo2qYDX0+53rBmWXLIFBRlTaLOBU+
+	zyE/M+O8qXu9QTR5kxkxtOwBqHGDPUqzZ0wWAYg/FRD3SNPtZUa6xE0e3CHrvSf2xf4DFrhW4Jd
+	OxXYkTdgNxVyhtymialKZlZFvJX2vH3jnF
+X-Gm-Gg: ASbGncsBgB2bGdeR4eXkiQPVaCeQzJU25gVH932qOvi6r0J1bQbhum5pGs/piBEbam9
+	cEKA7Kwc3q2p8wWBSGx/VJUcT9z2Go70w6Ib2TD7iWVIZAPqpzeWgbIE8Ddyxh1H6O1yIHlotqJ
+	n6mS7PMwqrQXYlXAkFfpsEt/b48PgHqBlt4IGZYzXy++GBoiB+1BCItJWuwwsD3L190+hLHG9fu
+	whcboqt5ooz3G7EGAumSmH0
+X-Received: by 2002:a05:600c:4715:b0:456:302:6dc3 with SMTP id 5b1f17b1804b1-45b517d4c47mr197984305e9.26.1756399470543;
+        Thu, 28 Aug 2025 09:44:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOQ697WbVXyU99n0waspLzqYpTQQBImj5MyrGfz7lwIURmhpghnGB5Sbe7cWt+MuicJOIRjj3b26keLzpmBNo=
+X-Received: by 2002:a05:600c:4715:b0:456:302:6dc3 with SMTP id
+ 5b1f17b1804b1-45b517d4c47mr197983995e9.26.1756399470139; Thu, 28 Aug 2025
+ 09:44:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/xe: Attempt to bring bos back to VRAM after eviction
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>, stable@vger.kernel.org
-References: <20250828154219.4889-1-thomas.hellstrom@linux.intel.com>
- <8621165a-68d0-467b-8fe5-c28b500c0d5e@intel.com>
- <ba4a969ad501922974c796e354292b7d5451dac4.camel@linux.intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <ba4a969ad501922974c796e354292b7d5451dac4.camel@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250827152754.12481-1-lifei.shirley@bytedance.com>
+ <aK8r11trXDjBnRON@google.com> <CABgObfYqVTK3uB00pAyZAdX=Vx1Xx_M0MOwUzm+D1C04mrVfig@mail.gmail.com>
+ <f904b674-98ba-4e13-a64c-fd30b6ac4a2e@bytedance.com>
+In-Reply-To: <f904b674-98ba-4e13-a64c-fd30b6ac4a2e@bytedance.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 28 Aug 2025 18:44:18 +0200
+X-Gm-Features: Ac12FXxy8RFR1sySn2cIpHgzn1YV9jdcFkuTVaa1o9x9iu2acXvfPgiJQStuG6A
+Message-ID: <CABgObfb4ocYcaZixoPD_VZL5Z_SieTGJW3GBCFB-_LuOH5Ut2g@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH] KVM: x86: Latch INITs only in specific CPU
+ states in KVM_SET_VCPU_EVENTS
+To: Fei Li <lifei.shirley@bytedance.com>
+Cc: Sean Christopherson <seanjc@google.com>, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, liran.alon@oracle.com, hpa@zytor.com, 
+	wanpeng.li@hotmail.com, kvm@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 28/08/2025 17:06, Thomas Hellström wrote:
-> Hi,
-> 
-> On Thu, 2025-08-28 at 16:59 +0100, Matthew Auld wrote:
->> On 28/08/2025 16:42, Thomas Hellström wrote:
->>> VRAM+TT bos that are evicted from VRAM to TT may remain in
->>> TT also after a revalidation following eviction or suspend.
->>>
->>> This manifests itself as applications becoming sluggish
->>> after buffer objects get evicted or after a resume from
->>> suspend or hibernation.
->>>
->>> If the bo supports placement in both VRAM and TT, and
->>> we are on DGFX, mark the TT placement as fallback. This means
->>> that it is tried only after VRAM + eviction.
->>>
->>> This flaw has probably been present since the xe module was
->>> upstreamed but use a Fixes: commit below where backporting is
->>> likely to be simple. For earlier versions we need to open-
->>> code the fallback algorithm in the driver.
->>>
->>> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5995
->>> Fixes: a78a8da51b36 ("drm/ttm: replace busy placement with flags
->>> v6")
->>> Cc: Matthew Brost <matthew.brost@intel.com>
->>> Cc: Matthew Auld <matthew.auld@intel.com>
->>> Cc: <stable@vger.kernel.org> # v6.9+
->>> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->>> ---
->>>    drivers/gpu/drm/xe/xe_bo.c | 2 ++
->>>    1 file changed, 2 insertions(+)
->>>
->>> diff --git a/drivers/gpu/drm/xe/xe_bo.c
->>> b/drivers/gpu/drm/xe/xe_bo.c
->>> index 4faf15d5fa6d..64dea4e478bd 100644
->>> --- a/drivers/gpu/drm/xe/xe_bo.c
->>> +++ b/drivers/gpu/drm/xe/xe_bo.c
->>> @@ -188,6 +188,8 @@ static void try_add_system(struct xe_device
->>> *xe, struct xe_bo *bo,
->>>    
->>>    		bo->placements[*c] = (struct ttm_place) {
->>>    			.mem_type = XE_PL_TT,
->>> +			.flags = (IS_DGFX(xe) && (bo_flags &
->>> XE_BO_FLAG_VRAM_MASK)) ?
->>
->> I suppose we could drop the dgfx check here?
-> 
-> Thanks for reviewing. From a quick look it looks like the VRAM_MASK
-> bits can be set also on IGFX? And if so, then it's not ideal to mark
-> the primary placement as FALLBACK. But I might have missed a rejection
-> somewhere.
+On Thu, Aug 28, 2025 at 5:13=E2=80=AFPM Fei Li <lifei.shirley@bytedance.com=
+> wrote:
+> Actually this is a bug triggered by one monitor tool in our production
+> environment. This monitor executes 'info registers -a' hmp at a fixed
+> frequency, even during VM startup process, which makes some AP stay in
+> KVM_MP_STATE_UNINITIALIZED forever. But this race only occurs with
+> extremely low probability, about 1~2 VM hangs per week.
+>
+> Considering other emulators, like cloud-hypervisor and firecracker maybe
+> also have similar potential race issues, I think KVM had better do some
+> handling. But anyway, I will check Qemu code to avoid such race. Thanks
+> for both of your comments. =F0=9F=99=82
 
-I was sweating bullets for a second there, but it looks like it gets 
-rejected in the ioctl with:
+If you can check whether other emulators invoke KVM_SET_VCPU_EVENTS in
+similar cases, that of course would help understanding the situation
+better.
 
-if (XE_IOCTL_DBG(xe, (args->placement & ~xe->info.mem_region_mask)
-      return -EINVAL;
+In QEMU, it is possible to delay KVM_GET_VCPU_EVENTS until after all
+vCPUs have halted.
 
-The flags get converted from the args->placement, and VRAM should never 
-appear in the mem_region_mask on igpu. If we allowed it I think it would 
-crash in add_vram() since the vram manager does not exist so 
-ttm_manager_type() would be NULL, AFAICT.
-
-> 
-> /Thomas
-> 
-> 
->>
->> Either way,
->> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
->>
->>> +			TTM_PL_FLAG_FALLBACK : 0,
->>>    		};
->>>    		*c += 1;
->>>    	}
->>
-> 
+Paolo
 
 
