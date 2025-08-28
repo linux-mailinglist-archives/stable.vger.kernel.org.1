@@ -1,125 +1,163 @@
-Return-Path: <stable+bounces-176639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2519B3A6BE
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 18:45:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A11B3A77B
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 19:15:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1582F18951E6
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 16:45:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A9163BD51C
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 17:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3075B32BF20;
-	Thu, 28 Aug 2025 16:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808E1334732;
+	Thu, 28 Aug 2025 17:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J1d5MnBF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZOTCUzMR"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620C132A3CF
-	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 16:44:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91EB33472C;
+	Thu, 28 Aug 2025 17:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756399476; cv=none; b=NlQXOYOS/3z8rihBhc3PIrQm+stJMTDCzxEveXrmjJ3Zs1sIH1Lwe85xDpTMQ/K4Lpda4qAa+6wgasI1g0KprdFA1R1hRRnfhd0TZaeW50pITsGGtuEf6NM3mSK0v7Ohy8OvqtkLrrU1/ouyF46BvTl4yIRiEcBuBLPXJmZ9kJA=
+	t=1756401246; cv=none; b=ZBjwdR5hyHQNdFxjj3V0by8cLrLvl0CiTR4WVMnQB0B/ULbkPMC6311Rob/SCKNv2doRj9Lid+gf9dP99GphMjK7z5651VF8kcxsdLYhoYIx6d6c6660oZt3tP63YjR/pTu34pgGEXVwD5PfL/W4Mbu1ORhZ5J7A0X79pB+sFh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756399476; c=relaxed/simple;
-	bh=16g9F5woniiXrhsLLuxG1053++5xXv7LjCWoyLqXmvA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DUscNKMF37iYn3t4vBFX92pIQhQEEnjFLk9It3lYyjRIvpEnQbY48DeKQ8hT+0S0YGtPCa8025TovBdd7ffOYyX2LPvwGIzz0yxWJw7s7F9pT12mvBFZ4wsc7GmR1p0CKCakRCZ/4eHxTtPGPZdqcZa3W6ODXXNuZ6Tf9mh+TLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J1d5MnBF; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756399473;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=16g9F5woniiXrhsLLuxG1053++5xXv7LjCWoyLqXmvA=;
-	b=J1d5MnBFDJMwq2tBjjJyR7sKyY9Nzy9d8T91zDBH/irkmCetXUfNzZJamBQtq/kIhG/6U5
-	/6AaDJQbvxDJvMZD4MqkHP83jQ4bVseHnY2BziiZ3F0GjELNFBOtsYUhQwQYJcVNfb1fjb
-	+HbHXY/QElOG13SRnKGMPxIFA5FelLk=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-380-eYTYd1e3OmKa_wmeWuFM3A-1; Thu, 28 Aug 2025 12:44:31 -0400
-X-MC-Unique: eYTYd1e3OmKa_wmeWuFM3A-1
-X-Mimecast-MFC-AGG-ID: eYTYd1e3OmKa_wmeWuFM3A_1756399471
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b7a0d1a71so7118655e9.2
-        for <stable@vger.kernel.org>; Thu, 28 Aug 2025 09:44:31 -0700 (PDT)
+	s=arc-20240116; t=1756401246; c=relaxed/simple;
+	bh=e2P3GbBnr/vA2wrzEew5Vztgeqpf47vGM3LUngBv630=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZnQ2BRRTdetKNeD5R1JIdtIos1vLYkbTDD5p7Jfq3z/bQWTE+TrMNhUCp+SXHsHvQznYbli3ZzVXkzQr5rdT0MtPxUl95VtoehvtDrpr91+vmo8i5/iHLQ3Vy9rhqq1QkZ0iovYNG9n4i8UZq2tJy+F557fQytArVkZfvu4x3x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZOTCUzMR; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b4c8bee055cso266883a12.2;
+        Thu, 28 Aug 2025 10:14:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756401244; x=1757006044; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oFf6Y+kZ5qDzWQbTvOGNXX5jgmWUdsOKV0pU+ZaksJQ=;
+        b=ZOTCUzMRhdyDQhSFZpxB3xR7Ugfsr/YN5MBvcT3Uiey6pud0BSjGWy+397Wa2ZX9NU
+         oQhrsbZ+/C/yya+EjdnouL7WgiIh6oJtu2pl/rMOokaWD/QY3CBWW4XU514u1x2Cczh9
+         ggmfi2s4MoBVO8Ea3yBhapzazSYMETAUp79YSe42Pn+iDD8PvLswiChOXPl9FtGZpyTR
+         XSdx9tByY1JOaJkekCCe1fwOS1TcRu/puy7dSHqz4QjOYNwVrFluSBDnItZb+uE3OQh8
+         xO5xmdIaqvKSwkDKE1oZpVXLHF9sbtUCr2RDPLiu1qbLYV9IAPB9At9HtQPUHtQHaQnP
+         tWEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756399470; x=1757004270;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=16g9F5woniiXrhsLLuxG1053++5xXv7LjCWoyLqXmvA=;
-        b=D6v5LpAYRxfwYJJnRdkzZ9TcURCgVV3gZMnBfqmsvQ16uZsOgbmMwME3c0GCnpApkV
-         FOZqWiTEqbpzIkikDTRD4phfRdGKV7aQl/88VC/10Ka5/QRvQi4gQ0V4FVBvFe22QGml
-         z9ZOOKDRnLt++DRkEtH65qv5IbeE+9DpuhNp0f/a36kC5vZeNEROrKMc3bE6Pq1KAUEt
-         8F7T7gvVFx5JMp6NhiqlEUuA7zmSch6UIdVckidBCqUIkUaNZElLQ2fcUBho7n7ZyJBa
-         PtHVCyBnqUgQlRFmetpbdW14Bf0qUZCajUpsKus7/rdL3lSrePjEGQ3k56XuJ0pd87TZ
-         bCXw==
-X-Forwarded-Encrypted: i=1; AJvYcCXUn32M2tuHA0QEe0/hV8h+VsVX5VNGMFTS/6hN0ZIGCoiXJyPq2lJCkc2JAuccFrcfw1W4OqY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0yXeaGRKgfVW2zf/Si81S6K+4HfVz8n+h3mIVQ30OMVfCzQoI
-	7uWkAfse8uEaxClD68UB7uwGlBcFvn7uKwD8/rE8LuhJW4Vo2qYDX0+53rBmWXLIFBRlTaLOBU+
-	zyE/M+O8qXu9QTR5kxkxtOwBqHGDPUqzZ0wWAYg/FRD3SNPtZUa6xE0e3CHrvSf2xf4DFrhW4Jd
-	OxXYkTdgNxVyhtymialKZlZFvJX2vH3jnF
-X-Gm-Gg: ASbGncsBgB2bGdeR4eXkiQPVaCeQzJU25gVH932qOvi6r0J1bQbhum5pGs/piBEbam9
-	cEKA7Kwc3q2p8wWBSGx/VJUcT9z2Go70w6Ib2TD7iWVIZAPqpzeWgbIE8Ddyxh1H6O1yIHlotqJ
-	n6mS7PMwqrQXYlXAkFfpsEt/b48PgHqBlt4IGZYzXy++GBoiB+1BCItJWuwwsD3L190+hLHG9fu
-	whcboqt5ooz3G7EGAumSmH0
-X-Received: by 2002:a05:600c:4715:b0:456:302:6dc3 with SMTP id 5b1f17b1804b1-45b517d4c47mr197984305e9.26.1756399470543;
-        Thu, 28 Aug 2025 09:44:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFOQ697WbVXyU99n0waspLzqYpTQQBImj5MyrGfz7lwIURmhpghnGB5Sbe7cWt+MuicJOIRjj3b26keLzpmBNo=
-X-Received: by 2002:a05:600c:4715:b0:456:302:6dc3 with SMTP id
- 5b1f17b1804b1-45b517d4c47mr197983995e9.26.1756399470139; Thu, 28 Aug 2025
- 09:44:30 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756401244; x=1757006044;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oFf6Y+kZ5qDzWQbTvOGNXX5jgmWUdsOKV0pU+ZaksJQ=;
+        b=oTByoKcaertxYvZoFxAWZijK0fR/F4iEpWexOZ8m/swC3RycuIMnR4O4UqeaciOfGP
+         m2sC0BheSLZfSMJnY7OAyF1GIpBGwo267iXSOL3vb3vbdkT2kptRrxDL5FNYbQ3gD/To
+         MTYrpi1y5Ffsyfe/jc96USHANENnUq4Bk2VVDcmzJQv7QbOUtxGQsIoDrJTbVGf68GGc
+         7FkKDPO76/MoknYUX9wQpoEgD5/Ybc+BEx9SwLsTUEAlKsRqu2DXvGJhQhm2XmuJvxTd
+         zU/E0NqBOJVXA4CID4rNCaOzN7K15KoKCgijjkLXJ4B/CS5Yf4SdzlZ+zd4fbJ7z37Bz
+         Fd3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVfs4p5uct2pt0zWcOt74mMSSIztIN061APnz5492OxH9/2KEFBSRS3vzoPkW0snqarkyV9saA8Jrmh7tE=@vger.kernel.org, AJvYcCXdKY+C/VzYIDsIi5wRzyoeXqm2imxBZOLJMeYdsPEVjWkyT7n86rm7znk/n7owMHUpIYbHjp9c@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7EAl3sii1MfK0es/ffBbQRoRPOTZIhXiOXBH0RWgnl6iokWne
+	wl/x/7whj9a272EIciDwn56BpoodeWp0AqK1CYZF8Pd0HxkwtmzbMlZA
+X-Gm-Gg: ASbGncsWNphTQJMimA1GA/S9XKe4RkCNNTuhUOqrBUiBemTq9TpNAe2D/nedi2Kei6V
+	NrBaXb94OWwq8qiMnGi1In07ZJH7YgfOPBcw10SZUiD950TDx+uQHxSbE/7IIrC0EkCygoUql6g
+	UzJKE4a8KBmum8JANT4vezZYASU8t12OKKBS6P5OQEwNquHPA6giJ/5aWX51atFLff9+GbpmlxM
+	BhMP8+jf8l9qBlACwb2zIXdFx+FdjNyixCXrmhpW9inaOyATzDIdLJjCDv6dC9Sqgaq29rLRYaq
+	Q1v2aQt7NYjsRK5b9buMeQaY5r0P9Sw1aIHjrGvu6g8Ms+JJLt+hIyf3trz0zyPG7QtG1ckefhF
+	u66iY2rq4VwMBnBPYhBPzduz/CrSqfOUkcR/4uoTlOt44l4O1jlKfV49z+0Bg8fH0F9v6fm8=
+X-Google-Smtp-Source: AGHT+IGTAmc9IupZXzbfxYJAl1mMm5d8+llf0Cd4P4qOL3CGSr38IgDE3agkuRUZsGBinXlT0DgVBQ==
+X-Received: by 2002:a17:903:3c2b:b0:242:bba6:fc85 with SMTP id d9443c01a7336-2462ef4a02fmr346186855ad.56.1756401243950;
+        Thu, 28 Aug 2025 10:14:03 -0700 (PDT)
+Received: from visitorckw-System-Product-Name ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-327da8e71a8sm212401a91.15.2025.08.28.10.14.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Aug 2025 10:14:03 -0700 (PDT)
+Date: Fri, 29 Aug 2025 01:13:58 +0800
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, akpm@linux-foundation.org,
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
+	glittao@gmail.com, jserv@ccns.ncku.edu.tw, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, chuang@cs.nycu.edu.tw,
+	cfmc.cs13@nycu.edu.tw, jhcheng.cs13@nycu.edu.tw,
+	c.yuanhaur@wustl.edu
+Subject: Re: [PATCH 1/2] mm/slub: Fix cmp_loc_by_count() to return 0 when
+ counts are equal
+Message-ID: <aLCOVoshch9phL5M@visitorckw-System-Product-Name>
+References: <20250825013419.240278-1-visitorckw@gmail.com>
+ <20250825013419.240278-2-visitorckw@gmail.com>
+ <eb2fa38c-d963-4466-8702-e7017557e718@suse.cz>
+ <aKyjaTUneWQgwsV5@visitorckw-System-Product-Name>
+ <aK1n_t-V1AlN86JR@hyeyoo>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250827152754.12481-1-lifei.shirley@bytedance.com>
- <aK8r11trXDjBnRON@google.com> <CABgObfYqVTK3uB00pAyZAdX=Vx1Xx_M0MOwUzm+D1C04mrVfig@mail.gmail.com>
- <f904b674-98ba-4e13-a64c-fd30b6ac4a2e@bytedance.com>
-In-Reply-To: <f904b674-98ba-4e13-a64c-fd30b6ac4a2e@bytedance.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 28 Aug 2025 18:44:18 +0200
-X-Gm-Features: Ac12FXxy8RFR1sySn2cIpHgzn1YV9jdcFkuTVaa1o9x9iu2acXvfPgiJQStuG6A
-Message-ID: <CABgObfb4ocYcaZixoPD_VZL5Z_SieTGJW3GBCFB-_LuOH5Ut2g@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH] KVM: x86: Latch INITs only in specific CPU
- states in KVM_SET_VCPU_EVENTS
-To: Fei Li <lifei.shirley@bytedance.com>
-Cc: Sean Christopherson <seanjc@google.com>, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, liran.alon@oracle.com, hpa@zytor.com, 
-	wanpeng.li@hotmail.com, kvm@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aK1n_t-V1AlN86JR@hyeyoo>
 
-On Thu, Aug 28, 2025 at 5:13=E2=80=AFPM Fei Li <lifei.shirley@bytedance.com=
-> wrote:
-> Actually this is a bug triggered by one monitor tool in our production
-> environment. This monitor executes 'info registers -a' hmp at a fixed
-> frequency, even during VM startup process, which makes some AP stay in
-> KVM_MP_STATE_UNINITIALIZED forever. But this race only occurs with
-> extremely low probability, about 1~2 VM hangs per week.
->
-> Considering other emulators, like cloud-hypervisor and firecracker maybe
-> also have similar potential race issues, I think KVM had better do some
-> handling. But anyway, I will check Qemu code to avoid such race. Thanks
-> for both of your comments. =F0=9F=99=82
+On Tue, Aug 26, 2025 at 04:53:34PM +0900, Harry Yoo wrote:
+> On Tue, Aug 26, 2025 at 01:54:49AM +0800, Kuan-Wei Chiu wrote:
+> > Hi Vlastimil,
+> > 
+> > On Mon, Aug 25, 2025 at 07:28:17PM +0200, Vlastimil Babka wrote:
+> > > On 8/25/25 03:34, Kuan-Wei Chiu wrote:
+> > > > The comparison function cmp_loc_by_count() used for sorting stack trace
+> > > > locations in debugfs currently returns -1 if a->count > b->count and 1
+> > > > otherwise. This breaks the antisymmetry property required by sort(),
+> > > > because when two counts are equal, both cmp(a, b) and cmp(b, a) return
+> > > > 1.
+> > > 
+> > > Good catch.
+> > > 
+> > > > This can lead to undefined or incorrect ordering results. Fix it by
+> > > 
+> > > Wonder if it can really affect anything in practice other than swapping
+> > > needlessly some records with an equal count?
+> > > 
+> > It could result in some elements being incorrectly ordered, similar to
+> > what happened before in ACPI causing issues with s2idle [1][2]. But in
+> > this case, the worst impact is just the display order not matching the
+> > count, so it's not too critical.
+> 
+> Could you give an example where the previous cmp_loc_by_count() code
+> produces an incorrectly sorted array?
+> 
+Sorry for the late reply.
 
-If you can check whether other emulators invoke KVM_SET_VCPU_EVENTS in
-similar cases, that of course would help understanding the situation
-better.
+I tried generating random arrays to find a concrete example where the
+old cmp_loc_by_count() causes a wrong ordering, but I couldn't
+reproduce one. So I would like to withdraw my earlier claim that it
+definitely leads to incorrect results, since I cannot demonstrate a
+failing case.
 
-In QEMU, it is possible to delay KVM_GET_VCPU_EVENTS until after all
-vCPUs have halted.
+The complexity of the sort() implementation also makes it hard to
+reason precisely whether such inputs exist.
 
-Paolo
+That said, I still believe the patch should be merged, because sort()
+only guarantees correct behavior if the comparison function satisfies
+antisymmetry and transitivity. When those are violated, correctness
+depends on implementation details, and future changes (e.g., switching
+to a different sorting algorithm) could potentially break the ordering.
 
+Regards,
+Kuan-Wei
+
+> > [1]: https://lore.kernel.org/lkml/70674dc7-5586-4183-8953-8095567e73df@gmail.com
+> > [2]: https://lore.kernel.org/lkml/20240701205639.117194-1-visitorckw@gmail.com
+> > 
+> > > > explicitly returning 0 when the counts are equal, ensuring that the
+> > > > comparison function follows the expected mathematical properties.
+> > > 
+> > > Agreed with the cmp_int() suggestion for a v2.
+> > > 
+> > I'll make that change in v2.
+> 
+> -- 
+> Cheers,
+> Harry / Hyeonggon
 
