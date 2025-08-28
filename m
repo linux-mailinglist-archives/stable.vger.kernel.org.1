@@ -1,51 +1,55 @@
-Return-Path: <stable+bounces-176613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AFBFB3A210
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 16:36:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A8E6B3A1DF
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 16:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A85305873FC
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 14:29:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 018181888D5D
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 14:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09A62309B9;
-	Thu, 28 Aug 2025 14:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2880A3148C0;
+	Thu, 28 Aug 2025 14:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rJODl3jE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S32R4eke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E0E226D18;
-	Thu, 28 Aug 2025 14:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78FA3148AA;
+	Thu, 28 Aug 2025 14:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756391282; cv=none; b=TdEvoRNzeFAGbj+baDEI1YW1c8a2KkgGdCyJexbLxGB+ktiPhoIjaMxV3lPZOgn+PrknlbEfLgmMz78W/JVRsB7VgRAhaEQZatBzBjyLcSXQ2CwB/8Y2t6KNztyy4vSSCSmWig90f8aHIXT7oL+QrGqQPEjBxE5v09+4tCWdkns=
+	t=1756391320; cv=none; b=pWggzgqHAfLK/NXWyLW/hQ6Nh64oRRsXUMeIBu63J8QbAlwQeXHqyt1ymwAboJoQF/YgG13K5f1sOKfzbe+QYYC8sxUmyrAxIXKxcnHbvLKEStsafzHsJVxoUp9xU653H6FVs972w0o/J+85ksxYMUnDhWQ8ErRC7sBLo1Vqero=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756391282; c=relaxed/simple;
-	bh=8Y1aM2Nx929N3/lsRZDxgK5NO9SlpyO8VfSG4BzWSpA=;
-	h=Date:Subject:From:To:Cc:Message-ID:MIME-Version:Content-Type; b=ZXhZ+sQGd3D0Q3QqwPMlx0B3Z46lKAh8Jm0lJAu0WeyQRGP8weFwLmPLenI5guVyj3D+S7QPhtewAsHmyT0GfDyIOc3SnjJv/S37/Zjz1D5PPMpq+TDqZUbOapfvwleJUmSy1mu1SlybQG3yYRZ7yIU5vD+gIJ1MhdEprPRL68s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rJODl3jE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAC2C4CEEB;
-	Thu, 28 Aug 2025 14:28:02 +0000 (UTC)
+	s=arc-20240116; t=1756391320; c=relaxed/simple;
+	bh=g/YZW4958m4oLwRqPjzAj+rLRzVZubwrSj/QrnGIVDk=;
+	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rTEQRAzfYm0YGzWw4E2gwMr7l/p91jd2Oc8Kjh2iqeN8EjsZtxKJ3mt9ibFN33kAu9XMZpR7NwSxC7S/P5O7gWNsgdhvwdp0GOBGkYT/IrWAO+4GhEasDDcfCBYQWclofOVvP/rb45ti9ENx1RYqrADe5K/d0+nOL4b1VFAziy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S32R4eke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C3CC4CEEB;
+	Thu, 28 Aug 2025 14:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756391282;
-	bh=8Y1aM2Nx929N3/lsRZDxgK5NO9SlpyO8VfSG4BzWSpA=;
-	h=Date:Subject:From:To:Cc:From;
-	b=rJODl3jEaU2U0T3t4tzoQ8N1F4M8UJDUBoL8GvTzdggYIv7y2M39XvinrkreCy/zS
-	 XB2f4+92zvohDBUhI6p+ct1wFrufxE0Ne/ZXryJnYbDdTvbR0KdQtjCC+dC7oHN7nX
-	 GxK15cw/LbiwQdTYuNRhc1PBahNjZ4t6Glhnezvzh/q4ogBbkdtvwaU4WbLcy3+nlV
-	 E0nA9yh6S6HzJ6rUd4aaKtxhTihK9Wlb7IeG03RdG2cpyPOSOdGymqghpUpWVSMmg/
-	 bzwa70D8DPSPiXSHo1de7XTXHq8/+/obtr8Gf/afdSRYxXaRHeow793Kds9Gh1bzuQ
-	 +t4flYGYDwKOw==
-Date: Thu, 28 Aug 2025 07:28:01 -0700
-Subject: [PATCHSET] xfs: improve online repair reap calculations
+	s=k20201202; t=1756391319;
+	bh=g/YZW4958m4oLwRqPjzAj+rLRzVZubwrSj/QrnGIVDk=;
+	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
+	b=S32R4eke5zKB0GY8HTcTO4VXU5kal1Zlp9Nv7r17GlY4ltSUvkWOo0gVGpwt9KD3j
+	 TqVlVsNA3yrOidaJ3SsatVxTBfFtfyWrUfMi3kLLqwlxfn6m68MiJXyP7xc5tKJoRH
+	 fCPkg/9ByA5xDrQ3Z2QlOdBPABXyltFq3rXYckKdonLdCj+dav/bux29qSeluAEuRR
+	 NYbR1dq235fQlNGvQx9QCOwvQLujqqh7ihEIt1zoUpXOo4kESBI7mjZCGscW+3E0qO
+	 2CWS+se5vAzQ/QMcWu17+o/jAsmEm3vsYvWMrFR2SuiQBxgt+ume5ZRTZOVCCKZbX/
+	 iZhlwW7ShtmVw==
+Date: Thu, 28 Aug 2025 07:28:38 -0700
+Subject: [PATCH 3/9] xfs: use deferred intent items for reaping crosslinked
+ blocks
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: cem@kernel.org, djwong@kernel.org
 Cc: stable@vger.kernel.org, hch@lst.de, linux-xfs@vger.kernel.org
-Message-ID: <175639126389.761138.3915752172201973808.stgit@frogsfrogsfrogs>
+Message-ID: <175639126502.761138.11864019415667592045.stgit@frogsfrogsfrogs>
+In-Reply-To: <175639126389.761138.3915752172201973808.stgit@frogsfrogsfrogs>
+References: <175639126389.761138.3915752172201973808.stgit@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,56 +59,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-Hi all,
+From: Darrick J. Wong <djwong@kernel.org>
 
-A few months ago, the multi-fsblock untorn writes patchset added a bunch
-of log intent item helper functions to estimate the number of intent
-items that could be added to a particular transaction.  Those helpers
-enabled us to compute a safe upper bound on the number of blocks that
-could be written in an untorn fashion with filesystem-provided out of
-place writes.
+When we're removing rmap records for crosslinked blocks, use deferred
+intent items so that we can try to free/unmap as many of the old data
+structure's blocks as we can in the same transaction as the commit.
 
-Currently, the online fsck code employs static limits on the number of
-intent items that it's willing to accrue to a single transaction when
-it's trying to reap what it thinks are the old blocks from a corrupt
-structure.  There have been no problems reported with this approach
-after years of testing, but static limits are scary and gross because
-overestimating the intent item limit could result in transaction
-overflows and dead filesystems; and underestimating causes unnecessary
-overhead.
-
-This series uses the new log intent item size helpers to estimate the
-limits dynamically based on worst-case per-block repair work vs. the
-size of the scrub transaction.  After several months of testing this,
-there don't seem to be any problems here either.
-
-If you're going to start using this code, I strongly recommend pulling
-from my git trees, which are linked below.
-
-This has been running on the djcloud for months with no problems.  Enjoy!
-Comments and questions are, as always, welcome.
-
---D
-
-kernel git tree:
-https://git.kernel.org/cgit/linux/kernel/git/djwong/xfs-linux.git/log/?h=fix-scrub-reap-calculations
+Cc: <stable@vger.kernel.org> # v6.6
+Fixes: 1c7ce115e52106 ("xfs: reap large AG metadata extents when possible")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
-Commits in this patchset:
- * xfs: prepare reaping code for dynamic limits
- * xfs: convert the ifork reap code to use xreap_state
- * xfs: use deferred intent items for reaping crosslinked blocks
- * xfs: compute per-AG extent reap limits dynamically
- * xfs: compute data device CoW staging extent reap limits dynamically
- * xfs: compute realtime device CoW staging extent reap limits dynamically
- * xfs: compute file mapping reap limits dynamically
- * xfs: remove static reap limits
- * xfs: use deferred reaping for data device cow extents
----
- fs/xfs/scrub/repair.h |    8 -
- fs/xfs/scrub/trace.h  |   45 ++++
- fs/xfs/scrub/newbt.c  |    7 +
- fs/xfs/scrub/reap.c   |  622 +++++++++++++++++++++++++++++++++++++++----------
- fs/xfs/scrub/trace.c  |    1 
- 5 files changed, 552 insertions(+), 131 deletions(-)
+ fs/xfs/scrub/reap.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+
+diff --git a/fs/xfs/scrub/reap.c b/fs/xfs/scrub/reap.c
+index db46f6cd4112f3..33272729249f64 100644
+--- a/fs/xfs/scrub/reap.c
++++ b/fs/xfs/scrub/reap.c
+@@ -430,8 +430,6 @@ xreap_agextent_iter(
+ 		trace_xreap_dispose_unmap_extent(pag_group(sc->sa.pag), agbno,
+ 				*aglenp);
+ 
+-		xreap_force_defer_finish(rs);
+-
+ 		if (rs->oinfo == &XFS_RMAP_OINFO_COW) {
+ 			/*
+ 			 * If we're unmapping CoW staging extents, remove the
+@@ -440,11 +438,14 @@ xreap_agextent_iter(
+ 			 */
+ 			xfs_refcount_free_cow_extent(sc->tp, false, fsbno,
+ 					*aglenp);
++			xreap_force_defer_finish(rs);
+ 			return 0;
+ 		}
+ 
+-		return xfs_rmap_free(sc->tp, sc->sa.agf_bp, sc->sa.pag, agbno,
+-				*aglenp, rs->oinfo);
++		xfs_rmap_free_extent(sc->tp, false, fsbno, *aglenp,
++				rs->oinfo->oi_owner);
++		xreap_inc_defer(rs);
++		return 0;
+ 	}
+ 
+ 	trace_xreap_dispose_free_extent(pag_group(sc->sa.pag), agbno, *aglenp);
 
 
