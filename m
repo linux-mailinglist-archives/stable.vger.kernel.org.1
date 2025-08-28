@@ -1,240 +1,218 @@
-Return-Path: <stable+bounces-176649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF531B3A87A
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 19:42:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49841B3A8A5
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 19:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1C291893992
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 17:42:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D47613A5FF5
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 17:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5FD0322DB3;
-	Thu, 28 Aug 2025 17:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7103375C3;
+	Thu, 28 Aug 2025 17:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GrJnk5uW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nt3TuSvd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845F1340D83
-	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 17:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756402920; cv=none; b=IYnyGvipAxQF/1m+bwDgGfht0BZMl1ro/YTKaq4LAD6QIOsqkLuk4HfAnYnlUD10qRHkcsJquHhCB072fZc+4Ii/1V6sylE4u0ZE13b5GDqkcZosl4NcnTu1uweqfHzQWcLRrD/VEFaMO1A31AWzFaHuYEEYeTAZhEO5os5GkD0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756402920; c=relaxed/simple;
-	bh=0HCe6pe+DPLQodLXLprWPcvX+lqpDmyd3nKKTft9KJA=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQzhsOAIev8oaPEFrpNqIs0Lva5n9k7gqyFQibwezc/eq/Juawg03Omp2qWZt0/rjANhyZ7ci3TBihmF9onasovcKtdX6PlLAx32P4NEsRasaPMD2vZdVyMFkcPzYOavfTMhKZr0FczK+UuQY2IoxBiRI+X7h1RwYDWFzx4g7Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GrJnk5uW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F151DC4CEEB
-	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 17:41:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756402920;
-	bh=0HCe6pe+DPLQodLXLprWPcvX+lqpDmyd3nKKTft9KJA=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=GrJnk5uWdLiTqe1CxlTI5oNTgiXSt4JOvA6Ll3eu9zMj9LuLfhuWlF5Cqm8+1h2w6
-	 0xYjPIuQKF7AjakCUudjKFvNdR7Id85R/aFEafRLNoUwX/CHoWR2pQonSrF3S0wwoy
-	 xG3XNa5sz5J6q/Z2fItGzsH2jbeGOf7/lzzcrcju+y4ppSwxDdR/q9RcqJE9WSdFG1
-	 +cgEeoI8kEin3JPhKRfrm5IV9VPwgWTotfQ0ivbSKP8MhSNCxDP1LsRPRQHz96wRCT
-	 5qBd3WYpVcVPWq660nHt2mhnIPkoXOIvs2Q0ROfaAv5osQD7CGG1oglAGGL9N/gtMq
-	 DhAj5KcLbl8bA==
-From: Trond Myklebust <trondmy@kernel.org>
-To: stable@vger.kernel.org
-Subject: [PATCH 5.10.y 2/2] NFS: Fix a race when updating an existing write
-Date: Thu, 28 Aug 2025 10:41:58 -0700
-Message-ID: <5cadfa963bb3f2719b8e3fce85fcd61f3d9aeeb3.1756402795.git.trond.myklebust@hammerspace.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1756402795.git.trond.myklebust@hammerspace.com>
-References: <2025082225-attribute-embark-823b@gregkh> <cover.1756402795.git.trond.myklebust@hammerspace.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C4922F01
+	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 17:49:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756403389; cv=fail; b=fblB8aq/ywdJTYnZwSN0ipsJCs07pImBaNo8aYqKoGie/TO9QaeD7EdBZ/WbYgleTf/VQVahUSbbvSJxJkzXIl06OrBDbkwjORAHpW2yQdqi+mlUWaMlBtEbeAST2kbQzdXyhjwwT/Iq1dpU79Wjp9b39JbQhAFZTiwIklFvib0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756403389; c=relaxed/simple;
+	bh=HFhFtSDHQb2+JgMSF8ZG5PCEVHiFN5TfCyG0nCsfMPA=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Vvj2cyLNVk0HBOcPUVCDRMH6HMALzWcXzOKEMAZHOQhxV2PjaoqOFnnpm0G/tyDCgs7EFGKzZ0rD3+Ms6FgzmeA/i42q75/GW1atqhEuFsLpmmjf5hs4uJNCuNFi0fNPcrHzl0UDFrx8uny6ffKCntRvbEEBof1urgeqUXoQgmQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nt3TuSvd; arc=fail smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756403388; x=1787939388;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=HFhFtSDHQb2+JgMSF8ZG5PCEVHiFN5TfCyG0nCsfMPA=;
+  b=Nt3TuSvdGL01KTWr2YiblrN+IpsYXvM7k8x4NcuTGx49nwi+FAKYGUEK
+   IMHV5Y4B+FSPcnafwcxB97ND+obV11tIwdtKo1C2/DqMGmNOPNeIjHgzr
+   tXtzHwLIZFDgE5bRgBhjvm14cVwgPypHVaFNMMsQ/Muput/G4vD8Jao30
+   OrN3arDlRsu9Hb5T6q0NugQqcwk5jshDg7g4PBqgCkpKocLbpBNZGh5dd
+   wozyUb2eElcWLhiPVX+EXELgii49x+4yq1XJz61n2VhbcXXQkesIyEMEx
+   nN+EOVjG+X4Sk8fAg8eJv9zS3rD0nRFbY8yBUYN8eW9QxZ5IOBhQzidl7
+   A==;
+X-CSE-ConnectionGUID: m1Jgi4olSGi4yrRhx8zD6w==
+X-CSE-MsgGUID: FJSd274MQkqdDRgFOQv5dw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11536"; a="68959834"
+X-IronPort-AV: E=Sophos;i="6.18,220,1751266800"; 
+   d="scan'208";a="68959834"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 10:49:47 -0700
+X-CSE-ConnectionGUID: EbKArQrfRVShZ7JEFb7CHA==
+X-CSE-MsgGUID: CURLVU5OT/W8R4+El947NQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,220,1751266800"; 
+   d="scan'208";a="169695963"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 10:49:46 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 28 Aug 2025 10:49:45 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Thu, 28 Aug 2025 10:49:45 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (40.107.212.53)
+ by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 28 Aug 2025 10:49:45 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uIsGTfyeUXEXnrRTpDbwUpMdejsb00C1tObn8BUur3WRC1hj3MYyavnhF4i1qgFozNYbNidGSvUxjyvq5IAVbYMgD/1Zz3f9/7tQwbdtJLoo1X84omrYvxMqBoxUVHtYgOuQ6dv89S3GcqzM2vjgmrSeyttTc99xq68iOIDNlw7Cdyf1pqjWdsYVa2s0KzgHar4HBBrrBJfZ2IiAVdXDVTax/Du7MDJPTVt0ms1nrQZWuH5UxsFl9cjYCBN/LARpNhAjP/i84jlgtXg4C9Mg7LumI78CCvIeythCXMUbamUhfkKbDdrZMm7Xkynnf7YHxtSHxd701Fa1yTEWG1sfyQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fB2ED3VddFIkwaJKt7bZ+Jb3WGpWKfJ4W/bG1IotS0k=;
+ b=D+ZruFfxM0nnCTxFf0f8yFaLS4+I5X2eapmhJjbddVgheZ2nUITB9XiFFG8+e0xHDZva7If/WMM2JbLFhwCE0JoPIibQ1McMKzVxlmKjNceIWj5tCKj4rcNTtCUfdlN4p7D9DxArfbIVETczRY1EWg5TM4Ms5gsSzERLV91cmGbiKgfrWiLHhg91UnXm69SFhPA1xmaTimFq76G3dt74aZaIlWzCbL8pG+1EbyN5pPhcxFJcPN15VEN91csd2fCEhuXiaSfqbqLg+pbykNR5vBhLVsUtZMfau2d1ottOJefB0YJ37qF9O7D4EyJX7TkfHPdwp1flquRwjccgFACSCA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
+ by PH0PR11MB7616.namprd11.prod.outlook.com (2603:10b6:510:26d::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.18; Thu, 28 Aug
+ 2025 17:49:39 +0000
+Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
+ ([fe80::8900:d137:e757:ac9f]) by SJ0PR11MB4845.namprd11.prod.outlook.com
+ ([fe80::8900:d137:e757:ac9f%3]) with mapi id 15.20.9052.023; Thu, 28 Aug 2025
+ 17:49:39 +0000
+From: Imre Deak <imre.deak@intel.com>
+To: <stable@vger.kernel.org>
+CC: <intel-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4.y] Revert "drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS"
+Date: Thu, 28 Aug 2025 20:49:26 +0300
+Message-ID: <20250828174932.414566-1-imre.deak@intel.com>
+X-Mailer: git-send-email 2.49.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: DUZPR01CA0111.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4bb::12) To SJ0PR11MB4845.namprd11.prod.outlook.com
+ (2603:10b6:a03:2d1::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|PH0PR11MB7616:EE_
+X-MS-Office365-Filtering-Correlation-Id: e36fa39e-9850-4eaf-a27c-08dde65b4293
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|10070799003|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Gyz7tv0/ybhjcwpW3w5BzrLLO42zUjLoNaufgRNRkJYWchEbrwMtuqQuSSJZ?=
+ =?us-ascii?Q?BLhVXLXgTVGm/6uYXI+4IsVr3jYQXD4abpO9C6U17mu+5OTvsHjAQQbbG09t?=
+ =?us-ascii?Q?LzELUnOW+a5reNOTd7WYdkyEfJPQwL8mqdAT4CzowdZcaphhIOwQxYW2QMMk?=
+ =?us-ascii?Q?zyjC2mt6Plxjh0wvSKjBQEvMDguYZuPn9A8kXXI1PcXSotMJSZ3YDYXJwVg8?=
+ =?us-ascii?Q?eFGrjdn93liR4lz/kvOughgdD/4aj7DwcpQA4VzC7CwfLrLtIkkyFNBKfNj5?=
+ =?us-ascii?Q?yQwNomoEqQ/QmB+umvUplCSiCWv0Fka1P4D+HBp9ksLzn++dpeRylzwtTfI7?=
+ =?us-ascii?Q?n+ycAfTw4N5wDH+IT7P6TAzeEN69AQJeOYROqfRdcQkwRwtIRObFujoc7PY8?=
+ =?us-ascii?Q?tj8t2JZsY2XnvdWXo0dZ39uZKEY1FyrXvqDxxzdigqStevUavmFTRjgAfVr0?=
+ =?us-ascii?Q?rzEbebOTyxlhkC9fYL+ClhpOxB+2M2m2OI/fj9l4pFTZyp0j/qU5ieuE9aT7?=
+ =?us-ascii?Q?i6fyzNXrbOfR1Mh63PWKBfTOfexZI1RoaOv8E4FpKuAUUgXVkp7QNv9u5fo2?=
+ =?us-ascii?Q?7QKNTuzbvMzMaBUmOW4FbPMzJ/AVPWUGVzYtH/WFCBhurJO4hZMeo4b1ViJ6?=
+ =?us-ascii?Q?MyLTKkOG/lTzXGTtmmlv5FInOcwT2iHiVXhzz7v7hz9wD+qgtX8rssUIvPcq?=
+ =?us-ascii?Q?TS3M76g7+KvHw145WnDTZzNMwD4z3Jdh88UQX71IehhBYSPqAEkyon3KdWfF?=
+ =?us-ascii?Q?FFei/Q7sS3Tf2XOapYYjXfnkn7m1MziDWWRwlpEOWWPBNA/vf8FzvQRUdzOM?=
+ =?us-ascii?Q?NdvD6ZP89sJPLiVjLAks0PjsLa7of7bu37e4NytOfefSZJ+w53bwKlrFtO4h?=
+ =?us-ascii?Q?weeX4Fd9kGXwX90H6bkJN3exquVERxmHxoFRvF6ryTACx8/+jHAXl34Q4AA8?=
+ =?us-ascii?Q?ZrtVN0DeIAuIRfx2Ir+NCHRSI/EwGUDZYPBjkPCJgcul9m7JYCywQwE0DWWg?=
+ =?us-ascii?Q?GwjmREwzqcfxsXS5UWioiRAaT/Kcn3u7MW9LyDo/CmS/6ImSCFIAUppXxwum?=
+ =?us-ascii?Q?EB+TR+A7vw70I1XlU/ipaBjWvqvN1qZLhZDFN+NWsHFbGmI/80wnGZvIx+Eh?=
+ =?us-ascii?Q?TFS8LPVYwdVDESyRj95CgZ70FPtXMSkgrhDkqGaiD+wqNY5cA98G3/nTRjQj?=
+ =?us-ascii?Q?b38oZU1/CqCbv7X+4YXg8qZTZxprsw6c8ah6G4DJ5rmEmRLWj/ypM7X2LcOd?=
+ =?us-ascii?Q?LgXJ8t6PxMCmXD8OD+EGL49UVaH1oSoIv7gIRFubeu3D20H6BxsTEhk0yw5q?=
+ =?us-ascii?Q?3HNIDXpbZw2SwM2pv276YP3OYAAkWR5x0UtMwJMuRH1BWQGR6iztvMLJ3jQh?=
+ =?us-ascii?Q?5WoGxI8=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?nU+B3sdgF4X5C/Nm/WwcBbyv02XjnCh/j8ufADqjDkPHkG4JfjS3gGyX0ush?=
+ =?us-ascii?Q?TAppRY7+PjHPDp6ncCQak+ZlJ8/BJ0Cf+UxHAtDb5evEFJ4wznrmVTNhCkFZ?=
+ =?us-ascii?Q?U4/n86PY3BDAUr6uWcR45XCXENzMOgYx4zg/8HuP8dRP1bw9nDIABL5dsZxV?=
+ =?us-ascii?Q?c5RZ+ExGkroWbMHcyFPnmB9RIJrY9PLPidXgeqfIlyRiYwwauIuIDyHH/7xT?=
+ =?us-ascii?Q?E7jRVkuwbENVbp/mQ8gy060Ki6pfNvEpjqIPBuuyup1Hr8nIgI4xeUFcZIJB?=
+ =?us-ascii?Q?F6/JdTPSfto2ntC9pCZKF1w0DyfZDAimgo0FhWLgYvKjuqtc4+9wAO15Wwp8?=
+ =?us-ascii?Q?XxILBlM7H7kUnbDNRgdvycL7OR165nrc+lrijb3eyFso4ww+Iy6NuCXmUtvb?=
+ =?us-ascii?Q?x0OYMqxRmF6Nr9yhdsj9oG8HOcCHbMGj0+C+PRA0GozIXH1xCpsYsKCAUxUl?=
+ =?us-ascii?Q?aTRrAuvDBxvuYx0PfzEp/JRfp45g6zhiCycIMcFdeUDG0TJyMwcO74e7goKj?=
+ =?us-ascii?Q?QCkzq9KgCCDx3BJ4gIH3zgONExUrK3TEkSxbghQ9bPJOllsO3Azi9X1Iec+9?=
+ =?us-ascii?Q?TbJ2Ca2WV9sNbHiNb0AhjJqbz/6M+W01s0AW4eDdbMeRtd3t3AuUAY4fex2T?=
+ =?us-ascii?Q?k82Cp5nss9PJyi5IW/JgeYzAHyfajSw02vih8OGtn3nnFYMDs0zP+zna0EgD?=
+ =?us-ascii?Q?mgF1KThlAFCqc66WD6+yxadLnlm0B2swVI1qCtJHhZoz2QhRxZnvuSqO/Sr/?=
+ =?us-ascii?Q?ee/GUwxXWwcBPXeauuCJSoWiqeMqJ5Lh3YWgDxvezdVoJIzkVloGanutUYio?=
+ =?us-ascii?Q?0XAHpSErn1t4Ek8VIDykNc/DBVAaAQC5Wn9T5c/lptQjskPU8tr6TSH2n1hc?=
+ =?us-ascii?Q?pHjr5a3GU+wgoShjzmG4uMaKpwj2zbCPOcaYe7jY7SjE/JZT1QJgF2pir0vL?=
+ =?us-ascii?Q?qcsI2em4Uc4pNstD+tpIYXpeQgyxjzAJoEbc7n5IahpdEXqyb784JnczO3FG?=
+ =?us-ascii?Q?e4hYu6Dn+S/Onhb9rMFc1Hp29i41OfCO0l5GXRMWKQgcAkWSiglX4lx740a9?=
+ =?us-ascii?Q?nlkmW4LfFqE9nl7Pgr25Yy1pkd/L9qAoJg813fs9zSiApPaAgo9uQU6MTubH?=
+ =?us-ascii?Q?7C4r2gJsejaL5ViZMTlr3qnaZW/qNHl1T40gPx0zmk+CBNXR8MW1AUSGj5Up?=
+ =?us-ascii?Q?b6RjUOShsIJo0P3XMmx7Gn9/gO6r5Ng6WlwE5nsXSql7eugAujL9aB6pR174?=
+ =?us-ascii?Q?E79IH5xSF/oCCW5i97xrWy7UbFrmSHRroi9oEvcKZ+BntWAXemK9d8/zygQb?=
+ =?us-ascii?Q?rPYZ020MsfCK1yzbvle60LXaskAfy+h3j1mxFfs8GnS1GaMUcsDlX0N3D1yB?=
+ =?us-ascii?Q?RfOtANKhBZzwOxZjGa5jTzi6dbiVznFzD5PHp+2p/Bgrqy9EtMB/bKaoICgg?=
+ =?us-ascii?Q?lpDEVxCOHA3A0/XY5KoWomNL9EgQtAvZHP1f0F2paRBb1CyhVyGQBxZ7UYYc?=
+ =?us-ascii?Q?Oi/RnSJIi6uom57su80MDleJZPBs4Ua566bCYCZC9HiF+h9tR6HZjF1ByGdh?=
+ =?us-ascii?Q?Hc3r0r2FVkLjjZQgFlrc+zSh4bFNdXTDEpH/bzwtpgSiC12CjnKtv4CWbSG/?=
+ =?us-ascii?Q?PqTrBTtar72MbtHOwC06R6WyzU/Uv7tyJKcVm2fFO3o5?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: e36fa39e-9850-4eaf-a27c-08dde65b4293
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 17:49:39.2479
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gj1D5epHQXbHS60lTZdyqW+hNwsRP6VSbzr6Zx+hnjz8iy1komxmyHvgsk0HIyPsQPdq7wYAqpbjVqQ8kO7zZA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7616
+X-OriginatorOrg: intel.com
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+This reverts commit 2402adce8da4e7396b63b5ffa71e1fa16e5fe5c4.
 
-After nfs_lock_and_join_requests() tests for whether the request is
-still attached to the mapping, nothing prevents a call to
-nfs_inode_remove_request() from succeeding until we actually lock the
-page group.
-The reason is that whoever called nfs_inode_remove_request() doesn't
-necessarily have a lock on the page group head.
+The upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ("drm/dp:
+Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS") the
+reverted commit backported causes a regression, on one eDP panel at
+least resulting in display flickering, described in detail at the Link:
+below. The issue fixed by the upstream commit will need a different
+solution, revert the backport for now.
 
-So in order to avoid races, let's take the page group lock earlier in
-nfs_lock_and_join_requests(), and hold it across the removal of the
-request in nfs_inode_remove_request().
-
-Reported-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Joe Quanaim <jdq@meta.com>
-Tested-by: Andrew Steffen <aksteffen@meta.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Fixes: bd37d6fce184 ("NFSv4: Convert nfs_lock_and_join_requests() to use nfs_page_find_head_request()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-(cherry picked from commit 76d2e3890fb169168c73f2e4f8375c7cc24a765e)
+Cc: intel-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: Sasha Levin <sashal@kernel.org>
+Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14558
+Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- fs/nfs/pagelist.c        |  9 +++---
- fs/nfs/write.c           | 66 ++++++++++++++--------------------------
- include/linux/nfs_page.h |  1 +
- 3 files changed, 29 insertions(+), 47 deletions(-)
+ drivers/gpu/drm/drm_dp_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/pagelist.c b/fs/nfs/pagelist.c
-index 7ac70f7e83b1..41f755365a61 100644
---- a/fs/nfs/pagelist.c
-+++ b/fs/nfs/pagelist.c
-@@ -234,13 +234,14 @@ nfs_page_group_unlock(struct nfs_page *req)
- 	nfs_page_clear_headlock(req);
- }
- 
--/*
-- * nfs_page_group_sync_on_bit_locked
-+/**
-+ * nfs_page_group_sync_on_bit_locked - Test if all requests have @bit set
-+ * @req: request in page group
-+ * @bit: PG_* bit that is used to sync page group
-  *
-  * must be called with page group lock held
-  */
--static bool
--nfs_page_group_sync_on_bit_locked(struct nfs_page *req, unsigned int bit)
-+bool nfs_page_group_sync_on_bit_locked(struct nfs_page *req, unsigned int bit)
- {
- 	struct nfs_page *head = req->wb_head;
- 	struct nfs_page *tmp;
-diff --git a/fs/nfs/write.c b/fs/nfs/write.c
-index d0a5dafdac54..0b05a40a21f3 100644
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -155,20 +155,10 @@ nfs_page_set_inode_ref(struct nfs_page *req, struct inode *inode)
- 	}
- }
- 
--static int
--nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
-+static void nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
- {
--	int ret;
--
--	if (!test_bit(PG_REMOVE, &req->wb_flags))
--		return 0;
--	ret = nfs_page_group_lock(req);
--	if (ret)
--		return ret;
- 	if (test_and_clear_bit(PG_REMOVE, &req->wb_flags))
- 		nfs_page_set_inode_ref(req, inode);
--	nfs_page_group_unlock(req);
--	return 0;
- }
- 
- static struct nfs_page *
-@@ -240,36 +230,6 @@ static struct nfs_page *nfs_page_find_head_request(struct page *page)
- 	return req;
- }
- 
--static struct nfs_page *nfs_find_and_lock_page_request(struct page *page)
--{
--	struct inode *inode = page_file_mapping(page)->host;
--	struct nfs_page *req, *head;
--	int ret;
--
--	for (;;) {
--		req = nfs_page_find_head_request(page);
--		if (!req)
--			return req;
--		head = nfs_page_group_lock_head(req);
--		if (head != req)
--			nfs_release_request(req);
--		if (IS_ERR(head))
--			return head;
--		ret = nfs_cancel_remove_inode(head, inode);
--		if (ret < 0) {
--			nfs_unlock_and_release_request(head);
--			return ERR_PTR(ret);
--		}
--		/* Ensure that nobody removed the request before we locked it */
--		if (head == nfs_page_private_request(page))
--			break;
--		if (PageSwapCache(page))
--			break;
--		nfs_unlock_and_release_request(head);
--	}
--	return head;
--}
--
- /* Adjust the file length if we're writing beyond the end */
- static void nfs_grow_file(struct page *page, unsigned int offset, unsigned int count)
- {
-@@ -626,14 +586,32 @@ nfs_lock_and_join_requests(struct page *page)
- 	 * reference to the whole page group - the group will not be destroyed
- 	 * until the head reference is released.
+diff --git a/drivers/gpu/drm/drm_dp_helper.c b/drivers/gpu/drm/drm_dp_helper.c
+index 4eabef5b86d0..ffc68d305afe 100644
+--- a/drivers/gpu/drm/drm_dp_helper.c
++++ b/drivers/gpu/drm/drm_dp_helper.c
+@@ -280,7 +280,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_aux *aux, unsigned int offset,
+ 	 * We just have to do it before any DPCD access and hope that the
+ 	 * monitor doesn't power down exactly after the throw away read.
  	 */
--	head = nfs_find_and_lock_page_request(page);
-+retry:
-+	head = nfs_page_find_head_request(page);
- 	if (IS_ERR_OR_NULL(head))
- 		return head;
- 
-+	while (!nfs_lock_request(head)) {
-+		ret = nfs_wait_on_request(head);
-+		if (ret < 0) {
-+			nfs_release_request(head);
-+			return ERR_PTR(ret);
-+		}
-+	}
-+
- 	ret = nfs_page_group_lock(head);
- 	if (ret < 0)
- 		goto out_unlock;
- 
-+	/* Ensure that nobody removed the request before we locked it */
-+	if (head != nfs_page_private_request(page) && !PageSwapCache(page)) {
-+		nfs_page_group_unlock(head);
-+		nfs_unlock_and_release_request(head);
-+		goto retry;
-+	}
-+
-+	nfs_cancel_remove_inode(head, inode);
-+
- 	/* lock each request in the page group */
- 	for (subreq = head->wb_this_page;
- 	     subreq != head;
-@@ -842,7 +820,8 @@ static void nfs_inode_remove_request(struct nfs_page *req)
- 	struct nfs_inode *nfsi = NFS_I(inode);
- 	struct nfs_page *head;
- 
--	if (nfs_page_group_sync_on_bit(req, PG_REMOVE)) {
-+	nfs_page_group_lock(req);
-+	if (nfs_page_group_sync_on_bit_locked(req, PG_REMOVE)) {
- 		head = req->wb_head;
- 
- 		spin_lock(&mapping->private_lock);
-@@ -853,6 +832,7 @@ static void nfs_inode_remove_request(struct nfs_page *req)
- 		}
- 		spin_unlock(&mapping->private_lock);
- 	}
-+	nfs_page_group_unlock(req);
- 
- 	if (test_and_clear_bit(PG_INODE_REF, &req->wb_flags)) {
- 		nfs_release_request(req);
-diff --git a/include/linux/nfs_page.h b/include/linux/nfs_page.h
-index 7c5e704a7520..137b790ea1a4 100644
---- a/include/linux/nfs_page.h
-+++ b/include/linux/nfs_page.h
-@@ -150,6 +150,7 @@ extern void nfs_join_page_group(struct nfs_page *head,
- extern int nfs_page_group_lock(struct nfs_page *);
- extern void nfs_page_group_unlock(struct nfs_page *);
- extern bool nfs_page_group_sync_on_bit(struct nfs_page *, unsigned int);
-+extern bool nfs_page_group_sync_on_bit_locked(struct nfs_page *, unsigned int);
- extern	int nfs_page_set_headlock(struct nfs_page *req);
- extern void nfs_page_clear_headlock(struct nfs_page *req);
- extern bool nfs_async_iocounter_wait(struct rpc_task *, struct nfs_lock_context *);
+-	ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_LANE0_1_STATUS, buffer,
++	ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_DPCD_REV, buffer,
+ 				 1);
+ 	if (ret != 1)
+ 		goto out;
 -- 
-2.51.0
+2.49.1
 
 
