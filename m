@@ -1,107 +1,238 @@
-Return-Path: <stable+bounces-176614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8E6B3A1DF
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 16:31:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B005B3A231
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 16:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 018181888D5D
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 14:30:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 232D3581773
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 14:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2880A3148C0;
-	Thu, 28 Aug 2025 14:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC033101B1;
+	Thu, 28 Aug 2025 14:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S32R4eke"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="TiaksBK2";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="0vv1DokT";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="TiaksBK2";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="0vv1DokT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78FA3148AA;
-	Thu, 28 Aug 2025 14:28:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B0525D216
+	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 14:30:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756391320; cv=none; b=pWggzgqHAfLK/NXWyLW/hQ6Nh64oRRsXUMeIBu63J8QbAlwQeXHqyt1ymwAboJoQF/YgG13K5f1sOKfzbe+QYYC8sxUmyrAxIXKxcnHbvLKEStsafzHsJVxoUp9xU653H6FVs972w0o/J+85ksxYMUnDhWQ8ErRC7sBLo1Vqero=
+	t=1756391445; cv=none; b=Vs4ijWUlemCH2GQmsQdWgZso1ws5WU7DfJDGfwi0QKpWNydhZIqO7NPZ5Pas4fyNET9omdMVnm4rHIkGzUFJTX2Q+//fxuS6tPbilVXAVEwWqwT4piaeQGwEhXi2T7C8SZmqMbe3F2Fb48mWd602dqTerfRl4nscOI6X/EiaxDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756391320; c=relaxed/simple;
-	bh=g/YZW4958m4oLwRqPjzAj+rLRzVZubwrSj/QrnGIVDk=;
-	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rTEQRAzfYm0YGzWw4E2gwMr7l/p91jd2Oc8Kjh2iqeN8EjsZtxKJ3mt9ibFN33kAu9XMZpR7NwSxC7S/P5O7gWNsgdhvwdp0GOBGkYT/IrWAO+4GhEasDDcfCBYQWclofOVvP/rb45ti9ENx1RYqrADe5K/d0+nOL4b1VFAziy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S32R4eke; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C3CC4CEEB;
-	Thu, 28 Aug 2025 14:28:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756391319;
-	bh=g/YZW4958m4oLwRqPjzAj+rLRzVZubwrSj/QrnGIVDk=;
-	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=S32R4eke5zKB0GY8HTcTO4VXU5kal1Zlp9Nv7r17GlY4ltSUvkWOo0gVGpwt9KD3j
-	 TqVlVsNA3yrOidaJ3SsatVxTBfFtfyWrUfMi3kLLqwlxfn6m68MiJXyP7xc5tKJoRH
-	 fCPkg/9ByA5xDrQ3Z2QlOdBPABXyltFq3rXYckKdonLdCj+dav/bux29qSeluAEuRR
-	 NYbR1dq235fQlNGvQx9QCOwvQLujqqh7ihEIt1zoUpXOo4kESBI7mjZCGscW+3E0qO
-	 2CWS+se5vAzQ/QMcWu17+o/jAsmEm3vsYvWMrFR2SuiQBxgt+ume5ZRTZOVCCKZbX/
-	 iZhlwW7ShtmVw==
-Date: Thu, 28 Aug 2025 07:28:38 -0700
-Subject: [PATCH 3/9] xfs: use deferred intent items for reaping crosslinked
- blocks
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: cem@kernel.org, djwong@kernel.org
-Cc: stable@vger.kernel.org, hch@lst.de, linux-xfs@vger.kernel.org
-Message-ID: <175639126502.761138.11864019415667592045.stgit@frogsfrogsfrogs>
-In-Reply-To: <175639126389.761138.3915752172201973808.stgit@frogsfrogsfrogs>
-References: <175639126389.761138.3915752172201973808.stgit@frogsfrogsfrogs>
+	s=arc-20240116; t=1756391445; c=relaxed/simple;
+	bh=6Cir9eKHQmIdJ8bzY01aZN//9SOPJYEgesmkIDEiFW0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b9otq2y+Y3pDZSiuR1t0HUsB88CJeqd3RwcZSJ2khqZRbQT3B6anjmgPh9GHkBRjFlwUYHAl8HGhc7tA2IiFJzuRIXDtoewLMWN5OwmkU+khacDOeBgljcWmHJYm0lv0h9FKFBm6pmcZ2FKnM6Tz9fIH8K5vEvqpfLYty12AeW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=TiaksBK2; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=0vv1DokT; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=TiaksBK2; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=0vv1DokT; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4A16F33895;
+	Thu, 28 Aug 2025 14:30:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756391441; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=LRuuHCoLWwYVBQEW2UDz60bE1l/PW8wxhu/LxdEPMjE=;
+	b=TiaksBK2Iso0XoO5Wc9+xCKVSkNGR7euxpUK3hFQj4QLxHQUkDvwQMsOxkhMjdKpeGCXPv
+	X0QXCRrYH0gzVj3ad/Cjx7WtJvlp+9hU7ybqh8wKza9bnbygfCXifDs5dfcvizgeBVztvK
+	rCjQbybCNt1O0XAsKxDm29zUVc7wXNA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756391441;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=LRuuHCoLWwYVBQEW2UDz60bE1l/PW8wxhu/LxdEPMjE=;
+	b=0vv1DokTxWHWRE2UdBhHRnIc97oM92EM9+5SZ2U4fjSt0S0q50GdzIcGVc+dCXQym8nF8w
+	bPsHhvC0F3fwB8DQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756391441; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=LRuuHCoLWwYVBQEW2UDz60bE1l/PW8wxhu/LxdEPMjE=;
+	b=TiaksBK2Iso0XoO5Wc9+xCKVSkNGR7euxpUK3hFQj4QLxHQUkDvwQMsOxkhMjdKpeGCXPv
+	X0QXCRrYH0gzVj3ad/Cjx7WtJvlp+9hU7ybqh8wKza9bnbygfCXifDs5dfcvizgeBVztvK
+	rCjQbybCNt1O0XAsKxDm29zUVc7wXNA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756391441;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=LRuuHCoLWwYVBQEW2UDz60bE1l/PW8wxhu/LxdEPMjE=;
+	b=0vv1DokTxWHWRE2UdBhHRnIc97oM92EM9+5SZ2U4fjSt0S0q50GdzIcGVc+dCXQym8nF8w
+	bPsHhvC0F3fwB8DQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2B7311368B;
+	Thu, 28 Aug 2025 14:30:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id fSotCRFosGhRIwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 28 Aug 2025 14:30:41 +0000
+Message-ID: <5f88a029-b783-4a47-ac7f-9e1ed6605229@suse.cz>
+Date: Thu, 28 Aug 2025 16:30:40 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/mremap: fix regression in vrm->new_addr check
+Content-Language: en-US
+To: Carlos Llamas <cmllamas@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: kernel-team@android.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, "open list:MEMORY MAPPING" <linux-mm@kvack.org>
+References: <8a4dc910-5237-48aa-8abb-a6d5044bc290@lucifer.local>
+ <20250828142657.770502-1-cmllamas@google.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250828142657.770502-1-cmllamas@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid,suse.cz:email,oracle.com:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spam-Score: -4.30
 
-From: Darrick J. Wong <djwong@kernel.org>
+On 8/28/25 16:26, Carlos Llamas wrote:
+> Commit 3215eaceca87 ("mm/mremap: refactor initial parameter sanity
+> checks") moved the sanity check for vrm->new_addr from mremap_to() to
+> check_mremap_params().
+> 
+> However, this caused a regression as vrm->new_addr is now checked even
+> when MREMAP_FIXED and MREMAP_DONTUNMAP flags are not specified. In this
+> case, vrm->new_addr can be garbage and create unexpected failures.
+> 
+> Fix this by moving the new_addr check after the vrm_implies_new_addr()
+> guard. This ensures that the new_addr is only checked when the user has
+> specified one explicitly.
+> 
+> Cc: stable@vger.kernel.org
 
-When we're removing rmap records for crosslinked blocks, use deferred
-intent items so that we can try to free/unmap as many of the old data
-structure's blocks as we can in the same transaction as the commit.
+Not necessary, but for mm-hotfixes please, Andrew.
 
-Cc: <stable@vger.kernel.org> # v6.6
-Fixes: 1c7ce115e52106 ("xfs: reap large AG metadata extents when possible")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
----
- fs/xfs/scrub/reap.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+> Fixes: 3215eaceca87 ("mm/mremap: refactor initial parameter sanity checks")
+> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
 
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-diff --git a/fs/xfs/scrub/reap.c b/fs/xfs/scrub/reap.c
-index db46f6cd4112f3..33272729249f64 100644
---- a/fs/xfs/scrub/reap.c
-+++ b/fs/xfs/scrub/reap.c
-@@ -430,8 +430,6 @@ xreap_agextent_iter(
- 		trace_xreap_dispose_unmap_extent(pag_group(sc->sa.pag), agbno,
- 				*aglenp);
- 
--		xreap_force_defer_finish(rs);
--
- 		if (rs->oinfo == &XFS_RMAP_OINFO_COW) {
- 			/*
- 			 * If we're unmapping CoW staging extents, remove the
-@@ -440,11 +438,14 @@ xreap_agextent_iter(
- 			 */
- 			xfs_refcount_free_cow_extent(sc->tp, false, fsbno,
- 					*aglenp);
-+			xreap_force_defer_finish(rs);
- 			return 0;
- 		}
- 
--		return xfs_rmap_free(sc->tp, sc->sa.agf_bp, sc->sa.pag, agbno,
--				*aglenp, rs->oinfo);
-+		xfs_rmap_free_extent(sc->tp, false, fsbno, *aglenp,
-+				rs->oinfo->oi_owner);
-+		xreap_inc_defer(rs);
-+		return 0;
- 	}
- 
- 	trace_xreap_dispose_free_extent(pag_group(sc->sa.pag), agbno, *aglenp);
+> ---
+> v2:
+>  - split out vrm->new_len into individual checks
+>  - cc stable, collect tags
+> 
+> v1:
+> https://lore.kernel.org/all/20250828032653.521314-1-cmllamas@google.com/
+> 
+>  mm/mremap.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/mremap.c b/mm/mremap.c
+> index e618a706aff5..35de0a7b910e 100644
+> --- a/mm/mremap.c
+> +++ b/mm/mremap.c
+> @@ -1774,15 +1774,18 @@ static unsigned long check_mremap_params(struct vma_remap_struct *vrm)
+>  	if (!vrm->new_len)
+>  		return -EINVAL;
+>  
+> -	/* Is the new length or address silly? */
+> -	if (vrm->new_len > TASK_SIZE ||
+> -	    vrm->new_addr > TASK_SIZE - vrm->new_len)
+> +	/* Is the new length silly? */
+> +	if (vrm->new_len > TASK_SIZE)
+>  		return -EINVAL;
+>  
+>  	/* Remainder of checks are for cases with specific new_addr. */
+>  	if (!vrm_implies_new_addr(vrm))
+>  		return 0;
+>  
+> +	/* Is the new address silly? */
+> +	if (vrm->new_addr > TASK_SIZE - vrm->new_len)
+> +		return -EINVAL;
+> +
+>  	/* The new address must be page-aligned. */
+>  	if (offset_in_page(vrm->new_addr))
+>  		return -EINVAL;
 
 
