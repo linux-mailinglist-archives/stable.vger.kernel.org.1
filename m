@@ -1,364 +1,201 @@
-Return-Path: <stable+bounces-176605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973D1B39DAE
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 14:48:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87009B39DF9
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 15:01:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EEB41BA55A8
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 12:48:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23F9C3BC7EC
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 13:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D043081CE;
-	Thu, 28 Aug 2025 12:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8583101D4;
+	Thu, 28 Aug 2025 13:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=desy.de header.i=@desy.de header.b="dfI+mLWu"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JtymtjnB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-o-3.desy.de (smtp-o-3.desy.de [131.169.56.156])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EC130BB9D
-	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 12:48:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=131.169.56.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3603101D3
+	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 13:00:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756385299; cv=none; b=neJU7PJfUrrCHFix7fjvzGU1g0ZTD/ApQ6lZ/PRuQTc8Rc1nU+MuyPnsCY9j9H8mgAK6jsaPlNYBjkcJPywr3ZvP1N7JmbRnQuDRGF4IK/zdhWScoRDx8uU/oysBPdnyWeXCiNDYw6wa3qMl7y/cFvje3lHChqF6Y0U1Jr2ypzU=
+	t=1756386057; cv=none; b=gaR/T87WdfNjBEK9ito/vllvXbHaZkqUg7iVeJPLNdEiL0GQCZT1rJik33cBQXVNrU4DDNz0qHsE3rKUhS4ODo4pnhpzI3iFsbrqzdtrX45S+dJYufrvUPJR0c2aQAo/3Jm6+oChiJ0IpoE0fcVVkT9B4usm+X0sXa7ANRE1XXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756385299; c=relaxed/simple;
-	bh=NwlJER5TwN4jq9RS4wj5cl/xjNnKeNCPBoVP+zjAuNI=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=MlpzKtbXRnTLbzvddjCaqfqiHmhdGz18OEZ/QnIozgAioWoEUclkpOA9SsozzZD9ecciLBHk5Jd2hCkg65oUy55h7STPSMadQnrxG+LZg7dbw0PL1G4uM+pP5JrKurnjBk/KYoqOT0wOCQAPonNN7T8BS7ONbUCTmnN9RpZahdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=desy.de; spf=pass smtp.mailfrom=desy.de; dkim=pass (1024-bit key) header.d=desy.de header.i=@desy.de header.b=dfI+mLWu; arc=none smtp.client-ip=131.169.56.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=desy.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=desy.de
-Received: from smtp-o-2.desy.de (smtp-o-2.desy.de [131.169.56.155])
-	by smtp-o-3.desy.de (Postfix) with ESMTP id B033F11F91B
-	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 14:48:13 +0200 (CEST)
-Received: from smtp-buf-1.desy.de (smtp-buf-1.desy.de [IPv6:2001:638:700:1038::1:a4])
-	by smtp-o-2.desy.de (Postfix) with ESMTP id 036AD13F647
-	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 14:48:06 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 smtp-o-2.desy.de 036AD13F647
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=desy.de; s=default;
-	t=1756385286; bh=yPEnCEUlOjZndbu8nSXz/U5gUyjQihz79sLTH6kpWqY=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=dfI+mLWukAU1TF+Gnpu4XNfV4G+0fxyCdbxD+UsHsXuWBWBoExusXfTcg/o1umrPS
-	 ze0sBoSfp/IywMytURRuF69gFFk8Mn0AAyffPDvIsrEWUIGy4LHvKbZOy0npbYtsia
-	 ClMZkz13dET4HNDsIXhqfqJrT5Ely9fEO0WlvMiE=
-Received: from smtp-m-2.desy.de (smtp-m-2.desy.de [131.169.56.130])
-	by smtp-buf-1.desy.de (Postfix) with ESMTP id EE53420056;
-	Thu, 28 Aug 2025 14:48:05 +0200 (CEST)
-Received: from b1722.mx.srv.dfn.de (b1722.mx.srv.dfn.de [194.95.235.47])
-	by smtp-m-2.desy.de (Postfix) with ESMTP id E09F616003F;
-	Thu, 28 Aug 2025 14:48:05 +0200 (CEST)
-Received: from smtp-intra-2.desy.de (smtp-intra-2.desy.de [131.169.56.83])
-	by b1722.mx.srv.dfn.de (Postfix) with ESMTP id 991AA160058;
-	Thu, 28 Aug 2025 14:48:04 +0200 (CEST)
-Received: from z-mbx-2.desy.de (z-mbx-2.desy.de [131.169.55.140])
-	by smtp-intra-2.desy.de (Postfix) with ESMTP id BABB620044;
-	Thu, 28 Aug 2025 14:48:03 +0200 (CEST)
-Date: Thu, 28 Aug 2025 14:48:03 +0200 (CEST)
-From: "Mkrtchyan, Tigran" <tigran.mkrtchyan@desy.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable <stable@vger.kernel.org>, patches@lists.linux.dev, 
-	Trond Myklebust <trond.myklebust@hammerspace.com>, 
-	Sasha Levin <sashal@kernel.org>, 
-	Dan Carpenter <dan.carpenter@linaro.org>
-Message-ID: <1930989002.4608779.1756385283630.JavaMail.zimbra@desy.de>
-In-Reply-To: <20250826110928.612854620@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org> <20250826110928.612854620@linuxfoundation.org>
-Subject: Re: [PATCH 5.10 168/523] pNFS/flexfiles: dont attempt pnfs on fatal
- DS errors
+	s=arc-20240116; t=1756386057; c=relaxed/simple;
+	bh=jKUgrkKGxwjF/OmmVzVGTm7SLGw0brqesEGq3+BW44I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kiusXpiMzygqI3aR6C63sNBu1gH7h6UZbC4RAM9uIn9xDuXE8JuKSD/x9pr3K5Iw3h1FtayYsZ7E+asfPTmeS0SaBSdCCCwRhCHGyQvlADeF1CLio1x8Tf2Ltn7K+p5xE2+s/Lxakc1340tdGwLMWc10r8HO95I/saI61+p00l4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JtymtjnB; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756386055;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AbvuB6Au0zhNqXABCgDm8J3gFB0IHbInVCTp8q39tsI=;
+	b=JtymtjnBrBg5ENlqe0750ST9jSSF3mHVGC6EN4IZWIYdP9mabgz+GfrNBDj6TSuneoZZ/K
+	0Lef8pyNLefuuBu+YTO+oKjv6JtQ+bB62MKcqOVyS91slDLNu4uJXScGInPnfHiT/NFVjj
+	JEu0wOCLRKhlyIwkUXn8e2msXq7IEBQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-175-RaOj-_ImNheU4L85yH0eNQ-1; Thu, 28 Aug 2025 09:00:52 -0400
+X-MC-Unique: RaOj-_ImNheU4L85yH0eNQ-1
+X-Mimecast-MFC-AGG-ID: RaOj-_ImNheU4L85yH0eNQ_1756386051
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45b71fe31ffso5503105e9.2
+        for <stable@vger.kernel.org>; Thu, 28 Aug 2025 06:00:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756386051; x=1756990851;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AbvuB6Au0zhNqXABCgDm8J3gFB0IHbInVCTp8q39tsI=;
+        b=Fax3d4+KH+gacWWmz2wPDVx3sFvYPkNKIzIQ7Zlc8S8CyDLD0btE9Pqi14xAkGf/bo
+         Klln9B633pKa8QaNbIdhFhKeUo5eU8njhXmY7Y5GRNLf0ni/Mt023rqIMLTwea0nmKfj
+         F0dZRpWZyj9IKSQE+bByfpp8XGlLOrXODow+SuuQL2HKP/pn22xHWxXYcM5YhuzKyFX/
+         hE+MFHl/zVhRs/6W5u86oSzki4iKzBSrDsFfHdByzteKO689099lRGnPwxb722Oj3YbW
+         HfXEfXXNYzsdgg3kvIDAEdN5BPb3ZmgZ433NXeWrFlXcJ6CjLIifg8QXnUWKQq/kzQJV
+         1s6A==
+X-Forwarded-Encrypted: i=1; AJvYcCUMyW16PHXALUzcN5al99LdW+MsGoVXBj19Ag2VnHJrnyOxPyowd6YBrpffZWrCINOG4OTYBRo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywljfv/NurgrJ9IOiya2HKZ9V15hjOdC3et6LvbxaMHD61Te+9f
+	CMuDiUiYiideXSo8Nyk7+lM0UndzvaF+GqrLoA+oWMWf8guod6yOG12o6jCapTpPGDl7deipcNn
+	jCY0j/y4RlYZ6SdXZhl/cfaDJNK5RwpQ/tvvEVIENmz/hW5CWTJpuM5KErA==
+X-Gm-Gg: ASbGncuRFp2tqXuaurHithhqEqJF1/31382a7K+5HQJA3WxTl7e/Q85kKFl1IXy8ETT
+	6zhis5ftOWVebXE1vWGh83CgM9uXt+k7aywy2Cam9Os0dpIpOXRks+CC/+1EOpXR6+k5ztTEpyR
+	gkqe5J3tO0/N0WL0RvFeO9zXhNqGEotKCx1+d8fTUwEcXdpm1mbzjmusHX27u6Cmi+xstDHnVxt
+	ecP9k+aI26GnLeA/edslRnJ3F/8QPatS6rv/4YiXL47kEyVQ5QAT2DOnHmidWy6vgn9gnvxeAe2
+	bvkzLDB+CQfWc/e29Zo1HZYLk1947cWw
+X-Received: by 2002:a05:6000:2386:b0:3cb:46fc:8ea2 with SMTP id ffacd0b85a97d-3cb46fc90eamr6842053f8f.6.1756386050919;
+        Thu, 28 Aug 2025 06:00:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEFwS7Qliz/HxgGv2dXJpTk5nUZcNUDdFuQrU+BPOwYcdT0gczDl4R2JQKuapyawZNMQWWyqw==
+X-Received: by 2002:a05:6000:2386:b0:3cb:46fc:8ea2 with SMTP id ffacd0b85a97d-3cb46fc90eamr6842013f8f.6.1756386050171;
+        Thu, 28 Aug 2025 06:00:50 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1515:7300:62e6:253a:2a96:5e3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cd5997658fsm4839515f8f.46.2025.08.28.06.00.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Aug 2025 06:00:49 -0700 (PDT)
+Date: Thu, 28 Aug 2025 09:00:46 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Parav Pandit <parav@nvidia.com>
+Cc: Cornelia Huck <cohuck@redhat.com>,
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
+	"jasowang@redhat.com" <jasowang@redhat.com>,
+	"stefanha@redhat.com" <stefanha@redhat.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Max Gurtovoy <mgurtovoy@nvidia.com>,
+	"NBU-Contact-Li Rongqing (EXTERNAL)" <lirongqing@baidu.com>,
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>
+Subject: Re: [PATCH] Revert "virtio_pci: Support surprise removal of virtio
+ pci device"
+Message-ID: <20250828085526-mutt-send-email-mst@kernel.org>
+References: <CY8PR12MB7195C932CA73F6C2FC7484ABDC3FA@CY8PR12MB7195.namprd12.prod.outlook.com>
+ <20250824102947-mutt-send-email-mst@kernel.org>
+ <CY8PR12MB71956B4FDE7C4A2DA4304D0CDC39A@CY8PR12MB7195.namprd12.prod.outlook.com>
+ <20250827061537-mutt-send-email-mst@kernel.org>
+ <87frdddmni.fsf@redhat.com>
+ <CY8PR12MB7195FD9F90C45CC2B17A4776DC3BA@CY8PR12MB7195.namprd12.prod.outlook.com>
+ <87cy8fej4z.fsf@redhat.com>
+ <20250828081717-mutt-send-email-mst@kernel.org>
+ <87a53jeiv6.fsf@redhat.com>
+ <CY8PR12MB719591FB70C7ACA82AD8ACF8DC3BA@CY8PR12MB7195.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256; 
-	boundary="----=_Part_4608780_1928269810.1756385283660"
-X-Mailer: Zimbra 10.1.10_GA_4785 (ZimbraWebClient - FF142 (Linux)/10.1.10_GA_4785)
-Thread-Topic: pNFS/flexfiles: dont attempt pnfs on fatal DS errors
-Thread-Index: eZfEBFLMzAkAKXIDN4nCBFX/JcedBg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CY8PR12MB719591FB70C7ACA82AD8ACF8DC3BA@CY8PR12MB7195.namprd12.prod.outlook.com>
 
-------=_Part_4608780_1928269810.1756385283660
-Date: Thu, 28 Aug 2025 14:48:03 +0200 (CEST)
-From: "Mkrtchyan, Tigran" <tigran.mkrtchyan@desy.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable <stable@vger.kernel.org>, patches@lists.linux.dev, 
-	Trond Myklebust <trond.myklebust@hammerspace.com>, 
-	Sasha Levin <sashal@kernel.org>, 
-	Dan Carpenter <dan.carpenter@linaro.org>
-Message-ID: <1930989002.4608779.1756385283630.JavaMail.zimbra@desy.de>
-In-Reply-To: <20250826110928.612854620@linuxfoundation.org>
-References: <20250826110924.562212281@linuxfoundation.org> <20250826110928.612854620@linuxfoundation.org>
-Subject: Re: [PATCH 5.10 168/523] pNFS/flexfiles: dont attempt pnfs on fatal
- DS errors
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 10.1.10_GA_4785 (ZimbraWebClient - FF142 (Linux)/10.1.10_GA_4785)
-Thread-Topic: pNFS/flexfiles: dont attempt pnfs on fatal DS errors
-Thread-Index: eZfEBFLMzAkAKXIDN4nCBFX/JcedBg==
+On Thu, Aug 28, 2025 at 12:33:58PM +0000, Parav Pandit wrote:
+> 
+> > From: Cornelia Huck <cohuck@redhat.com>
+> > Sent: 28 August 2025 05:52 PM
+> > 
+> > On Thu, Aug 28 2025, "Michael S. Tsirkin" <mst@redhat.com> wrote:
+> > 
+> > > On Thu, Aug 28, 2025 at 02:16:28PM +0200, Cornelia Huck wrote:
+> > >> On Thu, Aug 28 2025, Parav Pandit <parav@nvidia.com> wrote:
+> > >>
+> > >> >> From: Cornelia Huck <cohuck@redhat.com>
+> > >> >> Sent: 27 August 2025 05:04 PM
+> > >> >>
+> > >> >> On Wed, Aug 27 2025, "Michael S. Tsirkin" <mst@redhat.com> wrote:
+> > >> >>
+> > >> >> > On Tue, Aug 26, 2025 at 06:52:03PM +0000, Parav Pandit wrote:
+> > >> >> >> > What I do not understand, is what good does the revert do. Sorry.
+> > >> >> >> >
+> > >> >> >> Let me explain.
+> > >> >> >> It prevents the issue of vblk requests being stuck due to broken VQ.
+> > >> >> >> It prevents the vnet driver start_xmit() to be not stuck on skb
+> > completions.
+> > >> >> >
+> > >> >> > This is the part I don't get.  In what scenario, before
+> > >> >> > 43bb40c5b9265 start_xmit is not stuck, but after 43bb40c5b9265 it is
+> > stuck?
+> > >> >> >
+> > >> >> > Once the device is gone, it is not using any buffers at all.
+> > >> >>
+> > >> >> What I also don't understand: virtio-ccw does exactly the same
+> > >> >> thing (virtio_break_device(), added in 2014), and it supports
+> > >> >> surprise removal _only_, yet I don't remember seeing bug reports?
+> > >> >
+> > >> > I suspect that stress testing may not have happened for ccw with active
+> > vblk Ios and outstanding transmit pkt and cvq commands.
+> > >> > Hard to say as we don't have ccw hw or systems.
+> > >>
+> > >> cc:ing linux-s390 list. I'd be surprised if nobody ever tested
+> > >> surprise removal on a loaded system in the last 11 years.
+> > >
+> > >
+> > > As it became very clear from follow up discussion, the issue is
+> > > nothing to do with virtio, it is with a broken hypervisor that allows
+> > > device to DMA into guest memory while also telling the guest that the
+> > > device has been removed.
+> > >
+> > > I guess s390 is just not broken like this.
+> > 
+> > Ah good, I missed that -- that indeed sounds broken, and needs to be fixed
+> > there.
+> Nop. This is not the issue. You missed this focused on fixing the device.
+> 
+> The fact is: the driver is expecting the IOs and CVQ commands and DMA to succeed even after device is removed.
+> The driver is expecting the device reset to also succeed.
+> Stefan already pointed out this in the vblk driver patches.
+> This is why you see call traces on del_gendisk(), CVQ commands.
+> 
+> Again, it is the broken drivers not the device.
+> Device can stop the DMA and stop responding to the requests and kernel 6.X will continue to hang as long as it has cited commit.
 
 
-Hi Greg,
+Parav, the issues you cite are real but unrelated and will hang anyway
+with or without the commit.
 
-I just got a report that the proposed fix has a bug in one of the error paths. I am
-trying to fix that, so you might want to wait with the backport.
+All you have to do is pull out the device while e.g. a command is in the
+process of being submitted.
 
-Sorry about that,
-   Tigran.
+All the commit you want to revert does, is in some instances instead of
+just hanging it will make queue as broken and release memory. Since you
+device is not really gone and keeps DMAing into memory, guest memory
+gets corrupted.
 
------ Original Message -----
-> From: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-> To: "stable" <stable@vger.kernel.org>
-> Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, patches@lists.linux.dev, "Tigran Mkrtchyan"
-> <tigran.mkrtchyan@desy.de>, "Trond Myklebust" <trond.myklebust@hammerspace.com>, "Sasha Levin" <sashal@kernel.org>
-> Sent: Tuesday, 26 August, 2025 13:06:18
-> Subject: [PATCH 5.10 168/523] pNFS/flexfiles: dont attempt pnfs on fatal DS errors
 
-> 5.10-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
-> 
-> [ Upstream commit f06bedfa62d57f7b67d44aacd6badad2e13a803f ]
-> 
-> When an applications get killed (SIGTERM/SIGINT) while pNFS client performs a
-> connection
-> to DS, client ends in an infinite loop of connect-disconnect. This
-> source of the issue, it that flexfilelayoutdev#nfs4_ff_layout_prepare_ds gets an
-> error
-> on nfs4_pnfs_ds_connect with status ERESTARTSYS, which is set by
-> rpc_signal_task, but
-> the error is treated as transient, thus retried.
-> 
-> The issue is reproducible with Ctrl+C the following script(there should be ~1000
-> files in
-> a directory, client should must not have any connections to DSes):
-> 
-> ```
-> echo 3 > /proc/sys/vm/drop_caches
-> 
-> for i in *
-> do
->   head -1 $i
-> done
-> ```
-> 
-> The change aims to propagate the nfs4_ff_layout_prepare_ds error state
-> to the caller that can decide whatever this is a retryable error or not.
-> 
-> Signed-off-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
-> Link: https://lore.kernel.org/r/20250627071751.189663-1-tigran.mkrtchyan@desy.de
-> Fixes: 260f32adb88d ("pNFS/flexfiles: Check the result of nfs4_pnfs_ds_connect")
-> Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
-> fs/nfs/flexfilelayout/flexfilelayout.c    | 26 ++++++++++++++---------
-> fs/nfs/flexfilelayout/flexfilelayoutdev.c |  6 +++---
-> 2 files changed, 19 insertions(+), 13 deletions(-)
-> 
-> diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c
-> b/fs/nfs/flexfilelayout/flexfilelayout.c
-> index a053dd05057f..57150b27c0fd 100644
-> --- a/fs/nfs/flexfilelayout/flexfilelayout.c
-> +++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-> @@ -739,14 +739,14 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment
-> *lseg,
-> {
-> 	struct nfs4_ff_layout_segment *fls = FF_LAYOUT_LSEG(lseg);
-> 	struct nfs4_ff_layout_mirror *mirror;
-> -	struct nfs4_pnfs_ds *ds;
-> +	struct nfs4_pnfs_ds *ds = ERR_PTR(-EAGAIN);
-> 	u32 idx;
-> 
-> 	/* mirrors are initially sorted by efficiency */
-> 	for (idx = start_idx; idx < fls->mirror_array_cnt; idx++) {
-> 		mirror = FF_LAYOUT_COMP(lseg, idx);
-> 		ds = nfs4_ff_layout_prepare_ds(lseg, mirror, false);
-> -		if (!ds)
-> +		if (IS_ERR(ds))
-> 			continue;
-> 
-> 		if (check_device &&
-> @@ -754,10 +754,10 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment
-> *lseg,
-> 			continue;
-> 
-> 		*best_idx = idx;
-> -		return ds;
-> +		break;
-> 	}
-> 
-> -	return NULL;
-> +	return ds;
-> }
-> 
-> static struct nfs4_pnfs_ds *
-> @@ -933,7 +933,7 @@ ff_layout_pg_init_write(struct nfs_pageio_descriptor *pgio,
-> 	for (i = 0; i < pgio->pg_mirror_count; i++) {
-> 		mirror = FF_LAYOUT_COMP(pgio->pg_lseg, i);
-> 		ds = nfs4_ff_layout_prepare_ds(pgio->pg_lseg, mirror, true);
-> -		if (!ds) {
-> +		if (IS_ERR(ds)) {
-> 			if (!ff_layout_no_fallback_to_mds(pgio->pg_lseg))
-> 				goto out_mds;
-> 			pnfs_generic_pg_cleanup(pgio);
-> @@ -1820,6 +1820,7 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
-> 	u32 idx = hdr->pgio_mirror_idx;
-> 	int vers;
-> 	struct nfs_fh *fh;
-> +	bool ds_fatal_error = false;
-> 
-> 	dprintk("--> %s ino %lu pgbase %u req %zu@%llu\n",
-> 		__func__, hdr->inode->i_ino,
-> @@ -1827,8 +1828,10 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
-> 
-> 	mirror = FF_LAYOUT_COMP(lseg, idx);
-> 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, false);
-> -	if (!ds)
-> +	if (IS_ERR(ds)) {
-> +		ds_fatal_error = nfs_error_is_fatal(PTR_ERR(ds));
-> 		goto out_failed;
-> +	}
-> 
-> 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
-> 						   hdr->inode);
-> @@ -1869,7 +1872,7 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
-> 	return PNFS_ATTEMPTED;
-> 
-> out_failed:
-> -	if (ff_layout_avoid_mds_available_ds(lseg))
-> +	if (ff_layout_avoid_mds_available_ds(lseg) && !ds_fatal_error)
-> 		return PNFS_TRY_AGAIN;
-> 	trace_pnfs_mds_fallback_read_pagelist(hdr->inode,
-> 			hdr->args.offset, hdr->args.count,
-> @@ -1890,11 +1893,14 @@ ff_layout_write_pagelist(struct nfs_pgio_header *hdr,
-> int sync)
-> 	int vers;
-> 	struct nfs_fh *fh;
-> 	u32 idx = hdr->pgio_mirror_idx;
-> +	bool ds_fatal_error = false;
-> 
-> 	mirror = FF_LAYOUT_COMP(lseg, idx);
-> 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, true);
-> -	if (!ds)
-> +	if (IS_ERR(ds)) {
-> +		ds_fatal_error = nfs_error_is_fatal(PTR_ERR(ds));
-> 		goto out_failed;
-> +	}
-> 
-> 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
-> 						   hdr->inode);
-> @@ -1937,7 +1943,7 @@ ff_layout_write_pagelist(struct nfs_pgio_header *hdr, int
-> sync)
-> 	return PNFS_ATTEMPTED;
-> 
-> out_failed:
-> -	if (ff_layout_avoid_mds_available_ds(lseg))
-> +	if (ff_layout_avoid_mds_available_ds(lseg) && !ds_fatal_error)
-> 		return PNFS_TRY_AGAIN;
-> 	trace_pnfs_mds_fallback_write_pagelist(hdr->inode,
-> 			hdr->args.offset, hdr->args.count,
-> @@ -1979,7 +1985,7 @@ static int ff_layout_initiate_commit(struct
-> nfs_commit_data *data, int how)
-> 	idx = calc_ds_index_from_commit(lseg, data->ds_commit_index);
-> 	mirror = FF_LAYOUT_COMP(lseg, idx);
-> 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, true);
-> -	if (!ds)
-> +	if (IS_ERR(ds))
-> 		goto out_err;
-> 
-> 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
-> diff --git a/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-> b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-> index 4b0cdddce6eb..11777d33a85e 100644
-> --- a/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-> +++ b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
-> @@ -368,11 +368,11 @@ nfs4_ff_layout_prepare_ds(struct pnfs_layout_segment
-> *lseg,
-> 			  struct nfs4_ff_layout_mirror *mirror,
-> 			  bool fail_return)
-> {
-> -	struct nfs4_pnfs_ds *ds = NULL;
-> +	struct nfs4_pnfs_ds *ds;
-> 	struct inode *ino = lseg->pls_layout->plh_inode;
-> 	struct nfs_server *s = NFS_SERVER(ino);
-> 	unsigned int max_payload;
-> -	int status;
-> +	int status = -EAGAIN;
-> 
-> 	if (!ff_layout_init_mirror_ds(lseg->pls_layout, mirror))
-> 		goto noconnect;
-> @@ -410,7 +410,7 @@ nfs4_ff_layout_prepare_ds(struct pnfs_layout_segment *lseg,
-> 	ff_layout_send_layouterror(lseg);
-> 	if (fail_return || !ff_layout_has_available_ds(lseg))
-> 		pnfs_error_mark_layout_for_return(ino, lseg);
-> -	ds = NULL;
-> +	ds = ERR_PTR(status);
-> out:
-> 	return ds;
-> }
-> --
-> 2.39.5
+But your argument that the issue is that the fix is "incomplete" is
+bogus - when we make the fix complete it will become even worse for
+this broken devices.
 
-------=_Part_4608780_1928269810.1756385283660
-Content-Type: application/pkcs7-signature; name=smime.p7s; smime-type=signed-data
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCAMIIH
-XzCCBUegAwIBAgIQGrSZ0tLzGu9JoeeaXGroSzANBgkqhkiG9w0BAQwFADBVMQswCQYDVQQGEwJO
-TDEZMBcGA1UEChMQR0VBTlQgVmVyZW5pZ2luZzErMCkGA1UEAxMiR0VBTlQgVENTIEF1dGhlbnRp
-Y2F0aW9uIFJTQSBDQSA0QjAeFw0yNDEyMDQwOTQzMjZaFw0yNjAxMDMwOTQzMjZaMIGpMRMwEQYK
-CZImiZPyLGQBGRMDb3JnMRYwFAYKCZImiZPyLGQBGRMGdGVyZW5hMRMwEQYKCZImiZPyLGQBGRMD
-dGNzMQswCQYDVQQGEwJERTEuMCwGA1UEChMlRGV1dHNjaGVzIEVsZWt0cm9uZW4tU3luY2hyb3Ry
-b24gREVTWTEoMCYGA1UEAwwfVGlncmFuIE1rcnRjaHlhbiB0aWdyYW5AZGVzeS5kZTCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBAKZ1aJleygPW8bRzYJ3VfXwfY2TxAF0QUuTk/6Bqu8Bi
-UQjIgmBQ1hCzz8DVdJ8saw7p5/c1JDmVHqm2DJPwXLROKACiDdSHPf+N8PFZvxHxOqFNPeO/oJhO
-jHXG1c/tL8ElfiUlMtEZYtoS60/VUz3A/4FIWP2A5s/UIOSZyCcKz3AUcAanHGEJVS8oWKQj7pNX
-yjojvX4aPHzsKP+c+c/5wq08/aziRXLCekhKk+VdS8lhlS/3AL1G0VSWKj5/pOpz4ozmv44GEw9z
-FAsPWuTcLXqCX993BOoWAyQDcygAsb0nQQMzx+4wlSGsI31/gKOE5ZOJ3SErWDswgzxWm8Xht/Kl
-ymDHPXi8P0ohQjJrQRpJXVwD/tXDwSSbWP9jnVbtqpvLLBkNrSy6elW19nkE1ObpSPcn+be5hs1P
-59Y+GPudytAQ3MOoFoNd7kxpVQoM6cdQjRHdyIDbavZrdxr33s7uqSbcI/PE8W5M0iPNnd4ip4kH
-UIOdpsjk7b7kEdO4Jf9dDrz/fduAEaW+AUTfb+G42LiftUBXkANa50nOseW3tocadYOTySufN9or
-IwvcQ/1uemVd83On7k8bWevfU159x28aidxv8liqJXrrT28tp/QxtGtDXjo9jdkWi/5d/9XfqQgN
-IT7KH42fc3ZlaL3pLuJwEQWVtFnWUTRJAgMBAAGjggHUMIIB0DAfBgNVHSMEGDAWgBQQMuoC4vzP
-6lYlVIfDmPXog9bFJDAOBgNVHQ8BAf8EBAMCBaAwCQYDVR0TBAIwADAdBgNVHSUEFjAUBggrBgEF
-BQcDAgYIKwYBBQUHAwQwRQYDVR0gBD4wPDAMBgoqhkiG90wFAgIFMA0GCyqGSIb3TAUCAwMDMA0G
-CyqGSIb3TAUCAwECMA4GDCsGAQQBgcRaAgMCAjBUBgNVHR8ETTBLMEmgR6BFhkNodHRwOi8vY3Js
-LmVudGVycHJpc2Uuc2VjdGlnby5jb20vR0VBTlRUQ1NBdXRoZW50aWNhdGlvblJTQUNBNEIuY3Js
-MIGRBggrBgEFBQcBAQSBhDCBgTBPBggrBgEFBQcwAoZDaHR0cDovL2NydC5lbnRlcnByaXNlLnNl
-Y3RpZ28uY29tL0dFQU5UVENTQXV0aGVudGljYXRpb25SU0FDQTRCLmNydDAuBggrBgEFBQcwAYYi
-aHR0cDovL29jc3AuZW50ZXJwcmlzZS5zZWN0aWdvLmNvbTAjBgNVHREEHDAagRh0aWdyYW4ubWty
-dGNoeWFuQGRlc3kuZGUwHQYDVR0OBBYEFMmhx6vILo+tVVV6rojJTwL+t2eGMA0GCSqGSIb3DQEB
-DAUAA4ICAQARKKJEO1G3lIe+AA+E3pl5mNYs/+XgswX1316JYDRzBnfVweMR6IaOT7yrP+Mwhx3v
-yiM8VeSVFtfyLlV6FaHAxNFo5Z19L++g/FWWAg0Wz13aFaEm0+KEp8RkB/Mh3EbSukZxUqmWCgrx
-zmx+I5zlX8pLxNgrxcc1WW5l7Y7y2sci++W6wE/L7rgMuznqiBLw/qwnkXAeQrw2PIllAGwRqrwa
-37kPa+naT1P0HskuBFHQSmMihB5HQl6+2Rs9M5RMW3/IlUQAqkhZQGBXmiWDivjPFKXJQnCmhQmh
-76sOcSOScfzYI5xOD+ZGdBRRufkUxaXJ2G//IgkK2R8mqrFEXxBFaBMc0uMBJHKNv+FO7H6VPOe9
-BD9FwfLiqWvGwKJrF11Bk/QSfWh+zCJ8JHPAi6irwQO4Xf+0xhPsxb+jBfKK3I84YMf6zsDkdDzH
-lkNPhDh4xhYhEAk+L228pjTEmnbb2QVv52grZ0dbITuN+Hz2ypvLfaS8p06lrht45COlkmuIUVqp
-bsc3kRt610qwXSjYcc8zeCQI0Rqnnq+0UN5T0KU7JSzUho6vaTSUG57uc7b3DkIW2Z9VpXX5xKb/
-vfl++jC5JzKrbCeS+QOStpXwwaH62IUHwdfWfkvpzb8EFALEmCvu8nlT9NaqYlB/xogMH6oHBm+Y
-nxmRQxWROAAAMYIDZTCCA2ECAQEwaTBVMQswCQYDVQQGEwJOTDEZMBcGA1UEChMQR0VBTlQgVmVy
-ZW5pZ2luZzErMCkGA1UEAxMiR0VBTlQgVENTIEF1dGhlbnRpY2F0aW9uIFJTQSBDQSA0QgIQGrSZ
-0tLzGu9JoeeaXGroSzANBglghkgBZQMEAgEFAKCBzjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
-MBwGCSqGSIb3DQEJBTEPFw0yNTA4MjgxMjQ4MDRaMC0GCSqGSIb3DQEJNDEgMB4wDQYJYIZIAWUD
-BAIBBQChDQYJKoZIhvcNAQELBQAwLwYJKoZIhvcNAQkEMSIEINZCD2mmSaO/R3BB29hsiRjsJp9z
-ALPLHP01zrK2xxZcMDQGCSqGSIb3DQEJDzEnMCUwCgYIKoZIhvcNAwcwDgYIKoZIhvcNAwICAgCA
-MAcGBSsOAwIHMA0GCSqGSIb3DQEBCwUABIICAA2r7Wj2atsN7kbp6ffNwzA4JOo9F+ifcN6FQVSo
-RTbGaqOabAPHhkCmCMwyyHFhyEEYqoh07Kc47gntk7Mi/ci9X0YTZfJ4VXn3TPOSaTy4HThVewQ+
-yQPvAOqsQx1o0MX6a3V2ybrdg3k5V96XklknqRakHrnFwgDpG119ruBX5CV9qa2q+qIs2PeKgOxE
-KboB0IRMTfojYatPYyap0/Y/aUFsGhA+d2OL1zlw8ozZvKPmZm+ShmBH8eJdZGy0U43ugi9Iseze
-dvYlwDsLq2uCPtnMtlYPxdwWSLMN2eJr7B/RRpuS5AbOps/A1Yz4yXKW5KlfFUobO11WoPUd5c9v
-2oKBLPv8usSyHzAJTCRuVCwNAQ+07/T9yYM+RO3trRBN8R894P0npf09cAxr/60KItl89cOmCr+Z
-jYkPdUljV6DbOggmwfp7kVz1sMud6vYypOggvvAGlb0VJ2woAvZuM7FCRAFbh5p1w2Y8vfUZyWsn
-/K6KSHUHHBuDFpz1SP7SwGZLugwHL4nqhRcvG+iOqRlAbVxuxsLTAPdzZbkXC8AUg5KLAvomNrwP
-+B10bwboWo/U1R1VGUAeJZkiiMUGx2yOOaC5no/PuBHH4o+fnoIXIGe+URGSVu8WccItmP04StiS
-8Pjc26wjEJtIUbt2DpmhqUyi7DmznAsvfKZIAAAAAAAA
-------=_Part_4608780_1928269810.1756385283660--
+
+
+
+-- 
+MST
+
 
