@@ -1,155 +1,158 @@
-Return-Path: <stable+bounces-176631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B420CB3A389
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 17:08:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C40B3A3D1
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 17:13:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38E854675AF
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 15:02:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B2CC1C2585D
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 15:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C05256C6C;
-	Thu, 28 Aug 2025 15:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D9825A64C;
+	Thu, 28 Aug 2025 15:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="DIBZydPO"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="AcedoJ/b"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6ACA212FB6
-	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 15:02:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05963259CBC
+	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 15:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756393338; cv=none; b=aUpM73rpI/XHw4m1c1u2y+xZWyIdjSyzM0BzrIBG4LiTElCHkL1i/2yGAQKiMzGBKR+zvxba1XGTAQ2U246Js4rVnT1MyphZV83ePYIZArA/2SpKzeVBjwvPVSPd+KIV1rC0lY0hz/0Pl1FXtlEsKzbGAtwllrgEJUXAaY5pjOI=
+	t=1756394014; cv=none; b=C1NfFXyp6wDKNkdlnAC4ipn2aMuzklaCzUX5rULNa1lIW8lCXQXM+ODheG0myxrVmz3XGmcmZmW5ZqH5o8BVGGVZhhMtALmzoIPK/NppRcoH7JTXGEQEkNikijl5FAbLeC9FotZFoTcvOTb63GPh9UeDaClaPslGem1KqBxXAr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756393338; c=relaxed/simple;
-	bh=q6ddUStciG6COxuYJZfg8lpo+NvTrwyMon53V2tvsSo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aVACYqsCAZRyrbWpzflvafNvZZY0ZvWbMS5t0QgCN7Bqd+NtSUpECgBx+ydu4YrTf7JSlMpV43Peme37giOQWw+bLGKfgxKcKZLafrJc7RhhPoaoKRdtQbFfSWjIklL0PZ3hDmq6lfTELqAK3p21aOsAcmDflvs/TqXB+6rMsoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=DIBZydPO; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-45a1b0bde14so6608905e9.2
-        for <stable@vger.kernel.org>; Thu, 28 Aug 2025 08:02:16 -0700 (PDT)
+	s=arc-20240116; t=1756394014; c=relaxed/simple;
+	bh=w2+P6LuZxNLocswuyLR6jCH7IucTlMDmyCyEUgbj0c4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X8e+1LrvMjThUHhy4J4zSL8iLKQFWYO4HXq5TFJ6jbDTMWm5nnOwzn2hAs6Vg7b6LZnAUZB+zzEgAeJa+hh2lA8V5NBkWm94Mc8r36vyuuAlNtXBjs4lZLNRFUMIj9vY9w5rwxi4i9kUU6BL1eg8bMlcbPC1ZKBrPQ5ewaPyXKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=AcedoJ/b; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-323266cdf64so937314a91.0
+        for <stable@vger.kernel.org>; Thu, 28 Aug 2025 08:13:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1756393335; x=1756998135; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KR3uP2tHoxqPBYsBUj0fZf6IIWL0ISvbw8NHKPCMuLc=;
-        b=DIBZydPOsLtYqzLkO5V2cscKUyt9QiRGHTxG0b175y12FobA7TPzmTVzXfen/Kjnez
-         OzxvzUUMgGqERyCKNeFGVgw7ND7W7LvaF4lzb9ZL/43U7XQg6T/MCX4aWgR2Jcj/j2Jr
-         Ga5L5x/nezpdaTJKCE620wUBG276q/HLluF25AEHdEcR9HYwLS4b4jMqIKUKVzP9xFY6
-         3C5hSBd5f42z8J7xfcnps1BsuwmYrf9DIReCNGwCWGcIQ6ym+EYBTthgLI2q4LVN/RVs
-         VIvK1J9JeQCTu0wZm2n+ze6bb8jc0N1A8WeMTsLm0lXA6PPMWu0wBrJfpUcI6DxY/WL5
-         cmNw==
+        d=bytedance.com; s=google; t=1756394011; x=1756998811; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5Ayg5INEbzaZhjUJB+PggkJhdT02eVoUoex1wYs37Eg=;
+        b=AcedoJ/btH/aEleVwBujrhBs/HJqH1ZYoDgutiE+A7CXRZIXuFNDRCUocXgCNDKAnh
+         SyqOAuxCY2UEO4nTXb689MUg2dWQFFxK4P504Vn8rZmRJ3ctm2wEDm49R01G16X0G2nL
+         wMk0Iio/Qr7yvcrWqTVHxSmxE4wTkD+jwaYvFFXTj20i5F4a8CsVoPzurk7wxCRMxqlz
+         u5jjx9JpuTAszdj8FAVE80JDq6TFg4KdoAnVhZTkngS3HVYRRfB9rNR6GxRqzv9SjNfG
+         +heP4jprP8DMm6mHD7MCd1sK6+wDn23I0apH2Ms2YSVicbsEn/B+IpmD4k1AIm6fFJ4M
+         xKwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756393335; x=1756998135;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KR3uP2tHoxqPBYsBUj0fZf6IIWL0ISvbw8NHKPCMuLc=;
-        b=TaIoPacCk+ZF9fgYgl/BSw/ybwkrcwmS9SXFFcGPrqCDYuTRyiHIJ4Fyj+Ozus9qS1
-         hz5JxWfX5bQCShFlRSmgrVfevNK4uf8PYoO7/KF0Co8/bqpI1+0wqDPg9Z4h/GDLO6oN
-         6zkyLcjbRsDRIIajnElPepCnpMGf2GadC+OYIn4jWHv5u/UKgxA1pzvtoh0n0YoOyFKN
-         mVrHdTQvuxQYWCpeoYGIHQO1juyVqPnmqRdv8k5RjRYs2XE+Vi/N7NJoeAYb1fy189Nb
-         vUHH3yXEk5XsURiLNBVk+MEjiUfNU1Da3s3QmeehRdBwXYGGPAvUMSVUQLkJiphJ3UEu
-         gxtw==
-X-Forwarded-Encrypted: i=1; AJvYcCWL77cd8gBxt657JShhIGzjjk+P3PwU8Iv/S7Hdwx4sAE8JlgTiBRdu4W7FJPBOJR7ZzED8Ky0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/hS/e8omDH8bvCEbI/wGKeAUF9yaDdAPBZS3jpYKW3VXFcZzP
-	iSzr0jMyWZ5URxDH/kucVRn3/RIoEjqYwKGoXQQBbC+4RVQpu03gPL8hteWMWtaE9wo=
-X-Gm-Gg: ASbGncsvW9Yt0Y6aeBSQL+WG7cMNHCWkGqHfJkPI9M4f7z5Gu6+RqRBUREIe1jx8Ed9
-	r4oyHUtiRw2zMkxTxiLZhwqKV4FE1H7WUeclkmXsJHOCOqEOni5ge0LFzJLm6EDVqGqhGZgjY2/
-	BnR6Wj7K6klmX4hpe33KKx7a0f7hHEcr2RSREVtn0W8pt8j4GJMQebvkxhmqSw1uTzcDTTJUuGy
-	SrY1NEkX8fd1WZh4SyLmBYQpUbk2jnZ94TVFp+hjMyNVrjQ5jVdc8Raz3GF0YoJTeI+6Htom9v3
-	chmo/ICzBiKmkT6L3c/zDZiYK5I55f7D7fu0qI0Hwx5e1mLfbJWn/6RiaGlIQ05chGCg8XIqrOA
-	C19L9wdi4RhIJ1b0OlGtz5vad9JO3qjNonGlgxkz9sWADppiC+92bXcvbmi+2VcWV2JnyNXBsQM
-	0=
-X-Google-Smtp-Source: AGHT+IGCT8QE0tuRPEr2sAjHd9Ua1F6DWShmwMCiVJhOf9bjKN9y/GnaNC2XNjeXc9uY7L7xQutnhA==
-X-Received: by 2002:a05:600c:3589:b0:45b:765a:a8ff with SMTP id 5b1f17b1804b1-45b765aaa1emr30253045e9.11.1756393334627;
-        Thu, 28 Aug 2025 08:02:14 -0700 (PDT)
-Received: from hermes.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b797dd66dsm35576975e9.20.2025.08.28.08.02.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 08:02:14 -0700 (PDT)
-Date: Thu, 28 Aug 2025 08:02:07 -0700
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Naman Jain <namjain@linux.microsoft.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "K . Y . Srinivasan"
- <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
- <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
- linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, Michael Kelley
- <mhklinux@outlook.com>, Long Li <longli@microsoft.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] uio_hv_generic: Let userspace take care of interrupt
- mask
-Message-ID: <20250828080207.6d9d3426@hermes.local>
-In-Reply-To: <20250828044200.492030-1-namjain@linux.microsoft.com>
-References: <20250828044200.492030-1-namjain@linux.microsoft.com>
+        d=1e100.net; s=20230601; t=1756394011; x=1756998811;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5Ayg5INEbzaZhjUJB+PggkJhdT02eVoUoex1wYs37Eg=;
+        b=FMB3DyMBm15cxhWA0veJbX9VyX/XvGK7MwGCr3ahmMsF4bHwem22Rd1sJD6gBKfOzX
+         2rvgpBBEuvuynd03OR+ASFILIfojUxaSI2sfn8HITq8n12sbbB+cALzFSxcpcpNrdFh+
+         yZ32eDxkAuUMMr2IaqrOrRdMpk6NiimVwiRtEhcoai9d8DlpA1WFb7th6kXhefwMH+Uw
+         V/j4d8wIJe5So44/eudVXDSjGf0ni8PuGnBvTdKnihEm4DBqL4g0Z2bNgw6l4+KS0aWO
+         OEjWzO5Rb8FGBVQwUKNt2scZJ9GzaVr5NMBg2GQId+AyzjmEoZVzB1HqdXFOELAhQ+XT
+         XVRA==
+X-Forwarded-Encrypted: i=1; AJvYcCX4y5ozt4uOBJ8O3dRbWb+oXtiw6DC+Urqex/x6OGZzNelq4e5VHAnR6FLhkqyqwZEZiDoJUtc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWGDB9DP9HRedoSfPL05EhB7d64N627ro+Fp1fedFiAugoN7Q/
+	Bt+pxxka13CJHW52cN6LWlaMI/K0hJK5KFOvJ2ubeF5QD2RwvTT8ufdUFYc823wSKOA=
+X-Gm-Gg: ASbGnctheD6T2gN6ziykOK9feIiBN9upAXgOI8fV14Xw0DULNztLM1lanYsVkaZTHTG
+	rL2Q3aVt1kZlXjIv17VOBaWfRe393CfNGjYsCaFtpwA0A4pJyIWOwmUZu2edsSi4clT6+TtfNer
+	V9dim5iQv79X/hxB+4zvFTp3n5xJk1VLVSV+vvyaqeFXl2LCQ1y214Nn/JQyCrYLEqXHS3crZdP
+	4JTTFwCL1897qBISR6l+NziY85rO0k1Sb9YT7IjDEEpML6dscb26H7UDfFkUFxWhtMjJ1W7wKCE
+	c7ynb0fmeGVfHlcfhHy4b/c1izv4hblqLlkSSN9wXfaeMmaz58KGg80YrZN2F0D8QTCLU/ys4nH
+	z9HYI59MubU7Q5CySScm2iqi8nVRm5B8N4A16u5I+HlfYfOdeiR3eFY6blAnn9vaV0Q==
+X-Google-Smtp-Source: AGHT+IFeBD8+FsFOIfhdVfCuBI9Q22Evk4whBnaoZs4OTHBuqiV6OsCzuYJCKNJmIqpVWno7FbQ4rw==
+X-Received: by 2002:a17:90b:2ccf:b0:312:959:dc42 with SMTP id 98e67ed59e1d1-32515ef6f25mr25874725a91.11.1756394011030;
+        Thu, 28 Aug 2025 08:13:31 -0700 (PDT)
+Received: from [10.4.109.226] ([139.177.225.238])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3276f5a0bf9sm5578927a91.13.2025.08.28.08.13.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Aug 2025 08:13:30 -0700 (PDT)
+Message-ID: <f904b674-98ba-4e13-a64c-fd30b6ac4a2e@bytedance.com>
+Date: Thu, 28 Aug 2025 23:13:25 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [External] Re: [PATCH] KVM: x86: Latch INITs only in specific CPU
+ states in KVM_SET_VCPU_EVENTS
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, liran.alon@oracle.com, hpa@zytor.com,
+ wanpeng.li@hotmail.com, kvm@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250827152754.12481-1-lifei.shirley@bytedance.com>
+ <aK8r11trXDjBnRON@google.com>
+ <CABgObfYqVTK3uB00pAyZAdX=Vx1Xx_M0MOwUzm+D1C04mrVfig@mail.gmail.com>
+Content-Language: en-US
+From: Fei Li <lifei.shirley@bytedance.com>
+In-Reply-To: <CABgObfYqVTK3uB00pAyZAdX=Vx1Xx_M0MOwUzm+D1C04mrVfig@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, 28 Aug 2025 10:12:00 +0530
-Naman Jain <namjain@linux.microsoft.com> wrote:
 
-> Remove the logic to set interrupt mask by default in uio_hv_generic
-> driver as the interrupt mask value is supposed to be controlled
-> completely by the user space. If the mask bit gets changed
-> by the driver, concurrently with user mode operating on the ring,
-> the mask bit may be set when it is supposed to be clear, and the
-> user-mode driver will miss an interrupt which will cause a hang.
->=20
-> For eg- when the driver sets inbound ring buffer interrupt mask to 1,
-> the host does not interrupt the guest on the UIO VMBus channel.
-> However, setting the mask does not prevent the host from putting a
-> message in the inbound ring buffer.=C2=A0So let=E2=80=99s assume that hap=
-pens,
-> the host puts a message into the ring buffer but does not interrupt.
->=20
-> Subsequently, the user space code in the guest sets the inbound ring
-> buffer interrupt mask to 0, saying =E2=80=9CHey, I=E2=80=99m ready for in=
-terrupts=E2=80=9D.
-> User space code then calls pread() to wait for an interrupt.
-> Then one of two things happens:
->=20
-> * The host never sends another message. So the pread() waits forever.
-> * The host does send another message. But because there=E2=80=99s already=
- a
->   message in the ring buffer, it doesn=E2=80=99t generate an interrupt.
->   This is the correct behavior, because the host should only send an
->   interrupt when the inbound ring buffer transitions from empty to
->   not-empty. Adding an additional message to a ring buffer that is not
->   empty is not supposed to generate an interrupt on the guest.
->   Since the guest is waiting in pread() and not removing messages from
->   the ring buffer, the pread() waits forever.
->=20
-> This could be easily reproduced in hv_fcopy_uio_daemon if we delay
-> setting interrupt mask to 0.
->=20
-> Similarly if hv_uio_channel_cb() sets the interrupt_mask to 1,
-> there=E2=80=99s a race condition. Once user space empties the inbound ring
-> buffer, but before user space sets interrupt_mask to 0, the host could
-> put another message in the ring buffer but it wouldn=E2=80=99t interrupt.
-> Then the next pread() would hang.
->=20
-> Fix these by removing all instances where interrupt_mask is changed,
-> while keeping the one in set_event() unchanged to enable userspace
-> control the interrupt mask by writing 0/1 to /dev/uioX.
->=20
-> Fixes: 95096f2fbd10 ("uio-hv-generic: new userspace i/o driver for VMBus")
-> Suggested-by: John Starks <jostarks@microsoft.com>
-> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-> Cc: <stable@vger.kernel.org>
+On 8/28/25 12:08 AM, Paolo Bonzini wrote:
+> On Wed, Aug 27, 2025 at 6:01 PM Sean Christopherson <seanjc@google.com> wrote:
+>> On Wed, Aug 27, 2025, Fei Li wrote:
+>>> Commit ff90afa75573 ("KVM: x86: Evaluate latched_init in
+>>> KVM_SET_VCPU_EVENTS when vCPU not in SMM") changes KVM_SET_VCPU_EVENTS
+>>> handler to set pending LAPIC INIT event regardless of if vCPU is in
+>>> SMM mode or not.
+>>>
+>>> However, latch INIT without checking CPU state exists race condition,
+>>> which causes the loss of INIT event. This is fatal during the VM
+>>> startup process because it will cause some AP to never switch to
+>>> non-root mode. Just as commit f4ef19108608 ("KVM: X86: Fix loss of
+>>> pending INIT due to race") said:
+>>>        BSP                          AP
+>>>                       kvm_vcpu_ioctl_x86_get_vcpu_events
+>>>                         events->smi.latched_init = 0
+>>>
+>>>                       kvm_vcpu_block
+>>>                         kvm_vcpu_check_block
+>>>                           schedule
+>>>
+>>> send INIT to AP
+>>>                       kvm_vcpu_ioctl_x86_set_vcpu_events
+>>>                       (e.g. `info registers -a` when VM starts/reboots)
+>>>                         if (events->smi.latched_init == 0)
+>>>                           clear INIT in pending_events
+>> This is a QEMU bug, no?
+> I think I agree.
+Actually this is a bug triggered by one monitor tool in our production 
+environment. This monitor executes 'info registers -a' hmp at a fixed 
+frequency, even during VM startup process, which makes some AP stay in 
+KVM_MP_STATE_UNINITIALIZED forever. But thisrace only occurs with 
+extremely low probability, about 1~2 VM hangs per week.
 
-Makes sense. I think the logic got carried over from uio.
-Does it need to make sure interrupt is masked by default to avoid
-races at startup?
+Considering other emulators, like cloud-hypervisor and firecracker maybe 
+also have similar potential race issues, I think KVM had better do some 
+handling. But anyway, I will check Qemu code to avoid such race. Thanks 
+for both of your comments. 🙂
+
+Have a nice day, thanks
+Fei
+>
+>> IIUC, it's invoking kvm_vcpu_ioctl_x86_set_vcpu_events()
+>> with stale data.
+> More precisely, it's not expecting other vCPUs to change the pending
+> events asynchronously.
+Yes, will sort out a more complete calling process later.
+>
+>> I'm also a bit confused as to how QEMU is even gaining control
+>> of the vCPU to emit KVM_SET_VCPU_EVENTS if the vCPU is in
+>> kvm_vcpu_block().
+> With a signal. :)
+>
+> Paolo
+>
 
