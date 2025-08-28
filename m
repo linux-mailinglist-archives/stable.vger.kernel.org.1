@@ -1,220 +1,498 @@
-Return-Path: <stable+bounces-176570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54413B39541
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 09:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC33BB3963A
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 10:08:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BC84202D36
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 07:34:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 177C5462045
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 08:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFDB2D7390;
-	Thu, 28 Aug 2025 07:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE082D7D2A;
+	Thu, 28 Aug 2025 08:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="NdyKipbl"
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="RstMqYs3"
 X-Original-To: stable@vger.kernel.org
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011001.outbound.protection.outlook.com [52.101.65.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BA01FC0F0;
-	Thu, 28 Aug 2025 07:33:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756366425; cv=fail; b=dPphICGObY4DB2gq/zWYs4w5XPyDakTl3lBTMom+CSfQq9adqtv+KwkAZjHNdZ8FD0xV+UGmsTGD0gLmmU7+4Vaq3JCA34l9y4WEZ50kYW8JyTSFrqPBeMMMPwaFT6iE+IDoksM7fcNiVZbUwkngBMzkejN6p858KMKXTVBJV68=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756366425; c=relaxed/simple;
-	bh=Nqf5lwCBye2d+EkEAkUHptlqd/kI4DmBVr0bhbGkVK4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=TByHiUmrx8jJpZS0CSqFJqsMdKsmmG4AMtJm3GnzTCnFJ3mXs3QZwTHWImKXpa4wQ9U3D6mrlygAf3KylJodBTYl6xysEPZzw76ebMWWYv2NLdnJoCi3L5bo7otluJOoFkhgMHuGESzyVJxPGjjGXTYqdubbJ3WvkIC3WRt25tY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=NdyKipbl; arc=fail smtp.client-ip=52.101.65.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Td5YiNiCtb8RpP96PXntkWBmrwNYW+TefxXUuBzpnnmA92eskbnYKDY43VgVgBzYJQIn/0PqPjB98vbLu4bS0BgqxpofX9hxno6TtvpFfvk4nYfUb97rkk8tlZxyapuDO6XS9xY7dnBodLyw60bHS7+pa8Cml24/9d0KOFG195hogc+m3lLduXagVLmu53AszewoPHovFQLFRyN6v6dn5/NkQ6aPnTXetRU+30YgwsRqqSX8w0vc2++A0pKLLF7IhX6JLkR1YfgKarQBamEdL6eM+UDfjdXR3OPn3DCOTpb6pLzF9R4H7falSkC1M8cPD8wwwGy7B3cKjDtXlNnxTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8JF2tox7BZUjmMmYuKuZUUpt8WNsNsoU8qZH113uWfA=;
- b=KXoHUvj8xp/mCZQ2kRFBCk1ir5KMGgRxewbJgl9mQXLXNMK7SXAfg6CbNelWaELC5mgg2+veQJs+09BjUgx4JwhO4QKHte1zom35SX2wgroCUdBYgT1j4OpFG6qLkMsSjrrJbhdG80xY778vpipTsGeatLJnfFFVzrq6HIqWMrQPkp6CpGzHNIpDnD7pSXOXBTAcJ9s7mLI4pBl8sm2wsUPIk6pza+UiW1VtN9p7JZ/m2mu5gsLNR9GwnMkMNSPJzIQ2aBfZAW6pgu2+LgvvY7o9ewSDWBjAGGuMe/LibjLMda+C/a96cL6+W8eGY7x0lI6Zi2gkZ1B3seEFp9aJkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=axis.com; dmarc=pass action=none header.from=axis.com;
- dkim=pass header.d=axis.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8JF2tox7BZUjmMmYuKuZUUpt8WNsNsoU8qZH113uWfA=;
- b=NdyKipblNNJWPL9jJijPYwAfheamOtLUR4IlqSsck4qgD3AhklGAJHtVCFGTlF4lc8BqlaaP0IQcOwQA1/gztQWjwWG6PYrsD5eniEojWZ6zbalp4rV9/JSBjTw6Ga09s7wihFVme7Qy1CYTCMhOSwrUVwNseOpe2VX7TcKZU0M=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=axis.com;
-Received: from VI1PR02MB10076.eurprd02.prod.outlook.com
- (2603:10a6:800:1c2::19) by DU0PR02MB8168.eurprd02.prod.outlook.com
- (2603:10a6:10:320::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.16; Thu, 28 Aug
- 2025 07:33:40 +0000
-Received: from VI1PR02MB10076.eurprd02.prod.outlook.com
- ([fe80::869a:7318:e349:822d]) by VI1PR02MB10076.eurprd02.prod.outlook.com
- ([fe80::869a:7318:e349:822d%5]) with mapi id 15.20.9052.019; Thu, 28 Aug 2025
- 07:33:40 +0000
-Message-ID: <6162e560-1b60-4e30-8d1e-210ba9e132cd@axis.com>
-Date: Thu, 28 Aug 2025 15:33:32 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] power: supply: bq27xxx: restrict no-battery
- detection to bq27000
-To: "H. Nikolaus Schaller" <hns@goldelico.com>,
- Sebastian Reichel <sre@kernel.org>, Jerry Lv <Jerry.Lv@axis.com>
-Cc: =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org,
- stable@vger.kernel.org, kernel@pyra-handheld.com, andreas@kemnade.info
-References: <cover.1755945297.git.hns@goldelico.com>
- <dd979fa6855fd051ee5117016c58daaa05966e24.1755945297.git.hns@goldelico.com>
-Content-Language: en-US
-From: Jerry Lv <jerrylv@axis.com>
-In-Reply-To: <dd979fa6855fd051ee5117016c58daaa05966e24.1755945297.git.hns@goldelico.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: KU2P306CA0058.MYSP306.PROD.OUTLOOK.COM
- (2603:1096:d10:39::7) To VI1PR02MB10076.eurprd02.prod.outlook.com
- (2603:10a6:800:1c2::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450E52D7801;
+	Thu, 28 Aug 2025 08:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756368478; cv=none; b=bIU5r9GH65s7IX8F5janyEKv7LFDpvy4F66iLMXYZtZ+al6dd7Cxe8y3XpH8vYhQ3bRlsWquobhD7uLSAWyht/S9GpWcxlZrLo43HPPbMi4unX2u+DdvTID1YRPcxfkqyUeuEXsa+Fl2J4yXbmZdozYKEEIp2I6ZWbz/LDRLTvM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756368478; c=relaxed/simple;
+	bh=dSgFH52W1Wp5go3fx/XlIZBS2GEY67YrkqYA70jmFqY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=IItbI07L10hRREiELfjukfCEiDHO7P2R5SfYOEpRSBg3HN+/zpn//uNaxtGb4huiWhG5UARQh9bP45/qA17l12KEa3hwFaLOOKDHRtmLkdmJ+XVXgmOMuGfJ2zvbF6EWqIGyOYzrIF4/2L73U7raFnPlweCUzq1LOLcsxsxSGZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=RstMqYs3; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 57S87UNj81334954, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1756368451; bh=xLPnaPnz+J9oPl4NL8YGGtvhgUSFRZNSIyOOEWj5DJw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=RstMqYs3yQX9i+4EcIhp77xFqIOlaVSVG0rgqhzEv8aeo6JQC9jBhxVVVY2FZ6LEK
+	 JT8Inr8qdnD9uPHDGu08cicjJG6JN1VVlFPKysQnxg5NyiWyA9Ei90CUhAisOp56pm
+	 ihzO3wlFLGmgpXI2K4foHaxeFcIh5p/v/+SnEa/cBHUao6vBVcONdbhZ3W598mHL/X
+	 W43x0JFbztJO+xMocXWFPYLsT/8UBEdB4etxAjG7Ka329KRS+9h6cng+IOkE8Ec4Dt
+	 avZYh2ls582F2Qo7tRHB9tYc9+gd3nFtL8qBO5amnhZIFFy8sdy3XX3auO8LJo33hp
+	 0loCg66FWDOvQ==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.13/5.93) with ESMTPS id 57S87UNj81334954
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 28 Aug 2025 16:07:31 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Thu, 28 Aug 2025 16:07:29 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.27; Thu, 28 Aug 2025 16:07:28 +0800
+Received: from RTEXMBS03.realtek.com.tw ([fe80::982b:42ba:82a4:f1d]) by
+ RTEXMBS03.realtek.com.tw ([fe80::982b:42ba:82a4:f1d%2]) with mapi id
+ 15.01.2507.035; Thu, 28 Aug 2025 16:07:28 +0800
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
+To: "pchelkin@ispras.ru" <pchelkin@ispras.ru>,
+        Ping-Ke Shih
+	<pkshih@realtek.com>,
+        Zong-Zhe Yang <kevin_yang@realtek.com>
+CC: Bernie Huang <phhuang@realtek.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "lvc-project@linuxtesting.org"
+	<lvc-project@linuxtesting.org>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH rtw v2 1/4] wifi: rtw89: fix use-after-free in rtw89_core_tx_kick_off_and_wait()
+Thread-Topic: [PATCH rtw v2 1/4] wifi: rtw89: fix use-after-free in
+ rtw89_core_tx_kick_off_and_wait()
+Thread-Index: AQHcF8icTIlJtwQk2kOn9fej8NWkdbR3L+cQ
+Date: Thu, 28 Aug 2025 08:07:28 +0000
+Message-ID: <87693651fe394065b421d8d8fe171f89@realtek.com>
+References: <20250827120603.723548-2-pchelkin@ispras.ru>
+In-Reply-To: <20250827120603.723548-2-pchelkin@ispras.ru>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1PR02MB10076:EE_|DU0PR02MB8168:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc3c7fe4-c6fa-4cbe-0664-08dde6053561
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|42112799006|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?b2UvMzFKcXJxd3BHTkFmVkxjcHU0ays2YTBmTDBpbVRBcEJjUkVJYTBtSHE1?=
- =?utf-8?B?VEhMODZYNytCLzdSVGEwMXcwb0ptelZCWWR4elNwVjljY1RBeXdUNHoxeHBY?=
- =?utf-8?B?VFY1a0dFalpMVnV0TGRCSkhkc1JhU3pRR0o0WVIvTm9CbHFScUhEZ05NenZX?=
- =?utf-8?B?bm0rbytUTVJEcGk3SlcybGZSVm96d2twUXpaK1dRV2Y4aGYxWUpzam5uR2Jr?=
- =?utf-8?B?N1l5R0FTM013dUZZREpkWTg0VXlOeEFxQTE4RTV4WDVZbTlWVEs1VEFJYmFE?=
- =?utf-8?B?Ylg5ZWJPSldFZ1NjbXVYSUorMHhQUURyNDFhT0tqR0pKcjBqdEd5UDlGd2hz?=
- =?utf-8?B?OWY0UDNaRzArR3Y3WGFWUDhUdktkN2F5dzZJTDcyTEF4SnpOUzhKRW91RnJ6?=
- =?utf-8?B?MXVBM1ZvTEk3VUswNkVGK3QzRk9UUXRXSEtNTlllZmRJWEZ5aWxHTjVxTlJx?=
- =?utf-8?B?d2FDdmJFdFpSeW5kNzZFMmVWektaZjV1TG5seWg0SFJuS1pqanpIS3hMM1Bs?=
- =?utf-8?B?ZFgrY2ZYUXlHQ0VUajNsNTRrdXFuYWVQK1JSdXdMbnUrMmtqaFhxYmZsYlFo?=
- =?utf-8?B?c1BDUkx6RUxLeW1MbXN5YXlJdmN1elZFV2M4RllsZ3RGalh6bGRGSFdaaHRn?=
- =?utf-8?B?SFc2WHFhVDZxbzRFY0UvbDVGRXpUdjc0QnVWQTdjc25NSHIzdDRpMy9NSFBW?=
- =?utf-8?B?dFJPMHdCbFkva0QrTmlrYVBNaklwc21UYmdiUGpEam13RFpuTHRTbTh4UkV6?=
- =?utf-8?B?SWYxMGQyNEQ3aGJIVHlnTjFML0xtbllIQkg2Qy9zRzNlS0pKRjJxU0NVOUp4?=
- =?utf-8?B?T1FGSFZWK0tsNkpoZ0lVSWFrK25GbUpYcDZqM1FhemovdUtNd3owaHZQZDM5?=
- =?utf-8?B?bXpRM0I4R2lGSTVYVlFCTFE1U2hEZmhlNjJFNU5ja1BaOFFXajArSHk3enIr?=
- =?utf-8?B?cVFqbnFYOWd4ODdzRjdFM0RQR0R3TzRtamUzWnhBZVdETjhySFJjbHJRQTJQ?=
- =?utf-8?B?M1o3YlVXY2x5V1RXbTAwZXZmbUhFMUMyWlNPa3hEanRRTlpJRElCNUJGNFV4?=
- =?utf-8?B?ZjRkU1pEaGJSYzJ5cEgvYkcyOHdmMGo1T3g4UDBtYWlzZ1VkZUpuYjB5TjYz?=
- =?utf-8?B?T213QUVFSjVGcHRSc0xFMFBZZUJNNVVqVWwyQ0dtaFhXUFNMSGFTSTN2TUJY?=
- =?utf-8?B?aU5XMlFxNnh1aE02WnNFdnAzdFIyeFBkM3pienRXcU81UTQzamJxSFArU0p5?=
- =?utf-8?B?anFtbktmRlVBbDZyTmg2eXdqeTZsdDNBaXpEQXE2UnZIeGVSQ2ZLREtnRlVW?=
- =?utf-8?B?YlZQZ3pGbEc3RlpqUnBOckRmR09GdTBhN1llTUNuNytDTzZyRmdDL1ZUUElJ?=
- =?utf-8?B?dWdDNFhBWjhRcFhlbHd4Q2RlM2FlRDEzV1lkaHkvbTcyZWtrNFJCYVpheitl?=
- =?utf-8?B?cFNHQlZIZmJObWR3SThwWnJ2SzgzNEpzUk04MDRkQklxb0ZUVjArdVVyVTVy?=
- =?utf-8?B?TGNpUE1VVzhjMUVqMjQ1cXhpWUJMcVE1VUJwdEZtalVDazlVQk54cEsxR3Nj?=
- =?utf-8?B?bHlSMWlhakhsVE11WmpFZlV0ZlJMMWk4Z2F3a3dxUWdkL1NmMTBvaTRjZElL?=
- =?utf-8?B?YkhmcXVKS1hxRVpyNTNSRUVKTXVaVEtPTnd6L3R4WEZRRkRxMGM0cEtueXo5?=
- =?utf-8?B?MCtweVVqbUxQVVFhREdBaGdSUGcyQ2dzaUJaRGpRMUhsQ1p3NWZYaEhQbFVs?=
- =?utf-8?B?MlkzUS84UXJiZnk2RGM1WWRjb3NXa2lLUnIxbTkyUmVqaUVsVHhobnZZUW1k?=
- =?utf-8?B?dGY0NVQ0TldvWVpMaGM1ekcraWZGM2JCN24vTHl2V21Pby9nMFVBbVRqYUNa?=
- =?utf-8?B?cC9qZ3cwU1RIMHFUWEFSVVRSMFVTYkI4N2lrMElpTGRJOTRCU2VCUTZrSjJ1?=
- =?utf-8?Q?iLsV12D7Z5Y=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR02MB10076.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(42112799006)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZFRDc054WTlKbUFFWVJ0WUZQaDZRaUt3UU5ubHRUNVVxZVJzTzN2QVA1bzh3?=
- =?utf-8?B?MmRUZ2tWQjBiczBjNHc0ay9LVjZGZDZmT1Z6MlFhT1dwTDRQUGVWbFRoRXlC?=
- =?utf-8?B?VmxVb255OVY4ZXRWVUIwc2V5c2hwU0pTUTBFSkRkSnVLeEZuYUxrRWg2Y2hB?=
- =?utf-8?B?NkJnV1orZWFaSGRHN3ZzVnYyOHpHemlxMmp5cEVYQzR4RG1KL2RhZThpUW5j?=
- =?utf-8?B?RWZvZU8rWXF6RmdTNEx5bSs4YjNRa0ZnekJUdVhrOFNzZkRiOTl0ZE5ubitm?=
- =?utf-8?B?UFBMemZCWjVuVy8yK3ZGbnZsRTRXS1RYdENNYXJHd2xGbDN3dU1ZalVJakJw?=
- =?utf-8?B?d2VmRkdOZ1BDVXpFK3NkTXkzWlRjdmVDZXkxQzNqOUoxRXo4eHhhUmtDa3JI?=
- =?utf-8?B?cVlXUGVJWGx5bEZuN0hmdWVCT21Wa2E5elNTR3pzamwzZGRBR2ZQbXNIeXIr?=
- =?utf-8?B?SDFrWkRKVzlyUGZqeWVaMXVnVHZjcmV0eUt0N1IzNGF2ZmxlVWNBYVh2Nks2?=
- =?utf-8?B?SXltYzdsYVhzTGdDbS9xbEczYms4ZXB0OXREaFJLRVlocEU0R01sMVlZWG0y?=
- =?utf-8?B?MElBQm5Ddi9pQUE3MUFsVXlBWCtLRFNWa2dwM1haT2hUaFN1ZnR4SHZ1aDgr?=
- =?utf-8?B?eWpqbXBUc2UvamN1UGNwbVZ5VDk4aUVMT1k2V0JoMGY5UmExclhueVJsOUlJ?=
- =?utf-8?B?aUtISDBucEhjdG5RSjZ3OERxaWtobnEvUWtyRm5JWlpyb2Qzb2c0NTFDOXJY?=
- =?utf-8?B?dllXcEl2dWZRSURCNVFzMExobkk5ZzhlVnJLVUF1ZTE1UmsxMUR0YkZwRnk0?=
- =?utf-8?B?N1lRTmV2WEhiV1k4YzN5MHlHWUNSTEovRzVPN0VwdktYRDkxZHppdVg5Sy91?=
- =?utf-8?B?UThhY1l2eVR2YUNXMWZCL1QzYkNUa05hMzl6bG1yelczY1FObTBXd2gzQXds?=
- =?utf-8?B?WUVyTmx3cmdPK3NYN2hZOStjcFhudVUwYTZvUjIwbDlIZlkyaFloRUpoV2hE?=
- =?utf-8?B?ZGUzbENGRFdpaWdsbWJpWTRKa1pNdDIzOWRYQzNydkcwWlNwY3F1VFdsdU9L?=
- =?utf-8?B?bS9wZ1Y3bzZFbWhsM1dGbEQ3ZkpGZnVLbVNaYXJ4OE00WmFZcFBCcjRUcTVW?=
- =?utf-8?B?ZTdQOCtlaEtuMDlKc0ZqTlVaMEZvcjJLOHZremhoNnQ3RzNZeXZhQ0hLSHNr?=
- =?utf-8?B?bmVhMVhtK1k2WHNPby81MWoyTXAxR1pYL2ZmVHIyQ05BWTlnNmZJbWVkZ3dW?=
- =?utf-8?B?cEFEZVU0QzVMSXJDbTQ3a1VNMjh0azl2K0JzWWg4cjBITHNKcEkyN2xuM01D?=
- =?utf-8?B?R0xIdGloUUdVMGNORXVLOW5WemptUTIyMlVnVU4wTnQ4L1c3VU5RaWJrL3lF?=
- =?utf-8?B?eDBvdkpBYTREVHo2Kys2SWtTMlpvQ3VLbGYwMXo3ZDRzWW0rN1I0dGlhTlN1?=
- =?utf-8?B?UGZBaEZlcnJLaTR4c0FNOVBqc3ljSGQzSVFGUGdvTnVQY1dQN29rZHF5UzND?=
- =?utf-8?B?ZWNrYS90am5BdlFTSFUvaU5nY3Myd2hINHBVeGpJUWdsZGNrcTYyaWNudjdK?=
- =?utf-8?B?Vk1XaG15ZnV1TlVRMG1yUXFYOThzMHp6b2xlNFJhd013ZStaTDdkVFQ3Q0Jv?=
- =?utf-8?B?cnBmUEdCc1hHd2NrUEN3Z0pndjBlakozLzlyQkpEaGJjc2l0VGFXT0lPTzEx?=
- =?utf-8?B?dkdUcVBzNEpGUldUVlpHYzNrTU5RL0dOWllsalplQ0tUdmtoNFBGeW1yY29j?=
- =?utf-8?B?YlVKZktrY1JlYTZkS09mTFRXdnRhVnpYNTJ5QW0rcXd4c3BFL0hyZWRYQmRI?=
- =?utf-8?B?bWZXYjRQS1ZFMlZZYVVlVzlML3lrejA0VEJ4M3FDc2ZoWko0ZG16Y2R2RFZt?=
- =?utf-8?B?QmNxaW9yMlJWdml0SW5IWDAzaFRoVmlqLzdtQ1Nud2tSNURSWGNxOHVhUzVk?=
- =?utf-8?B?cXkvTzl3aUhZK3lTRXIvTVVVZWF3aDlKQXpoMnI2UU5DNkFzRGFNbXRGMDVi?=
- =?utf-8?B?aEZlRWwwSFZidFpHWU5qYlNnUW5vOFdaV1RRMEU5MU9CZU9LNk5hVmQ1UmRo?=
- =?utf-8?B?TzQ4U0Foa1lTR0J2d1ZrUCs5ZUZoTitNZU1ucXpNTjhCcWZDdTROQ1BpSFRq?=
- =?utf-8?Q?E27R6bchhIOrU/YdsmSkxkrON?=
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc3c7fe4-c6fa-4cbe-0664-08dde6053561
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR02MB10076.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 07:33:40.3227
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jtoZ5vgWDlTCMb+Wjr16cPMPCZdnHniYLJhYumiav05fgTmixvSqIPgUx7YpyJMQXVfIk6FCwCYMO/X8izvQWA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR02MB8168
 
-On 8/23/2025 6:34 PM, H. Nikolaus Schaller wrote:
-> There are fuel gauges in the bq27xxx series (e.g. bq27z561) which may in some
-> cases report 0xff as the value of BQ27XXX_REG_FLAGS that should not be
-> interpreted as "no battery" like for a disconnected battery with some built
-> in bq27000 chip.
->
-> So restrict the no-battery detection originally introduced by
->
->      commit 3dd843e1c26a ("bq27000: report missing device better.")
->
-> to the bq27000.
->
-> There is no need to backport further because this was hidden before
->
-> 	commit f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
->
-> Fixes: f16d9fb6cf03 ("power: supply: bq27xxx: Retrieve again when busy")
-> Suggested-by: Jerry Lv <Jerry.Lv@axis.com>
+Fedor Pchelkin <pchelkin@ispras.ru> wrote:
+> There is a bug observed when rtw89_core_tx_kick_off_and_wait() tries to a=
+ccess already
+> freed skb_data:
+>=20
+>  BUG: KFENCE: use-after-free write in rtw89_core_tx_kick_off_and_wait
+> drivers/net/wireless/realtek/rtw89/core.c:1110
+>=20
+>  CPU: 6 UID: 0 PID: 41377 Comm: kworker/u64:24 Not tainted  6.17.0-rc1+ #=
+1 PREEMPT(lazy)
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS edk2-20250523=
+-14.fc42
+> 05/23/2025
+>  Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
+>=20
+>  Use-after-free write at 0x0000000020309d9d (in kfence-#251):
+>  rtw89_core_tx_kick_off_and_wait drivers/net/wireless/realtek/rtw89/core.=
+c:1110
+>  rtw89_core_scan_complete drivers/net/wireless/realtek/rtw89/core.c:5338
+>  rtw89_hw_scan_complete_cb drivers/net/wireless/realtek/rtw89/fw.c:7979
+>  rtw89_chanctx_proceed_cb drivers/net/wireless/realtek/rtw89/chan.c:3165
+>  rtw89_chanctx_proceed drivers/net/wireless/realtek/rtw89/chan.h:141
+>  rtw89_hw_scan_complete drivers/net/wireless/realtek/rtw89/fw.c:8012
+>  rtw89_mac_c2h_scanofld_rsp drivers/net/wireless/realtek/rtw89/mac.c:5059
+>  rtw89_fw_c2h_work drivers/net/wireless/realtek/rtw89/fw.c:6758
+>  process_one_work kernel/workqueue.c:3241  worker_thread kernel/workqueue=
+.c:3400
+> kthread kernel/kthread.c:463  ret_from_fork arch/x86/kernel/process.c:154
+> ret_from_fork_asm arch/x86/entry/entry_64.S:258
+>=20
+>  kfence-#251: 0x0000000056e2393d-0x000000009943cb62, size=3D232,
+> cache=3Dskbuff_head_cache
+>=20
+>  allocated by task 41377 on cpu 6 at 77869.159548s (0.009551s ago):
+>  __alloc_skb net/core/skbuff.c:659
+>  __netdev_alloc_skb net/core/skbuff.c:734  ieee80211_nullfunc_get
+> net/mac80211/tx.c:5844  rtw89_core_send_nullfunc
+> drivers/net/wireless/realtek/rtw89/core.c:3431
+>  rtw89_core_scan_complete drivers/net/wireless/realtek/rtw89/core.c:5338
+>  rtw89_hw_scan_complete_cb drivers/net/wireless/realtek/rtw89/fw.c:7979
+>  rtw89_chanctx_proceed_cb drivers/net/wireless/realtek/rtw89/chan.c:3165
+>  rtw89_chanctx_proceed drivers/net/wireless/realtek/rtw89/chan.c:3194
+>  rtw89_hw_scan_complete drivers/net/wireless/realtek/rtw89/fw.c:8012
+>  rtw89_mac_c2h_scanofld_rsp drivers/net/wireless/realtek/rtw89/mac.c:5059
+>  rtw89_fw_c2h_work drivers/net/wireless/realtek/rtw89/fw.c:6758
+>  process_one_work kernel/workqueue.c:3241  worker_thread kernel/workqueue=
+.c:3400
+> kthread kernel/kthread.c:463  ret_from_fork arch/x86/kernel/process.c:154
+> ret_from_fork_asm arch/x86/entry/entry_64.S:258
+>=20
+>  freed by task 1045 on cpu 9 at 77869.168393s (0.001557s ago):
+>  ieee80211_tx_status_skb net/mac80211/status.c:1117  rtw89_pci_release_tx=
+wd_skb
+> drivers/net/wireless/realtek/rtw89/pci.c:564
+>  rtw89_pci_release_tx_skbs.isra.0 drivers/net/wireless/realtek/rtw89/pci.=
+c:651
+>  rtw89_pci_release_tx drivers/net/wireless/realtek/rtw89/pci.c:676
+>  rtw89_pci_napi_poll drivers/net/wireless/realtek/rtw89/pci.c:4238
+>  __napi_poll net/core/dev.c:7495
+>  net_rx_action net/core/dev.c:7557 net/core/dev.c:7684  handle_softirqs
+> kernel/softirq.c:580
+>  do_softirq.part.0 kernel/softirq.c:480
+>  __local_bh_enable_ip kernel/softirq.c:407  rtw89_pci_interrupt_threadfn
+> drivers/net/wireless/realtek/rtw89/pci.c:927
+>  irq_thread_fn kernel/irq/manage.c:1133
+>  irq_thread kernel/irq/manage.c:1257
+>  kthread kernel/kthread.c:463
+>  ret_from_fork arch/x86/kernel/process.c:154  ret_from_fork_asm
+> arch/x86/entry/entry_64.S:258
+>=20
+> It is a consequence of a race between the waiting and the signaling side =
+of the completion:
+>=20
+>             Waiting thread                            Completing thread
+>=20
+> rtw89_core_tx_kick_off_and_wait()
+>   rcu_assign_pointer(skb_data->wait, wait)
+>   /* start waiting */
+>   wait_for_completion_timeout()
+>                                                 rtw89_pci_tx_status()
+>                                                   rtw89_core_tx_wait_comp=
+lete()
+>                                                     rcu_read_lock()
+>                                                     /* signals completion=
+ and
+>                                                      * proceeds further
+>                                                      */
+>=20
+> complete(&wait->completion)
+>                                                     rcu_read_unlock()
+>                                                   ...
+>                                                   /* frees skb_data */
+>                                                   ieee80211_tx_status_ni(=
+)
+>   /* returns (exit status doesn't matter) */
+>   wait_for_completion_timeout()
+>   ...
+>   /* accesses the already freed skb_data */
+>   rcu_assign_pointer(skb_data->wait, NULL)
+>=20
+> The completing side might proceed and free the underlying skb even before=
+ the waiting side
+> is fully awoken and run to execution.  Actually the race happens regardle=
+ss of
+> wait_for_completion_timeout() exit status, e.g.
+> the waiting side may hit a timeout and the concurrent completing side is =
+still able to free the
+> skb.
+>=20
+> Skbs which are sent by rtw89_core_tx_kick_off_and_wait() are owned by the=
+ driver.  They
+> don't come from core ieee80211 stack so no need to pass them to ieee80211=
+_tx_status_ni()
+> on completing side.
+>=20
+> Introduce a work function which will act as a garbage collector for rtw89=
+_tx_wait_info objects
+> and the associated skbs.  Thus no potentially heavy locks are required on=
+ the completing
+> side.
+>=20
+> Found by Linux Verification Center (linuxtesting.org).
+>=20
+> Fixes: 1ae5ca615285 ("wifi: rtw89: add function to wait for completion of=
+ TX skbs")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+> Suggested-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 > ---
->   drivers/power/supply/bq27xxx_battery.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
-> index dadd8754a73a8..3363af24017ae 100644
-> --- a/drivers/power/supply/bq27xxx_battery.c
-> +++ b/drivers/power/supply/bq27xxx_battery.c
-> @@ -1944,8 +1944,8 @@ static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
->   	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
->   
->   	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
-> -	if ((cache.flags & 0xff) == 0xff)
-> -		cache.flags = -ENODEV; /* read error */
-> +	if (di->chip == BQ27000 && (cache.flags & 0xff) == 0xff)
-> +		cache.flags = -ENODEV; /* bq27000 hdq read error */
->   	if (cache.flags >= 0) {
->   		cache.capacity = bq27xxx_battery_read_soc(di);
->   
+>=20
+> v2: use a work function to manage release of tx_waits and associated skbs=
+ (Zong-Zhe)
+>=20
+> The interesting part is how rtw89_tx_wait_work() should wait for completi=
+on - based on
+> timeout or without it, or just check status with a call to completion_don=
+e().
+>=20
 
-This change works fine for BQ27z561
+I like "wait for timeout" as what you have done, but maybe using a smaller =
+timeout.
+Completing side might not be in order, so don't take too much time on uncom=
+pleted
+ones when going through list.
 
+> Simply waiting with wait_for_completion() may become a bottleneck if for =
+any reason the
+> completion is delayed significantly, and we are holding a wiphy lock here=
+.  I _suspect_
+> rtw89_pci_tx_status() should be called either by napi polling handler or =
+in other cases e.g. by
+> rtw89_hci_reset() but it's hard to deduce for any possible scenario that =
+it will be called in
+> some time.
+>=20
+
+When rtw89_hci_reset() is called, all pending skb should be released.
+(it means completing side will be done)
+So, we can call a func (directly) as rtw89_tx_wait_work() does there.
+
+> Anyway, the current and the next patch try to make sure that when
+> rtw89_core_tx_wait_complete() is called, skbdata->wait is properly initia=
+lized so that there
+> should be no buggy situations when tx_wait skb is not recognized and inva=
+lidly passed to
+> ieee80211 stack, also without signaling a completion.
+>=20
+> If rtw89_core_tx_wait_complete() is not called at all, this should indica=
+te a bug elsewhere.
+>=20
+>  drivers/net/wireless/realtek/rtw89/core.c | 42 +++++++++++++++++++----
+> drivers/net/wireless/realtek/rtw89/core.h | 22 +++++++-----
+> drivers/net/wireless/realtek/rtw89/pci.c  |  9 ++---
+>  3 files changed, 54 insertions(+), 19 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/realtek/rtw89/core.c
+> b/drivers/net/wireless/realtek/rtw89/core.c
+> index 57590f5577a3..48aa02d6abd4 100644
+> --- a/drivers/net/wireless/realtek/rtw89/core.c
+> +++ b/drivers/net/wireless/realtek/rtw89/core.c
+> @@ -1073,6 +1073,26 @@ rtw89_core_tx_update_desc_info(struct rtw89_dev *r=
+twdev,
+>  	}
+>  }
+>=20
+> +static void rtw89_tx_wait_work(struct wiphy *wiphy, struct wiphy_work
+> +*work) {
+> +	struct rtw89_dev *rtwdev =3D container_of(work, struct rtw89_dev,
+> +						tx_wait_work);
+> +	struct rtw89_tx_wait_info *wait, *tmp;
+> +
+> +	lockdep_assert_wiphy(wiphy);
+> +
+> +	list_for_each_entry_safe(wait, tmp, &rtwdev->tx_waits, list) {
+> +		if (!wait->finished) {
+> +			unsigned long tmo =3D msecs_to_jiffies(wait->timeout);
+> +			if (!wait_for_completion_timeout(&wait->completion, tmo))
+> +				continue;
+> +		}
+> +		list_del(&wait->list);
+> +		dev_kfree_skb_any(wait->skb);
+> +		kfree(wait);
+> +	}
+> +}
+> +
+
+A func (not work_fn look) for rtw89_hci_reset to call directly.
+And consider to use a smaller timeout.
+
+>  void rtw89_core_tx_kick_off(struct rtw89_dev *rtwdev, u8 qsel)  {
+>  	u8 ch_dma;
+> @@ -1090,6 +1110,8 @@ int rtw89_core_tx_kick_off_and_wait(struct rtw89_de=
+v *rtwdev,
+> struct sk_buff *sk
+>  	unsigned long time_left;
+>  	int ret =3D 0;
+>=20
+> +	lockdep_assert_wiphy(rtwdev->hw->wiphy);
+> +
+>  	wait =3D kzalloc(sizeof(*wait), GFP_KERNEL);
+>  	if (!wait) {
+>  		rtw89_core_tx_kick_off(rtwdev, qsel); @@ -1097,18 +1119,23 @@ int
+> rtw89_core_tx_kick_off_and_wait(struct rtw89_dev *rtwdev, struct sk_buff =
+*sk
+>  	}
+>=20
+>  	init_completion(&wait->completion);
+> -	rcu_assign_pointer(skb_data->wait, wait);
+> +	skb_data->wait =3D wait;
+
+(completing/waiting side are lockfree in different context, and can be diff=
+erent CPU)
+So, please keep RCU access to avoid potential problems.
+And, keep using kfree_rcu(wait) to ensure freeing time is suitable.
+
+>=20
+>  	rtw89_core_tx_kick_off(rtwdev, qsel);
+>  	time_left =3D wait_for_completion_timeout(&wait->completion,
+>  						msecs_to_jiffies(timeout));
+> -	if (time_left =3D=3D 0)
+> +	if (time_left =3D=3D 0) {
+>  		ret =3D -ETIMEDOUT;
+> -	else if (!wait->tx_done)
+> -		ret =3D -EAGAIN;
+> +	} else {
+> +		wait->finished =3D true;
+> +		if (!wait->tx_done)
+> +			ret =3D -EAGAIN;
+> +	}
+>=20
+> -	rcu_assign_pointer(skb_data->wait, NULL);
+> -	kfree_rcu(wait, rcu_head);
+> +	wait->skb =3D skb;
+> +	wait->timeout =3D timeout;
+> +	list_add_tail(&wait->list, &rtwdev->tx_waits);
+> +	wiphy_work_queue(rtwdev->hw->wiphy, &rtwdev->tx_wait_work);
+>=20
+
+If completed (i.e. time_left !=3D 0), free them directly without queuing wo=
+rk.
+Reduce the chance to do list/work things.
+
+>  	return ret;
+>  }
+> @@ -4972,6 +4999,7 @@ void rtw89_core_stop(struct rtw89_dev *rtwdev)
+>  	clear_bit(RTW89_FLAG_RUNNING, rtwdev->flags);
+>=20
+>  	wiphy_work_cancel(wiphy, &rtwdev->c2h_work);
+> +	wiphy_work_cancel(wiphy, &rtwdev->tx_wait_work);
+>  	wiphy_work_cancel(wiphy, &rtwdev->cancel_6ghz_probe_work);
+>  	wiphy_work_cancel(wiphy, &btc->eapol_notify_work);
+>  	wiphy_work_cancel(wiphy, &btc->arp_notify_work); @@ -5203,6 +5231,7 @@ =
+int
+> rtw89_core_init(struct rtw89_dev *rtwdev)
+>  		INIT_LIST_HEAD(&rtwdev->scan_info.pkt_list[band]);
+>  	}
+>  	INIT_LIST_HEAD(&rtwdev->scan_info.chan_list);
+> +	INIT_LIST_HEAD(&rtwdev->tx_waits);
+>  	INIT_WORK(&rtwdev->ba_work, rtw89_core_ba_work);
+>  	INIT_WORK(&rtwdev->txq_work, rtw89_core_txq_work);
+>  	INIT_DELAYED_WORK(&rtwdev->txq_reinvoke_work, rtw89_core_txq_reinvoke_w=
+ork);
+> @@ -5233,6 +5262,7 @@ int rtw89_core_init(struct rtw89_dev *rtwdev)
+>  	wiphy_work_init(&rtwdev->c2h_work, rtw89_fw_c2h_work);
+>  	wiphy_work_init(&rtwdev->ips_work, rtw89_ips_work);
+>  	wiphy_work_init(&rtwdev->cancel_6ghz_probe_work, rtw89_cancel_6ghz_prob=
+e_work);
+> +	wiphy_work_init(&rtwdev->tx_wait_work, rtw89_tx_wait_work);
+>  	INIT_WORK(&rtwdev->load_firmware_work, rtw89_load_firmware_work);
+>=20
+>  	skb_queue_head_init(&rtwdev->c2h_queue);
+> diff --git a/drivers/net/wireless/realtek/rtw89/core.h
+> b/drivers/net/wireless/realtek/rtw89/core.h
+> index 43e10278e14d..06f7d82a8d18 100644
+> --- a/drivers/net/wireless/realtek/rtw89/core.h
+> +++ b/drivers/net/wireless/realtek/rtw89/core.h
+> @@ -3508,12 +3508,16 @@ struct rtw89_phy_rate_pattern {
+>=20
+>  struct rtw89_tx_wait_info {
+>  	struct rcu_head rcu_head;
+> +	struct list_head list;
+>  	struct completion completion;
+> +	struct sk_buff *skb;
+> +	unsigned int timeout;
+>  	bool tx_done;
+> +	bool finished;
+>  };
+>=20
+>  struct rtw89_tx_skb_data {
+> -	struct rtw89_tx_wait_info __rcu *wait;
+> +	struct rtw89_tx_wait_info *wait;
+>  	u8 hci_priv[];
+>  };
+
+As mentioned above, I would like to keep rcu.
+
+>=20
+> @@ -5925,6 +5929,9 @@ struct rtw89_dev {
+>  	/* used to protect rpwm */
+>  	spinlock_t rpwm_lock;
+>=20
+> +	struct list_head tx_waits;
+> +	struct wiphy_work tx_wait_work;
+> +
+>  	struct rtw89_cam_info cam_info;
+>=20
+>  	struct sk_buff_head c2h_queue;
+> @@ -7258,23 +7265,20 @@ static inline struct sk_buff *rtw89_alloc_skb_for=
+_rx(struct
+> rtw89_dev *rtwdev,
+>  	return dev_alloc_skb(length);
+>  }
+>=20
+> -static inline void rtw89_core_tx_wait_complete(struct rtw89_dev *rtwdev,
+> +static inline bool rtw89_core_tx_wait_complete(struct rtw89_dev
+> +*rtwdev,
+>  					       struct rtw89_tx_skb_data *skb_data,
+>  					       bool tx_done)
+>  {
+>  	struct rtw89_tx_wait_info *wait;
+>=20
+> -	rcu_read_lock();
+> -
+> -	wait =3D rcu_dereference(skb_data->wait);
+> +	wait =3D skb_data->wait;
+>  	if (!wait)
+> -		goto out;
+> +		return false;
+>=20
+>  	wait->tx_done =3D tx_done;
+> -	complete(&wait->completion);
+> +	complete_all(&wait->completion);
+>=20
+> -out:
+> -	rcu_read_unlock();
+> +	return true;
+>  }
+>=20
+>  static inline bool rtw89_is_mlo_1_1(struct rtw89_dev *rtwdev) diff --git
+> a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek=
+/rtw89/pci.c
+> index a669f2f843aa..6356c2c224c5 100644
+> --- a/drivers/net/wireless/realtek/rtw89/pci.c
+> +++ b/drivers/net/wireless/realtek/rtw89/pci.c
+> @@ -464,10 +464,7 @@ static void rtw89_pci_tx_status(struct rtw89_dev *rt=
+wdev,
+>  	struct rtw89_tx_skb_data *skb_data =3D RTW89_TX_SKB_CB(skb);
+>  	struct ieee80211_tx_info *info;
+>=20
+> -	rtw89_core_tx_wait_complete(rtwdev, skb_data, tx_status =3D=3D RTW89_TX=
+_DONE);
+> -
+>  	info =3D IEEE80211_SKB_CB(skb);
+> -	ieee80211_tx_info_clear_status(info);
+>=20
+>  	if (info->flags & IEEE80211_TX_CTL_NO_ACK)
+>  		info->flags |=3D IEEE80211_TX_STAT_NOACK_TRANSMITTED;
+> @@ -494,6 +491,10 @@ static void rtw89_pci_tx_status(struct rtw89_dev *rt=
+wdev,
+>  		}
+>  	}
+>=20
+> +	if (rtw89_core_tx_wait_complete(rtwdev, skb_data, tx_status =3D=3D RTW8=
+9_TX_DONE))
+> +		return;
+> +
+> +	ieee80211_tx_info_clear_status(info);
+
+Don't change order of these calls.
+(it's wrong for normal pkt because their tx_info are cleared after filled)
+
+>  	ieee80211_tx_status_ni(rtwdev->hw, skb);  }
+>=20
+> @@ -1387,7 +1388,7 @@ static int rtw89_pci_txwd_submit(struct rtw89_dev *=
+rtwdev,
+>  	}
+>=20
+>  	tx_data->dma =3D dma;
+> -	rcu_assign_pointer(skb_data->wait, NULL);
+> +	skb_data->wait =3D NULL;
+>=20
+>  	txwp_len =3D sizeof(*txwp_info);
+>  	txwd_len =3D chip->txwd_body_size;
+> --
+> 2.50.1
 
