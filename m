@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-176641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADB9FB3A833
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 19:35:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E287EB3A835
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 19:35:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72BF81783F8
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 17:35:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8FBB188CD98
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 17:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF0E337681;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4170321446;
 	Thu, 28 Aug 2025 17:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T1vUWP6c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AY2iFRQn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7D22C11C3
-	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 17:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935B1338F32
+	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 17:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756402520; cv=none; b=um+72kGibWmYEn21mbQh3ZpRZHrJesbKvBzoE/1srqAqDlBRVzuzW42rMcCBttasfZckwHLr0RZufSRybyJq4EoulY17VpQA+J8ScpS4YMssZNDHrC8SbXVyy7sgsJJZTXS0Q4JdRZUdnwIYsKtSd39Y5mubzoQsNAc4d0ilImE=
+	t=1756402520; cv=none; b=EuoO2Ra4b7ecwEG9RdubPm3ThW6Ads+r6u3R4r4aDKf8OR3Ec1mOujeRA2WY/5TWlzqWsjshiV0t+WcKPjY6ffXHy1nSl3w59sFz5t7lVJ5oJ1M3z+xgG+ZkSD6yA9OD6Q3jD91TpHFwTyHf3mKbErqijC8BAsYmEZg4hiwHHPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756402520; c=relaxed/simple;
-	bh=luuabEwYXaA1Jeo9RVbYGTSJ/Hig5nO6Pi47tTZPDgc=;
+	bh=BdoZc9kKtyEuyEqAwwDZoL7JL2x0uvxSL/6cbrjYj94=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpiPa+g1LX9XH+UEyZWcpNveX7KQ1soTF3KyFNWx7M5wmfNNSYvpDkHHMBYaCTFDdnV4RclIujx5swzIIi9PoYTyg5Yzl1qFkIRbK3AM6OEyrmbvkYGikOLb5fgjE2H2GEGYBuP842djk0cgcdqGgGA9lkolrpor6KDh/qPdSEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T1vUWP6c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C7BC4CEF5;
+	 MIME-Version; b=Qp6p9RZ+0M9bRni8o27tXkJDmvxIGDpRy1ZpCgCXMAVaIeji352QyGRKWb6gKjvmOpur4g6YRfUET8jNVHsMpkOcNfW25KTNMQ9eYRU85piB+XLn2+5M5MEQ6PFTPCOmser6VPdJU11rpoOjRBpdJYmtQEnOchVRFH9njIWzB4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AY2iFRQn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00044C4CEED;
 	Thu, 28 Aug 2025 17:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756402519;
-	bh=luuabEwYXaA1Jeo9RVbYGTSJ/Hig5nO6Pi47tTZPDgc=;
+	s=k20201202; t=1756402520;
+	bh=BdoZc9kKtyEuyEqAwwDZoL7JL2x0uvxSL/6cbrjYj94=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=T1vUWP6cgmHY04yTPj5mHH8vgt3RcbBf+CxL81tTO+KfnzCDeo1kXG88ATiuO/nC9
-	 gJbeHK0HQ6KeTn/l5sXQFoUwm2cruNRJGtNFUraXFBp5EcMZMjAbyPwLQpBhVqsMIL
-	 58J2KO8N8wQO4xwESS0w97w0fr4fheZVCPWYoB6nu6MbMrKqgJK7W/PqN1L4XSYATU
-	 1RuWB6q0KcP0p+Ncpbex19NvHMrPvLkQVpsPHAyl0BeILAGx5vok6ZU3JbHatqLYHm
-	 Q1dUmdI2LBCIQ9j/5kfatwQNdqo2AAqUK4t97WPoAR62vTO9cegMOjFc/ea8VlJYIB
-	 SViyNa/3EMLCA==
+	b=AY2iFRQnateIYpiD42fc8X3xuMwYULs7ZL+nsh9TnS3yIgg+YPeQSoL+hAqD0x7dV
+	 stpIKkR5bk6ZAmP2aNQg6+6IjvTNDPS4ZMN7tOG2TjEV2rdiG5/QcmkFX/eftfso2L
+	 dTqNjQiOwNyPjHezeKkdVEED7XzCsvubXMNWtrRZhdbd6pRGyvKAhZO+/NF2AvHXuB
+	 hyspj33+mxpLib06Tl59E8+rPoivd7BEDDIXVtm66V5Xxbep84O++RME1luwElGER3
+	 K860HtZ3SrUgb9XraKfLk9TRiNAy7Szd8jr+qwFbfQtvKqBSx+iXGG0Jm8MKzruntv
+	 +UvusJPJwSQKQ==
 From: Trond Myklebust <trondmy@kernel.org>
 To: stable@vger.kernel.org
-Subject: [PATCH 5.15.y 1/2] nfs: fold nfs_page_group_lock_subrequests into nfs_lock_and_join_requests
-Date: Thu, 28 Aug 2025 10:35:16 -0700
-Message-ID: <aab653aafa9b43704671370c110c2f80326f638b.1756402339.git.trond.myklebust@hammerspace.com>
+Subject: [PATCH 5.15.y 2/2] NFS: Fix a race when updating an existing write
+Date: Thu, 28 Aug 2025 10:35:17 -0700
+Message-ID: <326931e7438b6519a3e08b28448dad1f38770ff2.1756402339.git.trond.myklebust@hammerspace.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <cover.1756402339.git.trond.myklebust@hammerspace.com>
 References: <2025082225-cling-drainer-d884@gregkh> <cover.1756402339.git.trond.myklebust@hammerspace.com>
@@ -57,227 +57,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Christoph Hellwig <hch@lst.de>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-Fold nfs_page_group_lock_subrequests into nfs_lock_and_join_requests to
-prepare for future changes to this code, and move the helpers to write.c
-as well.
+After nfs_lock_and_join_requests() tests for whether the request is
+still attached to the mapping, nothing prevents a call to
+nfs_inode_remove_request() from succeeding until we actually lock the
+page group.
+The reason is that whoever called nfs_inode_remove_request() doesn't
+necessarily have a lock on the page group head.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+So in order to avoid races, let's take the page group lock earlier in
+nfs_lock_and_join_requests(), and hold it across the removal of the
+request in nfs_inode_remove_request().
+
+Reported-by: Jeff Layton <jlayton@kernel.org>
+Tested-by: Joe Quanaim <jdq@meta.com>
+Tested-by: Andrew Steffen <aksteffen@meta.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Fixes: bd37d6fce184 ("NFSv4: Convert nfs_lock_and_join_requests() to use nfs_page_find_head_request()")
+Cc: stable@vger.kernel.org
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-(cherry picked from commit 25edbcac6e32eab345e470d56ca9974a577b878b)
+(cherry picked from commit 76d2e3890fb169168c73f2e4f8375c7cc24a765e)
 ---
- fs/nfs/pagelist.c        | 77 ----------------------------------------
- fs/nfs/write.c           | 74 ++++++++++++++++++++++++++++++++++----
- include/linux/nfs_page.h |  1 -
- 3 files changed, 68 insertions(+), 84 deletions(-)
+ fs/nfs/pagelist.c        |  9 +++---
+ fs/nfs/write.c           | 66 ++++++++++++++--------------------------
+ include/linux/nfs_page.h |  1 +
+ 3 files changed, 29 insertions(+), 47 deletions(-)
 
 diff --git a/fs/nfs/pagelist.c b/fs/nfs/pagelist.c
-index fdecf729fa92..73817063791a 100644
+index 73817063791a..d6b18100a4cf 100644
 --- a/fs/nfs/pagelist.c
 +++ b/fs/nfs/pagelist.c
-@@ -167,83 +167,6 @@ nfs_page_group_lock_head(struct nfs_page *req)
- 	return head;
+@@ -234,13 +234,14 @@ nfs_page_group_unlock(struct nfs_page *req)
+ 	nfs_page_clear_headlock(req);
  }
  
 -/*
-- * nfs_unroll_locks -  unlock all newly locked reqs and wait on @req
-- * @head: head request of page group, must be holding head lock
-- * @req: request that couldn't lock and needs to wait on the req bit lock
-- *
-- * This is a helper function for nfs_lock_and_join_requests
-- * returns 0 on success, < 0 on error.
-- */
--static void
--nfs_unroll_locks(struct nfs_page *head, struct nfs_page *req)
--{
--	struct nfs_page *tmp;
--
--	/* relinquish all the locks successfully grabbed this run */
--	for (tmp = head->wb_this_page ; tmp != req; tmp = tmp->wb_this_page) {
--		if (!kref_read(&tmp->wb_kref))
--			continue;
--		nfs_unlock_and_release_request(tmp);
--	}
--}
--
--/*
-- * nfs_page_group_lock_subreq -  try to lock a subrequest
-- * @head: head request of page group
-- * @subreq: request to lock
-- *
-- * This is a helper function for nfs_lock_and_join_requests which
-- * must be called with the head request and page group both locked.
-- * On error, it returns with the page group unlocked.
-- */
--static int
--nfs_page_group_lock_subreq(struct nfs_page *head, struct nfs_page *subreq)
--{
--	int ret;
--
--	if (!kref_get_unless_zero(&subreq->wb_kref))
--		return 0;
--	while (!nfs_lock_request(subreq)) {
--		nfs_page_group_unlock(head);
--		ret = nfs_wait_on_request(subreq);
--		if (!ret)
--			ret = nfs_page_group_lock(head);
--		if (ret < 0) {
--			nfs_unroll_locks(head, subreq);
--			nfs_release_request(subreq);
--			return ret;
--		}
--	}
--	return 0;
--}
--
--/*
-- * nfs_page_group_lock_subrequests -  try to lock the subrequests
-- * @head: head request of page group
-- *
-- * This is a helper function for nfs_lock_and_join_requests which
-- * must be called with the head request locked.
-- */
--int nfs_page_group_lock_subrequests(struct nfs_page *head)
--{
--	struct nfs_page *subreq;
--	int ret;
--
--	ret = nfs_page_group_lock(head);
--	if (ret < 0)
--		return ret;
--	/* lock each request in the page group */
--	for (subreq = head->wb_this_page; subreq != head;
--			subreq = subreq->wb_this_page) {
--		ret = nfs_page_group_lock_subreq(head, subreq);
--		if (ret < 0)
--			return ret;
--	}
--	nfs_page_group_unlock(head);
--	return 0;
--}
--
- /*
-  * nfs_page_set_headlock - set the request PG_HEADLOCK
-  * @req: request that is to be locked
+- * nfs_page_group_sync_on_bit_locked
++/**
++ * nfs_page_group_sync_on_bit_locked - Test if all requests have @bit set
++ * @req: request in page group
++ * @bit: PG_* bit that is used to sync page group
+  *
+  * must be called with page group lock held
+  */
+-static bool
+-nfs_page_group_sync_on_bit_locked(struct nfs_page *req, unsigned int bit)
++bool nfs_page_group_sync_on_bit_locked(struct nfs_page *req, unsigned int bit)
+ {
+ 	struct nfs_page *head = req->wb_head;
+ 	struct nfs_page *tmp;
 diff --git a/fs/nfs/write.c b/fs/nfs/write.c
-index bb401d37fe26..6500aeb959f9 100644
+index 6500aeb959f9..9323631f4889 100644
 --- a/fs/nfs/write.c
 +++ b/fs/nfs/write.c
-@@ -546,6 +546,57 @@ void nfs_join_page_group(struct nfs_page *head, struct nfs_commit_info *cinfo,
- 	nfs_destroy_unlinked_subrequests(destroy_list, head, inode);
+@@ -155,20 +155,10 @@ nfs_page_set_inode_ref(struct nfs_page *req, struct inode *inode)
+ 	}
  }
  
-+/*
-+ * nfs_unroll_locks -  unlock all newly locked reqs and wait on @req
-+ * @head: head request of page group, must be holding head lock
-+ * @req: request that couldn't lock and needs to wait on the req bit lock
-+ *
-+ * This is a helper function for nfs_lock_and_join_requests
-+ * returns 0 on success, < 0 on error.
-+ */
-+static void
-+nfs_unroll_locks(struct nfs_page *head, struct nfs_page *req)
-+{
-+	struct nfs_page *tmp;
-+
-+	/* relinquish all the locks successfully grabbed this run */
-+	for (tmp = head->wb_this_page ; tmp != req; tmp = tmp->wb_this_page) {
-+		if (!kref_read(&tmp->wb_kref))
-+			continue;
-+		nfs_unlock_and_release_request(tmp);
-+	}
-+}
-+
-+/*
-+ * nfs_page_group_lock_subreq -  try to lock a subrequest
-+ * @head: head request of page group
-+ * @subreq: request to lock
-+ *
-+ * This is a helper function for nfs_lock_and_join_requests which
-+ * must be called with the head request and page group both locked.
-+ * On error, it returns with the page group unlocked.
-+ */
-+static int
-+nfs_page_group_lock_subreq(struct nfs_page *head, struct nfs_page *subreq)
-+{
-+	int ret;
-+
-+	if (!kref_get_unless_zero(&subreq->wb_kref))
-+		return 0;
-+	while (!nfs_lock_request(subreq)) {
-+		nfs_page_group_unlock(head);
-+		ret = nfs_wait_on_request(subreq);
-+		if (!ret)
-+			ret = nfs_page_group_lock(head);
-+		if (ret < 0) {
-+			nfs_unroll_locks(head, subreq);
-+			nfs_release_request(subreq);
-+			return ret;
-+		}
-+	}
-+	return 0;
-+}
-+
- /*
-  * nfs_lock_and_join_requests - join all subreqs to the head req
-  * @page: the page used to lookup the "page group" of nfs_page structures
-@@ -565,7 +616,7 @@ static struct nfs_page *
- nfs_lock_and_join_requests(struct page *page)
+-static int
+-nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
++static void nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
  {
- 	struct inode *inode = page_file_mapping(page)->host;
--	struct nfs_page *head;
-+	struct nfs_page *head, *subreq;
- 	struct nfs_commit_info cinfo;
- 	int ret;
+-	int ret;
+-
+-	if (!test_bit(PG_REMOVE, &req->wb_flags))
+-		return 0;
+-	ret = nfs_page_group_lock(req);
+-	if (ret)
+-		return ret;
+ 	if (test_and_clear_bit(PG_REMOVE, &req->wb_flags))
+ 		nfs_page_set_inode_ref(req, inode);
+-	nfs_page_group_unlock(req);
+-	return 0;
+ }
  
-@@ -579,16 +630,27 @@ nfs_lock_and_join_requests(struct page *page)
+ static struct nfs_page *
+@@ -240,36 +230,6 @@ static struct nfs_page *nfs_page_find_head_request(struct page *page)
+ 	return req;
+ }
+ 
+-static struct nfs_page *nfs_find_and_lock_page_request(struct page *page)
+-{
+-	struct inode *inode = page_file_mapping(page)->host;
+-	struct nfs_page *req, *head;
+-	int ret;
+-
+-	for (;;) {
+-		req = nfs_page_find_head_request(page);
+-		if (!req)
+-			return req;
+-		head = nfs_page_group_lock_head(req);
+-		if (head != req)
+-			nfs_release_request(req);
+-		if (IS_ERR(head))
+-			return head;
+-		ret = nfs_cancel_remove_inode(head, inode);
+-		if (ret < 0) {
+-			nfs_unlock_and_release_request(head);
+-			return ERR_PTR(ret);
+-		}
+-		/* Ensure that nobody removed the request before we locked it */
+-		if (head == nfs_page_private_request(page))
+-			break;
+-		if (PageSwapCache(page))
+-			break;
+-		nfs_unlock_and_release_request(head);
+-	}
+-	return head;
+-}
+-
+ /* Adjust the file length if we're writing beyond the end */
+ static void nfs_grow_file(struct page *page, unsigned int offset, unsigned int count)
+ {
+@@ -626,14 +586,32 @@ nfs_lock_and_join_requests(struct page *page)
+ 	 * reference to the whole page group - the group will not be destroyed
+ 	 * until the head reference is released.
+ 	 */
+-	head = nfs_find_and_lock_page_request(page);
++retry:
++	head = nfs_page_find_head_request(page);
  	if (IS_ERR_OR_NULL(head))
  		return head;
  
-+	ret = nfs_page_group_lock(head);
-+	if (ret < 0)
-+		goto out_unlock;
++	while (!nfs_lock_request(head)) {
++		ret = nfs_wait_on_request(head);
++		if (ret < 0) {
++			nfs_release_request(head);
++			return ERR_PTR(ret);
++		}
++	}
++
+ 	ret = nfs_page_group_lock(head);
+ 	if (ret < 0)
+ 		goto out_unlock;
+ 
++	/* Ensure that nobody removed the request before we locked it */
++	if (head != nfs_page_private_request(page) && !PageSwapCache(page)) {
++		nfs_page_group_unlock(head);
++		nfs_unlock_and_release_request(head);
++		goto retry;
++	}
++
++	nfs_cancel_remove_inode(head, inode);
 +
  	/* lock each request in the page group */
--	ret = nfs_page_group_lock_subrequests(head);
--	if (ret < 0) {
--		nfs_unlock_and_release_request(head);
--		return ERR_PTR(ret);
-+	for (subreq = head->wb_this_page;
-+	     subreq != head;
-+	     subreq = subreq->wb_this_page) {
-+		ret = nfs_page_group_lock_subreq(head, subreq);
-+		if (ret < 0)
-+			goto out_unlock;
+ 	for (subreq = head->wb_this_page;
+ 	     subreq != head;
+@@ -843,7 +821,8 @@ static void nfs_inode_remove_request(struct nfs_page *req)
+ 	struct nfs_inode *nfsi = NFS_I(inode);
+ 	struct nfs_page *head;
+ 
+-	if (nfs_page_group_sync_on_bit(req, PG_REMOVE)) {
++	nfs_page_group_lock(req);
++	if (nfs_page_group_sync_on_bit_locked(req, PG_REMOVE)) {
+ 		head = req->wb_head;
+ 
+ 		spin_lock(&mapping->private_lock);
+@@ -854,6 +833,7 @@ static void nfs_inode_remove_request(struct nfs_page *req)
+ 		}
+ 		spin_unlock(&mapping->private_lock);
  	}
++	nfs_page_group_unlock(req);
  
--	nfs_join_page_group(head, &cinfo, inode);
-+	nfs_page_group_unlock(head);
- 
-+	nfs_join_page_group(head, &cinfo, inode);
- 	return head;
-+
-+out_unlock:
-+	nfs_unlock_and_release_request(head);
-+	return ERR_PTR(ret);
- }
- 
- static void nfs_write_error(struct nfs_page *req, int error)
+ 	if (test_and_clear_bit(PG_INODE_REF, &req->wb_flags)) {
+ 		nfs_release_request(req);
 diff --git a/include/linux/nfs_page.h b/include/linux/nfs_page.h
-index 40aa09a21f75..7c5e704a7520 100644
+index 7c5e704a7520..137b790ea1a4 100644
 --- a/include/linux/nfs_page.h
 +++ b/include/linux/nfs_page.h
-@@ -144,7 +144,6 @@ extern  int nfs_wait_on_request(struct nfs_page *);
- extern	void nfs_unlock_request(struct nfs_page *req);
- extern	void nfs_unlock_and_release_request(struct nfs_page *);
- extern	struct nfs_page *nfs_page_group_lock_head(struct nfs_page *req);
--extern	int nfs_page_group_lock_subrequests(struct nfs_page *head);
- extern void nfs_join_page_group(struct nfs_page *head,
- 				struct nfs_commit_info *cinfo,
- 				struct inode *inode);
+@@ -150,6 +150,7 @@ extern void nfs_join_page_group(struct nfs_page *head,
+ extern int nfs_page_group_lock(struct nfs_page *);
+ extern void nfs_page_group_unlock(struct nfs_page *);
+ extern bool nfs_page_group_sync_on_bit(struct nfs_page *, unsigned int);
++extern bool nfs_page_group_sync_on_bit_locked(struct nfs_page *, unsigned int);
+ extern	int nfs_page_set_headlock(struct nfs_page *req);
+ extern void nfs_page_clear_headlock(struct nfs_page *req);
+ extern bool nfs_async_iocounter_wait(struct rpc_task *, struct nfs_lock_context *);
 -- 
 2.51.0
 
