@@ -1,104 +1,143 @@
-Return-Path: <stable+bounces-176543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC86BB390E7
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 03:16:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B38CCB39171
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 04:05:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81D54167FEA
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 01:16:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E29246551C
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 02:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC19C1E32D6;
-	Thu, 28 Aug 2025 01:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466B8248883;
+	Thu, 28 Aug 2025 02:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H1VVtCDq"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OEdAR1uH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915BD4A00;
-	Thu, 28 Aug 2025 01:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEDE195FE8
+	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 02:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756343787; cv=none; b=QQW/b5nHky16dTLUQ5Hf22wxwqJTOxiQCQ/ynOgMYWYbYev+rjGao/Ms+lARIGcp2O1Isl3t6K9MSW77AER4iiBKJxb6lyybczpx2YTB2Sq6k5yMYoP7JWuigpGlnWrb0MJDBZx7MMFfjJBcrjv6byN+FrrPGJpntI/QQ+cppbY=
+	t=1756346734; cv=none; b=mPkYGFpTWi3AyAhnuCsgL+g6wG50N22w71cbBZ5xjETmtZt0s60z5SXj7FM8wL+mkrBBq47634G1T7hqgADcpewXU7XiRRNrqqVhNqP8CsK2tnoUhjVWRYkBLj4esUxpsEORhW2YqoMgmfZ6+RecEKmUzFalUJTPjEjsmzK+6Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756343787; c=relaxed/simple;
-	bh=1qvh7FuwAHEr4HKxFymbYY2odFZkstc1OtXh+ux1otw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KevPTw/4KBL1LmvRp3irEjfYwnQSonvPPpTwOEJ/ljjIjbTH/1Yo4NfFW/xG/4kE7o+CXAbMkApxod+xEm/W9fvge3VTmSg1wb3H924lVxPnnnxDXPGbt7jHLEA2f3Q7CIUMYljE0qqb5nn6yG5HBj/hrTocSMCxw0MxZS410L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H1VVtCDq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B90BAC4CEEB;
-	Thu, 28 Aug 2025 01:16:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756343787;
-	bh=1qvh7FuwAHEr4HKxFymbYY2odFZkstc1OtXh+ux1otw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=H1VVtCDq8VzVgnW8qc384lkGjTID6Tgrh52L8O+ejsVygga8IYPyd46WYoVbv5zme
-	 GafxmernB0BMHDZJLzimPFNvmayADOV0lUuxCEgMtC4bS3QtPDkK0VTBIdr1iw3jM+
-	 JtnX6bY7jceabW+uqjqCf2VIQvEu/Dq//r7f+W8H0DLNK5FIXYUQ6VxKV1ycLG+FiR
-	 9ZBOPc08b0y1nq7Qxo9m0rTD1jUEbfMIx19iIqd5v4SEM3goC6iPSL2CzSUdfUOyy8
-	 eiLyIYvwt6dUTiBL5g6c6oP3szad9kzVKxzNIit/KBQubRYHGZPWSmtDcu6yiXXovl
-	 BxZNtaqodqynA==
-Date: Wed, 27 Aug 2025 18:16:26 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Abin Joseph <abin.joseph@amd.com>
-Cc: <radhey.shyam.pandey@amd.com>, <andrew+netdev@lunn.ch>,
- <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
- <michal.simek@amd.com>, <git@amd.com>, <netdev@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH net-next] net: xilinx: axienet: Add error handling for
- RX metadata pointer retrieval
-Message-ID: <20250827181626.7d1dbc3f@kernel.org>
-In-Reply-To: <20250826180549.2178147-1-abin.joseph@amd.com>
-References: <20250826180549.2178147-1-abin.joseph@amd.com>
+	s=arc-20240116; t=1756346734; c=relaxed/simple;
+	bh=IiiK/TLSYzjTbuhRBbkspw8DwVRCSdJwRbF9f7BfnzQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i+yh7GwON+Ut+4peexj80fSrg49hkt74ukDBvTVc1nNz1VmQq5+sWDvrT6Nmn2WmVXBsGQ75npZryjqJlOaRlILrvtstoG5YGAkfMo6rjqn56gFMJnsCMGD9/qKfV/32qQd7JmioL7Smm8qB5YSQFRxzEcBuJ/a2t1aVWqdOebM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OEdAR1uH; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <cfb62b9d-9cbd-47dd-a894-3357027e2a50@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1756346720;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rb2F2xDiL4eTGN41G2MHNYXODkWfWx3B+Sfl8F3SlJw=;
+	b=OEdAR1uHhvyS3yB4J7+ExJ3vBSsoIRGDRSEgjJLQN0jVFDfw4h6Ix2tzNSSUoP3oIR85+f
+	kaIZZxMQqSCzAUYpng0TFfAAKLFqQxm9fB+S9Bf+l8Y1mFC6PJe0EOIBVAVhX90gAuHH+9
+	TpqCpbeKga7zbbp3YT9LlRDUFCCdXjI=
+Date: Thu, 28 Aug 2025 10:05:11 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
+Content-Language: en-US
+To: Finn Thain <fthain@linux-m68k.org>
+Cc: akpm@linux-foundation.org, geert@linux-m68k.org,
+ linux-kernel@vger.kernel.org, mhiramat@kernel.org, oak@helsinkinet.fi,
+ peterz@infradead.org, stable@vger.kernel.org, will@kernel.org,
+ Lance Yang <ioworker0@gmail.com>, linux-m68k@lists.linux-m68k.org
+References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
+ <20250825032743.80641-1-ioworker0@gmail.com>
+ <c8851682-25f1-f594-e30f-5b62e019d37b@linux-m68k.org>
+ <96ae7afc-c882-4c3d-9dea-3e2ae2789caf@linux.dev>
+ <5a44c60b-650a-1f8a-d5cb-abf9f0716817@linux-m68k.org>
+ <4e7e7292-338d-4a57-84ec-ae7427f6ad7c@linux.dev>
+ <d07778f8-8990-226b-5171-4a36e6e18f32@linux-m68k.org>
+ <d95592ec-f51e-4d80-b633-7440b4e69944@linux.dev>
+ <30a55f56-93c2-4408-b1a5-5574984fb45f@linux.dev>
+ <4405ee5a-becc-7375-61a9-01304b3e0b20@linux-m68k.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <4405ee5a-becc-7375-61a9-01304b3e0b20@linux-m68k.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, 26 Aug 2025 23:35:49 +0530 Abin Joseph wrote:
-> Subject: [PATCH net-next] net: xilinx: axienet: Add error handling for RX metadata pointer retrieval
 
-Sounds like a fix, please repost as [PATCH net], against the
-netdev/net tree.
 
-> Add proper error checking for dmaengine_desc_get_metadata_ptr() which
-> can return an error pointer and lead to potential crashes or undefined
-> behaviour if the pointer retrieval fails.
+On 2025/8/28 07:43, Finn Thain wrote:
 > 
-> Properly handle the error by unmapping DMA buffer, freeing the skb and
-> returning early to prevent further processing with invalid data.
+> On Mon, 25 Aug 2025, Lance Yang wrote:
 > 
-> Fixes: 6a91b846af85 ("net: axienet: Introduce dmaengine support")
-> Signed-off-by: Abin Joseph <abin.joseph@amd.com>
-> ---
->  drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
+>>
+>> Same here, using a global static variable instead of a local one. The
+>> result is consistently misaligned.
+>>
+>> ```
+>> #include <linux/module.h>
+>> #include <linux/init.h>
+>>
+>> static struct __attribute__((packed)) test_container {
+>>      char padding[49];
+>>      struct mutex io_lock;
+>> } cont;
+>>
+>> static int __init alignment_init(void)
+>> {
+>>      pr_info("Container base address      : %px\n", &cont);
+>>      pr_info("io_lock member address      : %px\n", &cont.io_lock);
+>>      pr_info("io_lock address offset mod 4: %lu\n", (unsigned long)&cont.io_lock % 4);
+>>      return 0;
+>> }
+>>
+>> static void __exit alignment_exit(void)
+>> {
+>>      pr_info("Module unloaded\n");
+>> }
+>>
+>> module_init(alignment_init);
+>> module_exit(alignment_exit);
+>> MODULE_LICENSE("GPL");
+>> MODULE_AUTHOR("x");
+>> MODULE_DESCRIPTION("x");
+>> ```
+>>
+>> Result from dmesg:
+>>
+>> ```
+>> [Mon Aug 25 19:33:28 2025] Container base address      : ffffffffc28f0940
+>> [Mon Aug 25 19:33:28 2025] io_lock member address      : ffffffffc28f0971
+>> [Mon Aug 25 19:33:28 2025] io_lock address offset mod 4: 1
+>> ```
+>>
 > 
-> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> index 0d8a05fe541a..1729fd21d83b 100644
-> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> @@ -1166,8 +1166,17 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
->  	skb = skbuf_dma->skb;
->  	app_metadata = dmaengine_desc_get_metadata_ptr(skbuf_dma->desc, &meta_len,
->  						       &meta_max_len);
-> -	dma_unmap_single(lp->dev, skbuf_dma->dma_address, lp->max_frm_size,
-> -			 DMA_FROM_DEVICE);
-> +
-> +	dma_unmap_single(lp->dev, skbuf_dma->dma_address, lp->max_frm_size, DMA_FROM_DEVICE);
+> FTR, I was able to reproduce that result (i.e. static storage):
+> 
+> [    0.320000] Container base address      : 0055d9d0
+> [    0.320000] io_lock member address      : 0055da01
+> [    0.320000] io_lock address offset mod 4: 1
+> 
+> I think the experiments you sent previously would have demonstrated the
+> same result, except for the unpredictable base address that you sensibly
+> logged in this version.
 
-80 char width is still strongly preferred, at least in networking.
-So please don't unwrap this line for no apparent reason :\
+Thanks for taking the time to reproduce it!
 
-> +	if (IS_ERR(app_metadata)) {
--- 
-pw-bot: cr
+This proves the problem can happen in practice (e.g., with packed structs),
+so we need to ignore the unaligned pointers on the architectures that don't
+trap for now.
+
+Cheers,
+Lance
+
 
