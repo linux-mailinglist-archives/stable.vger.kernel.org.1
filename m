@@ -1,116 +1,186 @@
-Return-Path: <stable+bounces-176673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5AB9B3ADE2
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 00:53:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D642BB3AE5E
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 01:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5E71C80F05
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 22:54:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E4424680B9
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 23:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B1D28BABB;
-	Thu, 28 Aug 2025 22:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C6426F29B;
+	Thu, 28 Aug 2025 23:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="lY3RW1nv"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="IRJu2F5j"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8521923D7EC
-	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 22:53:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E317082D;
+	Thu, 28 Aug 2025 23:19:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756421622; cv=none; b=IK8wwfDMndfhem9iZHewn2BFLGP7u+QccP0aLPsYSHubt9JLMg23Wlj0xjKCmUk1aq91saCMzMZCn1LFrPkYK1wJqSALao+nhaIW6tCo739SEucUiVFAqWme215bCMOE/5PrjcfXLNFExc9VwLlLe69O5c4nIM9sq7apS7pVjSM=
+	t=1756423175; cv=none; b=kgjaaLIX1sub6VNjofKPGWh3IVBjBnZ/OwSe/bvT9IMiIsrJdhmeuLkN9YCyllhnHV0nAMGGKv5iWHgKPbWiDjmnSSK3+pdvYwEj413VeBnT0yv3Kr/jyfLj/xn6n0gZc0JvBlagUg3aLDnPM0nmaBvZ/ET5p1uga3ZCQaUabJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756421622; c=relaxed/simple;
-	bh=bRiDCfz0S+U/QPTf4FoEVSczI7dQRwbekvj4mVUeptw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FfNJp+nGEqn05beRGW2mH5nv6WyO0MEW1MYzCJz7Injq8oxIO0PDVP4GiUsoLFIyc8/JOSCOmGp2nn3UHQo1ouPoIs8TI506suani/pXoqzCZ/r9+Bo1Z5fpyfNZrpJJ4lNA8Sn3DSgSe+gUXKM1vMkb3zzdVQ0oFKeuL2qtaN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=lY3RW1nv; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57SLV63b024128;
-	Thu, 28 Aug 2025 22:53:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=bRiDC
-	fz0S+U/QPTf4FoEVSczI7dQRwbekvj4mVUeptw=; b=lY3RW1nv7XZvNcZCb4zQs
-	r9BiJif5tOVo/uzCY9g6RDdqMntKqY94abDn17jD6rR+tRUYOvH0DXhMIY9d8DnD
-	QAF9wsggBsulOBdiecnEDM3N9QkCHb4dNxtt8aoiMPcCWTAlT6d73ECxd0eRzBx2
-	VD9/aT+fR9w5aTdcyBwm4R3a2fRkHCq/9ni1LJQubmJ9StpRulXsmoM0aygoWMs3
-	T9ac5VaJdC8jaB5r3YmYSIzrbwdQuMHFO8KJsx+D4J9quPAZ3lZ6cZaBF1rzTwva
-	SclK6UcpkS9h0P55Cgg3yQc5YZwEvADIsS3qOyku7F9yKIDYQktwdX8fNsCBj3YP
-	Q==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48q42t9c22-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 28 Aug 2025 22:53:26 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57SLoqcR012131;
-	Thu, 28 Aug 2025 22:53:25 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48q43cf9d2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 28 Aug 2025 22:53:25 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 57SMrPPk008159;
-	Thu, 28 Aug 2025 22:53:25 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 48q43cf9cp-1;
-	Thu, 28 Aug 2025 22:53:25 +0000
-From: Sherry Yang <sherry.yang@oracle.com>
-To: gregkh@linuxfoundation.org
-Cc: johannes.berg@intel.com, patches@lists.linux.dev, repk@triplefau.lt,
-        sashal@kernel.org, stable@vger.kernel.org, sherry.yang@oracle.com
-Subject: Re: [PATCH 5.4 098/403] Reapply "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
-Date: Thu, 28 Aug 2025 15:53:23 -0700
-Message-ID: <20250828225323.725505-1-sherry.yang@oracle.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110909.381604948@linuxfoundation.org>
-References: <20250826110909.381604948@linuxfoundation.org>
+	s=arc-20240116; t=1756423175; c=relaxed/simple;
+	bh=VLwNbmkR89mKoTUx8RIBr4lfBqASXd/0jIL78aT9de8=;
+	h=Date:To:From:Subject:Message-Id; b=L3p3GM2Ydu3civfwh8jlRQIhgs02+hyC3ki6Zg9G4UN4eY9HKbVqII2h3lopbW4srEuhEd2phzhNpU2GGfDhNUelwNtGnU7cuDiq7U8y2qrYFh28BTURoUFKzsf33yTJgqkAPsSw+lTKjBZWWBSCFvfFSJnyN/sTqCEp4HKmvS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=IRJu2F5j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FB6C4CEEB;
+	Thu, 28 Aug 2025 23:19:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756423175;
+	bh=VLwNbmkR89mKoTUx8RIBr4lfBqASXd/0jIL78aT9de8=;
+	h=Date:To:From:Subject:From;
+	b=IRJu2F5j9PRzONlx5s+CRR+bC9+k/ab8LRmO83u94sALwAl7Qqi+Vmdqx4IrXAOPx
+	 IsqfXILgzThBxJgDm6Q9DM12AM1bWZ+gdLBYJvnYIHTwUYWYIMbzcKtMod0Uo8GEx9
+	 zViN9VVM8HUNMEB/PR8T5HCPUbEXMGuYwUBBe/TA=
+Date: Thu, 28 Aug 2025 16:19:34 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,nao.horiguchi@gmail.com,david@redhat.com,linmiaohe@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-memory-failure-fix-vm_bug_on_pagepagepoisonedpage-when-unpoison-memory.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250828231935.29FB6C4CEEB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-28_04,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 bulkscore=0
- adultscore=0 mlxlogscore=632 spamscore=0 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2508280191
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAxMyBTYWx0ZWRfX9RCrHox5HDeb
- arWfj/IXaqdra3rbcO3mRXu0V0aydZmSdFZypgGDZMrH15+iD41VPAeYJfeqMInISBjcQRGIaTq
- 3tGz0mpbgk4OUfV7F6OPI3yRsrduoHYZ4aiYWDA9cHkMpFWyVzrzqE6WK1FUyD+Y2X3qT72fP5v
- 6F9bDi3J5lEd975GJ95Sj3zaw4wDhkxNwx7vOBov1765XK77Aj+Z0VRlXIhZcriEjYdtG1pS/Qr
- fXvBckwNBYFsTrH//47/CeQpoylSVsnc9BE9/gJXiLpK6cO3dY/6TIzmcmIb4DByPg5LbHohH35
- za8c3Vfgf03DpU08EUDU14JRRsKpUq4b1B7+12HkG0QSlO6B8Ptodg9JIbhGhjurPjKxfEpsFVM
- dbFUXkfqE/pB5D2ndSjbX6+xPBQg+g==
-X-Proofpoint-ORIG-GUID: vQigp2RMFE0UusNMNVYTwLKfGw0zpDOU
-X-Authority-Analysis: v=2.4 cv=RqfFLDmK c=1 sm=1 tr=0 ts=68b0dde6 b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=5S4kX0IQPxXMa9SJivYA:9 cc=ntf
- awl=host:12069
-X-Proofpoint-GUID: vQigp2RMFE0UusNMNVYTwLKfGw0zpDOU
 
-Hi Greg,
 
-I noticed that only [PATCH 2/2] from the series
+The patch titled
+     Subject: mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-memory-failure-fix-vm_bug_on_pagepagepoisonedpage-when-unpoison-memory.patch
 
-[PATCH wireless 0/2] Fix ieee80211_tx_h_select_key() for 802.11 encaps offloading [1]
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memory-failure-fix-vm_bug_on_pagepagepoisonedpage-when-unpoison-memory.patch
 
-was backported to 5.4-stable, while [PATCH 1/2] is missing.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-It looks like the 1st patch is the prerequisite patch to apply the 2nd patch.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-[1] https://lore.kernel.org/all/cover.1752765971.git.repk@triplefau.lt/
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Thanks,
-Sherry
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Miaohe Lin <linmiaohe@huawei.com>
+Subject: mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
+Date: Thu, 28 Aug 2025 10:46:18 +0800
+
+When I did memory failure tests, below panic occurs:
+
+page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
+kernel BUG at include/linux/page-flags.h:616!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ unpoison_memory+0x2f3/0x590
+ simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
+ debugfs_attr_write+0x42/0x60
+ full_proxy_write+0x5b/0x80
+ vfs_write+0xd5/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xb9/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f08f0314887
+RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
+RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
+RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
+R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
+ </TASK>
+Modules linked in: hwpoison_inject
+---[ end trace 0000000000000000 ]---
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Kernel panic - not syncing: Fatal exception
+Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+---[ end Kernel panic - not syncing: Fatal exception ]---
+
+The root cause is that unpoison_memory() tries to check the PG_HWPoison
+flags of an uninitialized page.  So VM_BUG_ON_PAGE(PagePoisoned(page)) is
+triggered.  This can be reproduced by below steps:
+
+1.Offline memory block:
+
+ echo offline > /sys/devices/system/memory/memory12/state
+
+2.Get offlined memory pfn:
+
+ page-types -b n -rlN
+
+3.Write pfn to unpoison-pfn
+
+ echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
+
+This scenario can be identified by pfn_to_online_page() returning NULL. 
+And ZONE_DEVICE pages are never expected, so we can simply fail if
+pfn_to_online_page() == NULL to fix the bug.
+
+Link: https://lkml.kernel.org/r/20250828024618.1744895-1-linmiaohe@huawei.com
+Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memory-failure.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+--- a/mm/memory-failure.c~mm-memory-failure-fix-vm_bug_on_pagepagepoisonedpage-when-unpoison-memory
++++ a/mm/memory-failure.c
+@@ -2568,10 +2568,9 @@ int unpoison_memory(unsigned long pfn)
+ 	static DEFINE_RATELIMIT_STATE(unpoison_rs, DEFAULT_RATELIMIT_INTERVAL,
+ 					DEFAULT_RATELIMIT_BURST);
+ 
+-	if (!pfn_valid(pfn))
+-		return -ENXIO;
+-
+-	p = pfn_to_page(pfn);
++	p = pfn_to_online_page(pfn);
++	if (!p)
++		return -EIO;
+ 	folio = page_folio(p);
+ 
+ 	mutex_lock(&mf_mutex);
+_
+
+Patches currently in -mm which might be from linmiaohe@huawei.com are
+
+mm-memory-failure-fix-vm_bug_on_pagepagepoisonedpage-when-unpoison-memory.patch
+revert-hugetlb-make-hugetlb-depends-on-sysfs-or-sysctl.patch
+
 
