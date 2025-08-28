@@ -1,91 +1,96 @@
-Return-Path: <stable+bounces-176594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE59B39B4D
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 13:16:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6156EB39B6B
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 13:23:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0D71165E1C
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 11:16:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E19A1C81698
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 11:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FF315B0FE;
-	Thu, 28 Aug 2025 11:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71387849C;
+	Thu, 28 Aug 2025 11:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="UzYBM3Yp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qt1kh0yC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6D74A23
-	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 11:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE97244691;
+	Thu, 28 Aug 2025 11:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756379767; cv=none; b=DIWkcMhEpcSvbEMCSPQ3NEhPaikHYysyqOK2ezKGBeuWfwvYx7zDYwLHgzekDd8LR0jOa4xasApKrEbpfJJqRPpaGRChzSG2iHmFKKhRYhG65iPDRbS6+HPFthPoyr1K0J5Tqa5sKGYYIXoCqbOGOfOVnBt8tx5kR7artutonU4=
+	t=1756380178; cv=none; b=ZivJeGmrCOM0Jeq3YSaM4BtwWLdaxw/N1JJc6VLt20YI1S2NxgTMwX1+awKwN9rG1GXsnPJmOr/HIZtTbDLWUt13Je7sDT5cDz3MPEDixv/Jmz5FZeqmSqILeIYizzoRa0vngh+ljeN9m7KF3HMSPkNOciT6gOopv7Wlg4tyEW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756379767; c=relaxed/simple;
-	bh=x2CwY0f27ONX+8fmDC68h7bPHgxl9g7WINlENPZM7FQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rw/5T44PTMNMz80k1UXpHK888NrweqErup4VfeICWXPh0RnjGMT5k+/mIUpUcRpLvBC5MVsEItUKC1c+zHOa6Ly8Lw3RHNE55a+bvPIEN0KIgrvperrY6m566+avyV1z35GQEsfMpkiY8mZZAPpsClan0s1lqaH6HXRvB0uorFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=UzYBM3Yp; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45b4d892175so4676885e9.2
-        for <stable@vger.kernel.org>; Thu, 28 Aug 2025 04:16:04 -0700 (PDT)
+	s=arc-20240116; t=1756380178; c=relaxed/simple;
+	bh=fvV1/34M0q/gAMQ253l/U84MmKBcsMJLgosMs2oZQgk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=d/iv61m2I+TkmV3UGbPnvSUt7w3+7WzfeYdAba8KFn5cWOVI9wr4IIPQVNRaeXjmXkCdunDpvcn96vtvtPcXuXzxvMaGw6UNI48TUZKxO3pGKU36xrRMo2+3vvuwCF5/455Maka4GaaFr0SnffQ97nMPjxzmBNdlbqVnmZSnkXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qt1kh0yC; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2445824dc27so7139685ad.3;
+        Thu, 28 Aug 2025 04:22:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756379763; x=1756984563; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756380176; x=1756984976; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/QHBOrXAja8iWLDpJiD9eodym9F/g93zNuwCDVC3UT0=;
-        b=UzYBM3YpxrIrUDUDvNEAWw2vlcnHMx9856CwgCzIbpqufWz5OIC7H3YnE9AEr+5ViS
-         CX0GWtKb0n7Rke7qJPva1KgsXh7vscFoPb9p955qR5TqOlqnGH99lfR9htG0G+yoZfVP
-         wWaXDhQCVi+E/lshbryHpuCGuFUB6qUIu23Xi7K4Up92Tws8mHzDJm4Wip5NA0axCmt7
-         WcTcEbMjBpxuJBxhdaXo6XEUx67BWrIP3HYEs6FjNoO62dUJuncyzJLJbYhLvVOFVMaS
-         YFdGN6iYOJ9culihj1bkvcuzxY1IDmnAYuAdwrMhrTxIkUBtUgYREytBFt8MQO6UhAUq
-         gj3g==
+        bh=PxeMfx1+uNFbtk5b+iMV6QezPtIYzUJuvmOTjg2DLuM=;
+        b=Qt1kh0yC0vw6jItCiCV9czAn4OxUuWnFj4N5JpMiJpbj0sAgDXYu9+mGe9LHRkJgQ2
+         lvZgeAvisXSaBFB8tM7pgmQ9knbZrvAs1ypnG0yKEJMa+/GFNvUJGJGpcQBKojNLE43Y
+         nofVOyfUHq/piwG50hZBRXhgxVvGSzAYxDTTrRD5oUmaxs6tNcc64V8TU2qYtcDlhNNc
+         qz8dL8THwnv9/3rW4mXFPJNUFZTGohLW/tcUISN/WWEazQil38RnyPNnjLKksr/sgrY7
+         78QjKisVDqJzF+P9oHKCkGI2uY5IBR/MF5O/z6bqlkE0fDF8B3ESYE7sim7GSMTIxe2R
+         I/xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756379763; x=1756984563;
+        d=1e100.net; s=20230601; t=1756380176; x=1756984976;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/QHBOrXAja8iWLDpJiD9eodym9F/g93zNuwCDVC3UT0=;
-        b=BOxZvpYVs7lvU4ZhsrcZXh/6rr9zGN+qZTu78JeuyvjiVYPRA+9R1Cd8s4+bL25gG4
-         ZeWUiUPdFLS/4lq+eI9FXrQ9ZhGMuxCbO6SXD9H3W32IM22512HHPjnws+sa/2oWbq+M
-         smk1IlU6O4AtrmOKaNyHiwUU/XmORHkTI0RyD0zGH/PTUMzPkE4nZPwBLd/GvXFjknYj
-         k3Zgo87gEC1PB7cI3ymZ7IZhBlPOznbrrqLi3hsAuur2AvJIzYRwgVfSIqhZ0auilb7H
-         frsPgfmuOskqEFZ33au/aOHmw67aoq/RC81reyhgItMB7kUjVAKT4L+0iErHS1Q2OWuP
-         VcwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXl6HhgdhnFNjqz+lvgTOrcEzcVj3flgDEzfF9p+k+3UvNvxpfBdN8/85Kj5fRLIuB/izBxi6c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8eHjHkvCisoLc5Y0J6maO/7AS34tqQXbOGtghxEl8TmIN6naH
-	SfrYU9pMNFzj1RUbFi4w/noeO8hP3hMjjnPIL44OVchzWVviTacbi7Cga8PmXJtxQck=
-X-Gm-Gg: ASbGncuESRdgBaXO1hUVFsABbXfHVGGhuNJnOVcslRtvbvrIxjuQtzpZUhbzIf06fQK
-	rtqpP00t3ce4vVHqenfyNGYFEUfi2mwmYqC5STNfNprdrfDHSOAnzpYgmr7fEBpD3j0mr6fO1MN
-	P5QWFu8NBZw5eUcpE+sRKmW8YS2aL5ZQpWz+Ugzs8otOvVWl8NcsEEXnfTP2Gh/fhEGWn1dWd1/
-	BuKsAj5gosZO3dP8QDHHRzifVjfOlVb4fijm5F+jKbrWsf54g9F70GkVXEBKa1r7HDBGe8B7C44
-	o84nnotE61fyKWSBteyBl7Ri1IrzbASZvfa5k7C9va7Osha3+WquUU2HjisSeNhywFxgbBuBFyU
-	aW9rlgg8F0jq1o3XY/M80Qyook6Rp200RaW0tsSQ37rzl05KeBgiiiv0SSErfnac/EfhVoGuMw3
-	VeWGJCMol25nzq9Ndh/EXiE8qc2B3HMOGM
-X-Google-Smtp-Source: AGHT+IErHCmWbg2YMUeSrTBCHGmKcPBhN8tMdoOfMQOVPGyHr5ox98O0LhP5cUl5kKNQOFlN8MsLNw==
-X-Received: by 2002:a05:600c:35c9:b0:458:b7d1:99f9 with SMTP id 5b1f17b1804b1-45b517a0655mr207154405e9.11.1756379762476;
-        Thu, 28 Aug 2025 04:16:02 -0700 (PDT)
-Received: from raven.intern.cm-ag (p200300dc6f1d0f00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1d:f00:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f306c93sm69608945e9.14.2025.08.28.04.16.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 04:16:01 -0700 (PDT)
-From: Max Kellermann <max.kellermann@ionos.com>
-To: Slava.Dubeyko@ibm.com,
-	xiubli@redhat.com,
-	idryomov@gmail.com,
-	amarkuze@redhat.com,
-	ceph-devel@vger.kernel.org,
+        bh=PxeMfx1+uNFbtk5b+iMV6QezPtIYzUJuvmOTjg2DLuM=;
+        b=UhrpCDLqTJpaX+ZgWymxslGSr3gR0ni8s/LQ3VeLWsQ4yB05xDeWUAV8HD4/K8VIou
+         AX9/ozU0UK/04U7sQX4uu+3pxsZgsTmaJdeoo4VEKj/mpDa2HRkmJoeHQGZjmblpvv2g
+         yAUHPtXc3K5+S0zIjdq6kGkiWxZ7+Z3Z7SQ7m5pDDL7Zwv+gatdBEviR0DklS8pNl/Ub
+         +W/k6F+fC6nHbkDv/WOjNaJKkwyWExPH+nLwdaFFm98bx1wUmDO4+P3iXwuGGmP5ClXy
+         mWKKM0kuoZoeFvzUrPG6/9O2VnVihVnODP+mM3bfw7DQPLs0UPJdG07rJNqRpDujCUvX
+         NTug==
+X-Forwarded-Encrypted: i=1; AJvYcCVBr6DgtmPWhbHdXj1CTfsfzvvVa7zCOMkysAvIGKps70G1JpgfNQ84fZBFQk18pLfRJRsskyE3@vger.kernel.org, AJvYcCWjwRlTwc6k3+H0LcjOisJarhehSPWbV54Q8Ywso8f5Pwa/TvaDs+rImEa64V3oaMVBQco=@vger.kernel.org, AJvYcCWpp76uyiENM6t509yPUC4nYseUZ6HPpuqVS8qHRrf/tNGJXbG3FSPx2lOTDWswoN+6AwjvMbFQOCq28w==@vger.kernel.org, AJvYcCXvR08hnM5jb73cboeoRv3nPFY2gooM0MZ43wqjSz1tZdD4IAkU8nH6IxHNpRS+TWsGiAjOcbSbrcLx/Jfr@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmBuF3KO703f2KJGAixIW9chkaVIDaiUN9kAQhX94s/89Z0By4
+	zAJOg+f0i/sJDg7sAlUFbbgrBl93iIRMypC6fPHDQP3Sxibthimb77h8
+X-Gm-Gg: ASbGnctIbRq63VKxrki0H2ekp3f9sZWXOkSfjRliJprT2aLr+aJzLLgvKurDXGtIONB
+	uEWNkK5Km95fg8FJg8w38c5suHJkt5dzJdYjYCR7PcI/R5teEfo37ZSI2FOTrakuhdfOKZOBarj
+	8jKzy8rRZOs/19a6JuJmhgKUHMafqWYNIpnpueG3R9qJSvhfBvcr/04nvxw9JugdPEElxXNAgGH
+	c3C0ninF2lxFh2HEcXQzYiR0/+m6wRFiz8B+x66tsC2UV9TDuAilcPd7K2PprsgeC8MZ93efgkA
+	0ErCp4R8cTXCH7aTS+WPv3IbwDxTCoeSihffMdJmqZIJJMtn3PMqptDe94Uj4/BVMsluBt4KxVL
+	ULx8SUg2o3SOuI0sAHUWAgL01UTTVqUbSVhUOP81kjnsqsxFzbeRRyTWUH0wroIXvTj973noUxM
+	kyGr8Ipy/XHA9DbEZgN5wvOQ==
+X-Google-Smtp-Source: AGHT+IHQiVu4toyB2lDInXoaA+fupYv0LkXXDoJV5p3MjYWV2/Hw1sV5uJxKSw9UtwpQSAHlRTlqsQ==
+X-Received: by 2002:a17:902:fd0e:b0:242:accd:bbe8 with SMTP id d9443c01a7336-2462ef4ca76mr245371675ad.36.1756380175971;
+        Thu, 28 Aug 2025 04:22:55 -0700 (PDT)
+Received: from localhost.localdomain ([112.97.57.188])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-3276f57ab3esm4952547a91.3.2025.08.28.04.22.48
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 28 Aug 2025 04:22:55 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Joerg Roedel <jroedel@suse.de>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	brauner@kernel.org
-Cc: Max Kellermann <max.kellermann@ionos.com>,
+	bpf@vger.kernel.org
+Cc: linmq006@gmail.com,
 	stable@vger.kernel.org
-Subject: [PATCH] fs/ceph/addr: fix crash after fscrypt_encrypt_pagecache_blocks() error
-Date: Thu, 28 Aug 2025 13:15:52 +0200
-Message-ID: <20250828111552.686973-1-max.kellermann@ionos.com>
-X-Mailer: git-send-email 2.47.2
+Subject: [PATCH] ACPI/IORT: Fix memory leak in iort_rmr_alloc_sids()
+Date: Thu, 28 Aug 2025 19:22:43 +0800
+Message-Id: <20250828112243.61460-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,56 +99,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The function move_dirty_folio_in_page_array() was created by commit
-ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method") by
-moving code from ceph_writepages_start() to this function.
+If krealloc_array() fails in iort_rmr_alloc_sids(), the function returns
+NULL but does not free the original 'sids' allocation. This results in a
+memory leak since the caller overwrites the original pointer with the
+NULL return value.
 
-This new function is supposed to return an error code which is checked
-by the caller (now ceph_process_folio_batch()), and on error, the
-caller invokes redirty_page_for_writepage() and then breaks from the
-loop.
-
-However, the refactoring commit has gone wrong, and it by accident, it
-always returns 0 (= success) because it first NULLs the pointer and
-then returns PTR_ERR(NULL) which is always 0.  This means errors are
-silently ignored, leaving NULL entries in the page array, which may
-later crash the kernel.
-
-The simple solution is to call PTR_ERR() before clearing the pointer.
-
-Fixes: ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method")
-Link: https://lore.kernel.org/ceph-devel/aK4v548CId5GIKG1@swift.blarg.de/
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Fixes: 491cf4a6735a ("ACPI/IORT: Add support to retrieve IORT RMR reserved regions")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 ---
- fs/ceph/addr.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+This follows the same pattern as the fix in commit 06615967d488
+("bpf, verifier: Fix memory leak in array reallocation for stack state").
+---
+ drivers/acpi/arm64/iort.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index 8b202d789e93..e3e0d477f3f7 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -1264,7 +1264,9 @@ static inline int move_dirty_folio_in_page_array(struct address_space *mapping,
- 								0,
- 								gfp_flags);
- 		if (IS_ERR(pages[index])) {
--			if (PTR_ERR(pages[index]) == -EINVAL) {
-+			int err = PTR_ERR(pages[index]);
-+
-+			if (err == -EINVAL) {
- 				pr_err_client(cl, "inode->i_blkbits=%hhu\n",
- 						inode->i_blkbits);
- 			}
-@@ -1273,7 +1275,7 @@ static inline int move_dirty_folio_in_page_array(struct address_space *mapping,
- 			BUG_ON(ceph_wbc->locked_pages == 0);
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 98759d6199d3..65f0f56ad753 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -937,8 +937,10 @@ static u32 *iort_rmr_alloc_sids(u32 *sids, u32 count, u32 id_start,
  
- 			pages[index] = NULL;
--			return PTR_ERR(pages[index]);
-+			return err;
- 		}
- 	} else {
- 		pages[index] = &folio->page;
+ 	new_sids = krealloc_array(sids, count + new_count,
+ 				  sizeof(*new_sids), GFP_KERNEL);
+-	if (!new_sids)
++	if (!new_sids) {
++		kfree(sids);
+ 		return NULL;
++	}
+ 
+ 	for (i = count; i < total_count; i++)
+ 		new_sids[i] = id_start++;
 -- 
-2.47.2
+2.39.5 (Apple Git-154)
 
 
