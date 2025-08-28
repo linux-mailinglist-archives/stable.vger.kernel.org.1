@@ -1,214 +1,111 @@
-Return-Path: <stable+bounces-176572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28159B39686
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 10:14:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1169B396A8
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 10:18:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E9CF466B7B
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 08:13:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0907F7C503C
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 08:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648222E06EF;
-	Thu, 28 Aug 2025 08:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB293283C90;
+	Thu, 28 Aug 2025 08:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="RlrEzKWT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bo52Ygiv"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995342D29B7;
-	Thu, 28 Aug 2025 08:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1A933EC;
+	Thu, 28 Aug 2025 08:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756368661; cv=none; b=U2iFCyQrqPU9fD/110FziX0v6LHGAk5vNzYlRWjCMbtXByMCeAl+/0bpOz2TkZfF8BqNYCmPJft4HHfgwYbTYinf9fAXCvXRR/emjXDytFGEcD+xspgZ37XVtTsYQH2j8bHwfCZL1n6A0OWQ+DCXqPqdxo+dCZuoLlluuTbCPm0=
+	t=1756369024; cv=none; b=BRI3pGOm2LIvD0Y/hiydmeTZXJr20dEXdD/MIeR2zlIAsIdiNqjV46gW6hp1Gibn1wqpUMFZm8Z3vpyO2AYB8j+JrYfa9O4rPNRBg1+WllVowZLRpPT6SoE0PeQGf+ottBVxEQECH9Fh1FRy18uzj2Qme4VpV+fThCY0cswN8aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756368661; c=relaxed/simple;
-	bh=3dz9IadScgdKEkCBQbsr1QwXXeIQIoYgy699cAGf160=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XYeJtYkerQWq44WEQXbxolwdqNm6b4eyC+4aILV+WvdJIzHpELTehWOCttMQp9yqJZJi5aMsIlryY023FhSF8QjuHAuVdnom9Grg6cnbH2GnFIGErZMoCMjkG62reX2kHi+0TpTpgdHD0agAm7xjBFaki5UXt0ywZw51gCU3P0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=RlrEzKWT; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57RJZ491020682;
-	Thu, 28 Aug 2025 08:10:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=NIaglf
-	HccRNPqyomLsaKKsVSKVuZ/402mhg40I0kM5k=; b=RlrEzKWTw6Tnppy808GBTR
-	428VN2T8AJO+tmk4TBS/ha0PeqqnaY2kQjvKwU6DseBX/bR9tgQukY3A6TK5B5g+
-	ozpX55vMdSSRJ4jK9sDP45cInhQK6Y6K2MGkbC3HdSCGF66B0fzpISzP0Xy1mgCm
-	xkoH/crmAxGjiUUpRy8yyui3PbXddf3o8PPInZdAE//HWbNf6y/C5g9UtIESCvvP
-	/qX7uLIOPyPL//rhULxVz0ve11XRVVCmkmMYOJhb8WNCyfbgK2TcleRy5ZZafLbi
-	pe3aMqafHx3gT8LjKpHQXvNBrD30lbqW4PQLElGtZsWJHT8enBV3To0OJ0B2wP6Q
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5avrjtv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 08:10:52 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57S57aET020796;
-	Thu, 28 Aug 2025 08:10:51 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48qrc0v3k4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 08:10:51 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57S8An1041026222
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 28 Aug 2025 08:10:49 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 723EA58056;
-	Thu, 28 Aug 2025 08:10:49 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E243C58052;
-	Thu, 28 Aug 2025 08:10:47 +0000 (GMT)
-Received: from [9.152.212.219] (unknown [9.152.212.219])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 28 Aug 2025 08:10:47 +0000 (GMT)
-Message-ID: <8d76d3f66a3ad261d7116ed6b8fbccb561c89f7f.camel@linux.ibm.com>
-Subject: Re: [PATCH] iommu/s390: Fix memory corruption when using identity
- domain
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Matthew Rosato <mjrosato@linux.ibm.com>, joro@8bytes.org
-Cc: will@kernel.org, robin.murphy@arm.com, gerald.schaefer@linux.ibm.com,
-        jgg@ziepe.ca, iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, stable@vger.kernel.org,
-        Cam Miller
- <cam@linux.ibm.com>
-Date: Thu, 28 Aug 2025 10:10:47 +0200
-In-Reply-To: <20250827210828.274527-1-mjrosato@linux.ibm.com>
-References: <20250827210828.274527-1-mjrosato@linux.ibm.com>
-Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	s=arc-20240116; t=1756369024; c=relaxed/simple;
+	bh=md0fuo3Xq/Ahb18PZXxjPaMuI/v/41g6yZBBe+Tg6jI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=m/G1myd8NLDPw/BIqgnk9dCXb7oymNtMyQlS1zWTuH+d2nXvIXujZsU/NwQyVI6943Ba5XJ+kh7UmFFz6o+jvXhlezDzDBlCav1i/2jZvhNc7WHvhAysko+RHVRIsIC2u2KHxMdLUeFevCDASlWhjOZFDKoIbiH2tXwrm4lGFt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bo52Ygiv; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so572563b3a.1;
+        Thu, 28 Aug 2025 01:17:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756369022; x=1756973822; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zylwBWDPXVKWmm6Hb1xihjAItLPLFQXPFZ/9sdXRA+4=;
+        b=Bo52YgivMrH+vPEeHFw+U6Z6dTtTzj85RoS7IpC8VnazG5b2zC+qXqslIYTH1OFw7g
+         wMsPjWH5gk+qv2bB4dRqBnr/vSzEov/3Kq8SZaw+zc+7FWy1iYtIMW6kvRQqPI/p6Hos
+         tcmjbgx0Ln7OMUuJopZJfz4ym0uEg+EmWT+3ZsI+8WA+Ua+EIURlegyD0ztUuLEQfdfm
+         xIF2vkG26oDbALfSED9UqrDmILVn1vCfQB8RM/nKXUYrKuR0ie34nKxZHqqBg9ANq/lp
+         FKbOghGzwrHHTuCAurL424aDsDac+mGmp42y1JIWEz45VHAg81/2RFdQyveZakCxXdSs
+         YafA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756369022; x=1756973822;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zylwBWDPXVKWmm6Hb1xihjAItLPLFQXPFZ/9sdXRA+4=;
+        b=mWWoK4DiDczlUUQP7kVS8AbbYIcSJfpZCiIwUfh7C8mdaCzkOlLDVBPvfLheZ9i6rN
+         nfUqd6O9k7B7PSc5DVDrfmTm+zC2/TwwRmiqM7l6beLAAmz6h7zHN+V7QmBZIoDleCu4
+         IDwCE7krnH5x/mp0LjnQDE1PPpjzsa4u02dZkQp5IRD8eShP0UWx9AMF5FSY3sbNde6d
+         YsmeN0HKtuc2fInL/BTjzUevD1qwy+8S4aR7+PAzQIk9M0M3ilnW3sbLgcWWJ7uszONC
+         +DgWLR53qNdkQWmMcfJcVJceTnPxDa10B+dpgUG/0qSTd9YLi0ej6NhJlv1C5n7Gw5Il
+         a+5w==
+X-Forwarded-Encrypted: i=1; AJvYcCUzplebu6acHJHb9zH6keqYTW6Poig+8+1/vdH57JBaRNpSs9wVWhA5z0SGBTItOMvl5Zuz7LE6idDDod6G3Q==@vger.kernel.org, AJvYcCVCqmJ3FVYlg2mvkAJppAMob3+btmXQXY/CV+dqIeO81PSUgg7iYfiFfI32Fckmx5nEPwgpBOO4@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8Bv+qJg7E95EY9g0JhpBShSOOs3RmEjC7t3rbv4MuBNfNB1fC
+	uaEbnjGHYkgzeLaPzTmmZNdcv1tpsOyJ5oP3Q3xz/xwUXfAS/+QxMhIffd6AKqru9mCPgA==
+X-Gm-Gg: ASbGncuFv9ONBwve/Zt3PZEvSzK+7FmyL4XKxBxhcGwBARU65M9lJUONl9Aq4fZQzf7
+	YqP8sWBUC5TvQyZatb/JKdldLceQ6vwi3ywL4YaCEqWKK0qkErrhSiG3HCriTXQwishb0woVkSs
+	XCXkJpo/S9wEl/YVylVxi2zxW/CL02t+odUueZlutFZNBb8j72YJqvfNRt5llI+QCNJmjQoJX3x
+	gUDilzNBYGDYAd/k6bLYKKcjIzvqgPI9t1oWu2ryXAJcTzStyHNb0kvNV2wyDD5zLZbcqtWsQLA
+	GQxNMc91+Xi7xjb0UDycaW7jSKtu54YoCtBgHnrC2GJab9gpvt1Zjwmz7FTxaXAmGpEPCT0WB9T
+	r1nUnD7JCatdoqD5hbHhvupEHGWuwfpJkhg==
+X-Google-Smtp-Source: AGHT+IFU/oUYYFEJNl7dghU/fGn3FtJeONFm7grPU9wi3QdtaKQSDTq9heigSyGvapWGGtwDUc07dg==
+X-Received: by 2002:a05:6a00:14c4:b0:76e:7ab9:a239 with SMTP id d2e1a72fcca58-771fc292df8mr10407594b3a.16.1756369022395;
+        Thu, 28 Aug 2025 01:17:02 -0700 (PDT)
+Received: from localhost.localdomain ([154.16.27.177])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77213559a3csm2280789b3a.63.2025.08.28.01.16.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Aug 2025 01:17:02 -0700 (PDT)
+From: lifangxu <lifangxu22@gmail.com>
+X-Google-Original-From: lifangxu <lifangxu@kylinos.cn>
+To: gregkh@linuxfoundation.org
+Cc: Alexander@wetzel-home.de,
+	johannes.berg@intel.com,
+	johannes@sipsolutions.net,
+	lifangxu@kylinos.cn,
+	linux-wireless@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Withdraw [PATCH 5.4.y] wifi: cfg80211: Add missing lock in cfg80211_check_and_end_cac
+Date: Thu, 28 Aug 2025 16:16:34 +0800
+Message-ID: <20250828081634.2192-1-lifangxu@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2025082749-strength-baffling-eb44@gregkh>
+References: <2025082749-strength-baffling-eb44@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: v4wAkA0haK9Y4PSewS9MpH5A-jzvVZLi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAyMSBTYWx0ZWRfX5fu2EYVBohSa
- AcwxaAb9Qqld0cmRsYYsgB0HRESbP2N5PSRxlumKMTkPWQn3D0mGvRGZBMv/JP4PrB2xd/oq+bw
- MnnzHMNaVk/VW1ziD0uTDilDdnhvYweDrboIX7BFV8IKQc087o1ByqrXIFLJyK85bpaHBZs6TJM
- kHOgyXO1Or3/F6yutZsQCHQgz6wXoNS9Ex0vkJjnhb8/zMP5RzgIyGcBYpbVW6h/+Zsg/7ff2gk
- VPJhZlPwZyOPhNa1EoQvOw+izCEIzamD3BNeN8ny+X5mG5ctyFQkBq5hyVZzCrKQED17bIpMv7M
- kJo1ZGJoQf0MnvOnEuGwaW8a+rH9eDJYp1ET2/jeuLP/29j2erxEBokJm0xkrgI0XgPZ4tAz+Ty
- siVZhZuB
-X-Proofpoint-ORIG-GUID: v4wAkA0haK9Y4PSewS9MpH5A-jzvVZLi
-X-Authority-Analysis: v=2.4 cv=SNNCVPvH c=1 sm=1 tr=0 ts=68b00f0c cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=aNs30nL-xdb_lp8ugGoA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-28_02,2025-08-26_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 bulkscore=0 phishscore=0 clxscore=1011
- impostorscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230021
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2025-08-27 at 17:08 -0400, Matthew Rosato wrote:
-> zpci_get_iommu_ctrs() returns counter information to be reported as part
-> of device statistics; these counters are stored as part of the s390_domai=
-n.
-> The problem, however, is that the identity domain is not backed by an
-> s390_domain and so the conversion via to_s390_domain() yields a bad addre=
-ss
-> that is zero'd initially and read on-demand later via a sysfs read.
-> These counters aren't necessary for the identity domain; just return NULL
-> in this case.
->=20
-> This issue was discovered via KASAN with reports that look like:
-> BUG: KASAN: global-out-of-bounds in zpci_fmb_enable_device
-> when using the identity domain for a device on s390.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 64af12c6ec3a ("iommu/s390: implement iommu passthrough via identit=
-y domain")
-> Reported-by: Cam Miller <cam@linux.ibm.com>
-> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
-> ---
->  drivers/iommu/s390-iommu.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/iommu/s390-iommu.c b/drivers/iommu/s390-iommu.c
-> index 9c80d61deb2c..d7370347c910 100644
-> --- a/drivers/iommu/s390-iommu.c
-> +++ b/drivers/iommu/s390-iommu.c
-> @@ -1032,7 +1032,8 @@ struct zpci_iommu_ctrs *zpci_get_iommu_ctrs(struct =
-zpci_dev *zdev)
-> =20
->  	lockdep_assert_held(&zdev->dom_lock);
-> =20
-> -	if (zdev->s390_domain->type =3D=3D IOMMU_DOMAIN_BLOCKED)
-> +	if (zdev->s390_domain->type =3D=3D IOMMU_DOMAIN_BLOCKED ||
-> +	    zdev->s390_domain->type =3D=3D IOMMU_DOMAIN_IDENTITY)
->  		return NULL;
-> =20
->  	s390_domain =3D to_s390_domain(zdev->s390_domain);
+Thank you for your feedback,
 
-Looks good to me and thanks for the fix!
+After reevaluate, I found that this CVE-2025-38643 fixed warning occurs in
+wdev_chandef(net/wireless/chan.c:1552), which is not added in
+cfg80211_check_and_end_cac before kernel 6.12-rc1. 
 
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+So, 5.4.y appears unaffected, despite introducing commit (26ec17a1dc5e).
+I'm withdrawing this backport.
+
+Thanks,
+
+lifangxu
 
