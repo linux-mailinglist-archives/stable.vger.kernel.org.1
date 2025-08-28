@@ -1,143 +1,162 @@
-Return-Path: <stable+bounces-176544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B38CCB39171
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 04:05:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BF9B392A1
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 06:40:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E29246551C
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 02:05:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A76436666B
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 04:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466B8248883;
-	Thu, 28 Aug 2025 02:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B3125B1DA;
+	Thu, 28 Aug 2025 04:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OEdAR1uH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZaqEZNNP"
 X-Original-To: stable@vger.kernel.org
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f194.google.com (mail-pg1-f194.google.com [209.85.215.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEDE195FE8
-	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 02:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882D513BC3F;
+	Thu, 28 Aug 2025 04:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756346734; cv=none; b=mPkYGFpTWi3AyAhnuCsgL+g6wG50N22w71cbBZ5xjETmtZt0s60z5SXj7FM8wL+mkrBBq47634G1T7hqgADcpewXU7XiRRNrqqVhNqP8CsK2tnoUhjVWRYkBLj4esUxpsEORhW2YqoMgmfZ6+RecEKmUzFalUJTPjEjsmzK+6Mg=
+	t=1756356022; cv=none; b=RaG5e95lHfkJb4EzyZzkxVdYhr1GKBUTpEwJvwrwyEWe11EGCbTSeUvAvvo6mGFe0ByGhxUkhqKWnZQC4EBNNlMnPnhm12fvR9qKsQ9FPWbFgbYpmNamUKSqihsajaQn51ecwBuufliPYDt8bS1yO/c/9jWQbzIU+2PylcuWbqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756346734; c=relaxed/simple;
-	bh=IiiK/TLSYzjTbuhRBbkspw8DwVRCSdJwRbF9f7BfnzQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i+yh7GwON+Ut+4peexj80fSrg49hkt74ukDBvTVc1nNz1VmQq5+sWDvrT6Nmn2WmVXBsGQ75npZryjqJlOaRlILrvtstoG5YGAkfMo6rjqn56gFMJnsCMGD9/qKfV/32qQd7JmioL7Smm8qB5YSQFRxzEcBuJ/a2t1aVWqdOebM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OEdAR1uH; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <cfb62b9d-9cbd-47dd-a894-3357027e2a50@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1756346720;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rb2F2xDiL4eTGN41G2MHNYXODkWfWx3B+Sfl8F3SlJw=;
-	b=OEdAR1uHhvyS3yB4J7+ExJ3vBSsoIRGDRSEgjJLQN0jVFDfw4h6Ix2tzNSSUoP3oIR85+f
-	kaIZZxMQqSCzAUYpng0TFfAAKLFqQxm9fB+S9Bf+l8Y1mFC6PJe0EOIBVAVhX90gAuHH+9
-	TpqCpbeKga7zbbp3YT9LlRDUFCCdXjI=
-Date: Thu, 28 Aug 2025 10:05:11 +0800
+	s=arc-20240116; t=1756356022; c=relaxed/simple;
+	bh=EprYMS7hj8izs5KOEZoOZxUbWLd46yXqkjI1puJA5/s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VbS+SK0TWJ/Mxp+kf6ajnLY7iMY+Upr1YsqgqRnBU/sWPiYFZbrcM3GZJ9TYHBvUWt2pyQga0LFWkMbRan460vsvuJLddSUTNulKa4l0nMGyDlZIghfCzAS8g5v8XdULes+fPuLY6BOtyr/GczHy+o1oupVyQUo5k0CygAIks0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZaqEZNNP; arc=none smtp.client-ip=209.85.215.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f194.google.com with SMTP id 41be03b00d2f7-b4c5467617dso551217a12.1;
+        Wed, 27 Aug 2025 21:40:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756356020; x=1756960820; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/1FbmeMJrwmv+p89A8rbgWWowNF8958qVntUHwO7+EI=;
+        b=ZaqEZNNPlkCLAO4U0SXNmDV4J9/SaClNrx+m/4mYOat1waZZaAYQitv/MiJz9TDhZ/
+         WCPL2kdOPAvOfR7UQPqBqsqGaoHWYr7jgeK5RLYHQQS7ex5mTUN/lEf51NBZK14pfvuW
+         VEs0zchwTpNPXnJ8VRBGZyUksVAKPbs3QfxXhs4hyP2QGmwADGEuQkHegXVTGFut5DuP
+         bBCsxRryigqPT1nF8wSdBJzaQrI2JZU2govOKAIFj02OxU2LBnV0yJiXNMhdAaXTzHLx
+         DlsM0qNfMqDUEtVTFgt7oEi/6t5h7NH14Roz5iqjsPyQoumjEnrGD+/pIz7ruB1CN6WB
+         +gAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756356020; x=1756960820;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/1FbmeMJrwmv+p89A8rbgWWowNF8958qVntUHwO7+EI=;
+        b=UPoUXP6K8hVDdj4r+sBRSPTkPbXitl8WBJJch8AdcrrhhD3kFBq+MwEFJmKT6NLyaE
+         akWlCkMAWIpoiGuqokYadkdsb4VKkqcAAYO+r7W4pVKmBAVjr3V+dvqwZ2S74DPLqIkx
+         xT2M/xjZQtydXF0cxhYm5Nt7s0wNxx5nDj8v2sH62qZba1G8O9Ewr4TgHentBGx+E+v2
+         yoRR83+3Wqi3Ij0+RkGhrgTM4+uzzWd1jSZMTIC5d9SCuljrMGxqFotrCQ3nvXmjBwpn
+         j/mAAhqfb1tWv2pH2JjrVvPM/nLl89DNclYeRxIquqULmufMLgLW60AjetAKK1Ajku+Y
+         HO/w==
+X-Forwarded-Encrypted: i=1; AJvYcCUF4U8vPKO3QUmhSfJTmhQnjG3Bp2yyVhZdzN31ckXcjoi7PL2beurTHa401ChmzlEEnjBnuQNqwqhwoL8=@vger.kernel.org, AJvYcCVW8gzisn1KffY0rtLw5m/TSh6TPUfOhkuGNH4FiPwtiHd+TvTPAo2cAyfHq8xqGt0bmYR/JExV@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfhmeNEKAVKk9KvGHbcogrIMr/SRV2F4iK8B44j8bXw5YhDtEO
+	7aR4vpmdUMs9eJRkvKLVKsNvr/stLSpAaCXL3zltpRCQr0UtWH5npCew
+X-Gm-Gg: ASbGncuoYMidji5D37BrijQMzVd+6fgxB0m/iszvEciOc4taCvllUp33guQ//g0A5OR
+	6fKSub7RH/SZTvL2m0ebzIIeH/YGAKvvE8r4KLjwSinOXTdQ3yKcugsSHSZ04KISt78nxjai2Rm
+	ZjC7j+YSNSfBna+fey9KW9DC2Q2SjwCANFkrBTkscRroCZDj4nlKPe33uah+GYlzsDCwU9ltM/S
+	YbqLT/gF+j9ze5F9D1SyZ7sgFMDBre93M7R5xUtc0TQYZmipepkrCKllODtOsTIpR901uRIMBip
+	92cMEqPq7fUMFaX+Nt2bLsl9Iyp2g8isK6tM/k6aEfzwsNOVzFLb4LbX1wwxidkFaB7h2MDtCkA
+	RDly9BSuaHrZbWXl2PCaupu/ghtZbvTnmCF47/E+6aM3E9LF/Vtl3eNaaP6LBTaROSVRSG/jPnZ
+	CAdnW2zcTpow==
+X-Google-Smtp-Source: AGHT+IEP1TMhgc2sfEgNwFmxmDOy/Miw4UKnS0rMvZzojwu7hGcM0OKpcNCnt1LcGiWVsu/79ksTyw==
+X-Received: by 2002:a17:90b:48c5:b0:325:8f58:f4d1 with SMTP id 98e67ed59e1d1-3258f58f6f6mr18806594a91.29.1756356019741;
+        Wed, 27 Aug 2025 21:40:19 -0700 (PDT)
+Received: from 2045D.localdomain (56.sub-75-229-200.myvzw.com. [75.229.200.56])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3274572be3bsm3482835a91.2.2025.08.27.21.40.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Aug 2025 21:40:19 -0700 (PDT)
+From: John Evans <evans1210144@gmail.com>
+To: james.smart@broadcom.com,
+	dick.kennedy@broadcom.com,
+	James.Bottomley@HansenPartnership.com,
+	martin.petersen@oracle.com,
+	justintee8345@gmail.com
+Cc: linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] scsi: lpfc: Fix buffer free/clear order in deferred receive path
+Date: Thu, 28 Aug 2025 12:40:08 +0800
+Message-ID: <20250828044008.743-1-evans1210144@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
-Content-Language: en-US
-To: Finn Thain <fthain@linux-m68k.org>
-Cc: akpm@linux-foundation.org, geert@linux-m68k.org,
- linux-kernel@vger.kernel.org, mhiramat@kernel.org, oak@helsinkinet.fi,
- peterz@infradead.org, stable@vger.kernel.org, will@kernel.org,
- Lance Yang <ioworker0@gmail.com>, linux-m68k@lists.linux-m68k.org
-References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
- <20250825032743.80641-1-ioworker0@gmail.com>
- <c8851682-25f1-f594-e30f-5b62e019d37b@linux-m68k.org>
- <96ae7afc-c882-4c3d-9dea-3e2ae2789caf@linux.dev>
- <5a44c60b-650a-1f8a-d5cb-abf9f0716817@linux-m68k.org>
- <4e7e7292-338d-4a57-84ec-ae7427f6ad7c@linux.dev>
- <d07778f8-8990-226b-5171-4a36e6e18f32@linux-m68k.org>
- <d95592ec-f51e-4d80-b633-7440b4e69944@linux.dev>
- <30a55f56-93c2-4408-b1a5-5574984fb45f@linux.dev>
- <4405ee5a-becc-7375-61a9-01304b3e0b20@linux-m68k.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <4405ee5a-becc-7375-61a9-01304b3e0b20@linux-m68k.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
+Fix a use-after-free window by correcting the buffer release sequence in
+the deferred receive path. The code freed the RQ buffer first and only
+then cleared the context pointer under the lock. Concurrent paths
+(e.g., ABTS and the repost path) also inspect and release the same
+pointer under the lock, so the old order could lead to double-free/UAF.
 
+Note that the repost path already uses the correct pattern: detach the
+pointer under the lock, then free it after dropping the lock. The deferred
+path should do the same.
 
-On 2025/8/28 07:43, Finn Thain wrote:
-> 
-> On Mon, 25 Aug 2025, Lance Yang wrote:
-> 
->>
->> Same here, using a global static variable instead of a local one. The
->> result is consistently misaligned.
->>
->> ```
->> #include <linux/module.h>
->> #include <linux/init.h>
->>
->> static struct __attribute__((packed)) test_container {
->>      char padding[49];
->>      struct mutex io_lock;
->> } cont;
->>
->> static int __init alignment_init(void)
->> {
->>      pr_info("Container base address      : %px\n", &cont);
->>      pr_info("io_lock member address      : %px\n", &cont.io_lock);
->>      pr_info("io_lock address offset mod 4: %lu\n", (unsigned long)&cont.io_lock % 4);
->>      return 0;
->> }
->>
->> static void __exit alignment_exit(void)
->> {
->>      pr_info("Module unloaded\n");
->> }
->>
->> module_init(alignment_init);
->> module_exit(alignment_exit);
->> MODULE_LICENSE("GPL");
->> MODULE_AUTHOR("x");
->> MODULE_DESCRIPTION("x");
->> ```
->>
->> Result from dmesg:
->>
->> ```
->> [Mon Aug 25 19:33:28 2025] Container base address      : ffffffffc28f0940
->> [Mon Aug 25 19:33:28 2025] io_lock member address      : ffffffffc28f0971
->> [Mon Aug 25 19:33:28 2025] io_lock address offset mod 4: 1
->> ```
->>
-> 
-> FTR, I was able to reproduce that result (i.e. static storage):
-> 
-> [    0.320000] Container base address      : 0055d9d0
-> [    0.320000] io_lock member address      : 0055da01
-> [    0.320000] io_lock address offset mod 4: 1
-> 
-> I think the experiments you sent previously would have demonstrated the
-> same result, except for the unpredictable base address that you sensibly
-> logged in this version.
+Fixes: 472e146d1cf3 ("scsi: lpfc: Correct upcalling nvmet_fc transport during io done downcall")
+Cc: stable@vger.kernel.org
+Signed-off-by: John Evans <evans1210144@gmail.com>
+---
+v2:
+* Rework locking to read and clear the buffer pointer atomically, as
+  suggested by Justin Tee.
+---
+ drivers/scsi/lpfc/lpfc_nvmet.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-Thanks for taking the time to reproduce it!
-
-This proves the problem can happen in practice (e.g., with packed structs),
-so we need to ignore the unaligned pointers on the architectures that don't
-trap for now.
-
-Cheers,
-Lance
+diff --git a/drivers/scsi/lpfc/lpfc_nvmet.c b/drivers/scsi/lpfc/lpfc_nvmet.c
+index fba2e62027b7..4cfc928bcf2d 100644
+--- a/drivers/scsi/lpfc/lpfc_nvmet.c
++++ b/drivers/scsi/lpfc/lpfc_nvmet.c
+@@ -1243,7 +1243,7 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_target_port *tgtport,
+ 	struct lpfc_nvmet_tgtport *tgtp;
+ 	struct lpfc_async_xchg_ctx *ctxp =
+ 		container_of(rsp, struct lpfc_async_xchg_ctx, hdlrctx.fcp_req);
+-	struct rqb_dmabuf *nvmebuf = ctxp->rqb_buffer;
++	struct rqb_dmabuf *nvmebuf;
+ 	struct lpfc_hba *phba = ctxp->phba;
+ 	unsigned long iflag;
+ 
+@@ -1251,13 +1251,18 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_target_port *tgtport,
+ 	lpfc_nvmeio_data(phba, "NVMET DEFERRCV: xri x%x sz %d CPU %02x\n",
+ 			 ctxp->oxid, ctxp->size, raw_smp_processor_id());
+ 
++	spin_lock_irqsave(&ctxp->ctxlock, iflag);
++	nvmebuf = ctxp->rqb_buffer;
+ 	if (!nvmebuf) {
++		spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ 		lpfc_printf_log(phba, KERN_INFO, LOG_NVME_IOERR,
+ 				"6425 Defer rcv: no buffer oxid x%x: "
+ 				"flg %x ste %x\n",
+ 				ctxp->oxid, ctxp->flag, ctxp->state);
+ 		return;
+ 	}
++	ctxp->rqb_buffer = NULL;
++	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ 
+ 	tgtp = phba->targetport->private;
+ 	if (tgtp)
+@@ -1265,9 +1270,6 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_target_port *tgtport,
+ 
+ 	/* Free the nvmebuf since a new buffer already replaced it */
+ 	nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
+-	spin_lock_irqsave(&ctxp->ctxlock, iflag);
+-	ctxp->rqb_buffer = NULL;
+-	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ }
+ 
+ /**
+-- 
+2.43.0
 
 
