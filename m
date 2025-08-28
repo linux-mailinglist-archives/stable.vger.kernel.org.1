@@ -1,247 +1,364 @@
-Return-Path: <stable+bounces-176604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54AE2B39D61
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 14:34:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 973D1B39DAE
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 14:48:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B3C4465F4A
-	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 12:34:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EEB41BA55A8
+	for <lists+stable@lfdr.de>; Thu, 28 Aug 2025 12:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EBF30F7FF;
-	Thu, 28 Aug 2025 12:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D043081CE;
+	Thu, 28 Aug 2025 12:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FgOheL1M"
+	dkim=pass (1024-bit key) header.d=desy.de header.i=@desy.de header.b="dfI+mLWu"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2086.outbound.protection.outlook.com [40.107.92.86])
+Received: from smtp-o-3.desy.de (smtp-o-3.desy.de [131.169.56.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF38482EB;
-	Thu, 28 Aug 2025 12:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756384447; cv=fail; b=QEXbMpj8CvvZd9dFiYVe3HfrsD4d1z7Ks6SmC86VnUym2+Envy605kgNrZGzNLO95M2RHC76T053rd8DKkONr0MVjUj0PwxJ+CfwTy6pDZAfJ7xgFU4S2EQwQNL0+G163Bh3QO7Lug7Hesu/5Vlo5dbnRzncyEZtx85f5E5or5I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756384447; c=relaxed/simple;
-	bh=CEJvjtfZBqUMcI1mLCF0fv5mhlPJIBQN2gSquZS8ue8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jaHJBGZkF7zMpBVXMCKeULiwezxRlDt6cwExZfNiI7GWvz3yYvc2v/11ptMywodrwXjnStvr8BBZy/Xd8ncb+0VVdVKCb5pcjJ9EpOXjMYSNP1VRaWK6yYbZegIBEfQQaoSr5t7qeY+ZDKe90cF9mAWK59hiPVqYQeTcgOINFek=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FgOheL1M; arc=fail smtp.client-ip=40.107.92.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iafwhbZDCeDCfrjp2EJSuA+rj0P7o7v9+PFDD4j0QAD6XNKYwUPkDz9CMUFGIgT+JcRLTNnptzuytcNa5avaCoQFJkDzs15w6qr3VNgw/srbKwwTjWTDDD7wJgL4TeTO5pkBppdlk7TvwHW/mjYilC13xm447+emrcgM5AWuuvWWEWTkrlKl84ciTIEsTdlXLRYrzSjH8GI+pWCCaclJB+aWjAg9c9B2XU+Rv2AlCVPO+7NT9UDKOl6aeDBKCn1ZkNzi+2yA6qHaAf4vEDCReCI1EYGea2XMT47nZZEyyrygIRCV60JoqFMz0Q9IUCIX9qqec/kpxJd5XSKShgo+hw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PAPIt9DW8t68g0djsjGQG3ql7dEKW81BprDxOoNNQmU=;
- b=PzfGONshi4g2T5YVxdPoKVjE6sjFW1IaPrBPBU+U5B8M7HFHuxYAU9v+2SZdxA7T6HezI0Hg5n27Sns7fLmfi11f5aNC4vP9ciRpKkLyLnCrwZGYYtFvX3itX2L4LQ+pIj7tPXEeYOoAMKDzGpv2+NZyjFVRUnMjRnCXbGzTFroGRajB7EHeQNql8px2C0a53n4A0Be9ApWExQ9HbOvidEDtmJ7W/8irro9cFngZKb1+f8REtHFfu2sIu+VRcpsbI8culRYwbFQ/gkD4pKDjOiuZQLO5f3zuTHME08C21y5U5w/Hoz8KGgIVdva8ZuvXHcC0XINTe9Dqrwch0ONgPg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PAPIt9DW8t68g0djsjGQG3ql7dEKW81BprDxOoNNQmU=;
- b=FgOheL1MmG0cq5Z6id/ejtO7zPtWDrI2PlMj1xk8gQruzLSQBysZ7oj6B9G0vFzJTM8Ioa5pcJZf6m707gAeG88kuK3wX9Li4BVT5AcUXC/9gIf6zVZx/7mnL5drYjGpq5l99IPjUjNwhtaywy6C4WRz0B5eju0SQk89Kh6mGksPcJeuTNSSwx1caL4Buv3SKsriyhxKkpR5bZMBGzJonHwRQfpeIAhyrZvJqhttAzYLEirva6VnEp/r/Rz3pmToEmErDgdooSvvpwqJgqQ7BFZvVcJHt4DH8UQZwt4gKwq8M2KAR3JY1ICZ1+lblMcnVXPgdID1/hsPiqyA63Cfng==
-Received: from CY8PR12MB7195.namprd12.prod.outlook.com (2603:10b6:930:59::11)
- by DS4PR12MB9747.namprd12.prod.outlook.com (2603:10b6:8:2a5::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.15; Thu, 28 Aug
- 2025 12:33:58 +0000
-Received: from CY8PR12MB7195.namprd12.prod.outlook.com
- ([fe80::e571:5f76:2b46:e0f8]) by CY8PR12MB7195.namprd12.prod.outlook.com
- ([fe80::e571:5f76:2b46:e0f8%6]) with mapi id 15.20.9052.019; Thu, 28 Aug 2025
- 12:33:58 +0000
-From: Parav Pandit <parav@nvidia.com>
-To: Cornelia Huck <cohuck@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-CC: "virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"jasowang@redhat.com" <jasowang@redhat.com>, "stefanha@redhat.com"
-	<stefanha@redhat.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Max Gurtovoy
-	<mgurtovoy@nvidia.com>, "NBU-Contact-Li Rongqing (EXTERNAL)"
-	<lirongqing@baidu.com>, "linux-s390@vger.kernel.org"
-	<linux-s390@vger.kernel.org>
-Subject: RE: [PATCH] Revert "virtio_pci: Support surprise removal of virtio
- pci device"
-Thread-Topic: [PATCH] Revert "virtio_pci: Support surprise removal of virtio
- pci device"
-Thread-Index:
- AQHcE0XKqVbu8cWtaUCLZj1LjgeTGbRudpsAgAAWuWCAABaPAIAADA7wgAADewCAAmIWsIAAy/cAgANp/uCAAQYPgIAAFMmAgAEqTRCAAHQBAIAAALwAgAAA6YCAAAJbYA==
-Date: Thu, 28 Aug 2025 12:33:58 +0000
-Message-ID:
- <CY8PR12MB719591FB70C7ACA82AD8ACF8DC3BA@CY8PR12MB7195.namprd12.prod.outlook.com>
-References: <20250822090249-mutt-send-email-mst@kernel.org>
- <CY8PR12MB7195392690042EF1600CEAC5DC3DA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250822095225-mutt-send-email-mst@kernel.org>
- <CY8PR12MB7195C932CA73F6C2FC7484ABDC3FA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250824102947-mutt-send-email-mst@kernel.org>
- <CY8PR12MB71956B4FDE7C4A2DA4304D0CDC39A@CY8PR12MB7195.namprd12.prod.outlook.com>
- <20250827061537-mutt-send-email-mst@kernel.org> <87frdddmni.fsf@redhat.com>
- <CY8PR12MB7195FD9F90C45CC2B17A4776DC3BA@CY8PR12MB7195.namprd12.prod.outlook.com>
- <87cy8fej4z.fsf@redhat.com> <20250828081717-mutt-send-email-mst@kernel.org>
- <87a53jeiv6.fsf@redhat.com>
-In-Reply-To: <87a53jeiv6.fsf@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY8PR12MB7195:EE_|DS4PR12MB9747:EE_
-x-ms-office365-filtering-correlation-id: 66477039-af58-4b57-9e71-08dde62f294d
-x-ld-processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|7416014|376014|10070799003|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?6p6Dfav+TKTnk2ln6M1zckeocnwAI6RNTyThA/fMGvzt/hRnLUdLF2I2ayNY?=
- =?us-ascii?Q?BCU734MpH3ZtQYYYjjN0h9s5E1jMXleE1oM833IamM0c+AJzjKpx1jZCZOW2?=
- =?us-ascii?Q?gnGPSZ+osKhc9P+haRk8cF0OQkM/RNCwCFLMaUlccYDDcd8V1gJbH/cXVDD2?=
- =?us-ascii?Q?XIhp4tjUEX15eLmPsqjZMWEtid+LWLZ72hACDJSobstPXMWSBygPDc+XXVHp?=
- =?us-ascii?Q?LD2Se4zTTeH5bDxMeT6u4vgtMnQqVijueAtwoBpOjRhOjmK5I08TuMaUF5M6?=
- =?us-ascii?Q?ayEqYUntGIi4BQmdqVDPZ8nYmo/li05Sz4mCk5EFrtW3Y7W/h7MbonUipSvC?=
- =?us-ascii?Q?Dz898EdhWUn4UUVKW19BCrMnYxx/eo/zn8yjL01jbr4M+SkPBymyJLDMBLCc?=
- =?us-ascii?Q?+ZwY4KmQxKaFL4i86a3X2QTeITK0WK/E8B0xF5DLNrtQE/LpPaxfwxHC/LvC?=
- =?us-ascii?Q?FDC6WnJejLcYqu0xzU/GsA+1hMROR9e27kq32yVw5qnMdDVRTyzd8WvMHpKy?=
- =?us-ascii?Q?pxQ0ohRphBDfFNdcc1wZEn97+/r+d9/7Gaqt2nbG2PTzV70eNa6/hRtYXkLr?=
- =?us-ascii?Q?HVx2tAvJaSydOVYAwmiGfvA4UqdOooggfCww9+2KeV8dxkcdEGs5DX01EmuN?=
- =?us-ascii?Q?j0/cBkw9FGcTPk+axWYmdRYUJd2n4Osj1wUn3VOW3D2fXMr30YhUO1fv0rPn?=
- =?us-ascii?Q?d3aq0f65xG9iRZfL+U9AhoYRC39yING9tKX+fYTRpnICacDUWZX/bKpctOq5?=
- =?us-ascii?Q?ubgMOvuFMvNW0LZuslRM/iwudo6Qp529t3pByKlcqH8SlQ+4FJnaRMWd9CXk?=
- =?us-ascii?Q?mcH/GKDf6xMb53N0Hcs9ymDaHnWq82Qrzf2J3XxI0UJE2HnO2Fgsbu/9NB75?=
- =?us-ascii?Q?jOijP36F4Uu1UPLsdwdfIvx6TU4HR+nbra7T/b/b9MsOW9XjG6++VRsoeJJy?=
- =?us-ascii?Q?7kvsd2/jaHd/30eMQiXBa83A4bTT+OfX2P2ehd3NPqhyxAzFWHto+/us2SMT?=
- =?us-ascii?Q?631KV42EzHMvtjHx600DjSD+yXj3pf8piGoPXOofY/nluBZhz4et5pl+KlV4?=
- =?us-ascii?Q?y8Bj3fVitHSBgLooInjnv4zk8LlFvv0AarOHLvgBe9wWfr9ACTRn1mBQjfmK?=
- =?us-ascii?Q?DuZOrHZPQ68QOG/k+6JVBTHxfaWC45uhEbjL27uuOOEqPAs4+2cNSilnpNGB?=
- =?us-ascii?Q?rHFP/ocK9XYl28WjXRoCYtWtly153lHp6tLbxcoUkXnRnSh+QigxVPbHawDA?=
- =?us-ascii?Q?cWxOAdmQv63XXJ4aq4ecN9RFxkC8hT+xE+tp32aw5CeKzd53+QT+9qGPHCQQ?=
- =?us-ascii?Q?9RmYr631teHxwpuul/7jB3jP4QSAr19TG73HINBCL6MWHqLeFP0IJe/u5wX3?=
- =?us-ascii?Q?P6v8MBTaybJVF4VVlDxWXC5sPYlslVvQ/f8mikAjndEdlaibqXmweDlxNVX0?=
- =?us-ascii?Q?h5noiHFWjUUeuO+G53/3qFVur0o9e5frvq9i98cfrayZAt5mwbMPnw=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB7195.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(10070799003)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?i7evOPfullFbfEPp6w+Ggi6ISl+kWtRtwpiLr6Ke7W1dFxYW79WpH8VDtn1W?=
- =?us-ascii?Q?vS0jQF6TRUK0Vd8+y+pzBrdSssJ6bA9xX6gc2Sljl9lNUuAqNfmc9La8h9mA?=
- =?us-ascii?Q?TQcFqsgD8nAalpytZP6Y9y8eF2wChqbBgGk5eosYIS+oo0rOWi2L+Z1j1hEn?=
- =?us-ascii?Q?OdJArIkTUXmXLKOe6JI2aEtrdvg9KbeCPONk1QU1Y0mcMGUBnZ4x1u9jwq6P?=
- =?us-ascii?Q?cfjhFAHP3UdBiUSG2OJsB20dnuQn+oq4zBn2CqWT41HsU2oX6JEeodbY+5KT?=
- =?us-ascii?Q?I/aduZVH/7DvAgcPzu8MB3doaNq88y9WwCeqiayF2LBDBoOYWNGvmCcuAFAA?=
- =?us-ascii?Q?/b2NgrVyhldA+uWBZStzjxF2nlzUtmLMnOgQr5rw/XetU8VV+BZ8FNiBH/Qr?=
- =?us-ascii?Q?tVW5nVve22+1vn7BZnE5RR/BN0oowL5DLbdD3S+KuFligr744cgIlufQr2Tn?=
- =?us-ascii?Q?t+liXV+5NINMfIvZLF6XttFgG3RlekxsaJRijSXU3HozxJFknCwyTYcOItZ8?=
- =?us-ascii?Q?VMaiqHvM9Wv9zNlih/yRYl4IIXiPUbEujhGyAEmrj8pCwiNcCtEmeOVltxWQ?=
- =?us-ascii?Q?kODdO1LlbeGnK9x1z50/X7W/I3QHR/8QutC+gm5kL7FRwY3pVAinrj/uE598?=
- =?us-ascii?Q?CjcKaQiaO5Va3uWz+BteWP1KwLMHbpRViMgyVsxYUpZjUlFE8F8EV+ktGGJx?=
- =?us-ascii?Q?B/YMkeUD1g4tEf7w3DXHCTj5gkzJr0zUB/JZ80qZTF8jHVaJDZ7InqO38n9X?=
- =?us-ascii?Q?XVEtdU+aWxv0FCXZWgzPq5rEVGq+OSPrOg7cJdBRid5YTXtE6Ty+JZjNAdF0?=
- =?us-ascii?Q?QseErwP2tey64fHvRlQ7T6OHqe1GsGtlp6tp2A1vZy8yjStaXCcJKmLy/N+3?=
- =?us-ascii?Q?evcMej1KaV77hHbvIm6oISESwE9GYYyKGM3XIbvgr2B20FWLPo9DHdcGFdAk?=
- =?us-ascii?Q?r1raN6O8ya8xBVmGOzWHdA27eYzXzYQoPO4OjF+3/siQI3rve0lVwbTgQQNw?=
- =?us-ascii?Q?4gLwtZ6+di++vmaHT2AHifxHSwByrhEI826oWqRs1pHPDRT6naponrP/ozCF?=
- =?us-ascii?Q?mfbVFp9X8Hpzy3V7B3xpYef+cI7lBO4sq1LL9JvxGJfrTyTe3E1eznkeLy/A?=
- =?us-ascii?Q?l7zpjKANcRTux+K3HFMjFXlbqOM7GODSstH1D4LiV6bWKIwlWZ0+8zZSasbX?=
- =?us-ascii?Q?CoTMfgwRSvRdQLK+4lq7klaL/0LT74SMQL4HkblvK/KLFQhTBu4PzxW9Vsdl?=
- =?us-ascii?Q?04RBefO4vDphsWlppXm0OXzR4E1gSvFJ8Hur7z/N90/Sr9ZzmiqdSjZ7st6f?=
- =?us-ascii?Q?x2IWLgWkTqK+JVS0jKrwABJYn1S6kMANCxDvIDLZMvUllB4ocPVxpP7m0PpM?=
- =?us-ascii?Q?EbS5nusuyVEsCcxuE0IkUk658i0xL5qNEXwqvyGU3vKJfZQFW5R+Pe0AW/Iz?=
- =?us-ascii?Q?tMlPAaQkItm2FlxbdTaHAVhBwHnPGdVFIbomkwaYPeo+PpVwW36VldcRbyWA?=
- =?us-ascii?Q?yOlibQOi83HHnw4jo2kfttxWt8dWDGNC8xPO6lNR8loqYCossQ0IFpBHAqe0?=
- =?us-ascii?Q?1egM+GeD3T24XgU91Y7gMHhutfzBLnR0UbCjd3skJQ8ykbblhZKgdG6Eb94L?=
- =?us-ascii?Q?b23nnY1SQ+pU3hlVcl4wlWkh+GsV/LcAY+sYc36Tqehl?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EC130BB9D
+	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 12:48:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=131.169.56.156
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756385299; cv=none; b=neJU7PJfUrrCHFix7fjvzGU1g0ZTD/ApQ6lZ/PRuQTc8Rc1nU+MuyPnsCY9j9H8mgAK6jsaPlNYBjkcJPywr3ZvP1N7JmbRnQuDRGF4IK/zdhWScoRDx8uU/oysBPdnyWeXCiNDYw6wa3qMl7y/cFvje3lHChqF6Y0U1Jr2ypzU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756385299; c=relaxed/simple;
+	bh=NwlJER5TwN4jq9RS4wj5cl/xjNnKeNCPBoVP+zjAuNI=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=MlpzKtbXRnTLbzvddjCaqfqiHmhdGz18OEZ/QnIozgAioWoEUclkpOA9SsozzZD9ecciLBHk5Jd2hCkg65oUy55h7STPSMadQnrxG+LZg7dbw0PL1G4uM+pP5JrKurnjBk/KYoqOT0wOCQAPonNN7T8BS7ONbUCTmnN9RpZahdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=desy.de; spf=pass smtp.mailfrom=desy.de; dkim=pass (1024-bit key) header.d=desy.de header.i=@desy.de header.b=dfI+mLWu; arc=none smtp.client-ip=131.169.56.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=desy.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=desy.de
+Received: from smtp-o-2.desy.de (smtp-o-2.desy.de [131.169.56.155])
+	by smtp-o-3.desy.de (Postfix) with ESMTP id B033F11F91B
+	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 14:48:13 +0200 (CEST)
+Received: from smtp-buf-1.desy.de (smtp-buf-1.desy.de [IPv6:2001:638:700:1038::1:a4])
+	by smtp-o-2.desy.de (Postfix) with ESMTP id 036AD13F647
+	for <stable@vger.kernel.org>; Thu, 28 Aug 2025 14:48:06 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 smtp-o-2.desy.de 036AD13F647
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=desy.de; s=default;
+	t=1756385286; bh=yPEnCEUlOjZndbu8nSXz/U5gUyjQihz79sLTH6kpWqY=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=dfI+mLWukAU1TF+Gnpu4XNfV4G+0fxyCdbxD+UsHsXuWBWBoExusXfTcg/o1umrPS
+	 ze0sBoSfp/IywMytURRuF69gFFk8Mn0AAyffPDvIsrEWUIGy4LHvKbZOy0npbYtsia
+	 ClMZkz13dET4HNDsIXhqfqJrT5Ely9fEO0WlvMiE=
+Received: from smtp-m-2.desy.de (smtp-m-2.desy.de [131.169.56.130])
+	by smtp-buf-1.desy.de (Postfix) with ESMTP id EE53420056;
+	Thu, 28 Aug 2025 14:48:05 +0200 (CEST)
+Received: from b1722.mx.srv.dfn.de (b1722.mx.srv.dfn.de [194.95.235.47])
+	by smtp-m-2.desy.de (Postfix) with ESMTP id E09F616003F;
+	Thu, 28 Aug 2025 14:48:05 +0200 (CEST)
+Received: from smtp-intra-2.desy.de (smtp-intra-2.desy.de [131.169.56.83])
+	by b1722.mx.srv.dfn.de (Postfix) with ESMTP id 991AA160058;
+	Thu, 28 Aug 2025 14:48:04 +0200 (CEST)
+Received: from z-mbx-2.desy.de (z-mbx-2.desy.de [131.169.55.140])
+	by smtp-intra-2.desy.de (Postfix) with ESMTP id BABB620044;
+	Thu, 28 Aug 2025 14:48:03 +0200 (CEST)
+Date: Thu, 28 Aug 2025 14:48:03 +0200 (CEST)
+From: "Mkrtchyan, Tigran" <tigran.mkrtchyan@desy.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable <stable@vger.kernel.org>, patches@lists.linux.dev, 
+	Trond Myklebust <trond.myklebust@hammerspace.com>, 
+	Sasha Levin <sashal@kernel.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>
+Message-ID: <1930989002.4608779.1756385283630.JavaMail.zimbra@desy.de>
+In-Reply-To: <20250826110928.612854620@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org> <20250826110928.612854620@linuxfoundation.org>
+Subject: Re: [PATCH 5.10 168/523] pNFS/flexfiles: dont attempt pnfs on fatal
+ DS errors
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB7195.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 66477039-af58-4b57-9e71-08dde62f294d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2025 12:33:58.6894
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: kctntmWOei8PR3JX7WGTLerGXp+xAXYXEyOHHfYXV8PNPAj5eEsYqUVQtfbEHkGUaThpygYbptLzX+atAfCmzQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9747
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256; 
+	boundary="----=_Part_4608780_1928269810.1756385283660"
+X-Mailer: Zimbra 10.1.10_GA_4785 (ZimbraWebClient - FF142 (Linux)/10.1.10_GA_4785)
+Thread-Topic: pNFS/flexfiles: dont attempt pnfs on fatal DS errors
+Thread-Index: eZfEBFLMzAkAKXIDN4nCBFX/JcedBg==
+
+------=_Part_4608780_1928269810.1756385283660
+Date: Thu, 28 Aug 2025 14:48:03 +0200 (CEST)
+From: "Mkrtchyan, Tigran" <tigran.mkrtchyan@desy.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable <stable@vger.kernel.org>, patches@lists.linux.dev, 
+	Trond Myklebust <trond.myklebust@hammerspace.com>, 
+	Sasha Levin <sashal@kernel.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>
+Message-ID: <1930989002.4608779.1756385283630.JavaMail.zimbra@desy.de>
+In-Reply-To: <20250826110928.612854620@linuxfoundation.org>
+References: <20250826110924.562212281@linuxfoundation.org> <20250826110928.612854620@linuxfoundation.org>
+Subject: Re: [PATCH 5.10 168/523] pNFS/flexfiles: dont attempt pnfs on fatal
+ DS errors
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 10.1.10_GA_4785 (ZimbraWebClient - FF142 (Linux)/10.1.10_GA_4785)
+Thread-Topic: pNFS/flexfiles: dont attempt pnfs on fatal DS errors
+Thread-Index: eZfEBFLMzAkAKXIDN4nCBFX/JcedBg==
 
 
-> From: Cornelia Huck <cohuck@redhat.com>
-> Sent: 28 August 2025 05:52 PM
->=20
-> On Thu, Aug 28 2025, "Michael S. Tsirkin" <mst@redhat.com> wrote:
->=20
-> > On Thu, Aug 28, 2025 at 02:16:28PM +0200, Cornelia Huck wrote:
-> >> On Thu, Aug 28 2025, Parav Pandit <parav@nvidia.com> wrote:
-> >>
-> >> >> From: Cornelia Huck <cohuck@redhat.com>
-> >> >> Sent: 27 August 2025 05:04 PM
-> >> >>
-> >> >> On Wed, Aug 27 2025, "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> >> >>
-> >> >> > On Tue, Aug 26, 2025 at 06:52:03PM +0000, Parav Pandit wrote:
-> >> >> >> > What I do not understand, is what good does the revert do. Sor=
-ry.
-> >> >> >> >
-> >> >> >> Let me explain.
-> >> >> >> It prevents the issue of vblk requests being stuck due to broken=
- VQ.
-> >> >> >> It prevents the vnet driver start_xmit() to be not stuck on skb
-> completions.
-> >> >> >
-> >> >> > This is the part I don't get.  In what scenario, before
-> >> >> > 43bb40c5b9265 start_xmit is not stuck, but after 43bb40c5b9265 it=
- is
-> stuck?
-> >> >> >
-> >> >> > Once the device is gone, it is not using any buffers at all.
-> >> >>
-> >> >> What I also don't understand: virtio-ccw does exactly the same
-> >> >> thing (virtio_break_device(), added in 2014), and it supports
-> >> >> surprise removal _only_, yet I don't remember seeing bug reports?
-> >> >
-> >> > I suspect that stress testing may not have happened for ccw with act=
-ive
-> vblk Ios and outstanding transmit pkt and cvq commands.
-> >> > Hard to say as we don't have ccw hw or systems.
-> >>
-> >> cc:ing linux-s390 list. I'd be surprised if nobody ever tested
-> >> surprise removal on a loaded system in the last 11 years.
-> >
-> >
-> > As it became very clear from follow up discussion, the issue is
-> > nothing to do with virtio, it is with a broken hypervisor that allows
-> > device to DMA into guest memory while also telling the guest that the
-> > device has been removed.
-> >
-> > I guess s390 is just not broken like this.
->=20
-> Ah good, I missed that -- that indeed sounds broken, and needs to be fixe=
-d
-> there.
-Nop. This is not the issue. You missed this focused on fixing the device.
+Hi Greg,
 
-The fact is: the driver is expecting the IOs and CVQ commands and DMA to su=
-cceed even after device is removed.
-The driver is expecting the device reset to also succeed.
-Stefan already pointed out this in the vblk driver patches.
+I just got a report that the proposed fix has a bug in one of the error paths. I am
+trying to fix that, so you might want to wait with the backport.
 
-This is why you see call traces on del_gendisk(), CVQ commands.
+Sorry about that,
+   Tigran.
 
-Again, it is the broken drivers not the device.
-Device can stop the DMA and stop responding to the requests and kernel 6.X =
-will continue to hang as long as it has cited commit.
+----- Original Message -----
+> From: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+> To: "stable" <stable@vger.kernel.org>
+> Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, patches@lists.linux.dev, "Tigran Mkrtchyan"
+> <tigran.mkrtchyan@desy.de>, "Trond Myklebust" <trond.myklebust@hammerspace.com>, "Sasha Levin" <sashal@kernel.org>
+> Sent: Tuesday, 26 August, 2025 13:06:18
+> Subject: [PATCH 5.10 168/523] pNFS/flexfiles: dont attempt pnfs on fatal DS errors
 
+> 5.10-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
+> 
+> [ Upstream commit f06bedfa62d57f7b67d44aacd6badad2e13a803f ]
+> 
+> When an applications get killed (SIGTERM/SIGINT) while pNFS client performs a
+> connection
+> to DS, client ends in an infinite loop of connect-disconnect. This
+> source of the issue, it that flexfilelayoutdev#nfs4_ff_layout_prepare_ds gets an
+> error
+> on nfs4_pnfs_ds_connect with status ERESTARTSYS, which is set by
+> rpc_signal_task, but
+> the error is treated as transient, thus retried.
+> 
+> The issue is reproducible with Ctrl+C the following script(there should be ~1000
+> files in
+> a directory, client should must not have any connections to DSes):
+> 
+> ```
+> echo 3 > /proc/sys/vm/drop_caches
+> 
+> for i in *
+> do
+>   head -1 $i
+> done
+> ```
+> 
+> The change aims to propagate the nfs4_ff_layout_prepare_ds error state
+> to the caller that can decide whatever this is a retryable error or not.
+> 
+> Signed-off-by: Tigran Mkrtchyan <tigran.mkrtchyan@desy.de>
+> Link: https://lore.kernel.org/r/20250627071751.189663-1-tigran.mkrtchyan@desy.de
+> Fixes: 260f32adb88d ("pNFS/flexfiles: Check the result of nfs4_pnfs_ds_connect")
+> Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+> fs/nfs/flexfilelayout/flexfilelayout.c    | 26 ++++++++++++++---------
+> fs/nfs/flexfilelayout/flexfilelayoutdev.c |  6 +++---
+> 2 files changed, 19 insertions(+), 13 deletions(-)
+> 
+> diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c
+> b/fs/nfs/flexfilelayout/flexfilelayout.c
+> index a053dd05057f..57150b27c0fd 100644
+> --- a/fs/nfs/flexfilelayout/flexfilelayout.c
+> +++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+> @@ -739,14 +739,14 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment
+> *lseg,
+> {
+> 	struct nfs4_ff_layout_segment *fls = FF_LAYOUT_LSEG(lseg);
+> 	struct nfs4_ff_layout_mirror *mirror;
+> -	struct nfs4_pnfs_ds *ds;
+> +	struct nfs4_pnfs_ds *ds = ERR_PTR(-EAGAIN);
+> 	u32 idx;
+> 
+> 	/* mirrors are initially sorted by efficiency */
+> 	for (idx = start_idx; idx < fls->mirror_array_cnt; idx++) {
+> 		mirror = FF_LAYOUT_COMP(lseg, idx);
+> 		ds = nfs4_ff_layout_prepare_ds(lseg, mirror, false);
+> -		if (!ds)
+> +		if (IS_ERR(ds))
+> 			continue;
+> 
+> 		if (check_device &&
+> @@ -754,10 +754,10 @@ ff_layout_choose_ds_for_read(struct pnfs_layout_segment
+> *lseg,
+> 			continue;
+> 
+> 		*best_idx = idx;
+> -		return ds;
+> +		break;
+> 	}
+> 
+> -	return NULL;
+> +	return ds;
+> }
+> 
+> static struct nfs4_pnfs_ds *
+> @@ -933,7 +933,7 @@ ff_layout_pg_init_write(struct nfs_pageio_descriptor *pgio,
+> 	for (i = 0; i < pgio->pg_mirror_count; i++) {
+> 		mirror = FF_LAYOUT_COMP(pgio->pg_lseg, i);
+> 		ds = nfs4_ff_layout_prepare_ds(pgio->pg_lseg, mirror, true);
+> -		if (!ds) {
+> +		if (IS_ERR(ds)) {
+> 			if (!ff_layout_no_fallback_to_mds(pgio->pg_lseg))
+> 				goto out_mds;
+> 			pnfs_generic_pg_cleanup(pgio);
+> @@ -1820,6 +1820,7 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
+> 	u32 idx = hdr->pgio_mirror_idx;
+> 	int vers;
+> 	struct nfs_fh *fh;
+> +	bool ds_fatal_error = false;
+> 
+> 	dprintk("--> %s ino %lu pgbase %u req %zu@%llu\n",
+> 		__func__, hdr->inode->i_ino,
+> @@ -1827,8 +1828,10 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
+> 
+> 	mirror = FF_LAYOUT_COMP(lseg, idx);
+> 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, false);
+> -	if (!ds)
+> +	if (IS_ERR(ds)) {
+> +		ds_fatal_error = nfs_error_is_fatal(PTR_ERR(ds));
+> 		goto out_failed;
+> +	}
+> 
+> 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
+> 						   hdr->inode);
+> @@ -1869,7 +1872,7 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
+> 	return PNFS_ATTEMPTED;
+> 
+> out_failed:
+> -	if (ff_layout_avoid_mds_available_ds(lseg))
+> +	if (ff_layout_avoid_mds_available_ds(lseg) && !ds_fatal_error)
+> 		return PNFS_TRY_AGAIN;
+> 	trace_pnfs_mds_fallback_read_pagelist(hdr->inode,
+> 			hdr->args.offset, hdr->args.count,
+> @@ -1890,11 +1893,14 @@ ff_layout_write_pagelist(struct nfs_pgio_header *hdr,
+> int sync)
+> 	int vers;
+> 	struct nfs_fh *fh;
+> 	u32 idx = hdr->pgio_mirror_idx;
+> +	bool ds_fatal_error = false;
+> 
+> 	mirror = FF_LAYOUT_COMP(lseg, idx);
+> 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, true);
+> -	if (!ds)
+> +	if (IS_ERR(ds)) {
+> +		ds_fatal_error = nfs_error_is_fatal(PTR_ERR(ds));
+> 		goto out_failed;
+> +	}
+> 
+> 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
+> 						   hdr->inode);
+> @@ -1937,7 +1943,7 @@ ff_layout_write_pagelist(struct nfs_pgio_header *hdr, int
+> sync)
+> 	return PNFS_ATTEMPTED;
+> 
+> out_failed:
+> -	if (ff_layout_avoid_mds_available_ds(lseg))
+> +	if (ff_layout_avoid_mds_available_ds(lseg) && !ds_fatal_error)
+> 		return PNFS_TRY_AGAIN;
+> 	trace_pnfs_mds_fallback_write_pagelist(hdr->inode,
+> 			hdr->args.offset, hdr->args.count,
+> @@ -1979,7 +1985,7 @@ static int ff_layout_initiate_commit(struct
+> nfs_commit_data *data, int how)
+> 	idx = calc_ds_index_from_commit(lseg, data->ds_commit_index);
+> 	mirror = FF_LAYOUT_COMP(lseg, idx);
+> 	ds = nfs4_ff_layout_prepare_ds(lseg, mirror, true);
+> -	if (!ds)
+> +	if (IS_ERR(ds))
+> 		goto out_err;
+> 
+> 	ds_clnt = nfs4_ff_find_or_create_ds_client(mirror, ds->ds_clp,
+> diff --git a/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+> b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+> index 4b0cdddce6eb..11777d33a85e 100644
+> --- a/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+> +++ b/fs/nfs/flexfilelayout/flexfilelayoutdev.c
+> @@ -368,11 +368,11 @@ nfs4_ff_layout_prepare_ds(struct pnfs_layout_segment
+> *lseg,
+> 			  struct nfs4_ff_layout_mirror *mirror,
+> 			  bool fail_return)
+> {
+> -	struct nfs4_pnfs_ds *ds = NULL;
+> +	struct nfs4_pnfs_ds *ds;
+> 	struct inode *ino = lseg->pls_layout->plh_inode;
+> 	struct nfs_server *s = NFS_SERVER(ino);
+> 	unsigned int max_payload;
+> -	int status;
+> +	int status = -EAGAIN;
+> 
+> 	if (!ff_layout_init_mirror_ds(lseg->pls_layout, mirror))
+> 		goto noconnect;
+> @@ -410,7 +410,7 @@ nfs4_ff_layout_prepare_ds(struct pnfs_layout_segment *lseg,
+> 	ff_layout_send_layouterror(lseg);
+> 	if (fail_return || !ff_layout_has_available_ds(lseg))
+> 		pnfs_error_mark_layout_for_return(ino, lseg);
+> -	ds = NULL;
+> +	ds = ERR_PTR(status);
+> out:
+> 	return ds;
+> }
+> --
+> 2.39.5
+
+------=_Part_4608780_1928269810.1756385283660
+Content-Type: application/pkcs7-signature; name=smime.p7s; smime-type=signed-data
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCAMIIH
+XzCCBUegAwIBAgIQGrSZ0tLzGu9JoeeaXGroSzANBgkqhkiG9w0BAQwFADBVMQswCQYDVQQGEwJO
+TDEZMBcGA1UEChMQR0VBTlQgVmVyZW5pZ2luZzErMCkGA1UEAxMiR0VBTlQgVENTIEF1dGhlbnRp
+Y2F0aW9uIFJTQSBDQSA0QjAeFw0yNDEyMDQwOTQzMjZaFw0yNjAxMDMwOTQzMjZaMIGpMRMwEQYK
+CZImiZPyLGQBGRMDb3JnMRYwFAYKCZImiZPyLGQBGRMGdGVyZW5hMRMwEQYKCZImiZPyLGQBGRMD
+dGNzMQswCQYDVQQGEwJERTEuMCwGA1UEChMlRGV1dHNjaGVzIEVsZWt0cm9uZW4tU3luY2hyb3Ry
+b24gREVTWTEoMCYGA1UEAwwfVGlncmFuIE1rcnRjaHlhbiB0aWdyYW5AZGVzeS5kZTCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBAKZ1aJleygPW8bRzYJ3VfXwfY2TxAF0QUuTk/6Bqu8Bi
+UQjIgmBQ1hCzz8DVdJ8saw7p5/c1JDmVHqm2DJPwXLROKACiDdSHPf+N8PFZvxHxOqFNPeO/oJhO
+jHXG1c/tL8ElfiUlMtEZYtoS60/VUz3A/4FIWP2A5s/UIOSZyCcKz3AUcAanHGEJVS8oWKQj7pNX
+yjojvX4aPHzsKP+c+c/5wq08/aziRXLCekhKk+VdS8lhlS/3AL1G0VSWKj5/pOpz4ozmv44GEw9z
+FAsPWuTcLXqCX993BOoWAyQDcygAsb0nQQMzx+4wlSGsI31/gKOE5ZOJ3SErWDswgzxWm8Xht/Kl
+ymDHPXi8P0ohQjJrQRpJXVwD/tXDwSSbWP9jnVbtqpvLLBkNrSy6elW19nkE1ObpSPcn+be5hs1P
+59Y+GPudytAQ3MOoFoNd7kxpVQoM6cdQjRHdyIDbavZrdxr33s7uqSbcI/PE8W5M0iPNnd4ip4kH
+UIOdpsjk7b7kEdO4Jf9dDrz/fduAEaW+AUTfb+G42LiftUBXkANa50nOseW3tocadYOTySufN9or
+IwvcQ/1uemVd83On7k8bWevfU159x28aidxv8liqJXrrT28tp/QxtGtDXjo9jdkWi/5d/9XfqQgN
+IT7KH42fc3ZlaL3pLuJwEQWVtFnWUTRJAgMBAAGjggHUMIIB0DAfBgNVHSMEGDAWgBQQMuoC4vzP
+6lYlVIfDmPXog9bFJDAOBgNVHQ8BAf8EBAMCBaAwCQYDVR0TBAIwADAdBgNVHSUEFjAUBggrBgEF
+BQcDAgYIKwYBBQUHAwQwRQYDVR0gBD4wPDAMBgoqhkiG90wFAgIFMA0GCyqGSIb3TAUCAwMDMA0G
+CyqGSIb3TAUCAwECMA4GDCsGAQQBgcRaAgMCAjBUBgNVHR8ETTBLMEmgR6BFhkNodHRwOi8vY3Js
+LmVudGVycHJpc2Uuc2VjdGlnby5jb20vR0VBTlRUQ1NBdXRoZW50aWNhdGlvblJTQUNBNEIuY3Js
+MIGRBggrBgEFBQcBAQSBhDCBgTBPBggrBgEFBQcwAoZDaHR0cDovL2NydC5lbnRlcnByaXNlLnNl
+Y3RpZ28uY29tL0dFQU5UVENTQXV0aGVudGljYXRpb25SU0FDQTRCLmNydDAuBggrBgEFBQcwAYYi
+aHR0cDovL29jc3AuZW50ZXJwcmlzZS5zZWN0aWdvLmNvbTAjBgNVHREEHDAagRh0aWdyYW4ubWty
+dGNoeWFuQGRlc3kuZGUwHQYDVR0OBBYEFMmhx6vILo+tVVV6rojJTwL+t2eGMA0GCSqGSIb3DQEB
+DAUAA4ICAQARKKJEO1G3lIe+AA+E3pl5mNYs/+XgswX1316JYDRzBnfVweMR6IaOT7yrP+Mwhx3v
+yiM8VeSVFtfyLlV6FaHAxNFo5Z19L++g/FWWAg0Wz13aFaEm0+KEp8RkB/Mh3EbSukZxUqmWCgrx
+zmx+I5zlX8pLxNgrxcc1WW5l7Y7y2sci++W6wE/L7rgMuznqiBLw/qwnkXAeQrw2PIllAGwRqrwa
+37kPa+naT1P0HskuBFHQSmMihB5HQl6+2Rs9M5RMW3/IlUQAqkhZQGBXmiWDivjPFKXJQnCmhQmh
+76sOcSOScfzYI5xOD+ZGdBRRufkUxaXJ2G//IgkK2R8mqrFEXxBFaBMc0uMBJHKNv+FO7H6VPOe9
+BD9FwfLiqWvGwKJrF11Bk/QSfWh+zCJ8JHPAi6irwQO4Xf+0xhPsxb+jBfKK3I84YMf6zsDkdDzH
+lkNPhDh4xhYhEAk+L228pjTEmnbb2QVv52grZ0dbITuN+Hz2ypvLfaS8p06lrht45COlkmuIUVqp
+bsc3kRt610qwXSjYcc8zeCQI0Rqnnq+0UN5T0KU7JSzUho6vaTSUG57uc7b3DkIW2Z9VpXX5xKb/
+vfl++jC5JzKrbCeS+QOStpXwwaH62IUHwdfWfkvpzb8EFALEmCvu8nlT9NaqYlB/xogMH6oHBm+Y
+nxmRQxWROAAAMYIDZTCCA2ECAQEwaTBVMQswCQYDVQQGEwJOTDEZMBcGA1UEChMQR0VBTlQgVmVy
+ZW5pZ2luZzErMCkGA1UEAxMiR0VBTlQgVENTIEF1dGhlbnRpY2F0aW9uIFJTQSBDQSA0QgIQGrSZ
+0tLzGu9JoeeaXGroSzANBglghkgBZQMEAgEFAKCBzjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcB
+MBwGCSqGSIb3DQEJBTEPFw0yNTA4MjgxMjQ4MDRaMC0GCSqGSIb3DQEJNDEgMB4wDQYJYIZIAWUD
+BAIBBQChDQYJKoZIhvcNAQELBQAwLwYJKoZIhvcNAQkEMSIEINZCD2mmSaO/R3BB29hsiRjsJp9z
+ALPLHP01zrK2xxZcMDQGCSqGSIb3DQEJDzEnMCUwCgYIKoZIhvcNAwcwDgYIKoZIhvcNAwICAgCA
+MAcGBSsOAwIHMA0GCSqGSIb3DQEBCwUABIICAA2r7Wj2atsN7kbp6ffNwzA4JOo9F+ifcN6FQVSo
+RTbGaqOabAPHhkCmCMwyyHFhyEEYqoh07Kc47gntk7Mi/ci9X0YTZfJ4VXn3TPOSaTy4HThVewQ+
+yQPvAOqsQx1o0MX6a3V2ybrdg3k5V96XklknqRakHrnFwgDpG119ruBX5CV9qa2q+qIs2PeKgOxE
+KboB0IRMTfojYatPYyap0/Y/aUFsGhA+d2OL1zlw8ozZvKPmZm+ShmBH8eJdZGy0U43ugi9Iseze
+dvYlwDsLq2uCPtnMtlYPxdwWSLMN2eJr7B/RRpuS5AbOps/A1Yz4yXKW5KlfFUobO11WoPUd5c9v
+2oKBLPv8usSyHzAJTCRuVCwNAQ+07/T9yYM+RO3trRBN8R894P0npf09cAxr/60KItl89cOmCr+Z
+jYkPdUljV6DbOggmwfp7kVz1sMud6vYypOggvvAGlb0VJ2woAvZuM7FCRAFbh5p1w2Y8vfUZyWsn
+/K6KSHUHHBuDFpz1SP7SwGZLugwHL4nqhRcvG+iOqRlAbVxuxsLTAPdzZbkXC8AUg5KLAvomNrwP
++B10bwboWo/U1R1VGUAeJZkiiMUGx2yOOaC5no/PuBHH4o+fnoIXIGe+URGSVu8WccItmP04StiS
+8Pjc26wjEJtIUbt2DpmhqUyi7DmznAsvfKZIAAAAAAAA
+------=_Part_4608780_1928269810.1756385283660--
 
