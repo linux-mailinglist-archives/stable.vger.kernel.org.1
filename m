@@ -1,89 +1,165 @@
-Return-Path: <stable+bounces-176720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E5AB3C04E
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 18:07:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC77B3C11F
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 18:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8A321886F2B
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 16:07:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7629AA08604
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 16:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8546132C32E;
-	Fri, 29 Aug 2025 16:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AF8334371;
+	Fri, 29 Aug 2025 16:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D7s7Vq4s"
 X-Original-To: stable@vger.kernel.org
-Received: from irl.hu (irl.hu [95.85.9.111])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBEC3218C6;
-	Fri, 29 Aug 2025 16:06:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF2F283FDE;
+	Fri, 29 Aug 2025 16:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756483575; cv=none; b=erK5bpTICS4h2R9CvH8JentZK5njo3R8DC12Z3p3yC/mZ/uy8wBiRUl7DaQn03rnRLazgLXVZCZyz7gkZ9xNxVbLDPbFH1xCKUmjgavvIpEDJi76Bx3yXh8CKvrCOqanD2/0TPfyWfLp5jjtqiQmMdfrN/IzBbv4ldcaGHLhZSM=
+	t=1756485989; cv=none; b=Xr3dunf2UOrbeEbZtX67lHOz78zCcGNzJV3KxM+tHevefJug7Z05B+9VN1Q+wX7IUGERqkJYmnp9yTNPoTQbURgPnUpTNZsVaQKqqNr5QxxWnzTvoksh41x/t4fIMBMtFA/iifkbr08f42tljvw5MFhgeISR0x8px7Y1AWv3pWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756483575; c=relaxed/simple;
-	bh=VmJBa+4m+0rUZPWAD3Gyee+a7V7U9qElmS6Q6lZRMq0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=BL1aYca3hL0snaRGe6bvzLVB3l4XC+gQrepLdsW7xAAsVSRi5iHJrr7Jneis56/180w0or6V9jajDRl3hRH+yn97d1k8cuqvfN6uGGQNQUcHcqW+bg8HkLOtR0MqCtdf7hdMQe28YGrc+IUYn6w402/UtOviD7eshSRUHK3oPXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
-Received: from fedori.lan (51b694d5.dsl.pool.telekom.hu [::ffff:81.182.148.213])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 0000000000088D59.0000000068B1CFED.0023A914; Fri, 29 Aug 2025 18:06:04 +0200
-From: Gergo Koteles <soyer@irl.hu>
-To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
-  Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
-  Takashi Iwai <tiwai@suse.com>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-  alsa-devel@alsa-project.org, Gergo Koteles <soyer@irl.hu>,
-  stable@vger.kernel.org
-Subject: [PATCH 2/2] ALSA: hda: tas2781: reorder tas2563 calibration variables
-Date: Fri, 29 Aug 2025 18:04:50 +0200
-Message-ID: <20250829160450.66623-2-soyer@irl.hu>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250829160450.66623-1-soyer@irl.hu>
-References: <20250829160450.66623-1-soyer@irl.hu>
+	s=arc-20240116; t=1756485989; c=relaxed/simple;
+	bh=PVpX8+3IqfXg1/WqFGH/rwOO8yjTxELXA5EvlRBBMZc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vFLbAdQmubUMV6TwyCxEZKNfItY/ZB6vWdX+gHasm/8BhtQIgpGknQFRpFkwodfXXahKv0Bv2fryb5qngGpPBq7p7wO9jM/0T6hHOsPCnUi9jaSIiZFERTaEMHwy1IGJn7EfX63hbBsViSH+SGHkUZqHaIiZpFR93PlMpNc04XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D7s7Vq4s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4098AC4CEF0;
+	Fri, 29 Aug 2025 16:46:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756485988;
+	bh=PVpX8+3IqfXg1/WqFGH/rwOO8yjTxELXA5EvlRBBMZc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=D7s7Vq4sTLna4JGv7jkxQ+Glrr41wNqIFZ69f2jS4N2FgRPGmazU+mT1ZYZzT5MVh
+	 LwQyyPST7pEiUz3aHpak0Lljjs3HeIDhDI8/GT4d0rdFISmukYSF4Di7IQj7wg9ZnC
+	 qGkcxoyXLAwblIEMk/jdBFjlf2lGxe6iU1r69UfzpAXg+noHlUGrshDhdcAoIIz8OZ
+	 5YYNaFWce9bM32WI5JN4tExtDaxX8Qwvgmh4VHwZclzus2lxqjkwvOFZwM1tgG9+0j
+	 u9koKe3Ideu6bNCDCTWB2yqDzvJEpyHbQ7ebrvFOvN2iIq/kJsNNTVoB9fE/PHICzK
+	 gnTUnH8Qg2m+w==
+From: Eric Biggers <ebiggers@kernel.org>
+To: Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
+	kasan-dev@googlegroups.com
+Cc: Dmitry Vyukov <dvyukov@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] kmsan: Fix out-of-bounds access to shadow memory
+Date: Fri, 29 Aug 2025 09:45:00 -0700
+Message-ID: <20250829164500.324329-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-The tasdev_load_calibrated_data() function expects the calibration data
-values in the cali_data buffer as R0, R0Low, InvR0, Power, TLim which
-is not the same as what tas2563_save_calibration() writes to the buffer.
+Running sha224_kunit on a KMSAN-enabled kernel results in a crash in
+kmsan_internal_set_shadow_origin():
 
-Reorder the EFI variables in the tas2563_save_calibration() function
-to put the values in the buffer in the correct order.
+    BUG: unable to handle page fault for address: ffffbc3840291000
+    #PF: supervisor read access in kernel mode
+    #PF: error_code(0x0000) - not-present page
+    PGD 1810067 P4D 1810067 PUD 192d067 PMD 3c17067 PTE 0
+    Oops: 0000 [#1] SMP NOPTI
+    CPU: 0 UID: 0 PID: 81 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc3 #10 PREEMPT(voluntary)
+    Tainted: [N]=TEST
+    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+    RIP: 0010:kmsan_internal_set_shadow_origin+0x91/0x100
+    [...]
+    Call Trace:
+    <TASK>
+    __msan_memset+0xee/0x1a0
+    sha224_final+0x9e/0x350
+    test_hash_buffer_overruns+0x46f/0x5f0
+    ? kmsan_get_shadow_origin_ptr+0x46/0xa0
+    ? __pfx_test_hash_buffer_overruns+0x10/0x10
+    kunit_try_run_case+0x198/0xa00
 
-Fixes: 4fe238513407 ("ALSA: hda/tas2781: Move and unified the calibrated-data getting function for SPI and I2C into the tas2781_hda lib")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
+This occurs when memset() is called on a buffer that is not 4-byte
+aligned and extends to the end of a guard page, i.e. the next page is
+unmapped.
+
+The bug is that the loop at the end of
+kmsan_internal_set_shadow_origin() accesses the wrong shadow memory
+bytes when the address is not 4-byte aligned.  Since each 4 bytes are
+associated with an origin, it rounds the address and size so that it can
+access all the origins that contain the buffer.  However, when it checks
+the corresponding shadow bytes for a particular origin, it incorrectly
+uses the original unrounded shadow address.  This results in reads from
+shadow memory beyond the end of the buffer's shadow memory, which
+crashes when that memory is not mapped.
+
+To fix this, correctly align the shadow address before accessing the 4
+shadow bytes corresponding to each origin.
+
+Fixes: 2ef3cec44c60 ("kmsan: do not wipe out origin when doing partial unpoisoning")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- sound/hda/codecs/side-codecs/tas2781_hda_i2c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/kmsan/core.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c b/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-index 1eac751ab2a6..83eb19bb9bce 100644
---- a/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-+++ b/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-@@ -300,7 +300,7 @@ static int tas2563_save_calibration(struct tas2781_hda *h)
+diff --git a/mm/kmsan/core.c b/mm/kmsan/core.c
+index 1ea711786c522..8bca7fece47f0 100644
+--- a/mm/kmsan/core.c
++++ b/mm/kmsan/core.c
+@@ -193,11 +193,12 @@ depot_stack_handle_t kmsan_internal_chain_origin(depot_stack_handle_t id)
+ 
+ void kmsan_internal_set_shadow_origin(void *addr, size_t size, int b,
+ 				      u32 origin, bool checked)
  {
- 	efi_guid_t efi_guid = tasdev_fct_efi_guid[LENOVO];
- 	char *vars[TASDEV_CALIB_N] = {
--		"R0_%d", "InvR0_%d", "R0_Low_%d", "Power_%d", "TLim_%d"
-+		"R0_%d", "R0_Low_%d", "InvR0_%d", "Power_%d", "TLim_%d"
- 	};
- 	efi_char16_t efi_name[TAS2563_CAL_VAR_NAME_MAX];
- 	unsigned long max_size = TAS2563_CAL_DATA_SIZE;
+ 	u64 address = (u64)addr;
+-	u32 *shadow_start, *origin_start;
++	void *shadow_start;
++	u32 *aligned_shadow, *origin_start;
+ 	size_t pad = 0;
+ 
+ 	KMSAN_WARN_ON(!kmsan_metadata_is_contiguous(addr, size));
+ 	shadow_start = kmsan_get_metadata(addr, KMSAN_META_SHADOW);
+ 	if (!shadow_start) {
+@@ -212,13 +213,16 @@ void kmsan_internal_set_shadow_origin(void *addr, size_t size, int b,
+ 		}
+ 		return;
+ 	}
+ 	__memset(shadow_start, b, size);
+ 
+-	if (!IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
++	if (IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
++		aligned_shadow = shadow_start;
++	} else {
+ 		pad = address % KMSAN_ORIGIN_SIZE;
+ 		address -= pad;
++		aligned_shadow = shadow_start - pad;
+ 		size += pad;
+ 	}
+ 	size = ALIGN(size, KMSAN_ORIGIN_SIZE);
+ 	origin_start =
+ 		(u32 *)kmsan_get_metadata((void *)address, KMSAN_META_ORIGIN);
+@@ -228,11 +232,11 @@ void kmsan_internal_set_shadow_origin(void *addr, size_t size, int b,
+ 	 * and unconditionally overwrite the old origin slot.
+ 	 * If the new origin is zero, overwrite the old origin slot iff the
+ 	 * corresponding shadow slot is zero.
+ 	 */
+ 	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++) {
+-		if (origin || !shadow_start[i])
++		if (origin || !aligned_shadow[i])
+ 			origin_start[i] = origin;
+ 	}
+ }
+ 
+ struct page *kmsan_vmalloc_to_page_or_null(void *vaddr)
+
+base-commit: 1b237f190eb3d36f52dffe07a40b5eb210280e00
 -- 
-2.51.0
+2.50.1
 
 
