@@ -1,108 +1,120 @@
-Return-Path: <stable+bounces-176722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED894B3C161
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 18:57:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F147EB3C182
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 19:08:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BF363B9767
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 16:57:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9EAE588423
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 17:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F88E335BB1;
-	Fri, 29 Aug 2025 16:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H/h/Jw1S"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 348CD3375BE;
+	Fri, 29 Aug 2025 17:08:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFEE283FDE
-	for <stable@vger.kernel.org>; Fri, 29 Aug 2025 16:57:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0293375B1;
+	Fri, 29 Aug 2025 17:08:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756486651; cv=none; b=K2HFpstU57kIr4xpVBNg5VKdNNz4nYpy7rIvG4Xh3WxoGlZ7u2aTI7i4llYulZIuFdZTtvNWV9/naSbG5+jAHg2PgWfW6TjiiZ//SGKE6cdpdSNjyruXf8waKYc6A5Ih8+M2Tcag4+CipQs9GArfNvN+KY4HBWLvx1fEhqVjOw4=
+	t=1756487308; cv=none; b=W1t4iQZ3bM+Cs117JMSNHc9kYojjBtZdnwcx9uX9gga1624bdKnp7h+KKImZCphCP5NDj6ObDXzmKqwBri5tFgwQQ2c/6uFWyEFkzynIE514z2cV8l4z6AVPmVL6eSrkbDQh2nAP+MBtSYN6IaVYi1cC1j1bP31E8vpOQaDxrgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756486651; c=relaxed/simple;
-	bh=rMY9CK3FzyWL5hcZjlKfSIoe7gfxKfxrpr7JgBhZVPg=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=X9ktjCTzF8UXK2W08wcDhf73J6ruRMIm1bFwqfxCOLjyu4UzPrZ+thjx3j9T3F1mcaRsdu5z/2kk7FW1RWR+LQawTMHObqiNdAnMrWfcWqpp+NKGnnchgU7dX3VuUtoEq9YwVeyA2eViJM5E/B2LETWF/vWJj1dwsOPpW/X36UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H/h/Jw1S; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-55f6bb0a364so796631e87.1
-        for <stable@vger.kernel.org>; Fri, 29 Aug 2025 09:57:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756486648; x=1757091448; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rMY9CK3FzyWL5hcZjlKfSIoe7gfxKfxrpr7JgBhZVPg=;
-        b=H/h/Jw1SzFqaEKaiIixIIK01Lz7IxmjpURBKAlaVHq3mUgEvxXAgEdbcvIrrVGc0V9
-         tnd82medqCL1d5+eyiFOu1lzwNfaqp72/MqBqAfm8eexH4VsufuEaXhahhuuQy2x/UYc
-         c0QinNK+Xb22kItoqNMmRYVVKM+I9dLB0OQsYlCaFqojVHDlKoM7EkkLZfRMDP5vKx4B
-         i32pOMKUHCOhSHaiJtbiPEXvJMY6y9ffCN0pp86RjKuqjbTtJDft99nT01RiLGS7NIv6
-         LMU7NTFV/ukBpKUdAutW0uLTToFqk2C7uNhPnc8lu0BYRUU+aeMJoNqYDYXJchIFFV2b
-         yVyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756486648; x=1757091448;
-        h=cc:to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rMY9CK3FzyWL5hcZjlKfSIoe7gfxKfxrpr7JgBhZVPg=;
-        b=HUk8miRvCftXl/zwPRhEI6WcE12aWISLk1ArcGNvNAGuNOuggcUuPBC7A9YWMiTgLO
-         RMHQ7bsPlcEPI3AWF3Hq43fY6r5h0M99n9SVFhGIXqeVUWYb5uYID+A/4T6zn07bd8BR
-         hWWngSsTxoGCpMhM2Xh6kiJkTcjmUzyqZAtcBPE8iGaqKKmQPTDoqOMr/1DknJuATMQH
-         H4M9Yw2pOwLPCuoZm5aPgF+lt7FOl5A7vzXiSBQK/5WjEl2mBNHVx4Or+E4HgQ6+YDnX
-         A+MArzchyizNz1kBTRn/lfGUxQtqHrYxgelk9b3O5ySsPDV69DzoyxQuLNh+b2kTDcCu
-         CSpQ==
-X-Gm-Message-State: AOJu0YwDJ5W6MLk+EJvnK0S+N+DQguLgs/Qn+3mXzxvP4lE9br1FNJA2
-	aaPmjQx/JXUstRgUB6M25+qHHJb7e6izgW29bY+PoPAqDeRmmtDuR9iHQIAFZgLyR4gKQatpqMI
-	tEqRlTI6PHy5nR2mThMBQFiYOEGAfWXg=
-X-Gm-Gg: ASbGnct+GlaPYnOD9GYIw9C1cpyBHZYfOI0RTnTQ68JL9R3RtbLgNHT4QySXQC/+G2b
-	A/r2R6w5Ao1jib0Xiis/DViuMvCbWEaKh5Ey9IxHGc3hBM0H1zLEI5lve+2ODpCJ0h4HMV/OjZt
-	5SN+nsu8A3wY+8XU/n8rcvU+9hMX2nityJ0Qw2qkhU55qbZqzKQvXsVmc/9OiRzJyy7s877++lj
-	uHbutvyBD9acWQzggCs
-X-Google-Smtp-Source: AGHT+IGcw5eRtwwB6jNfxVcLXIsPGYbwUz4mW0XmcZkL8XVoLP7FN/i1ZY6JtTOG9mR5bbvMKURCsKG+woYi/lDOX+Y=
-X-Received: by 2002:a05:6512:6082:b0:55f:553d:2b83 with SMTP id
- 2adb3069b0e04-55f553d2ea6mr3179032e87.54.1756486647605; Fri, 29 Aug 2025
- 09:57:27 -0700 (PDT)
+	s=arc-20240116; t=1756487308; c=relaxed/simple;
+	bh=SIIL7tfbe1Qypqdr/Gnur9FsUbBj729FigkstAdP5m4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tCuM5xER1B61JY+En9ooTH4kDioRIrtS7yCPxTJnJMqAh89feVp8JdpIfEQQ0abWUdW3OYf9ovrhvn6ecjRiWRNzUoSgjH0NuGYYmjR/7W0RYAecvwQH8rX7GPRAtfaWmBQ4IM8WXC7KjaexWK4C4OdVBlo+681aiSXZxpCHK60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
+Date: Fri, 29 Aug 2025 17:08:03 +0000
+From: Brett Sheffield <bacs@librecast.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	achill@achill.org
+Subject: Re: [PATCH 6.6 000/587] 6.6.103-rc1 review
+Message-ID: <aLHecwEL3r7lrw2e@auntie>
+References: <20250826110952.942403671@linuxfoundation.org>
+ <aK2rwEQ5hdOQSlLq@auntie>
+ <2025082620-humorous-stinky-bf0e@gregkh>
+ <aK3Lj1OouiUqskLh@karahi.gladserv.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Reply-To: sedat.dilek@gmail.com
-From: Sedat Dilek <sedat.dilek@gmail.com>
-Date: Fri, 29 Aug 2025 18:56:52 +0200
-X-Gm-Features: Ac12FXw8MPs7Rvl1AoAM4XDl01SD-oI-RuX4Acg7EVXtc4_8rDfMZU5S3_wwOy4
-Message-ID: <CA+icZUWXiz1kqR6omufFwByQ9dD9m=-UYY9JghVQnbGD2NMy1w@mail.gmail.com>
-Subject: [stable-6.16|lts-6.12] net: ipv4: fix regression in local-broadcast routes
-To: Sasha Levin <sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Oscar Maes <oscmaes92@gmail.com>, 
-	Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
-	Brett A C Sheffield <bacs@librecast.net>, Salvatore Bonaccorso <carnil@debian.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aK3Lj1OouiUqskLh@karahi.gladserv.com>
 
-Hi Sasha and Greg,
+On 2025-08-26 16:58, Brett Sheffield wrote:
+> On 2025-08-26 14:50, Greg Kroah-Hartman wrote:
+> > On Tue, Aug 26, 2025 at 12:42:40PM +0000, Brett A C Sheffield wrote:
+> > > Hi Greg,
+> > > 
+> > > On 2025-08-26 13:02, Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 6.6.103 release.
+> > > > There are 587 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > > 
+> > > > Responses should be made by Thu, 28 Aug 2025 11:08:24 +0000.
+> > > > Anything received after that time might be too late.
+> > > 
+> > > Quick query - should we be backporting a known regression, even if it is in
+> > > mainline presently, or do we wait until the fix is applied to mainline and
+> > > *then* backport both patches?
+> > > 
+> > > 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
+> > > 
+> > > introduces a regression which breaks IPv4 broadcast, which stops WOL working
+> > > (breaking my CI system), among other things:
+> > > 
+> > > https://lore.kernel.org/regressions/20250822165231.4353-4-bacs@librecast.net
+> > > 
+> > > This regression has *already* been backported to:
+> > > 
+> > > - 6.16.3
+> > > - 6.12.43
+> > > 
+> > > so I guess we wait for a fix for these.
+> > > 
+> > > However, it is not yet present in the other stable kernels.  The new stable
+> > > release candidates today would spread the breakage to:
+> > > 
+> > > - 6.6.y
+> > > - 6.1.y
+> > > - 5.15.y
+> > > - 5.10.y
+> > > 
+> > > Do we revert this patch in today's RCs for now, or keep it for full
+> > > compatibility with mainline bugliness?
+> > 
+> > Is the fix in linux-next yet?  If it's there, I can queue it up
+> > everywhere, which might be best.
+> 
+> Not yet, but I'll let you know as soon as it is.  I'd suggest dropping
+> 9e30ecf23b1b from 6.6.y 6.1.y 5.15.y 5.10.y and 5.4.y until the fix is
+> available.
 
-Salvatore Bonaccorso <carnil@debian.org> from Debian Kernel Team
-included this regression-fix already.
+Hi Greg,
 
-Upstream commit 5189446ba995556eaa3755a6e875bc06675b88bd
-"net: ipv4: fix regression in local-broadcast routes"
+The fix has hit Linus' tree now with commit:
 
-As far as I have seen this should be included in stable-6.16 and
-LTS-6.12 (for other stable branches I simply have no interest - please
-double-check).
+5189446ba995 ("net: ipv4: fix regression in local-broadcast routes")
 
-I am sure Sasha's new kernel-patch-AI tool has catched this - just
-kindly inform you.
+This needs to be applied to all stable trees.
 
-Thanks.
+Cheers,
 
-Best regards,
--Sedat-
-
-https://salsa.debian.org/kernel-team/linux/-/commit/194de383c5cd5e8c22cadfc487b5f8e153a28b11
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=5189446ba995556eaa3755a6e875bc06675b88bd
+Brett
 
