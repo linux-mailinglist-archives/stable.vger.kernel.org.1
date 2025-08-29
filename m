@@ -1,133 +1,100 @@
-Return-Path: <stable+bounces-176680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C973B3B2B6
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 07:53:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA955B3B2E0
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 08:03:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF156566E74
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 05:53:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9A53568122
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 06:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD46521CFFA;
-	Fri, 29 Aug 2025 05:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="iyJOyVe7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8245E1FF1D1;
+	Fri, 29 Aug 2025 06:03:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171737404E;
-	Fri, 29 Aug 2025 05:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0AC216E32
+	for <stable@vger.kernel.org>; Fri, 29 Aug 2025 06:03:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756446779; cv=none; b=hryhmANg68WgUsGzgFxw5+UyEkty7zwrb+JUb9oo4GA3L/X5JXsOOSClwii6gaXXHaMHq15nQBE7KKVjRA8vXao9tkPlvL+9B9MvT070J+8l3lzG0K8aUizvQ+Hr7dEsf7Qa1J4Ai5fSRqgpICKJ0YEdTZEiSUsoMQSPTfdKCLM=
+	t=1756447413; cv=none; b=CvOJ63Qj9LmjyMQuCs4he5BJiylvSAdAIpsMSotN3MI3mfX+tvRZDjz8MEl5+diYstTCcVfmpUXKWLM/zdlxHeTjbAWx6DAwBN0dqGSJ2hFXiYGNv7G63CTMT3QEbIKv2x0iMzmTm+uUGHMzsVr4zm8Tb8YepMuQyP4c3v1wH5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756446779; c=relaxed/simple;
-	bh=LG8tzpGW4xmEbi+NqiDEg4/hoFt/I5LMddcB/akqt6Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fkv9+4DIEqocduKgXAZet1GlyDlFlNRZQQjP5/sf7t8wQUAc1YYlh6rjoZiEa8uMJxeuCgUsUyvbxhnKGgMXVIRpIIQAiNvb3ATOua0AM+2rNBIWKqjD2cyM6BKTJWJXvGww+Iygf8x4n+HxtKD74hkM3vsHdir8fT6T+vWCFu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=iyJOyVe7; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [100.79.129.125] (unknown [4.194.122.136])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 08EB1211080D;
-	Thu, 28 Aug 2025 22:52:47 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 08EB1211080D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1756446771;
-	bh=pgQVYTbJ2GLvLrSRzex4vEnPKoTWOLwxiHE6X1U+Qtk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iyJOyVe72o7jHGrUHNM+/cOH6ln7WpCgeCXdLjLz3xbcQbfRzu66dTaK3Nisze0zh
-	 S1yWsE6JZGWoRdj6U6vQdDaWa5wgXpGBaEPw3LwP8mddxCuPidJKMFOQ/L9NzzPZTo
-	 txCai/QP+h8QrPirBr5yQOEmbqlSJxni2L8RylFg=
-Message-ID: <1bb599ee-fe28-409d-b430-2fc086268936@linux.microsoft.com>
-Date: Fri, 29 Aug 2025 11:22:45 +0530
+	s=arc-20240116; t=1756447413; c=relaxed/simple;
+	bh=RDU5MeTuDuySpPFewMtdjUwt9JMdY+Vo6HVaO3FpanA=;
+	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=J3OXdAhfsH0XmlqM24IIZ2moTyD4A1uGwdDzexpt7N6nPY/+Q4CXOEbvseYywzCuBtQeAMzRotaRGbB8sx50z1BpIUGKzCkPlpO/WE/aVb4WWP8ZGKhG2hs3LCzWLyC9Xf2Ycy4fkc87q1R25AODJArV/QSA5e2HNLkSXKrcGhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+Received: from [192.168.0.1] (c144-154.icpnet.pl [85.221.144.154])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: mgorny)
+	by smtp.gentoo.org (Postfix) with ESMTPSA id 0C571340DB0;
+	Fri, 29 Aug 2025 06:03:30 +0000 (UTC)
+Message-ID: <53696f9e03ff0aa2d8ef3903293e49723df967d1.camel@gentoo.org>
+Subject: 5.10 backport request: ASoC: Intel: sof_rt5682: shrink platform_id
+ names below 20 characters
+From: =?UTF-8?Q?Micha=C5=82_G=C3=B3rny?= <mgorny@gentoo.org>
+To: stable@vger.kernel.org
+Date: Fri, 29 Aug 2025 08:03:27 +0200
+Organization: Gentoo
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-oMNL343h7vNdF2SpnZHI"
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] uio_hv_generic: Let userspace take care of interrupt
- mask
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "K . Y . Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, Michael Kelley <mhklinux@outlook.com>,
- Long Li <longli@microsoft.com>, stable@vger.kernel.org
-References: <20250828044200.492030-1-namjain@linux.microsoft.com>
- <20250828080207.6d9d3426@hermes.local>
-Content-Language: en-US
-From: Naman Jain <namjain@linux.microsoft.com>
-In-Reply-To: <20250828080207.6d9d3426@hermes.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
 
+--=-oMNL343h7vNdF2SpnZHI
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/28/2025 8:32 PM, Stephen Hemminger wrote:
-> On Thu, 28 Aug 2025 10:12:00 +0530
-> Naman Jain <namjain@linux.microsoft.com> wrote:
-> 
->> Remove the logic to set interrupt mask by default in uio_hv_generic
->> driver as the interrupt mask value is supposed to be controlled
->> completely by the user space. If the mask bit gets changed
->> by the driver, concurrently with user mode operating on the ring,
->> the mask bit may be set when it is supposed to be clear, and the
->> user-mode driver will miss an interrupt which will cause a hang.
->>
->> For eg- when the driver sets inbound ring buffer interrupt mask to 1,
->> the host does not interrupt the guest on the UIO VMBus channel.
->> However, setting the mask does not prevent the host from putting a
->> message in the inbound ring buffer. So let’s assume that happens,
->> the host puts a message into the ring buffer but does not interrupt.
->>
->> Subsequently, the user space code in the guest sets the inbound ring
->> buffer interrupt mask to 0, saying “Hey, I’m ready for interrupts”.
->> User space code then calls pread() to wait for an interrupt.
->> Then one of two things happens:
->>
->> * The host never sends another message. So the pread() waits forever.
->> * The host does send another message. But because there’s already a
->>    message in the ring buffer, it doesn’t generate an interrupt.
->>    This is the correct behavior, because the host should only send an
->>    interrupt when the inbound ring buffer transitions from empty to
->>    not-empty. Adding an additional message to a ring buffer that is not
->>    empty is not supposed to generate an interrupt on the guest.
->>    Since the guest is waiting in pread() and not removing messages from
->>    the ring buffer, the pread() waits forever.
->>
->> This could be easily reproduced in hv_fcopy_uio_daemon if we delay
->> setting interrupt mask to 0.
->>
->> Similarly if hv_uio_channel_cb() sets the interrupt_mask to 1,
->> there’s a race condition. Once user space empties the inbound ring
->> buffer, but before user space sets interrupt_mask to 0, the host could
->> put another message in the ring buffer but it wouldn’t interrupt.
->> Then the next pread() would hang.
->>
->> Fix these by removing all instances where interrupt_mask is changed,
->> while keeping the one in set_event() unchanged to enable userspace
->> control the interrupt mask by writing 0/1 to /dev/uioX.
->>
->> Fixes: 95096f2fbd10 ("uio-hv-generic: new userspace i/o driver for VMBus")
->> Suggested-by: John Starks <jostarks@microsoft.com>
->> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
->> Cc: <stable@vger.kernel.org>
-> 
-> Makes sense. I think the logic got carried over from uio.
-> Does it need to make sure interrupt is masked by default to avoid
-> races at startup?
+Hello,
 
-No, initially I also figured that this would be required, and that's why
-this was added in the first place. But my experiments with userspace
-told me otherwise and I don't think this is required.
+I would like to request backporting the following patch to 5.10 series:
 
-Thanks.
+  590cfb082837cc6c0c595adf1711330197c86a58
+  ASoC: Intel: sof_rt5682: shrink platform_id names below 20 characters
 
-Regards,
-Naman
+The patch seems to be already present in 5.15 and newer branches, and
+its lack seems to be causing out-of-bounds read.  I've hit it in the
+wild while trying to install 5.10.241 on i686:
+
+  sh /var/tmp/portage/sys-kernel/gentoo-kernel-5.10.241/work/linux-5.10/scr=
+ipts/depmod.sh depmod 5.10.241-gentoo-dist
+depmod: FATAL: Module index: bad character '=EF=BF=BD'=3D0x80 - only 7-bit =
+ASCII is supported:
+platform:jsl_rt5682_max98360ax=EF=BF=BD
+
+TIA.
+
+--=20
+Best regards,
+Micha=C5=82 G=C3=B3rny
+
+--=-oMNL343h7vNdF2SpnZHI
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFGBAABCgAwFiEEx2qEUJQJjSjMiybFY5ra4jKeJA4FAmixQq8SHG1nb3JueUBn
+ZW50b28ub3JnAAoJEGOa2uIyniQOIdsH/ix546il59MQYpRwSexLfRPjQsy4HRn3
+EgcW1pnarp/FctZ9t6EwCrbC7bWkBFxGI0zJtcYEZeCmxnzftxWC4yTWblTxigze
+R9jeYD5VJS+637OHYJpnbYgAc6N4HoStxnb2OoyZ+pYOTDTOcqeRvfPtt5byBJOh
+f4EK47z3VV+LGT6u3CzHzGk4a+EypRxPtoOBkL0omj/rfOJ7D5oWqf6pYrXh0Xbu
+gTJx9BI9uhxgOF38sM89qVyezNYuVQBWMnsWSSJy9fhAYsDbhmy8kZCCtDnbRFNy
+zGJ0hxzKcf6z3F8bRE8gTBjZEv3DlCCgDEECAJVZaVn1yPkJiWNzktg=
+=Nh0H
+-----END PGP SIGNATURE-----
+
+--=-oMNL343h7vNdF2SpnZHI--
 
