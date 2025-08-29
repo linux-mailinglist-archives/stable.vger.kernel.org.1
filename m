@@ -1,122 +1,95 @@
-Return-Path: <stable+bounces-176695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B45CB3B9DA
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 13:19:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C45B3B9DE
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 13:21:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27305A08462
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 11:19:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C81BA084C4
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 11:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475A52D2498;
-	Fri, 29 Aug 2025 11:19:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QiO/j/fJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DB32D2498;
+	Fri, 29 Aug 2025 11:21:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lankhorst.se (lankhorst.se [141.105.120.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12C622759C;
-	Fri, 29 Aug 2025 11:19:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66590263F32
+	for <stable@vger.kernel.org>; Fri, 29 Aug 2025 11:21:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.105.120.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756466366; cv=none; b=jy4VEOFtPGZcjjtTd/kzwE7DKn5Am42ZBnVfUNuszaV/BcplN8TnrfousvWSejm79WovFOu9O0M3w/FurhpdtFUt2GdRe+G2m+gvUr3KN49YdzxCDCILmO0pKRAZrORQxWW58aG5/LufJW/xUDwTZ8Cy/36dvKELxu6AcuvtW+A=
+	t=1756466480; cv=none; b=FdoEP3hdORkA9SuGHsAJqH67Xehwk/+WKg0/I9GvfOq3uOP3QoIYk3TRfZUcgmOLtcGB860baj7iZ0oOyvVeX/ScNVfI3lGHqlmfIiYIc0dyoIiLbBj606mvg+/zDyHE4u9cEBu3B2Qwgr250RliXJRCtmzm2r8c8h6noqzmYm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756466366; c=relaxed/simple;
-	bh=wtkk33ip4Gxk3X0QjiQ1Wz5aaAIgrr9KrI7wfdEmyHw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bRhCAVVn9QGuaIg11rgZnWqcShe++5E6frwW+r2WWSvvzE/3znCknrlKaSxv4cSfqamisGMlkE+qx0k6uX2rOWsFgBveNvGYHZiZyH/HV67yVWUzBLlz4LuBnahGp7EBUDodUdkQ319hgYuGVBsUbbEqMRNIW5aorAPPh7zbCBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QiO/j/fJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A426FC4CEF0;
-	Fri, 29 Aug 2025 11:19:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756466365;
-	bh=wtkk33ip4Gxk3X0QjiQ1Wz5aaAIgrr9KrI7wfdEmyHw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QiO/j/fJzoIt9L3pGbiFUFmPN9meMKf7HXRUzASLqMmq3nZ23NFo33cUDPzBnHl+U
-	 GSdqzMgictixBbSkgTo0h0WXQhAj3ako5I3Kmerf481T14LrxKG/4G3AE/mlHwwkGS
-	 6i1brKwNmEaS3A5f5x1sNNE89fQPNfHt3cJcYkY0k9nL+KC+ZpdFxK+ovnxa45u4tW
-	 YinuE8LU5OInuWWSXgMI1hf802gWeGlEInoNrLUn8vzo+39u+1trLxuJWpIJAFgmE/
-	 jujMk718BnOIkt5NHs8kMahmhRp/b7wd5WFT7l5cLYFfm0KYOJvurdcIhipMOLTeWW
-	 WBb4uwy5PX8uw==
-Date: Fri, 29 Aug 2025 12:19:21 +0100
-From: Simon Horman <horms@kernel.org>
-To: Oscar Maes <oscmaes92@gmail.com>
-Cc: netdev@vger.kernel.org, bacs@librecast.net, brett@librecast.net,
-	kuba@kernel.org, pabeni@redhat.com, davem@davemloft.net,
-	dsahern@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v4] selftests: net: add test for destination in
- broadcast packets
-Message-ID: <20250829111921.GI31759@horms.kernel.org>
-References: <20250828114242.6433-1-oscmaes92@gmail.com>
+	s=arc-20240116; t=1756466480; c=relaxed/simple;
+	bh=wrGXB3bQpPYd1i8k7VSV0E+aV/6DGOubyOJM3sJamkA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sTzHFMM9ZxnBlQSeysZd3GpIZDKGo+5VSLlHr93Cknt0RLFvQiNQcmVrZtYqcDvFCU+TAzEjM+Zp8nC/XP5NLc512VQDKYI+t8ca5r4m97DDQ3NaPirawbqBVuCUX/1HXv/1tKyTsefChnHKBDai3iUb/e/sKasFm7it/jsA7sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se; spf=pass smtp.mailfrom=lankhorst.se; arc=none smtp.client-ip=141.105.120.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lankhorst.se
+Message-ID: <343ef596-0d4b-4554-874e-a40c2e61ee08@lankhorst.se>
+Date: Fri, 29 Aug 2025 13:21:15 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250828114242.6433-1-oscmaes92@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/xe: Attempt to bring bos back to VRAM after eviction
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>,
+ Matthew Auld <matthew.auld@intel.com>, stable@vger.kernel.org
+References: <20250828154219.4889-1-thomas.hellstrom@linux.intel.com>
+ <e8a176ab-a24c-4b9d-a046-ae386f08f129@lankhorst.se>
+ <692711fadc25a6c85c19ae16e9c04e50f1eaa3a9.camel@linux.intel.com>
+Content-Language: en-US
+From: Maarten Lankhorst <dev@lankhorst.se>
+In-Reply-To: <692711fadc25a6c85c19ae16e9c04e50f1eaa3a9.camel@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 28, 2025 at 01:42:42PM +0200, Oscar Maes wrote:
-> Add test to check the broadcast ethernet destination field is set
-> correctly.
+Hey,
+
+Den 2025-08-29 kl. 12:55, skrev Thomas Hellström:
+> On Fri, 2025-08-29 at 09:42 +0200, Maarten Lankhorst wrote:
+>> Hey,
+>>
+>> Den 2025-08-28 kl. 17:42, skrev Thomas Hellström:
+>>> VRAM+TT bos that are evicted from VRAM to TT may remain in
+>>> TT also after a revalidation following eviction or suspend.
+>>>
+>>> This manifests itself as applications becoming sluggish
+>>> after buffer objects get evicted or after a resume from
+>>> suspend or hibernation.
+>>>
+>>> If the bo supports placement in both VRAM and TT, and
+>>> we are on DGFX, mark the TT placement as fallback. This means
+>>> that it is tried only after VRAM + eviction.
+>>>
+>>> This flaw has probably been present since the xe module was
+>>> upstreamed but use a Fixes: commit below where backporting is
+>>> likely to be simple. For earlier versions we need to open-
+>>> code the fallback algorithm in the driver.
+>>>
+>>> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5995
+>>> Fixes: a78a8da51b36 ("drm/ttm: replace busy placement with flags
+>>> v6")
+>> I'd say it this closes a bug in the original driver, although
+>> effectively v6.8 is no longer supported anyway.
+>>
+>> Should DESIRED also be set on the add_vram flags?
 > 
-> This test sends a broadcast ping, captures it using tcpdump and
-> ensures that all bits of the 6 octet ethernet destination address
-> are correctly set by examining the output capture file.
+> It looks for me from the TTM code that TTM then *skips* the placement
+> when doing a second pass with evictions.
 > 
-> Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
-> Co-authored-by: Brett A C Sheffield <bacs@librecast.net>
+> So that's not really what we want IMO.
+> Yeah, seems the flag name is a bit misleading, it's more of an opportunistic placement
+when space is available.
 
-...
-
-> +test_broadcast_ether_dst() {
-> +	local rc=0
-> +	CAPFILE=$(mktemp -u cap.XXXXXXXXXX)
-> +	OUTPUT=$(mktemp -u out.XXXXXXXXXX)
-> +
-> +	echo "Testing ethernet broadcast destination"
-> +
-> +	# start tcpdump listening for icmp
-> +	# tcpdump will exit after receiving a single packet
-> +	# timeout will kill tcpdump if it is still running after 2s
-> +	timeout 2s ip netns exec "${CLIENT_NS}" \
-> +		tcpdump -i link0 -c 1 -w "${CAPFILE}" icmp &> "${OUTPUT}" &
-> +	pid=$!
-> +	slowwait 1 grep -qs "listening" "${OUTPUT}"
-> +
-> +	# send broadcast ping
-> +	ip netns exec "${CLIENT_NS}" \
-> +		ping -W0.01 -c1 -b 255.255.255.255 &> /dev/null
-> +
-> +	# wait for tcpdump for exit after receiving packet
-> +	wait "${pid}"
-
-Hi Oscar and Brett,
-
-I am concerned that if something goes wrong this may block forever.
-Also, I'm wondering if this test could make use of the tcpdump helpers
-provided in tools/testing/selftests/net/forwarding/lib.sh
-
-> +
-> +	# compare ethernet destination field to ff:ff:ff:ff:ff:ff
-> +	ether_dst=$(tcpdump -r "${CAPFILE}" -tnne 2>/dev/null | \
-> +			awk '{sub(/,/,"",$3); print $3}')
-> +	if [[ "${ether_dst}" == "ff:ff:ff:ff:ff:ff" ]]; then
-> +		echo "[ OK ]"
-> +		rc="${ksft_pass}"
-> +	else
-> +		echo "[FAIL] expected dst ether addr to be ff:ff:ff:ff:ff:ff," \
-> +			"got ${ether_dst}"
-> +		rc="${ksft_fail}"
-> +	fi
-> +
-> +	return "${rc}"
-> +}
-
-...
+Kind regards,
+~Maarten Lankhorst
 
