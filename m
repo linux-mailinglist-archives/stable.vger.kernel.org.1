@@ -1,128 +1,97 @@
-Return-Path: <stable+bounces-176704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DBFAB3BAD7
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 14:09:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E10B3BB7E
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 14:38:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AEB61894AB7
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 12:09:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8E3BA20C1F
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 12:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35461313E35;
-	Fri, 29 Aug 2025 12:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DCF318144;
+	Fri, 29 Aug 2025 12:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VNR/0UFc"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="xm8vajwe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973FF229B1F;
-	Fri, 29 Aug 2025 12:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2C82C374B;
+	Fri, 29 Aug 2025 12:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756469340; cv=none; b=jHurU5W4fZD+BEPPGe5VqCkV9synfpY9Ap+qgW05qxarJKkQYquU2kyTqDANOLYPKIROZAOvW4WX9pSCpEK+QE/gbGoChrUxVEhzNoPkMyNNNlMwjkl5hIJoMNG0seLok2TgIXIA4wyArfvL2uxi0t5pAeLKBspA5P9ZPDxnwK4=
+	t=1756471089; cv=none; b=UVFzN7a/KEP3SnM76/uSG5fl5Vl7oDPEiM7azf678DtKxd9kHemkV728b8ibdf7fhytY6NQZ62rTrE1omW8NGfRWl/tZoZXWXQk3n3wktiMJhoywBcnIAWfnRX7lg6vzz1Adw2nfZs037fI8SDuWi+jyl7KK2HLiSHr/5lhYp6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756469340; c=relaxed/simple;
-	bh=X7Qp7FxOg1y6PkSZpFUYEzQiBPHiZ8aKkiR6aS9pUNo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pa605L83S3QGohHmeGyoi2R7Y3MU3W8k/q8AuswbaRU88RGxw/VJoXJ3mxAGctmOBSAez7V+a6aM+6ESq7oQ8KqMbmhB3w5GdsSd/dYEsH1WsCMg3PO9WXUlRt2mEgUI6IC7uNiSUuKcZFqQ5lXYD+tu4cXAHlEwM8jZRvyoedY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VNR/0UFc; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-77201f3d389so2159182b3a.2;
-        Fri, 29 Aug 2025 05:08:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756469338; x=1757074138; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ssij9SY5ZHsEeenXlxMWFiz5iGlvdpqLAMZCmsyuD7w=;
-        b=VNR/0UFcDZYzbRiyXM3sHNrOGTafDZToeRbrRbFHTw3GwSTxxpssmUO/88nU6uNOYI
-         tPckSWtXH2/Ia7u5pqKL1vUcDlnYjERR4wgwLYr4yb8WOp2G9VXO+O8sffcb/C9a8zKY
-         F6DGpzdmvn1czihzcmU0YdMiKzb+Qf2/f8FbYGYKuBBs1oScPYq6EPii0w1rOh+BhXcT
-         DHEmXvA59KxNT44mgbsv4ylrVEMAPokmymF5ry4o1Yu88YuppqQV6LAmjX8/t2jVYjSB
-         yd81JcpNw5ElxGo95kU2jQjRD1PJHIYyegeAwAh6LqTTD4RPPLiAURp7+111GjJVyfyK
-         X37g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756469338; x=1757074138;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ssij9SY5ZHsEeenXlxMWFiz5iGlvdpqLAMZCmsyuD7w=;
-        b=NZDpwlo/ig2yjXuz2ao7UpoN5E4c0DqbkqcnPuQqq6dpXCV2THK0cfLpOGP0aacnKR
-         I8s+zLf5QJy9IfH/xfGb5jqMZdsQapuzKv1QAQ6ExLlYR7iFwB2W9v5mptX48PP3w2iD
-         bO7CsOqDVflEai8SM6JcoO0CmNK/81i9jX+lP1VsLgBlonSzTVZsyaRT3Map+a/Z+wa5
-         jxapFmeuLKCfjhdFLIeXz1rfWnI6IhDDMY7iq4Te8FHNIrcIgVBy25uN7gH/4PNB7kXG
-         Jt3wHmCH+u8mmJXOAxaq5Pzil14QT0rBHo18fBFdbI5FTCt05B54+KqITJPHpJnLgC/B
-         iUnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUtjj6tZ+ytmd5zZ41pHl7/Hsy1QCBDqcf8Gyisu5PIRc5u8x1vYsISvwAIlro7kU75a5rzv5wSzoD4W9Y=@vger.kernel.org, AJvYcCWligREsaBNNqxyMNtwhBnOYKrETEpaBCY+d91Vdz+EiWpmy0zeweJJFsfzTFTQ53hTOgIaxtAR@vger.kernel.org
-X-Gm-Message-State: AOJu0YzonywD02hmOZZB/s/CFM3kvfoo6uY/vqGd3VEQ9yWntV8/AsSl
-	amxLF1SmUo/xKOJdE+crtLVlFp+9i4vWsUplT8Vz1z3zs42F/mI3cowo
-X-Gm-Gg: ASbGncvSDhWfjX2Lzwa+p36Y/UmClZv50pgTqhS0ZAsVd9syZaPC1zMqbW4nGwPh2Hl
-	zFwqTsO0a+ZJr3zlmu6ohdHrKf3au7iUxrAZPjTOHJ/BsDYQgmsO2FqGKg9KQeRePHBLFDm466r
-	cA4a5upTMdXI8PZZglJWciFH6GyiZoQvKuNSLJj3bN2VYxUzpO9sfejS3U2pFY4gehKSOveaMfv
-	FhW0+WxGjnkB48bg8Dc3GZhZ6qbvwFZaKCd2ZyGpdPJ33uS3XpX1kiSsNOOGj0tMIBkjFqM3cfF
-	XBpGOLJvf4E1dvpDXgiylNUmiBiIkjrbs1TFzbzjeLsDbIm4wVSV+TTH1UsDaV7cX4xYnGg6USr
-	sEFbpCOPbQVZAiFzbztZbhEP5bSCsoIWBgUw5JLTftmoPp9FMKOldHEUoINym4TKyTfbTf+iy5e
-	zo7O8D0uIX8/eR3l60Nfl4LhbOfc9SwmYrNJbnpTpV06TNxzKDjfgWZxwP
-X-Google-Smtp-Source: AGHT+IHbYa9s53mJukTIQKYLvNji7ERSt0sQ7BQvGh8tc2UnWpHzLZYJA4mp+CXJze8S58TN6eDCnQ==
-X-Received: by 2002:a05:6a21:8906:b0:243:be7c:2d63 with SMTP id adf61e73a8af0-243be7c35f8mr4973218637.42.1756469337730;
-        Fri, 29 Aug 2025 05:08:57 -0700 (PDT)
-Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.116.239.34])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-b4cd28aecd0sm2056031a12.30.2025.08.29.05.08.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 05:08:57 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@linaro.org>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	coresight@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] coresight: trbe: Fix incorrect error check for devm_kzalloc
-Date: Fri, 29 Aug 2025 20:08:47 +0800
-Message-Id: <20250829120847.2016087-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.35.1
+	s=arc-20240116; t=1756471089; c=relaxed/simple;
+	bh=WpCT1BEi88kOYc1KlNxAEIr7FEnG2KH3hWXRvs1KhWc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sQR3apC6pwbePdmHn9RL7nXG8VFsvN8zwO7MywhP6SAQ7L8sJS2WDafnE9eluDIHlnjKIq3FMiYiHaEcgNAAVENWQyFgsrwPMo6Mz5lBlHVqppY37P593whwi5ear0h08AdRGtBd1lLhONg/Xw7SEqaHjQEU/ZEeU5N+Wy6Cxfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=xm8vajwe; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=OzmW5No5ytDzgBIZKPfdhdcoLrbkRFgOz/I63mOxbCI=; t=1756471087;
+	x=1756903087; b=xm8vajweWj/w9gj8fS7xXwQe5sBSk0CP3ftRQLLyEIOY5KP3XzUOnIezX3i0L
+	a9LSP//0FQ1IShilw3tnNRlWKpLOMyhSGoCPEYeHPmupluWtKI8pjJ/I5ch5JkJ59vb1ZL3C7qvyQ
+	ca+q12Cyz5vdcA+NRe/iWYqHGyry5Z/6HEOpppeFlo8FsHS1iEA6p8km64UqgEO5/JHza+Iw4ns1e
+	Rb6+gKjHm48sNOEDi6ifeyuQp4ULwvxhewh9lZ7IYVLhHk6CInjQ6iqau0l0ti+1/BuUVkqXzfH1R
+	RaVZf1leeipzGKUkHEQj/yFPLIQCmSJuAvyXujH9zotNTmZSUg==;
+Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
+	id 1uryMn-00AAN3-1Q;
+	Fri, 29 Aug 2025 14:38:05 +0200
+Message-ID: <27863761-d747-459a-af85-18abe207c0ca@leemhuis.info>
+Date: Fri, 29 Aug 2025 14:38:04 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: Bug report - Sticky keys acting not sticky sometimes
+To: Alerymin <alerdev.ca4x6@simplelogin.com>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ dmitry.torokhov@gmail.com, linux-input@vger.kernel.org
+References: <175646738541.6.2676742517164037652.877606794@simplelogin.com>
+ <dd24398b-0d10-45d4-b93d-4377c017f2e7@leemhuis.info>
+ <175646914218.7.12773379431621187280.877650584@simplelogin.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <175646914218.7.12773379431621187280.877650584@simplelogin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1756471087;983e20da;
+X-HE-SMSGID: 1uryMn-00AAN3-1Q
 
-Fix incorrect use of IS_ERR() to check devm_kzalloc() return value.
-devm_kzalloc() returns NULL on failure, not an error pointer.
+On 29.08.25 14:05, Alerymin wrote:
+> On Friday, August 29th, 2025 at 11:58, Thorsten Leemhuis
+> <regressions@leemhuis.info> wrote:
+>> On 29.08.25 13:36, Alerymin wrote:
+> 
+> Well, I read the reporting page a bit too quickly so I CCed the
+> regressions list while I shouldn't have, sorry. I've never seen it
+> work normally, it's not a regression.
 
-This issue was introduced by commit 4277f035d227
-("coresight: trbe: Add a representative coresight_platform_data for TRBE")
-which replaced the original function but didn't update the error check.
+Happens, no worries. But in that case a hint to anyone that might reply
+to this thread: feel free to drop the regressions list and the stable
+list (it's off-topic there, too)
 
-Fixes: 4277f035d227 ("coresight: trbe: Add a representative coresight_platform_data for TRBE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- drivers/hwtracing/coresight/coresight-trbe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> On a github issues on kbd-
+> project legionus had a few ideas about it: https://github.com/
+> legionus/kbd/issues/140
 
-diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
-index 8267dd1a2130..caf873adfc3a 100644
---- a/drivers/hwtracing/coresight/coresight-trbe.c
-+++ b/drivers/hwtracing/coresight/coresight-trbe.c
-@@ -1279,7 +1279,7 @@ static void arm_trbe_register_coresight_cpu(struct trbe_drvdata *drvdata, int cp
- 	 * into the device for that purpose.
- 	 */
- 	desc.pdata = devm_kzalloc(dev, sizeof(*desc.pdata), GFP_KERNEL);
--	if (IS_ERR(desc.pdata))
-+	if (!desc.pdata)
- 		goto cpu_clear;
- 
- 	desc.type = CORESIGHT_DEV_TYPE_SINK;
--- 
-2.35.1
+FWIW, some developers do not follow links in cases like this, as they
+get a lot of reports every day and not much time at hand (and walking
+through other tickets often is cumbersome). You chances will thus be
+higher is you summarize the important bits in a case like this; then
+people might follow the link if they really care.
 
+Good luck! Ciao, Thorsten
 
