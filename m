@@ -1,100 +1,107 @@
-Return-Path: <stable+bounces-176681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA955B3B2E0
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 08:03:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD26B3B342
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 08:20:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9A53568122
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 06:03:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E857685841
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 06:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8245E1FF1D1;
-	Fri, 29 Aug 2025 06:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D709A23BD1B;
+	Fri, 29 Aug 2025 06:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="SHjMXgt1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0AC216E32
-	for <stable@vger.kernel.org>; Fri, 29 Aug 2025 06:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDC21FF7B3;
+	Fri, 29 Aug 2025 06:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756447413; cv=none; b=CvOJ63Qj9LmjyMQuCs4he5BJiylvSAdAIpsMSotN3MI3mfX+tvRZDjz8MEl5+diYstTCcVfmpUXKWLM/zdlxHeTjbAWx6DAwBN0dqGSJ2hFXiYGNv7G63CTMT3QEbIKv2x0iMzmTm+uUGHMzsVr4zm8Tb8YepMuQyP4c3v1wH5A=
+	t=1756448422; cv=none; b=tfeAIIdH0prpSi0vdd8zPEopZzD2X3rql0XD/iOdnpUKtq0yVEme341+OX9BjJ5ife9XMQUTQhFDEkSZRKiQeLpXmB0X5cqCm6gr2Ssqh6dFIptqiP2ZtIR0xMK8EuTPHYZXHKQT5vJXbrqiaBoxLiWt+sXEh/CKoNGgBcKH81Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756447413; c=relaxed/simple;
-	bh=RDU5MeTuDuySpPFewMtdjUwt9JMdY+Vo6HVaO3FpanA=;
-	h=Message-ID:Subject:From:To:Date:Content-Type:MIME-Version; b=J3OXdAhfsH0XmlqM24IIZ2moTyD4A1uGwdDzexpt7N6nPY/+Q4CXOEbvseYywzCuBtQeAMzRotaRGbB8sx50z1BpIUGKzCkPlpO/WE/aVb4WWP8ZGKhG2hs3LCzWLyC9Xf2Ycy4fkc87q1R25AODJArV/QSA5e2HNLkSXKrcGhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
-Received: from [192.168.0.1] (c144-154.icpnet.pl [85.221.144.154])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: mgorny)
-	by smtp.gentoo.org (Postfix) with ESMTPSA id 0C571340DB0;
-	Fri, 29 Aug 2025 06:03:30 +0000 (UTC)
-Message-ID: <53696f9e03ff0aa2d8ef3903293e49723df967d1.camel@gentoo.org>
-Subject: 5.10 backport request: ASoC: Intel: sof_rt5682: shrink platform_id
- names below 20 characters
-From: =?UTF-8?Q?Micha=C5=82_G=C3=B3rny?= <mgorny@gentoo.org>
-To: stable@vger.kernel.org
-Date: Fri, 29 Aug 2025 08:03:27 +0200
-Organization: Gentoo
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-oMNL343h7vNdF2SpnZHI"
-User-Agent: Evolution 3.56.2 
+	s=arc-20240116; t=1756448422; c=relaxed/simple;
+	bh=v/unp1wJZ4wt+gtb9URTeY7e1rqk+cPr8/4lwrZYSPg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DS1gNwfyyGL3hD+Z+cGPCL5dJ93axwpBLQVE64TNwn1miBPfDDGo8Ohgw9zMcbDOgj/w4elS06UQEDMmyK550LBkQX3wpPv9ttILjEUTr/ii6EcHoN8lcA+8a4KOdf7RHankCovn7HrrKYN50ZYe+8ehXed7Q/9u5YdA3oXQSBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=SHjMXgt1; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 14C8B1038C106;
+	Fri, 29 Aug 2025 08:20:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1756448410; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=O4EneYV/MWd5kppnSN7M1ImvbKtg1wmaX2ZgzX2GRiQ=;
+	b=SHjMXgt1q6JM1uubm5z6LxjBMQiuamt6gO0jwlRmq24/i7CrOwufA2z31jniNe2FzN5fRi
+	Zcc+gsmFWrWb69fTQ3lMV32ZKnjLxmKsLTPGlWR6439kIFS+5OAwKnj5XGejwFf3QYJi0S
+	PVC6jB8XNUqGjtpEQKqUwlmHxjQfHsEM2B2iSWLbUh2c/ILy73CddT8WlrJbhvBXTVfzZd
+	vuC+TQIjwUJRTnrIsL+bwnZMU8d7X5d8qrbuaADsEELIQemiTekzfllBd0mX400K40CBAO
+	gaUrhBXpgO1hKBZuOOkDbVir7InOCUe1pHPonP5faa/l61qRFbk2/Ha3gtLAig==
+Date: Fri, 29 Aug 2025 08:20:00 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	achill@achill.org
+Subject: Re: [PATCH 6.1 000/482] 6.1.149-rc1 review
+Message-ID: <aLFGkFLgDL3Z9AU7@duo.ucw.cz>
+References: <20250826110930.769259449@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="uwNqM38krSEe0hUZ"
+Content-Disposition: inline
+In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
 
---=-oMNL343h7vNdF2SpnZHI
-Content-Type: text/plain; charset="UTF-8"
+--uwNqM38krSEe0hUZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hello,
+Hi!
 
-I would like to request backporting the following patch to 5.10 series:
+> This is the start of the stable review cycle for the 6.1.149 release.
+> There are 482 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-  590cfb082837cc6c0c595adf1711330197c86a58
-  ASoC: Intel: sof_rt5682: shrink platform_id names below 20 characters
+CIP testing did not find any problems here:
 
-The patch seems to be already present in 5.15 and newer branches, and
-its lack seems to be causing out-of-bounds read.  I've hit it in the
-wild while trying to install 5.10.241 on i686:
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.1.y
 
-  sh /var/tmp/portage/sys-kernel/gentoo-kernel-5.10.241/work/linux-5.10/scr=
-ipts/depmod.sh depmod 5.10.241-gentoo-dist
-depmod: FATAL: Module index: bad character '=EF=BF=BD'=3D0x80 - only 7-bit =
-ASCII is supported:
-platform:jsl_rt5682_max98360ax=EF=BF=BD
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
-TIA.
-
---=20
 Best regards,
-Micha=C5=82 G=C3=B3rny
+                                                                Pavel
+--=20
+In cooperation with DENX Software Engineering GmbH, HRB 165235 Munich,
+Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---=-oMNL343h7vNdF2SpnZHI
+--uwNqM38krSEe0hUZ
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFGBAABCgAwFiEEx2qEUJQJjSjMiybFY5ra4jKeJA4FAmixQq8SHG1nb3JueUBn
-ZW50b28ub3JnAAoJEGOa2uIyniQOIdsH/ix546il59MQYpRwSexLfRPjQsy4HRn3
-EgcW1pnarp/FctZ9t6EwCrbC7bWkBFxGI0zJtcYEZeCmxnzftxWC4yTWblTxigze
-R9jeYD5VJS+637OHYJpnbYgAc6N4HoStxnb2OoyZ+pYOTDTOcqeRvfPtt5byBJOh
-f4EK47z3VV+LGT6u3CzHzGk4a+EypRxPtoOBkL0omj/rfOJ7D5oWqf6pYrXh0Xbu
-gTJx9BI9uhxgOF38sM89qVyezNYuVQBWMnsWSSJy9fhAYsDbhmy8kZCCtDnbRFNy
-zGJ0hxzKcf6z3F8bRE8gTBjZEv3DlCCgDEECAJVZaVn1yPkJiWNzktg=
-=Nh0H
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaLFGkAAKCRAw5/Bqldv6
+8ujxAJ9qV01dDwiSlTE/esbsJ10RA/t2VQCeIG5Yx/KEtRgaQv5y8KHiw1opWeE=
+=CX2c
 -----END PGP SIGNATURE-----
 
---=-oMNL343h7vNdF2SpnZHI--
+--uwNqM38krSEe0hUZ--
 
