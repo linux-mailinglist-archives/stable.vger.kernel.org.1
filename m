@@ -1,185 +1,184 @@
-Return-Path: <stable+bounces-176728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48109B3C335
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 21:40:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 104FAB3C3F7
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 22:57:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9F2E46198B
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 19:40:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A488188A970
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 20:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D32221543;
-	Fri, 29 Aug 2025 19:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1F9334395;
+	Fri, 29 Aug 2025 20:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="n58h4ZjN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BHXF9X0z"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2042.outbound.protection.outlook.com [40.107.96.42])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65700244669
-	for <stable@vger.kernel.org>; Fri, 29 Aug 2025 19:37:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756496242; cv=fail; b=D8VTjUQ0KVR0lyMPDUFjG/fKPcWD5iRPKHNd8syI3OUxTe30SDU3MNEa5IFruyg4wsyzywBWKS272qsGOYpHqsK0KU9kv2plVTMAUyYMz08QuCzxewfcGgWKDg1/+T3/u4w2gt8CqdAFfbSyKzFwxIouah/8OSNV7LT6mAfB8u0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756496242; c=relaxed/simple;
-	bh=ucac72Pq/MxeLmY9YiErJHOqQ286bc/4JKgLDSrlRTs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=C6TECxaUxsZV3YivvJ+zSIVJMU0/u5UcMlxbBBMtE+oHTTrS8gl+GT54wxiRXK5vtlpccrHdxPz0Dk2MsnVlXhk/iFeOeg46oU6mziqKmf35obdyTQ5S6cWgY3AoHXJebZmr4nToSu2p88sOsLhil8c6Ik879iH6Wx/s50BRua0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=n58h4ZjN; arc=fail smtp.client-ip=40.107.96.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=w3N1OOo9lAq90wrWnZFhaTM4H6ttIy76oY8GY6asFUUAaetW5/IIQ4vXR1V2vfi6jQXCsI8CFa9KyRLQ7JLiWkW7SR+zxlasfLC3NLjXyoTzDiJB+wjqxEVbi5Hdmil+oucrCARrx3UiPQyNcqcecmWQkaFIQa+riaE0Y/WZLWcgi3N53ug9jHQ9wKS2vORJXsjvQn6WNiSAU98jWUrW3rrxVfgSrM3r9Nd4tKqf1SQfOAVzwrO05yY/17DUEJpyi2Zx9U7nSuWt6mBMmMNOWmNCO1cYBumbjgws08SPmQaH+jyESjxZIeD4tJ1J6sfeIP7MUBYzyy2K4sK1o6Dlvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i4TEuGAztE+9Oj9auNOE6BzjnYsM1o8kcKZGooUIm7Q=;
- b=ojNlLrElC4kabcMvIKa+Jx9vbfybPqfPINKzbkbUF7sokK3RvAlFS+TB5r+00sqj2nHwHe9if9PUxsBkfXKgeYUC6GEH2a3Cv21bDGwCKBleF1KY7kb2NHWs6Ej5gcCJgba1WzUP8vJcLOpwkvastFTDuyxhG5CGGr3TuAIL+PpWD96zz7ODQCknrQh+j4guBzwkPy1/0JJmd4zzzG+GbklffASIN5whxUfcCOYT3qMeX4T2MBBjsRZHVgJsUw+D7OyZTa4nZrvaOc79vMOYhg1qQGJR4c2wxVS8THDtOSIwJtv00LttMyeb/BfjxFnOEmPrPcgGwqaxNOltFc2DwA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i4TEuGAztE+9Oj9auNOE6BzjnYsM1o8kcKZGooUIm7Q=;
- b=n58h4ZjNCuklTi+O7K2nJcULHbcQScGRIrvnYNMx0Rr4P25SVKOiCJpDZIRWz38NcLAmx954mk+1ppV4F171EGUpCaMRbimOlzNcrj7bcOyIJNa0tCGtFFXaIDF5tXJEJ+YqUJL/WadgQ6zvZksx1GpWlGQxAQwYrAPbG9d/LlI=
-Received: from BN9PR03CA0116.namprd03.prod.outlook.com (2603:10b6:408:fd::31)
- by DM4PR12MB7599.namprd12.prod.outlook.com (2603:10b6:8:109::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.21; Fri, 29 Aug
- 2025 19:37:09 +0000
-Received: from BL6PEPF00020E64.namprd04.prod.outlook.com
- (2603:10b6:408:fd:cafe::5a) by BN9PR03CA0116.outlook.office365.com
- (2603:10b6:408:fd::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.16 via Frontend Transport; Fri,
- 29 Aug 2025 19:37:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL6PEPF00020E64.mail.protection.outlook.com (10.167.249.25) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9073.11 via Frontend Transport; Fri, 29 Aug 2025 19:37:08 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 29 Aug
- 2025 14:37:06 -0500
-Received: from tr4.amd.com (10.180.168.240) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Fri, 29 Aug
- 2025 12:37:05 -0700
-From: Alex Deucher <alexander.deucher@amd.com>
-To: <stable@vger.kernel.org>, <gregkh@linuxfoundation.org>,
-	<sashal@kernel.org>
-CC: Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH] Revert "drm/amdgpu: Avoid extra evict-restore process."
-Date: Fri, 29 Aug 2025 15:36:52 -0400
-Message-ID: <20250829193652.1925084-1-alexander.deucher@amd.com>
-X-Mailer: git-send-email 2.51.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFC419D07A
+	for <stable@vger.kernel.org>; Fri, 29 Aug 2025 20:57:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756501022; cv=none; b=RLnbcSQRsGxTu7RF1dm/MCx/yoOMa4z6UncIgI+v/KbH//rQeo7eOMQdIGGjRiUD09boXLrtZ0z190gxw/RLOz4lsTZ5KCct7fdSLS4xALGrQypkHXvtz+tKyuL+KouWdk9PK70ImJPscGOW9xFl7jJmXNUlo/mo+gM6ff+2ErM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756501022; c=relaxed/simple;
+	bh=CU9Ov1xu1eOFKBbi9l+zTIcWuAdj5HqZXDuwGEueuk4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BkOSp5iREikw2729Bqd+JMkMD+koQ7br+jNfdUxR0NPNF4Pyeqq12/uQB0JzmG20Z/wivEzGAAdMCW5om8mnGUrxabdROwpZna1cArA7SDd64gyTA12G64GhxydAaYtV8AfDHVIPSdDk3rohlUQlc06EFaiolS5ZCXSRlLQPiHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BHXF9X0z; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756501021; x=1788037021;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=CU9Ov1xu1eOFKBbi9l+zTIcWuAdj5HqZXDuwGEueuk4=;
+  b=BHXF9X0z3hhazx64xYjW/xICjP/0CSn2bZEo4Gq3K/OMjoBDqkwCTNeQ
+   XpgymVnRUgOoRMy4/9b81VuTNLnNA3ZTPvw5JyQEBbzhz0nfKxcE4aY1I
+   qI4E+1MLca4IhijByMPjeVgNadq/IaqtUOwZT0IR2BuDrqNl/5mhcNGhm
+   llGiVv9XOMNa/sXt5o/DFKQ4Hq4LC7TlK8rPoEM7LwcIMtjMwf3Drbrui
+   S1KZTQxZl69FQCc7x5lRNgA0Gx0dpul7tbLo40/LtKbJzzCxauzyOXW9N
+   /Ekekd524hQAJdm1Yg1gi6wvWJJ5V+kEPxiHU71+4GoM/7KP9nzYlSdO7
+   g==;
+X-CSE-ConnectionGUID: M8Yp65d/ROWa+SIb/l3czQ==
+X-CSE-MsgGUID: YmyNz74mT4u7Sct+QeM7uA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11537"; a="57820289"
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; 
+   d="scan'208";a="57820289"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2025 13:57:00 -0700
+X-CSE-ConnectionGUID: O1vBhJcGSwe3ytJMxgd/Hw==
+X-CSE-MsgGUID: aPGF0cx5QD2JzoCO68onFQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; 
+   d="scan'208";a="169724151"
+Received: from agladkov-desk.ger.corp.intel.com (HELO [10.245.245.245]) ([10.245.245.245])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2025 13:56:59 -0700
+Message-ID: <ead117c6cde4312a4c52e6d9977d0e4502718e27.camel@linux.intel.com>
+Subject: Re: [PATCH 2/3] drm/xe: Allow the pm notifier to continue on failure
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>, Matthew Auld
+ <matthew.auld@intel.com>
+Cc: intel-xe@lists.freedesktop.org, stable@vger.kernel.org, Matthew Brost	
+ <matthew.brost@intel.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>
+Date: Fri, 29 Aug 2025 22:56:55 +0200
+In-Reply-To: <aLHgK7edrKFfGIqw@intel.com>
+References: <20250829113350.40959-1-thomas.hellstrom@linux.intel.com>
+	 <20250829113350.40959-3-thomas.hellstrom@linux.intel.com>
+	 <45929eb2-bd6d-46d3-86a1-fe4f233d3c70@intel.com>
+	 <aLHgK7edrKFfGIqw@intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To satlexmb09.amd.com
- (10.181.42.218)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00020E64:EE_|DM4PR12MB7599:EE_
-X-MS-Office365-Filtering-Correlation-Id: fdf81478-51e7-43f9-8af2-08dde733714d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pzduSPwS4Cn7Yjer/3wgygMepksdFkMoOeaW9p6Aul3DEME4LKJ6eyqX1ux8?=
- =?us-ascii?Q?tTSNgkHdWF/1a/zhz8IJ4z4+iXcgFQYnoPN0zlARjcfSQ9XVqRBqEpbD8pdQ?=
- =?us-ascii?Q?ublIo0Ej7BT17Uiua1RYamJcEmuSSrHHgWclNmscvx3Ip3PK42dCXyMN41Sr?=
- =?us-ascii?Q?XwzQIOu8DF/KYCWCOiUQ6X6aig/2UasH669H//I7XInY05z5RXr8flw+G7AW?=
- =?us-ascii?Q?GAeCKV46kTPMnkR7nC+0QG2iGXoTyiyhRlgdbzvzbchVpccFiomdHbejr7B2?=
- =?us-ascii?Q?YNAlOoSOk1yWdB5ODSWl1tj13aHL+mlW6Fi31rA2syagY95T3BwAqSAcbhE4?=
- =?us-ascii?Q?KaMqZqIXeILzqtXU/Ft7jTyUqJGjg4ncISgZhCpdGN40FYCsfMQn6uP0v0YZ?=
- =?us-ascii?Q?VQdrmT7kRXT2P0biGmKlXGJ+mpiVM26AajIhrdbCBjdmPXq+hf6tuPPoqxkh?=
- =?us-ascii?Q?OCkFA8UYvUbOR7haxgfzlrLIY6VIIDIBBchQCP2OgPXmf30DdAFISm+M8ypn?=
- =?us-ascii?Q?Vozl9PA4UO8v7N8KVEEl8xBpqx7sdSG/ikDVcD5Gc7EWGejHhIsKcWtwX75O?=
- =?us-ascii?Q?tdnsQ6mzySigNbsYPgXMRzDKk08Iejgao6/rJDtVWABj23Hq7ZfhsX7RkOIe?=
- =?us-ascii?Q?seZIbCklwWYnpPhR0xhKLqpioLlOIXSbG/whht7ZuIBpmc5CuIYURNdf2wQp?=
- =?us-ascii?Q?96/pT01yQoik8i3CWuSu6hZGFfQH/PtpH+M9QXjRX0mv4YYuUxw4ZN2xzd7e?=
- =?us-ascii?Q?Hq7h3JRVpGuL0FWk24eW7uQnOmWelCWqOghFaUKDyLw95EKeA/sEu8qWyiT5?=
- =?us-ascii?Q?+RoAwLbGVyFMywDeIliUH9pNgk8kBEfdsmLJghfUNOT3yUR531WyWgA//EL+?=
- =?us-ascii?Q?ZUJQBH2RqeExBCQV3MUmZC7dL0vXKj93K3/nqS+FhyVf6cTwetjsG48oNoIC?=
- =?us-ascii?Q?vWXrTu9p26jaf4oLAtCInfPY4Zr5WSuZw/AukBDxWdi73jmjBP3iQtcApUO/?=
- =?us-ascii?Q?YLxBUvbi30/MFdR7RvA/DlrlZp4gl58Jm7WCYCW5OE+S8Ozh+zHulbtGif8G?=
- =?us-ascii?Q?pWbet71B1AadwMoMj9fmyort4EU4nzutvWWzuwmKEbEIW+r/coPc8kpylxSd?=
- =?us-ascii?Q?HA1ryX9uk8Nf8IYCWEkBWzer7b8ZE6ZuVrfwRvVFzqcwp5i0i48Xkb9EDg5f?=
- =?us-ascii?Q?D/q2Yw9YN6qpnzY82WyK5eaTWQnZ3QvAXVpuVpIe7LD+snhN6ptmv9hM2T9R?=
- =?us-ascii?Q?T6qQhnrsIMNKatfDQxTTm0H5SAKaqkNW1pb1WY+nA9PJigj06xU66fkYzs7e?=
- =?us-ascii?Q?YpuhYggRrOiMSd2IKimYpO249M5uj/ieV3ufgkthhpw1ppcbHazrS87e4kaG?=
- =?us-ascii?Q?eg1+xLJUlpZuf2Cj8sgVgsjoOwD70Hlyvi206qSkyhyIfCHQQ6tjsuoCWG2M?=
- =?us-ascii?Q?VfP0smjHMJ72EXNmZiAUd0paeXXok2weyPIPUQOOwkIJzJc+agJmPOgWhh11?=
- =?us-ascii?Q?TetqNjTV9dxcy1EwtX5wcf3Cv7smINtBvf/4?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2025 19:37:08.6310
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fdf81478-51e7-43f9-8af2-08dde733714d
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00020E64.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7599
 
-This reverts commit 71598a5a7797f0052aaa7bcff0b8d4b8f20f1441.
+On Fri, 2025-08-29 at 13:15 -0400, Rodrigo Vivi wrote:
+> On Fri, Aug 29, 2025 at 04:50:01PM +0100, Matthew Auld wrote:
+> > On 29/08/2025 12:33, Thomas Hellstr=C3=B6m wrote:
+> > > Its actions are opportunistic anyway and will be completed
+> > > on device suspend.
+> > >=20
+> > > Also restrict the scope of the pm runtime reference to
+> > > the notifier callback itself to make it easier to
+> > > follow.
+> > >=20
+> > > Marking as a fix to simplify backporting of the fix
+> > > that follows in the series.
+> > >=20
+> > > Fixes: c6a4d46ec1d7 ("drm/xe: evict user memory in PM notifier")
+> > > Cc: Matthew Auld <matthew.auld@intel.com>
+> > > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > > Cc: <stable@vger.kernel.org> # v6.16+
+> > > Signed-off-by: Thomas Hellstr=C3=B6m
+> > > <thomas.hellstrom@linux.intel.com>
+> > > ---
+> > > =C2=A0 drivers/gpu/drm/xe/xe_pm.c | 14 ++++----------
+> > > =C2=A0 1 file changed, 4 insertions(+), 10 deletions(-)
+> > >=20
+> > > diff --git a/drivers/gpu/drm/xe/xe_pm.c
+> > > b/drivers/gpu/drm/xe/xe_pm.c
+> > > index a2e85030b7f4..b57b46ad9f7c 100644
+> > > --- a/drivers/gpu/drm/xe/xe_pm.c
+> > > +++ b/drivers/gpu/drm/xe/xe_pm.c
+> > > @@ -308,28 +308,22 @@ static int xe_pm_notifier_callback(struct
+> > > notifier_block *nb,
+> > > =C2=A0=C2=A0	case PM_SUSPEND_PREPARE:
+> > > =C2=A0=C2=A0		xe_pm_runtime_get(xe);
+> > > =C2=A0=C2=A0		err =3D xe_bo_evict_all_user(xe);
+> > > -		if (err) {
+> > > +		if (err)
+> > > =C2=A0=C2=A0			drm_dbg(&xe->drm, "Notifier evict user
+> > > failed (%d)\n", err);
+> > > -			xe_pm_runtime_put(xe);
+> > > -			break;
+> > > -		}
+> > > =C2=A0=C2=A0		err =3D xe_bo_notifier_prepare_all_pinned(xe);
+> > > -		if (err) {
+> > > +		if (err)
+> > > =C2=A0=C2=A0			drm_dbg(&xe->drm, "Notifier prepare pin
+> > > failed (%d)\n", err);
+> > > -			xe_pm_runtime_put(xe);
+> > > -		}
+> > > +		xe_pm_runtime_put(xe);
+> >=20
+> > IIRC I was worried that this ends up triggering runtime suspend at
+> > some
+> > later point and then something wakes it up again before the actual
+> > forced
+> > suspend triggers, which looks like it would undo all the
+> > prepare_all_pinned() work, so I opted for keeping it held over the
+> > entire
+> > sequence. Is that not a concern here?
 
-This commit introduced a regression, however the fix for the
-regression:
-aa5fc4362fac ("drm/amdgpu: fix task hang from failed job submission during process kill")
-depends on things not yet present in 6.12.y and older kernels.  Since
-this commit is more of an optimization, just revert it for
-6.12.y and older stable kernels.
+Good point.
 
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.1.x - 6.12.x
----
+>=20
+> I was seeing this more like a umbrella to shut-up our inner callers
+> warnings
+> since runtime pm references will be taken prior to pm state
+> transitions
+> by base/power.
+>=20
+> However on a quick look I couldn't connect the core code that takes
+> the
+> runtime pm directly with this notify now. So, perhaps let's indeed
+> play
+> safe and keep our own references here?!...
 
-Please apply this revert to 6.1.x to 6.12.x stable trees.  The newer
-stable trees and Linus' tree already have the regression fix.
+I'll keep the references, and perhaps add a comment about that so that
+nobody tries this again.
 
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Any concerns about ignoring errors?
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-index 0adb106e2c42..37d53578825b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2292,11 +2292,13 @@ void amdgpu_vm_adjust_size(struct amdgpu_device *adev, uint32_t min_vm_size,
-  */
- long amdgpu_vm_wait_idle(struct amdgpu_vm *vm, long timeout)
- {
--	timeout = drm_sched_entity_flush(&vm->immediate, timeout);
-+	timeout = dma_resv_wait_timeout(vm->root.bo->tbo.base.resv,
-+					DMA_RESV_USAGE_BOOKKEEP,
-+					true, timeout);
- 	if (timeout <= 0)
- 		return timeout;
- 
--	return drm_sched_entity_flush(&vm->delayed, timeout);
-+	return dma_fence_wait_timeout(vm->last_unlocked, true, timeout);
- }
- 
- static void amdgpu_vm_destroy_task_info(struct kref *kref)
--- 
-2.51.0
+/Thomas
+
+
+>=20
+> >=20
+> > > =C2=A0=C2=A0		break;
+> > > =C2=A0=C2=A0	case PM_POST_HIBERNATION:
+> > > =C2=A0=C2=A0	case PM_POST_SUSPEND:
+> > > +		xe_pm_runtime_get(xe);
+> > > =C2=A0=C2=A0		xe_bo_notifier_unprepare_all_pinned(xe);
+> > > =C2=A0=C2=A0		xe_pm_runtime_put(xe);
+> > > =C2=A0=C2=A0		break;
+> > > =C2=A0=C2=A0	}
+> > > -	if (err)
+> > > -		return NOTIFY_BAD;
+> > > -
+> > > =C2=A0=C2=A0	return NOTIFY_DONE;
+> > > =C2=A0 }
+> >=20
 
 
