@@ -1,105 +1,239 @@
-Return-Path: <stable+bounces-176731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D365B3C4BF
-	for <lists+stable@lfdr.de>; Sat, 30 Aug 2025 00:20:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5698CB3C4D3
+	for <lists+stable@lfdr.de>; Sat, 30 Aug 2025 00:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21C42A01238
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 22:20:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F4A41C83AD5
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 22:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF2427AC2E;
-	Fri, 29 Aug 2025 22:19:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="urG17Cu0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B142C1597;
+	Fri, 29 Aug 2025 22:29:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC56F278753;
-	Fri, 29 Aug 2025 22:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A42529B78F;
+	Fri, 29 Aug 2025 22:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756505976; cv=none; b=XR9hy3LLxoeYKIFlxyxG+JqthRJ1j+x128dVDIrSIdXpeV4NB5RvNQaD72O9FN20znBRbJ7RuTfVBrqfmxSP1vBF6sOpfm73/gfq1yhggjiWuEzODjTCtir44+2+MnWiXIwr56OoZB1yIiLMRLbXyKxoefXFE/4XE9xYCCp4N/k=
+	t=1756506593; cv=none; b=SrwW4nrfTs/lMezAVcBxJXDu753pGffLSfzK/dm5VZixsEeIMCWXHB1eCTXbHKP1zN8xDnmagAsaNMHSVkdpPLXkP6JQXrPi95CoNpZwmQPnrxMfyf7lFQEvuvimt0ungEpGGleZQRMBPCNjv8WUF5YUME+FMzgARvTO7TlYEUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756505976; c=relaxed/simple;
-	bh=A5C4e1z8sW6QvmbwOIiYp+LFhDtXndxxYvLSqp0kA+Y=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=uGo8PVf19CP2uuMTFl23IMEUnUghIIjjFNZI5PKURkUlGFA1CZeMx6bfpCSdHddaINz18Pvg+kCIQywIap8IWWD2S37mBSuiuRPB73/UCHuPQgp8pgI/O6AJ9lhwqqHU+peeofBfzEDVglPI7nFk5ZCGOvCcDsYHd45LQu3Z5Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=urG17Cu0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEDD1C4CEF0;
-	Fri, 29 Aug 2025 22:19:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756505975;
-	bh=A5C4e1z8sW6QvmbwOIiYp+LFhDtXndxxYvLSqp0kA+Y=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=urG17Cu0QCZUQbFVDgXT3dCRnuMWmpPlmDvJdI4Abo8SJeu1hqVsGz86qT7t0Dy70
-	 7uTWu4y1t2+5PYpGMEtI4AXStd1kWE03knzBjEZg26s9ZfgGMt1agb9zOD8YpfJ5yB
-	 0pE8WCG3cLfJGk9gkjTNiK4bcW5aB55Sg15GnlBGdHh516u84vJa3CdMWBWnznhuxx
-	 CQgXFE+uyX/Tlb8PTjzc2DaEKW0H7msNowSnc3ffO8AvGTO5uymNa0T58NiLt02wXo
-	 Vw4KEY8fF9+cFGxM/vdVbqw2yIFQObk2Z5ujLwwzHfzUO05aqFV0MEUqPPJKFsXF6m
-	 zjVW2xdI8r9Uw==
-From: Mark Brown <broonie@kernel.org>
-To: linux-spi@vger.kernel.org, Conor Dooley <conor@kernel.org>
-Cc: Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org, 
- Valentina Fernandez <valentina.fernandezalanis@microchip.com>, 
- Daire McNamara <daire.mcnamara@microchip.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, linux-kernel@vger.kernel.org
-In-Reply-To: <20250825-during-ploy-939bdd068593@spud>
-References: <20250825-during-ploy-939bdd068593@spud>
-Subject: Re: [PATCH v1] spi: microchip-core-qspi: stop checking viability
- of op->max_freq in supports_op callback
-Message-Id: <175650597222.396097.13617844393392701589.b4-ty@kernel.org>
-Date: Fri, 29 Aug 2025 23:19:32 +0100
+	s=arc-20240116; t=1756506593; c=relaxed/simple;
+	bh=rgFMzDDfMGFjHuwkzBBGwQ3cGLq0uWp7VY5Dc61B8zU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N1XNbEx63xew6eUL5GkqufXs+DxZpqxbghEe9ainQVEe5hSOs0lFPn64Z9gJn8v1H4DvQ/O+nx+4vmPvpBy/inb+H63kt05G0zGqrPaXQNsaerwat2m8pXziYD4/90podGT7esmMJX4zJ84Eh1YRhhtwysFWaWucURYLkWrWtcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D525CC4CEF0;
+	Fri, 29 Aug 2025 22:29:51 +0000 (UTC)
+From: Dave Jiang <dave.jiang@intel.com>
+To: linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	dave@stgolabs.net,
+	jonathan.cameron@huawei.com,
+	alison.schofield@intel.com,
+	vishal.l.verma@intel.com,
+	ira.weiny@intel.com,
+	dan.j.williams@intel.com,
+	marc.herbert@linux.intel.com,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	stable@vger.kernel.org
+Subject: [PATCH v3 3/4] cxl, acpi/hmat: Update CXL access coordinates directly instead of through HMAT
+Date: Fri, 29 Aug 2025 15:29:06 -0700
+Message-ID: <20250829222907.1290912-4-dave.jiang@intel.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250829222907.1290912-1-dave.jiang@intel.com>
+References: <20250829222907.1290912-1-dave.jiang@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-a9b2a
+Content-Transfer-Encoding: 8bit
 
-On Mon, 25 Aug 2025 12:53:28 +0100, Conor Dooley wrote:
-> In commit 13529647743d9 ("spi: microchip-core-qspi: Support per spi-mem
-> operation frequency switches") the logic for checking the viability of
-> op->max_freq in mchp_coreqspi_setup_clock() was copied into
-> mchp_coreqspi_supports_op(). Unfortunately, op->max_freq is not valid
-> when this function is called during probe but is instead zero.
-> Accordingly, baud_rate_val is calculated to be INT_MAX due to division
-> by zero, causing probe of the attached memory device to fail.
-> 
-> [...]
+The current implementation of CXL memory hotplug notifier gets called
+before the HMAT memory hotplug notifier. The CXL driver calculates the
+access coordinates (bandwidth and latency values) for the CXL end to
+end path (i.e. CPU to endpoint). When the CXL region is onlined, the CXL
+memory hotplug notifier writes the access coordinates to the HMAT target
+structs. Then the HMAT memory hotplug notifier is called and it creates
+the access coordinates for the node sysfs attributes.
 
-Applied to
+During testing on an Intel platform, it was found that although the
+newly calculated coordinates were pushed to sysfs, the sysfs attributes for
+the access coordinates showed up with the wrong initiator. The system has
+4 nodes (0, 1, 2, 3) where node 0 and 1 are CPU nodes and node 2 and 3 are
+CXL nodes. The expectation is that node 2 would show up as a target to node
+0:
+/sys/devices/system/node/node2/access0/initiators/node0
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+However it was observed that node 2 showed up as a target under node 1:
+/sys/devices/system/node/node2/access0/initiators/node1
 
-Thanks!
+The original intent of the 'ext_updated' flag in HMAT handling code was to
+stop HMAT memory hotplug callback from clobbering the access coordinates
+after CXL has injected its calculated coordinates and replaced the generic
+target access coordinates provided by the HMAT table in the HMAT target
+structs. However the flag is hacky at best and blocks the updates from
+other CXL regions that are onlined in the same node later on. Remove the
+'ext_updated' flag usage and just update the access coordinates for the
+nodes directly without touching HMAT target data.
 
-[1/1] spi: microchip-core-qspi: stop checking viability of op->max_freq in supports_op callback
-      commit: 89e7353f522f5cf70cb48c01ce2dcdcb275b8022
+The hotplug memory callback ordering is changed. Instead of changing CXL,
+move HMAT back so there's room for the levels rather than have CXL share
+the same level as SLAB_CALLBACK_PRI. The change will resulting in the CXL
+callback to be executed after the HMAT callback.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+With the change, the CXL hotplug memory notifier runs after the HMAT
+callback. The HMAT callback will create the node sysfs attributes for
+access coordinates. The CXL callback will write the access coordinates to
+the now created node sysfs attributes directly and will not pollute the
+HMAT target values.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+A nodemask is introduced to keep track if a node has been updated and
+prevents further updates.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Fixes: 067353a46d8c ("cxl/region: Add memory hotplug notifier for cxl region")
+Cc: stable@vger.kernel.org
+Tested-by: Marc Herbert <marc.herbert@linux.intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+---
+v3:
+- Use nodemask instead of xarray to keep track of node updates (Jonathan)
+---
+ drivers/acpi/numa/hmat.c  |  6 ------
+ drivers/cxl/core/cdat.c   |  5 -----
+ drivers/cxl/core/core.h   |  1 -
+ drivers/cxl/core/region.c | 20 ++++++++++++--------
+ include/linux/memory.h    |  2 +-
+ 5 files changed, 13 insertions(+), 21 deletions(-)
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index 4958301f5417..5d32490dc4ab 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -74,7 +74,6 @@ struct memory_target {
+ 	struct node_cache_attrs cache_attrs;
+ 	u8 gen_port_device_handle[ACPI_SRAT_DEVICE_HANDLE_SIZE];
+ 	bool registered;
+-	bool ext_updated;	/* externally updated */
+ };
+ 
+ struct memory_initiator {
+@@ -391,7 +390,6 @@ int hmat_update_target_coordinates(int nid, struct access_coordinate *coord,
+ 				  coord->read_bandwidth, access);
+ 	hmat_update_target_access(target, ACPI_HMAT_WRITE_BANDWIDTH,
+ 				  coord->write_bandwidth, access);
+-	target->ext_updated = true;
+ 
+ 	return 0;
+ }
+@@ -773,10 +771,6 @@ static void hmat_update_target_attrs(struct memory_target *target,
+ 	u32 best = 0;
+ 	int i;
+ 
+-	/* Don't update if an external agent has changed the data.  */
+-	if (target->ext_updated)
+-		return;
+-
+ 	/* Don't update for generic port if there's no device handle */
+ 	if ((access == NODE_ACCESS_CLASS_GENPORT_SINK_LOCAL ||
+ 	     access == NODE_ACCESS_CLASS_GENPORT_SINK_CPU) &&
+diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
+index c0af645425f4..c891fd618cfd 100644
+--- a/drivers/cxl/core/cdat.c
++++ b/drivers/cxl/core/cdat.c
+@@ -1081,8 +1081,3 @@ int cxl_update_hmat_access_coordinates(int nid, struct cxl_region *cxlr,
+ {
+ 	return hmat_update_target_coordinates(nid, &cxlr->coord[access], access);
+ }
+-
+-bool cxl_need_node_perf_attrs_update(int nid)
+-{
+-	return !acpi_node_backed_by_real_pxm(nid);
+-}
+diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
+index 2669f251d677..a253d308f3c9 100644
+--- a/drivers/cxl/core/core.h
++++ b/drivers/cxl/core/core.h
+@@ -139,7 +139,6 @@ long cxl_pci_get_latency(struct pci_dev *pdev);
+ int cxl_pci_get_bandwidth(struct pci_dev *pdev, struct access_coordinate *c);
+ int cxl_update_hmat_access_coordinates(int nid, struct cxl_region *cxlr,
+ 				       enum access_coordinate_class access);
+-bool cxl_need_node_perf_attrs_update(int nid);
+ int cxl_port_get_switch_dport_bandwidth(struct cxl_port *port,
+ 					struct access_coordinate *c);
+ 
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index 71cc42d05248..0ed95cbc5d5b 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -30,6 +30,12 @@
+  * 3. Decoder targets
+  */
+ 
++/*
++ * nodemask that sets per node when the access_coordinates for the node has
++ * been updated by the CXL memory hotplug notifier.
++ */
++static nodemask_t nodemask_region_seen = NODE_MASK_NONE;
++
+ static struct cxl_region *to_cxl_region(struct device *dev);
+ 
+ #define __ACCESS_ATTR_RO(_level, _name) {				\
+@@ -2442,14 +2448,8 @@ static bool cxl_region_update_coordinates(struct cxl_region *cxlr, int nid)
+ 
+ 	for (int i = 0; i < ACCESS_COORDINATE_MAX; i++) {
+ 		if (cxlr->coord[i].read_bandwidth) {
+-			rc = 0;
+-			if (cxl_need_node_perf_attrs_update(nid))
+-				node_set_perf_attrs(nid, &cxlr->coord[i], i);
+-			else
+-				rc = cxl_update_hmat_access_coordinates(nid, cxlr, i);
+-
+-			if (rc == 0)
+-				cset++;
++			node_update_perf_attrs(nid, &cxlr->coord[i], i);
++			cset++;
+ 		}
+ 	}
+ 
+@@ -2487,6 +2487,10 @@ static int cxl_region_perf_attrs_callback(struct notifier_block *nb,
+ 	if (nid != region_nid)
+ 		return NOTIFY_DONE;
+ 
++	/* No action needed if node bit already set */
++	if (node_test_and_set(nid, nodemask_region_seen))
++		return NOTIFY_DONE;
++
+ 	if (!cxl_region_update_coordinates(cxlr, nid))
+ 		return NOTIFY_DONE;
+ 
+diff --git a/include/linux/memory.h b/include/linux/memory.h
+index 1305102688d0..0b755d1ef1ec 100644
+--- a/include/linux/memory.h
++++ b/include/linux/memory.h
+@@ -120,8 +120,8 @@ struct mem_section;
+  */
+ #define DEFAULT_CALLBACK_PRI	0
+ #define SLAB_CALLBACK_PRI	1
+-#define HMAT_CALLBACK_PRI	2
+ #define CXL_CALLBACK_PRI	5
++#define HMAT_CALLBACK_PRI	6
+ #define MM_COMPUTE_BATCH_PRI	10
+ #define CPUSET_CALLBACK_PRI	10
+ #define MEMTIER_HOTPLUG_PRI	100
+-- 
+2.50.1
 
 
