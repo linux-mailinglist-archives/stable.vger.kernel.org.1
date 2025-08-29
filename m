@@ -1,118 +1,98 @@
-Return-Path: <stable+bounces-176701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B73B3BA1D
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 13:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4805B3BA69
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 13:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5596D564C4C
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 11:45:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DE8B1733E7
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 11:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77EF42D6E59;
-	Fri, 29 Aug 2025 11:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5E3304BCD;
+	Fri, 29 Aug 2025 11:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="yWKc1Z2Z"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BD52D5A10;
-	Fri, 29 Aug 2025 11:44:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485E82D12E4;
+	Fri, 29 Aug 2025 11:58:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756467896; cv=none; b=LTpUezSiyc4RTfYKwWV/sbGzYvuhunZZF2Y240JBwEVBFuecNFALyPt9XG4Mj8xT1YfuqTQz1mdBlMkGbEbT+V04+bC117ELmDd3CMW+wauLgWOUXklq/r7W03A3eTTN388ygiL9ukkH70U0EHzGE8yM2EN+2TRzHyvK7aqJhQc=
+	t=1756468684; cv=none; b=CgAP3W7tMonYwqiTUXQOuTER3qEfpAPc2Rw6hx1IhJ2DY0r5doqBCmBbZBfXozqTlsl8pFd1tifwISwPYyIyJpeiUs/ZTdmeLSN61jOiqepbbN7Jy/LKQdawU/rFaFLa1/z+eov7Rg2TcU06uZSy3o7i4RHWFJPZL7OENyT8PIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756467896; c=relaxed/simple;
-	bh=rWSNZmDoBwoJRt2diJ69HY8DPyP9382HG/KxtrMuzl4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JMnLBYUIKwwLbCKc7qUmGnq8HzYjTV4zKbTVp+4iC+MgudNvvzYSpM227UAsSe2N45baXb2f/k8uBfGhY9h94uBVVCHeuhLbL8cXrsf+eeR80uMlN3+jML5eBVEBEUPzmCc5dc5/LVuUxg0A2cRziJbZlxWwtIAVy1r+atFzCw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-Date: Fri, 29 Aug 2025 13:44:38 +0200
-From: Brett Sheffield <bacs@librecast.net>
-To: Simon Horman <horms@kernel.org>
-Cc: Oscar Maes <oscmaes92@gmail.com>, netdev@vger.kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, davem@davemloft.net,
-	dsahern@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v4] selftests: net: add test for destination in
- broadcast packets
-Message-ID: <aLGSplLd9LjVzZOk@karahi.gladserv.com>
-References: <20250828114242.6433-1-oscmaes92@gmail.com>
- <20250829111921.GI31759@horms.kernel.org>
+	s=arc-20240116; t=1756468684; c=relaxed/simple;
+	bh=ynveZ1yqv7u1kVZVuyyTknKuM8nqhb1csnyz1gTkaao=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Xe8f8qLdk0bHdWzu42HR7AZVOEoXYJg05wo1lv0Oz07HzuaXw0kxwZ3JqgHtUO50bjVj+NolHIkwYuIZrPSawOtaHe5DHXqeHSlKPe8QxGhAtB9Vmooax3NlEsGXZjhpMnisoB+4FIHkTB1qpaf2waF0cOriQShz+cfRfGAS4c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=yWKc1Z2Z; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=OiUAwF7kCruDwiTlDNNG4PcIpUt2a1KBnH5GQtUR5Ug=; t=1756468682;
+	x=1756900682; b=yWKc1Z2ZKMYNWv9c74FcEHV9NMLErerVvI5QR1iXby/TTErStde/CVOxaGpVx
+	fw9IsXESbG5N/l6NAz6VIeSUskgCPpw4ILubRbotP4zJmtFLX+T1A3cy8Pg89bWjH85Zpyy3sapP5
+	bqQqaVfsTp3Wpc6j3y/fkgF3+Og6mK4edug3JwwdigpBhB/8ttovc27XU1W5IKtHFYeFm2CSb3zMh
+	wYtrk8GM2UcMj0sGVAGxeXtgdj3D42MjEOFsXE9Uj7Ic78wu5wpl238nSXJsuRJZRcpUZ4karIco/
+	E5Z/AMTCaIs8POXQvhaSETEJR0FzbhaIBpljxTEeQ3g1zWVVJA==;
+Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
+	id 1urxjz-00A0uS-0E;
+	Fri, 29 Aug 2025 13:57:59 +0200
+Message-ID: <dd24398b-0d10-45d4-b93d-4377c017f2e7@leemhuis.info>
+Date: Fri, 29 Aug 2025 13:57:57 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250829111921.GI31759@horms.kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Bug report - Sticky keys acting not sticky sometimes
+To: Alerymin <alerdev.ca4x6@simplelogin.com>, stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, dmitry.torokhov@gmail.com,
+ linux-input@vger.kernel.org
+References: <175646738541.6.2676742517164037652.877606794@simplelogin.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <175646738541.6.2676742517164037652.877606794@simplelogin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1756468682;4e6a38f4;
+X-HE-SMSGID: 1urxjz-00A0uS-0E
 
-On 2025-08-29 12:19, Simon Horman wrote:
-> On Thu, Aug 28, 2025 at 01:42:42PM +0200, Oscar Maes wrote:
-> > Add test to check the broadcast ethernet destination field is set
-> > correctly.
-> > 
-> > This test sends a broadcast ping, captures it using tcpdump and
-> > ensures that all bits of the 6 octet ethernet destination address
-> > are correctly set by examining the output capture file.
-> > 
-> > Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
-> > Co-authored-by: Brett A C Sheffield <bacs@librecast.net>
-> 
-> ...
-> 
-> > +test_broadcast_ether_dst() {
-> > +	local rc=0
-> > +	CAPFILE=$(mktemp -u cap.XXXXXXXXXX)
-> > +	OUTPUT=$(mktemp -u out.XXXXXXXXXX)
-> > +
-> > +	echo "Testing ethernet broadcast destination"
-> > +
-> > +	# start tcpdump listening for icmp
-> > +	# tcpdump will exit after receiving a single packet
-> > +	# timeout will kill tcpdump if it is still running after 2s
-> > +	timeout 2s ip netns exec "${CLIENT_NS}" \
-> > +		tcpdump -i link0 -c 1 -w "${CAPFILE}" icmp &> "${OUTPUT}" &
-> > +	pid=$!
-> > +	slowwait 1 grep -qs "listening" "${OUTPUT}"
-> > +
-> > +	# send broadcast ping
-> > +	ip netns exec "${CLIENT_NS}" \
-> > +		ping -W0.01 -c1 -b 255.255.255.255 &> /dev/null
-> > +
-> > +	# wait for tcpdump for exit after receiving packet
-> > +	wait "${pid}"
-> 
-> Hi Oscar and Brett,
-> 
-> I am concerned that if something goes wrong this may block forever.
-> Also, I'm wondering if this test could make use of the tcpdump helpers
-> provided in tools/testing/selftests/net/forwarding/lib.sh
+Lo!
 
-tcpdump is started with `timeout 2s`, which will kill it if the 2s timeout is
-exceeded.  Is that not sufficient here?
-
-> > +
-> > +	# compare ethernet destination field to ff:ff:ff:ff:ff:ff
-> > +	ether_dst=$(tcpdump -r "${CAPFILE}" -tnne 2>/dev/null | \
-> > +			awk '{sub(/,/,"",$3); print $3}')
-> > +	if [[ "${ether_dst}" == "ff:ff:ff:ff:ff:ff" ]]; then
-> > +		echo "[ OK ]"
-> > +		rc="${ksft_pass}"
-> > +	else
-> > +		echo "[FAIL] expected dst ether addr to be ff:ff:ff:ff:ff:ff," \
-> > +			"got ${ether_dst}"
-> > +		rc="${ksft_fail}"
-> > +	fi
-> > +
-> > +	return "${rc}"
-> > +}
+On 29.08.25 13:36, Alerymin wrote:
+> Note:
+> The issue looks like it's from tty directly but I don't see who is the maintainer, so I email the closest I can get
 > 
-> ...
+> Description:
+> In command line, sticky keys reset only when typing ASCII and ISO-8859-1 characters.
+> Tested with the QWERTY Lafayette layout: https://codeberg.org/Alerymin/kbd-qwerty-lafayette
+> 
+> Observed Behaviour:
+> When the layout is loaded in ISO-8859-15, most characters typed don't reset the sticky key, unless it's basic ASCII characters or Unicode
+> When the layout is loaded in ISO-8859-1, the sticky key works fine.
+> 
+> Expected behaviour:
+> Sticky key working in ISO-8859-1 and ISO-8859-15
+> 
+> System used:
+> Arch Linux, kernel 6.16.3-arch1-1
 
-bacs
--- 
+Thx for the report. You CCed the regressions list, so please allow me to
+ask: what's the last version where this worked? And FWIW in case nobody
+comes around with an idea what might cause this any time soon: could you
+bisect[1] what's causing the problem? Ciao, Thorsten
+
+[1]
+https://docs.kernel.org/admin-guide/verify-bugs-and-bisect-regressions.html
 
