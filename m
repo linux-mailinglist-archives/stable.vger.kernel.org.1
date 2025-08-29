@@ -1,102 +1,102 @@
-Return-Path: <stable+bounces-176686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C245DB3B490
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 09:43:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6B6B3B4B0
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 09:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EC5E7C497E
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 07:43:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48C7C7B71F5
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 07:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEA427BF6C;
-	Fri, 29 Aug 2025 07:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4CA284B4C;
+	Fri, 29 Aug 2025 07:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jh7eyiPa"
 X-Original-To: stable@vger.kernel.org
-Received: from lankhorst.se (lankhorst.se [141.105.120.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D5127B347
-	for <stable@vger.kernel.org>; Fri, 29 Aug 2025 07:42:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.105.120.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7F023ABBD;
+	Fri, 29 Aug 2025 07:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756453382; cv=none; b=d+HSEeb3eL9+/iT3h/Q8lfRxpQK3wTo+waL46f9NBAhTnqpXjT8RqVjpVX16CSm4pd4RmbQP6JvAMwAFcPv7m+VXWdxOCV6xKVm/SwAoxjBNQHWyom3f+i5GL6pK0d1bHMg802oW0og2WwGv/bKbsnKFiQDwdBMUxz1WzxuPnVg=
+	t=1756453758; cv=none; b=rjg1L0tziqTN6Dqk6mNRRM8qwhfcd5ED7UUzI6bPd0i+/yHyA5IHvL/u6ghBReIPp42jeZKp/hn/T4xP/l7ccRx/0F/m+b/4JakfGUjDCw9XfTXZRbnk5Mon5B2x9RPO7ZyFLal4wjmtDp71g8Qg8hyTN9BKJzupc22kAoKOhL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756453382; c=relaxed/simple;
-	bh=PRy94JAM1ACtanqpUNvrJbmhrfnqSn4HuVjHKDD001c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d1j0PAwvoH0/jIaim6YZUoHjmtfLsZWccWQuoyI6vlX8dnzGlaKA+iVqb/Kf8LkkHr7ttGGE7CbA0jXSD5++QG+frNALZR88NWGjTYLsJPsZNPy4ejoeGGQQhdKhXxtoVwoN5RgU8zkfuoWxBFUiCCdKP9t+GTm8pQccDafNyR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se; spf=pass smtp.mailfrom=lankhorst.se; arc=none smtp.client-ip=141.105.120.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lankhorst.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lankhorst.se
-Message-ID: <e8a176ab-a24c-4b9d-a046-ae386f08f129@lankhorst.se>
-Date: Fri, 29 Aug 2025 09:42:55 +0200
+	s=arc-20240116; t=1756453758; c=relaxed/simple;
+	bh=dF+v6pBPXAEvo6aOXOvywP1ufSrZor0h7MkaWLQK5dI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QqTML+xOpSNyLgppIm7av5Ez0mU2bshX610YHrRI/W1c/1w1V9pkIuH+V8nJmM9sircuFfUmtWf7/1EKc5ukLcsfAYu+KCxEXkIvLRofBDcomXN256FjSEiEdjjz8Spg0CnIG/igHYLp/6Mgqk414EzB5wZ/pjsy6jbEmsIu7Wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jh7eyiPa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF26DC4CEF0;
+	Fri, 29 Aug 2025 07:49:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756453758;
+	bh=dF+v6pBPXAEvo6aOXOvywP1ufSrZor0h7MkaWLQK5dI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Jh7eyiPa+eTuVCyVjfAOPherneBnYDfNTkkbV3vRkFZt+w3aJYb3ZgmwsHTGBeCV8
+	 9opq4JF0YiaNpyxxy4hJGoP0ArtNLmEfS3K2BNjPgFUWeJpngtBvF1sfX9P19pIC24
+	 q0Ji295VEt2zSosrb/wFyYW8l/S8w56yvuEsyiXH5Nvy6DgTYWEwvreqjwDTDotVaI
+	 +AJgHkhAiEKMcXw8F2FG2loRDBSqa5z8+sPBTJsKFkuOwQFMHyAMubkbs8lfyIqbEY
+	 m7lIpT/gqMkddw2gO5F2hbZLpSwVLCaLew3c61ViQFr3EVP2zo4r//rxrpYVVLQGwE
+	 p7tqkgo4TLyfA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1urtr9-000000000Zj-07S0;
+	Fri, 29 Aug 2025 09:49:07 +0200
+Date: Fri, 29 Aug 2025 09:49:07 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, "Nancy.Lin" <nancy.lin@mediatek.com>
+Subject: Re: [PATCH] drm/mediatek: fix device leaks at bind
+Message-ID: <aLFbcznLUutbMo6r@hovoldconsulting.com>
+References: <20250722092722.425-1-johan@kernel.org>
+ <aK7VCJ9yOKntjgKX@hovoldconsulting.com>
+ <CAAOTY_-CijzQqrRUf_=cQbTUSybN3GT46q0vx1139mmZub_OfQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/xe: Attempt to bring bos back to VRAM after eviction
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
- Matthew Auld <matthew.auld@intel.com>, stable@vger.kernel.org
-References: <20250828154219.4889-1-thomas.hellstrom@linux.intel.com>
-Content-Language: en-US
-From: Maarten Lankhorst <dev@lankhorst.se>
-In-Reply-To: <20250828154219.4889-1-thomas.hellstrom@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAOTY_-CijzQqrRUf_=cQbTUSybN3GT46q0vx1139mmZub_OfQ@mail.gmail.com>
 
-Hey,
+On Fri, Aug 29, 2025 at 07:51:23AM +0800, Chun-Kuang Hu wrote:
+> Johan Hovold <johan@kernel.org> 於 2025年8月27日 週三 下午5:51寫道：
 
-Den 2025-08-28 kl. 17:42, skrev Thomas Hellström:
-> VRAM+TT bos that are evicted from VRAM to TT may remain in
-> TT also after a revalidation following eviction or suspend.
+> > On Tue, Jul 22, 2025 at 11:27:22AM +0200, Johan Hovold wrote:
+> > > Make sure to drop the references to the sibling platform devices and
+> > > their child drm devices taken by of_find_device_by_node() and
+> > > device_find_child() when initialising the driver data during bind().
+> > >
+> > > Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
+> > > Cc: stable@vger.kernel.org    # 6.4
+> > > Cc: Nancy.Lin <nancy.lin@mediatek.com>
+> > > Signed-off-by: Johan Hovold <johan@kernel.org>
+> >
+> > Can this one be picked up?
 > 
-> This manifests itself as applications becoming sluggish
-> after buffer objects get evicted or after a resume from
-> suspend or hibernation.
+> Ma Ke has sent a similar patch [1] before you. And that patch fix more things.
+> I've already pick up the final version [2].
 > 
-> If the bo supports placement in both VRAM and TT, and
-> we are on DGFX, mark the TT placement as fallback. This means
-> that it is tried only after VRAM + eviction.
-> 
-> This flaw has probably been present since the xe module was
-> upstreamed but use a Fixes: commit below where backporting is
-> likely to be simple. For earlier versions we need to open-
-> code the fallback algorithm in the driver.
-> 
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5995
-> Fixes: a78a8da51b36 ("drm/ttm: replace busy placement with flags v6")
-I'd say it this closes a bug in the original driver, although effectively v6.8 is no longer supported anyway.
+> [1] https://patchwork.kernel.org/project/dri-devel/patch/20250718033226.3390054-1-make24@iscas.ac.cn/
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/chunkuang.hu/linux.git/commit/?h=mediatek-drm-fixes-20250825&id=1f403699c40f0806a707a9a6eed3b8904224021a
 
-Should DESIRED also be set on the add_vram flags?
+I'm afraid that patch is completely broken and introduces a potential
+use-after-free by adding a bogus decrement of the OF node refcount.
 
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.9+
-> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> ---
->  drivers/gpu/drm/xe/xe_bo.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-> index 4faf15d5fa6d..64dea4e478bd 100644
-> --- a/drivers/gpu/drm/xe/xe_bo.c
-> +++ b/drivers/gpu/drm/xe/xe_bo.c
-> @@ -188,6 +188,8 @@ static void try_add_system(struct xe_device *xe, struct xe_bo *bo,
->  
->  		bo->placements[*c] = (struct ttm_place) {
->  			.mem_type = XE_PL_TT,
-> +			.flags = (IS_DGFX(xe) && (bo_flags & XE_BO_FLAG_VRAM_MASK)) ?
-> +			TTM_PL_FLAG_FALLBACK : 0,
->  		};
->  		*c += 1;
->  	}
+I suggest you drop that one and pick up mine instead which is correct
+and cleaner.
 
-Kind regards,
-~Maarten Lankhorst
+Johan
 
