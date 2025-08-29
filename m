@@ -1,165 +1,108 @@
-Return-Path: <stable+bounces-176721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC77B3C11F
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 18:46:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED894B3C161
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 18:57:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7629AA08604
-	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 16:46:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BF363B9767
+	for <lists+stable@lfdr.de>; Fri, 29 Aug 2025 16:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AF8334371;
-	Fri, 29 Aug 2025 16:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F88E335BB1;
+	Fri, 29 Aug 2025 16:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D7s7Vq4s"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H/h/Jw1S"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF2F283FDE;
-	Fri, 29 Aug 2025 16:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFEE283FDE
+	for <stable@vger.kernel.org>; Fri, 29 Aug 2025 16:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756485989; cv=none; b=Xr3dunf2UOrbeEbZtX67lHOz78zCcGNzJV3KxM+tHevefJug7Z05B+9VN1Q+wX7IUGERqkJYmnp9yTNPoTQbURgPnUpTNZsVaQKqqNr5QxxWnzTvoksh41x/t4fIMBMtFA/iifkbr08f42tljvw5MFhgeISR0x8px7Y1AWv3pWs=
+	t=1756486651; cv=none; b=K2HFpstU57kIr4xpVBNg5VKdNNz4nYpy7rIvG4Xh3WxoGlZ7u2aTI7i4llYulZIuFdZTtvNWV9/naSbG5+jAHg2PgWfW6TjiiZ//SGKE6cdpdSNjyruXf8waKYc6A5Ih8+M2Tcag4+CipQs9GArfNvN+KY4HBWLvx1fEhqVjOw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756485989; c=relaxed/simple;
-	bh=PVpX8+3IqfXg1/WqFGH/rwOO8yjTxELXA5EvlRBBMZc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vFLbAdQmubUMV6TwyCxEZKNfItY/ZB6vWdX+gHasm/8BhtQIgpGknQFRpFkwodfXXahKv0Bv2fryb5qngGpPBq7p7wO9jM/0T6hHOsPCnUi9jaSIiZFERTaEMHwy1IGJn7EfX63hbBsViSH+SGHkUZqHaIiZpFR93PlMpNc04XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D7s7Vq4s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4098AC4CEF0;
-	Fri, 29 Aug 2025 16:46:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756485988;
-	bh=PVpX8+3IqfXg1/WqFGH/rwOO8yjTxELXA5EvlRBBMZc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=D7s7Vq4sTLna4JGv7jkxQ+Glrr41wNqIFZ69f2jS4N2FgRPGmazU+mT1ZYZzT5MVh
-	 LwQyyPST7pEiUz3aHpak0Lljjs3HeIDhDI8/GT4d0rdFISmukYSF4Di7IQj7wg9ZnC
-	 qGkcxoyXLAwblIEMk/jdBFjlf2lGxe6iU1r69UfzpAXg+noHlUGrshDhdcAoIIz8OZ
-	 5YYNaFWce9bM32WI5JN4tExtDaxX8Qwvgmh4VHwZclzus2lxqjkwvOFZwM1tgG9+0j
-	 u9koKe3Ideu6bNCDCTWB2yqDzvJEpyHbQ7ebrvFOvN2iIq/kJsNNTVoB9fE/PHICzK
-	 gnTUnH8Qg2m+w==
-From: Eric Biggers <ebiggers@kernel.org>
-To: Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	kasan-dev@googlegroups.com
-Cc: Dmitry Vyukov <dvyukov@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] kmsan: Fix out-of-bounds access to shadow memory
-Date: Fri, 29 Aug 2025 09:45:00 -0700
-Message-ID: <20250829164500.324329-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1756486651; c=relaxed/simple;
+	bh=rMY9CK3FzyWL5hcZjlKfSIoe7gfxKfxrpr7JgBhZVPg=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=X9ktjCTzF8UXK2W08wcDhf73J6ruRMIm1bFwqfxCOLjyu4UzPrZ+thjx3j9T3F1mcaRsdu5z/2kk7FW1RWR+LQawTMHObqiNdAnMrWfcWqpp+NKGnnchgU7dX3VuUtoEq9YwVeyA2eViJM5E/B2LETWF/vWJj1dwsOPpW/X36UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H/h/Jw1S; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-55f6bb0a364so796631e87.1
+        for <stable@vger.kernel.org>; Fri, 29 Aug 2025 09:57:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756486648; x=1757091448; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rMY9CK3FzyWL5hcZjlKfSIoe7gfxKfxrpr7JgBhZVPg=;
+        b=H/h/Jw1SzFqaEKaiIixIIK01Lz7IxmjpURBKAlaVHq3mUgEvxXAgEdbcvIrrVGc0V9
+         tnd82medqCL1d5+eyiFOu1lzwNfaqp72/MqBqAfm8eexH4VsufuEaXhahhuuQy2x/UYc
+         c0QinNK+Xb22kItoqNMmRYVVKM+I9dLB0OQsYlCaFqojVHDlKoM7EkkLZfRMDP5vKx4B
+         i32pOMKUHCOhSHaiJtbiPEXvJMY6y9ffCN0pp86RjKuqjbTtJDft99nT01RiLGS7NIv6
+         LMU7NTFV/ukBpKUdAutW0uLTToFqk2C7uNhPnc8lu0BYRUU+aeMJoNqYDYXJchIFFV2b
+         yVyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756486648; x=1757091448;
+        h=cc:to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rMY9CK3FzyWL5hcZjlKfSIoe7gfxKfxrpr7JgBhZVPg=;
+        b=HUk8miRvCftXl/zwPRhEI6WcE12aWISLk1ArcGNvNAGuNOuggcUuPBC7A9YWMiTgLO
+         RMHQ7bsPlcEPI3AWF3Hq43fY6r5h0M99n9SVFhGIXqeVUWYb5uYID+A/4T6zn07bd8BR
+         hWWngSsTxoGCpMhM2Xh6kiJkTcjmUzyqZAtcBPE8iGaqKKmQPTDoqOMr/1DknJuATMQH
+         H4M9Yw2pOwLPCuoZm5aPgF+lt7FOl5A7vzXiSBQK/5WjEl2mBNHVx4Or+E4HgQ6+YDnX
+         A+MArzchyizNz1kBTRn/lfGUxQtqHrYxgelk9b3O5ySsPDV69DzoyxQuLNh+b2kTDcCu
+         CSpQ==
+X-Gm-Message-State: AOJu0YwDJ5W6MLk+EJvnK0S+N+DQguLgs/Qn+3mXzxvP4lE9br1FNJA2
+	aaPmjQx/JXUstRgUB6M25+qHHJb7e6izgW29bY+PoPAqDeRmmtDuR9iHQIAFZgLyR4gKQatpqMI
+	tEqRlTI6PHy5nR2mThMBQFiYOEGAfWXg=
+X-Gm-Gg: ASbGnct+GlaPYnOD9GYIw9C1cpyBHZYfOI0RTnTQ68JL9R3RtbLgNHT4QySXQC/+G2b
+	A/r2R6w5Ao1jib0Xiis/DViuMvCbWEaKh5Ey9IxHGc3hBM0H1zLEI5lve+2ODpCJ0h4HMV/OjZt
+	5SN+nsu8A3wY+8XU/n8rcvU+9hMX2nityJ0Qw2qkhU55qbZqzKQvXsVmc/9OiRzJyy7s877++lj
+	uHbutvyBD9acWQzggCs
+X-Google-Smtp-Source: AGHT+IGcw5eRtwwB6jNfxVcLXIsPGYbwUz4mW0XmcZkL8XVoLP7FN/i1ZY6JtTOG9mR5bbvMKURCsKG+woYi/lDOX+Y=
+X-Received: by 2002:a05:6512:6082:b0:55f:553d:2b83 with SMTP id
+ 2adb3069b0e04-55f553d2ea6mr3179032e87.54.1756486647605; Fri, 29 Aug 2025
+ 09:57:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Reply-To: sedat.dilek@gmail.com
+From: Sedat Dilek <sedat.dilek@gmail.com>
+Date: Fri, 29 Aug 2025 18:56:52 +0200
+X-Gm-Features: Ac12FXw8MPs7Rvl1AoAM4XDl01SD-oI-RuX4Acg7EVXtc4_8rDfMZU5S3_wwOy4
+Message-ID: <CA+icZUWXiz1kqR6omufFwByQ9dD9m=-UYY9JghVQnbGD2NMy1w@mail.gmail.com>
+Subject: [stable-6.16|lts-6.12] net: ipv4: fix regression in local-broadcast routes
+To: Sasha Levin <sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Oscar Maes <oscmaes92@gmail.com>, 
+	Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
+	Brett A C Sheffield <bacs@librecast.net>, Salvatore Bonaccorso <carnil@debian.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Running sha224_kunit on a KMSAN-enabled kernel results in a crash in
-kmsan_internal_set_shadow_origin():
+Hi Sasha and Greg,
 
-    BUG: unable to handle page fault for address: ffffbc3840291000
-    #PF: supervisor read access in kernel mode
-    #PF: error_code(0x0000) - not-present page
-    PGD 1810067 P4D 1810067 PUD 192d067 PMD 3c17067 PTE 0
-    Oops: 0000 [#1] SMP NOPTI
-    CPU: 0 UID: 0 PID: 81 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc3 #10 PREEMPT(voluntary)
-    Tainted: [N]=TEST
-    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-    RIP: 0010:kmsan_internal_set_shadow_origin+0x91/0x100
-    [...]
-    Call Trace:
-    <TASK>
-    __msan_memset+0xee/0x1a0
-    sha224_final+0x9e/0x350
-    test_hash_buffer_overruns+0x46f/0x5f0
-    ? kmsan_get_shadow_origin_ptr+0x46/0xa0
-    ? __pfx_test_hash_buffer_overruns+0x10/0x10
-    kunit_try_run_case+0x198/0xa00
+Salvatore Bonaccorso <carnil@debian.org> from Debian Kernel Team
+included this regression-fix already.
 
-This occurs when memset() is called on a buffer that is not 4-byte
-aligned and extends to the end of a guard page, i.e. the next page is
-unmapped.
+Upstream commit 5189446ba995556eaa3755a6e875bc06675b88bd
+"net: ipv4: fix regression in local-broadcast routes"
 
-The bug is that the loop at the end of
-kmsan_internal_set_shadow_origin() accesses the wrong shadow memory
-bytes when the address is not 4-byte aligned.  Since each 4 bytes are
-associated with an origin, it rounds the address and size so that it can
-access all the origins that contain the buffer.  However, when it checks
-the corresponding shadow bytes for a particular origin, it incorrectly
-uses the original unrounded shadow address.  This results in reads from
-shadow memory beyond the end of the buffer's shadow memory, which
-crashes when that memory is not mapped.
+As far as I have seen this should be included in stable-6.16 and
+LTS-6.12 (for other stable branches I simply have no interest - please
+double-check).
 
-To fix this, correctly align the shadow address before accessing the 4
-shadow bytes corresponding to each origin.
+I am sure Sasha's new kernel-patch-AI tool has catched this - just
+kindly inform you.
 
-Fixes: 2ef3cec44c60 ("kmsan: do not wipe out origin when doing partial unpoisoning")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
----
- mm/kmsan/core.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+Thanks.
 
-diff --git a/mm/kmsan/core.c b/mm/kmsan/core.c
-index 1ea711786c522..8bca7fece47f0 100644
---- a/mm/kmsan/core.c
-+++ b/mm/kmsan/core.c
-@@ -193,11 +193,12 @@ depot_stack_handle_t kmsan_internal_chain_origin(depot_stack_handle_t id)
- 
- void kmsan_internal_set_shadow_origin(void *addr, size_t size, int b,
- 				      u32 origin, bool checked)
- {
- 	u64 address = (u64)addr;
--	u32 *shadow_start, *origin_start;
-+	void *shadow_start;
-+	u32 *aligned_shadow, *origin_start;
- 	size_t pad = 0;
- 
- 	KMSAN_WARN_ON(!kmsan_metadata_is_contiguous(addr, size));
- 	shadow_start = kmsan_get_metadata(addr, KMSAN_META_SHADOW);
- 	if (!shadow_start) {
-@@ -212,13 +213,16 @@ void kmsan_internal_set_shadow_origin(void *addr, size_t size, int b,
- 		}
- 		return;
- 	}
- 	__memset(shadow_start, b, size);
- 
--	if (!IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
-+	if (IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
-+		aligned_shadow = shadow_start;
-+	} else {
- 		pad = address % KMSAN_ORIGIN_SIZE;
- 		address -= pad;
-+		aligned_shadow = shadow_start - pad;
- 		size += pad;
- 	}
- 	size = ALIGN(size, KMSAN_ORIGIN_SIZE);
- 	origin_start =
- 		(u32 *)kmsan_get_metadata((void *)address, KMSAN_META_ORIGIN);
-@@ -228,11 +232,11 @@ void kmsan_internal_set_shadow_origin(void *addr, size_t size, int b,
- 	 * and unconditionally overwrite the old origin slot.
- 	 * If the new origin is zero, overwrite the old origin slot iff the
- 	 * corresponding shadow slot is zero.
- 	 */
- 	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++) {
--		if (origin || !shadow_start[i])
-+		if (origin || !aligned_shadow[i])
- 			origin_start[i] = origin;
- 	}
- }
- 
- struct page *kmsan_vmalloc_to_page_or_null(void *vaddr)
+Best regards,
+-Sedat-
 
-base-commit: 1b237f190eb3d36f52dffe07a40b5eb210280e00
--- 
-2.50.1
-
+https://salsa.debian.org/kernel-team/linux/-/commit/194de383c5cd5e8c22cadfc487b5f8e153a28b11
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=5189446ba995556eaa3755a6e875bc06675b88bd
 
