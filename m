@@ -1,113 +1,192 @@
-Return-Path: <stable+bounces-176741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC3EAB3CB6F
-	for <lists+stable@lfdr.de>; Sat, 30 Aug 2025 16:28:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D972B3CE04
+	for <lists+stable@lfdr.de>; Sat, 30 Aug 2025 19:20:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA21A56579E
-	for <lists+stable@lfdr.de>; Sat, 30 Aug 2025 14:28:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 403EB1B26C54
+	for <lists+stable@lfdr.de>; Sat, 30 Aug 2025 17:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3941F26E142;
-	Sat, 30 Aug 2025 14:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45BF24EF76;
+	Sat, 30 Aug 2025 17:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="tMMs3s2B"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Y2/1UaJq"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EDC21FF38;
-	Sat, 30 Aug 2025 14:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E64284B4F;
+	Sat, 30 Aug 2025 17:20:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756564123; cv=none; b=Fs24PPkTtjDmo1gqhrGF0lpj7DJ8DKew3oJ42Eu5ghRb4kZuXh3Yp0bzSFjVY+BldX8yAFmMgMxnwXJulHBZWgTAfQRtgbzPn8INAAeyPoT0PLsou+ArzAJ13nyttZWsqC/+2QL2WQJwKxQWjlgQRxMOJvBzWSWr/1L3T0R21v8=
+	t=1756574406; cv=none; b=AsoZ7K0A7/EwZmYAxApf6eQTQFf1otowZOdcUMCdgLnNdsTxihH2hLQLT5l/ruRL72XLqaY9czf9qKtlarKtYjl8tziot9cOPI9LopNvqbu5RHsV/UOa0l7Qe5lnKSJIDjXrrncITkRAEolBWtLH5Mn/vygAiNe+LJvOgNygc08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756564123; c=relaxed/simple;
-	bh=YAQ0j9K3lE/r4icyyZ1fXa638JamIoz0p/DY3KBwcxY=;
+	s=arc-20240116; t=1756574406; c=relaxed/simple;
+	bh=KF3oOWX/aUFO8SGoQKKdkC7zzq3zptMbJSRQ+x1Qnn0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RYLKt3JC+oVIZBSKhJn+stNfEj2sUfeiqJ1tD9BLqIxMu8piFXpkXgRQnxjmaFG10du1Md9x6MHtjuQqEWo/8ElSmv5/qgwzN/pNyXeFLXezLVA4xHGMgOgZvanFcRuTSYQt6lFqsKHSU9XC8lUShqjFnn+a4KW4o3hu4l0EolI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=tMMs3s2B; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=qiWlM2z4pFliC1XU4x388n2RlecYZAWxMBbF4rNFKuE=; b=tMMs3s2Bv49/CDpwA723uiir1p
-	qqvH8Rxz2MH401QCv025poOkKVLrmg6/q6oBajgOsAOGQl2EXKVcQGNzn3EPlaDhLlYIm+Gum8iHg
-	oB5G0m3QHVppbEasHIYAM+xLV9dIF7mBK47VBdX3MqVQcU98wh+ql4Iop7ASmi1Sob6o=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1usMZB-006aDf-52; Sat, 30 Aug 2025 16:28:29 +0200
-Date: Sat, 30 Aug 2025 16:28:29 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Linus Walleij <linus.walleij@linaro.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net: dsa: mv88e6xxx: Fix fwnode reference leaks in
- mv88e6xxx_port_setup_leds
-Message-ID: <7797e6a1-6721-4330-a1de-f068f8901f92@lunn.ch>
-References: <20250830085508.2107507-1-linmq006@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=dFTDLx6ZS3+293HFr/rhTB2hgLIl0DBf7Pt89gsYrp00+Y8O+4iTnTTs51pKulgN+XHPhpOAnIFdFCPXX8q1StRKixsrKMaBAspmUjqy93PxkC9dzvoU6Bby4EEyO32/MeG+7sLWVUmWDQ1htp31+idxvx1xybzik6rruAnadog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Y2/1UaJq; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E54A740E016C;
+	Sat, 30 Aug 2025 17:19:54 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 48_kHgx2fDtm; Sat, 30 Aug 2025 17:19:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1756574390; bh=yFHx6y297lhsVBJOnwZMghCs9css2zjdqXyvjnNnMBQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Y2/1UaJqO3pWMDKvgiR/nPpIJwxPgMHqumoxYUpKkd5TZfLhjMf/IlohOaBxKq43W
+	 i+DlZed6Aib+rKfH0zpn4Xnii6/WCg7komBl4D8u6R4wnmTlgcQttYOOcFepPmkDW6
+	 YWa5bh1KLCCaQ7UU1BkYSROEBT/AKAExk1sq5gSa887EhtpkAGx4IWZcDmeGoK7kzV
+	 Te2zwH8Kx9LH99CzeQG4cH2x4LHHFyupkO2QWHV3/IHiwqVJWcsC0PVrE9xsP9imv+
+	 6HM2K4PUq/hWEKQSZ7l+zzVD1EDXMzhZ/tSOu5qriYgGpyBQqGs4ExeM926qfqaC5M
+	 3jOzvKcWjNFtFBI8wc/7zhGJqJuY70p1iQcZt98CA85516JIPAcXVPLSiOn4x9prrQ
+	 4kbuStol/MwprklF58Y+L+oudPhw26h/Ao5Ffj0oH9Lz/DtZRT9SPAw+z0x5uCniuE
+	 89l+wBRuiXwd7bGf1YPS7zbB2iB+VpzKqlDWXwrHA4eLEqJhwpSNawla68L0unSOOv
+	 T+vvK11k1tNiRRNwhnAJhQdE1Zzbg/g+sVoiu9T+y0DhMV9zwezUaTrWL1Y1Oz3JG6
+	 7Nop549gg1XEBAF+e8/exaHJD9C4E0VLxG8IqZxZOuKaw6wCkand42Ab1ikVYfB4+V
+	 hnORRUHOfczIGjVxzfAtQefg=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 4DD2040E016D;
+	Sat, 30 Aug 2025 17:19:28 +0000 (UTC)
+Date: Sat, 30 Aug 2025 19:19:21 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org,
+	Naveen rao <naveen.rao@amd.com>, Sairaj Kodilkar <sarunkod@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Xin Li (Intel)" <xin@zytor.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Babu Moger <babu.moger@amd.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Naveen N Rao <naveen@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v4 2/4] x86/cpu/topology: Always try
+ cpu_parse_topology_ext() on AMD/Hygon
+Message-ID: <20250830171921.GAaLMymVpsFhjWtylo@fat_crate.local>
+References: <20250825075732.10694-1-kprateek.nayak@amd.com>
+ <20250825075732.10694-3-kprateek.nayak@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250830085508.2107507-1-linmq006@gmail.com>
+In-Reply-To: <20250825075732.10694-3-kprateek.nayak@amd.com>
 
-> diff --git a/drivers/net/dsa/mv88e6xxx/leds.c b/drivers/net/dsa/mv88e6xxx/leds.c
-> index 1c88bfaea46b..dcc765066f9c 100644
-> --- a/drivers/net/dsa/mv88e6xxx/leds.c
-> +++ b/drivers/net/dsa/mv88e6xxx/leds.c
-> @@ -779,6 +779,8 @@ int mv88e6xxx_port_setup_leds(struct mv88e6xxx_chip *chip, int port)
->  			continue;
->  		if (led_num > 1) {
->  			dev_err(dev, "invalid LED specified port %d\n", port);
-> +			fwnode_handle_put(led);
-> +			fwnode_handle_put(leds);
->  			return -EINVAL;
->  		}
->  
-> @@ -823,17 +825,23 @@ int mv88e6xxx_port_setup_leds(struct mv88e6xxx_chip *chip, int port)
->  		init_data.devname_mandatory = true;
->  		init_data.devicename = kasprintf(GFP_KERNEL, "%s:0%d:0%d", chip->info->name,
->  						 port, led_num);
-> -		if (!init_data.devicename)
-> +		if (!init_data.devicename) {
-> +			fwnode_handle_put(led);
-> +			fwnode_handle_put(leds);
->  			return -ENOMEM;
-> +		}
->  
->  		ret = devm_led_classdev_register_ext(dev, l, &init_data);
->  		kfree(init_data.devicename);
->  
->  		if (ret) {
->  			dev_err(dev, "Failed to init LED %d for port %d", led_num, port);
-> +			fwnode_handle_put(led);
-> +			fwnode_handle_put(leds);
->  			return ret;
->  		}
->  	}
->  
-> +	fwnode_handle_put(leds);
->  	return 0;
+On Mon, Aug 25, 2025 at 07:57:30AM +0000, K Prateek Nayak wrote:
+> This has not been a problem on baremetal platforms since support for
+> TOPOEXT (Fam 0x15 and later) predates the support for CPUID leaf 0xb
+> (Fam 0x17[Zen2] and later), however, for AMD guests on QEMU, "x2apic"
+> feature can be enabled independent of the "topoext" feature where QEMU
+> expects topology and the initial APICID to be parsed using the CPUID
+> leaf 0xb (especially when number of cores > 255) which is populated
+> independent of the "topoext" feature flag.
 
-Since you need this three times, please put the cleanup at the end and
-use a goto:
+This sounds like we're fixing the kernel because someone *might* supply
+a funky configuration to qemu. You need to understand that we're not wagging
+the dog and fixing the kernel because of that.
 
-    Andrew
+If someone manages to enable some weird concoction of feature flags in qemu,
+we certainly won't "fix" that in the kernel.
 
----
-pw-bot: cr
+So let's concentrate that text around fixing the issue of parsing CPUID
+topology leafs which we should parse and looking at CPUID flags only for those
+feature leafs, for which those flags are existing.
+
+If qemu wants stuff to work, then it better emulate the feature flag
+configuration like the hw does.
+
+> Unconditionally call cpu_parse_topology_ext() on AMD and Hygon
+> processors to first parse the topology using the XTOPOLOGY leaves
+> (0x80000026 / 0xb) before using the TOPOEXT leaf (0x8000001e).
+> 
+> Cc: stable@vger.kernel.org # Only v6.9 and above
+> Link: https://lore.kernel.org/lkml/1529686927-7665-1-git-send-email-suravee.suthikulpanit@amd.com/ [1]
+> Link: https://lore.kernel.org/lkml/20080818181435.523309000@linux-os.sc.intel.com/ [2]
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 [3]
+> Suggested-by: Naveen N Rao (AMD) <naveen@kernel.org>
+> Fixes: 3986a0a805e6 ("x86/CPU/AMD: Derive CPU topology from CPUID function 0xB when available")
+> Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+> ---
+> Changelog v3..v4:
+> 
+> o Quoted relevant section of the PPR justifying the changes.
+> 
+> o Moved this patch up ahead.
+> 
+> o Cc'd stable and made a note that backports should target v6.9 and
+>   above since this depends on the x86 topology rewrite.
+
+Put that explanation in the CC:stable comment.
+
+> ---
+>  arch/x86/kernel/cpu/topology_amd.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/cpu/topology_amd.c b/arch/x86/kernel/cpu/topology_amd.c
+> index 827dd0dbb6e9..4e3134a5550c 100644
+> --- a/arch/x86/kernel/cpu/topology_amd.c
+> +++ b/arch/x86/kernel/cpu/topology_amd.c
+> @@ -175,18 +175,14 @@ static void topoext_fixup(struct topo_scan *tscan)
+>  
+>  static void parse_topology_amd(struct topo_scan *tscan)
+>  {
+> -	bool has_topoext = false;
+> -
+>  	/*
+> -	 * If the extended topology leaf 0x8000_001e is available
+> -	 * try to get SMT, CORE, TILE, and DIE shifts from extended
+> +	 * Try to get SMT, CORE, TILE, and DIE shifts from extended
+>  	 * CPUID leaf 0x8000_0026 on supported processors first. If
+>  	 * extended CPUID leaf 0x8000_0026 is not supported, try to
+>  	 * get SMT and CORE shift from leaf 0xb first, then try to
+>  	 * get the CORE shift from leaf 0x8000_0008.
+>  	 */
+> -	if (cpu_feature_enabled(X86_FEATURE_TOPOEXT))
+> -		has_topoext = cpu_parse_topology_ext(tscan);
+> +	bool has_topoext = cpu_parse_topology_ext(tscan);
+
+Ok, I see what the point here is - you want to parse topology regardless of
+X86_FEATURE_TOPOEXT.
+
+Which is true - latter "indicates support for Core::X86::Cpuid::CachePropEax0
+and Core::X86::Cpuid::ExtApicId" only and the leafs cpu_parse_topology_ext()
+attempts to parse are different ones.
+
+So, "has_topoext" doesn't have anything to do with X86_FEATURE_TOPOEXT - it
+simply means that the topology extensions parser found some extensions and
+parsed them. So let's rename that variable differently so that there is no
+confusion.
+
+You can do the renaming in parse_8000_001e() in a later patch as that is only
+a cosmetic thing and we don't want to send that to stable.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
