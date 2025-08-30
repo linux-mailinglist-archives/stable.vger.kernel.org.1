@@ -1,192 +1,158 @@
-Return-Path: <stable+bounces-176742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D972B3CE04
-	for <lists+stable@lfdr.de>; Sat, 30 Aug 2025 19:20:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F6EB3CEE4
+	for <lists+stable@lfdr.de>; Sat, 30 Aug 2025 21:03:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 403EB1B26C54
-	for <lists+stable@lfdr.de>; Sat, 30 Aug 2025 17:20:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A972A560404
+	for <lists+stable@lfdr.de>; Sat, 30 Aug 2025 19:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45BF24EF76;
-	Sat, 30 Aug 2025 17:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2B52DCF5B;
+	Sat, 30 Aug 2025 19:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Y2/1UaJq"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="OzSy2vZw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E64284B4F;
-	Sat, 30 Aug 2025 17:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7592DCF43;
+	Sat, 30 Aug 2025 19:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756574406; cv=none; b=AsoZ7K0A7/EwZmYAxApf6eQTQFf1otowZOdcUMCdgLnNdsTxihH2hLQLT5l/ruRL72XLqaY9czf9qKtlarKtYjl8tziot9cOPI9LopNvqbu5RHsV/UOa0l7Qe5lnKSJIDjXrrncITkRAEolBWtLH5Mn/vygAiNe+LJvOgNygc08=
+	t=1756580601; cv=none; b=clMcUWCsaKGxi+ht0HuXih+eV/G9MMSdxMALPVuRAMLtjjSPP9IlJJCEbGeJkUV5cXAwPwaqVwbd9qcqWubG+FqOjDyCuOlTEKRtXqs/B1Es6iIOm4/+rcSZblgAz+uTHmeUQ0aIvpiTOVg88dmazW4fDE0CIzv68CsJE60p2a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756574406; c=relaxed/simple;
-	bh=KF3oOWX/aUFO8SGoQKKdkC7zzq3zptMbJSRQ+x1Qnn0=;
+	s=arc-20240116; t=1756580601; c=relaxed/simple;
+	bh=VIWxAub9v9Nc15TVtanbA94IbdHFmist+z2EzFE2cR0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dFTDLx6ZS3+293HFr/rhTB2hgLIl0DBf7Pt89gsYrp00+Y8O+4iTnTTs51pKulgN+XHPhpOAnIFdFCPXX8q1StRKixsrKMaBAspmUjqy93PxkC9dzvoU6Bby4EEyO32/MeG+7sLWVUmWDQ1htp31+idxvx1xybzik6rruAnadog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Y2/1UaJq; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E54A740E016C;
-	Sat, 30 Aug 2025 17:19:54 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 48_kHgx2fDtm; Sat, 30 Aug 2025 17:19:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1756574390; bh=yFHx6y297lhsVBJOnwZMghCs9css2zjdqXyvjnNnMBQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y2/1UaJqO3pWMDKvgiR/nPpIJwxPgMHqumoxYUpKkd5TZfLhjMf/IlohOaBxKq43W
-	 i+DlZed6Aib+rKfH0zpn4Xnii6/WCg7komBl4D8u6R4wnmTlgcQttYOOcFepPmkDW6
-	 YWa5bh1KLCCaQ7UU1BkYSROEBT/AKAExk1sq5gSa887EhtpkAGx4IWZcDmeGoK7kzV
-	 Te2zwH8Kx9LH99CzeQG4cH2x4LHHFyupkO2QWHV3/IHiwqVJWcsC0PVrE9xsP9imv+
-	 6HM2K4PUq/hWEKQSZ7l+zzVD1EDXMzhZ/tSOu5qriYgGpyBQqGs4ExeM926qfqaC5M
-	 3jOzvKcWjNFtFBI8wc/7zhGJqJuY70p1iQcZt98CA85516JIPAcXVPLSiOn4x9prrQ
-	 4kbuStol/MwprklF58Y+L+oudPhw26h/Ao5Ffj0oH9Lz/DtZRT9SPAw+z0x5uCniuE
-	 89l+wBRuiXwd7bGf1YPS7zbB2iB+VpzKqlDWXwrHA4eLEqJhwpSNawla68L0unSOOv
-	 T+vvK11k1tNiRRNwhnAJhQdE1Zzbg/g+sVoiu9T+y0DhMV9zwezUaTrWL1Y1Oz3JG6
-	 7Nop549gg1XEBAF+e8/exaHJD9C4E0VLxG8IqZxZOuKaw6wCkand42Ab1ikVYfB4+V
-	 hnORRUHOfczIGjVxzfAtQefg=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 4DD2040E016D;
-	Sat, 30 Aug 2025 17:19:28 +0000 (UTC)
-Date: Sat, 30 Aug 2025 19:19:21 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org,
-	Naveen rao <naveen.rao@amd.com>, Sairaj Kodilkar <sarunkod@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Xin Li (Intel)" <xin@zytor.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Babu Moger <babu.moger@amd.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Naveen N Rao <naveen@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v4 2/4] x86/cpu/topology: Always try
- cpu_parse_topology_ext() on AMD/Hygon
-Message-ID: <20250830171921.GAaLMymVpsFhjWtylo@fat_crate.local>
-References: <20250825075732.10694-1-kprateek.nayak@amd.com>
- <20250825075732.10694-3-kprateek.nayak@amd.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nsQaV2jY1OYIwPjeCeBW2UFgENLtJ0Fr6a1XKPnDsMMkS2cStKCJre3F47FGx2y8k//ym3zzqYCRZJFHb00xMdHbW/sEaBhyGYyYUXIoSfoSBxL9IvFHC8npslNa1oU4+UTxlikcoQFbWYKTXJIp7AuGMRyXMmswV/ti970gleY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=OzSy2vZw; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=2zEd97eD2ST6z8QE5V+sbWWx834UK4nRASIGlcRaKT4=; b=OzSy2vZwcRjSz3EGgWN0bKaGEX
+	iEFlOxiyyqSCr9dXuigwYYK6xHuBmRZ/2kEV0aT2l3hiutPjbcs3iPxgMplsb353tascvVME9BbYD
+	21d/OA0gyGKQhzAucWVP5mFXLtjf31KMmpQ4sCcH84jxe3lK70aOsqkTcO2AVumVDXsu6xq2xu/Dk
+	8YaJcFjXNGwE4qahpWBFL/tpk9JB5tN/oTZOctWW5YruufJmdADvMERFvxU7zFWRJRZuJcuKEemez
+	0wmJZzqENEZEXaFyT/VCyzMpVsAl1ViM5qUBvOA+qBP7lrko20+IPExyS494Z4K2C2y2uK3DAC7wV
+	C6HdrysA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <carnil@debian.org>)
+	id 1usQqs-00H2TD-9s; Sat, 30 Aug 2025 19:03:02 +0000
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 2D2FDBE2EE7; Sat, 30 Aug 2025 21:03:01 +0200 (CEST)
+Date: Sat, 30 Aug 2025 21:03:01 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Aaron Conole <aconole@redhat.com>, 1108860@bugs.debian.org,
+	Charles Bordet <rough.rock3059@datachamp.fr>
+Cc: Guillaume Nault <gnault@redhat.com>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	Charles Bordet <rough.rock3059@datachamp.fr>,
+	linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: Bug#1108860: [regression] Wireguard fragmentation fails with
+ VXLAN since 8930424777e4 ("tunnels: Accept PACKET_HOST
+ skb_tunnel_check_pmtu().") causing network timeouts
+Message-ID: <aLNK5WOmkgzNrh8P@eldamar.lan>
+References: <aHVhQLPJIhq-SYPM@eldamar.lan>
+ <aHYiwvElalXstQVa@debian>
+ <e585ae4c.AMcAAHLjGYQAAAAAAAAABAFNqZcAAYCsWIwAAAAAAA3mswBoanLG@mailjet.com>
+ <f7tjz485mpk.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250825075732.10694-3-kprateek.nayak@amd.com>
+In-Reply-To: <f7tjz485mpk.fsf@redhat.com>
+X-Debian-User: carnil
 
-On Mon, Aug 25, 2025 at 07:57:30AM +0000, K Prateek Nayak wrote:
-> This has not been a problem on baremetal platforms since support for
-> TOPOEXT (Fam 0x15 and later) predates the support for CPUID leaf 0xb
-> (Fam 0x17[Zen2] and later), however, for AMD guests on QEMU, "x2apic"
-> feature can be enabled independent of the "topoext" feature where QEMU
-> expects topology and the initial APICID to be parsed using the CPUID
-> leaf 0xb (especially when number of cores > 255) which is populated
-> independent of the "topoext" feature flag.
+Hi,
 
-This sounds like we're fixing the kernel because someone *might* supply
-a funky configuration to qemu. You need to understand that we're not wagging
-the dog and fixing the kernel because of that.
-
-If someone manages to enable some weird concoction of feature flags in qemu,
-we certainly won't "fix" that in the kernel.
-
-So let's concentrate that text around fixing the issue of parsing CPUID
-topology leafs which we should parse and looking at CPUID flags only for those
-feature leafs, for which those flags are existing.
-
-If qemu wants stuff to work, then it better emulate the feature flag
-configuration like the hw does.
-
-> Unconditionally call cpu_parse_topology_ext() on AMD and Hygon
-> processors to first parse the topology using the XTOPOLOGY leaves
-> (0x80000026 / 0xb) before using the TOPOEXT leaf (0x8000001e).
+On Wed, Jul 16, 2025 at 08:44:55AM -0400, Aaron Conole wrote:
+> Guillaume Nault <gnault@redhat.com> writes:
 > 
-> Cc: stable@vger.kernel.org # Only v6.9 and above
-> Link: https://lore.kernel.org/lkml/1529686927-7665-1-git-send-email-suravee.suthikulpanit@amd.com/ [1]
-> Link: https://lore.kernel.org/lkml/20080818181435.523309000@linux-os.sc.intel.com/ [2]
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 [3]
-> Suggested-by: Naveen N Rao (AMD) <naveen@kernel.org>
-> Fixes: 3986a0a805e6 ("x86/CPU/AMD: Derive CPU topology from CPUID function 0xB when available")
-> Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-> ---
-> Changelog v3..v4:
+> > On Mon, Jul 14, 2025 at 09:57:52PM +0200, Salvatore Bonaccorso wrote:
+> >> Hi,
+> >> 
+> >> Charles Bordet reported the following issue (full context in
+> >> https://bugs.debian.org/1108860)
+> >> 
+> >> > Dear Maintainer,
+> >> > 
+> >> > What led up to the situation?
+> >> > We run a production environment using Debian 12 VMs, with a network
+> >> > topology involving VXLAN tunnels encapsulated inside Wireguard
+> >> > interfaces. This setup has worked reliably for over a year, with MTU set
+> >> > to 1500 on all interfaces except the Wireguard interface (set to 1420).
+> >> > Wireguard kernel fragmentation allowed this configuration to function
+> >> > without issues, even though the effective path MTU is lower than 1500.
+> >> > 
+> >> > What exactly did you do (or not do) that was effective (or ineffective)?
+> >> > We performed a routine system upgrade, updating all packages include the
+> >> > kernel. After the upgrade, we observed severe network issues (timeouts,
+> >> > very slow HTTP/HTTPS, and apt update failures) on all VMs behind the
+> >> > router. SSH and small-packet traffic continued to work.
+> >> > 
+> >> > To diagnose, we:
+> >> > 
+> >> > * Restored a backup (with the previous kernel): the problem disappeared.
+> >> > * Repeated the upgrade, confirming the issue reappeared.
+> >> > * Systematically tested each kernel version from 6.1.124-1 up to
+> >> > 6.1.140-1. The problem first appears with kernel 6.1.135-1; all earlier
+> >> > versions work as expected.
+> >> > * Kernel version from the backports (6.12.32-1) did not resolve the
+> >> > problem.
+> >> > 
+> >> > What was the outcome of this action?
+> >> > 
+> >> > * With kernel 6.1.135-1 or later, network timeouts occur for
+> >> > large-packet protocols (HTTP, apt, etc.), while SSH and small-packet
+> >> > protocols work.
+> >> > * With kernel 6.1.133-1 or earlier, everything works as expected.
+> >> > 
+> >> > What outcome did you expect instead?
+> >> > We expected the network to function as before, with Wireguard handling
+> >> > fragmentation transparently and no application-level timeouts,
+> >> > regardless of the kernel version.
+> >> 
+> >> While triaging the issue we found that the commit 8930424777e4
+> >> ("tunnels: Accept PACKET_HOST in skb_tunnel_check_pmtu()." introduces
+> >> the issue and Charles confirmed that the issue was present as well in
+> >> 6.12.35 and 6.15.4 (other version up could potentially still be
+> >> affected, but we wanted to check it is not a 6.1.y specific
+> >> regression).
+> >> 
+> >> Reverthing the commit fixes Charles' issue.
+> >> 
+> >> Does that ring a bell?
+> >
+> > It doesn't ring a bell. Do you have more details on the setup that has
+> > the problem? Or, ideally, a self-contained reproducer?
 > 
-> o Quoted relevant section of the PPR justifying the changes.
-> 
-> o Moved this patch up ahead.
-> 
-> o Cc'd stable and made a note that backports should target v6.9 and
->   above since this depends on the x86 topology rewrite.
+> +1 - I tested this patch with an OVS setup using vxlan and geneve
+> tunnels.  A reproducer or more details would help.
 
-Put that explanation in the CC:stable comment.
+Charles, any news here, did you found a way to provide a
+self-contained reproducer for your issue?
 
-> ---
->  arch/x86/kernel/cpu/topology_amd.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/x86/kernel/cpu/topology_amd.c b/arch/x86/kernel/cpu/topology_amd.c
-> index 827dd0dbb6e9..4e3134a5550c 100644
-> --- a/arch/x86/kernel/cpu/topology_amd.c
-> +++ b/arch/x86/kernel/cpu/topology_amd.c
-> @@ -175,18 +175,14 @@ static void topoext_fixup(struct topo_scan *tscan)
->  
->  static void parse_topology_amd(struct topo_scan *tscan)
->  {
-> -	bool has_topoext = false;
-> -
->  	/*
-> -	 * If the extended topology leaf 0x8000_001e is available
-> -	 * try to get SMT, CORE, TILE, and DIE shifts from extended
-> +	 * Try to get SMT, CORE, TILE, and DIE shifts from extended
->  	 * CPUID leaf 0x8000_0026 on supported processors first. If
->  	 * extended CPUID leaf 0x8000_0026 is not supported, try to
->  	 * get SMT and CORE shift from leaf 0xb first, then try to
->  	 * get the CORE shift from leaf 0x8000_0008.
->  	 */
-> -	if (cpu_feature_enabled(X86_FEATURE_TOPOEXT))
-> -		has_topoext = cpu_parse_topology_ext(tscan);
-> +	bool has_topoext = cpu_parse_topology_ext(tscan);
+Does the issue still reproeduce for you on the most current version of
+each of the affected dstable series?
 
-Ok, I see what the point here is - you want to parse topology regardless of
-X86_FEATURE_TOPOEXT.
-
-Which is true - latter "indicates support for Core::X86::Cpuid::CachePropEax0
-and Core::X86::Cpuid::ExtApicId" only and the leafs cpu_parse_topology_ext()
-attempts to parse are different ones.
-
-So, "has_topoext" doesn't have anything to do with X86_FEATURE_TOPOEXT - it
-simply means that the topology extensions parser found some extensions and
-parsed them. So let's rename that variable differently so that there is no
-confusion.
-
-You can do the renaming in parse_8000_001e() in a later patch as that is only
-a cosmetic thing and we don't want to send that to stable.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Regards,
+Salvatore
 
