@@ -1,94 +1,79 @@
-Return-Path: <stable+bounces-176736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE474B3C878
-	for <lists+stable@lfdr.de>; Sat, 30 Aug 2025 08:18:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE3DB3C879
+	for <lists+stable@lfdr.de>; Sat, 30 Aug 2025 08:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 904CB3B2C78
-	for <lists+stable@lfdr.de>; Sat, 30 Aug 2025 06:18:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D4013B23C8
+	for <lists+stable@lfdr.de>; Sat, 30 Aug 2025 06:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A250F1E1A05;
-	Sat, 30 Aug 2025 06:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95601CCEE0;
+	Sat, 30 Aug 2025 06:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBJolfAx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXTL18uC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADA652F99;
-	Sat, 30 Aug 2025 06:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9556052F99
+	for <stable@vger.kernel.org>; Sat, 30 Aug 2025 06:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756534684; cv=none; b=mDYndX+FqxSzPOlAqezGZaWXDSQVay8HJAzPj6qs9RvvyH+h0s115gfjW91HMUsHOWLqFc0EyvGokNieNp/bpwLnOwj/wP1nW0S3+eDZdyaJqCaoHZp6/xUy76K3aGjzkVfFaI2Cp/DyzzT9Egu0Y358C9Df3TEBB+BV+6rAkQg=
+	t=1756534747; cv=none; b=fUw3D5+1Vk42kx9oGVikmboMtSgZ7lD4xRKDRpZPK5Onf4IPFe1JqXjZt+kS5rn+hApCYAxNyd+3MRrTfk9WP70AzMxcbKX0jigkiT5fvIAdPD/Ho7kIbJEKD/AydXVT9vhEdwKKLWNTbsuqCA+wQc1tEaR14OG6qh5U8YMBNbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756534684; c=relaxed/simple;
-	bh=8QxXN92CL+ywVbSvEbZeFhl5sfTdPMsZM6SLi+qfAyk=;
+	s=arc-20240116; t=1756534747; c=relaxed/simple;
+	bh=EizBb/VTEiRJ55vzNdftliC2XA11+ng7XxeOR8X6X38=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U8wV3E8Dv2RXQoAMNcqP3HpICN/d5jzGc+5DVUUdMSrJtIBuGOJeqQsDJpEOGO2XuG5/AwSy5btnXJxIqO5I34DOT4/6i143NDl7b2KQ4jjcWRI6iQJjMfVLPSzkuhN1UFl62qUGjoeH4PPY9JDGf+AdbRcGuBrr1nzkL/n7Du0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBJolfAx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F5AC4CEEB;
-	Sat, 30 Aug 2025 06:18:02 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=t6kWaAPRZmmq6tfyiyDKh9JXFu3qcyXgSSnNqyHBp4Z6U1p7KbRMJABc/iQRYSZcCycoh5sLByFpfeNqUVo5NjRC/BdUZKrjl5yF/XHTcCaWuPY3+ym2GQZBbKWjj4oKbUUleisyYB9vjgUm65fZ7Ec4kecQTRBHYo6FsLxIl48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXTL18uC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF48C4CEEB;
+	Sat, 30 Aug 2025 06:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756534683;
-	bh=8QxXN92CL+ywVbSvEbZeFhl5sfTdPMsZM6SLi+qfAyk=;
+	s=korg; t=1756534747;
+	bh=EizBb/VTEiRJ55vzNdftliC2XA11+ng7XxeOR8X6X38=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dBJolfAxMvC8RD4BYYnTp7IpLLRWcTIqzDLfhKDCIs7Fp4zUMs1REWyaS8dyIpH/2
-	 dETIdyw7C8SlkjzixG9seR7Zm0zTGSsL8h2Pjy5gw+zXtFcDZzs8v1rO2IM20AJh2j
-	 KrtWyAmPxOS1lx1CU25+Y1KTb+4fR0550w855Mow=
-Date: Sat, 30 Aug 2025 08:18:00 +0200
+	b=WXTL18uCfOQAPMm74ayAvqfSJRgjwo30kS7dC1eOjwILXlf98gxG+xcsEMQ68ckRH
+	 7ZuVqhaEnoFr6WdG6yLoIZfEDqIu5X4Kr3l9gC8sfuGuGO2T+LAt9FLBVb9voJW+Lt
+	 PTsEVolnaqBHsrzKy9hTekEKHzFvsDY6S2ZsVyZ8=
+Date: Sat, 30 Aug 2025 08:19:04 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Sherry Yang <sherry.yang@oracle.com>
-Cc: "johannes.berg@intel.com" <johannes.berg@intel.com>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>,
-	"repk@triplefau.lt" <repk@triplefau.lt>,
-	"sashal@kernel.org" <sashal@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH 5.4 098/403] Reapply "wifi: mac80211: Update skbs control
- block key in ieee80211_tx_dequeue()"
-Message-ID: <2025083022-bleep-numbness-0fc1@gregkh>
-References: <20250826110909.381604948@linuxfoundation.org>
- <20250828225323.725505-1-sherry.yang@oracle.com>
- <2025082931-repurpose-unfeeling-04fb@gregkh>
- <6E63CCB8-0298-45F1-B835-B5E040CE6815@oracle.com>
+To: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org, sashal@kernel.org
+Subject: Re: [PATCH] Revert "drm/amdgpu: Avoid extra evict-restore process."
+Message-ID: <2025083040-startle-shortlist-3f48@gregkh>
+References: <20250829193652.1925084-1-alexander.deucher@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6E63CCB8-0298-45F1-B835-B5E040CE6815@oracle.com>
+In-Reply-To: <20250829193652.1925084-1-alexander.deucher@amd.com>
 
-On Fri, Aug 29, 2025 at 05:15:00PM +0000, Sherry Yang wrote:
+On Fri, Aug 29, 2025 at 03:36:52PM -0400, Alex Deucher wrote:
+> This reverts commit 71598a5a7797f0052aaa7bcff0b8d4b8f20f1441.
 > 
+> This commit introduced a regression, however the fix for the
+> regression:
+> aa5fc4362fac ("drm/amdgpu: fix task hang from failed job submission during process kill")
+> depends on things not yet present in 6.12.y and older kernels.  Since
+> this commit is more of an optimization, just revert it for
+> 6.12.y and older stable kernels.
 > 
-> > On Aug 28, 2025, at 9:24 PM, Greg KH <gregkh@linuxfoundation.org> wrote:
-> > 
-> > On Thu, Aug 28, 2025 at 03:53:23PM -0700, Sherry Yang wrote:
-> >> Hi Greg,
-> >> 
-> >> I noticed that only [PATCH 2/2] from the series
-> >> 
-> >> [PATCH wireless 0/2] Fix ieee80211_tx_h_select_key() for 802.11 encaps offloading [1]
-> >> 
-> >> was backported to 5.4-stable, while [PATCH 1/2] is missing.
-> >> 
-> >> It looks like the 1st patch is the prerequisite patch to apply the 2nd patch.
-> >> 
-> >> [1] https://urldefense.com/v3/__https://lore.kernel.org/all/cover.1752765971.git.repk@triplefau.lta__;!!ACWV5N9M2RV99hQ!ITMqVu4PcbzGTShSCka7THPXkavGtJSDV14NENhXrSlnq5NVYm5c44uQujhYeIJ-y6oHMzBYuTV7qUh-7_ENrMBs$
-> > 
-> > What is the git id of the patch you feel is missing?
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> Cc: stable@vger.kernel.org # 6.1.x - 6.12.x
+> ---
 > 
-> 9b096abd5454 (“wifi: mac80211: Check 802.11 encaps offloading in ieee80211_tx_h_select_key()”) in linux-stable-5.15.y
+> Please apply this revert to 6.1.x to 6.12.x stable trees.  The newer
+> stable trees and Linus' tree already have the regression fix.
 
-So you really mean 4037c468d1b3 ("wifi: mac80211: Check 802.11 encaps
-offloading in ieee80211_tx_h_select_key()") needs to be backported to
-5.4.y as well?
+What is the commit id in Linus's tree for this fix?  Why can't we just
+take that one instead?
 
 thanks,
 
