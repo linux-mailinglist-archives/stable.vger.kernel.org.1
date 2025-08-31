@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-176768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3A6B3D4EF
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 21:25:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68041B3D500
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 21:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D8A417A03D
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 19:25:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D24E31896F73
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 19:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC36276030;
-	Sun, 31 Aug 2025 19:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5BE22CBC0;
+	Sun, 31 Aug 2025 19:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="b2DbA1x9"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rVkykXHR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2697B27587C;
-	Sun, 31 Aug 2025 19:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD926D1A7;
+	Sun, 31 Aug 2025 19:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756668357; cv=none; b=iYWetPSBlqr+kuoxxI0FSt2fuOP7bo29NF5nHxh4RctRDsoyua//BAftPduZJxctx0akas39cH1FGNJde6uq+/wzbjAxMKgGZRRpBpFNDdzCIRMaH2k3HdfXtkM8F2OtV3hRmgCTipyBKFgA00UhyM+r8mv7/as2oUeeVSXY7og=
+	t=1756669380; cv=none; b=CfESQY7UeUbRwgUOwLlhGa+0nY5KNWhWcOdAvFsrTOxGrR6GCWIa8fpg5p9y0i61rxe/E1US08hlELJJlog1CBkGigxEMjtSGeHm18jAJXHuBwrGkYV/xOjonTKFEEDwwRB8GzW+UgC+hol7PzwzXmdAe03l27nBzminFkvHJlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756668357; c=relaxed/simple;
-	bh=8dHvcmVjSSX0mAL/Rr2eQe1MAMKGSuHfD8jDrd2XX9g=;
-	h=Date:To:From:Subject:Message-Id; b=YaUACPCMNFOCWqzUFJZHk3XUgrHmUJVZWA04EVk4qPryq1+Z/sQjC4x4VICGnEy9FYWpXqtILajmftUZh8+cIHUOVEohPNP90CErB/cCNDRVkK7idUXbwmW9SfjkA7H57zEXlQP3kCg7mbZ8kRh3HiXJSVfsD15BpaHES2CqjGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=b2DbA1x9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294E8C4CEED;
-	Sun, 31 Aug 2025 19:25:55 +0000 (UTC)
+	s=arc-20240116; t=1756669380; c=relaxed/simple;
+	bh=1j3C+v8sr9p4ph0rSuNFCHSRL1mdKN5oYs6fNa9pwFk=;
+	h=Date:To:From:Subject:Message-Id; b=u/1gAa+prG2WNiR6cOfg74DHAdWl/tg3caS3ElmejxAKXCnEh2C6DKq/Tk/oTPXUxTDos761sbZG/06bkVbWTb2SaqhRkI+V27gDjR2yJ+xhCen4JKunBiMGgkKVbrtvcMLpI4QSloGyxRx79zbDdRtsLV9eDbGvuJu7BP3EwyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rVkykXHR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 081C3C4CEED;
+	Sun, 31 Aug 2025 19:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1756668355;
-	bh=8dHvcmVjSSX0mAL/Rr2eQe1MAMKGSuHfD8jDrd2XX9g=;
+	s=korg; t=1756669380;
+	bh=1j3C+v8sr9p4ph0rSuNFCHSRL1mdKN5oYs6fNa9pwFk=;
 	h=Date:To:From:Subject:From;
-	b=b2DbA1x926rj+UkK4HgwaCAY0BZ1k77lUDdp/aub4mljWs3cnbJabvdRsk/5sQlMb
-	 VueaMby1O+3qEgFLtDHB2Kx1bazJovpZ2bSRdBqy90/qOOMN0+xRar7iTsEzdq03kd
-	 UJNbNUtrmg7dFiiH9n63Z1aVtTJ+fwiH0MYNBwAo=
-Date: Sun, 31 Aug 2025 12:25:54 -0700
-To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,mhocko@kernel.org,glider@google.com,dvyukov@google.com,bhe@redhat.com,andreyknvl@gmail.com,urezki@gmail.com,akpm@linux-foundation.org
+	b=rVkykXHRoEoPmz0aUBx2V1vYjMDpLGOA6XXbloJb9rHpfdZJH8vhUgUH6axB5M2eY
+	 ItGfgLDdN0q2SAq+JDamWD/99g62cMEOKump9Cn7yHO3y6DEFj77WUqSpFsuA0viJO
+	 kcBHoo6po5ZYTRQoj6MmFzqLsZWkxd9nGJFzZt7g=
+Date: Sun, 31 Aug 2025 12:42:59 -0700
+To: mm-commits@vger.kernel.org,yuzhao@google.com,yuanchu@google.com,yangge1116@126.com,willy@infradead.org,will@kernel.org,weixugc@google.com,vbabka@suse.cz,stable@vger.kernel.org,shivankg@amd.com,peterx@redhat.com,lizhe.67@bytedance.com,koct9i@gmail.com,keirf@google.com,jhubbard@nvidia.com,jgg@ziepe.ca,hch@infradead.org,hannes@cmpxchg.org,david@redhat.com,chrisl@kernel.org,axelrasmussen@google.com,aneesh.kumar@kernel.org,hughd@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-vmalloc-mm-kasan-respect-gfp-mask-in-kasan_populate_vmalloc.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250831192555.294E8C4CEED@smtp.kernel.org>
+Subject: + mm-fix-folio_expected_ref_count-when-pg_private_2.patch added to mm-new branch
+Message-Id: <20250831194300.081C3C4CEED@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,15 +50,21 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm/vmalloc, mm/kasan: respect gfp mask in kasan_populate_vmalloc()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-vmalloc-mm-kasan-respect-gfp-mask-in-kasan_populate_vmalloc.patch
+     Subject: mm: fix folio_expected_ref_count() when PG_private_2
+has been added to the -mm mm-new branch.  Its filename is
+     mm-fix-folio_expected_ref_count-when-pg_private_2.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmalloc-mm-kasan-respect-gfp-mask-in-kasan_populate_vmalloc.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-fix-folio_expected_ref_count-when-pg_private_2.patch
 
-This patch will later appear in the mm-hotfixes-unstable branch at
+This patch will later appear in the mm-new branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
 
 Before you just go and hit "reply", please:
    a) Consider who else should be cc'ed
@@ -73,199 +79,79 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Subject: mm/vmalloc, mm/kasan: respect gfp mask in kasan_populate_vmalloc()
-Date: Sun, 31 Aug 2025 14:10:58 +0200
+From: Hugh Dickins <hughd@google.com>
+Subject: mm: fix folio_expected_ref_count() when PG_private_2
+Date: Sun, 31 Aug 2025 02:01:16 -0700 (PDT)
 
-kasan_populate_vmalloc() and its helpers ignore the caller's gfp_mask and
-always allocate memory using the hardcoded GFP_KERNEL flag.  This makes
-them inconsistent with vmalloc(), which was recently extended to support
-GFP_NOFS and GFP_NOIO allocations.
+6.16's folio_expected_ref_count() is forgetting the PG_private_2 flag,
+which (like PG_private, but not in addition to PG_private) counts for 1
+more reference: it needs to be using folio_has_private() in place of
+folio_test_private().
 
-Page table allocations performed during shadow population also ignore the
-external gfp_mask.  To preserve the intended semantics of GFP_NOFS and
-GFP_NOIO, wrap the apply_to_page_range() calls into the appropriate
-memalloc scope.
+But this went wrong earlier: folio_expected_ref_count() was based on (and
+replaced) mm/migrate.c's folio_expected_refs(), which has been using
+folio_test_private() since 6.0 converted to folios(): before that,
+expected_page_refs() was correctly using page_has_private().
 
-This patch:
- - Extends kasan_populate_vmalloc() and helpers to take gfp_mask;
- - Passes gfp_mask down to alloc_pages_bulk() and __get_free_page();
- - Enforces GFP_NOFS/NOIO semantics with memalloc_*_save()/restore()
-   around apply_to_page_range();
- - Updates vmalloc.c and percpu allocator call sites accordingly.
+Just a few filesystems are still using PG_private_2 a.k.a.  PG_fscache. 
+Potentially, this fix re-enables page migration on their folios; but it
+would not be surprising to learn that in practice those folios are not
+migratable for other reasons.
 
-Link: https://lkml.kernel.org/r/20250831121058.92971-1-urezki@gmail.com
-Fixes: 451769ebb7e7 ("mm/vmalloc: alloc GFP_NO{FS,IO} for vmalloc")
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Link: https://lkml.kernel.org/r/f91ee36e-a8cb-e3a4-c23b-524ff3848da7@google.com
+Fixes: 86ebd50224c0 ("mm: add folio_expected_ref_count() for reference count calculation")
+Fixes: 108ca8358139 ("mm/migrate: Convert expected_page_refs() to folio_expected_refs()")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Keir Fraser <keirf@google.com>
+Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+Cc: Li Zhe <lizhe.67@bytedance.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Shivank Garg <shivankg@amd.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: yangge <yangge1116@126.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/kasan.h |    6 +++---
- mm/kasan/shadow.c     |   31 ++++++++++++++++++++++++-------
- mm/vmalloc.c          |    8 ++++----
- 3 files changed, 31 insertions(+), 14 deletions(-)
+ include/linux/mm.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/kasan.h~mm-vmalloc-mm-kasan-respect-gfp-mask-in-kasan_populate_vmalloc
-+++ a/include/linux/kasan.h
-@@ -562,7 +562,7 @@ static inline void kasan_init_hw_tags(vo
- #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
- 
- void kasan_populate_early_vm_area_shadow(void *start, unsigned long size);
--int kasan_populate_vmalloc(unsigned long addr, unsigned long size);
-+int kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mask);
- void kasan_release_vmalloc(unsigned long start, unsigned long end,
- 			   unsigned long free_region_start,
- 			   unsigned long free_region_end,
-@@ -574,7 +574,7 @@ static inline void kasan_populate_early_
- 						       unsigned long size)
- { }
- static inline int kasan_populate_vmalloc(unsigned long start,
--					unsigned long size)
-+					unsigned long size, gfp_t gfp_mask)
- {
- 	return 0;
- }
-@@ -610,7 +610,7 @@ static __always_inline void kasan_poison
- static inline void kasan_populate_early_vm_area_shadow(void *start,
- 						       unsigned long size) { }
- static inline int kasan_populate_vmalloc(unsigned long start,
--					unsigned long size)
-+					unsigned long size, gfp_t gfp_mask)
- {
- 	return 0;
- }
---- a/mm/kasan/shadow.c~mm-vmalloc-mm-kasan-respect-gfp-mask-in-kasan_populate_vmalloc
-+++ a/mm/kasan/shadow.c
-@@ -336,13 +336,13 @@ static void ___free_pages_bulk(struct pa
- 	}
- }
- 
--static int ___alloc_pages_bulk(struct page **pages, int nr_pages)
-+static int ___alloc_pages_bulk(struct page **pages, int nr_pages, gfp_t gfp_mask)
- {
- 	unsigned long nr_populated, nr_total = nr_pages;
- 	struct page **page_array = pages;
- 
- 	while (nr_pages) {
--		nr_populated = alloc_pages_bulk(GFP_KERNEL, nr_pages, pages);
-+		nr_populated = alloc_pages_bulk(gfp_mask, nr_pages, pages);
- 		if (!nr_populated) {
- 			___free_pages_bulk(page_array, nr_total - nr_pages);
- 			return -ENOMEM;
-@@ -354,25 +354,42 @@ static int ___alloc_pages_bulk(struct pa
- 	return 0;
- }
- 
--static int __kasan_populate_vmalloc(unsigned long start, unsigned long end)
-+static int __kasan_populate_vmalloc(unsigned long start, unsigned long end, gfp_t gfp_mask)
- {
- 	unsigned long nr_pages, nr_total = PFN_UP(end - start);
- 	struct vmalloc_populate_data data;
-+	unsigned int flags;
- 	int ret = 0;
- 
--	data.pages = (struct page **)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-+	data.pages = (struct page **)__get_free_page(gfp_mask | __GFP_ZERO);
- 	if (!data.pages)
- 		return -ENOMEM;
- 
- 	while (nr_total) {
- 		nr_pages = min(nr_total, PAGE_SIZE / sizeof(data.pages[0]));
--		ret = ___alloc_pages_bulk(data.pages, nr_pages);
-+		ret = ___alloc_pages_bulk(data.pages, nr_pages, gfp_mask);
- 		if (ret)
- 			break;
- 
- 		data.start = start;
-+
-+		/*
-+		 * page tables allocations ignore external gfp mask, enforce it
-+		 * by the scope API
-+		 */
-+		if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
-+			flags = memalloc_nofs_save();
-+		else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
-+			flags = memalloc_noio_save();
-+
- 		ret = apply_to_page_range(&init_mm, start, nr_pages * PAGE_SIZE,
- 					  kasan_populate_vmalloc_pte, &data);
-+
-+		if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
-+			memalloc_nofs_restore(flags);
-+		else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
-+			memalloc_noio_restore(flags);
-+
- 		___free_pages_bulk(data.pages, nr_pages);
- 		if (ret)
- 			break;
-@@ -386,7 +403,7 @@ static int __kasan_populate_vmalloc(unsi
- 	return ret;
- }
- 
--int kasan_populate_vmalloc(unsigned long addr, unsigned long size)
-+int kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mask)
- {
- 	unsigned long shadow_start, shadow_end;
- 	int ret;
-@@ -415,7 +432,7 @@ int kasan_populate_vmalloc(unsigned long
- 	shadow_start = PAGE_ALIGN_DOWN(shadow_start);
- 	shadow_end = PAGE_ALIGN(shadow_end);
- 
--	ret = __kasan_populate_vmalloc(shadow_start, shadow_end);
-+	ret = __kasan_populate_vmalloc(shadow_start, shadow_end, gfp_mask);
- 	if (ret)
- 		return ret;
- 
---- a/mm/vmalloc.c~mm-vmalloc-mm-kasan-respect-gfp-mask-in-kasan_populate_vmalloc
-+++ a/mm/vmalloc.c
-@@ -2026,6 +2026,8 @@ static struct vmap_area *alloc_vmap_area
- 	if (unlikely(!vmap_initialized))
- 		return ERR_PTR(-EBUSY);
- 
-+	/* Only reclaim behaviour flags are relevant. */
-+	gfp_mask = gfp_mask & GFP_RECLAIM_MASK;
- 	might_sleep();
- 
- 	/*
-@@ -2038,8 +2040,6 @@ static struct vmap_area *alloc_vmap_area
- 	 */
- 	va = node_alloc(size, align, vstart, vend, &addr, &vn_id);
- 	if (!va) {
--		gfp_mask = gfp_mask & GFP_RECLAIM_MASK;
--
- 		va = kmem_cache_alloc_node(vmap_area_cachep, gfp_mask, node);
- 		if (unlikely(!va))
- 			return ERR_PTR(-ENOMEM);
-@@ -2089,7 +2089,7 @@ retry:
- 	BUG_ON(va->va_start < vstart);
- 	BUG_ON(va->va_end > vend);
- 
--	ret = kasan_populate_vmalloc(addr, size);
-+	ret = kasan_populate_vmalloc(addr, size, gfp_mask);
- 	if (ret) {
- 		free_vmap_area(va);
- 		return ERR_PTR(ret);
-@@ -4826,7 +4826,7 @@ retry:
- 
- 	/* populate the kasan shadow space */
- 	for (area = 0; area < nr_vms; area++) {
--		if (kasan_populate_vmalloc(vas[area]->va_start, sizes[area]))
-+		if (kasan_populate_vmalloc(vas[area]->va_start, sizes[area], GFP_KERNEL))
- 			goto err_free_shadow;
+--- a/include/linux/mm.h~mm-fix-folio_expected_ref_count-when-pg_private_2
++++ a/include/linux/mm.h
+@@ -2234,8 +2234,8 @@ static inline int folio_expected_ref_cou
+ 	} else {
+ 		/* One reference per page from the pagecache. */
+ 		ref_count += !!folio->mapping << order;
+-		/* One reference from PG_private. */
+-		ref_count += folio_test_private(folio);
++		/* One reference from PG_private or PG_private_2. */
++		ref_count += folio_has_private(folio);
  	}
  
+ 	/* One reference per page table mapping. */
 _
 
-Patches currently in -mm which might be from urezki@gmail.com are
+Patches currently in -mm which might be from hughd@google.com are
 
-mm-vmalloc-mm-kasan-respect-gfp-mask-in-kasan_populate_vmalloc.patch
+mm-fix-folio_expected_ref_count-when-pg_private_2.patch
+mm-gup-check-ref_count-instead-of-lru-before-migration.patch
+mm-gup-local-lru_add_drain-to-avoid-lru_add_drain_all.patch
+mm-revert-mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch
+mm-revert-mm-vmscanc-fix-oom-on-swap-stress-test.patch
+mm-folio_may_be_cached-unless-folio_test_large.patch
+mm-lru_add_drain_all-do-local-lru_add_drain-first.patch
 
 
