@@ -1,117 +1,80 @@
-Return-Path: <stable+bounces-176778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52CBBB3D566
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 23:44:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92634B3D5C5
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 01:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D6183AF715
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 21:44:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14F8F1898581
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 23:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE6923F26A;
-	Sun, 31 Aug 2025 21:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302B12580D1;
+	Sun, 31 Aug 2025 23:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Mrkrzg6Z"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083BF800;
-	Sun, 31 Aug 2025 21:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB3F79CD;
+	Sun, 31 Aug 2025 23:29:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756676645; cv=none; b=oiGdljkk6N/ZdXFE8wG4B5cM15wIzzijy4nb0oqLNbqcpt4e0u3astynwPqS5HOlACnltJITW/jdgWLpPQG4ScGvgTLE0vUGMayjLskPfK9dDJ9WRCDbgWH1QFMC/2megiqQkTPSaq2uZTnbX/uWRWXHmDCCguU8N45h3w7U4VQ=
+	t=1756682970; cv=none; b=KwmGQrUwl89D2ZepFG64IkkfX3OT60dA33xBNkF85GUoKr664RIDz4ND36U+gfoRE3dNuLX+y8L2Ba5j7g96f3KJnvpouaRbeHR+1eR5HG+Bu3RJI22IgRUdFYEIuVEBSyskMw8aAd6F5XxODW3oNYiH2KiHEy85lg273E1nhUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756676645; c=relaxed/simple;
-	bh=XhLWBhTPHbzSraYjiFNcsGlZcv2V8Lnl9xjhUeu1L1c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Td2T8rmFipcHD2LFOPqdqsXHAEOkJjJvTxopIxAAzwrvRJYdzG6rHCGidFiyobCRD+yT+mpQmw8X7OPvqWhgjH1tWNx0HWF+V8VzKgjbI2k3+TNH1Te7IgvtpmtBzHk1xcXMOHfCJIWGidv3h4CQ+V/pEVUMcaeVa49qaDUlvoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CC7841D13;
-	Sun, 31 Aug 2025 14:43:54 -0700 (PDT)
-Received: from e127648.arm.com (unknown [10.57.78.139])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BA9153F694;
-	Sun, 31 Aug 2025 14:44:01 -0700 (PDT)
-From: Christian Loehle <christian.loehle@arm.com>
-To: rafael@kernel.org,
-	lukasz.luba@arm.com
-Cc: linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dietmar.eggemann@arm.com,
-	kenneth.crudup@gmail.com,
-	Christian Loehle <christian.loehle@arm.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] PM: EM: Fix late boot with holes in CPU topology
-Date: Sun, 31 Aug 2025 22:43:57 +0100
-Message-Id: <20250831214357.2020076-1-christian.loehle@arm.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1756682970; c=relaxed/simple;
+	bh=EZBFEyS4HxmV71x9Ua5+mUF9HJBJSHv+wrduh9/94Gk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fqgTsBSft2kX256yEkMBmn0Lx3g9ArLCYgiPi6LQd66EiTSluKshmPLtYFc3brEnAf/jSfkPL1kD/MpD8gUZN1ieqyJjE1Wa6sb6SvaP9ZML+vsVYMQoKbaY6F9BjZ39kHMV9ZDFtJ9M3BD4qonygssk6Uh5SG5+TeWoaOjLcZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Mrkrzg6Z; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=GlJZyU2iMVQPpa9EdFBUUeOTbxDJebxwLjr10Yw03Lg=; b=Mrkrzg6Z8HCtRGY/E/z135F7Hg
+	tZe3rZKgm3C4ce8chS8if7k51HdJ7OOFH+nZzZXWucCGB2iGxcDtyHfD/fnp0rfIf/RXd1i9/bncs
+	cFcyKHZ6n29O6LTrBOOEIU39X/rHGbtHHYUax6t3fYjmQ9pmWrYh6Tr/wqd4OKcIvdy9GlfHkLGVb
+	TJD4zizmTKlIlO/qMvBr+kgIDy+jWUfP0G02JOIM5zXRiQ+r4mRe5T9CC0d/N1INRkuGxipSD2ZjL
+	192HjO249X/X3jdcmn3NR9eqs7ylLWvc+Mm9oYEnH1JNBpIvHXgOQHcbT3bP6QU+0WpTIwXTozQ7h
+	yquRNp8Q==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1usrU1-0000000GrLf-3iWo;
+	Sun, 31 Aug 2025 23:29:13 +0000
+Date: Mon, 1 Sep 2025 00:29:13 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: mm-commits@vger.kernel.org, yuzhao@google.com, yuanchu@google.com,
+	yangge1116@126.com, will@kernel.org, weixugc@google.com,
+	vbabka@suse.cz, stable@vger.kernel.org, shivankg@amd.com,
+	peterx@redhat.com, lizhe.67@bytedance.com, koct9i@gmail.com,
+	keirf@google.com, jhubbard@nvidia.com, jgg@ziepe.ca,
+	hch@infradead.org, hannes@cmpxchg.org, david@redhat.com,
+	chrisl@kernel.org, axelrasmussen@google.com,
+	aneesh.kumar@kernel.org, hughd@google.com
+Subject: Re: + mm-fix-folio_expected_ref_count-when-pg_private_2.patch added
+ to mm-new branch
+Message-ID: <aLTayWpbkN3g1Q15@casper.infradead.org>
+References: <20250831194300.081C3C4CEED@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250831194300.081C3C4CEED@smtp.kernel.org>
 
-commit e3f1164fc9ee ("PM: EM: Support late CPUs booting and capacity
-adjustment") added a mechanism to handle CPUs that come up late by
-retrying when any of the `cpufreq_cpu_get()` call fails.
+On Sun, Aug 31, 2025 at 12:42:59PM -0700, Andrew Morton wrote:
+> 
+> The patch titled
+>      Subject: mm: fix folio_expected_ref_count() when PG_private_2
+> has been added to the -mm mm-new branch.  Its filename is
+>      mm-fix-folio_expected_ref_count-when-pg_private_2.patch
 
-However, if there are holes in the CPU topology (offline CPUs, e.g.
-nosmt), the first missing CPU causes the loop to break, preventing
-subsequent online CPUs from being updated.
-Instead of aborting on the first missing CPU policy, loop through all
-and retry if any were missing.
-
-Fixes: e3f1164fc9ee ("PM: EM: Support late CPUs booting and capacity adjustment")
-Suggested-by: Kenneth Crudup <kenneth.crudup@gmail.com>
-Reported-by: Kenneth Crudup <kenneth.crudup@gmail.com>
-Closes: https://lore.kernel.org/linux-pm/40212796-734c-4140-8a85-854f72b8144d@panix.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Loehle <christian.loehle@arm.com>
----
- kernel/power/energy_model.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
-
-diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
-index ea7995a25780..b63c2afc1379 100644
---- a/kernel/power/energy_model.c
-+++ b/kernel/power/energy_model.c
-@@ -778,7 +778,7 @@ void em_adjust_cpu_capacity(unsigned int cpu)
- static void em_check_capacity_update(void)
- {
- 	cpumask_var_t cpu_done_mask;
--	int cpu;
-+	int cpu, failed_cpus = 0;
- 
- 	if (!zalloc_cpumask_var(&cpu_done_mask, GFP_KERNEL)) {
- 		pr_warn("no free memory\n");
-@@ -796,10 +796,8 @@ static void em_check_capacity_update(void)
- 
- 		policy = cpufreq_cpu_get(cpu);
- 		if (!policy) {
--			pr_debug("Accessing cpu%d policy failed\n", cpu);
--			schedule_delayed_work(&em_update_work,
--					      msecs_to_jiffies(1000));
--			break;
-+			failed_cpus++;
-+			continue;
- 		}
- 		cpufreq_cpu_put(policy);
- 
-@@ -814,6 +812,11 @@ static void em_check_capacity_update(void)
- 		em_adjust_new_capacity(cpu, dev, pd);
- 	}
- 
-+	if (failed_cpus) {
-+		pr_debug("Accessing %d policies failed, retrying\n", failed_cpus);
-+		schedule_delayed_work(&em_update_work, msecs_to_jiffies(1000));
-+	}
-+
- 	free_cpumask_var(cpu_done_mask);
- }
- 
--- 
-2.34.1
-
+NAK.  I'm about to respond properly, but this one is dangerously wrong.
 
