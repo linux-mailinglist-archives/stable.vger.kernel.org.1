@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-176751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E918EB3D288
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 13:36:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD312B3D28D
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 13:36:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB3FF3BD01F
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 11:36:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86B9A3BCE49
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 11:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD6E258EF0;
-	Sun, 31 Aug 2025 11:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0909A25A2C8;
+	Sun, 31 Aug 2025 11:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MJ7DdF+w"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GPf5XB6l"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC311DB125;
-	Sun, 31 Aug 2025 11:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F59D22A4DA;
+	Sun, 31 Aug 2025 11:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756640196; cv=none; b=O+DqyBMg1FQ/MXf3USJ5s/lUOldGJdo2+WXlmn2JDrYmmwfgRvJ9kqZxPAPUOz9qKs6NSkkSrSugNw5plRMMmnjSr6262Tf9pYQlcArGkug79ozR35EqLtYGTkS/4EoNP7U7xIdwtMDHLQElLz23TkdKzn5mKAF8EvKWUYjyJy8=
+	t=1756640196; cv=none; b=UGt0hkjftCqcLXZFAJhnMPJxLzjet7XIrjEY/WgxYMrFYq3zBBWBRQ44ffQ0KD4AkMecBu4f31gSMJqkQSw37FOnXLQBQAm+zQWzDyneHnz/GwFRVc1iHzMZ58hTXllXaa0fV1DzwDOf79JDI+UNO2ntvKAe/VUcgbh4MxYM5JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756640196; c=relaxed/simple;
-	bh=LfoZx3TjTj6uwJ1O/VBARwGIA99pc3EHjHaCgfE9NuY=;
+	bh=5UMA1QQbhpw59AbBzA24LNrq4MiD/a6bEyFrWmfD9AA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ICsEN2JkZ7iB9AWk61Ttahq7t2msjJaFp2QOxwyuAnzDbjrx7hzj8fsfd53akuzuJaMkapGJOUIbeReWDYtWfpE74Cj74KtFUDkV7IcWTAAT7WwQYWcLDN7XBwjPGlFYgYaix3BvhpYhOsgm0/0VRFgnMigcmqakDYZh1HBz5zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MJ7DdF+w; arc=none smtp.client-ip=209.85.219.48
+	 In-Reply-To:To:Cc; b=X0Iqb/n0RrSGBcB7eZDGuOPVb8P/u/QD8+eMlMZeiD/v77tt7mRp6jhtNYU7Xtw/dgESQRY7jItyAgUhDLkSTGDiXkjIomBcXkGzHbOuTOgvc1vkkyO0H9+vH2Z47CJfy14C2Hfa1JcR19buV4OKGwuhB/50cMfPvJDhi65uY+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GPf5XB6l; arc=none smtp.client-ip=209.85.219.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-70dea0c6759so42776356d6.3;
-        Sun, 31 Aug 2025 04:36:34 -0700 (PDT)
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-70a9f5625b7so31677816d6.2;
+        Sun, 31 Aug 2025 04:36:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756640193; x=1757244993; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756640194; x=1757244994; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=imvbS76XoT7vPDnoNBAMw6pY77bkDW1TJhU+1nyBJGA=;
-        b=MJ7DdF+wmZbEc5br/TVmnCuBYkze9zYILObGS2fYLI9T7FABbQzDOWCuJcoZ6JnH0S
-         XkBB1Rkl7nOY0ehR1+bgbQ55GP9HMNXF47jugM9wBFaT1du1ZLddURadoRBCVPMWX2y4
-         99Q3Ji88TVFKb/N3vmrrkWWVWKBvsrLLUoaF3m4jSVU8O76dfplcJwObS5UJroej3wRQ
-         2OhgGBNaE4F0yTEzsO0W7FjyEkJ90m9qMMOgWOsXNKoAf9WrPdPeX5APoWY6OKap7FBV
-         QXJvGpu7B8PeI+QY/m6veT6JSy0j3R8xRW4aITY/etuq7ypzU6LSl+GtB2gqp8ncuUH/
-         L01g==
+        bh=55pZ4cEaeEj0rydwxsO5TL3wb1AMbR3NyzI16xoHkYo=;
+        b=GPf5XB6lcucWRkH30JpBAZvcDxxzIDdYnpJSVzWRmtxw0xfQxODT1yhnLI6j2SX5+9
+         8Y+GqsNBWgSW6AtwiqvS3y47RXtbV2dQetLngkboxfTCJhb1YTVqZM2TeGAtNyn5i1EP
+         wAcNfwpv9CAzetD6iB68IxY3sRQgXxxDHT4UbbAOZq9P1Nyga9w9CyHxQ5532DGRkidY
+         yi55sCM65mV3DaMC6xybkRE79ujVSFNjR10dcqrSXo220bcH7AwRHM3Q2Sx4RsN7i0yq
+         xHqWzX3bGi3yvoEEV5mj97q699KPodsz6oNA4UpbrGy+xQcMuVxbdTC40UeZG0GYhNU6
+         q3MQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756640193; x=1757244993;
+        d=1e100.net; s=20230601; t=1756640194; x=1757244994;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=imvbS76XoT7vPDnoNBAMw6pY77bkDW1TJhU+1nyBJGA=;
-        b=SifvPWYOoliCiJlFEN06nqByLh17Yu4R2nbSE5CXYsn5DuV4LifX7kmpw4nAoEWvW6
-         v0kyF+5eDqtFWxnj2pema+OdSgh4qIDiqoBQlGavEhybIirZ4JX5iqVrNtbm9OwzZt8x
-         dHNPP25BnPzNTUmGsxYo5LVKIfUE4L0iJ/zadJPMex+aBvyR4p8F+3wYxBRWlVtf4Qai
-         waEdUgM/fiEKLLWZ1i91HjhbPP9I84SvJoo0baVeC4DNouo0opNmiWU7VIpxN+VZZ4wZ
-         ExwI2Txhz1uPCvU8z2Rm/nTYoF5IWLyZ4fjsK52EsU9kQ6Cv/upINXrJfir4yvJgv+Na
-         hTBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUrY3s94/A3AAwZ6r67YWVUaBfWWn4vv9iOClDc9p5CXOhKYYdldh+cAQc0tZs0DhnHah9PEQBv3FCZLJZg@vger.kernel.org, AJvYcCVD9ZtafDnfTHDGBKj7JuYgvDpe7qW3C2P81gaM58KBnIDZbmRy2tGuUhO2NLoK9TbMuungxC3+@vger.kernel.org, AJvYcCVgKuM8FjGDG9S6PvC97+STstTN0Yl1b8jFmDrjpKSDrKF9S7FTwVi0A7OrVPYvqq9XFNfQ9ORAjJ9m@vger.kernel.org, AJvYcCWrMdhtHGh2J0wNWxUalT/3SZwcQTWf08Mdm1CbNcH+7u1J6KMM2BuTuHamhIYfY9NfDgwpEmq8Zkoo@vger.kernel.org
-X-Gm-Message-State: AOJu0YzF0cJ7RULKm52GWBhVngNA1O8Jxdwv/gOxydTnQqwsRl4WgLIE
-	KDDIq1Q+DrrKAQLecO3z5jNzAcC+lG46oc/pkQfdDw+ni+gBZTjPj0qGMQX3tjyh1KI=
-X-Gm-Gg: ASbGncs1u4Q8BpTo0wjo9WIIKY/szCv1+K6RHA58b9v6UGlcQIzY/VTEENYU4h/Kta0
-	1Aenj+8OYS+pxtSlca55RGJLAEeHXAY5A11hw/sPlNPbT75/V2N63mKn642swKGqg7LAXX+CV3o
-	59UJdPKLtojH3qtMnlE23uCbwef6s+0H7fO8cIJ0jw1WdWFKDGMS6GWHFY1Wg56WrSChLlyr2Ik
-	gFZYMM9gGHSAR3CgmrtJB9kA7oWXK+pOfH+GhJrDvmUgz6W4GRBETtsemviPSqt/RcFdUlhQOKW
-	zwIordL9Zh95M988umemTv53V9mk2t/Qur/3dPoflg1CjSz/ITrmkxTob3Eke5EnV/teb+miDqw
-	Ijh6uPDFrR9rF0C4XLoTvsFC85EE6i3pN3YJLJpzWz+3BdAW92Rjt
-X-Google-Smtp-Source: AGHT+IHV630wqWGffYM6kShz7/qTYJvqOJRnSYz6I3w0weN4IBkM8Q5XyHS+gzuNT6ATIJlJwAut8A==
-X-Received: by 2002:ad4:5948:0:b0:70d:d4d8:d3fc with SMTP id 6a1803df08f44-70fac8d3491mr45266476d6.46.1756640193195;
-        Sun, 31 Aug 2025 04:36:33 -0700 (PDT)
+        bh=55pZ4cEaeEj0rydwxsO5TL3wb1AMbR3NyzI16xoHkYo=;
+        b=mSdQX6LSb+ud0w1fswcraPKplpER8EWmJKBSreukoeO5jTNmHmQODvMzbFYVlGaKuL
+         hbcU1RQmV7O+idk6tGFdJeeG9otMxuheCoxCQNz/zu+OhVYPsFOCsTBb4UPBGC7DLgrF
+         Y+G3+RotH3vqhyth/1PnPbe90l/c9GXHGDuKMpW/hQKvXSeLbEwZ0xBPLZmZFB5pu+JS
+         Mgg48hnxsn9a8TwicNrH94iTHjYIizbXbFo8Wfo5CgiV81OrPJI3vHe+NZR2UNCasYcR
+         DKDL84H/USaQlHNoFRhamqmo5nKKnGrvBRvrRzdmLYotTDVX+bdTpI5hVJE8qj/PQGZA
+         vIMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/gGN3QgkeHZftPRoeKVo3AtnDSn5erD4dF9pR8XkVdxYbBjrbCOG7upnkBbr+kx7avqdtDc2Q5q0c@vger.kernel.org, AJvYcCUWx4wV7vYMxMZTxlsoWV5ZBvwjAfNNllUiVJoPzLHwQU1nflsQD13JMhtszPKScmtsoRMPEk2OI0xk@vger.kernel.org, AJvYcCV7WPZYVXGIzy2UyFPTAKeOaOb3x4aXihCU4v7g/kc6EV91O19yl8ysu58tCoF3fUmbwfVK5QSPjOnn9+fU@vger.kernel.org, AJvYcCXKBWfw2K6ij6uAeSrskm3jMgYcAtW/Dc/SXaG0b33ZRbNSlnE5J7FhKSOKJ0GwbVTj32vZh160@vger.kernel.org
+X-Gm-Message-State: AOJu0YwI2VNtl1mIov7DHC1cPc1YBkbg0MBCArVhUFHVY8GbzKA0eVjy
+	6yJYcA2J3cBRK+98GNOJHFRbpNMK5z8rjZ4tSOo4nQL6+dgm5Up0KKKu
+X-Gm-Gg: ASbGncvO/qMLZfCBmUnhaMgOhdHURcIJTghdCXqGExqPnNZnUEmTSBIenbR/PqLyYBn
+	94VnEnwZKTgzBdLoJS6lLVALeLEMmuHQpuVG8f6jO+u4b1IHUBj3eMD1ccd+XLA7/kaNyCej09Z
+	zGYFLkcO+x3GxtsojHOpYZG9RpyqUbTZlWS+SC/tTAJN4MMinGszqMl/TnsDyyHakSrVEX+G905
+	MzGtcwHRO5ACnfqKRWcDATfOxGmDet0fMdnDbPhvgq8A0Mk7ZS2ms/7jGux80m9/dB+LS4R4vIE
+	CIqkBPu2CpyZsEgMa+Avhlp78vVIVBZQ8hZoqjgjRYBuJICI0PqjVeqEx3glNaWetItp6YuvAc6
+	DqER5R78FcYPGqlN77WVOPqR7t1XPVjQ=
+X-Google-Smtp-Source: AGHT+IExHYamVdOAcgQV8wp2Sxz6sXo66oWwsm5X4uR2NdQwoTIYNsv249mMC/XJXTvsDtdfpXt8aQ==
+X-Received: by 2002:ad4:596a:0:b0:70d:edda:f4ff with SMTP id 6a1803df08f44-70fac6f831bmr48324426d6.11.1756640194107;
+        Sun, 31 Aug 2025 04:36:34 -0700 (PDT)
 Received: from [127.0.0.1] ([135.237.130.227])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70fb28383b9sm20519076d6.37.2025.08.31.04.36.32
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70fb28383b9sm20519076d6.37.2025.08.31.04.36.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Aug 2025 04:36:32 -0700 (PDT)
+        Sun, 31 Aug 2025 04:36:33 -0700 (PDT)
 From: Denzeel Oliva <wachiturroxd150@gmail.com>
-Date: Sun, 31 Aug 2025 11:36:26 +0000
-Subject: [PATCH 1/3] dt-bindings: clock: exynos990: Add LHS_ACEL clock ID
- for HSI0 block
+Date: Sun, 31 Aug 2025 11:36:27 +0000
+Subject: [PATCH 2/3] clk: samsung: exynos990: Add LHS_ACEL gate clock for
+ HSI0 and update CLK_NR_TOP
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,7 +85,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250831-usb-v1-1-02ec5ea50627@gmail.com>
+Message-Id: <20250831-usb-v1-2-02ec5ea50627@gmail.com>
 References: <20250831-usb-v1-0-02ec5ea50627@gmail.com>
 In-Reply-To: <20250831-usb-v1-0-02ec5ea50627@gmail.com>
 To: Krzysztof Kozlowski <krzk@kernel.org>, 
@@ -99,38 +99,49 @@ Cc: linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
  linux-kernel@vger.kernel.org, Denzeel Oliva <wachiturroxd150@gmail.com>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1756640191; l=1077;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756640191; l=1688;
  i=wachiturroxd150@gmail.com; s=20250831; h=from:subject:message-id;
- bh=LfoZx3TjTj6uwJ1O/VBARwGIA99pc3EHjHaCgfE9NuY=;
- b=uLgDqC52/VYRAqkLs2JCoyEBud19Hv2fcWbUqQ6Rv42NnR1elkkUsxTwEF8CdS8DYjgEfI6hZ
- jnzGk50t/WPBvRxvltHhT7a9FhhOvTIoPabcMi47dkWersyeSL3KlXO
+ bh=5UMA1QQbhpw59AbBzA24LNrq4MiD/a6bEyFrWmfD9AA=;
+ b=jzsHw7/2Z/SAz8j9iHAzScqWyZXLXTBtJv7RhMq+aamElMTrlEiFWBFvcyT31bvKxO4J1KdPZ
+ h4q9KYV5gcECA2Pr61g/PalEvkcP0getvfVGo+OnzKyk3aZCfQyrYpB
 X-Developer-Key: i=wachiturroxd150@gmail.com; a=ed25519;
  pk=3fZmF8+BzoNPhZuzL19/BkBXzCDwLBPlLqQYILU0U5k=
 
-Add the missing LHS_ACEL clock ID for the HSI0 block. This clock is
-required for proper USB operation, as without it, USB connections fail
-with errors like device descriptor read timeouts and address response
-issues.
+Add the LHS_ACEL gate clock to the HSI0 clock controller. This clock is
+critical for USB functionality and mark it as critical to keep it
+enabled and update CLK_NR_TOP.
 
-Fixes: 5feae3e79dbe ("dt-bindings: clock: samsung: Add Exynos990 SoC CMU bindings")
+Fixes: bdd03ebf721f ("clk: samsung: Introduce Exynos990 clock controller driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Denzeel Oliva <wachiturroxd150@gmail.com>
 ---
- include/dt-bindings/clock/samsung,exynos990.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/samsung/clk-exynos990.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/dt-bindings/clock/samsung,exynos990.h b/include/dt-bindings/clock/samsung,exynos990.h
-index c5c79e078f2f60fdb2c0f61ba6e7f3c6f2fbe9f2..c60f15503d5b18b11ca9bdce86466512dc933901 100644
---- a/include/dt-bindings/clock/samsung,exynos990.h
-+++ b/include/dt-bindings/clock/samsung,exynos990.h
-@@ -236,6 +236,7 @@
- #define CLK_GOUT_HSI0_VGEN_LITE_HSI0_CLK		20
- #define CLK_GOUT_HSI0_CMU_HSI0_PCLK			21
- #define CLK_GOUT_HSI0_XIU_D_HSI0_ACLK			22
-+#define CLK_GOUT_HSI0_LHS_ACEL_D_HSI0_CLK		23
+diff --git a/drivers/clk/samsung/clk-exynos990.c b/drivers/clk/samsung/clk-exynos990.c
+index 91736b15c4b4a0759419517f7b04dd0a8f38a289..7884354d612c54039289fa9b80ad08f34b9b7029 100644
+--- a/drivers/clk/samsung/clk-exynos990.c
++++ b/drivers/clk/samsung/clk-exynos990.c
+@@ -18,7 +18,7 @@
  
- /* CMU_PERIS */
- #define CLK_MOUT_PERIS_BUS_USER			1
+ /* NOTE: Must be equal to the last clock ID increased by one */
+ #define CLKS_NR_TOP (CLK_DOUT_CMU_CLK_CMUREF + 1)
+-#define CLKS_NR_HSI0 (CLK_GOUT_HSI0_XIU_D_HSI0_ACLK + 1)
++#define CLKS_NR_HSI0 (CLK_GOUT_HSI0_LHS_ACEL_D_HSI0_CLK + 1)
+ #define CLKS_NR_PERIS (CLK_GOUT_PERIS_OTP_CON_TOP_OSCCLK + 1)
+ 
+ /* ---- CMU_TOP ------------------------------------------------------------- */
+@@ -1332,6 +1332,10 @@ static const struct samsung_gate_clock hsi0_gate_clks[] __initconst = {
+ 	     "gout_hsi0_xiu_d_hsi0_aclk", "mout_hsi0_bus_user",
+ 	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_XIU_D_HSI0_IPCLKPORT_ACLK,
+ 	     21, CLK_IGNORE_UNUSED, 0),
++	GATE(CLK_GOUT_HSI0_LHS_ACEL_D_HSI0_CLK,
++	     "gout_hsi0_lhs_acel_d_hsi0_clk", "mout_hsi0_bus_user",
++	     CLK_CON_GAT_GOUT_BLK_HSI0_UID_LHS_ACEL_D_HSI0_IPCLKPORT_I_CLK,
++	     21, CLK_IS_CRITICAL, 0),
+ };
+ 
+ static const struct samsung_cmu_info hsi0_cmu_info __initconst = {
 
 -- 
 2.50.1
