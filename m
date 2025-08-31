@@ -1,286 +1,171 @@
-Return-Path: <stable+bounces-176756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C91B3D2AE
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 14:12:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E5AB3D35F
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 14:45:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07548188FD1F
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 12:12:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B54AD188AD24
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 12:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4094E235057;
-	Sun, 31 Aug 2025 12:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC90225DD0B;
+	Sun, 31 Aug 2025 12:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PaPpVzAu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DM+sdTic"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D60BF9D9;
-	Sun, 31 Aug 2025 12:12:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CECC25333F;
+	Sun, 31 Aug 2025 12:45:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756642350; cv=none; b=M0RKQ8BGXuS8bXEZIBkeSvPlAQGhYm126xXPfccrBx7NGsgncwqDCCXlTSlUXf96oW3YkXkcNTGCvsyxjjVzV/0qdbv7CzGtmSn5QV1k8ag9bnf15YbNMpBAI/B/PyPj0T04Pn68dTLB6AxuON+nCV5q12uyDDbylfwDBrmW0sA=
+	t=1756644322; cv=none; b=I9WsnmdexksXrHL/YxnLAumY3GZPzHEt6YqrrumVqn3YZjAmiOs3V8XjRKu5xfPN3aNUCbGUprhJD2HwI09xAd63z7tEDSzHD+p9OMul8yxqzZhpIZ2hIGqauc8TTixe6u71QUNZPb3HmcO+3dlWACeu8OuMML7M0K0m6gPKTok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756642350; c=relaxed/simple;
-	bh=5BtGY5EPA4lNroYZVvbYXNMVp4bZfsHIGj+MQjrRZH0=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DX6XeNRE2iSLrMO5+0Xl30fXxum0j34BN8Uo1olW3sp/OWq1F+5DXaF9SAC4EapF4OJ6aWtqMKO/8iEr6lfKDgsTWDpQdXZlxqxl2yIlgabpd5M4ilxnAqLeb/9nG/ASyL2QeKkBPDnUPTQhUwM87V2JldOE6VqgxAAF9Pv+Nrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PaPpVzAu; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-55f6186cc17so2561650e87.2;
-        Sun, 31 Aug 2025 05:12:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756642346; x=1757247146; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=u/dhVZcd5Nyq2shVbKIb+s/eIzus38d+RCiUMAwTO2M=;
-        b=PaPpVzAu3YHu17P5bPD5P6cF/B8tgSljqSQlUWs2FBBAcEZgvckrA63EaRO4ss0M3l
-         81II4xSMI7IkhbVHC6YFdVEDpfu32/pFOXyhTu6rKYv8Ig/BDEXFhDTQ4pVtNsYSq5In
-         KEJvwFo9EVcsKDE0KMFuerQYpkLS0RMcOurpvP7Ee4i+rtSnPSeHLWn8D089EPuaZFtz
-         opH6/Y7ZBF6XjfJNOPxP9q8bReJLtQMRKVN+o3wAHfsSuYrJ8sN8zNhTyZz88iDQNpsQ
-         OfHQK32J89cYr5wiHnOeAtoVWni18rEGdthtLMz0bAGk/jdFTPj6UUQ/PSBvher5HXTJ
-         TNIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756642346; x=1757247146;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u/dhVZcd5Nyq2shVbKIb+s/eIzus38d+RCiUMAwTO2M=;
-        b=opzg2ggpvj8J2TteMiiz3jHm3/x33KFSWeZIrA6TaT95+MkaOnFcRB2MnomOMpHLtl
-         hreTax9zEm1DR2IwrPJZQiAALMawUxG88YJiHoSvEDSt/9Ba6/ekv8KcodPGjIuSrwUi
-         vWoNWCg+aNcLSNJ8n4NThDS4VwY43wjHSM5OBDscE+l09OzRIpyt/W5kFjXYgCLW2b/N
-         gmyDpg8GUpLGayWVlsy07Nf8BDnPC+nRrdSo8qiSun5hbiRMjC0fEoYM8NlzTFYdQRaF
-         /oJH3dcPXmWk8CtSXLjFD4spRQopQN3wOTcdPlcaPC4SEE+RxAfeDxmX3rMu8LQi8A8+
-         QWnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUbuDH7ZDlxfOACvrXZ4x14PcjhFqHSd0ySwiFVsMbTGY3Be4CNdyES7xHDoHzISIu8o1d+f7yMdez/ZEk=@vger.kernel.org, AJvYcCXMsz8THSZ7NBo5NE38o4+ZxRgPxB0x4B/rsZWGjsdEGC9f1BEwNS1Gi68t22O4xfu3N4ZzYdMh@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2/gBJrDBYY4fcRBm9afSTJSHhZCvJ1DdJds5BqNmvJIjAuipd
-	ui+DVpOqkl1+Orz9Ck38CS7YIAMyp8hBvCgq13P2BeAdiLOrXl/VGSfSFvYKdzQx
-X-Gm-Gg: ASbGnctbWKpAmFLKbAXXGbabPO6TNe6X/YlzPQt+KBPPjLxIvmqFY/vEjMd556YJs38
-	mp42pzFpz1CCo1BEmTMo+kGIALkMxk/C0GaquuIKhaqotQt8GsQ5l3uoRtyZ0g6rZuRkWOqvGE5
-	bJ6ooiBAvLGExBjpRhvvjBotNwT/Rc5UUM/b2TZ0psyi15ygAsEMV6i+KoqB8PK/v78JL/7AP52
-	8471/SxOKRIgG24NIrDXNuzaUo5kSGS/F0OcbJvsXoYky+dM+3V6qbxsPOD8YNxTrt3O9KVv3/I
-	kweiQghZ+i9KnOQY5R9NLrY7/+ii0nSQJF+qSEMVHz0Bu2egXJ9pseLr6MbC3K1DY04rBQWY/f8
-	=
-X-Google-Smtp-Source: AGHT+IFOytm83B/8ww/DzxvWe7BVJbvgNih+SZzMyJNZPQenqFi+Eh46FMc/u1wMcgfRczNvRPmZsA==
-X-Received: by 2002:a05:6512:6512:b0:55f:6aa7:c09 with SMTP id 2adb3069b0e04-55f7095524cmr870310e87.44.1756642345779;
-        Sun, 31 Aug 2025 05:12:25 -0700 (PDT)
-Received: from pc636 ([2001:9b1:d5a0:a500::800])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f676dc1d4sm2174032e87.22.2025.08.31.05.12.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Aug 2025 05:12:25 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Sun, 31 Aug 2025 14:12:23 +0200
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@kernel.org>, Baoquan He <bhe@redhat.com>,
-	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/vmalloc, mm/kasan: respect gfp mask in
- kasan_populate_vmalloc()
-Message-ID: <aLQ8J2vuYi2POPsE@pc636>
-References: <20250831121058.92971-1-urezki@gmail.com>
+	s=arc-20240116; t=1756644322; c=relaxed/simple;
+	bh=j8zEHiKo/duY7tUu4UrzzTl6RAMNLEJ5SUnWOsj1FVQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lAzw5HLAaOlZun1DGlyK/1DmA8+LxvLWAr+njT4UkZh0cR0JRSuSEctgST8yhLl2Is76e1z4Bk2s0pqOo2s4T3fNQoWZlKKGu9CE5fbCgzkafeuZc5FQy1Osl/SjbVEMMyy/YBwM/x5GAjcT7ddMvjXiP0C4cqJQBgPzG0fVj6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DM+sdTic; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF89C4CEED;
+	Sun, 31 Aug 2025 12:45:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756644322;
+	bh=j8zEHiKo/duY7tUu4UrzzTl6RAMNLEJ5SUnWOsj1FVQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DM+sdTicjOy2wpuEeqSXiwIXMY8RTOMLwWBAxknRduz174iodwPxTLQEV3OhYLS07
+	 sqwk72JrTgJpXV+JE+IDtjyzrs/t3p1Pc2vqWpBZpO7Jd1mfEY6ZVjm+WVxGOoRFHC
+	 Y3GrzBTOQSrEEaGe1qqpi+xzMIvPoyIvS3W8Li/aK58AAWfLcz2FD7drjF/T/fmxoO
+	 cTrVldVxFWwAoJ4BNo/JSIflTqMcAPECue9lu7VHWa0P+zgzFX883B2asgpwRdwx9V
+	 OohgznRUslYqvaNc5LzMNRHqQk33vuKV1emAQB/PWMt0cujaUzUMpgZm5g2zt3iZA3
+	 pMsYVHgU6jQfg==
+Date: Sun, 31 Aug 2025 18:15:13 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, 
+	bhelgaas@google.com, helgaas@kernel.org, kishon@kernel.org, vigneshr@ti.com, 
+	stable@vger.kernel.org, linux-pci@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, srk@ti.com
+Subject: Re: [PATCH v3] PCI: j721e: Fix programming sequence of "strap"
+ settings
+Message-ID: <oztilfun77apxtjxumx4tydkcd2gsalsak4m2rvsry2oooqjna@2yvcx6cnuemm>
+References: <20250829091707.2990211-1-s-vadapalli@ti.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250831121058.92971-1-urezki@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250829091707.2990211-1-s-vadapalli@ti.com>
 
-On Sun, Aug 31, 2025 at 02:10:58PM +0200, Uladzislau Rezki (Sony) wrote:
-> kasan_populate_vmalloc() and its helpers ignore the caller's gfp_mask
-> and always allocate memory using the hardcoded GFP_KERNEL flag. This
-> makes them inconsistent with vmalloc(), which was recently extended to
-> support GFP_NOFS and GFP_NOIO allocations.
+On Fri, Aug 29, 2025 at 02:46:28PM GMT, Siddharth Vadapalli wrote:
+> The Cadence PCIe Controller integrated in the TI K3 SoCs supports both
+> Root-Complex and Endpoint modes of operation. The Glue Layer allows
+> "strapping" the Mode of operation of the Controller, the Link Speed
+> and the Link Width. This is enabled by programming the "PCIEn_CTRL"
+> register (n corresponds to the PCIe instance) within the CTRL_MMR
+> memory-mapped register space. The "reset-values" of the registers are
+> also different depending on the mode of operation.
 > 
-> Page table allocations performed during shadow population also ignore
-> the external gfp_mask. To preserve the intended semantics of GFP_NOFS
-> and GFP_NOIO, wrap the apply_to_page_range() calls into the appropriate
-> memalloc scope.
+> Since the PCIe Controller latches onto the "reset-values" immediately
+> after being powered on, if the Glue Layer configuration is not done while
+> the PCIe Controller is off, it will result in the PCIe Controller latching
+> onto the wrong "reset-values". In practice, this will show up as a wrong
+> representation of the PCIe Controller's capability structures in the PCIe
+> Configuration Space. Some such capabilities which are supported by the PCIe
+> Controller in the Root-Complex mode but are incorrectly latched onto as
+> being unsupported are:
+> - Link Bandwidth Notification
+> - Alternate Routing ID (ARI) Forwarding Support
+> - Next capability offset within Advanced Error Reporting (AER) capability
 > 
-> This patch:
->  - Extends kasan_populate_vmalloc() and helpers to take gfp_mask;
->  - Passes gfp_mask down to alloc_pages_bulk() and __get_free_page();
->  - Enforces GFP_NOFS/NOIO semantics with memalloc_*_save()/restore()
->    around apply_to_page_range();
->  - Updates vmalloc.c and percpu allocator call sites accordingly.
+> Fix this by powering off the PCIe Controller before programming the "strap"
+> settings and powering it on after that.
 > 
-> To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+> Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
 > Cc: <stable@vger.kernel.org>
-> Fixes: 451769ebb7e7 ("mm/vmalloc: alloc GFP_NO{FS,IO} for vmalloc")
-> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 > ---
->  include/linux/kasan.h |  6 +++---
->  mm/kasan/shadow.c     | 31 ++++++++++++++++++++++++-------
->  mm/vmalloc.c          |  8 ++++----
->  3 files changed, 31 insertions(+), 14 deletions(-)
 > 
-> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-> index 890011071f2b..fe5ce9215821 100644
-> --- a/include/linux/kasan.h
-> +++ b/include/linux/kasan.h
-> @@ -562,7 +562,7 @@ static inline void kasan_init_hw_tags(void) { }
->  #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
->  
->  void kasan_populate_early_vm_area_shadow(void *start, unsigned long size);
-> -int kasan_populate_vmalloc(unsigned long addr, unsigned long size);
-> +int kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mask);
->  void kasan_release_vmalloc(unsigned long start, unsigned long end,
->  			   unsigned long free_region_start,
->  			   unsigned long free_region_end,
-> @@ -574,7 +574,7 @@ static inline void kasan_populate_early_vm_area_shadow(void *start,
->  						       unsigned long size)
->  { }
->  static inline int kasan_populate_vmalloc(unsigned long start,
-> -					unsigned long size)
-> +					unsigned long size, gfp_t gfp_mask)
->  {
->  	return 0;
->  }
-> @@ -610,7 +610,7 @@ static __always_inline void kasan_poison_vmalloc(const void *start,
->  static inline void kasan_populate_early_vm_area_shadow(void *start,
->  						       unsigned long size) { }
->  static inline int kasan_populate_vmalloc(unsigned long start,
-> -					unsigned long size)
-> +					unsigned long size, gfp_t gfp_mask)
->  {
->  	return 0;
->  }
-> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
-> index d2c70cd2afb1..c7c0be119173 100644
-> --- a/mm/kasan/shadow.c
-> +++ b/mm/kasan/shadow.c
-> @@ -335,13 +335,13 @@ static void ___free_pages_bulk(struct page **pages, int nr_pages)
->  	}
->  }
->  
-> -static int ___alloc_pages_bulk(struct page **pages, int nr_pages)
-> +static int ___alloc_pages_bulk(struct page **pages, int nr_pages, gfp_t gfp_mask)
->  {
->  	unsigned long nr_populated, nr_total = nr_pages;
->  	struct page **page_array = pages;
->  
->  	while (nr_pages) {
-> -		nr_populated = alloc_pages_bulk(GFP_KERNEL, nr_pages, pages);
-> +		nr_populated = alloc_pages_bulk(gfp_mask, nr_pages, pages);
->  		if (!nr_populated) {
->  			___free_pages_bulk(page_array, nr_total - nr_pages);
->  			return -ENOMEM;
-> @@ -353,25 +353,42 @@ static int ___alloc_pages_bulk(struct page **pages, int nr_pages)
->  	return 0;
->  }
->  
-> -static int __kasan_populate_vmalloc(unsigned long start, unsigned long end)
-> +static int __kasan_populate_vmalloc(unsigned long start, unsigned long end, gfp_t gfp_mask)
->  {
->  	unsigned long nr_pages, nr_total = PFN_UP(end - start);
->  	struct vmalloc_populate_data data;
-> +	unsigned int flags;
->  	int ret = 0;
->  
-> -	data.pages = (struct page **)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-> +	data.pages = (struct page **)__get_free_page(gfp_mask | __GFP_ZERO);
->  	if (!data.pages)
->  		return -ENOMEM;
->  
->  	while (nr_total) {
->  		nr_pages = min(nr_total, PAGE_SIZE / sizeof(data.pages[0]));
-> -		ret = ___alloc_pages_bulk(data.pages, nr_pages);
-> +		ret = ___alloc_pages_bulk(data.pages, nr_pages, gfp_mask);
->  		if (ret)
->  			break;
->  
->  		data.start = start;
-> +
-> +		/*
-> +		 * page tables allocations ignore external gfp mask, enforce it
-> +		 * by the scope API
-> +		 */
-> +		if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
-> +			flags = memalloc_nofs_save();
-> +		else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
-> +			flags = memalloc_noio_save();
-> +
->  		ret = apply_to_page_range(&init_mm, start, nr_pages * PAGE_SIZE,
->  					  kasan_populate_vmalloc_pte, &data);
-> +
-> +		if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
-> +			memalloc_nofs_restore(flags);
-> +		else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
-> +			memalloc_noio_restore(flags);
-> +
->  		___free_pages_bulk(data.pages, nr_pages);
->  		if (ret)
->  			break;
-> @@ -385,7 +402,7 @@ static int __kasan_populate_vmalloc(unsigned long start, unsigned long end)
->  	return ret;
->  }
->  
-> -int kasan_populate_vmalloc(unsigned long addr, unsigned long size)
-> +int kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mask)
->  {
->  	unsigned long shadow_start, shadow_end;
->  	int ret;
-> @@ -414,7 +431,7 @@ int kasan_populate_vmalloc(unsigned long addr, unsigned long size)
->  	shadow_start = PAGE_ALIGN_DOWN(shadow_start);
->  	shadow_end = PAGE_ALIGN(shadow_end);
->  
-> -	ret = __kasan_populate_vmalloc(shadow_start, shadow_end);
-> +	ret = __kasan_populate_vmalloc(shadow_start, shadow_end, gfp_mask);
->  	if (ret)
->  		return ret;
->  
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 6dbcdceecae1..5edd536ba9d2 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -2026,6 +2026,8 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
->  	if (unlikely(!vmap_initialized))
->  		return ERR_PTR(-EBUSY);
->  
-> +	/* Only reclaim behaviour flags are relevant. */
-> +	gfp_mask = gfp_mask & GFP_RECLAIM_MASK;
->  	might_sleep();
->  
->  	/*
-> @@ -2038,8 +2040,6 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
->  	 */
->  	va = node_alloc(size, align, vstart, vend, &addr, &vn_id);
->  	if (!va) {
-> -		gfp_mask = gfp_mask & GFP_RECLAIM_MASK;
-> -
->  		va = kmem_cache_alloc_node(vmap_area_cachep, gfp_mask, node);
->  		if (unlikely(!va))
->  			return ERR_PTR(-ENOMEM);
-> @@ -2089,7 +2089,7 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
->  	BUG_ON(va->va_start < vstart);
->  	BUG_ON(va->va_end > vend);
->  
-> -	ret = kasan_populate_vmalloc(addr, size);
-> +	ret = kasan_populate_vmalloc(addr, size, gfp_mask);
->  	if (ret) {
->  		free_vmap_area(va);
->  		return ERR_PTR(ret);
-> @@ -4826,7 +4826,7 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
->  
->  	/* populate the kasan shadow space */
->  	for (area = 0; area < nr_vms; area++) {
-> -		if (kasan_populate_vmalloc(vas[area]->va_start, sizes[area]))
-> +		if (kasan_populate_vmalloc(vas[area]->va_start, sizes[area], GFP_KERNEL))
->  			goto err_free_shadow;
->  	}
->  
-> -- 
-> 2.47.2
+> Hello,
 > 
-+ Andrey Ryabinin <ryabinin.a.a@gmail.com>
+> This patch is based on commit
+> 07d9df80082b Merge tag 'perf-tools-fixes-for-v6.17-2025-08-27' of git://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools
+> of Mainline Linux.
+> 
+> v2 of this patch is at:
+> https://lore.kernel.org/r/20250819101336.292013-1-s-vadapalli@ti.com/
+> Changes since v2:
+> - Based on Bjorn's feedback at:
+>   https://lore.kernel.org/r/20250819221748.GA598958@bhelgaas/
+>   1) Commit message has been rephrased to summarize the issue and the
+>   fix without elaborating too much on the details.
+>   2) Description of the issue's symptoms noticeable by a user has been
+>   added to the commit message.
+>   3) Comment has been wrapped to fit within 80 columns.
+>   4) The implementation has been simplified by moving the Controller
+>   Power OFF and Power ON sequence into j721e_pcie_ctrl_init() as a
+>   result of which the code reordering as well as function parameter
+>   changes are no longer required.
+> - Based on offline feedback from Vignesh, Runtime PM APIs are used
+>   instead of PM DOMAIN APIs to power off and power on the PCIe
+>   Controller.
+> - Rebased patch on latest Mainline Linux.
+> 
+> Test Logs on J7200 EVM without the current patch applied show that the
+> ARI Forwarding Capability incorrectly shows up as not being supported:
+> https://gist.github.com/Siddharth-Vadapalli-at-TI/768bca36025ed630c4e69bcc3d94501a
+> 
+> Test Logs on J7200 EVM with the current patch applied show that the
+> ARI Forwarding Capability correctly shows up as being supported:
+> https://gist.github.com/Siddharth-Vadapalli-at-TI/fc1752d17140646c8fa57209eccd86ce
+> 
+> As explained in the commit message, this discrepancy is solely due to
+> the PCIe Controller latching onto the incorrect reset-values which
+> occurs when the strap settings are programmed after the PCIe Controller
+> is powered on, at which point, the reset-values don't toggle anymore.
+> 
+> Regards,
+> Siddharth.
+> 
+>  drivers/pci/controller/cadence/pci-j721e.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+> index 6c93f39d0288..c178b117215a 100644
+> --- a/drivers/pci/controller/cadence/pci-j721e.c
+> +++ b/drivers/pci/controller/cadence/pci-j721e.c
+> @@ -284,6 +284,22 @@ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
+>  	if (!ret)
+>  		offset = args.args[0];
+>  
+> +	/*
+> +	 * The PCIe Controller's registers have different "reset-values"
+> +	 * depending on the "strap" settings programmed into the PCIEn_CTRL
+> +	 * register within the CTRL_MMR memory-mapped register space.
+> +	 * The registers latch onto a "reset-value" based on the "strap"
+> +	 * settings sampled after the PCIe Controller is powered on.
+> +	 * To ensure that the "reset-values" are sampled accurately, power
+> +	 * off the PCIe Controller before programming the "strap" settings
+> +	 * and power it on after that.
+> +	 */
+> +	ret = pm_runtime_put_sync(dev);
+> +	if (ret < 0) {
+> +		dev_err(dev, "Failed to power off PCIe Controller\n");
+> +		return ret;
+> +	}
 
---
-Uladzislau Rezki
+How does the controller gets powered off after pm_runtime_put_sync() since you
+do not have runtime PM callbacks? I believe the parent is turning off the power
+domain?
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
