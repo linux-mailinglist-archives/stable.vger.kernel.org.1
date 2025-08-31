@@ -1,219 +1,112 @@
-Return-Path: <stable+bounces-176774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA46B3D505
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 21:43:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46308B3D525
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 22:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D45118970AC
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 19:43:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E90C7AAD5C
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 20:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F3122F77E;
-	Sun, 31 Aug 2025 19:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B6822CBC6;
+	Sun, 31 Aug 2025 20:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DqN02cpg"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ZbnSCS5x"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A7A6D1A7;
-	Sun, 31 Aug 2025 19:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB642153ED
+	for <stable@vger.kernel.org>; Sun, 31 Aug 2025 20:21:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756669391; cv=none; b=c++LlRTN0qlU6xiWC0y1knnLEIvg/KxVQ97X/6XhqBZsutCXkqN1nCVIb/DEtcMezz0lD+TmsiVUdgD8Cjb9bNPX1DcVnh9NomnHt6mD7RCVbJZsjs14op3gHXT/LyNEKcmKn5GJQr5lpN/BcnwY7JVVYBO3l63qKa08Vj0RYGw=
+	t=1756671708; cv=none; b=SgLx1W0QjdNlCJ+/3JSFBrsZp85TB+APT2mOzdRkqkmqaQOdyYKPGEl9UxfPAzvTBlNB7O1VIt9rY5szZlydpOZMDyXOg0yqB2mKW2JV5J02Cg8aJ0Uv3gl4OeVP3YSKVZ41o/5VPVNzw3ixEETWA+kMt6fHp97y7Wua6faBh3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756669391; c=relaxed/simple;
-	bh=ewc+EUIcFpibNUXNnku3PQ2CazvgDqDrjIS4F1qL+XU=;
-	h=Date:To:From:Subject:Message-Id; b=YbyVcCA3qg+PPCbH62ymRNBqft+R30F0ap9oFdl48kSUsl0LixYWdJH+K5OYhO4FCq2ABuN3ekCjJDKY2/I+RFWDEqwDzQHWhmW3RQp8PD58BI3Y1UvKggN05B1JAHOyb5ldBoB+wbf2tOimnKAX1/RZ99kjqxcojisPGXRRbx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DqN02cpg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898A4C4CEED;
-	Sun, 31 Aug 2025 19:43:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1756669391;
-	bh=ewc+EUIcFpibNUXNnku3PQ2CazvgDqDrjIS4F1qL+XU=;
-	h=Date:To:From:Subject:From;
-	b=DqN02cpg/qDflh9TfisyHR7KxhZd4Gi26Fcm6Dbxi1pvedke6XG6oga+4045/lo0U
-	 tJSDXFx9zOAn0pLzdigzGzaOFXBflBxe61ojxmSxmWS1TxZkSUAwdtpXCOh6D4jiBC
-	 d+Hor7D1AqWf3hcW9ud9TmQpHaTkKlyPazjk9pGQ=
-Date: Sun, 31 Aug 2025 12:43:11 -0700
-To: mm-commits@vger.kernel.org,yuzhao@google.com,yuanchu@google.com,yangge1116@126.com,willy@infradead.org,will@kernel.org,weixugc@google.com,vbabka@suse.cz,stable@vger.kernel.org,shivankg@amd.com,peterx@redhat.com,lizhe.67@bytedance.com,koct9i@gmail.com,keirf@google.com,jhubbard@nvidia.com,jgg@ziepe.ca,hch@infradead.org,hannes@cmpxchg.org,david@redhat.com,chrisl@kernel.org,axelrasmussen@google.com,aneesh.kumar@kernel.org,hughd@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-folio_may_be_cached-unless-folio_test_large.patch added to mm-new branch
-Message-Id: <20250831194311.898A4C4CEED@smtp.kernel.org>
+	s=arc-20240116; t=1756671708; c=relaxed/simple;
+	bh=WqfT+RuOpoy2GNTNCGbwzBezOFmM1K9e9h+alWy6cGk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g9kHk7e3Eb5e6RT5F72jDfEPF10O19DNI5Z+w9sDJZSfwYnyBzaRL/U9Enjf1a3ZLaqK7EPwLsmXxxE7GkaCSZXGhECfd0D66dMKx5iN0B+W7oL4yWNf5pISWhhX31hvBVwwO+AvtLwFnY9lF5f8/DQ8Jowb9CKb1z1fGjuqX2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ZbnSCS5x; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4cFNh654wqz9tBL;
+	Sun, 31 Aug 2025 22:21:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1756671702;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Yfw+WMjGUF0hO/KZCoOHJUIvyWE1adn9OAswx+D5UuE=;
+	b=ZbnSCS5xaUqzL3bHh+zB/WgB/duVnZeSRge7/O8d+5aPG+/bmTedreKa+5hQlgr+Tpe192
+	PT0fH3OT81kLOoz/np0LuijSpaJ1wgkgIh2uUNYa+52TW+i9Y+tGSG8Di4y/i5Kd57m/Uo
+	MRbU2Roj7o8CqDCoXBSWu+CMbswHsGJsD1SSgMfzBAF0tPU0PoDUl7YHhyph4Pccm0F6hZ
+	6ad1gtnjUvfdKfVAbY8nRjqDjJOhKDjZkjymoUHKpQVJoHZZUBIIyDYGf5yb1i/LriS5t8
+	NzoxE3wWx4ZaaCIvuFy/iBhbuLmSoW1tzTnaxqvfLVAQHlejft48W+0jYtivTQ==
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+To: stable@vger.kernel.org
+Cc: Niklas Cassel <cassel@kernel.org>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>
+Subject: [PATCH 1/2] PCI: Rename PCIE_RESET_CONFIG_DEVICE_WAIT_MS to PCIE_RESET_CONFIG_WAIT_MS
+Date: Sun, 31 Aug 2025 22:20:48 +0200
+Message-ID: <20250831202100.443607-1-marek.vasut+renesas@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: ef131cd13b8f1a098e5
+X-MBO-RS-META: yofux4sof5gw74gd6taawohj8u5bo7g5
 
+From: Niklas Cassel <cassel@kernel.org>
 
-The patch titled
-     Subject: mm: folio_may_be_cached() unless folio_test_large()
-has been added to the -mm mm-new branch.  Its filename is
-     mm-folio_may_be_cached-unless-folio_test_large.patch
+[ Upstream commit 817f989700fddefa56e5e443e7d138018ca6709d ]
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-folio_may_be_cached-unless-folio_test_large.patch
+Rename PCIE_RESET_CONFIG_DEVICE_WAIT_MS to PCIE_RESET_CONFIG_WAIT_MS.
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Hugh Dickins <hughd@google.com>
-Subject: mm: folio_may_be_cached() unless folio_test_large()
-Date: Sun, 31 Aug 2025 02:16:25 -0700 (PDT)
-
-mm/swap.c and mm/mlock.c agree to drain any per-CPU batch as soon as a
-large folio is added: so collect_longterm_unpinnable_folios() just wastes
-effort when calling lru_add_drain_all() on a large folio.
-
-But although there is good reason not to batch up PMD-sized folios, we
-might well benefit from batching a small number of low-order mTHPs (though
-unclear how that "small number" limitation will be implemented).
-
-So ask if folio_may_be_cached() rather than !folio_test_large(), to
-insulate those particular checks from future change.  Name preferred to
-"folio_is_batchable" because large folios can well be put on a batch: it's
-just the per-CPU LRU caches, drained much later, which need care.
-
-Marked for stable, to counter the increase in lru_add_drain_all()s from
-"mm/gup: check ref_count instead of lru before migration".
-
-Link: https://lkml.kernel.org/r/861c061c-51cd-b940-49df-9f55e1fee2c8@google.com
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Keir Fraser <keirf@google.com>
-Cc: Konstantin Khlebnikov <koct9i@gmail.com>
-Cc: Li Zhe <lizhe.67@bytedance.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Shivank Garg <shivankg@amd.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Wei Xu <weixugc@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: yangge <yangge1116@126.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.12.x
 ---
+ drivers/pci/controller/plda/pcie-starfive.c | 2 +-
+ drivers/pci/pci.h                           | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
- include/linux/swap.h |   10 ++++++++++
- mm/gup.c             |    5 +++--
- mm/mlock.c           |    6 +++---
- mm/swap.c            |    2 +-
- 4 files changed, 17 insertions(+), 6 deletions(-)
-
---- a/include/linux/swap.h~mm-folio_may_be_cached-unless-folio_test_large
-+++ a/include/linux/swap.h
-@@ -381,6 +381,16 @@ void folio_add_lru_vma(struct folio *, s
- void mark_page_accessed(struct page *);
- void folio_mark_accessed(struct folio *);
- 
-+static inline bool folio_may_be_cached(struct folio *folio)
-+{
-+	/*
-+	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
-+	 * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
-+	 * will be sensible, but nobody has implemented and tested that yet.
-+	 */
-+	return !folio_test_large(folio);
-+}
-+
- extern atomic_t lru_disable_count;
- 
- static inline bool lru_cache_disabled(void)
---- a/mm/gup.c~mm-folio_may_be_cached-unless-folio_test_large
-+++ a/mm/gup.c
-@@ -2309,8 +2309,9 @@ static unsigned long collect_longterm_un
- 			continue;
- 		}
- 
--		if (drain_allow && folio_ref_count(folio) !=
--				   folio_expected_ref_count(folio) + 1) {
-+		if (drain_allow && folio_may_be_cached(folio) &&
-+				folio_ref_count(folio) !=
-+				folio_expected_ref_count(folio) + 1) {
- 			lru_add_drain_all();
- 			drain_allow = false;
- 		}
---- a/mm/mlock.c~mm-folio_may_be_cached-unless-folio_test_large
-+++ a/mm/mlock.c
-@@ -255,7 +255,7 @@ void mlock_folio(struct folio *folio)
- 
- 	folio_get(folio);
- 	if (!folio_batch_add(fbatch, mlock_lru(folio)) ||
--	    folio_test_large(folio) || lru_cache_disabled())
-+	    !folio_may_be_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
- 	local_unlock(&mlock_fbatch.lock);
- }
-@@ -278,7 +278,7 @@ void mlock_new_folio(struct folio *folio
- 
- 	folio_get(folio);
- 	if (!folio_batch_add(fbatch, mlock_new(folio)) ||
--	    folio_test_large(folio) || lru_cache_disabled())
-+	    !folio_may_be_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
- 	local_unlock(&mlock_fbatch.lock);
- }
-@@ -299,7 +299,7 @@ void munlock_folio(struct folio *folio)
+diff --git a/drivers/pci/controller/plda/pcie-starfive.c b/drivers/pci/controller/plda/pcie-starfive.c
+index 0564fdce47c2a..0a0b5a7d84d7e 100644
+--- a/drivers/pci/controller/plda/pcie-starfive.c
++++ b/drivers/pci/controller/plda/pcie-starfive.c
+@@ -368,7 +368,7 @@ static int starfive_pcie_host_init(struct plda_pcie_rp *plda)
+ 	 * of 100ms following exit from a conventional reset before
+ 	 * sending a configuration request to the device.
  	 */
- 	folio_get(folio);
- 	if (!folio_batch_add(fbatch, folio) ||
--	    folio_test_large(folio) || lru_cache_disabled())
-+	    !folio_may_be_cached(folio) || lru_cache_disabled())
- 		mlock_folio_batch(fbatch);
- 	local_unlock(&mlock_fbatch.lock);
- }
---- a/mm/swap.c~mm-folio_may_be_cached-unless-folio_test_large
-+++ a/mm/swap.c
-@@ -192,7 +192,7 @@ static void __folio_batch_add_and_move(s
- 		local_lock(&cpu_fbatches.lock);
+-	msleep(PCIE_RESET_CONFIG_DEVICE_WAIT_MS);
++	msleep(PCIE_RESET_CONFIG_WAIT_MS);
  
- 	if (!folio_batch_add(this_cpu_ptr(fbatch), folio) ||
--			folio_test_large(folio) || lru_cache_disabled())
-+			!folio_may_be_cached(folio) || lru_cache_disabled())
- 		folio_batch_move_lru(this_cpu_ptr(fbatch), move_fn);
+ 	if (starfive_pcie_host_wait_for_link(pcie))
+ 		dev_info(dev, "port link down\n");
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index b65868e709517..c951f861a69b2 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -57,7 +57,7 @@
+  *    completes before sending a Configuration Request to the device
+  *    immediately below that Port."
+  */
+-#define PCIE_RESET_CONFIG_DEVICE_WAIT_MS	100
++#define PCIE_RESET_CONFIG_WAIT_MS	100
  
- 	if (disable_irq)
-_
-
-Patches currently in -mm which might be from hughd@google.com are
-
-mm-fix-folio_expected_ref_count-when-pg_private_2.patch
-mm-gup-check-ref_count-instead-of-lru-before-migration.patch
-mm-gup-local-lru_add_drain-to-avoid-lru_add_drain_all.patch
-mm-revert-mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch
-mm-revert-mm-vmscanc-fix-oom-on-swap-stress-test.patch
-mm-folio_may_be_cached-unless-folio_test_large.patch
-mm-lru_add_drain_all-do-local-lru_add_drain-first.patch
+ /* Message Routing (r[2:0]); PCIe r6.0, sec 2.2.8 */
+ #define PCIE_MSG_TYPE_R_RC	0
+-- 
+2.50.1
 
 
