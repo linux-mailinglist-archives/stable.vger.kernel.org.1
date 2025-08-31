@@ -1,136 +1,279 @@
-Return-Path: <stable+bounces-176754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB80B3D29A
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 13:47:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CEE8B3D2AB
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 14:11:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F5D1189D90E
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 11:47:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99AA4188C909
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 12:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8869025742F;
-	Sun, 31 Aug 2025 11:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFEA20D4E9;
+	Sun, 31 Aug 2025 12:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PoR61D6t"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MStGD96M"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBBA28F5;
-	Sun, 31 Aug 2025 11:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA341E47A5;
+	Sun, 31 Aug 2025 12:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756640840; cv=none; b=tC79K87xIcEoryvWXA2dyqfSC/gSTHFf3rQZbXQ4JQ4vrKwlSAZl85DMrDjgtXACqSKfF9/6nXV5C04Q6p5ohpv4C/V8Oq2pVQi06z3Cp3yljSfcz/KIAyHWe8ZrWNdYKDlAviFRkj6q4/CeVRtKkSdwp4J3bzch4Mw+peqa4xo=
+	t=1756642265; cv=none; b=QmpDkjx4OGLWZebgWyrsGRY4M3YQqC2mEYWu+P6fh8AXeyM+UIPXBZvpYTf0QohVsSB9ibbt7op8gxW8aDu2LdAqry/Hro4FTmnrHhFFr5TXpnFUO5/NU6CoUYGMMN6UDNni0jcOLMap1Z3OoOgkjfgbhqR6cgtsJNeGUf08FbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756640840; c=relaxed/simple;
-	bh=sydcbx6eXw+bJ0LHhJFOtpoHmSVDqG0WI6nSt89fNH8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nMpTv2HM4QOtlzmNQ7xs6zzpGAeflZ64ZTcmpi0aK/tBpFuiCwLqf+Aq5HebzbtEl/qRLS0czQ253w3Aki0yBj4UttzFeYdxhroj7YNJryvkQcWAIOAi8H9zRZa4sUMtVnKtUREtUsB311oeDlcLX2dDADwqQ1l1LNEatIUMK5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PoR61D6t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56202C4CEED;
-	Sun, 31 Aug 2025 11:47:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756640839;
-	bh=sydcbx6eXw+bJ0LHhJFOtpoHmSVDqG0WI6nSt89fNH8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PoR61D6tZU+60J55AMGwUFoMlHIJff+XJPc2M0YySARzieX/KPj9OJrG0MMT1EQxm
-	 kzDb0rj94KKxH04dGuiIXKV2MWMmHVYicLebukKj4LLUuOFOFG9JAhkmUTDpCBgK+9
-	 93CkmE9pmMHXF14m1cwK5we1M1YR5ruoFe8boGA5c9Rh+sQw9DDFtK8jTiNK9ul9xS
-	 RM+QB7fAtGw8eHDmlnvs5sqUuivxZgNtWJQ2QVtrDwLRMpff5OQVUYfLUHFm92bWet
-	 9HqWLO7opLSZNK4adH+CRwLATQoRxaDrqxcigenhF6HdEiglDHNem/DtssAM8G4yjG
-	 agr0P6fdQ4x3g==
-Message-ID: <f2edc075-4bad-40a6-8cb2-14d3e6f3cdaa@kernel.org>
-Date: Sun, 31 Aug 2025 13:47:14 +0200
+	s=arc-20240116; t=1756642265; c=relaxed/simple;
+	bh=jICduQK12QHrbBJp8MUu9GI3F6Ji/6j0lTVwrNM4gcY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H4CeIrdYJdcrpiB63OsVK9DGibIpFhywWjBKYdCJ7qsZVPeeQmfcwfDR7qPYGKn/7tibAGgzn39VYn9H5uEMoCU0s8Cogo4UWmrE6c7rb9vDyLhkaTYqC1HcEBguQ3NACNGmDzDPvgsfRKShgDhd4vq5nHlWPLvZRvDZa1ht9qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MStGD96M; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-55f98e7782bso3381e87.0;
+        Sun, 31 Aug 2025 05:11:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756642262; x=1757247062; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JG9B+llAHV7LYg7nSulca8AjjzTpBy37d7vM3/vyiO0=;
+        b=MStGD96MzGclUFwGwNC4Se+nVsduW7AQ/6LaovEIh9fg1GCGR7AFAwEs5IYkt+uXzT
+         7EGkS49/eouiD7cDQ39kaDXnyR0LSEilFxNdqDabOuRpQORY+rkWBtQhareD/YO3GYoz
+         557wz1SXzEl6vinM4dRo89tPvcM30JtsiefVHGBpvjSBfzmygQacRZqJesyZdGp8xrWW
+         4kMsR7gqNN32OlVr9MOQ2AJs7urnqYg/yONztSfTnTw0tbcNohTNziY3Ifv0Cd7sQMfB
+         HTiSHJpba7uOwmlhOgac3Trt4SMWqmppzjAXjpdns4DAcR/gvJsz1x4V852eDonB9m7K
+         zXmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756642262; x=1757247062;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JG9B+llAHV7LYg7nSulca8AjjzTpBy37d7vM3/vyiO0=;
+        b=G88H4iqPBT/2XgxK/E/M0TPJERHQ/s7PEO0iczQcdvCYUY3yxQ0L7nnSH1oGMH9o3B
+         BghWG+82Yr19i9fSU/m7Yi8CdrJk58sYMwUeCrtHGjumxnw9xPnKibmGvxoZAKngft1l
+         0l+psRI0uK4gPWNLTrEfGs14CPcJLsqF067Px1NteYuit4p5lsm3aDfc3Po5E8mD1m3C
+         eL5+Jc3BMMmOPgytmjFn+jgnuQQONz1sbcTTZmM1om+lgeOqBo8XyfZoMsPDf5w3qUin
+         gkJ3ivImIbGW2Z1x90VCAOZHyVzBJmBqBMvQmh8Rw1WNFt/hxRpQgFxqqsnw59jS7C4+
+         c0Yg==
+X-Forwarded-Encrypted: i=1; AJvYcCUFNsm4fQfQeZk5USIB9TzTCalrZwmrK9YIjNX2HDh7C8v/TPi1R7ag9Fu2l+VOpTeeKdkdTjQQ@vger.kernel.org, AJvYcCXxOxnP9YFEkdn6Zg8AkgibRwGVm14fE+dQR3vWnlWtEkAtOC8jYap+nwgCLkpLG17VEmjlK6gebw9c+Zk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpXiOBbMCof19hE+qWPoPsycOCQXr3qk8VItMXq/EbINkYsxXY
+	N8CVWcEFjFehRf4ojmcqRs0+PsOoVdtpIqr5zr68c7y8LOvwcxOd1uB62sRAtu+Q
+X-Gm-Gg: ASbGncuhH6JVGUINTsIt2utCHyeZ90tn87ti9/UjLrl/CEDODxxQTCiHddeBzepMIsX
+	mKazJWDT62/j+PHit7rYUJ5GLsPwhMH1/3YaBrjSiAEdt5z+hbP3+mJ3f5chdM2LyyTRuikep+P
+	lYfx3So9VrqhYqfGvrSbPNoCwEmqxEB418YOHhZp2bgXkJlzEeXgyI6iTMBfepy5G57TqqYP+Dz
+	2o24eV79Mq6R8wQR7P8mr/aaSzIIySvfIMyuXFQIU/Odndv1NcyU2D/K2bCMULOU4VYWKvl2bxT
+	mjp0gI2TX7WuxwNYej29vPrhpdkUEvknE4+YX5WIzJpCCkwQ02LeWhPZegwWhi1qp0KDARj6qCG
+	bViZ/2numSsJWbYnjZhbzyq1pHBzo
+X-Google-Smtp-Source: AGHT+IFueuf2oZt8S2Uk0qkd9+oS33qtaqyqR6ss70d2dMC/0TmF2R5rYRs5z4E0tLgmfioWY9AQ/A==
+X-Received: by 2002:a05:6512:3491:b0:55b:83cf:b260 with SMTP id 2adb3069b0e04-55f6f6c39b1mr927648e87.11.1756642261264;
+        Sun, 31 Aug 2025 05:11:01 -0700 (PDT)
+Received: from pc638.lan ([2001:9b1:d5a0:a500:2d8:61ff:fec9:d743])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55f7a3bf9b4sm279519e87.78.2025.08.31.05.11.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 Aug 2025 05:11:00 -0700 (PDT)
+From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+To: linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Hocko <mhocko@kernel.org>,
+	Baoquan He <bhe@redhat.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/vmalloc, mm/kasan: respect gfp mask in kasan_populate_vmalloc()
+Date: Sun, 31 Aug 2025 14:10:58 +0200
+Message-ID: <20250831121058.92971-1-urezki@gmail.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] dt-bindings: clock: exynos990: Add LHS_ACEL clock ID
- for HSI0 block
-To: Denzeel Oliva <wachiturroxd150@gmail.com>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>, Alim Akhtar <alim.akhtar@samsung.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250831-usb-v1-0-02ec5ea50627@gmail.com>
- <20250831-usb-v1-1-02ec5ea50627@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250831-usb-v1-1-02ec5ea50627@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 31/08/2025 13:36, Denzeel Oliva wrote:
-> Add the missing LHS_ACEL clock ID for the HSI0 block. This clock is
-> required for proper USB operation, as without it, USB connections fail
-> with errors like device descriptor read timeouts and address response
-> issues.
+kasan_populate_vmalloc() and its helpers ignore the caller's gfp_mask
+and always allocate memory using the hardcoded GFP_KERNEL flag. This
+makes them inconsistent with vmalloc(), which was recently extended to
+support GFP_NOFS and GFP_NOIO allocations.
 
-Incomplete feature due to missing clock is not really a fix, considering
-that we add clocks piece-by-piece. Otherwise every new clock would be a fix.
+Page table allocations performed during shadow population also ignore
+the external gfp_mask. To preserve the intended semantics of GFP_NOFS
+and GFP_NOIO, wrap the apply_to_page_range() calls into the appropriate
+memalloc scope.
 
-Unless something else changed and the USB was working fine before?
+This patch:
+ - Extends kasan_populate_vmalloc() and helpers to take gfp_mask;
+ - Passes gfp_mask down to alloc_pages_bulk() and __get_free_page();
+ - Enforces GFP_NOFS/NOIO semantics with memalloc_*_save()/restore()
+   around apply_to_page_range();
+ - Updates vmalloc.c and percpu allocator call sites accordingly.
 
-If not, drop fixes and cc-stable from this and following commits.
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 451769ebb7e7 ("mm/vmalloc: alloc GFP_NO{FS,IO} for vmalloc")
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+---
+ include/linux/kasan.h |  6 +++---
+ mm/kasan/shadow.c     | 31 ++++++++++++++++++++++++-------
+ mm/vmalloc.c          |  8 ++++----
+ 3 files changed, 31 insertions(+), 14 deletions(-)
 
-> 
-> Fixes: 5feae3e79dbe ("dt-bindings: clock: samsung: Add Exynos990 SoC CMU bindings")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Denzeel Oliva <wachiturroxd150@gmail.com>
-> ---
->  include/dt-bindings/clock/samsung,exynos990.h | 1 +
-Best regards,
-Krzysztof
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index 890011071f2b..fe5ce9215821 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -562,7 +562,7 @@ static inline void kasan_init_hw_tags(void) { }
+ #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
+ 
+ void kasan_populate_early_vm_area_shadow(void *start, unsigned long size);
+-int kasan_populate_vmalloc(unsigned long addr, unsigned long size);
++int kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mask);
+ void kasan_release_vmalloc(unsigned long start, unsigned long end,
+ 			   unsigned long free_region_start,
+ 			   unsigned long free_region_end,
+@@ -574,7 +574,7 @@ static inline void kasan_populate_early_vm_area_shadow(void *start,
+ 						       unsigned long size)
+ { }
+ static inline int kasan_populate_vmalloc(unsigned long start,
+-					unsigned long size)
++					unsigned long size, gfp_t gfp_mask)
+ {
+ 	return 0;
+ }
+@@ -610,7 +610,7 @@ static __always_inline void kasan_poison_vmalloc(const void *start,
+ static inline void kasan_populate_early_vm_area_shadow(void *start,
+ 						       unsigned long size) { }
+ static inline int kasan_populate_vmalloc(unsigned long start,
+-					unsigned long size)
++					unsigned long size, gfp_t gfp_mask)
+ {
+ 	return 0;
+ }
+diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+index d2c70cd2afb1..c7c0be119173 100644
+--- a/mm/kasan/shadow.c
++++ b/mm/kasan/shadow.c
+@@ -335,13 +335,13 @@ static void ___free_pages_bulk(struct page **pages, int nr_pages)
+ 	}
+ }
+ 
+-static int ___alloc_pages_bulk(struct page **pages, int nr_pages)
++static int ___alloc_pages_bulk(struct page **pages, int nr_pages, gfp_t gfp_mask)
+ {
+ 	unsigned long nr_populated, nr_total = nr_pages;
+ 	struct page **page_array = pages;
+ 
+ 	while (nr_pages) {
+-		nr_populated = alloc_pages_bulk(GFP_KERNEL, nr_pages, pages);
++		nr_populated = alloc_pages_bulk(gfp_mask, nr_pages, pages);
+ 		if (!nr_populated) {
+ 			___free_pages_bulk(page_array, nr_total - nr_pages);
+ 			return -ENOMEM;
+@@ -353,25 +353,42 @@ static int ___alloc_pages_bulk(struct page **pages, int nr_pages)
+ 	return 0;
+ }
+ 
+-static int __kasan_populate_vmalloc(unsigned long start, unsigned long end)
++static int __kasan_populate_vmalloc(unsigned long start, unsigned long end, gfp_t gfp_mask)
+ {
+ 	unsigned long nr_pages, nr_total = PFN_UP(end - start);
+ 	struct vmalloc_populate_data data;
++	unsigned int flags;
+ 	int ret = 0;
+ 
+-	data.pages = (struct page **)__get_free_page(GFP_KERNEL | __GFP_ZERO);
++	data.pages = (struct page **)__get_free_page(gfp_mask | __GFP_ZERO);
+ 	if (!data.pages)
+ 		return -ENOMEM;
+ 
+ 	while (nr_total) {
+ 		nr_pages = min(nr_total, PAGE_SIZE / sizeof(data.pages[0]));
+-		ret = ___alloc_pages_bulk(data.pages, nr_pages);
++		ret = ___alloc_pages_bulk(data.pages, nr_pages, gfp_mask);
+ 		if (ret)
+ 			break;
+ 
+ 		data.start = start;
++
++		/*
++		 * page tables allocations ignore external gfp mask, enforce it
++		 * by the scope API
++		 */
++		if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
++			flags = memalloc_nofs_save();
++		else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
++			flags = memalloc_noio_save();
++
+ 		ret = apply_to_page_range(&init_mm, start, nr_pages * PAGE_SIZE,
+ 					  kasan_populate_vmalloc_pte, &data);
++
++		if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
++			memalloc_nofs_restore(flags);
++		else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
++			memalloc_noio_restore(flags);
++
+ 		___free_pages_bulk(data.pages, nr_pages);
+ 		if (ret)
+ 			break;
+@@ -385,7 +402,7 @@ static int __kasan_populate_vmalloc(unsigned long start, unsigned long end)
+ 	return ret;
+ }
+ 
+-int kasan_populate_vmalloc(unsigned long addr, unsigned long size)
++int kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mask)
+ {
+ 	unsigned long shadow_start, shadow_end;
+ 	int ret;
+@@ -414,7 +431,7 @@ int kasan_populate_vmalloc(unsigned long addr, unsigned long size)
+ 	shadow_start = PAGE_ALIGN_DOWN(shadow_start);
+ 	shadow_end = PAGE_ALIGN(shadow_end);
+ 
+-	ret = __kasan_populate_vmalloc(shadow_start, shadow_end);
++	ret = __kasan_populate_vmalloc(shadow_start, shadow_end, gfp_mask);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 6dbcdceecae1..5edd536ba9d2 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2026,6 +2026,8 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
+ 	if (unlikely(!vmap_initialized))
+ 		return ERR_PTR(-EBUSY);
+ 
++	/* Only reclaim behaviour flags are relevant. */
++	gfp_mask = gfp_mask & GFP_RECLAIM_MASK;
+ 	might_sleep();
+ 
+ 	/*
+@@ -2038,8 +2040,6 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
+ 	 */
+ 	va = node_alloc(size, align, vstart, vend, &addr, &vn_id);
+ 	if (!va) {
+-		gfp_mask = gfp_mask & GFP_RECLAIM_MASK;
+-
+ 		va = kmem_cache_alloc_node(vmap_area_cachep, gfp_mask, node);
+ 		if (unlikely(!va))
+ 			return ERR_PTR(-ENOMEM);
+@@ -2089,7 +2089,7 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
+ 	BUG_ON(va->va_start < vstart);
+ 	BUG_ON(va->va_end > vend);
+ 
+-	ret = kasan_populate_vmalloc(addr, size);
++	ret = kasan_populate_vmalloc(addr, size, gfp_mask);
+ 	if (ret) {
+ 		free_vmap_area(va);
+ 		return ERR_PTR(ret);
+@@ -4826,7 +4826,7 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+ 
+ 	/* populate the kasan shadow space */
+ 	for (area = 0; area < nr_vms; area++) {
+-		if (kasan_populate_vmalloc(vas[area]->va_start, sizes[area]))
++		if (kasan_populate_vmalloc(vas[area]->va_start, sizes[area], GFP_KERNEL))
+ 			goto err_free_shadow;
+ 	}
+ 
+-- 
+2.47.2
+
 
