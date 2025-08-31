@@ -1,171 +1,140 @@
-Return-Path: <stable+bounces-176757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E5AB3D35F
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 14:45:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D199AB3D3F3
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 16:56:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B54AD188AD24
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 12:45:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4EE43B4D33
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 14:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC90225DD0B;
-	Sun, 31 Aug 2025 12:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD252236E9;
+	Sun, 31 Aug 2025 14:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DM+sdTic"
+	dkim=pass (2048-bit key) header.d=aisle.com header.i=@aisle.com header.b="nyE345xQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CECC25333F;
-	Sun, 31 Aug 2025 12:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CBF19755B
+	for <stable@vger.kernel.org>; Sun, 31 Aug 2025 14:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756644322; cv=none; b=I9WsnmdexksXrHL/YxnLAumY3GZPzHEt6YqrrumVqn3YZjAmiOs3V8XjRKu5xfPN3aNUCbGUprhJD2HwI09xAd63z7tEDSzHD+p9OMul8yxqzZhpIZ2hIGqauc8TTixe6u71QUNZPb3HmcO+3dlWACeu8OuMML7M0K0m6gPKTok=
+	t=1756652188; cv=none; b=nCMq1x6tJrBPYJ+sIoA4BLtAqzHcBxt3guDYoIs9ueBnGO+WrHofLQpebgbps6QIEXyJS/Q7/wH3lSmK4C52roPJfAGHtvqcHuv4ELzfhKXtpWWNo+HgUt6VhqmgtBmg53+bPm18XT5e+y4FoYtUxbjj+oUDuL6WFcP5Mx5W3xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756644322; c=relaxed/simple;
-	bh=j8zEHiKo/duY7tUu4UrzzTl6RAMNLEJ5SUnWOsj1FVQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lAzw5HLAaOlZun1DGlyK/1DmA8+LxvLWAr+njT4UkZh0cR0JRSuSEctgST8yhLl2Is76e1z4Bk2s0pqOo2s4T3fNQoWZlKKGu9CE5fbCgzkafeuZc5FQy1Osl/SjbVEMMyy/YBwM/x5GAjcT7ddMvjXiP0C4cqJQBgPzG0fVj6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DM+sdTic; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF89C4CEED;
-	Sun, 31 Aug 2025 12:45:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756644322;
-	bh=j8zEHiKo/duY7tUu4UrzzTl6RAMNLEJ5SUnWOsj1FVQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DM+sdTicjOy2wpuEeqSXiwIXMY8RTOMLwWBAxknRduz174iodwPxTLQEV3OhYLS07
-	 sqwk72JrTgJpXV+JE+IDtjyzrs/t3p1Pc2vqWpBZpO7Jd1mfEY6ZVjm+WVxGOoRFHC
-	 Y3GrzBTOQSrEEaGe1qqpi+xzMIvPoyIvS3W8Li/aK58AAWfLcz2FD7drjF/T/fmxoO
-	 cTrVldVxFWwAoJ4BNo/JSIflTqMcAPECue9lu7VHWa0P+zgzFX883B2asgpwRdwx9V
-	 OohgznRUslYqvaNc5LzMNRHqQk33vuKV1emAQB/PWMt0cujaUzUMpgZm5g2zt3iZA3
-	 pMsYVHgU6jQfg==
-Date: Sun, 31 Aug 2025 18:15:13 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, 
-	bhelgaas@google.com, helgaas@kernel.org, kishon@kernel.org, vigneshr@ti.com, 
-	stable@vger.kernel.org, linux-pci@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, srk@ti.com
-Subject: Re: [PATCH v3] PCI: j721e: Fix programming sequence of "strap"
- settings
-Message-ID: <oztilfun77apxtjxumx4tydkcd2gsalsak4m2rvsry2oooqjna@2yvcx6cnuemm>
-References: <20250829091707.2990211-1-s-vadapalli@ti.com>
+	s=arc-20240116; t=1756652188; c=relaxed/simple;
+	bh=EtfLYB6Ix1bHJE3YAm2Ocn1PZIurA8/YM1AS4zYQv1M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mLgGAhnjoHwbIvi8QHwG57J+BxIzD4WSCf+ajpYI2PPE/t2czoWZr0VHaSYcDM4vL4Vz2QkdH3JDiqpgdVs38i79lexccUh/9UNgJ7+fSqyVEjLrALKeSc+8Wm/YpK41kd6rM7OAt5ogFut6owHKRYweBo42V88eGPZSild0miE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aisle.com; spf=pass smtp.mailfrom=aisle.com; dkim=pass (2048-bit key) header.d=aisle.com header.i=@aisle.com header.b=nyE345xQ; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aisle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aisle.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-45b7e69570bso15260255e9.0
+        for <stable@vger.kernel.org>; Sun, 31 Aug 2025 07:56:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=aisle.com; s=google; t=1756652185; x=1757256985; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=M9KRu8Ru4f/F2B2xaN1VxeRY/x4K4WntI346qys4v6I=;
+        b=nyE345xQLfwxPHvLxyJ3uhaokRhb893FhFR76s+U7p4mLAY4I5OWSvpK5zDJ6/EVfP
+         tzQ6MCgHE9KLZZvrI47zmcKPW3yjyHkUrOKVLcUCWERAvgB3ExiQ/ub1m/Ih+YsGFG87
+         HHYo7xbLycthPDd4z5aY667Nmp8vQi1TEmja88ZyHBFmmKhE65p7fayurx6kR0t+XLzD
+         FlRsjTrVZmu/nr4dDRHCdaORvFMaeWOsAkzo6t0CF669L3iAfzZ87itVXyHo5Pdv7sMV
+         j5qLgiB5JXTUWH4JsxHcaRo/tE2u86Pb1fnxU/ppbMjvcSOebkFpvp17S9B1kfoTmVH6
+         KSYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756652185; x=1757256985;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=M9KRu8Ru4f/F2B2xaN1VxeRY/x4K4WntI346qys4v6I=;
+        b=nCg8w9b+FCg+B4ESGDvI3S05saENBcPvrYOZF7N3qBSYQ9Mgvu+/uMhBNrbeiIbW3V
+         7/z3aRyFx8hP+CjY30IhDJ4Pg4/m3jIdcxRRb6TjwsBE96lpnd69tmB14ZH26wvwO1lf
+         QuE6FVOpYY+O9B2ifYwE9mtSVGqK4S4oqhB7IFHj4UJOS48vn8RmaMl3TY6VCxFfydO+
+         2OuDA3+pfQiP4v5NNi618NS1y1IvPbINej0Sr98jR+Nnjc2aKtoyz0jcqrqSsZI8L7si
+         3I9chr4Fj5VD/9cwIj7eF0iwKxvj5hk5h4E1gGOqPdA/PWpFldSbag5PPyJlM7C+l2jn
+         hGnw==
+X-Forwarded-Encrypted: i=1; AJvYcCW7fiB4/TJGjXx4PipgiT7VvmTC7pDWzUqU/ltIwaVMJou9zxsfXv5F842v63s1HCd8JJQivwA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOAFViVnGyjqVaiAmEXeGI6sWHY9dGZb2iXn9s/Zq+GyD4iQcH
+	7U+uxNmQqH4LaGbUwS0QFFkSzGR7x0FDhmynKeQyK9DckD8DQJoVx77PTPGOC8oDQMc=
+X-Gm-Gg: ASbGncsYci49yeDNYBIYKmPmnR960MDco4aOu9a4YHagGUXPuRKcXPqWxasjBiL2bLJ
+	aLFLyMIXnUG8uU+vT2nMV4cT8BmCIBIGYt76r7Dl/ilQaKx1AGGgetH7khOCSGBn1EGYa6zl8L4
+	B77VCq2aM2Uj2FChnyK1IDW+gXp5I86dP5eEt/roaH277hcaADdPtg8HuQcvxfgRvvBTDj29WYI
+	jhNVnLigAmXxjBYEMjzlPxz5sD7kB1vl+eH8AMB3+MN9L8EJbwUeu+g7eJq1ueEXMySadVtT3Ie
+	TaFdhpRvlgg7DvCx+8Se2ss1MgWMqppBl81WtXfyduNm41E+cOXdFlTNDS2KOBCmbNHFqjNcuPk
+	UenyJ5S7prC/IlDZxuyl7PCtLC/7saPUZ4cvguwseh8w1+yQznYA2xvHuO8Q8stIoj9uFVgGvBy
+	uiyYeMerf8jW8nNPf7cg==
+X-Google-Smtp-Source: AGHT+IFECZm94cv0ABA94deFhM69SwEYykQaQ3t0S0Jj1eMYv2dW7N7j1CEH45wVfmQ9gpzQYScDYQ==
+X-Received: by 2002:a05:600c:4715:b0:45b:43cc:e558 with SMTP id 5b1f17b1804b1-45b8558ad00mr38526875e9.35.1756652185412;
+        Sun, 31 Aug 2025 07:56:25 -0700 (PDT)
+Received: from localhost ([193.138.7.149])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3cf33fbb3ccsm11425183f8f.51.2025.08.31.07.56.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 Aug 2025 07:56:24 -0700 (PDT)
+From: Stanislav Fort <stanislav.fort@aisle.com>
+X-Google-Original-From: Stanislav Fort <disclosure@aisle.com>
+To: netdev@vger.kernel.org
+Cc: Marek Lindner <marek.lindner@mailbox.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
+	Antonio Quartulli <antonio@mandelbit.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	b.a.t.m.a.n@lists.open-mesh.org (moderated list:BATMAN ADVANCED),
+	linux-kernel@vger.kernel.org (open list),
+	disclosure@aisle.com,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] batman-adv: fix OOB read/write in network-coding decode
+Date: Sun, 31 Aug 2025 16:56:23 +0200
+Message-Id: <20250831145623.63778-1-disclosure@aisle.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250829091707.2990211-1-s-vadapalli@ti.com>
 
-On Fri, Aug 29, 2025 at 02:46:28PM GMT, Siddharth Vadapalli wrote:
-> The Cadence PCIe Controller integrated in the TI K3 SoCs supports both
-> Root-Complex and Endpoint modes of operation. The Glue Layer allows
-> "strapping" the Mode of operation of the Controller, the Link Speed
-> and the Link Width. This is enabled by programming the "PCIEn_CTRL"
-> register (n corresponds to the PCIe instance) within the CTRL_MMR
-> memory-mapped register space. The "reset-values" of the registers are
-> also different depending on the mode of operation.
-> 
-> Since the PCIe Controller latches onto the "reset-values" immediately
-> after being powered on, if the Glue Layer configuration is not done while
-> the PCIe Controller is off, it will result in the PCIe Controller latching
-> onto the wrong "reset-values". In practice, this will show up as a wrong
-> representation of the PCIe Controller's capability structures in the PCIe
-> Configuration Space. Some such capabilities which are supported by the PCIe
-> Controller in the Root-Complex mode but are incorrectly latched onto as
-> being unsupported are:
-> - Link Bandwidth Notification
-> - Alternate Routing ID (ARI) Forwarding Support
-> - Next capability offset within Advanced Error Reporting (AER) capability
-> 
-> Fix this by powering off the PCIe Controller before programming the "strap"
-> settings and powering it on after that.
-> 
-> Fixes: f3e25911a430 ("PCI: j721e: Add TI J721E PCIe driver")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-> ---
-> 
-> Hello,
-> 
-> This patch is based on commit
-> 07d9df80082b Merge tag 'perf-tools-fixes-for-v6.17-2025-08-27' of git://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools
-> of Mainline Linux.
-> 
-> v2 of this patch is at:
-> https://lore.kernel.org/r/20250819101336.292013-1-s-vadapalli@ti.com/
-> Changes since v2:
-> - Based on Bjorn's feedback at:
->   https://lore.kernel.org/r/20250819221748.GA598958@bhelgaas/
->   1) Commit message has been rephrased to summarize the issue and the
->   fix without elaborating too much on the details.
->   2) Description of the issue's symptoms noticeable by a user has been
->   added to the commit message.
->   3) Comment has been wrapped to fit within 80 columns.
->   4) The implementation has been simplified by moving the Controller
->   Power OFF and Power ON sequence into j721e_pcie_ctrl_init() as a
->   result of which the code reordering as well as function parameter
->   changes are no longer required.
-> - Based on offline feedback from Vignesh, Runtime PM APIs are used
->   instead of PM DOMAIN APIs to power off and power on the PCIe
->   Controller.
-> - Rebased patch on latest Mainline Linux.
-> 
-> Test Logs on J7200 EVM without the current patch applied show that the
-> ARI Forwarding Capability incorrectly shows up as not being supported:
-> https://gist.github.com/Siddharth-Vadapalli-at-TI/768bca36025ed630c4e69bcc3d94501a
-> 
-> Test Logs on J7200 EVM with the current patch applied show that the
-> ARI Forwarding Capability correctly shows up as being supported:
-> https://gist.github.com/Siddharth-Vadapalli-at-TI/fc1752d17140646c8fa57209eccd86ce
-> 
-> As explained in the commit message, this discrepancy is solely due to
-> the PCIe Controller latching onto the incorrect reset-values which
-> occurs when the strap settings are programmed after the PCIe Controller
-> is powered on, at which point, the reset-values don't toggle anymore.
-> 
-> Regards,
-> Siddharth.
-> 
->  drivers/pci/controller/cadence/pci-j721e.c | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-> index 6c93f39d0288..c178b117215a 100644
-> --- a/drivers/pci/controller/cadence/pci-j721e.c
-> +++ b/drivers/pci/controller/cadence/pci-j721e.c
-> @@ -284,6 +284,22 @@ static int j721e_pcie_ctrl_init(struct j721e_pcie *pcie)
->  	if (!ret)
->  		offset = args.args[0];
->  
-> +	/*
-> +	 * The PCIe Controller's registers have different "reset-values"
-> +	 * depending on the "strap" settings programmed into the PCIEn_CTRL
-> +	 * register within the CTRL_MMR memory-mapped register space.
-> +	 * The registers latch onto a "reset-value" based on the "strap"
-> +	 * settings sampled after the PCIe Controller is powered on.
-> +	 * To ensure that the "reset-values" are sampled accurately, power
-> +	 * off the PCIe Controller before programming the "strap" settings
-> +	 * and power it on after that.
-> +	 */
-> +	ret = pm_runtime_put_sync(dev);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Failed to power off PCIe Controller\n");
-> +		return ret;
-> +	}
+batadv_nc_skb_decode_packet() trusts coded_len and checks only against
+skb->len. XOR starts at sizeof(struct batadv_unicast_packet), reducing
+payload headroom, and the source skb length is not verified, allowing an
+out-of-bounds read and a small out-of-bounds write.
 
-How does the controller gets powered off after pm_runtime_put_sync() since you
-do not have runtime PM callbacks? I believe the parent is turning off the power
-domain?
+Validate that coded_len fits within the payload area of both destination
+and source sk_buffs before XORing.
 
-- Mani
+Fixes: 2df5278b0267 ("batman-adv: network coding - receive coded packets and decode them")
+Cc: stable@vger.kernel.org
+Reported-by: Stanislav Fort <disclosure@aisle.com>
+Signed-off-by: Stanislav Fort <disclosure@aisle.com>
+---
+ net/batman-adv/network-coding.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
+diff --git a/net/batman-adv/network-coding.c b/net/batman-adv/network-coding.c
+index 9f56308779cc..af97d077369f 100644
+--- a/net/batman-adv/network-coding.c
++++ b/net/batman-adv/network-coding.c
+@@ -1687,7 +1687,12 @@ batadv_nc_skb_decode_packet(struct batadv_priv *bat_priv, struct sk_buff *skb,
+ 
+ 	coding_len = ntohs(coded_packet_tmp.coded_len);
+ 
+-	if (coding_len > skb->len)
++	/* ensure dst buffer is large enough (payload only) */
++	if (coding_len + h_size > skb->len)
++		return NULL;
++
++	/* ensure src buffer is large enough (payload only) */
++	if (coding_len + h_size > nc_packet->skb->len)
+ 		return NULL;
+ 
+ 	/* Here the magic is reversed:
 -- 
-மணிவண்ணன் சதாசிவம்
+2.39.3 (Apple Git-146)
+
 
