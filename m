@@ -1,106 +1,85 @@
-Return-Path: <stable+bounces-176745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFB0B3D105
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 08:03:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD34EB3D1B5
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 11:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAACA189F8C8
-	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 06:03:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85DCC3AD3BF
+	for <lists+stable@lfdr.de>; Sun, 31 Aug 2025 09:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93164AEE2;
-	Sun, 31 Aug 2025 06:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C9B205E25;
+	Sun, 31 Aug 2025 09:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K/jrdlVc"
+	dkim=pass (2048-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b="e8FzE+p6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cmsr-t-1.hinet.net (cmsr-t-1.hinet.net [203.69.209.160])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A52A48
-	for <stable@vger.kernel.org>; Sun, 31 Aug 2025 06:03:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E5F35957
+	for <stable@vger.kernel.org>; Sun, 31 Aug 2025 09:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.69.209.160
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756620202; cv=none; b=rpu99KQYKQB9ygtO8UDxnKfNvj6G2UjjsvaFwc3cLgYur4FTy+RX21SlzHKq18ozfCHJZu6I2Lj3FhsP5UHMRyMWOfeKOFLhCkxkKbI8bge82L6KhYueIzUNAq4z84K/3cRwcBZJHdU5OFzAp7F2Ne1gaFU0v1QQI2JR30uCOBE=
+	t=1756633631; cv=none; b=kVnAuHBrB17smauqDvBTtTBj7Nlv/AW9cXhWrQxq9l+wuyDvW4+08DdS0vaYscY+lr21rISRbWXYS9geAldMxWa8Zqua8vruSov5UMZA7wcYrVtqfz5iQaOIG0F69/xD0H0taYGcDVxRQ3dy8PwKbcUXww9/j6fVlI5oVcGQIQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756620202; c=relaxed/simple;
-	bh=00BGTRV7thNsXHvRvWG3kDraM5XWXoya0MLOBm4b5fY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VbFXRdsTl78JStx/Z6BDi3Vzf2tmvlQ7WeNkSb52b53AnTXyUiPGe8NjDkBdPJnnB7l+YMr3/tBh6qXWi7Q0DVtDUteQXYZl0fLFlEPmmO6iCDaGe8m0mHN/DSOv9DfLhVT3S0kAHwBxrJwdI7hdyCUFggcdmEVXDs2JhdpmEos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K/jrdlVc; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-248d5074ff7so21780595ad.0
-        for <stable@vger.kernel.org>; Sat, 30 Aug 2025 23:03:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756620200; x=1757225000; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C3yztekeXcFEYzGBwSZXBzHZHbgep6UJq+xxxAXFBo0=;
-        b=K/jrdlVc+9UKxPH7j0laT+2hKjDuJ/403c0VidMGsd481BqlvevKTuF9wUYHZLdwjp
-         Fek2mkFFL+2zn4MO4LvI5m8pdbULKFl3vlbPQRqR8L2lxeY3C5qbGia9G0Jea9o+BJMu
-         b+NY5EbAjaTVBG6Ct0F3DSX+FtfDa8YmFN4tGwEK2PojELSYPM7Dio4vZdOEbgR4FWme
-         d47+z8mSE4eSWvaVqXD9kB8a7ReD6dgyROP8EzMaeVF+TEEhYa9T3DSYS+nvCuoACuse
-         0HdS3Lds1XofpLkZ76rw8PjyqF5f5QH57bUdCzgp+vgTHvBpOv5HfnwsaPiVCL/nSyHn
-         WC9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756620200; x=1757225000;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=C3yztekeXcFEYzGBwSZXBzHZHbgep6UJq+xxxAXFBo0=;
-        b=CJ5e4MgVJ7HxjRD1zwgyYtHk1a99S1UcN3yNjDgVm+6cInG2+7BvtcdB6fPn86r3xr
-         lADlOkzVIT4qC7xTpsA4zDpiWYOk//AmSaydPza8ioXAsmar4bc1o+uO1XeMbrpymkb/
-         3CGiYvSztaNpH6y5Hz0AysCrv9BijGDGxvaiRNFmTeXofpsc0OjCWtukSe91FEr9wwkR
-         vO0/zUzy2TLq0a+zhmWlaRdtLvIxSbPCp4SE8z9j4lNgwsqU9vlbueFlPcpF6JJyJHDO
-         LQbzQUUvqWKNB778mw02220A+xlwqH7U3ZgFmWSWxw45ItoCxEuYFimmHdMwJF+FgR/3
-         YsFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWtyM0pSJOWguu74rHbqQcsHQSOtf1LVJrNBlkmHoF9aKxU4FjWN2QGGKLQUjOMl6ns3bFIb+Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzr4gwsrFgtAVg5gApHksaopDX3LUjOi2+2Kcql4H8IBGszJi+T
-	a72S2RqtFVeZX7G4/xEpbyqf10w69A0XUO0RRLi5e3QvE6h+RyGPKURB
-X-Gm-Gg: ASbGncvCnT0FlpFUY4puxBWe7iqguXKajgEm3c+c/ruU4E9gTe+kMvom91CEA6gz6f7
-	00DfN9zYhIk5nv7pQz/yGqeNbzdzF1g576XU5c8Euf+XGcwCuFoBtdHy4DiRQH1n430aHcvbfDd
-	ZvSZ34TBsdhadvmTNGugPjMMHifYOtJkhm3tX03YqfRo6YBBGQhh4SsB6xVRgwVo8ZR4kXiTvBP
-	Cl/Fiwf0PTHQ311k9bYWDzWyTPCR12vPXht0jD6D+7VSGP0qGDbH6yC+RX1NzIO4mmGgZK40ctS
-	UrsDTqVJIa0cZklbiSCtNm4qbq98BGcTnUjYffYlvJJbd3E/dBxtTM++A4h16ARO9R68bVZ+xCU
-	19MllLVIk7IkarVRFf4qdUr67VHZtg0klVNd3+FxHWSy6QeRdPoh+ApbpShYRqOk=
-X-Google-Smtp-Source: AGHT+IFBetGaH6KvkXEXVijgbdd9O6yRIbGBovhMr6vm73dkCAgJD/IRiJBVU229W+bkkCDdHGC29w==
-X-Received: by 2002:a17:903:3884:b0:240:417d:8166 with SMTP id d9443c01a7336-24944ac250dmr45045785ad.19.1756620200280;
-        Sat, 30 Aug 2025 23:03:20 -0700 (PDT)
-Received: from BM5220 (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-24903758b3dsm69262065ad.61.2025.08.30.23.03.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Aug 2025 23:03:20 -0700 (PDT)
-From: Zenm Chen <zenmchen@gmail.com>
-To: gregkh@linuxfoundation.org
-Cc: guanwentao@uniontech.com,
-	mingo@kernel.org,
-	stable@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	vincent.guittot@linaro.org,
-	wkarny@gmail.com
-Subject: Re: [PATCH 6.6 8/8] sched/fair: Fix frequency selection for non-invariant case
-Date: Sun, 31 Aug 2025 14:03:15 +0800
-Message-ID: <20250831060315.5693-1-zenmchen@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025082213-awkward-harmonize-4212@gregkh>
-References: <2025082213-awkward-harmonize-4212@gregkh>
+	s=arc-20240116; t=1756633631; c=relaxed/simple;
+	bh=/OMbF9owtaHhE9k8kJ20eu1/oMpRys03hx98tByb++U=;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type; b=EX9IYLNi7dX2cfj51h0p8XD1nJWfXTD2pSfUgGkGi9voEBfrHrWvqJ8SHFkP1zeHuDdURpCwTcJ/uE9gbtG8F4YhBtotKN52S9PgqYVLF1vCoN1pu3Vvr596Yu80OTEhSzlPho6Odo7OCJE7QsdjZIYI1XGQMydce9LaQggZSlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net; spf=pass smtp.mailfrom=ms29.hinet.net; dkim=pass (2048-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b=e8FzE+p6; arc=none smtp.client-ip=203.69.209.160
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ms29.hinet.net
+Received: from cmsr5.hinet.net ([10.199.216.84])
+	by cmsr-t-1.hinet.net (8.15.2/8.15.2) with ESMTPS id 57V97sbi933221
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <stable@vger.kernel.org>; Sun, 31 Aug 2025 17:07:54 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ms29.hinet.net;
+	s=s2; t=1756631274; bh=/OMbF9owtaHhE9k8kJ20eu1/oMpRys03hx98tByb++U=;
+	h=From:To:Subject:Date;
+	b=e8FzE+p6R9psTE2ssfcH0lGyiCTrD8NMLyNzivzPKHlgksPzks4/0IKeHn474bI8y
+	 NZdRtKpPeOI+qi4D85vMKN5KLXs0dhk8Pd38hqlwWK24mIIe7nZ+oM3W/1BJpMgm/6
+	 HNH+BmTvYzrHey+zFJZl2sI7E9oOeSXi31Syh3jxwwYk7lrT7Y6j+w4zmzsAjYsMd1
+	 K/CBC4u3iLtA+ad2/5HDcXj6zwIeCOcvhi7VgLmRIgcSKsYQd03IfD+XBmunAc5WzH
+	 Wm28bwQ8kpaLOmuX8wYvCKCUdAE/Md+zCGEprGZOWjvsbs+cBCmjLHNFzM+9qeYK2h
+	 3OTPUYLV+2Bhw==
+Received: from [127.0.0.1] (218-173-224-25.dynamic-ip.hinet.net [218.173.224.25])
+	by cmsr5.hinet.net (8.15.2/8.15.2) with ESMTPS id 57V94sOh942768
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <stable@vger.kernel.org>; Sun, 31 Aug 2025 17:07:53 +0800
+From: "Info - Albinayah 957" <Stable@ms29.hinet.net>
+To: stable@vger.kernel.org
+Reply-To: "Info - Albinayah." <europe-sales@albinayah-group.com>
+Subject: =?UTF-8?B?TmV3IFNlcHRlbWJlciBPcmRlci4gMTU1MDggU3VuZGF5LCBBdWd1c3QgMzEsIDIwMjUgYXQgMTE6MDc6NTIgQU0=?=
+Message-ID: <1b9ad53a-34e1-0750-d9a5-952fe594a765@ms29.hinet.net>
+Content-Transfer-Encoding: 7bit
+Date: Sun, 31 Aug 2025 09:07:52 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.4 cv=ZJd0mm7b c=1 sm=1 tr=0 ts=68b410ea
+	a=JfKTcXGCP3chUBhEG7o28Q==:117 a=IkcTkHD0fZMA:10 a=5KLPUuaC_9wA:10
+	a=OrFXhexWvejrBOeqCD4A:9 a=QEXdDO2ut3YA:10
 
-Hi Wentao and Greg,
+Hi Stable,
 
-After upgrading the kernel from 6.6.88 to 6.6.89 a few month ago, my 
-computer became very very very slow [1], so these months i keep using 
-kernel 6.6.88. Yesterday I tried 6.6.103 and your patchset does fix 
-this problem, thank you so much!
+Please provide a quote for your products:
 
-[1] https://aur.archlinux.org/packages/linux-lts66#comment-1024908
+Include:
+1.Pricing (per unit)
+2.Delivery cost & timeline
+3.Quote expiry date
+
+Deadline: September
+
+Thanks!
+
+Kamal Prasad
+
+Albinayah Trading
 
