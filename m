@@ -1,167 +1,160 @@
-Return-Path: <stable+bounces-176789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E5AB3DB17
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 09:32:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8AA8B3DB37
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 09:38:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8269B3B2F6B
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 07:32:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34984189BFDA
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 07:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744FC26D4CA;
-	Mon,  1 Sep 2025 07:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9276E26F297;
+	Mon,  1 Sep 2025 07:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gDIB7jxY"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZoIHldoE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89DA26F2AE;
-	Mon,  1 Sep 2025 07:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2D426B75C
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 07:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756711956; cv=none; b=OdFs5epGIenuIVoR/DjP07LywMnIje959WUfP4M1tcVcW78H2d/l+zFhlQoRfWY1422FUER0334ZLRTuKxThfjs/Jn7BUSxhBNf4IvTBm6sm2xpajKQvc5x/+f/1h8dMHsnlq08XKByr9kCwvkvFwVkiNBgsTQP4bVTmxoTlLiQ=
+	t=1756712285; cv=none; b=eLnyA5Hox1H0ZFc6y5HykyrFmyT6cr+PxrmH8sMdb42tKW+YaojHSirBFVqxxL+MmQ6WniCRibzmWLdza5QrnJzt8B2Pv7S+/CbxPMJbmtWmUxn0TEyVhgCZVTI9uGhTJ+avAsLnRAwfUmhJ7KKEmG56qC+fj/F66QVBP/wco1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756711956; c=relaxed/simple;
-	bh=Tib9W/CgGxKrTG7tutz+gnQpqUXs0++EMfobtgtr6bY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hIEwkwwPisU3cp0sFkh7n1y/cPZ5IhWEk77iYIFjnLpCrONJYrrmLBHb7Z1RLgtlj8ZGkqTpv2ZkQZRGoPotFyN+RsUG8VzEau8+1gEc5fQSbvO8u2mwU4XGASSHWPDUJYs0KwNr43ddUQWIi0LjdnU+YCEBt7r0bgnHuCIWCu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gDIB7jxY; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2487a60d649so49827455ad.2;
-        Mon, 01 Sep 2025 00:32:34 -0700 (PDT)
+	s=arc-20240116; t=1756712285; c=relaxed/simple;
+	bh=WzfW40AZj4gPjN0MUg3o+yqK/+B/OT5Q7UpvUVPe8oI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aQNnMWvDclHaNyVEoNbgUJcbdv0EsT05KjvvWngBvEdW07IG6y0DJc256YYpFpPvEbWIt39Es/O0Lss1ZS3FkB5Lbdw+ihWT2BHWv/XuG+TmPyZSKmvgZR3VjdXU1GTT7tPWGIPqyPM3nBFyjAvkTMFPTiERaTg5Rgg6nbNNvr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZoIHldoE; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4b326b6c189so16654011cf.2
+        for <stable@vger.kernel.org>; Mon, 01 Sep 2025 00:38:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756711954; x=1757316754; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6rOAxdmOETfgsAaqbaLTN5ale6TV6rPQAy9mKOuAnE8=;
-        b=gDIB7jxYWvaRBeJpLG1aU2K5TTeV3ik3qq8NYqoaH5xljJysTkHVB03JtwkmLmyalj
-         1F1cRoGkWem5zphLH9dsE05o/23jOnfQmLM818FfWI5tKn52LhyKScp9noaCK5QcY+V0
-         U14inozlUA0tMfBS6vVH9TNCWjeaA+QXJKwYPFkLjTyv0swlBdTgiPlOkfYgC4fVsT4E
-         yg5hL6iRiAvSQuZJpaxTbQfy031ASSaztp6I2oCX/TVVLgzPUf8skIx/7V68nVfJTjUq
-         BZ1azWoDE0l0dactydWtgNZ5bM9DSyk/kCUPoBrJTG12jSbdtcITHi6Vsk0Us9A0NUur
-         P84A==
+        d=google.com; s=20230601; t=1756712283; x=1757317083; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7q7Kl5djn2WgPJ4cdJmkEnqgC+STRWJseSy7eNtKfiA=;
+        b=ZoIHldoE4OtEwoVNTtDxzFHfePWLl8GYRBZOmq9MVfG5gMXB+/iN6gOv6cb41P4g98
+         FUtpZMQPHZY4tls3HxBDujX6LPerx3SYsA7kN6DUH8AW4BP02Z9nQGJY9DwMq4mgYRTH
+         5S48mS/QSxtUlJJBUspoKXcDCpVTP73WWcZ0b87zVIlAElp4UK3PZE59AV8DXGzORcDh
+         L/v+7kCjfdYhlldxO/Rxez6ONIEH+WhNyYTjFbUZSTdOH/IT9nRgevi1hJTpzVfdfv9L
+         VUx6mf79Ubmb+svzi1lbSbwjWetF0mv11udoChe5tI+y8e1lElYI1VzQ58jmhfMt+vfw
+         elsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756711954; x=1757316754;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6rOAxdmOETfgsAaqbaLTN5ale6TV6rPQAy9mKOuAnE8=;
-        b=aChK0npyHXuxeCwd8bvL+biYmXvU/ko7r6sHckOMbHpeyz2ZISKAM/1VWlCjCfIhGD
-         o8yPQPMuyKqhww3zQjioDtV3hNrML6ovJ9ZQMs3RkO7FKWotVHakZyL62gzisuXLN25V
-         DydQ2v/f+0mmCP5Zk7shp/qnyFivmYSXSLXzulNGOp/2lFhwKeGf0TsL5oks/oBnaowk
-         fYfMlB2ONpl1P2ahFncCPNDHTqLVffY1+RlMMZpsAdHesrB8qVUoUCLV/o682FhT/UtG
-         AjN5Pjefoht3A4BAiuQbU2dfc9DHR0+YGlkJ+ka3F23RaF+JCPZx9kdIeA85LQFPsX1f
-         /w9A==
-X-Forwarded-Encrypted: i=1; AJvYcCU3XjsFu31aG0eVWJfO8RPTGPkZncKj7174YB3PdS8Exe0pPSDniImx6dzPGM9L9YJlPORhi244@vger.kernel.org, AJvYcCVH8EDjoRObU/PUrbfc/MDvB6vYVQFpDf42R25V3To93fensAEj4PEpNIsM8D5G7ifcaHtap+Mdqa/WjIY=@vger.kernel.org, AJvYcCWG5I9c1Q2AaCVFZq97NnD8GQwb8A0YgtTSAwpxvfQRNXQFvSpGrxphbteEmZbk1vOAJ4/bkHRF@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9vF/7siaFKzCdPweDsUsY5L8vrVyqQ55w4SUjswQNpImFeZ1x
-	3Rp02S17yAMlS4p7awkT2LIlxv1+kCW1S1xuQMt4gcRwHBovWgNS2XBW3CnPhezo0VE=
-X-Gm-Gg: ASbGncv19v2SyjAtbR8sYcx8gh/UhGrkeqXjq2OGU+DE5X/EJOPcsMlIICvA/GBFviZ
-	i2Y+nEfWyom+SyjtNgRJkRgeG78LRTd4CcTnQPFWILi0rCxDCAe1tTGtxLKha87yEL5byoEDJd5
-	JGAf+8VeIywmtDZLPFVfxhxcM0AazNFLwOoL1aKdIiUVJ+Sk188fSuYwYd2SNPJOvo0YHqwax4x
-	cPyy+/ki3Yac1ATLgqzn6U+pdVu/+BoJ96th2nUC3V/BwsFg4ymTExm30BVSqXvPdrTY7UA2CQk
-	b107HYqojf2fcac1k40SDPOiCHUXbbXO5lb/g1aBLSFN66pm8jGlEeFUP0+MfZaUWm4R3eYlh6N
-	xOUKOtohKpP5JnpxtLNqVtr5aC/NocZoHkL+BLlaDkrgml6qnZMBjBMbIAlnbr71om+RlmYo8ZO
-	0I6qDBrSHgCgcci6WUVVDILk3W+Wpb03/dB8gwY0mdBTSftw==
-X-Google-Smtp-Source: AGHT+IFkslgfwDMpPMAmqLBkJ/nBUu/MN7hOY4lUTgPiIxx0vtJ9uHgXIQjTess/VvF7BwLR1zVzhQ==
-X-Received: by 2002:a17:903:1a2e:b0:249:10a1:5332 with SMTP id d9443c01a7336-24944873f1fmr85728725ad.9.1756711954035;
-        Mon, 01 Sep 2025 00:32:34 -0700 (PDT)
-Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.116.239.33])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-24903704060sm95957675ad.20.2025.09.01.00.32.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 00:32:33 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2] net: dsa: mv88e6xxx: Fix fwnode reference leaks in mv88e6xxx_port_setup_leds
-Date: Mon,  1 Sep 2025 15:32:23 +0800
-Message-Id: <20250901073224.2273103-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.35.1
+        d=1e100.net; s=20230601; t=1756712283; x=1757317083;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7q7Kl5djn2WgPJ4cdJmkEnqgC+STRWJseSy7eNtKfiA=;
+        b=B57NzYwrAeNk0L6+nSKYvx+bsD7T/EqZsDe4K6asGTLQobnvDY+UrPqt+kRiRGBI2h
+         0VQ2jCPJs5ro+Q5EWErk4Z2J1eJYspg1aNJR3nuJBubokGBvVr898YA/tYHpa0itHqzw
+         wamDxMZxdZCdzLrEjDZFBhGZMyKfcpKK/ImxD8Hph0LWHSFlRCWF8us5DujangA9jQJe
+         robDNl/JqpkWZnRagsFA7X7d0ze8MDAToI6Zzii5T/DKs3vIb+oKUDjfLYpvgWdA3EBb
+         Xz0nriT0jTPm/vYZiC5YGIbayvQZQKB3nKtZ7NHG1t6r+1+KEfCMu6cMt6CwPnTr99xr
+         gxfw==
+X-Forwarded-Encrypted: i=1; AJvYcCXaDybx25QG9GWTVwueLc7nu3hzWVbpTgonljWx3YANfK5ey+nazTOQhcCnCUNho8ZTeXxtOWw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUUXBq6XbVIyxm549Z3x+YFs017mvDCndZrHm0/qPaeV4tyPyR
+	hGl+PvhaYo3VDJ8CmfW/rZxAA2zUqaouXAI48/koqUE7YWVWRDTDuy5zImkFkdL4r3aqAZC36uI
+	JpiFGMNWhY6S+Amg9QfrKTCMt4W6k3iMG0TC7ChVV
+X-Gm-Gg: ASbGncu0amFjjQEH7NJ2Npj87eVbF+KWfoGeNjGsJNBvAT5e3FJpIUrpQ3XOGY+7WvU
+	tpIxlUyuUvw8DdajIr1Eu9G9ZTmkWvOj3bc8hL1ZweZy9ZDwRHww19luSLaiqqAeTX9qVmVvsk/
+	FinYCkTf90YDPCUxmchrlJGYZzKBHeMPaEaLn0k6du8JM3CgiUa1aPw6DnJLLRWPD0ISWyj1zSI
+	ZZznQW6zWvYPw==
+X-Google-Smtp-Source: AGHT+IGzV6ATmp61ewbLzWto0qipug1G5shAQMh1uxcEylMfvmjc0KzUnlWIJKtFhfSJ0DazP+bJFRjB/3sgo7tLmGo=
+X-Received: by 2002:a05:622a:4c0e:b0:4b3:19b1:99d4 with SMTP id
+ d75a77b69052e-4b31dd773bdmr95750161cf.80.1756712282420; Mon, 01 Sep 2025
+ 00:38:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250827143715.23538-1-disclosure@aisle.com>
+In-Reply-To: <20250827143715.23538-1-disclosure@aisle.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 1 Sep 2025 00:37:48 -0700
+X-Gm-Features: Ac12FXwEBF4lffbGsQAW59JN0B7gOKoWwGphyL_Y5FDSSgXmBtkMqJYMWifcp7Q
+Message-ID: <CANn89iJM3CV-_2jWMMspH52RvfWtep-3srctf47NkYUkTTboSg@mail.gmail.com>
+Subject: Re: [PATCH net] netrom: validate header lengths in nr_rx_frame()
+ using pskb_may_pull()
+To: Stanislav Fort <disclosure@aisle.com>
+Cc: netdev@vger.kernel.org, security@kernel.org, kuba@kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fix multiple fwnode reference leaks:
+On Wed, Aug 27, 2025 at 7:38=E2=80=AFAM Stanislav Fort <disclosure@aisle.co=
+m> wrote:
+>
+> NET/ROM nr_rx_frame() dereferences the 5-byte transport header
+> unconditionally. nr_route_frame() currently accepts frames as short as
+> NR_NETWORK_LEN (15 bytes), which can lead to small out-of-bounds reads
+> on short frames.
+>
+> Fix by using pskb_may_pull() in nr_rx_frame() to ensure the full
+> NET/ROM network + transport header is present before accessing it, and
+> guard the extra fields used by NR_CONNREQ (window, user address, and the
+> optional BPQ timeout extension) with additional pskb_may_pull() checks.
+>
+> This aligns with recent fixes using pskb_may_pull() to validate header
+> availability.
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: Stanislav Fort <disclosure@aisle.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Stanislav Fort <disclosure@aisle.com>
+> ---
+>  net/netrom/af_netrom.c | 12 +++++++++++-
+>  net/netrom/nr_route.c  |  2 +-
+>  2 files changed, 12 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/netrom/af_netrom.c b/net/netrom/af_netrom.c
+> index 3331669d8e33..1fbaa161288a 100644
+> --- a/net/netrom/af_netrom.c
+> +++ b/net/netrom/af_netrom.c
+> @@ -885,6 +885,10 @@ int nr_rx_frame(struct sk_buff *skb, struct net_devi=
+ce *dev)
+>          *      skb->data points to the netrom frame start
+>          */
+>
+> +       /* Ensure NET/ROM network + transport header are present */
+> +       if (!pskb_may_pull(skb, NR_NETWORK_LEN + NR_TRANSPORT_LEN))
+> +               return 0;
+> +
+>         src  =3D (ax25_address *)(skb->data + 0);
+>         dest =3D (ax25_address *)(skb->data + 7);
+>
+> @@ -961,6 +965,12 @@ int nr_rx_frame(struct sk_buff *skb, struct net_devi=
+ce *dev)
+>                 return 0;
+>         }
+>
+> +       /* Ensure NR_CONNREQ fields (window + user address) are present *=
+/
+> +       if (!pskb_may_pull(skb, 21 + AX25_ADDR_LEN)) {
 
-1. The function calls fwnode_get_named_child_node() to get the "leds" node,
-   but never calls fwnode_handle_put(leds) to release this reference.
+If skb->head is reallocated by this pskb_may_pull(), dest variable
+might point to a freed piece of memory
 
-2. Within the fwnode_for_each_child_node() loop, the early return
-   paths that don't properly release the "led" fwnode reference.
+(old skb->head)
 
-This fix follows the same pattern as commit d029edefed39
-("net dsa: qca8k: fix usages of device_get_named_child_node()")
+As far as netrom is concerned, I would force a full linearization of
+the packet very early
 
-Fixes: 94a2a84f5e9e ("net: dsa: mv88e6xxx: Support LED control")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
-changes in v2:
-- use goto for cleanup in error paths
-- v1: https://lore.kernel.org/all/20250830085508.2107507-1-linmq006@gmail.com/
----
- drivers/net/dsa/mv88e6xxx/leds.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+It is also unclear if the bug even exists in the first place.
 
-diff --git a/drivers/net/dsa/mv88e6xxx/leds.c b/drivers/net/dsa/mv88e6xxx/leds.c
-index 1c88bfaea46b..ab3bc645da56 100644
---- a/drivers/net/dsa/mv88e6xxx/leds.c
-+++ b/drivers/net/dsa/mv88e6xxx/leds.c
-@@ -779,7 +779,8 @@ int mv88e6xxx_port_setup_leds(struct mv88e6xxx_chip *chip, int port)
- 			continue;
- 		if (led_num > 1) {
- 			dev_err(dev, "invalid LED specified port %d\n", port);
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto err_put_led;
- 		}
- 
- 		if (led_num == 0)
-@@ -823,17 +824,25 @@ int mv88e6xxx_port_setup_leds(struct mv88e6xxx_chip *chip, int port)
- 		init_data.devname_mandatory = true;
- 		init_data.devicename = kasprintf(GFP_KERNEL, "%s:0%d:0%d", chip->info->name,
- 						 port, led_num);
--		if (!init_data.devicename)
--			return -ENOMEM;
-+		if (!init_data.devicename) {
-+			ret = -ENOMEM;
-+			goto err_put_led;
-+		}
- 
- 		ret = devm_led_classdev_register_ext(dev, l, &init_data);
- 		kfree(init_data.devicename);
- 
- 		if (ret) {
- 			dev_err(dev, "Failed to init LED %d for port %d", led_num, port);
--			return ret;
-+			goto err_put_led;
- 		}
- 	}
- 
-+	fwnode_handle_put(leds);
- 	return 0;
-+
-+err_put_led:
-+	fwnode_handle_put(led);
-+	fwnode_handle_put(leds);
-+	return ret;
- }
--- 
-2.35.1
+Can you show the stack trace leading to this function being called
+from an arbitrary
+provider (like a packet being fed by malicious user space)
 
+For instance nr_rx_frame() can be called from net/netrom/nr_loopback.c
+with non malicious packet.
+
+For the remaining caller (nr_route_frame()), it is unclear to me.
 
