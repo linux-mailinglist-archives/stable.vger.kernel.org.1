@@ -1,276 +1,241 @@
-Return-Path: <stable+bounces-176810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346C9B3DDC1
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 11:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE77B3DDCA
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 11:14:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81CE5188074D
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 09:13:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18DFD188F983
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 09:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C2D3009EE;
-	Mon,  1 Sep 2025 09:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52D9305053;
+	Mon,  1 Sep 2025 09:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="jJkFmExS";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mxt9M1w0"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="PEdCmu2e";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="g4HKswC2";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="PEdCmu2e";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="g4HKswC2"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28822FFDFE;
-	Mon,  1 Sep 2025 09:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF3430497A
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 09:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756717978; cv=none; b=ljavOYbpyvl1igTNFuUNPTH9A/rbckTLbOIr+VW7cmv6ZZVSxXz1hK/5Nr+OUgejW+rAtckMfdBEnicwbuThM/B36eBvd6fYdo7XlMbakKhkKiwOh/gHjxbSRclPl7N4x1msDBjilA914I5qf2o/q7VR6OweOeHvCzHlYhBjyOc=
+	t=1756718094; cv=none; b=czY0c9OnmqxpNMDbDTM99EM/DQaJDewleh+wphfEMTFRZPiOoh7e32qZHZN/KekcEt9XgAs4qxH9BtqanWbJOPz4+xLsuZje2qxSIMP1G/BDSp/MHAxxX0vOk4SqZKjussaSeiU3Mk5Qd2A7DGGtH8rRfNO/Ol1w8UtJgbH58eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756717978; c=relaxed/simple;
-	bh=wutNVAbp3dfG7ym5Z5nxrvnUXjfIKhxTM7oCA1K2ZZ8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=V2hh9zmI2+HJS4uVA2WeI1Ze2D2KpsN3+dLJM3j94+MAdnb/V6KGsctGYuOXbce4p/bc14BeJYSG3pI9RG9rGiECy3jnST12DwcAuj2ldNAjPbfpp5Ebp2ChweY2FDyT8g5HmrYCN/bcy0qSBmSx3RuozWQoyCTwt1oHg0nFwtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=jJkFmExS; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mxt9M1w0; arc=none smtp.client-ip=202.12.124.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id B976A7A00E2;
-	Mon,  1 Sep 2025 05:12:54 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Mon, 01 Sep 2025 05:12:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm2; t=1756717974; x=1756804374; bh=SP
-	HadFh9HxajytO1/5tbW7NlX857Ehz5RAZeJmX89Yg=; b=jJkFmExSFSC1eUsvzh
-	zgQqexcH+p+PtKGuPtu9c7InDWOwum8OdNz4JH7O2w1ntpJd6Lzm8q+uLScqUtPZ
-	XD0+QNvO55dhvKz9q+OQ4P7q7gcKsXmscx+9IEb/xJJm7MWKNgqnAE4vbK/1ha8c
-	N+ehWsHBi0RTn6ODkgWqwJd5lNGRHFo6M24T3hFprIOf/r5e8M2D33xO0qLHblrC
-	ZDzvn/x6SRp0TwJu/Cq12IePLB2Qa83Fob/XjBr/zyoGB3Ol2T87ZdpfrVvXwGsr
-	K/adJFyD1h8SN+x7WP0Rmcd1TYklKf88tmiDe/aAmqXHnA+dTAHa3yF1JsRpNEiT
-	XlyA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1756717974; x=1756804374; bh=SPHadFh9HxajytO1/5tbW7NlX857
-	Ehz5RAZeJmX89Yg=; b=mxt9M1w0cW0DptNYPyjYfDc6ZaTcC6FprKcYmyuaYoqF
-	2VO2E1kV8O1FSYIwjF2HDLeD30ZkLmXZIJ/xMNaxk7Y81hk+nLN+xZ6BXF0xj346
-	ZrKdTVdsgiT1yfyVOn8ICxlFTfizSIvrqClwK4fNsvmB0jT+EEm1XEGeA4/Uxa9g
-	eoVRhCA+c25jUc8I6ACV/gI1OAtfWt66HhncFGVziEWgE6xTkbcejTjDdlyPtwwa
-	rMlpzcDmH7zfiQB8hzlrb0Z+MmO1CupbGDcCPHgDLhmSpuwPK7XdBkvef6KV3Mdp
-	TO1oTdd4im+4ftO8mK3T6KTVRFDRWjtLX8EONxHL5A==
-X-ME-Sender: <xms:lWO1aET5GBi-W7rahTwEyS3GN4-x_DyuFcPoe2j0H2DDWTaJQJvMjg>
-    <xme:lWO1aNdy6-iqHYmHHUMirUriEGKuhgMqemkWIXkmAPS2EHFgY89ir_RIT5p9Q4WyX
-    DiyhH-ICMC_74DDYPU>
-X-ME-Received: <xmr:lWO1aOQQFjY2xl3iogA2C5ZVXFXciBwt9_kaDNnvnMyQezvxO_2LNoKnkpj0VLdnZMYT0B_H6uDRH7QJD-ahxsVYIesladM3kVBs_A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduledujeeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeflrghnnhgvucfi
-    rhhunhgruhcuoehjsehjrghnnhgruhdrnhgvtheqnecuggftrfgrthhtvghrnhepgfffie
-    ffteeuffetuefggefhgfehtdfhkefgtdejueeuvdevkeetveevvdffkeehnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhesjhgrnhhnrghurd
-    hnvghtpdhnsggprhgtphhtthhopeelpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pehlihhnuhigqdhfsgguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
-    epughrihdquggvvhgvlheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgt
-    phhtthhopehjsehjrghnnhgruhdrnhgvthdprhgtphhtthhopeguvghllhgvrhesghhmgi
-    druggvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtohepthgvtghhsehtohhothgrihdrnhgvthdprhgtphhtthhope
-    hsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehhrghnshhg
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtrhgvughinhhgsehnvhhiughirgdrtg
-    homh
-X-ME-Proxy: <xmx:lWO1aBLh34AXbBGfsbg-fU0EvJBzHX7krwbkkb8hBTcVto7LvzsTnA>
-    <xmx:lWO1aDJ4I_WKHs00ZVjMLKuKIBQd1SLj2_CPOioWYTbIhjIf2fPXuA>
-    <xmx:lWO1aEiC7_uIURdNsgMs9MH5kgBN9sFGbdC2v5B-qPisEyXkxN69Dw>
-    <xmx:lWO1aFM52cAQX-LPI5caDTy2YIjvbh5chB7m9ivw730Y0Zjptr9vqg>
-    <xmx:lmO1aDUWv4nxEDAc6S2suqcfXxgeH_HC42d17FBk4HoMu6VkdxNOfHYE>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 1 Sep 2025 05:12:53 -0400 (EDT)
-From: Janne Grunau <j@jannau.net>
-Date: Mon, 01 Sep 2025 11:12:45 +0200
-Subject: [PATCH] fbdev/simplefb: Fix use after free in
- simplefb_detach_genpds()
+	s=arc-20240116; t=1756718094; c=relaxed/simple;
+	bh=rmf2xPzlWh0zVjAjjlpTyV6VyIqJffUe1/m6pejmv40=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AFdH+ORUJ9mFV7JMLBZFX1hPR3Rxex3u0tho8pSTb2woC3Fwj+W5lg+a7JRU32dxkxQtGgCZHb4jItW+mF1ADBuaVAT8xXp44757JlEEDNo7a/NmdDsUzRZHM4CobUolEgGlxqtsgYgI4D58zNPaa5l0lt3CXe6nhMUQpRgZLEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=PEdCmu2e; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=g4HKswC2; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=PEdCmu2e; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=g4HKswC2; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 53D491F387;
+	Mon,  1 Sep 2025 09:14:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756718091; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=8TP2gZxqJ/BLSOVQu0B58s8cXLU6QhiNYYtE2iVrHlk=;
+	b=PEdCmu2eIQCd02VJg0tf1TCfM0oVu7adEedBpBeDtqPe36XOQjvh8MkVKtvvlKMBUgplzb
+	Ss7aK9xzMO0FIXV+oqnL7vSCCms1uiFhoCGDXS6/styj+auUTBgsEovhn0AEwJN+C/xLSc
+	QbBU6AacrmG8cIw8H5n4qBQVNjkrH9o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756718091;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=8TP2gZxqJ/BLSOVQu0B58s8cXLU6QhiNYYtE2iVrHlk=;
+	b=g4HKswC25V/TUTYSRdXhDN5BW9JbBpFxEYA5NFXEMTU6wPdxfsWU5vBYeyxjrD0Cpjis7Z
+	X74XP6/Nq/iWcLBA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756718091; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=8TP2gZxqJ/BLSOVQu0B58s8cXLU6QhiNYYtE2iVrHlk=;
+	b=PEdCmu2eIQCd02VJg0tf1TCfM0oVu7adEedBpBeDtqPe36XOQjvh8MkVKtvvlKMBUgplzb
+	Ss7aK9xzMO0FIXV+oqnL7vSCCms1uiFhoCGDXS6/styj+auUTBgsEovhn0AEwJN+C/xLSc
+	QbBU6AacrmG8cIw8H5n4qBQVNjkrH9o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756718091;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=8TP2gZxqJ/BLSOVQu0B58s8cXLU6QhiNYYtE2iVrHlk=;
+	b=g4HKswC25V/TUTYSRdXhDN5BW9JbBpFxEYA5NFXEMTU6wPdxfsWU5vBYeyxjrD0Cpjis7Z
+	X74XP6/Nq/iWcLBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 15EC91378C;
+	Mon,  1 Sep 2025 09:14:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 493KAwtktWhvagAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 01 Sep 2025 09:14:51 +0000
+Message-ID: <df993304-d4f3-484a-81da-6aff3f14764f@suse.cz>
+Date: Mon, 1 Sep 2025 11:14:50 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm: slub: avoid wake up kswapd in set_track_prepare
+Content-Language: en-US
+To: yangshiguang <yangshiguang1011@163.com>
+Cc: David Rientjes <rientjes@google.com>, harry.yoo@oracle.com,
+ akpm@linux-foundation.org, cl@gentwo.org, roman.gushchin@linux.dev,
+ glittao@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ yangshiguang <yangshiguang@xiaomi.com>, stable@vger.kernel.org
+References: <20250830020946.1767573-1-yangshiguang1011@163.com>
+ <c8f6933e-f733-4f86-c09d-8028ad862f33@google.com>
+ <7f30ddd1-c6f7-4b2b-a2b9-875844092e28@suse.cz>
+ <11922bd5.7fae.1990464d9c8.Coremail.yangshiguang1011@163.com>
+ <c85034fe-d48e-4433-8c65-52bfb1d5d69b@suse.cz>
+ <623a8fd2.8b7b.1990481f065.Coremail.yangshiguang1011@163.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <623a8fd2.8b7b.1990481f065.Coremail.yangshiguang1011@163.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250901-simplefb-genpd-uaf-v1-1-0d9f3a34c4dc@jannau.net>
-X-B4-Tracking: v=1; b=H4sIAIxjtWgC/x3MTQqAIBBA4avIrBtQ+8OuEi2sxhooE6UIorsnL
- b/Few8kikwJOvFApIsTHz5DFQKm1fqFkOds0FLX0kiFifewkRtxIR9mPK3DstatrNpGWW0ghyG
- S4/uf9sP7fsK6ROdkAAAA
-X-Change-ID: 20250901-simplefb-genpd-uaf-352704761a29
-To: Hans de Goede <hansg@kernel.org>, Helge Deller <deller@gmx.de>, 
- Thierry Reding <treding@nvidia.com>
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, Daniel Huhardeaux <tech@tootai.net>, 
- stable@vger.kernel.org, Janne Grunau <j@jannau.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6069; i=j@jannau.net;
- s=yk2024; h=from:subject:message-id;
- bh=wutNVAbp3dfG7ym5Z5nxrvnUXjfIKhxTM7oCA1K2ZZ8=;
- b=owGbwMvMwCW2UNrmdq9+ahrjabUkhoytyZPfqtrvt+I4c9IiRXCO8mr5pxPSBFac1JeUPb4qM
- Xa1a0FURykLgxgXg6yYIkuS9ssOhtU1ijG1D8Jg5rAygQxh4OIUgIkwzGT4K2i+JeZJQFZ8xHpd
- B24p/gmZtxpEzQ+Uu0V9/13ittNzGyPDg2sH8+5f3v3zXoZL4MpjC+5I6DNPUPfXzOvfwCMbJ5j
- BDQA=
-X-Developer-Key: i=j@jannau.net; a=openpgp;
- fpr=8B336A6BE4E5695E89B8532B81E806F586338419
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[163.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FREEMAIL_ENVRCPT(0.00)[163.com,gmail.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[google.com,oracle.com,linux-foundation.org,gentwo.org,linux.dev,gmail.com,kvack.org,vger.kernel.org,xiaomi.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	URIBL_BLOCKED(0.00)[suse.cz:email,suse.cz:mid,xiaomi.com:email];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
 
-The pm_domain cleanup can not be devres managed as it uses struct
-simplefb_par which is allocated within struct fb_info by
-framebuffer_alloc(). This allocation is explicitly freed by
-unregister_framebuffer() in simplefb_remove().
-Devres managed cleanup runs after the device remove call and thus can no
-longer access struct simplefb_par.
-Call simplefb_detach_genpds() explicitly from simplefb_destroy() like
-the cleanup functions for clocks and regulators.
+On 9/1/25 11:00, yangshiguang wrote:
+> 
+> 
+> At 2025-09-01 16:46:13, "Vlastimil Babka" <vbabka@suse.cz> wrote:
+>>On 9/1/25 10:29, yangshiguang wrote:
+>>> 
+>>> 
+>>> At 2025-09-01 16:15:04, "Vlastimil Babka" <vbabka@suse.cz> wrote:
+>>>>On 9/1/25 09:50, David Rientjes wrote:
+>>>>> On Sat, 30 Aug 2025, yangshiguang1011@163.com wrote:
+>>>>> 
+>>>>>> From: yangshiguang <yangshiguang@xiaomi.com>
+>>>>>> 
+>>>>>> From: yangshiguang <yangshiguang@xiaomi.com>
+>>>>>> 
+>>>>> 
+>>>>> Duplicate lines.
+>>>>> 
+>>>>>> set_track_prepare() can incur lock recursion.
+>>>>>> The issue is that it is called from hrtimer_start_range_ns
+>>>>>> holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
+>>>>>> CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
+>>>>>> and try to hold the per_cpu(hrtimer_bases)[n].lock.
+>>>>>> 
+>>>>>> Avoid deadlock caused by implicitly waking up kswapd by
+>>>>>> passing in allocation flags. And the slab caller context has
+>>>>>> preemption disabled, so __GFP_KSWAPD_RECLAIM must not appear in gfp_flags.
+>>>>>> 
+>>>>> 
+>>>>> This mentions __GFP_KSWAPD_RECLAIM, but the patch actually masks off 
+>>>>> __GFP_DIRECT_RECLAIM which would be a heavierweight operation.  Disabling 
+>>>>> direct reclaim does not necessarily imply that kswapd will be disabled as 
+>>>>> well.
+>>>>
+>>>>Yeah I think the changelog should say __GFP_DIRECT_RECLAIM.
+>>>>
+>>>>> Are you meaning to clear __GFP_RECLAIM in set_track_prepare()?
+>>>>
+>>>>No because if the context context (e.g. the hrtimers) can't support
+>>>>__GFP_KSWAPD_RECLAIM it won't have it in gfp_flags and we now pass them to
+>>> 
+>>>>set_track_prepare() so it already won't be there.
+>>> 
+>>> 
+>>> Sry. Should be __GFP_DIRECT_RECLAIM. I will resend the patch.
+>>
+>>I have adjusted it locally already. Also moved the masking of
+>>__GFP_DIRECT_RECLAIM to ___slab_alloc itself as that's where
+>>the preemption is disabled so it's more obvious.
+>>
+>>Does the result look good to you?
+> 
+> This looks good.
+> Currently only ___slab_alloc disables preemption context calls to set_track. 
+> In the future, not all callers will disable preemption. 
 
-Fixes an use after free on M2 Mac mini during
-aperture_remove_conflicting_devices() using the downstream asahi kernel
-with Debian's kernel config. For unknown reasons this started to
-consistently dereference an invalid pointer in v6.16.3 based kernels.
-
-[    6.736134] BUG: KASAN: slab-use-after-free in simplefb_detach_genpds+0x58/0x220
-[    6.743545] Read of size 4 at addr ffff8000304743f0 by task (udev-worker)/227
-[    6.750697]
-[    6.752182] CPU: 6 UID: 0 PID: 227 Comm: (udev-worker) Tainted: G S                  6.16.3-asahi+ #16 PREEMPTLAZY
-[    6.752186] Tainted: [S]=CPU_OUT_OF_SPEC
-[    6.752187] Hardware name: Apple Mac mini (M2, 2023) (DT)
-[    6.752189] Call trace:
-[    6.752190]  show_stack+0x34/0x98 (C)
-[    6.752194]  dump_stack_lvl+0x60/0x80
-[    6.752197]  print_report+0x17c/0x4d8
-[    6.752201]  kasan_report+0xb4/0x100
-[    6.752206]  __asan_report_load4_noabort+0x20/0x30
-[    6.752209]  simplefb_detach_genpds+0x58/0x220
-[    6.752213]  devm_action_release+0x50/0x98
-[    6.752216]  release_nodes+0xd0/0x2c8
-[    6.752219]  devres_release_all+0xfc/0x178
-[    6.752221]  device_unbind_cleanup+0x28/0x168
-[    6.752224]  device_release_driver_internal+0x34c/0x470
-[    6.752228]  device_release_driver+0x20/0x38
-[    6.752231]  bus_remove_device+0x1b0/0x380
-[    6.752234]  device_del+0x314/0x820
-[    6.752238]  platform_device_del+0x3c/0x1e8
-[    6.752242]  platform_device_unregister+0x20/0x50
-[    6.752246]  aperture_detach_platform_device+0x1c/0x30
-[    6.752250]  aperture_detach_devices+0x16c/0x290
-[    6.752253]  aperture_remove_conflicting_devices+0x34/0x50
-...
-[    6.752343]
-[    6.967409] Allocated by task 62:
-[    6.970724]  kasan_save_stack+0x3c/0x70
-[    6.974560]  kasan_save_track+0x20/0x40
-[    6.978397]  kasan_save_alloc_info+0x40/0x58
-[    6.982670]  __kasan_kmalloc+0xd4/0xd8
-[    6.986420]  __kmalloc_noprof+0x194/0x540
-[    6.990432]  framebuffer_alloc+0xc8/0x130
-[    6.994444]  simplefb_probe+0x258/0x2378
-...
-[    7.054356]
-[    7.055838] Freed by task 227:
-[    7.058891]  kasan_save_stack+0x3c/0x70
-[    7.062727]  kasan_save_track+0x20/0x40
-[    7.066565]  kasan_save_free_info+0x4c/0x80
-[    7.070751]  __kasan_slab_free+0x6c/0xa0
-[    7.074675]  kfree+0x10c/0x380
-[    7.077727]  framebuffer_release+0x5c/0x90
-[    7.081826]  simplefb_destroy+0x1b4/0x2c0
-[    7.085837]  put_fb_info+0x98/0x100
-[    7.089326]  unregister_framebuffer+0x178/0x320
-[    7.093861]  simplefb_remove+0x3c/0x60
-[    7.097611]  platform_remove+0x60/0x98
-[    7.101361]  device_remove+0xb8/0x160
-[    7.105024]  device_release_driver_internal+0x2fc/0x470
-[    7.110256]  device_release_driver+0x20/0x38
-[    7.114529]  bus_remove_device+0x1b0/0x380
-[    7.118628]  device_del+0x314/0x820
-[    7.122116]  platform_device_del+0x3c/0x1e8
-[    7.126302]  platform_device_unregister+0x20/0x50
-[    7.131012]  aperture_detach_platform_device+0x1c/0x30
-[    7.136157]  aperture_detach_devices+0x16c/0x290
-[    7.140779]  aperture_remove_conflicting_devices+0x34/0x50
-...
-
-Reported-by: Daniel Huhardeaux <tech@tootai.net>
-Cc: stable@vger.kernel.org
-Fixes: 92a511a568e44 ("fbdev/simplefb: Add support for generic power-domains")
-Signed-off-by: Janne Grunau <j@jannau.net>
----
- drivers/video/fbdev/simplefb.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/video/fbdev/simplefb.c b/drivers/video/fbdev/simplefb.c
-index 1893815dc67f4c1403eea42c0e10a7ead4d96ba9..cd5193e704ffe1ccc178c13916a462446af9cb14 100644
---- a/drivers/video/fbdev/simplefb.c
-+++ b/drivers/video/fbdev/simplefb.c
-@@ -93,6 +93,7 @@ struct simplefb_par {
- 
- static void simplefb_clocks_destroy(struct simplefb_par *par);
- static void simplefb_regulators_destroy(struct simplefb_par *par);
-+static void simplefb_detach_genpds(void *res);
- 
- /*
-  * fb_ops.fb_destroy is called by the last put_fb_info() call at the end
-@@ -105,6 +106,7 @@ static void simplefb_destroy(struct fb_info *info)
- 
- 	simplefb_regulators_destroy(info->par);
- 	simplefb_clocks_destroy(info->par);
-+	simplefb_detach_genpds(info->par);
- 	if (info->screen_base)
- 		iounmap(info->screen_base);
- 
-@@ -465,13 +467,11 @@ static int simplefb_attach_genpds(struct simplefb_par *par,
- 		return err;
- 	}
- 
--	par->num_genpds = err;
--
- 	/*
- 	 * Single power-domain devices are handled by the driver core, so
- 	 * nothing to do here.
- 	 */
--	if (par->num_genpds <= 1)
-+	if (err <= 1)
- 		return 0;
- 
- 	par->genpds = devm_kcalloc(dev, par->num_genpds, sizeof(*par->genpds),
-@@ -485,6 +485,12 @@ static int simplefb_attach_genpds(struct simplefb_par *par,
- 	if (!par->genpd_links)
- 		return -ENOMEM;
- 
-+	/*
-+	 * Set num_genpds only after genpds and genpd_links are allocated to
-+	 * exit early from simplefb_detach_genpds() without full initialisation.
-+	 */
-+	par->num_genpds = err;
-+
- 	for (i = 0; i < par->num_genpds; i++) {
- 		par->genpds[i] = dev_pm_domain_attach_by_id(dev, i);
- 		if (IS_ERR(par->genpds[i])) {
-@@ -506,9 +512,10 @@ static int simplefb_attach_genpds(struct simplefb_par *par,
- 			dev_warn(dev, "failed to link power-domain %u\n", i);
- 	}
- 
--	return devm_add_action_or_reset(dev, simplefb_detach_genpds, par);
-+	return 0;
- }
- #else
-+static void simplefb_detach_genpds(void *res) { }
- static int simplefb_attach_genpds(struct simplefb_par *par,
- 				  struct platform_device *pdev)
- {
-
----
-base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
-change-id: 20250901-simplefb-genpd-uaf-352704761a29
-
-Best regards,
--- 
-Janne Grunau <j@jannau.net>
+Great, added to slab/for-next-fixes. Thanks!
 
 
