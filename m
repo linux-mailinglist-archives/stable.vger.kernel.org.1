@@ -1,112 +1,109 @@
-Return-Path: <stable+bounces-176812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303AAB3DE31
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 11:24:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E410CB3DE3D
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 11:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E049C3AC708
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 09:24:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BEA017F6AC
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 09:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB53C30C608;
-	Mon,  1 Sep 2025 09:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CB130DEC8;
+	Mon,  1 Sep 2025 09:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NeTZEL7d"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iBxl9iBh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5422430ACEA;
-	Mon,  1 Sep 2025 09:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D5D2E0417;
+	Mon,  1 Sep 2025 09:21:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756718449; cv=none; b=I0xdtVzVId/nprFAKQcSupmt1O4Nmum9O6aOttSsUoWAplPnXXkDR1oSIvNR7tNBdZ+yQUt5Si/QFv7vbt1KRemq4ud6lrAlMoBhOa2sq6rhxj4cdtxZ1/XQP0bxER0F3gzxuSWL1c0AbyyGRQNROVna2GWaXXJgEWhqvV/6eNg=
+	t=1756718469; cv=none; b=ZS7mIT0LCaF6rVjNsOhtxorOh1OwK7Tl3IC4KhDs+sd+TWYpkEOD0e6lQP5q34CTAXb+0VDw9b79H+eytehMuaVMkXgoVbjwSLHX35QhIhsigsLmwypcvhPigixMekuxuEIQTnkNjGij5jr/3zWCx9F7JRQCuLPkwFX8/u7Ab0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756718449; c=relaxed/simple;
-	bh=uPpjhhX6OSOG20zlto+F459N/ANJBRNXVrmbCAnwWsU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cxbO37JQ4WV5RC7frS78lX+gYN7riG/RezvBKze649C3764MOb3SnkwDc/YJxXlllxIqT5rvJpyyW2cUNAvIFauNQ+myWG8br/aC62XVsnWC1muw410ltRmA63gT0N5cGUhCMEIuP9z+8k88bVkp1k1kqDrB5lPp+8M4gg61CTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NeTZEL7d; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-327d8df861dso1883494a91.2;
-        Mon, 01 Sep 2025 02:20:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756718447; x=1757323247; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OTM7j+dudYDI3LeEGbLTFNhknSATcKexImiJ1EJbpS4=;
-        b=NeTZEL7d4UxhFW0dFhLz3Lgr/ty60sVm3/4K7VK92M6GP6BOp/MJMakSLwN1ktbWm9
-         ZCt50YEEs+mAEt+Woce+tlTr5YhR6Ru1dl5sJsa56dPc5FMQtkvRsfxXEVt7b3jYRW91
-         CdD8dx4jCH6MYHCi/6ozKMGYAHWLndnbjvC0L4RmjV25Tg3zpQ7IJWT0QAPrK5Xk2xct
-         HSVSaq7prRLD1CVHkDkPcOK6bglvLOuKogBVM1CqgdfXKbaQVeSmZiSjmmlc8m4iq3iR
-         AkxbKncdbRWW7ORMdUaoO+Qy6cOGz9veSAUh07xYk4WoyDKNri+imCNzV0ObIQ0RArd4
-         s6Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756718447; x=1757323247;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OTM7j+dudYDI3LeEGbLTFNhknSATcKexImiJ1EJbpS4=;
-        b=UQEb7dttwpO3Ol6IabyNtr/+VYf2gXHI2Na5kWAdHfN7Zjd7i/f2h63kyPncPCc5VK
-         AqojFxeFEO69nMPB31GRsfyZH/g1H7RapdK+njZ5lcGDB/7NSTRHayxr6mQu6yi0GSS/
-         dBgS6szpMBYmzEnMO2j/bc55pcUC5DY+ESCgEm1GTa4HOStXrMF7x/mH3Ug1vAZHW1Z3
-         /N9B3uWnjPgjzo8CGOgH8SAdz9Afdz3RTZbTso7q4mcPvAmgmZAztVAUcR0nQBvZLq0S
-         wleN54Jq/utT/gyWt8muEzIY4U+tIL3jB7XFkG3wqIO/386c5t8Wa5+5OfOVBTtJQ21R
-         BBBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUha2i5KPE26zNlXJ6k7lO1ObM7kVfJP5joCABqI500ttjxqrI3Ki6pP1d/wsamSV8JJCGR135J1nXnmc8=@vger.kernel.org, AJvYcCXNkwWK1TlGbvJzUtqXwhReU4kMomza3+9gH6H4+AJZZB2UpuxB7i3OiroDCqMyh+QdmJY+4fLk@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqWFXbTI/SvO9v6HBe3SrqQNsflJ+7/deujAgWEDneSC9O6XXc
-	g7je4yYh14l5BLuZ197IK9ud8jevmm48taaOsb7zvEk0LX/6PRo7M8dKIaRuQ6RuiKySDk8LTyW
-	k6gAewtiNRzsBj4tcusouCWVCSQUu3h0=
-X-Gm-Gg: ASbGncs7/ibrFCqXZq7q7U9f37m7Rnvmsho2zNtWff81Y5SgezMhmAwfHzI9i7F0dov
-	oMYNvYwlZClX75ViQ6eyrXyWx1/kGBiJNIMSq1crzpXomBXmt+wtZSi3hl/DkSBSVmGUQDZBL5A
-	udpYZZzli5Qrhnkmz4hCBs7BRxXh+WoRI1ca7Z52bzkCxu9D1W0Tv2nuLcpDhj7Qnlcrx5WpOGn
-	+u6q2d7eLjnczeddfVwvZhkbRJyDinDCVbfG1iRixqt8pcmKQ==
-X-Google-Smtp-Source: AGHT+IE8wUy1PB+IopIFDdgKXlskbRViVOMNnmdf/EFPKaLDFIGjEd6U9ahFVCRY9iM736R4GYKuuWXmGbJO+1d+tCE=
-X-Received: by 2002:a17:90b:4d83:b0:325:57fc:87ce with SMTP id
- 98e67ed59e1d1-3281543380fmr9519163a91.9.1756718447493; Mon, 01 Sep 2025
- 02:20:47 -0700 (PDT)
+	s=arc-20240116; t=1756718469; c=relaxed/simple;
+	bh=ls5u1XePOINQwXxs0U11TUbZVLbAaL/foUkpem7uo+s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VOjkTz2ZUOR9xOSP3is28KHLdpdyKViUvsfOHrZ7z2/WibJ3d/R/jsdfdZR2SgRxbsiNhGV+WxVu0UeICYWYzn9YtSAZrz+ZMy5w0lAVTEaGfZzNdKPKhu6sK0LAyj4/guZwXd+5UhdskRWyRnc0KT3P61k2PbsjCKsNkX0L8cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iBxl9iBh; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756718468; x=1788254468;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ls5u1XePOINQwXxs0U11TUbZVLbAaL/foUkpem7uo+s=;
+  b=iBxl9iBhJLh5KXm+nYH1ZsTNv2YcocyS5eA5JHXoWIuNSwpDB+tS4LlD
+   4MTOworazD8UjvbMCxHosklpde5F3ZHvcGlqK6T6vnw5eR9O6XPG0CWmZ
+   oWCY4ECLc96l4Vn4+GsgBptd4M4O7KDaE0VTrqKlc6KMCyfMB9CGeuKxF
+   yrCSDLXLwvjYeNydHHROiaklE2Uqa+JTGJIQyZd4sbXaEIN0rMFazICiS
+   te2SZmZCjCJN9nqrASG+ydvRous9WHBqC5VCgiDdt/FaZ6ViJ1BUp0C8F
+   YRMzLqTjHxR8EAsGZCRuikx9vgPuk8NmgoX7j+vApw7fk0199kZ5CM7ou
+   w==;
+X-CSE-ConnectionGUID: FmpkWQLYRGib8s7BlrJhKQ==
+X-CSE-MsgGUID: U78szqvvTvGc8xHo/8XZPQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62803587"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="62803587"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 02:21:08 -0700
+X-CSE-ConnectionGUID: V7X8rnqMS3ueJLy+SCkyKg==
+X-CSE-MsgGUID: MLlgXYFpQ5GnCrnqMVziLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="170823305"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 02:21:04 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1ut0ih-0000000AN6Z-42sq;
+	Mon, 01 Sep 2025 12:20:59 +0300
+Date: Mon, 1 Sep 2025 12:20:59 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Gabor Juhos <j4g8y7@gmail.com>
+Cc: Wolfram Sang <wsa@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Andrew Lunn <andrew@lunn.ch>, Hanna Hawa <hhhawa@amazon.com>,
+	Robert Marko <robert.marko@sartura.hr>,
+	Linus Walleij <linus.walleij@linaro.org>, linux-i2c@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Imre Kaloz <kaloz@openwrt.org>
+Subject: Re: [PATCH v3 0/2] i2c: pxa: fix I2C communication on Armada 3700
+Message-ID: <aLVle-fEMXlQlDR-@smile.fi.intel.com>
+References: <20250827-i2c-pxa-fix-i2c-communication-v3-0-052c9b1966a2@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250829083015.1992751-1-linmq006@gmail.com>
-In-Reply-To: <20250829083015.1992751-1-linmq006@gmail.com>
-From: Max Filippov <jcmvbkbc@gmail.com>
-Date: Mon, 1 Sep 2025 02:20:36 -0700
-X-Gm-Features: Ac12FXzAyEogZM8FrgEbQ-F5JCiJPgP03A7CJQUrB8cqhmDZLcCZUEpO4k-ru6k
-Message-ID: <CAMo8Bf+Xv-r4cji=ueQgt0yK2SLJPSFNhzpG0ZX7Uo9b7qaMzQ@mail.gmail.com>
-Subject: Re: [PATCH] xtensa: simdisk: add input size check in proc_write_simdisk
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: chris@zankel.net, thorsten.blum@linux.dev, viro@zeniv.linux.org.uk, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250827-i2c-pxa-fix-i2c-communication-v3-0-052c9b1966a2@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, Aug 29, 2025 at 1:30=E2=80=AFAM Miaoqian Lin <linmq006@gmail.com> w=
-rote:
->
-> A malicious user could pass an arbitrarily bad value
-> to memdup_user_nul(), potentially causing kernel crash.
->
-> This follows the same pattern as commit ee76746387f6
-> ("netdevsim: prevent bad user input in nsim_dev_health_break_write()")
->
-> Fixes: b6c7e873daf7 ("xtensa: ISS: add host file-based simulated disk")
-> Fixes: 16e5c1fc3604 ("convert a bunch of open-coded instances of memdup_u=
-ser_nul()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> ---
->  arch/xtensa/platforms/iss/simdisk.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+On Wed, Aug 27, 2025 at 07:13:57PM +0200, Gabor Juhos wrote:
+> There is a long standing bug which causes I2C communication not to
+> work on the Armada 3700 based boards. The first patch in the series
+> fixes that regression. The second patch improves recovery to make it
+> more robust which helps to avoid communication problems with certain
+> SFP modules.
 
-Thanks. Applied to my xtensa tree.
+> Changes in v3:
+>   - rebase on tip of i2c/for-current
 
--- Max
+Hmm... Why not the i2c/i2c-host branch? (It's Andi's tree)
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
