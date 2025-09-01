@@ -1,188 +1,215 @@
-Return-Path: <stable+bounces-176873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7C9B3E729
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 16:30:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33993B3E7BD
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 16:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1F6F1881CAE
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 14:30:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0BA42077F5
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 14:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E53341641;
-	Mon,  1 Sep 2025 14:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FCD2F3C01;
+	Mon,  1 Sep 2025 14:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JfLoa4GV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55EE12F49EE;
-	Mon,  1 Sep 2025 14:29:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908AF34AB05;
+	Mon,  1 Sep 2025 14:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756736975; cv=none; b=CRgnOiEwBL0Mdis7mU7QOx5h1+fP3HAtLkEZuKjEVrlQeq8A4dKRao9Qo/RZDz5+qfGnPpIu3SqbgtbvWPYVh1hSrTNHLo/SphN+YT7yZsbSz2OhZewbOhpEaSffNptA6N+58o24TbALjsEs0cNomOma0AJRqePBfuY/BLr2GZE=
+	t=1756737934; cv=none; b=Nzecz8qPXBAx/1C74a0ADxfHag7EWHA2hyLXFclnfxFClcW2T9LA1xogZ8IaSN5HNqwgXXX8p0oyVYNG9LBBX8SrzU7YFdlP+/EIkcaa8QS7OvO707gFY4kODtNt3KdQKrLxeByfvsHdHhFBifFM9NfXxuUfb0d5A70dvC4tXEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756736975; c=relaxed/simple;
-	bh=rIc9PaP5Dn/UnXTwF/5gEzVX6ZfvAdPwwxjS/weWLp8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VWOSxcS1VtPElXn11VAhj5LEsiFpZH5CSkYVPvSzgVS8VB81mr0RVVPVYNDr9exTBCZ7kg92VFPbdvN/VJ7U/Ku1GaFt4n5ZopW5yNl0n3T50XLUQMTwWlgmXYmO/gbwSJuUq6sjA+EWJRwpvT72gbc07JJet02NIbWouj+fCHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6188b5b113eso5645641a12.0;
-        Mon, 01 Sep 2025 07:29:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756736971; x=1757341771;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NplgeWcNTOnynvORO+lXqHJFAtHGQ9bpXO8+3KZyIv8=;
-        b=PBMpjxC9zUgiC11DCKHDVqyACQGANG0BS6ltiBwPMml1R0aDSCONVRdV3rShdbNAk6
-         rTRk+Xkk0evHM+zvOMatwPrHbdfDgMe+74L+MR4oK8bvQDum+PbvDpc6BKNfYvyEf2HE
-         b3fjHFoJLvRv/gude2IUkAOChYS9aha3vJxlNGx4TrhvsrvivVhUSsv3nGu3KbdiySmI
-         NsEImrehrU4Q3h8BqN3Jv71Z7/Tn5fOAJLt+h8Uf5ODu+9d0TKZrgHcg64UNpy7+2TGS
-         /sKSpyygZSHJx/FCOwIEjL1BWMLSt9C0myDE5rkNmDEj018s/2kZBHWC9e/IwcutoPxU
-         oJSA==
-X-Forwarded-Encrypted: i=1; AJvYcCVzrFe8sNYlCkvg1pSzXI+VZoalutriNwCTR8ES8wC0GEqOUCDIcfhMDcxGEJLwnOL95Av9k6XA@vger.kernel.org, AJvYcCWDqNd8nPE9EYNfNhI73qcqPvVtFx6Vy2HRd5KeTDB3vOkltimCI3gIKFELnSyKAsmoZsd6qIMZIqr3lYg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyC68O7MZxR/bKwnDC6FX6QpIve90WOavl0XNClNUX9NuWKifSA
-	m9LFX5keSdpuarzeAZT4UguuErVVuEzJyzXnvxeN1MIYTzK42J1u72P3OHmEmg==
-X-Gm-Gg: ASbGncveC9GsZBG+leGty5HZbZp+xh6++WSlJXgCNQDRqYAhYi+oiCtNi0EGwFM0O9e
-	/ZubNyPjMU30mhi8EpToQ+kGwiknZ/cfQQDAV9t8jXe6LU+a9r2UeC0zPyXfcVLgGxWun941NWg
-	TnVS7HnBNHHU3lSkBrujzTlu8kwXWE1FyCsOdvht47YFHJBPvs/qhyjLypULbLYzRAe1XplB5aS
-	T+TTaLKlD7rCmobcJYCaKfuiyC4kZlJzpWGYbA8XfqKuXeJ12oI12CX7ycEF4Yy/cI7EZwdZB6d
-	47BOAf7OpS4RiYxUi7nW8pLBp9whFnPM4S9F1OvEC3c+EjeZTAJrMe0wK5GYDYsZHpNbz+D+5Z8
-	npcGXuKGO9h7fdt+MgoeJI+/E
-X-Google-Smtp-Source: AGHT+IGBIGQeIkdga89sLFjwwgHh8OYnMDrUbIJGCO8aVa3tpGY6JBZWq8dWt/C4qF/ldn1mbHERwg==
-X-Received: by 2002:a05:6402:210c:b0:61e:a5c8:e830 with SMTP id 4fb4d7f45d1cf-61ea5c8e868mr1893659a12.1.1756736971012;
-        Mon, 01 Sep 2025 07:29:31 -0700 (PDT)
-Received: from localhost ([2a03:2880:30ff:73::])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61cfc1c7a8fsm7275979a12.3.2025.09.01.07.29.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 07:29:30 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 01 Sep 2025 07:29:13 -0700
-Subject: [PATCH net] netpoll: fix incorrect refcount handling causing
- incorrect cleanup
+	s=arc-20240116; t=1756737934; c=relaxed/simple;
+	bh=S/pG0a+pdik3O+EKJnS+m1hVoSUlv6Wpum7/EHnsWAY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cFl2tEuReMfks9/z7tdKOD52qxVBDLtx2rEVSHjpW5trgcFVYQSFLbZhO3h+GpjnYUkC3JcNGyXveo8ZOl2G7Wx+EtAhGconVBXCe99t6YwY+6TrYE1qXLTdmQmJfF/aUfTLf/0aJO94xjLqGjwGAn2qWcw3E18xnNQWvKtTVbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JfLoa4GV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C4CC4CEF0;
+	Mon,  1 Sep 2025 14:45:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756737934;
+	bh=S/pG0a+pdik3O+EKJnS+m1hVoSUlv6Wpum7/EHnsWAY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JfLoa4GVy3TtrHdJ+EtfqTgRicnrSM9xzMkUbw681pMiuPBjXUvPAtLaOg2zprJoL
+	 a3qFMnkEgZQAIAEo1IH4famds+IFbytLGpGJl//m1C0ZWNxyMUM53q1V+cMX7DKFQa
+	 Z06X3KbdYlp/rokhzdxSLtZhp9e2U2gi3ER+Nzp0UsYcvHttNHdUZds3D2794KXQLs
+	 HWFDIQZ3FVgzES3+rfxQFc19fuR6pswH9LSnhCjwzOsuYNhc1Lxm8R4YgDT/emGuDS
+	 HbjTQ7QrXa4xzpNVJDw1gikBjOiOpBVRZJr99cF8Vl9W6g08wBrIEdHx3wroS+SwpT
+	 oMN0S5bMI5rDg==
+Date: Mon, 1 Sep 2025 20:15:24 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, 
+	bhelgaas@google.com, helgaas@kernel.org, kishon@kernel.org, vigneshr@ti.com, 
+	stable@vger.kernel.org, linux-pci@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, srk@ti.com
+Subject: Re: [PATCH v3] PCI: j721e: Fix programming sequence of "strap"
+ settings
+Message-ID: <7hxdcjm7evlphkldct7seytno4is7rjkx5vquvtfhpdkzxdhu6@yocrjgzciwu3>
+References: <20250829091707.2990211-1-s-vadapalli@ti.com>
+ <oztilfun77apxtjxumx4tydkcd2gsalsak4m2rvsry2oooqjna@2yvcx6cnuemm>
+ <b2fb9252-6bfc-45da-973a-31cdfcc86b3d@ti.com>
+ <z3ubracmtlq23yicbrhqjgnzrfoqheffm6cvhfnawlvbu4cmmp@ddu2o7xhw5tz>
+ <48e9d897-2cd3-48ef-b46a-635ae75f5ac6@ti.com>
+ <3wc3t6y5gzzspgfeklsqo3bupfp6gsfy6mls6t66hflcqlqsfk@cu26wv3sow4y>
+ <9d2bba15-52e4-432a-8f7f-a0f5d7c2e4ad@ti.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250901-netpoll_memleak-v1-1-34a181977dfc@debian.org>
-X-B4-Tracking: v=1; b=H4sIALmttWgC/x3MUQrCMBAFwKss77uBbVBKcxURqclTF9O0JEWE0
- rsLzgFmR2M1NgTZUfmxZktBkL4TxNdUnnSWEARe/VlH7V3hti4532bOmdPbjZo0ne5xGHxEJ1g
- rH/b9jxcUbrgexw+Et+TnZgAAAA==
-X-Change-ID: 20250901-netpoll_memleak-90d0d4bc772c
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- david decotigny <decot@googlers.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel-team@meta.com, stable@vger.kernel.org, jv@jvosburgh.net, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-dd21f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3035; i=leitao@debian.org;
- h=from:subject:message-id; bh=rIc9PaP5Dn/UnXTwF/5gEzVX6ZfvAdPwwxjS/weWLp8=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBota3J1vyCtlP6LNUk+o4zFSY8qigmfKO1Spm1y
- ZSjNgJviTmJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaLWtyQAKCRA1o5Of/Hh3
- bUnuEACgCkzBAIx2/Shph1NfT03nw5u5yMoAbMncpCQr+7K3gZgqPGwuvZ66Y7sqJ1etfm+J6P7
- Cm5uE9Hk56rVF8nxbzUmwAfMf7dOy1BCP8r735LTGAA72a/A4OaGeh2t7NhACOLuMn4mIGLcHez
- wQW8PZkipq5Q0C1kG0sj020pYP8fj05Dbu+em0RdtwkS8ESyFa8KxZQ7NbQ3seXQ1RarNETNRRh
- MCcDzMfnRCt8GkJFvOgKZJxKo37oi76tO0c57vLdddAqRmHDgdoU9FtLf0zUWPPJr5GcmS0t0FS
- hfvYDo/N3M6RsJLyw2tNKhwo1l20sFKqM6vdXw1L7pfSiMWUXhgZQjnKuUDkfr+nvD/lIb1gyoh
- 350dkh+1tpqF7mIGgfDgJYlh+k5ycY1oFBz+iCWxva7dUt/aLIXkO9zRwGzIPAj9OcB5SwE/5va
- tdfj4+jfE0mdSs7SirfYt6x7euS2RAqSpgfQxzEdH8E6UY2QqfBqy5QrNU5AUkijl7+hP/tXUVR
- ZayjxIuF8yYxrkiGjAZwxy3OC9jyM1i0F0GryXGLhsDTreZHP8VQ7z0Q8RRCXjC6LJ3OKPav/cO
- NvwalU6F2i//tsE41EBYZmt30ivZ+aibPwJZuUh/i67t6Fan/jtdUW/W9gD+bNsZrt3AAnKGpfW
- B/vWc5Yc91SLMPg==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9d2bba15-52e4-432a-8f7f-a0f5d7c2e4ad@ti.com>
 
-commit efa95b01da18 ("netpoll: fix use after free") incorrectly
-ignored the refcount and prematurely set dev->npinfo to NULL during
-netpoll cleanup, leading to improper behavior and memory leaks.
+On Mon, Sep 01, 2025 at 04:50:02PM GMT, Siddharth Vadapalli wrote:
+> On Mon, Sep 01, 2025 at 12:14:51PM +0530, Manivannan Sadhasivam wrote:
+> > On Mon, Sep 01, 2025 at 11:51:33AM GMT, Siddharth Vadapalli wrote:
+> > > On Mon, Sep 01, 2025 at 11:18:23AM +0530, Manivannan Sadhasivam wrote:
+> > > > On Mon, Sep 01, 2025 at 10:27:51AM GMT, Siddharth Vadapalli wrote:
+> > > > > On Sun, Aug 31, 2025 at 06:15:13PM +0530, Manivannan Sadhasivam wrote:
+> > > > > 
+> > > > > Hello Mani,
+> > > > > 
+> > > > > > On Fri, Aug 29, 2025 at 02:46:28PM GMT, Siddharth Vadapalli wrote:
+> > > 
+> > > [...]
+> > > 
+> > > > > > > +	/*
+> > > > > > > +	 * The PCIe Controller's registers have different "reset-values"
+> > > > > > > +	 * depending on the "strap" settings programmed into the PCIEn_CTRL
+> > > > > > > +	 * register within the CTRL_MMR memory-mapped register space.
+> > > > > > > +	 * The registers latch onto a "reset-value" based on the "strap"
+> > > > > > > +	 * settings sampled after the PCIe Controller is powered on.
+> > > > > > > +	 * To ensure that the "reset-values" are sampled accurately, power
+> > > > > > > +	 * off the PCIe Controller before programming the "strap" settings
+> > > > > > > +	 * and power it on after that.
+> > > > > > > +	 */
+> > > > > > > +	ret = pm_runtime_put_sync(dev);
+> > > > > > > +	if (ret < 0) {
+> > > > > > > +		dev_err(dev, "Failed to power off PCIe Controller\n");
+> > > > > > > +		return ret;
+> > > > > > > +	}
+> > > > > > 
+> > > > > > How does the controller gets powered off after pm_runtime_put_sync() since you
+> > > > > > do not have runtime PM callbacks? I believe the parent is turning off the power
+> > > > > > domain?
+> > > > > 
+> > > > > By invoking 'pm_runtime_put_sync(dev)', the ref-count is being
+> > > > > decremented and it results in the device being powered off. I have
+> > > > > verified it by printing the power domain index within the functions for
+> > > > > powering off and powering on devices on the J7200 SoC. Logs:
+> > > > > 
+> > > > > 	root@j7200-evm:~# modprobe pci_j721e
+> > > > > 	[   25.231675] [Powering On]: 240
+> > > > > 	[   25.234848] j721e-pcie 2910000.pcie: host bridge /bus@100000/pcie@2910000 ranges:
+> > > > > 	[   25.242378] j721e-pcie 2910000.pcie:       IO 0x4100001000..0x4100100fff -> 0x0000001000
+> > > > > 	[   25.250496] j721e-pcie 2910000.pcie:      MEM 0x4100101000..0x41ffffffff -> 0x0000101000
+> > > > > 	[   25.258588] j721e-pcie 2910000.pcie:   IB MEM 0x0000000000..0xffffffffffff -> 0x0000000000
+> > > > > 	[   25.267098] [Powering Off]: 240
+> > > > > 	[   25.270318] [Powering On]: 240
+> > > > > 	[   25.273511] [Powering On]: 187
+> > > > > 	[   26.372361] j721e-pcie 2910000.pcie: PCI host bridge to bus 0000:00
+> > > > > 	[   26.378666] pci_bus 0000:00: root bus resource [bus 00-ff]
+> > > > > 	[   26.384156] pci_bus 0000:00: root bus resource [io  0x0000-0xfffff] (bus address [0x1000-0x100fff])
+> > > > > 	[   26.393197] pci_bus 0000:00: root bus resource [mem 0x4100101000-0x41ffffffff] (bus address [0x00101000-0xffffffff])
+> > > > > 	[   26.403728] pci 0000:00:00.0: [104c:b00f] type 01 class 0x060400 PCIe Root Port
+> > > > > 	[   26.411044] pci 0000:00:00.0: PCI bridge to [bus 00]
+> > > > > 	[   26.416009] pci 0000:00:00.0:   bridge window [io  0x0000-0x0fff]
+> > > > > 	[   26.422091] pci 0000:00:00.0:   bridge window [mem 0x00000000-0x000fffff]
+> > > > > 	[   26.428874] pci 0000:00:00.0:   bridge window [mem 0x00000000-0x000fffff 64bit pref]
+> > > > > 	[   26.436676] pci 0000:00:00.0: supports D1
+> > > > > 	[   26.440699] pci 0000:00:00.0: PME# supported from D0 D1 D3hot
+> > > > > 	[   26.448064] pci 0000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+> > > > > 	[   26.456274] pci_bus 0000:01: busn_res: [bus 01-ff] end is updated to 01
+> > > > > 	[   26.462923] pci 0000:00:00.0: PCI bridge to [bus 01]
+> > > > > 	[   26.467933] pci_bus 0000:00: resource 4 [io  0x0000-0xfffff]
+> > > > > 	[   26.473595] pci_bus 0000:00: resource 5 [mem 0x4100101000-0x41ffffffff]
+> > > > > 	[   26.480337] pcieport 0000:00:00.0: of_irq_parse_pci: failed with rc=-22
+> > > > > 	[   26.487479] pcieport 0000:00:00.0: PME: Signaling with IRQ 701
+> > > > > 	[   26.493909] pcieport 0000:00:00.0: AER: enabled with IRQ 701
+> > > > > 
+> > > > > In the above logs, '240' is the Power Domain Index for the PCIe
+> > > > > Controller on J7200 SoC. It is powered on initially before the driver is
+> > > > > probed.
+> > > > 
+> > > > In that case, the driver should not call pm_runtime_get_sync() in its probe.
+> > > > What it should do is:
+> > > > 
+> > > > 	pm_runtime_set_active()
+> > > > 	pm_runtime_enable()
+> > > 
+> > > If I understand correctly, are you suggesting the following?
+> > > 
+> > > j721e_pcie_probe()
+> > > 	pm_runtime_set_active()
+> > > 	pm_runtime_enable()
+> > > 	ret = j721e_pcie_ctrl_init(pcie);
+> > > 		/*
+> > > 		 * PCIe Controller should be powered off here, but is there
+> > > 		 * a way to ensure that it has been powered off?
+> > > 		 */
+> > > 		=> Program the strap settings and return to
+> > > 		j721e_pcie_probe()
+> > > 	/* Power on the PCIe Controller now */
+> > > 	ret = pm_runtime_get_sync(dev);
+> > 
+> > This pm_runtime_get_sync() should be part of j721e_pcie_ctrl_init() where you
+> > do power off, program strap and power on.
+> > 
+> > This should not be part of probe() as by that time, controller is already
+> > powered on. So pm_runtime_set_active() and pm_runtime_enable() should be enough
+> > to convey the state of the device to PM core.
+> 
+> I have tried out the suggestion in the following manner:
+> 
+> 	j721e_pcie_probe()
+> 		...
+> 		pm_runtime_set_active(dev);
+> 		pm_runtime_enable(dev);
+> 		ret = j721e_pcie_ctrl_init(pcie);
+> 			... within j721e_pcie_ctrl_init()
+> 			ret = pm_runtime_put_sync(dev);
+> 			/* Program Strap Settings */
+> 			ret = pm_runtime_get_sync(dev);
+> 			...
+> 		...
+> 		exit probe
+> 
+> Since a 'pm_runtime_get_sync()' hasn't yet been invoked prior to the
+> section where 'pm_runtime_put_sync()' is invoked, it leads to a ref-count
+> underflow error at runtime. Please let me know if I am missing
+> something.
+> 
 
-Scenario causing lack of proper cleanup:
+Doh... At the start of probe(), device PM usage_count will be 0. So we cannot
+decrement it without incrementing it.
 
-1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
-   allocated, and refcnt = 1
-   - Keep in mind that npinfo is shared among all netpoll instances. In
-     this case, there is just one.
+Could you try below sequence?
 
-2) Another netpoll is also associated with the same NIC and
-   npinfo->refcnt += 1.
-   - Now dev->npinfo->refcnt = 2;
-   - There is just one npinfo associated to the netdev.
+	probe()
+	...
+	pm_runtime_set_active()
+	pm_runtime_enable()
+	j721e_pcie_ctrl_init()
+		...
+		pm_runtime_get() /* Just increment usage_count */
+		pm_runtime_put_sync() /* ask PM core to turn off */
+		/* program strap setting */
+		pm_runtime_get_sync() /* ask PM core to turn on */
+		pm_runtime_put_noidle() /* balance the usage_count without
+						suspending the device */
+	...
 
-3) When the first netpolls goes to clean up:
-   - The first cleanup succeeds and clears np->dev->npinfo, ignoring
-     refcnt.
-     - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
-   - Set dev->npinfo = NULL, without proper cleanup
-   - No ->ndo_netpoll_cleanup() is either called
+- Mani
 
-4) Now the second target tries to clean up
-   - The second cleanup fails because np->dev->npinfo is already NULL.
-     * In this case, ops->ndo_netpoll_cleanup() was never called, and
-       the skb pool is not cleaned as well (for the second netpoll
-       instance)
-  - This leaks npinfo and skbpool skbs, which is clearly reported by
-    kmemleak.
-
-Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
-clarifying comments emphasizing that npinfo cleanup should only happen
-once the refcount reaches zero, ensuring stable and correct netpoll
-behavior.
-
-Cc: stable@vger.kernel.org
-Cc: jv@jvosburgh.net
-Fixes: efa95b01da18 ("netpoll: fix use after free")
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
-I have a selftest that shows the memory leak when kmemleak is enabled
-and I will be submitting to net-next.
-
-Also, giving I am reverting commit efa95b01da18 ("netpoll: fix use
-after free"), which was supposed to fix a problem on bonding, I am
-copying Jay.
----
- net/core/netpoll.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 5f65b62346d4e..19676cd379640 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -815,6 +815,10 @@ static void __netpoll_cleanup(struct netpoll *np)
- 	if (!npinfo)
- 		return;
- 
-+	/* At this point, there is a single npinfo instance per netdevice, and
-+	 * its refcnt tracks how many netpoll structures are linked to it. We
-+	 * only perform npinfo cleanup when the refcnt decrements to zero.
-+	 */
- 	if (refcount_dec_and_test(&npinfo->refcnt)) {
- 		const struct net_device_ops *ops;
- 
-@@ -824,8 +828,7 @@ static void __netpoll_cleanup(struct netpoll *np)
- 
- 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
- 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
--	} else
--		RCU_INIT_POINTER(np->dev->npinfo, NULL);
-+	}
- 
- 	skb_pool_flush(np);
- }
-
----
-base-commit: 864ecc4a6dade82d3f70eab43dad0e277aa6fc78
-change-id: 20250901-netpoll_memleak-90d0d4bc772c
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+-- 
+மணிவண்ணன் சதாசிவம்
 
