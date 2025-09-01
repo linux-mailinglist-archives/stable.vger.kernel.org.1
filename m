@@ -1,251 +1,132 @@
-Return-Path: <stable+bounces-176914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA3EB3F0FD
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 00:24:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1288B3F151
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 01:21:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B439D1A87F35
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 22:24:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AF4C203664
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 23:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9000A28468D;
-	Mon,  1 Sep 2025 22:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FEF1286891;
+	Mon,  1 Sep 2025 23:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q0shQsl3"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="tcicKCDY";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Rjmmo2pJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F89223DF0;
-	Mon,  1 Sep 2025 22:24:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CB832F76C
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 23:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756765464; cv=none; b=pzwpFfWXvhyYHQXMVExneIYNJoa5P2oT1e3AfGDORHjF0M7pakPDDGJuthwn3XPcgcUJOziFNwihu8Uj7EPIGB+Q3h/gmBOQwF3uozkvGsL1qe0DzVTb3iMbvcH/Ux61nzM0R0mud0erok3yrHInSHwuBMW/MsMODOIAfOTuzzY=
+	t=1756768887; cv=none; b=M9Kz8nEwO9asHFkpyESKDIhp6M3854908ReC8MfMeBXM2tViYgPnASjYKK4suH2hqcpLdzBXSfL70SmbLVzx7kRLQLye09EE9263zwFYt9iPPc02V2JpfAhlafFZW7ai3l5OLeIo+uNWEiJz3ACc9WMrBvw7WNW/t1xcaBTWSLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756765464; c=relaxed/simple;
-	bh=CskA38wb5TYBMTOWHKn53pBQvrb2Cqr8nEqyhWL8n4g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cTLn5se+XC8qHrqDvANXbG23L00/+iKF6WWicpRaoiSS9+syBiDQ+yXwgDyg+wryxPKeGCkttHAl70P6POm/99+G4rb/WXYt5fFNzYq1Imk1CXjn/FtP158YiGrxavZ8DZ9s1al9mX3h9sL+F/xaC186z8B5nFSYpW3RWbRbX9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q0shQsl3; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756765463; x=1788301463;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CskA38wb5TYBMTOWHKn53pBQvrb2Cqr8nEqyhWL8n4g=;
-  b=Q0shQsl3IwPBaFu+j3FE7P6O3IcfmQCFZQcxwFLH1ujCVy0ZQxRAUr2F
-   d1z9DURlmCN5Hnlnv/52AuZrE0c9XNdb2t8wZn1Y/0ODQ9dynAudX8Jl3
-   8eAMl+xEAPDx7+ptgRTvN7v9LIA7g1Yub7+Y4PiRos2jIi1gLDi3LVcRu
-   Vd9Uci952OcbGKwZJ2RKSZQ9MgEeNmzXgtBhiHXk5lm06Lf+d5cKCboKm
-   rvZgvmIebHjI1lmcFHZ+eUyij0kyqz8X20VPGfUYedK7iJ9YeJK50ZLH9
-   aGifeJjfdZFtXvZIKDKSZcXk3Kwqa0v1s3FNXQKxut5cNMldkPiWRsawq
-   Q==;
-X-CSE-ConnectionGUID: FVhjejy6R+WfCiOAHadMtw==
-X-CSE-MsgGUID: 72Tfb4Q9QamuLrD5Sn81YA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="61658590"
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="61658590"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 15:24:22 -0700
-X-CSE-ConnectionGUID: /xEQ8/f7TUWFmYMfhjrGyQ==
-X-CSE-MsgGUID: Iw9JlJZiTq2aEIhcNBW5QQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="170376345"
-Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
-  by orviesa006.jf.intel.com with ESMTP; 01 Sep 2025 15:24:19 -0700
-Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1utCwe-00019b-0t;
-	Mon, 01 Sep 2025 22:24:13 +0000
-Date: Tue, 2 Sep 2025 06:24:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shuai Zhang <quic_shuaz@quicinc.com>, dmitry.baryshkov@oss.qualcomm.com,
-	marcel@holtmann.org, luiz.dentz@gmail.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-bluetooth@vger.kernel.org,
-	stable@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, quic_chejiang@quicinc.com,
-	Shuai Zhang <quic_shuaz@quicinc.com>
-Subject: Re: [PATCH v8] Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail
- when BT_EN is pulled up by hw
-Message-ID: <202509020557.cSBn6IwZ-lkp@intel.com>
-References: <20250822123605.757306-1-quic_shuaz@quicinc.com>
+	s=arc-20240116; t=1756768887; c=relaxed/simple;
+	bh=FFlJXfdXcFQix/AqMvGLRkodpK1dXIjrF+G6eURK3g4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h3csZqohkZm47OizBFz5zsKbutWotUeK3RASUojAMJelHlXDjvyTRMIpwKaW/xeIXtm43YYweDpjcZEvMEKBla+SiqDQ8/H7uv/4UMyBaEcPvFMsur12LsTk1hwZEjzlwMIcWAfqhCLbIY5fz2G+EnmVNUVOP3ekYQy/V0gMiA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=tcicKCDY; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Rjmmo2pJ; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4cG4cz5rQRz9sm6;
+	Tue,  2 Sep 2025 01:21:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1756768883;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WE+0x2BzLTMyHvVG++xQOQXzu1LsGH1QM5RqsMPA1uw=;
+	b=tcicKCDY9372L17oh6YQ2Q0KhiPSxr8UZtOB+Wwqg3/TciOUHYm2UFu7Oak2+tz0OiAZ8R
+	z0Ky3xABrQCPUfuF0twlwrZdUMu0NqSc585QnmYsOzOXvb7zR1BRaSocoqAISTydjUVrv0
+	ta7Icbl/DK7k4SDBBK7svNmnmm1Vi1JEj0EeeA4dWZw2FSJ/Y+EaG9FcVE5Eha31vc4nAU
+	aj1PL+19Fr0QWuT7UWR9MTU419jEri/6E7orfooTttLkTVBCnEftYi2e8Kdl+UMfJ9pULj
+	H1gk5r/dCJYES17aewJUt2zL1CbdiFxx/+2z9HAxh99S9p+lJm+mMskAKYSfgw==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=Rjmmo2pJ;
+	spf=pass (outgoing_mbo_mout: domain of marek.vasut+renesas@mailbox.org designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=marek.vasut+renesas@mailbox.org
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1756768881;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WE+0x2BzLTMyHvVG++xQOQXzu1LsGH1QM5RqsMPA1uw=;
+	b=Rjmmo2pJWwo8a0HOkquSwuTJB0cZ1r7Q2oubUfLddUu7JaG9GpmzyBZEKhUgIq9apjuAii
+	V+y2Gl3AQmvWvEggpfnCgLY1/94qVs+tYOEAzrhgYPG4DwUMGGWAScl3MmHvzrPUZwZCSe
+	pnYEiOL5Lpi0sKgkVkQigJNCzE34HePUGhaaoJMYfVfRlYg1TOYDlxasm2b222HqSL4lwm
+	nNJVRpm7cPWH+XdzWB5eyMDQ7fqyxxeMzRlb4Pr4o7v1Z+596pU58lWN6WWUY1VnlDumYN
+	SZgk4pgne195WXJchHtoA3qWwo1/+zcYDfDgUgrd4euZowJ9TKzmgpthRyHbZA==
+To: stable@vger.kernel.org
+Cc: Niklas Cassel <cassel@kernel.org>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>
+Subject: [PATCH v2 1/2] PCI: Rename PCIE_RESET_CONFIG_DEVICE_WAIT_MS to PCIE_RESET_CONFIG_WAIT_MS
+Date: Tue,  2 Sep 2025 01:20:09 +0200
+Message-ID: <20250901232051.232813-1-marek.vasut+renesas@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250822123605.757306-1-quic_shuaz@quicinc.com>
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: 7e99d0fd6a4e2781343
+X-MBO-RS-META: p6f3q59a3rs6p6ed16x49831o7m5ijhn
+X-Rspamd-Queue-Id: 4cG4cz5rQRz9sm6
 
-Hi Shuai,
+From: Niklas Cassel <cassel@kernel.org>
 
-kernel test robot noticed the following build errors:
+[ Upstream commit 817f989700fddefa56e5e443e7d138018ca6709d ]
 
-[auto build test ERROR on bluetooth/master]
-[also build test ERROR on bluetooth-next/master linus/master v6.17-rc4 next-20250901]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Rename PCIE_RESET_CONFIG_DEVICE_WAIT_MS to PCIE_RESET_CONFIG_WAIT_MS.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Shuai-Zhang/Bluetooth-hci_qca-Fix-SSR-SubSystem-Restart-fail-when-BT_EN-is-pulled-up-by-hw/20250822-203836
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git master
-patch link:    https://lore.kernel.org/r/20250822123605.757306-1-quic_shuaz%40quicinc.com
-patch subject: [PATCH v8] Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail when BT_EN is pulled up by hw
-config: arm64-defconfig (https://download.01.org/0day-ci/archive/20250902/202509020557.cSBn6IwZ-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250902/202509020557.cSBn6IwZ-lkp@intel.com/reproduce)
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Cc: <stable@vger.kernel.org> # 6.12.x
+---
+V2: Add own SoB line
+---
+ drivers/pci/controller/plda/pcie-starfive.c | 2 +-
+ drivers/pci/pci.h                           | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509020557.cSBn6IwZ-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from include/linux/kernel.h:23,
-                    from drivers/bluetooth/hci_qca.c:18:
-   drivers/bluetooth/hci_qca.c: In function 'qca_hw_error':
->> drivers/bluetooth/hci_qca.c:1669:60: error: 'struct hci_dev' has no member named 'quirks'
-    1669 |         if (!test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
-         |                                                            ^~
-   include/linux/bitops.h:44:44: note: in definition of macro 'bitop'
-      44 |           __builtin_constant_p((uintptr_t)(addr) != (uintptr_t)NULL) && \
-         |                                            ^~~~
-   drivers/bluetooth/hci_qca.c:1669:14: note: in expansion of macro 'test_bit'
-    1669 |         if (!test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
-         |              ^~~~~~~~
->> drivers/bluetooth/hci_qca.c:1669:60: error: 'struct hci_dev' has no member named 'quirks'
-    1669 |         if (!test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
-         |                                                            ^~
-   include/linux/bitops.h:45:23: note: in definition of macro 'bitop'
-      45 |           (uintptr_t)(addr) != (uintptr_t)NULL &&                       \
-         |                       ^~~~
-   drivers/bluetooth/hci_qca.c:1669:14: note: in expansion of macro 'test_bit'
-    1669 |         if (!test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
-         |              ^~~~~~~~
->> drivers/bluetooth/hci_qca.c:1669:60: error: 'struct hci_dev' has no member named 'quirks'
-    1669 |         if (!test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
-         |                                                            ^~
-   include/linux/bitops.h:46:57: note: in definition of macro 'bitop'
-      46 |           __builtin_constant_p(*(const unsigned long *)(addr))) ?       \
-         |                                                         ^~~~
-   drivers/bluetooth/hci_qca.c:1669:14: note: in expansion of macro 'test_bit'
-    1669 |         if (!test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
-         |              ^~~~~~~~
->> drivers/bluetooth/hci_qca.c:1669:60: error: 'struct hci_dev' has no member named 'quirks'
-    1669 |         if (!test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
-         |                                                            ^~
-   include/linux/bitops.h:47:24: note: in definition of macro 'bitop'
-      47 |          const##op(nr, addr) : op(nr, addr))
-         |                        ^~~~
-   drivers/bluetooth/hci_qca.c:1669:14: note: in expansion of macro 'test_bit'
-    1669 |         if (!test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
-         |              ^~~~~~~~
->> drivers/bluetooth/hci_qca.c:1669:60: error: 'struct hci_dev' has no member named 'quirks'
-    1669 |         if (!test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
-         |                                                            ^~
-   include/linux/bitops.h:47:39: note: in definition of macro 'bitop'
-      47 |          const##op(nr, addr) : op(nr, addr))
-         |                                       ^~~~
-   drivers/bluetooth/hci_qca.c:1669:14: note: in expansion of macro 'test_bit'
-    1669 |         if (!test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
-         |              ^~~~~~~~
-
-
-vim +1669 drivers/bluetooth/hci_qca.c
-
-  1609	
-  1610	static void qca_hw_error(struct hci_dev *hdev, u8 code)
-  1611	{
-  1612		struct hci_uart *hu = hci_get_drvdata(hdev);
-  1613		struct qca_data *qca = hu->priv;
-  1614	
-  1615		set_bit(QCA_SSR_TRIGGERED, &qca->flags);
-  1616		set_bit(QCA_HW_ERROR_EVENT, &qca->flags);
-  1617		bt_dev_info(hdev, "mem_dump_status: %d", qca->memdump_state);
-  1618	
-  1619		if (qca->memdump_state == QCA_MEMDUMP_IDLE) {
-  1620			/* If hardware error event received for other than QCA
-  1621			 * soc memory dump event, then we need to crash the SOC
-  1622			 * and wait here for 8 seconds to get the dump packets.
-  1623			 * This will block main thread to be on hold until we
-  1624			 * collect dump.
-  1625			 */
-  1626			set_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
-  1627			qca_send_crashbuffer(hu);
-  1628			qca_wait_for_dump_collection(hdev);
-  1629		} else if (qca->memdump_state == QCA_MEMDUMP_COLLECTING) {
-  1630			/* Let us wait here until memory dump collected or
-  1631			 * memory dump timer expired.
-  1632			 */
-  1633			bt_dev_info(hdev, "waiting for dump to complete");
-  1634			qca_wait_for_dump_collection(hdev);
-  1635		}
-  1636	
-  1637		mutex_lock(&qca->hci_memdump_lock);
-  1638		if (qca->memdump_state != QCA_MEMDUMP_COLLECTED) {
-  1639			bt_dev_err(hu->hdev, "clearing allocated memory due to memdump timeout");
-  1640			hci_devcd_abort(hu->hdev);
-  1641			if (qca->qca_memdump) {
-  1642				kfree(qca->qca_memdump);
-  1643				qca->qca_memdump = NULL;
-  1644			}
-  1645			qca->memdump_state = QCA_MEMDUMP_TIMEOUT;
-  1646			cancel_delayed_work(&qca->ctrl_memdump_timeout);
-  1647		}
-  1648		mutex_unlock(&qca->hci_memdump_lock);
-  1649	
-  1650		if (qca->memdump_state == QCA_MEMDUMP_TIMEOUT ||
-  1651		    qca->memdump_state == QCA_MEMDUMP_COLLECTED) {
-  1652			cancel_work_sync(&qca->ctrl_memdump_evt);
-  1653			skb_queue_purge(&qca->rx_memdump_q);
-  1654		}
-  1655	
-  1656		/*
-  1657		 * If the BT chip's bt_en pin is connected to a 3.3V power supply via
-  1658		 * hardware and always stays high, driver cannot control the bt_en pin.
-  1659		 * As a result, during SSR (SubSystem Restart), QCA_SSR_TRIGGERED and
-  1660		 * QCA_IBS_DISABLED flags cannot be cleared, which leads to a reset
-  1661		 * command timeout.
-  1662		 * Add an msleep delay to ensure controller completes the SSR process.
-  1663		 *
-  1664		 * Host will not download the firmware after SSR, controller to remain
-  1665		 * in the IBS_WAKE state, and the host needs to synchronize with it
-  1666		 *
-  1667		 * Since the bluetooth chip has been reset, clear the memdump state.
-  1668		 */
-> 1669		if (!test_bit(HCI_QUIRK_NON_PERSISTENT_SETUP, &hdev->quirks)) {
-  1670			/*
-  1671			 * When the SSR (SubSystem Restart) duration exceeds 2 seconds,
-  1672			 * it triggers host tx_idle_delay, which sets host TX state
-  1673			 * to sleep. Reset tx_idle_timer after SSR to prevent
-  1674			 * host enter TX IBS_Sleep mode.
-  1675			 */
-  1676			mod_timer(&qca->tx_idle_timer, jiffies +
-  1677					  msecs_to_jiffies(qca->tx_idle_delay));
-  1678	
-  1679			/* Controller reset completion time is 50ms */
-  1680			msleep(50);
-  1681	
-  1682			clear_bit(QCA_SSR_TRIGGERED, &qca->flags);
-  1683			clear_bit(QCA_IBS_DISABLED, &qca->flags);
-  1684	
-  1685			qca->tx_ibs_state = HCI_IBS_TX_AWAKE;
-  1686			qca->memdump_state = QCA_MEMDUMP_IDLE;
-  1687		}
-  1688	
-  1689		clear_bit(QCA_HW_ERROR_EVENT, &qca->flags);
-  1690	}
-  1691	
-
+diff --git a/drivers/pci/controller/plda/pcie-starfive.c b/drivers/pci/controller/plda/pcie-starfive.c
+index 0564fdce47c2a..0a0b5a7d84d7e 100644
+--- a/drivers/pci/controller/plda/pcie-starfive.c
++++ b/drivers/pci/controller/plda/pcie-starfive.c
+@@ -368,7 +368,7 @@ static int starfive_pcie_host_init(struct plda_pcie_rp *plda)
+ 	 * of 100ms following exit from a conventional reset before
+ 	 * sending a configuration request to the device.
+ 	 */
+-	msleep(PCIE_RESET_CONFIG_DEVICE_WAIT_MS);
++	msleep(PCIE_RESET_CONFIG_WAIT_MS);
+ 
+ 	if (starfive_pcie_host_wait_for_link(pcie))
+ 		dev_info(dev, "port link down\n");
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index b65868e709517..c951f861a69b2 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -57,7 +57,7 @@
+  *    completes before sending a Configuration Request to the device
+  *    immediately below that Port."
+  */
+-#define PCIE_RESET_CONFIG_DEVICE_WAIT_MS	100
++#define PCIE_RESET_CONFIG_WAIT_MS	100
+ 
+ /* Message Routing (r[2:0]); PCIe r6.0, sec 2.2.8 */
+ #define PCIE_MSG_TYPE_R_RC	0
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.50.1
+
 
