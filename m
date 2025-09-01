@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-176798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C313B3DC95
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:36:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A305B3DC9C
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:37:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6B11163446
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:36:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E70A3189D85E
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC632FC005;
-	Mon,  1 Sep 2025 08:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2972F39AE;
+	Mon,  1 Sep 2025 08:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kQ8JUkKZ"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="WEgcQAeL"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875362FB98B
-	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 08:35:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF292FAC0E
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 08:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756715731; cv=none; b=QUUT5Egvbws+Nz464KtFLfIWxtsXZcOeUJZJPm/sAtR8/btCo5DcpsOiAazRsUL8x8k9LI0++BmZ/6yyCIOcxDPuxjOWd5Fjsrei6zV8h7u4JuIjn2ysFfbQshQSsARtu0bV+pUt2c99lfITkW2/yyslkf+4RLEZG0s6pt2dcDk=
+	t=1756715799; cv=none; b=tujSkr4WYrAWHZeaIqUd+ZGAL6URknjCkWEOLCHL9R3IX0Gtu6nrxQOCcA8/jWQcwR9AZz/gQz7G50v1NOs0Dbmke8BgckIdetvlWvCOwCcR+C7K0ehJUh4ggsFixzAkjeNH3NxpIprxQblKeU9aCIS8sps9qvvonOxeWRBgWbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756715731; c=relaxed/simple;
+	s=arc-20240116; t=1756715799; c=relaxed/simple;
 	bh=2Z/2giYlnJAYjuwfKEXgXaulO85yZSVyVfwZ6W4j1YI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RatPycSS92YNXtQDUFSPzOebhxDmmfZo7SoZUq3KbsmMM2fIn/UgHQD4rMr6EfJh/0FidL5XP472S/07NG1KoRjmwM492YSInprz3OHquG1R4v65QdmogWpr1XXz4uZgsstv/LC51ggdg6U4G80J1EGxB7kHH6a3O7HwWa4Cbcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=kQ8JUkKZ; arc=none smtp.client-ip=220.197.31.3
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hZidnjHyDU1XVvPxUkUlulyn6nGEHTQ8l75l4LIUFiBA8OZ8aJkWFqzkiFKQgtVLHAZ+sY2fa0U+rOUfv0X4T/w3LjEX5Q1XXIQ+ujSDsJGTVdTrN0NmKQ+eMX+5fgvbRck3A0QOJ3e2UiyeIAyvBVymeyszqdXsebI4Zml5+TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=WEgcQAeL; arc=none smtp.client-ip=117.135.210.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
 	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=7i
-	W/cz5lhIUrPi/Ko95IMunrIbAditDEI3mzA2HhDKE=; b=kQ8JUkKZceGn45SUNQ
-	EAXx5ZwTtIqz/jEq5a0oJKO5zJ02JJWw6RnsXS7Q2/KXjNOTMwhdCFLiQZ1wyulj
-	ZA6aDPrKH/5SWnowaI/eypgillNud9QgECzCGB4z9gvSgam/Rh2DnK2/SV6MQrhT
-	lQpOAzQNxLKNzpyG5dcLiUe7k=
+	W/cz5lhIUrPi/Ko95IMunrIbAditDEI3mzA2HhDKE=; b=WEgcQAeLoxlMqayz/C
+	vUWhoR3EN3gDK+Niqto9QvpIbXMkQOjhS/2rox+V0SlXZMbdmaOB/qgfwhei5T3z
+	Zg1VzkXSxpj+4MmSkByFybuCRiS3XRiGDiesa37BwEn5WPRnf/mrKLepj8ojI89u
+	AwHLG0pNVYsRT47DHcLC30P+Y=
 Received: from mi-work.mioffice.cn (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wB3_urKWrVoR4v4Fg--.25612S4;
-	Mon, 01 Sep 2025 16:35:23 +0800 (CST)
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wBXpfEQW7Vok7z4Fg--.41681S4;
+	Mon, 01 Sep 2025 16:36:33 +0800 (CST)
 From: yangshiguang1011@163.com
 To: yangshiguang@xiaomi.com
-Cc: yangshiguang1011@163.com,
-	stable@vger.kernel.org
+Cc: stable@vger.kernel.org
 Subject: [PATCH v5] mm: slub: avoid wake up kswapd in set_track_prepare
-Date: Mon,  1 Sep 2025 16:35:20 +0800
-Message-ID: <20250901083520.85957-1-yangshiguang1011@163.com>
+Date: Mon,  1 Sep 2025 16:36:31 +0800
+Message-ID: <20250901083631.90774-1-yangshiguang1011@163.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -52,12 +51,12 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wB3_urKWrVoR4v4Fg--.25612S4
+X-CM-TRANSID:_____wBXpfEQW7Vok7z4Fg--.41681S4
 X-Coremail-Antispam: 1Uf129KBjvJXoW3Jr43XFWkKF1UCFWkWryUWrg_yoW7KFy5pF
 	W7WFy3JF48AF1jvFWDCa1Uur1SvrZ3CrW8CF43Wa4rua4Yvr48WFZrtFyjvFW5ArykuanF
 	k3W09Fnagw4jqaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRdwIfUUUUU=
-X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/1tbiEBu75Wi1VZqowQAAsu
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Um0PhUUUUU=
+X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/xtbBMRG75Wi1Tx-TjAAGsq
 
 From: yangshiguang <yangshiguang@xiaomi.com>
 
