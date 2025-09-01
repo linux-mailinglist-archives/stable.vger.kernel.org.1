@@ -1,171 +1,235 @@
-Return-Path: <stable+bounces-176803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C2FB3DCDD
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:46:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A3CB3DCEB
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B5D664E1B09
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:46:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8877A7A1FB5
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60B42FDC50;
-	Mon,  1 Sep 2025 08:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B9F2FE591;
+	Mon,  1 Sep 2025 08:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="bmXl/6tW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB1C2FDC39;
-	Mon,  1 Sep 2025 08:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9781F2FE593;
+	Mon,  1 Sep 2025 08:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756716361; cv=none; b=Hu5Vu+vK/CBibGPsocqPUAVfoTq8CpXQisS6WzEHyvIS9mpm8t7rvIGPO6MnB26XEf1JDiNSZ0h4ZDa21vtBmlXPUJFjR5p4SsnaKtM445zzfCX3quJ9nNYP8lr0RU8bt+q3R9lUGBWTA4zzO9du2czo1Txxx+fhCWXnnwmBVHw=
+	t=1756716409; cv=none; b=uyxIBzhjnrNb6VfWeK3xl7aPYX+1wCE+pdCssSZLakX5lbRxKuCV51yRQsKhsglx/B88tsm5duw6DapQGLk9q+mMG7UsRHvqjEZU4qTUdT/etucImNP/BASVBNdoAEW2I7NVUmT4gCzTj5vxzE4orWb66kpB8emAmLJHudCHKgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756716361; c=relaxed/simple;
-	bh=ZE9gLmPnDqTqk06S/cgXtqlrzst3rOGf71E5ISS59so=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b2mPf/FQde89G4D+xye4CQ+3T445naqbQX78orqb+jAJ0LDvluEGU4LTJD4C2ofdMsPgQ/ZemvDP+QFJr6BINhYTndLT9OPXlcNUefkwWeSOQOV23aV3zu4moj0Daq9cowDSMeWXNLBdnEIy3egKoBmtdLVZcaiK0q85aG0QIF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5449432a9d7so937432e0c.3;
-        Mon, 01 Sep 2025 01:45:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756716359; x=1757321159;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Lu55cGC1shfZahu4nJqSCls01RHf6IMjgCiuEU3j5YM=;
-        b=ir/r4JS8JFxzgC5DZ+MHcVU4YvM/1aSka/Mvcjh6B0kuvJkyZX0D81mBQvb0n12XOB
-         QScHyADdO+aYSooezLcXUzvHs23o1blnsYEfwUNrtGw2gEAHTGQzRrcIR2o2m6muJDeb
-         olod6Qg/5CjH9R4PX5fuOuYued747AbXyvZ9VVitSkjE4aHgDr16dgmNJEiXLjlST8uE
-         gfzLil1IPelkeXHkzCOleGxtrE8vJvAG9ciC07qOoN48qJ1BiHJhuCQxFn7T+o/2Z05U
-         kkK92TLcxLzr1bN7tBhvJM2pXTWc9wIiA1FBhO4LJniO0e5Pr9c24MTmiR0FozB+Ygqb
-         jpzA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvbl8oDldURgXWDKDZD1Dbfu40j7CiO+GtIGq7tDGr2nxBllP8Q1+ST2Q+wBpu86I0vtGMbkOe@vger.kernel.org, AJvYcCXOkxMDaeO96ECV1jNvulqNshv43O+YIMrK4ce9esLxVAdne0mPMoC4Pwig1N4AKZCg1hmaQ3bVPza+YVs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsLE8nko/uR9Sc6y+kxr7lU+zmL3g2aUX+KBwfDOrcW1Vt5TZj
-	XLKbP+4S6cPcUVMlB+xEyLhzmTY0X3RDrGHu7mXjy10uaZSA4OfUOgDMBNYci72q
-X-Gm-Gg: ASbGncsZGJDKDsYICVI8cZVhJdGwI/1OerVLrJTlhoqxYy27PCBPzK72auzXtApFENC
-	f+qGJirrWHZigTEL0dKZpoEODaeXIfFGaBCVwBheAy2OE/FdvWImYBNUlJ4QwoMpDzALeLufODA
-	dvbJD3A8UzlEs9p2T8oLma9ah3O5WKSUFLCX9MFrpuY6acgzlR82pmrdP4mH90qQn1lIecBQ3Gx
-	NTn/pBD+9waFuBM5P/LB+YIW4qDjR6YhD6dHVTMVSebO5m9PVmsDB5L/9LB8EoQ5v1LV8Yuq6zb
-	O/AXxRk7JW1mPI2X/B/wh8wEhWYtQgDdrmjSo4HLWnplsGmXfovbE/txXcwI1oDgD0vHubGfza5
-	RkUT9PFIHKJ2E3eYs+jjWFDcJ5heIjsmKAEq4b9ANC63dJgdr+4jSk3nCKyK8
-X-Google-Smtp-Source: AGHT+IHcZooVWVxwyGkP6ZWTx7PBgQXv31nIkfFRr939eowCZSPGt/0Z3GKO89bjAXvjNvm/0bRKrQ==
-X-Received: by 2002:a05:6122:3c95:b0:53c:6d68:1cd6 with SMTP id 71dfb90a1353d-544a02b3eccmr1879793e0c.16.1756716358948;
-        Mon, 01 Sep 2025 01:45:58 -0700 (PDT)
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com. [209.85.222.42])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-544912c7125sm4144274e0c.5.2025.09.01.01.45.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 01:45:58 -0700 (PDT)
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-8972e215df9so114033241.1;
-        Mon, 01 Sep 2025 01:45:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX1VakGci/qNw87b6L9bC/w09d3o8HmVgvqeGk1yG9rRt+XARKG0UrD9IqscLGZaKI7qp1TWNOe/GlpTwA=@vger.kernel.org, AJvYcCX7kBQ/fkLBn6Gq2X/A95ZXKDSzB9sSQ5FNTaSnL3x4SKIcNIZmexH8WNPO8VQq/Pl1povAFTEu@vger.kernel.org
-X-Received: by 2002:a05:6102:162c:b0:51f:66fc:53b4 with SMTP id
- ada2fe7eead31-52b1bd28af5mr1710735137.30.1756716358063; Mon, 01 Sep 2025
- 01:45:58 -0700 (PDT)
+	s=arc-20240116; t=1756716409; c=relaxed/simple;
+	bh=aFhmNRaDog4OBMUtbhj2/Nh0aqYh5xZP4LvIXKr8TXQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZI5M+VzSrkqhh6vE9UmVcyUxunrtUOsuGU9pCyV7Qn3f3Iz4iAsIioRt1EIPjlaeuK39fKX3XUDEd3tCMH9p1F5xsuoPU5WJf8oFti6Z8JMBHkd57HoCOStj/LoVXOlhYTG1a8QPIyfv0enTJPIf1YhELhGwfDUL5ndcBYJX+V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=bmXl/6tW; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=25
+	MhXLNm+7a14v6gcmGlJ6+jZMzm6fx0npG3qsB1wec=; b=bmXl/6tW/cokMs+lIc
+	SQM8o9S9qjiJn327ME7OIO2cbJ0HIqiAMySslj38AFpP/LfSAGCBYbdcaHSWyDoQ
+	GD15i3HE088xZpTvY8KTUn5lndn/pjG02lVIJF/WRM4eKXO0WFOhFg2r1QXmxGDe
+	NamFmBnm6M6VJCxpz9QhXlRXU=
+Received: from mi-work.mioffice.cn (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDXj+1YXbVoQg0oFw--.13402S4;
+	Mon, 01 Sep 2025 16:46:18 +0800 (CST)
+From: yangshiguang1011@163.com
+To: harry.yoo@oracle.com
+Cc: vbabka@suse.cz,
+	akpm@linux-foundation.org,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	glittao@gmail.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	yangshiguang <yangshiguang@xiaomi.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v5] mm: slub: avoid wake up kswapd in set_track_prepare
+Date: Mon,  1 Sep 2025 16:46:01 +0800
+Message-ID: <20250901084601.96740-1-yangshiguang1011@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
- <20250825032743.80641-1-ioworker0@gmail.com> <c8851682-25f1-f594-e30f-5b62e019d37b@linux-m68k.org>
- <96ae7afc-c882-4c3d-9dea-3e2ae2789caf@linux.dev> <5a44c60b-650a-1f8a-d5cb-abf9f0716817@linux-m68k.org>
- <4e7e7292-338d-4a57-84ec-ae7427f6ad7c@linux.dev> <d07778f8-8990-226b-5171-4a36e6e18f32@linux-m68k.org>
- <d95592ec-f51e-4d80-b633-7440b4e69944@linux.dev> <30a55f56-93c2-4408-b1a5-5574984fb45f@linux.dev>
- <4405ee5a-becc-7375-61a9-01304b3e0b20@linux-m68k.org> <cfb62b9d-9cbd-47dd-a894-3357027e2a50@linux.dev>
-In-Reply-To: <cfb62b9d-9cbd-47dd-a894-3357027e2a50@linux.dev>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 1 Sep 2025 10:45:46 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdV-AtPm-W-QUC1HixJ8Koy_HdESwCCOhRs3Q26=wjWwog@mail.gmail.com>
-X-Gm-Features: Ac12FXyV9h1utoTEvCbocGnG0IAN7uIVG3x3Lc95GJw3v48XpvYZ_YA0jVY7Wlc
-Message-ID: <CAMuHMdV-AtPm-W-QUC1HixJ8Koy_HdESwCCOhRs3Q26=wjWwog@mail.gmail.com>
-Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
-To: Lance Yang <lance.yang@linux.dev>
-Cc: Finn Thain <fthain@linux-m68k.org>, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, mhiramat@kernel.org, oak@helsinkinet.fi, 
-	peterz@infradead.org, stable@vger.kernel.org, will@kernel.org, 
-	Lance Yang <ioworker0@gmail.com>, linux-m68k@lists.linux-m68k.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDXj+1YXbVoQg0oFw--.13402S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Jr43XFWkKF1UCFWkWryUWrg_yoW7KryUpF
+	W7WFy3JF48AF1jvFWDCa1Uur1SvrZ3CrW8Cr43Wa4rua4Yvr48WFZrtFyjvFW5ArykuanF
+	y3W09Fnagw4jqaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jnxhLUUUUU=
+X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/1tbiEAG75Wi1VZrtiQAAs5
 
-Hi Lance,
+From: yangshiguang <yangshiguang@xiaomi.com>
 
-On Thu, 28 Aug 2025 at 04:05, Lance Yang <lance.yang@linux.dev> wrote:
-> On 2025/8/28 07:43, Finn Thain wrote:
-> > On Mon, 25 Aug 2025, Lance Yang wrote:
-> >> Same here, using a global static variable instead of a local one. The
-> >> result is consistently misaligned.
-> >>
-> >> ```
-> >> #include <linux/module.h>
-> >> #include <linux/init.h>
-> >>
-> >> static struct __attribute__((packed)) test_container {
-> >>      char padding[49];
-> >>      struct mutex io_lock;
-> >> } cont;
-> >>
-> >> static int __init alignment_init(void)
-> >> {
-> >>      pr_info("Container base address      : %px\n", &cont);
-> >>      pr_info("io_lock member address      : %px\n", &cont.io_lock);
-> >>      pr_info("io_lock address offset mod 4: %lu\n", (unsigned long)&cont.io_lock % 4);
-> >>      return 0;
-> >> }
-> >>
-> >> static void __exit alignment_exit(void)
-> >> {
-> >>      pr_info("Module unloaded\n");
-> >> }
-> >>
-> >> module_init(alignment_init);
-> >> module_exit(alignment_exit);
-> >> MODULE_LICENSE("GPL");
-> >> MODULE_AUTHOR("x");
-> >> MODULE_DESCRIPTION("x");
-> >> ```
-> >>
-> >> Result from dmesg:
-> >>
-> >> ```
-> >> [Mon Aug 25 19:33:28 2025] Container base address      : ffffffffc28f0940
-> >> [Mon Aug 25 19:33:28 2025] io_lock member address      : ffffffffc28f0971
-> >> [Mon Aug 25 19:33:28 2025] io_lock address offset mod 4: 1
-> >> ```
-> >>
-> >
-> > FTR, I was able to reproduce that result (i.e. static storage):
-> >
-> > [    0.320000] Container base address      : 0055d9d0
-> > [    0.320000] io_lock member address      : 0055da01
-> > [    0.320000] io_lock address offset mod 4: 1
-> >
-> > I think the experiments you sent previously would have demonstrated the
-> > same result, except for the unpredictable base address that you sensibly
-> > logged in this version.
->
-> Thanks for taking the time to reproduce it!
->
-> This proves the problem can happen in practice (e.g., with packed structs),
-> so we need to ignore the unaligned pointers on the architectures that don't
-> trap for now.
+set_track_prepare() can incur lock recursion.
+The issue is that it is called from hrtimer_start_range_ns
+holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
+CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
+and try to hold the per_cpu(hrtimer_bases)[n].lock.
 
-Putting locks inside a packed struct is definitely a Very Bad Idea
-and a No Go.  Packed structs are meant to describe memory data and
-MMIO register layouts, and must not contain control data for critical
-sections.
+Avoid deadlock caused by implicitly waking up kswapd by
+passing in allocation flags. And the slab caller context has
+preemption disabled, so __GFP_DIRECT_RECLAIM must not appear in gfp_flags.
 
-Gr{oetje,eeting}s,
+The oops looks something like:
 
-                        Geert
+BUG: spinlock recursion on CPU#3, swapper/3/0
+ lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
+Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
+Call trace:
+spin_bug+0x0
+_raw_spin_lock_irqsave+0x80
+hrtimer_try_to_cancel+0x94
+task_contending+0x10c
+enqueue_dl_entity+0x2a4
+dl_server_start+0x74
+enqueue_task_fair+0x568
+enqueue_task+0xac
+do_activate_task+0x14c
+ttwu_do_activate+0xcc
+try_to_wake_up+0x6c8
+default_wake_function+0x20
+autoremove_wake_function+0x1c
+__wake_up+0xac
+wakeup_kswapd+0x19c
+wake_all_kswapds+0x78
+__alloc_pages_slowpath+0x1ac
+__alloc_pages_noprof+0x298
+stack_depot_save_flags+0x6b0
+stack_depot_save+0x14
+set_track_prepare+0x5c
+___slab_alloc+0xccc
+__kmalloc_cache_noprof+0x470
+__set_page_owner+0x2bc
+post_alloc_hook[jt]+0x1b8
+prep_new_page+0x28
+get_page_from_freelist+0x1edc
+__alloc_pages_noprof+0x13c
+alloc_slab_page+0x244
+allocate_slab+0x7c
+___slab_alloc+0x8e8
+kmem_cache_alloc_noprof+0x450
+debug_objects_fill_pool+0x22c
+debug_object_activate+0x40
+enqueue_hrtimer[jt]+0xdc
+hrtimer_start_range_ns+0x5f8
+...
 
+Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
+Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
+Cc: stable@vger.kernel.org
+---
+
+v1 -> v2:
+    propagate gfp flags to set_track_prepare()
+v2 -> v3:
+    Remove the gfp restriction in set_track_prepare()
+v3 -> v4:
+    Re-describe the comments in set_track_prepare.
+v4 -> v5:
+    Modify the patch commit.
+
+[1]https://lore.kernel.org/all/20250801065121.876793-1-yangshiguang1011@163.com/
+[2]https://lore.kernel.org/all/20250814111641.380629-2-yangshiguang1011@163.com/
+[3]https://lore.kernel.org/all/20250825121737.2535732-1-yangshiguang1011@163.com/
+[4]https://lore.kernel.org/all/20250830020946.1767573-1-yangshiguang1011@163.com/
+---
+ mm/slub.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 30003763d224..b0af51a5321b 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -962,19 +962,25 @@ static struct track *get_track(struct kmem_cache *s, void *object,
+ }
+ 
+ #ifdef CONFIG_STACKDEPOT
+-static noinline depot_stack_handle_t set_track_prepare(void)
++static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
+ {
+ 	depot_stack_handle_t handle;
+ 	unsigned long entries[TRACK_ADDRS_COUNT];
+ 	unsigned int nr_entries;
++	/*
++	 * Preemption is disabled in ___slab_alloc() so we need to disallow
++	 * blocking. The flags are further adjusted by gfp_nested_mask() in
++	 * stack_depot itself.
++	 */
++	gfp_flags &= ~(__GFP_DIRECT_RECLAIM);
+ 
+ 	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
+-	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
++	handle = stack_depot_save(entries, nr_entries, gfp_flags);
+ 
+ 	return handle;
+ }
+ #else
+-static inline depot_stack_handle_t set_track_prepare(void)
++static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
+ {
+ 	return 0;
+ }
+@@ -996,9 +1002,9 @@ static void set_track_update(struct kmem_cache *s, void *object,
+ }
+ 
+ static __always_inline void set_track(struct kmem_cache *s, void *object,
+-				      enum track_item alloc, unsigned long addr)
++				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
+ {
+-	depot_stack_handle_t handle = set_track_prepare();
++	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
+ 
+ 	set_track_update(s, object, alloc, addr, handle);
+ }
+@@ -1921,9 +1927,9 @@ static inline bool free_debug_processing(struct kmem_cache *s,
+ static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
+ static inline int check_object(struct kmem_cache *s, struct slab *slab,
+ 			void *object, u8 val) { return 1; }
+-static inline depot_stack_handle_t set_track_prepare(void) { return 0; }
++static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
+ static inline void set_track(struct kmem_cache *s, void *object,
+-			     enum track_item alloc, unsigned long addr) {}
++			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
+ static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
+ 					struct slab *slab) {}
+ static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
+@@ -3878,7 +3884,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 			 * tracking info and return the object.
+ 			 */
+ 			if (s->flags & SLAB_STORE_USER)
+-				set_track(s, freelist, TRACK_ALLOC, addr);
++				set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
+ 
+ 			return freelist;
+ 		}
+@@ -3910,7 +3916,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 			goto new_objects;
+ 
+ 		if (s->flags & SLAB_STORE_USER)
+-			set_track(s, freelist, TRACK_ALLOC, addr);
++			set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
+ 
+ 		return freelist;
+ 	}
+@@ -4422,7 +4428,7 @@ static noinline void free_to_partial_list(
+ 	depot_stack_handle_t handle = 0;
+ 
+ 	if (s->flags & SLAB_STORE_USER)
+-		handle = set_track_prepare();
++		handle = set_track_prepare(__GFP_NOWARN);
+ 
+ 	spin_lock_irqsave(&n->list_lock, flags);
+ 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.43.0
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 
