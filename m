@@ -1,31 +1,31 @@
-Return-Path: <stable+bounces-176866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65547B3E6BD
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 16:11:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 551CDB3E6BF
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 16:11:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5F791A8113E
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 14:11:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75C717A16B2
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 14:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1060E33EAF9;
-	Mon,  1 Sep 2025 14:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E831E340D86;
+	Mon,  1 Sep 2025 14:11:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761372566DD
-	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 14:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE7E2566DD
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 14:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756735891; cv=none; b=oVJOCVuoiyOGvJnug4tCdTxsqrMBiETxv/9LyyzYB8HP9zPsu7HA52j0PDG2VcqrLQiAMO0wFIQZ+3/OZjTVNf4c7xnVBVeIKseSE1qfQWQO1G2R9/1V/YeyuuhWG9KfUt+RUM3OT7f4bbLGCi8UABRcKnQmyh8iwd+DnTOK+ig=
+	t=1756735893; cv=none; b=bcYVBICOS67EUi89ZPHCWwPfP2/ctJ/vinLKo23gxqE9GrZRfd0t863ftUrA3O6y5NIKeet5lWUhr/BE4IEAKPd/wpoQxY+CFjyFryeJVX/XqMLkI1On28k92ltHt4VDZp9DImAj33/70X6TBlkEropSJgwohK25vIYB3TGuMVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756735891; c=relaxed/simple;
-	bh=6K8P7SJHQEwIPCwRumEBIF7JEiPsS2kowgPhVCqua7c=;
+	s=arc-20240116; t=1756735893; c=relaxed/simple;
+	bh=oUuKLGxvedYigTx6/SYAbTD3+NcTqL+C31/S+MjQcww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WHBD+ivR+eDfIlrD90OjUEq++A5pOI9SFGi4NiUDciIwCH+Qw72rEuES++OLFI9VJ552BUYW1P3nHDQ4MuL1iKQ+a4V4Gopqsb1yaeJA+gT8vickJfA8MoE5qcEQMj/kS/vicsTGhDLJiIQFMrcAMwBZ2Ze6ZkIWORNktOtuM4k=
+	 MIME-Version:Content-Type; b=t3K2DHxOss8a9qj8HKhA7zqzBPJ86itUp/V4L1EZ2tJwikLn3Xw4XgxFZuyL/tfxETd2bLWx9C8C7voOB82e+pTGM1NAcnaIo5aCeXj8Lwn7zs4ypib/f3+eCbNJoj1/fdDxvLMDzUmZ5ryj+zsk2hiW6uLYS6Ku1hPfvocTo+E=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
@@ -34,8 +34,8 @@ Received: from pomiot (c144-154.icpnet.pl [85.221.144.154])
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: mgorny)
-	by smtp.gentoo.org (Postfix) with ESMTPSA id 4E8A8340F03;
-	Mon, 01 Sep 2025 14:11:28 +0000 (UTC)
+	by smtp.gentoo.org (Postfix) with ESMTPSA id 513D5340F04;
+	Mon, 01 Sep 2025 14:11:30 +0000 (UTC)
 From: =?UTF-8?q?Micha=C5=82=20G=C3=B3rny?= <mgorny@gentoo.org>
 To: stable@vger.kernel.org
 Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
@@ -44,9 +44,9 @@ Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
 	Rander Wang <rander.wang@intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	=?UTF-8?q?Micha=C5=82=20G=C3=B3rny?= <mgorny@gentoo.org>
-Subject: [PATCH v2 linux-5.10.y 2/5] ASoC: Intel: sof_rt5682: shrink platform_id names below 20 characters
-Date: Mon,  1 Sep 2025 16:10:55 +0200
-Message-ID: <20250901141117.96236-2-mgorny@gentoo.org>
+Subject: [PATCH v2 linux-5.10.y 3/5] ASoC: Intel: glk_rt5682_max98357a: shrink platform_id below 20 characters
+Date: Mon,  1 Sep 2025 16:10:56 +0200
+Message-ID: <20250901141117.96236-3-mgorny@gentoo.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250901141117.96236-1-mgorny@gentoo.org>
 References: <2025090101-exert-deceased-3071@gregkh>
@@ -62,111 +62,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit 590cfb082837cc6c0c595adf1711330197c86a58 upstream.
+commit bc47256afef38175a0ad6bcfd4dbab9d2c65b377 upstream.
 
-Some Chromebooks machine driver aliases exceed 20 characters, which
-leads to sparse warnings:
+Sparse throws the following warning:
 
-sound/soc/intel/boards/sof_rt5682.c:959:25: error: too long
+sound/soc/intel/boards/glk_rt5682_max98357a.c:622:25: error: too long
 initializer-string for array of char(no space for nul char)
 
-sound/soc/intel/boards/sof_rt5682.c:989:25: error: too long
-initializer-string for array of char(no space for nul char)
-
-sound/soc/intel/boards/sof_rt5682.c:1039:25: error: too long
-initializer-string for array of char(no space for nul char)
-
-Fix by using the 'mx' shortcut for Maxim platforms (already used in
-platform firmware)
+Fix by using the 'mx' acronym for Maxim
 
 Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 Reviewed-by: Paul Olaru <paul.olaru@oss.nxp.com>
 Reviewed-by: Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>
 Reviewed-by: Rander Wang <rander.wang@intel.com>
-Link: https://lore.kernel.org/r/20210621194057.21711-4-pierre-louis.bossart@linux.intel.com
+Link: https://lore.kernel.org/r/20210621194057.21711-5-pierre-louis.bossart@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Michał Górny <mgorny@gentoo.org>
 ---
- sound/soc/intel/boards/sof_rt5682.c               | 12 ++++++------
- sound/soc/intel/common/soc-acpi-intel-jsl-match.c |  2 +-
- sound/soc/intel/common/soc-acpi-intel-tgl-match.c |  4 ++--
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ sound/soc/intel/boards/glk_rt5682_max98357a.c     | 4 ++--
+ sound/soc/intel/common/soc-acpi-intel-glk-match.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/intel/boards/sof_rt5682.c b/sound/soc/intel/boards/sof_rt5682.c
-index 5883d1fa3b7e..414dc594014d 100644
---- a/sound/soc/intel/boards/sof_rt5682.c
-+++ b/sound/soc/intel/boards/sof_rt5682.c
-@@ -844,7 +844,7 @@ static const struct platform_device_id board_ids[] = {
- 		.name = "sof_rt5682",
- 	},
+diff --git a/sound/soc/intel/boards/glk_rt5682_max98357a.c b/sound/soc/intel/boards/glk_rt5682_max98357a.c
+index c1b789ac6d50..005bd96175cf 100644
+--- a/sound/soc/intel/boards/glk_rt5682_max98357a.c
++++ b/sound/soc/intel/boards/glk_rt5682_max98357a.c
+@@ -621,7 +621,7 @@ static int geminilake_audio_probe(struct platform_device *pdev)
+ 
+ static const struct platform_device_id glk_board_ids[] = {
  	{
--		.name = "tgl_max98357a_rt5682",
-+		.name = "tgl_mx98357a_rt5682",
- 		.driver_data = (kernel_ulong_t)(SOF_RT5682_MCLK_EN |
- 					SOF_RT5682_SSP_CODEC(0) |
- 					SOF_SPEAKER_AMP_PRESENT |
-@@ -861,7 +861,7 @@ static const struct platform_device_id board_ids[] = {
- 					SOF_RT5682_SSP_AMP(1)),
+-		.name = "glk_rt5682_max98357a",
++		.name = "glk_rt5682_mx98357a",
+ 		.driver_data =
+ 			(kernel_ulong_t)&glk_audio_card_rt5682_m98357a,
  	},
- 	{
--		.name = "tgl_max98373_rt5682",
-+		.name = "tgl_mx98373_rt5682",
- 		.driver_data = (kernel_ulong_t)(SOF_RT5682_MCLK_EN |
- 					SOF_RT5682_SSP_CODEC(0) |
- 					SOF_SPEAKER_AMP_PRESENT |
-@@ -870,7 +870,7 @@ static const struct platform_device_id board_ids[] = {
- 					SOF_RT5682_NUM_HDMIDEV(4)),
- 	},
- 	{
--		.name = "jsl_rt5682_max98360a",
-+		.name = "jsl_rt5682_mx98360a",
- 		.driver_data = (kernel_ulong_t)(SOF_RT5682_MCLK_EN |
- 					SOF_RT5682_MCLK_24MHZ |
- 					SOF_RT5682_SSP_CODEC(0) |
-@@ -898,7 +898,7 @@ MODULE_AUTHOR("Bard Liao <bard.liao@intel.com>");
- MODULE_AUTHOR("Sathya Prakash M R <sathya.prakash.m.r@intel.com>");
+@@ -643,4 +643,4 @@ MODULE_DESCRIPTION("Geminilake Audio Machine driver-RT5682 & MAX98357A in I2S mo
+ MODULE_AUTHOR("Naveen Manohar <naveen.m@intel.com>");
+ MODULE_AUTHOR("Harsha Priya <harshapriya.n@intel.com>");
  MODULE_LICENSE("GPL v2");
- MODULE_ALIAS("platform:sof_rt5682");
--MODULE_ALIAS("platform:tgl_max98357a_rt5682");
-+MODULE_ALIAS("platform:tgl_mx98357a_rt5682");
- MODULE_ALIAS("platform:jsl_rt5682_rt1015");
--MODULE_ALIAS("platform:tgl_max98373_rt5682");
--MODULE_ALIAS("platform:jsl_rt5682_max98360a");
-+MODULE_ALIAS("platform:tgl_mx98373_rt5682");
-+MODULE_ALIAS("platform:jsl_rt5682_mx98360a");
-diff --git a/sound/soc/intel/common/soc-acpi-intel-jsl-match.c b/sound/soc/intel/common/soc-acpi-intel-jsl-match.c
-index 34f5fcad5701..a539b65ba254 100644
---- a/sound/soc/intel/common/soc-acpi-intel-jsl-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-jsl-match.c
-@@ -54,7 +54,7 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_jsl_machines[] = {
+-MODULE_ALIAS("platform:glk_rt5682_max98357a");
++MODULE_ALIAS("platform:glk_rt5682_mx98357a");
+diff --git a/sound/soc/intel/common/soc-acpi-intel-glk-match.c b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
+index ac8f77d0afa9..e05db22d860c 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-glk-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
+@@ -33,7 +33,7 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_glk_machines[] = {
  	},
  	{
  		.id = "10EC5682",
--		.drv_name = "jsl_rt5682_max98360a",
-+		.drv_name = "jsl_rt5682_mx98360a",
- 		.sof_fw_filename = "sof-jsl.ri",
+-		.drv_name = "glk_rt5682_max98357a",
++		.drv_name = "glk_rt5682_mx98357a",
+ 		.fw_filename = "intel/dsp_fw_glk.bin",
  		.machine_quirk = snd_soc_acpi_codec_list,
- 		.quirk_data = &mx98360a_spk,
-diff --git a/sound/soc/intel/common/soc-acpi-intel-tgl-match.c b/sound/soc/intel/common/soc-acpi-intel-tgl-match.c
-index 15d862cdcd2f..f7c491eba1e7 100644
---- a/sound/soc/intel/common/soc-acpi-intel-tgl-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-tgl-match.c
-@@ -321,7 +321,7 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_tgl_machines[] = {
- 	},
- 	{
- 		.id = "10EC5682",
--		.drv_name = "tgl_max98357a_rt5682",
-+		.drv_name = "tgl_mx98357a_rt5682",
- 		.machine_quirk = snd_soc_acpi_codec_list,
- 		.quirk_data = &tgl_codecs,
- 		.sof_fw_filename = "sof-tgl.ri",
-@@ -329,7 +329,7 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_tgl_machines[] = {
- 	},
- 	{
- 		.id = "10EC5682",
--		.drv_name = "tgl_max98373_rt5682",
-+		.drv_name = "tgl_mx98373_rt5682",
- 		.machine_quirk = snd_soc_acpi_codec_list,
- 		.quirk_data = &tgl_max98373_amp,
- 		.sof_fw_filename = "sof-tgl.ri",
+ 		.quirk_data = &glk_codecs,
 
