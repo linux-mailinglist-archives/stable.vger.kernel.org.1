@@ -1,70 +1,122 @@
-Return-Path: <stable+bounces-176837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C286B3E219
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 13:56:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E6BB3E227
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 14:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 026201A80FA9
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 11:57:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE4A21625BA
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 12:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDCB53218DC;
-	Mon,  1 Sep 2025 11:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08712254B09;
+	Mon,  1 Sep 2025 12:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q69e1590"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="yPIzxOa1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C04D3218DA
-	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 11:56:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BEF1FC7C5;
+	Mon,  1 Sep 2025 12:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756727811; cv=none; b=UGESelCDdlQcPwa6y4VSJSMaczOEdQs41cRQi/OrwPFR4SznFjE7DGnONfUIGvIbt/rLQlkEGq4XvCtHjeBFFA2R+Eg9vnVIKX2cuLl9uVWuZOLMWnCG4gEo3wBNxZc5deYYlmmdiHtTvpFqPca5qUqwfpHw2k6we+O5Rk7Evrw=
+	t=1756728252; cv=none; b=fCWW5I5sqizIc4Ukgw+SZhJyt0ht1YnAeRdFi/DfHgevk31YPqsqZY5UkHZ0mjI/jRkFYLD0aUuiIb1uSSlJiYIon+yno/DUe/qjgN7gekjYnHNo33dCw3tjOqdbxa9Sx2ROKPBeapItZoeqLKx+2bDAeWx0qvHYEtdn6JCAUIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756727811; c=relaxed/simple;
-	bh=P0RiKDrkmO9V+O3LfToBu407g5za9qsFV/126B/t0XQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uYl0zL8mNqciIIaquaudi3iNjfSg8UpPY51mQsEozWUWQtayarJ8iF/x62+N9Vs1OH87DUCp+flPM/g1ci58Mo8SWpiZKQgz7Vc9UJCsCGeN+b0eg2Oi2qbKu/zQZo7wbYYgVqo+184grcW+MZXm7UjC1HWp619KQ5fOcVQ9pOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q69e1590; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8C7C4CEF0;
-	Mon,  1 Sep 2025 11:56:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756727811;
-	bh=P0RiKDrkmO9V+O3LfToBu407g5za9qsFV/126B/t0XQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q69e1590cDtJPUM3bFNEXVkeVK07MD9CzoZftnolONfx2EtMJgbuf6O3XKJItrd2a
-	 X3gwruFEJFVxRqL8W12evdGNPrX9VVI47/yA8tWA1xmDxKEl//VmO4h7Z6W1gP/Wnq
-	 mk/2IQwVlC4YyVF6inPG6K6x26piT9k4MlwRFrZc=
-Date: Mon, 1 Sep 2025 13:56:47 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jan Kara <jack@suse.cz>
-Cc: stable@vger.kernel.org, hc105@poolhem.se
-Subject: Re: UDF failures in 5.15
-Message-ID: <2025090140-snowless-mandate-1857@gregkh>
-References: <z7j65bmrb4apv63sudegcqaxxxrnja2i4fysjcpiects5gmue4@sapo53pogv25>
+	s=arc-20240116; t=1756728252; c=relaxed/simple;
+	bh=gHY5lSYrBmGTMeATrmCtIIDaas/UdeCZELU8716Qi/Y=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a04KRjT5ig+z50nNE8Uvy1dcwGRUhh2RHaSVNrl9ulumQoKNWK0AgJeQ+jMm5cb3gcHnSLPmTJwv25+64PL99UfW2GQqy5JnpnKZsUAmbb1zIVfjNsfi9EcSXhWwkYclofpOOytKg9nmBM0Zc3eQViJJ6n2UkuausC8FiQoyOpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=yPIzxOa1; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 581C44rR2801951;
+	Mon, 1 Sep 2025 07:04:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1756728244;
+	bh=6s67FAZDJUizll6nPEf6TZibmkbOoVBvmJUSm6yE6vc=;
+	h=From:To:CC:Subject:Date;
+	b=yPIzxOa13fWYaShw/EVS1xRj4NZETT0OsRwAi3ieDNmlrKjpdwDnK9KnDNjkqQ+vo
+	 eU+c4dAVhOSDKbZl1tV7QqnMHI68U1Ij7Nqlto1tTxFd8H3SMLokyeSDhBdQyCE4cC
+	 X4Cp1syqPxnRI5hPkq5Ur31+FnJOSzoOaadQdL44=
+Received: from DLEE111.ent.ti.com (dlee111.ent.ti.com [157.170.170.22])
+	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 581C44Za1527093
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Mon, 1 Sep 2025 07:04:04 -0500
+Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE111.ent.ti.com
+ (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 1
+ Sep 2025 07:04:03 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Mon, 1 Sep 2025 07:04:03 -0500
+Received: from uda0492258.dhcp.ti.com (uda0492258.dhcp.ti.com [172.24.231.84])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 581C3xQj2472040;
+	Mon, 1 Sep 2025 07:04:00 -0500
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: <lpieralisi@kernel.org>, <kwilczynski@kernel.org>, <mani@kernel.org>,
+        <robh@kernel.org>, <bhelgaas@google.com>, <vigneshr@ti.com>
+CC: <stable@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
+        <s-vadapalli@ti.com>
+Subject: [PATCH] PCI: j721e: Fix module autoloading
+Date: Mon, 1 Sep 2025 17:33:55 +0530
+Message-ID: <20250901120359.3410774-1-s-vadapalli@ti.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <z7j65bmrb4apv63sudegcqaxxxrnja2i4fysjcpiects5gmue4@sapo53pogv25>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Mon, Sep 01, 2025 at 12:20:50PM +0200, Jan Kara wrote:
-> Hello,
-> 
-> Henrik notified me that UDF in 5.15 kernel is failing for him, likely
-> because commit 1ea1cd11c72d ("udf: Fix directory iteration for longer tail
-> extents") is missing 5.15 stable tree. Basically wherever d16076d9b684b got
-> backported, 1ea1cd11c72d needs to be backported as well (I'm sorry for
-> forgetting to add proper Fixes tag back then).
+Commit under Fixes added support to build the driver as a loadable
+module. However, it did not add MODULE_DEVICE_TABLE() which is required
+for autoloading the driver when it is built as a loadable module.
 
-Now queued up, thanks!
+Fix it.
 
-greg k-h
+Fixes: a2790bf81f0f ("PCI: j721e: Add support to build as a loadable module")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+---
+
+Hello,
+
+This patch is based on commit
+b320789d6883 Linux 6.17-rc4
+of Mainline Linux.
+
+Patch has been tested on J7200-EVM with the driver configs set to 'm'.
+The pci-j721e.c driver is autoloaded as Linux boots and it doesn't need
+to be manually probed. Logs:
+https://gist.github.com/Siddharth-Vadapalli-at-TI/f64eed4df6fd4f714747b3c7e7876f24
+
+Regards,
+Siddharth.
+
+ drivers/pci/controller/cadence/pci-j721e.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
+index 6c93f39d0288..cfca13a4c840 100644
+--- a/drivers/pci/controller/cadence/pci-j721e.c
++++ b/drivers/pci/controller/cadence/pci-j721e.c
+@@ -440,6 +440,7 @@ static const struct of_device_id of_j721e_pcie_match[] = {
+ 	},
+ 	{},
+ };
++MODULE_DEVICE_TABLE(of, of_j721e_pcie_match);
+ 
+ static int j721e_pcie_probe(struct platform_device *pdev)
+ {
+-- 
+2.43.0
+
 
