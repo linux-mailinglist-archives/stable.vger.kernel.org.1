@@ -1,183 +1,219 @@
-Return-Path: <stable+bounces-176878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C7AB3E837
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 17:05:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AEE0B3EA96
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 17:33:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D5F07A3BAE
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 15:03:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBF997B2861
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 15:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826BB343D77;
-	Mon,  1 Sep 2025 15:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0C61F3B98;
+	Mon,  1 Sep 2025 15:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="GMo7N4uI"
+	dkim=pass (2048-bit key) header.d=helsinkinet.fi header.i=@helsinkinet.fi header.b="JamioJuo"
 X-Original-To: stable@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.dnamail.fi (sender001.dnamail.fi [83.102.40.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCED341ACE
-	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 15:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10020334372;
+	Mon,  1 Sep 2025 15:21:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.102.40.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756739103; cv=none; b=dfr76SLoFZqv16xpTAQ2XZjs2RZZohKjtDvYkOOU67eoGFRxit4GR8OZJ0zJnLfRdka/SBj3PN7roC9jPIPcqCJfjd8yTH0eMYon3h3av4rUM3rB+KKxyi3IzMVh8/zURq1z3M8wy442cg+Qh/YRpBxf6uLjIyDirqIX82ZyQxk=
+	t=1756740066; cv=none; b=Q+3Lb/tDuGv/ki1lBx99pzTn8aDbaHdrXDY0Pg96PfAbE3PU6G2xft+AdZQtFVgmC757Z2OUBExXaYU5bdgxW4Y9zDjnvq0vUDId+uUVX4S8xlPCmx6urGEGU5EQX13CA6lhWimjaM6tHIUo+wixsFwA5sle+4fPstQJcWCH69Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756739103; c=relaxed/simple;
-	bh=NzJKaNqFey2ehopdK0ID3IioXGnhql27vSag7QFDFso=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kbbxo2jcp5ocljZdmk9mYYbZ5U3SsuY8hZrcssfGoj4jPEu17WU6iOnfHIjv01iYrr80bHZKrtKaSRcYK18A+QxVz3w00SAq8p3PB6hFtKY56U1WnhjWw/nu4pkfPwI1aHpL8vjfcAebiyZvfl93dVDWIE9KG0DTvmbFdOHpSkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=GMo7N4uI; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1756739102; x=1788275102;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=NzJKaNqFey2ehopdK0ID3IioXGnhql27vSag7QFDFso=;
-  b=GMo7N4uI3sCmQE0PyVW+Jh+tq5M/UM5pwjnJEYY9HUwqLiKMMNdRdSNN
-   ZHBd2BEL9uJi05VN1MhibojZmL06+WDnhF30A1/xSTBd5+pfVgr+A7yxU
-   9BGBvR3c44FOX8TXWgPewOB9tvdpQZU9hJ8tUNITA5JKcybCq19aAYwdV
-   TYOHauQejvHYO3Ea130b+FOJK6c2w+MODgfYcEY1ty4rNMKRpWnwo9K1X
-   Ws5+xU9Ak1TPfL/yn5CTwh9Z1a2i1Rq6AZmkq/Au7iT6s1tqUsGen1ZRM
-   ETc/88M/8OMgID0HQn7lJZPcl+31IKC5x3gVcScxvCmYTIOVIkFKPIi9K
-   w==;
-X-CSE-ConnectionGUID: hRJ1odblTViAzW9QhPAUiw==
-X-CSE-MsgGUID: p/U0svi7SAi9I4wn3mOfQw==
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="277284642"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 01 Sep 2025 08:05:00 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Mon, 1 Sep 2025 08:04:31 -0700
-Received: from ROU-LT-M70749.microchip.com (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.44 via Frontend Transport; Mon, 1 Sep 2025 08:04:30 -0700
-From: Romain Sioen <romain.sioen@microchip.com>
-To: <stable@vger.kernel.org>
-CC: <hamish.martin@alliedtelesis.co.nz>, <jikos@kernel.org>, Romain Sioen
-	<romain.sioen@microchip.com>
-Subject: [PATCH 2/2] HID: mcp2221: Handle reads greater than 60 bytes
-Date: Mon, 1 Sep 2025 17:03:31 +0200
-Message-ID: <20250901150331.198437-3-romain.sioen@microchip.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250901150331.198437-1-romain.sioen@microchip.com>
-References: <20250901150331.198437-1-romain.sioen@microchip.com>
+	s=arc-20240116; t=1756740066; c=relaxed/simple;
+	bh=4MXorRygA3iS+ycoLelxrTTNdpMNmF6JkScxrjohY68=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PCJSk1LMXRvPnMzwbzy3pHrD0SZx7GflFKhnLt1hFJd/ikKk5nchXK79mG8rO1pqOPE0Goa7aYUXkPAGof6XjnwE9dqPTRnbryGEjHZArhDcagzpctjtR6ilxeQrZ3oewcMwLCW7lwjUquCKaCC0az2yNizyJ2ave+YB3zH/5dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=helsinkinet.fi; spf=pass smtp.mailfrom=helsinkinet.fi; dkim=pass (2048-bit key) header.d=helsinkinet.fi header.i=@helsinkinet.fi header.b=JamioJuo; arc=none smtp.client-ip=83.102.40.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=helsinkinet.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=helsinkinet.fi
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.dnamail.fi (Postfix) with ESMTP id EA3C12113FDE;
+	Mon,  1 Sep 2025 18:13:00 +0300 (EEST)
+X-Virus-Scanned: X-Virus-Scanned: amavis at smtp.dnamail.fi
+Received: from smtp.dnamail.fi ([83.102.40.178])
+ by localhost (dmail-psmtp01.s.dnaip.fi [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id d7tmIfMIGLGX; Mon,  1 Sep 2025 18:12:59 +0300 (EEST)
+Received: from [192.168.101.100] (87-92-61-203.bb.dnainternet.fi [87.92.61.203])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: oak@dnamail.internal)
+	by smtp.dnamail.fi (Postfix) with ESMTPSA id 1426E2113E0B;
+	Mon,  1 Sep 2025 18:12:53 +0300 (EEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 smtp.dnamail.fi 1426E2113E0B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=helsinkinet.fi;
+	s=2025-03; t=1756739579;
+	bh=pd2r8zAJCyTMArHVQIHS7IIjNpjZF/Rb/ZQJCnx4bzQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=JamioJuoeiN7QczyB3T5zGC9ajP+/uWKCaeIzE7JtGaHVdOveU6j5nivGA1bW0r9l
+	 WsHr9r6qBBRP58NeY2GvU5Hle2aWMiJU48BUkxLAa58nZyX5i1oQvZ0Jd6X0qhJRxo
+	 SCUp5f46+KTEuyE8ecbwphl7kob8qqisDgiXQ+7R3wBYDKrXVj1eqYPi2tNOwg/gLz
+	 a3GquxmdlACo4ak1bhoqwGqlWOMkksUuV0zqQOSPtUi4H4KG2x7mk6rOz9rqu6+Wa3
+	 Los+xKGZb/wy3LItojmYirnerShUvTFtbna0BDyw9UScbHYFL57jQLrkNECZhUe1RF
+	 VKEbYv0HKL2bg==
+Message-ID: <617b6c79-2d66-467f-89a0-79d2d2efb714@helsinkinet.fi>
+Date: Mon, 1 Sep 2025 18:12:53 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Finn Thain <fthain@linux-m68k.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lance Yang
+ <lance.yang@linux.dev>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org
+References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
+ <1a5ce56a-d0d0-481e-b663-a7b176682a65@helsinkinet.fi>
+ <CAMuHMdUKgMfL+1EnkZbbqNqTv4aMs_XWocXxq5jVGeOMaQXnDQ@mail.gmail.com>
+Content-Language: en-US
+From: Eero Tamminen <oak@helsinkinet.fi>
+In-Reply-To: <CAMuHMdUKgMfL+1EnkZbbqNqTv4aMs_XWocXxq5jVGeOMaQXnDQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Hi Geert,
 
-[ Upstream commit 2682468671aa0b4d52ae09779b48212a80d71b91 ]
+On 1.9.2025 11.51, Geert Uytterhoeven wrote:
+>> On 23.8.2025 10.49, Lance Yang wrote:
+>>   > Anyway, I've prepared two patches for discussion, either of which should
+>>   > fix the alignment issue :)
+>>   >
+>>   > Patch A[1] adjusts the runtime checks to handle unaligned pointers.
+>>   > Patch B[2] enforces 4-byte alignment on the core lock structures.
+>>   >
+>>   > Both tested on x86-64.
+>>   >
+>>   > [1]
+>> https://lore.kernel.org/lkml/20250823050036.7748-1-lance.yang@linux.dev
+>>   > [2] https://lore.kernel.org/lkml/20250823074048.92498-1-
+>>   > lance.yang@linux.dev
+>>
+>> Same goes for both of these, except that removing warnings makes minimal
+>> kernel boot 1-2% faster than 4-aligning the whole struct.
 
-When a user requests more than 60 bytes of data the MCP2221 must chunk
-the data in chunks up to 60 bytes long (see command/response code 0x40
-in the datasheet).
-In order to signal that the device has more data the (undocumented) byte
-at byte index 2 of the Get I2C Data response uses the value 0x54. This
-contrasts with the case for the final data chunk where the value
-returned is 0x55 (MCP2221_I2C_READ_COMPL). The fact that 0x55 was not
-returned in the response was interpreted by the driver as a failure
-meaning that all reads of more than 60 bytes would fail.
+Note that above result was from (emulated) 68030 Falcon, i.e. something 
+that has really small caches (256-byte i-/d-cache), *and* a kernel 
+config using CONFIG_CC_OPTIMIZE_FOR_SIZE=y (with GCC 12.2).
 
-Add support for reads that are split over multiple chunks by looking for
-the response code indicating that more data is expected and continuing
-the read as the code intended. Some timing delays are required to ensure
-the chip has time to refill its FIFO as data is read in from the I2C
-bus. This timing has been tested in my system when configured for bus
-speeds of 50KHz, 100KHz, and 400KHz and operates well.
 
-Fixes: 67a95c21463d0 ("HID: mcp2221: add usb to i2c-smbus host bridge")
-Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-[romain.sioen@microchip.com: backport to stable, up to 6.8. Add "Fixes" tag]
-Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
----
- drivers/hid/hid-mcp2221.c | 32 +++++++++++++++++++++++---------
- 1 file changed, 23 insertions(+), 9 deletions(-)
+> That is an interesting outcome! So the gain of naturally-aligning the
+> lock is more than offset by the increased cache pressure due to wasting
+> (a bit?) more memory.
 
-diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
-index ce4e8e6b3d86..a985301a4135 100644
---- a/drivers/hid/hid-mcp2221.c
-+++ b/drivers/hid/hid-mcp2221.c
-@@ -49,6 +49,7 @@ enum {
- 	MCP2221_I2C_MASK_ADDR_NACK = 0x40,
- 	MCP2221_I2C_WRADDRL_SEND = 0x21,
- 	MCP2221_I2C_ADDR_NACK = 0x25,
-+	MCP2221_I2C_READ_PARTIAL = 0x54,
- 	MCP2221_I2C_READ_COMPL = 0x55,
- 	MCP2221_ALT_F_NOT_GPIOV = 0xEE,
- 	MCP2221_ALT_F_NOT_GPIOD = 0xEF,
-@@ -297,6 +298,7 @@ static int mcp_i2c_smbus_read(struct mcp2221 *mcp,
- {
- 	int ret;
- 	u16 total_len;
-+	int retries = 0;
- 
- 	mcp->txbuf[0] = type;
- 	if (msg) {
-@@ -320,20 +322,31 @@ static int mcp_i2c_smbus_read(struct mcp2221 *mcp,
- 	mcp->rxbuf_idx = 0;
- 
- 	do {
-+		/* Wait for the data to be read by the device */
-+		usleep_range(980, 1000);
-+
- 		memset(mcp->txbuf, 0, 4);
- 		mcp->txbuf[0] = MCP2221_I2C_GET_DATA;
- 
- 		ret = mcp_send_data_req_status(mcp, mcp->txbuf, 1);
--		if (ret)
--			return ret;
--
--		ret = mcp_chk_last_cmd_status_free_bus(mcp);
--		if (ret)
--			return ret;
--
--		usleep_range(980, 1000);
-+		if (ret) {
-+			if (retries < 5) {
-+				/* The data wasn't ready to read.
-+				 * Wait a bit longer and try again.
-+				 */
-+				usleep_range(90, 100);
-+				retries++;
-+			} else {
-+				return ret;
-+			}
-+		} else {
-+			retries = 0;
-+		}
- 	} while (mcp->rxbuf_idx < total_len);
- 
-+	usleep_range(980, 1000);
-+	ret = mcp_chk_last_cmd_status_free_bus(mcp);
-+
- 	return ret;
- }
- 
-@@ -799,7 +812,8 @@ static int mcp2221_raw_event(struct hid_device *hdev,
- 				mcp->status = -EIO;
- 				break;
- 			}
--			if (data[2] == MCP2221_I2C_READ_COMPL) {
-+			if (data[2] == MCP2221_I2C_READ_COMPL ||
-+			    data[2] == MCP2221_I2C_READ_PARTIAL) {
- 				buf = mcp->rxbuf;
- 				memcpy(&buf[mcp->rxbuf_idx], &data[4], data[3]);
- 				mcp->rxbuf_idx = mcp->rxbuf_idx + data[3];
--- 
-2.48.1
+Another reason could be those extra inlined warning checks in:
+-----------------------------------------------------
+$ git grep -e hung_task_set_blocker -e hung_task_clear_blocker kernel/
+kernel/locking/mutex.c: hung_task_set_blocker(lock, BLOCKER_TYPE_MUTEX);
+kernel/locking/mutex.c: hung_task_clear_blocker();
+kernel/locking/rwsem.c:         hung_task_set_blocker(sem, 
+BLOCKER_TYPE_RWSEM_READER);
+kernel/locking/rwsem.c:         hung_task_clear_blocker();
+kernel/locking/rwsem.c:         hung_task_set_blocker(sem, 
+BLOCKER_TYPE_RWSEM_WRITER);
+kernel/locking/rwsem.c:         hung_task_clear_blocker();
+kernel/locking/semaphore.c:     hung_task_set_blocker(sem, 
+BLOCKER_TYPE_SEM);
+kernel/locking/semaphore.c:     hung_task_clear_blocker();
+-----------------------------------------------------
 
+
+> Do you know what was the impact on total kernel size?
+
+As expected, kernel code size is smaller with the static inlined warn 
+checks removed:
+-----------------------------------------------------
+$ size vmlinux-m68k-6.16-fix1 vmlinux-m68k-6.16-fix2
+    text	   data	    bss	    dec	    hex	filename
+3088520	 953532	  84224	4126276	 3ef644	vmlinux-m68k-6.16-fix1  [1]
+3088730	 953564	  84192	4126486	 3ef716	vmlinux-m68k-6.16-fix2  [2]
+-----------------------------------------------------
+
+But could aligning of structs have caused 32 bytes moving from BSS to 
+DATA section?
+
+
+	- Eero
+
+PS. I profiled these 3 kernels on emulated Falcon. According to (Hatari) 
+profiler, main difference in the kernel with the warnings removed, is it 
+doing less than half of the calls to  NCR5380_read() / 
+atari_scsi_reg_read(), compared to the other 2 versions.
+
+These additional 2x calls in the other two versions, seem to mostly come 
+through chain originating from process_scheduled_works(), 
+NCR5380_poll_politely*() functions and bus probing.
+
+After quick look at the WARN_ON_ONCE()s and SCSI code, I have no idea 
+how having those checks being inlined to locking functions, or not, 
+would cause a difference like that.  I've tried patching & building 
+kernels again, and repeating profiling, but result is same.
+
+While Hatari call (graph) tracking might have some issue (due to kernel 
+stack return address manipulation), I don't see how there could be a 
+problem with the profiler instruction counts.  Kernel code at given 
+address does not change during boot in monolithic kernel, (emulator) 
+profiler tracks _every_ executed instruction/address, and it's clearly 
+correct function:
+------------------------------------
+# disassembly with profile data: <instructions percentage>% (<sum of 
+instructions>, <sum of cycles>, <sum of i-cache misses>, <sum of d-cache 
+hits>)
+...
+atari_scsi_falcon_reg_read:
+$001dd826  link.w    a6,#$0      0.43% (414942, 1578432, 44701, 0)
+$001dd82a  move.w    sr,d1       0.43% (414942, 224, 8, 0)
+$001dd82c  ori.w     #$700,sr    0.43% (414942, 414368, 44705, 0)
+$001dd830  move.l    $8(a6),d0   0.43% (414942, 357922, 44705, 414911)
+$001dd834  addi.l    #$88,d0     0.43% (414942, 1014804, 133917, 0)
+$001dd83a  move.w    d0,$8606.w  0.43% (414942, 3618352, 89169, 0)
+$001dd83e  move.w    $8604.w,d0  0.43% (414942, 3620646, 89162, 0)
+$001dd842  move.w    d1,sr       0.43% (414942, 2148, 142, 0)
+$001dd844  unlk      a6          0.43% (414942, 436, 0, 414893)
+$001dd846  rts                   0.43% (414942, 1073934, 134123, 414942)
+atari_scsi_falcon_reg_write:
+$001dd848  link.w    a6,#$0      0.00% (81, 484, 29, 0)
+$001dd84c  move.l    $c(a6),d0   0.00% (81, 326, 29, 73)
+...
+------------------------------------
+
+Maybe those WARN_ON_ONCE() checks just happen to slow down something 
+marginally so that things get interrupted & re-started more for the SCSI 
+code?
+
+PPS. emulated machine has no SCSI drives, only one IDE drive (with 4MB 
+Busybox partition):
+----------------------------------------------------
+scsi host0: Atari native SCSI, irq 15, io_port 0x0, base 0x0, can_queue 
+1, cmd_per_lun 2, sg_tablesize 1, this_id 7, flags { }
+atari-falcon-ide atari-falcon-ide: Atari Falcon and Q40/Q60 PATA controller
+scsi host1: pata_falcon
+ata1: PATA max PIO4 cmd fff00000 ctl fff00038 data fff00000 no IRQ, 
+using PIO polling
+...
+ata1: found unknown device (class 0)
+ata1.00: ATA-7: Hatari  IDE disk 4M, 1.0, max UDMA/100
+ata1.00: 8192 sectors, multi 16: LBA48
+ata1.00: configured for PIO
+...
+scsi 1:0:0:0: Direct-Access     ATA      Hatari  IDE disk 1.0  PQ: 0 ANSI: 5
+sd 1:0:0:0: [sda] 8192 512-byte logical blocks: (4.19 MB/4.00 MiB)
+sd 1:0:0:0: [sda] Write Protect is off
+sd 1:0:0:0: [sda] Mode Sense: 00 3a 00 00
+sd 1:0:0:0: [sda] Write cache: disabled, read cache: enabled, doesn't 
+support DPO or FUA
+sd 1:0:0:0: [sda] Preferred minimum I/O size 512 bytes
+sd 1:0:0:0: [sda] Attached SCSI disk
+VFS: Mounted root (ext2 filesystem) readonly on device 8:0.
+---------------------------------------------------
 
