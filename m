@@ -1,122 +1,159 @@
-Return-Path: <stable+bounces-176864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E1B2B3E698
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 16:04:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB309B3E6BC
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 16:11:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 116891890E96
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 14:05:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C42B916D9CA
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 14:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F4A335BB7;
-	Mon,  1 Sep 2025 14:04:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="KqyxXN49"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37EC2EF643;
+	Mon,  1 Sep 2025 14:11:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D620B2F0C6A;
-	Mon,  1 Sep 2025 14:04:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DBF2566DD
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 14:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756735491; cv=none; b=clqP2wSdvMJeXsWCA1lpdbcTRoVRJ5sC5EZ99IePmF+qcCfWe2GbiXxWg7S2pLy9JF3923n95MYuTIXXLRYIx3OSZHx1+LNwG47cm/udkAw38y307CH6SxlDDmjNjuO4IP3OX/TyXhoOw4+8DQsjAQfdfxKlUVXtprDM1L7Yz6E=
+	t=1756735889; cv=none; b=PTVwXMcOQ3UpoopP1LBtg1G8NwncubnkN28S+eNgwjQ41zDfm2MD0vf+yfhY4EeuGfnE3KwAxYlAJEuT15S9VA+CYpoZZ7TlVyWO7QSbKsEfAYmRXmKp1jkAG/Qt5ABeEGWRAVOKncMdHp38rwVE/hoZssXD4UBQn/wDhLXlZGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756735491; c=relaxed/simple;
-	bh=MBAxppJ4Yxipfgrq9hINNhoETtapRmUwYX9DHjy9cNs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rn9xtc1TRlq1XQgjVFYnnpziZhHlnmyNBAJpNcUzMLkcmUzo/sfcJ/7lRudTdahwoZQamjbvWIt5qQ0oc/AxYRtaCl+ZPvGea/0XfgDfZsORwy+7QrLBMY+eO9sWL45TdLwY7nvBxmTTdarXtDLud7Z/eIwSMuNM6mpn1mMkhu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=KqyxXN49; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 66DF340E01A3;
-	Mon,  1 Sep 2025 14:04:45 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id DAawho8N4MkJ; Mon,  1 Sep 2025 14:04:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1756735482; bh=9OkTfI5wEVdDhw+V3HGr4K3GrOFekJwQhvaU0g8yFRo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KqyxXN49ErtrMYQF9qPuCeTxGSzJHQgewRH6zhEnjZjmmVYPCcAns4N0UMe25WYCf
-	 NxwAUAh8iD2P0mCb8cv4X2oKQuGKkBlXy2eH/oUKR5/Gi3gc2qiG1TqBkrpBZcKCeP
-	 3/f1BxLXzqjCqu92+SrC8J8M/HUgBm9sEnQzYKGmGn8rO5MG+QYXtu9+WJ+eX2zbEu
-	 QHSY9GreTEF/5z31RHxeblndGIeNVQ3nloJQkcxLpsyadt3ntu2t25ANubzNcSlRVB
-	 6ScwRTvqlkUQohVTFqtWFgsti848JcphihZiuRdKF4Ub3cLelMZNwv9Pz3a2Gvag2d
-	 ncRnEEszasDOTMJcw9575YprL2UvrHse1wEEyoCB1bQBoJI3GUY4EwtJyAfT4q18sa
-	 A51pFNn11DSwD0L8Eo9ipIxmUUFAN/slq4UceHwbkvwK8PTZQyL156uzvAmH66gC8c
-	 SaWDO4jmXkCmF1cMHM65Ihb/I9Bh4107f2ztiklE0lNfznWodoSyVUMH/gHzMmeZQV
-	 B4QMpi2QJdpAbECPWZbuNIToWiUQuxViXJcPy+84ctXb/PXMC9/Gc9pRAbpYifo8kr
-	 UXlkSPl71iWc8WMbU07gCznpmNZBbu//+fy1lTilo0Cd1GEHbR0HCNCDjihsMGUwAN
-	 O5jEdHh8fifoUbyr4dhf78Uo=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	s=arc-20240116; t=1756735889; c=relaxed/simple;
+	bh=JxjbOSKiea0RyHNQhTiW/tpNHvI/zKSczFt824xsAgg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kUbfvZGDb5MftHwOc7U0dCb/AWKeBWdxgzXePivU7/Cn8df4D0vNydqFZtD7B23ZaKqqdujohWOr+gsMbDHWkJPYhLQgRomKDk1QBJbCxuXHslIDi4UTwN1Imhv8Ffxt4Y60XMeRh9n+WVFWMDy3dEwtoT3rtowcs/ePqQ72ddw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+Received: from pomiot (c144-154.icpnet.pl [85.221.144.154])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id B1F7440E01A2;
-	Mon,  1 Sep 2025 14:04:19 +0000 (UTC)
-Date: Mon, 1 Sep 2025 16:04:18 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org,
-	Naveen rao <naveen.rao@amd.com>, Sairaj Kodilkar <sarunkod@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Xin Li (Intel)" <xin@zytor.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Babu Moger <babu.moger@amd.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Naveen N Rao <naveen@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v4 2/4] x86/cpu/topology: Always try
- cpu_parse_topology_ext() on AMD/Hygon
-Message-ID: <20250901140418.GDaLWn4iNqlpgw75_y@fat_crate.local>
-References: <20250825075732.10694-1-kprateek.nayak@amd.com>
- <20250825075732.10694-3-kprateek.nayak@amd.com>
- <20250830171921.GAaLMymVpsFhjWtylo@fat_crate.local>
- <939c23b3-2a43-4083-985c-ab0b16a3c452@amd.com>
+	(Authenticated sender: mgorny)
+	by smtp.gentoo.org (Postfix) with ESMTPSA id 4BB50340F29;
+	Mon, 01 Sep 2025 14:11:26 +0000 (UTC)
+From: =?UTF-8?q?Micha=C5=82=20G=C3=B3rny?= <mgorny@gentoo.org>
+To: stable@vger.kernel.org
+Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Paul Olaru <paul.olaru@oss.nxp.com>,
+	Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
+	Rander Wang <rander.wang@intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Micha=C5=82=20G=C3=B3rny?= <mgorny@gentoo.org>
+Subject: [PATCH v2 linux-5.10.y 1/5] ASoC: Intel: bxt_da7219_max98357a: shrink platform_id below 20 characters
+Date: Mon,  1 Sep 2025 16:10:54 +0200
+Message-ID: <20250901141117.96236-1-mgorny@gentoo.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025090101-exert-deceased-3071@gregkh>
+References: <2025090101-exert-deceased-3071@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <939c23b3-2a43-4083-985c-ab0b16a3c452@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 01, 2025 at 09:51:53AM +0530, K Prateek Nayak wrote:
-> Ack! Does "has_xtopology" sound good or should we go for something more
-> explicit like "has_xtopology_0x26_0xb"?
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-has_xtopology with a comment above it to explicitly state what it means,
-sounds good.
+commit 24e46fb811e991f56d5694b10ae7ceb8d2b8c846 upstream.
 
-> Patch 3 will get rid of that "has_topoext" argument in parse_8000_001e()
-> entirely so I'll rename the local variable here and use the subsequent
-> cleanup for parse_8000_001e().
+Sparse throwns the following warnings:
 
-Ok.
+sound/soc/intel/boards/bxt_da7219_max98357a.c:843:19: error: too long
+initializer-string for array of char(no space for nul char)
 
-So pls send this one now so that I can queue it as an urgent fix and then the
-cleanups can go ontop later.
+sound/soc/intel/boards/bxt_da7219_max98357a.c:844:19: error: too long
+initializer-string for array of char(no space for nul char)
 
-Thx.
+sound/soc/intel/boards/bxt_da7219_max98357a.c:845:19: error: too long
+initializer-string for array of char(no space for nul char)
 
--- 
-Regards/Gruss,
-    Boris.
+Fix by using the 'mx' acronyn for Maxim
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Paul Olaru <paul.olaru@oss.nxp.com>
+Reviewed-by: Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>
+Reviewed-by: Rander Wang <rander.wang@intel.com>
+Link: https://lore.kernel.org/r/20210511213707.32958-5-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Michał Górny <mgorny@gentoo.org>
+---
+ sound/soc/intel/boards/bxt_da7219_max98357a.c     | 12 ++++++------
+ sound/soc/intel/common/soc-acpi-intel-bxt-match.c |  2 +-
+ sound/soc/intel/common/soc-acpi-intel-cml-match.c |  2 +-
+ sound/soc/intel/common/soc-acpi-intel-glk-match.c |  2 +-
+ 4 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/sound/soc/intel/boards/bxt_da7219_max98357a.c b/sound/soc/intel/boards/bxt_da7219_max98357a.c
+index 1a24c44db6dd..85738fd20b22 100644
+--- a/sound/soc/intel/boards/bxt_da7219_max98357a.c
++++ b/sound/soc/intel/boards/bxt_da7219_max98357a.c
+@@ -840,9 +840,9 @@ static int broxton_audio_probe(struct platform_device *pdev)
+ }
+ 
+ static const struct platform_device_id bxt_board_ids[] = {
+-	{ .name = "bxt_da7219_max98357a" },
+-	{ .name = "glk_da7219_max98357a" },
+-	{ .name = "cml_da7219_max98357a" },
++	{ .name = "bxt_da7219_mx98357a" },
++	{ .name = "glk_da7219_mx98357a" },
++	{ .name = "cml_da7219_mx98357a" },
+ 	{ }
+ };
+ 
+@@ -866,6 +866,6 @@ MODULE_AUTHOR("Naveen Manohar <naveen.m@intel.com>");
+ MODULE_AUTHOR("Mac Chiang <mac.chiang@intel.com>");
+ MODULE_AUTHOR("Brent Lu <brent.lu@intel.com>");
+ MODULE_LICENSE("GPL v2");
+-MODULE_ALIAS("platform:bxt_da7219_max98357a");
+-MODULE_ALIAS("platform:glk_da7219_max98357a");
+-MODULE_ALIAS("platform:cml_da7219_max98357a");
++MODULE_ALIAS("platform:bxt_da7219_mx98357a");
++MODULE_ALIAS("platform:glk_da7219_mx98357a");
++MODULE_ALIAS("platform:cml_da7219_mx98357a");
+diff --git a/sound/soc/intel/common/soc-acpi-intel-bxt-match.c b/sound/soc/intel/common/soc-acpi-intel-bxt-match.c
+index 32f77e29c2ff..d467663f6757 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-bxt-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-bxt-match.c
+@@ -56,7 +56,7 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_bxt_machines[] = {
+ 	},
+ 	{
+ 		.id = "DLGS7219",
+-		.drv_name = "bxt_da7219_max98357a",
++		.drv_name = "bxt_da7219_mx98357a",
+ 		.fw_filename = "intel/dsp_fw_bxtn.bin",
+ 		.machine_quirk = snd_soc_acpi_codec_list,
+ 		.quirk_data = &bxt_codecs,
+diff --git a/sound/soc/intel/common/soc-acpi-intel-cml-match.c b/sound/soc/intel/common/soc-acpi-intel-cml-match.c
+index 9b85811ffd51..43bba5670ab1 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-cml-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-cml-match.c
+@@ -54,7 +54,7 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_cml_machines[] = {
+ 	},
+ 	{
+ 		.id = "DLGS7219",
+-		.drv_name = "cml_da7219_max98357a",
++		.drv_name = "cml_da7219_mx98357a",
+ 		.machine_quirk = snd_soc_acpi_codec_list,
+ 		.quirk_data = &max98357a_spk_codecs,
+ 		.sof_fw_filename = "sof-cml.ri",
+diff --git a/sound/soc/intel/common/soc-acpi-intel-glk-match.c b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
+index 26cb3b16cdd3..ac8f77d0afa9 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-glk-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
+@@ -24,7 +24,7 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_glk_machines[] = {
+ 	},
+ 	{
+ 		.id = "DLGS7219",
+-		.drv_name = "glk_da7219_max98357a",
++		.drv_name = "glk_da7219_mx98357a",
+ 		.fw_filename = "intel/dsp_fw_glk.bin",
+ 		.machine_quirk = snd_soc_acpi_codec_list,
+ 		.quirk_data = &glk_codecs,
 
