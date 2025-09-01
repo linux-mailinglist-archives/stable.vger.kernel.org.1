@@ -1,106 +1,122 @@
-Return-Path: <stable+bounces-176882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6610B3EB07
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 17:40:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B433B3EB44
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 17:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB35F16E8B5
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 15:36:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACD7F3BC3C5
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 15:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8AC2D595C;
-	Mon,  1 Sep 2025 15:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A44B2D5936;
+	Mon,  1 Sep 2025 15:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XhCEvYmo"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="RzHtRXfB"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.74.81.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95452D5942
-	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 15:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22E332F748
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 15:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.74.81.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756740810; cv=none; b=S5TKJY3MFKGfxzoZUoXOuv11Dwgb5vEZt4oullNW5Er/OEK/s6lXG1dxueExfK+UA2+iXe7wL0Y+AZHVobN9CjAjcxy55KKZ6oDM2A3bJxKagY9n5qA0OEh3XvPYPVhsJ6YmOAWVc3bX0HQ8gWvtcfJC9DVh3u7BBpTyUy1uiU0=
+	t=1756740981; cv=none; b=JOciMo6d9zJYZ5mA9fothXBcJdBpFLfstmZTXcgqwJQdjoxfp31mke24L3g9YvjFxzLCC0fL7A8ArZ+kNn5LSbr8QYhbdSrR2p3fpKqv4pEiJR1x+nWDDzmP1n0NgunyHMfsscNdxVpfnspfaMo7LnngNyxjnwDpv5Lgo4038yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756740810; c=relaxed/simple;
-	bh=HwfE37ILkpJLGlX5x9Akah5htBxTQ4MLFW4gwTbjKCs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DrJXwoIeH2qRFShqQ8jH9BwWNBB6it+VxBtI4S5PCrTJbrX8TzFmBWSeJDnk6y9zHJb1lOLn7LEgrDtF0tLeki0KnDsjGRZ3aa73ddeWxM6aEt2jS204ZbJepiRHitwX1PaWCTGjYAkj5bs2Db3gBKfmVCvnKuC+x3Bmk3kMIT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XhCEvYmo; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756740808;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TrgTQsbjRK4plaVS2IeLRNEJop7nYsHFeJcp7M6qYU0=;
-	b=XhCEvYmoXObUl424OemQ4KbjRap2LrHve9+hiwqa+PNRLWyOmUEvOEwVZhdyQs06rRp365
-	SDnTbIAFQM/HIti91VMz4MKnFgJGrUE7vbRsIKFIEl6peunLTpjVEsEg5UFkDHfpbSs/Dj
-	Mmdr+rriuA/xTXSpBNHkutd/ENiaum0=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-382-at_GCWa8O_q74nhYssOPFg-1; Mon,
- 01 Sep 2025 11:33:23 -0400
-X-MC-Unique: at_GCWa8O_q74nhYssOPFg-1
-X-Mimecast-MFC-AGG-ID: at_GCWa8O_q74nhYssOPFg_1756740801
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8B774195609F;
-	Mon,  1 Sep 2025 15:33:21 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.127])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5CE9D180044F;
-	Mon,  1 Sep 2025 15:33:20 +0000 (UTC)
-Date: Mon, 1 Sep 2025 23:33:15 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/vmalloc, mm/kasan: respect gfp mask in
- kasan_populate_vmalloc()
-Message-ID: <aLW8u1Lvlcp5Y3tc@MiWiFi-R3L-srv>
-References: <20250831121058.92971-1-urezki@gmail.com>
- <aLVyia16eyoYftAw@MiWiFi-R3L-srv>
- <aLV0JrSPfitu1jFV@pc638.lan>
+	s=arc-20240116; t=1756740981; c=relaxed/simple;
+	bh=9JwtvSG2NelMsNKd3xmz5TOExyyTYOB82C2jYI47TG4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cnjuYTXR0+0JXSYp/EH3oioykVVM/eXtbIfnUan7viMVJIzG8XPmf2myZ9r618s0TLmYXk3YVjLuxZSHr9HRPLc7M6Vq11eG/lUiMy0D+YypNXgAqe72UaW9js8OPfXLTLSuglh38gtoBzVBAWSmyn/UrXII2jzVkuoj7lqKh/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=RzHtRXfB; arc=none smtp.client-ip=3.74.81.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1756740979; x=1788276979;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=9JwtvSG2NelMsNKd3xmz5TOExyyTYOB82C2jYI47TG4=;
+  b=RzHtRXfB9p6oQAvUC1u6CSvcNYCWuSV3g+m5Rcb0aHlMsEEvLW4HoMTj
+   UVwZKJADf3aJbDZPSHOt+FaSSUwLCl88CzSTHP91fOj/eH3dx5LqTJAsq
+   nVRu4e6NC4AJs2+nLtglhRGa5bdFWpBIKq7QEqQAzEvoEywl6XehPUbh9
+   HC8iFLt8sHiXRQ6g738JDpco8Z5+gbUBIIS0wgZcMBl1vfqKndvp5WFAZ
+   7Rh7hJTqqZk/hSKMbxxqcXEAyGFpGH2Gj0/K/QidTENsAYQHAgl4Yiq3/
+   VVuB4ThRnmcxmoLmIw8NyXhGqTUxQaEJ6mGdPjTQA2MIK4GDReaMujrDb
+   w==;
+X-CSE-ConnectionGUID: YIjBGaYOQ2qSYJLPWnIcGw==
+X-CSE-MsgGUID: rHYS6hpsSwmM3vRFuPSAGQ==
+X-IronPort-AV: E=Sophos;i="6.18,214,1751241600"; 
+   d="scan'208";a="1472442"
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 15:36:08 +0000
+Received: from EX19MTAEUB001.ant.amazon.com [54.240.197.234:21416]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.36.37:2525] with esmtp (Farcaster)
+ id 6e917357-1e1d-4ab2-a9f1-168f45e2cf5e; Mon, 1 Sep 2025 15:36:08 +0000 (UTC)
+X-Farcaster-Flow-ID: 6e917357-1e1d-4ab2-a9f1-168f45e2cf5e
+Received: from EX19D002EUC004.ant.amazon.com (10.252.51.230) by
+ EX19MTAEUB001.ant.amazon.com (10.252.51.28) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.17;
+ Mon, 1 Sep 2025 15:36:06 +0000
+Received: from dev-dsk-nmanthey-1a-b3c7e931.eu-west-1.amazon.com
+ (172.19.120.2) by EX19D002EUC004.ant.amazon.com (10.252.51.230) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Mon, 1 Sep 2025
+ 15:36:05 +0000
+From: Norbert Manthey <nmanthey@amazon.de>
+To: <stable@vger.kernel.org>
+CC: Norbert Manthey <nmanthey@amazon.de>
+Subject: [PATCH 6.1.y 0/1] Backporting patches with git-llm-pick
+Date: Mon, 1 Sep 2025 15:35:58 +0000
+Message-ID: <20250901153559.14799-1-nmanthey@amazon.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2025011112-racing-handbrake-a317@gregkh>
+References: <2025011112-racing-handbrake-a317@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLV0JrSPfitu1jFV@pc638.lan>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-ClientProxiedBy: EX19D041UWB002.ant.amazon.com (10.13.139.179) To
+ EX19D002EUC004.ant.amazon.com (10.252.51.230)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On 09/01/25 at 12:23pm, Uladzislau Rezki wrote:
-> On Mon, Sep 01, 2025 at 06:16:41PM +0800, Baoquan He wrote:
-> > Hi Uladzislau,
-> > 
-> > On 08/31/25 at 02:10pm, Uladzislau Rezki (Sony) wrote:
-> > > kasan_populate_vmalloc() and its helpers ignore the caller's gfp_mask
-> > > and always allocate memory using the hardcoded GFP_KERNEL flag. This
-> > > makes them inconsistent with vmalloc(), which was recently extended to
-> > > support GFP_NOFS and GFP_NOIO allocations.
-> > 
-> > Is this patch on top of your patchset "[PATCH 0/8] __vmalloc() and no-block
-> > support"? Or it is a replacement of "[PATCH 5/8] mm/kasan, mm/vmalloc: Respect
-> > GFP flags in kasan_populate_vmalloc()" in the patchset?
-> > 
-> > I may not get their relationship clearly.
-> > 
-> It is out of series which i posted to support no-block for vmalloc. 
-> I will base a new version based on this patch because it is rather
-> a fix.
-> 
-> It is to address and complete GFP_NOFS/GFP_NOIO flags for vmalloc.
-
-I got it now, thanks a lot.
+RGVhciBhbGwsCgp3ZSBsb29rZWQgaW50byBpbXByb3ZpbmcgY29tbWl0IGJhY2twb3J0aW5nIHdv
+cmtmbG93cy4gVGhpcyBzcGVjaWZpYyBjb21taXQgaW4KdGhpcyBzZXJpZXMgY2F1Z2h0IG91ciBh
+dHRlbnRpb24sIGFzIGl0IHN0YXRlcyB0aGF0IGJhY2twb3J0aW5nIHdpbGwgbm90IGJlCnRyaXZp
+YWwuIFRoZSBjb21taXQgbWVzc2FnZSBoYXMgdGhpcyBwYXJ0OiAKCkJhY2twb3J0IGhpbnQ6IHRo
+aXMgcGF0Y2ggd2lsbCBoYXZlIGEgdHJpdmlhbCBjb25mbGljdCBhcHBseWluZyB0bwp2Ni42Lnks
+IGFuZCBvdGhlciB0cml2aWFsIGNvbmZsaWN0cyBhcHBseWluZyB0byBzdGFibGUga2VybmVscyA8
+IHY2LjYuCgpXZSB3YW50IHRvIGF1dG9tYXRlIGJhY2twb3J0aW5nIGNvbW1pdHMgd2l0aCBhIHNp
+bWlsYXIgcHJvcGVydHkuIFRoZXJlZm9yZSwgd2UKYnVpbGQgYSB0b29sIGdpdC1sbG0tcGljayB0
+aGF0IHNpbXBsaWZpZXMgdGhlIGJhY2twb3J0aW5nIGNvbW1pdC4gQWZ0ZXIKY2hlcnJ5LXBpY2tp
+bmcsIHdlIHRyeSB0byBhdXRvbWF0aWNhbGx5IGRldGVjdCBkZXBlbmRlbmN5LWNvbW1pdHMuIElu
+IGNhc2Ugb2YKZmFpbHVyZSwgd2UgdGhlbiB0cnkgdG8gdXNlIHRoZSBwYXRjaCB0b29sLiBJZiB0
+aGlzIHByb2Nlc3MgZmFpbHMsIHdlIHRoZW4gdGFrZQp0aGUgcmVqZWN0ZWQgcGF0Y2ggZmlsZXMs
+IGFuZCBmZWVkIHRoZWlyIGNvbnRlbnQgd2l0aCBvdGhlciBjb250ZXh0IGFuZCBhIHRhc2sKZGVz
+Y3JpcHRpb24gdG8gYmFja3BvcnQgdG8gYW4gTExNLiBUaGUgcmVzdWx0aW5nIGNvZGUgbW9kaWZp
+Y2F0aW9uIGlzIHRoZW4KYXBwbGllZC4gSW4gY2FzZSB2YWxpZGF0aW9uIGlzIHBhc3NlZCwgYSBj
+b21taXQgaXMgY3JlYXRlZC4gVGhlIGNvbW1pdCBtZXNzYWdlCmlzIGFsd2F5cyBleHRlbmRlZCBi
+eSBhIGRlc2NyaXB0aW9uIG9mIHRoZSBhZGFwdGVkIGNvZGUgY2hhbmdlLCBhbmQgd2l0aCB3aGlj
+aAp0ZWNobmlxdWUgYSBjb21taXQgd2FzIGFwcGxpZWQuCgpXZSBtYWRlIHRoZSB0b29sIGF2YWls
+YWJsZSBvbiBnaXRodWI6IGh0dHBzOi8vZ2l0aHViLmNvbS9hd3NsYWJzL0dpdF9sbG1fcGljay8K
+V2UgY3VycmVudGx5IHVzZSBMTE1zIHZpYSB0aGUgQVdTIEJlZHJvY2sgc2VydmljZSwgYW5kIGRl
+ZmF1bHQgdG8gdGhlIE5vdmEgUHJvCm1vZGVsLiBUaGUgcGF0Y2ggaW4gdGhpcyBzZXJpZXMgdXNl
+cyB0aGUgdmFuaWxsYSB2ZXJzaW9uIG9mIHRoZSB0b29sJ3MgY3VycmVudApvdXRwdXQgd2hlbiBy
+dW5uaW5nIGdpdC1sbG0tcGljayBpbiBpdHMgdmlydHVhbCB0ZXN0IGVudmlyb25tZW50OgoKU0tJ
+UF9WRU5WX0dMUF9URVNUSU5HPTEgJEdMUF9QQVRIL3Rlc3QvdGVzdC1pbi12ZW52LnNoIFwKICAg
+IGdpdC1sbG0tcGljayBcCiAgICAtLXZhbGlkYXRpb24tY29tbWFuZCAkR0xQX1BBVEgvYmluL2ds
+cC1jb21waWxlLXRlc3QtY2hhbmdlZC1rZXJuZWwtZmlsZS5zaCBcCiAgICAteCBmNDdjODM0YTkx
+MzFhZTY0YmVlM2M0NjJmNGU2MTBjNjdiMGEwMDBmCgpCZXN0LApOb3JiZXJ0CgpBbWlyIEdvbGRz
+dGVpbiAoMSk6CiAgZnM6IHJlbGF4IGFzc2VydGlvbnMgb24gZmFpbHVyZSB0byBlbmNvZGUgZmls
+ZSBoYW5kbGVzCgogZnMvbm90aWZ5L2ZkaW5mby5jICAgICB8IDQgKy0tLQogZnMvb3ZlcmxheWZz
+L2NvcHlfdXAuYyB8IDUgKystLS0KIDIgZmlsZXMgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCA2
+IGRlbGV0aW9ucygtKQoKLS0gCjIuMzQuMQoKCgoKQW1hem9uIFdlYiBTZXJ2aWNlcyBEZXZlbG9w
+bWVudCBDZW50ZXIgR2VybWFueSBHbWJIClRhbWFyYS1EYW56LVN0ci4gMTMKMTAyNDMgQmVybGlu
+Ckdlc2NoYWVmdHNmdWVocnVuZzogQ2hyaXN0aWFuIFNjaGxhZWdlciwgSm9uYXRoYW4gV2Vpc3MK
+RWluZ2V0cmFnZW4gYW0gQW10c2dlcmljaHQgQ2hhcmxvdHRlbmJ1cmcgdW50ZXIgSFJCIDI1Nzc2
+NCBCClNpdHo6IEJlcmxpbgpVc3QtSUQ6IERFIDM2NSA1MzggNTk3Cg==
 
 
