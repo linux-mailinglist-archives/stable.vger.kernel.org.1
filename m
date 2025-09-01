@@ -1,228 +1,239 @@
-Return-Path: <stable+bounces-176799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A305B3DC9C
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:37:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0CC4B3DCB9
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:39:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E70A3189D85E
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:37:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DD004405CA
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2972F39AE;
-	Mon,  1 Sep 2025 08:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06830268C40;
+	Mon,  1 Sep 2025 08:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="WEgcQAeL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KXEj1oto"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF292FAC0E
-	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 08:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5BB2FC000
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 08:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756715799; cv=none; b=tujSkr4WYrAWHZeaIqUd+ZGAL6URknjCkWEOLCHL9R3IX0Gtu6nrxQOCcA8/jWQcwR9AZz/gQz7G50v1NOs0Dbmke8BgckIdetvlWvCOwCcR+C7K0ehJUh4ggsFixzAkjeNH3NxpIprxQblKeU9aCIS8sps9qvvonOxeWRBgWbM=
+	t=1756715934; cv=none; b=mEYsDWJq+vb8gdHcBCRrQiB7kkH0m18XAI+qS1V5jf83eVJmDtRbhiJAiIlXPXjgqPW29s1qaTbvaQFFKGfi7Z9R6ixtz98CeKDe3Il/eI6jb9K4uLYVCwJWRF/XuBDYoat+yBkJg3WhlfIgWXOUhZlvsYtbJI/S03Uralabk4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756715799; c=relaxed/simple;
-	bh=2Z/2giYlnJAYjuwfKEXgXaulO85yZSVyVfwZ6W4j1YI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hZidnjHyDU1XVvPxUkUlulyn6nGEHTQ8l75l4LIUFiBA8OZ8aJkWFqzkiFKQgtVLHAZ+sY2fa0U+rOUfv0X4T/w3LjEX5Q1XXIQ+ujSDsJGTVdTrN0NmKQ+eMX+5fgvbRck3A0QOJ3e2UiyeIAyvBVymeyszqdXsebI4Zml5+TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=WEgcQAeL; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=7i
-	W/cz5lhIUrPi/Ko95IMunrIbAditDEI3mzA2HhDKE=; b=WEgcQAeLoxlMqayz/C
-	vUWhoR3EN3gDK+Niqto9QvpIbXMkQOjhS/2rox+V0SlXZMbdmaOB/qgfwhei5T3z
-	Zg1VzkXSxpj+4MmSkByFybuCRiS3XRiGDiesa37BwEn5WPRnf/mrKLepj8ojI89u
-	AwHLG0pNVYsRT47DHcLC30P+Y=
-Received: from mi-work.mioffice.cn (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wBXpfEQW7Vok7z4Fg--.41681S4;
-	Mon, 01 Sep 2025 16:36:33 +0800 (CST)
-From: yangshiguang1011@163.com
-To: yangshiguang@xiaomi.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH v5] mm: slub: avoid wake up kswapd in set_track_prepare
-Date: Mon,  1 Sep 2025 16:36:31 +0800
-Message-ID: <20250901083631.90774-1-yangshiguang1011@163.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1756715934; c=relaxed/simple;
+	bh=TqKDFnPOp/7fEQ+wViYWqt2nYv1FEvS+zJM718HW4Ek=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HIjnsTPbsH7E/kKB5SJAlIKMDqhI//+ajpxWlWkjU3Oychl5Sh4TGxQMYkoDdloKLyEInrCqiaL+MUUpCFZAag3MYtTel1NgCYkmjTC3rV4k7+fBuA6E4vGZxXbAgw5c8AF4n6axHoHT6lkaBWJ3OwZh3Js3gVuJOxVHBoOg39A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KXEj1oto; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756715932; x=1788251932;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=TqKDFnPOp/7fEQ+wViYWqt2nYv1FEvS+zJM718HW4Ek=;
+  b=KXEj1otosiWHANL3kyqWiwHNhojLZSoL/23IyCWocB4n6sJRAb9MogRV
+   IsUPfNRrSh04JSGXt5R1bH3t9IQdCQAzQ8wtGG0b/24kQCqAMZHIyiZQs
+   8/+J83nCE423ZgSTMp9yu7cuqBMSnucNPs1fEN9p0V97k1F81YkB0JZXx
+   HU4HsXoJmZqOp3X+S5eGxFK9hpcqG+ncqv4iQHIF0ccPuJUp7ltMrXuXE
+   CC5J89NTsm6LpJWfdjTmbdvd99jePo9XbgL4wkDSzI3bVsZnnELaM78n9
+   7JzcjSY2sNceAgSWQ49jl73PVmc9jZzfKiEqkTxph9sKWdQtSrnoRypYx
+   Q==;
+X-CSE-ConnectionGUID: Qj9kMeu7SuOu+iwh9HkWzQ==
+X-CSE-MsgGUID: /VjV4AU1Rv6/BSC8V+5a+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11539"; a="58899195"
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="58899195"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 01:38:50 -0700
+X-CSE-ConnectionGUID: EdUDi1hkRnW3Rd1zqMW57Q==
+X-CSE-MsgGUID: YvULGWn1TKC4wyo7EvKvGQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="201910244"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO fedora) ([10.245.244.171])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 01:38:48 -0700
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	stable@vger.kernel.org,
+	Rodrigo vivi <rodrigo.vivi@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Subject: [PATCH v2 1/3] drm/xe: Attempt to bring bos back to VRAM after eviction
+Date: Mon,  1 Sep 2025 10:38:27 +0200
+Message-ID: <20250901083829.27341-2-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250901083829.27341-1-thomas.hellstrom@linux.intel.com>
+References: <20250901083829.27341-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBXpfEQW7Vok7z4Fg--.41681S4
-X-Coremail-Antispam: 1Uf129KBjvJXoW3Jr43XFWkKF1UCFWkWryUWrg_yoW7KFy5pF
-	W7WFy3JF48AF1jvFWDCa1Uur1SvrZ3CrW8CF43Wa4rua4Yvr48WFZrtFyjvFW5ArykuanF
-	k3W09Fnagw4jqaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Um0PhUUUUU=
-X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/xtbBMRG75Wi1Tx-TjAAGsq
 
-From: yangshiguang <yangshiguang@xiaomi.com>
+VRAM+TT bos that are evicted from VRAM to TT may remain in
+TT also after a revalidation following eviction or suspend.
 
-From: yangshiguang <yangshiguang@xiaomi.com>
+This manifests itself as applications becoming sluggish
+after buffer objects get evicted or after a resume from
+suspend or hibernation.
 
-set_track_prepare() can incur lock recursion.
-The issue is that it is called from hrtimer_start_range_ns
-holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
-CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
-and try to hold the per_cpu(hrtimer_bases)[n].lock.
+If the bo supports placement in both VRAM and TT, and
+we are on DGFX, mark the TT placement as fallback. This means
+that it is tried only after VRAM + eviction.
 
-Avoid deadlock caused by implicitly waking up kswapd by
-passing in allocation flags. And the slab caller context has
-preemption disabled, so __GFP_DIRECT_RECLAIM must not appear in gfp_flags.
+This flaw has probably been present since the xe module was
+upstreamed but use a Fixes: commit below where backporting is
+likely to be simple. For earlier versions we need to open-
+code the fallback algorithm in the driver.
 
-The oops looks something like:
+v2:
+- Remove check for dgfx. (Matthew Auld)
+- Update the xe_dma_buf kunit test for the new strategy (CI)
+- Allow dma-buf to pin in current placement (CI)
+- Make xe_bo_validate() for pinned bos a NOP.
 
-BUG: spinlock recursion on CPU#3, swapper/3/0
- lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
-Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
-Call trace:
-spin_bug+0x0
-_raw_spin_lock_irqsave+0x80
-hrtimer_try_to_cancel+0x94
-task_contending+0x10c
-enqueue_dl_entity+0x2a4
-dl_server_start+0x74
-enqueue_task_fair+0x568
-enqueue_task+0xac
-do_activate_task+0x14c
-ttwu_do_activate+0xcc
-try_to_wake_up+0x6c8
-default_wake_function+0x20
-autoremove_wake_function+0x1c
-__wake_up+0xac
-wakeup_kswapd+0x19c
-wake_all_kswapds+0x78
-__alloc_pages_slowpath+0x1ac
-__alloc_pages_noprof+0x298
-stack_depot_save_flags+0x6b0
-stack_depot_save+0x14
-set_track_prepare+0x5c
-___slab_alloc+0xccc
-__kmalloc_cache_noprof+0x470
-__set_page_owner+0x2bc
-post_alloc_hook[jt]+0x1b8
-prep_new_page+0x28
-get_page_from_freelist+0x1edc
-__alloc_pages_noprof+0x13c
-alloc_slab_page+0x244
-allocate_slab+0x7c
-___slab_alloc+0x8e8
-kmem_cache_alloc_noprof+0x450
-debug_objects_fill_pool+0x22c
-debug_object_activate+0x40
-enqueue_hrtimer[jt]+0xdc
-hrtimer_start_range_ns+0x5f8
-...
-
-Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
-Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
-Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5995
+Fixes: a78a8da51b36 ("drm/ttm: replace busy placement with flags v6")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: <stable@vger.kernel.org> # v6.9+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com> #v1
 ---
+ drivers/gpu/drm/xe/tests/xe_bo.c      |  2 +-
+ drivers/gpu/drm/xe/tests/xe_dma_buf.c | 10 +---------
+ drivers/gpu/drm/xe/xe_bo.c            | 16 ++++++++++++----
+ drivers/gpu/drm/xe/xe_bo.h            |  2 +-
+ drivers/gpu/drm/xe/xe_dma_buf.c       |  2 +-
+ 5 files changed, 16 insertions(+), 16 deletions(-)
 
-v1 -> v2:
-    propagate gfp flags to set_track_prepare()
-v2 -> v3:
-    Remove the gfp restriction in set_track_prepare()
-v3 -> v4:
-    Re-describe the comments in set_track_prepare.
-v4 -> v5:
-    Modify the patch commit.
-
-[1]https://lore.kernel.org/all/20250801065121.876793-1-yangshiguang1011@163.com/
-[2]https://lore.kernel.org/all/20250814111641.380629-2-yangshiguang1011@163.com/
-[3]https://lore.kernel.org/all/20250825121737.2535732-1-yangshiguang1011@163.com/
-[4]https://lore.kernel.org/all/20250830020946.1767573-1-yangshiguang1011@163.com/
----
- mm/slub.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 30003763d224..b0af51a5321b 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -962,19 +962,25 @@ static struct track *get_track(struct kmem_cache *s, void *object,
- }
- 
- #ifdef CONFIG_STACKDEPOT
--static noinline depot_stack_handle_t set_track_prepare(void)
-+static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
- {
- 	depot_stack_handle_t handle;
- 	unsigned long entries[TRACK_ADDRS_COUNT];
- 	unsigned int nr_entries;
-+	/*
-+	 * Preemption is disabled in ___slab_alloc() so we need to disallow
-+	 * blocking. The flags are further adjusted by gfp_nested_mask() in
-+	 * stack_depot itself.
-+	 */
-+	gfp_flags &= ~(__GFP_DIRECT_RECLAIM);
- 
- 	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
--	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
-+	handle = stack_depot_save(entries, nr_entries, gfp_flags);
- 
- 	return handle;
- }
- #else
--static inline depot_stack_handle_t set_track_prepare(void)
-+static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
- {
- 	return 0;
- }
-@@ -996,9 +1002,9 @@ static void set_track_update(struct kmem_cache *s, void *object,
- }
- 
- static __always_inline void set_track(struct kmem_cache *s, void *object,
--				      enum track_item alloc, unsigned long addr)
-+				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
- {
--	depot_stack_handle_t handle = set_track_prepare();
-+	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
- 
- 	set_track_update(s, object, alloc, addr, handle);
- }
-@@ -1921,9 +1927,9 @@ static inline bool free_debug_processing(struct kmem_cache *s,
- static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
- static inline int check_object(struct kmem_cache *s, struct slab *slab,
- 			void *object, u8 val) { return 1; }
--static inline depot_stack_handle_t set_track_prepare(void) { return 0; }
-+static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
- static inline void set_track(struct kmem_cache *s, void *object,
--			     enum track_item alloc, unsigned long addr) {}
-+			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
- static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
- 					struct slab *slab) {}
- static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
-@@ -3878,7 +3884,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- 			 * tracking info and return the object.
- 			 */
- 			if (s->flags & SLAB_STORE_USER)
--				set_track(s, freelist, TRACK_ALLOC, addr);
-+				set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
- 
- 			return freelist;
+diff --git a/drivers/gpu/drm/xe/tests/xe_bo.c b/drivers/gpu/drm/xe/tests/xe_bo.c
+index bb469096d072..7b40cc8be1c9 100644
+--- a/drivers/gpu/drm/xe/tests/xe_bo.c
++++ b/drivers/gpu/drm/xe/tests/xe_bo.c
+@@ -236,7 +236,7 @@ static int evict_test_run_tile(struct xe_device *xe, struct xe_tile *tile, struc
  		}
-@@ -3910,7 +3916,7 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- 			goto new_objects;
  
- 		if (s->flags & SLAB_STORE_USER)
--			set_track(s, freelist, TRACK_ALLOC, addr);
-+			set_track(s, freelist, TRACK_ALLOC, addr, gfpflags);
- 
- 		return freelist;
+ 		xe_bo_lock(external, false);
+-		err = xe_bo_pin_external(external);
++		err = xe_bo_pin_external(external, false);
+ 		xe_bo_unlock(external);
+ 		if (err) {
+ 			KUNIT_FAIL(test, "external bo pin err=%pe\n",
+diff --git a/drivers/gpu/drm/xe/tests/xe_dma_buf.c b/drivers/gpu/drm/xe/tests/xe_dma_buf.c
+index 3c5ad8cc65a0..5baeab6b6fb7 100644
+--- a/drivers/gpu/drm/xe/tests/xe_dma_buf.c
++++ b/drivers/gpu/drm/xe/tests/xe_dma_buf.c
+@@ -85,15 +85,7 @@ static void check_residency(struct kunit *test, struct xe_bo *exported,
+ 		return;
  	}
-@@ -4422,7 +4428,7 @@ static noinline void free_to_partial_list(
- 	depot_stack_handle_t handle = 0;
  
- 	if (s->flags & SLAB_STORE_USER)
--		handle = set_track_prepare();
-+		handle = set_track_prepare(__GFP_NOWARN);
+-	/*
+-	 * If on different devices, the exporter is kept in system  if
+-	 * possible, saving a migration step as the transfer is just
+-	 * likely as fast from system memory.
+-	 */
+-	if (params->mem_mask & XE_BO_FLAG_SYSTEM)
+-		KUNIT_EXPECT_TRUE(test, xe_bo_is_mem_type(exported, XE_PL_TT));
+-	else
+-		KUNIT_EXPECT_TRUE(test, xe_bo_is_mem_type(exported, mem_type));
++	KUNIT_EXPECT_TRUE(test, xe_bo_is_mem_type(exported, mem_type));
  
- 	spin_lock_irqsave(&n->list_lock, flags);
+ 	if (params->force_different_devices)
+ 		KUNIT_EXPECT_TRUE(test, xe_bo_is_mem_type(imported, XE_PL_TT));
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index 4faf15d5fa6d..870f43347281 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -188,6 +188,8 @@ static void try_add_system(struct xe_device *xe, struct xe_bo *bo,
  
+ 		bo->placements[*c] = (struct ttm_place) {
+ 			.mem_type = XE_PL_TT,
++			.flags = (bo_flags & XE_BO_FLAG_VRAM_MASK) ?
++			TTM_PL_FLAG_FALLBACK : 0,
+ 		};
+ 		*c += 1;
+ 	}
+@@ -2322,6 +2324,7 @@ uint64_t vram_region_gpu_offset(struct ttm_resource *res)
+ /**
+  * xe_bo_pin_external - pin an external BO
+  * @bo: buffer object to be pinned
++ * @in_place: Pin in current placement, don't attempt to migrate.
+  *
+  * Pin an external (not tied to a VM, can be exported via dma-buf / prime FD)
+  * BO. Unique call compared to xe_bo_pin as this function has it own set of
+@@ -2329,7 +2332,7 @@ uint64_t vram_region_gpu_offset(struct ttm_resource *res)
+  *
+  * Returns 0 for success, negative error code otherwise.
+  */
+-int xe_bo_pin_external(struct xe_bo *bo)
++int xe_bo_pin_external(struct xe_bo *bo, bool in_place)
+ {
+ 	struct xe_device *xe = xe_bo_device(bo);
+ 	int err;
+@@ -2338,9 +2341,11 @@ int xe_bo_pin_external(struct xe_bo *bo)
+ 	xe_assert(xe, xe_bo_is_user(bo));
+ 
+ 	if (!xe_bo_is_pinned(bo)) {
+-		err = xe_bo_validate(bo, NULL, false);
+-		if (err)
+-			return err;
++		if (!in_place) {
++			err = xe_bo_validate(bo, NULL, false);
++			if (err)
++				return err;
++		}
+ 
+ 		spin_lock(&xe->pinned.lock);
+ 		list_add_tail(&bo->pinned_link, &xe->pinned.late.external);
+@@ -2493,6 +2498,9 @@ int xe_bo_validate(struct xe_bo *bo, struct xe_vm *vm, bool allow_res_evict)
+ 	};
+ 	int ret;
+ 
++	if (xe_bo_is_pinned(bo))
++		return 0;
++
+ 	if (vm) {
+ 		lockdep_assert_held(&vm->lock);
+ 		xe_vm_assert_held(vm);
+diff --git a/drivers/gpu/drm/xe/xe_bo.h b/drivers/gpu/drm/xe/xe_bo.h
+index 8cce413b5235..cfb1ec266a6d 100644
+--- a/drivers/gpu/drm/xe/xe_bo.h
++++ b/drivers/gpu/drm/xe/xe_bo.h
+@@ -200,7 +200,7 @@ static inline void xe_bo_unlock_vm_held(struct xe_bo *bo)
+ 	}
+ }
+ 
+-int xe_bo_pin_external(struct xe_bo *bo);
++int xe_bo_pin_external(struct xe_bo *bo, bool in_place);
+ int xe_bo_pin(struct xe_bo *bo);
+ void xe_bo_unpin_external(struct xe_bo *bo);
+ void xe_bo_unpin(struct xe_bo *bo);
+diff --git a/drivers/gpu/drm/xe/xe_dma_buf.c b/drivers/gpu/drm/xe/xe_dma_buf.c
+index 346f857f3837..af64baf872ef 100644
+--- a/drivers/gpu/drm/xe/xe_dma_buf.c
++++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+@@ -72,7 +72,7 @@ static int xe_dma_buf_pin(struct dma_buf_attachment *attach)
+ 		return ret;
+ 	}
+ 
+-	ret = xe_bo_pin_external(bo);
++	ret = xe_bo_pin_external(bo, true);
+ 	xe_assert(xe, !ret);
+ 
+ 	return 0;
 -- 
-2.43.0
+2.50.1
 
 
