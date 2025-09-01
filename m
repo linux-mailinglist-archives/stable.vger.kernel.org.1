@@ -1,171 +1,167 @@
-Return-Path: <stable+bounces-176788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EE24B3DA26
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88E5AB3DB17
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 09:32:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 584B63B181B
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 06:45:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8269B3B2F6B
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 07:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6193525C82E;
-	Mon,  1 Sep 2025 06:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744FC26D4CA;
+	Mon,  1 Sep 2025 07:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pUWXj12y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gDIB7jxY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1340D18EB0;
-	Mon,  1 Sep 2025 06:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89DA26F2AE;
+	Mon,  1 Sep 2025 07:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756709099; cv=none; b=XnJGsuARCuTIkA5oeA6o9YSyTIOJo/8ogRBh0hc/vANCPBJliI6C8fA++rzRFl0OD6vj694+7kBf1KyKbdf/V2Fi8hIfnutjECTaniLVg7JY8GyYOUsw6wPubRJEVEdt3UCDq9kLZgIdCZ6oYuOp0r69+tl9aR+bmRnqEb6QybA=
+	t=1756711956; cv=none; b=OdFs5epGIenuIVoR/DjP07LywMnIje959WUfP4M1tcVcW78H2d/l+zFhlQoRfWY1422FUER0334ZLRTuKxThfjs/Jn7BUSxhBNf4IvTBm6sm2xpajKQvc5x/+f/1h8dMHsnlq08XKByr9kCwvkvFwVkiNBgsTQP4bVTmxoTlLiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756709099; c=relaxed/simple;
-	bh=v2eZIqPOo2OudPRqDX5kzJtAjfTXJAadp0/fdfmvLZA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X1ZfZseg5AD+M+lLhyVtpu3uOtXI9vy+CtwEMtY/uufJ8sFpNkH2hwmSaGigMLagf1Wh0Z/cfgPpl8rs7XHoIgC9DtuQyf8P2nayNqH6H5ObPGJOjEi/EWg7zbtnQXsqIAho6Ik4ET6E8KXHJtv3nI0+XzkgxniX6XhXZjQyXEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pUWXj12y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90986C4CEF0;
-	Mon,  1 Sep 2025 06:44:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756709098;
-	bh=v2eZIqPOo2OudPRqDX5kzJtAjfTXJAadp0/fdfmvLZA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pUWXj12y/46qUHn/Ji4NDqSOkiEAFPhAk/HA28xDSFlq608cUDldqgm0BqowQfybX
-	 TdqhHMeZjfv+8OP5DfS56YA6zEZDbBuGlWE9fpfDUaC6fJN2PvoRfUNaGy3QxE6zg/
-	 eS7exKNlmjIsKz0Qsox+fhdqhY49+ajcxrR1ZlQv6Z2orPxTxXcV5Yw/te2U0A6jLU
-	 TuZ/b1Q6UOb1fSOaD+72HuuRx2rAQElzhl2R2UW95EpMPrrP3ddKpl8F7ricUw3Psm
-	 52tNVEHJJrzmXIilswkxejmhP8NJJ7P3wHAmjAoqNChN2SKtlE4KKFU/QJO3YZ2V+H
-	 dMbsTxAQLAnhg==
-Date: Mon, 1 Sep 2025 12:14:51 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, 
-	bhelgaas@google.com, helgaas@kernel.org, kishon@kernel.org, vigneshr@ti.com, 
-	stable@vger.kernel.org, linux-pci@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, srk@ti.com
-Subject: Re: [PATCH v3] PCI: j721e: Fix programming sequence of "strap"
- settings
-Message-ID: <3wc3t6y5gzzspgfeklsqo3bupfp6gsfy6mls6t66hflcqlqsfk@cu26wv3sow4y>
-References: <20250829091707.2990211-1-s-vadapalli@ti.com>
- <oztilfun77apxtjxumx4tydkcd2gsalsak4m2rvsry2oooqjna@2yvcx6cnuemm>
- <b2fb9252-6bfc-45da-973a-31cdfcc86b3d@ti.com>
- <z3ubracmtlq23yicbrhqjgnzrfoqheffm6cvhfnawlvbu4cmmp@ddu2o7xhw5tz>
- <48e9d897-2cd3-48ef-b46a-635ae75f5ac6@ti.com>
+	s=arc-20240116; t=1756711956; c=relaxed/simple;
+	bh=Tib9W/CgGxKrTG7tutz+gnQpqUXs0++EMfobtgtr6bY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hIEwkwwPisU3cp0sFkh7n1y/cPZ5IhWEk77iYIFjnLpCrONJYrrmLBHb7Z1RLgtlj8ZGkqTpv2ZkQZRGoPotFyN+RsUG8VzEau8+1gEc5fQSbvO8u2mwU4XGASSHWPDUJYs0KwNr43ddUQWIi0LjdnU+YCEBt7r0bgnHuCIWCu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gDIB7jxY; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2487a60d649so49827455ad.2;
+        Mon, 01 Sep 2025 00:32:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756711954; x=1757316754; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6rOAxdmOETfgsAaqbaLTN5ale6TV6rPQAy9mKOuAnE8=;
+        b=gDIB7jxYWvaRBeJpLG1aU2K5TTeV3ik3qq8NYqoaH5xljJysTkHVB03JtwkmLmyalj
+         1F1cRoGkWem5zphLH9dsE05o/23jOnfQmLM818FfWI5tKn52LhyKScp9noaCK5QcY+V0
+         U14inozlUA0tMfBS6vVH9TNCWjeaA+QXJKwYPFkLjTyv0swlBdTgiPlOkfYgC4fVsT4E
+         yg5hL6iRiAvSQuZJpaxTbQfy031ASSaztp6I2oCX/TVVLgzPUf8skIx/7V68nVfJTjUq
+         BZ1azWoDE0l0dactydWtgNZ5bM9DSyk/kCUPoBrJTG12jSbdtcITHi6Vsk0Us9A0NUur
+         P84A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756711954; x=1757316754;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6rOAxdmOETfgsAaqbaLTN5ale6TV6rPQAy9mKOuAnE8=;
+        b=aChK0npyHXuxeCwd8bvL+biYmXvU/ko7r6sHckOMbHpeyz2ZISKAM/1VWlCjCfIhGD
+         o8yPQPMuyKqhww3zQjioDtV3hNrML6ovJ9ZQMs3RkO7FKWotVHakZyL62gzisuXLN25V
+         DydQ2v/f+0mmCP5Zk7shp/qnyFivmYSXSLXzulNGOp/2lFhwKeGf0TsL5oks/oBnaowk
+         fYfMlB2ONpl1P2ahFncCPNDHTqLVffY1+RlMMZpsAdHesrB8qVUoUCLV/o682FhT/UtG
+         AjN5Pjefoht3A4BAiuQbU2dfc9DHR0+YGlkJ+ka3F23RaF+JCPZx9kdIeA85LQFPsX1f
+         /w9A==
+X-Forwarded-Encrypted: i=1; AJvYcCU3XjsFu31aG0eVWJfO8RPTGPkZncKj7174YB3PdS8Exe0pPSDniImx6dzPGM9L9YJlPORhi244@vger.kernel.org, AJvYcCVH8EDjoRObU/PUrbfc/MDvB6vYVQFpDf42R25V3To93fensAEj4PEpNIsM8D5G7ifcaHtap+Mdqa/WjIY=@vger.kernel.org, AJvYcCWG5I9c1Q2AaCVFZq97NnD8GQwb8A0YgtTSAwpxvfQRNXQFvSpGrxphbteEmZbk1vOAJ4/bkHRF@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9vF/7siaFKzCdPweDsUsY5L8vrVyqQ55w4SUjswQNpImFeZ1x
+	3Rp02S17yAMlS4p7awkT2LIlxv1+kCW1S1xuQMt4gcRwHBovWgNS2XBW3CnPhezo0VE=
+X-Gm-Gg: ASbGncv19v2SyjAtbR8sYcx8gh/UhGrkeqXjq2OGU+DE5X/EJOPcsMlIICvA/GBFviZ
+	i2Y+nEfWyom+SyjtNgRJkRgeG78LRTd4CcTnQPFWILi0rCxDCAe1tTGtxLKha87yEL5byoEDJd5
+	JGAf+8VeIywmtDZLPFVfxhxcM0AazNFLwOoL1aKdIiUVJ+Sk188fSuYwYd2SNPJOvo0YHqwax4x
+	cPyy+/ki3Yac1ATLgqzn6U+pdVu/+BoJ96th2nUC3V/BwsFg4ymTExm30BVSqXvPdrTY7UA2CQk
+	b107HYqojf2fcac1k40SDPOiCHUXbbXO5lb/g1aBLSFN66pm8jGlEeFUP0+MfZaUWm4R3eYlh6N
+	xOUKOtohKpP5JnpxtLNqVtr5aC/NocZoHkL+BLlaDkrgml6qnZMBjBMbIAlnbr71om+RlmYo8ZO
+	0I6qDBrSHgCgcci6WUVVDILk3W+Wpb03/dB8gwY0mdBTSftw==
+X-Google-Smtp-Source: AGHT+IFkslgfwDMpPMAmqLBkJ/nBUu/MN7hOY4lUTgPiIxx0vtJ9uHgXIQjTess/VvF7BwLR1zVzhQ==
+X-Received: by 2002:a17:903:1a2e:b0:249:10a1:5332 with SMTP id d9443c01a7336-24944873f1fmr85728725ad.9.1756711954035;
+        Mon, 01 Sep 2025 00:32:34 -0700 (PDT)
+Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.116.239.33])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-24903704060sm95957675ad.20.2025.09.01.00.32.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Sep 2025 00:32:33 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2] net: dsa: mv88e6xxx: Fix fwnode reference leaks in mv88e6xxx_port_setup_leds
+Date: Mon,  1 Sep 2025 15:32:23 +0800
+Message-Id: <20250901073224.2273103-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.35.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <48e9d897-2cd3-48ef-b46a-635ae75f5ac6@ti.com>
 
-On Mon, Sep 01, 2025 at 11:51:33AM GMT, Siddharth Vadapalli wrote:
-> On Mon, Sep 01, 2025 at 11:18:23AM +0530, Manivannan Sadhasivam wrote:
-> > On Mon, Sep 01, 2025 at 10:27:51AM GMT, Siddharth Vadapalli wrote:
-> > > On Sun, Aug 31, 2025 at 06:15:13PM +0530, Manivannan Sadhasivam wrote:
-> > > 
-> > > Hello Mani,
-> > > 
-> > > > On Fri, Aug 29, 2025 at 02:46:28PM GMT, Siddharth Vadapalli wrote:
-> 
-> [...]
-> 
-> > > > > +	/*
-> > > > > +	 * The PCIe Controller's registers have different "reset-values"
-> > > > > +	 * depending on the "strap" settings programmed into the PCIEn_CTRL
-> > > > > +	 * register within the CTRL_MMR memory-mapped register space.
-> > > > > +	 * The registers latch onto a "reset-value" based on the "strap"
-> > > > > +	 * settings sampled after the PCIe Controller is powered on.
-> > > > > +	 * To ensure that the "reset-values" are sampled accurately, power
-> > > > > +	 * off the PCIe Controller before programming the "strap" settings
-> > > > > +	 * and power it on after that.
-> > > > > +	 */
-> > > > > +	ret = pm_runtime_put_sync(dev);
-> > > > > +	if (ret < 0) {
-> > > > > +		dev_err(dev, "Failed to power off PCIe Controller\n");
-> > > > > +		return ret;
-> > > > > +	}
-> > > > 
-> > > > How does the controller gets powered off after pm_runtime_put_sync() since you
-> > > > do not have runtime PM callbacks? I believe the parent is turning off the power
-> > > > domain?
-> > > 
-> > > By invoking 'pm_runtime_put_sync(dev)', the ref-count is being
-> > > decremented and it results in the device being powered off. I have
-> > > verified it by printing the power domain index within the functions for
-> > > powering off and powering on devices on the J7200 SoC. Logs:
-> > > 
-> > > 	root@j7200-evm:~# modprobe pci_j721e
-> > > 	[   25.231675] [Powering On]: 240
-> > > 	[   25.234848] j721e-pcie 2910000.pcie: host bridge /bus@100000/pcie@2910000 ranges:
-> > > 	[   25.242378] j721e-pcie 2910000.pcie:       IO 0x4100001000..0x4100100fff -> 0x0000001000
-> > > 	[   25.250496] j721e-pcie 2910000.pcie:      MEM 0x4100101000..0x41ffffffff -> 0x0000101000
-> > > 	[   25.258588] j721e-pcie 2910000.pcie:   IB MEM 0x0000000000..0xffffffffffff -> 0x0000000000
-> > > 	[   25.267098] [Powering Off]: 240
-> > > 	[   25.270318] [Powering On]: 240
-> > > 	[   25.273511] [Powering On]: 187
-> > > 	[   26.372361] j721e-pcie 2910000.pcie: PCI host bridge to bus 0000:00
-> > > 	[   26.378666] pci_bus 0000:00: root bus resource [bus 00-ff]
-> > > 	[   26.384156] pci_bus 0000:00: root bus resource [io  0x0000-0xfffff] (bus address [0x1000-0x100fff])
-> > > 	[   26.393197] pci_bus 0000:00: root bus resource [mem 0x4100101000-0x41ffffffff] (bus address [0x00101000-0xffffffff])
-> > > 	[   26.403728] pci 0000:00:00.0: [104c:b00f] type 01 class 0x060400 PCIe Root Port
-> > > 	[   26.411044] pci 0000:00:00.0: PCI bridge to [bus 00]
-> > > 	[   26.416009] pci 0000:00:00.0:   bridge window [io  0x0000-0x0fff]
-> > > 	[   26.422091] pci 0000:00:00.0:   bridge window [mem 0x00000000-0x000fffff]
-> > > 	[   26.428874] pci 0000:00:00.0:   bridge window [mem 0x00000000-0x000fffff 64bit pref]
-> > > 	[   26.436676] pci 0000:00:00.0: supports D1
-> > > 	[   26.440699] pci 0000:00:00.0: PME# supported from D0 D1 D3hot
-> > > 	[   26.448064] pci 0000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
-> > > 	[   26.456274] pci_bus 0000:01: busn_res: [bus 01-ff] end is updated to 01
-> > > 	[   26.462923] pci 0000:00:00.0: PCI bridge to [bus 01]
-> > > 	[   26.467933] pci_bus 0000:00: resource 4 [io  0x0000-0xfffff]
-> > > 	[   26.473595] pci_bus 0000:00: resource 5 [mem 0x4100101000-0x41ffffffff]
-> > > 	[   26.480337] pcieport 0000:00:00.0: of_irq_parse_pci: failed with rc=-22
-> > > 	[   26.487479] pcieport 0000:00:00.0: PME: Signaling with IRQ 701
-> > > 	[   26.493909] pcieport 0000:00:00.0: AER: enabled with IRQ 701
-> > > 
-> > > In the above logs, '240' is the Power Domain Index for the PCIe
-> > > Controller on J7200 SoC. It is powered on initially before the driver is
-> > > probed.
-> > 
-> > In that case, the driver should not call pm_runtime_get_sync() in its probe.
-> > What it should do is:
-> > 
-> > 	pm_runtime_set_active()
-> > 	pm_runtime_enable()
-> 
-> If I understand correctly, are you suggesting the following?
-> 
-> j721e_pcie_probe()
-> 	pm_runtime_set_active()
-> 	pm_runtime_enable()
-> 	ret = j721e_pcie_ctrl_init(pcie);
-> 		/*
-> 		 * PCIe Controller should be powered off here, but is there
-> 		 * a way to ensure that it has been powered off?
-> 		 */
-> 		=> Program the strap settings and return to
-> 		j721e_pcie_probe()
-> 	/* Power on the PCIe Controller now */
-> 	ret = pm_runtime_get_sync(dev);
+Fix multiple fwnode reference leaks:
 
-This pm_runtime_get_sync() should be part of j721e_pcie_ctrl_init() where you
-do power off, program strap and power on.
+1. The function calls fwnode_get_named_child_node() to get the "leds" node,
+   but never calls fwnode_handle_put(leds) to release this reference.
 
-This should not be part of probe() as by that time, controller is already
-powered on. So pm_runtime_set_active() and pm_runtime_enable() should be enough
-to convey the state of the device to PM core.
+2. Within the fwnode_for_each_child_node() loop, the early return
+   paths that don't properly release the "led" fwnode reference.
 
-- Mani
+This fix follows the same pattern as commit d029edefed39
+("net dsa: qca8k: fix usages of device_get_named_child_node()")
 
+Fixes: 94a2a84f5e9e ("net: dsa: mv88e6xxx: Support LED control")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+changes in v2:
+- use goto for cleanup in error paths
+- v1: https://lore.kernel.org/all/20250830085508.2107507-1-linmq006@gmail.com/
+---
+ drivers/net/dsa/mv88e6xxx/leds.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/dsa/mv88e6xxx/leds.c b/drivers/net/dsa/mv88e6xxx/leds.c
+index 1c88bfaea46b..ab3bc645da56 100644
+--- a/drivers/net/dsa/mv88e6xxx/leds.c
++++ b/drivers/net/dsa/mv88e6xxx/leds.c
+@@ -779,7 +779,8 @@ int mv88e6xxx_port_setup_leds(struct mv88e6xxx_chip *chip, int port)
+ 			continue;
+ 		if (led_num > 1) {
+ 			dev_err(dev, "invalid LED specified port %d\n", port);
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto err_put_led;
+ 		}
+ 
+ 		if (led_num == 0)
+@@ -823,17 +824,25 @@ int mv88e6xxx_port_setup_leds(struct mv88e6xxx_chip *chip, int port)
+ 		init_data.devname_mandatory = true;
+ 		init_data.devicename = kasprintf(GFP_KERNEL, "%s:0%d:0%d", chip->info->name,
+ 						 port, led_num);
+-		if (!init_data.devicename)
+-			return -ENOMEM;
++		if (!init_data.devicename) {
++			ret = -ENOMEM;
++			goto err_put_led;
++		}
+ 
+ 		ret = devm_led_classdev_register_ext(dev, l, &init_data);
+ 		kfree(init_data.devicename);
+ 
+ 		if (ret) {
+ 			dev_err(dev, "Failed to init LED %d for port %d", led_num, port);
+-			return ret;
++			goto err_put_led;
+ 		}
+ 	}
+ 
++	fwnode_handle_put(leds);
+ 	return 0;
++
++err_put_led:
++	fwnode_handle_put(led);
++	fwnode_handle_put(leds);
++	return ret;
+ }
 -- 
-மணிவண்ணன் சதாசிவம்
+2.35.1
+
 
