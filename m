@@ -1,139 +1,105 @@
-Return-Path: <stable+bounces-176912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46593B3F06E
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 23:18:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62586B3F0EA
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 00:15:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D9C97B14C1
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 21:16:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35F6E206C3E
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 22:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33B321A457;
-	Mon,  1 Sep 2025 21:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0811327E7DF;
+	Mon,  1 Sep 2025 22:15:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ElAZSesP"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F10C13B;
-	Mon,  1 Sep 2025 21:18:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40A7188715;
+	Mon,  1 Sep 2025 22:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756761482; cv=none; b=MW6j3eQ0NTbbAAApHLDPGn9FiERqriDvp0FR9DzJ9QbS39aGGYdphOozOkTOqHyu5c/D/dnGn+ybMiTyncSt5f1bqo13C+EUtUJW3wPiclalA3fEQ3y2J9XfgPF5rocHETTrxZsIaJGsyYB/0qzy4hfknAWVyQON81p5X5P5CCo=
+	t=1756764927; cv=none; b=SElTIKUMHKzME+PvxOX9h2DTToJF+IH4+rmXKD9QZJYn87/KmRELPPbUGF5H7kbkL1VS/DOzdbEi4/O5MEFSUDaANa2TLs8JQSdX9+vUomnFNhghi5xFHx+MI8viI4xwtaO9vHhC23THrEHRfl1XkZRnw9A1Hfu4Q3baS7gOmSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756761482; c=relaxed/simple;
-	bh=FAfUZYd51XKAFsO1yizBYL4+TL7Q4X2J0zPtZaHdsqY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YtspSlpKJlT/gINengoEaGxPFchObARJivoLcNgyQnfEEbnKZ/El96E+MZkE+7QP1MdYUTc4f15CdlkoIADPCAtJi9KMBSS9Buxzkksy7gdjmdh3ILDNZlirVFqYDha/cG17q5U7wlwb14gC+MxNRZIpZqq0ikhGekfHPIqo4Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BFA6D1692;
-	Mon,  1 Sep 2025 14:17:50 -0700 (PDT)
-Received: from [10.57.65.108] (unknown [10.57.65.108])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 838FE3F694;
-	Mon,  1 Sep 2025 14:17:57 -0700 (PDT)
-Message-ID: <300d135c-fd8e-4c15-bd57-3df2f39c8d25@arm.com>
-Date: Mon, 1 Sep 2025 22:17:55 +0100
+	s=arc-20240116; t=1756764927; c=relaxed/simple;
+	bh=A5C4e1z8sW6QvmbwOIiYp+LFhDtXndxxYvLSqp0kA+Y=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=YCSTHVbZdXUbqmPHDdtM4W8A7AKIPI4Uv5tpJXM0JSle0sCC28FAVVjy33f4fmUa6XZ6rudmHYv2slgiNrY9IW+6tqV/6vLBtzxBeWhrY9yic78mQ5QkuPPs3n5EgQlLua34q9EgZL8dV5K/KnMnb+ntKONPXXDRU6SN0UvtaDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ElAZSesP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE197C4CEF0;
+	Mon,  1 Sep 2025 22:15:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756764926;
+	bh=A5C4e1z8sW6QvmbwOIiYp+LFhDtXndxxYvLSqp0kA+Y=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=ElAZSesPkTvvxhtpONOletka8rVQZblEpL9ldovoiBZ//i3oQ3g0afAE4qMy1hvei
+	 50i5DWTxc6mTjpSzGRzJyMsqxshqNjENb/zSNloWSxtt+V9sPgTVzrlFSEpjPdMOSw
+	 KE21LiQkCmK7DlQeNjmKlFyxP82vUmhraRtX8+rHFQ2mc31rYudoTavnxzmfXe7VLc
+	 q5OchuDUtqELAYoElWkCjTH7n2JfMVc1TQoTJml9j7PWFjeNx+Zz2LaYCKGKdqsDJQ
+	 wd3u0SXW/f0Xd2ETZPBrmNUROzfud1kDupQS64bLx6PcT00DRfFsAYecqnUcgoNfBc
+	 AVBlkgRyKnUwg==
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, Conor Dooley <conor@kernel.org>
+Cc: Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org, 
+ Valentina Fernandez <valentina.fernandezalanis@microchip.com>, 
+ Daire McNamara <daire.mcnamara@microchip.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, linux-kernel@vger.kernel.org
+In-Reply-To: <20250825-during-ploy-939bdd068593@spud>
+References: <20250825-during-ploy-939bdd068593@spud>
+Subject: Re: [PATCH v1] spi: microchip-core-qspi: stop checking viability
+ of op->max_freq in supports_op callback
+Message-Id: <175676492358.901095.2384047110451067593.b4-ty@kernel.org>
+Date: Mon, 01 Sep 2025 23:15:23 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] PM: EM: Fix late boot with holes in CPU topology
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: lukasz.luba@arm.com, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, dietmar.eggemann@arm.com,
- kenneth.crudup@gmail.com, stable@vger.kernel.org
-References: <20250831214357.2020076-1-christian.loehle@arm.com>
- <CAJZ5v0idnFDYviDBusv8hvFD+yH71kL=Q_ARpn5cUBbAg838RQ@mail.gmail.com>
- <dd2e0cdd-ca95-4c83-9397-0606f3899799@arm.com>
- <CAJZ5v0jbOwH7T0StbjQLVeQiYhYU2EMCT+yp8jr8r0p4AwNgkw@mail.gmail.com>
- <CAJZ5v0gOuLJEPm_sG=4xOpqKJ2izY2pbLc7ROq70wvXgtb_m4A@mail.gmail.com>
-Content-Language: en-US
-From: Christian Loehle <christian.loehle@arm.com>
-In-Reply-To: <CAJZ5v0gOuLJEPm_sG=4xOpqKJ2izY2pbLc7ROq70wvXgtb_m4A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-cff91
 
-On 9/1/25 20:47, Rafael J. Wysocki wrote:
-> On Mon, Sep 1, 2025 at 7:41 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->>
->> On Mon, Sep 1, 2025 at 7:33 PM Christian Loehle
->> <christian.loehle@arm.com> wrote:
->>>
->>> On 9/1/25 17:58, Rafael J. Wysocki wrote:
->>>> On Sun, Aug 31, 2025 at 11:44 PM Christian Loehle
->>>> <christian.loehle@arm.com> wrote:
->>>>>
->>>>> commit e3f1164fc9ee ("PM: EM: Support late CPUs booting and capacity
->>>>> adjustment") added a mechanism to handle CPUs that come up late by
->>>>> retrying when any of the `cpufreq_cpu_get()` call fails.
->>>>>
->>>>> However, if there are holes in the CPU topology (offline CPUs, e.g.
->>>>> nosmt), the first missing CPU causes the loop to break, preventing
->>>>> subsequent online CPUs from being updated.
->>>>> Instead of aborting on the first missing CPU policy, loop through all
->>>>> and retry if any were missing.
->>>>>
->>>>> Fixes: e3f1164fc9ee ("PM: EM: Support late CPUs booting and capacity adjustment")
->>>>> Suggested-by: Kenneth Crudup <kenneth.crudup@gmail.com>
->>>>> Reported-by: Kenneth Crudup <kenneth.crudup@gmail.com>
->>>>> Closes: https://lore.kernel.org/linux-pm/40212796-734c-4140-8a85-854f72b8144d@panix.com/
->>>>> Cc: stable@vger.kernel.org
->>>>> Signed-off-by: Christian Loehle <christian.loehle@arm.com>
->>>>> ---
->>>>>  kernel/power/energy_model.c | 13 ++++++++-----
->>>>>  1 file changed, 8 insertions(+), 5 deletions(-)
->>>>>
->>>>> diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
->>>>> index ea7995a25780..b63c2afc1379 100644
->>>>> --- a/kernel/power/energy_model.c
->>>>> +++ b/kernel/power/energy_model.c
->>>>> @@ -778,7 +778,7 @@ void em_adjust_cpu_capacity(unsigned int cpu)
->>>>>  static void em_check_capacity_update(void)
->>>>>  {
->>>>>         cpumask_var_t cpu_done_mask;
->>>>> -       int cpu;
->>>>> +       int cpu, failed_cpus = 0;
->>>>>
->>>>>         if (!zalloc_cpumask_var(&cpu_done_mask, GFP_KERNEL)) {
->>>>>                 pr_warn("no free memory\n");
->>>>> @@ -796,10 +796,8 @@ static void em_check_capacity_update(void)
->>>>>
->>>>>                 policy = cpufreq_cpu_get(cpu);
->>>>>                 if (!policy) {
->>>>> -                       pr_debug("Accessing cpu%d policy failed\n", cpu);
->>>>
->>>> I'm still quite unsure why you want to stop printing this message.  It
->>>> is kind of useful to know which policies have had to be retried, while
->>>> printing the number of them really isn't particularly useful.  And
->>>> this is pr_debug(), so user selectable anyway.
->>>>
->>>> So I'm inclined to retain the line above and drop the new pr_debug() below.
->>>>
->>>> Please let me know if this is a problem.
->>>
->>> For nosmt this leads to a lot of prints every seconds, that's all.
->>> I can resend with the pr_debug for every fail, alternatively print a
->>> cpumask.
->>
->> Printing a cpumask might be better, but it would add some complexity
->> only needed for the printing.
->>
->> Maybe it's just better to not print anything at all.
+On Mon, 25 Aug 2025 12:53:28 +0100, Conor Dooley wrote:
+> In commit 13529647743d9 ("spi: microchip-core-qspi: Support per spi-mem
+> operation frequency switches") the logic for checking the viability of
+> op->max_freq in mchp_coreqspi_setup_clock() was copied into
+> mchp_coreqspi_supports_op(). Unfortunately, op->max_freq is not valid
+> when this function is called during probe but is instead zero.
+> Accordingly, baud_rate_val is calculated to be INT_MAX due to division
+> by zero, causing probe of the attached memory device to fail.
 > 
-> I've changed the patch to that effect and tentatively applied it, so
-> no need to resend if you agree with this modification.
-> 
-> Thanks!
+> [...]
 
-All good, thanks!
-Yeah I was already leaning towards that now anyway.
-I think Kenneth's report (which although he hasn't confirmed would be
-that these prints were a red herring for him, they are expected) is
-at least an indication that these prints might not be that useful after
-all.
+Applied to
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[1/1] spi: microchip-core-qspi: stop checking viability of op->max_freq in supports_op callback
+      commit: 89e7353f522f5cf70cb48c01ce2dcdcb275b8022
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
