@@ -1,124 +1,97 @@
-Return-Path: <stable+bounces-176796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D4EDB3DC47
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:23:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B09CAB3DC5A
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:29:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEB3A17B2C5
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:23:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B9FF3BFD0D
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4450525CC4D;
-	Mon,  1 Sep 2025 08:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC5B2F1FCC;
+	Mon,  1 Sep 2025 08:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Dz8uyAzg"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="bkStn7t/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230CD26F445
-	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 08:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0CE7259C9C;
+	Mon,  1 Sep 2025 08:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756714999; cv=none; b=B/BnK2desjx/H8Z6AAjYM2JqKZr6hUwmq003NISDtvxl4Y3SFnYVazDTKyzVtHmsRz7irjxDRfa+c5zkkFFe0DB7aJRqGhms5z4tK87WS/Y3fVZVpw14R5csQankJ7L7Z3VfHa2exAG+Uc5tD4x+6zWR8bfjXNLJB5mvzfISKh0=
+	t=1756715385; cv=none; b=i0b8AVEyAgWgvPDGnEVTkXO0KMUWRQsSoa0WQ9QMq5HmgCnJPFL+hE6pyTWVc3u465GZTbCw2p9CV2WqDLshvwlXE2xJo7pbAZBFqOFb3kyfQvkeT2COUQnH+16FWq0MSQD9Sck6EOAt0RKdHQmzsfdW+DRosPnrnzKLsCyF6D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756714999; c=relaxed/simple;
-	bh=1GRc8xrxN9zGX5wz5BhvKOO2j5zrzx4fFnKG/lVnDdA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J8cb4qLXhrNTEVCHF7TJEIJSB2I4nhSSm2olwqWV+Vvr350zT6SJYhIfNPL/Md2JTbGPnEJ6SeRXOW9sZyvJUHrAtyoJNmqQn6e/jX9iNBJjgH56Z9c2Evw977OrPWH9eQSqeOaKBTZXdrcDvD5oDOoCq2IpDnA/ula63RgIyyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Dz8uyAzg; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-55f6e0eed29so1602545e87.3
-        for <stable@vger.kernel.org>; Mon, 01 Sep 2025 01:23:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756714995; x=1757319795; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K6bOX31TOnXa3mSpUgWZIksoOSQJIo6oigebcMiGpVk=;
-        b=Dz8uyAzgarZvRBDqWWnP+o0U86ka5hRrkwgV0NlTvB1H4KaavPr9OXtifRWGyBpZhd
-         4RTS1Ii3q9rZPzEXv7pjrIuX0WiyIwNmB0j8UYGYKgzC0kYLccqV3fHDCbNXMZDtQjmo
-         gQiwpG28ZWd1RO5BUKErdyIHmeplvRsTKAfX4KMeT2vNdi35UdCczvAp47o6gXIuRrEW
-         4hAH1yjoEa5fO48bu4rAIl6QTIJptC9r251HxtiEPzW5fHQXTJ+LPtnTCykdnAqZLHG/
-         cu9lewA9vJ5uQ6U/VqsrNIjybREuo4VgvovYZorEknE1YhCNECxrNloex32z6/yU791v
-         /f6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756714995; x=1757319795;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=K6bOX31TOnXa3mSpUgWZIksoOSQJIo6oigebcMiGpVk=;
-        b=ohTI2Ok7mqX3J+TcjS4Krjc9e18jbMMULsljXJtNmEvhDC3PpgFO7ftoaCp3kWEWCb
-         kkSfvpn5jubXPSZJI1SrzIjIE+rVSKkimGV50QNVB+Nlj0YEF3WGdCsDjynw7I35HeHH
-         O5zaP027c3426D+4DG9FpSxWe4EDf0Qka7w1tlnVpO3ibjitCwuqyvnUtMv0c5c9CFAF
-         fXgA406JvapB3k80s8wcE4hZwiqsma+PvhLKY/jL6VaqeaNSui/L10allJWn5/6ug2t2
-         qTJjzxFtCUxzwJu1ko1FsmEbSX7UHzOYkqRo+OAhU3t2k2aG2kMcubdivicttAw+DI6a
-         I7pA==
-X-Forwarded-Encrypted: i=1; AJvYcCW8G7A0v1HBp7VaIN+fh8FICr+u1j+t0pNMU9THbmbwTiej+o06sXHm9vXWOLTG2PHsX34lXHg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAws3/w1YuGU95JtknB1nPviyPo0bcefspweJOBHbWf6hOmpsz
-	sdAvtv/4EqMGMWZJLXXbYdYFN87p3IDC823fJJjwM0GiYYNf4IOrn9+uVrJIuKUPulr4b9CUZVP
-	33vMJ52JSYvfiloW8ZHPPAW360qOfSSDevQ3c3HVS4g==
-X-Gm-Gg: ASbGncuLVwqAt0uLHLfXcOX8LhpRn1kodF2l2A9Lbvcpcj2mRNrhV5PT+P6pA2MkBce
-	/MTZgxXmW9x8lai9+exTpNEu8MIhj+WGxyWz9+Cuy7bnsU3ensNCWwWBh/C/piVBZa2mbPH4khV
-	Vpvs3iqzLEHFF3ROY90kZ3AMFfXHYgcHA2m26mIzLQ5xbrsAwM26FTNP4XN/z/UGMfa3IJrkIxH
-	MIwCbtR6NDOlNHJZQ==
-X-Google-Smtp-Source: AGHT+IHVwIASRqXdiBtabwQpeTaLvx/MwfpuhWhcvrvqvY8VLXWEY8BeiyfCJbCTfLb/GJ7BJFbdc5bUK1izSWZcw90=
-X-Received: by 2002:ac2:4c47:0:b0:55f:6186:c161 with SMTP id
- 2adb3069b0e04-55f70a0081cmr1669470e87.49.1756714995167; Mon, 01 Sep 2025
- 01:23:15 -0700 (PDT)
+	s=arc-20240116; t=1756715385; c=relaxed/simple;
+	bh=uiQGrPDGIQy2w2GoqtOwTVJzYrsAW1FwxDcYA3G+Lw8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=Psq5OK5VhqZvcDCuwjRV6wPKqUr9ud4yRrhLh/el4AYLnbCIbzLJ60VpyqRY4/ZTobcTnzQaM7V2xYgKhETc5EpZGY9aHa7FhsZjWdgwsIZq3I6PR4lHrYIrTRMvjotC2PnEG/GCCg95y8fxOnHZGgE3cZtcVnUZ0rARV9c+t7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=bkStn7t/ reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=j5PJ2+yjz1EmUPb6Z1UJJ6UB8vR7LqQz1AQRzce8lPU=; b=b
+	kStn7t/V8eq/iZd9uruH9IJ86zUK1m5DmyvuNvD0/UCPpRGXYqpVjs/QpEit2QFg
+	6I+HubjY3j0rzOOszSjTm5GfkX8c3OvfWPInRgBJ+t7v2MOY5JLcNzxTslWl3XU5
+	QxhVyvSj+kBPPpsv6LH7+Uqiuhbgb0HfUmMJxStwgU=
+Received: from yangshiguang1011$163.com ( [1.202.162.48] ) by
+ ajax-webmail-wmsvr-40-108 (Coremail) ; Mon, 1 Sep 2025 16:29:02 +0800 (CST)
+Date: Mon, 1 Sep 2025 16:29:02 +0800 (CST)
+From: yangshiguang  <yangshiguang1011@163.com>
+To: "Vlastimil Babka" <vbabka@suse.cz>
+Cc: "David Rientjes" <rientjes@google.com>, harry.yoo@oracle.com,
+	akpm@linux-foundation.org, cl@gentwo.org, roman.gushchin@linux.dev,
+	glittao@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	yangshiguang <yangshiguang@xiaomi.com>, stable@vger.kernel.org
+Subject: Re:Re: [PATCH v4] mm: slub: avoid wake up kswapd in
+ set_track_prepare
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20250519(9504565a)
+ Copyright (c) 2002-2025 www.mailtech.cn 163com
+In-Reply-To: <7f30ddd1-c6f7-4b2b-a2b9-875844092e28@suse.cz>
+References: <20250830020946.1767573-1-yangshiguang1011@163.com>
+ <c8f6933e-f733-4f86-c09d-8028ad862f33@google.com>
+ <7f30ddd1-c6f7-4b2b-a2b9-875844092e28@suse.cz>
+X-NTES-SC: AL_Qu2eBPuauksv5CKfZOkfmUgRj+k6WsK3s/sn3oNfP5B+jCLp+zE7R3NTB2LO79CDEC6NnQiHawJv0ehAb5dHTZwLRzc2zXorPS8GrhfNFYzcXQ==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250901073224.2273103-1-linmq006@gmail.com>
-In-Reply-To: <20250901073224.2273103-1-linmq006@gmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Mon, 1 Sep 2025 10:23:04 +0200
-X-Gm-Features: Ac12FXwOPFvcHfnOB3USWBMbhSfcVlBY0l39KH-IS_467sKxEs3coXt0xb6oRRE
-Message-ID: <CACRpkdYVCU3Pb2u3r_G0BY19mbF8m1je696RNP_49rU7G4PvUw@mail.gmail.com>
-Subject: Re: [PATCH v2] net: dsa: mv88e6xxx: Fix fwnode reference leaks in mv88e6xxx_port_setup_leds
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <11922bd5.7fae.1990464d9c8.Coremail.yangshiguang1011@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:bCgvCgD33xlOWbVoDEAmAA--.2284W
+X-CM-SenderInfo: 51dqw25klj3ttqjriiqr6rljoofrz/xtbBMRG75Wi1Tx-TjAAEso
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-On Mon, Sep 1, 2025 at 9:32=E2=80=AFAM Miaoqian Lin <linmq006@gmail.com> wr=
-ote:
-
-> Fix multiple fwnode reference leaks:
->
-> 1. The function calls fwnode_get_named_child_node() to get the "leds" nod=
-e,
->    but never calls fwnode_handle_put(leds) to release this reference.
->
-> 2. Within the fwnode_for_each_child_node() loop, the early return
->    paths that don't properly release the "led" fwnode reference.
->
-> This fix follows the same pattern as commit d029edefed39
-> ("net dsa: qca8k: fix usages of device_get_named_child_node()")
->
-> Fixes: 94a2a84f5e9e ("net: dsa: mv88e6xxx: Support LED control")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-> ---
-> changes in v2:
-> - use goto for cleanup in error paths
-> - v1: https://lore.kernel.org/all/20250830085508.2107507-1-linmq006@gmail=
-.com/
-
-When I coded it I honestly believed fwnode_get_named_child_node()
-also released the children after use but apparently not, my bad :(
-
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-
-Yours,
-Linus Walleij
+CgpBdCAyMDI1LTA5LTAxIDE2OjE1OjA0LCAiVmxhc3RpbWlsIEJhYmthIiA8dmJhYmthQHN1c2Uu
+Y3o+IHdyb3RlOgo+T24gOS8xLzI1IDA5OjUwLCBEYXZpZCBSaWVudGplcyB3cm90ZToKPj4gT24g
+U2F0LCAzMCBBdWcgMjAyNSwgeWFuZ3NoaWd1YW5nMTAxMUAxNjMuY29tIHdyb3RlOgo+PiAKPj4+
+IEZyb206IHlhbmdzaGlndWFuZyA8eWFuZ3NoaWd1YW5nQHhpYW9taS5jb20+Cj4+PiAKPj4+IEZy
+b206IHlhbmdzaGlndWFuZyA8eWFuZ3NoaWd1YW5nQHhpYW9taS5jb20+Cj4+PiAKPj4gCj4+IER1
+cGxpY2F0ZSBsaW5lcy4KPj4gCj4+PiBzZXRfdHJhY2tfcHJlcGFyZSgpIGNhbiBpbmN1ciBsb2Nr
+IHJlY3Vyc2lvbi4KPj4+IFRoZSBpc3N1ZSBpcyB0aGF0IGl0IGlzIGNhbGxlZCBmcm9tIGhydGlt
+ZXJfc3RhcnRfcmFuZ2VfbnMKPj4+IGhvbGRpbmcgdGhlIHBlcl9jcHUoaHJ0aW1lcl9iYXNlcylb
+bl0ubG9jaywgYnV0IHdoZW4gZW5hYmxlZAo+Pj4gQ09ORklHX0RFQlVHX09CSkVDVFNfVElNRVJT
+LCBtYXkgd2FrZSB1cCBrc3dhcGQgaW4gc2V0X3RyYWNrX3ByZXBhcmUsCj4+PiBhbmQgdHJ5IHRv
+IGhvbGQgdGhlIHBlcl9jcHUoaHJ0aW1lcl9iYXNlcylbbl0ubG9jay4KPj4+IAo+Pj4gQXZvaWQg
+ZGVhZGxvY2sgY2F1c2VkIGJ5IGltcGxpY2l0bHkgd2FraW5nIHVwIGtzd2FwZCBieQo+Pj4gcGFz
+c2luZyBpbiBhbGxvY2F0aW9uIGZsYWdzLiBBbmQgdGhlIHNsYWIgY2FsbGVyIGNvbnRleHQgaGFz
+Cj4+PiBwcmVlbXB0aW9uIGRpc2FibGVkLCBzbyBfX0dGUF9LU1dBUERfUkVDTEFJTSBtdXN0IG5v
+dCBhcHBlYXIgaW4gZ2ZwX2ZsYWdzLgo+Pj4gCj4+IAo+PiBUaGlzIG1lbnRpb25zIF9fR0ZQX0tT
+V0FQRF9SRUNMQUlNLCBidXQgdGhlIHBhdGNoIGFjdHVhbGx5IG1hc2tzIG9mZiAKPj4gX19HRlBf
+RElSRUNUX1JFQ0xBSU0gd2hpY2ggd291bGQgYmUgYSBoZWF2aWVyd2VpZ2h0IG9wZXJhdGlvbi4g
+IERpc2FibGluZyAKPj4gZGlyZWN0IHJlY2xhaW0gZG9lcyBub3QgbmVjZXNzYXJpbHkgaW1wbHkg
+dGhhdCBrc3dhcGQgd2lsbCBiZSBkaXNhYmxlZCBhcyAKPj4gd2VsbC4KPgo+WWVhaCBJIHRoaW5r
+IHRoZSBjaGFuZ2Vsb2cgc2hvdWxkIHNheSBfX0dGUF9ESVJFQ1RfUkVDTEFJTS4KPgo+PiBBcmUg
+eW91IG1lYW5pbmcgdG8gY2xlYXIgX19HRlBfUkVDTEFJTSBpbiBzZXRfdHJhY2tfcHJlcGFyZSgp
+Pwo+Cj5ObyBiZWNhdXNlIGlmIHRoZSBjb250ZXh0IGNvbnRleHQgKGUuZy4gdGhlIGhydGltZXJz
+KSBjYW4ndCBzdXBwb3J0Cj5fX0dGUF9LU1dBUERfUkVDTEFJTSBpdCB3b24ndCBoYXZlIGl0IGlu
+IGdmcF9mbGFncyBhbmQgd2Ugbm93IHBhc3MgdGhlbSB0bwoKPnNldF90cmFja19wcmVwYXJlKCkg
+c28gaXQgYWxyZWFkeSB3b24ndCBiZSB0aGVyZS4KCgpTcnkuIFNob3VsZCBiZSBfX0dGUF9ESVJF
+Q1RfUkVDTEFJTS4gSSB3aWxsIHJlc2VuZCB0aGUgcGF0Y2gu
 
