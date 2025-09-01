@@ -1,96 +1,97 @@
-Return-Path: <stable+bounces-176827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1798B3DFD6
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 12:13:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39473B3DFE8
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 12:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D5573A6CCE
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:13:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C9CA16FC29
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC6B2EE268;
-	Mon,  1 Sep 2025 10:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F063C301493;
+	Mon,  1 Sep 2025 10:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="vec88hCK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AU9UCskK"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F5A17BA3;
-	Mon,  1 Sep 2025 10:13:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DED1AB6F1
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 10:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756721610; cv=none; b=bh5EfsQjxogt6oSafAfwfodaLoaYXo7igN88omwHXisbh+WvRL/q9zxHMCw01p2WF+oCYLBF1wkIdFfn4407aQlnFM9M+JJymb+8Go0FzZBaaMBGuqkeZAX7KU4ZhRir+99DxE19DHSTxJDQQUn7NHw5guuo1uQJuzZtCGD1hoQ=
+	t=1756721816; cv=none; b=F57NCHOiE+f07atXwcenR4p8eA5oIoeY4yB2+iWQ3FeNji4jknzZBndO4Lvt4duo95He6/EOw8/uFHa+6mR6QUuQLjHO5v7wgMgGzMysvANdoB++4BVaHNHWTf6x2Yg+tjKGatawYP+pwVG495LkLlO2tmsE6Xl2shn+ZO4tjcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756721610; c=relaxed/simple;
-	bh=syflzeax5SIbtp1IYnQaLM1Nl5z86ON5FhzAAu1ylEQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lOl684f320i3bz/8QSk+zZCiBky6kiJ++CQj0Kz2+g9A9sCVzfJLXd/hOwAXS/Ik5bGqu2MP3J2dq0B038CrU86KjWVyV0KIv/o1TypJWf8e6Vk207BEyCY2oy0Q6EJil5OO0r0hoeywl6p99q/d3TD/x81LGpojJFZ2iYYT50E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=vec88hCK; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4cFl7g5W4vz9tpk;
-	Mon,  1 Sep 2025 12:13:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1756721599;
+	s=arc-20240116; t=1756721816; c=relaxed/simple;
+	bh=B+1DlquKVk41/r6dL0vQTw41mvBrVwTTFhUlbS0w+mE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r5MmFcW0qktKuJMgqBCgDzt6iZYRY8ZM7ZHXrTQxjhfc4jg57Nr5Ng3kgi12MVUDOdk7Cc2nB4pH46pFNgoDe95QAX/BUOBOqTL6rIctopWp3+jHdHLLloMuIRM8fAP7oQbFeVOb05M7K2MzrqFBq9D+TKgyqi6gZxbOiFMXrj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AU9UCskK; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756721814;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PEPqKsXcvXT/g24/oUJ+GoYNPppG4ZlMLpGam/YzKnY=;
-	b=vec88hCKKDE7RbFUqpBJTsK9g2ifA9UrB4TgMAy3eJ1kpCt8uTgEdyYh62Wot4umwPkRD2
-	ITAbFotnK4nEbrJcc3xPWIT89mEIzQtl8WcYLavBI7YxiIuWmTabbf+CA99cXJ4SqgfOFI
-	iRXXGmG0Fgh+Y+ZpDQwS9wsZYiW4bCP2H8hzeVzyYvaJ6HFFsvxiZv86duNh8q/qEnlat8
-	hYmHeSTZnJxS4s9/ARAAX+kvdnE4WOvaRzn0U/omo5ybmFt+Y9N4AfYw6jG3rmE7J1HCyE
-	PopPHQbHmMH/Eh4izFTmp0Urv9CL3ZxnYercHSlzD8YXK3jNn2IFzqa1gf1i5w==
-Message-ID: <9c7499e1-8386-45d2-b859-aba7b33387af@mailbox.org>
-Date: Mon, 1 Sep 2025 12:13:16 +0200
+	bh=B+1DlquKVk41/r6dL0vQTw41mvBrVwTTFhUlbS0w+mE=;
+	b=AU9UCskKz54OXKUqfn+Nq709aRwwU5O/pFSv2Vat4PoAyusPUzbexODEUfE7vgupf1cASi
+	t1MyA51SC2joN2BIuDBLOZNXipPhV2nHxUfIGrlM50FyfTCViCu8xFJzCPBZfV1oUmwyBJ
+	YqSJk1HHu2e5MGSVdH4qxPkbfhlGKjo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-611-vz1nJLrVNeWLtfTda_JN2g-1; Mon,
+ 01 Sep 2025 06:16:53 -0400
+X-MC-Unique: vz1nJLrVNeWLtfTda_JN2g-1
+X-Mimecast-MFC-AGG-ID: vz1nJLrVNeWLtfTda_JN2g_1756721812
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 96AA0180028D;
+	Mon,  1 Sep 2025 10:16:51 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.127])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 61B0530001A2;
+	Mon,  1 Sep 2025 10:16:50 +0000 (UTC)
+Date: Mon, 1 Sep 2025 18:16:41 +0800
+From: Baoquan He <bhe@redhat.com>
+To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/vmalloc, mm/kasan: respect gfp mask in
+ kasan_populate_vmalloc()
+Message-ID: <aLVyia16eyoYftAw@MiWiFi-R3L-srv>
+References: <20250831121058.92971-1-urezki@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] drm/rcar-du: dsi: Fix 1/2/3 lane support
-To: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
- dri-devel@lists.freedesktop.org
-Cc: stable@vger.kernel.org, David Airlie <airlied@gmail.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>,
- Simona Vetter <simona@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
- linux-renesas-soc@vger.kernel.org
-References: <20250813210840.97621-1-marek.vasut+renesas@mailbox.org>
- <d1354951-cbd3-4216-970b-e1e130f58522@ideasonboard.com>
- <fa0d9882-aadd-49e4-8a39-e0d0c321ecc1@mailbox.org>
- <e03c3fcb-7392-4ddc-80f1-8c104cd04e3c@ideasonboard.com>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <e03c3fcb-7392-4ddc-80f1-8c104cd04e3c@ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: 12693b4806c0b95e2f9
-X-MBO-RS-META: 1tqhofjo8unimw73ac5d1sc8b6esrkz7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250831121058.92971-1-urezki@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On 9/1/25 11:22 AM, Tomi Valkeinen wrote:
+Hi Uladzislau,
 
-Hello Tomi,
+On 08/31/25 at 02:10pm, Uladzislau Rezki (Sony) wrote:
+> kasan_populate_vmalloc() and its helpers ignore the caller's gfp_mask
+> and always allocate memory using the hardcoded GFP_KERNEL flag. This
+> makes them inconsistent with vmalloc(), which was recently extended to
+> support GFP_NOFS and GFP_NOIO allocations.
 
->> Would you like to pick this up via drm-misc , or shall I ?
-> 
-> I'll push to drm-misc. Thanks!
+Is this patch on top of your patchset "[PATCH 0/8] __vmalloc() and no-block
+support"? Or it is a replacement of "[PATCH 5/8] mm/kasan, mm/vmalloc: Respect
+GFP flags in kasan_populate_vmalloc()" in the patchset?
 
-Thank you
+I may not get their relationship clearly.
 
--- 
-Best regards,
-Marek Vasut
+Thanks
+Baoquan
+
 
