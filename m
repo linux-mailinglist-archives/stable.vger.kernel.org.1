@@ -1,235 +1,169 @@
-Return-Path: <stable+bounces-176780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A9EB3D687
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 04:07:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7DDB3D68D
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 04:09:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 056C917145F
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 02:07:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E94D189892D
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 02:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5347E1F4621;
-	Mon,  1 Sep 2025 02:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764FB207A32;
+	Mon,  1 Sep 2025 02:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="q0MvgCLk"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pm3wSN5m"
 X-Original-To: stable@vger.kernel.org
-Received: from esa12.hc1455-7.c3s2.iphmx.com (esa12.hc1455-7.c3s2.iphmx.com [139.138.37.100])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D0313A258;
-	Mon,  1 Sep 2025 02:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.37.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCC02940D
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 02:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756692418; cv=none; b=qknDPpF4DAD4I5GioDljxbmfz69qU021IhtAV+jStqnsHq050YmlzEkra6nkLUm/te5u6Yb/gqRNZVElwzFblHKpDi0pHiyZhd2pMXX5jlLynZojraXoA+u0c7ZUp95fF/hR2kkkxyxuvYjsnPCQ3X3hwN8mSSBhvX65mDUGvl8=
+	t=1756692573; cv=none; b=H57ggmbqEPQ4Bp7dhBoYE6LCSrwU+nGqnEF2LFfslmAfe5wyDeR006ar18gJDEI+Ico4DC295v4IpdxRaGzFQLrQHzFtEDe1E5aNtD43v9/trzIbb/Bv8js8fFDi8qOWGSpOV9tDVYmMDSiw7COun2zZgrqHOksDTms4o7tRtHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756692418; c=relaxed/simple;
-	bh=n1kVlBxB9nyQY/ojhVZA3zpRuBr13yVP8/DwVDm7lxk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AvK0WRq4fO4QMpeKr1Z65oXyeNG1fOkJVXPbD0Terv5+YQnM6d8kX2NIACongaEUak34Z2l+jLcilSzohae4AKZXiFD85nawJyHRHDKKcUBLKkgXyMtiHVnVdII0L1Zee9sPpqvF2gPw2xvlI+uLmVwNtnQm2nrtpRXZbFDRj7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=q0MvgCLk; arc=none smtp.client-ip=139.138.37.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1756692416; x=1788228416;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=n1kVlBxB9nyQY/ojhVZA3zpRuBr13yVP8/DwVDm7lxk=;
-  b=q0MvgCLkk58+WQWIo5ffGeF5m7FSW8hc8M+E2wtR9+oFqchmMVYvui2J
-   Re6JVYSj3Qoz4b2fpg7eKPRCwLZEnQgfFPI9sJWEgXivnoc3Ox4Wwyh5w
-   27XsXQjd4JWrGWeggf62aydcUiZq/J7pCh9BHhehdTOFFquBHBqM6wCDW
-   y8uzIVa/Pby/egswvaBb3l7iieq4/KERI4kZQ0oDw1rFpOWGzxT50ATS+
-   eLSnFhWSZZnVs2ZG3KM5h+Afa9Eqf/zgOCCFj0OZhraGvo3dGp1N7ZhHm
-   dDtHBSp+03zMYS/LVvNPK5kI+WhWbss8JGNgmWAxURmYxW63ZGNtDnnDq
-   w==;
-X-CSE-ConnectionGUID: PQl7f5/1SlCNj8cr0LIW8A==
-X-CSE-MsgGUID: rsvm0YlUSXCdWtQTXtAIZQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11539"; a="190112815"
-X-IronPort-AV: E=Sophos;i="6.18,225,1751209200"; 
-   d="scan'208";a="190112815"
-Received: from unknown (HELO az2nlsmgr2.o.css.fujitsu.com) ([20.61.8.234])
-  by esa12.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 11:05:45 +0900
-Received: from az2nlsmgm4.fujitsu.com (unknown [10.150.26.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgr2.o.css.fujitsu.com (Postfix) with ESMTPS id D928926E7;
-	Mon,  1 Sep 2025 02:05:44 +0000 (UTC)
-Received: from az2nlsmom4.fujitsu.com (az2nlsmom4.o.css.fujitsu.com [10.150.26.201])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm4.fujitsu.com (Postfix) with ESMTPS id 8B8F210001D4;
-	Mon,  1 Sep 2025 02:05:44 +0000 (UTC)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmom4.fujitsu.com (Postfix) with ESMTPS id 2D4052000222;
-	Mon,  1 Sep 2025 02:05:42 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.167.135.81])
-	by edo.cn.fujitsu.com (Postfix) with ESMTP id 9794A1A0074;
-	Mon,  1 Sep 2025 10:05:38 +0800 (CST)
-From: Ruan Shiyang <ruansy.fnst@fujitsu.com>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	lkp@intel.com,
-	ying.huang@linux.alibaba.com,
-	akpm@linux-foundation.org,
-	y-goto@fujitsu.com,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Ben Segall <bsegall@google.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm: memory-tiering: fix PGPROMOTE_CANDIDATE counting
-Date: Mon,  1 Sep 2025 10:05:38 +0800
-Message-ID: <20250901020538.3960468-1-ruansy.fnst@fujitsu.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250729035101.1601407-1-ruansy.fnst@fujitsu.com>
-References: <20250729035101.1601407-1-ruansy.fnst@fujitsu.com>
+	s=arc-20240116; t=1756692573; c=relaxed/simple;
+	bh=FOP26zaTOY1xrPxkZDwQuusVzgnNln+P8abj1VM1Wic=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bePYpOMgqR8jbQzHz9emS859lhJYY+Os/KAgQzPt+PiysC16ksSalvn6eKupG6DqXdNMiSI10NbQof6krQELfW94VzZhzFRJWAb8tRc734WEB5DQS7VOfIxASRo9rcAzbF726OPqS9VsAEFIIwwFfFbknCrE4S2idhNOIR7ENwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pm3wSN5m; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57VNSkjt003705
+	for <stable@vger.kernel.org>; Mon, 1 Sep 2025 02:09:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	HJFTJhiN+4hmB6UylAdee9vnnn/inlLMUCHrFPbCUQY=; b=pm3wSN5mnW9lMLaI
+	66RbTvLssLk0CyWIYOHVGhvzRPbj3mtLll+6fRFFAwNmUslJfGGlnpmmJ4zMAvJw
+	fb1d9U6wnZ6rHtTVKaQ2NV5UtP+WWbaGkW766SrVmDhyqGYrwpYT5ZKCpMryQjpI
+	wPdrfb9BKhKlo322E4dCNz5xaggl1OhTDOwuaI/Js2Es0b/qOC+c6NDp6L9xdQT2
+	oDW0jGdFdGJ2UGF/imVwB8DRXrnkAULUTlAkPaAiStx+wtGK5WolUtakd+rhw7fT
+	ZTRLE12IGEq+UB6uIYuFEWHd2bEW8zGk0lrivxRYwdT4wLkYg2SjtLGdls6L4oXR
+	Hn39jA==
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ur8rtybt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 01 Sep 2025 02:09:30 +0000 (GMT)
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-7724487d2a8so2010230b3a.1
+        for <stable@vger.kernel.org>; Sun, 31 Aug 2025 19:09:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756692570; x=1757297370;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HJFTJhiN+4hmB6UylAdee9vnnn/inlLMUCHrFPbCUQY=;
+        b=VgK8K6w2FJ1L3iUsA81EMd8rqrveBevp8yz8hytaScQVvKf4uNU7ZPIvl+BQbavGPz
+         T0FxyWT+6+FjJ+aCjXlhDtZZnXlXFtgWkr9Kkc5cJdD5VSp/3WcL1HzOJzJjxnUQfCkP
+         AxaA5Z/LogkXI4IQxZIwKqMdru6P3UV6FPIWfuNppTBS/FeG7Ks3j3w4UU4Ic1vW08xQ
+         6hpXvSUPfbWqbt1yuWyLbw7K2Lm24wHdmlKOaq817LEzEHSyvU9Ry3nNNCP0z3oPiZ0D
+         Af6zZu00gA3Wo7B5lyz/xPD/UJLNtbvGRU2mdm22Ln4aZnrUUm1Dax+Y55W7GMYohWGF
+         +I5Q==
+X-Gm-Message-State: AOJu0YyqBYzLRxXpoK6i5+EdLbB4E9L8J1paoHtteNcpmsQtbNN6EixR
+	oAY/VcVrAobLRPhfo8YNZtySG+yUvecuSfD/WI33f8OwUNxDxxQjpt1K8aB2HktdCkL+1Cr2mPg
+	wNy6BzTRePrW8J9SedHYdcJIe8bZU4tLyQ+X3lXIsUmMH7XvK5gJlh4TiFpM=
+X-Gm-Gg: ASbGncs/f+aRQ1g926bB6fEff9y5oNvAGBenQRNqjZ0yzLTwiq9u/CQwknHvkF3KPp4
+	G5/YhVX+pAs8htz3CzF5DoH1hgxDNrWkBA8hIKggZBfoSirIQ15oV4I6vs3Min56VoKtaRQRHIP
+	uuIjeQNEtGA5Nk95TY6jdE5wSE1hldVWgZ7nLHz0fuRAL1UM9doE/6Osc0OCo1JAUh4O/U7xBOV
+	dV2mWh2+HK3xxFhoiL5uGpLWVS9ZjQBcGzmNbytR09f1SkFOHYuXa3lAVcj6K6w3A+/dI46k5Pk
+	Vyhqsirjb+mBWw3be1M8lz7XoJmAdEQr9SF1FiNAI3dHwfk3iQLOwg8KjwhwJmfyMZhJ/t25JPu
+	YLyvCnSpe/1w6ryUQ+7w4NNTFIoB4Ng==
+X-Received: by 2002:a05:6a20:7f8d:b0:243:c081:b4a7 with SMTP id adf61e73a8af0-243d6f85b56mr8491249637.59.1756692569898;
+        Sun, 31 Aug 2025 19:09:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGv7jJ40IozONRbSG/trocPvA1w/awpQsGYUiMBvP2awE0A/DyTnHq/4z0XXj5ICaPVOFmkcw==
+X-Received: by 2002:a05:6a20:7f8d:b0:243:c081:b4a7 with SMTP id adf61e73a8af0-243d6f85b56mr8491228637.59.1756692569368;
+        Sun, 31 Aug 2025 19:09:29 -0700 (PDT)
+Received: from [10.133.33.253] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7725f9f7b50sm568901b3a.68.2025.08.31.19.09.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 31 Aug 2025 19:09:29 -0700 (PDT)
+Message-ID: <62773a2a-235f-4894-a570-3496bd8c1c15@oss.qualcomm.com>
+Date: Mon, 1 Sep 2025 10:09:24 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] coresight: trbe: Fix incorrect error check for
+ devm_kzalloc
+To: Miaoqian Lin <linmq006@gmail.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Mike Leach
+ <mike.leach@linaro.org>,
+        James Clark <james.clark@linaro.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20250829120847.2016087-1-linmq006@gmail.com>
+Content-Language: en-US
+From: Jie Gan <jie.gan@oss.qualcomm.com>
+In-Reply-To: <20250829120847.2016087-1-linmq006@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAxOSBTYWx0ZWRfX/Jxvsge35Bil
+ qCwdrlW8Nyd9HcHsBo8Xul5qzj73DwUmMsXDI7T2sTZ66nSkWcAq0KjsyXaKV52ZViO37h3VqA9
+ l8rJXPU5CVKQLFbliRhVZFRp0hV21uJySe/ez/u/SQHhK2pca08ZFeZnzwoVJh1/V47N9eX5bO+
+ fjIusIThBKe1w4rDAeUTy1Rj0wKxrzbXO0hu2jqhrlan479XlFFnPafrv0e2fJVfzDKaJnaci6+
+ lLk8gEPrpSH9qea+nhGYUY/t4A/GuhNY5fCPs470Ehe+BcdUvsL/uXndag1HoiFn5pwkEL3IFTE
+ nlkREG+mU8nqivNRDUIqafc4PYsAKvp7g82eGqr7sVYmst1Ul53OBEnCujuLZtUVNLmotDuksMG
+ MyotkEKn
+X-Proofpoint-GUID: OieBeklAXkAj0CHp44w-G80C0tmjHO-u
+X-Proofpoint-ORIG-GUID: OieBeklAXkAj0CHp44w-G80C0tmjHO-u
+X-Authority-Analysis: v=2.4 cv=PNkP+eqC c=1 sm=1 tr=0 ts=68b5005a cx=c_pps
+ a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
+ a=kMyzGuzSTzuwxu01R-0A:9 a=QEXdDO2ut3YA:10 a=2VI0MkxyNR6bbpdq8BZq:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-01_01,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 priorityscore=1501 impostorscore=0 clxscore=1011
+ suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300019
 
-Goto-san reported confusing pgpromote statistics where the
-pgpromote_success count significantly exceeded pgpromote_candidate.
 
-On a system with three nodes (nodes 0-1: DRAM 4GB, node 2: NVDIMM 4GB):
- # Enable demotion only
- echo 1 > /sys/kernel/mm/numa/demotion_enabled
- numactl -m 0-1 memhog -r200 3500M >/dev/null &
- pid=$!
- sleep 2
- numactl memhog -r100 2500M >/dev/null &
- sleep 10
- kill -9 $pid # terminate the 1st memhog
- # Enable promotion
- echo 2 > /proc/sys/kernel/numa_balancing
 
-After a few seconds, we observeed `pgpromote_candidate < pgpromote_success`
-$ grep -e pgpromote /proc/vmstat
-pgpromote_success 2579
-pgpromote_candidate 0
+On 8/29/2025 8:08 PM, Miaoqian Lin wrote:
+> Fix incorrect use of IS_ERR() to check devm_kzalloc() return value.
+> devm_kzalloc() returns NULL on failure, not an error pointer.
+> 
+> This issue was introduced by commit 4277f035d227
+> ("coresight: trbe: Add a representative coresight_platform_data for TRBE")
+> which replaced the original function but didn't update the error check.
+> 
+> Fixes: 4277f035d227 ("coresight: trbe: Add a representative coresight_platform_data for TRBE")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> ---
+>   drivers/hwtracing/coresight/coresight-trbe.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hwtracing/coresight/coresight-trbe.c b/drivers/hwtracing/coresight/coresight-trbe.c
+> index 8267dd1a2130..caf873adfc3a 100644
+> --- a/drivers/hwtracing/coresight/coresight-trbe.c
+> +++ b/drivers/hwtracing/coresight/coresight-trbe.c
+> @@ -1279,7 +1279,7 @@ static void arm_trbe_register_coresight_cpu(struct trbe_drvdata *drvdata, int cp
+>   	 * into the device for that purpose.
+>   	 */
+>   	desc.pdata = devm_kzalloc(dev, sizeof(*desc.pdata), GFP_KERNEL);
+> -	if (IS_ERR(desc.pdata))
 
-In this scenario, after terminating the first memhog, the conditions for
-pgdat_free_space_enough() are quickly met, and triggers promotion.
-However, these migrated pages are only counted for in PGPROMOTE_SUCCESS,
-not in PGPROMOTE_CANDIDATE.
+IS_ERR_OR_NULL(desc.pdata) would be better.
 
-To solve these confusing statistics, introduce PGPROMOTE_CANDIDATE_NRL to
-count the missed promotion pages.  And also, not counting these pages into
-PGPROMOTE_CANDIDATE is to avoid changing the existing algorithm or
-performance of the promotion rate limit.
+Thanks,
+Jie
 
-Link: https://lkml.kernel.org/r/20250729035101.1601407-1-ruansy.fnst@fujitsu.com
-Co-developed-by: Li Zhijian <lizhijian@fujitsu.com>
-Signed-off-by: Ruan Shiyang <ruansy.fnst@fujitsu.com>
-Reported-by: Yasunori Gotou (Fujitsu) <y-goto@fujitsu.com>
-Suggested-by: Huang Ying <ying.huang@linux.alibaba.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-Changes since v1:
-  1. change Li Zhijian from 'Signed-off-by' to 'Co-developed-by' per Vlastimil.
-  2. add Acked-by: Vlastimil Babka <vbabka@suse.cz>
----
- include/linux/mmzone.h | 16 +++++++++++++++-
- kernel/sched/fair.c    |  5 +++--
- mm/vmstat.c            |  1 +
- 3 files changed, 19 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 0c5da9141983..9d3ea9085556 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -234,7 +234,21 @@ enum node_stat_item {
- #endif
- #ifdef CONFIG_NUMA_BALANCING
- 	PGPROMOTE_SUCCESS,	/* promote successfully */
--	PGPROMOTE_CANDIDATE,	/* candidate pages to promote */
-+	/**
-+	 * Candidate pages for promotion based on hint fault latency.  This
-+	 * counter is used to control the promotion rate and adjust the hot
-+	 * threshold.
-+	 */
-+	PGPROMOTE_CANDIDATE,
-+	/**
-+	 * Not rate-limited (NRL) candidate pages for those can be promoted
-+	 * without considering hot threshold because of enough free pages in
-+	 * fast-tier node.  These promotions bypass the regular hotness checks
-+	 * and do NOT influence the promotion rate-limiter or
-+	 * threshold-adjustment logic.
-+	 * This is for statistics/monitoring purposes.
-+	 */
-+	PGPROMOTE_CANDIDATE_NRL,
- #endif
- 	/* PGDEMOTE_*: pages demoted */
- 	PGDEMOTE_KSWAPD,
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index b173a059315c..82c8d804c54c 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -1923,11 +1923,13 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
- 		struct pglist_data *pgdat;
- 		unsigned long rate_limit;
- 		unsigned int latency, th, def_th;
-+		long nr = folio_nr_pages(folio);
- 
- 		pgdat = NODE_DATA(dst_nid);
- 		if (pgdat_free_space_enough(pgdat)) {
- 			/* workload changed, reset hot threshold */
- 			pgdat->nbp_threshold = 0;
-+			mod_node_page_state(pgdat, PGPROMOTE_CANDIDATE_NRL, nr);
- 			return true;
- 		}
- 
-@@ -1941,8 +1943,7 @@ bool should_numa_migrate_memory(struct task_struct *p, struct folio *folio,
- 		if (latency >= th)
- 			return false;
- 
--		return !numa_promotion_rate_limit(pgdat, rate_limit,
--						  folio_nr_pages(folio));
-+		return !numa_promotion_rate_limit(pgdat, rate_limit, nr);
- 	}
- 
- 	this_cpupid = cpu_pid_to_cpupid(dst_cpu, current->pid);
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index 71cd1ceba191..e74f0b2a1021 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1280,6 +1280,7 @@ const char * const vmstat_text[] = {
- #ifdef CONFIG_NUMA_BALANCING
- 	[I(PGPROMOTE_SUCCESS)]			= "pgpromote_success",
- 	[I(PGPROMOTE_CANDIDATE)]		= "pgpromote_candidate",
-+	[I(PGPROMOTE_CANDIDATE_NRL)]		= "pgpromote_candidate_nrl",
- #endif
- 	[I(PGDEMOTE_KSWAPD)]			= "pgdemote_kswapd",
- 	[I(PGDEMOTE_DIRECT)]			= "pgdemote_direct",
--- 
-2.43.0
+> +	if (!desc.pdata)
+>   		goto cpu_clear;
+>   
+>   	desc.type = CORESIGHT_DEV_TYPE_SINK;
 
 
