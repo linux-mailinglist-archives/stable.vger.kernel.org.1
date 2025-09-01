@@ -1,121 +1,169 @@
-Return-Path: <stable+bounces-176815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA5FB3DE70
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 11:28:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC23B3DE97
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 11:32:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C22631A80BD0
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 09:28:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D54C443A71
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 09:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629B430C376;
-	Mon,  1 Sep 2025 09:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D70130DEC4;
+	Mon,  1 Sep 2025 09:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ys8RH9Jg"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="duhoG9Vf"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BECB30C354;
-	Mon,  1 Sep 2025 09:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C1230DEB1
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 09:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756718645; cv=none; b=iDo4Ipkcf6i4rwoj/z1GfUbr2FMYgcsGItEqLYnLHsgZSSs4USwV/BrjS/UIJ704sCOFuD55dA89SyW2fNMX8FJ8czrPat/NfiuwgAB1Gcr8UrsvLcWBC08H7rX+UEPcOE8yidpfRnKerBRGQ8Mq+aprDqWBw+yNgJGg5r5wKNo=
+	t=1756718998; cv=none; b=LdIgCZE/gKV8Xlb5mOmC2vCZbyExAwHvfEruCEftm26UcMx9KuyesQvdsyphUQmY9SzDME+kN+Zv2YJjNhnL8WBNhBHyA74ZRhMV9mLhRgGNJbjKKfBq4MN+qArQOx5EQr9ERXHJnpe43A50eSsR2WkSvTpNd4fLg3ryeXlRV2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756718645; c=relaxed/simple;
-	bh=T+Xj0rZyysLavFO/ivCHNXIvOAG2SlkbSMufW+nOfw8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=REpUFgSWDefvjYeULUY6yTnKKcS22ZuOkJFdXiEsFKAeV5AOfWo5I03/iwraOOPLBsQ5KcCbc23GmAD8Lip5RgyrXM/ZrPzEWSl0CDo1G0SzAjLxcmFU/JGi3jeGLcNdAccTaVcGPjZ6OpSwq6Fqtzq/db+kMQhxJNCNBeX6hck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ys8RH9Jg; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756718644; x=1788254644;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=T+Xj0rZyysLavFO/ivCHNXIvOAG2SlkbSMufW+nOfw8=;
-  b=Ys8RH9JgAxyZEYP5grd7PPyuldLK41yvSkSMYXIv/6uLw/A6c38BO3FU
-   zgvKjUGcO3mWwwKOJiO1y2Gnueuz4gYsaBIYG6zdCVchanoe88BM/VI71
-   CVHa+Y3EklKXZ4f940d8KHdCA8e6+7jwUa+9NyDvbO51T6XhxgQ5EPOx8
-   SoCfq6Lrr+RsL1BDXl7mdtQr395rnIFSIa0D18e0/CUoLfElct4rzAW7U
-   t1YUIuoFHX6HNJeZM6wEeHLgYiOe7GXJRYKRuvzKcqnxOoBm+rY6T7a60
-   Fah9QoYxi/6aaqRtaMQaX4S+Xwk9LtJswaOJMNXshjI1LZHg+Ir/lOR5x
-   Q==;
-X-CSE-ConnectionGUID: 5kQZBovsQDCgdtreqDdTjA==
-X-CSE-MsgGUID: Hd8y/l1oRKm0BsONTvquHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11539"; a="58904236"
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="58904236"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 02:24:01 -0700
-X-CSE-ConnectionGUID: KnieA+JKSEuAmMEdyCnOEg==
-X-CSE-MsgGUID: 1RoFlB6oTXagl4Ix4oEuLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="171823134"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 02:23:58 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1ut0lW-0000000AN9U-3oYK;
-	Mon, 01 Sep 2025 12:23:54 +0300
-Date: Mon, 1 Sep 2025 12:23:54 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Gabor Juhos <j4g8y7@gmail.com>
-Cc: Wolfram Sang <wsa@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>, Hanna Hawa <hhhawa@amazon.com>,
-	Robert Marko <robert.marko@sartura.hr>,
-	Linus Walleij <linus.walleij@linaro.org>, linux-i2c@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Imre Kaloz <kaloz@openwrt.org>
-Subject: Re: [PATCH v3 0/2] i2c: pxa: fix I2C communication on Armada 3700
-Message-ID: <aLVmKrxEzYgbMUQU@smile.fi.intel.com>
-References: <20250827-i2c-pxa-fix-i2c-communication-v3-0-052c9b1966a2@gmail.com>
+	s=arc-20240116; t=1756718998; c=relaxed/simple;
+	bh=qZJxbmaqGWsy4atFe2P3rGVqkuLG6BlTXh6WeAcAyhU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 References; b=Aws2wGG8AiIWTiGOuvCnFg8NFXJXKPjNk4rEEXCY4atvZKWUBFRm+uKNUz1Ans1+0i6Xq1e0oeTjud+5Pm1wEJldFK6MzI0Trlkb47PPmIsLekehhxRBdiyvHE/dNOuVxvgPK5gdWrORDO/EYnMJ5v0TK+KbIh27I/5XQMt+unU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=duhoG9Vf; arc=none smtp.client-ip=203.254.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250901092952epoutp0499d8cd492f2035582eff6e41f95f16da~hHp3LK27z0566705667epoutp04J
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 09:29:52 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250901092952epoutp0499d8cd492f2035582eff6e41f95f16da~hHp3LK27z0566705667epoutp04J
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1756718992;
+	bh=74Q1v6jsTAK/snjr8Bol8mkXpMT6PrDDB7mwBUaLBDo=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=duhoG9Vfo9MZOdJwEUweOVti6TF5ssKEaXuBHMXGEot2BY0fWmc9P0IBHlRSrsThv
+	 tOpfjQieTm9YhADMDRenITqN/7yWck6ARrjqndgd8fQjNwztCOUxyzUKyQJx9D9emj
+	 vhEPYe+CdkbzK61hgNNRDZTZLN/WrKt0Lsvg300o=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20250901092952epcas5p15f9c1d6b59500aeac07e20af90cad9f6~hHp20veHp1370913709epcas5p13;
+	Mon,  1 Sep 2025 09:29:52 +0000 (GMT)
+Received: from epcas5p3.samsung.com (unknown [182.195.38.86]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4cFk9W4mCWz2SSKY; Mon,  1 Sep
+	2025 09:29:51 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+	20250901092950epcas5p35accdcb60fe3ba58772289058a12f8a1~hHp1a6Xqt2257322573epcas5p34;
+	Mon,  1 Sep 2025 09:29:50 +0000 (GMT)
+Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20250901092949epsmtip23b4ed2198fb6b60b6d40969701766613~hHpz3yNss1644216442epsmtip2H;
+	Mon,  1 Sep 2025 09:29:49 +0000 (GMT)
+From: Shashank A P <shashank.ap@samsung.com>
+To: jack@suse.com, linux-kernel@vger.kernel.org
+Cc: shadakshar.i@samsung.com, thiagu.r@samsung.com, hy50.seo@samsung.com,
+	kwangwon.min@samsung.com, alim.akhtar@samsung.com, h10.kim@samsung.com,
+	kwmad.kim@samsung.com, selvarasu.g@samsung.com, Shashank A P
+	<shashank.ap@samsung.com>, stable@vger.kernel.org
+Subject: [PATCH] fs: quota: create dedicated workqueue for
+ quota_release_work
+Date: Mon,  1 Sep 2025 14:59:00 +0530
+Message-ID: <20250901092905.2115-1-shashank.ap@samsung.com>
+X-Mailer: git-send-email 2.46.0.windows.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250827-i2c-pxa-fix-i2c-communication-v3-0-052c9b1966a2@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250901092950epcas5p35accdcb60fe3ba58772289058a12f8a1
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20250901092950epcas5p35accdcb60fe3ba58772289058a12f8a1
+References: <CGME20250901092950epcas5p35accdcb60fe3ba58772289058a12f8a1@epcas5p3.samsung.com>
 
-On Wed, Aug 27, 2025 at 07:13:57PM +0200, Gabor Juhos wrote:
-> There is a long standing bug which causes I2C communication not to
-> work on the Armada 3700 based boards. The first patch in the series
-> fixes that regression. The second patch improves recovery to make it
-> more robust which helps to avoid communication problems with certain
-> SFP modules.
+There is a kernel panic due to WARN_ONCE when panic_on_warn is set.
 
-...
+This issue occurs when writeback is triggered due to sync call for an
+opened file(ie, writeback reason is WB_REASON_SYNC). When f2fs balance
+is needed at sync path, flush for quota_release_work is triggered.
+By default quota_release_work is queued to "events_unbound" queue which
+does not have WQ_MEM_RECLAIM flag. During f2fs balance "writeback"
+workqueue tries to flush quota_release_work causing kernel panic due to
+MEM_RECLAIM flag mismatch errors.
 
->   - remove Imre's tag from the cover letter, and replace his SoB tag to
->     Reviewed-by in the individual patches
+This patch creates dedicated workqueue with WQ_MEM_RECLAIM flag
+for work quota_release_work.
 
-Note, this can be automated with `b4`.
+------------[ cut here ]------------
+WARNING: CPU: 4 PID: 14867 at kernel/workqueue.c:3721 check_flush_dependency+0x13c/0x148
+Call trace:
+ check_flush_dependency+0x13c/0x148
+ __flush_work+0xd0/0x398
+ flush_delayed_work+0x44/0x5c
+ dquot_writeback_dquots+0x54/0x318
+ f2fs_do_quota_sync+0xb8/0x1a8
+ f2fs_write_checkpoint+0x3cc/0x99c
+ f2fs_gc+0x190/0x750
+ f2fs_balance_fs+0x110/0x168
+ f2fs_write_single_data_page+0x474/0x7dc
+ f2fs_write_data_pages+0x7d0/0xd0c
+ do_writepages+0xe0/0x2f4
+ __writeback_single_inode+0x44/0x4ac
+ writeback_sb_inodes+0x30c/0x538
+ wb_writeback+0xf4/0x440
+ wb_workfn+0x128/0x5d4
+ process_scheduled_works+0x1c4/0x45c
+ worker_thread+0x32c/0x3e8
+ kthread+0x11c/0x1b0
+ ret_from_fork+0x10/0x20
+Kernel panic - not syncing: kernel: panic_on_warn set ...
 
-	# Start a new branch of the same base
-	git checkout -b v3 ...
-	# Apply last version from the mailing list
-	b4 am $MESSAGE_ID_OF_v2
-	# Do actual development of v3
-	...
+Fixes: ac6f420291b3 ("quota: flush quota_release_work upon quota writeback")
+CC: stable@vger.kernel.org
+Signed-off-by: Shashank A P <shashank.ap@samsung.com>
+---
+ fs/quota/dquot.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-Also you can do more with `b4 relay`, but I haven't tried it, so I don't know
-if it makes it possible or better.
-
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index df4a9b348769..d0f83a0c42df 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -162,6 +162,9 @@ static struct quota_module_name module_names[] = INIT_QUOTA_MODULE_NAMES;
+ /* SLAB cache for dquot structures */
+ static struct kmem_cache *dquot_cachep;
+ 
++/* workqueue for work quota_release_work*/
++struct workqueue_struct *quota_unbound_wq;
++
+ void register_quota_format(struct quota_format_type *fmt)
+ {
+ 	spin_lock(&dq_list_lock);
+@@ -881,7 +884,7 @@ void dqput(struct dquot *dquot)
+ 	put_releasing_dquots(dquot);
+ 	atomic_dec(&dquot->dq_count);
+ 	spin_unlock(&dq_list_lock);
+-	queue_delayed_work(system_unbound_wq, &quota_release_work, 1);
++	queue_delayed_work(quota_unbound_wq, &quota_release_work, 1);
+ }
+ EXPORT_SYMBOL(dqput);
+ 
+@@ -3041,6 +3044,11 @@ static int __init dquot_init(void)
+ 
+ 	shrinker_register(dqcache_shrinker);
+ 
++	quota_unbound_wq = alloc_workqueue("quota_events_unbound",
++					   WQ_UNBOUND | WQ_MEM_RECLAIM, WQ_MAX_ACTIVE);
++	if (!quota_unbound_wq)
++		panic("Cannot create quota_unbound_wq\n");
++
+ 	return 0;
+ }
+ fs_initcall(dquot_init);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
 
