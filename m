@@ -1,395 +1,145 @@
-Return-Path: <stable+bounces-176804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDBBB3DCE3
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:46:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD0DB3DCF8
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:49:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D5537ADB8A
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:44:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B33CA7A1EAB
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A8F2FE592;
-	Mon,  1 Sep 2025 08:46:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="D2kygCGl";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="wd192ord";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="D2kygCGl";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="wd192ord"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E412FE56D;
+	Mon,  1 Sep 2025 08:48:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766292FE068;
-	Mon,  1 Sep 2025 08:46:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45572FB99B;
+	Mon,  1 Sep 2025 08:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756716378; cv=none; b=MFjsvdnYOflIegmBUUMOX80Qz8NpyhfXwkNY+E4U6f124JfbLLb7Kf8/n/klXATMPGDxBj9pijdvTLXB2hZbwgH7r5Y4a/SPHPO6fbTDFFAIO7oYbm1HE1Pb92cUe36D2o8BxS8sM9hUlN9dFVKPf7Hmephal5kdKQ+yAzMcLVY=
+	t=1756716537; cv=none; b=NWKZ+ZAW11YgGOhwn2l6O0V+nwvjSUt1+GihtanbrRH/TOhxbE2nF1zwERFsqKLdvQuciWcgpQ/kr4+X4rXLP4/YueZpwyO0prJoCOnDVr2VhxM+0jQqB6DjSbnD7csE2CiFrfxTOoF/f/hQSOpoXaqPC1/6f/JnzVtiWboZMGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756716378; c=relaxed/simple;
-	bh=C5w4bDLt6cXypSVDcIbljs9SBt/bo/XDsluQD8ZIOJ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MAXXq9f+5wuD2sGns+17EkovogkbX6Tjn2jOJeNcPW4aCT9rGNdapcEwcXhwxPyfVSvkDQWqdhzYrA2boDjSDkQHBnXwNj+MzDTOQiYulpRM7AtNKVfNKTLrVNWOJyQhO2pp970DyFpXln0jmPqLEAPMjzTGXYB7TSyEq41kIgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=D2kygCGl; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=wd192ord; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=D2kygCGl; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=wd192ord; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 699C8211CC;
-	Mon,  1 Sep 2025 08:46:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756716374; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7Q86hpfGSgj8G2VobCdpf5XaVDOntwogaH4eosMO5QM=;
-	b=D2kygCGlMOBUyc4KGcqkNdFxDuICVU4luwj+dCGmzIwQGSDapoWvPmDKcAP7EwrB32Dpi+
-	YyIaO97+tBdJiAK5pMLtxnS4RfOkhcJFvIoJN4m/bAzvgKAvtNd+XbgAf//TKYwEXUy8kf
-	IunEGyLyaL3e4liMixwoQ2XSr4gTtLo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756716374;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7Q86hpfGSgj8G2VobCdpf5XaVDOntwogaH4eosMO5QM=;
-	b=wd192ordSKJwEnTfQGm6oLt/dtVj0CzpofkMehpeKk8K89wtasgVHiR0/s9lV9AlDC3y9X
-	baqf6ueZTa1ZFBCw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=D2kygCGl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wd192ord
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756716374; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7Q86hpfGSgj8G2VobCdpf5XaVDOntwogaH4eosMO5QM=;
-	b=D2kygCGlMOBUyc4KGcqkNdFxDuICVU4luwj+dCGmzIwQGSDapoWvPmDKcAP7EwrB32Dpi+
-	YyIaO97+tBdJiAK5pMLtxnS4RfOkhcJFvIoJN4m/bAzvgKAvtNd+XbgAf//TKYwEXUy8kf
-	IunEGyLyaL3e4liMixwoQ2XSr4gTtLo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756716374;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7Q86hpfGSgj8G2VobCdpf5XaVDOntwogaH4eosMO5QM=;
-	b=wd192ordSKJwEnTfQGm6oLt/dtVj0CzpofkMehpeKk8K89wtasgVHiR0/s9lV9AlDC3y9X
-	baqf6ueZTa1ZFBCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 23F89136ED;
-	Mon,  1 Sep 2025 08:46:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id PWRbCFZdtWg5YQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 01 Sep 2025 08:46:14 +0000
-Message-ID: <c85034fe-d48e-4433-8c65-52bfb1d5d69b@suse.cz>
-Date: Mon, 1 Sep 2025 10:46:13 +0200
+	s=arc-20240116; t=1756716537; c=relaxed/simple;
+	bh=8MZNME6CUICip8YLriqh73EGkN+aVtZ5jOj2xggld9E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X5SCuS2D3hEd/l7wZCexH9umwawxjAXRga3SB7rJuLwy5gFMSKPwld1JM8SBah66bmnzj6V6k+hsBhQNWOKdkCScb+U8ubPwqsWJ/8I4lb4JVfCJZ0NTJiyuBYkXkzobmUFVyG4ZTpSaw+Q8LymEuNUiP5jnvDflKh1TlBQZ87E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-523264ecab8so1373478137.2;
+        Mon, 01 Sep 2025 01:48:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756716534; x=1757321334;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=06Sj7xDyFNchhNG4bIMKlTkghy/c7Pe7YTc3T5dsw5o=;
+        b=WVQQ3lc8zJPPPyy2NlorQVG61HloSG5ye0vy0UFHz8lcEwEDNHpZdNqAdi+66mvpX+
+         w/yQXxU8NCpwqfyP6CEG8tBpkjOGFClV4x9dQ7Oi0bID+kttYRV1FcrrnS3F5/Ui1k2+
+         hfqf8MwwrgOX+HiiSFD0Y72aPrhOvKVixadsFU45BabSIG6igNULELjpD+q3keak9Yag
+         LCTB9cD+adKZyQQO1o6ym98zQn7I6OzFO2QeFMSnLx0To8ZTkzp8XJloHv77fpPAQhm3
+         2uBXoYGJIDklC2ZHFwcPn01tpWp2cfL6HkZIlRlAy9MMiA1GkhQIvCPT5FJtDg2iXUs9
+         aw2A==
+X-Forwarded-Encrypted: i=1; AJvYcCWK7rCJMFlIE3P38rzQpbe40rZyj3Dr55jK86GSFHAlXeRmuFEkba6BfLAXLOgmmJOHJtqoUUODzgaI2WY=@vger.kernel.org, AJvYcCXtwf/gavrTDR3jShQfYn5FS8eVcbP9V/j5/Y84QHeJOF518Bv+0+MgYZNIsXkWjp7cq5ds9YK+@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbC5mnDtLMZeKzxFyZw+yi8GgXu+G7hX5+Ajjje2Cir2M9W7H4
+	HmRlX0asR7SYvgSQKOP0ZDvR7WUmC+RsCvdm9+C+s+HtjP6a030y/46izVBABYE7
+X-Gm-Gg: ASbGncvddAyPCwZK4vy9RYn4odPRdXuzA0zS+DEn8ufS1S3ZwN8bA7bnpbL5mClaZDS
+	uOKRcq+COOTx/vwWs9Tz4WQ8FFgVQa76BhnHMXV77eAKq8AUM+WAl7K0chvbMLdS9Omf6ZHwJmR
+	/I68GjvqNtYYGzKRJ/8jAAudqYyGDwiRhNZjvFpNM7wDpMjJNd62P7WaJjlQj4N7yLygvxpXPa3
+	mZl2NRURXMgFvpvlJ20fm0FDhNWLqKFLtCTqI7IsdXhDY9+utz6Heiri/ZX2A2by3/S2A1LibSu
+	pDyjdSXRuMQTj8TxxJPB0UV/tfj3rCUlz2Qnq3DXa4yHqSsHwYc6HBjFcoG1tMuQeAte3GF2cYE
+	9zwdJp5XUim2GmX+TDQQ2IujMb+3MGyCBtgLSS+A0EgRCO78gBGYzsgJB/51G6NbRFaAT/Pw=
+X-Google-Smtp-Source: AGHT+IEOCgWGLP4sjICEfqdw0ujKRIpJg3pSeRWeRRH0PN6TMJRAZ8urdVTRfJF2bFHmCn9j0j6oPw==
+X-Received: by 2002:a05:6102:d90:b0:521:760c:7aa5 with SMTP id ada2fe7eead31-52b1c14162fmr1363766137.33.1756716534386;
+        Mon, 01 Sep 2025 01:48:54 -0700 (PDT)
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com. [209.85.217.53])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-8943ba52cb1sm3503112241.11.2025.09.01.01.48.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Sep 2025 01:48:54 -0700 (PDT)
+Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-529858dc690so871132137.0;
+        Mon, 01 Sep 2025 01:48:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU6XrA+5UAhUKIwomGfVkH8IbhW4GMF8R0iSKmu+ioI3f7CsiRfntYVqC118gyIYWeXEnRXTqp1@vger.kernel.org, AJvYcCVwjCRyBFb8H0HiusGKvXKMIyEUVnDU4hHSSde0zBl8PtiVhstTd2u0pdxkOMSZQIWa6NjU/KJB28DYirU=@vger.kernel.org
+X-Received: by 2002:a05:6102:41a6:b0:521:ed06:1fd2 with SMTP id
+ ada2fe7eead31-52b1b2ee877mr1843595137.16.1756716533551; Mon, 01 Sep 2025
+ 01:48:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: slub: avoid wake up kswapd in set_track_prepare
-Content-Language: en-US
-To: yangshiguang <yangshiguang1011@163.com>
-Cc: David Rientjes <rientjes@google.com>, harry.yoo@oracle.com,
- akpm@linux-foundation.org, cl@gentwo.org, roman.gushchin@linux.dev,
- glittao@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- yangshiguang <yangshiguang@xiaomi.com>, stable@vger.kernel.org
-References: <20250830020946.1767573-1-yangshiguang1011@163.com>
- <c8f6933e-f733-4f86-c09d-8028ad862f33@google.com>
- <7f30ddd1-c6f7-4b2b-a2b9-875844092e28@suse.cz>
- <11922bd5.7fae.1990464d9c8.Coremail.yangshiguang1011@163.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <11922bd5.7fae.1990464d9c8.Coremail.yangshiguang1011@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FREEMAIL_ENVRCPT(0.00)[163.com,gmail.com];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[google.com,oracle.com,linux-foundation.org,gentwo.org,linux.dev,gmail.com,kvack.org,vger.kernel.org,xiaomi.com];
-	FREEMAIL_TO(0.00)[163.com];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid,suse.cz:dkim,suse.cz:email];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 699C8211CC
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
+References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
+ <20250825032743.80641-1-ioworker0@gmail.com> <c8851682-25f1-f594-e30f-5b62e019d37b@linux-m68k.org>
+ <96ae7afc-c882-4c3d-9dea-3e2ae2789caf@linux.dev> <5a44c60b-650a-1f8a-d5cb-abf9f0716817@linux-m68k.org>
+ <4e7e7292-338d-4a57-84ec-ae7427f6ad7c@linux.dev> <20250825130715.3a1141ed@pumpkin>
+In-Reply-To: <20250825130715.3a1141ed@pumpkin>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 1 Sep 2025 10:48:42 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXg=0Q9e1O6W0Gp+fPoP8-5VQ-2fGGg54w=seaqF9H8PQ@mail.gmail.com>
+X-Gm-Features: Ac12FXwFWUyxJ4HiRdR2QeiyJ2opGZhBZBrlHhDkBBM4NfQKlaUcE6HKYkXz9Yk
+Message-ID: <CAMuHMdXg=0Q9e1O6W0Gp+fPoP8-5VQ-2fGGg54w=seaqF9H8PQ@mail.gmail.com>
+Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Lance Yang <lance.yang@linux.dev>, Finn Thain <fthain@linux-m68k.org>, 
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org, mhiramat@kernel.org, 
+	oak@helsinkinet.fi, peterz@infradead.org, stable@vger.kernel.org, 
+	will@kernel.org, Lance Yang <ioworker0@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 9/1/25 10:29, yangshiguang wrote:
-> 
-> 
-> At 2025-09-01 16:15:04, "Vlastimil Babka" <vbabka@suse.cz> wrote:
->>On 9/1/25 09:50, David Rientjes wrote:
->>> On Sat, 30 Aug 2025, yangshiguang1011@163.com wrote:
->>> 
->>>> From: yangshiguang <yangshiguang@xiaomi.com>
->>>> 
->>>> From: yangshiguang <yangshiguang@xiaomi.com>
->>>> 
->>> 
->>> Duplicate lines.
->>> 
->>>> set_track_prepare() can incur lock recursion.
->>>> The issue is that it is called from hrtimer_start_range_ns
->>>> holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
->>>> CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
->>>> and try to hold the per_cpu(hrtimer_bases)[n].lock.
->>>> 
->>>> Avoid deadlock caused by implicitly waking up kswapd by
->>>> passing in allocation flags. And the slab caller context has
->>>> preemption disabled, so __GFP_KSWAPD_RECLAIM must not appear in gfp_flags.
->>>> 
->>> 
->>> This mentions __GFP_KSWAPD_RECLAIM, but the patch actually masks off 
->>> __GFP_DIRECT_RECLAIM which would be a heavierweight operation.  Disabling 
->>> direct reclaim does not necessarily imply that kswapd will be disabled as 
->>> well.
->>
->>Yeah I think the changelog should say __GFP_DIRECT_RECLAIM.
->>
->>> Are you meaning to clear __GFP_RECLAIM in set_track_prepare()?
->>
->>No because if the context context (e.g. the hrtimers) can't support
->>__GFP_KSWAPD_RECLAIM it won't have it in gfp_flags and we now pass them to
-> 
->>set_track_prepare() so it already won't be there.
-> 
-> 
-> Sry. Should be __GFP_DIRECT_RECLAIM. I will resend the patch.
+Hi David,
 
-I have adjusted it locally already. Also moved the masking of
-__GFP_DIRECT_RECLAIM to ___slab_alloc itself as that's where
-the preemption is disabled so it's more obvious.
+On Mon, 25 Aug 2025 at 14:07, David Laight <david.laight.linux@gmail.com> wrote:
+> On Mon, 25 Aug 2025 15:46:42 +0800
+> Lance Yang <lance.yang@linux.dev> wrote:
+> > On 2025/8/25 14:17, Finn Thain wrote:
+> > > On Mon, 25 Aug 2025, Lance Yang wrote:
+> > >> What if we squash the runtime check fix into your patch?
+> > >
+> > > Did my patch not solve the problem?
+> >
+> > Hmm... it should solve the problem for natural alignment, which is a
+> > critical fix.
+> >
+> > But it cannot solve the problem of forced misalignment from drivers using
+> > #pragma pack(1). The runtime warning will still trigger in those cases.
+> >
+> > I built a simple test module on a kernel with your patch applied:
+> >
+> > ```
+> > #include <linux/module.h>
+> > #include <linux/init.h>
+> >
+> > struct __attribute__((packed)) test_container {
+> >      char padding[49];
+> >      struct mutex io_lock;
+> > };
+> >
+> > static int __init alignment_init(void)
+> > {
+> >      struct test_container cont;
+> >      pr_info("io_lock address offset mod 4: %lu\n", (unsigned long)&cont.io_lock % 4);
+>
+> Doesn't that give a compilation warning from 'taking the address of a packed member'?
+> Ignore that at your peril.
+>
+> More problematic is that, IIRC, m68k kmalloc() allocates 16bit aligned memory.
+> This has broken other things in the past.
 
-Does the result look good to you?
+Really? AFAIK it always returns memory that is at least aligned to the
+cache line size (i.e. 16 bytes on m68k). So perhaps you are confusing
+"16bit" with "16byte"?
 
-commit 1b7052bc536650f8ca29b4f6f8682dc9f5692d16
-Author: yangshiguang <yangshiguang@xiaomi.com>
-Date:   Sat Aug 30 10:09:46 2025 +0800
+Gr{oetje,eeting}s,
 
-    mm: slub: avoid wake up kswapd in set_track_prepare
-    
-    set_track_prepare() can incur lock recursion.
-    The issue is that it is called from hrtimer_start_range_ns
-    holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
-    CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
-    and try to hold the per_cpu(hrtimer_bases)[n].lock.
-    
-    Avoid deadlock caused by implicitly waking up kswapd by passing in
-    allocation flags, which do not contain __GFP_KSWAPD_RECLAIM in the
-    debug_objects_fill_pool() case.
-    Since ___slab_alloc() has preemption disabled and thus was using
-    GFP_NOWAIT, we instead mask out __GFP_DIRECT_RECLAIM from the flags.
-    
-    The oops looks something like:
-    
-    BUG: spinlock recursion on CPU#3, swapper/3/0
-     lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
-    Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
-    Call trace:
-    spin_bug+0x0
-    _raw_spin_lock_irqsave+0x80
-    hrtimer_try_to_cancel+0x94
-    task_contending+0x10c
-    enqueue_dl_entity+0x2a4
-    dl_server_start+0x74
-    enqueue_task_fair+0x568
-    enqueue_task+0xac
-    do_activate_task+0x14c
-    ttwu_do_activate+0xcc
-    try_to_wake_up+0x6c8
-    default_wake_function+0x20
-    autoremove_wake_function+0x1c
-    __wake_up+0xac
-    wakeup_kswapd+0x19c
-    wake_all_kswapds+0x78
-    __alloc_pages_slowpath+0x1ac
-    __alloc_pages_noprof+0x298
-    stack_depot_save_flags+0x6b0
-    stack_depot_save+0x14
-    set_track_prepare+0x5c
-    ___slab_alloc+0xccc
-    __kmalloc_cache_noprof+0x470
-    __set_page_owner+0x2bc
-    post_alloc_hook[jt]+0x1b8
-    prep_new_page+0x28
-    get_page_from_freelist+0x1edc
-    __alloc_pages_noprof+0x13c
-    alloc_slab_page+0x244
-    allocate_slab+0x7c
-    ___slab_alloc+0x8e8
-    kmem_cache_alloc_noprof+0x450
-    debug_objects_fill_pool+0x22c
-    debug_object_activate+0x40
-    enqueue_hrtimer[jt]+0xdc
-    hrtimer_start_range_ns+0x5f8
-    ...
-    
-    Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
-    Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
-    Cc: stable@vger.kernel.org
-    Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+                        Geert
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 1787e4d51e48..d257141896c9 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -962,19 +962,19 @@ static struct track *get_track(struct kmem_cache *s, void *object,
- }
- 
- #ifdef CONFIG_STACKDEPOT
--static noinline depot_stack_handle_t set_track_prepare(void)
-+static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
- {
- 	depot_stack_handle_t handle;
- 	unsigned long entries[TRACK_ADDRS_COUNT];
- 	unsigned int nr_entries;
- 
- 	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
--	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
-+	handle = stack_depot_save(entries, nr_entries, gfp_flags);
- 
- 	return handle;
- }
- #else
--static inline depot_stack_handle_t set_track_prepare(void)
-+static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
- {
- 	return 0;
- }
-@@ -996,9 +996,9 @@ static void set_track_update(struct kmem_cache *s, void *object,
- }
- 
- static __always_inline void set_track(struct kmem_cache *s, void *object,
--				      enum track_item alloc, unsigned long addr)
-+				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
- {
--	depot_stack_handle_t handle = set_track_prepare();
-+	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
- 
- 	set_track_update(s, object, alloc, addr, handle);
- }
-@@ -1926,9 +1926,9 @@ static inline bool free_debug_processing(struct kmem_cache *s,
- static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
- static inline int check_object(struct kmem_cache *s, struct slab *slab,
- 			void *object, u8 val) { return 1; }
--static inline depot_stack_handle_t set_track_prepare(void) { return 0; }
-+static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
- static inline void set_track(struct kmem_cache *s, void *object,
--			     enum track_item alloc, unsigned long addr) {}
-+			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
- static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
- 					struct slab *slab) {}
- static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
-@@ -3881,9 +3881,14 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- 			 * For debug caches here we had to go through
- 			 * alloc_single_from_partial() so just store the
- 			 * tracking info and return the object.
-+			 *
-+			 * Due to disabled preemption we need to disallow
-+			 * blocking. The flags are further adjusted by
-+			 * gfp_nested_mask() in stack_depot itself.
- 			 */
- 			if (s->flags & SLAB_STORE_USER)
--				set_track(s, freelist, TRACK_ALLOC, addr);
-+				set_track(s, freelist, TRACK_ALLOC, addr,
-+					  gfpflags & ~(__GFP_DIRECT_RECLAIM));
- 
- 			return freelist;
- 		}
-@@ -3915,7 +3920,8 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- 			goto new_objects;
- 
- 		if (s->flags & SLAB_STORE_USER)
--			set_track(s, freelist, TRACK_ALLOC, addr);
-+			set_track(s, freelist, TRACK_ALLOC, addr,
-+				  gfpflags & ~(__GFP_DIRECT_RECLAIM));
- 
- 		return freelist;
- 	}
-@@ -4426,8 +4432,12 @@ static noinline void free_to_partial_list(
- 	unsigned long flags;
- 	depot_stack_handle_t handle = 0;
- 
-+	/*
-+	 * We cannot use GFP_NOWAIT as there are callsites where waking up
-+	 * kswapd could deadlock
-+	 */
- 	if (s->flags & SLAB_STORE_USER)
--		handle = set_track_prepare();
-+		handle = set_track_prepare(__GFP_NOWARN);
- 
- 	spin_lock_irqsave(&n->list_lock, flags);
- 
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
