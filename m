@@ -1,368 +1,265 @@
-Return-Path: <stable+bounces-176892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0876B3ECDA
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 19:02:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 300F9B3ECEF
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 19:06:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AE251B2112E
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 17:02:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A64E3AA55B
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 17:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838EC30F800;
-	Mon,  1 Sep 2025 17:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B79530E831;
+	Mon,  1 Sep 2025 17:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E+CnUrBE"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Jl6ar1YI"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2063.outbound.protection.outlook.com [40.107.244.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0E61E1E16;
-	Mon,  1 Sep 2025 17:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B182EC093;
+	Mon,  1 Sep 2025 17:05:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.63
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756746135; cv=fail; b=VX4zZPebpUPo6rJNzfer9W2sznGlN/SzHvZaxSw6wi1tVMHbUUiVmssRgkMIKmtAmM4n64mKUjMlslyRdEp50PACR4p3lZD2Jg2AIQh0FwiQvheHWR5hf0C69SC1TkPW6ckw+4BdHMp48kkYvkAW2ZxUe/oyfEhylbCeXT65iiY=
+	t=1756746330; cv=fail; b=UTujHGL4OFmHv8XWfS+nnHKPQUjSYLJ7CIQ6UECgsamftVe81PXFUAaJFpfHIAYIxQzXC03TjCygFxCAz/IkViHhuM1ykFgVKAY/MIv/3TdNO1vfyqBv3XzrcRvwRFSboycnqLMAB1jKWd2QRlVHppeOlw5tX8V+Vvm7xRLbnJY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756746135; c=relaxed/simple;
-	bh=ruFuNUk+xtwRvAUuonf5KQRO/vaCENqLupPXzYsNPPs=;
-	h=Message-ID:Date:From:Subject:To:CC:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ipYKETcRtROOAONqqjJIFj48jLJ1zYlFjVOZERAt7Alq2/jAhXv2zsGlpCMbfQmF7fjhvFHteUlZvlWFuFEzqdDQ/zAqSAIg6TlvMDCRCOVivIbeanx8ic7o29v4FlB5ULOcBxPl3Hcu3TLFEfevA9eAveP0rkJmX8S/5mQOpow=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E+CnUrBE; arc=fail smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756746133; x=1788282133;
-  h=message-id:date:from:subject:to:cc:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=ruFuNUk+xtwRvAUuonf5KQRO/vaCENqLupPXzYsNPPs=;
-  b=E+CnUrBEjsalJ1pM8z7D8cw8BiwZ5ggWkYOPjFvX+HJd7t4XjD6L6Fx/
-   a5IaFqti0Rs4S/hx41v6UWAotqdtl5LcGUPZxKyt3iqltQJTTCxYhExEK
-   I34DYeNpp1HsFJ2HglKPy0cUnEBbUd2Wags6SwsstbbOnVxwPZydMdC54
-   oq/lHKNOYgfJ7WMlKnZev1jj4ltq2FOseDATPzEhK/oSlcZW5JVZFCVP5
-   U07DFEJH8zGoX3Wltkgx4fmVnJRczpWr7rc0H6/6ZF8jGE5J0w3zq8wI0
-   /zYLMjwZalSG85pvt3EF5yjvo8WNnE2il0fi4KOTShRw1VhW3HLOk74Vu
-   w==;
-X-CSE-ConnectionGUID: drmhsME/T2qXEJdxgvoW1g==
-X-CSE-MsgGUID: jjxh43YHSMybHgxoPgEtxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62842206"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="62842206"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 10:02:12 -0700
-X-CSE-ConnectionGUID: YQrEZIq1RMqaeBi8HYf9mA==
-X-CSE-MsgGUID: zlROMWE4RYaVsFmAfaSHTQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="171511936"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 10:02:11 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 1 Sep 2025 10:02:10 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Mon, 1 Sep 2025 10:02:10 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (40.107.223.89)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 1 Sep 2025 10:02:10 -0700
+	s=arc-20240116; t=1756746330; c=relaxed/simple;
+	bh=tCj3io+qFtqAw9nPIR4o18EbCofK0eHZTbckD2650tk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nf9pLifmYsDDf0esWYkK5n1bmeq1T6sYYR2OJ46iATUH2j6ADAyBr9i2tnm8fJjqfOxb8U4cMym1XzRfnxj3eJFKp+tBhPR8sknPxCXq9fypEojYGtb9ozfP7uwj3KKRwe+MV0klrRHgxCAi/ZWWew2UzIeYF3dZ0Hqcj4TxeP0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Jl6ar1YI; arc=fail smtp.client-ip=40.107.244.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pBVt/LuGINBKIIxWMDdqZU3S3UmTCX/dtTUNIr+2f/sj1ZJorBvu+1WDmbstO0SunztQK7+bNuNZmFqMVbFJFkhfHYWnnGCdvHTVrQ3BpKMIxTIMw4+CIRR2ZFuGxuYRUNoWOoRhDQ4f5f2jc4d29Y79JJ5mzYBGCzhFX4a97opgCWxHAgns000CevNYiCOuAoDG5L/GuYF67I4D70SubAf6HGb7XEw5E0tn6ED+jaUfFBLVRfYc2ADpuKG7cgW4JWP4yk9rt3XAeKXj3fUCF6vcSsf1hLWHoomZqBl/tOks9dxGYhYITpwXuX+H7LEboqQzzf2R1UY6xgFLCacoUA==
+ b=t2Xt2hxQiMsBqJ/ZGbZS/SXZzhT9Bjkk6lrjGc5D/LlvFeP2byMAUcakW91ApjFYr215X+xl7sSNQD8CrpwpSDJKgr98bLFT3boKk4OWjGrN4y3bpizga9RLXdTFE098FO2VVbWtxopN05BfftXJKyoIq3oGkMFAHfg2OfiSk6LOgLJ7RmaGjqbOiu+D7ynuLrvUhEmaxp2LsRoPQaVDWmy/CH4vTKpM1WiLMvgENBK4OKb9dSRmrD+9bItcVrQK6mHzKJBqskxftBxL2wyasnOZn3IVPGQ3q88w/FzjrJkYNTXjfhWeVAI6dhFcJ8B02LZdg89fNFc5F2R4zeH7Ag==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DOQu8GriSFX5btBw4av8ObYxpJsFnu+mSCmPi8koOAc=;
- b=Yvu91YLtZOc8T1uSI6CTMWyz4P3gcPq8M6bW3vXBjFPucVzSFB9y3twXCBR1HjiAqlzxMRG3k0ipiE08hujR57SmkmKWHvP+ReoWjTOd/Z4hO9gi8rIGMnUdzIVcdEXqNEFOTqcSjtTgOqs8NsCde1kz+4cC3v+rzSzuh5cyAPdDpa3jjckqIjJejNY14DAMaPpcqPHzc2xLB9I/f93w8ZLn9oOuQ/J6DVZjtZTUmMPbeql1tlFNbVfmjTbm2jtpzfBlb5YvjQL21sFAek1mW/coHJWOcBqhdqrDzI8tGJMreoghNHM+0SgZAYz5kNZ/cP9SRRqsrro5us7ZEbLTZg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA1PR11MB7198.namprd11.prod.outlook.com (2603:10b6:208:419::15)
- by DS0PR11MB8069.namprd11.prod.outlook.com (2603:10b6:8:12c::20) with
+ bh=g67+snDWidgrFUtRguvPu9bEEB3z9QFen2ZN+1WmWto=;
+ b=JzrIFRObyQZ0aG1HSQ+IIE1C+ltY42P6MzHMM/hvgaL5yftQyBlosNq7psihrNs/umvcz0faSIj/GcpuMNR71uL172DpcDcngNVD9cmsz/bKUuNWJWUTLXXDQQDueCRjb6NwNQYm95JZbXMf7pqmSIWsL80tYngzMlvIPzPVJOh1oi7JztYCXSMl06VEglYVcLeVjGtsiKQnbUY3tFg7YkgeB24O70+B7G7caVsu3VQLd0eDRF1rQe+aqzYJzdIzmVKkP6gQRuqhTuhO9oqC5f1eyyJBMuMuVSoT6E+YxdB0X/AVLZud4NE42dfFQW+xkUkD+RWntUmHA+Q9NYed/w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linutronix.de smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=g67+snDWidgrFUtRguvPu9bEEB3z9QFen2ZN+1WmWto=;
+ b=Jl6ar1YITcxdHnqF1W2Fu1MkzP/HRIIlfX/NP6DhUmKERs2ZY9JiwQPeTG69bJEpfcijEhQ5CaXL88uyELmovIpEBTGAAZi5ipFVoyL5313IRp7rO97LydeEp+UYRcZ2y5il7ygKdSyc4iVxoxVqnaTVFxLw266KXGw0VR6yYQ8=
+Received: from BN9PR03CA0889.namprd03.prod.outlook.com (2603:10b6:408:13c::24)
+ by CH3PR12MB9394.namprd12.prod.outlook.com (2603:10b6:610:1cf::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Mon, 1 Sep
- 2025 17:02:02 +0000
-Received: from IA1PR11MB7198.namprd11.prod.outlook.com
- ([fe80::eeac:69b0:1990:4905]) by IA1PR11MB7198.namprd11.prod.outlook.com
- ([fe80::eeac:69b0:1990:4905%5]) with mapi id 15.20.9073.021; Mon, 1 Sep 2025
- 17:02:02 +0000
-Message-ID: <18915c80-84c3-4a61-a5d2-d40387ec4eb7@intel.com>
-Date: Mon, 1 Sep 2025 20:01:57 +0300
-User-Agent: Mozilla Thunderbird
-From: Adrian Hunter <adrian.hunter@intel.com>
-Subject: Re: [PATCH 2/2] mmc: sdhci-pci-gli: GL9767: Fix initializing the
- UHS-II interface during a power-on
-To: Ben Chuang <benchuanggli@gmail.com>, <ulf.hansson@linaro.org>
-CC: <victor.shih@genesyslogic.com.tw>, <ben.chuang@genesyslogic.com.tw>,
-	<HL.Liu@genesyslogic.com.tw>, <SeanHY.Chen@genesyslogic.com.tw>,
-	<victorshihgli@gmail.com>, <linux-mmc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20250901094224.3920-1-benchuanggli@gmail.com>
-Content-Language: en-US
-Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park,
- 6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 -
- 4, Domiciled in Helsinki
-In-Reply-To: <20250901094224.3920-1-benchuanggli@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DU2PR04CA0304.eurprd04.prod.outlook.com
- (2603:10a6:10:2b5::9) To IA1PR11MB7198.namprd11.prod.outlook.com
- (2603:10b6:208:419::15)
+ 2025 17:05:22 +0000
+Received: from MN1PEPF0000ECD7.namprd02.prod.outlook.com
+ (2603:10b6:408:13c:cafe::8c) by BN9PR03CA0889.outlook.office365.com
+ (2603:10b6:408:13c::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.27 via Frontend Transport; Mon,
+ 1 Sep 2025 17:05:22 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ MN1PEPF0000ECD7.mail.protection.outlook.com (10.167.242.136) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9094.14 via Frontend Transport; Mon, 1 Sep 2025 17:05:21 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 1 Sep
+ 2025 12:05:21 -0500
+Received: from BLRKPRNAYAK.amd.com (10.180.168.240) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Mon, 1 Sep
+ 2025 10:05:07 -0700
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, <x86@kernel.org>
+CC: Naveen rao <naveen.rao@amd.com>, Sairaj Kodilkar <sarunkod@amd.com>, "H.
+ Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)"
+	<peterz@infradead.org>, "Xin Li (Intel)" <xin@zytor.com>, Pawan Gupta
+	<pawan.kumar.gupta@linux.intel.com>, <linux-kernel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>, Babu Moger
+	<babu.moger@amd.com>, Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>, <stable@vger.kernel.org>, "Naveen N
+ Rao" <naveen@kernel.org>
+Subject: [PATCH v5 1/4] x86/cpu/topology: Always try cpu_parse_topology_ext() on AMD/Hygon
+Date: Mon, 1 Sep 2025 17:04:15 +0000
+Message-ID: <20250901170418.4314-2-kprateek.nayak@amd.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250901170418.4314-1-kprateek.nayak@amd.com>
+References: <20250901170418.4314-1-kprateek.nayak@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To satlexmb09.amd.com
+ (10.181.42.218)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB7198:EE_|DS0PR11MB8069:EE_
-X-MS-Office365-Filtering-Correlation-Id: d88d691e-2b29-4115-5c68-08dde9794563
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD7:EE_|CH3PR12MB9394:EE_
+X-MS-Office365-Filtering-Correlation-Id: 73624e75-417e-474e-2497-08dde979bc88
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?eGJnOVNlaC9pQlVWelY3cTIzbEF6anU1dXVkRzQ3VDVOdno0VzJwSnk4SE1Z?=
- =?utf-8?B?aWlWQW9HRlE2MGsxQi9vODZDWVhRQm9yNWVHK2J3K1RoNSt4enowWkZIYlRs?=
- =?utf-8?B?TGN2ZGhDQzZrbEF1TWVtUk1ISmVodGpTNGJOandJeElUVUo5VDE1QVdZQlEw?=
- =?utf-8?B?N1h5anJUTml6SVBDSmdqNmhQVlNDTWdzcDFPMEswcUxQOWk2Z2Z1cHljKzlQ?=
- =?utf-8?B?NUVENkNKc0R6YTMvWGEwekpYRWhwMm5Uc3VGbnRta2J6VzNpejhJUWpSanVW?=
- =?utf-8?B?ZkxIbDZSK3VSeCtsTktpaUllVUo4NWVnMlBrb25QRHBEOTRHNUl2c1pKTk0v?=
- =?utf-8?B?b05XbjVCcXpaVmkxb1hLNTNudWtPeTlYMSsyazJ1ZUFGN25jZEllbG9JODhF?=
- =?utf-8?B?b3lGUTJuaXZxY3ZqRi9IakF6M0VOank1aVZHdzVxNklveHZWdnhwa0RtaUpn?=
- =?utf-8?B?MTFWZGV0Wjk1ZjgwYXAwcVBEalFjL2dXUnNNdm8rdzNTc1kvcWk2TEt0QmpK?=
- =?utf-8?B?ejZzUFZ3MGZUM1RZZ1BSSmJmallRRk42TWhvcW8xck9QeE5xbzFMeG8wUXhG?=
- =?utf-8?B?RlJSRE1iWXNmejhrMHhod0ZBTHJFRERzeFphdldyQlkxckJIVEIrK2NuRmpn?=
- =?utf-8?B?dW85TUcrSXdjSk1yL2UwZjM4d1VGcWhPaUJYOTVLRzY5T1UxR2UvemsxSHZh?=
- =?utf-8?B?Y2FIb3I5dE1JWGRid1JPWUhNL1pwQ3JyYlM1aEtyOEMyUDkxei82b2RpTlhU?=
- =?utf-8?B?OW1zS0U5bGxjODl4dGRjc2hZZkcwVzRrS2JTY1E1Uzc5alBWOXYrekFyMjNt?=
- =?utf-8?B?Q2tlaWI1Vy9WWlpWTXJPd1pJeFpEd2xBS3QwbmZFZHlFLzB6OHFJUlVMcjQ4?=
- =?utf-8?B?d0lZVFJiU3FUaXVzWWNGL3JUNXNsLzFyd1JpNzNsVEorM2l5UWYzSTZaOXdT?=
- =?utf-8?B?Yk9SYkZHekRDQ1VtVUdSTDhra0RHOUhyT3c0TlJkOGFMRk0rbVI3YS9oM0pT?=
- =?utf-8?B?RTlzRjNyNWVkL29ucGFoc3lnTWpNNlJSeFhvYzZURTJJSHVHRnBsR0VWcDZa?=
- =?utf-8?B?NThwb3lzRkRhMWE3em9oK09WRXZoWkFWTld6ZW5HK2xIUGdjRGw1YUw3cmNn?=
- =?utf-8?B?N24wdHB5cDg4VGRKeWY1bUl6MUlqMS9UK1VDRVdWQjdQaTlROVFMbUZYYXF6?=
- =?utf-8?B?cGxWeDQ4eW5yS1BhRS9ITXNQL29oMmorMGRtOFcwV2FvMEU4bE5uWjRzZjFF?=
- =?utf-8?B?SFJKZEtoelFVcjdqcVQwaUlJWms0aU9GZ2YxNWVYN1JBNHE0SGM1UkRPYVNZ?=
- =?utf-8?B?WEIwRGhyVTROOFF1Z1kzUFNJdWZMeFU3alNBOVZlazRIdVlqd3F1ZUp6cjFV?=
- =?utf-8?B?YUxwRStPM0xMZE9WSWpHejQwS294bDJwOE1HOUZ5OU5NbW9ESUVPZStBVGsw?=
- =?utf-8?B?OEp0eDE2UVhuVkVicjdJOEVESmNuV2JWTDlzdXZLTmdlVDJSTWtkcFUwS01v?=
- =?utf-8?B?YVNFbThhUzZiNWVaZUR1MnRxK3RTbTVPNk5mbjZKcXJmR1A4eWJBREtPcUZt?=
- =?utf-8?B?TmpGdHp6VTZtOWVqZWZ6ZDY2WlNpVjlTUk83TTFDTXNPMDgwVFJiY1NNWmUy?=
- =?utf-8?B?SFZLa0ZUQ084clJHZmQ1bmo4ZFIrenk0dXRmZHNuaFRBVHU1TllnTnhVR254?=
- =?utf-8?B?M1J0YXV5T3V0WjcrSmNkOUQ0aWxCVjJQMTV4aWd3RVJlVFF2aEdTdjJkRm9k?=
- =?utf-8?B?QXhxWk40SXBUYkRSdEowNWpLTUVpWHNqZFlSVXpGZ1o4Snc4NDdvVlZGZFB2?=
- =?utf-8?B?NGZIZjQyTGdQSnVxdEt5Y0NHRFBSOUpEeHNPY3R3QmhwYmI5ZldUYlBGUFZx?=
- =?utf-8?B?a3UwejFYRFlNWHphZzVNdWlROHV0clh0SHdiTFJsQWt3VkE9PQ==?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QlBDWXJJNWo1Z1VKM0lPVFVtRjVGTlV4UVlsZXJZaytrcVpxVWU0WDJMT2ow?=
- =?utf-8?B?TW5IY2JscjhLVlptRTVqOVprRjR3dXlDNFVUWE1iTDlqY0x1WjF6T2ZkOEhL?=
- =?utf-8?B?bVQ0OGVNdGh2UHM5cUFrckhRbmN2N3RQWUE2eU9wVVd1c3hKUmIrUlVzbFA4?=
- =?utf-8?B?MWs0SUtYTlMvMzF6dnhkcUdOODFpamdyOFJveDl3T3FrbU9jVktZTzNSZXhH?=
- =?utf-8?B?SVJXWUM3SE9YV0txZW03K1lQOGJLUWIvd0JpZ2JNUnhycmY1OSt1ZVBUZHlX?=
- =?utf-8?B?SkRrcGpDaUlUUFZXc1FhWHY0VEVpQVBqZDFjOXoreEV0MzJZY2JjSmpVbW9F?=
- =?utf-8?B?TG1yeEtUTUtMTU01TXU1SUFmaFRwZ2Y2ZVRJNDVZNDlNSzVpczZzMVlTSlkx?=
- =?utf-8?B?cnNHY1JnZ3MyeWdlMVY0eHppVWd0SkRnZUhDbDF3eE44TTZDTmlnaWFDT3lF?=
- =?utf-8?B?Sit1UUFjc2hoUjhyZUNYTDY0YmNqZVB6eTZBN29nYTBMVkRQMmgzSVpEbWtV?=
- =?utf-8?B?dkUxMDV3Z0JwaEN6cDRhZGc0dk1oczl4aS8wR3piZTh6KzhyUlNtTVh3dUdx?=
- =?utf-8?B?WDUrZzJMSTl0TlZ2OEhobDVSWnNHa09CVWlVNmRJbXJKQmovV3FYWHNWdEM4?=
- =?utf-8?B?amJTL0JLWXZtTStSdFNoZms5MlZMRUxnNWtkbjZsMDAwd1lRYVlLVTZMK1hT?=
- =?utf-8?B?VEVEcGxuK0NFYUdFQ250MDFDNzB5ek9FekxVQzVRV01ETHdYa252Qms3OTJw?=
- =?utf-8?B?bjd1TnR5Mld3aEllZlpYM283RXpGUFQ3QVpWa2U4REJ5RjRZNTI0VnJJSFpK?=
- =?utf-8?B?WSs0c0JNZTN0M2xid09aK0E5RXcyaXlBdWh5OFo3NFBmOHR5MytBdndhdzdr?=
- =?utf-8?B?Y3F3MDl3ODl6emtiUktBZXBwaEwwTG55ZUZBV1crQmhHeGlkN0Nqci9UUm80?=
- =?utf-8?B?OHNZamZMSHl0ZGFpVkhBV2xybXZidDErNGhUem9qbTRORFBwNThNWDQzQlI1?=
- =?utf-8?B?Zm9xN00xVm1BWTI0RHNLTnU1V0o1elF0WDV4cjNuQng3ckVQTXZOSC9vd0to?=
- =?utf-8?B?aW4xOXFWQzltN0hyU3dhZWVyTVhkakVaNW1YZXZSVFBOWE1oZnJFWlBwWnk2?=
- =?utf-8?B?TGhhakJCOUtoblQ5aSt4Z3V4cVBjQ2xjNlJjMGhUTnRVS0NiZ0xhY1JPMW40?=
- =?utf-8?B?OXZGWGUxYVlVUXJLb3B4c1QrQWUxY2Y1dWdraWd4akFucnNWYkQvbWRzV2Uw?=
- =?utf-8?B?R0hQK3BDWGVlRXdSclg5Mnc5MmI5VmZPYVAxcG5mV1h1dkhUNzI3WnZyK0U4?=
- =?utf-8?B?RlJqNmNyemtibWdUbXI2QXdENDYzc1VjQThIQ0ttWWlCSWRoN3BWYkhQUVlW?=
- =?utf-8?B?L3F5NE5GQzNPa2pTTy9ETTdvTUJsWVRzS2ZwQlRidXZVMW40Q25sUityQWJk?=
- =?utf-8?B?S1oySUkrSndvMkppS1hXK3JGY1M5cGt0OHBwL0pFbjZTTk1pVVEyK3dxYmlM?=
- =?utf-8?B?RWl1VktEZjJPTHJhejdTV0xmS0ttYXNBaXhCZGdrQmZpRjdaZHY4TUhhUVFV?=
- =?utf-8?B?WFFaYVhTckREeitqaWNnODVXWEF0NGIwTjgyYTMwdzBmYU4vbklrbVVLaVE5?=
- =?utf-8?B?KzAwMnNuY1JBd1ZXRWhLL01leEs0RVFZcjJmVDZrS0Nza2RLSnhVcDNBVTcy?=
- =?utf-8?B?SWRsRzI0VWRFNDFhNnZqSjk2T0oxb0tZMzdya243Y0pBK3dkRzhoRENOVXF4?=
- =?utf-8?B?T01HazN0dnIyVy9sVGpaemlIVGhuZ3pHMytOOHA0QkF3QUlibVNJQ2hNVWpk?=
- =?utf-8?B?Z0tUeWVudENGSE51ZmVia0EyZHBCbW5TS1FEUjdoellHd0pvNEdydFhZejhw?=
- =?utf-8?B?RVlhOVhma3JUWDlwTEw1QjhmbTJsSGxwcnNocHFOczFuQkdtWXU3d1cwS1F3?=
- =?utf-8?B?Y25RSUU1TkI1eVVkUWQ2MlFjem1vNnNYWENycHkweXB3ZFFaWXUvcHRlc0xh?=
- =?utf-8?B?N0hnTHBWcThlYW1TWmtzaDRBdndDTUVad1FicEdQZXY3VDJKYnhrTEdBZUNX?=
- =?utf-8?B?VUFQS1NZTk00d3RZdElaTi9oSytjc2JqSFNuZmRyd25FRmFGbE1CbVgxTVFX?=
- =?utf-8?B?bWFWSjVES3dsY1ZJM2E3V0k1amNwUjdFY0M1MjhHNVVaL1JZN3poMEhBcFNK?=
- =?utf-8?B?Nnc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: d88d691e-2b29-4115-5c68-08dde9794563
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7198.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2025 17:02:02.2455
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014|7416014|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Ng9vRDmxlz2f7rzqOm1AW+LxxuiTtgBD1g5moywXeiTneHA8anmMZRM3j2oQ?=
+ =?us-ascii?Q?BisVnJ5ThYPnFpYYLHGU/0OKFqeDJMAegwcI49VJsvPLWPjAm3ueDe/wxl9p?=
+ =?us-ascii?Q?R6g8Mo9wknkrPVVcblPFSD11JjkU3AgbC2KCgf3c2KyNCV2x1lJNf4kki1x1?=
+ =?us-ascii?Q?x1NFF0cz5r+2StE6Pzt9hmbgjVDoxHEWfFaq/c/dyBN4TQOLf+YhU6fEUnXf?=
+ =?us-ascii?Q?hdtTVW8dQxgyuFj0FhHSn3KqNfHxQq9WVcFc2l5DM0pFoueesvCvAtfBDGwa?=
+ =?us-ascii?Q?g/bRp8ybPw+M2c04uK3gw5dp37MaoMtGZdARLPImY2eFRswCkyJbFoQ+PawY?=
+ =?us-ascii?Q?X9pzY6rRXEl7uNHCQPdkdmIBhG6unRe4f++irLr+bQ04hCH5J2lN9YoTGwKg?=
+ =?us-ascii?Q?7pcwDCZqpVT5ABWfo5LEK4Y5OZpOuuq3UiaESvXHC0vrfRJTTAty8M9sR2xE?=
+ =?us-ascii?Q?VDifW1iH+34FFTWbmyjQRSAgOvTBsGbt5HJghiO22afbnvf51KoiX0mdp7RC?=
+ =?us-ascii?Q?VVyj9SkgzDyTOzRgPzvPcBgwlXAv5eMduvGg1VVCAhRsqcZfNlhoWijyb5c2?=
+ =?us-ascii?Q?dl1WAZqV48ryfyDJA6ZtphwDIKGErvHBrmKEaltV4lwPyElFh+Pi7RdBq1/7?=
+ =?us-ascii?Q?PiHo6aQU0c3NQ1KtSHsT9eBq5+0lngC1QC9RD2H7foj/1UgmbI0+9pMhY0iz?=
+ =?us-ascii?Q?eXh0zfwza0K+znAVJYBrJCnCZ0ISKNw/u+qMjA/mGj8Fc/FDawsYeuHFlIQv?=
+ =?us-ascii?Q?N1dIvVGDKYy2odUmhO1RyEGkboUItfHCcH01FEzB+1vBYAxKLisFiY/B4gO0?=
+ =?us-ascii?Q?9ggl93FyK6eRZT0MwJeaWbmHjjFjmjkLhg5Apw1l8QEJ99r6wLqgNBFwxGw+?=
+ =?us-ascii?Q?qbXYBZIVzMGoFBLCx9iCUwTs3Xlq+1TSktDAPYioBA5WxI/u1/mdI0rmJytZ?=
+ =?us-ascii?Q?lugA2a2WOwu7eeQ7tGAbuLM8y5QEFAGCVJ5W6F7cXpm9UXw/c0b0+F8zPe/W?=
+ =?us-ascii?Q?DV6AqbT9oYOxm4WgK5ySIduqY72aB/brIEvf+to9k5uNTfsH2VYAYo92ooaZ?=
+ =?us-ascii?Q?00QxzUXRa3LN8kvmkxrEyJyelXnpKmYf5UNNUFXMabCs1p61Tr9t2/DoJ3bs?=
+ =?us-ascii?Q?xPAFYG3N4owAXFEZf1C91T3IqtTUV5Hh9VLJWS1duTVPA9gzEkvyyegcY7S4?=
+ =?us-ascii?Q?miC22i/T293jYGc7SsWBmUI/HWuupUPnSq/lY5liVEzu3cUMNup68DiJsnRt?=
+ =?us-ascii?Q?0THQoMTHj5mdtCuhG0elEQkqYVsJGAFcLp9fv5aE5B7D1zafmQOVSrUgAcEp?=
+ =?us-ascii?Q?9vXU+vZnm/tLJlr6q7CD1pR+qWqc14gx8AP2WP8DzLG1Arxp0iY5ewP3Xk/X?=
+ =?us-ascii?Q?r5bizRVRWiX8FxP3X26PTLfju3UlOV4cJb+80eK/E4OS1OalGYQs2lCV676E?=
+ =?us-ascii?Q?bhIWuUaJpb8cWfaU+4zuZvKNJw9981gnh1h6hftmEegc1MgggCmaQ4N4nbDy?=
+ =?us-ascii?Q?9idDBjV5iGQwa93WHdeYvR0V5vMKzDLMLqsbUK0wCgKc/vQpwhweFMIkgA?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014)(7416014)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2025 17:05:21.9369
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OShNklBi31JzwTsK8E0UBRIMMZXT4oWJbaRUuTGZIfobqjSYdecaUuebMlPyh89k30dfxZ2euyvH4xDo/qGOqQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8069
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 73624e75-417e-474e-2497-08dde979bc88
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MN1PEPF0000ECD7.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9394
 
-On 01/09/2025 12:42, Ben Chuang wrote:
-> From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> 
-> According to the power structure of IC hardware design for UHS-II
-> interface, reset control and timing must be added to the initialization
-> process of powering on the UHS-II interface.
-> 
-> Fixes: 27dd3b82557a ("mmc: sdhci-pci-gli: enable UHS-II mode for GL9767")
-> Cc: stable@vger.kernel.org # v6.13+
-> Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> ---
->  drivers/mmc/host/sdhci-pci-gli.c | 71 +++++++++++++++++++++++++++++++-
->  1 file changed, 70 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-> index 3a1de477e9af..85d0d7e6169c 100644
-> --- a/drivers/mmc/host/sdhci-pci-gli.c
-> +++ b/drivers/mmc/host/sdhci-pci-gli.c
-> @@ -283,6 +283,8 @@
->  #define   PCIE_GLI_9767_UHS2_CTL2_ZC_VALUE	  0xb
->  #define   PCIE_GLI_9767_UHS2_CTL2_ZC_CTL	  BIT(6)
->  #define   PCIE_GLI_9767_UHS2_CTL2_ZC_CTL_VALUE	  0x1
-> +#define   PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN	BIT(13)
-> +#define   PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE	BIT(14)
->  
->  #define GLI_MAX_TUNING_LOOP 40
->  
-> @@ -1179,6 +1181,69 @@ static void gl9767_set_low_power_negotiation(struct pci_dev *pdev, bool enable)
->  	gl9767_vhs_read(pdev);
->  }
->  
-> +static void sdhci_gl9767_uhs2_phy_reset_assert(struct sdhci_host *host)
-> +{
-> +	struct sdhci_pci_slot *slot = sdhci_priv(host);
-> +	struct pci_dev *pdev = slot->chip->pdev;
-> +	u32 value;
-> +
-> +	gl9767_vhs_write(pdev);
-> +	pci_read_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, &value);
-> +	value |= PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN;
-> +	pci_write_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, value);
-> +	value &= ~PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE;
-> +	pci_write_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, value);
-> +	gl9767_vhs_read(pdev);
-> +}
-> +
-> +static void sdhci_gl9767_uhs2_phy_reset_deassert(struct sdhci_host *host)
-> +{
-> +	struct sdhci_pci_slot *slot = sdhci_priv(host);
-> +	struct pci_dev *pdev = slot->chip->pdev;
-> +	u32 value;
-> +
-> +	gl9767_vhs_write(pdev);
-> +	pci_read_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, &value);
-> +	value |= PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE;
+Support for parsing the topology on AMD/Hygon processors using CPUID
+leaf 0xb was added in commit 3986a0a805e6 ("x86/CPU/AMD: Derive CPU
+topology from CPUID function 0xB when available"). In an effort to keep
+all the topology parsing bits in one place, this commit also introduced
+a pseudo dependency on the TOPOEXT feature to parse the CPUID leaf 0xb.
 
-Maybe add a small comment about PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE
-and PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN being updated separately.
+TOPOEXT feature (CPUID 0x80000001 ECX[22]) advertises the support for
+Cache Properties leaf 0x8000001d and the CPUID leaf 0x8000001e EAX for
+"Extended APIC ID" however support for 0xb was introduced alongside the
+x2APIC support not only on AMD [1], but also historically on x86 [2].
 
-> +	pci_write_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, value);
-> +	value &= ~PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN;
-> +	pci_write_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, value);
-> +	gl9767_vhs_read(pdev);
-> +}
+Similar to 0xb, the support for extended CPU topology leaf 0x80000026
+too does not depend on the TOPOEXT feature.
 
-sdhci_gl9767_uhs2_phy_reset_assert() and sdhci_gl9767_uhs2_phy_reset_deassert()
-are fairly similar.  Maybe consider:
+The support for these leaves is expected to be confirmed by ensuring
+"leaf <= {extended_}cpuid_level" and then parsing the level 0 of the
+respective leaf to confirm EBX[15:0] (LogProcAtThisLevel) is non-zero as
+stated in the definition of "CPUID_Fn0000000B_EAX_x00 [Extended Topology
+Enumeration] (Core::X86::Cpuid::ExtTopEnumEax0)" in Processor
+Programming Reference (PPR) for AMD Family 19h Model 01h Rev B1 Vol1 [3]
+Sec. 2.1.15.1 "CPUID Instruction Functions".
 
-static void sdhci_gl9767_uhs2_phy_reset(struct sdhci_host *host, bool assert)
-{
-	struct sdhci_pci_slot *slot = sdhci_priv(host);
-	struct pci_dev *pdev = slot->chip->pdev;
-	u32 value, set, clr;
+This has not been a problem on baremetal platforms since support for
+TOPOEXT (Fam 0x15 and later) predates the support for CPUID leaf 0xb
+(Fam 0x17[Zen2] and later), however, for AMD guests on QEMU, "x2apic"
+feature can be enabled independent of the "topoext" feature where QEMU
+expects topology and the initial APICID to be parsed using the CPUID
+leaf 0xb (especially when number of cores > 255) which is populated
+independent of the "topoext" feature flag.
 
-	if (assert) {
-		set = PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN;
-		clr = PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE;
-	} else {
-		set = PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE;
-		clr = PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN;
-	}
+Unconditionally call cpu_parse_topology_ext() on AMD and Hygon
+processors to first parse the topology using the XTOPOLOGY leaves
+(0x80000026 / 0xb) before using the TOPOEXT leaf (0x8000001e).
 
-	gl9767_vhs_write(pdev);
-	pci_read_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, &value);
-	value |= set;
-	pci_write_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, value);
-	value &= ~clr;
-	pci_write_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, value);
-	gl9767_vhs_read(pdev);
-}
+While at it, break down the single large comment in parse_topology_amd()
+to better highlight the purpose of each CPUID leaf.
 
+Cc: stable@vger.kernel.org # Only v6.9 and above; Depends on x86 topology rewrite
+Link: https://lore.kernel.org/lkml/1529686927-7665-1-git-send-email-suravee.suthikulpanit@amd.com/ [1]
+Link: https://lore.kernel.org/lkml/20080818181435.523309000@linux-os.sc.intel.com/ [2]
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 [3]
+Suggested-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Fixes: 3986a0a805e6 ("x86/CPU/AMD: Derive CPU topology from CPUID function 0xB when available")
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+---
+Changelog v4..v5:
 
-> +
-> +static void __gl9767_uhs2_set_power(struct sdhci_host *host, unsigned char mode, unsigned short vdd)
-> +{
-> +	u8 pwr = 0;
-> +
-> +	if (mode != MMC_POWER_OFF) {
-> +		pwr = sdhci_get_vdd_value(vdd);
-> +		if (!pwr)
-> +			WARN(1, "%s: Invalid vdd %#x\n",
-> +			     mmc_hostname(host->mmc), vdd);
-> +		pwr |= SDHCI_VDD2_POWER_180;
-> +	}
-> +
-> +	if (host->pwr == pwr)
-> +		return;
-> +
-> +	host->pwr = pwr;
-> +
-> +	if (pwr == 0) {
-> +		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
-> +	} else {
-> +		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
-> +
-> +		pwr |= SDHCI_POWER_ON;
-> +		sdhci_writeb(host, pwr & 0xf, SDHCI_POWER_CONTROL);
-> +		mdelay(5);
+o Made a note on only targeting versions >= v6.9 for stable backports
+  since the fix depends on the x86 topology rewrite. (Boris)
 
-Can be mmc_delay(5)
+o Renamed "has_topoext" to "has_xtopology". (Boris)
 
-> +
-> +		sdhci_gl9767_uhs2_phy_reset_assert(host);
-> +		pwr |= SDHCI_VDD2_POWER_ON;
-> +		sdhci_writeb(host, pwr, SDHCI_POWER_CONTROL);
-> +		mdelay(5);
+o Broke down the large comment in parse_topology_amd() to better
+  highlight the purpose of each leaf and the overall parsing flow.
+  (Boris)
+---
+ arch/x86/kernel/cpu/topology_amd.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-Can be mmc_delay(5)
-
-> +	}
-> +}
-> +
->  static void sdhci_gl9767_set_clock(struct sdhci_host *host, unsigned int clock)
->  {
->  	struct sdhci_pci_slot *slot = sdhci_priv(host);
-> @@ -1205,6 +1270,10 @@ static void sdhci_gl9767_set_clock(struct sdhci_host *host, unsigned int clock)
->  	}
->  
->  	sdhci_enable_clk(host, clk);
-> +
-> +	if (mmc_card_uhs2(host->mmc))
-> +		sdhci_gl9767_uhs2_phy_reset_deassert(host);
-> +
->  	gl9767_set_low_power_negotiation(pdev, true);
->  }
->  
-> @@ -1476,7 +1545,7 @@ static void sdhci_gl9767_set_power(struct sdhci_host *host, unsigned char mode,
->  		gl9767_vhs_read(pdev);
->  
->  		sdhci_gli_overcurrent_event_enable(host, false);
-> -		sdhci_uhs2_set_power(host, mode, vdd);
-> +		__gl9767_uhs2_set_power(host, mode, vdd);
->  		sdhci_gli_overcurrent_event_enable(host, true);
->  	} else {
->  		gl9767_vhs_write(pdev);
+diff --git a/arch/x86/kernel/cpu/topology_amd.c b/arch/x86/kernel/cpu/topology_amd.c
+index 827dd0dbb6e9..c79ebbb639cb 100644
+--- a/arch/x86/kernel/cpu/topology_amd.c
++++ b/arch/x86/kernel/cpu/topology_amd.c
+@@ -175,27 +175,30 @@ static void topoext_fixup(struct topo_scan *tscan)
+ 
+ static void parse_topology_amd(struct topo_scan *tscan)
+ {
+-	bool has_topoext = false;
+-
+ 	/*
+-	 * If the extended topology leaf 0x8000_001e is available
+-	 * try to get SMT, CORE, TILE, and DIE shifts from extended
++	 * Try to get SMT, CORE, TILE, and DIE shifts from extended
+ 	 * CPUID leaf 0x8000_0026 on supported processors first. If
+ 	 * extended CPUID leaf 0x8000_0026 is not supported, try to
+-	 * get SMT and CORE shift from leaf 0xb first, then try to
+-	 * get the CORE shift from leaf 0x8000_0008.
++	 * get SMT and CORE shift from leaf 0xb. If either leaf is
++	 * available, cpu_parse_topology_ext() will return true.
+ 	 */
+-	if (cpu_feature_enabled(X86_FEATURE_TOPOEXT))
+-		has_topoext = cpu_parse_topology_ext(tscan);
++	bool has_xtopology = cpu_parse_topology_ext(tscan);
+ 
+ 	if (cpu_feature_enabled(X86_FEATURE_AMD_HTR_CORES))
+ 		tscan->c->topo.cpu_type = cpuid_ebx(0x80000026);
+ 
+-	if (!has_topoext && !parse_8000_0008(tscan))
++	/*
++	 * If XTOPOLOGY leaves (0x26/0xb) are not available, try to
++	 * get the CORE shift from leaf 0x8000_0008 first.
++	 */
++	if (!has_xtopology && !parse_8000_0008(tscan))
+ 		return;
+ 
+-	/* Prefer leaf 0x8000001e if available */
+-	if (parse_8000_001e(tscan, has_topoext))
++	/*
++	 * Prefer leaf 0x8000001e if available to get the SMT shift and
++	 * the initial APIC ID if XTOPOLOGY leaves are not available.
++	 */
++	if (parse_8000_001e(tscan, has_xtopology))
+ 		return;
+ 
+ 	/* Try the NODEID MSR */
+-- 
+2.34.1
 
 
