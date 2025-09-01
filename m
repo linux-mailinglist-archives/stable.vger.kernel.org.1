@@ -1,191 +1,146 @@
-Return-Path: <stable+bounces-176829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7494B3DFF5
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 12:20:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B31B3E000
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 12:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F3AC189F1D4
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:20:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFBEB17940A
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1F130C359;
-	Mon,  1 Sep 2025 10:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D640309DD2;
+	Mon,  1 Sep 2025 10:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="TIDXfaM2";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iQNOygej"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="QmGkKTA6";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="uY7sJyC1";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="QmGkKTA6";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="uY7sJyC1"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64868305068;
-	Mon,  1 Sep 2025 10:20:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B231930AD02
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 10:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756722015; cv=none; b=MhfKSfw0Za0YTfMrJ79qmo7yAnRUbM7ANemgG1XeU1uOs2Hoy2fHYIuNfSy39XHmkeXFkB3ueHwahpNeGQgomsk19wHC4VVIJ+jf4540up+c7SOhyC53rBaqUX+2CxDZi5ucWP0zeAZ/sJk9UUqeh7Sop1oEsOjEFJhvVaKxUDE=
+	t=1756722054; cv=none; b=IQb+oQKRG7v+aMk7lWf9mvNE27fVHjBa84Bbh6G0X7/ZYYXTI9M0HEmkRjkANp3W+5WyX7SP0OFZHfDDDVyRYAKqhn20wh8SC5bv0ZWi4jtMnjAJFsWPNSqZ1cJdOPcZV2DHUaDw9T1kcFOQHK27ad+Eu7an2Fse7jhJSPcF97c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756722015; c=relaxed/simple;
-	bh=Y8Tb+m/HScr5qE9ER9dJ8sPMOqgFCRTapvm6JyzihTs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=OGlQ92JiQ7Vaj0SLnePHPegC4VYRwwB3tottjI5eWVv1llK7SWQv5s8eItQ3836x711PUjfLzX/JMpFZKMQNoudLNrILfBqLReOtQrUqOEIvM+XbldgR7XB8eH9VsGJDIDieWbBaa0OP0X1YKLINPxxhaTVisWdCWkOzVKbhp9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=TIDXfaM2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iQNOygej; arc=none smtp.client-ip=202.12.124.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 668421D00238;
-	Mon,  1 Sep 2025 06:20:12 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Mon, 01 Sep 2025 06:20:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm2; t=1756722012; x=1756808412; bh=j9
-	opy8fANg8wAVYAeXir3BkxPG3tSAJ23TA9BHXHU5w=; b=TIDXfaM269Jcsbckd0
-	sy/SweI5yhufpKsZXiAmjjjedw9LzJVogSA0AnBsuzvR2UlKZAHAOfwzZRKgzaMi
-	1Pjv1zY1wffW2w10nx3fymKlvgJtxS2esLLAqQYBrQuf210tLO8ppBjr3RT23xke
-	KvnssNfURzLEmhaH9XlzE8jp0ZSHObMPycjyIf+fSliip6ZSdSjiMks+3pDunoUT
-	5rcPGUkJjkfZHoUcuyW16RPkN4VW1zcCY22jJ1uwUbv1od8OjvPWLGgRFIdi1z5z
-	PdbIExJ/TT8Rs8hTVnv5LVVH/yIjb+afPRW6ZQP5Do++aTgDE8zhhCHtE1TnGGs3
-	9mjQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1756722012; x=1756808412; bh=j9opy8fANg8wAVYAeXir3BkxPG3t
-	SAJ23TA9BHXHU5w=; b=iQNOygejlW4FIxfPDPiQumCLiwlHAImmG1HoFxVgtWDS
-	ipYjydA9wG2X3jll6pUYtwtRbFvpmQZkQNk4TOf9/AH82Di66/PuDzpruazkTMmy
-	UxYEa175MvtapmmhJeVBghu2Fdul6i9nbuyNdyNGAfG/xJ5WsobEuzHVledGhynz
-	xJh4ZBz4vRkH2AaM6F1ff/Sxi+CdyDGvXGNfv8Mvmz1Dk9HXb0DNRNwaC13MmzrU
-	+cuRufc7e1MEQtsWoLh4vGX8nUKIx0rdBOpaYKbLzp6We3rDUV4Hy7CZuWdFZUKK
-	Nz8k1XCAWN0b4xsH7P43ygDyuoGlT08LWWuIZodc8w==
-X-ME-Sender: <xms:W3O1aKQmvHfJ6xldhmw4ectEwmgqFhjHpqYI6SGxYw68yZPSin2Qyg>
-    <xme:W3O1aMqgIWQD4CLo5ItHg-a6L0L9pIoBE9pQL9p3aPGoS-1xAUMeEq8aZLklHfwsS
-    hj6mc4kkx2P_ZdL9Vo>
-X-ME-Received: <xmr:W3O1aHmni0yU1gb9VLpaWvkjcV8oTsSHsXcNsb8wmNjyArevWHQOBpDa8y1tDQbMuBCn6tdqGGNU1G9wzCoTdGFZJiYEJwxjgB32Aw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduleduledtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeflrghnnhgvucfi
-    rhhunhgruhcuoehjsehjrghnnhgruhdrnhgvtheqnecuggftrfgrthhtvghrnhepfeehle
-    dtheefteejfedvheetuedttdetleegudeuteejveetieefuedvfeffvdeinecuffhomhgr
-    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehjsehjrghnnhgruhdrnhgvthdpnhgspghrtghpthhtohepkedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprhgvghhrvghsshhiohhnsheslhhish
-    htshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhg
-    vghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehjsehjrghnnhgruhdrnhgvthdprh
-    gtphhtthhopehlihhnuhigqdhinhhpuhhtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepsggvnhhtihhssheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhikh
-    hosheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvhhishhhnhhuohgtvhesghhmrghi
-    lhdrtghomhdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:W3O1aFc0-eIKH-oi_W_NM5S9AGVtkVh5cNE5nk4bmLORSG0_ITbytA>
-    <xmx:XHO1aDop90wgW4yLZN9cdpsL_AQOGYQvEZAtdeI4i1AozwaRDYoXzQ>
-    <xmx:XHO1aPOlxeon_JhzC9c3-J6QhV_I_ToP9qzlSEKMN8cJOzGUXlVynQ>
-    <xmx:XHO1aGjhD7dqgE0rXqjj9utAPF8P4-t1c3hCnmDAu_BqpWsZTfowJw>
-    <xmx:XHO1aHbZv2CO5wUd6PBXUtA6IWAw6YNY4PpLduPYwiHTg5Z1aIs70fHq>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 1 Sep 2025 06:20:11 -0400 (EDT)
-From: Janne Grunau <j@jannau.net>
-Date: Mon, 01 Sep 2025 12:20:07 +0200
-Subject: [PATCH] HID: lenovo: Use KEY_PERFORMANCE instead of ACPI's
- platform_profile
+	s=arc-20240116; t=1756722054; c=relaxed/simple;
+	bh=Kow1rbxlJKuwL2yuZHGeWRNSqLGuxqbSohKpgPBlHRw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=oejASruqbphVvDe2UahWhOAzDtYJ24lns1LbIA3ZRLYQ9sfRvt2oPZJf4gTZQSYBrqJKvNj0yWV9cVPrZm+DqEEHqv4B1r72KuAzCgLaeQS6MUpE/rc2NVZxMhFKvajI7rasSzuHqVzCuhB7OnrWvyJYGE3pNBAcdkCPDdAYufc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=QmGkKTA6; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=uY7sJyC1; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=QmGkKTA6; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=uY7sJyC1; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8FE5D21168;
+	Mon,  1 Sep 2025 10:20:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756722050; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type;
+	bh=+yjcUMTcUdL0Qe6D6WQHRRMPA2tdvWuFWsnMtFpskOw=;
+	b=QmGkKTA6JIMVwEsCP+VbwYtMp5Y7/pdWh0jX0Dx57Vtj3G4z/bwvUvNMiq844sASYzRUiZ
+	Bj/QKBPriD0/cc/Ou4iGMPzVVKgjSgpiSi1TMqqRWfywiwps1thX0jMtYC3ZlwUMfxaswv
+	Yq2QitXZeASL/qH7w+I97qW+O11RV0s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756722050;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type;
+	bh=+yjcUMTcUdL0Qe6D6WQHRRMPA2tdvWuFWsnMtFpskOw=;
+	b=uY7sJyC1hHOpapmFTPWBu/DJdnpda+Ms+PfOTMa7tD+a2s7CoVdlpNiG9AsGidSn2znYuT
+	KxSGQrIoQHK4f+Dw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QmGkKTA6;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=uY7sJyC1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1756722050; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type;
+	bh=+yjcUMTcUdL0Qe6D6WQHRRMPA2tdvWuFWsnMtFpskOw=;
+	b=QmGkKTA6JIMVwEsCP+VbwYtMp5Y7/pdWh0jX0Dx57Vtj3G4z/bwvUvNMiq844sASYzRUiZ
+	Bj/QKBPriD0/cc/Ou4iGMPzVVKgjSgpiSi1TMqqRWfywiwps1thX0jMtYC3ZlwUMfxaswv
+	Yq2QitXZeASL/qH7w+I97qW+O11RV0s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1756722050;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type;
+	bh=+yjcUMTcUdL0Qe6D6WQHRRMPA2tdvWuFWsnMtFpskOw=;
+	b=uY7sJyC1hHOpapmFTPWBu/DJdnpda+Ms+PfOTMa7tD+a2s7CoVdlpNiG9AsGidSn2znYuT
+	KxSGQrIoQHK4f+Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 88156136ED;
+	Mon,  1 Sep 2025 10:20:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 3mkkIYJztWiLfgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 01 Sep 2025 10:20:50 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 43DDEA099B; Mon,  1 Sep 2025 12:20:50 +0200 (CEST)
+Date: Mon, 1 Sep 2025 12:20:50 +0200
+From: Jan Kara <jack@suse.cz>
+To: stable@vger.kernel.org
+Cc: hc105@poolhem.se
+Subject: UDF failures in 5.15
+Message-ID: <z7j65bmrb4apv63sudegcqaxxxrnja2i4fysjcpiects5gmue4@sapo53pogv25>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250901-hid-lenovo-drop-platform_profile-v1-1-e2e9c68483ab@jannau.net>
-X-B4-Tracking: v=1; b=H4sIAFZztWgC/x2N0QqDMAwAf0XyvEBVinS/MmSUNdVAbUoqMhD/3
- eLjwXF3QiVlqvDuTlA6uLLkBv2rg9/q80LIoTEMZrDGmR5XDpgoyyEYVAqW5Pcoun2LSuREGGz
- Txjg5bx20TFGK/H8Wn/m6bkUm0uxyAAAA
-X-Change-ID: 20250901-hid-lenovo-drop-platform_profile-d59013f79a59
-To: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
- Vishnu Sankar <vishnuocv@gmail.com>
-Cc: linux-input@vger.kernel.org, regressions@lists.linux.dev, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Janne Grunau <j@jannau.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2600; i=j@jannau.net;
- s=yk2024; h=from:subject:message-id;
- bh=Y8Tb+m/HScr5qE9ER9dJ8sPMOqgFCRTapvm6JyzihTs=;
- b=owGbwMvMwCW2UNrmdq9+ahrjabUkhoytxZFhacmLxDviJ/mo5X07ciH7jM0fm1+6c821rztEM
- 0zf8tizo5SFQYyLQVZMkSVJ+2UHw+oaxZjaB2Ewc1iZQIYwcHEKwETSHBn+u9mrLuCO0Jlw8eje
- pjMc7spiX/yS13b/N+I5pfmVo9c9kZHhCXeJ83K55zaHP+XrM7bER3vXty8/of9L+k5Lzsqg6Z8
- 4AA==
-X-Developer-Key: i=j@jannau.net; a=openpgp;
- fpr=8B336A6BE4E5695E89B8532B81E806F586338419
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 8FE5D21168
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_TWO(0.00)[2];
+	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:dkim,suse.com:email];
+	FROM_HAS_DN(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TO_DN_NONE(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.com:email]
+X-Spam-Score: -4.01
 
-Commit 84c9d2a968c82 ("HID: lenovo: Support for ThinkPad-X12-TAB-1/2 Kbd
-Fn keys") added a dependency on ACPI's platform_profile. This should not
-be done for generic USB devices as this prevents using the devices on
-non ACPI devices like Apple silicon Macs and other non-ACPI arm64
-systems. An attempt to allow using platform_profile on non-ACPI systems
-was rejected in [1] and instead platform_profile was made to fail during
-init in commit dd133162c9cf ("ACPI: platform_profile: Avoid initializing
-on non-ACPI platforms").
-So remove the broken dependency and instead let's user space handle this
-keycode by sending the new KEY_PERFORMANCE. Stable backport depends on
-commit 89c5214639294 ("Input: add keycode for performance mode key").
+Hello,
 
-[1]: https://lore.kernel.org/linux-acpi/CAJZ5v0icRdTSToaKbdf=MdRin4NyB2MstUVaQo8VR6-n7DkVMQ@mail.gmail.com/
+Henrik notified me that UDF in 5.15 kernel is failing for him, likely
+because commit 1ea1cd11c72d ("udf: Fix directory iteration for longer tail
+extents") is missing 5.15 stable tree. Basically wherever d16076d9b684b got
+backported, 1ea1cd11c72d needs to be backported as well (I'm sorry for
+forgetting to add proper Fixes tag back then).
 
-Cc: regressions@lists.linux.dev
-Cc: stable@vger.kernel.org
-Fixes: 84c9d2a968c82 ("HID: lenovo: Support for ThinkPad-X12-TAB-1/2 Kbd Fn keys")
-Signed-off-by: Janne Grunau <j@jannau.net>
----
- #regzbot introduced: 84c9d2a968c82
----
- drivers/hid/Kconfig      | 2 --
- drivers/hid/hid-lenovo.c | 4 +---
- 2 files changed, 1 insertion(+), 5 deletions(-)
-
-diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
-index a57901203aeb284acd23be727d2fad0c137c101c..8ae63f8257cd582448e9683ca7fc654c8e465c0f 100644
---- a/drivers/hid/Kconfig
-+++ b/drivers/hid/Kconfig
-@@ -597,8 +597,6 @@ config HID_LED
- 
- config HID_LENOVO
- 	tristate "Lenovo / Thinkpad devices"
--	depends on ACPI
--	select ACPI_PLATFORM_PROFILE
- 	select NEW_LEDS
- 	select LEDS_CLASS
- 	help
-diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
-index b3121fa7a72d73f2b9ac12f36bc3d87c2649c69b..654879814f97aaf876ac16c00bf9efca22d116f3 100644
---- a/drivers/hid/hid-lenovo.c
-+++ b/drivers/hid/hid-lenovo.c
-@@ -32,8 +32,6 @@
- #include <linux/leds.h>
- #include <linux/workqueue.h>
- 
--#include <linux/platform_profile.h>
--
- #include "hid-ids.h"
- 
- /* Userspace expects F20 for mic-mute KEY_MICMUTE does not work */
-@@ -734,7 +732,7 @@ static int lenovo_raw_event_TP_X12_tab(struct hid_device *hdev, u32 raw_data)
- 				report_key_event(input, KEY_RFKILL);
- 				return 1;
- 			}
--			platform_profile_cycle();
-+			report_key_event(input, KEY_PERFORMANCE);
- 			return 1;
- 		case TP_X12_RAW_HOTKEY_FN_F10:
- 			/* TAB1 has PICKUP Phone and TAB2 use Snipping tool*/
-
----
-base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
-change-id: 20250901-hid-lenovo-drop-platform_profile-d59013f79a59
-
-Best regards,
+								Honza
 -- 
-Janne Grunau <j@jannau.net>
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
