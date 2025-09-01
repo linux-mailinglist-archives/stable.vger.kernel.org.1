@@ -1,109 +1,128 @@
-Return-Path: <stable+bounces-176813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E410CB3DE3D
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 11:25:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69834B3DE6B
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 11:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BEA017F6AC
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 09:24:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 609BA1A809A3
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 09:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CB130DEC8;
-	Mon,  1 Sep 2025 09:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF6F309DB1;
+	Mon,  1 Sep 2025 09:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iBxl9iBh"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="o0Dm4phU"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D5D2E0417;
-	Mon,  1 Sep 2025 09:21:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70432303C8D;
+	Mon,  1 Sep 2025 09:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756718469; cv=none; b=ZS7mIT0LCaF6rVjNsOhtxorOh1OwK7Tl3IC4KhDs+sd+TWYpkEOD0e6lQP5q34CTAXb+0VDw9b79H+eytehMuaVMkXgoVbjwSLHX35QhIhsigsLmwypcvhPigixMekuxuEIQTnkNjGij5jr/3zWCx9F7JRQCuLPkwFX8/u7Ab0Y=
+	t=1756718581; cv=none; b=OxmmNYkYBIFXCtrsqbySlbOwHb4KsLihhsxSSbItJpHvR/7dXYp0dOz7pzi7s0LKrewwPMfyoijaTCbXCbfFm5eFr7bYo5RM4VhX/MQj+mRrrnDRcZQyZpyTmai0aTU/IgAl7+nowLNAYhvCAWTIMq0Yy0Tc20by464r0tqRhfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756718469; c=relaxed/simple;
-	bh=ls5u1XePOINQwXxs0U11TUbZVLbAaL/foUkpem7uo+s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VOjkTz2ZUOR9xOSP3is28KHLdpdyKViUvsfOHrZ7z2/WibJ3d/R/jsdfdZR2SgRxbsiNhGV+WxVu0UeICYWYzn9YtSAZrz+ZMy5w0lAVTEaGfZzNdKPKhu6sK0LAyj4/guZwXd+5UhdskRWyRnc0KT3P61k2PbsjCKsNkX0L8cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iBxl9iBh; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756718468; x=1788254468;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ls5u1XePOINQwXxs0U11TUbZVLbAaL/foUkpem7uo+s=;
-  b=iBxl9iBhJLh5KXm+nYH1ZsTNv2YcocyS5eA5JHXoWIuNSwpDB+tS4LlD
-   4MTOworazD8UjvbMCxHosklpde5F3ZHvcGlqK6T6vnw5eR9O6XPG0CWmZ
-   oWCY4ECLc96l4Vn4+GsgBptd4M4O7KDaE0VTrqKlc6KMCyfMB9CGeuKxF
-   yrCSDLXLwvjYeNydHHROiaklE2Uqa+JTGJIQyZd4sbXaEIN0rMFazICiS
-   te2SZmZCjCJN9nqrASG+ydvRous9WHBqC5VCgiDdt/FaZ6ViJ1BUp0C8F
-   YRMzLqTjHxR8EAsGZCRuikx9vgPuk8NmgoX7j+vApw7fk0199kZ5CM7ou
-   w==;
-X-CSE-ConnectionGUID: FmpkWQLYRGib8s7BlrJhKQ==
-X-CSE-MsgGUID: U78szqvvTvGc8xHo/8XZPQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="62803587"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="62803587"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 02:21:08 -0700
-X-CSE-ConnectionGUID: V7X8rnqMS3ueJLy+SCkyKg==
-X-CSE-MsgGUID: MLlgXYFpQ5GnCrnqMVziLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="170823305"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 02:21:04 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1ut0ih-0000000AN6Z-42sq;
-	Mon, 01 Sep 2025 12:20:59 +0300
-Date: Mon, 1 Sep 2025 12:20:59 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Gabor Juhos <j4g8y7@gmail.com>
-Cc: Wolfram Sang <wsa@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>, Hanna Hawa <hhhawa@amazon.com>,
-	Robert Marko <robert.marko@sartura.hr>,
-	Linus Walleij <linus.walleij@linaro.org>, linux-i2c@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Imre Kaloz <kaloz@openwrt.org>
-Subject: Re: [PATCH v3 0/2] i2c: pxa: fix I2C communication on Armada 3700
-Message-ID: <aLVle-fEMXlQlDR-@smile.fi.intel.com>
-References: <20250827-i2c-pxa-fix-i2c-communication-v3-0-052c9b1966a2@gmail.com>
+	s=arc-20240116; t=1756718581; c=relaxed/simple;
+	bh=inHRaS4Kg5KmM8x2x1WVTksGZ37CfV4NG8BOkOKDvC4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=te/KSrUGio8zee+/yAr9zSlITM9kJJ5VTwx8EGhreJW8UhMf5MEnaZrxIU2pQ60Axq9adrSrQhgWB5FIsCwxPmUTaJjaIJYsUro+g8bhNaNWDU/HWzkDExTcu7U/2aF/bbveKZLI5W5CJ5EgFS+8IIGCQ8yPa/lEhRqnvsq4USQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=o0Dm4phU; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 05167EFE;
+	Mon,  1 Sep 2025 11:21:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1756718509;
+	bh=inHRaS4Kg5KmM8x2x1WVTksGZ37CfV4NG8BOkOKDvC4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=o0Dm4phUp+R3cxtxsrWrEoOL97EwFPH2RUt4L1B7oo4QhScvIJJuiT++F3xtf2FuZ
+	 3VmKk3COtouhjK/V3fkKJbQ3Hld3SW7rHc8XNOcyNOmlQ8NdCff1SMoNBHnl71eVDg
+	 qWDx9M6YMkhdPxZfaNXr3ApnQxksqesrqa/7qf24=
+Message-ID: <e03c3fcb-7392-4ddc-80f1-8c104cd04e3c@ideasonboard.com>
+Date: Mon, 1 Sep 2025 12:22:52 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250827-i2c-pxa-fix-i2c-communication-v3-0-052c9b1966a2@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/rcar-du: dsi: Fix 1/2/3 lane support
+To: Marek Vasut <marek.vasut@mailbox.org>, dri-devel@lists.freedesktop.org
+Cc: stable@vger.kernel.org, David Airlie <airlied@gmail.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>,
+ Simona Vetter <simona@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>,
+ linux-renesas-soc@vger.kernel.org
+References: <20250813210840.97621-1-marek.vasut+renesas@mailbox.org>
+ <d1354951-cbd3-4216-970b-e1e130f58522@ideasonboard.com>
+ <fa0d9882-aadd-49e4-8a39-e0d0c321ecc1@mailbox.org>
+Content-Language: en-US
+From: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+In-Reply-To: <fa0d9882-aadd-49e4-8a39-e0d0c321ecc1@mailbox.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 27, 2025 at 07:13:57PM +0200, Gabor Juhos wrote:
-> There is a long standing bug which causes I2C communication not to
-> work on the Armada 3700 based boards. The first patch in the series
-> fixes that regression. The second patch improves recovery to make it
-> more robust which helps to avoid communication problems with certain
-> SFP modules.
+Hi,
 
-> Changes in v3:
->   - rebase on tip of i2c/for-current
+On 31/08/2025 20:01, Marek Vasut wrote:
+> On 8/14/25 7:54 AM, Tomi Valkeinen wrote:
+> 
+> Hello Tomi,
+> 
+>> On 14/08/2025 00:08, Marek Vasut wrote:
+>>> Remove fixed PPI lane count setup. The R-Car DSI host is capable
+>>> of operating in 1..4 DSI lane mode. Remove the hard-coded 4-lane
+>>> configuration from PPI register settings and instead configure
+>>> the PPI lane count according to lane count information already
+>>> obtained by this driver instance.
+>>>
+>>> Configure TXSETR register to match PPI lane count. The R-Car V4H
+>>> Reference Manual R19UH0186EJ0121 Rev.1.21 section 67.2.2.3 Tx Set
+>>> Register (TXSETR), field LANECNT description indicates that the
+>>> TXSETR register LANECNT bitfield lane count must be configured
+>>> such, that it matches lane count configuration in PPISETR register
+>>> DLEN bitfield. Make sure the LANECNT and DLEN bitfields are
+>>> configured to match.
+>>>
+>>> Fixes: 155358310f01 ("drm: rcar-du: Add R-Car DSI driver")
+>>> Cc: <stable@vger.kernel.org>
+>>> Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+>>> ---
+>>> Cc: David Airlie <airlied@gmail.com>
+>>> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+>>> Cc: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+>>> Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+>>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>>> Cc: Magnus Damm <magnus.damm@gmail.com>
+>>> Cc: Maxime Ripard <mripard@kernel.org>
+>>> Cc: Simona Vetter <simona@ffwll.ch>
+>>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>>> Cc: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+>>> Cc: dri-devel@lists.freedesktop.org
+>>> Cc: linux-renesas-soc@vger.kernel.org
+>>> ---
+>>> V2: - Split this out of a series, update commit message, combine from
+>>>        drm/rcar-du: dsi: Remove fixed PPI lane count setup
+>>>        drm/rcar-du: dsi: Configure TXSETR register to match PPI lane
+>>> count
+>>>      - add Fixes tag, CC stable
+>>> ---
+>>>   drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi.c      | 5 ++++-
+>>>   drivers/gpu/drm/renesas/rcar-du/rcar_mipi_dsi_regs.h | 8 ++++----
+>>>   2 files changed, 8 insertions(+), 5 deletions(-)
+>>
+>> Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+> Would you like to pick this up via drm-misc , or shall I ?
 
-Hmm... Why not the i2c/i2c-host branch? (It's Andi's tree)
+I'll push to drm-misc. Thanks!
 
--- 
-With Best Regards,
-Andy Shevchenko
-
+ Tomi
 
 
