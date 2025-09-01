@@ -1,169 +1,159 @@
-Return-Path: <stable+bounces-176816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC23B3DE97
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 11:32:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFBB1B3DEAB
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 11:36:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D54C443A71
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 09:31:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BB4A1894F7E
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 09:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D70130DEC4;
-	Mon,  1 Sep 2025 09:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF9B2FE58C;
+	Mon,  1 Sep 2025 09:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="duhoG9Vf"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="uMGkd0SX"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C1230DEB1
-	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 09:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C476325A341;
+	Mon,  1 Sep 2025 09:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756718998; cv=none; b=LdIgCZE/gKV8Xlb5mOmC2vCZbyExAwHvfEruCEftm26UcMx9KuyesQvdsyphUQmY9SzDME+kN+Zv2YJjNhnL8WBNhBHyA74ZRhMV9mLhRgGNJbjKKfBq4MN+qArQOx5EQr9ERXHJnpe43A50eSsR2WkSvTpNd4fLg3ryeXlRV2Q=
+	t=1756719371; cv=none; b=JXTcEjF1NCjaqimmOqiCBPiPCCEHA5t1J5BG5BMEN0oFyG1KMJPIE8ckoUAgIg/47rEUnYtDLzCTqR18Dty12Ft4ZT18pQp2R4iFFytIWtwP1ATyikBPwHTCli87SryUZlUVaSpkOKetCD1lKh7XBMwhYktAk487GUc7qFU3KPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756718998; c=relaxed/simple;
-	bh=qZJxbmaqGWsy4atFe2P3rGVqkuLG6BlTXh6WeAcAyhU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 References; b=Aws2wGG8AiIWTiGOuvCnFg8NFXJXKPjNk4rEEXCY4atvZKWUBFRm+uKNUz1Ans1+0i6Xq1e0oeTjud+5Pm1wEJldFK6MzI0Trlkb47PPmIsLekehhxRBdiyvHE/dNOuVxvgPK5gdWrORDO/EYnMJ5v0TK+KbIh27I/5XQMt+unU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=duhoG9Vf; arc=none smtp.client-ip=203.254.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20250901092952epoutp0499d8cd492f2035582eff6e41f95f16da~hHp3LK27z0566705667epoutp04J
-	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 09:29:52 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20250901092952epoutp0499d8cd492f2035582eff6e41f95f16da~hHp3LK27z0566705667epoutp04J
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1756718992;
-	bh=74Q1v6jsTAK/snjr8Bol8mkXpMT6PrDDB7mwBUaLBDo=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=duhoG9Vfo9MZOdJwEUweOVti6TF5ssKEaXuBHMXGEot2BY0fWmc9P0IBHlRSrsThv
-	 tOpfjQieTm9YhADMDRenITqN/7yWck6ARrjqndgd8fQjNwztCOUxyzUKyQJx9D9emj
-	 vhEPYe+CdkbzK61hgNNRDZTZLN/WrKt0Lsvg300o=
-Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
-	20250901092952epcas5p15f9c1d6b59500aeac07e20af90cad9f6~hHp20veHp1370913709epcas5p13;
-	Mon,  1 Sep 2025 09:29:52 +0000 (GMT)
-Received: from epcas5p3.samsung.com (unknown [182.195.38.86]) by
-	epsnrtp02.localdomain (Postfix) with ESMTP id 4cFk9W4mCWz2SSKY; Mon,  1 Sep
-	2025 09:29:51 +0000 (GMT)
-Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-	20250901092950epcas5p35accdcb60fe3ba58772289058a12f8a1~hHp1a6Xqt2257322573epcas5p34;
-	Mon,  1 Sep 2025 09:29:50 +0000 (GMT)
-Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250901092949epsmtip23b4ed2198fb6b60b6d40969701766613~hHpz3yNss1644216442epsmtip2H;
-	Mon,  1 Sep 2025 09:29:49 +0000 (GMT)
-From: Shashank A P <shashank.ap@samsung.com>
-To: jack@suse.com, linux-kernel@vger.kernel.org
-Cc: shadakshar.i@samsung.com, thiagu.r@samsung.com, hy50.seo@samsung.com,
-	kwangwon.min@samsung.com, alim.akhtar@samsung.com, h10.kim@samsung.com,
-	kwmad.kim@samsung.com, selvarasu.g@samsung.com, Shashank A P
-	<shashank.ap@samsung.com>, stable@vger.kernel.org
-Subject: [PATCH] fs: quota: create dedicated workqueue for
- quota_release_work
-Date: Mon,  1 Sep 2025 14:59:00 +0530
-Message-ID: <20250901092905.2115-1-shashank.ap@samsung.com>
-X-Mailer: git-send-email 2.46.0.windows.1
+	s=arc-20240116; t=1756719371; c=relaxed/simple;
+	bh=PiwqZJCg0JTa1pZ56Fd6Wyt0Ul+2iqKvO05eQAGWYJo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s+/Jb2nD6B2Q3sk2NH8/bo4+6mfVaBvio9vUwhPxKCwmfvlW6Euz0lmVTFpbFO2DAgDpAVa1Alz8MiIv8R9tkmBsvxWD8VqBSjsjr7IPBtFLLYTStDpgsmNKKppgj9VvC5A62O3d2cigV1Q5SKAwU25Q2BDA1Y7D6llLWRVkvo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=uMGkd0SX; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ekHLxl+xZQ2A1ir8y9wQNeOzde7UET8G9p+labbm86Y=; b=uMGkd0SXjOX6DaEyvBh3Qu7kez
+	TEGFd4x814gtOxoseuX5pqredDxyu0PfoIUoCxzS6Bm88fUHP445cnSWQ5OpwMUA9zABqZMy1fS/g
+	qc6POcitKwjQFoq7QV0J2PuPF+QKj1hFuGWsmZXYtTlnmdiIYTNdXE//Bh81t7EFMhT93Hy3KOUfY
+	NTpiSmMltDWcL9LXXpBSZwOJzOHXa8bNhDud3ED0kdYwWDN4eR48u6l9XYMvS18bCPCsZRevo4YJP
+	rH+v+dK/109d/xsjt71Tbi693zTy5ta78MoaVnDK9zXgKCcJh3LN6YI1ppdGMW7FDAXwjVgHx5rLj
+	NwxnP1aw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1ut0xE-000000063tK-33Dy;
+	Mon, 01 Sep 2025 09:36:01 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 5A362300342; Mon, 01 Sep 2025 11:36:00 +0200 (CEST)
+Date: Mon, 1 Sep 2025 11:36:00 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Finn Thain <fthain@linux-m68k.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Eero Tamminen <oak@helsinkinet.fi>, Will Deacon <will@kernel.org>,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
+Message-ID: <20250901093600.GF4067720@noisy.programming.kicks-ass.net>
+References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
+ <20250825071247.GO3245006@noisy.programming.kicks-ass.net>
+ <58dac4d0-2811-182a-e2c1-4edfe4759759@linux-m68k.org>
+ <20250825114136.GX3245006@noisy.programming.kicks-ass.net>
+ <9453560f-2240-ab6f-84f1-0bb99d118998@linux-m68k.org>
+ <20250827115447.GR3289052@noisy.programming.kicks-ass.net>
+ <10b5aaae-5947-53a9-88bb-802daafd83d4@linux-m68k.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250901092950epcas5p35accdcb60fe3ba58772289058a12f8a1
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-542,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20250901092950epcas5p35accdcb60fe3ba58772289058a12f8a1
-References: <CGME20250901092950epcas5p35accdcb60fe3ba58772289058a12f8a1@epcas5p3.samsung.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <10b5aaae-5947-53a9-88bb-802daafd83d4@linux-m68k.org>
 
-There is a kernel panic due to WARN_ONCE when panic_on_warn is set.
+On Thu, Aug 28, 2025 at 07:53:52PM +1000, Finn Thain wrote:
 
-This issue occurs when writeback is triggered due to sync call for an
-opened file(ie, writeback reason is WB_REASON_SYNC). When f2fs balance
-is needed at sync path, flush for quota_release_work is triggered.
-By default quota_release_work is queued to "events_unbound" queue which
-does not have WQ_MEM_RECLAIM flag. During f2fs balance "writeback"
-workqueue tries to flush quota_release_work causing kernel panic due to
-MEM_RECLAIM flag mismatch errors.
+> > Anyway, I'm not opposed to adding an explicit alignment to atomic_t.
+> > Isn't s32 or __s32 already having this?
+> > 
+> 
+> For Linux/m68k, __alignof__(__s32) == 2 and __alignof__(s32) == 2.
 
-This patch creates dedicated workqueue with WQ_MEM_RECLAIM flag
-for work quota_release_work.
+Hmm, somehow I thought one of those enforced natural alignment. Oh well.
 
-------------[ cut here ]------------
-WARNING: CPU: 4 PID: 14867 at kernel/workqueue.c:3721 check_flush_dependency+0x13c/0x148
-Call trace:
- check_flush_dependency+0x13c/0x148
- __flush_work+0xd0/0x398
- flush_delayed_work+0x44/0x5c
- dquot_writeback_dquots+0x54/0x318
- f2fs_do_quota_sync+0xb8/0x1a8
- f2fs_write_checkpoint+0x3cc/0x99c
- f2fs_gc+0x190/0x750
- f2fs_balance_fs+0x110/0x168
- f2fs_write_single_data_page+0x474/0x7dc
- f2fs_write_data_pages+0x7d0/0xd0c
- do_writepages+0xe0/0x2f4
- __writeback_single_inode+0x44/0x4ac
- writeback_sb_inodes+0x30c/0x538
- wb_writeback+0xf4/0x440
- wb_workfn+0x128/0x5d4
- process_scheduled_works+0x1c4/0x45c
- worker_thread+0x32c/0x3e8
- kthread+0x11c/0x1b0
- ret_from_fork+0x10/0x20
-Kernel panic - not syncing: kernel: panic_on_warn set ...
+> > But I think it might make sense to have a DEBUG alignment check right
+> > along with adding that alignment, just to make sure things are indeed /
+> > stay aligned.
+> > 
+> 
+> A run-time assertion seems surperfluous as long as other architectures 
+> already trap for misaligned locks. 
 
-Fixes: ac6f420291b3 ("quota: flush quota_release_work upon quota writeback")
-CC: stable@vger.kernel.org
-Signed-off-by: Shashank A P <shashank.ap@samsung.com>
+Right, but those architectures have natural alignment. m68k is 'special'
+in that it doesn't have this.
+
+> For m68k, perhaps we could have a compile-time check:
+
+I don't think build-time is sufficient. There is various code that casts
+to atomic types and other funny stuff like that.
+
+If you want to ensure 'atomics' are always naturally aligned, the only
+sound way is to have a runtime test/trap.
+
+Something like the completely untested below should do I suppose.
+
 ---
- fs/quota/dquot.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index df4a9b348769..d0f83a0c42df 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -162,6 +162,9 @@ static struct quota_module_name module_names[] = INIT_QUOTA_MODULE_NAMES;
- /* SLAB cache for dquot structures */
- static struct kmem_cache *dquot_cachep;
- 
-+/* workqueue for work quota_release_work*/
-+struct workqueue_struct *quota_unbound_wq;
-+
- void register_quota_format(struct quota_format_type *fmt)
+diff --git a/include/linux/instrumented.h b/include/linux/instrumented.h
+index 711a1f0d1a73..e39cdfe5a59e 100644
+--- a/include/linux/instrumented.h
++++ b/include/linux/instrumented.h
+@@ -67,6 +67,7 @@ static __always_inline void instrument_atomic_read(const volatile void *v, size_
  {
- 	spin_lock(&dq_list_lock);
-@@ -881,7 +884,7 @@ void dqput(struct dquot *dquot)
- 	put_releasing_dquots(dquot);
- 	atomic_dec(&dquot->dq_count);
- 	spin_unlock(&dq_list_lock);
--	queue_delayed_work(system_unbound_wq, &quota_release_work, 1);
-+	queue_delayed_work(quota_unbound_wq, &quota_release_work, 1);
+ 	kasan_check_read(v, size);
+ 	kcsan_check_atomic_read(v, size);
++	WARN_ON_ONCE(IS_ENABLED(CONFIG_DEBUG_ATOMIC) && ((unsigned long)v & 3));
  }
- EXPORT_SYMBOL(dqput);
  
-@@ -3041,6 +3044,11 @@ static int __init dquot_init(void)
+ /**
+@@ -81,6 +82,7 @@ static __always_inline void instrument_atomic_write(const volatile void *v, size
+ {
+ 	kasan_check_write(v, size);
+ 	kcsan_check_atomic_write(v, size);
++	WARN_ON_ONCE(IS_ENABLED(CONFIG_DEBUG_ATOMIC) && ((unsigned long)v & 3));
+ }
  
- 	shrinker_register(dqcache_shrinker);
+ /**
+@@ -95,6 +97,7 @@ static __always_inline void instrument_atomic_read_write(const volatile void *v,
+ {
+ 	kasan_check_write(v, size);
+ 	kcsan_check_atomic_read_write(v, size);
++	WARN_ON_ONCE(IS_ENABLED(CONFIG_DEBUG_ATOMIC) && ((unsigned long)v & 3));
+ }
  
-+	quota_unbound_wq = alloc_workqueue("quota_events_unbound",
-+					   WQ_UNBOUND | WQ_MEM_RECLAIM, WQ_MAX_ACTIVE);
-+	if (!quota_unbound_wq)
-+		panic("Cannot create quota_unbound_wq\n");
+ /**
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index dc0e0c6ed075..1c7e30cdfe04 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1363,6 +1363,16 @@ config DEBUG_PREEMPT
+ 	  depending on workload as it triggers debugging routines for each
+ 	  this_cpu operation. It should only be used for debugging purposes.
+ 
++config DEBUG_ATOMIC
++	bool "Debug atomic variables"
++	depends on DEBUG_KERNEL
++	help
++	  If you say Y here then the kernel will add a runtime alignment check
++	  to atomic accesses. Useful for architectures that do not have trap on
++	  mis-aligned access.
 +
- 	return 0;
- }
- fs_initcall(dquot_init);
--- 
-2.34.1
-
++	  This option has potentially significant overhead.
++
+ menu "Lock Debugging (spinlocks, mutexes, etc...)"
+ 
+ config LOCK_DEBUGGING_SUPPORT
 
