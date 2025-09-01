@@ -1,136 +1,124 @@
-Return-Path: <stable+bounces-176795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1F3DB3DC1D
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:18:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4EDB3DC47
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:23:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94B7717C257
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:18:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEB3A17B2C5
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3DC61F91C8;
-	Mon,  1 Sep 2025 08:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4450525CC4D;
+	Mon,  1 Sep 2025 08:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eBp90KTV"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Dz8uyAzg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663BA2110E;
-	Mon,  1 Sep 2025 08:18:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230CD26F445
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 08:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756714699; cv=none; b=FY8XDx8c3HJmpnaCZDlJYIBOxXwGF88VKQSsEqOplCC75o3d1z7fjQAkOVdFLYWKvJODeW0Bfoi/t0kAUt3hr9afNd/X6VWjHnw38yAN5aUWhyXPK4wz5y7wX57htX62RyKXmgcKsiFAs2dhjQQMwTV1bSVY4g6ddhsYKEHUTOw=
+	t=1756714999; cv=none; b=B/BnK2desjx/H8Z6AAjYM2JqKZr6hUwmq003NISDtvxl4Y3SFnYVazDTKyzVtHmsRz7irjxDRfa+c5zkkFFe0DB7aJRqGhms5z4tK87WS/Y3fVZVpw14R5csQankJ7L7Z3VfHa2exAG+Uc5tD4x+6zWR8bfjXNLJB5mvzfISKh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756714699; c=relaxed/simple;
-	bh=n2mChHJOpuovt3EkOwskBKLM9hbBlkGgtvGxWx7OgZM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F0/cfQLtis2fB06brZzZq8Okqkvm/BmAjrUvtQvSNpJUe2STRWQuRH1e+KNpvgol9upwob0CGRCL/CY5d5FwZTV7PLQt/QT7hu1ROqA505tuOKV41oNCRftXLhSdT/9+IHILPP4T2CGXuL6QmbOLodVGgnIsTfpSq92ec6+kN3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eBp90KTV; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-770530175a6so2397909b3a.3;
-        Mon, 01 Sep 2025 01:18:18 -0700 (PDT)
+	s=arc-20240116; t=1756714999; c=relaxed/simple;
+	bh=1GRc8xrxN9zGX5wz5BhvKOO2j5zrzx4fFnKG/lVnDdA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J8cb4qLXhrNTEVCHF7TJEIJSB2I4nhSSm2olwqWV+Vvr350zT6SJYhIfNPL/Md2JTbGPnEJ6SeRXOW9sZyvJUHrAtyoJNmqQn6e/jX9iNBJjgH56Z9c2Evw977OrPWH9eQSqeOaKBTZXdrcDvD5oDOoCq2IpDnA/ula63RgIyyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Dz8uyAzg; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-55f6e0eed29so1602545e87.3
+        for <stable@vger.kernel.org>; Mon, 01 Sep 2025 01:23:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756714698; x=1757319498; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fhO72zhYOJiaCs0Sw3nOH7x/q+Nik5NH+Mprbd215KE=;
-        b=eBp90KTVNT+b7sJbhfHoOGzh/vlSVIurwwOMkwxwkZf1dSkB5f4ULB3bGwGHP4awXY
-         8GsjqUtSFp+HHaN/YNEMicpQkNu/R0kjA7urwzHrh5gubjkhGNOGlgABEVjbdtyM5b4q
-         5cmY8XLD3TtunFaOPxn5XOtjvFQ7emV0Ki1bgPwa9UrTpue6rOvFTx9hx531Xky/rkeW
-         u8peCNe884pOVe4R7c+6mNR9FZMosiw/gMlwEOrucYFQPl/mTDTTzLSEjQoeBqsGIF8Z
-         +pmm++8uxdGmVtjrxcR6ltsaIFfEcKOSil3Po+zkzrhf4ziWELpehX6we17K35sWjiMP
-         1Rzg==
+        d=linaro.org; s=google; t=1756714995; x=1757319795; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K6bOX31TOnXa3mSpUgWZIksoOSQJIo6oigebcMiGpVk=;
+        b=Dz8uyAzgarZvRBDqWWnP+o0U86ka5hRrkwgV0NlTvB1H4KaavPr9OXtifRWGyBpZhd
+         4RTS1Ii3q9rZPzEXv7pjrIuX0WiyIwNmB0j8UYGYKgzC0kYLccqV3fHDCbNXMZDtQjmo
+         gQiwpG28ZWd1RO5BUKErdyIHmeplvRsTKAfX4KMeT2vNdi35UdCczvAp47o6gXIuRrEW
+         4hAH1yjoEa5fO48bu4rAIl6QTIJptC9r251HxtiEPzW5fHQXTJ+LPtnTCykdnAqZLHG/
+         cu9lewA9vJ5uQ6U/VqsrNIjybREuo4VgvovYZorEknE1YhCNECxrNloex32z6/yU791v
+         /f6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756714698; x=1757319498;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fhO72zhYOJiaCs0Sw3nOH7x/q+Nik5NH+Mprbd215KE=;
-        b=swBKuI96kwHq30qLnciIBBTibGDPPDH8JnuY188MNjy6WdEBn2T/3uJGshA5w4fOfP
-         OgOOEjuVbSZS3Ec7PBynCq8+9OpbBDE+JIo9l389Y8GhZDn5I0rpM9j6MDMtcOOSXIYr
-         i5ey0KSY4HoydetpEQd55lwxRXRT0RBgQYooGrNoEvTf/CXIKMClWstnF2o08sJq8mer
-         izecf5PU/gdgHFpPznP9/z7PvtcCS7bnoNdK+RoC3b8YVfsm3j2WuxTMWulQc1Yn46p/
-         nqMsOGDHAAebPoLLYzKhU5L9zZAD61vaH6c6Ggsy5bCCakDU/jGMzaeWjoZJR4oky0Sk
-         KIkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUqiFl/Q/UkFI55MstSUh9JKLkz2mcjtJf8UCNNT5LvxL3qqaaXnbDggWlhMdrsFzQx+SE=@vger.kernel.org, AJvYcCVKGNR5AxgwE/e21cfADU+jcBvmn8b1/LDX7eNwfvH4jwPNRFrq05k/Y1wv2PuneKM9cFASJ2olrddITQD2@vger.kernel.org, AJvYcCXuLc6lxHdBmog1vOlmFGfEVMoKatsWP2EjOpNbVQo5MfJGs8lxOZbJRTqJjk8avos7b+p9iRVS@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyylr7NdzVEu1gRuhi9Saslbm1LxVKeQbXZU8ixRRGRC6wfCJUY
-	/VFC0q5v/3ONmUgWkab2lU8voOxiEzezDhOuqAF/NRr689xe2aIi0Q5B
-X-Gm-Gg: ASbGncu3XdhXlP3ue2GWshbN6vAIr+AYmWWRUqbm79890sdOCylMXffrDZsZ2DK9xoN
-	qyk50UzMxtHgv0s9Fyp0kYoVZczkDM/Vv23GvY6+vtpoFT9HF8URT8aIFSKAMvodt+fOBviFPmI
-	PBcpoWqg5AaOqhT5UEQjSUv471l6EiKks9nQUvBQaVhwgzXs++5FoypeCtRsvhlBo/e288JNFEP
-	DA94g0LILVpB6LPHKHnLQBbbPBq3tiqDo5LYIDJWAeoNRQJJOQDBnMlegtbW6cfRjR7UbvQ8+y5
-	URycY75JXyX4NWm+kXmV3fDtO07RoeIbNRLp8c8BypX4HJaEPO8cW9B8ttnoNMfsVAR7mwvjI9P
-	QSLQcPHvIX/KE/uYXRek14UKRAtZb5I/hliLTtVki3DvT+X4MNWt6xnnBa1BBQHOH2oi9XQrRtM
-	UfNjqi8RueWk3Bam6nP9kfwRdZVMFkjP0ctXGOMycL+wnU6w==
-X-Google-Smtp-Source: AGHT+IFlIp5XtLRMTgGoktobYhmw4UEb9uqheDBPPdgtLTkETP+vGDUp6jU8cTUi1l23ljJmw1JTGg==
-X-Received: by 2002:a05:6a20:6a1b:b0:243:a7f1:ffd3 with SMTP id adf61e73a8af0-243d6f3a6e1mr9609890637.48.1756714697622;
-        Mon, 01 Sep 2025 01:18:17 -0700 (PDT)
-Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.116.239.35])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-b4f8a0a2851sm868312a12.37.2025.09.01.01.18.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 01:18:17 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Longfang Liu <liulongfang@huawei.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] hisi_acc_vfio_pci: Fix reference leak in hisi_acc_vfio_debug_init
-Date: Mon,  1 Sep 2025 16:18:08 +0800
-Message-Id: <20250901081809.2286649-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.35.1
+        d=1e100.net; s=20230601; t=1756714995; x=1757319795;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=K6bOX31TOnXa3mSpUgWZIksoOSQJIo6oigebcMiGpVk=;
+        b=ohTI2Ok7mqX3J+TcjS4Krjc9e18jbMMULsljXJtNmEvhDC3PpgFO7ftoaCp3kWEWCb
+         kkSfvpn5jubXPSZJI1SrzIjIE+rVSKkimGV50QNVB+Nlj0YEF3WGdCsDjynw7I35HeHH
+         O5zaP027c3426D+4DG9FpSxWe4EDf0Qka7w1tlnVpO3ibjitCwuqyvnUtMv0c5c9CFAF
+         fXgA406JvapB3k80s8wcE4hZwiqsma+PvhLKY/jL6VaqeaNSui/L10allJWn5/6ug2t2
+         qTJjzxFtCUxzwJu1ko1FsmEbSX7UHzOYkqRo+OAhU3t2k2aG2kMcubdivicttAw+DI6a
+         I7pA==
+X-Forwarded-Encrypted: i=1; AJvYcCW8G7A0v1HBp7VaIN+fh8FICr+u1j+t0pNMU9THbmbwTiej+o06sXHm9vXWOLTG2PHsX34lXHg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAws3/w1YuGU95JtknB1nPviyPo0bcefspweJOBHbWf6hOmpsz
+	sdAvtv/4EqMGMWZJLXXbYdYFN87p3IDC823fJJjwM0GiYYNf4IOrn9+uVrJIuKUPulr4b9CUZVP
+	33vMJ52JSYvfiloW8ZHPPAW360qOfSSDevQ3c3HVS4g==
+X-Gm-Gg: ASbGncuLVwqAt0uLHLfXcOX8LhpRn1kodF2l2A9Lbvcpcj2mRNrhV5PT+P6pA2MkBce
+	/MTZgxXmW9x8lai9+exTpNEu8MIhj+WGxyWz9+Cuy7bnsU3ensNCWwWBh/C/piVBZa2mbPH4khV
+	Vpvs3iqzLEHFF3ROY90kZ3AMFfXHYgcHA2m26mIzLQ5xbrsAwM26FTNP4XN/z/UGMfa3IJrkIxH
+	MIwCbtR6NDOlNHJZQ==
+X-Google-Smtp-Source: AGHT+IHVwIASRqXdiBtabwQpeTaLvx/MwfpuhWhcvrvqvY8VLXWEY8BeiyfCJbCTfLb/GJ7BJFbdc5bUK1izSWZcw90=
+X-Received: by 2002:ac2:4c47:0:b0:55f:6186:c161 with SMTP id
+ 2adb3069b0e04-55f70a0081cmr1669470e87.49.1756714995167; Mon, 01 Sep 2025
+ 01:23:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250901073224.2273103-1-linmq006@gmail.com>
+In-Reply-To: <20250901073224.2273103-1-linmq006@gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 1 Sep 2025 10:23:04 +0200
+X-Gm-Features: Ac12FXwOPFvcHfnOB3USWBMbhSfcVlBY0l39KH-IS_467sKxEs3coXt0xb6oRRE
+Message-ID: <CACRpkdYVCU3Pb2u3r_G0BY19mbF8m1je696RNP_49rU7G4PvUw@mail.gmail.com>
+Subject: Re: [PATCH v2] net: dsa: mv88e6xxx: Fix fwnode reference leaks in mv88e6xxx_port_setup_leds
+To: Miaoqian Lin <linmq006@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The debugfs_lookup() function returns a dentry with an increased reference
-count that must be released by calling dput().
+On Mon, Sep 1, 2025 at 9:32=E2=80=AFAM Miaoqian Lin <linmq006@gmail.com> wr=
+ote:
 
-Fixes: b398f91779b8 ("hisi_acc_vfio_pci: register debugfs for hisilicon migration driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+> Fix multiple fwnode reference leaks:
+>
+> 1. The function calls fwnode_get_named_child_node() to get the "leds" nod=
+e,
+>    but never calls fwnode_handle_put(leds) to release this reference.
+>
+> 2. Within the fwnode_for_each_child_node() loop, the early return
+>    paths that don't properly release the "led" fwnode reference.
+>
+> This fix follows the same pattern as commit d029edefed39
+> ("net dsa: qca8k: fix usages of device_get_named_child_node()")
+>
+> Fixes: 94a2a84f5e9e ("net: dsa: mv88e6xxx: Support LED control")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> ---
+> changes in v2:
+> - use goto for cleanup in error paths
+> - v1: https://lore.kernel.org/all/20250830085508.2107507-1-linmq006@gmail=
+.com/
 
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-index 2149f49aeec7..1710485cbbec 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -1611,8 +1611,10 @@ static void hisi_acc_vfio_debug_init(struct hisi_acc_vf_core_device *hisi_acc_vd
- 	}
- 
- 	migf = kzalloc(sizeof(*migf), GFP_KERNEL);
--	if (!migf)
-+	if (!migf) {
-+		dput(vfio_dev_migration);
- 		return;
-+	}
- 	hisi_acc_vdev->debug_migf = migf;
- 
- 	vfio_hisi_acc = debugfs_create_dir("hisi_acc", vfio_dev_migration);
-@@ -1622,6 +1624,8 @@ static void hisi_acc_vfio_debug_init(struct hisi_acc_vf_core_device *hisi_acc_vd
- 				    hisi_acc_vf_migf_read);
- 	debugfs_create_devm_seqfile(dev, "cmd_state", vfio_hisi_acc,
- 				    hisi_acc_vf_debug_cmd);
-+
-+	dput(vfio_dev_migration);
- }
- 
- static void hisi_acc_vf_debugfs_exit(struct hisi_acc_vf_core_device *hisi_acc_vdev)
--- 
-2.35.1
+When I coded it I honestly believed fwnode_get_named_child_node()
+also released the children after use but apparently not, my bad :(
 
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+
+Yours,
+Linus Walleij
 
