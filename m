@@ -1,159 +1,112 @@
-Return-Path: <stable+bounces-176850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB389B3E37C
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 14:42:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC202B3E3D0
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 15:00:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CA8E203B03
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 12:41:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 312961A82C64
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 13:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A92E212FB9;
-	Mon,  1 Sep 2025 12:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB01D334393;
+	Mon,  1 Sep 2025 13:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGLL/UvE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XNLL2hTg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384DB17A2E6
-	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 12:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3802773FB;
+	Mon,  1 Sep 2025 13:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756730450; cv=none; b=EyVr6TGOapEvHp6M7THSlvVo3Es/zuIxxEDBvysM7jhiMkNjTHdhgHezwf7ZZoTcUe7iBwlBUHpW5y1CNa718FAVj10A+M6xot8bM9MfhTzDVnIrP0u6AJPi9l/dvH/W+qaxRRyCxPLKiNGK45rxgbitxemvNsbTCyj6TnIk/wc=
+	t=1756731603; cv=none; b=bt8nUFSTQvTRdjfsUobMylPyeot3Uih7HOMQjKBDqhybYUxwOR8H5918XkiXpNv7q2Ro05+mz62ortZSJV5c1TCL3AHGfQjRYStJb2qbP5L8YIwugy4tmChlGL+YZ8iCJbU+G9P4ew2T4mTFL0Ni1vrnfHtK8KDNPMGZzHZmzo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756730450; c=relaxed/simple;
-	bh=K66wKWpKsYQeY2DCqrN61ftC181HWnftwu4PsDsFGhU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LJFFrZQqcROdL5fBykmRwZFHqkh7o8WZykhHJr+afhZ4hUVerrDF2dQWVdAjdgwLYI/a84doAy0ka7hcTxT/2odb8H8vTs3O5Sa3CsjsqhB1jnET8jZIoi30WOwd7VANTcXSmVhB+MJ4XoOFjWLz2NKsfSPMpzlhNFv771RfuLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGLL/UvE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B0FC4CEF0;
-	Mon,  1 Sep 2025 12:40:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756730449;
-	bh=K66wKWpKsYQeY2DCqrN61ftC181HWnftwu4PsDsFGhU=;
-	h=Subject:To:Cc:From:Date:From;
-	b=yGLL/UvEwqYFLa+VvcYAfzUbqoW3q0sSnv7ybfAEv+EJ66kSmfqccDUDBTfM+bc+t
-	 DmZ8iEksjEpGljmRAFFFBKXYbc4m6vsGcrhYZYEGkUr59e3wYwI/2UtYILcocCba+8
-	 /nQER46by9ti5i+o3buPOqAYKLurPvpZZmiy9qD4=
-Subject: FAILED: patch "[PATCH] drm/mediatek: Fix device/node reference count leaks in" failed to apply to 6.6-stable tree
-To: make24@iscas.ac.cn,chunkuang.hu@kernel.org,ck.hu@mediatek.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 01 Sep 2025 14:40:46 +0200
-Message-ID: <2025090146-playback-kinsman-373c@gregkh>
+	s=arc-20240116; t=1756731603; c=relaxed/simple;
+	bh=DH6a3pyoYn3ATBRSgAOH51prI3soF9SNPDXpoAdnWog=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F/Wp52Obh35LlPedAZG9LV96+DhBb+dG4qhrCxHYXMY7kgrZk1VS9eQPrHZhJpLGjGuqOrKnYm5eS1YMu2MPuZ9Bh6OdplTiu7YhAYwtdg1eqRAkad4tygra8TijbIQansbFh8nxhN0rcLFobetGr4CI4CVep3wSZxbwJi+1c70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XNLL2hTg; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756731602; x=1788267602;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=DH6a3pyoYn3ATBRSgAOH51prI3soF9SNPDXpoAdnWog=;
+  b=XNLL2hTgMqdxsLfsp/JFeROUDo3eL9VBS+42MLN3G1PdxVoW90YaLMCT
+   9VjPM+KlZBcBbX3GuwpiOJp5XrsNS7T7q08990Ov5K48PnKvkPY69LTdk
+   0ZYutrS0YxG4i8v3uAyctOfRm0pAZ95iwSa4mwB3kL3K2LkUE87Fkbdi4
+   JYaBF60PsIyR9J59mtp98mB8TmxogXvGN45ggNJ5DOpp5u5xCXzgdN6f4
+   pnkiUXuePg6CxuSyidr2OBDc9HiEQkZ2nqOS3bffxfLYWPAsIyd9iF1EG
+   Ics1bB3f2bTyg4Dpn4wUu/bxu/eu/d/OiUszveYsEdmix/VeBGHxXkJSt
+   g==;
+X-CSE-ConnectionGUID: 1TOojo8aS/uWzkFBPnb0uQ==
+X-CSE-MsgGUID: VMh0S38DQgCb8Yl/wBx/3w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="61624678"
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="61624678"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 06:00:01 -0700
+X-CSE-ConnectionGUID: xwZZeoL/T0aoxgmhL7FbRw==
+X-CSE-MsgGUID: JqYRR8LmT6SoeUPOPCZ9ow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="170990663"
+Received: from chiasheng-server.itwn.intel.com ([10.225.75.39])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 05:59:59 -0700
+From: Chiasheng Lee <chiasheng.lee@linux.intel.com>
+To: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	linux-i2c@vger.kernel.org
+Cc: Jean Delvare <jdelvare@suse.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Chiasheng Lee <chiasheng.lee@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] i2c: i801: Hide Intel Birch Stream SoC TCO WDT
+Date: Mon,  1 Sep 2025 20:59:43 +0800
+Message-ID: <20250901125943.916522-1-chiasheng.lee@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+Hide the Intel Birch Stream SoC TCO WDT feature since it was removed.
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On platforms with PCH TCO WDT, this redundant device might be rendering
+errors like this:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+[   28.144542] sysfs: cannot create duplicate filename '/bus/platform/devices/iTCO_wdt'
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 1f403699c40f0806a707a9a6eed3b8904224021a
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025090146-playback-kinsman-373c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+Fixes: 8c56f9ef25a3 ("i2c: i801: Add support for Intel Birch Stream SoC")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Chiasheng Lee <chiasheng.lee@linux.intel.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220320
+---
+ drivers/i2c/busses/i2c-i801.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 1f403699c40f0806a707a9a6eed3b8904224021a Mon Sep 17 00:00:00 2001
-From: Ma Ke <make24@iscas.ac.cn>
-Date: Tue, 12 Aug 2025 15:19:32 +0800
-Subject: [PATCH] drm/mediatek: Fix device/node reference count leaks in
- mtk_drm_get_all_drm_priv
-
-Using device_find_child() and of_find_device_by_node() to locate
-devices could cause an imbalance in the device's reference count.
-device_find_child() and of_find_device_by_node() both call
-get_device() to increment the reference count of the found device
-before returning the pointer. In mtk_drm_get_all_drm_priv(), these
-references are never released through put_device(), resulting in
-permanent reference count increments. Additionally, the
-for_each_child_of_node() iterator fails to release node references in
-all code paths. This leaks device node references when loop
-termination occurs before reaching MAX_CRTC. These reference count
-leaks may prevent device/node resources from being properly released
-during driver unbind operations.
-
-As comment of device_find_child() says, 'NOTE: you will need to drop
-the reference with put_device() after use'.
-
-Cc: stable@vger.kernel.org
-Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250812071932.471730-1-make24@iscas.ac.cn/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-index d5e6bab36414..f8a817689e16 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -387,19 +387,19 @@ static bool mtk_drm_get_all_drm_priv(struct device *dev)
- 
- 		of_id = of_match_node(mtk_drm_of_ids, node);
- 		if (!of_id)
--			continue;
-+			goto next_put_node;
- 
- 		pdev = of_find_device_by_node(node);
- 		if (!pdev)
--			continue;
-+			goto next_put_node;
- 
- 		drm_dev = device_find_child(&pdev->dev, NULL, mtk_drm_match);
- 		if (!drm_dev)
--			continue;
-+			goto next_put_device_pdev_dev;
- 
- 		temp_drm_priv = dev_get_drvdata(drm_dev);
- 		if (!temp_drm_priv)
--			continue;
-+			goto next_put_device_drm_dev;
- 
- 		if (temp_drm_priv->data->main_len)
- 			all_drm_priv[CRTC_MAIN] = temp_drm_priv;
-@@ -411,10 +411,17 @@ static bool mtk_drm_get_all_drm_priv(struct device *dev)
- 		if (temp_drm_priv->mtk_drm_bound)
- 			cnt++;
- 
--		if (cnt == MAX_CRTC) {
--			of_node_put(node);
-+next_put_device_drm_dev:
-+		put_device(drm_dev);
-+
-+next_put_device_pdev_dev:
-+		put_device(&pdev->dev);
-+
-+next_put_node:
-+		of_node_put(node);
-+
-+		if (cnt == MAX_CRTC)
- 			break;
--		}
- 	}
- 
- 	if (drm_priv->data->mmsys_dev_num == cnt) {
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index a7f89946dad4..e94ac746a741 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1052,7 +1052,7 @@ static const struct pci_device_id i801_ids[] = {
+ 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_SOC_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_PCH_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
+-	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
++	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5)			 },
+ 	{ PCI_DEVICE_DATA(INTEL, ARROW_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+ 	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
+-- 
+2.43.0
 
 
