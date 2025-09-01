@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-176806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD0DB3DCF8
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:49:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 346D8B3DD10
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:52:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B33CA7A1EAB
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:47:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5220A189DBAC
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E412FE56D;
-	Mon,  1 Sep 2025 08:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815BD2FF661;
+	Mon,  1 Sep 2025 08:51:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45572FB99B;
-	Mon,  1 Sep 2025 08:48:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01842FE59E;
+	Mon,  1 Sep 2025 08:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756716537; cv=none; b=NWKZ+ZAW11YgGOhwn2l6O0V+nwvjSUt1+GihtanbrRH/TOhxbE2nF1zwERFsqKLdvQuciWcgpQ/kr4+X4rXLP4/YueZpwyO0prJoCOnDVr2VhxM+0jQqB6DjSbnD7csE2CiFrfxTOoF/f/hQSOpoXaqPC1/6f/JnzVtiWboZMGE=
+	t=1756716697; cv=none; b=Dbz6bLP5zFGSIvxYvNZhaeNIktxydLfBhzbz2pc93+KytM6nTdtG1gH4jOi6E7Di96TCUXEwT5Qp8zFV3IH/nWEJmxDPSEzfmFY5kMmqLJv+LTbY7osAc3TMxhkE2lro5C+kK503g4dbUqMe6Bmgphs/XdOpperl7EDtWMeemy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756716537; c=relaxed/simple;
-	bh=8MZNME6CUICip8YLriqh73EGkN+aVtZ5jOj2xggld9E=;
+	s=arc-20240116; t=1756716697; c=relaxed/simple;
+	bh=uSvK41FmgeQ8I6Z+IJZE9+asxAYJK58LDNCtRKIuCfY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X5SCuS2D3hEd/l7wZCexH9umwawxjAXRga3SB7rJuLwy5gFMSKPwld1JM8SBah66bmnzj6V6k+hsBhQNWOKdkCScb+U8ubPwqsWJ/8I4lb4JVfCJZ0NTJiyuBYkXkzobmUFVyG4ZTpSaw+Q8LymEuNUiP5jnvDflKh1TlBQZ87E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.42
+	 To:Cc:Content-Type; b=hLsQOw91kO2Av0m8QN8+m4ZvYmZNUJJM/BlrnibQJ5znyRvoAD2W5g2I2onZYU9vjMOp2OUiTtogUWXLbeTSPsm72buwjDh4E6Gd/y3aocXzfTXoDHmYDiNL1D9rly/p+MtlWfTLKyg4O1lx9y5H4PVAa5FDVAguY2oHcILxDGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-523264ecab8so1373478137.2;
-        Mon, 01 Sep 2025 01:48:55 -0700 (PDT)
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-8980d75995dso90406241.3;
+        Mon, 01 Sep 2025 01:51:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756716534; x=1757321334;
+        d=1e100.net; s=20230601; t=1756716694; x=1757321494;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=06Sj7xDyFNchhNG4bIMKlTkghy/c7Pe7YTc3T5dsw5o=;
-        b=WVQQ3lc8zJPPPyy2NlorQVG61HloSG5ye0vy0UFHz8lcEwEDNHpZdNqAdi+66mvpX+
-         w/yQXxU8NCpwqfyP6CEG8tBpkjOGFClV4x9dQ7Oi0bID+kttYRV1FcrrnS3F5/Ui1k2+
-         hfqf8MwwrgOX+HiiSFD0Y72aPrhOvKVixadsFU45BabSIG6igNULELjpD+q3keak9Yag
-         LCTB9cD+adKZyQQO1o6ym98zQn7I6OzFO2QeFMSnLx0To8ZTkzp8XJloHv77fpPAQhm3
-         2uBXoYGJIDklC2ZHFwcPn01tpWp2cfL6HkZIlRlAy9MMiA1GkhQIvCPT5FJtDg2iXUs9
-         aw2A==
-X-Forwarded-Encrypted: i=1; AJvYcCWK7rCJMFlIE3P38rzQpbe40rZyj3Dr55jK86GSFHAlXeRmuFEkba6BfLAXLOgmmJOHJtqoUUODzgaI2WY=@vger.kernel.org, AJvYcCXtwf/gavrTDR3jShQfYn5FS8eVcbP9V/j5/Y84QHeJOF518Bv+0+MgYZNIsXkWjp7cq5ds9YK+@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbC5mnDtLMZeKzxFyZw+yi8GgXu+G7hX5+Ajjje2Cir2M9W7H4
-	HmRlX0asR7SYvgSQKOP0ZDvR7WUmC+RsCvdm9+C+s+HtjP6a030y/46izVBABYE7
-X-Gm-Gg: ASbGncvddAyPCwZK4vy9RYn4odPRdXuzA0zS+DEn8ufS1S3ZwN8bA7bnpbL5mClaZDS
-	uOKRcq+COOTx/vwWs9Tz4WQ8FFgVQa76BhnHMXV77eAKq8AUM+WAl7K0chvbMLdS9Omf6ZHwJmR
-	/I68GjvqNtYYGzKRJ/8jAAudqYyGDwiRhNZjvFpNM7wDpMjJNd62P7WaJjlQj4N7yLygvxpXPa3
-	mZl2NRURXMgFvpvlJ20fm0FDhNWLqKFLtCTqI7IsdXhDY9+utz6Heiri/ZX2A2by3/S2A1LibSu
-	pDyjdSXRuMQTj8TxxJPB0UV/tfj3rCUlz2Qnq3DXa4yHqSsHwYc6HBjFcoG1tMuQeAte3GF2cYE
-	9zwdJp5XUim2GmX+TDQQ2IujMb+3MGyCBtgLSS+A0EgRCO78gBGYzsgJB/51G6NbRFaAT/Pw=
-X-Google-Smtp-Source: AGHT+IEOCgWGLP4sjICEfqdw0ujKRIpJg3pSeRWeRRH0PN6TMJRAZ8urdVTRfJF2bFHmCn9j0j6oPw==
-X-Received: by 2002:a05:6102:d90:b0:521:760c:7aa5 with SMTP id ada2fe7eead31-52b1c14162fmr1363766137.33.1756716534386;
-        Mon, 01 Sep 2025 01:48:54 -0700 (PDT)
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com. [209.85.217.53])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-8943ba52cb1sm3503112241.11.2025.09.01.01.48.53
+        bh=WotrGx0bV1lkHS8mV0WZnLSC2eWHhyQWssws+EOHV0c=;
+        b=p7SgahV7RoXT7A38WoD1vgnUmqAZERrnciNk7LyRKU1eTIoypOUvsgLEKvefVzqcKt
+         ZmPhihBnA6GqSbgCN331Ho8T3yPMumFkhNQ2tMdZUdzzR9TFqFdWdKNPzocML1Ql2WzA
+         UNhRpnAbcskO/OISk8Q0z/03PSNFZnpnlhl8NQ6q+BeyDb9YRCRB2FrqsCiP9NfsuZws
+         sqfX01veiEbyy6Pm6NDwA3gH4lxz8ylf/FnB398FfabdHJwlq1MkZvcfwf6JuSMVbLTH
+         nxhqhO1SmS4GqpmcM+iu2SpE4f8V2CFPTyPQIYA0w/Uvy84ZiakdceaIB3CW3k6N5QuE
+         AJOg==
+X-Forwarded-Encrypted: i=1; AJvYcCUgko+bJVnNSKf35gVkXWyM7AtcjMvo10iTMXpFckMdT9+Zgsl1Fgr73enfLyfVSDp1KLxK5xc/@vger.kernel.org, AJvYcCWzwnCPLgDHwIIilMr0RDGHB9LYVu8cuxfFa1cVBPs0C/g9dqrCkro/tJ6fd3LF/0zyQoj2q9JjCMY7SEw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5tLwG0oeqQsL/PGLxhMAjXlGf1B0NH8ArUTnWcfTFnrU3tVNW
+	H2nvThcp6KjpLERYRQDY4MfbAKdZlON7/QIZnpqtg1/dpYA9fGrf6SpzZjXv80Ar
+X-Gm-Gg: ASbGnctNdTQTCmkAmD4eBXPBH81XxiJmAExmcmA3mEFrqaVcUO2w+BkV9ALJcUp4y9g
+	F/hq08bxDOxFBo2b9u4uBy2GNGtPu/5tdBirrrwacUIj9JrEqGxYX6pAmkC1FEWQ9E3LxEpyVfK
+	S6w19QW4vc+YY6uHJkEi1xaKT62IVWwY/MEarByhP1+2n4j1Zx8YeZ0Traxag7/XA6N1JjaxJ3p
+	dzGiqzunid8wPEz88ib33OCtHk00Wnfxr56ykv+4fmRkJCPoT5/v1TMTpPT8QfkTe1u1o60v1Gv
+	aGnhwkrzaZ4w8vG6le4c/Jg+kapBc2WsGo3jf3+oqs29Augxf/ZIIOejR130AUs1Hax6dVRE6ue
+	4azc2KRfTUBgcAIYsV5/iTwB1Lo0Ek2UtVYJiMj9V04Y+kx2L5UfrnNfZv1WrDjTgnrdeU9A=
+X-Google-Smtp-Source: AGHT+IEXNgpFZ5qnf5jopxT/eEcLhmcSib3ubK5+GS3G45ed1p95enAA/RsXyaLeGTc0udPMq3rPKw==
+X-Received: by 2002:a05:6102:1612:b0:522:2b10:7d07 with SMTP id ada2fe7eead31-52b1c14d255mr1629898137.30.1756716694155;
+        Mon, 01 Sep 2025 01:51:34 -0700 (PDT)
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com. [209.85.222.54])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-52aec3ae8ccsm3028925137.0.2025.09.01.01.51.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 01:48:54 -0700 (PDT)
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-529858dc690so871132137.0;
-        Mon, 01 Sep 2025 01:48:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU6XrA+5UAhUKIwomGfVkH8IbhW4GMF8R0iSKmu+ioI3f7CsiRfntYVqC118gyIYWeXEnRXTqp1@vger.kernel.org, AJvYcCVwjCRyBFb8H0HiusGKvXKMIyEUVnDU4hHSSde0zBl8PtiVhstTd2u0pdxkOMSZQIWa6NjU/KJB28DYirU=@vger.kernel.org
-X-Received: by 2002:a05:6102:41a6:b0:521:ed06:1fd2 with SMTP id
- ada2fe7eead31-52b1b2ee877mr1843595137.16.1756716533551; Mon, 01 Sep 2025
- 01:48:53 -0700 (PDT)
+        Mon, 01 Sep 2025 01:51:33 -0700 (PDT)
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-8980d75995dso90400241.3;
+        Mon, 01 Sep 2025 01:51:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU3Q+80U+kaFEQyVsU8pyJog9SdO8Tm+k79z3Q9A79U+wBMo68hlyXqPShLgRdZ9MoXnmFB3ZWU@vger.kernel.org, AJvYcCVc1RIk9BO6muUIlZZZTaP6ruKFxBi3cGYX0PzMBlxiXwHaoDugzI2Au+4CkFNds3oMc2msDF9WwOvKcEQ=@vger.kernel.org
+X-Received: by 2002:a05:6102:2ac9:b0:529:b446:1743 with SMTP id
+ ada2fe7eead31-52b19a55edfmr2096555137.11.1756716693556; Mon, 01 Sep 2025
+ 01:51:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,65 +72,68 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
- <20250825032743.80641-1-ioworker0@gmail.com> <c8851682-25f1-f594-e30f-5b62e019d37b@linux-m68k.org>
- <96ae7afc-c882-4c3d-9dea-3e2ae2789caf@linux.dev> <5a44c60b-650a-1f8a-d5cb-abf9f0716817@linux-m68k.org>
- <4e7e7292-338d-4a57-84ec-ae7427f6ad7c@linux.dev> <20250825130715.3a1141ed@pumpkin>
-In-Reply-To: <20250825130715.3a1141ed@pumpkin>
+ <1a5ce56a-d0d0-481e-b663-a7b176682a65@helsinkinet.fi>
+In-Reply-To: <1a5ce56a-d0d0-481e-b663-a7b176682a65@helsinkinet.fi>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 1 Sep 2025 10:48:42 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXg=0Q9e1O6W0Gp+fPoP8-5VQ-2fGGg54w=seaqF9H8PQ@mail.gmail.com>
-X-Gm-Features: Ac12FXwFWUyxJ4HiRdR2QeiyJ2opGZhBZBrlHhDkBBM4NfQKlaUcE6HKYkXz9Yk
-Message-ID: <CAMuHMdXg=0Q9e1O6W0Gp+fPoP8-5VQ-2fGGg54w=seaqF9H8PQ@mail.gmail.com>
+Date: Mon, 1 Sep 2025 10:51:22 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUKgMfL+1EnkZbbqNqTv4aMs_XWocXxq5jVGeOMaQXnDQ@mail.gmail.com>
+X-Gm-Features: Ac12FXwMdMp9qNSuU3NsSHsJYJoBDJeG51xj4OtzBCmdyfOrJU-V6GtDcIUSO3U
+Message-ID: <CAMuHMdUKgMfL+1EnkZbbqNqTv4aMs_XWocXxq5jVGeOMaQXnDQ@mail.gmail.com>
 Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Lance Yang <lance.yang@linux.dev>, Finn Thain <fthain@linux-m68k.org>, 
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org, mhiramat@kernel.org, 
-	oak@helsinkinet.fi, peterz@infradead.org, stable@vger.kernel.org, 
-	will@kernel.org, Lance Yang <ioworker0@gmail.com>
+To: Eero Tamminen <oak@helsinkinet.fi>
+Cc: Finn Thain <fthain@linux-m68k.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lance Yang <lance.yang@linux.dev>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org
 Content-Type: text/plain; charset="UTF-8"
 
-Hi David,
+Hi Eero,
 
-On Mon, 25 Aug 2025 at 14:07, David Laight <david.laight.linux@gmail.com> wrote:
-> On Mon, 25 Aug 2025 15:46:42 +0800
-> Lance Yang <lance.yang@linux.dev> wrote:
-> > On 2025/8/25 14:17, Finn Thain wrote:
-> > > On Mon, 25 Aug 2025, Lance Yang wrote:
-> > >> What if we squash the runtime check fix into your patch?
-> > >
-> > > Did my patch not solve the problem?
-> >
-> > Hmm... it should solve the problem for natural alignment, which is a
-> > critical fix.
-> >
-> > But it cannot solve the problem of forced misalignment from drivers using
-> > #pragma pack(1). The runtime warning will still trigger in those cases.
-> >
-> > I built a simple test module on a kernel with your patch applied:
-> >
-> > ```
-> > #include <linux/module.h>
-> > #include <linux/init.h>
-> >
-> > struct __attribute__((packed)) test_container {
-> >      char padding[49];
-> >      struct mutex io_lock;
-> > };
-> >
-> > static int __init alignment_init(void)
-> > {
-> >      struct test_container cont;
-> >      pr_info("io_lock address offset mod 4: %lu\n", (unsigned long)&cont.io_lock % 4);
+On Tue, 26 Aug 2025 at 17:22, Eero Tamminen <oak@helsinkinet.fi> wrote:
+> On 25.8.2025 5.03, Finn Thain wrote:
+> > Some recent commits incorrectly assumed the natural alignment of locks.
+> > That assumption fails on Linux/m68k (and, interestingly, would have failed
+> > on Linux/cris also). This leads to spurious warnings from the hang check
+> > code. Fix this bug by adding the necessary 'aligned' attribute.
+> [...]
+> > Reported-by: Eero Tamminen <oak@helsinkinet.fi>
+> > Closes: https://lore.kernel.org/lkml/CAMuHMdW7Ab13DdGs2acMQcix5ObJK0O2dG_Fxzr8_g58Rc1_0g@mail.gmail.com/
+> > Fixes: e711faaafbe5 ("hung_task: replace blocker_mutex with encoded blocker")
+> > Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+> > ---
+> > I tested this on m68k using GCC and it fixed the problem for me. AFAIK,
+> > the other architectures naturally align ints already so I'm expecting to
+> > see no effect there.
 >
-> Doesn't that give a compilation warning from 'taking the address of a packed member'?
-> Ignore that at your peril.
+> Yes, it fixes both of the issues (warnings & broken console):
+>         Tested-by: Eero Tamminen <oak@helsinkinet.fi>
 >
-> More problematic is that, IIRC, m68k kmalloc() allocates 16bit aligned memory.
-> This has broken other things in the past.
+> (Emulated Atari Falcon) boot up performance with this is within normal
+> variation.
+>
+> On 23.8.2025 10.49, Lance Yang wrote:
+>  > Anyway, I've prepared two patches for discussion, either of which should
+>  > fix the alignment issue :)
+>  >
+>  > Patch A[1] adjusts the runtime checks to handle unaligned pointers.
+>  > Patch B[2] enforces 4-byte alignment on the core lock structures.
+>  >
+>  > Both tested on x86-64.
+>  >
+>  > [1]
+> https://lore.kernel.org/lkml/20250823050036.7748-1-lance.yang@linux.dev
+>  > [2] https://lore.kernel.org/lkml/20250823074048.92498-1-
+>  > lance.yang@linux.dev
+>
+> Same goes for both of these, except that removing warnings makes minimal
+> kernel boot 1-2% faster than 4-aligning the whole struct.
 
-Really? AFAIK it always returns memory that is at least aligned to the
-cache line size (i.e. 16 bytes on m68k). So perhaps you are confusing
-"16bit" with "16byte"?
+That is an interesting outcome! So the gain of naturally-aligning the
+lock is more than offset by the increased cache pressure due to wasting
+(a bit?) more memory.
+
+Do you know what was the impact on total kernel size?
+Thanks!
 
 Gr{oetje,eeting}s,
 
