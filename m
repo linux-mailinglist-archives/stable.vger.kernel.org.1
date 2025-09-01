@@ -1,114 +1,76 @@
-Return-Path: <stable+bounces-176857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58D5B3E536
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 15:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC48FB3E5A9
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 15:42:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0558B3B5D15
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 13:36:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C06EF442F8F
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 13:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA13334372;
-	Mon,  1 Sep 2025 13:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315B13375C1;
+	Mon,  1 Sep 2025 13:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="guC4pzkG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gw6u70C7"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4461B3314B3;
-	Mon,  1 Sep 2025 13:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB643375D5
+	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 13:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756733748; cv=none; b=ivGZCyuvzFo9oTyZfHU7QsG2fze89uStSJC6VkfbhzZySt2UL+mTio6rAdlDdtmff33RpUTTuqxnuNYmyoWSQq+RsYbIPiTjSCmiYcme1tUtyGzR5YkAjM6ZEZdxgTuBUI6C4hsMB6X5MahN2gVCd5/4EZfdYTSiA0Og/wsWipI=
+	t=1756734014; cv=none; b=R+1HOP5ypaumAjWlmLLITFbJoH06pKfTC7UHRAV6tgO3gFd6PXXSVUOp/OD30w76cHjqjxxaJb2K8JlL3A5JAeTdYUUASkvAYyphPRzg4pZQWDJeQcuHuhL2ZKg6UNnTWFFbGgIF2Tnx/lZF8NlfaGNlKYcL29R3ASqzbe0cJOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756733748; c=relaxed/simple;
-	bh=3JAO/QiTZY8eNFFGW5kNE0Esd7k4OSKajQLnhcfKT3U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eqBO7M6RsAdU5ctgxzAWDm7PaqiM1zPPNI9QG/xZdQt6iVssbgfU2ZyNRWVf9ACK3hpdNZFRZF0mFs3/NRMjDr/Y3vdRvkZle7BSTRxhUcgXFQny2aJyXlkHSDcOD+N+MX02XflETs/uTJjF2LtEi2PoZvo7Eo1In/wPBPNlwAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=guC4pzkG; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756733747; x=1788269747;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=3JAO/QiTZY8eNFFGW5kNE0Esd7k4OSKajQLnhcfKT3U=;
-  b=guC4pzkGRlbvkq3pQey0w+bsgtKXyxS0X1h/AyQA9r87Ankez/j1GBKi
-   HCBW5U7Vt+myRNk1lg71i+zPkf8hw23NaYDmbLuCC5T5k+4ViNDa1CVmd
-   HWbgtHigfDFK3sxOKUEDAj3suQhvl3YYhLkX+0gDoF/o61Az6jQW8/7xA
-   ky/b8/ib8TFwxT2U7JknUmxJ6o8KZevyhVSBJ4PU4Yp990xLxxxuLBUjT
-   M9zRTAtVF7NBZ1b+hoY4hLIIhEUXLpPfXRpVtOvo2scQfEnSqkxb1CQvi
-   /0nyBy/PT2K8NVK2FijpjFnnNWPZVuxvzFqSki0BUbPEJGFpaQV+kFFYg
-   g==;
-X-CSE-ConnectionGUID: ZYHtWZc3TvqUGhfrqDYhJg==
-X-CSE-MsgGUID: d9FE3y2LQFSRzj1yxrZV6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="58191648"
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="58191648"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 06:35:46 -0700
-X-CSE-ConnectionGUID: 9dN+0VpwQamRIvD3bwh12w==
-X-CSE-MsgGUID: hhTa0mucQReDw4wRDTyakg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="170573230"
-Received: from mylly.fi.intel.com (HELO [10.237.72.151]) ([10.237.72.151])
-  by orviesa009.jf.intel.com with ESMTP; 01 Sep 2025 06:35:44 -0700
-Message-ID: <2f5efd07-2e04-49b8-a4d1-37e4f68ddfba@linux.intel.com>
-Date: Mon, 1 Sep 2025 16:35:42 +0300
+	s=arc-20240116; t=1756734014; c=relaxed/simple;
+	bh=iGS440OeV0B9Ya2NfgA+NV1hSQOCbh5FyKfJ5TKkajc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rUkZ7InDniQa4GWCip4LVHNwPGOmJelPBUz9WhUOgHrImHgPvz5dL6UgvdY0P4g1iT+YPZHxR7RoGoA8jAKchbYUe5Q82SERP5eqYp4umq/5v4NsVx6e0CSmuVBA7TgDZpCfoSpuCXpA1FN1ot+VuMAnlb5aslBI/dzFxfcKA4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gw6u70C7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02348C4CEF1;
+	Mon,  1 Sep 2025 13:40:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1756734012;
+	bh=iGS440OeV0B9Ya2NfgA+NV1hSQOCbh5FyKfJ5TKkajc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Gw6u70C7/fgxqgHAuVI3RZyA1mbH6fGxkCl7P6IZpvkXkhm836F9RIfpxWivLTFLW
+	 ZTszZp0G41ZqJgsW5wOk3hicFSxGDkSOsryhoN6JgqCGRtmZsqvve8pBNs5aZcJwWe
+	 PldlOKOBmY/+AvFFr1isYinUhdiU24SDCH3bhea0=
+Date: Mon, 1 Sep 2025 15:40:04 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Cc: stable@vger.kernel.org, Niklas Cassel <cassel@kernel.org>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>
+Subject: Re: [PATCH 1/2] PCI: Rename PCIE_RESET_CONFIG_DEVICE_WAIT_MS to
+ PCIE_RESET_CONFIG_WAIT_MS
+Message-ID: <2025090152-dance-malformed-653f@gregkh>
+References: <20250831202100.443607-1-marek.vasut+renesas@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] i2c: i801: Hide Intel Birch Stream SoC TCO WDT
-To: Chiasheng Lee <chiasheng.lee@linux.intel.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>, linux-i2c@vger.kernel.org
-Cc: Jean Delvare <jdelvare@suse.com>, Andi Shyti <andi.shyti@kernel.org>,
- stable@vger.kernel.org
-References: <20250901125943.916522-1-chiasheng.lee@linux.intel.com>
-Content-Language: en-US
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-In-Reply-To: <20250901125943.916522-1-chiasheng.lee@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250831202100.443607-1-marek.vasut+renesas@mailbox.org>
 
-On 9/1/25 3:59 PM, Chiasheng Lee wrote:
-> Hide the Intel Birch Stream SoC TCO WDT feature since it was removed.
+On Sun, Aug 31, 2025 at 10:20:48PM +0200, Marek Vasut wrote:
+> From: Niklas Cassel <cassel@kernel.org>
 > 
-> On platforms with PCH TCO WDT, this redundant device might be rendering
-> errors like this:
+> [ Upstream commit 817f989700fddefa56e5e443e7d138018ca6709d ]
 > 
-> [   28.144542] sysfs: cannot create duplicate filename '/bus/platform/devices/iTCO_wdt'
+> Rename PCIE_RESET_CONFIG_DEVICE_WAIT_MS to PCIE_RESET_CONFIG_WAIT_MS.
 > 
-> Fixes: 8c56f9ef25a3 ("i2c: i801: Add support for Intel Birch Stream SoC")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Chiasheng Lee <chiasheng.lee@linux.intel.com>
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=220320
+> Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+> Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+> Cc: <stable@vger.kernel.org> # 6.12.x
 > ---
->   drivers/i2c/busses/i2c-i801.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
-> index a7f89946dad4..e94ac746a741 100644
-> --- a/drivers/i2c/busses/i2c-i801.c
-> +++ b/drivers/i2c/busses/i2c-i801.c
-> @@ -1052,7 +1052,7 @@ static const struct pci_device_id i801_ids[] = {
->   	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
->   	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_SOC_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
->   	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_PCH_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
-> -	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
-> +	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5)			 },
->   	{ PCI_DEVICE_DATA(INTEL, ARROW_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
->   	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_H_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
->   	{ PCI_DEVICE_DATA(INTEL, PANTHER_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
 
-Reviewed-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+You did not sign off on these patches :(
+
 
