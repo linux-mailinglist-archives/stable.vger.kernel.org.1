@@ -1,214 +1,171 @@
-Return-Path: <stable+bounces-176802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F21DFB3DCB4
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:39:12 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C2FB3DCDD
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 10:46:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79A79179A0A
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:39:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B5D664E1B09
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 08:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FFE62FB602;
-	Mon,  1 Sep 2025 08:38:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RhZnGt6O"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60B42FDC50;
+	Mon,  1 Sep 2025 08:46:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CD42FB979
-	for <stable@vger.kernel.org>; Mon,  1 Sep 2025 08:38:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB1C2FDC39;
+	Mon,  1 Sep 2025 08:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756715936; cv=none; b=RDAOCBRBnEH3QXGhRTkuDSqitvJbtMKQmsliQIYlB3/D1u2B8/mKmdgG5c7IDhYXloEHd/KSaWxPtpYqvn8M5Pao3cLtbqx4+9HYH/I6NldWI77TALXgk8bUR3PFl7V5fQZzhjzgYzPKkxH9A843PV+AjhJHAXo2UGj1HUpA6O8=
+	t=1756716361; cv=none; b=Hu5Vu+vK/CBibGPsocqPUAVfoTq8CpXQisS6WzEHyvIS9mpm8t7rvIGPO6MnB26XEf1JDiNSZ0h4ZDa21vtBmlXPUJFjR5p4SsnaKtM445zzfCX3quJ9nNYP8lr0RU8bt+q3R9lUGBWTA4zzO9du2czo1Txxx+fhCWXnnwmBVHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756715936; c=relaxed/simple;
-	bh=myEraqHrwlpKq0dPBDwUdwmmV4+V7DyNocOkSyynlNg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NDKK5qGDg4+snb7vShsWyK7XmCKZNnC5Z0a9W3pPOFoGT0EEQ5PDCmxZxAejmZ5idwccGmGcQ89u2a+Z/nwaDPMM0qpe179DBD3BfXTLmNYBI8X4ciFaCyNy2qfOj02Qfs3bLYRcLkV0MIgCUyj6z0Y+r8E4LCSeRaLPDE0m/Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RhZnGt6O; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756715935; x=1788251935;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=myEraqHrwlpKq0dPBDwUdwmmV4+V7DyNocOkSyynlNg=;
-  b=RhZnGt6OK5c+sdw5H8RfcfST4QudgK8HuZwrO9IYnFiEqVRdkLCqJHZb
-   mB9LXEKheTrYFV+JhdYw3QW93Cf/OKps3dzU4jjI/+SPNWpLp+knqVrKa
-   0DRaVHtjAwP/Mr+FNbh1kMr2sJzNz0RXSmizrzYn2P+i0m6zBL+U+CKlo
-   KVg8HRgq5uwo+hfgxCA70uc9DxEemm5+dbFjhn4zkbc00yHO712VsNvej
-   VwykRrzHmE77dv6QZHAENksv28tGHP6D79M2ZW+jTEksiGpr3Ew0NQ1Yl
-   wnQxbq8z5kqoSIBZ07Gw+yTtjQnl1m0+3XT3sMoDyYF3MJ8UHO03mJhcB
-   w==;
-X-CSE-ConnectionGUID: Y8YX2UOxTxaQrE50FHW/PQ==
-X-CSE-MsgGUID: FQHOD0eJQiSsAtAM94Ab6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11539"; a="58899198"
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="58899198"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 01:38:54 -0700
-X-CSE-ConnectionGUID: 0B5c18kcSkCkiGa2xICqIw==
-X-CSE-MsgGUID: cy6rjyxGSs20FtFV8sRA5w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
-   d="scan'208";a="201910255"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO fedora) ([10.245.244.171])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 01:38:52 -0700
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	stable@vger.kernel.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Subject: [PATCH v2 3/3] drm/xe: Block exec and rebind worker while evicting for suspend / hibernate
-Date: Mon,  1 Sep 2025 10:38:29 +0200
-Message-ID: <20250901083829.27341-4-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250901083829.27341-1-thomas.hellstrom@linux.intel.com>
-References: <20250901083829.27341-1-thomas.hellstrom@linux.intel.com>
+	s=arc-20240116; t=1756716361; c=relaxed/simple;
+	bh=ZE9gLmPnDqTqk06S/cgXtqlrzst3rOGf71E5ISS59so=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b2mPf/FQde89G4D+xye4CQ+3T445naqbQX78orqb+jAJ0LDvluEGU4LTJD4C2ofdMsPgQ/ZemvDP+QFJr6BINhYTndLT9OPXlcNUefkwWeSOQOV23aV3zu4moj0Daq9cowDSMeWXNLBdnEIy3egKoBmtdLVZcaiK0q85aG0QIF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5449432a9d7so937432e0c.3;
+        Mon, 01 Sep 2025 01:45:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756716359; x=1757321159;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Lu55cGC1shfZahu4nJqSCls01RHf6IMjgCiuEU3j5YM=;
+        b=ir/r4JS8JFxzgC5DZ+MHcVU4YvM/1aSka/Mvcjh6B0kuvJkyZX0D81mBQvb0n12XOB
+         QScHyADdO+aYSooezLcXUzvHs23o1blnsYEfwUNrtGw2gEAHTGQzRrcIR2o2m6muJDeb
+         olod6Qg/5CjH9R4PX5fuOuYued747AbXyvZ9VVitSkjE4aHgDr16dgmNJEiXLjlST8uE
+         gfzLil1IPelkeXHkzCOleGxtrE8vJvAG9ciC07qOoN48qJ1BiHJhuCQxFn7T+o/2Z05U
+         kkK92TLcxLzr1bN7tBhvJM2pXTWc9wIiA1FBhO4LJniO0e5Pr9c24MTmiR0FozB+Ygqb
+         jpzA==
+X-Forwarded-Encrypted: i=1; AJvYcCVvbl8oDldURgXWDKDZD1Dbfu40j7CiO+GtIGq7tDGr2nxBllP8Q1+ST2Q+wBpu86I0vtGMbkOe@vger.kernel.org, AJvYcCXOkxMDaeO96ECV1jNvulqNshv43O+YIMrK4ce9esLxVAdne0mPMoC4Pwig1N4AKZCg1hmaQ3bVPza+YVs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsLE8nko/uR9Sc6y+kxr7lU+zmL3g2aUX+KBwfDOrcW1Vt5TZj
+	XLKbP+4S6cPcUVMlB+xEyLhzmTY0X3RDrGHu7mXjy10uaZSA4OfUOgDMBNYci72q
+X-Gm-Gg: ASbGncsZGJDKDsYICVI8cZVhJdGwI/1OerVLrJTlhoqxYy27PCBPzK72auzXtApFENC
+	f+qGJirrWHZigTEL0dKZpoEODaeXIfFGaBCVwBheAy2OE/FdvWImYBNUlJ4QwoMpDzALeLufODA
+	dvbJD3A8UzlEs9p2T8oLma9ah3O5WKSUFLCX9MFrpuY6acgzlR82pmrdP4mH90qQn1lIecBQ3Gx
+	NTn/pBD+9waFuBM5P/LB+YIW4qDjR6YhD6dHVTMVSebO5m9PVmsDB5L/9LB8EoQ5v1LV8Yuq6zb
+	O/AXxRk7JW1mPI2X/B/wh8wEhWYtQgDdrmjSo4HLWnplsGmXfovbE/txXcwI1oDgD0vHubGfza5
+	RkUT9PFIHKJ2E3eYs+jjWFDcJ5heIjsmKAEq4b9ANC63dJgdr+4jSk3nCKyK8
+X-Google-Smtp-Source: AGHT+IHcZooVWVxwyGkP6ZWTx7PBgQXv31nIkfFRr939eowCZSPGt/0Z3GKO89bjAXvjNvm/0bRKrQ==
+X-Received: by 2002:a05:6122:3c95:b0:53c:6d68:1cd6 with SMTP id 71dfb90a1353d-544a02b3eccmr1879793e0c.16.1756716358948;
+        Mon, 01 Sep 2025 01:45:58 -0700 (PDT)
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com. [209.85.222.42])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-544912c7125sm4144274e0c.5.2025.09.01.01.45.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Sep 2025 01:45:58 -0700 (PDT)
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-8972e215df9so114033241.1;
+        Mon, 01 Sep 2025 01:45:58 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX1VakGci/qNw87b6L9bC/w09d3o8HmVgvqeGk1yG9rRt+XARKG0UrD9IqscLGZaKI7qp1TWNOe/GlpTwA=@vger.kernel.org, AJvYcCX7kBQ/fkLBn6Gq2X/A95ZXKDSzB9sSQ5FNTaSnL3x4SKIcNIZmexH8WNPO8VQq/Pl1povAFTEu@vger.kernel.org
+X-Received: by 2002:a05:6102:162c:b0:51f:66fc:53b4 with SMTP id
+ ada2fe7eead31-52b1bd28af5mr1710735137.30.1756716358063; Mon, 01 Sep 2025
+ 01:45:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
+ <20250825032743.80641-1-ioworker0@gmail.com> <c8851682-25f1-f594-e30f-5b62e019d37b@linux-m68k.org>
+ <96ae7afc-c882-4c3d-9dea-3e2ae2789caf@linux.dev> <5a44c60b-650a-1f8a-d5cb-abf9f0716817@linux-m68k.org>
+ <4e7e7292-338d-4a57-84ec-ae7427f6ad7c@linux.dev> <d07778f8-8990-226b-5171-4a36e6e18f32@linux-m68k.org>
+ <d95592ec-f51e-4d80-b633-7440b4e69944@linux.dev> <30a55f56-93c2-4408-b1a5-5574984fb45f@linux.dev>
+ <4405ee5a-becc-7375-61a9-01304b3e0b20@linux-m68k.org> <cfb62b9d-9cbd-47dd-a894-3357027e2a50@linux.dev>
+In-Reply-To: <cfb62b9d-9cbd-47dd-a894-3357027e2a50@linux.dev>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 1 Sep 2025 10:45:46 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV-AtPm-W-QUC1HixJ8Koy_HdESwCCOhRs3Q26=wjWwog@mail.gmail.com>
+X-Gm-Features: Ac12FXyV9h1utoTEvCbocGnG0IAN7uIVG3x3Lc95GJw3v48XpvYZ_YA0jVY7Wlc
+Message-ID: <CAMuHMdV-AtPm-W-QUC1HixJ8Koy_HdESwCCOhRs3Q26=wjWwog@mail.gmail.com>
+Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Finn Thain <fthain@linux-m68k.org>, akpm@linux-foundation.org, 
+	linux-kernel@vger.kernel.org, mhiramat@kernel.org, oak@helsinkinet.fi, 
+	peterz@infradead.org, stable@vger.kernel.org, will@kernel.org, 
+	Lance Yang <ioworker0@gmail.com>, linux-m68k@lists.linux-m68k.org
+Content-Type: text/plain; charset="UTF-8"
 
-When the xe pm_notifier evicts for suspend / hibernate, there might be
-racing tasks trying to re-validate again. This can lead to suspend taking
-excessive time or get stuck in a live-lock. This behaviour becomes
-much worse with the fix that actually makes re-validation bring back
-bos to VRAM rather than letting them remain in TT.
+Hi Lance,
 
-Prevent that by having exec and the rebind worker waiting for a completion
-that is set to block by the pm_notifier before suspend and is signaled
-by the pm_notifier after resume / wakeup.
+On Thu, 28 Aug 2025 at 04:05, Lance Yang <lance.yang@linux.dev> wrote:
+> On 2025/8/28 07:43, Finn Thain wrote:
+> > On Mon, 25 Aug 2025, Lance Yang wrote:
+> >> Same here, using a global static variable instead of a local one. The
+> >> result is consistently misaligned.
+> >>
+> >> ```
+> >> #include <linux/module.h>
+> >> #include <linux/init.h>
+> >>
+> >> static struct __attribute__((packed)) test_container {
+> >>      char padding[49];
+> >>      struct mutex io_lock;
+> >> } cont;
+> >>
+> >> static int __init alignment_init(void)
+> >> {
+> >>      pr_info("Container base address      : %px\n", &cont);
+> >>      pr_info("io_lock member address      : %px\n", &cont.io_lock);
+> >>      pr_info("io_lock address offset mod 4: %lu\n", (unsigned long)&cont.io_lock % 4);
+> >>      return 0;
+> >> }
+> >>
+> >> static void __exit alignment_exit(void)
+> >> {
+> >>      pr_info("Module unloaded\n");
+> >> }
+> >>
+> >> module_init(alignment_init);
+> >> module_exit(alignment_exit);
+> >> MODULE_LICENSE("GPL");
+> >> MODULE_AUTHOR("x");
+> >> MODULE_DESCRIPTION("x");
+> >> ```
+> >>
+> >> Result from dmesg:
+> >>
+> >> ```
+> >> [Mon Aug 25 19:33:28 2025] Container base address      : ffffffffc28f0940
+> >> [Mon Aug 25 19:33:28 2025] io_lock member address      : ffffffffc28f0971
+> >> [Mon Aug 25 19:33:28 2025] io_lock address offset mod 4: 1
+> >> ```
+> >>
+> >
+> > FTR, I was able to reproduce that result (i.e. static storage):
+> >
+> > [    0.320000] Container base address      : 0055d9d0
+> > [    0.320000] io_lock member address      : 0055da01
+> > [    0.320000] io_lock address offset mod 4: 1
+> >
+> > I think the experiments you sent previously would have demonstrated the
+> > same result, except for the unpredictable base address that you sensibly
+> > logged in this version.
+>
+> Thanks for taking the time to reproduce it!
+>
+> This proves the problem can happen in practice (e.g., with packed structs),
+> so we need to ignore the unaligned pointers on the architectures that don't
+> trap for now.
 
-It's probably still possible to craft malicious applications that block
-suspending. More work is pending to fix that.
+Putting locks inside a packed struct is definitely a Very Bad Idea
+and a No Go.  Packed structs are meant to describe memory data and
+MMIO register layouts, and must not contain control data for critical
+sections.
 
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4288
-Fixes: c6a4d46ec1d7 ("drm/xe: evict user memory in PM notifier")
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: <stable@vger.kernel.org> # v6.16+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
----
- drivers/gpu/drm/xe/xe_device_types.h |  2 ++
- drivers/gpu/drm/xe/xe_exec.c         |  9 +++++++++
- drivers/gpu/drm/xe/xe_pm.c           |  4 ++++
- drivers/gpu/drm/xe/xe_vm.c           | 14 ++++++++++++++
- 4 files changed, 29 insertions(+)
+Gr{oetje,eeting}s,
 
-diff --git a/drivers/gpu/drm/xe/xe_device_types.h b/drivers/gpu/drm/xe/xe_device_types.h
-index 092004d14db2..6602bd678cbc 100644
---- a/drivers/gpu/drm/xe/xe_device_types.h
-+++ b/drivers/gpu/drm/xe/xe_device_types.h
-@@ -507,6 +507,8 @@ struct xe_device {
- 
- 	/** @pm_notifier: Our PM notifier to perform actions in response to various PM events. */
- 	struct notifier_block pm_notifier;
-+	/** @pm_block: Completion to block validating tasks on suspend / hibernate prepare */
-+	struct completion pm_block;
- 
- 	/** @pmt: Support the PMT driver callback interface */
- 	struct {
-diff --git a/drivers/gpu/drm/xe/xe_exec.c b/drivers/gpu/drm/xe/xe_exec.c
-index 44364c042ad7..374c831e691b 100644
---- a/drivers/gpu/drm/xe/xe_exec.c
-+++ b/drivers/gpu/drm/xe/xe_exec.c
-@@ -237,6 +237,15 @@ int xe_exec_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
- 		goto err_unlock_list;
- 	}
- 
-+	/*
-+	 * It's OK to block interruptible here with the vm lock held, since
-+	 * on task freezing during suspend / hibernate, the call will
-+	 * return -ERESTARTSYS and the IOCTL will be rerun.
-+	 */
-+	err = wait_for_completion_interruptible(&xe->pm_block);
-+	if (err)
-+		goto err_unlock_list;
-+
- 	vm_exec.vm = &vm->gpuvm;
- 	vm_exec.flags = DRM_EXEC_INTERRUPTIBLE_WAIT;
- 	if (xe_vm_in_lr_mode(vm)) {
-diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
-index bee9aacd82e7..f4c7a84270ea 100644
---- a/drivers/gpu/drm/xe/xe_pm.c
-+++ b/drivers/gpu/drm/xe/xe_pm.c
-@@ -306,6 +306,7 @@ static int xe_pm_notifier_callback(struct notifier_block *nb,
- 	switch (action) {
- 	case PM_HIBERNATION_PREPARE:
- 	case PM_SUSPEND_PREPARE:
-+		reinit_completion(&xe->pm_block);
- 		xe_pm_runtime_get(xe);
- 		err = xe_bo_evict_all_user(xe);
- 		if (err)
-@@ -322,6 +323,7 @@ static int xe_pm_notifier_callback(struct notifier_block *nb,
- 		break;
- 	case PM_POST_HIBERNATION:
- 	case PM_POST_SUSPEND:
-+		complete_all(&xe->pm_block);
- 		xe_bo_notifier_unprepare_all_pinned(xe);
- 		xe_pm_runtime_put(xe);
- 		break;
-@@ -348,6 +350,8 @@ int xe_pm_init(struct xe_device *xe)
- 	if (err)
- 		return err;
- 
-+	init_completion(&xe->pm_block);
-+	complete_all(&xe->pm_block);
- 	/* For now suspend/resume is only allowed with GuC */
- 	if (!xe_device_uc_enabled(xe))
- 		return 0;
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index 3ff3c67aa79d..edcdb0528f2a 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -394,6 +394,9 @@ static int xe_gpuvm_validate(struct drm_gpuvm_bo *vm_bo, struct drm_exec *exec)
- 		list_move_tail(&gpuva_to_vma(gpuva)->combined_links.rebind,
- 			       &vm->rebind_list);
- 
-+	if (!try_wait_for_completion(&vm->xe->pm_block))
-+		return -EAGAIN;
-+
- 	ret = xe_bo_validate(gem_to_xe_bo(vm_bo->obj), vm, false);
- 	if (ret)
- 		return ret;
-@@ -494,6 +497,12 @@ static void preempt_rebind_work_func(struct work_struct *w)
- 	xe_assert(vm->xe, xe_vm_in_preempt_fence_mode(vm));
- 	trace_xe_vm_rebind_worker_enter(vm);
- 
-+	/*
-+	 * This blocks the wq during suspend / hibernate.
-+	 * Don't hold any locks.
-+	 */
-+retry_pm:
-+	wait_for_completion(&vm->xe->pm_block);
- 	down_write(&vm->lock);
- 
- 	if (xe_vm_is_closed_or_banned(vm)) {
-@@ -503,6 +512,11 @@ static void preempt_rebind_work_func(struct work_struct *w)
- 	}
- 
- retry:
-+	if (!try_wait_for_completion(&vm->xe->pm_block)) {
-+		up_write(&vm->lock);
-+		goto retry_pm;
-+	}
-+
- 	if (xe_vm_userptr_check_repin(vm)) {
- 		err = xe_vm_userptr_pin(vm);
- 		if (err)
+                        Geert
+
 -- 
-2.50.1
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
