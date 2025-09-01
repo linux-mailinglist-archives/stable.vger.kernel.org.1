@@ -1,226 +1,132 @@
-Return-Path: <stable+bounces-176860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11002B3E5C7
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 15:43:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E34ADB3E633
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 15:55:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6138C3AB752
-	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 13:42:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E35B31894922
+	for <lists+stable@lfdr.de>; Mon,  1 Sep 2025 13:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8616D3376B5;
-	Mon,  1 Sep 2025 13:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9368533CEB8;
+	Mon,  1 Sep 2025 13:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hhAgv3jy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+jCrNZk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85AB3314AF;
-	Mon,  1 Sep 2025 13:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B49533A01A;
+	Mon,  1 Sep 2025 13:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756734150; cv=none; b=DYas221/X1bAddgSEaYU8/k8qrblF7jscaYmWMFQHdq3dIM2/rQlurwB0C12Vu492E2NwegD+LkRXeI6b67iVI+chUWUbSXd/+Mnj9UHhWaIgXUgPQXu57pxXSh/D2fLKx74ChxMqDq1MiYJZef5pKHZq1GCGvEKuzDqSGdFPiM=
+	t=1756734877; cv=none; b=FJkMZCBRIHyPNBXiubJk8hHNTE8MZJ1THb1uhlP1WQHU7YqxiKmQ1pcj0DuNWEegOVuRuASCL9OyarjjQK1JbW/JiiFwV4JJOdfqMNL8QF4nlFmYP1RyYn+/PJ2A69FDS8/de6HXldfKjtP9efAVH433q/kw6waabUV0zalU8HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756734150; c=relaxed/simple;
-	bh=Vh7XUBI8fbBk4XZ8pKOtZH1UfNJDpJTXo419bu2F3VE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bDO2ywGxr+myDt44IttuWWaGde5FVLguVudDlizVW4/3nCEcyVmJ1d+D1+Z7ooT+QXBWE1cXFzLxFEDxZ/Sm/IEUYP7aFCxtE1NhgDHJ86S87D/YlD5WIzP/nB4bT5PKyi/glcqOCBwyempKGfEVjtBOCcJeIbHi17L5mrdEYo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hhAgv3jy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2A3C4CEF0;
-	Mon,  1 Sep 2025 13:42:04 +0000 (UTC)
+	s=arc-20240116; t=1756734877; c=relaxed/simple;
+	bh=dKazTaBppRdZ6pcD75vpdUcxLLB5hqEqMkzZHVCiBNg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KAGErgLOSjovhSRU10hKXPKc7U4ZtylkMBjx3ruKJ1Jp64RTcGGtHBm+tP6MJsO25o3lFrv8jWIzf72E76j/5KyuZGqnkU7HYx+c49UAPIcCAb7gB7dude5epxQznJ9i5bbeAY0KsO4F2BMGqqvnG5MRP7T8jK9A9mR/LVIrs2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+jCrNZk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B07C4CEF1;
+	Mon,  1 Sep 2025 13:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756734149;
-	bh=Vh7XUBI8fbBk4XZ8pKOtZH1UfNJDpJTXo419bu2F3VE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hhAgv3jysX69gBwri906yWypXEK80NcNcU75ZV9/QeXQCy7l2f36k4byfNVTER6IP
-	 gOpTcCFplnwo778jgs8p6iIv5w82lNMr1NdsMRGJMrKmcMxP4YY2DKw+dekKbGSucF
-	 fH1UC9E5PgUSkFcL53l8SZJBBuh5k12ZnrsQltX79STLRHqZnRwbCiiL2r1trnqoDx
-	 puTp0teu7LJmcMXEaHizKLVFBrc6SbxJk1xEnU8p4L+3jrFGOH2GOvXFX8s+j/Uzcc
-	 iESOxfINPv0beoEDy4YTocStDSjRMNPUi5KjJ3O7gh5nCTPwxK3fbka9qE414MrABB
-	 Q6ziiIx0FS2KA==
-From: Christian Brauner <brauner@kernel.org>
-To: Simon Schuster <schuster.simon@siemens-energy.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-mm@kvack.org,
+	s=k20201202; t=1756734876;
+	bh=dKazTaBppRdZ6pcD75vpdUcxLLB5hqEqMkzZHVCiBNg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=A+jCrNZkKxm1FbmK7b6ytLKAccupSYtvZJ2uNzZpJd8Tq0XYY+TGtUnl4b4caNfMG
+	 M9A+8hepao3DlYv4q/TiNnMM+DdFy5pbNyGJXOv94ql+QikuYXFWIxbQ0uSxjpevZP
+	 C5uWZcc+eH++OHHJ5Pn1MatGlzqgiX+FncArgfdQorkd9kGVR/mJP499McpJ8jrYDO
+	 DUmk4v14SDDEgKEv+iU817LJvYvdJ7Yo9QNnJK4iKo+U74FbHbBX0kUOoqPDlA5NNO
+	 kFtiMV3LME+uq3NWq303IC7Rc4A3o1TiVBaWbOdNUdEzno6RCp9a6f9RDg/sAYfH6I
+	 ip07/GiRVh4bw==
+Date: Mon, 1 Sep 2025 19:24:31 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-csky@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	apparmor@lists.ubuntu.com,
-	selinux@vger.kernel.org,
-	linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	stable@vger.kernel.org,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Guo Ren <guoren@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Serge Hallyn <sergeh@kernel.org>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	John Johansen <john.johansen@canonical.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Kentaro Takeda <takedakn@nttdata.co.jp>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Brian Cain <bcain@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Michal Simek <monstr@monstr.eu>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Chris Zankel <chris@zankel.net>,
-	Max Filippov <jcmvbkbc@gmail.com>
-Subject: Re: [PATCH v2 0/4] nios2: Add architecture support for clone3
-Date: Mon,  1 Sep 2025 15:41:21 +0200
-Message-ID: <20250901-sauer-stunk-49def0170f7d@brauner>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com>
-References: <20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com>
+	Poovendhan Selvaraj <quic_poovendh@quicinc.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] phy: qcom-qmp-usb: fix NULL pointer dereference in
+ PM callbacks
+Message-ID: <aLWllyKvag-BAXjn@vaman>
+References: <20250825-qmp-null-deref-on-pm-v1-0-bbd3ca330849@oss.qualcomm.com>
+ <20250825-qmp-null-deref-on-pm-v1-1-bbd3ca330849@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1648; i=brauner@kernel.org; h=from:subject:message-id; bh=Vh7XUBI8fbBk4XZ8pKOtZH1UfNJDpJTXo419bu2F3VE=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRsXbQgjNu70HTe/oL9c9q1am5UpWv3Rf4/axBS2d225 DLTetc9HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNJDGb4796daOqUVCMcef3h SZ6HDAFLrq8xmcSxzTOQKT+CvTO3n+G/d83ztvwDXH+ZHPU+vLlcvOafQ5/X9C+bSnabHoy/7bC TBwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250825-qmp-null-deref-on-pm-v1-1-bbd3ca330849@oss.qualcomm.com>
 
-On Mon, 01 Sep 2025 15:09:49 +0200, Simon Schuster wrote:
-> This series adds support for the clone3 system call to the nios2
-> architecture. This addresses the build-time warning "warning: clone3()
-> entry point is missing, please fix" introduced in 505d66d1abfb9
-> ("clone3: drop __ARCH_WANT_SYS_CLONE3 macro"). The implementation passes
-> the relevant clone3 tests of kselftest when applied on top of
-> next-20250815:
+On 25-08-25, 17:22, Kathiravan Thirumoorthy wrote:
+> From: Poovendhan Selvaraj <quic_poovendh@quicinc.com>
 > 
-> [...]
+> The pm ops are enabled before qmp phy create which causes
+> a NULL pointer dereference when accessing qmp->phy->init_count
+> in the qmp_usb_runtime_suspend.
+> 
+> So if qmp->phy is NULL, bail out early in suspend / resume callbacks
+> to avoid the NULL pointer dereference in qmp_usb_runtime_suspend and
+> qmp_usb_runtime_resume.
 
-Seems fine to me. Thanks for fixing this.
+That is a band-aid. we should enable pm only when ready... 
+Why not do that instead?
 
----
+> 
+> Below is the stacktrace for reference:
+> 
+> [<818381a0>] (qmp_usb_runtime_suspend [phy_qcom_qmp_usb]) from [<4051d1d8>] (__rpm_callback+0x3c/0x110)
+> [<4051d1d8>] (__rpm_callback) from [<4051d2fc>] (rpm_callback+0x50/0x54)
+> [<4051d2fc>] (rpm_callback) from [<4051d940>] (rpm_suspend+0x23c/0x428)
+> [<4051d940>] (rpm_suspend) from [<4051e808>] (pm_runtime_work+0x74/0x8c)
+> [<4051e808>] (pm_runtime_work) from [<401311f4>] (process_scheduled_works+0x1d0/0x2c8)
+> [<401311f4>] (process_scheduled_works) from [<40131d48>] (worker_thread+0x260/0x2e4)
+> [<40131d48>] (worker_thread) from [<40138970>] (kthread+0x118/0x12c)
+> [<40138970>] (kthread) from [<4010013c>] (ret_from_fork+0x14/0x38)
+> 
+> Cc: stable@vger.kernel.org # v6.0
+> Fixes: 65753f38f530 ("phy: qcom-qmp-usb: drop multi-PHY support")
+> Signed-off-by: Poovendhan Selvaraj <quic_poovendh@quicinc.com>
+> Signed-off-by: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
+> ---
+>  drivers/phy/qualcomm/phy-qcom-qmp-usb.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+> index ed646a7e705ba3259708775ed5fedbbbada13735..cd04e8f22a0fe81b086b308d02713222aa95cae3 100644
+> --- a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+> +++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+> @@ -1940,7 +1940,7 @@ static int __maybe_unused qmp_usb_runtime_suspend(struct device *dev)
+>  
+>  	dev_vdbg(dev, "Suspending QMP phy, mode:%d\n", qmp->mode);
+>  
+> -	if (!qmp->phy->init_count) {
+> +	if (!qmp->phy || !qmp->phy->init_count) {
+>  		dev_vdbg(dev, "PHY not initialized, bailing out\n");
+>  		return 0;
+>  	}
+> @@ -1960,7 +1960,7 @@ static int __maybe_unused qmp_usb_runtime_resume(struct device *dev)
+>  
+>  	dev_vdbg(dev, "Resuming QMP phy, mode:%d\n", qmp->mode);
+>  
+> -	if (!qmp->phy->init_count) {
+> +	if (!qmp->phy || !qmp->phy->init_count) {
+>  		dev_vdbg(dev, "PHY not initialized, bailing out\n");
+>  		return 0;
+>  	}
+> 
+> -- 
+> 2.34.1
 
-Applied to the kernel-6.18.clone3 branch of the vfs/vfs.git tree.
-Patches in the kernel-6.18.clone3 branch should appear in linux-next soon.
-
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
-
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: kernel-6.18.clone3
-
-[1/4] copy_sighand: Handle architectures where sizeof(unsigned long) < sizeof(u64)
-      https://git.kernel.org/vfs/vfs/c/04ff48239f46
-[2/4] copy_process: pass clone_flags as u64 across calltree
-      https://git.kernel.org/vfs/vfs/c/5b38576cb8d3
-[3/4] arch: copy_thread: pass clone_flags as u64
-      https://git.kernel.org/vfs/vfs/c/04e760acd97f
-[4/4] nios2: implement architecture-specific portion of sys_clone3
-      https://git.kernel.org/vfs/vfs/c/d7109d2a2358
+-- 
+~Vinod
 
