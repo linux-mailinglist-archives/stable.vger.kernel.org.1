@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-177259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C723B4046C
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AEA5B404FC
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F7EC188ECD9
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AF705604EE
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737A9261593;
-	Tue,  2 Sep 2025 13:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD992ECD1A;
+	Tue,  2 Sep 2025 13:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8P0Rpxr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/w0U/Ic"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E3A2DC33B;
-	Tue,  2 Sep 2025 13:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7B930F542;
+	Tue,  2 Sep 2025 13:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820083; cv=none; b=Z8iwboMRbzWhxgKPsGGxeLGGx1TTdULugoVzdpdJ/Rof6f+/S1tRC+oh+jtCPQeWW0+Mg3Xx0OIxo0V3vLv9f2klYF9+kJudIBi0Df6HmQmNNXUNL+GxWQDD+m4/KLfOXq7F/+vZwAeXTbDkiOg7bDA+RgVvIp29h4GXwU1OR5Q=
+	t=1756820388; cv=none; b=REHNkrD1+a6eRq3dNaC5IWE7sJm5XmT48RIBoAs7aMJUDUda9MQvHXeLX2ifgyXteRGhYebLdwVMr2NEj2jqPGpYYLqE9nyj62BIj9X1YAZDw7n5n8uRQvcwv8PEyGfgwGyn83q0e7de+uuQ0kCq7biiJLecuUuA/WYENyvipTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820083; c=relaxed/simple;
-	bh=3Kvwnqo5l6UzUPsfj8lKbFgw+QN+idawybyaVVSEUMo=;
+	s=arc-20240116; t=1756820388; c=relaxed/simple;
+	bh=gCk56bk+0dLHEqff9fLoMqRV7vuSqsyvQsi5pMc1sbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kh5k7xdLgK8Qm4a9sTm7UWS2tGkEYUx4SaQRhQ0FLuinOno4apHcm7gnlS0bXqKrXZilD6cKffwmP0JmrbD0bNfl18VJ9QogT65X+jMZqODFPwdyNVAZmUXhMAIqNArW/5+QfPkTEPnVtgx7lRvsqLEP35EieOLeK7b61nbkats=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8P0Rpxr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F814C4CEED;
-	Tue,  2 Sep 2025 13:34:42 +0000 (UTC)
+	 MIME-Version; b=M+wLdgbCacPV96LjxRegj6ajOtqzWEyWYAV55BD9nbxUVTJQhLfcpU9XI1g8sA6rreG5H0jhTSndvvoyNQDR0Y653QcsgBjzlSBOCYiBa8kbagKHcO/J/LALaIWJKbcBwwnXoGcO+9ucLr0GAYYRW/hnn1xXmp19QMxkOFo4lhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/w0U/Ic; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5621CC4CEED;
+	Tue,  2 Sep 2025 13:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820082;
-	bh=3Kvwnqo5l6UzUPsfj8lKbFgw+QN+idawybyaVVSEUMo=;
+	s=korg; t=1756820387;
+	bh=gCk56bk+0dLHEqff9fLoMqRV7vuSqsyvQsi5pMc1sbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8P0RpxrfkLTjf2gw4pGAcCMAKCTWHocpftFSQ11bd4yTX/uSSyaf7mcRsbJOEUGM
-	 yNwO43CuM0dkoehPtqsqgktNlcgxkeQGW4M7GfTO9zsOsW9kmUhKoZF8vlbEZ1N1+B
-	 EF5J+U3VIAV8M8xqcxIYxnPnfphL+eG+xuR2BvME=
+	b=1/w0U/IcP+7qYmgyiv4DjGVU4S+9DeGRa+uUUcdFOt0bKicDqKfCtc7umlfq2Lm2d
+	 yaBbK3X/gwN/ryxs7q++g/8uKkN257NqOyRSOahYEyd6grslHu2dzjSk8To5Og/iqB
+	 /8JB5uuU1qWyaUNFVtut6CP74Qw0oQWRvyhdFaQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Asad Kamal <asad.kamal@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 88/95] drm/amd/amdgpu: disable hwmon power1_cap* for gfx 11.0.3 on vf mode
+	Brett A C Sheffield <bacs@librecast.net>,
+	Oscar Maes <oscmaes92@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 13/50] net: ipv4: fix regression in local-broadcast routes
 Date: Tue,  2 Sep 2025 15:21:04 +0200
-Message-ID: <20250902131942.981173898@linuxfoundation.org>
+Message-ID: <20250902131931.044763619@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: Oscar Maes <oscmaes92@gmail.com>
 
-commit 5dff50802b285da8284a7bf17ae2fdc6f1357023 upstream.
+[ Upstream commit 5189446ba995556eaa3755a6e875bc06675b88bd ]
 
-the PPSMC_MSG_GetPptLimit msg is not valid for gfx 11.0.3 on vf mode,
-so skiped to create power1_cap* hwmon sysfs node.
+Commit 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
+introduced a regression where local-broadcast packets would have their
+gateway set in __mkroute_output, which was caused by fi = NULL being
+removed.
 
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Asad Kamal <asad.kamal@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e82a8d441038d8cb10b63047a9e705c42479d156)
+Fix this by resetting the fib_info for local-broadcast packets. This
+preserves the intended changes for directed-broadcast packets.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
+Reported-by: Brett A C Sheffield <bacs@librecast.net>
+Closes: https://lore.kernel.org/regressions/20250822165231.4353-4-bacs@librecast.net
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250827062322.4807-1-oscmaes92@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/amdgpu_pm.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ net/ipv4/route.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-@@ -3668,14 +3668,16 @@ static umode_t hwmon_attributes_visible(
- 		effective_mode &= ~S_IWUSR;
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index c57a1cee98e2c..395bc567b15d3 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2549,12 +2549,16 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
+ 		    !netif_is_l3_master(dev_out))
+ 			return ERR_PTR(-EINVAL);
  
- 	/* not implemented yet for APUs other than GC 10.3.1 (vangogh) and 9.4.3 */
--	if (((adev->family == AMDGPU_FAMILY_SI) ||
--	     ((adev->flags & AMD_IS_APU) && (gc_ver != IP_VERSION(10, 3, 1)) &&
--	      (gc_ver != IP_VERSION(9, 4, 3) && gc_ver != IP_VERSION(9, 4, 4)))) &&
--	    (attr == &sensor_dev_attr_power1_cap_max.dev_attr.attr ||
--	     attr == &sensor_dev_attr_power1_cap_min.dev_attr.attr ||
--	     attr == &sensor_dev_attr_power1_cap.dev_attr.attr ||
--	     attr == &sensor_dev_attr_power1_cap_default.dev_attr.attr))
--		return 0;
-+	if (attr == &sensor_dev_attr_power1_cap_max.dev_attr.attr ||
-+	    attr == &sensor_dev_attr_power1_cap_min.dev_attr.attr ||
-+	    attr == &sensor_dev_attr_power1_cap.dev_attr.attr ||
-+	    attr == &sensor_dev_attr_power1_cap_default.dev_attr.attr) {
-+		if (adev->family == AMDGPU_FAMILY_SI ||
-+		    ((adev->flags & AMD_IS_APU) && gc_ver != IP_VERSION(10, 3, 1) &&
-+		     (gc_ver != IP_VERSION(9, 4, 3) && gc_ver != IP_VERSION(9, 4, 4))) ||
-+		    (amdgpu_sriov_vf(adev) && gc_ver == IP_VERSION(11, 0, 3)))
-+			return 0;
+-	if (ipv4_is_lbcast(fl4->daddr))
++	if (ipv4_is_lbcast(fl4->daddr)) {
+ 		type = RTN_BROADCAST;
+-	else if (ipv4_is_multicast(fl4->daddr))
++
++		/* reset fi to prevent gateway resolution */
++		fi = NULL;
++	} else if (ipv4_is_multicast(fl4->daddr)) {
+ 		type = RTN_MULTICAST;
+-	else if (ipv4_is_zeronet(fl4->daddr))
++	} else if (ipv4_is_zeronet(fl4->daddr)) {
+ 		return ERR_PTR(-EINVAL);
 +	}
  
- 	/* not implemented yet for APUs having < GC 9.3.0 (Renoir) */
- 	if (((adev->family == AMDGPU_FAMILY_SI) ||
+ 	if (dev_out->flags & IFF_LOOPBACK)
+ 		flags |= RTCF_LOCAL;
+-- 
+2.50.1
+
 
 
 
