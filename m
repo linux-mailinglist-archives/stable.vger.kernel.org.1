@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-177327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C95B404DB
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17665B40420
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 754C51B657BA
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C1EF4E7A94
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6C8307AD9;
-	Tue,  2 Sep 2025 13:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F2131A57D;
+	Tue,  2 Sep 2025 13:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7QUm+DB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAdDrf8X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C342BE053;
-	Tue,  2 Sep 2025 13:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C072D31A548;
+	Tue,  2 Sep 2025 13:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820291; cv=none; b=Ly5U/PlVnRvC9RjfJu2In2tRRIr6nLjJX0i0FZ14Ykce6eKUuPf6WpzFR2lRaMphflNWCgU7k3HK91JfMi7Qo3km7aYdg326M+MdS+ugq9YgCc2dEP2ujm0nxUrKaRX1wLYxM4dPcL/fqnhyr/xFE9ulcoznMtPQOR7ajrOHjMc=
+	t=1756820104; cv=none; b=OTidr7MSIs9cap8azSQdnNB8tMpCKvH3lgGF+0Vh4523YSW3pwqCh8mc8Racu5tjneMQ3qPtropcH4fhYrtpfSsdpdG7PUQbJCTZaQbE88YkPsuw35/G42QHBmpJcUIy2rpUN9N27m56mzapsKb2Mx6ErfSJm6trSdNwVm/lb28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820291; c=relaxed/simple;
-	bh=WcUoZTBK7LsQ83SbH9nmypo1Xft1jWiAIg6bO9Kmww8=;
+	s=arc-20240116; t=1756820104; c=relaxed/simple;
+	bh=gfR9hptiKulw58ZbJmio++km5i+HwtgdddYeCxDp59Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LoyvccwAlocf7f6aIXsHh/uWQhb6uOkGKfmRvPYoB++jhYKRanXZ3l2oafantzp/n7f5CR/8hOTEV8K9a9UMr+T9F/Qin021/M1D8BWZ3fsNceMHkkeP2aUELR3HPed0tXu59JoO4jxiu2AUM1GDoeIXawpu1LwlC+CGeI7w+5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7QUm+DB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D78C4CEED;
-	Tue,  2 Sep 2025 13:38:10 +0000 (UTC)
+	 MIME-Version; b=SlMa1XE4Tx+um/Hy4owD/6JGb+m+gThdu7UWu24kGUewZrwkn4fQ/d0TcOXBu5P/lZRvkQ8ykwlqjeEY/DXyYC86F1N9ArLPp8P0f9ZdVI9PHRHYYhSHomOyKOi6Zhv/oaGpdQs2Nly1f8mll/fmSzwoQ41vBjaHi/O/1PD3xxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAdDrf8X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39BCC4CEF4;
+	Tue,  2 Sep 2025 13:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820291;
-	bh=WcUoZTBK7LsQ83SbH9nmypo1Xft1jWiAIg6bO9Kmww8=;
+	s=korg; t=1756820104;
+	bh=gfR9hptiKulw58ZbJmio++km5i+HwtgdddYeCxDp59Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7QUm+DBtPLaEwgDQcuWKpbTSzR9zrKxW3UMa3FPqdZyPLq7AH/gps+6/2G3WQNaw
-	 FRt+tZtw7u7r13yrakIq9T4VN+nvmZhchDIcBzmGaLuWwg8Eof3eYdZkj8EBW2gER6
-	 DU7BitXoH3ycUy0d7u6LmH4zBm5UWUPEYBzxHh3w=
+	b=LAdDrf8XD+AXwiE1HJXOhDb+1HAEqf2HkcbTWfyfnTr/yhoxDw1KZrrqHYuv7b3Mu
+	 Ub5cc04eZdMx4+kD3S1ImRqvaccGJjXJGQMORUfs0cAa4WCsz2jEDRb9IDqcMewBb0
+	 WzCXYdtoa8HhmMB4xfd2MMpvC0jMeNgE++1v9XDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.6 58/75] HID: asus: fix UAF via HID_CLAIMED_INPUT validation
+	Mason Chang <mason-cw.chang@mediatek.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Daniel Golle <daniel@makrotopia.org>
+Subject: [PATCH 6.12 94/95] thermal/drivers/mediatek/lvts_thermal: Add lvts commands and their sizes to driver data
 Date: Tue,  2 Sep 2025 15:21:10 +0200
-Message-ID: <20250902131937.392135144@linuxfoundation.org>
+Message-ID: <20250902131943.209721000@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,140 +62,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Mason Chang <mason-cw.chang@mediatek.com>
 
-commit d3af6ca9a8c34bbd8cff32b469b84c9021c9e7e4 upstream.
+commit 6203a5e6fd090ed05f6d9b92e33bc7e7679a3dd6 upstream.
 
-After hid_hw_start() is called hidinput_connect() will eventually be
-called to set up the device with the input layer since the
-HID_CONNECT_DEFAULT connect mask is used. During hidinput_connect()
-all input and output reports are processed and corresponding hid_inputs
-are allocated and configured via hidinput_configure_usages(). This
-process involves slot tagging report fields and configuring usages
-by setting relevant bits in the capability bitmaps. However it is possible
-that the capability bitmaps are not set at all leading to the subsequent
-hidinput_has_been_populated() check to fail leading to the freeing of the
-hid_input and the underlying input device.
+Add LVTS commands and their sizes to driver data in preparation for
+adding different commands.
 
-This becomes problematic because a malicious HID device like a
-ASUS ROG N-Key keyboard can trigger the above scenario via a
-specially crafted descriptor which then leads to a user-after-free
-when the name of the freed input device is written to later on after
-hid_hw_start(). Below, report 93 intentionally utilises the
-HID_UP_UNDEFINED Usage Page which is skipped during usage
-configuration, leading to the frees.
-
-0x05, 0x0D,        // Usage Page (Digitizer)
-0x09, 0x05,        // Usage (Touch Pad)
-0xA1, 0x01,        // Collection (Application)
-0x85, 0x0D,        //   Report ID (13)
-0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
-0x09, 0xC5,        //   Usage (0xC5)
-0x15, 0x00,        //   Logical Minimum (0)
-0x26, 0xFF, 0x00,  //   Logical Maximum (255)
-0x75, 0x08,        //   Report Size (8)
-0x95, 0x04,        //   Report Count (4)
-0xB1, 0x02,        //   Feature (Data,Var,Abs)
-0x85, 0x5D,        //   Report ID (93)
-0x06, 0x00, 0x00,  //   Usage Page (Undefined)
-0x09, 0x01,        //   Usage (0x01)
-0x15, 0x00,        //   Logical Minimum (0)
-0x26, 0xFF, 0x00,  //   Logical Maximum (255)
-0x75, 0x08,        //   Report Size (8)
-0x95, 0x1B,        //   Report Count (27)
-0x81, 0x02,        //   Input (Data,Var,Abs)
-0xC0,              // End Collection
-
-Below is the KASAN splat after triggering the UAF:
-
-[   21.672709] ==================================================================
-[   21.673700] BUG: KASAN: slab-use-after-free in asus_probe+0xeeb/0xf80
-[   21.673700] Write of size 8 at addr ffff88810a0ac000 by task kworker/1:2/54
-[   21.673700]
-[   21.673700] CPU: 1 UID: 0 PID: 54 Comm: kworker/1:2 Not tainted 6.16.0-rc4-g9773391cf4dd-dirty #36 PREEMPT(voluntary)
-[   21.673700] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-[   21.673700] Call Trace:
-[   21.673700]  <TASK>
-[   21.673700]  dump_stack_lvl+0x5f/0x80
-[   21.673700]  print_report+0xd1/0x660
-[   21.673700]  kasan_report+0xe5/0x120
-[   21.673700]  __asan_report_store8_noabort+0x1b/0x30
-[   21.673700]  asus_probe+0xeeb/0xf80
-[   21.673700]  hid_device_probe+0x2ee/0x700
-[   21.673700]  really_probe+0x1c6/0x6b0
-[   21.673700]  __driver_probe_device+0x24f/0x310
-[   21.673700]  driver_probe_device+0x4e/0x220
-[...]
-[   21.673700]
-[   21.673700] Allocated by task 54:
-[   21.673700]  kasan_save_stack+0x3d/0x60
-[   21.673700]  kasan_save_track+0x18/0x40
-[   21.673700]  kasan_save_alloc_info+0x3b/0x50
-[   21.673700]  __kasan_kmalloc+0x9c/0xa0
-[   21.673700]  __kmalloc_cache_noprof+0x139/0x340
-[   21.673700]  input_allocate_device+0x44/0x370
-[   21.673700]  hidinput_connect+0xcb6/0x2630
-[   21.673700]  hid_connect+0xf74/0x1d60
-[   21.673700]  hid_hw_start+0x8c/0x110
-[   21.673700]  asus_probe+0x5a3/0xf80
-[   21.673700]  hid_device_probe+0x2ee/0x700
-[   21.673700]  really_probe+0x1c6/0x6b0
-[   21.673700]  __driver_probe_device+0x24f/0x310
-[   21.673700]  driver_probe_device+0x4e/0x220
-[...]
-[   21.673700]
-[   21.673700] Freed by task 54:
-[   21.673700]  kasan_save_stack+0x3d/0x60
-[   21.673700]  kasan_save_track+0x18/0x40
-[   21.673700]  kasan_save_free_info+0x3f/0x60
-[   21.673700]  __kasan_slab_free+0x3c/0x50
-[   21.673700]  kfree+0xcf/0x350
-[   21.673700]  input_dev_release+0xab/0xd0
-[   21.673700]  device_release+0x9f/0x220
-[   21.673700]  kobject_put+0x12b/0x220
-[   21.673700]  put_device+0x12/0x20
-[   21.673700]  input_free_device+0x4c/0xb0
-[   21.673700]  hidinput_connect+0x1862/0x2630
-[   21.673700]  hid_connect+0xf74/0x1d60
-[   21.673700]  hid_hw_start+0x8c/0x110
-[   21.673700]  asus_probe+0x5a3/0xf80
-[   21.673700]  hid_device_probe+0x2ee/0x700
-[   21.673700]  really_probe+0x1c6/0x6b0
-[   21.673700]  __driver_probe_device+0x24f/0x310
-[   21.673700]  driver_probe_device+0x4e/0x220
-[...]
-
-Fixes: 9ce12d8be12c ("HID: asus: Add i2c touchpad support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Link: https://patch.msgid.link/20250810181041.44874-1-qasdev00@gmail.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Mason Chang <mason-cw.chang@mediatek.com>
+Link: https://lore.kernel.org/r/20250526102659.30225-3-mason-cw.chang@mediatek.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-asus.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/thermal/mediatek/lvts_thermal.c |   65 +++++++++++++++++++++++++-------
+ 1 file changed, 52 insertions(+), 13 deletions(-)
 
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -1108,7 +1108,13 @@ static int asus_probe(struct hid_device
- 		return ret;
- 	}
+--- a/drivers/thermal/mediatek/lvts_thermal.c
++++ b/drivers/thermal/mediatek/lvts_thermal.c
+@@ -92,17 +92,6 @@
  
--	if (!drvdata->input) {
-+	/*
-+	 * Check that input registration succeeded. Checking that
-+	 * HID_CLAIMED_INPUT is set prevents a UAF when all input devices
-+	 * were freed during registration due to no usages being mapped,
-+	 * leaving drvdata->input pointing to freed memory.
-+	 */
-+	if (!drvdata->input || !(hdev->claimed & HID_CLAIMED_INPUT)) {
- 		hid_err(hdev, "Asus input not registered\n");
- 		ret = -ENOMEM;
- 		goto err_stop_hw;
+ #define LVTS_MINIMUM_THRESHOLD		20000
+ 
+-static const u32 default_conn_cmds[] = { 0xC103FFFF, 0xC502FF55 };
+-/*
+- * Write device mask: 0xC1030000
+- */
+-static const u32 default_init_cmds[] = {
+-	0xC1030E01, 0xC1030CFC, 0xC1030A8C, 0xC103098D, 0xC10308F1,
+-	0xC10307A6, 0xC10306B8, 0xC1030500, 0xC1030420, 0xC1030300,
+-	0xC1030030, 0xC10300F6, 0xC1030050, 0xC1030060, 0xC10300AC,
+-	0xC10300FC, 0xC103009D, 0xC10300F1, 0xC10300E1
+-};
+-
+ static int golden_temp = LVTS_GOLDEN_TEMP_DEFAULT;
+ static int golden_temp_offset;
+ 
+@@ -132,7 +121,11 @@ struct lvts_ctrl_data {
+ 
+ struct lvts_data {
+ 	const struct lvts_ctrl_data *lvts_ctrl;
++	const u32 *conn_cmd;
++	const u32 *init_cmd;
+ 	int num_lvts_ctrl;
++	int num_conn_cmd;
++	int num_init_cmd;
+ 	int temp_factor;
+ 	int temp_offset;
+ 	int gt_calib_bit_offset;
+@@ -974,9 +967,10 @@ static int lvts_ctrl_set_enable(struct l
+ 
+ static int lvts_ctrl_connect(struct device *dev, struct lvts_ctrl *lvts_ctrl)
+ {
++	const struct lvts_data *lvts_data = lvts_ctrl->lvts_data;
+ 	u32 id;
+ 
+-	lvts_write_config(lvts_ctrl, default_conn_cmds, ARRAY_SIZE(default_conn_cmds));
++	lvts_write_config(lvts_ctrl, lvts_data->conn_cmd, lvts_data->num_conn_cmd);
+ 
+ 	/*
+ 	 * LVTS_ID : Get ID and status of the thermal controller
+@@ -995,7 +989,9 @@ static int lvts_ctrl_connect(struct devi
+ 
+ static int lvts_ctrl_initialize(struct device *dev, struct lvts_ctrl *lvts_ctrl)
+ {
+-	lvts_write_config(lvts_ctrl, default_init_cmds, ARRAY_SIZE(default_init_cmds));
++	const struct lvts_data *lvts_data = lvts_ctrl->lvts_data;
++
++	lvts_write_config(lvts_ctrl, lvts_data->init_cmd, lvts_data->num_init_cmd);
+ 
+ 	return 0;
+ }
+@@ -1424,6 +1420,17 @@ static int lvts_resume(struct device *de
+ 	return 0;
+ }
+ 
++static const u32 default_conn_cmds[] = { 0xC103FFFF, 0xC502FF55 };
++/*
++ * Write device mask: 0xC1030000
++ */
++static const u32 default_init_cmds[] = {
++	0xC1030E01, 0xC1030CFC, 0xC1030A8C, 0xC103098D, 0xC10308F1,
++	0xC10307A6, 0xC10306B8, 0xC1030500, 0xC1030420, 0xC1030300,
++	0xC1030030, 0xC10300F6, 0xC1030050, 0xC1030060, 0xC10300AC,
++	0xC10300FC, 0xC103009D, 0xC10300F1, 0xC10300E1
++};
++
+ /*
+  * The MT8186 calibration data is stored as packed 3-byte little-endian
+  * values using a weird layout that makes sense only when viewed as a 32-bit
+@@ -1718,7 +1725,11 @@ static const struct lvts_ctrl_data mt819
+ 
+ static const struct lvts_data mt7988_lvts_ap_data = {
+ 	.lvts_ctrl	= mt7988_lvts_ap_data_ctrl,
++	.conn_cmd	= default_conn_cmds,
++	.init_cmd	= default_init_cmds,
+ 	.num_lvts_ctrl	= ARRAY_SIZE(mt7988_lvts_ap_data_ctrl),
++	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
++	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
+ 	.temp_factor	= LVTS_COEFF_A_MT7988,
+ 	.temp_offset	= LVTS_COEFF_B_MT7988,
+ 	.gt_calib_bit_offset = 24,
+@@ -1726,7 +1737,11 @@ static const struct lvts_data mt7988_lvt
+ 
+ static const struct lvts_data mt8186_lvts_data = {
+ 	.lvts_ctrl	= mt8186_lvts_data_ctrl,
++	.conn_cmd	= default_conn_cmds,
++	.init_cmd	= default_init_cmds,
+ 	.num_lvts_ctrl	= ARRAY_SIZE(mt8186_lvts_data_ctrl),
++	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
++	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
+ 	.temp_factor	= LVTS_COEFF_A_MT7988,
+ 	.temp_offset	= LVTS_COEFF_B_MT7988,
+ 	.gt_calib_bit_offset = 24,
+@@ -1735,7 +1750,11 @@ static const struct lvts_data mt8186_lvt
+ 
+ static const struct lvts_data mt8188_lvts_mcu_data = {
+ 	.lvts_ctrl	= mt8188_lvts_mcu_data_ctrl,
++	.conn_cmd	= default_conn_cmds,
++	.init_cmd	= default_init_cmds,
+ 	.num_lvts_ctrl	= ARRAY_SIZE(mt8188_lvts_mcu_data_ctrl),
++	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
++	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
+ 	.temp_factor	= LVTS_COEFF_A_MT8195,
+ 	.temp_offset	= LVTS_COEFF_B_MT8195,
+ 	.gt_calib_bit_offset = 20,
+@@ -1744,7 +1763,11 @@ static const struct lvts_data mt8188_lvt
+ 
+ static const struct lvts_data mt8188_lvts_ap_data = {
+ 	.lvts_ctrl	= mt8188_lvts_ap_data_ctrl,
++	.conn_cmd	= default_conn_cmds,
++	.init_cmd	= default_init_cmds,
+ 	.num_lvts_ctrl	= ARRAY_SIZE(mt8188_lvts_ap_data_ctrl),
++	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
++	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
+ 	.temp_factor	= LVTS_COEFF_A_MT8195,
+ 	.temp_offset	= LVTS_COEFF_B_MT8195,
+ 	.gt_calib_bit_offset = 20,
+@@ -1753,7 +1776,11 @@ static const struct lvts_data mt8188_lvt
+ 
+ static const struct lvts_data mt8192_lvts_mcu_data = {
+ 	.lvts_ctrl	= mt8192_lvts_mcu_data_ctrl,
++	.conn_cmd	= default_conn_cmds,
++	.init_cmd	= default_init_cmds,
+ 	.num_lvts_ctrl	= ARRAY_SIZE(mt8192_lvts_mcu_data_ctrl),
++	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
++	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
+ 	.temp_factor	= LVTS_COEFF_A_MT8195,
+ 	.temp_offset	= LVTS_COEFF_B_MT8195,
+ 	.gt_calib_bit_offset = 24,
+@@ -1762,7 +1789,11 @@ static const struct lvts_data mt8192_lvt
+ 
+ static const struct lvts_data mt8192_lvts_ap_data = {
+ 	.lvts_ctrl	= mt8192_lvts_ap_data_ctrl,
++	.conn_cmd	= default_conn_cmds,
++	.init_cmd	= default_init_cmds,
+ 	.num_lvts_ctrl	= ARRAY_SIZE(mt8192_lvts_ap_data_ctrl),
++	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
++	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
+ 	.temp_factor	= LVTS_COEFF_A_MT8195,
+ 	.temp_offset	= LVTS_COEFF_B_MT8195,
+ 	.gt_calib_bit_offset = 24,
+@@ -1771,7 +1802,11 @@ static const struct lvts_data mt8192_lvt
+ 
+ static const struct lvts_data mt8195_lvts_mcu_data = {
+ 	.lvts_ctrl	= mt8195_lvts_mcu_data_ctrl,
++	.conn_cmd	= default_conn_cmds,
++	.init_cmd	= default_init_cmds,
+ 	.num_lvts_ctrl	= ARRAY_SIZE(mt8195_lvts_mcu_data_ctrl),
++	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
++	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
+ 	.temp_factor	= LVTS_COEFF_A_MT8195,
+ 	.temp_offset	= LVTS_COEFF_B_MT8195,
+ 	.gt_calib_bit_offset = 24,
+@@ -1780,7 +1815,11 @@ static const struct lvts_data mt8195_lvt
+ 
+ static const struct lvts_data mt8195_lvts_ap_data = {
+ 	.lvts_ctrl	= mt8195_lvts_ap_data_ctrl,
++	.conn_cmd	= default_conn_cmds,
++	.init_cmd	= default_init_cmds,
+ 	.num_lvts_ctrl	= ARRAY_SIZE(mt8195_lvts_ap_data_ctrl),
++	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
++	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
+ 	.temp_factor	= LVTS_COEFF_A_MT8195,
+ 	.temp_offset	= LVTS_COEFF_B_MT8195,
+ 	.gt_calib_bit_offset = 24,
 
 
 
