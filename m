@@ -1,89 +1,200 @@
-Return-Path: <stable+bounces-176927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A72AB3F3CE
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 06:40:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C9E0B3F424
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 07:05:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76EA020436A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 04:40:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 807607A6217
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 05:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3A51B3930;
-	Tue,  2 Sep 2025 04:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88F02DF144;
+	Tue,  2 Sep 2025 05:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOC4rWRf"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="g2UQ3clM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9874722301;
-	Tue,  2 Sep 2025 04:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13CD635;
+	Tue,  2 Sep 2025 05:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756788015; cv=none; b=g2XtPZuE6zt6eUA650EjKFsCsp3Jjcxf5Pr1jHoNrBOILZsRK3002TzAKBAqtpDqhYxYcpXMcym8jea/A7Ra4nu2LZMzfIF7jYX0xE2cRTlBvNUkLB99Sfp6rpJU+L6K6oD/DLAFDfkC3VwWRkInKLhZ2ryyjctnEyILRD51szk=
+	t=1756789512; cv=none; b=gZQ9U7o5WXXEvN12shv9zkQRJn2+StmoCCwGCW2ywZd8WHSJy5jn+YXYu8xc5mRkFEEm8FDv8LcY32z+chuERslIl7gajd+BfqNycrfuBz1xlGkoxLnI62LorBjpDhQUCrgzTJQUHrCX47rrMuTWouvvEsv9UVDFWUYiZjfAzCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756788015; c=relaxed/simple;
-	bh=qCOo+EDJdNk2baz9ZX5MlWq6gVuoUvaqCXd5s0H2RDk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KcgstwUPH3Qx6ypD5YEQ20SnpOhrm36208Mk1+PGq/jjB1vR2a08ilO0HlXcMyAL75RZPgX0QpKLUBeuLc338ewOaUsT66f1R1eW2W6kGuNK1Ffh6bIrXw6xpSKS+CxoUicFy3VKt6UHVhibtnMmeSFYKsueFDigVjynDtB55DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOC4rWRf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA16C4CEED;
-	Tue,  2 Sep 2025 04:40:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756788015;
-	bh=qCOo+EDJdNk2baz9ZX5MlWq6gVuoUvaqCXd5s0H2RDk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JOC4rWRfNN9nEPMzQKJ8K8XQ+03Em7rO1P9pAgnfOCt+bNlTVVpwXNKxvXttEognd
-	 tnRHJKE9sZrQencJl6ZezjSy8S5Q1QKDQdbno2yip+Cwf5wKzWZH8B+xNtGeE0tknJ
-	 idpUEzq0Nb+4rPjw4p6eujn0u0+iE+NZJRVxjQx0=
-Date: Tue, 2 Sep 2025 06:40:11 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: jinfeng.wang.cn@windriver.com
-Cc: broonie@kernel.org, khairul.anuar.romli@altera.com,
-	matthew.gerlach@altera.com, patches@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 6.6 136/139] spi: spi-cadence-quadspi: Fix pm runtime
- unbalance
-Message-ID: <2025090253-cannabis-moaner-7aca@gregkh>
-References: <20250703143946.496631282@linuxfoundation.org>
- <20250902033442.145912-1-jinfeng.wang.cn@windriver.com>
+	s=arc-20240116; t=1756789512; c=relaxed/simple;
+	bh=4Uoz/TuOXbA3W3vKtblJsBp1uKjF8Y65YHLvdHQ3NrY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aMVuNksFitIGlULsrlcnMaJEO+kduMUVPT4bMddJ/+liYrCYgYbAo/heTyTwjiqyfAH7YrEVdbDszB09FEKWSB0fjIikF1Bs5O2tb/ljAaQYwbzSJ1+4S6qTa5DcJPZNtm62qbrQtXJyZKb8UTTFm4+XnJNxcvI8ULYWH/sj+Yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=g2UQ3clM; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 58254rTF2907370;
+	Tue, 2 Sep 2025 00:04:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1756789493;
+	bh=KiCSG+FWn7wT91Kqc9IfCxj4YVRksH0HnJ9uZhIZXZk=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=g2UQ3clMuq7E4+YaBXRfrQeyFcjGu2XGZ63cr/Xa9Fb7qmAGyBug0jrL9nyc6FQ1/
+	 lnTgJ3XrhmFo+SGzGz3iz6j3JLAjy1NMVZ8SHv2jvomzWMDRraCrZ2g0zb4CtPFw47
+	 ccfjCfrVzsrftizgbk2+JUbIhLXj8aOc7R99tdhU=
+Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 58254rhf3227998
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Tue, 2 Sep 2025 00:04:53 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 2
+ Sep 2025 00:04:52 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Tue, 2 Sep 2025 00:04:53 -0500
+Received: from localhost (uda0492258.dhcp.ti.com [172.24.231.84])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 58254pJh3519022;
+	Tue, 2 Sep 2025 00:04:52 -0500
+Date: Tue, 2 Sep 2025 10:34:51 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Manivannan Sadhasivam <mani@kernel.org>
+CC: Siddharth Vadapalli <s-vadapalli@ti.com>, <lpieralisi@kernel.org>,
+        <kwilczynski@kernel.org>, <robh@kernel.org>, <bhelgaas@google.com>,
+        <helgaas@kernel.org>, <kishon@kernel.org>, <vigneshr@ti.com>,
+        <stable@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
+Subject: Re: [PATCH v3] PCI: j721e: Fix programming sequence of "strap"
+ settings
+Message-ID: <08b87b5f-838b-4f40-ae90-10ded134356e@ti.com>
+References: <20250829091707.2990211-1-s-vadapalli@ti.com>
+ <oztilfun77apxtjxumx4tydkcd2gsalsak4m2rvsry2oooqjna@2yvcx6cnuemm>
+ <b2fb9252-6bfc-45da-973a-31cdfcc86b3d@ti.com>
+ <z3ubracmtlq23yicbrhqjgnzrfoqheffm6cvhfnawlvbu4cmmp@ddu2o7xhw5tz>
+ <48e9d897-2cd3-48ef-b46a-635ae75f5ac6@ti.com>
+ <3wc3t6y5gzzspgfeklsqo3bupfp6gsfy6mls6t66hflcqlqsfk@cu26wv3sow4y>
+ <9d2bba15-52e4-432a-8f7f-a0f5d7c2e4ad@ti.com>
+ <7hxdcjm7evlphkldct7seytno4is7rjkx5vquvtfhpdkzxdhu6@yocrjgzciwu3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20250902033442.145912-1-jinfeng.wang.cn@windriver.com>
+In-Reply-To: <7hxdcjm7evlphkldct7seytno4is7rjkx5vquvtfhpdkzxdhu6@yocrjgzciwu3>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Tue, Sep 02, 2025 at 11:34:42AM +0800, jinfeng.wang.cn@windriver.com wrote:
-> 1. Issue
->   on branch 6.6.y using board Stratix10.
+On Mon, Sep 01, 2025 at 08:15:24PM +0530, Manivannan Sadhasivam wrote:
+> On Mon, Sep 01, 2025 at 04:50:02PM GMT, Siddharth Vadapalli wrote:
+> > On Mon, Sep 01, 2025 at 12:14:51PM +0530, Manivannan Sadhasivam wrote:
+> > > On Mon, Sep 01, 2025 at 11:51:33AM GMT, Siddharth Vadapalli wrote:
+
+[...]
+
+> > > > 
+> > > > If I understand correctly, are you suggesting the following?
+> > > > 
+> > > > j721e_pcie_probe()
+> > > > 	pm_runtime_set_active()
+> > > > 	pm_runtime_enable()
+> > > > 	ret = j721e_pcie_ctrl_init(pcie);
+> > > > 		/*
+> > > > 		 * PCIe Controller should be powered off here, but is there
+> > > > 		 * a way to ensure that it has been powered off?
+> > > > 		 */
+> > > > 		=> Program the strap settings and return to
+> > > > 		j721e_pcie_probe()
+> > > > 	/* Power on the PCIe Controller now */
+> > > > 	ret = pm_runtime_get_sync(dev);
+> > > 
+> > > This pm_runtime_get_sync() should be part of j721e_pcie_ctrl_init() where you
+> > > do power off, program strap and power on.
+> > > 
+> > > This should not be part of probe() as by that time, controller is already
+> > > powered on. So pm_runtime_set_active() and pm_runtime_enable() should be enough
+> > > to convey the state of the device to PM core.
+> > 
+> > I have tried out the suggestion in the following manner:
+> > 
+> > 	j721e_pcie_probe()
+> > 		...
+> > 		pm_runtime_set_active(dev);
+> > 		pm_runtime_enable(dev);
+> > 		ret = j721e_pcie_ctrl_init(pcie);
+> > 			... within j721e_pcie_ctrl_init()
+> > 			ret = pm_runtime_put_sync(dev);
+> > 			/* Program Strap Settings */
+> > 			ret = pm_runtime_get_sync(dev);
+> > 			...
+> > 		...
+> > 		exit probe
+> > 
+> > Since a 'pm_runtime_get_sync()' hasn't yet been invoked prior to the
+> > section where 'pm_runtime_put_sync()' is invoked, it leads to a ref-count
+> > underflow error at runtime. Please let me know if I am missing
+> > something.
+> > 
 > 
->   I encountered cadence-qspi ff8d2000.spi: Unbalanced pm_runtime_enable! error.
+> Doh... At the start of probe(), device PM usage_count will be 0. So we cannot
+> decrement it without incrementing it.
 > 
->   After reverting these two commitsi on branch 6.6.y:
->     https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/spi/spi-cadence-quadspi.c?h=linux-6.6.y&id=cdfb20e4b34ad99b3fe122aafb4f8ee7b9856e1f
->     https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/spi/spi-cadence-quadspi.c?h=linux-6.6.y&id=1af6d1696ca40b2d22889b4b8bbea616f94aaa84
->   Unbalanced pm_runtime_enable! error does not appear.
+> Could you try below sequence?
 > 
-> 2. Analyse of the codes
->   These two commits are cherry-picked from master branch, the commit id on master branch is b07f349d1864 and 04a8ff1bc351.
->   04a8ff1bc351 fix b07f349d1864. b07f349d1864 fix 86401132d7bb. 86401132d7bb fix 0578a6dbfe75.
->   6.6.y only backport b07f349d1864 and 04a8ff1bc351, but does not backport 0578a6dbfe75 and 86401132d7bb. And the backport 
->   of b07f349d1864 differs with the original patch. So there is Unbalanced pm_runtime_enable error. 
->   If revert the backport for b07f349d1864 and 04a8ff1bc351, there is no error.
->   If backport 0578a6dbfe75 and 86401132d7bb, there is hang during booting. I didn't find the cause of the hang.
->   Since 0578a6dbfe75 and 86401132d7bb are not backported, b07f349d1864 and 04a8ff1bc351 are not needed. 
->   How about reverting the bakcports cdfb20e4b34a and 1af6d1696ca4 for b07f349d1864 and 04a8ff1bc351 on 6.6?
+> 	probe()
+> 	...
+> 	pm_runtime_set_active()
+> 	pm_runtime_enable()
+> 	j721e_pcie_ctrl_init()
+> 		...
+> 		pm_runtime_get() /* Just increment usage_count */
+> 		pm_runtime_put_sync() /* ask PM core to turn off */
+> 		/* program strap setting */
+> 		pm_runtime_get_sync() /* ask PM core to turn on */
+> 		pm_runtime_put_noidle() /* balance the usage_count without
+> 						suspending the device */
+> 	...
 
-If you wish to have things reverted, please send the reverts with the
-reasons why.
+The above sequence powers off the controller at the point in time that
+the strap settings are programmed. 'pm_runtime_get_sync()' is powering
+on the controller afterwards. However, the 'pm_runtime_put_noidle()'
+at the end is causing the controller to be powered off again leading to
+a crash. Removing 'pm_runtime_put_noidle()' results in a functional
+sequence.
 
-thanks,
+Please consider the existing sequence prior to this patch:
 
-greg k-h
+probe()
+	...
+	pm_runtime_enable()
+	pm_runtime_get_sync() => usage_count is 1
+	...
+	exit probe
+
+With the suggested sequence above, we have:
+
+probe()
+	...
+	pm_runtime_set_active()
+	pm_runtime_enable()
+	j721e_pcie_ctrl_init()
+		...
+		pm_runtime_get() => usage_count is 1
+		pm_runtime_put_sync() => usage_count is 0
+		/* Controller is powered off now */
+		/* Strap settings are programmed */
+		pm_runtime_get_sync() => usage_count is 1
+		/* Controller is powered on now */
+		pm_runtime_put_noidle() => usage_count is 0
+		/* Controller is powered off in a while */
+	...
+	/* Crash is observed aroung this point before probe finishes */
+
+Please let me know if the fix is to drop 'pm_runtime_put_noidle()'
+from the above sequence.
+
+Regards,
+Siddharth.
 
