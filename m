@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-177305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A28B404BC
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:46:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA2BB40421
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA7A8188677F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:42:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C12517ACB60
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C9F307AE7;
-	Tue,  2 Sep 2025 13:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEE9261393;
+	Tue,  2 Sep 2025 13:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hrnx8W2B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0rhlZn7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902783074B2;
-	Tue,  2 Sep 2025 13:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAAF30AAD6;
+	Tue,  2 Sep 2025 13:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820225; cv=none; b=WOmacnJW8S+ffUQwVmX7OoSSTVlm5f2BX5nXgm46/9Ucw6cKTXvMRZkjO+6cKT7NdqRy7XkV/0uVgsyrBMrpYpiqBYYNY2818XuyO2XPE2sFsXkSZmkYJfaIHNpP3lLJJWLH/qp+7rC1aDP3GjouXx78fyGyMMsjOBtYwbr7ApE=
+	t=1756819937; cv=none; b=ICLFtNPes5lmJXFzaB/Yb1gTpMdDac6jP7WPbRTvfAHkaWYMrfmVHqcHX88KFk1QgSDlUA3yBPo7KxBbdSKPMILMHxtmhhXzIFdJZ/IK14iLi07RIVaayTnPFVpnDpTZD3Qti/OiB0UYqwe1SBMYbI6FdxiQRDfY4K5KbA8SHm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820225; c=relaxed/simple;
-	bh=pGtSVY3UO+1l+6tB32oSQ159PWDx96uS8m0kDPA0/G0=;
+	s=arc-20240116; t=1756819937; c=relaxed/simple;
+	bh=lQR32eDVN+tDobX0/pdpnmHIlA75clHq6ZASKS0C3Ks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JlYS8gqjBqCFhVEC9zLFI5IsQtd4AoSsoysGXZ791EPlMUukVpqbCGWwmXuMBjQ968eMZ9QwdOQLWl+vApi6HSrsQj4PobkT9gydYeHwwxMFQO1mBX9ROd9GvZrL9QGm965Rg0yqTDE4an7KuJfPzsRMcpBcEaiBrGYf3TerSMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hrnx8W2B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156F2C4CEED;
-	Tue,  2 Sep 2025 13:37:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UZsLwCRGkZaF+AEtQixg+yBPqhj5MMmXSRrYGQGGQTNs49HI0t3POjwjCpkIh8uey0/BW0dEpOSrEJ2bjGQmSwKRqh02FxMPqttgcj30K/CrLu+t3RFNGR/Pa1XdseNBpP5rS0fG/CN7FdxFBeRn87itqwgeJ52qDVJS2RaxFjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0rhlZn7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18092C4CEF4;
+	Tue,  2 Sep 2025 13:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820225;
-	bh=pGtSVY3UO+1l+6tB32oSQ159PWDx96uS8m0kDPA0/G0=;
+	s=korg; t=1756819937;
+	bh=lQR32eDVN+tDobX0/pdpnmHIlA75clHq6ZASKS0C3Ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hrnx8W2BLWZhjsvR2Dh8o0+tmo8BauR53kneJi2x9HVAkplcBroELm6p2h8ykJXv1
-	 7sEAwkAipQ2fYWRdiSIxDW7XpNi+JAIOahEEhV7r0kXtzGPNHx5zs01xGt1gIVPO3a
-	 wdHWRpX2qsh9Kw3dwGs1S8II4G3CYelo6ZAh713E=
+	b=Y0rhlZn7r/6AGQmOUuXHavv0vKkataGBeBaKRa4zuDhXfCT6FH01d4U/4LFI5KvDW
+	 DbWw0LgtK3NQ8oHoqG4WYnxX7n4zDXxzfySFIAat4MqS4tJYedC3zTmFgGZYc80sQU
+	 Tx8dfK2FLYkZB51foyKSEi6FqAlsWxButCNDAPBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	=?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 06/75] of: dynamic: Fix use after free in of_changeset_add_prop_helper()
+Subject: [PATCH 6.12 42/95] drm/xe/xe_sync: avoid race during ufence signaling
 Date: Tue,  2 Sep 2025 15:20:18 +0200
-Message-ID: <20250902131935.363655117@linuxfoundation.org>
+Message-ID: <20250902131941.220483215@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +62,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-[ Upstream commit 80af3745ca465c6c47e833c1902004a7fa944f37 ]
+[ Upstream commit 04e1f683cd28dc9407b238543871a6e09a570dc0 ]
 
-If the of_changeset_add_property() function call fails, then this code
-frees "new_pp" and then dereference it on the next line.  Return the
-error code directly instead.
+Marking ufence as signalled after copy_to_user() is too late.
+Worker thread which signals ufence by memory write might be raced
+with another userspace vm-bind call. In map/unmap scenario unmap
+may still see ufence is not signalled causing -EBUSY. Change the
+order of marking / write to user-fence fixes this issue.
 
-Fixes: c81f6ce16785 ("of: dynamic: Fix memleak when of_pci_add_properties() failed")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/aKgljjhnpa4lVpdx@stanley.mountain
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: 977e5b82e090 ("drm/xe: Expose user fence from xe_sync_entry")
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5536
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://lore.kernel.org/r/20250820083903.2109891-2-zbigniew.kempczynski@intel.com
+(cherry picked from commit 8ae04fe9ffc93d6bc3bc63ac08375427d69cee06)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/dynamic.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_sync.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-index 72531f44adf09..18393800546c1 100644
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -934,13 +934,15 @@ static int of_changeset_add_prop_helper(struct of_changeset *ocs,
- 		return -ENOMEM;
+diff --git a/drivers/gpu/drm/xe/xe_sync.c b/drivers/gpu/drm/xe/xe_sync.c
+index b0684e6d2047b..dd7bd766ae184 100644
+--- a/drivers/gpu/drm/xe/xe_sync.c
++++ b/drivers/gpu/drm/xe/xe_sync.c
+@@ -77,6 +77,7 @@ static void user_fence_worker(struct work_struct *w)
+ {
+ 	struct xe_user_fence *ufence = container_of(w, struct xe_user_fence, worker);
  
- 	ret = of_changeset_add_property(ocs, np, new_pp);
--	if (ret)
-+	if (ret) {
- 		__of_prop_free(new_pp);
-+		return ret;
-+	}
- 
- 	new_pp->next = np->deadprops;
- 	np->deadprops = new_pp;
- 
--	return ret;
-+	return 0;
++	WRITE_ONCE(ufence->signalled, 1);
+ 	if (mmget_not_zero(ufence->mm)) {
+ 		kthread_use_mm(ufence->mm);
+ 		if (copy_to_user(ufence->addr, &ufence->value, sizeof(ufence->value)))
+@@ -89,7 +90,6 @@ static void user_fence_worker(struct work_struct *w)
+ 	 * Wake up waiters only after updating the ufence state, allowing the UMD
+ 	 * to safely reuse the same ufence without encountering -EBUSY errors.
+ 	 */
+-	WRITE_ONCE(ufence->signalled, 1);
+ 	wake_up_all(&ufence->xe->ufence_wq);
+ 	user_fence_put(ufence);
  }
- 
- /**
 -- 
 2.50.1
 
