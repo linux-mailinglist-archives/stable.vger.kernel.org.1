@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-177353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E37B404F6
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48300B4040B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55F1B547935
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C16EE4E6746
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F3E3128CB;
-	Tue,  2 Sep 2025 13:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7423148DD;
+	Tue,  2 Sep 2025 13:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LoZcpuGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3jjxbU+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4250261593;
-	Tue,  2 Sep 2025 13:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C43830DEB9;
+	Tue,  2 Sep 2025 13:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820375; cv=none; b=ONBqaGsx/dVWnHMUV8hjNmKR+sNRjuOMV9Xynnmt37qApTUSd7xlSIpxbwBoPR7ABh33kSWLJh37V4luaUme2WcuMcNUII3kjvCAA/6wzBwUiW8SvdexYXVjzft7Qdw48NI9V7sJn38+/Z1prU+qZDtmzK5A+bhOJnqAVMj4kKA=
+	t=1756820043; cv=none; b=fuXmAKffFLXDPjVo9o7ewa96nYZ/C5dFsLfKnk8ea2v9Fb0wAA6cOLaiL3NYxVuNB0p3GWQdTCU+7NLjH9uZ9kZxZnb8K+0QstHeyRLfGHOzPB3YOVyvkrjKaqLTVRldRHDC/xTS13uHn+XOoeIC6UqEXamqLxVtlUd4widAqgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820375; c=relaxed/simple;
-	bh=XygLJttyQ8qdThTVAQJM6x08TFh7rTuv0WTIeUzwUXA=;
+	s=arc-20240116; t=1756820043; c=relaxed/simple;
+	bh=q0LWgoiKntCrz1UhJ+gZRV0nkm8G8hobKajM/341TeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t0dB+tn/GAslB+IxXcASzdwAT/D131iEMKS+Cj+8X5mf4qhYtXwc++1VBx9NMUDHGBm2dELDP9+/aNW215JE3w8teGt3wM6VX0qKsKhZkzUrEFiYqrkOR5Fob6ZfnmrQooaekDrpMBG7D4fhtQxS7+3Rb/dQF6AZyTcOPWnSXB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LoZcpuGx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5440AC4CEED;
-	Tue,  2 Sep 2025 13:39:34 +0000 (UTC)
+	 MIME-Version; b=rY+pRHN1sp11oC3MWX4ImglX9TV+6wtUA4eLXvrQouoFbX/WEii7TU4sb+w1xAQsWSJFeDq+Rp6TqyNy+baJcJ2VcUTAWy1vJE/QhwmjTr72lbWT6uOciHolEVoKniltpiUH6zeGgiovzISKGmYKJC1S74GC33G7AQvHRk5rHMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3jjxbU+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142EAC4CEED;
+	Tue,  2 Sep 2025 13:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820374;
-	bh=XygLJttyQ8qdThTVAQJM6x08TFh7rTuv0WTIeUzwUXA=;
+	s=korg; t=1756820043;
+	bh=q0LWgoiKntCrz1UhJ+gZRV0nkm8G8hobKajM/341TeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LoZcpuGxwESWls0AJudKXm1a567hHQco2+JOzkoqQufDEjemudHzaLcNFToTJxDqR
-	 UmTrPQE/ew0eoU/bmiK0RfuxM8FEAeN2IBzcGkjoKn7LcceGRtG6yysBlXRBrd9fRa
-	 L/vjPlGJCTlgIVRgT/+rHpPR5z0qX2Ej57E/dIJQ=
+	b=A3jjxbU+nEEu3NE/ISO9o+ekfgurDe9gcr7PYrhP0q8saaHodkDE8+umeFgCbWead
+	 p4q2DYddoGjcCjq/f1yB67dbeACJFg479hy9qhylsXgYNpUsMbywMfGu6DKUFxhMki
+	 7fyXxjho7FoUQCaX3L4CPtd+9S8nJnBn5aNOwfco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 01/50] pinctrl: STMFX: add missing HAS_IOMEM dependency
+	Minjong Kim <minbell.kim@samsung.com>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.12 76/95] HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()
 Date: Tue,  2 Sep 2025 15:20:52 +0200
-Message-ID: <20250902131930.570698731@linuxfoundation.org>
+Message-ID: <20250902131942.525545146@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Minjong Kim <minbell.kim@samsung.com>
 
-[ Upstream commit a12946bef0407cf2db0899c83d42c47c00af3fbc ]
+commit 185c926283da67a72df20a63a5046b3b4631b7d9 upstream.
 
-When building on ARCH=um (which does not set HAS_IOMEM), kconfig
-reports an unmet dependency caused by PINCTRL_STMFX. It selects
-MFD_STMFX, which depends on HAS_IOMEM. To stop this warning,
-PINCTRL_STMFX should also depend on HAS_IOMEM.
+in ntrig_report_version(), hdev parameter passed from hid_probe().
+sending descriptor to /dev/uhid can make hdev->dev.parent->parent to null
+if hdev->dev.parent->parent is null, usb_dev has
+invalid address(0xffffffffffffff58) that hid_to_usb_dev(hdev) returned
+when usb_rcvctrlpipe() use usb_dev,it trigger
+page fault error for address(0xffffffffffffff58)
 
-kconfig warning:
-WARNING: unmet direct dependencies detected for MFD_STMFX
-  Depends on [n]: HAS_IOMEM [=n] && I2C [=y] && OF [=y]
-  Selected by [y]:
-  - PINCTRL_STMFX [=y] && PINCTRL [=y] && I2C [=y] && OF_GPIO [=y]
+add null check logic to ntrig_report_version()
+before calling hid_to_usb_dev()
 
-Fixes: 1490d9f841b1 ("pinctrl: Add STMFX GPIO expander Pinctrl/GPIO driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/20250815022721.1650885-1-rdunlap@infradead.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Minjong Kim <minbell.kim@samsung.com>
+Link: https://patch.msgid.link/20250813-hid-ntrig-page-fault-fix-v2-1-f98581f35106@samsung.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-ntrig.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index f71fefff400f5..6d61be061ff54 100644
---- a/drivers/pinctrl/Kconfig
-+++ b/drivers/pinctrl/Kconfig
-@@ -438,6 +438,7 @@ config PINCTRL_STMFX
- 	tristate "STMicroelectronics STMFX GPIO expander pinctrl driver"
- 	depends on I2C
- 	depends on OF_GPIO
-+	depends on HAS_IOMEM
- 	select GENERIC_PINCONF
- 	select GPIOLIB_IRQCHIP
- 	select MFD_STMFX
--- 
-2.50.1
-
+--- a/drivers/hid/hid-ntrig.c
++++ b/drivers/hid/hid-ntrig.c
+@@ -144,6 +144,9 @@ static void ntrig_report_version(struct
+ 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
+ 	unsigned char *data = kmalloc(8, GFP_KERNEL);
+ 
++	if (!hid_is_usb(hdev))
++		return;
++
+ 	if (!data)
+ 		goto err_free;
+ 
 
 
 
