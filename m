@@ -1,174 +1,109 @@
-Return-Path: <stable+bounces-177555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4722FB410D1
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 01:36:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CCEBB41102
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 01:53:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E03C51682B1
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 23:36:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 248267B3132
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 23:51:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2B727FB2D;
-	Tue,  2 Sep 2025 23:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E54C2EAB64;
+	Tue,  2 Sep 2025 23:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="KuhVkv/d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HSr7D5h+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A572E27F195;
-	Tue,  2 Sep 2025 23:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3ED12EAB6F
+	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 23:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756856152; cv=none; b=GqOZelIa06D+Pt4QSrdy85ezu5pitraTwVAna0B6ozZQQKkH/Sr2YwRmYq0W4P4BI5xrs8wmtv6dLd4B8Z8M0IkwnZ5Sau2DEfe8Qt7L5Ku4xtDGqaONZeQgYjkUaP8gvb+BdTm8sLwR7tuIcPbcuM33IbFgUgJ2CRUOQNRxNtI=
+	t=1756857175; cv=none; b=aJgZzKbnxyoJxJz0Yl6s0z/qJXuSwDKquGAA5cFrwgihz2uwQ4m8ynrW1JBnsrd9qSwtKcJwtFTD1gvxcGXR2Ui2M2mKrcxlyg7cwbk+xUsf5EXUdcQ/WOX0x/PrWa3vPw2yWGMk/1lQITwDyLtDwChCiEWs2AzAr3psr+m5dgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756856152; c=relaxed/simple;
-	bh=x6LpFluFjx6CMdPJhcdJXxc+ZmKyyp+mg5K9yCMKoXw=;
-	h=Date:To:From:Subject:Message-Id; b=riS0/bejN3UgUEXu58BqayPKnYv532xQykAj05NZkzAYYWKmTyBh9n9I5RKSoXIVvvX137V3fgDhC8sHm2p9ZaT8VIg7Hj5y7p4hat07A9Yu4KKSv1tTcNjRnvAXiu2TiLz/QwlSSIlKAmBEMbfGSbLD/eSr16Hjb/mE91les8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=KuhVkv/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5FBC4CEED;
-	Tue,  2 Sep 2025 23:35:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1756856151;
-	bh=x6LpFluFjx6CMdPJhcdJXxc+ZmKyyp+mg5K9yCMKoXw=;
-	h=Date:To:From:Subject:From;
-	b=KuhVkv/dMsehG2G9RndMZhC5kPhaLSbMQxSp8bg7cG2voVcPcXJxYEgToEqtELJp8
-	 TCIIp3xzjkr5RdWHbp11ZI3kL8Gn2x+nQW/RFycVPK8ehKSDhO2+gzDg0cK6ffFfa1
-	 8I3GWHnLFAfmAwHTNXvJf7Up9lHZP+YCfuyUXI7Q=
-Date: Tue, 02 Sep 2025 16:35:50 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ryabinin.a.a@gmail.com,morbo@google.com,justinstitt@google.com,glider@google.com,elver@google.com,dvyukov@google.com,andreyknvl@gmail.com,nathan@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + compiler-clangh-define-__sanitize___-macros-only-when-undefined.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250902233551.1A5FBC4CEED@smtp.kernel.org>
+	s=arc-20240116; t=1756857175; c=relaxed/simple;
+	bh=6givWJeo2KbjB4vPFl536ZK/TBqk0kofHXgNZGIJA7Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XoHc83VvY67v0y++FlXK8f1aZjmogpuS2t9xzJC4HLaGq+Wx9D7Z/WajGbsDHJ2cGx2FCtOX1E90Be1DLfTGDd3Ii4S03GiUTqKozQHqV4wDboPgctGbmq/Qswaa7+WIFFn9OF5ycjHKSUERAEA2MImim4VanBRuqeEdw4NkaLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HSr7D5h+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF25C4CEF7;
+	Tue,  2 Sep 2025 23:52:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756857174;
+	bh=6givWJeo2KbjB4vPFl536ZK/TBqk0kofHXgNZGIJA7Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HSr7D5h+2t7T6w5sEZcnMb9TqV2Zh1xHWp4tg3ZmEOu0pjgDtXzx6JQSEMTd1eH2F
+	 ajrL34w603laEBpRXbPAZgcWwZ1fU8PHltOQNjZTYsRMJkFIN/jRV1ko4QjTlW3jx7
+	 8YTGvTpzBj56HBHu/vFwXTfbMN+yNakOJuSHJPVNfmaDlUk1UUkkYuW5H6hNnohvVY
+	 nFxHqpDEIjO3ltHGVwX2vKiCUc2dXOJfUGQaztk2IL3K8C43hW5HVFvCgbhi302uNr
+	 pPj0YwXTj0Y82ZJ5NltplVQnq0G4zz3sL7WOWndHwmagpjGmdOZO13Zrjb7PI/b034
+	 uKiMCUK5e/xQw==
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linuxppc-dev@lists.ozlabs.org,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 5.4 only] powerpc: boot: Remove unnecessary zero in label in udelay()
+Date: Tue,  2 Sep 2025 16:52:34 -0700
+Message-ID: <20250902235234.2046667-1-nathan@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+When building powerpc configurations in linux-5.4.y with binutils 2.43
+or newer, there is an assembler error in arch/powerpc/boot/util.S:
 
-The patch titled
-     Subject: compiler-clang.h: define __SANITIZE_*__ macros only when undefined
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     compiler-clangh-define-__sanitize___-macros-only-when-undefined.patch
+  arch/powerpc/boot/util.S: Assembler messages:
+  arch/powerpc/boot/util.S:44: Error: junk at end of line, first unrecognized character is `0'
+  arch/powerpc/boot/util.S:49: Error: syntax error; found `b', expected `,'
+  arch/powerpc/boot/util.S:49: Error: junk at end of line: `b'
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/compiler-clangh-define-__sanitize___-macros-only-when-undefined.patch
+binutils 2.43 contains stricter parsing of certain labels [1].
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Remove the unnecessary leading zero to fix the build. This is only
+needed in linux-5.4.y because commit 8b14e1dff067 ("powerpc: Remove
+support for PowerPC 601") removed this code altogether in 5.10.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Nathan Chancellor <nathan@kernel.org>
-Subject: compiler-clang.h: define __SANITIZE_*__ macros only when undefined
-Date: Tue, 02 Sep 2025 15:49:26 -0700
-
-Clang 22 recently added support for defining __SANITIZE__ macros similar
-to GCC [1], which causes warnings (or errors with CONFIG_WERROR=y or W=e)
-with the existing defines that the kernel creates to emulate this behavior
-with existing clang versions.
-
-  In file included from <built-in>:3:
-  In file included from include/linux/compiler_types.h:171:
-  include/linux/compiler-clang.h:37:9: error: '__SANITIZE_THREAD__' macro redefined [-Werror,-Wmacro-redefined]
-     37 | #define __SANITIZE_THREAD__
-        |         ^
-  <built-in>:352:9: note: previous definition is here
-    352 | #define __SANITIZE_THREAD__ 1
-        |         ^
-
-Refactor compiler-clang.h to only define the sanitizer macros when they
-are undefined and adjust the rest of the code to use these macros for
-checking if the sanitizers are enabled, clearing up the warnings and
-allowing the kernel to easily drop these defines when the minimum
-supported version of LLVM for building the kernel becomes 22.0.0 or newer.
-
-Link: https://lkml.kernel.org/r/20250902-clang-update-sanitize-defines-v1-1-cf3702ca3d92@kernel.org
-Link: https://github.com/llvm/llvm-project/commit/568c23bbd3303518c5056d7f03444dae4fdc8a9c [1]
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=226749d5a6ff0d5c607d6428d6c81e1e7e7a994b [1]
 Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
+ arch/powerpc/boot/util.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- include/linux/compiler-clang.h |   29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
-
---- a/include/linux/compiler-clang.h~compiler-clangh-define-__sanitize___-macros-only-when-undefined
-+++ a/include/linux/compiler-clang.h
-@@ -18,23 +18,42 @@
- #define KASAN_ABI_VERSION 5
+diff --git a/arch/powerpc/boot/util.S b/arch/powerpc/boot/util.S
+index f11f0589a669..5ab2bc864e66 100644
+--- a/arch/powerpc/boot/util.S
++++ b/arch/powerpc/boot/util.S
+@@ -41,12 +41,12 @@ udelay:
+ 	srwi	r4,r4,16
+ 	cmpwi	0,r4,1		/* 601 ? */
+ 	bne	.Ludelay_not_601
+-00:	li	r0,86	/* Instructions / microsecond? */
++0:	li	r0,86	/* Instructions / microsecond? */
+ 	mtctr	r0
+ 10:	addi	r0,r0,0 /* NOP */
+ 	bdnz	10b
+ 	subic.	r3,r3,1
+-	bne	00b
++	bne	0b
+ 	blr
  
- /*
-+ * Clang 22 added preprocessor macros to match GCC, in hopes of eventually
-+ * dropping __has_feature support for sanitizers:
-+ * https://github.com/llvm/llvm-project/commit/568c23bbd3303518c5056d7f03444dae4fdc8a9c
-+ * Create these macros for older versions of clang so that it is easy to clean
-+ * up once the minimum supported version of LLVM for building the kernel always
-+ * creates these macros.
-+ *
-  * Note: Checking __has_feature(*_sanitizer) is only true if the feature is
-  * enabled. Therefore it is not required to additionally check defined(CONFIG_*)
-  * to avoid adding redundant attributes in other configurations.
-  */
-+#if __has_feature(address_sanitizer) && !defined(__SANITIZE_ADDRESS__)
-+#define __SANITIZE_ADDRESS__
-+#endif
-+#if __has_feature(hwaddress_sanitizer) && !defined(__SANITIZE_HWADDRESS__)
-+#define __SANITIZE_HWADDRESS__
-+#endif
-+#if __has_feature(thread_sanitizer) && !defined(__SANITIZE_THREAD__)
-+#define __SANITIZE_THREAD__
-+#endif
- 
--#if __has_feature(address_sanitizer) || __has_feature(hwaddress_sanitizer)
--/* Emulate GCC's __SANITIZE_ADDRESS__ flag */
-+/*
-+ * Treat __SANITIZE_HWADDRESS__ the same as __SANITIZE_ADDRESS__ in the kernel.
-+ */
-+#ifdef __SANITIZE_HWADDRESS__
- #define __SANITIZE_ADDRESS__
-+#endif
-+
-+#ifdef __SANITIZE_ADDRESS__
- #define __no_sanitize_address \
- 		__attribute__((no_sanitize("address", "hwaddress")))
- #else
- #define __no_sanitize_address
- #endif
- 
--#if __has_feature(thread_sanitizer)
--/* emulate gcc's __SANITIZE_THREAD__ flag */
--#define __SANITIZE_THREAD__
-+#ifdef __SANITIZE_THREAD__
- #define __no_sanitize_thread \
- 		__attribute__((no_sanitize("thread")))
- #else
-_
+ .Ludelay_not_601:
 
-Patches currently in -mm which might be from nathan@kernel.org are
-
-compiler-clangh-define-__sanitize___-macros-only-when-undefined.patch
-mm-rmap-convert-enum-rmap_level-to-enum-pgtable_level-fix.patch
+base-commit: c25f780e491e4734eb27d65aa58e0909fd78ad9f
+-- 
+2.51.0
 
 
