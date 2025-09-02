@@ -1,152 +1,122 @@
-Return-Path: <stable+bounces-176978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ED86B3FC84
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:32:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9FEB3FC89
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:33:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A12604E3299
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:32:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C183D1B251E8
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64018281520;
-	Tue,  2 Sep 2025 10:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB17284663;
+	Tue,  2 Sep 2025 10:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PvkIx0OZ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fHlSbO4n"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891C032F757
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 10:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE16283146
+	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 10:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756809160; cv=none; b=QplM3m45glkZV2x9fdXCGJ1SlYaS0675RrrQYmExIUkETv0WKbG2kTd60++jTuwvWedZ6116XziKOa0S5pH5IMZxuBO5BU11+jVumJR75Zwm3MFO+BNixUFrmOEegWxEg5d7oGi9eyQGWNQUvpxM3UcVXX+pRoAeb7yzmulzR94=
+	t=1756809183; cv=none; b=mqfp1/yaOGqw5QpoaoJHzFheGTYjkA4RCB736zZOBJv1xQ3PXbK6UkDcMI8IZZdVzrtQoe/rBtGG0X8a9rWjGdtbzev6jDJjUQyyTa+zyI/i0qGM7OJ8gIj3uE+THIJrdbV2NgNIibQ0cC29Q9VkhoyLRFqjt3ehMXHNCh/22L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756809160; c=relaxed/simple;
-	bh=xHgaSh2A4yEv4NX/+7lLbbxdcZbq+h7IkvUfY2N9/WE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RQgmsWJ2ANQTbESrPhsR9qBUgmWT4BaFY8pPNPKYaGxdSebN0q1IoN34J080TatNnLAi/h6ATpn7U9hrNP2FTHso6R0B0v3+/aqerfyW413bSUX4ujFO2k3QA0TPmUiGa/96YPQ785pYgPD7V8KxBXlXFuN8YgvUVFQ1RyLQ1so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PvkIx0OZ; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756809159; x=1788345159;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=xHgaSh2A4yEv4NX/+7lLbbxdcZbq+h7IkvUfY2N9/WE=;
-  b=PvkIx0OZApK05OYNxJXDMSk/Te4MnT8pd0FpMKC0ww0DS14Qf2QO0HxX
-   yBL99v2j9E92SdF5vvIvnx8yrfECjJcJeaYD46E5D5t/76O1H5uPX5kVv
-   s8ORo7nqe75Anq9j/C0F4JciD7U+JBs95cSJCTaBM6R9oRvH1WACCOHTZ
-   UhxkM202R5JwGo4B9JKMQrPCUl2S0mj82aJ8Q+aEw12YbmZ1ixvLEU8It
-   FljrM8XpAuXN3oJcuE/4lDLlbheuJ7LXBYtxnWqJ31DgwU1LZgffpFSwd
-   q2093dhQaV8babduH6HGhOtBVUg9UihMRYYmGGredW4zgcyE0buNHc+xn
-   g==;
-X-CSE-ConnectionGUID: oiQ4Fj8bRPyGrrF1f/f2Zw==
-X-CSE-MsgGUID: bE9Nrcb2RiuMiMg69BZLcA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59026437"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="59026437"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 03:32:37 -0700
-X-CSE-ConnectionGUID: dgrQJMdnQkGqG0FBFn4MeQ==
-X-CSE-MsgGUID: ynApx5lgSW+TGzzlSL3/BQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="171402132"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO [10.245.245.71]) ([10.245.245.71])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 03:32:35 -0700
-Message-ID: <f16b5123-ed53-45b3-ac13-656ad839e87f@intel.com>
-Date: Tue, 2 Sep 2025 11:32:33 +0100
+	s=arc-20240116; t=1756809183; c=relaxed/simple;
+	bh=D6kMRVNdjTsHxomh8Umwb4E3q6zvSzEKkpefTTT/TzQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=FPyhAS1+1oOdPztFwMmRtIU/4h/yUfgVXK7PQqwuLR0Wgv6xPZrGW05BGhe46DkPrXUGEiJNdawStGenJuIh4/0rjI6jqPUgYiis7zK2oF9LnV0GFD483vVSd7cxMM+RPyzvblmwmBtsp5/dZiZev0Z8l9HllHvGbwuwYhoiy0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fHlSbO4n; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-61cad8d2a3eso601945a12.1
+        for <stable@vger.kernel.org>; Tue, 02 Sep 2025 03:33:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1756809180; x=1757413980; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t+2RmtyC5BdrhVnYkf0pE1bp+20qsxwnCUP1SaL1uDE=;
+        b=fHlSbO4nvFRetVrpPRB6bgLDTOjU/qdzNl0rZ71B3InipDSZ1MMMwMdo0PGcfEL5fs
+         LFcViE5hQl7oi3c1I/H42PHnYeiW0RuhqNAB5gBMg8GmrETEHccPan1j+rJbMaGascMK
+         iKCzMW4cWTyLr91cs1atbLg6ElGZxk3WSWlILzBttnb9qbrHQ1vOBbfwNU05b1Yc7NFu
+         MybDLmgRpIhGt7xwGNl86t/MBneCuXcCAA6indKsJqmAb2qxeVk5NCbjQuzqrXzDVBQy
+         md6/0xArDSxaVZtTZgD3+dLVg3dnnldtBI2PxQur+Ids+bNhFw/evhQ349llSXscnzJV
+         Itwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756809180; x=1757413980;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t+2RmtyC5BdrhVnYkf0pE1bp+20qsxwnCUP1SaL1uDE=;
+        b=iEZwiOq5YoBUdx3dVL7n6MNSF2FfZYnkmwDICz3KnXcpFcPEiMiVqNSUBRin/3P0yp
+         L9wawH/NiDexXGci/jm17JisfOrt5mE5DZr/XkjZGK0NPHzVwK5zLnvfBsmzCHbFrJnE
+         sYDCPLDHQtWIAdYxFEa7NUIbKn78g51uXIVhxqZWuGaBxtbJg5z1+iWUaaPKnCmPR5SD
+         rSs/5HXEKyE/JQGfrLfFEor7zMknWq0t9px1VKANBDgCsWfKas8s3Mtd9aNLwG+IrISk
+         KScXQ9qLGXthJSCXvainqjjVaQYR0D6xsNwdTwcaGSgkP++HOHG/abtIpDtdf+gVGPBz
+         MdSw==
+X-Gm-Message-State: AOJu0Yw+DXXv2Uh15mSLCOwRuZgC1g3WwolhK0J5eJpVbrdB+/zikYo9
+	XsXCMS5gOKdaSBvOWv2YiA+zQ5RUdp6O/m9j4bPYQAx9bP0x4hmeEsadDCALADH0ccw=
+X-Gm-Gg: ASbGncudRpO79rqvNS/zfLpZ5khvsTiUMsoRgWDGRbR1YHt6nFumdnx024y9wd/+1w3
+	tDXxsIYeBUv+ab3IAeF+8kWTtZ+LBja2200zJEM03tbXngYeh06fkC0XmYPG5Bu1Pz2uQvNRndo
+	3dM5mEsOBBEBerjMCECUkqP1w0hr/vZN1e7N7wTIGKm1IzNIP2jti2B8Nu+Soz6ahvEuUH654ke
+	jJAUZvmP1Pj3DN7RWBoRNT9b+r9IKIvB+Cg+SO0VAiaBI/U3fQumUzCi1HAwdgOi36knm2pSZlR
+	fAFp8ANnN12nfFhHYuz6OaoQWgEImV5zKI6JuKV7irSemNhxiZOuuXYtt2ope8RRD5J+Awy7Lu1
+	ZJNX2dcBpN2dApSibIPP1t7Yp7Ka+PgP5dEyztrvpigLyzjFOpQ==
+X-Google-Smtp-Source: AGHT+IHAsN/656NaYDyz43thubEPzcHhs+/jF4e7qFvC7WKngX9lMBJC+gCJOclV74lgolxYOi8bDw==
+X-Received: by 2002:a17:906:690:b0:b04:1457:93 with SMTP id a640c23a62f3a-b04145702d1mr390858166b.3.1756809180009;
+        Tue, 02 Sep 2025 03:33:00 -0700 (PDT)
+Received: from [127.0.1.1] ([178.197.219.123])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b0423ed35e4sm516431766b.25.2025.09.02.03.32.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 03:32:59 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>, 
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Tomasz Figa <tomasz.figa@gmail.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Ulf Hansson <ulf.hansson@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+ linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: stable@vger.kernel.org
+In-Reply-To: <20250830111657.126190-3-krzysztof.kozlowski@linaro.org>
+References: <20250830111657.126190-3-krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH 1/2] pinctrl: samsung: Drop unused S3C24xx driver data
+Message-Id: <175680917816.135692.16731223900572881206.b4-ty@linaro.org>
+Date: Tue, 02 Sep 2025 12:32:58 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] drm/xe: Allow the pm notifier to continue on
- failure
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>, stable@vger.kernel.org,
- Matthew Brost <matthew.brost@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-References: <20250901083829.27341-1-thomas.hellstrom@linux.intel.com>
- <20250901083829.27341-3-thomas.hellstrom@linux.intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20250901083829.27341-3-thomas.hellstrom@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-On 01/09/2025 09:38, Thomas Hellström wrote:
-> Its actions are opportunistic anyway and will be completed
-> on device suspend.
 
-If it fails here, it will likely also fail in the real suspend part 
-which is more hostile/restrictive environment, so maybe failing early is 
-better? Not completely sure though.
+On Sat, 30 Aug 2025 13:16:58 +0200, Krzysztof Kozlowski wrote:
+> Drop unused declarations after S3C24xx SoC family removal in the commit
+> 61b7f8920b17 ("ARM: s3c: remove all s3c24xx support").
+> 
+> 
 
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Applied, thanks!
 
-> 
-> Marking as a fix to simplify backporting of the fix
-> that follows in the series.
-> 
-> v2:
-> - Keep the runtime pm reference over suspend / hibernate and
->    document why. (Matt Auld, Rodrigo Vivi):
-> 
-> Fixes: c6a4d46ec1d7 ("drm/xe: evict user memory in PM notifier")
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.16+
-> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> ---
->   drivers/gpu/drm/xe/xe_pm.c | 17 +++++++----------
->   1 file changed, 7 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
-> index a2e85030b7f4..bee9aacd82e7 100644
-> --- a/drivers/gpu/drm/xe/xe_pm.c
-> +++ b/drivers/gpu/drm/xe/xe_pm.c
-> @@ -308,17 +308,17 @@ static int xe_pm_notifier_callback(struct notifier_block *nb,
->   	case PM_SUSPEND_PREPARE:
->   		xe_pm_runtime_get(xe);
->   		err = xe_bo_evict_all_user(xe);
-> -		if (err) {
-> +		if (err)
->   			drm_dbg(&xe->drm, "Notifier evict user failed (%d)\n", err);
-> -			xe_pm_runtime_put(xe);
-> -			break;
-> -		}
->   
->   		err = xe_bo_notifier_prepare_all_pinned(xe);
-> -		if (err) {
-> +		if (err)
->   			drm_dbg(&xe->drm, "Notifier prepare pin failed (%d)\n", err);
-> -			xe_pm_runtime_put(xe);
-> -		}
-> +		/*
-> +		 * Keep the runtime pm reference until post hibernation / post suspend to
-> +		 * avoid a runtime suspend interfering with evicted objects or backup
-> +		 * allocations.
-> +		 */
->   		break;
->   	case PM_POST_HIBERNATION:
->   	case PM_POST_SUSPEND:
-> @@ -327,9 +327,6 @@ static int xe_pm_notifier_callback(struct notifier_block *nb,
->   		break;
->   	}
->   
-> -	if (err)
-> -		return NOTIFY_BAD;
-> -
->   	return NOTIFY_DONE;
->   }
->   
+[1/2] pinctrl: samsung: Drop unused S3C24xx driver data
+      https://git.kernel.org/pinctrl/samsung/c/358253fa8179ab4217ac283b56adde0174186f87
+[2/2] dt-bindings: pinctrl: samsung: Drop S3C2410
+      https://git.kernel.org/pinctrl/samsung/c/d37db94b078197ec4be1cadebbfd7bf144e3c5e4
+
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 
