@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-177134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2C1B403AF
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:35:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40288B40402
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2BA51B63AF2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:32:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 692B54E6074
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832103126D1;
-	Tue,  2 Sep 2025 13:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB4730BF6B;
+	Tue,  2 Sep 2025 13:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxI/fZQ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6M1P0pX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3919830ACFE;
-	Tue,  2 Sep 2025 13:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7E930DEAE;
+	Tue,  2 Sep 2025 13:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819688; cv=none; b=l1qoz/i6qNo+o+gJhOhLLCIXBxoPstHkezdCcCzUynMWOPt3SHSHKeceKaRysmAuhaz6qGyx4XgsBlRePtHNvzd5t7LfhZDrOKFjgHd2rR2nt92PMwZ3J7BT4qkdjKNKm346PlmXyC1iYSlFQZnRz6x275Eb74v6bGvbOIb3WJg=
+	t=1756820020; cv=none; b=jTBwpezW362EjiCC3gj6IbhphCpYTx8CvRoAD0hc+XvExCIOIKFFYbAhPIRrJ8iDz9AJe7+hvB5JaIRo2YM7c2PNXrhEL5Jt949yAQubsZa7AcYLbRln/5mlu4a8+NjylumtLyl+ryPbSnVW4FWOdFExOlZ25sjxieGzq/vX2gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819688; c=relaxed/simple;
-	bh=7fAppNOECfEX9chDs9S7yBSzNCo1LOr6wlzdSWQddTA=;
+	s=arc-20240116; t=1756820020; c=relaxed/simple;
+	bh=rpRc89T59fI67tEMiWeT1nRJ0JNhN8Jx1pityyZLgK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDjd8uM5W1qGOSpghlP22nYWlape+B2wcOEy5IUViXF7H/0YqLyaXrDr7459hyERCqWi9CXSGoNMv6a8TgcaBo6lKSB9eBr+TJ05eRGBi9xL4sYfRGgA5BYDoAB15Hv5w0ewXMFonVvxfp1urtapzIGXp62YSXgqf1qOI7I2rJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxI/fZQ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6B2C4CEED;
-	Tue,  2 Sep 2025 13:28:07 +0000 (UTC)
+	 MIME-Version; b=nGg7rVPO1s9zTK3zTCiKw6R9+1WrZSnWJHuvf+cxDS8FCm7XdmbjeKC+dNT9tzyti8fdT4XgFgQhf2z7yGt9zf1mGioMKdurxoHLJgDfguY5QREJ/NAkB+q/D1hDjeUtlCwsUUVG3WzoHRF8WgcK9hDIvsWgv8bIphLkYCCR82E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6M1P0pX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC07C4CEED;
+	Tue,  2 Sep 2025 13:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819688;
-	bh=7fAppNOECfEX9chDs9S7yBSzNCo1LOr6wlzdSWQddTA=;
+	s=korg; t=1756820019;
+	bh=rpRc89T59fI67tEMiWeT1nRJ0JNhN8Jx1pityyZLgK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UxI/fZQ929XYECvat4EX2s4MzckO8cHMFIetlGSV+20d5b7U7zpD9zZRvqH2A1z8K
-	 t5zKqLu7osJVlOqfVfYyf4vEzavJKvjmqYQ2I5bNqFJVtAxYllnHlCmZ0Pjv3OoDLM
-	 C3QHsZPUIgnc+jR7H8J3vFTrmy6rTSY5IPW/0zhk=
+	b=M6M1P0pX+HqBKTXt1tVnv+aS+3HW3wyfq/WKknPPBqsdCe40qPpczzV/1PTGm1gKR
+	 v9QmCDpeMPMUkoLvaz9WN1ycDm7SwZBBD+DS7Q7EB4LS86H/iyknEismjWzwupEET4
+	 6Tq0uhd3MVeS+ziLk9y3JqO8AJeP7vt4pXPVATNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.16 110/142] HID: multitouch: fix slab out-of-bounds access in mt_report_fixup()
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.12 36/95] ice: dont leave device non-functional if Tx scheduler config fails
 Date: Tue,  2 Sep 2025 15:20:12 +0200
-Message-ID: <20250902131952.490618221@linuxfoundation.org>
+Message-ID: <20250902131940.995399445@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +64,243 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-commit 0379eb8691b9c4477da0277ae0832036ca4410b4 upstream.
+[ Upstream commit 86aae43f21cf784c1d7f6a9af93e5116b0f232ab ]
 
-A malicious HID device can trigger a slab out-of-bounds during
-mt_report_fixup() by passing in report descriptor smaller than
-607 bytes. mt_report_fixup() attempts to patch byte offset 607
-of the descriptor with 0x25 by first checking if byte offset
-607 is 0x15 however it lacks bounds checks to verify if the
-descriptor is big enough before conducting this check. Fix
-this bug by ensuring the descriptor size is at least 608
-bytes before accessing it.
+The ice_cfg_tx_topo function attempts to apply Tx scheduler topology
+configuration based on NVM parameters, selecting either a 5 or 9 layer
+topology.
 
-Below is the KASAN splat after the out of bounds access happens:
+As part of this flow, the driver acquires the "Global Configuration Lock",
+which is a hardware resource associated with programming the DDP package
+to the device. This "lock" is implemented by firmware as a way to
+guarantee that only one PF can program the DDP for a device. Unlike a
+traditional lock, once a PF has acquired this lock, no other PF will be
+able to acquire it again (including that PF) until a CORER of the device.
+Future requests to acquire the lock report that global configuration has
+already completed.
 
-[   13.671954] ==================================================================
-[   13.672667] BUG: KASAN: slab-out-of-bounds in mt_report_fixup+0x103/0x110
-[   13.673297] Read of size 1 at addr ffff888103df39df by task kworker/0:1/10
-[   13.673297]
-[   13.673297] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.15.0-00005-gec5d573d83f4-dirty #3
-[   13.673297] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/04
-[   13.673297] Call Trace:
-[   13.673297]  <TASK>
-[   13.673297]  dump_stack_lvl+0x5f/0x80
-[   13.673297]  print_report+0xd1/0x660
-[   13.673297]  kasan_report+0xe5/0x120
-[   13.673297]  __asan_report_load1_noabort+0x18/0x20
-[   13.673297]  mt_report_fixup+0x103/0x110
-[   13.673297]  hid_open_report+0x1ef/0x810
-[   13.673297]  mt_probe+0x422/0x960
-[   13.673297]  hid_device_probe+0x2e2/0x6f0
-[   13.673297]  really_probe+0x1c6/0x6b0
-[   13.673297]  __driver_probe_device+0x24f/0x310
-[   13.673297]  driver_probe_device+0x4e/0x220
-[   13.673297]  __device_attach_driver+0x169/0x320
-[   13.673297]  bus_for_each_drv+0x11d/0x1b0
-[   13.673297]  __device_attach+0x1b8/0x3e0
-[   13.673297]  device_initial_probe+0x12/0x20
-[   13.673297]  bus_probe_device+0x13d/0x180
-[   13.673297]  device_add+0xe3a/0x1670
-[   13.673297]  hid_add_device+0x31d/0xa40
-[...]
+The following flow is used to program the Tx topology:
 
-Fixes: c8000deb6836 ("HID: multitouch: Add support for GT7868Q")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ * Read the DDP package for scheduler configuration data
+ * Acquire the global configuration lock
+ * Program Tx scheduler topology according to DDP package data
+ * Trigger a CORER which clears the global configuration lock
+
+This is followed by the flow for programming the DDP package:
+
+ * Acquire the global configuration lock (again)
+ * Download the DDP package to the device
+ * Release the global configuration lock.
+
+However, if configuration of the Tx topology fails, (i.e.
+ice_get_set_tx_topo returns an error code), the driver exits
+ice_cfg_tx_topo() immediately, and fails to trigger CORER.
+
+While the global configuration lock is held, the firmware rejects most
+AdminQ commands, as it is waiting for the DDP package download (or Tx
+scheduler topology programming) to occur.
+
+The current driver flows assume that the global configuration lock has been
+reset by CORER after programming the Tx topology. Thus, the same PF
+attempts to acquire the global lock again, and fails. This results in the
+driver reporting "an unknown error occurred when loading the DDP package".
+It then attempts to enter safe mode, but ultimately fails to finish
+ice_probe() since nearly all AdminQ command report error codes, and the
+driver stops loading the device at some point during its initialization.
+
+The only currently known way that ice_get_set_tx_topo() can fail is with
+certain older DDP packages which contain invalid topology configuration, on
+firmware versions which strictly validate this data. The most recent
+releases of the DDP have resolved the invalid data. However, it is still
+poor practice to essentially brick the device, and prevent access to the
+device even through safe mode or recovery mode. It is also plausible that
+this command could fail for some other reason in the future.
+
+We cannot simply release the global lock after a failed call to
+ice_get_set_tx_topo(). Releasing the lock indicates to firmware that global
+configuration (downloading of the DDP) has completed. Future attempts by
+this or other PFs to load the DDP will fail with a report that the DDP
+package has already been downloaded. Then, PFs will enter safe mode as they
+realize that the package on the device does not meet the minimum version
+requirement to load. The reported error messages are confusing, as they
+indicate the version of the default "safe mode" package in the NVM, rather
+than the version of the file loaded from /lib/firmware.
+
+Instead, we need to trigger CORER to clear global configuration. This is
+the lowest level of hardware reset which clears the global configuration
+lock and related state. It also clears any already downloaded DDP.
+Crucially, it does *not* clear the Tx scheduler topology configuration.
+
+Refactor ice_cfg_tx_topo() to always trigger a CORER after acquiring the
+global lock, regardless of success or failure of the topology
+configuration.
+
+We need to re-initialize the HW structure when we trigger the CORER. Thus,
+it makes sense for this to be the responsibility of ice_cfg_tx_topo()
+rather than its caller, ice_init_tx_topology(). This avoids needless
+re-initialization in cases where we don't attempt to update the Tx
+scheduler topology, such as if it has already been programmed.
+
+There is one catch: failure to re-initialize the HW struct should stop
+ice_probe(). If this function fails, we won't have a valid HW structure and
+cannot ensure the device is functioning properly. To handle this, ensure
+ice_cfg_tx_topo() returns a limited set of error codes. Set aside one
+specifically, -ENODEV, to indicate that the ice_init_tx_topology() should
+fail and stop probe.
+
+Other error codes indicate failure to apply the Tx scheduler topology. This
+is treated as a non-fatal error, with an informational message informing
+the system administrator that the updated Tx topology did not apply. This
+allows the device to load and function with the default Tx scheduler
+topology, rather than failing to load entirely.
+
+Note that this use of CORER will not result in loops with future PFs
+attempting to also load the invalid Tx topology configuration. The first PF
+will acquire the global configuration lock as part of programming the DDP.
+Each PF after this will attempt to acquire the global lock as part of
+programming the Tx topology, and will fail with the indication from
+firmware that global configuration is already complete. Tx scheduler
+topology configuration is only performed during driver init (probe or
+devlink reload) and not during cleanup for a CORER that happens after probe
+completes.
+
+Fixes: 91427e6d9030 ("ice: Support 5 layer topology")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_ddp.c  | 44 ++++++++++++++++-------
+ drivers/net/ethernet/intel/ice/ice_main.c | 16 ++++++---
+ 2 files changed, 43 insertions(+), 17 deletions(-)
 
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1461,6 +1461,14 @@ static const __u8 *mt_report_fixup(struc
- 	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
- 	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
- 	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
-+		if (*size < 608) {
-+			dev_info(
-+				&hdev->dev,
-+				"GT7868Q fixup: report descriptor is only %u bytes, skipping\n",
-+				*size);
-+			return rdesc;
-+		}
+diff --git a/drivers/net/ethernet/intel/ice/ice_ddp.c b/drivers/net/ethernet/intel/ice/ice_ddp.c
+index e4c8cd12a41d1..04bec5d8e7084 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ddp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ddp.c
+@@ -2352,7 +2352,13 @@ ice_get_set_tx_topo(struct ice_hw *hw, u8 *buf, u16 buf_size,
+  * The function will apply the new Tx topology from the package buffer
+  * if available.
+  *
+- * Return: zero when update was successful, negative values otherwise.
++ * Return:
++ * * 0 - Successfully applied topology configuration.
++ * * -EBUSY - Failed to acquire global configuration lock.
++ * * -EEXIST - Topology configuration has already been applied.
++ * * -EIO - Unable to apply topology configuration.
++ * * -ENODEV - Failed to re-initialize device after applying configuration.
++ * * Other negative error codes indicate unexpected failures.
+  */
+ int ice_cfg_tx_topo(struct ice_hw *hw, const void *buf, u32 len)
+ {
+@@ -2385,7 +2391,7 @@ int ice_cfg_tx_topo(struct ice_hw *hw, const void *buf, u32 len)
+ 
+ 	if (status) {
+ 		ice_debug(hw, ICE_DBG_INIT, "Get current topology is failed\n");
+-		return status;
++		return -EIO;
+ 	}
+ 
+ 	/* Is default topology already applied ? */
+@@ -2472,31 +2478,45 @@ int ice_cfg_tx_topo(struct ice_hw *hw, const void *buf, u32 len)
+ 				 ICE_GLOBAL_CFG_LOCK_TIMEOUT);
+ 	if (status) {
+ 		ice_debug(hw, ICE_DBG_INIT, "Failed to acquire global lock\n");
+-		return status;
++		return -EBUSY;
+ 	}
+ 
+ 	/* Check if reset was triggered already. */
+ 	reg = rd32(hw, GLGEN_RSTAT);
+ 	if (reg & GLGEN_RSTAT_DEVSTATE_M) {
+-		/* Reset is in progress, re-init the HW again */
+ 		ice_debug(hw, ICE_DBG_INIT, "Reset is in progress. Layer topology might be applied already\n");
+ 		ice_check_reset(hw);
+-		return 0;
++		/* Reset is in progress, re-init the HW again */
++		goto reinit_hw;
+ 	}
+ 
+ 	/* Set new topology */
+ 	status = ice_get_set_tx_topo(hw, new_topo, size, NULL, NULL, true);
+ 	if (status) {
+-		ice_debug(hw, ICE_DBG_INIT, "Failed setting Tx topology\n");
+-		return status;
++		ice_debug(hw, ICE_DBG_INIT, "Failed to set Tx topology, status %pe\n",
++			  ERR_PTR(status));
++		/* only report -EIO here as the caller checks the error value
++		 * and reports an informational error message informing that
++		 * the driver failed to program Tx topology.
++		 */
++		status = -EIO;
+ 	}
+ 
+-	/* New topology is updated, delay 1 second before issuing the CORER */
++	/* Even if Tx topology config failed, we need to CORE reset here to
++	 * clear the global configuration lock. Delay 1 second to allow
++	 * hardware to settle then issue a CORER
++	 */
+ 	msleep(1000);
+ 	ice_reset(hw, ICE_RESET_CORER);
+-	/* CORER will clear the global lock, so no explicit call
+-	 * required for release.
+-	 */
++	ice_check_reset(hw);
 +
- 		if (rdesc[607] == 0x15) {
- 			rdesc[607] = 0x25;
- 			dev_info(
++reinit_hw:
++	/* Since we triggered a CORER, re-initialize hardware */
++	ice_deinit_hw(hw);
++	if (ice_init_hw(hw)) {
++		ice_debug(hw, ICE_DBG_INIT, "Failed to re-init hardware after setting Tx topology\n");
++		return -ENODEV;
++	}
+ 
+-	return 0;
++	return status;
+ }
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index d1abd21cfc647..74d4f2fde3e0f 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -4559,17 +4559,23 @@ ice_init_tx_topology(struct ice_hw *hw, const struct firmware *firmware)
+ 			dev_info(dev, "Tx scheduling layers switching feature disabled\n");
+ 		else
+ 			dev_info(dev, "Tx scheduling layers switching feature enabled\n");
+-		/* if there was a change in topology ice_cfg_tx_topo triggered
+-		 * a CORER and we need to re-init hw
++		return 0;
++	} else if (err == -ENODEV) {
++		/* If we failed to re-initialize the device, we can no longer
++		 * continue loading.
+ 		 */
+-		ice_deinit_hw(hw);
+-		err = ice_init_hw(hw);
+-
++		dev_warn(dev, "Failed to initialize hardware after applying Tx scheduling configuration.\n");
+ 		return err;
+ 	} else if (err == -EIO) {
+ 		dev_info(dev, "DDP package does not support Tx scheduling layers switching feature - please update to the latest DDP package and try again\n");
++		return 0;
++	} else if (err == -EEXIST) {
++		return 0;
+ 	}
+ 
++	/* Do not treat this as a fatal error. */
++	dev_info(dev, "Failed to apply Tx scheduling configuration, err %pe\n",
++		 ERR_PTR(err));
+ 	return 0;
+ }
+ 
+-- 
+2.50.1
+
 
 
 
