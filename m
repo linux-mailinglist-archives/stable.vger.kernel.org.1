@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-177453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8498B40578
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:54:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B03B40557
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28045189C571
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:49:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72004540017
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A657305E32;
-	Tue,  2 Sep 2025 13:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8784233A039;
+	Tue,  2 Sep 2025 13:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N46ZebxK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6IhcHce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EA2190472;
-	Tue,  2 Sep 2025 13:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D78305070;
+	Tue,  2 Sep 2025 13:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820694; cv=none; b=FIkgpUbcMWYjhTnn8wXdINiKamRjkKBxLdSjlwJeDlT9tgA+/linQrXatocbup7gJZHaYkTIGRPiWMbcaXIHvktPIo91ymvBuiFrM517J6PC9p0fGaw66joI73gTc+0AvLAX3o9HEZFCJTi6aUDYylTMLNAmoUBb5w3H5j/3Z3o=
+	t=1756820559; cv=none; b=ZuEJSM0fgkxp2NuHrRZ3TmH9LP0r/5HQd/IpYlScC7v8co8kbXlWEfBNSATmc+cDixIezejn1f+qlazz7sSKv/rEK1roqdRzDTYphdAA4DKvxlguf6m0CPR52VoW0dQhYWxiHUC60aj3u15LSQlX+3ovSsoDzJgyAnVbAsW7bSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820694; c=relaxed/simple;
-	bh=+SgdQS2sXtzc37fX8S6/iKj0P0ouh4qWr559HFwTUJ0=;
+	s=arc-20240116; t=1756820559; c=relaxed/simple;
+	bh=B3nGs2W0zkpzgvGZj+GILglJAak7eGTXbAgOuJgl1+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atLrfA+WLTmwDIjzg6Jcgh9n7nfR5G5YbvRrZEAA62G585dJ8ihrYjHkctCbSzZD6WAfk9K+btwuy3JX1y+/HkERHfbWP5k5BKMRS0YehBbQSr8mxtCJGxa7iW4mgpGBVI/DjwVizV/xhfqBQv6dvTUluUhIkuQkDJln7PzGiEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N46ZebxK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E385C4CEF4;
-	Tue,  2 Sep 2025 13:44:53 +0000 (UTC)
+	 MIME-Version; b=cAOkpQBW06jggUx4rJ0bVSLqsglbGNTujRYgYLSYftPPCITE49ZzdXPP0/dLKVWLoMkvh4xKsbye8wR62ml7Z9XvjmdUbyoanUNSYQ3MMP7luxQcPLRKJOo/itkx1qTKku0j+NLeIqjndsu3sAC6N30hNe8j1ECKGjyS+9+0gVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6IhcHce; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4929C4CEF5;
+	Tue,  2 Sep 2025 13:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820693;
-	bh=+SgdQS2sXtzc37fX8S6/iKj0P0ouh4qWr559HFwTUJ0=;
+	s=korg; t=1756820559;
+	bh=B3nGs2W0zkpzgvGZj+GILglJAak7eGTXbAgOuJgl1+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N46ZebxKwnh+5pkE1zjlEvJjrK8bGPHD4m519v8Y8QGToM0Vd5tIdSNyiNtqzDP6c
-	 6I8RFumRiUyIzwXWlNvXC/+tVUFv2LanJZ3oVbiot5gUujd8oqOc7QBBc1Q9oBWmwI
-	 BmKODA8Ba2BvN9pPHwniy2HsPHRq850uHzuPe2o4=
+	b=a6IhcHce/UQqoSN5U8+HhQ7KLVB999inne3He+pKGdk2KEjVPD+2wNAVIIxo1ozLK
+	 UfvQ/R5mfSkhINnN8izIKCbiPr98FVUtF1SFhM0kibvnsJW69w5qp39UTEqc5p9sZi
+	 Ep/f7h/TG6Sf6cj/AzxywvTJMab0RyBNTG039Tn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Alexei Lazar <alazar@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 09/34] powerpc/kvm: Fix ifdef to remove build warning
+Subject: [PATCH 5.15 17/33] net/mlx5e: Set local Xoff after FW update
 Date: Tue,  2 Sep 2025 15:21:35 +0200
-Message-ID: <20250902131926.987492413@linuxfoundation.org>
+Message-ID: <20250902131927.728372689@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+References: <20250902131927.045875971@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
+From: Alexei Lazar <alazar@nvidia.com>
 
-[ Upstream commit 88688a2c8ac6c8036d983ad8b34ce191c46a10aa ]
+[ Upstream commit aca0c31af61e0d5cf1675a0cbd29460b95ae693c ]
 
-When compiling for pseries or powernv defconfig with "make C=1",
-these warning were reported bu sparse tool in powerpc/kernel/kvm.c
+The local Xoff value is being set before the firmware (FW) update.
+In case of a failure where the FW is not updated with the new value,
+there is no fallback to the previous value.
+Update the local Xoff value after the FW has been successfully set.
 
-arch/powerpc/kernel/kvm.c:635:9: warning: switch with no cases
-arch/powerpc/kernel/kvm.c:646:9: warning: switch with no cases
-
-Currently #ifdef were added after the switch case which are specific
-for BOOKE and PPC_BOOK3S_32. These are not enabled in pseries/powernv
-defconfig. Fix it by moving the #ifdef before switch(){}
-
-Fixes: cbe487fac7fc0 ("KVM: PPC: Add mtsrin PV code")
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250518044107.39928-1-maddy@linux.ibm.com
+Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250825143435.598584-12-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/kvm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/kvm.c b/arch/powerpc/kernel/kvm.c
-index d89cf802d9aa7..8067641561a4f 100644
---- a/arch/powerpc/kernel/kvm.c
-+++ b/arch/powerpc/kernel/kvm.c
-@@ -632,19 +632,19 @@ static void __init kvm_check_ins(u32 *inst, u32 features)
- #endif
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
+index c9d5d8d93994d..7899a7230299d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
+@@ -346,7 +346,6 @@ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
+ 		if (err)
+ 			return err;
+ 	}
+-	priv->dcbx.xoff = xoff;
+ 
+ 	/* Apply the settings */
+ 	if (update_buffer) {
+@@ -355,6 +354,8 @@ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
+ 			return err;
  	}
  
--	switch (inst_no_rt & ~KVM_MASK_RB) {
- #ifdef CONFIG_PPC_BOOK3S_32
-+	switch (inst_no_rt & ~KVM_MASK_RB) {
- 	case KVM_INST_MTSRIN:
- 		if (features & KVM_MAGIC_FEAT_SR) {
- 			u32 inst_rb = _inst & KVM_MASK_RB;
- 			kvm_patch_ins_mtsrin(inst, inst_rt, inst_rb);
- 		}
- 		break;
--#endif
- 	}
-+#endif
++	priv->dcbx.xoff = xoff;
++
+ 	if (update_prio2buffer)
+ 		err = mlx5e_port_set_priority2buffer(priv->mdev, prio2buffer);
  
--	switch (_inst) {
- #ifdef CONFIG_BOOKE
-+	switch (_inst) {
- 	case KVM_INST_WRTEEI_0:
- 		kvm_patch_ins_wrteei_0(inst);
- 		break;
-@@ -652,8 +652,8 @@ static void __init kvm_check_ins(u32 *inst, u32 features)
- 	case KVM_INST_WRTEEI_1:
- 		kvm_patch_ins_wrtee(inst, 0, 1);
- 		break;
--#endif
- 	}
-+#endif
- }
- 
- extern u32 kvm_template_start[];
 -- 
 2.50.1
 
