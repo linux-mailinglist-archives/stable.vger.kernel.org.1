@@ -1,89 +1,81 @@
-Return-Path: <stable+bounces-177528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8D25B40BC3
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 19:14:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84846B40BDE
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 19:20:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E95CF1A84256
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 17:15:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97281B64F4D
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 17:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C06342C99;
-	Tue,  2 Sep 2025 17:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A8E341646;
+	Tue,  2 Sep 2025 17:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dOMDWc+H"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k7H0Lm7N"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D8131B102
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 17:14:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD4A4C9D;
+	Tue,  2 Sep 2025 17:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756833279; cv=none; b=dImjRYNMTgHcStqxYlxI+XsezZoulh5U/Q7heWxbL+edsx6ZXYvwV2POfyYIhFO3XJppKwGMWxqRYiKDSqRKoM9/ItmEjmHgB+CYCZ2x/aBh6m9+TJ8mk2uH10UNhHJ+zO52v4s4iPQD6kQqgKqSDm3NQ51QtGdpF6gdrBuK1m0=
+	t=1756833631; cv=none; b=o4dxW5i5nJfYkx/F+2Bn4NRMGeeMH1EMnT9hA9SGdWCL3JGgd73++kYenxa6ug+nYotei20HXfF5p9VgGHJ3baPtDBfw9k+7J9Kg1niwMNbbfRC8l3yzIUxd2j6FoaZ2tQyrkdOX0sQSfu0E763Mqb0YYfYUE3qef+ulMyOMXTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756833279; c=relaxed/simple;
-	bh=KP+TLtwyL8ipGtoqM7ghjMPqXCRkOL7mmitCpt9EMnE=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=RyQT6u8ZnlYZ/9UnOiZwI52sEhbnt83uWmIEKilLtjeuz2ytKRhmSqkV2EGYB0IR4KcuEGuW2wSpKJxpe9YzgyFc7DJL59OzS5zgZSBJK03u30uWUoJhX7rw2bkLT/M9jfYdZZynITCQMxu+UQOkqZLIZDiY5GBGMGguWlwaUFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dOMDWc+H; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756833276;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yJTbTLLAJp5d1X+RLfkvvY6hV6oBzi1je5oF3smiZug=;
-	b=dOMDWc+H9lwRpfUWjXKW4Ny9lFd1W2cdnMwTcebuiO/n/cm48AXmD69nJxIRtab/qxFkM/
-	VQK2WRUz26ELXliS7g6LyOqCVbpREmDEOyFzrIqogIuPd++xsqYym/zOUQgREi+xUfAo2o
-	vgSAB6LY99QgHTp0l0S3ST2yDHOX6Gk=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-373-oUkqXZg1MvigYU_94KllNg-1; Tue, 02 Sep 2025 13:14:34 -0400
-X-MC-Unique: oUkqXZg1MvigYU_94KllNg-1
-X-Mimecast-MFC-AGG-ID: oUkqXZg1MvigYU_94KllNg_1756833274
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4b311db2c76so42655911cf.2
-        for <stable@vger.kernel.org>; Tue, 02 Sep 2025 10:14:34 -0700 (PDT)
+	s=arc-20240116; t=1756833631; c=relaxed/simple;
+	bh=aAIA/74ykFG0qSe/yOMdbXjAvsrrRajO6wp0FuGkyIQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=smjMseoU2ug8GDLogoVmTesNt6ynWJao4nK4XFMzFui/+6hejwO3jQODrszcsiSTxea/+6NfsgqcsZg0mK+RRcCTSMVLtqFIolUGxmXbwsObo/YPEgDsOnTajpsWYootVthWzmlkCGT3pBAFeiEmUbaq1Q0BVm4xc2F8kRX+J0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k7H0Lm7N; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4b30f73ca19so28518701cf.0;
+        Tue, 02 Sep 2025 10:20:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756833628; x=1757438428; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=9UcAoezJikf05g2UoojgkOql9xoE6wdqt1xJrbbCb4g=;
+        b=k7H0Lm7NoGVDF1kd8SF5uWoECd2n/pTpxZ7WAB941/8WCroN+eklyGB3ujD/IIYx7v
+         x3oRnLkrDYjsfusC62KKp5xP0O9U3EeZ/+c/d9Bo5ei+hMg5hkL1+fYqBKStLF3LBcYP
+         U/+uNKwlRBcwII/yAvnzgEe3qMs4/jlbJJGevkepB0geC+aFCzZ/AiL1LXuigz7V2xhM
+         k5P7wEAp81wFSpEXyuJ4kh11PvDvNCEAa9sD8pWxot/YhOtK6mu2+A58EnvXyJEhYiRi
+         DTyLcgBYY1rCSCiG73CTVTaNEB9jhUVkcOAwCPynLbZny1lcgw5yr0bQx6ro5DwxwbE4
+         X8Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756833274; x=1757438074;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yJTbTLLAJp5d1X+RLfkvvY6hV6oBzi1je5oF3smiZug=;
-        b=iiLutcLyUWylDIoXLVdvy/UJzjQpM9+5Mg+16HZuIyGm39tNK/GW2Fp7EXFgZZhXMX
-         Mg0kVi8UAGA4Co/CmvNU6W36Q9QFu1hmbCrl1HIWbIBMh4fthN6G1+YUx/lFt3QAIshn
-         /P+NiEMF+7nBeHpfmRcs9q27J3O3gsTG36ldyZr3dxoeh+ECvspoGfkMP4t+coPtpjbN
-         qSVqmFnXWdRzAmkyYfuVoGcI8/K4Ob6FS3m2OovPwSW8ohLMKtvTB9vbLaRewy2cVClA
-         b1TrfxYFSgJuy/D/THG9PxE6gZX02kNh6eV9wiSYwi83cq832e3VeKT4jcNEObrupN2n
-         LQaA==
-X-Forwarded-Encrypted: i=1; AJvYcCVixfpcu7N5w8lTUP+2BR8PUutznNhrPuIC+P2NX09zeGt4Ux3+DWK5jq0owEox8iBEnbjUa4Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxyl/Yl3hlkGsq96jM3eeuBK0/OBH7m0FaqeV+Y+VxX1+AMP74c
-	UqamM/ClDLPhHvLRvruf5lY7m/mRCTL8wclYWBa9HHk2i20Fy/AV+V61PeA7QTDkkDrsKAFXed1
-	LViBvm6tkT5brmyLbfklyNvO+mGFN3K5hWhwTo56WNadN8Zkf4BQUmNob4Q==
-X-Gm-Gg: ASbGncvqs07nRn/73ZaUPqoH1nlDwSmYpJ+ykyOcR1c5+X+8BpTn3FmEnNsO0e8Hsx/
-	ToXkDR0Qg2MWW6yrikjYXfuZRe/PyxYgZf8cdkJaD7Kz0KAIs8qLjWsD9zogXa7wT0q5QyMoYfT
-	5L0AZSbbIXbb3YsiO4G7OMhy/wOnc8PL7bMv9ty60o6DMH1aR8f9wq78SU8xEZmIKJj8B5r+ykW
-	wLlDv1aY9t3m58qmb+44PlUK330TBVwITXcLC7tuTGFK0va5U6nHJ0YW8qpXjun/MhmOm/Ve+AB
-	hlqbJL54HHXbRElnLWl92E4MR8apv/LS9Qy6NOnUbDF68mQlI85G1D3Bl5g595iA2A0vbquvPJ/
-	C4WgHo0/tAw==
-X-Received: by 2002:a05:622a:2a12:b0:4b3:4d20:302 with SMTP id d75a77b69052e-4b34d2015ccmr30038451cf.81.1756833273762;
-        Tue, 02 Sep 2025 10:14:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFd9q75h/QyzT7q7qh5UVGeZkAkp/BGinsKuVNoDttOlVyk/VfACSIA8Q3J9whLbhq6hXufmg==
-X-Received: by 2002:a05:622a:2a12:b0:4b3:4d20:302 with SMTP id d75a77b69052e-4b34d2015ccmr30037991cf.81.1756833273364;
-        Tue, 02 Sep 2025 10:14:33 -0700 (PDT)
-Received: from ?IPV6:2601:188:c180:4250:ecbe:130d:668d:951d? ([2601:188:c180:4250:ecbe:130d:668d:951d])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b3462ede0bsm15181361cf.36.2025.09.02.10.14.32
+        d=1e100.net; s=20230601; t=1756833628; x=1757438428;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9UcAoezJikf05g2UoojgkOql9xoE6wdqt1xJrbbCb4g=;
+        b=Z/d0TaJpDd6++P+4KdxRCAkz7TIrsxwbnRzxZrecwqp+3StyKmo3mRJmjr/y4EJSPJ
+         /MfABbJ/JFjnDPEXw+pAuqIYduFDBTPvHegTklx9rp5/+YfA9DDkFH47eTOPnpBI+qNX
+         FUZJZ43HO4XvM8hAd3BltUCSAst44Qo1G3xDOoM+me5WI11LvyRjlNZhjFmEPXLhRPId
+         Pi/ylCLE3H02MUKSK/VJxZfUG/vV8IAVdQb1MdZoenicz306mITbsVCniSTEcvexO8z2
+         2A1kZqBWlsb7zk9LGq6l2U6y0RssWi3IynyBKVdUR7JJSZz50aqZw4bcxi1VXV4xuZsm
+         CaXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV53vRDGrEC8hcyg1jSjmxlWDH7YS4UBoRgBrYVWc07mY0ewVYfsScdJbvUh/PGhhcrczsC1n1alBlf9zg=@vger.kernel.org, AJvYcCVGXZHfkfL6oV/nLZxPmM0ML57Ie9qUybm+Oi78WlwM1I+2QZhgAH4Ushi0QwSVJJuMgqDHrme+@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYDdUGdR9lGSTBw9HvxRmBIj7SdaQDa9cyQrDA85oNNKuvfpNO
+	Y5BE2CGfpV6kIcsqPNHncrdWAubumo9hsu9/rsLIYDum5yg3or9xou0l
+X-Gm-Gg: ASbGncuT1poob88eSIG+Gqij3W0lkI2QQopkgmouUcZjOmMbmhEfOc1asvvPODVLIlI
+	g6f0XKxwvSsSSty9VIiNjPj07jB0zvcwErwhibLb3XvcVLdbQpyHCNkZGC7Wg7WAiVPvew0m7Qg
+	J9erqRhs8dSErfuS/jpveHc7WZndtzUOHJlzEEa02HUSC8izpLZlGrFUgDjrSXY/280019iOsmJ
+	tDz+Vzzk6inUTkHEvVp12z6BkDyv+hZbaB9gMaVkIuX7GHpmhSG72OZNtEq8p8pQLnkl01jBlgJ
+	FkLKzGduw64nPTOX+54q7MZWusilWG5/uYuVhg95tlbii15gCQdvkrvGTsXrq7HeqUlTMoIY6xb
+	74hZw3y+Q+K593wBzADcO6GFYhUFP3x9qXDsmEsws0MJQq2Pp24DTtfM6cd6a
+X-Google-Smtp-Source: AGHT+IEYQHz3uH6yvGi4Ms/HZ2DRPyjwin79idavp89EMunKhbND7hmID6a/w+sfeYcDIjyfLR1mWQ==
+X-Received: by 2002:a05:622a:a18:b0:4b3:1230:f6e4 with SMTP id d75a77b69052e-4b31da1803bmr131402531cf.54.1756833628275;
+        Tue, 02 Sep 2025 10:20:28 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-80698a04af4sm170640285a.28.2025.09.02.10.20.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Sep 2025 10:14:32 -0700 (PDT)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <533633c5-90cc-4a35-9ec3-9df2720a6e9e@redhat.com>
-Date: Tue, 2 Sep 2025 13:14:31 -0400
+        Tue, 02 Sep 2025 10:20:27 -0700 (PDT)
+Message-ID: <b546967f-d347-473b-bf57-901a63abe292@gmail.com>
+Date: Tue, 2 Sep 2025 10:20:22 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,54 +83,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cpuset: prevent freeing unallocated cpumask in hotplug
- handling
-To: Ashay Jaiswal <quic_ashayj@quicinc.com>, Tejun Heo <tj@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Cc: cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250902-cpuset-free-on-condition-v1-1-f46ffab53eac@quicinc.com>
+Subject: Re: [PATCH 5.10 00/34] 5.10.242-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20250902131926.607219059@linuxfoundation.org>
 Content-Language: en-US
-In-Reply-To: <20250902-cpuset-free-on-condition-v1-1-f46ffab53eac@quicinc.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
+On 9/2/25 06:21, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.242 release.
+> There are 34 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 04 Sep 2025 13:19:14 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.242-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-On 9/2/25 12:26 AM, Ashay Jaiswal wrote:
-> In cpuset hotplug handling, temporary cpumasks are allocated only when
-> running under cgroup v2. The current code unconditionally frees these
-> masks, which can lead to a crash on cgroup v1 case.
->
-> Free the temporary cpumasks only when they were actually allocated.
->
-> Fixes: 4b842da276a8 ("cpuset: Make CPU hotplug work with partition")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ashay Jaiswal <quic_ashayj@quicinc.com>
-> ---
->   kernel/cgroup/cpuset.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-> index a78ccd11ce9b43c2e8b0e2c454a8ee845ebdc808..a4f908024f3c0a22628a32f8a5b0ae96c7dccbb9 100644
-> --- a/kernel/cgroup/cpuset.c
-> +++ b/kernel/cgroup/cpuset.c
-> @@ -4019,7 +4019,8 @@ static void cpuset_handle_hotplug(void)
->   	if (force_sd_rebuild)
->   		rebuild_sched_domains_cpuslocked();
->   
-> -	free_tmpmasks(ptmp);
-> +	if (on_dfl && ptmp)
-> +		free_tmpmasks(ptmp);
->   }
->   
->   void cpuset_update_active_cpus(void)
-The patch that introduces the bug is actually commit 5806b3d05165 
-("cpuset: decouple tmpmasks and cpumasks freeing in cgroup") which 
-removes the NULL check. The on_dfl check is not necessary and I would 
-suggest adding the NULL check in free_tmpmasks().
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Cheers,
-Longman
-
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
