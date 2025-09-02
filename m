@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-177159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EBDCB403A0
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 761D7B40443
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2C5B17AD7F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 542FE1B644E2
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EDB30DEAE;
-	Tue,  2 Sep 2025 13:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3532A311953;
+	Tue,  2 Sep 2025 13:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTVc5Jy7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="og2+yrda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0590630DEA4;
-	Tue,  2 Sep 2025 13:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4CA30BBBD;
+	Tue,  2 Sep 2025 13:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819772; cv=none; b=Cj2Hu/Aeo5Smp2/qbQJy471eVwjrRUuTBr5UZg0u8lJxk3YAXnwJXplMtWI8nu09/L3DsGqvfUl8sy5I1cJcZo34zUanhEX/7Wit9TfJhL1VOdoKE1ecZBHC8WynBUayQVS9MYiElIDTFj6MjhF9porGBBbkVpojfAKFcGlfmaE=
+	t=1756819953; cv=none; b=hl7/U7QSxmzbGU+ndy5yX8g0j6MMdTQznIkXLAjfOCSQjMHXxvuEtW3ZXX8lqwFnCPSi88UVJ4lsniNpIZJ/WsXGAyELpKBdjG8N9KhhqA+Fgx1Sc/58ZrA82dcpHLZdZ9ne0gtS5md46mbp3uSR1MxFozVsC3YhvoKGMWQJryY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819772; c=relaxed/simple;
-	bh=+DUe9EcsuzwEj2fw8OkrukgUm5Sb8GvOsFlZDQokp94=;
+	s=arc-20240116; t=1756819953; c=relaxed/simple;
+	bh=5aEUdK3XZbtZq6zvCsWH7qduKbHV4yHeiGIv2dxrsfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qq4AUj9nERJYYqifT0Q6sy9bx5BC6FJnpLdAGwaZuwpZPnj1tpPMrNNCwqP3RwWRawUkB+WrauZ9c+D7C6bY16ZvP5Sjq677FUaFeEaD1MDWWUplxQ3x4iRgVwR0MIOgMC82Yi5IHA/fzDDdzyxbR76lWnO9iksbJCEHuZt9VNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTVc5Jy7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EBEC4CEED;
-	Tue,  2 Sep 2025 13:29:31 +0000 (UTC)
+	 MIME-Version; b=agzLTN9ljj4Ym2Jrz2HgnHkumacay8pF0lYOSHc64xF269mxxwT03b8xv9ue/dg8/oY/eyp8EbouIybe0Ievy1m2lsTbi3OQ4qtl9NjOmt58n95nCXiJ+V9/0vUNZbwKBpqMiZVPmo5Z+gEcslWQ1R1ZsSvTjOEcEtg7g4wFOSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=og2+yrda; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E816FC4CEED;
+	Tue,  2 Sep 2025 13:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819771;
-	bh=+DUe9EcsuzwEj2fw8OkrukgUm5Sb8GvOsFlZDQokp94=;
+	s=korg; t=1756819953;
+	bh=5aEUdK3XZbtZq6zvCsWH7qduKbHV4yHeiGIv2dxrsfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CTVc5Jy7iUKcK1VMVzV0xJUD1LtSCR5XE89LT07yuxRAGM72S5b3BUtEYH/sbYRED
-	 PnrUDA/cybg/zH+aIBLR7H51KaQZJSwL+7HsS5W7VPXLS7sAE2dq5tXsqL5YmRIHlX
-	 GUXoYGHC3KzNX+9P+M+4VpmjrnVuJk52n1QZzQoY=
+	b=og2+yrdaVn+wjwB/mEe59pH8kvb/6kPv/YW30N2A16wwZZQOCs9vqHFRd2z2kIU6y
+	 rclV0yaO/r6XImCpBJAgcsRjYR/BZl2GnwDHHiyfg0d65faI0NcFO8ElznFg5K8Pq9
+	 XIn3k0T875eYGNQFYphX62ETPXTeh/aXSUDXuG0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingyue Zhang <chunzhennn@qq.com>,
-	Suoxing Zhang <aftern00n@qq.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Ludovico de Nittis <ludovico.denittis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 102/142] io_uring/kbuf: always use READ_ONCE() to read ring provided buffer lengths
-Date: Tue,  2 Sep 2025 15:20:04 +0200
-Message-ID: <20250902131952.191321279@linuxfoundation.org>
+Subject: [PATCH 6.12 29/95] Bluetooth: hci_event: Treat UNKNOWN_CONN_ID on disconnect as success
+Date: Tue,  2 Sep 2025 15:20:05 +0200
+Message-ID: <20250902131940.730119428@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Ludovico de Nittis <ludovico.denittis@collabora.com>
 
-[ Upstream commit 98b6fa62c84f2e129161e976a5b9b3cb4ccd117b ]
+[ Upstream commit 2f050a5392b7a0928bf836d9891df4851463512c ]
 
-Since the buffers are mapped from userspace, it is prudent to use
-READ_ONCE() to read the value into a local variable, and use that for
-any other actions taken. Having a stable read of the buffer length
-avoids worrying about it changing after checking, or being read multiple
-times.
+When the host sends an HCI_OP_DISCONNECT command, the controller may
+respond with the status HCI_ERROR_UNKNOWN_CONN_ID (0x02). E.g. this can
+happen on resume from suspend, if the link was terminated by the remote
+device before the event mask was correctly set.
 
-Similarly, the buffer may well change in between it being picked and
-being committed. Ensure the looping for incremental ring buffer commit
-stops if it hits a zero sized buffer, as no further progress can be made
-at that point.
+This is a btmon snippet that shows the issue:
+```
+> ACL Data RX: Handle 3 flags 0x02 dlen 12
+      L2CAP: Disconnection Request (0x06) ident 5 len 4
+        Destination CID: 65
+        Source CID: 72
+< ACL Data TX: Handle 3 flags 0x00 dlen 12
+      L2CAP: Disconnection Response (0x07) ident 5 len 4
+        Destination CID: 65
+        Source CID: 72
+> ACL Data RX: Handle 3 flags 0x02 dlen 12
+      L2CAP: Disconnection Request (0x06) ident 6 len 4
+        Destination CID: 64
+        Source CID: 71
+< ACL Data TX: Handle 3 flags 0x00 dlen 12
+      L2CAP: Disconnection Response (0x07) ident 6 len 4
+        Destination CID: 64
+        Source CID: 71
+< HCI Command: Set Event Mask (0x03|0x0001) plen 8
+        Mask: 0x3dbff807fffbffff
+          Inquiry Complete
+          Inquiry Result
+          Connection Complete
+          Connection Request
+          Disconnection Complete
+          Authentication Complete
+[...]
+< HCI Command: Disconnect (0x01|0x0006) plen 3
+        Handle: 3 Address: 78:20:A5:4A:DF:28 (Nintendo Co.,Ltd)
+        Reason: Remote User Terminated Connection (0x13)
+> HCI Event: Command Status (0x0f) plen 4
+      Disconnect (0x01|0x0006) ncmd 1
+        Status: Unknown Connection Identifier (0x02)
+```
 
-Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
-Link: https://lore.kernel.org/io-uring/tencent_000C02641F6250C856D0C26228DE29A3D30A@qq.com/
-Reported-by: Qingyue Zhang <chunzhennn@qq.com>
-Reported-by: Suoxing Zhang <aftern00n@qq.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Currently, the hci_cs_disconnect function treats any non-zero status
+as a command failure. This can be misleading because the connection is
+indeed being terminated and the controller is confirming that is has no
+knowledge of that connection handle. Meaning that the initial request of
+disconnecting a device should be treated as done.
+
+With this change we allow the function to proceed, following the success
+path, which correctly calls `mgmt_device_disconnected` and ensures a
+consistent state.
+
+Link: https://github.com/bluez/bluez/issues/1226
+Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
+Signed-off-by: Ludovico de Nittis <ludovico.denittis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/kbuf.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ net/bluetooth/hci_event.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
-index 81a13338dfab3..19a8bde5e1e1c 100644
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -36,15 +36,19 @@ static bool io_kbuf_inc_commit(struct io_buffer_list *bl, int len)
- {
- 	while (len) {
- 		struct io_uring_buf *buf;
--		u32 this_len;
-+		u32 buf_len, this_len;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 768bd5fd808f2..428aba38a3654 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2694,7 +2694,7 @@ static void hci_cs_disconnect(struct hci_dev *hdev, u8 status)
+ 	if (!conn)
+ 		goto unlock;
  
- 		buf = io_ring_head_to_buf(bl->buf_ring, bl->head, bl->mask);
--		this_len = min_t(u32, len, buf->len);
--		buf->len -= this_len;
--		if (buf->len) {
-+		buf_len = READ_ONCE(buf->len);
-+		this_len = min_t(u32, len, buf_len);
-+		buf_len -= this_len;
-+		/* Stop looping for invalid buffer length of 0 */
-+		if (buf_len || !this_len) {
- 			buf->addr += this_len;
-+			buf->len = buf_len;
- 			return false;
- 		}
-+		buf->len = 0;
- 		bl->head++;
- 		len -= this_len;
- 	}
-@@ -159,6 +163,7 @@ static void __user *io_ring_buffer_select(struct io_kiocb *req, size_t *len,
- 	__u16 tail, head = bl->head;
- 	struct io_uring_buf *buf;
- 	void __user *ret;
-+	u32 buf_len;
+-	if (status) {
++	if (status && status != HCI_ERROR_UNKNOWN_CONN_ID) {
+ 		mgmt_disconnect_failed(hdev, &conn->dst, conn->type,
+ 				       conn->dst_type, status);
  
- 	tail = smp_load_acquire(&br->tail);
- 	if (unlikely(tail == head))
-@@ -168,8 +173,9 @@ static void __user *io_ring_buffer_select(struct io_kiocb *req, size_t *len,
- 		req->flags |= REQ_F_BL_EMPTY;
- 
- 	buf = io_ring_head_to_buf(br, head, bl->mask);
--	if (*len == 0 || *len > buf->len)
--		*len = buf->len;
-+	buf_len = READ_ONCE(buf->len);
-+	if (*len == 0 || *len > buf_len)
-+		*len = buf_len;
- 	req->flags |= REQ_F_BUFFER_RING | REQ_F_BUFFERS_COMMIT;
- 	req->buf_list = bl;
- 	req->buf_index = buf->bid;
-@@ -265,7 +271,7 @@ static int io_ring_buffers_peek(struct io_kiocb *req, struct buf_sel_arg *arg,
- 
- 	req->buf_index = buf->bid;
- 	do {
--		u32 len = buf->len;
-+		u32 len = READ_ONCE(buf->len);
- 
- 		/* truncate end piece, if needed, for non partial buffers */
- 		if (len > arg->max_len) {
 -- 
 2.50.1
 
