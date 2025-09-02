@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-177351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D644AB4048E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:43:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D03B40541
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D02FB4E3F19
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 620BF4E1B75
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1563126CF;
-	Tue,  2 Sep 2025 13:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7CA306D35;
+	Tue,  2 Sep 2025 13:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqYQnJVn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVuEfcxb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671C13126BF;
-	Tue,  2 Sep 2025 13:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E802DECDE;
+	Tue,  2 Sep 2025 13:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820368; cv=none; b=V4pkfGbWIpStdUO0I/NpU0Kx4JSrEj9vek4EydG0QLNdR267xK0kJxEyoIshKwzSF/rsszc0zSNG373u3WTHMrD5BaE6wR/vx/zr+ayIDQafd2tP7KvJmId4l6Z3O9SDDPpVHiB6cGyb68DzZfTDgu0bVMGYgZyG/Q6nmgZ33dU=
+	t=1756820594; cv=none; b=Cjqycn2aCwOd5OusmjtphF2FWy+Vyy9OyMW79BQXUhE9yYD1EU4t7fQ24Hu0qI9TpO3r/5eZgDWpEF+LC9UnDU/W0dHkTfNUeyr/4h9fqp1eihPDBW5JYE7bGnTzWD3Z/a+TbT1g5+ymDkPVFsCZQVmaUaRLhGyU+B0ZTBSp1Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820368; c=relaxed/simple;
-	bh=Tt8pZad1giJ88BvOwpdhlfOn/Hjocl84Re0NQXT21Pc=;
+	s=arc-20240116; t=1756820594; c=relaxed/simple;
+	bh=l9ydAcRih9R0zzVf4CXd12okONOCwdFdkNHZJUjwrZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxMvjsJD3o90iwVHoTz7T6CLusW5m71KMt7aUSb8gw9Zq9GT67DR9gSlP9AgNd41u9NqhtRI4vzpFWoYrJmf7GjTV2XYGXFa/GgUWK/BxES4ccWBzDaoOXsvGfP9jqiDiSea9B+vtKU1FWVCVCKLIX+Ros/xE1oPfv+smWB3Ec8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqYQnJVn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28C5C4CEED;
-	Tue,  2 Sep 2025 13:39:27 +0000 (UTC)
+	 MIME-Version; b=cU/QyRzGqI2jU4XvJVpMEN+rrHKTPGVUQOhaXf94mpjStBEqznH14q4ZtVPKEUP6LCMxcGS2G8erTeTApJ5xB1awDe4ijLgS883sm4NAcpp67CPKH2F4feOz6Z/W/ucYgflmudohUuXN1VfHPJPkiCpF/qnaKPIqnCigKStzI4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVuEfcxb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281BCC4CEED;
+	Tue,  2 Sep 2025 13:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820368;
-	bh=Tt8pZad1giJ88BvOwpdhlfOn/Hjocl84Re0NQXT21Pc=;
+	s=korg; t=1756820592;
+	bh=l9ydAcRih9R0zzVf4CXd12okONOCwdFdkNHZJUjwrZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZqYQnJVn4zq3eP2Rf1kOADzqYZHXyw1aT9s3SgyxhRnwRSo0FtmmWjmSnBzssJhHE
-	 QJJO3xtFv5QiXzR+B1TniqLcoo1H7MpntlNLq7syPPWEk5LS/al0zbKq6VbmpDX3hN
-	 w2j70/8yYXHKs68MFp1YPHCneUCRKvzkwZjPuagE=
+	b=cVuEfcxbkx0FQxHETby6T+gimtNFv96WPXgRLsX4pfWzyIMYscuR4oV0lDRitGV9y
+	 ZIC1+MO/sLunsBCVB9Fs6z6CjinYwJnJdDURsfvpxhbsNaks0V4uaJK9JlzbCh69J2
+	 jR8un6gZtNRzBJx6pjmoA5bj5JdI9/O3giLsMdJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
+	Brett A C Sheffield <bacs@librecast.net>,
+	Oscar Maes <oscmaes92@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 75/75] xfs: do not propagate ENODATA disk errors into xattr code
+Subject: [PATCH 5.15 09/33] net: ipv4: fix regression in local-broadcast routes
 Date: Tue,  2 Sep 2025 15:21:27 +0200
-Message-ID: <20250902131938.046550266@linuxfoundation.org>
+Message-ID: <20250902131927.416793947@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+References: <20250902131927.045875971@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Oscar Maes <oscmaes92@gmail.com>
 
-commit ae668cd567a6a7622bc813ee0bb61c42bed61ba7 upstream.
+[ Upstream commit 5189446ba995556eaa3755a6e875bc06675b88bd ]
 
-ENODATA (aka ENOATTR) has a very specific meaning in the xfs xattr code;
-namely, that the requested attribute name could not be found.
+Commit 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
+introduced a regression where local-broadcast packets would have their
+gateway set in __mkroute_output, which was caused by fi = NULL being
+removed.
 
-However, a medium error from disk may also return ENODATA. At best,
-this medium error may escape to userspace as "attribute not found"
-when in fact it's an IO (disk) error.
+Fix this by resetting the fib_info for local-broadcast packets. This
+preserves the intended changes for directed-broadcast packets.
 
-At worst, we may oops in xfs_attr_leaf_get() when we do:
-
-	error = xfs_attr_leaf_hasname(args, &bp);
-	if (error == -ENOATTR)  {
-		xfs_trans_brelse(args->trans, bp);
-		return error;
-	}
-
-because an ENODATA/ENOATTR error from disk leaves us with a null bp,
-and the xfs_trans_brelse will then null-deref it.
-
-As discussed on the list, we really need to modify the lower level
-IO functions to trap all disk errors and ensure that we don't let
-unique errors like this leak up into higher xfs functions - many
-like this should be remapped to EIO.
-
-However, this patch directly addresses a reported bug in the xattr
-code, and should be safe to backport to stable kernels. A larger-scope
-patch to handle more unique errors at lower levels can follow later.
-
-(Note, prior to 07120f1abdff we did not oops, but we did return the
-wrong error code to userspace.)
-
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Fixes: 07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
-Cc: stable@vger.kernel.org # v5.9+
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-[ Adjust context: removed metadata health tracking calls ]
+Cc: stable@vger.kernel.org
+Fixes: 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
+Reported-by: Brett A C Sheffield <bacs@librecast.net>
+Closes: https://lore.kernel.org/regressions/20250822165231.4353-4-bacs@librecast.net
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250827062322.4807-1-oscmaes92@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_attr_remote.c |    7 +++++++
- fs/xfs/libxfs/xfs_da_btree.c    |    6 ++++++
- 2 files changed, 13 insertions(+)
+ net/ipv4/route.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_attr_remote.c
-+++ b/fs/xfs/libxfs/xfs_attr_remote.c
-@@ -418,6 +418,13 @@ xfs_attr_rmtval_get(
- 			dblkcnt = XFS_FSB_TO_BB(mp, map[i].br_blockcount);
- 			error = xfs_buf_read(mp->m_ddev_targp, dblkno, dblkcnt,
- 					0, &bp, &xfs_attr3_rmt_buf_ops);
-+			/*
-+			 * ENODATA from disk implies a disk medium failure;
-+			 * ENODATA for xattrs means attribute not found, so
-+			 * disambiguate that here.
-+			 */
-+			if (error == -ENODATA)
-+				error = -EIO;
- 			if (error)
- 				return error;
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index df4cbf9ba288f..b24de1c67d0c2 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2552,12 +2552,16 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
+ 		    !netif_is_l3_master(dev_out))
+ 			return ERR_PTR(-EINVAL);
  
---- a/fs/xfs/libxfs/xfs_da_btree.c
-+++ b/fs/xfs/libxfs/xfs_da_btree.c
-@@ -2649,6 +2649,12 @@ xfs_da_read_buf(
+-	if (ipv4_is_lbcast(fl4->daddr))
++	if (ipv4_is_lbcast(fl4->daddr)) {
+ 		type = RTN_BROADCAST;
+-	else if (ipv4_is_multicast(fl4->daddr))
++
++		/* reset fi to prevent gateway resolution */
++		fi = NULL;
++	} else if (ipv4_is_multicast(fl4->daddr)) {
+ 		type = RTN_MULTICAST;
+-	else if (ipv4_is_zeronet(fl4->daddr))
++	} else if (ipv4_is_zeronet(fl4->daddr)) {
+ 		return ERR_PTR(-EINVAL);
++	}
  
- 	error = xfs_trans_read_buf_map(mp, tp, mp->m_ddev_targp, mapp, nmap, 0,
- 			&bp, ops);
-+	/*
-+	 * ENODATA from disk implies a disk medium failure; ENODATA for
-+	 * xattrs means attribute not found, so disambiguate that here.
-+	 */
-+	if (error == -ENODATA && whichfork == XFS_ATTR_FORK)
-+		error = -EIO;
- 	if (error)
- 		goto out_free;
- 
+ 	if (dev_out->flags & IFF_LOOPBACK)
+ 		flags |= RTCF_LOCAL;
+-- 
+2.50.1
+
 
 
 
