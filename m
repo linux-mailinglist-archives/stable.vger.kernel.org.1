@@ -1,147 +1,109 @@
-Return-Path: <stable+bounces-176965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37EC1B3FB93
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:01:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E82B3FB90
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2129D3B1924
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:00:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA0492C17F5
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5468927B4F5;
-	Tue,  2 Sep 2025 09:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 793CD2EE27C;
+	Tue,  2 Sep 2025 09:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aXgJs+jS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kzsM0CZ0"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966742F1FC0
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 09:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7782EE268;
+	Tue,  2 Sep 2025 09:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756807073; cv=none; b=W1sAEne7vjjbShBd91PHt1gz9qvv/cIJffqTrkgn2Tm8d+xeqdufbwPUQbymYKJzzUaSJ9SlCINtPc5Eo31uWZwYrAQAn7J/HIGmi974LtW5UoIYAG/yJrZAbI2antVsZo+u+rB2JBNoHp4wKy38cyMAUowVIQt9F5Lg1xrNms8=
+	t=1756807179; cv=none; b=YOoIuCSW3gJBllxzRFct/oMceRYz/+U1WKyQ0seYJ8kRFK06RjMvo9nJtIZZfku+rpLxX3yuLNMyLI4d9rLE/QCESe7A4b5baGr4YXEMa6VD5/MasGwogKIMtDXhcp0e4pPByh4afrkdEDjyUmnRjoStoQ4ZlLJYtI7xLlRJxvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756807073; c=relaxed/simple;
-	bh=z8gMwvXA44Wodi+hSnmRdnTeDizAmm+mkq0BLF6OVgI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Dsw+Eo2JhoAH14mMJ8bLaeX1nIVV5mCww6l0ST6xOGmhjBvva9nhkW4ir/XKwVXPvOwECrndVSOXHKkhY2lWMTOYbG88CXPW0zttHKhUeg8AiNzE4Mq2ac+F2vLYQfGPjW30DWEHeJBRLRhaU2hfgXB8864B8R1xjNzfEf6YgX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aXgJs+jS; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756807069;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HZc4GB0/gNL5X2pnt5xZy0Mk61OX021O6i+im+Ocmjs=;
-	b=aXgJs+jSwLKWb1xFynmcC/GHudjEUgB5n34mP900CJ5MoMoz/jKrfZx5kt7uHExxklJA8E
-	Xub3uo7ou6TueZWNIbVhfraYi43XScxBBk49mz0xvksWBNh7r0iBlNNjKZPZ3q0EOzy8eK
-	0+8t3oZgpJXvIGnqabS+wZYQa4FOPbY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-640-AT4DvHaJN_6lxNnEdIWQmw-1; Tue, 02 Sep 2025 05:57:46 -0400
-X-MC-Unique: AT4DvHaJN_6lxNnEdIWQmw-1
-X-Mimecast-MFC-AGG-ID: AT4DvHaJN_6lxNnEdIWQmw_1756807065
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3cbd6cd78efso2364139f8f.1
-        for <stable@vger.kernel.org>; Tue, 02 Sep 2025 02:57:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756807065; x=1757411865;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HZc4GB0/gNL5X2pnt5xZy0Mk61OX021O6i+im+Ocmjs=;
-        b=ps855i2DkOZamt4EjDCQ0ZPEFH6akxDrv5FUz79SzM2+djW+Eoi6aPw018mc5PAblE
-         w1HR0OjcNZWGEzxSIHDt2Ewg/BsSjSw3N9H8UZKA5GPcP4IJNanGbQaQShA8XviOvFC7
-         tXcpA/Iko/7ryfd4hzmy92grwg2wDcKbiqHhsMwJYRXpmIyijJLDGRI4Qhi1mI47q5eE
-         1APxTJDAzmFdyl+QVDXxvk9mfSPQTTBq2mYmKXQC4UUtVTD3TfvncG9C7usmvzMqSEI/
-         FdSFCuSgqEj0sIKpQUd372yB6ocPUyYy+QJVoO4OGs2LHS1Vtw5diwjfhoZ79Ih19luS
-         oHLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXTV48xwvc12bFMSSdFdfoSCosU2AfPPP7IgH53D4IwIl6vOc1/Bf4s2ZPVIc4/PSvNif/bAwA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+z5L6hsyxD/md45Pp/XkVi6dqc2g/YMZEYsL0vqR4XHD/RyUu
-	TizieOilvf8g6UNyiZD2ujW1IPNPFTHrk4Oqf++C2orWiiSZaG8jpF1/IwM9Nyuy2LhvJCz53Wi
-	/E73T0IpJ+8Z1vDA01CwDfgMkSm8lp4SXjdi/c2mKuFZkqAJ3FBil1Hk6gw==
-X-Gm-Gg: ASbGncugZilKape1Og1akZfbFtVcAEhn2r7mv6dmRcIBAea731M76gLvhmIXzEkizw9
-	3lgNX1iMD1zBXCUf4K39hNTNI+/U5vPcLkf4pTojwIFxFV9y2uDuGPMP1vMmy8RWfuOQ1kGyQk9
-	xNtkgWOVbIZ32eBAl+xeTdVUybvoU5+s2+krk17tV+F2tpu2K1UYvgNGYWknZ4/hOyr2Q5uABCi
-	+BQqynYWN5E0auHlnpgvT51NM52OXm02DiwGpy/0Kb1Wqt9/HxgANy7fK0GVsEivrTjMs5OE4Se
-	9npTr/XmEUFcKuc0YDqydu45LGH9LTksPZYlziiqConLmbqOAG8C358fPqM06J7SQBo4fjk0a0k
-	XeMfhcC4nzPg=
-X-Received: by 2002:a05:6000:2110:b0:3d2:52e3:9220 with SMTP id ffacd0b85a97d-3d252e39a50mr6205384f8f.5.1756807064874;
-        Tue, 02 Sep 2025 02:57:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBBKawshRRcWgMajhrJGR9pfMn2+8pBgJ1J6VR2pISIYxt4qBpwtVugddscbM7nf2wPfGedA==
-X-Received: by 2002:a05:6000:2110:b0:3d2:52e3:9220 with SMTP id ffacd0b85a97d-3d252e39a50mr6205351f8f.5.1756807064174;
-        Tue, 02 Sep 2025 02:57:44 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e00:6083:48d1:630a:25ae? ([2a0d:3344:2712:7e00:6083:48d1:630a:25ae])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d21a80c723sm14068985f8f.9.2025.09.02.02.57.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Sep 2025 02:57:43 -0700 (PDT)
-Message-ID: <a46cca6e-5350-4ca4-ba17-bf0f89d812cf@redhat.com>
-Date: Tue, 2 Sep 2025 11:57:42 +0200
+	s=arc-20240116; t=1756807179; c=relaxed/simple;
+	bh=M22+uJTa/W0eNL+3Bo93sBc6P8ROW0P0TJeVjfjQk18=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rhbMPSxxnAkWwhJ0KE/tcgYRrJYLXSeKhE6ShnsavNxaYMR8Z48s/W46Kt1LQxREAZftLW/NgCtg3gkQ30hp05+wMwQduF/T8c7aTFFin7l3NISUD8juzUKEVGnU2k+TdsjcDLBmg03Kr+DGw7kPIlarh43MrRtV9dKqy6yCIV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kzsM0CZ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99184C4CEED;
+	Tue,  2 Sep 2025 09:59:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756807178;
+	bh=M22+uJTa/W0eNL+3Bo93sBc6P8ROW0P0TJeVjfjQk18=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kzsM0CZ0400pFYojaPSN3T8hh4EfIYl7a/Mi8NEmZ1c6qb4DouJ9/F56YeIqbtCnD
+	 XPjcrINJyIv8Zbh4dunh7pNK5xMkUjpk+oYVqLjqfbzxZWnOAxGUKQfxbo/NDarrLJ
+	 JEW+8E1V5q1uCg7ZvVmDiEcF1mytSCutnNt4yLJ1BwpC6WmsTcll0jR2OlqMNpgpsV
+	 +dZOiaM6VTJlzYzIj7P5wZSj0CV9C7St6uj3cJ70LnbR8UjM3Z82ePB9Tvd8WUfoMp
+	 B7ZXtU1T6VcWritj/lKN9Hr5mDw/AXbn9BK/gnC4OUSgis9QTFw+s/4MJ1IeivSKee
+	 3/US+8bpFiBUw==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1utNnQ-0000000080j-2mDu;
+	Tue, 02 Sep 2025 11:59:25 +0200
+Date: Tue, 2 Sep 2025 11:59:24 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Cristian Marussi <cristian.marussi@arm.com>, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Jan Palus <jpalus@fastmail.com>
+Subject: Re: [PATCH] firmware: arm_scmi: quirk: fix write to string constant
+Message-ID: <aLa__M_VJYqxb9mc@hovoldconsulting.com>
+References: <20250829132152.28218-1-johan@kernel.org>
+ <aLG5XFHXKgcBida8@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4] selftests: net: add test for destination in
- broadcast packets
-To: Brett Sheffield <bacs@librecast.net>
-Cc: Oscar Maes <oscmaes92@gmail.com>, netdev@vger.kernel.org,
- kuba@kernel.org, davem@davemloft.net, dsahern@kernel.org,
- stable@vger.kernel.org
-References: <20250828114242.6433-1-oscmaes92@gmail.com>
- <03991134-4007-422b-b25a-003a85c1edb0@redhat.com>
- <aLa54kZLIV3zbi2v@karahi.gladserv.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <aLa54kZLIV3zbi2v@karahi.gladserv.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aLG5XFHXKgcBida8@hovoldconsulting.com>
 
+Hi Sudeep,
 
-
-On 9/2/25 11:33 AM, Brett Sheffield wrote:
-> On 2025-09-02 10:49, Paolo Abeni wrote:
->> On 8/28/25 1:42 PM, Oscar Maes wrote:
->>> Add test to check the broadcast ethernet destination field is set
->>> correctly.
->>>
->>> This test sends a broadcast ping, captures it using tcpdump and
->>> ensures that all bits of the 6 octet ethernet destination address
->>> are correctly set by examining the output capture file.
->>>
->>> Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
->>> Co-authored-by: Brett A C Sheffield <bacs@librecast.net>
->>
->> I'm sorry for nit-picking, but the sob/tag-chain is wrong, please have a
->> look at:
->>
->> https://elixir.bootlin.com/linux/v6.16.4/source/Documentation/process/submitting-patches.rst#L516
+On Fri, Aug 29, 2025 at 04:29:48PM +0200, Johan Hovold wrote:
+> On Fri, Aug 29, 2025 at 03:21:52PM +0200, Johan Hovold wrote:
+> > The quirk version range is typically a string constant and must not be
+> > modified (e.g. as it may be stored in read-only memory):
+> > 
+> > 	Unable to handle kernel write to read-only memory at virtual
+> > 	address ffffc036d998a947
+> > 
+> > Fix the range parsing so that it operates on a copy of the version range
+> > string, and mark all the quirk strings as const to reduce the risk of
+> > introducing similar future issues.
 > 
-> Thanks Paolo. So, something like:
+> With Jan's permission, let's add:
 > 
-> Co-developed-by: Brett A C Sheffield <bacs@librecast.net>
-> Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
-> Co-developed-by: Oscar Maes <oscmaes92@gmail.com>
-> Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+> Reported-by: Jan Palus <jpalus@fastmail.com>
 > 
-> with the last sign-off by Oscar because he is submitting?
+> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220437
+> > Fixes: 487c407d57d6 ("firmware: arm_scmi: Add common framework to handle firmware quirks")
+> > Cc: stable@vger.kernel.org	# 6.16
+> > Cc: Cristian Marussi <cristian.marussi@arm.com>
+> > Signed-off-by: Johan Hovold <johan@kernel.org>
 
-Actually my understanding is:
+I noticed that you picked up this fix yesterday but also that you
+rewrote the commit message and switched using cleanup helpers.
 
-Co-developed-by: Brett A C Sheffield <bacs@librecast.net>
-Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
-Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Please don't do such (non-trivial) changes without making that clear
+in the commit message before your Signed-off-by tag:
 
-(if the patch is submitted by Oscar.) Basically the first examples in
-the doc, with the only differences that such examples lists 3 co-developers.
+	[ sudeep: rewrite commit message; switch to cleanup helpers ]
 
-/P
+In this case, you also changed the meaning so that the commit message
+now reads like the sole reason that writing to string constants is wrong
+is that they may reside in read-only memory.
 
+I used "e.g." on purpose instead of listing further reasons like the
+fact that string constants may be shared so that parsing of one quirk
+can subtly break a later one.
+
+Johan
 
