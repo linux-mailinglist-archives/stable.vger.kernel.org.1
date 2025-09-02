@@ -1,217 +1,200 @@
-Return-Path: <stable+bounces-177496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E77CB405BA
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:57:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33768B40520
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD7D31BA0975
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:52:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC4E87B34E0
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8431332ED2C;
-	Tue,  2 Sep 2025 13:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F1C31B102;
+	Tue,  2 Sep 2025 13:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFBuYGOw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPV8gbXr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405223081A2;
-	Tue,  2 Sep 2025 13:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDDB2DFA32;
+	Tue,  2 Sep 2025 13:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820833; cv=none; b=lORVU+PnDCkYs2tItRgxrD7rTVdJihPpmZ7WUGLWgcdzCkjbjHEOtxXNUO56ceP6e0caS5ZffcCw9XOJj3PVHVQiy4FkCK/TviOIIpvBvKxW0wVRiu/qy1ToVNaHoj4n28fp6mzt5JCLi1bHOq952ER8bkaBAuCFfS3PcKbIhpo=
+	t=1756820732; cv=none; b=m+/Ch860RoKkSDVeKXiLsI0nxhXeE1qps+8sS3yIiQq2fGxbPi42F7eC2WLgc5Je8WU4m81dhOe4NIJirIibTKqcMHhd8FkmwDY8UrPJ1VRaxBLJFuH/4t0Mr/ztICuhbHaRElUVQxvkXq7VeF+SqQ4ISnA721qHeSwfSIIoNok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820833; c=relaxed/simple;
-	bh=+MfqKmw48JqvThNd+pJNbyLhLfpfMsthKXfYIxl98Mo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=juI/j2b7Y+K2VkfvR6Ghi9H6+1qs3HprrIfZQ3tCTsiC43GbxhQaW+LRBFDurkWAMQIxRNDame22XgBu1ddCh+z3lL+i1e23/Msd1aeJXz1vfYhLJOKFDS9TEfvfYdDNnLnH6/NK2SxXP2GGML1NeRDD7axOl9A8N7SJ4rrzV14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFBuYGOw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEE5C4CEED;
-	Tue,  2 Sep 2025 13:47:11 +0000 (UTC)
+	s=arc-20240116; t=1756820732; c=relaxed/simple;
+	bh=JpNjFvdagTZ2IcGP+Sal7axF4xbFcKk2hcht9GA/J8A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kS4OfOYbzNsi3O+zBR3PPbsnmq2OCpA3I6VXUqHioil3BDgop7+gcJg7FMcXRnwLU6Jg28mPJgI8SQMY1DVc0B26Lli02S5Z+M4hMimJtmhbw1Gp4GRNjIYKwS/qv860BLfLRH28H+N1q2T9P3uMNQckIIEASKoIcTEMDCpVkWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPV8gbXr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20CEC4CEED;
+	Tue,  2 Sep 2025 13:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820831;
-	bh=+MfqKmw48JqvThNd+pJNbyLhLfpfMsthKXfYIxl98Mo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZFBuYGOwexD8adWKjIV8p6ajgnGRIP7JV/S2aZ1L4QMi3ptSTka+j9EIb+zst9YZ8
-	 WYH/kxyKr6yKBMW7hM5URkrvTZ2AC0HB/+y/U26ea3HHhGdfcMOLKkqYnVfIU7LeEX
-	 I0IaXIl30ZejryufXC9zrc8yI3aisyTzfkCIOyQc=
+	s=korg; t=1756820732;
+	bh=JpNjFvdagTZ2IcGP+Sal7axF4xbFcKk2hcht9GA/J8A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UPV8gbXrjMLMQwk5rGlYg+ghxQ24samn4xSm3CErzOA0URsQgAaT5Dez8nklYDppr
+	 belzpKOymsTxhVsfAVOM9Xnqy2jWb27a6tTNupuJJMBULfDyd4LTTZE4g6PTOfWasU
+	 69+NIPeqa0tTcu+uTibutKCWvOWRO7Rv4yvSp+gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org
-Subject: [PATCH 5.4 00/23] 5.4.298-rc1 review
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 5.10 20/34] HID: asus: fix UAF via HID_CLAIMED_INPUT validation
 Date: Tue,  2 Sep 2025 15:21:46 +0200
-Message-ID: <20250902131924.720400762@linuxfoundation.org>
+Message-ID: <20250902131927.425851857@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
+References: <20250902131926.607219059@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.298-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-5.4.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 5.4.298-rc1
-X-KernelTest-Deadline: 2025-09-04T13:19+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 5.4.298 release.
-There are 23 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Thu, 04 Sep 2025 13:19:14 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.298-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-and the diffstat can be found below.
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-thanks,
+commit d3af6ca9a8c34bbd8cff32b469b84c9021c9e7e4 upstream.
 
-greg k-h
+After hid_hw_start() is called hidinput_connect() will eventually be
+called to set up the device with the input layer since the
+HID_CONNECT_DEFAULT connect mask is used. During hidinput_connect()
+all input and output reports are processed and corresponding hid_inputs
+are allocated and configured via hidinput_configure_usages(). This
+process involves slot tagging report fields and configuring usages
+by setting relevant bits in the capability bitmaps. However it is possible
+that the capability bitmaps are not set at all leading to the subsequent
+hidinput_has_been_populated() check to fail leading to the freeing of the
+hid_input and the underlying input device.
 
--------------
-Pseudo-Shortlog of commits:
+This becomes problematic because a malicious HID device like a
+ASUS ROG N-Key keyboard can trigger the above scenario via a
+specially crafted descriptor which then leads to a user-after-free
+when the name of the freed input device is written to later on after
+hid_hw_start(). Below, report 93 intentionally utilises the
+HID_UP_UNDEFINED Usage Page which is skipped during usage
+configuration, leading to the frees.
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 5.4.298-rc1
+0x05, 0x0D,        // Usage Page (Digitizer)
+0x09, 0x05,        // Usage (Touch Pad)
+0xA1, 0x01,        // Collection (Application)
+0x85, 0x0D,        //   Report ID (13)
+0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
+0x09, 0xC5,        //   Usage (0xC5)
+0x15, 0x00,        //   Logical Minimum (0)
+0x26, 0xFF, 0x00,  //   Logical Maximum (255)
+0x75, 0x08,        //   Report Size (8)
+0x95, 0x04,        //   Report Count (4)
+0xB1, 0x02,        //   Feature (Data,Var,Abs)
+0x85, 0x5D,        //   Report ID (93)
+0x06, 0x00, 0x00,  //   Usage Page (Undefined)
+0x09, 0x01,        //   Usage (0x01)
+0x15, 0x00,        //   Logical Minimum (0)
+0x26, 0xFF, 0x00,  //   Logical Maximum (255)
+0x75, 0x08,        //   Report Size (8)
+0x95, 0x1B,        //   Report Count (27)
+0x81, 0x02,        //   Input (Data,Var,Abs)
+0xC0,              // End Collection
 
-Imre Deak <imre.deak@intel.com>
-    Revert "drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS"
+Below is the KASAN splat after triggering the UAF:
 
-Fabio Porcedda <fabio.porcedda@gmail.com>
-    net: usb: qmi_wwan: add Telit Cinterion LE910C4-WWX new compositions
+[   21.672709] ==================================================================
+[   21.673700] BUG: KASAN: slab-use-after-free in asus_probe+0xeeb/0xf80
+[   21.673700] Write of size 8 at addr ffff88810a0ac000 by task kworker/1:2/54
+[   21.673700]
+[   21.673700] CPU: 1 UID: 0 PID: 54 Comm: kworker/1:2 Not tainted 6.16.0-rc4-g9773391cf4dd-dirty #36 PREEMPT(voluntary)
+[   21.673700] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+[   21.673700] Call Trace:
+[   21.673700]  <TASK>
+[   21.673700]  dump_stack_lvl+0x5f/0x80
+[   21.673700]  print_report+0xd1/0x660
+[   21.673700]  kasan_report+0xe5/0x120
+[   21.673700]  __asan_report_store8_noabort+0x1b/0x30
+[   21.673700]  asus_probe+0xeeb/0xf80
+[   21.673700]  hid_device_probe+0x2ee/0x700
+[   21.673700]  really_probe+0x1c6/0x6b0
+[   21.673700]  __driver_probe_device+0x24f/0x310
+[   21.673700]  driver_probe_device+0x4e/0x220
+[...]
+[   21.673700]
+[   21.673700] Allocated by task 54:
+[   21.673700]  kasan_save_stack+0x3d/0x60
+[   21.673700]  kasan_save_track+0x18/0x40
+[   21.673700]  kasan_save_alloc_info+0x3b/0x50
+[   21.673700]  __kasan_kmalloc+0x9c/0xa0
+[   21.673700]  __kmalloc_cache_noprof+0x139/0x340
+[   21.673700]  input_allocate_device+0x44/0x370
+[   21.673700]  hidinput_connect+0xcb6/0x2630
+[   21.673700]  hid_connect+0xf74/0x1d60
+[   21.673700]  hid_hw_start+0x8c/0x110
+[   21.673700]  asus_probe+0x5a3/0xf80
+[   21.673700]  hid_device_probe+0x2ee/0x700
+[   21.673700]  really_probe+0x1c6/0x6b0
+[   21.673700]  __driver_probe_device+0x24f/0x310
+[   21.673700]  driver_probe_device+0x4e/0x220
+[...]
+[   21.673700]
+[   21.673700] Freed by task 54:
+[   21.673700]  kasan_save_stack+0x3d/0x60
+[   21.673700]  kasan_save_track+0x18/0x40
+[   21.673700]  kasan_save_free_info+0x3f/0x60
+[   21.673700]  __kasan_slab_free+0x3c/0x50
+[   21.673700]  kfree+0xcf/0x350
+[   21.673700]  input_dev_release+0xab/0xd0
+[   21.673700]  device_release+0x9f/0x220
+[   21.673700]  kobject_put+0x12b/0x220
+[   21.673700]  put_device+0x12/0x20
+[   21.673700]  input_free_device+0x4c/0xb0
+[   21.673700]  hidinput_connect+0x1862/0x2630
+[   21.673700]  hid_connect+0xf74/0x1d60
+[   21.673700]  hid_hw_start+0x8c/0x110
+[   21.673700]  asus_probe+0x5a3/0xf80
+[   21.673700]  hid_device_probe+0x2ee/0x700
+[   21.673700]  really_probe+0x1c6/0x6b0
+[   21.673700]  __driver_probe_device+0x24f/0x310
+[   21.673700]  driver_probe_device+0x4e/0x220
+[...]
 
-Alex Deucher <alexander.deucher@amd.com>
-    Revert "drm/amdgpu: fix incorrect vm flags to map bo"
+Fixes: 9ce12d8be12c ("HID: asus: Add i2c touchpad support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Link: https://patch.msgid.link/20250810181041.44874-1-qasdev00@gmail.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/hid/hid-asus.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-Minjong Kim <minbell.kim@samsung.com>
-    HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()
-
-Ping Cheng <pinglinux@gmail.com>
-    HID: wacom: Add a new Art Pen 2
-
-Qasim Ijaz <qasdev00@gmail.com>
-    HID: asus: fix UAF via HID_CLAIMED_INPUT validation
-
-Thijs Raymakers <thijs@raymakers.nl>
-    KVM: x86: use array_index_nospec with indices that come from guest
-
-Li Nan <linan122@huawei.com>
-    efivarfs: Fix slab-out-of-bounds in efivarfs_d_compare
-
-Eric Dumazet <edumazet@google.com>
-    sctp: initialize more fields in sctp_v6_from_sk()
-
-Rohan G Thomas <rohan.g.thomas@altera.com>
-    net: stmmac: xgmac: Do not enable RX FIFO Overflow interrupts
-
-Alexei Lazar <alazar@nvidia.com>
-    net/mlx5e: Set local Xoff after FW update
-
-Alexei Lazar <alazar@nvidia.com>
-    net/mlx5e: Update and set Xon/Xoff upon port speed set
-
-Alexei Lazar <alazar@nvidia.com>
-    net/mlx5e: Update and set Xon/Xoff upon MTU set
-
-Yeounsu Moon <yyyynoom@gmail.com>
-    net: dlink: fix multicast stats being counted incorrectly
-
-Kuniyuki Iwashima <kuniyu@google.com>
-    atm: atmtcp: Prevent arbitrary write in atmtcp_recv_control().
-
-Christoph Hellwig <hch@lst.de>
-    net/atm: remove the atmdev_ops {get, set}sockopt methods
-
-Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-    Bluetooth: hci_event: Detect if HCI_EV_NUM_COMP_PKTS is unbalanced
-
-Madhavan Srinivasan <maddy@linux.ibm.com>
-    powerpc/kvm: Fix ifdef to remove build warning
-
-Oscar Maes <oscmaes92@gmail.com>
-    net: ipv4: fix regression in local-broadcast routes
-
-Nikolay Kuratov <kniv@yandex-team.ru>
-    vhost/net: Protect ubufs with rcu read lock in vhost_net_ubuf_put()
-
-Damien Le Moal <dlemoal@kernel.org>
-    scsi: core: sysfs: Correct sysfs attributes access rights
-
-Tengda Wu <wutengda@huaweicloud.com>
-    ftrace: Fix potential warning in trace_printk_seq during ftrace_dump
-
-Randy Dunlap <rdunlap@infradead.org>
-    pinctrl: STMFX: add missing HAS_IOMEM dependency
-
-
--------------
-
-Diffstat:
-
- Makefile                                           |  4 +--
- arch/powerpc/kernel/kvm.c                          |  8 ++---
- arch/x86/kvm/lapic.c                               |  3 ++
- arch/x86/kvm/x86.c                                 |  7 ++--
- drivers/atm/atmtcp.c                               | 17 +++++++--
- drivers/atm/eni.c                                  | 17 ---------
- drivers/atm/firestream.c                           |  2 --
- drivers/atm/fore200e.c                             | 27 ---------------
- drivers/atm/horizon.c                              | 40 ----------------------
- drivers/atm/iphase.c                               | 16 ---------
- drivers/atm/lanai.c                                |  2 --
- drivers/atm/solos-pci.c                            |  2 --
- drivers/atm/zatm.c                                 | 16 ---------
- drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c            |  4 +--
- drivers/gpu/drm/drm_dp_helper.c                    |  2 +-
- drivers/hid/hid-asus.c                             |  8 ++++-
- drivers/hid/hid-ntrig.c                            |  3 ++
- drivers/hid/wacom_wac.c                            |  1 +
- drivers/net/ethernet/dlink/dl2k.c                  |  2 +-
- .../ethernet/mellanox/mlx5/core/en/port_buffer.c   |  3 +-
- .../ethernet/mellanox/mlx5/core/en/port_buffer.h   | 12 +++++++
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c  | 19 +++++++++-
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c |  4 ---
- drivers/net/usb/qmi_wwan.c                         |  3 ++
- drivers/pinctrl/Kconfig                            |  1 +
- drivers/scsi/scsi_sysfs.c                          |  4 +--
- drivers/vhost/net.c                                |  9 +++--
- fs/efivarfs/super.c                                |  4 +++
- include/linux/atmdev.h                             | 10 +-----
- kernel/trace/trace.c                               |  4 +--
- net/atm/common.c                                   | 29 ++++++++--------
- net/bluetooth/hci_event.c                          | 12 ++++++-
- net/ipv4/route.c                                   | 10 ++++--
- net/sctp/ipv6.c                                    |  2 ++
- 34 files changed, 129 insertions(+), 178 deletions(-)
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -1027,7 +1027,13 @@ static int asus_probe(struct hid_device
+ 		return ret;
+ 	}
+ 
+-	if (!drvdata->input) {
++	/*
++	 * Check that input registration succeeded. Checking that
++	 * HID_CLAIMED_INPUT is set prevents a UAF when all input devices
++	 * were freed during registration due to no usages being mapped,
++	 * leaving drvdata->input pointing to freed memory.
++	 */
++	if (!drvdata->input || !(hdev->claimed & HID_CLAIMED_INPUT)) {
+ 		hid_err(hdev, "Asus input not registered\n");
+ 		ret = -ENOMEM;
+ 		goto err_stop_hw;
 
 
 
