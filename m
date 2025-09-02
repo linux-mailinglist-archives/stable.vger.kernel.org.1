@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-177102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E550EB4033D
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:30:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BBCB403ED
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:38:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E14414E3492
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:30:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F98717B8CB
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8751305E14;
-	Tue,  2 Sep 2025 13:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59B9307AF3;
+	Tue,  2 Sep 2025 13:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHzooTGH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vbk8thFz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48902F9C3D;
-	Tue,  2 Sep 2025 13:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941783043BD;
+	Tue,  2 Sep 2025 13:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819583; cv=none; b=OFSOlkvfrChJMQxIwKywW44APj3FJvQcY7b7HR6BfvHydbvjrDnAWmDMehV96UdGPowxGpXUm+GWGfRLemQTeiHa8lnyok9oS/4l106/riv1RTD/QYPkOoFPF7sZIWE8cTNfg7kGlBON1RTpLYp6dpPBAAXHPB9CvbIfza+5G2c=
+	t=1756819896; cv=none; b=IbPIV+0BjJq1MbjW5ng/zlWwq5iQjs9FNYwGOHuUGyZNMwoaxUeMlwz6HB6hdfXnXRZnxUD11iKD4torV2eL4VwyIUO0KEkaN7UL/hyRGtspGL8BSS5Fucn51by7vIOAQi1bo5xAjPqaJooi/zNlbBNhsH3UOgL1LwCr+j5L5ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819583; c=relaxed/simple;
-	bh=OwTCGxVwL3lKFA8BO4b6OKdjubx0OKH36G1VjoRsLtM=;
+	s=arc-20240116; t=1756819896; c=relaxed/simple;
+	bh=1SBaA13LhIC9PXqRPTcmLdAOZ3IJh44wt7p8gRPdaNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UqumJqW70MrPGwTfvT7ZjL9lLP4fhHd8xqIXvbbezivk21FT+IkBmm+xA2reIeSHelAoWJ13Et9FgRh3tnfrY0K2bNuA2pj2bje6C2SBAUkenEkd0HzFDLim2tMPWy1/OLcPR2Mi5+bqi88ADNyoxwNVjWzD2Gh9xd0h8nzsFDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHzooTGH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2683C4CEED;
-	Tue,  2 Sep 2025 13:26:22 +0000 (UTC)
+	 MIME-Version; b=W23OiJA9nYV8awTBlWuJj50Gn6TJSi1S6oyJt0EVu9vWs9MKcsyFvxOl7aGquwXUAH9gn5kL/LWP/Ir/aRRP0i8B8kckL4tayzqlXb5T1y2qVXgiWZL5TXS9IZs+ktaS91Bxe5cnY7MTW1A3JtPR8hnzyr4JUF7ghbpFbWJpngc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vbk8thFz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE05C4CEF5;
+	Tue,  2 Sep 2025 13:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819583;
-	bh=OwTCGxVwL3lKFA8BO4b6OKdjubx0OKH36G1VjoRsLtM=;
+	s=korg; t=1756819896;
+	bh=1SBaA13LhIC9PXqRPTcmLdAOZ3IJh44wt7p8gRPdaNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uHzooTGHPZJdR14a6U9ykTw3GejwG41wKw/NiN7E9ZLpP4Zr5kng4MFRad3zhKJfv
-	 UpVHUO4q2E6GinB/p6oMFcBvqU2YnVw+Y7HDxqVqiJZW67vnB0r6pV8CjIl4URHVXv
-	 WcduP2qs2SsWpWh21DNtjBen2JdhMqW2eqmfYF2c=
+	b=Vbk8thFzEVPBXCw6dNpQ7ZubVBJya4RQWUtjJaW/d3332SyhLb5yaAP+bxfAqQ2aS
+	 OPDK3oOma4xUt+ETm0E7WrG69i+FgNcNEf0umg1yHUCxb9bDDrV6nXhoBdWIoNeiRF
+	 JWkT5b9wdS6nPNeKSttx5UE9urjWDMHuAXgp0k+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lama Kayal <lkayal@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 078/142] net/mlx5: HWS, Fix memory leak in hws_pool_buddy_init error path
-Date: Tue,  2 Sep 2025 15:19:40 +0200
-Message-ID: <20250902131951.258726459@linuxfoundation.org>
+Subject: [PATCH 6.12 05/95] pinctrl: STMFX: add missing HAS_IOMEM dependency
+Date: Tue,  2 Sep 2025 15:19:41 +0200
+Message-ID: <20250902131939.817867220@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lama Kayal <lkayal@nvidia.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 2c0a959bebdc1ada13cf9a8242f177c5400299e6 ]
+[ Upstream commit a12946bef0407cf2db0899c83d42c47c00af3fbc ]
 
-In the error path of hws_pool_buddy_init(), the buddy allocator cleanup
-doesn't free the allocator structure itself, causing a memory leak.
+When building on ARCH=um (which does not set HAS_IOMEM), kconfig
+reports an unmet dependency caused by PINCTRL_STMFX. It selects
+MFD_STMFX, which depends on HAS_IOMEM. To stop this warning,
+PINCTRL_STMFX should also depend on HAS_IOMEM.
 
-Add the missing kfree() to properly release all allocated memory.
+kconfig warning:
+WARNING: unmet direct dependencies detected for MFD_STMFX
+  Depends on [n]: HAS_IOMEM [=n] && I2C [=y] && OF [=y]
+  Selected by [y]:
+  - PINCTRL_STMFX [=y] && PINCTRL [=y] && I2C [=y] && OF_GPIO [=y]
 
-Fixes: c61afff94373 ("net/mlx5: HWS, added memory management handling")
-Signed-off-by: Lama Kayal <lkayal@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250825143435.598584-2-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1490d9f841b1 ("pinctrl: Add STMFX GPIO expander Pinctrl/GPIO driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/20250815022721.1650885-1-rdunlap@infradead.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/steering/hws/pool.c | 1 +
+ drivers/pinctrl/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/pool.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/pool.c
-index 7e37d6e9eb836..7b5071c3df368 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/pool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/pool.c
-@@ -124,6 +124,7 @@ static int hws_pool_buddy_init(struct mlx5hws_pool *pool)
- 		mlx5hws_err(pool->ctx, "Failed to create resource type: %d size %zu\n",
- 			    pool->type, pool->alloc_log_sz);
- 		mlx5hws_buddy_cleanup(buddy);
-+		kfree(buddy);
- 		return -ENOMEM;
- 	}
- 
+diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
+index 354536de564b6..e05174e5efbc3 100644
+--- a/drivers/pinctrl/Kconfig
++++ b/drivers/pinctrl/Kconfig
+@@ -504,6 +504,7 @@ config PINCTRL_STMFX
+ 	tristate "STMicroelectronics STMFX GPIO expander pinctrl driver"
+ 	depends on I2C
+ 	depends on OF_GPIO
++	depends on HAS_IOMEM
+ 	select GENERIC_PINCONF
+ 	select GPIOLIB_IRQCHIP
+ 	select MFD_STMFX
 -- 
 2.50.1
 
