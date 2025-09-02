@@ -1,422 +1,272 @@
-Return-Path: <stable+bounces-177309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B4DAB40497
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:44:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6842BB4043E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1DEF3BA2C9
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:42:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 733A31B24092
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F7E3074B7;
-	Tue,  2 Sep 2025 13:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D57A3093DD;
+	Tue,  2 Sep 2025 13:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaPdkGtv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlnkfls7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A3123D7EC;
-	Tue,  2 Sep 2025 13:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2DA3093B6;
+	Tue,  2 Sep 2025 13:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820238; cv=none; b=Zd91F3Z6EegX3zMIF52GOcgKHo8zmC/XGDgNpXp8WtTS5xbwi2kmQWeAQR5/C/fxCa+0hMZRyTaXWFfzwgZOAIC1gOQ331zbzxjrLIsDFtt1Q7frL1WAklc++GOGZh25JMcPLQcetAnL7D4CoRiG8KHVZoJqS1pr2/d3ALn/9Wc=
+	t=1756819920; cv=none; b=BfCHryhuJ1X0aGddLz9Cn3S8WnPlk1rgVzrq+AuVdztD5UzXhZKNRS6bL0j+0/XMPshzJBFGcpHuUnmzeSOJynmrUD/nZs3xmStqa3HLjTWxJk+XNOcvKOMRLVZ3rxI+ElN7vPsEhq4jHhRT3aAe46v1rXQrNNWUa+y/dc4oMSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820238; c=relaxed/simple;
-	bh=m+I9yKtLh+hfE4g4xUdhB+y9EbdNfTm2xyWqG3OiCJ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Eztf9xJEftrtHWulGrler5UVEq8vUWKYE5qKXM6pYKWWWD6/9ocEc2PbW6LrlRX9N+g2VZIPdtHw1Dl5LqcQKeuzau5qE2SqiUMz9UYW6/FUyJSoZEMhHshJ/w0zR7yn29UvIBf5Rhh9ewAVK3bNWpz9o6EQs3wG6PZ2WDnOdvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaPdkGtv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5ECEC4CEF5;
-	Tue,  2 Sep 2025 13:37:16 +0000 (UTC)
+	s=arc-20240116; t=1756819920; c=relaxed/simple;
+	bh=iOtZL4yFHKr1pQy+srJ6ksRm4Zt4W0zXiMM5eMF5xMo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=V6EtkGKnbhM1soeKc9KLrVmauZ/oOKO+NrjutNFgkpwqMOFtfHfTy/smjXaqwBdaOVDySyxdK8fLVvaEpMKJXOpnAzfkznlFy4KPZ9X2S/xuHcSM/+/Gfv1QYxRwTXxjHyPZWL7OpWAn7aEgRgwvaZlzs0fg728SNM8qyWEZyjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlnkfls7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A54C1C4CEED;
+	Tue,  2 Sep 2025 13:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820237;
-	bh=m+I9yKtLh+hfE4g4xUdhB+y9EbdNfTm2xyWqG3OiCJ8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=EaPdkGtvJC5FyMP14S7P+A/buxSS1v/exPfoR+EMF0e6fy4lHC6e3rSPaVWTds9wn
-	 rTmns1lAsgW99rXsCbOzKknqoU9CuvuKBILcK1L0hNrTG9EnXYW8trh9fgp2Tf5CcT
-	 mvUD6dDNxY8UXlpa+2EC39VEiRoqYwjeXuUSz99o=
+	s=korg; t=1756819920;
+	bh=iOtZL4yFHKr1pQy+srJ6ksRm4Zt4W0zXiMM5eMF5xMo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nlnkfls7MvKEyGCYrDkPxzD3jzstqOSg4DdfF7A0zSI38AsGQ9Xaa8AtxHXO7RUHc
+	 vRINcMUCOdt9tSXaQw00If9Dp2Mr+Q5W7ITavJbgL1rE0XvIR+1z7jjE192UQccmmU
+	 XNwBy/VYYEUhtCoCDRdH20QxMhYbxI0NOi0WYAm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org
-Subject: [PATCH 6.6 00/75] 6.6.104-rc1 review
-Date: Tue,  2 Sep 2025 15:20:12 +0200
-Message-ID: <20250902131935.107897242@linuxfoundation.org>
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.12 37/95] ice: use fixed adapter index for E825C embedded devices
+Date: Tue,  2 Sep 2025 15:20:13 +0200
+Message-ID: <20250902131941.034372219@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.104-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.6.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.6.104-rc1
-X-KernelTest-Deadline: 2025-09-04T13:19+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.6.104 release.
-There are 75 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Jacob Keller <jacob.e.keller@intel.com>
+
+[ Upstream commit 5c5e5b52bf05c7fe88768318c041052c5fac36b8 ]
+
+The ice_adapter structure is used by the ice driver to connect multiple
+physical functions of a device in software. It was introduced by
+commit 0e2bddf9e5f9 ("ice: add ice_adapter for shared data across PFs on
+the same NIC") and is primarily used for PTP support, as well as for
+handling certain cross-PF synchronization.
+
+The original design of ice_adapter used PCI address information to
+determine which devices should be connected. This was extended to support
+E825C devices by commit fdb7f54700b1 ("ice: Initial support for E825C
+hardware in ice_adapter"), which used the device ID for E825C devices
+instead of the PCI address.
+
+Later, commit 0093cb194a75 ("ice: use DSN instead of PCI BDF for
+ice_adapter index") replaced the use of Bus/Device/Function addressing with
+use of the device serial number.
+
+E825C devices may appear in "Dual NAC" configuration which has multiple
+physical devices tied to the same clock source and which need to use the
+same ice_adapter. Unfortunately, each "NAC" has its own NVM which has its
+own unique Device Serial Number. Thus, use of the DSN for connecting
+ice_adapter does not work properly. It "worked" in the pre-production
+systems because the DSN was not initialized on the test NVMs and all the
+NACs had the same zero'd serial number.
+
+Since we cannot rely on the DSN, lets fall back to the logic in the
+original E825C support which used the device ID. This is safe for E825C
+only because of the embedded nature of the device. It isn't a discreet
+adapter that can be plugged into an arbitrary system. All E825C devices on
+a given system are connected to the same clock source and need to be
+configured through the same PTP clock.
+
+To make this separation clear, reserve bit 63 of the 64-bit index values as
+a "fixed index" indicator. Always clear this bit when using the device
+serial number as an index.
+
+For E825C, use a fixed value defined as the 0x579C E825C backplane device
+ID bitwise ORed with the fixed index indicator. This is slightly different
+than the original logic of just using the device ID directly. Doing so
+prevents a potential issue with systems where only one of the NACs is
+connected with an external PHY over SGMII. In that case, one NAC would
+have the E825C_SGMII device ID, but the other would not.
+
+Separate the determination of the full 64-bit index from the 32-bit
+reduction logic. Provide both ice_adapter_index() and a wrapping
+ice_adapter_xa_index() which handles reducing the index to a long on 32-bit
+systems. As before, cache the full index value in the adapter structure to
+warn about collisions.
+
+This fixes issues with E825C not initializing PTP on both NACs, due to
+failure to connect the appropriate devices to the same ice_adapter.
+
+Fixes: 0093cb194a75 ("ice: use DSN instead of PCI BDF for ice_adapter index")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/intel/ice/ice_adapter.c | 49 +++++++++++++++-----
+ drivers/net/ethernet/intel/ice/ice_adapter.h |  4 +-
+ 2 files changed, 40 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.c b/drivers/net/ethernet/intel/ice/ice_adapter.c
+index 66e070095d1bb..10285995c9edd 100644
+--- a/drivers/net/ethernet/intel/ice/ice_adapter.c
++++ b/drivers/net/ethernet/intel/ice/ice_adapter.c
+@@ -13,16 +13,45 @@
+ static DEFINE_XARRAY(ice_adapters);
+ static DEFINE_MUTEX(ice_adapters_mutex);
+ 
+-static unsigned long ice_adapter_index(u64 dsn)
++#define ICE_ADAPTER_FIXED_INDEX	BIT_ULL(63)
++
++#define ICE_ADAPTER_INDEX_E825C	\
++	(ICE_DEV_ID_E825C_BACKPLANE | ICE_ADAPTER_FIXED_INDEX)
++
++static u64 ice_adapter_index(struct pci_dev *pdev)
+ {
++	switch (pdev->device) {
++	case ICE_DEV_ID_E825C_BACKPLANE:
++	case ICE_DEV_ID_E825C_QSFP:
++	case ICE_DEV_ID_E825C_SFP:
++	case ICE_DEV_ID_E825C_SGMII:
++		/* E825C devices have multiple NACs which are connected to the
++		 * same clock source, and which must share the same
++		 * ice_adapter structure. We can't use the serial number since
++		 * each NAC has its own NVM generated with its own unique
++		 * Device Serial Number. Instead, rely on the embedded nature
++		 * of the E825C devices, and use a fixed index. This relies on
++		 * the fact that all E825C physical functions in a given
++		 * system are part of the same overall device.
++		 */
++		return ICE_ADAPTER_INDEX_E825C;
++	default:
++		return pci_get_dsn(pdev) & ~ICE_ADAPTER_FIXED_INDEX;
++	}
++}
++
++static unsigned long ice_adapter_xa_index(struct pci_dev *pdev)
++{
++	u64 index = ice_adapter_index(pdev);
++
+ #if BITS_PER_LONG == 64
+-	return dsn;
++	return index;
+ #else
+-	return (u32)dsn ^ (u32)(dsn >> 32);
++	return (u32)index ^ (u32)(index >> 32);
+ #endif
+ }
+ 
+-static struct ice_adapter *ice_adapter_new(u64 dsn)
++static struct ice_adapter *ice_adapter_new(struct pci_dev *pdev)
+ {
+ 	struct ice_adapter *adapter;
+ 
+@@ -30,7 +59,7 @@ static struct ice_adapter *ice_adapter_new(u64 dsn)
+ 	if (!adapter)
+ 		return NULL;
+ 
+-	adapter->device_serial_number = dsn;
++	adapter->index = ice_adapter_index(pdev);
+ 	spin_lock_init(&adapter->ptp_gltsyn_time_lock);
+ 	refcount_set(&adapter->refcount, 1);
+ 
+@@ -63,24 +92,23 @@ static void ice_adapter_free(struct ice_adapter *adapter)
+  */
+ struct ice_adapter *ice_adapter_get(struct pci_dev *pdev)
+ {
+-	u64 dsn = pci_get_dsn(pdev);
+ 	struct ice_adapter *adapter;
+ 	unsigned long index;
+ 	int err;
+ 
+-	index = ice_adapter_index(dsn);
++	index = ice_adapter_xa_index(pdev);
+ 	scoped_guard(mutex, &ice_adapters_mutex) {
+ 		err = xa_insert(&ice_adapters, index, NULL, GFP_KERNEL);
+ 		if (err == -EBUSY) {
+ 			adapter = xa_load(&ice_adapters, index);
+ 			refcount_inc(&adapter->refcount);
+-			WARN_ON_ONCE(adapter->device_serial_number != dsn);
++			WARN_ON_ONCE(adapter->index != ice_adapter_index(pdev));
+ 			return adapter;
+ 		}
+ 		if (err)
+ 			return ERR_PTR(err);
+ 
+-		adapter = ice_adapter_new(dsn);
++		adapter = ice_adapter_new(pdev);
+ 		if (!adapter)
+ 			return ERR_PTR(-ENOMEM);
+ 		xa_store(&ice_adapters, index, adapter, GFP_KERNEL);
+@@ -99,11 +127,10 @@ struct ice_adapter *ice_adapter_get(struct pci_dev *pdev)
+  */
+ void ice_adapter_put(struct pci_dev *pdev)
+ {
+-	u64 dsn = pci_get_dsn(pdev);
+ 	struct ice_adapter *adapter;
+ 	unsigned long index;
+ 
+-	index = ice_adapter_index(dsn);
++	index = ice_adapter_xa_index(pdev);
+ 	scoped_guard(mutex, &ice_adapters_mutex) {
+ 		adapter = xa_load(&ice_adapters, index);
+ 		if (WARN_ON(!adapter))
+diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.h b/drivers/net/ethernet/intel/ice/ice_adapter.h
+index ac15c0d2bc1a4..409467847c753 100644
+--- a/drivers/net/ethernet/intel/ice/ice_adapter.h
++++ b/drivers/net/ethernet/intel/ice/ice_adapter.h
+@@ -32,7 +32,7 @@ struct ice_port_list {
+  * @refcount: Reference count. struct ice_pf objects hold the references.
+  * @ctrl_pf: Control PF of the adapter
+  * @ports: Ports list
+- * @device_serial_number: DSN cached for collision detection on 32bit systems
++ * @index: 64-bit index cached for collision detection on 32bit systems
+  */
+ struct ice_adapter {
+ 	refcount_t refcount;
+@@ -41,7 +41,7 @@ struct ice_adapter {
+ 
+ 	struct ice_pf *ctrl_pf;
+ 	struct ice_port_list ports;
+-	u64 device_serial_number;
++	u64 index;
+ };
+ 
+ struct ice_adapter *ice_adapter_get(struct pci_dev *pdev);
+-- 
+2.50.1
 
-Responses should be made by Thu, 04 Sep 2025 13:19:14 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.104-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.6.104-rc1
-
-Eric Sandeen <sandeen@redhat.com>
-    xfs: do not propagate ENODATA disk errors into xattr code
-
-Imre Deak <imre.deak@intel.com>
-    Revert "drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS"
-
-Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-    HID: mcp2221: Handle reads greater than 60 bytes
-
-Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-    HID: mcp2221: Don't set bus speed on every transfer
-
-Chris Mi <cmi@nvidia.com>
-    net/mlx5: SF, Fix add port error handling
-
-Eric Dumazet <edumazet@google.com>
-    net: rose: fix a typo in rose_clear_routes()
-
-James Jones <jajones@nvidia.com>
-    drm/nouveau/disp: Always accept linear modifier
-
-Steve French <stfrench@microsoft.com>
-    smb3 client: fix return code mapping of remap_file_range
-
-Fabio Porcedda <fabio.porcedda@gmail.com>
-    net: usb: qmi_wwan: add Telit Cinterion LE910C4-WWX new compositions
-
-Shuhao Fu <sfual@cse.ust.hk>
-    fs/smb: Fix inconsistent refcnt update
-
-Shanker Donthineni <sdonthineni@nvidia.com>
-    dma/pool: Ensure DMA_DIRECT_REMAP allocations are decrypted
-
-Alex Deucher <alexander.deucher@amd.com>
-    Revert "drm/amdgpu: fix incorrect vm flags to map bo"
-
-Minjong Kim <minbell.kim@samsung.com>
-    HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()
-
-Ping Cheng <pinglinux@gmail.com>
-    HID: wacom: Add a new Art Pen 2
-
-Matt Coffin <mcoffin13@gmail.com>
-    HID: logitech: Add ids for G PRO 2 LIGHTSPEED
-
-Antheas Kapenekakis <lkml@antheas.dev>
-    HID: quirks: add support for Legion Go dual dinput modes
-
-Qasim Ijaz <qasdev00@gmail.com>
-    HID: multitouch: fix slab out-of-bounds access in mt_report_fixup()
-
-Qasim Ijaz <qasdev00@gmail.com>
-    HID: asus: fix UAF via HID_CLAIMED_INPUT validation
-
-Borislav Petkov (AMD) <bp@alien8.de>
-    x86/microcode/AMD: Handle the case of no BIOS microcode
-
-Thijs Raymakers <thijs@raymakers.nl>
-    KVM: x86: use array_index_nospec with indices that come from guest
-
-Li Nan <linan122@huawei.com>
-    efivarfs: Fix slab-out-of-bounds in efivarfs_d_compare
-
-Eric Dumazet <edumazet@google.com>
-    sctp: initialize more fields in sctp_v6_from_sk()
-
-Takamitsu Iwai <takamitz@amazon.co.jp>
-    net: rose: include node references in rose_neigh refcount
-
-Takamitsu Iwai <takamitz@amazon.co.jp>
-    net: rose: convert 'use' field to refcount_t
-
-Takamitsu Iwai <takamitz@amazon.co.jp>
-    net: rose: split remove and free operations in rose_remove_neigh()
-
-Rohan G Thomas <rohan.g.thomas@altera.com>
-    net: stmmac: Set CIC bit only for TX queues with COE
-
-Rohan G Thomas <rohan.g.thomas@altera.com>
-    net: stmmac: xgmac: Correct supported speed modes
-
-Serge Semin <fancer.lancer@gmail.com>
-    net: stmmac: Rename phylink_get_caps() callback to update_caps()
-
-Rohan G Thomas <rohan.g.thomas@altera.com>
-    net: stmmac: xgmac: Do not enable RX FIFO Overflow interrupts
-
-Alexei Lazar <alazar@nvidia.com>
-    net/mlx5e: Set local Xoff after FW update
-
-Alexei Lazar <alazar@nvidia.com>
-    net/mlx5e: Update and set Xon/Xoff upon port speed set
-
-Alexei Lazar <alazar@nvidia.com>
-    net/mlx5e: Update and set Xon/Xoff upon MTU set
-
-Moshe Shemesh <moshe@nvidia.com>
-    net/mlx5: Nack sync reset when SFs are present
-
-Jiri Pirko <jiri@resnulli.us>
-    net/mlx5: Convert SF port_indices xarray to function_ids xarray
-
-Jiri Pirko <jiri@resnulli.us>
-    net/mlx5: Use devlink port pointer to get the pointer of container SF struct
-
-Jiri Pirko <jiri@resnulli.us>
-    net/mlx5: Call mlx5_sf_id_erase() once in mlx5_sf_dealloc()
-
-Moshe Shemesh <moshe@nvidia.com>
-    net/mlx5: Fix lockdep assertion on sync reset unload event
-
-Moshe Shemesh <moshe@nvidia.com>
-    net/mlx5: Add support for sync reset using hot reset
-
-Moshe Shemesh <moshe@nvidia.com>
-    net/mlx5: Add device cap for supporting hot reset in sync reset flow
-
-Moshe Shemesh <moshe@nvidia.com>
-    net/mlx5: Reload auxiliary drivers on fw_activate
-
-Horatiu Vultur <horatiu.vultur@microchip.com>
-    phy: mscc: Fix when PTP clock is register and unregister
-
-Yeounsu Moon <yyyynoom@gmail.com>
-    net: dlink: fix multicast stats being counted incorrectly
-
-Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-    dt-bindings: display/msm: qcom,mdp5: drop lut clock
-
-Michal Kubiak <michal.kubiak@intel.com>
-    ice: fix incorrect counter for buffer allocation failures
-
-Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-    ice: stop storing XDP verdict within ice_rx_buf
-
-Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-    ice: gather page_count()'s of each frag right before XDP prog call
-
-Larysa Zaremba <larysa.zaremba@intel.com>
-    ice: Introduce ice_xdp_buff
-
-Timur Tabi <ttabi@nvidia.com>
-    drm/nouveau: remove unused memory target test
-
-Timur Tabi <ttabi@nvidia.com>
-    drm/nouveau: remove unused increment in gm200_flcn_pio_imem_wr
-
-Kuniyuki Iwashima <kuniyu@google.com>
-    atm: atmtcp: Prevent arbitrary write in atmtcp_recv_control().
-
-Pavel Shpakovskiy <pashpakovskii@salutedevices.com>
-    Bluetooth: hci_sync: fix set_local_name race condition
-
-Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-    Bluetooth: hci_event: Detect if HCI_EV_NUM_COMP_PKTS is unbalanced
-
-Ludovico de Nittis <ludovico.denittis@collabora.com>
-    Bluetooth: hci_event: Mark connection as closed during suspend disconnect
-
-Ludovico de Nittis <ludovico.denittis@collabora.com>
-    Bluetooth: hci_event: Treat UNKNOWN_CONN_ID on disconnect as success
-
-José Expósito <jose.exposito89@gmail.com>
-    HID: input: report battery status changes immediately
-
-José Expósito <jose.exposito89@gmail.com>
-    HID: input: rename hidinput_set_battery_charge_status()
-
-Madhavan Srinivasan <maddy@linux.ibm.com>
-    powerpc/kvm: Fix ifdef to remove build warning
-
-Rob Clark <robin.clark@oss.qualcomm.com>
-    drm/msm: Defer fd_install in SUBMIT ioctl
-
-Oscar Maes <oscmaes92@gmail.com>
-    net: ipv4: fix regression in local-broadcast routes
-
-Nikolay Kuratov <kniv@yandex-team.ru>
-    vhost/net: Protect ubufs with rcu read lock in vhost_net_ubuf_put()
-
-Trond Myklebust <trond.myklebust@hammerspace.com>
-    NFS: Fix a race when updating an existing write
-
-Christoph Hellwig <hch@lst.de>
-    nfs: fold nfs_page_group_lock_subrequests into nfs_lock_and_join_requests
-
-Werner Sembach <wse@tuxedocomputers.com>
-    ACPI: EC: Add device to acpi_ec_no_wakeup[] qurik list
-
-Junli Liu <liujunli@lixiang.com>
-    erofs: fix atomic context detection when !CONFIG_DEBUG_LOCK_ALLOC
-
-Alexey Klimov <alexey.klimov@linaro.org>
-    ASoC: codecs: tx-macro: correct tx_macro_component_drv name
-
-Paulo Alcantara <pc@manguebit.org>
-    smb: client: fix race with concurrent opens in rename(2)
-
-Paulo Alcantara <pc@manguebit.org>
-    smb: client: fix race with concurrent opens in unlink(2)
-
-Damien Le Moal <dlemoal@kernel.org>
-    scsi: core: sysfs: Correct sysfs attributes access rights
-
-Tengda Wu <wutengda@huaweicloud.com>
-    ftrace: Fix potential warning in trace_printk_seq during ftrace_dump
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    of: dynamic: Fix use after free in of_changeset_add_prop_helper()
-
-Rob Herring <robh@kernel.org>
-    of: Add a helper to free property struct
-
-Aleksander Jan Bajkowski <olek2@wp.pl>
-    mips: lantiq: xway: sysctrl: rename the etop node
-
-Aleksander Jan Bajkowski <olek2@wp.pl>
-    mips: dts: lantiq: danube: add missing burst length property
-
-Randy Dunlap <rdunlap@infradead.org>
-    pinctrl: STMFX: add missing HAS_IOMEM dependency
-
-Lizhi Hou <lizhi.hou@amd.com>
-    of: dynamic: Fix memleak when of_pci_add_properties() failed
-
-
--------------
-
-Diffstat:
-
- .../devicetree/bindings/display/msm/qcom,mdp5.yaml |   1 -
- Makefile                                           |   4 +-
- arch/mips/boot/dts/lantiq/danube_easy50712.dts     |   5 +-
- arch/mips/lantiq/xway/sysctrl.c                    |  10 +-
- arch/powerpc/kernel/kvm.c                          |   8 +-
- arch/x86/kernel/cpu/microcode/amd.c                |  22 ++-
- arch/x86/kvm/lapic.c                               |   2 +
- arch/x86/kvm/x86.c                                 |   7 +-
- drivers/acpi/ec.c                                  |   6 +
- drivers/atm/atmtcp.c                               |  17 +-
- drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c            |   4 +-
- drivers/gpu/drm/display/drm_dp_helper.c            |   2 +-
- drivers/gpu/drm/msm/msm_gem_submit.c               |  14 +-
- drivers/gpu/drm/nouveau/dispnv50/wndw.c            |   4 +
- drivers/gpu/drm/nouveau/nvkm/falcon/gm200.c        |  15 +-
- drivers/hid/hid-asus.c                             |   8 +-
- drivers/hid/hid-ids.h                              |   3 +
- drivers/hid/hid-input-test.c                       |  10 +-
- drivers/hid/hid-input.c                            |  51 +++---
- drivers/hid/hid-logitech-dj.c                      |   4 +
- drivers/hid/hid-logitech-hidpp.c                   |   2 +
- drivers/hid/hid-mcp2221.c                          |  71 +++++---
- drivers/hid/hid-multitouch.c                       |   8 +
- drivers/hid/hid-ntrig.c                            |   3 +
- drivers/hid/hid-quirks.c                           |   2 +
- drivers/hid/wacom_wac.c                            |   1 +
- drivers/net/ethernet/dlink/dl2k.c                  |   2 +-
- drivers/net/ethernet/intel/ice/ice_txrx.c          |  94 +++++++---
- drivers/net/ethernet/intel/ice/ice_txrx.h          |  19 +-
- drivers/net/ethernet/intel/ice/ice_txrx_lib.h      |  53 ++----
- drivers/net/ethernet/mellanox/mlx5/core/devlink.c  |   2 +-
- .../ethernet/mellanox/mlx5/core/en/port_buffer.c   |   3 +-
- .../ethernet/mellanox/mlx5/core/en/port_buffer.h   |  12 ++
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c  |  19 +-
- drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c | 200 ++++++++++++++-------
- drivers/net/ethernet/mellanox/mlx5/core/fw_reset.h |   1 +
- drivers/net/ethernet/mellanox/mlx5/core/main.c     |   3 +
- .../net/ethernet/mellanox/mlx5/core/sf/devlink.c   |  87 ++++-----
- drivers/net/ethernet/mellanox/mlx5/core/sf/sf.h    |   6 +
- drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c  |   8 +-
- .../net/ethernet/stmicro/stmmac/dwxgmac2_core.c    |  13 +-
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c |   9 +-
- drivers/net/ethernet/stmicro/stmmac/hwif.h         |   8 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |  12 +-
- drivers/net/phy/mscc/mscc.h                        |   4 +
- drivers/net/phy/mscc/mscc_main.c                   |   4 +-
- drivers/net/phy/mscc/mscc_ptp.c                    |  34 ++--
- drivers/net/usb/qmi_wwan.c                         |   3 +
- drivers/of/dynamic.c                               |  29 +--
- drivers/of/of_private.h                            |   1 +
- drivers/of/overlay.c                               |  11 +-
- drivers/of/unittest.c                              |  12 +-
- drivers/pinctrl/Kconfig                            |   1 +
- drivers/scsi/scsi_sysfs.c                          |   4 +-
- drivers/vhost/net.c                                |   9 +-
- fs/efivarfs/super.c                                |   4 +
- fs/erofs/zdata.c                                   |  13 +-
- fs/nfs/pagelist.c                                  |  86 +--------
- fs/nfs/write.c                                     | 148 +++++++++------
- fs/smb/client/cifsfs.c                             |  14 ++
- fs/smb/client/inode.c                              |  34 +++-
- fs/smb/client/smb2inode.c                          |   7 +-
- fs/xfs/libxfs/xfs_attr_remote.c                    |   7 +
- fs/xfs/libxfs/xfs_da_btree.c                       |   6 +
- include/linux/atmdev.h                             |   1 +
- include/linux/mlx5/mlx5_ifc.h                      |  11 +-
- include/linux/nfs_page.h                           |   2 +-
- include/net/bluetooth/hci_sync.h                   |   2 +-
- include/net/rose.h                                 |  18 +-
- kernel/dma/pool.c                                  |   4 +-
- kernel/trace/trace.c                               |   4 +-
- net/atm/common.c                                   |  15 +-
- net/bluetooth/hci_event.c                          |  20 ++-
- net/bluetooth/hci_sync.c                           |   6 +-
- net/bluetooth/mgmt.c                               |   5 +-
- net/ipv4/route.c                                   |  10 +-
- net/rose/af_rose.c                                 |  13 +-
- net/rose/rose_in.c                                 |  12 +-
- net/rose/rose_route.c                              |  62 ++++---
- net/rose/rose_timer.c                              |   2 +-
- net/sctp/ipv6.c                                    |   2 +
- sound/soc/codecs/lpass-tx-macro.c                  |   2 +-
- 82 files changed, 897 insertions(+), 560 deletions(-)
 
 
 
