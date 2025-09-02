@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-177285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FE2B40461
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A09EB4040E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1716E56051D
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:40:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD5FB5473E7
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66309306486;
-	Tue,  2 Sep 2025 13:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8058830BF6E;
+	Tue,  2 Sep 2025 13:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSlYn5MT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o45uc6yR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243372D9ECA;
-	Tue,  2 Sep 2025 13:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA132DECDE;
+	Tue,  2 Sep 2025 13:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820162; cv=none; b=PT6Iom5/6vSs9fkSTYFek9k+kRn6lf25NetGmBP/Udi4rygVdmxRunMQvYThOY3mpn6rA7bM3P5Ikltv2gtutMASADLxc/RTMZvmJx1GQCyvx0/Fjf+OsAENXuXYyA02jfXE6W99d0pwEgBL1Dz16HJ3lu0EyRHz9ane8js9biM=
+	t=1756819979; cv=none; b=UDUvz5Ig53/l8NWDqZPBBkqXZrouBvvTyhiGRNY2WxWW6U1vBVvlOGIolPPKsLcEC9cZTsJE+73SyLVBYc0x4GxMQcLmJ9uI4Ot+AElChuerkKPCbNN9DndR7ygxKmYCdnjQL01Uw0SFh3Xy+aSStdJPQJBCyHo/KVGxqvbW/7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820162; c=relaxed/simple;
-	bh=ZQuoZ3hcDlXNFq/bskgGNkr5OgjjUeKcI6LgVOM02Zw=;
+	s=arc-20240116; t=1756819979; c=relaxed/simple;
+	bh=cqYcfh7PQKtm3rrJ+MxdwY4OIMZP7nv4tbf8HHlJwsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IiC8/fKLMQiUqIdZPV3jBLwz0OuCULC00NdQ5Mt3ufMCOMkmSknfnTTP63aUGU8dmPVywtZdvWyIabfYGhGu4AZQ6Y6RqV2+tlqXtK9TryvyJ7aP9HzEfFTUXcfLKxwNo28X73RChryFyPd6ckXZgrUiIedEuwmOdm9fQu7ltfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSlYn5MT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87655C4CEF5;
-	Tue,  2 Sep 2025 13:36:01 +0000 (UTC)
+	 MIME-Version; b=tYj5pjg4C45RtliTGsb25YCzkERfLTF6fkBdxLGIQaeyp/z7SaqzDotHe3g1uaZkIGIeo262OLeUHXOzBK/8RgkVq/2pur+bM3kfOFAx/gPQ5XK/RNWPNswprJQCSiQ3Nt47/CmaIUWvyVWKIu8DSOoaczYl/w5I6pTRCMdqsDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o45uc6yR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3214C4CEED;
+	Tue,  2 Sep 2025 13:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820162;
-	bh=ZQuoZ3hcDlXNFq/bskgGNkr5OgjjUeKcI6LgVOM02Zw=;
+	s=korg; t=1756819979;
+	bh=cqYcfh7PQKtm3rrJ+MxdwY4OIMZP7nv4tbf8HHlJwsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gSlYn5MT/sIPlIUPH+4U/ujiaXqcVijRtKhdUWLPsitfj0cIeiFGSB33XST+2z+Wh
-	 A+6m0/zzGP0cPEDJij+QpeOqqDkPjSR/JswlBq9lghEEcq/0oUNmNNl1rOsa9zl+lw
-	 N3GprR24RL1akXshabNyMMUn/C7ocVHvbUtgSUc8=
+	b=o45uc6yR90una8lThkifDD9gYF8aqDzoWVmhREWJFaNISlkHKcLxOKocMBgD9CQXz
+	 7dKZcpAfgZ0w5RexKKl93n9X8qcAkOAHo4mSYQjjhGuuZNLV+5rDiga+P4rtAboN9k
+	 JXpN18a/f9clhD2d1Nl9g2Gp9iBE9YqGQTrVMLpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Rohan G Thomas <rohan.g.thomas@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 18/75] drm/msm: Defer fd_install in SUBMIT ioctl
+Subject: [PATCH 6.12 54/95] net: stmmac: xgmac: Do not enable RX FIFO Overflow interrupts
 Date: Tue,  2 Sep 2025 15:20:30 +0200
-Message-ID: <20250902131935.828698098@linuxfoundation.org>
+Message-ID: <20250902131941.677965541@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Rohan G Thomas <rohan.g.thomas@altera.com>
 
-[ Upstream commit f22853435bbd1e9836d0dce7fd99c040b94c2bf1 ]
+[ Upstream commit 4f23382841e67174211271a454811dd17c0ef3c5 ]
 
-Avoid fd_install() until there are no more potential error paths, to
-avoid put_unused_fd() after the fd is made visible to userspace.
+Enabling RX FIFO Overflow interrupts is counterproductive
+and causes an interrupt storm when RX FIFO overflows.
+Disabling this interrupt has no side effect and eliminates
+interrupt storms when the RX FIFO overflows.
 
-Fixes: 68dc6c2d5eec ("drm/msm: Fix submit error-path leaks")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/665363/
+Commit 8a7cb245cf28 ("net: stmmac: Do not enable RX FIFO
+overflow interrupts") disables RX FIFO overflow interrupts
+for DWMAC4 IP and removes the corresponding handling of
+this interrupt. This patch is doing the same thing for
+XGMAC IP.
+
+Fixes: 2142754f8b9c ("net: stmmac: Add MAC related callbacks for XGMAC2")
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250825-xgmac-minor-fixes-v3-1-c225fe4444c0@altera.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gem_submit.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
-index bbe4f1665b603..dc142f9e4f602 100644
---- a/drivers/gpu/drm/msm/msm_gem_submit.c
-+++ b/drivers/gpu/drm/msm/msm_gem_submit.c
-@@ -981,12 +981,8 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
- 
- 	if (ret == 0 && args->flags & MSM_SUBMIT_FENCE_FD_OUT) {
- 		sync_file = sync_file_create(submit->user_fence);
--		if (!sync_file) {
-+		if (!sync_file)
- 			ret = -ENOMEM;
--		} else {
--			fd_install(out_fence_fd, sync_file->file);
--			args->fence_fd = out_fence_fd;
--		}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+index 5dcc95bc0ad28..7201a38842651 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+@@ -203,10 +203,6 @@ static void dwxgmac2_dma_rx_mode(struct stmmac_priv *priv, void __iomem *ioaddr,
  	}
  
- 	submit_attach_object_fences(submit);
-@@ -1013,10 +1009,14 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
- out_unlock:
- 	mutex_unlock(&queue->lock);
- out_post_unlock:
--	if (ret && (out_fence_fd >= 0)) {
--		put_unused_fd(out_fence_fd);
-+	if (ret) {
-+		if (out_fence_fd >= 0)
-+			put_unused_fd(out_fence_fd);
- 		if (sync_file)
- 			fput(sync_file->file);
-+	} else if (sync_file) {
-+		fd_install(out_fence_fd, sync_file->file);
-+		args->fence_fd = out_fence_fd;
- 	}
+ 	writel(value, ioaddr + XGMAC_MTL_RXQ_OPMODE(channel));
+-
+-	/* Enable MTL RX overflow */
+-	value = readl(ioaddr + XGMAC_MTL_QINTEN(channel));
+-	writel(value | XGMAC_RXOIE, ioaddr + XGMAC_MTL_QINTEN(channel));
+ }
  
- 	if (!IS_ERR_OR_NULL(submit)) {
+ static void dwxgmac2_dma_tx_mode(struct stmmac_priv *priv, void __iomem *ioaddr,
 -- 
 2.50.1
 
