@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-177198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EADB1B403DF
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:37:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 123A7B4037A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D52874E3E93
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:37:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FD4918953A5
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9091A2D481B;
-	Tue,  2 Sep 2025 13:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5131E305E01;
+	Tue,  2 Sep 2025 13:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qm43NTLx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BTq+M6Aw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435D4305076;
-	Tue,  2 Sep 2025 13:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E53A304BA0;
+	Tue,  2 Sep 2025 13:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819890; cv=none; b=pPOd07aEORQ+h0kJXBQH+uQS8tLOTWFWdD+wLVbQnHLq8pqhnd/OurmBw694MTQJAscvgQoeczIh2XIKFBtrDoUNDQk6OTsuVHsBR39du4dacLkCBVBF0VPsSa2/CVOq2tNH+bznd/IWuU4Gu5NnWKSWlU1GNYhy8YVWp0gnoZw=
+	t=1756819580; cv=none; b=g+Rlv0y64v2ack6kvqHV8ZDgFu8wJSm7TqWYTNhDliijyVIZUT1ZU4m7u4uZJpy77cpe7A590YSV5SVNaq4jEn+KaNl30pFFE6lDBYGDWnjwaznUpr8MwgBV7R+5eVS9BumBt4XBY2FdbOptvhYNQEnxk3gvzweHkvBOswZxZyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819890; c=relaxed/simple;
-	bh=A/H7RSy1GPaI7c8IMD/jzCg+mM9b7PGRlFLH97bMrPc=;
+	s=arc-20240116; t=1756819580; c=relaxed/simple;
+	bh=FwrBufRPBB/bgWe1E4Nx1hngGA84TO5swkPjlg/B4UY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vB6Uj8S6lvnCh9V8sCzFDSmiZXMmRdr3DqfbemWXC/PGoFXN4UZEzxMEDZezBxfUaha63dkKhi3XB2FUr7IU4gaHCWlGFGCqqAeJ64BX5Z5GQFFWH9Ms/6c2be1JtuRuHzqPTGMNeS/Ofr6ohFJZbpBe0Wqe9h15xPLkSDt4j/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qm43NTLx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94F5C4CEF4;
-	Tue,  2 Sep 2025 13:31:29 +0000 (UTC)
+	 MIME-Version; b=RDLrzGNOxLwv/fIaLQwSDC5/cETwyWEtfWqL3K2AQMytbIReK7uat50DiFwMlpmiYpPmRKXNW8WbdW6r21NPMCzBWNZwsW1GLz2QpE8LL9VZxVm5F1W+cudMne5nO8vqEceLrY6jyhtxMCy9LMU23yRZXzuIBZ3ZEkF2TAHfPkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BTq+M6Aw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A108C4CEFD;
+	Tue,  2 Sep 2025 13:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819890;
-	bh=A/H7RSy1GPaI7c8IMD/jzCg+mM9b7PGRlFLH97bMrPc=;
+	s=korg; t=1756819579;
+	bh=FwrBufRPBB/bgWe1E4Nx1hngGA84TO5swkPjlg/B4UY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qm43NTLx1adr4Clwg+M/hXIS8ldS5LPWVsn/aRpJIKgEegCGfZdQTsEo1WEOHHPxW
-	 an19GTshK+9FjSqMhJpoaVugDiywaFLGqEvKLMUYroLCU+VF19OL/a8S1VCj8bhJF7
-	 D+4mVyXzLBVp4Q2g5X1kw7MoH3Hsm8r7G5bJbN0U=
+	b=BTq+M6Awmnhh0CFuzZYEkL5ikkUim388XfV3D3HmJM+jyfxyxbUpZJZ12LMUDZj90
+	 p4O1mCHusWUYanVkMJuan6E9NLBZsNqBEzLk6KJO74CwRcJj7wt33KEd3r0NKZZtcS
+	 Z9MivspBnWDf5QGQxFKM2ieRVNNuMpvyzJ7Ia8QE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Ye Weihua <yeweihua4@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 03/95] trace/fgraph: Fix the warning caused by missing unregister notifier
+Subject: [PATCH 6.16 077/142] bnxt_en: Fix stats context reservation logic
 Date: Tue,  2 Sep 2025 15:19:39 +0200
-Message-ID: <20250902131939.742134593@linuxfoundation.org>
+Message-ID: <20250902131951.220030366@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Weihua <yeweihua4@huawei.com>
+From: Michael Chan <michael.chan@broadcom.com>
 
-[ Upstream commit edede7a6dcd7435395cf757d053974aaab6ab1c2 ]
+[ Upstream commit b4fc8faacfea2538184a1dbd616ae9447a361f3d ]
 
-This warning was triggered during testing on v6.16:
+The HW resource reservation logic allows the L2 driver to use the
+RoCE resources if the RoCE driver is not registered.  When calculating
+the stats contexts available for L2, we should not blindly subtract
+the stats contexts reserved for RoCE unless the RoCE driver is
+registered.  This bug may cause the L2 rings to be less than the
+number requested when we are close to running out of stats contexts.
 
-notifier callback ftrace_suspend_notifier_call already registered
-WARNING: CPU: 2 PID: 86 at kernel/notifier.c:23 notifier_chain_register+0x44/0xb0
-...
-Call Trace:
- <TASK>
- blocking_notifier_chain_register+0x34/0x60
- register_ftrace_graph+0x330/0x410
- ftrace_profile_write+0x1e9/0x340
- vfs_write+0xf8/0x420
- ? filp_flush+0x8a/0xa0
- ? filp_close+0x1f/0x30
- ? do_dup2+0xaf/0x160
- ksys_write+0x65/0xe0
- do_syscall_64+0xa4/0x260
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-When writing to the function_profile_enabled interface, the notifier was
-not unregistered after start_graph_tracing failed, causing a warning the
-next time function_profile_enabled was written.
-
-Fixed by adding unregister_pm_notifier in the exception path.
-
-Link: https://lore.kernel.org/20250818073332.3890629-1-yeweihua4@huawei.com
-Fixes: 4a2b8dda3f870 ("tracing/function-graph-tracer: fix a regression while suspend to disk")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Ye Weihua <yeweihua4@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 2e4592dc9bee ("bnxt_en: Change MSIX/NQs allocation policy")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250825175927.459987-4-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/fgraph.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
-index c12335499ec91..2eed8bc672f91 100644
---- a/kernel/trace/fgraph.c
-+++ b/kernel/trace/fgraph.c
-@@ -1316,6 +1316,7 @@ int register_ftrace_graph(struct fgraph_ops *gops)
- 		ftrace_graph_active--;
- 		gops->saved_func = NULL;
- 		fgraph_lru_release_index(i);
-+		unregister_pm_notifier(&ftrace_suspend_notifier);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 5360c42ad409c..cb76ab78904fc 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -8009,7 +8009,8 @@ static int __bnxt_reserve_rings(struct bnxt *bp)
  	}
- 	return ret;
- }
+ 	rx_rings = min_t(int, rx_rings, hwr.grp);
+ 	hwr.cp = min_t(int, hwr.cp, bp->cp_nr_rings);
+-	if (hwr.stat > bnxt_get_ulp_stat_ctxs(bp))
++	if (bnxt_ulp_registered(bp->edev) &&
++	    hwr.stat > bnxt_get_ulp_stat_ctxs(bp))
+ 		hwr.stat -= bnxt_get_ulp_stat_ctxs(bp);
+ 	hwr.cp = min_t(int, hwr.cp, hwr.stat);
+ 	rc = bnxt_trim_rings(bp, &rx_rings, &hwr.tx, hwr.cp, sh);
 -- 
 2.50.1
 
