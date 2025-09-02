@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-177301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 338CFB404B8
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:46:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03AFFB4038E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B731A1B63971
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:42:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2FB43AA0F3
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA053376BF;
-	Tue,  2 Sep 2025 13:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D831130E830;
+	Tue,  2 Sep 2025 13:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nyl8iOm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fq5l0ER3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8F631DDB8;
-	Tue,  2 Sep 2025 13:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA4231A569;
+	Tue,  2 Sep 2025 13:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820213; cv=none; b=l0nyxCI+ZCGYYSYklPaRH1LR8RuhE8vcrcGbx6GmTZQHpMjxzWfjpK6NatIEBTU8NYGq4rdQBgn6VGTYAXFNH3LTXNU5rIWwtUaf9VGELGOSxoIScQGIFFpVnqL6AHaCqSY3JliEEjVTbH2Qv5Y1RW2SJKIJfoonzBC2OkkmQcs=
+	t=1756819794; cv=none; b=iKoekovBMYRVzTd4O2wW/D1tAPq+A9Zt2stH//6IqV9fq+az4yPUzfMIwf28wIDW8xJ6wN8+qPDK/TFRBhNJ65MmapGm1tequ2iXsNr8p+waw3GhWdtQGkvrvUY3dSMU0tXfusbVqVgD9ZrIjXHeVKdGpFvEy1Q4j7DRUCGcdqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820213; c=relaxed/simple;
-	bh=IYAxXPJ/ursIyaUnsNeZvZ9/ErlTWPCGb+0phNTuqTc=;
+	s=arc-20240116; t=1756819794; c=relaxed/simple;
+	bh=sEOv/82pafAEfOgIwtJZcT6YFHwPgsvgb6GnnV0/TnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M9xQ/B4w4h//r2KniMp0xsdH26rbJvcjRoL5zGO+eo5+RSerk53xBpT0Nq0nv+qFxokP40d8Mmo77TrVZ9Vk8kpzVueNoSs3xpS3RlvYRV1dtS3s/U6GdYsjXcBq9Q6hJqhDGIQyWGpWE7fhDI3LT2LoH8JjiibpjQ2/AVQOo4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nyl8iOm0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E18C4CEED;
-	Tue,  2 Sep 2025 13:36:52 +0000 (UTC)
+	 MIME-Version; b=e0sGmwWJqehIrr5XQL+5jlefBhqoxkQldKw/Qtk8PK3NBwNudkvmKZNghiDERv5j2D7gFIP2j7mnJSPcoxfWlLS1RBWogJu6R+FsvMId87ls+6VL3cQUO2D109hSH1JzPpl+V08mZfR+5pYMgqeU/J5A2lfBK1vR+s7M/d6xH90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fq5l0ER3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2C2C4CEF5;
+	Tue,  2 Sep 2025 13:29:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820213;
-	bh=IYAxXPJ/ursIyaUnsNeZvZ9/ErlTWPCGb+0phNTuqTc=;
+	s=korg; t=1756819794;
+	bh=sEOv/82pafAEfOgIwtJZcT6YFHwPgsvgb6GnnV0/TnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nyl8iOm0qNMiDeJOAt+BF/TAgtoqndu1feWSgUctFlpG+OMHh3j5e9v7t4dPaipsf
-	 al8evaG0avQNAXU1myUlgXihSLcNrqL33YOboxmH8faWVuU6DZWuSEKLQafRIbGJYs
-	 iQ9va5i/a5xjDnUsESobRv7zPowKmbpB8vgTzr4c=
+	b=Fq5l0ER3JinDG7HAS1sPbcZ05+M85D9EPSyFp/7Xq80u2+mfULJebABzGjWn4M+mM
+	 GdH0ifyGRaLLMgSrOAiFUJ2uvuB72phCJ9lJFrNbHL2WdWTqfy5cd4WrnPuEs+aIQm
+	 WOAYVev6wewJWRfiBW8AXIYn5rFRXXO3UjVg5Ju4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Priya Singh <priyax.singh@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 32/75] ice: fix incorrect counter for buffer allocation failures
+	Mason Chang <mason-cw.chang@mediatek.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Daniel Golle <daniel@makrotopia.org>
+Subject: [PATCH 6.16 142/142] thermal/drivers/mediatek/lvts_thermal: Add mt7988 lvts commands
 Date: Tue,  2 Sep 2025 15:20:44 +0200
-Message-ID: <20250902131936.383850831@linuxfoundation.org>
+Message-ID: <20250902131953.719587261@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,51 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Kubiak <michal.kubiak@intel.com>
+From: Mason Chang <mason-cw.chang@mediatek.com>
 
-[ Upstream commit b1a0c977c6f1130f7dd125ee3db8c2435d7e3d41 ]
+commit 685a755089f95b7e205c0202567d9a647f9de096 upstream.
 
-Currently, the driver increments `alloc_page_failed` when buffer allocation fails
-in `ice_clean_rx_irq()`. However, this counter is intended for page allocation
-failures, not buffer allocation issues.
+These commands are necessary to avoid severely abnormal and inaccurate
+temperature readings that are caused by using the default commands.
 
-This patch corrects the counter by incrementing `alloc_buf_failed` instead,
-ensuring accurate statistics reporting for buffer allocation failures.
-
-Fixes: 2fba7dc5157b ("ice: Add support for XDP multi-buffer on Rx side")
-Reported-by: Jacob Keller <jacob.e.keller@intel.com>
-Suggested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Priya Singh <priyax.singh@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mason Chang <mason-cw.chang@mediatek.com>
+Link: https://lore.kernel.org/r/20250526102659.30225-4-mason-cw.chang@mediatek.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/mediatek/lvts_thermal.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index e7084c6aab6da..eae4376c68595 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -1297,7 +1297,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 			skb = ice_construct_skb(rx_ring, xdp);
- 		/* exit if we failed to retrieve a buffer */
- 		if (!skb) {
--			rx_ring->ring_stats->rx_stats.alloc_page_failed++;
-+			rx_ring->ring_stats->rx_stats.alloc_buf_failed++;
- 			xdp_verdict = ICE_XDP_CONSUMED;
- 		}
- 		ice_put_rx_mbuf(rx_ring, xdp, &xdp_xmit, ntc, xdp_verdict);
--- 
-2.50.1
-
+--- a/drivers/thermal/mediatek/lvts_thermal.c
++++ b/drivers/thermal/mediatek/lvts_thermal.c
+@@ -1443,6 +1443,8 @@ static int lvts_resume(struct device *de
+ }
+ 
+ static const u32 default_conn_cmds[] = { 0xC103FFFF, 0xC502FF55 };
++static const u32 mt7988_conn_cmds[] = { 0xC103FFFF, 0xC502FC55 };
++
+ /*
+  * Write device mask: 0xC1030000
+  */
+@@ -1453,6 +1455,12 @@ static const u32 default_init_cmds[] = {
+ 	0xC10300FC, 0xC103009D, 0xC10300F1, 0xC10300E1
+ };
+ 
++static const u32 mt7988_init_cmds[] = {
++	0xC1030300, 0xC1030420, 0xC1030500, 0xC10307A6, 0xC1030CFC,
++	0xC1030A8C, 0xC103098D, 0xC10308F1, 0xC1030B04, 0xC1030E01,
++	0xC10306B8
++};
++
+ /*
+  * The MT8186 calibration data is stored as packed 3-byte little-endian
+  * values using a weird layout that makes sense only when viewed as a 32-bit
+@@ -1747,11 +1755,11 @@ static const struct lvts_ctrl_data mt819
+ 
+ static const struct lvts_data mt7988_lvts_ap_data = {
+ 	.lvts_ctrl	= mt7988_lvts_ap_data_ctrl,
+-	.conn_cmd	= default_conn_cmds,
+-	.init_cmd	= default_init_cmds,
++	.conn_cmd	= mt7988_conn_cmds,
++	.init_cmd	= mt7988_init_cmds,
+ 	.num_lvts_ctrl	= ARRAY_SIZE(mt7988_lvts_ap_data_ctrl),
+-	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
+-	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
++	.num_conn_cmd	= ARRAY_SIZE(mt7988_conn_cmds),
++	.num_init_cmd	= ARRAY_SIZE(mt7988_init_cmds),
+ 	.temp_factor	= LVTS_COEFF_A_MT7988,
+ 	.temp_offset	= LVTS_COEFF_B_MT7988,
+ 	.gt_calib_bit_offset = 24,
 
 
 
