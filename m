@@ -1,163 +1,209 @@
-Return-Path: <stable+bounces-176982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F33B3FD07
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:52:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11289B3FD0D
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:53:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDBC67A5E65
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:50:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73BF41892DE6
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FB02F5311;
-	Tue,  2 Sep 2025 10:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 097E22F5482;
+	Tue,  2 Sep 2025 10:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="BqjzIpA/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dWnEdzvz"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361272F5303;
-	Tue,  2 Sep 2025 10:51:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA6D2F5311;
+	Tue,  2 Sep 2025 10:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756810318; cv=none; b=Qn1Y5HV5GMZQhab5bsgSOX4yFI5VgJkJ/3jzJU19ZWC/GHZSLgT/XL41O+KRm85GD4RrGXckoxhSlaw+XzfhP4oMhcuD2KkUah2gYTdeiJo8c14aUiZUMVP1o57XUsjv03cImAWmCvjOVSubBR4iH+qsn7npj3HhifiBd2DxYkM=
+	t=1756810402; cv=none; b=qQx7NDCo79XnZG1pe5Et6YW+c1pAMeZQu5W06qpB9ga96xF2FmlN/TaQkAMswk96OHtmXUVdmY9AIfmMwPMn/LLn10tmu96kl5OFeakqr4qUt1oMxZbo6kh2psHnu83L/UaYADxKK+6Fd5yWQ18kR3s7wG47H91KgrxUM1cVKj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756810318; c=relaxed/simple;
-	bh=5oCH/UAMV/Ow7I5KjhpkHLsSOUSZe/gM+gFWpbFwqd0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CwyIhaPT7VEu8L6kfoM9qwBtlEt3ASUaoGjFd9G4U/271yxp10rDZh6NTrj9kogXITogPHoHsP2zLW2q/Iq7tH8ZIdPt2M3ly1e/A1DsGei0AGQRFEMfRYdHQB8jp94kWo4nE5PwYWhuKCqjdiRs2HKY4xL1NzEplFxwqBEMkgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=BqjzIpA/; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1756810282; x=1757415082; i=markus.elfring@web.de;
-	bh=5oCH/UAMV/Ow7I5KjhpkHLsSOUSZe/gM+gFWpbFwqd0=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=BqjzIpA/VWQeYLrTo2eWTcKg1Z+/fQUZ3+X8LxKIcpg1SvubA+ysNspSc+V2LIXC
-	 Pbc+D5glHCT1FRKg0ZP7o4cS9btSJ8wAenqBObrv5G0Vlww4XVNevqhd+QvkeqEJA
-	 HckWmj5/hYoKtJL5ehJfdOzn7gUAxeFXvs5jV634f8GmbIeansFz3se82WRQfORzB
-	 d+qWu1UW89GQwakA0ibAM+wPdPdnmaTWnBrF2YFO3fQkXb4zn9c3TSit6O6kNxjSi
-	 mdu0xPexlFAB+3IftzvrX/aAX46K1vrMVKw1r1JnN0InivtbQpPHWKpn2sDIpQtiF
-	 O1zuk9L2heXPLdDxkA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.69.184]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Melaj-1uJEVj1Agv-00c9xY; Tue, 02
- Sep 2025 12:51:22 +0200
-Message-ID: <75284139-15f9-4cb6-8b6e-44b9f5312f54@web.de>
-Date: Tue, 2 Sep 2025 12:51:20 +0200
+	s=arc-20240116; t=1756810402; c=relaxed/simple;
+	bh=E4MuKBuPMui/9MgZi7f/P87mnPNEsSCyGsrv1jTBJzQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cWKAgGRpTW871UwgPKtyRU1eQ1/43yNqIeNlms0Ni2jbLxsgG5ruN8UZrykeu+OdVBG2e8waqCEG/sw0lUYXQ1qRurgL7FZ/yHG2/GE82tFuFXDCgxz5WmahHGDLUSulSbtNDq/rqLCDHLxfOC3h+Nt2Gk9DvoGEaXdOTNU8aac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dWnEdzvz; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756810401; x=1788346401;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=E4MuKBuPMui/9MgZi7f/P87mnPNEsSCyGsrv1jTBJzQ=;
+  b=dWnEdzvzNkwaWe5LM5LQuv/cKhH60pP36/A2x36kPSUOeVLeNqmiKQW8
+   7R1wSyzl/+A8gD/uJTiG6jjpnQXHHtSQOIlSrkPKeYuy+oGN761GXX8It
+   XLfj7T8y4bjmjcyEo27P6vfBms/8kWi1d8D//LWbSQOR2QsPYsHE3dHa/
+   ACkshRg4jwQ+cwGC0e1l+GFmCWpD+CC+YUVG2WOZK8DOVPaxWmjK8pO05
+   FNqSqnKKH2reGOkMZ5A7OhjXJaJQ8qCIsNDpB3tD2eyFEZAJyTMrfxYby
+   Lbb6RaEYMyijXXNfiUKHq9XWaq59ZqBFTwT8klgBQfpexUpiMcYsf4CNS
+   g==;
+X-CSE-ConnectionGUID: TyHnMWCbTpWt5vaVXBa0+A==
+X-CSE-MsgGUID: pR4p9uqvTjyylegJMStSyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="76678010"
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="76678010"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 03:53:19 -0700
+X-CSE-ConnectionGUID: iKmDKrdcQ1qtNfX1kWWMeA==
+X-CSE-MsgGUID: Ou9vgMjuQqyP9Duvhmtd1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="171609563"
+Received: from johunt-mobl9.ger.corp.intel.com (HELO mnyman-desk.intel.com) ([10.245.245.90])
+  by fmviesa008.fm.intel.com with ESMTP; 02 Sep 2025 03:53:17 -0700
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+To: <gregkh@linuxfoundation.org>
+Cc: <linux-usb@vger.kernel.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/3] xhci: dbc: decouple endpoint allocation from initialization
+Date: Tue,  2 Sep 2025 13:53:04 +0300
+Message-ID: <20250902105306.877476-2-mathias.nyman@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250902105306.877476-1-mathias.nyman@linux.intel.com>
+References: <20250902105306.877476-1-mathias.nyman@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: pasemi: fix PCI device reference leaks in pas_setup_mce_regs
-To: Jiri Slaby <jirislaby@kernel.org>, Miaoqian Lin <linmq006@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Olof Johansson <olof@lixom.net>, Paul Mackerras <paulus@ozlabs.org>,
- Thomas Gleixner <tglx@linutronix.de>
-References: <20250902072156.2389727-1-linmq006@gmail.com>
- <63be79a4-79e4-47f5-a756-aa55fe0d29ab@web.de>
- <d620167b-ba52-4f80-82bc-1a35223f96e6@kernel.org>
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <d620167b-ba52-4f80-82bc-1a35223f96e6@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:qkJgSfUQRHDUBjKXTnPkIaQJnw4BApWlKae00poTjroIKXjD8Ih
- 2lPfwJNfJJMCtwdBDBPOG5SnCrZ4ccMjBwkA/V0cbKohaXFFOvcio1AccLoK2X7JdKjNXFj
- VqHPTFWhnanX1bcB5pnj4NaPKF9AhQpDo/U02alKCkRnqQ42oym1YeGoiFt9KBQs/SgbKNS
- uGGmWClTTpQHpRpafSjgg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:O9SB3Lj683U=;QiORRqIzC0CLJ22Ht3pjTrAVGPw
- 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
- /AGeakanwk58ADqbDPT
+Content-Transfer-Encoding: 8bit
 
->> *=C2=A0Would=C2=A0you=C2=A0like=C2=A0to=C2=A0increase=C2=A0the=C2=A0app=
-lication=C2=A0of=C2=A0scope-based=C2=A0resource=C2=A0management?
->> =C2=A0=C2=A0https://elixir.bootlin.com/linux/v6.17-rc4/source/include/l=
-inux/device.h#L1180
->=20
-> That=C2=A0won't=C2=A0work=C2=A0here=C2=A0at=C2=A0all.
+Decouple allocation of endpoint ring buffer from initialization
+of the buffer, and initialization of endpoint context parts from
+from the rest of the contexts.
 
-Why do you think in this direction here?
+It allows driver to clear up and reinitialize endpoint rings
+after disconnect without reallocating everything.
 
-Regards,
-Markus
+This is a prerequisite for the next patch that prevents the transfer
+ring from filling up with cancelled (no-op) TRBs if a debug cable is
+reconnected several times without transferring anything.
+
+Cc: stable@vger.kernel.org
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+---
+ drivers/usb/host/xhci-dbgcap.c | 71 ++++++++++++++++++++++------------
+ 1 file changed, 46 insertions(+), 25 deletions(-)
+
+diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
+index 06a2edb9e86e..d0faff233e3e 100644
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -101,13 +101,34 @@ static u32 xhci_dbc_populate_strings(struct dbc_str_descs *strings)
+ 	return string_length;
+ }
+ 
++static void xhci_dbc_init_ep_contexts(struct xhci_dbc *dbc)
++{
++	struct xhci_ep_ctx      *ep_ctx;
++	unsigned int		max_burst;
++	dma_addr_t		deq;
++
++	max_burst               = DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
++
++	/* Populate bulk out endpoint context: */
++	ep_ctx                  = dbc_bulkout_ctx(dbc);
++	deq                     = dbc_bulkout_enq(dbc);
++	ep_ctx->ep_info         = 0;
++	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
++	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_out->cycle_state);
++
++	/* Populate bulk in endpoint context: */
++	ep_ctx                  = dbc_bulkin_ctx(dbc);
++	deq                     = dbc_bulkin_enq(dbc);
++	ep_ctx->ep_info         = 0;
++	ep_ctx->ep_info2        = dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
++	ep_ctx->deq             = cpu_to_le64(deq | dbc->ring_in->cycle_state);
++}
++
+ static void xhci_dbc_init_contexts(struct xhci_dbc *dbc, u32 string_length)
+ {
+ 	struct dbc_info_context	*info;
+-	struct xhci_ep_ctx	*ep_ctx;
+ 	u32			dev_info;
+-	dma_addr_t		deq, dma;
+-	unsigned int		max_burst;
++	dma_addr_t		dma;
+ 
+ 	if (!dbc)
+ 		return;
+@@ -121,20 +142,8 @@ static void xhci_dbc_init_contexts(struct xhci_dbc *dbc, u32 string_length)
+ 	info->serial		= cpu_to_le64(dma + DBC_MAX_STRING_LENGTH * 3);
+ 	info->length		= cpu_to_le32(string_length);
+ 
+-	/* Populate bulk out endpoint context: */
+-	ep_ctx			= dbc_bulkout_ctx(dbc);
+-	max_burst		= DBC_CTRL_MAXBURST(readl(&dbc->regs->control));
+-	deq			= dbc_bulkout_enq(dbc);
+-	ep_ctx->ep_info		= 0;
+-	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_OUT_EP, 1024, max_burst);
+-	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_out->cycle_state);
+-
+-	/* Populate bulk in endpoint context: */
+-	ep_ctx			= dbc_bulkin_ctx(dbc);
+-	deq			= dbc_bulkin_enq(dbc);
+-	ep_ctx->ep_info		= 0;
+-	ep_ctx->ep_info2	= dbc_epctx_info2(BULK_IN_EP, 1024, max_burst);
+-	ep_ctx->deq		= cpu_to_le64(deq | dbc->ring_in->cycle_state);
++	/* Populate bulk in and out endpoint contexts: */
++	xhci_dbc_init_ep_contexts(dbc);
+ 
+ 	/* Set DbC context and info registers: */
+ 	lo_hi_writeq(dbc->ctx->dma, &dbc->regs->dccp);
+@@ -436,6 +445,23 @@ dbc_alloc_ctx(struct device *dev, gfp_t flags)
+ 	return ctx;
+ }
+ 
++static void xhci_dbc_ring_init(struct xhci_ring *ring)
++{
++	struct xhci_segment *seg = ring->first_seg;
++
++	/* clear all trbs on ring in case of old ring */
++	memset(seg->trbs, 0, TRB_SEGMENT_SIZE);
++
++	/* Only event ring does not use link TRB */
++	if (ring->type != TYPE_EVENT) {
++		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
++
++		trb->link.segment_ptr = cpu_to_le64(ring->first_seg->dma);
++		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
++	}
++	xhci_initialize_ring_info(ring);
++}
++
+ static struct xhci_ring *
+ xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
+ {
+@@ -464,15 +490,10 @@ xhci_dbc_ring_alloc(struct device *dev, enum xhci_ring_type type, gfp_t flags)
+ 
+ 	seg->dma = dma;
+ 
+-	/* Only event ring does not use link TRB */
+-	if (type != TYPE_EVENT) {
+-		union xhci_trb *trb = &seg->trbs[TRBS_PER_SEGMENT - 1];
+-
+-		trb->link.segment_ptr = cpu_to_le64(dma);
+-		trb->link.control = cpu_to_le32(LINK_TOGGLE | TRB_TYPE(TRB_LINK));
+-	}
+ 	INIT_LIST_HEAD(&ring->td_list);
+-	xhci_initialize_ring_info(ring);
++
++	xhci_dbc_ring_init(ring);
++
+ 	return ring;
+ dma_fail:
+ 	kfree(seg);
+-- 
+2.43.0
+
 
