@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-177366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E94ACB40502
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2883CB404AF
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:45:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F2351B67712
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D64B95E1003
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540CF313533;
-	Tue,  2 Sep 2025 13:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25CD730BF69;
+	Tue,  2 Sep 2025 13:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBynRo4W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvr7kBjs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD7D313551;
-	Tue,  2 Sep 2025 13:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F0730BF6E;
+	Tue,  2 Sep 2025 13:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820415; cv=none; b=g9eP2NsTDEcCJVsXXcDdnTuiLVr8uUZ1uvLIM5G72kjwag+W74wvkVDC/aOAGg/PuvFc7cDrWS99tBIqfC+7ImWjm5VPzLRpa9afS8J+kxEYUS/+1BbVYkZnYEjXjSOc082TrMxeDHKZx3ym0oyvElf3jIj8jwp6BN7QZvLyAPU=
+	t=1756820299; cv=none; b=V3SeQYVJUbd0/8NAtaFtgktXWaKTmkiXtDEWrBiXSP55cLqCh7JF9RtFWfyNKWqoWRTHqnnK9ezCRIPvCt4ni+X78c2Y40wFNZPYB823qNpGVqBuk1RaVT0biYu8EMD+nfCrQ692a+XAZB4RNuHJm2JToLpz3IZaK7Ojriw3h1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820415; c=relaxed/simple;
-	bh=qI4qAWiHru/RpwMB1JhSZW4ed+Svs3QUhaV+QtidlrA=;
+	s=arc-20240116; t=1756820299; c=relaxed/simple;
+	bh=s7R4hvmyRtQyON2Y/lMgNRmQ2ifPMGIxMnMwQ9k+2Do=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3erm6dGELSKlQCNC5VlVqs3vMLM21MCiJ72jyHW6VfwhEVcrxxzz5g12QXG/xzmKZt3iq4Nvr6l8Xcvhr3SFdKvtub1rlecFdqiTcK0aQZU82UZVzSZDJLFBl4tI0V5rmPfGQ3AaGve9ajevsCH1SRmdx3jpa18ixUESu/ZIfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBynRo4W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D921C4CEF5;
-	Tue,  2 Sep 2025 13:40:14 +0000 (UTC)
+	 MIME-Version; b=Rpr9Z3fdLOuVn9JWiAd15Ze6cqhNwPW4DAum6+gf613jx2/dAjV+2sw4csP4d4/y6b+ev4xO8Je7yo6B+2nBGLuLrG/IFx5HBgX0QpZusfQHWSopaMLPEhp8hMnR8QUwDvBkK3p8yfkb8ZMYOutTyakk2qshJDPFu0DM+sxKC8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rvr7kBjs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D051DC4CEED;
+	Tue,  2 Sep 2025 13:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820414;
-	bh=qI4qAWiHru/RpwMB1JhSZW4ed+Svs3QUhaV+QtidlrA=;
+	s=korg; t=1756820298;
+	bh=s7R4hvmyRtQyON2Y/lMgNRmQ2ifPMGIxMnMwQ9k+2Do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sBynRo4WkBpSlpUEu3aKlCLPAbtHTbOWfikHqwPjyDk8J1yHbbpg6SDS+EnO4C+/E
-	 mNJC1zryDJkrH6c/X9Bc8/TJymf0vmAfQpyBkOkgK4dUBMhITify2Ah69uX4Pzu+mq
-	 iYFWlbn7+pD4ZAa/Mp7zJoNrdM9B64DVhpqK6JeE=
+	b=rvr7kBjsRdr2w5V7tWCI/AEnpu6S8vVMVJ41yHE2XtTtOkimpTtT42zuEPGtRoeY7
+	 mUmoqextaNylCnVeMpT5l01BwXGGG5S7ytVwOfINiap/Su2FveSP99Jo/3qPY1Lkhq
+	 nVC+OtJQBYlufyFNjnK+9YhmN9PL+mfvh+bfaBYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Shpakovskiy <pashpakovskii@salutedevices.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 21/50] Bluetooth: hci_sync: fix set_local_name race condition
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.6 60/75] HID: quirks: add support for Legion Go dual dinput modes
 Date: Tue,  2 Sep 2025 15:21:12 +0200
-Message-ID: <20250902131931.368272294@linuxfoundation.org>
+Message-ID: <20250902131937.468189641@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Shpakovskiy <pashpakovskii@salutedevices.com>
+From: Antheas Kapenekakis <lkml@antheas.dev>
 
-[ Upstream commit 6bbd0d3f0c23fc53c17409dd7476f38ae0ff0cd9 ]
+commit 1f3214aae9f49faf495f3836216afbc6c5400b2e upstream.
 
-Function set_name_sync() uses hdev->dev_name field to send
-HCI_OP_WRITE_LOCAL_NAME command, but copying from data to hdev->dev_name
-is called after mgmt cmd was queued, so it is possible that function
-set_name_sync() will read old name value.
+The Legion Go features detachable controllers which support a dual
+dinput mode. In this mode, the controllers appear under a single HID
+device with two applications.
 
-This change adds name as a parameter for function hci_update_name_sync()
-to avoid race condition.
+Currently, both controllers appear under the same event device, causing
+their controls to be mixed up. This patch separates the two so that
+they can be used independently.
 
-Fixes: 6f6ff38a1e14 ("Bluetooth: hci_sync: Convert MGMT_OP_SET_LOCAL_NAME")
-Signed-off-by: Pavel Shpakovskiy <pashpakovskii@salutedevices.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In addition, the latest firmware update for the Legion Go swaps the IDs
+to the ones used by the Legion Go 2, so add those IDs as well.
+
+[jkosina@suse.com: improved shortlog]
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/hci_sync.h | 2 +-
- net/bluetooth/hci_sync.c         | 6 +++---
- net/bluetooth/mgmt.c             | 5 ++++-
- 3 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/hid/hid-ids.h    |    2 ++
+ drivers/hid/hid-quirks.c |    2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
-index 3a7658d660224..a8b106d884d41 100644
---- a/include/net/bluetooth/hci_sync.h
-+++ b/include/net/bluetooth/hci_sync.h
-@@ -65,7 +65,7 @@ int hci_update_class_sync(struct hci_dev *hdev);
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -818,6 +818,8 @@
+ #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_6019	0x6019
+ #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_602E	0x602e
+ #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_6093	0x6093
++#define USB_DEVICE_ID_LENOVO_LEGION_GO_DUAL_DINPUT	0x6184
++#define USB_DEVICE_ID_LENOVO_LEGION_GO2_DUAL_DINPUT	0x61ed
  
- int hci_update_eir_sync(struct hci_dev *hdev);
- int hci_update_class_sync(struct hci_dev *hdev);
--int hci_update_name_sync(struct hci_dev *hdev);
-+int hci_update_name_sync(struct hci_dev *hdev, const u8 *name);
- int hci_write_ssp_mode_sync(struct hci_dev *hdev, u8 mode);
- 
- int hci_get_random_address(struct hci_dev *hdev, bool require_privacy,
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index acff47da799aa..965b0f2b43a72 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -3424,13 +3424,13 @@ int hci_update_scan_sync(struct hci_dev *hdev)
- 	return hci_write_scan_enable_sync(hdev, scan);
- }
- 
--int hci_update_name_sync(struct hci_dev *hdev)
-+int hci_update_name_sync(struct hci_dev *hdev, const u8 *name)
- {
- 	struct hci_cp_write_local_name cp;
- 
- 	memset(&cp, 0, sizeof(cp));
- 
--	memcpy(cp.name, hdev->dev_name, sizeof(cp.name));
-+	memcpy(cp.name, name, sizeof(cp.name));
- 
- 	return __hci_cmd_sync_status(hdev, HCI_OP_WRITE_LOCAL_NAME,
- 					    sizeof(cp), &cp,
-@@ -3482,7 +3482,7 @@ int hci_powered_update_sync(struct hci_dev *hdev)
- 			hci_write_fast_connectable_sync(hdev, false);
- 		hci_update_scan_sync(hdev);
- 		hci_update_class_sync(hdev);
--		hci_update_name_sync(hdev);
-+		hci_update_name_sync(hdev, hdev->dev_name);
- 		hci_update_eir_sync(hdev);
- 	}
- 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 919e1bae2b269..27876512c63a4 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -3897,8 +3897,11 @@ static void set_name_complete(struct hci_dev *hdev, void *data, int err)
- 
- static int set_name_sync(struct hci_dev *hdev, void *data)
- {
-+	struct mgmt_pending_cmd *cmd = data;
-+	struct mgmt_cp_set_local_name *cp = cmd->param;
-+
- 	if (lmp_bredr_capable(hdev)) {
--		hci_update_name_sync(hdev);
-+		hci_update_name_sync(hdev, cp->name);
- 		hci_update_eir_sync(hdev);
- 	}
- 
--- 
-2.50.1
-
+ #define USB_VENDOR_ID_LETSKETCH		0x6161
+ #define USB_DEVICE_ID_WP9620N		0x4d15
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -124,6 +124,8 @@ static const struct hid_device_id hid_qu
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_PENSKETCH_T609A), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_LABTEC, USB_DEVICE_ID_LABTEC_ODDOR_HANDBRAKE), HID_QUIRK_ALWAYS_POLL },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_LEGION_GO_DUAL_DINPUT), HID_QUIRK_MULTI_INPUT },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_LEGION_GO2_DUAL_DINPUT), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_OPTICAL_USB_MOUSE_600E), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_608D), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_6019), HID_QUIRK_ALWAYS_POLL },
 
 
 
