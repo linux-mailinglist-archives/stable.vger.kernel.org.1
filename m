@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-177138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7707B40389
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A94B403DA
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:36:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0640A546681
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:32:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F15804E0C1F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3823128A6;
-	Tue,  2 Sep 2025 13:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9BB311592;
+	Tue,  2 Sep 2025 13:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xThu3nxl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SyhCZmfm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE50015747D;
-	Tue,  2 Sep 2025 13:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2811032ED3C;
+	Tue,  2 Sep 2025 13:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819701; cv=none; b=cOIybNPQJVsqQlwttGWMrQ0Wivtbw4JkfSRhmtLRh5dMnqrahPSBcH5rfSJnXAX01j/SHB6n8cuIfZcn6H3ik/Uh02eyFFxUFlBZ8yRLrYBe57Wokt1E18FA3QxVK8sMSHEZQUCNClQdWvIBgbwhu2HItrn58vRw8CeBh8sAGJM=
+	t=1756819874; cv=none; b=iL7CcL8JLVcqEsosRn4SbrE+kvLmKotb6SePWGcIZ8/fWoPr1bmU893yTYUAlRiZ2+PIZVMfmpksSYkUmcMmhqZoi2mupcTBbvYFMjUHbDsu+9Ln8yJ9q6RsjPqdZCLvlWMzAhmT2555Z6NESispSUbHJ9V9/wJ5ckqLmmxqR08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819701; c=relaxed/simple;
-	bh=oeLtV8h3zRmxIj/k4cmgO7T4nwfa8MG9LUmKPq116E8=;
+	s=arc-20240116; t=1756819874; c=relaxed/simple;
+	bh=/s3LXUKG5V8f9wFT92EiS7+ZhuXPY0a1S/IAaZUC7Lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tXlkj4RIOqfWHdRzdcsyn5tLA34cnn7TZLe8q4Rvz3iQXinxg/kjTPhyRQ0YJUyFno/zXfgU+2hWFin3AA3o2LoZpP5ArcBjvK4LHPRgoFPo+FZgH6Zw+vXYFrubMHfYm+5KZ6yEyt8EAOTaRQUq/GQvrO5nbKfG25eIqyEGMgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xThu3nxl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20720C4CEF5;
-	Tue,  2 Sep 2025 13:28:20 +0000 (UTC)
+	 MIME-Version; b=n3JhlpFGrUbtKzxAsIT6fxU2yu5+yVRWl6/luOyKkdzCXJiivDiswOoUgs4xufW6Hdrii4dGBqIzz1Jz/qG9ZKV3hDIftMynydE18pXWC666EhFL8JXhOYBAxz8Mz5qAvUEuDoDCAxrmAhTatAUzus4vuCXSkKNKigFK5H/1myU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SyhCZmfm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A7BC4CEF4;
+	Tue,  2 Sep 2025 13:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819701;
-	bh=oeLtV8h3zRmxIj/k4cmgO7T4nwfa8MG9LUmKPq116E8=;
+	s=korg; t=1756819874;
+	bh=/s3LXUKG5V8f9wFT92EiS7+ZhuXPY0a1S/IAaZUC7Lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xThu3nxlPAijNXjpKGorlqtxAdstjMvce93Z2ZNvJRuxDODUmK2wZSWSfvhhxZ/n/
-	 sDfZU8CPZS1UubN17NONJMpg3Ljkjhil9U8eGHmHGX/BFuq0wnpWcD8sBhqb4Yk2h9
-	 D0BmR4B7ZNOA7RN389lu3kYUYIJ5eoFnbEVovl7c=
+	b=SyhCZmfmRWFnt2KCec1DeRx4Z6Q7B2XuuH/3IOy4FVqNAp1eQA3ji5u/TqsTywHQ1
+	 JcYnFBWAM+9B3PkWlmikXnTKsJ7bOJkAi4SqhaFiGbR5u5jbXlQPkJj3RPB3FLIMF9
+	 1FUO5aPHar+AbxTNCuzJgoDCXRcs88Y4KqZzTiko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+942297eecf7d2d61d1f1@syzkaller.appspotmail.com,
-	Takamitsu Iwai <takamitz@amazon.co.jp>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 096/142] net: rose: include node references in rose_neigh refcount
+Subject: [PATCH 6.12 22/95] drm/msm/kms: move snapshot init earlier in KMS init
 Date: Tue,  2 Sep 2025 15:19:58 +0200
-Message-ID: <20250902131951.946336599@linuxfoundation.org>
+Message-ID: <20250902131940.464999448@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,144 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takamitsu Iwai <takamitz@amazon.co.jp>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit da9c9c877597170b929a6121a68dcd3dd9a80f45 ]
+[ Upstream commit 553666f839b86545300773954df7426a45c169c4 ]
 
-Current implementation maintains two separate reference counting
-mechanisms: the 'count' field in struct rose_neigh tracks references from
-rose_node structures, while the 'use' field (now refcount_t) tracks
-references from rose_sock.
+Various parts of the display driver can be triggering the display
+snapshot (including the IOMMU fault handlers). Move the call to
+msm_disp_snapshot_init() before KMS initialization, otherwise it is
+possible to ocassionally trigger the kernel fault during init:
 
-This patch merges these two reference counting systems using 'use' field
-for proper reference management. Specifically, this patch adds incrementing
-and decrementing of rose_neigh->use when rose_neigh->count is incremented
-or decremented.
+  __lock_acquire+0x44/0x2798 (P)
+  lock_acquire+0x114/0x25c
+  _raw_spin_lock_irqsave+0x6c/0x90
+  kthread_queue_work+0x2c/0xac
+  msm_disp_snapshot_state+0x2c/0x4c
+  msm_kms_fault_handler+0x2c/0x74
+  msm_disp_fault_handler+0x30/0x48
+  report_iommu_fault+0x54/0x128
+  arm_smmu_context_fault+0x74/0x184
+  __handle_irq_event_percpu+0xa4/0x24c
+  handle_irq_event_percpu+0x20/0x5c
+  handle_irq_event+0x48/0x84
+  handle_fasteoi_irq+0xcc/0x170
+  generic_handle_domain_irq+0x48/0x70
+  gic_handle_irq+0x54/0x11c
+  call_on_irq_stack+0x3c/0x50
+  do_interrupt_handler+0x54/0x78
+  el1_interrupt+0x3c/0x5c
+  el1h_64_irq_handler+0x20/0x30
+  el1h_64_irq+0x6c/0x70
+  _raw_spin_unlock_irqrestore+0x44/0x68 (P)
+  klist_next+0xc4/0x124
+  bus_for_each_drv+0x9c/0xe8
+  __device_attach+0xfc/0x190
+  device_initial_probe+0x1c/0x2c
+  bus_probe_device+0x44/0xa0
+  device_add+0x204/0x3e4
+  platform_device_add+0x170/0x244
+  platform_device_register_full+0x130/0x138
+  drm_connector_hdmi_audio_init+0xc0/0x108
+  drm_bridge_connector_init+0x318/0x394
+  msm_dsi_manager_connector_init+0xac/0xdc
+  msm_dsi_modeset_init+0x78/0xc0
+  _dpu_kms_drm_obj_init+0x198/0x75c
+  dpu_kms_hw_init+0x2f8/0x494
+  msm_drm_kms_init+0xb0/0x230
+  msm_drm_init+0x218/0x250
+  msm_drm_bind+0x3c/0x4c
+  try_to_bring_up_aggregate_device+0x208/0x2a4
+  __component_add+0xa8/0x188
+  component_add+0x1c/0x2c
+  dsi_dev_attach+0x24/0x34
+  dsi_host_attach+0x68/0xa0
+  devm_mipi_dsi_attach+0x40/0xcc
+  lt9611_attach_dsi+0x94/0x118
+  lt9611_probe+0x368/0x3c8
+  i2c_device_probe+0x2d0/0x3d8
+  really_probe+0x130/0x354
+  __driver_probe_device+0xac/0x110
+  driver_probe_device+0x44/0x110
+  __device_attach_driver+0xb0/0x138
+  bus_for_each_drv+0x90/0xe8
+  __device_attach+0xfc/0x190
+  device_initial_probe+0x1c/0x2c
+  bus_probe_device+0x44/0xa0
+  deferred_probe_work_func+0xac/0x110
+  process_one_work+0x20c/0x51c
+  process_scheduled_works+0x58/0x88
+  worker_thread+0x1ec/0x304
+  kthread+0x194/0x1d4
+  ret_from_fork+0x10/0x20
 
-This patch also modifies rose_rt_free(), rose_rt_device_down() and
-rose_clear_route() to properly release references to rose_neigh objects
-before freeing a rose_node through rose_remove_node().
-
-These changes ensure rose_neigh structures are properly freed only when
-all references, including those from rose_node structures, are released.
-As a result, this resolves a slab-use-after-free issue reported by Syzbot.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+942297eecf7d2d61d1f1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=942297eecf7d2d61d1f1
-Signed-off-by: Takamitsu Iwai <takamitz@amazon.co.jp>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250823085857.47674-4-takamitz@amazon.co.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Fixes: 98659487b845 ("drm/msm: add support to take dpu snapshot")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/664149/
+Link: https://lore.kernel.org/r/20250715-msm-move-snapshot-init-v1-1-f39c396192ab@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rose/rose_route.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/msm_kms.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
-index 8efb9033c057c..1adee1fbc2ed1 100644
---- a/net/rose/rose_route.c
-+++ b/net/rose/rose_route.c
-@@ -178,6 +178,7 @@ static int __must_check rose_add_node(struct rose_route_struct *rose_route,
- 			}
- 		}
- 		rose_neigh->count++;
-+		rose_neigh_hold(rose_neigh);
+diff --git a/drivers/gpu/drm/msm/msm_kms.c b/drivers/gpu/drm/msm/msm_kms.c
+index 6749f0fbca96d..52464a1346f81 100644
+--- a/drivers/gpu/drm/msm/msm_kms.c
++++ b/drivers/gpu/drm/msm/msm_kms.c
+@@ -241,6 +241,12 @@ int msm_drm_kms_init(struct device *dev, const struct drm_driver *drv)
+ 	if (ret)
+ 		return ret;
  
- 		goto out;
- 	}
-@@ -187,6 +188,7 @@ static int __must_check rose_add_node(struct rose_route_struct *rose_route,
- 		rose_node->neighbour[rose_node->count] = rose_neigh;
- 		rose_node->count++;
- 		rose_neigh->count++;
-+		rose_neigh_hold(rose_neigh);
- 	}
- 
- out:
-@@ -322,6 +324,7 @@ static int rose_del_node(struct rose_route_struct *rose_route,
- 	for (i = 0; i < rose_node->count; i++) {
- 		if (rose_node->neighbour[i] == rose_neigh) {
- 			rose_neigh->count--;
-+			rose_neigh_put(rose_neigh);
- 
- 			if (rose_neigh->count == 0) {
- 				rose_remove_neigh(rose_neigh);
-@@ -430,6 +433,7 @@ int rose_add_loopback_node(const rose_address *address)
- 	rose_node_list  = rose_node;
- 
- 	rose_loopback_neigh->count++;
-+	rose_neigh_hold(rose_loopback_neigh);
- 
- out:
- 	spin_unlock_bh(&rose_node_list_lock);
-@@ -461,6 +465,7 @@ void rose_del_loopback_node(const rose_address *address)
- 	rose_remove_node(rose_node);
- 
- 	rose_loopback_neigh->count--;
-+	rose_neigh_put(rose_loopback_neigh);
- 
- out:
- 	spin_unlock_bh(&rose_node_list_lock);
-@@ -500,6 +505,7 @@ void rose_rt_device_down(struct net_device *dev)
- 				memmove(&t->neighbour[i], &t->neighbour[i + 1],
- 					sizeof(t->neighbour[0]) *
- 						(t->count - i));
-+				rose_neigh_put(s);
- 			}
- 
- 			if (t->count <= 0)
-@@ -543,6 +549,7 @@ static int rose_clear_routes(void)
- {
- 	struct rose_neigh *s, *rose_neigh;
- 	struct rose_node  *t, *rose_node;
-+	int i;
- 
- 	spin_lock_bh(&rose_node_list_lock);
- 	spin_lock_bh(&rose_neigh_list_lock);
-@@ -553,8 +560,12 @@ static int rose_clear_routes(void)
- 	while (rose_node != NULL) {
- 		t         = rose_node;
- 		rose_node = rose_node->next;
--		if (!t->loopback)
++	ret = msm_disp_snapshot_init(ddev);
++	if (ret) {
++		DRM_DEV_ERROR(dev, "msm_disp_snapshot_init failed ret = %d\n", ret);
++		return ret;
++	}
 +
-+		if (!t->loopback) {
-+			for (i = 0; i < rose_node->count; i++)
-+				rose_neigh_put(t->neighbour[i]);
- 			rose_remove_node(t);
-+		}
+ 	ret = priv->kms_init(ddev);
+ 	if (ret) {
+ 		DRM_DEV_ERROR(dev, "failed to load kms\n");
+@@ -293,10 +299,6 @@ int msm_drm_kms_init(struct device *dev, const struct drm_driver *drv)
+ 		goto err_msm_uninit;
  	}
  
- 	while (rose_neigh != NULL) {
-@@ -1189,7 +1200,7 @@ static int rose_neigh_show(struct seq_file *seq, void *v)
- 			   (rose_neigh->loopback) ? "RSLOOP-0" : ax2asc(buf, &rose_neigh->callsign),
- 			   rose_neigh->dev ? rose_neigh->dev->name : "???",
- 			   rose_neigh->count,
--			   refcount_read(&rose_neigh->use) - 1,
-+			   refcount_read(&rose_neigh->use) - rose_neigh->count - 1,
- 			   (rose_neigh->dce_mode) ? "DCE" : "DTE",
- 			   (rose_neigh->restarted) ? "yes" : "no",
- 			   ax25_display_timer(&rose_neigh->t0timer) / HZ,
-@@ -1294,6 +1305,7 @@ void __exit rose_rt_free(void)
- 	struct rose_neigh *s, *rose_neigh = rose_neigh_list;
- 	struct rose_node  *t, *rose_node  = rose_node_list;
- 	struct rose_route *u, *rose_route = rose_route_list;
-+	int i;
+-	ret = msm_disp_snapshot_init(ddev);
+-	if (ret)
+-		DRM_DEV_ERROR(dev, "msm_disp_snapshot_init failed ret = %d\n", ret);
+-
+ 	drm_mode_config_reset(ddev);
  
- 	while (rose_neigh != NULL) {
- 		s          = rose_neigh;
-@@ -1307,6 +1319,8 @@ void __exit rose_rt_free(void)
- 		t         = rose_node;
- 		rose_node = rose_node->next;
- 
-+		for (i = 0; i < t->count; i++)
-+			rose_neigh_put(t->neighbour[i]);
- 		rose_remove_node(t);
- 	}
- 
+ 	return 0;
 -- 
 2.50.1
 
