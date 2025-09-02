@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-177319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7498B404B9
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:46:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46AB3B4041A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06C7B17A4E1
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:42:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82B4B4E6BF1
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6696E3093B8;
-	Tue,  2 Sep 2025 13:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4615F30E0F1;
+	Tue,  2 Sep 2025 13:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/OYOaDU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxu/jnw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EBD2BE036;
-	Tue,  2 Sep 2025 13:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033C231987D;
+	Tue,  2 Sep 2025 13:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820265; cv=none; b=KDMP0WqgRk3IQx3N9NDy4axwFZX1xG2NCCysdldqVVJKDOfJOozjV9f9BA7n4CoVfA3Y4WVuUgdSOdlCIY5JMiN5VY9J9IaKwONdTiVYYAo64sGF7sQ9P63C05XhXIj5KMQJMH8I3nCl+7K9xAF+dDzQiPYCm3guUnEvUA+SlCo=
+	t=1756820080; cv=none; b=kUk93df4gnYgzoKyXj16rJzuRhtg4vgS88LuwBm+CEhi1zDxLMExofyDybnorhBi9YWlAU1wdNDI0T6WXo1PNiOOwJGrjTxhC9Lm1AvZdILYa5pAEuXbrrIQAB9htijvRUIgWJI4QCSGxEyVZGvgtJ23zSH8UCQsLMXowaWVHMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820265; c=relaxed/simple;
-	bh=+hwnmRr0TcHG2A+gehoXFLL4sC8QtZajnsVrvmMQ6zs=;
+	s=arc-20240116; t=1756820080; c=relaxed/simple;
+	bh=FTDQHeQviVEBwM0h3Wf2Ebs1SK19pbqNOcvFRAkoQEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgpsVlBjz/caCDkoOAIYS7YfBGT0HbI4HCKMXSakyI2T3q3hKDD9svfNnkFHvLuSt9IZI+JrlQ3IyEKCAWEWz4+EN+whPhnrlL4we56haFrGo//H07gIW+AqzSLelp+cE70dh99NjODLVFLwJgglNE8kHBPGUtKD+OTWAOHpkjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/OYOaDU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FB2C4CEED;
-	Tue,  2 Sep 2025 13:37:44 +0000 (UTC)
+	 MIME-Version; b=s4FbDq/wOXOItL09oty4EiqjjWIeGZ+dmQNDRxbq7v9U8gTalw953bizqzZS9JBU1eKUCIISgiakIzw9MU3tHjkB88yGOaSNyEIoueTZo65SKUdn7lAkANf0KruH4DORqcoi20mnS0qVEKoxsImV3JZDTT43TrxOGpLZU88isGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxu/jnw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78275C4CEED;
+	Tue,  2 Sep 2025 13:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820264;
-	bh=+hwnmRr0TcHG2A+gehoXFLL4sC8QtZajnsVrvmMQ6zs=;
+	s=korg; t=1756820079;
+	bh=FTDQHeQviVEBwM0h3Wf2Ebs1SK19pbqNOcvFRAkoQEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c/OYOaDU9b5gw3xJEeAzGY4x2Dg7Qc4MppEK+h0RqSp41/pTwcsvZhaJLa7urfrEc
-	 7HwDsVxePuDabNywIf+QUZNxTOepbqLa09C6LhPzKJeffGF9uv1FWzT00V6xSpckYa
-	 +0ck2wRUn75Nev8bGKaL2/flMqg3vyeFJNuwXdeQ=
+	b=nxu/jnw6e18TT9hRet7UF2QRbvhscmUoRlnSdzN1JNx0LBf7Jtk2AVl42FC5x9eHk
+	 qdSsu4YpqQBD6Q8lKVQ/sIA+aeJr1JeLWIIcZRUQQ8/nkKkxHRFx6BXHRpRiF1Wv22
+	 XryhJX66DfQyd7PHk0T5yuutQ+OhRLYNCEMOAkhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takamitsu Iwai <takamitz@amazon.co.jp>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 51/75] net: rose: split remove and free operations in rose_remove_neigh()
+	Ma Ke <make24@iscas.ac.cn>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Subject: [PATCH 6.12 87/95] drm/mediatek: Fix device/node reference count leaks in mtk_drm_get_all_drm_priv
 Date: Tue,  2 Sep 2025 15:21:03 +0200
-Message-ID: <20250902131937.123199740@linuxfoundation.org>
+Message-ID: <20250902131942.942945442@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takamitsu Iwai <takamitz@amazon.co.jp>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit dcb34659028f856c423a29ef9b4e2571d203444d ]
+commit 1f403699c40f0806a707a9a6eed3b8904224021a upstream.
 
-The current rose_remove_neigh() performs two distinct operations:
-1. Removes rose_neigh from rose_neigh_list
-2. Frees the rose_neigh structure
+Using device_find_child() and of_find_device_by_node() to locate
+devices could cause an imbalance in the device's reference count.
+device_find_child() and of_find_device_by_node() both call
+get_device() to increment the reference count of the found device
+before returning the pointer. In mtk_drm_get_all_drm_priv(), these
+references are never released through put_device(), resulting in
+permanent reference count increments. Additionally, the
+for_each_child_of_node() iterator fails to release node references in
+all code paths. This leaks device node references when loop
+termination occurs before reaching MAX_CRTC. These reference count
+leaks may prevent device/node resources from being properly released
+during driver unbind operations.
 
-Split these operations into separate functions to improve maintainability
-and prepare for upcoming refcount_t conversion. The timer cleanup remains
-in rose_remove_neigh() because free operations can be called from timer
-itself.
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
 
-This patch introduce rose_neigh_put() to handle the freeing of rose_neigh
-structures and modify rose_remove_neigh() to handle removal only.
-
-Signed-off-by: Takamitsu Iwai <takamitz@amazon.co.jp>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250823085857.47674-2-takamitz@amazon.co.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: d860d1faa6b2 ("net: rose: convert 'use' field to refcount_t")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250812071932.471730-1-make24@iscas.ac.cn/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/rose.h    |  8 ++++++++
- net/rose/rose_route.c | 15 ++++++---------
- 2 files changed, 14 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/rose.h b/include/net/rose.h
-index 23267b4efcfa3..174b4f605d849 100644
---- a/include/net/rose.h
-+++ b/include/net/rose.h
-@@ -151,6 +151,14 @@ struct rose_sock {
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -381,19 +381,19 @@ static bool mtk_drm_get_all_drm_priv(str
  
- #define rose_sk(sk) ((struct rose_sock *)(sk))
+ 		of_id = of_match_node(mtk_drm_of_ids, node);
+ 		if (!of_id)
+-			continue;
++			goto next_put_node;
  
-+static inline void rose_neigh_put(struct rose_neigh *rose_neigh)
-+{
-+	if (rose_neigh->ax25)
-+		ax25_cb_put(rose_neigh->ax25);
-+	kfree(rose_neigh->digipeat);
-+	kfree(rose_neigh);
-+}
+ 		pdev = of_find_device_by_node(node);
+ 		if (!pdev)
+-			continue;
++			goto next_put_node;
+ 
+ 		drm_dev = device_find_child(&pdev->dev, NULL, mtk_drm_match);
+ 		if (!drm_dev)
+-			continue;
++			goto next_put_device_pdev_dev;
+ 
+ 		temp_drm_priv = dev_get_drvdata(drm_dev);
+ 		if (!temp_drm_priv)
+-			continue;
++			goto next_put_device_drm_dev;
+ 
+ 		if (temp_drm_priv->data->main_len)
+ 			all_drm_priv[CRTC_MAIN] = temp_drm_priv;
+@@ -405,10 +405,17 @@ static bool mtk_drm_get_all_drm_priv(str
+ 		if (temp_drm_priv->mtk_drm_bound)
+ 			cnt++;
+ 
+-		if (cnt == MAX_CRTC) {
+-			of_node_put(node);
++next_put_device_drm_dev:
++		put_device(drm_dev);
 +
- /* af_rose.c */
- extern ax25_address rose_callsign;
- extern int  sysctl_rose_restart_request_timeout;
-diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
-index a7054546f52df..b406b1e0fb1e7 100644
---- a/net/rose/rose_route.c
-+++ b/net/rose/rose_route.c
-@@ -234,20 +234,12 @@ static void rose_remove_neigh(struct rose_neigh *rose_neigh)
- 
- 	if ((s = rose_neigh_list) == rose_neigh) {
- 		rose_neigh_list = rose_neigh->next;
--		if (rose_neigh->ax25)
--			ax25_cb_put(rose_neigh->ax25);
--		kfree(rose_neigh->digipeat);
--		kfree(rose_neigh);
- 		return;
++next_put_device_pdev_dev:
++		put_device(&pdev->dev);
++
++next_put_node:
++		of_node_put(node);
++
++		if (cnt == MAX_CRTC)
+ 			break;
+-		}
  	}
  
- 	while (s != NULL && s->next != NULL) {
- 		if (s->next == rose_neigh) {
- 			s->next = rose_neigh->next;
--			if (rose_neigh->ax25)
--				ax25_cb_put(rose_neigh->ax25);
--			kfree(rose_neigh->digipeat);
--			kfree(rose_neigh);
- 			return;
- 		}
- 
-@@ -331,8 +323,10 @@ static int rose_del_node(struct rose_route_struct *rose_route,
- 		if (rose_node->neighbour[i] == rose_neigh) {
- 			rose_neigh->count--;
- 
--			if (rose_neigh->count == 0 && rose_neigh->use == 0)
-+			if (rose_neigh->count == 0 && rose_neigh->use == 0) {
- 				rose_remove_neigh(rose_neigh);
-+				rose_neigh_put(rose_neigh);
-+			}
- 
- 			rose_node->count--;
- 
-@@ -513,6 +507,7 @@ void rose_rt_device_down(struct net_device *dev)
- 		}
- 
- 		rose_remove_neigh(s);
-+		rose_neigh_put(s);
- 	}
- 	spin_unlock_bh(&rose_neigh_list_lock);
- 	spin_unlock_bh(&rose_node_list_lock);
-@@ -569,6 +564,7 @@ static int rose_clear_routes(void)
- 		if (s->use == 0 && !s->loopback) {
- 			s->count = 0;
- 			rose_remove_neigh(s);
-+			rose_neigh_put(s);
- 		}
- 	}
- 
-@@ -1301,6 +1297,7 @@ void __exit rose_rt_free(void)
- 		rose_neigh = rose_neigh->next;
- 
- 		rose_remove_neigh(s);
-+		rose_neigh_put(s);
- 	}
- 
- 	while (rose_node != NULL) {
--- 
-2.50.1
-
+ 	if (drm_priv->data->mmsys_dev_num == cnt) {
 
 
 
