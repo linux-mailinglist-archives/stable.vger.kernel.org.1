@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-177369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA464B40504
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0A6B404B2
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:45:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C11581899AC2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 758083A0668
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B8A3148D5;
-	Tue,  2 Sep 2025 13:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B6328B4F0;
+	Tue,  2 Sep 2025 13:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rg1wTK0j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttMInR9k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FBF30E0F6;
-	Tue,  2 Sep 2025 13:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA4B30C343;
+	Tue,  2 Sep 2025 13:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820424; cv=none; b=qrn1JzsGgWJnH2GIh/znX79U4zCnjkwv30re44Lb3q9SE5XQY/Mm27v0kBQEeFwH3+GommTiuFIN3o3VTFQ5q7jYnF9C8QC2Fl/PXSWkd6UdOmdLzmQBmG+x2M246p17PM+YJF2wL0Bvqk6BHz6wDV9vsYc0r8rLBNJ9ltAsZOQ=
+	t=1756820308; cv=none; b=a91Va//TIFnV6lp8Q0nrYy19lzSbDLJrsxenu0ywo//9hg4XfWqEYaVe8x/zqK/yMcTTwZEolGnBVxrNw3FFuNxuoY0hfu7KJkgxVsyfeyYa6hFrjlKfR9h5HTqynSLQeigbloSpU70vXzodxkJ4rNG1/D9zDS/BKfvB+uFXFp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820424; c=relaxed/simple;
-	bh=2hozR82bl5QJ5j0qSagjpHm2yO3vAxBj1oxh1tSmNos=;
+	s=arc-20240116; t=1756820308; c=relaxed/simple;
+	bh=QhA1jSh0gtNdVK0HaS4dv1e/fG5KWrFHrpIQYDhF128=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O48rQIphT26ykdVuO0EVUwXhPLNVW9MGWDqUjQZRJqeQVBp1Qi0K+Q2oO9LZrrOvZ//J4O5vDvsc+VOV+DN8Gqx3YblVKwLmF45DrA+BQZ4QA4xsqRbUR/sdyXaLjY/tEgv3PEGAdZSfLWUHIDxuiqBTQTyqYx0JTXIiW296Fvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rg1wTK0j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F18C4CEF4;
-	Tue,  2 Sep 2025 13:40:23 +0000 (UTC)
+	 MIME-Version; b=moJLjVpTmvFuqQRYVGB/pwseAbYjAPsArYFx88yoWBwHw/porM6lPpYKCXFmFywjKjIRgeImBc4y8My/9pib45BMiNHXu21emX34o4Za1JrqrYJrEiR23piT9cFV3d+s93mNT8utnXuOE9ei0uylX/rcC112wdNL9oGWZiIOD90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ttMInR9k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D64C4CEED;
+	Tue,  2 Sep 2025 13:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820424;
-	bh=2hozR82bl5QJ5j0qSagjpHm2yO3vAxBj1oxh1tSmNos=;
+	s=korg; t=1756820308;
+	bh=QhA1jSh0gtNdVK0HaS4dv1e/fG5KWrFHrpIQYDhF128=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rg1wTK0jm3D3K1oWcxrjt6Gtt4iHe/UCp8yYR4ODM+69ih14F5AJdvCPI2d5/0JJH
-	 syE3dS2dwf5HFspOoX3FM+7TZWeH3JZ217ImzNCkN0H3nhTomKAxRxVrn7GukDSpez
-	 /B0l7aZ6IXaBy3fOg3HdK6E+yoagkVSMSO/v+eaA=
+	b=ttMInR9kT+ragfht8rZ9Bh0BU6matSH84uyXxXVsCLjM675oZtw884o1lkkMDcPu9
+	 Ngca+M0HtGihCqrSustIwBzS2Ka94PMiC8JqKuL9eqzt/6YK5yHc5UTTajCC4Z152c
+	 1sj3j1qcWLbEOaMpm0S2Z/GiYClU8uO7x2iqk4pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 24/50] phy: mscc: Fix when PTP clock is register and unregister
+	Minjong Kim <minbell.kim@samsung.com>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.6 63/75] HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()
 Date: Tue,  2 Sep 2025 15:21:15 +0200
-Message-ID: <20250902131931.486776620@linuxfoundation.org>
+Message-ID: <20250902131937.589761701@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Minjong Kim <minbell.kim@samsung.com>
 
-[ Upstream commit 882e57cbc7204662f6c5672d5b04336c1d790b03 ]
+commit 185c926283da67a72df20a63a5046b3b4631b7d9 upstream.
 
-It looks like that every time when the interface was set down and up the
-driver was creating a new ptp clock. On top of this the function
-ptp_clock_unregister was never called.
-Therefore fix this by calling ptp_clock_register and initialize the
-mii_ts struct inside the probe function and call ptp_clock_unregister when
-driver is removed.
+in ntrig_report_version(), hdev parameter passed from hid_probe().
+sending descriptor to /dev/uhid can make hdev->dev.parent->parent to null
+if hdev->dev.parent->parent is null, usb_dev has
+invalid address(0xffffffffffffff58) that hid_to_usb_dev(hdev) returned
+when usb_rcvctrlpipe() use usb_dev,it trigger
+page fault error for address(0xffffffffffffff58)
 
-Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250825065543.2916334-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+add null check logic to ntrig_report_version()
+before calling hid_to_usb_dev()
+
+Signed-off-by: Minjong Kim <minbell.kim@samsung.com>
+Link: https://patch.msgid.link/20250813-hid-ntrig-page-fault-fix-v2-1-f98581f35106@samsung.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/mscc/mscc.h      |  4 ++++
- drivers/net/phy/mscc/mscc_main.c |  4 +---
- drivers/net/phy/mscc/mscc_ptp.c  | 34 ++++++++++++++++++++------------
- 3 files changed, 26 insertions(+), 16 deletions(-)
+ drivers/hid/hid-ntrig.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
-index 878298304430c..fcfbff691b3c6 100644
---- a/drivers/net/phy/mscc/mscc.h
-+++ b/drivers/net/phy/mscc/mscc.h
-@@ -474,6 +474,7 @@ static inline void vsc8584_config_macsec_intr(struct phy_device *phydev)
- void vsc85xx_link_change_notify(struct phy_device *phydev);
- void vsc8584_config_ts_intr(struct phy_device *phydev);
- int vsc8584_ptp_init(struct phy_device *phydev);
-+void vsc8584_ptp_deinit(struct phy_device *phydev);
- int vsc8584_ptp_probe_once(struct phy_device *phydev);
- int vsc8584_ptp_probe(struct phy_device *phydev);
- irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev);
-@@ -488,6 +489,9 @@ static inline int vsc8584_ptp_init(struct phy_device *phydev)
- {
- 	return 0;
- }
-+static inline void vsc8584_ptp_deinit(struct phy_device *phydev)
-+{
-+}
- static inline int vsc8584_ptp_probe_once(struct phy_device *phydev)
- {
- 	return 0;
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index 36734bb217e42..2fabb6a7d2415 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -2326,9 +2326,7 @@ static int vsc85xx_probe(struct phy_device *phydev)
+--- a/drivers/hid/hid-ntrig.c
++++ b/drivers/hid/hid-ntrig.c
+@@ -144,6 +144,9 @@ static void ntrig_report_version(struct
+ 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
+ 	unsigned char *data = kmalloc(8, GFP_KERNEL);
  
- static void vsc85xx_remove(struct phy_device *phydev)
- {
--	struct vsc8531_private *priv = phydev->priv;
--
--	skb_queue_purge(&priv->rx_skbs_list);
-+	vsc8584_ptp_deinit(phydev);
- }
- 
- /* Microsemi VSC85xx PHYs */
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index add1a9ee721af..1f6237705b44b 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -1297,7 +1297,6 @@ static void vsc8584_set_input_clk_configured(struct phy_device *phydev)
- 
- static int __vsc8584_init_ptp(struct phy_device *phydev)
- {
--	struct vsc8531_private *vsc8531 = phydev->priv;
- 	static const u32 ltc_seq_e[] = { 0, 400000, 0, 0, 0 };
- 	static const u8  ltc_seq_a[] = { 8, 6, 5, 4, 2 };
- 	u32 val;
-@@ -1514,17 +1513,7 @@ static int __vsc8584_init_ptp(struct phy_device *phydev)
- 
- 	vsc85xx_ts_eth_cmp1_sig(phydev);
- 
--	vsc8531->mii_ts.rxtstamp = vsc85xx_rxtstamp;
--	vsc8531->mii_ts.txtstamp = vsc85xx_txtstamp;
--	vsc8531->mii_ts.hwtstamp = vsc85xx_hwtstamp;
--	vsc8531->mii_ts.ts_info  = vsc85xx_ts_info;
--	phydev->mii_ts = &vsc8531->mii_ts;
--
--	memcpy(&vsc8531->ptp->caps, &vsc85xx_clk_caps, sizeof(vsc85xx_clk_caps));
--
--	vsc8531->ptp->ptp_clock = ptp_clock_register(&vsc8531->ptp->caps,
--						     &phydev->mdio.dev);
--	return PTR_ERR_OR_ZERO(vsc8531->ptp->ptp_clock);
-+	return 0;
- }
- 
- void vsc8584_config_ts_intr(struct phy_device *phydev)
-@@ -1551,6 +1540,16 @@ int vsc8584_ptp_init(struct phy_device *phydev)
- 	return 0;
- }
- 
-+void vsc8584_ptp_deinit(struct phy_device *phydev)
-+{
-+	struct vsc8531_private *vsc8531 = phydev->priv;
++	if (!hid_is_usb(hdev))
++		return;
 +
-+	if (vsc8531->ptp->ptp_clock) {
-+		ptp_clock_unregister(vsc8531->ptp->ptp_clock);
-+		skb_queue_purge(&vsc8531->rx_skbs_list);
-+	}
-+}
-+
- irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev)
- {
- 	struct vsc8531_private *priv = phydev->priv;
-@@ -1608,7 +1607,16 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
+ 	if (!data)
+ 		goto err_free;
  
- 	vsc8531->ptp->phydev = phydev;
- 
--	return 0;
-+	vsc8531->mii_ts.rxtstamp = vsc85xx_rxtstamp;
-+	vsc8531->mii_ts.txtstamp = vsc85xx_txtstamp;
-+	vsc8531->mii_ts.hwtstamp = vsc85xx_hwtstamp;
-+	vsc8531->mii_ts.ts_info  = vsc85xx_ts_info;
-+	phydev->mii_ts = &vsc8531->mii_ts;
-+
-+	memcpy(&vsc8531->ptp->caps, &vsc85xx_clk_caps, sizeof(vsc85xx_clk_caps));
-+	vsc8531->ptp->ptp_clock = ptp_clock_register(&vsc8531->ptp->caps,
-+						     &phydev->mdio.dev);
-+	return PTR_ERR_OR_ZERO(vsc8531->ptp->ptp_clock);
- }
- 
- int vsc8584_ptp_probe_once(struct phy_device *phydev)
--- 
-2.50.1
-
 
 
 
