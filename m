@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-177434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4DD9B404F3
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC1FB4051D
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:50:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2573C7A0308
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C8D4165AEF
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA18A30BF74;
-	Tue,  2 Sep 2025 13:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493C331E0EA;
+	Tue,  2 Sep 2025 13:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUEoDZ+V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJCzVGFa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9753A272E7C;
-	Tue,  2 Sep 2025 13:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04958212568;
+	Tue,  2 Sep 2025 13:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820630; cv=none; b=p+RnJtq8ho7c8XW45D9WzdTiatmQqGKfRaqFTiFl+vNbf/ZMPhHy+m+UKhZ282YQsUYukE87noQMsi8tnXusSoLpR+ZAOTnd1GVh7QITKur4XJDvZ2749h6HzY9fcjguavqSWSk8CQgwS9iHHIcBi1O+6ITvMb3qRmVIIOSwmxc=
+	t=1756820476; cv=none; b=iCb8uzBgaBYKgPAkDldfTihLymu4/YEBmgqVZEihoaUdKhm0fDL2WlaeYnsDHVIokCq4SHm8tES2HdlU0zb2VOfv3pR6SPfJBvlaRGagqKbSU/xNa5AjRBpOpYmP0AfSSe/JLlWpinUjoVFpMynO2L5JXFqMXQZ+NEj07COglBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820630; c=relaxed/simple;
-	bh=j1X6MgmJLSUiHPveFbmMcVxSr6y4zN5I//AVKQTMbgQ=;
+	s=arc-20240116; t=1756820476; c=relaxed/simple;
+	bh=QIJHN6SqMMFqiQOY1u5ZFh65wXIVBIcUCXCI2pkFlv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L919rXQR16RkyvpP+bjn9StJZLEmtzz4FtQYX8RSbGJvpmCf2zw4Hbou8A1J1SDkbU9UHPn2PGNt+hJWb19Mg3PGWuZ1uSEHfd5DSSwEjqpI70tvlO2rkrVXn64nNh68e6iOSdSHdu57cQ/UeXdelZRENM3EbhtFxUovYSUWmdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUEoDZ+V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB37C4CEED;
-	Tue,  2 Sep 2025 13:43:49 +0000 (UTC)
+	 MIME-Version; b=CykiFQ/WMWtz+3TI8heIzM6xdCQ3a6Jyu6SiHLdaeakSoQEubQQWAkZEV7dsa9OnvmAJ/rKD6uuPrxbARM9v6dAU8gxKryY4GUmhtt4IUdiqrfOJH8FrR0pvad/IzA8zbaFCV12l5U5MYEsTKOT8M8FvO1plCmPQVup/AT58lN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJCzVGFa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B2EC4CEED;
+	Tue,  2 Sep 2025 13:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820630;
-	bh=j1X6MgmJLSUiHPveFbmMcVxSr6y4zN5I//AVKQTMbgQ=;
+	s=korg; t=1756820475;
+	bh=QIJHN6SqMMFqiQOY1u5ZFh65wXIVBIcUCXCI2pkFlv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUEoDZ+VKW6l5WmQag8+EymmRiA9F8qo+7z9LQKh12lcuClbXJiHm6bOcGQshUpxa
-	 KymBk7ErRFlAk0+lmLKqOPDOGe77zPQssFcIGKh4LH5RduPI/vfGY2fKmz2no52cFJ
-	 jwyTLg3lqH4c2SmbEekaBgkEySnbMGrmymVvpWBU=
+	b=sJCzVGFa3/wwkK+dId5slEbI96CZapyF4+GZ9nxZioR+4L/fKa+14uSc8n00Ddxpu
+	 FeZjlfAWOHf8zNkJcKwxHcc3LQIajb2OUJZ8tqQRvDxzMKeHovZ6GHeMKK8E/iCfJ3
+	 3gqvQvP4nKpd+ptw4NH21YibqnXyPQUrJ38diLlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 14/33] phy: mscc: Fix when PTP clock is register and unregister
-Date: Tue,  2 Sep 2025 15:21:32 +0200
-Message-ID: <20250902131927.612278481@linuxfoundation.org>
+	Shuhao Fu <sfual@cse.ust.hk>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 42/50] fs/smb: Fix inconsistent refcnt update
+Date: Tue,  2 Sep 2025 15:21:33 +0200
+Message-ID: <20250902131932.187505286@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
-References: <20250902131927.045875971@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-[ Upstream commit 882e57cbc7204662f6c5672d5b04336c1d790b03 ]
+commit ab529e6ca1f67bcf31f3ea80c72bffde2e9e053e upstream.
 
-It looks like that every time when the interface was set down and up the
-driver was creating a new ptp clock. On top of this the function
-ptp_clock_unregister was never called.
-Therefore fix this by calling ptp_clock_register and initialize the
-mii_ts struct inside the probe function and call ptp_clock_unregister when
-driver is removed.
+A possible inconsistent update of refcount was identified in `smb2_compound_op`.
+Such inconsistent update could lead to possible resource leaks.
 
-Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250825065543.2916334-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Why it is a possible bug:
+1. In the comment section of the function, it clearly states that the
+reference to `cfile` should be dropped after calling this function.
+2. Every control flow path would check and drop the reference to
+`cfile`, except the patched one.
+3. Existing callers would not handle refcount update of `cfile` if
+-ENOMEM is returned.
+
+To fix the bug, an extra goto label "out" is added, to make sure that the
+cleanup logic would always be respected. As the problem is caused by the
+allocation failure of `vars`, the cleanup logic between label "finished"
+and "out" can be safely ignored. According to the definition of function
+`is_replayable_error`, the error code of "-ENOMEM" is not recoverable.
+Therefore, the replay logic also gets ignored.
+
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/mscc/mscc.h      |  4 ++++
- drivers/net/phy/mscc/mscc_main.c |  4 +---
- drivers/net/phy/mscc/mscc_ptp.c  | 34 ++++++++++++++++++++------------
- 3 files changed, 26 insertions(+), 16 deletions(-)
+ fs/smb/client/smb2inode.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
-index 878298304430c..fcfbff691b3c6 100644
---- a/drivers/net/phy/mscc/mscc.h
-+++ b/drivers/net/phy/mscc/mscc.h
-@@ -474,6 +474,7 @@ static inline void vsc8584_config_macsec_intr(struct phy_device *phydev)
- void vsc85xx_link_change_notify(struct phy_device *phydev);
- void vsc8584_config_ts_intr(struct phy_device *phydev);
- int vsc8584_ptp_init(struct phy_device *phydev);
-+void vsc8584_ptp_deinit(struct phy_device *phydev);
- int vsc8584_ptp_probe_once(struct phy_device *phydev);
- int vsc8584_ptp_probe(struct phy_device *phydev);
- irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev);
-@@ -488,6 +489,9 @@ static inline int vsc8584_ptp_init(struct phy_device *phydev)
- {
- 	return 0;
- }
-+static inline void vsc8584_ptp_deinit(struct phy_device *phydev)
-+{
-+}
- static inline int vsc8584_ptp_probe_once(struct phy_device *phydev)
- {
- 	return 0;
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index 03aa85ec60dfc..982e73adf2bcf 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -2326,9 +2326,7 @@ static int vsc85xx_probe(struct phy_device *phydev)
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -81,8 +81,10 @@ static int smb2_compound_op(const unsign
+ 	int len;
  
- static void vsc85xx_remove(struct phy_device *phydev)
- {
--	struct vsc8531_private *priv = phydev->priv;
--
--	skb_queue_purge(&priv->rx_skbs_list);
-+	vsc8584_ptp_deinit(phydev);
- }
- 
- /* Microsemi VSC85xx PHYs */
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index f77bfbee5f20b..e30e6ba9da2f4 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -1294,7 +1294,6 @@ static void vsc8584_set_input_clk_configured(struct phy_device *phydev)
- 
- static int __vsc8584_init_ptp(struct phy_device *phydev)
- {
--	struct vsc8531_private *vsc8531 = phydev->priv;
- 	static const u32 ltc_seq_e[] = { 0, 400000, 0, 0, 0 };
- 	static const u8  ltc_seq_a[] = { 8, 6, 5, 4, 2 };
- 	u32 val;
-@@ -1511,17 +1510,7 @@ static int __vsc8584_init_ptp(struct phy_device *phydev)
- 
- 	vsc85xx_ts_eth_cmp1_sig(phydev);
- 
--	vsc8531->mii_ts.rxtstamp = vsc85xx_rxtstamp;
--	vsc8531->mii_ts.txtstamp = vsc85xx_txtstamp;
--	vsc8531->mii_ts.hwtstamp = vsc85xx_hwtstamp;
--	vsc8531->mii_ts.ts_info  = vsc85xx_ts_info;
--	phydev->mii_ts = &vsc8531->mii_ts;
--
--	memcpy(&vsc8531->ptp->caps, &vsc85xx_clk_caps, sizeof(vsc85xx_clk_caps));
--
--	vsc8531->ptp->ptp_clock = ptp_clock_register(&vsc8531->ptp->caps,
--						     &phydev->mdio.dev);
--	return PTR_ERR_OR_ZERO(vsc8531->ptp->ptp_clock);
-+	return 0;
- }
- 
- void vsc8584_config_ts_intr(struct phy_device *phydev)
-@@ -1548,6 +1537,16 @@ int vsc8584_ptp_init(struct phy_device *phydev)
- 	return 0;
- }
- 
-+void vsc8584_ptp_deinit(struct phy_device *phydev)
-+{
-+	struct vsc8531_private *vsc8531 = phydev->priv;
-+
-+	if (vsc8531->ptp->ptp_clock) {
-+		ptp_clock_unregister(vsc8531->ptp->ptp_clock);
-+		skb_queue_purge(&vsc8531->rx_skbs_list);
+ 	vars = kzalloc(sizeof(*vars), GFP_ATOMIC);
+-	if (vars == NULL)
+-		return -ENOMEM;
++	if (vars == NULL) {
++		rc = -ENOMEM;
++		goto out;
 +	}
-+}
-+
- irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev)
- {
- 	struct vsc8531_private *priv = phydev->priv;
-@@ -1605,7 +1604,16 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
+ 	rqst = &vars->rqst[0];
+ 	rsp_iov = &vars->rsp_iov[0];
  
- 	vsc8531->ptp->phydev = phydev;
+@@ -510,6 +512,7 @@ static int smb2_compound_op(const unsign
+ 		break;
+ 	}
  
--	return 0;
-+	vsc8531->mii_ts.rxtstamp = vsc85xx_rxtstamp;
-+	vsc8531->mii_ts.txtstamp = vsc85xx_txtstamp;
-+	vsc8531->mii_ts.hwtstamp = vsc85xx_hwtstamp;
-+	vsc8531->mii_ts.ts_info  = vsc85xx_ts_info;
-+	phydev->mii_ts = &vsc8531->mii_ts;
-+
-+	memcpy(&vsc8531->ptp->caps, &vsc85xx_clk_caps, sizeof(vsc85xx_clk_caps));
-+	vsc8531->ptp->ptp_clock = ptp_clock_register(&vsc8531->ptp->caps,
-+						     &phydev->mdio.dev);
-+	return PTR_ERR_OR_ZERO(vsc8531->ptp->ptp_clock);
- }
++out:
+ 	if (cfile)
+ 		cifsFileInfo_put(cfile);
  
- int vsc8584_ptp_probe_once(struct phy_device *phydev)
--- 
-2.50.1
-
 
 
 
