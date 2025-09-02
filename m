@@ -1,98 +1,92 @@
-Return-Path: <stable+bounces-176918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1941AB3F1A9
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 02:47:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1570AB3F1E9
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 03:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA61F484963
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 00:47:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C481189EC6A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 01:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C721E3DC8;
-	Tue,  2 Sep 2025 00:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE442DF153;
+	Tue,  2 Sep 2025 01:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="g7+1E16n"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SDfo6bmw"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2082.outbound.protection.outlook.com [40.107.93.82])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2064.outbound.protection.outlook.com [40.107.236.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD34F2AE6A
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 00:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CA61A288;
+	Tue,  2 Sep 2025 01:32:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.64
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756774026; cv=fail; b=p5Ad1d38tXJEKEWNXi4BTH9wiLC272r9Co8XvFCI1ZRekOpeXYE4U68VME3VKsktToepKQ+iFFGGvuJcZpTji5lQwfQI3ulX4Ht/1DswkezbkI4jfOEFrjwnQcU+xzVxVUeAUkUhS9rdEl/KnYLvTRM369f4SlY5/zwikqbPeXs=
+	t=1756776745; cv=fail; b=cqFIusPGEnZVIeWeqtz+7Ih8JOhTWhAghB5Md0IKWk//dVfQrF3V1N3tfbvl9hzibn5UEO6KHL4aoASMFfJxqfoCTiVo2lxXi49S45QANof2hLyz0EY8ym/Cua+wjobWGBc6LnFwSjTwh1L935DscA4zSWlSJvXguxB9GNr2cqA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756774026; c=relaxed/simple;
-	bh=+Qv+aqCfaOVmhcmhNXnRsD2qsov7mFKXMURqwuAu0hA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hHhTyIyqeRRxu1HaZleVI2pKYbku7+/G2+QDUSfc2BmVNWiIFm6knQCaycXB9pjhVa+G1N4JvMDK5dRvUI0zD3NRuzaMRpPng1h19kjboWWbXqMKruuZuN2mpMh4o0GvXgqenbqULoaf9zKgqw/8YtNfgyiHNXpLM+tP4+pkEhA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=g7+1E16n; arc=fail smtp.client-ip=40.107.93.82
+	s=arc-20240116; t=1756776745; c=relaxed/simple;
+	bh=KO9GAkPxXG0vjRh0RpJg6t0gUOqGZRBK+TZh4+Wu+Wc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=k9xZK5W+fI03N2OIGmiSijY6Rw7z9oxDPkuqQGC9CqUheLXFiGiwQnvwuk63oyB+apRbBo13TAhBm7V9/iLoIc4WlpBwQ63l2UOPmp5hiu3INCl24lDnGMVQoT56Ntc845Ps7bS4aI2hTlwvCcsqg3GIwXmbRhWFF3B9l+8FsrM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=SDfo6bmw; arc=fail smtp.client-ip=40.107.236.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JYdSRzcExQwtNWxK38qhuIF7h1tnVbTiAstLxJR8ZDpvIFUXm2FuAESAnsEActpBpbE4b9RN/FBIIILVOiEils48/xA/tZrUHM7zQ3y6+7OwRDumsk3vgWpVsdje+1ovcAuSAWzFHmqBXFxaudUMrhtgNzYDj38pUIDeq6mG2Uf+lamEN/zW9nuRTgA5vaX/ntLm3yrgOTntrJ2rv2gVf4Adi1DMyRyXeDXdaGd30XTtooanMgPDO1hPiubjielD2fXm0OwT52ty24Vbu/48ZaT3fRclnl5O08Pjd7KUauKFXey+eD4/rvteGHWklaAVDvsiyt5solGA01CDOzjwiQ==
+ b=XiqGjJICPDKiUAYkW88lsWJXdSFjU2nXvDj/xPjkjo1U+oSCH1T0XGw8BOLBDMaHfSQLNXr9ax/SYtFefmGyRiBN0yxdykJg5RNl+jAJ2x6HaGl2s+3A15qtuAR+9EXpuSgoejV1nEHOaL5VAOrqZQ1bE2hjoTDTpGVUG9IkRekf+SmqNX5NcivDeJwBDKZPIYy1WC7bk3YJ9VtC4NI+TTdxR1vcTB6grpG+VHR+EiKLLtkgqOLtXXuzY/oxsacoRxBDdTmuTfpvd5xAF2e7YMCokLux6tqUdReuRsfrH1vH0xUIRKRjc25E1rHEq3oAIMmyPon8vUI7FVDxUIGG+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=exXkE8NtY37uvq0chsGgPGRm59HizfrXeuHr1grPerI=;
- b=KnXAfMzLzeM/QYD79VdHOzGA3WggDE4foZhfpvNpG/93X5+pjB9z4VgZqSkXAeqPDD+bHfhzHz5XXBz4L/I6AU7NcX7mJpbmoqiE/CunbYbfl3EjorfgdLeJKcr3fuhxHMHz48KMw5EAzk5y0icsmvOzyTgpulX7ujcOchD5wbs6vNAIuRJFcYdbvS64PmMcKn9mnq4PwfO4QYeclcvM7jHobx4IhXZnaF1kJB6hi/oVsSgfz5eBXwl8Oq0uWIbDtAYtbrqINUZJYFGVhDbHgDTPV0FdfnudUsYs7i+TxvlJ5hW4N98gSxqIi2oTp2wEGgU5n0h4S/IuqUOwXOu91g==
+ bh=BVVNzRh8T8JLyCNoAZ79IEkQcS/VJTNo8wJjeji3QLI=;
+ b=bQqcYbmUV7G4E6Klo0wU+NlupPzQdlAZ6k3iky3cgWJU+5lfpCG6O9TPRabjzvZmmBOU/qkDieRGK4BRdsoGD3jpTDlSlvIbKfnE16cfM3fE7yQdhe4UYlABLQzODRgIgODVl+Ui4JUGNCYL7yRvKh4nH1CKiXjEDFzGq3NVIDCNAkDczJ2czA/6qENwviNtkW+Eg4B6busb7FpApnAx6XHb0yZrbmZOU2LaEUCQLuSZnsnwZNZKawEf3naBAfkFbg/KTL2ux4J2pavzYrKRaYvxGse2EFisDFtW/9q7ShzIrBxgC6ue45SVwgsxD14mgklLuh32+8BxELuMtKzMZQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
+ 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=exXkE8NtY37uvq0chsGgPGRm59HizfrXeuHr1grPerI=;
- b=g7+1E16nO5QGy8eZLdYlJ9fhjf2KNnLNptfugKXeZyYmlkRBWL17STkgMUvOMeNp/+TBUHgrSQ12Dq+SaGYtDHERyM9UcI6QEhDLWzDwRCU1k290N6VmkaAfPnUz8CoajYYiqnWhXVR/V7mUiseEF/95I7aTn4Ha4s2C9eOVNEk=
-Received: from MW4PR04CA0388.namprd04.prod.outlook.com (2603:10b6:303:81::33)
- by LV9PR12MB9760.namprd12.prod.outlook.com (2603:10b6:408:2f0::12) with
+ bh=BVVNzRh8T8JLyCNoAZ79IEkQcS/VJTNo8wJjeji3QLI=;
+ b=SDfo6bmwUZsmD7INo1WTQlIT53v+3TFY9oXZfC4na2ubu/RDnRCIyi/cTlM1cb78oI4C/0rPqSKF5R+dOHiBMYHl1vvapeUSGka2DpqZdOZ9/3sC3qaPrd1Y7OWcrdyQ2EP/WIzRxIo5ts2Qn6dH9rEnzRnwe+RfNKjctaN3d3w=
+Received: from SA0PR11CA0117.namprd11.prod.outlook.com (2603:10b6:806:d1::32)
+ by DM4PR12MB7598.namprd12.prod.outlook.com (2603:10b6:8:10a::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Tue, 2 Sep
- 2025 00:46:54 +0000
-Received: from CY4PEPF0000EDD7.namprd03.prod.outlook.com
- (2603:10b6:303:81:cafe::7a) by MW4PR04CA0388.outlook.office365.com
- (2603:10b6:303:81::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.25; Tue, 2 Sep
+ 2025 01:32:20 +0000
+Received: from SA2PEPF00003F65.namprd04.prod.outlook.com
+ (2603:10b6:806:d1:cafe::c8) by SA0PR11CA0117.outlook.office365.com
+ (2603:10b6:806:d1::32) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.27 via Frontend Transport; Tue,
- 2 Sep 2025 00:46:53 +0000
+ 2 Sep 2025 01:32:20 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CY4PEPF0000EDD7.mail.protection.outlook.com (10.167.241.203) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SA2PEPF00003F65.mail.protection.outlook.com (10.167.248.40) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9073.11 via Frontend Transport; Tue, 2 Sep 2025 00:46:53 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.9094.14 via Frontend Transport; Tue, 2 Sep 2025 01:32:19 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 1 Sep
- 2025 19:46:52 -0500
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
+ 2025 20:32:18 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
  (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 1 Sep
- 2025 19:46:51 -0500
-Received: from wayne-dev-lnx.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Mon, 1 Sep 2025 19:46:44 -0500
-From: waynelin <Wayne.Lin@amd.com>
-To: <amd-gfx@lists.freedesktop.org>
-CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>, Roman Li <roman.li@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>, Tom Chung <chiahsuan.chung@amd.com>, "Fangzhi
- Zuo" <jerry.zuo@amd.com>, Dan Wheeler <daniel.wheeler@amd.com>, Ray Wu
-	<Ray.Wu@amd.com>, Ivan Lipski <ivan.lipski@amd.com>, Alex Hung
-	<alex.hung@amd.com>, Ovidiu Bunea <ovidiu.bunea@amd.com>, Mario Limonciello
-	<mario.limonciello@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
-	<stable@vger.kernel.org>, Charlene Liu <charlene.liu@amd.com>
-Subject: [PATCH 08/11] drm/amd/display: Correct sequences and delays for DCN35 PG & RCG
-Date: Tue, 2 Sep 2025 08:42:53 +0800
-Message-ID: <20250902004532.1833436-9-Wayne.Lin@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250902004532.1833436-1-Wayne.Lin@amd.com>
-References: <20250902004532.1833436-1-Wayne.Lin@amd.com>
+ 2025 20:32:17 -0500
+Received: from xhdradheys41.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Mon, 1 Sep 2025 20:32:07 -0500
+From: Abin Joseph <abin.joseph@amd.com>
+To: <radhey.shyam.pandey@amd.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <michal.simek@amd.com>
+CC: <git@amd.com>, <abin.joseph@amd.com>, <netdev@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH net v2] net: xilinx: axienet: Add error handling for RX metadata pointer retrieval
+Date: Tue, 2 Sep 2025 07:02:05 +0530
+Message-ID: <20250902013205.2849707-1-abin.joseph@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -103,713 +97,103 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD7:EE_|LV9PR12MB9760:EE_
-X-MS-Office365-Filtering-Correlation-Id: c23bb34c-6856-43cc-f430-08dde9ba35c5
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003F65:EE_|DM4PR12MB7598:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0d29c0bb-ae93-4a3f-50e9-08dde9c08ec7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|36860700013|43062017;
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pdDfceFO06KKlS60orBUHA5OGPIB4S/Tc4POq2FlG5Bb6sJrQtkUzQC0Jt0H?=
- =?us-ascii?Q?xisAGyCNE9Ljze8FwRdg1lN5zOl3cN8olRq+8x6Rxun9i/hv3o3SXcm9IqbF?=
- =?us-ascii?Q?LzwHjbwKwhO+kMs+QBrRFE1wmJ5PEuIofCBuFb9WsMEiz/79PrtuMx/VwaSE?=
- =?us-ascii?Q?qt97WIfzpMaOQmi13/OYkKkcQgs+tLiH8nVNNtQfhxBwjRCdMWTL4UwpqkSA?=
- =?us-ascii?Q?B4dOSgK64ISBERA7nKjc4c4R7q6YTW8lcRlQzMi+AdtjAdg0o1BUgT2gqI5o?=
- =?us-ascii?Q?hqs89t2kwRBc2Sf07njUI03YTWbcKOW5m89043c3K3yreQjgGX3uEVLxsNTH?=
- =?us-ascii?Q?zPkwptiLDA2z7papASV5NCBwkegZewujjBDZk8PbzOPJJEV/YhfINuiVknbt?=
- =?us-ascii?Q?6jqQ6pq8tmZnIkP3IDCCCl7IVolXs7pWUfEbpFoQaxLMJAQDe1Ot/os1QjJ5?=
- =?us-ascii?Q?EtrUqgZO1ViwyIU2Orb2Tmc7Gf9lSv+zfVwctzbOLm+FWckJbW12+ojYOnc4?=
- =?us-ascii?Q?PmaGKwv+YVBr6UYNY0Yz9bPf26/+pHjKNQcbVoAi0wNlX6ZD0sKpc37jZ6De?=
- =?us-ascii?Q?nNies0Ktro02Z9esK1aYZzNLYV+28/uopzY0l7HNR91olqpd6lgoz6/0h1Kg?=
- =?us-ascii?Q?tJhkYPKiDpXSeE0E7LRp01W5kUWG55VD5zW12cPiiQN9edQFNKnDbCLIXXEi?=
- =?us-ascii?Q?x9+rvfr5p4op+TwbiFZfI51YPVWwgZXUo4rrdTnRMQE26Vb/cc1P8AoodOci?=
- =?us-ascii?Q?7bMGElAj7PPuNOvjp0uk6qsz6iWGBMYaFQuDTea2ZNWg6mAuyv5GEkVnZdFY?=
- =?us-ascii?Q?xbPvL92bvR8m9XV357WutclfXq1wyaJmo4YByJp6PMD3BY7pD+/k8piv+2ai?=
- =?us-ascii?Q?3hsiCfaMurSiGGoI3yNnHbxPvXg7Rt6BD2lvloB/XIS7i1LcX4wiXX9Vkn4b?=
- =?us-ascii?Q?8FCCegdX6JBium1G3yHv4rVHGoYKmELhJnAyU7tUYyI3K1I3yR8HjnKRUPTj?=
- =?us-ascii?Q?iajn06c5DedTCxZX9d/2sw+1iV95Z/xjrVW6hoylEgzCHXBcuHw2rUOLsHLd?=
- =?us-ascii?Q?5uEJulNLFOQuEZytGog/dH2VQBjj/5NuctksXPc6tI1q04EuS0oeCfX1TnbT?=
- =?us-ascii?Q?8GCnbqykK8KPVZKQlBlSk4BXN/5vxfb9p4YQIWBRqapdY1a+5TT9O31cDC5x?=
- =?us-ascii?Q?9kITnSFCONWjd3xcph038hfTk0KX/xO8HS/3erLJfY2Qf7DAtHRPkwtXIgLo?=
- =?us-ascii?Q?71c/XJjln+2FGY7FsVTZM5KM31fOMIYQk9wT+nwZ87UcfEwEc0ZOaQQt003+?=
- =?us-ascii?Q?yGLtTOfgSS8+rD9LccnOkG2OGCeaIwrmei2gLH5raAtm/J4PguHnjbtSDdlc?=
- =?us-ascii?Q?XVDe4pmo2Kr85qtyDRoRb8JG8SZKgkeuIpL+k7WVhgxreg0nM2YxuReDNlGh?=
- =?us-ascii?Q?30xwkY9q5fG8aeg/fA0MlEWKMp1J8k5UoZnqjv9Hav6cm3ZUz1K62lIvmNix?=
- =?us-ascii?Q?r/QARhx/jYG/Tg/Y4t/fsVb08VLyTh2WJLhj5lPyGCdywinRX3XJ2EIF0Q?=
- =?us-ascii?Q?=3D=3D?=
+	=?us-ascii?Q?+rQ+gKSEWeN5D3j20nuT2TmErrBsk7L2u05Pf6uUL4AIG6ygdR81HfvGqT1s?=
+ =?us-ascii?Q?VxTeV5KpiXzZkJTIsqX0CqiK75fpgOk5T09QgQQ/HTxdl+9usRE2UBL9OVkZ?=
+ =?us-ascii?Q?TgzF/qa5vjUQv8yS+6LWSeSFXtuOx/I0lMNzKbh0Q0UCEiZE44ecxWhuQVLt?=
+ =?us-ascii?Q?A4FoMs44RFeGH07z7I61m2v2Bst/YyFBa9h1jbn/qfoLJEbveQ9Fe78udc87?=
+ =?us-ascii?Q?4BKCgYzFPAwFJeN3meacylgNvPxQVHmfxp0dR9zh815xdAoE56kD2LCqLwV1?=
+ =?us-ascii?Q?zKWmSLdhYEeYYRYsHH1VHs00nsJHg2T4yeCMwz1ElwLRn2QhKt6679T7zTy8?=
+ =?us-ascii?Q?L2Yv7BWuKEzcsQM4fhgnLfAxDfh6TsGAzAqkNCvVI9DkZQoCUnkpTxjMcIVI?=
+ =?us-ascii?Q?SIj30GeRmiM4DMhxTLRDGsi3BqYHVDT0Vc5ShbPldT8QRJzigwh4sxz/ek9R?=
+ =?us-ascii?Q?L+DGLBG4BfDWGJO4zMyTsiZZeDGEKX2fR5rCerPKyQYffByma+i9Qt7atquH?=
+ =?us-ascii?Q?0qg7GlJx1SorN0YtHodt2W7yQ7IRaCuAUe4Ay2pXxnUAe3eE1jePXtckm079?=
+ =?us-ascii?Q?WrGBkiNOzTiNptLjeqgFCdBq290h3QusiyxwZQS3EBduSwEMcw9rmFHma0ou?=
+ =?us-ascii?Q?EJv18HQpUv53UBQNcTLviCEv4LtmmQbCDZxZji/A5owZF0s88Ss4uAEVgo1z?=
+ =?us-ascii?Q?o4WK6Z6c+jYtCYqujSwB5l5IbYfJNgPSGs9g2FS/W9aQayfOeTsmTQpnRtXN?=
+ =?us-ascii?Q?e4Fzd4Nz70hDRdrEBeEgDxESmytK1L7bRFMsfxaqc8S+1Jjgbrv1nkyOh/UL?=
+ =?us-ascii?Q?zUYU1+2bgxkm9MUNXWPn6efbAtoSzLstv4U3hLQJDSShvcgKRYYHUjlOXXpa?=
+ =?us-ascii?Q?j+LY2yl+IQC4NxsA1lK2d4GyRcFArtlUbiSarxdo0qTl295fjO1vFu0AqlpH?=
+ =?us-ascii?Q?dJN5qCH+nm+ZRnKjVo4gUiT3yUinB6VF9pQidiapBaSBptBEGxipNTb8KWEP?=
+ =?us-ascii?Q?ZvkNe/YAqJ+nKfj4ljhJFTddTpDfQ6fjcY0d/xN/iu23yzku7Ey8qphLHTWa?=
+ =?us-ascii?Q?QUqs7zr9HljkDhnUzo/jFsDUWL3pPYtSZPPgZSTG0DO/enVGQYckqQHoo/zB?=
+ =?us-ascii?Q?vT4+ztLQ78n3xjOcdwPigpR1ZXPsmg00FpOC6Zv+7MPVczVhAMK6aZqd4ZBx?=
+ =?us-ascii?Q?Uq7eLZ8eQPpBqUYbvtC2YrzcWwyasklS0fgEm3dXvNkrIyCDzcwWnudcLJKS?=
+ =?us-ascii?Q?Am6IDakCURoOzH0ZRk3spoT5ykPPzUykFvO+yXyr45r2cmGbaYL7myHVMUCz?=
+ =?us-ascii?Q?r8IkKTKhzCKMDOmpt2Wusu3XAu0oGFPdDidIp3YsgsL+D0FhOMOw2jgQEwYR?=
+ =?us-ascii?Q?IQtELYYHgSeBxokqjsL3aUnWlF4CW3tYJWLANBUjIzJ5rjPLWg+9irFN0sm7?=
+ =?us-ascii?Q?u/B1J1WEiCf8jkQEZdKEBMsn32t1O87SgXe4qu3BtegcOMrQgwqNfmUCkP8d?=
+ =?us-ascii?Q?EpUQlcffVGbneCYW4l7U5wCxbAhuCMhUTCgM?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(36860700013)(43062017);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 00:46:53.0943
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 01:32:19.4221
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c23bb34c-6856-43cc-f430-08dde9ba35c5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0d29c0bb-ae93-4a3f-50e9-08dde9c08ec7
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EDD7.namprd03.prod.outlook.com
+	SA2PEPF00003F65.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV9PR12MB9760
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7598
 
-From: Ovidiu Bunea <ovidiu.bunea@amd.com>
+Add proper error checking for dmaengine_desc_get_metadata_ptr() which
+can return an error pointer and lead to potential crashes or undefined
+behaviour if the pointer retrieval fails.
 
-[why]
-The current PG & RCG programming in driver has some gaps and incorrect
-sequences.
+Properly handle the error by unmapping DMA buffer, freeing the skb and
+returning early to prevent further processing with invalid data.
 
-[how]
-Added delays after ungating clocks to allow ramp up, increased polling
-to allow more time for power up, and removed the incorrect sequences.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Fixes: 6a91b846af85 ("net: axienet: Introduce dmaengine support")
+Signed-off-by: Abin Joseph <abin.joseph@amd.com>
 ---
- drivers/gpu/drm/amd/display/dc/dc.h           |   1 +
- .../amd/display/dc/dccg/dcn35/dcn35_dccg.c    |  74 +++++------
- .../amd/display/dc/hwss/dcn35/dcn35_hwseq.c   | 115 +++---------------
- .../amd/display/dc/hwss/dcn35/dcn35_init.c    |   3 -
- .../amd/display/dc/hwss/dcn351/dcn351_init.c  |   3 -
- .../gpu/drm/amd/display/dc/inc/hw/pg_cntl.h   |   1 +
- .../amd/display/dc/pg/dcn35/dcn35_pg_cntl.c   |  78 +++++++-----
- 7 files changed, 111 insertions(+), 164 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
-index b41e66c31e6a..09d705cf5c9b 100644
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -1162,6 +1162,7 @@ struct dc_debug_options {
- 	unsigned int auxless_alpm_lfps_silence_ns;
- 	unsigned int auxless_alpm_lfps_t1t2_us;
- 	short auxless_alpm_lfps_t1t2_offset_us;
-+	bool enable_pg_cntl_debug_logs;
- };
- 
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-index 58c84f555c0f..0ce9489ac6b7 100644
---- a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-+++ b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-@@ -133,30 +133,34 @@ enum dsc_clk_source {
- };
- 
- 
--static void dccg35_set_dsc_clk_rcg(struct dccg *dccg, int inst, bool enable)
-+static void dccg35_set_dsc_clk_rcg(struct dccg *dccg, int inst, bool allow_rcg)
- {
- 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
- 
--	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dsc && enable)
-+	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dsc && allow_rcg)
- 		return;
- 
- 	switch (inst) {
- 	case 0:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK0_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK0_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	case 1:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK1_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK1_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	case 2:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK2_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK2_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	case 3:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK3_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK3_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	default:
- 		BREAK_TO_DEBUGGER();
- 		return;
- 	}
+Changes in v2:
+Update the alias to net
+
+---
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 0d8a05fe541a..83469f7f08d1 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -1166,8 +1166,18 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
+ 	skb = skbuf_dma->skb;
+ 	app_metadata = dmaengine_desc_get_metadata_ptr(skbuf_dma->desc, &meta_len,
+ 						       &meta_max_len);
 +
-+	/* Wait for clock to ramp */
-+	if (!allow_rcg)
-+		udelay(10);
- }
- 
- static void dccg35_set_symclk32_se_rcg(
-@@ -385,35 +389,34 @@ static void dccg35_set_dtbclk_p_rcg(struct dccg *dccg, int inst, bool enable)
- 	}
- }
- 
--static void dccg35_set_dppclk_rcg(struct dccg *dccg,
--												int inst, bool enable)
-+static void dccg35_set_dppclk_rcg(struct dccg *dccg, int inst, bool allow_rcg)
- {
--
- 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
- 
--
--	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp && enable)
-+	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp && allow_rcg)
- 		return;
- 
- 	switch (inst) {
- 	case 0:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	case 1:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK1_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK1_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	case 2:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK2_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK2_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	case 3:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK3_ROOT_GATE_DISABLE, enable ? 0 : 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK3_ROOT_GATE_DISABLE, allow_rcg ? 0 : 1);
- 		break;
- 	default:
- 	BREAK_TO_DEBUGGER();
- 		break;
- 	}
--	//DC_LOG_DEBUG("%s: inst(%d) DPPCLK rcg_disable: %d\n", __func__, inst, enable ? 0 : 1);
- 
-+	/* Wait for clock to ramp */
-+	if (!allow_rcg)
-+		udelay(10);
- }
- 
- static void dccg35_set_dpstreamclk_rcg(
-@@ -1177,32 +1180,34 @@ static void dccg35_update_dpp_dto(struct dccg *dccg, int dpp_inst,
- }
- 
- static void dccg35_set_dppclk_root_clock_gating(struct dccg *dccg,
--		 uint32_t dpp_inst, uint32_t enable)
-+		 uint32_t dpp_inst, uint32_t disallow_rcg)
- {
- 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
- 
--	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
-+	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp && !disallow_rcg)
- 		return;
- 
- 
- 	switch (dpp_inst) {
- 	case 0:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, enable);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, disallow_rcg);
- 		break;
- 	case 1:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK1_ROOT_GATE_DISABLE, enable);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK1_ROOT_GATE_DISABLE, disallow_rcg);
- 		break;
- 	case 2:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK2_ROOT_GATE_DISABLE, enable);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK2_ROOT_GATE_DISABLE, disallow_rcg);
- 		break;
- 	case 3:
--		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK3_ROOT_GATE_DISABLE, enable);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK3_ROOT_GATE_DISABLE, disallow_rcg);
- 		break;
- 	default:
- 		break;
- 	}
--	//DC_LOG_DEBUG("%s: dpp_inst(%d) rcg: %d\n", __func__, dpp_inst, enable);
- 
-+	/* Wait for clock to ramp */
-+	if (disallow_rcg)
-+		udelay(10);
- }
- 
- static void dccg35_get_pixel_rate_div(
-@@ -1782,8 +1787,7 @@ static void dccg35_enable_dscclk(struct dccg *dccg, int inst)
- 	//Disable DTO
- 	switch (inst) {
- 	case 0:
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dsc)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK0_ROOT_GATE_DISABLE, 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK0_ROOT_GATE_DISABLE, 1);
- 
- 		REG_UPDATE_2(DSCCLK0_DTO_PARAM,
- 				DSCCLK0_DTO_PHASE, 0,
-@@ -1791,8 +1795,7 @@ static void dccg35_enable_dscclk(struct dccg *dccg, int inst)
- 		REG_UPDATE(DSCCLK_DTO_CTRL,	DSCCLK0_EN, 1);
- 		break;
- 	case 1:
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dsc)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK1_ROOT_GATE_DISABLE, 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK1_ROOT_GATE_DISABLE, 1);
- 
- 		REG_UPDATE_2(DSCCLK1_DTO_PARAM,
- 				DSCCLK1_DTO_PHASE, 0,
-@@ -1800,8 +1803,7 @@ static void dccg35_enable_dscclk(struct dccg *dccg, int inst)
- 		REG_UPDATE(DSCCLK_DTO_CTRL, DSCCLK1_EN, 1);
- 		break;
- 	case 2:
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dsc)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK2_ROOT_GATE_DISABLE, 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK2_ROOT_GATE_DISABLE, 1);
- 
- 		REG_UPDATE_2(DSCCLK2_DTO_PARAM,
- 				DSCCLK2_DTO_PHASE, 0,
-@@ -1809,8 +1811,7 @@ static void dccg35_enable_dscclk(struct dccg *dccg, int inst)
- 		REG_UPDATE(DSCCLK_DTO_CTRL, DSCCLK2_EN, 1);
- 		break;
- 	case 3:
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dsc)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK3_ROOT_GATE_DISABLE, 1);
-+		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DSCCLK3_ROOT_GATE_DISABLE, 1);
- 
- 		REG_UPDATE_2(DSCCLK3_DTO_PARAM,
- 				DSCCLK3_DTO_PHASE, 0,
-@@ -1821,6 +1822,9 @@ static void dccg35_enable_dscclk(struct dccg *dccg, int inst)
- 		BREAK_TO_DEBUGGER();
- 		return;
- 	}
+ 	dma_unmap_single(lp->dev, skbuf_dma->dma_address, lp->max_frm_size,
+ 			 DMA_FROM_DEVICE);
 +
-+	/* Wait for clock to ramp */
-+	udelay(10);
- }
- 
- static void dccg35_disable_dscclk(struct dccg *dccg,
-@@ -1864,6 +1868,9 @@ static void dccg35_disable_dscclk(struct dccg *dccg,
- 	default:
- 		return;
- 	}
-+
-+	/* Wait for clock ramp */
-+	udelay(10);
- }
- 
- static void dccg35_enable_symclk_se(struct dccg *dccg, uint32_t stream_enc_inst, uint32_t link_enc_inst)
-@@ -2349,10 +2356,7 @@ static void dccg35_disable_symclk_se_cb(
- 
- void dccg35_root_gate_disable_control(struct dccg *dccg, uint32_t pipe_idx, uint32_t disable_clock_gating)
- {
--
--	if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp) {
--		dccg35_set_dppclk_root_clock_gating(dccg, pipe_idx, disable_clock_gating);
--	}
-+	dccg35_set_dppclk_root_clock_gating(dccg, pipe_idx, disable_clock_gating);
- }
- 
- static const struct dccg_funcs dccg35_funcs_new = {
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-index a267f574b619..764eff6a4ec6 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-@@ -113,6 +113,14 @@ static void enable_memory_low_power(struct dc *dc)
- }
- #endif
- 
-+static void print_pg_status(struct dc *dc, const char *debug_func, const char *debug_log)
-+{
-+	if (dc->debug.enable_pg_cntl_debug_logs && dc->res_pool->pg_cntl) {
-+		if (dc->res_pool->pg_cntl->funcs->print_pg_status)
-+			dc->res_pool->pg_cntl->funcs->print_pg_status(dc->res_pool->pg_cntl, debug_func, debug_log);
++	if (IS_ERR(app_metadata)) {
++		if (net_ratelimit())
++			netdev_err(lp->ndev, "Failed to get RX metadata pointer\n");
++		dev_kfree_skb_any(skb);
++		lp->ndev->stats.rx_dropped++;
++		goto rx_submit;
 +	}
-+}
 +
- void dcn35_set_dmu_fgcg(struct dce_hwseq *hws, bool enable)
- {
- 	REG_UPDATE_3(DMU_CLK_CNTL,
-@@ -137,6 +145,8 @@ void dcn35_init_hw(struct dc *dc)
- 	uint32_t user_level = MAX_BACKLIGHT_LEVEL;
- 	int i;
+ 	/* TODO: Derive app word index programmatically */
+ 	rx_len = (app_metadata[LEN_APP] & 0xFFFF);
+ 	skb_put(skb, rx_len);
+@@ -1180,6 +1190,7 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
+ 	u64_stats_add(&lp->rx_bytes, rx_len);
+ 	u64_stats_update_end(&lp->rx_stat_sync);
  
-+	print_pg_status(dc, __func__, ": start");
-+
- 	if (dc->clk_mgr && dc->clk_mgr->funcs->init_clocks)
- 		dc->clk_mgr->funcs->init_clocks(dc->clk_mgr);
- 
-@@ -200,10 +210,7 @@ void dcn35_init_hw(struct dc *dc)
- 
- 	/* we want to turn off all dp displays before doing detection */
- 	dc->link_srv->blank_all_dp_displays(dc);
--/*
--	if (hws->funcs.enable_power_gating_plane)
--		hws->funcs.enable_power_gating_plane(dc->hwseq, true);
--*/
-+
- 	if (res_pool->hubbub && res_pool->hubbub->funcs->dchubbub_init)
- 		res_pool->hubbub->funcs->dchubbub_init(dc->res_pool->hubbub);
- 	/* If taking control over from VBIOS, we may want to optimize our first
-@@ -236,6 +243,8 @@ void dcn35_init_hw(struct dc *dc)
- 		}
- 
- 		hws->funcs.init_pipes(dc, dc->current_state);
-+		print_pg_status(dc, __func__, ": after init_pipes");
-+
- 		if (dc->res_pool->hubbub->funcs->allow_self_refresh_control &&
- 			!dc->res_pool->hubbub->ctx->dc->debug.disable_stutter)
- 			dc->res_pool->hubbub->funcs->allow_self_refresh_control(dc->res_pool->hubbub,
-@@ -312,6 +321,7 @@ void dcn35_init_hw(struct dc *dc)
- 		if (dc->res_pool->pg_cntl->funcs->init_pg_status)
- 			dc->res_pool->pg_cntl->funcs->init_pg_status(dc->res_pool->pg_cntl);
- 	}
-+	print_pg_status(dc, __func__, ": after init_pg_status");
- }
- 
- static void update_dsc_on_stream(struct pipe_ctx *pipe_ctx, bool enable)
-@@ -500,97 +510,6 @@ void dcn35_physymclk_root_clock_control(struct dce_hwseq *hws, unsigned int phy_
- 	}
- }
- 
--void dcn35_dsc_pg_control(
--		struct dce_hwseq *hws,
--		unsigned int dsc_inst,
--		bool power_on)
--{
--	uint32_t power_gate = power_on ? 0 : 1;
--	uint32_t pwr_status = power_on ? 0 : 2;
--	uint32_t org_ip_request_cntl = 0;
--
--	if (hws->ctx->dc->debug.disable_dsc_power_gate)
--		return;
--	if (hws->ctx->dc->debug.ignore_pg)
--		return;
--	REG_GET(DC_IP_REQUEST_CNTL, IP_REQUEST_EN, &org_ip_request_cntl);
--	if (org_ip_request_cntl == 0)
--		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 1);
--
--	switch (dsc_inst) {
--	case 0: /* DSC0 */
--		REG_UPDATE(DOMAIN16_PG_CONFIG,
--				DOMAIN_POWER_GATE, power_gate);
--
--		REG_WAIT(DOMAIN16_PG_STATUS,
--				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
--		break;
--	case 1: /* DSC1 */
--		REG_UPDATE(DOMAIN17_PG_CONFIG,
--				DOMAIN_POWER_GATE, power_gate);
--
--		REG_WAIT(DOMAIN17_PG_STATUS,
--				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
--		break;
--	case 2: /* DSC2 */
--		REG_UPDATE(DOMAIN18_PG_CONFIG,
--				DOMAIN_POWER_GATE, power_gate);
--
--		REG_WAIT(DOMAIN18_PG_STATUS,
--				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
--		break;
--	case 3: /* DSC3 */
--		REG_UPDATE(DOMAIN19_PG_CONFIG,
--				DOMAIN_POWER_GATE, power_gate);
--
--		REG_WAIT(DOMAIN19_PG_STATUS,
--				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
--		break;
--	default:
--		BREAK_TO_DEBUGGER();
--		break;
--	}
--
--	if (org_ip_request_cntl == 0)
--		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 0);
--}
--
--void dcn35_enable_power_gating_plane(struct dce_hwseq *hws, bool enable)
--{
--	bool force_on = true; /* disable power gating */
--	uint32_t org_ip_request_cntl = 0;
--
--	if (hws->ctx->dc->debug.disable_hubp_power_gate)
--		return;
--	if (hws->ctx->dc->debug.ignore_pg)
--		return;
--	REG_GET(DC_IP_REQUEST_CNTL, IP_REQUEST_EN, &org_ip_request_cntl);
--	if (org_ip_request_cntl == 0)
--		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 1);
--	/* DCHUBP0/1/2/3/4/5 */
--	REG_UPDATE(DOMAIN0_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--	REG_UPDATE(DOMAIN2_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--	/* DPP0/1/2/3/4/5 */
--	REG_UPDATE(DOMAIN1_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--	REG_UPDATE(DOMAIN3_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--
--	force_on = true; /* disable power gating */
--	if (enable && !hws->ctx->dc->debug.disable_dsc_power_gate)
--		force_on = false;
--
--	/* DCS0/1/2/3/4 */
--	REG_UPDATE(DOMAIN16_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--	REG_UPDATE(DOMAIN17_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--	REG_UPDATE(DOMAIN18_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--	REG_UPDATE(DOMAIN19_PG_CONFIG, DOMAIN_POWER_FORCEON, force_on);
--
--
--}
--
- /* In headless boot cases, DIG may be turned
-  * on which causes HW/SW discrepancies.
-  * To avoid this, power down hardware on boot
-@@ -1453,6 +1372,8 @@ void dcn35_prepare_bandwidth(
- 	}
- 
- 	dcn20_prepare_bandwidth(dc, context);
-+
-+	print_pg_status(dc, __func__, ": after rcg and power up");
- }
- 
- void dcn35_optimize_bandwidth(
-@@ -1461,6 +1382,8 @@ void dcn35_optimize_bandwidth(
- {
- 	struct pg_block_update pg_update_state;
- 
-+	print_pg_status(dc, __func__, ": before rcg and power up");
-+
- 	dcn20_optimize_bandwidth(dc, context);
- 
- 	if (dc->hwss.calc_blocks_to_gate) {
-@@ -1472,6 +1395,8 @@ void dcn35_optimize_bandwidth(
- 		if (dc->hwss.root_clock_control)
- 			dc->hwss.root_clock_control(dc, &pg_update_state, false);
- 	}
-+
-+	print_pg_status(dc, __func__, ": after rcg and power up");
- }
- 
- void dcn35_set_drr(struct pipe_ctx **pipe_ctx,
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
-index 52cc488416ac..f2f16a0bdb4f 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
-@@ -115,7 +115,6 @@ static const struct hw_sequencer_funcs dcn35_funcs = {
- 	.exit_optimized_pwr_state = dcn21_exit_optimized_pwr_state,
- 	.update_visual_confirm_color = dcn10_update_visual_confirm_color,
- 	.apply_idle_power_optimizations = dcn35_apply_idle_power_optimizations,
--	.update_dsc_pg = dcn32_update_dsc_pg,
- 	.calc_blocks_to_gate = dcn35_calc_blocks_to_gate,
- 	.calc_blocks_to_ungate = dcn35_calc_blocks_to_ungate,
- 	.hw_block_power_up = dcn35_hw_block_power_up,
-@@ -151,7 +150,6 @@ static const struct hwseq_private_funcs dcn35_private_funcs = {
- 	.plane_atomic_disable = dcn35_plane_atomic_disable,
- 	//.plane_atomic_disable = dcn20_plane_atomic_disable,/*todo*/
- 	//.hubp_pg_control = dcn35_hubp_pg_control,
--	.enable_power_gating_plane = dcn35_enable_power_gating_plane,
- 	.dpp_root_clock_control = dcn35_dpp_root_clock_control,
- 	.dpstream_root_clock_control = dcn35_dpstream_root_clock_control,
- 	.physymclk_root_clock_control = dcn35_physymclk_root_clock_control,
-@@ -166,7 +164,6 @@ static const struct hwseq_private_funcs dcn35_private_funcs = {
- 	.calculate_dccg_k1_k2_values = dcn32_calculate_dccg_k1_k2_values,
- 	.resync_fifo_dccg_dio = dcn314_resync_fifo_dccg_dio,
- 	.is_dp_dig_pixel_rate_div_policy = dcn35_is_dp_dig_pixel_rate_div_policy,
--	.dsc_pg_control = dcn35_dsc_pg_control,
- 	.dsc_pg_status = dcn32_dsc_pg_status,
- 	.enable_plane = dcn35_enable_plane,
- 	.wait_for_pipe_update_if_needed = dcn10_wait_for_pipe_update_if_needed,
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn351/dcn351_init.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn351/dcn351_init.c
-index e34efcb7bde5..09e60158f0b5 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn351/dcn351_init.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn351/dcn351_init.c
-@@ -114,7 +114,6 @@ static const struct hw_sequencer_funcs dcn351_funcs = {
- 	.exit_optimized_pwr_state = dcn21_exit_optimized_pwr_state,
- 	.update_visual_confirm_color = dcn10_update_visual_confirm_color,
- 	.apply_idle_power_optimizations = dcn35_apply_idle_power_optimizations,
--	.update_dsc_pg = dcn32_update_dsc_pg,
- 	.calc_blocks_to_gate = dcn351_calc_blocks_to_gate,
- 	.calc_blocks_to_ungate = dcn351_calc_blocks_to_ungate,
- 	.hw_block_power_up = dcn351_hw_block_power_up,
-@@ -146,7 +145,6 @@ static const struct hwseq_private_funcs dcn351_private_funcs = {
- 	.plane_atomic_disable = dcn35_plane_atomic_disable,
- 	//.plane_atomic_disable = dcn20_plane_atomic_disable,/*todo*/
- 	//.hubp_pg_control = dcn35_hubp_pg_control,
--	.enable_power_gating_plane = dcn35_enable_power_gating_plane,
- 	.dpp_root_clock_control = dcn35_dpp_root_clock_control,
- 	.dpstream_root_clock_control = dcn35_dpstream_root_clock_control,
- 	.physymclk_root_clock_control = dcn35_physymclk_root_clock_control,
-@@ -160,7 +158,6 @@ static const struct hwseq_private_funcs dcn351_private_funcs = {
- 	.setup_hpo_hw_control = dcn35_setup_hpo_hw_control,
- 	.calculate_dccg_k1_k2_values = dcn32_calculate_dccg_k1_k2_values,
- 	.is_dp_dig_pixel_rate_div_policy = dcn35_is_dp_dig_pixel_rate_div_policy,
--	.dsc_pg_control = dcn35_dsc_pg_control,
- 	.dsc_pg_status = dcn32_dsc_pg_status,
- 	.enable_plane = dcn35_enable_plane,
- 	.wait_for_pipe_update_if_needed = dcn10_wait_for_pipe_update_if_needed,
-diff --git a/drivers/gpu/drm/amd/display/dc/inc/hw/pg_cntl.h b/drivers/gpu/drm/amd/display/dc/inc/hw/pg_cntl.h
-index 44f86cc2d1d6..227e3f8d7e5f 100644
---- a/drivers/gpu/drm/amd/display/dc/inc/hw/pg_cntl.h
-+++ b/drivers/gpu/drm/amd/display/dc/inc/hw/pg_cntl.h
-@@ -49,6 +49,7 @@ struct pg_cntl_funcs {
- 	void (*mem_pg_control)(struct pg_cntl *pg_cntl, bool power_on);
- 	void (*dio_pg_control)(struct pg_cntl *pg_cntl, bool power_on);
- 	void (*init_pg_status)(struct pg_cntl *pg_cntl);
-+	void (*print_pg_status)(struct pg_cntl *pg_cntl, const char *debug_func, const char *debug_log);
- };
- 
- #endif //__DC_PG_CNTL_H__
-diff --git a/drivers/gpu/drm/amd/display/dc/pg/dcn35/dcn35_pg_cntl.c b/drivers/gpu/drm/amd/display/dc/pg/dcn35/dcn35_pg_cntl.c
-index af21c0a27f86..72bd43f9bbe2 100644
---- a/drivers/gpu/drm/amd/display/dc/pg/dcn35/dcn35_pg_cntl.c
-+++ b/drivers/gpu/drm/amd/display/dc/pg/dcn35/dcn35_pg_cntl.c
-@@ -79,16 +79,12 @@ void pg_cntl35_dsc_pg_control(struct pg_cntl *pg_cntl, unsigned int dsc_inst, bo
- 	uint32_t power_gate = power_on ? 0 : 1;
- 	uint32_t pwr_status = power_on ? 0 : 2;
- 	uint32_t org_ip_request_cntl = 0;
--	bool block_enabled;
--
--	/*need to enable dscclk regardless DSC_PG*/
--	if (pg_cntl->ctx->dc->res_pool->dccg->funcs->enable_dsc && power_on)
--		pg_cntl->ctx->dc->res_pool->dccg->funcs->enable_dsc(
--				pg_cntl->ctx->dc->res_pool->dccg, dsc_inst);
-+	bool block_enabled = false;
-+	bool skip_pg = pg_cntl->ctx->dc->debug.ignore_pg ||
-+		       pg_cntl->ctx->dc->debug.disable_dsc_power_gate ||
-+		       pg_cntl->ctx->dc->idle_optimizations_allowed;
- 
--	if (pg_cntl->ctx->dc->debug.ignore_pg ||
--		pg_cntl->ctx->dc->debug.disable_dsc_power_gate ||
--		pg_cntl->ctx->dc->idle_optimizations_allowed)
-+	if (skip_pg && !power_on)
- 		return;
- 
- 	block_enabled = pg_cntl35_dsc_pg_status(pg_cntl, dsc_inst);
-@@ -111,7 +107,7 @@ void pg_cntl35_dsc_pg_control(struct pg_cntl *pg_cntl, unsigned int dsc_inst, bo
- 
- 		REG_WAIT(DOMAIN16_PG_STATUS,
- 				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
-+				1, 10000);
- 		break;
- 	case 1: /* DSC1 */
- 		REG_UPDATE(DOMAIN17_PG_CONFIG,
-@@ -119,7 +115,7 @@ void pg_cntl35_dsc_pg_control(struct pg_cntl *pg_cntl, unsigned int dsc_inst, bo
- 
- 		REG_WAIT(DOMAIN17_PG_STATUS,
- 				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
-+				1, 10000);
- 		break;
- 	case 2: /* DSC2 */
- 		REG_UPDATE(DOMAIN18_PG_CONFIG,
-@@ -127,7 +123,7 @@ void pg_cntl35_dsc_pg_control(struct pg_cntl *pg_cntl, unsigned int dsc_inst, bo
- 
- 		REG_WAIT(DOMAIN18_PG_STATUS,
- 				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
-+				1, 10000);
- 		break;
- 	case 3: /* DSC3 */
- 		REG_UPDATE(DOMAIN19_PG_CONFIG,
-@@ -135,7 +131,7 @@ void pg_cntl35_dsc_pg_control(struct pg_cntl *pg_cntl, unsigned int dsc_inst, bo
- 
- 		REG_WAIT(DOMAIN19_PG_STATUS,
- 				DOMAIN_PGFSM_PWR_STATUS, pwr_status,
--				1, 1000);
-+				1, 10000);
- 		break;
- 	default:
- 		BREAK_TO_DEBUGGER();
-@@ -144,12 +140,6 @@ void pg_cntl35_dsc_pg_control(struct pg_cntl *pg_cntl, unsigned int dsc_inst, bo
- 
- 	if (dsc_inst < MAX_PIPES)
- 		pg_cntl->pg_pipe_res_enable[PG_DSC][dsc_inst] = power_on;
--
--	if (pg_cntl->ctx->dc->res_pool->dccg->funcs->disable_dsc && !power_on) {
--		/*this is to disable dscclk*/
--		pg_cntl->ctx->dc->res_pool->dccg->funcs->disable_dsc(
--			pg_cntl->ctx->dc->res_pool->dccg, dsc_inst);
--	}
- }
- 
- static bool pg_cntl35_hubp_dpp_pg_status(struct pg_cntl *pg_cntl, unsigned int hubp_dpp_inst)
-@@ -189,11 +179,12 @@ void pg_cntl35_hubp_dpp_pg_control(struct pg_cntl *pg_cntl, unsigned int hubp_dp
- 	uint32_t pwr_status = power_on ? 0 : 2;
- 	uint32_t org_ip_request_cntl;
- 	bool block_enabled;
-+	bool skip_pg = pg_cntl->ctx->dc->debug.ignore_pg ||
-+		       pg_cntl->ctx->dc->debug.disable_hubp_power_gate ||
-+		       pg_cntl->ctx->dc->debug.disable_dpp_power_gate ||
-+		       pg_cntl->ctx->dc->idle_optimizations_allowed;
- 
--	if (pg_cntl->ctx->dc->debug.ignore_pg ||
--		pg_cntl->ctx->dc->debug.disable_hubp_power_gate ||
--		pg_cntl->ctx->dc->debug.disable_dpp_power_gate ||
--		pg_cntl->ctx->dc->idle_optimizations_allowed)
-+	if (skip_pg && !power_on)
- 		return;
- 
- 	block_enabled = pg_cntl35_hubp_dpp_pg_status(pg_cntl, hubp_dpp_inst);
-@@ -213,22 +204,22 @@ void pg_cntl35_hubp_dpp_pg_control(struct pg_cntl *pg_cntl, unsigned int hubp_dp
- 	case 0:
- 		/* DPP0 & HUBP0 */
- 		REG_UPDATE(DOMAIN0_PG_CONFIG, DOMAIN_POWER_GATE, power_gate);
--		REG_WAIT(DOMAIN0_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 1000);
-+		REG_WAIT(DOMAIN0_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 10000);
- 		break;
- 	case 1:
- 		/* DPP1 & HUBP1 */
- 		REG_UPDATE(DOMAIN1_PG_CONFIG, DOMAIN_POWER_GATE, power_gate);
--		REG_WAIT(DOMAIN1_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 1000);
-+		REG_WAIT(DOMAIN1_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 10000);
- 		break;
- 	case 2:
- 		/* DPP2 & HUBP2 */
- 		REG_UPDATE(DOMAIN2_PG_CONFIG, DOMAIN_POWER_GATE, power_gate);
--		REG_WAIT(DOMAIN2_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 1000);
-+		REG_WAIT(DOMAIN2_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 10000);
- 		break;
- 	case 3:
- 		/* DPP3 & HUBP3 */
- 		REG_UPDATE(DOMAIN3_PG_CONFIG, DOMAIN_POWER_GATE, power_gate);
--		REG_WAIT(DOMAIN3_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 1000);
-+		REG_WAIT(DOMAIN3_PG_STATUS, DOMAIN_PGFSM_PWR_STATUS, pwr_status, 1, 10000);
- 		break;
- 	default:
- 		BREAK_TO_DEBUGGER();
-@@ -501,6 +492,36 @@ void pg_cntl35_init_pg_status(struct pg_cntl *pg_cntl)
- 	pg_cntl->pg_res_enable[PG_DWB] = block_enabled;
- }
- 
-+static void pg_cntl35_print_pg_status(struct pg_cntl *pg_cntl, const char *debug_func, const char *debug_log)
-+{
-+	int i = 0;
-+	bool block_enabled = false;
-+
-+	DC_LOG_DEBUG("%s: %s", debug_func, debug_log);
-+
-+	DC_LOG_DEBUG("PG_CNTL status:\n");
-+
-+	block_enabled = pg_cntl35_io_clk_status(pg_cntl);
-+	DC_LOG_DEBUG("ONO0=%d (DCCG, DIO, DCIO)\n", block_enabled ? 1 : 0);
-+
-+	block_enabled = pg_cntl35_mem_status(pg_cntl);
-+	DC_LOG_DEBUG("ONO1=%d (DCHUBBUB, DCHVM, DCHUBBUBMEM)\n", block_enabled ? 1 : 0);
-+
-+	block_enabled = pg_cntl35_plane_otg_status(pg_cntl);
-+	DC_LOG_DEBUG("ONO2=%d (MPC, OPP, OPTC, DWB)\n", block_enabled ? 1 : 0);
-+
-+	block_enabled = pg_cntl35_hpo_pg_status(pg_cntl);
-+	DC_LOG_DEBUG("ONO3=%d (HPO)\n", block_enabled ? 1 : 0);
-+
-+	for (i = 0; i < pg_cntl->ctx->dc->res_pool->pipe_count; i++) {
-+		block_enabled = pg_cntl35_hubp_dpp_pg_status(pg_cntl, i);
-+		DC_LOG_DEBUG("ONO%d=%d (DCHUBP%d, DPP%d)\n", 4 + i * 2, block_enabled ? 1 : 0, i, i);
-+
-+		block_enabled = pg_cntl35_dsc_pg_status(pg_cntl, i);
-+		DC_LOG_DEBUG("ONO%d=%d (DSC%d)\n", 5 + i * 2, block_enabled ? 1 : 0, i);
-+	}
-+}
-+
- static const struct pg_cntl_funcs pg_cntl35_funcs = {
- 	.init_pg_status = pg_cntl35_init_pg_status,
- 	.dsc_pg_control = pg_cntl35_dsc_pg_control,
-@@ -511,7 +532,8 @@ static const struct pg_cntl_funcs pg_cntl35_funcs = {
- 	.mpcc_pg_control = pg_cntl35_mpcc_pg_control,
- 	.opp_pg_control = pg_cntl35_opp_pg_control,
- 	.optc_pg_control = pg_cntl35_optc_pg_control,
--	.dwb_pg_control = pg_cntl35_dwb_pg_control
-+	.dwb_pg_control = pg_cntl35_dwb_pg_control,
-+	.print_pg_status = pg_cntl35_print_pg_status
- };
- 
- struct pg_cntl *pg_cntl35_create(
++rx_submit:
+ 	for (i = 0; i < CIRC_SPACE(lp->rx_ring_head, lp->rx_ring_tail,
+ 				   RX_BUF_NUM_DEFAULT); i++)
+ 		axienet_rx_submit_desc(lp->ndev);
 -- 
-2.43.0
+2.34.1
 
 
