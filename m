@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-177423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1D1B4055C
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:52:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D54B4058B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B19691B65923
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48C1F1B683D2
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6231C84C6;
-	Tue,  2 Sep 2025 13:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE0E31354B;
+	Tue,  2 Sep 2025 13:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbPZJbTx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOe4Kh+r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9E12DECDE;
-	Tue,  2 Sep 2025 13:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6A12D6629;
+	Tue,  2 Sep 2025 13:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820597; cv=none; b=uaa39pkWIXOAQVq+kLaFDWIfwAO+YoESxoe2ryxwLmrenl17Uv8R0+SSmnHoMxYYv6ixOXVMmbE9lq1/l4y8CCKIMVI+g1pmrqEWqiabJJfinNRV/Cp2TKyWC6hdW713fUIqV6vC6hTgStxqnp+UoSjz8l8EsAcoF6hhw7qd0fM=
+	t=1756820729; cv=none; b=ng9Ibi3gYw2iBe0VJ+KK0Iau1Wdrvdq8h4kzn9fUz3ykqpjd2stkDZL1wiTMYJlRs3qOdi94uGf5UG0kWYtUJ9esXUUCIO8yBKXV+1iIyHPVva4r2kgULAJSpP4FibqrSS4xGxK/KzA1WlPB7tJszXi1fymO2dc367J2pU8JUCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820597; c=relaxed/simple;
-	bh=opFnhu6OwM7Hpk3UJqwad9COVEu4P1iJfd8FfSXvYr8=;
+	s=arc-20240116; t=1756820729; c=relaxed/simple;
+	bh=BV+fo0qas66yPWw42Yg75lBExIxwlKrcEJ8q0IAT4Vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ne92UEhtPxZsYpGvJLJhJywMqybYfjNrDetGPl2/gItWwuVKwGOvN6N5IQ3jm/PdwXrFTNe9sZzQ/E/6JJvQ4FhD0KPql+VgwbE0fWF/mi7GzBwcqvWVGlZz8gMbWly227TLpOkrwAiIV+XgP/gaK1W+5f01tx6Z0F35ub4kymU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbPZJbTx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D83C4CEED;
-	Tue,  2 Sep 2025 13:43:15 +0000 (UTC)
+	 MIME-Version; b=tKw3qcHoqMKftQ7Y55MVyZiazyxTaU1A0+3AKMpDEBFUPgU5ooeHHQ+DTAFeQo+RKymmAva7GvUNE/gFcvvp7U1kOd2UTkkD6OLDon2LZylln79RotvRoQSvivp6OMsUoBVbbcsxkYAs3jFTPQSY3zVY1waHQJdVH9PoTJvxXkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOe4Kh+r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E73C4CEF4;
+	Tue,  2 Sep 2025 13:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820596;
-	bh=opFnhu6OwM7Hpk3UJqwad9COVEu4P1iJfd8FfSXvYr8=;
+	s=korg; t=1756820729;
+	bh=BV+fo0qas66yPWw42Yg75lBExIxwlKrcEJ8q0IAT4Vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TbPZJbTxg6FV7L829toCo/+Q0NhUJdur5aNaKLl9jmdi4ZW+ZJbD/sLAiv8GuMBU5
-	 IZCfhV5BvvV2QGWW+tTh8s0Fi2K3ZmoAqopiTiLFsyJqUVC4zyriTRuGvQsN+5TnBy
-	 yH6mTeejZ65DXRbt/SQBtejmVK3OnEfCarsaOaJM=
+	b=eOe4Kh+rqkC8CyjItyEBy9xDk5zf9K9y2HLiZXprzc6/BkYhyVjBX5j5Q6+b3tIN0
+	 NPEm+Jask38r3NeJi2Kk3X669McSuPdRy1CnoaneBzUvdIy0PXemVu8mdl/e7ZdJ6x
+	 n1QaUNHF3evBRPoACpWS9qwOoYBAeRovz+0pmVb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 5.15 27/33] dma/pool: Ensure DMA_DIRECT_REMAP allocations are decrypted
+	Thijs Raymakers <thijs@raymakers.nl>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 5.10 19/34] KVM: x86: use array_index_nospec with indices that come from guest
 Date: Tue,  2 Sep 2025 15:21:45 +0200
-Message-ID: <20250902131928.126143244@linuxfoundation.org>
+Message-ID: <20250902131927.385207470@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
-References: <20250902131927.045875971@linuxfoundation.org>
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
+References: <20250902131926.607219059@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shanker Donthineni <sdonthineni@nvidia.com>
+From: Thijs Raymakers <thijs@raymakers.nl>
 
-commit 89a2d212bdb4bc29bed8e7077abe054b801137ea upstream.
+commit c87bd4dd43a624109c3cc42d843138378a7f4548 upstream.
 
-When CONFIG_DMA_DIRECT_REMAP is enabled, atomic pool pages are
-remapped via dma_common_contiguous_remap() using the supplied
-pgprot. Currently, the mapping uses
-pgprot_dmacoherent(PAGE_KERNEL), which leaves the memory encrypted
-on systems with memory encryption enabled (e.g., ARM CCA Realms).
+min and dest_id are guest-controlled indices. Using array_index_nospec()
+after the bounds checks clamps these values to mitigate speculative execution
+side-channels.
 
-This can cause the DMA layer to fail or crash when accessing the
-memory, as the underlying physical pages are not configured as
-expected.
-
-Fix this by requesting a decrypted mapping in the vmap() call:
-pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL))
-
-This ensures that atomic pool memory is consistently mapped
-unencrypted.
-
+Signed-off-by: Thijs Raymakers <thijs@raymakers.nl>
 Cc: stable@vger.kernel.org
-Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20250811181759.998805-1-sdonthineni@nvidia.com
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 715062970f37 ("KVM: X86: Implement PV sched yield hypercall")
+Fixes: bdf7ffc89922 ("KVM: LAPIC: Fix pv ipis out-of-bounds access")
+Fixes: 4180bf1b655a ("KVM: X86: Implement "send IPI" hypercall")
+Link: https://lore.kernel.org/r/20250804064405.4802-1-thijs@raymakers.nl
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/pool.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/lapic.c |    2 ++
+ arch/x86/kvm/x86.c   |    7 +++++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
---- a/kernel/dma/pool.c
-+++ b/kernel/dma/pool.c
-@@ -102,8 +102,8 @@ static int atomic_pool_expand(struct gen
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -610,6 +610,8 @@ static int __pv_send_ipi(unsigned long *
+ 	if (min > map->max_apic_id)
+ 		return 0;
  
- #ifdef CONFIG_DMA_DIRECT_REMAP
- 	addr = dma_common_contiguous_remap(page, pool_size,
--					   pgprot_dmacoherent(PAGE_KERNEL),
--					   __builtin_return_address(0));
-+			pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL)),
-+			__builtin_return_address(0));
- 	if (!addr)
- 		goto free_page;
- #else
++	min = array_index_nospec(min, map->max_apic_id + 1);
++
+ 	for_each_set_bit(i, ipi_bitmap,
+ 		min((u32)BITS_PER_LONG, (map->max_apic_id - min + 1))) {
+ 		if (map->phys_map[min + i]) {
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8359,8 +8359,11 @@ static void kvm_sched_yield(struct kvm *
+ 	rcu_read_lock();
+ 	map = rcu_dereference(kvm->arch.apic_map);
+ 
+-	if (likely(map) && dest_id <= map->max_apic_id && map->phys_map[dest_id])
+-		target = map->phys_map[dest_id]->vcpu;
++	if (likely(map) && dest_id <= map->max_apic_id) {
++		dest_id = array_index_nospec(dest_id, map->max_apic_id + 1);
++		if (map->phys_map[dest_id])
++			target = map->phys_map[dest_id]->vcpu;
++	}
+ 
+ 	rcu_read_unlock();
+ 
 
 
 
