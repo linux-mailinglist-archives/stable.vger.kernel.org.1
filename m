@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-177358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46825B404D6
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4DFDB4043D
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EB5A5E6693
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78D03547FDB
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EB130FC0B;
-	Tue,  2 Sep 2025 13:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF2230E82D;
+	Tue,  2 Sep 2025 13:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2el5vGrb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIGQmczc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF99299AB5;
-	Tue,  2 Sep 2025 13:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA1E2DC33B;
+	Tue,  2 Sep 2025 13:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820391; cv=none; b=aFu82FvYphNfPiK9K8nzYGOQdOQj8eSItJYF/nk/6uUwjBM7TsiLpK5ap7WTXcWqA3szhJkth2kWyyequFOaEVyqoFJB8IRc51/ceUFRxtsu7LZj1xyYhjjPrfs9E71sQQvQQtJfPKx+PRlUVxXFv0jEgQuCaEsZHhwUlHhc6ms=
+	t=1756820086; cv=none; b=EF6FllIyC5rJXddrev8qZtf6yumMOy0KTZJaD+crvW4Hf04JLy81Ks0F20r6xw5thLaRV71TRNTrq4LLD8vOV7yEq9anEAdY8Ov4VjT9AYjOOWGF7pN5l/Gu7MsE9HcffMLQ6M+Ub0kMlj2qPh6hlRQaIVoxf8zvBz3vKq16sjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820391; c=relaxed/simple;
-	bh=nXKqovRkPiLuaqi+mVHsPbRNOK42VprMGDrz2m8YzGc=;
+	s=arc-20240116; t=1756820086; c=relaxed/simple;
+	bh=3uv+OBkP67Rlu2FhqVBFy2GR7vjEhlcSCS6VCWTTwRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GOm7RMECDpxmaSZhagkF9b7YFbS5YamCmKyU98dvqwjlnrqlwT6dly2Jp78StyHYq88D8Z/HBiprQsfQsLFV2MH3sXRQPxTMoWlrcLfhZQXKXPr6gcCOFG3vOliF9JtuwpdYWbKJugsLvo2hDLjIL2DkEja0QdILdQssWC3QGjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2el5vGrb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B438FC4CEED;
-	Tue,  2 Sep 2025 13:39:50 +0000 (UTC)
+	 MIME-Version; b=KeBVlsLV0YSAHv3o14oQJpHiIH+kknh5Tia5RzzfiRzEKPg4nY/kbLfTnfzD9ePuaA/NziKgOoN0sDzYoSS5MSb1EbQUnsro1mMJqcTgmyXcwD33j5UCbZG7p094exUwR4K5YFWEkFAsMdKdakm8xtnCAmgscyGFzGcdPyC+1/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIGQmczc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73CC6C4CEED;
+	Tue,  2 Sep 2025 13:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820391;
-	bh=nXKqovRkPiLuaqi+mVHsPbRNOK42VprMGDrz2m8YzGc=;
+	s=korg; t=1756820085;
+	bh=3uv+OBkP67Rlu2FhqVBFy2GR7vjEhlcSCS6VCWTTwRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2el5vGrbL4dPWemoAMVmyygdSvF+2XVSRi1W519GwA549sfTo3Cg29BAsJtNqJGVg
-	 wyvK55XHz8p6xSgMBfnv4+aTJQFX3t7esc3NjCqwXlwjGEylKJfLa85SGh5eTENrba
-	 zRRGaphBsZ9+gcUrdsuFGMZXc+K2MqQMjP0zP7hQ=
+	b=fIGQmczc3F9k0ckjSvtALCGDTLzJj4ArdoRthU9i5qsEFBcHlpeZwowAV/VUtS5Fv
+	 zEbSFTspeldMb89JYwsRPFYgN2SQsPnnWlsPT4Dw1UJZlwSsJpwsO28qReHXQdvLBt
+	 WZ6g072iMHaq2ziAyvNcIEvkuDHjWevesIGO2QZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/50] drm/msm: Defer fd_install in SUBMIT ioctl
+	syzbot+2eb8d1719f7cfcfa6840@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Takamitsu Iwai <takamitz@amazon.co.jp>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 89/95] net: rose: fix a typo in rose_clear_routes()
 Date: Tue,  2 Sep 2025 15:21:05 +0200
-Message-ID: <20250902131931.081836482@linuxfoundation.org>
+Message-ID: <20250902131943.019004826@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robin.clark@oss.qualcomm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f22853435bbd1e9836d0dce7fd99c040b94c2bf1 ]
+commit 1cc8a5b534e5f9b5e129e54ee2e63c9f5da4f39a upstream.
 
-Avoid fd_install() until there are no more potential error paths, to
-avoid put_unused_fd() after the fd is made visible to userspace.
+syzbot crashed in rose_clear_routes(), after a recent patch typo.
 
-Fixes: 68dc6c2d5eec ("drm/msm: Fix submit error-path leaks")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/665363/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+CPU: 0 UID: 0 PID: 10591 Comm: syz.3.1856 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+ RIP: 0010:rose_clear_routes net/rose/rose_route.c:565 [inline]
+ RIP: 0010:rose_rt_ioctl+0x162/0x1250 net/rose/rose_route.c:760
+ <TASK>
+  rose_ioctl+0x3ce/0x8b0 net/rose/af_rose.c:1381
+  sock_do_ioctl+0xd9/0x300 net/socket.c:1238
+  sock_ioctl+0x576/0x790 net/socket.c:1359
+  vfs_ioctl fs/ioctl.c:51 [inline]
+  __do_sys_ioctl fs/ioctl.c:598 [inline]
+  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:584
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: da9c9c877597 ("net: rose: include node references in rose_neigh refcount")
+Reported-by: syzbot+2eb8d1719f7cfcfa6840@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68af3e29.a70a0220.3cafd4.002e.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Takamitsu Iwai <takamitz@amazon.co.jp>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250827172149.5359-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/msm_gem_submit.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/rose/rose_route.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
-index 572dd662e8095..6a02f790624a9 100644
---- a/drivers/gpu/drm/msm/msm_gem_submit.c
-+++ b/drivers/gpu/drm/msm/msm_gem_submit.c
-@@ -929,12 +929,8 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+--- a/net/rose/rose_route.c
++++ b/net/rose/rose_route.c
+@@ -562,7 +562,7 @@ static int rose_clear_routes(void)
+ 		rose_node = rose_node->next;
  
- 	if (ret == 0 && args->flags & MSM_SUBMIT_FENCE_FD_OUT) {
- 		sync_file = sync_file_create(submit->user_fence);
--		if (!sync_file) {
-+		if (!sync_file)
- 			ret = -ENOMEM;
--		} else {
--			fd_install(out_fence_fd, sync_file->file);
--			args->fence_fd = out_fence_fd;
--		}
- 	}
- 
- 	submit_attach_object_fences(submit);
-@@ -959,10 +955,14 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
- out_unlock:
- 	mutex_unlock(&queue->lock);
- out_post_unlock:
--	if (ret && (out_fence_fd >= 0)) {
--		put_unused_fd(out_fence_fd);
-+	if (ret) {
-+		if (out_fence_fd >= 0)
-+			put_unused_fd(out_fence_fd);
- 		if (sync_file)
- 			fput(sync_file->file);
-+	} else if (sync_file) {
-+		fd_install(out_fence_fd, sync_file->file);
-+		args->fence_fd = out_fence_fd;
- 	}
- 
- 	if (!IS_ERR_OR_NULL(submit)) {
--- 
-2.50.1
-
+ 		if (!t->loopback) {
+-			for (i = 0; i < rose_node->count; i++)
++			for (i = 0; i < t->count; i++)
+ 				rose_neigh_put(t->neighbour[i]);
+ 			rose_remove_node(t);
+ 		}
 
 
 
