@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-177418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E41B4055F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:53:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9848FB4056E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:53:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BE51547C5E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BC661892824
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEDF5257AC1;
-	Tue,  2 Sep 2025 13:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE21830F54A;
+	Tue,  2 Sep 2025 13:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fc5V8hEC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DG9Y4hWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D61A28AB1E;
-	Tue,  2 Sep 2025 13:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9852A30F536;
+	Tue,  2 Sep 2025 13:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820579; cv=none; b=B561yC884DrjCPwEZR1C8w0FgMr/VlV6625rpjoOB3LoBFvPDHzCqnp8TiaxreTLVTTPJCPwmESq+p4SnTR5y7i0kW2g0oPzFpg2GlndTWpUaHyCtdRRdAUARtLXgDKiBhyztS9+h50G8oEn49DDfjogmld+xcjn7In7yocDarE=
+	t=1756820663; cv=none; b=sT8k5V1+eFd87DpjUq+k7wCe0Er/j6VmQuaEf4i0UbphowBKVYflWOfK6TETuiu92CZwLyQVKUe+hyCa6eGr0jszEP7rpAm2Z1ANZk/YCW2EKBdr8n/yS9lb2Aaiuwyd7QI9ChSnCWYhMuVfSgB6FpZITCKZyLt17Z7/qQWBAxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820579; c=relaxed/simple;
-	bh=saRsNWTDGlmtNqdQFyv1I2qK3gVyPA6LtpQzmR6whsk=;
+	s=arc-20240116; t=1756820663; c=relaxed/simple;
+	bh=hzluJtK00TX5D7zn46ulDF3i8QdSXNNh0BgVT/0qfXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A+FhviKX/HLGx3MLl7SUN+Q36EGI2/+kC6gOm3E+FRDW7z7b1e0r4I+Pte5gFjeNiMwx0Ui/H0CNiSFjIUftbvAx1dMS5If+H0zOtZHoRRry3oJL8T8NAqbUMwA1vOyf+8x76te6SQJs4kfoBFYvOH9Pr92YmIH4lkPlTH1UcEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fc5V8hEC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E617C4CEED;
-	Tue,  2 Sep 2025 13:42:57 +0000 (UTC)
+	 MIME-Version; b=L2RjCx8Rs3UzcTYdhhl48PTXQwNPsvQ5yaTAix4l8Unm/rjvbfBxZgyb4uVGYcTdJxuPvazHSyEoqa0Zev1mTBQN0e/PsOPKrpp5viOI1oHASys11mu22IJ3zBrnnH/IPKKw9H+NeO4T7SYVAwl7YUkI2rzxhzMx7nHRLqgHNKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DG9Y4hWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001CDC4CEF7;
+	Tue,  2 Sep 2025 13:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820579;
-	bh=saRsNWTDGlmtNqdQFyv1I2qK3gVyPA6LtpQzmR6whsk=;
+	s=korg; t=1756820663;
+	bh=hzluJtK00TX5D7zn46ulDF3i8QdSXNNh0BgVT/0qfXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fc5V8hECWkGvWjIKI6pUT/OTVpqXXgKDQCVGJSVsSvraffG2vCRRieMXcE8bYwFEG
-	 dQfQHFbbUmG//SxSyBo/v7e2LUNF8ljmtIS/fV+iolDPZRO3sSog6BZjBOB9J5Wius
-	 /PwSimswtJI/IDu4aqstL0Y2Qfa/SEjbRtVHmEAE=
+	b=DG9Y4hWdPOmm+Pg7xIj2Q7E07uJ9HWRiJKnU4QfrJN2bV0P6zuVNr7zgrYI7N+wKW
+	 s3oJ9EwLg8KlKG4gqx1dDAd9nBosyu71CwVY4bZ8dKiClbRVW6yyq9f0RZB5EqF7KP
+	 qlN8+bk23B79uQv9GbSLkMumk8/GwlHu7vaEMhLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.15 23/33] HID: multitouch: fix slab out-of-bounds access in mt_report_fixup()
+	Alexei Lazar <alazar@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 15/34] net/mlx5e: Set local Xoff after FW update
 Date: Tue,  2 Sep 2025 15:21:41 +0200
-Message-ID: <20250902131927.966372482@linuxfoundation.org>
+Message-ID: <20250902131927.225147867@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
-References: <20250902131927.045875971@linuxfoundation.org>
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
+References: <20250902131926.607219059@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Alexei Lazar <alazar@nvidia.com>
 
-commit 0379eb8691b9c4477da0277ae0832036ca4410b4 upstream.
+[ Upstream commit aca0c31af61e0d5cf1675a0cbd29460b95ae693c ]
 
-A malicious HID device can trigger a slab out-of-bounds during
-mt_report_fixup() by passing in report descriptor smaller than
-607 bytes. mt_report_fixup() attempts to patch byte offset 607
-of the descriptor with 0x25 by first checking if byte offset
-607 is 0x15 however it lacks bounds checks to verify if the
-descriptor is big enough before conducting this check. Fix
-this bug by ensuring the descriptor size is at least 608
-bytes before accessing it.
+The local Xoff value is being set before the firmware (FW) update.
+In case of a failure where the FW is not updated with the new value,
+there is no fallback to the previous value.
+Update the local Xoff value after the FW has been successfully set.
 
-Below is the KASAN splat after the out of bounds access happens:
-
-[   13.671954] ==================================================================
-[   13.672667] BUG: KASAN: slab-out-of-bounds in mt_report_fixup+0x103/0x110
-[   13.673297] Read of size 1 at addr ffff888103df39df by task kworker/0:1/10
-[   13.673297]
-[   13.673297] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.15.0-00005-gec5d573d83f4-dirty #3
-[   13.673297] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/04
-[   13.673297] Call Trace:
-[   13.673297]  <TASK>
-[   13.673297]  dump_stack_lvl+0x5f/0x80
-[   13.673297]  print_report+0xd1/0x660
-[   13.673297]  kasan_report+0xe5/0x120
-[   13.673297]  __asan_report_load1_noabort+0x18/0x20
-[   13.673297]  mt_report_fixup+0x103/0x110
-[   13.673297]  hid_open_report+0x1ef/0x810
-[   13.673297]  mt_probe+0x422/0x960
-[   13.673297]  hid_device_probe+0x2e2/0x6f0
-[   13.673297]  really_probe+0x1c6/0x6b0
-[   13.673297]  __driver_probe_device+0x24f/0x310
-[   13.673297]  driver_probe_device+0x4e/0x220
-[   13.673297]  __device_attach_driver+0x169/0x320
-[   13.673297]  bus_for_each_drv+0x11d/0x1b0
-[   13.673297]  __device_attach+0x1b8/0x3e0
-[   13.673297]  device_initial_probe+0x12/0x20
-[   13.673297]  bus_probe_device+0x13d/0x180
-[   13.673297]  device_add+0xe3a/0x1670
-[   13.673297]  hid_add_device+0x31d/0xa40
-[...]
-
-Fixes: c8000deb6836 ("HID: multitouch: Add support for GT7868Q")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250825143435.598584-12-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1448,6 +1448,14 @@ static __u8 *mt_report_fixup(struct hid_
- 	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
- 	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
- 	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
-+		if (*size < 608) {
-+			dev_info(
-+				&hdev->dev,
-+				"GT7868Q fixup: report descriptor is only %u bytes, skipping\n",
-+				*size);
-+			return rdesc;
-+		}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
+index c9d5d8d93994d..7899a7230299d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
+@@ -346,7 +346,6 @@ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
+ 		if (err)
+ 			return err;
+ 	}
+-	priv->dcbx.xoff = xoff;
+ 
+ 	/* Apply the settings */
+ 	if (update_buffer) {
+@@ -355,6 +354,8 @@ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
+ 			return err;
+ 	}
+ 
++	priv->dcbx.xoff = xoff;
 +
- 		if (rdesc[607] == 0x15) {
- 			rdesc[607] = 0x25;
- 			dev_info(
+ 	if (update_prio2buffer)
+ 		err = mlx5e_port_set_priority2buffer(priv->mdev, prio2buffer);
+ 
+-- 
+2.50.1
+
 
 
 
