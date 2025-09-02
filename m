@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-177125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54CFB40362
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:32:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA187B40349
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:31:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BFB2487AB7
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:32:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39E74545E76
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BE3311974;
-	Tue,  2 Sep 2025 13:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D3830F533;
+	Tue,  2 Sep 2025 13:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfBpHmp7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAeGeyT1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AA6320A01;
-	Tue,  2 Sep 2025 13:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774712DAFA1;
+	Tue,  2 Sep 2025 13:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819659; cv=none; b=gY7ZeF8RVadfE14hvTKyVL5pk5DiX66ocEgSvePJqn1PxNSN38DYnPblB1noHuIKvPYkUZoc0U28PiNjTp7SFLZ611qzDGNydjScCLVbAgk9YRdQpNj/liJUMo8Emh8TeZJ3i24nrpE8cqo09yFY/tZ8MvEkMx59kkvssEaFEQI=
+	t=1756819557; cv=none; b=GiMbRPSZo/k8lEtxGQUMbjoceKPXfM3GfQROg7dwWVynu56xOPTiIhQAu7posnNXHOUL3E4c+fAV6BZlNtkp3KyrpdKrqYU3h3lcO4fOXeeNoXlNTaapXf6C4zqCYDS9wmx5aHIP8Lk6H0rcnle9Omrp08gjk5zeaYgfT0iFqh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819659; c=relaxed/simple;
-	bh=PIOZcn5A6eWnxX/57jvY/2rVzurVYxzN8eizpoWAqaI=;
+	s=arc-20240116; t=1756819557; c=relaxed/simple;
+	bh=P9T1P5ivl7uGYGDB0qub3q1LrwcHatp4FgPdyZd1kUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CaGKDD20Y9LNBUlDf8KcTbMq8YH4zFsBOay0MI5nx4HF3slQU5JkLuTyUMXcPJfXlF6ukBBAFj/wnX8s1BWLXa5YLOc5/orMvbMP16bd1CUD8ak6BCgnOK9tlsDrwteXJXdUqKp7y+LxtPzBpW/HSnnLKxesWVoQbBZR1WDMMKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfBpHmp7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65537C4CEED;
-	Tue,  2 Sep 2025 13:27:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CJtL/jFd30Mwc++I3Dfh7Om1NN6c2z3Una75sivBweYB7uJoqkyIh8MEQa8MFUkAFrHo/+YiS3/82BhYk47OapaBvl25Y3vVCF3F5crL0sUtQEZooRHAZ8BYJuqF5s6GsSPB6LSiQFx8otmvQUxUfVTvdQm0HheUqpagBjPRF8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAeGeyT1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E3EC4CEF5;
+	Tue,  2 Sep 2025 13:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819658;
-	bh=PIOZcn5A6eWnxX/57jvY/2rVzurVYxzN8eizpoWAqaI=;
+	s=korg; t=1756819557;
+	bh=P9T1P5ivl7uGYGDB0qub3q1LrwcHatp4FgPdyZd1kUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dfBpHmp7pE/Tfyel16mrZuxihjUs4av1QU18+dDr88P9DUGgwaDPY/Jm3iE6fQUE7
-	 fdvZ/lK2WbTriS3Cj6kHSANeph8l7oN9dPPkKdHqXICRL2JwBuXQ2h8DkGeqUBBKbm
-	 4lBNjBQb4qWYJ9V/FrMiRwBpKhx85+T7qCFR8qjs=
+	b=IAeGeyT1UykraRiyYYfBpwSwlLx5ZsMQZrQKLmiXHYk288fZwP64GR3CIRRVPYZLi
+	 Fn2IxWdzeiJQWT8vpjdfuo1aj33AspdDE1gLDqV+G3my6zUzAgGmmOxeahopueUr71
+	 PCCgtAQVnSvlth4vLNDxeTVNnAZbnDmQDr4E1nyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
 	Matthew Brost <matthew.brost@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 069/142] drm/xe/xe_sync: avoid race during ufence signaling
-Date: Tue,  2 Sep 2025 15:19:31 +0200
-Message-ID: <20250902131950.903941192@linuxfoundation.org>
+Subject: [PATCH 6.16 070/142] drm/xe/vm: Dont pin the vm_resv during validation
+Date: Tue,  2 Sep 2025 15:19:32 +0200
+Message-ID: <20250902131950.943408961@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
 References: <20250902131948.154194162@linuxfoundation.org>
@@ -69,51 +68,98 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-[ Upstream commit 04e1f683cd28dc9407b238543871a6e09a570dc0 ]
+[ Upstream commit 7551865cd12af2dc47e5a174eebcfb0b94b5449b ]
 
-Marking ufence as signalled after copy_to_user() is too late.
-Worker thread which signals ufence by memory write might be raced
-with another userspace vm-bind call. In map/unmap scenario unmap
-may still see ufence is not signalled causing -EBUSY. Change the
-order of marking / write to user-fence fixes this issue.
+The pinning has the odd side-effect that unlocking *any* resv
+during validation triggers an "unlocking pinned lock" warning.
 
-Fixes: 977e5b82e090 ("drm/xe: Expose user fence from xe_sync_entry")
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5536
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
+Fixes: 5cc3325584c4 ("drm/xe: Rework eviction rejection of bound external bos")
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20250820083903.2109891-2-zbigniew.kempczynski@intel.com
-(cherry picked from commit 8ae04fe9ffc93d6bc3bc63ac08375427d69cee06)
+Link: https://lore.kernel.org/r/20250821143045.106005-2-thomas.hellstrom@linux.intel.com
+(cherry picked from commit 0a51bf3e54dd8b77e6f1febbbb66def0660862d2)
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_sync.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_bo.c |  5 ++---
+ drivers/gpu/drm/xe/xe_vm.h | 15 ++-------------
+ 2 files changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_sync.c b/drivers/gpu/drm/xe/xe_sync.c
-index f87276df18f28..82872a51f0983 100644
---- a/drivers/gpu/drm/xe/xe_sync.c
-+++ b/drivers/gpu/drm/xe/xe_sync.c
-@@ -77,6 +77,7 @@ static void user_fence_worker(struct work_struct *w)
- {
- 	struct xe_user_fence *ufence = container_of(w, struct xe_user_fence, worker);
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index 7aa2c17825da9..e2c6493cb70d9 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -2435,7 +2435,6 @@ int xe_bo_validate(struct xe_bo *bo, struct xe_vm *vm, bool allow_res_evict)
+ 		.no_wait_gpu = false,
+ 		.gfp_retry_mayfail = true,
+ 	};
+-	struct pin_cookie cookie;
+ 	int ret;
  
-+	WRITE_ONCE(ufence->signalled, 1);
- 	if (mmget_not_zero(ufence->mm)) {
- 		kthread_use_mm(ufence->mm);
- 		if (copy_to_user(ufence->addr, &ufence->value, sizeof(ufence->value)))
-@@ -91,7 +92,6 @@ static void user_fence_worker(struct work_struct *w)
- 	 * Wake up waiters only after updating the ufence state, allowing the UMD
- 	 * to safely reuse the same ufence without encountering -EBUSY errors.
- 	 */
--	WRITE_ONCE(ufence->signalled, 1);
- 	wake_up_all(&ufence->xe->ufence_wq);
- 	user_fence_put(ufence);
+ 	if (vm) {
+@@ -2446,10 +2445,10 @@ int xe_bo_validate(struct xe_bo *bo, struct xe_vm *vm, bool allow_res_evict)
+ 		ctx.resv = xe_vm_resv(vm);
+ 	}
+ 
+-	cookie = xe_vm_set_validating(vm, allow_res_evict);
++	xe_vm_set_validating(vm, allow_res_evict);
+ 	trace_xe_bo_validate(bo);
+ 	ret = ttm_bo_validate(&bo->ttm, &bo->placement, &ctx);
+-	xe_vm_clear_validating(vm, allow_res_evict, cookie);
++	xe_vm_clear_validating(vm, allow_res_evict);
+ 
+ 	return ret;
  }
+diff --git a/drivers/gpu/drm/xe/xe_vm.h b/drivers/gpu/drm/xe/xe_vm.h
+index 0158ec0ae3b23..e54ca835b5828 100644
+--- a/drivers/gpu/drm/xe/xe_vm.h
++++ b/drivers/gpu/drm/xe/xe_vm.h
+@@ -310,22 +310,14 @@ void xe_vm_snapshot_free(struct xe_vm_snapshot *snap);
+  * Register this task as currently making bos resident for the vm. Intended
+  * to avoid eviction by the same task of shared bos bound to the vm.
+  * Call with the vm's resv lock held.
+- *
+- * Return: A pin cookie that should be used for xe_vm_clear_validating().
+  */
+-static inline struct pin_cookie xe_vm_set_validating(struct xe_vm *vm,
+-						     bool allow_res_evict)
++static inline void xe_vm_set_validating(struct xe_vm *vm, bool allow_res_evict)
+ {
+-	struct pin_cookie cookie = {};
+-
+ 	if (vm && !allow_res_evict) {
+ 		xe_vm_assert_held(vm);
+-		cookie = lockdep_pin_lock(&xe_vm_resv(vm)->lock.base);
+ 		/* Pairs with READ_ONCE in xe_vm_is_validating() */
+ 		WRITE_ONCE(vm->validating, current);
+ 	}
+-
+-	return cookie;
+ }
+ 
+ /**
+@@ -333,17 +325,14 @@ static inline struct pin_cookie xe_vm_set_validating(struct xe_vm *vm,
+  * @vm: Pointer to the vm or NULL
+  * @allow_res_evict: Eviction from @vm was allowed. Must be set to the same
+  * value as for xe_vm_set_validation().
+- * @cookie: Cookie obtained from xe_vm_set_validating().
+  *
+  * Register this task as currently making bos resident for the vm. Intended
+  * to avoid eviction by the same task of shared bos bound to the vm.
+  * Call with the vm's resv lock held.
+  */
+-static inline void xe_vm_clear_validating(struct xe_vm *vm, bool allow_res_evict,
+-					  struct pin_cookie cookie)
++static inline void xe_vm_clear_validating(struct xe_vm *vm, bool allow_res_evict)
+ {
+ 	if (vm && !allow_res_evict) {
+-		lockdep_unpin_lock(&xe_vm_resv(vm)->lock.base, cookie);
+ 		/* Pairs with READ_ONCE in xe_vm_is_validating() */
+ 		WRITE_ONCE(vm->validating, NULL);
+ 	}
 -- 
 2.50.1
 
