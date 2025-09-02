@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-177385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA72B40522
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:50:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4DD9B404F3
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74FE5189F05C
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:45:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2573C7A0308
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2E8320381;
-	Tue,  2 Sep 2025 13:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA18A30BF74;
+	Tue,  2 Sep 2025 13:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olbwcvSi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUEoDZ+V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48711212568;
-	Tue,  2 Sep 2025 13:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9753A272E7C;
+	Tue,  2 Sep 2025 13:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820474; cv=none; b=hui8I/+OXZeHodqh+sVimGZwP8wltyT+/6tuFsa3IjJ03E0C+PzJISfUtjw2VG1HbVpVTrlqUDVLm5QurZBSn17AULULo2a4w0TWth5Nu78wSSbs/cLvUA823ga+tWd8G+R8Jbo5TYcFeJRWsT7wmrfl76lO2V71oEMLeZUdHeU=
+	t=1756820630; cv=none; b=p+RnJtq8ho7c8XW45D9WzdTiatmQqGKfRaqFTiFl+vNbf/ZMPhHy+m+UKhZ282YQsUYukE87noQMsi8tnXusSoLpR+ZAOTnd1GVh7QITKur4XJDvZ2749h6HzY9fcjguavqSWSk8CQgwS9iHHIcBi1O+6ITvMb3qRmVIIOSwmxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820474; c=relaxed/simple;
-	bh=dnYnJF5MQeWvWyKm5rSsBG+p4lWtIKXFCC4ncRU+Wks=;
+	s=arc-20240116; t=1756820630; c=relaxed/simple;
+	bh=j1X6MgmJLSUiHPveFbmMcVxSr6y4zN5I//AVKQTMbgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5/QrNHuwrmxxlvkrEmPSmMhiaByUwYVbNt9KNhZq7Erx3CMt6Py59JOIcDiKkDVxOxn5Qk4m8lwj48UdeP4udgfbgX9XiafM0kn1w5/AyH/GeBSnby7qqVb95L9UWL0i9TKc5Xk+3f9+hl1DXCR1T9Ee+I29kbFzW/4C6QMkzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olbwcvSi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6186DC4CEED;
-	Tue,  2 Sep 2025 13:41:12 +0000 (UTC)
+	 MIME-Version; b=L919rXQR16RkyvpP+bjn9StJZLEmtzz4FtQYX8RSbGJvpmCf2zw4Hbou8A1J1SDkbU9UHPn2PGNt+hJWb19Mg3PGWuZ1uSEHfd5DSSwEjqpI70tvlO2rkrVXn64nNh68e6iOSdSHdu57cQ/UeXdelZRENM3EbhtFxUovYSUWmdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUEoDZ+V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB37C4CEED;
+	Tue,  2 Sep 2025 13:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820472;
-	bh=dnYnJF5MQeWvWyKm5rSsBG+p4lWtIKXFCC4ncRU+Wks=;
+	s=korg; t=1756820630;
+	bh=j1X6MgmJLSUiHPveFbmMcVxSr6y4zN5I//AVKQTMbgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=olbwcvSiz9CvTPBxqBglRcJ9JQAM4XrlP2VBBtc87tc9UwUrYezsAWGukvptLbQfO
-	 znNrLXAC+8nQXzhVhmaYpFSSNz29svFdvoyhrP5zv9GAQg4n0sK2B5s3FiQpj06OuT
-	 ek+UpGBpqPpYgjrWflLsFIa2sf5wNSPTcLR/DMEI=
+	b=ZUEoDZ+VKW6l5WmQag8+EymmRiA9F8qo+7z9LQKh12lcuClbXJiHm6bOcGQshUpxa
+	 KymBk7ErRFlAk0+lmLKqOPDOGe77zPQssFcIGKh4LH5RduPI/vfGY2fKmz2no52cFJ
+	 jwyTLg3lqH4c2SmbEekaBgkEySnbMGrmymVvpWBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 6.1 41/50] dma/pool: Ensure DMA_DIRECT_REMAP allocations are decrypted
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 14/33] phy: mscc: Fix when PTP clock is register and unregister
 Date: Tue,  2 Sep 2025 15:21:32 +0200
-Message-ID: <20250902131932.149580196@linuxfoundation.org>
+Message-ID: <20250902131927.612278481@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+References: <20250902131927.045875971@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shanker Donthineni <sdonthineni@nvidia.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-commit 89a2d212bdb4bc29bed8e7077abe054b801137ea upstream.
+[ Upstream commit 882e57cbc7204662f6c5672d5b04336c1d790b03 ]
 
-When CONFIG_DMA_DIRECT_REMAP is enabled, atomic pool pages are
-remapped via dma_common_contiguous_remap() using the supplied
-pgprot. Currently, the mapping uses
-pgprot_dmacoherent(PAGE_KERNEL), which leaves the memory encrypted
-on systems with memory encryption enabled (e.g., ARM CCA Realms).
+It looks like that every time when the interface was set down and up the
+driver was creating a new ptp clock. On top of this the function
+ptp_clock_unregister was never called.
+Therefore fix this by calling ptp_clock_register and initialize the
+mii_ts struct inside the probe function and call ptp_clock_unregister when
+driver is removed.
 
-This can cause the DMA layer to fail or crash when accessing the
-memory, as the underlying physical pages are not configured as
-expected.
-
-Fix this by requesting a decrypted mapping in the vmap() call:
-pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL))
-
-This ensures that atomic pool memory is consistently mapped
-unencrypted.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20250811181759.998805-1-sdonthineni@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250825065543.2916334-1-horatiu.vultur@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/pool.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/phy/mscc/mscc.h      |  4 ++++
+ drivers/net/phy/mscc/mscc_main.c |  4 +---
+ drivers/net/phy/mscc/mscc_ptp.c  | 34 ++++++++++++++++++++------------
+ 3 files changed, 26 insertions(+), 16 deletions(-)
 
---- a/kernel/dma/pool.c
-+++ b/kernel/dma/pool.c
-@@ -102,8 +102,8 @@ static int atomic_pool_expand(struct gen
+diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
+index 878298304430c..fcfbff691b3c6 100644
+--- a/drivers/net/phy/mscc/mscc.h
++++ b/drivers/net/phy/mscc/mscc.h
+@@ -474,6 +474,7 @@ static inline void vsc8584_config_macsec_intr(struct phy_device *phydev)
+ void vsc85xx_link_change_notify(struct phy_device *phydev);
+ void vsc8584_config_ts_intr(struct phy_device *phydev);
+ int vsc8584_ptp_init(struct phy_device *phydev);
++void vsc8584_ptp_deinit(struct phy_device *phydev);
+ int vsc8584_ptp_probe_once(struct phy_device *phydev);
+ int vsc8584_ptp_probe(struct phy_device *phydev);
+ irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev);
+@@ -488,6 +489,9 @@ static inline int vsc8584_ptp_init(struct phy_device *phydev)
+ {
+ 	return 0;
+ }
++static inline void vsc8584_ptp_deinit(struct phy_device *phydev)
++{
++}
+ static inline int vsc8584_ptp_probe_once(struct phy_device *phydev)
+ {
+ 	return 0;
+diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
+index 03aa85ec60dfc..982e73adf2bcf 100644
+--- a/drivers/net/phy/mscc/mscc_main.c
++++ b/drivers/net/phy/mscc/mscc_main.c
+@@ -2326,9 +2326,7 @@ static int vsc85xx_probe(struct phy_device *phydev)
  
- #ifdef CONFIG_DMA_DIRECT_REMAP
- 	addr = dma_common_contiguous_remap(page, pool_size,
--					   pgprot_dmacoherent(PAGE_KERNEL),
--					   __builtin_return_address(0));
-+			pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL)),
-+			__builtin_return_address(0));
- 	if (!addr)
- 		goto free_page;
- #else
+ static void vsc85xx_remove(struct phy_device *phydev)
+ {
+-	struct vsc8531_private *priv = phydev->priv;
+-
+-	skb_queue_purge(&priv->rx_skbs_list);
++	vsc8584_ptp_deinit(phydev);
+ }
+ 
+ /* Microsemi VSC85xx PHYs */
+diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
+index f77bfbee5f20b..e30e6ba9da2f4 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.c
++++ b/drivers/net/phy/mscc/mscc_ptp.c
+@@ -1294,7 +1294,6 @@ static void vsc8584_set_input_clk_configured(struct phy_device *phydev)
+ 
+ static int __vsc8584_init_ptp(struct phy_device *phydev)
+ {
+-	struct vsc8531_private *vsc8531 = phydev->priv;
+ 	static const u32 ltc_seq_e[] = { 0, 400000, 0, 0, 0 };
+ 	static const u8  ltc_seq_a[] = { 8, 6, 5, 4, 2 };
+ 	u32 val;
+@@ -1511,17 +1510,7 @@ static int __vsc8584_init_ptp(struct phy_device *phydev)
+ 
+ 	vsc85xx_ts_eth_cmp1_sig(phydev);
+ 
+-	vsc8531->mii_ts.rxtstamp = vsc85xx_rxtstamp;
+-	vsc8531->mii_ts.txtstamp = vsc85xx_txtstamp;
+-	vsc8531->mii_ts.hwtstamp = vsc85xx_hwtstamp;
+-	vsc8531->mii_ts.ts_info  = vsc85xx_ts_info;
+-	phydev->mii_ts = &vsc8531->mii_ts;
+-
+-	memcpy(&vsc8531->ptp->caps, &vsc85xx_clk_caps, sizeof(vsc85xx_clk_caps));
+-
+-	vsc8531->ptp->ptp_clock = ptp_clock_register(&vsc8531->ptp->caps,
+-						     &phydev->mdio.dev);
+-	return PTR_ERR_OR_ZERO(vsc8531->ptp->ptp_clock);
++	return 0;
+ }
+ 
+ void vsc8584_config_ts_intr(struct phy_device *phydev)
+@@ -1548,6 +1537,16 @@ int vsc8584_ptp_init(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++void vsc8584_ptp_deinit(struct phy_device *phydev)
++{
++	struct vsc8531_private *vsc8531 = phydev->priv;
++
++	if (vsc8531->ptp->ptp_clock) {
++		ptp_clock_unregister(vsc8531->ptp->ptp_clock);
++		skb_queue_purge(&vsc8531->rx_skbs_list);
++	}
++}
++
+ irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev)
+ {
+ 	struct vsc8531_private *priv = phydev->priv;
+@@ -1605,7 +1604,16 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
+ 
+ 	vsc8531->ptp->phydev = phydev;
+ 
+-	return 0;
++	vsc8531->mii_ts.rxtstamp = vsc85xx_rxtstamp;
++	vsc8531->mii_ts.txtstamp = vsc85xx_txtstamp;
++	vsc8531->mii_ts.hwtstamp = vsc85xx_hwtstamp;
++	vsc8531->mii_ts.ts_info  = vsc85xx_ts_info;
++	phydev->mii_ts = &vsc8531->mii_ts;
++
++	memcpy(&vsc8531->ptp->caps, &vsc85xx_clk_caps, sizeof(vsc85xx_clk_caps));
++	vsc8531->ptp->ptp_clock = ptp_clock_register(&vsc8531->ptp->caps,
++						     &phydev->mdio.dev);
++	return PTR_ERR_OR_ZERO(vsc8531->ptp->ptp_clock);
+ }
+ 
+ int vsc8584_ptp_probe_once(struct phy_device *phydev)
+-- 
+2.50.1
+
 
 
 
