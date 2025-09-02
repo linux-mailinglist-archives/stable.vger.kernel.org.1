@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-177429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 375EFB40547
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C17B4052F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:50:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87D1D5E47F1
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1612A7B3C6E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBA9309DB5;
-	Tue,  2 Sep 2025 13:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1370D33CE84;
+	Tue,  2 Sep 2025 13:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEqElzX/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zGeLYrr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B33B284B2E;
-	Tue,  2 Sep 2025 13:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27C4324B07;
+	Tue,  2 Sep 2025 13:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820615; cv=none; b=OdkXf17oOS4qdMCAmtlRHFSZuq76G3il6r5jGbEE/zESqwLrC9MsRlMNkc8pmiFWyaGV0WztAOJz7x10JLbt47BEJixTxISX9rD2acap7ngCyaBerPbYjiKkdxIeCbvUQ86rdwj5LZQeHMVQje3n/ViM0HrE3gE9S/NodCFmmfk=
+	t=1756820748; cv=none; b=OmWmltE1dwmlzrFuNmfcug3Ig6WxIdBXIWTLFRubMHfc9P1a+0R656BIM7/JCoUyDXJhBYT4jo+I2cIruK7GC9hNXTaXh+CZFvPBnn6Td/nYLX6LsEtUSMWT4wEUl7xCJV7CgrNCWk6E9as9U7bvh9tVsYt2e2Ci54wCdmrIXtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820615; c=relaxed/simple;
-	bh=FzcXD0vCCNWAfjUMhqqvJ0/Up9E+jbeUxDkV3OLQlAY=;
+	s=arc-20240116; t=1756820748; c=relaxed/simple;
+	bh=9mfcGVO7kiq71ze2x7i+zNY/+ZK53UXbJli79RtNgaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJZaLKYw6t86IYczHTpcclRbfXeuS2RB8h+43V4Hne5+WDAvhQPuBnbs7RKq2n/CvOIQIfceImhKlXOMHxs1kTOOx05TKAdpMWFui+BuNVtCUHzd5LYdVVQp9mmQroWY/pV0hMbn5ZRlApx6aDh6vb0z7j187/nDqRBXUfrlwyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEqElzX/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EBAEC4CEF5;
-	Tue,  2 Sep 2025 13:43:34 +0000 (UTC)
+	 MIME-Version; b=VsXWkfTchc1U8YK3I6I4j5047En8CyUSGqkTgdx2d6jsImU72VixNW2SvJg5ozwlm+EuqGMmEHgxhdm4KmTiEEipvfw/detiDT5k1PUTCERJg9yCwus9DbIrTAf4BxrO1PL24I7eSoEYK6VG8ciskK1EAcoyXyglmclskgWDlik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zGeLYrr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF20C4CEED;
+	Tue,  2 Sep 2025 13:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820615;
-	bh=FzcXD0vCCNWAfjUMhqqvJ0/Up9E+jbeUxDkV3OLQlAY=;
+	s=korg; t=1756820748;
+	bh=9mfcGVO7kiq71ze2x7i+zNY/+ZK53UXbJli79RtNgaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tEqElzX/uGu8c3dpBXs+J3DpAonMB+0aGgaetm36J2xF0rFJiiTqf+lMXhHKB+FHP
-	 0V0mhiS62kqilX4/Gk+xY0BgHmviz5q50JhFSsZ3jNAzfhkxjRfqCP4wzySF7NXZsE
-	 uYLB5wSoXf5JcGUK7jH0esEynxuy5H4JX4ftLGdo=
+	b=1zGeLYrrx1W+Dnj1WEwZnUD3H/bqztyqsnpXo5t2+qGZifgBQFjycM2ATr6LBmLR/
+	 HUePouePbug8G+QTVKIV28I2GiTYbFwcTL6VBMOYlgy8x/51O+7y6kP4Y8QZBflQkp
+	 Yh0pDpJA3JM83LVz2GKNcgaQRlFZ4qMfdeHPRTV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 33/33] xfs: do not propagate ENODATA disk errors into xattr code
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 25/34] net: usb: qmi_wwan: add Telit Cinterion LE910C4-WWX new compositions
 Date: Tue,  2 Sep 2025 15:21:51 +0200
-Message-ID: <20250902131928.363504598@linuxfoundation.org>
+Message-ID: <20250902131927.619720587@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
-References: <20250902131927.045875971@linuxfoundation.org>
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
+References: <20250902131926.607219059@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit ae668cd567a6a7622bc813ee0bb61c42bed61ba7 upstream.
+commit e81a7f65288c7e2cfb7e7890f648e099fd885ab3 upstream.
 
-ENODATA (aka ENOATTR) has a very specific meaning in the xfs xattr code;
-namely, that the requested attribute name could not be found.
+Add the following Telit Cinterion LE910C4-WWX new compositions:
 
-However, a medium error from disk may also return ENODATA. At best,
-this medium error may escape to userspace as "attribute not found"
-when in fact it's an IO (disk) error.
+0x1034: tty (AT) + tty (AT) + rmnet
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1034 Rev=00.00
+S:  Manufacturer=Telit
+S:  Product=LE910C4-WWX
+S:  SerialNumber=93f617e7
+C:  #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-At worst, we may oops in xfs_attr_leaf_get() when we do:
+0x1037: tty (diag) + tty (Telit custom) + tty (AT) + tty (AT) + rmnet
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 15 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1037 Rev=00.00
+S:  Manufacturer=Telit
+S:  Product=LE910C4-WWX
+S:  SerialNumber=93f617e7
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-	error = xfs_attr_leaf_hasname(args, &bp);
-	if (error == -ENOATTR)  {
-		xfs_trans_brelse(args->trans, bp);
-		return error;
-	}
+0x1038: tty (Telit custom) + tty (AT) + tty (AT) + rmnet
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  9 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1038 Rev=00.00
+S:  Manufacturer=Telit
+S:  Product=LE910C4-WWX
+S:  SerialNumber=93f617e7
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-because an ENODATA/ENOATTR error from disk leaves us with a null bp,
-and the xfs_trans_brelse will then null-deref it.
-
-As discussed on the list, we really need to modify the lower level
-IO functions to trap all disk errors and ensure that we don't let
-unique errors like this leak up into higher xfs functions - many
-like this should be remapped to EIO.
-
-However, this patch directly addresses a reported bug in the xattr
-code, and should be safe to backport to stable kernels. A larger-scope
-patch to handle more unique errors at lower levels can follow later.
-
-(Note, prior to 07120f1abdff we did not oops, but we did return the
-wrong error code to userspace.)
-
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Fixes: 07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
-Cc: stable@vger.kernel.org # v5.9+
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-[ Adjust context: removed metadata health tracking calls ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Link: https://patch.msgid.link/20250822091324.39558-1-Fabio.Porcedda@telit.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_attr_remote.c |    7 +++++++
- fs/xfs/libxfs/xfs_da_btree.c    |    6 ++++++
- 2 files changed, 13 insertions(+)
+ drivers/net/usb/qmi_wwan.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/xfs/libxfs/xfs_attr_remote.c
-+++ b/fs/xfs/libxfs/xfs_attr_remote.c
-@@ -418,6 +418,13 @@ xfs_attr_rmtval_get(
- 			dblkcnt = XFS_FSB_TO_BB(mp, map[i].br_blockcount);
- 			error = xfs_buf_read(mp->m_ddev_targp, dblkno, dblkcnt,
- 					0, &bp, &xfs_attr3_rmt_buf_ops);
-+			/*
-+			 * ENODATA from disk implies a disk medium failure;
-+			 * ENODATA for xattrs means attribute not found, so
-+			 * disambiguate that here.
-+			 */
-+			if (error == -ENODATA)
-+				error = -EIO;
- 			if (error)
- 				return error;
- 
---- a/fs/xfs/libxfs/xfs_da_btree.c
-+++ b/fs/xfs/libxfs/xfs_da_btree.c
-@@ -2639,6 +2639,12 @@ xfs_da_read_buf(
- 
- 	error = xfs_trans_read_buf_map(mp, tp, mp->m_ddev_targp, mapp, nmap, 0,
- 			&bp, ops);
-+	/*
-+	 * ENODATA from disk implies a disk medium failure; ENODATA for
-+	 * xattrs means attribute not found, so disambiguate that here.
-+	 */
-+	if (error == -ENODATA && whichfork == XFS_ATTR_FORK)
-+		error = -EIO;
- 	if (error)
- 		goto out_free;
- 
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1297,6 +1297,9 @@ static const struct usb_device_id produc
+ 	{QMI_FIXED_INTF(0x2357, 0x0201, 4)},	/* TP-LINK HSUPA Modem MA180 */
+ 	{QMI_FIXED_INTF(0x2357, 0x9000, 4)},	/* TP-LINK MA260 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1031, 3)}, /* Telit LE910C1-EUX */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1034, 2)}, /* Telit LE910C4-WWX */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1037, 4)}, /* Telit LE910C4-WWX */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1038, 3)}, /* Telit LE910C4-WWX */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x103a, 0)}, /* Telit LE910C4-WWX */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1040, 2)},	/* Telit LE922A */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1050, 2)},	/* Telit FN980 */
 
 
 
