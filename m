@@ -1,101 +1,152 @@
-Return-Path: <stable+bounces-176977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F3AB3FC68
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:28:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ED86B3FC84
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F7381B24F85
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:28:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A12604E3299
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAEB72E5415;
-	Tue,  2 Sep 2025 10:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64018281520;
+	Tue,  2 Sep 2025 10:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PvkIx0OZ"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5EF2EC57B;
-	Tue,  2 Sep 2025 10:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891C032F757
+	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 10:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756808886; cv=none; b=g8dl/sMMLdcRfCNilaw6aUC6V7y+1OwwNxy2kIRoH+C1BOrbsBfKK0wwvvKaBDe997NdKTzJFb/VCSymma2MnyAz7qoHBP80VSGAo1HdQxGbT5FEAU7/O1AduivHcEZ4SSLfA5npnsFdtX4WzOTj9J8MZm/fTNRTPjH3K1b4uas=
+	t=1756809160; cv=none; b=QplM3m45glkZV2x9fdXCGJ1SlYaS0675RrrQYmExIUkETv0WKbG2kTd60++jTuwvWedZ6116XziKOa0S5pH5IMZxuBO5BU11+jVumJR75Zwm3MFO+BNixUFrmOEegWxEg5d7oGi9eyQGWNQUvpxM3UcVXX+pRoAeb7yzmulzR94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756808886; c=relaxed/simple;
-	bh=NYZ/k+QUdmExt9Cd73uifh9B1Y3UsA0bGoTxnRMsluU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WuqCGFCAR/43OZeUFnJ07PiRn39ZtveZ8w4Z1W94jOnAbcHEwkfqfiIRzylYXXwZBdMmPSKpKSoPvZVW9PLbKbmTNpc+hwU1F2cSl+qftUJCIXMRrjSadofaDeILn06Ve4Qc9FHkXssh3eZAamE7rAIBatw1gC+24KQ0YZR3Anc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5571526BE;
-	Tue,  2 Sep 2025 03:27:56 -0700 (PDT)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F08263F6A8;
-	Tue,  2 Sep 2025 03:28:02 -0700 (PDT)
-Date: Tue, 2 Sep 2025 11:28:00 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Lee Jones <lee@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Pawel Moll <pawel.moll@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 0/2] mfd: vexpress: convert the driver to using the new
- generic GPIO chip API
-Message-ID: <20250902-kind-gorgeous-armadillo-166b84@sudeepholla>
-References: <20250811-gpio-mmio-mfd-conv-v1-0-68c5c958cf80@linaro.org>
- <CAMRc=Md+2_3w5kdaUF9-nGdHv9C+tGRfN9TTu6E4+hSdFbwGBQ@mail.gmail.com>
+	s=arc-20240116; t=1756809160; c=relaxed/simple;
+	bh=xHgaSh2A4yEv4NX/+7lLbbxdcZbq+h7IkvUfY2N9/WE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RQgmsWJ2ANQTbESrPhsR9qBUgmWT4BaFY8pPNPKYaGxdSebN0q1IoN34J080TatNnLAi/h6ATpn7U9hrNP2FTHso6R0B0v3+/aqerfyW413bSUX4ujFO2k3QA0TPmUiGa/96YPQ785pYgPD7V8KxBXlXFuN8YgvUVFQ1RyLQ1so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PvkIx0OZ; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756809159; x=1788345159;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=xHgaSh2A4yEv4NX/+7lLbbxdcZbq+h7IkvUfY2N9/WE=;
+  b=PvkIx0OZApK05OYNxJXDMSk/Te4MnT8pd0FpMKC0ww0DS14Qf2QO0HxX
+   yBL99v2j9E92SdF5vvIvnx8yrfECjJcJeaYD46E5D5t/76O1H5uPX5kVv
+   s8ORo7nqe75Anq9j/C0F4JciD7U+JBs95cSJCTaBM6R9oRvH1WACCOHTZ
+   UhxkM202R5JwGo4B9JKMQrPCUl2S0mj82aJ8Q+aEw12YbmZ1ixvLEU8It
+   FljrM8XpAuXN3oJcuE/4lDLlbheuJ7LXBYtxnWqJ31DgwU1LZgffpFSwd
+   q2093dhQaV8babduH6HGhOtBVUg9UihMRYYmGGredW4zgcyE0buNHc+xn
+   g==;
+X-CSE-ConnectionGUID: oiQ4Fj8bRPyGrrF1f/f2Zw==
+X-CSE-MsgGUID: bE9Nrcb2RiuMiMg69BZLcA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59026437"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="59026437"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 03:32:37 -0700
+X-CSE-ConnectionGUID: dgrQJMdnQkGqG0FBFn4MeQ==
+X-CSE-MsgGUID: ynApx5lgSW+TGzzlSL3/BQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="171402132"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO [10.245.245.71]) ([10.245.245.71])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 03:32:35 -0700
+Message-ID: <f16b5123-ed53-45b3-ac13-656ad839e87f@intel.com>
+Date: Tue, 2 Sep 2025 11:32:33 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] drm/xe: Allow the pm notifier to continue on
+ failure
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>, stable@vger.kernel.org,
+ Matthew Brost <matthew.brost@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+References: <20250901083829.27341-1-thomas.hellstrom@linux.intel.com>
+ <20250901083829.27341-3-thomas.hellstrom@linux.intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20250901083829.27341-3-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=Md+2_3w5kdaUF9-nGdHv9C+tGRfN9TTu6E4+hSdFbwGBQ@mail.gmail.com>
 
-On Tue, Sep 02, 2025 at 11:28:49AM +0200, Bartosz Golaszewski wrote:
-> On Mon, Aug 11, 2025 at 3:36 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> >
-> > This converts the vexpress-sysreg MFD driver to using the new generic
-> > GPIO interface but first fixes an issue with an unchecked return value
-> > of devm_gpiochio_add_data().
-> >
-> > Lee: Please, create an immutable branch containing these commits after
-> > you pick them up, as I'd like to merge it into the GPIO tree and remove
-> > the legacy interface in this cycle.
-> >
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > ---
-> > Bartosz Golaszewski (2):
-> >       mfd: vexpress-sysreg: check the return value of devm_gpiochip_add_data()
-> >       mfd: vexpress-sysreg: use new generic GPIO chip API
-> >
-> >  drivers/mfd/vexpress-sysreg.c | 25 ++++++++++++++++++++-----
-> >  1 file changed, 20 insertions(+), 5 deletions(-)
-> > ---
-> > base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
-> > change-id: 20250728-gpio-mmio-mfd-conv-d27c2cfbccfe
-> >
-> > Best regards,
-> > --
-> > Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
+On 01/09/2025 09:38, Thomas Hellström wrote:
+> Its actions are opportunistic anyway and will be completed
+> on device suspend.
+
+If it fails here, it will likely also fail in the real suspend part 
+which is more hostile/restrictive environment, so maybe failing early is 
+better? Not completely sure though.
+
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+
 > 
-> It's been almost a month, so gentle ping.
+> Marking as a fix to simplify backporting of the fix
+> that follows in the series.
 > 
+> v2:
+> - Keep the runtime pm reference over suspend / hibernate and
+>    document why. (Matt Auld, Rodrigo Vivi):
+> 
+> Fixes: c6a4d46ec1d7 ("drm/xe: evict user memory in PM notifier")
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.16+
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> ---
+>   drivers/gpu/drm/xe/xe_pm.c | 17 +++++++----------
+>   1 file changed, 7 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
+> index a2e85030b7f4..bee9aacd82e7 100644
+> --- a/drivers/gpu/drm/xe/xe_pm.c
+> +++ b/drivers/gpu/drm/xe/xe_pm.c
+> @@ -308,17 +308,17 @@ static int xe_pm_notifier_callback(struct notifier_block *nb,
+>   	case PM_SUSPEND_PREPARE:
+>   		xe_pm_runtime_get(xe);
+>   		err = xe_bo_evict_all_user(xe);
+> -		if (err) {
+> +		if (err)
+>   			drm_dbg(&xe->drm, "Notifier evict user failed (%d)\n", err);
+> -			xe_pm_runtime_put(xe);
+> -			break;
+> -		}
+>   
+>   		err = xe_bo_notifier_prepare_all_pinned(xe);
+> -		if (err) {
+> +		if (err)
+>   			drm_dbg(&xe->drm, "Notifier prepare pin failed (%d)\n", err);
+> -			xe_pm_runtime_put(xe);
+> -		}
+> +		/*
+> +		 * Keep the runtime pm reference until post hibernation / post suspend to
+> +		 * avoid a runtime suspend interfering with evicted objects or backup
+> +		 * allocations.
+> +		 */
+>   		break;
+>   	case PM_POST_HIBERNATION:
+>   	case PM_POST_SUSPEND:
+> @@ -327,9 +327,6 @@ static int xe_pm_notifier_callback(struct notifier_block *nb,
+>   		break;
+>   	}
+>   
+> -	if (err)
+> -		return NOTIFY_BAD;
+> -
+>   	return NOTIFY_DONE;
+>   }
+>   
 
-Sorry for that, LGTM. FWIW:
-
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-
--- 
-Regards,
-Sudeep
 
