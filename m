@@ -1,306 +1,422 @@
-Return-Path: <stable+bounces-177238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40288B40402
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4DAB40497
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:44:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 692B54E6074
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1DEF3BA2C9
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB4730BF6B;
-	Tue,  2 Sep 2025 13:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F7E3074B7;
+	Tue,  2 Sep 2025 13:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6M1P0pX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaPdkGtv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7E930DEAE;
-	Tue,  2 Sep 2025 13:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A3123D7EC;
+	Tue,  2 Sep 2025 13:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820020; cv=none; b=jTBwpezW362EjiCC3gj6IbhphCpYTx8CvRoAD0hc+XvExCIOIKFFYbAhPIRrJ8iDz9AJe7+hvB5JaIRo2YM7c2PNXrhEL5Jt949yAQubsZa7AcYLbRln/5mlu4a8+NjylumtLyl+ryPbSnVW4FWOdFExOlZ25sjxieGzq/vX2gk=
+	t=1756820238; cv=none; b=Zd91F3Z6EegX3zMIF52GOcgKHo8zmC/XGDgNpXp8WtTS5xbwi2kmQWeAQR5/C/fxCa+0hMZRyTaXWFfzwgZOAIC1gOQ331zbzxjrLIsDFtt1Q7frL1WAklc++GOGZh25JMcPLQcetAnL7D4CoRiG8KHVZoJqS1pr2/d3ALn/9Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820020; c=relaxed/simple;
-	bh=rpRc89T59fI67tEMiWeT1nRJ0JNhN8Jx1pityyZLgK4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGg7rVPO1s9zTK3zTCiKw6R9+1WrZSnWJHuvf+cxDS8FCm7XdmbjeKC+dNT9tzyti8fdT4XgFgQhf2z7yGt9zf1mGioMKdurxoHLJgDfguY5QREJ/NAkB+q/D1hDjeUtlCwsUUVG3WzoHRF8WgcK9hDIvsWgv8bIphLkYCCR82E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6M1P0pX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC07C4CEED;
-	Tue,  2 Sep 2025 13:33:39 +0000 (UTC)
+	s=arc-20240116; t=1756820238; c=relaxed/simple;
+	bh=m+I9yKtLh+hfE4g4xUdhB+y9EbdNfTm2xyWqG3OiCJ8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Eztf9xJEftrtHWulGrler5UVEq8vUWKYE5qKXM6pYKWWWD6/9ocEc2PbW6LrlRX9N+g2VZIPdtHw1Dl5LqcQKeuzau5qE2SqiUMz9UYW6/FUyJSoZEMhHshJ/w0zR7yn29UvIBf5Rhh9ewAVK3bNWpz9o6EQs3wG6PZ2WDnOdvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaPdkGtv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5ECEC4CEF5;
+	Tue,  2 Sep 2025 13:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820019;
-	bh=rpRc89T59fI67tEMiWeT1nRJ0JNhN8Jx1pityyZLgK4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M6M1P0pX+HqBKTXt1tVnv+aS+3HW3wyfq/WKknPPBqsdCe40qPpczzV/1PTGm1gKR
-	 v9QmCDpeMPMUkoLvaz9WN1ycDm7SwZBBD+DS7Q7EB4LS86H/iyknEismjWzwupEET4
-	 6Tq0uhd3MVeS+ziLk9y3JqO8AJeP7vt4pXPVATNU=
+	s=korg; t=1756820237;
+	bh=m+I9yKtLh+hfE4g4xUdhB+y9EbdNfTm2xyWqG3OiCJ8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EaPdkGtvJC5FyMP14S7P+A/buxSS1v/exPfoR+EMF0e6fy4lHC6e3rSPaVWTds9wn
+	 rTmns1lAsgW99rXsCbOzKknqoU9CuvuKBILcK1L0hNrTG9EnXYW8trh9fgp2Tf5CcT
+	 mvUD6dDNxY8UXlpa+2EC39VEiRoqYwjeXuUSz99o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.12 36/95] ice: dont leave device non-functional if Tx scheduler config fails
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org
+Subject: [PATCH 6.6 00/75] 6.6.104-rc1 review
 Date: Tue,  2 Sep 2025 15:20:12 +0200
-Message-ID: <20250902131940.995399445@linuxfoundation.org>
+Message-ID: <20250902131935.107897242@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.104-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.6.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.6.104-rc1
+X-KernelTest-Deadline: 2025-09-04T13:19+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.6.104 release.
+There are 75 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Thu, 04 Sep 2025 13:19:14 +0000.
+Anything received after that time might be too late.
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.104-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+and the diffstat can be found below.
 
-[ Upstream commit 86aae43f21cf784c1d7f6a9af93e5116b0f232ab ]
+thanks,
 
-The ice_cfg_tx_topo function attempts to apply Tx scheduler topology
-configuration based on NVM parameters, selecting either a 5 or 9 layer
-topology.
+greg k-h
 
-As part of this flow, the driver acquires the "Global Configuration Lock",
-which is a hardware resource associated with programming the DDP package
-to the device. This "lock" is implemented by firmware as a way to
-guarantee that only one PF can program the DDP for a device. Unlike a
-traditional lock, once a PF has acquired this lock, no other PF will be
-able to acquire it again (including that PF) until a CORER of the device.
-Future requests to acquire the lock report that global configuration has
-already completed.
+-------------
+Pseudo-Shortlog of commits:
 
-The following flow is used to program the Tx topology:
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.6.104-rc1
 
- * Read the DDP package for scheduler configuration data
- * Acquire the global configuration lock
- * Program Tx scheduler topology according to DDP package data
- * Trigger a CORER which clears the global configuration lock
+Eric Sandeen <sandeen@redhat.com>
+    xfs: do not propagate ENODATA disk errors into xattr code
 
-This is followed by the flow for programming the DDP package:
+Imre Deak <imre.deak@intel.com>
+    Revert "drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS"
 
- * Acquire the global configuration lock (again)
- * Download the DDP package to the device
- * Release the global configuration lock.
+Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+    HID: mcp2221: Handle reads greater than 60 bytes
 
-However, if configuration of the Tx topology fails, (i.e.
-ice_get_set_tx_topo returns an error code), the driver exits
-ice_cfg_tx_topo() immediately, and fails to trigger CORER.
+Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+    HID: mcp2221: Don't set bus speed on every transfer
 
-While the global configuration lock is held, the firmware rejects most
-AdminQ commands, as it is waiting for the DDP package download (or Tx
-scheduler topology programming) to occur.
+Chris Mi <cmi@nvidia.com>
+    net/mlx5: SF, Fix add port error handling
 
-The current driver flows assume that the global configuration lock has been
-reset by CORER after programming the Tx topology. Thus, the same PF
-attempts to acquire the global lock again, and fails. This results in the
-driver reporting "an unknown error occurred when loading the DDP package".
-It then attempts to enter safe mode, but ultimately fails to finish
-ice_probe() since nearly all AdminQ command report error codes, and the
-driver stops loading the device at some point during its initialization.
+Eric Dumazet <edumazet@google.com>
+    net: rose: fix a typo in rose_clear_routes()
 
-The only currently known way that ice_get_set_tx_topo() can fail is with
-certain older DDP packages which contain invalid topology configuration, on
-firmware versions which strictly validate this data. The most recent
-releases of the DDP have resolved the invalid data. However, it is still
-poor practice to essentially brick the device, and prevent access to the
-device even through safe mode or recovery mode. It is also plausible that
-this command could fail for some other reason in the future.
+James Jones <jajones@nvidia.com>
+    drm/nouveau/disp: Always accept linear modifier
 
-We cannot simply release the global lock after a failed call to
-ice_get_set_tx_topo(). Releasing the lock indicates to firmware that global
-configuration (downloading of the DDP) has completed. Future attempts by
-this or other PFs to load the DDP will fail with a report that the DDP
-package has already been downloaded. Then, PFs will enter safe mode as they
-realize that the package on the device does not meet the minimum version
-requirement to load. The reported error messages are confusing, as they
-indicate the version of the default "safe mode" package in the NVM, rather
-than the version of the file loaded from /lib/firmware.
+Steve French <stfrench@microsoft.com>
+    smb3 client: fix return code mapping of remap_file_range
 
-Instead, we need to trigger CORER to clear global configuration. This is
-the lowest level of hardware reset which clears the global configuration
-lock and related state. It also clears any already downloaded DDP.
-Crucially, it does *not* clear the Tx scheduler topology configuration.
+Fabio Porcedda <fabio.porcedda@gmail.com>
+    net: usb: qmi_wwan: add Telit Cinterion LE910C4-WWX new compositions
 
-Refactor ice_cfg_tx_topo() to always trigger a CORER after acquiring the
-global lock, regardless of success or failure of the topology
-configuration.
+Shuhao Fu <sfual@cse.ust.hk>
+    fs/smb: Fix inconsistent refcnt update
 
-We need to re-initialize the HW structure when we trigger the CORER. Thus,
-it makes sense for this to be the responsibility of ice_cfg_tx_topo()
-rather than its caller, ice_init_tx_topology(). This avoids needless
-re-initialization in cases where we don't attempt to update the Tx
-scheduler topology, such as if it has already been programmed.
+Shanker Donthineni <sdonthineni@nvidia.com>
+    dma/pool: Ensure DMA_DIRECT_REMAP allocations are decrypted
 
-There is one catch: failure to re-initialize the HW struct should stop
-ice_probe(). If this function fails, we won't have a valid HW structure and
-cannot ensure the device is functioning properly. To handle this, ensure
-ice_cfg_tx_topo() returns a limited set of error codes. Set aside one
-specifically, -ENODEV, to indicate that the ice_init_tx_topology() should
-fail and stop probe.
+Alex Deucher <alexander.deucher@amd.com>
+    Revert "drm/amdgpu: fix incorrect vm flags to map bo"
 
-Other error codes indicate failure to apply the Tx scheduler topology. This
-is treated as a non-fatal error, with an informational message informing
-the system administrator that the updated Tx topology did not apply. This
-allows the device to load and function with the default Tx scheduler
-topology, rather than failing to load entirely.
+Minjong Kim <minbell.kim@samsung.com>
+    HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()
 
-Note that this use of CORER will not result in loops with future PFs
-attempting to also load the invalid Tx topology configuration. The first PF
-will acquire the global configuration lock as part of programming the DDP.
-Each PF after this will attempt to acquire the global lock as part of
-programming the Tx topology, and will fail with the indication from
-firmware that global configuration is already complete. Tx scheduler
-topology configuration is only performed during driver init (probe or
-devlink reload) and not during cleanup for a CORER that happens after probe
-completes.
+Ping Cheng <pinglinux@gmail.com>
+    HID: wacom: Add a new Art Pen 2
 
-Fixes: 91427e6d9030 ("ice: Support 5 layer topology")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/intel/ice/ice_ddp.c  | 44 ++++++++++++++++-------
- drivers/net/ethernet/intel/ice/ice_main.c | 16 ++++++---
- 2 files changed, 43 insertions(+), 17 deletions(-)
+Matt Coffin <mcoffin13@gmail.com>
+    HID: logitech: Add ids for G PRO 2 LIGHTSPEED
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ddp.c b/drivers/net/ethernet/intel/ice/ice_ddp.c
-index e4c8cd12a41d1..04bec5d8e7084 100644
---- a/drivers/net/ethernet/intel/ice/ice_ddp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ddp.c
-@@ -2352,7 +2352,13 @@ ice_get_set_tx_topo(struct ice_hw *hw, u8 *buf, u16 buf_size,
-  * The function will apply the new Tx topology from the package buffer
-  * if available.
-  *
-- * Return: zero when update was successful, negative values otherwise.
-+ * Return:
-+ * * 0 - Successfully applied topology configuration.
-+ * * -EBUSY - Failed to acquire global configuration lock.
-+ * * -EEXIST - Topology configuration has already been applied.
-+ * * -EIO - Unable to apply topology configuration.
-+ * * -ENODEV - Failed to re-initialize device after applying configuration.
-+ * * Other negative error codes indicate unexpected failures.
-  */
- int ice_cfg_tx_topo(struct ice_hw *hw, const void *buf, u32 len)
- {
-@@ -2385,7 +2391,7 @@ int ice_cfg_tx_topo(struct ice_hw *hw, const void *buf, u32 len)
- 
- 	if (status) {
- 		ice_debug(hw, ICE_DBG_INIT, "Get current topology is failed\n");
--		return status;
-+		return -EIO;
- 	}
- 
- 	/* Is default topology already applied ? */
-@@ -2472,31 +2478,45 @@ int ice_cfg_tx_topo(struct ice_hw *hw, const void *buf, u32 len)
- 				 ICE_GLOBAL_CFG_LOCK_TIMEOUT);
- 	if (status) {
- 		ice_debug(hw, ICE_DBG_INIT, "Failed to acquire global lock\n");
--		return status;
-+		return -EBUSY;
- 	}
- 
- 	/* Check if reset was triggered already. */
- 	reg = rd32(hw, GLGEN_RSTAT);
- 	if (reg & GLGEN_RSTAT_DEVSTATE_M) {
--		/* Reset is in progress, re-init the HW again */
- 		ice_debug(hw, ICE_DBG_INIT, "Reset is in progress. Layer topology might be applied already\n");
- 		ice_check_reset(hw);
--		return 0;
-+		/* Reset is in progress, re-init the HW again */
-+		goto reinit_hw;
- 	}
- 
- 	/* Set new topology */
- 	status = ice_get_set_tx_topo(hw, new_topo, size, NULL, NULL, true);
- 	if (status) {
--		ice_debug(hw, ICE_DBG_INIT, "Failed setting Tx topology\n");
--		return status;
-+		ice_debug(hw, ICE_DBG_INIT, "Failed to set Tx topology, status %pe\n",
-+			  ERR_PTR(status));
-+		/* only report -EIO here as the caller checks the error value
-+		 * and reports an informational error message informing that
-+		 * the driver failed to program Tx topology.
-+		 */
-+		status = -EIO;
- 	}
- 
--	/* New topology is updated, delay 1 second before issuing the CORER */
-+	/* Even if Tx topology config failed, we need to CORE reset here to
-+	 * clear the global configuration lock. Delay 1 second to allow
-+	 * hardware to settle then issue a CORER
-+	 */
- 	msleep(1000);
- 	ice_reset(hw, ICE_RESET_CORER);
--	/* CORER will clear the global lock, so no explicit call
--	 * required for release.
--	 */
-+	ice_check_reset(hw);
-+
-+reinit_hw:
-+	/* Since we triggered a CORER, re-initialize hardware */
-+	ice_deinit_hw(hw);
-+	if (ice_init_hw(hw)) {
-+		ice_debug(hw, ICE_DBG_INIT, "Failed to re-init hardware after setting Tx topology\n");
-+		return -ENODEV;
-+	}
- 
--	return 0;
-+	return status;
- }
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index d1abd21cfc647..74d4f2fde3e0f 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4559,17 +4559,23 @@ ice_init_tx_topology(struct ice_hw *hw, const struct firmware *firmware)
- 			dev_info(dev, "Tx scheduling layers switching feature disabled\n");
- 		else
- 			dev_info(dev, "Tx scheduling layers switching feature enabled\n");
--		/* if there was a change in topology ice_cfg_tx_topo triggered
--		 * a CORER and we need to re-init hw
-+		return 0;
-+	} else if (err == -ENODEV) {
-+		/* If we failed to re-initialize the device, we can no longer
-+		 * continue loading.
- 		 */
--		ice_deinit_hw(hw);
--		err = ice_init_hw(hw);
--
-+		dev_warn(dev, "Failed to initialize hardware after applying Tx scheduling configuration.\n");
- 		return err;
- 	} else if (err == -EIO) {
- 		dev_info(dev, "DDP package does not support Tx scheduling layers switching feature - please update to the latest DDP package and try again\n");
-+		return 0;
-+	} else if (err == -EEXIST) {
-+		return 0;
- 	}
- 
-+	/* Do not treat this as a fatal error. */
-+	dev_info(dev, "Failed to apply Tx scheduling configuration, err %pe\n",
-+		 ERR_PTR(err));
- 	return 0;
- }
- 
--- 
-2.50.1
+Antheas Kapenekakis <lkml@antheas.dev>
+    HID: quirks: add support for Legion Go dual dinput modes
 
+Qasim Ijaz <qasdev00@gmail.com>
+    HID: multitouch: fix slab out-of-bounds access in mt_report_fixup()
+
+Qasim Ijaz <qasdev00@gmail.com>
+    HID: asus: fix UAF via HID_CLAIMED_INPUT validation
+
+Borislav Petkov (AMD) <bp@alien8.de>
+    x86/microcode/AMD: Handle the case of no BIOS microcode
+
+Thijs Raymakers <thijs@raymakers.nl>
+    KVM: x86: use array_index_nospec with indices that come from guest
+
+Li Nan <linan122@huawei.com>
+    efivarfs: Fix slab-out-of-bounds in efivarfs_d_compare
+
+Eric Dumazet <edumazet@google.com>
+    sctp: initialize more fields in sctp_v6_from_sk()
+
+Takamitsu Iwai <takamitz@amazon.co.jp>
+    net: rose: include node references in rose_neigh refcount
+
+Takamitsu Iwai <takamitz@amazon.co.jp>
+    net: rose: convert 'use' field to refcount_t
+
+Takamitsu Iwai <takamitz@amazon.co.jp>
+    net: rose: split remove and free operations in rose_remove_neigh()
+
+Rohan G Thomas <rohan.g.thomas@altera.com>
+    net: stmmac: Set CIC bit only for TX queues with COE
+
+Rohan G Thomas <rohan.g.thomas@altera.com>
+    net: stmmac: xgmac: Correct supported speed modes
+
+Serge Semin <fancer.lancer@gmail.com>
+    net: stmmac: Rename phylink_get_caps() callback to update_caps()
+
+Rohan G Thomas <rohan.g.thomas@altera.com>
+    net: stmmac: xgmac: Do not enable RX FIFO Overflow interrupts
+
+Alexei Lazar <alazar@nvidia.com>
+    net/mlx5e: Set local Xoff after FW update
+
+Alexei Lazar <alazar@nvidia.com>
+    net/mlx5e: Update and set Xon/Xoff upon port speed set
+
+Alexei Lazar <alazar@nvidia.com>
+    net/mlx5e: Update and set Xon/Xoff upon MTU set
+
+Moshe Shemesh <moshe@nvidia.com>
+    net/mlx5: Nack sync reset when SFs are present
+
+Jiri Pirko <jiri@resnulli.us>
+    net/mlx5: Convert SF port_indices xarray to function_ids xarray
+
+Jiri Pirko <jiri@resnulli.us>
+    net/mlx5: Use devlink port pointer to get the pointer of container SF struct
+
+Jiri Pirko <jiri@resnulli.us>
+    net/mlx5: Call mlx5_sf_id_erase() once in mlx5_sf_dealloc()
+
+Moshe Shemesh <moshe@nvidia.com>
+    net/mlx5: Fix lockdep assertion on sync reset unload event
+
+Moshe Shemesh <moshe@nvidia.com>
+    net/mlx5: Add support for sync reset using hot reset
+
+Moshe Shemesh <moshe@nvidia.com>
+    net/mlx5: Add device cap for supporting hot reset in sync reset flow
+
+Moshe Shemesh <moshe@nvidia.com>
+    net/mlx5: Reload auxiliary drivers on fw_activate
+
+Horatiu Vultur <horatiu.vultur@microchip.com>
+    phy: mscc: Fix when PTP clock is register and unregister
+
+Yeounsu Moon <yyyynoom@gmail.com>
+    net: dlink: fix multicast stats being counted incorrectly
+
+Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+    dt-bindings: display/msm: qcom,mdp5: drop lut clock
+
+Michal Kubiak <michal.kubiak@intel.com>
+    ice: fix incorrect counter for buffer allocation failures
+
+Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+    ice: stop storing XDP verdict within ice_rx_buf
+
+Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+    ice: gather page_count()'s of each frag right before XDP prog call
+
+Larysa Zaremba <larysa.zaremba@intel.com>
+    ice: Introduce ice_xdp_buff
+
+Timur Tabi <ttabi@nvidia.com>
+    drm/nouveau: remove unused memory target test
+
+Timur Tabi <ttabi@nvidia.com>
+    drm/nouveau: remove unused increment in gm200_flcn_pio_imem_wr
+
+Kuniyuki Iwashima <kuniyu@google.com>
+    atm: atmtcp: Prevent arbitrary write in atmtcp_recv_control().
+
+Pavel Shpakovskiy <pashpakovskii@salutedevices.com>
+    Bluetooth: hci_sync: fix set_local_name race condition
+
+Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+    Bluetooth: hci_event: Detect if HCI_EV_NUM_COMP_PKTS is unbalanced
+
+Ludovico de Nittis <ludovico.denittis@collabora.com>
+    Bluetooth: hci_event: Mark connection as closed during suspend disconnect
+
+Ludovico de Nittis <ludovico.denittis@collabora.com>
+    Bluetooth: hci_event: Treat UNKNOWN_CONN_ID on disconnect as success
+
+José Expósito <jose.exposito89@gmail.com>
+    HID: input: report battery status changes immediately
+
+José Expósito <jose.exposito89@gmail.com>
+    HID: input: rename hidinput_set_battery_charge_status()
+
+Madhavan Srinivasan <maddy@linux.ibm.com>
+    powerpc/kvm: Fix ifdef to remove build warning
+
+Rob Clark <robin.clark@oss.qualcomm.com>
+    drm/msm: Defer fd_install in SUBMIT ioctl
+
+Oscar Maes <oscmaes92@gmail.com>
+    net: ipv4: fix regression in local-broadcast routes
+
+Nikolay Kuratov <kniv@yandex-team.ru>
+    vhost/net: Protect ubufs with rcu read lock in vhost_net_ubuf_put()
+
+Trond Myklebust <trond.myklebust@hammerspace.com>
+    NFS: Fix a race when updating an existing write
+
+Christoph Hellwig <hch@lst.de>
+    nfs: fold nfs_page_group_lock_subrequests into nfs_lock_and_join_requests
+
+Werner Sembach <wse@tuxedocomputers.com>
+    ACPI: EC: Add device to acpi_ec_no_wakeup[] qurik list
+
+Junli Liu <liujunli@lixiang.com>
+    erofs: fix atomic context detection when !CONFIG_DEBUG_LOCK_ALLOC
+
+Alexey Klimov <alexey.klimov@linaro.org>
+    ASoC: codecs: tx-macro: correct tx_macro_component_drv name
+
+Paulo Alcantara <pc@manguebit.org>
+    smb: client: fix race with concurrent opens in rename(2)
+
+Paulo Alcantara <pc@manguebit.org>
+    smb: client: fix race with concurrent opens in unlink(2)
+
+Damien Le Moal <dlemoal@kernel.org>
+    scsi: core: sysfs: Correct sysfs attributes access rights
+
+Tengda Wu <wutengda@huaweicloud.com>
+    ftrace: Fix potential warning in trace_printk_seq during ftrace_dump
+
+Dan Carpenter <dan.carpenter@linaro.org>
+    of: dynamic: Fix use after free in of_changeset_add_prop_helper()
+
+Rob Herring <robh@kernel.org>
+    of: Add a helper to free property struct
+
+Aleksander Jan Bajkowski <olek2@wp.pl>
+    mips: lantiq: xway: sysctrl: rename the etop node
+
+Aleksander Jan Bajkowski <olek2@wp.pl>
+    mips: dts: lantiq: danube: add missing burst length property
+
+Randy Dunlap <rdunlap@infradead.org>
+    pinctrl: STMFX: add missing HAS_IOMEM dependency
+
+Lizhi Hou <lizhi.hou@amd.com>
+    of: dynamic: Fix memleak when of_pci_add_properties() failed
+
+
+-------------
+
+Diffstat:
+
+ .../devicetree/bindings/display/msm/qcom,mdp5.yaml |   1 -
+ Makefile                                           |   4 +-
+ arch/mips/boot/dts/lantiq/danube_easy50712.dts     |   5 +-
+ arch/mips/lantiq/xway/sysctrl.c                    |  10 +-
+ arch/powerpc/kernel/kvm.c                          |   8 +-
+ arch/x86/kernel/cpu/microcode/amd.c                |  22 ++-
+ arch/x86/kvm/lapic.c                               |   2 +
+ arch/x86/kvm/x86.c                                 |   7 +-
+ drivers/acpi/ec.c                                  |   6 +
+ drivers/atm/atmtcp.c                               |  17 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c            |   4 +-
+ drivers/gpu/drm/display/drm_dp_helper.c            |   2 +-
+ drivers/gpu/drm/msm/msm_gem_submit.c               |  14 +-
+ drivers/gpu/drm/nouveau/dispnv50/wndw.c            |   4 +
+ drivers/gpu/drm/nouveau/nvkm/falcon/gm200.c        |  15 +-
+ drivers/hid/hid-asus.c                             |   8 +-
+ drivers/hid/hid-ids.h                              |   3 +
+ drivers/hid/hid-input-test.c                       |  10 +-
+ drivers/hid/hid-input.c                            |  51 +++---
+ drivers/hid/hid-logitech-dj.c                      |   4 +
+ drivers/hid/hid-logitech-hidpp.c                   |   2 +
+ drivers/hid/hid-mcp2221.c                          |  71 +++++---
+ drivers/hid/hid-multitouch.c                       |   8 +
+ drivers/hid/hid-ntrig.c                            |   3 +
+ drivers/hid/hid-quirks.c                           |   2 +
+ drivers/hid/wacom_wac.c                            |   1 +
+ drivers/net/ethernet/dlink/dl2k.c                  |   2 +-
+ drivers/net/ethernet/intel/ice/ice_txrx.c          |  94 +++++++---
+ drivers/net/ethernet/intel/ice/ice_txrx.h          |  19 +-
+ drivers/net/ethernet/intel/ice/ice_txrx_lib.h      |  53 ++----
+ drivers/net/ethernet/mellanox/mlx5/core/devlink.c  |   2 +-
+ .../ethernet/mellanox/mlx5/core/en/port_buffer.c   |   3 +-
+ .../ethernet/mellanox/mlx5/core/en/port_buffer.h   |  12 ++
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c  |  19 +-
+ drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c | 200 ++++++++++++++-------
+ drivers/net/ethernet/mellanox/mlx5/core/fw_reset.h |   1 +
+ drivers/net/ethernet/mellanox/mlx5/core/main.c     |   3 +
+ .../net/ethernet/mellanox/mlx5/core/sf/devlink.c   |  87 ++++-----
+ drivers/net/ethernet/mellanox/mlx5/core/sf/sf.h    |   6 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c  |   8 +-
+ .../net/ethernet/stmicro/stmmac/dwxgmac2_core.c    |  13 +-
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c |   9 +-
+ drivers/net/ethernet/stmicro/stmmac/hwif.h         |   8 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |  12 +-
+ drivers/net/phy/mscc/mscc.h                        |   4 +
+ drivers/net/phy/mscc/mscc_main.c                   |   4 +-
+ drivers/net/phy/mscc/mscc_ptp.c                    |  34 ++--
+ drivers/net/usb/qmi_wwan.c                         |   3 +
+ drivers/of/dynamic.c                               |  29 +--
+ drivers/of/of_private.h                            |   1 +
+ drivers/of/overlay.c                               |  11 +-
+ drivers/of/unittest.c                              |  12 +-
+ drivers/pinctrl/Kconfig                            |   1 +
+ drivers/scsi/scsi_sysfs.c                          |   4 +-
+ drivers/vhost/net.c                                |   9 +-
+ fs/efivarfs/super.c                                |   4 +
+ fs/erofs/zdata.c                                   |  13 +-
+ fs/nfs/pagelist.c                                  |  86 +--------
+ fs/nfs/write.c                                     | 148 +++++++++------
+ fs/smb/client/cifsfs.c                             |  14 ++
+ fs/smb/client/inode.c                              |  34 +++-
+ fs/smb/client/smb2inode.c                          |   7 +-
+ fs/xfs/libxfs/xfs_attr_remote.c                    |   7 +
+ fs/xfs/libxfs/xfs_da_btree.c                       |   6 +
+ include/linux/atmdev.h                             |   1 +
+ include/linux/mlx5/mlx5_ifc.h                      |  11 +-
+ include/linux/nfs_page.h                           |   2 +-
+ include/net/bluetooth/hci_sync.h                   |   2 +-
+ include/net/rose.h                                 |  18 +-
+ kernel/dma/pool.c                                  |   4 +-
+ kernel/trace/trace.c                               |   4 +-
+ net/atm/common.c                                   |  15 +-
+ net/bluetooth/hci_event.c                          |  20 ++-
+ net/bluetooth/hci_sync.c                           |   6 +-
+ net/bluetooth/mgmt.c                               |   5 +-
+ net/ipv4/route.c                                   |  10 +-
+ net/rose/af_rose.c                                 |  13 +-
+ net/rose/rose_in.c                                 |  12 +-
+ net/rose/rose_route.c                              |  62 ++++---
+ net/rose/rose_timer.c                              |   2 +-
+ net/sctp/ipv6.c                                    |   2 +
+ sound/soc/codecs/lpass-tx-macro.c                  |   2 +-
+ 82 files changed, 897 insertions(+), 560 deletions(-)
 
 
 
