@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-177212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA2BB40421
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2D4B403B2
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C12517ACB60
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:36:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2105B188E642
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEE9261393;
-	Tue,  2 Sep 2025 13:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5819830C35F;
+	Tue,  2 Sep 2025 13:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0rhlZn7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nt+wLLfX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAAF30AAD6;
-	Tue,  2 Sep 2025 13:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144DB3054E7;
+	Tue,  2 Sep 2025 13:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819937; cv=none; b=ICLFtNPes5lmJXFzaB/Yb1gTpMdDac6jP7WPbRTvfAHkaWYMrfmVHqcHX88KFk1QgSDlUA3yBPo7KxBbdSKPMILMHxtmhhXzIFdJZ/IK14iLi07RIVaayTnPFVpnDpTZD3Qti/OiB0UYqwe1SBMYbI6FdxiQRDfY4K5KbA8SHm8=
+	t=1756819712; cv=none; b=tbmWP3FflHhpOfzlsnTfDEV+DsAdrijmGB6bjWuDyhN/M8kmQkWEKr3+ddenM0cgaDyCJltdpVJBrMQsUI4D6cgDqSAnoVvgcLM67hTbdyTm0MFpW/I6x5zlKPoP8f/sf6hUQ3GBg4I3yqHcAfiAsmaxaCxRtA8VN47oriaDWPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819937; c=relaxed/simple;
-	bh=lQR32eDVN+tDobX0/pdpnmHIlA75clHq6ZASKS0C3Ks=;
+	s=arc-20240116; t=1756819712; c=relaxed/simple;
+	bh=n1UNF6nk5yes3ixYAUmlNNPa6roXY5qz9rCF/HUZotc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UZsLwCRGkZaF+AEtQixg+yBPqhj5MMmXSRrYGQGGQTNs49HI0t3POjwjCpkIh8uey0/BW0dEpOSrEJ2bjGQmSwKRqh02FxMPqttgcj30K/CrLu+t3RFNGR/Pa1XdseNBpP5rS0fG/CN7FdxFBeRn87itqwgeJ52qDVJS2RaxFjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0rhlZn7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18092C4CEF4;
-	Tue,  2 Sep 2025 13:32:15 +0000 (UTC)
+	 MIME-Version; b=OCfhqbWrDxEyU97dngmmQckJV3TIq2KfLZT6TbPwCvBIJnfw1VT/nOXM/bIMvk9/od7j+Q3rw4ss5X/TMRe5faOMl0F0iM2CbQkepvGJMrtOe8BAROPCJRExfiZlh8hCpEULVvKtxtSnNCG2kD99V+vBnJMVQRiCLqSf8Q+fL/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nt+wLLfX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E3AC4CEED;
+	Tue,  2 Sep 2025 13:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819937;
-	bh=lQR32eDVN+tDobX0/pdpnmHIlA75clHq6ZASKS0C3Ks=;
+	s=korg; t=1756819711;
+	bh=n1UNF6nk5yes3ixYAUmlNNPa6roXY5qz9rCF/HUZotc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0rhlZn7r/6AGQmOUuXHavv0vKkataGBeBaKRa4zuDhXfCT6FH01d4U/4LFI5KvDW
-	 DbWw0LgtK3NQ8oHoqG4WYnxX7n4zDXxzfySFIAat4MqS4tJYedC3zTmFgGZYc80sQU
-	 Tx8dfK2FLYkZB51foyKSEi6FqAlsWxButCNDAPBk=
+	b=nt+wLLfX/RGky5m+BwSoMoEGWGQG6z9vRX75vOXSNWDROrdv/faOOuLYqmelAYcA3
+	 y+KH60QJkxnuWp3N3kHJMhmbuuddONpUqNaa40zUR20wBvxqC1m289fql0buTV7bU3
+	 k8hUSbaZOxPtgvdDUOa1ZAhixU8xNZcCzQ9QbF5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 42/95] drm/xe/xe_sync: avoid race during ufence signaling
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 116/142] Revert "drm/amdgpu: fix incorrect vm flags to map bo"
 Date: Tue,  2 Sep 2025 15:20:18 +0200
-Message-ID: <20250902131941.220483215@linuxfoundation.org>
+Message-ID: <20250902131952.728700543@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +58,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 04e1f683cd28dc9407b238543871a6e09a570dc0 ]
+commit ac4ed2da4c1305a1a002415058aa7deaf49ffe3e upstream.
 
-Marking ufence as signalled after copy_to_user() is too late.
-Worker thread which signals ufence by memory write might be raced
-with another userspace vm-bind call. In map/unmap scenario unmap
-may still see ufence is not signalled causing -EBUSY. Change the
-order of marking / write to user-fence fixes this issue.
+This reverts commit b08425fa77ad2f305fe57a33dceb456be03b653f.
 
-Fixes: 977e5b82e090 ("drm/xe: Expose user fence from xe_sync_entry")
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5536
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20250820083903.2109891-2-zbigniew.kempczynski@intel.com
-(cherry picked from commit 8ae04fe9ffc93d6bc3bc63ac08375427d69cee06)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Revert this to align with 6.17 because the fixes tag
+was wrong on this commit.
+
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit be33e8a239aac204d7e9e673c4220ef244eb1ba3)
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_sync.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_sync.c b/drivers/gpu/drm/xe/xe_sync.c
-index b0684e6d2047b..dd7bd766ae184 100644
---- a/drivers/gpu/drm/xe/xe_sync.c
-+++ b/drivers/gpu/drm/xe/xe_sync.c
-@@ -77,6 +77,7 @@ static void user_fence_worker(struct work_struct *w)
- {
- 	struct xe_user_fence *ufence = container_of(w, struct xe_user_fence, worker);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+@@ -88,8 +88,8 @@ int amdgpu_map_static_csa(struct amdgpu_
+ 	}
  
-+	WRITE_ONCE(ufence->signalled, 1);
- 	if (mmget_not_zero(ufence->mm)) {
- 		kthread_use_mm(ufence->mm);
- 		if (copy_to_user(ufence->addr, &ufence->value, sizeof(ufence->value)))
-@@ -89,7 +90,6 @@ static void user_fence_worker(struct work_struct *w)
- 	 * Wake up waiters only after updating the ufence state, allowing the UMD
- 	 * to safely reuse the same ufence without encountering -EBUSY errors.
- 	 */
--	WRITE_ONCE(ufence->signalled, 1);
- 	wake_up_all(&ufence->xe->ufence_wq);
- 	user_fence_put(ufence);
- }
--- 
-2.50.1
-
+ 	r = amdgpu_vm_bo_map(adev, *bo_va, csa_addr, 0, size,
+-			     AMDGPU_VM_PAGE_READABLE | AMDGPU_VM_PAGE_WRITEABLE |
+-			     AMDGPU_VM_PAGE_EXECUTABLE);
++			     AMDGPU_PTE_READABLE | AMDGPU_PTE_WRITEABLE |
++			     AMDGPU_PTE_EXECUTABLE);
+ 
+ 	if (r) {
+ 		DRM_ERROR("failed to do bo_map on static CSA, err=%d\n", r);
 
 
 
