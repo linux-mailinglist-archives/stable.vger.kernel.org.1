@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-177472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE5C1B40597
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:55:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A91B4055A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:52:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D089481C29
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:51:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD8651B6581F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968B4340D92;
-	Tue,  2 Sep 2025 13:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2643093B8;
+	Tue,  2 Sep 2025 13:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChsTyaRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K803v51n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53075324B1A;
-	Tue,  2 Sep 2025 13:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CB23054C1;
+	Tue,  2 Sep 2025 13:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820755; cv=none; b=l27gz9JpQqcdjpzphGC0iNZTBkY6DNaduTYQIa4ZxKrHcKuLWsHNIaAGQGdJhZ7LspYFZzqqNWf/U7K9JajxFBnBufvZXRAC3hG7RWVy4V5Ls1EQWy+L9hyK82LdhCaD3OXeJqBO0CVvtJG0vniDhkDJ2ZrfHdUw1A5lG3MdPJk=
+	t=1756820586; cv=none; b=Us7N3FYxwEWTkpugdHuaDt2Y5U0YCSqHg/nQGv/Jk8M5IjuGQ6fYlX33lLUgPceNsYwEwH/OjZupt31YubvBNOvZi59eI+bx4cXyior2ClaouuGgyJXNXXjlJTRUcDhGxLVh8Key2od+XVZp4sXCK1Guri/j9Hxu4iIczmtktXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820755; c=relaxed/simple;
-	bh=aBEDWNzpU/ID9e71ZgmaVhuPhf/EHWlrU5aSwjhWSkc=;
+	s=arc-20240116; t=1756820586; c=relaxed/simple;
+	bh=INQzRf1rEJTipSZj2ltvUTDNP3C9KzdV8N2yxqvQutA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8t+IKtT0BJdD7MXO6qk/rvPNrBhAiaQJt2biVJvjqtXJ7MQ2nFzb07ezjcGokvIU4dK6IVDzhuG2txQmUSboGVV1c0iMzuScXaCcv2oPKNT+Cq2OITRop7utGvVIgQyDyfT7B26yKd7fcbPmlc+TkvGTt6KamJ/3lIMT2/4lJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChsTyaRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD877C4CEED;
-	Tue,  2 Sep 2025 13:45:54 +0000 (UTC)
+	 MIME-Version; b=okZ7bN2v30J6PP3oenccB3Qjtm6/iZXq+qm6ps46O6reSM1hXiZrbGvKSQHK34rgkNSH5eafM8HyFLp7khKyyf/F1OCVLojDlTwKAWDwdmipY65MJCPuIHfatbl3ORQ3dZVSFc/bT7sjbxomEhAPrw/EIKx3Cxp4wIIFetF96FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K803v51n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB2CC4CEF5;
+	Tue,  2 Sep 2025 13:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820755;
-	bh=aBEDWNzpU/ID9e71ZgmaVhuPhf/EHWlrU5aSwjhWSkc=;
+	s=korg; t=1756820585;
+	bh=INQzRf1rEJTipSZj2ltvUTDNP3C9KzdV8N2yxqvQutA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ChsTyaRkP/J+dYtXFs1u9+R0LlnNNM5EZE1GXl0mYzXJETNs0jIKSp0tkxCUTHUQu
-	 +0+mjcp/tvk2mLP+m8GrvK9UgRTmUmb700Fbfrpb+9wO6XMP3pzxjIWEqOcU1RCAQa
-	 tQz/uwyIp2UgFUw/q8YTRGl/euKG+TkG70NbBE6o=
+	b=K803v51nvAk1U7ck3rf1EmzdbhRpsOkTMqDWiHIek0RboSPk/LJFi5o/0kjoLHITo
+	 VfJnmtEwufInEaNoF5fmVMinB0pxwpcmx54VnTvtNFIPDVzpkfupiTXuLxks1uA7hA
+	 S0TAb+ByaiCDDvsO3hrNDl2OM5/8Zb0eoTz8DONs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e69f06a0f30116c68056@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 17/34] sctp: initialize more fields in sctp_v6_from_sk()
+	Minjong Kim <minbell.kim@samsung.com>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 5.15 25/33] HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()
 Date: Tue,  2 Sep 2025 15:21:43 +0200
-Message-ID: <20250902131927.308928071@linuxfoundation.org>
+Message-ID: <20250902131928.042933168@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+References: <20250902131927.045875971@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Minjong Kim <minbell.kim@samsung.com>
 
-[ Upstream commit 2e8750469242cad8f01f320131fd5a6f540dbb99 ]
+commit 185c926283da67a72df20a63a5046b3b4631b7d9 upstream.
 
-syzbot found that sin6_scope_id was not properly initialized,
-leading to undefined behavior.
+in ntrig_report_version(), hdev parameter passed from hid_probe().
+sending descriptor to /dev/uhid can make hdev->dev.parent->parent to null
+if hdev->dev.parent->parent is null, usb_dev has
+invalid address(0xffffffffffffff58) that hid_to_usb_dev(hdev) returned
+when usb_rcvctrlpipe() use usb_dev,it trigger
+page fault error for address(0xffffffffffffff58)
 
-Clear sin6_scope_id and sin6_flowinfo.
+add null check logic to ntrig_report_version()
+before calling hid_to_usb_dev()
 
-BUG: KMSAN: uninit-value in __sctp_v6_cmp_addr+0x887/0x8c0 net/sctp/ipv6.c:649
-  __sctp_v6_cmp_addr+0x887/0x8c0 net/sctp/ipv6.c:649
-  sctp_inet6_cmp_addr+0x4f2/0x510 net/sctp/ipv6.c:983
-  sctp_bind_addr_conflict+0x22a/0x3b0 net/sctp/bind_addr.c:390
-  sctp_get_port_local+0x21eb/0x2440 net/sctp/socket.c:8452
-  sctp_get_port net/sctp/socket.c:8523 [inline]
-  sctp_listen_start net/sctp/socket.c:8567 [inline]
-  sctp_inet_listen+0x710/0xfd0 net/sctp/socket.c:8636
-  __sys_listen_socket net/socket.c:1912 [inline]
-  __sys_listen net/socket.c:1927 [inline]
-  __do_sys_listen net/socket.c:1932 [inline]
-  __se_sys_listen net/socket.c:1930 [inline]
-  __x64_sys_listen+0x343/0x4c0 net/socket.c:1930
-  x64_sys_call+0x271d/0x3e20 arch/x86/include/generated/asm/syscalls_64.h:51
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Local variable addr.i.i created at:
-  sctp_get_port net/sctp/socket.c:8515 [inline]
-  sctp_listen_start net/sctp/socket.c:8567 [inline]
-  sctp_inet_listen+0x650/0xfd0 net/sctp/socket.c:8636
-  __sys_listen_socket net/socket.c:1912 [inline]
-  __sys_listen net/socket.c:1927 [inline]
-  __do_sys_listen net/socket.c:1932 [inline]
-  __se_sys_listen net/socket.c:1930 [inline]
-  __x64_sys_listen+0x343/0x4c0 net/socket.c:1930
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+e69f06a0f30116c68056@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68adc0a2.050a0220.37038e.00c4.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20250826141314.1802610-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Minjong Kim <minbell.kim@samsung.com>
+Link: https://patch.msgid.link/20250813-hid-ntrig-page-fault-fix-v2-1-f98581f35106@samsung.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/ipv6.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/hid-ntrig.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
-index d594b949ae82f..a9cfe4d62df83 100644
---- a/net/sctp/ipv6.c
-+++ b/net/sctp/ipv6.c
-@@ -499,7 +499,9 @@ static void sctp_v6_from_sk(union sctp_addr *addr, struct sock *sk)
- {
- 	addr->v6.sin6_family = AF_INET6;
- 	addr->v6.sin6_port = 0;
-+	addr->v6.sin6_flowinfo = 0;
- 	addr->v6.sin6_addr = sk->sk_v6_rcv_saddr;
-+	addr->v6.sin6_scope_id = 0;
- }
+--- a/drivers/hid/hid-ntrig.c
++++ b/drivers/hid/hid-ntrig.c
+@@ -144,6 +144,9 @@ static void ntrig_report_version(struct
+ 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
+ 	unsigned char *data = kmalloc(8, GFP_KERNEL);
  
- /* Initialize sk->sk_rcv_saddr from sctp_addr. */
--- 
-2.50.1
-
++	if (!hid_is_usb(hdev))
++		return;
++
+ 	if (!data)
+ 		goto err_free;
+ 
 
 
 
