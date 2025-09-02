@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133EFB404D2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D09B404FA
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF299188F833
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ED7B1B674EC
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CECC1308F30;
-	Tue,  2 Sep 2025 13:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDDC93128D9;
+	Tue,  2 Sep 2025 13:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wotww4WZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHPEhgM7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9443093B8;
-	Tue,  2 Sep 2025 13:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F103128D5;
+	Tue,  2 Sep 2025 13:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820258; cv=none; b=qTrSfoZZLFnAC7imShPA/0WAsTdOtgRUTiUMs0oJCv2K8nDNG7VlNJyNeVXc7HNgXHwXEMvCDeyoyx3Jwfl3M9mBhpvzU9Pn9YShIve49R16LQj0fXvIhMQns0bCv16Fdg+O64ASLe8gFtE/CJkKCegOhjdf6D5P+zCOImFX3VU=
+	t=1756820381; cv=none; b=asRTJ+RA5mJf1NYEwOk3sOFTYmocDx8+IyCl3HUcgA8s8SeNokhrugec7DEUmcR4MrPKmfdxG5w24C31z+lwy0lPGtLOO+9EuK/UrCN6gTozD6NT5QF2cYkciB+PlDgDGS8cXi1rkORQ9vZNpe98+IxtVYu5903RtYAfU1Gsf2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820258; c=relaxed/simple;
-	bh=rskP4RvtYK6yG07GGPYOq1vvSNFx2nQmf4XUS5P10zk=;
+	s=arc-20240116; t=1756820381; c=relaxed/simple;
+	bh=Pt5FSQxhRTPzFxg7URdJXRRjDlYcdDMl+oSyQpKpbMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DHeGibbk7Iy/rcngdjNAahXLovRgMdgWaRpe84uvvIKaFSdnb7SASlg8Te4ziTx5/TWr+H4yquo0410l+/DMijfw6BITCorQm8U69HWc+19un4tpwR2vSIrUI2PRc7eUNpj5qc+CPFwttLWIaa/p5xnnd4g2hBJF+TVQxZahH4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wotww4WZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1215DC4CEED;
-	Tue,  2 Sep 2025 13:37:37 +0000 (UTC)
+	 MIME-Version; b=J3sjLyQxvtGPCLmCWh7jbbnAv8J7aQCIWSp0MWmp2BNa/u/H9aXlrKv1gSgrS+B5vLYY9IT8AyW1mxyGjIvKkUNEwVAss3S8zRl0/mlCjg28A+RCndoy1kIj2vlnnbiu0yaLjvKjnDTL3iRrUtRBxV2tnZAmN8VzoRDoVwfgFPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHPEhgM7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1458C4CEF4;
+	Tue,  2 Sep 2025 13:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820258;
-	bh=rskP4RvtYK6yG07GGPYOq1vvSNFx2nQmf4XUS5P10zk=;
+	s=korg; t=1756820381;
+	bh=Pt5FSQxhRTPzFxg7URdJXRRjDlYcdDMl+oSyQpKpbMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wotww4WZGdTVSvWwYSIQHqKtlzEdOhucmEKyLwaE1CCeUx2gpZgBNwRLbflNmtm/C
-	 ALmtF5gRubTc34GP4btMsPz+oOuHiW+39Av5w39NOQl49k5PP6q9N+b5/8pZriJt9t
-	 stve4Usnc4/0ooZztRa4f7yE+B9UkE42EMptitjw=
+	b=iHPEhgM7vLjI7DnZ21rZl5gDhpUWmT8yQYrragsESH+E81ja1aeqdh3hJt9sXWQq0
+	 RjeDzWJWQCrz6D+ikCjsxgTbYey6/OewWs1Ps/c3cNedP2NZdG+BvMiIJgtWk0tXVG
+	 G6evHqBZIG+2pxSEPHe1YLo1YhpPwMZzOuIEiqsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohan G Thomas <rohan.g.thomas@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 49/75] net: stmmac: xgmac: Correct supported speed modes
-Date: Tue,  2 Sep 2025 15:21:01 +0200
-Message-ID: <20250902131937.045836851@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	Joe Quanaim <jdq@meta.com>,
+	Andrew Steffen <aksteffen@meta.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: [PATCH 6.1 11/50] NFS: Fix a race when updating an existing write
+Date: Tue,  2 Sep 2025 15:21:02 +0200
+Message-ID: <20250902131930.965591805@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohan G Thomas <rohan.g.thomas@altera.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 42ef11b2bff5b6a2910c28d2ea47cc00e0fbcaec ]
+commit 76d2e3890fb169168c73f2e4f8375c7cc24a765e upstream.
 
-Correct supported speed modes as per the XGMAC databook.
-Commit 9cb54af214a7 ("net: stmmac: Fix IP-cores specific
-MAC capabilities") removes support for 10M, 100M and
-1000HD. 1000HD is not supported by XGMAC IP, but it does
-support 10M and 100M FD mode for XGMAC version >= 2_20,
-and it also supports 10M and 100M HD mode if the HDSEL bit
-is set in the MAC_HW_FEATURE0 reg. This commit enables support
-for 10M and 100M speed modes for XGMAC IP based on XGMAC
-version and MAC capabilities.
+After nfs_lock_and_join_requests() tests for whether the request is
+still attached to the mapping, nothing prevents a call to
+nfs_inode_remove_request() from succeeding until we actually lock the
+page group.
+The reason is that whoever called nfs_inode_remove_request() doesn't
+necessarily have a lock on the page group head.
 
-Fixes: 9cb54af214a7 ("net: stmmac: Fix IP-cores specific MAC capabilities")
-Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Link: https://patch.msgid.link/20250825-xgmac-minor-fixes-v3-2-c225fe4444c0@altera.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So in order to avoid races, let's take the page group lock earlier in
+nfs_lock_and_join_requests(), and hold it across the removal of the
+request in nfs_inode_remove_request().
+
+Reported-by: Jeff Layton <jlayton@kernel.org>
+Tested-by: Joe Quanaim <jdq@meta.com>
+Tested-by: Andrew Steffen <aksteffen@meta.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Fixes: bd37d6fce184 ("NFSv4: Convert nfs_lock_and_join_requests() to use nfs_page_find_head_request()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c | 13 +++++++++++--
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c  |  5 +++++
- 2 files changed, 16 insertions(+), 2 deletions(-)
+ fs/nfs/pagelist.c        |    9 +++---
+ fs/nfs/write.c           |   66 ++++++++++++++++-------------------------------
+ include/linux/nfs_page.h |    1 
+ 3 files changed, 29 insertions(+), 47 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-index 052566f5b7f36..0bcb378fa0bc9 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -47,6 +47,14 @@ static void dwxgmac2_core_init(struct mac_device_info *hw,
- 	writel(XGMAC_INT_DEFAULT_EN, ioaddr + XGMAC_INT_EN);
+--- a/fs/nfs/pagelist.c
++++ b/fs/nfs/pagelist.c
+@@ -233,13 +233,14 @@ nfs_page_group_unlock(struct nfs_page *r
+ 	nfs_page_clear_headlock(req);
  }
  
-+static void dwxgmac2_update_caps(struct stmmac_priv *priv)
-+{
-+	if (!priv->dma_cap.mbps_10_100)
-+		priv->hw->link.caps &= ~(MAC_10 | MAC_100);
-+	else if (!priv->dma_cap.half_duplex)
-+		priv->hw->link.caps &= ~(MAC_10HD | MAC_100HD);
-+}
-+
- static void dwxgmac2_set_mac(void __iomem *ioaddr, bool enable)
+-/*
+- * nfs_page_group_sync_on_bit_locked
++/**
++ * nfs_page_group_sync_on_bit_locked - Test if all requests have @bit set
++ * @req: request in page group
++ * @bit: PG_* bit that is used to sync page group
+  *
+  * must be called with page group lock held
+  */
+-static bool
+-nfs_page_group_sync_on_bit_locked(struct nfs_page *req, unsigned int bit)
++bool nfs_page_group_sync_on_bit_locked(struct nfs_page *req, unsigned int bit)
  {
- 	u32 tx = readl(ioaddr + XGMAC_TX_CONFIG);
-@@ -1583,6 +1591,7 @@ static void dwxgmac3_fpe_configure(void __iomem *ioaddr, struct stmmac_fpe_cfg *
+ 	struct nfs_page *head = req->wb_head;
+ 	struct nfs_page *tmp;
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -154,20 +154,10 @@ nfs_page_set_inode_ref(struct nfs_page *
+ 	}
+ }
  
- const struct stmmac_ops dwxgmac210_ops = {
- 	.core_init = dwxgmac2_core_init,
-+	.update_caps = dwxgmac2_update_caps,
- 	.set_mac = dwxgmac2_set_mac,
- 	.rx_ipc = dwxgmac2_rx_ipc,
- 	.rx_queue_enable = dwxgmac2_rx_queue_enable,
-@@ -1705,8 +1714,8 @@ int dwxgmac2_setup(struct stmmac_priv *priv)
- 		mac->mcast_bits_log2 = ilog2(mac->multicast_filter_bins);
- 
- 	mac->link.caps = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
--			 MAC_1000FD | MAC_2500FD | MAC_5000FD |
--			 MAC_10000FD;
-+			 MAC_10 | MAC_100 | MAC_1000FD |
-+			 MAC_2500FD | MAC_5000FD | MAC_10000FD;
- 	mac->link.duplex = 0;
- 	mac->link.speed10 = XGMAC_CONFIG_SS_10_MII;
- 	mac->link.speed100 = XGMAC_CONFIG_SS_100_MII;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-index 37c4258fef794..b2c03cb65c7cc 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-@@ -382,8 +382,11 @@ static int dwxgmac2_dma_interrupt(struct stmmac_priv *priv,
- static int dwxgmac2_get_hw_feature(void __iomem *ioaddr,
- 				   struct dma_features *dma_cap)
+-static int
+-nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
++static void nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
  {
-+	struct stmmac_priv *priv;
- 	u32 hw_cap;
+-	int ret;
+-
+-	if (!test_bit(PG_REMOVE, &req->wb_flags))
+-		return 0;
+-	ret = nfs_page_group_lock(req);
+-	if (ret)
+-		return ret;
+ 	if (test_and_clear_bit(PG_REMOVE, &req->wb_flags))
+ 		nfs_page_set_inode_ref(req, inode);
+-	nfs_page_group_unlock(req);
+-	return 0;
+ }
  
-+	priv = container_of(dma_cap, struct stmmac_priv, dma_cap);
+ static struct nfs_page *
+@@ -239,36 +229,6 @@ static struct nfs_page *nfs_page_find_he
+ 	return req;
+ }
+ 
+-static struct nfs_page *nfs_find_and_lock_page_request(struct page *page)
+-{
+-	struct inode *inode = page_file_mapping(page)->host;
+-	struct nfs_page *req, *head;
+-	int ret;
+-
+-	for (;;) {
+-		req = nfs_page_find_head_request(page);
+-		if (!req)
+-			return req;
+-		head = nfs_page_group_lock_head(req);
+-		if (head != req)
+-			nfs_release_request(req);
+-		if (IS_ERR(head))
+-			return head;
+-		ret = nfs_cancel_remove_inode(head, inode);
+-		if (ret < 0) {
+-			nfs_unlock_and_release_request(head);
+-			return ERR_PTR(ret);
+-		}
+-		/* Ensure that nobody removed the request before we locked it */
+-		if (head == nfs_page_private_request(page))
+-			break;
+-		if (PageSwapCache(page))
+-			break;
+-		nfs_unlock_and_release_request(head);
+-	}
+-	return head;
+-}
+-
+ /* Adjust the file length if we're writing beyond the end */
+ static void nfs_grow_file(struct page *page, unsigned int offset, unsigned int count)
+ {
+@@ -625,14 +585,32 @@ nfs_lock_and_join_requests(struct page *
+ 	 * reference to the whole page group - the group will not be destroyed
+ 	 * until the head reference is released.
+ 	 */
+-	head = nfs_find_and_lock_page_request(page);
++retry:
++	head = nfs_page_find_head_request(page);
+ 	if (IS_ERR_OR_NULL(head))
+ 		return head;
+ 
++	while (!nfs_lock_request(head)) {
++		ret = nfs_wait_on_request(head);
++		if (ret < 0) {
++			nfs_release_request(head);
++			return ERR_PTR(ret);
++		}
++	}
 +
- 	/* MAC HW feature 0 */
- 	hw_cap = readl(ioaddr + XGMAC_HW_FEATURE0);
- 	dma_cap->edma = (hw_cap & XGMAC_HWFEAT_EDMA) >> 31;
-@@ -406,6 +409,8 @@ static int dwxgmac2_get_hw_feature(void __iomem *ioaddr,
- 	dma_cap->vlhash = (hw_cap & XGMAC_HWFEAT_VLHASH) >> 4;
- 	dma_cap->half_duplex = (hw_cap & XGMAC_HWFEAT_HDSEL) >> 3;
- 	dma_cap->mbps_1000 = (hw_cap & XGMAC_HWFEAT_GMIISEL) >> 1;
-+	if (dma_cap->mbps_1000 && priv->synopsys_id >= DWXGMAC_CORE_2_20)
-+		dma_cap->mbps_10_100 = 1;
+ 	ret = nfs_page_group_lock(head);
+ 	if (ret < 0)
+ 		goto out_unlock;
  
- 	/* MAC HW feature 1 */
- 	hw_cap = readl(ioaddr + XGMAC_HW_FEATURE1);
--- 
-2.50.1
-
++	/* Ensure that nobody removed the request before we locked it */
++	if (head != nfs_page_private_request(page) && !PageSwapCache(page)) {
++		nfs_page_group_unlock(head);
++		nfs_unlock_and_release_request(head);
++		goto retry;
++	}
++
++	nfs_cancel_remove_inode(head, inode);
++
+ 	/* lock each request in the page group */
+ 	for (subreq = head->wb_this_page;
+ 	     subreq != head;
+@@ -853,7 +831,8 @@ static void nfs_inode_remove_request(str
+ 	struct nfs_inode *nfsi = NFS_I(inode);
+ 	struct nfs_page *head;
+ 
+-	if (nfs_page_group_sync_on_bit(req, PG_REMOVE)) {
++	nfs_page_group_lock(req);
++	if (nfs_page_group_sync_on_bit_locked(req, PG_REMOVE)) {
+ 		head = req->wb_head;
+ 
+ 		spin_lock(&mapping->private_lock);
+@@ -864,6 +843,7 @@ static void nfs_inode_remove_request(str
+ 		}
+ 		spin_unlock(&mapping->private_lock);
+ 	}
++	nfs_page_group_unlock(req);
+ 
+ 	if (test_and_clear_bit(PG_INODE_REF, &req->wb_flags)) {
+ 		nfs_release_request(req);
+--- a/include/linux/nfs_page.h
++++ b/include/linux/nfs_page.h
+@@ -148,6 +148,7 @@ extern	void nfs_join_page_group(struct n
+ extern int nfs_page_group_lock(struct nfs_page *);
+ extern void nfs_page_group_unlock(struct nfs_page *);
+ extern bool nfs_page_group_sync_on_bit(struct nfs_page *, unsigned int);
++extern bool nfs_page_group_sync_on_bit_locked(struct nfs_page *, unsigned int);
+ extern	int nfs_page_set_headlock(struct nfs_page *req);
+ extern void nfs_page_clear_headlock(struct nfs_page *req);
+ extern bool nfs_async_iocounter_wait(struct rpc_task *, struct nfs_lock_context *);
 
 
 
