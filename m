@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-176994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 128C4B3FDB2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34FFEB3FDB5
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C751D2C4E99
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 11:22:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE51A2C4F6F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 11:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811242F8BC6;
-	Tue,  2 Sep 2025 11:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85DE2E92C5;
+	Tue,  2 Sep 2025 11:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ULDhcxTT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GNEe5W6v"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83422F744C;
-	Tue,  2 Sep 2025 11:21:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90252F83D0;
+	Tue,  2 Sep 2025 11:21:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756812114; cv=none; b=uSCKrMgZkFLqvi035JIjmVsqDOfQQ6mjAG2AYNwQMiwRnfxCpDrab/ljYnyUb9sgHRGj4rrz1UN72WTftkAtJScI50i+SfX7UTZcUpGNwhiVEfIEd8of0L0PDY3wobgG4RYyaueCAcQLA5zIcAO00NBNdpr9mi1MEWXS47gmuZM=
+	t=1756812117; cv=none; b=hnGzJAl3WnSBZHREXjlR4B+BLaZKR36E0DHmQK8ENvRLFrAgmImjyXwQq0bDeBWwvZW+XmdSAB/hWLjH8NyQpjKtZEU0XxxqCe3ImeDy88F0NgOiObAMzySNhc5aIOBcq++2pgGGdBiyWamKxhmV3xDAvlXc7MozsA+dQBhGuBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756812114; c=relaxed/simple;
-	bh=r90VB4kVBN2xFkL5AxvLxiyYXhfIfvCQV5FTD6ekEMU=;
+	s=arc-20240116; t=1756812117; c=relaxed/simple;
+	bh=3hh7/4HKJe6OeXFl1JCaf+f5VfZb6PdHargCvfMgQao=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Wgm1FaAOq7Vn9Vgg6dCvPn4WomfExg77MCoZDBIfqCu2ArzNYmAdoar4iPATgQ5wbHtvsD4CXCCnc05ga2WFF4exEUfg0bA/ASNZvP+spbVTenYbCZRgCg26AWFw4KQtVPYZQ5CoqLS3zv1/ImssJSM8dz6hsLbP8Qmf9a2HgkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ULDhcxTT; arc=none smtp.client-ip=209.85.216.48
+	 MIME-Version; b=cAjgmGoH+HqSVBqWw0sDEAuTOPPt2TRetJU2AOjx3jBAmow9bNp1XhN/V7Od09VURfmOygc5yWhF7zYTaeu+ji7UQS0my8AexwLRTemLNrzQxpTkBa0BlOtLLx8GF3ygLiJUCeDbZ7EC0YHURFtArY93hiy1abCYj+YRD4KP+q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GNEe5W6v; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-327771edfbbso5293019a91.0;
-        Tue, 02 Sep 2025 04:21:51 -0700 (PDT)
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-771fa8e4190so3441771b3a.1;
+        Tue, 02 Sep 2025 04:21:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756812111; x=1757416911; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756812115; x=1757416915; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=b4A5fkthP3KXEpRu6BAtoU0UoZrqtT9TFK5zNXIFO6I=;
-        b=ULDhcxTT1Y/I/r76X1yFwZtbMdklz/diwnudlatgqW2xPfOcaaj8tYuGca8AdI/U4U
-         7T5aOKhmLCWjJ9YCWMDuzK33i22XxGq8o3H4VJBns2pVvdlAt0Rx9PPKM26vA+y3grOk
-         +SN0GB5cZPZgW7uTLOzG2bWnCFJAfY46FD9E5L/vRi2J3d3ed9PyoofwuVO76EcqkBp8
-         XzkNPS2hQhaITQ+glZ+VJYQeRhSniD5A4IZfJfkRZ6kXKP95UdbIU+jWoU0cIoprDoLA
-         VtsphQmWFzBP/2M6Z+NBx808kWo+b8rMabmYyX3opypED22m5UOEpSuiTXxxkdTGKBg2
-         urcg==
+        bh=OmBFxHhYRsHxUFb6yKl311GgplCtiII3+UFgBt4dL+A=;
+        b=GNEe5W6vnXrO6WrQX/WRMFNRGtRv8JeRFTYryJz9l+JP6S0f6uQpyfiioTR4JHpZdi
+         j0TUwRVrbD1duCizPi7TBMgpLB2dG+kvt++R/XXm7/AR5e3PwWsmPYuhVip9PT9Pj6S0
+         r1sqAxs63/VC1I6svQQJu+xl2xwb9mkZhvs0vLqlN2iHcnOO5zyonMHUCTUqYWJ3huk5
+         0iN4dTAh41XWcdjb6DWBRWTSFwQwo9RR5oGS0l3QXYDzKQYFEqqutoVMcB2L9EBdYcZW
+         7pIyX5fJxWHratbMaquB8seYNwIEaZlsh5awLGBHLIXzjnaFSpTco+FUkC9qUWhtjw/h
+         vRtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756812111; x=1757416911;
+        d=1e100.net; s=20230601; t=1756812115; x=1757416915;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=b4A5fkthP3KXEpRu6BAtoU0UoZrqtT9TFK5zNXIFO6I=;
-        b=dFOYpCMlXqbRaYPqYAv0ati4ddjwZwP9gQbHYPLz40CsO38umK2a+GO36dRMLR8Qxw
-         CreHvts6sjiQO0yA7Ioc7WIlD06QutMu8tTlBPN9IgvNi1tnxudMusx6lhWFSwBQpo/p
-         HDNnh+kJwsxQf3PsUlHypUOozId26/0J9aveIds/JUQmeVDydNlkAVVvJ8bpYmFf4/+N
-         zBr2BSFvTgz93tNfDZPkPuV3oROKywQHQtCXUssu8MJuaMleW213+irr9voDXa6zuOsp
-         N2xTMgfKVRpXc3yMPUUDmcqZDi7FIMGlaS22t36IQAn6Ji7BKGv7ENKI+Qaky0HRDAA3
-         iqow==
-X-Forwarded-Encrypted: i=1; AJvYcCW6K61AGhmKCKEnTOW74Ws3rxQIJarvIY/WmGx2G13px179bGAJV69NBZVP3GRC2+keOSynw26yKnGDBYp18cD5NgU=@vger.kernel.org, AJvYcCWuJMAiLz8q30PWx8hgPbY2fyEhuiqNsx91En8onahk9Ib/7w/qS4655Oug3Zg1QyjrIeKpuICOFAplXs0=@vger.kernel.org, AJvYcCXCjqbOD+ZqO6ekPmAlWDNQ/Vh8O7VrZk/UTq4dFI8yccBQjsGTH4rmGnPGYh9LmS0ysDIAbZGE@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnRssX2nkso8YoIObd144jKv0eSuqIosYTVmVlbLz2Fg5jgTie
-	ILJM/LtTT2tzsOu5hNMGv9OWlkgoepdsYCCdvSevMm3jMPogUeKyfvCN
-X-Gm-Gg: ASbGncv8TlpnSSb5pGKNhIqvvWTit9e3VphpIDSDqMGWTwDsbymR8RSQdZUWzaz7eZK
-	hA75YpbfKPhUT2P9VGYOHppC9J2Zjk44ZN9SC5DfRt7YQJEvFQauCIFHttPrW9QZzZ8AeNBeVcr
-	LjuuYrnMf5FZkmQcZqlGkjcqx54L34sMoUp+abAioEaRfSNhnwAipTrbPr+F+QEGcDnG2jBKXDM
-	i/oTFl+Y1a8TMTJVpTAauZa7QQk8hyFlQhoVbvOlybQkisqGtZG+Ds4SQEB4YLwhbqLNzbt2PW8
-	oMGWI5NG43ewWUFLXdcoI+CAyvyBnEXdi/9eWQaiVMGMokXianoEQGlXeQkCOsj8XeKra1LWFxo
-	06pPsQvqDI/rFaTNVNhJBYM6FfBIf48sWkjY5c5YhCKdEM28LIGoPNgNi6EeH
-X-Google-Smtp-Source: AGHT+IH1KF6DJ5OOOOe1l7ldEAlzXJxUIBb9mE6VlKXMsVGCI5lGE0+ieIjUzywYE4Fa9tCwx8K4LQ==
-X-Received: by 2002:a17:90b:5587:b0:32b:4c71:f40a with SMTP id 98e67ed59e1d1-32b4c71f85amr241852a91.24.1756812110843;
-        Tue, 02 Sep 2025 04:21:50 -0700 (PDT)
+        bh=OmBFxHhYRsHxUFb6yKl311GgplCtiII3+UFgBt4dL+A=;
+        b=hdVAUh3lT39DrX6zw9R3NHSWsy6LgbjfUDxksX0uHfJFwfN9axB1R1mvh/93837vD/
+         2+SPqOnv+ymTf8BDcMWtJ+G2lYHK7SkE/qXJLHxHXNFWxQznvdW83Ys9pnahdj1AiKE5
+         +N/zcbKFQDFStfvweFuSfP+aTWHDk+rvrbcvdWJc2ps9qUy2d+tF8bSqnQ0WUY6QukLu
+         Saq023dZUCLx3hLUqrwGg9AQfVgIVfuz20gEppe26Njpia9j2usvD+MNC0gOyJMgRyJi
+         CO1fZiDAkIAYlFEVAgyOwC5Dxiq+waKEIEjaqtsP1H5RADY5iCSfBUcZfygzxMGnQ+0X
+         q8QQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUAXXXd9DjNX8QgHeBKi2y+9X+fWVGOJw0KMKBzs4Rb4AhxswALmukgs9NNq/cC0kzMLh2E39KkVLD/L/tBmTRnzqI=@vger.kernel.org, AJvYcCUu598c6ejGeF1/V+Lp5p+jCOSVWPDi3RS03RmnTkAiSlFp+n0U3qWHcJTZlRSylA2MdUeyI1n5@vger.kernel.org, AJvYcCXP5z4UXd2Hiend0YnjNRm3vBEM7/Kdgp2/dzjT1hMu04AamCh1pHo+BFmGFh14itFwb+5afJ9APf9b4ew=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaPnLas2Bf2QaywWv0bfSVv85yaTTNGoVgrrh/V2cEolqtbAkg
+	ICzrcDhsnBjbcfM85HoNrQE+HAnIQE7KoziDqQ4osH2o4hW1ZtFjPBxq
+X-Gm-Gg: ASbGnctyPfKHrJ+mmSPf3yvdlfSa94Z5AoXD3f21R6t1mZNdidWowSAWTd2KfunAwpX
+	yQKqfW+mjHKtVouO0irdl44SV+G7TJwrhtF/IxGgKGx+R9s+toxK0szhXtcdAKV08n++2rrV5TD
+	U3XOq2JNMSq9RzB3UhYZANpXHWtTBedfZGYWcGn8s7S07t69WDz5/j+wpp4CL0X5ew+3MjjY06G
+	dUAJ9rPgoSpH+GVnxP5XX6aiAQ7Sud8RW6qcDNEqR1m0zDKgg9D+LNoylAUiA94JgYhjHCeOwHo
+	bbttt0Wxpv+DaRJ6X4DYGv3763nYm67JUwBdgekdMrtGbxXvRFX2iY1xwFoC4EzuMdeABfAjdDx
+	Gv2/lAYCTb2aLoOSOsWnxtacg8bsDLNU0bKxZKRFQ1Z7Bi3ZkfjsbPoAXcR/h
+X-Google-Smtp-Source: AGHT+IHagalNzYPov+qToIRn5726tUcNigXXQLmuwNeQCyxqjqgOyE8ZJPIjKB/R2FuzA1JH42ZaHA==
+X-Received: by 2002:a05:6a20:42a3:b0:243:c38c:7b3d with SMTP id adf61e73a8af0-243d6e10746mr16673032637.24.1756812115058;
+        Tue, 02 Sep 2025 04:21:55 -0700 (PDT)
 Received: from name2965-Precision-7820-Tower.. ([121.185.186.233])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a4e27d1sm13140645b3a.81.2025.09.02.04.21.47
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a4e27d1sm13140645b3a.81.2025.09.02.04.21.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 04:21:50 -0700 (PDT)
+        Tue, 02 Sep 2025 04:21:54 -0700 (PDT)
 From: Jeongjun Park <aha310510@gmail.com>
 To: inki.dae@samsung.com,
 	sw0312.kim@samsung.com,
@@ -87,9 +87,9 @@ Cc: krzk@kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	aha310510@gmail.com
-Subject: [PATCH 2/3] drm/exynos: vidi: fix to avoid directly dereferencing user pointer
-Date: Tue,  2 Sep 2025 20:20:42 +0900
-Message-Id: <20250902112043.3525123-3-aha310510@gmail.com>
+Subject: [PATCH 3/3] drm/exynos: vidi: use ctx->lock to protect struct vidi_context member variables related to memory alloc/free
+Date: Tue,  2 Sep 2025 20:20:43 +0900
+Message-Id: <20250902112043.3525123-4-aha310510@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250902112043.3525123-1-aha310510@gmail.com>
 References: <20250902112043.3525123-1-aha310510@gmail.com>
@@ -101,54 +101,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In vidi_connection_ioctl(), vidi->edid(user pointer) is directly
-dereferenced in the kernel.
+Exynos Virtual Display driver performs memory allocation/free operations
+without lock protection, which easily causes concurrency problem.
 
-This allows arbitrary kernel memory access from the user space, so instead
-of directly accessing the user pointer in the kernel, we should modify it
-to copy edid to kernel memory using copy_from_user() and use it.
+For example, use-after-free can occur in race scenario like this:
+```
+	CPU0				CPU1				CPU2
+	----				----				----
+  vidi_connection_ioctl()
+    if (vidi->connection) // true
+      drm_edid = drm_edid_alloc(); // alloc drm_edid
+      ...
+      ctx->raw_edid = drm_edid;
+      ...
+								drm_mode_getconnector()
+								  drm_helper_probe_single_connector_modes()
+								    vidi_get_modes()
+								      if (ctx->raw_edid) // true
+								        drm_edid_dup(ctx->raw_edid);
+								          if (!drm_edid) // false
+								          ...
+				vidi_connection_ioctl()
+				  if (vidi->connection) // false
+				    drm_edid_free(ctx->raw_edid); // free drm_edid
+				    ...
+								          drm_edid_alloc(drm_edid->edid)
+								            kmemdup(edid); // UAF!!
+								            ...
+```
+
+To prevent these vulns, at least in vidi_context, member variables related
+to memory alloc/free should be protected with ctx->lock.
 
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 ---
- drivers/gpu/drm/exynos/exynos_drm_vidi.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c | 38 ++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-index 1fe297d512e7..601406b640c7 100644
+index 601406b640c7..37733f2ac0e7 100644
 --- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
 +++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -251,13 +251,27 @@ int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
+@@ -186,29 +186,37 @@ static ssize_t vidi_store_connection(struct device *dev,
+ 				const char *buf, size_t len)
+ {
+ 	struct vidi_context *ctx = dev_get_drvdata(dev);
+-	int ret;
++	int ret, new_connected;
+ 
+-	ret = kstrtoint(buf, 0, &ctx->connected);
++	ret = kstrtoint(buf, 0, &new_connected);
+ 	if (ret)
+ 		return ret;
+-
+-	if (ctx->connected > 1)
++	if (new_connected > 1)
+ 		return -EINVAL;
+ 
++	mutex_lock(&ctx->lock);
++
+ 	/*
+ 	 * Use fake edid data for test. If raw_edid is set then it can't be
+ 	 * tested.
+ 	 */
+ 	if (ctx->raw_edid) {
+ 		DRM_DEV_DEBUG_KMS(dev, "edid data is not fake data.\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto fail;
+ 	}
+ 
++	ctx->connected = new_connected;
++	mutex_unlock(&ctx->lock);
++
+ 	DRM_DEV_DEBUG_KMS(dev, "requested connection.\n");
+ 
+ 	drm_helper_hpd_irq_event(ctx->drm_dev);
+ 
+ 	return len;
++fail:
++	mutex_unlock(&ctx->lock);
++	return ret;
+ }
+ 
+ static DEVICE_ATTR(connection, 0644, vidi_show_connection,
+@@ -243,11 +251,14 @@ int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
+ 		return -EINVAL;
+ 	}
+ 
++	mutex_lock(&ctx->lock);
+ 	if (ctx->connected == vidi->connection) {
++		mutex_unlock(&ctx->lock);
+ 		DRM_DEV_DEBUG_KMS(ctx->dev,
+ 				  "same connection request.\n");
+ 		return -EINVAL;
+ 	}
++	mutex_unlock(&ctx->lock);
  
  	if (vidi->connection) {
  		const struct drm_edid *drm_edid;
--		const struct edid *raw_edid;
-+		const void __user *edid_userptr = u64_to_user_ptr(vidi->edid);
-+		void *edid_buf;
-+		struct edid hdr;
- 		size_t size;
+@@ -281,14 +292,21 @@ int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
+ 					  "edid data is invalid.\n");
+ 			return -EINVAL;
+ 		}
++		mutex_lock(&ctx->lock);
+ 		ctx->raw_edid = drm_edid;
++		mutex_unlock(&ctx->lock);
+ 	} else {
+ 		/* with connection = 0, free raw_edid */
++		mutex_lock(&ctx->lock);
+ 		drm_edid_free(ctx->raw_edid);
+ 		ctx->raw_edid = NULL;
++		mutex_unlock(&ctx->lock);
+ 	}
  
--		raw_edid = (const struct edid *)(unsigned long)vidi->edid;
--		size = (raw_edid->extensions + 1) * EDID_LENGTH;
-+		if (copy_from_user(&hdr, edid_userptr, sizeof(hdr)))
-+			return -EFAULT;
++	mutex_lock(&ctx->lock);
+ 	ctx->connected = vidi->connection;
++	mutex_unlock(&ctx->lock);
++
+ 	drm_helper_hpd_irq_event(ctx->drm_dev);
  
--		drm_edid = drm_edid_alloc(raw_edid, size);
-+		size = (hdr.extensions + 1) * EDID_LENGTH;
+ 	return 0;
+@@ -303,7 +321,7 @@ static enum drm_connector_status vidi_detect(struct drm_connector *connector,
+ 	 * connection request would come from user side
+ 	 * to do hotplug through specific ioctl.
+ 	 */
+-	return ctx->connected ? connector_status_connected :
++	return READ_ONCE(ctx->connected) ? connector_status_connected :
+ 			connector_status_disconnected;
+ }
+ 
+@@ -326,11 +344,15 @@ static int vidi_get_modes(struct drm_connector *connector)
+ 	const struct drm_edid *drm_edid;
+ 	int count;
+ 
++	mutex_lock(&ctx->lock);
 +
-+		edid_buf = kmalloc(size, GFP_KERNEL);
-+		if (!edid_buf)
-+			return -ENOMEM;
+ 	if (ctx->raw_edid)
+ 		drm_edid = drm_edid_dup(ctx->raw_edid);
+ 	else
+ 		drm_edid = drm_edid_alloc(fake_edid_info, sizeof(fake_edid_info));
+ 
++	mutex_unlock(&ctx->lock);
 +
-+		if (copy_from_user(edid_buf, edid_userptr, size)) {
-+			kfree(edid_buf);
-+			return -EFAULT;
-+		}
+ 	drm_edid_connector_update(connector, drm_edid);
+ 
+ 	count = drm_edid_connector_add_modes(connector);
+@@ -482,9 +504,13 @@ static void vidi_remove(struct platform_device *pdev)
+ {
+ 	struct vidi_context *ctx = platform_get_drvdata(pdev);
+ 
++	mutex_lock(&ctx->lock);
 +
-+		drm_edid = drm_edid_alloc(edid_buf, size);
-+		kfree(edid_buf);
- 		if (!drm_edid)
- 			return -ENOMEM;
+ 	drm_edid_free(ctx->raw_edid);
+ 	ctx->raw_edid = NULL;
+ 
++	mutex_unlock(&ctx->lock);
++
+ 	component_del(&pdev->dev, &vidi_component_ops);
+ }
  
 --
 
