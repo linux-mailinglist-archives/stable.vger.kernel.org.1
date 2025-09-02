@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-177410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E0FB40552
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:52:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33970B40507
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B1311B65124
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F1CE189A37A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23DC3081C7;
-	Tue,  2 Sep 2025 13:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CBC305E15;
+	Tue,  2 Sep 2025 13:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsHNJ399"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRNSerN4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09923054F4;
-	Tue,  2 Sep 2025 13:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E2E313E23;
+	Tue,  2 Sep 2025 13:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820552; cv=none; b=Au0JwkNoMUiJOKRaMPB5MziRMPpV3xF0obItV14hKc0/EiPLQ884eEqkrw4VrwcpHG8cnkg+KIVwSMHylcvJsMZkad94wCuK7PqmSNlQxAKsmayLXTtr/Er59IfGUyonOCugBFM6/Z7637r5pl/R3M2F72/AnYLDvwYPEjoc5+M=
+	t=1756820435; cv=none; b=c8CBDBvxIYViIB+XW1hUPgaLC3X4WSc2dyHsi0vEsMXz4ZawakRW7Os3nNyijtxWROY+p9K9mhWulKEqiuGmxKl1oIMLvC5qHIBZXfSGmkiBFYXYMs3Sd+fugK5fTkzwMl+18ODhRMgaAqTb6SImEatS7w0GCxjwENqnuJzvJDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820552; c=relaxed/simple;
-	bh=sOBKsrfoPoTWduovyUwz6GqsuqVcP8y3y3Pw5BWUAnQ=;
+	s=arc-20240116; t=1756820435; c=relaxed/simple;
+	bh=qwVmq/dSOh1irhGzp8B6OPWFqxgzMQPNi46kGSlR2dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CO8ADumHchPcl17CH1ZrNghudUi+4ujLKOfsXuNWJD8khdn8RlUpR+cjfY/YWKPJuaI98onlmjbgkzt4TiyE62GuLUZK7DiGe81mLpSML1D03kpp6rC136fXPEJHhiK3XfIIpoKKDncBGnGSUbsiUtoSn+0AAiYUNjnOORIXQnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsHNJ399; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A574C4CEED;
-	Tue,  2 Sep 2025 13:42:31 +0000 (UTC)
+	 MIME-Version; b=F6RQQVywTptuHmIANElBrUSUY1P6QolNcMin28UW3VZ4TvcetzNRF0tLMjPgpTC503qEshUT8fPsX45+QpYA8ZjGScVkJ6saEV4ro40copKvWvMsT/CoaiRrHlAtxt1xeJV9c2eq72ehYz7QnL9p1HONfUOKsBJA7Mi4W1vqwMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRNSerN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C483C4CEED;
+	Tue,  2 Sep 2025 13:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820552;
-	bh=sOBKsrfoPoTWduovyUwz6GqsuqVcP8y3y3Pw5BWUAnQ=;
+	s=korg; t=1756820435;
+	bh=qwVmq/dSOh1irhGzp8B6OPWFqxgzMQPNi46kGSlR2dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jsHNJ399OjPkUOuXmGMLjee1AuUmUdMopwqPEjEhsOPTR+5cnO1H16USF4ZJVMYUh
-	 DMH2x50aEA0gUViwyzNpz/OZhmf/apiXs8HDgCoIAUuxr+KX8rqXoQMqJiKXKugHb0
-	 9zR+SgxSt+MqI1vHO+D9Zzu5kPnB5qUu1AMfZovM=
+	b=GRNSerN4osB/3K41qhSZ3OsQ4hAo8O3067LTUF6oIHVGvTEGEq5u/b03TixJ1aFqk
+	 2o+KOv7MlPirUR7GQJAQ23P1WXoSQilmhLrjo379tHbClWxGamIacKwHxr/e7iF/zd
+	 iLfug+03iu2zTeXqp16Bmr2bywdXHD0mkO7CpQrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Alexei Lazar <alazar@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 01/33] pinctrl: STMFX: add missing HAS_IOMEM dependency
+Subject: [PATCH 6.1 28/50] net/mlx5e: Set local Xoff after FW update
 Date: Tue,  2 Sep 2025 15:21:19 +0200
-Message-ID: <20250902131927.105220495@linuxfoundation.org>
+Message-ID: <20250902131931.638981475@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
-References: <20250902131927.045875971@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Alexei Lazar <alazar@nvidia.com>
 
-[ Upstream commit a12946bef0407cf2db0899c83d42c47c00af3fbc ]
+[ Upstream commit aca0c31af61e0d5cf1675a0cbd29460b95ae693c ]
 
-When building on ARCH=um (which does not set HAS_IOMEM), kconfig
-reports an unmet dependency caused by PINCTRL_STMFX. It selects
-MFD_STMFX, which depends on HAS_IOMEM. To stop this warning,
-PINCTRL_STMFX should also depend on HAS_IOMEM.
+The local Xoff value is being set before the firmware (FW) update.
+In case of a failure where the FW is not updated with the new value,
+there is no fallback to the previous value.
+Update the local Xoff value after the FW has been successfully set.
 
-kconfig warning:
-WARNING: unmet direct dependencies detected for MFD_STMFX
-  Depends on [n]: HAS_IOMEM [=n] && I2C [=y] && OF [=y]
-  Selected by [y]:
-  - PINCTRL_STMFX [=y] && PINCTRL [=y] && I2C [=y] && OF_GPIO [=y]
-
-Fixes: 1490d9f841b1 ("pinctrl: Add STMFX GPIO expander Pinctrl/GPIO driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/20250815022721.1650885-1-rdunlap@infradead.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250825143435.598584-12-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index 31921108e4569..546a8f1bb10bc 100644
---- a/drivers/pinctrl/Kconfig
-+++ b/drivers/pinctrl/Kconfig
-@@ -269,6 +269,7 @@ config PINCTRL_STMFX
- 	tristate "STMicroelectronics STMFX GPIO expander pinctrl driver"
- 	depends on I2C
- 	depends on OF_GPIO
-+	depends on HAS_IOMEM
- 	select GENERIC_PINCONF
- 	select GPIOLIB_IRQCHIP
- 	select MFD_STMFX
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
+index c9d5d8d93994d..7899a7230299d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
+@@ -346,7 +346,6 @@ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
+ 		if (err)
+ 			return err;
+ 	}
+-	priv->dcbx.xoff = xoff;
+ 
+ 	/* Apply the settings */
+ 	if (update_buffer) {
+@@ -355,6 +354,8 @@ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
+ 			return err;
+ 	}
+ 
++	priv->dcbx.xoff = xoff;
++
+ 	if (update_prio2buffer)
+ 		err = mlx5e_port_set_priority2buffer(priv->mdev, prio2buffer);
+ 
 -- 
 2.50.1
 
