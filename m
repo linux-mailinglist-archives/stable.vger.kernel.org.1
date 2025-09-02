@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-177128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1819CB4039E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E11DB403F8
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:38:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE0277B866D
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:30:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54A9B4E6107
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293833126B7;
-	Tue,  2 Sep 2025 13:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3BF3128D9;
+	Tue,  2 Sep 2025 13:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIT8KaV4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQHSan+5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B83311C2C;
-	Tue,  2 Sep 2025 13:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8848A2DAFCA;
+	Tue,  2 Sep 2025 13:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819667; cv=none; b=m5ALp658u8B2/BKloDTrB4pjBv6L2/e3EBeIsLBz9GB/pAUuj1HB8VCHdvuw35iJuAUUVz2CZ3rVvMv7BI9EeaHXBQjfCCHX54BUiuO69+52X+qCYZgmyAwtKdNQTM5ppYsjJYXxPYEmjMPktXwmFQN5PKOillG6j4CzyvgWTwg=
+	t=1756820004; cv=none; b=LS9oyr6/Il52mxaxQaHbPAlhJgbn9VUC0CRl3kTfkecRQmYNuteZp29tticN+87Yz+8GJhmOeve8Y92SkTv9ALwXDezqiPvwwhCfU+EWKyUodsHss4nYG1DEdIE0bH89UCY7GUgbx8YkRjvSNdu+TJa068VI/ih31G5qmrDtUDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819667; c=relaxed/simple;
-	bh=0tYzcJ2v/fnrh5RGmvEn9bOAirlQspH76IDCYZ2bGlc=;
+	s=arc-20240116; t=1756820004; c=relaxed/simple;
+	bh=RFXJnHqxFWvb7l7Vp29P2OWyHevfXd8xNralUAbyL+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=op2T6wyVVBy3z3PTiQ/uCYdkiLnPUtrUmTdzo4T7cMFhOzu0iiSsi3DyDEZp8ykBOuEo6jPFsjUvpVYdrZPFh5cetkYOsvqeHLmF7FE6rTHtiJ5Zuaj30lf0/Ex5RN3Fg1RM1+iE0v5HAbxypxzQeROvWS8v2qvvbPakLGFZLxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIT8KaV4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C5FC4CEED;
-	Tue,  2 Sep 2025 13:27:47 +0000 (UTC)
+	 MIME-Version; b=iGYpJcck6Mpizr69sqtrcTD1fM3daQicgswYkYkaVgE58RWiKakSCtFt6M1FprmjiJ8HEmnVRIL0noFsR4THn9NZ8dGZJr5k6X5b39LH3s9hF0wYcbcThDy+V+us5hVXtcyTu89gKVGtuScqZghtILjv3THU/hFKZWiSoZHGpq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQHSan+5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED18C4CEED;
+	Tue,  2 Sep 2025 13:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819667;
-	bh=0tYzcJ2v/fnrh5RGmvEn9bOAirlQspH76IDCYZ2bGlc=;
+	s=korg; t=1756820004;
+	bh=RFXJnHqxFWvb7l7Vp29P2OWyHevfXd8xNralUAbyL+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lIT8KaV4GFa1ACJSvnV8eSzjP236M2uUn3WgcKGckYfuObLhKiQxPcNUyrU/DW123
-	 1FM6u8XAvFSQLo4pKVmmzq8IgZwfcGDosvyd8tgj5a41xLYxlBr3PhwtTJArg0HWUX
-	 WVDT3qwZVsI44Yma1UQYotJ6wiC7Y70cUED3SU0o=
+	b=wQHSan+5SZnqgYFZ23eOq5yZDQGwIBUnXl5rii98BSOjix/3pmcwtAwYbVgHmIPQL
+	 Y8uRwnDGiugp6bWn8SkQiTU/Wg6gZNqLfKpJwEDkyTaRcCq4ixFTC9H6cIeZFvOqvs
+	 BXPU/JgUyce/ePioZay+oIfqrm+dvGKh8KyVCsYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thijs Raymakers <thijs@raymakers.nl>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.16 104/142] KVM: x86: use array_index_nospec with indices that come from guest
-Date: Tue,  2 Sep 2025 15:20:06 +0200
-Message-ID: <20250902131952.266580276@linuxfoundation.org>
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 31/95] Bluetooth: hci_event: Detect if HCI_EV_NUM_COMP_PKTS is unbalanced
+Date: Tue,  2 Sep 2025 15:20:07 +0200
+Message-ID: <20250902131940.806850779@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thijs Raymakers <thijs@raymakers.nl>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit c87bd4dd43a624109c3cc42d843138378a7f4548 upstream.
+[ Upstream commit 15bf2c6391bafb14a3020d06ec0761bce0803463 ]
 
-min and dest_id are guest-controlled indices. Using array_index_nospec()
-after the bounds checks clamps these values to mitigate speculative execution
-side-channels.
+This attempts to detect if HCI_EV_NUM_COMP_PKTS contain an unbalanced
+(more than currently considered outstanding) number of packets otherwise
+it could cause the hcon->sent to underflow and loop around breaking the
+tracking of the outstanding packets pending acknowledgment.
 
-Signed-off-by: Thijs Raymakers <thijs@raymakers.nl>
-Cc: stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Fixes: 715062970f37 ("KVM: X86: Implement PV sched yield hypercall")
-Fixes: bdf7ffc89922 ("KVM: LAPIC: Fix pv ipis out-of-bounds access")
-Fixes: 4180bf1b655a ("KVM: X86: Implement "send IPI" hypercall")
-Link: https://lore.kernel.org/r/20250804064405.4802-1-thijs@raymakers.nl
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f42809185896 ("Bluetooth: Simplify num_comp_pkts_evt function")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/lapic.c |    2 ++
- arch/x86/kvm/x86.c   |    7 +++++--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_event.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -852,6 +852,8 @@ static int __pv_send_ipi(unsigned long *
- 	if (min > map->max_apic_id)
- 		return 0;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index b8213bfa0a674..262ff30261d67 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -4395,7 +4395,17 @@ static void hci_num_comp_pkts_evt(struct hci_dev *hdev, void *data,
+ 		if (!conn)
+ 			continue;
  
-+	min = array_index_nospec(min, map->max_apic_id + 1);
-+
- 	for_each_set_bit(i, ipi_bitmap,
- 		min((u32)BITS_PER_LONG, (map->max_apic_id - min + 1))) {
- 		if (map->phys_map[min + i]) {
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10051,8 +10051,11 @@ static void kvm_sched_yield(struct kvm_v
- 	rcu_read_lock();
- 	map = rcu_dereference(vcpu->kvm->arch.apic_map);
+-		conn->sent -= count;
++		/* Check if there is really enough packets outstanding before
++		 * attempting to decrease the sent counter otherwise it could
++		 * underflow..
++		 */
++		if (conn->sent >= count) {
++			conn->sent -= count;
++		} else {
++			bt_dev_warn(hdev, "hcon %p sent %u < count %u",
++				    conn, conn->sent, count);
++			conn->sent = 0;
++		}
  
--	if (likely(map) && dest_id <= map->max_apic_id && map->phys_map[dest_id])
--		target = map->phys_map[dest_id]->vcpu;
-+	if (likely(map) && dest_id <= map->max_apic_id) {
-+		dest_id = array_index_nospec(dest_id, map->max_apic_id + 1);
-+		if (map->phys_map[dest_id])
-+			target = map->phys_map[dest_id]->vcpu;
-+	}
- 
- 	rcu_read_unlock();
- 
+ 		switch (conn->type) {
+ 		case ACL_LINK:
+-- 
+2.50.1
+
 
 
 
