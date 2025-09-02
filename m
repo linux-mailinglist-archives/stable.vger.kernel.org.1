@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-177249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3FCB40411
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13500B4050E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:49:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F1404E68F0
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05974561E40
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6021030DD36;
-	Tue,  2 Sep 2025 13:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7468931A56B;
+	Tue,  2 Sep 2025 13:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSHdLGFT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zATca0l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB5621D5B8;
-	Tue,  2 Sep 2025 13:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FA130505C;
+	Tue,  2 Sep 2025 13:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820053; cv=none; b=U5DaSWAzUHQERvKODRyNglg0j1hmeGQ2GmAuohbJz/z2IAASC++s1EbUOv6XqfEM1hZciapg2VOpwiwMEG4vtaCZndvfvwJe3xv26AzPp7ehrHYa170gpcjBCVbzu4MCZmNl5Sn82IG6KVXlRYxl07AprH7HYtdbAvpnjpMflco=
+	t=1756820448; cv=none; b=Os6QJgAh6T05w+wS4aCSVIWqjuwSHeJfoCUVlnZw0xavQslV8Z6DztRSwwti55LdpTlmoxxOZURxvGoq+IQSurB4Erkw29BJAik3+NvZhualIipE8JolAFxMw3Ey3z/YHrGQWIQOTJURuozuLvuULxJ6413pnNKkuFf0zUq3Tws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820053; c=relaxed/simple;
-	bh=ZxVSu0nsCa/VfPPVP9gn03jIo22XCU3tDpO+UYqzZUQ=;
+	s=arc-20240116; t=1756820448; c=relaxed/simple;
+	bh=skkQzEobM/qLblQoBB/vgKTEOpa/FapuWAYwq6yH6MQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CK1FqY2SSnbp7qmZbmgP8OCXvdgQuas25H6hzb6wk7LD13L1EfZWeoCIsNdZoMPa9FbZDG14ePZQpyClt76i2/DDoec7Xr+qjjFvLeg9BPBd5kPK3WrmAWGkhP16vchjJdK+tOlFLR/dLDNbK6Ncd8+3+l5UH3noaqiHjBWCw6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSHdLGFT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977BCC4CEED;
-	Tue,  2 Sep 2025 13:34:12 +0000 (UTC)
+	 MIME-Version; b=a9uHIijyRhIy4FkLmW550Q4E8NcVZ9sfMjScGJ4BZLN2TTFHO/qwSevlzkVD0np2CkxSHylZWTGRxEe0oxXzYQkns9YPq/g8HYetVoA61Cbx3cLWzqY4d5dcUQ44yjzSKCeOmPOiFYuYwxyy1xDgm0DMuOkHTLmLF8ASGPAjfSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zATca0l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7B6C4CEF4;
+	Tue,  2 Sep 2025 13:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820053;
-	bh=ZxVSu0nsCa/VfPPVP9gn03jIo22XCU3tDpO+UYqzZUQ=;
+	s=korg; t=1756820448;
+	bh=skkQzEobM/qLblQoBB/vgKTEOpa/FapuWAYwq6yH6MQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSHdLGFT5N2NwP1/c0h/4spMbyudKsXECLkwX4QeqQWOVlBDyH2MNaWXgIrPNwCbu
-	 tj5RVCf97dFG+sYV63rShOO8gQyow3up+OjPzC5fob+fSoBBjFxTBfn2hKidiRCrDp
-	 avzY0Ecvz1DashJYlfx60+lfBDVTJB6eMuTGZO5w=
+	b=0zATca0lX+d1LCTPegHnBt1QQDs1+30doW9t8sVRFCVQfKYrJ/PPG/un0tCmoBCb1
+	 nw6YTvxZw17E2eVqHcZT3M5ex4wSDJzWca7lL5rpyIVrBbN/I6ChMwbVbjvSM4QFfV
+	 YUiFPY+EQV+tWaF3M3h8xzRxZzXoL2YeVGb+uFMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 6.12 79/95] dma/pool: Ensure DMA_DIRECT_REMAP allocations are decrypted
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Ingo Molnar <mingo@elte.hu>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 04/50] ftrace: Fix potential warning in trace_printk_seq during ftrace_dump
 Date: Tue,  2 Sep 2025 15:20:55 +0200
-Message-ID: <20250902131942.640782533@linuxfoundation.org>
+Message-ID: <20250902131930.685993163@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +66,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shanker Donthineni <sdonthineni@nvidia.com>
+From: Tengda Wu <wutengda@huaweicloud.com>
 
-commit 89a2d212bdb4bc29bed8e7077abe054b801137ea upstream.
+[ Upstream commit 4013aef2ced9b756a410f50d12df9ebe6a883e4a ]
 
-When CONFIG_DMA_DIRECT_REMAP is enabled, atomic pool pages are
-remapped via dma_common_contiguous_remap() using the supplied
-pgprot. Currently, the mapping uses
-pgprot_dmacoherent(PAGE_KERNEL), which leaves the memory encrypted
-on systems with memory encryption enabled (e.g., ARM CCA Realms).
+When calling ftrace_dump_one() concurrently with reading trace_pipe,
+a WARN_ON_ONCE() in trace_printk_seq() can be triggered due to a race
+condition.
 
-This can cause the DMA layer to fail or crash when accessing the
-memory, as the underlying physical pages are not configured as
-expected.
+The issue occurs because:
 
-Fix this by requesting a decrypted mapping in the vmap() call:
-pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL))
+CPU0 (ftrace_dump)                              CPU1 (reader)
+echo z > /proc/sysrq-trigger
 
-This ensures that atomic pool memory is consistently mapped
-unencrypted.
+!trace_empty(&iter)
+trace_iterator_reset(&iter) <- len = size = 0
+                                                cat /sys/kernel/tracing/trace_pipe
+trace_find_next_entry_inc(&iter)
+  __find_next_entry
+    ring_buffer_empty_cpu <- all empty
+  return NULL
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20250811181759.998805-1-sdonthineni@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+trace_printk_seq(&iter.seq)
+  WARN_ON_ONCE(s->seq.len >= s->seq.size)
+
+In the context between trace_empty() and trace_find_next_entry_inc()
+during ftrace_dump, the ring buffer data was consumed by other readers.
+This caused trace_find_next_entry_inc to return NULL, failing to populate
+`iter.seq`. At this point, due to the prior trace_iterator_reset, both
+`iter.seq.len` and `iter.seq.size` were set to 0. Since they are equal,
+the WARN_ON_ONCE condition is triggered.
+
+Move the trace_printk_seq() into the if block that checks to make sure the
+return value of trace_find_next_entry_inc() is non-NULL in
+ftrace_dump_one(), ensuring the 'iter.seq' is properly populated before
+subsequent operations.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Ingo Molnar <mingo@elte.hu>
+Link: https://lore.kernel.org/20250822033343.3000289-1-wutengda@huaweicloud.com
+Fixes: d769041f8653 ("ring_buffer: implement new locking")
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/pool.c |    4 ++--
+ kernel/trace/trace.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/dma/pool.c
-+++ b/kernel/dma/pool.c
-@@ -102,8 +102,8 @@ static int atomic_pool_expand(struct gen
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 874f869ae72e6..7e8ab09d98cc7 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -10183,10 +10183,10 @@ void ftrace_dump(enum ftrace_dump_mode oops_dump_mode)
+ 			ret = print_trace_line(&iter);
+ 			if (ret != TRACE_TYPE_NO_CONSUME)
+ 				trace_consume(&iter);
++
++			trace_printk_seq(&iter.seq);
+ 		}
+ 		touch_nmi_watchdog();
+-
+-		trace_printk_seq(&iter.seq);
+ 	}
  
- #ifdef CONFIG_DMA_DIRECT_REMAP
- 	addr = dma_common_contiguous_remap(page, pool_size,
--					   pgprot_dmacoherent(PAGE_KERNEL),
--					   __builtin_return_address(0));
-+			pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL)),
-+			__builtin_return_address(0));
- 	if (!addr)
- 		goto free_page;
- #else
+ 	if (!cnt)
+-- 
+2.50.1
+
 
 
 
