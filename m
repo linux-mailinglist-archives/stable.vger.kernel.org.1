@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-177348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC847B404EF
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B05B40516
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:49:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 390AD1B669AD
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6115B3B766E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE84C30EF83;
-	Tue,  2 Sep 2025 13:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E883074AE;
+	Tue,  2 Sep 2025 13:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOzijb6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmtaOF8v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC6E26D4E2;
-	Tue,  2 Sep 2025 13:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1238332A81A;
+	Tue,  2 Sep 2025 13:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820359; cv=none; b=nWoXLtAoah3P3eHWs2aOuM4PSQ64Qav+R3ND8vDTJvUWjV/Ps74BNn8OoA04EtaIQX5FL+V7ZjrzgvaYPQUYpukVjMRRUbjLYmHKEK75LXivFuk7yg8aFD+3qTWZP54BYPeRZ47+Ez9N0psFEYeZC7MXZDjsPFvDjsKUdVuzssM=
+	t=1756820504; cv=none; b=NZs7xR1dc9yAeMQSd2LT46UF4LkmualnhIBned47lQvw0/vj7hOt0fkCHvibCrhxJaHK1yw9IsO+rWM2INHjxNxakyGUdRgQ2RrkcXz70cP5XxxXQAePXXwl4xD0/FS+tNuBAaUDykcslwGMH3OVsa4uPWbJdeqSp4TJYI7x980=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820359; c=relaxed/simple;
-	bh=Z0hBmWzUs08J7nuwtmeOq66ViYzHV3rKI5uXc5aQmSE=;
+	s=arc-20240116; t=1756820504; c=relaxed/simple;
+	bh=QWTvrnAXtkBTrfmFgTLPXCjCRu3C8+vhS0JTTWDMQ88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eDk6mToZQZMVqcStzysH+lNuRe3Bnc+hq6N9qKkug/4TZzfgb3QZ4d4C2e14PVaijGZwxxo4y35S7/72wUxvOtrHXSLuPEJy7PyS7bXljRdJHL5jTF9Os2EKrhzx7Njj7Yenai2/7AtlGm8KaQg/mM4olnS04guRLhFHc70t7gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOzijb6r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B29EC4CEF4;
-	Tue,  2 Sep 2025 13:39:18 +0000 (UTC)
+	 MIME-Version; b=TX4YCDvEdTdl4+BmKvFp0Gz5kEWR76/PjWZt+f5Dk+LM3xUU8BBPfaNsjo8R+xKTe1RMWEzqBgDZlQIHgGM6wq71Hi5t1PuN9E6SzkuUOSDjfMIBDefRc0axm63znjJ3F4SbaeW8LmjwTHHwernGKUCQ1U3mXa21zwnxJGQA4Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmtaOF8v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9395FC4CEED;
+	Tue,  2 Sep 2025 13:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820359;
-	bh=Z0hBmWzUs08J7nuwtmeOq66ViYzHV3rKI5uXc5aQmSE=;
+	s=korg; t=1756820503;
+	bh=QWTvrnAXtkBTrfmFgTLPXCjCRu3C8+vhS0JTTWDMQ88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oOzijb6rCUMfwq87fVn3iV3zO8wcmdHl747X/GiiZgdgNbpzOM9CrfWCJfvr7dMoJ
-	 jjPBb68XGt9Qvn5m+QSM86u5d0vPRHaVhusr3vusXJSUkkbyxmbtjTW0LchYzEwQie
-	 y7NpNGGF7J71K6P7OjEKLi1kjvxQ7CwSmRTI6AOM=
+	b=YmtaOF8vLfsyxg4Gkp/jr3uq/GOs9rSyHHHHSwar7WTIlrJZxi6MKJDP3mB6Rz13y
+	 o0SyeZ+y74qEfC8l/cfypWOBmkfc63ABcxR40eK494aW339AC45u95NfqE7kg6uTk3
+	 sYBqntAePRxg+FrcJ7zjs6Lc/t4xmwPu4a6XH20o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Romain Sioen <romain.sioen@microchip.com>
-Subject: [PATCH 6.6 72/75] HID: mcp2221: Dont set bus speed on every transfer
+	syzbot+e69f06a0f30116c68056@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 33/50] sctp: initialize more fields in sctp_v6_from_sk()
 Date: Tue,  2 Sep 2025 15:21:24 +0200
-Message-ID: <20250902131937.934010545@linuxfoundation.org>
+Message-ID: <20250902131931.834827603@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 02a46753601a24e1673d9c28173121055e8e6cc9 upstream.
+[ Upstream commit 2e8750469242cad8f01f320131fd5a6f540dbb99 ]
 
-Since the initial commit of this driver the I2C bus speed has been
-reconfigured for every single transfer. This is despite the fact that we
-never change the speed and it is never "lost" by the chip.
-Upon investigation we find that what was really happening was that the
-setting of the bus speed had the side effect of cancelling a previous
-failed command if there was one, thereby freeing the bus. This is the
-part that was actually required to keep the bus operational in the face
-of failed commands.
+syzbot found that sin6_scope_id was not properly initialized,
+leading to undefined behavior.
 
-Instead of always setting the speed, we now correctly cancel any failed
-commands as they are detected. This means we can just set the bus speed
-at probe time and remove the previous speed sets on each transfer.
-This has the effect of improving performance and reducing the number of
-commands required to complete transfers.
+Clear sin6_scope_id and sin6_flowinfo.
 
-Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Fixes: 67a95c21463d ("HID: mcp2221: add usb to i2c-smbus host bridge")
-[romain.sioen@microchip.com: backport to stable, up to 6.8. Add "Fixes" tag]
-Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: KMSAN: uninit-value in __sctp_v6_cmp_addr+0x887/0x8c0 net/sctp/ipv6.c:649
+  __sctp_v6_cmp_addr+0x887/0x8c0 net/sctp/ipv6.c:649
+  sctp_inet6_cmp_addr+0x4f2/0x510 net/sctp/ipv6.c:983
+  sctp_bind_addr_conflict+0x22a/0x3b0 net/sctp/bind_addr.c:390
+  sctp_get_port_local+0x21eb/0x2440 net/sctp/socket.c:8452
+  sctp_get_port net/sctp/socket.c:8523 [inline]
+  sctp_listen_start net/sctp/socket.c:8567 [inline]
+  sctp_inet_listen+0x710/0xfd0 net/sctp/socket.c:8636
+  __sys_listen_socket net/socket.c:1912 [inline]
+  __sys_listen net/socket.c:1927 [inline]
+  __do_sys_listen net/socket.c:1932 [inline]
+  __se_sys_listen net/socket.c:1930 [inline]
+  __x64_sys_listen+0x343/0x4c0 net/socket.c:1930
+  x64_sys_call+0x271d/0x3e20 arch/x86/include/generated/asm/syscalls_64.h:51
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Local variable addr.i.i created at:
+  sctp_get_port net/sctp/socket.c:8515 [inline]
+  sctp_listen_start net/sctp/socket.c:8567 [inline]
+  sctp_inet_listen+0x650/0xfd0 net/sctp/socket.c:8636
+  __sys_listen_socket net/socket.c:1912 [inline]
+  __sys_listen net/socket.c:1927 [inline]
+  __do_sys_listen net/socket.c:1932 [inline]
+  __se_sys_listen net/socket.c:1930 [inline]
+  __x64_sys_listen+0x343/0x4c0 net/socket.c:1930
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+e69f06a0f30116c68056@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68adc0a2.050a0220.37038e.00c4.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20250826141314.1802610-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-mcp2221.c |   41 +++++++++++++++++++++++++++--------------
- 1 file changed, 27 insertions(+), 14 deletions(-)
+ net/sctp/ipv6.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/hid/hid-mcp2221.c
-+++ b/drivers/hid/hid-mcp2221.c
-@@ -187,6 +187,25 @@ static int mcp_cancel_last_cmd(struct mc
- 	return mcp_send_data_req_status(mcp, mcp->txbuf, 8);
+diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
+index d081858c2d073..a1cb8ac0408af 100644
+--- a/net/sctp/ipv6.c
++++ b/net/sctp/ipv6.c
+@@ -547,7 +547,9 @@ static void sctp_v6_from_sk(union sctp_addr *addr, struct sock *sk)
+ {
+ 	addr->v6.sin6_family = AF_INET6;
+ 	addr->v6.sin6_port = 0;
++	addr->v6.sin6_flowinfo = 0;
+ 	addr->v6.sin6_addr = sk->sk_v6_rcv_saddr;
++	addr->v6.sin6_scope_id = 0;
  }
  
-+/* Check if the last command succeeded or failed and return the result.
-+ * If the command did fail, cancel that command which will free the i2c bus.
-+ */
-+static int mcp_chk_last_cmd_status_free_bus(struct mcp2221 *mcp)
-+{
-+	int ret;
-+
-+	ret = mcp_chk_last_cmd_status(mcp);
-+	if (ret) {
-+		/* The last command was a failure.
-+		 * Send a cancel which will also free the bus.
-+		 */
-+		usleep_range(980, 1000);
-+		mcp_cancel_last_cmd(mcp);
-+	}
-+
-+	return ret;
-+}
-+
- static int mcp_set_i2c_speed(struct mcp2221 *mcp)
- {
- 	int ret;
-@@ -241,7 +260,7 @@ static int mcp_i2c_write(struct mcp2221
- 		usleep_range(980, 1000);
- 
- 		if (last_status) {
--			ret = mcp_chk_last_cmd_status(mcp);
-+			ret = mcp_chk_last_cmd_status_free_bus(mcp);
- 			if (ret)
- 				return ret;
- 		}
-@@ -308,7 +327,7 @@ static int mcp_i2c_smbus_read(struct mcp
- 		if (ret)
- 			return ret;
- 
--		ret = mcp_chk_last_cmd_status(mcp);
-+		ret = mcp_chk_last_cmd_status_free_bus(mcp);
- 		if (ret)
- 			return ret;
- 
-@@ -328,11 +347,6 @@ static int mcp_i2c_xfer(struct i2c_adapt
- 
- 	mutex_lock(&mcp->lock);
- 
--	/* Setting speed before every transaction is required for mcp2221 */
--	ret = mcp_set_i2c_speed(mcp);
--	if (ret)
--		goto exit;
--
- 	if (num == 1) {
- 		if (msgs->flags & I2C_M_RD) {
- 			ret = mcp_i2c_smbus_read(mcp, msgs, MCP2221_I2C_RD_DATA,
-@@ -417,9 +431,7 @@ static int mcp_smbus_write(struct mcp222
- 	if (last_status) {
- 		usleep_range(980, 1000);
- 
--		ret = mcp_chk_last_cmd_status(mcp);
--		if (ret)
--			return ret;
-+		ret = mcp_chk_last_cmd_status_free_bus(mcp);
- 	}
- 
- 	return ret;
-@@ -437,10 +449,6 @@ static int mcp_smbus_xfer(struct i2c_ada
- 
- 	mutex_lock(&mcp->lock);
- 
--	ret = mcp_set_i2c_speed(mcp);
--	if (ret)
--		goto exit;
--
- 	switch (size) {
- 
- 	case I2C_SMBUS_QUICK:
-@@ -1152,6 +1160,11 @@ static int mcp2221_probe(struct hid_devi
- 	if (i2c_clk_freq < 50)
- 		i2c_clk_freq = 50;
- 	mcp->cur_i2c_clk_div = (12000000 / (i2c_clk_freq * 1000)) - 3;
-+	ret = mcp_set_i2c_speed(mcp);
-+	if (ret) {
-+		hid_err(hdev, "can't set i2c speed: %d\n", ret);
-+		return ret;
-+	}
- 
- 	mcp->adapter.owner = THIS_MODULE;
- 	mcp->adapter.class = I2C_CLASS_HWMON;
+ /* Initialize sk->sk_rcv_saddr from sctp_addr. */
+-- 
+2.50.1
+
 
 
 
