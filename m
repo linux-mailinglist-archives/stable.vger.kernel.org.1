@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-177461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ACC1B4058D
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:55:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B589B40599
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42C2C163A19
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:49:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3C394E6768
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF403101D5;
-	Tue,  2 Sep 2025 13:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED98324B36;
+	Tue,  2 Sep 2025 13:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOl/CItR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdSIPy2K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665C321255E;
-	Tue,  2 Sep 2025 13:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC38322C77;
+	Tue,  2 Sep 2025 13:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820719; cv=none; b=XddJp+X1lSoFUJkIH8bUkqOIXSSSlbqFibehvSFDtKkJt13XYieUX8KfEwPCxUz/hD1jpPFauP7MUuY5iwYGuVNFp9LIhIgz2922SRZyojYB1gUVOvzIopwf7XjwQbp/8PWiO9KKiYJqlORBP+N8HnOHTZonP6r2UoH3Zcm3m2s=
+	t=1756820768; cv=none; b=kJG60l3BV3SyAzBmCNlYUP12D7Hw/9ZIgeBeagCoSsEP003uyp4GHQXwbYrNc8A5eTZohWzKcB3M4NzzOSGDGnaxjh24wz7HB7c+8ydgyMNfS/dLINB9fZfePUFlCWOpg0nredm2bWR2v2HawG3Q0EAGZPIQA8U01ggmAgRBqWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820719; c=relaxed/simple;
-	bh=MoLuwKynvoOCB8yAEGb3RHzdheb6YRgqmUaaGmN40LY=;
+	s=arc-20240116; t=1756820768; c=relaxed/simple;
+	bh=BJMn2+G1BUgkXRV1+dH9s+FCe2euN2bTYiW/lIDTuMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cqqfofoeSHfvv+ffsfFns3pNRo99adxdSf7IOhnv8QV4CLUpcOLcVU1zSyT3PHRjPcZA1BhzXtXM/MJuUDIoJX18RtLRT+OgHpDHOFxFhP7ZJE9Y7pzRQFTDXCgpzstacCWGj/FfuvZctV2erjXRdm7uQvv3iqphZXEX/rvyPBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOl/CItR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA709C4CEED;
-	Tue,  2 Sep 2025 13:45:18 +0000 (UTC)
+	 MIME-Version; b=ZV0q9unQysni1df6PM43/NRuLznEYbMGoWoUR5jtw9IkaGzNVQldMn8b8+gY063FEd5EEukUGRG0WU4jY6uSyKpUdnEII3uPxioso140NZ2YeMPZeJCoWEadVPlecDhnaGel2+ncJY0Y8BpYt55WXP2XMFt99PaoHFsxDwNH2o4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdSIPy2K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DFE8C4CEED;
+	Tue,  2 Sep 2025 13:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820719;
-	bh=MoLuwKynvoOCB8yAEGb3RHzdheb6YRgqmUaaGmN40LY=;
+	s=korg; t=1756820768;
+	bh=BJMn2+G1BUgkXRV1+dH9s+FCe2euN2bTYiW/lIDTuMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tOl/CItRls6iaAmHwIgtwE5SXnh8j2oCUjWYu8yY3IpIDehurvjS3/EgZA1+it4vz
-	 SHhFiAwLDSJNRUFz2OlNUcuKCuNQOVazJjpfkOt71OS6DLJV9ySZw85qyDAWgYzM7g
-	 Z7s/eOTQWuZ3j9LawR5VRpgqq6xpO6srPV5Zr8T4=
+	b=fdSIPy2KACGuQx3B6YHrCj+PmtQpd1AiguP6DdOaXqKuRyWhDJE9WNrgg4J1nYGGa
+	 kaeYN/maVz6AK81FT20movr0v9WrCvPnbt5rQURK/D0PjYTXclzpWLNg6N8c9A3Rvp
+	 JE4MyKGbrhU/OKkDl3NbvosHHQ0QAFkSSq4Dv0/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Paul Olaru <paul.olaru@oss.nxp.com>,
-	Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
-	Rander Wang <rander.wang@intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	=?UTF-8?q?Micha=C5=82=20G=C3=B3rny?= <mgorny@gentoo.org>
-Subject: [PATCH 5.10 32/34] ASoC: Intel: glk_rt5682_max98357a: shrink platform_id below 20 characters
+	Alexei Lazar <alazar@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 12/23] net/mlx5e: Update and set Xon/Xoff upon port speed set
 Date: Tue,  2 Sep 2025 15:21:58 +0200
-Message-ID: <20250902131927.889659266@linuxfoundation.org>
+Message-ID: <20250902131925.214379670@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131924.720400762@linuxfoundation.org>
+References: <20250902131924.720400762@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Alexei Lazar <alazar@nvidia.com>
 
-commit bc47256afef38175a0ad6bcfd4dbab9d2c65b377 upstream.
+[ Upstream commit d24341740fe48add8a227a753e68b6eedf4b385a ]
 
-Sparse throws the following warning:
+Xon/Xoff sizes are derived from calculations that include
+the port speed.
+These settings need to be updated and applied whenever the
+port speed is changed.
+The port speed is typically set after the physical link goes down
+and is negotiated as part of the link-up process between the two
+connected interfaces.
+Xon/Xoff parameters being updated at the point where the new
+negotiated speed is established.
 
-sound/soc/intel/boards/glk_rt5682_max98357a.c:622:25: error: too long
-initializer-string for array of char(no space for nul char)
-
-Fix by using the 'mx' acronym for Maxim
-
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Paul Olaru <paul.olaru@oss.nxp.com>
-Reviewed-by: Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Link: https://lore.kernel.org/r/20210621194057.21711-5-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Michał Górny <mgorny@gentoo.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250825143435.598584-11-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/glk_rt5682_max98357a.c     |    4 ++--
- sound/soc/intel/common/soc-acpi-intel-glk-match.c |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/soc/intel/boards/glk_rt5682_max98357a.c
-+++ b/sound/soc/intel/boards/glk_rt5682_max98357a.c
-@@ -621,7 +621,7 @@ static int geminilake_audio_probe(struct
- 
- static const struct platform_device_id glk_board_ids[] = {
- 	{
--		.name = "glk_rt5682_max98357a",
-+		.name = "glk_rt5682_mx98357a",
- 		.driver_data =
- 			(kernel_ulong_t)&glk_audio_card_rt5682_m98357a,
- 	},
-@@ -643,4 +643,4 @@ MODULE_DESCRIPTION("Geminilake Audio Mac
- MODULE_AUTHOR("Naveen Manohar <naveen.m@intel.com>");
- MODULE_AUTHOR("Harsha Priya <harshapriya.n@intel.com>");
- MODULE_LICENSE("GPL v2");
--MODULE_ALIAS("platform:glk_rt5682_max98357a");
-+MODULE_ALIAS("platform:glk_rt5682_mx98357a");
---- a/sound/soc/intel/common/soc-acpi-intel-glk-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
-@@ -33,7 +33,7 @@ struct snd_soc_acpi_mach snd_soc_acpi_in
- 	},
- 	{
- 		.id = "10EC5682",
--		.drv_name = "glk_rt5682_max98357a",
-+		.drv_name = "glk_rt5682_mx98357a",
- 		.fw_filename = "intel/dsp_fw_glk.bin",
- 		.machine_quirk = snd_soc_acpi_codec_list,
- 		.quirk_data = &glk_codecs,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 41bd16cc9d0f6..b8d0b68befcb9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -141,6 +141,8 @@ void mlx5e_update_carrier(struct mlx5e_priv *priv)
+ 	if (port_state == VPORT_STATE_UP) {
+ 		netdev_info(priv->netdev, "Link up\n");
+ 		netif_carrier_on(priv->netdev);
++		mlx5e_port_manual_buffer_config(priv, 0, priv->netdev->mtu,
++						NULL, NULL, NULL);
+ 	} else {
+ 		netdev_info(priv->netdev, "Link down\n");
+ 		netif_carrier_off(priv->netdev);
+-- 
+2.50.1
+
 
 
 
