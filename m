@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-177043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FF7B402E7
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:25:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25DF2B402F8
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A8D6544E3A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:24:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 387D5165D7E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D78A30C357;
-	Tue,  2 Sep 2025 13:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C34310783;
+	Tue,  2 Sep 2025 13:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URLtcwBV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hapx2k2f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB82730BF74;
-	Tue,  2 Sep 2025 13:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A17310625;
+	Tue,  2 Sep 2025 13:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819385; cv=none; b=VFtcIFlfj4z/h9MGfBUVCpZL1Y2LTNN7u3Ay43Dtu3Fm5kfRGCy0TNkMa5tLoH0i9dvcYqGHyAuNWPURI/FZq5I+/I+emOlSBSVOYvahAL5LYLa5cTXSiJ8cKBNdURh8dYKcTFOjcRgEzEsMF0kGkb9WXTfGdU4qUTsJHi3QBto=
+	t=1756819393; cv=none; b=Vyxxtt4/OViFej4xE3PLr7l7f5PVFCDMT7OBX+sMfNmiLAmPcR+qbytU0+vwtCnlQrAob1VSiIWlDz1D+x2ZLqBGEvjvwbZWRPkOREFi/ZGNDwTtl+M+KGZTf1VHDoWZ62JHL2lo4CF/0jtpqD/8karfv5oLBulJWKqIK7AgnZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819385; c=relaxed/simple;
-	bh=drWQQ6hQVNLdGVk1fs4+TD9bQjNNElj39+UnwgN2Uv0=;
+	s=arc-20240116; t=1756819393; c=relaxed/simple;
+	bh=+/aUc+QruCvnPXn2oQBPZ8SF+S9eQW3O8aDtHaJL94s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B7Nyerm/NEapQrglDEYLjAWP0kNzYKYqYDqISvHB3fvv8A8VtP+fsDK7vQ6haUJCsWBIMHfSr4g1/4NwlVz0pbs9N3sguvOJ0MxKDwXlaUXSgDcTaOJTswgvWu08yFnV19MXE5p53tHvbtfp1pKmhFjkhY1Ma2cVPIjGDujDi0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URLtcwBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCB5C4CEED;
-	Tue,  2 Sep 2025 13:23:04 +0000 (UTC)
+	 MIME-Version; b=ULYkAUPSY2heSl2Wc/eKF+sNODWakqL705j0ngtzsKJRfpabF+42vyvZQbEDIne1+9deKfjL6ptXDUeV8dy2ufjiRZ5QRz1booomBrfJjgzhc0MckjHcXcd+wVfTkqSfOWVBrD/pO62qZ8WElH6r/0cASeATA56jbcpc2ulNVx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hapx2k2f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC32AC4CEF4;
+	Tue,  2 Sep 2025 13:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819385;
-	bh=drWQQ6hQVNLdGVk1fs4+TD9bQjNNElj39+UnwgN2Uv0=;
+	s=korg; t=1756819392;
+	bh=+/aUc+QruCvnPXn2oQBPZ8SF+S9eQW3O8aDtHaJL94s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=URLtcwBVTcYNBmShvVNZDvbjhU28+pT5fIokuEEDAbi86gzGeW/Nc3dw2e12t1xPF
-	 alU/27WNN/gzKoEhRyFCNUyZ/hm0S4Gya3rk/ZVz/Mlod3I+UFWa1HZQCrPoCMeY0g
-	 QQCNEm7AJZ1WBy4JcbqQYxtz2OvNiRmq6glXdMTI=
+	b=hapx2k2fR2N0IFpqBo1vwl5APoBHA0xDoIlm5yvINTjx+4ah0fkrXPbKIjkhUrkuZ
+	 ttLDttez9dNtRUvXrFjH87aIt9rPuROAWuBtuB1quZR+im3QgMRr8yC1Z0EmdG9sCG
+	 XQo55CZx+eNjj2iosEj001+DGO7yIa9s5JHXkf1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 019/142] smb: client: fix race with concurrent opens in rename(2)
-Date: Tue,  2 Sep 2025 15:18:41 +0200
-Message-ID: <20250902131948.886670575@linuxfoundation.org>
+Subject: [PATCH 6.16 020/142] ASoC: codecs: tx-macro: correct tx_macro_component_drv name
+Date: Tue,  2 Sep 2025 15:18:42 +0200
+Message-ID: <20250902131948.922868529@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
 References: <20250902131948.154194162@linuxfoundation.org>
@@ -69,85 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-[ Upstream commit d84291fc7453df7881a970716f8256273aca5747 ]
+[ Upstream commit 43e0da37d5cfb23eec6aeee9422f84d86621ce2b ]
 
-Besides sending the rename request to the server, the rename process
-also involves closing any deferred close, waiting for outstanding I/O
-to complete as well as marking all existing open handles as deleted to
-prevent them from deferring closes, which increases the race window
-for potential concurrent opens on the target file.
+We already have a component driver named "RX-MACRO", which is
+lpass-rx-macro.c. The tx macro component driver's name should
+be "TX-MACRO" accordingly. Fix it.
 
-Fix this by unhashing the dentry in advance to prevent any concurrent
-opens on the target.
-
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-cifs@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: Srinivas Kandagatla <srini@kernel.org>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20250806140030.691477-1-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/inode.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ sound/soc/codecs/lpass-tx-macro.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index cf9060f0fc08e..fe453a4b3dc83 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -2474,6 +2474,7 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
- 	struct cifs_sb_info *cifs_sb;
- 	struct tcon_link *tlink;
- 	struct cifs_tcon *tcon;
-+	bool rehash = false;
- 	unsigned int xid;
- 	int rc, tmprc;
- 	int retry_count = 0;
-@@ -2489,6 +2490,17 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
- 	if (unlikely(cifs_forced_shutdown(cifs_sb)))
- 		return -EIO;
+diff --git a/sound/soc/codecs/lpass-tx-macro.c b/sound/soc/codecs/lpass-tx-macro.c
+index 27bae58f40725..fe000ff522d24 100644
+--- a/sound/soc/codecs/lpass-tx-macro.c
++++ b/sound/soc/codecs/lpass-tx-macro.c
+@@ -2230,7 +2230,7 @@ static int tx_macro_register_mclk_output(struct tx_macro *tx)
+ }
  
-+	/*
-+	 * Prevent any concurrent opens on the target by unhashing the dentry.
-+	 * VFS already unhashes the target when renaming directories.
-+	 */
-+	if (d_is_positive(target_dentry) && !d_is_dir(target_dentry)) {
-+		if (!d_unhashed(target_dentry)) {
-+			d_drop(target_dentry);
-+			rehash = true;
-+		}
-+	}
-+
- 	tlink = cifs_sb_tlink(cifs_sb);
- 	if (IS_ERR(tlink))
- 		return PTR_ERR(tlink);
-@@ -2530,6 +2542,8 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
- 		}
- 	}
- 
-+	if (!rc)
-+		rehash = false;
- 	/*
- 	 * No-replace is the natural behavior for CIFS, so skip unlink hacks.
- 	 */
-@@ -2588,12 +2602,16 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
- 			goto cifs_rename_exit;
- 		rc = cifs_do_rename(xid, source_dentry, from_name,
- 				    target_dentry, to_name);
-+		if (!rc)
-+			rehash = false;
- 	}
- 
- 	/* force revalidate to go get info when needed */
- 	CIFS_I(source_dir)->time = CIFS_I(target_dir)->time = 0;
- 
- cifs_rename_exit:
-+	if (rehash)
-+		d_rehash(target_dentry);
- 	kfree(info_buf_source);
- 	free_dentry_path(page2);
- 	free_dentry_path(page1);
+ static const struct snd_soc_component_driver tx_macro_component_drv = {
+-	.name = "RX-MACRO",
++	.name = "TX-MACRO",
+ 	.probe = tx_macro_component_probe,
+ 	.controls = tx_macro_snd_controls,
+ 	.num_controls = ARRAY_SIZE(tx_macro_snd_controls),
 -- 
 2.50.1
 
