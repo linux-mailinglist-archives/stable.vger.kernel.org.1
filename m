@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-177266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17665B40420
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 666D3B404D4
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C1EF4E7A94
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BE6117CD21
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F2131A57D;
-	Tue,  2 Sep 2025 13:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2F2306D35;
+	Tue,  2 Sep 2025 13:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAdDrf8X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKBEGWts"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C072D31A548;
-	Tue,  2 Sep 2025 13:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCEA3594B;
+	Tue,  2 Sep 2025 13:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820104; cv=none; b=OTidr7MSIs9cap8azSQdnNB8tMpCKvH3lgGF+0Vh4523YSW3pwqCh8mc8Racu5tjneMQ3qPtropcH4fhYrtpfSsdpdG7PUQbJCTZaQbE88YkPsuw35/G42QHBmpJcUIy2rpUN9N27m56mzapsKb2Mx6ErfSJm6trSdNwVm/lb28=
+	t=1756820295; cv=none; b=AW1C2v7MGXi/UjzP2WrGQCKlSYTJAFFSjgUC/sHx1RHzSYG56ll3GGi84wtmUPri31ftLtxXDqUkscT5IdY7tq+An6HPllZesZWC6Lf4R3qR8mCVDz2YJy9qL/MLqzIkbeW0CaAv6vPbTihG635HULHXblr5ztn5ElU46mHnl5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820104; c=relaxed/simple;
-	bh=gfR9hptiKulw58ZbJmio++km5i+HwtgdddYeCxDp59Q=;
+	s=arc-20240116; t=1756820295; c=relaxed/simple;
+	bh=cjudG1obOq5P5gH7kbu2QcairVAvaPXEwafW40MmkIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlMa1XE4Tx+um/Hy4owD/6JGb+m+gThdu7UWu24kGUewZrwkn4fQ/d0TcOXBu5P/lZRvkQ8ykwlqjeEY/DXyYC86F1N9ArLPp8P0f9ZdVI9PHRHYYhSHomOyKOi6Zhv/oaGpdQs2Nly1f8mll/fmSzwoQ41vBjaHi/O/1PD3xxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAdDrf8X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39BCC4CEF4;
-	Tue,  2 Sep 2025 13:35:03 +0000 (UTC)
+	 MIME-Version; b=YN4vxJAgsLTFEOVciVWL/6ht9THpCsSodd5yN75g5gaGr/Sw0EsVmdo919NBZ/RKkA2hzy4R0ZGPARxLUUwj/JzNo8q8kDHmblJrkCh/WenQ3XYfZ2UgYTOUYnXmi660Pa1cc1yubj5Cvxgg6OaVBxPoVcO52cd5tqrftsHNC8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKBEGWts; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5E3C4CEED;
+	Tue,  2 Sep 2025 13:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820104;
-	bh=gfR9hptiKulw58ZbJmio++km5i+HwtgdddYeCxDp59Q=;
+	s=korg; t=1756820294;
+	bh=cjudG1obOq5P5gH7kbu2QcairVAvaPXEwafW40MmkIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LAdDrf8XD+AXwiE1HJXOhDb+1HAEqf2HkcbTWfyfnTr/yhoxDw1KZrrqHYuv7b3Mu
-	 Ub5cc04eZdMx4+kD3S1ImRqvaccGJjXJGQMORUfs0cAa4WCsz2jEDRb9IDqcMewBb0
-	 WzCXYdtoa8HhmMB4xfd2MMpvC0jMeNgE++1v9XDo=
+	b=RKBEGWtsxrkMPr4zMVyaqqfVLhKZ/rcNss/VTs1l6iFuGJva2jzrBmA9Ag57e3uG3
+	 6Ni+LSv3uHJ1Xb1GMT/Y2uDlBwVjviQ5vzKcMjfCHe3hHtaNtaNhYDCf5cma8yywsp
+	 Vvwgzsc2tRNtgn4e/NuMTCIuTmZmZYqIc/jI4vts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mason Chang <mason-cw.chang@mediatek.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Daniel Golle <daniel@makrotopia.org>
-Subject: [PATCH 6.12 94/95] thermal/drivers/mediatek/lvts_thermal: Add lvts commands and their sizes to driver data
-Date: Tue,  2 Sep 2025 15:21:10 +0200
-Message-ID: <20250902131943.209721000@linuxfoundation.org>
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.6 59/75] HID: multitouch: fix slab out-of-bounds access in mt_report_fixup()
+Date: Tue,  2 Sep 2025 15:21:11 +0200
+Message-ID: <20250902131937.431004340@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,195 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mason Chang <mason-cw.chang@mediatek.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-commit 6203a5e6fd090ed05f6d9b92e33bc7e7679a3dd6 upstream.
+commit 0379eb8691b9c4477da0277ae0832036ca4410b4 upstream.
 
-Add LVTS commands and their sizes to driver data in preparation for
-adding different commands.
+A malicious HID device can trigger a slab out-of-bounds during
+mt_report_fixup() by passing in report descriptor smaller than
+607 bytes. mt_report_fixup() attempts to patch byte offset 607
+of the descriptor with 0x25 by first checking if byte offset
+607 is 0x15 however it lacks bounds checks to verify if the
+descriptor is big enough before conducting this check. Fix
+this bug by ensuring the descriptor size is at least 608
+bytes before accessing it.
 
-Signed-off-by: Mason Chang <mason-cw.chang@mediatek.com>
-Link: https://lore.kernel.org/r/20250526102659.30225-3-mason-cw.chang@mediatek.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Below is the KASAN splat after the out of bounds access happens:
+
+[   13.671954] ==================================================================
+[   13.672667] BUG: KASAN: slab-out-of-bounds in mt_report_fixup+0x103/0x110
+[   13.673297] Read of size 1 at addr ffff888103df39df by task kworker/0:1/10
+[   13.673297]
+[   13.673297] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.15.0-00005-gec5d573d83f4-dirty #3
+[   13.673297] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/04
+[   13.673297] Call Trace:
+[   13.673297]  <TASK>
+[   13.673297]  dump_stack_lvl+0x5f/0x80
+[   13.673297]  print_report+0xd1/0x660
+[   13.673297]  kasan_report+0xe5/0x120
+[   13.673297]  __asan_report_load1_noabort+0x18/0x20
+[   13.673297]  mt_report_fixup+0x103/0x110
+[   13.673297]  hid_open_report+0x1ef/0x810
+[   13.673297]  mt_probe+0x422/0x960
+[   13.673297]  hid_device_probe+0x2e2/0x6f0
+[   13.673297]  really_probe+0x1c6/0x6b0
+[   13.673297]  __driver_probe_device+0x24f/0x310
+[   13.673297]  driver_probe_device+0x4e/0x220
+[   13.673297]  __device_attach_driver+0x169/0x320
+[   13.673297]  bus_for_each_drv+0x11d/0x1b0
+[   13.673297]  __device_attach+0x1b8/0x3e0
+[   13.673297]  device_initial_probe+0x12/0x20
+[   13.673297]  bus_probe_device+0x13d/0x180
+[   13.673297]  device_add+0xe3a/0x1670
+[   13.673297]  hid_add_device+0x31d/0xa40
+[...]
+
+Fixes: c8000deb6836 ("HID: multitouch: Add support for GT7868Q")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/mediatek/lvts_thermal.c |   65 +++++++++++++++++++++++++-------
- 1 file changed, 52 insertions(+), 13 deletions(-)
+ drivers/hid/hid-multitouch.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/thermal/mediatek/lvts_thermal.c
-+++ b/drivers/thermal/mediatek/lvts_thermal.c
-@@ -92,17 +92,6 @@
- 
- #define LVTS_MINIMUM_THRESHOLD		20000
- 
--static const u32 default_conn_cmds[] = { 0xC103FFFF, 0xC502FF55 };
--/*
-- * Write device mask: 0xC1030000
-- */
--static const u32 default_init_cmds[] = {
--	0xC1030E01, 0xC1030CFC, 0xC1030A8C, 0xC103098D, 0xC10308F1,
--	0xC10307A6, 0xC10306B8, 0xC1030500, 0xC1030420, 0xC1030300,
--	0xC1030030, 0xC10300F6, 0xC1030050, 0xC1030060, 0xC10300AC,
--	0xC10300FC, 0xC103009D, 0xC10300F1, 0xC10300E1
--};
--
- static int golden_temp = LVTS_GOLDEN_TEMP_DEFAULT;
- static int golden_temp_offset;
- 
-@@ -132,7 +121,11 @@ struct lvts_ctrl_data {
- 
- struct lvts_data {
- 	const struct lvts_ctrl_data *lvts_ctrl;
-+	const u32 *conn_cmd;
-+	const u32 *init_cmd;
- 	int num_lvts_ctrl;
-+	int num_conn_cmd;
-+	int num_init_cmd;
- 	int temp_factor;
- 	int temp_offset;
- 	int gt_calib_bit_offset;
-@@ -974,9 +967,10 @@ static int lvts_ctrl_set_enable(struct l
- 
- static int lvts_ctrl_connect(struct device *dev, struct lvts_ctrl *lvts_ctrl)
- {
-+	const struct lvts_data *lvts_data = lvts_ctrl->lvts_data;
- 	u32 id;
- 
--	lvts_write_config(lvts_ctrl, default_conn_cmds, ARRAY_SIZE(default_conn_cmds));
-+	lvts_write_config(lvts_ctrl, lvts_data->conn_cmd, lvts_data->num_conn_cmd);
- 
- 	/*
- 	 * LVTS_ID : Get ID and status of the thermal controller
-@@ -995,7 +989,9 @@ static int lvts_ctrl_connect(struct devi
- 
- static int lvts_ctrl_initialize(struct device *dev, struct lvts_ctrl *lvts_ctrl)
- {
--	lvts_write_config(lvts_ctrl, default_init_cmds, ARRAY_SIZE(default_init_cmds));
-+	const struct lvts_data *lvts_data = lvts_ctrl->lvts_data;
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1448,6 +1448,14 @@ static __u8 *mt_report_fixup(struct hid_
+ 	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
+ 	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
+ 	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
++		if (*size < 608) {
++			dev_info(
++				&hdev->dev,
++				"GT7868Q fixup: report descriptor is only %u bytes, skipping\n",
++				*size);
++			return rdesc;
++		}
 +
-+	lvts_write_config(lvts_ctrl, lvts_data->init_cmd, lvts_data->num_init_cmd);
- 
- 	return 0;
- }
-@@ -1424,6 +1420,17 @@ static int lvts_resume(struct device *de
- 	return 0;
- }
- 
-+static const u32 default_conn_cmds[] = { 0xC103FFFF, 0xC502FF55 };
-+/*
-+ * Write device mask: 0xC1030000
-+ */
-+static const u32 default_init_cmds[] = {
-+	0xC1030E01, 0xC1030CFC, 0xC1030A8C, 0xC103098D, 0xC10308F1,
-+	0xC10307A6, 0xC10306B8, 0xC1030500, 0xC1030420, 0xC1030300,
-+	0xC1030030, 0xC10300F6, 0xC1030050, 0xC1030060, 0xC10300AC,
-+	0xC10300FC, 0xC103009D, 0xC10300F1, 0xC10300E1
-+};
-+
- /*
-  * The MT8186 calibration data is stored as packed 3-byte little-endian
-  * values using a weird layout that makes sense only when viewed as a 32-bit
-@@ -1718,7 +1725,11 @@ static const struct lvts_ctrl_data mt819
- 
- static const struct lvts_data mt7988_lvts_ap_data = {
- 	.lvts_ctrl	= mt7988_lvts_ap_data_ctrl,
-+	.conn_cmd	= default_conn_cmds,
-+	.init_cmd	= default_init_cmds,
- 	.num_lvts_ctrl	= ARRAY_SIZE(mt7988_lvts_ap_data_ctrl),
-+	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
-+	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
- 	.temp_factor	= LVTS_COEFF_A_MT7988,
- 	.temp_offset	= LVTS_COEFF_B_MT7988,
- 	.gt_calib_bit_offset = 24,
-@@ -1726,7 +1737,11 @@ static const struct lvts_data mt7988_lvt
- 
- static const struct lvts_data mt8186_lvts_data = {
- 	.lvts_ctrl	= mt8186_lvts_data_ctrl,
-+	.conn_cmd	= default_conn_cmds,
-+	.init_cmd	= default_init_cmds,
- 	.num_lvts_ctrl	= ARRAY_SIZE(mt8186_lvts_data_ctrl),
-+	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
-+	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
- 	.temp_factor	= LVTS_COEFF_A_MT7988,
- 	.temp_offset	= LVTS_COEFF_B_MT7988,
- 	.gt_calib_bit_offset = 24,
-@@ -1735,7 +1750,11 @@ static const struct lvts_data mt8186_lvt
- 
- static const struct lvts_data mt8188_lvts_mcu_data = {
- 	.lvts_ctrl	= mt8188_lvts_mcu_data_ctrl,
-+	.conn_cmd	= default_conn_cmds,
-+	.init_cmd	= default_init_cmds,
- 	.num_lvts_ctrl	= ARRAY_SIZE(mt8188_lvts_mcu_data_ctrl),
-+	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
-+	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
- 	.temp_factor	= LVTS_COEFF_A_MT8195,
- 	.temp_offset	= LVTS_COEFF_B_MT8195,
- 	.gt_calib_bit_offset = 20,
-@@ -1744,7 +1763,11 @@ static const struct lvts_data mt8188_lvt
- 
- static const struct lvts_data mt8188_lvts_ap_data = {
- 	.lvts_ctrl	= mt8188_lvts_ap_data_ctrl,
-+	.conn_cmd	= default_conn_cmds,
-+	.init_cmd	= default_init_cmds,
- 	.num_lvts_ctrl	= ARRAY_SIZE(mt8188_lvts_ap_data_ctrl),
-+	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
-+	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
- 	.temp_factor	= LVTS_COEFF_A_MT8195,
- 	.temp_offset	= LVTS_COEFF_B_MT8195,
- 	.gt_calib_bit_offset = 20,
-@@ -1753,7 +1776,11 @@ static const struct lvts_data mt8188_lvt
- 
- static const struct lvts_data mt8192_lvts_mcu_data = {
- 	.lvts_ctrl	= mt8192_lvts_mcu_data_ctrl,
-+	.conn_cmd	= default_conn_cmds,
-+	.init_cmd	= default_init_cmds,
- 	.num_lvts_ctrl	= ARRAY_SIZE(mt8192_lvts_mcu_data_ctrl),
-+	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
-+	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
- 	.temp_factor	= LVTS_COEFF_A_MT8195,
- 	.temp_offset	= LVTS_COEFF_B_MT8195,
- 	.gt_calib_bit_offset = 24,
-@@ -1762,7 +1789,11 @@ static const struct lvts_data mt8192_lvt
- 
- static const struct lvts_data mt8192_lvts_ap_data = {
- 	.lvts_ctrl	= mt8192_lvts_ap_data_ctrl,
-+	.conn_cmd	= default_conn_cmds,
-+	.init_cmd	= default_init_cmds,
- 	.num_lvts_ctrl	= ARRAY_SIZE(mt8192_lvts_ap_data_ctrl),
-+	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
-+	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
- 	.temp_factor	= LVTS_COEFF_A_MT8195,
- 	.temp_offset	= LVTS_COEFF_B_MT8195,
- 	.gt_calib_bit_offset = 24,
-@@ -1771,7 +1802,11 @@ static const struct lvts_data mt8192_lvt
- 
- static const struct lvts_data mt8195_lvts_mcu_data = {
- 	.lvts_ctrl	= mt8195_lvts_mcu_data_ctrl,
-+	.conn_cmd	= default_conn_cmds,
-+	.init_cmd	= default_init_cmds,
- 	.num_lvts_ctrl	= ARRAY_SIZE(mt8195_lvts_mcu_data_ctrl),
-+	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
-+	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
- 	.temp_factor	= LVTS_COEFF_A_MT8195,
- 	.temp_offset	= LVTS_COEFF_B_MT8195,
- 	.gt_calib_bit_offset = 24,
-@@ -1780,7 +1815,11 @@ static const struct lvts_data mt8195_lvt
- 
- static const struct lvts_data mt8195_lvts_ap_data = {
- 	.lvts_ctrl	= mt8195_lvts_ap_data_ctrl,
-+	.conn_cmd	= default_conn_cmds,
-+	.init_cmd	= default_init_cmds,
- 	.num_lvts_ctrl	= ARRAY_SIZE(mt8195_lvts_ap_data_ctrl),
-+	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
-+	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
- 	.temp_factor	= LVTS_COEFF_A_MT8195,
- 	.temp_offset	= LVTS_COEFF_B_MT8195,
- 	.gt_calib_bit_offset = 24,
+ 		if (rdesc[607] == 0x15) {
+ 			rdesc[607] = 0x25;
+ 			dev_info(
 
 
 
