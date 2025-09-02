@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-177409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C11F6B40556
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:52:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC847B404EF
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F36485465B6
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 390AD1B669AD
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92ABB2848A1;
-	Tue,  2 Sep 2025 13:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE84C30EF83;
+	Tue,  2 Sep 2025 13:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFubkf3n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOzijb6r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D85308F1A;
-	Tue,  2 Sep 2025 13:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC6E26D4E2;
+	Tue,  2 Sep 2025 13:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820549; cv=none; b=sbFXT5w6h1tKgTg2DII9hU9EE2ioURPhCsAiI73cwliDUOCyY3BwYfuxfx0IiJ3z96uick3jbOcg11+mJSGuMSpem9BYJOBAOLved4Th1x323qkihZ4CUr++U7PJTJgZG5XTt5oU0MMRG9nJpL0rXMEcvMNoC/WeQUDw3zT2Nzg=
+	t=1756820359; cv=none; b=nWoXLtAoah3P3eHWs2aOuM4PSQ64Qav+R3ND8vDTJvUWjV/Ps74BNn8OoA04EtaIQX5FL+V7ZjrzgvaYPQUYpukVjMRRUbjLYmHKEK75LXivFuk7yg8aFD+3qTWZP54BYPeRZ47+Ez9N0psFEYeZC7MXZDjsPFvDjsKUdVuzssM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820549; c=relaxed/simple;
-	bh=Q17JNhDCdZdVU5cWYZ6XHK9SUiGTilNCQr/WVqY0oZI=;
+	s=arc-20240116; t=1756820359; c=relaxed/simple;
+	bh=Z0hBmWzUs08J7nuwtmeOq66ViYzHV3rKI5uXc5aQmSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tbGNfmdXVO22uGKxSgQ0LlYAaRP5EUG+XbnVx1+FB2hGAQ2VJce3B1J4kU55N8YRYLERVQvKBhwA+fhn2phM/UmAvMJgg7crKzeubMR+eed23G7LqRz9mgv9A5srljGWkhMZvTT3vBTNrLtdEjdVyYTFXg8YBFhlGxWPPTVj/D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFubkf3n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43FDC4CEED;
-	Tue,  2 Sep 2025 13:42:28 +0000 (UTC)
+	 MIME-Version; b=eDk6mToZQZMVqcStzysH+lNuRe3Bnc+hq6N9qKkug/4TZzfgb3QZ4d4C2e14PVaijGZwxxo4y35S7/72wUxvOtrHXSLuPEJy7PyS7bXljRdJHL5jTF9Os2EKrhzx7Njj7Yenai2/7AtlGm8KaQg/mM4olnS04guRLhFHc70t7gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOzijb6r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B29EC4CEF4;
+	Tue,  2 Sep 2025 13:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820549;
-	bh=Q17JNhDCdZdVU5cWYZ6XHK9SUiGTilNCQr/WVqY0oZI=;
+	s=korg; t=1756820359;
+	bh=Z0hBmWzUs08J7nuwtmeOq66ViYzHV3rKI5uXc5aQmSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFubkf3nMuoyDFbm3ovTXSF11eztFfSNYeEdXEGEeJOuESCstyqnUIh9i/8bi9C4U
-	 o7l04pF2Y3NOW6orRJPWBhrEm3uNbggXfQut+hS2JoByX8eXmhA3SUj4bbMRgNjEwO
-	 DVNRQVAqBonu4lNybIgxIX55oaY7ZEsjcmMZ3Tx8=
+	b=oOzijb6rCUMfwq87fVn3iV3zO8wcmdHl747X/GiiZgdgNbpzOM9CrfWCJfvr7dMoJ
+	 jjPBb68XGt9Qvn5m+QSM86u5d0vPRHaVhusr3vusXJSUkkbyxmbtjTW0LchYzEwQie
+	 y7NpNGGF7J71K6P7OjEKLi1kjvxQ7CwSmRTI6AOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Joe Quanaim <jdq@meta.com>,
-	Andrew Steffen <aksteffen@meta.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>
-Subject: [PATCH 5.15 06/33] NFS: Fix a race when updating an existing write
+	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Romain Sioen <romain.sioen@microchip.com>
+Subject: [PATCH 6.6 72/75] HID: mcp2221: Dont set bus speed on every transfer
 Date: Tue,  2 Sep 2025 15:21:24 +0200
-Message-ID: <20250902131927.297887271@linuxfoundation.org>
+Message-ID: <20250902131937.934010545@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
-References: <20250902131927.045875971@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,183 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
 
-commit 76d2e3890fb169168c73f2e4f8375c7cc24a765e upstream.
+commit 02a46753601a24e1673d9c28173121055e8e6cc9 upstream.
 
-After nfs_lock_and_join_requests() tests for whether the request is
-still attached to the mapping, nothing prevents a call to
-nfs_inode_remove_request() from succeeding until we actually lock the
-page group.
-The reason is that whoever called nfs_inode_remove_request() doesn't
-necessarily have a lock on the page group head.
+Since the initial commit of this driver the I2C bus speed has been
+reconfigured for every single transfer. This is despite the fact that we
+never change the speed and it is never "lost" by the chip.
+Upon investigation we find that what was really happening was that the
+setting of the bus speed had the side effect of cancelling a previous
+failed command if there was one, thereby freeing the bus. This is the
+part that was actually required to keep the bus operational in the face
+of failed commands.
 
-So in order to avoid races, let's take the page group lock earlier in
-nfs_lock_and_join_requests(), and hold it across the removal of the
-request in nfs_inode_remove_request().
+Instead of always setting the speed, we now correctly cancel any failed
+commands as they are detected. This means we can just set the bus speed
+at probe time and remove the previous speed sets on each transfer.
+This has the effect of improving performance and reducing the number of
+commands required to complete transfers.
 
-Reported-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Joe Quanaim <jdq@meta.com>
-Tested-by: Andrew Steffen <aksteffen@meta.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Fixes: bd37d6fce184 ("NFSv4: Convert nfs_lock_and_join_requests() to use nfs_page_find_head_request()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Fixes: 67a95c21463d ("HID: mcp2221: add usb to i2c-smbus host bridge")
+[romain.sioen@microchip.com: backport to stable, up to 6.8. Add "Fixes" tag]
+Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/pagelist.c        |    9 +++---
- fs/nfs/write.c           |   66 ++++++++++++++++-------------------------------
- include/linux/nfs_page.h |    1 
- 3 files changed, 29 insertions(+), 47 deletions(-)
+ drivers/hid/hid-mcp2221.c |   41 +++++++++++++++++++++++++++--------------
+ 1 file changed, 27 insertions(+), 14 deletions(-)
 
---- a/fs/nfs/pagelist.c
-+++ b/fs/nfs/pagelist.c
-@@ -234,13 +234,14 @@ nfs_page_group_unlock(struct nfs_page *r
- 	nfs_page_clear_headlock(req);
+--- a/drivers/hid/hid-mcp2221.c
++++ b/drivers/hid/hid-mcp2221.c
+@@ -187,6 +187,25 @@ static int mcp_cancel_last_cmd(struct mc
+ 	return mcp_send_data_req_status(mcp, mcp->txbuf, 8);
  }
  
--/*
-- * nfs_page_group_sync_on_bit_locked
-+/**
-+ * nfs_page_group_sync_on_bit_locked - Test if all requests have @bit set
-+ * @req: request in page group
-+ * @bit: PG_* bit that is used to sync page group
-  *
-  * must be called with page group lock held
-  */
--static bool
--nfs_page_group_sync_on_bit_locked(struct nfs_page *req, unsigned int bit)
-+bool nfs_page_group_sync_on_bit_locked(struct nfs_page *req, unsigned int bit)
- {
- 	struct nfs_page *head = req->wb_head;
- 	struct nfs_page *tmp;
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -155,20 +155,10 @@ nfs_page_set_inode_ref(struct nfs_page *
- 	}
- }
- 
--static int
--nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
-+static void nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
- {
--	int ret;
--
--	if (!test_bit(PG_REMOVE, &req->wb_flags))
--		return 0;
--	ret = nfs_page_group_lock(req);
--	if (ret)
--		return ret;
- 	if (test_and_clear_bit(PG_REMOVE, &req->wb_flags))
- 		nfs_page_set_inode_ref(req, inode);
--	nfs_page_group_unlock(req);
--	return 0;
- }
- 
- static struct nfs_page *
-@@ -240,36 +230,6 @@ static struct nfs_page *nfs_page_find_he
- 	return req;
- }
- 
--static struct nfs_page *nfs_find_and_lock_page_request(struct page *page)
--{
--	struct inode *inode = page_file_mapping(page)->host;
--	struct nfs_page *req, *head;
--	int ret;
--
--	for (;;) {
--		req = nfs_page_find_head_request(page);
--		if (!req)
--			return req;
--		head = nfs_page_group_lock_head(req);
--		if (head != req)
--			nfs_release_request(req);
--		if (IS_ERR(head))
--			return head;
--		ret = nfs_cancel_remove_inode(head, inode);
--		if (ret < 0) {
--			nfs_unlock_and_release_request(head);
--			return ERR_PTR(ret);
--		}
--		/* Ensure that nobody removed the request before we locked it */
--		if (head == nfs_page_private_request(page))
--			break;
--		if (PageSwapCache(page))
--			break;
--		nfs_unlock_and_release_request(head);
--	}
--	return head;
--}
--
- /* Adjust the file length if we're writing beyond the end */
- static void nfs_grow_file(struct page *page, unsigned int offset, unsigned int count)
- {
-@@ -626,14 +586,32 @@ nfs_lock_and_join_requests(struct page *
- 	 * reference to the whole page group - the group will not be destroyed
- 	 * until the head reference is released.
- 	 */
--	head = nfs_find_and_lock_page_request(page);
-+retry:
-+	head = nfs_page_find_head_request(page);
- 	if (IS_ERR_OR_NULL(head))
- 		return head;
- 
-+	while (!nfs_lock_request(head)) {
-+		ret = nfs_wait_on_request(head);
-+		if (ret < 0) {
-+			nfs_release_request(head);
-+			return ERR_PTR(ret);
-+		}
++/* Check if the last command succeeded or failed and return the result.
++ * If the command did fail, cancel that command which will free the i2c bus.
++ */
++static int mcp_chk_last_cmd_status_free_bus(struct mcp2221 *mcp)
++{
++	int ret;
++
++	ret = mcp_chk_last_cmd_status(mcp);
++	if (ret) {
++		/* The last command was a failure.
++		 * Send a cancel which will also free the bus.
++		 */
++		usleep_range(980, 1000);
++		mcp_cancel_last_cmd(mcp);
 +	}
 +
- 	ret = nfs_page_group_lock(head);
- 	if (ret < 0)
- 		goto out_unlock;
- 
-+	/* Ensure that nobody removed the request before we locked it */
-+	if (head != nfs_page_private_request(page) && !PageSwapCache(page)) {
-+		nfs_page_group_unlock(head);
-+		nfs_unlock_and_release_request(head);
-+		goto retry;
-+	}
++	return ret;
++}
 +
-+	nfs_cancel_remove_inode(head, inode);
-+
- 	/* lock each request in the page group */
- 	for (subreq = head->wb_this_page;
- 	     subreq != head;
-@@ -843,7 +821,8 @@ static void nfs_inode_remove_request(str
- 	struct nfs_inode *nfsi = NFS_I(inode);
- 	struct nfs_page *head;
+ static int mcp_set_i2c_speed(struct mcp2221 *mcp)
+ {
+ 	int ret;
+@@ -241,7 +260,7 @@ static int mcp_i2c_write(struct mcp2221
+ 		usleep_range(980, 1000);
  
--	if (nfs_page_group_sync_on_bit(req, PG_REMOVE)) {
-+	nfs_page_group_lock(req);
-+	if (nfs_page_group_sync_on_bit_locked(req, PG_REMOVE)) {
- 		head = req->wb_head;
- 
- 		spin_lock(&mapping->private_lock);
-@@ -854,6 +833,7 @@ static void nfs_inode_remove_request(str
+ 		if (last_status) {
+-			ret = mcp_chk_last_cmd_status(mcp);
++			ret = mcp_chk_last_cmd_status_free_bus(mcp);
+ 			if (ret)
+ 				return ret;
  		}
- 		spin_unlock(&mapping->private_lock);
- 	}
-+	nfs_page_group_unlock(req);
+@@ -308,7 +327,7 @@ static int mcp_i2c_smbus_read(struct mcp
+ 		if (ret)
+ 			return ret;
  
- 	if (test_and_clear_bit(PG_INODE_REF, &req->wb_flags)) {
- 		nfs_release_request(req);
---- a/include/linux/nfs_page.h
-+++ b/include/linux/nfs_page.h
-@@ -150,6 +150,7 @@ extern void nfs_join_page_group(struct n
- extern int nfs_page_group_lock(struct nfs_page *);
- extern void nfs_page_group_unlock(struct nfs_page *);
- extern bool nfs_page_group_sync_on_bit(struct nfs_page *, unsigned int);
-+extern bool nfs_page_group_sync_on_bit_locked(struct nfs_page *, unsigned int);
- extern	int nfs_page_set_headlock(struct nfs_page *req);
- extern void nfs_page_clear_headlock(struct nfs_page *req);
- extern bool nfs_async_iocounter_wait(struct rpc_task *, struct nfs_lock_context *);
+-		ret = mcp_chk_last_cmd_status(mcp);
++		ret = mcp_chk_last_cmd_status_free_bus(mcp);
+ 		if (ret)
+ 			return ret;
+ 
+@@ -328,11 +347,6 @@ static int mcp_i2c_xfer(struct i2c_adapt
+ 
+ 	mutex_lock(&mcp->lock);
+ 
+-	/* Setting speed before every transaction is required for mcp2221 */
+-	ret = mcp_set_i2c_speed(mcp);
+-	if (ret)
+-		goto exit;
+-
+ 	if (num == 1) {
+ 		if (msgs->flags & I2C_M_RD) {
+ 			ret = mcp_i2c_smbus_read(mcp, msgs, MCP2221_I2C_RD_DATA,
+@@ -417,9 +431,7 @@ static int mcp_smbus_write(struct mcp222
+ 	if (last_status) {
+ 		usleep_range(980, 1000);
+ 
+-		ret = mcp_chk_last_cmd_status(mcp);
+-		if (ret)
+-			return ret;
++		ret = mcp_chk_last_cmd_status_free_bus(mcp);
+ 	}
+ 
+ 	return ret;
+@@ -437,10 +449,6 @@ static int mcp_smbus_xfer(struct i2c_ada
+ 
+ 	mutex_lock(&mcp->lock);
+ 
+-	ret = mcp_set_i2c_speed(mcp);
+-	if (ret)
+-		goto exit;
+-
+ 	switch (size) {
+ 
+ 	case I2C_SMBUS_QUICK:
+@@ -1152,6 +1160,11 @@ static int mcp2221_probe(struct hid_devi
+ 	if (i2c_clk_freq < 50)
+ 		i2c_clk_freq = 50;
+ 	mcp->cur_i2c_clk_div = (12000000 / (i2c_clk_freq * 1000)) - 3;
++	ret = mcp_set_i2c_speed(mcp);
++	if (ret) {
++		hid_err(hdev, "can't set i2c speed: %d\n", ret);
++		return ret;
++	}
+ 
+ 	mcp->adapter.owner = THIS_MODULE;
+ 	mcp->adapter.class = I2C_CLASS_HWMON;
 
 
 
