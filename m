@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-177364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481AAB40500
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA03B40410
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 617D11B676B5
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08DF94E679F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE96731353F;
-	Tue,  2 Sep 2025 13:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6DC30DEC4;
+	Tue,  2 Sep 2025 13:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dar9hdqI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/jgyg1S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6483130E834;
-	Tue,  2 Sep 2025 13:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07649314A8B;
+	Tue,  2 Sep 2025 13:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820409; cv=none; b=uW9+cjS2n5gAHa6DJLrT7LU54CmWWChlpELDKz4QMIlOqeCZrdtT/RG7Y7RcqvCyxYt0uab58PIPU4NtywjEWGTIDBIETvCUdM9ZeL3RBDF+lGeW5EGSG22l7RqbLI+dbZmTJl8cKG7uh47eFS4QSIARhm6ZuronCJcEPAoqwIc=
+	t=1756820050; cv=none; b=OjKbXfwsTUsqC+Fa/XhrSfk2p0D40Qxx+jHQv+1JnJtNtVHQ1nCVp8hi/+DLBHNFNx4wDJHY2J9aX5I/NhrF8fjWrqM1G6U33PJlJcCpHB3+8ENEPR56t6OpcZEQJdorUPhD1mT7E+LB1QlGZ9xzEE3A0YiGeUL63JMPI6sE/rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820409; c=relaxed/simple;
-	bh=R7p/D9Z/ncgzDRziSHIiqRI6/+/QzAM6f2aNJVLYhF0=;
+	s=arc-20240116; t=1756820050; c=relaxed/simple;
+	bh=tpi/8GSFQlH/cjECq13gUF8DSgnCzlNSMKcSqySm+tI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+zWS+v9mlYRdjSGFbM29cIexzvrHIkcixX2F6HI3KguADPFvW9HmbCV5gVpJj5WfxTzqH+kk3WNxyueqUZptIsi0e8R6wW0laZ3/JY0nz8Al/x9Y7ViUkV+/xho4THNkavty9pQZCFGp512zh8fzsNRf3nJgImzEiUGhuNN+wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dar9hdqI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E34FEC4CEED;
-	Tue,  2 Sep 2025 13:40:08 +0000 (UTC)
+	 MIME-Version; b=IBDoTL8wzg2cdy7dz/oxXid+tvbLVmJTIWSJBXFyDPTUaE5y/9AwPANWBkmqt081ynzq9UFBsfpGgZL6IrjTQ4nTUWd287ddol/zK1U3sroafWohnx8qoOT+paWxcyGGVodBBLQfB1G948fSSvjS418y5AH2vnJqVrbyY/NfrCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/jgyg1S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860E2C4CEED;
+	Tue,  2 Sep 2025 13:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820409;
-	bh=R7p/D9Z/ncgzDRziSHIiqRI6/+/QzAM6f2aNJVLYhF0=;
+	s=korg; t=1756820049;
+	bh=tpi/8GSFQlH/cjECq13gUF8DSgnCzlNSMKcSqySm+tI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dar9hdqIvOM9drd9AfAa13J0coS7eiKwuM/MbMp4lgqH/W6a4IAyB7S8V6sAjYfTK
-	 itJMQTttvUKvLa8oi411mIvmdxN3ju/yHTTx6fDqPHevB9JGWgjWUKzp3exfTUtP69
-	 Qws1lLB7YX47Irty/iV+T8iOsrw+Xv67AmZ+wby4=
+	b=j/jgyg1SgWGCUq8Nr6rJXf9JAdug/iFjyRDeq4hBN3fnxU6E+/WybLKu2/UlEmuOP
+	 4XAAfywEjRlEXZg22vpaIw8tIX9VvB8Hf+MKQLTTPJjzJ72f1yJvpd/9OtY93uBMba
+	 b2bl4Tb4p76mhqDQF48sbnULqks4yZMWk8uD8Kq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 02/50] mips: dts: lantiq: danube: add missing burst length property
-Date: Tue,  2 Sep 2025 15:20:53 +0200
-Message-ID: <20250902131930.608571201@linuxfoundation.org>
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 78/95] blk-zoned: Fix a lockdep complaint about recursive locking
+Date: Tue,  2 Sep 2025 15:20:54 +0200
+Message-ID: <20250902131942.603456062@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 7b28232921782aa38048249132899c337405eaa8 ]
+commit 198f36f902ec7e99b645382505f74b87a4523ed9 upstream.
 
-The upstream dts lacks the lantiq,{rx/tx}-burst-length property. Other
-issues were also fixed:
-arch/mips/boot/dts/lantiq/danube_easy50712.dtb: etop@e180000 (lantiq,etop-xway): 'interrupt-names' is a required property
-	from schema $id: http://devicetree.org/schemas/net/lantiq,etop-xway.yaml#
-arch/mips/boot/dts/lantiq/danube_easy50712.dtb: etop@e180000 (lantiq,etop-xway): 'lantiq,tx-burst-length' is a required property
-	from schema $id: http://devicetree.org/schemas/net/lantiq,etop-xway.yaml#
-arch/mips/boot/dts/lantiq/danube_easy50712.dtb: etop@e180000 (lantiq,etop-xway): 'lantiq,rx-burst-length' is a required property
-	from schema $id: http://devicetree.org/schemas/net/lantiq,etop-xway.yaml#
+If preparing a write bio fails then blk_zone_wplug_bio_work() calls
+bio_endio() with zwplug->lock held. If a device mapper driver is stacked
+on top of the zoned block device then this results in nested locking of
+zwplug->lock. The resulting lockdep complaint is a false positive
+because this is nested locking and not recursive locking. Suppress this
+false positive by calling blk_zone_wplug_bio_io_error() without holding
+zwplug->lock. This is safe because no code in
+blk_zone_wplug_bio_io_error() depends on zwplug->lock being held. This
+patch suppresses the following lockdep complaint:
 
-Fixes: 14d4e308e0aa ("net: lantiq: configure the burst length in ethernet drivers")
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Acked-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+WARNING: possible recursive locking detected
+--------------------------------------------
+kworker/3:0H/46 is trying to acquire lock:
+ffffff882968b830 (&zwplug->lock){-...}-{2:2}, at: blk_zone_write_plug_bio_endio+0x64/0x1f0
+
+but task is already holding lock:
+ffffff88315bc230 (&zwplug->lock){-...}-{2:2}, at: blk_zone_wplug_bio_work+0x8c/0x48c
+
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(&zwplug->lock);
+  lock(&zwplug->lock);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+3 locks held by kworker/3:0H/46:
+ #0: ffffff8809486758 ((wq_completion)sdd_zwplugs){+.+.}-{0:0}, at: process_one_work+0x1bc/0x65c
+ #1: ffffffc085de3d70 ((work_completion)(&zwplug->bio_work)){+.+.}-{0:0}, at: process_one_work+0x1e4/0x65c
+ #2: ffffff88315bc230 (&zwplug->lock){-...}-{2:2}, at: blk_zone_wplug_bio_work+0x8c/0x48c
+
+stack backtrace:
+CPU: 3 UID: 0 PID: 46 Comm: kworker/3:0H Tainted: G        W  OE      6.12.38-android16-5-maybe-dirty-4k #1 8b362b6f76e3645a58cd27d86982bce10d150025
+Tainted: [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: Spacecraft board based on MALIBU (DT)
+Workqueue: sdd_zwplugs blk_zone_wplug_bio_work
+Call trace:
+ dump_backtrace+0xfc/0x17c
+ show_stack+0x18/0x28
+ dump_stack_lvl+0x40/0xa0
+ dump_stack+0x18/0x24
+ print_deadlock_bug+0x38c/0x398
+ __lock_acquire+0x13e8/0x2e1c
+ lock_acquire+0x134/0x2b4
+ _raw_spin_lock_irqsave+0x5c/0x80
+ blk_zone_write_plug_bio_endio+0x64/0x1f0
+ bio_endio+0x9c/0x240
+ __dm_io_complete+0x214/0x260
+ clone_endio+0xe8/0x214
+ bio_endio+0x218/0x240
+ blk_zone_wplug_bio_work+0x204/0x48c
+ process_one_work+0x26c/0x65c
+ worker_thread+0x33c/0x498
+ kthread+0x110/0x134
+ ret_from_fork+0x10/0x20
+
+Cc: stable@vger.kernel.org
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Fixes: dd291d77cc90 ("block: Introduce zone write plugging")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250825182720.1697203-1-bvanassche@acm.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/boot/dts/lantiq/danube_easy50712.dts | 3 +++
- 1 file changed, 3 insertions(+)
+ block/blk-zoned.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/boot/dts/lantiq/danube_easy50712.dts b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
-index 1ce20b7d05cb8..d8b3cd69eda3c 100644
---- a/arch/mips/boot/dts/lantiq/danube_easy50712.dts
-+++ b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
-@@ -87,8 +87,11 @@ etop@e180000 {
- 			reg = <0xe180000 0x40000>;
- 			interrupt-parent = <&icu0>;
- 			interrupts = <73 78>;
-+			interrupt-names = "tx", "rx";
- 			phy-mode = "rmii";
- 			mac-address = [ 00 11 22 33 44 55 ];
-+			lantiq,rx-burst-length = <4>;
-+			lantiq,tx-burst-length = <4>;
- 		};
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -1281,14 +1281,14 @@ static void blk_zone_wplug_bio_work(stru
+ 	struct block_device *bdev;
+ 	unsigned long flags;
+ 	struct bio *bio;
++	bool prepared;
  
- 		stp0: stp@e100bb0 {
--- 
-2.50.1
-
+ 	/*
+ 	 * Submit the next plugged BIO. If we do not have any, clear
+ 	 * the plugged flag.
+ 	 */
+-	spin_lock_irqsave(&zwplug->lock, flags);
+-
+ again:
++	spin_lock_irqsave(&zwplug->lock, flags);
+ 	bio = bio_list_pop(&zwplug->bio_list);
+ 	if (!bio) {
+ 		zwplug->flags &= ~BLK_ZONE_WPLUG_PLUGGED;
+@@ -1296,13 +1296,14 @@ again:
+ 		goto put_zwplug;
+ 	}
+ 
+-	if (!blk_zone_wplug_prepare_bio(zwplug, bio)) {
++	prepared = blk_zone_wplug_prepare_bio(zwplug, bio);
++	spin_unlock_irqrestore(&zwplug->lock, flags);
++
++	if (!prepared) {
+ 		blk_zone_wplug_bio_io_error(zwplug, bio);
+ 		goto again;
+ 	}
+ 
+-	spin_unlock_irqrestore(&zwplug->lock, flags);
+-
+ 	bdev = bio->bi_bdev;
+ 
+ 	/*
 
 
 
