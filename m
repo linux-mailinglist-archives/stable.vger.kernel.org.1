@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-177162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF7EB403D3
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:36:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 691D9B40414
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89135189AE0D
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:34:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B42A9547575
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE25930DEB9;
-	Tue,  2 Sep 2025 13:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C9D30C604;
+	Tue,  2 Sep 2025 13:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0qaHkCDh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPjgtmnm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9946D30DD30;
-	Tue,  2 Sep 2025 13:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5DA30C35F;
+	Tue,  2 Sep 2025 13:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819781; cv=none; b=Fd4bcQ2rFYYd2PsS+1vJqt91RKdqAX0Dfl3RJ8K0ZcFAP6e2hs/Lm7iVkw/+torQIJjPxluRvM9JhR305Y8F42Zk7xRABYWFUm5rbndrn+ugci9hW+vthwjvkmtnHbx4Fbtz51g6pxQ8kXz9RkIXnRJKZUU7BtLJfqyqY5gjmZI=
+	t=1756819986; cv=none; b=boEiZlNSyF4npCAws0YPzmGSzJhvQ8g+KtrxO120w/eb2rPirozt656jpZtXO2igjSr6LnWmiY5slQb7B0Vn7/Y/zJ0yDWvQ2HSBMKQ2DFURrnWezX6tQPfj3GsrOPRWO3NboQQZemS6NIZVr6sq1bKA6B3K5ieAaklnTdCaZlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819781; c=relaxed/simple;
-	bh=QAE6rdqjvl0sxj35epr10rCoN8FmqbqZfqg9XrJRVcY=;
+	s=arc-20240116; t=1756819986; c=relaxed/simple;
+	bh=H+AcWaqyfCZ5GmK0CnH7LOOmIf0KwL9sNiVgFGrTe5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVSSnXq3xYQ9i0pvuB8RUrN8wwQqXVARgLyRFmCkb4t8LoLIa+vnVZyUCZ20TbThAkLzzu+TZzgBY/iFUxxZ2IZb0NukuYAzPLZC+MBbFIlzu5tcS1bTpBp/3ocs070ihoLs9P8PINohGHhYmFMYh2e3eAkBg3dwyWSocjJUD7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0qaHkCDh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B15C4CEED;
-	Tue,  2 Sep 2025 13:29:40 +0000 (UTC)
+	 MIME-Version; b=JEtPCw2AL3RauJBmg5uGlWxYrBmdCc6zbiUbREmg4tXfEg+caYM7l5U7JBYBG6B5ATDEaS2zOs/+eB2Pdg0PsdD4D7oby7W9m2HKif51PLLiAGZnRBgS499/8fRBeJmBzzDHv1Kf2O9bDQNF4LqXhmIqUAO56t52zT5EflvR/Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPjgtmnm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679E6C4CEED;
+	Tue,  2 Sep 2025 13:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819781;
-	bh=QAE6rdqjvl0sxj35epr10rCoN8FmqbqZfqg9XrJRVcY=;
+	s=korg; t=1756819986;
+	bh=H+AcWaqyfCZ5GmK0CnH7LOOmIf0KwL9sNiVgFGrTe5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0qaHkCDhn/EOB5ADWPEDfEE8M8YUfvFeRgHgYjdkC2lo6dk5IusjqQMO/2k9WNPpU
-	 HCsul4LEkjjYANx8a5DWjJo2+oLyqWJ8WBhMr+ACdBFSVaVOFHq0K1rr1zZERlspWb
-	 nwdVk5iliNiZk/WxcWRTwPShlRvdz4A8k280bGqc=
+	b=oPjgtmnmrVi++tnfQFWURLNPcIjNt5KcP+fKRWZABiTVRqIgK3hfAaHjvzpCE8hmi
+	 xizhuyUAioD2fUGh8CdliuxcpGRIvpov8Rxssmpe5QlmiYRzBXhLwwbCXa4qHeBvVe
+	 qeDmAtCX2bu73bMgrilZIIf7Cqzrr+i2cLkfyvSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 130/142] drm/amdgpu/userq: fix error handling of invalid doorbell
+	Rohan G Thomas <rohan.g.thomas@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 56/95] net: stmmac: Set CIC bit only for TX queues with COE
 Date: Tue,  2 Sep 2025 15:20:32 +0200
-Message-ID: <20250902131953.265156911@linuxfoundation.org>
+Message-ID: <20250902131941.755044860@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Rohan G Thomas <rohan.g.thomas@altera.com>
 
-commit c767d74a9cdd1042046d02319d16b85d9aa8a8aa upstream.
+[ Upstream commit b1eded580ab28119de0b0f21efe37ee2b4419144 ]
 
-If the doorbell is invalid, be sure to set the r to an error
-state so the function returns an error.
+Currently, in the AF_XDP transmit paths, the CIC bit of
+TX Desc3 is set for all packets. Setting this bit for
+packets transmitting through queues that don't support
+checksum offloading causes the TX DMA to get stuck after
+transmitting some packets. This patch ensures the CIC bit
+of TX Desc3 is set only if the TX queue supports checksum
+offloading.
 
-Reviewed-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 7e2a5b0a9a165a7c51274aa01b18be29491b4345)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 132c32ee5bc0 ("net: stmmac: Add TX via XDP zero-copy socket")
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Link: https://patch.msgid.link/20250825-xgmac-minor-fixes-v3-3-c225fe4444c0@altera.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
-@@ -426,6 +426,7 @@ amdgpu_userq_create(struct drm_file *fil
- 	if (index == (uint64_t)-EINVAL) {
- 		drm_file_err(uq_mgr->file, "Failed to get doorbell for queue\n");
- 		kfree(queue);
-+		r = -EINVAL;
- 		goto unlock;
- 	}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 058cd9e9fd71d..40d56ff66b6a8 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -2488,6 +2488,7 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
+ 	struct netdev_queue *nq = netdev_get_tx_queue(priv->dev, queue);
+ 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
+ 	struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[queue];
++	bool csum = !priv->plat->tx_queues_cfg[queue].coe_unsupported;
+ 	struct xsk_buff_pool *pool = tx_q->xsk_pool;
+ 	unsigned int entry = tx_q->cur_tx;
+ 	struct dma_desc *tx_desc = NULL;
+@@ -2573,7 +2574,7 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
+ 		}
  
+ 		stmmac_prepare_tx_desc(priv, tx_desc, 1, xdp_desc.len,
+-				       true, priv->mode, true, true,
++				       csum, priv->mode, true, true,
+ 				       xdp_desc.len);
+ 
+ 		stmmac_enable_dma_transmission(priv, priv->ioaddr, queue);
+@@ -4902,6 +4903,7 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
+ {
+ 	struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[queue];
+ 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
++	bool csum = !priv->plat->tx_queues_cfg[queue].coe_unsupported;
+ 	unsigned int entry = tx_q->cur_tx;
+ 	struct dma_desc *tx_desc;
+ 	dma_addr_t dma_addr;
+@@ -4953,7 +4955,7 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
+ 	stmmac_set_desc_addr(priv, tx_desc, dma_addr);
+ 
+ 	stmmac_prepare_tx_desc(priv, tx_desc, 1, xdpf->len,
+-			       true, priv->mode, true, true,
++			       csum, priv->mode, true, true,
+ 			       xdpf->len);
+ 
+ 	tx_q->tx_count_frames++;
+-- 
+2.50.1
+
 
 
 
