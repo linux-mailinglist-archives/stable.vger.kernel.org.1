@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-177224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE3DCB4044E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:41:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82976B40491
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20EDF18847BD
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2722018909FB
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283FF30ACFE;
-	Tue,  2 Sep 2025 13:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258DF320A31;
+	Tue,  2 Sep 2025 13:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyRfs4ca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2mNnXfO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90252DECDE;
-	Tue,  2 Sep 2025 13:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81CC31E102;
+	Tue,  2 Sep 2025 13:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819975; cv=none; b=CSzbq2tJr7sbTlWoRpssCvOEnf8TKhy+cOdIFxsXootIXUy4wMuASmviOdgGxjS9Z0z7xqYqcdCMtdDazVaKwKTCljWp7QNIFndg91apw9IPV9KnD0YasGO3rx79rFCabeFdu/f3qUK0W2fwu7OxtMpPwNnV03C4EE9jvJHH2Hk=
+	t=1756820158; cv=none; b=P1igYJvaB+dTNHREt4td82MNh/6URfG3ZUME374pG88WPtyICpilyxknenopYo7dfzebL/Ekwd1TESnu2v5DBJtwM6g+/nNEmdUxwliu/5Quxbk9DcZrQlNbgxRsu2+UfDX/2mSYBNp0mX/qXrCf4u9Hzyk5z2wgpYCWc4CrDZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819975; c=relaxed/simple;
-	bh=yjtEcr22ZjG65eqtHsq+8VR+he4Py4SIt0/I6ftcmoY=;
+	s=arc-20240116; t=1756820158; c=relaxed/simple;
+	bh=OpcVFwmy5YN/C0nFIkUe4eR9CUTZJpdRSie4latCutA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DAuwd6J/2pde7mZHiUT8Ao9r1LA2PHnQoElahXVQIfC+XdgeOP8XykCvTDTlQ8b7/By+q31XWc+594MsNgyBc1xzkKQXIYkNtYBf+ZjUmLzKArkz5OanUaWqtrnKmGlYuG2uA6PwtFqRTDD34iqirCQdaHO3q70rPcbXLaJ24p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyRfs4ca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C46CC4CEED;
-	Tue,  2 Sep 2025 13:32:55 +0000 (UTC)
+	 MIME-Version; b=MhZUKz+ql0NYD8dDrKwveodC+sTWPo5vLcZPiSuCQQqx2q7Mzrqm1yajkGe776w6HQNKOgNsCBUvr5RT6g2mXKmsy2fYcNFPw/ckRH0Czy9Z9DDr661lQH897f5kLw5LD78WstfdEPuU19/tqNHKwgVlrMAXf7hTFpTVgxO/E/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2mNnXfO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DAB3C4CEF4;
+	Tue,  2 Sep 2025 13:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819975;
-	bh=yjtEcr22ZjG65eqtHsq+8VR+he4Py4SIt0/I6ftcmoY=;
+	s=korg; t=1756820158;
+	bh=OpcVFwmy5YN/C0nFIkUe4eR9CUTZJpdRSie4latCutA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YyRfs4ca3CUeIyH1PsZYie1p0AX84dVZE0H6QFOBlbqR72aj6M08jxjc0hOp6ULbN
-	 0GqYt9xDrwlX/bUl9UzcPh2pLFF6zTF0Hwa+1kPdeO4xcy+7415vUqXh9WIxGWx0gO
-	 qaLCBoYVlnQgRndfyAEUnF6+eK308qYg15EabgKM=
+	b=d2mNnXfODTijQr/ncpIRVujLtrVPqM+1WYJIvuZQ1Ll9IIkF6f2uG4l8p070jwksk
+	 ApZxrzWfVCw6Tvu8c/kGg/z3yY3NvqdeczJB43yfz8FgX3fldMM+C8uWYcBZ3rP8ji
+	 Lf4BSqFAjZnMKA6XtMZ6sEAGqFXT2kP/kV44j7Vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Lazar <alazar@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Brett A C Sheffield <bacs@librecast.net>,
+	Oscar Maes <oscmaes92@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 53/95] net/mlx5e: Set local Xoff after FW update
+Subject: [PATCH 6.6 17/75] net: ipv4: fix regression in local-broadcast routes
 Date: Tue,  2 Sep 2025 15:20:29 +0200
-Message-ID: <20250902131941.639561755@linuxfoundation.org>
+Message-ID: <20250902131935.791061578@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Oscar Maes <oscmaes92@gmail.com>
 
-[ Upstream commit aca0c31af61e0d5cf1675a0cbd29460b95ae693c ]
+[ Upstream commit 5189446ba995556eaa3755a6e875bc06675b88bd ]
 
-The local Xoff value is being set before the firmware (FW) update.
-In case of a failure where the FW is not updated with the new value,
-there is no fallback to the previous value.
-Update the local Xoff value after the FW has been successfully set.
+Commit 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
+introduced a regression where local-broadcast packets would have their
+gateway set in __mkroute_output, which was caused by fi = NULL being
+removed.
 
-Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250825143435.598584-12-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by resetting the fib_info for local-broadcast packets. This
+preserves the intended changes for directed-broadcast packets.
+
+Cc: stable@vger.kernel.org
+Fixes: 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
+Reported-by: Brett A C Sheffield <bacs@librecast.net>
+Closes: https://lore.kernel.org/regressions/20250822165231.4353-4-bacs@librecast.net
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250827062322.4807-1-oscmaes92@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv4/route.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-index 3efa8bf1d14ef..4720523813b97 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-@@ -575,7 +575,6 @@ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
- 		if (err)
- 			return err;
- 	}
--	priv->dcbx.xoff = xoff;
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 8672ebbace980..20f5c8307443d 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2547,12 +2547,16 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
+ 		    !netif_is_l3_master(dev_out))
+ 			return ERR_PTR(-EINVAL);
  
- 	/* Apply the settings */
- 	if (update_buffer) {
-@@ -584,6 +583,8 @@ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
- 			return err;
- 	}
- 
-+	priv->dcbx.xoff = xoff;
+-	if (ipv4_is_lbcast(fl4->daddr))
++	if (ipv4_is_lbcast(fl4->daddr)) {
+ 		type = RTN_BROADCAST;
+-	else if (ipv4_is_multicast(fl4->daddr))
 +
- 	if (update_prio2buffer)
- 		err = mlx5e_port_set_priority2buffer(priv->mdev, prio2buffer);
++		/* reset fi to prevent gateway resolution */
++		fi = NULL;
++	} else if (ipv4_is_multicast(fl4->daddr)) {
+ 		type = RTN_MULTICAST;
+-	else if (ipv4_is_zeronet(fl4->daddr))
++	} else if (ipv4_is_zeronet(fl4->daddr)) {
+ 		return ERR_PTR(-EINVAL);
++	}
  
+ 	if (dev_out->flags & IFF_LOOPBACK)
+ 		flags |= RTCF_LOCAL;
 -- 
 2.50.1
 
