@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19CCB40587
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:54:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8E1B405AB
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCB3C1B6831A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:50:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBED056538A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7C72DFA3E;
-	Tue,  2 Sep 2025 13:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E992324B34;
+	Tue,  2 Sep 2025 13:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyBNLuGJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xa1Lg/xR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C4D41A8F;
-	Tue,  2 Sep 2025 13:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF798324B1C;
+	Tue,  2 Sep 2025 13:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820709; cv=none; b=mucBig/YDEaIpuTwByba2k26arfo8Af2sYWtG86ReNTV1JACdxV30gNsANQbCcIggEDVdFI2+JmzrOj8W79xYtoac3VG9tDOGvleS3thoZDmB4IbhzBMDJrDqBsPZA7kAFOBUCDcggeTnZS+8ByT3QujNb/m0nLC/jsf/mMtIGc=
+	t=1756820762; cv=none; b=fQSXbh8lwvMBZR0OEc+q24qLyBvdEkxASi8iOVdh0koWebPHjVzDrEnV69fZm0CN5JeCMcPqK4AN64eYYIhCDIEHsK6ZVCVrX6jnLFLIjS8Apa+PMknZLObYt6BddTrlVVATtcEF2kaBw4dH3Bptb0VmGJ/8bQad38U/C1P3v5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820709; c=relaxed/simple;
-	bh=eQq2nAFZTeJhbDPDIK8nMD490iWJHQYNEtytL05rdMg=;
+	s=arc-20240116; t=1756820762; c=relaxed/simple;
+	bh=AcXSJ4Nr4msoI+VkQjEms7xSt1uwEO5+gn8kVZKc7jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SGs0aupkUhst4dBRp4ivaRDwermWB/nr28uhDpyHeVVB6roLUKku1F29Fm97RSLGpLvsQY+6IOysGRdWOFON3zjbPf6VYvbiNMvc1vkr9lvuxfp0GHwQm/oMaxLiCyWXgJFGmVXP8n5OLM29K+uH0DDVNJNs8oJ2CU73eLNpWJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyBNLuGJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABA6C4CEF7;
-	Tue,  2 Sep 2025 13:45:08 +0000 (UTC)
+	 MIME-Version; b=mxyMrEQ5JSzgdEn7mwSLwSkY7OwkbFIcWHxt8wTuEnXlMWtCCdK8rsWIATSyPha0kNCmptJOjwUw+BH/VhXCdiGiuaz+WRlH7xnP2DV0buGHn/B/zG9Dzej/643MhkMptq2h6+VCtB6hz+wU7YBE4Y/D7KpE0Ge+S7PY1JO/Pmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xa1Lg/xR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F257C4CEED;
+	Tue,  2 Sep 2025 13:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820709;
-	bh=eQq2nAFZTeJhbDPDIK8nMD490iWJHQYNEtytL05rdMg=;
+	s=korg; t=1756820761;
+	bh=AcXSJ4Nr4msoI+VkQjEms7xSt1uwEO5+gn8kVZKc7jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyBNLuGJ0CmCTfvf/2kaTnPRehoW4JSV8PuPvAGJqsSCbH1BZN3dQ9xRWOFrKnBbP
-	 2WniQ2tdylJJ3a5pM5Td+SoxIvlbnk5gEMWdgLJzeaYkTz5FaAWoWrgs3O7orOaSRm
-	 D9gjbvuIti7FE/h/LivRUz39DnFfxWHWunRWwozo=
+	b=xa1Lg/xRS1FSo7WeOUUJ1Upik+hzGtUmq52kwUeLqMmQ5y7NesoVuoIWadcGmA1pc
+	 VQNi0i6tInF08f87+YjpLWvXFFrW8qqUg/KIZcr2vUpIS/ySVbDhaMeUFLhXxy8kop
+	 Xz4Qw39s9aJrj4uXErUgVX/NdlAv74RKLA8QV2TE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	Sasha Levin <sashal@kernel.org>,
-	Imre Deak <imre.deak@intel.com>
-Subject: [PATCH 5.10 29/34] Revert "drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS"
-Date: Tue,  2 Sep 2025 15:21:55 +0200
-Message-ID: <20250902131927.773792816@linuxfoundation.org>
+	Yeounsu Moon <yyyynoom@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 10/23] net: dlink: fix multicast stats being counted incorrectly
+Date: Tue,  2 Sep 2025 15:21:56 +0200
+Message-ID: <20250902131925.135894331@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131924.720400762@linuxfoundation.org>
+References: <20250902131924.720400762@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Yeounsu Moon <yyyynoom@gmail.com>
 
-This reverts commit 89d17a2d89a83c5b7643ca934651a3f9229e4734 which is
-commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f upstream.
+[ Upstream commit 007a5ffadc4fd51739527f1503b7cf048f31c413 ]
 
-The upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ("drm/dp:
-Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS") the
-reverted commit backported causes a regression, on one eDP panel at
-least resulting in display flickering, described in detail at the Link:
-below. The issue fixed by the upstream commit will need a different
-solution, revert the backport for now.
+`McstFramesRcvdOk` counts the number of received multicast packets, and
+it reports the value correctly.
 
-Cc: intel-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: Sasha Levin <sashal@kernel.org>
-Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14558
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, reading `McstFramesRcvdOk` clears the register to zero. As a
+result, the driver was reporting only the packets since the last read,
+instead of the accumulated total.
+
+Fix this by updating the multicast statistics accumulatively instaed of
+instantaneously.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Tested-on: D-Link DGE-550T Rev-A3
+Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250823182927.6063-3-yyyynoom@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_dp_helper.c |    2 +-
+ drivers/net/ethernet/dlink/dl2k.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_dp_helper.c
-+++ b/drivers/gpu/drm/drm_dp_helper.c
-@@ -299,7 +299,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
- 	 * monitor doesn't power down exactly after the throw away read.
- 	 */
- 	if (!aux->is_remote) {
--		ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_LANE0_1_STATUS,
-+		ret = drm_dp_dpcd_access(aux, DP_AUX_NATIVE_READ, DP_DPCD_REV,
- 					 buffer, 1);
- 		if (ret != 1)
- 			goto out;
+diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
+index 8d57fb5072054..b4a8d4f12087a 100644
+--- a/drivers/net/ethernet/dlink/dl2k.c
++++ b/drivers/net/ethernet/dlink/dl2k.c
+@@ -1102,7 +1102,7 @@ get_stats (struct net_device *dev)
+ 	dev->stats.rx_bytes += dr32(OctetRcvOk);
+ 	dev->stats.tx_bytes += dr32(OctetXmtOk);
+ 
+-	dev->stats.multicast = dr32(McstFramesRcvdOk);
++	dev->stats.multicast += dr32(McstFramesRcvdOk);
+ 	dev->stats.collisions += dr32(SingleColFrames)
+ 			     +  dr32(MultiColFrames);
+ 
+-- 
+2.50.1
+
 
 
 
