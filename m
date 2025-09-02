@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-177229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6243EB403F5
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:38:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 876A7B4046D
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1014B4E565A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52237170B68
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A32530DD3C;
-	Tue,  2 Sep 2025 13:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F463101C2;
+	Tue,  2 Sep 2025 13:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mA8FSjgi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePhvVA1w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E6231281F;
-	Tue,  2 Sep 2025 13:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B40324B0C;
+	Tue,  2 Sep 2025 13:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819992; cv=none; b=mEtohWveS1m8zeTa6tKNDWQsw1FlRcEdpG/TO45FM0/T51qyv4BhSbKYTQX85TWSc9hFq1G4p0jZxrEOrg8yF5fbMiMtcCnVtO1BLFeq2hxKhbZwTBkcGfpPMmNwhQI7I4OnMsjHY1VAvl50+60q8in0t4TFPsqzf5k72+H+xG4=
+	t=1756820175; cv=none; b=ZAR8NkJPVzYHZ7hqA9FCwk24K/fU1gOMqxdWWz7pq+v27UIXi2ZxBdBVW2IYvS2ivQ/whfEdEar/h1zSQMSmX4fdS8ysU5sKIi/VO1IQvsrEvrjqphcouM495FaEFel0rfpX4u0JiEs597/cAVRMiMQ/irfmYH+bwT2Dm8gWGg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819992; c=relaxed/simple;
-	bh=k4lEkO5SNv9t/nAxqi7Jqaz3tMnCQb/dvgJOTa24c/U=;
+	s=arc-20240116; t=1756820175; c=relaxed/simple;
+	bh=Hyi/KNdX7l3NVJfJ/ymX0fpqF4dRqr4MgGDgbvKs+5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sR6SvQNjNbUEJWYAUpvjN11R+nP4cVbGC36CnXrky9PnM5xCE3eQGNkRasUj5UemQqW5LFLewtoWveOb9e+Bo1crRb+xtxUjSMmtExn6e4gPPifodimuTSj5vurqHBUvBfMgCcbgy+q8k1nooeIc4eV3Caozr8kfCm58uHXiWDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mA8FSjgi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E65C4CEED;
-	Tue,  2 Sep 2025 13:33:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SCm/ZRoKEnoRLlCg8dxpznDeZUKmqlJMYdZmIBxJ+mqo415JJcT3211jVRrulVx2g+q0IfrOau68Oiyfff9j8qHlNsuuoCARb6h5WOdfjIMfdjlw99rPiJH7aafHBA2uKmzBOn5GIam6qQxU3wgIrDNKc7Vje+lUKRkNeUI1mew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePhvVA1w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5546BC4CEED;
+	Tue,  2 Sep 2025 13:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819992;
-	bh=k4lEkO5SNv9t/nAxqi7Jqaz3tMnCQb/dvgJOTa24c/U=;
+	s=korg; t=1756820174;
+	bh=Hyi/KNdX7l3NVJfJ/ymX0fpqF4dRqr4MgGDgbvKs+5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mA8FSjgitgp3o/yXb6nYhskZGT7PSNMTIRUCyeddl21HilXeqLaYU57avFJShtSb2
-	 xJlaFD6VvN4tweqo6A89haFPZNvHi425e5LUntoLmcuY5uPiVlv66OXLqQdT0IANHk
-	 vh5IQG8NpEO5pasfi14YGQH9D20oJ0psko9GEurg=
+	b=ePhvVA1wvT8SWO8kd5yMcYST5/I2N+7ifEKlTjYwrMM3Jyc3Lbs+ccPTcVD6xcDP7
+	 dFYIL/UXnmVWP8X5cibI1C7ZIN//kGSlQLwz/MCLiXTW6msHGmJd5ocWikvzVwo0qo
+	 uy535l+RWZsD3tYQkFSQlLv5HotB1+gaNTWGw1bM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Damato <jdamato@fastly.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	=?UTF-8?q?=E5=8D=A2=E5=9B=BD=E5=AE=8F?= <luguohong@xiaomi.com>,
+	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 57/95] hv_netvsc: Link queues to NAPIs
+Subject: [PATCH 6.6 21/75] HID: input: report battery status changes immediately
 Date: Tue,  2 Sep 2025 15:20:33 +0200
-Message-ID: <20250902131941.791991233@linuxfoundation.org>
+Message-ID: <20250902131935.953961333@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +61,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Damato <jdamato@fastly.com>
+From: José Expósito <jose.exposito89@gmail.com>
 
-[ Upstream commit 8b641b5e4c782464c8818a71b443eeef8984bf34 ]
+[ Upstream commit e94536e1d1818b0989aa19b443b7089f50133c35 ]
 
-Use netif_queue_set_napi to link queues to NAPI instances so that they
-can be queried with netlink.
+Previously, the battery status (charging/discharging) was not reported
+immediately to user-space. 
 
-Shradha Gupta tested the patch and reported that the results are
-as expected:
+For most input devices, this wasn't problematic because changing their
+battery status requires connecting them to a different bus.
+For example, a gamepad would report a discharging status while
+connected via Bluetooth and a charging status while connected via USB.
 
-$ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
-                           --dump queue-get --json='{"ifindex": 2}'
+However, certain devices are not connected or disconnected when their
+battery status changes. For example, a phone battery changes its status
+without connecting or disconnecting it.
+In these cases, the battery status was not reported immediately to user
+space.
 
- [{'id': 0, 'ifindex': 2, 'napi-id': 8193, 'type': 'rx'},
-  {'id': 1, 'ifindex': 2, 'napi-id': 8194, 'type': 'rx'},
-  {'id': 2, 'ifindex': 2, 'napi-id': 8195, 'type': 'rx'},
-  {'id': 3, 'ifindex': 2, 'napi-id': 8196, 'type': 'rx'},
-  {'id': 4, 'ifindex': 2, 'napi-id': 8197, 'type': 'rx'},
-  {'id': 5, 'ifindex': 2, 'napi-id': 8198, 'type': 'rx'},
-  {'id': 6, 'ifindex': 2, 'napi-id': 8199, 'type': 'rx'},
-  {'id': 7, 'ifindex': 2, 'napi-id': 8200, 'type': 'rx'},
-  {'id': 0, 'ifindex': 2, 'napi-id': 8193, 'type': 'tx'},
-  {'id': 1, 'ifindex': 2, 'napi-id': 8194, 'type': 'tx'},
-  {'id': 2, 'ifindex': 2, 'napi-id': 8195, 'type': 'tx'},
-  {'id': 3, 'ifindex': 2, 'napi-id': 8196, 'type': 'tx'},
-  {'id': 4, 'ifindex': 2, 'napi-id': 8197, 'type': 'tx'},
-  {'id': 5, 'ifindex': 2, 'napi-id': 8198, 'type': 'tx'},
-  {'id': 6, 'ifindex': 2, 'napi-id': 8199, 'type': 'tx'},
-  {'id': 7, 'ifindex': 2, 'napi-id': 8200, 'type': 'tx'}]
+Report battery status changes immediately to user space to support
+these kinds of devices.
 
-Signed-off-by: Joe Damato <jdamato@fastly.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Tested-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 9448ccd85336 ("net: hv_netvsc: fix loss of early receive events from host during channel open.")
+Fixes: a608dc1c0639 ("HID: input: map battery system charging")
+Reported-by: 卢国宏 <luguohong@xiaomi.com>
+Closes: https://lore.kernel.org/linux-input/aI49Im0sGb6fpgc8@fedora/T/
+Tested-by: 卢国宏 <luguohong@xiaomi.com>
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/netvsc.c       | 13 ++++++++++++-
- drivers/net/hyperv/rndis_filter.c |  9 +++++++--
- 2 files changed, 19 insertions(+), 3 deletions(-)
+ drivers/hid/hid-input.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
-index 807465dd4c8e3..87ac2a5f18091 100644
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -712,8 +712,13 @@ void netvsc_device_remove(struct hv_device *device)
- 	for (i = 0; i < net_device->num_chn; i++) {
- 		/* See also vmbus_reset_channel_cb(). */
- 		/* only disable enabled NAPI channel */
--		if (i < ndev->real_num_rx_queues)
-+		if (i < ndev->real_num_rx_queues) {
-+			netif_queue_set_napi(ndev, i, NETDEV_QUEUE_TYPE_TX,
-+					     NULL);
-+			netif_queue_set_napi(ndev, i, NETDEV_QUEUE_TYPE_RX,
-+					     NULL);
- 			napi_disable(&net_device->chan_table[i].napi);
-+		}
+diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
+index b372b74f3e24b..f5c217ac4bfaa 100644
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -609,13 +609,19 @@ static bool hidinput_update_battery_charge_status(struct hid_device *dev,
+ 	return false;
+ }
  
- 		netif_napi_del(&net_device->chan_table[i].napi);
- 	}
-@@ -1826,6 +1831,10 @@ struct netvsc_device *netvsc_device_add(struct hv_device *device,
- 	netdev_dbg(ndev, "hv_netvsc channel opened successfully\n");
+-static void hidinput_update_battery(struct hid_device *dev, int value)
++static void hidinput_update_battery(struct hid_device *dev, unsigned int usage,
++				    int value)
+ {
+ 	int capacity;
  
- 	napi_enable(&net_device->chan_table[0].napi);
-+	netif_queue_set_napi(ndev, 0, NETDEV_QUEUE_TYPE_RX,
-+			     &net_device->chan_table[0].napi);
-+	netif_queue_set_napi(ndev, 0, NETDEV_QUEUE_TYPE_TX,
-+			     &net_device->chan_table[0].napi);
+ 	if (!dev->battery)
+ 		return;
  
- 	/* Connect with the NetVsp */
- 	ret = netvsc_connect_vsp(device, net_device, device_info);
-@@ -1844,6 +1853,8 @@ struct netvsc_device *netvsc_device_add(struct hv_device *device,
- 
- close:
- 	RCU_INIT_POINTER(net_device_ctx->nvdev, NULL);
-+	netif_queue_set_napi(ndev, 0, NETDEV_QUEUE_TYPE_TX, NULL);
-+	netif_queue_set_napi(ndev, 0, NETDEV_QUEUE_TYPE_RX, NULL);
- 	napi_disable(&net_device->chan_table[0].napi);
- 
- 	/* Now, we can close the channel safely */
-diff --git a/drivers/net/hyperv/rndis_filter.c b/drivers/net/hyperv/rndis_filter.c
-index e457f809fe311..9b8769a8b77a1 100644
---- a/drivers/net/hyperv/rndis_filter.c
-+++ b/drivers/net/hyperv/rndis_filter.c
-@@ -1255,10 +1255,15 @@ static void netvsc_sc_open(struct vmbus_channel *new_sc)
- 	ret = vmbus_open(new_sc, netvsc_ring_bytes,
- 			 netvsc_ring_bytes, NULL, 0,
- 			 netvsc_channel_cb, nvchan);
--	if (ret == 0)
-+	if (ret == 0) {
- 		napi_enable(&nvchan->napi);
--	else
-+		netif_queue_set_napi(ndev, chn_index, NETDEV_QUEUE_TYPE_RX,
-+				     &nvchan->napi);
-+		netif_queue_set_napi(ndev, chn_index, NETDEV_QUEUE_TYPE_TX,
-+				     &nvchan->napi);
-+	} else {
- 		netdev_notice(ndev, "sub channel open failed: %d\n", ret);
++	if (hidinput_update_battery_charge_status(dev, usage, value)) {
++		power_supply_changed(dev->battery);
++		return;
 +	}
++
+ 	if (value == 0 || value < dev->battery_min || value > dev->battery_max)
+ 		return;
  
- 	if (atomic_inc_return(&nvscdev->open_chn) == nvscdev->num_chn)
- 		wake_up(&nvscdev->subchan_open);
+@@ -642,13 +648,8 @@ static void hidinput_cleanup_battery(struct hid_device *dev)
+ {
+ }
+ 
+-static bool hidinput_update_battery_charge_status(struct hid_device *dev,
+-						  unsigned int usage, int value)
+-{
+-	return false;
+-}
+-
+-static void hidinput_update_battery(struct hid_device *dev, int value)
++static void hidinput_update_battery(struct hid_device *dev, unsigned int usage,
++				    int value)
+ {
+ }
+ #endif	/* CONFIG_HID_BATTERY_STRENGTH */
+@@ -1515,11 +1516,7 @@ void hidinput_hid_event(struct hid_device *hid, struct hid_field *field, struct
+ 		return;
+ 
+ 	if (usage->type == EV_PWR) {
+-		bool handled = hidinput_update_battery_charge_status(hid, usage->hid, value);
+-
+-		if (!handled)
+-			hidinput_update_battery(hid, value);
+-
++		hidinput_update_battery(hid, usage->hid, value);
+ 		return;
+ 	}
+ 
 -- 
 2.50.1
 
