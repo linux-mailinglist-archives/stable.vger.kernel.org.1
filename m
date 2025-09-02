@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-177396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A41E7B40535
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD2EB404E3
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7346F176289
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF0B97AE87F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFFB32A823;
-	Tue,  2 Sep 2025 13:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3E533A00B;
+	Tue,  2 Sep 2025 13:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xiGS4LNA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hl8BCLsw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EF932A81A;
-	Tue,  2 Sep 2025 13:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADA1338F4F;
+	Tue,  2 Sep 2025 13:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820507; cv=none; b=Gul9TWB7WBk7YYwL34xC1LRIhmW+8KvULjVF7maz5/+ehyAP1zY8H99j9B3W5zJvb/RsNMq2HG65h+ErMQQrmh3oNAxbK+4U0cNoSE+JZ+YSlN1civnxRU8pQZmX+WACpmFmKHVQo/UZf+TqIIn7lsC0tGaQJBNL3phTGEwFl+Y=
+	t=1756820556; cv=none; b=nyehNpWIr/hvws+WXh6Ai08Mzvog6wf7Az1wrb8Yp6wO8qyTTIV//Kci/xo3aSYBf/f5mBE2yOmODOKaT1qVIA9vz8tUS36QP7IPXTd+dzmWPp6jD06nmnBrottUG6I7NclpEqt2shfveutpY+Riyd78BR8bdDsuil0pYOYLnjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820507; c=relaxed/simple;
-	bh=r6FYEosvsfjAt8yy5kw60Cwbp2pYPYVEXNbosG4/m+g=;
+	s=arc-20240116; t=1756820556; c=relaxed/simple;
+	bh=pu9YYuDigYkX4IahGK59nZKhiOg0pvRzGp7VcDPL4lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/+RtkUCjCLmiWbB+EUxS1fZuREboEKJ5k2B1i2yF0Sp6OvBi+ErJvBlPiUIlve0tXFkbR3NXD/5aLJdYfo2kBReGTP5jO7HAOgdm/Jemq1wVoy5+JttjSw4to1jLPRSiejF29kZNrg1fRG6TwEx3uq0HUWwdW1k+P47xKDVDWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xiGS4LNA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0197C4CEED;
-	Tue,  2 Sep 2025 13:41:46 +0000 (UTC)
+	 MIME-Version; b=QS+Fk+x3yrCBiJFZnG0knayivki4v9+j3C06ckYp9M2ShEGC1KckDnxE5EzdO1Pm0l92ZlhZlOOTHzZfdZNk45qwlbPXNfvPPVkkHkQ39oDv+Gs5Sq6q0sWGpbaGhXu0IrYnC1M+VlmWdrORA3Cm7nmwDuS0PdhlZUXFIqXm5Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hl8BCLsw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCD2C4CEF7;
+	Tue,  2 Sep 2025 13:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820507;
-	bh=r6FYEosvsfjAt8yy5kw60Cwbp2pYPYVEXNbosG4/m+g=;
+	s=korg; t=1756820556;
+	bh=pu9YYuDigYkX4IahGK59nZKhiOg0pvRzGp7VcDPL4lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xiGS4LNA2sDS1UutOtTZzP4Vzkii6r1Upj2yKbXiyyM8FdG6E3SNH7kbpPMdw57w2
-	 BVDFEijiO8wx89xynnmQhvHdm819Qll60b+FysVYlnT/xshy3iBaCfi7JAcRGGBOoO
-	 vYEmX3vPcYjDYXPPcT0lPzN3XYdVRnX1m6x0GKV0=
+	b=hl8BCLswUlIPMOBpm21qI7M2W/Wug+YblOgJR1xT0PqOimg2zaQ/uDB2oT1CbHWiK
+	 /crYrUp46m6U0TUHMtNZsz85aK3qj2CqbqGcqSHHMx1GmEN2vfmy50WXTCuWHN48/s
+	 HFh64mV1W9h+aDfBHMn27S+DpV6Ff512lu3UNVSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Wu Guanghao <wuguanghao3@huawei.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 34/50] efivarfs: Fix slab-out-of-bounds in efivarfs_d_compare
-Date: Tue,  2 Sep 2025 15:21:25 +0200
-Message-ID: <20250902131931.878152858@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.15 08/33] udf: Fix directory iteration for longer tail extents
+Date: Tue,  2 Sep 2025 15:21:26 +0200
+Message-ID: <20250902131927.378207870@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+References: <20250902131927.045875971@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit a6358f8cf64850f3f27857b8ed8c1b08cfc4685c ]
+commit 1ea1cd11c72d1405a6b98440a9d5ea82dfa07166 upstream.
 
-Observed on kernel 6.6 (present on master as well):
+When directory's last extent has more that one block and its length is
+not multiple of a block side, the code wrongly decided to move to the
+next extent instead of processing the last partial block. This led to
+directory corruption. Fix the rounding issue.
 
-  BUG: KASAN: slab-out-of-bounds in memcmp+0x98/0xd0
-  Call trace:
-   kasan_check_range+0xe8/0x190
-   __asan_loadN+0x1c/0x28
-   memcmp+0x98/0xd0
-   efivarfs_d_compare+0x68/0xd8
-   __d_lookup_rcu_op_compare+0x178/0x218
-   __d_lookup_rcu+0x1f8/0x228
-   d_alloc_parallel+0x150/0x648
-   lookup_open.isra.0+0x5f0/0x8d0
-   open_last_lookups+0x264/0x828
-   path_openat+0x130/0x3f8
-   do_filp_open+0x114/0x248
-   do_sys_openat2+0x340/0x3c0
-   __arm64_sys_openat+0x120/0x1a0
-
-If dentry->d_name.len < EFI_VARIABLE_GUID_LEN , 'guid' can become
-negative, leadings to oob. The issue can be triggered by parallel
-lookups using invalid filename:
-
-  T1			T2
-  lookup_open
-   ->lookup
-    simple_lookup
-     d_add
-     // invalid dentry is added to hash list
-
-			lookup_open
-			 d_alloc_parallel
-			  __d_lookup_rcu
-			   __d_lookup_rcu_op_compare
-			    hlist_bl_for_each_entry_rcu
-			    // invalid dentry can be retrieved
-			     ->d_compare
-			      efivarfs_d_compare
-			      // oob
-
-Fix it by checking 'guid' before cmp.
-
-Fixes: da27a24383b2 ("efivarfs: guid part of filenames are case-insensitive")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Signed-off-by: Wu Guanghao <wuguanghao3@huawei.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/efivarfs/super.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/udf/directory.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index b8c4641ed152b..9025430cf2ad3 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -47,6 +47,10 @@ static int efivarfs_d_compare(const struct dentry *dentry,
+--- a/fs/udf/directory.c
++++ b/fs/udf/directory.c
+@@ -171,7 +171,7 @@ static struct buffer_head *udf_fiiter_br
+ static int udf_fiiter_advance_blk(struct udf_fileident_iter *iter)
  {
- 	int guid = len - EFI_VARIABLE_GUID_LEN;
+ 	iter->loffset++;
+-	if (iter->loffset < iter->elen >> iter->dir->i_blkbits)
++	if (iter->loffset < DIV_ROUND_UP(iter->elen, 1<<iter->dir->i_blkbits))
+ 		return 0;
  
-+	/* Parallel lookups may produce a temporary invalid filename */
-+	if (guid <= 0)
-+		return 1;
-+
- 	if (name->len != len)
- 		return 1;
- 
--- 
-2.50.1
-
+ 	iter->loffset = 0;
 
 
 
