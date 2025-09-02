@@ -1,87 +1,95 @@
-Return-Path: <stable+bounces-176924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90509B3F2F8
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 05:51:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35799B3F36F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 06:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 208311A81C23
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 03:52:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC76118869CB
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 04:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768A9269CE6;
-	Tue,  2 Sep 2025 03:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11AA32E0928;
+	Tue,  2 Sep 2025 04:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fgtoCQM7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CTiOXP7A"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1953257851
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 03:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E34D33991;
+	Tue,  2 Sep 2025 04:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756785105; cv=none; b=kNCeedmn8dvyY9YqTuBVMsuXiFscfrp1KqnFrPXIOEo107kwE/gn9inKRHUCAd3uf5GwrovvXUhgq2KOG8vAVN68T0q9mp0djfMx8UKEr1NHS8Fk8/XSx/ggcu4nqr+2R+XTMXpOJ4P8E4r37t+nuyU0aIcvNB1AQYX3FzpnQS4=
+	t=1756786213; cv=none; b=BeOkGrWWxQyDMNFA/Zx1X1noYOtOqY16G3Y7iJG9pkRSbjmcpUbLJD9DTmrDVUU6uGhL1dYRGxzZP0MDE93GdQiNSFwkskvlRx3nqS7/pLn2Y6G7q0DDZfVBDv2MP4qg4aJNAoMcMgfHUqb+S61/e+lKjCXHdUvD0ZsaQPd3DIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756785105; c=relaxed/simple;
-	bh=n2mChHJOpuovt3EkOwskBKLM9hbBlkGgtvGxWx7OgZM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=e6dnsQcdGB2RLsK+6SqmBYEEuce7Fi0DzZhFODQq1u9iuVMtaCkOz/B6cy8zyby2NZhg0PgEi5tEGlopImnD5gn7u4txkc150EOi8c155ykM8Rmbxf1+5zlf/nA9xAtZy8+1QNPg4qSR496aJ2t/4R0iDCJI5fBCdgrXFSLMXLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fgtoCQM7; arc=none smtp.client-ip=209.85.215.170
+	s=arc-20240116; t=1756786213; c=relaxed/simple;
+	bh=vpfYScOjakMNy+nGuXLIrD0EA6DhL55xUbZ8RW8gSgI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g8MbUoXWhUmx7X2uJT8hRUDkZce5bKFw40RdCnxFMG7MEWyseTikX5YyBzvnb0LvDWo/UCYnbslc2fc13Qwd9j42YkNTg35byMDGnLMPy6BDOLk71dqir2ZCH/sd3Ez025ZDmcZsEBQnLaQF1oU0HYalm6Su6G8Cwvf2OIH5XsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CTiOXP7A; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b4d1e7d5036so2294177a12.1
-        for <stable@vger.kernel.org>; Mon, 01 Sep 2025 20:51:43 -0700 (PDT)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-24b13313b1bso2795705ad.2;
+        Mon, 01 Sep 2025 21:10:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756785103; x=1757389903; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fhO72zhYOJiaCs0Sw3nOH7x/q+Nik5NH+Mprbd215KE=;
-        b=fgtoCQM7XbybdCKXtfi8M7K8IWSP1CSDM0HPnexAP7HXm86gEERCKyTsWanEm0Uzfc
-         QjFBBzjr3LXP5xB30YdSLNcwdBQrzirNVgd0H0To68iCmfRHphXnSPxSk3mX4PWORd5c
-         Aj/0CZBL5XOlrrwHnJ1tMHry+oc121DQOmKmMPSKLG00UXOsssKPDeLrn+cQDFU6RhBw
-         qp7vwiR+bE4F3I8R63Ic3SgJDMywRxB4whG/RWdhRwIjp3UpQzFLKQ1B4YfpWnS0N5sI
-         Sc8lIsUJoY8Q22dpm4X9xJht8v18uQx6SzEcAXrQgA0TDZTKDolLAURO73qW7bv0nwe5
-         BojA==
+        d=gmail.com; s=20230601; t=1756786212; x=1757391012; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=19JVbPSSMfi36C+z91aIsE+9NN7e/Je8JVocDDvdxI8=;
+        b=CTiOXP7A4gDhvWCJ++L/CCx2fT6sPbN7zuHm1pylic6CIKgKwTgQV6P49TeT424q6d
+         tIsWoy9CaB5oLZWFCdBdLZAWDClcX2VUC11fbph7HE7CIbfSBklMeRIm1Qg9jV4YoVAJ
+         96g87IvhoRLvdodPWZ/HWip050/68apOpOR3gwSNdSsy3uR/fpRx9ZF+TW1pmx62vEul
+         0ItoM40QlfGCs66CVJRSSKpu8HpZBsqoR2tzB8FSbr90jWTP28msTSUF3lr4RV5jYz9P
+         OKIb+sziRWnAFI1Sv55iDI/1n1rJiY/zGdPtSzbyD3Q7sImPQ90nervno26L3VAnu5y0
+         2wGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756785103; x=1757389903;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fhO72zhYOJiaCs0Sw3nOH7x/q+Nik5NH+Mprbd215KE=;
-        b=Fe1aPwTl5Fj48SvlxslOv25FiwBtUW8RYoN//Wfz2BhrYcUBj35ukPiKyIqIHBbOKb
-         iwiRSYsrUX8xufrCpTFK9s0U14ZX1ZbjbUW9hqaZELMMHtvKeUrMM7JxIaajsLMtpnRD
-         c/80WpCjoF3R0wms4N2lU29tR8qEFxw5yE9x5hiME+CfFAEh0eqJrNlVx8E5yvEnYM30
-         DbXuyh3DwNd87/HARMqiETH5BOE/o7YVqzVf2otGRN2Hw+MzqzhHabM/BDgVR4A/fLDR
-         lvNh9G3U1luRCiAPegruzl9+t/qqvrD/PTtXnBfXj07vcjFU/8deyys3noR8OF4I52C2
-         VZFw==
-X-Gm-Message-State: AOJu0YwU74UFVr/uCL6GgXgCQ1ILbLEcXyl1UxKtF2Ubg/8jslO8/unI
-	oFfuJWOK51dKl6Jilqq98FvWDJmI9TE8vzD5alZjrfRzJ7eaG91VmC8iAkkrwLZlqEI=
-X-Gm-Gg: ASbGnctZzr3nLmg3V0o2JkfR0L6+H1UQ4BzIfivDF7CUT+yxmsUjM5h8/QPslQ941sn
-	dvU1iebby8mZhFukTzPQOgvIGEzvBy2hAqgj9o0ivNeQYv2uQ7BZUduPPYcEFk7uEIPy6J6tT9c
-	7Z4A90xVcMPZcC6PVjIHEOAxdQWoAG654TxMn08we0YgSKRkIyWgMxfveIaeAX2tDHeYxzKylUY
-	AyXfICGAzpfWmxpNxXptS+ETvpzlpZg9TH/9bArwJPGvGErek4E5UKGZuFYpjY8oKpe1dC351c8
-	OBs1ZRG76hNrpFs1IzHQHBUOqY8N/jwACYBzARmXGfdPgn7Dn6tQEX24KWr3qSbwR3vnahujUw7
-	xIVofQA9MHx7/pph8Hm9xJAfHzxHHJTaM3mc4SnAQ19qSPmQS5p9uiPCGnozLXZdwwa7mS+uQ1g
-	+H+0qqFYDOyKWizaipZYrzPAfIo5a6Z/GtS+H71dbcWArA62aUZbBUix/A
-X-Google-Smtp-Source: AGHT+IEylkoLgnfgs+eiQawiS0LvEGhdEfoNRMQRFSMWTcYcFOqIvY3rbC690Jcd1+bF6THJLbVuzw==
-X-Received: by 2002:a17:902:ec88:b0:248:ff49:d758 with SMTP id d9443c01a7336-249448dee30mr160639655ad.1.1756785103023;
-        Mon, 01 Sep 2025 20:51:43 -0700 (PDT)
-Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.116.239.37])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-24b14206426sm6295885ad.17.2025.09.01.20.51.41
+        d=1e100.net; s=20230601; t=1756786212; x=1757391012;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=19JVbPSSMfi36C+z91aIsE+9NN7e/Je8JVocDDvdxI8=;
+        b=KRZedel0oof2n4y52MciTQ5o8qJ9q+Oe5KsdZX9f9czY63W2QYldiPl400V3dI/zgK
+         OzokEmIVf4siwDDtMvQA0Vx518fNn2M7KRM8wnB9+1D9et6bYo+wYe195V1fDF0PI/EQ
+         PQZjIr1SsjQo4pyHn8wb4hPzbqpGO5yuGDn6KpCZER9d82+YXA9HRSgK4qDmLwTC6WPt
+         DrTqwDPZYn+Ec6stbgs8O14yeF//f/6Y+JovKi/I7UAB6Tqkhv/v2E7H1TOCAiiilyRY
+         vuEwECA+ctGW0GrMrb/pkiKRWYk5fbmytjoGEr2gS2YE964ZspqNMPpgn7XUAozZ/UaR
+         g6sA==
+X-Forwarded-Encrypted: i=1; AJvYcCULVNztYoUvsqRqeK3nbZJYQ++ZK1NKF0WA1L6PxiRbm1whTn+ME4WaRdqz8whJzHHITWFyoTKeCtwVnfh25hE=@vger.kernel.org, AJvYcCW7ES5MpvAasPNbR1EkODpMEB7y7MNfXXwjQ0na8wk8nKGjrsehxg7eid5KBuz9yy59P8lSgCms@vger.kernel.org, AJvYcCWNqOeOAOgHam9OawGYZ3BP4dvxyHdPgcaVopnIwRuzrGEOSiIKopdHY+EGf2oRarvl2NgUUk8cLPVOFc8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCNuoflz8DqeN7phNjbLhNEjb9HxbUBByk7Cy/vYe9UAChDMcY
+	9vrif80ad78SGaWXQ28ywcENqNiPT8fYF6p2KdV6bqC1S7vIGW/Gn5m9
+X-Gm-Gg: ASbGncsL9GBXi3l/2/gOfy3PZaxsfXwIOkv+gRBrVVx0urw+/QoXCxfR86KTWhcNm0e
+	4ICyCIkZO/PLY7lRmFFmxealEtxwr/YfSBnNrTTnLEiWzP3a5q9ncM+ni6LHBDF8Ai9DgxD4Z8D
+	i6choaN6VQE3XWzyUoKDVdVOXRXUbgEWRP07K0nquFiGinR8YDcqN7jnVFm/LkY4+pnRlQQya01
+	jOxBuEyjdfFWI/NNJQVpBEfdoOdoir5fz62PjrADTCNSW2FyF1Q1/V7PDUjFc46CvZ2OzYp6Ytg
+	1C9N+KH7gjVgLGnkrFwppTWZg1N/ZWEdQIp6fqdazWc7P6PubHNzfg5yRyhZuzrDjrZBoAj4kII
+	4soFAM7E5J90J7H4dwfWYzT4Jd0MHdXFvxSf1QpbisJr/IotUAtOdpo6gelZIyA1bb2DJ8Qnalb
+	JC2kkF1SrTXhWPAPZm1uW2eYwdI/b+4kkgo1uPk49RuGZt1YvSMtbNa1M=
+X-Google-Smtp-Source: AGHT+IHqWZSv9fVE2o9FpNUE/zchbO0kWXsmmJcbNEZcGV9RobrVJC1W6rztHbdML4czeSNJPdZUSQ==
+X-Received: by 2002:a17:902:e745:b0:246:e1f3:77b2 with SMTP id d9443c01a7336-24944b65071mr121741105ad.53.1756786211765;
+        Mon, 01 Sep 2025 21:10:11 -0700 (PDT)
+Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.22.11.165])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-24af84de7a4sm21250635ad.7.2025.09.01.21.10.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 20:51:42 -0700 (PDT)
+        Mon, 01 Sep 2025 21:10:11 -0700 (PDT)
 From: Miaoqian Lin <linmq006@gmail.com>
-To: linmq006@gmail.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH] hisi_acc_vfio_pci: Fix reference leak in hisi_acc_vfio_debug_init
-Date: Tue,  2 Sep 2025 11:51:37 +0800
-Message-Id: <20250902035137.2350850-1-linmq006@gmail.com>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Pagadala Yesu Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Rotem Kerem <rotem.kerem@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] wifi: iwlwifi: Fix dentry reference leak in iwl_mld_add_link_debugfs
+Date: Tue,  2 Sep 2025 12:09:49 +0800
+Message-Id: <20250902040955.2362472-1-linmq006@gmail.com>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <y>
-References: <y>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,42 +98,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The debugfs_lookup() function returns a dentry with an increased reference
-count that must be released by calling dput().
+The debugfs_lookup() function increases the dentry reference count.
+Add missing dput() call to release the reference when the "iwlmld"
+directory already exists.
 
-Fixes: b398f91779b8 ("hisi_acc_vfio_pci: register debugfs for hisilicon migration driver")
+Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 ---
- drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 6 +++++-
+ drivers/net/wireless/intel/iwlwifi/mld/debugfs.c | 6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-index 2149f49aeec7..1710485cbbec 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -1611,8 +1611,10 @@ static void hisi_acc_vfio_debug_init(struct hisi_acc_vf_core_device *hisi_acc_vd
- 	}
- 
- 	migf = kzalloc(sizeof(*migf), GFP_KERNEL);
--	if (!migf)
-+	if (!migf) {
-+		dput(vfio_dev_migration);
- 		return;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
+index cc052b0aa53f..372204bf8452 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/debugfs.c
+@@ -1001,8 +1001,12 @@ void iwl_mld_add_link_debugfs(struct ieee80211_hw *hw,
+ 	 * If not, this is a per-link dir of a MLO vif, add in it the iwlmld
+ 	 * dir.
+ 	 */
+-	if (!mld_link_dir)
++	if (!mld_link_dir) {
+ 		mld_link_dir = debugfs_create_dir("iwlmld", dir);
++	} else {
++		/* Release the reference from debugfs_lookup */
++		dput(mld_link_dir);
 +	}
- 	hisi_acc_vdev->debug_migf = migf;
- 
- 	vfio_hisi_acc = debugfs_create_dir("hisi_acc", vfio_dev_migration);
-@@ -1622,6 +1624,8 @@ static void hisi_acc_vfio_debug_init(struct hisi_acc_vf_core_device *hisi_acc_vd
- 				    hisi_acc_vf_migf_read);
- 	debugfs_create_devm_seqfile(dev, "cmd_state", vfio_hisi_acc,
- 				    hisi_acc_vf_debug_cmd);
-+
-+	dput(vfio_dev_migration);
  }
  
- static void hisi_acc_vf_debugfs_exit(struct hisi_acc_vf_core_device *hisi_acc_vdev)
+ static ssize_t _iwl_dbgfs_fixed_rate_write(struct iwl_mld *mld, char *buf,
 -- 
 2.35.1
-
 
