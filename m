@@ -1,196 +1,156 @@
-Return-Path: <stable+bounces-177532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333C9B40C3A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 19:38:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D00AB40C6A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 19:49:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2F105E434C
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 17:38:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE93C1B21A81
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 17:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24645345754;
-	Tue,  2 Sep 2025 17:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1978A310654;
+	Tue,  2 Sep 2025 17:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="KGjbL/sa"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="hMpau7uh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A83834573D
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 17:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C359632F761;
+	Tue,  2 Sep 2025 17:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756834695; cv=none; b=VKSWs239RWL6ZFJdarWrP+oDle2br5BvXDz66bCfNlNAokySEhFToQJbuP0E14w5eXBppb4C85oPzGyHOCRTbSTgQOsPEoHEL5sXLzpraH8zjvgJuzU91o05w13PlInikC12CuygXNWCKAvcvlgWbqo2zb0Unk2Wi2YqiAxHjl8=
+	t=1756835351; cv=none; b=qoeO39fhyFUaSSrtsWMkHKVRRr03YjGQsW0dRK99vQTCN5Hx5vCSVHI460bnrWo4jyoJcofGs8zZshHDEeB+CyjFuIEK8LNrYUYEL+xmCoN15Mks4zFQkzpfjn+Y9uApWTNCRYEL/pjYlHEqZmR8Os9QK3fRfq+IfVxCJUM7yg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756834695; c=relaxed/simple;
-	bh=2Z+f+tiHla+aQTQotpxacmkadlxYF0eoGoXuymRlJFU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iWVEKUjqWNZK84JNG2ZgMdtQmBJREmWIXlCZnOfNu18cEH/VmyjKgBQO7UUkOTEJfTDK8s5PXBoQRuScdP1Qg5QT3Z6NZnLIA8i2N2xy8DOkZl6kL0qt6Ab9MfkBUXEt/wiDsw7j/rGALoNEpNn0EE3DSb/e4GovWZeKYI5eK2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=KGjbL/sa; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-55f7c0fb972so2527645e87.3
-        for <stable@vger.kernel.org>; Tue, 02 Sep 2025 10:38:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756834691; x=1757439491; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nMdZlkimpPBEuPAWoTrzN+8f/yVdz1IgzbjTh40gfDQ=;
-        b=KGjbL/samYv4/OkvGoMgUDnKCAEL1eRn+Z/4Q5CLfcCSUXb8aLDVkHr1OdvUxTJvW/
-         jUTSFn7k5s2+JleAC1kbRBTv1y9zYJnrwms9jN0bb/wM5nN71PHThc192SMST7tuB9Rm
-         gyqRec8BjM6sgqSnfE3D7s9VQzrTuIWwIb7RtnCwIOfmpTRPHrodIkGuvCiZI6tw7e3d
-         gAc6jzeGpg6xyZ9JxQqB8ai0vhCTbmoJhQ2CMu1fVYBhv1kXCTBfzwwsz15TLsPEjGvm
-         5+DidMz1kd6+k1GQZ8ZAZQM/Z9nPN24O1kpCuObhGmzt6GPzxaspM8xlKrkN9F8m1W3f
-         sfHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756834691; x=1757439491;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nMdZlkimpPBEuPAWoTrzN+8f/yVdz1IgzbjTh40gfDQ=;
-        b=lbL5kCricDhlavqgiNZLxcnJozHRbPm6NfGxl1as9iGJrQdmTJrbfQfwCJFarzG0VZ
-         hiTIPZFJG4WvHU/vZskPiBYap2wlpHGj+56AJjfYctt4Gn6hO7Ln9D2KfVOiU4nbYl7t
-         KdOFbSvMnT0/4mY/phHuZ9tW6+/mfPcci7dF6wzcaCXJsqLix5qRIfUFTeGH2Y4+dd05
-         uvzyvp3PfpmvfZDA6DzmnL4+2bC03hE73qzn2xGlKL6RqkPqtgEOdzxyB93Z3wcgK2TM
-         ACiE8x3XQyXa0GM7Ewi/gnwFpF9ImZQ9VgqJ2vSMZQg2OJssVFU3rJdicTIw6wlDGPQq
-         0yAg==
-X-Forwarded-Encrypted: i=1; AJvYcCVYAHpYmw4JNGF+bSBAP198/o6NY1E/kOZEFkTHLG/5cn3ZuWd0VMObZYZ1N8AuEmnJBDgn8H4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzziRxxSLBwkJCIlL4Hqbps2fK43ipItnC0hl73oVLWqhYaXVOB
-	3Ks6h7OqX/xcM+y4Ut2t3PtRB4LOt/4fQawUcbBU2swLU+jkc1E25up1t/UG5EeuMYseBpBuZU+
-	U6/sfSDKUS04ZQ3Xe/i3+V7JoYYrbx5wjaWRWjyK0QQ==
-X-Gm-Gg: ASbGncu0IAC04gyyI/fjZZgkgP0OqU/SCJ1IKQycmmJNCPGyh0yLWqHFlP51fQzpuG+
-	8mzCA3SToCUxQIV+B9SAtvpCzm50mHnH2Y6600MCKabbpIJth7CdHxmOfO+uMXqSTgz1EUA2TbQ
-	U0btsiD1L6PG4fJ3o3HVNL1qEq3AXPOI0ipMkaX6G9roOfACh/4I47xkhnRq0mWLl9Q26iGMkOQ
-	rcQIyWp2iTfC0JEQIIGK1jIvqQlbxk53FtVtPA=
-X-Google-Smtp-Source: AGHT+IFm+23zbyZl8sFvNScDe+I2YeYbDYPXFeVHpq8D0bnsdMaG/KEVvVZ9a/rq1R21K2fB6GO+UcDGweplkB3yAgc=
-X-Received: by 2002:a05:6512:b01:b0:55f:6cbd:fc0f with SMTP id
- 2adb3069b0e04-55f70566bf2mr4012228e87.0.1756834691121; Tue, 02 Sep 2025
- 10:38:11 -0700 (PDT)
+	s=arc-20240116; t=1756835351; c=relaxed/simple;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jYjvOexlejn6z359IdIiymLJKpbgdgoP1eO+DxyY9f5dOwRqhX11PPWDqypXvXmVyV0AQGJqJYDWREPS3hW1fZ24ziUX/JESCMjRjo30615uFxShWdHRhPYsG56EcKBD5ql+T6nzowJYbwwU9nNjgaGbG5LeoW4FwXHIfz1f3So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=hMpau7uh; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1756835309; x=1757440109; i=rwarsow@gmx.de;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=hMpau7uhJ+cImsmAkPK+JpjUgoKoRHcdx1cuQk/kx7k8XK0avez2AFoURxdOP2Zr
+	 UBaKvjta1EB3wqwnAoHHYHRBGRmDxBSVxj52BDSYpwvZkKnC2RW2yrm5AU0BsuCQ4
+	 W2ge/jrNXN/Uv1AFFzUl6Txv8jPtSRRFiGLgbBydb6PRxBDgqUsjcJy0lEnXOcfKl
+	 vdva1Zbzxz6kmzc5BpvfS5JNM3TwFoPZ01C4bCUOepg4hr+Z5TvmpamVivO7j+WQm
+	 AwdLfjiGzAkdO+Jaqkq/rb/8WpCXLMSuDjGFPYeHW/ZgqFhUpBiIonCNeDnWNlzZX
+	 CZ5Lpjbb5sQX4q1j+Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.34.249]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N0X8o-1uWcY43dYK-015N7Q; Tue, 02
+ Sep 2025 19:48:28 +0200
+Message-ID: <06ecd35d-523f-4827-b456-5504a91e8553@gmx.de>
+Date: Tue, 2 Sep 2025 19:48:27 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org> <aLcDP36eEIZ_tqFv@smile.fi.intel.com>
-In-Reply-To: <aLcDP36eEIZ_tqFv@smile.fi.intel.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 2 Sep 2025 19:37:59 +0200
-X-Gm-Features: Ac12FXyPcmhwrJUG952loM2GHhwbaAf9Pg-CA5a2iq5iRb4akDGioSRihDizLT0
-Message-ID: <CAMRc=McSpciZCCzhSRwDqUw-7qiqqQqNAqngSm5mGNefWBJinA@mail.gmail.com>
-Subject: Re: [PATCH v7 00/16] pinctrl: introduce the concept of a GPIO pin
- function category
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org, 
-	Chen-Yu Tsai <wenst@chromium.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.16 000/142] 6.16.5-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
+References: <20250902131948.154194162@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:xPgOoSX50QuD7Pn1cXh8cUnDXCfZGAhTa1E0oWetZ6lNv3ExWVy
+ ZSFOxARoS1GqbkTDP+InvHemGPb2OX/Mz3noctMyQ29kpynq+Q8CSDoJcz1C6zHaamdVAtd
+ BiGkJSgrsHVgjCQ//wOAiEVDFPbavz1MXEnOjWRXocbCn+Sa7i2f2Dg4cQ9cK7DMFvHZwcJ
+ B0jfhbTkKxs5C90XdI/FQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:GC5lMw3ggOY=;9pKy5BJU7VTN59nETNXtnRh6f0j
+ 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
 
-On Tue, Sep 2, 2025 at 4:46=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@intel.com> wrote:
->
-> On Tue, Sep 02, 2025 at 01:59:09PM +0200, Bartosz Golaszewski wrote:
-> > Problem: when pinctrl core binds pins to a consumer device and the
-> > pinmux ops of the underlying driver are marked as strict, the pin in
-> > question can no longer be requested as a GPIO using the GPIO descriptor
-> > API. It will result in the following error:
-> >
-> > [    5.095688] sc8280xp-tlmm f100000.pinctrl: pin GPIO_25 already reque=
-sted by regulator-edp-3p3; cannot claim for f100000.pinctrl:570
-> > [    5.107822] sc8280xp-tlmm f100000.pinctrl: error -EINVAL: pin-25 (f1=
-00000.pinctrl:570)
-> >
-> > This typically makes sense except when the pins are muxed to a function
-> > that actually says "GPIO". Of course, the function name is just a strin=
-g
-> > so it has no meaning to the pinctrl subsystem.
-> >
-> > We have many Qualcomm SoCs (and I can imagine it's a common pattern in
-> > other platforms as well) where we mux a pin to "gpio" function using th=
-e
-> > `pinctrl-X` property in order to configure bias or drive-strength and
-> > then access it using the gpiod API. This makes it impossible to mark th=
-e
-> > pin controller module as "strict".
-> >
-> > This series proposes to introduce a concept of a sub-category of
-> > pinfunctions: GPIO functions where the above is not true and the pin
-> > muxed as a GPIO can still be accessed via the GPIO consumer API even fo=
-r
-> > strict pinmuxers.
-> >
-> > To that end: we first clean up the drivers that use struct function_des=
-c
-> > and make them use the smaller struct pinfunction instead - which is the
-> > correct structure for drivers to describe their pin functions with. We
-> > also rework pinmux core to not duplicate memory used to store the
-> > pinfunctions unless they're allocated dynamically.
-> >
-> > First: provide the kmemdup_const() helper which only duplicates memory
-> > if it's not in the .rodata section. Then rework all pinctrl drivers tha=
-t
-> > instantiate objects of type struct function_desc as they should only be
-> > created by pinmux core. Next constify the return value of the accessor
-> > used to expose these structures to users and finally convert the
-> > pinfunction object within struct function_desc to a pointer and use
-> > kmemdup_const() to assign it. With this done proceed to add
-> > infrastructure for the GPIO pin function category and use it in Qualcom=
-m
-> > drivers. At the very end: make the Qualcomm pinmuxer strict.
->
-> I read all this and do not understand why we take all this way,
-> Esp. see my Q in patch 16. Can we rather limit this to the controller
-> driver to decide and have it handle all the possible configurations,
-> muxing, etc?
->
-> I think what we are trying to do here is to delegate part of the
-> driver's work pin mux / pin control core. While it sounds like right
-> direction the implementation (design wise) seems to me unscalable.
->
-> In any case first 12 patch (in case they are not regressing) are good
-> to go as soon as they can. I like the part of constification.
->
+Hi
 
-I'm not sure how to rephrase it. Strict pinmuxers are already a thing,
-but on many platforms it's impossible to use them BECAUSE pinctrl
-doesn't care about what a function does semantically. It just so
-happens that some functions are GPIOs and as such can also be used by
-GPIOLIB. Except that if the pinmuxer is "strict", any gpiod_get() call
-will fail BECAUSE pinctrl does not know that a function called "gpio"
-is actually a GPIO and will say NO if anything tries to request a
-muxed pin. This (the function name) is just a string, it could as well
-be called "andy" for all pinctrl cares. This is why we're doing it at
-the pinctrl core level - because it will benefit many other platforms
-as Linus mentioned elsewhere - he has some other platforms lined up
-for a similar conversion. And also because it cannot be done at the
-driver level at the moment, it's the pinctrl core that says "NO" to
-GPIOLIB. I think you missed the entire point of this series.
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-Bartosz
+Thanks
+
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
+
 
