@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F4EB404C2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:46:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FA1B404F9
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D510317A1AA
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:42:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62B8E5603B3
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB3A3090C6;
-	Tue,  2 Sep 2025 13:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0D331353B;
+	Tue,  2 Sep 2025 13:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PaAuOGmm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAg5F3pE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7CF261393;
-	Tue,  2 Sep 2025 13:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02F63101A8;
+	Tue,  2 Sep 2025 13:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820261; cv=none; b=KxeTjvuQJW4wzcSPXERMObmJfiU5bfmJCp67tBO4+5OLmD72u7v/SOkFnCbptexFtdLQshs1kYCsIpTBvl9GMNli4qRL9kwYA9NU57tf9MIBQDvDAekw3OLjpKh3G2qYwCw8WqeD/OpMTv3HbSxdfAet/IV/u6fFsNMPg2DaoOs=
+	t=1756820385; cv=none; b=lgj6Mjw8rPA7tCe/P+g6RTfozpx8rd/CrjJA1upshy2PQ3yE54YB0KoZfo0diUzdSWQBuNgmNZp5KvSkt7oK79mI3hiWzCs1elGwck5LL4TKdjDaLsGpnrTXxWPsDi/cIJ2lWfly+sxsZPtlnmbRJQSzsNu1JxlKwowuVd3mc/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820261; c=relaxed/simple;
-	bh=YzJVfioyR9Om9pZf936cwaAvqqS53KBzM5M1iH0e61c=;
+	s=arc-20240116; t=1756820385; c=relaxed/simple;
+	bh=U8POCE9LV+gfUUlsL9yclOBeenQXhPIdNKhac5KWwgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TfCxwXL7t8ppkIFiueRXAci3riRwtRjxuu2d7BeN2syN+Wok5xIH+6y3LyYk/ejjBquMqu0mX+x8QEun6k6X061fjX1o9S2lVmNxziRWcMW8vM+4nISf2Z5WP1RvmlisHKTk042+s0+rK08rekk/7BkgiSEPSg7zbC0InHDok80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PaAuOGmm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B5F9C4CEED;
-	Tue,  2 Sep 2025 13:37:41 +0000 (UTC)
+	 MIME-Version; b=Zv8i6nkCyK0M4v2CQchsqr8BJ0QhacRjsszjNyIR5Mr4cecEZftLfvM+j/D6KFGHZ/7KRpzLmxEUL4w4Mq1NcqwuEQZC6ryFJmk+azMfpEXr1BupaJO8gy2EPuj8vkUPIlza9CzIidOwL3YrgsmIetXy40fpHOCQURVYI+7xw6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAg5F3pE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BACC4CEED;
+	Tue,  2 Sep 2025 13:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820261;
-	bh=YzJVfioyR9Om9pZf936cwaAvqqS53KBzM5M1iH0e61c=;
+	s=korg; t=1756820384;
+	bh=U8POCE9LV+gfUUlsL9yclOBeenQXhPIdNKhac5KWwgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PaAuOGmmzv/f3yqpTOSHYiSfxscNUfBQPmB2cykdihpsrh5wTqvckjmNxptLpuvjG
-	 UY6roCuXpYujJuuDac9EWfej1GWNSycQ1jrNsBPs3EI782ItD9hg34uit5mrssXrVh
-	 /A7LV8NjAQe7x456r1/xiYTwGvl053RMUJ/WMLfg=
+	b=nAg5F3pE726WxWAl4IWIlSUWsFaXWQ9CLvma2kXYUI3UnYu7vakVcalw9rp0ZLkkl
+	 EudIpLANWH2ezsYLOv8Qg7RfdPoKbxIfmkUsxubvhyt3FtucnbicUOLCOEyWI27Ln4
+	 710tbUIb1UwZ+srY8VXR+nXTfqtkejN1+2i4RyLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohan G Thomas <rohan.g.thomas@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 50/75] net: stmmac: Set CIC bit only for TX queues with COE
-Date: Tue,  2 Sep 2025 15:21:02 +0200
-Message-ID: <20250902131937.085419961@linuxfoundation.org>
+	Andrey Ryabinin <arbn@yandex-team.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 6.1 12/50] vhost/net: Protect ubufs with rcu read lock in vhost_net_ubuf_put()
+Date: Tue,  2 Sep 2025 15:21:03 +0200
+Message-ID: <20250902131931.005676144@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohan G Thomas <rohan.g.thomas@altera.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit b1eded580ab28119de0b0f21efe37ee2b4419144 ]
+commit dd54bcf86c91a4455b1f95cbc8e9ac91205f3193 upstream.
 
-Currently, in the AF_XDP transmit paths, the CIC bit of
-TX Desc3 is set for all packets. Setting this bit for
-packets transmitting through queues that don't support
-checksum offloading causes the TX DMA to get stuck after
-transmitting some packets. This patch ensures the CIC bit
-of TX Desc3 is set only if the TX queue supports checksum
-offloading.
+When operating on struct vhost_net_ubuf_ref, the following execution
+sequence is theoretically possible:
+CPU0 is finalizing DMA operation                   CPU1 is doing VHOST_NET_SET_BACKEND
+                             // ubufs->refcount == 2
+vhost_net_ubuf_put()                               vhost_net_ubuf_put_wait_and_free(oldubufs)
+                                                     vhost_net_ubuf_put_and_wait()
+                                                       vhost_net_ubuf_put()
+                                                         int r = atomic_sub_return(1, &ubufs->refcount);
+                                                         // r = 1
+int r = atomic_sub_return(1, &ubufs->refcount);
+// r = 0
+                                                      wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
+                                                      // no wait occurs here because condition is already true
+                                                    kfree(ubufs);
+if (unlikely(!r))
+  wake_up(&ubufs->wait);  // use-after-free
 
-Fixes: 132c32ee5bc0 ("net: stmmac: Add TX via XDP zero-copy socket")
-Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Link: https://patch.msgid.link/20250825-xgmac-minor-fixes-v3-3-c225fe4444c0@altera.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This leads to use-after-free on ubufs access. This happens because CPU1
+skips waiting for wake_up() when refcount is already zero.
+
+To prevent that use a read-side RCU critical section in vhost_net_ubuf_put(),
+as suggested by Hillf Danton. For this lock to take effect, free ubufs with
+kfree_rcu().
+
+Cc: stable@vger.kernel.org
+Fixes: 0ad8b480d6ee9 ("vhost: fix ref cnt checking deadlock")
+Reported-by: Andrey Ryabinin <arbn@yandex-team.com>
+Suggested-by: Hillf Danton <hdanton@sina.com>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Message-Id: <20250805130917.727332-1-kniv@yandex-team.ru>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/vhost/net.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index fa8ee0624f2f2..ff5389a8efc33 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2426,6 +2426,7 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
- 	struct netdev_queue *nq = netdev_get_tx_queue(priv->dev, queue);
- 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
- 	struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[queue];
-+	bool csum = !priv->plat->tx_queues_cfg[queue].coe_unsupported;
- 	struct xsk_buff_pool *pool = tx_q->xsk_pool;
- 	unsigned int entry = tx_q->cur_tx;
- 	struct dma_desc *tx_desc = NULL;
-@@ -2496,7 +2497,7 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
- 		}
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -95,6 +95,7 @@ struct vhost_net_ubuf_ref {
+ 	atomic_t refcount;
+ 	wait_queue_head_t wait;
+ 	struct vhost_virtqueue *vq;
++	struct rcu_head rcu;
+ };
  
- 		stmmac_prepare_tx_desc(priv, tx_desc, 1, xdp_desc.len,
--				       true, priv->mode, true, true,
-+				       csum, priv->mode, true, true,
- 				       xdp_desc.len);
+ #define VHOST_NET_BATCH 64
+@@ -248,9 +249,13 @@ vhost_net_ubuf_alloc(struct vhost_virtqu
  
- 		stmmac_enable_dma_transmission(priv, priv->ioaddr);
-@@ -4789,6 +4790,7 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
+ static int vhost_net_ubuf_put(struct vhost_net_ubuf_ref *ubufs)
  {
- 	struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[queue];
- 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
-+	bool csum = !priv->plat->tx_queues_cfg[queue].coe_unsupported;
- 	unsigned int entry = tx_q->cur_tx;
- 	struct dma_desc *tx_desc;
- 	dma_addr_t dma_addr;
-@@ -4833,7 +4835,7 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
- 	stmmac_set_desc_addr(priv, tx_desc, dma_addr);
+-	int r = atomic_sub_return(1, &ubufs->refcount);
++	int r;
++
++	rcu_read_lock();
++	r = atomic_sub_return(1, &ubufs->refcount);
+ 	if (unlikely(!r))
+ 		wake_up(&ubufs->wait);
++	rcu_read_unlock();
+ 	return r;
+ }
  
- 	stmmac_prepare_tx_desc(priv, tx_desc, 1, xdpf->len,
--			       true, priv->mode, true, true,
-+			       csum, priv->mode, true, true,
- 			       xdpf->len);
+@@ -263,7 +268,7 @@ static void vhost_net_ubuf_put_and_wait(
+ static void vhost_net_ubuf_put_wait_and_free(struct vhost_net_ubuf_ref *ubufs)
+ {
+ 	vhost_net_ubuf_put_and_wait(ubufs);
+-	kfree(ubufs);
++	kfree_rcu(ubufs, rcu);
+ }
  
- 	tx_q->tx_count_frames++;
--- 
-2.50.1
-
+ static void vhost_net_clear_ubuf_info(struct vhost_net *n)
 
 
 
