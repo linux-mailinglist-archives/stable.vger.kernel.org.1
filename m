@@ -1,159 +1,108 @@
-Return-Path: <stable+bounces-177523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3BE1B40BB3
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 19:11:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A613EB40BB8
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 19:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A392C5637C9
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 17:11:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1E6F3B3E13
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 17:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20AFC310654;
-	Tue,  2 Sep 2025 17:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F11310654;
+	Tue,  2 Sep 2025 17:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hokH9fCV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cDxav9HH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6981033EB01;
-	Tue,  2 Sep 2025 17:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78201C7012
+	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 17:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756833065; cv=none; b=PLDWuFzR5JlbLeEx0jbxIQaJgEd87DU77S7jdxZp411ZBvnYSSrBSNrSI+5K4DmApa7zxJ12j/8nQx3DurfoXPA+mcFqLMlreOPv+HfVqSldljwfDw56I7geYEu+1GdvjaZO0PirGJ8vyim3/jOthBNTyadtuK2Eqy5TzgzqxkI=
+	t=1756833103; cv=none; b=TYx1CIUteOk7F0IdnEiyd4Rq+x/FZs27JLHsXTJiA+Ey/IUDewg7Skq7zxoogilsAmAI3oOV8maXXi5yH3jhQvvzJ94xGeQlx/6qAql47PaK/oMwKAhkKoCcfcI8vgNmpbuUcAs0osC7J5xNjutdpKgopa2Msbjy5WarcEB/BTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756833065; c=relaxed/simple;
-	bh=DrCyuQEf6glI7LfRJAuaKNwC1GTQke6K7aTulwZMIX8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ErhfFOCYq2jnLkacduX+TLvuRdP+NH+W4iLaccMnpOusrybjc1JPjPRFUorZS2BZQs1oOUEczh82evFIOsCPcziXD4j7/+NHZT3/O0WLe7EdsoEY9Fx3keU6iyNc2tTmzjh9JID2kAaTlslhR5KveEr4lSRyT8wiQxsryafnRlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hokH9fCV; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-805a1931a15so139897985a.1;
-        Tue, 02 Sep 2025 10:11:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756833063; x=1757437863; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=oBHtVSFw10dHsem95fb/g6IdGjhm6pmkppakycR4TZE=;
-        b=hokH9fCV5wJU3iGSWBNQppCHKow0ovbn20aFg7megQ4cTwpGvsUfzGKCU68HZA+Kee
-         V+zw84FUCSddMc3895pCOP9koQT0fQtKl3uJyqA5Q7FfLQquaIx56TCVN9WjXH2akUHZ
-         txXVNWkt2qw97NoKeoje4f8YpyDWRw0WOBn3Nmtda/ajHPIoepOrgViiYnVUuZe7Ed+m
-         4TCxxc3bMj++3cTtmHspMFUWKQu94kSEaxpBCY9THta4wCALm684G66cJLO2FFQkLsbg
-         CUh/RqXt8+8cdmPI778zs6+FXQpOfIl6+rukjWoSLhkFaJZ/xT1eDiUYgvE8LTju+ft5
-         VwLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756833063; x=1757437863;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oBHtVSFw10dHsem95fb/g6IdGjhm6pmkppakycR4TZE=;
-        b=BZHMhJ+HlXAlCheCmMPIld+o+alCUhrfiZoagbojdY4/JrUBSQrjR3+pplVsuiK9GK
-         hY0jSs19N4EEmTSuxeskVsD6WB8FArRPDUYgGEgyi/NUUWd8qoUGY4Bi1kc+2lf/V8Xn
-         C+0KiPzOKso8nIajeadeScSkNz8KsotxmJE0LOiYpjm8c43umcnGYSJlDVC3ozUTrzWR
-         62oW/lJst2XDAZzBEw1TdpDxaEziDaeWPtz9W/MNdPBXtSzibhdk+srcfHZX8gNJZCjV
-         TjaxO7JdR3ut9hWne7qjzyMXjDVfNecRIoRH3Qq9MfauhbCHxuvtlTfA/ysw8tNsRFJn
-         q/8w==
-X-Forwarded-Encrypted: i=1; AJvYcCWkLYjE+Gk6sOsbD5WiNWpREwDmTmq4H/eLon2ITPXq3L4OmSQBfFId1TtKAbNMUotqbkjrNpQw@vger.kernel.org, AJvYcCXSZDB/MAzsf/aXIhBTRL+85d11T7JbQC/82ZiFH1vaBxX10Cllrj9RaVxafeUoBEZlQ3IqwTmaS2TvUkk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6jUZOFd2wY5NzVlAi2Gzqs/QwV5U2R9Eg/rTI3W5jDwwGjR+C
-	DYmzCE3Si5EfI3Cq2ngPsJ9S+sDklVQuS4WTrzk7hAL/iRQL/aD1jfmH
-X-Gm-Gg: ASbGncsdOo8nw3FEaJcm7rQaB6sNgtXcIONr5xPkqpSLpB/VfxajF9k88W0JjRmCUfl
-	8xhFjh10qjeFpzgIoYyx80ASpi0UPWmNozMyFZUkF3nuc2L4IoL9Jybu1ojb/Gk1C/ZBdUHcQmU
-	lTOPurDUtqAq5heWRxR+ebUKeW+i8L7kP215weNA8taDIKMoZ2r/hINa+jwu8OTf5yDone72DyQ
-	y87KmM4p9dryyvpmWRjVUh1tqmyXeHtvMO+JHIiHcoHujHfqja+Ue3AzyGEa7uAFKJXahicCMj9
-	Lbtx2KbTZjti+d02IYTA/nH3kYgUuh/HHm5Yc6E5z/2ji2Muns1phuOYiDDyfefodDfr4lnZpTV
-	TB70b9IumBFa0JzPgrTJEmtL4EdEm7ku83GyLIw6TCkbrCnwhZQ==
-X-Google-Smtp-Source: AGHT+IHnCSeufqhOHInLwoqV6gJLxiDNg3lrNlsEFOrhrs3RYhLLhW7CKfH3dJjBuOOkx+9jhFc8EA==
-X-Received: by 2002:a05:620a:1710:b0:809:db70:b415 with SMTP id af79cd13be357-809db70b47dmr80053485a.24.1756833062936;
-        Tue, 02 Sep 2025 10:11:02 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8069d6b056dsm167152785a.68.2025.09.02.10.10.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Sep 2025 10:11:01 -0700 (PDT)
-Message-ID: <109893d0-2df3-4a60-b77b-2be47ac605ae@gmail.com>
-Date: Tue, 2 Sep 2025 10:10:55 -0700
+	s=arc-20240116; t=1756833103; c=relaxed/simple;
+	bh=eHDh6EYEf8otbCErhsJ5F0gjruWxqH5WeQD28ohPUHY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EjiaC+CxwXmZZfZp1I6h30+ueK+6ZxgE6wZGMjAKh2xMSe/v5tsLtDCii91NEB6dOt8yvUlHFHQspIwszLs0ARjpxalWkBjevYrfqql55cDLFfEOLrE4ruk4Xgqcn/bwXumKzGV+LwbC2R2dil6h9h42bp7TMZp2aHlpoKrewNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cDxav9HH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32307C4CEED;
+	Tue,  2 Sep 2025 17:11:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756833101;
+	bh=eHDh6EYEf8otbCErhsJ5F0gjruWxqH5WeQD28ohPUHY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cDxav9HHZzqMdr/ZnjNaKvlJZ3DRDWJl0oGzPYf9mT+uXo+l2AtdhnqCjZla064pX
+	 puyhUGaLIyYYgnDVR9x/v3+cjhW7pk33gNGG4QUZDSRH8zYIELNx/h0F8EZ54vQE7w
+	 jPN7EsxAB24MSrvSqGCKRqY0NVkm76RHRBnz1MKbSzuerstEXuKWzInV0uaaqcMd9U
+	 lCIATpp013sFEyyHLBat8hIfxrY/i53uQzjW6wLRE+olH50ZsT+vi4Klr6JkKtOv/r
+	 5Z7qtxaoq2dVKW0qMRMmA1ZvzToFShFLktlUUsukhSQrCaGgNKkOR0fN61POnkuR0I
+	 Vh/OpQBTmPi1w==
+Date: Tue, 2 Sep 2025 13:11:39 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: "Manthey, Norbert" <nmanthey@amazon.de>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.1.y 0/1] Backporting patches with git-llm-pick
+Message-ID: <aLclSwgwIhaMjE88@laps>
+References: <2025011112-racing-handbrake-a317@gregkh>
+ <20250901153559.14799-1-nmanthey@amazon.de>
+ <aLbZoQrlED0PN0pc@laps>
+ <f0f5fd8da13d000355166d9eb87e24ddc1b8fa70.camel@amazon.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 00/23] 5.4.298-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, achill@achill.org
-References: <20250902131924.720400762@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- WlfRzlpjIPmdjgoicA==
-In-Reply-To: <20250902131924.720400762@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <f0f5fd8da13d000355166d9eb87e24ddc1b8fa70.camel@amazon.de>
 
-On 9/2/25 06:21, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.298 release.
-> There are 23 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 04 Sep 2025 13:19:14 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.298-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Tue, Sep 02, 2025 at 04:22:40PM +0000, Manthey, Norbert wrote:
+>On Tue, 2025-09-02 at 07:48 -0400, Sasha Levin wrote:
+>> One note about the tool: in my experience, unless the tool can also act as an
+>> agent and investigate the relevant git repo (and attempt builds and run tests)
+>> on it's own, the results used to be very lackluster.
+>
+>I agree in general. On the other hand, we want to keep the amount of work done by
+>the LLM or agent small. For now, we only submit a bit of context and the commit
+>messages. The validation is executed by the application independently of the
+>agent. There is no feedback loop yet, or similar -- that could all be done in the
+>agent-stage. We have a few more filters and limits to only process commits that
+>are likely to be finished successfully by an LLM.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Consider a simple backport example: let's say that upstream we see a patch that
+does something like:
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+   mutex_lock(&m);
+- old_func();
++ new_func();
+   mutex_unlock(&m);
+
+But when we look at an older tree, we see:
+
+   spin_lock(&l);
+   old_func();
+   spin_unlock(&l);
+
+If you don't pass massive amounts of context in, there's no way for an LLM to
+know if it's safe to simply replace old_func() with new_func() in the old code.
+Most LLMs I played with will just go ahead and do that.
+
+A human backporter (and most likely, an AI agent) would have a lightbulb moment
+where they go look at new_func() to see if it's safe to be called under a
+spinlock.
+
+I guess that my point is that at this level for this usecase, LLMs don't end up
+being much better than using something like wiggle[1].
+
+
+[1] https://github.com/neilbrown/wiggle
+
 -- 
-Florian
+Thanks,
+Sasha
 
