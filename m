@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-177441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277FDB40574
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:53:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B66EB40519
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 162DD563DD8
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9ECD63A5ECD
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D813630EF83;
-	Tue,  2 Sep 2025 13:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B136832A800;
+	Tue,  2 Sep 2025 13:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEIvWVat"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cs96chSn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E522EDD6B;
-	Tue,  2 Sep 2025 13:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1B4324B2D;
+	Tue,  2 Sep 2025 13:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820653; cv=none; b=loKVeCC73k2EoRgZjg+rgCvWeLeSUWyc2xzozqjwwojnck2k7UUcD/XTJrWClHVw1s2bHkYs/VohQ0Sh7jxF+bci6Q568hM5Ww6wdw5vBywgHpqQ3V6MRNl9kaeR2/a1uBJf09eZa0L175dccFwfaa7UhUC0a59NOwsunfslt58=
+	t=1756820491; cv=none; b=a+iwCU6IavAqd6piJ+gW5m59pBk1i2p8wL6QpB3XVkaPzVjSkCNuFwIkFDnCf1WkE0hRlzNfN2YWWF7aP98/CcQdgT+x7ML80u6bU+f2v8XAqTvMXIFIpQA1A9Pn6KHleTi1HWVX8vABx8KXFc69hjaXPpiCV19ySgz+fDU/Yzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820653; c=relaxed/simple;
-	bh=3QJ+RGXqyv2vT9OrKb+oySheFm09OggUQ30m2fRLbXE=;
+	s=arc-20240116; t=1756820491; c=relaxed/simple;
+	bh=8iVbkRikCkBI8URpIt0hubUQf/Cu/DEpy/2z2B2ftdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dvf/Kpof12OaieMM7PVYA8D7IpRYI49y3ko55myR/AV1B8sOTe82/SoELWfPICjHDdxATl3/HQOYeJlSBXaC7lFt/lXD5CXwPyLp3BsYLvt643We1oI9dy+7+Mqp3pfY+lSByWoJUbkG9MstI9GsvFAksq1MIdU4Fz/KccrVNro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEIvWVat; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F069CC4CEED;
-	Tue,  2 Sep 2025 13:44:12 +0000 (UTC)
+	 MIME-Version; b=qt6atxsAPJmDvOjgT1D6tmbXLR0skfb1Q0Uv1VpgJDWoV5e2b0z/p8cHdUGrY9J1lOQ0EyGqon4ncFhjq0lWqH3v15TmJ2cTm2SEElzt5aPfzlbF6GuRULEljBDuYGUvqtsX62STATozqTHnbadnVy/ZJieJQ0idjqXfQMTetug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cs96chSn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA4CC4CEED;
+	Tue,  2 Sep 2025 13:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820653;
-	bh=3QJ+RGXqyv2vT9OrKb+oySheFm09OggUQ30m2fRLbXE=;
+	s=korg; t=1756820491;
+	bh=8iVbkRikCkBI8URpIt0hubUQf/Cu/DEpy/2z2B2ftdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dEIvWVatXZGcUCiqCHaFC/dQCfjyd8MSzq2WV4R9KSxF+cx6mMLcanPLH98TvW+Ji
-	 Tt5bCqxqBxbURPSltoDKNBbOp5/BmzkjxmX3K/lJ1BD8hxz4+7Wj9MOVay0/WrX1Xo
-	 vRqE26SZCpnGGwAxVtamN+qDJX7M9Mx4lVwCzJEw=
+	b=Cs96chSnKHN72y7IAGdfK8PYKY9/pDYrvMt4Q+/LFafGdKHthE+iEfv0uXdFDJRAg
+	 V44XT7CiM/tLnJtRKcVNAKhQxNOogTlD3O5URX1mJwoaDgPuu3fx1Dd0mfnWnIytq8
+	 ggWlaStkoM5IQ3e78yxB079zNIoezd0d81IM2+78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeounsu Moon <yyyynoom@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 12/34] net: dlink: fix multicast stats being counted incorrectly
+	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Romain Sioen <romain.sioen@microchip.com>
+Subject: [PATCH 6.1 47/50] HID: mcp2221: Dont set bus speed on every transfer
 Date: Tue,  2 Sep 2025 15:21:38 +0200
-Message-ID: <20250902131927.106989838@linuxfoundation.org>
+Message-ID: <20250902131932.381198014@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeounsu Moon <yyyynoom@gmail.com>
+From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
 
-[ Upstream commit 007a5ffadc4fd51739527f1503b7cf048f31c413 ]
+commit 02a46753601a24e1673d9c28173121055e8e6cc9 upstream.
 
-`McstFramesRcvdOk` counts the number of received multicast packets, and
-it reports the value correctly.
+Since the initial commit of this driver the I2C bus speed has been
+reconfigured for every single transfer. This is despite the fact that we
+never change the speed and it is never "lost" by the chip.
+Upon investigation we find that what was really happening was that the
+setting of the bus speed had the side effect of cancelling a previous
+failed command if there was one, thereby freeing the bus. This is the
+part that was actually required to keep the bus operational in the face
+of failed commands.
 
-However, reading `McstFramesRcvdOk` clears the register to zero. As a
-result, the driver was reporting only the packets since the last read,
-instead of the accumulated total.
+Instead of always setting the speed, we now correctly cancel any failed
+commands as they are detected. This means we can just set the bus speed
+at probe time and remove the previous speed sets on each transfer.
+This has the effect of improving performance and reducing the number of
+commands required to complete transfers.
 
-Fix this by updating the multicast statistics accumulatively instaed of
-instantaneously.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Tested-on: D-Link DGE-550T Rev-A3
-Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250823182927.6063-3-yyyynoom@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Fixes: 67a95c21463d ("HID: mcp2221: add usb to i2c-smbus host bridge")
+[romain.sioen@microchip.com: backport to stable, up to 6.8. Add "Fixes" tag]
+Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-mcp2221.c |   41 +++++++++++++++++++++++++++--------------
+ 1 file changed, 27 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index b7f992103da3c..af1e96e0209fc 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -1095,7 +1095,7 @@ get_stats (struct net_device *dev)
- 	dev->stats.rx_bytes += dr32(OctetRcvOk);
- 	dev->stats.tx_bytes += dr32(OctetXmtOk);
+--- a/drivers/hid/hid-mcp2221.c
++++ b/drivers/hid/hid-mcp2221.c
+@@ -169,6 +169,25 @@ static int mcp_cancel_last_cmd(struct mc
+ 	return mcp_send_data_req_status(mcp, mcp->txbuf, 8);
+ }
  
--	dev->stats.multicast = dr32(McstFramesRcvdOk);
-+	dev->stats.multicast += dr32(McstFramesRcvdOk);
- 	dev->stats.collisions += dr32(SingleColFrames)
- 			     +  dr32(MultiColFrames);
++/* Check if the last command succeeded or failed and return the result.
++ * If the command did fail, cancel that command which will free the i2c bus.
++ */
++static int mcp_chk_last_cmd_status_free_bus(struct mcp2221 *mcp)
++{
++	int ret;
++
++	ret = mcp_chk_last_cmd_status(mcp);
++	if (ret) {
++		/* The last command was a failure.
++		 * Send a cancel which will also free the bus.
++		 */
++		usleep_range(980, 1000);
++		mcp_cancel_last_cmd(mcp);
++	}
++
++	return ret;
++}
++
+ static int mcp_set_i2c_speed(struct mcp2221 *mcp)
+ {
+ 	int ret;
+@@ -223,7 +242,7 @@ static int mcp_i2c_write(struct mcp2221
+ 		usleep_range(980, 1000);
  
--- 
-2.50.1
-
+ 		if (last_status) {
+-			ret = mcp_chk_last_cmd_status(mcp);
++			ret = mcp_chk_last_cmd_status_free_bus(mcp);
+ 			if (ret)
+ 				return ret;
+ 		}
+@@ -290,7 +309,7 @@ static int mcp_i2c_smbus_read(struct mcp
+ 		if (ret)
+ 			return ret;
+ 
+-		ret = mcp_chk_last_cmd_status(mcp);
++		ret = mcp_chk_last_cmd_status_free_bus(mcp);
+ 		if (ret)
+ 			return ret;
+ 
+@@ -310,11 +329,6 @@ static int mcp_i2c_xfer(struct i2c_adapt
+ 
+ 	mutex_lock(&mcp->lock);
+ 
+-	/* Setting speed before every transaction is required for mcp2221 */
+-	ret = mcp_set_i2c_speed(mcp);
+-	if (ret)
+-		goto exit;
+-
+ 	if (num == 1) {
+ 		if (msgs->flags & I2C_M_RD) {
+ 			ret = mcp_i2c_smbus_read(mcp, msgs, MCP2221_I2C_RD_DATA,
+@@ -399,9 +413,7 @@ static int mcp_smbus_write(struct mcp222
+ 	if (last_status) {
+ 		usleep_range(980, 1000);
+ 
+-		ret = mcp_chk_last_cmd_status(mcp);
+-		if (ret)
+-			return ret;
++		ret = mcp_chk_last_cmd_status_free_bus(mcp);
+ 	}
+ 
+ 	return ret;
+@@ -419,10 +431,6 @@ static int mcp_smbus_xfer(struct i2c_ada
+ 
+ 	mutex_lock(&mcp->lock);
+ 
+-	ret = mcp_set_i2c_speed(mcp);
+-	if (ret)
+-		goto exit;
+-
+ 	switch (size) {
+ 
+ 	case I2C_SMBUS_QUICK:
+@@ -870,6 +878,11 @@ static int mcp2221_probe(struct hid_devi
+ 	if (i2c_clk_freq < 50)
+ 		i2c_clk_freq = 50;
+ 	mcp->cur_i2c_clk_div = (12000000 / (i2c_clk_freq * 1000)) - 3;
++	ret = mcp_set_i2c_speed(mcp);
++	if (ret) {
++		hid_err(hdev, "can't set i2c speed: %d\n", ret);
++		return ret;
++	}
+ 
+ 	mcp->adapter.owner = THIS_MODULE;
+ 	mcp->adapter.class = I2C_CLASS_HWMON;
 
 
 
