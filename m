@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-177151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C3D5B40372
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD399B403EE
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:38:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D33D23AC38A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 059AA4E5F5A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4373128DE;
-	Tue,  2 Sep 2025 13:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E41E312817;
+	Tue,  2 Sep 2025 13:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vz2J0pZu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ap1P8C1W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1630231282C;
-	Tue,  2 Sep 2025 13:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE44E30C341;
+	Tue,  2 Sep 2025 13:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819745; cv=none; b=udDj6p41uA2LooHCedwmOVBrd+oTLoFPPhmrXSBAZEbIHjQRwD8Vc7IAb/ZuLurx1R7tL6rwK70ql6LSjGl9Sb0NlwcVNrdzIIXY3sU61PUVNEvPvJ1N+nSKDI6GOpMDfkEmmtB0wepmaCKzjK7VW8aeGeU0xWpLI47f/dvX+pc=
+	t=1756819972; cv=none; b=mJEWqWU5DoRKYVP0OsOVcfZcCbIbAUTOp5+6++L3Uo5YWpz+xZfiWVBN+3VBqa5ZperUBVix9xbpDZOmYA9F6e39zrC/87IsEno2ta1mz8dKMfGosXhfUnBaagFvi8ft2F/AMD2eyQ4E6lyT5ggAy93D/VdKVVnq3T9a37+18lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819745; c=relaxed/simple;
-	bh=YsX5QlkR0c1ywN9Wq9AZY2OFJN7vqtsHDrg2M/+P3fc=;
+	s=arc-20240116; t=1756819972; c=relaxed/simple;
+	bh=sAIlRXlrkj2DV3czWLqq996oFfRUxJgpzZIv5oL3KbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E3sjulFMlT9wls8I+sZlJdqulZkBkbMmUYxLP3TYEB2XEHueVPkRXV2JrhiT8lW/DG/E0v27+jNbYPp5bWOKWeeen+Vq/OZCrb2aEXnAteM4/CwX+ysF22QFZtZdO2He7fF98tjE80CJcbYuwRt9PvJmWYhTyt4ep20PVbTeVwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vz2J0pZu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74371C4CEF4;
-	Tue,  2 Sep 2025 13:29:04 +0000 (UTC)
+	 MIME-Version; b=eZhpUvJHQBuaWihy4AawmevXNi6mfiQpNRqUmGeKe+VN220wShPjKI0HqGLECVgW/EahXHzAg4d0naMm1j+Ci6KoIw+bKMRiPQhmbFLdceMf96Dc5Be9SUN7FioX9UST4ydTJvzu0N15b64F3icrZo9yRb7GxgtzDoS3wbLYVK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ap1P8C1W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5810C4CEED;
+	Tue,  2 Sep 2025 13:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819744;
-	bh=YsX5QlkR0c1ywN9Wq9AZY2OFJN7vqtsHDrg2M/+P3fc=;
+	s=korg; t=1756819972;
+	bh=sAIlRXlrkj2DV3czWLqq996oFfRUxJgpzZIv5oL3KbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vz2J0pZuCZs9YRd6sXqA7BQZZBfzPdzgqkS/q9GvtaXbVCc7/aDsm72tCfqxoPQej
-	 NSpmoTLLxo5MwjewAYINgRS+lBggtxGo0lxLlw6PuDRE6qlQgEf0pC4tNvN4mu+fwK
-	 q9U0oGpiFscaMyDq7Khd9wzfpIg4Roxk+fHlyhOs=
+	b=ap1P8C1WTQT8YB00Zsk6azzh5NTFZ8cnyjlzG2AHQg56PX4TDsHKcLpZDbGfh5KLn
+	 vO/IMuBnPyraRAtQ6zVCEwcx2a53pbcjt6Zo++/lRT6RIiZKczx1kTe9McoTWthvSb
+	 Ny6PYKgtMNg7YTf60GhHOc5oGU417SYPjDRTN7lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Jones <jajones@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.16 125/142] drm/nouveau/disp: Always accept linear modifier
-Date: Tue,  2 Sep 2025 15:20:27 +0200
-Message-ID: <20250902131953.074302374@linuxfoundation.org>
+	Alexei Lazar <alazar@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 52/95] net/mlx5e: Update and set Xon/Xoff upon port speed set
+Date: Tue,  2 Sep 2025 15:20:28 +0200
+Message-ID: <20250902131941.601992105@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Jones <jajones@nvidia.com>
+From: Alexei Lazar <alazar@nvidia.com>
 
-commit e2fe0c54fb7401e6ecd3c10348519ab9e23bd639 upstream.
+[ Upstream commit d24341740fe48add8a227a753e68b6eedf4b385a ]
 
-On some chipsets, which block-linear modifiers are
-supported is format-specific. However, linear
-modifiers are always be supported. The prior
-modifier filtering logic was not accounting for
-the linear case.
+Xon/Xoff sizes are derived from calculations that include
+the port speed.
+These settings need to be updated and applied whenever the
+port speed is changed.
+The port speed is typically set after the physical link goes down
+and is negotiated as part of the link-up process between the two
+connected interfaces.
+Xon/Xoff parameters being updated at the point where the new
+negotiated speed is established.
 
-Cc: stable@vger.kernel.org
-Fixes: c586f30bf74c ("drm/nouveau/kms: Add format mod prop to base/ovly/nvdisp")
-Signed-off-by: James Jones <jajones@nvidia.com>
-Link: https://lore.kernel.org/r/20250811220017.1337-3-jajones@nvidia.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250825143435.598584-11-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/dispnv50/wndw.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/nouveau/dispnv50/wndw.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/wndw.c
-@@ -795,6 +795,10 @@ static bool nv50_plane_format_mod_suppor
- 	struct nouveau_drm *drm = nouveau_drm(plane->dev);
- 	uint8_t i;
- 
-+	/* All chipsets can display all formats in linear layout */
-+	if (modifier == DRM_FORMAT_MOD_LINEAR)
-+		return true;
-+
- 	if (drm->client.device.info.chipset < 0xc0) {
- 		const struct drm_format_info *info = drm_format_info(format);
- 		const uint8_t kind = (modifier >> 12) & 0xff;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index de2327ffb0f78..6176457b846bc 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -135,6 +135,8 @@ void mlx5e_update_carrier(struct mlx5e_priv *priv)
+ 	if (up) {
+ 		netdev_info(priv->netdev, "Link up\n");
+ 		netif_carrier_on(priv->netdev);
++		mlx5e_port_manual_buffer_config(priv, 0, priv->netdev->mtu,
++						NULL, NULL, NULL);
+ 	} else {
+ 		netdev_info(priv->netdev, "Link down\n");
+ 		netif_carrier_off(priv->netdev);
+-- 
+2.50.1
+
 
 
 
