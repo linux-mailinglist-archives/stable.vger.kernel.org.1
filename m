@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-177168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89E44B40392
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDECB4045E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E1C03A408D
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:34:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A9F31887412
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF34530E0D8;
-	Tue,  2 Sep 2025 13:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEF930DD12;
+	Tue,  2 Sep 2025 13:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YQTPryp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mmbW0aT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7794930C340;
-	Tue,  2 Sep 2025 13:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892FE3054E7;
+	Tue,  2 Sep 2025 13:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819797; cv=none; b=LJ53cBCftjeado/E61w1fJ5tvUMiJOllOekYhf1QS1GfkqF0zBcxPceLAvM9OkA9QJkkvasUj4phwRhBzMpCmH6F36iBJ1pQ+Dqsp+Nr/FTIRHDTxbnkgLjV4mhITrhXVjp/8O7adFzePk1Nq9Z3eD7HNW9oohH3ZvwEkN2L6OQ=
+	t=1756819995; cv=none; b=sknu3kozo7MmyNiYvihJIgjZoc0x9p5v1J4jz+jKg/JNpVIDKh4F34okyAO4+w2u583PpqqlXdM8frA0T7ZbawB9mZSjhS6DZBqOHRf7I+74MtN1bu4VFhXY5JGgUkSzb2QZ3m0wzB82JOYY/N6HbHKWou5KATMHoA5xZiYxP0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819797; c=relaxed/simple;
-	bh=qNEDoieNlvAMUaQSly7sJ4WOITzhyTWyzRgBCHmfqZo=;
+	s=arc-20240116; t=1756819995; c=relaxed/simple;
+	bh=cymjOLMXKfkMnEq8oBzdccR9CIR9zRFLaXiG2EQ1CXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDP+PzCNh/i7QQ31bB/3zmqiI95jzS42qe7J3VvB8d4cISjLe6+c2oQ2J/+9FzjotB8GN2AuX1G57of85SmoQC3h/9SQ23nAoswCNi7VRg3/FDpTYGSr4h0FNYVQDhf2cwjU5qBso1DldUpxtG9ApK68VdJH+hOl1bcolwgeXms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YQTPryp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB95C4CEED;
-	Tue,  2 Sep 2025 13:29:56 +0000 (UTC)
+	 MIME-Version; b=RIG24pA98xoajYCxI2haStmYeVCFKvuplQpYRoxIsBT1bv/+9QYHXOND5kmmoINcjGuAIbZctUSolUYNUGi+grqNgdF+Phyfs3k/YUl9TOeuPCCmgCyAIYcnKR+HXjUpHKjmn6FYljLyv1PtGH0Oy0AbkjrIB5TlOHh5yA9UrCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mmbW0aT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4CFC4CEF5;
+	Tue,  2 Sep 2025 13:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819797;
-	bh=qNEDoieNlvAMUaQSly7sJ4WOITzhyTWyzRgBCHmfqZo=;
+	s=korg; t=1756819995;
+	bh=cymjOLMXKfkMnEq8oBzdccR9CIR9zRFLaXiG2EQ1CXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0YQTPrypNWGE3m5ra1PBh4zgI0EhGMN8fl1dkkt1/kRtkcRTvu13ArtrQj6n1+uU1
-	 wTKOKtohOeOHE+beyhR23a5io0g8RI5X7tr4noAqOWH2+cPNEL9Vc/N45ORHXZOMn6
-	 rScKQlWX2erleCGRxKoQCo1CrQwzBr/9mUONMBJE=
+	b=1mmbW0aTsB4MU5TxHSKoa4rWzVVSXJvcm2nWsaNpnhqJzMPXu1Gf9zLlO23u4ADA1
+	 t6KnstGfcx8EOAIBDGyPTQbZR2W76bWPedrh2BrmfMRy9HAkRFCb24/fWIk8d1ogj2
+	 j8/BNCIOSnLyacwdayz/zgzMYnru6mFpM5o6wgPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Jesse Zhang <Jesse.Zhang@amd.com>
-Subject: [PATCH 6.16 131/142] drm/amdgpu: update firmware version checks for user queue support
-Date: Tue,  2 Sep 2025 15:20:33 +0200
-Message-ID: <20250902131953.302833627@linuxfoundation.org>
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 58/95] net: hv_netvsc: fix loss of early receive events from host during channel open.
+Date: Tue,  2 Sep 2025 15:20:34 +0200
+Message-ID: <20250902131941.829985041@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse.Zhang <Jesse.Zhang@amd.com>
+From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
 
-commit ee38ea0ae4ed13fe33e033dc98d11e76bc7167cd upstream.
+[ Upstream commit 9448ccd853368582efa9db05db344f8bb9dffe0f ]
 
-The minimum firmware versions required for user queue functionality
-have been increased to address an issue where the queue privilege
-state was lost during queue connect operations.
+The hv_netvsc driver currently enables NAPI after opening the primary and
+subchannels. This ordering creates a race: if the Hyper-V host places data
+in the host -> guest ring buffer and signals the channel before
+napi_enable() has been called, the channel callback will run but
+napi_schedule_prep() will return false. As a result, the NAPI poller never
+gets scheduled, the data in the ring buffer is not consumed, and the
+receive queue may remain permanently stuck until another interrupt happens
+to arrive.
 
-The problem occurred because the privilege state was being restored
-to its initial value at the beginning of the function, overwriting
-the state that was properly set during the queue connect case.
+Fix this by enabling NAPI and registering it with the RX/TX queues before
+vmbus channel is opened. This guarantees that any early host signal after
+open will correctly trigger NAPI scheduling and the ring buffer will be
+drained.
 
-This commit updates the minimum version requirements:
-- ME firmware from 2390 to 2420
-- PFP firmware from 2530 to 2580
-- MEC firmware from 2600 to 2650
-- MES firmware remains at 120
-
-These updated firmware versions contain the necessary fixes to
-properly maintain queue privilege state throughout connect operations.
-
-Fixes: 61ca97e9590c ("drm/amdgpu: Add fw minimum version check for usermode queue")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5f976c9939f0d5916d2b8ef3156a6d1799781df1)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 76bb5db5c749d ("netvsc: fix use after free on module removal")
+Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+Link: https://patch.msgid.link/20250825115627.GA32189@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/hyperv/netvsc.c       | 17 ++++++++---------
+ drivers/net/hyperv/rndis_filter.c | 23 ++++++++++++++++-------
+ 2 files changed, 24 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index 456ba758fa94..c85de8c8f6f5 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -1612,9 +1612,9 @@ static int gfx_v11_0_sw_init(struct amdgpu_ip_block *ip_block)
- 	case IP_VERSION(11, 0, 2):
- 	case IP_VERSION(11, 0, 3):
- 		if (!adev->gfx.disable_uq &&
--		    adev->gfx.me_fw_version  >= 2390 &&
--		    adev->gfx.pfp_fw_version >= 2530 &&
--		    adev->gfx.mec_fw_version >= 2600 &&
-+		    adev->gfx.me_fw_version  >= 2420 &&
-+		    adev->gfx.pfp_fw_version >= 2580 &&
-+		    adev->gfx.mec_fw_version >= 2650 &&
- 		    adev->mes.fw_version[0] >= 120) {
- 			adev->userq_funcs[AMDGPU_HW_IP_GFX] = &userq_mes_funcs;
- 			adev->userq_funcs[AMDGPU_HW_IP_COMPUTE] = &userq_mes_funcs;
+diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
+index 87ac2a5f18091..5f14799b68c53 100644
+--- a/drivers/net/hyperv/netvsc.c
++++ b/drivers/net/hyperv/netvsc.c
+@@ -1811,6 +1811,11 @@ struct netvsc_device *netvsc_device_add(struct hv_device *device,
+ 
+ 	/* Enable NAPI handler before init callbacks */
+ 	netif_napi_add(ndev, &net_device->chan_table[0].napi, netvsc_poll);
++	napi_enable(&net_device->chan_table[0].napi);
++	netif_queue_set_napi(ndev, 0, NETDEV_QUEUE_TYPE_RX,
++			     &net_device->chan_table[0].napi);
++	netif_queue_set_napi(ndev, 0, NETDEV_QUEUE_TYPE_TX,
++			     &net_device->chan_table[0].napi);
+ 
+ 	/* Open the channel */
+ 	device->channel->next_request_id_callback = vmbus_next_request_id;
+@@ -1830,12 +1835,6 @@ struct netvsc_device *netvsc_device_add(struct hv_device *device,
+ 	/* Channel is opened */
+ 	netdev_dbg(ndev, "hv_netvsc channel opened successfully\n");
+ 
+-	napi_enable(&net_device->chan_table[0].napi);
+-	netif_queue_set_napi(ndev, 0, NETDEV_QUEUE_TYPE_RX,
+-			     &net_device->chan_table[0].napi);
+-	netif_queue_set_napi(ndev, 0, NETDEV_QUEUE_TYPE_TX,
+-			     &net_device->chan_table[0].napi);
+-
+ 	/* Connect with the NetVsp */
+ 	ret = netvsc_connect_vsp(device, net_device, device_info);
+ 	if (ret != 0) {
+@@ -1853,14 +1852,14 @@ struct netvsc_device *netvsc_device_add(struct hv_device *device,
+ 
+ close:
+ 	RCU_INIT_POINTER(net_device_ctx->nvdev, NULL);
+-	netif_queue_set_napi(ndev, 0, NETDEV_QUEUE_TYPE_TX, NULL);
+-	netif_queue_set_napi(ndev, 0, NETDEV_QUEUE_TYPE_RX, NULL);
+-	napi_disable(&net_device->chan_table[0].napi);
+ 
+ 	/* Now, we can close the channel safely */
+ 	vmbus_close(device->channel);
+ 
+ cleanup:
++	netif_queue_set_napi(ndev, 0, NETDEV_QUEUE_TYPE_TX, NULL);
++	netif_queue_set_napi(ndev, 0, NETDEV_QUEUE_TYPE_RX, NULL);
++	napi_disable(&net_device->chan_table[0].napi);
+ 	netif_napi_del(&net_device->chan_table[0].napi);
+ 
+ cleanup2:
+diff --git a/drivers/net/hyperv/rndis_filter.c b/drivers/net/hyperv/rndis_filter.c
+index 9b8769a8b77a1..9a92552ee35c2 100644
+--- a/drivers/net/hyperv/rndis_filter.c
++++ b/drivers/net/hyperv/rndis_filter.c
+@@ -1252,17 +1252,26 @@ static void netvsc_sc_open(struct vmbus_channel *new_sc)
+ 	new_sc->rqstor_size = netvsc_rqstor_size(netvsc_ring_bytes);
+ 	new_sc->max_pkt_size = NETVSC_MAX_PKT_SIZE;
+ 
++	/* Enable napi before opening the vmbus channel to avoid races
++	 * as the host placing data on the host->guest ring may be left
++	 * out if napi was not enabled.
++	 */
++	napi_enable(&nvchan->napi);
++	netif_queue_set_napi(ndev, chn_index, NETDEV_QUEUE_TYPE_RX,
++			     &nvchan->napi);
++	netif_queue_set_napi(ndev, chn_index, NETDEV_QUEUE_TYPE_TX,
++			     &nvchan->napi);
++
+ 	ret = vmbus_open(new_sc, netvsc_ring_bytes,
+ 			 netvsc_ring_bytes, NULL, 0,
+ 			 netvsc_channel_cb, nvchan);
+-	if (ret == 0) {
+-		napi_enable(&nvchan->napi);
+-		netif_queue_set_napi(ndev, chn_index, NETDEV_QUEUE_TYPE_RX,
+-				     &nvchan->napi);
+-		netif_queue_set_napi(ndev, chn_index, NETDEV_QUEUE_TYPE_TX,
+-				     &nvchan->napi);
+-	} else {
++	if (ret != 0) {
+ 		netdev_notice(ndev, "sub channel open failed: %d\n", ret);
++		netif_queue_set_napi(ndev, chn_index, NETDEV_QUEUE_TYPE_TX,
++				     NULL);
++		netif_queue_set_napi(ndev, chn_index, NETDEV_QUEUE_TYPE_RX,
++				     NULL);
++		napi_disable(&nvchan->napi);
+ 	}
+ 
+ 	if (atomic_inc_return(&nvscdev->open_chn) == nvscdev->num_chn)
 -- 
-2.51.0
+2.50.1
 
 
 
