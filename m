@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-177231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A80B40404
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D6FB4040A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3106D7BC41C
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:36:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A2767BAE03
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8BB3128CD;
-	Tue,  2 Sep 2025 13:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662CB31CA78;
+	Tue,  2 Sep 2025 13:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyD7fhxg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uizzqnrx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A013128CB;
-	Tue,  2 Sep 2025 13:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2378330E859;
+	Tue,  2 Sep 2025 13:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819999; cv=none; b=W78zRid6RqtyyGZwaqqU/aQVByui8tDAto9fZvY5XHVIBdnieYuPzXk2EluNel7sm980IPO7ugk/bqnlDUtgOkKxm8OsXrDYEOMUHEU7EtFBn2QNv7ZJDo/AFz5yIqe0CeF8U/CZBygyLZUX7r28ktzvDCPmmaZhwmUeJ0I5Nes=
+	t=1756819804; cv=none; b=PbzYlSA9DTHKU4XYPevni+iuBztg0i2aQy24ToW48E+C92izWOOocPAKUKWxLzyl6u10x9c82jx480zOdLdGsDnTdftPYDa21yJKuz0t4RQEar5MccC/2pNtrNCZmH/K7iKkLS5TLzvOi1B/mwuX7sZpf0Bt2XbfzkYJgZKiUjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819999; c=relaxed/simple;
-	bh=b+xiNj0wWQ3xays4FWZ7dD6H4RVEGOvzVPLzcwkOi78=;
+	s=arc-20240116; t=1756819804; c=relaxed/simple;
+	bh=/vVoEXvp35kRkqmqveE9qkZj5GgxDTFwnEaCRMzF9pI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kvfEMjX9GVJimTRFPGALa4MZtqSBQG7ElJp1mXAVQwdKMAHdi72mBD0BaelJnSop5NPlTvBtod9TADnb9SlE+8BbZn10fE+SdbKTOFsEL9QFTwgDpphDqyzhCFFuwIQghFpyxWD7DKF1/xNZolED0WYQo2KZOtIie0zYvafWCEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyD7fhxg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F915C4CEED;
-	Tue,  2 Sep 2025 13:33:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D1M84zaI8p6TJX+5O+cSh8SzRlrL2o/0ituZduFBMBVtvSeN6ycntAb5ZYfq57HFyC660d9SV4IegCSTcPejo8jAffOsrCT22j55twA9U8c5MKSWr4Ed+EUX/jBjYs2dupGG0MmQjQt+4/NLXAqvcKj0Q/3ZtrGG/KOK08SXbWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uizzqnrx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C8DC4CEED;
+	Tue,  2 Sep 2025 13:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819998;
-	bh=b+xiNj0wWQ3xays4FWZ7dD6H4RVEGOvzVPLzcwkOi78=;
+	s=korg; t=1756819804;
+	bh=/vVoEXvp35kRkqmqveE9qkZj5GgxDTFwnEaCRMzF9pI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyD7fhxgABZVfmu1UWSIk3mIwltx2HWBIwOOSUt9Bcw4AFPvyBi2khvNEY75xjAQS
-	 XEQ6IoYRunYJcx+GihDvAE/WUct+rUBiMfFbQseRsY8jrNVdM1KD1YRJUtjRXBwEx6
-	 xB8WyKctJKRFPcFyWZi7lxL1lL7pBx8803+Dlg10=
+	b=uizzqnrxNR6bAYH3uQfHg+uUDGU7K1+f8017BHCxW/lRqC1G2hftL6Y/6pRp2KzXh
+	 5VfGOtsmwsDOXIg+pPzYQirB/etPgzkzAWlgX0vq4Wp3DpJfmBcQUVAEb8QT7NSjdJ
+	 /CzyR3B+QZqfLpKMNaGGW7pYNi7NUA9EcxrGGjj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takamitsu Iwai <takamitz@amazon.co.jp>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 59/95] net: rose: split remove and free operations in rose_remove_neigh()
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 133/142] drm/amdgpu/gfx12: set MQD as appriopriate for queue types
 Date: Tue,  2 Sep 2025 15:20:35 +0200
-Message-ID: <20250902131941.870174209@linuxfoundation.org>
+Message-ID: <20250902131953.378142573@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,122 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takamitsu Iwai <takamitz@amazon.co.jp>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit dcb34659028f856c423a29ef9b4e2571d203444d ]
+commit 29f155c5e82fe35ff85b1f13612cb8c2dbe1dca3 upstream.
 
-The current rose_remove_neigh() performs two distinct operations:
-1. Removes rose_neigh from rose_neigh_list
-2. Frees the rose_neigh structure
+Set the MQD as appropriate for the kernel vs user queues.
 
-Split these operations into separate functions to improve maintainability
-and prepare for upcoming refcount_t conversion. The timer cleanup remains
-in rose_remove_neigh() because free operations can be called from timer
-itself.
-
-This patch introduce rose_neigh_put() to handle the freeing of rose_neigh
-structures and modify rose_remove_neigh() to handle removal only.
-
-Signed-off-by: Takamitsu Iwai <takamitz@amazon.co.jp>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250823085857.47674-2-takamitz@amazon.co.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: d860d1faa6b2 ("net: rose: convert 'use' field to refcount_t")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7b9110f2897957efd9715b52fc01986509729db3)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/rose.h    |  8 ++++++++
- net/rose/rose_route.c | 15 ++++++---------
- 2 files changed, 14 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/rose.h b/include/net/rose.h
-index 23267b4efcfa3..174b4f605d849 100644
---- a/include/net/rose.h
-+++ b/include/net/rose.h
-@@ -151,6 +151,14 @@ struct rose_sock {
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
+@@ -3022,6 +3022,8 @@ static int gfx_v12_0_gfx_mqd_init(struct
+ #endif
+ 	if (prop->tmz_queue)
+ 		tmp = REG_SET_FIELD(tmp, CP_GFX_HQD_CNTL, TMZ_MATCH, 1);
++	if (!prop->kernel_queue)
++		tmp = REG_SET_FIELD(tmp, CP_GFX_HQD_CNTL, RB_NON_PRIV, 1);
+ 	mqd->cp_gfx_hqd_cntl = tmp;
  
- #define rose_sk(sk) ((struct rose_sock *)(sk))
- 
-+static inline void rose_neigh_put(struct rose_neigh *rose_neigh)
-+{
-+	if (rose_neigh->ax25)
-+		ax25_cb_put(rose_neigh->ax25);
-+	kfree(rose_neigh->digipeat);
-+	kfree(rose_neigh);
-+}
-+
- /* af_rose.c */
- extern ax25_address rose_callsign;
- extern int  sysctl_rose_restart_request_timeout;
-diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
-index a7054546f52df..b406b1e0fb1e7 100644
---- a/net/rose/rose_route.c
-+++ b/net/rose/rose_route.c
-@@ -234,20 +234,12 @@ static void rose_remove_neigh(struct rose_neigh *rose_neigh)
- 
- 	if ((s = rose_neigh_list) == rose_neigh) {
- 		rose_neigh_list = rose_neigh->next;
--		if (rose_neigh->ax25)
--			ax25_cb_put(rose_neigh->ax25);
--		kfree(rose_neigh->digipeat);
--		kfree(rose_neigh);
- 		return;
- 	}
- 
- 	while (s != NULL && s->next != NULL) {
- 		if (s->next == rose_neigh) {
- 			s->next = rose_neigh->next;
--			if (rose_neigh->ax25)
--				ax25_cb_put(rose_neigh->ax25);
--			kfree(rose_neigh->digipeat);
--			kfree(rose_neigh);
- 			return;
- 		}
- 
-@@ -331,8 +323,10 @@ static int rose_del_node(struct rose_route_struct *rose_route,
- 		if (rose_node->neighbour[i] == rose_neigh) {
- 			rose_neigh->count--;
- 
--			if (rose_neigh->count == 0 && rose_neigh->use == 0)
-+			if (rose_neigh->count == 0 && rose_neigh->use == 0) {
- 				rose_remove_neigh(rose_neigh);
-+				rose_neigh_put(rose_neigh);
-+			}
- 
- 			rose_node->count--;
- 
-@@ -513,6 +507,7 @@ void rose_rt_device_down(struct net_device *dev)
- 		}
- 
- 		rose_remove_neigh(s);
-+		rose_neigh_put(s);
- 	}
- 	spin_unlock_bh(&rose_neigh_list_lock);
- 	spin_unlock_bh(&rose_node_list_lock);
-@@ -569,6 +564,7 @@ static int rose_clear_routes(void)
- 		if (s->use == 0 && !s->loopback) {
- 			s->count = 0;
- 			rose_remove_neigh(s);
-+			rose_neigh_put(s);
- 		}
- 	}
- 
-@@ -1301,6 +1297,7 @@ void __exit rose_rt_free(void)
- 		rose_neigh = rose_neigh->next;
- 
- 		rose_remove_neigh(s);
-+		rose_neigh_put(s);
- 	}
- 
- 	while (rose_node != NULL) {
--- 
-2.50.1
-
+ 	/* set up cp_doorbell_control */
+@@ -3171,8 +3173,10 @@ static int gfx_v12_0_compute_mqd_init(st
+ 			    (order_base_2(AMDGPU_GPU_PAGE_SIZE / 4) - 1));
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, UNORD_DISPATCH, 1);
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, TUNNEL_DISPATCH, 0);
+-	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, PRIV_STATE, 1);
+-	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, KMD_QUEUE, 1);
++	if (prop->kernel_queue) {
++		tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, PRIV_STATE, 1);
++		tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, KMD_QUEUE, 1);
++	}
+ 	if (prop->tmz_queue)
+ 		tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, TMZ, 1);
+ 	mqd->cp_hqd_pq_control = tmp;
 
 
 
