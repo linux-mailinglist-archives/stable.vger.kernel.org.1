@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED8CB40430
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73403B4037B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:33:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29DDC1B27451
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:37:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34F153AE812
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4240C3054EC;
-	Tue,  2 Sep 2025 13:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94608272E7C;
+	Tue,  2 Sep 2025 13:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGYF2ON2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FCu1B8X0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EC4305062;
-	Tue,  2 Sep 2025 13:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0F930DD34;
+	Tue,  2 Sep 2025 13:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819887; cv=none; b=C93sjV5UJ/VlH5Didrt0GUeaDvZT9wxX++VIWWXtlS/p/BouXGc7bLCHVfz8lugi+5Lf7MO6N49vMDfYkMcN78wnNE36ciqhjYxWXaB4HCAKNmh5UjMpcWol9qMxHPlqgXcLdPWvXLDQSDXa8b21KR+YSGv36gy5gikoOqCFpZk=
+	t=1756819765; cv=none; b=Ax6Uf+KyXjQHVPmW1YVAEZH8i5FEM6tn3LcFnQv9zWOjkT3gAnQE1IpPybMH0H5jCOE0fmkMxp57tUF086o6BmbB9J4MUlUClnQ4D13vlziADoIyAXeFoblIJmHLfdlYZj5aAOYr+XsKvFRoHI76m8TqwJfWEzCwjri71whI2dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819887; c=relaxed/simple;
-	bh=reN5bVgGfhRWgX9VDoIsZ+p2z6goOl1FCsqlLi3qmQE=;
+	s=arc-20240116; t=1756819765; c=relaxed/simple;
+	bh=psjcQ4UQYahFVEgCFiTMFuA2BQ66D0iGmw2IFXsuuds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tWMv9yqg47ibRee1vpiFdEQPfMqhHxOyoNxfrNtJYRUdYSRWw86uH7DLOn62F4aSK+HFqT8RmYXDsgOYi3Uyw6mW4UzRUQcJiOeynVhMOXYXUGzolzvDq1LgTNWwMNFBQD4s7i/41pDzcWgeTcRWq2qkZNsDuiZ857R+wCZ0VCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGYF2ON2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65591C4CEED;
-	Tue,  2 Sep 2025 13:31:26 +0000 (UTC)
+	 MIME-Version; b=J/slL0ExGNplpt5AQrniLxJujBjkcweoR8LtqSqn2WC8uPcV7uhRFSAMJj0CRCP2CvmNXxen6HnDXaSzjxu1p0HtgTJLvJ+0fZDNLaw6DVnDMNNmw4MU12HjaVTAadAGjv9e1BUGx9SlEx4KRiczq91I5kEXrOCWTMAzkpFk0KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FCu1B8X0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFBCC4CEED;
+	Tue,  2 Sep 2025 13:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819886;
-	bh=reN5bVgGfhRWgX9VDoIsZ+p2z6goOl1FCsqlLi3qmQE=;
+	s=korg; t=1756819765;
+	bh=psjcQ4UQYahFVEgCFiTMFuA2BQ66D0iGmw2IFXsuuds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QGYF2ON2ROSzJsMH42CaN5g1S+WOz7Wf1Yj/ZIS6jdzhXXGV7+cpVUEN2u36Aflhj
-	 D88QGLz73B5Km+0hkFC/2hQFxjd+2GpfbYd3u7kQChnvDTKyR6+z3gMrvRGRNW4gpT
-	 rVadh6jieazfTpU2AkGu0E1EjFYUjL/4XTMBH0UE=
+	b=FCu1B8X0bL8SpIG0aWzjqJloCE6LAYoHcPslQU6vTc4f8lPOGw2nWnHowDv2i42cc
+	 YrqO5TExQD+v3XXB9IcWNywyg7OMaryumbaG/oeGaR4Fn73Xl0KIdFGmNcPXzWix9D
+	 eeR2mEQEaqxr+RjeBptEol9bu5XZRCjsbozh4nEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E5=8D=A2=E5=9B=BD=E5=AE=8F?= <luguohong@xiaomi.com>,
-	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Li Nan <linan122@huawei.com>,
+	Wu Guanghao <wuguanghao3@huawei.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 26/95] HID: input: rename hidinput_set_battery_charge_status()
+Subject: [PATCH 6.16 100/142] efivarfs: Fix slab-out-of-bounds in efivarfs_d_compare
 Date: Tue,  2 Sep 2025 15:20:02 +0200
-Message-ID: <20250902131940.615571866@linuxfoundation.org>
+Message-ID: <20250902131952.109101405@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,149 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Expósito <jose.exposito89@gmail.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit a82231b2a8712d0218fc286a9b0da328d419a3f4 ]
+[ Upstream commit a6358f8cf64850f3f27857b8ed8c1b08cfc4685c ]
 
-In preparation for a patch fixing a bug affecting
-hidinput_set_battery_charge_status(), rename the function to
-hidinput_update_battery_charge_status() and move it up so it can be used
-by hidinput_update_battery().
+Observed on kernel 6.6 (present on master as well):
 
-Refactor, no functional changes.
+  BUG: KASAN: slab-out-of-bounds in memcmp+0x98/0xd0
+  Call trace:
+   kasan_check_range+0xe8/0x190
+   __asan_loadN+0x1c/0x28
+   memcmp+0x98/0xd0
+   efivarfs_d_compare+0x68/0xd8
+   __d_lookup_rcu_op_compare+0x178/0x218
+   __d_lookup_rcu+0x1f8/0x228
+   d_alloc_parallel+0x150/0x648
+   lookup_open.isra.0+0x5f0/0x8d0
+   open_last_lookups+0x264/0x828
+   path_openat+0x130/0x3f8
+   do_filp_open+0x114/0x248
+   do_sys_openat2+0x340/0x3c0
+   __arm64_sys_openat+0x120/0x1a0
 
-Tested-by: 卢国宏 <luguohong@xiaomi.com>
-Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Stable-dep-of: e94536e1d181 ("HID: input: report battery status changes immediately")
+If dentry->d_name.len < EFI_VARIABLE_GUID_LEN , 'guid' can become
+negative, leadings to oob. The issue can be triggered by parallel
+lookups using invalid filename:
+
+  T1			T2
+  lookup_open
+   ->lookup
+    simple_lookup
+     d_add
+     // invalid dentry is added to hash list
+
+			lookup_open
+			 d_alloc_parallel
+			  __d_lookup_rcu
+			   __d_lookup_rcu_op_compare
+			    hlist_bl_for_each_entry_rcu
+			    // invalid dentry can be retrieved
+			     ->d_compare
+			      efivarfs_d_compare
+			      // oob
+
+Fix it by checking 'guid' before cmp.
+
+Fixes: da27a24383b2 ("efivarfs: guid part of filenames are case-insensitive")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Signed-off-by: Wu Guanghao <wuguanghao3@huawei.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-input-test.c | 10 +++++-----
- drivers/hid/hid-input.c      | 38 ++++++++++++++++++------------------
- 2 files changed, 24 insertions(+), 24 deletions(-)
+ fs/efivarfs/super.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hid/hid-input-test.c b/drivers/hid/hid-input-test.c
-index 77c2d45ac62a7..6f5c71660d823 100644
---- a/drivers/hid/hid-input-test.c
-+++ b/drivers/hid/hid-input-test.c
-@@ -7,7 +7,7 @@
- 
- #include <kunit/test.h>
- 
--static void hid_test_input_set_battery_charge_status(struct kunit *test)
-+static void hid_test_input_update_battery_charge_status(struct kunit *test)
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index 284d6dbba2ece..5c0d45cccc10e 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -152,6 +152,10 @@ static int efivarfs_d_compare(const struct dentry *dentry,
  {
- 	struct hid_device *dev;
- 	bool handled;
-@@ -15,15 +15,15 @@ static void hid_test_input_set_battery_charge_status(struct kunit *test)
- 	dev = kunit_kzalloc(test, sizeof(*dev), GFP_KERNEL);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
+ 	int guid = len - EFI_VARIABLE_GUID_LEN;
  
--	handled = hidinput_set_battery_charge_status(dev, HID_DG_HEIGHT, 0);
-+	handled = hidinput_update_battery_charge_status(dev, HID_DG_HEIGHT, 0);
- 	KUNIT_EXPECT_FALSE(test, handled);
- 	KUNIT_EXPECT_EQ(test, dev->battery_charge_status, POWER_SUPPLY_STATUS_UNKNOWN);
- 
--	handled = hidinput_set_battery_charge_status(dev, HID_BAT_CHARGING, 0);
-+	handled = hidinput_update_battery_charge_status(dev, HID_BAT_CHARGING, 0);
- 	KUNIT_EXPECT_TRUE(test, handled);
- 	KUNIT_EXPECT_EQ(test, dev->battery_charge_status, POWER_SUPPLY_STATUS_DISCHARGING);
- 
--	handled = hidinput_set_battery_charge_status(dev, HID_BAT_CHARGING, 1);
-+	handled = hidinput_update_battery_charge_status(dev, HID_BAT_CHARGING, 1);
- 	KUNIT_EXPECT_TRUE(test, handled);
- 	KUNIT_EXPECT_EQ(test, dev->battery_charge_status, POWER_SUPPLY_STATUS_CHARGING);
- }
-@@ -63,7 +63,7 @@ static void hid_test_input_get_battery_property(struct kunit *test)
- }
- 
- static struct kunit_case hid_input_tests[] = {
--	KUNIT_CASE(hid_test_input_set_battery_charge_status),
-+	KUNIT_CASE(hid_test_input_update_battery_charge_status),
- 	KUNIT_CASE(hid_test_input_get_battery_property),
- 	{ }
- };
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index 9d80635a91ebd..b372b74f3e24b 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -595,6 +595,20 @@ static void hidinput_cleanup_battery(struct hid_device *dev)
- 	dev->battery = NULL;
- }
- 
-+static bool hidinput_update_battery_charge_status(struct hid_device *dev,
-+						  unsigned int usage, int value)
-+{
-+	switch (usage) {
-+	case HID_BAT_CHARGING:
-+		dev->battery_charge_status = value ?
-+					     POWER_SUPPLY_STATUS_CHARGING :
-+					     POWER_SUPPLY_STATUS_DISCHARGING;
-+		return true;
-+	}
++	/* Parallel lookups may produce a temporary invalid filename */
++	if (guid <= 0)
++		return 1;
 +
-+	return false;
-+}
-+
- static void hidinput_update_battery(struct hid_device *dev, int value)
- {
- 	int capacity;
-@@ -617,20 +631,6 @@ static void hidinput_update_battery(struct hid_device *dev, int value)
- 		power_supply_changed(dev->battery);
- 	}
- }
--
--static bool hidinput_set_battery_charge_status(struct hid_device *dev,
--					       unsigned int usage, int value)
--{
--	switch (usage) {
--	case HID_BAT_CHARGING:
--		dev->battery_charge_status = value ?
--					     POWER_SUPPLY_STATUS_CHARGING :
--					     POWER_SUPPLY_STATUS_DISCHARGING;
--		return true;
--	}
--
--	return false;
--}
- #else  /* !CONFIG_HID_BATTERY_STRENGTH */
- static int hidinput_setup_battery(struct hid_device *dev, unsigned report_type,
- 				  struct hid_field *field, bool is_percentage)
-@@ -642,14 +642,14 @@ static void hidinput_cleanup_battery(struct hid_device *dev)
- {
- }
+ 	if (name->len != len)
+ 		return 1;
  
--static void hidinput_update_battery(struct hid_device *dev, int value)
-+static bool hidinput_update_battery_charge_status(struct hid_device *dev,
-+						  unsigned int usage, int value)
- {
-+	return false;
- }
- 
--static bool hidinput_set_battery_charge_status(struct hid_device *dev,
--					       unsigned int usage, int value)
-+static void hidinput_update_battery(struct hid_device *dev, int value)
- {
--	return false;
- }
- #endif	/* CONFIG_HID_BATTERY_STRENGTH */
- 
-@@ -1515,7 +1515,7 @@ void hidinput_hid_event(struct hid_device *hid, struct hid_field *field, struct
- 		return;
- 
- 	if (usage->type == EV_PWR) {
--		bool handled = hidinput_set_battery_charge_status(hid, usage->hid, value);
-+		bool handled = hidinput_update_battery_charge_status(hid, usage->hid, value);
- 
- 		if (!handled)
- 			hidinput_update_battery(hid, value);
 -- 
 2.50.1
 
