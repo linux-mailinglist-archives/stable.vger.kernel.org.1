@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-177150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B3AB40390
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8C71B403EC
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 532177BA24B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:31:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E868D4E5E08
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6483128B1;
-	Tue,  2 Sep 2025 13:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F124F31280E;
+	Tue,  2 Sep 2025 13:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtACvYK9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvbnCi9D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD8330CD95;
-	Tue,  2 Sep 2025 13:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF08D3126CA;
+	Tue,  2 Sep 2025 13:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819741; cv=none; b=J5p3aFNVgCxRSQ7RbXFDWlYJAOGy4KZUU79kIj/qwIxgeNeS464/TNagNJfCZl4XD/2xs0uE7jmRUzUDs8SCzTt8cSUUrrQnEbIB17ItjqDRKWfhWNzVYCvNusv2z6tPZE290MZ5ioD9K8YGHb5Wo/lqX0HMgkZ3C6oh1N+tMCY=
+	t=1756819966; cv=none; b=mVYldnTh60bD/YjmpG4e9CDADl7G2AHhijJyV9N5SdYpKcqHhOBkYsybJjkw2DF4PKhEwcGQPxdO2HViEq6oj6xWBDXq7EppCPQ6ZDrOpSIwEhCLmHeL2PqaJWZ+KtsiYyfIS5FNy6NzwtXz3ZAlsmcJmkBg723L+krDtDBNeOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819741; c=relaxed/simple;
-	bh=IY8+ymO9pVNM2Dx0fPoxFluZB5Ql+tUYq8WAh+pk3Ts=;
+	s=arc-20240116; t=1756819966; c=relaxed/simple;
+	bh=EMLEKBFtIXka4C32wxPlZLa0CUWiSivBWLoNkgiPwUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EaGdcQlcSSLLKTjF1h2NG0VfeYSM1gReXrT+iMP0r7xtIMHqmfZhSYgV6KDbjbWNXL51qgUu4YCPaGRUZFEdZdDpjQjnb6g5ons92NtrTw+Iu/L18L/HL02deoNqSJYJ6wTgKQ/dFo9Boby3MOlVTpjdhLbSygFXOMRw8kRggdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtACvYK9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40108C4CEED;
-	Tue,  2 Sep 2025 13:29:01 +0000 (UTC)
+	 MIME-Version; b=beMVICV+0rn3n93OZ0fURpM478+8jNjsH14PVsqBJWTbvvFqX6dkxjL6MY93Na2kpxD+Yw/q2j2dHqmg0eFaMFnAIoXo8SXyvP7D0YeYNJNwAUSfrXPcZIzIpaJAsvUHBZRDdlhc5hU6GOpyfN6W2tVhz36+IyCVith2xq9PmYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvbnCi9D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D488BC4CEED;
+	Tue,  2 Sep 2025 13:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819741;
-	bh=IY8+ymO9pVNM2Dx0fPoxFluZB5Ql+tUYq8WAh+pk3Ts=;
+	s=korg; t=1756819966;
+	bh=EMLEKBFtIXka4C32wxPlZLa0CUWiSivBWLoNkgiPwUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JtACvYK9qcQL+2CmaccHCeeWtH/UVH4g3VieQk4kOW37FzQ5pVQd4ltewqJH/Qyx7
-	 k/FFb9qMeiVgnfVw2fmbg5l334iAWVCtO/E6z4SkyJAptvkRxqpkiFBWlpgosX4Y9O
-	 yvhiZNMv491hxRyQYK9NjtjtNp5KFWarHbtsX8TY=
+	b=nvbnCi9D52CNakquhQbqyLy/CrFs87eYdk3dr26kuimMOuG9Uqj9NzIE4v8JsX01a
+	 8Q0GgIe+TMR2ZjFRyvy1TYtbIkOuJ4t7DTX2dM1WHEyjZ/N++qeTqLiyeW7S769Qn/
+	 /VuGNMjLoauCqBt7mrpdKSIyCt45ceKawNf4YdNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Brian Welty <brian.welty@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH 6.16 124/142] drm/xe/vm: Clear the scratch_pt pointer on error
+	Moshe Shemesh <moshe@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 50/95] net/mlx5: Nack sync reset when SFs are present
 Date: Tue,  2 Sep 2025 15:20:26 +0200
-Message-ID: <20250902131953.034900163@linuxfoundation.org>
+Message-ID: <20250902131941.526964015@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-commit 2b55ddf36229e0278c956215784ab1feeff510aa upstream.
+[ Upstream commit 26e42ec7712d392d561964514b1f253b1a96f42d ]
 
-Avoid triggering a dereference of an error pointer on cleanup in
-xe_vm_free_scratch() by clearing any scratch_pt error pointer.
+If PF (Physical Function) has SFs (Sub-Functions), since the SFs are not
+taking part in the synchronization flow, sync reset can lead to fatal
+error on the SFs, as the function will be closed unexpectedly from the
+SF point of view.
 
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Fixes: 06951c2ee72d ("drm/xe: Use NULL PTEs as scratch PTEs")
-Cc: Brian Welty <brian.welty@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20250821143045.106005-4-thomas.hellstrom@linux.intel.com
-(cherry picked from commit 358ee50ab565f3c8ea32480e9d03127a81ba32f8)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a check to prevent sync reset when there are SFs on a PF device
+which is not ECPF, as ECPF is teardowned gracefully before reset.
+
+Fixes: 92501fa6e421 ("net/mlx5: Ack on sync_reset_request only if PF can do reset_now")
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250825143435.598584-8-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_vm.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c   |  6 ++++++
+ drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c | 10 ++++++++++
+ drivers/net/ethernet/mellanox/mlx5/core/sf/sf.h      |  6 ++++++
+ 3 files changed, 22 insertions(+)
 
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -1582,8 +1582,12 @@ static int xe_vm_create_scratch(struct x
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+index 0829912157c97..516df7f1997eb 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+@@ -6,6 +6,7 @@
+ #include "fw_reset.h"
+ #include "diag/fw_tracer.h"
+ #include "lib/tout.h"
++#include "sf/sf.h"
  
- 	for (i = MAX_HUGEPTE_LEVEL; i < vm->pt_root[id]->level; i++) {
- 		vm->scratch_pt[id][i] = xe_pt_create(vm, tile, i);
--		if (IS_ERR(vm->scratch_pt[id][i]))
--			return PTR_ERR(vm->scratch_pt[id][i]);
-+		if (IS_ERR(vm->scratch_pt[id][i])) {
-+			int err = PTR_ERR(vm->scratch_pt[id][i]);
-+
-+			vm->scratch_pt[id][i] = NULL;
-+			return err;
-+		}
- 
- 		xe_pt_populate_empty(tile, vm, vm->scratch_pt[id][i]);
+ enum {
+ 	MLX5_FW_RESET_FLAGS_RESET_REQUESTED,
+@@ -423,6 +424,11 @@ static bool mlx5_is_reset_now_capable(struct mlx5_core_dev *dev,
+ 		return false;
  	}
+ 
++	if (!mlx5_core_is_ecpf(dev) && !mlx5_sf_table_empty(dev)) {
++		mlx5_core_warn(dev, "SFs should be removed before reset\n");
++		return false;
++	}
++
+ #if IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE)
+ 	if (reset_method != MLX5_MFRL_REG_PCI_RESET_METHOD_HOT_RESET) {
+ 		err = mlx5_check_hotplug_interrupt(dev);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
+index b96909fbeb12d..bdac3db1bd61d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
+@@ -518,3 +518,13 @@ void mlx5_sf_table_cleanup(struct mlx5_core_dev *dev)
+ 	WARN_ON(!xa_empty(&table->function_ids));
+ 	kfree(table);
+ }
++
++bool mlx5_sf_table_empty(const struct mlx5_core_dev *dev)
++{
++	struct mlx5_sf_table *table = dev->priv.sf_table;
++
++	if (!table)
++		return true;
++
++	return xa_empty(&table->function_ids);
++}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/sf.h b/drivers/net/ethernet/mellanox/mlx5/core/sf/sf.h
+index 860f9ddb7107b..89559a37997ad 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sf/sf.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/sf.h
+@@ -17,6 +17,7 @@ void mlx5_sf_hw_table_destroy(struct mlx5_core_dev *dev);
+ 
+ int mlx5_sf_table_init(struct mlx5_core_dev *dev);
+ void mlx5_sf_table_cleanup(struct mlx5_core_dev *dev);
++bool mlx5_sf_table_empty(const struct mlx5_core_dev *dev);
+ 
+ int mlx5_devlink_sf_port_new(struct devlink *devlink,
+ 			     const struct devlink_port_new_attrs *add_attr,
+@@ -61,6 +62,11 @@ static inline void mlx5_sf_table_cleanup(struct mlx5_core_dev *dev)
+ {
+ }
+ 
++static inline bool mlx5_sf_table_empty(const struct mlx5_core_dev *dev)
++{
++	return true;
++}
++
+ #endif
+ 
+ #endif
+-- 
+2.50.1
+
 
 
 
