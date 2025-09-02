@@ -1,259 +1,132 @@
-Return-Path: <stable+bounces-176939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3CCCB3F6BA
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 09:30:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3722FB3F6DA
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 09:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 859CA16F01A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 07:30:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBEC148389A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 07:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B315C2E7167;
-	Tue,  2 Sep 2025 07:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08E82E6CD4;
+	Tue,  2 Sep 2025 07:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GcwEE84K"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OFKWLtTT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52722E6CDD
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 07:30:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FC5BA4A;
+	Tue,  2 Sep 2025 07:44:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756798206; cv=none; b=LaCIH7jPHBAIBKFukNEXhmqNb0mAN3D0EoGzamwAEeoRfb8nuTaIdJx1ITYizcCZEy2HgRDBynf1gMqj1SWPM279Y1J0tVGoj1QbSDqCGnO4GqNqL+dCyf2TKcpFT3zfE7si9HMNlPkk+z6jFl+rJAGCA3B+gpClsEig6FtFAH8=
+	t=1756799050; cv=none; b=GRDw+/s8ajvVMXrgYpPNFgZz/+nS231xSITjGSFsn+L1DbGS+ePI4LWX0HNRD3KQvPRtgimD9FWs1PvZhzd04H727qo7mY3x59XoVCz+k3LJnoHvnqbOK0pzTbjRd2lOE7cCXh8VnbpmasYG+UAyCauRREUi+pSTUFfrgNKwo2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756798206; c=relaxed/simple;
-	bh=2n/SisMV09Hm94CbM/DLU+eQEpBb/49IdprBdPzTK3E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tbrNJdWb2s8dpBcyhPqZdHcS4CCgpjMcOzfOqj4/HNAcBhhGCK5bCpD0G/+rjzntKjpZIfZArQ5o0qLeQlxtdstyD+JJ4OX6ma32PJti1SsdgvLEaMGZgm8OejA9+0Oo/AXPcgMqZwBBx/tHR0jJZHouciiKh3elai6dQzK+NuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GcwEE84K; arc=none smtp.client-ip=209.85.208.43
+	s=arc-20240116; t=1756799050; c=relaxed/simple;
+	bh=rGefaYqmIgAIRC+qqJ+WkMpoVJ9r8/a0zi/BXHNfY0M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CoKxkqiSs/2t67+3zFkSLOPVps/TQXFAl3EVEv3c5URjr94R3/HbzwmRGDALdBdce2hUD3kLl856AMNJsjpqzxPiUU67lpBAdgSAcb6gkYPQ/N76uTNz+91iKDhZwtNNksYKWqrkGTKV/tksskYg0GOZ9ve3evOeQ9DUZc+lzZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OFKWLtTT; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-61caf8fc422so8909514a12.2
-        for <stable@vger.kernel.org>; Tue, 02 Sep 2025 00:30:04 -0700 (PDT)
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-32753ef4e33so3728672a91.0;
+        Tue, 02 Sep 2025 00:44:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756798203; x=1757403003; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Jx2F/ziatheZ/yDLUW5J1nHGpoaepympUGoXb3XJsW8=;
-        b=GcwEE84K+jfrJN2riFJVPC5zA3ykDfAnGnuoSNwso2C/6B76ZkCJXqOq0a6byRt4HV
-         NzR/dG71zDR2IgLEFCr4xxPAFvA9Yo+6EEUE5LfAh+ie6FNfocY1hPUQbL2ESHu63yGs
-         Ept0/S8vp0wWPDXApOezHlkf66Oe8aDZLDg/Djl2BA+0xbcwi4PCACvTRiEe4TztDq73
-         AJwG7iwqyZOoHRtmXcGNDqIjtabMQfb5lFIRBJTg+mcnfRaj1mXLyzVltSncgYsmnY0Z
-         0TvTPorKBXQ0Atw/RuPTUnKvp7dxBT7j7i0PJHgrJhv//JgLL6ka1HQRJQblEjU07+OD
-         zKdg==
+        d=gmail.com; s=20230601; t=1756799048; x=1757403848; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FM7MmdamHY0R7vTb4cIphiGo5yn+8kPhrgUcTHLwJT4=;
+        b=OFKWLtTTUkh9NIMKc2wsm6E8C9hcySzTu3eGC17RqqdqEMQXMco1BnZeAyHFaF9zkG
+         NVXzOihwXsCbE0ASP+J33N5j3TDo3g4jBOE4I80Niy2s2adaAlYf7k5s8LLEEtpSJJF9
+         iwb7uiaJ12sXnkp5ijIWYrnU6YjyZhnFBPUNlCCcDs9MhMMRsKzisA1bi1lwSjYEu6Fz
+         PmFPgxNmYmI6kfr0JySCq659/NZhoWFXs4gB7ej0yOJx2YSRrxsnENjTQpaf3H1uSzS1
+         8tgqts/VSNKziFbgB3jtCdFaELjzuHe28i5CJV1qxo+ct77/5pHSJrepKHO09xNZipLX
+         wdEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756798203; x=1757403003;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Jx2F/ziatheZ/yDLUW5J1nHGpoaepympUGoXb3XJsW8=;
-        b=fOb2c552yHqO2qVDqP/Ep4MpGIG5fI3VLICl9a7RlgVsBXr53TCtH1/aPd27c2/OK9
-         2pb+dh0IRV62OOAmeZkED9vLhJaJ8Stob1urn3tWRS7SPsI+jKYMsHr0SShovxtGOMx1
-         4AxY4OzN6IWpVqAsh9YthjyICSQitUvOpIFDL7hdUFKnNHejlpp6zYcLhMHDOXXQaY93
-         3KKst5kTOrhhuApcmJsMM/dS8LQaiCuzqagMFAU2GacXl4uNASJAF3KjrngtsU828nr1
-         xF8OceRoOG6qg62gqfv1u0gA6kdunBatOHK+ePFmB4W8MuO4Xvv/g+qlpWxELyOTHbyq
-         Mi7A==
-X-Forwarded-Encrypted: i=1; AJvYcCWbBPZ33oxvs2zXtHYy4mTUWOqGYZapz9NZqIw3OewcEaJNiGiQt0uGPdy8njLPsOPPTZ4PmM0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjdJKJWFDbGF7QezYpjoG/KUpBGq58leZPRXtKRGKVn9lYjF9B
-	uNLRcpCZZipyfe6yW0RiLOoUglJKvss29ckZRCogM+4dGmRAQQS2+hVnBhoeRuwrBsF6xLJoycH
-	mz+iW9yckrfe38va829b5u4vi5HR0y9A=
-X-Gm-Gg: ASbGncttj/9Fr40f42Oll1D6M3nL4UNcQaBJk2VdFK/rySwX81SKDVbULHO1NSex3ql
-	0k/gRA0jTeI+wdkUlovpaaYk17A7BUrnGO1aJ+fBqA7A63aC0E6MhU16j8a+cpPiwyshx0D/JTT
-	UIGzkpUS2veBiOx6OAVtcWOlrWP7O0yzyoMzLazPw7du9kqvKTi77mgNlJjVZTRqLnE94BdhoqG
-	Ur4uAs=
-X-Google-Smtp-Source: AGHT+IGrqDVYtQAWyZAjkQeNO80jGrHFAyTANY25G2+Q6rAh2gqJ1LnU6F0ka2DjwSH1oiWYFHwAKBwZxlEiujPkudw=
-X-Received: by 2002:a05:6402:51cb:b0:618:2733:1a52 with SMTP id
- 4fb4d7f45d1cf-61d26997500mr8458024a12.8.1756798202674; Tue, 02 Sep 2025
- 00:30:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756799048; x=1757403848;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FM7MmdamHY0R7vTb4cIphiGo5yn+8kPhrgUcTHLwJT4=;
+        b=RmFz7dU7c7RYBKH41jivVTe+6/rkd/SiZbtnreIvTrvU/pc7X6xmKgWyYEc6k8d+qm
+         16Vm8O8BJRVYyf19xPDUQ+ivth9yf70x9ZPT5VhbpydbD9gP4GqSN3dXkTaHdIwxzt7e
+         4d64vu2M52WZPEfbTpp6M/eP6gi51aW5VyDYnvmfDDAgeF+LKc2apn5nR1zlzWo4aPRx
+         OM8/9j2shDu6LTiJ0FUpLjnfm1fKidnCTHcjGuRAjtFlphauDox5iuyMdAZR876qf6HE
+         1cwhz4ifvqvBQeVqEYxuMpYqXl/msBBZUsesPCaU81STyqNzlorni60udJxaJlYccDbe
+         zE7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWrvxZE/2STu5MzJZp0SIk359VyLDqE5JhGZBQhkG8F2XbdZrQJQ6kkUXbjFBIvG+E7yoYrgP0cIZ2u+to=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXL5T+8h4RR5SJApone1mAaQ230fodiVPxsqHkdjR+3tBOKEfc
+	O2owwC47QDVvIHbYcNQ7r0wnxPWbdij1+7J3Rp0JOt7l50EQh0E0n9hP
+X-Gm-Gg: ASbGncv7JasWQs4wJSK+ahrXfPHje6HmbmHQsPVVf/OacmtFroBRJEqBHLo4qq1PMRg
+	wsSNMYRK2UCJk6P1gm9EqlOmeJxhuMOKfG8K3CjPDgDMka6eGybSBW6jJgYumC1D+gMgHl/LwKI
+	KlO4H82PfADTswFh6F+NfNfelfyosX4KoSQxhdU9qNrckVRIZUzRpnXclCXw+LARtm7RpJ4xb6c
+	De3/pzB8NjVxU5pb1KFS0mQCuCcdhT6E8M3VbQRipJne6pH7xwcHruzzsxXYFFyw/fEZ5geGyPh
+	esDngovQcKhUw5XJR5ZR+09QoikAdiRCqXoDcc5G3VXox5ipyqnFS9IHIKQ0zj34Nqeng0mwU09
+	oqDk2VpKgKAQqYd4bjL8uDJbsSPXvaV360n0tAaBtcmzmUhaxh2yI+u7EqY/cQzjAq9jruP0cgb
+	H1R1rtgSLx89sHKqPJWsM8Xtt6N+v3bVHfUKkopwvKP8BJCM/5yJAU5Y8=
+X-Google-Smtp-Source: AGHT+IGITksdEmvXHmmuZdLa/yQwq2NxV+cSSSlV4wRNZf68cw30YPa+bxghFOGqMqWKVmSu6m5h7g==
+X-Received: by 2002:a17:90b:4e88:b0:327:e9f4:4dd8 with SMTP id 98e67ed59e1d1-3281543831dmr16440832a91.10.1756799048190;
+        Tue, 02 Sep 2025 00:44:08 -0700 (PDT)
+Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.22.11.162])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-329d1927536sm1112034a91.2.2025.09.02.00.44.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 00:44:07 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Miaoqian Lin <linmq006@gmail.com>,
+	Nicolas Pitre <nico@fluxnic.net>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] drivers: bus: fix device node reference leak in __cci_ace_get_port
+Date: Tue,  2 Sep 2025 15:43:51 +0800
+Message-Id: <20250902074353.2401060-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.35.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2025011112-racing-handbrake-a317@gregkh> <20250901153559.14799-1-nmanthey@amazon.de>
- <20250901153559.14799-2-nmanthey@amazon.de> <2025090114-bodacious-daffodil-2f2e@gregkh>
- <2025090116-repent-living-b7de@gregkh> <ac90cc6067bc7a50d7eb0d606b3dc3718f35b9d9.camel@amazon.de>
-In-Reply-To: <ac90cc6067bc7a50d7eb0d606b3dc3718f35b9d9.camel@amazon.de>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Tue, 2 Sep 2025 09:29:50 +0200
-X-Gm-Features: Ac12FXw5df76rHZEaiiW3AYx94duqeS25Kc4HsjtpB445hEyTIfABLzc53iIEmo
-Message-ID: <CAOQ4uxgmc0jexG4uiKT-6rYriqucB6egeFOj0CUUHQQOdg7J4g@mail.gmail.com>
-Subject: Re: [PATCH 6.1.y 1/1] fs: relax assertions on failure to encode file handles
-To: "Manthey, Norbert" <nmanthey@amazon.de>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "brauner@kernel.org" <brauner@kernel.org>, 
-	"syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com" <syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com>, 
-	"dima@arista.com" <dima@arista.com>, "Yagmurlu, Oemer Erdinc" <oeygmrl@amazon.de>, Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 2, 2025 at 9:20=E2=80=AFAM Manthey, Norbert <nmanthey@amazon.de=
-> wrote:
->
-> On Mon, 2025-09-01 at 22:00 +0200, Greg Kroah-Hartman wrote:
-> > CAUTION: This email originated from outside of the organization. Do not=
- click links or open
-> > attachments unless you can confirm the sender and know the content is s=
-afe.
-> >
-> >
-> >
-> > On Mon, Sep 01, 2025 at 09:54:03PM +0200, Greg Kroah-Hartman wrote:
-> > > On Mon, Sep 01, 2025 at 03:35:59PM +0000, Norbert Manthey wrote:
-> > > > From: Amir Goldstein <amir73il@gmail.com>
-> > > >
-> > > > commit 974e3fe0ac61de85015bbe5a4990cf4127b304b2 upstream.
-> > > >
-> > > > Encoding file handles is usually performed by a filesystem >encode_=
-fh()
-> > > > method that may fail for various reasons.
-> > > >
-> > > > The legacy users of exportfs_encode_fh(), namely, nfsd and
-> > > > name_to_handle_at(2) syscall are ready to cope with the possibility
-> > > > of failure to encode a file handle.
-> > > >
-> > > > There are a few other users of exportfs_encode_{fh,fid}() that
-> > > > currently have a WARN_ON() assertion when ->encode_fh() fails.
-> > > > Relax those assertions because they are wrong.
-> > > >
-> > > > The second linked bug report states commit 16aac5ad1fa9 ("ovl: supp=
-ort
-> > > > encoding non-decodable file handles") in v6.6 as the regressing com=
-mit,
-> > > > but this is not accurate.
-> > > >
-> > > > The aforementioned commit only increases the chances of the asserti=
-on
-> > > > and allows triggering the assertion with the reproducer using overl=
-ayfs,
-> > > > inotify and drop_caches.
-> > > >
-> > > > Triggering this assertion was always possible with other filesystem=
-s and
-> > > > other reasons of ->encode_fh() failures and more particularly, it w=
-as
-> > > > also possible with the exact same reproducer using overlayfs that i=
-s
-> > > > mounted with options index=3Don,nfs_export=3Don also on kernels < v=
-6.6.
-> > > > Therefore, I am not listing the aforementioned commit as a Fixes co=
-mmit.
-> > > >
-> > > > Backport hint: this patch will have a trivial conflict applying to
-> > > > v6.6.y, and other trivial conflicts applying to stable kernels < v6=
-.6.
-> > > >
-> > > > Reported-by: syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com
-> > > > Tested-by: syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com
-> > > > Closes: https://lore.kernel.org/linux-unionfs/671fd40c.050a0220.473=
-5a.024f.GAE@google.com/
-> > > > Reported-by: Dmitry Safonov <dima@arista.com>
-> > > > Closes: https://lore.kernel.org/linux-
-> > > > fsdevel/CAGrbwDTLt6drB9eaUagnQVgdPBmhLfqqxAf3F+Juqy_o6oP8uw@mail.gm=
-ail.com/
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> > > > Link: https://lore.kernel.org/r/20241219115301.465396-1-amir73il@gm=
-ail.com
-> > > > Signed-off-by: Christian Brauner <brauner@kernel.org>
-> > > > Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-> > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > >
-> > > I never signed off on the original commit, so why was this added?
->
-> This cherry-pick is not for the upstream commit, but for the backport on =
-the 6.6 tree. The
-> respective commit hash is given in the backport line. Is this additional =
-information you would like
-> to have in the commit message?
->
-> > >
-> > > >
-> > > > (fuzzy picked from commit f47c834a9131ae64bee3c462f4e610c67b0a000f)
-> > > > Applied with LLM-adjusted hunks for 1 functions from us.amazon.nova
-> > > > - Changed the function call from `exportfs_encode_fid` to `exportfs=
-_encode_inode_fh` to match
-> > > > the destination code.
-> >
-> > Wait, that was just fuzz matching, the real body didn't even change.
-> >
-> > > > - Removed the warning message as per the patch.
-> >
-> > I do not understand this change, what exactly was this?
->
-> I need to rewrite (here: drop) this manually. The LLM was also describing=
- the content of the
-> original patch, not only the diff it created.
->
-> >
-> > > Please put this in the proper place, and in the proper format, if you
-> > > want to add "notes" to the backport.
->
-> IIUC, the changes applied to the patch so that it applies should come abo=
-ve my SOB, no? What's the
-> format requirement (except the 80-100 char limit)?
->
-> I am aware of the discussions about AI generated code. I wanted to explic=
-itly mention the AI use, if
-> it was used as backporting helper. Do you suggest to still move this into=
- the notes section of the
-> commit and sent patch, instead of having this in the commit itself?
->
-> > >
-> > > But really, it took a LLM to determine an abi change?  That feels lik=
-e
-> > > total overkill as you then had to actually manually check it as well.
-> > > But hey, it's your cpu cycles to burn, not mine...
->
-> I prefer reviewing the code instead of writing/massaging all of it, and o=
-n success have the change
-> tested/validated automatically before I reviewing.
->
-> >
-> >
-> > Again, total overkill, 1 minute doing a simple git merge resolution
-> > would have done the same thing, right?
->
+Add missing of_node_put() call to release
+the device node reference obtained via of_parse_phandle().
 
-1 minute is a lot of time when multiplied by the number of "almost
-cleanly applied"
-backports ;)
+Fixes: ed69bdd8fd9b ("drivers: bus: add ARM CCI support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/bus/arm-cci.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-> For this example, yes, I agree. There are more complex commits where this=
- works as well.
->
-> >
-> > confused as to why this took a whole new tool?  We have good merge
-> > resolution tools for git these days, what's wrong with using one of the
-> > many ones out there?
->
-> There is nothing wrong using any other tool. The git-llm-pick tool allows=
- to automatically backport
-> more commits and supports user specified validation for the changes. The =
-LLM is only the last
-> attempt. A human needs to review the output either way, and eventually do=
- the
-> backport interactively.
->
+diff --git a/drivers/bus/arm-cci.c b/drivers/bus/arm-cci.c
+index b8184a903583..af180f884f1d 100644
+--- a/drivers/bus/arm-cci.c
++++ b/drivers/bus/arm-cci.c
+@@ -163,14 +163,18 @@ static int __cci_ace_get_port(struct device_node *dn, int type)
+ 	int i;
+ 	bool ace_match;
+ 	struct device_node *cci_portn;
++	int ret = -ENODEV;
+ 
+ 	cci_portn = of_parse_phandle(dn, "cci-control-port", 0);
+ 	for (i = 0; i < nb_cci_ports; i++) {
+ 		ace_match = ports[i].type == type;
+-		if (ace_match && cci_portn == ports[i].dn)
+-			return i;
++		if (ace_match && cci_portn == ports[i].dn) {
++			ret = i;
++			break;
++		}
+ 	}
+-	return -ENODEV;
++	of_node_put(cci_portn);
++	return ret;
+ }
+ 
+ int cci_ace_get_port(struct device_node *dn)
+-- 
+2.35.1
 
-First of all, this is not the first project that attempts to apply
-"semantic" patches
-that can deal with a lot more fuzz than git apply can. Long before the LLM =
-buzz.
-
-I personally find LLM to be quite useful for some of the more boring
-of my tasks.
-Translation and understanding semantics is what LLM does best, so deploying
-it for stable backports could be very productive IMO, as long as the
-result is tested
-reviewed and signed off by a human developer who understands what the patch
-is doing.
-
-Thanks,
-Amir.
 
