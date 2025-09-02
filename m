@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-177293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854EFB40486
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:43:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E476B40431
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AE93561020
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:41:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BCF47BA60D
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A13B334373;
-	Tue,  2 Sep 2025 13:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3380F320A21;
+	Tue,  2 Sep 2025 13:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c21dRLaz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7vSPM0D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544CF3314CC;
-	Tue,  2 Sep 2025 13:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E321930EF6C;
+	Tue,  2 Sep 2025 13:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820188; cv=none; b=hjxDCw+duFfBQZsq7gjWfn3m7+/a68stT8+35/nEzaFbeIgVKxpUyxxe7LlVqQOkJmotudZ+YjItIwmPRM2F0d6SIIYOwx5HQ6Bba8vzFr2EsAozXB9eZrPG92SxljNOZIUmfK/JaI19QOaZ//PTrMLjhbIqJN33ZgfEgX3tuq8=
+	t=1756819815; cv=none; b=AzhNgxr41b3X1IPiWdQ9TP59vbwzyEQHwhXgJQFoI182Z6Evxe6HmdlVkcVpKTTAzHwgGxYuXNI3+iPJ/mgVxQbl4IznCTs2EP1VkbnO6gj8HvjbhZQ3RunQcX/5sBLRUHU5ebHkMJVi+5k5M8HMm64+iNS67OWOCToWBSB+25s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820188; c=relaxed/simple;
-	bh=yn093sx7Ooku1XEMm5dsLWcGYJDnTBzI4UpdOPu02bc=;
+	s=arc-20240116; t=1756819815; c=relaxed/simple;
+	bh=Nn8IjDPE03gZtRahSaGlHr2o0U20t3Nhhri9k7sPEiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebt9NFMNlMhzt8M5A3z7/PHJgNTu6f6cz6LyhmOUXQCmglty6+vel0vITH/n6mKMdhdyNRV858z6uOVAEsBpmafbTPX2FwZehP/g8f8Unz59rSJIKKuy3VAG4W7o+T6NDhNofDwii7axiKbYo1TVztrz96m+4LCjDuTxnxHl3W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c21dRLaz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC58C4CEF5;
-	Tue,  2 Sep 2025 13:36:27 +0000 (UTC)
+	 MIME-Version; b=GdEYT037GUaa8iXZREZNZ4COay7mVgBXbUavZdseALExYIqtyNWyZebYKDuBld4hr5gQkwnr7vn5nTVrHKIqWVs343oYIuQQsJZEfst75obWxTAxqYel27FaVO9kMTID8Ik6i0M/TTrzHzFE/0DFnByT6sPQwBiZCLuhff/KH1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7vSPM0D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF75C4CEF9;
+	Tue,  2 Sep 2025 13:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820188;
-	bh=yn093sx7Ooku1XEMm5dsLWcGYJDnTBzI4UpdOPu02bc=;
+	s=korg; t=1756819814;
+	bh=Nn8IjDPE03gZtRahSaGlHr2o0U20t3Nhhri9k7sPEiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c21dRLazvqwA7IXJz584eCMoUzFXltyfh8FEnKp/lv6MnmrBFUSn64CQZSpF4xSoP
-	 3N8laooJxWLG0JUHzAHcw+ttX69ZVhTTv+llOgwBWZll5nAx8z8qc1osvRaQ9xykpB
-	 /PKvr4sIijf5ikiwh/kjLNaFqbRpEzkLIhNq2tV0=
+	b=b7vSPM0DAk2rqaKErCKCaiiNw3rTo1gUtzXYxBY31fYAJUKvd2GXbiINhFZxsmhn6
+	 p9kHzhmatS8hmGHBPY0apidQgwCpfFyYG9JPm+YOav7KnPuWH90O2OG3gYo29+B29K
+	 ML59Wpc0nUnuqYsnwv++SYfLPkNEoHhYsZn6cLEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Shpakovskiy <pashpakovskii@salutedevices.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 25/75] Bluetooth: hci_sync: fix set_local_name race condition
-Date: Tue,  2 Sep 2025 15:20:37 +0200
-Message-ID: <20250902131936.104791082@linuxfoundation.org>
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.16 136/142] firmware: qcom: scm: take struct device as argument in SHM bridge enable
+Date: Tue,  2 Sep 2025 15:20:38 +0200
+Message-ID: <20250902131953.491570164@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Shpakovskiy <pashpakovskii@salutedevices.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 6bbd0d3f0c23fc53c17409dd7476f38ae0ff0cd9 ]
+commit dc3f4e75c54c19bad9a70419afae00ce6baf3ebf upstream.
 
-Function set_name_sync() uses hdev->dev_name field to send
-HCI_OP_WRITE_LOCAL_NAME command, but copying from data to hdev->dev_name
-is called after mgmt cmd was queued, so it is possible that function
-set_name_sync() will read old name value.
+qcom_scm_shm_bridge_enable() is used early in the SCM initialization
+routine. It makes an SCM call and so expects the internal __scm pointer
+in the SCM driver to be assigned. For this reason the tzmem memory pool
+is allocated *after* this pointer is assigned. However, this can lead to
+a crash if another consumer of the SCM API makes a call using the memory
+pool between the assignment of the __scm pointer and the initialization
+of the tzmem memory pool.
 
-This change adds name as a parameter for function hci_update_name_sync()
-to avoid race condition.
+As qcom_scm_shm_bridge_enable() is a special case, not meant to be
+called by ordinary users, pull it into the local SCM header. Make it
+take struct device as argument. This is the device that will be used to
+make the SCM call as opposed to the global __scm pointer. This will
+allow us to move the tzmem initialization *before* the __scm assignment
+in the core SCM driver.
 
-Fixes: 6f6ff38a1e14 ("Bluetooth: hci_sync: Convert MGMT_OP_SET_LOCAL_NAME")
-Signed-off-by: Pavel Shpakovskiy <pashpakovskii@salutedevices.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250630-qcom-scm-race-v2-2-fa3851c98611@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/hci_sync.h | 2 +-
- net/bluetooth/hci_sync.c         | 6 +++---
- net/bluetooth/mgmt.c             | 5 ++++-
- 3 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/firmware/qcom/qcom_scm.c       |   12 +++++++++---
+ drivers/firmware/qcom/qcom_scm.h       |    1 +
+ drivers/firmware/qcom/qcom_tzmem.c     |    3 ++-
+ include/linux/firmware/qcom/qcom_scm.h |    1 -
+ 4 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
-index 3cb2d10cac930..e2e588b08fe90 100644
---- a/include/net/bluetooth/hci_sync.h
-+++ b/include/net/bluetooth/hci_sync.h
-@@ -72,7 +72,7 @@ int hci_update_class_sync(struct hci_dev *hdev);
- 
- int hci_update_eir_sync(struct hci_dev *hdev);
- int hci_update_class_sync(struct hci_dev *hdev);
--int hci_update_name_sync(struct hci_dev *hdev);
-+int hci_update_name_sync(struct hci_dev *hdev, const u8 *name);
- int hci_write_ssp_mode_sync(struct hci_dev *hdev, u8 mode);
- 
- int hci_get_random_address(struct hci_dev *hdev, bool require_privacy,
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 01aca07707117..020f1809fc994 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -3491,13 +3491,13 @@ int hci_update_scan_sync(struct hci_dev *hdev)
- 	return hci_write_scan_enable_sync(hdev, scan);
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -1603,7 +1603,13 @@ bool qcom_scm_lmh_dcvsh_available(void)
  }
+ EXPORT_SYMBOL_GPL(qcom_scm_lmh_dcvsh_available);
  
--int hci_update_name_sync(struct hci_dev *hdev)
-+int hci_update_name_sync(struct hci_dev *hdev, const u8 *name)
+-int qcom_scm_shm_bridge_enable(void)
++/*
++ * This is only supposed to be called once by the TZMem module. It takes the
++ * SCM struct device as argument and uses it to pass the call as at the time
++ * the SHM Bridge is enabled, the SCM is not yet fully set up and doesn't
++ * accept global user calls. Don't try to use the __scm pointer here.
++ */
++int qcom_scm_shm_bridge_enable(struct device *scm_dev)
  {
- 	struct hci_cp_write_local_name cp;
+ 	int ret;
  
- 	memset(&cp, 0, sizeof(cp));
+@@ -1615,11 +1621,11 @@ int qcom_scm_shm_bridge_enable(void)
  
--	memcpy(cp.name, hdev->dev_name, sizeof(cp.name));
-+	memcpy(cp.name, name, sizeof(cp.name));
+ 	struct qcom_scm_res res;
  
- 	return __hci_cmd_sync_status(hdev, HCI_OP_WRITE_LOCAL_NAME,
- 					    sizeof(cp), &cp,
-@@ -3550,7 +3550,7 @@ int hci_powered_update_sync(struct hci_dev *hdev)
- 			hci_write_fast_connectable_sync(hdev, false);
- 		hci_update_scan_sync(hdev);
- 		hci_update_class_sync(hdev);
--		hci_update_name_sync(hdev);
-+		hci_update_name_sync(hdev, hdev->dev_name);
- 		hci_update_eir_sync(hdev);
+-	if (!__qcom_scm_is_call_available(__scm->dev, QCOM_SCM_SVC_MP,
++	if (!__qcom_scm_is_call_available(scm_dev, QCOM_SCM_SVC_MP,
+ 					  QCOM_SCM_MP_SHM_BRIDGE_ENABLE))
+ 		return -EOPNOTSUPP;
+ 
+-	ret = qcom_scm_call(__scm->dev, &desc, &res);
++	ret = qcom_scm_call(scm_dev, &desc, &res);
+ 
+ 	if (ret)
+ 		return ret;
+--- a/drivers/firmware/qcom/qcom_scm.h
++++ b/drivers/firmware/qcom/qcom_scm.h
+@@ -83,6 +83,7 @@ int scm_legacy_call(struct device *dev,
+ 		    struct qcom_scm_res *res);
+ 
+ struct qcom_tzmem_pool *qcom_scm_get_tzmem_pool(void);
++int qcom_scm_shm_bridge_enable(struct device *scm_dev);
+ 
+ #define QCOM_SCM_SVC_BOOT		0x01
+ #define QCOM_SCM_BOOT_SET_ADDR		0x01
+--- a/drivers/firmware/qcom/qcom_tzmem.c
++++ b/drivers/firmware/qcom/qcom_tzmem.c
+@@ -20,6 +20,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/types.h>
+ 
++#include "qcom_scm.h"
+ #include "qcom_tzmem.h"
+ 
+ struct qcom_tzmem_area {
+@@ -94,7 +95,7 @@ static int qcom_tzmem_init(void)
+ 			goto notsupp;
  	}
  
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 82fa8c28438f2..9b01eaaa0eb2d 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -3819,8 +3819,11 @@ static void set_name_complete(struct hci_dev *hdev, void *data, int err)
+-	ret = qcom_scm_shm_bridge_enable();
++	ret = qcom_scm_shm_bridge_enable(qcom_tzmem_dev);
+ 	if (ret == -EOPNOTSUPP)
+ 		goto notsupp;
  
- static int set_name_sync(struct hci_dev *hdev, void *data)
- {
-+	struct mgmt_pending_cmd *cmd = data;
-+	struct mgmt_cp_set_local_name *cp = cmd->param;
-+
- 	if (lmp_bredr_capable(hdev)) {
--		hci_update_name_sync(hdev);
-+		hci_update_name_sync(hdev, cp->name);
- 		hci_update_eir_sync(hdev);
- 	}
+--- a/include/linux/firmware/qcom/qcom_scm.h
++++ b/include/linux/firmware/qcom/qcom_scm.h
+@@ -148,7 +148,6 @@ bool qcom_scm_lmh_dcvsh_available(void);
  
--- 
-2.50.1
-
+ int qcom_scm_gpu_init_regs(u32 gpu_req);
+ 
+-int qcom_scm_shm_bridge_enable(void);
+ int qcom_scm_shm_bridge_create(u64 pfn_and_ns_perm_flags,
+ 			       u64 ipfn_and_s_perm_flags, u64 size_and_flags,
+ 			       u64 ns_vmids, u64 *handle);
 
 
 
