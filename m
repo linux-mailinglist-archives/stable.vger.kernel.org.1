@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-177240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9BAB4042B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD704B4047B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DE9C5479F5
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76EFC5E1188
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4B83148CB;
-	Tue,  2 Sep 2025 13:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01A932ED5B;
+	Tue,  2 Sep 2025 13:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFPP04s1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dvq1g1zv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCC33148B2;
-	Tue,  2 Sep 2025 13:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5206F3009EF;
+	Tue,  2 Sep 2025 13:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820025; cv=none; b=qelCQRaGi067TyBJdOFczILsZrnFlzfRB3+XcgSz4n+oBELgibbRCbO2kh2HZ21M7oRorNfY6HZdjuD15LiV2spzh0TxIYZ4M3kOD4chGrCEha7FnXO/cmDRbEjZjtxu4d3f+jRMHjvtI1h42kbe85NiH9qZ4ZS5pC8H36z/9tw=
+	t=1756820191; cv=none; b=jCNyAVVmccclHHc7Ox5+ghCduIaidHTJ8GpntDf8qV8jRMDnPzZAIQlPgl2/yiS8NrDUbO5xCb7u6I/lsbhWf2DBa9oj3ofT1bfAdOGquijkX5UlYvSbR2XhR6w6j5wrwNMem2ScAgsp42nJ3peEhB1xbaaA29jXFW808oa2HSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820025; c=relaxed/simple;
-	bh=pfriYSCPw0hSOKchjAOGDYo6y/3pdkDd6VUBUJ9PPpE=;
+	s=arc-20240116; t=1756820191; c=relaxed/simple;
+	bh=66Oe130EXED0UwwRxCbK0LOqtacLbf7uc+wnv+d6IDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T6AUYNW0B6gBHi/ylOXfPGzkKv8o5ZTMaT+xyMQOOQxYV1LT/i5M5mCgdXd+9mDEkmKmHrRnEYTfcePMzzF9Fq2aOrQ+dCEY13D6G0yJN3h5599wT3VsVL/WWpDCgA46e7LpsZF0o+ddLgPIdASqATQDbBStG72L5tMjh4D5Yi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFPP04s1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A1BC4CEED;
-	Tue,  2 Sep 2025 13:33:45 +0000 (UTC)
+	 MIME-Version; b=qfk7c4rP2yg7/juzTpi6tXhhxo7BI4Z1TUDvXonPN323Or9H9u9DIs7CawGa6iM0QAGEeKPieLghALqwu2wxmQdlni2pKY9Mdmq8XW6HuAw+92p0UJqfUllbzJSWvezLEe61VZirlWRkyT6xs2SYNDyqwQkDBDzMwVTa0i0OVdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dvq1g1zv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA89C4CEED;
+	Tue,  2 Sep 2025 13:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820025;
-	bh=pfriYSCPw0hSOKchjAOGDYo6y/3pdkDd6VUBUJ9PPpE=;
+	s=korg; t=1756820191;
+	bh=66Oe130EXED0UwwRxCbK0LOqtacLbf7uc+wnv+d6IDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFPP04s1pzFkYsj1IsBtTl8m3WiuoD1BB89Lvk1jffGLOuHaz0eBbaNZwFXF+5c1k
-	 d8ViqJm9sYrL8WqjlCcnh4faJ5J7l3S0sj7hLwway48ShwEMFtzHpfhe+C/+uUZ4Mg
-	 aSjoCv3fgqGpuNMftjse12QsL4HZyx8tpX4xmrRw=
+	b=Dvq1g1zvEdEeWc64Py46k1cw/3N98t4OLlNPJ5YtzTApUbGUSN94OpoCAGy1xye+I
+	 xTKdFDs7GK1f5NTS+FOLgydCKq9aiOT6WdRO+peLEp1Oi6txPt3l/+gk6LqrZ7qFcS
+	 5ImmcUHnmQYvSnKbXtLB4TcYSJHpkeoV5riOzA5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e69f06a0f30116c68056@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
+	syzbot+1741b56d54536f4ec349@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 62/95] sctp: initialize more fields in sctp_v6_from_sk()
+Subject: [PATCH 6.6 26/75] atm: atmtcp: Prevent arbitrary write in atmtcp_recv_control().
 Date: Tue,  2 Sep 2025 15:20:38 +0200
-Message-ID: <20250902131941.983606614@linuxfoundation.org>
+Message-ID: <20250902131936.141955363@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +63,194 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 2e8750469242cad8f01f320131fd5a6f540dbb99 ]
+[ Upstream commit ec79003c5f9d2c7f9576fc69b8dbda80305cbe3a ]
 
-syzbot found that sin6_scope_id was not properly initialized,
-leading to undefined behavior.
+syzbot reported the splat below. [0]
 
-Clear sin6_scope_id and sin6_flowinfo.
+When atmtcp_v_open() or atmtcp_v_close() is called via connect()
+or close(), atmtcp_send_control() is called to send an in-kernel
+special message.
 
-BUG: KMSAN: uninit-value in __sctp_v6_cmp_addr+0x887/0x8c0 net/sctp/ipv6.c:649
-  __sctp_v6_cmp_addr+0x887/0x8c0 net/sctp/ipv6.c:649
-  sctp_inet6_cmp_addr+0x4f2/0x510 net/sctp/ipv6.c:983
-  sctp_bind_addr_conflict+0x22a/0x3b0 net/sctp/bind_addr.c:390
-  sctp_get_port_local+0x21eb/0x2440 net/sctp/socket.c:8452
-  sctp_get_port net/sctp/socket.c:8523 [inline]
-  sctp_listen_start net/sctp/socket.c:8567 [inline]
-  sctp_inet_listen+0x710/0xfd0 net/sctp/socket.c:8636
-  __sys_listen_socket net/socket.c:1912 [inline]
-  __sys_listen net/socket.c:1927 [inline]
-  __do_sys_listen net/socket.c:1932 [inline]
-  __se_sys_listen net/socket.c:1930 [inline]
-  __x64_sys_listen+0x343/0x4c0 net/socket.c:1930
-  x64_sys_call+0x271d/0x3e20 arch/x86/include/generated/asm/syscalls_64.h:51
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
+The message has ATMTCP_HDR_MAGIC in atmtcp_control.hdr.length.
+Also, a pointer of struct atm_vcc is set to atmtcp_control.vcc.
+
+The notable thing is struct atmtcp_control is uAPI but has a
+space for an in-kernel pointer.
+
+  struct atmtcp_control {
+  	struct atmtcp_hdr hdr;	/* must be first */
+  ...
+  	atm_kptr_t vcc;		/* both directions */
+  ...
+  } __ATM_API_ALIGN;
+
+  typedef struct { unsigned char _[8]; } __ATM_API_ALIGN atm_kptr_t;
+
+The special message is processed in atmtcp_recv_control() called
+from atmtcp_c_send().
+
+atmtcp_c_send() is vcc->dev->ops->send() and called from 2 paths:
+
+  1. .ndo_start_xmit() (vcc->send() == atm_send_aal0())
+  2. vcc_sendmsg()
+
+The problem is sendmsg() does not validate the message length and
+userspace can abuse atmtcp_recv_control() to overwrite any kptr
+by atmtcp_control.
+
+Let's add a new ->pre_send() hook to validate messages from sendmsg().
+
+[0]:
+Oops: general protection fault, probably for non-canonical address 0xdffffc00200000ab: 0000 [#1] SMP KASAN PTI
+KASAN: probably user-memory-access in range [0x0000000100000558-0x000000010000055f]
+CPU: 0 UID: 0 PID: 5865 Comm: syz-executor331 Not tainted 6.17.0-rc1-syzkaller-00215-gbab3ce404553 #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+RIP: 0010:atmtcp_recv_control drivers/atm/atmtcp.c:93 [inline]
+RIP: 0010:atmtcp_c_send+0x1da/0x950 drivers/atm/atmtcp.c:297
+Code: 4d 8d 75 1a 4c 89 f0 48 c1 e8 03 42 0f b6 04 20 84 c0 0f 85 15 06 00 00 41 0f b7 1e 4d 8d b7 60 05 00 00 4c 89 f0 48 c1 e8 03 <42> 0f b6 04 20 84 c0 0f 85 13 06 00 00 66 41 89 1e 4d 8d 75 1c 4c
+RSP: 0018:ffffc90003f5f810 EFLAGS: 00010203
+RAX: 00000000200000ab RBX: 0000000000000000 RCX: 0000000000000000
+RDX: ffff88802a510000 RSI: 00000000ffffffff RDI: ffff888030a6068c
+RBP: ffff88802699fb40 R08: ffff888030a606eb R09: 1ffff1100614c0dd
+R10: dffffc0000000000 R11: ffffffff8718fc40 R12: dffffc0000000000
+R13: ffff888030a60680 R14: 000000010000055f R15: 00000000ffffffff
+FS:  00007f8d7e9236c0(0000) GS:ffff888125c1c000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000000045ad50 CR3: 0000000075bde000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ vcc_sendmsg+0xa10/0xc60 net/atm/common.c:645
+ sock_sendmsg_nosec net/socket.c:714 [inline]
+ __sock_sendmsg+0x219/0x270 net/socket.c:729
+ ____sys_sendmsg+0x505/0x830 net/socket.c:2614
+ ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2668
+ __sys_sendmsg net/socket.c:2700 [inline]
+ __do_sys_sendmsg net/socket.c:2705 [inline]
+ __se_sys_sendmsg net/socket.c:2703 [inline]
+ __x64_sys_sendmsg+0x19b/0x260 net/socket.c:2703
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Local variable addr.i.i created at:
-  sctp_get_port net/sctp/socket.c:8515 [inline]
-  sctp_listen_start net/sctp/socket.c:8567 [inline]
-  sctp_inet_listen+0x650/0xfd0 net/sctp/socket.c:8636
-  __sys_listen_socket net/socket.c:1912 [inline]
-  __sys_listen net/socket.c:1927 [inline]
-  __do_sys_listen net/socket.c:1932 [inline]
-  __se_sys_listen net/socket.c:1930 [inline]
-  __x64_sys_listen+0x343/0x4c0 net/socket.c:1930
+RIP: 0033:0x7f8d7e96a4a9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 51 18 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f8d7e923198 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f8d7e9f4308 RCX: 00007f8d7e96a4a9
+RDX: 0000000000000000 RSI: 0000200000000240 RDI: 0000000000000005
+RBP: 00007f8d7e9f4300 R08: 65732f636f72702f R09: 65732f636f72702f
+R10: 65732f636f72702f R11: 0000000000000246 R12: 00007f8d7e9c10ac
+R13: 00007f8d7e9231a0 R14: 0000200000000200 R15: 0000200000000250
+ </TASK>
+Modules linked in:
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+e69f06a0f30116c68056@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68adc0a2.050a0220.37038e.00c4.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20250826141314.1802610-1-edumazet@google.com
+Reported-by: syzbot+1741b56d54536f4ec349@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68a6767c.050a0220.3d78fd.0011.GAE@google.com/
+Tested-by: syzbot+1741b56d54536f4ec349@syzkaller.appspotmail.com
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250821021901.2814721-1-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/ipv6.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/atm/atmtcp.c   | 17 ++++++++++++++---
+ include/linux/atmdev.h |  1 +
+ net/atm/common.c       | 15 ++++++++++++---
+ 3 files changed, 27 insertions(+), 6 deletions(-)
 
-diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
-index 38e2fbdcbeac4..9f835e674c599 100644
---- a/net/sctp/ipv6.c
-+++ b/net/sctp/ipv6.c
-@@ -546,7 +546,9 @@ static void sctp_v6_from_sk(union sctp_addr *addr, struct sock *sk)
- {
- 	addr->v6.sin6_family = AF_INET6;
- 	addr->v6.sin6_port = 0;
-+	addr->v6.sin6_flowinfo = 0;
- 	addr->v6.sin6_addr = sk->sk_v6_rcv_saddr;
-+	addr->v6.sin6_scope_id = 0;
+diff --git a/drivers/atm/atmtcp.c b/drivers/atm/atmtcp.c
+index ff558908897f3..9c83fb29b2f1b 100644
+--- a/drivers/atm/atmtcp.c
++++ b/drivers/atm/atmtcp.c
+@@ -279,6 +279,19 @@ static struct atm_vcc *find_vcc(struct atm_dev *dev, short vpi, int vci)
+         return NULL;
  }
  
- /* Initialize sk->sk_rcv_saddr from sctp_addr. */
++static int atmtcp_c_pre_send(struct atm_vcc *vcc, struct sk_buff *skb)
++{
++	struct atmtcp_hdr *hdr;
++
++	if (skb->len < sizeof(struct atmtcp_hdr))
++		return -EINVAL;
++
++	hdr = (struct atmtcp_hdr *)skb->data;
++	if (hdr->length == ATMTCP_HDR_MAGIC)
++		return -EINVAL;
++
++	return 0;
++}
+ 
+ static int atmtcp_c_send(struct atm_vcc *vcc,struct sk_buff *skb)
+ {
+@@ -288,9 +301,6 @@ static int atmtcp_c_send(struct atm_vcc *vcc,struct sk_buff *skb)
+ 	struct sk_buff *new_skb;
+ 	int result = 0;
+ 
+-	if (skb->len < sizeof(struct atmtcp_hdr))
+-		goto done;
+-
+ 	dev = vcc->dev_data;
+ 	hdr = (struct atmtcp_hdr *) skb->data;
+ 	if (hdr->length == ATMTCP_HDR_MAGIC) {
+@@ -347,6 +357,7 @@ static const struct atmdev_ops atmtcp_v_dev_ops = {
+ 
+ static const struct atmdev_ops atmtcp_c_dev_ops = {
+ 	.close		= atmtcp_c_close,
++	.pre_send	= atmtcp_c_pre_send,
+ 	.send		= atmtcp_c_send
+ };
+ 
+diff --git a/include/linux/atmdev.h b/include/linux/atmdev.h
+index 45f2f278b50a8..70807c679f1ab 100644
+--- a/include/linux/atmdev.h
++++ b/include/linux/atmdev.h
+@@ -185,6 +185,7 @@ struct atmdev_ops { /* only send is required */
+ 	int (*compat_ioctl)(struct atm_dev *dev,unsigned int cmd,
+ 			    void __user *arg);
+ #endif
++	int (*pre_send)(struct atm_vcc *vcc, struct sk_buff *skb);
+ 	int (*send)(struct atm_vcc *vcc,struct sk_buff *skb);
+ 	int (*send_bh)(struct atm_vcc *vcc, struct sk_buff *skb);
+ 	int (*send_oam)(struct atm_vcc *vcc,void *cell,int flags);
+diff --git a/net/atm/common.c b/net/atm/common.c
+index 9cc82acbc7358..48bb3f66a3f2a 100644
+--- a/net/atm/common.c
++++ b/net/atm/common.c
+@@ -635,18 +635,27 @@ int vcc_sendmsg(struct socket *sock, struct msghdr *m, size_t size)
+ 
+ 	skb->dev = NULL; /* for paths shared with net_device interfaces */
+ 	if (!copy_from_iter_full(skb_put(skb, size), size, &m->msg_iter)) {
+-		atm_return_tx(vcc, skb);
+-		kfree_skb(skb);
+ 		error = -EFAULT;
+-		goto out;
++		goto free_skb;
+ 	}
+ 	if (eff != size)
+ 		memset(skb->data + size, 0, eff-size);
++
++	if (vcc->dev->ops->pre_send) {
++		error = vcc->dev->ops->pre_send(vcc, skb);
++		if (error)
++			goto free_skb;
++	}
++
+ 	error = vcc->dev->ops->send(vcc, skb);
+ 	error = error ? error : size;
+ out:
+ 	release_sock(sk);
+ 	return error;
++free_skb:
++	atm_return_tx(vcc, skb);
++	kfree_skb(skb);
++	goto out;
+ }
+ 
+ __poll_t vcc_poll(struct file *file, struct socket *sock, poll_table *wait)
 -- 
 2.50.1
 
