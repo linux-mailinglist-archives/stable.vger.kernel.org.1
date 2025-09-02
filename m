@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-177275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751A5B40482
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:43:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70703B40385
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD5B5189E6A7
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F7A47AB196
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB5130F937;
-	Tue,  2 Sep 2025 13:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C088A31281F;
+	Tue,  2 Sep 2025 13:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKMSveIe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCaThGtK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A252DC32D;
-	Tue,  2 Sep 2025 13:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8AD3054E7;
+	Tue,  2 Sep 2025 13:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820134; cv=none; b=X88lXZ7D0IH1f82tUBpfga86s1mScVHT3rY57RaQCWPxioAQi5dYjZw+1aDGArvfbGej9tpv6v1ugZuY9h5iOY16TEWVzR8+8auNwdbPj1r+rmmCJfRdbmY7dnv9yhTv+lx9ZC+RzYPSEkGMzHGSwAdQn0ZiweorEQUfqCcRw04=
+	t=1756819691; cv=none; b=tJFNVoEZWmu2O1w2u1wAFW3d4M1N6Xp9up/tqqKdwuiFbHb0pLLOMfQ/itsToTi+pbMSDcirSpI/vL+nFSlc8a3MSY9jYROUse7+N3d7YZf/i4Y3o7/ONtZS5LwxhKOhML/Ca4g75bDWM3VTHQl+r0hxwWu2lO2ZnZWWgwA1csU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820134; c=relaxed/simple;
-	bh=mwmxNFGhtpsmFIy4e3DeXSqeSA6rSasAmm4Wx3gAVWM=;
+	s=arc-20240116; t=1756819691; c=relaxed/simple;
+	bh=YlNbHLseJPjgi8fqTilnuSEPww5/ftkLqlroTq7KYVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uV3/4sL3CpPCrd63YOznpLSaRoh7WWqWj2QcK/TQqtP9ghOZFwhN/YWerivAqOPxVc/N5Kk8k8PUMh+QykwD4XaYANZmHRlqBErzIUnkQqQ9fWVlaPRGh7etHIfVM15VCFEUe4h9k5g7isXObuue7hEtFhTZ+8hw/flxqtQs+UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKMSveIe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521BCC4CEED;
-	Tue,  2 Sep 2025 13:35:32 +0000 (UTC)
+	 MIME-Version; b=YFq8wd9lQ/hyufwpn+W2COf2trwS7rcDhDAI3NjSzSfnam00Lj3eU/K72mdgx0vW9h7gMlewXag/OaLBYqdanKoMBfnBEMfZussGPDseGXCBs4PA791jsrQSwOI1adYxt4QwWN7xsEMprz/j5luv4v3GbmTQFm+Jayfg94ZcSqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCaThGtK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1401C4CEF4;
+	Tue,  2 Sep 2025 13:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820132;
-	bh=mwmxNFGhtpsmFIy4e3DeXSqeSA6rSasAmm4Wx3gAVWM=;
+	s=korg; t=1756819691;
+	bh=YlNbHLseJPjgi8fqTilnuSEPww5/ftkLqlroTq7KYVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKMSveIexwybfjErJRRWzBaQ5kymNZ20MjwHiizY6AwjMHdHzIhaAJnjyahEV/YCd
-	 1JE4eN1dzwtSgHbSJACA9ZSWkqW6uCHbiu7/w3DpW3N05Q2sEIu8YkzVoCJqcIdknm
-	 p9zBFx3xiaD1KTJSymnDyKRdKkIrKpVlWW5b9lhA=
+	b=VCaThGtKqlUPa1kddvzKFfsocjI94LQlMS1NpH3n15ulkOPuNmwmK1sGJ3XLAucEY
+	 IlB/OaN/CVR05+72kt46XhE0jYvd+vHibW9qhShwu2fbxjPoaI0nj55PunO2bsE3RC
+	 a5IKC4YuTagModJCQ4wN/wjMkkrPS55smqcBp7RI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 01/75] of: dynamic: Fix memleak when of_pci_add_properties() failed
+	Martin Hilgendorf <martin.hilgendorf@posteo.de>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.16 111/142] HID: elecom: add support for ELECOM M-DT2DRBK
 Date: Tue,  2 Sep 2025 15:20:13 +0200
-Message-ID: <20250902131935.169542293@linuxfoundation.org>
+Message-ID: <20250902131952.529218975@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: Martin Hilgendorf <martin.hilgendorf@posteo.de>
 
-[ Upstream commit c81f6ce16785cc07ae81f53deb07b662ed0bb3a5 ]
+commit 832e5777143e799a97e8f9b96f002a90f06ba548 upstream.
 
-When of_pci_add_properties() failed, of_changeset_destroy() is called to
-free the changeset. And of_changeset_destroy() puts device tree node in
-each entry but does not free property in the entry. This leads to memory
-leak in the failure case.
+The DT2DRBK trackball has 8 buttons, but the report descriptor only
+specifies 5. This patch adds the device ID and performs a similar fixup as
+for other ELECOM devices to enable the remaining 3 buttons.
 
-In of_changeset_add_prop_helper(), add the property to the device tree node
-deadprops list. Thus, the property will also be freed along with device
-tree node.
-
-Fixes: b544fc2b8606 ("of: dynamic: Add interfaces for creating device node dynamically")
-Reported-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Closes: https://lore.kernel.org/all/aJms+YT8TnpzpCY8@lpieralisi/
-Tested-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://lore.kernel.org/r/20250818152221.3685724-1-lizhi.hou@amd.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Martin Hilgendorf <martin.hilgendorf@posteo.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/dynamic.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hid/hid-elecom.c |    2 ++
+ drivers/hid/hid-ids.h    |    1 +
+ drivers/hid/hid-quirks.c |    1 +
+ 3 files changed, 4 insertions(+)
 
-diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-index 4d57a4e341054..7f78fba502ec4 100644
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -939,6 +939,9 @@ static int of_changeset_add_prop_helper(struct of_changeset *ocs,
- 		kfree(new_pp);
- 	}
- 
-+	new_pp->next = np->deadprops;
-+	np->deadprops = new_pp;
-+
- 	return ret;
- }
- 
--- 
-2.50.1
-
+--- a/drivers/hid/hid-elecom.c
++++ b/drivers/hid/hid-elecom.c
+@@ -101,6 +101,7 @@ static const __u8 *elecom_report_fixup(s
+ 		 */
+ 		mouse_button_fixup(hdev, rdesc, *rsize, 12, 30, 14, 20, 8);
+ 		break;
++	case USB_DEVICE_ID_ELECOM_M_DT2DRBK:
+ 	case USB_DEVICE_ID_ELECOM_M_HT1DRBK_011C:
+ 		/*
+ 		 * Report descriptor format:
+@@ -123,6 +124,7 @@ static const struct hid_device_id elecom
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT4DRBK) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT1URBK) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT1DRBK) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT2DRBK) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1URBK_010C) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1URBK_019B) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1DRBK_010D) },
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -448,6 +448,7 @@
+ #define USB_DEVICE_ID_ELECOM_M_XT4DRBK	0x00fd
+ #define USB_DEVICE_ID_ELECOM_M_DT1URBK	0x00fe
+ #define USB_DEVICE_ID_ELECOM_M_DT1DRBK	0x00ff
++#define USB_DEVICE_ID_ELECOM_M_DT2DRBK	0x018d
+ #define USB_DEVICE_ID_ELECOM_M_HT1URBK_010C	0x010c
+ #define USB_DEVICE_ID_ELECOM_M_HT1URBK_019B	0x019b
+ #define USB_DEVICE_ID_ELECOM_M_HT1DRBK_010D	0x010d
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -410,6 +410,7 @@ static const struct hid_device_id hid_ha
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT4DRBK) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT1URBK) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT1DRBK) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT2DRBK) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1URBK_010C) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1URBK_019B) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_HT1DRBK_010D) },
 
 
 
