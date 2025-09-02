@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-177137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26CD4B40368
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:32:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA17AB403F4
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:38:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 998C43A483A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:32:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D482546FD3
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA6630BF7B;
-	Tue,  2 Sep 2025 13:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E6E3093CB;
+	Tue,  2 Sep 2025 13:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKs1CDCu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6qW8Z2M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6F130BF71;
-	Tue,  2 Sep 2025 13:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086BF3054DD;
+	Tue,  2 Sep 2025 13:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819698; cv=none; b=VLG3B3QG/dnsvjVbycLr+wgrnoVi+fYByc5D7SQLJXieNBDFzQOXpk9QJTgvB8dOQmEX8h75d+AB6OW3TehiifBc6I0F2Hx94kJjvg1fAzeDKu0Qg53dy+d2iacSI3qxckJwpGYMqdqJHRlh8S4PpZxsjzWmBZTdjWvTH5XqP+I=
+	t=1756819927; cv=none; b=fUXkHnqS/sBCHBplO3EIKGtHLHKlK0CndyL8QyWjHnJsUx88JbCToeJOWMZdEAdPEpZRilR8LMM4J9n1UoPZzVRFHxCNtapNtwv0lF7Z/3tzeu3OXurixFyJopAh4+a8DPaFPFxB73lb4XMAJ0GN4ONsRu+Ck28cTvZpl28DnZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819698; c=relaxed/simple;
-	bh=42JunV5PxOYKlJomCpT5AMSSSqrcGKYGd0nQlmdEyKY=;
+	s=arc-20240116; t=1756819927; c=relaxed/simple;
+	bh=r5TOZVjpy5Unca1DIB9ukvXWDig83DmrnFV3185i4+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQ9Z6IW6cHOGdtaDLVDSZGX3sVBYcs/ASA4E9y+Jy8uNKVb5a8Ii6pxWHhRDywPIdzCOOKPA3rBTMIP3VJEb7sO+I8RL7AdjiUqhBXRRw8yxsdma4ClaR0wowCI0u73z9dqHNYOIeJ9ZXEiusTe8CGkWR+LHOidkpCF/pYCoC2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKs1CDCu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F2EC4CEED;
-	Tue,  2 Sep 2025 13:28:17 +0000 (UTC)
+	 MIME-Version; b=nNicsg459wytndTMFTLZ/iKZ3AL26ubADdb0zRkc61763xEVcTwF8Un3i5f4azk5TMsaJ91/qsqnoQszF/16unLAxzGZTkqxKJbhMGcDB7A85lBmOo/xiSr8lMl+CHaNQmBlswUc2QGi7RIjj1t9aQivaRzdMN2lNn8lhrAwFUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6qW8Z2M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E782C4CEED;
+	Tue,  2 Sep 2025 13:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819697;
-	bh=42JunV5PxOYKlJomCpT5AMSSSqrcGKYGd0nQlmdEyKY=;
+	s=korg; t=1756819926;
+	bh=r5TOZVjpy5Unca1DIB9ukvXWDig83DmrnFV3185i4+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bKs1CDCuAn8+gkWZVSWWSYRWXFGwsEQmxtttKG/3soB61zoKSDQwRRFeoIUdSdAo+
-	 T4faRQmV7nq53rPpS/HJ7aIxQ2Uy8Wltz7gnKWDd39GAGMfxpKJ7lagsp7Yyb2ytJD
-	 oT10vzecC4iRXsce0y7MCdC3baFz+hk6HGTQfhEI=
+	b=o6qW8Z2MblYdqY0J92UEuVB6wEnb0ckPN0POoM3bLmJzr6Zu5eM9oTO8UAQQVrbYS
+	 0UlJlAtB+LGO+Bc/tp8jInrBkZIteVAkBK5qkCm7rAroYzy+QUentgpyaO1ZO7z+Vh
+	 Nmb1PAkZQDVyAcrEAnbIHHyPZJ0z89no24Mg1Z5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Coffin <mcoffin13@gmail.com>,
-	Bastien Nocera <hadess@hadess.net>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.16 113/142] HID: logitech: Add ids for G PRO 2 LIGHTSPEED
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 39/95] dt-bindings: display/msm: qcom,mdp5: drop lut clock
 Date: Tue,  2 Sep 2025 15:20:15 +0200
-Message-ID: <20250902131952.607383397@linuxfoundation.org>
+Message-ID: <20250902131941.109504657@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Coffin <mcoffin13@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-commit ab1bb82f3db20e23eace06db52031b1164a110c2 upstream.
+[ Upstream commit 7ab3b7579a6d2660a3425b9ea93b9a140b07f49c ]
 
-Adds support for the G PRO 2 LIGHTSPEED Wireless via it's nano receiver
-or directly. This nano receiver appears to work identically to the 1_1
-receiver for the case I've verified, which is the battery status through
-lg-hidpp.
+None of MDP5 platforms have a LUT clock on the display-controller, it
+was added by the mistake. Drop it, fixing DT warnings on MSM8976 /
+MSM8956 platforms. Technically it's an ABI break, but no other platforms
+are affected.
 
-The same appears to be the case wired, sharing much with the Pro X
-Superlight 2; differences seemed to lie in userland configuration rather
-than in interfaces used by hid_logitech_hidpp on the kernel side.
-
-I verified the sysfs interface for battery charge/discharge status, and
-capacity read to be working on my 910-007290 device (white).
-
-Signed-off-by: Matt Coffin <mcoffin13@gmail.com>
-Reviewed-by: Bastien Nocera <hadess@hadess.net>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 385c8ac763b3 ("dt-bindings: display/msm: convert MDP5 schema to YAML format")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Patchwork: https://patchwork.freedesktop.org/patch/667822/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h            |    1 +
- drivers/hid/hid-logitech-dj.c    |    4 ++++
- drivers/hid/hid-logitech-hidpp.c |    2 ++
- 3 files changed, 7 insertions(+)
+ Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -907,6 +907,7 @@
- #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_2		0xc534
- #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1	0xc539
- #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_1	0xc53f
-+#define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_2	0xc543
- #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_POWERPLAY	0xc53a
- #define USB_DEVICE_ID_LOGITECH_BOLT_RECEIVER	0xc548
- #define USB_DEVICE_ID_SPACETRAVELLER	0xc623
---- a/drivers/hid/hid-logitech-dj.c
-+++ b/drivers/hid/hid-logitech-dj.c
-@@ -1983,6 +1983,10 @@ static const struct hid_device_id logi_d
- 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH,
- 		USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_1),
- 	 .driver_data = recvr_type_gaming_hidpp},
-+	{ /* Logitech lightspeed receiver (0xc543) */
-+	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH,
-+		USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_2),
-+	 .driver_data = recvr_type_gaming_hidpp},
- 
- 	{ /* Logitech 27 MHz HID++ 1.0 receiver (0xc513) */
- 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, USB_DEVICE_ID_MX3000_RECEIVER),
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -4596,6 +4596,8 @@ static const struct hid_device_id hidpp_
- 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, 0xC094) },
- 	{ /* Logitech G Pro X Superlight 2 Gaming Mouse over USB */
- 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, 0xC09b) },
-+	{ /* Logitech G PRO 2 LIGHTSPEED Wireless Mouse over USB */
-+	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, 0xc09a) },
- 
- 	{ /* G935 Gaming Headset */
- 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, 0x0a87),
+diff --git a/Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml b/Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml
+index e153f8d26e7aa..2735c78b0b67a 100644
+--- a/Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml
++++ b/Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml
+@@ -60,7 +60,6 @@ properties:
+           - const: bus
+           - const: core
+           - const: vsync
+-          - const: lut
+           - const: tbu
+           - const: tbu_rt
+         # MSM8996 has additional iommu clock
+-- 
+2.50.1
+
 
 
 
