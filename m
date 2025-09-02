@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-177111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32679B403AE
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:35:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D9CB403FF
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:38:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF71F7B0F76
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:29:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07324188D19E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB59307AE7;
-	Tue,  2 Sep 2025 13:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8319310645;
+	Tue,  2 Sep 2025 13:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgV78hcd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+u6WNDw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABE33064BE;
-	Tue,  2 Sep 2025 13:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667573101AE;
+	Tue,  2 Sep 2025 13:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819611; cv=none; b=fdKjYYNYaROu+SbS9rP/p99t/GJzJ/6sDrkw2xHYOLHfcAzQIW4PQsjuIM5pCBfTvKbtrxZe48HMuPOSxH8WBDggGDwDcxqLOelnk0z1C5VTuqnAKVW45glRMwylqHz/vTOS5vEGUeBjpCxjaFt5JAmFqCyJ31KdR48/EB2L224=
+	t=1756819838; cv=none; b=nqTtjoPYkbN8T1xEnfwuzXuEpkuC9+9h+RQxdUJkYfWxVeFK3jBAdUh/ZraLYTbxJ7faCuYPKbI7Dyim6m1rgrvnI0xpK+SEUWdGq3gDZEUqwmYDwmV08ptBX7FRw0uZjMg/3q/kqoUXWAhIrE6EyB1iXb8H3Nlu2qAStRNPeQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819611; c=relaxed/simple;
-	bh=TGuEfre4zF3KmJQRbKdW7cuzp8yqvqEV4shaCsFyaV8=;
+	s=arc-20240116; t=1756819838; c=relaxed/simple;
+	bh=KqzalcNpd9ri26nqa1mgz7bWfQnyEM8gj0wIAkUkQSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACML0baQn+qkEHWJyUdhnWMA49vvDHfZ8z+2R4osLM1rEMnDJnPBlA0K3NzsMR8xx8qxepqE21b7+UaY8yhOf0GFdollwMd59/QTluV7BZu6oo0fq4zgJHeE4CUhO/cbmgpr0ChpYK8K3SxjytzrHUxPbEs88OtJZpG6IPBKTJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgV78hcd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C390DC4CEED;
-	Tue,  2 Sep 2025 13:26:50 +0000 (UTC)
+	 MIME-Version; b=DfsrcOGFayUyHtvfwTdDk4NTdBDQSbJ9xX3t1HFBkhIahB0c9C5OdjsQLisr/xnZtLWaKATNJAJKfzlhG6Lrf7NnU9kdTGE6rCxkZsbe7ZjkR40gjo5SMgwtELMmtW4RGL1ICKBu9FYDIKebH1dqLcyz10B/2SgCuCMSB5VvDB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+u6WNDw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7112FC4CEED;
+	Tue,  2 Sep 2025 13:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819611;
-	bh=TGuEfre4zF3KmJQRbKdW7cuzp8yqvqEV4shaCsFyaV8=;
+	s=korg; t=1756819837;
+	bh=KqzalcNpd9ri26nqa1mgz7bWfQnyEM8gj0wIAkUkQSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qgV78hcdYFcQdn+s5s8Md+LVJucLJZ/2EXjMfDKkbUCYjKkq45+2Qz1DVzlOBzhzy
-	 wnk1NvrLyfJR5HAXvBuM9W/p/8Dm5DpzfxlfKOiP58l7NvBlcxTD1sTCdRT9Hn0ENJ
-	 RO0DvzxsqpBHch76+YCPyU52bqsfrywy8aCo+cic=
+	b=I+u6WNDwradTeXcTQw48XykBORr3RKxSlyMfFnEL0rPNo1xUBGI5itijAwDb8R+9c
+	 DEw/zSf5nY6ULe66p5/k00gXx+yL69lYWf89h/7Krhz0fXpKEo5oNjjU3UGKgf3nme
+	 a5PypgdB2lPhSrjwEuycjy4NIkf00wJ1kYIv/RgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Lazar <alazar@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	John Garry <john.g.garry@oracle.com>,
+	Johannes Thumshin <johannes.thumshirn@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 086/142] net/mlx5e: Update and set Xon/Xoff upon MTU set
+Subject: [PATCH 6.12 12/95] scsi: core: sysfs: Correct sysfs attributes access rights
 Date: Tue,  2 Sep 2025 15:19:48 +0200
-Message-ID: <20250902131951.559921094@linuxfoundation.org>
+Message-ID: <20250902131940.085172529@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit ceddedc969f0532b7c62ca971ee50d519d2bc0cb ]
+[ Upstream commit a2f54ff15c3bdc0132e20aae041607e2320dbd73 ]
 
-Xon/Xoff sizes are derived from calculation that include the MTU size.
-Set Xon/Xoff when MTU is set.
-If Xon/Xoff fails, set the previous MTU.
+The SCSI sysfs attributes "supported_mode" and "active_mode" do not
+define a store method and thus cannot be modified.  Correct the
+DEVICE_ATTR() call for these two attributes to not include S_IWUSR to
+allow write access as they are read-only.
 
-Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250825143435.598584-10-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250728041700.76660-1-dlemoal@kernel.org
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Johannes Thumshin <johannes.thumshirn@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/en/port_buffer.h         | 12 ++++++++++++
- .../net/ethernet/mellanox/mlx5/core/en_main.c   | 17 ++++++++++++++++-
- 2 files changed, 28 insertions(+), 1 deletion(-)
+ drivers/scsi/scsi_sysfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-index f4a19ffbb641c..66d276a1be836 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-@@ -66,11 +66,23 @@ struct mlx5e_port_buffer {
- 	struct mlx5e_bufferx_reg  buffer[MLX5E_MAX_NETWORK_BUFFER];
- };
- 
-+#ifdef CONFIG_MLX5_CORE_EN_DCB
- int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
- 				    u32 change, unsigned int mtu,
- 				    struct ieee_pfc *pfc,
- 				    u32 *buffer_size,
- 				    u8 *prio2buffer);
-+#else
-+static inline int
-+mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
-+				u32 change, unsigned int mtu,
-+				void *pfc,
-+				u32 *buffer_size,
-+				u8 *prio2buffer)
-+{
-+	return 0;
-+}
-+#endif
- 
- int mlx5e_port_query_buffer(struct mlx5e_priv *priv,
- 			    struct mlx5e_port_buffer *port_buffer);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 16d818943487b..f0142d32b648f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -48,6 +48,7 @@
- #include "en.h"
- #include "en/dim.h"
- #include "en/txrx.h"
-+#include "en/port_buffer.h"
- #include "en_tc.h"
- #include "en_rep.h"
- #include "en_accel/ipsec.h"
-@@ -2985,9 +2986,11 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
- 	struct mlx5e_params *params = &priv->channels.params;
- 	struct net_device *netdev = priv->netdev;
- 	struct mlx5_core_dev *mdev = priv->mdev;
--	u16 mtu;
-+	u16 mtu, prev_mtu;
- 	int err;
- 
-+	mlx5e_query_mtu(mdev, params, &prev_mtu);
-+
- 	err = mlx5e_set_mtu(mdev, params, params->sw_mtu);
- 	if (err)
- 		return err;
-@@ -2997,6 +3000,18 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
- 		netdev_warn(netdev, "%s: VPort MTU %d is different than netdev mtu %d\n",
- 			    __func__, mtu, params->sw_mtu);
- 
-+	if (mtu != prev_mtu && MLX5_BUFFER_SUPPORTED(mdev)) {
-+		err = mlx5e_port_manual_buffer_config(priv, 0, mtu,
-+						      NULL, NULL, NULL);
-+		if (err) {
-+			netdev_warn(netdev, "%s: Failed to set Xon/Xoff values with MTU %d (err %d), setting back to previous MTU %d\n",
-+				    __func__, mtu, err, prev_mtu);
-+
-+			mlx5e_set_mtu(mdev, params, prev_mtu);
-+			return err;
-+		}
-+	}
-+
- 	params->sw_mtu = mtu;
- 	return 0;
+diff --git a/drivers/scsi/scsi_sysfs.c b/drivers/scsi/scsi_sysfs.c
+index 32f94db6d6bf5..e669768a7a5bf 100644
+--- a/drivers/scsi/scsi_sysfs.c
++++ b/drivers/scsi/scsi_sysfs.c
+@@ -265,7 +265,7 @@ show_shost_supported_mode(struct device *dev, struct device_attribute *attr,
+ 	return show_shost_mode(supported_mode, buf);
  }
+ 
+-static DEVICE_ATTR(supported_mode, S_IRUGO | S_IWUSR, show_shost_supported_mode, NULL);
++static DEVICE_ATTR(supported_mode, S_IRUGO, show_shost_supported_mode, NULL);
+ 
+ static ssize_t
+ show_shost_active_mode(struct device *dev,
+@@ -279,7 +279,7 @@ show_shost_active_mode(struct device *dev,
+ 		return show_shost_mode(shost->active_mode, buf);
+ }
+ 
+-static DEVICE_ATTR(active_mode, S_IRUGO | S_IWUSR, show_shost_active_mode, NULL);
++static DEVICE_ATTR(active_mode, S_IRUGO, show_shost_active_mode, NULL);
+ 
+ static int check_reset_type(const char *str)
+ {
 -- 
 2.50.1
 
