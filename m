@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-177459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DBBB4058A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 651E6B405A6
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:56:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E5061892D40
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:50:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83C2B1BA0622
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4768B31A563;
-	Tue,  2 Sep 2025 13:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE94324B28;
+	Tue,  2 Sep 2025 13:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swf70X3d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdhrNBUY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028412DFA39;
-	Tue,  2 Sep 2025 13:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486342D4B4E;
+	Tue,  2 Sep 2025 13:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820713; cv=none; b=Ra45TPLtIZtfE36tjPSehkfTOWB9huRE580sBJc1YJjq1pW/P2LHnhD+fQIrXlki6tvzz0PniZQ8v37fMxP2DkSM+n3sdMGXhM+fa/9mBRiUsiWiv0w3H9dRQkbsB4jWaLAgYp2id4mBfGwAanKbe6SH+ach7s43/mmRtbhcYKQ=
+	t=1756820765; cv=none; b=u//qyMHKRArJjkn/ooig3qfnui2WwjggayoZ4GaT02lIJTfZK8Pzs/XRNvfoKEK3e/uFTMk+IqJZ0l7GqPhDrB9iMjp8ADl0m2czitvLG1azPw/yqlmBwp2TkNPg47wKfSeZh/lhvU1GGTJcsG8olBdPQUSIbxjPLhDfJF53ejQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820713; c=relaxed/simple;
-	bh=KXVzDdYviA2Y8tVxc9RQkNIL8+L9yidOnhmHTdyqj+Q=;
+	s=arc-20240116; t=1756820765; c=relaxed/simple;
+	bh=WqSDU0SPpqIx4nA7+7gIBX5zMkW+uH6DEn1HLzf4Eok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iTIoSjVaPeu5C10COYC4sU6NFcKITRc6jTG4jfHbg2Wsibb/haJ49Orq+R6dFF/nnXO8VNJJZ9x1oVTQu21CD33JU6WPsrbtrGEFmrPXgRUtIU3ixz8+leGgkepl1Jat0gXy0TGBwxaSc7+cvBQuKl0WFE5TqcEi30vgwkk6E40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swf70X3d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB44C4CEF4;
-	Tue,  2 Sep 2025 13:45:12 +0000 (UTC)
+	 MIME-Version; b=Spa/b1Q0Y7VZvmTLSOAUCxOl63B/YEXaL0XnZdDsv1jy4YtNAi5i9TWvFB9iQ8pmrob4q0OppfGCGA1iG3WrjMgxVwAI+z/AlaEi9VJnK6Q+bLFyyC0aauvRQfy12gehWeVfWjwIVIwPmUoVuWe7Ld7kj0qJUhSW6lSC4B0aw/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdhrNBUY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD44C4CEED;
+	Tue,  2 Sep 2025 13:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820712;
-	bh=KXVzDdYviA2Y8tVxc9RQkNIL8+L9yidOnhmHTdyqj+Q=;
+	s=korg; t=1756820765;
+	bh=WqSDU0SPpqIx4nA7+7gIBX5zMkW+uH6DEn1HLzf4Eok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swf70X3dlUI6c7gwrLXiGsHT7htHak8Gwso8BXth20yNtRCKBO0geAwDYa0gJ+vzZ
-	 0sZSxWU+9vSXYYH7jaHxpqHid2zUhC3AKcqCBCWemnRBk7Es9+Je8l5H1fRUELsczO
-	 T6g1906NwNKjsYar549DpOWMVs3+Q1LB0L7Q+JOo=
+	b=FdhrNBUYu3pgU/VyDAjFIgB1XDJWb3B6Jiy2Xd1zotEZ7BBn+yyfEPicxP1+zaUJz
+	 lgmOhQybHQMSvF2bY8hT7jJKFK5lBk6TSHhW/wcLiE4axdG8AObIRcwSKWsqnz1bAD
+	 7p9dOpuYFSmfZkZViff7h1odAJHYDBL/hUTjVtKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Paul Olaru <paul.olaru@oss.nxp.com>,
-	Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
-	Rander Wang <rander.wang@intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	=?UTF-8?q?Micha=C5=82=20G=C3=B3rny?= <mgorny@gentoo.org>
-Subject: [PATCH 5.10 30/34] ASoC: Intel: bxt_da7219_max98357a: shrink platform_id below 20 characters
-Date: Tue,  2 Sep 2025 15:21:56 +0200
-Message-ID: <20250902131927.813850406@linuxfoundation.org>
+	Alexei Lazar <alazar@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 11/23] net/mlx5e: Update and set Xon/Xoff upon MTU set
+Date: Tue,  2 Sep 2025 15:21:57 +0200
+Message-ID: <20250902131925.174468678@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131924.720400762@linuxfoundation.org>
+References: <20250902131924.720400762@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +62,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Alexei Lazar <alazar@nvidia.com>
 
-commit 24e46fb811e991f56d5694b10ae7ceb8d2b8c846 upstream.
+[ Upstream commit ceddedc969f0532b7c62ca971ee50d519d2bc0cb ]
 
-Sparse throwns the following warnings:
+Xon/Xoff sizes are derived from calculation that include the MTU size.
+Set Xon/Xoff when MTU is set.
+If Xon/Xoff fails, set the previous MTU.
 
-sound/soc/intel/boards/bxt_da7219_max98357a.c:843:19: error: too long
-initializer-string for array of char(no space for nul char)
-
-sound/soc/intel/boards/bxt_da7219_max98357a.c:844:19: error: too long
-initializer-string for array of char(no space for nul char)
-
-sound/soc/intel/boards/bxt_da7219_max98357a.c:845:19: error: too long
-initializer-string for array of char(no space for nul char)
-
-Fix by using the 'mx' acronyn for Maxim
-
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Paul Olaru <paul.olaru@oss.nxp.com>
-Reviewed-by: Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>
-Reviewed-by: Rander Wang <rander.wang@intel.com>
-Link: https://lore.kernel.org/r/20210511213707.32958-5-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Michał Górny <mgorny@gentoo.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250825143435.598584-10-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bxt_da7219_max98357a.c     |   12 ++++++------
- sound/soc/intel/common/soc-acpi-intel-bxt-match.c |    2 +-
- sound/soc/intel/common/soc-acpi-intel-cml-match.c |    2 +-
- sound/soc/intel/common/soc-acpi-intel-glk-match.c |    2 +-
- 4 files changed, 9 insertions(+), 9 deletions(-)
+ .../mellanox/mlx5/core/en/port_buffer.h         | 12 ++++++++++++
+ .../net/ethernet/mellanox/mlx5/core/en_main.c   | 17 ++++++++++++++++-
+ 2 files changed, 28 insertions(+), 1 deletion(-)
 
---- a/sound/soc/intel/boards/bxt_da7219_max98357a.c
-+++ b/sound/soc/intel/boards/bxt_da7219_max98357a.c
-@@ -840,9 +840,9 @@ static int broxton_audio_probe(struct pl
- }
- 
- static const struct platform_device_id bxt_board_ids[] = {
--	{ .name = "bxt_da7219_max98357a" },
--	{ .name = "glk_da7219_max98357a" },
--	{ .name = "cml_da7219_max98357a" },
-+	{ .name = "bxt_da7219_mx98357a" },
-+	{ .name = "glk_da7219_mx98357a" },
-+	{ .name = "cml_da7219_mx98357a" },
- 	{ }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
+index 34f55b81a0deb..7b852b87a609f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
+@@ -64,11 +64,23 @@ struct mlx5e_port_buffer {
+ 	struct mlx5e_bufferx_reg  buffer[MLX5E_MAX_BUFFER];
  };
  
-@@ -866,6 +866,6 @@ MODULE_AUTHOR("Naveen Manohar <naveen.m@
- MODULE_AUTHOR("Mac Chiang <mac.chiang@intel.com>");
- MODULE_AUTHOR("Brent Lu <brent.lu@intel.com>");
- MODULE_LICENSE("GPL v2");
--MODULE_ALIAS("platform:bxt_da7219_max98357a");
--MODULE_ALIAS("platform:glk_da7219_max98357a");
--MODULE_ALIAS("platform:cml_da7219_max98357a");
-+MODULE_ALIAS("platform:bxt_da7219_mx98357a");
-+MODULE_ALIAS("platform:glk_da7219_mx98357a");
-+MODULE_ALIAS("platform:cml_da7219_mx98357a");
---- a/sound/soc/intel/common/soc-acpi-intel-bxt-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-bxt-match.c
-@@ -56,7 +56,7 @@ struct snd_soc_acpi_mach snd_soc_acpi_in
- 	},
- 	{
- 		.id = "DLGS7219",
--		.drv_name = "bxt_da7219_max98357a",
-+		.drv_name = "bxt_da7219_mx98357a",
- 		.fw_filename = "intel/dsp_fw_bxtn.bin",
- 		.machine_quirk = snd_soc_acpi_codec_list,
- 		.quirk_data = &bxt_codecs,
---- a/sound/soc/intel/common/soc-acpi-intel-cml-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-cml-match.c
-@@ -54,7 +54,7 @@ struct snd_soc_acpi_mach snd_soc_acpi_in
- 	},
- 	{
- 		.id = "DLGS7219",
--		.drv_name = "cml_da7219_max98357a",
-+		.drv_name = "cml_da7219_mx98357a",
- 		.machine_quirk = snd_soc_acpi_codec_list,
- 		.quirk_data = &max98357a_spk_codecs,
- 		.sof_fw_filename = "sof-cml.ri",
---- a/sound/soc/intel/common/soc-acpi-intel-glk-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
-@@ -24,7 +24,7 @@ struct snd_soc_acpi_mach snd_soc_acpi_in
- 	},
- 	{
- 		.id = "DLGS7219",
--		.drv_name = "glk_da7219_max98357a",
-+		.drv_name = "glk_da7219_mx98357a",
- 		.fw_filename = "intel/dsp_fw_glk.bin",
- 		.machine_quirk = snd_soc_acpi_codec_list,
- 		.quirk_data = &glk_codecs,
++#ifdef CONFIG_MLX5_CORE_EN_DCB
+ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
+ 				    u32 change, unsigned int mtu,
+ 				    struct ieee_pfc *pfc,
+ 				    u32 *buffer_size,
+ 				    u8 *prio2buffer);
++#else
++static inline int
++mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
++				u32 change, unsigned int mtu,
++				void *pfc,
++				u32 *buffer_size,
++				u8 *prio2buffer)
++{
++	return 0;
++}
++#endif
+ 
+ int mlx5e_port_query_buffer(struct mlx5e_priv *priv,
+ 			    struct mlx5e_port_buffer *port_buffer);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index b3ba996004f1d..41bd16cc9d0f6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -42,6 +42,7 @@
+ #include "eswitch.h"
+ #include "en.h"
+ #include "en/txrx.h"
++#include "en/port_buffer.h"
+ #include "en_tc.h"
+ #include "en_rep.h"
+ #include "en_accel/ipsec.h"
+@@ -2894,9 +2895,11 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
+ 	struct mlx5e_params *params = &priv->channels.params;
+ 	struct net_device *netdev = priv->netdev;
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+-	u16 mtu;
++	u16 mtu, prev_mtu;
+ 	int err;
+ 
++	mlx5e_query_mtu(mdev, params, &prev_mtu);
++
+ 	err = mlx5e_set_mtu(mdev, params, params->sw_mtu);
+ 	if (err)
+ 		return err;
+@@ -2906,6 +2909,18 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
+ 		netdev_warn(netdev, "%s: VPort MTU %d is different than netdev mtu %d\n",
+ 			    __func__, mtu, params->sw_mtu);
+ 
++	if (mtu != prev_mtu && MLX5_BUFFER_SUPPORTED(mdev)) {
++		err = mlx5e_port_manual_buffer_config(priv, 0, mtu,
++						      NULL, NULL, NULL);
++		if (err) {
++			netdev_warn(netdev, "%s: Failed to set Xon/Xoff values with MTU %d (err %d), setting back to previous MTU %d\n",
++				    __func__, mtu, err, prev_mtu);
++
++			mlx5e_set_mtu(mdev, params, prev_mtu);
++			return err;
++		}
++	}
++
+ 	params->sw_mtu = mtu;
+ 	return 0;
+ }
+-- 
+2.50.1
+
 
 
 
