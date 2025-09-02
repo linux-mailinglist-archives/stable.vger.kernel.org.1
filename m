@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-177291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCD9B40476
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A80B40404
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D128B560BB4
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:40:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3106D7BC41C
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA56324B37;
-	Tue,  2 Sep 2025 13:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8BB3128CD;
+	Tue,  2 Sep 2025 13:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8TH2WUx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyD7fhxg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173DB3064BB;
-	Tue,  2 Sep 2025 13:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A013128CB;
+	Tue,  2 Sep 2025 13:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820183; cv=none; b=ZnkiKs/5Mqlohe17zw9mKkOaPkCd5HjkP8GpC4z3mZEg8oRxG6hXDcOYrU4lpWYBvuf++mG3RtcgJ5zm7JT6ofwqjKLPCZc/49TNsEV4SDif2rCyAhux2MpzEc8SbjsDa6kUjJIvypLGgPJRAPm9iOxATrdommjhT8IA2xbHkIU=
+	t=1756819999; cv=none; b=W78zRid6RqtyyGZwaqqU/aQVByui8tDAto9fZvY5XHVIBdnieYuPzXk2EluNel7sm980IPO7ugk/bqnlDUtgOkKxm8OsXrDYEOMUHEU7EtFBn2QNv7ZJDo/AFz5yIqe0CeF8U/CZBygyLZUX7r28ktzvDCPmmaZhwmUeJ0I5Nes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820183; c=relaxed/simple;
-	bh=ey4vJud2LmCEg6NH6KWXC3UUjZZvDwTzwCKUfSoRSgA=;
+	s=arc-20240116; t=1756819999; c=relaxed/simple;
+	bh=b+xiNj0wWQ3xays4FWZ7dD6H4RVEGOvzVPLzcwkOi78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7YkkJdQf2zKG4EYO5ThTmvb/HEfXBqj7OtSeGd4pY4Ap9yfQn1amR+XC41ld95ykM0HlOurDixVCWQ7XudsbfQEkA/4ko6ZDH6+1YSHIN6VJLlnItDgK1NR0naix19CF4IUyvQrzLSXMRZP2NF9SYRNkN0SbEYWmaa7JPrJ7do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8TH2WUx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 413DCC4CEED;
-	Tue,  2 Sep 2025 13:36:21 +0000 (UTC)
+	 MIME-Version; b=kvfEMjX9GVJimTRFPGALa4MZtqSBQG7ElJp1mXAVQwdKMAHdi72mBD0BaelJnSop5NPlTvBtod9TADnb9SlE+8BbZn10fE+SdbKTOFsEL9QFTwgDpphDqyzhCFFuwIQghFpyxWD7DKF1/xNZolED0WYQo2KZOtIie0zYvafWCEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyD7fhxg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F915C4CEED;
+	Tue,  2 Sep 2025 13:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820181;
-	bh=ey4vJud2LmCEg6NH6KWXC3UUjZZvDwTzwCKUfSoRSgA=;
+	s=korg; t=1756819998;
+	bh=b+xiNj0wWQ3xays4FWZ7dD6H4RVEGOvzVPLzcwkOi78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v8TH2WUxC1bRgVWh5Ahm6FwBBcJYL1Y/rg5isl34y2QZnKFhFksWY9DkUvu5sC704
-	 3+RmvUWGhvHyUeIa5IqTcbgWKAkSh1q3POWbQaPuofkSrn76wO11IXKDdGm8ci4ZEW
-	 6N2i+ldzwma0RJ04DaAjrvQK86Llw1l1YA2XjRuU=
+	b=fyD7fhxgABZVfmu1UWSIk3mIwltx2HWBIwOOSUt9Bcw4AFPvyBi2khvNEY75xjAQS
+	 XEQ6IoYRunYJcx+GihDvAE/WUct+rUBiMfFbQseRsY8jrNVdM1KD1YRJUtjRXBwEx6
+	 xB8WyKctJKRFPcFyWZi7lxL1lL7pBx8803+Dlg10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ludovico de Nittis <ludovico.denittis@collabora.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Takamitsu Iwai <takamitz@amazon.co.jp>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 23/75] Bluetooth: hci_event: Mark connection as closed during suspend disconnect
+Subject: [PATCH 6.12 59/95] net: rose: split remove and free operations in rose_remove_neigh()
 Date: Tue,  2 Sep 2025 15:20:35 +0200
-Message-ID: <20250902131936.028989423@linuxfoundation.org>
+Message-ID: <20250902131941.870174209@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ludovico de Nittis <ludovico.denittis@collabora.com>
+From: Takamitsu Iwai <takamitz@amazon.co.jp>
 
-[ Upstream commit b7fafbc499b5ee164018eb0eefe9027f5a6aaad2 ]
+[ Upstream commit dcb34659028f856c423a29ef9b4e2571d203444d ]
 
-When suspending, the disconnect command for an active Bluetooth
-connection could be issued, but the corresponding
-`HCI_EV_DISCONN_COMPLETE` event might not be received before the system
-completes the suspend process. This can lead to an inconsistent state.
+The current rose_remove_neigh() performs two distinct operations:
+1. Removes rose_neigh from rose_neigh_list
+2. Frees the rose_neigh structure
 
-On resume, the controller may auto-accept reconnections from the same
-device (due to suspend event filters), but these new connections are
-rejected by the kernel which still has connection objects from before
-suspend. Resulting in errors like:
-```
-kernel: Bluetooth: hci0: ACL packet for unknown connection handle 1
-kernel: Bluetooth: hci0: Ignoring HCI_Connection_Complete for existing
-connection
-```
+Split these operations into separate functions to improve maintainability
+and prepare for upcoming refcount_t conversion. The timer cleanup remains
+in rose_remove_neigh() because free operations can be called from timer
+itself.
 
-This is a btmon snippet that shows the issue:
-```
-< HCI Command: Disconnect (0x01|0x0006) plen 3
-        Handle: 1 Address: 78:20:A5:4A:DF:28 (Nintendo Co.,Ltd)
-        Reason: Remote User Terminated Connection (0x13)
-> HCI Event: Command Status (0x0f) plen 4
-      Disconnect (0x01|0x0006) ncmd 2
-        Status: Success (0x00)
-[...]
-// Host suspends with the event filter set for the device
-// On resume, the device tries to reconnect with a new handle
+This patch introduce rose_neigh_put() to handle the freeing of rose_neigh
+structures and modify rose_remove_neigh() to handle removal only.
 
-> HCI Event: Connect Complete (0x03) plen 11
-        Status: Success (0x00)
-        Handle: 2
-        Address: 78:20:A5:4A:DF:28 (Nintendo Co.,Ltd)
-
-// Kernel ignores this event because there is an existing connection
-with
-// handle 1
-```
-
-By explicitly setting the connection state to BT_CLOSED we can ensure a
-consistent state, even if we don't receive the disconnect complete event
-in time.
-
-Link: https://github.com/bluez/bluez/issues/1226
-Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
-Signed-off-by: Ludovico de Nittis <ludovico.denittis@collabora.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Takamitsu Iwai <takamitz@amazon.co.jp>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250823085857.47674-2-takamitz@amazon.co.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: d860d1faa6b2 ("net: rose: convert 'use' field to refcount_t")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/net/rose.h    |  8 ++++++++
+ net/rose/rose_route.c | 15 ++++++---------
+ 2 files changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index fb5e4e4858f77..a07ad1c99a4b0 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -2707,6 +2707,12 @@ static void hci_cs_disconnect(struct hci_dev *hdev, u8 status)
- 		goto done;
+diff --git a/include/net/rose.h b/include/net/rose.h
+index 23267b4efcfa3..174b4f605d849 100644
+--- a/include/net/rose.h
++++ b/include/net/rose.h
+@@ -151,6 +151,14 @@ struct rose_sock {
+ 
+ #define rose_sk(sk) ((struct rose_sock *)(sk))
+ 
++static inline void rose_neigh_put(struct rose_neigh *rose_neigh)
++{
++	if (rose_neigh->ax25)
++		ax25_cb_put(rose_neigh->ax25);
++	kfree(rose_neigh->digipeat);
++	kfree(rose_neigh);
++}
++
+ /* af_rose.c */
+ extern ax25_address rose_callsign;
+ extern int  sysctl_rose_restart_request_timeout;
+diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
+index a7054546f52df..b406b1e0fb1e7 100644
+--- a/net/rose/rose_route.c
++++ b/net/rose/rose_route.c
+@@ -234,20 +234,12 @@ static void rose_remove_neigh(struct rose_neigh *rose_neigh)
+ 
+ 	if ((s = rose_neigh_list) == rose_neigh) {
+ 		rose_neigh_list = rose_neigh->next;
+-		if (rose_neigh->ax25)
+-			ax25_cb_put(rose_neigh->ax25);
+-		kfree(rose_neigh->digipeat);
+-		kfree(rose_neigh);
+ 		return;
  	}
  
-+	/* During suspend, mark connection as closed immediately
-+	 * since we might not receive HCI_EV_DISCONN_COMPLETE
-+	 */
-+	if (hdev->suspended)
-+		conn->state = BT_CLOSED;
-+
- 	mgmt_conn = test_and_clear_bit(HCI_CONN_MGMT_CONNECTED, &conn->flags);
+ 	while (s != NULL && s->next != NULL) {
+ 		if (s->next == rose_neigh) {
+ 			s->next = rose_neigh->next;
+-			if (rose_neigh->ax25)
+-				ax25_cb_put(rose_neigh->ax25);
+-			kfree(rose_neigh->digipeat);
+-			kfree(rose_neigh);
+ 			return;
+ 		}
  
- 	if (conn->type == ACL_LINK) {
+@@ -331,8 +323,10 @@ static int rose_del_node(struct rose_route_struct *rose_route,
+ 		if (rose_node->neighbour[i] == rose_neigh) {
+ 			rose_neigh->count--;
+ 
+-			if (rose_neigh->count == 0 && rose_neigh->use == 0)
++			if (rose_neigh->count == 0 && rose_neigh->use == 0) {
+ 				rose_remove_neigh(rose_neigh);
++				rose_neigh_put(rose_neigh);
++			}
+ 
+ 			rose_node->count--;
+ 
+@@ -513,6 +507,7 @@ void rose_rt_device_down(struct net_device *dev)
+ 		}
+ 
+ 		rose_remove_neigh(s);
++		rose_neigh_put(s);
+ 	}
+ 	spin_unlock_bh(&rose_neigh_list_lock);
+ 	spin_unlock_bh(&rose_node_list_lock);
+@@ -569,6 +564,7 @@ static int rose_clear_routes(void)
+ 		if (s->use == 0 && !s->loopback) {
+ 			s->count = 0;
+ 			rose_remove_neigh(s);
++			rose_neigh_put(s);
+ 		}
+ 	}
+ 
+@@ -1301,6 +1297,7 @@ void __exit rose_rt_free(void)
+ 		rose_neigh = rose_neigh->next;
+ 
+ 		rose_remove_neigh(s);
++		rose_neigh_put(s);
+ 	}
+ 
+ 	while (rose_node != NULL) {
 -- 
 2.50.1
 
