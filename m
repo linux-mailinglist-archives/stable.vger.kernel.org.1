@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-177435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE774B404F4
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89763B4057B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:54:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CA557A67A6
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BB7D1B67955
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E05B30BF6E;
-	Tue,  2 Sep 2025 13:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826193064AF;
+	Tue,  2 Sep 2025 13:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1tcUKu1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MU722h4t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACB82F1FC1;
-	Tue,  2 Sep 2025 13:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D778304BA0;
+	Tue,  2 Sep 2025 13:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820634; cv=none; b=pSDQa636czDElaHFCBqfEneKFhchdzgH1NLZ50Hj7TpjPzEcxwpN6xOly2pWMFFLQr2c5TA4PusYcjAUXRIL/hMwQvLIlLtCt4dCTwtkLbqdv/j6B7y6krv5EFeUO8X3Jy72q58SjHyagT69huawi8ys0aJvf2BXDTNeS8rzCyc=
+	t=1756820687; cv=none; b=J76dLm4mEBBUSbb+zInZ2qwLWBU11HjenqMf2aHb2m3VxCbbNokxU6eKg0TMyPs5iNN0rivIuDGn4EwgOCtDga1FO9rey/G/nhoYzpbPXwwfESY/dRLxLNTx3cvoTa6cH9SqENUt85XKYpQtahJiRDSBtP9QSNTqL5cDKaYAI+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820634; c=relaxed/simple;
-	bh=VRIr4BCIEKc7EWmgpBfAk1TJvHO6b+zd7YTi+Z9C2pc=;
+	s=arc-20240116; t=1756820687; c=relaxed/simple;
+	bh=rhOawZDNyEwLR/wh0ImnaNMetcaq7idO8vfUO0OVSXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+lzPCSE4QdXAGZBaDJ6tD3DJbHHu39Mli3hHLfbWKpBqnV3XvbrP/DD2kehzayTkg+2pT70hFYqGLxcpjOScUyywjhKNPpKApa8H2YW5MjocUp3biuJaYw/O3Q9Em8JXMuf27iNURVaBjw95U3zkimuLQvbb/8pI0Lvv0kPY+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1tcUKu1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D6EC4CEF4;
-	Tue,  2 Sep 2025 13:43:53 +0000 (UTC)
+	 MIME-Version; b=G/vEH5eZc9CEGGR9ugRBfxzTaAJvDkr5JQfSHY4Jn/CxNzAxXFAdwMAREqeChmuYHnwijE0g7rHa1eU56PZ7n1ms3QzT9qvBeFfngAxRvCJ17VY/KSSwgDcjFQ4H67C5KRKvROyq/UMRLfpnvse4CipGhRTyDoOsYm8qKFGLQy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MU722h4t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A270EC4CEED;
+	Tue,  2 Sep 2025 13:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820633;
-	bh=VRIr4BCIEKc7EWmgpBfAk1TJvHO6b+zd7YTi+Z9C2pc=;
+	s=korg; t=1756820687;
+	bh=rhOawZDNyEwLR/wh0ImnaNMetcaq7idO8vfUO0OVSXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1tcUKu1JDUQ16sBaP0d4L+yq6Jx7OwXPBBpo/bvgvEeT3tvgWDWh4J9PkzddTFl7
-	 yzKaxiKuBp7edchZvCAUCA1mngQzftdkRhnbSAIa0hy9P3njlofqFSg+kNJ+DmFwcQ
-	 1iP8SzqmVgNnEAGv2u/hU6yFEoccYoM1NRBLs114=
+	b=MU722h4tUwFnxkDFHrgsdlbyalJzQCQkhwTecNLNCEzQamh7DpnzKYWwp9olQJy9F
+	 me/oScla1lb7Oj/hVSg6qLe/zSuUSEA/gYRQ9qjBsMFvDRHHyHpWyzPRaSN3xu860C
+	 jlVNBKGxCltpyDHLhTr34IqHC7M7ocsgSyyw001w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Lazar <alazar@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 15/33] net/mlx5e: Update and set Xon/Xoff upon MTU set
+	Andrey Ryabinin <arbn@yandex-team.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 5.10 07/34] vhost/net: Protect ubufs with rcu read lock in vhost_net_ubuf_put()
 Date: Tue,  2 Sep 2025 15:21:33 +0200
-Message-ID: <20250902131927.651999782@linuxfoundation.org>
+Message-ID: <20250902131926.908498638@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
-References: <20250902131927.045875971@linuxfoundation.org>
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
+References: <20250902131926.607219059@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit ceddedc969f0532b7c62ca971ee50d519d2bc0cb ]
+commit dd54bcf86c91a4455b1f95cbc8e9ac91205f3193 upstream.
 
-Xon/Xoff sizes are derived from calculation that include the MTU size.
-Set Xon/Xoff when MTU is set.
-If Xon/Xoff fails, set the previous MTU.
+When operating on struct vhost_net_ubuf_ref, the following execution
+sequence is theoretically possible:
+CPU0 is finalizing DMA operation                   CPU1 is doing VHOST_NET_SET_BACKEND
+                             // ubufs->refcount == 2
+vhost_net_ubuf_put()                               vhost_net_ubuf_put_wait_and_free(oldubufs)
+                                                     vhost_net_ubuf_put_and_wait()
+                                                       vhost_net_ubuf_put()
+                                                         int r = atomic_sub_return(1, &ubufs->refcount);
+                                                         // r = 1
+int r = atomic_sub_return(1, &ubufs->refcount);
+// r = 0
+                                                      wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
+                                                      // no wait occurs here because condition is already true
+                                                    kfree(ubufs);
+if (unlikely(!r))
+  wake_up(&ubufs->wait);  // use-after-free
 
-Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250825143435.598584-10-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This leads to use-after-free on ubufs access. This happens because CPU1
+skips waiting for wake_up() when refcount is already zero.
+
+To prevent that use a read-side RCU critical section in vhost_net_ubuf_put(),
+as suggested by Hillf Danton. For this lock to take effect, free ubufs with
+kfree_rcu().
+
+Cc: stable@vger.kernel.org
+Fixes: 0ad8b480d6ee9 ("vhost: fix ref cnt checking deadlock")
+Reported-by: Andrey Ryabinin <arbn@yandex-team.com>
+Suggested-by: Hillf Danton <hdanton@sina.com>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Message-Id: <20250805130917.727332-1-kniv@yandex-team.ru>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlx5/core/en/port_buffer.h         | 12 ++++++++++++
- .../net/ethernet/mellanox/mlx5/core/en_main.c   | 17 ++++++++++++++++-
- 2 files changed, 28 insertions(+), 1 deletion(-)
+ drivers/vhost/net.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-index 80af7a5ac6046..a23e3d810f3e4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-@@ -63,11 +63,23 @@ struct mlx5e_port_buffer {
- 	struct mlx5e_bufferx_reg  buffer[MLX5E_MAX_BUFFER];
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -95,6 +95,7 @@ struct vhost_net_ubuf_ref {
+ 	atomic_t refcount;
+ 	wait_queue_head_t wait;
+ 	struct vhost_virtqueue *vq;
++	struct rcu_head rcu;
  };
  
-+#ifdef CONFIG_MLX5_CORE_EN_DCB
- int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
- 				    u32 change, unsigned int mtu,
- 				    struct ieee_pfc *pfc,
- 				    u32 *buffer_size,
- 				    u8 *prio2buffer);
-+#else
-+static inline int
-+mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
-+				u32 change, unsigned int mtu,
-+				void *pfc,
-+				u32 *buffer_size,
-+				u8 *prio2buffer)
-+{
-+	return 0;
-+}
-+#endif
+ #define VHOST_NET_BATCH 64
+@@ -248,9 +249,13 @@ vhost_net_ubuf_alloc(struct vhost_virtqu
  
- int mlx5e_port_query_buffer(struct mlx5e_priv *priv,
- 			    struct mlx5e_port_buffer *port_buffer);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 321441e6ad328..bb7e3c80ad74e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -42,6 +42,7 @@
- #include "eswitch.h"
- #include "en.h"
- #include "en/txrx.h"
-+#include "en/port_buffer.h"
- #include "en_tc.h"
- #include "en_rep.h"
- #include "en_accel/ipsec.h"
-@@ -2242,9 +2243,11 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
- 	struct mlx5e_params *params = &priv->channels.params;
- 	struct net_device *netdev = priv->netdev;
- 	struct mlx5_core_dev *mdev = priv->mdev;
--	u16 mtu;
-+	u16 mtu, prev_mtu;
- 	int err;
- 
-+	mlx5e_query_mtu(mdev, params, &prev_mtu);
+ static int vhost_net_ubuf_put(struct vhost_net_ubuf_ref *ubufs)
+ {
+-	int r = atomic_sub_return(1, &ubufs->refcount);
++	int r;
 +
- 	err = mlx5e_set_mtu(mdev, params, params->sw_mtu);
- 	if (err)
- 		return err;
-@@ -2254,6 +2257,18 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
- 		netdev_warn(netdev, "%s: VPort MTU %d is different than netdev mtu %d\n",
- 			    __func__, mtu, params->sw_mtu);
- 
-+	if (mtu != prev_mtu && MLX5_BUFFER_SUPPORTED(mdev)) {
-+		err = mlx5e_port_manual_buffer_config(priv, 0, mtu,
-+						      NULL, NULL, NULL);
-+		if (err) {
-+			netdev_warn(netdev, "%s: Failed to set Xon/Xoff values with MTU %d (err %d), setting back to previous MTU %d\n",
-+				    __func__, mtu, err, prev_mtu);
-+
-+			mlx5e_set_mtu(mdev, params, prev_mtu);
-+			return err;
-+		}
-+	}
-+
- 	params->sw_mtu = mtu;
- 	return 0;
++	rcu_read_lock();
++	r = atomic_sub_return(1, &ubufs->refcount);
+ 	if (unlikely(!r))
+ 		wake_up(&ubufs->wait);
++	rcu_read_unlock();
+ 	return r;
  }
--- 
-2.50.1
-
+ 
+@@ -263,7 +268,7 @@ static void vhost_net_ubuf_put_and_wait(
+ static void vhost_net_ubuf_put_wait_and_free(struct vhost_net_ubuf_ref *ubufs)
+ {
+ 	vhost_net_ubuf_put_and_wait(ubufs);
+-	kfree(ubufs);
++	kfree_rcu(ubufs, rcu);
+ }
+ 
+ static void vhost_net_clear_ubuf_info(struct vhost_net *n)
 
 
 
