@@ -1,264 +1,116 @@
-Return-Path: <stable+bounces-176969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50AFB3FBF1
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:12:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6ECDB3FBFF
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91453480519
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:12:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61C041B22C8B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81DF2EE285;
-	Tue,  2 Sep 2025 10:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m0iq12Hp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C40726B2CE;
+	Tue,  2 Sep 2025 10:16:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3A62EA49D;
-	Tue,  2 Sep 2025 10:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB282BD11;
+	Tue,  2 Sep 2025 10:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756807939; cv=none; b=HG+w0xAZ5paa/VIoS3rYQAYZiSoskUKGQK5VysEczTqNlGgxnVp2OF9VpXu29AvTxvVcR98E6JzWqSi2e4U6mRgTl8BDfWLn0nsu2+JNnsq/oyPVaY6tYB46aqP/nX9aeyH/7qCdqHY0a7Bd3HXMBPxczd5gM9DAHGqJWjjygJY=
+	t=1756808213; cv=none; b=HXb6nfYJQ+1ikaDoqCMcBJ04u2WUDCghJYlnusprPqgH/gKF74pJwvZ5HnwxCNInRKqjus+8igHvlDgeF4dXE/2d+yY1r9b5epotebySHqx326m6vwJYr+5bYYvgtfhYZEup7T6HSf1NmW/yVKK9JYJrfTJjI8vXEhUIqdIUh/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756807939; c=relaxed/simple;
-	bh=dLzEaqaX+WltyZNFo8+JxunBRV1p0dzHnmT+/Qzfz8o=;
+	s=arc-20240116; t=1756808213; c=relaxed/simple;
+	bh=MiuVwlDkQpkcmg4SsiFuwfX5YZ5iFvnaXQsJoKawFBk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PMyFmBEOWGwauDvdY6H9ZaJPy02gYsqoRCADz4V2/4slLKGxAI4r3yP9AmJLSb6ZTYzlvJl0NH13/DhALnbnCHmwgT+n1dJYWVctCbKGOzr0buLR6IUdQHkcogZoJMVQLnJLnhkp4lh9OcoVPUWmAWOotA62T1HUvEQgnnbpHNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m0iq12Hp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4683CC4CEED;
-	Tue,  2 Sep 2025 10:12:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756807938;
-	bh=dLzEaqaX+WltyZNFo8+JxunBRV1p0dzHnmT+/Qzfz8o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m0iq12HpLoyS1ZEAT5vmL19wjDENpOw9N5G0QDaXoQdlEofns52lh6RpdN50jPO1R
-	 ak9cN19qpcWOmfzidBioNz9i37LW2qVyAl5dWev8b84X8BSTgtW0ZMyF4wiZ0tODeg
-	 37l1Sep25jEgdMGQHpabFabtdhE+lwhO6o+Di9dJo0ZG6t2jmNfUBKH7M7uB3jFB6O
-	 5WZHS1PcaoBBHqm/0SYq7KvP1gHczRkZMPdsjuqXzDgfe9gJm7j7lDhlRX90wmt6SW
-	 SYOkHuV3FfBoVusXPqpobYqfqcRCBx/iMgfB9zkd2PB0fxpTLlrUzxcn+6lXr5mQOi
-	 N9IrNKtKmu07w==
-Date: Tue, 2 Sep 2025 11:12:11 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	kasan-dev@googlegroups.com, Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-	Matthew Maurer <mmaurer@google.com>,
-	Sami Tolvanen <samitolvanen@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] rust: kasan/kbuild: fix missing flags on first build
-Message-ID: <20250902-crablike-bountiful-eb1c127f024a@spud>
-References: <20250408220311.1033475-1-ojeda@kernel.org>
- <20250901-shrimp-define-9d99cc2a012a@spud>
- <aLaq6TpUtLkqHg_o@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=FtoGm8VKiEJ3lOkBsxez0XwZ5lStPc1HaNqJUj7zaHzxeRroI/F8TtqumSqwVczpNQUwABBaCT5KxTRpGkHMjCvW9vD4UmthmurBDtE6jBPHumhLawVfc0luSWEj7f8bdKfiIataqvl+0DkYYWar/vwUJ0YEQHFCA9Z0d+2+N38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 418FE169C;
+	Tue,  2 Sep 2025 03:16:42 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 305483F6A8;
+	Tue,  2 Sep 2025 03:16:49 -0700 (PDT)
+Date: Tue, 2 Sep 2025 11:16:46 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: Cristian Marussi <cristian.marussi@arm.com>, arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Sudeep Holla <sudeep.holla@arm.com>, stable@vger.kernel.org,
+	Jan Palus <jpalus@fastmail.com>
+Subject: Re: [PATCH] firmware: arm_scmi: quirk: fix write to string constant
+Message-ID: <20250902-axiomatic-salamander-of-reputation-d70aa8@sudeepholla>
+References: <20250829132152.28218-1-johan@kernel.org>
+ <aLG5XFHXKgcBida8@hovoldconsulting.com>
+ <aLa__M_VJYqxb9mc@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="H+VzOpbPUpNEExps"
-Content-Disposition: inline
-In-Reply-To: <aLaq6TpUtLkqHg_o@google.com>
-
-
---H+VzOpbPUpNEExps
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <aLa__M_VJYqxb9mc@hovoldconsulting.com>
 
-On Tue, Sep 02, 2025 at 08:29:29AM +0000, Alice Ryhl wrote:
-> On Mon, Sep 01, 2025 at 06:45:54PM +0100, Conor Dooley wrote:
-> > Yo,
-> >=20
-> > On Wed, Apr 09, 2025 at 12:03:11AM +0200, Miguel Ojeda wrote:
-> > > If KASAN is enabled, and one runs in a clean repository e.g.:
-> > >=20
-> > >     make LLVM=3D1 prepare
-> > >     make LLVM=3D1 prepare
-> > >=20
-> > > Then the Rust code gets rebuilt, which should not happen.
-> > >=20
-> > > The reason is some of the LLVM KASAN `rustc` flags are added in the
-> > > second run:
-> > >=20
-> > >     -Cllvm-args=3D-asan-instrumentation-with-call-threshold=3D10000
-> > >     -Cllvm-args=3D-asan-stack=3D0
-> > >     -Cllvm-args=3D-asan-globals=3D1
-> > >     -Cllvm-args=3D-asan-kernel-mem-intrinsic-prefix=3D1
-> > >=20
-> > > Further runs do not rebuild Rust because the flags do not change anym=
-ore.
-> > >=20
-> > > Rebuilding like that in the second run is bad, even if this just happ=
-ens
-> > > with KASAN enabled, but missing flags in the first one is even worse.
-> > >=20
-> > > The root issue is that we pass, for some architectures and for the mo=
-ment,
-> > > a generated `target.json` file. That file is not ready by the time `r=
-ustc`
-> > > gets called for the flag test, and thus the flag test fails just beca=
-use
-> > > the file is not available, e.g.:
-> > >=20
-> > >     $ ... --target=3D./scripts/target.json ... -Cllvm-args=3D...
-> > >     error: target file "./scripts/target.json" does not exist
-> > >=20
-> > > There are a few approaches we could take here to solve this. For inst=
-ance,
-> > > we could ensure that every time that the config is rebuilt, we regene=
-rate
-> > > the file and recompute the flags. Or we could use the LLVM version to
-> > > check for these flags, instead of testing the flag (which may have ot=
-her
-> > > advantages, such as allowing us to detect renames on the LLVM side).
-> > >=20
-> > > However, it may be easier than that: `rustc` is aware of the `-Cllvm-=
-args`
-> > > regardless of the `--target` (e.g. I checked that the list printed
-> > > is the same, plus that I can check for these flags even if I pass
-> > > a completely unrelated target), and thus we can just eliminate the
-> > > dependency completely.
-> > >=20
-> > > Thus filter out the target.
-> >=20
-> >=20
-> >=20
-> >=20
-> > > This does mean that `rustc-option` cannot be used to test a flag that
-> > > requires the right target, but we don't have other users yet, it is a
-> > > minimal change and we want to get rid of custom targets in the future.
-> >=20
-> > Hmm, while this might be true, I think it should not actually have been
-> > true. Commit ca627e636551e ("rust: cfi: add support for CFI_CLANG with =
-Rust")
-> > added a cc-option check to the rust kconfig symbol, checking if the c
-> > compiler supports the integer normalisations stuff:
-> > 	depends on !CFI_CLANG || RUSTC_VERSION >=3D 107900 && $(cc-option,-fsa=
-nitize=3Dkcfi -fsanitize-cfi-icall-experimental-normalize-integers)
-> > and also sets the relevant options in the makefile:
-> > 	ifdef CONFIG_RUST
-> > 	       # Always pass -Zsanitizer-cfi-normalize-integers as CONFIG_RUST=
- selects
-> > 	       # CONFIG_CFI_ICALL_NORMALIZE_INTEGERS.
-> > 	       RUSTC_FLAGS_CFI   :=3D -Zsanitizer=3Dkcfi -Zsanitizer-cfi-norma=
-lize-integers
-> > 	       KBUILD_RUSTFLAGS +=3D $(RUSTC_FLAGS_CFI)
-> > 	       export RUSTC_FLAGS_CFI
-> > 	endif
-> > but it should also have added a rustc-option check as, unfortunately,
-> > support for kcfi in rustc is target specific. This results in build
-> > breakages where the arch supports CFI_CLANG and RUST, but the target in
-> > use does not have the kcfi flag set.
-> > I attempted to fix this by adding:
-> > 	diff --git a/arch/Kconfig b/arch/Kconfig
-> > 	index d1b4ffd6e0856..235709fb75152 100644
-> > 	--- a/arch/Kconfig
-> > 	+++ b/arch/Kconfig
-> > 	@@ -916,6 +916,7 @@ config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
-> > 	 config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
-> > 	        def_bool y
-> > 	        depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
-> > 	+       depends on $(rustc-option,-C panic=3Dabort -Zsanitizer=3Dkcfi =
--Zsanitizer-cfi-normalize-integers)
-> > 	        depends on RUSTC_VERSION >=3D 107900
-> > 	        # With GCOV/KASAN we need this fix: https://github.com/rust-la=
-ng/rust/pull/129373
-> > 	        depends on (RUSTC_LLVM_VERSION >=3D 190103 && RUSTC_VERSION >=
-=3D 108200) || \
-> > but of course this does not work for cross compilation, as you're
-> > stripping the target information out and so the check passes on my host
-> > even though my intended
-> > RUSTC_BOOTSTRAP=3D1 rustc -C panic=3Dabort -Zsanitizer=3Dkcfi -Zsanitiz=
-er-cfi-normalize-integers -Ctarget-cpu=3Dgeneric-rv64 --target=3Driscv64ima=
-c-unknown-none-elf
-> > is a failure.
-> >=20
-> > I dunno too much about rustc itself, but I suspect that adding kcfi to
-> > the target there is a "free" win, but that'll take time to trickle down
-> > and the minimum version rustc version for the kernel isn't going to have
-> > that.
-> >=20
-> > I'm not really sure what your target.json suggestion below is, so just
-> > reporting so that someone that understands the alternative solutions can
-> > fix this.
->=20
-> Probably right now we have to do this cfg by
->=20
-> 	depends on CONFIG_ARM
+On Tue, Sep 02, 2025 at 11:59:24AM +0200, Johan Hovold wrote:
+> Hi Sudeep,
+> 
+> On Fri, Aug 29, 2025 at 04:29:48PM +0200, Johan Hovold wrote:
+> > On Fri, Aug 29, 2025 at 03:21:52PM +0200, Johan Hovold wrote:
+> > > The quirk version range is typically a string constant and must not be
+> > > modified (e.g. as it may be stored in read-only memory):
+> > > 
+> > > 	Unable to handle kernel write to read-only memory at virtual
+> > > 	address ffffc036d998a947
+> > > 
+> > > Fix the range parsing so that it operates on a copy of the version range
+> > > string, and mark all the quirk strings as const to reduce the risk of
+> > > introducing similar future issues.
+> > 
+> > With Jan's permission, let's add:
+> > 
+> > Reported-by: Jan Palus <jpalus@fastmail.com>
+> > 
 
-It's valid on x86 too, right?
+I was hoping to hear back, but I assume silence is kind of acceptance.
 
->=20
-> to prevent riscv if rustc has the missing setting
-> set on riscv. Once we add it to riscv, we change it to
->=20
-> 	depends on CONFIG_ARM || (RUSTC_VERSION >=3D ??? || CONFIG_RISCV)
+> > > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220437
+> > > Fixes: 487c407d57d6 ("firmware: arm_scmi: Add common framework to handle firmware quirks")
+> > > Cc: stable@vger.kernel.org	# 6.16
+> > > Cc: Cristian Marussi <cristian.marussi@arm.com>
+> > > Signed-off-by: Johan Hovold <johan@kernel.org>
+> 
+> I noticed that you picked up this fix yesterday but also that you
+> rewrote the commit message and switched using cleanup helpers.
+> 
+> Please don't do such (non-trivial) changes without making that clear
+> in the commit message before your Signed-off-by tag:
+> 
+> 	[ sudeep: rewrite commit message; switch to cleanup helpers ]
+> 
 
-I kinda shied away from something like this since there was already a
-cc-option on the other half and checking different versions per arch
-becomes a mess - but yeah it kinda is a no-brainer to do it here when
-rustc-option is kinda broken.
+Sorry I meant to do that when I replied and asked you if you are OK
+with cleanup helpers. Also yes I planned to add a line like something
+above before finalizing.
 
-I guess the temporary fix is then:
+> In this case, you also changed the meaning so that the commit message
+> now reads like the sole reason that writing to string constants is wrong
+> is that they may reside in read-only memory.
+> 
 
-config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
-	def_bool y
-	depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
-	depends on ARM64 || x86_64
-	depends on RUSTC_VERSION >=3D 107900
-	# With GCOV/KASAN we need this fix: https://github.com/rust-lang/rust/pull=
-/129373
-	depends on (RUSTC_LLVM_VERSION >=3D 190103 && RUSTC_VERSION >=3D 108200) |=
-| \
-		(!GCOV_KERNEL && !KASAN_GENERIC && !KASAN_SW_TAGS)
+Ah, I didn't realise that it changes the meaning now.
 
-because there's no 32-bit target with SanitizerSet::KCFI in rustc either
-AFAICT. Then later on it'd become more like:
+> I used "e.g." on purpose instead of listing further reasons like the
+> fact that string constants may be shared so that parsing of one quirk
+> can subtly break a later one.
+>
 
-config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
-	def_bool y
-	depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
-	depends on RISCV || ((ARM64 || x86_64) && RUSTC_VERSION >=3D 107900)
-	depends on (ARM64 || x86_64) || (RISCV && RUSTC_VERSION >=3D 999999)
-	# With GCOV/KASAN we need this fix: https://github.com/rust-lang/rust/pull=
-/129373
-	depends on (RUSTC_LLVM_VERSION >=3D 190103 && RUSTC_VERSION >=3D 108200) |=
-| \
-		(!GCOV_KERNEL && !KASAN_GENERIC && !KASAN_SW_TAGS)
+I see your point, will revert to your commit message.
 
-but that exact sort of mess is what becomes unwieldy fast since that
-doesn't even cover 32-bit arm.
-
-
---H+VzOpbPUpNEExps
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaLbC+wAKCRB4tDGHoIJi
-0hjyAP9tByKVI1IGeavixZ01MOC4OXttf2BTFfivcgVEZF5lAAEA27I7Tv1B7oFK
-OTlynfN6TLIg3kRbEhZ4XzMKZVeSLgU=
-=lQ9s
------END PGP SIGNATURE-----
-
---H+VzOpbPUpNEExps--
+-- 
+Regards,
+Sudeep
 
