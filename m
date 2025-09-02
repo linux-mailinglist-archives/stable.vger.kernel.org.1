@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-177187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 414D9B403E5
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:37:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2EDB40355
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:31:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 925C51644C8
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:36:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB45D3B9203
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C7C307491;
-	Tue,  2 Sep 2025 13:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8800423D7EC;
+	Tue,  2 Sep 2025 13:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSXgbb1+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjQYEX5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732463064AF;
-	Tue,  2 Sep 2025 13:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422FF3074B7;
+	Tue,  2 Sep 2025 13:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819861; cv=none; b=Iu3UzW97UtXWy/DtbKVp7BxIYg1XYF54TT/SAPORMkfqTD5Qq/NMjo9eUHWcX24v/mMP/dufltGZGibM/dBjUB0XZ5fINL9v2nma2qCXYSfZEfdhLdkBg0ZT7vhr6EwcdS1Iniv3If0p0kK1+PAQz4vTrXaY4ApHh3RQnavsCLM=
+	t=1756819638; cv=none; b=WeCqxhAzQSQyUoRgawySODF1/JDYZG9O0umq2L35ydMsYvbhcM4itpboH4kzKZFBQOzmJ1xgt4UOKFQkrdob42pDjZyDVh3kFTR+slCHlbWnZ1iEDd1JLaKlSD5HNf3QufhEMHGxTYqeLO5HyMhxO2cDoetRjiWnjs3H6ds73ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819861; c=relaxed/simple;
-	bh=xULixPIUXsTKdbkzUx3xWSff0iBMPq2S8rbWWxs6f48=;
+	s=arc-20240116; t=1756819638; c=relaxed/simple;
+	bh=QkjlpKKrohaXHhF4yAoDFbHTLeDjA5lwnUUFmik9Ev4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VfZ/6U1g+AFsyFt9Gw5fbMpbVu9sC75oKHe/NAmol0yaAdUMeDuprAmfNdg+AFh19BFwKHlt5qA4kQJRsRzgVx3XzYahaKOy+mS+HFcNnCimuu85km6XuZaCoJtSV20/+bnyfSIh5u4O3fqRCINPpYaNhikk+Qlez3HRh61Cj2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSXgbb1+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000EBC4CEED;
-	Tue,  2 Sep 2025 13:31:00 +0000 (UTC)
+	 MIME-Version; b=nO80Vuj1gdyLlECnEElVTKp1//+hDI02FREop+JkKAQrCSrrUBEGcqDawYWNaY7ScRpy3MxGrGbrK78DJg9FNfBF70TmtKXX5YX+gGj/5TGuGOIJw34uNd5qrLrad8/npKVdA18Q/OpFSzEQSRcmwXkuLJWgGYC6DY7TasYMOZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjQYEX5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56A2C4CEED;
+	Tue,  2 Sep 2025 13:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819861;
-	bh=xULixPIUXsTKdbkzUx3xWSff0iBMPq2S8rbWWxs6f48=;
+	s=korg; t=1756819638;
+	bh=QkjlpKKrohaXHhF4yAoDFbHTLeDjA5lwnUUFmik9Ev4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSXgbb1+aGOcMn9+5mfr0O5x2gNca4I6PG73GHrYkaGTxraBeuAacXDf90nFqaQH/
-	 z2mGSNiyyEa/zkTRXWABRIjL0dcBsMMwfaDje62gfJwIYYSx9rjm2ySKGPSL5eVk0q
-	 VRiFyRdp1h3TQxd4RcD/AuLo1l/PSXZYib2ZlqWY=
+	b=TjQYEX5SNSi3WxXDMyV/5jB4Ojh4Hn9/1UVPkLM6JhIygQum42OeHe3jz4X9vYErt
+	 dkGv2GarWIMEelMneN6qI5QVT6BA48kdmi2WkwXxYDc4ZdkwVakhfpyQmsBXBfR0Hh
+	 YqFRj7jdDJJ9W7MZBCnBSrg93QJyGgtXsZNz/WuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett A C Sheffield <bacs@librecast.net>,
-	Oscar Maes <oscmaes92@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Suoxing Zhang <aftern00n@qq.com>,
+	Qingyue Zhang <chunzhennn@qq.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 19/95] net: ipv4: fix regression in local-broadcast routes
+Subject: [PATCH 6.16 093/142] io_uring/kbuf: fix signedness in this_len calculation
 Date: Tue,  2 Sep 2025 15:19:55 +0200
-Message-ID: <20250902131940.350844826@linuxfoundation.org>
+Message-ID: <20250902131951.827164904@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oscar Maes <oscmaes92@gmail.com>
+From: Qingyue Zhang <chunzhennn@qq.com>
 
-[ Upstream commit 5189446ba995556eaa3755a6e875bc06675b88bd ]
+[ Upstream commit c64eff368ac676e8540344d27a3de47e0ad90d21 ]
 
-Commit 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
-introduced a regression where local-broadcast packets would have their
-gateway set in __mkroute_output, which was caused by fi = NULL being
-removed.
+When importing and using buffers, buf->len is considered unsigned.
+However, buf->len is converted to signed int when committing. This can
+lead to unexpected behavior if the buffer is large enough to be
+interpreted as a negative value. Make min_t calculation unsigned.
 
-Fix this by resetting the fib_info for local-broadcast packets. This
-preserves the intended changes for directed-broadcast packets.
-
-Cc: stable@vger.kernel.org
-Fixes: 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
-Reported-by: Brett A C Sheffield <bacs@librecast.net>
-Closes: https://lore.kernel.org/regressions/20250822165231.4353-4-bacs@librecast.net
-Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250827062322.4807-1-oscmaes92@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
+Co-developed-by: Suoxing Zhang <aftern00n@qq.com>
+Signed-off-by: Suoxing Zhang <aftern00n@qq.com>
+Signed-off-by: Qingyue Zhang <chunzhennn@qq.com>
+Link: https://lore.kernel.org/r/tencent_4DBB3674C0419BEC2C0C525949DA410CA307@qq.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ io_uring/kbuf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 9a5c9497b3931..261ddb6542a40 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2532,12 +2532,16 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
- 		    !netif_is_l3_master(dev_out))
- 			return ERR_PTR(-EINVAL);
+diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+index f2d2cc319faac..81a13338dfab3 100644
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -39,7 +39,7 @@ static bool io_kbuf_inc_commit(struct io_buffer_list *bl, int len)
+ 		u32 this_len;
  
--	if (ipv4_is_lbcast(fl4->daddr))
-+	if (ipv4_is_lbcast(fl4->daddr)) {
- 		type = RTN_BROADCAST;
--	else if (ipv4_is_multicast(fl4->daddr))
-+
-+		/* reset fi to prevent gateway resolution */
-+		fi = NULL;
-+	} else if (ipv4_is_multicast(fl4->daddr)) {
- 		type = RTN_MULTICAST;
--	else if (ipv4_is_zeronet(fl4->daddr))
-+	} else if (ipv4_is_zeronet(fl4->daddr)) {
- 		return ERR_PTR(-EINVAL);
-+	}
- 
- 	if (dev_out->flags & IFF_LOOPBACK)
- 		flags |= RTCF_LOCAL;
+ 		buf = io_ring_head_to_buf(bl->buf_ring, bl->head, bl->mask);
+-		this_len = min_t(int, len, buf->len);
++		this_len = min_t(u32, len, buf->len);
+ 		buf->len -= this_len;
+ 		if (buf->len) {
+ 			buf->addr += this_len;
 -- 
 2.50.1
 
