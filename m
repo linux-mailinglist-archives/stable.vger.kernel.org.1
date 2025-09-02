@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-177477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64960B405AC
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:56:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 270F8B4058E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:55:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1224B16826D
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:51:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85774163AFE
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3733E324B1C;
-	Tue,  2 Sep 2025 13:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E155531A544;
+	Tue,  2 Sep 2025 13:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUI6jxFv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owsG2wyZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E725D2D4B4E;
-	Tue,  2 Sep 2025 13:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB0D2FAC19;
+	Tue,  2 Sep 2025 13:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820772; cv=none; b=QKyXHrHq8ia30PZ6KTx+UgiCIH8whLAppWd9p00m5z6F1fukJGuudCJtV2y+/V8+3DlE0xnn1qQp+4eUa1BL5i7krMFM88k5jHWhxXkoWMH+7kNmPPi0uZ8/6jJ5hpOU70iA4qONlZml/UISlk7DmKwZlZJOTV8lud3Wln0fDyk=
+	t=1756820722; cv=none; b=e6tuTnY79zTXTg1ko/BgU9b4TstnhBFUenquCvOB9hfRn0rfEkJYOFmjbwxxqZEL1MuuYq6LJ1S1WJi/1+JLOb4vwLs7ESgQPKcqaWijEbdBsH0VgKOTo5HGtbBV2vwT/8DEqpfOhtYatlE/Hitdwgt3o47BvdtfvgboYf0b6bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820772; c=relaxed/simple;
-	bh=yJ1Hi7Szz90FfCRlN3oBNPLqB/9Ilh8dGSfwPgZD7Bs=;
+	s=arc-20240116; t=1756820722; c=relaxed/simple;
+	bh=396cnp8d3FQu1zEA8VwWklf+G0/wDbt/PqlGX/tRDuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJgcz2O0drZZCfgF9G2rE5ig/JrqYrIUHPVFZlUO8z2ILodMQnpJcnDJ37aYzkEFKhqtgFMvSlJm7n++zmeGo6+vaXzJ3GfRs96D+tI4iOYQOx3eQLxEgeQomBcgWd6vgAh+vdr4EwQy6YscZDlVSbo1gu8758BbfhqSLeChNw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUI6jxFv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E99C4CEED;
-	Tue,  2 Sep 2025 13:46:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rcATk1AoRSo/6n46bC99WFca1SikpwDBHdSHxMOk8yyDQVduc0nmMuMZZOSb2c2ETLzYE+ZahCxo6FAgyyqb9J7EQ0TZQHJP15LBfb92iG4pipzVY6DyEJTv2gd20IQbF8wp4JDGgQaHPVv2fIm5mWjGNLjDyaDxWockyT8PbT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owsG2wyZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220DEC4CEED;
+	Tue,  2 Sep 2025 13:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820771;
-	bh=yJ1Hi7Szz90FfCRlN3oBNPLqB/9Ilh8dGSfwPgZD7Bs=;
+	s=korg; t=1756820722;
+	bh=396cnp8d3FQu1zEA8VwWklf+G0/wDbt/PqlGX/tRDuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUI6jxFvqLucm0IyjZkmUJxs4H8iihWv0KgHxXkuN8gI8Sm2FItZlgb61O1nXNnGm
-	 pZfFem5G8tR+mx7RJJfwVt2kATxhc+2JRBc117drlQkh4L//R4CU4Rr9iA3p/CJgXO
-	 m1Vz+dw2n7lxyKhAWzjyTxCnwGegMP0e2yfcuN6M=
+	b=owsG2wyZ8FPnhw9sBVACM+G7wd0EjFbnMPRUqsSGQeZHWGCZ693kQxReM7dXr9hWd
+	 YmWkvjUwNm+X9/lifkwYSYSNRgPVBSv/S7ZMyTULjFeHdIEof11FrSEPX+vmLBQbh0
+	 9g4ZNZc4Pt3UBMWv2nW2FrLraBOfh8upEI700bhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Lazar <alazar@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 13/23] net/mlx5e: Set local Xoff after FW update
+	Brent Lu <brent.lu@intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Micha=C5=82=20G=C3=B3rny?= <mgorny@gentoo.org>
+Subject: [PATCH 5.10 33/34] ASoC: Intel: sof_da7219_mx98360a: fail to initialize soundcard
 Date: Tue,  2 Sep 2025 15:21:59 +0200
-Message-ID: <20250902131925.255640045@linuxfoundation.org>
+Message-ID: <20250902131927.927344847@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131924.720400762@linuxfoundation.org>
-References: <20250902131924.720400762@linuxfoundation.org>
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
+References: <20250902131926.607219059@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Brent Lu <brent.lu@intel.com>
 
-[ Upstream commit aca0c31af61e0d5cf1675a0cbd29460b95ae693c ]
+commit 0f32d9eb38c13c32895b5bf695eac639cee02d6c upstream.
 
-The local Xoff value is being set before the firmware (FW) update.
-In case of a failure where the FW is not updated with the new value,
-there is no fallback to the previous value.
-Update the local Xoff value after the FW has been successfully set.
+The default codec for speaker amp's DAI Link is max98373 and will be
+overwritten in probe function if the board id is sof_da7219_mx98360a.
+However, the probe function does not do it because the board id is
+changed in earlier commit.
 
-Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250825143435.598584-12-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1cc04d195dc2 ("ASoC: Intel: sof_da7219_max98373: shrink platform_id below 20 characters")
+Signed-off-by: Brent Lu <brent.lu@intel.com>
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20210726094525.5748-1-brent.lu@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Michał Górny <mgorny@gentoo.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/intel/boards/sof_da7219_max98373.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-index 99c7cdd0404a5..44d3d6826f696 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-@@ -341,7 +341,6 @@ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
- 		if (err)
- 			return err;
- 	}
--	priv->dcbx.xoff = xoff;
+--- a/sound/soc/intel/boards/sof_da7219_max98373.c
++++ b/sound/soc/intel/boards/sof_da7219_max98373.c
+@@ -404,7 +404,7 @@ static int audio_probe(struct platform_d
+ 		return -ENOMEM;
  
- 	/* Apply the settings */
- 	if (update_buffer) {
-@@ -350,6 +349,8 @@ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
- 			return err;
- 	}
- 
-+	priv->dcbx.xoff = xoff;
-+
- 	if (update_prio2buffer)
- 		err = mlx5e_port_set_priority2buffer(priv->mdev, prio2buffer);
- 
--- 
-2.50.1
-
+ 	/* By default dais[0] is configured for max98373 */
+-	if (!strcmp(pdev->name, "sof_da7219_max98360a")) {
++	if (!strcmp(pdev->name, "sof_da7219_mx98360a")) {
+ 		dais[0] = (struct snd_soc_dai_link) {
+ 			.name = "SSP1-Codec",
+ 			.id = 0,
 
 
 
