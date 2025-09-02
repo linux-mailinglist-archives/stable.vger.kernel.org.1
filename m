@@ -1,255 +1,367 @@
-Return-Path: <stable+bounces-176929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1929BB3F49C
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 07:35:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D61B3F50B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 08:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1C47167F08
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 05:35:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5623F202F66
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 06:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22A52E175F;
-	Tue,  2 Sep 2025 05:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088992E1F10;
+	Tue,  2 Sep 2025 06:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="f5/OY3IF"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="X7oJrzl0"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2058.outbound.protection.outlook.com [40.107.236.58])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2059.outbound.protection.outlook.com [40.107.92.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077EF27057D;
-	Tue,  2 Sep 2025 05:35:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA99A27E07E;
+	Tue,  2 Sep 2025 06:10:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.59
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756791313; cv=fail; b=MXsVrvukYqhYqHYkeG8bSGu/IcpzEEbBa2R025HPQOjPA4CvL29tXbtMdFh0nyny2XgW+W48gu37sasOPKQBHOb2tFjsttG7/HzIL5/HYABSHZIM+p123fi3rqvRgI+lCVpp5l7kRDmuIMpclGGbKz9SC6Gwk0qP8c4y9dSTlQw=
+	t=1756793409; cv=fail; b=h5Ny/r3pQ81bmW8rSjq5FFFvJ36sDM1PSaYRDH9AIvXzCqmoa75dFU3L8KI2UDTWviRbe4SlLeie92HNbxmb7xkq6k/Uw5UGYO+GNi8e/DL9/tk37ThU3KEZqHklAJHBIKHQfxDMOShsprjOV7807ZTFYa6ReGKw62hSbSVvQNs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756791313; c=relaxed/simple;
-	bh=LVB+ZPcozaBSyQ1TGRC4L+eeINdqiVm4Rb28Ag0/Lz8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=pWuilpsmIz6zj7vIqg2idfOh+Cib5rbH4Ka8VaEAScGDBBpkitEiI6D96gWJD0ldkSNv7oSo5BifaqPKgwENtUyf0zMi0y8bVyTA2qk5sfXk9ekGy3DyuhdWIREzqZt0BCIuIFfpW0HjwcJgOly1DaaXENbUHw1RKEJpyZNXE+E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=f5/OY3IF; arc=fail smtp.client-ip=40.107.236.58
+	s=arc-20240116; t=1756793409; c=relaxed/simple;
+	bh=iqp6XOVgyVqsEEIrywrTPG8MP1c5U6R1THdutAfavEc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=YTDc+AyL9MQEZf5c7Am6iDyw2IiKJ84RDN5Y4UoI2l6850s9m/yjbmNvQQE0uW2v3ptFAj+PubZy6ayour77wb7b7qU+lOsZ+/qj4KWHLu/JdFIxYC+55NfrDy+H8NiQtymdPGgLuvFly2drkYiIkRsjq1mJAUzTzN5OPy4DjpQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=X7oJrzl0; arc=fail smtp.client-ip=40.107.92.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wMQMpgPwm8B1tCXPveqIiShE0vKKDXJlv5EdlNH8sRy4K9VOWVce4M4d9ZIzxXaPStl6bKGtr56iOK4wQdy08+1BcS+x/wNmyXRSGlYKMwSDxvjQ/ZIpx7UCR5vU/r45XbW/2XY+a9tPPaT77lHyCYwBuLVLnMKOWkHoKq0D3tMMRp5hrRf2u5yo2v0K1ozQYCE5H7QhGTN+LiwsVqvppV+hKvs2P9W/sW0D9vm2BGYAGVd1yQMzbmLorj8Gc8rb9PTAA/sRy2eLtyFe+waZ58bEfCOaC9+CqT96B/cbSGr4ZYfG/C6ZQV0AGtOSlQ8EwHaTUMuccTT8V/m2U53DZg==
+ b=KPxrXMwmP78DYegelXSDTp0OVJlUEVRLVWQJUxmJEDvXw+PL4XW32PuQo/5sCJaazNRaWPbBffOQvY0Jvw6Fb+nxCz9mrjSnVIa92mEsPCCQ050bEwLIHwJsXl1oZPcuKuKNaxulwXFUbhwwAajjhR0QW1vjQR7YZgOGzwNJiruEQSqb7a1edTZqWwAm8NTT5fv9N5o3XzRf834ondO98ylqqYwtfWy0CbhBmQemkdRygQARnyy1BzSdIgJo5ffmxB+9x2mrLbn7IDL7RbQHt/2CyxW+Ce4xtotjIrEw/mUEzBq3R2Qb3hN9mLxBT6eMgm2Q/KQaKjpmo/PBLUa7wQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rpz60VTQpUy8X6xAtDQxKKJH97KtzALJ23EOZNl8AfI=;
- b=YFVW3LLLwQMk0nvU7MEA9XwbY5srZMnnGZXGa/G6oFuPwHwpNbkVYMQiL5dsyvS8A+vl/5jcO47SlvtxdtECFOy2j0cL/xN0Tid5W7uqqJboxxGWg+jmpYeCceXvxWGq4Ezot/7o6iytn6GZRbDf5KwUc2nUD4B9HX5excYK474RjR4afFs4VSRjDfB/zbX57KypnV7xV01y0v0kp5X2K/p4Fs4euNn0WB24DVM37kmvQNOVDGNBdt7EZEKcBQzZSYidhiHtVq1QHLbfJxHxGBGGKQpmSZYREqDXN/qYmhnGdTz1kF/X9YaLlzFyQYRUl3524V1Pq/ih1smTouIDWA==
+ bh=EOAwL6a26zujFKe9IOvfwj9cMuNIVY6DhyBjHZ9gFDI=;
+ b=ClaWiN8lTUFJVP5jQ3neoh/IUEmsj+z3pqFrlRoIg5f2iwiGl00RXeRj/B9nZ22BEmVRRCgXHJ40JsCVtMs7alMwMnma6WYGRla1/Q2gqdmLWBjvC0PwK2qItAujmSMGgHINEwyXmru3nRVwTYQJPM6piFMqw8ircAlPlPa8LOVY4mv10XoMK6vB//hz3XS8l0bDcbM8gKSQnzmNkBcKByyZhTv+SAPOl9mc3XrLIJs4DNQMj263aCOVvc1uTSwXLUkLeUTvg2wV8Q8ZQlwXOvkbWoP1Mt0wtlNqUq4cwuJM+CNjMlC3NEsTnGaVK7wvWGPQhHyonGxqkog+uVQQ/A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rpz60VTQpUy8X6xAtDQxKKJH97KtzALJ23EOZNl8AfI=;
- b=f5/OY3IFAhRYZjkcCtSAGwA/bGFwts/WOnHsaRUg5apcmsCTlqMGJoHTkS6fz59bKYBMi7aD2mMtiOVrX7kALaQCF9Uu+n3qajS2FlyWpLPJPvVXornLtsFopQKmi1APd0+xffsbq+WKnFiuZkpG8++HzlvBrzOMyncXQOPIOpg=
-Received: from MN0PR12MB5953.namprd12.prod.outlook.com (2603:10b6:208:37c::15)
- by DM6PR12MB4385.namprd12.prod.outlook.com (2603:10b6:5:2a6::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Tue, 2 Sep
- 2025 05:35:03 +0000
-Received: from MN0PR12MB5953.namprd12.prod.outlook.com
- ([fe80::6798:13c6:d7ba:e01c]) by MN0PR12MB5953.namprd12.prod.outlook.com
- ([fe80::6798:13c6:d7ba:e01c%6]) with mapi id 15.20.9073.026; Tue, 2 Sep 2025
- 05:35:03 +0000
-From: "Pandey, Radhey Shyam" <radhey.shyam.pandey@amd.com>
-To: "Joseph, Abin" <Abin.Joseph@amd.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, "Simek, Michal"
-	<michal.simek@amd.com>
-CC: "git (AMD-Xilinx)" <git@amd.com>, "Joseph, Abin" <Abin.Joseph@amd.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH net v2] net: xilinx: axienet: Add error handling for RX
- metadata pointer retrieval
-Thread-Topic: [PATCH net v2] net: xilinx: axienet: Add error handling for RX
- metadata pointer retrieval
-Thread-Index: AQHcG6lzcJoCobRwKECrqYgv4+SAPbR/V/5w
-Date: Tue, 2 Sep 2025 05:35:03 +0000
-Message-ID:
- <MN0PR12MB5953745D77A76528DDFD72E5B706A@MN0PR12MB5953.namprd12.prod.outlook.com>
-References: <20250902013205.2849707-1-abin.joseph@amd.com>
-In-Reply-To: <20250902013205.2849707-1-abin.joseph@amd.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Enabled=True;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SetDate=2025-09-02T05:08:45.0000000Z;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Name=AMD
- Internal Distribution
- Only;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ContentBits=3;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Method=Standard
-authentication-results: dkim=none (message not signed)
+ bh=EOAwL6a26zujFKe9IOvfwj9cMuNIVY6DhyBjHZ9gFDI=;
+ b=X7oJrzl0dVZUWWF1enNVaSFIkNQqF7msXOc9rxa3yYKPh158VPV1S687ekvBh5Qqloib00eaQWRcu15YngnzMpdky+ZAU9uSpMXZJ2cr/SCUTu8LVMtXliOj6tPr1vmAZGstjRsRkzZWUCNsdrJoVeaRmEZ4cokWkbai81DOvrs=
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN0PR12MB5953:EE_|DM6PR12MB4385:EE_
-x-ms-office365-filtering-correlation-id: e71a9ae4-b43d-411d-e3e4-08dde9e277b2
-x-ld-processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|7053199007|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?ow4ISTqF8PL0LnWo2myQESYRq+xZK7Cef4lng5z7YXw7oxqbQoN7wPd4vlfc?=
- =?us-ascii?Q?w5dfYfKSQtQ6YbJl5/3JFTCX0IBb50KU3lc5M9hVOjrwm4ePy56DBF83DKf7?=
- =?us-ascii?Q?K0qejWYnkk59CfV9/8EYseCblQQDD3LZdi6zsO8+B+kc8apeLXizrGq68UEh?=
- =?us-ascii?Q?CT1Hrid6t5tp8HmP2ncvxFtBOcBY1wwzQ+utioNXWwRQ+hcyhyx5pJbZ3tDI?=
- =?us-ascii?Q?xhrPlrNIKlG2qR+Q5CXl2EuoSFXEgiejce3vplwXVHrQfNFKa53V7lRR1cQQ?=
- =?us-ascii?Q?sCeY6yMognjFtq6pkXDA9KkJFQl7qMNhozKPzvYFYc1o3zoxhqsQcxqadADt?=
- =?us-ascii?Q?TrknEAbMpXoflXqS1QIsR2+wBDdw/iwn8+EbSl9skWDgXmmn7ER80uWfuoRk?=
- =?us-ascii?Q?43Rv72IGWG10p2ps5PIzXaUf6APAivm9oJdtmrlbfbOJczAhVHomYu+78Cmy?=
- =?us-ascii?Q?db37PuniBrfX5e3y3L2RIw/K/J7DhCZyKtJFcopIB+Q6de6R114xyPgK+0Mp?=
- =?us-ascii?Q?4yEJPL2eWKdt0tYl8PWcxpOj6FIJcJfTuyBQmA9QbGLi1LaYXTlUSqmgtnKw?=
- =?us-ascii?Q?5EU3L69W4f7VtRBMCDx2zmR+A4FnhldqbcTRCx6CjeaPLmlzcp7h1dFsHmxD?=
- =?us-ascii?Q?mHMarqqHaGFbmIkRT5rheIW8rsHwQbc2a/vJk2C97rbYlhBF+a46dEgVXw6A?=
- =?us-ascii?Q?+i6o3dqHvEg22oN8Ea5zA6Hw+B98bR685d6nMQKJ3Hw9V9mJszB4fGau+y5n?=
- =?us-ascii?Q?MkJ8x1lVXkJBnvHAEzFtiqX2IRNoW1F8yIM+uNcr8iTFcTKNXKxfA0v5lCQY?=
- =?us-ascii?Q?77k392hOK3SfyWGqs02plDc9FAeszpcaUFiB6gQJt0pZ67x6uouBXMzyTYtw?=
- =?us-ascii?Q?CsBuMlmzeQd+6aBjjiQfJ/zg37+CG7/mD4R7fUGPFdliXHtpmc06dgSgKtb1?=
- =?us-ascii?Q?Ci+5B3o0SQhmc517qH33ubfVdSc/Ewwr48oPCEr9ZJDABi+VrZo7Dj6pEzTa?=
- =?us-ascii?Q?qIrKmZcu+tD3CrDklEyp2xdcJsv0l8nRsYhSReAPR95I7n3UU+aT6Thnxbd/?=
- =?us-ascii?Q?+cuLBrWKmqOoLTpmELvGV1HN8QCYC/mRG6Yd0LopQYaQPDJjtQXbHygHZIdN?=
- =?us-ascii?Q?8Jggaf+T6lsNS7jDAV4Qf9LFsY0Uu63vD3xW0jbNHMWQGELfn7ngTt+YyJbk?=
- =?us-ascii?Q?saTa7k8A16Adh3Ez4RpoMsxrjOuBCnhC/kM/15sVtH7XC2+b9QYtHoKJiDLk?=
- =?us-ascii?Q?JnpUmTMlVW+x3XAlgxLWvOqBiMlMA+6tGix2E8/zSI9DxTh6GZryGMM0f7Wk?=
- =?us-ascii?Q?kGsv6RAAeryFIFT7GhI6s0JrOaMNvoVXnN4PlZ796TObJV4hsU496zzImVdg?=
- =?us-ascii?Q?hBD4EKYIaYgaDT7uJuAtx5oFz3zul30/C5DfJuI7VPze8CFYnbO158nhLMlB?=
- =?us-ascii?Q?CVJ9ftfRnJsrMUFN8wssWi0NbAJvD7ffu+BNVKth2bdWBMi5NobW4w=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5953.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7053199007)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?IVvJ4IK6oEwe3EDWqLmfOMxKat5/6LBAtFjgjACtIDTsduIINgHrdvxtzrG3?=
- =?us-ascii?Q?LqGQUOZC2l4QsAISH8Saoph/xuR4Rec3R+b0Pm6h74A0efkcXsFETjG4k2Cr?=
- =?us-ascii?Q?wCNCmwpXf3EI/ddYUODLaHt5yqnt6ZikiiqdUoiMd3gFaXjtZ3xf+1keBxQR?=
- =?us-ascii?Q?mP6wuKyA5JXFbnfoWH5OYMWPdVZxUTlg7xlNXGVDqDTQJuzJmvd6vwOBHys2?=
- =?us-ascii?Q?caFmq7+I3aiD1i+0gD6y/T3YLZPcfdZ88+bS+7BVKM5uhJcQsKGS4lNGgDnv?=
- =?us-ascii?Q?xZVZGBzDYFTNMkvzR/PhDyn1ZmyEWRb5OzS3PSIPyS8lnpIkK3upBogvpD4P?=
- =?us-ascii?Q?it6q3bIfgyrrZvqr6umiMlI4zZGqr+FPS0N7eFqE7parqu1NpdQvrJ+yT4dr?=
- =?us-ascii?Q?5dy+PDWdMFhvtcby6/QDtun7aytsfMHt2De8O8HAaxW6ALkc/b+WKDfM6BKq?=
- =?us-ascii?Q?v22konn7lcErvfKYhVffn+y/CHlJyNHgihfq3mQZaW3dlU1n4lLzV9CkA4cq?=
- =?us-ascii?Q?ECvTmzMOMTGXbsfcH4ab/PAnvSBWF7+lxqZZ8W0l4BAXI5OdKI3aNyObU+Mi?=
- =?us-ascii?Q?Ukk1NzYhIkxcg34uVTOJilbG2+Lec9/45bGky+0d05BadncVZvOzzwpc5g3y?=
- =?us-ascii?Q?nJx6DzsxZnnMvTgbWsXxWenX/KifcqcHmhGkMEtT7KaW107x2uxZLNXOJqPi?=
- =?us-ascii?Q?GLR/jiZOh/q0IdILzK7QIoCaPORd2laCE7jo4nSmk0DADG25IKOLWPlkoeus?=
- =?us-ascii?Q?Q8kHF2HgJ7vMNYHTzkC58CITIqKAnazgXE3tWEA0hxVTowZ2LRWj5eFjPs3G?=
- =?us-ascii?Q?7uVsvE2wVxO8tw/TsC46d+pWFKhyIzPjMSfhjFsde/NKKjubRrINLxQ/LfNC?=
- =?us-ascii?Q?7PFsYBm4Q146Ce9DvyZgrAs4jgGLUxYW9vAOFkpO/nzjaTRuArht8ehBvkRm?=
- =?us-ascii?Q?Fsfb4BUzrPWyg6n/IjE9rBgBvmSKNnnXcmwsxyyk/gjA9sC9QodSpPzc/1Dq?=
- =?us-ascii?Q?kj1J0fJhSGWw4cSHh3LRqDLQT//8FTvuEVaY1vWNlRKc6yuE3n1OzxRcOzIU?=
- =?us-ascii?Q?HrBN5eo8TPb0RPEEdpxf98zwvH7FWzuAHsmMbiPtFAy7OyFfp57jzxC+zWG4?=
- =?us-ascii?Q?biUCIrI8WbGmkXoi/+cWpOuxocgE72WzTPaZpOg9Ft+cE56WG2gXxSqraUoX?=
- =?us-ascii?Q?izmqC54yUclQ+4spdYPGlZitxXOyTfUuGN5UXYdC6mLsAtboGWVGAFcf07gN?=
- =?us-ascii?Q?E7i26kilPYMdYiycjZwUFPw48AXhGk33C2n+GQtWNFliQFt0O8AncUkuwLzh?=
- =?us-ascii?Q?2qKwPLqqcbmteiBvWp3uq/dmiT/MSFgL59P0kLcpTSmxVu5H4PdBW7eko6Aj?=
- =?us-ascii?Q?GrBjd9reCxWOmnnnDl9BLK6mEBf7NC+dYbuXKaraxph1EWLod1PtoCm0xrYL?=
- =?us-ascii?Q?8AL/y3btx9+LBQuBaES2rdApXQK1af0b5HpLaAlmiJ34j9CUzEbEMu/jpFOu?=
- =?us-ascii?Q?Ye6I+QhxXUC3a2v3SK9ucATdSpYEdohgS6Addy6mBEcWsdIRS1BoOg+YbD03?=
- =?us-ascii?Q?zdGHmcOPgYMqeLozsIQ=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from PH8PR12MB7301.namprd12.prod.outlook.com (2603:10b6:510:222::12)
+ by CY8PR12MB7540.namprd12.prod.outlook.com (2603:10b6:930:97::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Tue, 2 Sep
+ 2025 06:10:05 +0000
+Received: from PH8PR12MB7301.namprd12.prod.outlook.com
+ ([fe80::a929:e8eb:ef22:6350]) by PH8PR12MB7301.namprd12.prod.outlook.com
+ ([fe80::a929:e8eb:ef22:6350%6]) with mapi id 15.20.9073.026; Tue, 2 Sep 2025
+ 06:10:05 +0000
+Message-ID: <5f999a32-db26-4964-8152-ac06da8beea4@amd.com>
+Date: Tue, 2 Sep 2025 11:39:57 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/2] drm/buddy: Optimize free block management with RB
+ tree
+Content-Language: en-US
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: christian.koenig@amd.com, matthew.auld@intel.com,
+ jani.nikula@linux.intel.com, dri-devel@lists.freedesktop.org,
+ amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, alexander.deucher@amd.com
+References: <20250901185604.2222-1-Arunpravin.PaneerSelvam@amd.com>
+ <20250901194151.GJ4067720@noisy.programming.kicks-ass.net>
+From: Arunpravin Paneer Selvam <arunpravin.paneerselvam@amd.com>
+In-Reply-To: <20250901194151.GJ4067720@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN4PR01CA0103.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:2ac::11) To PH8PR12MB7301.namprd12.prod.outlook.com
+ (2603:10b6:510:222::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR12MB7301:EE_|CY8PR12MB7540:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c88d03f-36e6-46ea-ae05-08dde9e75bf6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?azFWdDdwdTlCMldiOE5KcjFkalprc2t5UVZwK0IrSGpWeHBkaUZVa1QzZmhl?=
+ =?utf-8?B?bStPenNSNFlSU3pMSFgzMnRrZ0tYWkx2ekNVV0g5N0pVU1I4RkpFaGVvWGc2?=
+ =?utf-8?B?SHhweXpLRG1sOVhQYitOcDlqb250dUwxbHRJMDF6RzJUTVRhMmdDNzNEL3B5?=
+ =?utf-8?B?UUxnT2lBdCt3ZnZGRDhsNEhVQWRJZXdXMG5FeUQxeHh0cjRiSmg5TDJZZk4v?=
+ =?utf-8?B?TWY0WWZUWUludDBDMW5mK0xsZGNiQkpvbHQzQXRsWXVJYUl6NEVjdmVaM2Z2?=
+ =?utf-8?B?V2g0T1ZTNTNyNmdsSnZUb3B3N0N0VXRNUm1DdHlnZk5kcDlCMEdLb1pKdUFy?=
+ =?utf-8?B?NWM4a1diRWhVSjN5SGVDOWk1VXFDc21ERW9DKzhkRDhwNFJSU0cwZlFUcXhk?=
+ =?utf-8?B?Qi80bXM2d3I4SHZuZjY2MjdpMm1odjFuS2lxdWpIeWNJSVhlb3JYcjZhNUhk?=
+ =?utf-8?B?MXFQbUNQYmtuTDB2aDJmUjFBRE9kMk5SbHo5OXdWODgrcHE1SHQ1bDhxUml6?=
+ =?utf-8?B?TDJSMVhML3VHQjIyUFAxcE5mZHA1RWNEaWJETEZ3NXNuaERFSFdnM0FnYXNW?=
+ =?utf-8?B?dGtHZU55WEtlMThTZmd1NlVTSXJyWXU0WDg0RU5CQnlHSm5wVHNSNkNKUEtn?=
+ =?utf-8?B?ajRkaU95ZVljQnRPT0pFaWRGaGlxeHBSd0FUYkZvazlTQ0V1Zk4rQXdPM2Za?=
+ =?utf-8?B?elNEbjZ4cStHNEtFSzU1TmVWbWpmdTgxK2dUTTlaSS93N3ppRFd2YXJkSkZx?=
+ =?utf-8?B?Y2k2TERxdlVkUEEyQWhmdEpBbDR0NllIdEkvdlZUMmJuV3puR2UvSWRVVTNE?=
+ =?utf-8?B?ZWMycjJ1TGx2MVduaUZHZGNzb2JzT2kwMzVSaC9mdUtFMzNaT0JBVmxQN1Fp?=
+ =?utf-8?B?TnZWU1BpbGZUckphcVFuVHlROHdkWFJ1KzdJeGw0SnVtdDJnSXVHS3crbkRC?=
+ =?utf-8?B?cmMzTFgyNllGdkZNTk5yWS9ZRzh2MTF0a0ZvaWFIcEFpY3Yxd1BXY1RSbllH?=
+ =?utf-8?B?WnFHa2RWVmVYMjdYMmNsbTBnSFl6V0FtcWd4Z1hEZmVSRzRQc09CMXFEUEpC?=
+ =?utf-8?B?b1VwZkx1ZzNWanFqOW42dkFaL3MrQTcvNWE4alNhNnBOZ2M4UnlxUWprQnYr?=
+ =?utf-8?B?TlVJUlo5VVRvTXI2V0NCVlVrRWVpNFZuUnNKUHY5MElKU3hIWVdLTSt0TkNu?=
+ =?utf-8?B?MlRkbEZYRDd5YlhCZFBBRmwxM3dPbGtWQTZWM0RkUmVMQmVJZ1E1U1JyUThi?=
+ =?utf-8?B?VjJqZS9xLzlBM3lrVHVBSy9WQjdpTk5sbysrekFXVXlIS28ra09HZlRLZ2U2?=
+ =?utf-8?B?dnBNRWxNcFhGV2J3eWpMOFllZ0l6YTZwQ2dKRDZCTks4ZWFYTEdUbE5kVjJC?=
+ =?utf-8?B?YnVveE9FMUZZMnBXY05LL0xJODV1VjBqRTJORWR1eDh2WXJEd0M4dkhxa3J1?=
+ =?utf-8?B?SEVkMUtQSVQyajVKZWFmdTQrWkhzSHI0Zkhsd1NkdStwSUxyV3JIeC83Rm43?=
+ =?utf-8?B?QzlEbVlyU1pLQnlzdlVpNTZDRG1vMGorTW1sZnh5aHp0VGl5QytPelFEYjlK?=
+ =?utf-8?B?QWxYM1JIUkcyQUFjV1lkYitPSU90c1h4L1lBM3Z3b2p0VldCUytWUWFqMGNj?=
+ =?utf-8?B?SlFxZFlRZFo3TFordUhMV2F5d2xjNjZHVmFDa2xFUWtWZllrU011WnN0VUpW?=
+ =?utf-8?B?K3B3WTMrQzJ5UldnaFNHOFVOeFhGQXdTUlZNUjB6clBuYnpHMWhLWFdWOW02?=
+ =?utf-8?B?WldEaU1JQjI0NmhlMjV0aEhxakZXNEtKc3BNUWpLZ24wblFDbXYrNkthcWdE?=
+ =?utf-8?B?RWs5RFpFWW1Zb1Q3a0RhVWpHMkdiYzRCVkhwUWY5SENGM3FMKzF1MnhwajVY?=
+ =?utf-8?B?dXBUc1g2SC9VekJTeGRKWkxwRC8rbUtQUUpTZEZRQVhwcmJ0NFhmL001SnJh?=
+ =?utf-8?Q?AIxfufvGvvQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7301.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TGpOWWZMYUUrTkxQL3Z5RFVrMEluODVsUk1ocCtSYnNOa05reVpkWEtvZ1hs?=
+ =?utf-8?B?alJQQlBVcW11aXBPZURpY3BjQlZzbmRsN0VFWHAwRVQyWFBTWDNPZWR2M0JZ?=
+ =?utf-8?B?dXpXTE8rUzJ5cVFZdWk0OGsvd0MvYXY3cHFKemYvOW1GUlVFMHhUQkdiTEZI?=
+ =?utf-8?B?WjF0cDBvaUtvb3FIeERkV2dpKzV1bEVNdjFPbEdRbkJtQmhYbmN0cGZpQmQy?=
+ =?utf-8?B?VVpLNURBVGxlejVpRXRPdGJORXFmSENvQWFuTENZaWdqd0ZpQVhXOGZXVFNG?=
+ =?utf-8?B?VnJoekpoZUlhMVpuaFF4c25pNmdtaXl2b2x0a0VVWGlieCtjaHdjRkVoZjJq?=
+ =?utf-8?B?TVlxd2h6WjY5TUU4aWx6aExmTFJyendmeGZZdXU2bTc3Y0svaUxTTnNWQmpE?=
+ =?utf-8?B?RDMrb0RIYVFiNVhSN0tEZE4vVkxjbXRTMEdaaEQva1ZWa1p6UERTdVowYlF6?=
+ =?utf-8?B?Wjd3c0lUOWlyNTlkVHRDKzhBSDJQWTR1a1hwZnhyemdMQ2hNNW1XSWYvZnFx?=
+ =?utf-8?B?WHdHSm9oNlBjcUZ2VDJDKzExVzBoRHZpSlpvbTZCU1U0b1lKMDYxOWx1YWdI?=
+ =?utf-8?B?aWVaV2JDdEthWGdhc2dRd3ZqMDVxRnBNdE13SDRwTW1hblhVMlYxUzZSYThz?=
+ =?utf-8?B?U09STFY2MVZaQWp3N0xraUU0ZlVSTUx1NVUwUGlNdENIUU9PQ3gxODhtRzJh?=
+ =?utf-8?B?S1JMeWhzUWw1N1dyZWdIM2EvaHZ0Q2swSlpmNGhhUzNLdG0xY2lMMmhTejI0?=
+ =?utf-8?B?MFBVRUpjTXpOSjFjM2J6d3dDaDc2aHFIOVZZZlNUWTJOck44Wktzc1BXOEZD?=
+ =?utf-8?B?Z01kQXhLSW00UHhDaHpIeURSbkFLV1N4VGVKQVhPRVIwNFZuaksra3RBSzMw?=
+ =?utf-8?B?TFJ0bXVvSFlGWEorVlJmM0lMNGMvdUt1K2tLRExXN1ZFOHpXK2d2NExZV3Y4?=
+ =?utf-8?B?ZjVmQnpaWWNyU0I2VVc4UGxyV21BVVhLWk5UZ3o4bkRrYnp6NWVHSWNJbTkw?=
+ =?utf-8?B?S25KMGRWdmVnMjBZM21YQVF5RElNNGgzbENWYXZqUU45OVJxb0VteDlMc0pV?=
+ =?utf-8?B?TklTZ1RibUZaQm1vS2FhRlQ1VFBZWWU0K3kxQldXOHhzdEdtMEFYY1E4ZWZo?=
+ =?utf-8?B?YU5CZHBZUldpTkZYVm16OThZUWU5NzFJZStXbjdPOWRZUkIwYjZIVHYrNzRz?=
+ =?utf-8?B?UTJ5aDNKNnZlOG16eWh0SUJnU0s3aUwxVmk1alBab0hXRXNBcUhaZ1pYQXZP?=
+ =?utf-8?B?bWJOQldkS2NaeEg1OTFZVU1LZ0VET2ZLWFptdSt0UzA1U2tRdUd4WDhPN1pB?=
+ =?utf-8?B?Q0tLdlhmUWVFbEVQcmxTTVNEZitBdU9xOVcza2c4SytlYVdtZGt1d3NOcUkw?=
+ =?utf-8?B?RnRYSlZ2TWcvUlRvSFQ3NUgvS0N0a3FBQjgrTkE4cDJHZ2JNVHNLazg4N3Q0?=
+ =?utf-8?B?UURlenVRMzdXWFdQWGpBT3N5K0txVVp0SjVlZnptR0dJRHJ3OHhZUXBvYlhm?=
+ =?utf-8?B?K2JlR1Ard1VmL3UzZmE4NmgxdTlET2FBaUVNVko4N2Y2V2dVOUwvV1g1L0U5?=
+ =?utf-8?B?K1N5Nk1FcmxrSEhrYWdRTnNsdjdSblVnTkd4akttREtqQlZ0cnIwak1aVGls?=
+ =?utf-8?B?dHBkQUNaTk42cDR3Q2JJS2Q3dDQyUld1ZlZabmhQQW12cDk1MzhiTFA4Njh2?=
+ =?utf-8?B?UUVuS1ZvWEQ4N3RNY0lQcW9ObGlnWE5STXRYSjJJTHppOERvZy9TQ1ZFTlJ4?=
+ =?utf-8?B?d0dSYTRJaU1tKzhaTHZjZ0hKWVMvSGtrSUFOT05meHVLMzdRNThqNkplSDBj?=
+ =?utf-8?B?bUNUYUZnMERnRHBEWmRkU1hpdWVCM01ZOGw1OTlzYkw4QTV2Wk1iS3d4by9T?=
+ =?utf-8?B?dCtROG80akZ2TmcwWEtOaHJENFFiT3VJTjVoL3IrV1lJdVlLQXArYk9HRmZG?=
+ =?utf-8?B?c2xJTmpIZ0FQQjhRYVFlRkJ0T3Axc21qU3d0dFV6eTdLL1M0dWxVbXlDUEgw?=
+ =?utf-8?B?SlFhNTkvYlhvcGtGOGIwelpTY2hrWHBQRThaS2xhMFczbTJ0Z3NsQ3pVRXlu?=
+ =?utf-8?B?N2xIQUJjM0Q0RnFmdHRpRXg5ZU1QWjQ4Z1JTOG0zSmdwYnlhak4rTUdkVkJV?=
+ =?utf-8?Q?PFWUzxB+NRnUmA/fhLAFCjONM?=
 X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c88d03f-36e6-46ea-ae05-08dde9e75bf6
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7301.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5953.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e71a9ae4-b43d-411d-e3e4-08dde9e277b2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2025 05:35:03.6318
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2025 06:10:04.9955
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Z1yAk/Pc6hYSt4SrUd2v1Rp/HlWiw93D+WJD+RRqd7+svJ+SCjRrK3Q6+k7o15J9
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4385
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VxPvxNNUxGRkZBSC/Jit53w7MGRWd8d+cns09KZ4q4QJoU0dCutmxgo4PGbVe7FooMl7ML5rX/BK4k/cds0WJQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7540
 
-[AMD Official Use Only - AMD Internal Distribution Only]
 
-> -----Original Message-----
-> From: Abin Joseph <abin.joseph@amd.com>
-> Sent: Tuesday, September 2, 2025 7:02 AM
-> To: Pandey, Radhey Shyam <radhey.shyam.pandey@amd.com>;
-> andrew+netdev@lunn.ch; davem@davemloft.net; edumazet@google.com;
-> kuba@kernel.org; pabeni@redhat.com; Simek, Michal <michal.simek@amd.com>
-> Cc: git (AMD-Xilinx) <git@amd.com>; Joseph, Abin <Abin.Joseph@amd.com>;
-> netdev@vger.kernel.org; linux-arm-kernel@lists.infradead.org; linux-
-> kernel@vger.kernel.org; stable@vger.kernel.org
-> Subject: [PATCH net v2] net: xilinx: axienet: Add error handling for RX m=
-etadata
-> pointer retrieval
->
-> Add proper error checking for dmaengine_desc_get_metadata_ptr() which
-> can return an error pointer and lead to potential crashes or undefined
-> behaviour if the pointer retrieval fails.
->
-> Properly handle the error by unmapping DMA buffer, freeing the skb and
-> returning early to prevent further processing with invalid data.
->
-> Fixes: 6a91b846af85 ("net: axienet: Introduce dmaengine support")
-> Signed-off-by: Abin Joseph <abin.joseph@amd.com>
+On 9/2/2025 1:11 AM, Peter Zijlstra wrote:
+> On Tue, Sep 02, 2025 at 12:26:04AM +0530, Arunpravin Paneer Selvam wrote:
+>> Replace the freelist (O(n)) used for free block management with a
+>> red-black tree, providing more efficient O(log n) search, insert,
+>> and delete operations. This improves scalability and performance
+>> when managing large numbers of free blocks per order (e.g., hundreds
+>> or thousands).
+> Did you consider the interval tree?
 
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-With one minor comment below-
+In this allocator, free blocks are tracked individually by order and not 
+as arbitrary ranges. The
 
-> ---
->
-> Changes in v2:
-> Update the alias to net
->
-> ---
->  drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->
-> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> index 0d8a05fe541a..83469f7f08d1 100644
-> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> @@ -1166,8 +1166,18 @@ static void axienet_dma_rx_cb(void *data, const st=
-ruct
-> dmaengine_result *result)
->       skb =3D skbuf_dma->skb;
->       app_metadata =3D dmaengine_desc_get_metadata_ptr(skbuf_dma->desc,
-> &meta_len,
->                                                      &meta_max_len);
-> +
+operations are keyed insert/delete/lookup, for which an rbtree is 
+sufficient and simper, AFAIK.
 
-This is unrelated change.
-
->       dma_unmap_single(lp->dev, skbuf_dma->dma_address, lp->max_frm_size,
->                        DMA_FROM_DEVICE);
-> +
-> +     if (IS_ERR(app_metadata)) {
-> +             if (net_ratelimit())
-> +                     netdev_err(lp->ndev, "Failed to get RX metadata poi=
-nter\n");
-> +             dev_kfree_skb_any(skb);
-> +             lp->ndev->stats.rx_dropped++;
-> +             goto rx_submit;
-> +     }
-> +
->       /* TODO: Derive app word index programmatically */
->       rx_len =3D (app_metadata[LEN_APP] & 0xFFFF);
->       skb_put(skb, rx_len);
-> @@ -1180,6 +1190,7 @@ static void axienet_dma_rx_cb(void *data, const str=
-uct
-> dmaengine_result *result)
->       u64_stats_add(&lp->rx_bytes, rx_len);
->       u64_stats_update_end(&lp->rx_stat_sync);
 >
-> +rx_submit:
->       for (i =3D 0; i < CIRC_SPACE(lp->rx_ring_head, lp->rx_ring_tail,
->                                  RX_BUF_NUM_DEFAULT); i++)
->               axienet_rx_submit_desc(lp->ndev);
-> --
-> 2.34.1
+>
+>> @@ -41,23 +43,53 @@ static void drm_block_free(struct drm_buddy *mm,
+>>   	kmem_cache_free(slab_blocks, block);
+>>   }
+>>   
+>> -static void list_insert_sorted(struct drm_buddy *mm,
+>> -			       struct drm_buddy_block *block)
+>> +static void rbtree_insert(struct drm_buddy *mm,
+>> +			  struct drm_buddy_block *block)
+>>   {
+>> +	struct rb_root *root = &mm->free_tree[drm_buddy_block_order(block)];
+>> +	struct rb_node **link = &root->rb_node;
+>> +	struct rb_node *parent = NULL;
+>>   	struct drm_buddy_block *node;
+>> -	struct list_head *head;
+>> +	u64 offset;
+>> +
+>> +	offset = drm_buddy_block_offset(block);
+>>   
+>> -	head = &mm->free_list[drm_buddy_block_order(block)];
+>> -	if (list_empty(head)) {
+>> -		list_add(&block->link, head);
+>> -		return;
+>> +	while (*link) {
+>> +		parent = *link;
+>> +		node = rb_entry(parent, struct drm_buddy_block, rb);
+>> +
+>> +		if (offset < drm_buddy_block_offset(node))
+>> +			link = &parent->rb_left;
+>> +		else
+>> +			link = &parent->rb_right;
+>>   	}
+>>   
+>> -	list_for_each_entry(node, head, link)
+>> -		if (drm_buddy_block_offset(block) < drm_buddy_block_offset(node))
+>> -			break;
+>> +	rb_link_node(&block->rb, parent, link);
+>> +	rb_insert_color(&block->rb, root);
+>> +}
+> static inline bool __drm_bb_less(const struct drm_buddy_block *a,
+> 				 const struct drm_buddy_block *b)
+> {
+> 	return drm_buddy_block_offset(a) < drm_buddy_block_offset(b);
+> }
+>
+> #define __node_2_drm_bb(node) rb_entry((node), struct drm_buddy_block, rb)
+>
+> static inline bool rb_drm_bb_less(struct rb_node *a, const struct rb_node *b)
+> {
+> 	return __drm_bb_less(__node_2_drm_bb(a), __node_2_drm_bb(b));
+> }
+>
+> static void rbtree_insert(struct drm_buddy *mm, struct drm_buddy_block *block)
+> {
+> 	rb_add(block->rb, &mm->free_tree[drm_buddy_block_order(block)], rb_drm_bb_less);
+> }
+>
+>> +
+>> +static void rbtree_remove(struct drm_buddy *mm,
+>> +			  struct drm_buddy_block *block)
+>> +{
+>> +	struct rb_root *root;
+>> +
+>> +	root = &mm->free_tree[drm_buddy_block_order(block)];
+>> +	rb_erase(&block->rb, root);
+>>   
+>> -	__list_add(&block->link, node->link.prev, &node->link);
+>> +	RB_CLEAR_NODE(&block->rb);
+>> +}
+>> +
+>> +static inline struct drm_buddy_block *
+>> +rbtree_last_entry(struct drm_buddy *mm, unsigned int order)
+>> +{
+>> +	struct rb_node *node = rb_last(&mm->free_tree[order]);
+>> +
+>> +	return node ? rb_entry(node, struct drm_buddy_block, rb) : NULL;
+>> +}
+> rb_add_cached() caches the leftmost entry, if you invert the key, the
+> last is first.
+
+With inversion, the in-tree ordering changes from natural ascending 
+offsets to descending,
+
+which can break assumptions in existing buddy allocator code that 
+expects ascending order.
+
+>
+>> diff --git a/include/linux/rbtree.h b/include/linux/rbtree.h
+>> index 8d2ba3749866..17190bb4837c 100644
+>> --- a/include/linux/rbtree.h
+>> +++ b/include/linux/rbtree.h
+>> @@ -79,6 +79,62 @@ static inline void rb_link_node_rcu(struct rb_node *node, struct rb_node *parent
+>>   	   ____ptr ? rb_entry(____ptr, type, member) : NULL; \
+>>   	})
+>>   
+>> +/**
+>> + * rbtree_for_each_entry - iterate in-order over rb_root of given type
+>> + *
+>> + * @pos:	the 'type *' to use as a loop cursor.
+>> + * @root:	'rb_root *' of the rbtree.
+>> + * @member:	the name of the rb_node field within 'type'.
+>> + */
+>> +#define rbtree_for_each_entry(pos, root, member) \
+>> +	for ((pos) = rb_entry_safe(rb_first(root), typeof(*(pos)), member); \
+>> +	     (pos); \
+>> +	     (pos) = rb_entry_safe(rb_next(&(pos)->member), typeof(*(pos)), member))
+>> +
+>> +/**
+>> + * rbtree_reverse_for_each_entry - iterate in reverse in-order over rb_root
+>> + * of given type
+>> + *
+>> + * @pos:	the 'type *' to use as a loop cursor.
+>> + * @root:	'rb_root *' of the rbtree.
+>> + * @member:	the name of the rb_node field within 'type'.
+>> + */
+>> +#define rbtree_reverse_for_each_entry(pos, root, member) \
+>> +	for ((pos) = rb_entry_safe(rb_last(root), typeof(*(pos)), member); \
+>> +	     (pos); \
+>> +	     (pos) = rb_entry_safe(rb_prev(&(pos)->member), typeof(*(pos)), member))
+>> +
+>> +/**
+>> + * rbtree_for_each_entry_safe - iterate in-order over rb_root safe against removal
+>> + *
+>> + * @pos:	the 'type *' to use as a loop cursor
+>> + * @n:		another 'type *' to use as temporary storage
+>> + * @root:	'rb_root *' of the rbtree
+>> + * @member:	the name of the rb_node field within 'type'
+>> + */
+>> +#define rbtree_for_each_entry_safe(pos, n, root, member) \
+>> +	for ((pos) = rb_entry_safe(rb_first(root), typeof(*(pos)), member), \
+>> +	     (n) = (pos) ? rb_entry_safe(rb_next(&(pos)->member), typeof(*(pos)), member) : NULL; \
+>> +	     (pos); \
+>> +	     (pos) = (n), \
+>> +	     (n) = (pos) ? rb_entry_safe(rb_next(&(pos)->member), typeof(*(pos)), member) : NULL)
+>> +
+>> +/**
+>> + * rbtree_reverse_for_each_entry_safe - iterate in reverse in-order over rb_root
+>> + * safe against removal
+>> + *
+>> + * @pos:	the struct type * to use as a loop cursor.
+>> + * @n:		another struct type * to use as temporary storage.
+>> + * @root:	pointer to struct rb_root to iterate.
+>> + * @member:	name of the rb_node field within the struct.
+>> + */
+>> +#define rbtree_reverse_for_each_entry_safe(pos, n, root, member) \
+>> +	for ((pos) = rb_entry_safe(rb_last(root), typeof(*(pos)), member), \
+>> +	     (n) = (pos) ? rb_entry_safe(rb_prev(&(pos)->member), typeof(*(pos)), member) : NULL; \
+>> +	     (pos); \
+>> +	     (pos) = (n), \
+>> +	     (n) = (pos) ? rb_entry_safe(rb_prev(&(pos)->member), typeof(*(pos)), member) : NULL)
+>> +
+> Not really a fan of these. That's typically a sign you're doing it
+> wrong. Full tree iteration is actually slower than linked list.
+
+I understand your concern about full-tree iteration being slower than a 
+list walk. In our current use cases, though,
+
+the cost is not on the hot path and performance is comparable or even 
+better to list traversal. We occasionally need
+
+to walk the full set of blocks to perform specific operations, and these 
+macros make that code simpler and
+
+less error-prone. They aren't meant to replace targeted lookups or 
+bounded walks, just to cover where a full
+
+traversal is necessary.
+
+Thanks,
+
+Arun.
 
 
