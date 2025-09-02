@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-177422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D03B40541
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED61B4056B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:53:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 620BF4E1B75
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F8711B66989
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7CA306D35;
-	Tue,  2 Sep 2025 13:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6547A30E830;
+	Tue,  2 Sep 2025 13:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVuEfcxb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZC3J8DJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E802DECDE;
-	Tue,  2 Sep 2025 13:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A4230DD12;
+	Tue,  2 Sep 2025 13:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820594; cv=none; b=Cjqycn2aCwOd5OusmjtphF2FWy+Vyy9OyMW79BQXUhE9yYD1EU4t7fQ24Hu0qI9TpO3r/5eZgDWpEF+LC9UnDU/W0dHkTfNUeyr/4h9fqp1eihPDBW5JYE7bGnTzWD3Z/a+TbT1g5+ymDkPVFsCZQVmaUaRLhGyU+B0ZTBSp1Aw=
+	t=1756820645; cv=none; b=riTHUyv761mKIYBknq5E1AwxPOQQ3Z7WBDURKDQbjgmHw/83JrOt0vaDr1vfp797/otwTSC0nNJZX9QvUkQlsYuKAXsj44QZR1KtFZcSGEA5ULJdC1K2OYZnSLHIO/tRWT6e7ziOPxrvmjkGI/XUPWg0u9OhBgSUhfz70rW91VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820594; c=relaxed/simple;
-	bh=l9ydAcRih9R0zzVf4CXd12okONOCwdFdkNHZJUjwrZI=;
+	s=arc-20240116; t=1756820645; c=relaxed/simple;
+	bh=/vLxRZHLtt0TXP72WY3i02MWDi5+Pp2bX61YQsKlQVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cU/QyRzGqI2jU4XvJVpMEN+rrHKTPGVUQOhaXf94mpjStBEqznH14q4ZtVPKEUP6LCMxcGS2G8erTeTApJ5xB1awDe4ijLgS883sm4NAcpp67CPKH2F4feOz6Z/W/ucYgflmudohUuXN1VfHPJPkiCpF/qnaKPIqnCigKStzI4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVuEfcxb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281BCC4CEED;
-	Tue,  2 Sep 2025 13:43:11 +0000 (UTC)
+	 MIME-Version; b=XKcboZNKYGtaFaVqKJpxGURZsVRtLpovC1HpSfTaamWLEB2rOIaB3TY6e0WpxGzD5+0dY4ydca3th/8uFRQLQTC1VZBDIhUSiX04C95jpSKT5k1lwmsTc5h0yb6Zs3nqDdPCKpnvA1bpRnPlAUyddVCNyFnQuur7lqqzQQy6XDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZC3J8DJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39849C4CEED;
+	Tue,  2 Sep 2025 13:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820592;
-	bh=l9ydAcRih9R0zzVf4CXd12okONOCwdFdkNHZJUjwrZI=;
+	s=korg; t=1756820643;
+	bh=/vLxRZHLtt0TXP72WY3i02MWDi5+Pp2bX61YQsKlQVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cVuEfcxbkx0FQxHETby6T+gimtNFv96WPXgRLsX4pfWzyIMYscuR4oV0lDRitGV9y
-	 ZIC1+MO/sLunsBCVB9Fs6z6CjinYwJnJdDURsfvpxhbsNaks0V4uaJK9JlzbCh69J2
-	 jR8un6gZtNRzBJx6pjmoA5bj5JdI9/O3giLsMdJ4=
+	b=ZC3J8DJTzIhGtXaNTylUTRVFVMR70VHlLEQvZTj/bCVnDijN9IdbLwHH/hOF2RZhT
+	 UggW+EbB4klCErg05BkVDuqNEshNDYp+zgl24CjPpQMrrtaQQ23wWSBkQ/z147zwan
+	 MBNmgvaicapNNza1dayAqjg5U2629x5MwaAz+hO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett A C Sheffield <bacs@librecast.net>,
-	Oscar Maes <oscmaes92@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 09/33] net: ipv4: fix regression in local-broadcast routes
+Subject: [PATCH 5.10 01/34] pinctrl: STMFX: add missing HAS_IOMEM dependency
 Date: Tue,  2 Sep 2025 15:21:27 +0200
-Message-ID: <20250902131927.416793947@linuxfoundation.org>
+Message-ID: <20250902131926.670583534@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
-References: <20250902131927.045875971@linuxfoundation.org>
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
+References: <20250902131926.607219059@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oscar Maes <oscmaes92@gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 5189446ba995556eaa3755a6e875bc06675b88bd ]
+[ Upstream commit a12946bef0407cf2db0899c83d42c47c00af3fbc ]
 
-Commit 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
-introduced a regression where local-broadcast packets would have their
-gateway set in __mkroute_output, which was caused by fi = NULL being
-removed.
+When building on ARCH=um (which does not set HAS_IOMEM), kconfig
+reports an unmet dependency caused by PINCTRL_STMFX. It selects
+MFD_STMFX, which depends on HAS_IOMEM. To stop this warning,
+PINCTRL_STMFX should also depend on HAS_IOMEM.
 
-Fix this by resetting the fib_info for local-broadcast packets. This
-preserves the intended changes for directed-broadcast packets.
+kconfig warning:
+WARNING: unmet direct dependencies detected for MFD_STMFX
+  Depends on [n]: HAS_IOMEM [=n] && I2C [=y] && OF [=y]
+  Selected by [y]:
+  - PINCTRL_STMFX [=y] && PINCTRL [=y] && I2C [=y] && OF_GPIO [=y]
 
-Cc: stable@vger.kernel.org
-Fixes: 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
-Reported-by: Brett A C Sheffield <bacs@librecast.net>
-Closes: https://lore.kernel.org/regressions/20250822165231.4353-4-bacs@librecast.net
-Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250827062322.4807-1-oscmaes92@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1490d9f841b1 ("pinctrl: Add STMFX GPIO expander Pinctrl/GPIO driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/20250815022721.1650885-1-rdunlap@infradead.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/pinctrl/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index df4cbf9ba288f..b24de1c67d0c2 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2552,12 +2552,16 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
- 		    !netif_is_l3_master(dev_out))
- 			return ERR_PTR(-EINVAL);
- 
--	if (ipv4_is_lbcast(fl4->daddr))
-+	if (ipv4_is_lbcast(fl4->daddr)) {
- 		type = RTN_BROADCAST;
--	else if (ipv4_is_multicast(fl4->daddr))
-+
-+		/* reset fi to prevent gateway resolution */
-+		fi = NULL;
-+	} else if (ipv4_is_multicast(fl4->daddr)) {
- 		type = RTN_MULTICAST;
--	else if (ipv4_is_zeronet(fl4->daddr))
-+	} else if (ipv4_is_zeronet(fl4->daddr)) {
- 		return ERR_PTR(-EINVAL);
-+	}
- 
- 	if (dev_out->flags & IFF_LOOPBACK)
- 		flags |= RTCF_LOCAL;
+diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
+index 815095326e2d6..72c27181a4270 100644
+--- a/drivers/pinctrl/Kconfig
++++ b/drivers/pinctrl/Kconfig
+@@ -268,6 +268,7 @@ config PINCTRL_STMFX
+ 	tristate "STMicroelectronics STMFX GPIO expander pinctrl driver"
+ 	depends on I2C
+ 	depends on OF_GPIO
++	depends on HAS_IOMEM
+ 	select GENERIC_PINCONF
+ 	select GPIOLIB_IRQCHIP
+ 	select MFD_STMFX
 -- 
 2.50.1
 
