@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-177439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B78B40554
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:52:25 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5361B404E9
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8633E3A3D62
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 19A4E4E1E85
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6692330DD12;
-	Tue,  2 Sep 2025 13:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF8033A030;
+	Tue,  2 Sep 2025 13:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VoNv25vo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEZzEHxr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23935261593;
-	Tue,  2 Sep 2025 13:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D7F308F17;
+	Tue,  2 Sep 2025 13:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820647; cv=none; b=f0U5f/PQ/IpT4HP+Wu8flZvv6Av5tk3DEoaEE1IA9e3SaYbvTrWkSkkufIvZr3dpKVxI94RUjzir4oTtvMI9tzHK9WGKqDibrjKUtEUX3H0yET4G1TWkelLmy2aTvkcMrO+urJc7rVmbWY5TJc7RllcmBe/xSgUzIjYVQGpGMdA=
+	t=1756820562; cv=none; b=fbsFvQtYWHhuIdj7myRfnH/ErckROsT6bQOPOgCjb60oZNhAJ5FknrR2dJpNTPXIrjnvGhftBa6ctNKL/P/Ub3tkFHH6+okvP2CJD6tUoYhNo9NBrbN5cWDFvCPWP0VBs2ohlGjmCcK9t9X9U35EAMzs69pCw1FIack/PUkOLFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820647; c=relaxed/simple;
-	bh=3UIQddMcavh455dVvXZCdvzPepsLpJOpcF9PY2IdCA8=;
+	s=arc-20240116; t=1756820562; c=relaxed/simple;
+	bh=OIdFqzVmARfQNC6Er1pl226R3UeepKVpbXO+e9SPzhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lum166NuPM0eT5LU1YUOVxKfxnXL6ch4rxk3F8j5Gsw8YIPwME0l+u7iHiirNUba+Q6scNDEKyejPpcULQ1cnC4dCPqzknjyqZuPXln0O2YNsjZgGC/Xsc7zIAEh2QcMJ5HFBLYqkr7pfPDcGz+d2lzLKeo+2Rsq+Wf2lhfQjnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VoNv25vo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A95DC4CEED;
-	Tue,  2 Sep 2025 13:44:06 +0000 (UTC)
+	 MIME-Version; b=L8YfrzQGVW/+OKc0nSATzMd3uGbWsaZKiZldkUl9bFyb++61t5+s+MutjllwqWsz/cOhKfDwrMpU3Kq8EmItdTHpU5TDE5LkBKFzx+/KzCquMo4w4FOh3+XWTq7EZ8tsVI8+QBCizPbJkXuklKF1TMxcsHImEaTCE8FovdGwKOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEZzEHxr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CCDC4CEED;
+	Tue,  2 Sep 2025 13:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820647;
-	bh=3UIQddMcavh455dVvXZCdvzPepsLpJOpcF9PY2IdCA8=;
+	s=korg; t=1756820562;
+	bh=OIdFqzVmARfQNC6Er1pl226R3UeepKVpbXO+e9SPzhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VoNv25vozkVPy1ovayoW7QVeBKqrf2npH4dLASTLZXbUI+ofZy1p+Wdm7kgZjkncq
-	 5C8HryzdCNQ3cgLeWIAZkvl7cdtrrVfmxxPCo6g/AZ0Md1DoTIyeiNMMx2de1MBYgJ
-	 766k/xX+7PH6jeiNmZhYrbJrgyF/FM2mfjbzXnFE=
+	b=WEZzEHxrKgHkrmE6LkM6g0aR7ff2TgXCxKlDa4ZSrx+ZqprMbQyInnicQEdCm8Wf0
+	 cFlvzuedFgEjTxdlnR/rLcOAJrPCRR2XPKs7BqX9yW0cR5tm7xOw9Xjb03SfcRghx9
+	 9sBVmRHIKS9gCywguMYj7FljhjrL7RDMceLiAbeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Rohan G Thomas <rohan.g.thomas@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 10/34] Bluetooth: hci_event: Detect if HCI_EV_NUM_COMP_PKTS is unbalanced
+Subject: [PATCH 5.15 18/33] net: stmmac: xgmac: Do not enable RX FIFO Overflow interrupts
 Date: Tue,  2 Sep 2025 15:21:36 +0200
-Message-ID: <20250902131927.027437754@linuxfoundation.org>
+Message-ID: <20250902131927.768186611@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+References: <20250902131927.045875971@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Rohan G Thomas <rohan.g.thomas@altera.com>
 
-[ Upstream commit 15bf2c6391bafb14a3020d06ec0761bce0803463 ]
+[ Upstream commit 4f23382841e67174211271a454811dd17c0ef3c5 ]
 
-This attempts to detect if HCI_EV_NUM_COMP_PKTS contain an unbalanced
-(more than currently considered outstanding) number of packets otherwise
-it could cause the hcon->sent to underflow and loop around breaking the
-tracking of the outstanding packets pending acknowledgment.
+Enabling RX FIFO Overflow interrupts is counterproductive
+and causes an interrupt storm when RX FIFO overflows.
+Disabling this interrupt has no side effect and eliminates
+interrupt storms when the RX FIFO overflows.
 
-Fixes: f42809185896 ("Bluetooth: Simplify num_comp_pkts_evt function")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Commit 8a7cb245cf28 ("net: stmmac: Do not enable RX FIFO
+overflow interrupts") disables RX FIFO overflow interrupts
+for DWMAC4 IP and removes the corresponding handling of
+this interrupt. This patch is doing the same thing for
+XGMAC IP.
+
+Fixes: 2142754f8b9c ("net: stmmac: Add MAC related callbacks for XGMAC2")
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250825-xgmac-minor-fixes-v3-1-c225fe4444c0@altera.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 7f26c1aab9a06..c6dbb4aebfbc1 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3811,7 +3811,17 @@ static void hci_num_comp_pkts_evt(struct hci_dev *hdev, struct sk_buff *skb)
- 		if (!conn)
- 			continue;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+index 5e98355f422b3..3e4318d5dcdf5 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+@@ -199,10 +199,6 @@ static void dwxgmac2_dma_rx_mode(void __iomem *ioaddr, int mode,
+ 	}
  
--		conn->sent -= count;
-+		/* Check if there is really enough packets outstanding before
-+		 * attempting to decrease the sent counter otherwise it could
-+		 * underflow..
-+		 */
-+		if (conn->sent >= count) {
-+			conn->sent -= count;
-+		} else {
-+			bt_dev_warn(hdev, "hcon %p sent %u < count %u",
-+				    conn, conn->sent, count);
-+			conn->sent = 0;
-+		}
+ 	writel(value, ioaddr + XGMAC_MTL_RXQ_OPMODE(channel));
+-
+-	/* Enable MTL RX overflow */
+-	value = readl(ioaddr + XGMAC_MTL_QINTEN(channel));
+-	writel(value | XGMAC_RXOIE, ioaddr + XGMAC_MTL_QINTEN(channel));
+ }
  
- 		switch (conn->type) {
- 		case ACL_LINK:
+ static void dwxgmac2_dma_tx_mode(void __iomem *ioaddr, int mode,
 -- 
 2.50.1
 
