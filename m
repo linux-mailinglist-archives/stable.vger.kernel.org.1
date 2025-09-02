@@ -1,109 +1,113 @@
-Return-Path: <stable+bounces-176966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E82B3FB90
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63757B3FBB7
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA0492C17F5
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:00:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 343FA2C2A0A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 793CD2EE27C;
-	Tue,  2 Sep 2025 09:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387D22F290B;
+	Tue,  2 Sep 2025 10:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kzsM0CZ0"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JKPL8Nvr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7782EE268;
-	Tue,  2 Sep 2025 09:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2493F2F1FEE
+	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 10:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756807179; cv=none; b=YOoIuCSW3gJBllxzRFct/oMceRYz/+U1WKyQ0seYJ8kRFK06RjMvo9nJtIZZfku+rpLxX3yuLNMyLI4d9rLE/QCESe7A4b5baGr4YXEMa6VD5/MasGwogKIMtDXhcp0e4pPByh4afrkdEDjyUmnRjoStoQ4ZlLJYtI7xLlRJxvA=
+	t=1756807411; cv=none; b=rXXpve16vUMgMcyuE7xV7FQW4/xlKoX/QDMpjvmerfsVUDsSSqJgGayzCDCjdlCokN9LQGCZWy7VNnbAFJaUdiyVPOtzYmnWlS4ncE40sR/YVi1m0+7d9yHJMlGpHDvbP+tZjFjRVpMhEs2gEKddqvNIxjlKcb+Uja7BMi3DJg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756807179; c=relaxed/simple;
-	bh=M22+uJTa/W0eNL+3Bo93sBc6P8ROW0P0TJeVjfjQk18=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rhbMPSxxnAkWwhJ0KE/tcgYRrJYLXSeKhE6ShnsavNxaYMR8Z48s/W46Kt1LQxREAZftLW/NgCtg3gkQ30hp05+wMwQduF/T8c7aTFFin7l3NISUD8juzUKEVGnU2k+TdsjcDLBmg03Kr+DGw7kPIlarh43MrRtV9dKqy6yCIV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kzsM0CZ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99184C4CEED;
-	Tue,  2 Sep 2025 09:59:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756807178;
-	bh=M22+uJTa/W0eNL+3Bo93sBc6P8ROW0P0TJeVjfjQk18=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kzsM0CZ0400pFYojaPSN3T8hh4EfIYl7a/Mi8NEmZ1c6qb4DouJ9/F56YeIqbtCnD
-	 XPjcrINJyIv8Zbh4dunh7pNK5xMkUjpk+oYVqLjqfbzxZWnOAxGUKQfxbo/NDarrLJ
-	 JEW+8E1V5q1uCg7ZvVmDiEcF1mytSCutnNt4yLJ1BwpC6WmsTcll0jR2OlqMNpgpsV
-	 +dZOiaM6VTJlzYzIj7P5wZSj0CV9C7St6uj3cJ70LnbR8UjM3Z82ePB9Tvd8WUfoMp
-	 B7ZXtU1T6VcWritj/lKN9Hr5mDw/AXbn9BK/gnC4OUSgis9QTFw+s/4MJ1IeivSKee
-	 3/US+8bpFiBUw==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1utNnQ-0000000080j-2mDu;
-	Tue, 02 Sep 2025 11:59:25 +0200
-Date: Tue, 2 Sep 2025 11:59:24 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Cristian Marussi <cristian.marussi@arm.com>, arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Jan Palus <jpalus@fastmail.com>
-Subject: Re: [PATCH] firmware: arm_scmi: quirk: fix write to string constant
-Message-ID: <aLa__M_VJYqxb9mc@hovoldconsulting.com>
-References: <20250829132152.28218-1-johan@kernel.org>
- <aLG5XFHXKgcBida8@hovoldconsulting.com>
+	s=arc-20240116; t=1756807411; c=relaxed/simple;
+	bh=lMt8f1svkhZE33FXRLY0yAkh9fTWrIdcWz2YobDS3hs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SHhCQbKfNAGs2PiBXqb0eRXnu8KtM+4PmAQ1TAc291OtUu5bdC7gdgTjdKeHqj8RgW9Ee1lcy3foxflK6vndFDWru21mn7v9Q7Zml7ZYLWMOI7v3VLGGRb8S76hbri87ZUA/UI+cI8QWdp0CgMN8huks/w88Bl52AbRNaEi2OdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JKPL8Nvr; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-55f68d7a98aso3529626e87.3
+        for <stable@vger.kernel.org>; Tue, 02 Sep 2025 03:03:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1756807407; x=1757412207; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lMt8f1svkhZE33FXRLY0yAkh9fTWrIdcWz2YobDS3hs=;
+        b=JKPL8Nvr1t8aJ1PNt/35It7dkYt5pQZa023xPSAvyWqItoR3lwVnz4nF5tna3rs+Ou
+         1k5JQ8bqK9W/rMsW0zhEBjQW67g5JAeSne/NDhiYZY6UOxYVI+nYg5deydTeU++UHbE6
+         yzHEzRlieXIMiONQv2ovW1LrVMp3Q4+MZTxTwGrclhqNQ/Hj6HEq3OWbBlAzqzwGkSzQ
+         VQ0PdczWInkY/ZYRF0gVtPXmBUsPeataa3qrcs9cGzcU1m5TN3OrCHGI9ey5SR2FUhJh
+         LyZ4GaYecdcd4imEENmNQwoz12omr598xDlC13d7zaLotnjyE0ZcFC0RmmdlLVgUK3Tp
+         t6Bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756807407; x=1757412207;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lMt8f1svkhZE33FXRLY0yAkh9fTWrIdcWz2YobDS3hs=;
+        b=u8yMPl/75dzm5SfKDtSQdZgD/zhOZXerEvM2RfjC81vkqrWu1MF3ajgCqpYceqM6Gw
+         hLerSbbAtgageeoX0xLzwgegmoYp83cAbgsnTx2jEBcndexbs6aZV/8aQWoHHHsqE4hA
+         ywdw2CRZcBynMYLHYnt4yjyUa+SNm/DYsosIEtTVamabl9tzh/zZs6vxc8snGXW5wcLC
+         W1bEvIUqECBGptORu1rwHzG3//yKutIiQ7soVLyWVA7qJ/T2XVFxWg0wKOc7KlrAA/3s
+         XSXl+1mew49NEIQBTlQst46Zv5sYHobI7OX0k4o56fQpZVxmIaDyjSYgwxsAiC1yaFAd
+         1ucA==
+X-Forwarded-Encrypted: i=1; AJvYcCVXM/gl901vqe90cVk/wmo0YGLCBmx9nORnzRMK+wpCut3T6gLiNUI6nWNljXzVO77c57ZrSMI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTEf/DspQEM8O6c8cFNQsRKSVmIoHLpkneV6CC5pbCoe0XJEJD
+	aFp0z8nWUtA1qGi831HNU4LRfp7Bd0lL2UMjHgqxLB3+k09vpcWS1WeLzx9oyxjUWdLAEDrpy8F
+	Xe85RrWIzZ20QwT4ag/vrWQY+3QEZK0Q8TNsG7k37Ew==
+X-Gm-Gg: ASbGncuc+64IR/MXN0kfnUB69BQlHro3OI7Hs08MoA7pQxhz7GrXa9ndoAMr4Lv3l2d
+	SH8QckZ/IjUhpVupgPrleNJGv0AYQj3vKu1+NFWf2aP2GrWIeg/um4DqpZSX4j3qncG/xvUkeHX
+	GLDbZrMogbWHCf0nmTHjCBR5zLtpW2mNBjSzzk2VeXpiKwvqVYUuapYpx3qbBtFkpWsYyg4ywpp
+	3MaBqyMgV3n2vxJGw==
+X-Google-Smtp-Source: AGHT+IFdHvcUVxSylVwD2vnKLU9FQTJFLwj42u6Z7wlm3bxT33e3D2bu+wc3U3jlI6g8xaBcDAr/McPTMKQVI/EszFU=
+X-Received: by 2002:a2e:b8d4:0:b0:336:7121:525a with SMTP id
+ 38308e7fff4ca-336cab0981bmr32752001fa.25.1756807407065; Tue, 02 Sep 2025
+ 03:03:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLG5XFHXKgcBida8@hovoldconsulting.com>
+References: <20250811-gpio-mmio-mfd-conv-v1-0-68c5c958cf80@linaro.org> <20250811-gpio-mmio-mfd-conv-v1-1-68c5c958cf80@linaro.org>
+In-Reply-To: <20250811-gpio-mmio-mfd-conv-v1-1-68c5c958cf80@linaro.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 2 Sep 2025 12:03:15 +0200
+X-Gm-Features: Ac12FXx83c_FhzzXPFUThYNZRpQMbuI8Pyqd_lvAWb4e0eyemL5lMdz-E0s3cCM
+Message-ID: <CACRpkdbLoa518Nu6UqFcqgx5fvqv9Uj5o_etybO+sxZpDQ3_Mw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mfd: vexpress-sysreg: check the return value of devm_gpiochip_add_data()
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Lee Jones <lee@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>, 
+	Sudeep Holla <sudeep.holla@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Pawel Moll <pawel.moll@arm.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Sudeep,
+On Mon, Aug 11, 2025 at 3:36=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
+ wrote:
 
-On Fri, Aug 29, 2025 at 04:29:48PM +0200, Johan Hovold wrote:
-> On Fri, Aug 29, 2025 at 03:21:52PM +0200, Johan Hovold wrote:
-> > The quirk version range is typically a string constant and must not be
-> > modified (e.g. as it may be stored in read-only memory):
-> > 
-> > 	Unable to handle kernel write to read-only memory at virtual
-> > 	address ffffc036d998a947
-> > 
-> > Fix the range parsing so that it operates on a copy of the version range
-> > string, and mark all the quirk strings as const to reduce the risk of
-> > introducing similar future issues.
-> 
-> With Jan's permission, let's add:
-> 
-> Reported-by: Jan Palus <jpalus@fastmail.com>
-> 
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220437
-> > Fixes: 487c407d57d6 ("firmware: arm_scmi: Add common framework to handle firmware quirks")
-> > Cc: stable@vger.kernel.org	# 6.16
-> > Cc: Cristian Marussi <cristian.marussi@arm.com>
-> > Signed-off-by: Johan Hovold <johan@kernel.org>
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>
+> Commit 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
+> removed the return value check from the call to gpiochip_add_data() (or
+> rather gpiochip_add() back then and later converted to devres) with no
+> explanation. This function however can still fail, so check the return
+> value and bail-out if it does.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 974cc7b93441 ("mfd: vexpress: Define the device as MFD cells")
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-I noticed that you picked up this fix yesterday but also that you
-rewrote the commit message and switched using cleanup helpers.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Please don't do such (non-trivial) changes without making that clear
-in the commit message before your Signed-off-by tag:
-
-	[ sudeep: rewrite commit message; switch to cleanup helpers ]
-
-In this case, you also changed the meaning so that the commit message
-now reads like the sole reason that writing to string constants is wrong
-is that they may reside in read-only memory.
-
-I used "e.g." on purpose instead of listing further reasons like the
-fact that string constants may be shared so that parsing of one quirk
-can subtly break a later one.
-
-Johan
+Yours,
+Linus Walleij
 
