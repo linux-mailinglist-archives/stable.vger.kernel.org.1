@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-177493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1E5B405A9
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:56:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 049BBB40585
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4B315E3B95
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:52:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21C131889CAE
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F0032A832;
-	Tue,  2 Sep 2025 13:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E1C2F363A;
+	Tue,  2 Sep 2025 13:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIfxUDBQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v79Ub9F2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6496D32A81D;
-	Tue,  2 Sep 2025 13:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB29314B82;
+	Tue,  2 Sep 2025 13:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820822; cv=none; b=ZxAaAhoXNuNU7UpZ0TQHgNCAw1Fp5yhnu/3A59S5uF27JpYCQ3a840NnwBO9PiLOJIoWz1f+v/Zoocn6YjsN6dB028fyI83Ql2c4dAMNAEObWY6D7PX1zM7E8EbPOGSA/C29UNwfAjF4RDiBtbCdL+r9NSHFP6tHu2PSvSjQeZ8=
+	t=1756820703; cv=none; b=N82+fvNL9535tDXgF73y32LlMZl0pcRABHDwtXbPXp7gU37K/+v5IKwvFVfIUrSufH9IeZP6KK/FxHYnhhRMzrhWC728ZDhhUhyZPSY1Rr6RxdrbybNxTMODm+1ZMZJG00GXl1ywOHevsp9fjJalpWkQk3VZ/1BuPIFCuTsphLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820822; c=relaxed/simple;
-	bh=z6vOHKqPgIixlcN637GX3TaKXDXa2jVNJvBVfZ8vWXg=;
+	s=arc-20240116; t=1756820703; c=relaxed/simple;
+	bh=pD3/FudG0hFJvYArLKf50RuEqtzschNC60agVJBmfQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XN0dSVHBRs4fITKLGu1CKjcVTMZDGAr20sVqlTTyVSaWyVUkLHkRJpdtQpHf5zKDZaqa7NV22nV4/xgicTbn3DZGhOd7X0MRzNZemikMAjIyGAC49IATL0t03eOsVZO3UQCdXrR0M0M9TlSREY0/L2TwbZYZ+jBGaKXTIFEIT3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIfxUDBQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93037C4CEED;
-	Tue,  2 Sep 2025 13:47:01 +0000 (UTC)
+	 MIME-Version; b=I/+dSxCYYk3H5nXdPyI2X+Mws3gx6rtdtooKo9P7hZnHjdXMVZZdPoCAioJvQJ20oHI/ceCxWd0sQjTKuV3lY4BXl5A2OLF2vrOdSroZ93bl4mTbjjPnE8piophXn7Ie4jILQsqdflcfCEh18N6KOFo/vk0cCW4aLV83UDEhp6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v79Ub9F2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C10C4CEED;
+	Tue,  2 Sep 2025 13:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820822;
-	bh=z6vOHKqPgIixlcN637GX3TaKXDXa2jVNJvBVfZ8vWXg=;
+	s=korg; t=1756820703;
+	bh=pD3/FudG0hFJvYArLKf50RuEqtzschNC60agVJBmfQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mIfxUDBQUa2uPiu6a+cCFDReMXrH6666rbMunPyPBLLOhQVw/B/vMeWdHDP6c1b73
-	 s2W/3C4WtYLVK1Rh2Ky4amVT6ZMAckVsZhm3gkqlb67QH0Jv0twsmt3W95iXybJsRi
-	 ZOBoe9NiSGZjIOl1vjQC/p3Gainp8+5C3qczZb+U=
+	b=v79Ub9F2Vx/u10mYwusGEporkJbvqI+54TuLjWnwfHZkgfKYb6i1V5cotDo+/E2dQ
+	 M6SFMgnhT4pFWDoDQik5n6WTpbwpwqGzSjPBeOsajuZdGWQ0soXuSKhQF7355sGmoj
+	 9gR6DOFd99dGvEbgXqtx+QM0W62px5qvsebDoeag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 07/23] Bluetooth: hci_event: Detect if HCI_EV_NUM_COMP_PKTS is unbalanced
+	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Romain Sioen <romain.sioen@microchip.com>
+Subject: [PATCH 5.10 27/34] HID: mcp2221: Dont set bus speed on every transfer
 Date: Tue,  2 Sep 2025 15:21:53 +0200
-Message-ID: <20250902131925.016957354@linuxfoundation.org>
+Message-ID: <20250902131927.696174993@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131924.720400762@linuxfoundation.org>
-References: <20250902131924.720400762@linuxfoundation.org>
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
+References: <20250902131926.607219059@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
 
-[ Upstream commit 15bf2c6391bafb14a3020d06ec0761bce0803463 ]
+commit 02a46753601a24e1673d9c28173121055e8e6cc9 upstream.
 
-This attempts to detect if HCI_EV_NUM_COMP_PKTS contain an unbalanced
-(more than currently considered outstanding) number of packets otherwise
-it could cause the hcon->sent to underflow and loop around breaking the
-tracking of the outstanding packets pending acknowledgment.
+Since the initial commit of this driver the I2C bus speed has been
+reconfigured for every single transfer. This is despite the fact that we
+never change the speed and it is never "lost" by the chip.
+Upon investigation we find that what was really happening was that the
+setting of the bus speed had the side effect of cancelling a previous
+failed command if there was one, thereby freeing the bus. This is the
+part that was actually required to keep the bus operational in the face
+of failed commands.
 
-Fixes: f42809185896 ("Bluetooth: Simplify num_comp_pkts_evt function")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Instead of always setting the speed, we now correctly cancel any failed
+commands as they are detected. This means we can just set the bus speed
+at probe time and remove the previous speed sets on each transfer.
+This has the effect of improving performance and reducing the number of
+commands required to complete transfers.
+
+Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Fixes: 67a95c21463d ("HID: mcp2221: add usb to i2c-smbus host bridge")
+[romain.sioen@microchip.com: backport to stable, up to 6.8. Add "Fixes" tag]
+Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/hid/hid-mcp2221.c |   41 +++++++++++++++++++++++++++--------------
+ 1 file changed, 27 insertions(+), 14 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 33b025a52b83a..4e8911501255d 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3681,7 +3681,17 @@ static void hci_num_comp_pkts_evt(struct hci_dev *hdev, struct sk_buff *skb)
- 		if (!conn)
- 			continue;
+--- a/drivers/hid/hid-mcp2221.c
++++ b/drivers/hid/hid-mcp2221.c
+@@ -169,6 +169,25 @@ static int mcp_cancel_last_cmd(struct mc
+ 	return mcp_send_data_req_status(mcp, mcp->txbuf, 8);
+ }
  
--		conn->sent -= count;
-+		/* Check if there is really enough packets outstanding before
-+		 * attempting to decrease the sent counter otherwise it could
-+		 * underflow..
++/* Check if the last command succeeded or failed and return the result.
++ * If the command did fail, cancel that command which will free the i2c bus.
++ */
++static int mcp_chk_last_cmd_status_free_bus(struct mcp2221 *mcp)
++{
++	int ret;
++
++	ret = mcp_chk_last_cmd_status(mcp);
++	if (ret) {
++		/* The last command was a failure.
++		 * Send a cancel which will also free the bus.
 +		 */
-+		if (conn->sent >= count) {
-+			conn->sent -= count;
-+		} else {
-+			bt_dev_warn(hdev, "hcon %p sent %u < count %u",
-+				    conn, conn->sent, count);
-+			conn->sent = 0;
-+		}
++		usleep_range(980, 1000);
++		mcp_cancel_last_cmd(mcp);
++	}
++
++	return ret;
++}
++
+ static int mcp_set_i2c_speed(struct mcp2221 *mcp)
+ {
+ 	int ret;
+@@ -223,7 +242,7 @@ static int mcp_i2c_write(struct mcp2221
+ 		usleep_range(980, 1000);
  
- 		switch (conn->type) {
- 		case ACL_LINK:
--- 
-2.50.1
-
+ 		if (last_status) {
+-			ret = mcp_chk_last_cmd_status(mcp);
++			ret = mcp_chk_last_cmd_status_free_bus(mcp);
+ 			if (ret)
+ 				return ret;
+ 		}
+@@ -290,7 +309,7 @@ static int mcp_i2c_smbus_read(struct mcp
+ 		if (ret)
+ 			return ret;
+ 
+-		ret = mcp_chk_last_cmd_status(mcp);
++		ret = mcp_chk_last_cmd_status_free_bus(mcp);
+ 		if (ret)
+ 			return ret;
+ 
+@@ -310,11 +329,6 @@ static int mcp_i2c_xfer(struct i2c_adapt
+ 
+ 	mutex_lock(&mcp->lock);
+ 
+-	/* Setting speed before every transaction is required for mcp2221 */
+-	ret = mcp_set_i2c_speed(mcp);
+-	if (ret)
+-		goto exit;
+-
+ 	if (num == 1) {
+ 		if (msgs->flags & I2C_M_RD) {
+ 			ret = mcp_i2c_smbus_read(mcp, msgs, MCP2221_I2C_RD_DATA,
+@@ -399,9 +413,7 @@ static int mcp_smbus_write(struct mcp222
+ 	if (last_status) {
+ 		usleep_range(980, 1000);
+ 
+-		ret = mcp_chk_last_cmd_status(mcp);
+-		if (ret)
+-			return ret;
++		ret = mcp_chk_last_cmd_status_free_bus(mcp);
+ 	}
+ 
+ 	return ret;
+@@ -419,10 +431,6 @@ static int mcp_smbus_xfer(struct i2c_ada
+ 
+ 	mutex_lock(&mcp->lock);
+ 
+-	ret = mcp_set_i2c_speed(mcp);
+-	if (ret)
+-		goto exit;
+-
+ 	switch (size) {
+ 
+ 	case I2C_SMBUS_QUICK:
+@@ -870,6 +878,11 @@ static int mcp2221_probe(struct hid_devi
+ 	if (i2c_clk_freq < 50)
+ 		i2c_clk_freq = 50;
+ 	mcp->cur_i2c_clk_div = (12000000 / (i2c_clk_freq * 1000)) - 3;
++	ret = mcp_set_i2c_speed(mcp);
++	if (ret) {
++		hid_err(hdev, "can't set i2c speed: %d\n", ret);
++		return ret;
++	}
+ 
+ 	mcp->adapter.owner = THIS_MODULE;
+ 	mcp->adapter.class = I2C_CLASS_HWMON;
 
 
 
