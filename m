@@ -1,109 +1,77 @@
-Return-Path: <stable+bounces-177556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCEBB41102
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 01:53:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6147AB41107
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 01:54:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 248267B3132
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 23:51:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0871E1B255A0
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 23:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E54C2EAB64;
-	Tue,  2 Sep 2025 23:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465092EAB72;
+	Tue,  2 Sep 2025 23:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HSr7D5h+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ENI/H6yY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3ED12EAB6F
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 23:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AC82EA72B;
+	Tue,  2 Sep 2025 23:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756857175; cv=none; b=aJgZzKbnxyoJxJz0Yl6s0z/qJXuSwDKquGAA5cFrwgihz2uwQ4m8ynrW1JBnsrd9qSwtKcJwtFTD1gvxcGXR2Ui2M2mKrcxlyg7cwbk+xUsf5EXUdcQ/WOX0x/PrWa3vPw2yWGMk/1lQITwDyLtDwChCiEWs2AzAr3psr+m5dgQ=
+	t=1756857268; cv=none; b=Q0BcSOCC7AWioJAfBZJcq61ZUCsFQRYo4t64NZKKFudA2uF3wW+YAbZucO6XXY9QcwNTtmQFwl1RpWMq0JjdTuXig8g096Cn0zc4L7yfwmbltQLh7gAJsiRMLOhfDnXHF9xZJJ2PHkmyPGLFbpI6GhU2URuWOOduP30+DhG8vdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756857175; c=relaxed/simple;
-	bh=6givWJeo2KbjB4vPFl536ZK/TBqk0kofHXgNZGIJA7Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XoHc83VvY67v0y++FlXK8f1aZjmogpuS2t9xzJC4HLaGq+Wx9D7Z/WajGbsDHJ2cGx2FCtOX1E90Be1DLfTGDd3Ii4S03GiUTqKozQHqV4wDboPgctGbmq/Qswaa7+WIFFn9OF5ycjHKSUERAEA2MImim4VanBRuqeEdw4NkaLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HSr7D5h+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF25C4CEF7;
-	Tue,  2 Sep 2025 23:52:52 +0000 (UTC)
+	s=arc-20240116; t=1756857268; c=relaxed/simple;
+	bh=/HzkzVw/sf8/Kz6qLXNOLv8z0OEtNS0Fgza/c2GFMao=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EnW0S1dshEC9RXRrSbY00AN2yR4hOxoUqePjfwiMtTSe2nluzW+U7Uy5gYXChqsi0qeifBQ+Qb8PSyNQKTnoqM6s7nFLBC13WNl7gUUSx7sX21uY0r0LcoIoGYc0AjBFaNB9Cw3v8a7upcvpqHgiACBNaAKq7XMFvgQvatNtEms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ENI/H6yY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D95C4CEED;
+	Tue,  2 Sep 2025 23:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756857174;
-	bh=6givWJeo2KbjB4vPFl536ZK/TBqk0kofHXgNZGIJA7Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=HSr7D5h+2t7T6w5sEZcnMb9TqV2Zh1xHWp4tg3ZmEOu0pjgDtXzx6JQSEMTd1eH2F
-	 ajrL34w603laEBpRXbPAZgcWwZ1fU8PHltOQNjZTYsRMJkFIN/jRV1ko4QjTlW3jx7
-	 8YTGvTpzBj56HBHu/vFwXTfbMN+yNakOJuSHJPVNfmaDlUk1UUkkYuW5H6hNnohvVY
-	 nFxHqpDEIjO3ltHGVwX2vKiCUc2dXOJfUGQaztk2IL3K8C43hW5HVFvCgbhi302uNr
-	 pPj0YwXTj0Y82ZJ5NltplVQnq0G4zz3sL7WOWndHwmagpjGmdOZO13Zrjb7PI/b034
-	 uKiMCUK5e/xQw==
-From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linuxppc-dev@lists.ozlabs.org,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.4 only] powerpc: boot: Remove unnecessary zero in label in udelay()
-Date: Tue,  2 Sep 2025 16:52:34 -0700
-Message-ID: <20250902235234.2046667-1-nathan@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	s=k20201202; t=1756857267;
+	bh=/HzkzVw/sf8/Kz6qLXNOLv8z0OEtNS0Fgza/c2GFMao=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ENI/H6yYT8CCs9f3TtPOE46g0RwCmIbiW0K2aCH6zoPAQHI2nqeVm+nW4mkp8lh57
+	 W50SQ897Fxq7XMud3xiiy7wJgF/8lJH7nwhx6WbyXo+lwtiJx56MJlyGTT29A+VyBZ
+	 ubOBbYe2dn8nAn6nnBfmHKO6v8/eaB+kYWCHZvIe2MFEUnAb4k9REX+ZYLgYw+fR8V
+	 JEC+bV1r/7rIMGI2TeMbTCAZsMWi+ziWyle4vzIHk52MxV43GHtGfn22SOxrc1vVB4
+	 jhD7y8ieKomAwYhRYDtIzBxrUjaxq8YlUyjhgbjem1z2MR2GLDpaWkcCCT1pxOj2Vs
+	 hLWawdQOiyBkw==
+Date: Tue, 2 Sep 2025 16:54:26 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, david decotigny <decot@googlers.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ stable@vger.kernel.org, jv@jvosburgh.net
+Subject: Re: [PATCH net] netpoll: fix incorrect refcount handling causing
+ incorrect cleanup
+Message-ID: <20250902165426.6d6cd172@kernel.org>
+In-Reply-To: <20250901-netpoll_memleak-v1-1-34a181977dfc@debian.org>
+References: <20250901-netpoll_memleak-v1-1-34a181977dfc@debian.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-When building powerpc configurations in linux-5.4.y with binutils 2.43
-or newer, there is an assembler error in arch/powerpc/boot/util.S:
+On Mon, 01 Sep 2025 07:29:13 -0700 Breno Leitao wrote:
+> I have a selftest that shows the memory leak when kmemleak is enabled
+> and I will be submitting to net-next.
+> 
+> Also, giving I am reverting commit efa95b01da18 ("netpoll: fix use
+> after free"), which was supposed to fix a problem on bonding, I am
+> copying Jay.
 
-  arch/powerpc/boot/util.S: Assembler messages:
-  arch/powerpc/boot/util.S:44: Error: junk at end of line, first unrecognized character is `0'
-  arch/powerpc/boot/util.S:49: Error: syntax error; found `b', expected `,'
-  arch/powerpc/boot/util.S:49: Error: junk at end of line: `b'
-
-binutils 2.43 contains stricter parsing of certain labels [1].
-
-Remove the unnecessary leading zero to fix the build. This is only
-needed in linux-5.4.y because commit 8b14e1dff067 ("powerpc: Remove
-support for PowerPC 601") removed this code altogether in 5.10.
-
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=226749d5a6ff0d5c607d6428d6c81e1e7e7a994b [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- arch/powerpc/boot/util.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/boot/util.S b/arch/powerpc/boot/util.S
-index f11f0589a669..5ab2bc864e66 100644
---- a/arch/powerpc/boot/util.S
-+++ b/arch/powerpc/boot/util.S
-@@ -41,12 +41,12 @@ udelay:
- 	srwi	r4,r4,16
- 	cmpwi	0,r4,1		/* 601 ? */
- 	bne	.Ludelay_not_601
--00:	li	r0,86	/* Instructions / microsecond? */
-+0:	li	r0,86	/* Instructions / microsecond? */
- 	mtctr	r0
- 10:	addi	r0,r0,0 /* NOP */
- 	bdnz	10b
- 	subic.	r3,r3,1
--	bne	00b
-+	bne	0b
- 	blr
- 
- .Ludelay_not_601:
-
-base-commit: c25f780e491e4734eb27d65aa58e0909fd78ad9f
+Please post them together. It looks like there may be more bugs here.
 -- 
-2.51.0
-
+pw-bot: cr
 
