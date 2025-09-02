@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-177299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B03C9B40498
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:44:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09092B40425
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AD23164173
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:41:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 323A04E7B59
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431A032ED2D;
-	Tue,  2 Sep 2025 13:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DB331AF1A;
+	Tue,  2 Sep 2025 13:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvFEWN9I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvMdMqIW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B3132ED25;
-	Tue,  2 Sep 2025 13:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7672F2DC33B;
+	Tue,  2 Sep 2025 13:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820207; cv=none; b=GxYmHoAr/Bv23U/l7Df4O1aXDXMfh4GpKK98DZ9O1ePW7eowknbfdySKZFnO4eYbQqVm5A3nAdz3SkwcBNin3kH2RsCRAXKFK/sviP8WzVj9Ky9clV2Pt2EaS0A7wpILICTGqEvzJcl/EvRhsG0e1C3qYPGHpLZQKOdWjXG2uWw=
+	t=1756820113; cv=none; b=p+7OGq8Fg5T94WpTMATR+EBPCS1FgTytr7eaNU6Pilqnabt0LTfDkOsYIp/BcePAcqS1ih2wbKmaaVML1Z7h5+wEeD1kPZ12xKBGjgEnLW/df4n9tXWK/an2n9yS30qkDAIsAby/ez02VE94fRoIfFKVmFH7DQgwmR2yte16xbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820207; c=relaxed/simple;
-	bh=Ag4i/4zx7QaVEgta7JbanKf0GAE51t0UugwU3Vx30OU=;
+	s=arc-20240116; t=1756820113; c=relaxed/simple;
+	bh=KC4mhj6NeFqCDCbqTw1hfu1v27IxgJTeUx9rD1TKgqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUMa3OD44AjemK+D09XIcrN9id7rRqK/QbvxxVK/YlVZqLpYkhRd5ymkoL8r7b6cbhr1b4kHniIXSuDxV0EW7ZsbEY5tIqU5pv+mBMKtt1S/w5GNUkEhCmNlB2Wz2CkVxx9mEExNWxwtWDbvmeGiWiXP75Yo0UhIa/oH0tW8kkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvFEWN9I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77164C4CEF4;
-	Tue,  2 Sep 2025 13:36:46 +0000 (UTC)
+	 MIME-Version; b=AvFVjgol8HGP0zGsKxa03Pc9gfHPNxq7iGQWZ0sGkwJlOF2NmI8h08ot4snIq46Iu5Ho/zbzVsH1yz8nv3EIHD/vevMa+4Vcz1aNcltGHuIeWFW274Ay+SK0WrIL5bYOBQ35NXplTZrhNdTHaWX83z8t7MxaFFPFCZ5jZQ3mM64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvMdMqIW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02E1C4CEED;
+	Tue,  2 Sep 2025 13:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820206;
-	bh=Ag4i/4zx7QaVEgta7JbanKf0GAE51t0UugwU3Vx30OU=;
+	s=korg; t=1756820113;
+	bh=KC4mhj6NeFqCDCbqTw1hfu1v27IxgJTeUx9rD1TKgqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SvFEWN9ICscszsIIJ8FVWfLNUmJAe/9rF0E3nyx1aCnt1L68DoDd8C0Z7rmryMdyC
-	 NGDxkyvWYnWETsSoHfAK/iwjeXWNeitj3cfxbj9LMqnaU6Yj9aMdgFRJlerPOOT5Lk
-	 L2jkHbnlgDiAhZoSfmlQeYKMcimTdKUKUV7enTKw=
+	b=jvMdMqIWS0r4E7uSxDZn6RU+lJXMcYpyzC8cbppr6NXqNm2w/hKnLsimBfbWx/FOy
+	 7sD9Tk83ICve4Q4je+HfDGnsmq9Ltl12oi2kKG2fN0c5ONh2qUrZ7YJfCwktUWXGbx
+	 JdwyfTaz4Xwq1VFeIabCxAgN1QiBmED66fya6QSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Xu Du <xudu@redhat.com>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>
-Subject: [PATCH 6.6 30/75] ice: gather page_count()s of each frag right before XDP prog call
+	Neil Mandir <neil.mandir@seco.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 66/95] net: macb: Disable clocks once
 Date: Tue,  2 Sep 2025 15:20:42 +0200
-Message-ID: <20250902131936.296722144@linuxfoundation.org>
+Message-ID: <20250902131942.134785198@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,99 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Neil Mandir <neil.mandir@seco.com>
 
-[ Upstream commit 11c4aa074d547d825b19cd8d9f288254d89d805c ]
+[ Upstream commit dac978e51cce0c1f00a14c4a82f81d387f79b2d4 ]
 
-If we store the pgcnt on few fragments while being in the middle of
-gathering the whole frame and we stumbled upon DD bit not being set, we
-terminate the NAPI Rx processing loop and come back later on. Then on
-next NAPI execution we work on previously stored pgcnt.
+When the driver is removed the clocks are disabled twice: once in
+macb_remove and a second time by runtime pm. Disable wakeup in remove so
+all the clocks are disabled and skip the second call to macb_clks_disable.
+Always suspend the device as we always set it active in probe.
 
-Imagine that second half of page was used actively by networking stack
-and by the time we came back, stack is not busy with this page anymore
-and decremented the refcnt. The page reuse algorithm in this case should
-be good to reuse the page but given the old refcnt it will not do so and
-attempt to release the page via page_frag_cache_drain() with
-pagecnt_bias used as an arg. This in turn will result in negative refcnt
-on struct page, which was initially observed by Xu Du.
-
-Therefore, move the page count storage from ice_get_rx_buf() to a place
-where we are sure that whole frame has been collected, but before
-calling XDP program as it internally can also change the page count of
-fragments belonging to xdp_buff.
-
-Fixes: ac0753391195 ("ice: Store page count inside ice_rx_buf")
-Reported-and-tested-by: Xu Du <xudu@redhat.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Co-developed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: b1a0c977c6f1 ("ice: fix incorrect counter for buffer allocation failures")
+Fixes: d54f89af6cc4 ("net: macb: Add pm runtime support")
+Signed-off-by: Neil Mandir <neil.mandir@seco.com>
+Co-developed-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://patch.msgid.link/20250826143022.935521-1-sean.anderson@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c | 27 ++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/cadence/macb_main.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index 46f10f32924ee..beb5c8643fe7d 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -924,7 +924,6 @@ ice_get_rx_buf(struct ice_rx_ring *rx_ring, const unsigned int size,
- 	struct ice_rx_buf *rx_buf;
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 2421a7bcd221e..6c2d69ef1a8db 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5230,14 +5230,11 @@ static void macb_remove(struct platform_device *pdev)
+ 		mdiobus_unregister(bp->mii_bus);
+ 		mdiobus_free(bp->mii_bus);
  
- 	rx_buf = &rx_ring->rx_buf[ntc];
--	rx_buf->pgcnt = page_count(rx_buf->page);
- 	prefetchw(rx_buf->page);
- 
- 	if (!size)
-@@ -940,6 +939,31 @@ ice_get_rx_buf(struct ice_rx_ring *rx_ring, const unsigned int size,
- 	return rx_buf;
- }
- 
-+/**
-+ * ice_get_pgcnts - grab page_count() for gathered fragments
-+ * @rx_ring: Rx descriptor ring to store the page counts on
-+ *
-+ * This function is intended to be called right before running XDP
-+ * program so that the page recycling mechanism will be able to take
-+ * a correct decision regarding underlying pages; this is done in such
-+ * way as XDP program can change the refcount of page
-+ */
-+static void ice_get_pgcnts(struct ice_rx_ring *rx_ring)
-+{
-+	u32 nr_frags = rx_ring->nr_frags + 1;
-+	u32 idx = rx_ring->first_desc;
-+	struct ice_rx_buf *rx_buf;
-+	u32 cnt = rx_ring->count;
-+
-+	for (int i = 0; i < nr_frags; i++) {
-+		rx_buf = &rx_ring->rx_buf[idx];
-+		rx_buf->pgcnt = page_count(rx_buf->page);
-+
-+		if (++idx == cnt)
-+			idx = 0;
-+	}
-+}
-+
- /**
-  * ice_build_skb - Build skb around an existing buffer
-  * @rx_ring: Rx descriptor ring to transact packets on
-@@ -1243,6 +1267,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 		if (ice_is_non_eop(rx_ring, rx_desc))
- 			continue;
- 
-+		ice_get_pgcnts(rx_ring);
- 		ice_run_xdp(rx_ring, xdp, xdp_prog, xdp_ring, rx_buf, rx_desc);
- 		if (rx_buf->act == ICE_XDP_PASS)
- 			goto construct_skb;
++		device_set_wakeup_enable(&bp->pdev->dev, 0);
+ 		cancel_work_sync(&bp->hresp_err_bh_work);
+ 		pm_runtime_disable(&pdev->dev);
+ 		pm_runtime_dont_use_autosuspend(&pdev->dev);
+-		if (!pm_runtime_suspended(&pdev->dev)) {
+-			macb_clks_disable(bp->pclk, bp->hclk, bp->tx_clk,
+-					  bp->rx_clk, bp->tsu_clk);
+-			pm_runtime_set_suspended(&pdev->dev);
+-		}
++		pm_runtime_set_suspended(&pdev->dev);
+ 		phylink_destroy(bp->phylink);
+ 		free_netdev(dev);
+ 	}
 -- 
 2.50.1
 
