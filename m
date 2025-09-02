@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-177323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4160B404C8
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:46:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C85B4046E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C23E617B86B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:42:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5570188FE55
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A7A30ACF9;
-	Tue,  2 Sep 2025 13:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50C130C372;
+	Tue,  2 Sep 2025 13:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kaR+nUEy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivV4pR8Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C09B2BE053;
-	Tue,  2 Sep 2025 13:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7252F30EF65;
+	Tue,  2 Sep 2025 13:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820278; cv=none; b=roI+igGYLMbpdG0mS2LxvWQsSzim+DufBtLJ4av4RfHj7TZ3xvts5aJUxIG+JkcfCg9rtFp3ver61CtPB69xEqvEB8dhDMYQI54TrxZ3MYxOlQcW0sLyLRJCKRzzVFEAXQSrdU6DVaUeqpw+f90t5hXnWweB+8+fErnarypOieg=
+	t=1756820089; cv=none; b=EF0OM8yYVRWWZzoKlNDvkftbh8KHYUWXVYCZo9rkkSPCVYYp5itix95bKD8l+ygHHXTgLpxm08M1cKSjrz1278xDsKeTg4nQknWPHUCoSF7+HMafb45VgUgK5RByS4Pexk8vDaw7lrCnf8Uy2ozi4j1WaiZNlr57DMC9TUVCC4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820278; c=relaxed/simple;
-	bh=ES69nZ8FcboNLqLQX2E1ucYdO/F4nvAHQVybqQLdmwc=;
+	s=arc-20240116; t=1756820089; c=relaxed/simple;
+	bh=NqQ8qHflVPj5ZIaAl/hbLpig0ifObEIGGXp9s8GRTjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+PVmg9t60M6z7TQB5SdstyNjSRVsPMIWV02sik2jYH/dgKhncAdQbofOhyJBghasnMYWPtDehXwB1mCv4t64pfRPIkI1iX6H2Mjmy0fB6KWkOSaSKiMDzWWGmB32gK4v2vXL9EsRvSsS05apuyywqiGqxTMcHNqB7ujI5GAfCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kaR+nUEy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE25C4CEED;
-	Tue,  2 Sep 2025 13:37:56 +0000 (UTC)
+	 MIME-Version; b=I3rA2m/KxSNAfxI/z+7e6sPODaLdSsmy+iWKt73+fSClDJE52a2qhD/zkQCJIw8NAIovCGDMOiPCE+WefNfE6LyVWZk9TnJM2DsukNBQ1MebconhgUcw7vwQKwk1HiNluArhj1HapphbHEgV65oZN7ASSIhgmAtL/OTizRoR+fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivV4pR8Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79547C4CEED;
+	Tue,  2 Sep 2025 13:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820278;
-	bh=ES69nZ8FcboNLqLQX2E1ucYdO/F4nvAHQVybqQLdmwc=;
+	s=korg; t=1756820088;
+	bh=NqQ8qHflVPj5ZIaAl/hbLpig0ifObEIGGXp9s8GRTjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kaR+nUEyBwIuiyX2WmjsXedknWvgNHxojezjxAJtfRgnab+MgJusMJZAMzx22Qb+v
-	 CxJ2ZaYaQyFNE/wcmygPHrn/XyNoHcGrnPSmuiki/ME+W72a/atdvE76+kZDvIubjc
-	 7k1CemZxKMdMQac4L3d5heoFXlEqr6hESbWc0LVI=
+	b=ivV4pR8Yyr1gy5YNEIXwITkbM2cQQs4niOw2jpZc4i7Zted82x5e1Ghfz2U/Jku6P
+	 81uN+amWpDVX9lZ4CS4PyUBfvonDVX5JwNi+UNwvZpVgRDpZLMYBcOuQ60tlal2DP/
+	 Z1QYhRrZ3YRn2CmQNHQ17F7GIsbuYPFYXi6CtuwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e69f06a0f30116c68056@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 54/75] sctp: initialize more fields in sctp_v6_from_sk()
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>
+Subject: [PATCH 6.12 90/95] PCI: Rename PCIE_RESET_CONFIG_DEVICE_WAIT_MS to PCIE_RESET_CONFIG_WAIT_MS
 Date: Tue,  2 Sep 2025 15:21:06 +0200
-Message-ID: <20250902131937.237091666@linuxfoundation.org>
+Message-ID: <20250902131943.057232083@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 2e8750469242cad8f01f320131fd5a6f540dbb99 ]
+commit 817f989700fddefa56e5e443e7d138018ca6709d upstream.
 
-syzbot found that sin6_scope_id was not properly initialized,
-leading to undefined behavior.
+Rename PCIE_RESET_CONFIG_DEVICE_WAIT_MS to PCIE_RESET_CONFIG_WAIT_MS.
 
-Clear sin6_scope_id and sin6_flowinfo.
-
-BUG: KMSAN: uninit-value in __sctp_v6_cmp_addr+0x887/0x8c0 net/sctp/ipv6.c:649
-  __sctp_v6_cmp_addr+0x887/0x8c0 net/sctp/ipv6.c:649
-  sctp_inet6_cmp_addr+0x4f2/0x510 net/sctp/ipv6.c:983
-  sctp_bind_addr_conflict+0x22a/0x3b0 net/sctp/bind_addr.c:390
-  sctp_get_port_local+0x21eb/0x2440 net/sctp/socket.c:8452
-  sctp_get_port net/sctp/socket.c:8523 [inline]
-  sctp_listen_start net/sctp/socket.c:8567 [inline]
-  sctp_inet_listen+0x710/0xfd0 net/sctp/socket.c:8636
-  __sys_listen_socket net/socket.c:1912 [inline]
-  __sys_listen net/socket.c:1927 [inline]
-  __do_sys_listen net/socket.c:1932 [inline]
-  __se_sys_listen net/socket.c:1930 [inline]
-  __x64_sys_listen+0x343/0x4c0 net/socket.c:1930
-  x64_sys_call+0x271d/0x3e20 arch/x86/include/generated/asm/syscalls_64.h:51
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Local variable addr.i.i created at:
-  sctp_get_port net/sctp/socket.c:8515 [inline]
-  sctp_listen_start net/sctp/socket.c:8567 [inline]
-  sctp_inet_listen+0x650/0xfd0 net/sctp/socket.c:8636
-  __sys_listen_socket net/socket.c:1912 [inline]
-  __sys_listen net/socket.c:1927 [inline]
-  __do_sys_listen net/socket.c:1932 [inline]
-  __se_sys_listen net/socket.c:1930 [inline]
-  __x64_sys_listen+0x343/0x4c0 net/socket.c:1930
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+e69f06a0f30116c68056@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68adc0a2.050a0220.37038e.00c4.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20250826141314.1802610-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20250625102347.1205584-10-cassel@kernel.org
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/ipv6.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/controller/plda/pcie-starfive.c |    2 +-
+ drivers/pci/pci.h                           |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
-index 717828e531621..0673857cb3d8b 100644
---- a/net/sctp/ipv6.c
-+++ b/net/sctp/ipv6.c
-@@ -547,7 +547,9 @@ static void sctp_v6_from_sk(union sctp_addr *addr, struct sock *sk)
- {
- 	addr->v6.sin6_family = AF_INET6;
- 	addr->v6.sin6_port = 0;
-+	addr->v6.sin6_flowinfo = 0;
- 	addr->v6.sin6_addr = sk->sk_v6_rcv_saddr;
-+	addr->v6.sin6_scope_id = 0;
- }
+--- a/drivers/pci/controller/plda/pcie-starfive.c
++++ b/drivers/pci/controller/plda/pcie-starfive.c
+@@ -368,7 +368,7 @@ static int starfive_pcie_host_init(struc
+ 	 * of 100ms following exit from a conventional reset before
+ 	 * sending a configuration request to the device.
+ 	 */
+-	msleep(PCIE_RESET_CONFIG_DEVICE_WAIT_MS);
++	msleep(PCIE_RESET_CONFIG_WAIT_MS);
  
- /* Initialize sk->sk_rcv_saddr from sctp_addr. */
--- 
-2.50.1
-
+ 	if (starfive_pcie_host_wait_for_link(pcie))
+ 		dev_info(dev, "port link down\n");
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -57,7 +57,7 @@
+  *    completes before sending a Configuration Request to the device
+  *    immediately below that Port."
+  */
+-#define PCIE_RESET_CONFIG_DEVICE_WAIT_MS	100
++#define PCIE_RESET_CONFIG_WAIT_MS	100
+ 
+ /* Message Routing (r[2:0]); PCIe r6.0, sec 2.2.8 */
+ #define PCIE_MSG_TYPE_R_RC	0
 
 
 
