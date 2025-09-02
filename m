@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-177216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954EDB40442
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:41:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8447EB4044B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 457421B643DA
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39491560111
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2ED30BB90;
-	Tue,  2 Sep 2025 13:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0643331E0FB;
+	Tue,  2 Sep 2025 13:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07lsXXTC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+ADRmoG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA5920B1F5;
-	Tue,  2 Sep 2025 13:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C5C30F533;
+	Tue,  2 Sep 2025 13:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819950; cv=none; b=qLVLvVCO3Sm8Cnwzhvj6DiKdLZQsn4mxh2JrD7P8QuKVdYpfCSCNs1+CVhkoLLU1ZltjS2m10IfzBPtOl+f3Gdhgxzy5No0InVzXcTLs/7lzmPUWnywTXdzkNYIfnHa/DZ6IroLPebbRgKNwkphflzlBJSZZpZnBQYGYYwWUqXE=
+	t=1756820136; cv=none; b=l95B39TVSLY5fVGLrfPLopb0cvxnohh4sRio0Y/PBPaCgLsx6TPLzF1ngAZiGh2Gn0sDYZvtPLoXezmnYv+y7323KJDY/E4x6sGcMC7VhxI2Mt1NNPR9zA7tXX2QVEkoEP/xFeiI8rvCBHoV4xJejilmzLnePtDmfen9HiwU4pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819950; c=relaxed/simple;
-	bh=wgQIdReXxbSBVcKNumr5GzPYizrJOhz626zmYIgZqxA=;
+	s=arc-20240116; t=1756820136; c=relaxed/simple;
+	bh=ibRPVFXtxV12eMzYwOJTp18qbMLcnVNcvmSNgdLLPBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBl55G5tLoiHAtmyRWxpaij/Y9+xNqxQT241gr90As99YO8QD1XB4320wXSpXzy+A6+7VkUHiz9e2CZHV5ljyxaDIYMh46L+lBSHO4lB18d808G/kPGHqiSwE7Ag5mVNM0WauuXFiCvMAImb4gfQLBEDn61YXxR+bnMmxiuRj4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07lsXXTC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0197C4CEED;
-	Tue,  2 Sep 2025 13:32:29 +0000 (UTC)
+	 MIME-Version; b=aiqw6tbvJmtboVGQXUoTm3qROyeIasSN8OPQH/1MYmnopB8ivbCObic+iZvRok6w5B2OgCcxYIEkwZBsCfFrwFGCWR/zKY7/7n4RBpT6zYREaN8D9rVbxXOZ+RFPjvt6hItcjcNBvHK966aLiEJzrt2+we4mNTXxm33XbcqOtQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+ADRmoG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D9BC4CEED;
+	Tue,  2 Sep 2025 13:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819950;
-	bh=wgQIdReXxbSBVcKNumr5GzPYizrJOhz626zmYIgZqxA=;
+	s=korg; t=1756820136;
+	bh=ibRPVFXtxV12eMzYwOJTp18qbMLcnVNcvmSNgdLLPBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07lsXXTC9MLatSw/WBTIUx87BWtExXdfMDlrZ8p47sjwc1tmuLI06ePcjm4IYUWs5
-	 6XOGjOE1TiyNJxPkJ/c4DV9rngrHnAZK3R+Nzc5CeoiwWq/z7AEvHuLjvGBtEvtdba
-	 1v6VK/YDBGl+g7+VVloT+pX+MoJpOfn+vnFl6Y/Q=
+	b=e+ADRmoG2SC4REv+blKDWdQjCBJZrw+rEFq6NaUqdF7Rwyo3yiDdYDG3rVPYwuQXT
+	 5m83G9XNN7Y1W4mLw1cd7sHJCGelkqGTf9GS24A+D0HSvgEyzxg6uTAfawEiBtt9HJ
+	 H7aWwsa3+QAsa3U1IB+i7XM8rITKOymd6sNaN1iE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	linux-cifs@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 46/95] bnxt_en: Adjust TX rings if reservation is less than requested
+Subject: [PATCH 6.6 10/75] smb: client: fix race with concurrent opens in rename(2)
 Date: Tue,  2 Sep 2025 15:20:22 +0200
-Message-ID: <20250902131941.368657963@linuxfoundation.org>
+Message-ID: <20250902131935.520307071@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +65,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit 1ee581c24dfdcbc6de25aac95a48c1f08e9a542c ]
+[ Upstream commit d84291fc7453df7881a970716f8256273aca5747 ]
 
-Before we accept an ethtool request to increase a resource (such as
-rings), we call the FW to check that the requested resource is likely
-available first before we commit.  But it is still possible that
-the actual reservation or allocation can fail.  The existing code
-is missing the logic to adjust the TX rings in case the reserved
-TX rings are less than requested.  Add a warning message (a similar
-message for RX rings already exists) and add the logic to adjust
-the TX rings.  Without this fix, the number of TX rings reported
-to the stack can exceed the actual TX rings and ethtool -l will
-report more than the actual TX rings.
+Besides sending the rename request to the server, the rename process
+also involves closing any deferred close, waiting for outstanding I/O
+to complete as well as marking all existing open handles as deleted to
+prevent them from deferring closes, which increases the race window
+for potential concurrent opens on the target file.
 
-Fixes: 674f50a5b026 ("bnxt_en: Implement new method to reserve rings.")
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250825175927.459987-3-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by unhashing the dentry in advance to prevent any concurrent
+opens on the target.
+
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-cifs@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ fs/smb/client/inode.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index dc123822771b6..b8c6087a5c31e 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -7788,6 +7788,11 @@ static int __bnxt_reserve_rings(struct bnxt *bp)
- 		hwr.rx = rx_rings << 1;
- 	tx_cp = bnxt_num_tx_to_cp(bp, hwr.tx);
- 	hwr.cp = sh ? max_t(int, tx_cp, rx_rings) : tx_cp + rx_rings;
-+	if (hwr.tx != bp->tx_nr_rings) {
-+		netdev_warn(bp->dev,
-+			    "Able to reserve only %d out of %d requested TX rings\n",
-+			    hwr.tx, bp->tx_nr_rings);
-+	}
- 	bp->tx_nr_rings = hwr.tx;
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index df01029918fd4..6c16c4f34d882 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -2379,6 +2379,7 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
+ 	struct cifs_sb_info *cifs_sb;
+ 	struct tcon_link *tlink;
+ 	struct cifs_tcon *tcon;
++	bool rehash = false;
+ 	unsigned int xid;
+ 	int rc, tmprc;
+ 	int retry_count = 0;
+@@ -2394,6 +2395,17 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
+ 	if (unlikely(cifs_forced_shutdown(cifs_sb)))
+ 		return -EIO;
  
- 	/* If we cannot reserve all the RX rings, reset the RSS map only
-@@ -12269,6 +12274,13 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
- 	if (rc)
- 		return rc;
- 
-+	/* Make adjustments if reserved TX rings are less than requested */
-+	bp->tx_nr_rings -= bp->tx_nr_rings_xdp;
-+	bp->tx_nr_rings_per_tc = bnxt_tx_nr_rings_per_tc(bp);
-+	if (bp->tx_nr_rings_xdp) {
-+		bp->tx_nr_rings_xdp = bp->tx_nr_rings_per_tc;
-+		bp->tx_nr_rings += bp->tx_nr_rings_xdp;
++	/*
++	 * Prevent any concurrent opens on the target by unhashing the dentry.
++	 * VFS already unhashes the target when renaming directories.
++	 */
++	if (d_is_positive(target_dentry) && !d_is_dir(target_dentry)) {
++		if (!d_unhashed(target_dentry)) {
++			d_drop(target_dentry);
++			rehash = true;
++		}
 +	}
- 	rc = bnxt_alloc_mem(bp, irq_re_init);
- 	if (rc) {
- 		netdev_err(bp->dev, "bnxt_alloc_mem err: %x\n", rc);
++
+ 	tlink = cifs_sb_tlink(cifs_sb);
+ 	if (IS_ERR(tlink))
+ 		return PTR_ERR(tlink);
+@@ -2433,6 +2445,8 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
+ 		}
+ 	}
+ 
++	if (!rc)
++		rehash = false;
+ 	/*
+ 	 * No-replace is the natural behavior for CIFS, so skip unlink hacks.
+ 	 */
+@@ -2491,12 +2505,16 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
+ 			goto cifs_rename_exit;
+ 		rc = cifs_do_rename(xid, source_dentry, from_name,
+ 				    target_dentry, to_name);
++		if (!rc)
++			rehash = false;
+ 	}
+ 
+ 	/* force revalidate to go get info when needed */
+ 	CIFS_I(source_dir)->time = CIFS_I(target_dir)->time = 0;
+ 
+ cifs_rename_exit:
++	if (rehash)
++		d_rehash(target_dentry);
+ 	kfree(info_buf_source);
+ 	free_dentry_path(page2);
+ 	free_dentry_path(page1);
 -- 
 2.50.1
 
