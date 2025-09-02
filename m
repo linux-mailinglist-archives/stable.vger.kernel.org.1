@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-177287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 884B9B40458
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:41:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A8CB40493
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:44:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA09D3AEEE7
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:40:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2024C162454
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A57322C78;
-	Tue,  2 Sep 2025 13:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D4633471B;
+	Tue,  2 Sep 2025 13:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ww4rNk4v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5EZQDRf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD68D304BA9;
-	Tue,  2 Sep 2025 13:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1685432ED21;
+	Tue,  2 Sep 2025 13:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820168; cv=none; b=LP5DlpMvBn6Zux9vkF5DtyvXLivEyAR+LUdRCc6bo+rGZxXShZfLsSnl+OBYtOANZaNiyLLjcOjblqvuyOzoTP3kbbVj8xZjZtDgPEhou9qzTGrSc3OkYtAqyRtLXCFh5SwweYyVYGSYMmNqY3CyTanTOFP6qbP9N1s5jetkTuo=
+	t=1756820204; cv=none; b=pmm0WiJk2JfniB9AqItKoubSHIabIWVjiRUgLFMfsiK3SwEeYwbQuG0cqjiz+fLElpSwZwLdydjVfWROBzeAJYiRkE4VXKWVdRe/nd/c9QEUonm71Hi1/rHwPyYon5nn+TR17dzRCt+PWWWaBpbIGT2+PDl+RG9MNbeW4ns2Ajs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820168; c=relaxed/simple;
-	bh=ExpEM/PygySPpfRXRfUkk2HZZ+pJR9x6Xf/FoFVqtpg=;
+	s=arc-20240116; t=1756820204; c=relaxed/simple;
+	bh=LKxNw+0XBs68aqRYVR4UOuFEVn4ZmbAXEASIVQZqJjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sTrF301qO+u9bHBLgLhZBmWuy/yTSvxXUDB60s7or8kylurbtUd4mo/IBkjzQpOd7BSUC1hye4lQXKdL51PFhEdqxRV0Jdj+djkQDg1SnWw5uxOqqN1jjdg3d3hFXlz/fI8hZynirfkcMtgdIlH7qZE8S+5JzfJheVrpfJB6zeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ww4rNk4v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CBEC4CEED;
-	Tue,  2 Sep 2025 13:36:08 +0000 (UTC)
+	 MIME-Version; b=lDyaWURnVUSQajMxBee3Juhdk0FivsM8yotNEQZ0iyVKYBF+zljrZBOq59Femu6HkTEClO+0AMn4652sm0SbN1qPVTjjUAD4fjqxiLtq7jWdIpn42LZ62rpgKe1KTjuNUOF64kk9f3r3RDrdv9W4pioxUHeuGaGHs2AvXhr8OT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5EZQDRf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD93C4CEF4;
+	Tue,  2 Sep 2025 13:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820168;
-	bh=ExpEM/PygySPpfRXRfUkk2HZZ+pJR9x6Xf/FoFVqtpg=;
+	s=korg; t=1756820203;
+	bh=LKxNw+0XBs68aqRYVR4UOuFEVn4ZmbAXEASIVQZqJjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ww4rNk4vG8a4HDCJUdqgIJ5of+7OVSjiP4yFAnBzpRoPa4CYpIb1oE2I+EQUxuTIt
-	 gZXtJjdF0pQecv9/IBEFC/sZTPo0rUgpLrMqp7KgS+jR+2lkMraXbj71zxmSFNmyqu
-	 Ftl91BJ3ZwlaTIrrF33BiarTTKYY0yu7bYAKqYRU=
+	b=O5EZQDRfnSpocCGboI7ag4KFBeolOCpK/UBMa5u4TUm4yTUIlrwKyq8+EQUQkHcRx
+	 I+nFWVy/6Zz9L+DF6ZNG9eX4qUcsppIN8n5wak3s6ncoOxtvTjAp5pnNf2m4lt/BFJ
+	 XqTEwE5h0AQAKCKFreKAzXty+Jjd6zDQLJQYnr9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 02/75] pinctrl: STMFX: add missing HAS_IOMEM dependency
-Date: Tue,  2 Sep 2025 15:20:14 +0200
-Message-ID: <20250902131935.208064390@linuxfoundation.org>
+Subject: [PATCH 6.6 03/75] mips: dts: lantiq: danube: add missing burst length property
+Date: Tue,  2 Sep 2025 15:20:15 +0200
+Message-ID: <20250902131935.246448426@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
 References: <20250902131935.107897242@linuxfoundation.org>
@@ -66,42 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit a12946bef0407cf2db0899c83d42c47c00af3fbc ]
+[ Upstream commit 7b28232921782aa38048249132899c337405eaa8 ]
 
-When building on ARCH=um (which does not set HAS_IOMEM), kconfig
-reports an unmet dependency caused by PINCTRL_STMFX. It selects
-MFD_STMFX, which depends on HAS_IOMEM. To stop this warning,
-PINCTRL_STMFX should also depend on HAS_IOMEM.
+The upstream dts lacks the lantiq,{rx/tx}-burst-length property. Other
+issues were also fixed:
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: etop@e180000 (lantiq,etop-xway): 'interrupt-names' is a required property
+	from schema $id: http://devicetree.org/schemas/net/lantiq,etop-xway.yaml#
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: etop@e180000 (lantiq,etop-xway): 'lantiq,tx-burst-length' is a required property
+	from schema $id: http://devicetree.org/schemas/net/lantiq,etop-xway.yaml#
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: etop@e180000 (lantiq,etop-xway): 'lantiq,rx-burst-length' is a required property
+	from schema $id: http://devicetree.org/schemas/net/lantiq,etop-xway.yaml#
 
-kconfig warning:
-WARNING: unmet direct dependencies detected for MFD_STMFX
-  Depends on [n]: HAS_IOMEM [=n] && I2C [=y] && OF [=y]
-  Selected by [y]:
-  - PINCTRL_STMFX [=y] && PINCTRL [=y] && I2C [=y] && OF_GPIO [=y]
-
-Fixes: 1490d9f841b1 ("pinctrl: Add STMFX GPIO expander Pinctrl/GPIO driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/20250815022721.1650885-1-rdunlap@infradead.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 14d4e308e0aa ("net: lantiq: configure the burst length in ethernet drivers")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/boot/dts/lantiq/danube_easy50712.dts | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index 7dfb7190580ef..ab3908a923e3a 100644
---- a/drivers/pinctrl/Kconfig
-+++ b/drivers/pinctrl/Kconfig
-@@ -438,6 +438,7 @@ config PINCTRL_STMFX
- 	tristate "STMicroelectronics STMFX GPIO expander pinctrl driver"
- 	depends on I2C
- 	depends on OF_GPIO
-+	depends on HAS_IOMEM
- 	select GENERIC_PINCONF
- 	select GPIOLIB_IRQCHIP
- 	select MFD_STMFX
+diff --git a/arch/mips/boot/dts/lantiq/danube_easy50712.dts b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
+index 1ce20b7d05cb8..d8b3cd69eda3c 100644
+--- a/arch/mips/boot/dts/lantiq/danube_easy50712.dts
++++ b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
+@@ -87,8 +87,11 @@ etop@e180000 {
+ 			reg = <0xe180000 0x40000>;
+ 			interrupt-parent = <&icu0>;
+ 			interrupts = <73 78>;
++			interrupt-names = "tx", "rx";
+ 			phy-mode = "rmii";
+ 			mac-address = [ 00 11 22 33 44 55 ];
++			lantiq,rx-burst-length = <4>;
++			lantiq,tx-burst-length = <4>;
+ 		};
+ 
+ 		stp0: stp@e100bb0 {
 -- 
 2.50.1
 
