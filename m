@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691D9B40414
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD22B4046A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B42A9547575
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3CA856084C
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C9D30C604;
-	Tue,  2 Sep 2025 13:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17216324B01;
+	Tue,  2 Sep 2025 13:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPjgtmnm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CibRMHc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5DA30C35F;
-	Tue,  2 Sep 2025 13:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C543C305E14;
+	Tue,  2 Sep 2025 13:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819986; cv=none; b=boEiZlNSyF4npCAws0YPzmGSzJhvQ8g+KtrxO120w/eb2rPirozt656jpZtXO2igjSr6LnWmiY5slQb7B0Vn7/Y/zJ0yDWvQ2HSBMKQ2DFURrnWezX6tQPfj3GsrOPRWO3NboQQZemS6NIZVr6sq1bKA6B3K5ieAaklnTdCaZlw=
+	t=1756820171; cv=none; b=Ue93qFR8ddbLUXPUtg1UZz7jTnu2WiijbnJTErOd2dsElYK5rigoo7CMpHlkF2gWPtpjnVviaP7biHIZ+fdjxMUIqFoLC/t4Q2s1swpAT6XkIOB6kP7jz3aq7cKFwQooQWrP9qv6YFoA27nOUfdWgO74hs0ohZpfC3UY1t/XmbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819986; c=relaxed/simple;
-	bh=H+AcWaqyfCZ5GmK0CnH7LOOmIf0KwL9sNiVgFGrTe5E=;
+	s=arc-20240116; t=1756820171; c=relaxed/simple;
+	bh=g0GVvnCxCtVh5sE74Ju8G2QI2nOAtnGCC7YCvAi4Rl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JEtPCw2AL3RauJBmg5uGlWxYrBmdCc6zbiUbREmg4tXfEg+caYM7l5U7JBYBG6B5ATDEaS2zOs/+eB2Pdg0PsdD4D7oby7W9m2HKif51PLLiAGZnRBgS499/8fRBeJmBzzDHv1Kf2O9bDQNF4LqXhmIqUAO56t52zT5EflvR/Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPjgtmnm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679E6C4CEED;
-	Tue,  2 Sep 2025 13:33:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hv1Rw71QoRigENT5PcAp/aNvv8YPaF1WNBapFl3Cvu8HZfxRc9QdOtAH0dz3DIYCcdmWfoYk/+K/qzqUzF2pkUtY7ok6ZaBIojpQefmpjTA39hr85f5D7ZfLLos64MOVge9Wg5Yd169Ggi52k8Z5DxfowG4QFPN8TzPdkU68VoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CibRMHc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F6B1C4CEF4;
+	Tue,  2 Sep 2025 13:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819986;
-	bh=H+AcWaqyfCZ5GmK0CnH7LOOmIf0KwL9sNiVgFGrTe5E=;
+	s=korg; t=1756820171;
+	bh=g0GVvnCxCtVh5sE74Ju8G2QI2nOAtnGCC7YCvAi4Rl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oPjgtmnmrVi++tnfQFWURLNPcIjNt5KcP+fKRWZABiTVRqIgK3hfAaHjvzpCE8hmi
-	 xizhuyUAioD2fUGh8CdliuxcpGRIvpov8Rxssmpe5QlmiYRzBXhLwwbCXa4qHeBvVe
-	 qeDmAtCX2bu73bMgrilZIIf7Cqzrr+i2cLkfyvSA=
+	b=2CibRMHcSRJFYhNR6cKmmkmiQwpiDvy9kiHbcGj3+XbT4UQ3lcWE21j6IEvnM0oQ+
+	 GlkVIz9zbIBEidM/HvJ0464hFMI956oKp+6JPZAbi4vx+5mnx3fsmLg1QfZr1lFCVX
+	 oBhlXxHA9tQQTSZnVtAC5t6YLlX0DwFrSaW6RSME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohan G Thomas <rohan.g.thomas@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?=E5=8D=A2=E5=9B=BD=E5=AE=8F?= <luguohong@xiaomi.com>,
+	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 56/95] net: stmmac: Set CIC bit only for TX queues with COE
+Subject: [PATCH 6.6 20/75] HID: input: rename hidinput_set_battery_charge_status()
 Date: Tue,  2 Sep 2025 15:20:32 +0200
-Message-ID: <20250902131941.755044860@linuxfoundation.org>
+Message-ID: <20250902131935.912460599@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +61,149 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohan G Thomas <rohan.g.thomas@altera.com>
+From: José Expósito <jose.exposito89@gmail.com>
 
-[ Upstream commit b1eded580ab28119de0b0f21efe37ee2b4419144 ]
+[ Upstream commit a82231b2a8712d0218fc286a9b0da328d419a3f4 ]
 
-Currently, in the AF_XDP transmit paths, the CIC bit of
-TX Desc3 is set for all packets. Setting this bit for
-packets transmitting through queues that don't support
-checksum offloading causes the TX DMA to get stuck after
-transmitting some packets. This patch ensures the CIC bit
-of TX Desc3 is set only if the TX queue supports checksum
-offloading.
+In preparation for a patch fixing a bug affecting
+hidinput_set_battery_charge_status(), rename the function to
+hidinput_update_battery_charge_status() and move it up so it can be used
+by hidinput_update_battery().
 
-Fixes: 132c32ee5bc0 ("net: stmmac: Add TX via XDP zero-copy socket")
-Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Link: https://patch.msgid.link/20250825-xgmac-minor-fixes-v3-3-c225fe4444c0@altera.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Refactor, no functional changes.
+
+Tested-by: 卢国宏 <luguohong@xiaomi.com>
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Stable-dep-of: e94536e1d181 ("HID: input: report battery status changes immediately")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hid/hid-input-test.c | 10 +++++-----
+ drivers/hid/hid-input.c      | 38 ++++++++++++++++++------------------
+ 2 files changed, 24 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 058cd9e9fd71d..40d56ff66b6a8 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2488,6 +2488,7 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
- 	struct netdev_queue *nq = netdev_get_tx_queue(priv->dev, queue);
- 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
- 	struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[queue];
-+	bool csum = !priv->plat->tx_queues_cfg[queue].coe_unsupported;
- 	struct xsk_buff_pool *pool = tx_q->xsk_pool;
- 	unsigned int entry = tx_q->cur_tx;
- 	struct dma_desc *tx_desc = NULL;
-@@ -2573,7 +2574,7 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
- 		}
+diff --git a/drivers/hid/hid-input-test.c b/drivers/hid/hid-input-test.c
+index 77c2d45ac62a7..6f5c71660d823 100644
+--- a/drivers/hid/hid-input-test.c
++++ b/drivers/hid/hid-input-test.c
+@@ -7,7 +7,7 @@
  
- 		stmmac_prepare_tx_desc(priv, tx_desc, 1, xdp_desc.len,
--				       true, priv->mode, true, true,
-+				       csum, priv->mode, true, true,
- 				       xdp_desc.len);
+ #include <kunit/test.h>
  
- 		stmmac_enable_dma_transmission(priv, priv->ioaddr, queue);
-@@ -4902,6 +4903,7 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
+-static void hid_test_input_set_battery_charge_status(struct kunit *test)
++static void hid_test_input_update_battery_charge_status(struct kunit *test)
  {
- 	struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[queue];
- 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
-+	bool csum = !priv->plat->tx_queues_cfg[queue].coe_unsupported;
- 	unsigned int entry = tx_q->cur_tx;
- 	struct dma_desc *tx_desc;
- 	dma_addr_t dma_addr;
-@@ -4953,7 +4955,7 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
- 	stmmac_set_desc_addr(priv, tx_desc, dma_addr);
+ 	struct hid_device *dev;
+ 	bool handled;
+@@ -15,15 +15,15 @@ static void hid_test_input_set_battery_charge_status(struct kunit *test)
+ 	dev = kunit_kzalloc(test, sizeof(*dev), GFP_KERNEL);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, dev);
  
- 	stmmac_prepare_tx_desc(priv, tx_desc, 1, xdpf->len,
--			       true, priv->mode, true, true,
-+			       csum, priv->mode, true, true,
- 			       xdpf->len);
+-	handled = hidinput_set_battery_charge_status(dev, HID_DG_HEIGHT, 0);
++	handled = hidinput_update_battery_charge_status(dev, HID_DG_HEIGHT, 0);
+ 	KUNIT_EXPECT_FALSE(test, handled);
+ 	KUNIT_EXPECT_EQ(test, dev->battery_charge_status, POWER_SUPPLY_STATUS_UNKNOWN);
  
- 	tx_q->tx_count_frames++;
+-	handled = hidinput_set_battery_charge_status(dev, HID_BAT_CHARGING, 0);
++	handled = hidinput_update_battery_charge_status(dev, HID_BAT_CHARGING, 0);
+ 	KUNIT_EXPECT_TRUE(test, handled);
+ 	KUNIT_EXPECT_EQ(test, dev->battery_charge_status, POWER_SUPPLY_STATUS_DISCHARGING);
+ 
+-	handled = hidinput_set_battery_charge_status(dev, HID_BAT_CHARGING, 1);
++	handled = hidinput_update_battery_charge_status(dev, HID_BAT_CHARGING, 1);
+ 	KUNIT_EXPECT_TRUE(test, handled);
+ 	KUNIT_EXPECT_EQ(test, dev->battery_charge_status, POWER_SUPPLY_STATUS_CHARGING);
+ }
+@@ -63,7 +63,7 @@ static void hid_test_input_get_battery_property(struct kunit *test)
+ }
+ 
+ static struct kunit_case hid_input_tests[] = {
+-	KUNIT_CASE(hid_test_input_set_battery_charge_status),
++	KUNIT_CASE(hid_test_input_update_battery_charge_status),
+ 	KUNIT_CASE(hid_test_input_get_battery_property),
+ 	{ }
+ };
+diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
+index 9d80635a91ebd..b372b74f3e24b 100644
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -595,6 +595,20 @@ static void hidinput_cleanup_battery(struct hid_device *dev)
+ 	dev->battery = NULL;
+ }
+ 
++static bool hidinput_update_battery_charge_status(struct hid_device *dev,
++						  unsigned int usage, int value)
++{
++	switch (usage) {
++	case HID_BAT_CHARGING:
++		dev->battery_charge_status = value ?
++					     POWER_SUPPLY_STATUS_CHARGING :
++					     POWER_SUPPLY_STATUS_DISCHARGING;
++		return true;
++	}
++
++	return false;
++}
++
+ static void hidinput_update_battery(struct hid_device *dev, int value)
+ {
+ 	int capacity;
+@@ -617,20 +631,6 @@ static void hidinput_update_battery(struct hid_device *dev, int value)
+ 		power_supply_changed(dev->battery);
+ 	}
+ }
+-
+-static bool hidinput_set_battery_charge_status(struct hid_device *dev,
+-					       unsigned int usage, int value)
+-{
+-	switch (usage) {
+-	case HID_BAT_CHARGING:
+-		dev->battery_charge_status = value ?
+-					     POWER_SUPPLY_STATUS_CHARGING :
+-					     POWER_SUPPLY_STATUS_DISCHARGING;
+-		return true;
+-	}
+-
+-	return false;
+-}
+ #else  /* !CONFIG_HID_BATTERY_STRENGTH */
+ static int hidinput_setup_battery(struct hid_device *dev, unsigned report_type,
+ 				  struct hid_field *field, bool is_percentage)
+@@ -642,14 +642,14 @@ static void hidinput_cleanup_battery(struct hid_device *dev)
+ {
+ }
+ 
+-static void hidinput_update_battery(struct hid_device *dev, int value)
++static bool hidinput_update_battery_charge_status(struct hid_device *dev,
++						  unsigned int usage, int value)
+ {
++	return false;
+ }
+ 
+-static bool hidinput_set_battery_charge_status(struct hid_device *dev,
+-					       unsigned int usage, int value)
++static void hidinput_update_battery(struct hid_device *dev, int value)
+ {
+-	return false;
+ }
+ #endif	/* CONFIG_HID_BATTERY_STRENGTH */
+ 
+@@ -1515,7 +1515,7 @@ void hidinput_hid_event(struct hid_device *hid, struct hid_field *field, struct
+ 		return;
+ 
+ 	if (usage->type == EV_PWR) {
+-		bool handled = hidinput_set_battery_charge_status(hid, usage->hid, value);
++		bool handled = hidinput_update_battery_charge_status(hid, usage->hid, value);
+ 
+ 		if (!handled)
+ 			hidinput_update_battery(hid, value);
 -- 
 2.50.1
 
