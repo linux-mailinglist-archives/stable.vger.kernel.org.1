@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-177254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A68B4046B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B91EFB40512
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFB13188980B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32A41562568
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574B930496B;
-	Tue,  2 Sep 2025 13:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EB731AF3D;
+	Tue,  2 Sep 2025 13:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYgEi3JH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPcL3VcH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F8B30E0E7;
-	Tue,  2 Sep 2025 13:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA313064B9;
+	Tue,  2 Sep 2025 13:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820068; cv=none; b=JNtXJBmHIijlEWxdTPCljmqHHw9BjAeesh2R486gxmxsSmyUDfIS6R42cbq9eIlHoYDZMn+jXmf67RkUNvc/VemjBZKuUBv4ItTSzFa72hLxVCKYgfPkZU/ZI+/FrJo7FKEDQK2UebDIREarZLEEZHaAWbdKjCigvOsoovZLuAg=
+	t=1756820463; cv=none; b=oOpgz98QnjySiGuvv6ZKmwSjx3Bq23KE7200zqsLgUQiWZxcjTXt8G2u6Vgd7pWzJHWFFXLGAyfy9fI93kDvs3R+iCZwj2x9shFzeK3IEh26/J89TycbtLjdsIW/Qp0Jb/5C8ZleHGplKq6XNWufO99QQyY+wd3NeSOOJ1P9+Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820068; c=relaxed/simple;
-	bh=Wh5Epa6SK1hIvBnfKWriqa9+4DUUbNg8ECYEf+VGHmE=;
+	s=arc-20240116; t=1756820463; c=relaxed/simple;
+	bh=kRBus/PHdRMNVUO1I5GYu1dUg3IXXrcdrvfjuIuqt/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KH9IZFW/Xy9DiH3hSHl/FROm94oGElUR4WKAyjHXbOXJpjARWql6+wOJeQfqmlVSw833trwP++al6nmwXwR/6D3IiazjyghV7VGJICWjQFKOFVdXi6HTr7SdNKO83qLqZ6c8BVzRShXnh/FD0lnreSFOwgYd/wDdtHoPBBd6Uao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYgEi3JH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924A9C4CEED;
-	Tue,  2 Sep 2025 13:34:27 +0000 (UTC)
+	 MIME-Version; b=lbw5npE0ttywkf0i1n4+HVybOjxSPYwJ/Dh2JZNxz3iP1Zy9g8VzE0t8/pENTcc+DX7o5SZhDZDbrg6quGtVS+E7w3G7Sz1mjgkyV0CFalm2mqXk/0zELKCnRgV31xa8jF8X2ODRiTMjW9iBK/vzZORVHvvfUg0HIeN/ra/H2sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPcL3VcH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DB9C4CEED;
+	Tue,  2 Sep 2025 13:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820067;
-	bh=Wh5Epa6SK1hIvBnfKWriqa9+4DUUbNg8ECYEf+VGHmE=;
+	s=korg; t=1756820462;
+	bh=kRBus/PHdRMNVUO1I5GYu1dUg3IXXrcdrvfjuIuqt/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tYgEi3JHPL5bPgqKV8AJr9hCrhTTGKGTl3Nl0/UNueNJHZwaU0d+MeEOG7S5vBIY0
-	 kQrDSFyhyEdCM8Nh66UrKqTiFvirx1fACxUav37Nmyp57bdkRJAYtztuDgULKEx9aN
-	 qRFmC1pWIW3nBsLI9rm+SqySnc/kdyPrz+6Z5Mt8=
+	b=qPcL3VcHrUyAdvcAzFTv08U/SGDBwj/+d1tdCVVWl7qkCjNf7CyBe5XcPXIgHqzCi
+	 lyxG9tqVjAelf2JAlkdxyDRbRm9p3gWIK8A+pQTmY3UH1rO97geUN5HGz4PBwtChXg
+	 ufVYSDpxaJU1Gf+6KBq2W5U76lkfRt7UvyES8hhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.12 83/95] xfs: do not propagate ENODATA disk errors into xattr code
-Date: Tue,  2 Sep 2025 15:20:59 +0200
-Message-ID: <20250902131942.790534694@linuxfoundation.org>
+	Werner Sembach <wse@tuxedocomputers.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 09/50] ACPI: EC: Add device to acpi_ec_no_wakeup[] qurik list
+Date: Tue,  2 Sep 2025 15:21:00 +0200
+Message-ID: <20250902131930.883589324@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-commit ae668cd567a6a7622bc813ee0bb61c42bed61ba7 upstream.
+commit 9cd51eefae3c871440b93c03716c5398f41bdf78 upstream.
 
-ENODATA (aka ENOATTR) has a very specific meaning in the xfs xattr code;
-namely, that the requested attribute name could not be found.
+Add the TUXEDO InfinityBook Pro AMD Gen9 to the acpi_ec_no_wakeup[]
+quirk list to prevent spurious wakeups.
 
-However, a medium error from disk may also return ENODATA. At best,
-this medium error may escape to userspace as "attribute not found"
-when in fact it's an IO (disk) error.
-
-At worst, we may oops in xfs_attr_leaf_get() when we do:
-
-	error = xfs_attr_leaf_hasname(args, &bp);
-	if (error == -ENOATTR)  {
-		xfs_trans_brelse(args->trans, bp);
-		return error;
-	}
-
-because an ENODATA/ENOATTR error from disk leaves us with a null bp,
-and the xfs_trans_brelse will then null-deref it.
-
-As discussed on the list, we really need to modify the lower level
-IO functions to trap all disk errors and ensure that we don't let
-unique errors like this leak up into higher xfs functions - many
-like this should be remapped to EIO.
-
-However, this patch directly addresses a reported bug in the xattr
-code, and should be safe to backport to stable kernels. A larger-scope
-patch to handle more unique errors at lower levels can follow later.
-
-(Note, prior to 07120f1abdff we did not oops, but we did return the
-wrong error code to userspace.)
-
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Fixes: 07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
-Cc: stable@vger.kernel.org # v5.9+
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20250508111625.12149-1-wse@tuxedocomputers.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_attr_remote.c |    7 +++++++
- fs/xfs/libxfs/xfs_da_btree.c    |    6 ++++++
- 2 files changed, 13 insertions(+)
+ drivers/acpi/ec.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/xfs/libxfs/xfs_attr_remote.c
-+++ b/fs/xfs/libxfs/xfs_attr_remote.c
-@@ -435,6 +435,13 @@ xfs_attr_rmtval_get(
- 					0, &bp, &xfs_attr3_rmt_buf_ops);
- 			if (xfs_metadata_is_sick(error))
- 				xfs_dirattr_mark_sick(args->dp, XFS_ATTR_FORK);
-+			/*
-+			 * ENODATA from disk implies a disk medium failure;
-+			 * ENODATA for xattrs means attribute not found, so
-+			 * disambiguate that here.
-+			 */
-+			if (error == -ENODATA)
-+				error = -EIO;
- 			if (error)
- 				return error;
- 
---- a/fs/xfs/libxfs/xfs_da_btree.c
-+++ b/fs/xfs/libxfs/xfs_da_btree.c
-@@ -2833,6 +2833,12 @@ xfs_da_read_buf(
- 			&bp, ops);
- 	if (xfs_metadata_is_sick(error))
- 		xfs_dirattr_mark_sick(dp, whichfork);
-+	/*
-+	 * ENODATA from disk implies a disk medium failure; ENODATA for
-+	 * xattrs means attribute not found, so disambiguate that here.
-+	 */
-+	if (error == -ENODATA && whichfork == XFS_ATTR_FORK)
-+		error = -EIO;
- 	if (error)
- 		goto out_free;
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -2288,6 +2288,12 @@ static const struct dmi_system_id acpi_e
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
+ 		}
+ 	},
++	{
++		// TUXEDO InfinityBook Pro AMD Gen9
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GXxHRXx"),
++		},
++	},
+ 	{ },
+ };
  
 
 
