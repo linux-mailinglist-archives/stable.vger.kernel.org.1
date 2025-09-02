@@ -1,125 +1,121 @@
-Return-Path: <stable+bounces-177004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF551B3FF07
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 14:04:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC99B3FF32
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 14:08:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F30C91B2715F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:04:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A64512C6638
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C25301471;
-	Tue,  2 Sep 2025 11:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5E33019A8;
+	Tue,  2 Sep 2025 11:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="Ktw+Xa6Q"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="JXUx18fV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-239.mail.qq.com (out203-205-221-239.mail.qq.com [203.205.221.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F46301028
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 11:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94892FC875
+	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 11:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756814248; cv=none; b=j2ZGlW1jfDyD2F4RUhNLLJV0mKnZahvoGfVVCgMrmKKm+5scwiEYiX+kU43WHG1dH+IJDBs7jpCnf4G/4/j07eDZFjAG1ryLvj5AJtwhrjtCaCj9gX4GgCr3KzaOhV8S4vaMxNeFqdd8TQ5RxnPxTNYBwMw/b6cue+Erw9SJ8Dk=
+	t=1756814274; cv=none; b=WFWQsOtXfbvmeB7qfqsjMYvxnOqoe3PXADqF+iFtNw2PT3KuQt86r4tSNHldOQgKT8nPN0+upAtRQdAzg/WYVeD1XA3J5RyPmfsmsCceIfRdKao6mRx+Q5vRlAIQEItsrNcvDQAwRU7yO3MnPzy4wB3YgypUoBTFJ0QDCVg4IiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756814248; c=relaxed/simple;
-	bh=kkPqc1cvhELv0tJYEVHD2ZdMWGPrOMkmdqrhZS4yPg0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lSOP7QiD2GrHcEXkNwsoaOoHAd2eZUojByO70+VbR3sxgMwc88ODYkX3fdAasixoNH3wUZ1QQTuFPSrTvhAr6rNf3fn0zxD0xz2SHhJPNnujiYCenC18mXcxPZsC7N2Rk2UaDvt02KD5KnUdtN/rKA+WEyTgAIj2yNcG2tcROLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=Ktw+Xa6Q; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-55f76454f69so2175824e87.0
-        for <stable@vger.kernel.org>; Tue, 02 Sep 2025 04:57:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756814245; x=1757419045; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fp4Abv/fzY5toSq5c8kjCytYfJxDDQ+v7rc26B0Blgs=;
-        b=Ktw+Xa6QWfwXZkenNWDpRsP3Zc7Tqm9416Tlt9m4HIjOPAnzCaj6Jw29SUcvb9mQaO
-         Frb2mrUkA1bFxsOOWkbbDIMoZ6Z4PIuezinM1sD2qLIWyyl/98HofL0KWTaO7T5/ZXXz
-         yGt0S83oUBaZMMGJKRBIpGtf/yrsR+DaOkVjxyjUWFQPMDqcUVBERlVsWi+fIUSQ/S+1
-         6YFMO5iUn1PZvv/Cg60CCup3plzeY+nk2LyXv0FS2/3NpJRE6OrRd773NaceR6zUqmpi
-         bhENwdj8O21rXNMHDUWfuTGTz5VUn+x8mmRITJuvWu6tqU6eXK2zUGCZ6X4x5CQL1QKC
-         ntoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756814245; x=1757419045;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fp4Abv/fzY5toSq5c8kjCytYfJxDDQ+v7rc26B0Blgs=;
-        b=Xda0DBLAsB9LxGZD6K22s/Vr70JQjWWelxnSDp5oAEioiJR9vfB5UhITakyVZm/G1x
-         9q+wH7Y0X16wZOvF7vX85fUIJzSOsZeImXvehLzPGmOR/3Ebob0f60OYzwr8Dnu5ylBf
-         RVv1dr2fvOfrWu1Z1RxLkIBiPD6BwRPl6SDUaJj4g+4/5MiF+/UE+7JTWbYV7ggaxCy8
-         ysZfiu/+8AM9Ex2ePrHCG51i4jbMBCmj6/gGswrfF7hJE5CHrAqaKwY8FtRRx7q1L8OC
-         9Cg4DGLZgL85YrKUb59wyJ4hpDcW/vepwnJLRrBxjC/sOFz88C44aimwM7pHSMwudwoQ
-         HXaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVHoxepQGHCFRBSQ7wv4Zxwlj9WdyFF0XX939FXMNjXDNTiT2L3aoAsTmRIsyXE7Rul1MwSxaM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZNfR2UXAUg2As5fOfoBXcqOPNpTZHTOFMLdirh2GhZKi8wfSs
-	LXM7NUiCY99wSjvMVc4Oj1WHUij3nRebbzGJVXv5IVulChA/SbIYjqxtmYQgUJy3qbtp1OS/HRv
-	sa/dJ4lbyRd/0695JllDtYZDL+DLJezc97yPNMwD0YA==
-X-Gm-Gg: ASbGncsDs2nYHVXRy1prmRVeqlGzBlj+zauS+SdRxykRbBGEaK7QrO4KHWlkxzu2T7e
-	eNACCARGuODmzznc7L794j9fQ/LF9Mw2RBj0Voo4ltMS+CaovS+/W54RvriTkuJXJky013xzS1+
-	XXydvAGzqNue4FTR09MExzObXeK4hNiSBKfnp3CjNB/mwighTGtu8fGDcsYgbSUhfcN5XSJOImC
-	4xu4yNbAIrBPAVp5QiKjztjecjCYNXvrOPPZVWMzrPOMuo9TQ==
-X-Google-Smtp-Source: AGHT+IErcjW0+LGFGJcHQchCQeR1Yt+GA9XuQLP2Vn98G+VTiZcJCdrpPfkwDR775dV3lM7lVH5sLJhNO5IY+DD19Bk=
-X-Received: by 2002:a05:6512:3b8b:b0:55f:554c:b1fb with SMTP id
- 2adb3069b0e04-55f70912819mr3298424e87.29.1756814244976; Tue, 02 Sep 2025
- 04:57:24 -0700 (PDT)
+	s=arc-20240116; t=1756814274; c=relaxed/simple;
+	bh=a370aIgZUMDEjs0JMFwIkhfA8Qi2NC59bUJdc3INbMU=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=GBpMFMliRxwjqz1f2HfH/olz0jA2k2exxvRbmDxA+To0MZHQkCQAOcg9jf+4t4XS8oUtqlObORee1x0AIToDcw3kaCLnwIbqd6aAZ0gu/efzZEgp7JFNuho4sfMiPZ7qxpZMJbFSbOA1DTgVk7Sbjevo8ObNinr4u2ZPOmV0Pik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=JXUx18fV; arc=none smtp.client-ip=203.205.221.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1756814267;
+	bh=GYaFXqXLEKWGz4dgArel64ydmlxR3gXxQe7uLF/j44g=;
+	h=From:To:Cc:Subject:Date;
+	b=JXUx18fVyUoyEyUIPeNrs2wuYG2OjwOy/0l19dB6CMdxSKM1BDnfGJNaMRxd/vNU7
+	 Wiwj1PbekeoYcHZtipWWNqwm/eCORh+gdHwUVeh//83f+x/+7PoWQEqEc3thhOXqw/
+	 mD+nyrWovTITP1JQbbwkhZtD+/dIClFb4WTU5eW8=
+Received: from SSOC3-SH.company.local ([58.33.109.195])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id E64A7012; Tue, 02 Sep 2025 19:57:36 +0800
+X-QQ-mid: xmsmtpt1756814256trwkeg0l7
+Message-ID: <tencent_668C22B3310F1F372696487B211B9AB21807@qq.com>
+X-QQ-XMAILINFO: MZu/+/yIvVI0gnNxObwApfH5WlBfI+PBk8RiSUgvDgb2XL7KXhupw+XIbF/uOn
+	 qpg40QU1tA96lUPQAHuKd0NBJ24djMKUJ5hLyrfMqR/rpBBQD7CZbUuQKuuaEjuoVtCFhbq68Mgi
+	 2mXe0xcSSFOqhlUVsak27UJ3FiZb0GXEBQOmEw49ahM2wVAnJEdsMqbREwtIkesCq/DPoSZZ0eOP
+	 k2GcWT7ui/kC79sQi6rYaMV3IWQaxhN9y/C7KebQU2Ie2bnYleepFOfuKaTFnhbKHozo/7Zf2N2z
+	 mAOFuWcDec+Ca9flWapYNR5rVYfQPv0OhkeW9HaKeD6Ish70eYEDJouH415kaJm9kzMJL5MTfKaP
+	 VG3V4Sqjd8ZhjxsfrbGqF6VW7TpxnS7+CzqVRbvCuGvZ2W/R0Y/cLFMdBCBqht/y2fKtL6FQ6Ky/
+	 h/LUQoWRl6+on3GT0rMl+K25MRjunkIPcwwc0bOALloLGpM+p5ORaIR5SlOyzjLaM4tTApTj96Tl
+	 RMB3v0hzRTBgAGfm6kWKL8aFClsnGbvY/+G/lKaRBihKoCJhmRVwmY0OdJiiQgC6xGNg1eyieFK5
+	 HD8ZioVUJmqhYFWJkgP2uEroTVkIGUSMDc1jB0Y1E9vkb1RdGjWRtFRsk3x+7jgtnLFPgLPWlVSY
+	 M3OPpYTNhIixk2ZpMFwBN9+wCCxDypZa7zLF5Tn2u/VIgdQkVslzCV/SNKp13InFqT5JlyaEvSf+
+	 EncUDaUoVlvQD4T9Pv3Mu3Fsb7aMz7eIcxoO/1T+4DxRivMpF9OgR7W2uhIjSabK/Mw93f+PkJrR
+	 bhAJHuEjCKYTNN9xDzuM5eT4TvFALd1l2d5DRkFVydxLC7HqRWPfsHcJH1v+GUI9CUs6/sh24XeM
+	 gBOwN7h9oqhXLYgtDlwIWnqA1PALQ4Q5PIZqAhi4Y+3k2M0deJ+x2GrBq2/olUG0ZZbrF0+aKt5h
+	 kS008KhXFHllgykJHmTdsQQR9Qk0AHeNHd8ci0A7J+KwrG5VGQkxRlKI7GYq578oTx9KVS9gYoFm
+	 HsH0wxYVPzNBzywHySjWbhmaZEjn6z9MCnwb2ZaySJzyPpQEViajhrMTiXo98=
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+From: gj.han@foxmail.com
+To: hanguangjiang@lixiang.com
+Cc: liangjie@lixiang.com,
+	stable@vger.kernel.org
+Subject: [PATCH] blk-throttle: check policy bit in blk_throtl_activated()
+Date: Tue,  2 Sep 2025 19:57:34 +0800
+X-OQ-MSGID: <20250902115734.3624896-1-gj.han@foxmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250811-gpio-mmio-mfd-conv-v1-0-68c5c958cf80@linaro.org> <175680785548.2247963.242433624241359060.b4-ty@kernel.org>
-In-Reply-To: <175680785548.2247963.242433624241359060.b4-ty@kernel.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 2 Sep 2025 13:57:14 +0200
-X-Gm-Features: Ac12FXztQMclI5iZSDKTIUNQ7QH1_dUHxuo2PxWIXoNlkSSmA9MCP00AzVcpvI0
-Message-ID: <CAMRc=MeWnrSPrLOq7yH71wpw4vP6RJiLnuLCpwXogZn0yugFgw@mail.gmail.com>
-Subject: Re: [PATCH 0/2] mfd: vexpress: convert the driver to using the new
- generic GPIO chip API
-To: Lee Jones <lee@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Liviu Dudau <liviu.dudau@arm.com>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Pawel Moll <pawel.moll@arm.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 2, 2025 at 12:10=E2=80=AFPM Lee Jones <lee@kernel.org> wrote:
->
-> On Mon, 11 Aug 2025 15:36:15 +0200, Bartosz Golaszewski wrote:
-> > This converts the vexpress-sysreg MFD driver to using the new generic
-> > GPIO interface but first fixes an issue with an unchecked return value
-> > of devm_gpiochio_add_data().
-> >
-> > Lee: Please, create an immutable branch containing these commits after
-> > you pick them up, as I'd like to merge it into the GPIO tree and remove
-> > the legacy interface in this cycle.
-> >
-> > [...]
->
-> Applied, thanks!
->
-> [1/2] mfd: vexpress-sysreg: check the return value of devm_gpiochip_add_d=
-ata()
->       commit: 14b2b50be20bd15236bc7d4c614ecb5d9410c3ec
-> [2/2] mfd: vexpress-sysreg: use new generic GPIO chip API
->       commit: 8080e2c6138e4c615c1e6bc1378ec042b6f9cd36
->
-> --
-> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
->
+From: Han Guangjiang <hanguangjiang@lixiang.com>
 
-Thanks, you haven't pushed out the changes yet so maybe you're already
-on it but please don't forget to set up an immutable branch for
-merging back of these changes into the GPIO tree.
+On repeated cold boots we occasionally hit a NULL pointer crash in
+blk_should_throtl() when throttling is consulted before the throttle
+policy is fully enabled for the queue. Checking only q->td != NULL is
+insufficient during early initialization, so blkg_to_pd() for the
+throttle policy can still return NULL and blkg_to_tg() becomes NULL,
+which later gets dereferenced.
 
-Bartosz
+Tighten blk_throtl_activated() to also require that the throttle policy
+bit is set on the queue:
+
+  return q->td != NULL &&
+         test_bit(blkcg_policy_throtl.plid, q->blkcg_pols);
+
+This prevents blk_should_throtl() from accessing throttle group state
+until policy data has been attached to blkgs.
+
+Fixes: a3166c51702b ("blk-throttle: delay initialization until configuration")
+Cc: stable@vger.kernel.org
+
+Co-developed-by: Liang Jie <liangjie@lixiang.com>
+Signed-off-by: Liang Jie <liangjie@lixiang.com>
+Signed-off-by: Han Guangjiang <hanguangjiang@lixiang.com>
+---
+ block/blk-throttle.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/block/blk-throttle.h b/block/blk-throttle.h
+index 3b27755bfbff..9ca43dc56eda 100644
+--- a/block/blk-throttle.h
++++ b/block/blk-throttle.h
+@@ -156,7 +156,7 @@ void blk_throtl_cancel_bios(struct gendisk *disk);
+ 
+ static inline bool blk_throtl_activated(struct request_queue *q)
+ {
+-	return q->td != NULL;
++	return q->td != NULL && test_bit(blkcg_policy_throtl.plid, q->blkcg_pols);
+ }
+ 
+ static inline bool blk_should_throtl(struct bio *bio)
+-- 
+2.25.1
+
 
