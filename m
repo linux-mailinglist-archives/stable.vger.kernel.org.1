@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-177214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6147AB40439
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C322B4038C
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A24007ACE7D
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:36:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B09BD166878
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2B130ACF9;
-	Tue,  2 Sep 2025 13:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999B830C37B;
+	Tue,  2 Sep 2025 13:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q2TJcQy1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXKMfVg9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAF82C11C9;
-	Tue,  2 Sep 2025 13:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BDE3054E7;
+	Tue,  2 Sep 2025 13:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819944; cv=none; b=uF4rezV5MAqtNs2vgcvTCFZxC+str93anop5SfdbSNf1BRGJRZcOxnfaHhSQA4WGCPE+Ljg1bEOr8nXFK4OcrbA0tr0SiW0ibsGbtlE/r1acTaqPjspolPFCezActXx9NXX61uEiLuKgLU1uHVOzb2GvJ5MYGUKsESVvHU9vxkc=
+	t=1756819718; cv=none; b=RxvM6mdlqbaA1pCmza1dO6Sb9+pkA6iERhdGHvYGel1o0JwolbVHTu51Z8FWZ0S4U0yWWCL3BIRprGnJT/UgWZEXU6h+syDqtC6uJ4an3E+CmjmTd5CyUA/r/iSU5xtYSTn0Oo38tLu1MpZbTwLyL7fEdX+okCi+mFkq0fgPLIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819944; c=relaxed/simple;
-	bh=LMh54U8xQ9I0vjQy8i9Gl9OKwG0qqsQ55a8ZWGvWxJE=;
+	s=arc-20240116; t=1756819718; c=relaxed/simple;
+	bh=Q1JpJ7uqa2wiZjHgcM+9dzLAtc6ulA+VnhBwNj4WLJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmBkSnPNxhbtk2VaBkEC03t6dY1erVgy2pD7V4EdNmqaLcjxyV6sIkKycMSWp166ga9K6QUQ3aifHUXavb2lJYGQgWjN5J+adusHX9SXw2rcgTwo74mpY1vHrvYH1CLkfzCw8YqOln1V3rkPZGxFC0wy79YVi4Zr9cN2z41jP+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q2TJcQy1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5311CC4CEED;
-	Tue,  2 Sep 2025 13:32:23 +0000 (UTC)
+	 MIME-Version; b=V0sgd6BOP/EG/HYuOReuCtKfCANJmOmr4zEmNA2jk5QQ879D6z7i+AeYPCskJqvnC6cMElqQh+kbAzaFfMSTyvoIINOELAdC+uHz3PQDdbIlBHRADC8gOoeFIq/iJW8qOqZ4Xxn5G0yPhvOByYfWsLCbpWJYqZ2X8d264N3q/dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXKMfVg9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8431C4CEED;
+	Tue,  2 Sep 2025 13:28:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819943;
-	bh=LMh54U8xQ9I0vjQy8i9Gl9OKwG0qqsQ55a8ZWGvWxJE=;
+	s=korg; t=1756819718;
+	bh=Q1JpJ7uqa2wiZjHgcM+9dzLAtc6ulA+VnhBwNj4WLJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q2TJcQy1ZChfp8j34xGbhvcFyudnVqLpvskPg6SJUrgTZJkWL5ifbZEGpt3WeNr+K
-	 mS2jZedc4PjGLae7r1yFtpdAhZ2ngyD+NQtjCDWBcmxjFNI7D660/B2lK1F4X+WiWd
-	 mq2YZLsgjXcCWEqrjbCwEVpBOryrsIq7V49qRhSQ=
+	b=UXKMfVg9uYNDhTRujHsOVNUR+xs009ptvYBl7qzx+lpw9iCIydtunx1wGJOTWlhNq
+	 ZEfQr4pucA1tPzYcHNU8npERvzuVtGkI/b/9VRSMNwizc8gRuBw3bxNB/zFxr7Snyr
+	 ScnvN/j0EQ4vXSDu8srwDwotxoT1BYTzvU9+fftA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 44/95] phy: mscc: Fix when PTP clock is register and unregister
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.16 118/142] blk-zoned: Fix a lockdep complaint about recursive locking
 Date: Tue,  2 Sep 2025 15:20:20 +0200
-Message-ID: <20250902131941.293762552@linuxfoundation.org>
+Message-ID: <20250902131952.808931667@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 882e57cbc7204662f6c5672d5b04336c1d790b03 ]
+commit 198f36f902ec7e99b645382505f74b87a4523ed9 upstream.
 
-It looks like that every time when the interface was set down and up the
-driver was creating a new ptp clock. On top of this the function
-ptp_clock_unregister was never called.
-Therefore fix this by calling ptp_clock_register and initialize the
-mii_ts struct inside the probe function and call ptp_clock_unregister when
-driver is removed.
+If preparing a write bio fails then blk_zone_wplug_bio_work() calls
+bio_endio() with zwplug->lock held. If a device mapper driver is stacked
+on top of the zoned block device then this results in nested locking of
+zwplug->lock. The resulting lockdep complaint is a false positive
+because this is nested locking and not recursive locking. Suppress this
+false positive by calling blk_zone_wplug_bio_io_error() without holding
+zwplug->lock. This is safe because no code in
+blk_zone_wplug_bio_io_error() depends on zwplug->lock being held. This
+patch suppresses the following lockdep complaint:
 
-Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250825065543.2916334-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+WARNING: possible recursive locking detected
+--------------------------------------------
+kworker/3:0H/46 is trying to acquire lock:
+ffffff882968b830 (&zwplug->lock){-...}-{2:2}, at: blk_zone_write_plug_bio_endio+0x64/0x1f0
+
+but task is already holding lock:
+ffffff88315bc230 (&zwplug->lock){-...}-{2:2}, at: blk_zone_wplug_bio_work+0x8c/0x48c
+
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(&zwplug->lock);
+  lock(&zwplug->lock);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+3 locks held by kworker/3:0H/46:
+ #0: ffffff8809486758 ((wq_completion)sdd_zwplugs){+.+.}-{0:0}, at: process_one_work+0x1bc/0x65c
+ #1: ffffffc085de3d70 ((work_completion)(&zwplug->bio_work)){+.+.}-{0:0}, at: process_one_work+0x1e4/0x65c
+ #2: ffffff88315bc230 (&zwplug->lock){-...}-{2:2}, at: blk_zone_wplug_bio_work+0x8c/0x48c
+
+stack backtrace:
+CPU: 3 UID: 0 PID: 46 Comm: kworker/3:0H Tainted: G        W  OE      6.12.38-android16-5-maybe-dirty-4k #1 8b362b6f76e3645a58cd27d86982bce10d150025
+Tainted: [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: Spacecraft board based on MALIBU (DT)
+Workqueue: sdd_zwplugs blk_zone_wplug_bio_work
+Call trace:
+ dump_backtrace+0xfc/0x17c
+ show_stack+0x18/0x28
+ dump_stack_lvl+0x40/0xa0
+ dump_stack+0x18/0x24
+ print_deadlock_bug+0x38c/0x398
+ __lock_acquire+0x13e8/0x2e1c
+ lock_acquire+0x134/0x2b4
+ _raw_spin_lock_irqsave+0x5c/0x80
+ blk_zone_write_plug_bio_endio+0x64/0x1f0
+ bio_endio+0x9c/0x240
+ __dm_io_complete+0x214/0x260
+ clone_endio+0xe8/0x214
+ bio_endio+0x218/0x240
+ blk_zone_wplug_bio_work+0x204/0x48c
+ process_one_work+0x26c/0x65c
+ worker_thread+0x33c/0x498
+ kthread+0x110/0x134
+ ret_from_fork+0x10/0x20
+
+Cc: stable@vger.kernel.org
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Fixes: dd291d77cc90 ("block: Introduce zone write plugging")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250825182720.1697203-1-bvanassche@acm.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/mscc/mscc.h      |  4 ++++
- drivers/net/phy/mscc/mscc_main.c |  4 +---
- drivers/net/phy/mscc/mscc_ptp.c  | 34 ++++++++++++++++++++------------
- 3 files changed, 26 insertions(+), 16 deletions(-)
+ block/blk-zoned.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
-index 58c6d47fbe046..2bfe314ef881c 100644
---- a/drivers/net/phy/mscc/mscc.h
-+++ b/drivers/net/phy/mscc/mscc.h
-@@ -481,6 +481,7 @@ static inline void vsc8584_config_macsec_intr(struct phy_device *phydev)
- void vsc85xx_link_change_notify(struct phy_device *phydev);
- void vsc8584_config_ts_intr(struct phy_device *phydev);
- int vsc8584_ptp_init(struct phy_device *phydev);
-+void vsc8584_ptp_deinit(struct phy_device *phydev);
- int vsc8584_ptp_probe_once(struct phy_device *phydev);
- int vsc8584_ptp_probe(struct phy_device *phydev);
- irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev);
-@@ -495,6 +496,9 @@ static inline int vsc8584_ptp_init(struct phy_device *phydev)
- {
- 	return 0;
- }
-+static inline void vsc8584_ptp_deinit(struct phy_device *phydev)
-+{
-+}
- static inline int vsc8584_ptp_probe_once(struct phy_device *phydev)
- {
- 	return 0;
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index 42cafa68c4009..19983b206405c 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -2337,9 +2337,7 @@ static int vsc85xx_probe(struct phy_device *phydev)
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -1266,14 +1266,14 @@ static void blk_zone_wplug_bio_work(stru
+ 	struct block_device *bdev;
+ 	unsigned long flags;
+ 	struct bio *bio;
++	bool prepared;
  
- static void vsc85xx_remove(struct phy_device *phydev)
- {
--	struct vsc8531_private *priv = phydev->priv;
+ 	/*
+ 	 * Submit the next plugged BIO. If we do not have any, clear
+ 	 * the plugged flag.
+ 	 */
+-	spin_lock_irqsave(&zwplug->lock, flags);
 -
--	skb_queue_purge(&priv->rx_skbs_list);
-+	vsc8584_ptp_deinit(phydev);
- }
+ again:
++	spin_lock_irqsave(&zwplug->lock, flags);
+ 	bio = bio_list_pop(&zwplug->bio_list);
+ 	if (!bio) {
+ 		zwplug->flags &= ~BLK_ZONE_WPLUG_PLUGGED;
+@@ -1281,13 +1281,14 @@ again:
+ 		goto put_zwplug;
+ 	}
  
- /* Microsemi VSC85xx PHYs */
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index 80992827a3bdd..920f35f8f84e7 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -1295,7 +1295,6 @@ static void vsc8584_set_input_clk_configured(struct phy_device *phydev)
+-	if (!blk_zone_wplug_prepare_bio(zwplug, bio)) {
++	prepared = blk_zone_wplug_prepare_bio(zwplug, bio);
++	spin_unlock_irqrestore(&zwplug->lock, flags);
++
++	if (!prepared) {
+ 		blk_zone_wplug_bio_io_error(zwplug, bio);
+ 		goto again;
+ 	}
  
- static int __vsc8584_init_ptp(struct phy_device *phydev)
- {
--	struct vsc8531_private *vsc8531 = phydev->priv;
- 	static const u32 ltc_seq_e[] = { 0, 400000, 0, 0, 0 };
- 	static const u8  ltc_seq_a[] = { 8, 6, 5, 4, 2 };
- 	u32 val;
-@@ -1512,17 +1511,7 @@ static int __vsc8584_init_ptp(struct phy_device *phydev)
- 
- 	vsc85xx_ts_eth_cmp1_sig(phydev);
- 
--	vsc8531->mii_ts.rxtstamp = vsc85xx_rxtstamp;
--	vsc8531->mii_ts.txtstamp = vsc85xx_txtstamp;
--	vsc8531->mii_ts.hwtstamp = vsc85xx_hwtstamp;
--	vsc8531->mii_ts.ts_info  = vsc85xx_ts_info;
--	phydev->mii_ts = &vsc8531->mii_ts;
+-	spin_unlock_irqrestore(&zwplug->lock, flags);
 -
--	memcpy(&vsc8531->ptp->caps, &vsc85xx_clk_caps, sizeof(vsc85xx_clk_caps));
--
--	vsc8531->ptp->ptp_clock = ptp_clock_register(&vsc8531->ptp->caps,
--						     &phydev->mdio.dev);
--	return PTR_ERR_OR_ZERO(vsc8531->ptp->ptp_clock);
-+	return 0;
- }
+ 	bdev = bio->bi_bdev;
  
- void vsc8584_config_ts_intr(struct phy_device *phydev)
-@@ -1549,6 +1538,16 @@ int vsc8584_ptp_init(struct phy_device *phydev)
- 	return 0;
- }
- 
-+void vsc8584_ptp_deinit(struct phy_device *phydev)
-+{
-+	struct vsc8531_private *vsc8531 = phydev->priv;
-+
-+	if (vsc8531->ptp->ptp_clock) {
-+		ptp_clock_unregister(vsc8531->ptp->ptp_clock);
-+		skb_queue_purge(&vsc8531->rx_skbs_list);
-+	}
-+}
-+
- irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev)
- {
- 	struct vsc8531_private *priv = phydev->priv;
-@@ -1609,7 +1608,16 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
- 
- 	vsc8531->ptp->phydev = phydev;
- 
--	return 0;
-+	vsc8531->mii_ts.rxtstamp = vsc85xx_rxtstamp;
-+	vsc8531->mii_ts.txtstamp = vsc85xx_txtstamp;
-+	vsc8531->mii_ts.hwtstamp = vsc85xx_hwtstamp;
-+	vsc8531->mii_ts.ts_info  = vsc85xx_ts_info;
-+	phydev->mii_ts = &vsc8531->mii_ts;
-+
-+	memcpy(&vsc8531->ptp->caps, &vsc85xx_clk_caps, sizeof(vsc85xx_clk_caps));
-+	vsc8531->ptp->ptp_clock = ptp_clock_register(&vsc8531->ptp->caps,
-+						     &phydev->mdio.dev);
-+	return PTR_ERR_OR_ZERO(vsc8531->ptp->ptp_clock);
- }
- 
- int vsc8584_ptp_probe_once(struct phy_device *phydev)
--- 
-2.50.1
-
+ 	/*
 
 
 
