@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-177091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05AFB40367
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:32:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F44CB40311
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AD5818860BE
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:30:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94436166001
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5634D30F537;
-	Tue,  2 Sep 2025 13:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907AD311974;
+	Tue,  2 Sep 2025 13:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fToODpUP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dz1b44hm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104963054E0;
-	Tue,  2 Sep 2025 13:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8C52FE599;
+	Tue,  2 Sep 2025 13:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819549; cv=none; b=LZvEc6zHrDYo/0MONB5OhdG69oDfNU0GxTInlaPT/SwFnvu/BsdQIpn2i2O3GPAcXnymGWCCNkPLlnpIPZ9BwKVajrwE5h0OTKGLTgy9f36C1igNmWcutkfqRul/4j9mVyxhu+06Xi7KXc2G8/5S8WxuedIsmfFI2K8JnbQxPPo=
+	t=1756819444; cv=none; b=o7LL4IaB5absOZiYZjOhBDLS+zAJpmg2me/PoBFBC7SOl4lVzj8m0gkPea5597psjAh8zITxJgHa1cDeasVVKA60F7QjxWNVWHt8Ih5xwZX2TwEipaSashDs8KH4RH0XaUkXi8kqNmbjX0XnL09Xu/GptmohWuAZZJzH/TSY3y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819549; c=relaxed/simple;
-	bh=5SyZxt5wwHtNiUxXXI+Iu7/gFt7CWAYCMVefsmcf/OE=;
+	s=arc-20240116; t=1756819444; c=relaxed/simple;
+	bh=Gf3tt5L8zghJgCf9JkjKiwBWJ0Z0qesqglqBFOte6Yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKYBKe9dhoDt9xvI0ZWtlGNI8jRr+SbeVcBQINQTi504By5/Mm13FAYwk4PJOgG/LynCKCvvCoPuZ64lcXyeKrPxm06Z7O23cHe6My/LXL2OgOEqBCeOujbhLngncIzVRJnApflrBYN/MNmMWQOVAyOHaSu+STLjN8FUoppImkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fToODpUP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28ADAC4CEF5;
-	Tue,  2 Sep 2025 13:25:46 +0000 (UTC)
+	 MIME-Version; b=eYLVLirtNN+x3M5NEzm2eqJo2zstyPMVIMibPaNSNA9YOp6aerUKLj5fQWSkH0bvlre1R+ijkC8l4hBA77c9rDozJW9x3R5EeWxFE24DFmUFzYOvz2eygdqR/uI2UoElgzlPJUpX3ljxyL5t/OL91vOEWLOxfgo7yjKfWJT8c9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dz1b44hm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7E4C4CEED;
+	Tue,  2 Sep 2025 13:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819547;
-	bh=5SyZxt5wwHtNiUxXXI+Iu7/gFt7CWAYCMVefsmcf/OE=;
+	s=korg; t=1756819443;
+	bh=Gf3tt5L8zghJgCf9JkjKiwBWJ0Z0qesqglqBFOte6Yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fToODpUPjZj1ud/SIzziFsDmjHYNEU5J5+PqCM9l4se6FSAKwfJzMH5S7aJF3EIcs
-	 +XkHb1Ab6GlcqyHgbpSN43ILe+M9uTrO5RDjaUhYo1sQ9CQy+1SgV8IWGJRQ2OyL1Z
-	 0QpWZLLa4eorDdTjm2wsms2KyIhmoOgsR02clMOo=
+	b=Dz1b44hmVW3LP9J2W916YFJq5Dul+OgWWA+sDVifDem8A1k2dUwjhnfr22f2QkFmA
+	 LTh43u7neu/jDv0R9XzX+PkglWg1sZpM/plmUCJw4qxmfEKyjtn/NZlplQlIbk2MKO
+	 VMK8YAkQPzlyTSZ2VS+I8QJcYnRpazhI1Ye4AK+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
+	Ayushi Makhija <quic_amakhija@quicinc.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 035/142] drm/msm/dpu: correct dpu_plane_virtual_atomic_check()
-Date: Tue,  2 Sep 2025 15:18:57 +0200
-Message-ID: <20250902131949.489058877@linuxfoundation.org>
+Subject: [PATCH 6.16 036/142] drm/msm: update the high bitfield of certain DSI registers
+Date: Tue,  2 Sep 2025 15:18:58 +0200
+Message-ID: <20250902131949.526745085@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
 References: <20250902131948.154194162@linuxfoundation.org>
@@ -68,39 +66,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Ayushi Makhija <quic_amakhija@quicinc.com>
 
-[ Upstream commit 1a76b255eceb9c570c6228f6393e1d63d97a22ba ]
+[ Upstream commit 494045c561e68945b1183ff416b8db8e37a122d6 ]
 
-Fix c&p error in dpu_plane_virtual_atomic_check(), compare CRTC width
-too, in addition to CRTC height.
+Currently, the high bitfield of certain DSI registers
+do not align with the configuration of the SWI registers
+description. This can lead to wrong programming these DSI
+registers, for example for 4k resloution where H_TOTAL is
+taking 13 bits but software is programming only 12 bits
+because of the incorrect bitmask for H_TOTAL bitfeild,
+this is causing DSI FIFO errors. To resolve this issue,
+increase the high bitfield of the DSI registers from 12 bits
+to 16 bits in dsi.xml to match the SWI register configuration.
 
-Fixes: 8c62a31607f6 ("drm/msm/dpu: allow using two SSPP blocks for a single plane")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202507150432.U0cALR6W-lkp@intel.com/
+Signed-off-by: Ayushi Makhija <quic_amakhija@quicinc.com>
+Fixes: 4f52f5e63b62 ("drm/msm: import XML display registers database")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/666229/
+Link: https://lore.kernel.org/r/20250730123938.1038640-1-quic_amakhija@quicinc.com
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Jessica Zhang <jessica.zhang@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/664170/
-Link: https://lore.kernel.org/r/20250715-msm-fix-virt-atomic-check-v1-1-9bab02c9f952@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/registers/display/dsi.xml | 28 +++++++++----------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-index 421138bc3cb77..28d42eade5ccb 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-@@ -1169,7 +1169,7 @@ static int dpu_plane_virtual_atomic_check(struct drm_plane *plane,
- 	if (!old_plane_state || !old_plane_state->fb ||
- 	    old_plane_state->src_w != plane_state->src_w ||
- 	    old_plane_state->src_h != plane_state->src_h ||
--	    old_plane_state->src_w != plane_state->src_w ||
-+	    old_plane_state->crtc_w != plane_state->crtc_w ||
- 	    old_plane_state->crtc_h != plane_state->crtc_h ||
- 	    msm_framebuffer_format(old_plane_state->fb) !=
- 	    msm_framebuffer_format(plane_state->fb))
+diff --git a/drivers/gpu/drm/msm/registers/display/dsi.xml b/drivers/gpu/drm/msm/registers/display/dsi.xml
+index 501ffc585a9f6..c7a7b633d747b 100644
+--- a/drivers/gpu/drm/msm/registers/display/dsi.xml
++++ b/drivers/gpu/drm/msm/registers/display/dsi.xml
+@@ -159,28 +159,28 @@ xsi:schemaLocation="https://gitlab.freedesktop.org/freedreno/ rules-fd.xsd">
+ 		<bitfield name="RGB_SWAP" low="12" high="14" type="dsi_rgb_swap"/>
+ 	</reg32>
+ 	<reg32 offset="0x00020" name="ACTIVE_H">
+-		<bitfield name="START" low="0" high="11" type="uint"/>
+-		<bitfield name="END" low="16" high="27" type="uint"/>
++		<bitfield name="START" low="0" high="15" type="uint"/>
++		<bitfield name="END" low="16" high="31" type="uint"/>
+ 	</reg32>
+ 	<reg32 offset="0x00024" name="ACTIVE_V">
+-		<bitfield name="START" low="0" high="11" type="uint"/>
+-		<bitfield name="END" low="16" high="27" type="uint"/>
++		<bitfield name="START" low="0" high="15" type="uint"/>
++		<bitfield name="END" low="16" high="31" type="uint"/>
+ 	</reg32>
+ 	<reg32 offset="0x00028" name="TOTAL">
+-		<bitfield name="H_TOTAL" low="0" high="11" type="uint"/>
+-		<bitfield name="V_TOTAL" low="16" high="27" type="uint"/>
++		<bitfield name="H_TOTAL" low="0" high="15" type="uint"/>
++		<bitfield name="V_TOTAL" low="16" high="31" type="uint"/>
+ 	</reg32>
+ 	<reg32 offset="0x0002c" name="ACTIVE_HSYNC">
+-		<bitfield name="START" low="0" high="11" type="uint"/>
+-		<bitfield name="END" low="16" high="27" type="uint"/>
++		<bitfield name="START" low="0" high="15" type="uint"/>
++		<bitfield name="END" low="16" high="31" type="uint"/>
+ 	</reg32>
+ 	<reg32 offset="0x00030" name="ACTIVE_VSYNC_HPOS">
+-		<bitfield name="START" low="0" high="11" type="uint"/>
+-		<bitfield name="END" low="16" high="27" type="uint"/>
++		<bitfield name="START" low="0" high="15" type="uint"/>
++		<bitfield name="END" low="16" high="31" type="uint"/>
+ 	</reg32>
+ 	<reg32 offset="0x00034" name="ACTIVE_VSYNC_VPOS">
+-		<bitfield name="START" low="0" high="11" type="uint"/>
+-		<bitfield name="END" low="16" high="27" type="uint"/>
++		<bitfield name="START" low="0" high="15" type="uint"/>
++		<bitfield name="END" low="16" high="31" type="uint"/>
+ 	</reg32>
+ 
+ 	<reg32 offset="0x00038" name="CMD_DMA_CTRL">
+@@ -209,8 +209,8 @@ xsi:schemaLocation="https://gitlab.freedesktop.org/freedreno/ rules-fd.xsd">
+ 		<bitfield name="WORD_COUNT" low="16" high="31" type="uint"/>
+ 	</reg32>
+ 	<reg32 offset="0x00058" name="CMD_MDP_STREAM0_TOTAL">
+-		<bitfield name="H_TOTAL" low="0" high="11" type="uint"/>
+-		<bitfield name="V_TOTAL" low="16" high="27" type="uint"/>
++		<bitfield name="H_TOTAL" low="0" high="15" type="uint"/>
++		<bitfield name="V_TOTAL" low="16" high="31" type="uint"/>
+ 	</reg32>
+ 	<reg32 offset="0x0005c" name="CMD_MDP_STREAM1_CTRL">
+ 		<bitfield name="DATA_TYPE" low="0" high="5" type="uint"/>
 -- 
 2.50.1
 
