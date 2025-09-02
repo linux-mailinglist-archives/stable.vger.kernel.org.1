@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-177136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5A3B403D1
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:36:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 884B9B40458
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:41:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 550E57B155A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:31:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA09D3AEEE7
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01AFA312826;
-	Tue,  2 Sep 2025 13:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A57322C78;
+	Tue,  2 Sep 2025 13:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecmHNalG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ww4rNk4v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20DC312821;
-	Tue,  2 Sep 2025 13:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD68D304BA9;
+	Tue,  2 Sep 2025 13:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819694; cv=none; b=MSkkxUJkFuXD4F/R1ZZlfaQZ/thF1c+e4U/dTc/eMMReOc6G1ayBGcXOA02lG+LepXGYbe7Zv7cKj97pUXu896zNqhcZWrZPA5tGM+UIuStjkA51YGy+Wp7m/pRvEsjjncKRLqK9m9+CipWSBRM53ZNFmWlzDwszvHmBxLnP5iI=
+	t=1756820168; cv=none; b=LP5DlpMvBn6Zux9vkF5DtyvXLivEyAR+LUdRCc6bo+rGZxXShZfLsSnl+OBYtOANZaNiyLLjcOjblqvuyOzoTP3kbbVj8xZjZtDgPEhou9qzTGrSc3OkYtAqyRtLXCFh5SwweYyVYGSYMmNqY3CyTanTOFP6qbP9N1s5jetkTuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819694; c=relaxed/simple;
-	bh=1PHxLMRWMz49/N2GbyLBQxopn/st2nzz+C7u5f21aIA=;
+	s=arc-20240116; t=1756820168; c=relaxed/simple;
+	bh=ExpEM/PygySPpfRXRfUkk2HZZ+pJR9x6Xf/FoFVqtpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sbbhxsQBpWz8TFODFQoW4llfXlGjxplM09vUt979SHAIMAjqqm2+TDfyWmhjUu8puZEkc9+tnNRPVj70DPd18q+LgEwun53cPXMp8WfqUuUNFlX6mIhpcllF1DQ0hD/rjJG2YwcJfGrssVzf7mMIOEc52DNnvStw1JYQpUna6qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecmHNalG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E25FC4CEED;
-	Tue,  2 Sep 2025 13:28:13 +0000 (UTC)
+	 MIME-Version; b=sTrF301qO+u9bHBLgLhZBmWuy/yTSvxXUDB60s7or8kylurbtUd4mo/IBkjzQpOd7BSUC1hye4lQXKdL51PFhEdqxRV0Jdj+djkQDg1SnWw5uxOqqN1jjdg3d3hFXlz/fI8hZynirfkcMtgdIlH7qZE8S+5JzfJheVrpfJB6zeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ww4rNk4v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CBEC4CEED;
+	Tue,  2 Sep 2025 13:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819694;
-	bh=1PHxLMRWMz49/N2GbyLBQxopn/st2nzz+C7u5f21aIA=;
+	s=korg; t=1756820168;
+	bh=ExpEM/PygySPpfRXRfUkk2HZZ+pJR9x6Xf/FoFVqtpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ecmHNalGZLqdNIMLsXuiGziOk/uvJGGOLDo+EkMLJbRysePk+T8m2L2rswIPZUvOc
-	 cdfJgz+Q711Mgd3YYJp+pJEYpZ5QACABgJ0XnfFrWRIIGlskz49tZ0eKJgcdz8CzC+
-	 1eW2+VXYJm0ZFlsu2nBKV4n5pCUm7ehvn9pfMdOw=
+	b=Ww4rNk4vG8a4HDCJUdqgIJ5of+7OVSjiP4yFAnBzpRoPa4CYpIb1oE2I+EQUxuTIt
+	 gZXtJjdF0pQecv9/IBEFC/sZTPo0rUgpLrMqp7KgS+jR+2lkMraXbj71zxmSFNmyqu
+	 Ftl91BJ3ZwlaTIrrF33BiarTTKYY0yu7bYAKqYRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.16 112/142] HID: quirks: add support for Legion Go dual dinput modes
+	Randy Dunlap <rdunlap@infradead.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 02/75] pinctrl: STMFX: add missing HAS_IOMEM dependency
 Date: Tue,  2 Sep 2025 15:20:14 +0200
-Message-ID: <20250902131952.567010693@linuxfoundation.org>
+Message-ID: <20250902131935.208064390@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 1f3214aae9f49faf495f3836216afbc6c5400b2e upstream.
+[ Upstream commit a12946bef0407cf2db0899c83d42c47c00af3fbc ]
 
-The Legion Go features detachable controllers which support a dual
-dinput mode. In this mode, the controllers appear under a single HID
-device with two applications.
+When building on ARCH=um (which does not set HAS_IOMEM), kconfig
+reports an unmet dependency caused by PINCTRL_STMFX. It selects
+MFD_STMFX, which depends on HAS_IOMEM. To stop this warning,
+PINCTRL_STMFX should also depend on HAS_IOMEM.
 
-Currently, both controllers appear under the same event device, causing
-their controls to be mixed up. This patch separates the two so that
-they can be used independently.
+kconfig warning:
+WARNING: unmet direct dependencies detected for MFD_STMFX
+  Depends on [n]: HAS_IOMEM [=n] && I2C [=y] && OF [=y]
+  Selected by [y]:
+  - PINCTRL_STMFX [=y] && PINCTRL [=y] && I2C [=y] && OF_GPIO [=y]
 
-In addition, the latest firmware update for the Legion Go swaps the IDs
-to the ones used by the Legion Go 2, so add those IDs as well.
-
-[jkosina@suse.com: improved shortlog]
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1490d9f841b1 ("pinctrl: Add STMFX GPIO expander Pinctrl/GPIO driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/20250815022721.1650885-1-rdunlap@infradead.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    |    2 ++
- drivers/hid/hid-quirks.c |    2 ++
- 2 files changed, 4 insertions(+)
+ drivers/pinctrl/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -832,6 +832,8 @@
- #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_6019	0x6019
- #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_602E	0x602e
- #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_6093	0x6093
-+#define USB_DEVICE_ID_LENOVO_LEGION_GO_DUAL_DINPUT	0x6184
-+#define USB_DEVICE_ID_LENOVO_LEGION_GO2_DUAL_DINPUT	0x61ed
- 
- #define USB_VENDOR_ID_LETSKETCH		0x6161
- #define USB_DEVICE_ID_WP9620N		0x4d15
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -124,6 +124,8 @@ static const struct hid_device_id hid_qu
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_PENSKETCH_T609A), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_LABTEC, USB_DEVICE_ID_LABTEC_ODDOR_HANDBRAKE), HID_QUIRK_ALWAYS_POLL },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_LEGION_GO_DUAL_DINPUT), HID_QUIRK_MULTI_INPUT },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_LEGION_GO2_DUAL_DINPUT), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_OPTICAL_USB_MOUSE_600E), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_608D), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_6019), HID_QUIRK_ALWAYS_POLL },
+diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
+index 7dfb7190580ef..ab3908a923e3a 100644
+--- a/drivers/pinctrl/Kconfig
++++ b/drivers/pinctrl/Kconfig
+@@ -438,6 +438,7 @@ config PINCTRL_STMFX
+ 	tristate "STMicroelectronics STMFX GPIO expander pinctrl driver"
+ 	depends on I2C
+ 	depends on OF_GPIO
++	depends on HAS_IOMEM
+ 	select GENERIC_PINCONF
+ 	select GPIOLIB_IRQCHIP
+ 	select MFD_STMFX
+-- 
+2.50.1
+
 
 
 
