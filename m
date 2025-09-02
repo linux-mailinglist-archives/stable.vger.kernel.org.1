@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 897E0B40569
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:53:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A41E7B40535
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB24A1B66843
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7346F176289
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64F030E82D;
-	Tue,  2 Sep 2025 13:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFFB32A823;
+	Tue,  2 Sep 2025 13:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WibDAz//"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xiGS4LNA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734A82D4818;
-	Tue,  2 Sep 2025 13:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EF932A81A;
+	Tue,  2 Sep 2025 13:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820640; cv=none; b=tI7AddkvgChpxk4hjmMgrk6Ydq1ryEV8XcGYnMMtoWdQH6SdXcxPXLpf9MPAtUxfMYmLU50C8t/vXwUyueRXXfo82zFrkAb1YTBP+gT/dX9i+q6JEKKg+jdH6PEGmAKZ0NcT9XR6d4LQ/m1CyOH6OSV79Wjc20xUMgAfG/SBPL0=
+	t=1756820507; cv=none; b=Gul9TWB7WBk7YYwL34xC1LRIhmW+8KvULjVF7maz5/+ehyAP1zY8H99j9B3W5zJvb/RsNMq2HG65h+ErMQQrmh3oNAxbK+4U0cNoSE+JZ+YSlN1civnxRU8pQZmX+WACpmFmKHVQo/UZf+TqIIn7lsC0tGaQJBNL3phTGEwFl+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820640; c=relaxed/simple;
-	bh=I4Yn7dm7g9thEasQrS8Q6VXRFHCbJCMcb1kg2ExjKPM=;
+	s=arc-20240116; t=1756820507; c=relaxed/simple;
+	bh=r6FYEosvsfjAt8yy5kw60Cwbp2pYPYVEXNbosG4/m+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H7mSphZa5VL3sXCVu38j1TiMpWfgEH1eB+YJqaEoZ2kcJlgk9smV7DnVV0PxEPs7azQabuyLPINDrmKUOkYAVm89GDXeVNbbrWBYWkbD889AGmCy2iVLHnVlkEVh3gT7iS3mf229pwDofRjTteS4CfS5QX8pFY1YwlmZd9bUSlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WibDAz//; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F84C4CEED;
-	Tue,  2 Sep 2025 13:43:59 +0000 (UTC)
+	 MIME-Version; b=R/+RtkUCjCLmiWbB+EUxS1fZuREboEKJ5k2B1i2yF0Sp6OvBi+ErJvBlPiUIlve0tXFkbR3NXD/5aLJdYfo2kBReGTP5jO7HAOgdm/Jemq1wVoy5+JttjSw4to1jLPRSiejF29kZNrg1fRG6TwEx3uq0HUWwdW1k+P47xKDVDWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xiGS4LNA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0197C4CEED;
+	Tue,  2 Sep 2025 13:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820640;
-	bh=I4Yn7dm7g9thEasQrS8Q6VXRFHCbJCMcb1kg2ExjKPM=;
+	s=korg; t=1756820507;
+	bh=r6FYEosvsfjAt8yy5kw60Cwbp2pYPYVEXNbosG4/m+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WibDAz//UaFxkbSlHe82VKVxpOzEa/BPCkznkQVTgjTNlbtPShh7gWwCfkSY9LjOd
-	 Wct+22Oa6lcC2X0YZKgRlrisyiGOkupLIcx5C3wdDR5T7F/5Sq3H+LtC1dstT/ghZ1
-	 3t6vDIOW9d7CNU7eE5IRiXNWA/3pW1kivpZLZPko=
+	b=xiGS4LNA2sDS1UutOtTZzP4Vzkii6r1Upj2yKbXiyyM8FdG6E3SNH7kbpPMdw57w2
+	 BVDFEijiO8wx89xynnmQhvHdm819Qll60b+FysVYlnT/xshy3iBaCfi7JAcRGGBOoO
+	 vYEmX3vPcYjDYXPPcT0lPzN3XYdVRnX1m6x0GKV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Ryabinin <arbn@yandex-team.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 5.15 07/33] vhost/net: Protect ubufs with rcu read lock in vhost_net_ubuf_put()
+	Li Nan <linan122@huawei.com>,
+	Wu Guanghao <wuguanghao3@huawei.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 34/50] efivarfs: Fix slab-out-of-bounds in efivarfs_d_compare
 Date: Tue,  2 Sep 2025 15:21:25 +0200
-Message-ID: <20250902131927.338912647@linuxfoundation.org>
+Message-ID: <20250902131931.878152858@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
-References: <20250902131927.045875971@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Li Nan <linan122@huawei.com>
 
-commit dd54bcf86c91a4455b1f95cbc8e9ac91205f3193 upstream.
+[ Upstream commit a6358f8cf64850f3f27857b8ed8c1b08cfc4685c ]
 
-When operating on struct vhost_net_ubuf_ref, the following execution
-sequence is theoretically possible:
-CPU0 is finalizing DMA operation                   CPU1 is doing VHOST_NET_SET_BACKEND
-                             // ubufs->refcount == 2
-vhost_net_ubuf_put()                               vhost_net_ubuf_put_wait_and_free(oldubufs)
-                                                     vhost_net_ubuf_put_and_wait()
-                                                       vhost_net_ubuf_put()
-                                                         int r = atomic_sub_return(1, &ubufs->refcount);
-                                                         // r = 1
-int r = atomic_sub_return(1, &ubufs->refcount);
-// r = 0
-                                                      wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
-                                                      // no wait occurs here because condition is already true
-                                                    kfree(ubufs);
-if (unlikely(!r))
-  wake_up(&ubufs->wait);  // use-after-free
+Observed on kernel 6.6 (present on master as well):
 
-This leads to use-after-free on ubufs access. This happens because CPU1
-skips waiting for wake_up() when refcount is already zero.
+  BUG: KASAN: slab-out-of-bounds in memcmp+0x98/0xd0
+  Call trace:
+   kasan_check_range+0xe8/0x190
+   __asan_loadN+0x1c/0x28
+   memcmp+0x98/0xd0
+   efivarfs_d_compare+0x68/0xd8
+   __d_lookup_rcu_op_compare+0x178/0x218
+   __d_lookup_rcu+0x1f8/0x228
+   d_alloc_parallel+0x150/0x648
+   lookup_open.isra.0+0x5f0/0x8d0
+   open_last_lookups+0x264/0x828
+   path_openat+0x130/0x3f8
+   do_filp_open+0x114/0x248
+   do_sys_openat2+0x340/0x3c0
+   __arm64_sys_openat+0x120/0x1a0
 
-To prevent that use a read-side RCU critical section in vhost_net_ubuf_put(),
-as suggested by Hillf Danton. For this lock to take effect, free ubufs with
-kfree_rcu().
+If dentry->d_name.len < EFI_VARIABLE_GUID_LEN , 'guid' can become
+negative, leadings to oob. The issue can be triggered by parallel
+lookups using invalid filename:
 
-Cc: stable@vger.kernel.org
-Fixes: 0ad8b480d6ee9 ("vhost: fix ref cnt checking deadlock")
-Reported-by: Andrey Ryabinin <arbn@yandex-team.com>
-Suggested-by: Hillf Danton <hdanton@sina.com>
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Message-Id: <20250805130917.727332-1-kniv@yandex-team.ru>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  T1			T2
+  lookup_open
+   ->lookup
+    simple_lookup
+     d_add
+     // invalid dentry is added to hash list
+
+			lookup_open
+			 d_alloc_parallel
+			  __d_lookup_rcu
+			   __d_lookup_rcu_op_compare
+			    hlist_bl_for_each_entry_rcu
+			    // invalid dentry can be retrieved
+			     ->d_compare
+			      efivarfs_d_compare
+			      // oob
+
+Fix it by checking 'guid' before cmp.
+
+Fixes: da27a24383b2 ("efivarfs: guid part of filenames are case-insensitive")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Signed-off-by: Wu Guanghao <wuguanghao3@huawei.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/net.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/efivarfs/super.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -95,6 +95,7 @@ struct vhost_net_ubuf_ref {
- 	atomic_t refcount;
- 	wait_queue_head_t wait;
- 	struct vhost_virtqueue *vq;
-+	struct rcu_head rcu;
- };
- 
- #define VHOST_NET_BATCH 64
-@@ -248,9 +249,13 @@ vhost_net_ubuf_alloc(struct vhost_virtqu
- 
- static int vhost_net_ubuf_put(struct vhost_net_ubuf_ref *ubufs)
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index b8c4641ed152b..9025430cf2ad3 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -47,6 +47,10 @@ static int efivarfs_d_compare(const struct dentry *dentry,
  {
--	int r = atomic_sub_return(1, &ubufs->refcount);
-+	int r;
+ 	int guid = len - EFI_VARIABLE_GUID_LEN;
+ 
++	/* Parallel lookups may produce a temporary invalid filename */
++	if (guid <= 0)
++		return 1;
 +
-+	rcu_read_lock();
-+	r = atomic_sub_return(1, &ubufs->refcount);
- 	if (unlikely(!r))
- 		wake_up(&ubufs->wait);
-+	rcu_read_unlock();
- 	return r;
- }
+ 	if (name->len != len)
+ 		return 1;
  
-@@ -263,7 +268,7 @@ static void vhost_net_ubuf_put_and_wait(
- static void vhost_net_ubuf_put_wait_and_free(struct vhost_net_ubuf_ref *ubufs)
- {
- 	vhost_net_ubuf_put_and_wait(ubufs);
--	kfree(ubufs);
-+	kfree_rcu(ubufs, rcu);
- }
- 
- static void vhost_net_clear_ubuf_info(struct vhost_net *n)
+-- 
+2.50.1
+
 
 
 
