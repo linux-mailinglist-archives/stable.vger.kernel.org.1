@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-177188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D69B403CA
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:36:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53AE2B40378
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:33:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 251E64E048B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:36:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4161894DA0
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1ACE307482;
-	Tue,  2 Sep 2025 13:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE153054F4;
+	Tue,  2 Sep 2025 13:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RS4QE/Nx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHinbXdM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF683064AF;
-	Tue,  2 Sep 2025 13:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA5428B4F0;
+	Tue,  2 Sep 2025 13:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819864; cv=none; b=KK5yj+ehz1SZ/VEAXRYKqY91zh3TpbYEWr15a88YmmrEsXFCS/g96MLYnSc92UOTKtBF7QuCeisftyF3uodbsENl6W0/ol0TldHHiYJi94REE+QrE9Mm3QKDRR2bPGFvBH2cUFfoEV8B4G6I12YTTWscoMM7qkBSW2Ytur+x2XY=
+	t=1756819577; cv=none; b=LhlHG9MhjqoCbiUqOi8+SkRv7vs3ZoxVL2YMESl4jlQUnvJSl6PQSzcjZKyEpOEQBzi/Y0TBODhc7vTTXAtNu+fKC2YHYan68KB67SMmYplduclOlpI/RU48i1/WKs9mAYKqCfr0UyR4m2XsOect5zHPU6TW84g4uxX9X6VhCZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819864; c=relaxed/simple;
-	bh=T/KyQHcD6k7lylIGfYb8mesvM6IpByY3zgdc+Y0J5Wg=;
+	s=arc-20240116; t=1756819577; c=relaxed/simple;
+	bh=OW65tS29Og1Sk5OPIL1eePfV5lLVyztEVYVIO16Q0zA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/VftE5mbIY1Aqt49j0I79jCaSMSzEB2FdmcwMW1ksT+U3TQluHeq2E+W4e2M9VYHRnbnL8Kizue0fQ+7zcZ9oNL7M4gzAOBB989D2jZyVv9PkR6mmZr1Bm64sTmgzK3QH1PsP/AW5AP7x3J7TIfMUPNeqphEdWeaehUedem+b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RS4QE/Nx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC79C4CEF5;
-	Tue,  2 Sep 2025 13:31:03 +0000 (UTC)
+	 MIME-Version; b=WPW/YcqgfevwIoBsU3pQnFAfgwfa4HglC3XBE1nVEWgsGh6lQxISzHrV2CH9mCexK2WlgdPB+prr6GLEZZEHqHroZF/kGFxAS3hSPjvnGl22CzUZH0rzv/g5njQ+YSGpli2gi6c6kcQK5IgUtPMiBu2uTr+Te0b8b1nJOkrhxEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHinbXdM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B47FC4CEED;
+	Tue,  2 Sep 2025 13:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819864;
-	bh=T/KyQHcD6k7lylIGfYb8mesvM6IpByY3zgdc+Y0J5Wg=;
+	s=korg; t=1756819577;
+	bh=OW65tS29Og1Sk5OPIL1eePfV5lLVyztEVYVIO16Q0zA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RS4QE/NxpQbgMCZ/QrxgeE8xNh2KRpfj2yfbzoDMbVvtqRgSv9K3LP96iOZqued+I
-	 BWgqSxFD5p7xADjxk1vIjn6HUK+2bKGTqAcgZ2jg9dhBNU6syRJONeEgBZVDBE17ZF
-	 pdwuQT3gx7gw69oU0tGY+X+hynlZBFvzh60FVl7k=
+	b=QHinbXdMyHMPNA/fG/qrVtiZCFLFIGPIb1NtSr6Mcy5J42S+llMbtY6nZ+aNCVoX0
+	 mTbH2URibKQf5PZTaRPh8SiRo/ZNXoriUNuJXQV11exR7fxNgXqkZz6VA95u4Hx6LA
+	 ctkmvErgCoV86g+U4ncNYQC7o3pLI57Yv4Si/qnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Chen <chen.dylane@linux.dev>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 02/95] rtla: Check pkg-config install
+Subject: [PATCH 6.16 076/142] bnxt_en: Adjust TX rings if reservation is less than requested
 Date: Tue,  2 Sep 2025 15:19:38 +0200
-Message-ID: <20250902131939.703694527@linuxfoundation.org>
+Message-ID: <20250902131951.182511947@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Chen <chen.dylane@linux.dev>
+From: Michael Chan <michael.chan@broadcom.com>
 
-[ Upstream commit 7b128f1d53dcaa324d4aa05d821a6bf4a7b203e7 ]
+[ Upstream commit 1ee581c24dfdcbc6de25aac95a48c1f08e9a542c ]
 
-The tool pkg-config used to check libtraceevent and libtracefs, if not
-installed, it will report the libs not found, even though they have
-already been installed.
+Before we accept an ethtool request to increase a resource (such as
+rings), we call the FW to check that the requested resource is likely
+available first before we commit.  But it is still possible that
+the actual reservation or allocation can fail.  The existing code
+is missing the logic to adjust the TX rings in case the reserved
+TX rings are less than requested.  Add a warning message (a similar
+message for RX rings already exists) and add the logic to adjust
+the TX rings.  Without this fix, the number of TX rings reported
+to the stack can exceed the actual TX rings and ethtool -l will
+report more than the actual TX rings.
 
-Before:
-libtraceevent is missing. Please install libtraceevent-dev/libtraceevent-devel
-libtracefs is missing. Please install libtracefs-dev/libtracefs-devel
-
-After:
-Makefile.config:10: *** Error: pkg-config needed by libtraceevent/libtracefs is missing
-on this system, please install it.
-
-Link: https://lore.kernel.org/20250808040527.2036023-2-chen.dylane@linux.dev
-Fixes: 01474dc706ca ("tools/rtla: Use tools/build makefiles to build rtla")
-Signed-off-by: Tao Chen <chen.dylane@linux.dev>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 674f50a5b026 ("bnxt_en: Implement new method to reserve rings.")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250825175927.459987-3-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/Makefile.config | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/tools/tracing/rtla/Makefile.config b/tools/tracing/rtla/Makefile.config
-index 5f8c286712d4c..a35d6ee55ffcd 100644
---- a/tools/tracing/rtla/Makefile.config
-+++ b/tools/tracing/rtla/Makefile.config
-@@ -1,10 +1,18 @@
- # SPDX-License-Identifier: GPL-2.0-only
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index a4f4d90caf5e9..5360c42ad409c 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -8017,6 +8017,11 @@ static int __bnxt_reserve_rings(struct bnxt *bp)
+ 		hwr.rx = rx_rings << 1;
+ 	tx_cp = bnxt_num_tx_to_cp(bp, hwr.tx);
+ 	hwr.cp = sh ? max_t(int, tx_cp, rx_rings) : tx_cp + rx_rings;
++	if (hwr.tx != bp->tx_nr_rings) {
++		netdev_warn(bp->dev,
++			    "Able to reserve only %d out of %d requested TX rings\n",
++			    hwr.tx, bp->tx_nr_rings);
++	}
+ 	bp->tx_nr_rings = hwr.tx;
  
-+include $(srctree)/tools/scripts/utilities.mak
-+
- STOP_ERROR :=
+ 	/* If we cannot reserve all the RX rings, reset the RSS map only
+@@ -12872,6 +12877,13 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
+ 	if (rc)
+ 		return rc;
  
- LIBTRACEEVENT_MIN_VERSION = 1.5
- LIBTRACEFS_MIN_VERSION = 1.6
- 
-+ifndef ($(NO_LIBTRACEEVENT),1)
-+  ifeq ($(call get-executable,$(PKG_CONFIG)),)
-+    $(error Error: $(PKG_CONFIG) needed by libtraceevent/libtracefs is missing on this system, please install it)
-+  endif
-+endif
-+
- define lib_setup
-   $(eval LIB_INCLUDES += $(shell sh -c "$(PKG_CONFIG) --cflags lib$(1)"))
-   $(eval LDFLAGS += $(shell sh -c "$(PKG_CONFIG) --libs-only-L lib$(1)"))
++	/* Make adjustments if reserved TX rings are less than requested */
++	bp->tx_nr_rings -= bp->tx_nr_rings_xdp;
++	bp->tx_nr_rings_per_tc = bnxt_tx_nr_rings_per_tc(bp);
++	if (bp->tx_nr_rings_xdp) {
++		bp->tx_nr_rings_xdp = bp->tx_nr_rings_per_tc;
++		bp->tx_nr_rings += bp->tx_nr_rings_xdp;
++	}
+ 	rc = bnxt_alloc_mem(bp, irq_re_init);
+ 	if (rc) {
+ 		netdev_err(bp->dev, "bnxt_alloc_mem err: %x\n", rc);
 -- 
 2.50.1
 
