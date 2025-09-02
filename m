@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-177310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088D0B404AC
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:45:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89863B40440
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F38116DE5E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:42:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA7401B640C6
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F083074B4;
-	Tue,  2 Sep 2025 13:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE7A3093CA;
+	Tue,  2 Sep 2025 13:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uPa9Wr44"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfHnrr4Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AA02848A1;
-	Tue,  2 Sep 2025 13:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181722E7BB1;
+	Tue,  2 Sep 2025 13:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820238; cv=none; b=maMFFD4cGvhhHONFy1eN8CkuYl7eIQzJium9dLWeCLVQNboZTTLe8CUcCNBVBUfIWP6JxhLd3RdkBRQQ2gTCRjcNj3R2X+SOjcmZZ6uPFRlZFPrW2esTK7J3Sq3nwjdTvHnChW/N/aF40FgCvqMDRBPoXa9K/+VRj2oiuKqGVrc=
+	t=1756819947; cv=none; b=e3U2S3bVaYucBLZI7YxDe5K7bu2N5uyMUZPvuOY/ZqyIU7PZhCNO4ZuIuG7BnhGiFJItw9epaVJN8lkZleVrQboJr2up2JkXsV3q+EpCB6Aay2ZVnbDcPmSeq/WKYS1SVluCtHQ9k6q6/XsRl+h6yFD71isTzNKMJKK64KGUuI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820238; c=relaxed/simple;
-	bh=+vdstVZ4juHqCo3Vna11yyYBcSTfZZvBpFZUGL+22oA=;
+	s=arc-20240116; t=1756819947; c=relaxed/simple;
+	bh=QTEFpHLOLEtz5XB455LdMXF6warNcg+wEzJVOsrsUHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0Q3ljFavc+lP3fa5YZJOiqMLxJmOACwBbhjPGmMgslUbDfOIrGBE7Sbc8TAMcSX6nd/RWVSutBMzs/bNX64RABS0qDf6wXmsMqRtAAZLMIJrfLLe11x4K/sFuEdGauWsmB1GdV55k9do/NsGIoyIlVK0BGTyOJLPY/Qdl7EVoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uPa9Wr44; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37980C4CEED;
-	Tue,  2 Sep 2025 13:37:14 +0000 (UTC)
+	 MIME-Version; b=lx9WvOBqSNRgiz3EWYcLA/KvFv4q/5bakg3KhREvM3919afRtVByIsW9ubt8/promy2UH0XZDww+KF/r5KLvNlrcli316a2AR6WMgUNMYms4AM3zyW0/bFYi2TiZ8NYfYs1r3MdQFKtNuDrWOsWytQEpo64e27/mEHux0oAFkX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfHnrr4Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F939C4CEED;
+	Tue,  2 Sep 2025 13:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820234;
-	bh=+vdstVZ4juHqCo3Vna11yyYBcSTfZZvBpFZUGL+22oA=;
+	s=korg; t=1756819947;
+	bh=QTEFpHLOLEtz5XB455LdMXF6warNcg+wEzJVOsrsUHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uPa9Wr44olchefg65PLeLWkRrjkoqXD4B4exVozpUVSp0BJKaI/cwBJ8iODB2pC8Q
-	 0cmR3xvtHotN8hUd8iXmwD3S8LMKqa35I2cOIVreoZ4phUVLImzfd9WwqbgqeXGWZK
-	 k9K7HobUdhPUNaLesrQyVmN1gk+Cnjk7pUijtBeU=
+	b=cfHnrr4Ysw4aDJAvASafzL17u0AQZ85+RkcPe8bYHn+SYrjWIBLwbcxAm1cKxpstx
+	 apeTvU5Q814ZR4jimPLpz5DMbpVahpzveyDbsfTQ+zny7Z3glAF20//RuxPDGIipyZ
+	 hm+wldmfiLbT+3R3WTrymyR6wp6Z4OPcHqfEuYLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Shin <jaeshin@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 09/75] smb: client: fix race with concurrent opens in unlink(2)
+Subject: [PATCH 6.12 45/95] bnxt_en: Fix memory corruption when FW resources change during ifdown
 Date: Tue,  2 Sep 2025 15:20:21 +0200
-Message-ID: <20250902131935.482135582@linuxfoundation.org>
+Message-ID: <20250902131941.330942174@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,87 +65,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
 
-[ Upstream commit 0af1561b2d60bab2a2b00720a5c7b292ecc549ec ]
+[ Upstream commit 2747328ba2714f1a7454208dbbc1dc0631990b4a ]
 
-According to some logs reported by customers, CIFS client might end up
-reporting unlinked files as existing in stat(2) due to concurrent
-opens racing with unlink(2).
+bnxt_set_dflt_rings() assumes that it is always called before any TC has
+been created.  So it doesn't take bp->num_tc into account and assumes
+that it is always 0 or 1.
 
-Besides sending the removal request to the server, the unlink process
-could involve closing any deferred close as well as marking all
-existing open handles as deleted to prevent them from deferring
-closes, which increases the race window for potential concurrent
-opens.
+In the FW resource or capability change scenario, the FW will return
+flags in bnxt_hwrm_if_change() that will cause the driver to
+reinitialize and call bnxt_cancel_reservations().  This will lead to
+bnxt_init_dflt_ring_mode() calling bnxt_set_dflt_rings() and bp->num_tc
+may be greater than 1.  This will cause bp->tx_ring[] to be sized too
+small and cause memory corruption in bnxt_alloc_cp_rings().
 
-Fix this by unhashing the dentry in cifs_unlink() to prevent any
-subsequent opens.  Any open attempts, while we're still unlinking,
-will block on parent's i_rwsem.
+Fix it by properly scaling the TX rings by bp->num_tc in the code
+paths mentioned above.  Add 2 helper functions to determine
+bp->tx_nr_rings and bp->tx_nr_rings_per_tc.
 
-Reported-by: Jay Shin <jaeshin@redhat.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-cifs@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: ec5d31e3c15d ("bnxt_en: Handle firmware reset status during IF_UP.")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250825175927.459987-2-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/inode.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index d93ebd58ecae1..df01029918fd4 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -1856,15 +1856,24 @@ int cifs_unlink(struct inode *dir, struct dentry *dentry)
- 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
- 	struct tcon_link *tlink;
- 	struct cifs_tcon *tcon;
-+	__u32 dosattr = 0, origattr = 0;
- 	struct TCP_Server_Info *server;
- 	struct iattr *attrs = NULL;
--	__u32 dosattr = 0, origattr = 0;
-+	bool rehash = false;
- 
- 	cifs_dbg(FYI, "cifs_unlink, dir=0x%p, dentry=0x%p\n", dir, dentry);
- 
- 	if (unlikely(cifs_forced_shutdown(cifs_sb)))
- 		return -EIO;
- 
-+	/* Unhash dentry in advance to prevent any concurrent opens */
-+	spin_lock(&dentry->d_lock);
-+	if (!d_unhashed(dentry)) {
-+		__d_drop(dentry);
-+		rehash = true;
-+	}
-+	spin_unlock(&dentry->d_lock);
-+
- 	tlink = cifs_sb_tlink(cifs_sb);
- 	if (IS_ERR(tlink))
- 		return PTR_ERR(tlink);
-@@ -1915,7 +1924,8 @@ int cifs_unlink(struct inode *dir, struct dentry *dentry)
- 			cifs_drop_nlink(inode);
- 		}
- 	} else if (rc == -ENOENT) {
--		d_drop(dentry);
-+		if (simple_positive(dentry))
-+			d_delete(dentry);
- 	} else if (rc == -EBUSY) {
- 		if (server->ops->rename_pending_delete) {
- 			rc = server->ops->rename_pending_delete(full_path,
-@@ -1968,6 +1978,8 @@ int cifs_unlink(struct inode *dir, struct dentry *dentry)
- 	kfree(attrs);
- 	free_xid(xid);
- 	cifs_put_tlink(tlink);
-+	if (rehash)
-+		d_rehash(dentry);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index f4bafc71a7399..dc123822771b6 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -12241,6 +12241,17 @@ static int bnxt_set_xps_mapping(struct bnxt *bp)
  	return rc;
  }
+ 
++static int bnxt_tx_nr_rings(struct bnxt *bp)
++{
++	return bp->num_tc ? bp->tx_nr_rings_per_tc * bp->num_tc :
++			    bp->tx_nr_rings_per_tc;
++}
++
++static int bnxt_tx_nr_rings_per_tc(struct bnxt *bp)
++{
++	return bp->num_tc ? bp->tx_nr_rings / bp->num_tc : bp->tx_nr_rings;
++}
++
+ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
+ {
+ 	int rc = 0;
+@@ -15676,7 +15687,7 @@ static void bnxt_trim_dflt_sh_rings(struct bnxt *bp)
+ 	bp->cp_nr_rings = min_t(int, bp->tx_nr_rings_per_tc, bp->rx_nr_rings);
+ 	bp->rx_nr_rings = bp->cp_nr_rings;
+ 	bp->tx_nr_rings_per_tc = bp->cp_nr_rings;
+-	bp->tx_nr_rings = bp->tx_nr_rings_per_tc;
++	bp->tx_nr_rings = bnxt_tx_nr_rings(bp);
+ }
+ 
+ static int bnxt_set_dflt_rings(struct bnxt *bp, bool sh)
+@@ -15708,7 +15719,7 @@ static int bnxt_set_dflt_rings(struct bnxt *bp, bool sh)
+ 		bnxt_trim_dflt_sh_rings(bp);
+ 	else
+ 		bp->cp_nr_rings = bp->tx_nr_rings_per_tc + bp->rx_nr_rings;
+-	bp->tx_nr_rings = bp->tx_nr_rings_per_tc;
++	bp->tx_nr_rings = bnxt_tx_nr_rings(bp);
+ 
+ 	avail_msix = bnxt_get_max_func_irqs(bp) - bp->cp_nr_rings;
+ 	if (avail_msix >= BNXT_MIN_ROCE_CP_RINGS) {
+@@ -15721,7 +15732,7 @@ static int bnxt_set_dflt_rings(struct bnxt *bp, bool sh)
+ 	rc = __bnxt_reserve_rings(bp);
+ 	if (rc && rc != -ENODEV)
+ 		netdev_warn(bp->dev, "Unable to reserve tx rings\n");
+-	bp->tx_nr_rings_per_tc = bp->tx_nr_rings;
++	bp->tx_nr_rings_per_tc = bnxt_tx_nr_rings_per_tc(bp);
+ 	if (sh)
+ 		bnxt_trim_dflt_sh_rings(bp);
+ 
+@@ -15730,7 +15741,7 @@ static int bnxt_set_dflt_rings(struct bnxt *bp, bool sh)
+ 		rc = __bnxt_reserve_rings(bp);
+ 		if (rc && rc != -ENODEV)
+ 			netdev_warn(bp->dev, "2nd rings reservation failed.\n");
+-		bp->tx_nr_rings_per_tc = bp->tx_nr_rings;
++		bp->tx_nr_rings_per_tc = bnxt_tx_nr_rings_per_tc(bp);
+ 	}
+ 	if (BNXT_CHIP_TYPE_NITRO_A0(bp)) {
+ 		bp->rx_nr_rings++;
+@@ -15764,7 +15775,7 @@ static int bnxt_init_dflt_ring_mode(struct bnxt *bp)
+ 	if (rc)
+ 		goto init_dflt_ring_err;
+ 
+-	bp->tx_nr_rings_per_tc = bp->tx_nr_rings;
++	bp->tx_nr_rings_per_tc = bnxt_tx_nr_rings_per_tc(bp);
+ 
+ 	bnxt_set_dflt_rfs(bp);
  
 -- 
 2.50.1
