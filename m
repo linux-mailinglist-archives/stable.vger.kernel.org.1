@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-177375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1656B404E6
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA36B404E7
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C97B84E440C
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CFC51B65B9E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C8C31A041;
-	Tue,  2 Sep 2025 13:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF3A3090FD;
+	Tue,  2 Sep 2025 13:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MScdJ4rB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbgkvOf1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C921315761;
-	Tue,  2 Sep 2025 13:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0722DC35C;
+	Tue,  2 Sep 2025 13:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820442; cv=none; b=hozTzh+U35u1hpXpNtseiAHKsgsamu4Bnj0XYqDEowPikzZQRYBiFie1LDtx6TUXUGn54mZRmeKgEjeoaxfLRQi7C0P8kPSEAyixcpTRdDR7Kb8WYpO1ecFAQ3dVVxVpKRQVul1yHv73wGec8trFeiDN7uCogAiRYu34VT52y2k=
+	t=1756820341; cv=none; b=u10ci+W1W8nkbmzWeLs8EIYAkT9Hk1vW48V41HWM2rikWAtR4goR+45vykgJZy0cKXPvnbX8njVUt/dVDgdVULKl/xHQkQmacOH59W1soKgUjhvmgVDJKMZQOfsNuy/UXtXGpq/lR9PhvrR3dsgQDi87zIRk3UzKH7LmkjLRckA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820442; c=relaxed/simple;
-	bh=iHA8UKCeHGAUx98XNIUEFJ0JNYPyAq0z+YyarSYx/MQ=;
+	s=arc-20240116; t=1756820341; c=relaxed/simple;
+	bh=JCSRRh1HuHuWdG842BmLfaHhx7YZhCYs8VTXVhlRLv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=joSzJ6lJ4O3N16NBu5pSmqnKNomf0JjJ2spI3zCOkh6ZONzL5UcBOjkYSIBskgebr9cWI58jfCvVuBKojo9wWAxMbPCmCdqU5LXF4NcN50P8PxHAqZ0zXvGyH8U0DSyX4TgVj7N61jw4F3tGs6QObEL33HRrK5qz5iwg1T1SCpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MScdJ4rB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D38C4CEF4;
-	Tue,  2 Sep 2025 13:40:41 +0000 (UTC)
+	 MIME-Version; b=VVH8FnYJbm4ZMI9LmzapchUvKGuXojKPp3w1zF8wl615TR35vVzx55LD1sw5drNriKIO5SWUh4KeR7tnbvaSIKr6wQ6x0O1duqeesUhn/pQuyi2N14y7WaZhBThOF2jFhYLinnPil8v4YxXV3zOzM7D5WxMSzuO865OmVJdcuqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbgkvOf1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FFDC4CEED;
+	Tue,  2 Sep 2025 13:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820442;
-	bh=iHA8UKCeHGAUx98XNIUEFJ0JNYPyAq0z+YyarSYx/MQ=;
+	s=korg; t=1756820341;
+	bh=JCSRRh1HuHuWdG842BmLfaHhx7YZhCYs8VTXVhlRLv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MScdJ4rB46RP0Nx7uGzrjHE+zMbpaObwkvxQ8pzRPM3+TCo/375BBcsiHv+6VPpJi
-	 B6CKzRwQobQX0eGmerH/NNM7TJhGwwPWVrA3hOputkr79Z62s0fAfGb+PVPMnsTR7T
-	 djpj4+mRXSxiSaWt5mIm5jCQNC4cNpr3wuQcqHow=
+	b=xbgkvOf1hEWDtkqvOQAhbhLm0zvTe9wh6zgYqKwZCD/F3HXtglhFLxwwwcqBAURUH
+	 5FT9bZqhG2l8HC126fpBsGoSf5xsoTmBWIFT9v+sRL0hZD9eVEPcXfIUObotq0Ksia
+	 dfmOGYF8s8R6nwTBhMtwjJ9n9pdbHCZqohbvWWng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Shay Drory <shayd@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 03/50] mips: lantiq: xway: sysctrl: rename the etop node
+Subject: [PATCH 6.6 42/75] net/mlx5: Convert SF port_indices xarray to function_ids xarray
 Date: Tue,  2 Sep 2025 15:20:54 +0200
-Message-ID: <20250902131930.648401932@linuxfoundation.org>
+Message-ID: <20250902131936.770063087@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +61,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Jiri Pirko <jiri@nvidia.com>
 
-[ Upstream commit 8c431ea8f3f795c4b9cfa57a85bc4166b9cce0ac ]
+[ Upstream commit 2284a4836251b3dee348172f69ac84157aa7b03e ]
 
-Bindig requires a node name matching ‘^ethernet@[0-9a-f]+$’. This patch
-changes the clock name from “etop” to “ethernet”.
+No need to lookup for sf by a port index. Convert the xarray to have
+function id as an index and optimize the remaining function id
+based lookup.
 
-This fixes the following warning:
-arch/mips/boot/dts/lantiq/danube_easy50712.dtb: etop@e180000 (lantiq,etop-xway): $nodename:0: 'etop@e180000' does not match '^ethernet@[0-9a-f]+$'
-	from schema $id: http://devicetree.org/schemas/net/lantiq,etop-xway.yaml#
-
-Fixes: dac0bad93741 ("dt-bindings: net: lantiq,etop-xway: Document Lantiq Xway ETOP bindings")
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Acked-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Shay Drory <shayd@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: 26e42ec7712d ("net/mlx5: Nack sync reset when SFs are present")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/lantiq/danube_easy50712.dts |  2 +-
- arch/mips/lantiq/xway/sysctrl.c                | 10 +++++-----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ .../ethernet/mellanox/mlx5/core/sf/devlink.c  | 29 +++++++------------
+ 1 file changed, 11 insertions(+), 18 deletions(-)
 
-diff --git a/arch/mips/boot/dts/lantiq/danube_easy50712.dts b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
-index d8b3cd69eda3c..c4d7aa5753b04 100644
---- a/arch/mips/boot/dts/lantiq/danube_easy50712.dts
-+++ b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
-@@ -82,7 +82,7 @@ conf_out {
- 			};
- 		};
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
+index 4711dcfe8ba83..3f0ac2d1dde68 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
+@@ -29,7 +29,7 @@ static void *mlx5_sf_by_dl_port(struct devlink_port *dl_port)
  
--		etop@e180000 {
-+		ethernet@e180000 {
- 			compatible = "lantiq,etop-xway";
- 			reg = <0xe180000 0x40000>;
- 			interrupt-parent = <&icu0>;
-diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
-index d444a1b98a724..edf914393ad96 100644
---- a/arch/mips/lantiq/xway/sysctrl.c
-+++ b/arch/mips/lantiq/xway/sysctrl.c
-@@ -479,7 +479,7 @@ void __init ltq_soc_init(void)
- 		ifccr = CGU_IFCCR_VR9;
- 		pcicr = CGU_PCICR_VR9;
- 	} else {
--		clkdev_add_pmu("1e180000.etop", NULL, 1, 0, PMU_PPE);
-+		clkdev_add_pmu("1e180000.ethernet", NULL, 1, 0, PMU_PPE);
+ struct mlx5_sf_table {
+ 	struct mlx5_core_dev *dev; /* To refer from notifier context. */
+-	struct xarray port_indices; /* port index based lookup. */
++	struct xarray function_ids; /* function id based lookup. */
+ 	refcount_t refcount;
+ 	struct completion disable_complete;
+ 	struct mutex sf_state_lock; /* Serializes sf state among user cmds & vhca event handler. */
+@@ -40,24 +40,17 @@ struct mlx5_sf_table {
+ static struct mlx5_sf *
+ mlx5_sf_lookup_by_function_id(struct mlx5_sf_table *table, unsigned int fn_id)
+ {
+-	unsigned long index;
+-	struct mlx5_sf *sf;
+-
+-	xa_for_each(&table->port_indices, index, sf) {
+-		if (sf->hw_fn_id == fn_id)
+-			return sf;
+-	}
+-	return NULL;
++	return xa_load(&table->function_ids, fn_id);
+ }
+ 
+-static int mlx5_sf_id_insert(struct mlx5_sf_table *table, struct mlx5_sf *sf)
++static int mlx5_sf_function_id_insert(struct mlx5_sf_table *table, struct mlx5_sf *sf)
+ {
+-	return xa_insert(&table->port_indices, sf->port_index, sf, GFP_KERNEL);
++	return xa_insert(&table->function_ids, sf->hw_fn_id, sf, GFP_KERNEL);
+ }
+ 
+-static void mlx5_sf_id_erase(struct mlx5_sf_table *table, struct mlx5_sf *sf)
++static void mlx5_sf_function_id_erase(struct mlx5_sf_table *table, struct mlx5_sf *sf)
+ {
+-	xa_erase(&table->port_indices, sf->port_index);
++	xa_erase(&table->function_ids, sf->hw_fn_id);
+ }
+ 
+ static struct mlx5_sf *
+@@ -94,7 +87,7 @@ mlx5_sf_alloc(struct mlx5_sf_table *table, struct mlx5_eswitch *esw,
+ 	sf->hw_state = MLX5_VHCA_STATE_ALLOCATED;
+ 	sf->controller = controller;
+ 
+-	err = mlx5_sf_id_insert(table, sf);
++	err = mlx5_sf_function_id_insert(table, sf);
+ 	if (err)
+ 		goto insert_err;
+ 
+@@ -347,7 +340,7 @@ int mlx5_devlink_sf_port_new(struct devlink *devlink,
+ 
+ static void mlx5_sf_dealloc(struct mlx5_sf_table *table, struct mlx5_sf *sf)
+ {
+-	mlx5_sf_id_erase(table, sf);
++	mlx5_sf_function_id_erase(table, sf);
+ 
+ 	if (sf->hw_state == MLX5_VHCA_STATE_ALLOCATED) {
+ 		mlx5_sf_free(table, sf);
+@@ -451,7 +444,7 @@ static void mlx5_sf_deactivate_all(struct mlx5_sf_table *table)
+ 	/* At this point, no new user commands can start and no vhca event can
+ 	 * arrive. It is safe to destroy all user created SFs.
+ 	 */
+-	xa_for_each(&table->port_indices, index, sf) {
++	xa_for_each(&table->function_ids, index, sf) {
+ 		mlx5_eswitch_unload_sf_vport(esw, sf->hw_fn_id);
+ 		mlx5_sf_dealloc(table, sf);
  	}
+@@ -510,7 +503,7 @@ int mlx5_sf_table_init(struct mlx5_core_dev *dev)
  
- 	if (!of_machine_is_compatible("lantiq,ase"))
-@@ -513,9 +513,9 @@ void __init ltq_soc_init(void)
- 						CLOCK_133M, CLOCK_133M);
- 		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0);
- 		clkdev_add_pmu("1f203018.usb2-phy", "phy", 1, 0, PMU_USB0_P);
--		clkdev_add_pmu("1e180000.etop", "ppe", 1, 0, PMU_PPE);
--		clkdev_add_cgu("1e180000.etop", "ephycgu", CGU_EPHY);
--		clkdev_add_pmu("1e180000.etop", "ephy", 1, 0, PMU_EPHY);
-+		clkdev_add_pmu("1e180000.ethernet", "ppe", 1, 0, PMU_PPE);
-+		clkdev_add_cgu("1e180000.ethernet", "ephycgu", CGU_EPHY);
-+		clkdev_add_pmu("1e180000.ethernet", "ephy", 1, 0, PMU_EPHY);
- 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_ASE_SDIO);
- 		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
- 	} else if (of_machine_is_compatible("lantiq,grx390")) {
-@@ -574,7 +574,7 @@ void __init ltq_soc_init(void)
- 		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0 | PMU_AHBM);
- 		clkdev_add_pmu("1f203034.usb2-phy", "phy", 1, 0, PMU_USB1_P);
- 		clkdev_add_pmu("1e106000.usb", "otg", 1, 0, PMU_USB1 | PMU_AHBM);
--		clkdev_add_pmu("1e180000.etop", "switch", 1, 0, PMU_SWITCH);
-+		clkdev_add_pmu("1e180000.ethernet", "switch", 1, 0, PMU_SWITCH);
- 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
- 		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
- 		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
+ 	mutex_init(&table->sf_state_lock);
+ 	table->dev = dev;
+-	xa_init(&table->port_indices);
++	xa_init(&table->function_ids);
+ 	dev->priv.sf_table = table;
+ 	refcount_set(&table->refcount, 0);
+ 	table->esw_nb.notifier_call = mlx5_sf_esw_event;
+@@ -545,6 +538,6 @@ void mlx5_sf_table_cleanup(struct mlx5_core_dev *dev)
+ 	mlx5_esw_event_notifier_unregister(dev->priv.eswitch, &table->esw_nb);
+ 	WARN_ON(refcount_read(&table->refcount));
+ 	mutex_destroy(&table->sf_state_lock);
+-	WARN_ON(!xa_empty(&table->port_indices));
++	WARN_ON(!xa_empty(&table->function_ids));
+ 	kfree(table);
+ }
 -- 
 2.50.1
 
