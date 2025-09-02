@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-177335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F5EB404E0
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CD5B404E2
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25E421B65D26
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0E485E4662
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347BC30C377;
-	Tue,  2 Sep 2025 13:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90AB314A62;
+	Tue,  2 Sep 2025 13:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FO/V1RE1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdMWYlbt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64F62DAFCA;
-	Tue,  2 Sep 2025 13:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620D2313E23;
+	Tue,  2 Sep 2025 13:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820319; cv=none; b=WlgzZNV0VgQB8N/TL5dTzoOE0Y6y6pmxXV0O1nT3nywSxDpXp7lle8sZa5udd+ZzH4KpVLK175DmugSwh7EzqnmM0KaDejaUn5gDM0rjpCv9alyRgOnu21WGS60oL9uCcIQQZGKE1k8OaaD7MGDjtD/SRkRTtuK2kiy9DVKGkZI=
+	t=1756820430; cv=none; b=CboJ1+aKDXHba1TRh5KiAMD/kwTvdoM16Ycm8Ts5jl12SYnNxS6oXsNxSU+KxWKQ6nHo2ddr6eC1PbI/WjqAXxzJ24powvid8K5TJe4tnYGqesx7pzojybtaCHzR/Hd8DbKzoyqyA5FgbXLU9y7aM5ftRyzk5dk2CCN4B9afa1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820319; c=relaxed/simple;
-	bh=oLjrZIHWrjVvmn8C0ihB7u2pPpipsDftj2I6mH+1Rn4=;
+	s=arc-20240116; t=1756820430; c=relaxed/simple;
+	bh=463nhyPkks4LpuWUNxggHKG9NP9tR4+eDrqHib8UuWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cb9Y4dYda9rCITnYs0zxXN0OIG0tJxRJKN6E7uhl4+uVY4hiJedtQUHobWtggMpWS7roRmxN/CyvT6Zi1bnsdkcKx4Y3mu8Y8WbX44FdeKSGoOwYCM33Rd7DpttpQ0jhqXMJJNfy8hN/yzbYUTKEkEvtmYcK5qatV/vwntFuQcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FO/V1RE1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA09C4CEED;
-	Tue,  2 Sep 2025 13:38:37 +0000 (UTC)
+	 MIME-Version; b=fOvWkdmmh8FVJTi24W7curDcfTkcaQe3ocsNnXEXTwFNlv2CqOhIuGu/49iGSUT9ielh+czk+An2pnbZayhWibMWNjdtPMPKVgr/rBJaQR5VogXrv+UQ/n2fWBXJhUEX/wzdQbPfcr58LhFXXCwoOGN9TZsx1AfV4o2pDJFjQrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdMWYlbt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76777C4CEF9;
+	Tue,  2 Sep 2025 13:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820318;
-	bh=oLjrZIHWrjVvmn8C0ihB7u2pPpipsDftj2I6mH+1Rn4=;
+	s=korg; t=1756820429;
+	bh=463nhyPkks4LpuWUNxggHKG9NP9tR4+eDrqHib8UuWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FO/V1RE1Yo1rkyIiQgQrQcYvuXg0t+z+oEBo+JnVUGisCb3UACEY342l6jUVaAHb3
-	 pbBP0gdPXhN7/Jhwc2OKdtMsL0/yBZwjJRa+8ZT9joNCLbGLgIwDqwMaPzpNjfr7M3
-	 lAjfRm/q44sJlRtKP0fOZkQAgG570BQsASsawCcM=
+	b=MdMWYlbtTA1HejJfHM8bFaJUDi5jm2sJ6pXEINgU7CDAXPHyVrD96LzVfz1GaFI9V
+	 CiCCz+t6H4V51pa198ZjxlUeaFPYidZ1iEf9jA7b6+ylwTnS5gVffgBzOOEoIF5GOl
+	 d6Zor6WolMR5EwDBIMrg9YJkkCq0yVxjSeG7Dlok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 6.6 65/75] dma/pool: Ensure DMA_DIRECT_REMAP allocations are decrypted
+	Alexei Lazar <alazar@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 26/50] net/mlx5e: Update and set Xon/Xoff upon MTU set
 Date: Tue,  2 Sep 2025 15:21:17 +0200
-Message-ID: <20250902131937.669741500@linuxfoundation.org>
+Message-ID: <20250902131931.563208795@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shanker Donthineni <sdonthineni@nvidia.com>
+From: Alexei Lazar <alazar@nvidia.com>
 
-commit 89a2d212bdb4bc29bed8e7077abe054b801137ea upstream.
+[ Upstream commit ceddedc969f0532b7c62ca971ee50d519d2bc0cb ]
 
-When CONFIG_DMA_DIRECT_REMAP is enabled, atomic pool pages are
-remapped via dma_common_contiguous_remap() using the supplied
-pgprot. Currently, the mapping uses
-pgprot_dmacoherent(PAGE_KERNEL), which leaves the memory encrypted
-on systems with memory encryption enabled (e.g., ARM CCA Realms).
+Xon/Xoff sizes are derived from calculation that include the MTU size.
+Set Xon/Xoff when MTU is set.
+If Xon/Xoff fails, set the previous MTU.
 
-This can cause the DMA layer to fail or crash when accessing the
-memory, as the underlying physical pages are not configured as
-expected.
-
-Fix this by requesting a decrypted mapping in the vmap() call:
-pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL))
-
-This ensures that atomic pool memory is consistently mapped
-unencrypted.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20250811181759.998805-1-sdonthineni@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250825143435.598584-10-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/pool.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../mellanox/mlx5/core/en/port_buffer.h         | 12 ++++++++++++
+ .../net/ethernet/mellanox/mlx5/core/en_main.c   | 17 ++++++++++++++++-
+ 2 files changed, 28 insertions(+), 1 deletion(-)
 
---- a/kernel/dma/pool.c
-+++ b/kernel/dma/pool.c
-@@ -102,8 +102,8 @@ static int atomic_pool_expand(struct gen
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
+index 80af7a5ac6046..a23e3d810f3e4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
+@@ -63,11 +63,23 @@ struct mlx5e_port_buffer {
+ 	struct mlx5e_bufferx_reg  buffer[MLX5E_MAX_BUFFER];
+ };
  
- #ifdef CONFIG_DMA_DIRECT_REMAP
- 	addr = dma_common_contiguous_remap(page, pool_size,
--					   pgprot_dmacoherent(PAGE_KERNEL),
--					   __builtin_return_address(0));
-+			pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL)),
-+			__builtin_return_address(0));
- 	if (!addr)
- 		goto free_page;
- #else
++#ifdef CONFIG_MLX5_CORE_EN_DCB
+ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
+ 				    u32 change, unsigned int mtu,
+ 				    struct ieee_pfc *pfc,
+ 				    u32 *buffer_size,
+ 				    u8 *prio2buffer);
++#else
++static inline int
++mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
++				u32 change, unsigned int mtu,
++				void *pfc,
++				u32 *buffer_size,
++				u8 *prio2buffer)
++{
++	return 0;
++}
++#endif
+ 
+ int mlx5e_port_query_buffer(struct mlx5e_priv *priv,
+ 			    struct mlx5e_port_buffer *port_buffer);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 887d446354006..7612070b66160 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -42,6 +42,7 @@
+ #include "eswitch.h"
+ #include "en.h"
+ #include "en/txrx.h"
++#include "en/port_buffer.h"
+ #include "en_tc.h"
+ #include "en_rep.h"
+ #include "en_accel/ipsec.h"
+@@ -2640,9 +2641,11 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
+ 	struct mlx5e_params *params = &priv->channels.params;
+ 	struct net_device *netdev = priv->netdev;
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+-	u16 mtu;
++	u16 mtu, prev_mtu;
+ 	int err;
+ 
++	mlx5e_query_mtu(mdev, params, &prev_mtu);
++
+ 	err = mlx5e_set_mtu(mdev, params, params->sw_mtu);
+ 	if (err)
+ 		return err;
+@@ -2652,6 +2655,18 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
+ 		netdev_warn(netdev, "%s: VPort MTU %d is different than netdev mtu %d\n",
+ 			    __func__, mtu, params->sw_mtu);
+ 
++	if (mtu != prev_mtu && MLX5_BUFFER_SUPPORTED(mdev)) {
++		err = mlx5e_port_manual_buffer_config(priv, 0, mtu,
++						      NULL, NULL, NULL);
++		if (err) {
++			netdev_warn(netdev, "%s: Failed to set Xon/Xoff values with MTU %d (err %d), setting back to previous MTU %d\n",
++				    __func__, mtu, err, prev_mtu);
++
++			mlx5e_set_mtu(mdev, params, prev_mtu);
++			return err;
++		}
++	}
++
+ 	params->sw_mtu = mtu;
+ 	return 0;
+ }
+-- 
+2.50.1
+
 
 
 
