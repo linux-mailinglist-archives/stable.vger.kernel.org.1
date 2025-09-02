@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-177466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57CA7B4058C
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:55:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7025AB40563
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2127189E8D9
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:50:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA114546694
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5791A08A4;
-	Tue,  2 Sep 2025 13:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EC83093DD;
+	Tue,  2 Sep 2025 13:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPoTMALI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Q6NDxC3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6840031AF3C;
-	Tue,  2 Sep 2025 13:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34AF2DD5EB;
+	Tue,  2 Sep 2025 13:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820735; cv=none; b=G55rBGUj/lwq4ME6Wn1WaBBC2RjC78/mX95qzttPjLUpv+fmgjTWSvYjQt+rsXSJLhShsFlieHUVmh+QUlSEJ1VWW9LTb/gIno+5qrfVsiG8XZmrWD1Yct/i3K9mjIvIkQWfv5HUdf5U/H/cn6I5Zdfh+rRsDYBOijbtsbDJE+Q=
+	t=1756820602; cv=none; b=u+CHOo7ldTFOUl47LD4UbRaLr0+joUVPFvkIlEGTd+EguS/M1UepW8aYS42sPcZqdp3dqbaZ1/kP/C3ZzN7I3ECbAR3+G751Z6z5xukx0tAQAF6hjtbQ0lcPuWPjhybd05jgbYWLeBsi8qVxFN+C71hagYGHSvcvpj4SICA2Tds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820735; c=relaxed/simple;
-	bh=MG/HAodlhtlA+SXrvFGfI/c1vLh1bl5sQej+UlSCbxg=;
+	s=arc-20240116; t=1756820602; c=relaxed/simple;
+	bh=VtlV8m1XPiOYzQF0RKTqfcd3pJmWplXIE20l9qVFnA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dnp416eoFt006KE/0t2/t8b5Fl8qOFPmy0AmYXjItcZqmqUJHsS3+72aPYtHL4bOFgFXqq5g1epJTrQ3yNrAnPwrt7hDl3+1RHqSXMmLgHTGGGOreniFqHS71veWpMFEhJXjK/EMaGjt/SMjMxjITr6SJwvUgu0nKUI+xV6ZkH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPoTMALI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E26C4CEED;
-	Tue,  2 Sep 2025 13:45:34 +0000 (UTC)
+	 MIME-Version; b=aiUzbeKldxKJr37QjntDvryO4XbogIHNZw76bweP/D+AQNTLhDul18RP94Ri949UzyE/5OJ49hGA73ckEq1xOXkxCilFtObkValNB/RiccDXzZ6KO69cGL/a/lGq4kodw1eubOOXVjxe8XXxyyDUCAZXUKAqyMB7oo5QJaNQGjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Q6NDxC3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEB9C4CEED;
+	Tue,  2 Sep 2025 13:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820735;
-	bh=MG/HAodlhtlA+SXrvFGfI/c1vLh1bl5sQej+UlSCbxg=;
+	s=korg; t=1756820602;
+	bh=VtlV8m1XPiOYzQF0RKTqfcd3pJmWplXIE20l9qVFnA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fPoTMALIrtj4gBmz0tmeQFBzSHoxNtXlw3bI/dzqj/Y7iSgL22CaX1Gh4SNYWuPRM
-	 fP5MZCj78msdf/hTPsTnPeq5dxopnI2IHwGkI3m1HwURYBzxlTGeNdI3pmR/zYYnb8
-	 MzATxm5eZtPVizKGbjAW8h3DRz2mgBcDy7tcQbrs=
+	b=2Q6NDxC3H91rf+LU5MgbaD7/m4f9SXVOtO1t3O2iILggY21L7ao6Nu8oWnc41vOwA
+	 ypMixBNLUD6lkD7iNr7BjAhQsivQFVOYC99s6XsALPff3nsWErl040U1wOr/EZ9zMi
+	 KNwkCTZOWns40IgPqFmBvrw9B/vddozKloIV8FbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.10 21/34] HID: wacom: Add a new Art Pen 2
+	James Jones <jajones@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 5.15 29/33] drm/nouveau/disp: Always accept linear modifier
 Date: Tue,  2 Sep 2025 15:21:47 +0200
-Message-ID: <20250902131927.466548054@linuxfoundation.org>
+Message-ID: <20250902131928.203913935@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+References: <20250902131927.045875971@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,31 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping Cheng <pinglinux@gmail.com>
+From: James Jones <jajones@nvidia.com>
 
-commit 9fc51941d9e7793da969b2c66e6f8213c5b1237f upstream.
+commit e2fe0c54fb7401e6ecd3c10348519ab9e23bd639 upstream.
 
-Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+On some chipsets, which block-linear modifiers are
+supported is format-specific. However, linear
+modifiers are always be supported. The prior
+modifier filtering logic was not accounting for
+the linear case.
+
+Cc: stable@vger.kernel.org
+Fixes: c586f30bf74c ("drm/nouveau/kms: Add format mod prop to base/ovly/nvdisp")
+Signed-off-by: James Jones <jajones@nvidia.com>
+Link: https://lore.kernel.org/r/20250811220017.1337-3-jajones@nvidia.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_wac.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/nouveau/dispnv50/wndw.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -684,6 +684,7 @@ static bool wacom_is_art_pen(int tool_id
- 	case 0x885:	/* Intuos3 Marker Pen */
- 	case 0x804:	/* Intuos4/5 13HD/24HD Marker Pen */
- 	case 0x10804:	/* Intuos4/5 13HD/24HD Art Pen */
-+	case 0x204:     /* Art Pen 2 */
- 		is_art_pen = true;
- 		break;
- 	}
+--- a/drivers/gpu/drm/nouveau/dispnv50/wndw.c
++++ b/drivers/gpu/drm/nouveau/dispnv50/wndw.c
+@@ -664,6 +664,10 @@ static bool nv50_plane_format_mod_suppor
+ 	struct nouveau_drm *drm = nouveau_drm(plane->dev);
+ 	uint8_t i;
+ 
++	/* All chipsets can display all formats in linear layout */
++	if (modifier == DRM_FORMAT_MOD_LINEAR)
++		return true;
++
+ 	if (drm->client.device.info.chipset < 0xc0) {
+ 		const struct drm_format_info *info = drm_format_info(format);
+ 		const uint8_t kind = (modifier >> 12) & 0xff;
 
 
 
