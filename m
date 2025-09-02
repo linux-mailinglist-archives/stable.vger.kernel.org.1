@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-177226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82C75B40451
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:41:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF7EB403D3
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:36:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CD991884E55
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89135189AE0D
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E438830BF71;
-	Tue,  2 Sep 2025 13:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE25930DEB9;
+	Tue,  2 Sep 2025 13:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPEcJ3Ug"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0qaHkCDh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01133054E7;
-	Tue,  2 Sep 2025 13:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9946D30DD30;
+	Tue,  2 Sep 2025 13:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819982; cv=none; b=iBpP13FgmoHShJdboTiD/P3WrJJOwJh/3CI7I56Oj51VmKFnH6a5kq0pBGLTmUs3hxh3OdIFDh+dlnmfae1sLB2qzTLvUVSJXRUEBnZW/QhmDNDOXUwpjOkcTyl171cmjx/3dS8EX1TNaDvNnj4it72VvAeSePKjLJvF+4ifw6s=
+	t=1756819781; cv=none; b=Fd4bcQ2rFYYd2PsS+1vJqt91RKdqAX0Dfl3RJ8K0ZcFAP6e2hs/Lm7iVkw/+torQIJjPxluRvM9JhR305Y8F42Zk7xRABYWFUm5rbndrn+ugci9hW+vthwjvkmtnHbx4Fbtz51g6pxQ8kXz9RkIXnRJKZUU7BtLJfqyqY5gjmZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819982; c=relaxed/simple;
-	bh=kwqkHN6boP0VwPd9Qd4pjuFtqQF0yE5mKcrpJhUKhtI=;
+	s=arc-20240116; t=1756819781; c=relaxed/simple;
+	bh=QAE6rdqjvl0sxj35epr10rCoN8FmqbqZfqg9XrJRVcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ArQhilQ+wcgCg6ROb2qkH0JfCgnWDgBYWumtjyYM8hYCj6uEmsi9iXycrHP/qMcTFS/dAkrU/tmPhb7onkwrRPKDiSqWdGCLV4XfIVeqRPzuZfy4XfBe9Q3C/ujYSEwNzTDiMvTod4jmmq+e52CT/Yd2tXM6/qRZXTJqmRHvDqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPEcJ3Ug; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103CFC4CEF4;
-	Tue,  2 Sep 2025 13:33:01 +0000 (UTC)
+	 MIME-Version; b=XVSSnXq3xYQ9i0pvuB8RUrN8wwQqXVARgLyRFmCkb4t8LoLIa+vnVZyUCZ20TbThAkLzzu+TZzgBY/iFUxxZ2IZb0NukuYAzPLZC+MBbFIlzu5tcS1bTpBp/3ocs070ihoLs9P8PINohGHhYmFMYh2e3eAkBg3dwyWSocjJUD7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0qaHkCDh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B15C4CEED;
+	Tue,  2 Sep 2025 13:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819982;
-	bh=kwqkHN6boP0VwPd9Qd4pjuFtqQF0yE5mKcrpJhUKhtI=;
+	s=korg; t=1756819781;
+	bh=QAE6rdqjvl0sxj35epr10rCoN8FmqbqZfqg9XrJRVcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPEcJ3UgBZEdKqje37IIfm0IoGmIonr7Cj3qOWkFPM53SFysKibE0PLHJ/oFiwSqG
-	 wlxVrOA8RW1W+/hDprVrtdyF1DPEQFSv6m9xfkLOuJlkBQ1uogVkWeK5e7VAy2WJfM
-	 0Zc3/VfeK72GOS5puEJwSm2mptXw0Bl3h4nzN+Fo=
+	b=0qaHkCDhn/EOB5ADWPEDfEE8M8YUfvFeRgHgYjdkC2lo6dk5IusjqQMO/2k9WNPpU
+	 HCsul4LEkjjYANx8a5DWjJo2+oLyqWJ8WBhMr+ACdBFSVaVOFHq0K1rr1zZERlspWb
+	 nwdVk5iliNiZk/WxcWRTwPShlRvdz4A8k280bGqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohan G Thomas <rohan.g.thomas@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 55/95] net: stmmac: xgmac: Correct supported speed modes
-Date: Tue,  2 Sep 2025 15:20:31 +0200
-Message-ID: <20250902131941.716165777@linuxfoundation.org>
+	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 130/142] drm/amdgpu/userq: fix error handling of invalid doorbell
+Date: Tue,  2 Sep 2025 15:20:32 +0200
+Message-ID: <20250902131953.265156911@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohan G Thomas <rohan.g.thomas@altera.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 42ef11b2bff5b6a2910c28d2ea47cc00e0fbcaec ]
+commit c767d74a9cdd1042046d02319d16b85d9aa8a8aa upstream.
 
-Correct supported speed modes as per the XGMAC databook.
-Commit 9cb54af214a7 ("net: stmmac: Fix IP-cores specific
-MAC capabilities") removes support for 10M, 100M and
-1000HD. 1000HD is not supported by XGMAC IP, but it does
-support 10M and 100M FD mode for XGMAC version >= 2_20,
-and it also supports 10M and 100M HD mode if the HDSEL bit
-is set in the MAC_HW_FEATURE0 reg. This commit enables support
-for 10M and 100M speed modes for XGMAC IP based on XGMAC
-version and MAC capabilities.
+If the doorbell is invalid, be sure to set the r to an error
+state so the function returns an error.
 
-Fixes: 9cb54af214a7 ("net: stmmac: Fix IP-cores specific MAC capabilities")
-Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Link: https://patch.msgid.link/20250825-xgmac-minor-fixes-v3-2-c225fe4444c0@altera.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7e2a5b0a9a165a7c51274aa01b18be29491b4345)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c | 13 +++++++++++--
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c  |  5 +++++
- 2 files changed, 16 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-index f519d43738b08..445259f2ee935 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -47,6 +47,14 @@ static void dwxgmac2_core_init(struct mac_device_info *hw,
- 	writel(XGMAC_INT_DEFAULT_EN, ioaddr + XGMAC_INT_EN);
- }
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq.c
+@@ -426,6 +426,7 @@ amdgpu_userq_create(struct drm_file *fil
+ 	if (index == (uint64_t)-EINVAL) {
+ 		drm_file_err(uq_mgr->file, "Failed to get doorbell for queue\n");
+ 		kfree(queue);
++		r = -EINVAL;
+ 		goto unlock;
+ 	}
  
-+static void dwxgmac2_update_caps(struct stmmac_priv *priv)
-+{
-+	if (!priv->dma_cap.mbps_10_100)
-+		priv->hw->link.caps &= ~(MAC_10 | MAC_100);
-+	else if (!priv->dma_cap.half_duplex)
-+		priv->hw->link.caps &= ~(MAC_10HD | MAC_100HD);
-+}
-+
- static void dwxgmac2_set_mac(void __iomem *ioaddr, bool enable)
- {
- 	u32 tx = readl(ioaddr + XGMAC_TX_CONFIG);
-@@ -1532,6 +1540,7 @@ static void dwxgmac3_fpe_configure(void __iomem *ioaddr,
- 
- const struct stmmac_ops dwxgmac210_ops = {
- 	.core_init = dwxgmac2_core_init,
-+	.update_caps = dwxgmac2_update_caps,
- 	.set_mac = dwxgmac2_set_mac,
- 	.rx_ipc = dwxgmac2_rx_ipc,
- 	.rx_queue_enable = dwxgmac2_rx_queue_enable,
-@@ -1646,8 +1655,8 @@ int dwxgmac2_setup(struct stmmac_priv *priv)
- 		mac->mcast_bits_log2 = ilog2(mac->multicast_filter_bins);
- 
- 	mac->link.caps = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
--			 MAC_1000FD | MAC_2500FD | MAC_5000FD |
--			 MAC_10000FD;
-+			 MAC_10 | MAC_100 | MAC_1000FD |
-+			 MAC_2500FD | MAC_5000FD | MAC_10000FD;
- 	mac->link.duplex = 0;
- 	mac->link.speed10 = XGMAC_CONFIG_SS_10_MII;
- 	mac->link.speed100 = XGMAC_CONFIG_SS_100_MII;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-index 7201a38842651..4d6bb995d8d84 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-@@ -382,8 +382,11 @@ static int dwxgmac2_dma_interrupt(struct stmmac_priv *priv,
- static int dwxgmac2_get_hw_feature(void __iomem *ioaddr,
- 				   struct dma_features *dma_cap)
- {
-+	struct stmmac_priv *priv;
- 	u32 hw_cap;
- 
-+	priv = container_of(dma_cap, struct stmmac_priv, dma_cap);
-+
- 	/* MAC HW feature 0 */
- 	hw_cap = readl(ioaddr + XGMAC_HW_FEATURE0);
- 	dma_cap->edma = (hw_cap & XGMAC_HWFEAT_EDMA) >> 31;
-@@ -406,6 +409,8 @@ static int dwxgmac2_get_hw_feature(void __iomem *ioaddr,
- 	dma_cap->vlhash = (hw_cap & XGMAC_HWFEAT_VLHASH) >> 4;
- 	dma_cap->half_duplex = (hw_cap & XGMAC_HWFEAT_HDSEL) >> 3;
- 	dma_cap->mbps_1000 = (hw_cap & XGMAC_HWFEAT_GMIISEL) >> 1;
-+	if (dma_cap->mbps_1000 && priv->synopsys_id >= DWXGMAC_CORE_2_20)
-+		dma_cap->mbps_10_100 = 1;
- 
- 	/* MAC HW feature 1 */
- 	hw_cap = readl(ioaddr + XGMAC_HW_FEATURE1);
--- 
-2.50.1
-
 
 
 
