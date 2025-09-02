@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-177442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6663CB40571
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:53:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD09B40531
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5512C5607F7
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D8291B26CAE
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2260D30F533;
-	Tue,  2 Sep 2025 13:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064433115B1;
+	Tue,  2 Sep 2025 13:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWS77Sz+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1Bu4zG5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D342EDD6B;
-	Tue,  2 Sep 2025 13:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B817F3115AF;
+	Tue,  2 Sep 2025 13:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820656; cv=none; b=gzfOzYJ8HGXqS2zYmeonFAaC4LEA5D/B9tuq0RY9iImLqdOMJypdJ27LeRhiiWm7DtSlaJx69y9nRgaHr5VmycXD/b5djbQ3z2mRSwYeNitXdwHS1DJD0X1yXFVF7bYMacYve47wG42L4a0RNPT2Hl/Wp8SLRLTbSpP+C+U2zvA=
+	t=1756820494; cv=none; b=qwQa/66FjO8SwCLMblfc/vWRRYIRezcVa+sF7NeQvEY8tTjL5p/rcxhmS+ZFlluK4WR4O+zR+BxcEq43qRC3y8x4LwWBG37+D8YD9ISgzh1kxd35xhT9gyo86kSCoVhyxkV+ASxK5BPVYwL/tvA29Iz3LhkPKM0JjKWjJMPvw84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820656; c=relaxed/simple;
-	bh=m5hCIGruwc8KJEcGz+hE7ZbVwybC/30JmVVE12AyGXo=;
+	s=arc-20240116; t=1756820494; c=relaxed/simple;
+	bh=1y0+mamDS3mIPF+lCtrHVZfo8Zr1PzbOmQLDzZFQTtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kRroh4ObGGUE5xbJSeeZ78kV/trMlRjTyU5ZGFbqBMhGc4bVl2rkfcO5jnqbTeO8RzliVNhlNWTYEQIZvj3OJl+AGO0CepEjoWNBCLa0167bqS2ujvyFWp5Up0W9lm+f0rVxC2KyU76bEzPrHjK+YvThYaZBit+W/uw6hWcB7/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWS77Sz+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41347C4CEED;
-	Tue,  2 Sep 2025 13:44:16 +0000 (UTC)
+	 MIME-Version; b=qjh2ObrkM1DHPMnLeciObb65ZSEEjBwE+25y2F4Tfu1eE8Dk0xoPu6yyIpCschCUmlxQv5L0niohLpwu/nYCPK7DN8bvCcf0hCHzFvFNnjNuBXodq4B8O/iq6oVW/ie/ZWdYzGHEJk0eY//mP009Zyb095FuU5u6hucXjpqS9g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1Bu4zG5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3778CC4CEED;
+	Tue,  2 Sep 2025 13:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820656;
-	bh=m5hCIGruwc8KJEcGz+hE7ZbVwybC/30JmVVE12AyGXo=;
+	s=korg; t=1756820494;
+	bh=1y0+mamDS3mIPF+lCtrHVZfo8Zr1PzbOmQLDzZFQTtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWS77Sz+Oix7l4dFWD9CHixyx4f5nRpj9dJazVrfux9vp8JxKqSrTHodJHqQ48MJb
-	 Fy0ZdD8bVB8xPvqpUux2E10KC9kCZPkThk3b5vDKsZ2ycAyjdJVDL5SoNXWtgoUqSG
-	 GDCarkkzXZ3adxCGoQXHGlgS3silb1ENvwSsH2Qs=
+	b=T1Bu4zG5KdOFKvE1w72pSfG9OgX4gYm3NbMivE4O7FBfbl7F/a294zBUY66Sa4odN
+	 yqxVxJeD9wmFibumc2AtFFwLUnAfv7gs1cgyRLFfTh6k3nsrcexL4i+0ESzQY86UMq
+	 UUrOH9jlozAQvBqj+j9UqvQvuFgpULdUIIjvT5rc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Lazar <alazar@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 13/34] net/mlx5e: Update and set Xon/Xoff upon MTU set
+	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Romain Sioen <romain.sioen@microchip.com>
+Subject: [PATCH 6.1 48/50] HID: mcp2221: Handle reads greater than 60 bytes
 Date: Tue,  2 Sep 2025 15:21:39 +0200
-Message-ID: <20250902131927.145967293@linuxfoundation.org>
+Message-ID: <20250902131932.418647594@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
 
-[ Upstream commit ceddedc969f0532b7c62ca971ee50d519d2bc0cb ]
+commit 2682468671aa0b4d52ae09779b48212a80d71b91 upstream.
 
-Xon/Xoff sizes are derived from calculation that include the MTU size.
-Set Xon/Xoff when MTU is set.
-If Xon/Xoff fails, set the previous MTU.
+When a user requests more than 60 bytes of data the MCP2221 must chunk
+the data in chunks up to 60 bytes long (see command/response code 0x40
+in the datasheet).
+In order to signal that the device has more data the (undocumented) byte
+at byte index 2 of the Get I2C Data response uses the value 0x54. This
+contrasts with the case for the final data chunk where the value
+returned is 0x55 (MCP2221_I2C_READ_COMPL). The fact that 0x55 was not
+returned in the response was interpreted by the driver as a failure
+meaning that all reads of more than 60 bytes would fail.
 
-Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250825143435.598584-10-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add support for reads that are split over multiple chunks by looking for
+the response code indicating that more data is expected and continuing
+the read as the code intended. Some timing delays are required to ensure
+the chip has time to refill its FIFO as data is read in from the I2C
+bus. This timing has been tested in my system when configured for bus
+speeds of 50KHz, 100KHz, and 400KHz and operates well.
+
+Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Fixes: 67a95c21463d0 ("HID: mcp2221: add usb to i2c-smbus host bridge")
+[romain.sioen@microchip.com: backport to stable, up to 6.8. Add "Fixes" tag]
+Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlx5/core/en/port_buffer.h         | 12 ++++++++++++
- .../net/ethernet/mellanox/mlx5/core/en_main.c   | 17 ++++++++++++++++-
- 2 files changed, 28 insertions(+), 1 deletion(-)
+ drivers/hid/hid-mcp2221.c |   32 +++++++++++++++++++++++---------
+ 1 file changed, 23 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-index 80af7a5ac6046..a23e3d810f3e4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-@@ -63,11 +63,23 @@ struct mlx5e_port_buffer {
- 	struct mlx5e_bufferx_reg  buffer[MLX5E_MAX_BUFFER];
- };
+--- a/drivers/hid/hid-mcp2221.c
++++ b/drivers/hid/hid-mcp2221.c
+@@ -44,6 +44,7 @@ enum {
+ 	MCP2221_I2C_MASK_ADDR_NACK = 0x40,
+ 	MCP2221_I2C_WRADDRL_SEND = 0x21,
+ 	MCP2221_I2C_ADDR_NACK = 0x25,
++	MCP2221_I2C_READ_PARTIAL = 0x54,
+ 	MCP2221_I2C_READ_COMPL = 0x55,
+ 	MCP2221_ALT_F_NOT_GPIOV = 0xEE,
+ 	MCP2221_ALT_F_NOT_GPIOD = 0xEF,
+@@ -279,6 +280,7 @@ static int mcp_i2c_smbus_read(struct mcp
+ {
+ 	int ret;
+ 	u16 total_len;
++	int retries = 0;
  
-+#ifdef CONFIG_MLX5_CORE_EN_DCB
- int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
- 				    u32 change, unsigned int mtu,
- 				    struct ieee_pfc *pfc,
- 				    u32 *buffer_size,
- 				    u8 *prio2buffer);
-+#else
-+static inline int
-+mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
-+				u32 change, unsigned int mtu,
-+				void *pfc,
-+				u32 *buffer_size,
-+				u8 *prio2buffer)
-+{
-+	return 0;
-+}
-+#endif
+ 	mcp->txbuf[0] = type;
+ 	if (msg) {
+@@ -302,20 +304,31 @@ static int mcp_i2c_smbus_read(struct mcp
+ 	mcp->rxbuf_idx = 0;
  
- int mlx5e_port_query_buffer(struct mlx5e_priv *priv,
- 			    struct mlx5e_port_buffer *port_buffer);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index c3ff1fc577a7c..cef60bc2589cc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -42,6 +42,7 @@
- #include "eswitch.h"
- #include "en.h"
- #include "en/txrx.h"
-+#include "en/port_buffer.h"
- #include "en_tc.h"
- #include "en_rep.h"
- #include "en_accel/ipsec.h"
-@@ -2874,9 +2875,11 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
- 	struct mlx5e_params *params = &priv->channels.params;
- 	struct net_device *netdev = priv->netdev;
- 	struct mlx5_core_dev *mdev = priv->mdev;
--	u16 mtu;
-+	u16 mtu, prev_mtu;
- 	int err;
- 
-+	mlx5e_query_mtu(mdev, params, &prev_mtu);
+ 	do {
++		/* Wait for the data to be read by the device */
++		usleep_range(980, 1000);
 +
- 	err = mlx5e_set_mtu(mdev, params, params->sw_mtu);
- 	if (err)
- 		return err;
-@@ -2886,6 +2889,18 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
- 		netdev_warn(netdev, "%s: VPort MTU %d is different than netdev mtu %d\n",
- 			    __func__, mtu, params->sw_mtu);
+ 		memset(mcp->txbuf, 0, 4);
+ 		mcp->txbuf[0] = MCP2221_I2C_GET_DATA;
  
-+	if (mtu != prev_mtu && MLX5_BUFFER_SUPPORTED(mdev)) {
-+		err = mlx5e_port_manual_buffer_config(priv, 0, mtu,
-+						      NULL, NULL, NULL);
-+		if (err) {
-+			netdev_warn(netdev, "%s: Failed to set Xon/Xoff values with MTU %d (err %d), setting back to previous MTU %d\n",
-+				    __func__, mtu, err, prev_mtu);
-+
-+			mlx5e_set_mtu(mdev, params, prev_mtu);
-+			return err;
+ 		ret = mcp_send_data_req_status(mcp, mcp->txbuf, 1);
+-		if (ret)
+-			return ret;
+-
+-		ret = mcp_chk_last_cmd_status_free_bus(mcp);
+-		if (ret)
+-			return ret;
+-
+-		usleep_range(980, 1000);
++		if (ret) {
++			if (retries < 5) {
++				/* The data wasn't ready to read.
++				 * Wait a bit longer and try again.
++				 */
++				usleep_range(90, 100);
++				retries++;
++			} else {
++				return ret;
++			}
++		} else {
++			retries = 0;
 +		}
-+	}
+ 	} while (mcp->rxbuf_idx < total_len);
+ 
++	usleep_range(980, 1000);
++	ret = mcp_chk_last_cmd_status_free_bus(mcp);
 +
- 	params->sw_mtu = mtu;
- 	return 0;
+ 	return ret;
  }
--- 
-2.50.1
-
+ 
+@@ -776,7 +789,8 @@ static int mcp2221_raw_event(struct hid_
+ 				mcp->status = -EIO;
+ 				break;
+ 			}
+-			if (data[2] == MCP2221_I2C_READ_COMPL) {
++			if (data[2] == MCP2221_I2C_READ_COMPL ||
++			    data[2] == MCP2221_I2C_READ_PARTIAL) {
+ 				buf = mcp->rxbuf;
+ 				memcpy(&buf[mcp->rxbuf_idx], &data[4], data[3]);
+ 				mcp->rxbuf_idx = mcp->rxbuf_idx + data[3];
 
 
 
