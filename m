@@ -1,156 +1,147 @@
-Return-Path: <stable+bounces-176964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D7BB3FB4F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 11:54:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37EC1B3FB93
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:01:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5892616DD6A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 09:54:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2129D3B1924
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7D22ED85E;
-	Tue,  2 Sep 2025 09:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5468927B4F5;
+	Tue,  2 Sep 2025 09:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Q38/ydlY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aXgJs+jS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C81F2ED86B
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 09:51:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966742F1FC0
+	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 09:57:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756806718; cv=none; b=hPjPbHAmbT+03lTYLO+KQ4JJC+byPCJ1ovwgwvkVRdAaKUtzdiL4CLqMxm9A+XcnGwIytcPt1GQdmT/ktUeDl1jLUj/KhiZPilStkPj8KuubTUV5urNo47fx29ct+J7Pn2abVg/y5eFJ4y+Kbr6fnxQDdPaithzLy9lrbkB5Zus=
+	t=1756807073; cv=none; b=W1sAEne7vjjbShBd91PHt1gz9qvv/cIJffqTrkgn2Tm8d+xeqdufbwPUQbymYKJzzUaSJ9SlCINtPc5Eo31uWZwYrAQAn7J/HIGmi974LtW5UoIYAG/yJrZAbI2antVsZo+u+rB2JBNoHp4wKy38cyMAUowVIQt9F5Lg1xrNms8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756806718; c=relaxed/simple;
-	bh=OPuQMxOUMKmtd74yhuH3+ZoGiXX/Ej1X/m4lb4FXzBU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cx+Ssu9D4wmypho3tA6xOZbTZl6Vu825JmMFwZr8BC/RT11FT9dCrOvr9VwHGXrDO6RoK3+x443H0XTWzAoKNtG3eyI5klv9TGjHBpoZuAT0L2HVwthnBimn4sayC0D8/aeVr6YbYoWelM/I/8N+9t7mWGt+6jPnnksW09l44cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Q38/ydlY; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45b883aa3c9so15094295e9.2
-        for <stable@vger.kernel.org>; Tue, 02 Sep 2025 02:51:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1756806715; x=1757411515; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0TFEg4KYcJYl/xMrj917lNsi+q1ru1ge+qdtty/yQZg=;
-        b=Q38/ydlYzKPI84Xh7ggCDW4asKio8ouJrqHPCYErJ6gLYbkIfezrxwXpO5KCoMBQFb
-         FXTdY0ZdYh7w4WzfIWJJuPomyjYoUuK0MSxav5kr7ZXZhnJC9FyndqnT8vKkGnlxserB
-         TGY3A6LpFRBLqH5bu6k/WhDTKR7OG7OljYuS1feyhIP3SKLOELiAzmmaoJCOY8AEV8Ha
-         gUDg4yK5VDuKqRAMFbaIQhGH1dfQ4lJ/FX0FkPVbgxrSWLEjtWN9M/DIj+dXZCY0iehU
-         Job0s8C9bc6PWPvkw/l04LgfCXQx8iMj/mlM7lzaYcXUpeHes+yo+RpoLLsyxW96TO+b
-         1Zfg==
+	s=arc-20240116; t=1756807073; c=relaxed/simple;
+	bh=z8gMwvXA44Wodi+hSnmRdnTeDizAmm+mkq0BLF6OVgI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Dsw+Eo2JhoAH14mMJ8bLaeX1nIVV5mCww6l0ST6xOGmhjBvva9nhkW4ir/XKwVXPvOwECrndVSOXHKkhY2lWMTOYbG88CXPW0zttHKhUeg8AiNzE4Mq2ac+F2vLYQfGPjW30DWEHeJBRLRhaU2hfgXB8864B8R1xjNzfEf6YgX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aXgJs+jS; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756807069;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HZc4GB0/gNL5X2pnt5xZy0Mk61OX021O6i+im+Ocmjs=;
+	b=aXgJs+jSwLKWb1xFynmcC/GHudjEUgB5n34mP900CJ5MoMoz/jKrfZx5kt7uHExxklJA8E
+	Xub3uo7ou6TueZWNIbVhfraYi43XScxBBk49mz0xvksWBNh7r0iBlNNjKZPZ3q0EOzy8eK
+	0+8t3oZgpJXvIGnqabS+wZYQa4FOPbY=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-640-AT4DvHaJN_6lxNnEdIWQmw-1; Tue, 02 Sep 2025 05:57:46 -0400
+X-MC-Unique: AT4DvHaJN_6lxNnEdIWQmw-1
+X-Mimecast-MFC-AGG-ID: AT4DvHaJN_6lxNnEdIWQmw_1756807065
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3cbd6cd78efso2364139f8f.1
+        for <stable@vger.kernel.org>; Tue, 02 Sep 2025 02:57:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756806715; x=1757411515;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0TFEg4KYcJYl/xMrj917lNsi+q1ru1ge+qdtty/yQZg=;
-        b=NC5NQIzsC95obU2dYpkpfuka0a7NKbFxr+D5QXdD9NJ2FPgkEHxPrG2I0E3fMTtk4x
-         cc+0/sX9IOh+RNHsIPtv/GRuy9mkSA7FtDSg3toRipYrJZ/mcmjn/DK+VcSBIola02ja
-         6v+zip3IyKyLQJnuycTx4cIy8kiwk8B5yRa92MNNhZv/tyrF/I7uCpKUDzSn8Rs9Kp+C
-         cwVWuQ82C2fIOuSGiYcNbx+FjK4JZRA95tN+gZtGQe5tWMqIIv35XPEsQid+hx2yxWGT
-         0FluMldLjwr0deHNYa6jzD/u0UhPNNpgODMMMYPK00yHN8tRA6/braZu9akb5JOfFqCa
-         3rzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVOhUumR9/cEW6O5nLl8lSyTMPf18yXaIFdEtNkeyPLfghfq/ZuhPyppOlJppQ6XFDS78nbJeo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSzjc2KAXQPU/zm54Itk5x5qAUqIvjus+7Vpsvu+KoUNy02dMq
-	l+oFh4Kovo0Khl+r9l0jW0X8nsTkW8SFEtW/NSLZ9ifWFhOVtjyuXVqASu2dg5Ot7x0=
-X-Gm-Gg: ASbGncsk9xPEBz6AcawSkG2fe5Yp3MRMTu5mwxeEsvo0m2BhJ/E6l4IkxaQOgbO3s1J
-	7byvGYVLSzuCJODNjbfhSt/HMl1alBby8Llx4uBBaUbneUDFB7pPk52kgjvKjlVMokUNoJ4bB4S
-	BG6myFipkAPGh9xLvXXJuAhPQcml7ZKCGfsVbojwLCHvmjijogPrR+0IroNKJw8P/kOHf8y7EBP
-	+bxJyRVsefJSok6rfQTWiHbwJd0XOxX/OafiUgyrbmmqIf2mj1w9l+wConExVBuq+43zTQOB4in
-	DC8/kH+y9HBquB+z04SuSqsQxP1WV6fWYpxC0GzBcBpeoFrjbNRsEvglhY4VH3bpH+8P2bjG5t3
-	OCSXmt/T9HTr79TnIHaULrmb2e+CX2raRTmg3QFw087w=
-X-Google-Smtp-Source: AGHT+IGL74M/gnuKC4FyY3FBT30oTjIIJaIupFLaAOJ2PpkyzBPc3t2EA4S/LVebXzK30uxba3n03Q==
-X-Received: by 2002:a05:600c:c48f:b0:45b:71ac:b45a with SMTP id 5b1f17b1804b1-45b85533650mr84695395e9.11.1756806714687;
-        Tue, 02 Sep 2025 02:51:54 -0700 (PDT)
-Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f0d32a2sm295101005e9.9.2025.09.02.02.51.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 02:51:53 -0700 (PDT)
-Date: Tue, 2 Sep 2025 11:51:52 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Ashay Jaiswal <quic_ashayj@quicinc.com>
-Cc: Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] cpuset: prevent freeing unallocated cpumask in hotplug
- handling
-Message-ID: <wndxi6qoq6bq6lsovlpfutgx7jfummvipx7hhuu4khrdm35ls2@65nymtjs2q7w>
-References: <20250902-cpuset-free-on-condition-v1-1-f46ffab53eac@quicinc.com>
+        d=1e100.net; s=20230601; t=1756807065; x=1757411865;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HZc4GB0/gNL5X2pnt5xZy0Mk61OX021O6i+im+Ocmjs=;
+        b=ps855i2DkOZamt4EjDCQ0ZPEFH6akxDrv5FUz79SzM2+djW+Eoi6aPw018mc5PAblE
+         w1HR0OjcNZWGEzxSIHDt2Ewg/BsSjSw3N9H8UZKA5GPcP4IJNanGbQaQShA8XviOvFC7
+         tXcpA/Iko/7ryfd4hzmy92grwg2wDcKbiqHhsMwJYRXpmIyijJLDGRI4Qhi1mI47q5eE
+         1APxTJDAzmFdyl+QVDXxvk9mfSPQTTBq2mYmKXQC4UUtVTD3TfvncG9C7usmvzMqSEI/
+         FdSFCuSgqEj0sIKpQUd372yB6ocPUyYy+QJVoO4OGs2LHS1Vtw5diwjfhoZ79Ih19luS
+         oHLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXTV48xwvc12bFMSSdFdfoSCosU2AfPPP7IgH53D4IwIl6vOc1/Bf4s2ZPVIc4/PSvNif/bAwA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+z5L6hsyxD/md45Pp/XkVi6dqc2g/YMZEYsL0vqR4XHD/RyUu
+	TizieOilvf8g6UNyiZD2ujW1IPNPFTHrk4Oqf++C2orWiiSZaG8jpF1/IwM9Nyuy2LhvJCz53Wi
+	/E73T0IpJ+8Z1vDA01CwDfgMkSm8lp4SXjdi/c2mKuFZkqAJ3FBil1Hk6gw==
+X-Gm-Gg: ASbGncugZilKape1Og1akZfbFtVcAEhn2r7mv6dmRcIBAea731M76gLvhmIXzEkizw9
+	3lgNX1iMD1zBXCUf4K39hNTNI+/U5vPcLkf4pTojwIFxFV9y2uDuGPMP1vMmy8RWfuOQ1kGyQk9
+	xNtkgWOVbIZ32eBAl+xeTdVUybvoU5+s2+krk17tV+F2tpu2K1UYvgNGYWknZ4/hOyr2Q5uABCi
+	+BQqynYWN5E0auHlnpgvT51NM52OXm02DiwGpy/0Kb1Wqt9/HxgANy7fK0GVsEivrTjMs5OE4Se
+	9npTr/XmEUFcKuc0YDqydu45LGH9LTksPZYlziiqConLmbqOAG8C358fPqM06J7SQBo4fjk0a0k
+	XeMfhcC4nzPg=
+X-Received: by 2002:a05:6000:2110:b0:3d2:52e3:9220 with SMTP id ffacd0b85a97d-3d252e39a50mr6205384f8f.5.1756807064874;
+        Tue, 02 Sep 2025 02:57:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFBBKawshRRcWgMajhrJGR9pfMn2+8pBgJ1J6VR2pISIYxt4qBpwtVugddscbM7nf2wPfGedA==
+X-Received: by 2002:a05:6000:2110:b0:3d2:52e3:9220 with SMTP id ffacd0b85a97d-3d252e39a50mr6205351f8f.5.1756807064174;
+        Tue, 02 Sep 2025 02:57:44 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2712:7e00:6083:48d1:630a:25ae? ([2a0d:3344:2712:7e00:6083:48d1:630a:25ae])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d21a80c723sm14068985f8f.9.2025.09.02.02.57.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Sep 2025 02:57:43 -0700 (PDT)
+Message-ID: <a46cca6e-5350-4ca4-ba17-bf0f89d812cf@redhat.com>
+Date: Tue, 2 Sep 2025 11:57:42 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="z5d55kat4d54zghq"
-Content-Disposition: inline
-In-Reply-To: <20250902-cpuset-free-on-condition-v1-1-f46ffab53eac@quicinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v4] selftests: net: add test for destination in
+ broadcast packets
+To: Brett Sheffield <bacs@librecast.net>
+Cc: Oscar Maes <oscmaes92@gmail.com>, netdev@vger.kernel.org,
+ kuba@kernel.org, davem@davemloft.net, dsahern@kernel.org,
+ stable@vger.kernel.org
+References: <20250828114242.6433-1-oscmaes92@gmail.com>
+ <03991134-4007-422b-b25a-003a85c1edb0@redhat.com>
+ <aLa54kZLIV3zbi2v@karahi.gladserv.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <aLa54kZLIV3zbi2v@karahi.gladserv.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
---z5d55kat4d54zghq
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] cpuset: prevent freeing unallocated cpumask in hotplug
- handling
-MIME-Version: 1.0
 
-On Tue, Sep 02, 2025 at 09:56:17AM +0530, Ashay Jaiswal <quic_ashayj@quicin=
-c.com> wrote:
-> In cpuset hotplug handling, temporary cpumasks are allocated only when
-> running under cgroup v2. The current code unconditionally frees these
-> masks, which can lead to a crash on cgroup v1 case.
->=20
-> Free the temporary cpumasks only when they were actually allocated.
->=20
-> Fixes: 4b842da276a8 ("cpuset: Make CPU hotplug work with partition")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ashay Jaiswal <quic_ashayj@quicinc.com>
-> ---
->  kernel/cgroup/cpuset.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-> index a78ccd11ce9b43c2e8b0e2c454a8ee845ebdc808..a4f908024f3c0a22628a32f8a=
-5b0ae96c7dccbb9 100644
-> --- a/kernel/cgroup/cpuset.c
-> +++ b/kernel/cgroup/cpuset.c
-> @@ -4019,7 +4019,8 @@ static void cpuset_handle_hotplug(void)
->  	if (force_sd_rebuild)
->  		rebuild_sched_domains_cpuslocked();
-> =20
-> -	free_tmpmasks(ptmp);
-> +	if (on_dfl && ptmp)
-> +		free_tmpmasks(ptmp);
->  }
+On 9/2/25 11:33 AM, Brett Sheffield wrote:
+> On 2025-09-02 10:49, Paolo Abeni wrote:
+>> On 8/28/25 1:42 PM, Oscar Maes wrote:
+>>> Add test to check the broadcast ethernet destination field is set
+>>> correctly.
+>>>
+>>> This test sends a broadcast ping, captures it using tcpdump and
+>>> ensures that all bits of the 6 octet ethernet destination address
+>>> are correctly set by examining the output capture file.
+>>>
+>>> Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+>>> Co-authored-by: Brett A C Sheffield <bacs@librecast.net>
+>>
+>> I'm sorry for nit-picking, but the sob/tag-chain is wrong, please have a
+>> look at:
+>>
+>> https://elixir.bootlin.com/linux/v6.16.4/source/Documentation/process/submitting-patches.rst#L516
+> 
+> Thanks Paolo. So, something like:
+> 
+> Co-developed-by: Brett A C Sheffield <bacs@librecast.net>
+> Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
+> Co-developed-by: Oscar Maes <oscmaes92@gmail.com>
+> Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+> 
+> with the last sign-off by Oscar because he is submitting?
 
-Can you do=20
-	if (ptmp)
-		free_tmpmasks(ptmp);
+Actually my understanding is:
 
-so that v2 check in concentrated in one place only?
+Co-developed-by: Brett A C Sheffield <bacs@librecast.net>
+Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
 
-Thanks,
-Michal
+(if the patch is submitted by Oscar.) Basically the first examples in
+the doc, with the only differences that such examples lists 3 co-developers.
 
---z5d55kat4d54zghq
-Content-Type: application/pgp-signature; name="signature.asc"
+/P
 
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaLa+KBsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+Ah3/wD/d3gKmwBoKu8zYX6KDBEq
-a2AnLu103Jhxtbr7ASDeO10BANTgH2wmfZE7r24LBPVJCATLBptAqRmzsnsxgRKf
-/n4F
-=zZFz
------END PGP SIGNATURE-----
-
---z5d55kat4d54zghq--
 
