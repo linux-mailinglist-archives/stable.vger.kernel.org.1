@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-177093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05C05B40348
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:31:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79538B40358
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:32:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCC93164E09
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:30:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DA0116ECAE
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7266730BF79;
-	Tue,  2 Sep 2025 13:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E252E306486;
+	Tue,  2 Sep 2025 13:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZooqWGD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvlstoTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D36330F533;
-	Tue,  2 Sep 2025 13:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9BD30505A;
+	Tue,  2 Sep 2025 13:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819554; cv=none; b=keEEVQEzl167RSiA9Yg0awuRvAYAyKCNojvaMaevjhbDe44c39OUTSCrVhbtn/Qm/LxCn4dkmP5/ykmPgtRa5Y0udf+V1huTmootliWefvG+JmnSpWwyNHSG5ekDKiCG+fUKInO6kQSM2kq78R8vIRuHFcNkAmfQO5LpQZy8Vtk=
+	t=1756819589; cv=none; b=RDACay93FkAZrwCYaYm5sG4wWqLN2y4PSCfiPMaWgirAB0++/aL6O6ePlbSoxx2zMXrdkofWNbnpednj7e4vVHiE8zjA8OrrPWV+ZD+mxGK1UVLDmS+xw6i/r6NQvuQGPkHV81qeKngqDaYaiXLPp4866HhyBd/e3j20tNJ7aPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819554; c=relaxed/simple;
-	bh=x4prJZq/Uj33Qv6NiJLyvlibqOPRFGTdugTcBgcOWGw=;
+	s=arc-20240116; t=1756819589; c=relaxed/simple;
+	bh=NwC+gCz3LG1ES0X6rGEdTm/GGpKHXx0pR91kkZYY/uE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZ3XTNipP49+lOpDyZfn4VOkyU6V+b6qQ4Vgu1ZCUxL8h5qWr/f7f3ZNVeBO6WomrkLqdszU8gEo7XxGCuXvLa/HM4t9KBWustpfVk4AV4KLmrsav0Vi+YKYA8Zw8fvLq+RHKvw52rEUBPajdhA9RBZWxrdQCfIpac7n/pZcIXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZooqWGD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6AC8C4CEED;
-	Tue,  2 Sep 2025 13:25:53 +0000 (UTC)
+	 MIME-Version; b=t/bzaALneuJhUvn10jt/9bBTAJkleJPNzK5jCKXeakXXedakALxCVkaXBtdawJAUBPzEGySuMWtFJPqj4RP3938zJSVBLnRaW/sFaEPxlzRpUVegStFFWCliy6+TNF7TojW/MfpWvE2/PKyzqX4HaMe2p0LtQ4O+za9U3XrbU/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvlstoTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21463C4CEED;
+	Tue,  2 Sep 2025 13:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819554;
-	bh=x4prJZq/Uj33Qv6NiJLyvlibqOPRFGTdugTcBgcOWGw=;
+	s=korg; t=1756819589;
+	bh=NwC+gCz3LG1ES0X6rGEdTm/GGpKHXx0pR91kkZYY/uE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZooqWGDp4KuD3c5nB6hQ779/soqB7D9MtrrI91S/pSW7r9mg6uNKIdEdmHKAlYgN
-	 GpVgIebDbuy6n64wnuQgZGgpp5kGJm/d2RjZ3psMd8ETNbZ4ChUgq+Ocrym4nGkEfG
-	 Al0pinLESupCIBisUq4/DacEnhpOmlxOW6rn/OEs=
+	b=lvlstoTGosLpRUjsNXAPN7UsyhTveiLdsi+GtK6xQ3KwAgfVHujChxmR/cwevDdDm
+	 MsH4rMrkFh0CdPRzuJLrZrXDu+ET91f/TvrPDigmMH4gaAnXNV/hnhvOvbz2DwpoNF
+	 gZUqCz4mog31GFgc9T1jZ4Ei1V9yquGyV40XDvlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.16 061/142] ixgbe: fix ixgbe_orom_civd_info struct layout
-Date: Tue,  2 Sep 2025 15:19:23 +0200
-Message-ID: <20250902131950.588172002@linuxfoundation.org>
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 062/142] dt-bindings: display/msm: qcom,mdp5: drop lut clock
+Date: Tue,  2 Sep 2025 15:19:24 +0200
+Message-ID: <20250902131950.628912086@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
 References: <20250902131948.154194162@linuxfoundation.org>
@@ -69,55 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit ed913b343dcf9f623e7436fa1a153c89b22d109b ]
+[ Upstream commit 7ab3b7579a6d2660a3425b9ea93b9a140b07f49c ]
 
-The current layout of struct ixgbe_orom_civd_info causes incorrect data
-storage due to compiler-inserted padding. This results in issues when
-writing OROM data into the structure.
+None of MDP5 platforms have a LUT clock on the display-controller, it
+was added by the mistake. Drop it, fixing DT warnings on MSM8976 /
+MSM8956 platforms. Technically it's an ABI break, but no other platforms
+are affected.
 
-Add the __packed attribute to ensure the structure layout matches the
-expected binary format without padding.
-
-Fixes: 70db0788a262 ("ixgbe: read the OROM version information")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 385c8ac763b3 ("dt-bindings: display/msm: convert MDP5 schema to YAML format")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Patchwork: https://patchwork.freedesktop.org/patch/667822/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c      | 2 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index 71ea25de1bac7..754c176fd4a7a 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -3123,7 +3123,7 @@ static int ixgbe_get_orom_ver_info(struct ixgbe_hw *hw,
- 	if (err)
- 		return err;
- 
--	combo_ver = le32_to_cpu(civd.combo_ver);
-+	combo_ver = get_unaligned_le32(&civd.combo_ver);
- 
- 	orom->major = (u8)FIELD_GET(IXGBE_OROM_VER_MASK, combo_ver);
- 	orom->patch = (u8)FIELD_GET(IXGBE_OROM_VER_PATCH_MASK, combo_ver);
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-index 09df67f03cf47..38a41d81de0fa 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type_e610.h
-@@ -1150,7 +1150,7 @@ struct ixgbe_orom_civd_info {
- 	__le32 combo_ver;	/* Combo Image Version number */
- 	u8 combo_name_len;	/* Length of the unicode combo image version string, max of 32 */
- 	__le16 combo_name[32];	/* Unicode string representing the Combo Image version */
--};
-+} __packed;
- 
- /* Function specific capabilities */
- struct ixgbe_hw_func_caps {
+diff --git a/Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml b/Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml
+index e153f8d26e7aa..2735c78b0b67a 100644
+--- a/Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml
++++ b/Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml
+@@ -60,7 +60,6 @@ properties:
+           - const: bus
+           - const: core
+           - const: vsync
+-          - const: lut
+           - const: tbu
+           - const: tbu_rt
+         # MSM8996 has additional iommu clock
 -- 
 2.50.1
 
