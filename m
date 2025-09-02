@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-177203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84A4DB40435
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 657FEB40345
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:31:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95D5A1B62FC6
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:37:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E97A83AFE85
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891BE2DA751;
-	Tue,  2 Sep 2025 13:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E153115BE;
+	Tue,  2 Sep 2025 13:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8oh4+3E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0m5PNA8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4467223D7EC;
-	Tue,  2 Sep 2025 13:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE58306D53;
+	Tue,  2 Sep 2025 13:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819906; cv=none; b=s4uCtCLvlcQYx2qfH732nQnsjUXVT4SmO8Dgo7DKr+yScmb6FQAXlq2ncrL7SUM4VPm6AUryXcrLVet4QMzTxEDar3TRhUunK5veQd67YF4f6vcAVfKVQ9dGyvg16NuFHSMVdTGJku92DKzW4+6tpHqPE0oiHxcaVYdmC1XkRZc=
+	t=1756819599; cv=none; b=cevLNTLxnKl9buSYPOchc7cy3lEaYm2F4Nyq0bJw+ovTfNGCvH9Q/M1eEIgDOx3CvWCZ8GCeR7ES8qdlejx2sn6NmCg52K0ABrW6Gs8dwfP1ReuK+Bb1Yngma//ChIEZxXlnpuDnsXxn/OjVW6MEAw1zoYW4Kug0A+30sl/nFe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819906; c=relaxed/simple;
-	bh=JHvl+XH3Vs3RQuO5rbX8nZ2M4xy4KcEXVa1s86KSobI=;
+	s=arc-20240116; t=1756819599; c=relaxed/simple;
+	bh=vuScQYnPhuJ9vrFiJk5qzBPI2J/6jmCmOmf8JC2V8XU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uhj63IIZJpdD7JF6EZPfM/FKgzq0hyYvVaQWoJjUnW77+9e5mb5FuNOwpXXPcfL9j8smCkXDEyIT0oCoZywLy3wbCmIhKb8/CY2VuIIv1jWpvfCtAeMHzbJ7yHPtLyEl4WEPeF1glykwjyggGYhDIDHKIWGzlsTzwAo/N5vZHAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8oh4+3E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28DDC4CEF4;
-	Tue,  2 Sep 2025 13:31:45 +0000 (UTC)
+	 MIME-Version; b=I94sf4vnRq9s+ySarTEjgxlteUTWSfuLU0IYVWgBxgayjzChGeVZkaH+33jW3Icfajqghr3RxLRGJbE7QQQ5vRQLV2SDsv33pdjz+1uqoFq3czXPbRnN7RKONypbU+v37QuozvYNq26uxlJGy0y72wtwg16pm/dYxS0Y4v9ATE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0m5PNA8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 559F3C4CEED;
+	Tue,  2 Sep 2025 13:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819906;
-	bh=JHvl+XH3Vs3RQuO5rbX8nZ2M4xy4KcEXVa1s86KSobI=;
+	s=korg; t=1756819599;
+	bh=vuScQYnPhuJ9vrFiJk5qzBPI2J/6jmCmOmf8JC2V8XU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j8oh4+3E0WAiVB+nNP8i7LDJVbER4oNMVkcHdrl74ZJxvQLOJ1EciufwrB6jxJJvO
-	 IfOXkrGcvLrUj1CTsANiQL52+Cc4l1NoHt+WjkN3XbhXQ5BOMONDxTnoiCKqcNN+z2
-	 A0cdt3R0XqNJM6dG0tDs3R+KpnzicyoT2hQFcDE8=
+	b=0m5PNA8GqKVKa1VJ/zXqv5lVeEKQpRpCBPYkX5Od8nMNRfzdYfdt9eZXRRYUkhn1C
+	 on2QwfH8UqoLQiZEs2KC9hIfy+5MiSHM/c85lzPJtcXWcejbv/q3XC0KMxlvMCY4Fm
+	 a9vn5Nnl0NKFzBz9zt1sFVKpBQqmbHJiny8BKUA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Akiva Goldberger <agoldberger@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 08/95] of: dynamic: Fix use after free in of_changeset_add_prop_helper()
+Subject: [PATCH 6.16 082/142] net/mlx5: Reload auxiliary drivers on fw_activate
 Date: Tue,  2 Sep 2025 15:19:44 +0200
-Message-ID: <20250902131939.932828330@linuxfoundation.org>
+Message-ID: <20250902131951.407966267@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit 80af3745ca465c6c47e833c1902004a7fa944f37 ]
+[ Upstream commit 34cc6a54914f478c93e176450fae6313404f9f74 ]
 
-If the of_changeset_add_property() function call fails, then this code
-frees "new_pp" and then dereference it on the next line.  Return the
-error code directly instead.
+The devlink reload fw_activate command performs firmware activation
+followed by driver reload, while devlink reload driver_reinit triggers
+only driver reload. However, the driver reload logic differs between the
+two modes, as on driver_reinit mode mlx5 also reloads auxiliary drivers,
+while in fw_activate mode the auxiliary drivers are suspended where
+applicable.
 
-Fixes: c81f6ce16785 ("of: dynamic: Fix memleak when of_pci_add_properties() failed")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/aKgljjhnpa4lVpdx@stanley.mountain
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Additionally, following the cited commit, if the device has multiple PFs,
+the behavior during fw_activate may vary between PFs: one PF may suspend
+auxiliary drivers, while another reloads them.
+
+Align devlink dev reload fw_activate behavior with devlink dev reload
+driver_reinit, to reload all auxiliary drivers.
+
+Fixes: 72ed5d5624af ("net/mlx5: Suspend auxiliary devices only in case of PCI device suspend")
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Akiva Goldberger <agoldberger@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250825143435.598584-6-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/dynamic.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/devlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-index fcaaadc2eca1d..492f0354a7922 100644
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -935,13 +935,15 @@ static int of_changeset_add_prop_helper(struct of_changeset *ocs,
- 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+index 73cd746443788..42c70862095e9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+@@ -107,7 +107,7 @@ static int mlx5_devlink_reload_fw_activate(struct devlink *devlink, struct netli
+ 	if (err)
+ 		return err;
  
- 	ret = of_changeset_add_property(ocs, np, new_pp);
--	if (ret)
-+	if (ret) {
- 		__of_prop_free(new_pp);
-+		return ret;
-+	}
- 
- 	new_pp->next = np->deadprops;
- 	np->deadprops = new_pp;
- 
--	return ret;
-+	return 0;
- }
- 
- /**
+-	mlx5_unload_one_devl_locked(dev, true);
++	mlx5_unload_one_devl_locked(dev, false);
+ 	err = mlx5_health_wait_pci_up(dev);
+ 	if (err)
+ 		NL_SET_ERR_MSG_MOD(extack, "FW activate aborted, PCI reads fail after reset");
 -- 
 2.50.1
 
