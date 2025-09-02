@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-177140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01FC2B4036B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:32:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A28B404BC
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:46:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD5FF3AC3E3
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:32:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA7A8188677F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBAC30BF71;
-	Tue,  2 Sep 2025 13:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C9F307AE7;
+	Tue,  2 Sep 2025 13:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCFfRwhx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hrnx8W2B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7942030C35F;
-	Tue,  2 Sep 2025 13:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902783074B2;
+	Tue,  2 Sep 2025 13:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819708; cv=none; b=pHeh2Pu8W06W+0BgwMWFGnTGhhAW0uLMIgEQ4a0eCi7Dc8CZMgIMSQqzzIIyYZt9pGcv0rIO48DVlIEFk+n5V2kOTyRqIMIfdmJWN+9Q16bqE0qMVrMwMeR6agj+biY8kg9qlYTnAglt3rDWsGGngO7iC180YCmmru0idgUJzKM=
+	t=1756820225; cv=none; b=WOmacnJW8S+ffUQwVmX7OoSSTVlm5f2BX5nXgm46/9Ucw6cKTXvMRZkjO+6cKT7NdqRy7XkV/0uVgsyrBMrpYpiqBYYNY2818XuyO2XPE2sFsXkSZmkYJfaIHNpP3lLJJWLH/qp+7rC1aDP3GjouXx78fyGyMMsjOBtYwbr7ApE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819708; c=relaxed/simple;
-	bh=YPOiEXxZwWhb/ISsX/0VYJx878Fesd2MJzYqlWT8QEc=;
+	s=arc-20240116; t=1756820225; c=relaxed/simple;
+	bh=pGtSVY3UO+1l+6tB32oSQ159PWDx96uS8m0kDPA0/G0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lO/rvFdh8LhwmOLebo9lONYDSCCgycm2By8Fk6sAj+B8RWsINA4Occyos5AswNm0cquO917v6xsLc30BrgYLbLjFd8/+aRLbs5gBs+8FEC88Fs6i6fg44YS39JKdDAO4fhykLQB7tzzrDMKhQF7sYf6DLvrTetq0JR1zDd6A9EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCFfRwhx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB2BC4CEED;
-	Tue,  2 Sep 2025 13:28:27 +0000 (UTC)
+	 MIME-Version; b=JlYS8gqjBqCFhVEC9zLFI5IsQtd4AoSsoysGXZ791EPlMUukVpqbCGWwmXuMBjQ968eMZ9QwdOQLWl+vApi6HSrsQj4PobkT9gydYeHwwxMFQO1mBX9ROd9GvZrL9QGm965Rg0yqTDE4an7KuJfPzsRMcpBcEaiBrGYf3TerSMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hrnx8W2B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156F2C4CEED;
+	Tue,  2 Sep 2025 13:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819708;
-	bh=YPOiEXxZwWhb/ISsX/0VYJx878Fesd2MJzYqlWT8QEc=;
+	s=korg; t=1756820225;
+	bh=pGtSVY3UO+1l+6tB32oSQ159PWDx96uS8m0kDPA0/G0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CCFfRwhxZLu+2fks4CqAJcBBXqAtTuf4lMqMw4kOfPejFe989WBcf1U5RfL1mgcQB
-	 EdqWX2cwmRznuQL9k25UaM0fVBY2nQkEd89QdTKBYcE1i2zwxfP0S//cvcORvIY5Oo
-	 RqZQS7+qxH4NNNW+GmjmG5WFjWBF6+AqssDUDVp4=
+	b=Hrnx8W2BLWZhjsvR2Dh8o0+tmo8BauR53kneJi2x9HVAkplcBroELm6p2h8ykJXv1
+	 7sEAwkAipQ2fYWRdiSIxDW7XpNi+JAIOahEEhV7r0kXtzGPNHx5zs01xGt1gIVPO3a
+	 wdHWRpX2qsh9Kw3dwGs1S8II4G3CYelo6ZAh713E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minjong Kim <minbell.kim@samsung.com>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.16 115/142] HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()
-Date: Tue,  2 Sep 2025 15:20:17 +0200
-Message-ID: <20250902131952.690175689@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 06/75] of: dynamic: Fix use after free in of_changeset_add_prop_helper()
+Date: Tue,  2 Sep 2025 15:20:18 +0200
+Message-ID: <20250902131935.363655117@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minjong Kim <minbell.kim@samsung.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 185c926283da67a72df20a63a5046b3b4631b7d9 upstream.
+[ Upstream commit 80af3745ca465c6c47e833c1902004a7fa944f37 ]
 
-in ntrig_report_version(), hdev parameter passed from hid_probe().
-sending descriptor to /dev/uhid can make hdev->dev.parent->parent to null
-if hdev->dev.parent->parent is null, usb_dev has
-invalid address(0xffffffffffffff58) that hid_to_usb_dev(hdev) returned
-when usb_rcvctrlpipe() use usb_dev,it trigger
-page fault error for address(0xffffffffffffff58)
+If the of_changeset_add_property() function call fails, then this code
+frees "new_pp" and then dereference it on the next line.  Return the
+error code directly instead.
 
-add null check logic to ntrig_report_version()
-before calling hid_to_usb_dev()
-
-Signed-off-by: Minjong Kim <minbell.kim@samsung.com>
-Link: https://patch.msgid.link/20250813-hid-ntrig-page-fault-fix-v2-1-f98581f35106@samsung.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c81f6ce16785 ("of: dynamic: Fix memleak when of_pci_add_properties() failed")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aKgljjhnpa4lVpdx@stanley.mountain
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ntrig.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/of/dynamic.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/hid-ntrig.c
-+++ b/drivers/hid/hid-ntrig.c
-@@ -144,6 +144,9 @@ static void ntrig_report_version(struct
- 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
- 	unsigned char *data = kmalloc(8, GFP_KERNEL);
+diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+index 72531f44adf09..18393800546c1 100644
+--- a/drivers/of/dynamic.c
++++ b/drivers/of/dynamic.c
+@@ -934,13 +934,15 @@ static int of_changeset_add_prop_helper(struct of_changeset *ocs,
+ 		return -ENOMEM;
  
-+	if (!hid_is_usb(hdev))
-+		return;
-+
- 	if (!data)
- 		goto err_free;
+ 	ret = of_changeset_add_property(ocs, np, new_pp);
+-	if (ret)
++	if (ret) {
+ 		__of_prop_free(new_pp);
++		return ret;
++	}
  
+ 	new_pp->next = np->deadprops;
+ 	np->deadprops = new_pp;
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ /**
+-- 
+2.50.1
+
 
 
 
