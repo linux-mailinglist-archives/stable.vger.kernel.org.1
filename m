@@ -1,165 +1,233 @@
-Return-Path: <stable+bounces-176956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 143EEB3FA44
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 11:25:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7AA0B3FA56
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 11:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4710C18854A3
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 09:25:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AF7A2C0E7F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 09:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E622C145355;
-	Tue,  2 Sep 2025 09:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E182E8DE6;
+	Tue,  2 Sep 2025 09:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="w30xR8Jn"
+	dkim=pass (2048-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b="PO2/zc0v";
+	dkim=pass (2048-bit key) header.d=vates.tech header.i=teddy.astie@vates.tech header.b="s7ytcdG7"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
+Received: from mail187-26.suw11.mandrillapp.com (mail187-26.suw11.mandrillapp.com [198.2.187.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29CC3D987;
-	Tue,  2 Sep 2025 09:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF8F2E9EBE
+	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 09:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.2.187.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756805086; cv=none; b=V9rrxQZ2ZHaBoOBCTJZQSZ1tM3W9q5GIx2W0ruNiQdTJgZaKdC+4ceiiCkyuAQcNhgojLUHVbxkofe0Qbv4sJpvfswiTZhZEXfPwJCzQM1d8uq5kFxWa2N8iJBUSNaC1MSYxT7wre8/aALYV8E9FcedZLLrlYFx8mx2itddPbJk=
+	t=1756805315; cv=none; b=je88M9rgKxmiSIzOiG/fMjMjcoI2TT4oC/C9OnuvoB7MmfDnDODXfyGKH73p2QgGANle/jCxjOLfh31xwxlA/xXpQPsU5IHNFJU4HAG4YX0ggk8t0Gd3OKervy949Arhl6ZQn/MgMoxErLMsLb8gihb8aG9VVx213Xcvxrid4V8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756805086; c=relaxed/simple;
-	bh=1dbWm18+r0fq9wolRbLel93QkllqI1woe842afazZW0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=Nb+DddHl0Rh83UahC5/Fn9fB5O8kJpO6i0/JPL/vn67yPfy56MliZWH+nEnqQ9SxVCvXq4fhbcVsxPyN2hZJcqwasyaxcTWDecCgx5HHgD5LMMqqAJsuqJUPksfs7gieZL/HSC8oUPIFvOl+SIb9A/MTOEZQiJrjLGYMWSVX1Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=w30xR8Jn; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1756805072; x=1757409872; i=markus.elfring@web.de;
-	bh=Jo1K3T9e/LVSIg8mC1objN1DWoFTQaf3xHVgfgLf62k=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=w30xR8JndKzDHFdcsTNfEWAhZXLSBJGfZlIu8NJWKqgPSbeZBdlQYKR3L0L4taE9
-	 PkN7CzMGsZB/FoklV1zLEj3GFAFrmwkvd1I4XerdsbsI+XHw6vb/b+tbAvdrEHIVS
-	 /XhNi0qt4NciRk7ZglDLygV50ICVD8FNaMec11wK0lsVQlPWNWixWceZwQDbjA1Vf
-	 4B9IzqXw0d9M/E3beiLkj9OtUzxSD9AC+WGKI99MUrcaM/dJFAFiiEocom8PJyOcs
-	 BXi7+SOY81e55YHynNevmYT/rKNWbyRDvBMZKF8gSu33N8pk+RcT4rozupBR6ahQb
-	 XsSjvd5QrnWq7C1eFw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.69.184]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N45xt-1uT96U3SdN-013cgW; Tue, 02
- Sep 2025 11:24:31 +0200
-Message-ID: <8df346cf-bdc6-4701-b4e5-87bc55d30234@web.de>
-Date: Tue, 2 Sep 2025 11:24:29 +0200
+	s=arc-20240116; t=1756805315; c=relaxed/simple;
+	bh=9ifJBRijt44C9xe6aZCPOQu5Z/ScboVPRHCIHhn8R9s=;
+	h=From:Subject:To:Cc:Message-Id:Date:MIME-Version:Content-Type; b=VOW266chpT2bRbJza8eMCgbxYUMt7YQlljwL6TIU6qdz+JB2pCc0xIe8kKwW2VTyODnyYk6wffUQpfdZBQk/VdzjoMA6hB9lP2pOsky2WswMLqxFgS66tM/7TIVHPVn02TjX5W2v0ii5mZpxCqJrT8lP1OsdHkuvg5fsch+K1cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vates.tech; spf=pass smtp.mailfrom=bounce.vates.tech; dkim=pass (2048-bit key) header.d=mandrillapp.com header.i=@mandrillapp.com header.b=PO2/zc0v; dkim=pass (2048-bit key) header.d=vates.tech header.i=teddy.astie@vates.tech header.b=s7ytcdG7; arc=none smtp.client-ip=198.2.187.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vates.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bounce.vates.tech
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
+	s=mte1; t=1756805313; x=1757075313;
+	bh=mVE2bxoiaJc/omf+Xbgpgc0UASpoGRaDW87GrKaH4u4=;
+	h=From:Subject:To:Cc:Message-Id:Feedback-ID:Date:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:CC:Date:Subject:From;
+	b=PO2/zc0vRiJfgcVVAF3yo/FJ7NUJMeNGV8ItMqtNj8qllMSw/wBvH/1sRIBMKcDCL
+	 5IbQXl5I8yTXcJb0u9DHuYT/3G2e1DHC44X17HsKtMbMD5aznDlNkMu0vzIKNj1Ef8
+	 5nKFJZGbJRnMWzCDbJPg0EsoklccgNAkQMv2+uZ+q+JAm/s57/ZlluLccv6pEXHO8L
+	 XtIn/OHXPJjNckMCPMVWIbWEr83TazSBwMpQ75uHtsBJNVqUf0Bt0538V3NCTKX0Ny
+	 YIdF+IN3FB2q32lrtKTqxd9JbW5edMHib0TpJh+fRTR+fAE9C0EuWXuGRnWoUGB3xS
+	 5nJPzD0yvQ6vw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vates.tech; s=mte1;
+	t=1756805313; x=1757065813; i=teddy.astie@vates.tech;
+	bh=mVE2bxoiaJc/omf+Xbgpgc0UASpoGRaDW87GrKaH4u4=;
+	h=From:Subject:To:Cc:Message-Id:Feedback-ID:Date:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:CC:Date:Subject:From;
+	b=s7ytcdG7ZTe9eGAXPnUdcAvRBqwVcL9SBZR0d+6D3IJsiSqoIGy+9ot/0NFMMwkl2
+	 iFFNiGCiKVz4hYJgL5XKaH/PBWAaxZojtb1o1FS/EXkXsXEK7QBma632D/pTD97O6x
+	 Sfw+WUlqpEI+SpSp4eN2rg9lACy14JGQWUf0wg/Elv1IrsPFJrxqvMI9VoZwPHaVGl
+	 9FOXyShb3FyNXCVrr5/89sO5Pz8sdKqkGlIs/L0ej+11/JKFSS/c+eUDuy4VOTKwev
+	 hHWvh48KZ3lWz2BRGgHOUjBRc3Wadj5LnNX1gyju0fhAxEzQC0+A0L2muYouhbRHHK
+	 UM4YGTOQFMb8A==
+Received: from pmta09.mandrill.prod.suw01.rsglab.com (localhost [127.0.0.1])
+	by mail187-26.suw11.mandrillapp.com (Mailchimp) with ESMTP id 4cGL5Y0C8HzKsbYyL
+	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 09:28:33 +0000 (GMT)
+From: "Teddy Astie" <teddy.astie@vates.tech>
+Subject: =?utf-8?Q?[PATCH=20v5.10.y]=20xen:=20replace=20xen=5Fremap()=20with=20memremap()?=
+Received: from [37.26.189.201] by mandrillapp.com id 64e20d4f1037403cb4dae83921404d79; Tue, 02 Sep 2025 09:28:32 +0000
+X-Mailer: git-send-email 2.51.0
+X-Bm-Disclaimer: Yes
+X-Bm-Milter-Handled: 4ffbd6c1-ee69-4e1b-aabd-f977039bd3e2
+X-Bm-Transport-Timestamp: 1756805309861
+To: xen-devel@lists.xenproject.org, stable@vger.kernel.org
+Cc: "Juergen Gross" <jgross@suse.com>, "kernel test robot" <lkp@intel.com>, "Boris Ostrovsky" <boris.ostrovsky@oracle.com>, "Stefano Stabellini" <sstabellini@kernel.org>, "Teddy Astie" <teddy.astie@vates.tech>, "Anthoine Bourgeois" <anthoine.bourgeois@vates.tech>, "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Jiri Slaby" <jirislaby@kernel.org>
+Message-Id: <4cc9c1f583fb4bfca02ff7050b9b01cb9abb7e7f.1756803599.git.teddy.astie@vates.tech>
+X-Native-Encoded: 1
+X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,=20including=20all=20headers,=20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30504962.64e20d4f1037403cb4dae83921404d79?=
+X-Mandrill-User: md_30504962
+Feedback-ID: 30504962:30504962.20250902:md
+Date: Tue, 02 Sep 2025 09:28:32 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Miaoqian Lin <linmq006@gmail.com>, dmaengine@vger.kernel.org
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>, Vinod Koul <vkoul@kernel.org>,
- Viresh Kumar <vireshk@kernel.org>
-References: <20250902090358.2423285-1-linmq006@gmail.com>
-Subject: Re: [PATCH] dmaengine: dw: dmamux: Fix device reference leak in
- rzn1_dmamux_route_allocate
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20250902090358.2423285-1-linmq006@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:f0dQIVvmsoLhxEWPI8WYTJkefMn2+D9ooaSVjnJmco2KzQV8jqD
- QBmFBsmnFopKpCDNT8B9PIU4E777f+EUVV9XiIwpf9xMd/CKHfnXEvoyBnq2p//OAciVwvX
- yZmIRPEQ8b3LUPEBE7/HS8Qh1xehyUoFMYbFYUrVwEzfcwrYi/9PgnQ/6VlY5q4gsEipg9g
- fN0HT5mNknS4fokFXWRPA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:WOE/HwBYmbM=;iscepFKLebRk+VkOXqJsrxfpvjm
- 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
 
-> The reference taken by of_find_device_by_node()
-> must be released when not needed anymore.
-> Add missing put_device() call to fix device reference leaks.
+From: Juergen Gross <jgross@suse.com>
 
-1. You may occasionally put more than 60 characters into text lines
-   of such a change description.
-   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.17-rc4#n638
+From: Juergen Gross <jgross@suse.com>
 
-2. Would you like to increase the application of scope-based resource management?
-   https://elixir.bootlin.com/linux/v6.17-rc4/source/include/linux/device.h#L1180
+[ upstream commit 41925b105e345ebc84cedb64f59d20cb14a62613 ]
 
-3. How do you think about to append parentheses to the function name
-   in the summary phrase?
+xen_remap() is used to establish mappings for frames not under direct
+control of the kernel: for Xenstore and console ring pages, and for
+grant pages of non-PV guests.
+
+Today xen_remap() is defined to use ioremap() on x86 (doing uncached
+mappings), and ioremap_cache() on Arm (doing cached mappings).
+
+Uncached mappings for those use cases are bad for performance, so they
+should be avoided if possible. As all use cases of xen_remap() don't
+require uncached mappings (the mapped area is always physical RAM),
+a mapping using the standard WB cache mode is fine.
+
+As sparse is flagging some of the xen_remap() use cases to be not
+appropriate for iomem(), as the result is not annotated with the
+__iomem modifier, eliminate xen_remap() completely and replace all
+use cases with memremap() specifying the MEMREMAP_WB caching mode.
+
+xen_unmap() can be replaced with memunmap().
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+Link: https://lore.kernel.org/r/20220530082634.6339-1-jgross@suse.com
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Teddy Astie <teddy.astie@vates.tech> [backport to 5.10.y]
+---
+Cc: Anthoine Bourgeois <anthoine.bourgeois@vates.tech>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+
+ arch/x86/include/asm/xen/page.h   | 3 ---
+ drivers/tty/hvc/hvc_xen.c         | 2 +-
+ drivers/xen/grant-table.c         | 6 +++---
+ drivers/xen/xenbus/xenbus_probe.c | 3 +--
+ include/xen/arm/page.h            | 3 ---
+ 5 files changed, 5 insertions(+), 12 deletions(-)
+
+diff --git a/arch/x86/include/asm/xen/page.h b/arch/x86/include/asm/xen/page.h
+index 5941e18edd5a..c183b7f9efef 100644
+--- a/arch/x86/include/asm/xen/page.h
++++ b/arch/x86/include/asm/xen/page.h
+@@ -355,9 +355,6 @@ unsigned long arbitrary_virt_to_mfn(void *vaddr);
+ void make_lowmem_page_readonly(void *vaddr);
+ void make_lowmem_page_readwrite(void *vaddr);
+ 
+-#define xen_remap(cookie, size) ioremap((cookie), (size));
+-#define xen_unmap(cookie) iounmap((cookie))
+-
+ static inline bool xen_arch_need_swiotlb(struct device *dev,
+ 					 phys_addr_t phys,
+ 					 dma_addr_t dev_addr)
+diff --git a/drivers/tty/hvc/hvc_xen.c b/drivers/tty/hvc/hvc_xen.c
+index 4886cad0fde6..7b472ab2f34f 100644
+--- a/drivers/tty/hvc/hvc_xen.c
++++ b/drivers/tty/hvc/hvc_xen.c
+@@ -270,7 +270,7 @@ static int xen_hvm_console_init(void)
+ 	if (r < 0 || v == 0)
+ 		goto err;
+ 	gfn = v;
+-	info->intf = xen_remap(gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE);
++	info->intf = memremap(gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE, MEMREMAP_WB);
+ 	if (info->intf == NULL)
+ 		goto err;
+ 	info->vtermno = HVC_COOKIE;
+diff --git a/drivers/xen/grant-table.c b/drivers/xen/grant-table.c
+index 0a2d24d6ac6f..a10e0741bec5 100644
+--- a/drivers/xen/grant-table.c
++++ b/drivers/xen/grant-table.c
+@@ -743,7 +743,7 @@ int gnttab_setup_auto_xlat_frames(phys_addr_t addr)
+ 	if (xen_auto_xlat_grant_frames.count)
+ 		return -EINVAL;
+ 
+-	vaddr = xen_remap(addr, XEN_PAGE_SIZE * max_nr_gframes);
++	vaddr = memremap(addr, XEN_PAGE_SIZE * max_nr_gframes, MEMREMAP_WB);
+ 	if (vaddr == NULL) {
+ 		pr_warn("Failed to ioremap gnttab share frames (addr=%pa)!\n",
+ 			&addr);
+@@ -751,7 +751,7 @@ int gnttab_setup_auto_xlat_frames(phys_addr_t addr)
+ 	}
+ 	pfn = kcalloc(max_nr_gframes, sizeof(pfn[0]), GFP_KERNEL);
+ 	if (!pfn) {
+-		xen_unmap(vaddr);
++		memunmap(vaddr);
+ 		return -ENOMEM;
+ 	}
+ 	for (i = 0; i < max_nr_gframes; i++)
+@@ -770,7 +770,7 @@ void gnttab_free_auto_xlat_frames(void)
+ 	if (!xen_auto_xlat_grant_frames.count)
+ 		return;
+ 	kfree(xen_auto_xlat_grant_frames.pfn);
+-	xen_unmap(xen_auto_xlat_grant_frames.vaddr);
++	memunmap(xen_auto_xlat_grant_frames.vaddr);
+ 
+ 	xen_auto_xlat_grant_frames.pfn = NULL;
+ 	xen_auto_xlat_grant_frames.count = 0;
+diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
+index fb5358a73820..23595fdd053d 100644
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -919,8 +919,7 @@ static int __init xenbus_init(void)
+ #endif
+ 		xen_store_gfn = (unsigned long)v;
+ 		xen_store_interface =
+-			xen_remap(xen_store_gfn << XEN_PAGE_SHIFT,
+-				  XEN_PAGE_SIZE);
++			memremap(xen_store_gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE, MEMREMAP_WB);
+ 		break;
+ 	default:
+ 		pr_warn("Xenstore state unknown\n");
+diff --git a/include/xen/arm/page.h b/include/xen/arm/page.h
+index ac1b65470563..f831cfeca000 100644
+--- a/include/xen/arm/page.h
++++ b/include/xen/arm/page.h
+@@ -109,9 +109,6 @@ static inline bool set_phys_to_machine(unsigned long pfn, unsigned long mfn)
+ 	return __set_phys_to_machine(pfn, mfn);
+ }
+ 
+-#define xen_remap(cookie, size) ioremap_cache((cookie), (size))
+-#define xen_unmap(cookie) iounmap((cookie))
+-
+ bool xen_arch_need_swiotlb(struct device *dev,
+ 			   phys_addr_t phys,
+ 			   dma_addr_t dev_addr);
+-- 
+2.51.0
 
 
-Regards,
-Markus
+
+--
+Teddy Astie | Vates XCP-ng Developer
+
+XCP-ng & Xen Orchestra - Vates solutions
+
+web: https://vates.tech
+
 
