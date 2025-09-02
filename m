@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-177033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 432CCB402C8
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:23:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 404C4B402F5
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE8D81B26EB5
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:23:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 690E11896AA4
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72455304BA4;
-	Tue,  2 Sep 2025 13:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7B830DD0D;
+	Tue,  2 Sep 2025 13:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIgVq8r3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppaa1gmU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFB52DC32D;
-	Tue,  2 Sep 2025 13:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B9030E842;
+	Tue,  2 Sep 2025 13:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819347; cv=none; b=jmnwV1k0zpPXhJPI34tyGHhPLYVectMxLrWv8obU60sSW6xDsLX+DziuOEjT+5A1JRJGNc8GrlkaSlM2oKkbcZPT2zU2IRKh5jWhvwCmXGbpJYLH+NT7vrYKgJ4j7CfmkEL/iMpZWJhR6+fOaGbCxarSgV0SUAWxZd/clqq67YY=
+	t=1756819388; cv=none; b=ly2od9e1RjOOGbwYYBEOCm1+2v67Kd98gC+QoLyfw3HB3KIED0lH9rB9UKJUPuqRXbMBmCxAq8+a7Ara5ZzmP6cxGLXb+F+5QNqdse4AR7KHiZHm7NafvS509/CAN6WZO/NywNZ5kfbpew9E1dLBv+GZMjFjFKgxklNBDosKOGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819347; c=relaxed/simple;
-	bh=hCmOYYHoGKo7jQ8k4NC0nnI+UNme1MYboiO67WvBW64=;
+	s=arc-20240116; t=1756819388; c=relaxed/simple;
+	bh=gu/82B4ASVBa1LFc0Ga5aWRYPjIbSpTs7+T5b0GyNZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mHcRtEwGNYIKFl/MXER3ZDAQgnHoZPN9cwYIDnCOSR0Da3a4j3Ye5B4/lbFX5wIieg/1qcks80A1+Dw7sgqVWDmn+VPUlUwSBv97UiCZhQYmx+AJL+lgocTDy2FlbrQdAyZ76HHHd5i+wQ1jPT6wwVnUIfUjOTg15T0S1qrW5fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIgVq8r3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE90C4CEED;
-	Tue,  2 Sep 2025 13:22:26 +0000 (UTC)
+	 MIME-Version; b=dRV0zNxjpjIq+OOZMfGJGjW6vyhckiLkCsO2E4F3ljwCQc1inepRwAF6ap+zzOGORgpx+XX2l96/+KAAbPJjBDfjiUd6To5xeZpHnjbPUK+dzuocjqDt1A4rmnVi1iAsvBp4Ezh/IXe7pVdSWi3riEKdeL8FMrLA5EQx1IPQ7Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppaa1gmU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A0DC4CEED;
+	Tue,  2 Sep 2025 13:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819346;
-	bh=hCmOYYHoGKo7jQ8k4NC0nnI+UNme1MYboiO67WvBW64=;
+	s=korg; t=1756819388;
+	bh=gu/82B4ASVBa1LFc0Ga5aWRYPjIbSpTs7+T5b0GyNZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WIgVq8r39RdYkUjMkTA/cO6dSqU/QBTb766rbVvnMt9rFxFbE0iUVsBfkF2XkhW0m
-	 pO75KClItLWgNDKxNPYvcNlMebZMRxySbd8FIsZzDCDbWTphrE1e+2W5/Q154ZIJta
-	 Esx3P20hyUkU7PqErcnMTE/ZJNxX1VlVQSRVqgoM=
+	b=ppaa1gmUR/ncB/XbAf3GAgfDIy6K3C2+vfZh8wlvkT6i0LWBlqQrr9QD33n4mYFup
+	 fGA0tj1vtPVAgjpqu4qNnt7FGLFPxAFxnZZrF7cQX/9XfI6tcOXwOxeJGLY7KTWp35
+	 eFI1/VfFLRbz5w+hqirm2B/WmHGCJLQdI9ndzafk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunseong Kim <ysk@kzalloc.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
+	Tao Chen <chen.dylane@linux.dev>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 001/142] perf: Avoid undefined behavior from stopping/starting inactive events
-Date: Tue,  2 Sep 2025 15:18:23 +0200
-Message-ID: <20250902131948.213881711@linuxfoundation.org>
+Subject: [PATCH 6.16 002/142] tools/latency-collector: Check pkg-config install
+Date: Tue,  2 Sep 2025 15:18:24 +0200
+Message-ID: <20250902131948.250630073@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
 References: <20250902131948.154194162@linuxfoundation.org>
@@ -67,82 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yunseong Kim <ysk@kzalloc.com>
+From: Tao Chen <chen.dylane@linux.dev>
 
-[ Upstream commit b64fdd422a85025b5e91ead794db9d3ef970e369 ]
+[ Upstream commit 26ebba25e210116053609f4c7ee701bffa7ebd7d ]
 
-Calling pmu->start()/stop() on perf events in PERF_EVENT_STATE_OFF can
-leave event->hw.idx at -1. When PMU drivers later attempt to use this
-negative index as a shift exponent in bitwise operations, it leads to UBSAN
-shift-out-of-bounds reports.
+The tool pkg-config used to check libtraceevent and libtracefs, if not
+installed, it will report the libs not found, even though they have
+already been installed.
 
-The issue is a logical flaw in how event groups handle throttling when some
-members are intentionally disabled. Based on the analysis and the
-reproducer provided by Mark Rutland (this issue on both arm64 and x86-64).
+Before:
+libtraceevent is missing. Please install libtraceevent-dev/libtraceevent-devel
+libtracefs is missing. Please install libtracefs-dev/libtracefs-devel
 
-The scenario unfolds as follows:
+After:
+Makefile.config:10: *** Error: pkg-config needed by libtraceevent/libtracefs is missing
+on this system, please install it.
 
- 1. A group leader event is configured with a very aggressive sampling
-    period (e.g., sample_period = 1). This causes frequent interrupts and
-    triggers the throttling mechanism.
- 2. A child event in the same group is created in a disabled state
-    (.disabled = 1). This event remains in PERF_EVENT_STATE_OFF.
-    Since it hasn't been scheduled onto the PMU, its event->hw.idx remains
-    initialized at -1.
- 3. When throttling occurs, perf_event_throttle_group() and later
-    perf_event_unthrottle_group() iterate through all siblings, including
-    the disabled child event.
- 4. perf_event_throttle()/unthrottle() are called on this inactive child
-    event, which then call event->pmu->start()/stop().
- 5. The PMU driver receives the event with hw.idx == -1 and attempts to
-    use it as a shift exponent. e.g., in macros like PMCNTENSET(idx),
-    leading to the UBSAN report.
-
-The throttling mechanism attempts to start/stop events that are not
-actively scheduled on the hardware.
-
-Move the state check into perf_event_throttle()/perf_event_unthrottle() so
-that inactive events are skipped entirely. This ensures only active events
-with a valid hw.idx are processed, preventing undefined behavior and
-silencing UBSAN warnings. The corrected check ensures true before
-proceeding with PMU operations.
-
-The problem can be reproduced with the syzkaller reproducer:
-
-Fixes: 9734e25fbf5a ("perf: Fix the throttle logic for a group")
-Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20250812181046.292382-2-ysk@kzalloc.com
+Link: https://lore.kernel.org/20250808040527.2036023-1-chen.dylane@linux.dev
+Fixes: 9d56c88e5225 ("tools/tracing: Use tools/build makefiles on latency-collector")
+Signed-off-by: Tao Chen <chen.dylane@linux.dev>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/tracing/latency/Makefile.config | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 8060c2857bb2b..872122e074e5f 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -2665,6 +2665,9 @@ static void perf_log_itrace_start(struct perf_event *event);
+diff --git a/tools/tracing/latency/Makefile.config b/tools/tracing/latency/Makefile.config
+index 0fe6b50f029bf..6efa13e3ca93f 100644
+--- a/tools/tracing/latency/Makefile.config
++++ b/tools/tracing/latency/Makefile.config
+@@ -1,7 +1,15 @@
+ # SPDX-License-Identifier: GPL-2.0-only
  
- static void perf_event_unthrottle(struct perf_event *event, bool start)
- {
-+	if (event->state != PERF_EVENT_STATE_ACTIVE)
-+		return;
++include $(srctree)/tools/scripts/utilities.mak
 +
- 	event->hw.interrupts = 0;
- 	if (start)
- 		event->pmu->start(event, 0);
-@@ -2674,6 +2677,9 @@ static void perf_event_unthrottle(struct perf_event *event, bool start)
+ STOP_ERROR :=
  
- static void perf_event_throttle(struct perf_event *event)
- {
-+	if (event->state != PERF_EVENT_STATE_ACTIVE)
-+		return;
++ifndef ($(NO_LIBTRACEEVENT),1)
++  ifeq ($(call get-executable,$(PKG_CONFIG)),)
++    $(error Error: $(PKG_CONFIG) needed by libtraceevent/libtracefs is missing on this system, please install it)
++  endif
++endif
 +
- 	event->hw.interrupts = MAX_INTERRUPTS;
- 	event->pmu->stop(event, 0);
- 	if (event == event->group_leader)
+ define lib_setup
+   $(eval LIB_INCLUDES += $(shell sh -c "$(PKG_CONFIG) --cflags lib$(1)"))
+   $(eval LDFLAGS += $(shell sh -c "$(PKG_CONFIG) --libs-only-L lib$(1)"))
 -- 
 2.50.1
 
