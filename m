@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-177219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA29B403EB
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE226B4036F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:33:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D08044E564A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:37:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 375633A8A29
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AEA3311C2E;
-	Tue,  2 Sep 2025 13:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5B930AAB4;
+	Tue,  2 Sep 2025 13:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCpfgPXk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABTrkHk1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9D430ACFE;
-	Tue,  2 Sep 2025 13:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A71F30CD95;
+	Tue,  2 Sep 2025 13:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819959; cv=none; b=iZLZBzbSwfmSiytO5LaSlQ8mV2Y9HHjSpi+5um4Dn/12Qw+htPeX8sirfRMccYQmEVnEuBpMGsdu9dABBQNgQbavLIr9ZQEKL5cJ4OTsrQyrw6RMajYQtt2g2RcwGnSjJxAI+4mJHQ3bZOtGUvqSWmoA5ve3WrS4mRKLzwAUAeU=
+	t=1756819732; cv=none; b=SzGDXOF1BtCPGpLwTbrAzSpdtW8L/QzsuEp7c6axHr1J98Q7wWzfyqGkKJR+/B7a0diEgwkK3S7rMC/e6/MAQloQ0TT6BiajVMyCXowFWXJPJ6iScTzAL9CAWMxDntm4LpkzmsgZ7eNR9n+hyvf+d8Ox6BppRU9HjeM3jMpxYpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819959; c=relaxed/simple;
-	bh=GHm69O06Ffvd8I8UpgY+AOSzPInMKhR0d2tJWzyi/6M=;
+	s=arc-20240116; t=1756819732; c=relaxed/simple;
+	bh=x8tiu7I3qXxpNyNZTJHUqZy7IXX3EndTFODP+tfmfnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SmFyWPOtv7ge3Q4ths1jRqqcNcGPMqWji4bBQj43q8rvTkh0c6InIobK0WpdioUI/rcyOEu+Yz7P9i+c2IGcNbxL+TnXT2aR1jKviOuJuoJWRjJjQGQhL/Yz3QjHJE+AP3Ni+4nKo2D2kYf3/c2yN4lITm6UM6+zBt6OMsWgCN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCpfgPXk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEDEC4CEF4;
-	Tue,  2 Sep 2025 13:32:39 +0000 (UTC)
+	 MIME-Version; b=izkslceQKJsY+QaMOosbtnuTRCkE7zLgQq44sa4WXbW/jXWsyvwwUIfiObhOFRDq1ghQHI1HAYEWJx8lnPfLjFkL9Hyw2sPYLeUjovszCljzNxlZZVzjXBLEKda2SFWuZl/LyM9ncysYRAbqfF87Pjyh4Pe1NG5hHg4P8y/hvYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABTrkHk1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853BBC4CEED;
+	Tue,  2 Sep 2025 13:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819959;
-	bh=GHm69O06Ffvd8I8UpgY+AOSzPInMKhR0d2tJWzyi/6M=;
+	s=korg; t=1756819731;
+	bh=x8tiu7I3qXxpNyNZTJHUqZy7IXX3EndTFODP+tfmfnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aCpfgPXk6YK1qNiHT3Wt9phYEzt/BlFo8kn/rocL3eC/NWk+MP0/Y3vGM4fyuWZBs
-	 BaVsc1JW4woRs5DhlbhMqR07McnIJOzKtULwO0e6V32K4soQ1q5MIOSl16OTY6ijJt
-	 NTy9qO8+l9gOcxcmR7hCD9hKmhXghmDrSwhgsko4=
+	b=ABTrkHk1hKOCiVCeb/a/tP5Cf6YU9ggbly16Y4CZzuCrvmrpyPdfqvmETzQ4goQoP
+	 XTWMk8fW7z4JrFHWMdyoh3Pi+Ug0a/9PPFBAbAzfjUrZn8I6g52dH00sZqZ6Z85raJ
+	 RcA49CZN3XkEzudS7aclqXWp50pC4pWw7vgh8po0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Akiva Goldberger <agoldberger@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 48/95] net/mlx5: Reload auxiliary drivers on fw_activate
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.16 122/142] smb3 client: fix return code mapping of remap_file_range
 Date: Tue,  2 Sep 2025 15:20:24 +0200
-Message-ID: <20250902131941.451395038@linuxfoundation.org>
+Message-ID: <20250902131952.957497827@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 34cc6a54914f478c93e176450fae6313404f9f74 ]
+commit 0e08fa789d39aa01923e3ba144bd808291895c3c upstream.
 
-The devlink reload fw_activate command performs firmware activation
-followed by driver reload, while devlink reload driver_reinit triggers
-only driver reload. However, the driver reload logic differs between the
-two modes, as on driver_reinit mode mlx5 also reloads auxiliary drivers,
-while in fw_activate mode the auxiliary drivers are suspended where
-applicable.
+We were returning -EOPNOTSUPP for various remap_file_range cases
+but for some of these the copy_file_range_syscall() requires -EINVAL
+to be returned (e.g. where source and target file ranges overlap when
+source and target are the same file). This fixes xfstest generic/157
+which was expecting EINVAL for that (and also e.g. for when the src
+offset is beyond end of file).
 
-Additionally, following the cited commit, if the device has multiple PFs,
-the behavior during fw_activate may vary between PFs: one PF may suspend
-auxiliary drivers, while another reloads them.
-
-Align devlink dev reload fw_activate behavior with devlink dev reload
-driver_reinit, to reload all auxiliary drivers.
-
-Fixes: 72ed5d5624af ("net/mlx5: Suspend auxiliary devices only in case of PCI device suspend")
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Akiva Goldberger <agoldberger@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250825143435.598584-6-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/devlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/cifsfs.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-index a2cf3e79693dd..7211e65ad2dcc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-@@ -107,7 +107,7 @@ static int mlx5_devlink_reload_fw_activate(struct devlink *devlink, struct netli
- 	if (err)
- 		return err;
- 
--	mlx5_unload_one_devl_locked(dev, true);
-+	mlx5_unload_one_devl_locked(dev, false);
- 	err = mlx5_health_wait_pci_up(dev);
- 	if (err)
- 		NL_SET_ERR_MSG_MOD(extack, "FW activate aborted, PCI reads fail after reset");
--- 
-2.50.1
-
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -1358,6 +1358,20 @@ static loff_t cifs_remap_file_range(stru
+ 			truncate_setsize(target_inode, new_size);
+ 			fscache_resize_cookie(cifs_inode_cookie(target_inode),
+ 					      new_size);
++		} else if (rc == -EOPNOTSUPP) {
++			/*
++			 * copy_file_range syscall man page indicates EINVAL
++			 * is returned e.g when "fd_in and fd_out refer to the
++			 * same file and the source and target ranges overlap."
++			 * Test generic/157 was what showed these cases where
++			 * we need to remap EOPNOTSUPP to EINVAL
++			 */
++			if (off >= src_inode->i_size) {
++				rc = -EINVAL;
++			} else if (src_inode == target_inode) {
++				if (off + len > destoff)
++					rc = -EINVAL;
++			}
+ 		}
+ 		if (rc == 0 && new_size > target_cifsi->netfs.zero_point)
+ 			target_cifsi->netfs.zero_point = new_size;
 
 
 
