@@ -1,165 +1,134 @@
-Return-Path: <stable+bounces-177030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF96B401F5
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:06:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DEFB4025A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:15:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A778D7A4F62
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:05:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F8DB16D1D8
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:13:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8322D9EF8;
-	Tue,  2 Sep 2025 13:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1216D2DE6FA;
+	Tue,  2 Sep 2025 13:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UQCIDNYV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kUpGCqXc"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932C52D59F7;
-	Tue,  2 Sep 2025 13:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B902DD5F3;
+	Tue,  2 Sep 2025 13:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756818403; cv=none; b=t6zXLZ1rCudLDag6mrKlOfqi/NhmzaWKdddXKIQ9WLPuINAQCmeF7kc84mqWyaYxDiDO1wBttlNwnuY1JQ1xZneiQauS9hjfuCx89pZz9h2MV5CnWGoOqM5Jqq/IJFRrXVsBdkY7j6ABlJ0/1xG6szKrnQmXE8/gZV4TL7lxMlo=
+	t=1756818785; cv=none; b=YPfD4MxRsgGIZ2h+rS7DV+8s2P80SZTEPm9lXAozAxJXVig4jmkxJoxkxzM/KcC2PDp5DkMHztLl6O4GRE9uGO3AEpVRhc0AfJFEI9jJTEQsGhevaD7arqGNcd60RfAM0uxJt+2Z2MfTS8AVSOf7U7yvBZDvA/zsL8PtDaJ+Q4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756818403; c=relaxed/simple;
-	bh=304mhcCsZ3DPW/ZeHF0UCdKTce70KODDh/J7W7FbB/E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p1s0H/6pSDMlH+uwD4YCX6th3hQUBuGFBRW5p3uivbxaY9zKwRoT763+mrOCyLAeLaoorB7TPy2+ffHHlDVZsW+/BBE2scBYlsGErf+2CYyEwdvPyyOnepJx/aP3Kk+ZVEjg6rq5kiPZ4PT87G/oB7PN+CcUeWKLiow20jSiSNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UQCIDNYV; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756818402; x=1788354402;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=304mhcCsZ3DPW/ZeHF0UCdKTce70KODDh/J7W7FbB/E=;
-  b=UQCIDNYVGpxtvgbkoY7oFmF1uEHsOnvPkPekgEus5qGJynNt6xWHlzFa
-   TWHxSPe0G3h5Utjn7kuBwsm64ho/mdg76e2OvNOzK8lNOHc9KIr9WD+p8
-   3zER82Z0y7/EQNQ1p0NDn++8QH1CpnQbKEWuxamzkJzp4+v1Rc37odw56
-   wDJ30Ycr7hTDWtJcY45rF0SjGNTR+BQ+EaM2ai9fSVUTo7ipuwHJ87ge+
-   zug56QWzODqP8bIW1vfmvzkiaU6dRqgDEm/EZfxU0PAkON0tcjPECUrLN
-   ZeLPftYJbNYKKjKs677gxRgzPge20DevVGRTYJsP+Tug/Y/AKJfPvkntz
-   g==;
-X-CSE-ConnectionGUID: v59mql1DQYSn9d5KaX9Kow==
-X-CSE-MsgGUID: Kjs3JnUMS8GhbW3/WQUYzw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="59028180"
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="59028180"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:06:39 -0700
-X-CSE-ConnectionGUID: ahJv6su8QkCwIee8PybbEA==
-X-CSE-MsgGUID: WBNgT/TJTkOlqIdmDhs4Zg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="171432863"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:06:29 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1utQiN-0000000AhP0-4600;
-	Tue, 02 Sep 2025 16:06:23 +0300
-Date: Tue, 2 Sep 2025 16:06:23 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v7 01/16] pinctrl: check the return value of
- pinmux_ops::get_function_name()
-Message-ID: <aLbrz5DYS5Yxx_UE@smile.fi.intel.com>
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-1-bb091daedc52@linaro.org>
+	s=arc-20240116; t=1756818785; c=relaxed/simple;
+	bh=9NMZUI5Y7HI3Rw9WBW25pqDwev8NNixgVWRQ/sY2W6s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AIqQ5U7XYjbpeU07N2XuwWSV+Vp6fdakg4LC1SC9tfA49LpbhmvoY+jzAyWlZ4l/CpAZR6ZYTWLDHTujU1mOcl5/nH/oGYTzMZWIEwwZ21LPBFRcn4cp2v5QHsWqFhPe6K0IPkfIZsQNwGsdHkwQdqQfgqKuNgbSxOiDs7fGElY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kUpGCqXc; arc=none smtp.client-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-61bd4ad64c7so1638554eaf.0;
+        Tue, 02 Sep 2025 06:13:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756818782; x=1757423582; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9NMZUI5Y7HI3Rw9WBW25pqDwev8NNixgVWRQ/sY2W6s=;
+        b=kUpGCqXcB8Pj7a+YHKlHosOpY9crgmyl8MmU8jeYiwr5PNuJuBuAhYI/U0gap2q7Yr
+         hFsmHs44PR6qd/z3+3jokZj6yoJN/YZSoGpdbu+RRFGuh1B18qbdgKSRDIoBJSPCVAyq
+         9IVAHdPiNOBLzMvmM9urlNB1yuEJvGOgKEUp6zYSMIr6TiHafCwjnEVF37wJ28OqHP/6
+         hjZPuXT3Zr3uiXqkDkFyo9TQ1Y0mykcuIZUbud8NZ8WcoeIpQgVqi0YKWZj91r3f9DfT
+         FgFGjk+yO69T56qvSPjernpTE/tZwoYb2X+CzJiivwAQNhIrKNGkAzK/Htj02euaogfv
+         an2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756818782; x=1757423582;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9NMZUI5Y7HI3Rw9WBW25pqDwev8NNixgVWRQ/sY2W6s=;
+        b=VWfzrAwxZ7uXFCc7sfdwjzOkcoM7trmnYpL2WqnD23XMvaN5ER0EzWbf3jExRdEPxY
+         qVi0S/sLJnGozeM+Kd8CFhCkfTTxfLLJx7dhMPU3z9sssN8bu1/nFfvEMRkE8SZ1dFYi
+         TzxvuxP0uAqkGMSJgMkSP0DC9hcDagoq/enmPpQCqFtce5oZH12688IBN2s2S4hQCy7d
+         3uQW5/rIaQ314GP5sLA53YNGj3J44Pr+2I2fNMahSHFKtMUWjmuLRPb+bdueLq8W/sr/
+         EHZsaTkqjyYawRGWuaI2nyUcb+qM4o8zFC1CRdQlzO06jvuvsyIg9tpX5isV+34lAc3R
+         AXdA==
+X-Forwarded-Encrypted: i=1; AJvYcCUYnvGUp+Du+NjUG5ENHMu0zs9qhcb697d1pbDsmdXsqZDuSQCYAUkrA5RFU+oND0+yobziSVUY@vger.kernel.org, AJvYcCVwI0wvoXRDSQ6OxKOATPL1wJuiBxGPE8NKQlv08BB9M9oU/xQ92HZTKfQsYbHYDQvZb5Rgi7/VRNY=@vger.kernel.org, AJvYcCW2fEdSsRy4vHeCTrJTTVPi8kwnNE+ttXO8aMpsvjw2Cu5xf1SjPDTcQkKif0hnIhbSSHiBcvsL9D27vucY@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqRuIgvourLJ+/3CCJbM0XIURMpiT+SIVjq/AwMLHJPdCGAILY
+	JC55EdUKtTQCYRdICYIIDuKcrdqgdmgcsC/8g6AtrKfLKcYVrX5lWeVA1G4QiGiVen5zE4ScttS
+	EFe3kUT0+vD4ygNU7kvqeRuU02GgCU55C0Ctu7BuJiCWX
+X-Gm-Gg: ASbGncu+p6GtA0cxF7m7BJv3fUK1vq1KCmumq+6RVrIuFoHYoRdmUoUaWfgYG8aNQn8
+	r7K4oQIed/izZZNfYRqVWgBORxFGkEvPQ63RIIAKL4sBZUnft2JdJeTT6vIZM06eKlQC0U14WmS
+	QaotDFK5WQM0KZfSNFqmCwrU4Pn2nhOjAdAS/904T6hJ7rhwzrdRkQVSaiz7/jC0N9VKY9kAjiM
+	2o+U4SJ+E+4RspsSMCNFyjkKLO//JYwwSWULZL/SJdUXiR18w==
+X-Google-Smtp-Source: AGHT+IGVjb+W5RP9joRiPgJI7s3rpEWa84DA86mjTCeX0rni7ytI4P5B9ydSHyX6x6nu/YAiDN0oL7q964gtawLngK4=
+X-Received: by 2002:a05:6808:a550:10b0:438:1c5f:dbf4 with SMTP id
+ 5614622812f47-4381c5fdfe2mr459981b6e.33.1756818782210; Tue, 02 Sep 2025
+ 06:13:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250902-pinctrl-gpio-pinfuncs-v7-1-bb091daedc52@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <20250902090358.2423285-1-linmq006@gmail.com> <aLa65t3j1tmyEMnp@smile.fi.intel.com>
+ <CAH-r-ZHx+vcL3QY0rKP3Lo_qofYLSuxCxqyb=URPSbnStxA5cQ@mail.gmail.com> <aLbOqbuIVWhq4UtL@smile.fi.intel.com>
+In-Reply-To: <aLbOqbuIVWhq4UtL@smile.fi.intel.com>
+From: =?UTF-8?B?5p6X5aaZ5YCp?= <linmq006@gmail.com>
+Date: Tue, 2 Sep 2025 21:12:51 +0800
+X-Gm-Features: Ac12FXwgV4lKoeFyvanf3o9U8nBbczJMjjagB-fI6_fT7YZnE--LcckfImGs_Oo
+Message-ID: <CAH-r-ZHL5vSvieYoRp7n-5k3YfG2PSi1=atHg4+261roGOicpA@mail.gmail.com>
+Subject: Re: [PATCH] dmaengine: dw: dmamux: Fix device reference leak in rzn1_dmamux_route_allocate
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Viresh Kumar <vireshk@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+	Miquel Raynal <miquel.raynal@bootlin.com>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 02, 2025 at 01:59:10PM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> 
-> While the API contract in docs doesn't specify it explicitly,
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> =E4=BA=8E2025=E5=B9=B49=
+=E6=9C=882=E6=97=A5=E5=91=A8=E4=BA=8C 19:03=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Tue, Sep 02, 2025 at 06:18:18PM +0800, =E6=9E=97=E5=A6=99=E5=80=A9 wro=
+te:
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> =E4=BA=8E2025=E5=B9=
+=B49=E6=9C=882=E6=97=A5=E5=91=A8=E4=BA=8C 17:37=E5=86=99=E9=81=93=EF=BC=9A
+> > > On Tue, Sep 02, 2025 at 05:03:58PM +0800, Miaoqian Lin wrote:
+> > > > The reference taken by of_find_device_by_node()
+> > > > must be released when not needed anymore.
+> > > > Add missing put_device() call to fix device reference leaks.
+> > >
+> > > How is this being found? Do you have a stacktrace or kmemleak reports=
+?
+> >
+> > This was found through static code analysis.
+> > The of_find_device_by_node() documentation states that it
+> > "takes a reference to the embedded struct device which needs to be
+> > dropped after use."
+> >
+> > I cross-referenced other of_find_device_by_node() usage patterns to
+> > check the correct usage,
+> > then audited this code and found the problem.
+>
+> You should summarise that in the commit message. But since it's already a=
+pplied
+> it's for the future and up to Vinos if he wants this to be updated.
+>
 
-So, why not to amend the doc at the same time?
+Thank you. I'll include such info in the commit messages for future patches=
+.
 
-> the generic implementation of the get_function_name() callback from struct
-> pinmux_ops - pinmux_generic_get_function_name() - can fail and return
-> NULL. This is already checked in pinmux_check_ops() so add a similar
-> check in pinmux_func_name_to_selector() instead of passing the returned
-> pointer right down to strcmp() where the NULL can get dereferenced. This
-> is normal operation when adding new pinfunctions.
-
-Fixes?
-Reported?
-Closes?
-
-...
-
->  	while (selector < nfuncs) {
->  		const char *fname = ops->get_function_name(pctldev, selector);
->  
-> -		if (!strcmp(function, fname))
-> +		if (fname && !strcmp(function, fname))
->  			return selector;
-
-I would slightly refactor this:
-
-		const char *fname;
-
-		fname = ops->get_function_name(pctldev, selector);
-		if (fname && !strcmp(function, fname))
-			return selector;
-
->  		selector++;
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> > I don't have a stacktrace or kmemleak reports.
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
 
