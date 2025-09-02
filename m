@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-177217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 761D7B40443
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:41:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1096B403A4
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:35:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 542FE1B644E2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8BBA546934
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3532A311953;
-	Tue,  2 Sep 2025 13:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D803176EE;
+	Tue,  2 Sep 2025 13:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="og2+yrda"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHg7NMM3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4CA30BBBD;
-	Tue,  2 Sep 2025 13:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A8030DD31;
+	Tue,  2 Sep 2025 13:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819953; cv=none; b=hl7/U7QSxmzbGU+ndy5yX8g0j6MMdTQznIkXLAjfOCSQjMHXxvuEtW3ZXX8lqwFnCPSi88UVJ4lsniNpIZJ/WsXGAyELpKBdjG8N9KhhqA+Fgx1Sc/58ZrA82dcpHLZdZ9ne0gtS5md46mbp3uSR1MxFozVsC3YhvoKGMWQJryY=
+	t=1756819775; cv=none; b=Jjddsapajwt7YZK7x1YP7PH18qxABuf30Fht+RFdUHETCSvRR4V/ouIXxMYL474dVqDInerScKwKA7y/IbrDOOXU6yKrx3a4SS4tW6Hg1ahqKvnKFr60XEZIJ+OCXM9Ndmo56I0fe1KemjkM6BR/uAfD/JROw6fP3oCI9zSM+Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819953; c=relaxed/simple;
-	bh=5aEUdK3XZbtZq6zvCsWH7qduKbHV4yHeiGIv2dxrsfk=;
+	s=arc-20240116; t=1756819775; c=relaxed/simple;
+	bh=DiKbeOjPAe7ndQR80UNRWrfUH83P/oEEH0iC84HgO0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=agzLTN9ljj4Ym2Jrz2HgnHkumacay8pF0lYOSHc64xF269mxxwT03b8xv9ue/dg8/oY/eyp8EbouIybe0Ievy1m2lsTbi3OQ4qtl9NjOmt58n95nCXiJ+V9/0vUNZbwKBpqMiZVPmo5Z+gEcslWQ1R1ZsSvTjOEcEtg7g4wFOSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=og2+yrda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E816FC4CEED;
-	Tue,  2 Sep 2025 13:32:32 +0000 (UTC)
+	 MIME-Version; b=UZ8U9UT1D0C+USIzrmz3c1pVqcCqETL8THBTG0WzMzlEzwAPYa9rYXqQpyuXEck2sZUPvXwxjmkGSD62J0DaFPITQeJJk3oQx4G/VtnJDJoGnAuybQkSo+SfZuqgVaTc43X7AL7lsDhuTU6sLQdTtzcqJ+IA2U51LmIHr1O77ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHg7NMM3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDD3C4CEED;
+	Tue,  2 Sep 2025 13:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819953;
-	bh=5aEUdK3XZbtZq6zvCsWH7qduKbHV4yHeiGIv2dxrsfk=;
+	s=korg; t=1756819774;
+	bh=DiKbeOjPAe7ndQR80UNRWrfUH83P/oEEH0iC84HgO0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=og2+yrdaVn+wjwB/mEe59pH8kvb/6kPv/YW30N2A16wwZZQOCs9vqHFRd2z2kIU6y
-	 rclV0yaO/r6XImCpBJAgcsRjYR/BZl2GnwDHHiyfg0d65faI0NcFO8ElznFg5K8Pq9
-	 XIn3k0T875eYGNQFYphX62ETPXTeh/aXSUDXuG0Q=
+	b=kHg7NMM3IPfDhptGweT+8eooSKEyn7fXZT60ug6iFq72ZxoKL1/28CC1X2TK1zT6b
+	 8v3toa/Ni6MXoOnDFyTNGlBUBctICC2T4Z6/27ioyrwzi/RQuE2zWjCvw2YWY6OkqB
+	 xv9sHolovAsTGOzuIWROzZn0gBm1y271J8ZkGMGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ludovico de Nittis <ludovico.denittis@collabora.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 29/95] Bluetooth: hci_event: Treat UNKNOWN_CONN_ID on disconnect as success
+Subject: [PATCH 6.16 103/142] drm/mediatek: mtk_hdmi: Fix inverted parameters in some regmap_update_bits calls
 Date: Tue,  2 Sep 2025 15:20:05 +0200
-Message-ID: <20250902131940.730119428@linuxfoundation.org>
+Message-ID: <20250902131952.229380556@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ludovico de Nittis <ludovico.denittis@collabora.com>
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-[ Upstream commit 2f050a5392b7a0928bf836d9891df4851463512c ]
+[ Upstream commit c34414883f773412964404d77cd2fea04c6f7d60 ]
 
-When the host sends an HCI_OP_DISCONNECT command, the controller may
-respond with the status HCI_ERROR_UNKNOWN_CONN_ID (0x02). E.g. this can
-happen on resume from suspend, if the link was terminated by the remote
-device before the event mask was correctly set.
+In mtk_hdmi driver, a recent change replaced custom register access
+function calls by regmap ones, but two replacements by regmap_update_bits
+were done incorrectly, because original offset and mask parameters were
+inverted, so fix them.
 
-This is a btmon snippet that shows the issue:
-```
-> ACL Data RX: Handle 3 flags 0x02 dlen 12
-      L2CAP: Disconnection Request (0x06) ident 5 len 4
-        Destination CID: 65
-        Source CID: 72
-< ACL Data TX: Handle 3 flags 0x00 dlen 12
-      L2CAP: Disconnection Response (0x07) ident 5 len 4
-        Destination CID: 65
-        Source CID: 72
-> ACL Data RX: Handle 3 flags 0x02 dlen 12
-      L2CAP: Disconnection Request (0x06) ident 6 len 4
-        Destination CID: 64
-        Source CID: 71
-< ACL Data TX: Handle 3 flags 0x00 dlen 12
-      L2CAP: Disconnection Response (0x07) ident 6 len 4
-        Destination CID: 64
-        Source CID: 71
-< HCI Command: Set Event Mask (0x03|0x0001) plen 8
-        Mask: 0x3dbff807fffbffff
-          Inquiry Complete
-          Inquiry Result
-          Connection Complete
-          Connection Request
-          Disconnection Complete
-          Authentication Complete
-[...]
-< HCI Command: Disconnect (0x01|0x0006) plen 3
-        Handle: 3 Address: 78:20:A5:4A:DF:28 (Nintendo Co.,Ltd)
-        Reason: Remote User Terminated Connection (0x13)
-> HCI Event: Command Status (0x0f) plen 4
-      Disconnect (0x01|0x0006) ncmd 1
-        Status: Unknown Connection Identifier (0x02)
-```
-
-Currently, the hci_cs_disconnect function treats any non-zero status
-as a command failure. This can be misleading because the connection is
-indeed being terminated and the controller is confirming that is has no
-knowledge of that connection handle. Meaning that the initial request of
-disconnecting a device should be treated as done.
-
-With this change we allow the function to proceed, following the success
-path, which correctly calls `mgmt_device_disconnected` and ensures a
-consistent state.
-
-Link: https://github.com/bluez/bluez/issues/1226
-Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
-Signed-off-by: Ludovico de Nittis <ludovico.denittis@collabora.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: d6e25b3590a0 ("drm/mediatek: hdmi: Use regmap instead of iomem for main registers")
+Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250818-mt8173-fix-hdmi-issue-v1-1-55aff9b0295d@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_hdmi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 768bd5fd808f2..428aba38a3654 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -2694,7 +2694,7 @@ static void hci_cs_disconnect(struct hci_dev *hdev, u8 status)
- 	if (!conn)
- 		goto unlock;
+diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi.c b/drivers/gpu/drm/mediatek/mtk_hdmi.c
+index 8803cd4a8bc9b..4404e1b527b52 100644
+--- a/drivers/gpu/drm/mediatek/mtk_hdmi.c
++++ b/drivers/gpu/drm/mediatek/mtk_hdmi.c
+@@ -182,8 +182,8 @@ static inline struct mtk_hdmi *hdmi_ctx_from_bridge(struct drm_bridge *b)
  
--	if (status) {
-+	if (status && status != HCI_ERROR_UNKNOWN_CONN_ID) {
- 		mgmt_disconnect_failed(hdev, &conn->dst, conn->type,
- 				       conn->dst_type, status);
+ static void mtk_hdmi_hw_vid_black(struct mtk_hdmi *hdmi, bool black)
+ {
+-	regmap_update_bits(hdmi->regs, VIDEO_SOURCE_SEL,
+-			   VIDEO_CFG_4, black ? GEN_RGB : NORMAL_PATH);
++	regmap_update_bits(hdmi->regs, VIDEO_CFG_4,
++			   VIDEO_SOURCE_SEL, black ? GEN_RGB : NORMAL_PATH);
+ }
  
+ static void mtk_hdmi_hw_make_reg_writable(struct mtk_hdmi *hdmi, bool enable)
+@@ -310,8 +310,8 @@ static void mtk_hdmi_hw_send_info_frame(struct mtk_hdmi *hdmi, u8 *buffer,
+ 
+ static void mtk_hdmi_hw_send_aud_packet(struct mtk_hdmi *hdmi, bool enable)
+ {
+-	regmap_update_bits(hdmi->regs, AUDIO_PACKET_OFF,
+-			   GRL_SHIFT_R2, enable ? 0 : AUDIO_PACKET_OFF);
++	regmap_update_bits(hdmi->regs, GRL_SHIFT_R2,
++			   AUDIO_PACKET_OFF, enable ? 0 : AUDIO_PACKET_OFF);
+ }
+ 
+ static void mtk_hdmi_hw_config_sys(struct mtk_hdmi *hdmi)
 -- 
 2.50.1
 
