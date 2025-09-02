@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-177161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594A8B40382
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:33:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B690DB4041B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 323B64E3C24
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32DA0189F72F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827D7319864;
-	Tue,  2 Sep 2025 13:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9F932A823;
+	Tue,  2 Sep 2025 13:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/1iGlez"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDl95BKZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAAA30DD31;
-	Tue,  2 Sep 2025 13:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0D93009EF;
+	Tue,  2 Sep 2025 13:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819778; cv=none; b=U/6smXL/e7FdRf8XcGitHw11U3qflVbcJRBambEqc8JiysMOerC/Htn8LdrbLaJj+LjOnZyDLnKb9Tc/d7HBg9AjrEHsG536+mVdxmybPdrFwlvNW9sjHU8F021VPzrqDdbiQ1QHuGYMtZnnk9hWm6ImI4eUSP5I51ci3jskpgY=
+	t=1756819867; cv=none; b=PkN+fEHNsPgaevwsiB3VfQH3Y1K5Ts55u5CQqNs37OMdjlhdYSl4v9lj8pEdAWmoP0z+MBLL5H3ZI7kUwsSL/KMPScikpywmxGSZ4QbqlVM/tczKJmE7RAxDCBIK0xmya0ipvVujkpYuqSWfZSDEnPBp4vckkSB8i9HFUUUBPC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819778; c=relaxed/simple;
-	bh=XM8dlX9Ty4kUQv+w6vk/+qzl6i26u4mQ+Z6x+FewmZA=;
+	s=arc-20240116; t=1756819867; c=relaxed/simple;
+	bh=p6I7KygETCE2yZBTayXyYizquha/Br0puwe5bWuXQfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HyEoARhOcLlHLSBqeVMfHyFSuURMswqwfonUV4nX6Lr86EBJYsCZ7ZNPNYoMGf6uRkmgpYVY7ygt20miLDzYAa2eN7kZ/xTXeWc8v2CTeyYbinLPnZxJZ5MBEJbYPEBabae7XlqtaVNG4/xJDGfFW+RjdIOO7fEWE3wyRaUHlcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/1iGlez; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10DEC4CEED;
-	Tue,  2 Sep 2025 13:29:37 +0000 (UTC)
+	 MIME-Version; b=AEDomUtUpQ4hLZOY3dzs6/04Gi1dBpc53rUe4IEw72qX9XhIJUIuL8z0bJsTkzl0oM5MDGyABDbCcI8csp3uKnCTFPjjV+0XYFw7Rd/Ur0LofG03thFGdS+DpxSf4LwGTlU+tXDCYRAoFwxhbGE739/ktjRpdLsTrB/5iNa2TF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDl95BKZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF7EC4CEED;
+	Tue,  2 Sep 2025 13:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819778;
-	bh=XM8dlX9Ty4kUQv+w6vk/+qzl6i26u4mQ+Z6x+FewmZA=;
+	s=korg; t=1756819867;
+	bh=p6I7KygETCE2yZBTayXyYizquha/Br0puwe5bWuXQfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w/1iGlezib6RQ6d353PHKuwRiFhjFHLQbIhLjXhTA60oRJ3dmBMvSu0q7f3qhq6hK
-	 ezJrJSaTtDActwtm0UfFa4Ufh5PQzNB55Wh3C3b5S/T7VvrAsOEvi6kmbTMi+GNnDh
-	 W11ayLuKIfytorKZFWt7sjwgaTqEUmCT7dRQRv0Q=
+	b=PDl95BKZ8ybccIBGFNmQJ/0MMFwZDMC53Qk/jmqrNpX4uBk7zLpboC00ifL+rKzbc
+	 8LP11wri/uSf3X/ep5hj7NzGhCOj9ZdMvMgvD10nbJgKBuHU90MlEbYKLT6xGKiAbH
+	 P+UDZwRfDelUdEpFjuF+le+38VKYSK3npA0ayEF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takamitsu Iwai <takamitz@amazon.co.jp>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 094/142] net: rose: split remove and free operations in rose_remove_neigh()
+Subject: [PATCH 6.12 20/95] drm/msm: Defer fd_install in SUBMIT ioctl
 Date: Tue,  2 Sep 2025 15:19:56 +0200
-Message-ID: <20250902131951.864253944@linuxfoundation.org>
+Message-ID: <20250902131940.388602075@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takamitsu Iwai <takamitz@amazon.co.jp>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-[ Upstream commit dcb34659028f856c423a29ef9b4e2571d203444d ]
+[ Upstream commit f22853435bbd1e9836d0dce7fd99c040b94c2bf1 ]
 
-The current rose_remove_neigh() performs two distinct operations:
-1. Removes rose_neigh from rose_neigh_list
-2. Frees the rose_neigh structure
+Avoid fd_install() until there are no more potential error paths, to
+avoid put_unused_fd() after the fd is made visible to userspace.
 
-Split these operations into separate functions to improve maintainability
-and prepare for upcoming refcount_t conversion. The timer cleanup remains
-in rose_remove_neigh() because free operations can be called from timer
-itself.
-
-This patch introduce rose_neigh_put() to handle the freeing of rose_neigh
-structures and modify rose_remove_neigh() to handle removal only.
-
-Signed-off-by: Takamitsu Iwai <takamitz@amazon.co.jp>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250823085857.47674-2-takamitz@amazon.co.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: d860d1faa6b2 ("net: rose: convert 'use' field to refcount_t")
+Fixes: 68dc6c2d5eec ("drm/msm: Fix submit error-path leaks")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/665363/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/rose.h    |  8 ++++++++
- net/rose/rose_route.c | 15 ++++++---------
- 2 files changed, 14 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/msm/msm_gem_submit.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/rose.h b/include/net/rose.h
-index 23267b4efcfa3..174b4f605d849 100644
---- a/include/net/rose.h
-+++ b/include/net/rose.h
-@@ -151,6 +151,14 @@ struct rose_sock {
+diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
+index 4b3a8ee8e278f..3eee6517541e3 100644
+--- a/drivers/gpu/drm/msm/msm_gem_submit.c
++++ b/drivers/gpu/drm/msm/msm_gem_submit.c
+@@ -879,12 +879,8 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
  
- #define rose_sk(sk) ((struct rose_sock *)(sk))
- 
-+static inline void rose_neigh_put(struct rose_neigh *rose_neigh)
-+{
-+	if (rose_neigh->ax25)
-+		ax25_cb_put(rose_neigh->ax25);
-+	kfree(rose_neigh->digipeat);
-+	kfree(rose_neigh);
-+}
-+
- /* af_rose.c */
- extern ax25_address rose_callsign;
- extern int  sysctl_rose_restart_request_timeout;
-diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
-index b72bf8a08d489..0c44c416f4853 100644
---- a/net/rose/rose_route.c
-+++ b/net/rose/rose_route.c
-@@ -234,20 +234,12 @@ static void rose_remove_neigh(struct rose_neigh *rose_neigh)
- 
- 	if ((s = rose_neigh_list) == rose_neigh) {
- 		rose_neigh_list = rose_neigh->next;
--		if (rose_neigh->ax25)
--			ax25_cb_put(rose_neigh->ax25);
--		kfree(rose_neigh->digipeat);
--		kfree(rose_neigh);
- 		return;
+ 	if (ret == 0 && args->flags & MSM_SUBMIT_FENCE_FD_OUT) {
+ 		sync_file = sync_file_create(submit->user_fence);
+-		if (!sync_file) {
++		if (!sync_file)
+ 			ret = -ENOMEM;
+-		} else {
+-			fd_install(out_fence_fd, sync_file->file);
+-			args->fence_fd = out_fence_fd;
+-		}
  	}
  
- 	while (s != NULL && s->next != NULL) {
- 		if (s->next == rose_neigh) {
- 			s->next = rose_neigh->next;
--			if (rose_neigh->ax25)
--				ax25_cb_put(rose_neigh->ax25);
--			kfree(rose_neigh->digipeat);
--			kfree(rose_neigh);
- 			return;
- 		}
- 
-@@ -331,8 +323,10 @@ static int rose_del_node(struct rose_route_struct *rose_route,
- 		if (rose_node->neighbour[i] == rose_neigh) {
- 			rose_neigh->count--;
- 
--			if (rose_neigh->count == 0 && rose_neigh->use == 0)
-+			if (rose_neigh->count == 0 && rose_neigh->use == 0) {
- 				rose_remove_neigh(rose_neigh);
-+				rose_neigh_put(rose_neigh);
-+			}
- 
- 			rose_node->count--;
- 
-@@ -513,6 +507,7 @@ void rose_rt_device_down(struct net_device *dev)
- 		}
- 
- 		rose_remove_neigh(s);
-+		rose_neigh_put(s);
- 	}
- 	spin_unlock_bh(&rose_neigh_list_lock);
- 	spin_unlock_bh(&rose_node_list_lock);
-@@ -569,6 +564,7 @@ static int rose_clear_routes(void)
- 		if (s->use == 0 && !s->loopback) {
- 			s->count = 0;
- 			rose_remove_neigh(s);
-+			rose_neigh_put(s);
- 		}
+ 	if (ret)
+@@ -912,10 +908,14 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+ out_unlock:
+ 	mutex_unlock(&queue->lock);
+ out_post_unlock:
+-	if (ret && (out_fence_fd >= 0)) {
+-		put_unused_fd(out_fence_fd);
++	if (ret) {
++		if (out_fence_fd >= 0)
++			put_unused_fd(out_fence_fd);
+ 		if (sync_file)
+ 			fput(sync_file->file);
++	} else if (sync_file) {
++		fd_install(out_fence_fd, sync_file->file);
++		args->fence_fd = out_fence_fd;
  	}
  
-@@ -1301,6 +1297,7 @@ void __exit rose_rt_free(void)
- 		rose_neigh = rose_neigh->next;
- 
- 		rose_remove_neigh(s);
-+		rose_neigh_put(s);
- 	}
- 
- 	while (rose_node != NULL) {
+ 	if (!IS_ERR_OR_NULL(submit)) {
 -- 
 2.50.1
 
