@@ -1,227 +1,192 @@
-Return-Path: <stable+bounces-177497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260E6B405BF
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:57:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F45B405D3
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D02EA56575C
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:52:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F41318942AB
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A61A3054F4;
-	Tue,  2 Sep 2025 13:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07CD9311C30;
+	Tue,  2 Sep 2025 13:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="hmwtlyoD";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="r+uD5WzL";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="hmwtlyoD";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="r+uD5WzL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eRgAjFqj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244E5307AD7
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 13:47:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F393212556;
+	Tue,  2 Sep 2025 13:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820845; cv=none; b=GbIyDdUmcQHFk+7PXfDlecvHgNJwbQjF5KNABpVd0lZgxfHcP9FjDHBRbr7b03Vv05mM0xA1nlJPriiO/PgrWAsBSQ3j5TNemYZByNbZaTk9CwilYIC9rCbaAFefQTmPis4+nvkzjk+zplAvby5fIECT1po3Yl0kjk6JUxmGSFk=
+	t=1756821039; cv=none; b=D0MhMCiaGBaogt0XtGKiGPEGRu//aOgjdmP0fnI4pLTp0mUfuC+rd4dod409b6PqXEpbh7hLbMkAbwBIrbRpI29761mheTDe7dVFgK8cr9VHItVn52h2tnWD2c600iE/viKiOXbm25muhlldwipvHsQbMrNZYkkoCtC4txjemEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820845; c=relaxed/simple;
-	bh=E1iDV2jdVHvYPW6AbnlI+lsQWvIiTGOi+hZjLgN3oWY=;
+	s=arc-20240116; t=1756821039; c=relaxed/simple;
+	bh=pxx41/VBJwEQCpU5u+vMOlc6AdRXauTq/XBO/2b9BuM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fuwH33ZO9+2o87qfhnUWXooCJqRMFQyerZmlNn9M2/PGkjeg31jQkdIqOWOow5Oxx2uZho72kLUnIfhMfvYSaRDdI+bH8IFSjjvov51t3Cdragsiq4RaEAQyC3eusG/IAfprkz/nhhhIYeeCn4vFTVLdHCqnWKknJs+OA8qJGLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=hmwtlyoD; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=r+uD5WzL; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=hmwtlyoD; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=r+uD5WzL; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6F6D71F452;
-	Tue,  2 Sep 2025 13:47:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756820842; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DUP+jDkLYAcvHMZoNfo3+aWkCxWsUnenhaP136B6SY8=;
-	b=hmwtlyoDxf9IyGtzbkq2encQug20a8icIyopGBfWgdw7tG9O6ofRyNJ41iZZayfnDtQIS8
-	T4X1bLmPprkZrUG7YsKLp0qyC8tfv2Dh8xnmnZFxiyUBPxq9zdDp2gxgpf5/f/RHEswobT
-	bBM1jJ6pfQK7dWDSWk2uAhfa8zorxzM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756820842;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DUP+jDkLYAcvHMZoNfo3+aWkCxWsUnenhaP136B6SY8=;
-	b=r+uD5WzLCNjOHuF/UQGoxvcwKA2TBdBg2/f2iFZT29a3lF91XbPwzzGpyoDJewENpSkRCe
-	wbfdT2/4qqPDHYAw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1756820842; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DUP+jDkLYAcvHMZoNfo3+aWkCxWsUnenhaP136B6SY8=;
-	b=hmwtlyoDxf9IyGtzbkq2encQug20a8icIyopGBfWgdw7tG9O6ofRyNJ41iZZayfnDtQIS8
-	T4X1bLmPprkZrUG7YsKLp0qyC8tfv2Dh8xnmnZFxiyUBPxq9zdDp2gxgpf5/f/RHEswobT
-	bBM1jJ6pfQK7dWDSWk2uAhfa8zorxzM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1756820842;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DUP+jDkLYAcvHMZoNfo3+aWkCxWsUnenhaP136B6SY8=;
-	b=r+uD5WzLCNjOHuF/UQGoxvcwKA2TBdBg2/f2iFZT29a3lF91XbPwzzGpyoDJewENpSkRCe
-	wbfdT2/4qqPDHYAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 62C9113882;
-	Tue,  2 Sep 2025 13:47:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Lck9GGr1tmjPYgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 02 Sep 2025 13:47:22 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 0D584A0A9F; Tue,  2 Sep 2025 15:47:18 +0200 (CEST)
-Date: Tue, 2 Sep 2025 15:47:18 +0200
-From: Jan Kara <jack@suse.cz>
-To: Shashank A P <shashank.ap@samsung.com>
-Cc: jack@suse.com, linux-kernel@vger.kernel.org, shadakshar.i@samsung.com, 
-	thiagu.r@samsung.com, hy50.seo@samsung.com, kwangwon.min@samsung.com, 
-	alim.akhtar@samsung.com, h10.kim@samsung.com, kwmad.kim@samsung.com, 
-	selvarasu.g@samsung.com, stable@vger.kernel.org
-Subject: Re: [PATCH] fs: quota: create dedicated workqueue for
- quota_release_work
-Message-ID: <ufb72d6p54cxyzcy5glrfzaz7xm3inzp44k6rdff5on3daua4s@u2rf7xt4hdie>
-References: <CGME20250901092950epcas5p35accdcb60fe3ba58772289058a12f8a1@epcas5p3.samsung.com>
- <20250901092905.2115-1-shashank.ap@samsung.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=leGMOxLdK48Mvg48LLwHFnZM0figRKf4P68RRMQlMcPYzPUEJYBbaEhJi4fUZ0Dj//2HJVr2khUFTqCT3l6T0xuM+YIi52rmkFBslcnVxW1wrzfmEYBJDuue5O3XDa65imx6ZWDzS69tC6SpF2jrDcoPZQqEy7aSP4osexAVulg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eRgAjFqj; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756821038; x=1788357038;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=pxx41/VBJwEQCpU5u+vMOlc6AdRXauTq/XBO/2b9BuM=;
+  b=eRgAjFqjrvlk3rcCDhqI43ucdTkT/uOXlKMyRfYBSbsfxy7wKMiCYiU4
+   rRH6X5fWqrUvQSc6tyv0mZhHxPGjPLVLZd7iowQYgLqC/PPwXDi96UHQq
+   YmUA38gVUu5waT7H/8HpHvB+aNzX2xavUHd+ObEBZ5pAr5HSyu6IFqK7r
+   yUi14fqD5BlqhnklO+lBigcehHsn7YXZq5Z9jUfQTAD2E9WG0LpQLQ3ux
+   YfGbn4A6wfw5RGN1VMFlIZENAfKJVXzk1aYUWI/RL241J93Xd/2787EVi
+   3jDjd3EH8nZj1WCowwDa5vwdFubZEtufUfinT7tF+1aLKLnbXTCp8MXBG
+   g==;
+X-CSE-ConnectionGUID: pAVJrVGfSqSLaUBO+akCwg==
+X-CSE-MsgGUID: iVN9697HTdGfGFlrWT5emQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="62738133"
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="62738133"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:50:37 -0700
+X-CSE-ConnectionGUID: ZHIE/dHOSB+FAZRCRRCs4Q==
+X-CSE-MsgGUID: 2IiLBKTERdG7VU87j86+iA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="176590815"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:50:25 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1utROu-0000000AhyY-2NM3;
+	Tue, 02 Sep 2025 16:50:20 +0300
+Date: Tue, 2 Sep 2025 16:50:20 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Tony Lindgren <tony@atomide.com>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v7 01/16] pinctrl: check the return value of
+ pinmux_ops::get_function_name()
+Message-ID: <aLb2HH5zgxdbDiPo@smile.fi.intel.com>
+References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+ <20250902-pinctrl-gpio-pinfuncs-v7-1-bb091daedc52@linaro.org>
+ <aLbrz5DYS5Yxx_UE@smile.fi.intel.com>
+ <CAMRc=Mfx5czDM=vfEYhFtVO3MviYaW4wKBYjGZ9ZnMbr-+T4mg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250901092905.2115-1-shashank.ap@samsung.com>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-0.998];
-	MIME_GOOD(-0.10)[text/plain];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Score: -3.80
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=Mfx5czDM=vfEYhFtVO3MviYaW4wKBYjGZ9ZnMbr-+T4mg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Mon 01-09-25 14:59:00, Shashank A P wrote:
-> There is a kernel panic due to WARN_ONCE when panic_on_warn is set.
+On Tue, Sep 02, 2025 at 03:29:31PM +0200, Bartosz Golaszewski wrote:
+> On Tue, Sep 2, 2025 at 3:06 PM Andy Shevchenko
+> <andriy.shevchenko@intel.com> wrote:
+> > On Tue, Sep 02, 2025 at 01:59:10PM +0200, Bartosz Golaszewski wrote:
+> > >
+> > > While the API contract in docs doesn't specify it explicitly,
+> >
+> > So, why not to amend the doc at the same time?
 > 
-> This issue occurs when writeback is triggered due to sync call for an
-> opened file(ie, writeback reason is WB_REASON_SYNC). When f2fs balance
-> is needed at sync path, flush for quota_release_work is triggered.
-> By default quota_release_work is queued to "events_unbound" queue which
-> does not have WQ_MEM_RECLAIM flag. During f2fs balance "writeback"
-> workqueue tries to flush quota_release_work causing kernel panic due to
-> MEM_RECLAIM flag mismatch errors.
-> 
-> This patch creates dedicated workqueue with WQ_MEM_RECLAIM flag
-> for work quota_release_work.
-> 
-> ------------[ cut here ]------------
-> WARNING: CPU: 4 PID: 14867 at kernel/workqueue.c:3721 check_flush_dependency+0x13c/0x148
-> Call trace:
->  check_flush_dependency+0x13c/0x148
->  __flush_work+0xd0/0x398
->  flush_delayed_work+0x44/0x5c
->  dquot_writeback_dquots+0x54/0x318
->  f2fs_do_quota_sync+0xb8/0x1a8
->  f2fs_write_checkpoint+0x3cc/0x99c
->  f2fs_gc+0x190/0x750
->  f2fs_balance_fs+0x110/0x168
->  f2fs_write_single_data_page+0x474/0x7dc
->  f2fs_write_data_pages+0x7d0/0xd0c
->  do_writepages+0xe0/0x2f4
->  __writeback_single_inode+0x44/0x4ac
->  writeback_sb_inodes+0x30c/0x538
->  wb_writeback+0xf4/0x440
->  wb_workfn+0x128/0x5d4
->  process_scheduled_works+0x1c4/0x45c
->  worker_thread+0x32c/0x3e8
->  kthread+0x11c/0x1b0
->  ret_from_fork+0x10/0x20
-> Kernel panic - not syncing: kernel: panic_on_warn set ...
-> 
-> Fixes: ac6f420291b3 ("quota: flush quota_release_work upon quota writeback")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Shashank A P <shashank.ap@samsung.com>
+> Because this series is already big as is. That would be another commit
+> that can be separate.
 
-Thanks. It seems a bit unfortunate that we have to create a separate
-workqueue just for this but I don't see a different easy solution. So I've
-added your patch to my tree.
+I meant _in the same_ patch.
 
-								Honza
+> > > the generic implementation of the get_function_name() callback from struct
+> > > pinmux_ops - pinmux_generic_get_function_name() - can fail and return
+> > > NULL. This is already checked in pinmux_check_ops() so add a similar
+> > > check in pinmux_func_name_to_selector() instead of passing the returned
+> > > pointer right down to strcmp() where the NULL can get dereferenced. This
+> > > is normal operation when adding new pinfunctions.
 
-> ---
->  fs/quota/dquot.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
+> > Fixes?
 > 
-> diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-> index df4a9b348769..d0f83a0c42df 100644
-> --- a/fs/quota/dquot.c
-> +++ b/fs/quota/dquot.c
-> @@ -162,6 +162,9 @@ static struct quota_module_name module_names[] = INIT_QUOTA_MODULE_NAMES;
->  /* SLAB cache for dquot structures */
->  static struct kmem_cache *dquot_cachep;
->  
-> +/* workqueue for work quota_release_work*/
-> +struct workqueue_struct *quota_unbound_wq;
-> +
->  void register_quota_format(struct quota_format_type *fmt)
->  {
->  	spin_lock(&dq_list_lock);
-> @@ -881,7 +884,7 @@ void dqput(struct dquot *dquot)
->  	put_releasing_dquots(dquot);
->  	atomic_dec(&dquot->dq_count);
->  	spin_unlock(&dq_list_lock);
-> -	queue_delayed_work(system_unbound_wq, &quota_release_work, 1);
-> +	queue_delayed_work(quota_unbound_wq, &quota_release_work, 1);
->  }
->  EXPORT_SYMBOL(dqput);
->  
-> @@ -3041,6 +3044,11 @@ static int __init dquot_init(void)
->  
->  	shrinker_register(dqcache_shrinker);
->  
-> +	quota_unbound_wq = alloc_workqueue("quota_events_unbound",
-> +					   WQ_UNBOUND | WQ_MEM_RECLAIM, WQ_MAX_ACTIVE);
-> +	if (!quota_unbound_wq)
-> +		panic("Cannot create quota_unbound_wq\n");
-> +
->  	return 0;
->  }
->  fs_initcall(dquot_init);
-> -- 
-> 2.34.1
+> This has always been like that.
 > 
+> > Reported?
+> 
+> I mean, technically Mark Brown reported my previous patch failing but
+> I don't think we do this if we're still within the same series just
+> another iteration?
+> 
+> > Closes?
+> 
+> Ditto.
+
+I meant that this fixes a potential issue disregard to your series, right?
+
+...
+
+> > >       while (selector < nfuncs) {
+> > >               const char *fname = ops->get_function_name(pctldev, selector);
+> > >
+> > > -             if (!strcmp(function, fname))
+> > > +             if (fname && !strcmp(function, fname))
+> > >                       return selector;
+> >
+> > I would slightly refactor this:
+> >
+> >                 const char *fname;
+> >
+> >                 fname = ops->get_function_name(pctldev, selector);
+> >                 if (fname && !strcmp(function, fname))
+> >                         return selector;
+> >
+> > >               selector++;
+> >
+> 
+> You can do this in a subsequent patch, I prefer a smaller diff personally.
+
+Sure.
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+With Best Regards,
+Andy Shevchenko
+
+
 
