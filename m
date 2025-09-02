@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-177155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4C6B403C9
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:36:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC8D2B4042E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D19F1B63F17
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45E041B260B7
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B6C313E27;
-	Tue,  2 Sep 2025 13:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C822C3074B3;
+	Tue,  2 Sep 2025 13:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvXAYHG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rUw4ldkH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455ED313E04;
-	Tue,  2 Sep 2025 13:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8485B3054EC;
+	Tue,  2 Sep 2025 13:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819758; cv=none; b=j9RLYsVq4mgmi2LIej6fUokkdvvRy3+2KIq77x3yxU+2T/h/bn9PVE+I986daubvgF5ZhoSlw/JibHztpM03Bq4Tuwb3c2YrrhGi7vlYCfU/AMc4XKSXMbLxPxuT6HAaM2bc9u30TkYBdiX71IfRn457E1cx63aY5TT7e0EXbUg=
+	t=1756819880; cv=none; b=d/tm5k+DUTlRIOMSQiPJNcKKakO20ZrLWsQgEO7VGQ4s52Iwp6qQvwrLU3OppLmvvNM7osLsEJdCRA1uNw+V0J1QTV705QQdoEHG4FfgUNJQWZ5X2Ajg6KiVY8oczzhwdxAau/bmesz/uacsp4hPYmhHIiI+mRtvdEpT1sRBtNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819758; c=relaxed/simple;
-	bh=En3w9yI5fXBjunoeS4Ezr2Ic/mhETn7vfgtO463NMjw=;
+	s=arc-20240116; t=1756819880; c=relaxed/simple;
+	bh=JFA1PbaqKa+DvCHEuJgCdDgrUMi5KbPTqIsO6mLnRN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GmELqlObx6ve1endQonrhjSzniYq/lQ/j7Cced+7jnTUvhJkqaiGOzoHyikDsLXqFASTrH6/Foa19qBgbxrQWrfJdsYRtle0yOJwJPHoVhdH9HHBP6n/xLOqr2okGLD0tfL/qZSsfXW1fgZgWwOkW4cwGht7TK1ysbsISvRaey0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvXAYHG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FCBC4CEED;
-	Tue,  2 Sep 2025 13:29:17 +0000 (UTC)
+	 MIME-Version; b=cPLpTuacPmQ/8ZXxtZhNvmAp0yp+1WmPrSXz/LhjLMjuvjrN5BwjIhFtJBylvw3b93Q/d0m1tDICEOsyroFNej214s46hiHvjhiclsvXMj9IOcEo7wyORUiqeGiTmOnmwZHLwiHKAx+KOWuEnfDPCawCN2XFSmwVfnGojfGT6wI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rUw4ldkH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036D3C4CEED;
+	Tue,  2 Sep 2025 13:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819758;
-	bh=En3w9yI5fXBjunoeS4Ezr2Ic/mhETn7vfgtO463NMjw=;
+	s=korg; t=1756819880;
+	bh=JFA1PbaqKa+DvCHEuJgCdDgrUMi5KbPTqIsO6mLnRN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tvXAYHG7KOeQAwXpDU5+ypz6ekqjIpK4KsTZn8SGj01JP5LuiiICOmZmCAtQFE1kc
-	 CA4udVgMyn2z37l3tFYZaM4PSZ6xSVsHVFKTOv6O8V3jnXcPn5V1kJ4BalVHDR6i0w
-	 DFquv74oafajCTFTFZ6ZZEas/44YlW19+oqe/vGI=
+	b=rUw4ldkHuyvmKU30c4KyxfYij1NBe0PGHRhlaRf2hoa7lHShZzqdXbXQkCdNB0zxi
+	 u4MYmn6/m3Juubm0PnyE2+PNEB0wUE+XPJwAjN+QnqJE39/XBJ66kOgIVPU/2wNN83
+	 3AhtCmh5uyaIBHP+6jqavawYgw4W55TvYkoViuPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	James Chapman <jchapman@katalix.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jason-JH Lin <jason-jh.lin@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 098/142] l2tp: do not use sock_hold() in pppol2tp_session_get_sock()
+Subject: [PATCH 6.12 24/95] drm/mediatek: Add error handling for old state CRTC in atomic_disable
 Date: Tue,  2 Sep 2025 15:20:00 +0200
-Message-ID: <20250902131952.026445742@linuxfoundation.org>
+Message-ID: <20250902131940.540888264@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,114 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jason-JH Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 9b8c88f875c04d4cb9111bd5dd9291c7e9691bf5 ]
+[ Upstream commit 0c6b24d70da21201ed009a2aca740d2dfddc7ab5 ]
 
-pppol2tp_session_get_sock() is using RCU, it must be ready
-for sk_refcnt being zero.
+Introduce error handling to address an issue where, after a hotplug
+event, the cursor continues to update. This situation can lead to a
+kernel panic due to accessing the NULL `old_state->crtc`.
 
-Commit ee40fb2e1eb5 ("l2tp: protect sock pointer of
-struct pppol2tp_session with RCU") was correct because it
-had a call_rcu(..., pppol2tp_put_sk) which was later removed in blamed commit.
+E,g.
+Unable to handle kernel NULL pointer dereference at virtual address
+Call trace:
+ mtk_crtc_plane_disable+0x24/0x140
+ mtk_plane_atomic_update+0x8c/0xa8
+ drm_atomic_helper_commit_planes+0x114/0x2c8
+ drm_atomic_helper_commit_tail_rpm+0x4c/0x158
+ commit_tail+0xa0/0x168
+ drm_atomic_helper_commit+0x110/0x120
+ drm_atomic_commit+0x8c/0xe0
+ drm_atomic_helper_update_plane+0xd4/0x128
+ __setplane_atomic+0xcc/0x110
+ drm_mode_cursor_common+0x250/0x440
+ drm_mode_cursor_ioctl+0x44/0x70
+ drm_ioctl+0x264/0x5d8
+ __arm64_sys_ioctl+0xd8/0x510
+ invoke_syscall+0x6c/0xe0
+ do_el0_svc+0x68/0xe8
+ el0_svc+0x34/0x60
+ el0t_64_sync_handler+0x1c/0xf8
+ el0t_64_sync+0x180/0x188
 
-pppol2tp_recv() can use pppol2tp_session_get_sock() as well.
+Adding NULL pointer checks to ensure stability by preventing operations
+on an invalid CRTC state.
 
-Fixes: c5cbaef992d6 ("l2tp: refactor ppp socket/session relationship")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: James Chapman <jchapman@katalix.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Link: https://patch.msgid.link/20250826134435.1683435-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d208261e9f7c ("drm/mediatek: Add wait_event_timeout when disabling plane")
+Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20250728025036.24953-1-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_ppp.c | 25 ++++++++-----------------
- 1 file changed, 8 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_plane.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
-index fc5c2fd8f34c7..5e12e7ce17d8a 100644
---- a/net/l2tp/l2tp_ppp.c
-+++ b/net/l2tp/l2tp_ppp.c
-@@ -129,22 +129,12 @@ static const struct ppp_channel_ops pppol2tp_chan_ops = {
+diff --git a/drivers/gpu/drm/mediatek/mtk_plane.c b/drivers/gpu/drm/mediatek/mtk_plane.c
+index 74c2704efb664..6e20f7037b5bb 100644
+--- a/drivers/gpu/drm/mediatek/mtk_plane.c
++++ b/drivers/gpu/drm/mediatek/mtk_plane.c
+@@ -292,7 +292,8 @@ static void mtk_plane_atomic_disable(struct drm_plane *plane,
+ 	wmb(); /* Make sure the above parameter is set before update */
+ 	mtk_plane_state->pending.dirty = true;
  
- static const struct proto_ops pppol2tp_ops;
- 
--/* Retrieves the pppol2tp socket associated to a session.
-- * A reference is held on the returned socket, so this function must be paired
-- * with sock_put().
-- */
-+/* Retrieves the pppol2tp socket associated to a session. */
- static struct sock *pppol2tp_session_get_sock(struct l2tp_session *session)
- {
- 	struct pppol2tp_session *ps = l2tp_session_priv(session);
--	struct sock *sk;
--
--	rcu_read_lock();
--	sk = rcu_dereference(ps->sk);
--	if (sk)
--		sock_hold(sk);
--	rcu_read_unlock();
- 
--	return sk;
-+	return rcu_dereference(ps->sk);
+-	mtk_crtc_plane_disable(old_state->crtc, plane);
++	if (old_state && old_state->crtc)
++		mtk_crtc_plane_disable(old_state->crtc, plane);
  }
  
- /* Helpers to obtain tunnel/session contexts from sockets.
-@@ -206,14 +196,13 @@ static int pppol2tp_recvmsg(struct socket *sock, struct msghdr *msg,
- 
- static void pppol2tp_recv(struct l2tp_session *session, struct sk_buff *skb, int data_len)
- {
--	struct pppol2tp_session *ps = l2tp_session_priv(session);
--	struct sock *sk = NULL;
-+	struct sock *sk;
- 
- 	/* If the socket is bound, send it in to PPP's input queue. Otherwise
- 	 * queue it on the session socket.
- 	 */
- 	rcu_read_lock();
--	sk = rcu_dereference(ps->sk);
-+	sk = pppol2tp_session_get_sock(session);
- 	if (!sk)
- 		goto no_sock;
- 
-@@ -510,13 +499,14 @@ static void pppol2tp_show(struct seq_file *m, void *arg)
- 	struct l2tp_session *session = arg;
- 	struct sock *sk;
- 
-+	rcu_read_lock();
- 	sk = pppol2tp_session_get_sock(session);
- 	if (sk) {
- 		struct pppox_sock *po = pppox_sk(sk);
- 
- 		seq_printf(m, "   interface %s\n", ppp_dev_name(&po->chan));
--		sock_put(sk);
- 	}
-+	rcu_read_unlock();
- }
- 
- static void pppol2tp_session_init(struct l2tp_session *session)
-@@ -1530,6 +1520,7 @@ static void pppol2tp_seq_session_show(struct seq_file *m, void *v)
- 		port = ntohs(inet->inet_sport);
- 	}
- 
-+	rcu_read_lock();
- 	sk = pppol2tp_session_get_sock(session);
- 	if (sk) {
- 		state = sk->sk_state;
-@@ -1565,8 +1556,8 @@ static void pppol2tp_seq_session_show(struct seq_file *m, void *v)
- 		struct pppox_sock *po = pppox_sk(sk);
- 
- 		seq_printf(m, "   interface %s\n", ppp_dev_name(&po->chan));
--		sock_put(sk);
- 	}
-+	rcu_read_unlock();
- }
- 
- static int pppol2tp_seq_show(struct seq_file *m, void *v)
+ static void mtk_plane_atomic_update(struct drm_plane *plane,
 -- 
 2.50.1
 
