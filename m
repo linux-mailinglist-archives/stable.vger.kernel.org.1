@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E533CB4039F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A24F5B4042A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8721C179A43
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F04C5479C7
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0AB30DD3A;
-	Tue,  2 Sep 2025 13:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE4F313E23;
+	Tue,  2 Sep 2025 13:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="El5hFIgb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blaZwU6B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A331C84C6;
-	Tue,  2 Sep 2025 13:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA21930DEAE;
+	Tue,  2 Sep 2025 13:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819768; cv=none; b=XElf7G875+7HNcD0ij2RvNYJhEcxd0UbeY/SQ54XG91vTNjGdlYpllN79JLa7/A4x76SWzKPRR2S2E1qZ/CiQyawlAshen/EKjebV6hK+gBQR9vTQWi7Ypb4eTQBCijDTn9CH6ZmyAFY0Qmch0tb7QyVwTS3Y1Pq2vIsehxgBdU=
+	t=1756820022; cv=none; b=RP6snkAZzHhwaH52u4F8sO61eFfkufftj0uC50RbixiscQB45dzQexe96husgNWrmia+NinenRE/zE+kh1aICw8Twhi+cm0Kt4fioVHxYu1ivlzf0uLgPB8usjP0u8kN6hpoakjnF288ga0QGbyI0mdcNxP2jswSGKbCBgqclis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819768; c=relaxed/simple;
-	bh=Wga0JiRsDcmMpolaY1gFKDk1puWrjLpTjtj78ZMFxEc=;
+	s=arc-20240116; t=1756820022; c=relaxed/simple;
+	bh=tCJt1q5ZQypetNb01NvmMXCojeDo59SDArgH/ff2XKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iBQhyjVjnV2/+20Dl6OXsD+lOiPrD0PzFfOG7vch/pN7Y+WLm9ce3NK6bj6axVUfdCI/qjJJ2W2I1M32oAc+PAKUGRbo4gxCJf07mRHfYHf2A2oJS3kkVkLZH6Gjt9H8wYRWOyb38UyyigKPKtmq13G29qttTpOuxQKKkUotS+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=El5hFIgb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054D4C4CEED;
-	Tue,  2 Sep 2025 13:29:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=shLkkUd0Gs8IxjmYbYyBmy0YnQ0YThU+CQnt/MqH+9GxOvoDRll4v/TCwyhl1jDPfLRKX5MbzyFjhnqohT2Wkd3UR5sJ1ZhXXJy8IdZrj7s0kQOhHAt31XUFkFPO0L1xL+guMeEVhMdHANXLUDSz6c/5o1wLW8mYEwmzmriYnws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blaZwU6B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581CDC4CEED;
+	Tue,  2 Sep 2025 13:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819768;
-	bh=Wga0JiRsDcmMpolaY1gFKDk1puWrjLpTjtj78ZMFxEc=;
+	s=korg; t=1756820022;
+	bh=tCJt1q5ZQypetNb01NvmMXCojeDo59SDArgH/ff2XKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=El5hFIgbXmYO02w2xGIIzghAZND0RNSwdC9P1r9Z1UuReRK9kpd9U2HQUZzXB+0JY
-	 yIt97aExOZVoUx2rmDFsjVVJAh1QeSxDREShEqINPKIZQp7kTe+8ZzNiiSDJ9pn8FW
-	 U5gfjirvgCLm2hLK6BzzJJ8JyGJB3iql+V6otveQ=
+	b=blaZwU6B/LkQQLVeEQaPtH/C4I9W63iHNTwdZ894LX3BNRIEPPynKsHCmR8Z+AGPm
+	 8bqbsMHrC8hVq4K3w0xrpqJwXetj3uifOpwtJ4ED+wYT5F93h8Si7u+PHGpTNqI2hk
+	 lVNvd2e9ECXTIZqTXPvRVv9xirHiQNytOr31Yd7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Mandir <neil.mandir@seco.com>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?=E5=8D=A2=E5=9B=BD=E5=AE=8F?= <luguohong@xiaomi.com>,
+	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 101/142] net: macb: Disable clocks once
+Subject: [PATCH 6.12 27/95] HID: input: report battery status changes immediately
 Date: Tue,  2 Sep 2025 15:20:03 +0200
-Message-ID: <20250902131952.151195303@linuxfoundation.org>
+Message-ID: <20250902131940.653108576@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Mandir <neil.mandir@seco.com>
+From: José Expósito <jose.exposito89@gmail.com>
 
-[ Upstream commit dac978e51cce0c1f00a14c4a82f81d387f79b2d4 ]
+[ Upstream commit e94536e1d1818b0989aa19b443b7089f50133c35 ]
 
-When the driver is removed the clocks are disabled twice: once in
-macb_remove and a second time by runtime pm. Disable wakeup in remove so
-all the clocks are disabled and skip the second call to macb_clks_disable.
-Always suspend the device as we always set it active in probe.
+Previously, the battery status (charging/discharging) was not reported
+immediately to user-space. 
 
-Fixes: d54f89af6cc4 ("net: macb: Add pm runtime support")
-Signed-off-by: Neil Mandir <neil.mandir@seco.com>
-Co-developed-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20250826143022.935521-1-sean.anderson@linux.dev
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+For most input devices, this wasn't problematic because changing their
+battery status requires connecting them to a different bus.
+For example, a gamepad would report a discharging status while
+connected via Bluetooth and a charging status while connected via USB.
+
+However, certain devices are not connected or disconnected when their
+battery status changes. For example, a phone battery changes its status
+without connecting or disconnecting it.
+In these cases, the battery status was not reported immediately to user
+space.
+
+Report battery status changes immediately to user space to support
+these kinds of devices.
+
+Fixes: a608dc1c0639 ("HID: input: map battery system charging")
+Reported-by: 卢国宏 <luguohong@xiaomi.com>
+Closes: https://lore.kernel.org/linux-input/aI49Im0sGb6fpgc8@fedora/T/
+Tested-by: 卢国宏 <luguohong@xiaomi.com>
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/hid/hid-input.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 3cb50e5385d49..d949d2ba6cb9f 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5396,14 +5396,11 @@ static void macb_remove(struct platform_device *pdev)
- 		mdiobus_unregister(bp->mii_bus);
- 		mdiobus_free(bp->mii_bus);
+diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
+index b372b74f3e24b..f5c217ac4bfaa 100644
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -609,13 +609,19 @@ static bool hidinput_update_battery_charge_status(struct hid_device *dev,
+ 	return false;
+ }
  
-+		device_set_wakeup_enable(&bp->pdev->dev, 0);
- 		cancel_work_sync(&bp->hresp_err_bh_work);
- 		pm_runtime_disable(&pdev->dev);
- 		pm_runtime_dont_use_autosuspend(&pdev->dev);
--		if (!pm_runtime_suspended(&pdev->dev)) {
--			macb_clks_disable(bp->pclk, bp->hclk, bp->tx_clk,
--					  bp->rx_clk, bp->tsu_clk);
--			pm_runtime_set_suspended(&pdev->dev);
--		}
-+		pm_runtime_set_suspended(&pdev->dev);
- 		phylink_destroy(bp->phylink);
- 		free_netdev(dev);
+-static void hidinput_update_battery(struct hid_device *dev, int value)
++static void hidinput_update_battery(struct hid_device *dev, unsigned int usage,
++				    int value)
+ {
+ 	int capacity;
+ 
+ 	if (!dev->battery)
+ 		return;
+ 
++	if (hidinput_update_battery_charge_status(dev, usage, value)) {
++		power_supply_changed(dev->battery);
++		return;
++	}
++
+ 	if (value == 0 || value < dev->battery_min || value > dev->battery_max)
+ 		return;
+ 
+@@ -642,13 +648,8 @@ static void hidinput_cleanup_battery(struct hid_device *dev)
+ {
+ }
+ 
+-static bool hidinput_update_battery_charge_status(struct hid_device *dev,
+-						  unsigned int usage, int value)
+-{
+-	return false;
+-}
+-
+-static void hidinput_update_battery(struct hid_device *dev, int value)
++static void hidinput_update_battery(struct hid_device *dev, unsigned int usage,
++				    int value)
+ {
+ }
+ #endif	/* CONFIG_HID_BATTERY_STRENGTH */
+@@ -1515,11 +1516,7 @@ void hidinput_hid_event(struct hid_device *hid, struct hid_field *field, struct
+ 		return;
+ 
+ 	if (usage->type == EV_PWR) {
+-		bool handled = hidinput_update_battery_charge_status(hid, usage->hid, value);
+-
+-		if (!handled)
+-			hidinput_update_battery(hid, value);
+-
++		hidinput_update_battery(hid, usage->hid, value);
+ 		return;
  	}
+ 
 -- 
 2.50.1
 
