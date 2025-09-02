@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-177349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B8EB404F2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 897E0B40569
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:53:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A962D1884CA1
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB24A1B66843
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3316530F926;
-	Tue,  2 Sep 2025 13:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64F030E82D;
+	Tue,  2 Sep 2025 13:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0A6eXcO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WibDAz//"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11CF261593;
-	Tue,  2 Sep 2025 13:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734A82D4818;
+	Tue,  2 Sep 2025 13:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820364; cv=none; b=CihGwMNmnmWsGtRk7Otffj9vGyWcFx1ALaBkIp2A8V9t49l74L5rpOQ2qYV2T74NJA2dMuimhNcLtrP3z3QxgCZetKrA7D4IGni2ZQsc32e6kRfCE01Tviq2mf2bqybRYFyjH9NE29xO4IVN6l72Co8LQuJc2wE9lywazF3LfJs=
+	t=1756820640; cv=none; b=tI7AddkvgChpxk4hjmMgrk6Ydq1ryEV8XcGYnMMtoWdQH6SdXcxPXLpf9MPAtUxfMYmLU50C8t/vXwUyueRXXfo82zFrkAb1YTBP+gT/dX9i+q6JEKKg+jdH6PEGmAKZ0NcT9XR6d4LQ/m1CyOH6OSV79Wjc20xUMgAfG/SBPL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820364; c=relaxed/simple;
-	bh=v2kmXIe/DmC/OZuOdFMOSAQMj5faWjR8YwfKkJUBy8I=;
+	s=arc-20240116; t=1756820640; c=relaxed/simple;
+	bh=I4Yn7dm7g9thEasQrS8Q6VXRFHCbJCMcb1kg2ExjKPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B+c2sFX903gSXtYR2Vpual1eVPcJJffdF7zPQ220aRSHaG2Ua7HNWnZWmoZs4X4G9S7EemYubz0k/E5IN411P8f6kOxIzBzNZ+tB6wp+QNFCSmByxMcXxUv/KI+J9DN/X4CESma5c/BcKlNUHBeldyTqCXTkZCrKS8ivC0tin5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0A6eXcO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF8EC4CEED;
-	Tue,  2 Sep 2025 13:39:21 +0000 (UTC)
+	 MIME-Version; b=H7mSphZa5VL3sXCVu38j1TiMpWfgEH1eB+YJqaEoZ2kcJlgk9smV7DnVV0PxEPs7azQabuyLPINDrmKUOkYAVm89GDXeVNbbrWBYWkbD889AGmCy2iVLHnVlkEVh3gT7iS3mf229pwDofRjTteS4CfS5QX8pFY1YwlmZd9bUSlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WibDAz//; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F84C4CEED;
+	Tue,  2 Sep 2025 13:43:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820362;
-	bh=v2kmXIe/DmC/OZuOdFMOSAQMj5faWjR8YwfKkJUBy8I=;
+	s=korg; t=1756820640;
+	bh=I4Yn7dm7g9thEasQrS8Q6VXRFHCbJCMcb1kg2ExjKPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0A6eXcOEpAOb9QSToFH4xXnNvHNLrtCob+DhczuXKQEj95OBS8tiySKCqZJF/3wP
-	 dQFKw+kCbW3quxAcMhGu787+PsIBaSvfDj8Z86iSqYDLzhoX6MANbmWKUChTCeB0fb
-	 l3rXK80QX4AnuDdePVGDISdyqfR8lazDTo0rsuHE=
+	b=WibDAz//UaFxkbSlHe82VKVxpOzEa/BPCkznkQVTgjTNlbtPShh7gWwCfkSY9LjOd
+	 Wct+22Oa6lcC2X0YZKgRlrisyiGOkupLIcx5C3wdDR5T7F/5Sq3H+LtC1dstT/ghZ1
+	 3t6vDIOW9d7CNU7eE5IRiXNWA/3pW1kivpZLZPko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Romain Sioen <romain.sioen@microchip.com>
-Subject: [PATCH 6.6 73/75] HID: mcp2221: Handle reads greater than 60 bytes
+	Andrey Ryabinin <arbn@yandex-team.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 5.15 07/33] vhost/net: Protect ubufs with rcu read lock in vhost_net_ubuf_put()
 Date: Tue,  2 Sep 2025 15:21:25 +0200
-Message-ID: <20250902131937.971637145@linuxfoundation.org>
+Message-ID: <20250902131927.338912647@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+References: <20250902131927.045875971@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-commit 2682468671aa0b4d52ae09779b48212a80d71b91 upstream.
+commit dd54bcf86c91a4455b1f95cbc8e9ac91205f3193 upstream.
 
-When a user requests more than 60 bytes of data the MCP2221 must chunk
-the data in chunks up to 60 bytes long (see command/response code 0x40
-in the datasheet).
-In order to signal that the device has more data the (undocumented) byte
-at byte index 2 of the Get I2C Data response uses the value 0x54. This
-contrasts with the case for the final data chunk where the value
-returned is 0x55 (MCP2221_I2C_READ_COMPL). The fact that 0x55 was not
-returned in the response was interpreted by the driver as a failure
-meaning that all reads of more than 60 bytes would fail.
+When operating on struct vhost_net_ubuf_ref, the following execution
+sequence is theoretically possible:
+CPU0 is finalizing DMA operation                   CPU1 is doing VHOST_NET_SET_BACKEND
+                             // ubufs->refcount == 2
+vhost_net_ubuf_put()                               vhost_net_ubuf_put_wait_and_free(oldubufs)
+                                                     vhost_net_ubuf_put_and_wait()
+                                                       vhost_net_ubuf_put()
+                                                         int r = atomic_sub_return(1, &ubufs->refcount);
+                                                         // r = 1
+int r = atomic_sub_return(1, &ubufs->refcount);
+// r = 0
+                                                      wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
+                                                      // no wait occurs here because condition is already true
+                                                    kfree(ubufs);
+if (unlikely(!r))
+  wake_up(&ubufs->wait);  // use-after-free
 
-Add support for reads that are split over multiple chunks by looking for
-the response code indicating that more data is expected and continuing
-the read as the code intended. Some timing delays are required to ensure
-the chip has time to refill its FIFO as data is read in from the I2C
-bus. This timing has been tested in my system when configured for bus
-speeds of 50KHz, 100KHz, and 400KHz and operates well.
+This leads to use-after-free on ubufs access. This happens because CPU1
+skips waiting for wake_up() when refcount is already zero.
 
-Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Fixes: 67a95c21463d0 ("HID: mcp2221: add usb to i2c-smbus host bridge")
-[romain.sioen@microchip.com: backport to stable, up to 6.8. Add "Fixes" tag]
-Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
+To prevent that use a read-side RCU critical section in vhost_net_ubuf_put(),
+as suggested by Hillf Danton. For this lock to take effect, free ubufs with
+kfree_rcu().
+
+Cc: stable@vger.kernel.org
+Fixes: 0ad8b480d6ee9 ("vhost: fix ref cnt checking deadlock")
+Reported-by: Andrey Ryabinin <arbn@yandex-team.com>
+Suggested-by: Hillf Danton <hdanton@sina.com>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Message-Id: <20250805130917.727332-1-kniv@yandex-team.ru>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-mcp2221.c |   32 +++++++++++++++++++++++---------
- 1 file changed, 23 insertions(+), 9 deletions(-)
+ drivers/vhost/net.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/hid-mcp2221.c
-+++ b/drivers/hid/hid-mcp2221.c
-@@ -49,6 +49,7 @@ enum {
- 	MCP2221_I2C_MASK_ADDR_NACK = 0x40,
- 	MCP2221_I2C_WRADDRL_SEND = 0x21,
- 	MCP2221_I2C_ADDR_NACK = 0x25,
-+	MCP2221_I2C_READ_PARTIAL = 0x54,
- 	MCP2221_I2C_READ_COMPL = 0x55,
- 	MCP2221_ALT_F_NOT_GPIOV = 0xEE,
- 	MCP2221_ALT_F_NOT_GPIOD = 0xEF,
-@@ -297,6 +298,7 @@ static int mcp_i2c_smbus_read(struct mcp
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -95,6 +95,7 @@ struct vhost_net_ubuf_ref {
+ 	atomic_t refcount;
+ 	wait_queue_head_t wait;
+ 	struct vhost_virtqueue *vq;
++	struct rcu_head rcu;
+ };
+ 
+ #define VHOST_NET_BATCH 64
+@@ -248,9 +249,13 @@ vhost_net_ubuf_alloc(struct vhost_virtqu
+ 
+ static int vhost_net_ubuf_put(struct vhost_net_ubuf_ref *ubufs)
  {
- 	int ret;
- 	u16 total_len;
-+	int retries = 0;
- 
- 	mcp->txbuf[0] = type;
- 	if (msg) {
-@@ -320,20 +322,31 @@ static int mcp_i2c_smbus_read(struct mcp
- 	mcp->rxbuf_idx = 0;
- 
- 	do {
-+		/* Wait for the data to be read by the device */
-+		usleep_range(980, 1000);
+-	int r = atomic_sub_return(1, &ubufs->refcount);
++	int r;
 +
- 		memset(mcp->txbuf, 0, 4);
- 		mcp->txbuf[0] = MCP2221_I2C_GET_DATA;
- 
- 		ret = mcp_send_data_req_status(mcp, mcp->txbuf, 1);
--		if (ret)
--			return ret;
--
--		ret = mcp_chk_last_cmd_status_free_bus(mcp);
--		if (ret)
--			return ret;
--
--		usleep_range(980, 1000);
-+		if (ret) {
-+			if (retries < 5) {
-+				/* The data wasn't ready to read.
-+				 * Wait a bit longer and try again.
-+				 */
-+				usleep_range(90, 100);
-+				retries++;
-+			} else {
-+				return ret;
-+			}
-+		} else {
-+			retries = 0;
-+		}
- 	} while (mcp->rxbuf_idx < total_len);
- 
-+	usleep_range(980, 1000);
-+	ret = mcp_chk_last_cmd_status_free_bus(mcp);
-+
- 	return ret;
++	rcu_read_lock();
++	r = atomic_sub_return(1, &ubufs->refcount);
+ 	if (unlikely(!r))
+ 		wake_up(&ubufs->wait);
++	rcu_read_unlock();
+ 	return r;
  }
  
-@@ -799,7 +812,8 @@ static int mcp2221_raw_event(struct hid_
- 				mcp->status = -EIO;
- 				break;
- 			}
--			if (data[2] == MCP2221_I2C_READ_COMPL) {
-+			if (data[2] == MCP2221_I2C_READ_COMPL ||
-+			    data[2] == MCP2221_I2C_READ_PARTIAL) {
- 				buf = mcp->rxbuf;
- 				memcpy(&buf[mcp->rxbuf_idx], &data[4], data[3]);
- 				mcp->rxbuf_idx = mcp->rxbuf_idx + data[3];
+@@ -263,7 +268,7 @@ static void vhost_net_ubuf_put_and_wait(
+ static void vhost_net_ubuf_put_wait_and_free(struct vhost_net_ubuf_ref *ubufs)
+ {
+ 	vhost_net_ubuf_put_and_wait(ubufs);
+-	kfree(ubufs);
++	kfree_rcu(ubufs, rcu);
+ }
+ 
+ static void vhost_net_clear_ubuf_info(struct vhost_net *n)
 
 
 
