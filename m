@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8C85B4046E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 965C0B404D7
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5570188FE55
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24EE61891BFE
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50C130C372;
-	Tue,  2 Sep 2025 13:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987812877FC;
+	Tue,  2 Sep 2025 13:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivV4pR8Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYqP0vxc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7252F30EF65;
-	Tue,  2 Sep 2025 13:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558DA2E7BB1;
+	Tue,  2 Sep 2025 13:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820089; cv=none; b=EF0OM8yYVRWWZzoKlNDvkftbh8KHYUWXVYCZo9rkkSPCVYYp5itix95bKD8l+ygHHXTgLpxm08M1cKSjrz1278xDsKeTg4nQknWPHUCoSF7+HMafb45VgUgK5RByS4Pexk8vDaw7lrCnf8Uy2ozi4j1WaiZNlr57DMC9TUVCC4I=
+	t=1756820281; cv=none; b=EwVhQ0ieqMq1T7IKpzgxAAxQNP0mTOZxBVDeFgk9SjspGMsKp2Wf0XCqI0PjKMTN0uzu2zjoao6jKSbVLpr4oVXgizQyVjuIZeUX5ouTOt0U4tphv0EQmVMxsRZt4meRVai3kC7nLXhYMHwZCU08LVl9pGrJOCMpmmSFMZa2tS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820089; c=relaxed/simple;
-	bh=NqQ8qHflVPj5ZIaAl/hbLpig0ifObEIGGXp9s8GRTjo=;
+	s=arc-20240116; t=1756820281; c=relaxed/simple;
+	bh=cE/ExuI4RKP3H88XrZM+RjomkraJUG0FKc+GskJGFVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I3rA2m/KxSNAfxI/z+7e6sPODaLdSsmy+iWKt73+fSClDJE52a2qhD/zkQCJIw8NAIovCGDMOiPCE+WefNfE6LyVWZk9TnJM2DsukNBQ1MebconhgUcw7vwQKwk1HiNluArhj1HapphbHEgV65oZN7ASSIhgmAtL/OTizRoR+fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivV4pR8Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79547C4CEED;
-	Tue,  2 Sep 2025 13:34:48 +0000 (UTC)
+	 MIME-Version; b=YN3SvgLg974v5/8v3KU/pMMSIjmVVdvIR2o9J+J4H2i24GcDyd+a8fSBJ80Ck83MW1UPs083PUv5kBOLhldkaez/Hwf4zGdfMJMGlVkBhkkTJGVbIJXmiT5+RkVRNtz+8zrGopFF+5njlAVaxAVTJNI/orlYMpcGKBO7xsI0Omg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYqP0vxc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECD0C4CEED;
+	Tue,  2 Sep 2025 13:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820088;
-	bh=NqQ8qHflVPj5ZIaAl/hbLpig0ifObEIGGXp9s8GRTjo=;
+	s=korg; t=1756820281;
+	bh=cE/ExuI4RKP3H88XrZM+RjomkraJUG0FKc+GskJGFVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ivV4pR8Yyr1gy5YNEIXwITkbM2cQQs4niOw2jpZc4i7Zted82x5e1Ghfz2U/Jku6P
-	 81uN+amWpDVX9lZ4CS4PyUBfvonDVX5JwNi+UNwvZpVgRDpZLMYBcOuQ60tlal2DP/
-	 Z1QYhRrZ3YRn2CmQNHQ17F7GIsbuYPFYXi6CtuwI=
+	b=SYqP0vxcNfLP5MMztJ0/lh4amHlciKWXDrlgruiwjCvTDSAyx5NMX1W8oIeyv9s0M
+	 ics9bzh/Dma0NlZ1Kvw4T2c38CKlm8R7lkwPHUt8qSTM7bnZFp3Qh9ZG1ku40H2p5/
+	 sDhaJxMM8cSvle2cMx4KWStSCc4NCHSngFn/v2k4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>
-Subject: [PATCH 6.12 90/95] PCI: Rename PCIE_RESET_CONFIG_DEVICE_WAIT_MS to PCIE_RESET_CONFIG_WAIT_MS
-Date: Tue,  2 Sep 2025 15:21:06 +0200
-Message-ID: <20250902131943.057232083@linuxfoundation.org>
+	Li Nan <linan122@huawei.com>,
+	Wu Guanghao <wuguanghao3@huawei.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 55/75] efivarfs: Fix slab-out-of-bounds in efivarfs_d_compare
+Date: Tue,  2 Sep 2025 15:21:07 +0200
+Message-ID: <20250902131937.278061391@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Li Nan <linan122@huawei.com>
 
-commit 817f989700fddefa56e5e443e7d138018ca6709d upstream.
+[ Upstream commit a6358f8cf64850f3f27857b8ed8c1b08cfc4685c ]
 
-Rename PCIE_RESET_CONFIG_DEVICE_WAIT_MS to PCIE_RESET_CONFIG_WAIT_MS.
+Observed on kernel 6.6 (present on master as well):
 
-Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20250625102347.1205584-10-cassel@kernel.org
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  BUG: KASAN: slab-out-of-bounds in memcmp+0x98/0xd0
+  Call trace:
+   kasan_check_range+0xe8/0x190
+   __asan_loadN+0x1c/0x28
+   memcmp+0x98/0xd0
+   efivarfs_d_compare+0x68/0xd8
+   __d_lookup_rcu_op_compare+0x178/0x218
+   __d_lookup_rcu+0x1f8/0x228
+   d_alloc_parallel+0x150/0x648
+   lookup_open.isra.0+0x5f0/0x8d0
+   open_last_lookups+0x264/0x828
+   path_openat+0x130/0x3f8
+   do_filp_open+0x114/0x248
+   do_sys_openat2+0x340/0x3c0
+   __arm64_sys_openat+0x120/0x1a0
+
+If dentry->d_name.len < EFI_VARIABLE_GUID_LEN , 'guid' can become
+negative, leadings to oob. The issue can be triggered by parallel
+lookups using invalid filename:
+
+  T1			T2
+  lookup_open
+   ->lookup
+    simple_lookup
+     d_add
+     // invalid dentry is added to hash list
+
+			lookup_open
+			 d_alloc_parallel
+			  __d_lookup_rcu
+			   __d_lookup_rcu_op_compare
+			    hlist_bl_for_each_entry_rcu
+			    // invalid dentry can be retrieved
+			     ->d_compare
+			      efivarfs_d_compare
+			      // oob
+
+Fix it by checking 'guid' before cmp.
+
+Fixes: da27a24383b2 ("efivarfs: guid part of filenames are case-insensitive")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Signed-off-by: Wu Guanghao <wuguanghao3@huawei.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/plda/pcie-starfive.c |    2 +-
- drivers/pci/pci.h                           |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/efivarfs/super.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/pci/controller/plda/pcie-starfive.c
-+++ b/drivers/pci/controller/plda/pcie-starfive.c
-@@ -368,7 +368,7 @@ static int starfive_pcie_host_init(struc
- 	 * of 100ms following exit from a conventional reset before
- 	 * sending a configuration request to the device.
- 	 */
--	msleep(PCIE_RESET_CONFIG_DEVICE_WAIT_MS);
-+	msleep(PCIE_RESET_CONFIG_WAIT_MS);
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index 586c5709dfb55..34438981ddd80 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -90,6 +90,10 @@ static int efivarfs_d_compare(const struct dentry *dentry,
+ {
+ 	int guid = len - EFI_VARIABLE_GUID_LEN;
  
- 	if (starfive_pcie_host_wait_for_link(pcie))
- 		dev_info(dev, "port link down\n");
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -57,7 +57,7 @@
-  *    completes before sending a Configuration Request to the device
-  *    immediately below that Port."
-  */
--#define PCIE_RESET_CONFIG_DEVICE_WAIT_MS	100
-+#define PCIE_RESET_CONFIG_WAIT_MS	100
++	/* Parallel lookups may produce a temporary invalid filename */
++	if (guid <= 0)
++		return 1;
++
+ 	if (name->len != len)
+ 		return 1;
  
- /* Message Routing (r[2:0]); PCIe r6.0, sec 2.2.8 */
- #define PCIE_MSG_TYPE_R_RC	0
+-- 
+2.50.1
+
 
 
 
