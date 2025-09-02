@@ -1,122 +1,131 @@
-Return-Path: <stable+bounces-176979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE9FEB3FC89
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:33:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96189B3FCA5
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:36:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C183D1B251E8
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:33:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28AF0188F918
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB17284663;
-	Tue,  2 Sep 2025 10:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FD32E7BBA;
+	Tue,  2 Sep 2025 10:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fHlSbO4n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aJnHfgvn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE16283146
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 10:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8F72E2825;
+	Tue,  2 Sep 2025 10:35:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756809183; cv=none; b=mqfp1/yaOGqw5QpoaoJHzFheGTYjkA4RCB736zZOBJv1xQ3PXbK6UkDcMI8IZZdVzrtQoe/rBtGG0X8a9rWjGdtbzev6jDJjUQyyTa+zyI/i0qGM7OJ8gIj3uE+THIJrdbV2NgNIibQ0cC29Q9VkhoyLRFqjt3ehMXHNCh/22L0=
+	t=1756809339; cv=none; b=Faj+DvYPLqkehSfqUTpyyBNxN/bbuYcl11fuwRIgQxHDGBzN4iBpVIC5U1x5FqMy/Cdyjj0S55E+mqIqjIcoPZaGtPBnqx6FHvdax2Y2d/NoFhJXj9ooameznzMGvhRMoalO2CUj0RCv0FFwOz9mcrxBcIjibLuq/PC0xNq76zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756809183; c=relaxed/simple;
-	bh=D6kMRVNdjTsHxomh8Umwb4E3q6zvSzEKkpefTTT/TzQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=FPyhAS1+1oOdPztFwMmRtIU/4h/yUfgVXK7PQqwuLR0Wgv6xPZrGW05BGhe46DkPrXUGEiJNdawStGenJuIh4/0rjI6jqPUgYiis7zK2oF9LnV0GFD483vVSd7cxMM+RPyzvblmwmBtsp5/dZiZev0Z8l9HllHvGbwuwYhoiy0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fHlSbO4n; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-61cad8d2a3eso601945a12.1
-        for <stable@vger.kernel.org>; Tue, 02 Sep 2025 03:33:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756809180; x=1757413980; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t+2RmtyC5BdrhVnYkf0pE1bp+20qsxwnCUP1SaL1uDE=;
-        b=fHlSbO4nvFRetVrpPRB6bgLDTOjU/qdzNl0rZ71B3InipDSZ1MMMwMdo0PGcfEL5fs
-         LFcViE5hQl7oi3c1I/H42PHnYeiW0RuhqNAB5gBMg8GmrETEHccPan1j+rJbMaGascMK
-         iKCzMW4cWTyLr91cs1atbLg6ElGZxk3WSWlILzBttnb9qbrHQ1vOBbfwNU05b1Yc7NFu
-         MybDLmgRpIhGt7xwGNl86t/MBneCuXcCAA6indKsJqmAb2qxeVk5NCbjQuzqrXzDVBQy
-         md6/0xArDSxaVZtTZgD3+dLVg3dnnldtBI2PxQur+Ids+bNhFw/evhQ349llSXscnzJV
-         Itwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756809180; x=1757413980;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t+2RmtyC5BdrhVnYkf0pE1bp+20qsxwnCUP1SaL1uDE=;
-        b=iEZwiOq5YoBUdx3dVL7n6MNSF2FfZYnkmwDICz3KnXcpFcPEiMiVqNSUBRin/3P0yp
-         L9wawH/NiDexXGci/jm17JisfOrt5mE5DZr/XkjZGK0NPHzVwK5zLnvfBsmzCHbFrJnE
-         sYDCPLDHQtWIAdYxFEa7NUIbKn78g51uXIVhxqZWuGaBxtbJg5z1+iWUaaPKnCmPR5SD
-         rSs/5HXEKyE/JQGfrLfFEor7zMknWq0t9px1VKANBDgCsWfKas8s3Mtd9aNLwG+IrISk
-         KScXQ9qLGXthJSCXvainqjjVaQYR0D6xsNwdTwcaGSgkP++HOHG/abtIpDtdf+gVGPBz
-         MdSw==
-X-Gm-Message-State: AOJu0Yw+DXXv2Uh15mSLCOwRuZgC1g3WwolhK0J5eJpVbrdB+/zikYo9
-	XsXCMS5gOKdaSBvOWv2YiA+zQ5RUdp6O/m9j4bPYQAx9bP0x4hmeEsadDCALADH0ccw=
-X-Gm-Gg: ASbGncudRpO79rqvNS/zfLpZ5khvsTiUMsoRgWDGRbR1YHt6nFumdnx024y9wd/+1w3
-	tDXxsIYeBUv+ab3IAeF+8kWTtZ+LBja2200zJEM03tbXngYeh06fkC0XmYPG5Bu1Pz2uQvNRndo
-	3dM5mEsOBBEBerjMCECUkqP1w0hr/vZN1e7N7wTIGKm1IzNIP2jti2B8Nu+Soz6ahvEuUH654ke
-	jJAUZvmP1Pj3DN7RWBoRNT9b+r9IKIvB+Cg+SO0VAiaBI/U3fQumUzCi1HAwdgOi36knm2pSZlR
-	fAFp8ANnN12nfFhHYuz6OaoQWgEImV5zKI6JuKV7irSemNhxiZOuuXYtt2ope8RRD5J+Awy7Lu1
-	ZJNX2dcBpN2dApSibIPP1t7Yp7Ka+PgP5dEyztrvpigLyzjFOpQ==
-X-Google-Smtp-Source: AGHT+IHAsN/656NaYDyz43thubEPzcHhs+/jF4e7qFvC7WKngX9lMBJC+gCJOclV74lgolxYOi8bDw==
-X-Received: by 2002:a17:906:690:b0:b04:1457:93 with SMTP id a640c23a62f3a-b04145702d1mr390858166b.3.1756809180009;
-        Tue, 02 Sep 2025 03:33:00 -0700 (PDT)
-Received: from [127.0.1.1] ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b0423ed35e4sm516431766b.25.2025.09.02.03.32.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 03:32:59 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>, 
- Sylwester Nawrocki <s.nawrocki@samsung.com>, 
- Alim Akhtar <alim.akhtar@samsung.com>, 
- Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Tomasz Figa <tomasz.figa@gmail.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Ulf Hansson <ulf.hansson@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: stable@vger.kernel.org
-In-Reply-To: <20250830111657.126190-3-krzysztof.kozlowski@linaro.org>
-References: <20250830111657.126190-3-krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH 1/2] pinctrl: samsung: Drop unused S3C24xx driver data
-Message-Id: <175680917816.135692.16731223900572881206.b4-ty@linaro.org>
-Date: Tue, 02 Sep 2025 12:32:58 +0200
+	s=arc-20240116; t=1756809339; c=relaxed/simple;
+	bh=7o9EZ2IlqJciSHRV4dsJOeLuben/WcNyWC+ailQ200Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WJMpxl5E+PgHkFri0nNoO9lSnhUN/2kuhD0OZfg2TidQKI9g+sqLH7r6G/sE8gDhZdbu34g2w7NfL9L+ylj7o61Mo71JeIsubbUiF/T7pPuCLhHz7OBNH7EuHIi4OubyhKOpcgjozkl6NSH52OlzuqsqFOLRxWu1GNjzjLtUGhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aJnHfgvn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD01C4CEED;
+	Tue,  2 Sep 2025 10:35:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756809338;
+	bh=7o9EZ2IlqJciSHRV4dsJOeLuben/WcNyWC+ailQ200Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aJnHfgvnSV2t+IZgdq07gRJePZTs2WdtS3Yfi4FISo1ZDHQiNWbm36PJDak9Xu3ZH
+	 Zc3rzt70+RQER5+keRl9/J/eZ6DVIceJ4ON0EDVPCKyOmD7n/pjWMQf/nMVFb5VAnO
+	 ITCr7xXPaDJ31VeQP3az4LXLOZX+0NV+X0svugTi8PeTRTU1gqLVQjZpAlpXpFGPKd
+	 WstfjG5qnKOlMTYuYRcm+uh+6+EWCD4ew7cWCg6F3g5B6Q2NcONKpb87dJSlTk7gFI
+	 YKYkaBFNG+af9iV3LMahY0eWzw+emxtVLbvtC6ZSH1XoJCVWWGlIV88xwZ7Vqn9rdO
+	 RiGMcWsvk7BdQ==
+Message-ID: <d620167b-ba52-4f80-82bc-1a35223f96e6@kernel.org>
+Date: Tue, 2 Sep 2025 12:35:33 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] pasemi: fix PCI device reference leaks in
+ pas_setup_mce_regs
+To: Markus Elfring <Markus.Elfring@web.de>, Miaoqian Lin
+ <linmq006@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Olof Johansson <olof@lixom.net>, Paul Mackerras <paulus@ozlabs.org>,
+ Thomas Gleixner <tglx@linutronix.de>
+References: <20250902072156.2389727-1-linmq006@gmail.com>
+ <63be79a4-79e4-47f5-a756-aa55fe0d29ab@web.de>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <63be79a4-79e4-47f5-a756-aa55fe0d29ab@web.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-
-On Sat, 30 Aug 2025 13:16:58 +0200, Krzysztof Kozlowski wrote:
-> Drop unused declarations after S3C24xx SoC family removal in the commit
-> 61b7f8920b17 ("ARM: s3c: remove all s3c24xx support").
+On 02. 09. 25, 12:24, Markus Elfring wrote:
+> …
+>> Add missing pci_dev_put() calls to ensure all device references
+>> are properly released.
 > 
-> 
+> * See also:
+>    https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.17-rc4#n658
 
-Applied, thanks!
+?
 
-[1/2] pinctrl: samsung: Drop unused S3C24xx driver data
-      https://git.kernel.org/pinctrl/samsung/c/358253fa8179ab4217ac283b56adde0174186f87
-[2/2] dt-bindings: pinctrl: samsung: Drop S3C2410
-      https://git.kernel.org/pinctrl/samsung/c/d37db94b078197ec4be1cadebbfd7bf144e3c5e4
+> * Would you like to increase the application of scope-based resource management?
+>    https://elixir.bootlin.com/linux/v6.17-rc4/source/include/linux/device.h#L1180
 
-Best regards,
+That won't work here at all.
+
 -- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
+js
+suse labs
 
