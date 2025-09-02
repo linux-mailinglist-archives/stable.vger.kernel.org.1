@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-177176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121B0B403C3
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:36:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C75B40451
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:41:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C267E5420E9
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:35:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CD991884E55
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C078322DAA;
-	Tue,  2 Sep 2025 13:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E438830BF71;
+	Tue,  2 Sep 2025 13:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWd/JLF2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPEcJ3Ug"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA496322775;
-	Tue,  2 Sep 2025 13:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01133054E7;
+	Tue,  2 Sep 2025 13:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819824; cv=none; b=PpGEe3yeQyzP21tQnp0Dcb76MquZqWnsEhIlTu3U0qsX3JFGF1GqDZkmAbyb/3n4d2BmXhxIhF0ZU3MnWku1SlG3qcr6PfdjDT5crNVP5jn/zdNkjWHnHyF7dYyu92uGsT1SxNnc3GNamY44eD/hSXMISgQbn7OsrHS4YuUB/nM=
+	t=1756819982; cv=none; b=iBpP13FgmoHShJdboTiD/P3WrJJOwJh/3CI7I56Oj51VmKFnH6a5kq0pBGLTmUs3hxh3OdIFDh+dlnmfae1sLB2qzTLvUVSJXRUEBnZW/QhmDNDOXUwpjOkcTyl171cmjx/3dS8EX1TNaDvNnj4it72VvAeSePKjLJvF+4ifw6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819824; c=relaxed/simple;
-	bh=00Uw6/K5Vor2f6FKgnnm0x+HBxK3M/EfCFdGv6T2ug0=;
+	s=arc-20240116; t=1756819982; c=relaxed/simple;
+	bh=kwqkHN6boP0VwPd9Qd4pjuFtqQF0yE5mKcrpJhUKhtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIZOqQmW9ojT5sjXRX1ER6gB7LHDE37hizMqnPTqxsknDKGCO4haDV26XVr4dAgktn8KU90x918OR+VvLXhURi4eqP44cA0XAG/yZ01NbbUhALJD1rZVCOnTjBK5/m8QtVIFvFq6hCIlWlhV8r8EqsVBuNMh4g8WyZpNJAqcmmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWd/JLF2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B823C4CEF7;
-	Tue,  2 Sep 2025 13:30:24 +0000 (UTC)
+	 MIME-Version; b=ArQhilQ+wcgCg6ROb2qkH0JfCgnWDgBYWumtjyYM8hYCj6uEmsi9iXycrHP/qMcTFS/dAkrU/tmPhb7onkwrRPKDiSqWdGCLV4XfIVeqRPzuZfy4XfBe9Q3C/ujYSEwNzTDiMvTod4jmmq+e52CT/Yd2tXM6/qRZXTJqmRHvDqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPEcJ3Ug; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103CFC4CEF4;
+	Tue,  2 Sep 2025 13:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819824;
-	bh=00Uw6/K5Vor2f6FKgnnm0x+HBxK3M/EfCFdGv6T2ug0=;
+	s=korg; t=1756819982;
+	bh=kwqkHN6boP0VwPd9Qd4pjuFtqQF0yE5mKcrpJhUKhtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QWd/JLF29K3Q8e13SwZ2jYhV4pdAxZGSTm+kPcGWmMlgKPQODeADxjYKIlo9urd+w
-	 hD2X6vztxoVASfYZQAwaNAWliX1NHK2ncpLOdJ0B7EPodx3fHX5s4pesbJ9Tg5092l
-	 vvTWPT4tUHOJUbmv3KlYs+tOL9qxXqoMpWsm3YuQ=
+	b=PPEcJ3UgBZEdKqje37IIfm0IoGmIonr7Cj3qOWkFPM53SFysKibE0PLHJ/oFiwSqG
+	 wlxVrOA8RW1W+/hDprVrtdyF1DPEQFSv6m9xfkLOuJlkBQ1uogVkWeK5e7VAy2WJfM
+	 0Zc3/VfeK72GOS5puEJwSm2mptXw0Bl3h4nzN+Fo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Asad Kamal <asad.kamal@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 129/142] drm/amd/amdgpu: disable hwmon power1_cap* for gfx 11.0.3 on vf mode
+	Rohan G Thomas <rohan.g.thomas@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 55/95] net: stmmac: xgmac: Correct supported speed modes
 Date: Tue,  2 Sep 2025 15:20:31 +0200
-Message-ID: <20250902131953.228875156@linuxfoundation.org>
+Message-ID: <20250902131941.716165777@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: Rohan G Thomas <rohan.g.thomas@altera.com>
 
-commit 5dff50802b285da8284a7bf17ae2fdc6f1357023 upstream.
+[ Upstream commit 42ef11b2bff5b6a2910c28d2ea47cc00e0fbcaec ]
 
-the PPSMC_MSG_GetPptLimit msg is not valid for gfx 11.0.3 on vf mode,
-so skiped to create power1_cap* hwmon sysfs node.
+Correct supported speed modes as per the XGMAC databook.
+Commit 9cb54af214a7 ("net: stmmac: Fix IP-cores specific
+MAC capabilities") removes support for 10M, 100M and
+1000HD. 1000HD is not supported by XGMAC IP, but it does
+support 10M and 100M FD mode for XGMAC version >= 2_20,
+and it also supports 10M and 100M HD mode if the HDSEL bit
+is set in the MAC_HW_FEATURE0 reg. This commit enables support
+for 10M and 100M speed modes for XGMAC IP based on XGMAC
+version and MAC capabilities.
 
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Asad Kamal <asad.kamal@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e82a8d441038d8cb10b63047a9e705c42479d156)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9cb54af214a7 ("net: stmmac: Fix IP-cores specific MAC capabilities")
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Link: https://patch.msgid.link/20250825-xgmac-minor-fixes-v3-2-c225fe4444c0@altera.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/amdgpu_pm.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c | 13 +++++++++++--
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c  |  5 +++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-@@ -3458,14 +3458,16 @@ static umode_t hwmon_attributes_visible(
- 		effective_mode &= ~S_IWUSR;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+index f519d43738b08..445259f2ee935 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -47,6 +47,14 @@ static void dwxgmac2_core_init(struct mac_device_info *hw,
+ 	writel(XGMAC_INT_DEFAULT_EN, ioaddr + XGMAC_INT_EN);
+ }
  
- 	/* not implemented yet for APUs other than GC 10.3.1 (vangogh) and 9.4.3 */
--	if (((adev->family == AMDGPU_FAMILY_SI) ||
--	     ((adev->flags & AMD_IS_APU) && (gc_ver != IP_VERSION(10, 3, 1)) &&
--	      (gc_ver != IP_VERSION(9, 4, 3) && gc_ver != IP_VERSION(9, 4, 4)))) &&
--	    (attr == &sensor_dev_attr_power1_cap_max.dev_attr.attr ||
--	     attr == &sensor_dev_attr_power1_cap_min.dev_attr.attr ||
--	     attr == &sensor_dev_attr_power1_cap.dev_attr.attr ||
--	     attr == &sensor_dev_attr_power1_cap_default.dev_attr.attr))
--		return 0;
-+	if (attr == &sensor_dev_attr_power1_cap_max.dev_attr.attr ||
-+	    attr == &sensor_dev_attr_power1_cap_min.dev_attr.attr ||
-+	    attr == &sensor_dev_attr_power1_cap.dev_attr.attr ||
-+	    attr == &sensor_dev_attr_power1_cap_default.dev_attr.attr) {
-+		if (adev->family == AMDGPU_FAMILY_SI ||
-+		    ((adev->flags & AMD_IS_APU) && gc_ver != IP_VERSION(10, 3, 1) &&
-+		     (gc_ver != IP_VERSION(9, 4, 3) && gc_ver != IP_VERSION(9, 4, 4))) ||
-+		    (amdgpu_sriov_vf(adev) && gc_ver == IP_VERSION(11, 0, 3)))
-+			return 0;
-+	}
++static void dwxgmac2_update_caps(struct stmmac_priv *priv)
++{
++	if (!priv->dma_cap.mbps_10_100)
++		priv->hw->link.caps &= ~(MAC_10 | MAC_100);
++	else if (!priv->dma_cap.half_duplex)
++		priv->hw->link.caps &= ~(MAC_10HD | MAC_100HD);
++}
++
+ static void dwxgmac2_set_mac(void __iomem *ioaddr, bool enable)
+ {
+ 	u32 tx = readl(ioaddr + XGMAC_TX_CONFIG);
+@@ -1532,6 +1540,7 @@ static void dwxgmac3_fpe_configure(void __iomem *ioaddr,
  
- 	/* not implemented yet for APUs having < GC 9.3.0 (Renoir) */
- 	if (((adev->family == AMDGPU_FAMILY_SI) ||
+ const struct stmmac_ops dwxgmac210_ops = {
+ 	.core_init = dwxgmac2_core_init,
++	.update_caps = dwxgmac2_update_caps,
+ 	.set_mac = dwxgmac2_set_mac,
+ 	.rx_ipc = dwxgmac2_rx_ipc,
+ 	.rx_queue_enable = dwxgmac2_rx_queue_enable,
+@@ -1646,8 +1655,8 @@ int dwxgmac2_setup(struct stmmac_priv *priv)
+ 		mac->mcast_bits_log2 = ilog2(mac->multicast_filter_bins);
+ 
+ 	mac->link.caps = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
+-			 MAC_1000FD | MAC_2500FD | MAC_5000FD |
+-			 MAC_10000FD;
++			 MAC_10 | MAC_100 | MAC_1000FD |
++			 MAC_2500FD | MAC_5000FD | MAC_10000FD;
+ 	mac->link.duplex = 0;
+ 	mac->link.speed10 = XGMAC_CONFIG_SS_10_MII;
+ 	mac->link.speed100 = XGMAC_CONFIG_SS_100_MII;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+index 7201a38842651..4d6bb995d8d84 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+@@ -382,8 +382,11 @@ static int dwxgmac2_dma_interrupt(struct stmmac_priv *priv,
+ static int dwxgmac2_get_hw_feature(void __iomem *ioaddr,
+ 				   struct dma_features *dma_cap)
+ {
++	struct stmmac_priv *priv;
+ 	u32 hw_cap;
+ 
++	priv = container_of(dma_cap, struct stmmac_priv, dma_cap);
++
+ 	/* MAC HW feature 0 */
+ 	hw_cap = readl(ioaddr + XGMAC_HW_FEATURE0);
+ 	dma_cap->edma = (hw_cap & XGMAC_HWFEAT_EDMA) >> 31;
+@@ -406,6 +409,8 @@ static int dwxgmac2_get_hw_feature(void __iomem *ioaddr,
+ 	dma_cap->vlhash = (hw_cap & XGMAC_HWFEAT_VLHASH) >> 4;
+ 	dma_cap->half_duplex = (hw_cap & XGMAC_HWFEAT_HDSEL) >> 3;
+ 	dma_cap->mbps_1000 = (hw_cap & XGMAC_HWFEAT_GMIISEL) >> 1;
++	if (dma_cap->mbps_1000 && priv->synopsys_id >= DWXGMAC_CORE_2_20)
++		dma_cap->mbps_10_100 = 1;
+ 
+ 	/* MAC HW feature 1 */
+ 	hw_cap = readl(ioaddr + XGMAC_HW_FEATURE1);
+-- 
+2.50.1
+
 
 
 
