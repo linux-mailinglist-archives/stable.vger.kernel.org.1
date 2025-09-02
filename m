@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-177311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914A8B4049F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:44:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F476B40465
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B13C94E80C8
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:42:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAAD6188B99B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C8933CE9E;
-	Tue,  2 Sep 2025 13:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E923148B2;
+	Tue,  2 Sep 2025 13:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gxgi4gvv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KFUFYsGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C08308F1A;
-	Tue,  2 Sep 2025 13:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B6130DEA4;
+	Tue,  2 Sep 2025 13:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820240; cv=none; b=h/ErukZXeG/TZX8NuOIgWLvWpRGH28YX8KRCl7s67Q9nkrqOSFt3RXcES8TOe5hOMK21Reiwn+wFEZlYq0tTCj35kMopu6IJNPs/lnWQfQAhsdeY1qcevm/TFeF40hCD4gReEL0soVETXLllNj5lOqPSU8TwF0mzBvqoM17pak8=
+	t=1756820028; cv=none; b=GXtI96zEYlOY/FEAG1kDVOZP4Tf8JPtgoYRsZI7t+JwGtmreO6PHOSUS1RblifDDvC2iR4XHHv+HvIgBWYVJ7Hts/UniMElJH3zuL+6NtEdgU71x4QyKp0fbVJb7ij3zpF9HmctA9AHr5MO3dD1mrgcmCFW/GPeCEZy5dhSF0l8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820240; c=relaxed/simple;
-	bh=mc1GZB9dhtM7eT8x4uHhh6cvocKrIhFDjjeJ/JGELFE=;
+	s=arc-20240116; t=1756820028; c=relaxed/simple;
+	bh=d49jVzs1vtCacPEFYtBATML8QZqdJWRDt6e+jg/Fy8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BTBiUMspxrVq3ij9vuFEALuYAx1uabaCYLoKmcJvfM7jEZYxSv4aQ15nTGBGrdvLQ9f4t3rXn8YpDlcR6UlJRZGb4PhvI6B1EUypAuWKOCbJvxmwvniliACe9XMs8S6TKiTy2EFIGw5VQsy0GNlc4NmryUk+wBBAkFTCwVeucMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gxgi4gvv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1068C4CEED;
-	Tue,  2 Sep 2025 13:37:19 +0000 (UTC)
+	 MIME-Version; b=JvWj07kR0JIDfzXm7VULX8SzaannHtNCvFFOfbkfJoOFYOqqEH5AxK+hClB6rimMLYr4rBRLRkafsEzSBeaxpOx8fnlT8OTjB5KI8+lqGVpISC8nCNDM68h58CImana4aEzqNj/v5ORvXGZcJ9MYw8W9dzIAOahlCZXwjMsaAsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFUFYsGf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D2C4C4CEED;
+	Tue,  2 Sep 2025 13:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820240;
-	bh=mc1GZB9dhtM7eT8x4uHhh6cvocKrIhFDjjeJ/JGELFE=;
+	s=korg; t=1756820028;
+	bh=d49jVzs1vtCacPEFYtBATML8QZqdJWRDt6e+jg/Fy8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gxgi4gvvaMjeAs3givU/1ikaljbCPu/4JQ1x3spEzdXriBOaV8s/mrpV5y9HVHDG5
-	 mjBp07LbyQOrB+o0X0JfG5EzxVIj/6KaT6FJliYRlXY2Uwo0y2vZ7t+Swe3lksIW4X
-	 IAPQuuO2dOt68pQn/FIZzRtCoC1RptyVbjUuZjt0=
+	b=KFUFYsGfARpT0lzJwaN/cFX8UuDbfczpykIWCQ9ueXC/TmbhXZggGiUDJpZy/9lMH
+	 aP+J8YcZ6mIZFhA8eh2+W1vm5YBdeq6Y5Oxx5S/EW9ZRCfKyeML/ZvfQ9fPd7/BLB/
+	 dDIV2ghqa2U17qfpK2Pr2PA9ATiwey5aAl/l82d4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 35/75] phy: mscc: Fix when PTP clock is register and unregister
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.12 71/95] HID: asus: fix UAF via HID_CLAIMED_INPUT validation
 Date: Tue,  2 Sep 2025 15:20:47 +0200
-Message-ID: <20250902131936.499191040@linuxfoundation.org>
+Message-ID: <20250902131942.329682154@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +61,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit 882e57cbc7204662f6c5672d5b04336c1d790b03 ]
+commit d3af6ca9a8c34bbd8cff32b469b84c9021c9e7e4 upstream.
 
-It looks like that every time when the interface was set down and up the
-driver was creating a new ptp clock. On top of this the function
-ptp_clock_unregister was never called.
-Therefore fix this by calling ptp_clock_register and initialize the
-mii_ts struct inside the probe function and call ptp_clock_unregister when
-driver is removed.
+After hid_hw_start() is called hidinput_connect() will eventually be
+called to set up the device with the input layer since the
+HID_CONNECT_DEFAULT connect mask is used. During hidinput_connect()
+all input and output reports are processed and corresponding hid_inputs
+are allocated and configured via hidinput_configure_usages(). This
+process involves slot tagging report fields and configuring usages
+by setting relevant bits in the capability bitmaps. However it is possible
+that the capability bitmaps are not set at all leading to the subsequent
+hidinput_has_been_populated() check to fail leading to the freeing of the
+hid_input and the underlying input device.
 
-Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250825065543.2916334-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This becomes problematic because a malicious HID device like a
+ASUS ROG N-Key keyboard can trigger the above scenario via a
+specially crafted descriptor which then leads to a user-after-free
+when the name of the freed input device is written to later on after
+hid_hw_start(). Below, report 93 intentionally utilises the
+HID_UP_UNDEFINED Usage Page which is skipped during usage
+configuration, leading to the frees.
+
+0x05, 0x0D,        // Usage Page (Digitizer)
+0x09, 0x05,        // Usage (Touch Pad)
+0xA1, 0x01,        // Collection (Application)
+0x85, 0x0D,        //   Report ID (13)
+0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
+0x09, 0xC5,        //   Usage (0xC5)
+0x15, 0x00,        //   Logical Minimum (0)
+0x26, 0xFF, 0x00,  //   Logical Maximum (255)
+0x75, 0x08,        //   Report Size (8)
+0x95, 0x04,        //   Report Count (4)
+0xB1, 0x02,        //   Feature (Data,Var,Abs)
+0x85, 0x5D,        //   Report ID (93)
+0x06, 0x00, 0x00,  //   Usage Page (Undefined)
+0x09, 0x01,        //   Usage (0x01)
+0x15, 0x00,        //   Logical Minimum (0)
+0x26, 0xFF, 0x00,  //   Logical Maximum (255)
+0x75, 0x08,        //   Report Size (8)
+0x95, 0x1B,        //   Report Count (27)
+0x81, 0x02,        //   Input (Data,Var,Abs)
+0xC0,              // End Collection
+
+Below is the KASAN splat after triggering the UAF:
+
+[   21.672709] ==================================================================
+[   21.673700] BUG: KASAN: slab-use-after-free in asus_probe+0xeeb/0xf80
+[   21.673700] Write of size 8 at addr ffff88810a0ac000 by task kworker/1:2/54
+[   21.673700]
+[   21.673700] CPU: 1 UID: 0 PID: 54 Comm: kworker/1:2 Not tainted 6.16.0-rc4-g9773391cf4dd-dirty #36 PREEMPT(voluntary)
+[   21.673700] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+[   21.673700] Call Trace:
+[   21.673700]  <TASK>
+[   21.673700]  dump_stack_lvl+0x5f/0x80
+[   21.673700]  print_report+0xd1/0x660
+[   21.673700]  kasan_report+0xe5/0x120
+[   21.673700]  __asan_report_store8_noabort+0x1b/0x30
+[   21.673700]  asus_probe+0xeeb/0xf80
+[   21.673700]  hid_device_probe+0x2ee/0x700
+[   21.673700]  really_probe+0x1c6/0x6b0
+[   21.673700]  __driver_probe_device+0x24f/0x310
+[   21.673700]  driver_probe_device+0x4e/0x220
+[...]
+[   21.673700]
+[   21.673700] Allocated by task 54:
+[   21.673700]  kasan_save_stack+0x3d/0x60
+[   21.673700]  kasan_save_track+0x18/0x40
+[   21.673700]  kasan_save_alloc_info+0x3b/0x50
+[   21.673700]  __kasan_kmalloc+0x9c/0xa0
+[   21.673700]  __kmalloc_cache_noprof+0x139/0x340
+[   21.673700]  input_allocate_device+0x44/0x370
+[   21.673700]  hidinput_connect+0xcb6/0x2630
+[   21.673700]  hid_connect+0xf74/0x1d60
+[   21.673700]  hid_hw_start+0x8c/0x110
+[   21.673700]  asus_probe+0x5a3/0xf80
+[   21.673700]  hid_device_probe+0x2ee/0x700
+[   21.673700]  really_probe+0x1c6/0x6b0
+[   21.673700]  __driver_probe_device+0x24f/0x310
+[   21.673700]  driver_probe_device+0x4e/0x220
+[...]
+[   21.673700]
+[   21.673700] Freed by task 54:
+[   21.673700]  kasan_save_stack+0x3d/0x60
+[   21.673700]  kasan_save_track+0x18/0x40
+[   21.673700]  kasan_save_free_info+0x3f/0x60
+[   21.673700]  __kasan_slab_free+0x3c/0x50
+[   21.673700]  kfree+0xcf/0x350
+[   21.673700]  input_dev_release+0xab/0xd0
+[   21.673700]  device_release+0x9f/0x220
+[   21.673700]  kobject_put+0x12b/0x220
+[   21.673700]  put_device+0x12/0x20
+[   21.673700]  input_free_device+0x4c/0xb0
+[   21.673700]  hidinput_connect+0x1862/0x2630
+[   21.673700]  hid_connect+0xf74/0x1d60
+[   21.673700]  hid_hw_start+0x8c/0x110
+[   21.673700]  asus_probe+0x5a3/0xf80
+[   21.673700]  hid_device_probe+0x2ee/0x700
+[   21.673700]  really_probe+0x1c6/0x6b0
+[   21.673700]  __driver_probe_device+0x24f/0x310
+[   21.673700]  driver_probe_device+0x4e/0x220
+[...]
+
+Fixes: 9ce12d8be12c ("HID: asus: Add i2c touchpad support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Link: https://patch.msgid.link/20250810181041.44874-1-qasdev00@gmail.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/mscc/mscc.h      |  4 ++++
- drivers/net/phy/mscc/mscc_main.c |  4 +---
- drivers/net/phy/mscc/mscc_ptp.c  | 34 ++++++++++++++++++++------------
- 3 files changed, 26 insertions(+), 16 deletions(-)
+ drivers/hid/hid-asus.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
-index cdb343779a8fb..4ba6e32cf6d8d 100644
---- a/drivers/net/phy/mscc/mscc.h
-+++ b/drivers/net/phy/mscc/mscc.h
-@@ -476,6 +476,7 @@ static inline void vsc8584_config_macsec_intr(struct phy_device *phydev)
- void vsc85xx_link_change_notify(struct phy_device *phydev);
- void vsc8584_config_ts_intr(struct phy_device *phydev);
- int vsc8584_ptp_init(struct phy_device *phydev);
-+void vsc8584_ptp_deinit(struct phy_device *phydev);
- int vsc8584_ptp_probe_once(struct phy_device *phydev);
- int vsc8584_ptp_probe(struct phy_device *phydev);
- irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev);
-@@ -490,6 +491,9 @@ static inline int vsc8584_ptp_init(struct phy_device *phydev)
- {
- 	return 0;
- }
-+static inline void vsc8584_ptp_deinit(struct phy_device *phydev)
-+{
-+}
- static inline int vsc8584_ptp_probe_once(struct phy_device *phydev)
- {
- 	return 0;
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index 3de72d9cc22bd..3a932b30f4358 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -2337,9 +2337,7 @@ static int vsc85xx_probe(struct phy_device *phydev)
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -1210,7 +1210,13 @@ static int asus_probe(struct hid_device
+ 		return ret;
+ 	}
  
- static void vsc85xx_remove(struct phy_device *phydev)
- {
--	struct vsc8531_private *priv = phydev->priv;
--
--	skb_queue_purge(&priv->rx_skbs_list);
-+	vsc8584_ptp_deinit(phydev);
- }
- 
- /* Microsemi VSC85xx PHYs */
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index add1a9ee721af..1f6237705b44b 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -1297,7 +1297,6 @@ static void vsc8584_set_input_clk_configured(struct phy_device *phydev)
- 
- static int __vsc8584_init_ptp(struct phy_device *phydev)
- {
--	struct vsc8531_private *vsc8531 = phydev->priv;
- 	static const u32 ltc_seq_e[] = { 0, 400000, 0, 0, 0 };
- 	static const u8  ltc_seq_a[] = { 8, 6, 5, 4, 2 };
- 	u32 val;
-@@ -1514,17 +1513,7 @@ static int __vsc8584_init_ptp(struct phy_device *phydev)
- 
- 	vsc85xx_ts_eth_cmp1_sig(phydev);
- 
--	vsc8531->mii_ts.rxtstamp = vsc85xx_rxtstamp;
--	vsc8531->mii_ts.txtstamp = vsc85xx_txtstamp;
--	vsc8531->mii_ts.hwtstamp = vsc85xx_hwtstamp;
--	vsc8531->mii_ts.ts_info  = vsc85xx_ts_info;
--	phydev->mii_ts = &vsc8531->mii_ts;
--
--	memcpy(&vsc8531->ptp->caps, &vsc85xx_clk_caps, sizeof(vsc85xx_clk_caps));
--
--	vsc8531->ptp->ptp_clock = ptp_clock_register(&vsc8531->ptp->caps,
--						     &phydev->mdio.dev);
--	return PTR_ERR_OR_ZERO(vsc8531->ptp->ptp_clock);
-+	return 0;
- }
- 
- void vsc8584_config_ts_intr(struct phy_device *phydev)
-@@ -1551,6 +1540,16 @@ int vsc8584_ptp_init(struct phy_device *phydev)
- 	return 0;
- }
- 
-+void vsc8584_ptp_deinit(struct phy_device *phydev)
-+{
-+	struct vsc8531_private *vsc8531 = phydev->priv;
-+
-+	if (vsc8531->ptp->ptp_clock) {
-+		ptp_clock_unregister(vsc8531->ptp->ptp_clock);
-+		skb_queue_purge(&vsc8531->rx_skbs_list);
-+	}
-+}
-+
- irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev)
- {
- 	struct vsc8531_private *priv = phydev->priv;
-@@ -1608,7 +1607,16 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
- 
- 	vsc8531->ptp->phydev = phydev;
- 
--	return 0;
-+	vsc8531->mii_ts.rxtstamp = vsc85xx_rxtstamp;
-+	vsc8531->mii_ts.txtstamp = vsc85xx_txtstamp;
-+	vsc8531->mii_ts.hwtstamp = vsc85xx_hwtstamp;
-+	vsc8531->mii_ts.ts_info  = vsc85xx_ts_info;
-+	phydev->mii_ts = &vsc8531->mii_ts;
-+
-+	memcpy(&vsc8531->ptp->caps, &vsc85xx_clk_caps, sizeof(vsc85xx_clk_caps));
-+	vsc8531->ptp->ptp_clock = ptp_clock_register(&vsc8531->ptp->caps,
-+						     &phydev->mdio.dev);
-+	return PTR_ERR_OR_ZERO(vsc8531->ptp->ptp_clock);
- }
- 
- int vsc8584_ptp_probe_once(struct phy_device *phydev)
--- 
-2.50.1
-
+-	if (!drvdata->input) {
++	/*
++	 * Check that input registration succeeded. Checking that
++	 * HID_CLAIMED_INPUT is set prevents a UAF when all input devices
++	 * were freed during registration due to no usages being mapped,
++	 * leaving drvdata->input pointing to freed memory.
++	 */
++	if (!drvdata->input || !(hdev->claimed & HID_CLAIMED_INPUT)) {
+ 		hid_err(hdev, "Asus input not registered\n");
+ 		ret = -ENOMEM;
+ 		goto err_stop_hw;
 
 
 
