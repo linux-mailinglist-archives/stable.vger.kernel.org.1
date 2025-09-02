@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-177209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA17AB403F4
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:38:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95CECB4036A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:32:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D482546FD3
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:37:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54ED33AC18B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E6E3093CB;
-	Tue,  2 Sep 2025 13:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4B415747D;
+	Tue,  2 Sep 2025 13:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6qW8Z2M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jL0I2mPd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086BF3054DD;
-	Tue,  2 Sep 2025 13:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5243330BF71;
+	Tue,  2 Sep 2025 13:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819927; cv=none; b=fUXkHnqS/sBCHBplO3EIKGtHLHKlK0CndyL8QyWjHnJsUx88JbCToeJOWMZdEAdPEpZRilR8LMM4J9n1UoPZzVRFHxCNtapNtwv0lF7Z/3tzeu3OXurixFyJopAh4+a8DPaFPFxB73lb4XMAJ0GN4ONsRu+Ck28cTvZpl28DnZA=
+	t=1756819705; cv=none; b=QYV2X/wqfcqh/N7ynGmctX7zBm9k4LNCcxFmCs8mHCDJ5Yd+lIiUNzWXWNd3XGncbKbKmElyKDN6vaVjiI9tR9f4aqaBkTnrEd2plSy38mxwtbUnDlOLX0LArjyV5NWtgQ1amqlWUocx8r6EvxtJDN+8enhqCehfHMe+7FMfzps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819927; c=relaxed/simple;
-	bh=r5TOZVjpy5Unca1DIB9ukvXWDig83DmrnFV3185i4+g=;
+	s=arc-20240116; t=1756819705; c=relaxed/simple;
+	bh=/kdzAlAFFGToW01prkm58NvEZKyF2AQG8Jt62Yf7HmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nNicsg459wytndTMFTLZ/iKZ3AL26ubADdb0zRkc61763xEVcTwF8Un3i5f4azk5TMsaJ91/qsqnoQszF/16unLAxzGZTkqxKJbhMGcDB7A85lBmOo/xiSr8lMl+CHaNQmBlswUc2QGi7RIjj1t9aQivaRzdMN2lNn8lhrAwFUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6qW8Z2M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E782C4CEED;
-	Tue,  2 Sep 2025 13:32:06 +0000 (UTC)
+	 MIME-Version; b=Wiu18FIMvFJAKP+dSVk1Ou2Gcye0ivlJvO4Du3/bqwPszpazrP/sw5TfwOOLw7y61rYFZzj1TAla8c/IjGPl3u5+I8Uru1DDhwyEIk1UZY31R0LE1R/PEXuwV/xhb1mSwYK5+memT1zChr0hRiRGFCHnTzA1XvOBAgPCSuR0TBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jL0I2mPd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61CFC4CEED;
+	Tue,  2 Sep 2025 13:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819926;
-	bh=r5TOZVjpy5Unca1DIB9ukvXWDig83DmrnFV3185i4+g=;
+	s=korg; t=1756819705;
+	bh=/kdzAlAFFGToW01prkm58NvEZKyF2AQG8Jt62Yf7HmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o6qW8Z2MblYdqY0J92UEuVB6wEnb0ckPN0POoM3bLmJzr6Zu5eM9oTO8UAQQVrbYS
-	 0UlJlAtB+LGO+Bc/tp8jInrBkZIteVAkBK5qkCm7rAroYzy+QUentgpyaO1ZO7z+Vh
-	 Nmb1PAkZQDVyAcrEAnbIHHyPZJ0z89no24Mg1Z5I=
+	b=jL0I2mPdrAizfGqDJKyA3e8pYCV7L5Y/+ItQtGIpqfsd4yTZbRy8mJd7dZx3yVX5K
+	 1r3m9CBq8TDUL1kCJyunDayC5YBrQFS9T1VAqsYsNATUmQlaM4MuAqgUre3/tJpXqA
+	 9fZfU1tnjxSLwnQ+vCfBIsuVODhT9b/+zkg/A0eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 39/95] dt-bindings: display/msm: qcom,mdp5: drop lut clock
-Date: Tue,  2 Sep 2025 15:20:15 +0200
-Message-ID: <20250902131941.109504657@linuxfoundation.org>
+	Ping Cheng <ping.cheng@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.16 114/142] HID: wacom: Add a new Art Pen 2
+Date: Tue,  2 Sep 2025 15:20:16 +0200
+Message-ID: <20250902131952.644721796@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Ping Cheng <pinglinux@gmail.com>
 
-[ Upstream commit 7ab3b7579a6d2660a3425b9ea93b9a140b07f49c ]
+commit 9fc51941d9e7793da969b2c66e6f8213c5b1237f upstream.
 
-None of MDP5 platforms have a LUT clock on the display-controller, it
-was added by the mistake. Drop it, fixing DT warnings on MSM8976 /
-MSM8956 platforms. Technically it's an ABI break, but no other platforms
-are affected.
-
-Fixes: 385c8ac763b3 ("dt-bindings: display/msm: convert MDP5 schema to YAML format")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Patchwork: https://patchwork.freedesktop.org/patch/667822/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/hid/wacom_wac.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml b/Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml
-index e153f8d26e7aa..2735c78b0b67a 100644
---- a/Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml
-+++ b/Documentation/devicetree/bindings/display/msm/qcom,mdp5.yaml
-@@ -60,7 +60,6 @@ properties:
-           - const: bus
-           - const: core
-           - const: vsync
--          - const: lut
-           - const: tbu
-           - const: tbu_rt
-         # MSM8996 has additional iommu clock
--- 
-2.50.1
-
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -684,6 +684,7 @@ static bool wacom_is_art_pen(int tool_id
+ 	case 0x885:	/* Intuos3 Marker Pen */
+ 	case 0x804:	/* Intuos4/5 13HD/24HD Marker Pen */
+ 	case 0x10804:	/* Intuos4/5 13HD/24HD Art Pen */
++	case 0x204:     /* Art Pen 2 */
+ 		is_art_pen = true;
+ 		break;
+ 	}
 
 
 
