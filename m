@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-177274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC40B40481
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:43:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 854EFB40486
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 986AB189DD87
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AE93561020
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1D131DDBB;
-	Tue,  2 Sep 2025 13:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A13B334373;
+	Tue,  2 Sep 2025 13:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpT0NByd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c21dRLaz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59DB2DC32D;
-	Tue,  2 Sep 2025 13:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544CF3314CC;
+	Tue,  2 Sep 2025 13:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820129; cv=none; b=ALOhUlPXF6noNPLU66p4hXg6XVc/BtUNmmW8jvAEn2WjGDe7dVWKLq4/fTjKUZ5bdJEKADaa9j9CoLgGPz9jQW3/raXLuF1y9JQWLzDA+6FGbbW+BwXL3xPs2tyWot91cZhyFIhhJPMctBPeBDBzMHWu7yvGSIL+l2AtHh49gEw=
+	t=1756820188; cv=none; b=hjxDCw+duFfBQZsq7gjWfn3m7+/a68stT8+35/nEzaFbeIgVKxpUyxxe7LlVqQOkJmotudZ+YjItIwmPRM2F0d6SIIYOwx5HQ6Bba8vzFr2EsAozXB9eZrPG92SxljNOZIUmfK/JaI19QOaZ//PTrMLjhbIqJN33ZgfEgX3tuq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820129; c=relaxed/simple;
-	bh=oyRfPJ6bVOyHtXD7k05ONsEqj2wjoHm51MUzLidoNHU=;
+	s=arc-20240116; t=1756820188; c=relaxed/simple;
+	bh=yn093sx7Ooku1XEMm5dsLWcGYJDnTBzI4UpdOPu02bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rlo/Q9hmatAPq9n4Ri1CkqvCsAX62hPCpXxnf6OQpCvhclx6GwaYyy/m9nwWdKkVOOsFx46vdyS0NZiEQEHgnkLpU7oxqHsb6eUmfBp72a0lMibjlKhQjMdVZU0Yig5s9zpaSa2cdlnuRkABAT0WTlCrvBQfuKwyg4fJahyGbDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpT0NByd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283EBC4CEED;
-	Tue,  2 Sep 2025 13:35:28 +0000 (UTC)
+	 MIME-Version; b=ebt9NFMNlMhzt8M5A3z7/PHJgNTu6f6cz6LyhmOUXQCmglty6+vel0vITH/n6mKMdhdyNRV858z6uOVAEsBpmafbTPX2FwZehP/g8f8Unz59rSJIKKuy3VAG4W7o+T6NDhNofDwii7axiKbYo1TVztrz96m+4LCjDuTxnxHl3W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c21dRLaz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC58C4CEF5;
+	Tue,  2 Sep 2025 13:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820129;
-	bh=oyRfPJ6bVOyHtXD7k05ONsEqj2wjoHm51MUzLidoNHU=;
+	s=korg; t=1756820188;
+	bh=yn093sx7Ooku1XEMm5dsLWcGYJDnTBzI4UpdOPu02bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OpT0NBydwKRUi9iE5lKkzspyHYyB1ztjJsV23zfUfcpVzIlUP/46LeRsc8PcwlotP
-	 EmHU05Axgf4IEx6DGPx4v2NV1yywcbLLqdIdT3/a9i0Pejz7mMFXMBW9q5MWuLe2By
-	 44qWqvlZPNMTGfQhrjuHCZZLmih/+dvxXnosuTE0=
+	b=c21dRLazvqwA7IXJz584eCMoUzFXltyfh8FEnKp/lv6MnmrBFUSn64CQZSpF4xSoP
+	 3N8laooJxWLG0JUHzAHcw+ttX69ZVhTTv+llOgwBWZll5nAx8z8qc1osvRaQ9xykpB
+	 /PKvr4sIijf5ikiwh/kjLNaFqbRpEzkLIhNq2tV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+942297eecf7d2d61d1f1@syzkaller.appspotmail.com,
-	Takamitsu Iwai <takamitz@amazon.co.jp>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pavel Shpakovskiy <pashpakovskii@salutedevices.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 61/95] net: rose: include node references in rose_neigh refcount
+Subject: [PATCH 6.6 25/75] Bluetooth: hci_sync: fix set_local_name race condition
 Date: Tue,  2 Sep 2025 15:20:37 +0200
-Message-ID: <20250902131941.946022064@linuxfoundation.org>
+Message-ID: <20250902131936.104791082@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,142 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takamitsu Iwai <takamitz@amazon.co.jp>
+From: Pavel Shpakovskiy <pashpakovskii@salutedevices.com>
 
-[ Upstream commit da9c9c877597170b929a6121a68dcd3dd9a80f45 ]
+[ Upstream commit 6bbd0d3f0c23fc53c17409dd7476f38ae0ff0cd9 ]
 
-Current implementation maintains two separate reference counting
-mechanisms: the 'count' field in struct rose_neigh tracks references from
-rose_node structures, while the 'use' field (now refcount_t) tracks
-references from rose_sock.
+Function set_name_sync() uses hdev->dev_name field to send
+HCI_OP_WRITE_LOCAL_NAME command, but copying from data to hdev->dev_name
+is called after mgmt cmd was queued, so it is possible that function
+set_name_sync() will read old name value.
 
-This patch merges these two reference counting systems using 'use' field
-for proper reference management. Specifically, this patch adds incrementing
-and decrementing of rose_neigh->use when rose_neigh->count is incremented
-or decremented.
+This change adds name as a parameter for function hci_update_name_sync()
+to avoid race condition.
 
-This patch also modifies rose_rt_free(), rose_rt_device_down() and
-rose_clear_route() to properly release references to rose_neigh objects
-before freeing a rose_node through rose_remove_node().
-
-These changes ensure rose_neigh structures are properly freed only when
-all references, including those from rose_node structures, are released.
-As a result, this resolves a slab-use-after-free issue reported by Syzbot.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+942297eecf7d2d61d1f1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=942297eecf7d2d61d1f1
-Signed-off-by: Takamitsu Iwai <takamitz@amazon.co.jp>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250823085857.47674-4-takamitz@amazon.co.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 6f6ff38a1e14 ("Bluetooth: hci_sync: Convert MGMT_OP_SET_LOCAL_NAME")
+Signed-off-by: Pavel Shpakovskiy <pashpakovskii@salutedevices.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rose/rose_route.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ include/net/bluetooth/hci_sync.h | 2 +-
+ net/bluetooth/hci_sync.c         | 6 +++---
+ net/bluetooth/mgmt.c             | 5 ++++-
+ 3 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
-index 42460da0854d5..6acbb795c506d 100644
---- a/net/rose/rose_route.c
-+++ b/net/rose/rose_route.c
-@@ -178,6 +178,7 @@ static int __must_check rose_add_node(struct rose_route_struct *rose_route,
- 			}
- 		}
- 		rose_neigh->count++;
-+		rose_neigh_hold(rose_neigh);
+diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
+index 3cb2d10cac930..e2e588b08fe90 100644
+--- a/include/net/bluetooth/hci_sync.h
++++ b/include/net/bluetooth/hci_sync.h
+@@ -72,7 +72,7 @@ int hci_update_class_sync(struct hci_dev *hdev);
  
- 		goto out;
- 	}
-@@ -187,6 +188,7 @@ static int __must_check rose_add_node(struct rose_route_struct *rose_route,
- 		rose_node->neighbour[rose_node->count] = rose_neigh;
- 		rose_node->count++;
- 		rose_neigh->count++;
-+		rose_neigh_hold(rose_neigh);
- 	}
+ int hci_update_eir_sync(struct hci_dev *hdev);
+ int hci_update_class_sync(struct hci_dev *hdev);
+-int hci_update_name_sync(struct hci_dev *hdev);
++int hci_update_name_sync(struct hci_dev *hdev, const u8 *name);
+ int hci_write_ssp_mode_sync(struct hci_dev *hdev, u8 mode);
  
- out:
-@@ -322,6 +324,7 @@ static int rose_del_node(struct rose_route_struct *rose_route,
- 	for (i = 0; i < rose_node->count; i++) {
- 		if (rose_node->neighbour[i] == rose_neigh) {
- 			rose_neigh->count--;
-+			rose_neigh_put(rose_neigh);
+ int hci_get_random_address(struct hci_dev *hdev, bool require_privacy,
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 01aca07707117..020f1809fc994 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -3491,13 +3491,13 @@ int hci_update_scan_sync(struct hci_dev *hdev)
+ 	return hci_write_scan_enable_sync(hdev, scan);
+ }
  
- 			if (rose_neigh->count == 0) {
- 				rose_remove_neigh(rose_neigh);
-@@ -430,6 +433,7 @@ int rose_add_loopback_node(const rose_address *address)
- 	rose_node_list  = rose_node;
- 
- 	rose_loopback_neigh->count++;
-+	rose_neigh_hold(rose_loopback_neigh);
- 
- out:
- 	spin_unlock_bh(&rose_node_list_lock);
-@@ -461,6 +465,7 @@ void rose_del_loopback_node(const rose_address *address)
- 	rose_remove_node(rose_node);
- 
- 	rose_loopback_neigh->count--;
-+	rose_neigh_put(rose_loopback_neigh);
- 
- out:
- 	spin_unlock_bh(&rose_node_list_lock);
-@@ -500,6 +505,7 @@ void rose_rt_device_down(struct net_device *dev)
- 				memmove(&t->neighbour[i], &t->neighbour[i + 1],
- 					sizeof(t->neighbour[0]) *
- 						(t->count - i));
-+				rose_neigh_put(s);
- 			}
- 
- 			if (t->count <= 0)
-@@ -543,6 +549,7 @@ static int rose_clear_routes(void)
+-int hci_update_name_sync(struct hci_dev *hdev)
++int hci_update_name_sync(struct hci_dev *hdev, const u8 *name)
  {
- 	struct rose_neigh *s, *rose_neigh;
- 	struct rose_node  *t, *rose_node;
-+	int i;
+ 	struct hci_cp_write_local_name cp;
  
- 	spin_lock_bh(&rose_node_list_lock);
- 	spin_lock_bh(&rose_neigh_list_lock);
-@@ -553,8 +560,12 @@ static int rose_clear_routes(void)
- 	while (rose_node != NULL) {
- 		t         = rose_node;
- 		rose_node = rose_node->next;
--		if (!t->loopback)
-+
-+		if (!t->loopback) {
-+			for (i = 0; i < rose_node->count; i++)
-+				rose_neigh_put(t->neighbour[i]);
- 			rose_remove_node(t);
-+		}
+ 	memset(&cp, 0, sizeof(cp));
+ 
+-	memcpy(cp.name, hdev->dev_name, sizeof(cp.name));
++	memcpy(cp.name, name, sizeof(cp.name));
+ 
+ 	return __hci_cmd_sync_status(hdev, HCI_OP_WRITE_LOCAL_NAME,
+ 					    sizeof(cp), &cp,
+@@ -3550,7 +3550,7 @@ int hci_powered_update_sync(struct hci_dev *hdev)
+ 			hci_write_fast_connectable_sync(hdev, false);
+ 		hci_update_scan_sync(hdev);
+ 		hci_update_class_sync(hdev);
+-		hci_update_name_sync(hdev);
++		hci_update_name_sync(hdev, hdev->dev_name);
+ 		hci_update_eir_sync(hdev);
  	}
  
- 	while (rose_neigh != NULL) {
-@@ -1189,7 +1200,7 @@ static int rose_neigh_show(struct seq_file *seq, void *v)
- 			   (rose_neigh->loopback) ? "RSLOOP-0" : ax2asc(buf, &rose_neigh->callsign),
- 			   rose_neigh->dev ? rose_neigh->dev->name : "???",
- 			   rose_neigh->count,
--			   refcount_read(&rose_neigh->use) - 1,
-+			   refcount_read(&rose_neigh->use) - rose_neigh->count - 1,
- 			   (rose_neigh->dce_mode) ? "DCE" : "DTE",
- 			   (rose_neigh->restarted) ? "yes" : "no",
- 			   ax25_display_timer(&rose_neigh->t0timer) / HZ,
-@@ -1294,6 +1305,7 @@ void __exit rose_rt_free(void)
- 	struct rose_neigh *s, *rose_neigh = rose_neigh_list;
- 	struct rose_node  *t, *rose_node  = rose_node_list;
- 	struct rose_route *u, *rose_route = rose_route_list;
-+	int i;
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 82fa8c28438f2..9b01eaaa0eb2d 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -3819,8 +3819,11 @@ static void set_name_complete(struct hci_dev *hdev, void *data, int err)
  
- 	while (rose_neigh != NULL) {
- 		s          = rose_neigh;
-@@ -1307,6 +1319,8 @@ void __exit rose_rt_free(void)
- 		t         = rose_node;
- 		rose_node = rose_node->next;
- 
-+		for (i = 0; i < t->count; i++)
-+			rose_neigh_put(t->neighbour[i]);
- 		rose_remove_node(t);
+ static int set_name_sync(struct hci_dev *hdev, void *data)
+ {
++	struct mgmt_pending_cmd *cmd = data;
++	struct mgmt_cp_set_local_name *cp = cmd->param;
++
+ 	if (lmp_bredr_capable(hdev)) {
+-		hci_update_name_sync(hdev);
++		hci_update_name_sync(hdev, cp->name);
+ 		hci_update_eir_sync(hdev);
  	}
  
 -- 
