@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8712FB4045B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:41:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 701C9B403B3
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 284BD7BC2E7
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:36:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C1A4188E8CA
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B4130ACEB;
-	Tue,  2 Sep 2025 13:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3973030BF6E;
+	Tue,  2 Sep 2025 13:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EU7sgDp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uoQhokn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896EC20B1F5;
-	Tue,  2 Sep 2025 13:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B2D30AAB4;
+	Tue,  2 Sep 2025 13:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819940; cv=none; b=Ea/SRuxvcgy/NGBejqlcosu9ttb2V77LQglrJE2tuF3QBv52S2XpD1I1Nol4j3yIt2YzBZFdF001avOTxnP2dfVE7tykK4v9ZpE6H7NBWIRH9BbeqCojHqd2EZKfG2PWQOt5p+oLuxWkqDktjSXsL7Eij9vKuSLAK2xRA3rAea4=
+	t=1756819715; cv=none; b=My4+I5hNA7eqkEFDE/efhvtXZKTxAjQbvB4Y7I1ojzFIe+PFFqVPaivd8Vt3W9WHLWUDJH7szIaMmGQY4mPfMOjddA6upmRDGAYsH466UXP79nyoBc+Qmfdfx5YJST1Wo66HlHej+NE9dY95E/vXLpn0Pk77OT0S/6x3rkiy2fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819940; c=relaxed/simple;
-	bh=DramH946b+HnCYp/OABAhPXL/+raneG6xDzTXZ7nBiI=;
+	s=arc-20240116; t=1756819715; c=relaxed/simple;
+	bh=z4Z2zrhZgWTjZBEL0GUq9TD3bx+N0idBBZer8YLG3p8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=muqepYS8odjZvzirWh8k7zG/w8F0kjTp0dR5xbuSg2txrw54Ko/Df3ibX3R2Bnfk2TZ69eCnUfJNvGPvwOp3kyi9CvSwkzmyZPe011hNKByUNWbwtSoJ8K3exWxyhRv0/bytr9bIQU3TJgD92gLU5lzoBfrltaAX1HiklnVPZCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EU7sgDp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95CDC4CEED;
-	Tue,  2 Sep 2025 13:32:19 +0000 (UTC)
+	 MIME-Version; b=pWRq4bYHSUON6OPHws5jAcuWYU58i6ug3tEbBZOUz7YAMq1vS+3K0fl3hnNbq06h8jltaVIRxzqC36pZzA0ZA2HFHZG89WCCU5QaiQNQRNrAiLYifSNSDMIAeab/nYiLqVamxPjGdqyrOFpPfPtffgkTejPZhWBtcB6P2F2GdGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uoQhokn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A996C4CEED;
+	Tue,  2 Sep 2025 13:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819940;
-	bh=DramH946b+HnCYp/OABAhPXL/+raneG6xDzTXZ7nBiI=;
+	s=korg; t=1756819714;
+	bh=z4Z2zrhZgWTjZBEL0GUq9TD3bx+N0idBBZer8YLG3p8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1EU7sgDpAT9HMHnzvXFlpZ1x5ISWCnrjnjuXAJpjn2H5+FAZonQJeBK6jKY7V70Rs
-	 BQ2FXMJsxlaCbPUFUfLbB+X53JbnzaopHg4U7dl0r8if2Hch7ZpgRpEM2ODoZRhzL8
-	 O5mWTFY4vAMLaM4HLMQ6oEAexruJDJwypm9mpBX0=
+	b=1uoQhoknbpj4BAE9sLsXpClZNU2JFui2kxH9t3Hj8kGYwX/lRbEoU4a96tHSY1ngr
+	 dtWiRli1iSS//HCIRB4zh5cO0OmfAgLeWlAFNAAdAqYOdoAvPUlnIjQ8mEPfFVZdCA
+	 kELCrkBCGVfnuNSAEJflzJNyo5lCammGo8rxVvMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 43/95] drm/xe: Dont trigger rebind on initial dma-buf validation
+	Kees Cook <kees@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.16 117/142] arm64: mm: Fix CFI failure due to kpti_ng_pgd_alloc function signature
 Date: Tue,  2 Sep 2025 15:20:19 +0200
-Message-ID: <20250902131941.256977350@linuxfoundation.org>
+Message-ID: <20250902131952.769259668@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 16ca06aa2c2218cb21907c0c45a746958c944def ]
+commit ceca927c86e6f72f72d45487a34368bc9509431d upstream.
 
-On the first validate of an imported dma-buf (initial bind), the device
-has no GPU mappings, so a rebind is unnecessary. Rebinding here is
-harmful in multi-GPU setups and for VMs using preempt-fence mode, as it
-would evict in-flight GPU work.
+Seen during KPTI initialization:
 
-v2:
- - Drop dma_buf_validated, check for XE_PL_SYSTEM (Thomas)
+  CFI failure at create_kpti_ng_temp_pgd+0x124/0xce8 (target: kpti_ng_pgd_alloc+0x0/0x14; expected type: 0xd61b88b6)
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://lore.kernel.org/r/20250825152841.3837378-1-matthew.brost@intel.com
-(cherry picked from commit ffdf968762e4fb3cdae54e811ec3525e67440a60)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The call site is alloc_init_pud() at arch/arm64/mm/mmu.c:
+
+  pud_phys = pgtable_alloc(TABLE_PUD);
+
+alloc_init_pud() has the prototype:
+
+  static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+                             phys_addr_t phys, pgprot_t prot,
+                             phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+                             int flags)
+
+where the pgtable_alloc() prototype is declared.
+
+The target (kpti_ng_pgd_alloc) is used in arch/arm64/kernel/cpufeature.c:
+
+  create_kpti_ng_temp_pgd(kpti_ng_temp_pgd, __pa(alloc), KPTI_NG_TEMP_VA,
+                          PAGE_SIZE, PAGE_KERNEL, kpti_ng_pgd_alloc, 0);
+
+which is an alias for __create_pgd_mapping_locked() with prototype:
+
+  extern __alias(__create_pgd_mapping_locked)
+  void create_kpti_ng_temp_pgd(pgd_t *pgdir, phys_addr_t phys,
+                               unsigned long virt,
+                               phys_addr_t size, pgprot_t prot,
+                               phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+                               int flags);
+
+__create_pgd_mapping_locked() passes the function pointer down:
+
+  __create_pgd_mapping_locked() -> alloc_init_p4d() -> alloc_init_pud()
+
+But the target function (kpti_ng_pgd_alloc) has the wrong signature:
+
+  static phys_addr_t __init kpti_ng_pgd_alloc(int shift);
+
+The "int" should be "enum pgtable_type".
+
+To make "enum pgtable_type" available to cpufeature.c, move
+enum pgtable_type definition from arch/arm64/mm/mmu.c to
+arch/arm64/include/asm/mmu.h.
+
+Adjust kpti_ng_pgd_alloc to use "enum pgtable_type" instead of "int".
+The function behavior remains identical (parameter is unused).
+
+Fixes: c64f46ee1377 ("arm64: mm: use enum to identify pgtable level instead of *_SHIFT")
+Cc: <stable@vger.kernel.org> # 6.16.x
+Signed-off-by: Kees Cook <kees@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20250829190721.it.373-kees@kernel.org
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/mmu.h   |    7 +++++++
+ arch/arm64/kernel/cpufeature.c |    5 +++--
+ arch/arm64/mm/mmu.c            |    7 -------
+ 3 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-index 5f745d9ed6cc2..445bbe0299b08 100644
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -671,7 +671,8 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
- 	}
+--- a/arch/arm64/include/asm/mmu.h
++++ b/arch/arm64/include/asm/mmu.h
+@@ -17,6 +17,13 @@
+ #include <linux/refcount.h>
+ #include <asm/cpufeature.h>
  
- 	if (ttm_bo->type == ttm_bo_type_sg) {
--		ret = xe_bo_move_notify(bo, ctx);
-+		if (new_mem->mem_type == XE_PL_SYSTEM)
-+			ret = xe_bo_move_notify(bo, ctx);
- 		if (!ret)
- 			ret = xe_bo_move_dmabuf(ttm_bo, new_mem);
- 		return ret;
--- 
-2.50.1
-
++enum pgtable_type {
++	TABLE_PTE,
++	TABLE_PMD,
++	TABLE_PUD,
++	TABLE_P4D,
++};
++
+ typedef struct {
+ 	atomic64_t	id;
+ #ifdef CONFIG_COMPAT
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -84,6 +84,7 @@
+ #include <asm/hwcap.h>
+ #include <asm/insn.h>
+ #include <asm/kvm_host.h>
++#include <asm/mmu.h>
+ #include <asm/mmu_context.h>
+ #include <asm/mte.h>
+ #include <asm/hypervisor.h>
+@@ -1941,11 +1942,11 @@ static bool has_pmuv3(const struct arm64
+ extern
+ void create_kpti_ng_temp_pgd(pgd_t *pgdir, phys_addr_t phys, unsigned long virt,
+ 			     phys_addr_t size, pgprot_t prot,
+-			     phys_addr_t (*pgtable_alloc)(int), int flags);
++			     phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags);
+ 
+ static phys_addr_t __initdata kpti_ng_temp_alloc;
+ 
+-static phys_addr_t __init kpti_ng_pgd_alloc(int shift)
++static phys_addr_t __init kpti_ng_pgd_alloc(enum pgtable_type type)
+ {
+ 	kpti_ng_temp_alloc -= PAGE_SIZE;
+ 	return kpti_ng_temp_alloc;
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -46,13 +46,6 @@
+ #define NO_CONT_MAPPINGS	BIT(1)
+ #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
+ 
+-enum pgtable_type {
+-	TABLE_PTE,
+-	TABLE_PMD,
+-	TABLE_PUD,
+-	TABLE_P4D,
+-};
+-
+ u64 kimage_voffset __ro_after_init;
+ EXPORT_SYMBOL(kimage_voffset);
+ 
 
 
 
