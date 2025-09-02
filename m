@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-177173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E476B40431
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9BAB4042B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BCF47BA60D
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DE9C5479F5
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3380F320A21;
-	Tue,  2 Sep 2025 13:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4B83148CB;
+	Tue,  2 Sep 2025 13:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7vSPM0D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFPP04s1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E321930EF6C;
-	Tue,  2 Sep 2025 13:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCC33148B2;
+	Tue,  2 Sep 2025 13:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819815; cv=none; b=AzhNgxr41b3X1IPiWdQ9TP59vbwzyEQHwhXgJQFoI182Z6Evxe6HmdlVkcVpKTTAzHwgGxYuXNI3+iPJ/mgVxQbl4IznCTs2EP1VkbnO6gj8HvjbhZQ3RunQcX/5sBLRUHU5ebHkMJVi+5k5M8HMm64+iNS67OWOCToWBSB+25s=
+	t=1756820025; cv=none; b=qelCQRaGi067TyBJdOFczILsZrnFlzfRB3+XcgSz4n+oBELgibbRCbO2kh2HZ21M7oRorNfY6HZdjuD15LiV2spzh0TxIYZ4M3kOD4chGrCEha7FnXO/cmDRbEjZjtxu4d3f+jRMHjvtI1h42kbe85NiH9qZ4ZS5pC8H36z/9tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819815; c=relaxed/simple;
-	bh=Nn8IjDPE03gZtRahSaGlHr2o0U20t3Nhhri9k7sPEiU=;
+	s=arc-20240116; t=1756820025; c=relaxed/simple;
+	bh=pfriYSCPw0hSOKchjAOGDYo6y/3pdkDd6VUBUJ9PPpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GdEYT037GUaa8iXZREZNZ4COay7mVgBXbUavZdseALExYIqtyNWyZebYKDuBld4hr5gQkwnr7vn5nTVrHKIqWVs343oYIuQQsJZEfst75obWxTAxqYel27FaVO9kMTID8Ik6i0M/TTrzHzFE/0DFnByT6sPQwBiZCLuhff/KH1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7vSPM0D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF75C4CEF9;
-	Tue,  2 Sep 2025 13:30:13 +0000 (UTC)
+	 MIME-Version; b=T6AUYNW0B6gBHi/ylOXfPGzkKv8o5ZTMaT+xyMQOOQxYV1LT/i5M5mCgdXd+9mDEkmKmHrRnEYTfcePMzzF9Fq2aOrQ+dCEY13D6G0yJN3h5599wT3VsVL/WWpDCgA46e7LpsZF0o+ddLgPIdASqATQDbBStG72L5tMjh4D5Yi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFPP04s1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A1BC4CEED;
+	Tue,  2 Sep 2025 13:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819814;
-	bh=Nn8IjDPE03gZtRahSaGlHr2o0U20t3Nhhri9k7sPEiU=;
+	s=korg; t=1756820025;
+	bh=pfriYSCPw0hSOKchjAOGDYo6y/3pdkDd6VUBUJ9PPpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b7vSPM0DAk2rqaKErCKCaiiNw3rTo1gUtzXYxBY31fYAJUKvd2GXbiINhFZxsmhn6
-	 p9kHzhmatS8hmGHBPY0apidQgwCpfFyYG9JPm+YOav7KnPuWH90O2OG3gYo29+B29K
-	 ML59Wpc0nUnuqYsnwv++SYfLPkNEoHhYsZn6cLEM=
+	b=YFPP04s1pzFkYsj1IsBtTl8m3WiuoD1BB89Lvk1jffGLOuHaz0eBbaNZwFXF+5c1k
+	 d8ViqJm9sYrL8WqjlCcnh4faJ5J7l3S0sj7hLwway48ShwEMFtzHpfhe+C/+uUZ4Mg
+	 aSjoCv3fgqGpuNMftjse12QsL4HZyx8tpX4xmrRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.16 136/142] firmware: qcom: scm: take struct device as argument in SHM bridge enable
+	syzbot+e69f06a0f30116c68056@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 62/95] sctp: initialize more fields in sctp_v6_from_sk()
 Date: Tue,  2 Sep 2025 15:20:38 +0200
-Message-ID: <20250902131953.491570164@linuxfoundation.org>
+Message-ID: <20250902131941.983606614@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit dc3f4e75c54c19bad9a70419afae00ce6baf3ebf upstream.
+[ Upstream commit 2e8750469242cad8f01f320131fd5a6f540dbb99 ]
 
-qcom_scm_shm_bridge_enable() is used early in the SCM initialization
-routine. It makes an SCM call and so expects the internal __scm pointer
-in the SCM driver to be assigned. For this reason the tzmem memory pool
-is allocated *after* this pointer is assigned. However, this can lead to
-a crash if another consumer of the SCM API makes a call using the memory
-pool between the assignment of the __scm pointer and the initialization
-of the tzmem memory pool.
+syzbot found that sin6_scope_id was not properly initialized,
+leading to undefined behavior.
 
-As qcom_scm_shm_bridge_enable() is a special case, not meant to be
-called by ordinary users, pull it into the local SCM header. Make it
-take struct device as argument. This is the device that will be used to
-make the SCM call as opposed to the global __scm pointer. This will
-allow us to move the tzmem initialization *before* the __scm assignment
-in the core SCM driver.
+Clear sin6_scope_id and sin6_flowinfo.
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250630-qcom-scm-race-v2-2-fa3851c98611@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: KMSAN: uninit-value in __sctp_v6_cmp_addr+0x887/0x8c0 net/sctp/ipv6.c:649
+  __sctp_v6_cmp_addr+0x887/0x8c0 net/sctp/ipv6.c:649
+  sctp_inet6_cmp_addr+0x4f2/0x510 net/sctp/ipv6.c:983
+  sctp_bind_addr_conflict+0x22a/0x3b0 net/sctp/bind_addr.c:390
+  sctp_get_port_local+0x21eb/0x2440 net/sctp/socket.c:8452
+  sctp_get_port net/sctp/socket.c:8523 [inline]
+  sctp_listen_start net/sctp/socket.c:8567 [inline]
+  sctp_inet_listen+0x710/0xfd0 net/sctp/socket.c:8636
+  __sys_listen_socket net/socket.c:1912 [inline]
+  __sys_listen net/socket.c:1927 [inline]
+  __do_sys_listen net/socket.c:1932 [inline]
+  __se_sys_listen net/socket.c:1930 [inline]
+  __x64_sys_listen+0x343/0x4c0 net/socket.c:1930
+  x64_sys_call+0x271d/0x3e20 arch/x86/include/generated/asm/syscalls_64.h:51
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Local variable addr.i.i created at:
+  sctp_get_port net/sctp/socket.c:8515 [inline]
+  sctp_listen_start net/sctp/socket.c:8567 [inline]
+  sctp_inet_listen+0x650/0xfd0 net/sctp/socket.c:8636
+  __sys_listen_socket net/socket.c:1912 [inline]
+  __sys_listen net/socket.c:1927 [inline]
+  __do_sys_listen net/socket.c:1932 [inline]
+  __se_sys_listen net/socket.c:1930 [inline]
+  __x64_sys_listen+0x343/0x4c0 net/socket.c:1930
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+e69f06a0f30116c68056@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68adc0a2.050a0220.37038e.00c4.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20250826141314.1802610-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom/qcom_scm.c       |   12 +++++++++---
- drivers/firmware/qcom/qcom_scm.h       |    1 +
- drivers/firmware/qcom/qcom_tzmem.c     |    3 ++-
- include/linux/firmware/qcom/qcom_scm.h |    1 -
- 4 files changed, 12 insertions(+), 5 deletions(-)
+ net/sctp/ipv6.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/firmware/qcom/qcom_scm.c
-+++ b/drivers/firmware/qcom/qcom_scm.c
-@@ -1603,7 +1603,13 @@ bool qcom_scm_lmh_dcvsh_available(void)
- }
- EXPORT_SYMBOL_GPL(qcom_scm_lmh_dcvsh_available);
- 
--int qcom_scm_shm_bridge_enable(void)
-+/*
-+ * This is only supposed to be called once by the TZMem module. It takes the
-+ * SCM struct device as argument and uses it to pass the call as at the time
-+ * the SHM Bridge is enabled, the SCM is not yet fully set up and doesn't
-+ * accept global user calls. Don't try to use the __scm pointer here.
-+ */
-+int qcom_scm_shm_bridge_enable(struct device *scm_dev)
+diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
+index 38e2fbdcbeac4..9f835e674c599 100644
+--- a/net/sctp/ipv6.c
++++ b/net/sctp/ipv6.c
+@@ -546,7 +546,9 @@ static void sctp_v6_from_sk(union sctp_addr *addr, struct sock *sk)
  {
- 	int ret;
+ 	addr->v6.sin6_family = AF_INET6;
+ 	addr->v6.sin6_port = 0;
++	addr->v6.sin6_flowinfo = 0;
+ 	addr->v6.sin6_addr = sk->sk_v6_rcv_saddr;
++	addr->v6.sin6_scope_id = 0;
+ }
  
-@@ -1615,11 +1621,11 @@ int qcom_scm_shm_bridge_enable(void)
- 
- 	struct qcom_scm_res res;
- 
--	if (!__qcom_scm_is_call_available(__scm->dev, QCOM_SCM_SVC_MP,
-+	if (!__qcom_scm_is_call_available(scm_dev, QCOM_SCM_SVC_MP,
- 					  QCOM_SCM_MP_SHM_BRIDGE_ENABLE))
- 		return -EOPNOTSUPP;
- 
--	ret = qcom_scm_call(__scm->dev, &desc, &res);
-+	ret = qcom_scm_call(scm_dev, &desc, &res);
- 
- 	if (ret)
- 		return ret;
---- a/drivers/firmware/qcom/qcom_scm.h
-+++ b/drivers/firmware/qcom/qcom_scm.h
-@@ -83,6 +83,7 @@ int scm_legacy_call(struct device *dev,
- 		    struct qcom_scm_res *res);
- 
- struct qcom_tzmem_pool *qcom_scm_get_tzmem_pool(void);
-+int qcom_scm_shm_bridge_enable(struct device *scm_dev);
- 
- #define QCOM_SCM_SVC_BOOT		0x01
- #define QCOM_SCM_BOOT_SET_ADDR		0x01
---- a/drivers/firmware/qcom/qcom_tzmem.c
-+++ b/drivers/firmware/qcom/qcom_tzmem.c
-@@ -20,6 +20,7 @@
- #include <linux/spinlock.h>
- #include <linux/types.h>
- 
-+#include "qcom_scm.h"
- #include "qcom_tzmem.h"
- 
- struct qcom_tzmem_area {
-@@ -94,7 +95,7 @@ static int qcom_tzmem_init(void)
- 			goto notsupp;
- 	}
- 
--	ret = qcom_scm_shm_bridge_enable();
-+	ret = qcom_scm_shm_bridge_enable(qcom_tzmem_dev);
- 	if (ret == -EOPNOTSUPP)
- 		goto notsupp;
- 
---- a/include/linux/firmware/qcom/qcom_scm.h
-+++ b/include/linux/firmware/qcom/qcom_scm.h
-@@ -148,7 +148,6 @@ bool qcom_scm_lmh_dcvsh_available(void);
- 
- int qcom_scm_gpu_init_regs(u32 gpu_req);
- 
--int qcom_scm_shm_bridge_enable(void);
- int qcom_scm_shm_bridge_create(u64 pfn_and_ns_perm_flags,
- 			       u64 ipfn_and_s_perm_flags, u64 size_and_flags,
- 			       u64 ns_vmids, u64 *handle);
+ /* Initialize sk->sk_rcv_saddr from sctp_addr. */
+-- 
+2.50.1
+
 
 
 
