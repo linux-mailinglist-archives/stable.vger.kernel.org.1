@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3ADB40383
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:33:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C443B40423
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8FF73B331A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 338414E7B23
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D1F31A061;
-	Tue,  2 Sep 2025 13:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB2D26D4E2;
+	Tue,  2 Sep 2025 13:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJP6ul3d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLmW1zmV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1741131A062;
-	Tue,  2 Sep 2025 13:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832152DAFA1;
+	Tue,  2 Sep 2025 13:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819785; cv=none; b=YJ01lNPmSsPYPf+lZFrOyKdAbO/Qj9Eaqn7t4exH0U1B3VN7oBlC5v63pHrbG0S0EkqptNY0t9+vofwXnSw72RLfE0MkI+WMMvEQZaUM14b1GSKTNE2DhyUPFVei8Lg7ZHfymTsWZKUfuAuChONYXoB+f2RBjMLzSNKJkAIVQzc=
+	t=1756820110; cv=none; b=plhc3w9UUmdkScbATusXD0jP8DNHuSUMaOCUQq+sm40tyjrjhyWBeDQAGSkvdSgrrAsrXn6mrxPd63wL9G4IjoWXVZ34nNC0gT9qEcZwuSPhGI9rbCTB5Yui7EjwRqcG7HYRkUEGN7bKceJCWcpx7yG526SV9yfQJukld7WwuTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819785; c=relaxed/simple;
-	bh=lw+2f1hzugIWKiSdRUqh3aCTm8vSpr9XFbb2GjRXs1Q=;
+	s=arc-20240116; t=1756820110; c=relaxed/simple;
+	bh=/uGD7mo0+6bikeircO7M+gbtoS3TEfqIO10wKEkolcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urhwzX8+kxuZpJ46e7nJekQOrr+gOFD8wlwsytGNW0p1+DjRGHc3y11rPLWEpyPzsTnFZHTlOiRRnJXGNeNsPnMSJvqJJn0W2bdblTsrwNgXW7wV6cplpWWNvF/7XJnzGF+7Nji+lu8b+wJYA+MIY3CFl1I/WPOw0iDivHQiwkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJP6ul3d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4137EC4CEED;
-	Tue,  2 Sep 2025 13:29:44 +0000 (UTC)
+	 MIME-Version; b=rjyMkYtB8mGkQEHGVtYZ22tfjzWwnrUU9ZVAOlr5uc+cyXtK29ibNcpfPYg0D8zlMe96seaOblXgXWtGkCLyvPZ7CsRbHRwtiGU7/74wwknSbJGXcOEP3UTH8HNDFxKdgVVAZBDxOJC8Y3mPiNw01F5X4JmVdjegoyC0wYQoD2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLmW1zmV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C451C4CEED;
+	Tue,  2 Sep 2025 13:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819784;
-	bh=lw+2f1hzugIWKiSdRUqh3aCTm8vSpr9XFbb2GjRXs1Q=;
+	s=korg; t=1756820110;
+	bh=/uGD7mo0+6bikeircO7M+gbtoS3TEfqIO10wKEkolcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TJP6ul3d4sFJmGvDImEGVjRG2Qp21m8rev7ib7WhCxGbXAzMJR9CiEDSGlxWBX2HE
-	 ORkDzvo6JwwN54bMuhEvCGXYe8T6feHwzFVR/M5IUydXrl6sXvinSftsqjUHNJ1AH9
-	 kkzaQz1rHY/q2DLpXSFIr2fKF1QA+0a+TZRXdNe0=
+	b=xLmW1zmVs7Z0egcl2Ob7Y8y/cAckNWog/8N8WBRynO6H8EygoJGYLbGUe9Vb1fj1j
+	 EEAwJy2Y/nBwxWNcHma0y8J8ZHYLF5hxIULjE+A3K86wJNUd1rCgMvQRNKQSW0RK9s
+	 k5eT2+UmAA3SWnXOvN5apg9Vef1qvOa5/UWc/Kvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	Sasha Levin <sashal@kernel.org>,
-	Imre Deak <imre.deak@intel.com>
-Subject: [PATCH 6.16 139/142] Revert "drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS"
+	Li Nan <linan122@huawei.com>,
+	Wu Guanghao <wuguanghao3@huawei.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 65/95] efivarfs: Fix slab-out-of-bounds in efivarfs_d_compare
 Date: Tue,  2 Sep 2025 15:20:41 +0200
-Message-ID: <20250902131953.603872091@linuxfoundation.org>
+Message-ID: <20250902131942.097867416@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Li Nan <linan122@huawei.com>
 
-This reverts commit 944e732be9c3a33e64e9fb0f5451a37fc252ddfc which is
-commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f upstream.
+[ Upstream commit a6358f8cf64850f3f27857b8ed8c1b08cfc4685c ]
 
-The upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ("drm/dp:
-Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS") the
-reverted commit backported causes a regression, on one eDP panel at
-least resulting in display flickering, described in detail at the Link:
-below. The issue fixed by the upstream commit will need a different
-solution, revert the backport for now.
+Observed on kernel 6.6 (present on master as well):
 
-Cc: intel-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: Sasha Levin <sashal@kernel.org>
-Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14558
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  BUG: KASAN: slab-out-of-bounds in memcmp+0x98/0xd0
+  Call trace:
+   kasan_check_range+0xe8/0x190
+   __asan_loadN+0x1c/0x28
+   memcmp+0x98/0xd0
+   efivarfs_d_compare+0x68/0xd8
+   __d_lookup_rcu_op_compare+0x178/0x218
+   __d_lookup_rcu+0x1f8/0x228
+   d_alloc_parallel+0x150/0x648
+   lookup_open.isra.0+0x5f0/0x8d0
+   open_last_lookups+0x264/0x828
+   path_openat+0x130/0x3f8
+   do_filp_open+0x114/0x248
+   do_sys_openat2+0x340/0x3c0
+   __arm64_sys_openat+0x120/0x1a0
+
+If dentry->d_name.len < EFI_VARIABLE_GUID_LEN , 'guid' can become
+negative, leadings to oob. The issue can be triggered by parallel
+lookups using invalid filename:
+
+  T1			T2
+  lookup_open
+   ->lookup
+    simple_lookup
+     d_add
+     // invalid dentry is added to hash list
+
+			lookup_open
+			 d_alloc_parallel
+			  __d_lookup_rcu
+			   __d_lookup_rcu_op_compare
+			    hlist_bl_for_each_entry_rcu
+			    // invalid dentry can be retrieved
+			     ->d_compare
+			      efivarfs_d_compare
+			      // oob
+
+Fix it by checking 'guid' before cmp.
+
+Fixes: da27a24383b2 ("efivarfs: guid part of filenames are case-insensitive")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Signed-off-by: Wu Guanghao <wuguanghao3@huawei.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_helper.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/efivarfs/super.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/display/drm_dp_helper.c
-+++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -725,7 +725,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
- 	 * monitor doesn't power down exactly after the throw away read.
- 	 */
- 	if (!aux->is_remote) {
--		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
-+		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
- 		if (ret < 0)
- 			return ret;
- 	}
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index 11ebddc57bc73..1831e015b2f26 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -127,6 +127,10 @@ static int efivarfs_d_compare(const struct dentry *dentry,
+ {
+ 	int guid = len - EFI_VARIABLE_GUID_LEN;
+ 
++	/* Parallel lookups may produce a temporary invalid filename */
++	if (guid <= 0)
++		return 1;
++
+ 	if (name->len != len)
+ 		return 1;
+ 
+-- 
+2.50.1
+
 
 
 
