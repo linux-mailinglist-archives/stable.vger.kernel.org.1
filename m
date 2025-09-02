@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-177276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8447EB4044B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:41:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56665B4038D
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39491560111
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A5E816D6FA
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0643331E0FB;
-	Tue,  2 Sep 2025 13:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00EA93054E7;
+	Tue,  2 Sep 2025 13:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+ADRmoG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6JNzA6x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C5C30F533;
-	Tue,  2 Sep 2025 13:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38DA30AAB4;
+	Tue,  2 Sep 2025 13:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820136; cv=none; b=l95B39TVSLY5fVGLrfPLopb0cvxnohh4sRio0Y/PBPaCgLsx6TPLzF1ngAZiGh2Gn0sDYZvtPLoXezmnYv+y7323KJDY/E4x6sGcMC7VhxI2Mt1NNPR9zA7tXX2QVEkoEP/xFeiI8rvCBHoV4xJejilmzLnePtDmfen9HiwU4pw=
+	t=1756819725; cv=none; b=ErJhVhdKECzVYLBL3vidB3d4n3ZRVT7pY4CDyInpU/B7Bw0la7EVPG4oRKb9MV7JXMpXnXXkqm9Z3tM5kCvLMBioJppt+Kb3+Vf8IlLbjOL7FkS5Er0S9RjxkVHK0fu3i4ap7XuGut8NnqMJuSWt8e89ke835S2lZhklB+J+og8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820136; c=relaxed/simple;
-	bh=ibRPVFXtxV12eMzYwOJTp18qbMLcnVNcvmSNgdLLPBk=;
+	s=arc-20240116; t=1756819725; c=relaxed/simple;
+	bh=c06sxzV+h1mhBHJ1vIgrioEKyd5H85LPMlQ1Pyv1VQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aiqw6tbvJmtboVGQXUoTm3qROyeIasSN8OPQH/1MYmnopB8ivbCObic+iZvRok6w5B2OgCcxYIEkwZBsCfFrwFGCWR/zKY7/7n4RBpT6zYREaN8D9rVbxXOZ+RFPjvt6hItcjcNBvHK966aLiEJzrt2+we4mNTXxm33XbcqOtQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+ADRmoG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D9BC4CEED;
-	Tue,  2 Sep 2025 13:35:35 +0000 (UTC)
+	 MIME-Version; b=I190/ISdULbAZYQu+/MfTZ/zUq9lK2Mo2XJoddWErARuiz7r2v+Q31JxoTbLmXFljo/3ogA1JkCw5EB/F1L2OQpo4zBbwZdB7+/9lg8r/RCa7zSi+3SP8BSby4/zxgcWDDPapw0wb+LxVhxgYl9iFFsMmoDUPKxYueCHXvZtnig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6JNzA6x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D904C4CEED;
+	Tue,  2 Sep 2025 13:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820136;
-	bh=ibRPVFXtxV12eMzYwOJTp18qbMLcnVNcvmSNgdLLPBk=;
+	s=korg; t=1756819725;
+	bh=c06sxzV+h1mhBHJ1vIgrioEKyd5H85LPMlQ1Pyv1VQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+ADRmoG2SC4REv+blKDWdQjCBJZrw+rEFq6NaUqdF7Rwyo3yiDdYDG3rVPYwuQXT
-	 5m83G9XNN7Y1W4mLw1cd7sHJCGelkqGTf9GS24A+D0HSvgEyzxg6uTAfawEiBtt9HJ
-	 H7aWwsa3+QAsa3U1IB+i7XM8rITKOymd6sNaN1iE=
+	b=H6JNzA6xzRXcHkNWtKdbkTTrxaarS4sRFw8Kf2pX72ypyPST22KTD+/imML0gk/sg
+	 Fjg5MF3vyYYG59Hym6wmUtb+ztljYyk6UC7fvZdUFP5bmfL6CeHIy5X4Y+yqIbsmpE
+	 0pdgF3emHzFFQlXMEJpto/VWLXhDGu5gB6a53JEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Shuhao Fu <sfual@cse.ust.hk>,
 	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 10/75] smb: client: fix race with concurrent opens in rename(2)
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.16 120/142] fs/smb: Fix inconsistent refcnt update
 Date: Tue,  2 Sep 2025 15:20:22 +0200
-Message-ID: <20250902131935.520307071@linuxfoundation.org>
+Message-ID: <20250902131952.883469935@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-[ Upstream commit d84291fc7453df7881a970716f8256273aca5747 ]
+commit ab529e6ca1f67bcf31f3ea80c72bffde2e9e053e upstream.
 
-Besides sending the rename request to the server, the rename process
-also involves closing any deferred close, waiting for outstanding I/O
-to complete as well as marking all existing open handles as deleted to
-prevent them from deferring closes, which increases the race window
-for potential concurrent opens on the target file.
+A possible inconsistent update of refcount was identified in `smb2_compound_op`.
+Such inconsistent update could lead to possible resource leaks.
 
-Fix this by unhashing the dentry in advance to prevent any concurrent
-opens on the target.
+Why it is a possible bug:
+1. In the comment section of the function, it clearly states that the
+reference to `cfile` should be dropped after calling this function.
+2. Every control flow path would check and drop the reference to
+`cfile`, except the patched one.
+3. Existing callers would not handle refcount update of `cfile` if
+-ENOMEM is returned.
 
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-cifs@vger.kernel.org
+To fix the bug, an extra goto label "out" is added, to make sure that the
+cleanup logic would always be respected. As the problem is caused by the
+allocation failure of `vars`, the cleanup logic between label "finished"
+and "out" can be safely ignored. According to the definition of function
+`is_replayable_error`, the error code of "-ENOMEM" is not recoverable.
+Therefore, the replay logic also gets ignored.
+
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/inode.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ fs/smb/client/smb2inode.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index df01029918fd4..6c16c4f34d882 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -2379,6 +2379,7 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
- 	struct cifs_sb_info *cifs_sb;
- 	struct tcon_link *tlink;
- 	struct cifs_tcon *tcon;
-+	bool rehash = false;
- 	unsigned int xid;
- 	int rc, tmprc;
- 	int retry_count = 0;
-@@ -2394,6 +2395,17 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
- 	if (unlikely(cifs_forced_shutdown(cifs_sb)))
- 		return -EIO;
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -207,8 +207,10 @@ replay_again:
+ 	server = cifs_pick_channel(ses);
  
-+	/*
-+	 * Prevent any concurrent opens on the target by unhashing the dentry.
-+	 * VFS already unhashes the target when renaming directories.
-+	 */
-+	if (d_is_positive(target_dentry) && !d_is_dir(target_dentry)) {
-+		if (!d_unhashed(target_dentry)) {
-+			d_drop(target_dentry);
-+			rehash = true;
-+		}
+ 	vars = kzalloc(sizeof(*vars), GFP_ATOMIC);
+-	if (vars == NULL)
+-		return -ENOMEM;
++	if (vars == NULL) {
++		rc = -ENOMEM;
++		goto out;
 +	}
-+
- 	tlink = cifs_sb_tlink(cifs_sb);
- 	if (IS_ERR(tlink))
- 		return PTR_ERR(tlink);
-@@ -2433,6 +2445,8 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
- 		}
- 	}
+ 	rqst = &vars->rqst[0];
+ 	rsp_iov = &vars->rsp_iov[0];
  
-+	if (!rc)
-+		rehash = false;
- 	/*
- 	 * No-replace is the natural behavior for CIFS, so skip unlink hacks.
- 	 */
-@@ -2491,12 +2505,16 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
- 			goto cifs_rename_exit;
- 		rc = cifs_do_rename(xid, source_dentry, from_name,
- 				    target_dentry, to_name);
-+		if (!rc)
-+			rehash = false;
- 	}
+@@ -864,6 +866,7 @@ finished:
+ 	    smb2_should_replay(tcon, &retries, &cur_sleep))
+ 		goto replay_again;
  
- 	/* force revalidate to go get info when needed */
- 	CIFS_I(source_dir)->time = CIFS_I(target_dir)->time = 0;
++out:
+ 	if (cfile)
+ 		cifsFileInfo_put(cfile);
  
- cifs_rename_exit:
-+	if (rehash)
-+		d_rehash(target_dentry);
- 	kfree(info_buf_source);
- 	free_dentry_path(page2);
- 	free_dentry_path(page1);
--- 
-2.50.1
-
 
 
 
