@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-177361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8169EB404D8
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8783FB404D9
 	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1CE03B2AB2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CFBC1B6570F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B37431353C;
-	Tue,  2 Sep 2025 13:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12CD31062C;
+	Tue,  2 Sep 2025 13:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZPd/3kc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="reHKcAfV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D913054F4;
-	Tue,  2 Sep 2025 13:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5112BE053;
+	Tue,  2 Sep 2025 13:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820401; cv=none; b=L6L2fs/QULvzdMznL5Mx3V5NOeW3vhTe7sH06vl/1V0t2GhXNQ+798Z3EMq8RVk/pgMKe6pTV+V8n9/Av3PdYdFGrMGXmH0/fWbYNSbJK402dwiVTuxecfyLfNPaRBCeP9gHET9rtrorx+aJgjLk1TwUn1A/tDbwPY2wimZOpJU=
+	t=1756820284; cv=none; b=u4kwy1yqSD5idGLYbu2ttAXXi+IDLzKKpnux0hvBJqaiM4KmgCU6rPuePpgaCcO/41niu0h0ozvNG4FAOz3hZ61fg+BAjE200QU97jpxp32Saf7Gb6nn5u8GDMC7wb8Ud8OfoNfzRwa07Ad+WRc8CEXIs7sI1wHbWrAt+lzcyNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820401; c=relaxed/simple;
-	bh=LjBpK3jrCVLyzx/XEw74gKrSd3KpT8gpiyMdT/BSnFI=;
+	s=arc-20240116; t=1756820284; c=relaxed/simple;
+	bh=JFgCIw6IurPxglbgOP/C5oDIs7sBIoULnBWddX/H9YA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XS5BYZyS+jv9BTZaudGxi8ErX26hcxvAiMW30eYr1sSPvNRJRiyld8Zc6l8KiyXf+rTbSGEK6K2QlHMONmcRfIzbVNq0fnREuFYevXMu8rvTwM4yAx2kEaY1fUHhh2jKm40lyvCWttHbvzSbfBa+5zQYkQYsX/uus4Z+iJn8uCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZPd/3kc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19049C4CEED;
-	Tue,  2 Sep 2025 13:39:59 +0000 (UTC)
+	 MIME-Version; b=WmncRJS+/H6xbpfM864ETSo050ouvt4tSLZDyDRhZAc8dztVYrFaqtTzeFwCqRrxamyeN4RJwEy+dvS+tG4nb86PFBie/XZggBxeK5b0RrE54nM2xV9zG7db9HUXuUCmQIGxzgYIVYJjtDnXoPHQGS4QGJhoh6CustzomkUfb1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=reHKcAfV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBE8C4CEED;
+	Tue,  2 Sep 2025 13:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820400;
-	bh=LjBpK3jrCVLyzx/XEw74gKrSd3KpT8gpiyMdT/BSnFI=;
+	s=korg; t=1756820284;
+	bh=JFgCIw6IurPxglbgOP/C5oDIs7sBIoULnBWddX/H9YA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZPd/3kcMXiTbcdTBazNg1fiq1hex/VaTlM9I+88BW19ba1adVxaqu4E3lDjMQCD2
-	 D/wDpRRiS9U3vbvBJGhdOsPwsKbhNGocry2vox8ja7hksa5k9WOj0tevcdLjvB8SMZ
-	 uud/oVGhtygdRItEoOAen3aVQFwCPJk0oci2kGgM=
+	b=reHKcAfVw/jNe8xGmzLAhzM/WtDb8y1Nquhg/O18khKvk7JTwq7yriM/7xhgwiYHs
+	 NxDtT+4erPJg8IcxSgCLmxU0Myyzcjb44V/a8dxmYr438JmYcaq4Av/6q1YJWj0Ub3
+	 KpDkIHjOSo+eVz2a6CljOI27PIJJnxfIrvZE6uJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E5=8D=A2=E5=9B=BD=E5=AE=8F?= <luguohong@xiaomi.com>,
-	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 17/50] HID: input: report battery status changes immediately
+	Thijs Raymakers <thijs@raymakers.nl>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 56/75] KVM: x86: use array_index_nospec with indices that come from guest
 Date: Tue,  2 Sep 2025 15:21:08 +0200
-Message-ID: <20250902131931.202694188@linuxfoundation.org>
+Message-ID: <20250902131937.316100968@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Expósito <jose.exposito89@gmail.com>
+From: Thijs Raymakers <thijs@raymakers.nl>
 
-[ Upstream commit e94536e1d1818b0989aa19b443b7089f50133c35 ]
+commit c87bd4dd43a624109c3cc42d843138378a7f4548 upstream.
 
-Previously, the battery status (charging/discharging) was not reported
-immediately to user-space. 
+min and dest_id are guest-controlled indices. Using array_index_nospec()
+after the bounds checks clamps these values to mitigate speculative execution
+side-channels.
 
-For most input devices, this wasn't problematic because changing their
-battery status requires connecting them to a different bus.
-For example, a gamepad would report a discharging status while
-connected via Bluetooth and a charging status while connected via USB.
-
-However, certain devices are not connected or disconnected when their
-battery status changes. For example, a phone battery changes its status
-without connecting or disconnecting it.
-In these cases, the battery status was not reported immediately to user
-space.
-
-Report battery status changes immediately to user space to support
-these kinds of devices.
-
-Fixes: a608dc1c0639 ("HID: input: map battery system charging")
-Reported-by: 卢国宏 <luguohong@xiaomi.com>
-Closes: https://lore.kernel.org/linux-input/aI49Im0sGb6fpgc8@fedora/T/
-Tested-by: 卢国宏 <luguohong@xiaomi.com>
-Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thijs Raymakers <thijs@raymakers.nl>
+Cc: stable@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 715062970f37 ("KVM: X86: Implement PV sched yield hypercall")
+Fixes: bdf7ffc89922 ("KVM: LAPIC: Fix pv ipis out-of-bounds access")
+Fixes: 4180bf1b655a ("KVM: X86: Implement "send IPI" hypercall")
+Link: https://lore.kernel.org/r/20250804064405.4802-1-thijs@raymakers.nl
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-input.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ arch/x86/kvm/lapic.c |    2 ++
+ arch/x86/kvm/x86.c   |    7 +++++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index 51be30b7c1851..cd9d031858438 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -623,13 +623,19 @@ static bool hidinput_update_battery_charge_status(struct hid_device *dev,
- 	return false;
- }
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -847,6 +847,8 @@ static int __pv_send_ipi(unsigned long *
+ 	if (min > map->max_apic_id)
+ 		return 0;
  
--static void hidinput_update_battery(struct hid_device *dev, int value)
-+static void hidinput_update_battery(struct hid_device *dev, unsigned int usage,
-+				    int value)
- {
- 	int capacity;
- 
- 	if (!dev->battery)
- 		return;
- 
-+	if (hidinput_update_battery_charge_status(dev, usage, value)) {
-+		power_supply_changed(dev->battery);
-+		return;
-+	}
++	min = array_index_nospec(min, map->max_apic_id + 1);
 +
- 	if (value == 0 || value < dev->battery_min || value > dev->battery_max)
- 		return;
+ 	for_each_set_bit(i, ipi_bitmap,
+ 		min((u32)BITS_PER_LONG, (map->max_apic_id - min + 1))) {
+ 		if (map->phys_map[min + i]) {
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -9802,8 +9802,11 @@ static void kvm_sched_yield(struct kvm_v
+ 	rcu_read_lock();
+ 	map = rcu_dereference(vcpu->kvm->arch.apic_map);
  
-@@ -656,13 +662,8 @@ static void hidinput_cleanup_battery(struct hid_device *dev)
- {
- }
+-	if (likely(map) && dest_id <= map->max_apic_id && map->phys_map[dest_id])
+-		target = map->phys_map[dest_id]->vcpu;
++	if (likely(map) && dest_id <= map->max_apic_id) {
++		dest_id = array_index_nospec(dest_id, map->max_apic_id + 1);
++		if (map->phys_map[dest_id])
++			target = map->phys_map[dest_id]->vcpu;
++	}
  
--static bool hidinput_update_battery_charge_status(struct hid_device *dev,
--						  unsigned int usage, int value)
--{
--	return false;
--}
--
--static void hidinput_update_battery(struct hid_device *dev, int value)
-+static void hidinput_update_battery(struct hid_device *dev, unsigned int usage,
-+				    int value)
- {
- }
- #endif	/* CONFIG_HID_BATTERY_STRENGTH */
-@@ -1509,11 +1510,7 @@ void hidinput_hid_event(struct hid_device *hid, struct hid_field *field, struct
- 		return;
+ 	rcu_read_unlock();
  
- 	if (usage->type == EV_PWR) {
--		bool handled = hidinput_update_battery_charge_status(hid, usage->hid, value);
--
--		if (!handled)
--			hidinput_update_battery(hid, value);
--
-+		hidinput_update_battery(hid, usage->hid, value);
- 		return;
- 	}
- 
--- 
-2.50.1
-
 
 
 
