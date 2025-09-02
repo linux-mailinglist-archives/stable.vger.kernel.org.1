@@ -1,170 +1,132 @@
-Return-Path: <stable+bounces-177500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94CEB405FD
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 16:04:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D19B4066E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 16:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F1BC7BB5B6
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 14:01:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 554BA174258
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 14:14:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBBA2FB97F;
-	Tue,  2 Sep 2025 14:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="JHycl7Xh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1BC2F60C4;
+	Tue,  2 Sep 2025 14:14:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492CA2DF6EA
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 14:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9F42F068E;
+	Tue,  2 Sep 2025 14:14:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756821763; cv=none; b=Qu8MmwwXBNdb5q7wV3mSOYr420SsoHy0i7Qf6RW17dWn09ZoPbRxGBOfnuJVOgIea3ls8O1PtWup7cX5DYIujRoEEP5o8GZ8QZr3Hk0hp3vjYcKg2c0c2ki3i50WnfokLLiS+XGt5f4KenhTtueSjQhG9bcxDcRDejBk+lAL6tI=
+	t=1756822460; cv=none; b=feUAnWWYUZyijGhVD3yNbjJoMhQW3eFx/QhDGIxpEv6mq1VWnC0diboNXojjVHU/TcZ8O8uW5MeMMBARRWsckG2Qa189opmZuFjlg8isXMDlTRgxsxNwEk7RKn882rnv0AWcYDLSsbQP3Pxuy97Q1MZkmc5L00X/8tZlWnRTWdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756821763; c=relaxed/simple;
-	bh=t6qJ4Krbe8Eig8u7HuRNaH82OJCGzRpxUAzmtO7ZEgM=;
+	s=arc-20240116; t=1756822460; c=relaxed/simple;
+	bh=zqmHVRVfG5H2JdQZxR3TN93cPyGuhdQLjL2DVyfehZA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LzPQRPt65w+Ne7RAtCGLTY6kz1dw9TogK/z8VOUjC+Fjtm5P6UAmEuTNu6spsSdDrivAcE/tH1FTdhvPlNgHD3SdLUwI5HVHnW4N4kmrrW0rRXsKgu8KKGfW1UyR07GZjRKVtW9idlcU/zka5N/x6k0FPnPnK6Gvu3Ultb+WwHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=JHycl7Xh; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55f753ec672so3195060e87.2
-        for <stable@vger.kernel.org>; Tue, 02 Sep 2025 07:02:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756821759; x=1757426559; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t6qJ4Krbe8Eig8u7HuRNaH82OJCGzRpxUAzmtO7ZEgM=;
-        b=JHycl7XhizIXDhB7H67QiM3ora39fFS0qsQGf0MBFXfqjJb9Dgzdbi+DoMs5pSRqrV
-         H1S+PvcYqslE3IKKcShPsILhFh4PRKSBIAn2FyPiXHDOWJKPwZBIn2szYzVeB2zX/lMj
-         xFY9l3BIbKeACyANe2Gl3Wi6Pd7of6ydyevAVU5jUxXdKw5bKg3NiKjq5Drw1+1CjB80
-         GGS0MHpxBmKUTIVIfgW3lM2SpmJ2s70Gi+ySjOdNCbzVX9RHI09fnUcaI4TZdECpt6IX
-         U51ywl0Jzjr9Tx1v8W1cgFltIxP+C9cVUMC5r6Jdd9EqAUs2Tx+TLplVLKgDqqO8QFNo
-         UMTg==
+	 To:Cc:Content-Type; b=BWnuHLchPa/x1OmlJqUMnNf/J0tf+nWD/Isqiu6M34n8GdIVzYh9T+khctgklBQ2dHP0nioAIyy8+p1usCxItM2FjWrcGJE347p5KNByi5nBTWJwjqrY1EE5kM1g9KAk1hNFbpK/oJn8R+uNEhTK9L/qArL1yCY0ZeHbfNE6StA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-528d8aa2f3bso1789682137.2;
+        Tue, 02 Sep 2025 07:14:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756821759; x=1757426559;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t6qJ4Krbe8Eig8u7HuRNaH82OJCGzRpxUAzmtO7ZEgM=;
-        b=rfp65bS3UMOq1AtWgfL+rrIwN/RbZtsJSxkjgbnpztaMVdpGN+tDIHtUNi7Z7EEfBw
-         ypmOI+TtK1Il5c4C+Ix/74bSR97wTNnIXdW1wiC1ZvXeAhIV/heKc/PLx+3H0SGJlPXH
-         gLUUeX7mVDiA5zL04UxMjFPbtnv13r+OMKqfBUMOiKLYHtOCJ3ciabLprLu9C2ns8dB9
-         ecJzT2Wbv6zrl6h4RuA6yNZANGke221W8EbpJwuqgXTlzww36Y3yCLP+C7tOrrz2tTB/
-         YuA87VnO+X3IgvGz3vSmg85Do2JYSU3ycEj0QqgTA6UKGcarEJEyRiAYK3IG6nxxajPJ
-         Vokw==
-X-Forwarded-Encrypted: i=1; AJvYcCVvDjgwkXjwC7okXEISeiof9QnCp84YObYQ8M5PMXDTdHS9kwGGxzO2dY3oRpjO+4vcF0jSyf8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIxeojFhazrkGLrFuOf2VmmbhN0h8BcfbLdI6DLQ5EJwZC0NDv
-	wShyBZZmBfGhaZy8qEzrxZPWbuaoY3S45/7hwpLDjNI2uJPb+YLlTO+tO/aMpC3VGI4PZxCrL/V
-	S2F8AgJlKTBfNAR2Ps3Fm700QElxMaxxBC4Lj9lnG8Q==
-X-Gm-Gg: ASbGncsxlwRHjOB2D1fllkSvmVGXIhpPAppSnNul6jMiSRF4Yg6BZ8K1G+lfc59Fbkc
-	A1DcI3HU+Lufpj55HBtDcLjPqopr6G94jTY+eo1efu/EkORfvsahTr9QIwuOXwf1W0eUcwuOV0Z
-	XRbV1alISN1M/hIWcl4xkvpb5haftCSSXnZsvMA2x5mlGdRWKcYpENkj7Au6lIoPhvK//Kfo986
-	bVuAlhuKh1BaxtgWvTCfe/aUUD1oEEQAaCzZWk6ri9Js/tczw==
-X-Google-Smtp-Source: AGHT+IF0XxTo4Eof/cAnsUmsXyl7FaRgZjHqhfNse8z4FzsrSjUbnY+JobcnARjelIxZIYceGk+U5xWeRaOHkRoNgZc=
-X-Received: by 2002:a05:6512:1289:b0:55f:3f25:f03d with SMTP id
- 2adb3069b0e04-55f708dbc89mr4083265e87.32.1756821758848; Tue, 02 Sep 2025
- 07:02:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756822457; x=1757427257;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Mgo2uDMTTEUtNqi1o/66IFpTB7qN2XeEQUc+iUdZ+rs=;
+        b=S+dR+VfXqt4Lkge2mjEuDUwtE1cThRgIraerzSTY/5SDwdIWaV3RDgq4f1CcK+TiiI
+         TWZChQXZLMMrn++XePpkz/QSKuK0JgmB+sxCaByRrtpssX4+5oeaUrhVzsB2rBqL7yj/
+         zWgyYazBcqwGRj2THj3s24/ibuONzVV8sab14KsQB22iBolxLonFOr1qeiPJeBLGMoSI
+         QU0lQABZG/1HcOmmCxuUCVOJ7BgiPNybY+N6qjN18AqmBB5mllTlx7p5hYDT1Tfms8/S
+         xGbzJeEq5j0ilar+Ho6uiys2degBUcvLOOMDYHA5QJW+QfjIYketdq/idhj5u48iTAaY
+         xzhw==
+X-Forwarded-Encrypted: i=1; AJvYcCUxipHvi/PYj5w36Acetiw8uvln+2CDJsbcPdSiZIUMjvvGrWEk50jpZz4oaAHN5Mf9OzVkHAy+T+SFX9w=@vger.kernel.org, AJvYcCXdVzeDKxT990Ee4w8qbW50BrDw8vxrRarJP2jdzA1OaN0jdsfwD8Gko5QfdhzJjAzkKY9YoYl1@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzzg5FoBKLDmlGAJu/ThaWkr7l++KDah1O4H6flrbWpOtrjbqZT
+	/rVZ2INrYiKJIWGaCV8utBpySqkyBfwN8vXxwyphRWpjIpZGZ4okYx3+yEFFCGRq
+X-Gm-Gg: ASbGncv9VbMDb2/uAVsS4WauGxEQMkORfMuGudQbuM8yEP5Kj7ttSBnuoalnuz+0Czv
+	BeC+G0awFhCwFyR4bSwV2MyAd1e9vJYef5Jiesf7astw5bVjV6jcckT50EN4nxBQ3ycDGI7sO+w
+	uT+Sh/yE4LETz9cOIdoGJ/r24/Fbwsw3EO1i5UGEyr6gAx8a9ysoHE+sFTAfpIzxZaIN12QJP05
+	w+sXTk4rrlo4YYaWzCZP1Q3zbC9KnKSaVdZizxIjeQ6PDOPzr6J7UEcIzClTYuHtd/zTqBmH+AI
+	mlXJl0vl2WQTbT1Hfg7UpUAJ1rtVik82lhwXFLVWi8hP58W/G+0FN6A0CX0u/J8OmhX7pXJ7lkT
+	QAdrWFQVdYwzjmMNMejx66XUF2BMQnrVP3ik7XyunoyI5eoOFemPqRsshlrv9qpNibwaCi24=
+X-Google-Smtp-Source: AGHT+IFIQW2J4Y5lFxvmxIUCmwOPTjD/3NWWh3d3GpMYAi3sOS1fOcOeOK3J5Z05JxU1Wrniopt45Q==
+X-Received: by 2002:a05:6102:3350:b0:522:255d:4d19 with SMTP id ada2fe7eead31-52b1be31896mr3052717137.23.1756822455314;
+        Tue, 02 Sep 2025 07:14:15 -0700 (PDT)
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com. [209.85.222.49])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-894e1d08c79sm4494066241.6.2025.09.02.07.14.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Sep 2025 07:14:14 -0700 (PDT)
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-89018fa6f6dso1533173241.1;
+        Tue, 02 Sep 2025 07:14:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVFYJkxCGrb04M9lTeKQQTCgNqfvZvpF+J5tQhtATe4qtEhD5kpg3+yENZsZEwA5SYUrZbQ1wH1@vger.kernel.org, AJvYcCW+ZlkoX+J8NQJ74/BMHraRwB/z3VuduXnj5MXhqMzPbVXQFq0A0aDMPkNWvUxFkvI+pYaij9ZNJBKAZOc=@vger.kernel.org
+X-Received: by 2002:a05:6102:5710:b0:51f:66fc:53b8 with SMTP id
+ ada2fe7eead31-52b1be3a542mr3788218137.25.1756822454173; Tue, 02 Sep 2025
+ 07:14:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <20250902-pinctrl-gpio-pinfuncs-v7-1-bb091daedc52@linaro.org>
- <aLbrz5DYS5Yxx_UE@smile.fi.intel.com> <CAMRc=Mfx5czDM=vfEYhFtVO3MviYaW4wKBYjGZ9ZnMbr-+T4mg@mail.gmail.com>
- <aLb2HH5zgxdbDiPo@smile.fi.intel.com>
-In-Reply-To: <aLb2HH5zgxdbDiPo@smile.fi.intel.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 2 Sep 2025 16:02:27 +0200
-X-Gm-Features: Ac12FXzmmMVa4i5hYh_JJ6GZvRRv05y-_-Nk_APJiumjkhCqONHKECafTZ1ySu4
-Message-ID: <CAMRc=Mdp2djgGbgu_uwLSkrtRPomAU=6-SRdzCdSbrHWzS2c2A@mail.gmail.com>
-Subject: Re: [PATCH v7 01/16] pinctrl: check the return value of pinmux_ops::get_function_name()
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
-	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
-	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
+References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
+ <20250825032743.80641-1-ioworker0@gmail.com> <c8851682-25f1-f594-e30f-5b62e019d37b@linux-m68k.org>
+ <96ae7afc-c882-4c3d-9dea-3e2ae2789caf@linux.dev> <5a44c60b-650a-1f8a-d5cb-abf9f0716817@linux-m68k.org>
+ <4e7e7292-338d-4a57-84ec-ae7427f6ad7c@linux.dev> <d07778f8-8990-226b-5171-4a36e6e18f32@linux-m68k.org>
+ <d95592ec-f51e-4d80-b633-7440b4e69944@linux.dev> <30a55f56-93c2-4408-b1a5-5574984fb45f@linux.dev>
+ <4405ee5a-becc-7375-61a9-01304b3e0b20@linux-m68k.org> <cfb62b9d-9cbd-47dd-a894-3357027e2a50@linux.dev>
+ <CAMuHMdV-AtPm-W-QUC1HixJ8Koy_HdESwCCOhRs3Q26=wjWwog@mail.gmail.com> <f6835c03-3c3f-40ee-8000-f53f49d2b4a4@linux.dev>
+In-Reply-To: <f6835c03-3c3f-40ee-8000-f53f49d2b4a4@linux.dev>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 2 Sep 2025 16:14:02 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXWkkofG2M3zqxo6DmiZc7OJ8-2p+kJ1gxan0_nVFoiCA@mail.gmail.com>
+X-Gm-Features: Ac12FXzoAJTS6asLcRAF7gXDrJv7Cp9NcWKCJrI8Ef4AzRDbSg57ifH0BPfyuUo
+Message-ID: <CAMuHMdXWkkofG2M3zqxo6DmiZc7OJ8-2p+kJ1gxan0_nVFoiCA@mail.gmail.com>
+Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Finn Thain <fthain@linux-m68k.org>, akpm@linux-foundation.org, 
+	linux-kernel@vger.kernel.org, mhiramat@kernel.org, oak@helsinkinet.fi, 
+	peterz@infradead.org, stable@vger.kernel.org, will@kernel.org, 
+	Lance Yang <ioworker0@gmail.com>, linux-m68k@lists.linux-m68k.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 2, 2025 at 3:50=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@intel.com> wrote:
->
-> On Tue, Sep 02, 2025 at 03:29:31PM +0200, Bartosz Golaszewski wrote:
-> > On Tue, Sep 2, 2025 at 3:06=E2=80=AFPM Andy Shevchenko
-> > <andriy.shevchenko@intel.com> wrote:
-> > > On Tue, Sep 02, 2025 at 01:59:10PM +0200, Bartosz Golaszewski wrote:
-> > > >
-> > > > While the API contract in docs doesn't specify it explicitly,
-> > >
-> > > So, why not to amend the doc at the same time?
-> >
-> > Because this series is already big as is. That would be another commit
-> > that can be separate.
->
-> I meant _in the same_ patch.
->
-> > > > the generic implementation of the get_function_name() callback from=
- struct
-> > > > pinmux_ops - pinmux_generic_get_function_name() - can fail and retu=
-rn
-> > > > NULL. This is already checked in pinmux_check_ops() so add a simila=
-r
-> > > > check in pinmux_func_name_to_selector() instead of passing the retu=
-rned
-> > > > pointer right down to strcmp() where the NULL can get dereferenced.=
- This
-> > > > is normal operation when adding new pinfunctions.
->
-> > > Fixes?
-> >
-> > This has always been like that.
-> >
-> > > Reported?
-> >
-> > I mean, technically Mark Brown reported my previous patch failing but
-> > I don't think we do this if we're still within the same series just
-> > another iteration?
-> >
-> > > Closes?
-> >
-> > Ditto.
->
-> I meant that this fixes a potential issue disregard to your series, right=
-?
->
+Hi Lance,
 
-No, as long as the imx driver keeps putting stuff into the pin
-function radix tree directly, this cannot happen. The issue was
-triggered by the discrepancy between the number of added selectors and
-the hardcoded number of functions (we started at 0 which was not in
-the radix tree and crashed before we got to 1).
+On Tue, 2 Sept 2025 at 15:31, Lance Yang <lance.yang@linux.dev> wrote:
+> On 2025/9/1 16:45, Geert Uytterhoeven wrote:
+> > On Thu, 28 Aug 2025 at 04:05, Lance Yang <lance.yang@linux.dev> wrote:
+> >> This proves the problem can happen in practice (e.g., with packed structs),
+> >> so we need to ignore the unaligned pointers on the architectures that don't
+> >> trap for now.
+> >
+> > Putting locks inside a packed struct is definitely a Very Bad Idea
+> > and a No Go.  Packed structs are meant to describe memory data and
+>
+> Right. That's definitely not how packed structs should be used ;)
+>
+> > MMIO register layouts, and must not contain control data for critical
+> > sections.
+>
+> Unfortunately, this patten was found in an in-tree driver, as reported[1]
+> by kernel test robot, and there might be other undiscovered instances ...
+>
+> [1]
+> https://lore.kernel.org/oe-kbuild-all/202508240539.ARmC1Umu-lkp@intel.com
 
-Bart
+That one is completely bogus, and should be removed.
+Currently it would crash on any platform that does not support
+unaligned accesses.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
