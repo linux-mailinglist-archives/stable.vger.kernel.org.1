@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-177397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C32B1B40537
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DC9CB404D0
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE9F31B603D2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6E7F5464C5
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1211C3074B1;
-	Tue,  2 Sep 2025 13:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB143126B8;
+	Tue,  2 Sep 2025 13:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C159mcGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYIMpBUx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C343B2F5319;
-	Tue,  2 Sep 2025 13:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78287261593;
+	Tue,  2 Sep 2025 13:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820510; cv=none; b=havAUqk5vQ/+qNzhMpWa64sStIdBH0/efj1SDNXlVYye3gg/qnQXFv5KdXZVNTBp3sb/EBiqzjECnjNuWBujeEagSGd1DxZaxwedmEqbz8wGVlvXva3y9fKi2Mw0WCmkO2hBqrp33zQUvvTek3JyCiHT/uc39gWhm0dzXzo3bJs=
+	t=1756820365; cv=none; b=q3+pAxECnkdZ2qNX1Au/TVlJWqgHcmnnTIRXQMcgAkp0Z+obsaa0Nmjqff69ZORZt5VG11sjgO6wcB1QX/VEIDcaBa0hX3aJ+Pg+6LJiE7t6YihNMxCVNc53sH3zQ0hCAImEYgF5u4ONVvmzpNBFO8bDRhAfHHE2+OGuvj8jrVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820510; c=relaxed/simple;
-	bh=KzsjsfwWSjLLtfctNXzxhV6+x8O75tFVMER/L6jlC0E=;
+	s=arc-20240116; t=1756820365; c=relaxed/simple;
+	bh=MfXlxgU/pB7sWuRfIrTK6XK/eqbcQRhIjEeDlX+Uz08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jLcsgPnsc1V8RXPrJHHG5aYUPO4xpsG2Zen/PHeWnLpdLIol8fBGsnGBNBJmKQDimWvkvNG+1FCRmA6JuZNos3tm3QThplv03PBYrHoKxspkzPfYNyLbaOKHIiC8/c0Q8bbfUqzI+L6uRN8pGSxm1dKx1I4eViCPB38caevJ15Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C159mcGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397DBC4CEED;
-	Tue,  2 Sep 2025 13:41:49 +0000 (UTC)
+	 MIME-Version; b=SJsVCTcGOVHK3n6MV3yl1jG7jPin5V7R+ayA1+GYoQ8kfOLQa1qTZ+MWOtny6SkWAmKp0+bwcK2lAnrsdtLKCrgBm7Lgd8jf0ZAZPeBtbvL4gloV5LKYYsgTB9y6XUiL4aV552cYbZ0E3O+gEz8AJNRC6gmvNYNK3XxHKv9mzRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYIMpBUx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0EDEC4CEF4;
+	Tue,  2 Sep 2025 13:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820510;
-	bh=KzsjsfwWSjLLtfctNXzxhV6+x8O75tFVMER/L6jlC0E=;
+	s=korg; t=1756820365;
+	bh=MfXlxgU/pB7sWuRfIrTK6XK/eqbcQRhIjEeDlX+Uz08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C159mcGtZD2xJXs8Jirh7mWVB4NpIsppPuY7VcPDv5o+ouIL/LcCXBwSckrgjO5t1
-	 uls5cziCyBCDgPPN2zGOXL/s2qoUFr9aoDEPATsV2AKKmVn5WX04OhvlMO6lMtdOr7
-	 VAparhIUuOnj4i1jU/rEg6lM42iFGbpaPvZ6rSmE=
+	b=NYIMpBUxQWUGesa9jLG7n7lw3JnV5ERWhLhYhj8l4TkJ7gG9HUqgUC/fyPktiaXvF
+	 qVhwAlSLl44IZwuF/OwAw51ZPpH1txas8Rc/aQx3QR6gFTUprbvNQrdxzhzSLQSdL5
+	 mlEC5J85nuRzn262TeTdIB5KmtVN9JW5zR/43dzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thijs Raymakers <thijs@raymakers.nl>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.1 35/50] KVM: x86: use array_index_nospec with indices that come from guest
+	intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	Sasha Levin <sashal@kernel.org>,
+	Imre Deak <imre.deak@intel.com>
+Subject: [PATCH 6.6 74/75] Revert "drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS"
 Date: Tue,  2 Sep 2025 15:21:26 +0200
-Message-ID: <20250902131931.916300237@linuxfoundation.org>
+Message-ID: <20250902131938.008357049@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thijs Raymakers <thijs@raymakers.nl>
+From: Imre Deak <imre.deak@intel.com>
 
-commit c87bd4dd43a624109c3cc42d843138378a7f4548 upstream.
+This reverts commit 65e46aeaf84aa88539bcff6b8077e05fbd0700da which is
+commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f upstream.
 
-min and dest_id are guest-controlled indices. Using array_index_nospec()
-after the bounds checks clamps these values to mitigate speculative execution
-side-channels.
+The upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ("drm/dp:
+Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS") the
+reverted commit backported causes a regression, on one eDP panel at
+least resulting in display flickering, described in detail at the Link:
+below. The issue fixed by the upstream commit will need a different
+solution, revert the backport for now.
 
-Signed-off-by: Thijs Raymakers <thijs@raymakers.nl>
-Cc: stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Fixes: 715062970f37 ("KVM: X86: Implement PV sched yield hypercall")
-Fixes: bdf7ffc89922 ("KVM: LAPIC: Fix pv ipis out-of-bounds access")
-Fixes: 4180bf1b655a ("KVM: X86: Implement "send IPI" hypercall")
-Link: https://lore.kernel.org/r/20250804064405.4802-1-thijs@raymakers.nl
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: intel-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: Sasha Levin <sashal@kernel.org>
+Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14558
+Signed-off-by: Imre Deak <imre.deak@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.c |    2 ++
- arch/x86/kvm/x86.c   |    7 +++++--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/display/drm_dp_helper.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -684,6 +684,8 @@ static int __pv_send_ipi(unsigned long *
- 	if (min > map->max_apic_id)
- 		return 0;
- 
-+	min = array_index_nospec(min, map->max_apic_id + 1);
-+
- 	for_each_set_bit(i, ipi_bitmap,
- 		min((u32)BITS_PER_LONG, (map->max_apic_id - min + 1))) {
- 		if (map->phys_map[min + i]) {
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9681,8 +9681,11 @@ static void kvm_sched_yield(struct kvm_v
- 	rcu_read_lock();
- 	map = rcu_dereference(vcpu->kvm->arch.apic_map);
- 
--	if (likely(map) && dest_id <= map->max_apic_id && map->phys_map[dest_id])
--		target = map->phys_map[dest_id]->vcpu;
-+	if (likely(map) && dest_id <= map->max_apic_id) {
-+		dest_id = array_index_nospec(dest_id, map->max_apic_id + 1);
-+		if (map->phys_map[dest_id])
-+			target = map->phys_map[dest_id]->vcpu;
-+	}
- 
- 	rcu_read_unlock();
- 
+--- a/drivers/gpu/drm/display/drm_dp_helper.c
++++ b/drivers/gpu/drm/display/drm_dp_helper.c
+@@ -663,7 +663,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
+ 	 * monitor doesn't power down exactly after the throw away read.
+ 	 */
+ 	if (!aux->is_remote) {
+-		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
++		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
 
 
 
