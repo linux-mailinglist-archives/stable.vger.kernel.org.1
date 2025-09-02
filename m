@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FA1B404F9
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7498B404B9
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:46:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62B8E5603B3
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06C7B17A4E1
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0D331353B;
-	Tue,  2 Sep 2025 13:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6696E3093B8;
+	Tue,  2 Sep 2025 13:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAg5F3pE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/OYOaDU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02F63101A8;
-	Tue,  2 Sep 2025 13:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EBD2BE036;
+	Tue,  2 Sep 2025 13:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820385; cv=none; b=lgj6Mjw8rPA7tCe/P+g6RTfozpx8rd/CrjJA1upshy2PQ3yE54YB0KoZfo0diUzdSWQBuNgmNZp5KvSkt7oK79mI3hiWzCs1elGwck5LL4TKdjDaLsGpnrTXxWPsDi/cIJ2lWfly+sxsZPtlnmbRJQSzsNu1JxlKwowuVd3mc/c=
+	t=1756820265; cv=none; b=KDMP0WqgRk3IQx3N9NDy4axwFZX1xG2NCCysdldqVVJKDOfJOozjV9f9BA7n4CoVfA3Y4WVuUgdSOdlCIY5JMiN5VY9J9IaKwONdTiVYYAo64sGF7sQ9P63C05XhXIj5KMQJMH8I3nCl+7K9xAF+dDzQiPYCm3guUnEvUA+SlCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820385; c=relaxed/simple;
-	bh=U8POCE9LV+gfUUlsL9yclOBeenQXhPIdNKhac5KWwgE=;
+	s=arc-20240116; t=1756820265; c=relaxed/simple;
+	bh=+hwnmRr0TcHG2A+gehoXFLL4sC8QtZajnsVrvmMQ6zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zv8i6nkCyK0M4v2CQchsqr8BJ0QhacRjsszjNyIR5Mr4cecEZftLfvM+j/D6KFGHZ/7KRpzLmxEUL4w4Mq1NcqwuEQZC6ryFJmk+azMfpEXr1BupaJO8gy2EPuj8vkUPIlza9CzIidOwL3YrgsmIetXy40fpHOCQURVYI+7xw6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAg5F3pE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BACC4CEED;
-	Tue,  2 Sep 2025 13:39:43 +0000 (UTC)
+	 MIME-Version; b=TgpsVlBjz/caCDkoOAIYS7YfBGT0HbI4HCKMXSakyI2T3q3hKDD9svfNnkFHvLuSt9IZI+JrlQ3IyEKCAWEWz4+EN+whPhnrlL4we56haFrGo//H07gIW+AqzSLelp+cE70dh99NjODLVFLwJgglNE8kHBPGUtKD+OTWAOHpkjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/OYOaDU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FB2C4CEED;
+	Tue,  2 Sep 2025 13:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820384;
-	bh=U8POCE9LV+gfUUlsL9yclOBeenQXhPIdNKhac5KWwgE=;
+	s=korg; t=1756820264;
+	bh=+hwnmRr0TcHG2A+gehoXFLL4sC8QtZajnsVrvmMQ6zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nAg5F3pE726WxWAl4IWIlSUWsFaXWQ9CLvma2kXYUI3UnYu7vakVcalw9rp0ZLkkl
-	 EudIpLANWH2ezsYLOv8Qg7RfdPoKbxIfmkUsxubvhyt3FtucnbicUOLCOEyWI27Ln4
-	 710tbUIb1UwZ+srY8VXR+nXTfqtkejN1+2i4RyLU=
+	b=c/OYOaDU9b5gw3xJEeAzGY4x2Dg7Qc4MppEK+h0RqSp41/pTwcsvZhaJLa7urfrEc
+	 7HwDsVxePuDabNywIf+QUZNxTOepbqLa09C6LhPzKJeffGF9uv1FWzT00V6xSpckYa
+	 +0ck2wRUn75Nev8bGKaL2/flMqg3vyeFJNuwXdeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Ryabinin <arbn@yandex-team.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 6.1 12/50] vhost/net: Protect ubufs with rcu read lock in vhost_net_ubuf_put()
+	Takamitsu Iwai <takamitz@amazon.co.jp>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 51/75] net: rose: split remove and free operations in rose_remove_neigh()
 Date: Tue,  2 Sep 2025 15:21:03 +0200
-Message-ID: <20250902131931.005676144@linuxfoundation.org>
+Message-ID: <20250902131937.123199740@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Takamitsu Iwai <takamitz@amazon.co.jp>
 
-commit dd54bcf86c91a4455b1f95cbc8e9ac91205f3193 upstream.
+[ Upstream commit dcb34659028f856c423a29ef9b4e2571d203444d ]
 
-When operating on struct vhost_net_ubuf_ref, the following execution
-sequence is theoretically possible:
-CPU0 is finalizing DMA operation                   CPU1 is doing VHOST_NET_SET_BACKEND
-                             // ubufs->refcount == 2
-vhost_net_ubuf_put()                               vhost_net_ubuf_put_wait_and_free(oldubufs)
-                                                     vhost_net_ubuf_put_and_wait()
-                                                       vhost_net_ubuf_put()
-                                                         int r = atomic_sub_return(1, &ubufs->refcount);
-                                                         // r = 1
-int r = atomic_sub_return(1, &ubufs->refcount);
-// r = 0
-                                                      wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
-                                                      // no wait occurs here because condition is already true
-                                                    kfree(ubufs);
-if (unlikely(!r))
-  wake_up(&ubufs->wait);  // use-after-free
+The current rose_remove_neigh() performs two distinct operations:
+1. Removes rose_neigh from rose_neigh_list
+2. Frees the rose_neigh structure
 
-This leads to use-after-free on ubufs access. This happens because CPU1
-skips waiting for wake_up() when refcount is already zero.
+Split these operations into separate functions to improve maintainability
+and prepare for upcoming refcount_t conversion. The timer cleanup remains
+in rose_remove_neigh() because free operations can be called from timer
+itself.
 
-To prevent that use a read-side RCU critical section in vhost_net_ubuf_put(),
-as suggested by Hillf Danton. For this lock to take effect, free ubufs with
-kfree_rcu().
+This patch introduce rose_neigh_put() to handle the freeing of rose_neigh
+structures and modify rose_remove_neigh() to handle removal only.
 
-Cc: stable@vger.kernel.org
-Fixes: 0ad8b480d6ee9 ("vhost: fix ref cnt checking deadlock")
-Reported-by: Andrey Ryabinin <arbn@yandex-team.com>
-Suggested-by: Hillf Danton <hdanton@sina.com>
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Message-Id: <20250805130917.727332-1-kniv@yandex-team.ru>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Takamitsu Iwai <takamitz@amazon.co.jp>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250823085857.47674-2-takamitz@amazon.co.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: d860d1faa6b2 ("net: rose: convert 'use' field to refcount_t")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/net.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ include/net/rose.h    |  8 ++++++++
+ net/rose/rose_route.c | 15 ++++++---------
+ 2 files changed, 14 insertions(+), 9 deletions(-)
 
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -95,6 +95,7 @@ struct vhost_net_ubuf_ref {
- 	atomic_t refcount;
- 	wait_queue_head_t wait;
- 	struct vhost_virtqueue *vq;
-+	struct rcu_head rcu;
- };
+diff --git a/include/net/rose.h b/include/net/rose.h
+index 23267b4efcfa3..174b4f605d849 100644
+--- a/include/net/rose.h
++++ b/include/net/rose.h
+@@ -151,6 +151,14 @@ struct rose_sock {
  
- #define VHOST_NET_BATCH 64
-@@ -248,9 +249,13 @@ vhost_net_ubuf_alloc(struct vhost_virtqu
+ #define rose_sk(sk) ((struct rose_sock *)(sk))
  
- static int vhost_net_ubuf_put(struct vhost_net_ubuf_ref *ubufs)
- {
--	int r = atomic_sub_return(1, &ubufs->refcount);
-+	int r;
++static inline void rose_neigh_put(struct rose_neigh *rose_neigh)
++{
++	if (rose_neigh->ax25)
++		ax25_cb_put(rose_neigh->ax25);
++	kfree(rose_neigh->digipeat);
++	kfree(rose_neigh);
++}
 +
-+	rcu_read_lock();
-+	r = atomic_sub_return(1, &ubufs->refcount);
- 	if (unlikely(!r))
- 		wake_up(&ubufs->wait);
-+	rcu_read_unlock();
- 	return r;
- }
+ /* af_rose.c */
+ extern ax25_address rose_callsign;
+ extern int  sysctl_rose_restart_request_timeout;
+diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
+index a7054546f52df..b406b1e0fb1e7 100644
+--- a/net/rose/rose_route.c
++++ b/net/rose/rose_route.c
+@@ -234,20 +234,12 @@ static void rose_remove_neigh(struct rose_neigh *rose_neigh)
  
-@@ -263,7 +268,7 @@ static void vhost_net_ubuf_put_and_wait(
- static void vhost_net_ubuf_put_wait_and_free(struct vhost_net_ubuf_ref *ubufs)
- {
- 	vhost_net_ubuf_put_and_wait(ubufs);
--	kfree(ubufs);
-+	kfree_rcu(ubufs, rcu);
- }
+ 	if ((s = rose_neigh_list) == rose_neigh) {
+ 		rose_neigh_list = rose_neigh->next;
+-		if (rose_neigh->ax25)
+-			ax25_cb_put(rose_neigh->ax25);
+-		kfree(rose_neigh->digipeat);
+-		kfree(rose_neigh);
+ 		return;
+ 	}
  
- static void vhost_net_clear_ubuf_info(struct vhost_net *n)
+ 	while (s != NULL && s->next != NULL) {
+ 		if (s->next == rose_neigh) {
+ 			s->next = rose_neigh->next;
+-			if (rose_neigh->ax25)
+-				ax25_cb_put(rose_neigh->ax25);
+-			kfree(rose_neigh->digipeat);
+-			kfree(rose_neigh);
+ 			return;
+ 		}
+ 
+@@ -331,8 +323,10 @@ static int rose_del_node(struct rose_route_struct *rose_route,
+ 		if (rose_node->neighbour[i] == rose_neigh) {
+ 			rose_neigh->count--;
+ 
+-			if (rose_neigh->count == 0 && rose_neigh->use == 0)
++			if (rose_neigh->count == 0 && rose_neigh->use == 0) {
+ 				rose_remove_neigh(rose_neigh);
++				rose_neigh_put(rose_neigh);
++			}
+ 
+ 			rose_node->count--;
+ 
+@@ -513,6 +507,7 @@ void rose_rt_device_down(struct net_device *dev)
+ 		}
+ 
+ 		rose_remove_neigh(s);
++		rose_neigh_put(s);
+ 	}
+ 	spin_unlock_bh(&rose_neigh_list_lock);
+ 	spin_unlock_bh(&rose_node_list_lock);
+@@ -569,6 +564,7 @@ static int rose_clear_routes(void)
+ 		if (s->use == 0 && !s->loopback) {
+ 			s->count = 0;
+ 			rose_remove_neigh(s);
++			rose_neigh_put(s);
+ 		}
+ 	}
+ 
+@@ -1301,6 +1297,7 @@ void __exit rose_rt_free(void)
+ 		rose_neigh = rose_neigh->next;
+ 
+ 		rose_remove_neigh(s);
++		rose_neigh_put(s);
+ 	}
+ 
+ 	while (rose_node != NULL) {
+-- 
+2.50.1
+
 
 
 
