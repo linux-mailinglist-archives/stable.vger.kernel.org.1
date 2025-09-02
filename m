@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-177152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15885B40374
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7A1B4043F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50783B0594
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F39B5E0559
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901C7313E23;
-	Tue,  2 Sep 2025 13:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222EC31E11F;
+	Tue,  2 Sep 2025 13:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5RZx4sF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFAIf/HM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E656313558;
-	Tue,  2 Sep 2025 13:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34DA30EF90;
+	Tue,  2 Sep 2025 13:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819748; cv=none; b=NRv7Psqq4Mr7ofXeaLDJ7c9fnK6zvPRC6QgpzAAtHNKsRMTb2fr+uCG5ZU93vGltESdUsMe/Q8qKUCgMp0gbFnI9HIDHeIz/9KZYTDDDaPmPGLHYxnSIkHagqMvjceY2ZgXEB4/GjVNx9CNqo/+ttJ8tKB8dZZjg1Krmh7VQiis=
+	t=1756820155; cv=none; b=LgJ7VEIXko8zS3Yypkoe4kntNKM1cFpH3XeoSZ7Rbf+0e7m/fSV7cv2f6MUtlkleMbkyXwhYDRGonnX7jU9//7vMfHi/afoRZRLbhmkArKjDAm2Y0cjuJwPDUGuAt5LgCRKlmFhVjpG0rm+y1e8dfL8yqKNJf8utgpaQRME7L2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819748; c=relaxed/simple;
-	bh=a1wVJx8MLbDXgWsqMY55ccuEg8z9zVfA7Ut4XP74XJ0=;
+	s=arc-20240116; t=1756820155; c=relaxed/simple;
+	bh=As0zxQB7ntL5rgT9p4J7l7hae/Jc8aYisr4ZR9M8PhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QEOU22zjifLIH3h7CLGx901ms7z7lTf7jECks+0D0vESx9UnOcjK6sxAcrv7UT9Y1eIf4zrTV5uMZ4Rj/7JNWioimwFXhUKrVdh18VGxC5KuGHbQ+WrYE4ovjLR6ecMSsU21Cnkp2nF3ojFzdTSx8f1+e9XUxHI4AZiZcwJeQDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5RZx4sF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6305C4CEED;
-	Tue,  2 Sep 2025 13:29:07 +0000 (UTC)
+	 MIME-Version; b=RljYrSi9EfAOgVmy49PRroJASS9g69r4dOZe7L9SD5f5xEgN7qpUeci43B24pV5NCQs32FelFlopTIDYtX9qwlo6OqAjD2VDzlFEoK+ZpNn2LI6W2w6Q/hOjihwUMzn9Ftz/ggoRbiFgjuMntU01/ycxXldcl9o5kNW5Y95I/NQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFAIf/HM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4947DC4CEED;
+	Tue,  2 Sep 2025 13:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819748;
-	bh=a1wVJx8MLbDXgWsqMY55ccuEg8z9zVfA7Ut4XP74XJ0=;
+	s=korg; t=1756820155;
+	bh=As0zxQB7ntL5rgT9p4J7l7hae/Jc8aYisr4ZR9M8PhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z5RZx4sFuUHI+RXIGYv6MwacR0LC/P01gPyeq+oaW58BtvSTKHF/YpIkq0j4CSLc3
-	 cLRLrsOPWxjemqtJ8ag5U+q4uRro0Leum3elhJNtom55xYOgYAbjYFc7vaH/qq54DU
-	 /ajdl1BWB3c/r4fZtWS5UTArnT7q9Yxw+MA6XEXY=
+	b=uFAIf/HMytVIdY2PuR6eEGG1uTdYQpQ61t+sRmKl36yqOmcUj6sZ/Aeyz4vBWY53z
+	 oBzV2HjYKXYofVUb2LJT6A8mDjwzjfamQVoB11+7Xi/bug6fWST5aD23hdLlyT+ryj
+	 ykxHRjynzMNCazbJ5JIGsx7hVi94Tuup/tbxrc6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Timur Tabi <ttabi@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.16 126/142] drm/nouveau: fix error path in nvkm_gsp_fwsec_v2
+	Andrey Ryabinin <arbn@yandex-team.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 6.6 16/75] vhost/net: Protect ubufs with rcu read lock in vhost_net_ubuf_put()
 Date: Tue,  2 Sep 2025 15:20:28 +0200
-Message-ID: <20250902131953.112979635@linuxfoundation.org>
+Message-ID: <20250902131935.752564012@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Tabi <ttabi@nvidia.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-commit 66e82b6e0a28d4970383e1ee5d60f431001128cd upstream.
+commit dd54bcf86c91a4455b1f95cbc8e9ac91205f3193 upstream.
 
-Function nvkm_gsp_fwsec_v2() sets 'ret' if the kmemdup() call fails, but
-it never uses or returns 'ret' after that point.  We always need to release
-the firmware regardless, so do that and then check for error.
+When operating on struct vhost_net_ubuf_ref, the following execution
+sequence is theoretically possible:
+CPU0 is finalizing DMA operation                   CPU1 is doing VHOST_NET_SET_BACKEND
+                             // ubufs->refcount == 2
+vhost_net_ubuf_put()                               vhost_net_ubuf_put_wait_and_free(oldubufs)
+                                                     vhost_net_ubuf_put_and_wait()
+                                                       vhost_net_ubuf_put()
+                                                         int r = atomic_sub_return(1, &ubufs->refcount);
+                                                         // r = 1
+int r = atomic_sub_return(1, &ubufs->refcount);
+// r = 0
+                                                      wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
+                                                      // no wait occurs here because condition is already true
+                                                    kfree(ubufs);
+if (unlikely(!r))
+  wake_up(&ubufs->wait);  // use-after-free
 
-Fixes: 176fdcbddfd2 ("drm/nouveau/gsp/r535: add support for booting GSP-RM")
-Cc: stable@vger.kernel.org # v6.7+
-Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-Link: https://lore.kernel.org/r/20250813001004.2986092-1-ttabi@nvidia.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+This leads to use-after-free on ubufs access. This happens because CPU1
+skips waiting for wake_up() when refcount is already zero.
+
+To prevent that use a read-side RCU critical section in vhost_net_ubuf_put(),
+as suggested by Hillf Danton. For this lock to take effect, free ubufs with
+kfree_rcu().
+
+Cc: stable@vger.kernel.org
+Fixes: 0ad8b480d6ee9 ("vhost: fix ref cnt checking deadlock")
+Reported-by: Andrey Ryabinin <arbn@yandex-team.com>
+Suggested-by: Hillf Danton <hdanton@sina.com>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Message-Id: <20250805130917.727332-1-kniv@yandex-team.ru>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/vhost/net.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
-@@ -209,11 +209,12 @@ nvkm_gsp_fwsec_v2(struct nvkm_gsp *gsp,
- 	fw->boot_addr = bld->start_tag << 8;
- 	fw->boot_size = bld->code_size;
- 	fw->boot = kmemdup(bl->data + hdr->data_offset + bld->code_off, fw->boot_size, GFP_KERNEL);
--	if (!fw->boot)
--		ret = -ENOMEM;
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -96,6 +96,7 @@ struct vhost_net_ubuf_ref {
+ 	atomic_t refcount;
+ 	wait_queue_head_t wait;
+ 	struct vhost_virtqueue *vq;
++	struct rcu_head rcu;
+ };
  
- 	nvkm_firmware_put(bl);
+ #define VHOST_NET_BATCH 64
+@@ -249,9 +250,13 @@ vhost_net_ubuf_alloc(struct vhost_virtqu
  
-+	if (!fw->boot)
-+		return -ENOMEM;
+ static int vhost_net_ubuf_put(struct vhost_net_ubuf_ref *ubufs)
+ {
+-	int r = atomic_sub_return(1, &ubufs->refcount);
++	int r;
 +
- 	/* Patch in interface data. */
- 	return nvkm_gsp_fwsec_patch(gsp, fw, desc->InterfaceOffset, init_cmd);
++	rcu_read_lock();
++	r = atomic_sub_return(1, &ubufs->refcount);
+ 	if (unlikely(!r))
+ 		wake_up(&ubufs->wait);
++	rcu_read_unlock();
+ 	return r;
  }
+ 
+@@ -264,7 +269,7 @@ static void vhost_net_ubuf_put_and_wait(
+ static void vhost_net_ubuf_put_wait_and_free(struct vhost_net_ubuf_ref *ubufs)
+ {
+ 	vhost_net_ubuf_put_and_wait(ubufs);
+-	kfree(ubufs);
++	kfree_rcu(ubufs, rcu);
+ }
+ 
+ static void vhost_net_clear_ubuf_info(struct vhost_net *n)
 
 
 
