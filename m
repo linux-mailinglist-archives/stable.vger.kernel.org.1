@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-177362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53F89B404FF
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6329AB404DA
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 131681B6765E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68F1918923EB
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BBA30F542;
-	Tue,  2 Sep 2025 13:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80B430BBBD;
+	Tue,  2 Sep 2025 13:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SL3jjTp0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzSlRMBw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AD23043BA;
-	Tue,  2 Sep 2025 13:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63831308F1D;
+	Tue,  2 Sep 2025 13:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820403; cv=none; b=erJ9EohiWu5kDFRoEwcsbxYKLMvbOSYG/Ys8mLRqZMiBRXsnMu1HAvMTzPWggpmPbR7vBoy0dQx6bXZW/UZO7NKYH6TFguMYVQOcD0KlLGTJv9dIpYn0O5XSFskaHIMAZ6E3QnLQbk7OyvM1EEcvj9yJTv6Q03+do7fUBgyoTTA=
+	t=1756820288; cv=none; b=ACPXQVaAMF2/jBl5DxMtazgKEbVbGFvFV8jqCPO25EmkPzysl0FLtbhZMdMuB+pyGiXM7FssIB5OLDOjH06qD6LRakAjjfLutVxF0ftYn0jVFxYrKHyGofMidGXbpoww919OuOG2104cBxWIM6mKU5T/7jEOcUSeaZXlAIIVKkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820403; c=relaxed/simple;
-	bh=tYj1VdrZBQafo0KDjQrQS+A8mVrSxhhut/7cZ1rgdAY=;
+	s=arc-20240116; t=1756820288; c=relaxed/simple;
+	bh=BQ43NkToucFLLRAP/Y4IyxBQivyHyth6LWDKAdYIyoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKYyeI7XkfdLw+5KIrpBmh5gQLSU4+CoHbfiymrXcCxhJqzSN1G+4j6g8CxCFzmbBFZBO8N4iT6+WUElIjRuAHWPuutMWpqjUvoeoEbkvAgZ3mPhyfoN6TbtSHPFGO6WKwi+PrdCqoE0m4C9X2dX8EaMAFdQ1qAhkIq32rZX4DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SL3jjTp0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7F2C4CEED;
-	Tue,  2 Sep 2025 13:40:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HfjKmrKueHvDTUK3/e1I/mu2hiALgpIj0NCnSXwNdRUr5i+Xu5weQw9yJX9gjgorzYmxcmPyWTctccbcPGpGOYS09Kcc2wP/z8i/hSY/UZPxRowZ7ltAc6jWHCj2bCLIB8aDKM2hhLdaNDbarglHgdXOHjGxoWeG6OOMJfovovo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzSlRMBw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBC3C4CEED;
+	Tue,  2 Sep 2025 13:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820403;
-	bh=tYj1VdrZBQafo0KDjQrQS+A8mVrSxhhut/7cZ1rgdAY=;
+	s=korg; t=1756820288;
+	bh=BQ43NkToucFLLRAP/Y4IyxBQivyHyth6LWDKAdYIyoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SL3jjTp0M/dLuPeHtMUcUFi6EPeneQmfYgL725e95Ju1CJsoQngQh+FE2cJAkiZh+
-	 dlvOrRrItIcW3CGbw7Ak2R6yDFqy309c8s7+Xck29/tXqbrpvCo0r5PuxJ9pwjwj4r
-	 YDlI/8qjDuc37lf+pe4YxoLvrO+zYo9NxCSYW0QQ=
+	b=RzSlRMBwp544RIRXdaB5COs01rOjTOiPEG2A8l29+Pb4Bqr3T6v7p0BboT0kXr81P
+	 lAScU+BSN/VRlNNgVqVM3cyEzjrwIxCvyOoRHWJ/9F93aQz5397ug+fQ46OXunJjPO
+	 EBlo3c/vuYR1ZlfcHmdj0wXneZpXcXBB5OjLtgcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ludovico de Nittis <ludovico.denittis@collabora.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 18/50] Bluetooth: hci_event: Treat UNKNOWN_CONN_ID on disconnect as success
+	=?UTF-8?q?V=C3=ADtek=20V=C3=A1vra?= <vit.vavra.kh@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.6 57/75] x86/microcode/AMD: Handle the case of no BIOS microcode
 Date: Tue,  2 Sep 2025 15:21:09 +0200
-Message-ID: <20250902131931.243153786@linuxfoundation.org>
+Message-ID: <20250902131937.354704854@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ludovico de Nittis <ludovico.denittis@collabora.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit 2f050a5392b7a0928bf836d9891df4851463512c ]
+commit fcf8239ad6a5de54fa7ce18e464c6b5951b982cb upstream.
 
-When the host sends an HCI_OP_DISCONNECT command, the controller may
-respond with the status HCI_ERROR_UNKNOWN_CONN_ID (0x02). E.g. this can
-happen on resume from suspend, if the link was terminated by the remote
-device before the event mask was correctly set.
+Machines can be shipped without any microcode in the BIOS. Which means,
+the microcode patch revision is 0.
 
-This is a btmon snippet that shows the issue:
-```
-> ACL Data RX: Handle 3 flags 0x02 dlen 12
-      L2CAP: Disconnection Request (0x06) ident 5 len 4
-        Destination CID: 65
-        Source CID: 72
-< ACL Data TX: Handle 3 flags 0x00 dlen 12
-      L2CAP: Disconnection Response (0x07) ident 5 len 4
-        Destination CID: 65
-        Source CID: 72
-> ACL Data RX: Handle 3 flags 0x02 dlen 12
-      L2CAP: Disconnection Request (0x06) ident 6 len 4
-        Destination CID: 64
-        Source CID: 71
-< ACL Data TX: Handle 3 flags 0x00 dlen 12
-      L2CAP: Disconnection Response (0x07) ident 6 len 4
-        Destination CID: 64
-        Source CID: 71
-< HCI Command: Set Event Mask (0x03|0x0001) plen 8
-        Mask: 0x3dbff807fffbffff
-          Inquiry Complete
-          Inquiry Result
-          Connection Complete
-          Connection Request
-          Disconnection Complete
-          Authentication Complete
-[...]
-< HCI Command: Disconnect (0x01|0x0006) plen 3
-        Handle: 3 Address: 78:20:A5:4A:DF:28 (Nintendo Co.,Ltd)
-        Reason: Remote User Terminated Connection (0x13)
-> HCI Event: Command Status (0x0f) plen 4
-      Disconnect (0x01|0x0006) ncmd 1
-        Status: Unknown Connection Identifier (0x02)
-```
+Handle that gracefully.
 
-Currently, the hci_cs_disconnect function treats any non-zero status
-as a command failure. This can be misleading because the connection is
-indeed being terminated and the controller is confirming that is has no
-knowledge of that connection handle. Meaning that the initial request of
-disconnecting a device should be treated as done.
-
-With this change we allow the function to proceed, following the success
-path, which correctly calls `mgmt_device_disconnected` and ensures a
-consistent state.
-
-Link: https://github.com/bluez/bluez/issues/1226
-Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
-Signed-off-by: Ludovico de Nittis <ludovico.denittis@collabora.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 94838d230a6c ("x86/microcode/AMD: Use the family,model,stepping encoded in the patch ID")
+Reported-by: Vítek Vávra <vit.vavra.kh@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/microcode/amd.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 866462c97dbaf..3ff428df58a46 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -2767,7 +2767,7 @@ static void hci_cs_disconnect(struct hci_dev *hdev, u8 status)
- 	if (!conn)
- 		goto unlock;
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -161,8 +161,28 @@ static int cmp_id(const void *key, const
+ 		return 1;
+ }
  
--	if (status) {
-+	if (status && status != HCI_ERROR_UNKNOWN_CONN_ID) {
- 		mgmt_disconnect_failed(hdev, &conn->dst, conn->type,
- 				       conn->dst_type, status);
++static u32 cpuid_to_ucode_rev(unsigned int val)
++{
++	union zen_patch_rev p = {};
++	union cpuid_1_eax c;
++
++	c.full = val;
++
++	p.stepping  = c.stepping;
++	p.model     = c.model;
++	p.ext_model = c.ext_model;
++	p.ext_fam   = c.ext_fam;
++
++	return p.ucode_rev;
++}
++
+ static bool need_sha_check(u32 cur_rev)
+ {
++	if (!cur_rev) {
++		cur_rev = cpuid_to_ucode_rev(bsp_cpuid_1_eax);
++		pr_info_once("No current revision, generating the lowest one: 0x%x\n", cur_rev);
++	}
++
+ 	switch (cur_rev >> 8) {
+ 	case 0x80012: return cur_rev <= 0x800126f; break;
+ 	case 0x80082: return cur_rev <= 0x800820f; break;
+@@ -744,8 +764,6 @@ static struct ucode_patch *cache_find_pa
+ 	n.equiv_cpu = equiv_cpu;
+ 	n.patch_id  = uci->cpu_sig.rev;
  
--- 
-2.50.1
-
+-	WARN_ON_ONCE(!n.patch_id);
+-
+ 	list_for_each_entry(p, &microcode_cache, plist)
+ 		if (patch_cpus_equivalent(p, &n, false))
+ 			return p;
 
 
 
