@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-177419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B35CB4053C
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE5C1B40597
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9B155E3BDE
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D089481C29
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEC62C11C9;
-	Tue,  2 Sep 2025 13:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968B4340D92;
+	Tue,  2 Sep 2025 13:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMEpC6Ct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChsTyaRk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAC528AB1E;
-	Tue,  2 Sep 2025 13:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53075324B1A;
+	Tue,  2 Sep 2025 13:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820584; cv=none; b=mDaQ78eOMwHceOiDNeioKl2a/IwbnVicVJq7K3H1AiCRxhrd88OB6pKUxbfw2elUAsrrCfnqu+sGuIDVTyg9lpsTlIaQv3zGqqNPO5DB6491+dRWpryHq8KM070LUD7PhskJ0v0FyC1mw0nPeDbVnkdIBB5eMMkFZZ4NqCZEOuw=
+	t=1756820755; cv=none; b=l27gz9JpQqcdjpzphGC0iNZTBkY6DNaduTYQIa4ZxKrHcKuLWsHNIaAGQGdJhZ7LspYFZzqqNWf/U7K9JajxFBnBufvZXRAC3hG7RWVy4V5Ls1EQWy+L9hyK82LdhCaD3OXeJqBO0CVvtJG0vniDhkDJ2ZrfHdUw1A5lG3MdPJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820584; c=relaxed/simple;
-	bh=AorxlwadGKarMB9VHzSKSsFJdn4cbSTc525IDPIjWlM=;
+	s=arc-20240116; t=1756820755; c=relaxed/simple;
+	bh=aBEDWNzpU/ID9e71ZgmaVhuPhf/EHWlrU5aSwjhWSkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NkdlUTklh7L6nk0+4ngXebokcCuCFl0E5UWa897mnBx1LetT06BSMs+oWM7JisHUBIivxdbT1Yoj5coGZ6a3+iLf2gnZLC9KTBwHAoMR6v+wV+HZWtPpH3Z3pgyc24jVS1yQo9o4WjGIDhLjOJeCvCD34hSy+9vBMXO6DCsBR1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMEpC6Ct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF6FC4CEED;
-	Tue,  2 Sep 2025 13:43:01 +0000 (UTC)
+	 MIME-Version; b=j8t+IKtT0BJdD7MXO6qk/rvPNrBhAiaQJt2biVJvjqtXJ7MQ2nFzb07ezjcGokvIU4dK6IVDzhuG2txQmUSboGVV1c0iMzuScXaCcv2oPKNT+Cq2OITRop7utGvVIgQyDyfT7B26yKd7fcbPmlc+TkvGTt6KamJ/3lIMT2/4lJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChsTyaRk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD877C4CEED;
+	Tue,  2 Sep 2025 13:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820582;
-	bh=AorxlwadGKarMB9VHzSKSsFJdn4cbSTc525IDPIjWlM=;
+	s=korg; t=1756820755;
+	bh=aBEDWNzpU/ID9e71ZgmaVhuPhf/EHWlrU5aSwjhWSkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OMEpC6Ct4Czo3ovm47jgUdGa3P6LpEv/2/xG2+o1En8SAJWeYo2T+OsW1O/OCLqBF
-	 /v6yjWdWP/nd/5q6EreElZC7cOjFH2ZEP0O1SKXgDKyF6wbrx2nrxQXvJHFt2R6vkk
-	 Ed/ia/za1iJiCHaV0pAfe60bmkxdj624TegcWGXA=
+	b=ChsTyaRkP/J+dYtXFs1u9+R0LlnNNM5EZE1GXl0mYzXJETNs0jIKSp0tkxCUTHUQu
+	 +0+mjcp/tvk2mLP+m8GrvK9UgRTmUmb700Fbfrpb+9wO6XMP3pzxjIWEqOcU1RCAQa
+	 tQz/uwyIp2UgFUw/q8YTRGl/euKG+TkG70NbBE6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.15 24/33] HID: wacom: Add a new Art Pen 2
-Date: Tue,  2 Sep 2025 15:21:42 +0200
-Message-ID: <20250902131928.005521236@linuxfoundation.org>
+	syzbot+e69f06a0f30116c68056@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 17/34] sctp: initialize more fields in sctp_v6_from_sk()
+Date: Tue,  2 Sep 2025 15:21:43 +0200
+Message-ID: <20250902131927.308928071@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
-References: <20250902131927.045875971@linuxfoundation.org>
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
+References: <20250902131926.607219059@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,31 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping Cheng <pinglinux@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 9fc51941d9e7793da969b2c66e6f8213c5b1237f upstream.
+[ Upstream commit 2e8750469242cad8f01f320131fd5a6f540dbb99 ]
 
-Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+syzbot found that sin6_scope_id was not properly initialized,
+leading to undefined behavior.
+
+Clear sin6_scope_id and sin6_flowinfo.
+
+BUG: KMSAN: uninit-value in __sctp_v6_cmp_addr+0x887/0x8c0 net/sctp/ipv6.c:649
+  __sctp_v6_cmp_addr+0x887/0x8c0 net/sctp/ipv6.c:649
+  sctp_inet6_cmp_addr+0x4f2/0x510 net/sctp/ipv6.c:983
+  sctp_bind_addr_conflict+0x22a/0x3b0 net/sctp/bind_addr.c:390
+  sctp_get_port_local+0x21eb/0x2440 net/sctp/socket.c:8452
+  sctp_get_port net/sctp/socket.c:8523 [inline]
+  sctp_listen_start net/sctp/socket.c:8567 [inline]
+  sctp_inet_listen+0x710/0xfd0 net/sctp/socket.c:8636
+  __sys_listen_socket net/socket.c:1912 [inline]
+  __sys_listen net/socket.c:1927 [inline]
+  __do_sys_listen net/socket.c:1932 [inline]
+  __se_sys_listen net/socket.c:1930 [inline]
+  __x64_sys_listen+0x343/0x4c0 net/socket.c:1930
+  x64_sys_call+0x271d/0x3e20 arch/x86/include/generated/asm/syscalls_64.h:51
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Local variable addr.i.i created at:
+  sctp_get_port net/sctp/socket.c:8515 [inline]
+  sctp_listen_start net/sctp/socket.c:8567 [inline]
+  sctp_inet_listen+0x650/0xfd0 net/sctp/socket.c:8636
+  __sys_listen_socket net/socket.c:1912 [inline]
+  __sys_listen net/socket.c:1927 [inline]
+  __do_sys_listen net/socket.c:1932 [inline]
+  __se_sys_listen net/socket.c:1930 [inline]
+  __x64_sys_listen+0x343/0x4c0 net/socket.c:1930
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+e69f06a0f30116c68056@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68adc0a2.050a0220.37038e.00c4.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20250826141314.1802610-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/sctp/ipv6.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -684,6 +684,7 @@ static bool wacom_is_art_pen(int tool_id
- 	case 0x885:	/* Intuos3 Marker Pen */
- 	case 0x804:	/* Intuos4/5 13HD/24HD Marker Pen */
- 	case 0x10804:	/* Intuos4/5 13HD/24HD Art Pen */
-+	case 0x204:     /* Art Pen 2 */
- 		is_art_pen = true;
- 		break;
- 	}
+diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
+index d594b949ae82f..a9cfe4d62df83 100644
+--- a/net/sctp/ipv6.c
++++ b/net/sctp/ipv6.c
+@@ -499,7 +499,9 @@ static void sctp_v6_from_sk(union sctp_addr *addr, struct sock *sk)
+ {
+ 	addr->v6.sin6_family = AF_INET6;
+ 	addr->v6.sin6_port = 0;
++	addr->v6.sin6_flowinfo = 0;
+ 	addr->v6.sin6_addr = sk->sk_v6_rcv_saddr;
++	addr->v6.sin6_scope_id = 0;
+ }
+ 
+ /* Initialize sk->sk_rcv_saddr from sctp_addr. */
+-- 
+2.50.1
+
 
 
 
