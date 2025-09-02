@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-177359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33FBCB40494
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:44:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4160B404C8
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A12D37AC902
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:42:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C23E617B86B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CA6310645;
-	Tue,  2 Sep 2025 13:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A7A30ACF9;
+	Tue,  2 Sep 2025 13:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkjYgPbb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kaR+nUEy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C5D299AB5;
-	Tue,  2 Sep 2025 13:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C09B2BE053;
+	Tue,  2 Sep 2025 13:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820394; cv=none; b=lpx0kUAZHkzN2AfUyH10ekOvHLYxLCoOXZ89+6xHa+K7e+O6S5PVqpqfb0A5G5+E5IBFj3yMUy8ekTY0qAe9Voyjy0vhnLre5vJdsWBaNozJjZMk42tWvl7ThiD/4nHwWSpwOQoIl9BrJ0e+R25o/0OgPoOPRmsiSze/8lJpfhQ=
+	t=1756820278; cv=none; b=roI+igGYLMbpdG0mS2LxvWQsSzim+DufBtLJ4av4RfHj7TZ3xvts5aJUxIG+JkcfCg9rtFp3ver61CtPB69xEqvEB8dhDMYQI54TrxZ3MYxOlQcW0sLyLRJCKRzzVFEAXQSrdU6DVaUeqpw+f90t5hXnWweB+8+fErnarypOieg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820394; c=relaxed/simple;
-	bh=wl+KpYpHxK0NxzKQdzURtvxLHqf+ld45kIShL/6X75U=;
+	s=arc-20240116; t=1756820278; c=relaxed/simple;
+	bh=ES69nZ8FcboNLqLQX2E1ucYdO/F4nvAHQVybqQLdmwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u139Bx5jpxDA/udrGGsBtIzUMHTWb7pXWTNizAmie/SKd8otGzYC6dppSAwFXw0aJUnzwFB019TKpdmhPI3uIe2NPZ7mJTL4luI9DAxJ1ZCxVke5AAnJZlmz33Qma3j5sMY1so+6WHr8a1IXdoIKTr4dkpqTQZTDq0G14j4oN8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkjYgPbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC58C4CEF4;
-	Tue,  2 Sep 2025 13:39:53 +0000 (UTC)
+	 MIME-Version; b=T+PVmg9t60M6z7TQB5SdstyNjSRVsPMIWV02sik2jYH/dgKhncAdQbofOhyJBghasnMYWPtDehXwB1mCv4t64pfRPIkI1iX6H2Mjmy0fB6KWkOSaSKiMDzWWGmB32gK4v2vXL9EsRvSsS05apuyywqiGqxTMcHNqB7ujI5GAfCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kaR+nUEy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE25C4CEED;
+	Tue,  2 Sep 2025 13:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820394;
-	bh=wl+KpYpHxK0NxzKQdzURtvxLHqf+ld45kIShL/6X75U=;
+	s=korg; t=1756820278;
+	bh=ES69nZ8FcboNLqLQX2E1ucYdO/F4nvAHQVybqQLdmwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BkjYgPbb4k+3PJy0Luzh6ed9Jm/kINKsgBB3IQk+0qwzj5/3BNgkvAerzci/wB+YO
-	 hCHCIJpp8PsFPuZRp3XnV+jeYOoQISTR3u50YYSRTedQCbPBzvT6OqsLAfRbB6Ad2C
-	 E1ZWOwDD0dgYBWVYuSQ4FkX8Y5NOkx3QRuET3wXY=
+	b=kaR+nUEyBwIuiyX2WmjsXedknWvgNHxojezjxAJtfRgnab+MgJusMJZAMzx22Qb+v
+	 CxJ2ZaYaQyFNE/wcmygPHrn/XyNoHcGrnPSmuiki/ME+W72a/atdvE76+kZDvIubjc
+	 7k1CemZxKMdMQac4L3d5heoFXlEqr6hESbWc0LVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	syzbot+e69f06a0f30116c68056@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 15/50] powerpc/kvm: Fix ifdef to remove build warning
+Subject: [PATCH 6.6 54/75] sctp: initialize more fields in sctp_v6_from_sk()
 Date: Tue,  2 Sep 2025 15:21:06 +0200
-Message-ID: <20250902131931.123263886@linuxfoundation.org>
+Message-ID: <20250902131937.237091666@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +65,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 88688a2c8ac6c8036d983ad8b34ce191c46a10aa ]
+[ Upstream commit 2e8750469242cad8f01f320131fd5a6f540dbb99 ]
 
-When compiling for pseries or powernv defconfig with "make C=1",
-these warning were reported bu sparse tool in powerpc/kernel/kvm.c
+syzbot found that sin6_scope_id was not properly initialized,
+leading to undefined behavior.
 
-arch/powerpc/kernel/kvm.c:635:9: warning: switch with no cases
-arch/powerpc/kernel/kvm.c:646:9: warning: switch with no cases
+Clear sin6_scope_id and sin6_flowinfo.
 
-Currently #ifdef were added after the switch case which are specific
-for BOOKE and PPC_BOOK3S_32. These are not enabled in pseries/powernv
-defconfig. Fix it by moving the #ifdef before switch(){}
+BUG: KMSAN: uninit-value in __sctp_v6_cmp_addr+0x887/0x8c0 net/sctp/ipv6.c:649
+  __sctp_v6_cmp_addr+0x887/0x8c0 net/sctp/ipv6.c:649
+  sctp_inet6_cmp_addr+0x4f2/0x510 net/sctp/ipv6.c:983
+  sctp_bind_addr_conflict+0x22a/0x3b0 net/sctp/bind_addr.c:390
+  sctp_get_port_local+0x21eb/0x2440 net/sctp/socket.c:8452
+  sctp_get_port net/sctp/socket.c:8523 [inline]
+  sctp_listen_start net/sctp/socket.c:8567 [inline]
+  sctp_inet_listen+0x710/0xfd0 net/sctp/socket.c:8636
+  __sys_listen_socket net/socket.c:1912 [inline]
+  __sys_listen net/socket.c:1927 [inline]
+  __do_sys_listen net/socket.c:1932 [inline]
+  __se_sys_listen net/socket.c:1930 [inline]
+  __x64_sys_listen+0x343/0x4c0 net/socket.c:1930
+  x64_sys_call+0x271d/0x3e20 arch/x86/include/generated/asm/syscalls_64.h:51
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: cbe487fac7fc0 ("KVM: PPC: Add mtsrin PV code")
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250518044107.39928-1-maddy@linux.ibm.com
+Local variable addr.i.i created at:
+  sctp_get_port net/sctp/socket.c:8515 [inline]
+  sctp_listen_start net/sctp/socket.c:8567 [inline]
+  sctp_inet_listen+0x650/0xfd0 net/sctp/socket.c:8636
+  __sys_listen_socket net/socket.c:1912 [inline]
+  __sys_listen net/socket.c:1927 [inline]
+  __do_sys_listen net/socket.c:1932 [inline]
+  __se_sys_listen net/socket.c:1930 [inline]
+  __x64_sys_listen+0x343/0x4c0 net/socket.c:1930
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+e69f06a0f30116c68056@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68adc0a2.050a0220.37038e.00c4.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20250826141314.1802610-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/kvm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/sctp/ipv6.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/kernel/kvm.c b/arch/powerpc/kernel/kvm.c
-index 5b3c093611baf..7209d00a9c257 100644
---- a/arch/powerpc/kernel/kvm.c
-+++ b/arch/powerpc/kernel/kvm.c
-@@ -632,19 +632,19 @@ static void __init kvm_check_ins(u32 *inst, u32 features)
- #endif
- 	}
- 
--	switch (inst_no_rt & ~KVM_MASK_RB) {
- #ifdef CONFIG_PPC_BOOK3S_32
-+	switch (inst_no_rt & ~KVM_MASK_RB) {
- 	case KVM_INST_MTSRIN:
- 		if (features & KVM_MAGIC_FEAT_SR) {
- 			u32 inst_rb = _inst & KVM_MASK_RB;
- 			kvm_patch_ins_mtsrin(inst, inst_rt, inst_rb);
- 		}
- 		break;
--#endif
- 	}
-+#endif
- 
--	switch (_inst) {
- #ifdef CONFIG_BOOKE
-+	switch (_inst) {
- 	case KVM_INST_WRTEEI_0:
- 		kvm_patch_ins_wrteei_0(inst);
- 		break;
-@@ -652,8 +652,8 @@ static void __init kvm_check_ins(u32 *inst, u32 features)
- 	case KVM_INST_WRTEEI_1:
- 		kvm_patch_ins_wrtee(inst, 0, 1);
- 		break;
--#endif
- 	}
-+#endif
+diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
+index 717828e531621..0673857cb3d8b 100644
+--- a/net/sctp/ipv6.c
++++ b/net/sctp/ipv6.c
+@@ -547,7 +547,9 @@ static void sctp_v6_from_sk(union sctp_addr *addr, struct sock *sk)
+ {
+ 	addr->v6.sin6_family = AF_INET6;
+ 	addr->v6.sin6_port = 0;
++	addr->v6.sin6_flowinfo = 0;
+ 	addr->v6.sin6_addr = sk->sk_v6_rcv_saddr;
++	addr->v6.sin6_scope_id = 0;
  }
  
- extern u32 kvm_template_start[];
+ /* Initialize sk->sk_rcv_saddr from sctp_addr. */
 -- 
 2.50.1
 
