@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2BB5B405A2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:56:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 375EFB40547
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 546A54E7E3E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:51:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87D1D5E47F1
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7283A30BF77;
-	Tue,  2 Sep 2025 13:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBA9309DB5;
+	Tue,  2 Sep 2025 13:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Txhf74Mi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEqElzX/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3F430507B;
-	Tue,  2 Sep 2025 13:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B33B284B2E;
+	Tue,  2 Sep 2025 13:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820813; cv=none; b=BvdKuIq+R9IVa6ahq0PNX6shJS+LjoSedpcuCx2PMw50z2GY0C8GLE0cRy0uXXqAmkI2H3wOcXOQ4o2onCz4HtJ1BLnX/WuM/g9d751x19xWdVDByYYSKjWgRNs7nttJwCjXuPQfxQC/zbfCFRt4D+yp/uRcBiZcYEm6WbDQ3RE=
+	t=1756820615; cv=none; b=OdkXf17oOS4qdMCAmtlRHFSZuq76G3il6r5jGbEE/zESqwLrC9MsRlMNkc8pmiFWyaGV0WztAOJz7x10JLbt47BEJixTxISX9rD2acap7ngCyaBerPbYjiKkdxIeCbvUQ86rdwj5LZQeHMVQje3n/ViM0HrE3gE9S/NodCFmmfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820813; c=relaxed/simple;
-	bh=7yC7zwUDKk3HLutOjmMMvBSfvTIZlBSzpHS4C0wTnBw=;
+	s=arc-20240116; t=1756820615; c=relaxed/simple;
+	bh=FzcXD0vCCNWAfjUMhqqvJ0/Up9E+jbeUxDkV3OLQlAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSzvNo2EggeA30zZF3AyH2XwPtd/pwzNoO/skyHH/MGNcZPGM9395QxDbDDLTZXxNlwBPto21o6YbGsg/ZKHEVx+Mz6eWVNy/ORDw16ElElNCC7JyiixauYNPNLBIsCLPUBkjN631DaFzr+WWfRAFVEDkjJERvaW+Cx3Sme3Z3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Txhf74Mi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5F2C4CEED;
-	Tue,  2 Sep 2025 13:46:52 +0000 (UTC)
+	 MIME-Version; b=fJZaLKYw6t86IYczHTpcclRbfXeuS2RB8h+43V4Hne5+WDAvhQPuBnbs7RKq2n/CvOIQIfceImhKlXOMHxs1kTOOx05TKAdpMWFui+BuNVtCUHzd5LYdVVQp9mmQroWY/pV0hMbn5ZRlApx6aDh6vb0z7j187/nDqRBXUfrlwyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEqElzX/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EBAEC4CEF5;
+	Tue,  2 Sep 2025 13:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820812;
-	bh=7yC7zwUDKk3HLutOjmMMvBSfvTIZlBSzpHS4C0wTnBw=;
+	s=korg; t=1756820615;
+	bh=FzcXD0vCCNWAfjUMhqqvJ0/Up9E+jbeUxDkV3OLQlAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Txhf74Mi6skOpt/CR8byZ8IqPkumG46w1dh0CjWCY0dPNXZWMTqkpbUsysHMjjlQ3
-	 o1JhcM23c85hVGnQ9Y7Ddz9wqjv0WFAiz3Bs6upXK53+pyValxOT1GagzPAfWsNW4B
-	 TSKKJflODPjjjVekX/4eGhgKa16hONUoHwJ7So2E=
+	b=tEqElzX/uGu8c3dpBXs+J3DpAonMB+0aGgaetm36J2xF0rFJiiTqf+lMXhHKB+FHP
+	 0V0mhiS62kqilX4/Gk+xY0BgHmviz5q50JhFSsZ3jNAzfhkxjRfqCP4wzySF7NXZsE
+	 uYLB5wSoXf5JcGUK7jH0esEynxuy5H4JX4ftLGdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Ryabinin <arbn@yandex-team.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 5.4 04/23] vhost/net: Protect ubufs with rcu read lock in vhost_net_ubuf_put()
-Date: Tue,  2 Sep 2025 15:21:50 +0200
-Message-ID: <20250902131924.898424395@linuxfoundation.org>
+	Eric Sandeen <sandeen@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 33/33] xfs: do not propagate ENODATA disk errors into xattr code
+Date: Tue,  2 Sep 2025 15:21:51 +0200
+Message-ID: <20250902131928.363504598@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131924.720400762@linuxfoundation.org>
-References: <20250902131924.720400762@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+References: <20250902131927.045875971@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Eric Sandeen <sandeen@redhat.com>
 
-commit dd54bcf86c91a4455b1f95cbc8e9ac91205f3193 upstream.
+commit ae668cd567a6a7622bc813ee0bb61c42bed61ba7 upstream.
 
-When operating on struct vhost_net_ubuf_ref, the following execution
-sequence is theoretically possible:
-CPU0 is finalizing DMA operation                   CPU1 is doing VHOST_NET_SET_BACKEND
-                             // ubufs->refcount == 2
-vhost_net_ubuf_put()                               vhost_net_ubuf_put_wait_and_free(oldubufs)
-                                                     vhost_net_ubuf_put_and_wait()
-                                                       vhost_net_ubuf_put()
-                                                         int r = atomic_sub_return(1, &ubufs->refcount);
-                                                         // r = 1
-int r = atomic_sub_return(1, &ubufs->refcount);
-// r = 0
-                                                      wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
-                                                      // no wait occurs here because condition is already true
-                                                    kfree(ubufs);
-if (unlikely(!r))
-  wake_up(&ubufs->wait);  // use-after-free
+ENODATA (aka ENOATTR) has a very specific meaning in the xfs xattr code;
+namely, that the requested attribute name could not be found.
 
-This leads to use-after-free on ubufs access. This happens because CPU1
-skips waiting for wake_up() when refcount is already zero.
+However, a medium error from disk may also return ENODATA. At best,
+this medium error may escape to userspace as "attribute not found"
+when in fact it's an IO (disk) error.
 
-To prevent that use a read-side RCU critical section in vhost_net_ubuf_put(),
-as suggested by Hillf Danton. For this lock to take effect, free ubufs with
-kfree_rcu().
+At worst, we may oops in xfs_attr_leaf_get() when we do:
 
-Cc: stable@vger.kernel.org
-Fixes: 0ad8b480d6ee9 ("vhost: fix ref cnt checking deadlock")
-Reported-by: Andrey Ryabinin <arbn@yandex-team.com>
-Suggested-by: Hillf Danton <hdanton@sina.com>
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Message-Id: <20250805130917.727332-1-kniv@yandex-team.ru>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+	error = xfs_attr_leaf_hasname(args, &bp);
+	if (error == -ENOATTR)  {
+		xfs_trans_brelse(args->trans, bp);
+		return error;
+	}
+
+because an ENODATA/ENOATTR error from disk leaves us with a null bp,
+and the xfs_trans_brelse will then null-deref it.
+
+As discussed on the list, we really need to modify the lower level
+IO functions to trap all disk errors and ensure that we don't let
+unique errors like this leak up into higher xfs functions - many
+like this should be remapped to EIO.
+
+However, this patch directly addresses a reported bug in the xattr
+code, and should be safe to backport to stable kernels. A larger-scope
+patch to handle more unique errors at lower levels can follow later.
+
+(Note, prior to 07120f1abdff we did not oops, but we did return the
+wrong error code to userspace.)
+
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+Fixes: 07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
+Cc: stable@vger.kernel.org # v5.9+
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+[ Adjust context: removed metadata health tracking calls ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vhost/net.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/xfs/libxfs/xfs_attr_remote.c |    7 +++++++
+ fs/xfs/libxfs/xfs_da_btree.c    |    6 ++++++
+ 2 files changed, 13 insertions(+)
 
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -95,6 +95,7 @@ struct vhost_net_ubuf_ref {
- 	atomic_t refcount;
- 	wait_queue_head_t wait;
- 	struct vhost_virtqueue *vq;
-+	struct rcu_head rcu;
- };
+--- a/fs/xfs/libxfs/xfs_attr_remote.c
++++ b/fs/xfs/libxfs/xfs_attr_remote.c
+@@ -418,6 +418,13 @@ xfs_attr_rmtval_get(
+ 			dblkcnt = XFS_FSB_TO_BB(mp, map[i].br_blockcount);
+ 			error = xfs_buf_read(mp->m_ddev_targp, dblkno, dblkcnt,
+ 					0, &bp, &xfs_attr3_rmt_buf_ops);
++			/*
++			 * ENODATA from disk implies a disk medium failure;
++			 * ENODATA for xattrs means attribute not found, so
++			 * disambiguate that here.
++			 */
++			if (error == -ENODATA)
++				error = -EIO;
+ 			if (error)
+ 				return error;
  
- #define VHOST_NET_BATCH 64
-@@ -248,9 +249,13 @@ vhost_net_ubuf_alloc(struct vhost_virtqu
+--- a/fs/xfs/libxfs/xfs_da_btree.c
++++ b/fs/xfs/libxfs/xfs_da_btree.c
+@@ -2639,6 +2639,12 @@ xfs_da_read_buf(
  
- static int vhost_net_ubuf_put(struct vhost_net_ubuf_ref *ubufs)
- {
--	int r = atomic_sub_return(1, &ubufs->refcount);
-+	int r;
-+
-+	rcu_read_lock();
-+	r = atomic_sub_return(1, &ubufs->refcount);
- 	if (unlikely(!r))
- 		wake_up(&ubufs->wait);
-+	rcu_read_unlock();
- 	return r;
- }
+ 	error = xfs_trans_read_buf_map(mp, tp, mp->m_ddev_targp, mapp, nmap, 0,
+ 			&bp, ops);
++	/*
++	 * ENODATA from disk implies a disk medium failure; ENODATA for
++	 * xattrs means attribute not found, so disambiguate that here.
++	 */
++	if (error == -ENODATA && whichfork == XFS_ATTR_FORK)
++		error = -EIO;
+ 	if (error)
+ 		goto out_free;
  
-@@ -263,7 +268,7 @@ static void vhost_net_ubuf_put_and_wait(
- static void vhost_net_ubuf_put_wait_and_free(struct vhost_net_ubuf_ref *ubufs)
- {
- 	vhost_net_ubuf_put_and_wait(ubufs);
--	kfree(ubufs);
-+	kfree_rcu(ubufs, rcu);
- }
- 
- static void vhost_net_clear_ubuf_info(struct vhost_net *n)
 
 
 
