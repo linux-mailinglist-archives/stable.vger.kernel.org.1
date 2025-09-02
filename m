@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-177069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535CFB40322
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:29:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9160DB40327
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:29:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D70E41669CC
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:27:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B607E16F9AF
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061AF3126C5;
-	Tue,  2 Sep 2025 13:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924A331282D;
+	Tue,  2 Sep 2025 13:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0ca1OJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIX5aI6l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B670130BB8D;
-	Tue,  2 Sep 2025 13:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C55631281D;
+	Tue,  2 Sep 2025 13:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819473; cv=none; b=Rbqqh4C9Jps62sKoUxxXiap9mXKibVJAJ5bUqTwrJzo50G2PGodV+R7ymotZEOTHO2Us5jTnAStv6ZIhCZF+EJILbfob2v1NO5ndVHuWCEzqgRYdB70FgEhixtrBeXPnLsXR8ndME5evCWbR2kY76t+eAgDyMODMgq/s5nmFPgE=
+	t=1756819480; cv=none; b=K8NwKgDHlZiis5PBvHOcrIoEcQmC8sBOGu9vx0xBfEKgJxuHDWa5w0Y/td91mqCHdsWdCVJWEgIw/kZ2sUYrWgADU33ZQ2jYwzADagJkttvJOZABnhPGlWuMMNQmZzCV4H8MdgSO7oiBoN4zkEVd3qigkHXurAdUJnFKrS4KLb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819473; c=relaxed/simple;
-	bh=ZOom7z84AaWkYZ5nL7w724IMa+vAFTRaeWr3jjZg8qA=;
+	s=arc-20240116; t=1756819480; c=relaxed/simple;
+	bh=LSMIXAqfLl8mIohS9oT0WOzba9dwG1sG9qSbN23U6Ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=geqhlbl6W0uRSUTvqK9J2/gz96bfJEJYdMBpDifm3yMnIHsXngWvWfRTqpYrl39dqTIZGz9A0gUp84+HnOLXRwUQqYmk7y9PPlZ+Tq1Rh4ggZnYRh9HxqLDHIF/2R470fVG59vvldzMvCKDHtckTEUL7ywi7Ysk7o27Oa1+H4zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0ca1OJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3048C4CEED;
-	Tue,  2 Sep 2025 13:24:32 +0000 (UTC)
+	 MIME-Version; b=hs9/tmre+GLg14L0wCC+cYJAY0sOS+oIQsvfvFuoQyffLXC4g6y711WoIw/59CnDFYK6h5bj2VN8ah/TXJLm1Vd6aCZFT2LatmjtxD3ub4EDUhGVKVHtlfj3CBztSUHrH/hP2sNyl2F5uOlB0Yo92GXBMyUt9mXNN04xpp/PUec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIX5aI6l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A31E1C4CEED;
+	Tue,  2 Sep 2025 13:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819473;
-	bh=ZOom7z84AaWkYZ5nL7w724IMa+vAFTRaeWr3jjZg8qA=;
+	s=korg; t=1756819480;
+	bh=LSMIXAqfLl8mIohS9oT0WOzba9dwG1sG9qSbN23U6Ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q0ca1OJwvlqtGuPyQdisN1y5YksYDmysnxAVzTUFxE8Kmk3N6EWrljccbxxmThMlx
-	 31SwZcJoBEgvqa8jrH2qLEdZ1pJ8fEqJTzv9dS2/WgY2224XqMuxl3+oTNh7uXI78a
-	 bX8WniN5Luzu/5fXKHVNP8Dw0f8SUr1A4UsXxFAQ=
+	b=EIX5aI6laF04tZPxy6Q/pKLX0J8p8JyW1R7kiYENlYnwdD5Q2Rkovt115SRTr9+Ri
+	 MaS2Yx9Da0ko+e+ef4tH+iJ9BBPnz/sKZ0HQB4RrSHZOD4xLnWhoBpb8ykev13J+5b
+	 f1EXrWgxj8XhMh/kOF3DVEUBqFFrJbvNj+FazdjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	luoguangfei <15388634752@163.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 045/142] net: macb: fix unregister_netdev call order in macb_remove()
-Date: Tue,  2 Sep 2025 15:19:07 +0200
-Message-ID: <20250902131949.980613714@linuxfoundation.org>
+Subject: [PATCH 6.16 046/142] Bluetooth: hci_conn: Make unacked packet handling more robust
+Date: Tue,  2 Sep 2025 15:19:08 +0200
+Message-ID: <20250902131950.019044910@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
 References: <20250902131948.154194162@linuxfoundation.org>
@@ -66,61 +65,104 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: luoguangfei <15388634752@163.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 01b9128c5db1b470575d07b05b67ffa3cb02ebf1 ]
+[ Upstream commit 5d7eba62e5eb68347de59b31b347b24f304cf21c ]
 
-When removing a macb device, the driver calls phy_exit() before
-unregister_netdev(). This leads to a WARN from kernfs:
+This attempts to make unacked packet handling more robust by detecting
+if there are no connections left then restore all buffers of the
+respective pool.
 
-  ------------[ cut here ]------------
-  kernfs: can not remove 'attached_dev', no directory
-  WARNING: CPU: 1 PID: 27146 at fs/kernfs/dir.c:1683
-  Call trace:
-    kernfs_remove_by_name_ns+0xd8/0xf0
-    sysfs_remove_link+0x24/0x58
-    phy_detach+0x5c/0x168
-    phy_disconnect+0x4c/0x70
-    phylink_disconnect_phy+0x6c/0xc0 [phylink]
-    macb_close+0x6c/0x170 [macb]
-    ...
-    macb_remove+0x60/0x168 [macb]
-    platform_remove+0x5c/0x80
-    ...
-
-The warning happens because the PHY is being exited while the netdev
-is still registered. The correct order is to unregister the netdev
-before shutting down the PHY and cleaning up the MDIO bus.
-
-Fix this by moving unregister_netdev() ahead of phy_exit() in
-macb_remove().
-
-Fixes: 8b73fa3ae02b ("net: macb: Added ZynqMP-specific initialization")
-Signed-off-by: luoguangfei <15388634752@163.com>
-Link: https://patch.msgid.link/20250818232527.1316-1-15388634752@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5638d9ea9c01 ("Bluetooth: hci_conn: Fix not restoring ISO buffer count on disconnect")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_conn.c | 58 ++++++++++++++++++++++++++++------------
+ 1 file changed, 41 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index d1f1ae5ea161c..c1e904e4a01f4 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5391,11 +5391,11 @@ static void macb_remove(struct platform_device *pdev)
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 6a064a6b0e431..ad5574e9a93ee 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -149,8 +149,6 @@ static void hci_conn_cleanup(struct hci_conn *conn)
  
- 	if (dev) {
- 		bp = netdev_priv(dev);
-+		unregister_netdev(dev);
- 		phy_exit(bp->sgmii_phy);
- 		mdiobus_unregister(bp->mii_bus);
- 		mdiobus_free(bp->mii_bus);
+ 	hci_chan_list_flush(conn);
  
--		unregister_netdev(dev);
- 		cancel_work_sync(&bp->hresp_err_bh_work);
- 		pm_runtime_disable(&pdev->dev);
- 		pm_runtime_dont_use_autosuspend(&pdev->dev);
+-	hci_conn_hash_del(hdev, conn);
+-
+ 	if (HCI_CONN_HANDLE_UNSET(conn->handle))
+ 		ida_free(&hdev->unset_handle_ida, conn->handle);
+ 
+@@ -1142,28 +1140,54 @@ void hci_conn_del(struct hci_conn *conn)
+ 	disable_delayed_work_sync(&conn->auto_accept_work);
+ 	disable_delayed_work_sync(&conn->idle_work);
+ 
+-	if (conn->type == ACL_LINK) {
+-		/* Unacked frames */
+-		hdev->acl_cnt += conn->sent;
+-	} else if (conn->type == LE_LINK) {
+-		cancel_delayed_work(&conn->le_conn_timeout);
++	/* Remove the connection from the list so unacked logic can detect when
++	 * a certain pool is not being utilized.
++	 */
++	hci_conn_hash_del(hdev, conn);
+ 
+-		if (hdev->le_pkts)
+-			hdev->le_cnt += conn->sent;
++	/* Handle unacked frames:
++	 *
++	 * - In case there are no connection, or if restoring the buffers
++	 *   considered in transist would overflow, restore all buffers to the
++	 *   pool.
++	 * - Otherwise restore just the buffers considered in transit for the
++	 *   hci_conn
++	 */
++	switch (conn->type) {
++	case ACL_LINK:
++		if (!hci_conn_num(hdev, ACL_LINK) ||
++		    hdev->acl_cnt + conn->sent > hdev->acl_pkts)
++			hdev->acl_cnt = hdev->acl_pkts;
+ 		else
+ 			hdev->acl_cnt += conn->sent;
+-	} else {
+-		/* Unacked ISO frames */
+-		if (conn->type == CIS_LINK ||
+-		    conn->type == BIS_LINK ||
+-		    conn->type == PA_LINK) {
+-			if (hdev->iso_pkts)
+-				hdev->iso_cnt += conn->sent;
+-			else if (hdev->le_pkts)
++		break;
++	case LE_LINK:
++		cancel_delayed_work(&conn->le_conn_timeout);
++
++		if (hdev->le_pkts) {
++			if (!hci_conn_num(hdev, LE_LINK) ||
++			    hdev->le_cnt + conn->sent > hdev->le_pkts)
++				hdev->le_cnt = hdev->le_pkts;
++			else
+ 				hdev->le_cnt += conn->sent;
++		} else {
++			if ((!hci_conn_num(hdev, LE_LINK) &&
++			     !hci_conn_num(hdev, ACL_LINK)) ||
++			    hdev->acl_cnt + conn->sent > hdev->acl_pkts)
++				hdev->acl_cnt = hdev->acl_pkts;
+ 			else
+ 				hdev->acl_cnt += conn->sent;
+ 		}
++		break;
++	case CIS_LINK:
++	case BIS_LINK:
++	case PA_LINK:
++		if (!hci_iso_count(hdev) ||
++		    hdev->iso_cnt + conn->sent > hdev->iso_pkts)
++			hdev->iso_cnt = hdev->iso_pkts;
++		else
++			hdev->iso_cnt += conn->sent;
++		break;
+ 	}
+ 
+ 	skb_queue_purge(&conn->data_q);
 -- 
 2.50.1
 
