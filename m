@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-177070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB33BB40324
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:29:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB759B40357
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:32:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A899F16E71E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:27:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20455188448A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 105E231280E;
-	Tue,  2 Sep 2025 13:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C37B30E0EA;
+	Tue,  2 Sep 2025 13:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GwRTNAu+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xq0XXKLh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C118F3126D5;
-	Tue,  2 Sep 2025 13:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC9F30C340;
+	Tue,  2 Sep 2025 13:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819476; cv=none; b=QevetwxqlP8GCGKb+tLPKKUMfENVq3UezfMbaBpC0VsEcKZiSVDLojIZjqMaKvqHn062Z2LI1gqsPnA/XuFCHQTK8LtfJUo3QZJAvPe+IvcnNmP/fGhZmOyFdhaEa+AxBhv01AxO1+NOTEo+x/CeIQ2t+wxVax8zT9Mol8HvYvE=
+	t=1756819517; cv=none; b=cnPE535E2b5SJn3MCtIhXwsoJmNfQxkK1RGSVAdZNDQS4N8dXWujhe17vV1spBhsmZru61RuOyYffUlFRGBixM6fkO5DXvoTd7ElQ71NWUuY3OaQw59XC8SGORABk/kffcbhfFDf64r/E1nrZVy33YXpBSLlDaRS2rz0SHF3jmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819476; c=relaxed/simple;
-	bh=0GrOHbooxRbOP1oZfJ6GpLGyavnvP97wUYw6fum0ZTo=;
+	s=arc-20240116; t=1756819517; c=relaxed/simple;
+	bh=wXaJrauoNEKZ9FXa6JkqKlkKpEey+Vg/b4rsM2Pk5PA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PH2UtXhFrNSPOzky6Yx7wrpttSAtaXtFyH7TINe0U3snrS/KcGkDcQhS1OoQBzz6gAhW8wEvucZrPuyPDOSoKjwun1A/yW/dOx5+RT8ChGPGfP/0DdRZzlExUTZS1SvPJT+G1M5NdlN+3rpOCLitzXxqVN76gxRtJ63mRjoicUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwRTNAu+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E376C4CEED;
-	Tue,  2 Sep 2025 13:24:35 +0000 (UTC)
+	 MIME-Version; b=fdh34QGw1Lwn5X3QngMXRzUakhWeHFH8Q36lqGwHpO2yde+GJteMJCcX8AimsOmKbnV4WuBHuzok3hWmCNwQmLd49QCRKzgpE03VSVA2y/7yUbGwomkgi/q9v563YurxdeG5ULQv+WZ5LdFezfiJ4DMBcuZSxb+PFCqWHAYc1ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xq0XXKLh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEF5C4CEED;
+	Tue,  2 Sep 2025 13:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819476;
-	bh=0GrOHbooxRbOP1oZfJ6GpLGyavnvP97wUYw6fum0ZTo=;
+	s=korg; t=1756819513;
+	bh=wXaJrauoNEKZ9FXa6JkqKlkKpEey+Vg/b4rsM2Pk5PA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GwRTNAu+10UFPFHtBLGUMJRfRUEQlj62rvXloX7oQQNrvzJuqOkUlkBq9B6pn93s8
-	 CLalxzxMcwqjpBur3N4MmBHH4zbeqWtn8wgxCXNlOwlure8di5ctbVdEexo+gKtstQ
-	 63csIDvix50mgA0F2rksVyfTLWq5R6EVKbFvLwDs=
+	b=Xq0XXKLhXyvvZuLi/euvjyy6y3Mq8EEG0mtUpD9IJnBkqKhlGHveFw+cnWYpCcNFx
+	 WFOh/7lci/5PJ27M+IvSNvDEQqYbf1MPr4l/DWPTwfuTzBuFkxDZDSbWnVBAd7wmTC
+	 S38VauA+Cjfg1ejmPWRsGeq8Gwe2j+1dJnyesGEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett A C Sheffield <bacs@librecast.net>,
-	Oscar Maes <oscmaes92@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 028/142] net: ipv4: fix regression in local-broadcast routes
-Date: Tue,  2 Sep 2025 15:18:50 +0200
-Message-ID: <20250902131949.221888456@linuxfoundation.org>
+Subject: [PATCH 6.16 029/142] drm/msm: Defer fd_install in SUBMIT ioctl
+Date: Tue,  2 Sep 2025 15:18:51 +0200
+Message-ID: <20250902131949.260702128@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
 References: <20250902131948.154194162@linuxfoundation.org>
@@ -68,55 +66,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oscar Maes <oscmaes92@gmail.com>
+From: Rob Clark <robin.clark@oss.qualcomm.com>
 
-[ Upstream commit 5189446ba995556eaa3755a6e875bc06675b88bd ]
+[ Upstream commit f22853435bbd1e9836d0dce7fd99c040b94c2bf1 ]
 
-Commit 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
-introduced a regression where local-broadcast packets would have their
-gateway set in __mkroute_output, which was caused by fi = NULL being
-removed.
+Avoid fd_install() until there are no more potential error paths, to
+avoid put_unused_fd() after the fd is made visible to userspace.
 
-Fix this by resetting the fib_info for local-broadcast packets. This
-preserves the intended changes for directed-broadcast packets.
-
-Cc: stable@vger.kernel.org
-Fixes: 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
-Reported-by: Brett A C Sheffield <bacs@librecast.net>
-Closes: https://lore.kernel.org/regressions/20250822165231.4353-4-bacs@librecast.net
-Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250827062322.4807-1-oscmaes92@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 68dc6c2d5eec ("drm/msm: Fix submit error-path leaks")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/665363/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/msm_gem_submit.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 7b8e80c4f1d98..bf82434c3541b 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -2573,12 +2573,16 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
- 		    !netif_is_l3_master(dev_out))
- 			return ERR_PTR(-EINVAL);
+diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
+index d4f71bb54e84c..081d59979e31d 100644
+--- a/drivers/gpu/drm/msm/msm_gem_submit.c
++++ b/drivers/gpu/drm/msm/msm_gem_submit.c
+@@ -869,12 +869,8 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
  
--	if (ipv4_is_lbcast(fl4->daddr))
-+	if (ipv4_is_lbcast(fl4->daddr)) {
- 		type = RTN_BROADCAST;
--	else if (ipv4_is_multicast(fl4->daddr))
-+
-+		/* reset fi to prevent gateway resolution */
-+		fi = NULL;
-+	} else if (ipv4_is_multicast(fl4->daddr)) {
- 		type = RTN_MULTICAST;
--	else if (ipv4_is_zeronet(fl4->daddr))
-+	} else if (ipv4_is_zeronet(fl4->daddr)) {
- 		return ERR_PTR(-EINVAL);
-+	}
+ 	if (ret == 0 && args->flags & MSM_SUBMIT_FENCE_FD_OUT) {
+ 		sync_file = sync_file_create(submit->user_fence);
+-		if (!sync_file) {
++		if (!sync_file)
+ 			ret = -ENOMEM;
+-		} else {
+-			fd_install(out_fence_fd, sync_file->file);
+-			args->fence_fd = out_fence_fd;
+-		}
+ 	}
  
- 	if (dev_out->flags & IFF_LOOPBACK)
- 		flags |= RTCF_LOCAL;
+ 	if (ret)
+@@ -902,10 +898,14 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
+ out_unlock:
+ 	mutex_unlock(&queue->lock);
+ out_post_unlock:
+-	if (ret && (out_fence_fd >= 0)) {
+-		put_unused_fd(out_fence_fd);
++	if (ret) {
++		if (out_fence_fd >= 0)
++			put_unused_fd(out_fence_fd);
+ 		if (sync_file)
+ 			fput(sync_file->file);
++	} else if (sync_file) {
++		fd_install(out_fence_fd, sync_file->file);
++		args->fence_fd = out_fence_fd;
+ 	}
+ 
+ 	if (!IS_ERR_OR_NULL(submit)) {
 -- 
 2.50.1
 
