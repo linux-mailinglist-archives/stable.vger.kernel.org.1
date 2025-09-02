@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-177337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD51B404CE
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:46:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6077BB40536
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46AB82020E8
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5880F5E076D
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021D4311C13;
-	Tue,  2 Sep 2025 13:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B5E3376AD;
+	Tue,  2 Sep 2025 13:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zurJa5fF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKrRnSV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32CA2EFDB1;
-	Tue,  2 Sep 2025 13:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC80337682;
+	Tue,  2 Sep 2025 13:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820325; cv=none; b=dzmvKugtTKskK9ygh/KRIKlXUOYqeUSh9YBNkv7BEYZtJ44dpskvuwNYwIe32/7TlU8nkmOcPXSG0GtTNgAuX0QOa5IFLIyFuxo6uikzA0ovJMB2PYuaz4YT0E5nkXGV93SBbifkqYBNgo8u14sGGpG02GVk828P8DVB4GRH6tQ=
+	t=1756820536; cv=none; b=mMevqr2XnrjeQIcaULTJg0cf5NELll4I/1JGphhdaXaTAsoUyJQ7VO/9+WemUM+goFAP1IUyqRntmAL7bAS8X8eMCbUFO7BVZQMRjT7rxVTzFHUOjM9djMRrjpMGdPK0A/8GlPwLU4kJOWz1ab7r+V3PpyBEYrJ5AiTN766IrEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820325; c=relaxed/simple;
-	bh=P68hL7nNaOC5L0s+6LAS0bMdwMiitsHSDCLDhOcvX5c=;
+	s=arc-20240116; t=1756820536; c=relaxed/simple;
+	bh=O6KEgh3sinwqx6nwF9sSM9Yop4OebAULbLvjIPUM8xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TPrR4Y532OqwvwQWVj2FN6NvyHXGV+hfMofr6apLHcTUOcETw2rwTwmyjr37tOEw2eKVYL/1QzrwDJkoFrw+7fdf0W5rhn+Z3jCaZZfHdO1XVK/SZ3wFXhtlRCzQdM4cJe1hQHLb9ghHfDWDC51JZbcTuzwraRwcGQvOCCBDNRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zurJa5fF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F4AC4CEED;
-	Tue,  2 Sep 2025 13:38:44 +0000 (UTC)
+	 MIME-Version; b=cDrby11eINIOBuXzsE2oVrQWiYawK3CRMHDMenwBBF7+icigdmi6owFr6TG9J0cmkqWRx+uMRAB97x8jiUf94aaqyokVF+t83C+9sg1DzqIN8+95m0WzYsThV6Rz83alGP9f6RtBOJGPyEsJLaX04YFdGgWSyy96lBThcmdhJOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKrRnSV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2449CC4CEED;
+	Tue,  2 Sep 2025 13:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820325;
-	bh=P68hL7nNaOC5L0s+6LAS0bMdwMiitsHSDCLDhOcvX5c=;
+	s=korg; t=1756820536;
+	bh=O6KEgh3sinwqx6nwF9sSM9Yop4OebAULbLvjIPUM8xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zurJa5fFu8TIwN6FLJOdl7lrCH6dnzoMqTFu2KUiMYT8r6gY7VAI0jwmV6IbXhjrK
-	 ANwsdbDHZgmYFPtZcrNQfQ4QUBQB0h4lLQWXHRksIWSiTLF+Tr/9Gj4qAaDeT0DwI1
-	 IOYG71K7uj4slLZCw5bERJZEqvmA43NFwqCQmGdM=
+	b=OKrRnSV2SkIsQgb4VmTya0QCAxo0Z397cb+pWodv+tbIZvx149hH+0KV5uW8ZkBV/
+	 NvtBx1kpXO2UVwksplxBPIP5ETt3j8JXkBjTQ0LpB4B3f8ecdAU713e4aP2ncprp6k
+	 sjkBWQN4dbAFJlCzazU4SS3iWhuVMzo8Rzi3hbkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 67/75] net: usb: qmi_wwan: add Telit Cinterion LE910C4-WWX new compositions
-Date: Tue,  2 Sep 2025 15:21:19 +0200
-Message-ID: <20250902131937.743828235@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Ingo Molnar <mingo@elte.hu>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 02/33] ftrace: Fix potential warning in trace_printk_seq during ftrace_dump
+Date: Tue,  2 Sep 2025 15:21:20 +0200
+Message-ID: <20250902131927.143199725@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+References: <20250902131927.045875971@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +66,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Tengda Wu <wutengda@huaweicloud.com>
 
-commit e81a7f65288c7e2cfb7e7890f648e099fd885ab3 upstream.
+[ Upstream commit 4013aef2ced9b756a410f50d12df9ebe6a883e4a ]
 
-Add the following Telit Cinterion LE910C4-WWX new compositions:
+When calling ftrace_dump_one() concurrently with reading trace_pipe,
+a WARN_ON_ONCE() in trace_printk_seq() can be triggered due to a race
+condition.
 
-0x1034: tty (AT) + tty (AT) + rmnet
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1034 Rev=00.00
-S:  Manufacturer=Telit
-S:  Product=LE910C4-WWX
-S:  SerialNumber=93f617e7
-C:  #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+The issue occurs because:
 
-0x1037: tty (diag) + tty (Telit custom) + tty (AT) + tty (AT) + rmnet
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 15 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1037 Rev=00.00
-S:  Manufacturer=Telit
-S:  Product=LE910C4-WWX
-S:  SerialNumber=93f617e7
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+CPU0 (ftrace_dump)                              CPU1 (reader)
+echo z > /proc/sysrq-trigger
 
-0x1038: tty (Telit custom) + tty (AT) + tty (AT) + rmnet
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  9 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1038 Rev=00.00
-S:  Manufacturer=Telit
-S:  Product=LE910C4-WWX
-S:  SerialNumber=93f617e7
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+!trace_empty(&iter)
+trace_iterator_reset(&iter) <- len = size = 0
+                                                cat /sys/kernel/tracing/trace_pipe
+trace_find_next_entry_inc(&iter)
+  __find_next_entry
+    ring_buffer_empty_cpu <- all empty
+  return NULL
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Link: https://patch.msgid.link/20250822091324.39558-1-Fabio.Porcedda@telit.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+trace_printk_seq(&iter.seq)
+  WARN_ON_ONCE(s->seq.len >= s->seq.size)
+
+In the context between trace_empty() and trace_find_next_entry_inc()
+during ftrace_dump, the ring buffer data was consumed by other readers.
+This caused trace_find_next_entry_inc to return NULL, failing to populate
+`iter.seq`. At this point, due to the prior trace_iterator_reset, both
+`iter.seq.len` and `iter.seq.size` were set to 0. Since they are equal,
+the WARN_ON_ONCE condition is triggered.
+
+Move the trace_printk_seq() into the if block that checks to make sure the
+return value of trace_find_next_entry_inc() is non-NULL in
+ftrace_dump_one(), ensuring the 'iter.seq' is properly populated before
+subsequent operations.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Ingo Molnar <mingo@elte.hu>
+Link: https://lore.kernel.org/20250822033343.3000289-1-wutengda@huaweicloud.com
+Fixes: d769041f8653 ("ring_buffer: implement new locking")
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c |    3 +++
- 1 file changed, 3 insertions(+)
+ kernel/trace/trace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1363,6 +1363,9 @@ static const struct usb_device_id produc
- 	{QMI_FIXED_INTF(0x2357, 0x0201, 4)},	/* TP-LINK HSUPA Modem MA180 */
- 	{QMI_FIXED_INTF(0x2357, 0x9000, 4)},	/* TP-LINK MA260 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1031, 3)}, /* Telit LE910C1-EUX */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1034, 2)}, /* Telit LE910C4-WWX */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1037, 4)}, /* Telit LE910C4-WWX */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1038, 3)}, /* Telit LE910C4-WWX */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x103a, 0)}, /* Telit LE910C4-WWX */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1040, 2)},	/* Telit LE922A */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1050, 2)},	/* Telit FN980 */
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 23f6a9941be1d..7af8bbc57531c 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -10122,10 +10122,10 @@ void ftrace_dump(enum ftrace_dump_mode oops_dump_mode)
+ 			ret = print_trace_line(&iter);
+ 			if (ret != TRACE_TYPE_NO_CONSUME)
+ 				trace_consume(&iter);
++
++			trace_printk_seq(&iter.seq);
+ 		}
+ 		touch_nmi_watchdog();
+-
+-		trace_printk_seq(&iter.seq);
+ 	}
+ 
+ 	if (!cnt)
+-- 
+2.50.1
+
 
 
 
