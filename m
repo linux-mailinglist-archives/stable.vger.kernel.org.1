@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-177391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B66EB40519
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A959B40533
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9ECD63A5ECD
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E5124E1DF5
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B136832A800;
-	Tue,  2 Sep 2025 13:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926653093D2;
+	Tue,  2 Sep 2025 13:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cs96chSn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpFpaogd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1B4324B2D;
-	Tue,  2 Sep 2025 13:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DE83054EC;
+	Tue,  2 Sep 2025 13:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820491; cv=none; b=a+iwCU6IavAqd6piJ+gW5m59pBk1i2p8wL6QpB3XVkaPzVjSkCNuFwIkFDnCf1WkE0hRlzNfN2YWWF7aP98/CcQdgT+x7ML80u6bU+f2v8XAqTvMXIFIpQA1A9Pn6KHleTi1HWVX8vABx8KXFc69hjaXPpiCV19ySgz+fDU/Yzw=
+	t=1756820569; cv=none; b=kWgZWzc6aRS5U5+dpfOusYndD3GncAqh3xMssH4eaQOWH7g5Cs9yMnvA+o+PngmaJUqGCwgv5jmQcfkXNA2i0PIf3000/lznx3D9PIbNioqbsIi9ttPOKpVLtkrUzQPioFPpPmAq5ATbz8boH5ZRi5l7+SRhckU21Rfx3E/vmiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820491; c=relaxed/simple;
-	bh=8iVbkRikCkBI8URpIt0hubUQf/Cu/DEpy/2z2B2ftdU=;
+	s=arc-20240116; t=1756820569; c=relaxed/simple;
+	bh=+27v3kEx0eBZ2CUl38QsIU5RnQp4UP3DwHAbh1PVsxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qt6atxsAPJmDvOjgT1D6tmbXLR0skfb1Q0Uv1VpgJDWoV5e2b0z/p8cHdUGrY9J1lOQ0EyGqon4ncFhjq0lWqH3v15TmJ2cTm2SEElzt5aPfzlbF6GuRULEljBDuYGUvqtsX62STATozqTHnbadnVy/ZJieJQ0idjqXfQMTetug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cs96chSn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA4CC4CEED;
-	Tue,  2 Sep 2025 13:41:30 +0000 (UTC)
+	 MIME-Version; b=H6LCe61G2Rh5S6Z+iQyju5Om+Xk+HDMsd0sjZJuEdRCmOfD6uz7g+4ysZLa8FauqHlbxvd4EAksJfj0Yjx/sJ+KtR/VhBVSDas6+tRsExNYS/RFMj80BridyqGv5HSk3xScpUtCv1WEbFueUM3RfJxS5+j8RM7EBryZrzVtyTHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpFpaogd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC814C4CEED;
+	Tue,  2 Sep 2025 13:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820491;
-	bh=8iVbkRikCkBI8URpIt0hubUQf/Cu/DEpy/2z2B2ftdU=;
+	s=korg; t=1756820569;
+	bh=+27v3kEx0eBZ2CUl38QsIU5RnQp4UP3DwHAbh1PVsxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cs96chSnKHN72y7IAGdfK8PYKY9/pDYrvMt4Q+/LFafGdKHthE+iEfv0uXdFDJRAg
-	 V44XT7CiM/tLnJtRKcVNAKhQxNOogTlD3O5URX1mJwoaDgPuu3fx1Dd0mfnWnIytq8
-	 ggWlaStkoM5IQ3e78yxB079zNIoezd0d81IM2+78=
+	b=kpFpaogd0RsZdu6slRU55jemu8v+4Yo7urL/1RLQ7Jo5rJRsqp0x9E+UvURCt9Q2B
+	 ZjyEXkVMsmqHnSVT8ADprgvkm2bSvLGdM3IpcdpJfB9SI4aVcDll7AVZrY5IiPrVSD
+	 9WPwEft4VJikR/7I6eBNK9TbZLzpX6nLW3RY23T8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Romain Sioen <romain.sioen@microchip.com>
-Subject: [PATCH 6.1 47/50] HID: mcp2221: Dont set bus speed on every transfer
+	Li Nan <linan122@huawei.com>,
+	Wu Guanghao <wuguanghao3@huawei.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 20/33] efivarfs: Fix slab-out-of-bounds in efivarfs_d_compare
 Date: Tue,  2 Sep 2025 15:21:38 +0200
-Message-ID: <20250902131932.381198014@linuxfoundation.org>
+Message-ID: <20250902131927.846198690@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+References: <20250902131927.045875971@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+From: Li Nan <linan122@huawei.com>
 
-commit 02a46753601a24e1673d9c28173121055e8e6cc9 upstream.
+[ Upstream commit a6358f8cf64850f3f27857b8ed8c1b08cfc4685c ]
 
-Since the initial commit of this driver the I2C bus speed has been
-reconfigured for every single transfer. This is despite the fact that we
-never change the speed and it is never "lost" by the chip.
-Upon investigation we find that what was really happening was that the
-setting of the bus speed had the side effect of cancelling a previous
-failed command if there was one, thereby freeing the bus. This is the
-part that was actually required to keep the bus operational in the face
-of failed commands.
+Observed on kernel 6.6 (present on master as well):
 
-Instead of always setting the speed, we now correctly cancel any failed
-commands as they are detected. This means we can just set the bus speed
-at probe time and remove the previous speed sets on each transfer.
-This has the effect of improving performance and reducing the number of
-commands required to complete transfers.
+  BUG: KASAN: slab-out-of-bounds in memcmp+0x98/0xd0
+  Call trace:
+   kasan_check_range+0xe8/0x190
+   __asan_loadN+0x1c/0x28
+   memcmp+0x98/0xd0
+   efivarfs_d_compare+0x68/0xd8
+   __d_lookup_rcu_op_compare+0x178/0x218
+   __d_lookup_rcu+0x1f8/0x228
+   d_alloc_parallel+0x150/0x648
+   lookup_open.isra.0+0x5f0/0x8d0
+   open_last_lookups+0x264/0x828
+   path_openat+0x130/0x3f8
+   do_filp_open+0x114/0x248
+   do_sys_openat2+0x340/0x3c0
+   __arm64_sys_openat+0x120/0x1a0
 
-Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Fixes: 67a95c21463d ("HID: mcp2221: add usb to i2c-smbus host bridge")
-[romain.sioen@microchip.com: backport to stable, up to 6.8. Add "Fixes" tag]
-Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If dentry->d_name.len < EFI_VARIABLE_GUID_LEN , 'guid' can become
+negative, leadings to oob. The issue can be triggered by parallel
+lookups using invalid filename:
+
+  T1			T2
+  lookup_open
+   ->lookup
+    simple_lookup
+     d_add
+     // invalid dentry is added to hash list
+
+			lookup_open
+			 d_alloc_parallel
+			  __d_lookup_rcu
+			   __d_lookup_rcu_op_compare
+			    hlist_bl_for_each_entry_rcu
+			    // invalid dentry can be retrieved
+			     ->d_compare
+			      efivarfs_d_compare
+			      // oob
+
+Fix it by checking 'guid' before cmp.
+
+Fixes: da27a24383b2 ("efivarfs: guid part of filenames are case-insensitive")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Signed-off-by: Wu Guanghao <wuguanghao3@huawei.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-mcp2221.c |   41 +++++++++++++++++++++++++++--------------
- 1 file changed, 27 insertions(+), 14 deletions(-)
+ fs/efivarfs/super.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/hid/hid-mcp2221.c
-+++ b/drivers/hid/hid-mcp2221.c
-@@ -169,6 +169,25 @@ static int mcp_cancel_last_cmd(struct mc
- 	return mcp_send_data_req_status(mcp, mcp->txbuf, 8);
- }
- 
-+/* Check if the last command succeeded or failed and return the result.
-+ * If the command did fail, cancel that command which will free the i2c bus.
-+ */
-+static int mcp_chk_last_cmd_status_free_bus(struct mcp2221 *mcp)
-+{
-+	int ret;
-+
-+	ret = mcp_chk_last_cmd_status(mcp);
-+	if (ret) {
-+		/* The last command was a failure.
-+		 * Send a cancel which will also free the bus.
-+		 */
-+		usleep_range(980, 1000);
-+		mcp_cancel_last_cmd(mcp);
-+	}
-+
-+	return ret;
-+}
-+
- static int mcp_set_i2c_speed(struct mcp2221 *mcp)
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index 99d002438008b..124db520b2bd6 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -47,6 +47,10 @@ static int efivarfs_d_compare(const struct dentry *dentry,
  {
- 	int ret;
-@@ -223,7 +242,7 @@ static int mcp_i2c_write(struct mcp2221
- 		usleep_range(980, 1000);
+ 	int guid = len - EFI_VARIABLE_GUID_LEN;
  
- 		if (last_status) {
--			ret = mcp_chk_last_cmd_status(mcp);
-+			ret = mcp_chk_last_cmd_status_free_bus(mcp);
- 			if (ret)
- 				return ret;
- 		}
-@@ -290,7 +309,7 @@ static int mcp_i2c_smbus_read(struct mcp
- 		if (ret)
- 			return ret;
++	/* Parallel lookups may produce a temporary invalid filename */
++	if (guid <= 0)
++		return 1;
++
+ 	if (name->len != len)
+ 		return 1;
  
--		ret = mcp_chk_last_cmd_status(mcp);
-+		ret = mcp_chk_last_cmd_status_free_bus(mcp);
- 		if (ret)
- 			return ret;
- 
-@@ -310,11 +329,6 @@ static int mcp_i2c_xfer(struct i2c_adapt
- 
- 	mutex_lock(&mcp->lock);
- 
--	/* Setting speed before every transaction is required for mcp2221 */
--	ret = mcp_set_i2c_speed(mcp);
--	if (ret)
--		goto exit;
--
- 	if (num == 1) {
- 		if (msgs->flags & I2C_M_RD) {
- 			ret = mcp_i2c_smbus_read(mcp, msgs, MCP2221_I2C_RD_DATA,
-@@ -399,9 +413,7 @@ static int mcp_smbus_write(struct mcp222
- 	if (last_status) {
- 		usleep_range(980, 1000);
- 
--		ret = mcp_chk_last_cmd_status(mcp);
--		if (ret)
--			return ret;
-+		ret = mcp_chk_last_cmd_status_free_bus(mcp);
- 	}
- 
- 	return ret;
-@@ -419,10 +431,6 @@ static int mcp_smbus_xfer(struct i2c_ada
- 
- 	mutex_lock(&mcp->lock);
- 
--	ret = mcp_set_i2c_speed(mcp);
--	if (ret)
--		goto exit;
--
- 	switch (size) {
- 
- 	case I2C_SMBUS_QUICK:
-@@ -870,6 +878,11 @@ static int mcp2221_probe(struct hid_devi
- 	if (i2c_clk_freq < 50)
- 		i2c_clk_freq = 50;
- 	mcp->cur_i2c_clk_div = (12000000 / (i2c_clk_freq * 1000)) - 3;
-+	ret = mcp_set_i2c_speed(mcp);
-+	if (ret) {
-+		hid_err(hdev, "can't set i2c speed: %d\n", ret);
-+		return ret;
-+	}
- 
- 	mcp->adapter.owner = THIS_MODULE;
- 	mcp->adapter.class = I2C_CLASS_HWMON;
+-- 
+2.50.1
+
 
 
 
