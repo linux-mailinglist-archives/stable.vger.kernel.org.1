@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-177473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2680B405A0
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:56:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57CA7B4058C
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:55:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA0701B6123A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:51:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2127189E8D9
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D8A340D8D;
-	Tue,  2 Sep 2025 13:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5791A08A4;
+	Tue,  2 Sep 2025 13:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PbYrBMas"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPoTMALI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818E032274C;
-	Tue,  2 Sep 2025 13:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6840031AF3C;
+	Tue,  2 Sep 2025 13:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820758; cv=none; b=n9ud53Y/xJ8eU3JIcmv48ncHyW4M8jhRMyw813diggmQ9q4GwgsWUvhFK12a9E8h2uyMLn4u7++LpgCE86yT6Wy+YTjYjS/IZ7QMwijiuP8oHrERiAy0gRdFqMBFmIOElqM/cNUxlEazejqKs6j1d6/Xg4ymv7vkCMX0CK8L0RE=
+	t=1756820735; cv=none; b=G55rBGUj/lwq4ME6Wn1WaBBC2RjC78/mX95qzttPjLUpv+fmgjTWSvYjQt+rsXSJLhShsFlieHUVmh+QUlSEJ1VWW9LTb/gIno+5qrfVsiG8XZmrWD1Yct/i3K9mjIvIkQWfv5HUdf5U/H/cn6I5Zdfh+rRsDYBOijbtsbDJE+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820758; c=relaxed/simple;
-	bh=4mWZnsDaZxpL2djgzVhJDuvI0ncUMsii0mxJueMaXvs=;
+	s=arc-20240116; t=1756820735; c=relaxed/simple;
+	bh=MG/HAodlhtlA+SXrvFGfI/c1vLh1bl5sQej+UlSCbxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aIjNmGAsOSpEu3jGfmcSyiALDHFPTyrwCwEufTbaS6CpAO+zdZVQbp9Ir8Q5PSKBj/Mz0H24nQ4EC+MZLy+/lU41PeBB6WlW9wkH4Q88pVF4y+ws+TlZFMop2VYv8isgjir7IqK/hK2vgeLyiEjGS4wiosYMPJni/YgYkCZClkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PbYrBMas; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094BCC4CEED;
-	Tue,  2 Sep 2025 13:45:57 +0000 (UTC)
+	 MIME-Version; b=dnp416eoFt006KE/0t2/t8b5Fl8qOFPmy0AmYXjItcZqmqUJHsS3+72aPYtHL4bOFgFXqq5g1epJTrQ3yNrAnPwrt7hDl3+1RHqSXMmLgHTGGGOreniFqHS71veWpMFEhJXjK/EMaGjt/SMjMxjITr6SJwvUgu0nKUI+xV6ZkH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPoTMALI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E26C4CEED;
+	Tue,  2 Sep 2025 13:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820758;
-	bh=4mWZnsDaZxpL2djgzVhJDuvI0ncUMsii0mxJueMaXvs=;
+	s=korg; t=1756820735;
+	bh=MG/HAodlhtlA+SXrvFGfI/c1vLh1bl5sQej+UlSCbxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PbYrBMasJMTHALbuBKoJSMxY8Tki9Zg/zeYJPGm0so7rXAovIW7bY6Xhzb0rMKQf3
-	 FBt3D4jNkgDMVnBoLbIgecm70L+yleNxLDhWy92pKOOVubPD7WtDgCSDE4fTRZipG6
-	 Sz33jaaxiCMZJXhlwZ0tisT22wFCW8ej6ZK5DKFY=
+	b=fPoTMALIrtj4gBmz0tmeQFBzSHoxNtXlw3bI/dzqj/Y7iSgL22CaX1Gh4SNYWuPRM
+	 fP5MZCj78msdf/hTPsTnPeq5dxopnI2IHwGkI3m1HwURYBzxlTGeNdI3pmR/zYYnb8
+	 MzATxm5eZtPVizKGbjAW8h3DRz2mgBcDy7tcQbrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 01/23] pinctrl: STMFX: add missing HAS_IOMEM dependency
+	Ping Cheng <ping.cheng@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.10 21/34] HID: wacom: Add a new Art Pen 2
 Date: Tue,  2 Sep 2025 15:21:47 +0200
-Message-ID: <20250902131924.782528094@linuxfoundation.org>
+Message-ID: <20250902131927.466548054@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131924.720400762@linuxfoundation.org>
-References: <20250902131924.720400762@linuxfoundation.org>
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
+References: <20250902131926.607219059@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Ping Cheng <pinglinux@gmail.com>
 
-[ Upstream commit a12946bef0407cf2db0899c83d42c47c00af3fbc ]
+commit 9fc51941d9e7793da969b2c66e6f8213c5b1237f upstream.
 
-When building on ARCH=um (which does not set HAS_IOMEM), kconfig
-reports an unmet dependency caused by PINCTRL_STMFX. It selects
-MFD_STMFX, which depends on HAS_IOMEM. To stop this warning,
-PINCTRL_STMFX should also depend on HAS_IOMEM.
-
-kconfig warning:
-WARNING: unmet direct dependencies detected for MFD_STMFX
-  Depends on [n]: HAS_IOMEM [=n] && I2C [=y] && OF [=y]
-  Selected by [y]:
-  - PINCTRL_STMFX [=y] && PINCTRL [=y] && I2C [=y] && OF_GPIO [=y]
-
-Fixes: 1490d9f841b1 ("pinctrl: Add STMFX GPIO expander Pinctrl/GPIO driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/20250815022721.1650885-1-rdunlap@infradead.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/Kconfig | 1 +
+ drivers/hid/wacom_wac.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index b372419d61f26..57426dc52f9f0 100644
---- a/drivers/pinctrl/Kconfig
-+++ b/drivers/pinctrl/Kconfig
-@@ -278,6 +278,7 @@ config PINCTRL_STMFX
- 	tristate "STMicroelectronics STMFX GPIO expander pinctrl driver"
- 	depends on I2C
- 	depends on OF_GPIO
-+	depends on HAS_IOMEM
- 	select GENERIC_PINCONF
- 	select GPIOLIB_IRQCHIP
- 	select MFD_STMFX
--- 
-2.50.1
-
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -684,6 +684,7 @@ static bool wacom_is_art_pen(int tool_id
+ 	case 0x885:	/* Intuos3 Marker Pen */
+ 	case 0x804:	/* Intuos4/5 13HD/24HD Marker Pen */
+ 	case 0x10804:	/* Intuos4/5 13HD/24HD Art Pen */
++	case 0x204:     /* Art Pen 2 */
+ 		is_art_pen = true;
+ 		break;
+ 	}
 
 
 
