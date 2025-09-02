@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-177117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9637FB40393
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0159EB4040D
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AED91A81C22
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:32:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF76E1892CE7
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA25B307AC0;
-	Tue,  2 Sep 2025 13:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE2D326D77;
+	Tue,  2 Sep 2025 13:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5CQh98X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRexgJvi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E77273D6C;
-	Tue,  2 Sep 2025 13:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D665324B3A;
+	Tue,  2 Sep 2025 13:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819631; cv=none; b=W3n1vmDrOXcgBj87eF3f7Rwi9zbdpXpmoCd2OY5CdZjBaky/7B2GJw9Nib4+PPCVvTatdprtsLebZGWSWsKFc5RD8YT0nDWIRbmFje5Cd4jEH0xaVouTp0fbct0epEfzoUgBuvT8PQXJPYsnDsIZMyHJssrKCoaOI5NzVZuHup4=
+	t=1756819855; cv=none; b=jqexK7IzTDt8xIulSgzbCdAQ8XAt8I9xnuspZAhy45pd6EzugXwjPQpNnRGcYRW/QnPo+1rgcOCVdstPr9naPd606gZzNima+SgGBoyMjP9dg33ire5L+D51roeqBLuvdrBEi+o0+pJs2Z51udZKzXsUG9e+8C3Csnd/qy60Z8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819631; c=relaxed/simple;
-	bh=XutQXBE1NbBzlG/01ZG7EyOS0hfyDnrrqExJ2UlasPE=;
+	s=arc-20240116; t=1756819855; c=relaxed/simple;
+	bh=qRcrj+cpq2fs8I2BAWKyPO82WK4laO67SP/DSgB+Z0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FdarhVdvEVzCUqabrfA7V89bFPP7IJbc7W9gUlyIL57u7oOtm5tWkw15sOxhtwAYLUq/qEPJv5qfRS0xIJTypmRt5zrW0xYx6jzqlRtIXCIe5wcROeg4SQ/zgQm17Mhvt5tRf91dGynWrQhjs2fsCZ6Z6M9ha7p6BDjpOLsTUTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5CQh98X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD413C4CEED;
-	Tue,  2 Sep 2025 13:27:10 +0000 (UTC)
+	 MIME-Version; b=Xp36WsejDGe4e8Db66eRyLOMrfKTN4TYoDoWRUUoTOeLUpXB83H0R8EYTzo2lFAq+x0HeIlEmqAryYcgeqqzpo1G6O69fy6X+1259v+XZMbnyO9PBoZR51jlnO7YqtbG3+gElUD119m+c95dDZFO3enCfehjDjawb56OFylvJyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRexgJvi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6BFC4CEED;
+	Tue,  2 Sep 2025 13:30:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819631;
-	bh=XutQXBE1NbBzlG/01ZG7EyOS0hfyDnrrqExJ2UlasPE=;
+	s=korg; t=1756819855;
+	bh=qRcrj+cpq2fs8I2BAWKyPO82WK4laO67SP/DSgB+Z0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O5CQh98X24e436KvIULwCHH9eXb7aKI7gEn99M2f6c81E1MLCq4H/0kTRqQNmzAGz
-	 01MSYGk67TmwOOBOzZmO9qI9D9SkT42F4yFbXb3aJeGFMM8xL/PqiUL4FPg09MTnAl
-	 vNEWA9nOB7Stvvjep6X0N8sStu7FLB+u8OtxKmng=
+	b=vRexgJvijzMpHSKi9lRR9M7uohJlAIqpx8rUfpkxTPHwNLeJxnSaVyGf7dj4dehTO
+	 MdeARcSq2NgRdoQjaB08v6Z622X1w3s6tX8+9R2bmFQXEB5DId/HCqNO6mU5bEmkBs
+	 vnlCwwuRt+qozmaC6NWZNX6SZRQq8MWOBELbxsdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohan G Thomas <rohan.g.thomas@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 091/142] net: stmmac: Set CIC bit only for TX queues with COE
+	Werner Sembach <wse@tuxedocomputers.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 17/95] ACPI: EC: Add device to acpi_ec_no_wakeup[] qurik list
 Date: Tue,  2 Sep 2025 15:19:53 +0200
-Message-ID: <20250902131951.751369950@linuxfoundation.org>
+Message-ID: <20250902131940.276267564@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohan G Thomas <rohan.g.thomas@altera.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-[ Upstream commit b1eded580ab28119de0b0f21efe37ee2b4419144 ]
+commit 9cd51eefae3c871440b93c03716c5398f41bdf78 upstream.
 
-Currently, in the AF_XDP transmit paths, the CIC bit of
-TX Desc3 is set for all packets. Setting this bit for
-packets transmitting through queues that don't support
-checksum offloading causes the TX DMA to get stuck after
-transmitting some packets. This patch ensures the CIC bit
-of TX Desc3 is set only if the TX queue supports checksum
-offloading.
+Add the TUXEDO InfinityBook Pro AMD Gen9 to the acpi_ec_no_wakeup[]
+quirk list to prevent spurious wakeups.
 
-Fixes: 132c32ee5bc0 ("net: stmmac: Add TX via XDP zero-copy socket")
-Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Link: https://patch.msgid.link/20250825-xgmac-minor-fixes-v3-3-c225fe4444c0@altera.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20250508111625.12149-1-wse@tuxedocomputers.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/acpi/ec.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index e0fb06af1f940..36082d4917bcc 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -2584,6 +2584,7 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
- 	struct netdev_queue *nq = netdev_get_tx_queue(priv->dev, queue);
- 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
- 	struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[queue];
-+	bool csum = !priv->plat->tx_queues_cfg[queue].coe_unsupported;
- 	struct xsk_buff_pool *pool = tx_q->xsk_pool;
- 	unsigned int entry = tx_q->cur_tx;
- 	struct dma_desc *tx_desc = NULL;
-@@ -2671,7 +2672,7 @@ static bool stmmac_xdp_xmit_zc(struct stmmac_priv *priv, u32 queue, u32 budget)
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -2329,6 +2329,12 @@ static const struct dmi_system_id acpi_e
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
  		}
+ 	},
++	{
++		// TUXEDO InfinityBook Pro AMD Gen9
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GXxHRXx"),
++		},
++	},
+ 	{ },
+ };
  
- 		stmmac_prepare_tx_desc(priv, tx_desc, 1, xdp_desc.len,
--				       true, priv->mode, true, true,
-+				       csum, priv->mode, true, true,
- 				       xdp_desc.len);
- 
- 		stmmac_enable_dma_transmission(priv, priv->ioaddr, queue);
-@@ -4983,6 +4984,7 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
- {
- 	struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[queue];
- 	struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[queue];
-+	bool csum = !priv->plat->tx_queues_cfg[queue].coe_unsupported;
- 	unsigned int entry = tx_q->cur_tx;
- 	struct dma_desc *tx_desc;
- 	dma_addr_t dma_addr;
-@@ -5034,7 +5036,7 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
- 	stmmac_set_desc_addr(priv, tx_desc, dma_addr);
- 
- 	stmmac_prepare_tx_desc(priv, tx_desc, 1, xdpf->len,
--			       true, priv->mode, true, true,
-+			       csum, priv->mode, true, true,
- 			       xdpf->len);
- 
- 	tx_q->tx_count_frames++;
--- 
-2.50.1
-
 
 
 
