@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-177438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED61B4056B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:53:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 445A7B40518
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:49:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F8711B66989
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E146E3B82E0
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6547A30E830;
-	Tue,  2 Sep 2025 13:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A42307AC2;
+	Tue,  2 Sep 2025 13:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZC3J8DJT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ruea95HY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A4230DD12;
-	Tue,  2 Sep 2025 13:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019542F5319;
+	Tue,  2 Sep 2025 13:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820645; cv=none; b=riTHUyv761mKIYBknq5E1AwxPOQQ3Z7WBDURKDQbjgmHw/83JrOt0vaDr1vfp797/otwTSC0nNJZX9QvUkQlsYuKAXsj44QZR1KtFZcSGEA5ULJdC1K2OYZnSLHIO/tRWT6e7ziOPxrvmjkGI/XUPWg0u9OhBgSUhfz70rW91VE=
+	t=1756820514; cv=none; b=U0xo4PoGE2dv+MqIbLyV+XTfslPdZaVuqQkrP7HYRFenatI9wi/x0vwbc+qhv//hbwpND0bYctYHPG6HJ7bbGy9hN4UjuGUilndl0jBsn2lIQL4gD6pohKUn6Sfwn6gNdZOo+F8XHjI9ZgTyV2dzLkX5ODrRxRHCgvSRx1ypk5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820645; c=relaxed/simple;
-	bh=/vLxRZHLtt0TXP72WY3i02MWDi5+Pp2bX61YQsKlQVU=;
+	s=arc-20240116; t=1756820514; c=relaxed/simple;
+	bh=61r7OPgM56ggpRYji+0qaXT8idLaxMapP7ggxAaJUPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XKcboZNKYGtaFaVqKJpxGURZsVRtLpovC1HpSfTaamWLEB2rOIaB3TY6e0WpxGzD5+0dY4ydca3th/8uFRQLQTC1VZBDIhUSiX04C95jpSKT5k1lwmsTc5h0yb6Zs3nqDdPCKpnvA1bpRnPlAUyddVCNyFnQuur7lqqzQQy6XDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZC3J8DJT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39849C4CEED;
-	Tue,  2 Sep 2025 13:44:03 +0000 (UTC)
+	 MIME-Version; b=OahT/0cERidOVl+7vzcxSPtgBA1sG/VBdFQRhLq5eMy9JrxYXTTFCIDcLmv2xTD0KJOH0vh76bJ8TJYP3+zleoimCdAiT0YK/hrKBMpTqhrTsVMeeBBts/ANOHxDfUAOycyhj3CA6gmfK9Dv/59z15LmBoyj1PsUD6x1BQRliUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ruea95HY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64379C4CEED;
+	Tue,  2 Sep 2025 13:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820643;
-	bh=/vLxRZHLtt0TXP72WY3i02MWDi5+Pp2bX61YQsKlQVU=;
+	s=korg; t=1756820513;
+	bh=61r7OPgM56ggpRYji+0qaXT8idLaxMapP7ggxAaJUPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZC3J8DJTzIhGtXaNTylUTRVFVMR70VHlLEQvZTj/bCVnDijN9IdbLwHH/hOF2RZhT
-	 UggW+EbB4klCErg05BkVDuqNEshNDYp+zgl24CjPpQMrrtaQQ23wWSBkQ/z147zwan
-	 MBNmgvaicapNNza1dayAqjg5U2629x5MwaAz+hO8=
+	b=ruea95HY+KDrnAtX/pKwo+2IzWWFwo+Ho0I3voHycvar7+J24bbnyHTd3CT0yFEIk
+	 rcLXf5xYmM7Duix5eeNT/7kCNCkJ28RPXPlLh8RJKdVnflptfu+0zf5hoH/Tazx98h
+	 Xv2OXY7Ym2XnTF4uOgDUciI8flG046hKX8i6IoIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 01/34] pinctrl: STMFX: add missing HAS_IOMEM dependency
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.1 36/50] HID: asus: fix UAF via HID_CLAIMED_INPUT validation
 Date: Tue,  2 Sep 2025 15:21:27 +0200
-Message-ID: <20250902131926.670583534@linuxfoundation.org>
+Message-ID: <20250902131931.957421402@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit a12946bef0407cf2db0899c83d42c47c00af3fbc ]
+commit d3af6ca9a8c34bbd8cff32b469b84c9021c9e7e4 upstream.
 
-When building on ARCH=um (which does not set HAS_IOMEM), kconfig
-reports an unmet dependency caused by PINCTRL_STMFX. It selects
-MFD_STMFX, which depends on HAS_IOMEM. To stop this warning,
-PINCTRL_STMFX should also depend on HAS_IOMEM.
+After hid_hw_start() is called hidinput_connect() will eventually be
+called to set up the device with the input layer since the
+HID_CONNECT_DEFAULT connect mask is used. During hidinput_connect()
+all input and output reports are processed and corresponding hid_inputs
+are allocated and configured via hidinput_configure_usages(). This
+process involves slot tagging report fields and configuring usages
+by setting relevant bits in the capability bitmaps. However it is possible
+that the capability bitmaps are not set at all leading to the subsequent
+hidinput_has_been_populated() check to fail leading to the freeing of the
+hid_input and the underlying input device.
 
-kconfig warning:
-WARNING: unmet direct dependencies detected for MFD_STMFX
-  Depends on [n]: HAS_IOMEM [=n] && I2C [=y] && OF [=y]
-  Selected by [y]:
-  - PINCTRL_STMFX [=y] && PINCTRL [=y] && I2C [=y] && OF_GPIO [=y]
+This becomes problematic because a malicious HID device like a
+ASUS ROG N-Key keyboard can trigger the above scenario via a
+specially crafted descriptor which then leads to a user-after-free
+when the name of the freed input device is written to later on after
+hid_hw_start(). Below, report 93 intentionally utilises the
+HID_UP_UNDEFINED Usage Page which is skipped during usage
+configuration, leading to the frees.
 
-Fixes: 1490d9f841b1 ("pinctrl: Add STMFX GPIO expander Pinctrl/GPIO driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/20250815022721.1650885-1-rdunlap@infradead.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x05, 0x0D,        // Usage Page (Digitizer)
+0x09, 0x05,        // Usage (Touch Pad)
+0xA1, 0x01,        // Collection (Application)
+0x85, 0x0D,        //   Report ID (13)
+0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
+0x09, 0xC5,        //   Usage (0xC5)
+0x15, 0x00,        //   Logical Minimum (0)
+0x26, 0xFF, 0x00,  //   Logical Maximum (255)
+0x75, 0x08,        //   Report Size (8)
+0x95, 0x04,        //   Report Count (4)
+0xB1, 0x02,        //   Feature (Data,Var,Abs)
+0x85, 0x5D,        //   Report ID (93)
+0x06, 0x00, 0x00,  //   Usage Page (Undefined)
+0x09, 0x01,        //   Usage (0x01)
+0x15, 0x00,        //   Logical Minimum (0)
+0x26, 0xFF, 0x00,  //   Logical Maximum (255)
+0x75, 0x08,        //   Report Size (8)
+0x95, 0x1B,        //   Report Count (27)
+0x81, 0x02,        //   Input (Data,Var,Abs)
+0xC0,              // End Collection
+
+Below is the KASAN splat after triggering the UAF:
+
+[   21.672709] ==================================================================
+[   21.673700] BUG: KASAN: slab-use-after-free in asus_probe+0xeeb/0xf80
+[   21.673700] Write of size 8 at addr ffff88810a0ac000 by task kworker/1:2/54
+[   21.673700]
+[   21.673700] CPU: 1 UID: 0 PID: 54 Comm: kworker/1:2 Not tainted 6.16.0-rc4-g9773391cf4dd-dirty #36 PREEMPT(voluntary)
+[   21.673700] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+[   21.673700] Call Trace:
+[   21.673700]  <TASK>
+[   21.673700]  dump_stack_lvl+0x5f/0x80
+[   21.673700]  print_report+0xd1/0x660
+[   21.673700]  kasan_report+0xe5/0x120
+[   21.673700]  __asan_report_store8_noabort+0x1b/0x30
+[   21.673700]  asus_probe+0xeeb/0xf80
+[   21.673700]  hid_device_probe+0x2ee/0x700
+[   21.673700]  really_probe+0x1c6/0x6b0
+[   21.673700]  __driver_probe_device+0x24f/0x310
+[   21.673700]  driver_probe_device+0x4e/0x220
+[...]
+[   21.673700]
+[   21.673700] Allocated by task 54:
+[   21.673700]  kasan_save_stack+0x3d/0x60
+[   21.673700]  kasan_save_track+0x18/0x40
+[   21.673700]  kasan_save_alloc_info+0x3b/0x50
+[   21.673700]  __kasan_kmalloc+0x9c/0xa0
+[   21.673700]  __kmalloc_cache_noprof+0x139/0x340
+[   21.673700]  input_allocate_device+0x44/0x370
+[   21.673700]  hidinput_connect+0xcb6/0x2630
+[   21.673700]  hid_connect+0xf74/0x1d60
+[   21.673700]  hid_hw_start+0x8c/0x110
+[   21.673700]  asus_probe+0x5a3/0xf80
+[   21.673700]  hid_device_probe+0x2ee/0x700
+[   21.673700]  really_probe+0x1c6/0x6b0
+[   21.673700]  __driver_probe_device+0x24f/0x310
+[   21.673700]  driver_probe_device+0x4e/0x220
+[...]
+[   21.673700]
+[   21.673700] Freed by task 54:
+[   21.673700]  kasan_save_stack+0x3d/0x60
+[   21.673700]  kasan_save_track+0x18/0x40
+[   21.673700]  kasan_save_free_info+0x3f/0x60
+[   21.673700]  __kasan_slab_free+0x3c/0x50
+[   21.673700]  kfree+0xcf/0x350
+[   21.673700]  input_dev_release+0xab/0xd0
+[   21.673700]  device_release+0x9f/0x220
+[   21.673700]  kobject_put+0x12b/0x220
+[   21.673700]  put_device+0x12/0x20
+[   21.673700]  input_free_device+0x4c/0xb0
+[   21.673700]  hidinput_connect+0x1862/0x2630
+[   21.673700]  hid_connect+0xf74/0x1d60
+[   21.673700]  hid_hw_start+0x8c/0x110
+[   21.673700]  asus_probe+0x5a3/0xf80
+[   21.673700]  hid_device_probe+0x2ee/0x700
+[   21.673700]  really_probe+0x1c6/0x6b0
+[   21.673700]  __driver_probe_device+0x24f/0x310
+[   21.673700]  driver_probe_device+0x4e/0x220
+[...]
+
+Fixes: 9ce12d8be12c ("HID: asus: Add i2c touchpad support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Link: https://patch.msgid.link/20250810181041.44874-1-qasdev00@gmail.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-asus.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index 815095326e2d6..72c27181a4270 100644
---- a/drivers/pinctrl/Kconfig
-+++ b/drivers/pinctrl/Kconfig
-@@ -268,6 +268,7 @@ config PINCTRL_STMFX
- 	tristate "STMicroelectronics STMFX GPIO expander pinctrl driver"
- 	depends on I2C
- 	depends on OF_GPIO
-+	depends on HAS_IOMEM
- 	select GENERIC_PINCONF
- 	select GPIOLIB_IRQCHIP
- 	select MFD_STMFX
--- 
-2.50.1
-
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -1117,7 +1117,13 @@ static int asus_probe(struct hid_device
+ 		return ret;
+ 	}
+ 
+-	if (!drvdata->input) {
++	/*
++	 * Check that input registration succeeded. Checking that
++	 * HID_CLAIMED_INPUT is set prevents a UAF when all input devices
++	 * were freed during registration due to no usages being mapped,
++	 * leaving drvdata->input pointing to freed memory.
++	 */
++	if (!drvdata->input || !(hdev->claimed & HID_CLAIMED_INPUT)) {
+ 		hid_err(hdev, "Asus input not registered\n");
+ 		ret = -ENOMEM;
+ 		goto err_stop_hw;
 
 
 
