@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-177044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 404C4B402F5
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:26:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 826A3B40300
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:27:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 690E11896AA4
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:25:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B8A54E6B97
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:26:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7B830DD0D;
-	Tue,  2 Sep 2025 13:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BCF2F9C3D;
+	Tue,  2 Sep 2025 13:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppaa1gmU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OPh0uN+8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B9030E842;
-	Tue,  2 Sep 2025 13:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9429A273D6D;
+	Tue,  2 Sep 2025 13:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819388; cv=none; b=ly2od9e1RjOOGbwYYBEOCm1+2v67Kd98gC+QoLyfw3HB3KIED0lH9rB9UKJUPuqRXbMBmCxAq8+a7Ara5ZzmP6cxGLXb+F+5QNqdse4AR7KHiZHm7NafvS509/CAN6WZO/NywNZ5kfbpew9E1dLBv+GZMjFjFKgxklNBDosKOGQ=
+	t=1756819413; cv=none; b=h2S5+uRN/3sjh8846t4NNqEHikQmLIQVgZ6uOl9zQ8S7seaPCT8XClZz/Caa+pZw5M6jGsrDDOJl2IXSM1hFr853YRtXNXKfcO6XcjsMCaI6yjeTyZv41WJVl5s5ii4hS+XeXMq4lCodyJqtPYKm+OELGpGjzXikijxmV/zLZ7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819388; c=relaxed/simple;
-	bh=gu/82B4ASVBa1LFc0Ga5aWRYPjIbSpTs7+T5b0GyNZk=;
+	s=arc-20240116; t=1756819413; c=relaxed/simple;
+	bh=Nt+OMVqJoQK8lqH3+zsAUmt/jb0Rg3SZ/iAX0K85heM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dRV0zNxjpjIq+OOZMfGJGjW6vyhckiLkCsO2E4F3ljwCQc1inepRwAF6ap+zzOGORgpx+XX2l96/+KAAbPJjBDfjiUd6To5xeZpHnjbPUK+dzuocjqDt1A4rmnVi1iAsvBp4Ezh/IXe7pVdSWi3riEKdeL8FMrLA5EQx1IPQ7Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppaa1gmU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A0DC4CEED;
-	Tue,  2 Sep 2025 13:23:08 +0000 (UTC)
+	 MIME-Version; b=H2g5a1UPOAAVOmT+rBMmc3BPBPm6k0niRzGBz9kDruXqJE09E/LvM4tTXTgWjkcxI7gvvjGv+Hq5qC9GhM7ZewAiyhw+bikmC0J66hEm8Rn1uwC1go4r5ybo6k6YkT4DxUrTlkXZS8Eg7337Oq6u0m+U2ibtdWUGKoypepsOsAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OPh0uN+8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E0CC4CEED;
+	Tue,  2 Sep 2025 13:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819388;
-	bh=gu/82B4ASVBa1LFc0Ga5aWRYPjIbSpTs7+T5b0GyNZk=;
+	s=korg; t=1756819412;
+	bh=Nt+OMVqJoQK8lqH3+zsAUmt/jb0Rg3SZ/iAX0K85heM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ppaa1gmUR/ncB/XbAf3GAgfDIy6K3C2+vfZh8wlvkT6i0LWBlqQrr9QD33n4mYFup
-	 fGA0tj1vtPVAgjpqu4qNnt7FGLFPxAFxnZZrF7cQX/9XfI6tcOXwOxeJGLY7KTWp35
-	 eFI1/VfFLRbz5w+hqirm2B/WmHGCJLQdI9ndzafk=
+	b=OPh0uN+8ZAtTnvSGwv5MSexlWSl+yfS+IAUvHkIBg2bN3k2y0uxlGUbZJdEwV+Zqk
+	 idVX81SpuQUYc5iuuVEBPTSoO0SR8iOA2P1tu4aex8ta9bGXA1ZPI62V4ABwH285Op
+	 mKT2YFOiMxmt506uyUbciX1q31QMRMU/xJaB5zRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tao Chen <chen.dylane@linux.dev>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 002/142] tools/latency-collector: Check pkg-config install
-Date: Tue,  2 Sep 2025 15:18:24 +0200
-Message-ID: <20250902131948.250630073@linuxfoundation.org>
+Subject: [PATCH 6.16 003/142] rtla: Check pkg-config install
+Date: Tue,  2 Sep 2025 15:18:25 +0200
+Message-ID: <20250902131948.286754578@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
 References: <20250902131948.154194162@linuxfoundation.org>
@@ -68,7 +68,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Tao Chen <chen.dylane@linux.dev>
 
-[ Upstream commit 26ebba25e210116053609f4c7ee701bffa7ebd7d ]
+[ Upstream commit 7b128f1d53dcaa324d4aa05d821a6bf4a7b203e7 ]
 
 The tool pkg-config used to check libtraceevent and libtracefs, if not
 installed, it will report the libs not found, even though they have
@@ -82,25 +82,28 @@ After:
 Makefile.config:10: *** Error: pkg-config needed by libtraceevent/libtracefs is missing
 on this system, please install it.
 
-Link: https://lore.kernel.org/20250808040527.2036023-1-chen.dylane@linux.dev
-Fixes: 9d56c88e5225 ("tools/tracing: Use tools/build makefiles on latency-collector")
+Link: https://lore.kernel.org/20250808040527.2036023-2-chen.dylane@linux.dev
+Fixes: 01474dc706ca ("tools/rtla: Use tools/build makefiles to build rtla")
 Signed-off-by: Tao Chen <chen.dylane@linux.dev>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/latency/Makefile.config | 8 ++++++++
+ tools/tracing/rtla/Makefile.config | 8 ++++++++
  1 file changed, 8 insertions(+)
 
-diff --git a/tools/tracing/latency/Makefile.config b/tools/tracing/latency/Makefile.config
-index 0fe6b50f029bf..6efa13e3ca93f 100644
---- a/tools/tracing/latency/Makefile.config
-+++ b/tools/tracing/latency/Makefile.config
-@@ -1,7 +1,15 @@
+diff --git a/tools/tracing/rtla/Makefile.config b/tools/tracing/rtla/Makefile.config
+index 5f2231d8d6266..07ff5e8f3006e 100644
+--- a/tools/tracing/rtla/Makefile.config
++++ b/tools/tracing/rtla/Makefile.config
+@@ -1,10 +1,18 @@
  # SPDX-License-Identifier: GPL-2.0-only
  
 +include $(srctree)/tools/scripts/utilities.mak
 +
  STOP_ERROR :=
+ 
+ LIBTRACEEVENT_MIN_VERSION = 1.5
+ LIBTRACEFS_MIN_VERSION = 1.6
  
 +ifndef ($(NO_LIBTRACEEVENT),1)
 +  ifeq ($(call get-executable,$(PKG_CONFIG)),)
