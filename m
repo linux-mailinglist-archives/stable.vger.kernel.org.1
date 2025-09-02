@@ -1,100 +1,122 @@
-Return-Path: <stable+bounces-177507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06F7EB40877
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 17:06:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F3EB408E0
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 17:25:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67C235E5055
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:06:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 159D21884CE0
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE593128A6;
-	Tue,  2 Sep 2025 15:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DyQUhdrS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AC83043BD;
+	Tue,  2 Sep 2025 15:24:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA38A30EF7A
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 15:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C01623D7C4;
+	Tue,  2 Sep 2025 15:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756825563; cv=none; b=Chv6jiCJJ3p+9QnqDQTc/CqupCgL/24A8BD2HXD6yEJIFOhtaBUxm9JJyfA1+dPxeKnl/Rt73Xduoh0bDl6ymblDcFHooqs8p7/KRFzoDV9Qpdu6MTFUmIwAcVY4hFfDNyNtagh6jFcsnW9BOP3aIPGsK6GFLQ9JCwhBs8fZUDw=
+	t=1756826699; cv=none; b=T2Qi7AV+7sH5y1cNKs0hHd4uGKFm68qTdwuk80r5gjfGu9rJyvPt2xsoSvdkkt+SwNje2dFd2zQqW8qkKUtg7QxAQaHBunYpcYc8XajDFxBWj312NruzUPphShjGeYSG0avZa1Di/d6XqgGHSwzFSvcjTq0K0sBbh94c0NP0G1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756825563; c=relaxed/simple;
-	bh=f6wVUdChfXUC2dIghTBCKp/nFqlakl6+MJ0LfeFuz5Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=O1/PUaVNYOUk+vu7788PW4oCeD5h8Mh3RPy/3oxB7f7Kv1U1N8hSEReBvN0jiSDd3tEDT8fBN05V5FHU4OLnv5fK8sI2xWN2pbRH12okko0d0GtlfBxMVkbbvBNL9aVfVsOX6KusTnwche8twSzBfnabvN4iX89swu9W7b8MnMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DyQUhdrS; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756825562; x=1788361562;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=f6wVUdChfXUC2dIghTBCKp/nFqlakl6+MJ0LfeFuz5Q=;
-  b=DyQUhdrSpPuLi2O0Z4VpNlKG1oHYZCK6pGeTDf9+wyMP2sBM8rzZ0dsV
-   NuB5TDNjYOwQ8gbAmHnrZm017evWDfPZgxVlDCmJpPCvNEtU76E7qK+Es
-   UZNmANBjg3NAzbdWnyFX3jDEoE74jPwmUoQs7ve35HDF7HGo5Ts+5VbWx
-   2f2+fd4kjwUMbTuy+6A50GIYLaY99AR47Krq/i7TfTUQam5pY6XZsHFjB
-   QYsLBEwWNsOeCrw22bIooEztWf7ckAhUVETUjf6/ZTdq5/fzSlGAMlLWt
-   ArxIGEvrEfXRH8HIA2B0K/+fGHeTFFcXZ2f+l00KD7OC9GSfe+ukCiVks
-   w==;
-X-CSE-ConnectionGUID: Cxu9O5q7SfOLDoD0DITGFw==
-X-CSE-MsgGUID: dJeLs3ObRVKz61b8gTfbNg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="69810442"
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="69810442"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 08:06:02 -0700
-X-CSE-ConnectionGUID: 5zkmMphsRDaW0/JKtrCP0w==
-X-CSE-MsgGUID: aIKbk75ISI+G600qJcfLQw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
-   d="scan'208";a="176610566"
-Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
-  by orviesa005.jf.intel.com with ESMTP; 02 Sep 2025 08:06:01 -0700
-Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1utSa0-0002f1-0G;
-	Tue, 02 Sep 2025 15:05:54 +0000
-Date: Tue, 2 Sep 2025 23:05:44 +0800
-From: kernel test robot <lkp@intel.com>
-To: Oscar Maes <oscmaes92@gmail.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH net v5] selftests: net: add test for destination in
- broadcast packets
-Message-ID: <aLcHyJDorSjgy9p8@c25d56e612e5>
+	s=arc-20240116; t=1756826699; c=relaxed/simple;
+	bh=08WLGYvIs6DHBHZWmf9vElYib+z/jFkZCljxRkJotHw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bv3JVIXpQi2eDbNqKgfZe6FJFj7TPfx0UQsys2zQyxsnmlXob0NPzO8lFuf9qAta6+yFZOGFvzALtofoRA3oMo+IurM//oFeffQnih6mks2aajywc0y28mSQjn/iFsgA0BLGHcTwh0G71x621a4nbN56v0QpeS2RG5hLDodcoLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cGTxt08Cmz6M4ZQ;
+	Tue,  2 Sep 2025 23:22:26 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id E5D40140136;
+	Tue,  2 Sep 2025 23:24:52 +0800 (CST)
+Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 2 Sep
+ 2025 17:24:52 +0200
+Date: Tue, 2 Sep 2025 16:24:50 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Dave Jiang <dave.jiang@intel.com>
+CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <gregkh@linuxfoundation.org>,
+	<rafael@kernel.org>, <dakr@kernel.org>, <dave@stgolabs.net>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <dan.j.williams@intel.com>,
+	<marc.herbert@linux.intel.com>, <akpm@linux-foundation.org>,
+	<david@redhat.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v3 3/4] cxl, acpi/hmat: Update CXL access coordinates
+ directly instead of through HMAT
+Message-ID: <20250902162450.00002684@huawei.com>
+In-Reply-To: <20250829222907.1290912-4-dave.jiang@intel.com>
+References: <20250829222907.1290912-1-dave.jiang@intel.com>
+	<20250829222907.1290912-4-dave.jiang@intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250902150240.4272-1-oscmaes92@gmail.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Hi,
+On Fri, 29 Aug 2025 15:29:06 -0700
+Dave Jiang <dave.jiang@intel.com> wrote:
 
-Thanks for your patch.
+> The current implementation of CXL memory hotplug notifier gets called
+> before the HMAT memory hotplug notifier. The CXL driver calculates the
+> access coordinates (bandwidth and latency values) for the CXL end to
+> end path (i.e. CPU to endpoint). When the CXL region is onlined, the CXL
+> memory hotplug notifier writes the access coordinates to the HMAT target
+> structs. Then the HMAT memory hotplug notifier is called and it creates
+> the access coordinates for the node sysfs attributes.
+> 
+> During testing on an Intel platform, it was found that although the
+> newly calculated coordinates were pushed to sysfs, the sysfs attributes for
+> the access coordinates showed up with the wrong initiator. The system has
+> 4 nodes (0, 1, 2, 3) where node 0 and 1 are CPU nodes and node 2 and 3 are
+> CXL nodes. The expectation is that node 2 would show up as a target to node
+> 0:
+> /sys/devices/system/node/node2/access0/initiators/node0
+> 
+> However it was observed that node 2 showed up as a target under node 1:
+> /sys/devices/system/node/node2/access0/initiators/node1
+> 
+> The original intent of the 'ext_updated' flag in HMAT handling code was to
+> stop HMAT memory hotplug callback from clobbering the access coordinates
+> after CXL has injected its calculated coordinates and replaced the generic
+> target access coordinates provided by the HMAT table in the HMAT target
+> structs. However the flag is hacky at best and blocks the updates from
+> other CXL regions that are onlined in the same node later on. Remove the
+> 'ext_updated' flag usage and just update the access coordinates for the
+> nodes directly without touching HMAT target data.
+> 
+> The hotplug memory callback ordering is changed. Instead of changing CXL,
+> move HMAT back so there's room for the levels rather than have CXL share
+> the same level as SLAB_CALLBACK_PRI. The change will resulting in the CXL
+> callback to be executed after the HMAT callback.
+> 
+> With the change, the CXL hotplug memory notifier runs after the HMAT
+> callback. The HMAT callback will create the node sysfs attributes for
+> access coordinates. The CXL callback will write the access coordinates to
+> the now created node sysfs attributes directly and will not pollute the
+> HMAT target values.
+> 
+> A nodemask is introduced to keep track if a node has been updated and
+> prevents further updates.
+> 
+> Fixes: 067353a46d8c ("cxl/region: Add memory hotplug notifier for cxl region")
+> Cc: stable@vger.kernel.org
+> Tested-by: Marc Herbert <marc.herbert@linux.intel.com>
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH net v5] selftests: net: add test for destination in broadcast packets
-Link: https://lore.kernel.org/stable/20250902150240.4272-1-oscmaes92%40gmail.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
