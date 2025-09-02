@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-177169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 671FAB403B1
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:35:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B2E1B40470
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7E2B54678F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:34:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AF405609EC
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30E430E842;
-	Tue,  2 Sep 2025 13:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D04A42820B6;
+	Tue,  2 Sep 2025 13:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxZYEnSp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXE6RjlP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9931830DEBB;
-	Tue,  2 Sep 2025 13:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEA32FB62E;
+	Tue,  2 Sep 2025 13:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819800; cv=none; b=I+hLJGnanVzQimHDY1I4aKvqckqG7crCBgSdw9wn4HA2EkcxlGVmcdjA0W5hCbQweL/LQqIXpU7lDd2jogdNy0dfJn7Fl6RdhLwvoY+/mU6kxZ2bMk7ODEjF2sQrvsxxdpauyQsmdqEl/CNbD3XRSLrIJzA+BX1WtnXvUYTBsX8=
+	t=1756820178; cv=none; b=TsVr+XBmRyZngZiXuSv2JkjcFtpiaOQemnE90gFkfdSZfK5B1nFFfJMPJFAnsdycDRN/XASFSlAkPJgNDUvoFCT+XtPCWu3dlvKWWUAmWitOel4Ajmw3Qeid8LB8XDbTt4eSVDIavsvFCTE69UxY7EaNfBY4ZQ7w2Eli5GqsVmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819800; c=relaxed/simple;
-	bh=7wetER8GfehqJ/NSnNKMF1xUGwVEudZJK6NmhfoJ3es=;
+	s=arc-20240116; t=1756820178; c=relaxed/simple;
+	bh=I4ArA6f6QrvuaZLxhvFqMn6aeT4wbUbhv4T42hB40b4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gH0Chn61kE2aTuQAoUwDLNh5HLIkEKTzHvNxTVu65ZDax7QKuVPDlk/mcS/IKGLy57zuHPgRghiRk7Hu8du5nURK0Csv1PJ1ZriJBpyYrZ37xjIt7gFiThJPyc0JISiLkwUJNyw/2A9iKgt5yBBX5lJaRq4yL8D/PsPgxUlrtqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxZYEnSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22875C4CEF5;
-	Tue,  2 Sep 2025 13:29:59 +0000 (UTC)
+	 MIME-Version; b=Ilq2EMqZHf6QuT+B3q6X40P4fuqwVet6K+EoaABD0OxZf2M+evco6hINZkJR836q4s4bA0LhHAKGGcBxx5cI/RsUz2AX8oHbbvDfoof4g3NwSoRMuHKGDP4SJTqYGYZAbAq9RvrIGadPhfGGArf7UPGuGxwdqWZNvv/bl1IbXtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXE6RjlP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F23C4CEF7;
+	Tue,  2 Sep 2025 13:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819800;
-	bh=7wetER8GfehqJ/NSnNKMF1xUGwVEudZJK6NmhfoJ3es=;
+	s=korg; t=1756820178;
+	bh=I4ArA6f6QrvuaZLxhvFqMn6aeT4wbUbhv4T42hB40b4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WxZYEnSplPspdzFR3I3ZvnOPcSb+tFIkhwd5UCx5n05GpmBmIb6REI4jxQJTxQ3CO
-	 oTScpOKG5nuaT3aFxY02JU6sVCLOZJpHQOkB8KJW/I51o+VUthiTPPsOsy3XnNfI9F
-	 a90GYXkUw3FzWCYA03j7q5H2DjdBumqdsTO1P2Fk=
+	b=HXE6RjlPvcXbRT3QVylbzZyeNO/TNvLL/Gvgg2kRnCkTGG4mM14CqDJXimQ04rgwm
+	 LiPRaWw5+R+yjZFB7EkaUR/HaYRODjgcp7i3wt3tGXerPD41oGeeORuaiUxHap/+l/
+	 tDd3GfLn0Pl3kwoyENusNl7UMHVMiv9OwNgR8rIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 132/142] drm/amdgpu/gfx11: set MQD as appriopriate for queue types
+	Ludovico de Nittis <ludovico.denittis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 22/75] Bluetooth: hci_event: Treat UNKNOWN_CONN_ID on disconnect as success
 Date: Tue,  2 Sep 2025 15:20:34 +0200
-Message-ID: <20250902131953.340270366@linuxfoundation.org>
+Message-ID: <20250902131935.991636342@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Ludovico de Nittis <ludovico.denittis@collabora.com>
 
-commit 27f5e0c1321ee280189cea16044de2e157dc4bb9 upstream.
+[ Upstream commit 2f050a5392b7a0928bf836d9891df4851463512c ]
 
-Set the MQD as appropriate for the kernel vs user queues.
+When the host sends an HCI_OP_DISCONNECT command, the controller may
+respond with the status HCI_ERROR_UNKNOWN_CONN_ID (0x02). E.g. this can
+happen on resume from suspend, if the link was terminated by the remote
+device before the event mask was correctly set.
 
-Acked-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 063d6683208722b1875f888a45084e3d112701ac)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is a btmon snippet that shows the issue:
+```
+> ACL Data RX: Handle 3 flags 0x02 dlen 12
+      L2CAP: Disconnection Request (0x06) ident 5 len 4
+        Destination CID: 65
+        Source CID: 72
+< ACL Data TX: Handle 3 flags 0x00 dlen 12
+      L2CAP: Disconnection Response (0x07) ident 5 len 4
+        Destination CID: 65
+        Source CID: 72
+> ACL Data RX: Handle 3 flags 0x02 dlen 12
+      L2CAP: Disconnection Request (0x06) ident 6 len 4
+        Destination CID: 64
+        Source CID: 71
+< ACL Data TX: Handle 3 flags 0x00 dlen 12
+      L2CAP: Disconnection Response (0x07) ident 6 len 4
+        Destination CID: 64
+        Source CID: 71
+< HCI Command: Set Event Mask (0x03|0x0001) plen 8
+        Mask: 0x3dbff807fffbffff
+          Inquiry Complete
+          Inquiry Result
+          Connection Complete
+          Connection Request
+          Disconnection Complete
+          Authentication Complete
+[...]
+< HCI Command: Disconnect (0x01|0x0006) plen 3
+        Handle: 3 Address: 78:20:A5:4A:DF:28 (Nintendo Co.,Ltd)
+        Reason: Remote User Terminated Connection (0x13)
+> HCI Event: Command Status (0x0f) plen 4
+      Disconnect (0x01|0x0006) ncmd 1
+        Status: Unknown Connection Identifier (0x02)
+```
+
+Currently, the hci_cs_disconnect function treats any non-zero status
+as a command failure. This can be misleading because the connection is
+indeed being terminated and the controller is confirming that is has no
+knowledge of that connection handle. Meaning that the initial request of
+disconnecting a device should be treated as done.
+
+With this change we allow the function to proceed, following the success
+path, which correctly calls `mgmt_device_disconnected` and ensures a
+consistent state.
+
+Link: https://github.com/bluez/bluez/issues/1226
+Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
+Signed-off-by: Ludovico de Nittis <ludovico.denittis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_event.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -4124,6 +4124,8 @@ static int gfx_v11_0_gfx_mqd_init(struct
- #endif
- 	if (prop->tmz_queue)
- 		tmp = REG_SET_FIELD(tmp, CP_GFX_HQD_CNTL, TMZ_MATCH, 1);
-+	if (!prop->kernel_queue)
-+		tmp = REG_SET_FIELD(tmp, CP_GFX_HQD_CNTL, RB_NON_PRIV, 1);
- 	mqd->cp_gfx_hqd_cntl = tmp;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index c06010c0d8829..fb5e4e4858f77 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2692,7 +2692,7 @@ static void hci_cs_disconnect(struct hci_dev *hdev, u8 status)
+ 	if (!conn)
+ 		goto unlock;
  
- 	/* set up cp_doorbell_control */
-@@ -4276,8 +4278,10 @@ static int gfx_v11_0_compute_mqd_init(st
- 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, UNORD_DISPATCH, 1);
- 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, TUNNEL_DISPATCH,
- 			    prop->allow_tunneling);
--	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, PRIV_STATE, 1);
--	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, KMD_QUEUE, 1);
-+	if (prop->kernel_queue) {
-+		tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, PRIV_STATE, 1);
-+		tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, KMD_QUEUE, 1);
-+	}
- 	if (prop->tmz_queue)
- 		tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, TMZ, 1);
- 	mqd->cp_hqd_pq_control = tmp;
+-	if (status) {
++	if (status && status != HCI_ERROR_UNKNOWN_CONN_ID) {
+ 		mgmt_disconnect_failed(hdev, &conn->dst, conn->type,
+ 				       conn->dst_type, status);
+ 
+-- 
+2.50.1
+
 
 
 
