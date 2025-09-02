@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-177468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE3DBB40596
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:55:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DBC3B405B0
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:56:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0659A1A80CF8
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:50:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AA3A1B63BFF
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5A2320A1A;
-	Tue,  2 Sep 2025 13:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3958307AF2;
+	Tue,  2 Sep 2025 13:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yev+Huiy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UayD6r8C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2421731E0FD;
-	Tue,  2 Sep 2025 13:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AB5305062;
+	Tue,  2 Sep 2025 13:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820742; cv=none; b=QzFpma5Eep/xUdy74hh39lamuJW1M90OkLA4eliDSlqoiyUOo/D46015sRItAMNCIpXr+YatGWc+8mDDJXxEiicv1071AsxiP/mn0VNo8V8UJWi6ujxt9/1p4daCoTQGq9qt8/l88ZFZBjcBRjYRC/CtbY1RWOouB9EjcbzYMVA=
+	t=1756820809; cv=none; b=J6gGvDluoS8kBy7YXdDKAmu62VxpvFqLhRMz5Lxj0gwhalFrdMnRHB/UcbtZGGgVlVBGO6EA1I/tcp5/JykvT4XvN3w3RxVamQr1azQGyGdZBU4zDki/lXQ9mesWc/ov7LOh7kqhuOT5yBb1DeGJjiS53Nw16rob8n5XOeKKjUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820742; c=relaxed/simple;
-	bh=shBAnC5QA8D7/Ukszc5oDJLC7tteV2UTEZYHT32HLLY=;
+	s=arc-20240116; t=1756820809; c=relaxed/simple;
+	bh=ZYeOnej8dkkaASfkct6p8yDbNawTcSlIHPWuzDJfqbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=paaSKEjLumVZRM90ajGQFhy4Qi5Qse8E/e/kK17+Hg5Z98C9jPmJlHchmbyYfUFxml8m0n7Lcxf5h0MX5v8teGIse2OqrjX4gzSo7bUq7NzPBVq85bXxa0ABDtiz3GZi9XY6cuoNykQl6AMbFGg6wvlGB6gm3eX3+1QmKOKZQi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yev+Huiy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89860C4CEED;
-	Tue,  2 Sep 2025 13:45:41 +0000 (UTC)
+	 MIME-Version; b=QXeyuffCltuuISYwdfT3hSOglkCK9KKtm0dvDa4DUjtz9Pgb+5K+XJ72giR8COoVcA9/BsA72s6/gZ8pK4jeeFhmyMp/Xxe3usJD8+xbOdDKtMYNAKpvbt9kd4yYWAhw53eBPcQrxR9od9uNbAJaaraXGhext6uTbw0fg/uUgqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UayD6r8C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7C5C4CEF4;
+	Tue,  2 Sep 2025 13:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820742;
-	bh=shBAnC5QA8D7/Ukszc5oDJLC7tteV2UTEZYHT32HLLY=;
+	s=korg; t=1756820809;
+	bh=ZYeOnej8dkkaASfkct6p8yDbNawTcSlIHPWuzDJfqbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yev+Huiyq5U5RQhJiQLvrQeIulVeIOwZ/+eosANu8GgHneb6Sb8yADwM/YT/uG4Bz
-	 POzHyEaQ7bTn2Dr9dPMV8HK9V++/T7YocPyf7IZxNCaZ5K9mY8CZmQqA96HWXXg/ub
-	 lAWtuaLvf/RUDWcZ7YwNKH8DWKcrarDZqqZoOKt0=
+	b=UayD6r8C/H6rzT+VILuNtFq0yXzF0JCCm2ta4jQzZG0Hrrp+8Dz5TAlJyGyivBtix
+	 8MGiLqzWbDMIodnf8K9zpeW6RK2IB7xeJiR6EW04KlP0MCSXUaQt2GznS5pEMLtw2P
+	 7YsVV/ZmUgGY+AEXXoiGy9IPZhXa0mvOD9/F0AGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 23/34] Revert "drm/amdgpu: fix incorrect vm flags to map bo"
+	Damien Le Moal <dlemoal@kernel.org>,
+	John Garry <john.g.garry@oracle.com>,
+	Johannes Thumshin <johannes.thumshirn@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 03/23] scsi: core: sysfs: Correct sysfs attributes access rights
 Date: Tue,  2 Sep 2025 15:21:49 +0200
-Message-ID: <20250902131927.542121805@linuxfoundation.org>
+Message-ID: <20250902131924.860061707@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131924.720400762@linuxfoundation.org>
+References: <20250902131924.720400762@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit ac4ed2da4c1305a1a002415058aa7deaf49ffe3e upstream.
+[ Upstream commit a2f54ff15c3bdc0132e20aae041607e2320dbd73 ]
 
-This reverts commit b08425fa77ad2f305fe57a33dceb456be03b653f.
+The SCSI sysfs attributes "supported_mode" and "active_mode" do not
+define a store method and thus cannot be modified.  Correct the
+DEVICE_ATTR() call for these two attributes to not include S_IWUSR to
+allow write access as they are read-only.
 
-Revert this to align with 6.17 because the fixes tag
-was wrong on this commit.
-
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit be33e8a239aac204d7e9e673c4220ef244eb1ba3)
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250728041700.76660-1-dlemoal@kernel.org
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Johannes Thumshin <johannes.thumshirn@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c |    4 ++--
+ drivers/scsi/scsi_sysfs.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-@@ -94,8 +94,8 @@ int amdgpu_map_static_csa(struct amdgpu_
- 	}
+diff --git a/drivers/scsi/scsi_sysfs.c b/drivers/scsi/scsi_sysfs.c
+index 530b14685fd71..8949848fe6a74 100644
+--- a/drivers/scsi/scsi_sysfs.c
++++ b/drivers/scsi/scsi_sysfs.c
+@@ -264,7 +264,7 @@ show_shost_supported_mode(struct device *dev, struct device_attribute *attr,
+ 	return show_shost_mode(supported_mode, buf);
+ }
  
- 	r = amdgpu_vm_bo_map(adev, *bo_va, csa_addr, 0, size,
--			     AMDGPU_VM_PAGE_READABLE | AMDGPU_VM_PAGE_WRITEABLE |
--			     AMDGPU_VM_PAGE_EXECUTABLE);
-+			     AMDGPU_PTE_READABLE | AMDGPU_PTE_WRITEABLE |
-+			     AMDGPU_PTE_EXECUTABLE);
+-static DEVICE_ATTR(supported_mode, S_IRUGO | S_IWUSR, show_shost_supported_mode, NULL);
++static DEVICE_ATTR(supported_mode, S_IRUGO, show_shost_supported_mode, NULL);
  
- 	if (r) {
- 		DRM_ERROR("failed to do bo_map on static CSA, err=%d\n", r);
+ static ssize_t
+ show_shost_active_mode(struct device *dev,
+@@ -278,7 +278,7 @@ show_shost_active_mode(struct device *dev,
+ 		return show_shost_mode(shost->active_mode, buf);
+ }
+ 
+-static DEVICE_ATTR(active_mode, S_IRUGO | S_IWUSR, show_shost_active_mode, NULL);
++static DEVICE_ATTR(active_mode, S_IRUGO, show_shost_active_mode, NULL);
+ 
+ static int check_reset_type(const char *str)
+ {
+-- 
+2.50.1
+
 
 
 
