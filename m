@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-177142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701C9B403B3
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:35:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23EECB404A8
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:45:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C1A4188E8CA
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEFFD16AF32
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3973030BF6E;
-	Tue,  2 Sep 2025 13:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C5F32ED37;
+	Tue,  2 Sep 2025 13:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uoQhokn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kobQXs8W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B2D30AAB4;
-	Tue,  2 Sep 2025 13:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93350307AFA;
+	Tue,  2 Sep 2025 13:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819715; cv=none; b=My4+I5hNA7eqkEFDE/efhvtXZKTxAjQbvB4Y7I1ojzFIe+PFFqVPaivd8Vt3W9WHLWUDJH7szIaMmGQY4mPfMOjddA6upmRDGAYsH466UXP79nyoBc+Qmfdfx5YJST1Wo66HlHej+NE9dY95E/vXLpn0Pk77OT0S/6x3rkiy2fk=
+	t=1756820228; cv=none; b=MVp0TyQMOfnz5VLEPUqOLfVi39TuBNjsjLMvqArNrew0Vf8WmKwP/eZSMrNDpwwUMkEW6Ipuz3bIFaDHPCNsAjKvRvmfOdUYilg9Bk7m2yqlAUux7PRCYjM8KjAqnZNPMrVG2mYafU1HB+w14c8dJnb0P5EF/CDt9fDJNVc9UCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819715; c=relaxed/simple;
-	bh=z4Z2zrhZgWTjZBEL0GUq9TD3bx+N0idBBZer8YLG3p8=;
+	s=arc-20240116; t=1756820228; c=relaxed/simple;
+	bh=p00fYxZuyiMM/BGBxD3FfK66ZdmECEYxnBKbV4vyTuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWRq4bYHSUON6OPHws5jAcuWYU58i6ug3tEbBZOUz7YAMq1vS+3K0fl3hnNbq06h8jltaVIRxzqC36pZzA0ZA2HFHZG89WCCU5QaiQNQRNrAiLYifSNSDMIAeab/nYiLqVamxPjGdqyrOFpPfPtffgkTejPZhWBtcB6P2F2GdGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uoQhokn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A996C4CEED;
-	Tue,  2 Sep 2025 13:28:34 +0000 (UTC)
+	 MIME-Version; b=bXhqLHih/qLthRSP/5B5ra5j253RWcQ/ymadfk1dgxqAew2U1XkJo28vH7lh9A4h87wfKPyKMslrnzwxtp+/W7kPI2we5jfVjWDW4wXP6mJbCXNTQjH/pdWslEjT9cqsdKLzrztAaJtYB7IhHGv8VnLd8C4zS1BJkRFbZu91mwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kobQXs8W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C06BC4CEED;
+	Tue,  2 Sep 2025 13:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819714;
-	bh=z4Z2zrhZgWTjZBEL0GUq9TD3bx+N0idBBZer8YLG3p8=;
+	s=korg; t=1756820228;
+	bh=p00fYxZuyiMM/BGBxD3FfK66ZdmECEYxnBKbV4vyTuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1uoQhoknbpj4BAE9sLsXpClZNU2JFui2kxH9t3Hj8kGYwX/lRbEoU4a96tHSY1ngr
-	 dtWiRli1iSS//HCIRB4zh5cO0OmfAgLeWlAFNAAdAqYOdoAvPUlnIjQ8mEPfFVZdCA
-	 kELCrkBCGVfnuNSAEJflzJNyo5lCammGo8rxVvMQ=
+	b=kobQXs8WgR75xDwt6Jh1j+DRdicXVABKAnHhzqvX7Ora+2CIxlElSMCjUzxwgDjDu
+	 ST+IAI5qrD8FdWFt5Wv8ZDlZ2Jun1141hgFIsbBsG1y/M05ByZuxp1gw9KO2rh9Sdd
+	 E2nz9woTGlWSA817O1xhmmlHrERTx9WrT11tLUoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.16 117/142] arm64: mm: Fix CFI failure due to kpti_ng_pgd_alloc function signature
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Ingo Molnar <mingo@elte.hu>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 07/75] ftrace: Fix potential warning in trace_printk_seq during ftrace_dump
 Date: Tue,  2 Sep 2025 15:20:19 +0200
-Message-ID: <20250902131952.769259668@linuxfoundation.org>
+Message-ID: <20250902131935.405945486@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +66,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Tengda Wu <wutengda@huaweicloud.com>
 
-commit ceca927c86e6f72f72d45487a34368bc9509431d upstream.
+[ Upstream commit 4013aef2ced9b756a410f50d12df9ebe6a883e4a ]
 
-Seen during KPTI initialization:
+When calling ftrace_dump_one() concurrently with reading trace_pipe,
+a WARN_ON_ONCE() in trace_printk_seq() can be triggered due to a race
+condition.
 
-  CFI failure at create_kpti_ng_temp_pgd+0x124/0xce8 (target: kpti_ng_pgd_alloc+0x0/0x14; expected type: 0xd61b88b6)
+The issue occurs because:
 
-The call site is alloc_init_pud() at arch/arm64/mm/mmu.c:
+CPU0 (ftrace_dump)                              CPU1 (reader)
+echo z > /proc/sysrq-trigger
 
-  pud_phys = pgtable_alloc(TABLE_PUD);
+!trace_empty(&iter)
+trace_iterator_reset(&iter) <- len = size = 0
+                                                cat /sys/kernel/tracing/trace_pipe
+trace_find_next_entry_inc(&iter)
+  __find_next_entry
+    ring_buffer_empty_cpu <- all empty
+  return NULL
 
-alloc_init_pud() has the prototype:
+trace_printk_seq(&iter.seq)
+  WARN_ON_ONCE(s->seq.len >= s->seq.size)
 
-  static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
-                             phys_addr_t phys, pgprot_t prot,
-                             phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-                             int flags)
+In the context between trace_empty() and trace_find_next_entry_inc()
+during ftrace_dump, the ring buffer data was consumed by other readers.
+This caused trace_find_next_entry_inc to return NULL, failing to populate
+`iter.seq`. At this point, due to the prior trace_iterator_reset, both
+`iter.seq.len` and `iter.seq.size` were set to 0. Since they are equal,
+the WARN_ON_ONCE condition is triggered.
 
-where the pgtable_alloc() prototype is declared.
+Move the trace_printk_seq() into the if block that checks to make sure the
+return value of trace_find_next_entry_inc() is non-NULL in
+ftrace_dump_one(), ensuring the 'iter.seq' is properly populated before
+subsequent operations.
 
-The target (kpti_ng_pgd_alloc) is used in arch/arm64/kernel/cpufeature.c:
-
-  create_kpti_ng_temp_pgd(kpti_ng_temp_pgd, __pa(alloc), KPTI_NG_TEMP_VA,
-                          PAGE_SIZE, PAGE_KERNEL, kpti_ng_pgd_alloc, 0);
-
-which is an alias for __create_pgd_mapping_locked() with prototype:
-
-  extern __alias(__create_pgd_mapping_locked)
-  void create_kpti_ng_temp_pgd(pgd_t *pgdir, phys_addr_t phys,
-                               unsigned long virt,
-                               phys_addr_t size, pgprot_t prot,
-                               phys_addr_t (*pgtable_alloc)(enum pgtable_type),
-                               int flags);
-
-__create_pgd_mapping_locked() passes the function pointer down:
-
-  __create_pgd_mapping_locked() -> alloc_init_p4d() -> alloc_init_pud()
-
-But the target function (kpti_ng_pgd_alloc) has the wrong signature:
-
-  static phys_addr_t __init kpti_ng_pgd_alloc(int shift);
-
-The "int" should be "enum pgtable_type".
-
-To make "enum pgtable_type" available to cpufeature.c, move
-enum pgtable_type definition from arch/arm64/mm/mmu.c to
-arch/arm64/include/asm/mmu.h.
-
-Adjust kpti_ng_pgd_alloc to use "enum pgtable_type" instead of "int".
-The function behavior remains identical (parameter is unused).
-
-Fixes: c64f46ee1377 ("arm64: mm: use enum to identify pgtable level instead of *_SHIFT")
-Cc: <stable@vger.kernel.org> # 6.16.x
-Signed-off-by: Kees Cook <kees@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20250829190721.it.373-kees@kernel.org
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Ingo Molnar <mingo@elte.hu>
+Link: https://lore.kernel.org/20250822033343.3000289-1-wutengda@huaweicloud.com
+Fixes: d769041f8653 ("ring_buffer: implement new locking")
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/mmu.h   |    7 +++++++
- arch/arm64/kernel/cpufeature.c |    5 +++--
- arch/arm64/mm/mmu.c            |    7 -------
- 3 files changed, 10 insertions(+), 9 deletions(-)
+ kernel/trace/trace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/include/asm/mmu.h
-+++ b/arch/arm64/include/asm/mmu.h
-@@ -17,6 +17,13 @@
- #include <linux/refcount.h>
- #include <asm/cpufeature.h>
- 
-+enum pgtable_type {
-+	TABLE_PTE,
-+	TABLE_PMD,
-+	TABLE_PUD,
-+	TABLE_P4D,
-+};
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 907e45361939b..a32c8637503d1 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -10162,10 +10162,10 @@ void ftrace_dump(enum ftrace_dump_mode oops_dump_mode)
+ 			ret = print_trace_line(&iter);
+ 			if (ret != TRACE_TYPE_NO_CONSUME)
+ 				trace_consume(&iter);
 +
- typedef struct {
- 	atomic64_t	id;
- #ifdef CONFIG_COMPAT
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -84,6 +84,7 @@
- #include <asm/hwcap.h>
- #include <asm/insn.h>
- #include <asm/kvm_host.h>
-+#include <asm/mmu.h>
- #include <asm/mmu_context.h>
- #include <asm/mte.h>
- #include <asm/hypervisor.h>
-@@ -1941,11 +1942,11 @@ static bool has_pmuv3(const struct arm64
- extern
- void create_kpti_ng_temp_pgd(pgd_t *pgdir, phys_addr_t phys, unsigned long virt,
- 			     phys_addr_t size, pgprot_t prot,
--			     phys_addr_t (*pgtable_alloc)(int), int flags);
-+			     phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags);
- 
- static phys_addr_t __initdata kpti_ng_temp_alloc;
- 
--static phys_addr_t __init kpti_ng_pgd_alloc(int shift)
-+static phys_addr_t __init kpti_ng_pgd_alloc(enum pgtable_type type)
- {
- 	kpti_ng_temp_alloc -= PAGE_SIZE;
- 	return kpti_ng_temp_alloc;
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -46,13 +46,6 @@
- #define NO_CONT_MAPPINGS	BIT(1)
- #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
- 
--enum pgtable_type {
--	TABLE_PTE,
--	TABLE_PMD,
--	TABLE_PUD,
--	TABLE_P4D,
--};
++			trace_printk_seq(&iter.seq);
+ 		}
+ 		touch_nmi_watchdog();
 -
- u64 kimage_voffset __ro_after_init;
- EXPORT_SYMBOL(kimage_voffset);
+-		trace_printk_seq(&iter.seq);
+ 	}
  
+ 	if (!cnt)
+-- 
+2.50.1
+
 
 
 
