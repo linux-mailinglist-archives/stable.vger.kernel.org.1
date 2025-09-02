@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-177264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F204B40474
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53F89B404FF
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B14A51B6566A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 131681B6765E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689CC31A569;
-	Tue,  2 Sep 2025 13:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BBA30F542;
+	Tue,  2 Sep 2025 13:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z86vJx9n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SL3jjTp0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EDC30BF79;
-	Tue,  2 Sep 2025 13:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AD23043BA;
+	Tue,  2 Sep 2025 13:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820098; cv=none; b=ZTsshETTb3iAcn//dZUc4ZA/Agfe8N8c0ibKsjlQXZ5+SepFHoKmBjdDRsFjyoI4jWSKwJg5yvmgasPy23eBE74B+rY0Uu03U7iJfuV/ukAhDiZVhP1gqQpTOXcWRngjpG603SHQ/RxxshX7NZSIiHUAbDhUREu0BL7kReK2H84=
+	t=1756820403; cv=none; b=erJ9EohiWu5kDFRoEwcsbxYKLMvbOSYG/Ys8mLRqZMiBRXsnMu1HAvMTzPWggpmPbR7vBoy0dQx6bXZW/UZO7NKYH6TFguMYVQOcD0KlLGTJv9dIpYn0O5XSFskaHIMAZ6E3QnLQbk7OyvM1EEcvj9yJTv6Q03+do7fUBgyoTTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820098; c=relaxed/simple;
-	bh=jFCjxaDFyg3REYO0z0eTlaaGYHlxBa1hXMGTHWWTsBY=;
+	s=arc-20240116; t=1756820403; c=relaxed/simple;
+	bh=tYj1VdrZBQafo0KDjQrQS+A8mVrSxhhut/7cZ1rgdAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HNiiG7ANlEa23SP4sy5LlGnXYVPJcCro2qkElD720GU04lc/+tH0QLVCBL3URWB7g2knpc6NQSEefxOtsYG3DG9syTN5z2dYpAb0G/9d4o+VpMtCHK8mOx+v48ItYZNrkxKJjhp+/030FRxPOgiNXDpr0Z6rY0VllWRw2y7zhus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z86vJx9n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979BDC4CEED;
-	Tue,  2 Sep 2025 13:34:57 +0000 (UTC)
+	 MIME-Version; b=IKYyeI7XkfdLw+5KIrpBmh5gQLSU4+CoHbfiymrXcCxhJqzSN1G+4j6g8CxCFzmbBFZBO8N4iT6+WUElIjRuAHWPuutMWpqjUvoeoEbkvAgZ3mPhyfoN6TbtSHPFGO6WKwi+PrdCqoE0m4C9X2dX8EaMAFdQ1qAhkIq32rZX4DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SL3jjTp0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7F2C4CEED;
+	Tue,  2 Sep 2025 13:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820098;
-	bh=jFCjxaDFyg3REYO0z0eTlaaGYHlxBa1hXMGTHWWTsBY=;
+	s=korg; t=1756820403;
+	bh=tYj1VdrZBQafo0KDjQrQS+A8mVrSxhhut/7cZ1rgdAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z86vJx9n23PlohzNBPP3/rfsMeUx1b8lUi63k8XNoOUx8xdTOfx60SXsw7IBncvl7
-	 nkyfzxdVJPS59bfpAml0Z7ktDXdyWUcGF8lS3c59bZp/FZzBCtoN4vTzREeFANLR3Y
-	 XYZX7XQ4BIadH0F11F9cuXBiXOPCKjg3mqQ21It8=
+	b=SL3jjTp0M/dLuPeHtMUcUFi6EPeneQmfYgL725e95Ju1CJsoQngQh+FE2cJAkiZh+
+	 dlvOrRrItIcW3CGbw7Ak2R6yDFqy309c8s7+Xck29/tXqbrpvCo0r5PuxJ9pwjwj4r
+	 YDlI/8qjDuc37lf+pe4YxoLvrO+zYo9NxCSYW0QQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	Sasha Levin <sashal@kernel.org>,
-	Imre Deak <imre.deak@intel.com>
-Subject: [PATCH 6.12 92/95] Revert "drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS"
-Date: Tue,  2 Sep 2025 15:21:08 +0200
-Message-ID: <20250902131943.130857399@linuxfoundation.org>
+	Ludovico de Nittis <ludovico.denittis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 18/50] Bluetooth: hci_event: Treat UNKNOWN_CONN_ID on disconnect as success
+Date: Tue,  2 Sep 2025 15:21:09 +0200
+Message-ID: <20250902131931.243153786@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Ludovico de Nittis <ludovico.denittis@collabora.com>
 
-This reverts commit 3c778a98bee16b4c7ba364a0101ee3c399a95b85 which is
-commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f upstream.
+[ Upstream commit 2f050a5392b7a0928bf836d9891df4851463512c ]
 
-The upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ("drm/dp:
-Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS") the
-reverted commit backported causes a regression, on one eDP panel at
-least resulting in display flickering, described in detail at the Link:
-below. The issue fixed by the upstream commit will need a different
-solution, revert the backport for now.
+When the host sends an HCI_OP_DISCONNECT command, the controller may
+respond with the status HCI_ERROR_UNKNOWN_CONN_ID (0x02). E.g. this can
+happen on resume from suspend, if the link was terminated by the remote
+device before the event mask was correctly set.
 
-Cc: intel-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: Sasha Levin <sashal@kernel.org>
-Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14558
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is a btmon snippet that shows the issue:
+```
+> ACL Data RX: Handle 3 flags 0x02 dlen 12
+      L2CAP: Disconnection Request (0x06) ident 5 len 4
+        Destination CID: 65
+        Source CID: 72
+< ACL Data TX: Handle 3 flags 0x00 dlen 12
+      L2CAP: Disconnection Response (0x07) ident 5 len 4
+        Destination CID: 65
+        Source CID: 72
+> ACL Data RX: Handle 3 flags 0x02 dlen 12
+      L2CAP: Disconnection Request (0x06) ident 6 len 4
+        Destination CID: 64
+        Source CID: 71
+< ACL Data TX: Handle 3 flags 0x00 dlen 12
+      L2CAP: Disconnection Response (0x07) ident 6 len 4
+        Destination CID: 64
+        Source CID: 71
+< HCI Command: Set Event Mask (0x03|0x0001) plen 8
+        Mask: 0x3dbff807fffbffff
+          Inquiry Complete
+          Inquiry Result
+          Connection Complete
+          Connection Request
+          Disconnection Complete
+          Authentication Complete
+[...]
+< HCI Command: Disconnect (0x01|0x0006) plen 3
+        Handle: 3 Address: 78:20:A5:4A:DF:28 (Nintendo Co.,Ltd)
+        Reason: Remote User Terminated Connection (0x13)
+> HCI Event: Command Status (0x0f) plen 4
+      Disconnect (0x01|0x0006) ncmd 1
+        Status: Unknown Connection Identifier (0x02)
+```
+
+Currently, the hci_cs_disconnect function treats any non-zero status
+as a command failure. This can be misleading because the connection is
+indeed being terminated and the controller is confirming that is has no
+knowledge of that connection handle. Meaning that the initial request of
+disconnecting a device should be treated as done.
+
+With this change we allow the function to proceed, following the success
+path, which correctly calls `mgmt_device_disconnected` and ensures a
+consistent state.
+
+Link: https://github.com/bluez/bluez/issues/1226
+Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
+Signed-off-by: Ludovico de Nittis <ludovico.denittis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_helper.c |    2 +-
+ net/bluetooth/hci_event.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/display/drm_dp_helper.c
-+++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -664,7 +664,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
- 	 * monitor doesn't power down exactly after the throw away read.
- 	 */
- 	if (!aux->is_remote) {
--		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
-+		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
- 		if (ret < 0)
- 			return ret;
- 	}
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 866462c97dbaf..3ff428df58a46 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2767,7 +2767,7 @@ static void hci_cs_disconnect(struct hci_dev *hdev, u8 status)
+ 	if (!conn)
+ 		goto unlock;
+ 
+-	if (status) {
++	if (status && status != HCI_ERROR_UNKNOWN_CONN_ID) {
+ 		mgmt_disconnect_failed(hdev, &conn->dst, conn->type,
+ 				       conn->dst_type, status);
+ 
+-- 
+2.50.1
+
 
 
 
