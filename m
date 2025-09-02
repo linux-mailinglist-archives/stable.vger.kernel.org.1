@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-177381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BCBB404F1
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A68B4046B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 341464E6CD8
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFB13188980B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86E331AF12;
-	Tue,  2 Sep 2025 13:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574B930496B;
+	Tue,  2 Sep 2025 13:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xel72Thv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYgEi3JH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A563112C4;
-	Tue,  2 Sep 2025 13:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F8B30E0E7;
+	Tue,  2 Sep 2025 13:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820460; cv=none; b=TZFEBOB+fZnSkig1qmhQX7aOfFiX3PBhSx9QtQ9oWdpPJ5/DmPRwM+sOCwNGWf/+wdklZDmoB77xW0ccnwDvnWUDG6rqDEAexl6aJYiqrecO1zq+fKB93ZCWntMVRMOmNCZlSIY6SIVVO24xxidedi7sLipMyz3o6SyH1Cna3RQ=
+	t=1756820068; cv=none; b=JNtXJBmHIijlEWxdTPCljmqHHw9BjAeesh2R486gxmxsSmyUDfIS6R42cbq9eIlHoYDZMn+jXmf67RkUNvc/VemjBZKuUBv4ItTSzFa72hLxVCKYgfPkZU/ZI+/FrJo7FKEDQK2UebDIREarZLEEZHaAWbdKjCigvOsoovZLuAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820460; c=relaxed/simple;
-	bh=ItalJlijH88jZYj+eKWBoapanVgNDgUHzMLxAznK/XE=;
+	s=arc-20240116; t=1756820068; c=relaxed/simple;
+	bh=Wh5Epa6SK1hIvBnfKWriqa9+4DUUbNg8ECYEf+VGHmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fS4lBOhcI05Qq2XwL55e1qigvwg4D8dDnAhnM7Wz4YNmRvJGemXdfCS95YFWCdQYrUTrcqn30mXwERSrzg4Uuxbo3D19EonJY4Rwt8QzGbdg378fzBPdpiNv+FGFjzkXxPTCAu1YhMyaREwsFPiz+j1ayNgeRTvpOt+VJQYHrOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xel72Thv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92346C4CEED;
-	Tue,  2 Sep 2025 13:40:59 +0000 (UTC)
+	 MIME-Version; b=KH9IZFW/Xy9DiH3hSHl/FROm94oGElUR4WKAyjHXbOXJpjARWql6+wOJeQfqmlVSw833trwP++al6nmwXwR/6D3IiazjyghV7VGJICWjQFKOFVdXi6HTr7SdNKO83qLqZ6c8BVzRShXnh/FD0lnreSFOwgYd/wDdtHoPBBd6Uao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYgEi3JH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924A9C4CEED;
+	Tue,  2 Sep 2025 13:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820460;
-	bh=ItalJlijH88jZYj+eKWBoapanVgNDgUHzMLxAznK/XE=;
+	s=korg; t=1756820067;
+	bh=Wh5Epa6SK1hIvBnfKWriqa9+4DUUbNg8ECYEf+VGHmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xel72Thv5v/Y82G5s3S5Qo3urkkyu8+hnNtbr54FT4ztrxjytz6NZqx2U3WlORIor
-	 6Axg5chDoaG3XJKpxdQc8OODHmFjYjcy7xRgB5znLSqUppMRXqNyz+tjeTnaZxPVti
-	 bKN7VYNQtrVsCZAu7RWLVHhQbXdo2S/sXk8Jr99A=
+	b=tYgEi3JHPL5bPgqKV8AJr9hCrhTTGKGTl3Nl0/UNueNJHZwaU0d+MeEOG7S5vBIY0
+	 kQrDSFyhyEdCM8Nh66UrKqTiFvirx1fACxUav37Nmyp57bdkRJAYtztuDgULKEx9aN
+	 qRFmC1pWIW3nBsLI9rm+SqySnc/kdyPrz+6Z5Mt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 08/50] ASoC: codecs: tx-macro: correct tx_macro_component_drv name
+	Eric Sandeen <sandeen@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.12 83/95] xfs: do not propagate ENODATA disk errors into xattr code
 Date: Tue,  2 Sep 2025 15:20:59 +0200
-Message-ID: <20250902131930.844064862@linuxfoundation.org>
+Message-ID: <20250902131942.790534694@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Eric Sandeen <sandeen@redhat.com>
 
-[ Upstream commit 43e0da37d5cfb23eec6aeee9422f84d86621ce2b ]
+commit ae668cd567a6a7622bc813ee0bb61c42bed61ba7 upstream.
 
-We already have a component driver named "RX-MACRO", which is
-lpass-rx-macro.c. The tx macro component driver's name should
-be "TX-MACRO" accordingly. Fix it.
+ENODATA (aka ENOATTR) has a very specific meaning in the xfs xattr code;
+namely, that the requested attribute name could not be found.
 
-Cc: Srinivas Kandagatla <srini@kernel.org>
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20250806140030.691477-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, a medium error from disk may also return ENODATA. At best,
+this medium error may escape to userspace as "attribute not found"
+when in fact it's an IO (disk) error.
+
+At worst, we may oops in xfs_attr_leaf_get() when we do:
+
+	error = xfs_attr_leaf_hasname(args, &bp);
+	if (error == -ENOATTR)  {
+		xfs_trans_brelse(args->trans, bp);
+		return error;
+	}
+
+because an ENODATA/ENOATTR error from disk leaves us with a null bp,
+and the xfs_trans_brelse will then null-deref it.
+
+As discussed on the list, we really need to modify the lower level
+IO functions to trap all disk errors and ensure that we don't let
+unique errors like this leak up into higher xfs functions - many
+like this should be remapped to EIO.
+
+However, this patch directly addresses a reported bug in the xattr
+code, and should be safe to backport to stable kernels. A larger-scope
+patch to handle more unique errors at lower levels can follow later.
+
+(Note, prior to 07120f1abdff we did not oops, but we did return the
+wrong error code to userspace.)
+
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+Fixes: 07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
+Cc: stable@vger.kernel.org # v5.9+
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/lpass-tx-macro.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/libxfs/xfs_attr_remote.c |    7 +++++++
+ fs/xfs/libxfs/xfs_da_btree.c    |    6 ++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/sound/soc/codecs/lpass-tx-macro.c b/sound/soc/codecs/lpass-tx-macro.c
-index 840bbe991cd3a..aef2897e00fef 100644
---- a/sound/soc/codecs/lpass-tx-macro.c
-+++ b/sound/soc/codecs/lpass-tx-macro.c
-@@ -1795,7 +1795,7 @@ static int tx_macro_register_mclk_output(struct tx_macro *tx)
- }
+--- a/fs/xfs/libxfs/xfs_attr_remote.c
++++ b/fs/xfs/libxfs/xfs_attr_remote.c
+@@ -435,6 +435,13 @@ xfs_attr_rmtval_get(
+ 					0, &bp, &xfs_attr3_rmt_buf_ops);
+ 			if (xfs_metadata_is_sick(error))
+ 				xfs_dirattr_mark_sick(args->dp, XFS_ATTR_FORK);
++			/*
++			 * ENODATA from disk implies a disk medium failure;
++			 * ENODATA for xattrs means attribute not found, so
++			 * disambiguate that here.
++			 */
++			if (error == -ENODATA)
++				error = -EIO;
+ 			if (error)
+ 				return error;
  
- static const struct snd_soc_component_driver tx_macro_component_drv = {
--	.name = "RX-MACRO",
-+	.name = "TX-MACRO",
- 	.probe = tx_macro_component_probe,
- 	.controls = tx_macro_snd_controls,
- 	.num_controls = ARRAY_SIZE(tx_macro_snd_controls),
--- 
-2.50.1
-
+--- a/fs/xfs/libxfs/xfs_da_btree.c
++++ b/fs/xfs/libxfs/xfs_da_btree.c
+@@ -2833,6 +2833,12 @@ xfs_da_read_buf(
+ 			&bp, ops);
+ 	if (xfs_metadata_is_sick(error))
+ 		xfs_dirattr_mark_sick(dp, whichfork);
++	/*
++	 * ENODATA from disk implies a disk medium failure; ENODATA for
++	 * xattrs means attribute not found, so disambiguate that here.
++	 */
++	if (error == -ENODATA && whichfork == XFS_ATTR_FORK)
++		error = -EIO;
+ 	if (error)
+ 		goto out_free;
+ 
 
 
 
