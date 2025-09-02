@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-177256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F305BB40419
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 133EFB404D2
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E20FF4E6E57
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF299188F833
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2E630E832;
-	Tue,  2 Sep 2025 13:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CECC1308F30;
+	Tue,  2 Sep 2025 13:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYlihkNX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wotww4WZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A741261593;
-	Tue,  2 Sep 2025 13:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9443093B8;
+	Tue,  2 Sep 2025 13:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820074; cv=none; b=cIAs3LF/wo3xug9UCumkUV0G0vjYqXKPRa/ogTpOS/h34QVPqeQwL4riE6UI++HDzYKPX7D4jPF7r5LooPNnAtuLgqVv3mHCC2n6332bgznPNbO6WfOsNPAA9x8BSsXYHLSoZ4+rYi6gtf46Qn2Zig0M6UE6VRDFXtF2Vaayfuc=
+	t=1756820258; cv=none; b=qTrSfoZZLFnAC7imShPA/0WAsTdOtgRUTiUMs0oJCv2K8nDNG7VlNJyNeVXc7HNgXHwXEMvCDeyoyx3Jwfl3M9mBhpvzU9Pn9YShIve49R16LQj0fXvIhMQns0bCv16Fdg+O64ASLe8gFtE/CJkKCegOhjdf6D5P+zCOImFX3VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820074; c=relaxed/simple;
-	bh=eipAaaxDNSxtyolOXqC5rb7fgUomLVwgV3Yg1C0OVVs=;
+	s=arc-20240116; t=1756820258; c=relaxed/simple;
+	bh=rskP4RvtYK6yG07GGPYOq1vvSNFx2nQmf4XUS5P10zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bhv8GQPupd9Lj1hMVtq2hpHPzMNMBJAwpQ8OocTVE+vYI52Gf1FuOKKZ8vGgr1V7w9mTUQD7ZREwI09WeU03+UQPsdWVqr2EqW6p4AVzzeEp4VFZdSQbIwCP1gnVU/7LEow5y6VbH++9KC7qRq2OUOphszMcFegBMcTUmujCCew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYlihkNX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7816CC4CEED;
-	Tue,  2 Sep 2025 13:34:33 +0000 (UTC)
+	 MIME-Version; b=DHeGibbk7Iy/rcngdjNAahXLovRgMdgWaRpe84uvvIKaFSdnb7SASlg8Te4ziTx5/TWr+H4yquo0410l+/DMijfw6BITCorQm8U69HWc+19un4tpwR2vSIrUI2PRc7eUNpj5qc+CPFwttLWIaa/p5xnnd4g2hBJF+TVQxZahH4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wotww4WZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1215DC4CEED;
+	Tue,  2 Sep 2025 13:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820073;
-	bh=eipAaaxDNSxtyolOXqC5rb7fgUomLVwgV3Yg1C0OVVs=;
+	s=korg; t=1756820258;
+	bh=rskP4RvtYK6yG07GGPYOq1vvSNFx2nQmf4XUS5P10zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MYlihkNX7bcR+MQiVubv6KOQ0O6nRzTyiUcX/vb6cXv1NymGunaYH6cVEI0c9BVTS
-	 qbLGcGh5WjBOMmTjxLOm3XYNcuh7bT9a1BPTj/pV1RFqSusGa8PCVxfBSIZztlV1mO
-	 YkagGw++QVXh6pDF5ckwjymHW0wYNKgOAFnyZIBU=
+	b=wotww4WZGdTVSvWwYSIQHqKtlzEdOhucmEKyLwaE1CCeUx2gpZgBNwRLbflNmtm/C
+	 ALmtF5gRubTc34GP4btMsPz+oOuHiW+39Av5w39NOQl49k5PP6q9N+b5/8pZriJt9t
+	 stve4Usnc4/0ooZztRa4f7yE+B9UkE42EMptitjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Jones <jajones@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.12 85/95] drm/nouveau/disp: Always accept linear modifier
+	Rohan G Thomas <rohan.g.thomas@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 49/75] net: stmmac: xgmac: Correct supported speed modes
 Date: Tue,  2 Sep 2025 15:21:01 +0200
-Message-ID: <20250902131942.866505428@linuxfoundation.org>
+Message-ID: <20250902131937.045836851@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Jones <jajones@nvidia.com>
+From: Rohan G Thomas <rohan.g.thomas@altera.com>
 
-commit e2fe0c54fb7401e6ecd3c10348519ab9e23bd639 upstream.
+[ Upstream commit 42ef11b2bff5b6a2910c28d2ea47cc00e0fbcaec ]
 
-On some chipsets, which block-linear modifiers are
-supported is format-specific. However, linear
-modifiers are always be supported. The prior
-modifier filtering logic was not accounting for
-the linear case.
+Correct supported speed modes as per the XGMAC databook.
+Commit 9cb54af214a7 ("net: stmmac: Fix IP-cores specific
+MAC capabilities") removes support for 10M, 100M and
+1000HD. 1000HD is not supported by XGMAC IP, but it does
+support 10M and 100M FD mode for XGMAC version >= 2_20,
+and it also supports 10M and 100M HD mode if the HDSEL bit
+is set in the MAC_HW_FEATURE0 reg. This commit enables support
+for 10M and 100M speed modes for XGMAC IP based on XGMAC
+version and MAC capabilities.
 
-Cc: stable@vger.kernel.org
-Fixes: c586f30bf74c ("drm/nouveau/kms: Add format mod prop to base/ovly/nvdisp")
-Signed-off-by: James Jones <jajones@nvidia.com>
-Link: https://lore.kernel.org/r/20250811220017.1337-3-jajones@nvidia.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9cb54af214a7 ("net: stmmac: Fix IP-cores specific MAC capabilities")
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Link: https://patch.msgid.link/20250825-xgmac-minor-fixes-v3-2-c225fe4444c0@altera.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/dispnv50/wndw.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c | 13 +++++++++++--
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c  |  5 +++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/dispnv50/wndw.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/wndw.c
-@@ -663,6 +663,10 @@ static bool nv50_plane_format_mod_suppor
- 	struct nouveau_drm *drm = nouveau_drm(plane->dev);
- 	uint8_t i;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+index 052566f5b7f36..0bcb378fa0bc9 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -47,6 +47,14 @@ static void dwxgmac2_core_init(struct mac_device_info *hw,
+ 	writel(XGMAC_INT_DEFAULT_EN, ioaddr + XGMAC_INT_EN);
+ }
  
-+	/* All chipsets can display all formats in linear layout */
-+	if (modifier == DRM_FORMAT_MOD_LINEAR)
-+		return true;
++static void dwxgmac2_update_caps(struct stmmac_priv *priv)
++{
++	if (!priv->dma_cap.mbps_10_100)
++		priv->hw->link.caps &= ~(MAC_10 | MAC_100);
++	else if (!priv->dma_cap.half_duplex)
++		priv->hw->link.caps &= ~(MAC_10HD | MAC_100HD);
++}
 +
- 	if (drm->client.device.info.chipset < 0xc0) {
- 		const struct drm_format_info *info = drm_format_info(format);
- 		const uint8_t kind = (modifier >> 12) & 0xff;
+ static void dwxgmac2_set_mac(void __iomem *ioaddr, bool enable)
+ {
+ 	u32 tx = readl(ioaddr + XGMAC_TX_CONFIG);
+@@ -1583,6 +1591,7 @@ static void dwxgmac3_fpe_configure(void __iomem *ioaddr, struct stmmac_fpe_cfg *
+ 
+ const struct stmmac_ops dwxgmac210_ops = {
+ 	.core_init = dwxgmac2_core_init,
++	.update_caps = dwxgmac2_update_caps,
+ 	.set_mac = dwxgmac2_set_mac,
+ 	.rx_ipc = dwxgmac2_rx_ipc,
+ 	.rx_queue_enable = dwxgmac2_rx_queue_enable,
+@@ -1705,8 +1714,8 @@ int dwxgmac2_setup(struct stmmac_priv *priv)
+ 		mac->mcast_bits_log2 = ilog2(mac->multicast_filter_bins);
+ 
+ 	mac->link.caps = MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
+-			 MAC_1000FD | MAC_2500FD | MAC_5000FD |
+-			 MAC_10000FD;
++			 MAC_10 | MAC_100 | MAC_1000FD |
++			 MAC_2500FD | MAC_5000FD | MAC_10000FD;
+ 	mac->link.duplex = 0;
+ 	mac->link.speed10 = XGMAC_CONFIG_SS_10_MII;
+ 	mac->link.speed100 = XGMAC_CONFIG_SS_100_MII;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+index 37c4258fef794..b2c03cb65c7cc 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+@@ -382,8 +382,11 @@ static int dwxgmac2_dma_interrupt(struct stmmac_priv *priv,
+ static int dwxgmac2_get_hw_feature(void __iomem *ioaddr,
+ 				   struct dma_features *dma_cap)
+ {
++	struct stmmac_priv *priv;
+ 	u32 hw_cap;
+ 
++	priv = container_of(dma_cap, struct stmmac_priv, dma_cap);
++
+ 	/* MAC HW feature 0 */
+ 	hw_cap = readl(ioaddr + XGMAC_HW_FEATURE0);
+ 	dma_cap->edma = (hw_cap & XGMAC_HWFEAT_EDMA) >> 31;
+@@ -406,6 +409,8 @@ static int dwxgmac2_get_hw_feature(void __iomem *ioaddr,
+ 	dma_cap->vlhash = (hw_cap & XGMAC_HWFEAT_VLHASH) >> 4;
+ 	dma_cap->half_duplex = (hw_cap & XGMAC_HWFEAT_HDSEL) >> 3;
+ 	dma_cap->mbps_1000 = (hw_cap & XGMAC_HWFEAT_GMIISEL) >> 1;
++	if (dma_cap->mbps_1000 && priv->synopsys_id >= DWXGMAC_CORE_2_20)
++		dma_cap->mbps_10_100 = 1;
+ 
+ 	/* MAC HW feature 1 */
+ 	hw_cap = readl(ioaddr + XGMAC_HW_FEATURE1);
+-- 
+2.50.1
+
 
 
 
