@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-177334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 896B1B4047E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:43:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D8F1B40501
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 23EAB4E0FE7
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B424716FDC6
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECEC30C358;
-	Tue,  2 Sep 2025 13:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3123148B8;
+	Tue,  2 Sep 2025 13:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfL/vCdk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGc5igv9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF2A2EFDB1;
-	Tue,  2 Sep 2025 13:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4EC305E2D;
+	Tue,  2 Sep 2025 13:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820315; cv=none; b=LvFwsuBKbRlrTMabpgPxl6XXZOFrcFSDr1JlBClhexjghi0XAUuWWE0I3msDh48/02q9vWKsEiyrqxcWBUmgh3jGBk1OWL7d5/PVmjBVJYU/f4QTLnsPPbelsJWpoSdZDCgZx6lOnzGfmm4rDWcZtIh0EHVYz4v/y8OODk+7i0g=
+	t=1756820427; cv=none; b=CokOIWkox6zhzcMtJq+BPhW1CMzkqoKWOCw7ItZ2eCoDP7PNcwTXuEQ1fKOyGyhWljA2MHrNHsoGwmfunKKOneWylMbbaKO2Fpifhy81lerpvwx/MmnzMGMJKn0F/6s3p1eFa7W58FJqC2TIMJ6m/AEZ0jyDRCT/Cz+fWQ/L65w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820315; c=relaxed/simple;
-	bh=3iV+DB2uJV3M99dzmhMDolSnZ08GjhaE8z8KQCicPnU=;
+	s=arc-20240116; t=1756820427; c=relaxed/simple;
+	bh=8x/OQOHJNzVgZ+EbR6n3Aa4nQyvcuXX34ctsAsMIyhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZDkplnK3xsp31Rrz6Xg5jdfIGbSW6ZVW3c38KkcOhh+79txj6mAb1eLaxxOGO9Wg7arCFnmC2FwRzIeSyJb99y+zXnzya0Oi7S6/P+Y/7uEC6xtBslFu9J3b2Y+Z+Xw3/aumeODCr+jjQxXSb2B2ZhzaAAjNmcI+bhAe7u98cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfL/vCdk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E334C4CEED;
-	Tue,  2 Sep 2025 13:38:34 +0000 (UTC)
+	 MIME-Version; b=QkjlN0Ogp99h5G9QO2b2zwFcCQlQUhldb6/0EanyL9I+lFKtyBcW0Rumg3vGrGis9cmljZhP6Ed91vSuAcnVSIhML1a8QsVd2jSj96hJYFNyA81opC+8BfoaHCDNauFVGOrx9XndpyTn4Xx/nbV04SaWMF3iuyfO/D1gcTwZ5iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGc5igv9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9957DC4CEED;
+	Tue,  2 Sep 2025 13:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820315;
-	bh=3iV+DB2uJV3M99dzmhMDolSnZ08GjhaE8z8KQCicPnU=;
+	s=korg; t=1756820427;
+	bh=8x/OQOHJNzVgZ+EbR6n3Aa4nQyvcuXX34ctsAsMIyhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lfL/vCdkgzmkvGiubAXPBPzCBLZSDag/Mc6CGuVjhmclIRH68cJ8bBHr/3g+Lkt+1
-	 uIO6vZ+wLUwyd073LPH7ifYVYj3yva59fIAJG3MpG0ZxYBs1zkLoJJrnz9bL7Wqny4
-	 OcAyELTHPEMxfLEyhHXZVSzBcJU81zcIddpc+NVk=
+	b=EGc5igv97WlmK6bkVob9Y/835MK7H/1r03VwA2aOosEzKKUDw0ePjJRk0jK2bAtOx
+	 dfLtlqwvP+W4FcXxVW8eyTHDhuoRBD6bxEupZwXSK66myqfiRKsxWDcemaFuvelVhc
+	 yVC0oK6EHxbSRCk4RxERVxlZIMpNd33sBSJuOkZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 64/75] Revert "drm/amdgpu: fix incorrect vm flags to map bo"
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Akiva Goldberger <agoldberger@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 25/50] net/mlx5: Reload auxiliary drivers on fw_activate
 Date: Tue,  2 Sep 2025 15:21:16 +0200
-Message-ID: <20250902131937.627454352@linuxfoundation.org>
+Message-ID: <20250902131931.524754538@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-commit ac4ed2da4c1305a1a002415058aa7deaf49ffe3e upstream.
+[ Upstream commit 34cc6a54914f478c93e176450fae6313404f9f74 ]
 
-This reverts commit b08425fa77ad2f305fe57a33dceb456be03b653f.
+The devlink reload fw_activate command performs firmware activation
+followed by driver reload, while devlink reload driver_reinit triggers
+only driver reload. However, the driver reload logic differs between the
+two modes, as on driver_reinit mode mlx5 also reloads auxiliary drivers,
+while in fw_activate mode the auxiliary drivers are suspended where
+applicable.
 
-Revert this to align with 6.17 because the fixes tag
-was wrong on this commit.
+Additionally, following the cited commit, if the device has multiple PFs,
+the behavior during fw_activate may vary between PFs: one PF may suspend
+auxiliary drivers, while another reloads them.
 
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit be33e8a239aac204d7e9e673c4220ef244eb1ba3)
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Align devlink dev reload fw_activate behavior with devlink dev reload
+driver_reinit, to reload all auxiliary drivers.
+
+Fixes: 72ed5d5624af ("net/mlx5: Suspend auxiliary devices only in case of PCI device suspend")
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Akiva Goldberger <agoldberger@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250825143435.598584-6-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/devlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-@@ -89,8 +89,8 @@ int amdgpu_map_static_csa(struct amdgpu_
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+index 3749eb83d9e53..64dcfac9ce724 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+@@ -108,7 +108,7 @@ static int mlx5_devlink_reload_fw_activate(struct devlink *devlink, struct netli
+ 	if (err)
+ 		return err;
  
- 	r = amdgpu_vm_bo_map(adev, *bo_va, csa_addr, 0, size,
--			     AMDGPU_VM_PAGE_READABLE | AMDGPU_VM_PAGE_WRITEABLE |
--			     AMDGPU_VM_PAGE_EXECUTABLE);
-+			     AMDGPU_PTE_READABLE | AMDGPU_PTE_WRITEABLE |
-+			     AMDGPU_PTE_EXECUTABLE);
- 
- 	if (r) {
- 		DRM_ERROR("failed to do bo_map on static CSA, err=%d\n", r);
+-	mlx5_unload_one_devl_locked(dev, true);
++	mlx5_unload_one_devl_locked(dev, false);
+ 	err = mlx5_health_wait_pci_up(dev);
+ 	if (err)
+ 		NL_SET_ERR_MSG_MOD(extack, "FW activate aborted, PCI reads fail after reset");
+-- 
+2.50.1
+
 
 
 
