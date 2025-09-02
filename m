@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-177179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA853B403FD
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:38:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32679B403AE
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:35:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FB4C188CB7D
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:36:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF71F7B0F76
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A543101DB;
-	Tue,  2 Sep 2025 13:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB59307AE7;
+	Tue,  2 Sep 2025 13:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2u6pd83W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgV78hcd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCBA30FF01;
-	Tue,  2 Sep 2025 13:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABE33064BE;
+	Tue,  2 Sep 2025 13:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819835; cv=none; b=f2UJzoJOaPL3ZMoBtMdW0XJ3AjGDNFI+7bkDlhthrHQcCH6XEZRUcK1voDuJi6WvMn0f97ShZKYRrLDXL9y9qGQm4MdEOjDAPsEtokJVCc4tYYH+2m2boSwrAhhNU8d3JcFty6lurjpoRY79+cydYnGHbR73OqkCEXMA5Z8vF3w=
+	t=1756819611; cv=none; b=fdKjYYNYaROu+SbS9rP/p99t/GJzJ/6sDrkw2xHYOLHfcAzQIW4PQsjuIM5pCBfTvKbtrxZe48HMuPOSxH8WBDggGDwDcxqLOelnk0z1C5VTuqnAKVW45glRMwylqHz/vTOS5vEGUeBjpCxjaFt5JAmFqCyJ31KdR48/EB2L224=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819835; c=relaxed/simple;
-	bh=/pBT0uhmxSxgRrH0p4fKz4ndokTrIKF4i2ErwqIKJVg=;
+	s=arc-20240116; t=1756819611; c=relaxed/simple;
+	bh=TGuEfre4zF3KmJQRbKdW7cuzp8yqvqEV4shaCsFyaV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SeC+1HnKu8OMf496HpVjYW/M+08PFfFpbiBZ4s1Ty5eAnFAZLF3zgD65qccIs46ymDXx4ZRtfF0bSoyZgcUQKW4FjpvUUhjozi9CS3ENPNagGktKFnSMo75wumna2TONIUqPmK9MuniOGjgd9JNVFnXkWiTQHvui6gx245aXxEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2u6pd83W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13933C4CEED;
-	Tue,  2 Sep 2025 13:30:33 +0000 (UTC)
+	 MIME-Version; b=ACML0baQn+qkEHWJyUdhnWMA49vvDHfZ8z+2R4osLM1rEMnDJnPBlA0K3NzsMR8xx8qxepqE21b7+UaY8yhOf0GFdollwMd59/QTluV7BZu6oo0fq4zgJHeE4CUhO/cbmgpr0ChpYK8K3SxjytzrHUxPbEs88OtJZpG6IPBKTJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgV78hcd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C390DC4CEED;
+	Tue,  2 Sep 2025 13:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819834;
-	bh=/pBT0uhmxSxgRrH0p4fKz4ndokTrIKF4i2ErwqIKJVg=;
+	s=korg; t=1756819611;
+	bh=TGuEfre4zF3KmJQRbKdW7cuzp8yqvqEV4shaCsFyaV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2u6pd83WUCkpYHVCy2LCdDD0ruNuEYZBvYyY9kamr1QPCAlMNrvVpVd3Wb/Oz0nSb
-	 P8YWIUQwtIpwxUOCE2pjF9YPnn373uTRUogzfoS7gYCzEfCaGQb6RljXXgzgp8HfN3
-	 zdlWNccn52NKXMQDDr8Y9v99wgd5jxWwAQxRJJiQ=
+	b=qgV78hcdYFcQdn+s5s8Md+LVJucLJZ/2EXjMfDKkbUCYjKkq45+2Qz1DVzlOBzhzy
+	 wnk1NvrLyfJR5HAXvBuM9W/p/8Dm5DpzfxlfKOiP58l7NvBlcxTD1sTCdRT9Hn0ENJ
+	 RO0DvzxsqpBHch76+YCPyU52bqsfrywy8aCo+cic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Lei Yang <leiyang@redhat.com>,
+	Alexei Lazar <alazar@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 11/95] vhost: Fix ioctl # for VHOST_[GS]ET_FORK_FROM_OWNER
-Date: Tue,  2 Sep 2025 15:19:47 +0200
-Message-ID: <20250902131940.048257046@linuxfoundation.org>
+Subject: [PATCH 6.16 086/142] net/mlx5e: Update and set Xon/Xoff upon MTU set
+Date: Tue,  2 Sep 2025 15:19:48 +0200
+Message-ID: <20250902131951.559921094@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Alexei Lazar <alazar@nvidia.com>
 
-[ Upstream commit 24fc631539cc78225f5c61f99c7666fcff48024d ]
+[ Upstream commit ceddedc969f0532b7c62ca971ee50d519d2bc0cb ]
 
-The VHOST_[GS]ET_FEATURES_ARRAY ioctl already took 0x83 and it would
-result in a build error when the vhost uapi header is used for perf tool
-build like below.
+Xon/Xoff sizes are derived from calculation that include the MTU size.
+Set Xon/Xoff when MTU is set.
+If Xon/Xoff fails, set the previous MTU.
 
-  In file included from trace/beauty/ioctl.c:93:
-  tools/perf/trace/beauty/generated/ioctl/vhost_virtio_ioctl_array.c: In function ‘ioctl__scnprintf_vhost_virtio_cmd’:
-  tools/perf/trace/beauty/generated/ioctl/vhost_virtio_ioctl_array.c:36:18: error: initialized field overwritten [-Werror=override-init]
-     36 |         [0x83] = "SET_FORK_FROM_OWNER",
-        |                  ^~~~~~~~~~~~~~~~~~~~~
-  tools/perf/trace/beauty/generated/ioctl/vhost_virtio_ioctl_array.c:36:18: note: (near initialization for ‘vhost_virtio_ioctl_cmds[131]’)
-
-Fixes: 7d9896e9f6d02d8a ("vhost: Reintroduce kthread API and add mode selection")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Message-Id: <20250819063958.833770-1-namhyung@kernel.org>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
+Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250825143435.598584-10-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/vhost.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../mellanox/mlx5/core/en/port_buffer.h         | 12 ++++++++++++
+ .../net/ethernet/mellanox/mlx5/core/en_main.c   | 17 ++++++++++++++++-
+ 2 files changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/vhost.h b/include/uapi/linux/vhost.h
-index 1c7e7035fc49d..96b178f1bd5ca 100644
---- a/include/uapi/linux/vhost.h
-+++ b/include/uapi/linux/vhost.h
-@@ -254,7 +254,7 @@
-  * When fork_owner is set to VHOST_FORK_OWNER_KTHREAD:
-  *   - Vhost will create vhost workers as kernel threads.
-  */
--#define VHOST_SET_FORK_FROM_OWNER _IOW(VHOST_VIRTIO, 0x83, __u8)
-+#define VHOST_SET_FORK_FROM_OWNER _IOW(VHOST_VIRTIO, 0x84, __u8)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
+index f4a19ffbb641c..66d276a1be836 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
+@@ -66,11 +66,23 @@ struct mlx5e_port_buffer {
+ 	struct mlx5e_bufferx_reg  buffer[MLX5E_MAX_NETWORK_BUFFER];
+ };
  
- /**
-  * VHOST_GET_FORK_OWNER - Get the current fork_owner flag for the vhost device.
-@@ -262,6 +262,6 @@
-  *
-  * @return: An 8-bit value indicating the current thread mode.
-  */
--#define VHOST_GET_FORK_FROM_OWNER _IOR(VHOST_VIRTIO, 0x84, __u8)
-+#define VHOST_GET_FORK_FROM_OWNER _IOR(VHOST_VIRTIO, 0x85, __u8)
++#ifdef CONFIG_MLX5_CORE_EN_DCB
+ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
+ 				    u32 change, unsigned int mtu,
+ 				    struct ieee_pfc *pfc,
+ 				    u32 *buffer_size,
+ 				    u8 *prio2buffer);
++#else
++static inline int
++mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
++				u32 change, unsigned int mtu,
++				void *pfc,
++				u32 *buffer_size,
++				u8 *prio2buffer)
++{
++	return 0;
++}
++#endif
  
- #endif
+ int mlx5e_port_query_buffer(struct mlx5e_priv *priv,
+ 			    struct mlx5e_port_buffer *port_buffer);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 16d818943487b..f0142d32b648f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -48,6 +48,7 @@
+ #include "en.h"
+ #include "en/dim.h"
+ #include "en/txrx.h"
++#include "en/port_buffer.h"
+ #include "en_tc.h"
+ #include "en_rep.h"
+ #include "en_accel/ipsec.h"
+@@ -2985,9 +2986,11 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
+ 	struct mlx5e_params *params = &priv->channels.params;
+ 	struct net_device *netdev = priv->netdev;
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+-	u16 mtu;
++	u16 mtu, prev_mtu;
+ 	int err;
+ 
++	mlx5e_query_mtu(mdev, params, &prev_mtu);
++
+ 	err = mlx5e_set_mtu(mdev, params, params->sw_mtu);
+ 	if (err)
+ 		return err;
+@@ -2997,6 +3000,18 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
+ 		netdev_warn(netdev, "%s: VPort MTU %d is different than netdev mtu %d\n",
+ 			    __func__, mtu, params->sw_mtu);
+ 
++	if (mtu != prev_mtu && MLX5_BUFFER_SUPPORTED(mdev)) {
++		err = mlx5e_port_manual_buffer_config(priv, 0, mtu,
++						      NULL, NULL, NULL);
++		if (err) {
++			netdev_warn(netdev, "%s: Failed to set Xon/Xoff values with MTU %d (err %d), setting back to previous MTU %d\n",
++				    __func__, mtu, err, prev_mtu);
++
++			mlx5e_set_mtu(mdev, params, prev_mtu);
++			return err;
++		}
++	}
++
+ 	params->sw_mtu = mtu;
+ 	return 0;
+ }
 -- 
 2.50.1
 
