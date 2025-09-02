@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-177100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53AE2B40378
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:33:26 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EADB1B403DF
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:37:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4161894DA0
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:31:08 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D52874E3E93
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE153054F4;
-	Tue,  2 Sep 2025 13:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9091A2D481B;
+	Tue,  2 Sep 2025 13:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHinbXdM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qm43NTLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA5428B4F0;
-	Tue,  2 Sep 2025 13:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435D4305076;
+	Tue,  2 Sep 2025 13:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819577; cv=none; b=LhlHG9MhjqoCbiUqOi8+SkRv7vs3ZoxVL2YMESl4jlQUnvJSl6PQSzcjZKyEpOEQBzi/Y0TBODhc7vTTXAtNu+fKC2YHYan68KB67SMmYplduclOlpI/RU48i1/WKs9mAYKqCfr0UyR4m2XsOect5zHPU6TW84g4uxX9X6VhCZg=
+	t=1756819890; cv=none; b=pPOd07aEORQ+h0kJXBQH+uQS8tLOTWFWdD+wLVbQnHLq8pqhnd/OurmBw694MTQJAscvgQoeczIh2XIKFBtrDoUNDQk6OTsuVHsBR39du4dacLkCBVBF0VPsSa2/CVOq2tNH+bznd/IWuU4Gu5NnWKSWlU1GNYhy8YVWp0gnoZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819577; c=relaxed/simple;
-	bh=OW65tS29Og1Sk5OPIL1eePfV5lLVyztEVYVIO16Q0zA=;
+	s=arc-20240116; t=1756819890; c=relaxed/simple;
+	bh=A/H7RSy1GPaI7c8IMD/jzCg+mM9b7PGRlFLH97bMrPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WPW/YcqgfevwIoBsU3pQnFAfgwfa4HglC3XBE1nVEWgsGh6lQxISzHrV2CH9mCexK2WlgdPB+prr6GLEZZEHqHroZF/kGFxAS3hSPjvnGl22CzUZH0rzv/g5njQ+YSGpli2gi6c6kcQK5IgUtPMiBu2uTr+Te0b8b1nJOkrhxEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHinbXdM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B47FC4CEED;
-	Tue,  2 Sep 2025 13:26:16 +0000 (UTC)
+	 MIME-Version; b=vB6Uj8S6lvnCh9V8sCzFDSmiZXMmRdr3DqfbemWXC/PGoFXN4UZEzxMEDZezBxfUaha63dkKhi3XB2FUr7IU4gaHCWlGFGCqqAeJ64BX5Z5GQFFWH9Ms/6c2be1JtuRuHzqPTGMNeS/Ofr6ohFJZbpBe0Wqe9h15xPLkSDt4j/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qm43NTLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94F5C4CEF4;
+	Tue,  2 Sep 2025 13:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819577;
-	bh=OW65tS29Og1Sk5OPIL1eePfV5lLVyztEVYVIO16Q0zA=;
+	s=korg; t=1756819890;
+	bh=A/H7RSy1GPaI7c8IMD/jzCg+mM9b7PGRlFLH97bMrPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QHinbXdMyHMPNA/fG/qrVtiZCFLFIGPIb1NtSr6Mcy5J42S+llMbtY6nZ+aNCVoX0
-	 mTbH2URibKQf5PZTaRPh8SiRo/ZNXoriUNuJXQV11exR7fxNgXqkZz6VA95u4Hx6LA
-	 ctkmvErgCoV86g+U4ncNYQC7o3pLI57Yv4Si/qnI=
+	b=Qm43NTLx1adr4Clwg+M/hXIS8ldS5LPWVsn/aRpJIKgEegCGfZdQTsEo1WEOHHPxW
+	 an19GTshK+9FjSqMhJpoaVugDiywaFLGqEvKLMUYroLCU+VF19OL/a8S1VCj8bhJF7
+	 D+4mVyXzLBVp4Q2g5X1kw7MoH3Hsm8r7G5bJbN0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Ye Weihua <yeweihua4@huawei.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 076/142] bnxt_en: Adjust TX rings if reservation is less than requested
-Date: Tue,  2 Sep 2025 15:19:38 +0200
-Message-ID: <20250902131951.182511947@linuxfoundation.org>
+Subject: [PATCH 6.12 03/95] trace/fgraph: Fix the warning caused by missing unregister notifier
+Date: Tue,  2 Sep 2025 15:19:39 +0200
+Message-ID: <20250902131939.742134593@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Ye Weihua <yeweihua4@huawei.com>
 
-[ Upstream commit 1ee581c24dfdcbc6de25aac95a48c1f08e9a542c ]
+[ Upstream commit edede7a6dcd7435395cf757d053974aaab6ab1c2 ]
 
-Before we accept an ethtool request to increase a resource (such as
-rings), we call the FW to check that the requested resource is likely
-available first before we commit.  But it is still possible that
-the actual reservation or allocation can fail.  The existing code
-is missing the logic to adjust the TX rings in case the reserved
-TX rings are less than requested.  Add a warning message (a similar
-message for RX rings already exists) and add the logic to adjust
-the TX rings.  Without this fix, the number of TX rings reported
-to the stack can exceed the actual TX rings and ethtool -l will
-report more than the actual TX rings.
+This warning was triggered during testing on v6.16:
 
-Fixes: 674f50a5b026 ("bnxt_en: Implement new method to reserve rings.")
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250825175927.459987-3-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+notifier callback ftrace_suspend_notifier_call already registered
+WARNING: CPU: 2 PID: 86 at kernel/notifier.c:23 notifier_chain_register+0x44/0xb0
+...
+Call Trace:
+ <TASK>
+ blocking_notifier_chain_register+0x34/0x60
+ register_ftrace_graph+0x330/0x410
+ ftrace_profile_write+0x1e9/0x340
+ vfs_write+0xf8/0x420
+ ? filp_flush+0x8a/0xa0
+ ? filp_close+0x1f/0x30
+ ? do_dup2+0xaf/0x160
+ ksys_write+0x65/0xe0
+ do_syscall_64+0xa4/0x260
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+When writing to the function_profile_enabled interface, the notifier was
+not unregistered after start_graph_tracing failed, causing a warning the
+next time function_profile_enabled was written.
+
+Fixed by adding unregister_pm_notifier in the exception path.
+
+Link: https://lore.kernel.org/20250818073332.3890629-1-yeweihua4@huawei.com
+Fixes: 4a2b8dda3f870 ("tracing/function-graph-tracer: fix a regression while suspend to disk")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Ye Weihua <yeweihua4@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ kernel/trace/fgraph.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index a4f4d90caf5e9..5360c42ad409c 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -8017,6 +8017,11 @@ static int __bnxt_reserve_rings(struct bnxt *bp)
- 		hwr.rx = rx_rings << 1;
- 	tx_cp = bnxt_num_tx_to_cp(bp, hwr.tx);
- 	hwr.cp = sh ? max_t(int, tx_cp, rx_rings) : tx_cp + rx_rings;
-+	if (hwr.tx != bp->tx_nr_rings) {
-+		netdev_warn(bp->dev,
-+			    "Able to reserve only %d out of %d requested TX rings\n",
-+			    hwr.tx, bp->tx_nr_rings);
-+	}
- 	bp->tx_nr_rings = hwr.tx;
- 
- 	/* If we cannot reserve all the RX rings, reset the RSS map only
-@@ -12872,6 +12877,13 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
- 	if (rc)
- 		return rc;
- 
-+	/* Make adjustments if reserved TX rings are less than requested */
-+	bp->tx_nr_rings -= bp->tx_nr_rings_xdp;
-+	bp->tx_nr_rings_per_tc = bnxt_tx_nr_rings_per_tc(bp);
-+	if (bp->tx_nr_rings_xdp) {
-+		bp->tx_nr_rings_xdp = bp->tx_nr_rings_per_tc;
-+		bp->tx_nr_rings += bp->tx_nr_rings_xdp;
-+	}
- 	rc = bnxt_alloc_mem(bp, irq_re_init);
- 	if (rc) {
- 		netdev_err(bp->dev, "bnxt_alloc_mem err: %x\n", rc);
+diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
+index c12335499ec91..2eed8bc672f91 100644
+--- a/kernel/trace/fgraph.c
++++ b/kernel/trace/fgraph.c
+@@ -1316,6 +1316,7 @@ int register_ftrace_graph(struct fgraph_ops *gops)
+ 		ftrace_graph_active--;
+ 		gops->saved_func = NULL;
+ 		fgraph_lru_release_index(i);
++		unregister_pm_notifier(&ftrace_suspend_notifier);
+ 	}
+ 	return ret;
+ }
 -- 
 2.50.1
 
