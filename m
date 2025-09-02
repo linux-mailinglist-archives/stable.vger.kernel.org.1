@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-177316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DCFCB404BA
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:46:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59DACB40416
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B06D179614
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:42:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA7594E6F5F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E3B3093D8;
-	Tue,  2 Sep 2025 13:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3AC63090FD;
+	Tue,  2 Sep 2025 13:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCefJ+T+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="123z/bWn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805303090D2;
-	Tue,  2 Sep 2025 13:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622B630E0F1;
+	Tue,  2 Sep 2025 13:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820255; cv=none; b=C9Lsg5a9mxHBbc2sMa0LZqEZ2O7BgH2byZHwKYnKm9lrjbQnFdE9l46nCMXGQnPoUWzEerdjJY7DO4seZVpBS1Abjjtz52tXeSjMMW4z+TEKAP9oO59sRGvaBGpF1sOlbxPR+Y5uit2ZnWvUJOJZcad3x833cVRiOxXL5Od2Za8=
+	t=1756820071; cv=none; b=TEX6BAQ5qXXOrV/rmf2RXo97r2Fys+VEjNBuYE5Dtucy43U61APXScwSJW325t5es30qSm3zzxv1Z/Wv2W3S/M+l7pkDPBMJpTLe1JRhyGPUoWN5hkmHk++xQHRHPZ7Gf/kXkXdveLmeJNSHBKPiUhiFHQAsi2cDJargcqrHr3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820255; c=relaxed/simple;
-	bh=d/iPGeXMJrJkG+V0baybBWzUx25xi09KzCIiUj1fQxs=;
+	s=arc-20240116; t=1756820071; c=relaxed/simple;
+	bh=y2JcqRmH5Gb91nJLuiGgfMex9KLRf0kXSp8ap9e0Avk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfQb0cq7ribMY5oJd/WQP7HXLuWjCTpq/P2NY5cCoHEiuepycZqHl/sPZjqbqQg2IbY3M1hKIoZo2t8c2FNBHhF62yBbzJ6hEwGjU/bxHKgvqvoBxAV14FZCyq42wzQls2KBfAOGQPBxVsXRCf2P3XxVC5bVqwjLIZkplCAPdDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCefJ+T+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFB6C4CEED;
-	Tue,  2 Sep 2025 13:37:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U0G7dfqqnn9YYVd/zGH9GlqIKr2fxkKP2I5zYqDTIyWAjzmJZH6aH5vwb27bqfMiLrVzoiOavDjhJxU/KPqGGHf0de81vUhU5qWE5Ucn9k5pp3uANoJvLsIrfEOZ+zL4Ty6bjPhz8P0AaGNFY8MjBm/DVUuBeOwKxJaq5PQNGxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=123z/bWn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901DCC4CEED;
+	Tue,  2 Sep 2025 13:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820255;
-	bh=d/iPGeXMJrJkG+V0baybBWzUx25xi09KzCIiUj1fQxs=;
+	s=korg; t=1756820071;
+	bh=y2JcqRmH5Gb91nJLuiGgfMex9KLRf0kXSp8ap9e0Avk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fCefJ+T+cZf5Z6cUexWjwZywS/qkRd/vu7uvNXNLJoKCZRGHULC8dHR0+tIvGUXiv
-	 4RMrfOJDsip4HYMHeX70r3fUUU5a7iVOrPR5U6T9ny1EuuVYObGJM5674lgywz0v7s
-	 6rvBYLlybV4OAyL/Obtl3fhwblYajlLQhsAgu3ZY=
+	b=123z/bWn9xvIQ3n5zaYSGzYj5B9QOyxYOMtGmnf7cWW68CVcz9s0L+SxSCVN5LFwU
+	 he7VTmitjbHKTrCKpjWZM90j+l5M4DyRsN7LdyW015gQHBYG5D8lWp4m77KuDEVT0A
+	 KnvleYLbU7HzNXt2au4fUMr2OCBDRpzbfe4Bm6rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 48/75] net: stmmac: Rename phylink_get_caps() callback to update_caps()
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Brian Welty <brian.welty@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>
+Subject: [PATCH 6.12 84/95] drm/xe/vm: Clear the scratch_pt pointer on error
 Date: Tue,  2 Sep 2025 15:21:00 +0200
-Message-ID: <20250902131937.007031896@linuxfoundation.org>
+Message-ID: <20250902131942.828625330@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,125 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Serge Semin <fancer.lancer@gmail.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-[ Upstream commit dc144baeb4fbfa0d91ce9c3875307566f58704ec ]
+commit 2b55ddf36229e0278c956215784ab1feeff510aa upstream.
 
-Since recent commits the stmmac_ops::phylink_get_caps() callback has no
-longer been responsible for the phylink MAC capabilities getting, but
-merely updates the MAC capabilities in the mac_device_info::link::caps
-field. Rename the callback to comply with the what the method does now.
+Avoid triggering a dereference of an error pointer on cleanup in
+xe_vm_free_scratch() by clearing any scratch_pt error pointer.
 
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Romain Gantois <romain.gantois@bootlin.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 42ef11b2bff5 ("net: stmmac: xgmac: Correct supported speed modes")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 06951c2ee72d ("drm/xe: Use NULL PTEs as scratch PTEs")
+Cc: Brian Welty <brian.welty@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://lore.kernel.org/r/20250821143045.106005-4-thomas.hellstrom@linux.intel.com
+(cherry picked from commit 358ee50ab565f3c8ea32480e9d03127a81ba32f8)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c | 8 ++++----
- drivers/net/ethernet/stmicro/stmmac/hwif.h        | 8 ++++----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++---
- 3 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/xe/xe_vm.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-index a9837985a483d..bdb4f527289d2 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -69,7 +69,7 @@ static void dwmac4_core_init(struct mac_device_info *hw,
- 		init_waitqueue_head(&priv->tstamp_busy_wait);
- }
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -1402,8 +1402,12 @@ static int xe_vm_create_scratch(struct x
  
--static void dwmac4_phylink_get_caps(struct stmmac_priv *priv)
-+static void dwmac4_update_caps(struct stmmac_priv *priv)
- {
- 	if (priv->plat->tx_queues_to_use > 1)
- 		priv->hw->link.caps &= ~(MAC_10HD | MAC_100HD | MAC_1000HD);
-@@ -1161,7 +1161,7 @@ static int dwmac4_config_l4_filter(struct mac_device_info *hw, u32 filter_no,
+ 	for (i = MAX_HUGEPTE_LEVEL; i < vm->pt_root[id]->level; i++) {
+ 		vm->scratch_pt[id][i] = xe_pt_create(vm, tile, i);
+-		if (IS_ERR(vm->scratch_pt[id][i]))
+-			return PTR_ERR(vm->scratch_pt[id][i]);
++		if (IS_ERR(vm->scratch_pt[id][i])) {
++			int err = PTR_ERR(vm->scratch_pt[id][i]);
++
++			vm->scratch_pt[id][i] = NULL;
++			return err;
++		}
  
- const struct stmmac_ops dwmac4_ops = {
- 	.core_init = dwmac4_core_init,
--	.phylink_get_caps = dwmac4_phylink_get_caps,
-+	.update_caps = dwmac4_update_caps,
- 	.set_mac = stmmac_set_mac,
- 	.rx_ipc = dwmac4_rx_ipc_enable,
- 	.rx_queue_enable = dwmac4_rx_queue_enable,
-@@ -1204,7 +1204,7 @@ const struct stmmac_ops dwmac4_ops = {
- 
- const struct stmmac_ops dwmac410_ops = {
- 	.core_init = dwmac4_core_init,
--	.phylink_get_caps = dwmac4_phylink_get_caps,
-+	.update_caps = dwmac4_update_caps,
- 	.set_mac = stmmac_dwmac4_set_mac,
- 	.rx_ipc = dwmac4_rx_ipc_enable,
- 	.rx_queue_enable = dwmac4_rx_queue_enable,
-@@ -1253,7 +1253,7 @@ const struct stmmac_ops dwmac410_ops = {
- 
- const struct stmmac_ops dwmac510_ops = {
- 	.core_init = dwmac4_core_init,
--	.phylink_get_caps = dwmac4_phylink_get_caps,
-+	.update_caps = dwmac4_update_caps,
- 	.set_mac = stmmac_dwmac4_set_mac,
- 	.rx_ipc = dwmac4_rx_ipc_enable,
- 	.rx_queue_enable = dwmac4_rx_queue_enable,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-index 47fb8e1646c2e..ee9a7d98648b0 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-@@ -300,8 +300,8 @@ struct stmmac_est;
- struct stmmac_ops {
- 	/* MAC core initialization */
- 	void (*core_init)(struct mac_device_info *hw, struct net_device *dev);
--	/* Get phylink capabilities */
--	void (*phylink_get_caps)(struct stmmac_priv *priv);
-+	/* Update MAC capabilities */
-+	void (*update_caps)(struct stmmac_priv *priv);
- 	/* Enable the MAC RX/TX */
- 	void (*set_mac)(void __iomem *ioaddr, bool enable);
- 	/* Enable and verify that the IPC module is supported */
-@@ -423,8 +423,8 @@ struct stmmac_ops {
- 
- #define stmmac_core_init(__priv, __args...) \
- 	stmmac_do_void_callback(__priv, mac, core_init, __args)
--#define stmmac_mac_phylink_get_caps(__priv) \
--	stmmac_do_void_callback(__priv, mac, phylink_get_caps, __priv)
-+#define stmmac_mac_update_caps(__priv) \
-+	stmmac_do_void_callback(__priv, mac, update_caps, __priv)
- #define stmmac_mac_set(__priv, __args...) \
- 	stmmac_do_void_callback(__priv, mac, set_mac, __args)
- #define stmmac_rx_ipc(__priv, __args...) \
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 615d25a0e46be..fa8ee0624f2f2 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1230,8 +1230,8 @@ static int stmmac_phy_setup(struct stmmac_priv *priv)
- 		xpcs_get_interfaces(priv->hw->xpcs,
- 				    priv->phylink_config.supported_interfaces);
- 
--	/* Get the MAC specific capabilities */
--	stmmac_mac_phylink_get_caps(priv);
-+	/* Refresh the MAC-specific capabilities */
-+	stmmac_mac_update_caps(priv);
- 
- 	priv->phylink_config.mac_capabilities = priv->hw->link.caps;
- 
-@@ -7232,7 +7232,7 @@ int stmmac_reinit_queues(struct net_device *dev, u32 rx_cnt, u32 tx_cnt)
- 			priv->rss.table[i] = ethtool_rxfh_indir_default(i,
- 									rx_cnt);
- 
--	stmmac_mac_phylink_get_caps(priv);
-+	stmmac_mac_update_caps(priv);
- 
- 	priv->phylink_config.mac_capabilities = priv->hw->link.caps;
- 
--- 
-2.50.1
-
+ 		xe_pt_populate_empty(tile, vm, vm->scratch_pt[id][i]);
+ 	}
 
 
 
