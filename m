@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-177371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0CD5B404E2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 193C3B404D3
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0E485E4662
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FDFB17F1E5
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90AB314A62;
-	Tue,  2 Sep 2025 13:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A7F30C341;
+	Tue,  2 Sep 2025 13:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdMWYlbt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8rM2TFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620D2313E23;
-	Tue,  2 Sep 2025 13:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D8E30C602;
+	Tue,  2 Sep 2025 13:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820430; cv=none; b=CboJ1+aKDXHba1TRh5KiAMD/kwTvdoM16Ycm8Ts5jl12SYnNxS6oXsNxSU+KxWKQ6nHo2ddr6eC1PbI/WjqAXxzJ24powvid8K5TJe4tnYGqesx7pzojybtaCHzR/Hd8DbKzoyqyA5FgbXLU9y7aM5ftRyzk5dk2CCN4B9afa1c=
+	t=1756820322; cv=none; b=YOZNn2NI82osp79EtYvN2HjQKAYUQXgtGXK3iUtEtTvUR7ThMeKnSxTtwlwA+wdxw2fjZQozAf6mMAZFUrqB4BT4fPHCwaRUM9neMa+4hw24qYKn7uvWftofZT/CVF9c6RDeK6VRIegi3ZYKVfSZAfL/GcuFzaM+69lX3RnF63o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820430; c=relaxed/simple;
-	bh=463nhyPkks4LpuWUNxggHKG9NP9tR4+eDrqHib8UuWo=;
+	s=arc-20240116; t=1756820322; c=relaxed/simple;
+	bh=f20goLFgTm5/gf2FQJJJDeVUmJwRofRoaXYikGktglo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fOvWkdmmh8FVJTi24W7curDcfTkcaQe3ocsNnXEXTwFNlv2CqOhIuGu/49iGSUT9ielh+czk+An2pnbZayhWibMWNjdtPMPKVgr/rBJaQR5VogXrv+UQ/n2fWBXJhUEX/wzdQbPfcr58LhFXXCwoOGN9TZsx1AfV4o2pDJFjQrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdMWYlbt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76777C4CEF9;
-	Tue,  2 Sep 2025 13:40:29 +0000 (UTC)
+	 MIME-Version; b=HFgcTaCVoMBqnEjdAZDodGutMo81utfiIi3AYMcUZZaqd8K0fy2Qym6aSevkC5GuQV1SWcEdZ3ZVZGy1RM8gh7t/XeRTRIbC5CvR+Ls75Do8YeiG716Pj8LxGpFmav+fEyL2ptSW0b5nPFFrdd7JYbXD/f5YLQCr9CuXL6wiuXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8rM2TFe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61422C4CEED;
+	Tue,  2 Sep 2025 13:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820429;
-	bh=463nhyPkks4LpuWUNxggHKG9NP9tR4+eDrqHib8UuWo=;
+	s=korg; t=1756820321;
+	bh=f20goLFgTm5/gf2FQJJJDeVUmJwRofRoaXYikGktglo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MdMWYlbtTA1HejJfHM8bFaJUDi5jm2sJ6pXEINgU7CDAXPHyVrD96LzVfz1GaFI9V
-	 CiCCz+t6H4V51pa198ZjxlUeaFPYidZ1iEf9jA7b6+ylwTnS5gVffgBzOOEoIF5GOl
-	 d6Zor6WolMR5EwDBIMrg9YJkkCq0yVxjSeG7Dlok=
+	b=s8rM2TFed0S+A/uWHijhh2aNyVTgVHu1UPlPZwBCvVvNqh/MutCyk5tkHqopN736w
+	 YX5UC7Q1Iy1Z6RfIAM0N633Sjyh6Z5tFGaNA2c6cHR5WlFDafWJgfT5h34oT46E6Qx
+	 FzVYVfDww/Pfv93+SaBrYOJS35RSKRAmpr5h17lI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Lazar <alazar@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 26/50] net/mlx5e: Update and set Xon/Xoff upon MTU set
-Date: Tue,  2 Sep 2025 15:21:17 +0200
-Message-ID: <20250902131931.563208795@linuxfoundation.org>
+	Shuhao Fu <sfual@cse.ust.hk>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 66/75] fs/smb: Fix inconsistent refcnt update
+Date: Tue,  2 Sep 2025 15:21:18 +0200
+Message-ID: <20250902131937.706892792@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-[ Upstream commit ceddedc969f0532b7c62ca971ee50d519d2bc0cb ]
+commit ab529e6ca1f67bcf31f3ea80c72bffde2e9e053e upstream.
 
-Xon/Xoff sizes are derived from calculation that include the MTU size.
-Set Xon/Xoff when MTU is set.
-If Xon/Xoff fails, set the previous MTU.
+A possible inconsistent update of refcount was identified in `smb2_compound_op`.
+Such inconsistent update could lead to possible resource leaks.
 
-Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250825143435.598584-10-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Why it is a possible bug:
+1. In the comment section of the function, it clearly states that the
+reference to `cfile` should be dropped after calling this function.
+2. Every control flow path would check and drop the reference to
+`cfile`, except the patched one.
+3. Existing callers would not handle refcount update of `cfile` if
+-ENOMEM is returned.
+
+To fix the bug, an extra goto label "out" is added, to make sure that the
+cleanup logic would always be respected. As the problem is caused by the
+allocation failure of `vars`, the cleanup logic between label "finished"
+and "out" can be safely ignored. According to the definition of function
+`is_replayable_error`, the error code of "-ENOMEM" is not recoverable.
+Therefore, the replay logic also gets ignored.
+
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlx5/core/en/port_buffer.h         | 12 ++++++++++++
- .../net/ethernet/mellanox/mlx5/core/en_main.c   | 17 ++++++++++++++++-
- 2 files changed, 28 insertions(+), 1 deletion(-)
+ fs/smb/client/smb2inode.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-index 80af7a5ac6046..a23e3d810f3e4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.h
-@@ -63,11 +63,23 @@ struct mlx5e_port_buffer {
- 	struct mlx5e_bufferx_reg  buffer[MLX5E_MAX_BUFFER];
- };
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -206,8 +206,10 @@ replay_again:
+ 	server = cifs_pick_channel(ses);
  
-+#ifdef CONFIG_MLX5_CORE_EN_DCB
- int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
- 				    u32 change, unsigned int mtu,
- 				    struct ieee_pfc *pfc,
- 				    u32 *buffer_size,
- 				    u8 *prio2buffer);
-+#else
-+static inline int
-+mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
-+				u32 change, unsigned int mtu,
-+				void *pfc,
-+				u32 *buffer_size,
-+				u8 *prio2buffer)
-+{
-+	return 0;
-+}
-+#endif
- 
- int mlx5e_port_query_buffer(struct mlx5e_priv *priv,
- 			    struct mlx5e_port_buffer *port_buffer);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 887d446354006..7612070b66160 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -42,6 +42,7 @@
- #include "eswitch.h"
- #include "en.h"
- #include "en/txrx.h"
-+#include "en/port_buffer.h"
- #include "en_tc.h"
- #include "en_rep.h"
- #include "en_accel/ipsec.h"
-@@ -2640,9 +2641,11 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
- 	struct mlx5e_params *params = &priv->channels.params;
- 	struct net_device *netdev = priv->netdev;
- 	struct mlx5_core_dev *mdev = priv->mdev;
--	u16 mtu;
-+	u16 mtu, prev_mtu;
- 	int err;
- 
-+	mlx5e_query_mtu(mdev, params, &prev_mtu);
-+
- 	err = mlx5e_set_mtu(mdev, params, params->sw_mtu);
- 	if (err)
- 		return err;
-@@ -2652,6 +2655,18 @@ int mlx5e_set_dev_port_mtu(struct mlx5e_priv *priv)
- 		netdev_warn(netdev, "%s: VPort MTU %d is different than netdev mtu %d\n",
- 			    __func__, mtu, params->sw_mtu);
- 
-+	if (mtu != prev_mtu && MLX5_BUFFER_SUPPORTED(mdev)) {
-+		err = mlx5e_port_manual_buffer_config(priv, 0, mtu,
-+						      NULL, NULL, NULL);
-+		if (err) {
-+			netdev_warn(netdev, "%s: Failed to set Xon/Xoff values with MTU %d (err %d), setting back to previous MTU %d\n",
-+				    __func__, mtu, err, prev_mtu);
-+
-+			mlx5e_set_mtu(mdev, params, prev_mtu);
-+			return err;
-+		}
+ 	vars = kzalloc(sizeof(*vars), GFP_ATOMIC);
+-	if (vars == NULL)
+-		return -ENOMEM;
++	if (vars == NULL) {
++		rc = -ENOMEM;
++		goto out;
 +	}
-+
- 	params->sw_mtu = mtu;
- 	return 0;
- }
--- 
-2.50.1
-
+ 	rqst = &vars->rqst[0];
+ 	rsp_iov = &vars->rsp_iov[0];
+ 
+@@ -828,6 +830,7 @@ finished:
+ 	    smb2_should_replay(tcon, &retries, &cur_sleep))
+ 		goto replay_again;
+ 
++out:
+ 	if (cfile)
+ 		cifsFileInfo_put(cfile);
+ 
 
 
 
