@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-177206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2BAB403E3
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:37:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBDCB403A0
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 939A94E1ABA
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:37:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2C5B17AD7F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656DE3090D9;
-	Tue,  2 Sep 2025 13:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EDB30DEAE;
+	Tue,  2 Sep 2025 13:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQCTHmV4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTVc5Jy7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221533081A8;
-	Tue,  2 Sep 2025 13:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0590630DEA4;
+	Tue,  2 Sep 2025 13:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819916; cv=none; b=RY+wUKziqIuTH+vi60Yx1Xc1sVOIKdP1M9plGrSm/8GB+yoGmbxHFrbCjaKofougzuq9lmQCR0S9hbgI9/AFuUDD98qJtOUe8hQ1dgwepJ8isMaXbQjI+2S/1rV3SIVtKJmORo7jqPWCV/tbbQDeHqCeUSvwsp8RmMAxnAGMGKE=
+	t=1756819772; cv=none; b=Cj2Hu/Aeo5Smp2/qbQJy471eVwjrRUuTBr5UZg0u8lJxk3YAXnwJXplMtWI8nu09/L3DsGqvfUl8sy5I1cJcZo34zUanhEX/7Wit9TfJhL1VOdoKE1ecZBHC8WynBUayQVS9MYiElIDTFj6MjhF9porGBBbkVpojfAKFcGlfmaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819916; c=relaxed/simple;
-	bh=sBdpjXmQ1SEbyb1HDLwE8Kx4GpWzvBgTbHPriQihUck=;
+	s=arc-20240116; t=1756819772; c=relaxed/simple;
+	bh=+DUe9EcsuzwEj2fw8OkrukgUm5Sb8GvOsFlZDQokp94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IiPlggmkwx4WzbTZ6ASyAaRrIXSsyFtsyIZinRDV9otMPfT9Qgdx7VcR6kwGJEOgZZ1bbr23dQWZ0Qg+4/rqqtv7gEIPvzfEeipjoFOvGX+a2BJIyvapqULGaibBgkq1e/Hs/yv7794NXi/KKmtReRoNrTFGVGapzoLZSMwIXfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQCTHmV4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934B1C4CEF5;
-	Tue,  2 Sep 2025 13:31:55 +0000 (UTC)
+	 MIME-Version; b=qq4AUj9nERJYYqifT0Q6sy9bx5BC6FJnpLdAGwaZuwpZPnj1tpPMrNNCwqP3RwWRawUkB+WrauZ9c+D7C6bY16ZvP5Sjq677FUaFeEaD1MDWWUplxQ3x4iRgVwR0MIOgMC82Yi5IHA/fzDDdzyxbR76lWnO9iksbJCEHuZt9VNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTVc5Jy7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EBEC4CEED;
+	Tue,  2 Sep 2025 13:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819916;
-	bh=sBdpjXmQ1SEbyb1HDLwE8Kx4GpWzvBgTbHPriQihUck=;
+	s=korg; t=1756819771;
+	bh=+DUe9EcsuzwEj2fw8OkrukgUm5Sb8GvOsFlZDQokp94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQCTHmV4YTpe+DHnqVAarq6wtTipQY7+Bvbm0gLRaUIJWzASpf6l/cBUaLBEuhXDc
-	 zia2ouy7fxDfhk183oniteugfDnmIIvtybOVoG03s5FTM/j4k+99OHfxW1KsY4cEqV
-	 mPGJuBmbBQKyVa+mZPLDSqSwzy3bCmkLp+FCtu2Q=
+	b=CTVc5Jy7iUKcK1VMVzV0xJUD1LtSCR5XE89LT07yuxRAGM72S5b3BUtEYH/sbYRED
+	 PnrUDA/cybg/zH+aIBLR7H51KaQZJSwL+7HsS5W7VPXLS7sAE2dq5tXsqL5YmRIHlX
+	 GUXoYGHC3KzNX+9P+M+4VpmjrnVuJk52n1QZzQoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	luoguangfei <15388634752@163.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Qingyue Zhang <chunzhennn@qq.com>,
+	Suoxing Zhang <aftern00n@qq.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 28/95] net: macb: fix unregister_netdev call order in macb_remove()
+Subject: [PATCH 6.16 102/142] io_uring/kbuf: always use READ_ONCE() to read ring provided buffer lengths
 Date: Tue,  2 Sep 2025 15:20:04 +0200
-Message-ID: <20250902131940.692435128@linuxfoundation.org>
+Message-ID: <20250902131952.191321279@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: luoguangfei <15388634752@163.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 01b9128c5db1b470575d07b05b67ffa3cb02ebf1 ]
+[ Upstream commit 98b6fa62c84f2e129161e976a5b9b3cb4ccd117b ]
 
-When removing a macb device, the driver calls phy_exit() before
-unregister_netdev(). This leads to a WARN from kernfs:
+Since the buffers are mapped from userspace, it is prudent to use
+READ_ONCE() to read the value into a local variable, and use that for
+any other actions taken. Having a stable read of the buffer length
+avoids worrying about it changing after checking, or being read multiple
+times.
 
-  ------------[ cut here ]------------
-  kernfs: can not remove 'attached_dev', no directory
-  WARNING: CPU: 1 PID: 27146 at fs/kernfs/dir.c:1683
-  Call trace:
-    kernfs_remove_by_name_ns+0xd8/0xf0
-    sysfs_remove_link+0x24/0x58
-    phy_detach+0x5c/0x168
-    phy_disconnect+0x4c/0x70
-    phylink_disconnect_phy+0x6c/0xc0 [phylink]
-    macb_close+0x6c/0x170 [macb]
-    ...
-    macb_remove+0x60/0x168 [macb]
-    platform_remove+0x5c/0x80
-    ...
+Similarly, the buffer may well change in between it being picked and
+being committed. Ensure the looping for incremental ring buffer commit
+stops if it hits a zero sized buffer, as no further progress can be made
+at that point.
 
-The warning happens because the PHY is being exited while the netdev
-is still registered. The correct order is to unregister the netdev
-before shutting down the PHY and cleaning up the MDIO bus.
-
-Fix this by moving unregister_netdev() ahead of phy_exit() in
-macb_remove().
-
-Fixes: 8b73fa3ae02b ("net: macb: Added ZynqMP-specific initialization")
-Signed-off-by: luoguangfei <15388634752@163.com>
-Link: https://patch.msgid.link/20250818232527.1316-1-15388634752@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
+Link: https://lore.kernel.org/io-uring/tencent_000C02641F6250C856D0C26228DE29A3D30A@qq.com/
+Reported-by: Qingyue Zhang <chunzhennn@qq.com>
+Reported-by: Suoxing Zhang <aftern00n@qq.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/kbuf.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 3c2a7919b1289..2421a7bcd221e 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5225,11 +5225,11 @@ static void macb_remove(struct platform_device *pdev)
+diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+index 81a13338dfab3..19a8bde5e1e1c 100644
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -36,15 +36,19 @@ static bool io_kbuf_inc_commit(struct io_buffer_list *bl, int len)
+ {
+ 	while (len) {
+ 		struct io_uring_buf *buf;
+-		u32 this_len;
++		u32 buf_len, this_len;
  
- 	if (dev) {
- 		bp = netdev_priv(dev);
-+		unregister_netdev(dev);
- 		phy_exit(bp->sgmii_phy);
- 		mdiobus_unregister(bp->mii_bus);
- 		mdiobus_free(bp->mii_bus);
+ 		buf = io_ring_head_to_buf(bl->buf_ring, bl->head, bl->mask);
+-		this_len = min_t(u32, len, buf->len);
+-		buf->len -= this_len;
+-		if (buf->len) {
++		buf_len = READ_ONCE(buf->len);
++		this_len = min_t(u32, len, buf_len);
++		buf_len -= this_len;
++		/* Stop looping for invalid buffer length of 0 */
++		if (buf_len || !this_len) {
+ 			buf->addr += this_len;
++			buf->len = buf_len;
+ 			return false;
+ 		}
++		buf->len = 0;
+ 		bl->head++;
+ 		len -= this_len;
+ 	}
+@@ -159,6 +163,7 @@ static void __user *io_ring_buffer_select(struct io_kiocb *req, size_t *len,
+ 	__u16 tail, head = bl->head;
+ 	struct io_uring_buf *buf;
+ 	void __user *ret;
++	u32 buf_len;
  
--		unregister_netdev(dev);
- 		cancel_work_sync(&bp->hresp_err_bh_work);
- 		pm_runtime_disable(&pdev->dev);
- 		pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	tail = smp_load_acquire(&br->tail);
+ 	if (unlikely(tail == head))
+@@ -168,8 +173,9 @@ static void __user *io_ring_buffer_select(struct io_kiocb *req, size_t *len,
+ 		req->flags |= REQ_F_BL_EMPTY;
+ 
+ 	buf = io_ring_head_to_buf(br, head, bl->mask);
+-	if (*len == 0 || *len > buf->len)
+-		*len = buf->len;
++	buf_len = READ_ONCE(buf->len);
++	if (*len == 0 || *len > buf_len)
++		*len = buf_len;
+ 	req->flags |= REQ_F_BUFFER_RING | REQ_F_BUFFERS_COMMIT;
+ 	req->buf_list = bl;
+ 	req->buf_index = buf->bid;
+@@ -265,7 +271,7 @@ static int io_ring_buffers_peek(struct io_kiocb *req, struct buf_sel_arg *arg,
+ 
+ 	req->buf_index = buf->bid;
+ 	do {
+-		u32 len = buf->len;
++		u32 len = READ_ONCE(buf->len);
+ 
+ 		/* truncate end piece, if needed, for non partial buffers */
+ 		if (len > arg->max_len) {
 -- 
 2.50.1
 
