@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-177483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369D7B4059F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:56:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4A7B405B3
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:57:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 650ED5E0D63
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:51:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 053A61B63A29
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A59307499;
-	Tue,  2 Sep 2025 13:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128B732A81A;
+	Tue,  2 Sep 2025 13:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0akamDs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FCc3DQng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126A92DA751;
-	Tue,  2 Sep 2025 13:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6D2305062;
+	Tue,  2 Sep 2025 13:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820791; cv=none; b=sH5iaYOcuabd3zfDz3bK4Kp+UsB45nvlUC3aw4xkOlCI1CNoAZ/5c+Ciczx98r6xRWWZAc1FySvbJhK7/lbk+912CwFMotrfOVmC7qMeM1d30GoRibV75J5U0OvbhZsOpBkBrmwUZPiKA3BB0PsFK9EqjbyAxYJvIFotrazzGC0=
+	t=1756820797; cv=none; b=n6yOTWcf/zOGu4YRyrkwrSQs1J73XrOopgj7g1z09bxhAOIIBE1E7yAGibxG7vL/MFpEabrbFRh6rnMn3aXhWXzCgFYZw/FogZApar/OP4eeXKQjARuod2/w8MHMjgmiljmcGJRp67C4v2be8NySJUrz+ZKrsi7fILoEfSaCmWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820791; c=relaxed/simple;
-	bh=JGr+H7OMNdAMEe5dXys2K3hKN5kOwGJDGUdGXqjdxgo=;
+	s=arc-20240116; t=1756820797; c=relaxed/simple;
+	bh=IC/9yXzUind2LmlDF1qKR5GOtyhdUGzJl4Pb6RGyBbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TXnqiPEaG+1wYriHqXv7v1pVFRbtZp+7zc6JKQBKHfPbtDOoZCa21225/W9O7MmzSI1kZqVrZnZj2K9Q07C30/b39JkmIQiIL2dtyPNHjiynHhbL3hFVrhVVQU3B7nsPJuGPWoPCL/fLMyS35bl7XgcpY4s+keNNC+q3HjHrav8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0akamDs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C569C4CEF4;
-	Tue,  2 Sep 2025 13:46:30 +0000 (UTC)
+	 MIME-Version; b=ZfFmbZzHc73w3U41QaYxUX7uP4b+cDwH9zIKqkHo8wtNbkqMAzj+yVk+6DDrRW/81aI3PZ1PrdFsoAgypzs4rl14wiFEJQbE8OdIq33BauZhSjnE6NpeP+YNtgB/brev8mswd+e+KSRqSuAntIHD1aWXfmQCYq6Q90DlQApkrQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FCc3DQng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF34BC4CEED;
+	Tue,  2 Sep 2025 13:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820791;
-	bh=JGr+H7OMNdAMEe5dXys2K3hKN5kOwGJDGUdGXqjdxgo=;
+	s=korg; t=1756820797;
+	bh=IC/9yXzUind2LmlDF1qKR5GOtyhdUGzJl4Pb6RGyBbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B0akamDsEc8v+mhTAuDTiN1SfhSiR6wQI3IIUPol0QjwZEkkXXySN8IrYhT6yCRgk
-	 De0U/AkbjYnIe945oEykE6Xx4osHNKJ0eHdwu9LUt9ftMmHsjRS5LjevzOCd/YCR2j
-	 9xUIItVNS/ZG1plC0SP5hB5i6FuAqgT+LeP/kCgs=
+	b=FCc3DQngU5nK0Ob6DK/awT1ZQyTWaFY6FPcNymYl3fqxXSmqKyNx03A8nIi2LVd2J
+	 E8sXhJQVx40AapqumqTpFn1HmijccUCKuv7hvXiIbtk8Ogx9s1PP9RCN/KXaMq5hj4
+	 ADMkx1ItMCWmgS00DDtvJZh5N770Nv1yTsbXJ384=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.4 19/23] HID: wacom: Add a new Art Pen 2
-Date: Tue,  2 Sep 2025 15:22:05 +0200
-Message-ID: <20250902131925.497596771@linuxfoundation.org>
+	Minjong Kim <minbell.kim@samsung.com>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 5.4 20/23] HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()
+Date: Tue,  2 Sep 2025 15:22:06 +0200
+Message-ID: <20250902131925.537637682@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131924.720400762@linuxfoundation.org>
 References: <20250902131924.720400762@linuxfoundation.org>
@@ -65,27 +65,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ping Cheng <pinglinux@gmail.com>
+From: Minjong Kim <minbell.kim@samsung.com>
 
-commit 9fc51941d9e7793da969b2c66e6f8213c5b1237f upstream.
+commit 185c926283da67a72df20a63a5046b3b4631b7d9 upstream.
 
-Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+in ntrig_report_version(), hdev parameter passed from hid_probe().
+sending descriptor to /dev/uhid can make hdev->dev.parent->parent to null
+if hdev->dev.parent->parent is null, usb_dev has
+invalid address(0xffffffffffffff58) that hid_to_usb_dev(hdev) returned
+when usb_rcvctrlpipe() use usb_dev,it trigger
+page fault error for address(0xffffffffffffff58)
+
+add null check logic to ntrig_report_version()
+before calling hid_to_usb_dev()
+
+Signed-off-by: Minjong Kim <minbell.kim@samsung.com>
+Link: https://patch.msgid.link/20250813-hid-ntrig-page-fault-fix-v2-1-f98581f35106@samsung.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_wac.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-ntrig.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -684,6 +684,7 @@ static bool wacom_is_art_pen(int tool_id
- 	case 0x885:	/* Intuos3 Marker Pen */
- 	case 0x804:	/* Intuos4/5 13HD/24HD Marker Pen */
- 	case 0x10804:	/* Intuos4/5 13HD/24HD Art Pen */
-+	case 0x204:     /* Art Pen 2 */
- 		is_art_pen = true;
- 		break;
- 	}
+--- a/drivers/hid/hid-ntrig.c
++++ b/drivers/hid/hid-ntrig.c
+@@ -144,6 +144,9 @@ static void ntrig_report_version(struct
+ 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
+ 	unsigned char *data = kmalloc(8, GFP_KERNEL);
+ 
++	if (!hid_is_usb(hdev))
++		return;
++
+ 	if (!data)
+ 		goto err_free;
+ 
 
 
 
