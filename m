@@ -1,148 +1,125 @@
-Return-Path: <stable+bounces-177003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BCBBB3FEDD
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 14:00:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF551B3FF07
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 14:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 549C93BFC16
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 11:57:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F30C91B2715F
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E631302CAC;
-	Tue,  2 Sep 2025 11:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C25301471;
+	Tue,  2 Sep 2025 11:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hzP3Tewr"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="Ktw+Xa6Q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C263A27A456
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 11:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F46301028
+	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 11:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756813913; cv=none; b=RNOsNIFwHvSuwC4YkBdH160LIcvccPsb1Ul8z63LsoczvjTmWNChlqNcPnSW3waS59sncJzdiH8AehWx/a79qYpJWuLVg0ADKYxNapzYyM9/tQ54YxuBOdkF2GIjQ19s7h/UTkRGmcQl+EkYF3DNofPetTja3CSTxQzlWEML/io=
+	t=1756814248; cv=none; b=j2ZGlW1jfDyD2F4RUhNLLJV0mKnZahvoGfVVCgMrmKKm+5scwiEYiX+kU43WHG1dH+IJDBs7jpCnf4G/4/j07eDZFjAG1ryLvj5AJtwhrjtCaCj9gX4GgCr3KzaOhV8S4vaMxNeFqdd8TQ5RxnPxTNYBwMw/b6cue+Erw9SJ8Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756813913; c=relaxed/simple;
-	bh=K5C4PGpx/LOMzvnzh3r4Qx2adU6alBsrvqQPUMcNiyY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bwxHgTIJEPiuodJFu/mwC1zLgqutUM5dD02JMZKMC5QHwZOG8YgulWv7NPjKVCkndwZkCi4t95nqfyi2H6j12QO6rH/EbekbXMEIFGGM1j5Ex5/yCyHxMLvLZnB8hIIJ6F/KB6I0VBp4OApKxNrYkVvMihk1BRZKJDkuO9SjrFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hzP3Tewr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D7BC4CEED;
-	Tue,  2 Sep 2025 11:51:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756813913;
-	bh=K5C4PGpx/LOMzvnzh3r4Qx2adU6alBsrvqQPUMcNiyY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hzP3TewryGXOjBJ/foM6k2Kj1mT5lmUqO8UI0g85OeORACxK0CYhukH6OKrsqlPRz
-	 iK0+uIJZUQgShnnn0Kh65Ye68BOevvqZX5Lp+57AAMOmBv+U3y19cw8J1l2g4p/g4g
-	 AaxlgdHGoiR64ZSF9MwrnE4k/kspWIgU+zm1+rHZacdpQetBTlu7SrfSNHnZTObTOk
-	 LT98BW1wfdIRW5zfBFpwXFfMV0omJg4VjKG+c39SZzFy8SiwyFF3EwDIhIYnFArOB/
-	 fVRjRpiGc468B7a1l9vQGCCzB0p9TBehV5DxQbV6uqGDCFFqUWzB9cOe40247vl4wH
-	 Fc+lz7EFEbjzQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Eric Sandeen <sandeen@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] xfs: do not propagate ENODATA disk errors into xattr code
-Date: Tue,  2 Sep 2025 07:51:50 -0400
-Message-ID: <20250902115150.1331801-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025090105-strainer-glider-fdcd@gregkh>
-References: <2025090105-strainer-glider-fdcd@gregkh>
+	s=arc-20240116; t=1756814248; c=relaxed/simple;
+	bh=kkPqc1cvhELv0tJYEVHD2ZdMWGPrOMkmdqrhZS4yPg0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lSOP7QiD2GrHcEXkNwsoaOoHAd2eZUojByO70+VbR3sxgMwc88ODYkX3fdAasixoNH3wUZ1QQTuFPSrTvhAr6rNf3fn0zxD0xz2SHhJPNnujiYCenC18mXcxPZsC7N2Rk2UaDvt02KD5KnUdtN/rKA+WEyTgAIj2yNcG2tcROLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=Ktw+Xa6Q; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-55f76454f69so2175824e87.0
+        for <stable@vger.kernel.org>; Tue, 02 Sep 2025 04:57:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756814245; x=1757419045; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Fp4Abv/fzY5toSq5c8kjCytYfJxDDQ+v7rc26B0Blgs=;
+        b=Ktw+Xa6QWfwXZkenNWDpRsP3Zc7Tqm9416Tlt9m4HIjOPAnzCaj6Jw29SUcvb9mQaO
+         Frb2mrUkA1bFxsOOWkbbDIMoZ6Z4PIuezinM1sD2qLIWyyl/98HofL0KWTaO7T5/ZXXz
+         yGt0S83oUBaZMMGJKRBIpGtf/yrsR+DaOkVjxyjUWFQPMDqcUVBERlVsWi+fIUSQ/S+1
+         6YFMO5iUn1PZvv/Cg60CCup3plzeY+nk2LyXv0FS2/3NpJRE6OrRd773NaceR6zUqmpi
+         bhENwdj8O21rXNMHDUWfuTGTz5VUn+x8mmRITJuvWu6tqU6eXK2zUGCZ6X4x5CQL1QKC
+         ntoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756814245; x=1757419045;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Fp4Abv/fzY5toSq5c8kjCytYfJxDDQ+v7rc26B0Blgs=;
+        b=Xda0DBLAsB9LxGZD6K22s/Vr70JQjWWelxnSDp5oAEioiJR9vfB5UhITakyVZm/G1x
+         9q+wH7Y0X16wZOvF7vX85fUIJzSOsZeImXvehLzPGmOR/3Ebob0f60OYzwr8Dnu5ylBf
+         RVv1dr2fvOfrWu1Z1RxLkIBiPD6BwRPl6SDUaJj4g+4/5MiF+/UE+7JTWbYV7ggaxCy8
+         ysZfiu/+8AM9Ex2ePrHCG51i4jbMBCmj6/gGswrfF7hJE5CHrAqaKwY8FtRRx7q1L8OC
+         9Cg4DGLZgL85YrKUb59wyJ4hpDcW/vepwnJLRrBxjC/sOFz88C44aimwM7pHSMwudwoQ
+         HXaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHoxepQGHCFRBSQ7wv4Zxwlj9WdyFF0XX939FXMNjXDNTiT2L3aoAsTmRIsyXE7Rul1MwSxaM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZNfR2UXAUg2As5fOfoBXcqOPNpTZHTOFMLdirh2GhZKi8wfSs
+	LXM7NUiCY99wSjvMVc4Oj1WHUij3nRebbzGJVXv5IVulChA/SbIYjqxtmYQgUJy3qbtp1OS/HRv
+	sa/dJ4lbyRd/0695JllDtYZDL+DLJezc97yPNMwD0YA==
+X-Gm-Gg: ASbGncsDs2nYHVXRy1prmRVeqlGzBlj+zauS+SdRxykRbBGEaK7QrO4KHWlkxzu2T7e
+	eNACCARGuODmzznc7L794j9fQ/LF9Mw2RBj0Voo4ltMS+CaovS+/W54RvriTkuJXJky013xzS1+
+	XXydvAGzqNue4FTR09MExzObXeK4hNiSBKfnp3CjNB/mwighTGtu8fGDcsYgbSUhfcN5XSJOImC
+	4xu4yNbAIrBPAVp5QiKjztjecjCYNXvrOPPZVWMzrPOMuo9TQ==
+X-Google-Smtp-Source: AGHT+IErcjW0+LGFGJcHQchCQeR1Yt+GA9XuQLP2Vn98G+VTiZcJCdrpPfkwDR775dV3lM7lVH5sLJhNO5IY+DD19Bk=
+X-Received: by 2002:a05:6512:3b8b:b0:55f:554c:b1fb with SMTP id
+ 2adb3069b0e04-55f70912819mr3298424e87.29.1756814244976; Tue, 02 Sep 2025
+ 04:57:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250811-gpio-mmio-mfd-conv-v1-0-68c5c958cf80@linaro.org> <175680785548.2247963.242433624241359060.b4-ty@kernel.org>
+In-Reply-To: <175680785548.2247963.242433624241359060.b4-ty@kernel.org>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 2 Sep 2025 13:57:14 +0200
+X-Gm-Features: Ac12FXztQMclI5iZSDKTIUNQ7QH1_dUHxuo2PxWIXoNlkSSmA9MCP00AzVcpvI0
+Message-ID: <CAMRc=MeWnrSPrLOq7yH71wpw4vP6RJiLnuLCpwXogZn0yugFgw@mail.gmail.com>
+Subject: Re: [PATCH 0/2] mfd: vexpress: convert the driver to using the new
+ generic GPIO chip API
+To: Lee Jones <lee@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Liviu Dudau <liviu.dudau@arm.com>, 
+	Sudeep Holla <sudeep.holla@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Pawel Moll <pawel.moll@arm.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Eric Sandeen <sandeen@redhat.com>
+On Tue, Sep 2, 2025 at 12:10=E2=80=AFPM Lee Jones <lee@kernel.org> wrote:
+>
+> On Mon, 11 Aug 2025 15:36:15 +0200, Bartosz Golaszewski wrote:
+> > This converts the vexpress-sysreg MFD driver to using the new generic
+> > GPIO interface but first fixes an issue with an unchecked return value
+> > of devm_gpiochio_add_data().
+> >
+> > Lee: Please, create an immutable branch containing these commits after
+> > you pick them up, as I'd like to merge it into the GPIO tree and remove
+> > the legacy interface in this cycle.
+> >
+> > [...]
+>
+> Applied, thanks!
+>
+> [1/2] mfd: vexpress-sysreg: check the return value of devm_gpiochip_add_d=
+ata()
+>       commit: 14b2b50be20bd15236bc7d4c614ecb5d9410c3ec
+> [2/2] mfd: vexpress-sysreg: use new generic GPIO chip API
+>       commit: 8080e2c6138e4c615c1e6bc1378ec042b6f9cd36
+>
+> --
+> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
+>
 
-[ Upstream commit ae668cd567a6a7622bc813ee0bb61c42bed61ba7 ]
+Thanks, you haven't pushed out the changes yet so maybe you're already
+on it but please don't forget to set up an immutable branch for
+merging back of these changes into the GPIO tree.
 
-ENODATA (aka ENOATTR) has a very specific meaning in the xfs xattr code;
-namely, that the requested attribute name could not be found.
-
-However, a medium error from disk may also return ENODATA. At best,
-this medium error may escape to userspace as "attribute not found"
-when in fact it's an IO (disk) error.
-
-At worst, we may oops in xfs_attr_leaf_get() when we do:
-
-	error = xfs_attr_leaf_hasname(args, &bp);
-	if (error == -ENOATTR)  {
-		xfs_trans_brelse(args->trans, bp);
-		return error;
-	}
-
-because an ENODATA/ENOATTR error from disk leaves us with a null bp,
-and the xfs_trans_brelse will then null-deref it.
-
-As discussed on the list, we really need to modify the lower level
-IO functions to trap all disk errors and ensure that we don't let
-unique errors like this leak up into higher xfs functions - many
-like this should be remapped to EIO.
-
-However, this patch directly addresses a reported bug in the xattr
-code, and should be safe to backport to stable kernels. A larger-scope
-patch to handle more unique errors at lower levels can follow later.
-
-(Note, prior to 07120f1abdff we did not oops, but we did return the
-wrong error code to userspace.)
-
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Fixes: 07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
-Cc: stable@vger.kernel.org # v5.9+
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-[ Adjust context: removed metadata health tracking calls ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/xfs/libxfs/xfs_attr_remote.c | 7 +++++++
- fs/xfs/libxfs/xfs_da_btree.c    | 6 ++++++
- 2 files changed, 13 insertions(+)
-
-diff --git a/fs/xfs/libxfs/xfs_attr_remote.c b/fs/xfs/libxfs/xfs_attr_remote.c
-index 54de405cbab5a..4d369876487bd 100644
---- a/fs/xfs/libxfs/xfs_attr_remote.c
-+++ b/fs/xfs/libxfs/xfs_attr_remote.c
-@@ -418,6 +418,13 @@ xfs_attr_rmtval_get(
- 			dblkcnt = XFS_FSB_TO_BB(mp, map[i].br_blockcount);
- 			error = xfs_buf_read(mp->m_ddev_targp, dblkno, dblkcnt,
- 					0, &bp, &xfs_attr3_rmt_buf_ops);
-+			/*
-+			 * ENODATA from disk implies a disk medium failure;
-+			 * ENODATA for xattrs means attribute not found, so
-+			 * disambiguate that here.
-+			 */
-+			if (error == -ENODATA)
-+				error = -EIO;
- 			if (error)
- 				return error;
- 
-diff --git a/fs/xfs/libxfs/xfs_da_btree.c b/fs/xfs/libxfs/xfs_da_btree.c
-index 28bbfc31039c0..1efd45076ee2a 100644
---- a/fs/xfs/libxfs/xfs_da_btree.c
-+++ b/fs/xfs/libxfs/xfs_da_btree.c
-@@ -2649,6 +2649,12 @@ xfs_da_read_buf(
- 
- 	error = xfs_trans_read_buf_map(mp, tp, mp->m_ddev_targp, mapp, nmap, 0,
- 			&bp, ops);
-+	/*
-+	 * ENODATA from disk implies a disk medium failure; ENODATA for
-+	 * xattrs means attribute not found, so disambiguate that here.
-+	 */
-+	if (error == -ENODATA && whichfork == XFS_ATTR_FORK)
-+		error = -EIO;
- 	if (error)
- 		goto out_free;
- 
--- 
-2.50.1
-
+Bartosz
 
