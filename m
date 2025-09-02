@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-177401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36D1B4053E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB660B40561
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:53:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E79B16E1AD
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69B103B8C24
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFD632ED3C;
-	Tue,  2 Sep 2025 13:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6943101C2;
+	Tue,  2 Sep 2025 13:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9aEDBm/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3cKBKhA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2B02FE599;
-	Tue,  2 Sep 2025 13:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371A5304BA0;
+	Tue,  2 Sep 2025 13:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820523; cv=none; b=e1AhjuUV5Zdbc+FwL0yq6dkOi60nOMSufuY5CHiPpZTncoUB7NC3ID0bXbsuAKQp5Y7OmL5KcoxEnWPtZXCV+4n/63ePrDGvHQhK1FrtBjhLvlH1uDFCV9V+dMd1BtonbknXS7wUAlc3nAwqpRKLzTk4i3LhP16kNtoYHR1p7J0=
+	t=1756820677; cv=none; b=LyhuFc8W+pjr/8KlSmSbvhIOtqyErctj6MEEHiD7pbEzpVX1AAVEmSPLjti4kdc+CPeuEv3Rb2vDNNux9VTcHZcV8odmMPt5n2F5AdjBVMdivDyCbTId+4dXefP3MX8mI69lHd99Mt5qbV4d/EUyVebxXK1vukA2rNhyP9tPdYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820523; c=relaxed/simple;
-	bh=7TrqhBiwGoZ83p9F9IIT5mEINrqeDgPFb5h18wODyFU=;
+	s=arc-20240116; t=1756820677; c=relaxed/simple;
+	bh=xQ2ic1a67TLQWtfezJ7azFRE6xd5Sy2dtQ/aqlymsns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eFKfZw/XyKOxvAmenVgFXac/mjkfxIsz9A1r9tUGJzGf+bv7FA2Q8yWUP6b1YZaL5xlhzMN+rYytyVbRiz0/MN7b1iEhnF8upgoGYQk4/lkdynJL5TWS439PrCSYWHqwTP3xBQG+I4lnSBjzNwSROt5Tn5ovJNhshp3OXpA+y1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9aEDBm/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC32C4CEED;
-	Tue,  2 Sep 2025 13:42:03 +0000 (UTC)
+	 MIME-Version; b=I1GckgSOgZz10iV//tUJQKov+4IKXu7bEy4VeJ5Crz83UC076SW+x8kEI0Q29Enhl0nj+D9XGyyTO8S7iEkvbHzGMh+smzCL8nwkI1O7BEozHD7p7SpuDMBBHzqay/fBWeYJ6LhegSHIWrzjTsrv5GoXCQR1QBzcLs7mY8XKgL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3cKBKhA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD5AC4CEED;
+	Tue,  2 Sep 2025 13:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820523;
-	bh=7TrqhBiwGoZ83p9F9IIT5mEINrqeDgPFb5h18wODyFU=;
+	s=korg; t=1756820677;
+	bh=xQ2ic1a67TLQWtfezJ7azFRE6xd5Sy2dtQ/aqlymsns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M9aEDBm/D7I7RT4NAKxlad1UvwlNvMqnW/drY8fhdZAWtrQ3ALMz+5GThAAbZSqPV
-	 s7Hrh08UyQ7pWpMgh+Rbl4vUf2PbKTPkGVhj0NTDkc95YUeKBUBKyskLfZW35bEnoh
-	 0G4qWSMWjxH2uPlwmCP6avBWSsJMJ9Y2xuPWqMnE=
+	b=O3cKBKhAZWgww4Id1O3Vw7OuJzZGmIvb2jZhYgNcCmLW++MOyYsdp/Tkx79brrddd
+	 bqmwox3sdu2i2lZrR+vWMRZVD0JsY2i3fhz4kPgLTmkPAwGsD4bllv6bJFY1XbyiyN
+	 w+DA1fxYRsoypQa8CrGHFlD9gld9+vH61jbCNrNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minjong Kim <minbell.kim@samsung.com>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.1 39/50] HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()
+	Tianxiang Peng <txpeng@tencent.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Hui Li <caelli@tencent.com>,
+	stable@kernel.org
+Subject: [PATCH 5.10 04/34] x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper
 Date: Tue,  2 Sep 2025 15:21:30 +0200
-Message-ID: <20250902131932.073658599@linuxfoundation.org>
+Message-ID: <20250902131926.788829104@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
+References: <20250902131926.607219059@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minjong Kim <minbell.kim@samsung.com>
+From: Tianxiang Peng <txpeng@tencent.com>
 
-commit 185c926283da67a72df20a63a5046b3b4631b7d9 upstream.
+commit d8df126349dad855cdfedd6bbf315bad2e901c2f upstream.
 
-in ntrig_report_version(), hdev parameter passed from hid_probe().
-sending descriptor to /dev/uhid can make hdev->dev.parent->parent to null
-if hdev->dev.parent->parent is null, usb_dev has
-invalid address(0xffffffffffffff58) that hid_to_usb_dev(hdev) returned
-when usb_rcvctrlpipe() use usb_dev,it trigger
-page fault error for address(0xffffffffffffff58)
+Since
 
-add null check logic to ntrig_report_version()
-before calling hid_to_usb_dev()
+  923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
 
-Signed-off-by: Minjong Kim <minbell.kim@samsung.com>
-Link: https://patch.msgid.link/20250813-hid-ntrig-page-fault-fix-v2-1-f98581f35106@samsung.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+resctrl_cpu_detect() has been moved from common CPU initialization code to
+the vendor-specific BSP init helper, while Hygon didn't put that call in their
+code.
+
+This triggers a division by zero fault during early booting stage on our
+machines with X86_FEATURE_CQM* supported, where get_rdt_mon_resources() tries
+to calculate mon_l3_config with uninitialized boot_cpu_data.x86_cache_occ_scale.
+
+Add the missing resctrl_cpu_detect() in the Hygon BSP init helper.
+
+  [ bp: Massage commit message. ]
+
+Fixes: 923f3a2b48bd ("x86/resctrl: Query LLC monitoring properties once during boot")
+Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Hui Li <caelli@tencent.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/20250623093153.3016937-1-txpeng@tencent.com
+Signed-off-by: Tianxiang Peng <txpeng@tencent.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ntrig.c |    3 +++
+ arch/x86/kernel/cpu/hygon.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/hid/hid-ntrig.c
-+++ b/drivers/hid/hid-ntrig.c
-@@ -144,6 +144,9 @@ static void ntrig_report_version(struct
- 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
- 	unsigned char *data = kmalloc(8, GFP_KERNEL);
+--- a/arch/x86/kernel/cpu/hygon.c
++++ b/arch/x86/kernel/cpu/hygon.c
+@@ -17,6 +17,7 @@
+ #ifdef CONFIG_X86_64
+ # include <asm/set_memory.h>
+ #endif
++#include <asm/resctrl.h>
  
-+	if (!hid_is_usb(hdev))
-+		return;
+ #include "cpu.h"
+ 
+@@ -259,6 +260,8 @@ static void bsp_init_hygon(struct cpuinf
+ 			x86_amd_ls_cfg_ssbd_mask = 1ULL << 10;
+ 		}
+ 	}
 +
- 	if (!data)
- 		goto err_free;
++	resctrl_cpu_detect(c);
+ }
  
+ static void early_init_hygon(struct cpuinfo_x86 *c)
 
 
 
