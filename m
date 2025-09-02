@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-177239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24F5B4042A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE2BAB403E3
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F04C5479C7
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 939A94E1ABA
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE4F313E23;
-	Tue,  2 Sep 2025 13:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656DE3090D9;
+	Tue,  2 Sep 2025 13:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blaZwU6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQCTHmV4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA21930DEAE;
-	Tue,  2 Sep 2025 13:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221533081A8;
+	Tue,  2 Sep 2025 13:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820022; cv=none; b=RP6snkAZzHhwaH52u4F8sO61eFfkufftj0uC50RbixiscQB45dzQexe96husgNWrmia+NinenRE/zE+kh1aICw8Twhi+cm0Kt4fioVHxYu1ivlzf0uLgPB8usjP0u8kN6hpoakjnF288ga0QGbyI0mdcNxP2jswSGKbCBgqclis=
+	t=1756819916; cv=none; b=RY+wUKziqIuTH+vi60Yx1Xc1sVOIKdP1M9plGrSm/8GB+yoGmbxHFrbCjaKofougzuq9lmQCR0S9hbgI9/AFuUDD98qJtOUe8hQ1dgwepJ8isMaXbQjI+2S/1rV3SIVtKJmORo7jqPWCV/tbbQDeHqCeUSvwsp8RmMAxnAGMGKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820022; c=relaxed/simple;
-	bh=tCJt1q5ZQypetNb01NvmMXCojeDo59SDArgH/ff2XKA=;
+	s=arc-20240116; t=1756819916; c=relaxed/simple;
+	bh=sBdpjXmQ1SEbyb1HDLwE8Kx4GpWzvBgTbHPriQihUck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=shLkkUd0Gs8IxjmYbYyBmy0YnQ0YThU+CQnt/MqH+9GxOvoDRll4v/TCwyhl1jDPfLRKX5MbzyFjhnqohT2Wkd3UR5sJ1ZhXXJy8IdZrj7s0kQOhHAt31XUFkFPO0L1xL+guMeEVhMdHANXLUDSz6c/5o1wLW8mYEwmzmriYnws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blaZwU6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581CDC4CEED;
-	Tue,  2 Sep 2025 13:33:42 +0000 (UTC)
+	 MIME-Version; b=IiPlggmkwx4WzbTZ6ASyAaRrIXSsyFtsyIZinRDV9otMPfT9Qgdx7VcR6kwGJEOgZZ1bbr23dQWZ0Qg+4/rqqtv7gEIPvzfEeipjoFOvGX+a2BJIyvapqULGaibBgkq1e/Hs/yv7794NXi/KKmtReRoNrTFGVGapzoLZSMwIXfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQCTHmV4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934B1C4CEF5;
+	Tue,  2 Sep 2025 13:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820022;
-	bh=tCJt1q5ZQypetNb01NvmMXCojeDo59SDArgH/ff2XKA=;
+	s=korg; t=1756819916;
+	bh=sBdpjXmQ1SEbyb1HDLwE8Kx4GpWzvBgTbHPriQihUck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=blaZwU6B/LkQQLVeEQaPtH/C4I9W63iHNTwdZ894LX3BNRIEPPynKsHCmR8Z+AGPm
-	 8bqbsMHrC8hVq4K3w0xrpqJwXetj3uifOpwtJ4ED+wYT5F93h8Si7u+PHGpTNqI2hk
-	 lVNvd2e9ECXTIZqTXPvRVv9xirHiQNytOr31Yd7Q=
+	b=wQCTHmV4YTpe+DHnqVAarq6wtTipQY7+Bvbm0gLRaUIJWzASpf6l/cBUaLBEuhXDc
+	 zia2ouy7fxDfhk183oniteugfDnmIIvtybOVoG03s5FTM/j4k+99OHfxW1KsY4cEqV
+	 mPGJuBmbBQKyVa+mZPLDSqSwzy3bCmkLp+FCtu2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E5=8D=A2=E5=9B=BD=E5=AE=8F?= <luguohong@xiaomi.com>,
-	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	luoguangfei <15388634752@163.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 27/95] HID: input: report battery status changes immediately
-Date: Tue,  2 Sep 2025 15:20:03 +0200
-Message-ID: <20250902131940.653108576@linuxfoundation.org>
+Subject: [PATCH 6.12 28/95] net: macb: fix unregister_netdev call order in macb_remove()
+Date: Tue,  2 Sep 2025 15:20:04 +0200
+Message-ID: <20250902131940.692435128@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
 References: <20250902131939.601201881@linuxfoundation.org>
@@ -61,99 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Expósito <jose.exposito89@gmail.com>
+From: luoguangfei <15388634752@163.com>
 
-[ Upstream commit e94536e1d1818b0989aa19b443b7089f50133c35 ]
+[ Upstream commit 01b9128c5db1b470575d07b05b67ffa3cb02ebf1 ]
 
-Previously, the battery status (charging/discharging) was not reported
-immediately to user-space. 
+When removing a macb device, the driver calls phy_exit() before
+unregister_netdev(). This leads to a WARN from kernfs:
 
-For most input devices, this wasn't problematic because changing their
-battery status requires connecting them to a different bus.
-For example, a gamepad would report a discharging status while
-connected via Bluetooth and a charging status while connected via USB.
+  ------------[ cut here ]------------
+  kernfs: can not remove 'attached_dev', no directory
+  WARNING: CPU: 1 PID: 27146 at fs/kernfs/dir.c:1683
+  Call trace:
+    kernfs_remove_by_name_ns+0xd8/0xf0
+    sysfs_remove_link+0x24/0x58
+    phy_detach+0x5c/0x168
+    phy_disconnect+0x4c/0x70
+    phylink_disconnect_phy+0x6c/0xc0 [phylink]
+    macb_close+0x6c/0x170 [macb]
+    ...
+    macb_remove+0x60/0x168 [macb]
+    platform_remove+0x5c/0x80
+    ...
 
-However, certain devices are not connected or disconnected when their
-battery status changes. For example, a phone battery changes its status
-without connecting or disconnecting it.
-In these cases, the battery status was not reported immediately to user
-space.
+The warning happens because the PHY is being exited while the netdev
+is still registered. The correct order is to unregister the netdev
+before shutting down the PHY and cleaning up the MDIO bus.
 
-Report battery status changes immediately to user space to support
-these kinds of devices.
+Fix this by moving unregister_netdev() ahead of phy_exit() in
+macb_remove().
 
-Fixes: a608dc1c0639 ("HID: input: map battery system charging")
-Reported-by: 卢国宏 <luguohong@xiaomi.com>
-Closes: https://lore.kernel.org/linux-input/aI49Im0sGb6fpgc8@fedora/T/
-Tested-by: 卢国宏 <luguohong@xiaomi.com>
-Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 8b73fa3ae02b ("net: macb: Added ZynqMP-specific initialization")
+Signed-off-by: luoguangfei <15388634752@163.com>
+Link: https://patch.msgid.link/20250818232527.1316-1-15388634752@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-input.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index b372b74f3e24b..f5c217ac4bfaa 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -609,13 +609,19 @@ static bool hidinput_update_battery_charge_status(struct hid_device *dev,
- 	return false;
- }
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 3c2a7919b1289..2421a7bcd221e 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5225,11 +5225,11 @@ static void macb_remove(struct platform_device *pdev)
  
--static void hidinput_update_battery(struct hid_device *dev, int value)
-+static void hidinput_update_battery(struct hid_device *dev, unsigned int usage,
-+				    int value)
- {
- 	int capacity;
+ 	if (dev) {
+ 		bp = netdev_priv(dev);
++		unregister_netdev(dev);
+ 		phy_exit(bp->sgmii_phy);
+ 		mdiobus_unregister(bp->mii_bus);
+ 		mdiobus_free(bp->mii_bus);
  
- 	if (!dev->battery)
- 		return;
- 
-+	if (hidinput_update_battery_charge_status(dev, usage, value)) {
-+		power_supply_changed(dev->battery);
-+		return;
-+	}
-+
- 	if (value == 0 || value < dev->battery_min || value > dev->battery_max)
- 		return;
- 
-@@ -642,13 +648,8 @@ static void hidinput_cleanup_battery(struct hid_device *dev)
- {
- }
- 
--static bool hidinput_update_battery_charge_status(struct hid_device *dev,
--						  unsigned int usage, int value)
--{
--	return false;
--}
--
--static void hidinput_update_battery(struct hid_device *dev, int value)
-+static void hidinput_update_battery(struct hid_device *dev, unsigned int usage,
-+				    int value)
- {
- }
- #endif	/* CONFIG_HID_BATTERY_STRENGTH */
-@@ -1515,11 +1516,7 @@ void hidinput_hid_event(struct hid_device *hid, struct hid_field *field, struct
- 		return;
- 
- 	if (usage->type == EV_PWR) {
--		bool handled = hidinput_update_battery_charge_status(hid, usage->hid, value);
--
--		if (!handled)
--			hidinput_update_battery(hid, value);
--
-+		hidinput_update_battery(hid, usage->hid, value);
- 		return;
- 	}
- 
+-		unregister_netdev(dev);
+ 		cancel_work_sync(&bp->hresp_err_bh_work);
+ 		pm_runtime_disable(&pdev->dev);
+ 		pm_runtime_dont_use_autosuspend(&pdev->dev);
 -- 
 2.50.1
 
