@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-177392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD09B40531
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B9DB40572
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:53:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D8291B26CAE
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91767563E0A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064433115B1;
-	Tue,  2 Sep 2025 13:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778B430F542;
+	Tue,  2 Sep 2025 13:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1Bu4zG5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXY5AZ6C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B817F3115AF;
-	Tue,  2 Sep 2025 13:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3619B261593;
+	Tue,  2 Sep 2025 13:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820494; cv=none; b=qwQa/66FjO8SwCLMblfc/vWRRYIRezcVa+sF7NeQvEY8tTjL5p/rcxhmS+ZFlluK4WR4O+zR+BxcEq43qRC3y8x4LwWBG37+D8YD9ISgzh1kxd35xhT9gyo86kSCoVhyxkV+ASxK5BPVYwL/tvA29Iz3LhkPKM0JjKWjJMPvw84=
+	t=1756820660; cv=none; b=kZXjwIpH+yR+10x3e38fGtLrX9333CTAXGbggMscuCLhX7LU+F9sr5BsWgyU7utSsNBH63d1AuSMyj/bpEHPOpih1o6rzNvbgghLmJj1ro8K6D5NGfZc4PgCQsBw6fXfTOV+52s+r96VHlVeD98oc/3Q4Onn3xPEFFlfYtx1tu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820494; c=relaxed/simple;
-	bh=1y0+mamDS3mIPF+lCtrHVZfo8Zr1PzbOmQLDzZFQTtE=;
+	s=arc-20240116; t=1756820660; c=relaxed/simple;
+	bh=CxAuw+pWKT4ATlxSyD9nmwxhPMwzumb1FC6fKJcUXPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qjh2ObrkM1DHPMnLeciObb65ZSEEjBwE+25y2F4Tfu1eE8Dk0xoPu6yyIpCschCUmlxQv5L0niohLpwu/nYCPK7DN8bvCcf0hCHzFvFNnjNuBXodq4B8O/iq6oVW/ie/ZWdYzGHEJk0eY//mP009Zyb095FuU5u6hucXjpqS9g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1Bu4zG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3778CC4CEED;
-	Tue,  2 Sep 2025 13:41:34 +0000 (UTC)
+	 MIME-Version; b=j9cyxdVKrXukrJkMvsBc3r9mk6soat8k3wXogbiW0NMOFpJN+vHyn5Ghto5AHWhB4V/Pi2pXQsED+eye2eXO+c+r3WM5Bx8xPpMUZnwW9aUb6wTFTfzhXn1ZxgsQsqMAl9byeNu8hRe5bJHQ3qE4nye0UIYcSnFTzFmASkzyY0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXY5AZ6C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD77FC4CEED;
+	Tue,  2 Sep 2025 13:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820494;
-	bh=1y0+mamDS3mIPF+lCtrHVZfo8Zr1PzbOmQLDzZFQTtE=;
+	s=korg; t=1756820660;
+	bh=CxAuw+pWKT4ATlxSyD9nmwxhPMwzumb1FC6fKJcUXPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T1Bu4zG5KdOFKvE1w72pSfG9OgX4gYm3NbMivE4O7FBfbl7F/a294zBUY66Sa4odN
-	 yqxVxJeD9wmFibumc2AtFFwLUnAfv7gs1cgyRLFfTh6k3nsrcexL4i+0ESzQY86UMq
-	 UUrOH9jlozAQvBqj+j9UqvQvuFgpULdUIIjvT5rc=
+	b=wXY5AZ6CUg5r2yqm8hmubc0642iI9cDUlA0uo0bzeceSbmia5Bd1Rrh2Ufu3qChV6
+	 z/xpmwF2rpyDyce2/YlEJ6YcQNks5c/bK+C8AJfeBh+/YQCnlknZ4XXHrrkhdmv+1y
+	 74S/8ed/RUhtMt7EL4F/Uwnc9cOi/eGmOVYfb3UY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Romain Sioen <romain.sioen@microchip.com>
-Subject: [PATCH 6.1 48/50] HID: mcp2221: Handle reads greater than 60 bytes
-Date: Tue,  2 Sep 2025 15:21:39 +0200
-Message-ID: <20250902131932.418647594@linuxfoundation.org>
+	Alexei Lazar <alazar@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 14/34] net/mlx5e: Update and set Xon/Xoff upon port speed set
+Date: Tue,  2 Sep 2025 15:21:40 +0200
+Message-ID: <20250902131927.184473320@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
+References: <20250902131926.607219059@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+From: Alexei Lazar <alazar@nvidia.com>
 
-commit 2682468671aa0b4d52ae09779b48212a80d71b91 upstream.
+[ Upstream commit d24341740fe48add8a227a753e68b6eedf4b385a ]
 
-When a user requests more than 60 bytes of data the MCP2221 must chunk
-the data in chunks up to 60 bytes long (see command/response code 0x40
-in the datasheet).
-In order to signal that the device has more data the (undocumented) byte
-at byte index 2 of the Get I2C Data response uses the value 0x54. This
-contrasts with the case for the final data chunk where the value
-returned is 0x55 (MCP2221_I2C_READ_COMPL). The fact that 0x55 was not
-returned in the response was interpreted by the driver as a failure
-meaning that all reads of more than 60 bytes would fail.
+Xon/Xoff sizes are derived from calculations that include
+the port speed.
+These settings need to be updated and applied whenever the
+port speed is changed.
+The port speed is typically set after the physical link goes down
+and is negotiated as part of the link-up process between the two
+connected interfaces.
+Xon/Xoff parameters being updated at the point where the new
+negotiated speed is established.
 
-Add support for reads that are split over multiple chunks by looking for
-the response code indicating that more data is expected and continuing
-the read as the code intended. Some timing delays are required to ensure
-the chip has time to refill its FIFO as data is read in from the I2C
-bus. This timing has been tested in my system when configured for bus
-speeds of 50KHz, 100KHz, and 400KHz and operates well.
-
-Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Fixes: 67a95c21463d0 ("HID: mcp2221: add usb to i2c-smbus host bridge")
-[romain.sioen@microchip.com: backport to stable, up to 6.8. Add "Fixes" tag]
-Signed-off-by: Romain Sioen <romain.sioen@microchip.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
+Signed-off-by: Alexei Lazar <alazar@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250825143435.598584-11-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-mcp2221.c |   32 +++++++++++++++++++++++---------
- 1 file changed, 23 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/hid/hid-mcp2221.c
-+++ b/drivers/hid/hid-mcp2221.c
-@@ -44,6 +44,7 @@ enum {
- 	MCP2221_I2C_MASK_ADDR_NACK = 0x40,
- 	MCP2221_I2C_WRADDRL_SEND = 0x21,
- 	MCP2221_I2C_ADDR_NACK = 0x25,
-+	MCP2221_I2C_READ_PARTIAL = 0x54,
- 	MCP2221_I2C_READ_COMPL = 0x55,
- 	MCP2221_ALT_F_NOT_GPIOV = 0xEE,
- 	MCP2221_ALT_F_NOT_GPIOD = 0xEF,
-@@ -279,6 +280,7 @@ static int mcp_i2c_smbus_read(struct mcp
- {
- 	int ret;
- 	u16 total_len;
-+	int retries = 0;
- 
- 	mcp->txbuf[0] = type;
- 	if (msg) {
-@@ -302,20 +304,31 @@ static int mcp_i2c_smbus_read(struct mcp
- 	mcp->rxbuf_idx = 0;
- 
- 	do {
-+		/* Wait for the data to be read by the device */
-+		usleep_range(980, 1000);
-+
- 		memset(mcp->txbuf, 0, 4);
- 		mcp->txbuf[0] = MCP2221_I2C_GET_DATA;
- 
- 		ret = mcp_send_data_req_status(mcp, mcp->txbuf, 1);
--		if (ret)
--			return ret;
--
--		ret = mcp_chk_last_cmd_status_free_bus(mcp);
--		if (ret)
--			return ret;
--
--		usleep_range(980, 1000);
-+		if (ret) {
-+			if (retries < 5) {
-+				/* The data wasn't ready to read.
-+				 * Wait a bit longer and try again.
-+				 */
-+				usleep_range(90, 100);
-+				retries++;
-+			} else {
-+				return ret;
-+			}
-+		} else {
-+			retries = 0;
-+		}
- 	} while (mcp->rxbuf_idx < total_len);
- 
-+	usleep_range(980, 1000);
-+	ret = mcp_chk_last_cmd_status_free_bus(mcp);
-+
- 	return ret;
- }
- 
-@@ -776,7 +789,8 @@ static int mcp2221_raw_event(struct hid_
- 				mcp->status = -EIO;
- 				break;
- 			}
--			if (data[2] == MCP2221_I2C_READ_COMPL) {
-+			if (data[2] == MCP2221_I2C_READ_COMPL ||
-+			    data[2] == MCP2221_I2C_READ_PARTIAL) {
- 				buf = mcp->rxbuf;
- 				memcpy(&buf[mcp->rxbuf_idx], &data[4], data[3]);
- 				mcp->rxbuf_idx = mcp->rxbuf_idx + data[3];
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index cef60bc2589cc..cc93c503984a1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -141,6 +141,8 @@ void mlx5e_update_carrier(struct mlx5e_priv *priv)
+ 	if (port_state == VPORT_STATE_UP) {
+ 		netdev_info(priv->netdev, "Link up\n");
+ 		netif_carrier_on(priv->netdev);
++		mlx5e_port_manual_buffer_config(priv, 0, priv->netdev->mtu,
++						NULL, NULL, NULL);
+ 	} else {
+ 		netdev_info(priv->netdev, "Link down\n");
+ 		netif_carrier_off(priv->netdev);
+-- 
+2.50.1
+
 
 
 
