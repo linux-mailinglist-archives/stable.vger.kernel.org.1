@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-177248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA03B40410
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1656B404E6
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08DF94E679F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C97B84E440C
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6DC30DEC4;
-	Tue,  2 Sep 2025 13:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C8C31A041;
+	Tue,  2 Sep 2025 13:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/jgyg1S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MScdJ4rB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07649314A8B;
-	Tue,  2 Sep 2025 13:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C921315761;
+	Tue,  2 Sep 2025 13:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820050; cv=none; b=OjKbXfwsTUsqC+Fa/XhrSfk2p0D40Qxx+jHQv+1JnJtNtVHQ1nCVp8hi/+DLBHNFNx4wDJHY2J9aX5I/NhrF8fjWrqM1G6U33PJlJcCpHB3+8ENEPR56t6OpcZEQJdorUPhD1mT7E+LB1QlGZ9xzEE3A0YiGeUL63JMPI6sE/rQ=
+	t=1756820442; cv=none; b=hozTzh+U35u1hpXpNtseiAHKsgsamu4Bnj0XYqDEowPikzZQRYBiFie1LDtx6TUXUGn54mZRmeKgEjeoaxfLRQi7C0P8kPSEAyixcpTRdDR7Kb8WYpO1ecFAQ3dVVxVpKRQVul1yHv73wGec8trFeiDN7uCogAiRYu34VT52y2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820050; c=relaxed/simple;
-	bh=tpi/8GSFQlH/cjECq13gUF8DSgnCzlNSMKcSqySm+tI=;
+	s=arc-20240116; t=1756820442; c=relaxed/simple;
+	bh=iHA8UKCeHGAUx98XNIUEFJ0JNYPyAq0z+YyarSYx/MQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IBDoTL8wzg2cdy7dz/oxXid+tvbLVmJTIWSJBXFyDPTUaE5y/9AwPANWBkmqt081ynzq9UFBsfpGgZL6IrjTQ4nTUWd287ddol/zK1U3sroafWohnx8qoOT+paWxcyGGVodBBLQfB1G948fSSvjS418y5AH2vnJqVrbyY/NfrCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/jgyg1S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860E2C4CEED;
-	Tue,  2 Sep 2025 13:34:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=joSzJ6lJ4O3N16NBu5pSmqnKNomf0JjJ2spI3zCOkh6ZONzL5UcBOjkYSIBskgebr9cWI58jfCvVuBKojo9wWAxMbPCmCdqU5LXF4NcN50P8PxHAqZ0zXvGyH8U0DSyX4TgVj7N61jw4F3tGs6QObEL33HRrK5qz5iwg1T1SCpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MScdJ4rB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D38C4CEF4;
+	Tue,  2 Sep 2025 13:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820049;
-	bh=tpi/8GSFQlH/cjECq13gUF8DSgnCzlNSMKcSqySm+tI=;
+	s=korg; t=1756820442;
+	bh=iHA8UKCeHGAUx98XNIUEFJ0JNYPyAq0z+YyarSYx/MQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j/jgyg1SgWGCUq8Nr6rJXf9JAdug/iFjyRDeq4hBN3fnxU6E+/WybLKu2/UlEmuOP
-	 4XAAfywEjRlEXZg22vpaIw8tIX9VvB8Hf+MKQLTTPJjzJ72f1yJvpd/9OtY93uBMba
-	 b2bl4Tb4p76mhqDQF48sbnULqks4yZMWk8uD8Kq8=
+	b=MScdJ4rB46RP0Nx7uGzrjHE+zMbpaObwkvxQ8pzRPM3+TCo/375BBcsiHv+6VPpJi
+	 B6CKzRwQobQX0eGmerH/NNM7TJhGwwPWVrA3hOputkr79Z62s0fAfGb+PVPMnsTR7T
+	 djpj4+mRXSxiSaWt5mIm5jCQNC4cNpr3wuQcqHow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 78/95] blk-zoned: Fix a lockdep complaint about recursive locking
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 03/50] mips: lantiq: xway: sysctrl: rename the etop node
 Date: Tue,  2 Sep 2025 15:20:54 +0200
-Message-ID: <20250902131942.603456062@linuxfoundation.org>
+Message-ID: <20250902131930.648401932@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,126 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-commit 198f36f902ec7e99b645382505f74b87a4523ed9 upstream.
+[ Upstream commit 8c431ea8f3f795c4b9cfa57a85bc4166b9cce0ac ]
 
-If preparing a write bio fails then blk_zone_wplug_bio_work() calls
-bio_endio() with zwplug->lock held. If a device mapper driver is stacked
-on top of the zoned block device then this results in nested locking of
-zwplug->lock. The resulting lockdep complaint is a false positive
-because this is nested locking and not recursive locking. Suppress this
-false positive by calling blk_zone_wplug_bio_io_error() without holding
-zwplug->lock. This is safe because no code in
-blk_zone_wplug_bio_io_error() depends on zwplug->lock being held. This
-patch suppresses the following lockdep complaint:
+Bindig requires a node name matching ‘^ethernet@[0-9a-f]+$’. This patch
+changes the clock name from “etop” to “ethernet”.
 
-WARNING: possible recursive locking detected
---------------------------------------------
-kworker/3:0H/46 is trying to acquire lock:
-ffffff882968b830 (&zwplug->lock){-...}-{2:2}, at: blk_zone_write_plug_bio_endio+0x64/0x1f0
+This fixes the following warning:
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: etop@e180000 (lantiq,etop-xway): $nodename:0: 'etop@e180000' does not match '^ethernet@[0-9a-f]+$'
+	from schema $id: http://devicetree.org/schemas/net/lantiq,etop-xway.yaml#
 
-but task is already holding lock:
-ffffff88315bc230 (&zwplug->lock){-...}-{2:2}, at: blk_zone_wplug_bio_work+0x8c/0x48c
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(&zwplug->lock);
-  lock(&zwplug->lock);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-3 locks held by kworker/3:0H/46:
- #0: ffffff8809486758 ((wq_completion)sdd_zwplugs){+.+.}-{0:0}, at: process_one_work+0x1bc/0x65c
- #1: ffffffc085de3d70 ((work_completion)(&zwplug->bio_work)){+.+.}-{0:0}, at: process_one_work+0x1e4/0x65c
- #2: ffffff88315bc230 (&zwplug->lock){-...}-{2:2}, at: blk_zone_wplug_bio_work+0x8c/0x48c
-
-stack backtrace:
-CPU: 3 UID: 0 PID: 46 Comm: kworker/3:0H Tainted: G        W  OE      6.12.38-android16-5-maybe-dirty-4k #1 8b362b6f76e3645a58cd27d86982bce10d150025
-Tainted: [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-Hardware name: Spacecraft board based on MALIBU (DT)
-Workqueue: sdd_zwplugs blk_zone_wplug_bio_work
-Call trace:
- dump_backtrace+0xfc/0x17c
- show_stack+0x18/0x28
- dump_stack_lvl+0x40/0xa0
- dump_stack+0x18/0x24
- print_deadlock_bug+0x38c/0x398
- __lock_acquire+0x13e8/0x2e1c
- lock_acquire+0x134/0x2b4
- _raw_spin_lock_irqsave+0x5c/0x80
- blk_zone_write_plug_bio_endio+0x64/0x1f0
- bio_endio+0x9c/0x240
- __dm_io_complete+0x214/0x260
- clone_endio+0xe8/0x214
- bio_endio+0x218/0x240
- blk_zone_wplug_bio_work+0x204/0x48c
- process_one_work+0x26c/0x65c
- worker_thread+0x33c/0x498
- kthread+0x110/0x134
- ret_from_fork+0x10/0x20
-
-Cc: stable@vger.kernel.org
-Cc: Damien Le Moal <dlemoal@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Fixes: dd291d77cc90 ("block: Introduce zone write plugging")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250825182720.1697203-1-bvanassche@acm.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dac0bad93741 ("dt-bindings: net: lantiq,etop-xway: Document Lantiq Xway ETOP bindings")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-zoned.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/mips/boot/dts/lantiq/danube_easy50712.dts |  2 +-
+ arch/mips/lantiq/xway/sysctrl.c                | 10 +++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -1281,14 +1281,14 @@ static void blk_zone_wplug_bio_work(stru
- 	struct block_device *bdev;
- 	unsigned long flags;
- 	struct bio *bio;
-+	bool prepared;
+diff --git a/arch/mips/boot/dts/lantiq/danube_easy50712.dts b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
+index d8b3cd69eda3c..c4d7aa5753b04 100644
+--- a/arch/mips/boot/dts/lantiq/danube_easy50712.dts
++++ b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
+@@ -82,7 +82,7 @@ conf_out {
+ 			};
+ 		};
  
- 	/*
- 	 * Submit the next plugged BIO. If we do not have any, clear
- 	 * the plugged flag.
- 	 */
--	spin_lock_irqsave(&zwplug->lock, flags);
--
- again:
-+	spin_lock_irqsave(&zwplug->lock, flags);
- 	bio = bio_list_pop(&zwplug->bio_list);
- 	if (!bio) {
- 		zwplug->flags &= ~BLK_ZONE_WPLUG_PLUGGED;
-@@ -1296,13 +1296,14 @@ again:
- 		goto put_zwplug;
+-		etop@e180000 {
++		ethernet@e180000 {
+ 			compatible = "lantiq,etop-xway";
+ 			reg = <0xe180000 0x40000>;
+ 			interrupt-parent = <&icu0>;
+diff --git a/arch/mips/lantiq/xway/sysctrl.c b/arch/mips/lantiq/xway/sysctrl.c
+index d444a1b98a724..edf914393ad96 100644
+--- a/arch/mips/lantiq/xway/sysctrl.c
++++ b/arch/mips/lantiq/xway/sysctrl.c
+@@ -479,7 +479,7 @@ void __init ltq_soc_init(void)
+ 		ifccr = CGU_IFCCR_VR9;
+ 		pcicr = CGU_PCICR_VR9;
+ 	} else {
+-		clkdev_add_pmu("1e180000.etop", NULL, 1, 0, PMU_PPE);
++		clkdev_add_pmu("1e180000.ethernet", NULL, 1, 0, PMU_PPE);
  	}
  
--	if (!blk_zone_wplug_prepare_bio(zwplug, bio)) {
-+	prepared = blk_zone_wplug_prepare_bio(zwplug, bio);
-+	spin_unlock_irqrestore(&zwplug->lock, flags);
-+
-+	if (!prepared) {
- 		blk_zone_wplug_bio_io_error(zwplug, bio);
- 		goto again;
- 	}
- 
--	spin_unlock_irqrestore(&zwplug->lock, flags);
--
- 	bdev = bio->bi_bdev;
- 
- 	/*
+ 	if (!of_machine_is_compatible("lantiq,ase"))
+@@ -513,9 +513,9 @@ void __init ltq_soc_init(void)
+ 						CLOCK_133M, CLOCK_133M);
+ 		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0);
+ 		clkdev_add_pmu("1f203018.usb2-phy", "phy", 1, 0, PMU_USB0_P);
+-		clkdev_add_pmu("1e180000.etop", "ppe", 1, 0, PMU_PPE);
+-		clkdev_add_cgu("1e180000.etop", "ephycgu", CGU_EPHY);
+-		clkdev_add_pmu("1e180000.etop", "ephy", 1, 0, PMU_EPHY);
++		clkdev_add_pmu("1e180000.ethernet", "ppe", 1, 0, PMU_PPE);
++		clkdev_add_cgu("1e180000.ethernet", "ephycgu", CGU_EPHY);
++		clkdev_add_pmu("1e180000.ethernet", "ephy", 1, 0, PMU_EPHY);
+ 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_ASE_SDIO);
+ 		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
+ 	} else if (of_machine_is_compatible("lantiq,grx390")) {
+@@ -574,7 +574,7 @@ void __init ltq_soc_init(void)
+ 		clkdev_add_pmu("1e101000.usb", "otg", 1, 0, PMU_USB0 | PMU_AHBM);
+ 		clkdev_add_pmu("1f203034.usb2-phy", "phy", 1, 0, PMU_USB1_P);
+ 		clkdev_add_pmu("1e106000.usb", "otg", 1, 0, PMU_USB1 | PMU_AHBM);
+-		clkdev_add_pmu("1e180000.etop", "switch", 1, 0, PMU_SWITCH);
++		clkdev_add_pmu("1e180000.ethernet", "switch", 1, 0, PMU_SWITCH);
+ 		clkdev_add_pmu("1e103000.sdio", NULL, 1, 0, PMU_SDIO);
+ 		clkdev_add_pmu("1e103100.deu", NULL, 1, 0, PMU_DEU);
+ 		clkdev_add_pmu("1e116000.mei", "dfe", 1, 0, PMU_DFE);
+-- 
+2.50.1
+
 
 
 
