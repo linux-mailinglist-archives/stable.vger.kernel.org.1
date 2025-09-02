@@ -1,124 +1,202 @@
-Return-Path: <stable+bounces-176944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BED8B3F827
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:19:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB537B3F85B
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 10:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB43B188BFEE
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 08:20:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD8E717B27E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 08:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93F32DEA7E;
-	Tue,  2 Sep 2025 08:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653022E8B65;
+	Tue,  2 Sep 2025 08:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WitJJlvb"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q736aFP6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9B42E718E;
-	Tue,  2 Sep 2025 08:19:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474332E2DDD
+	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 08:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756801180; cv=none; b=l9KqbHEe+Wvi3HkkPwMTMLsYlmoB4aRzP/pCR7e4TEtkxgdEd2hlQ7QoolJLhd+ifNNFVNC6uDLLUYsWxIT1wSqYcuOQNlsOP2O1vTcjbqPoFEBRFBtmKl6kFdwXtY8Z7WiA1tEYRNBS7+jMVBIBkh5EFnM4NxwS7tMLbMefACs=
+	t=1756801774; cv=none; b=B91grsfmSCOGu/P4Hd0aqy22qi8vEKwO5XiPSZ55VGTCO3BwdfS0uINajFNWqcWmv9GwzZ0ssbDSWr1sdg6Mld6sRYCHZi1IeG2cEoC/3k0PpGwXF3PD2rRiKo0xJ7xj6zbqwN29mqvrG7OMA4qyPWGSPtKRlfGy2oYkqhVIJYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756801180; c=relaxed/simple;
-	bh=yCmgzYi8sdjyZvAEQPWw4LrdqTw3EaZ52PuJmV/5otg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mupYz9ZGmXgfN/TnsTCYt+trwgZuwp9DM9SNB1WxQKul7qLHi9+lFYOE61bqv85LJreKlFsh9qogKHMSlOmp6PmXX+9fQD0M8dxaFTfxl/8RAFF7gCJgZ9QUo0cAudkc53jKGKQglk7glH7YQz62gPWlLLOWb2cXKpqgbUTa6bM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WitJJlvb; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-77252278757so1338987b3a.3;
-        Tue, 02 Sep 2025 01:19:37 -0700 (PDT)
+	s=arc-20240116; t=1756801774; c=relaxed/simple;
+	bh=mz6MChWAhIh1fUS9YL3zMQPODRH3xmYPsKPrGEnKmVE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=U8JrZ84OF1cj5n32ojDFb4K6wHTFTR+HsVrZMdt9FMrkCyxBChrKMEUah5fBC5nBJ+peu7Jzank/FPGGaLVPsYPoXsBz33hxqaxAHl4TvTtjS6QN2TSvPFjwFx8aY5xRTvexjf8NXouJ6MZ2A/PBGxUik1cjloADQ6X/cFVE7/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q736aFP6; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45b883aa405so18553215e9.2
+        for <stable@vger.kernel.org>; Tue, 02 Sep 2025 01:29:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756801177; x=1757405977; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZpTL+8UAJAvc2e731Ib5tRm4izD0s+sqQLOdVQdO65Q=;
-        b=WitJJlvblODKrjNs0THoejWgcXab/n9043Jnp1Z0+11xJFFQKdg6ivtY84qBtMIEIZ
-         67gPttESOzl/GL+XOShecUp64N4giZYQrYwyffL2zmHPQSQQY1vfRjd1t/O1ZXxU/Vyy
-         3lRGnl6/w2lh+wS4zk0fzvpn2O6/yzxXjTFk5te/uEvmwc+6NXhtgjI9sPbqspahTT3a
-         Sq64jC2yhDKijNzKug8Te45yzOER/zTUwAG6MRALKElfR4FKZlxJ0WEFSPEVB6Gr5hsw
-         OEcKLYMNVK2NxhFVKmT3zoDdgtQ8t4sa3AIGsEAFGT7eZMKeKJshUdXuNeQ0JAIbfzcl
-         GQgw==
+        d=google.com; s=20230601; t=1756801771; x=1757406571; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fMrVj7jAgdBMUg6bB9EkBvTIBFRbh5mF4KGnDnI9ZoQ=;
+        b=Q736aFP6pE3HDPM1K/YTKrI13Zb6j2GY5mHXoLrn4KCtI3xOjhebM5iy6A08lG93BB
+         Hi/o5b7fTunhII2O8aVjG0dVcRZuK8onnTAnZK9BNL3pz65Wq8ysaDprx7iGCg+X9ClO
+         +oOt4jZlMxfjNHBAgvoulFPTlWoizVg+rwz6KU9/Wgs3+fcziY+e8WLLrsNRFmnZN23x
+         wgXq/V9JnsWAjFVpJPfSJvQV4JMih465l6MZiKGQVkHUxH4yQBvSTaj6NqHs2jFD8Hl7
+         3OANehw40X32KI5GhUvkNcju4enJRc+4uf/vcLrarAFYuobPHkiPNxfS0dEBLuZ9qlhi
+         ERwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756801177; x=1757405977;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZpTL+8UAJAvc2e731Ib5tRm4izD0s+sqQLOdVQdO65Q=;
-        b=JFNc2cSEjfj9rYJFC4VagBJ7SdHMCbLKCPGkhTtqLfE12bCudH5zuRwJObzvNJ05Eq
-         +LnHEiyNnyBUB6G1BAlc5VmOmVyRcdc1cZ6oupRl3ijQYiXZrGZ0NitKqhifp1Wc4oGl
-         kLMiVUTlRIux1y0QXnSZrEW9K8CFAMP24I+d57pxxcGLWpXPZL0Brqi3pAqXAdI25hZ1
-         k7gHRYfLHxrJAEJ+gqKs1ZXDN0Uch3uC6aYk7imJ+RbmYGKiIv/4BNz+fsMDXD7Kl7fo
-         A/TG1g/lRspdRrkfn4RDQEC8tE08kpRiiPG+Z1Wx/Wikich/msGHAZQnSDL3JzgjXxqo
-         TyMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWM7XjqQ9PH3/HkiJcFkjf2JlgVrqmw4uKvm+tEB0GBpyTx/JWcryxEdjfDoY9jNPXgZJUfasV8E8W1E9E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMCY+iMhFl7kCVr5yUUiRr54uISZ6sHS72OQgKkWW9j2fE1m6h
-	RllCSfM1JcJoL1txD/RwSVKnRt3wF0fnX+pKkU/LHdKBEyIu+HKfApjn
-X-Gm-Gg: ASbGnctU8mlQ33jfaxb+s+k1iVU0EJ7MruGbYZG/HAd/qX6P+zqr3sdEZHNzzflVXRd
-	mHirLVo2y4fOPHiXnDxLQ8cvJEPJSWB+sGkIZz3GrPHI0058CqLfbOVuWjFoDemh5aHNGWFPRaq
-	hNI2gvIBzAl0z69OMSjqeQj7DHVmgHGTKvFdEVnu2SGb43MB4jxDvP2aZGIX3owT/y/ts3hmi8e
-	/pBHQLfJ5SJM6gZQydT2CK7/y45wAy8lKvCNtkR7q3He3a1FY2p9veRFjGpOriVBHAIy1hwg0rB
-	sI2gdBHYGvRdp0YG102FKJijpmJ3aUQqE3Wm0vhIrB1ww+fbzVtZH79Om9QcVq8tNTdrDYJhxnd
-	0RlCsPoMp2SgZfRPqqk9oKx10cN3iRwBxb7qMnJr+R07mIbzyQHKtZ2AthJlI74fhhp9EHN5AY4
-	Lt/PC8B7PAPHYK+VJoz8GqRZY3fidriDFIkOKZ1RZIxnkNcL9D9PfWNj4l
-X-Google-Smtp-Source: AGHT+IHMn0mX5CJ0vwSNBKSDg7gEeatnObxmLvDcjQ8QncO3GhezbOnpScCrxUanP00/q7WT9RoRCQ==
-X-Received: by 2002:a05:6a00:1828:b0:772:499e:99c4 with SMTP id d2e1a72fcca58-772499e9e23mr13221266b3a.18.1756801177271;
-        Tue, 02 Sep 2025 01:19:37 -0700 (PDT)
-Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.116.239.34])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-77236d7eb7fsm10930193b3a.54.2025.09.02.01.19.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 01:19:36 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Liviu Dudau <liviu.dudau@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] bus: vexpress-config: fix device node reference leak in vexpress_syscfg_probe
-Date: Tue,  2 Sep 2025 16:19:27 +0800
-Message-Id: <20250902081929.2411971-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.35.1
+        d=1e100.net; s=20230601; t=1756801771; x=1757406571;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fMrVj7jAgdBMUg6bB9EkBvTIBFRbh5mF4KGnDnI9ZoQ=;
+        b=PnYrZriNmNDDm6jB70nmJRAC3RjQHnMQog9ZOaGMBXnW3eA9ZAqy/7JDNp5l59hmI1
+         ZVdhQ+eBbyMVgV7shW99AmY5RctZeQ5He5AjF95JdUzzkuxI5PiTcP54RXSI2A72Rb0B
+         InUqs+gAgMNnhsG8otkHYNPUSTjwesInGnKob73RYKY3hd5y424cCHqlwO9YRUStNQMx
+         KFAXOXrBpUSMxWsFzbJXIyf1rcXy3EKN6cy1Gi4BITSmWUr6v9GVnIFvzMcMknK5Hz99
+         sGcSmfxW/b+TbP2XHNoMcp9AfI6YQHPeAiM4JWkt3w9RMFVmZZ0NTYXowAFu2Tu7haG5
+         YEKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXc+VDYE6EIzEahWhWWcs1IWo2IWJxqthy4BzLYN8QbBtarRnQJ4KQ6PisBiiBwPHTgcSUZlkU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNKh80TmHi/O+qzs3RJobrH8FPiUvALc+gcQPaDe4oq8+4Wi+F
+	PWc4YEOR2eUp7IzvlT+r7hQEpCr/an+lcqMK+2vBqeULM5RN9ZNVZMuh7QLwHOYdWayxt0TKCyb
+	9V/IHSEiScpvtWp1nOg==
+X-Google-Smtp-Source: AGHT+IH+wbAKMP4pet3Iec/jg+z/+uHyKtEPnwn80rzGG04HiSXVcEQZ2VRn1KYTtbbuXX26NiHOYJCKfauiaaw=
+X-Received: from wrbbs17.prod.google.com ([2002:a05:6000:711:b0:3b7:8b93:59f4])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:1a8c:b0:3c9:24f5:4711 with SMTP id ffacd0b85a97d-3d1def66f6dmr8162944f8f.43.1756801770707;
+ Tue, 02 Sep 2025 01:29:30 -0700 (PDT)
+Date: Tue, 2 Sep 2025 08:29:29 +0000
+In-Reply-To: <20250901-shrimp-define-9d99cc2a012a@spud>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250408220311.1033475-1-ojeda@kernel.org> <20250901-shrimp-define-9d99cc2a012a@spud>
+Message-ID: <aLaq6TpUtLkqHg_o@google.com>
+Subject: Re: [PATCH] rust: kasan/kbuild: fix missing flags on first build
+From: Alice Ryhl <aliceryhl@google.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	kasan-dev@googlegroups.com, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Matthew Maurer <mmaurer@google.com>, Sami Tolvanen <samitolvanen@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-Add missing of_node_put() call to release
-the device node reference obtained via of_parse_phandle().
+On Mon, Sep 01, 2025 at 06:45:54PM +0100, Conor Dooley wrote:
+> Yo,
+> 
+> On Wed, Apr 09, 2025 at 12:03:11AM +0200, Miguel Ojeda wrote:
+> > If KASAN is enabled, and one runs in a clean repository e.g.:
+> > 
+> >     make LLVM=1 prepare
+> >     make LLVM=1 prepare
+> > 
+> > Then the Rust code gets rebuilt, which should not happen.
+> > 
+> > The reason is some of the LLVM KASAN `rustc` flags are added in the
+> > second run:
+> > 
+> >     -Cllvm-args=-asan-instrumentation-with-call-threshold=10000
+> >     -Cllvm-args=-asan-stack=0
+> >     -Cllvm-args=-asan-globals=1
+> >     -Cllvm-args=-asan-kernel-mem-intrinsic-prefix=1
+> > 
+> > Further runs do not rebuild Rust because the flags do not change anymore.
+> > 
+> > Rebuilding like that in the second run is bad, even if this just happens
+> > with KASAN enabled, but missing flags in the first one is even worse.
+> > 
+> > The root issue is that we pass, for some architectures and for the moment,
+> > a generated `target.json` file. That file is not ready by the time `rustc`
+> > gets called for the flag test, and thus the flag test fails just because
+> > the file is not available, e.g.:
+> > 
+> >     $ ... --target=./scripts/target.json ... -Cllvm-args=...
+> >     error: target file "./scripts/target.json" does not exist
+> > 
+> > There are a few approaches we could take here to solve this. For instance,
+> > we could ensure that every time that the config is rebuilt, we regenerate
+> > the file and recompute the flags. Or we could use the LLVM version to
+> > check for these flags, instead of testing the flag (which may have other
+> > advantages, such as allowing us to detect renames on the LLVM side).
+> > 
+> > However, it may be easier than that: `rustc` is aware of the `-Cllvm-args`
+> > regardless of the `--target` (e.g. I checked that the list printed
+> > is the same, plus that I can check for these flags even if I pass
+> > a completely unrelated target), and thus we can just eliminate the
+> > dependency completely.
+> > 
+> > Thus filter out the target.
+> 
+> 
+> 
+> 
+> > This does mean that `rustc-option` cannot be used to test a flag that
+> > requires the right target, but we don't have other users yet, it is a
+> > minimal change and we want to get rid of custom targets in the future.
+> 
+> Hmm, while this might be true, I think it should not actually have been
+> true. Commit ca627e636551e ("rust: cfi: add support for CFI_CLANG with Rust")
+> added a cc-option check to the rust kconfig symbol, checking if the c
+> compiler supports the integer normalisations stuff:
+> 	depends on !CFI_CLANG || RUSTC_VERSION >= 107900 && $(cc-option,-fsanitize=kcfi -fsanitize-cfi-icall-experimental-normalize-integers)
+> and also sets the relevant options in the makefile:
+> 	ifdef CONFIG_RUST
+> 	       # Always pass -Zsanitizer-cfi-normalize-integers as CONFIG_RUST selects
+> 	       # CONFIG_CFI_ICALL_NORMALIZE_INTEGERS.
+> 	       RUSTC_FLAGS_CFI   := -Zsanitizer=kcfi -Zsanitizer-cfi-normalize-integers
+> 	       KBUILD_RUSTFLAGS += $(RUSTC_FLAGS_CFI)
+> 	       export RUSTC_FLAGS_CFI
+> 	endif
+> but it should also have added a rustc-option check as, unfortunately,
+> support for kcfi in rustc is target specific. This results in build
+> breakages where the arch supports CFI_CLANG and RUST, but the target in
+> use does not have the kcfi flag set.
+> I attempted to fix this by adding:
+> 	diff --git a/arch/Kconfig b/arch/Kconfig
+> 	index d1b4ffd6e0856..235709fb75152 100644
+> 	--- a/arch/Kconfig
+> 	+++ b/arch/Kconfig
+> 	@@ -916,6 +916,7 @@ config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
+> 	 config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
+> 	        def_bool y
+> 	        depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
+> 	+       depends on $(rustc-option,-C panic=abort -Zsanitizer=kcfi -Zsanitizer-cfi-normalize-integers)
+> 	        depends on RUSTC_VERSION >= 107900
+> 	        # With GCOV/KASAN we need this fix: https://github.com/rust-lang/rust/pull/129373
+> 	        depends on (RUSTC_LLVM_VERSION >= 190103 && RUSTC_VERSION >= 108200) || \
+> but of course this does not work for cross compilation, as you're
+> stripping the target information out and so the check passes on my host
+> even though my intended
+> RUSTC_BOOTSTRAP=1 rustc -C panic=abort -Zsanitizer=kcfi -Zsanitizer-cfi-normalize-integers -Ctarget-cpu=generic-rv64 --target=riscv64imac-unknown-none-elf
+> is a failure.
+> 
+> I dunno too much about rustc itself, but I suspect that adding kcfi to
+> the target there is a "free" win, but that'll take time to trickle down
+> and the minimum version rustc version for the kernel isn't going to have
+> that.
+> 
+> I'm not really sure what your target.json suggestion below is, so just
+> reporting so that someone that understands the alternative solutions can
+> fix this.
 
-Since we don't actually use the node, decrement the
-reference count immediately after obtaining it.
+Probably right now we have to do this cfg by
 
-Fixes: a5a38765ac79 ("bus: vexpress-config: simplify config bus probing")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- drivers/bus/vexpress-config.c | 1 +
- 1 file changed, 1 insertion(+)
+	depends on CONFIG_ARM
 
-diff --git a/drivers/bus/vexpress-config.c b/drivers/bus/vexpress-config.c
-index 64ee920721ee..aa17f819dfc9 100644
---- a/drivers/bus/vexpress-config.c
-+++ b/drivers/bus/vexpress-config.c
-@@ -393,6 +393,7 @@ static int vexpress_syscfg_probe(struct platform_device *pdev)
- 		struct device_node *bridge_np;
- 
- 		bridge_np = of_parse_phandle(node, "arm,vexpress,config-bridge", 0);
-+		of_node_put(bridge_np);
- 		if (bridge_np != pdev->dev.parent->of_node)
- 			continue;
- 
--- 
-2.35.1
+to prevent riscv if rustc has the missing setting
+set on riscv. Once we add it to riscv, we change it to
 
+	depends on CONFIG_ARM || (RUSTC_VERSION >= ??? || CONFIG_RISCV)
+
+Alice
 
