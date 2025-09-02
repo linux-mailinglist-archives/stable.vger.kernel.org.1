@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-177109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72190B403A9
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:35:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6536BB403FB
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E9A07B8658
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:29:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1839188B224
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2117307AC2;
-	Tue,  2 Sep 2025 13:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74AB324B3B;
+	Tue,  2 Sep 2025 13:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0TBZEw0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6Od7VWJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4D1305062;
-	Tue,  2 Sep 2025 13:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A4830FC1F;
+	Tue,  2 Sep 2025 13:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819605; cv=none; b=C1J3CEeOObaI8/G5QxW7RF+TV4CAiWGnCJq25AkNC3E9EqJd4PbNmLIS+EXODwebiqa/bwkmcKJXOWxOvhlDeUiWxVhH3/6NoNO8tXNNNvo3oYY4gdRsG+hrn6QZFLKHExmOUMtA0wKvvgO+WNzHdrT8ofPZ6AfZsLhQw1o5t90=
+	t=1756819831; cv=none; b=uctayZzuxt0aaSnGelG4WPbj8G+DlI6l9IFQ4sih/3nR3xHH0hZZLPEwHs4yMQbyW/PJn+SaJpPn8KOI1Dl0YM3m6hnmkz9I9FbBvb1aIemF7OtVOkXO3SZSN/9SOhrHnIaRHRmZYZjBc14C9nxMX3MjpG0C132/8TnafP/8mAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819605; c=relaxed/simple;
-	bh=4KotfKRPKZnJKtddyKUaWI+dhPI/FleshtCKzkYihzc=;
+	s=arc-20240116; t=1756819831; c=relaxed/simple;
+	bh=qad/X1OGe2F8jM0B+ri5dDdxow1EJW9jwTC4tc1bECg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AKM0LRtXOIQmfUOQTYB3eE2/nG9L/d6ESgnf/CIBbBbmt0sPJvk1aoQBpsBquRPNxCDw70wjpSPUXSS5NlALHuPQK12ze+8daC1aX8j9hNTA6Q3rRUG7h/LWEzOWukc/i4UbXbOYYmGAMOSmsBBeQO1iafSILNL0XME3zq/YyY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0TBZEw0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B0AC4CEED;
-	Tue,  2 Sep 2025 13:26:44 +0000 (UTC)
+	 MIME-Version; b=mNm8gDCfwe9XX4+XLErDTxmQXVh/LnFkSSUVplWmbt2OWktFsoMXN73UsUC5Iw7WhnjE6uG4Q8NlX3G8igMSczw55Hzg1GsJJ767xTkVQHtlDV3hYEFy3WRXuN62UfS8S1hOj5InLV+j6Rd2WH8MlURwesLazG/rVjIRDFV0gzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6Od7VWJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5283C4CEF4;
+	Tue,  2 Sep 2025 13:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819605;
-	bh=4KotfKRPKZnJKtddyKUaWI+dhPI/FleshtCKzkYihzc=;
+	s=korg; t=1756819831;
+	bh=qad/X1OGe2F8jM0B+ri5dDdxow1EJW9jwTC4tc1bECg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z0TBZEw0w/ispt6VZJifdY2QMA2J55zHccyrYlxY9rGzaiLKRmizOYeqwRm/kaTg6
-	 R/YJW3M2MUxzNQsqZ77xrOIf+8Txzlhzxrl7MmNFUEiDUHF6baBiTS6pI8AUB27G4I
-	 iY3PL6Z0gMB5o7uKVL//0brOlLhWKophRrrsRSnI=
+	b=X6Od7VWJZQCzv7PO/VNo+HipfDw+Bu7lts3HGrV4rxCFUY0ZkyXC6EumP7g22teCq
+	 beg32jfcBmfbfz4xRx/Gr4hwU+vuCTx4D3tM73HVcNK01XuNYF4CoStPB6d/ZOg3u7
+	 FE6QsPV9zneHBmg5Pqi/VpxEZ9y1ShYJoMfvQ9xQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 084/142] net/mlx5: Nack sync reset when SFs are present
+Subject: [PATCH 6.12 10/95] perf symbol-minimal: Fix ehdr reading in filename__read_build_id
 Date: Tue,  2 Sep 2025 15:19:46 +0200
-Message-ID: <20250902131951.484839956@linuxfoundation.org>
+Message-ID: <20250902131940.010821977@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +62,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 26e42ec7712d392d561964514b1f253b1a96f42d ]
+[ Upstream commit ba0b7081f7a521d7c28b527a4f18666a148471e7 ]
 
-If PF (Physical Function) has SFs (Sub-Functions), since the SFs are not
-taking part in the synchronization flow, sync reset can lead to fatal
-error on the SFs, as the function will be closed unexpectedly from the
-SF point of view.
+The e_ident is part of the ehdr and so reading it a second time would
+mean the read ehdr was displaced by 16-bytes. Switch from stdio to
+open/read/lseek syscalls for similarity with the symbol-elf version of
+the function and so that later changes can alter then open flags.
 
-Add a check to prevent sync reset when there are SFs on a PF device
-which is not ECPF, as ECPF is teardowned gracefully before reset.
-
-Fixes: 92501fa6e421 ("net/mlx5: Ack on sync_reset_request only if PF can do reset_now")
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Parav Pandit <parav@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250825143435.598584-8-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: fef8f648bb47 ("perf symbol: Fix use-after-free in filename__read_build_id")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250823000024.724394-2-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c   |  6 ++++++
- drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c | 10 ++++++++++
- drivers/net/ethernet/mellanox/mlx5/core/sf/sf.h      |  6 ++++++
- 3 files changed, 22 insertions(+)
+ tools/perf/util/symbol-minimal.c | 55 ++++++++++++++++----------------
+ 1 file changed, 27 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-index 38b9b184ae01b..22995131824a0 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-@@ -6,6 +6,7 @@
- #include "fw_reset.h"
- #include "diag/fw_tracer.h"
- #include "lib/tout.h"
-+#include "sf/sf.h"
+diff --git a/tools/perf/util/symbol-minimal.c b/tools/perf/util/symbol-minimal.c
+index 36c1d3090689f..f114f75ebeb98 100644
+--- a/tools/perf/util/symbol-minimal.c
++++ b/tools/perf/util/symbol-minimal.c
+@@ -4,7 +4,6 @@
  
- enum {
- 	MLX5_FW_RESET_FLAGS_RESET_REQUESTED,
-@@ -428,6 +429,11 @@ static bool mlx5_is_reset_now_capable(struct mlx5_core_dev *dev,
- 		return false;
- 	}
- 
-+	if (!mlx5_core_is_ecpf(dev) && !mlx5_sf_table_empty(dev)) {
-+		mlx5_core_warn(dev, "SFs should be removed before reset\n");
-+		return false;
-+	}
-+
- #if IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE)
- 	if (reset_method != MLX5_MFRL_REG_PCI_RESET_METHOD_HOT_RESET) {
- 		err = mlx5_check_hotplug_interrupt(dev, bridge);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
-index 0864ba625c07d..3304f25cc8055 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
-@@ -518,3 +518,13 @@ void mlx5_sf_table_cleanup(struct mlx5_core_dev *dev)
- 	WARN_ON(!xa_empty(&table->function_ids));
- 	kfree(table);
- }
-+
-+bool mlx5_sf_table_empty(const struct mlx5_core_dev *dev)
-+{
-+	struct mlx5_sf_table *table = dev->priv.sf_table;
-+
-+	if (!table)
-+		return true;
-+
-+	return xa_empty(&table->function_ids);
-+}
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/sf.h b/drivers/net/ethernet/mellanox/mlx5/core/sf/sf.h
-index 860f9ddb7107b..89559a37997ad 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/sf/sf.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/sf.h
-@@ -17,6 +17,7 @@ void mlx5_sf_hw_table_destroy(struct mlx5_core_dev *dev);
- 
- int mlx5_sf_table_init(struct mlx5_core_dev *dev);
- void mlx5_sf_table_cleanup(struct mlx5_core_dev *dev);
-+bool mlx5_sf_table_empty(const struct mlx5_core_dev *dev);
- 
- int mlx5_devlink_sf_port_new(struct devlink *devlink,
- 			     const struct devlink_port_new_attrs *add_attr,
-@@ -61,6 +62,11 @@ static inline void mlx5_sf_table_cleanup(struct mlx5_core_dev *dev)
+ #include <errno.h>
+ #include <unistd.h>
+-#include <stdio.h>
+ #include <fcntl.h>
+ #include <string.h>
+ #include <stdlib.h>
+@@ -88,11 +87,8 @@ int filename__read_debuglink(const char *filename __maybe_unused,
+  */
+ int filename__read_build_id(const char *filename, struct build_id *bid)
  {
+-	FILE *fp;
+-	int ret = -1;
++	int fd, ret = -1;
+ 	bool need_swap = false, elf32;
+-	u8 e_ident[EI_NIDENT];
+-	int i;
+ 	union {
+ 		struct {
+ 			Elf32_Ehdr ehdr32;
+@@ -103,28 +99,27 @@ int filename__read_build_id(const char *filename, struct build_id *bid)
+ 			Elf64_Phdr *phdr64;
+ 		};
+ 	} hdrs;
+-	void *phdr;
+-	size_t phdr_size;
+-	void *buf = NULL;
+-	size_t buf_size = 0;
++	void *phdr, *buf = NULL;
++	ssize_t phdr_size, ehdr_size, buf_size = 0;
+ 
+-	fp = fopen(filename, "r");
+-	if (fp == NULL)
++	fd = open(filename, O_RDONLY);
++	if (fd < 0)
+ 		return -1;
+ 
+-	if (fread(e_ident, sizeof(e_ident), 1, fp) != 1)
++	if (read(fd, hdrs.ehdr32.e_ident, EI_NIDENT) != EI_NIDENT)
+ 		goto out;
+ 
+-	if (memcmp(e_ident, ELFMAG, SELFMAG) ||
+-	    e_ident[EI_VERSION] != EV_CURRENT)
++	if (memcmp(hdrs.ehdr32.e_ident, ELFMAG, SELFMAG) ||
++	    hdrs.ehdr32.e_ident[EI_VERSION] != EV_CURRENT)
+ 		goto out;
+ 
+-	need_swap = check_need_swap(e_ident[EI_DATA]);
+-	elf32 = e_ident[EI_CLASS] == ELFCLASS32;
++	need_swap = check_need_swap(hdrs.ehdr32.e_ident[EI_DATA]);
++	elf32 = hdrs.ehdr32.e_ident[EI_CLASS] == ELFCLASS32;
++	ehdr_size = (elf32 ? sizeof(hdrs.ehdr32) : sizeof(hdrs.ehdr64)) - EI_NIDENT;
+ 
+-	if (fread(elf32 ? (void *)&hdrs.ehdr32 : (void *)&hdrs.ehdr64,
+-		  elf32 ? sizeof(hdrs.ehdr32) : sizeof(hdrs.ehdr64),
+-		  1, fp) != 1)
++	if (read(fd,
++		 (elf32 ? (void *)&hdrs.ehdr32 : (void *)&hdrs.ehdr64) + EI_NIDENT,
++		 ehdr_size) != ehdr_size)
+ 		goto out;
+ 
+ 	if (need_swap) {
+@@ -138,14 +133,18 @@ int filename__read_build_id(const char *filename, struct build_id *bid)
+ 			hdrs.ehdr64.e_phnum = bswap_16(hdrs.ehdr64.e_phnum);
+ 		}
+ 	}
+-	phdr_size = elf32 ? hdrs.ehdr32.e_phentsize * hdrs.ehdr32.e_phnum
+-			  : hdrs.ehdr64.e_phentsize * hdrs.ehdr64.e_phnum;
++	if ((elf32 && hdrs.ehdr32.e_phentsize != sizeof(Elf32_Phdr)) ||
++	    (!elf32 && hdrs.ehdr64.e_phentsize != sizeof(Elf64_Phdr)))
++		goto out;
++
++	phdr_size = elf32 ? sizeof(Elf32_Phdr) * hdrs.ehdr32.e_phnum
++			  : sizeof(Elf64_Phdr) * hdrs.ehdr64.e_phnum;
+ 	phdr = malloc(phdr_size);
+ 	if (phdr == NULL)
+ 		goto out;
+ 
+-	fseek(fp, elf32 ? hdrs.ehdr32.e_phoff : hdrs.ehdr64.e_phoff, SEEK_SET);
+-	if (fread(phdr, phdr_size, 1, fp) != 1)
++	lseek(fd, elf32 ? hdrs.ehdr32.e_phoff : hdrs.ehdr64.e_phoff, SEEK_SET);
++	if (read(fd, phdr, phdr_size) != phdr_size)
+ 		goto out_free;
+ 
+ 	if (elf32)
+@@ -153,8 +152,8 @@ int filename__read_build_id(const char *filename, struct build_id *bid)
+ 	else
+ 		hdrs.phdr64 = phdr;
+ 
+-	for (i = 0; i < elf32 ? hdrs.ehdr32.e_phnum : hdrs.ehdr64.e_phnum; i++) {
+-		size_t p_filesz;
++	for (int i = 0; i < (elf32 ? hdrs.ehdr32.e_phnum : hdrs.ehdr64.e_phnum); i++) {
++		ssize_t p_filesz;
+ 
+ 		if (need_swap) {
+ 			if (elf32) {
+@@ -180,8 +179,8 @@ int filename__read_build_id(const char *filename, struct build_id *bid)
+ 				goto out_free;
+ 			buf = tmp;
+ 		}
+-		fseek(fp, elf32 ? hdrs.phdr32[i].p_offset : hdrs.phdr64[i].p_offset, SEEK_SET);
+-		if (fread(buf, p_filesz, 1, fp) != 1)
++		lseek(fd, elf32 ? hdrs.phdr32[i].p_offset : hdrs.phdr64[i].p_offset, SEEK_SET);
++		if (read(fd, buf, p_filesz) != p_filesz)
+ 			goto out_free;
+ 
+ 		ret = read_build_id(buf, p_filesz, bid, need_swap);
+@@ -194,7 +193,7 @@ int filename__read_build_id(const char *filename, struct build_id *bid)
+ 	free(buf);
+ 	free(phdr);
+ out:
+-	fclose(fp);
++	close(fd);
+ 	return ret;
  }
  
-+static inline bool mlx5_sf_table_empty(const struct mlx5_core_dev *dev)
-+{
-+	return true;
-+}
-+
- #endif
- 
- #endif
 -- 
 2.50.1
 
