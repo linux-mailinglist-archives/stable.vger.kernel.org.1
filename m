@@ -1,128 +1,170 @@
-Return-Path: <stable+bounces-177503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB23FB406E5
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 16:32:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94CEB405FD
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 16:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A98C12080BF
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 14:32:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F1BC7BB5B6
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 14:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AEF2F39BD;
-	Tue,  2 Sep 2025 14:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBBA2FB97F;
+	Tue,  2 Sep 2025 14:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=editrage.com header.i=@editrage.com header.b="gykZdWtW"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="JHycl7Xh"
 X-Original-To: stable@vger.kernel.org
-Received: from flamingo.yew.relay.mailchannels.net (flamingo.yew.relay.mailchannels.net [23.83.220.60])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105A83093CA
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 14:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.220.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756823527; cv=pass; b=DV0MrkKUQXq7CHN7H8NaEQTpDTAHPHKIKRrRMgOsRnuhOEz10Je2KagL+MqIjvXUx0BbTx38TMpPncYBAZY54/3W+904CFt4BhJipe4UnqEDWKHw+EqEI0UZEyKkdYK89lxUCMOZXkiUo8yhU6tW56FNdvjYrIDHKsFjhllVVIU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756823527; c=relaxed/simple;
-	bh=8bR8OFlLy2VUW1aqxbgV0A+FsjagdzUBElYDzmd68eM=;
-	h=Message-ID:From:To:Subject:MIME-Version:Content-Type:Date; b=NoIpdpwcNt9gsvwzx7kJ8Of/EZnw3BNNYD7oXvVJWnwzbfIR5OqCSGcVbsOJnXYR9UmdCggYJiKeVfAuwvsxO7SEBB3DI+xcZ9Cdo7bUEQFqOzVy8hWt0lSIbg3MUaokiLSG+krOo2dPbZRXv1CXFiIr7JC8H6Wp5W3/zY+YE8I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=editrage.com; spf=pass smtp.mailfrom=editrage.com; dkim=pass (2048-bit key) header.d=editrage.com header.i=@editrage.com header.b=gykZdWtW; arc=pass smtp.client-ip=23.83.220.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=editrage.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=editrage.com
-X-Sender-Id: hostingeremailsmtpin|x-authuser|care@editrage.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 6FBDA844EE2
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 13:54:15 +0000 (UTC)
-Received: from fr-int-smtpout19.hostinger.io (100-104-249-105.trex-nlb.outbound.svc.cluster.local [100.104.249.105])
-	(Authenticated sender: hostingeremailsmtpin)
-	by relay.mailchannels.net (Postfix) with ESMTPA id B83FA845E90
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 13:54:14 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1756821255; a=rsa-sha256;
-	cv=none;
-	b=StLaTNb5QBk6NIQG3giGqSudYkIF/TeQ2qAb+NbgUxtYyu2oPKlSOaAZ1TgaM1WoavjNU9
-	hoHRuvXhRnoudS7Lq2M5mdKtmYIV06JLqr8YrDPGIHtKkYcoF9srpei3Kbq/YmwciJuxOH
-	SVVQC21beK7EaKwg3a/aq+AAQFeoWX265ger/Ya4ZK8bcOwQtYe6xQeBNVXqhnCnvG5YCs
-	bLqsORURAp0/TEQKRuG/3V2tguygJj08C7FnQL8C1cSEoZCAaFEljTNOUswVIyl7zg2LsS
-	80oAyHMeqfB30KD81TIcCCJLf6H3LBRtAkji9tOD+fBNrkEfS+E3blKGFxA5yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1756821255;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
-	bh=8bR8OFlLy2VUW1aqxbgV0A+FsjagdzUBElYDzmd68eM=;
-	b=Wrb51y1FLw0IMzYTQqVS+mw9jR648CEVBKQxWXyph/TUAs1xNYA4m2FlAVYe6oC95utohG
-	E6UzZeaoA4/hYMjvRvGxMkTV7K2TkByZGC5vGmcslLqXeMwMv4KRARt7YKIvpgfsbPRmHB
-	ePOfcx3ZIHFZX+aPV0FZ1/RppPuGDdENIIOZD3MJfPVKRhFY2/MzLNdVTitE7wqYu/No1S
-	1iBexaYGyXyNJYxXm2YOQ8dif3VKiJSt2LQDXpTjfMweS8vwquIPToHxVXgBF/1c6g0QRK
-	QXm35YE5D+RiqDlakkZD04v9Kc+NvL3VNCfch1eX1MgeauD3PceO/eItAxbc6w==
-ARC-Authentication-Results: i=1;
-	rspamd-9594d4cf9-kbhhh;
-	auth=pass smtp.auth=hostingeremailsmtpin smtp.mailfrom=care@editrage.com
-X-Sender-Id: hostingeremailsmtpin|x-authuser|care@editrage.com
-X-MC-Relay: Good
-X-MailChannels-SenderId: hostingeremailsmtpin|x-authuser|care@editrage.com
-X-MailChannels-Auth-Id: hostingeremailsmtpin
-X-Cellar-Invention: 0645889c78704422_1756821255255_4254369579
-X-MC-Loop-Signature: 1756821255255:309123442
-X-MC-Ingress-Time: 1756821255255
-Received: from fr-int-smtpout19.hostinger.io ([UNAVAILABLE]. [148.222.54.35])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.104.249.105 (trex/7.1.3);
-	Tue, 02 Sep 2025 13:54:15 +0000
-Received: from 73b8c74f-fc73-4ac0-b19b-4cd38d0f2192.local (ec2-44-223-21-34.compute-1.amazonaws.com [44.223.21.34])
-	(Authenticated sender: care@editrage.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4cGS046dxcz1xnq
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 13:54:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=editrage.com;
-	s=hostingermail-a; t=1756821253;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=8bR8OFlLy2VUW1aqxbgV0A+FsjagdzUBElYDzmd68eM=;
-	b=gykZdWtWARw69jy4tn6drxZksANh9SP0yFOZxFZsF56oD0cAPyoWBfsgk6bn2x9GerKWJ4
-	LVsSLC2wHpZGxOHRtu5LvMQI1gdc3cyc5UCYXfmrHXPSMq0nhyjvHB1JbxdXHPkmEQ1J90
-	fqRP4zKawEwbLGV2KqyR6WnxFCTOscc2uURGjUryUW2K6p6BUk3eZ9JyicsIThWfZJPUXi
-	i6lNZrB13hqqxezVaGYWPkOOAM1NCqk4fY9Mpl6XQ7SSgYG7ste3zLS4WMXGidoX/JfpCe
-	9agSbMkadRvXgtLGUE2QckQEJFawo2icsZB4+CSMKb8S/mAOd4/V8NUxXPMEVQ==
-Message-ID: <73b8c74f-fc73-4ac0-b19b-4cd38d0f2192@editrage.com>
-From: Mohanish Ved <care@editrage.com>
-To: stable@vger.kernel.org
-Subject: Truth: AI adoption in healthcare
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492CA2DF6EA
+	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 14:02:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756821763; cv=none; b=Qu8MmwwXBNdb5q7wV3mSOYr420SsoHy0i7Qf6RW17dWn09ZoPbRxGBOfnuJVOgIea3ls8O1PtWup7cX5DYIujRoEEP5o8GZ8QZr3Hk0hp3vjYcKg2c0c2ki3i50WnfokLLiS+XGt5f4KenhTtueSjQhG9bcxDcRDejBk+lAL6tI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756821763; c=relaxed/simple;
+	bh=t6qJ4Krbe8Eig8u7HuRNaH82OJCGzRpxUAzmtO7ZEgM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LzPQRPt65w+Ne7RAtCGLTY6kz1dw9TogK/z8VOUjC+Fjtm5P6UAmEuTNu6spsSdDrivAcE/tH1FTdhvPlNgHD3SdLUwI5HVHnW4N4kmrrW0rRXsKgu8KKGfW1UyR07GZjRKVtW9idlcU/zka5N/x6k0FPnPnK6Gvu3Ultb+WwHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=JHycl7Xh; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55f753ec672so3195060e87.2
+        for <stable@vger.kernel.org>; Tue, 02 Sep 2025 07:02:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756821759; x=1757426559; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t6qJ4Krbe8Eig8u7HuRNaH82OJCGzRpxUAzmtO7ZEgM=;
+        b=JHycl7XhizIXDhB7H67QiM3ora39fFS0qsQGf0MBFXfqjJb9Dgzdbi+DoMs5pSRqrV
+         H1S+PvcYqslE3IKKcShPsILhFh4PRKSBIAn2FyPiXHDOWJKPwZBIn2szYzVeB2zX/lMj
+         xFY9l3BIbKeACyANe2Gl3Wi6Pd7of6ydyevAVU5jUxXdKw5bKg3NiKjq5Drw1+1CjB80
+         GGS0MHpxBmKUTIVIfgW3lM2SpmJ2s70Gi+ySjOdNCbzVX9RHI09fnUcaI4TZdECpt6IX
+         U51ywl0Jzjr9Tx1v8W1cgFltIxP+C9cVUMC5r6Jdd9EqAUs2Tx+TLplVLKgDqqO8QFNo
+         UMTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756821759; x=1757426559;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t6qJ4Krbe8Eig8u7HuRNaH82OJCGzRpxUAzmtO7ZEgM=;
+        b=rfp65bS3UMOq1AtWgfL+rrIwN/RbZtsJSxkjgbnpztaMVdpGN+tDIHtUNi7Z7EEfBw
+         ypmOI+TtK1Il5c4C+Ix/74bSR97wTNnIXdW1wiC1ZvXeAhIV/heKc/PLx+3H0SGJlPXH
+         gLUUeX7mVDiA5zL04UxMjFPbtnv13r+OMKqfBUMOiKLYHtOCJ3ciabLprLu9C2ns8dB9
+         ecJzT2Wbv6zrl6h4RuA6yNZANGke221W8EbpJwuqgXTlzww36Y3yCLP+C7tOrrz2tTB/
+         YuA87VnO+X3IgvGz3vSmg85Do2JYSU3ycEj0QqgTA6UKGcarEJEyRiAYK3IG6nxxajPJ
+         Vokw==
+X-Forwarded-Encrypted: i=1; AJvYcCVvDjgwkXjwC7okXEISeiof9QnCp84YObYQ8M5PMXDTdHS9kwGGxzO2dY3oRpjO+4vcF0jSyf8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIxeojFhazrkGLrFuOf2VmmbhN0h8BcfbLdI6DLQ5EJwZC0NDv
+	wShyBZZmBfGhaZy8qEzrxZPWbuaoY3S45/7hwpLDjNI2uJPb+YLlTO+tO/aMpC3VGI4PZxCrL/V
+	S2F8AgJlKTBfNAR2Ps3Fm700QElxMaxxBC4Lj9lnG8Q==
+X-Gm-Gg: ASbGncsxlwRHjOB2D1fllkSvmVGXIhpPAppSnNul6jMiSRF4Yg6BZ8K1G+lfc59Fbkc
+	A1DcI3HU+Lufpj55HBtDcLjPqopr6G94jTY+eo1efu/EkORfvsahTr9QIwuOXwf1W0eUcwuOV0Z
+	XRbV1alISN1M/hIWcl4xkvpb5haftCSSXnZsvMA2x5mlGdRWKcYpENkj7Au6lIoPhvK//Kfo986
+	bVuAlhuKh1BaxtgWvTCfe/aUUD1oEEQAaCzZWk6ri9Js/tczw==
+X-Google-Smtp-Source: AGHT+IF0XxTo4Eof/cAnsUmsXyl7FaRgZjHqhfNse8z4FzsrSjUbnY+JobcnARjelIxZIYceGk+U5xWeRaOHkRoNgZc=
+X-Received: by 2002:a05:6512:1289:b0:55f:3f25:f03d with SMTP id
+ 2adb3069b0e04-55f708dbc89mr4083265e87.32.1756821758848; Tue, 02 Sep 2025
+ 07:02:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Date: Tue,  2 Sep 2025 13:54:12 +0000 (UTC)
-X-CM-Envelope: MS4xfJEMtxRryI6xkSIrkN6J50j9wGu4v4FtFPvfAwRNuBzpTLAloejhPDmX76qJp/4wxmBFQGz5XpZSjeXCxlDjT20OgLDNrE/owAlnUpl+u3i1IXNULsHH f/eLzKlTxLefDVB0HRF7X+UaecXilFNNroEBzQk9Jt9xolMNEjeen/nBwBUANcs3n8ekxqvyKaL6lCiHpMnHHXw62o1G14D3RbVFJlc9eKxHclkMpkDb5o7o
-X-CM-Analysis: v=2.4 cv=DJTd4DNb c=1 sm=1 tr=0 ts=68b6f705 a=1uyTlxNLEoEcdq9WtLNpaQ==:117 a=1uyTlxNLEoEcdq9WtLNpaQ==:17 a=IkcTkHD0fZMA:10 a=amsrZz8KWSJj8ufvzgsA:9 a=QEXdDO2ut3YA:10 a=UzISIztuOb4A:10
-X-AuthUser: care@editrage.com
+References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+ <20250902-pinctrl-gpio-pinfuncs-v7-1-bb091daedc52@linaro.org>
+ <aLbrz5DYS5Yxx_UE@smile.fi.intel.com> <CAMRc=Mfx5czDM=vfEYhFtVO3MviYaW4wKBYjGZ9ZnMbr-+T4mg@mail.gmail.com>
+ <aLb2HH5zgxdbDiPo@smile.fi.intel.com>
+In-Reply-To: <aLb2HH5zgxdbDiPo@smile.fi.intel.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 2 Sep 2025 16:02:27 +0200
+X-Gm-Features: Ac12FXzmmMVa4i5hYh_JJ6GZvRRv05y-_-Nk_APJiumjkhCqONHKECafTZ1ySu4
+Message-ID: <CAMRc=Mdp2djgGbgu_uwLSkrtRPomAU=6-SRdzCdSbrHWzS2c2A@mail.gmail.com>
+Subject: Re: [PATCH v7 01/16] pinctrl: check the return value of pinmux_ops::get_function_name()
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Alexey Klimov <alexey.klimov@linaro.org>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>, 
+	Andy Shevchenko <andy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Jacky Bai <ping.bai@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, NXP S32 Linux Team <s32@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Tony Lindgren <tony@atomide.com>, 
+	Haojian Zhuang <haojian.zhuang@linaro.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mips@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	linux-mm@kvack.org, imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Dr. Sam Lavi Cosmetic And Implant Dentistry=C2=A0,
+On Tue, Sep 2, 2025 at 3:50=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@intel.com> wrote:
+>
+> On Tue, Sep 02, 2025 at 03:29:31PM +0200, Bartosz Golaszewski wrote:
+> > On Tue, Sep 2, 2025 at 3:06=E2=80=AFPM Andy Shevchenko
+> > <andriy.shevchenko@intel.com> wrote:
+> > > On Tue, Sep 02, 2025 at 01:59:10PM +0200, Bartosz Golaszewski wrote:
+> > > >
+> > > > While the API contract in docs doesn't specify it explicitly,
+> > >
+> > > So, why not to amend the doc at the same time?
+> >
+> > Because this series is already big as is. That would be another commit
+> > that can be separate.
+>
+> I meant _in the same_ patch.
+>
+> > > > the generic implementation of the get_function_name() callback from=
+ struct
+> > > > pinmux_ops - pinmux_generic_get_function_name() - can fail and retu=
+rn
+> > > > NULL. This is already checked in pinmux_check_ops() so add a simila=
+r
+> > > > check in pinmux_func_name_to_selector() instead of passing the retu=
+rned
+> > > > pointer right down to strcmp() where the NULL can get dereferenced.=
+ This
+> > > > is normal operation when adding new pinfunctions.
+>
+> > > Fixes?
+> >
+> > This has always been like that.
+> >
+> > > Reported?
+> >
+> > I mean, technically Mark Brown reported my previous patch failing but
+> > I don't think we do this if we're still within the same series just
+> > another iteration?
+> >
+> > > Closes?
+> >
+> > Ditto.
+>
+> I meant that this fixes a potential issue disregard to your series, right=
+?
+>
 
-AI adoption in healthcare isn=E2=80=99t coming =E2=80=94 it=E2=80=99s =
-already here.
-Some implant clinics are quietly using AI to handle patient =
-calls, consultations, and scheduling.
+No, as long as the imx driver keeps putting stuff into the pin
+function radix tree directly, this cannot happen. The issue was
+triggered by the discrepancy between the number of added selectors and
+the hardcoded number of functions (we started at 0 which was not in
+the radix tree and crashed before we got to 1).
 
-Their growth isn=E2=80=99t a =
-coincidence.
-Being first gives them an edge =E2=80=94 being late means =
-playing catch-up.
-
-Should I share a 2-min demo video so you can see how it =
-works?
-Reply 'Video' and I=E2=80=99ll send it.
-
-=E2=80=94
-Best regards, =C2=A0
-Mohanish Ved=C2=A0=C2=A0
-AI Growth Specialist =C2=A0
-EditRage Solutions
-=C2=A0
+Bart
 
