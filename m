@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-177324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965C0B404D7
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6146B40473
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24EE61891BFE
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E42E7188F26C
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987812877FC;
-	Tue,  2 Sep 2025 13:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56E731A563;
+	Tue,  2 Sep 2025 13:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYqP0vxc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g52cGK2+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558DA2E7BB1;
-	Tue,  2 Sep 2025 13:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C3831987D;
+	Tue,  2 Sep 2025 13:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820281; cv=none; b=EwVhQ0ieqMq1T7IKpzgxAAxQNP0mTOZxBVDeFgk9SjspGMsKp2Wf0XCqI0PjKMTN0uzu2zjoao6jKSbVLpr4oVXgizQyVjuIZeUX5ouTOt0U4tphv0EQmVMxsRZt4meRVai3kC7nLXhYMHwZCU08LVl9pGrJOCMpmmSFMZa2tS4=
+	t=1756820095; cv=none; b=WPxRHDHkLx/Bwjt+YoZft1/r+jHhjPrue5eKyUt6jJ7K8RjSpTNGuCYciYfxBhwHDrKmSRUrfZMpJ8bagGGT62j7l1czZLkkNSnNw/MtcZKw2hiyUNh5iLle6wNRI5owSIIud9wD17ZKMVKe6H5cimc97deW2e2TU6DU8FgufO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820281; c=relaxed/simple;
-	bh=cE/ExuI4RKP3H88XrZM+RjomkraJUG0FKc+GskJGFVA=;
+	s=arc-20240116; t=1756820095; c=relaxed/simple;
+	bh=E3FFS4ppZZGBfUp+W6PHGC3YixzxxEkQn+Myt3V3X90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YN3SvgLg974v5/8v3KU/pMMSIjmVVdvIR2o9J+J4H2i24GcDyd+a8fSBJ80Ck83MW1UPs083PUv5kBOLhldkaez/Hwf4zGdfMJMGlVkBhkkTJGVbIJXmiT5+RkVRNtz+8zrGopFF+5njlAVaxAVTJNI/orlYMpcGKBO7xsI0Omg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYqP0vxc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECD0C4CEED;
-	Tue,  2 Sep 2025 13:38:00 +0000 (UTC)
+	 MIME-Version; b=kNHVcZ4Yy0s3Iv+mo4mgrmZD5bdK4in372vKZRqcrfbGD7tfGRA+8Gze2v3rJg1Bna2NHmP4Us/FcgPAXIaF7Yol+wuIoWnZu9wZgnVEMEohWofoHzR2NpvyiIdxM+y+Iu2L8BULlmoRSpUQzzW568ulk0dhYBBMz69va9sfLEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g52cGK2+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73AF4C4CEED;
+	Tue,  2 Sep 2025 13:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820281;
-	bh=cE/ExuI4RKP3H88XrZM+RjomkraJUG0FKc+GskJGFVA=;
+	s=korg; t=1756820095;
+	bh=E3FFS4ppZZGBfUp+W6PHGC3YixzxxEkQn+Myt3V3X90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYqP0vxcNfLP5MMztJ0/lh4amHlciKWXDrlgruiwjCvTDSAyx5NMX1W8oIeyv9s0M
-	 ics9bzh/Dma0NlZ1Kvw4T2c38CKlm8R7lkwPHUt8qSTM7bnZFp3Qh9ZG1ku40H2p5/
-	 sDhaJxMM8cSvle2cMx4KWStSCc4NCHSngFn/v2k4=
+	b=g52cGK2+POQmaSyRP69ypvEFtNFWvfubQEWSJybB3rbAfFWJuxyGpB9Cky3eydruR
+	 pGPN0p5paqLizTkFBJYjDuHqrTiJXIC2jcM02eJ6ZsMRcOUU0gOOjQTebenjjH5dzF
+	 Zp7XDCdd2jaOcdRvthhKfu6ojL4eiqlzj9eziBN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Wu Guanghao <wuguanghao3@huawei.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 55/75] efivarfs: Fix slab-out-of-bounds in efivarfs_d_compare
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>
+Subject: [PATCH 6.12 91/95] PCI: dwc: Ensure that dw_pcie_wait_for_link() waits 100 ms after link up
 Date: Tue,  2 Sep 2025 15:21:07 +0200
-Message-ID: <20250902131937.278061391@linuxfoundation.org>
+Message-ID: <20250902131943.094194915@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit a6358f8cf64850f3f27857b8ed8c1b08cfc4685c ]
+commit 80dc18a0cba8dea42614f021b20a04354b213d86 upstream.
 
-Observed on kernel 6.6 (present on master as well):
+As per PCIe r6.0, sec 6.6.1, a Downstream Port that supports Link speeds
+greater than 5.0 GT/s, software must wait a minimum of 100 ms after Link
+training completes before sending a Configuration Request.
 
-  BUG: KASAN: slab-out-of-bounds in memcmp+0x98/0xd0
-  Call trace:
-   kasan_check_range+0xe8/0x190
-   __asan_loadN+0x1c/0x28
-   memcmp+0x98/0xd0
-   efivarfs_d_compare+0x68/0xd8
-   __d_lookup_rcu_op_compare+0x178/0x218
-   __d_lookup_rcu+0x1f8/0x228
-   d_alloc_parallel+0x150/0x648
-   lookup_open.isra.0+0x5f0/0x8d0
-   open_last_lookups+0x264/0x828
-   path_openat+0x130/0x3f8
-   do_filp_open+0x114/0x248
-   do_sys_openat2+0x340/0x3c0
-   __arm64_sys_openat+0x120/0x1a0
+Add this delay in dw_pcie_wait_for_link(), after the link is reported as
+up. The delay will only be performed in the success case where the link
+came up.
 
-If dentry->d_name.len < EFI_VARIABLE_GUID_LEN , 'guid' can become
-negative, leadings to oob. The issue can be triggered by parallel
-lookups using invalid filename:
+DWC glue drivers that have a link up IRQ (drivers that set
+use_linkup_irq = true) do not call dw_pcie_wait_for_link(), instead they
+perform this delay in their threaded link up IRQ handler.
 
-  T1			T2
-  lookup_open
-   ->lookup
-    simple_lookup
-     d_add
-     // invalid dentry is added to hash list
-
-			lookup_open
-			 d_alloc_parallel
-			  __d_lookup_rcu
-			   __d_lookup_rcu_op_compare
-			    hlist_bl_for_each_entry_rcu
-			    // invalid dentry can be retrieved
-			     ->d_compare
-			      efivarfs_d_compare
-			      // oob
-
-Fix it by checking 'guid' before cmp.
-
-Fixes: da27a24383b2 ("efivarfs: guid part of filenames are case-insensitive")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Signed-off-by: Wu Guanghao <wuguanghao3@huawei.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Link: https://patch.msgid.link/20250625102347.1205584-14-cassel@kernel.org
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/efivarfs/super.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pci/controller/dwc/pcie-designware.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 586c5709dfb55..34438981ddd80 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -90,6 +90,10 @@ static int efivarfs_d_compare(const struct dentry *dentry,
- {
- 	int guid = len - EFI_VARIABLE_GUID_LEN;
+--- a/drivers/pci/controller/dwc/pcie-designware.c
++++ b/drivers/pci/controller/dwc/pcie-designware.c
+@@ -655,6 +655,14 @@ int dw_pcie_wait_for_link(struct dw_pcie
+ 		return -ETIMEDOUT;
+ 	}
  
-+	/* Parallel lookups may produce a temporary invalid filename */
-+	if (guid <= 0)
-+		return 1;
++	/*
++	 * As per PCIe r6.0, sec 6.6.1, a Downstream Port that supports Link
++	 * speeds greater than 5.0 GT/s, software must wait a minimum of 100 ms
++	 * after Link training completes before sending a Configuration Request.
++	 */
++	if (pci->max_link_speed > 2)
++		msleep(PCIE_RESET_CONFIG_WAIT_MS);
 +
- 	if (name->len != len)
- 		return 1;
+ 	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+ 	val = dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKSTA);
  
--- 
-2.50.1
-
 
 
 
