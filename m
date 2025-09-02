@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-177167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03AFFB4038E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF650B40479
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:43:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2FB43AA0F3
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:34:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46DD91892379
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D831130E830;
-	Tue,  2 Sep 2025 13:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE142DAFA1;
+	Tue,  2 Sep 2025 13:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fq5l0ER3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLk+iQyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA4231A569;
-	Tue,  2 Sep 2025 13:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2942D2DC33B;
+	Tue,  2 Sep 2025 13:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819794; cv=none; b=iKoekovBMYRVzTd4O2wW/D1tAPq+A9Zt2stH//6IqV9fq+az4yPUzfMIwf28wIDW8xJ6wN8+qPDK/TFRBhNJ65MmapGm1tequ2iXsNr8p+waw3GhWdtQGkvrvUY3dSMU0tXfusbVqVgD9ZrIjXHeVKdGpFvEy1Q4j7DRUCGcdqI=
+	t=1756820120; cv=none; b=tmnsCVMgMGf8apxTEI98UDn6x09deSCUyU8a2eL1ljucuXg0hCuE2KatHN8MvPDiv57pzzepbxI2bxcruN7MnDPDfXeYIBp7r9TlYB4ND0y3T/T5hx+fWj9n9SSWLWz+uVgxEOdvLkzRUVrIndjngv17r4JGZkIx3iEA4PGE2Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819794; c=relaxed/simple;
-	bh=sEOv/82pafAEfOgIwtJZcT6YFHwPgsvgb6GnnV0/TnU=;
+	s=arc-20240116; t=1756820120; c=relaxed/simple;
+	bh=gla+jhBCe5RXnSyeZcu2bKrJzAafMAFU6tXw8kIVZjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e0sGmwWJqehIrr5XQL+5jlefBhqoxkQldKw/Qtk8PK3NBwNudkvmKZNghiDERv5j2D7gFIP2j7mnJSPcoxfWlLS1RBWogJu6R+FsvMId87ls+6VL3cQUO2D109hSH1JzPpl+V08mZfR+5pYMgqeU/J5A2lfBK1vR+s7M/d6xH90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fq5l0ER3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2C2C4CEF5;
-	Tue,  2 Sep 2025 13:29:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IVqll8Aj64yklOpCMW78zowG58q7w4gwu5ztm4GHRiIhGRIvhGUnBgmLPyRt8cKGOajjGAV7vmNzc/eWoJ+mpz3tZMjOzpPSYnYGpbrN160SoNeulBoWSwZOWWBI+gd98jMSWFmHlZIkt0iHuZaoD/OvQQKsUb+4wuC/4Yl8M+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLk+iQyg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E213C4CEED;
+	Tue,  2 Sep 2025 13:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819794;
-	bh=sEOv/82pafAEfOgIwtJZcT6YFHwPgsvgb6GnnV0/TnU=;
+	s=korg; t=1756820120;
+	bh=gla+jhBCe5RXnSyeZcu2bKrJzAafMAFU6tXw8kIVZjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fq5l0ER3JinDG7HAS1sPbcZ05+M85D9EPSyFp/7Xq80u2+mfULJebABzGjWn4M+mM
-	 GdH0ifyGRaLLMgSrOAiFUJ2uvuB72phCJ9lJFrNbHL2WdWTqfy5cd4WrnPuEs+aIQm
-	 WOAYVev6wewJWRfiBW8AXIYn5rFRXXO3UjVg5Ju4=
+	b=YLk+iQyg3zHr9GqVpUoeFL9rF+cf2Fx4VlOhEKTnULFoAa8Ntasf2FBnobuyQoFMo
+	 Yep7Op/xG9mpQTsVgI+FJ7kU//uaU1zZc3QoKOwNvVbPtOnctVd5WLwEnjj+PiBbfM
+	 GHDk8lnbOm3ebmdTzij0Bz63D45fOReQg46ZbinI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mason Chang <mason-cw.chang@mediatek.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Daniel Golle <daniel@makrotopia.org>
-Subject: [PATCH 6.16 142/142] thermal/drivers/mediatek/lvts_thermal: Add mt7988 lvts commands
+	=?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>,
+	Nutty Liu <liujingqi@lanxincomputing.com>,
+	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>
+Subject: [PATCH 6.12 68/95] RISC-V: KVM: fix stack overrun when loading vlenb
 Date: Tue,  2 Sep 2025 15:20:44 +0200
-Message-ID: <20250902131953.719587261@linuxfoundation.org>
+Message-ID: <20250902131942.213540312@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mason Chang <mason-cw.chang@mediatek.com>
+From: Radim Krčmář <rkrcmar@ventanamicro.com>
 
-commit 685a755089f95b7e205c0202567d9a647f9de096 upstream.
+commit 799766208f09f95677a9ab111b93872d414fbad7 upstream.
 
-These commands are necessary to avoid severely abnormal and inaccurate
-temperature readings that are caused by using the default commands.
+The userspace load can put up to 2048 bits into an xlen bit stack
+buffer.  We want only xlen bits, so check the size beforehand.
 
-Signed-off-by: Mason Chang <mason-cw.chang@mediatek.com>
-Link: https://lore.kernel.org/r/20250526102659.30225-4-mason-cw.chang@mediatek.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Fixes: 2fa290372dfe ("RISC-V: KVM: add 'vlenb' Vector CSR")
+Cc: stable@vger.kernel.org
+Signed-off-by: Radim Krčmář <rkrcmar@ventanamicro.com>
+Reviewed-by: Nutty Liu <liujingqi@lanxincomputing.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250805104418.196023-4-rkrcmar@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/mediatek/lvts_thermal.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ arch/riscv/kvm/vcpu_vector.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/thermal/mediatek/lvts_thermal.c
-+++ b/drivers/thermal/mediatek/lvts_thermal.c
-@@ -1443,6 +1443,8 @@ static int lvts_resume(struct device *de
- }
+--- a/arch/riscv/kvm/vcpu_vector.c
++++ b/arch/riscv/kvm/vcpu_vector.c
+@@ -181,6 +181,8 @@ int kvm_riscv_vcpu_set_reg_vector(struct
+ 		struct kvm_cpu_context *cntx = &vcpu->arch.guest_context;
+ 		unsigned long reg_val;
  
- static const u32 default_conn_cmds[] = { 0xC103FFFF, 0xC502FF55 };
-+static const u32 mt7988_conn_cmds[] = { 0xC103FFFF, 0xC502FC55 };
-+
- /*
-  * Write device mask: 0xC1030000
-  */
-@@ -1453,6 +1455,12 @@ static const u32 default_init_cmds[] = {
- 	0xC10300FC, 0xC103009D, 0xC10300F1, 0xC10300E1
- };
- 
-+static const u32 mt7988_init_cmds[] = {
-+	0xC1030300, 0xC1030420, 0xC1030500, 0xC10307A6, 0xC1030CFC,
-+	0xC1030A8C, 0xC103098D, 0xC10308F1, 0xC1030B04, 0xC1030E01,
-+	0xC10306B8
-+};
-+
- /*
-  * The MT8186 calibration data is stored as packed 3-byte little-endian
-  * values using a weird layout that makes sense only when viewed as a 32-bit
-@@ -1747,11 +1755,11 @@ static const struct lvts_ctrl_data mt819
- 
- static const struct lvts_data mt7988_lvts_ap_data = {
- 	.lvts_ctrl	= mt7988_lvts_ap_data_ctrl,
--	.conn_cmd	= default_conn_cmds,
--	.init_cmd	= default_init_cmds,
-+	.conn_cmd	= mt7988_conn_cmds,
-+	.init_cmd	= mt7988_init_cmds,
- 	.num_lvts_ctrl	= ARRAY_SIZE(mt7988_lvts_ap_data_ctrl),
--	.num_conn_cmd	= ARRAY_SIZE(default_conn_cmds),
--	.num_init_cmd	= ARRAY_SIZE(default_init_cmds),
-+	.num_conn_cmd	= ARRAY_SIZE(mt7988_conn_cmds),
-+	.num_init_cmd	= ARRAY_SIZE(mt7988_init_cmds),
- 	.temp_factor	= LVTS_COEFF_A_MT7988,
- 	.temp_offset	= LVTS_COEFF_B_MT7988,
- 	.gt_calib_bit_offset = 24,
++		if (reg_size != sizeof(reg_val))
++			return -EINVAL;
+ 		if (copy_from_user(&reg_val, uaddr, reg_size))
+ 			return -EFAULT;
+ 		if (reg_val != cntx->vector.vlenb)
 
 
 
