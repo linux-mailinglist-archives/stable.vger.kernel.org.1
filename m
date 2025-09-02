@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-177059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593C7B4030B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:27:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB33BB40324
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:29:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5D014E630D
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:26:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A899F16E71E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A309311C14;
-	Tue,  2 Sep 2025 13:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 105E231280E;
+	Tue,  2 Sep 2025 13:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgS/6P0b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GwRTNAu+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D5431197E;
-	Tue,  2 Sep 2025 13:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C118F3126D5;
+	Tue,  2 Sep 2025 13:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819439; cv=none; b=BxIVLq2FU60aiQoby6GsfH71ZCdnvdmmH9GcykHMJffz1e/KQGgTc4ZZruZ7dpHJlE94b2klXR5zv/SAuuTxNPI8SZOApYzkxR+zuhrr+YeUsAvV8bzbg92tCZHxAw/eZlbY8/o5NBxYcXQLXw19eD1gpF92oTHXW9WKfWNaMtU=
+	t=1756819476; cv=none; b=QevetwxqlP8GCGKb+tLPKKUMfENVq3UezfMbaBpC0VsEcKZiSVDLojIZjqMaKvqHn062Z2LI1gqsPnA/XuFCHQTK8LtfJUo3QZJAvPe+IvcnNmP/fGhZmOyFdhaEa+AxBhv01AxO1+NOTEo+x/CeIQ2t+wxVax8zT9Mol8HvYvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819439; c=relaxed/simple;
-	bh=OxuImUvYIPbeGXNgTCk1YDRZyboqyZVpGTsNQVF6d9I=;
+	s=arc-20240116; t=1756819476; c=relaxed/simple;
+	bh=0GrOHbooxRbOP1oZfJ6GpLGyavnvP97wUYw6fum0ZTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BAGP39mpW9AwKBez7BSt8CTCA6PpS6QQI4sXDxk+7sP0S83+JImu6A1LxH2zp7mb3e/AHtcbZImuVyfWhvTLyHLwivumYt/D7HURFkZIJ9/4ctCSJwLCwOGnzkxFDdy+GqpZOXnSKwD2CgMvC6KURiOZ9qr6d8EK74b0aZUCMm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgS/6P0b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AACC4CEED;
-	Tue,  2 Sep 2025 13:23:58 +0000 (UTC)
+	 MIME-Version; b=PH2UtXhFrNSPOzky6Yx7wrpttSAtaXtFyH7TINe0U3snrS/KcGkDcQhS1OoQBzz6gAhW8wEvucZrPuyPDOSoKjwun1A/yW/dOx5+RT8ChGPGfP/0DdRZzlExUTZS1SvPJT+G1M5NdlN+3rpOCLitzXxqVN76gxRtJ63mRjoicUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwRTNAu+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E376C4CEED;
+	Tue,  2 Sep 2025 13:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819438;
-	bh=OxuImUvYIPbeGXNgTCk1YDRZyboqyZVpGTsNQVF6d9I=;
+	s=korg; t=1756819476;
+	bh=0GrOHbooxRbOP1oZfJ6GpLGyavnvP97wUYw6fum0ZTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MgS/6P0bogNoG3pTxHdkccI30xJ7wzwoyZ4mcZ8fLy3OmA+0HGOjlnOoxgaaDB168
-	 CUuNzKRjqBFS3LLdfdyJ82RjMGJPjLU1WvniTbhGPtBSwqKw5s3GEYE9vy2OTUgXDn
-	 r1rFHKT5wyA3n8Ke8NwPvWPAn1I4MVe7AIcO4780=
+	b=GwRTNAu+10UFPFHtBLGUMJRfRUEQlj62rvXloX7oQQNrvzJuqOkUlkBq9B6pn93s8
+	 CLalxzxMcwqjpBur3N4MmBHH4zbeqWtn8wgxCXNlOwlure8di5ctbVdEexo+gKtstQ
+	 63csIDvix50mgA0F2rksVyfTLWq5R6EVKbFvLwDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Ryabinin <arbn@yandex-team.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	"Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 6.16 027/142] vhost/net: Protect ubufs with rcu read lock in vhost_net_ubuf_put()
-Date: Tue,  2 Sep 2025 15:18:49 +0200
-Message-ID: <20250902131949.184286157@linuxfoundation.org>
+	Brett A C Sheffield <bacs@librecast.net>,
+	Oscar Maes <oscmaes92@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 028/142] net: ipv4: fix regression in local-broadcast routes
+Date: Tue,  2 Sep 2025 15:18:50 +0200
+Message-ID: <20250902131949.221888456@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
 References: <20250902131948.154194162@linuxfoundation.org>
@@ -67,80 +68,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Oscar Maes <oscmaes92@gmail.com>
 
-commit dd54bcf86c91a4455b1f95cbc8e9ac91205f3193 upstream.
+[ Upstream commit 5189446ba995556eaa3755a6e875bc06675b88bd ]
 
-When operating on struct vhost_net_ubuf_ref, the following execution
-sequence is theoretically possible:
-CPU0 is finalizing DMA operation                   CPU1 is doing VHOST_NET_SET_BACKEND
-                             // ubufs->refcount == 2
-vhost_net_ubuf_put()                               vhost_net_ubuf_put_wait_and_free(oldubufs)
-                                                     vhost_net_ubuf_put_and_wait()
-                                                       vhost_net_ubuf_put()
-                                                         int r = atomic_sub_return(1, &ubufs->refcount);
-                                                         // r = 1
-int r = atomic_sub_return(1, &ubufs->refcount);
-// r = 0
-                                                      wait_event(ubufs->wait, !atomic_read(&ubufs->refcount));
-                                                      // no wait occurs here because condition is already true
-                                                    kfree(ubufs);
-if (unlikely(!r))
-  wake_up(&ubufs->wait);  // use-after-free
+Commit 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
+introduced a regression where local-broadcast packets would have their
+gateway set in __mkroute_output, which was caused by fi = NULL being
+removed.
 
-This leads to use-after-free on ubufs access. This happens because CPU1
-skips waiting for wake_up() when refcount is already zero.
-
-To prevent that use a read-side RCU critical section in vhost_net_ubuf_put(),
-as suggested by Hillf Danton. For this lock to take effect, free ubufs with
-kfree_rcu().
+Fix this by resetting the fib_info for local-broadcast packets. This
+preserves the intended changes for directed-broadcast packets.
 
 Cc: stable@vger.kernel.org
-Fixes: 0ad8b480d6ee9 ("vhost: fix ref cnt checking deadlock")
-Reported-by: Andrey Ryabinin <arbn@yandex-team.com>
-Suggested-by: Hillf Danton <hdanton@sina.com>
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Message-Id: <20250805130917.727332-1-kniv@yandex-team.ru>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
+Reported-by: Brett A C Sheffield <bacs@librecast.net>
+Closes: https://lore.kernel.org/regressions/20250822165231.4353-4-bacs@librecast.net
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250827062322.4807-1-oscmaes92@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/net.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/ipv4/route.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -96,6 +96,7 @@ struct vhost_net_ubuf_ref {
- 	atomic_t refcount;
- 	wait_queue_head_t wait;
- 	struct vhost_virtqueue *vq;
-+	struct rcu_head rcu;
- };
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 7b8e80c4f1d98..bf82434c3541b 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -2573,12 +2573,16 @@ static struct rtable *__mkroute_output(const struct fib_result *res,
+ 		    !netif_is_l3_master(dev_out))
+ 			return ERR_PTR(-EINVAL);
  
- #define VHOST_NET_BATCH 64
-@@ -247,9 +248,13 @@ vhost_net_ubuf_alloc(struct vhost_virtqu
- 
- static int vhost_net_ubuf_put(struct vhost_net_ubuf_ref *ubufs)
- {
--	int r = atomic_sub_return(1, &ubufs->refcount);
-+	int r;
+-	if (ipv4_is_lbcast(fl4->daddr))
++	if (ipv4_is_lbcast(fl4->daddr)) {
+ 		type = RTN_BROADCAST;
+-	else if (ipv4_is_multicast(fl4->daddr))
 +
-+	rcu_read_lock();
-+	r = atomic_sub_return(1, &ubufs->refcount);
- 	if (unlikely(!r))
- 		wake_up(&ubufs->wait);
-+	rcu_read_unlock();
- 	return r;
- }
++		/* reset fi to prevent gateway resolution */
++		fi = NULL;
++	} else if (ipv4_is_multicast(fl4->daddr)) {
+ 		type = RTN_MULTICAST;
+-	else if (ipv4_is_zeronet(fl4->daddr))
++	} else if (ipv4_is_zeronet(fl4->daddr)) {
+ 		return ERR_PTR(-EINVAL);
++	}
  
-@@ -262,7 +267,7 @@ static void vhost_net_ubuf_put_and_wait(
- static void vhost_net_ubuf_put_wait_and_free(struct vhost_net_ubuf_ref *ubufs)
- {
- 	vhost_net_ubuf_put_and_wait(ubufs);
--	kfree(ubufs);
-+	kfree_rcu(ubufs, rcu);
- }
- 
- static void vhost_net_clear_ubuf_info(struct vhost_net *n)
+ 	if (dev_out->flags & IFF_LOOPBACK)
+ 		flags |= RTCF_LOCAL;
+-- 
+2.50.1
+
 
 
 
