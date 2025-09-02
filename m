@@ -1,146 +1,208 @@
-Return-Path: <stable+bounces-177008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A91B3FF7B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 14:11:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80636B3FFD3
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 14:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EEE11B600C2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:11:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42FF97B8311
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BC62FFDCF;
-	Tue,  2 Sep 2025 12:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 231AF303C9C;
+	Tue,  2 Sep 2025 12:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QR+UZkEN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oiuGxnBk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26422FE07A
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 12:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B15288C20;
+	Tue,  2 Sep 2025 12:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756814587; cv=none; b=uwnestRSPQhRI0KCS1625pxTSX9ub7qpAxkBYT7OZJ8WhMVWidvZMl6RO1P0tdt7shECfJ1jJnNrWRpYYiUgkGge2AuE/KjYm8s/fQU/P1IchgKjUH6qua1KqZh297PZbwJCSMW0x/aslSFUDxnsoJZ0IbQvsg7Acd8WbFVqGPs=
+	t=1756814916; cv=none; b=b1T0z+Us6GcRJTa7ag4esSOT/cOJD28rOBPXBUDl8DZDBHO/2pa4lTcfTlLwHTXEmjx4n0p0GhXf+wPqpWPolqBI62w7fYwUrjrLQJpgcdut39H3FilV4/870TbAr4WVgsGQL43uirwD3nNVyr4aT6QAZXu0LFHJ37fTs6zhD8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756814587; c=relaxed/simple;
-	bh=NPZL+i4WAY2SwfjdvqK18LwyROxpl7tGSxQpG5ZlYSI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0UWYPumBYXvLD7bzeypQjqXdb+BnCYy0WaGfudDv10XmuR5jtgKbObXAYtOm5oCu2C+pke79cWI2ZTzK0Yo7mr8TtIXBILOdDwC23JkJYNmAwzzsdtUyN94dsD+IxkpXVxttS8WIQnuuFfIWLgxLjfGfdsM1kEEt8K9hNlLK+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QR+UZkEN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E15C4CEED;
-	Tue,  2 Sep 2025 12:03:06 +0000 (UTC)
+	s=arc-20240116; t=1756814916; c=relaxed/simple;
+	bh=ZPf10cXY2km1B/FVleWiffi1jphCqVPdfHT9UPrkwwo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JpweuvdkdgLuvPf8YvvyUpqpajwpchEn8+P+Ut5asTwDVOY1Tdi0d0wW3+nNbk58kCbazKhrG1EjQL3DtjF64ufvu6ahoqQ0/77t3Tfm4yGnE7NqiSeEzxpFroCX0DzhDqU+wihYlkzZnI8fK12eB5fOkA8B9unRH2FDMnRt3nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oiuGxnBk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B238C4CEED;
+	Tue,  2 Sep 2025 12:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756814587;
-	bh=NPZL+i4WAY2SwfjdvqK18LwyROxpl7tGSxQpG5ZlYSI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QR+UZkENVZD65BzzDYgANEZn0/CYeZbCRz16aeIXZjgiCANA7Gu0x8NaW53s6Oh+F
-	 iQAczFXac1h6Hce7vd/gNgDLX2qKzzizXz6r1X84AfzlUKFE+5RbVkklfWQ8UjBUKn
-	 n0c5gmAMwv5Z1iGCaJh1pp80CESYNVrhAf6HUd5etJ3+I9/FyrwjusmfAHhUl4K8fm
-	 VoLPUU6oipiiLJMygJQORddBHCBIuiB0zE9esMGqQ5d+zuk7lNArjv4gsgJbPyGyvS
-	 YHuS4D7LVI7BpT/VFY1vC/D5n7XZ94xpDA3IIbliO1KnaFZi3hL0873d1F9FVtoH4w
-	 P4Q5ks5Q6Tycg==
+	s=k20201202; t=1756814916;
+	bh=ZPf10cXY2km1B/FVleWiffi1jphCqVPdfHT9UPrkwwo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=oiuGxnBk/8quYXPsfzqBm7ce0j/ZCGpRAyoCPjWmIPvVWTkDxk9Fc88foovL2DSlm
+	 ZnHsFZ/ZZH/m3lfYUJ9V4Fmtgi6QmfaInaEtFFtbRYWBJ8OtVB4FCTCuaeZTGyTTcO
+	 f8vxmer0gi1hUohvgWQPO6/kZwnpyi65XNLj2axScHn3K2OQLEesu+h9umUYgwvnNj
+	 pXVDavGkq19mn3SqhXufvOouCB2kAgJ6Ach+eMGW4qPgU1A0tTJRzwmnOI0bygkuGZ
+	 hLs8Ci+33AtMLwB0Yp6/FWkDYpnbyt/hHb1fVnUeq6PPMveHaC190aEAjYWZaV8sN6
+	 Avi1h+ec0TDBQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Eric Sandeen <sandeen@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Carlos Maiolino <cem@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] xfs: do not propagate ENODATA disk errors into xattr code
-Date: Tue,  2 Sep 2025 08:03:03 -0400
-Message-ID: <20250902120303.1337984-1-sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: "Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Amit Chaudhari <amitchaudhari@mac.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	westeri@kernel.org,
+	andriy.shevchenko@linux.intel.com,
+	brgl@bgdev.pl,
+	linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.16] gpiolib: acpi: Add quirk for ASUS ProArt PX13
+Date: Tue,  2 Sep 2025 08:08:12 -0400
+Message-ID: <20250902120833.1342615-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025090111-poem-retold-4ac2@gregkh>
-References: <2025090111-poem-retold-4ac2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.16.4
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: "Mario Limonciello (AMD)" <superm1@kernel.org>
 
-[ Upstream commit ae668cd567a6a7622bc813ee0bb61c42bed61ba7 ]
+[ Upstream commit 23800ad1265f10c2bc6f42154ce4d20e59f2900e ]
 
-ENODATA (aka ENOATTR) has a very specific meaning in the xfs xattr code;
-namely, that the requested attribute name could not be found.
+The ASUS ProArt PX13 has a spurious wakeup event from the touchpad
+a few moments after entering hardware sleep.  This can be avoided
+by preventing the touchpad from being a wake source.
 
-However, a medium error from disk may also return ENODATA. At best,
-this medium error may escape to userspace as "attribute not found"
-when in fact it's an IO (disk) error.
+Add to the wakeup ignore list.
 
-At worst, we may oops in xfs_attr_leaf_get() when we do:
-
-	error = xfs_attr_leaf_hasname(args, &bp);
-	if (error == -ENOATTR)  {
-		xfs_trans_brelse(args->trans, bp);
-		return error;
-	}
-
-because an ENODATA/ENOATTR error from disk leaves us with a null bp,
-and the xfs_trans_brelse will then null-deref it.
-
-As discussed on the list, we really need to modify the lower level
-IO functions to trap all disk errors and ensure that we don't let
-unique errors like this leak up into higher xfs functions - many
-like this should be remapped to EIO.
-
-However, this patch directly addresses a reported bug in the xattr
-code, and should be safe to backport to stable kernels. A larger-scope
-patch to handle more unique errors at lower levels can follow later.
-
-(Note, prior to 07120f1abdff we did not oops, but we did return the
-wrong error code to userspace.)
-
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Fixes: 07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
-Cc: stable@vger.kernel.org # v5.9+
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-[ Adjust context: removed metadata health tracking calls ]
+Reported-by: Amit Chaudhari <amitchaudhari@mac.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4482
+Tested-by: Amit Chaudhari <amitchaudhari@mac.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/20250814183430.3887973-1-superm1@kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_attr_remote.c | 7 +++++++
- fs/xfs/libxfs/xfs_da_btree.c    | 6 ++++++
- 2 files changed, 13 insertions(+)
 
-diff --git a/fs/xfs/libxfs/xfs_attr_remote.c b/fs/xfs/libxfs/xfs_attr_remote.c
-index 54de405cbab5a..4d369876487bd 100644
---- a/fs/xfs/libxfs/xfs_attr_remote.c
-+++ b/fs/xfs/libxfs/xfs_attr_remote.c
-@@ -418,6 +418,13 @@ xfs_attr_rmtval_get(
- 			dblkcnt = XFS_FSB_TO_BB(mp, map[i].br_blockcount);
- 			error = xfs_buf_read(mp->m_ddev_targp, dblkno, dblkcnt,
- 					0, &bp, &xfs_attr3_rmt_buf_ops);
-+			/*
-+			 * ENODATA from disk implies a disk medium failure;
-+			 * ENODATA for xattrs means attribute not found, so
-+			 * disambiguate that here.
-+			 */
-+			if (error == -ENODATA)
-+				error = -EIO;
- 			if (error)
- 				return error;
- 
-diff --git a/fs/xfs/libxfs/xfs_da_btree.c b/fs/xfs/libxfs/xfs_da_btree.c
-index 12e3cca804b7e..3ec681fdc075b 100644
---- a/fs/xfs/libxfs/xfs_da_btree.c
-+++ b/fs/xfs/libxfs/xfs_da_btree.c
-@@ -2648,6 +2648,12 @@ xfs_da_read_buf(
- 
- 	error = xfs_trans_read_buf_map(mp, tp, mp->m_ddev_targp, mapp, nmap, 0,
- 			&bp, ops);
-+	/*
-+	 * ENODATA from disk implies a disk medium failure; ENODATA for
-+	 * xattrs means attribute not found, so disambiguate that here.
-+	 */
-+	if (error == -ENODATA && whichfork == XFS_ATTR_FORK)
-+		error = -EIO;
- 	if (error)
- 		goto out_free;
+LLM Generated explanations, may be completely bogus:
+
+Based on my comprehensive analysis of this commit and the context, here
+is my assessment:
+
+**Backport Status: YES**
+
+## Extensive Analysis:
+
+### 1. **Nature of the Fix**
+This commit fixes a real hardware bug - spurious wakeup events from the
+touchpad on the ASUS ProArt PX13 laptop. The code change adds a DMI-
+based quirk entry to the `gpiolib_acpi_quirks` table in
+`/home/sasha/linux/drivers/gpio/gpiolib-acpi-quirks.c:350-359`, which
+instructs the GPIO subsystem to ignore wake events from the specific
+touchpad GPIO pin (`ASCP1A00:00@8`).
+
+### 2. **符合稳定内核规则 (Meets Stable Kernel Rules)**
+According to `/home/sasha/linux/Documentation/process/stable-kernel-
+rules.rst`:
+- **Fixes a real bug**: Yes - spurious wakeups are a real hardware issue
+  that impacts users' ability to use sleep/suspend effectively (lines
+  18-19 of rules)
+- **Obviously correct and tested**: Yes - the fix is straightforward
+  (adding a quirk entry), has been tested by the reporter (Amit
+  Chaudhari), and reviewed by Mika Westerberg
+- **Size constraint**: The patch is only ~20 lines with context, well
+  under the 100-line limit
+- **Already in mainline**: Yes - commit
+  23800ad1265f10c2bc6f42154ce4d20e59f2900e
+
+### 3. **Historical Precedent**
+Multiple similar commits for spurious wakeup quirks have been backported
+to stable:
+- Commit `805c74eac8cb3` (GPD G1619-04 touchpad wakeup) - explicitly
+  marked with `Cc: stable@vger.kernel.org`
+- Commit `782eea0c89f7d` (Clevo NL5xNU) - marked with `Cc:
+  stable@vger.kernel.org`
+- Commit `a69982c37cd05` (Clevo NH5xAx) - marked with `Cc:
+  <stable@vger.kernel.org> # v6.1+`
+
+### 4. **Code Structure Analysis**
+The change follows the exact same pattern as other quirk entries in the
+file:
+```c
+.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+    .ignore_wake = "ASCP1A00:00@8",
+},
+```
+This is a data-only addition to an existing quirk table - no logic
+changes, no new code paths, minimal regression risk.
+
+### 5. **User Impact**
+The bug causes spurious wakeups "a few moments after entering hardware
+sleep", which:
+- Prevents proper system suspend/sleep functionality
+- Drains battery life on laptops
+- Disrupts user workflow
+- Is a clear hardware-specific issue that cannot be worked around by
+  users
+
+### 6. **Risk Assessment**
+- **Extremely low risk**: The change only affects systems that match the
+  specific DMI strings (ASUSTeK COMPUTER INC. + ProArt PX13)
+- **No impact on other systems**: DMI matching ensures this quirk only
+  applies to the affected hardware
+- **Well-established mechanism**: The ignore_wake infrastructure is
+  mature and widely used
+
+### 7. **Backporting Considerations**
+While this specific commit wasn't explicitly marked with `Cc: stable`,
+it follows the exact same pattern as commits that were. The commit has
+already been picked up by Sasha Levin's stable tree (as shown in the `[
+Upstream commit ]` tag in the local repository), suggesting the stable
+maintainers recognize its importance.
+
+The fix is self-contained, requires no prerequisites, and can be cleanly
+applied to any kernel version that has the `gpiolib-acpi-quirks.c` file
+structure (introduced in commit `92dc572852ddc`).
+
+### Conclusion
+This is a textbook example of a stable-appropriate fix: it addresses a
+specific hardware bug affecting real users, uses a well-established
+quirk mechanism, has zero impact on unaffected systems, and follows the
+exact pattern of previously backported fixes for identical issues on
+different hardware.
+
+ drivers/gpio/gpiolib-acpi-quirks.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
+index c13545dce3492..bfb04e67c4bc8 100644
+--- a/drivers/gpio/gpiolib-acpi-quirks.c
++++ b/drivers/gpio/gpiolib-acpi-quirks.c
+@@ -344,6 +344,20 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
+ 			.ignore_interrupt = "AMDI0030:00@8",
+ 		},
+ 	},
++	{
++		/*
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 5.35
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/4482
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "ProArt PX13"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "ASCP1A00:00@8",
++		},
++	},
+ 	{} /* Terminating entry */
+ };
  
 -- 
 2.50.1
