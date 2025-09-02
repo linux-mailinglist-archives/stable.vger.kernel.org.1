@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-177444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9848FB4056E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:53:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA960B40534
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BC661892824
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25EE0179614
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE21830F54A;
-	Tue,  2 Sep 2025 13:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B77032A815;
+	Tue,  2 Sep 2025 13:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DG9Y4hWd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvnfN2r5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9852A30F536;
-	Tue,  2 Sep 2025 13:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10C93064BF;
+	Tue,  2 Sep 2025 13:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820663; cv=none; b=sT8k5V1+eFd87DpjUq+k7wCe0Er/j6VmQuaEf4i0UbphowBKVYflWOfK6TETuiu92CZwLyQVKUe+hyCa6eGr0jszEP7rpAm2Z1ANZk/YCW2EKBdr8n/yS9lb2Aaiuwyd7QI9ChSnCWYhMuVfSgB6FpZITCKZyLt17Z7/qQWBAxA=
+	t=1756820501; cv=none; b=rVi+irx/0vso91xFMUFN3yQbrTIbgpNK+uQ20Ic/okQG4+/g4W7FyGhCCL0t0h1i4T/gv/nZFNu2YXELz1fT1sgdQPd9r3S1JZJF5UMW5XOl7MC25Oq3gtcXIiaAG/Shb/s5HZ9xwP030M3kLzMQ6mgCwfql8GSUImPO7tqBujc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820663; c=relaxed/simple;
-	bh=hzluJtK00TX5D7zn46ulDF3i8QdSXNNh0BgVT/0qfXI=;
+	s=arc-20240116; t=1756820501; c=relaxed/simple;
+	bh=XNiIUmfVMfMg/b5hr9LvSoGN4Q3GjxB94FJrQDW/J4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L2RjCx8Rs3UzcTYdhhl48PTXQwNPsvQ5yaTAix4l8Unm/rjvbfBxZgyb4uVGYcTdJxuPvazHSyEoqa0Zev1mTBQN0e/PsOPKrpp5viOI1oHASys11mu22IJ3zBrnnH/IPKKw9H+NeO4T7SYVAwl7YUkI2rzxhzMx7nHRLqgHNKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DG9Y4hWd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001CDC4CEF7;
-	Tue,  2 Sep 2025 13:44:22 +0000 (UTC)
+	 MIME-Version; b=LMd9VBtBmODwajriNaKijLn7aKs8WBGLbmEESKdusSZzC9v5zm5M0HoTnWOUdlvUA+cW/zI/f1OAnqx77mrKzZTQjCIbDGuj3FW9yvh3jx+8vN9v8Zd6IaXT1sG/GX8S4VwS200nv9VMEhfGCHaMGCTXmP3+Zb0ZwkaXqt+27rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvnfN2r5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F826C4CEF4;
+	Tue,  2 Sep 2025 13:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820663;
-	bh=hzluJtK00TX5D7zn46ulDF3i8QdSXNNh0BgVT/0qfXI=;
+	s=korg; t=1756820500;
+	bh=XNiIUmfVMfMg/b5hr9LvSoGN4Q3GjxB94FJrQDW/J4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DG9Y4hWdPOmm+Pg7xIj2Q7E07uJ9HWRiJKnU4QfrJN2bV0P6zuVNr7zgrYI7N+wKW
-	 s3oJ9EwLg8KlKG4gqx1dDAd9nBosyu71CwVY4bZ8dKiClbRVW6yyq9f0RZB5EqF7KP
-	 qlN8+bk23B79uQv9GbSLkMumk8/GwlHu7vaEMhLM=
+	b=uvnfN2r5ZsdKe/Ks+S1JeiDxYfucJQF06oL1d7aXZGfOhL2mAJiLisiMmmOiktXL7
+	 qQYTwewcU3JqzIanNwqeCOAw7EQL7j3KzGb9cMoi1dckLIdRLTFbxXvwmBZ/iehXWn
+	 0KRbA0m0qZAaAEFHHJweSPzrqX7jVY1mbMziCwGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Lazar <alazar@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Eric Sandeen <sandeen@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 15/34] net/mlx5e: Set local Xoff after FW update
+Subject: [PATCH 6.1 50/50] xfs: do not propagate ENODATA disk errors into xattr code
 Date: Tue,  2 Sep 2025 15:21:41 +0200
-Message-ID: <20250902131927.225147867@linuxfoundation.org>
+Message-ID: <20250902131932.498186657@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Eric Sandeen <sandeen@redhat.com>
 
-[ Upstream commit aca0c31af61e0d5cf1675a0cbd29460b95ae693c ]
+commit ae668cd567a6a7622bc813ee0bb61c42bed61ba7 upstream.
 
-The local Xoff value is being set before the firmware (FW) update.
-In case of a failure where the FW is not updated with the new value,
-there is no fallback to the previous value.
-Update the local Xoff value after the FW has been successfully set.
+ENODATA (aka ENOATTR) has a very specific meaning in the xfs xattr code;
+namely, that the requested attribute name could not be found.
 
-Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250825143435.598584-12-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+However, a medium error from disk may also return ENODATA. At best,
+this medium error may escape to userspace as "attribute not found"
+when in fact it's an IO (disk) error.
+
+At worst, we may oops in xfs_attr_leaf_get() when we do:
+
+	error = xfs_attr_leaf_hasname(args, &bp);
+	if (error == -ENOATTR)  {
+		xfs_trans_brelse(args->trans, bp);
+		return error;
+	}
+
+because an ENODATA/ENOATTR error from disk leaves us with a null bp,
+and the xfs_trans_brelse will then null-deref it.
+
+As discussed on the list, we really need to modify the lower level
+IO functions to trap all disk errors and ensure that we don't let
+unique errors like this leak up into higher xfs functions - many
+like this should be remapped to EIO.
+
+However, this patch directly addresses a reported bug in the xattr
+code, and should be safe to backport to stable kernels. A larger-scope
+patch to handle more unique errors at lower levels can follow later.
+
+(Note, prior to 07120f1abdff we did not oops, but we did return the
+wrong error code to userspace.)
+
+Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+Fixes: 07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
+Cc: stable@vger.kernel.org # v5.9+
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+[ Adjust context: removed metadata health tracking calls ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/xfs/libxfs/xfs_attr_remote.c |    7 +++++++
+ fs/xfs/libxfs/xfs_da_btree.c    |    6 ++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-index c9d5d8d93994d..7899a7230299d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/port_buffer.c
-@@ -346,7 +346,6 @@ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
- 		if (err)
- 			return err;
- 	}
--	priv->dcbx.xoff = xoff;
+--- a/fs/xfs/libxfs/xfs_attr_remote.c
++++ b/fs/xfs/libxfs/xfs_attr_remote.c
+@@ -418,6 +418,13 @@ xfs_attr_rmtval_get(
+ 			dblkcnt = XFS_FSB_TO_BB(mp, map[i].br_blockcount);
+ 			error = xfs_buf_read(mp->m_ddev_targp, dblkno, dblkcnt,
+ 					0, &bp, &xfs_attr3_rmt_buf_ops);
++			/*
++			 * ENODATA from disk implies a disk medium failure;
++			 * ENODATA for xattrs means attribute not found, so
++			 * disambiguate that here.
++			 */
++			if (error == -ENODATA)
++				error = -EIO;
+ 			if (error)
+ 				return error;
  
- 	/* Apply the settings */
- 	if (update_buffer) {
-@@ -355,6 +354,8 @@ int mlx5e_port_manual_buffer_config(struct mlx5e_priv *priv,
- 			return err;
- 	}
+--- a/fs/xfs/libxfs/xfs_da_btree.c
++++ b/fs/xfs/libxfs/xfs_da_btree.c
+@@ -2648,6 +2648,12 @@ xfs_da_read_buf(
  
-+	priv->dcbx.xoff = xoff;
-+
- 	if (update_prio2buffer)
- 		err = mlx5e_port_set_priority2buffer(priv->mdev, prio2buffer);
+ 	error = xfs_trans_read_buf_map(mp, tp, mp->m_ddev_targp, mapp, nmap, 0,
+ 			&bp, ops);
++	/*
++	 * ENODATA from disk implies a disk medium failure; ENODATA for
++	 * xattrs means attribute not found, so disambiguate that here.
++	 */
++	if (error == -ENODATA && whichfork == XFS_ATTR_FORK)
++		error = -EIO;
+ 	if (error)
+ 		goto out_free;
  
--- 
-2.50.1
-
 
 
 
