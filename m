@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-177026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF4CB4002B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 14:22:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33986B40005
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 14:20:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E32935E198B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:17:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2DA118883C0
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 12:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2822F8BF1;
-	Tue,  2 Sep 2025 12:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CF82FDC25;
+	Tue,  2 Sep 2025 12:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iqOeZHN7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IaLas0NB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D6E281525
-	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 12:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA8B19DF4F
+	for <stable@vger.kernel.org>; Tue,  2 Sep 2025 12:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756815110; cv=none; b=dQjRZvulu28A04ANIbs0kK4YveGhYpD/qGLkxHFfgEgvX4d3Xtf72qpZSoAPSrsl88dxsqhBLhK11/9KxnsXgbqGda2TUwniZcONugiyicxnxiKeqSVNKeH/Y0OgXowqwHm0TDSPED5zqpOxSapEM0sVpoUxUi5mukkle+JB60c=
+	t=1756815469; cv=none; b=dqZf9UoH/4c00jk5ue8L2RJ9ZAYRALvtuLbnu0SywHjtDnWsV73myNqnmpPgjXuFpKZmcbjbiPBG6MeAnXbOb375EspGPAvbj8yGvVrte9nWxpOSgytP2WQzZTfJu8LjSTdHhn6tHBvCnom+6/crf4Oy6kPK6jPwgCV3lcc95vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756815110; c=relaxed/simple;
-	bh=ITH+6LnfAop1X95n3azjnAKMblffjXR/MM3QV/Ccwe4=;
+	s=arc-20240116; t=1756815469; c=relaxed/simple;
+	bh=adrJ+5JwgO90SsDWABRuaZwdBwiWF469qR89emtQxzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n4l5eq6LBTIbMTaBfcKwu88QiLBe6ppSJ9SKR01u7KujSnCLgbsXZEz3Tv29h1rsE65CyzjD0vfZHU0g194NqP3UnnOvbMz3QXXnjb62LetdAzsn/AHhviqIWfk8FTFjoG9QDoNqKIxQIozT0GVXTSfUhB93T13A234WTAJ+grE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iqOeZHN7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C23CC4CEED;
-	Tue,  2 Sep 2025 12:11:49 +0000 (UTC)
+	 MIME-Version; b=gxP0iQFdWnVXyM57cpH+Sw1fpOlqTMWy318cPRc3lyyr2HsuSxFBynwiss/0oNZPIMPSyXjEb1NIu0r4P7ZyxRhfOJNk8x512+5s8eHuMJ6VwHgrzB0EBk3ZeUoHDnojiBy+ERTOnDzikFwOX0v5w+QbKjmI97Ako5xpi/TDvFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IaLas0NB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFA5C4CEED;
+	Tue,  2 Sep 2025 12:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756815109;
-	bh=ITH+6LnfAop1X95n3azjnAKMblffjXR/MM3QV/Ccwe4=;
+	s=k20201202; t=1756815468;
+	bh=adrJ+5JwgO90SsDWABRuaZwdBwiWF469qR89emtQxzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iqOeZHN7VdY5NXG8knijwfSwnyD9acFIwFN/pxbON416yd+FpKYPzFNmAW+XyrUn+
-	 e+gByCcpN17aeU1bLmYWhnKCEV7Ed9Eoub5hrj/S8BHBpr1h2Bx/UETOiQ+00SfphL
-	 E/6d7WDu21AkaHB7O1YhRkGPeqQqQIgHqc3Z9oQAAOZ9Yshfr0TpyAZF927gBWJg0a
-	 vwE68NquoUAoh4dwN1DuKQRIxuCvYzG028mhFhzbszgy8Z+GKvzw+vQGzLaaWLkF/M
-	 t+geiLvIplfweMpOszpq/za9LYeeUg9LrJRRSrExnhgU8RWi+qNmvPlWtdBhEuutXC
-	 b142rrMNRq0dA==
+	b=IaLas0NB61H/Xa81rLsuaPV8uiWnuxgjfl2iM5V25KdxZdn6aXodb9Q6rjIIChpHw
+	 KY7Frwp1OFB2XHQXi40jlHHfjOj/L2R7G5utD7190aNfFxEF/1JAp5MnPEMsxJL+dN
+	 r75tW2EFM1thir+5w+0tArrNIzmRbx/vbdzQBna9xhHCiDtf6K5Ob557oDfOg2+MSl
+	 +ZG/zzIPM1p/pRATzhBmEiVDFkSpMTqbbDuI4aj0iFCAd0MeY1kvF9tCZzinsxrisT
+	 A8jfyjETt3OLGn1+5UhPw5lZ5jBiq1IQJjWjrTiO9eH0M+JKYCjBuemV9+9LCt7KeW
+	 iItxOjjuGgdQg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Eric Sandeen <sandeen@redhat.com>,
 	"Darrick J. Wong" <djwong@kernel.org>,
 	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] xfs: do not propagate ENODATA disk errors into xattr code
-Date: Tue,  2 Sep 2025 08:11:47 -0400
-Message-ID: <20250902121147.1343964-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] xfs: do not propagate ENODATA disk errors into xattr code
+Date: Tue,  2 Sep 2025 08:17:46 -0400
+Message-ID: <20250902121746.1358335-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025090111-acorn-ammonia-8c45@gregkh>
-References: <2025090111-acorn-ammonia-8c45@gregkh>
+In-Reply-To: <2025090112-skillet-muskiness-5948@gregkh>
+References: <2025090112-skillet-muskiness-5948@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -108,7 +108,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 13 insertions(+)
 
 diff --git a/fs/xfs/libxfs/xfs_attr_remote.c b/fs/xfs/libxfs/xfs_attr_remote.c
-index 83b95be9ded8a..0ca4ab5ef119d 100644
+index 48d8e9caf86f7..09a9fd9a4e726 100644
 --- a/fs/xfs/libxfs/xfs_attr_remote.c
 +++ b/fs/xfs/libxfs/xfs_attr_remote.c
 @@ -418,6 +418,13 @@ xfs_attr_rmtval_get(
@@ -126,7 +126,7 @@ index 83b95be9ded8a..0ca4ab5ef119d 100644
  				return error;
  
 diff --git a/fs/xfs/libxfs/xfs_da_btree.c b/fs/xfs/libxfs/xfs_da_btree.c
-index c062e2c851787..9ac99912e7a54 100644
+index e46bc03365db2..08871fa84419b 100644
 --- a/fs/xfs/libxfs/xfs_da_btree.c
 +++ b/fs/xfs/libxfs/xfs_da_btree.c
 @@ -2639,6 +2639,12 @@ xfs_da_read_buf(
