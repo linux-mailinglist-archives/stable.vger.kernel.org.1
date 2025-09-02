@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-177289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 876A7B4046D
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E44B40392
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52237170B68
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:40:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E1C03A408D
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F463101C2;
-	Tue,  2 Sep 2025 13:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF34530E0D8;
+	Tue,  2 Sep 2025 13:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePhvVA1w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YQTPryp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B40324B0C;
-	Tue,  2 Sep 2025 13:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7794930C340;
+	Tue,  2 Sep 2025 13:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820175; cv=none; b=ZAR8NkJPVzYHZ7hqA9FCwk24K/fU1gOMqxdWWz7pq+v27UIXi2ZxBdBVW2IYvS2ivQ/whfEdEar/h1zSQMSmX4fdS8ysU5sKIi/VO1IQvsrEvrjqphcouM495FaEFel0rfpX4u0JiEs597/cAVRMiMQ/irfmYH+bwT2Dm8gWGg4=
+	t=1756819797; cv=none; b=LJ53cBCftjeado/E61w1fJ5tvUMiJOllOekYhf1QS1GfkqF0zBcxPceLAvM9OkA9QJkkvasUj4phwRhBzMpCmH6F36iBJ1pQ+Dqsp+Nr/FTIRHDTxbnkgLjV4mhITrhXVjp/8O7adFzePk1Nq9Z3eD7HNW9oohH3ZvwEkN2L6OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820175; c=relaxed/simple;
-	bh=Hyi/KNdX7l3NVJfJ/ymX0fpqF4dRqr4MgGDgbvKs+5s=;
+	s=arc-20240116; t=1756819797; c=relaxed/simple;
+	bh=qNEDoieNlvAMUaQSly7sJ4WOITzhyTWyzRgBCHmfqZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SCm/ZRoKEnoRLlCg8dxpznDeZUKmqlJMYdZmIBxJ+mqo415JJcT3211jVRrulVx2g+q0IfrOau68Oiyfff9j8qHlNsuuoCARb6h5WOdfjIMfdjlw99rPiJH7aafHBA2uKmzBOn5GIam6qQxU3wgIrDNKc7Vje+lUKRkNeUI1mew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePhvVA1w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5546BC4CEED;
-	Tue,  2 Sep 2025 13:36:14 +0000 (UTC)
+	 MIME-Version; b=oDP+PzCNh/i7QQ31bB/3zmqiI95jzS42qe7J3VvB8d4cISjLe6+c2oQ2J/+9FzjotB8GN2AuX1G57of85SmoQC3h/9SQ23nAoswCNi7VRg3/FDpTYGSr4h0FNYVQDhf2cwjU5qBso1DldUpxtG9ApK68VdJH+hOl1bcolwgeXms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YQTPryp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB95C4CEED;
+	Tue,  2 Sep 2025 13:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820174;
-	bh=Hyi/KNdX7l3NVJfJ/ymX0fpqF4dRqr4MgGDgbvKs+5s=;
+	s=korg; t=1756819797;
+	bh=qNEDoieNlvAMUaQSly7sJ4WOITzhyTWyzRgBCHmfqZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ePhvVA1wvT8SWO8kd5yMcYST5/I2N+7ifEKlTjYwrMM3Jyc3Lbs+ccPTcVD6xcDP7
-	 dFYIL/UXnmVWP8X5cibI1C7ZIN//kGSlQLwz/MCLiXTW6msHGmJd5ocWikvzVwo0qo
-	 uy535l+RWZsD3tYQkFSQlLv5HotB1+gaNTWGw1bM=
+	b=0YQTPrypNWGE3m5ra1PBh4zgI0EhGMN8fl1dkkt1/kRtkcRTvu13ArtrQj6n1+uU1
+	 wTKOKtohOeOHE+beyhR23a5io0g8RI5X7tr4noAqOWH2+cPNEL9Vc/N45ORHXZOMn6
+	 rScKQlWX2erleCGRxKoQCo1CrQwzBr/9mUONMBJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E5=8D=A2=E5=9B=BD=E5=AE=8F?= <luguohong@xiaomi.com>,
-	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 21/75] HID: input: report battery status changes immediately
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>
+Subject: [PATCH 6.16 131/142] drm/amdgpu: update firmware version checks for user queue support
 Date: Tue,  2 Sep 2025 15:20:33 +0200
-Message-ID: <20250902131935.953961333@linuxfoundation.org>
+Message-ID: <20250902131953.302833627@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-References: <20250902131935.107897242@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +59,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Expósito <jose.exposito89@gmail.com>
+From: Jesse.Zhang <Jesse.Zhang@amd.com>
 
-[ Upstream commit e94536e1d1818b0989aa19b443b7089f50133c35 ]
+commit ee38ea0ae4ed13fe33e033dc98d11e76bc7167cd upstream.
 
-Previously, the battery status (charging/discharging) was not reported
-immediately to user-space. 
+The minimum firmware versions required for user queue functionality
+have been increased to address an issue where the queue privilege
+state was lost during queue connect operations.
 
-For most input devices, this wasn't problematic because changing their
-battery status requires connecting them to a different bus.
-For example, a gamepad would report a discharging status while
-connected via Bluetooth and a charging status while connected via USB.
+The problem occurred because the privilege state was being restored
+to its initial value at the beginning of the function, overwriting
+the state that was properly set during the queue connect case.
 
-However, certain devices are not connected or disconnected when their
-battery status changes. For example, a phone battery changes its status
-without connecting or disconnecting it.
-In these cases, the battery status was not reported immediately to user
-space.
+This commit updates the minimum version requirements:
+- ME firmware from 2390 to 2420
+- PFP firmware from 2530 to 2580
+- MEC firmware from 2600 to 2650
+- MES firmware remains at 120
 
-Report battery status changes immediately to user space to support
-these kinds of devices.
+These updated firmware versions contain the necessary fixes to
+properly maintain queue privilege state throughout connect operations.
 
-Fixes: a608dc1c0639 ("HID: input: map battery system charging")
-Reported-by: 卢国宏 <luguohong@xiaomi.com>
-Closes: https://lore.kernel.org/linux-input/aI49Im0sGb6fpgc8@fedora/T/
-Tested-by: 卢国宏 <luguohong@xiaomi.com>
-Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 61ca97e9590c ("drm/amdgpu: Add fw minimum version check for usermode queue")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5f976c9939f0d5916d2b8ef3156a6d1799781df1)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-input.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index b372b74f3e24b..f5c217ac4bfaa 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -609,13 +609,19 @@ static bool hidinput_update_battery_charge_status(struct hid_device *dev,
- 	return false;
- }
- 
--static void hidinput_update_battery(struct hid_device *dev, int value)
-+static void hidinput_update_battery(struct hid_device *dev, unsigned int usage,
-+				    int value)
- {
- 	int capacity;
- 
- 	if (!dev->battery)
- 		return;
- 
-+	if (hidinput_update_battery_charge_status(dev, usage, value)) {
-+		power_supply_changed(dev->battery);
-+		return;
-+	}
-+
- 	if (value == 0 || value < dev->battery_min || value > dev->battery_max)
- 		return;
- 
-@@ -642,13 +648,8 @@ static void hidinput_cleanup_battery(struct hid_device *dev)
- {
- }
- 
--static bool hidinput_update_battery_charge_status(struct hid_device *dev,
--						  unsigned int usage, int value)
--{
--	return false;
--}
--
--static void hidinput_update_battery(struct hid_device *dev, int value)
-+static void hidinput_update_battery(struct hid_device *dev, unsigned int usage,
-+				    int value)
- {
- }
- #endif	/* CONFIG_HID_BATTERY_STRENGTH */
-@@ -1515,11 +1516,7 @@ void hidinput_hid_event(struct hid_device *hid, struct hid_field *field, struct
- 		return;
- 
- 	if (usage->type == EV_PWR) {
--		bool handled = hidinput_update_battery_charge_status(hid, usage->hid, value);
--
--		if (!handled)
--			hidinput_update_battery(hid, value);
--
-+		hidinput_update_battery(hid, usage->hid, value);
- 		return;
- 	}
- 
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index 456ba758fa94..c85de8c8f6f5 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -1612,9 +1612,9 @@ static int gfx_v11_0_sw_init(struct amdgpu_ip_block *ip_block)
+ 	case IP_VERSION(11, 0, 2):
+ 	case IP_VERSION(11, 0, 3):
+ 		if (!adev->gfx.disable_uq &&
+-		    adev->gfx.me_fw_version  >= 2390 &&
+-		    adev->gfx.pfp_fw_version >= 2530 &&
+-		    adev->gfx.mec_fw_version >= 2600 &&
++		    adev->gfx.me_fw_version  >= 2420 &&
++		    adev->gfx.pfp_fw_version >= 2580 &&
++		    adev->gfx.mec_fw_version >= 2650 &&
+ 		    adev->mes.fw_version[0] >= 120) {
+ 			adev->userq_funcs[AMDGPU_HW_IP_GFX] = &userq_mes_funcs;
+ 			adev->userq_funcs[AMDGPU_HW_IP_COMPUTE] = &userq_mes_funcs;
 -- 
-2.50.1
+2.51.0
 
 
 
