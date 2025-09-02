@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-177154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E7AB403C7
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:36:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9428B40464
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:42:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC9A5189440F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF8EA560638
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391A330DD24;
-	Tue,  2 Sep 2025 13:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA99321F32;
+	Tue,  2 Sep 2025 13:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0pkKovR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rz4xm0YP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E711B313E27;
-	Tue,  2 Sep 2025 13:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6233043D8;
+	Tue,  2 Sep 2025 13:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819755; cv=none; b=YzuGfdLEDzDEoX9nKzFQHcV2g8veWzyUWTexRoeLmeMuMrhLPvaQBCUk09aN3+nlrXmJLK7fLAPc7MijzW2j24gZXgkP0cFF5xQbndAqZRCvFpCNw/PMQQ3OclXtOb601gSlyQcyt4oecom/61e0ErT2jrNsSNxLWXOcrx5+Fbo=
+	t=1756820165; cv=none; b=uGnd6aJbyUxdQ7VEeUth/xRk+Y6gwhpXutFF7T+0eM2sLirdOSbOpQ8mI/Xz/wg/q02lQj6Pm58hmj/JL2HFaUZRZxu+SNqZfIJJqUTuXdbxd9DHoodSvx3aMpM5BpONe5NveOYnDb1b67zCwcHW0wbLMGDer2D/bMb3tyM7guY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819755; c=relaxed/simple;
-	bh=fY48yJfwB47w+R+MqrChG1/42xwKROvVNFIRkCZQNCk=;
+	s=arc-20240116; t=1756820165; c=relaxed/simple;
+	bh=zNnpgIpx61CkChnSQzsKnM3zGcccRdvl/44aWKDhmQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rWny8fq3j4AdKjuJT5EpUHuG67Y96hafUcp2vx9P3/bCg8kLoEmZjl61GLMEx9c9GZ9wPj1+4K09kU/7phyZ/9x5+CC/qv4Jv/31Poewt61RE4/wjz61ohV6bS1I/QTRlmKdHhwek+m+l2hsGh//vlxwU0slD/SZBFalIDocXFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0pkKovR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F72C4CEED;
-	Tue,  2 Sep 2025 13:29:14 +0000 (UTC)
+	 MIME-Version; b=LK1sfU2OHYtToonn7aDxtc/ZTbKHH92ZksQAZYWQO3bPhrr/1p4k+2SGOR21tecYXEZVRyHtBO9+3yyvFlg1C++MwZfGSE6vy7FKAruZPgU/7xL7u/d5XoS67b+hqbIXaPsjNlnWl+I/wfw6pjC0jb5dnKUZcYK5EDN9dF0+3/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rz4xm0YP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D20C4CEF5;
+	Tue,  2 Sep 2025 13:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819754;
-	bh=fY48yJfwB47w+R+MqrChG1/42xwKROvVNFIRkCZQNCk=;
+	s=korg; t=1756820165;
+	bh=zNnpgIpx61CkChnSQzsKnM3zGcccRdvl/44aWKDhmQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q0pkKovR/1Y4WlLz5CK9HcSopLnVrF67dqaWjBIqXZ6yx57WahZYLxG+nGdD3L9Bo
-	 5446io8tfUNcT86GRK+oWCf9BVZgJCdJZDFGuVaoHWCvUAjyIK61Ou8gkVz/d8zaGb
-	 cXRciJ2JF7idjrHVXepl7DmIw+wpAo7CZaCz/rKo=
+	b=rz4xm0YPDa/szRWKTfQmefnpJJIOlQodrYKDudPUx0TUhRL/j/eQSfFB3Ck/9/iuP
+	 1EpuzFPShz2WyowWgn2ZoaZuO5mibYUhzhdJyDzAwBvxJXAuOE+hSbYI/HwLWhGSvO
+	 2Crr9VgEbi1Rq5aSpWzX5iP4y6ufRfVtF/woHqqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Subject: [PATCH 6.16 128/142] drm/mediatek: Fix device/node reference count leaks in mtk_drm_get_all_drm_priv
-Date: Tue,  2 Sep 2025 15:20:30 +0200
-Message-ID: <20250902131953.189636605@linuxfoundation.org>
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 19/75] powerpc/kvm: Fix ifdef to remove build warning
+Date: Tue,  2 Sep 2025 15:20:31 +0200
+Message-ID: <20250902131935.870564609@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
 
-commit 1f403699c40f0806a707a9a6eed3b8904224021a upstream.
+[ Upstream commit 88688a2c8ac6c8036d983ad8b34ce191c46a10aa ]
 
-Using device_find_child() and of_find_device_by_node() to locate
-devices could cause an imbalance in the device's reference count.
-device_find_child() and of_find_device_by_node() both call
-get_device() to increment the reference count of the found device
-before returning the pointer. In mtk_drm_get_all_drm_priv(), these
-references are never released through put_device(), resulting in
-permanent reference count increments. Additionally, the
-for_each_child_of_node() iterator fails to release node references in
-all code paths. This leaks device node references when loop
-termination occurs before reaching MAX_CRTC. These reference count
-leaks may prevent device/node resources from being properly released
-during driver unbind operations.
+When compiling for pseries or powernv defconfig with "make C=1",
+these warning were reported bu sparse tool in powerpc/kernel/kvm.c
 
-As comment of device_find_child() says, 'NOTE: you will need to drop
-the reference with put_device() after use'.
+arch/powerpc/kernel/kvm.c:635:9: warning: switch with no cases
+arch/powerpc/kernel/kvm.c:646:9: warning: switch with no cases
 
-Cc: stable@vger.kernel.org
-Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250812071932.471730-1-make24@iscas.ac.cn/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Currently #ifdef were added after the switch case which are specific
+for BOOKE and PPC_BOOK3S_32. These are not enabled in pseries/powernv
+defconfig. Fix it by moving the #ifdef before switch(){}
+
+Fixes: cbe487fac7fc0 ("KVM: PPC: Add mtsrin PV code")
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250518044107.39928-1-maddy@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_drv.c |   21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ arch/powerpc/kernel/kvm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -388,19 +388,19 @@ static bool mtk_drm_get_all_drm_priv(str
- 
- 		of_id = of_match_node(mtk_drm_of_ids, node);
- 		if (!of_id)
--			continue;
-+			goto next_put_node;
- 
- 		pdev = of_find_device_by_node(node);
- 		if (!pdev)
--			continue;
-+			goto next_put_node;
- 
- 		drm_dev = device_find_child(&pdev->dev, NULL, mtk_drm_match);
- 		if (!drm_dev)
--			continue;
-+			goto next_put_device_pdev_dev;
- 
- 		temp_drm_priv = dev_get_drvdata(drm_dev);
- 		if (!temp_drm_priv)
--			continue;
-+			goto next_put_device_drm_dev;
- 
- 		if (temp_drm_priv->data->main_len)
- 			all_drm_priv[CRTC_MAIN] = temp_drm_priv;
-@@ -412,10 +412,17 @@ static bool mtk_drm_get_all_drm_priv(str
- 		if (temp_drm_priv->mtk_drm_bound)
- 			cnt++;
- 
--		if (cnt == MAX_CRTC) {
--			of_node_put(node);
-+next_put_device_drm_dev:
-+		put_device(drm_dev);
-+
-+next_put_device_pdev_dev:
-+		put_device(&pdev->dev);
-+
-+next_put_node:
-+		of_node_put(node);
-+
-+		if (cnt == MAX_CRTC)
- 			break;
--		}
+diff --git a/arch/powerpc/kernel/kvm.c b/arch/powerpc/kernel/kvm.c
+index 5b3c093611baf..7209d00a9c257 100644
+--- a/arch/powerpc/kernel/kvm.c
++++ b/arch/powerpc/kernel/kvm.c
+@@ -632,19 +632,19 @@ static void __init kvm_check_ins(u32 *inst, u32 features)
+ #endif
  	}
  
- 	if (drm_priv->data->mmsys_dev_num == cnt) {
+-	switch (inst_no_rt & ~KVM_MASK_RB) {
+ #ifdef CONFIG_PPC_BOOK3S_32
++	switch (inst_no_rt & ~KVM_MASK_RB) {
+ 	case KVM_INST_MTSRIN:
+ 		if (features & KVM_MAGIC_FEAT_SR) {
+ 			u32 inst_rb = _inst & KVM_MASK_RB;
+ 			kvm_patch_ins_mtsrin(inst, inst_rt, inst_rb);
+ 		}
+ 		break;
+-#endif
+ 	}
++#endif
+ 
+-	switch (_inst) {
+ #ifdef CONFIG_BOOKE
++	switch (_inst) {
+ 	case KVM_INST_WRTEEI_0:
+ 		kvm_patch_ins_wrteei_0(inst);
+ 		break;
+@@ -652,8 +652,8 @@ static void __init kvm_check_ins(u32 *inst, u32 features)
+ 	case KVM_INST_WRTEEI_1:
+ 		kvm_patch_ins_wrtee(inst, 0, 1);
+ 		break;
+-#endif
+ 	}
++#endif
+ }
+ 
+ extern u32 kvm_template_start[];
+-- 
+2.50.1
+
 
 
 
