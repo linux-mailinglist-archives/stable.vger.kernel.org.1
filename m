@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-177455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10CEFB40582
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:54:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1D1B4055C
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:52:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 797F81B681F1
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:49:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B19691B65923
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C43C3148DD;
-	Tue,  2 Sep 2025 13:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6231C84C6;
+	Tue,  2 Sep 2025 13:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQHoz+RI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbPZJbTx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296E9313E27;
-	Tue,  2 Sep 2025 13:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9E12DECDE;
+	Tue,  2 Sep 2025 13:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820700; cv=none; b=MUpUxehUvESdaWXMZnoi6zpVxJdSa963uxFMA5ryQ+EN/IcOWPiPUUnwTzD0i5Gp6qFnqWavf0AAcsZkafHXRt5qcvpPJo6cfNLUZgNdObpFZCNvnu0T3zL4Edo3lq6ytJgOdKbqqUMWzBV9gI7blgyQtpwzjQ2vJSR/JW5psnM=
+	t=1756820597; cv=none; b=uaa39pkWIXOAQVq+kLaFDWIfwAO+YoESxoe2ryxwLmrenl17Uv8R0+SSmnHoMxYYv6ixOXVMmbE9lq1/l4y8CCKIMVI+g1pmrqEWqiabJJfinNRV/Cp2TKyWC6hdW713fUIqV6vC6hTgStxqnp+UoSjz8l8EsAcoF6hhw7qd0fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820700; c=relaxed/simple;
-	bh=avj+v9ZKGwNaNUj4x3sPFc7A98kPcK1phRiVJXwmxQo=;
+	s=arc-20240116; t=1756820597; c=relaxed/simple;
+	bh=opFnhu6OwM7Hpk3UJqwad9COVEu4P1iJfd8FfSXvYr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ig+Om/LjC5bJePq0m9PaWikS4D6ZAimEIy0+9NIO7NYMAxneLWwYmdh3dIE0zQ0eLAvb71xU7Pwa64a11zMXoicDSE7YARfmWQlGeoCCSv0n8+usqtp0TxnkHFQE4J5GX1+e5CE7wXtWn+3EmCv3sgbJPRJr1if0VusC4OxLqhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQHoz+RI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D557C4CEF9;
-	Tue,  2 Sep 2025 13:44:59 +0000 (UTC)
+	 MIME-Version; b=ne92UEhtPxZsYpGvJLJhJywMqybYfjNrDetGPl2/gItWwuVKwGOvN6N5IQ3jm/PdwXrFTNe9sZzQ/E/6JJvQ4FhD0KPql+VgwbE0fWF/mi7GzBwcqvWVGlZz8gMbWly227TLpOkrwAiIV+XgP/gaK1W+5f01tx6Z0F35ub4kymU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbPZJbTx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D83C4CEED;
+	Tue,  2 Sep 2025 13:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820700;
-	bh=avj+v9ZKGwNaNUj4x3sPFc7A98kPcK1phRiVJXwmxQo=;
+	s=korg; t=1756820596;
+	bh=opFnhu6OwM7Hpk3UJqwad9COVEu4P1iJfd8FfSXvYr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QQHoz+RIMXt7Sc7vTk9CIt8+l2PT+JfBC8q9xnvd4SGY8dwFde2N19V/kxWBeTRRw
-	 prWPK05Dseo8jPCuJHImE/zxLrxIB0BaG9H97Nr7lBF24M3fBdT0aq9Eo42fwdA9yf
-	 WAPkSq1RTR4ecOu5ekgbuoyOZrZHMZUX3V2BQeVQ=
+	b=TbPZJbTxg6FV7L829toCo/+Q0NhUJdur5aNaKLl9jmdi4ZW+ZJbD/sLAiv8GuMBU5
+	 IZCfhV5BvvV2QGWW+tTh8s0Fi2K3ZmoAqopiTiLFsyJqUVC4zyriTRuGvQsN+5TnBy
+	 yH6mTeejZ65DXRbt/SQBtejmVK3OnEfCarsaOaJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Wu Guanghao <wuguanghao3@huawei.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 18/34] efivarfs: Fix slab-out-of-bounds in efivarfs_d_compare
-Date: Tue,  2 Sep 2025 15:21:44 +0200
-Message-ID: <20250902131927.347031581@linuxfoundation.org>
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH 5.15 27/33] dma/pool: Ensure DMA_DIRECT_REMAP allocations are decrypted
+Date: Tue,  2 Sep 2025 15:21:45 +0200
+Message-ID: <20250902131928.126143244@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+References: <20250902131927.045875971@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Shanker Donthineni <sdonthineni@nvidia.com>
 
-[ Upstream commit a6358f8cf64850f3f27857b8ed8c1b08cfc4685c ]
+commit 89a2d212bdb4bc29bed8e7077abe054b801137ea upstream.
 
-Observed on kernel 6.6 (present on master as well):
+When CONFIG_DMA_DIRECT_REMAP is enabled, atomic pool pages are
+remapped via dma_common_contiguous_remap() using the supplied
+pgprot. Currently, the mapping uses
+pgprot_dmacoherent(PAGE_KERNEL), which leaves the memory encrypted
+on systems with memory encryption enabled (e.g., ARM CCA Realms).
 
-  BUG: KASAN: slab-out-of-bounds in memcmp+0x98/0xd0
-  Call trace:
-   kasan_check_range+0xe8/0x190
-   __asan_loadN+0x1c/0x28
-   memcmp+0x98/0xd0
-   efivarfs_d_compare+0x68/0xd8
-   __d_lookup_rcu_op_compare+0x178/0x218
-   __d_lookup_rcu+0x1f8/0x228
-   d_alloc_parallel+0x150/0x648
-   lookup_open.isra.0+0x5f0/0x8d0
-   open_last_lookups+0x264/0x828
-   path_openat+0x130/0x3f8
-   do_filp_open+0x114/0x248
-   do_sys_openat2+0x340/0x3c0
-   __arm64_sys_openat+0x120/0x1a0
+This can cause the DMA layer to fail or crash when accessing the
+memory, as the underlying physical pages are not configured as
+expected.
 
-If dentry->d_name.len < EFI_VARIABLE_GUID_LEN , 'guid' can become
-negative, leadings to oob. The issue can be triggered by parallel
-lookups using invalid filename:
+Fix this by requesting a decrypted mapping in the vmap() call:
+pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL))
 
-  T1			T2
-  lookup_open
-   ->lookup
-    simple_lookup
-     d_add
-     // invalid dentry is added to hash list
+This ensures that atomic pool memory is consistently mapped
+unencrypted.
 
-			lookup_open
-			 d_alloc_parallel
-			  __d_lookup_rcu
-			   __d_lookup_rcu_op_compare
-			    hlist_bl_for_each_entry_rcu
-			    // invalid dentry can be retrieved
-			     ->d_compare
-			      efivarfs_d_compare
-			      // oob
-
-Fix it by checking 'guid' before cmp.
-
-Fixes: da27a24383b2 ("efivarfs: guid part of filenames are case-insensitive")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Signed-off-by: Wu Guanghao <wuguanghao3@huawei.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20250811181759.998805-1-sdonthineni@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/efivarfs/super.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/dma/pool.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 99d002438008b..124db520b2bd6 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -47,6 +47,10 @@ static int efivarfs_d_compare(const struct dentry *dentry,
- {
- 	int guid = len - EFI_VARIABLE_GUID_LEN;
+--- a/kernel/dma/pool.c
++++ b/kernel/dma/pool.c
+@@ -102,8 +102,8 @@ static int atomic_pool_expand(struct gen
  
-+	/* Parallel lookups may produce a temporary invalid filename */
-+	if (guid <= 0)
-+		return 1;
-+
- 	if (name->len != len)
- 		return 1;
- 
--- 
-2.50.1
-
+ #ifdef CONFIG_DMA_DIRECT_REMAP
+ 	addr = dma_common_contiguous_remap(page, pool_size,
+-					   pgprot_dmacoherent(PAGE_KERNEL),
+-					   __builtin_return_address(0));
++			pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL)),
++			__builtin_return_address(0));
+ 	if (!addr)
+ 		goto free_page;
+ #else
 
 
 
