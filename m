@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-177432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE2DB4054F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:52:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F36D1B4053E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 513304E6AAA
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E79B16E1AD
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B030830BF5D;
-	Tue,  2 Sep 2025 13:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFD632ED3C;
+	Tue,  2 Sep 2025 13:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEcvNISM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9aEDBm/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDAB30BBBC;
-	Tue,  2 Sep 2025 13:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2B02FE599;
+	Tue,  2 Sep 2025 13:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820624; cv=none; b=Y3swi2WtWCao0xxsoAj3qzbTrQdE4kZ98/RLzKCEOGvlncopZuDl7mhGEcddOO3706iI5906xzQD1Y/G/7wF3Y1nhaZ9XQWyL36NC64uzcSq1041d1GD/2YAmSbuHbNF+XhizkQ+H8ddcAFmOCqikG9HHpnEQX6qN1y09xW3tHA=
+	t=1756820523; cv=none; b=e1AhjuUV5Zdbc+FwL0yq6dkOi60nOMSufuY5CHiPpZTncoUB7NC3ID0bXbsuAKQp5Y7OmL5KcoxEnWPtZXCV+4n/63ePrDGvHQhK1FrtBjhLvlH1uDFCV9V+dMd1BtonbknXS7wUAlc3nAwqpRKLzTk4i3LhP16kNtoYHR1p7J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820624; c=relaxed/simple;
-	bh=ISaOQntDDnc+KffgPHPn0uLCcs1DHvAKOf7rTUO5Zds=;
+	s=arc-20240116; t=1756820523; c=relaxed/simple;
+	bh=7TrqhBiwGoZ83p9F9IIT5mEINrqeDgPFb5h18wODyFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UW3Cf3MXfuQ3bqgpBlztJlcQBLFzSSjejM+vbat1pHRwNaYI0771705eJjK8ftsaohGOddZzDB+8m3kD0esNKwfSq3wFhrOYD4FIdj/QtVOetMCrHGVzr/XxLfjm3p8zlvecm9EtryusF0nmAolued5e91t5IAnIZzUASo6Zi+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEcvNISM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4AD9C4CEF4;
-	Tue,  2 Sep 2025 13:43:43 +0000 (UTC)
+	 MIME-Version; b=eFKfZw/XyKOxvAmenVgFXac/mjkfxIsz9A1r9tUGJzGf+bv7FA2Q8yWUP6b1YZaL5xlhzMN+rYytyVbRiz0/MN7b1iEhnF8upgoGYQk4/lkdynJL5TWS439PrCSYWHqwTP3xBQG+I4lnSBjzNwSROt5Tn5ovJNhshp3OXpA+y1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9aEDBm/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC32C4CEED;
+	Tue,  2 Sep 2025 13:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820624;
-	bh=ISaOQntDDnc+KffgPHPn0uLCcs1DHvAKOf7rTUO5Zds=;
+	s=korg; t=1756820523;
+	bh=7TrqhBiwGoZ83p9F9IIT5mEINrqeDgPFb5h18wODyFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nEcvNISMEfq42p+KtzxBquOQuo5ka0/mgpuQZhzl+GhijC7lvvvv8NqWqnphPRR7h
-	 +gQbZtRAnWlnuvVUHiZ6JFk8o81lYMsGUT9h//lCCFHVCHnGlGVW3v1or+3PJQVKTE
-	 kCgX7OC8biAW4d4IBRwCoOd+j26jNTZdKFg/TEpQ=
+	b=M9aEDBm/D7I7RT4NAKxlad1UvwlNvMqnW/drY8fhdZAWtrQ3ALMz+5GThAAbZSqPV
+	 s7Hrh08UyQ7pWpMgh+Rbl4vUf2PbKTPkGVhj0NTDkc95YUeKBUBKyskLfZW35bEnoh
+	 0G4qWSMWjxH2uPlwmCP6avBWSsJMJ9Y2xuPWqMnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1741b56d54536f4ec349@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 12/33] atm: atmtcp: Prevent arbitrary write in atmtcp_recv_control().
+	Minjong Kim <minbell.kim@samsung.com>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.1 39/50] HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()
 Date: Tue,  2 Sep 2025 15:21:30 +0200
-Message-ID: <20250902131927.530026329@linuxfoundation.org>
+Message-ID: <20250902131932.073658599@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
-References: <20250902131927.045875971@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,197 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Minjong Kim <minbell.kim@samsung.com>
 
-[ Upstream commit ec79003c5f9d2c7f9576fc69b8dbda80305cbe3a ]
+commit 185c926283da67a72df20a63a5046b3b4631b7d9 upstream.
 
-syzbot reported the splat below. [0]
+in ntrig_report_version(), hdev parameter passed from hid_probe().
+sending descriptor to /dev/uhid can make hdev->dev.parent->parent to null
+if hdev->dev.parent->parent is null, usb_dev has
+invalid address(0xffffffffffffff58) that hid_to_usb_dev(hdev) returned
+when usb_rcvctrlpipe() use usb_dev,it trigger
+page fault error for address(0xffffffffffffff58)
 
-When atmtcp_v_open() or atmtcp_v_close() is called via connect()
-or close(), atmtcp_send_control() is called to send an in-kernel
-special message.
+add null check logic to ntrig_report_version()
+before calling hid_to_usb_dev()
 
-The message has ATMTCP_HDR_MAGIC in atmtcp_control.hdr.length.
-Also, a pointer of struct atm_vcc is set to atmtcp_control.vcc.
-
-The notable thing is struct atmtcp_control is uAPI but has a
-space for an in-kernel pointer.
-
-  struct atmtcp_control {
-  	struct atmtcp_hdr hdr;	/* must be first */
-  ...
-  	atm_kptr_t vcc;		/* both directions */
-  ...
-  } __ATM_API_ALIGN;
-
-  typedef struct { unsigned char _[8]; } __ATM_API_ALIGN atm_kptr_t;
-
-The special message is processed in atmtcp_recv_control() called
-from atmtcp_c_send().
-
-atmtcp_c_send() is vcc->dev->ops->send() and called from 2 paths:
-
-  1. .ndo_start_xmit() (vcc->send() == atm_send_aal0())
-  2. vcc_sendmsg()
-
-The problem is sendmsg() does not validate the message length and
-userspace can abuse atmtcp_recv_control() to overwrite any kptr
-by atmtcp_control.
-
-Let's add a new ->pre_send() hook to validate messages from sendmsg().
-
-[0]:
-Oops: general protection fault, probably for non-canonical address 0xdffffc00200000ab: 0000 [#1] SMP KASAN PTI
-KASAN: probably user-memory-access in range [0x0000000100000558-0x000000010000055f]
-CPU: 0 UID: 0 PID: 5865 Comm: syz-executor331 Not tainted 6.17.0-rc1-syzkaller-00215-gbab3ce404553 #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
-RIP: 0010:atmtcp_recv_control drivers/atm/atmtcp.c:93 [inline]
-RIP: 0010:atmtcp_c_send+0x1da/0x950 drivers/atm/atmtcp.c:297
-Code: 4d 8d 75 1a 4c 89 f0 48 c1 e8 03 42 0f b6 04 20 84 c0 0f 85 15 06 00 00 41 0f b7 1e 4d 8d b7 60 05 00 00 4c 89 f0 48 c1 e8 03 <42> 0f b6 04 20 84 c0 0f 85 13 06 00 00 66 41 89 1e 4d 8d 75 1c 4c
-RSP: 0018:ffffc90003f5f810 EFLAGS: 00010203
-RAX: 00000000200000ab RBX: 0000000000000000 RCX: 0000000000000000
-RDX: ffff88802a510000 RSI: 00000000ffffffff RDI: ffff888030a6068c
-RBP: ffff88802699fb40 R08: ffff888030a606eb R09: 1ffff1100614c0dd
-R10: dffffc0000000000 R11: ffffffff8718fc40 R12: dffffc0000000000
-R13: ffff888030a60680 R14: 000000010000055f R15: 00000000ffffffff
-FS:  00007f8d7e9236c0(0000) GS:ffff888125c1c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000000045ad50 CR3: 0000000075bde000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- vcc_sendmsg+0xa10/0xc60 net/atm/common.c:645
- sock_sendmsg_nosec net/socket.c:714 [inline]
- __sock_sendmsg+0x219/0x270 net/socket.c:729
- ____sys_sendmsg+0x505/0x830 net/socket.c:2614
- ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2668
- __sys_sendmsg net/socket.c:2700 [inline]
- __do_sys_sendmsg net/socket.c:2705 [inline]
- __se_sys_sendmsg net/socket.c:2703 [inline]
- __x64_sys_sendmsg+0x19b/0x260 net/socket.c:2703
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f8d7e96a4a9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 51 18 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f8d7e923198 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f8d7e9f4308 RCX: 00007f8d7e96a4a9
-RDX: 0000000000000000 RSI: 0000200000000240 RDI: 0000000000000005
-RBP: 00007f8d7e9f4300 R08: 65732f636f72702f R09: 65732f636f72702f
-R10: 65732f636f72702f R11: 0000000000000246 R12: 00007f8d7e9c10ac
-R13: 00007f8d7e9231a0 R14: 0000200000000200 R15: 0000200000000250
- </TASK>
-Modules linked in:
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+1741b56d54536f4ec349@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68a6767c.050a0220.3d78fd.0011.GAE@google.com/
-Tested-by: syzbot+1741b56d54536f4ec349@syzkaller.appspotmail.com
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250821021901.2814721-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Minjong Kim <minbell.kim@samsung.com>
+Link: https://patch.msgid.link/20250813-hid-ntrig-page-fault-fix-v2-1-f98581f35106@samsung.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/atm/atmtcp.c   | 17 ++++++++++++++---
- include/linux/atmdev.h |  1 +
- net/atm/common.c       | 15 ++++++++++++---
- 3 files changed, 27 insertions(+), 6 deletions(-)
+ drivers/hid/hid-ntrig.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/atm/atmtcp.c b/drivers/atm/atmtcp.c
-index ff558908897f3..9c83fb29b2f1b 100644
---- a/drivers/atm/atmtcp.c
-+++ b/drivers/atm/atmtcp.c
-@@ -279,6 +279,19 @@ static struct atm_vcc *find_vcc(struct atm_dev *dev, short vpi, int vci)
-         return NULL;
- }
+--- a/drivers/hid/hid-ntrig.c
++++ b/drivers/hid/hid-ntrig.c
+@@ -144,6 +144,9 @@ static void ntrig_report_version(struct
+ 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
+ 	unsigned char *data = kmalloc(8, GFP_KERNEL);
  
-+static int atmtcp_c_pre_send(struct atm_vcc *vcc, struct sk_buff *skb)
-+{
-+	struct atmtcp_hdr *hdr;
++	if (!hid_is_usb(hdev))
++		return;
 +
-+	if (skb->len < sizeof(struct atmtcp_hdr))
-+		return -EINVAL;
-+
-+	hdr = (struct atmtcp_hdr *)skb->data;
-+	if (hdr->length == ATMTCP_HDR_MAGIC)
-+		return -EINVAL;
-+
-+	return 0;
-+}
+ 	if (!data)
+ 		goto err_free;
  
- static int atmtcp_c_send(struct atm_vcc *vcc,struct sk_buff *skb)
- {
-@@ -288,9 +301,6 @@ static int atmtcp_c_send(struct atm_vcc *vcc,struct sk_buff *skb)
- 	struct sk_buff *new_skb;
- 	int result = 0;
- 
--	if (skb->len < sizeof(struct atmtcp_hdr))
--		goto done;
--
- 	dev = vcc->dev_data;
- 	hdr = (struct atmtcp_hdr *) skb->data;
- 	if (hdr->length == ATMTCP_HDR_MAGIC) {
-@@ -347,6 +357,7 @@ static const struct atmdev_ops atmtcp_v_dev_ops = {
- 
- static const struct atmdev_ops atmtcp_c_dev_ops = {
- 	.close		= atmtcp_c_close,
-+	.pre_send	= atmtcp_c_pre_send,
- 	.send		= atmtcp_c_send
- };
- 
-diff --git a/include/linux/atmdev.h b/include/linux/atmdev.h
-index 45f2f278b50a8..70807c679f1ab 100644
---- a/include/linux/atmdev.h
-+++ b/include/linux/atmdev.h
-@@ -185,6 +185,7 @@ struct atmdev_ops { /* only send is required */
- 	int (*compat_ioctl)(struct atm_dev *dev,unsigned int cmd,
- 			    void __user *arg);
- #endif
-+	int (*pre_send)(struct atm_vcc *vcc, struct sk_buff *skb);
- 	int (*send)(struct atm_vcc *vcc,struct sk_buff *skb);
- 	int (*send_bh)(struct atm_vcc *vcc, struct sk_buff *skb);
- 	int (*send_oam)(struct atm_vcc *vcc,void *cell,int flags);
-diff --git a/net/atm/common.c b/net/atm/common.c
-index 930eb302cd10f..38ed7b985f655 100644
---- a/net/atm/common.c
-+++ b/net/atm/common.c
-@@ -635,18 +635,27 @@ int vcc_sendmsg(struct socket *sock, struct msghdr *m, size_t size)
- 
- 	skb->dev = NULL; /* for paths shared with net_device interfaces */
- 	if (!copy_from_iter_full(skb_put(skb, size), size, &m->msg_iter)) {
--		atm_return_tx(vcc, skb);
--		kfree_skb(skb);
- 		error = -EFAULT;
--		goto out;
-+		goto free_skb;
- 	}
- 	if (eff != size)
- 		memset(skb->data + size, 0, eff-size);
-+
-+	if (vcc->dev->ops->pre_send) {
-+		error = vcc->dev->ops->pre_send(vcc, skb);
-+		if (error)
-+			goto free_skb;
-+	}
-+
- 	error = vcc->dev->ops->send(vcc, skb);
- 	error = error ? error : size;
- out:
- 	release_sock(sk);
- 	return error;
-+free_skb:
-+	atm_return_tx(vcc, skb);
-+	kfree_skb(skb);
-+	goto out;
- }
- 
- __poll_t vcc_poll(struct file *file, struct socket *sock, poll_table *wait)
--- 
-2.50.1
-
 
 
 
