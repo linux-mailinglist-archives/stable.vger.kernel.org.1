@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-177355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D09B404FA
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D38B4043A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ED7B1B674EC
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 442E8547EC0
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDDC93128D9;
-	Tue,  2 Sep 2025 13:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5083126056D;
+	Tue,  2 Sep 2025 13:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHPEhgM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfzOwiwD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F103128D5;
-	Tue,  2 Sep 2025 13:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E82830DD1A;
+	Tue,  2 Sep 2025 13:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820381; cv=none; b=asRTJ+RA5mJf1NYEwOk3sOFTYmocDx8+IyCl3HUcgA8s8SeNokhrugec7DEUmcR4MrPKmfdxG5w24C31z+lwy0lPGtLOO+9EuK/UrCN6gTozD6NT5QF2cYkciB+PlDgDGS8cXi1rkORQ9vZNpe98+IxtVYu5903RtYAfU1Gsf2A=
+	t=1756820077; cv=none; b=EFlzo3xFMgDZgIzV7oiwo5YOGN/w9mvjZxAz4z3HI7wlwBzafiqsX/tti7jZaWLrRNmbrIl2ltuHL+/Og5/+WJ/cq9i6k2TkhqCcrwGoxngxIEHdoIA7WycI4l8ab1YEPb3KDDdnItN4kJgR9PeoFGM4Cr/7aDv8az4/12e0gMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820381; c=relaxed/simple;
-	bh=Pt5FSQxhRTPzFxg7URdJXRRjDlYcdDMl+oSyQpKpbMc=;
+	s=arc-20240116; t=1756820077; c=relaxed/simple;
+	bh=3pSlwGFZoQPvEguzNJljMNMwXnHO8Fmwfjit5um4v/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J3sjLyQxvtGPCLmCWh7jbbnAv8J7aQCIWSp0MWmp2BNa/u/H9aXlrKv1gSgrS+B5vLYY9IT8AyW1mxyGjIvKkUNEwVAss3S8zRl0/mlCjg28A+RCndoy1kIj2vlnnbiu0yaLjvKjnDTL3iRrUtRBxV2tnZAmN8VzoRDoVwfgFPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHPEhgM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1458C4CEF4;
-	Tue,  2 Sep 2025 13:39:40 +0000 (UTC)
+	 MIME-Version; b=LbwDwAIvM71/Q/Ma1/nmv2LpTYEm4wE+REdh1/pTLSHt96OC0m7NZn7h6Dl9bV082iZJAMkYow3w+w2g0yG6FzZqGzeQOXr/TQ+rz/sgoalGkwOx2HuQhtCUeexKBtq/B9qPwItkpqVpRQJ1WuiZip1IYYjmlhAXEvP+dh0o6oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfzOwiwD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C4AC4CEED;
+	Tue,  2 Sep 2025 13:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820381;
-	bh=Pt5FSQxhRTPzFxg7URdJXRRjDlYcdDMl+oSyQpKpbMc=;
+	s=korg; t=1756820076;
+	bh=3pSlwGFZoQPvEguzNJljMNMwXnHO8Fmwfjit5um4v/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iHPEhgM7vLjI7DnZ21rZl5gDhpUWmT8yQYrragsESH+E81ja1aeqdh3hJt9sXWQq0
-	 RjeDzWJWQCrz6D+ikCjsxgTbYey6/OewWs1Ps/c3cNedP2NZdG+BvMiIJgtWk0tXVG
-	 G6evHqBZIG+2pxSEPHe1YLo1YhpPwMZzOuIEiqsY=
+	b=yfzOwiwDDiwY7HeQQs+VgSffUhTWA1Lb6POCq6kKrn6QVkERlw2cZISxiJUd2x31X
+	 5YCFJdqqXiPaebJKklRLLZB+xnq13Td+EyjMrACJjh2/zqnigux3l+jShr6x9PJFRR
+	 257e5bzvA5Wf8GzBGkPzXBdRHpH4hf2rRc/aP1X0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Joe Quanaim <jdq@meta.com>,
-	Andrew Steffen <aksteffen@meta.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>
-Subject: [PATCH 6.1 11/50] NFS: Fix a race when updating an existing write
+	Timur Tabi <ttabi@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.12 86/95] drm/nouveau: fix error path in nvkm_gsp_fwsec_v2
 Date: Tue,  2 Sep 2025 15:21:02 +0200
-Message-ID: <20250902131930.965591805@linuxfoundation.org>
+Message-ID: <20250902131942.904048348@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,183 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Timur Tabi <ttabi@nvidia.com>
 
-commit 76d2e3890fb169168c73f2e4f8375c7cc24a765e upstream.
+commit 66e82b6e0a28d4970383e1ee5d60f431001128cd upstream.
 
-After nfs_lock_and_join_requests() tests for whether the request is
-still attached to the mapping, nothing prevents a call to
-nfs_inode_remove_request() from succeeding until we actually lock the
-page group.
-The reason is that whoever called nfs_inode_remove_request() doesn't
-necessarily have a lock on the page group head.
+Function nvkm_gsp_fwsec_v2() sets 'ret' if the kmemdup() call fails, but
+it never uses or returns 'ret' after that point.  We always need to release
+the firmware regardless, so do that and then check for error.
 
-So in order to avoid races, let's take the page group lock earlier in
-nfs_lock_and_join_requests(), and hold it across the removal of the
-request in nfs_inode_remove_request().
-
-Reported-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Joe Quanaim <jdq@meta.com>
-Tested-by: Andrew Steffen <aksteffen@meta.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Fixes: bd37d6fce184 ("NFSv4: Convert nfs_lock_and_join_requests() to use nfs_page_find_head_request()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 176fdcbddfd2 ("drm/nouveau/gsp/r535: add support for booting GSP-RM")
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+Link: https://lore.kernel.org/r/20250813001004.2986092-1-ttabi@nvidia.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/pagelist.c        |    9 +++---
- fs/nfs/write.c           |   66 ++++++++++++++++-------------------------------
- include/linux/nfs_page.h |    1 
- 3 files changed, 29 insertions(+), 47 deletions(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/nfs/pagelist.c
-+++ b/fs/nfs/pagelist.c
-@@ -233,13 +233,14 @@ nfs_page_group_unlock(struct nfs_page *r
- 	nfs_page_clear_headlock(req);
- }
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
+@@ -209,11 +209,12 @@ nvkm_gsp_fwsec_v2(struct nvkm_gsp *gsp,
+ 	fw->boot_addr = bld->start_tag << 8;
+ 	fw->boot_size = bld->code_size;
+ 	fw->boot = kmemdup(bl->data + hdr->data_offset + bld->code_off, fw->boot_size, GFP_KERNEL);
+-	if (!fw->boot)
+-		ret = -ENOMEM;
  
--/*
-- * nfs_page_group_sync_on_bit_locked
-+/**
-+ * nfs_page_group_sync_on_bit_locked - Test if all requests have @bit set
-+ * @req: request in page group
-+ * @bit: PG_* bit that is used to sync page group
-  *
-  * must be called with page group lock held
-  */
--static bool
--nfs_page_group_sync_on_bit_locked(struct nfs_page *req, unsigned int bit)
-+bool nfs_page_group_sync_on_bit_locked(struct nfs_page *req, unsigned int bit)
- {
- 	struct nfs_page *head = req->wb_head;
- 	struct nfs_page *tmp;
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -154,20 +154,10 @@ nfs_page_set_inode_ref(struct nfs_page *
- 	}
- }
+ 	nvkm_firmware_put(bl);
  
--static int
--nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
-+static void nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
- {
--	int ret;
--
--	if (!test_bit(PG_REMOVE, &req->wb_flags))
--		return 0;
--	ret = nfs_page_group_lock(req);
--	if (ret)
--		return ret;
- 	if (test_and_clear_bit(PG_REMOVE, &req->wb_flags))
- 		nfs_page_set_inode_ref(req, inode);
--	nfs_page_group_unlock(req);
--	return 0;
- }
- 
- static struct nfs_page *
-@@ -239,36 +229,6 @@ static struct nfs_page *nfs_page_find_he
- 	return req;
- }
- 
--static struct nfs_page *nfs_find_and_lock_page_request(struct page *page)
--{
--	struct inode *inode = page_file_mapping(page)->host;
--	struct nfs_page *req, *head;
--	int ret;
--
--	for (;;) {
--		req = nfs_page_find_head_request(page);
--		if (!req)
--			return req;
--		head = nfs_page_group_lock_head(req);
--		if (head != req)
--			nfs_release_request(req);
--		if (IS_ERR(head))
--			return head;
--		ret = nfs_cancel_remove_inode(head, inode);
--		if (ret < 0) {
--			nfs_unlock_and_release_request(head);
--			return ERR_PTR(ret);
--		}
--		/* Ensure that nobody removed the request before we locked it */
--		if (head == nfs_page_private_request(page))
--			break;
--		if (PageSwapCache(page))
--			break;
--		nfs_unlock_and_release_request(head);
--	}
--	return head;
--}
--
- /* Adjust the file length if we're writing beyond the end */
- static void nfs_grow_file(struct page *page, unsigned int offset, unsigned int count)
- {
-@@ -625,14 +585,32 @@ nfs_lock_and_join_requests(struct page *
- 	 * reference to the whole page group - the group will not be destroyed
- 	 * until the head reference is released.
- 	 */
--	head = nfs_find_and_lock_page_request(page);
-+retry:
-+	head = nfs_page_find_head_request(page);
- 	if (IS_ERR_OR_NULL(head))
- 		return head;
- 
-+	while (!nfs_lock_request(head)) {
-+		ret = nfs_wait_on_request(head);
-+		if (ret < 0) {
-+			nfs_release_request(head);
-+			return ERR_PTR(ret);
-+		}
-+	}
++	if (!fw->boot)
++		return -ENOMEM;
 +
- 	ret = nfs_page_group_lock(head);
- 	if (ret < 0)
- 		goto out_unlock;
- 
-+	/* Ensure that nobody removed the request before we locked it */
-+	if (head != nfs_page_private_request(page) && !PageSwapCache(page)) {
-+		nfs_page_group_unlock(head);
-+		nfs_unlock_and_release_request(head);
-+		goto retry;
-+	}
-+
-+	nfs_cancel_remove_inode(head, inode);
-+
- 	/* lock each request in the page group */
- 	for (subreq = head->wb_this_page;
- 	     subreq != head;
-@@ -853,7 +831,8 @@ static void nfs_inode_remove_request(str
- 	struct nfs_inode *nfsi = NFS_I(inode);
- 	struct nfs_page *head;
- 
--	if (nfs_page_group_sync_on_bit(req, PG_REMOVE)) {
-+	nfs_page_group_lock(req);
-+	if (nfs_page_group_sync_on_bit_locked(req, PG_REMOVE)) {
- 		head = req->wb_head;
- 
- 		spin_lock(&mapping->private_lock);
-@@ -864,6 +843,7 @@ static void nfs_inode_remove_request(str
- 		}
- 		spin_unlock(&mapping->private_lock);
- 	}
-+	nfs_page_group_unlock(req);
- 
- 	if (test_and_clear_bit(PG_INODE_REF, &req->wb_flags)) {
- 		nfs_release_request(req);
---- a/include/linux/nfs_page.h
-+++ b/include/linux/nfs_page.h
-@@ -148,6 +148,7 @@ extern	void nfs_join_page_group(struct n
- extern int nfs_page_group_lock(struct nfs_page *);
- extern void nfs_page_group_unlock(struct nfs_page *);
- extern bool nfs_page_group_sync_on_bit(struct nfs_page *, unsigned int);
-+extern bool nfs_page_group_sync_on_bit_locked(struct nfs_page *, unsigned int);
- extern	int nfs_page_set_headlock(struct nfs_page *req);
- extern void nfs_page_clear_headlock(struct nfs_page *req);
- extern bool nfs_async_iocounter_wait(struct rpc_task *, struct nfs_lock_context *);
+ 	/* Patch in interface data. */
+ 	return nvkm_gsp_fwsec_patch(gsp, fw, desc->InterfaceOffset, init_cmd);
+ }
 
 
 
