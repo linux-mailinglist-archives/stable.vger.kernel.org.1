@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-177191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C362B40426
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7707B40389
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 315911A806B2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:37:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0640A546681
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5627232A82C;
-	Tue,  2 Sep 2025 13:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3823128A6;
+	Tue,  2 Sep 2025 13:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPJh8s6l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xThu3nxl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D9E32A83F;
-	Tue,  2 Sep 2025 13:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE50015747D;
+	Tue,  2 Sep 2025 13:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819871; cv=none; b=BwoJm4jfLv5zVImD5gqtu9heFgxpbRY0jvmKfzTBgNsIraINNNI8ekqMbfR6vrM7UnnUct2ZQ1vGXSzuwABwNcwM86rxOi1w0pOHNW+pB5JSPltF6hWrrkMJ52MZE9vTkV3Sj2Jj8qDD1C/4CzOI8cFnw362jTrtyCbzbuozKtg=
+	t=1756819701; cv=none; b=cOIybNPQJVsqQlwttGWMrQ0Wivtbw4JkfSRhmtLRh5dMnqrahPSBcH5rfSJnXAX01j/SHB6n8cuIfZcn6H3ik/Uh02eyFFxUFlBZ8yRLrYBe57Wokt1E18FA3QxVK8sMSHEZQUCNClQdWvIBgbwhu2HItrn58vRw8CeBh8sAGJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819871; c=relaxed/simple;
-	bh=d3vL7Cn4V9w+CD8Od9QuEvzylgLDM+A8HL+7RJk+XaQ=;
+	s=arc-20240116; t=1756819701; c=relaxed/simple;
+	bh=oeLtV8h3zRmxIj/k4cmgO7T4nwfa8MG9LUmKPq116E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cZkN+UlWHtCKJ2eQggOY+3F/ZE6vRrUH74VbbD/33gyA+ln/TPXygxG5fCrx5CeoB52lMy8o00n37nBiBchKoF9TvFAD5N0wv+WFT8s7uPsiaElWeH5EZOJ3YbKmPbXbwfXLCF6XOr9V+DESujsVNBzLJjdqOOkhcaBv04X76GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPJh8s6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374DFC4CEF4;
-	Tue,  2 Sep 2025 13:31:09 +0000 (UTC)
+	 MIME-Version; b=tXlkj4RIOqfWHdRzdcsyn5tLA34cnn7TZLe8q4Rvz3iQXinxg/kjTPhyRQ0YJUyFno/zXfgU+2hWFin3AA3o2LoZpP5ArcBjvK4LHPRgoFPo+FZgH6Zw+vXYFrubMHfYm+5KZ6yEyt8EAOTaRQUq/GQvrO5nbKfG25eIqyEGMgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xThu3nxl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20720C4CEF5;
+	Tue,  2 Sep 2025 13:28:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819870;
-	bh=d3vL7Cn4V9w+CD8Od9QuEvzylgLDM+A8HL+7RJk+XaQ=;
+	s=korg; t=1756819701;
+	bh=oeLtV8h3zRmxIj/k4cmgO7T4nwfa8MG9LUmKPq116E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IPJh8s6lfTMxWj5vU1hN02Taut59yl6BKzkUpKWeyFgpgRNIPxpLRG8gNqRWkCOjZ
-	 0/Q7YAPgvTrN4qVjv/yDI/mfrAwf5c+wsqmPh3qUOlYZID1zI8P3rGRTpFMXRR8z4J
-	 GYzxlLYnppXTBwvy1nZBv+C0wzcwxy1M7zGbibGg=
+	b=xThu3nxlPAijNXjpKGorlqtxAdstjMvce93Z2ZNvJRuxDODUmK2wZSWSfvhhxZ/n/
+	 sDfZU8CPZS1UubN17NONJMpg3Ljkjhil9U8eGHmHGX/BFuq0wnpWcD8sBhqb4Yk2h9
+	 D0BmR4B7ZNOA7RN389lu3kYUYIJ5eoFnbEVovl7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>,
-	William Zhang <william.zhang@broadcom.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	syzbot+942297eecf7d2d61d1f1@syzkaller.appspotmail.com,
+	Takamitsu Iwai <takamitz@amazon.co.jp>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 21/95] of: reserved_mem: Restructure call site for dma_contiguous_early_fixup()
-Date: Tue,  2 Sep 2025 15:19:57 +0200
-Message-ID: <20250902131940.426408163@linuxfoundation.org>
+Subject: [PATCH 6.16 096/142] net: rose: include node references in rose_neigh refcount
+Date: Tue,  2 Sep 2025 15:19:58 +0200
+Message-ID: <20250902131951.946336599@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +64,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>
+From: Takamitsu Iwai <takamitz@amazon.co.jp>
 
-[ Upstream commit 2c223f7239f376a90d71903ec474ba887cf21d94 ]
+[ Upstream commit da9c9c877597170b929a6121a68dcd3dd9a80f45 ]
 
-Restructure the call site for dma_contiguous_early_fixup() to
-where the reserved_mem nodes are being parsed from the DT so that
-dma_mmu_remap[] is populated before dma_contiguous_remap() is called.
+Current implementation maintains two separate reference counting
+mechanisms: the 'count' field in struct rose_neigh tracks references from
+rose_node structures, while the 'use' field (now refcount_t) tracks
+references from rose_sock.
 
-Fixes: 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory regions are processed")
-Signed-off-by: Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>
-Tested-by: William Zhang <william.zhang@broadcom.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20250806172421.2748302-1-oreoluwa.babatunde@oss.qualcomm.com
+This patch merges these two reference counting systems using 'use' field
+for proper reference management. Specifically, this patch adds incrementing
+and decrementing of rose_neigh->use when rose_neigh->count is incremented
+or decremented.
+
+This patch also modifies rose_rt_free(), rose_rt_device_down() and
+rose_clear_route() to properly release references to rose_neigh objects
+before freeing a rose_node through rose_remove_node().
+
+These changes ensure rose_neigh structures are properly freed only when
+all references, including those from rose_node structures, are released.
+As a result, this resolves a slab-use-after-free issue reported by Syzbot.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+942297eecf7d2d61d1f1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=942297eecf7d2d61d1f1
+Signed-off-by: Takamitsu Iwai <takamitz@amazon.co.jp>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250823085857.47674-4-takamitz@amazon.co.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/of_reserved_mem.c | 16 ++++++++++++----
- include/linux/dma-map-ops.h  |  3 +++
- kernel/dma/contiguous.c      |  2 --
- 3 files changed, 15 insertions(+), 6 deletions(-)
+ net/rose/rose_route.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
-index 45445a1600a96..7b5d6562fe4a0 100644
---- a/drivers/of/of_reserved_mem.c
-+++ b/drivers/of/of_reserved_mem.c
-@@ -24,6 +24,7 @@
- #include <linux/memblock.h>
- #include <linux/kmemleak.h>
- #include <linux/cma.h>
-+#include <linux/dma-map-ops.h>
+diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
+index 8efb9033c057c..1adee1fbc2ed1 100644
+--- a/net/rose/rose_route.c
++++ b/net/rose/rose_route.c
+@@ -178,6 +178,7 @@ static int __must_check rose_add_node(struct rose_route_struct *rose_route,
+ 			}
+ 		}
+ 		rose_neigh->count++;
++		rose_neigh_hold(rose_neigh);
  
- #include "of_private.h"
- 
-@@ -128,13 +129,17 @@ static int __init __reserved_mem_reserve_reg(unsigned long node,
- 		base = dt_mem_next_cell(dt_root_addr_cells, &prop);
- 		size = dt_mem_next_cell(dt_root_size_cells, &prop);
- 
--		if (size &&
--		    early_init_dt_reserve_memory(base, size, nomap) == 0)
-+		if (size && early_init_dt_reserve_memory(base, size, nomap) == 0) {
-+			/* Architecture specific contiguous memory fixup. */
-+			if (of_flat_dt_is_compatible(node, "shared-dma-pool") &&
-+			    of_get_flat_dt_prop(node, "reusable", NULL))
-+				dma_contiguous_early_fixup(base, size);
- 			pr_debug("Reserved memory: reserved region for node '%s': base %pa, size %lu MiB\n",
- 				uname, &base, (unsigned long)(size / SZ_1M));
--		else
-+		} else {
- 			pr_err("Reserved memory: failed to reserve memory for node '%s': base %pa, size %lu MiB\n",
- 			       uname, &base, (unsigned long)(size / SZ_1M));
-+		}
- 
- 		len -= t_len;
+ 		goto out;
  	}
-@@ -417,7 +422,10 @@ static int __init __reserved_mem_alloc_size(unsigned long node, const char *unam
- 		       uname, (unsigned long)(size / SZ_1M));
- 		return -ENOMEM;
+@@ -187,6 +188,7 @@ static int __must_check rose_add_node(struct rose_route_struct *rose_route,
+ 		rose_node->neighbour[rose_node->count] = rose_neigh;
+ 		rose_node->count++;
+ 		rose_neigh->count++;
++		rose_neigh_hold(rose_neigh);
  	}
--
-+	/* Architecture specific contiguous memory fixup. */
-+	if (of_flat_dt_is_compatible(node, "shared-dma-pool") &&
-+	    of_get_flat_dt_prop(node, "reusable", NULL))
-+		dma_contiguous_early_fixup(base, size);
- 	/* Save region in the reserved_mem array */
- 	fdt_reserved_mem_save_node(node, uname, base, size);
- 	return 0;
-diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
-index b7773201414c2..b42408a24ad13 100644
---- a/include/linux/dma-map-ops.h
-+++ b/include/linux/dma-map-ops.h
-@@ -153,6 +153,9 @@ static inline void dma_free_contiguous(struct device *dev, struct page *page,
+ 
+ out:
+@@ -322,6 +324,7 @@ static int rose_del_node(struct rose_route_struct *rose_route,
+ 	for (i = 0; i < rose_node->count; i++) {
+ 		if (rose_node->neighbour[i] == rose_neigh) {
+ 			rose_neigh->count--;
++			rose_neigh_put(rose_neigh);
+ 
+ 			if (rose_neigh->count == 0) {
+ 				rose_remove_neigh(rose_neigh);
+@@ -430,6 +433,7 @@ int rose_add_loopback_node(const rose_address *address)
+ 	rose_node_list  = rose_node;
+ 
+ 	rose_loopback_neigh->count++;
++	rose_neigh_hold(rose_loopback_neigh);
+ 
+ out:
+ 	spin_unlock_bh(&rose_node_list_lock);
+@@ -461,6 +465,7 @@ void rose_del_loopback_node(const rose_address *address)
+ 	rose_remove_node(rose_node);
+ 
+ 	rose_loopback_neigh->count--;
++	rose_neigh_put(rose_loopback_neigh);
+ 
+ out:
+ 	spin_unlock_bh(&rose_node_list_lock);
+@@ -500,6 +505,7 @@ void rose_rt_device_down(struct net_device *dev)
+ 				memmove(&t->neighbour[i], &t->neighbour[i + 1],
+ 					sizeof(t->neighbour[0]) *
+ 						(t->count - i));
++				rose_neigh_put(s);
+ 			}
+ 
+ 			if (t->count <= 0)
+@@ -543,6 +549,7 @@ static int rose_clear_routes(void)
  {
- 	__free_pages(page, get_order(size));
- }
-+static inline void dma_contiguous_early_fixup(phys_addr_t base, unsigned long size)
-+{
-+}
- #endif /* CONFIG_DMA_CMA*/
+ 	struct rose_neigh *s, *rose_neigh;
+ 	struct rose_node  *t, *rose_node;
++	int i;
  
- #ifdef CONFIG_DMA_DECLARE_COHERENT
-diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
-index 8df0dfaaca18e..9e5d63efe7c57 100644
---- a/kernel/dma/contiguous.c
-+++ b/kernel/dma/contiguous.c
-@@ -480,8 +480,6 @@ static int __init rmem_cma_setup(struct reserved_mem *rmem)
- 		pr_err("Reserved memory: unable to setup CMA region\n");
- 		return err;
+ 	spin_lock_bh(&rose_node_list_lock);
+ 	spin_lock_bh(&rose_neigh_list_lock);
+@@ -553,8 +560,12 @@ static int rose_clear_routes(void)
+ 	while (rose_node != NULL) {
+ 		t         = rose_node;
+ 		rose_node = rose_node->next;
+-		if (!t->loopback)
++
++		if (!t->loopback) {
++			for (i = 0; i < rose_node->count; i++)
++				rose_neigh_put(t->neighbour[i]);
+ 			rose_remove_node(t);
++		}
  	}
--	/* Architecture specific contiguous memory fixup. */
--	dma_contiguous_early_fixup(rmem->base, rmem->size);
  
- 	if (default_cma)
- 		dma_contiguous_default_area = cma;
+ 	while (rose_neigh != NULL) {
+@@ -1189,7 +1200,7 @@ static int rose_neigh_show(struct seq_file *seq, void *v)
+ 			   (rose_neigh->loopback) ? "RSLOOP-0" : ax2asc(buf, &rose_neigh->callsign),
+ 			   rose_neigh->dev ? rose_neigh->dev->name : "???",
+ 			   rose_neigh->count,
+-			   refcount_read(&rose_neigh->use) - 1,
++			   refcount_read(&rose_neigh->use) - rose_neigh->count - 1,
+ 			   (rose_neigh->dce_mode) ? "DCE" : "DTE",
+ 			   (rose_neigh->restarted) ? "yes" : "no",
+ 			   ax25_display_timer(&rose_neigh->t0timer) / HZ,
+@@ -1294,6 +1305,7 @@ void __exit rose_rt_free(void)
+ 	struct rose_neigh *s, *rose_neigh = rose_neigh_list;
+ 	struct rose_node  *t, *rose_node  = rose_node_list;
+ 	struct rose_route *u, *rose_route = rose_route_list;
++	int i;
+ 
+ 	while (rose_neigh != NULL) {
+ 		s          = rose_neigh;
+@@ -1307,6 +1319,8 @@ void __exit rose_rt_free(void)
+ 		t         = rose_node;
+ 		rose_node = rose_node->next;
+ 
++		for (i = 0; i < t->count; i++)
++			rose_neigh_put(t->neighbour[i]);
+ 		rose_remove_node(t);
+ 	}
+ 
 -- 
 2.50.1
 
