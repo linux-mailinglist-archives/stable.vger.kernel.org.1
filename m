@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-177265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 099CCB4041F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6EC1B404FD
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0930A4E7A60
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:39:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F0D8560C3D
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C135C30F526;
-	Tue,  2 Sep 2025 13:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC9C306486;
+	Tue,  2 Sep 2025 13:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDBM4eOT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P17NrsTv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9D42DC33B;
-	Tue,  2 Sep 2025 13:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B253043BA;
+	Tue,  2 Sep 2025 13:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820101; cv=none; b=t1Kjk3c3KBRlRXLZneAp+8LYA6a1VTHN21JTZJ8fzWe4rvgyC2jcBx+zViibDa0vQYr0ZfXeue4o4pqKohHhFXawITqVAbvxSsp/jGxZtFPRd5VwSnNU4uJwtNC+hBpnaZIdh+lHrProh8TEIfsVCRO0JXRx6sOb1R1ASOqAIes=
+	t=1756820406; cv=none; b=gDp9rhJpRNGeDsPnKobvj47LrcWRbkMglTRrw4lw8qcxmguT9oY3alUfeGJOrklpuKt1G7RJApyQAQlMNZAdpB/9Osi1y4jnvXfTFq+5GBuHm7Jd/efEN6khPZbIQU/jmphq/ZNSoCL+Y2miQ4nC22001VtJQr+UMy5GibL37SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820101; c=relaxed/simple;
-	bh=f3PQIW/5Cc5ZQS2qf+tQTIY2PM2L1Mo084vHu3q50kg=;
+	s=arc-20240116; t=1756820406; c=relaxed/simple;
+	bh=5RSfbRUfS80LyAaJZhK5n75NBpz5iTWVhmcSYe+J3O0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lvv3tJCXg5jBE5JnDfcVuyqmULE2kMJ7SSuWgAw52/9FZ46oZ9NmBS5EZYXyzE8jpbhLKOGVJ5latwcGCZKms7NUkwuzOlzZxKv0qIr1tVCsISLowZbQE4DaXc6fMjiAVZXYTkngaB/NVPp5xUCqswexvCWBBfA2ddOiqTrhnVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDBM4eOT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2810C4CEED;
-	Tue,  2 Sep 2025 13:35:00 +0000 (UTC)
+	 MIME-Version; b=rMHmYOtijXZzOvWtQTRL3dpW2/Djxt/YsE+qKLdm/RXyDLdAZzsOyo5kD3c44qEkBXSY635vCtUDt6YihqK0A28waAuQbNHsfzqazyJfXgZQt2XgtCfBDCZu0EeVLR1h1bveOXrjgaUGhMnHEjKJJYwhBQG6ql7Fx2hNEOdxda0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P17NrsTv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F17C4CEED;
+	Tue,  2 Sep 2025 13:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820101;
-	bh=f3PQIW/5Cc5ZQS2qf+tQTIY2PM2L1Mo084vHu3q50kg=;
+	s=korg; t=1756820406;
+	bh=5RSfbRUfS80LyAaJZhK5n75NBpz5iTWVhmcSYe+J3O0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDBM4eOTvH4YeKB+qimRpSJe2vm8Uo/+MX47jQtVIqWVPfg8IeUNDFr3EJGGkl1QP
-	 yy+xEo+/8YGqnfg1kP4bd4TAAy1RqksoVC18EbqMXwDcT2gyRIWm3baCnrSQrGYKoM
-	 jq9U8uK7qY0rN8zeb+erO4GuLm0fHYhnuHvXK4s8=
+	b=P17NrsTvMLQlPITWQgB2cRg9bQ0H8yAo9tqjlR9mxgIYlCAo8tDb1TQLfMoCDbVRb
+	 W4DWIGOap2YT7r0DiFOgglGpXAB99b9PKG66BIEYUBlQX1ljUloTzGmgUPZjWIFOvY
+	 uQn4y5acRPO8RRBETL51vQCgpr9AwdNhGcXAGON0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mason Chang <mason-cw.chang@mediatek.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Daniel Golle <daniel@makrotopia.org>
-Subject: [PATCH 6.12 93/95] thermal/drivers/mediatek/lvts_thermal: Change lvts commands array to static const
-Date: Tue,  2 Sep 2025 15:21:09 +0200
-Message-ID: <20250902131943.170396960@linuxfoundation.org>
+	Ludovico de Nittis <ludovico.denittis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 19/50] Bluetooth: hci_event: Mark connection as closed during suspend disconnect
+Date: Tue,  2 Sep 2025 15:21:10 +0200
+Message-ID: <20250902131931.283381665@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mason Chang <mason-cw.chang@mediatek.com>
+From: Ludovico de Nittis <ludovico.denittis@collabora.com>
 
-commit c5d5a72c01f7faabe7cc0fd63942c18372101daf upstream.
+[ Upstream commit b7fafbc499b5ee164018eb0eefe9027f5a6aaad2 ]
 
-Change the LVTS commands array to static const in preparation for
-adding different commands.
+When suspending, the disconnect command for an active Bluetooth
+connection could be issued, but the corresponding
+`HCI_EV_DISCONN_COMPLETE` event might not be received before the system
+completes the suspend process. This can lead to an inconsistent state.
 
-Signed-off-by: Mason Chang <mason-cw.chang@mediatek.com>
-Link: https://lore.kernel.org/r/20250526102659.30225-2-mason-cw.chang@mediatek.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+On resume, the controller may auto-accept reconnections from the same
+device (due to suspend event filters), but these new connections are
+rejected by the kernel which still has connection objects from before
+suspend. Resulting in errors like:
+```
+kernel: Bluetooth: hci0: ACL packet for unknown connection handle 1
+kernel: Bluetooth: hci0: Ignoring HCI_Connection_Complete for existing
+connection
+```
+
+This is a btmon snippet that shows the issue:
+```
+< HCI Command: Disconnect (0x01|0x0006) plen 3
+        Handle: 1 Address: 78:20:A5:4A:DF:28 (Nintendo Co.,Ltd)
+        Reason: Remote User Terminated Connection (0x13)
+> HCI Event: Command Status (0x0f) plen 4
+      Disconnect (0x01|0x0006) ncmd 2
+        Status: Success (0x00)
+[...]
+// Host suspends with the event filter set for the device
+// On resume, the device tries to reconnect with a new handle
+
+> HCI Event: Connect Complete (0x03) plen 11
+        Status: Success (0x00)
+        Handle: 2
+        Address: 78:20:A5:4A:DF:28 (Nintendo Co.,Ltd)
+
+// Kernel ignores this event because there is an existing connection
+with
+// handle 1
+```
+
+By explicitly setting the connection state to BT_CLOSED we can ensure a
+consistent state, even if we don't receive the disconnect complete event
+in time.
+
+Link: https://github.com/bluez/bluez/issues/1226
+Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
+Signed-off-by: Ludovico de Nittis <ludovico.denittis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/mediatek/lvts_thermal.c |   29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ net/bluetooth/hci_event.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/thermal/mediatek/lvts_thermal.c
-+++ b/drivers/thermal/mediatek/lvts_thermal.c
-@@ -92,6 +92,17 @@
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 3ff428df58a46..ff013e1d82a85 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2782,6 +2782,12 @@ static void hci_cs_disconnect(struct hci_dev *hdev, u8 status)
+ 		goto done;
+ 	}
  
- #define LVTS_MINIMUM_THRESHOLD		20000
- 
-+static const u32 default_conn_cmds[] = { 0xC103FFFF, 0xC502FF55 };
-+/*
-+ * Write device mask: 0xC1030000
-+ */
-+static const u32 default_init_cmds[] = {
-+	0xC1030E01, 0xC1030CFC, 0xC1030A8C, 0xC103098D, 0xC10308F1,
-+	0xC10307A6, 0xC10306B8, 0xC1030500, 0xC1030420, 0xC1030300,
-+	0xC1030030, 0xC10300F6, 0xC1030050, 0xC1030060, 0xC10300AC,
-+	0xC10300FC, 0xC103009D, 0xC10300F1, 0xC10300E1
-+};
++	/* During suspend, mark connection as closed immediately
++	 * since we might not receive HCI_EV_DISCONN_COMPLETE
++	 */
++	if (hdev->suspended)
++		conn->state = BT_CLOSED;
 +
- static int golden_temp = LVTS_GOLDEN_TEMP_DEFAULT;
- static int golden_temp_offset;
+ 	mgmt_conn = test_and_clear_bit(HCI_CONN_MGMT_CONNECTED, &conn->flags);
  
-@@ -880,7 +891,7 @@ static void lvts_ctrl_monitor_enable(str
-  * each write in the configuration register must be separated by a
-  * delay of 2 us.
-  */
--static void lvts_write_config(struct lvts_ctrl *lvts_ctrl, u32 *cmds, int nr_cmds)
-+static void lvts_write_config(struct lvts_ctrl *lvts_ctrl, const u32 *cmds, int nr_cmds)
- {
- 	int i;
- 
-@@ -963,9 +974,9 @@ static int lvts_ctrl_set_enable(struct l
- 
- static int lvts_ctrl_connect(struct device *dev, struct lvts_ctrl *lvts_ctrl)
- {
--	u32 id, cmds[] = { 0xC103FFFF, 0xC502FF55 };
-+	u32 id;
- 
--	lvts_write_config(lvts_ctrl, cmds, ARRAY_SIZE(cmds));
-+	lvts_write_config(lvts_ctrl, default_conn_cmds, ARRAY_SIZE(default_conn_cmds));
- 
- 	/*
- 	 * LVTS_ID : Get ID and status of the thermal controller
-@@ -984,17 +995,7 @@ static int lvts_ctrl_connect(struct devi
- 
- static int lvts_ctrl_initialize(struct device *dev, struct lvts_ctrl *lvts_ctrl)
- {
--	/*
--	 * Write device mask: 0xC1030000
--	 */
--	u32 cmds[] = {
--		0xC1030E01, 0xC1030CFC, 0xC1030A8C, 0xC103098D, 0xC10308F1,
--		0xC10307A6, 0xC10306B8, 0xC1030500, 0xC1030420, 0xC1030300,
--		0xC1030030, 0xC10300F6, 0xC1030050, 0xC1030060, 0xC10300AC,
--		0xC10300FC, 0xC103009D, 0xC10300F1, 0xC10300E1
--	};
--
--	lvts_write_config(lvts_ctrl, cmds, ARRAY_SIZE(cmds));
-+	lvts_write_config(lvts_ctrl, default_init_cmds, ARRAY_SIZE(default_init_cmds));
- 
- 	return 0;
- }
+ 	if (conn->type == ACL_LINK) {
+-- 
+2.50.1
+
 
 
 
