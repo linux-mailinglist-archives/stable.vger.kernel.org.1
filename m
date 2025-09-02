@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-177443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B9DB40572
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:53:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4183B40545
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:51:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91767563E0A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AEFF5E3A86
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778B430F542;
-	Tue,  2 Sep 2025 13:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFE92BE036;
+	Tue,  2 Sep 2025 13:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXY5AZ6C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LltGPXZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3619B261593;
-	Tue,  2 Sep 2025 13:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0C528AB1E;
+	Tue,  2 Sep 2025 13:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820660; cv=none; b=kZXjwIpH+yR+10x3e38fGtLrX9333CTAXGbggMscuCLhX7LU+F9sr5BsWgyU7utSsNBH63d1AuSMyj/bpEHPOpih1o6rzNvbgghLmJj1ro8K6D5NGfZc4PgCQsBw6fXfTOV+52s+r96VHlVeD98oc/3Q4Onn3xPEFFlfYtx1tu4=
+	t=1756820575; cv=none; b=ZDffeuW3+MYVKP6uujwLHB+SwTA/NvSNrKBLFGTOC0JEwt7iMzb5csk1r1Uan5R+JL9jzUoepthcVNPgc4TygDa1m6ml/3J5MBHCih+dUtzqpkQ/aSPn441bxT2Y5nRGmSS8e/u7MA42wH/2a8liaWKsPEPfQ0S1tBfOKI42wm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820660; c=relaxed/simple;
-	bh=CxAuw+pWKT4ATlxSyD9nmwxhPMwzumb1FC6fKJcUXPw=;
+	s=arc-20240116; t=1756820575; c=relaxed/simple;
+	bh=iPtYK2zRtb4cvQl3t0tnst4N+qw+qm9JxmfmsCQ8J+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j9cyxdVKrXukrJkMvsBc3r9mk6soat8k3wXogbiW0NMOFpJN+vHyn5Ghto5AHWhB4V/Pi2pXQsED+eye2eXO+c+r3WM5Bx8xPpMUZnwW9aUb6wTFTfzhXn1ZxgsQsqMAl9byeNu8hRe5bJHQ3qE4nye0UIYcSnFTzFmASkzyY0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXY5AZ6C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD77FC4CEED;
-	Tue,  2 Sep 2025 13:44:19 +0000 (UTC)
+	 MIME-Version; b=pU4GM05fDYUP//muCDbyqS+X6O1wp+botgYSPcOc3seMd8H8C1YKM2ULMxVcxo+zHAFJ0ywvLB8GzPgsVZ2h71tay5Om6d2qOrdRHGwsdADfmkOJE/nMt8ybPnafkA0ArRflgbZjWCVweTsebLN/fnb3WxEy2v/V2bcGpLC9X5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LltGPXZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88E1C4CEED;
+	Tue,  2 Sep 2025 13:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820660;
-	bh=CxAuw+pWKT4ATlxSyD9nmwxhPMwzumb1FC6fKJcUXPw=;
+	s=korg; t=1756820575;
+	bh=iPtYK2zRtb4cvQl3t0tnst4N+qw+qm9JxmfmsCQ8J+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wXY5AZ6CUg5r2yqm8hmubc0642iI9cDUlA0uo0bzeceSbmia5Bd1Rrh2Ufu3qChV6
-	 z/xpmwF2rpyDyce2/YlEJ6YcQNks5c/bK+C8AJfeBh+/YQCnlknZ4XXHrrkhdmv+1y
-	 74S/8ed/RUhtMt7EL4F/Uwnc9cOi/eGmOVYfb3UY=
+	b=LltGPXZVSjAEwzidwapcgx558o3kuw0Asn9dLSwMhqwCj8xXqqB+uryqSzMSDig/2
+	 ccAGiWqPmedt3q4LMPzQ0UnNJ2ZPLbn2171EN8c1qH6W4KiwkbHkAsIBtkcwZES/tt
+	 Hh5yqH21fPm42AXaGKBC5BR6t+ZDS9cR3KXrK+XM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Lazar <alazar@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 14/34] net/mlx5e: Update and set Xon/Xoff upon port speed set
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 5.15 22/33] HID: asus: fix UAF via HID_CLAIMED_INPUT validation
 Date: Tue,  2 Sep 2025 15:21:40 +0200
-Message-ID: <20250902131927.184473320@linuxfoundation.org>
+Message-ID: <20250902131927.926079643@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+References: <20250902131927.045875971@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +61,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit d24341740fe48add8a227a753e68b6eedf4b385a ]
+commit d3af6ca9a8c34bbd8cff32b469b84c9021c9e7e4 upstream.
 
-Xon/Xoff sizes are derived from calculations that include
-the port speed.
-These settings need to be updated and applied whenever the
-port speed is changed.
-The port speed is typically set after the physical link goes down
-and is negotiated as part of the link-up process between the two
-connected interfaces.
-Xon/Xoff parameters being updated at the point where the new
-negotiated speed is established.
+After hid_hw_start() is called hidinput_connect() will eventually be
+called to set up the device with the input layer since the
+HID_CONNECT_DEFAULT connect mask is used. During hidinput_connect()
+all input and output reports are processed and corresponding hid_inputs
+are allocated and configured via hidinput_configure_usages(). This
+process involves slot tagging report fields and configuring usages
+by setting relevant bits in the capability bitmaps. However it is possible
+that the capability bitmaps are not set at all leading to the subsequent
+hidinput_has_been_populated() check to fail leading to the freeing of the
+hid_input and the underlying input device.
 
-Fixes: 0696d60853d5 ("net/mlx5e: Receive buffer configuration")
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250825143435.598584-11-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This becomes problematic because a malicious HID device like a
+ASUS ROG N-Key keyboard can trigger the above scenario via a
+specially crafted descriptor which then leads to a user-after-free
+when the name of the freed input device is written to later on after
+hid_hw_start(). Below, report 93 intentionally utilises the
+HID_UP_UNDEFINED Usage Page which is skipped during usage
+configuration, leading to the frees.
+
+0x05, 0x0D,        // Usage Page (Digitizer)
+0x09, 0x05,        // Usage (Touch Pad)
+0xA1, 0x01,        // Collection (Application)
+0x85, 0x0D,        //   Report ID (13)
+0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
+0x09, 0xC5,        //   Usage (0xC5)
+0x15, 0x00,        //   Logical Minimum (0)
+0x26, 0xFF, 0x00,  //   Logical Maximum (255)
+0x75, 0x08,        //   Report Size (8)
+0x95, 0x04,        //   Report Count (4)
+0xB1, 0x02,        //   Feature (Data,Var,Abs)
+0x85, 0x5D,        //   Report ID (93)
+0x06, 0x00, 0x00,  //   Usage Page (Undefined)
+0x09, 0x01,        //   Usage (0x01)
+0x15, 0x00,        //   Logical Minimum (0)
+0x26, 0xFF, 0x00,  //   Logical Maximum (255)
+0x75, 0x08,        //   Report Size (8)
+0x95, 0x1B,        //   Report Count (27)
+0x81, 0x02,        //   Input (Data,Var,Abs)
+0xC0,              // End Collection
+
+Below is the KASAN splat after triggering the UAF:
+
+[   21.672709] ==================================================================
+[   21.673700] BUG: KASAN: slab-use-after-free in asus_probe+0xeeb/0xf80
+[   21.673700] Write of size 8 at addr ffff88810a0ac000 by task kworker/1:2/54
+[   21.673700]
+[   21.673700] CPU: 1 UID: 0 PID: 54 Comm: kworker/1:2 Not tainted 6.16.0-rc4-g9773391cf4dd-dirty #36 PREEMPT(voluntary)
+[   21.673700] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+[   21.673700] Call Trace:
+[   21.673700]  <TASK>
+[   21.673700]  dump_stack_lvl+0x5f/0x80
+[   21.673700]  print_report+0xd1/0x660
+[   21.673700]  kasan_report+0xe5/0x120
+[   21.673700]  __asan_report_store8_noabort+0x1b/0x30
+[   21.673700]  asus_probe+0xeeb/0xf80
+[   21.673700]  hid_device_probe+0x2ee/0x700
+[   21.673700]  really_probe+0x1c6/0x6b0
+[   21.673700]  __driver_probe_device+0x24f/0x310
+[   21.673700]  driver_probe_device+0x4e/0x220
+[...]
+[   21.673700]
+[   21.673700] Allocated by task 54:
+[   21.673700]  kasan_save_stack+0x3d/0x60
+[   21.673700]  kasan_save_track+0x18/0x40
+[   21.673700]  kasan_save_alloc_info+0x3b/0x50
+[   21.673700]  __kasan_kmalloc+0x9c/0xa0
+[   21.673700]  __kmalloc_cache_noprof+0x139/0x340
+[   21.673700]  input_allocate_device+0x44/0x370
+[   21.673700]  hidinput_connect+0xcb6/0x2630
+[   21.673700]  hid_connect+0xf74/0x1d60
+[   21.673700]  hid_hw_start+0x8c/0x110
+[   21.673700]  asus_probe+0x5a3/0xf80
+[   21.673700]  hid_device_probe+0x2ee/0x700
+[   21.673700]  really_probe+0x1c6/0x6b0
+[   21.673700]  __driver_probe_device+0x24f/0x310
+[   21.673700]  driver_probe_device+0x4e/0x220
+[...]
+[   21.673700]
+[   21.673700] Freed by task 54:
+[   21.673700]  kasan_save_stack+0x3d/0x60
+[   21.673700]  kasan_save_track+0x18/0x40
+[   21.673700]  kasan_save_free_info+0x3f/0x60
+[   21.673700]  __kasan_slab_free+0x3c/0x50
+[   21.673700]  kfree+0xcf/0x350
+[   21.673700]  input_dev_release+0xab/0xd0
+[   21.673700]  device_release+0x9f/0x220
+[   21.673700]  kobject_put+0x12b/0x220
+[   21.673700]  put_device+0x12/0x20
+[   21.673700]  input_free_device+0x4c/0xb0
+[   21.673700]  hidinput_connect+0x1862/0x2630
+[   21.673700]  hid_connect+0xf74/0x1d60
+[   21.673700]  hid_hw_start+0x8c/0x110
+[   21.673700]  asus_probe+0x5a3/0xf80
+[   21.673700]  hid_device_probe+0x2ee/0x700
+[   21.673700]  really_probe+0x1c6/0x6b0
+[   21.673700]  __driver_probe_device+0x24f/0x310
+[   21.673700]  driver_probe_device+0x4e/0x220
+[...]
+
+Fixes: 9ce12d8be12c ("HID: asus: Add i2c touchpad support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Link: https://patch.msgid.link/20250810181041.44874-1-qasdev00@gmail.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/hid-asus.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index cef60bc2589cc..cc93c503984a1 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -141,6 +141,8 @@ void mlx5e_update_carrier(struct mlx5e_priv *priv)
- 	if (port_state == VPORT_STATE_UP) {
- 		netdev_info(priv->netdev, "Link up\n");
- 		netif_carrier_on(priv->netdev);
-+		mlx5e_port_manual_buffer_config(priv, 0, priv->netdev->mtu,
-+						NULL, NULL, NULL);
- 	} else {
- 		netdev_info(priv->netdev, "Link down\n");
- 		netif_carrier_off(priv->netdev);
--- 
-2.50.1
-
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -1135,7 +1135,13 @@ static int asus_probe(struct hid_device
+ 		return ret;
+ 	}
+ 
+-	if (!drvdata->input) {
++	/*
++	 * Check that input registration succeeded. Checking that
++	 * HID_CLAIMED_INPUT is set prevents a UAF when all input devices
++	 * were freed during registration due to no usages being mapped,
++	 * leaving drvdata->input pointing to freed memory.
++	 */
++	if (!drvdata->input || !(hdev->claimed & HID_CLAIMED_INPUT)) {
+ 		hid_err(hdev, "Asus input not registered\n");
+ 		ret = -ENOMEM;
+ 		goto err_stop_hw;
 
 
 
