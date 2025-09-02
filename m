@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-177246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48300B4040B
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:39:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF00EB404E5
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C16EE4E6746
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0008F54064D
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7423148DD;
-	Tue,  2 Sep 2025 13:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2E730DD31;
+	Tue,  2 Sep 2025 13:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3jjxbU+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBYlklAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C43830DEB9;
-	Tue,  2 Sep 2025 13:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD522DF3CF;
+	Tue,  2 Sep 2025 13:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820043; cv=none; b=fuXmAKffFLXDPjVo9o7ewa96nYZ/C5dFsLfKnk8ea2v9Fb0wAA6cOLaiL3NYxVuNB0p3GWQdTCU+7NLjH9uZ9kZxZnb8K+0QstHeyRLfGHOzPB3YOVyvkrjKaqLTVRldRHDC/xTS13uHn+XOoeIC6UqEXamqLxVtlUd4widAqgY=
+	t=1756820335; cv=none; b=HtrZYT2g6rNYmsc4uZzPsmogCBhlGYKxIejGUmOMImGf6Dry71l7KPUEZzp2Mf/9/46OA2vqQMPliv0X+EI2CfL9Qk6+khDMD38I59H9zi9rpsmDFzHXzyF9rloWTkZm6KDpoNlMYs3huWc0z7Ws57LnXcxn9UthzwC/JeLf6F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820043; c=relaxed/simple;
-	bh=q0LWgoiKntCrz1UhJ+gZRV0nkm8G8hobKajM/341TeY=;
+	s=arc-20240116; t=1756820335; c=relaxed/simple;
+	bh=UxcVC4YzPNsejQNOGdgfoRBK/u5W8lpUukAc/Tz9hG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rY+pRHN1sp11oC3MWX4ImglX9TV+6wtUA4eLXvrQouoFbX/WEii7TU4sb+w1xAQsWSJFeDq+Rp6TqyNy+baJcJ2VcUTAWy1vJE/QhwmjTr72lbWT6uOciHolEVoKniltpiUH6zeGgiovzISKGmYKJC1S74GC33G7AQvHRk5rHMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3jjxbU+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142EAC4CEED;
-	Tue,  2 Sep 2025 13:34:02 +0000 (UTC)
+	 MIME-Version; b=Xqit8qAaoCGPYNTmMiCBNMgodupVixAT4f5GRXA2yFpjzA8jcCZSzxCnFwm0sl9KjcoNNa905Jyy3nPk8C4dPIIGbNYveEapjozd4edNBxOtBynGU3BndQTFgLD5GGTfWKLLDoF9SbcayvBAroQHiHxEFnn4mp3bHbi3+oCztD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBYlklAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06339C4CEED;
+	Tue,  2 Sep 2025 13:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820043;
-	bh=q0LWgoiKntCrz1UhJ+gZRV0nkm8G8hobKajM/341TeY=;
+	s=korg; t=1756820335;
+	bh=UxcVC4YzPNsejQNOGdgfoRBK/u5W8lpUukAc/Tz9hG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A3jjxbU+nEEu3NE/ISO9o+ekfgurDe9gcr7PYrhP0q8saaHodkDE8+umeFgCbWead
-	 p4q2DYddoGjcCjq/f1yB67dbeACJFg479hy9qhylsXgYNpUsMbywMfGu6DKUFxhMki
-	 7fyXxjho7FoUQCaX3L4CPtd+9S8nJnBn5aNOwfco=
+	b=lBYlklAvXXhEMX0MMlbGUPVKV7FgpMvC7iLYIgRKhQDIie5h4yrehtE8/l0JOC+0k
+	 LCfkwltmYKDWCgUTETdgUN9LrZayq2Vnw8AsKXf9m9iaOXZtkBfMf8Hvlbm0VmGLmp
+	 I7b6BcpmKsF6ep4HwaHLD6RxbiDUzsmMSHfj/Bxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minjong Kim <minbell.kim@samsung.com>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.12 76/95] HID: hid-ntrig: fix unable to handle page fault in ntrig_report_version()
+	Jiri Pirko <jiri@nvidia.com>,
+	Shay Drory <shayd@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 40/75] net/mlx5: Call mlx5_sf_id_erase() once in mlx5_sf_dealloc()
 Date: Tue,  2 Sep 2025 15:20:52 +0200
-Message-ID: <20250902131942.525545146@linuxfoundation.org>
+Message-ID: <20250902131936.692602936@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minjong Kim <minbell.kim@samsung.com>
+From: Jiri Pirko <jiri@nvidia.com>
 
-commit 185c926283da67a72df20a63a5046b3b4631b7d9 upstream.
+[ Upstream commit 2597ee190b4eb48d3b7d35b7bb2cc18046ae087e ]
 
-in ntrig_report_version(), hdev parameter passed from hid_probe().
-sending descriptor to /dev/uhid can make hdev->dev.parent->parent to null
-if hdev->dev.parent->parent is null, usb_dev has
-invalid address(0xffffffffffffff58) that hid_to_usb_dev(hdev) returned
-when usb_rcvctrlpipe() use usb_dev,it trigger
-page fault error for address(0xffffffffffffff58)
+Before every call of mlx5_sf_dealloc(), there is a call to
+mlx5_sf_id_erase(). So move it to the beginning of mlx5_sf_dealloc().
+Also remove redundant mlx5_sf_id_erase() call from mlx5_sf_free()
+as it is called only from mlx5_sf_dealloc().
 
-add null check logic to ntrig_report_version()
-before calling hid_to_usb_dev()
-
-Signed-off-by: Minjong Kim <minbell.kim@samsung.com>
-Link: https://patch.msgid.link/20250813-hid-ntrig-page-fault-fix-v2-1-f98581f35106@samsung.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Shay Drory <shayd@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: 26e42ec7712d ("net/mlx5: Nack sync reset when SFs are present")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ntrig.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/hid/hid-ntrig.c
-+++ b/drivers/hid/hid-ntrig.c
-@@ -144,6 +144,9 @@ static void ntrig_report_version(struct
- 	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
- 	unsigned char *data = kmalloc(8, GFP_KERNEL);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
+index e34a8f88c518c..1dd01701df20e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/devlink.c
+@@ -111,7 +111,6 @@ mlx5_sf_alloc(struct mlx5_sf_table *table, struct mlx5_eswitch *esw,
  
-+	if (!hid_is_usb(hdev))
-+		return;
+ static void mlx5_sf_free(struct mlx5_sf_table *table, struct mlx5_sf *sf)
+ {
+-	mlx5_sf_id_erase(table, sf);
+ 	mlx5_sf_hw_table_sf_free(table->dev, sf->controller, sf->id);
+ 	trace_mlx5_sf_free(table->dev, sf->port_index, sf->controller, sf->hw_fn_id);
+ 	kfree(sf);
+@@ -361,6 +360,8 @@ int mlx5_devlink_sf_port_new(struct devlink *devlink,
+ 
+ static void mlx5_sf_dealloc(struct mlx5_sf_table *table, struct mlx5_sf *sf)
+ {
++	mlx5_sf_id_erase(table, sf);
 +
- 	if (!data)
- 		goto err_free;
+ 	if (sf->hw_state == MLX5_VHCA_STATE_ALLOCATED) {
+ 		mlx5_sf_free(table, sf);
+ 	} else if (mlx5_sf_is_active(sf)) {
+@@ -401,7 +402,6 @@ int mlx5_devlink_sf_port_del(struct devlink *devlink,
+ 	}
  
+ 	mlx5_eswitch_unload_sf_vport(esw, sf->hw_fn_id);
+-	mlx5_sf_id_erase(table, sf);
+ 
+ 	mutex_lock(&table->sf_state_lock);
+ 	mlx5_sf_dealloc(table, sf);
+@@ -473,7 +473,6 @@ static void mlx5_sf_deactivate_all(struct mlx5_sf_table *table)
+ 	 */
+ 	xa_for_each(&table->port_indices, index, sf) {
+ 		mlx5_eswitch_unload_sf_vport(esw, sf->hw_fn_id);
+-		mlx5_sf_id_erase(table, sf);
+ 		mlx5_sf_dealloc(table, sf);
+ 	}
+ }
+-- 
+2.50.1
+
 
 
 
