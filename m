@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-177374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF27B404E4
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:47:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B39EDB404F7
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:48:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B23D3B4F6E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71F29188F285
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB64B314A8B;
-	Tue,  2 Sep 2025 13:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094BD31281D;
+	Tue,  2 Sep 2025 13:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpeNPmcM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="po+DZRcB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8815F30507B;
-	Tue,  2 Sep 2025 13:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1B931282C;
+	Tue,  2 Sep 2025 13:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820438; cv=none; b=p776IJ46UBc7cS7tfQq7Rxu3qi1gEyHOFf/EZKpQbLPaNwqU61wZbo5pltsUsYTs+Dyaejj4wuxoDLBrGg6UE2gnRzwaBg8jSSguVxcYTLXUGlzug9/oNPIypvBCY3RcYGpfPw+3MV//ZyElwlcZFv9hTDKzmLQLQcoKOd/k/es=
+	t=1756820371; cv=none; b=fzpIDjdrgp+8SGTOM4fm3kQEcaI+sc6xUjpwyYzAf1ia9wnX0RS8NqJMSnYnxYlsciTu3QL4BttGWEvmsSGH4Mbbrrrvgae8XQBEYj0Ae22JeKPUoDX6qkttB+eB/93JJjD85GA1LD/KTvr5IUhh4N/h3FIHZqLl3oHwuNivFO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820438; c=relaxed/simple;
-	bh=I5t7WsdqlfwI3WQonZPyopyHj93l9JQ5lsEz+he0bro=;
+	s=arc-20240116; t=1756820371; c=relaxed/simple;
+	bh=Nvyhux3PimkNeGWLbTTdrTQe5hfVwVsyZ4cqW1M3zRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WTCAhoBIXoWwBtx/HNM8rf4c+b0tpzeOQqwlvzReC1LK6n9/ZKiuIzKm1+pnvho4vE1xjOjia4umkYpzDJa+ljRPYNCnwd4TM/L1O5jLTfYsZD8SgxMJA+mXt/WX/NidAhb+fzaL4BQajYVC1WEzXy2UUjQEsxz+cmZcgoLCOPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpeNPmcM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DECC4CEED;
-	Tue,  2 Sep 2025 13:40:37 +0000 (UTC)
+	 MIME-Version; b=qN367NO3/QIqqEfJ+BSPjgGPORtNwULNC6RSKlP5wAv+asqlk3cENEFnvGmYmHQRJe/bfCsrSEj76jtJ7Uc4rfnXnZ8SUsR0qFxH50lKv7X4EIaxJc9zXc8RpNJtRmXlBZjYa6ovumIsocED2MlCN+GeNn7Le9wY3uDIwGTIVYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=po+DZRcB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FC9C4CEF5;
+	Tue,  2 Sep 2025 13:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820438;
-	bh=I5t7WsdqlfwI3WQonZPyopyHj93l9JQ5lsEz+he0bro=;
+	s=korg; t=1756820371;
+	bh=Nvyhux3PimkNeGWLbTTdrTQe5hfVwVsyZ4cqW1M3zRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZpeNPmcMwNnuPtjiLWYKTqG+9ru3jLmxKoG+702wYR9/FVB/buSKmOJVeHXQ8Dfel
-	 3pMOoYicdvSqW+GpeXn4uP2wuaLZVdl7NcemRGGlBPUF9s3Eet7UG6gmRQbCumDftg
-	 IunLeqjcMcpQGFARnrsW1qR+D1Dt/D3stlgsR69g=
+	b=po+DZRcBqyUtb65B0W9Agdkh2RoljuP2RK5pQBm1pVINR7i3sni1ek58LsdJY+PjQ
+	 8BSuUvpezkAsLFzB2OXHyvHTgl6EDEIjQyQ59WfDfIDuok8zm6wBeqhxjm7Etgyhh2
+	 psWwuvEajJmT5GGVtXjGKzr/An2aSIMRFZylrEUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohan G Thomas <rohan.g.thomas@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 29/50] net: stmmac: xgmac: Do not enable RX FIFO Overflow interrupts
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 68/75] smb3 client: fix return code mapping of remap_file_range
 Date: Tue,  2 Sep 2025 15:21:20 +0200
-Message-ID: <20250902131931.677469351@linuxfoundation.org>
+Message-ID: <20250902131937.781693913@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
-References: <20250902131930.509077918@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohan G Thomas <rohan.g.thomas@altera.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 4f23382841e67174211271a454811dd17c0ef3c5 ]
+commit 0e08fa789d39aa01923e3ba144bd808291895c3c upstream.
 
-Enabling RX FIFO Overflow interrupts is counterproductive
-and causes an interrupt storm when RX FIFO overflows.
-Disabling this interrupt has no side effect and eliminates
-interrupt storms when the RX FIFO overflows.
+We were returning -EOPNOTSUPP for various remap_file_range cases
+but for some of these the copy_file_range_syscall() requires -EINVAL
+to be returned (e.g. where source and target file ranges overlap when
+source and target are the same file). This fixes xfstest generic/157
+which was expecting EINVAL for that (and also e.g. for when the src
+offset is beyond end of file).
 
-Commit 8a7cb245cf28 ("net: stmmac: Do not enable RX FIFO
-overflow interrupts") disables RX FIFO overflow interrupts
-for DWMAC4 IP and removes the corresponding handling of
-this interrupt. This patch is doing the same thing for
-XGMAC IP.
-
-Fixes: 2142754f8b9c ("net: stmmac: Add MAC related callbacks for XGMAC2")
-Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250825-xgmac-minor-fixes-v3-1-c225fe4444c0@altera.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c | 4 ----
- 1 file changed, 4 deletions(-)
+ fs/smb/client/cifsfs.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-index 5e98355f422b3..3e4318d5dcdf5 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-@@ -199,10 +199,6 @@ static void dwxgmac2_dma_rx_mode(void __iomem *ioaddr, int mode,
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -1371,6 +1371,20 @@ static loff_t cifs_remap_file_range(stru
+ 			netfs_resize_file(&target_cifsi->netfs, new_size);
+ 			fscache_resize_cookie(cifs_inode_cookie(target_inode),
+ 					      new_size);
++		} else if (rc == -EOPNOTSUPP) {
++			/*
++			 * copy_file_range syscall man page indicates EINVAL
++			 * is returned e.g when "fd_in and fd_out refer to the
++			 * same file and the source and target ranges overlap."
++			 * Test generic/157 was what showed these cases where
++			 * we need to remap EOPNOTSUPP to EINVAL
++			 */
++			if (off >= src_inode->i_size) {
++				rc = -EINVAL;
++			} else if (src_inode == target_inode) {
++				if (off + len > destoff)
++					rc = -EINVAL;
++			}
+ 		}
  	}
  
- 	writel(value, ioaddr + XGMAC_MTL_RXQ_OPMODE(channel));
--
--	/* Enable MTL RX overflow */
--	value = readl(ioaddr + XGMAC_MTL_QINTEN(channel));
--	writel(value | XGMAC_RXOIE, ioaddr + XGMAC_MTL_QINTEN(channel));
- }
- 
- static void dwxgmac2_dma_tx_mode(void __iomem *ioaddr, int mode,
--- 
-2.50.1
-
 
 
 
