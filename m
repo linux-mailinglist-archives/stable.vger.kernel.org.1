@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-177105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A185B40361
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:32:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB20B403EA
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:38:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1129E7B8F4E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:29:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D58C27BAFF4
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCEA30649A;
-	Tue,  2 Sep 2025 13:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6082F362C;
+	Tue,  2 Sep 2025 13:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uw67oj5/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBxSas6P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA72E305E32;
-	Tue,  2 Sep 2025 13:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3922C15A3;
+	Tue,  2 Sep 2025 13:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819592; cv=none; b=Va9I+Xy4QhOqULVymQOSPK8JH2XwC4zzp3WK9HUy8RaCFxSgGM75LZACHLFMzW89MERe7+WgQKYmviCnsRl2DT3prHz89dO42oViMWovbV5KeH3M0REX4u2Fhe0Sm8d+byvcsPvRqQ0V4A746sgC1lKIqas8fhXYpw3yXFhrDo4=
+	t=1756819899; cv=none; b=lUPIbyHOuQ6emcGQyusrWoKpwDt8901x8JrPaP0avYTpBrGai6LiA5gR2CzGcgjyg/UT9UygGX9UrrVdKtuCxmrplovhFuRp2oOtUQj+ott4pCFMmadzotkbfBWdNaFk+TuU4uCuLiqTcXJpMj5N/cek/h0NqJXLVZt1SBIQ1ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819592; c=relaxed/simple;
-	bh=HJ5xyRA7t8NKcTXO7mof2kLi0vyMm4/Rf58cGMvdUbM=;
+	s=arc-20240116; t=1756819899; c=relaxed/simple;
+	bh=4cGydD2YgFlOAoWPYvKDi889gI4dRzMR2d5X9vhTctE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TGblqPos1E+1QuKuB9XqNo+zEzAP0BD8NGDA+R6J6JSvhB4PV+rB6f6wX85lJTY+XcoHatMhput4vcBGt4YznCao9zpIYDxF/HPB4HJ/plc5YrYwjbDzUEu9ZfwHPVtNza02FhMWmHOt6Xp1sylK+oN4w2Eh3PTIQaFF0TotEJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uw67oj5/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328FAC4CEED;
-	Tue,  2 Sep 2025 13:26:31 +0000 (UTC)
+	 MIME-Version; b=GaKmKVjdRmbeyF/8bm5PrVDD8RXw7NGFAhgVtthvb027afDniFk3mpoFUMl8s5ZOg/JH+Dwpw7WwpWHMa3/fxt8nccrltb9al3B3KSdO1bG397Xp4CHmBlRl+UB2m4sbrG+sPKxG+g8b9dnSikCHjdK7z1jAR6jSktD86Uwv6Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBxSas6P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE63C4CEED;
+	Tue,  2 Sep 2025 13:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819592;
-	bh=HJ5xyRA7t8NKcTXO7mof2kLi0vyMm4/Rf58cGMvdUbM=;
+	s=korg; t=1756819899;
+	bh=4cGydD2YgFlOAoWPYvKDi889gI4dRzMR2d5X9vhTctE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uw67oj5/q6yN7kk/crEOtTfk3EnUq6mmxmQ9fMzE78P4VcKgyjPb1Y7GYHNbfRDUu
-	 LZ/Y4yeaS0UQGH8vSNIRJHKpgadk230dTw5izsVjiSr7eYqYw5OVBtRVBTzqbzuwG9
-	 +TtBNwacTEaC6foqDY4SqF35x1TOao+BeJNZEKAg=
+	b=DBxSas6PJ4VA5kMbVHSOO4ZKZrBWYn4cR2U5Fsi/Bs3Jlht+ba3+IvcFflZv+TI91
+	 F6O8NCo7BcnBJx4YUQzM9D5gxv8dYPZIiyPcYar33L1i5U10wFftQuhN2SzrqgRHFq
+	 OU2Nj40mA16Qo7Khtf6TPT5wRSE9Dc/K9soWTcqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lama Kayal <lkayal@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 080/142] net/mlx5: HWS, Fix uninitialized variables in mlx5hws_pat_calc_nop error flow
+Subject: [PATCH 6.12 06/95] mips: dts: lantiq: danube: add missing burst length property
 Date: Tue,  2 Sep 2025 15:19:42 +0200
-Message-ID: <20250902131951.333867526@linuxfoundation.org>
+Message-ID: <20250902131939.856207117@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lama Kayal <lkayal@nvidia.com>
+From: Aleksander Jan Bajkowski <olek2@wp.pl>
 
-[ Upstream commit 24b6e53140475b56cadcccd4e82a93aa5bacf1eb ]
+[ Upstream commit 7b28232921782aa38048249132899c337405eaa8 ]
 
-In mlx5hws_pat_calc_nop(), src_field and dst_field are passed to
-hws_action_modify_get_target_fields() which should set their values.
-However, if an invalid action type is encountered, these variables
-remain uninitialized and are later used to update prev_src_field
-and prev_dst_field.
+The upstream dts lacks the lantiq,{rx/tx}-burst-length property. Other
+issues were also fixed:
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: etop@e180000 (lantiq,etop-xway): 'interrupt-names' is a required property
+	from schema $id: http://devicetree.org/schemas/net/lantiq,etop-xway.yaml#
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: etop@e180000 (lantiq,etop-xway): 'lantiq,tx-burst-length' is a required property
+	from schema $id: http://devicetree.org/schemas/net/lantiq,etop-xway.yaml#
+arch/mips/boot/dts/lantiq/danube_easy50712.dtb: etop@e180000 (lantiq,etop-xway): 'lantiq,rx-burst-length' is a required property
+	from schema $id: http://devicetree.org/schemas/net/lantiq,etop-xway.yaml#
 
-Initialize both variables to INVALID_FIELD to ensure they have
-defined values in all code paths.
-
-Fixes: 01e035fd0380 ("net/mlx5: HWS, handle modify header actions dependency")
-Signed-off-by: Lama Kayal <lkayal@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250825143435.598584-4-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 14d4e308e0aa ("net: lantiq: configure the burst length in ethernet drivers")
+Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/steering/hws/pat_arg.c    | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/mips/boot/dts/lantiq/danube_easy50712.dts | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/pat_arg.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/pat_arg.c
-index 51e4c551e0efd..622fd579f1407 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/pat_arg.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/pat_arg.c
-@@ -527,7 +527,6 @@ int mlx5hws_pat_calc_nop(__be64 *pattern, size_t num_actions,
- 			 u32 *nop_locations, __be64 *new_pat)
- {
- 	u16 prev_src_field = INVALID_FIELD, prev_dst_field = INVALID_FIELD;
--	u16 src_field, dst_field;
- 	u8 action_type;
- 	bool dependent;
- 	size_t i, j;
-@@ -539,6 +538,9 @@ int mlx5hws_pat_calc_nop(__be64 *pattern, size_t num_actions,
- 		return 0;
+diff --git a/arch/mips/boot/dts/lantiq/danube_easy50712.dts b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
+index 1ce20b7d05cb8..d8b3cd69eda3c 100644
+--- a/arch/mips/boot/dts/lantiq/danube_easy50712.dts
++++ b/arch/mips/boot/dts/lantiq/danube_easy50712.dts
+@@ -87,8 +87,11 @@ etop@e180000 {
+ 			reg = <0xe180000 0x40000>;
+ 			interrupt-parent = <&icu0>;
+ 			interrupts = <73 78>;
++			interrupt-names = "tx", "rx";
+ 			phy-mode = "rmii";
+ 			mac-address = [ 00 11 22 33 44 55 ];
++			lantiq,rx-burst-length = <4>;
++			lantiq,tx-burst-length = <4>;
+ 		};
  
- 	for (i = 0, j = 0; i < num_actions; i++, j++) {
-+		u16 src_field = INVALID_FIELD;
-+		u16 dst_field = INVALID_FIELD;
-+
- 		if (j >= max_actions)
- 			return -EINVAL;
- 
+ 		stp0: stp@e100bb0 {
 -- 
 2.50.1
 
