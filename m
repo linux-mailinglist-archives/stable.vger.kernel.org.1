@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-177252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D46EB40436
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF87FB40510
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:49:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8113547D51
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EAFF562129
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE327317700;
-	Tue,  2 Sep 2025 13:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C00131AF2A;
+	Tue,  2 Sep 2025 13:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1r6WW3S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wx/hwEYp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A54221D5B8;
-	Tue,  2 Sep 2025 13:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EAF3101D5;
+	Tue,  2 Sep 2025 13:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820062; cv=none; b=BSEuoWan7dBrmpoaIrS8HThnThb8Ej/n/1FNunRQhf5JQ6dW249Zh4ifrtN4OLMrHdWZH8AJ7yn3N7DAisj2GijaaOVZEx0QxUNzsgZUVKwDZMsrRcDO/A2kAG/pSK1ozsl8QygdYH8fH3WMVfcw6tD1ByyUxMU1HI3CVhnXK3Y=
+	t=1756820454; cv=none; b=fAZVnWpNU4dL4xOKt68Argk2qC0AgnvVVdstynNQfODxA0xbhSWrC2sllj3eU8Tl4dk0elnr1DxQMK0o1/8n4N1HCjnTwvQ1JuxNhPl4WNzDyfpEeiH0jfjK7T8WPULahO7YaO4gDu9ImAVq4Wh9XGtDmQCPRytByyPF630J6n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820062; c=relaxed/simple;
-	bh=fPNyiMUfAv9MNuyH97IfWlsplvkvPh9FrVG32P/oKmc=;
+	s=arc-20240116; t=1756820454; c=relaxed/simple;
+	bh=A37fS3R1j1h4sdBR6Iz7acBbXaDPmdjX+Dxj/eBrMHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=az3luf0WH33lR41Df/ig13QSisJ5cfVj9gREivxcy+LBxGoz78DchPgMW/0QlhilNw0oYJnz7hlEI0gWfPrxWa0qviSf4iKhmHRGbDVRfgjUVauP+ZRvLz+/M/ipgeTtFnRBN6QZt5IZeSsDVllkNwk+jHf0n/Gee3+rbbVpcGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1r6WW3S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D22C4CEED;
-	Tue,  2 Sep 2025 13:34:21 +0000 (UTC)
+	 MIME-Version; b=ZsfUy8meF5Pu/vDXPzrw53iaWAA+zdITGRxkbEf1M4jfgp+i3Un0U19/2CUWu9I2TJzRvNHN2TNb1+k1upjWsK4Y7rYbd5L9Mzohhhb4k1vA+IT1pODALA0elZ8qYTUE9IduFBrDHRB4gu+C0VqQUX4gUnzmpUfZpaKK0915LOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wx/hwEYp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F49C4CEED;
+	Tue,  2 Sep 2025 13:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820062;
-	bh=fPNyiMUfAv9MNuyH97IfWlsplvkvPh9FrVG32P/oKmc=;
+	s=korg; t=1756820453;
+	bh=A37fS3R1j1h4sdBR6Iz7acBbXaDPmdjX+Dxj/eBrMHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w1r6WW3SaeWc+GJj3E+OrkVZ5Pf49s6ohKBi1Zebx+LHEkYDNPeaJzYoP79IdUm08
-	 brQCoPKil9mngJq3oeA94YwKE4Md5s5zu/9L1lWP8jtlBBvBI8CNlbHkNU7+HxpwbG
-	 UBj9N10gvzkCLCSMPijmjZYxmnUJPIVLJnOYgRnQ=
+	b=Wx/hwEYpoSQ2wAlvM4xaqYPxzoZFta2VIabPSZELEx5VmD4w/0DJXRKyfMZWyjJG8
+	 OUeFm/WSw/Wo9q0qN9vnxodiV0+KfcQx6nwXhMrLp6cvkreWf6C6TFnrNUmLhbmUOo
+	 PVqJVv41pKUNQVlkvL9ma0eRl5dFQUDdjCbVB15U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 81/95] net: usb: qmi_wwan: add Telit Cinterion LE910C4-WWX new compositions
+	Jay Shin <jaeshin@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	linux-cifs@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 06/50] smb: client: fix race with concurrent opens in unlink(2)
 Date: Tue,  2 Sep 2025 15:20:57 +0200
-Message-ID: <20250902131942.715006585@linuxfoundation.org>
+Message-ID: <20250902131930.765189186@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+References: <20250902131930.509077918@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +66,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Paulo Alcantara <pc@manguebit.org>
 
-commit e81a7f65288c7e2cfb7e7890f648e099fd885ab3 upstream.
+[ Upstream commit 0af1561b2d60bab2a2b00720a5c7b292ecc549ec ]
 
-Add the following Telit Cinterion LE910C4-WWX new compositions:
+According to some logs reported by customers, CIFS client might end up
+reporting unlinked files as existing in stat(2) due to concurrent
+opens racing with unlink(2).
 
-0x1034: tty (AT) + tty (AT) + rmnet
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1034 Rev=00.00
-S:  Manufacturer=Telit
-S:  Product=LE910C4-WWX
-S:  SerialNumber=93f617e7
-C:  #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Besides sending the removal request to the server, the unlink process
+could involve closing any deferred close as well as marking all
+existing open handles as deleted to prevent them from deferring
+closes, which increases the race window for potential concurrent
+opens.
 
-0x1037: tty (diag) + tty (Telit custom) + tty (AT) + tty (AT) + rmnet
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 15 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1037 Rev=00.00
-S:  Manufacturer=Telit
-S:  Product=LE910C4-WWX
-S:  SerialNumber=93f617e7
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Fix this by unhashing the dentry in cifs_unlink() to prevent any
+subsequent opens.  Any open attempts, while we're still unlinking,
+will block on parent's i_rwsem.
 
-0x1038: tty (Telit custom) + tty (AT) + tty (AT) + rmnet
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  9 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1038 Rev=00.00
-S:  Manufacturer=Telit
-S:  Product=LE910C4-WWX
-S:  SerialNumber=93f617e7
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Link: https://patch.msgid.link/20250822091324.39558-1-Fabio.Porcedda@telit.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Jay Shin <jaeshin@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-cifs@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/client/inode.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1355,6 +1355,9 @@ static const struct usb_device_id produc
- 	{QMI_FIXED_INTF(0x2357, 0x0201, 4)},	/* TP-LINK HSUPA Modem MA180 */
- 	{QMI_FIXED_INTF(0x2357, 0x9000, 4)},	/* TP-LINK MA260 */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1031, 3)}, /* Telit LE910C1-EUX */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1034, 2)}, /* Telit LE910C4-WWX */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1037, 4)}, /* Telit LE910C4-WWX */
-+	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1038, 3)}, /* Telit LE910C4-WWX */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x103a, 0)}, /* Telit LE910C4-WWX */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1040, 2)},	/* Telit LE922A */
- 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1050, 2)},	/* Telit FN980 */
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index 634f28f0d331e..ffc05ebc92f43 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -1649,15 +1649,24 @@ int cifs_unlink(struct inode *dir, struct dentry *dentry)
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
+ 	struct tcon_link *tlink;
+ 	struct cifs_tcon *tcon;
++	__u32 dosattr = 0, origattr = 0;
+ 	struct TCP_Server_Info *server;
+ 	struct iattr *attrs = NULL;
+-	__u32 dosattr = 0, origattr = 0;
++	bool rehash = false;
+ 
+ 	cifs_dbg(FYI, "cifs_unlink, dir=0x%p, dentry=0x%p\n", dir, dentry);
+ 
+ 	if (unlikely(cifs_forced_shutdown(cifs_sb)))
+ 		return -EIO;
+ 
++	/* Unhash dentry in advance to prevent any concurrent opens */
++	spin_lock(&dentry->d_lock);
++	if (!d_unhashed(dentry)) {
++		__d_drop(dentry);
++		rehash = true;
++	}
++	spin_unlock(&dentry->d_lock);
++
+ 	tlink = cifs_sb_tlink(cifs_sb);
+ 	if (IS_ERR(tlink))
+ 		return PTR_ERR(tlink);
+@@ -1706,7 +1715,8 @@ int cifs_unlink(struct inode *dir, struct dentry *dentry)
+ 		if (inode)
+ 			cifs_drop_nlink(inode);
+ 	} else if (rc == -ENOENT) {
+-		d_drop(dentry);
++		if (simple_positive(dentry))
++			d_delete(dentry);
+ 	} else if (rc == -EBUSY) {
+ 		if (server->ops->rename_pending_delete) {
+ 			rc = server->ops->rename_pending_delete(full_path,
+@@ -1757,6 +1767,8 @@ int cifs_unlink(struct inode *dir, struct dentry *dentry)
+ 	kfree(attrs);
+ 	free_xid(xid);
+ 	cifs_put_tlink(tlink);
++	if (rehash)
++		d_rehash(dentry);
+ 	return rc;
+ }
+ 
+-- 
+2.50.1
+
 
 
 
