@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-177175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A479B403A2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D3ADB40383
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:33:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6651F4E3E0D
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:34:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8FF73B331A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39BC4322C63;
-	Tue,  2 Sep 2025 13:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D1F31A061;
+	Tue,  2 Sep 2025 13:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="At5DQXk8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJP6ul3d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7ADE32276C;
-	Tue,  2 Sep 2025 13:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1741131A062;
+	Tue,  2 Sep 2025 13:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819823; cv=none; b=BtYPSAdexYuaAOfi0faubFjlfGPBA97oG6xRw0jw1KkhenEnpTqQQsWX449mwM62juSkvHSP4T9vh4F5F7PbFVnADT3oeb190ZKvWfKzOeX3tQ14Rm1h1WyiCuTTwBUCoa9BtycP5UPpmTk1ZY3MN0Ao9RcNiENYAc4rkiqpB64=
+	t=1756819785; cv=none; b=YJ01lNPmSsPYPf+lZFrOyKdAbO/Qj9Eaqn7t4exH0U1B3VN7oBlC5v63pHrbG0S0EkqptNY0t9+vofwXnSw72RLfE0MkI+WMMvEQZaUM14b1GSKTNE2DhyUPFVei8Lg7ZHfymTsWZKUfuAuChONYXoB+f2RBjMLzSNKJkAIVQzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819823; c=relaxed/simple;
-	bh=H0ENwSOyo+8y7TDRITS+o75zpFSxha5i8fhAezaIVFI=;
+	s=arc-20240116; t=1756819785; c=relaxed/simple;
+	bh=lw+2f1hzugIWKiSdRUqh3aCTm8vSpr9XFbb2GjRXs1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rzHiyjVdZhB2XFViNWX7FraIBRB24nsMhCfSvvxrgWoky8ZJm0PujVjjnRN0Y0ahzLWjiNH6+eW6M6j9zolnoPSXTERBm9UocPFvGQdrZYORwGWmjdg3SXFmeGHsnbMtWZc1d8xBy4xaHHofoHGYfSo28/Keu2T1zsx2t3Ho3OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=At5DQXk8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13976C4CEF7;
-	Tue,  2 Sep 2025 13:30:20 +0000 (UTC)
+	 MIME-Version; b=urhwzX8+kxuZpJ46e7nJekQOrr+gOFD8wlwsytGNW0p1+DjRGHc3y11rPLWEpyPzsTnFZHTlOiRRnJXGNeNsPnMSJvqJJn0W2bdblTsrwNgXW7wV6cplpWWNvF/7XJnzGF+7Nji+lu8b+wJYA+MIY3CFl1I/WPOw0iDivHQiwkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJP6ul3d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4137EC4CEED;
+	Tue,  2 Sep 2025 13:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819821;
-	bh=H0ENwSOyo+8y7TDRITS+o75zpFSxha5i8fhAezaIVFI=;
+	s=korg; t=1756819784;
+	bh=lw+2f1hzugIWKiSdRUqh3aCTm8vSpr9XFbb2GjRXs1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=At5DQXk8gxBX2QDUmPS+q00x/QtDy3LX/0/eXyD4L/1bqbNoh1bPnrcS5RVi/CZ2b
-	 wqpOzeV51XjbWPRwLKc03Qo2X4dfZx20tnIJl0xQdWPyYS5t8cWWybRv7eq7p3uuRR
-	 gnhb5OSSw9NtvUH9oEnVHGRa2byvOXsNTHFjYP4U=
+	b=TJP6ul3d4sFJmGvDImEGVjRG2Qp21m8rev7ib7WhCxGbXAzMJR9CiEDSGlxWBX2HE
+	 ORkDzvo6JwwN54bMuhEvCGXYe8T6feHwzFVR/M5IUydXrl6sXvinSftsqjUHNJ1AH9
+	 kkzaQz1rHY/q2DLpXSFIr2fKF1QA+0a+TZRXdNe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.16 138/142] firmware: qcom: scm: request the waitqueue irq *after* initializing SCM
-Date: Tue,  2 Sep 2025 15:20:40 +0200
-Message-ID: <20250902131953.566568302@linuxfoundation.org>
+	intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	Sasha Levin <sashal@kernel.org>,
+	Imre Deak <imre.deak@intel.com>
+Subject: [PATCH 6.16 139/142] Revert "drm/dp: Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS"
+Date: Tue,  2 Sep 2025 15:20:41 +0200
+Message-ID: <20250902131953.603872091@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
 References: <20250902131948.154194162@linuxfoundation.org>
@@ -66,87 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Imre Deak <imre.deak@intel.com>
 
-commit 7ab36b51c6bee56e1a1939063dd10d602fe49d13 upstream.
+This reverts commit 944e732be9c3a33e64e9fb0f5451a37fc252ddfc which is
+commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f upstream.
 
-There's a subtle race in the SCM driver: we assign the __scm pointer
-before requesting the waitqueue interrupt. Assigning __scm marks the SCM
-API as ready to accept calls. It's possible that a user makes a call
-right after we set __scm and the firmware raises an interrupt before the
-driver's ready to service it. Move the __scm assignment after we request
-the interrupt.
+The upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ("drm/dp:
+Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS") the
+reverted commit backported causes a regression, on one eDP panel at
+least resulting in display flickering, described in detail at the Link:
+below. The issue fixed by the upstream commit will need a different
+solution, revert the backport for now.
 
-This has the added benefit of allowing us to drop the goto label.
-
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/r/20250630-qcom-scm-race-v2-4-fa3851c98611@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: intel-gfx@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: Sasha Levin <sashal@kernel.org>
+Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14558
+Signed-off-by: Imre Deak <imre.deak@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/qcom/qcom_scm.c |   36 ++++++++++++++----------------------
- 1 file changed, 14 insertions(+), 22 deletions(-)
+ drivers/gpu/drm/display/drm_dp_helper.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/firmware/qcom/qcom_scm.c
-+++ b/drivers/firmware/qcom/qcom_scm.c
-@@ -2276,29 +2276,27 @@ static int qcom_scm_probe(struct platfor
- 		return dev_err_probe(scm->dev, PTR_ERR(scm->mempool),
- 				     "Failed to create the SCM memory pool\n");
- 
-+	irq = platform_get_irq_optional(pdev, 0);
-+	if (irq < 0) {
-+		if (irq != -ENXIO)
-+			return irq;
-+	} else {
-+		ret = devm_request_threaded_irq(scm->dev, irq, NULL, qcom_scm_irq_handler,
-+						IRQF_ONESHOT, "qcom-scm", scm);
-+		if (ret < 0)
-+			return dev_err_probe(scm->dev, ret,
-+					     "Failed to request qcom-scm irq\n");
-+	}
-+
- 	/*
- 	 * Paired with smp_load_acquire() in qcom_scm_is_available().
- 	 *
- 	 * This marks the SCM API as ready to accept user calls and can only
--	 * be called after the TrustZone memory pool is initialized.
-+	 * be called after the TrustZone memory pool is initialized and the
-+	 * waitqueue interrupt requested.
+--- a/drivers/gpu/drm/display/drm_dp_helper.c
++++ b/drivers/gpu/drm/display/drm_dp_helper.c
+@@ -725,7 +725,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
+ 	 * monitor doesn't power down exactly after the throw away read.
  	 */
- 	smp_store_release(&__scm, scm);
- 
--	irq = platform_get_irq_optional(pdev, 0);
--	if (irq < 0) {
--		if (irq != -ENXIO) {
--			ret = irq;
--			goto err;
--		}
--	} else {
--		ret = devm_request_threaded_irq(__scm->dev, irq, NULL, qcom_scm_irq_handler,
--						IRQF_ONESHOT, "qcom-scm", __scm);
--		if (ret < 0) {
--			dev_err_probe(scm->dev, ret, "Failed to request qcom-scm irq\n");
--			goto err;
--		}
--	}
--
- 	__get_convention();
- 
- 	/*
-@@ -2328,12 +2326,6 @@ static int qcom_scm_probe(struct platfor
- 	WARN(ret < 0, "failed to initialize qseecom: %d\n", ret);
- 
- 	return 0;
--
--err:
--	/* Paired with smp_load_acquire() in qcom_scm_is_available(). */
--	smp_store_release(&__scm, NULL);
--
--	return ret;
- }
- 
- static void qcom_scm_shutdown(struct platform_device *pdev)
+ 	if (!aux->is_remote) {
+-		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
++		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
 
 
 
