@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-177233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E11DB403F8
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:38:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8FCB40366
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:32:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54A9B4E6107
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AC673BF4D5
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3BF3128D9;
-	Tue,  2 Sep 2025 13:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AD6320A0D;
+	Tue,  2 Sep 2025 13:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQHSan+5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GwDtJ9VM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8848A2DAFCA;
-	Tue,  2 Sep 2025 13:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226B630BBBD;
+	Tue,  2 Sep 2025 13:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820004; cv=none; b=LS9oyr6/Il52mxaxQaHbPAlhJgbn9VUC0CRl3kTfkecRQmYNuteZp29tticN+87Yz+8GJhmOeve8Y92SkTv9ALwXDezqiPvwwhCfU+EWKyUodsHss4nYG1DEdIE0bH89UCY7GUgbx8YkRjvSNdu+TJa068VI/ih31G5qmrDtUDM=
+	t=1756819671; cv=none; b=GSc2nYT/6EqTXZj2Ilz/pl1GVLJRAPWisuXV8MqErHhK5sN0yus54QYJ+pgLdxmCq5uN6NSGfSanBCIC4Aj1R8nzqELgvkFHdnhMd96UeOZgzGjVkxZaf2ZUXaJWPIpe2sp2zx1C8oIO5xEv4FNNXRel+ME2cVVGt5McS5JPDaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820004; c=relaxed/simple;
-	bh=RFXJnHqxFWvb7l7Vp29P2OWyHevfXd8xNralUAbyL+Q=;
+	s=arc-20240116; t=1756819671; c=relaxed/simple;
+	bh=kGt/jN+giUl8wS3KvkFpQO9WqWJMbxeF0XG8w4jU0gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iGYpJcck6Mpizr69sqtrcTD1fM3daQicgswYkYkaVgE58RWiKakSCtFt6M1FprmjiJ8HEmnVRIL0noFsR4THn9NZ8dGZJr5k6X5b39LH3s9hF0wYcbcThDy+V+us5hVXtcyTu89gKVGtuScqZghtILjv3THU/hFKZWiSoZHGpq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQHSan+5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED18C4CEED;
-	Tue,  2 Sep 2025 13:33:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BrWuL7W/wkhT1Z+WmTfLjNLFJAduKF124tgUy4Z1rapktg14CuZ+WFtrF7JtR1OVDmqxjtr9cj0h5liYMxkIjHmDAh7WUofUkJ2lM1IsYA+ODMQGthcgfIBfB5bKRYFzXmjpqUFVy8ezoGtc1xSxF72IPgDS4zVaJkUmvGchnnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwDtJ9VM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4D7C4CEED;
+	Tue,  2 Sep 2025 13:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820004;
-	bh=RFXJnHqxFWvb7l7Vp29P2OWyHevfXd8xNralUAbyL+Q=;
+	s=korg; t=1756819671;
+	bh=kGt/jN+giUl8wS3KvkFpQO9WqWJMbxeF0XG8w4jU0gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQHSan+5SZnqgYFZ23eOq5yZDQGwIBUnXl5rii98BSOjix/3pmcwtAwYbVgHmIPQL
-	 Y8uRwnDGiugp6bWn8SkQiTU/Wg6gZNqLfKpJwEDkyTaRcCq4ixFTC9H6cIeZFvOqvs
-	 BXPU/JgUyce/ePioZay+oIfqrm+dvGKh8KyVCsYc=
+	b=GwDtJ9VM+zofQssju0lnCkRGT7R6OtxVxrEgn7Um9zj87/4JZym5n853oiHJtANw9
+	 YRF6I/9M+jT2p4pWLnalZQW5j7QK5fwmmaq9SpAV2iKXwsXlxWN/jQekjd5dgv+vph
+	 d5bUW11g0VKgdiu2gKYiOTJPohk3IY3aTYJowiDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 31/95] Bluetooth: hci_event: Detect if HCI_EV_NUM_COMP_PKTS is unbalanced
+	=?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>,
+	Nutty Liu <liujingqi@lanxincomputing.com>,
+	Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>
+Subject: [PATCH 6.16 105/142] RISC-V: KVM: fix stack overrun when loading vlenb
 Date: Tue,  2 Sep 2025 15:20:07 +0200
-Message-ID: <20250902131940.806850779@linuxfoundation.org>
+Message-ID: <20250902131952.303920784@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
+References: <20250902131948.154194162@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Radim Krčmář <rkrcmar@ventanamicro.com>
 
-[ Upstream commit 15bf2c6391bafb14a3020d06ec0761bce0803463 ]
+commit 799766208f09f95677a9ab111b93872d414fbad7 upstream.
 
-This attempts to detect if HCI_EV_NUM_COMP_PKTS contain an unbalanced
-(more than currently considered outstanding) number of packets otherwise
-it could cause the hcon->sent to underflow and loop around breaking the
-tracking of the outstanding packets pending acknowledgment.
+The userspace load can put up to 2048 bits into an xlen bit stack
+buffer.  We want only xlen bits, so check the size beforehand.
 
-Fixes: f42809185896 ("Bluetooth: Simplify num_comp_pkts_evt function")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2fa290372dfe ("RISC-V: KVM: add 'vlenb' Vector CSR")
+Cc: stable@vger.kernel.org
+Signed-off-by: Radim Krčmář <rkrcmar@ventanamicro.com>
+Reviewed-by: Nutty Liu <liujingqi@lanxincomputing.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250805104418.196023-4-rkrcmar@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ arch/riscv/kvm/vcpu_vector.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index b8213bfa0a674..262ff30261d67 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -4395,7 +4395,17 @@ static void hci_num_comp_pkts_evt(struct hci_dev *hdev, void *data,
- 		if (!conn)
- 			continue;
+--- a/arch/riscv/kvm/vcpu_vector.c
++++ b/arch/riscv/kvm/vcpu_vector.c
+@@ -182,6 +182,8 @@ int kvm_riscv_vcpu_set_reg_vector(struct
+ 		struct kvm_cpu_context *cntx = &vcpu->arch.guest_context;
+ 		unsigned long reg_val;
  
--		conn->sent -= count;
-+		/* Check if there is really enough packets outstanding before
-+		 * attempting to decrease the sent counter otherwise it could
-+		 * underflow..
-+		 */
-+		if (conn->sent >= count) {
-+			conn->sent -= count;
-+		} else {
-+			bt_dev_warn(hdev, "hcon %p sent %u < count %u",
-+				    conn, conn->sent, count);
-+			conn->sent = 0;
-+		}
- 
- 		switch (conn->type) {
- 		case ACL_LINK:
--- 
-2.50.1
-
++		if (reg_size != sizeof(reg_val))
++			return -EINVAL;
+ 		if (copy_from_user(&reg_val, uaddr, reg_size))
+ 			return -EFAULT;
+ 		if (reg_val != cntx->vector.vlenb)
 
 
 
