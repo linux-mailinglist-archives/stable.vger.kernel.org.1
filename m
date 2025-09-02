@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-177080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5232BB4038A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:34:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C095B40359
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:32:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 083F27B143E
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:28:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 995851884C74
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7678731CA6D;
-	Tue,  2 Sep 2025 13:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA6430E0DF;
+	Tue,  2 Sep 2025 13:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jSZ9KQm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+y2MO73"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25DE530DECC;
-	Tue,  2 Sep 2025 13:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC3B30C340;
+	Tue,  2 Sep 2025 13:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819510; cv=none; b=i1QfO2dwL9ss5siM3IMHxQZYaVIs4x/lLsTMk8rW/kzhD2JQlCcYSH7C67n4WZp+uDbLk7T5qhB0i08ZxPJiK2E9Yf64WlU3GQFRnmK3HIE9q3GxOTYW6PqUbBVdZe1Xq/bXkGaUpmV2ffoSvrZFcW7DpJWiu9+X7sjcvjLVjAg=
+	t=1756819518; cv=none; b=W5LGW26TaVj093FhLO/oDE/gwdf+CnXQSXBdKIXakgMTg4TqP24GF4yXxYAhLcBBicyibRjTLVj+pvWfrMwNqE7G3UWADrMA1u+haRLAq5ScugHYX0gKL/5SF83vWE7x6iA5akEz+cSOkUCmt4hTvnpcwjg6o/Cvy/Ip/Xc1lfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819510; c=relaxed/simple;
-	bh=TwcBuZDZ43lkT5UzkpBTQhnH0nkBFxRVPCJtS7OJVEE=;
+	s=arc-20240116; t=1756819518; c=relaxed/simple;
+	bh=XQ3fMf40KU+Q3em2Up6BwL78p44HeiySe0p4Ulewer4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JuI5By4HZ03g80QRD21rlCB1mgr6/P8q4OqMnLRtnm7YxjHPNiLpVGhpLYBT8PD8q1A70A8VNAgiElOZtSmmf/mc7UM8TblhEH3NhioruFkqfREgXpp4EV5sWJSgjzxenf8tyVAtnDc1uGRJuwHJfWJ1EjdJ4eU6k4R6jBTpUBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jSZ9KQm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4B7C4CEED;
-	Tue,  2 Sep 2025 13:25:09 +0000 (UTC)
+	 MIME-Version; b=QH8A7CkyJYCHZ2ubpWakHOYlTouCsOEND1Kzn7xfeFB18NDXakGxON9USBxrCrnxTwMnvn5R4g1QIa6Vuk1Y0cP59i0jEQwR/WAER/+h9yKgbZuJlnr4j6dQqHwdTeRkYgk5tuP5/qy7DTIkHYDwvXyLtWr+EAylm5EYsfpt3zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+y2MO73; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683AAC4CEF4;
+	Tue,  2 Sep 2025 13:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819510;
-	bh=TwcBuZDZ43lkT5UzkpBTQhnH0nkBFxRVPCJtS7OJVEE=;
+	s=korg; t=1756819517;
+	bh=XQ3fMf40KU+Q3em2Up6BwL78p44HeiySe0p4Ulewer4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0jSZ9KQm54NA6B03IldA5O09zNEdPEBsUB2Z+k7EEVvWdpBQYPEZboc6yyd2qPw9E
-	 eRJKm1GLzdM4/yYC6zI32BlggOqhaH8YmNbWP5tTkCKOvwAd0KmUK1NyPuq6nDslVV
-	 hG8zmYl13u8EWqsz4xZcGlGCDMOVOz7T6xYfpAJk=
+	b=Y+y2MO73dxLEvLIoqLtf+NvzWwFtfZZ1sVaPuP0TMHPI0XL8S771AkITSUHzdCVVQ
+	 JsJGVB3MR4PoSZX8bPscENODgOWqOQ+alwwukTCN9p4pD2r99+6KkDPU8If0F84eOb
+	 Ytx4x68TaRhz5VgWpPPtE/9gvlJWIoisJfI3U+8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Stanner <phasta@kernel.org>,
 	Timur Tabi <ttabi@nvidia.com>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 055/142] drm/nouveau: remove unused increment in gm200_flcn_pio_imem_wr
-Date: Tue,  2 Sep 2025 15:19:17 +0200
-Message-ID: <20250902131950.360556731@linuxfoundation.org>
+Subject: [PATCH 6.16 056/142] drm/nouveau: remove unused memory target test
+Date: Tue,  2 Sep 2025 15:19:18 +0200
+Message-ID: <20250902131950.398491838@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
 References: <20250902131948.154194162@linuxfoundation.org>
@@ -69,35 +68,53 @@ Content-Transfer-Encoding: 8bit
 
 From: Timur Tabi <ttabi@nvidia.com>
 
-[ Upstream commit f529b8915543fb9ceb732cec5571f7fe12bc9530 ]
+[ Upstream commit 64c722b5e7f6b909b0e448e580f64628a0d76208 ]
 
-The 'tag' parameter is passed by value and is not actually used after
-being incremented, so remove the increment.  It's the function that calls
-gm200_flcn_pio_imem_wr that is supposed to (and does) increment 'tag'.
+The memory target check is a hold-over from a refactor.  It's harmless
+but distracting, so just remove it.
 
-Fixes: 0e44c2170876 ("drm/nouveau/flcn: new code to load+boot simple HS FWs (VPR scrubber)")
-Reviewed-by: Philipp Stanner <phasta@kernel.org>
+Fixes: 2541626cfb79 ("drm/nouveau/acr: use common falcon HS FW code for ACR FWs")
 Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-Link: https://lore.kernel.org/r/20250813001004.2986092-2-ttabi@nvidia.com
+Link: https://lore.kernel.org/r/20250813001004.2986092-3-ttabi@nvidia.com
 Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/falcon/gm200.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nvkm/falcon/gm200.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/gpu/drm/nouveau/nvkm/falcon/gm200.c b/drivers/gpu/drm/nouveau/nvkm/falcon/gm200.c
-index b7da3ab44c277..6a004c6e67425 100644
+index 6a004c6e67425..7c43397c19e61 100644
 --- a/drivers/gpu/drm/nouveau/nvkm/falcon/gm200.c
 +++ b/drivers/gpu/drm/nouveau/nvkm/falcon/gm200.c
-@@ -103,7 +103,7 @@ gm200_flcn_pio_imem_wr_init(struct nvkm_falcon *falcon, u8 port, bool sec, u32 i
- static void
- gm200_flcn_pio_imem_wr(struct nvkm_falcon *falcon, u8 port, const u8 *img, int len, u16 tag)
+@@ -249,9 +249,11 @@ int
+ gm200_flcn_fw_load(struct nvkm_falcon_fw *fw)
  {
--	nvkm_falcon_wr32(falcon, 0x188 + (port * 0x10), tag++);
-+	nvkm_falcon_wr32(falcon, 0x188 + (port * 0x10), tag);
- 	while (len >= 4) {
- 		nvkm_falcon_wr32(falcon, 0x184 + (port * 0x10), *(u32 *)img);
- 		img += 4;
+ 	struct nvkm_falcon *falcon = fw->falcon;
+-	int target, ret;
++	int ret;
+ 
+ 	if (fw->inst) {
++		int target;
++
+ 		nvkm_falcon_mask(falcon, 0x048, 0x00000001, 0x00000001);
+ 
+ 		switch (nvkm_memory_target(fw->inst)) {
+@@ -285,15 +287,6 @@ gm200_flcn_fw_load(struct nvkm_falcon_fw *fw)
+ 	}
+ 
+ 	if (fw->boot) {
+-		switch (nvkm_memory_target(&fw->fw.mem.memory)) {
+-		case NVKM_MEM_TARGET_VRAM: target = 4; break;
+-		case NVKM_MEM_TARGET_HOST: target = 5; break;
+-		case NVKM_MEM_TARGET_NCOH: target = 6; break;
+-		default:
+-			WARN_ON(1);
+-			return -EINVAL;
+-		}
+-
+ 		ret = nvkm_falcon_pio_wr(falcon, fw->boot, 0, 0,
+ 					 IMEM, falcon->code.limit - fw->boot_size, fw->boot_size,
+ 					 fw->boot_addr >> 8, false);
 -- 
 2.50.1
 
