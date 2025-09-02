@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-177098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75096B40375
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:33:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A470B403D0
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:36:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 557B518941E2
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:31:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F35F7BB504
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222DD31DDB4;
-	Tue,  2 Sep 2025 13:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90CA030FC07;
+	Tue,  2 Sep 2025 13:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIe7mMEr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="011GV4Ve"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12793054F8;
-	Tue,  2 Sep 2025 13:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA1D322A22;
+	Tue,  2 Sep 2025 13:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819570; cv=none; b=EZcLyaTW5l4yQ0WEqu8A0NJtZqLNicTB0WK5sgxW32M2QbuU/qiJBhRYeZwRCefZodlCB4AOG7s8zrNRbDz3T2SM96g5yCyX6MClFSWGEb3UWEsSvKzqUESBDnyw+fLAM7++d4f0djNAdbTJwYH1jNlAL+JUuEHAdoeDO0OfGRI=
+	t=1756819828; cv=none; b=twV8udDqoSgCWX2xo7eK+DV93cqZGfNAqWrGEoSVgYPRavX6jn192FIWYQGwGFYMnq9kq1pq8ZAU+UjJw5SET3ZPMMAWi2DYXAXqhIxAeoGgagUCgPwpaPGbVktbSLbHR/kNLn+7piqUEOrACZ9G/5z2g6m4gTuApJECWDb/gvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819570; c=relaxed/simple;
-	bh=WbZxVUEm3TXUROfncTv7tIq3lq37skt34vAnwTv4Lp0=;
+	s=arc-20240116; t=1756819828; c=relaxed/simple;
+	bh=gWNrWWQCz+9W2L4jSJjLaOLLKQfbwgM7eIwNfAKUNNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dEXTL5ZaKRlEn6U/lXEA1ob1E2aAAPhgmJAdmd2q9HwNAbMYKNyoJVjQDm7a31ibCIu6jTZOU1d4rjw1gJuk75EjwIrGcqd87KiuU8NzL/pN4bTxVcXwXflGTVXsuGhicjXDuIS17FCtXIxB5E7nl9d2bShX3MMdQ+TE5QgpGPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIe7mMEr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 592B4C4CEED;
-	Tue,  2 Sep 2025 13:26:10 +0000 (UTC)
+	 MIME-Version; b=TTIMlKSF16vldr/d862XElyPcwgLyoPksYYwJA5l5HEvLvA0K4B2L5+1eMIQCkG7MlN3TVgXs5FCKY1G7n+oMjvYkhpfCeqJ4QGJnNk0Zh70tJ3LQoZNMEMwLrQuzWEqFg0HRFBMn0jyB9cDR0JF08kmgWkPmQHAl4JTg6ZRvf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=011GV4Ve; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48937C4CEF4;
+	Tue,  2 Sep 2025 13:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819570;
-	bh=WbZxVUEm3TXUROfncTv7tIq3lq37skt34vAnwTv4Lp0=;
+	s=korg; t=1756819827;
+	bh=gWNrWWQCz+9W2L4jSJjLaOLLKQfbwgM7eIwNfAKUNNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FIe7mMErw2EfVqN23COrgTe5ZAvPowkFuLn/Anc8vU0b7ZTNoJBa3tuvoZlNzODsy
-	 +9gL8l8ljYH4LO0epu99I0hEwtDH2UmhOoBRiwjz0VtrQkPpD+tFIv+4rXjIKdZwA9
-	 gCg8YEWTo8XOJAoVWrgCcbWmrGyoOipU+5cTG/yU=
+	b=011GV4VeougIzS8FpVJq/woXQ2+0yhbfkC+ZjKt7j3lSBOpk70k2bxmSdjqo2IlPv
+	 uMUX9eE000AOKquNdPrQsgksH7AWULuBfdM58jQyqlFepSZaMVnzHE+NVtMtuB0NLD
+	 wyHTdQN1bqwmkayTj6kQ3rOZbUR96HINK/C3qYtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tao Chen <chen.dylane@linux.dev>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 074/142] net: macb: Fix offset error in gem_update_stats
-Date: Tue,  2 Sep 2025 15:19:36 +0200
-Message-ID: <20250902131951.103563569@linuxfoundation.org>
+Subject: [PATCH 6.12 01/95] tools/latency-collector: Check pkg-config install
+Date: Tue,  2 Sep 2025 15:19:37 +0200
+Message-ID: <20250902131939.665438991@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
-References: <20250902131948.154194162@linuxfoundation.org>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+References: <20250902131939.601201881@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Tao Chen <chen.dylane@linux.dev>
 
-[ Upstream commit 16c8a3a67ec799fc731919e3e51be9af6cdf541d ]
+[ Upstream commit 26ebba25e210116053609f4c7ee701bffa7ebd7d ]
 
-hw_stats now has only one variable for tx_octets/rx_octets, so we should
-only increment p once, not twice. This would cause the statistics to be
-reported under the wrong categories in `ethtool -S --all-groups` (which
-uses hw_stats) but not `ethtool -S` (which uses ethtool_stats).
+The tool pkg-config used to check libtraceevent and libtracefs, if not
+installed, it will report the libs not found, even though they have
+already been installed.
 
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Fixes: f6af690a295a ("net: cadence: macb: Report standard stats")
-Link: https://patch.msgid.link/20250825172134.681861-1-sean.anderson@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Before:
+libtraceevent is missing. Please install libtraceevent-dev/libtraceevent-devel
+libtracefs is missing. Please install libtracefs-dev/libtracefs-devel
+
+After:
+Makefile.config:10: *** Error: pkg-config needed by libtraceevent/libtracefs is missing
+on this system, please install it.
+
+Link: https://lore.kernel.org/20250808040527.2036023-1-chen.dylane@linux.dev
+Fixes: 9d56c88e5225 ("tools/tracing: Use tools/build makefiles on latency-collector")
+Signed-off-by: Tao Chen <chen.dylane@linux.dev>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/tracing/latency/Makefile.config | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index c1e904e4a01f4..3cb50e5385d49 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -3090,7 +3090,7 @@ static void gem_update_stats(struct macb *bp)
- 			/* Add GEM_OCTTXH, GEM_OCTRXH */
- 			val = bp->macb_reg_readl(bp, offset + 4);
- 			bp->ethtool_stats[i] += ((u64)val) << 32;
--			*(p++) += ((u64)val) << 32;
-+			*p += ((u64)val) << 32;
- 		}
- 	}
+diff --git a/tools/tracing/latency/Makefile.config b/tools/tracing/latency/Makefile.config
+index 0fe6b50f029bf..6efa13e3ca93f 100644
+--- a/tools/tracing/latency/Makefile.config
++++ b/tools/tracing/latency/Makefile.config
+@@ -1,7 +1,15 @@
+ # SPDX-License-Identifier: GPL-2.0-only
  
++include $(srctree)/tools/scripts/utilities.mak
++
+ STOP_ERROR :=
+ 
++ifndef ($(NO_LIBTRACEEVENT),1)
++  ifeq ($(call get-executable,$(PKG_CONFIG)),)
++    $(error Error: $(PKG_CONFIG) needed by libtraceevent/libtracefs is missing on this system, please install it)
++  endif
++endif
++
+ define lib_setup
+   $(eval LIB_INCLUDES += $(shell sh -c "$(PKG_CONFIG) --cflags lib$(1)"))
+   $(eval LDFLAGS += $(shell sh -c "$(PKG_CONFIG) --libs-only-L lib$(1)"))
 -- 
 2.50.1
 
