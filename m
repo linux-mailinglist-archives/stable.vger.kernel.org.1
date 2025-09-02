@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-177465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33768B40520
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:50:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D770B40562
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:53:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC4E87B34E0
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:48:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB40F546C34
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F1C31B102;
-	Tue,  2 Sep 2025 13:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CF83093CB;
+	Tue,  2 Sep 2025 13:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPV8gbXr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnPnHBvA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDDB2DFA32;
-	Tue,  2 Sep 2025 13:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340662DD5EB;
+	Tue,  2 Sep 2025 13:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820732; cv=none; b=m+/Ch860RoKkSDVeKXiLsI0nxhXeE1qps+8sS3yIiQq2fGxbPi42F7eC2WLgc5Je8WU4m81dhOe4NIJirIibTKqcMHhd8FkmwDY8UrPJ1VRaxBLJFuH/4t0Mr/ztICuhbHaRElUVQxvkXq7VeF+SqQ4ISnA721qHeSwfSIIoNok=
+	t=1756820600; cv=none; b=h3RrP2nVZiZxjYPnJ9KL4NWrBklRTBfbT2PFg2CzzhmKdfI+B9rT+22UdXRsaiURm8STf18xRA6K7CBrG66hasZ12BzLjhcFOSOWYdU3tqr4HSnl3K5dav/QHqUgo9TN8dZdguG1GgCg6WiXdtS7J874bt4xTPjABbIeSJ12fW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820732; c=relaxed/simple;
-	bh=JpNjFvdagTZ2IcGP+Sal7axF4xbFcKk2hcht9GA/J8A=;
+	s=arc-20240116; t=1756820600; c=relaxed/simple;
+	bh=kKzmVyuqRiooXU8s+twRwimCrC27jgVMgE3Aw8zGLm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kS4OfOYbzNsi3O+zBR3PPbsnmq2OCpA3I6VXUqHioil3BDgop7+gcJg7FMcXRnwLU6Jg28mPJgI8SQMY1DVc0B26Lli02S5Z+M4hMimJtmhbw1Gp4GRNjIYKwS/qv860BLfLRH28H+N1q2T9P3uMNQckIIEASKoIcTEMDCpVkWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPV8gbXr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20CEC4CEED;
-	Tue,  2 Sep 2025 13:45:31 +0000 (UTC)
+	 MIME-Version; b=oNdW6qXv48GzfKsUyuzIuLqu9tH1d40Cr/WkK9cBlwtZPc+PeG8TYMILEz2TrhRNn15U4xLXjhX7IDRJvRBn1br/EXhTM0il4rzuWZLnvZ0GH+MV0O4XjR7bJ3M8Au82Umq63c0+9D6X2iTqSyF0g01JPzUEzjpNGBvlYYO7zH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnPnHBvA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED29FC4CEED;
+	Tue,  2 Sep 2025 13:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820732;
-	bh=JpNjFvdagTZ2IcGP+Sal7axF4xbFcKk2hcht9GA/J8A=;
+	s=korg; t=1756820599;
+	bh=kKzmVyuqRiooXU8s+twRwimCrC27jgVMgE3Aw8zGLm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UPV8gbXrjMLMQwk5rGlYg+ghxQ24samn4xSm3CErzOA0URsQgAaT5Dez8nklYDppr
-	 belzpKOymsTxhVsfAVOM9Xnqy2jWb27a6tTNupuJJMBULfDyd4LTTZE4g6PTOfWasU
-	 69+NIPeqa0tTcu+uTibutKCWvOWRO7Rv4yvSp+gw=
+	b=SnPnHBvAzjruk/96KThJ0AkQgu+hmIlgpNr8xxHtZZa7PW/u+yDcOBfz+E7+SEko0
+	 bviGemjVlgKkAhlDjVHALfEI0GT8spoZUyxoI3YoNhj9fD6u4u3XACX2HAb7+XU3wV
+	 Bni7rp7H3bUJ5LKcb+TgtnU6A3IA1OSATLnnFLTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 5.10 20/34] HID: asus: fix UAF via HID_CLAIMED_INPUT validation
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 28/33] net: usb: qmi_wwan: add Telit Cinterion LE910C4-WWX new compositions
 Date: Tue,  2 Sep 2025 15:21:46 +0200
-Message-ID: <20250902131927.425851857@linuxfoundation.org>
+Message-ID: <20250902131928.163805865@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+References: <20250902131927.045875971@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,140 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit d3af6ca9a8c34bbd8cff32b469b84c9021c9e7e4 upstream.
+commit e81a7f65288c7e2cfb7e7890f648e099fd885ab3 upstream.
 
-After hid_hw_start() is called hidinput_connect() will eventually be
-called to set up the device with the input layer since the
-HID_CONNECT_DEFAULT connect mask is used. During hidinput_connect()
-all input and output reports are processed and corresponding hid_inputs
-are allocated and configured via hidinput_configure_usages(). This
-process involves slot tagging report fields and configuring usages
-by setting relevant bits in the capability bitmaps. However it is possible
-that the capability bitmaps are not set at all leading to the subsequent
-hidinput_has_been_populated() check to fail leading to the freeing of the
-hid_input and the underlying input device.
+Add the following Telit Cinterion LE910C4-WWX new compositions:
 
-This becomes problematic because a malicious HID device like a
-ASUS ROG N-Key keyboard can trigger the above scenario via a
-specially crafted descriptor which then leads to a user-after-free
-when the name of the freed input device is written to later on after
-hid_hw_start(). Below, report 93 intentionally utilises the
-HID_UP_UNDEFINED Usage Page which is skipped during usage
-configuration, leading to the frees.
+0x1034: tty (AT) + tty (AT) + rmnet
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1034 Rev=00.00
+S:  Manufacturer=Telit
+S:  Product=LE910C4-WWX
+S:  SerialNumber=93f617e7
+C:  #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-0x05, 0x0D,        // Usage Page (Digitizer)
-0x09, 0x05,        // Usage (Touch Pad)
-0xA1, 0x01,        // Collection (Application)
-0x85, 0x0D,        //   Report ID (13)
-0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
-0x09, 0xC5,        //   Usage (0xC5)
-0x15, 0x00,        //   Logical Minimum (0)
-0x26, 0xFF, 0x00,  //   Logical Maximum (255)
-0x75, 0x08,        //   Report Size (8)
-0x95, 0x04,        //   Report Count (4)
-0xB1, 0x02,        //   Feature (Data,Var,Abs)
-0x85, 0x5D,        //   Report ID (93)
-0x06, 0x00, 0x00,  //   Usage Page (Undefined)
-0x09, 0x01,        //   Usage (0x01)
-0x15, 0x00,        //   Logical Minimum (0)
-0x26, 0xFF, 0x00,  //   Logical Maximum (255)
-0x75, 0x08,        //   Report Size (8)
-0x95, 0x1B,        //   Report Count (27)
-0x81, 0x02,        //   Input (Data,Var,Abs)
-0xC0,              // End Collection
+0x1037: tty (diag) + tty (Telit custom) + tty (AT) + tty (AT) + rmnet
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 15 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1037 Rev=00.00
+S:  Manufacturer=Telit
+S:  Product=LE910C4-WWX
+S:  SerialNumber=93f617e7
+C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Below is the KASAN splat after triggering the UAF:
+0x1038: tty (Telit custom) + tty (AT) + tty (AT) + rmnet
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  9 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1038 Rev=00.00
+S:  Manufacturer=Telit
+S:  Product=LE910C4-WWX
+S:  SerialNumber=93f617e7
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-[   21.672709] ==================================================================
-[   21.673700] BUG: KASAN: slab-use-after-free in asus_probe+0xeeb/0xf80
-[   21.673700] Write of size 8 at addr ffff88810a0ac000 by task kworker/1:2/54
-[   21.673700]
-[   21.673700] CPU: 1 UID: 0 PID: 54 Comm: kworker/1:2 Not tainted 6.16.0-rc4-g9773391cf4dd-dirty #36 PREEMPT(voluntary)
-[   21.673700] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-[   21.673700] Call Trace:
-[   21.673700]  <TASK>
-[   21.673700]  dump_stack_lvl+0x5f/0x80
-[   21.673700]  print_report+0xd1/0x660
-[   21.673700]  kasan_report+0xe5/0x120
-[   21.673700]  __asan_report_store8_noabort+0x1b/0x30
-[   21.673700]  asus_probe+0xeeb/0xf80
-[   21.673700]  hid_device_probe+0x2ee/0x700
-[   21.673700]  really_probe+0x1c6/0x6b0
-[   21.673700]  __driver_probe_device+0x24f/0x310
-[   21.673700]  driver_probe_device+0x4e/0x220
-[...]
-[   21.673700]
-[   21.673700] Allocated by task 54:
-[   21.673700]  kasan_save_stack+0x3d/0x60
-[   21.673700]  kasan_save_track+0x18/0x40
-[   21.673700]  kasan_save_alloc_info+0x3b/0x50
-[   21.673700]  __kasan_kmalloc+0x9c/0xa0
-[   21.673700]  __kmalloc_cache_noprof+0x139/0x340
-[   21.673700]  input_allocate_device+0x44/0x370
-[   21.673700]  hidinput_connect+0xcb6/0x2630
-[   21.673700]  hid_connect+0xf74/0x1d60
-[   21.673700]  hid_hw_start+0x8c/0x110
-[   21.673700]  asus_probe+0x5a3/0xf80
-[   21.673700]  hid_device_probe+0x2ee/0x700
-[   21.673700]  really_probe+0x1c6/0x6b0
-[   21.673700]  __driver_probe_device+0x24f/0x310
-[   21.673700]  driver_probe_device+0x4e/0x220
-[...]
-[   21.673700]
-[   21.673700] Freed by task 54:
-[   21.673700]  kasan_save_stack+0x3d/0x60
-[   21.673700]  kasan_save_track+0x18/0x40
-[   21.673700]  kasan_save_free_info+0x3f/0x60
-[   21.673700]  __kasan_slab_free+0x3c/0x50
-[   21.673700]  kfree+0xcf/0x350
-[   21.673700]  input_dev_release+0xab/0xd0
-[   21.673700]  device_release+0x9f/0x220
-[   21.673700]  kobject_put+0x12b/0x220
-[   21.673700]  put_device+0x12/0x20
-[   21.673700]  input_free_device+0x4c/0xb0
-[   21.673700]  hidinput_connect+0x1862/0x2630
-[   21.673700]  hid_connect+0xf74/0x1d60
-[   21.673700]  hid_hw_start+0x8c/0x110
-[   21.673700]  asus_probe+0x5a3/0xf80
-[   21.673700]  hid_device_probe+0x2ee/0x700
-[   21.673700]  really_probe+0x1c6/0x6b0
-[   21.673700]  __driver_probe_device+0x24f/0x310
-[   21.673700]  driver_probe_device+0x4e/0x220
-[...]
-
-Fixes: 9ce12d8be12c ("HID: asus: Add i2c touchpad support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Link: https://patch.msgid.link/20250810181041.44874-1-qasdev00@gmail.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Link: https://patch.msgid.link/20250822091324.39558-1-Fabio.Porcedda@telit.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-asus.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/usb/qmi_wwan.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -1027,7 +1027,13 @@ static int asus_probe(struct hid_device
- 		return ret;
- 	}
- 
--	if (!drvdata->input) {
-+	/*
-+	 * Check that input registration succeeded. Checking that
-+	 * HID_CLAIMED_INPUT is set prevents a UAF when all input devices
-+	 * were freed during registration due to no usages being mapped,
-+	 * leaving drvdata->input pointing to freed memory.
-+	 */
-+	if (!drvdata->input || !(hdev->claimed & HID_CLAIMED_INPUT)) {
- 		hid_err(hdev, "Asus input not registered\n");
- 		ret = -ENOMEM;
- 		goto err_stop_hw;
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1358,6 +1358,9 @@ static const struct usb_device_id produc
+ 	{QMI_FIXED_INTF(0x2357, 0x0201, 4)},	/* TP-LINK HSUPA Modem MA180 */
+ 	{QMI_FIXED_INTF(0x2357, 0x9000, 4)},	/* TP-LINK MA260 */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1031, 3)}, /* Telit LE910C1-EUX */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1034, 2)}, /* Telit LE910C4-WWX */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1037, 4)}, /* Telit LE910C4-WWX */
++	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1038, 3)}, /* Telit LE910C4-WWX */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x103a, 0)}, /* Telit LE910C4-WWX */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1040, 2)},	/* Telit LE922A */
+ 	{QMI_QUIRK_SET_DTR(0x1bc7, 0x1050, 2)},	/* Telit FN980 */
 
 
 
