@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-177251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10AC7B40434
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:40:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39685B4048D
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8773E17003C
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:38:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94E8116315E
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA4E30E830;
-	Tue,  2 Sep 2025 13:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16065335BC9;
+	Tue,  2 Sep 2025 13:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZy74/Ju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnDh81Q8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FC930DED0;
-	Tue,  2 Sep 2025 13:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B732833471B;
+	Tue,  2 Sep 2025 13:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820059; cv=none; b=qs4fiSO2Iq2JShwdtfNgIgZQ3xGxLNIBAdvx0W3NSiOs0wet2Bqj6fNRl6ADSNuJX6Ji9b/SFhdmuTnJgoCqi9sCl9zCZ6Oi4O0zy9/3xYg4zQCfZcL00GCgW/gkjAjUqMpORCB1p/GXMdJhrLt0krP/ZZ7iT6mF4aVftDy0WO8=
+	t=1756820197; cv=none; b=HhqKiE/vr/uCwHL9MJjCgoVsc1ZzC9EkBKSWblqKqEE/NNXJZElGaTA3joVxbU9d44R6aTB5WP+MDbqJSpqgzcRJD8o1fKSus0BwuIX5oEextG1Wv2PCc8UglqxFCHeqUQ9uuilucdZPhtvDnMytOnTESK/uNr28FIUA8lPYzsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820059; c=relaxed/simple;
-	bh=hmY+kdFreYMx7zNrmQIT0sAQgGquR6KTTTDWBSjHJhY=;
+	s=arc-20240116; t=1756820197; c=relaxed/simple;
+	bh=v1JUP+4mFnRJ0eh6lh3KVOaIU9Pk3FYi2CXfcA6419s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aey1v+pBf6Ejuhesfu5m4NyqlhOVNXTUoO++sBG60ADL0UFRodVvdOSinwK+4YfWv24mQgk9xCGB/qmYxdi3Ervz+VywaIIiJ8GOBQ1I6MXBdOvo5KdsYnTZyQCAEa/Hl6tzibDsUBNLNAC3HC715EAsMSGUdSzK6iOyP0gCceI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZy74/Ju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC8DC4CEED;
-	Tue,  2 Sep 2025 13:34:18 +0000 (UTC)
+	 MIME-Version; b=WzexsE0szY6orArJVZyT7Oeydut86TrRZp5ljviBLp00/tmz1BnqpkB0xYk9Y19NhiZO2vYAthzjquci6TbBIe2vFgnXjxtJIRAIR2W3zfD4Z0Sg193OmdjB/LVc27oCQ1/b9mJ+DJrJy4OJXgIF1dcCxJz5gIZVfNUySiRaCEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnDh81Q8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FE5C4CEED;
+	Tue,  2 Sep 2025 13:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820059;
-	bh=hmY+kdFreYMx7zNrmQIT0sAQgGquR6KTTTDWBSjHJhY=;
+	s=korg; t=1756820197;
+	bh=v1JUP+4mFnRJ0eh6lh3KVOaIU9Pk3FYi2CXfcA6419s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lZy74/JuWs9wyIKd92d3eX/eXe/7Tb6HLtTGddICjEkTIsq9AwNJXXu6MT2KdJXZ2
-	 ploEajnEvFRpjz0OTbBFRj0+TsBmHblCCVm3H1/F5xNO+rHSwUVfLUaXhelscNZpQf
-	 TDMst6KgR08UUZZf+Fd2qBlet6asXUvqo+bKzmT8=
+	b=TnDh81Q81gFK8QkKcYMubrldmp6HqndwygvcGetkQdRHk/tRRkPZpfiN4BFINH73P
+	 ce7ZmOZMQGoMmq7cL1yaRBryc8vr3L4Wk+Bpnb0WoenIQlwU9zFgzDe/jE6X+ibZ5m
+	 ojCkamUMNEQU2t0oD/nYdpUNQymsPFOx2eETLGS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	James Chapman <jchapman@katalix.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 63/95] l2tp: do not use sock_hold() in pppol2tp_session_get_sock()
-Date: Tue,  2 Sep 2025 15:20:39 +0200
-Message-ID: <20250902131942.021428753@linuxfoundation.org>
+Subject: [PATCH 6.6 28/75] drm/nouveau: remove unused memory target test
+Date: Tue,  2 Sep 2025 15:20:40 +0200
+Message-ID: <20250902131936.221380445@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-References: <20250902131939.601201881@linuxfoundation.org>
+In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
+References: <20250902131935.107897242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,114 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Timur Tabi <ttabi@nvidia.com>
 
-[ Upstream commit 9b8c88f875c04d4cb9111bd5dd9291c7e9691bf5 ]
+[ Upstream commit 64c722b5e7f6b909b0e448e580f64628a0d76208 ]
 
-pppol2tp_session_get_sock() is using RCU, it must be ready
-for sk_refcnt being zero.
+The memory target check is a hold-over from a refactor.  It's harmless
+but distracting, so just remove it.
 
-Commit ee40fb2e1eb5 ("l2tp: protect sock pointer of
-struct pppol2tp_session with RCU") was correct because it
-had a call_rcu(..., pppol2tp_put_sk) which was later removed in blamed commit.
-
-pppol2tp_recv() can use pppol2tp_session_get_sock() as well.
-
-Fixes: c5cbaef992d6 ("l2tp: refactor ppp socket/session relationship")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: James Chapman <jchapman@katalix.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Link: https://patch.msgid.link/20250826134435.1683435-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2541626cfb79 ("drm/nouveau/acr: use common falcon HS FW code for ACR FWs")
+Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+Link: https://lore.kernel.org/r/20250813001004.2986092-3-ttabi@nvidia.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_ppp.c | 25 ++++++++-----------------
- 1 file changed, 8 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/nouveau/nvkm/falcon/gm200.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
-index 53baf2dd5d5da..16c514f628eac 100644
---- a/net/l2tp/l2tp_ppp.c
-+++ b/net/l2tp/l2tp_ppp.c
-@@ -129,22 +129,12 @@ static const struct ppp_channel_ops pppol2tp_chan_ops = {
- 
- static const struct proto_ops pppol2tp_ops;
- 
--/* Retrieves the pppol2tp socket associated to a session.
-- * A reference is held on the returned socket, so this function must be paired
-- * with sock_put().
-- */
-+/* Retrieves the pppol2tp socket associated to a session. */
- static struct sock *pppol2tp_session_get_sock(struct l2tp_session *session)
+diff --git a/drivers/gpu/drm/nouveau/nvkm/falcon/gm200.c b/drivers/gpu/drm/nouveau/nvkm/falcon/gm200.c
+index 6a004c6e67425..7c43397c19e61 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/falcon/gm200.c
++++ b/drivers/gpu/drm/nouveau/nvkm/falcon/gm200.c
+@@ -249,9 +249,11 @@ int
+ gm200_flcn_fw_load(struct nvkm_falcon_fw *fw)
  {
- 	struct pppol2tp_session *ps = l2tp_session_priv(session);
--	struct sock *sk;
+ 	struct nvkm_falcon *falcon = fw->falcon;
+-	int target, ret;
++	int ret;
+ 
+ 	if (fw->inst) {
++		int target;
++
+ 		nvkm_falcon_mask(falcon, 0x048, 0x00000001, 0x00000001);
+ 
+ 		switch (nvkm_memory_target(fw->inst)) {
+@@ -285,15 +287,6 @@ gm200_flcn_fw_load(struct nvkm_falcon_fw *fw)
+ 	}
+ 
+ 	if (fw->boot) {
+-		switch (nvkm_memory_target(&fw->fw.mem.memory)) {
+-		case NVKM_MEM_TARGET_VRAM: target = 4; break;
+-		case NVKM_MEM_TARGET_HOST: target = 5; break;
+-		case NVKM_MEM_TARGET_NCOH: target = 6; break;
+-		default:
+-			WARN_ON(1);
+-			return -EINVAL;
+-		}
 -
--	rcu_read_lock();
--	sk = rcu_dereference(ps->sk);
--	if (sk)
--		sock_hold(sk);
--	rcu_read_unlock();
- 
--	return sk;
-+	return rcu_dereference(ps->sk);
- }
- 
- /* Helpers to obtain tunnel/session contexts from sockets.
-@@ -206,14 +196,13 @@ static int pppol2tp_recvmsg(struct socket *sock, struct msghdr *msg,
- 
- static void pppol2tp_recv(struct l2tp_session *session, struct sk_buff *skb, int data_len)
- {
--	struct pppol2tp_session *ps = l2tp_session_priv(session);
--	struct sock *sk = NULL;
-+	struct sock *sk;
- 
- 	/* If the socket is bound, send it in to PPP's input queue. Otherwise
- 	 * queue it on the session socket.
- 	 */
- 	rcu_read_lock();
--	sk = rcu_dereference(ps->sk);
-+	sk = pppol2tp_session_get_sock(session);
- 	if (!sk)
- 		goto no_sock;
- 
-@@ -510,13 +499,14 @@ static void pppol2tp_show(struct seq_file *m, void *arg)
- 	struct l2tp_session *session = arg;
- 	struct sock *sk;
- 
-+	rcu_read_lock();
- 	sk = pppol2tp_session_get_sock(session);
- 	if (sk) {
- 		struct pppox_sock *po = pppox_sk(sk);
- 
- 		seq_printf(m, "   interface %s\n", ppp_dev_name(&po->chan));
--		sock_put(sk);
- 	}
-+	rcu_read_unlock();
- }
- 
- static void pppol2tp_session_init(struct l2tp_session *session)
-@@ -1529,6 +1519,7 @@ static void pppol2tp_seq_session_show(struct seq_file *m, void *v)
- 		port = ntohs(inet->inet_sport);
- 	}
- 
-+	rcu_read_lock();
- 	sk = pppol2tp_session_get_sock(session);
- 	if (sk) {
- 		state = sk->sk_state;
-@@ -1564,8 +1555,8 @@ static void pppol2tp_seq_session_show(struct seq_file *m, void *v)
- 		struct pppox_sock *po = pppox_sk(sk);
- 
- 		seq_printf(m, "   interface %s\n", ppp_dev_name(&po->chan));
--		sock_put(sk);
- 	}
-+	rcu_read_unlock();
- }
- 
- static int pppol2tp_seq_show(struct seq_file *m, void *v)
+ 		ret = nvkm_falcon_pio_wr(falcon, fw->boot, 0, 0,
+ 					 IMEM, falcon->code.limit - fw->boot_size, fw->boot_size,
+ 					 fw->boot_addr >> 8, false);
 -- 
 2.50.1
 
