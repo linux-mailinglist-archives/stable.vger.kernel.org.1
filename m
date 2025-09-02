@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-177474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8E1B405AB
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:56:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81DBBB4058A
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:54:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBED056538A
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:51:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E5061892D40
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E992324B34;
-	Tue,  2 Sep 2025 13:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4768B31A563;
+	Tue,  2 Sep 2025 13:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xa1Lg/xR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swf70X3d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF798324B1C;
-	Tue,  2 Sep 2025 13:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028412DFA39;
+	Tue,  2 Sep 2025 13:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820762; cv=none; b=fQSXbh8lwvMBZR0OEc+q24qLyBvdEkxASi8iOVdh0koWebPHjVzDrEnV69fZm0CN5JeCMcPqK4AN64eYYIhCDIEHsK6ZVCVrX6jnLFLIjS8Apa+PMknZLObYt6BddTrlVVATtcEF2kaBw4dH3Bptb0VmGJ/8bQad38U/C1P3v5Y=
+	t=1756820713; cv=none; b=Ra45TPLtIZtfE36tjPSehkfTOWB9huRE580sBJc1YJjq1pW/P2LHnhD+fQIrXlki6tvzz0PniZQ8v37fMxP2DkSM+n3sdMGXhM+fa/9mBRiUsiWiv0w3H9dRQkbsB4jWaLAgYp2id4mBfGwAanKbe6SH+ach7s43/mmRtbhcYKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820762; c=relaxed/simple;
-	bh=AcXSJ4Nr4msoI+VkQjEms7xSt1uwEO5+gn8kVZKc7jM=;
+	s=arc-20240116; t=1756820713; c=relaxed/simple;
+	bh=KXVzDdYviA2Y8tVxc9RQkNIL8+L9yidOnhmHTdyqj+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mxyMrEQ5JSzgdEn7mwSLwSkY7OwkbFIcWHxt8wTuEnXlMWtCCdK8rsWIATSyPha0kNCmptJOjwUw+BH/VhXCdiGiuaz+WRlH7xnP2DV0buGHn/B/zG9Dzej/643MhkMptq2h6+VCtB6hz+wU7YBE4Y/D7KpE0Ge+S7PY1JO/Pmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xa1Lg/xR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F257C4CEED;
-	Tue,  2 Sep 2025 13:46:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iTIoSjVaPeu5C10COYC4sU6NFcKITRc6jTG4jfHbg2Wsibb/haJ49Orq+R6dFF/nnXO8VNJJZ9x1oVTQu21CD33JU6WPsrbtrGEFmrPXgRUtIU3ixz8+leGgkepl1Jat0gXy0TGBwxaSc7+cvBQuKl0WFE5TqcEi30vgwkk6E40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swf70X3d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB44C4CEF4;
+	Tue,  2 Sep 2025 13:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820761;
-	bh=AcXSJ4Nr4msoI+VkQjEms7xSt1uwEO5+gn8kVZKc7jM=;
+	s=korg; t=1756820712;
+	bh=KXVzDdYviA2Y8tVxc9RQkNIL8+L9yidOnhmHTdyqj+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xa1Lg/xRS1FSo7WeOUUJ1Upik+hzGtUmq52kwUeLqMmQ5y7NesoVuoIWadcGmA1pc
-	 VQNi0i6tInF08f87+YjpLWvXFFrW8qqUg/KIZcr2vUpIS/ySVbDhaMeUFLhXxy8kop
-	 Xz4Qw39s9aJrj4uXErUgVX/NdlAv74RKLA8QV2TE=
+	b=swf70X3dlUI6c7gwrLXiGsHT7htHak8Gwso8BXth20yNtRCKBO0geAwDYa0gJ+vzZ
+	 0sZSxWU+9vSXYYH7jaHxpqHid2zUhC3AKcqCBCWemnRBk7Es9+Je8l5H1fRUELsczO
+	 T6g1906NwNKjsYar549DpOWMVs3+Q1LB0L7Q+JOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeounsu Moon <yyyynoom@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 10/23] net: dlink: fix multicast stats being counted incorrectly
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Paul Olaru <paul.olaru@oss.nxp.com>,
+	Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
+	Rander Wang <rander.wang@intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Micha=C5=82=20G=C3=B3rny?= <mgorny@gentoo.org>
+Subject: [PATCH 5.10 30/34] ASoC: Intel: bxt_da7219_max98357a: shrink platform_id below 20 characters
 Date: Tue,  2 Sep 2025 15:21:56 +0200
-Message-ID: <20250902131925.135894331@linuxfoundation.org>
+Message-ID: <20250902131927.813850406@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131924.720400762@linuxfoundation.org>
-References: <20250902131924.720400762@linuxfoundation.org>
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
+References: <20250902131926.607219059@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeounsu Moon <yyyynoom@gmail.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 007a5ffadc4fd51739527f1503b7cf048f31c413 ]
+commit 24e46fb811e991f56d5694b10ae7ceb8d2b8c846 upstream.
 
-`McstFramesRcvdOk` counts the number of received multicast packets, and
-it reports the value correctly.
+Sparse throwns the following warnings:
 
-However, reading `McstFramesRcvdOk` clears the register to zero. As a
-result, the driver was reporting only the packets since the last read,
-instead of the accumulated total.
+sound/soc/intel/boards/bxt_da7219_max98357a.c:843:19: error: too long
+initializer-string for array of char(no space for nul char)
 
-Fix this by updating the multicast statistics accumulatively instaed of
-instantaneously.
+sound/soc/intel/boards/bxt_da7219_max98357a.c:844:19: error: too long
+initializer-string for array of char(no space for nul char)
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Tested-on: D-Link DGE-550T Rev-A3
-Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250823182927.6063-3-yyyynoom@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+sound/soc/intel/boards/bxt_da7219_max98357a.c:845:19: error: too long
+initializer-string for array of char(no space for nul char)
+
+Fix by using the 'mx' acronyn for Maxim
+
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Paul Olaru <paul.olaru@oss.nxp.com>
+Reviewed-by: Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>
+Reviewed-by: Rander Wang <rander.wang@intel.com>
+Link: https://lore.kernel.org/r/20210511213707.32958-5-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Michał Górny <mgorny@gentoo.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/intel/boards/bxt_da7219_max98357a.c     |   12 ++++++------
+ sound/soc/intel/common/soc-acpi-intel-bxt-match.c |    2 +-
+ sound/soc/intel/common/soc-acpi-intel-cml-match.c |    2 +-
+ sound/soc/intel/common/soc-acpi-intel-glk-match.c |    2 +-
+ 4 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index 8d57fb5072054..b4a8d4f12087a 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -1102,7 +1102,7 @@ get_stats (struct net_device *dev)
- 	dev->stats.rx_bytes += dr32(OctetRcvOk);
- 	dev->stats.tx_bytes += dr32(OctetXmtOk);
+--- a/sound/soc/intel/boards/bxt_da7219_max98357a.c
++++ b/sound/soc/intel/boards/bxt_da7219_max98357a.c
+@@ -840,9 +840,9 @@ static int broxton_audio_probe(struct pl
+ }
  
--	dev->stats.multicast = dr32(McstFramesRcvdOk);
-+	dev->stats.multicast += dr32(McstFramesRcvdOk);
- 	dev->stats.collisions += dr32(SingleColFrames)
- 			     +  dr32(MultiColFrames);
+ static const struct platform_device_id bxt_board_ids[] = {
+-	{ .name = "bxt_da7219_max98357a" },
+-	{ .name = "glk_da7219_max98357a" },
+-	{ .name = "cml_da7219_max98357a" },
++	{ .name = "bxt_da7219_mx98357a" },
++	{ .name = "glk_da7219_mx98357a" },
++	{ .name = "cml_da7219_mx98357a" },
+ 	{ }
+ };
  
--- 
-2.50.1
-
+@@ -866,6 +866,6 @@ MODULE_AUTHOR("Naveen Manohar <naveen.m@
+ MODULE_AUTHOR("Mac Chiang <mac.chiang@intel.com>");
+ MODULE_AUTHOR("Brent Lu <brent.lu@intel.com>");
+ MODULE_LICENSE("GPL v2");
+-MODULE_ALIAS("platform:bxt_da7219_max98357a");
+-MODULE_ALIAS("platform:glk_da7219_max98357a");
+-MODULE_ALIAS("platform:cml_da7219_max98357a");
++MODULE_ALIAS("platform:bxt_da7219_mx98357a");
++MODULE_ALIAS("platform:glk_da7219_mx98357a");
++MODULE_ALIAS("platform:cml_da7219_mx98357a");
+--- a/sound/soc/intel/common/soc-acpi-intel-bxt-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-bxt-match.c
+@@ -56,7 +56,7 @@ struct snd_soc_acpi_mach snd_soc_acpi_in
+ 	},
+ 	{
+ 		.id = "DLGS7219",
+-		.drv_name = "bxt_da7219_max98357a",
++		.drv_name = "bxt_da7219_mx98357a",
+ 		.fw_filename = "intel/dsp_fw_bxtn.bin",
+ 		.machine_quirk = snd_soc_acpi_codec_list,
+ 		.quirk_data = &bxt_codecs,
+--- a/sound/soc/intel/common/soc-acpi-intel-cml-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-cml-match.c
+@@ -54,7 +54,7 @@ struct snd_soc_acpi_mach snd_soc_acpi_in
+ 	},
+ 	{
+ 		.id = "DLGS7219",
+-		.drv_name = "cml_da7219_max98357a",
++		.drv_name = "cml_da7219_mx98357a",
+ 		.machine_quirk = snd_soc_acpi_codec_list,
+ 		.quirk_data = &max98357a_spk_codecs,
+ 		.sof_fw_filename = "sof-cml.ri",
+--- a/sound/soc/intel/common/soc-acpi-intel-glk-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
+@@ -24,7 +24,7 @@ struct snd_soc_acpi_mach snd_soc_acpi_in
+ 	},
+ 	{
+ 		.id = "DLGS7219",
+-		.drv_name = "glk_da7219_max98357a",
++		.drv_name = "glk_da7219_mx98357a",
+ 		.fw_filename = "intel/dsp_fw_glk.bin",
+ 		.machine_quirk = snd_soc_acpi_codec_list,
+ 		.quirk_data = &glk_codecs,
 
 
 
