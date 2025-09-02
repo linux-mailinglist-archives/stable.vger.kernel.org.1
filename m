@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-177085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76038B4035F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:32:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B295FB40364
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:32:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5796188677F
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:30:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4A474E1247
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077E030E831;
-	Tue,  2 Sep 2025 13:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3583C32038B;
+	Tue,  2 Sep 2025 13:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0jIaXsI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RThKQqPy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B961C303C8B;
-	Tue,  2 Sep 2025 13:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A363093CA;
+	Tue,  2 Sep 2025 13:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819527; cv=none; b=JTLK8W0y1X0l7vz12N4v3O/clW0Fp7wR17blfWBdPTED+Eb/pYMbjBPhQB7D6Tx0vPlO90UasTPBo1Q7YlJCfSGqGrXEkV+AqAUVPDGzli/omgIyWLNj8Bg9sfVGqur6iLTxMlr/ZvHuCypH3SNbXt0BZK3QWgWvKljj7/3DP0s=
+	t=1756819662; cv=none; b=FVE34Ag+CIGaHvI/FtxEm3t527Q4iFUgOLFtHvAH0GGvtcrd7MSPdmE+cfFMC38rnoCABTQZIfRKXsYAErssPqTFS3BZxSYeY+boSYJ0y2Ekn7/v3NRL3Yq+dUugOMIpc4M7sgC96jcgJ0UBs4/cSP6miJ4PZVgn+yDMROG19k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819527; c=relaxed/simple;
-	bh=i19q4oxh0YfLxbzRxYCuraO/WVSLhCj+KSX5Ph8RjPg=;
+	s=arc-20240116; t=1756819662; c=relaxed/simple;
+	bh=Uv8pcyLDS5ZH135uxz7NrKJGL/bwlF38WqRHtYAIJGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cknrzR3u7mDvHU1wVmS1sTuoQ07NhFxSVGxoi8nspTqscDQaLiNtbOI950VqJfvC/DrEeJZCdZBRWBlQO7pvA1kw0z7OyU/EaR5Gz0olE3l/kYnFZGIaBr2ZpiQiSupvYR96qkVxM4XqkOirBl4XN1cGvuOhkoLNrIERZnUAbxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0jIaXsI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF96C4CEF4;
-	Tue,  2 Sep 2025 13:25:26 +0000 (UTC)
+	 MIME-Version; b=H9AEn5F66JMnvj2oEZ3SUejU1JNwAL0EaT6po8xIrw0IlWmVVvJrK7ywOXd8VwFkMfDNGpkRlZAKv2C1V3iYc1gDRDZ9xC+x9eqn7okZSEGz7HsEBXLVEFTAhIo3Yuh9GE8GZRAUQlidcG2vAr4dDZtOMz1GjV2Lbe2yo+1xhB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RThKQqPy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6451CC4CEED;
+	Tue,  2 Sep 2025 13:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756819527;
-	bh=i19q4oxh0YfLxbzRxYCuraO/WVSLhCj+KSX5Ph8RjPg=;
+	s=korg; t=1756819661;
+	bh=Uv8pcyLDS5ZH135uxz7NrKJGL/bwlF38WqRHtYAIJGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f0jIaXsIxx0rZxpFOc/8pmWh29gWrQ4FK6ZbQmPUFksF2+oq/KfPvW/l3NgwqG8G1
-	 hvK9q0pnTYXP1Ew9+VZZcIpphgZDBi7ifycRBDSHoSCOG37WAi7OzaFRO/oXRRrl0F
-	 e9P4RsgLKKSdBkuVT2AQF+jRZT9fugOPANCWxbbs=
+	b=RThKQqPyjcRSOGCxY5Ph0aqwNx+PKCPDNYFZZ1r+WXNV0IueBbN+qR5KSyHUU2Kch
+	 qgsaBY0xWHWXe6fJC9VsblBLQfJ8aPJ6gls9Vb/QjO5YDOZWTRI46PkzbNrapn8LpS
+	 TjEwjoTSzTyvkAIDqm4XqURtA8EXanPFCXiY15lE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jacob Keller <jacob.e.keller@intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Priya Singh <priyax.singh@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.16 059/142] ice: use fixed adapter index for E825C embedded devices
-Date: Tue,  2 Sep 2025 15:19:21 +0200
-Message-ID: <20250902131950.511752181@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 060/142] ice: fix incorrect counter for buffer allocation failures
+Date: Tue,  2 Sep 2025 15:19:22 +0200
+Message-ID: <20250902131950.550795333@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250902131948.154194162@linuxfoundation.org>
 References: <20250902131948.154194162@linuxfoundation.org>
@@ -70,200 +71,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Michal Kubiak <michal.kubiak@intel.com>
 
-[ Upstream commit 5c5e5b52bf05c7fe88768318c041052c5fac36b8 ]
+[ Upstream commit b1a0c977c6f1130f7dd125ee3db8c2435d7e3d41 ]
 
-The ice_adapter structure is used by the ice driver to connect multiple
-physical functions of a device in software. It was introduced by
-commit 0e2bddf9e5f9 ("ice: add ice_adapter for shared data across PFs on
-the same NIC") and is primarily used for PTP support, as well as for
-handling certain cross-PF synchronization.
+Currently, the driver increments `alloc_page_failed` when buffer allocation fails
+in `ice_clean_rx_irq()`. However, this counter is intended for page allocation
+failures, not buffer allocation issues.
 
-The original design of ice_adapter used PCI address information to
-determine which devices should be connected. This was extended to support
-E825C devices by commit fdb7f54700b1 ("ice: Initial support for E825C
-hardware in ice_adapter"), which used the device ID for E825C devices
-instead of the PCI address.
+This patch corrects the counter by incrementing `alloc_buf_failed` instead,
+ensuring accurate statistics reporting for buffer allocation failures.
 
-Later, commit 0093cb194a75 ("ice: use DSN instead of PCI BDF for
-ice_adapter index") replaced the use of Bus/Device/Function addressing with
-use of the device serial number.
-
-E825C devices may appear in "Dual NAC" configuration which has multiple
-physical devices tied to the same clock source and which need to use the
-same ice_adapter. Unfortunately, each "NAC" has its own NVM which has its
-own unique Device Serial Number. Thus, use of the DSN for connecting
-ice_adapter does not work properly. It "worked" in the pre-production
-systems because the DSN was not initialized on the test NVMs and all the
-NACs had the same zero'd serial number.
-
-Since we cannot rely on the DSN, lets fall back to the logic in the
-original E825C support which used the device ID. This is safe for E825C
-only because of the embedded nature of the device. It isn't a discreet
-adapter that can be plugged into an arbitrary system. All E825C devices on
-a given system are connected to the same clock source and need to be
-configured through the same PTP clock.
-
-To make this separation clear, reserve bit 63 of the 64-bit index values as
-a "fixed index" indicator. Always clear this bit when using the device
-serial number as an index.
-
-For E825C, use a fixed value defined as the 0x579C E825C backplane device
-ID bitwise ORed with the fixed index indicator. This is slightly different
-than the original logic of just using the device ID directly. Doing so
-prevents a potential issue with systems where only one of the NACs is
-connected with an external PHY over SGMII. In that case, one NAC would
-have the E825C_SGMII device ID, but the other would not.
-
-Separate the determination of the full 64-bit index from the 32-bit
-reduction logic. Provide both ice_adapter_index() and a wrapping
-ice_adapter_xa_index() which handles reducing the index to a long on 32-bit
-systems. As before, cache the full index value in the adapter structure to
-warn about collisions.
-
-This fixes issues with E825C not initializing PTP on both NACs, due to
-failure to connect the appropriate devices to the same ice_adapter.
-
-Fixes: 0093cb194a75 ("ice: use DSN instead of PCI BDF for ice_adapter index")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Fixes: 2fba7dc5157b ("ice: Add support for XDP multi-buffer on Rx side")
+Reported-by: Jacob Keller <jacob.e.keller@intel.com>
+Suggested-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Tested-by: Priya Singh <priyax.singh@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_adapter.c | 49 +++++++++++++++-----
- drivers/net/ethernet/intel/ice/ice_adapter.h |  4 +-
- 2 files changed, 40 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.c b/drivers/net/ethernet/intel/ice/ice_adapter.c
-index 66e070095d1bb..10285995c9edd 100644
---- a/drivers/net/ethernet/intel/ice/ice_adapter.c
-+++ b/drivers/net/ethernet/intel/ice/ice_adapter.c
-@@ -13,16 +13,45 @@
- static DEFINE_XARRAY(ice_adapters);
- static DEFINE_MUTEX(ice_adapters_mutex);
- 
--static unsigned long ice_adapter_index(u64 dsn)
-+#define ICE_ADAPTER_FIXED_INDEX	BIT_ULL(63)
-+
-+#define ICE_ADAPTER_INDEX_E825C	\
-+	(ICE_DEV_ID_E825C_BACKPLANE | ICE_ADAPTER_FIXED_INDEX)
-+
-+static u64 ice_adapter_index(struct pci_dev *pdev)
- {
-+	switch (pdev->device) {
-+	case ICE_DEV_ID_E825C_BACKPLANE:
-+	case ICE_DEV_ID_E825C_QSFP:
-+	case ICE_DEV_ID_E825C_SFP:
-+	case ICE_DEV_ID_E825C_SGMII:
-+		/* E825C devices have multiple NACs which are connected to the
-+		 * same clock source, and which must share the same
-+		 * ice_adapter structure. We can't use the serial number since
-+		 * each NAC has its own NVM generated with its own unique
-+		 * Device Serial Number. Instead, rely on the embedded nature
-+		 * of the E825C devices, and use a fixed index. This relies on
-+		 * the fact that all E825C physical functions in a given
-+		 * system are part of the same overall device.
-+		 */
-+		return ICE_ADAPTER_INDEX_E825C;
-+	default:
-+		return pci_get_dsn(pdev) & ~ICE_ADAPTER_FIXED_INDEX;
-+	}
-+}
-+
-+static unsigned long ice_adapter_xa_index(struct pci_dev *pdev)
-+{
-+	u64 index = ice_adapter_index(pdev);
-+
- #if BITS_PER_LONG == 64
--	return dsn;
-+	return index;
- #else
--	return (u32)dsn ^ (u32)(dsn >> 32);
-+	return (u32)index ^ (u32)(index >> 32);
- #endif
- }
- 
--static struct ice_adapter *ice_adapter_new(u64 dsn)
-+static struct ice_adapter *ice_adapter_new(struct pci_dev *pdev)
- {
- 	struct ice_adapter *adapter;
- 
-@@ -30,7 +59,7 @@ static struct ice_adapter *ice_adapter_new(u64 dsn)
- 	if (!adapter)
- 		return NULL;
- 
--	adapter->device_serial_number = dsn;
-+	adapter->index = ice_adapter_index(pdev);
- 	spin_lock_init(&adapter->ptp_gltsyn_time_lock);
- 	refcount_set(&adapter->refcount, 1);
- 
-@@ -63,24 +92,23 @@ static void ice_adapter_free(struct ice_adapter *adapter)
-  */
- struct ice_adapter *ice_adapter_get(struct pci_dev *pdev)
- {
--	u64 dsn = pci_get_dsn(pdev);
- 	struct ice_adapter *adapter;
- 	unsigned long index;
- 	int err;
- 
--	index = ice_adapter_index(dsn);
-+	index = ice_adapter_xa_index(pdev);
- 	scoped_guard(mutex, &ice_adapters_mutex) {
- 		err = xa_insert(&ice_adapters, index, NULL, GFP_KERNEL);
- 		if (err == -EBUSY) {
- 			adapter = xa_load(&ice_adapters, index);
- 			refcount_inc(&adapter->refcount);
--			WARN_ON_ONCE(adapter->device_serial_number != dsn);
-+			WARN_ON_ONCE(adapter->index != ice_adapter_index(pdev));
- 			return adapter;
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index 0e5107fe62ad5..c50cf3ad190e9 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -1295,7 +1295,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 			skb = ice_construct_skb(rx_ring, xdp);
+ 		/* exit if we failed to retrieve a buffer */
+ 		if (!skb) {
+-			rx_ring->ring_stats->rx_stats.alloc_page_failed++;
++			rx_ring->ring_stats->rx_stats.alloc_buf_failed++;
+ 			xdp_verdict = ICE_XDP_CONSUMED;
  		}
- 		if (err)
- 			return ERR_PTR(err);
- 
--		adapter = ice_adapter_new(dsn);
-+		adapter = ice_adapter_new(pdev);
- 		if (!adapter)
- 			return ERR_PTR(-ENOMEM);
- 		xa_store(&ice_adapters, index, adapter, GFP_KERNEL);
-@@ -99,11 +127,10 @@ struct ice_adapter *ice_adapter_get(struct pci_dev *pdev)
-  */
- void ice_adapter_put(struct pci_dev *pdev)
- {
--	u64 dsn = pci_get_dsn(pdev);
- 	struct ice_adapter *adapter;
- 	unsigned long index;
- 
--	index = ice_adapter_index(dsn);
-+	index = ice_adapter_xa_index(pdev);
- 	scoped_guard(mutex, &ice_adapters_mutex) {
- 		adapter = xa_load(&ice_adapters, index);
- 		if (WARN_ON(!adapter))
-diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.h b/drivers/net/ethernet/intel/ice/ice_adapter.h
-index ac15c0d2bc1a4..409467847c753 100644
---- a/drivers/net/ethernet/intel/ice/ice_adapter.h
-+++ b/drivers/net/ethernet/intel/ice/ice_adapter.h
-@@ -32,7 +32,7 @@ struct ice_port_list {
-  * @refcount: Reference count. struct ice_pf objects hold the references.
-  * @ctrl_pf: Control PF of the adapter
-  * @ports: Ports list
-- * @device_serial_number: DSN cached for collision detection on 32bit systems
-+ * @index: 64-bit index cached for collision detection on 32bit systems
-  */
- struct ice_adapter {
- 	refcount_t refcount;
-@@ -41,7 +41,7 @@ struct ice_adapter {
- 
- 	struct ice_pf *ctrl_pf;
- 	struct ice_port_list ports;
--	u64 device_serial_number;
-+	u64 index;
- };
- 
- struct ice_adapter *ice_adapter_get(struct pci_dev *pdev);
+ 		ice_put_rx_mbuf(rx_ring, xdp, &xdp_xmit, ntc, xdp_verdict);
 -- 
 2.50.1
 
