@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-177471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B06D8B405A1
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:56:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1E5B405A9
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 15:56:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D974563576
-	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:51:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4B315E3B95
+	for <lists+stable@lfdr.de>; Tue,  2 Sep 2025 13:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3313E33CEB9;
-	Tue,  2 Sep 2025 13:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F0032A832;
+	Tue,  2 Sep 2025 13:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEm8zmHu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIfxUDBQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C56324B11;
-	Tue,  2 Sep 2025 13:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6496D32A81D;
+	Tue,  2 Sep 2025 13:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756820752; cv=none; b=qwhTwWBdJDfANVlVehXzoco81WiiewP8Hu7cUHbOV1CXmRsrQKcg4osL6ciaDYN5TfZMWLLkIuaXEMnVo72QUPPZVu10dEYOaIGOe0UGyUykw4ClMHrHLa78ahoGFDijVR8SxChxD248bk1cLoSq/DuFCbS4mnSLKcbPtRICRM4=
+	t=1756820822; cv=none; b=ZxAaAhoXNuNU7UpZ0TQHgNCAw1Fp5yhnu/3A59S5uF27JpYCQ3a840NnwBO9PiLOJIoWz1f+v/Zoocn6YjsN6dB028fyI83Ql2c4dAMNAEObWY6D7PX1zM7E8EbPOGSA/C29UNwfAjF4RDiBtbCdL+r9NSHFP6tHu2PSvSjQeZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756820752; c=relaxed/simple;
-	bh=xh86wPrn0eQDrYCuCBiptHuAqyOqp4TPgPp2IhxGEeY=;
+	s=arc-20240116; t=1756820822; c=relaxed/simple;
+	bh=z6vOHKqPgIixlcN637GX3TaKXDXa2jVNJvBVfZ8vWXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EJokH/R6h739dkWmadFbiWrRzg66BmAWRG483m2jh+IQalWW/3+e3cpEe5Sv+23m+J/UHdXX02B2pVKO7HLW0o+J8Iq8IFIPXLj9G34HE3X7NjMabYI4qLSQbPmaVShXrTEwyl9fNZptQ413rNMBiHGhx9OZVl/1NL5fRjkmKlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEm8zmHu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAD4C4CEF7;
-	Tue,  2 Sep 2025 13:45:51 +0000 (UTC)
+	 MIME-Version; b=XN0dSVHBRs4fITKLGu1CKjcVTMZDGAr20sVqlTTyVSaWyVUkLHkRJpdtQpHf5zKDZaqa7NV22nV4/xgicTbn3DZGhOd7X0MRzNZemikMAjIyGAC49IATL0t03eOsVZO3UQCdXrR0M0M9TlSREY0/L2TwbZYZ+jBGaKXTIFEIT3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIfxUDBQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93037C4CEED;
+	Tue,  2 Sep 2025 13:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756820751;
-	bh=xh86wPrn0eQDrYCuCBiptHuAqyOqp4TPgPp2IhxGEeY=;
+	s=korg; t=1756820822;
+	bh=z6vOHKqPgIixlcN637GX3TaKXDXa2jVNJvBVfZ8vWXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SEm8zmHuU25hQdVwETEClULOrHZCpGMlAez0k67RsHhp1CBcnH9P0JOBtJMO1Ogvs
-	 mYu6dTVS6i8UYoVQ1ZXi3q6BSnMe+p3mbNxLzJ0YISXK6s1PQIS3KwMhZXKYeanqPd
-	 z6CxXmE8FIMV9oHIrW1GnhQpHLa65vGh9Kn8PAMk=
+	b=mIfxUDBQUa2uPiu6a+cCFDReMXrH6666rbMunPyPBLLOhQVw/B/vMeWdHDP6c1b73
+	 s2W/3C4WtYLVK1Rh2Ky4amVT6ZMAckVsZhm3gkqlb67QH0Jv0twsmt3W95iXybJsRi
+	 ZOBoe9NiSGZjIOl1vjQC/p3Gainp8+5C3qczZb+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Jones <jajones@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 5.10 26/34] drm/nouveau/disp: Always accept linear modifier
-Date: Tue,  2 Sep 2025 15:21:52 +0200
-Message-ID: <20250902131927.657801976@linuxfoundation.org>
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 07/23] Bluetooth: hci_event: Detect if HCI_EV_NUM_COMP_PKTS is unbalanced
+Date: Tue,  2 Sep 2025 15:21:53 +0200
+Message-ID: <20250902131925.016957354@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
-References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131924.720400762@linuxfoundation.org>
+References: <20250902131924.720400762@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Jones <jajones@nvidia.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit e2fe0c54fb7401e6ecd3c10348519ab9e23bd639 upstream.
+[ Upstream commit 15bf2c6391bafb14a3020d06ec0761bce0803463 ]
 
-On some chipsets, which block-linear modifiers are
-supported is format-specific. However, linear
-modifiers are always be supported. The prior
-modifier filtering logic was not accounting for
-the linear case.
+This attempts to detect if HCI_EV_NUM_COMP_PKTS contain an unbalanced
+(more than currently considered outstanding) number of packets otherwise
+it could cause the hcon->sent to underflow and loop around breaking the
+tracking of the outstanding packets pending acknowledgment.
 
-Cc: stable@vger.kernel.org
-Fixes: c586f30bf74c ("drm/nouveau/kms: Add format mod prop to base/ovly/nvdisp")
-Signed-off-by: James Jones <jajones@nvidia.com>
-Link: https://lore.kernel.org/r/20250811220017.1337-3-jajones@nvidia.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f42809185896 ("Bluetooth: Simplify num_comp_pkts_evt function")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/dispnv50/wndw.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/bluetooth/hci_event.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/nouveau/dispnv50/wndw.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/wndw.c
-@@ -660,6 +660,10 @@ static bool nv50_plane_format_mod_suppor
- 	struct nouveau_drm *drm = nouveau_drm(plane->dev);
- 	uint8_t i;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 33b025a52b83a..4e8911501255d 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -3681,7 +3681,17 @@ static void hci_num_comp_pkts_evt(struct hci_dev *hdev, struct sk_buff *skb)
+ 		if (!conn)
+ 			continue;
  
-+	/* All chipsets can display all formats in linear layout */
-+	if (modifier == DRM_FORMAT_MOD_LINEAR)
-+		return true;
-+
- 	if (drm->client.device.info.chipset < 0xc0) {
- 		const struct drm_format_info *info = drm_format_info(format);
- 		const uint8_t kind = (modifier >> 12) & 0xff;
+-		conn->sent -= count;
++		/* Check if there is really enough packets outstanding before
++		 * attempting to decrease the sent counter otherwise it could
++		 * underflow..
++		 */
++		if (conn->sent >= count) {
++			conn->sent -= count;
++		} else {
++			bt_dev_warn(hdev, "hcon %p sent %u < count %u",
++				    conn, conn->sent, count);
++			conn->sent = 0;
++		}
+ 
+ 		switch (conn->type) {
+ 		case ACL_LINK:
+-- 
+2.50.1
+
 
 
 
