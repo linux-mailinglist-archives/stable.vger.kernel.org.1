@@ -1,143 +1,98 @@
-Return-Path: <stable+bounces-177628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30E8B422E4
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 16:02:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A13CBB42302
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 16:05:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A86133A9CC2
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 14:01:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BDA3175E7F
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 14:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC0330F52D;
-	Wed,  3 Sep 2025 14:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F022C3126C5;
+	Wed,  3 Sep 2025 14:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GyiR/SZ3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gPnNxN0t"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A755789D;
-	Wed,  3 Sep 2025 14:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A7730F528;
+	Wed,  3 Sep 2025 14:03:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756908047; cv=none; b=Th/I6ofDf0iYnmzSB6S0NvBxTpDdV+pvUkNzGZctN+yFVUQtpABKbQfNiZS7MKXZIfRhmw7gLLjYMJ4dP9LxRhcdyWCqsCnSQjNH00VLbSroNe5w6Nn41iFILt99uD9Iyd46ClrAapfmuTRi79pXxiWR3kMggPQ9gfRRDtCbw7s=
+	t=1756908182; cv=none; b=COZ/6ikU2IHLBTvcqzyc8JZwMQ8qywWLr8JLiJub2ysHYM6McLFGIqqiI2mqiQh/MGjK/c85Bp8wm5PFO+nbQrF7ckYXvLo2Vcyy1Jo4Rb2G+FOJ12dsi1MXRvDvzbUE5nJIWpvM5dn4krb6FxUyFg1M7uQfceyJNR7U/h9ESoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756908047; c=relaxed/simple;
-	bh=lSF301elCdPOXOy81GiG5IgHSG1690Usuy6RvYlRfa0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qhcTkB3BCoRVhLU6mY9R5qUKzt4GSmd/xqYOK+HGr+zM5Mb3UT0T1wSNmGOlYbKKtHuxQpNP6CFbLIUuKk9PuixqLefbmuCszDuQ+dtUrVogtvok5TLT6/4/X5+S2IvBbMiL7WPD8r3zV7fCbvkPJfufDq/prYZeH6LzbEFW4ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GyiR/SZ3; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-77250e45d36so2763933b3a.0;
-        Wed, 03 Sep 2025 07:00:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756908045; x=1757512845; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xAesZB2lk9ao4BWYXbJjTK7DuZ36IgP0HTueS0+3TwI=;
-        b=GyiR/SZ3LwbvrpCfK8AG+WNipOM/1vifWFQN6K0VwQfCRWN89jDvjP/GP65Qf+EJn6
-         +ufX5Nh8D+qibj8TNIW3WaT170WpFUxqNqLQQbEdyW0TodHyr3nilF7J0cqWmt6qgqfs
-         ZfkT5Jw8SOUiCLYuDgnCa4tIXfdBuwglS6EUBZD8NfInIwnQe7XCftNddB7mo/zPBFCP
-         9cdCm3M5ucVSo6xNWPaCk8Y0iIkziX84Q6pRQIOQvT+zynRLXwO47WCfzfKAHxvF6ike
-         v8yKREburrRZGlyNGETvVH7uHBi7/IalPkAaivOEvSHaYFYm9n0c79+MtqN4WWaaTQoG
-         DGvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756908045; x=1757512845;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xAesZB2lk9ao4BWYXbJjTK7DuZ36IgP0HTueS0+3TwI=;
-        b=shInUsIGLQLRhp5fnB7hLdzsrvLf8jiNtmuiWQtAapwG6gHmLAri61jm1blu4drZhJ
-         BRX6MiGyAW1WDGAknnsxYAmevnIgSigtIgs7CZ0yNzQ6/9HbtCh5IYpHxuq8tvzqteXm
-         jenosbgTlFK7tkY7BeCJdRJcy7pK1fUaXXgdZQGThxOGUkji+DmMwcw5avCbz5jkFQQF
-         Dvm8w+3rWF+xA6iEEbpI9bl28D2KKsjvAuEHYEUcF/tYCJIbwCZQMju9CjUoZKI5Xy7R
-         Dp2M1tOZNS9GEGL7Q0EBP5wAfik5m3i8eT+jGxi84NgSOzam8V8WLAsKnw0v75MPWqOU
-         neyg==
-X-Forwarded-Encrypted: i=1; AJvYcCVY9ZcQqhuspaz3EItBO8xRCFe/tjDqhm/Fky156wsp7BqSgAzQKohQpZMiYEyORloV72VISCI1@vger.kernel.org, AJvYcCWoKCIcC5uev+NDFlIMPM1dJ72A9ItSB4Kb8Oke+J44tYH4n2E5QJhBmm4M75lkO+nw6XY0sDl4mAzeumg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxl4+Dze7bfmewy5kz6qSoLWru1/sPwC1bB7lU/k+oQ7EKgmm/M
-	fGA3eWOPFKphWmHctRf8ays8SqDkfmjRah6tBsj7lGHLtMzFgGzuLGVA
-X-Gm-Gg: ASbGncun7j07cHtETAKh5G5h15BJvYC4LvnuVVszKIJuvFfHG2qrl7FH1ucCI5xkIe/
-	QLoirDcisIHmzJjflUY3utGtwp7Aj5PoxVJkgYwUp4HcAp1IWB2u7lgmBTEQe8OfRRp/co/wG75
-	13hGQV6XTtufFngmLwcw/NDtVRL/BZzR8x1Nk6GQisUFLNBwJ5QQTSOsuS52RK4ckgG3f57a9XG
-	RRdb6XAOFnfC5DdRUwEaCIOLUyINnEuwZApaPFkTZM3WdDb/uz+x81jvv9HOo3xatxIHQNoOM/g
-	FtaX9L356xl8oGbrLKGMKKzwMs3aj1C3r4xYJk77HavzEr+8L+t/fo+fwqMCAmXk8QPgYp5UFkI
-	jj1bnDWO6d999SY4E+lmJiypwLmw30RNQnjQtqZ42BUP0kdX7xBlV0jUNfIl5SIV1cFnZu3XAkf
-	ewoO5y0j7/V3r7lQZOsT7/ku9GTq5DPax+gH20iSv3svY6bb1JdoncxGQ=
-X-Google-Smtp-Source: AGHT+IEiZzIqbK6NtZy7OvrioKfNs+nNoDPdVd41ZcGEBWChbdaMmyXQ4AtaISVEW5t+yv55VsqWyg==
-X-Received: by 2002:a05:6a20:9189:b0:248:7a71:c1e with SMTP id adf61e73a8af0-2487a710dcfmr3734029637.52.1756908043165;
-        Wed, 03 Sep 2025 07:00:43 -0700 (PDT)
-Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.22.11.165])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-77243ffcebasm12891155b3a.51.2025.09.03.07.00.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 07:00:42 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Thierry Reding <treding@nvidia.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Cc: linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] As the doc of of_parse_phandle() states: "The device_node pointer with refcount incremented.  Use  * of_node_put() on it when done."
-Date: Wed,  3 Sep 2025 22:00:35 +0800
-Message-Id: <20250903140035.2529812-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.35.1
+	s=arc-20240116; t=1756908182; c=relaxed/simple;
+	bh=Ov0nrLS0OcqS08nKtyCJQ1I/kTUYHcBS1+Kn1Ozmnm4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tfHmrWO5IIhZ1X/fgNObyv4o4kQ6ygvDMdo++Zycp2eeJkC8ysGM0H/Etta0CNOHCcLShmVsWv5ZObsiHWYCNl53Z3GOuA1+5wfpWQazH12SUsP7RJDN7wHPEHQasYOWcw1vCSSxX6mkMTVJtQGXlRaFGel7YgkX/H0Ls4KXonU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gPnNxN0t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4726C4CEF4;
+	Wed,  3 Sep 2025 14:02:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756908182;
+	bh=Ov0nrLS0OcqS08nKtyCJQ1I/kTUYHcBS1+Kn1Ozmnm4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gPnNxN0tvRwtsH54UILMJxtCL2STueLpueR/0TF9tBN2BeGe87K2BJtUJSuPc716t
+	 fZcYOsweEHEjjqZ3Ap4QsnJ8zE6OloG2s+zlQwfG150EI/u/PCPeKK5y8XxAxgOpG7
+	 zKIRl2KZxWwgp/h2B6+MUjt5Z0IDcqPxnlmKwxE0MsLHvCxkGfGR7cRjm8/Dk1wXws
+	 UNkYN5g7sFv7soEHKRr6tAN3vGWA8TK4H4Y1UrZ9hMYkP1cMLz0WN6XEhmsUEB/X6Y
+	 6KPALCBb0wLYa2lCXEZ3iLGxwyG4JJJHqBWMVs0NHkRfw3rCMZu0I52BKLY1Ov+jic
+	 YzeHb2gHzKg2Q==
+Date: Wed, 3 Sep 2025 15:02:56 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, achill@achill.org
+Subject: Re: [PATCH 6.1 00/50] 6.1.150-rc1 review
+Message-ID: <fad77ca3-95b3-45b9-ba05-21e3dfef83c4@sirena.org.uk>
+References: <20250902131930.509077918@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mYdIpcyd60mfR52A"
+Content-Disposition: inline
+In-Reply-To: <20250902131930.509077918@linuxfoundation.org>
+X-Cookie: You were s'posed to laugh!
 
-The function doesn't calls
-of_node_put() to release this reference, causing a reference leak.
 
-Move the of_parse_phandle() call after devm_kzalloc() and add the missing
-of_node_put() call immediately after of_address_to_resource() to properly
-release the device node reference.
+--mYdIpcyd60mfR52A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Found via static analysis.
+On Tue, Sep 02, 2025 at 03:20:51PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.150 release.
+> There are 50 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Fixes: 9a10c7e6519b ("drm/simpledrm: Add support for system memory framebuffers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- drivers/gpu/drm/sysfb/simpledrm.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+Tested-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/drivers/gpu/drm/sysfb/simpledrm.c b/drivers/gpu/drm/sysfb/simpledrm.c
-index 8530a3ef8a7a..f0bd7e958398 100644
---- a/drivers/gpu/drm/sysfb/simpledrm.c
-+++ b/drivers/gpu/drm/sysfb/simpledrm.c
-@@ -183,15 +183,16 @@ simplefb_get_memory_of(struct drm_device *dev, struct device_node *of_node)
- 	struct resource *res;
- 	int err;
- 
--	np = of_parse_phandle(of_node, "memory-region", 0);
--	if (!np)
--		return NULL;
--
- 	res = devm_kzalloc(dev->dev, sizeof(*res), GFP_KERNEL);
- 	if (!res)
- 		return ERR_PTR(-ENOMEM);
- 
-+	np = of_parse_phandle(of_node, "memory-region", 0);
-+	if (!np)
-+		return NULL;
-+
- 	err = of_address_to_resource(np, 0, res);
-+	of_node_put(np);
- 	if (err)
- 		return ERR_PTR(err);
- 
--- 
-2.35.1
+--mYdIpcyd60mfR52A
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmi4So8ACgkQJNaLcl1U
+h9CU3wf+JXw/Vv4VG9kabz/uHsyI6KKsiGmZLxr1VY9XNcwK7+XCgt/H2YPCdfVD
+WONLTNYH0Q2L+7c02vJINchmi4Uok/3LZsxNR9qRdi7qYPSPyougSFSm0202oaz9
+9D5/ZExLGKtfqfQ8EQZNnMKLU7jwlYZjcRbnGeVySR7Le99OlVC3uVzbkG0NmMR6
+8HoiWCe33bIw9fCSJ8Q6mPOLf8nbQ6reJRu1QwZaRXtlEmfXLqVp0Zw4QR3hYbXE
+VorGqbaQsG9mxwfQZsx8iwAY97qRtF6hWLcOQDkqNaj4Gb/3f9aBpIZhzJ1ZHSO0
+JAMZtqYmlv1dT7m/QYAvVd73KZW0dw==
+=bSEG
+-----END PGP SIGNATURE-----
+
+--mYdIpcyd60mfR52A--
 
