@@ -1,161 +1,88 @@
-Return-Path: <stable+bounces-177661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF8BB42A54
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 21:55:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71932B42AE2
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 22:28:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA8645829E8
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 19:55:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30CE95E568F
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 20:28:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD6D36998F;
-	Wed,  3 Sep 2025 19:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15FDB2E1C79;
+	Wed,  3 Sep 2025 20:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="BFDPE4K8"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="H5YGLXGv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FBD29D0E
-	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 19:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C6C2989B5;
+	Wed,  3 Sep 2025 20:28:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756929302; cv=none; b=bylDp/tVbvjBGJU3iAf46Y1wC0XYoIUbtuRwf5THpJkTxPRC08ye8ynv92q5pbVjkObNsNoFoPPM7+GMzVQcQQkZ4TmQMwbHTUZo9d5iUc8OeuImEFcyTmE0E/7XeaL6BSCOP80+dIGedP4YyLvl+rxyTUw7aCfOPT38ce101Mo=
+	t=1756931289; cv=none; b=J5QHwffh6oUeQJy6iAh9i20xPyBwOqm0sUIHoresy5q9BzPxcgNmKkN6ACBHz4zatgIABk0XAI2jblIubJ4mOMGb8xNSXTycdV6glmBnSTB42+UtmLfagRbP+60gqVUy2nQRaSeG8adNwpxW47v2O9ymWs9ed2o7Boh8jTciARs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756929302; c=relaxed/simple;
-	bh=ep2ByU6Sp3PUGleU/SkPJKB1vnJZEKwUxxPzvfc2zHY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Z4sYUBKsDnl0WiEZYjuDuzYpI9W3kg2Menk6K8oQn+CVIk+qc3L4VkloAWF3xxc3PhP0sQparPMsGVrYOkakUegzYu/5xCDqtZU3gPzkqR4IKee8ogLfIsMmPweiGTNspowAc0yWSlcYXwx4MID/ApmLHGLzj5bd33ikR5ySqzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=BFDPE4K8; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45cb5e1adf7so719235e9.0
-        for <stable@vger.kernel.org>; Wed, 03 Sep 2025 12:54:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1756929298; x=1757534098; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WemNBSJgvSeExxk4SwgXWO6xPmX/LP/uVncZJ5kxq9E=;
-        b=BFDPE4K8xVUXXC8Gx2hbOM8zU5TTPFUdWYAptHTWz8Yvrch7OX2kghUo/PgBAuvG2q
-         8SAAXklVb3rFhxrdsTlbuNoJVVfsIiho5owfVQCvBtbcJtvO/3357YX3rMv5DvHPaIKk
-         foVdKDLhYlhggvLi3pn9mn4b+aE6ZwZwpL8AX6PByewzQRyCiO7IirTDm8ZieRYirgR7
-         muQ4iK/baLbsZyt9PVSr9fGneYgIzMddMrAggJ8uihi6PhmqNxJOIU1gXu9ZTVbNXS6U
-         X+yCWVD0QNDeNcSAJajza0MFfJqaNfz1HANKipCzKP5PjgZog7l4P2zK5+GwyktMARuk
-         jaRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756929298; x=1757534098;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WemNBSJgvSeExxk4SwgXWO6xPmX/LP/uVncZJ5kxq9E=;
-        b=Ep/nBTSI+QukNh8gZMMZVJdPLqS9mGe5NeflvXRPR73RwoUwXrUUGKVXlkyEkhwI2x
-         6eTyeXRZbW7RMNWsQxIRZn00bzrg/kBrI+Q8FYNwG6KcjtDBijPDSem3YhfU03PL9wrd
-         PB3OHmMaQ1tewwNKkS4htVk/Op3Pj1+cp7K/QDtzVeytCowRKcIXJVlmgD4aSofdRbpz
-         cvgT593pChKKMMg/vryvgwJZs3Pe/nheWhFvIKjmuhZLq7DlZLJ3qRGLjRmv8OQxwiK0
-         oOYICW8lJZvGKvh2L7D02bPNrvjUeB65EGPL1rOAxbkT6On9hDS/mjMSXWRhDroAN2Gi
-         RfBg==
-X-Forwarded-Encrypted: i=1; AJvYcCX1DDpwC163QB5sgiEL4gH4S/6HQRqmLZV5voS1dbdv9MKULwTRb7Rb636JvkKweAtCnScR6iM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzi+jxn6hQD9AmqK9T8hfEf4mtPTCtoRS4zEP65qXsBRcyCvQCf
-	76F83knTG/2CuiOKZcmPr2QEr/URR8qiSJcEKfMqzdoY0TrmpLSfeRgVD7L1lbapRbw=
-X-Gm-Gg: ASbGncufCvIgMITc9+ahBdXpHWCVnkoG6HsrV5nYiJ2sUimwtezlkHT13XrqEnacp/Q
-	L/PZ1wfdNvStVTXwSsGravUwF0KIheFYsjYDf6qi6f7ZsXB2j4Tsa7M9sbRwCDo1knsk3N8DaXq
-	EBbzv5/n6GwFvcMBlUTrhsWYi6y8XyPGrLvhr3S34F4LMFDKDuNZIY6srFtFAyUk7nMjjoWXkeN
-	XcV6+e2MwIsFHVqtyN99ZJlXVlE0pLuvOQYBJK+rpvgH8mW7XC9LZMurSVnclX12G70SW4s0fU8
-	o/o7Mqk35WIsEcpaMJbFFbtKPxFhOVeKuBFE3ALMtXfBGosMMYK6CJHoLKYWwvW8LqgIK0E8UoB
-	z5YpAO7DYj0/s/gAybeHtvNKdepUq+ztyYedX5M6/MYW077OXDDy3nyZ5PIvcdwU4QqlPR9YfFH
-	6dqh6e
-X-Google-Smtp-Source: AGHT+IFJLqX9lWt48uvYEkJALLRR5ugjPDz4Bm8zdqTvK5mO3zXyFw6a/hUpgKW7TWri5+ZASWKjNQ==
-X-Received: by 2002:a05:600c:3153:b0:458:bda4:43df with SMTP id 5b1f17b1804b1-45b85570996mr172993485e9.17.1756929298246;
-        Wed, 03 Sep 2025 12:54:58 -0700 (PDT)
-Received: from alexghiti.eu.rivosinc.com (alexghiti.eu.rivosinc.com. [141.95.202.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d95df59e50sm9504812f8f.23.2025.09.03.12.54.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 12:54:57 -0700 (PDT)
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
-Date: Wed, 03 Sep 2025 19:54:29 +0000
-Subject: [PATCH RFC] riscv: Do not handle break traps from kernel as nmi
+	s=arc-20240116; t=1756931289; c=relaxed/simple;
+	bh=FXX7vCndb5jyCNrEFKxEbiBmLyA2whfFQXrgWUo3LWA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NnQsCVRD32YxhTGEqrdI4ww9PS+UhOq0kJmCya4xDmqZxc5tS8FbU39pFu4qjMITQn0XxnbMRqnuamzuk5FeMudE6nl8Av0OfDbzzlkQ4DLGvr3FgnvdMO9S3dyCKzaqNigJxDZmBj04vb+DIyYi/9PEroyyYz8u1pXdtGcEP0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=H5YGLXGv; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=dQqseQNcgscixdyVaCFhVdxJCiisNidf6D68QVReldg=; b=H5YGLXGvwHqOU/EB798ChPDAvM
+	LNit1fcg/BOsGWvScZvXYhKHhTsRTq5MjLWgslJVBPe16gJSLUZVjzIHbxb9LoUwzJDAOYLGA3Y50
+	giJU3Ln/9focte8EeBeSmPGAUbHsHzvy4cUO24bbT24E+tX8intdAGA9GAtkCuhVW2Er8TcmEydSl
+	YnEK6uRox5KJORRolqgf5iEAKymmE50AUH1L3/YIeCt6XrouzinlvbxZN6YXRWErmKnBFoHa/Tgj4
+	yLF3SyCwcqKwz+kFlsxF6UWhQGciR24sUsZB41HKvfpJZ9C2YSCSLLn5oKcnP8tjsH2EInS47btj4
+	gzNOdH3w==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1utu5L-00000007fvU-1cO1;
+	Wed, 03 Sep 2025 20:28:04 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 97F59300220; Wed, 03 Sep 2025 22:28:03 +0200 (CEST)
+Date: Wed, 3 Sep 2025 22:28:03 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Alexandre Ghiti <alexghiti@rivosinc.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Guo Ren <guoren@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH RFC] riscv: Do not handle break traps from kernel as nmi
+Message-ID: <20250903202803.GQ4067720@noisy.programming.kicks-ass.net>
+References: <20250903-dev-alex-break_nmi_v1-v1-1-4a3d81c29598@rivosinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250903-dev-alex-break_nmi_v1-v1-1-4a3d81c29598@rivosinc.com>
-X-B4-Tracking: v=1; b=H4sIAPScuGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDSwNj3ZTUMt3EnNQK3aSi1MTs+LzczPgyQ11T82RTYyPDNONUCwMloN6
- CotS0zAqwudFKQW7OSrG1tQDR4C8EbAAAAA==
-X-Change-ID: 20250903-dev-alex-break_nmi_v1-57c5321f3e80
-To: Peter Zijlstra <peterz@infradead.org>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Guo Ren <guoren@kernel.org>, 
- =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@rivosinc.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>, linux-riscv@lists.infradead.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Alexandre Ghiti <alexghiti@rivosinc.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1916;
- i=alexghiti@rivosinc.com; h=from:subject:message-id;
- bh=ep2ByU6Sp3PUGleU/SkPJKB1vnJZEKwUxxPzvfc2zHY=;
- b=owGbwMvMwCGWYr9pz6TW912Mp9WSGDJ2zOUQju2NeZLt/efBtlSDKNmvc3VLoqScb2v/XMt29
- an+IY39HaUsDGIcDLJiiiwK5gldLfZn62f/ufQeZg4rE8gQBi5OAZhItxPD/zq+v5/fzr6bXrSu
- ZMPx6vftCVu/bNnvsdBf8ceyozc26KUx/M99/HGOKsOcDa2nZq0prmblyUi9l8nxo1j6aJNWYvK
- bZi4A
-X-Developer-Key: i=alexghiti@rivosinc.com; a=openpgp;
- fpr=DC049C97114ED82152FE79A783E4BA75438E93E3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250903-dev-alex-break_nmi_v1-v1-1-4a3d81c29598@rivosinc.com>
 
-kprobe has been broken on riscv for quite some time. There is an attempt
-[1] to fix that which actually works. This patch works because it enables
-ARCH_HAVE_NMI_SAFE_CMPXCHG and that makes the ring buffer allocation
-succeed when handling a kprobe because we handle *all* kprobes in nmi
-context. We do so because Peter advised us to treat all kernel traps as
-nmi [2].
+On Wed, Sep 03, 2025 at 07:54:29PM +0000, Alexandre Ghiti wrote:
+> kprobe has been broken on riscv for quite some time. There is an attempt
+> [1] to fix that which actually works. This patch works because it enables
+> ARCH_HAVE_NMI_SAFE_CMPXCHG and that makes the ring buffer allocation
+> succeed when handling a kprobe because we handle *all* kprobes in nmi
+> context. We do so because Peter advised us to treat all kernel traps as
+> nmi [2].
+> 
+> But that does not seem right for kprobe handling, so instead, treat
+> break traps from kernel as non-nmi.
 
-But that does not seem right for kprobe handling, so instead, treat
-break traps from kernel as non-nmi.
-
-Link: https://lore.kernel.org/linux-riscv/20250711090443.1688404-1-pulehui@huaweicloud.com/ [1]
-Link: https://lore.kernel.org/linux-riscv/20250422094419.GC14170@noisy.programming.kicks-ass.net/ [2]
-Fixes: f0bddf50586d ("riscv: entry: Convert to generic entry")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
----
-This is clearly an RFC and this is likely not the right way to go, it is
-just a way to trigger a discussion about if handling kprobes in an nmi 
-context is the right way or not.
----
- arch/riscv/kernel/traps.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-index 80230de167def3c33db5bc190347ec5f87dbb6e3..90f36bb9b12d4ba0db0f084f87899156e3c7dc6f 100644
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -315,11 +315,11 @@ asmlinkage __visible __trap_section void do_trap_break(struct pt_regs *regs)
- 		local_irq_disable();
- 		irqentry_exit_to_user_mode(regs);
- 	} else {
--		irqentry_state_t state = irqentry_nmi_enter(regs);
-+		irqentry_state_t state = irqentry_enter(regs);
- 
- 		handle_break(regs);
- 
--		irqentry_nmi_exit(regs, state);
-+		irqentry_exit(regs, state);
- 	}
- }
- 
-
----
-base-commit: ae9a687664d965b13eeab276111b2f97dd02e090
-change-id: 20250903-dev-alex-break_nmi_v1-57c5321f3e80
-
-Best regards,
--- 
-Alexandre Ghiti <alexghiti@rivosinc.com>
-
+You can put a kprobe inside: local_irq_disable(), no? Inside any random
+spinlock region in fact. How is the probe then not NMI like?
 
