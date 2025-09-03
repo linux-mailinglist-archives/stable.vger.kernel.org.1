@@ -1,129 +1,100 @@
-Return-Path: <stable+bounces-177641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C6AB426F4
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 18:32:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2075B426FB
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 18:33:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADD44680EC5
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 16:32:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75481542001
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 16:33:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0CEE303C88;
-	Wed,  3 Sep 2025 16:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37E32D372A;
+	Wed,  3 Sep 2025 16:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="iOk1j/60"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WGHBKJNI"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA851A9FBE;
-	Wed,  3 Sep 2025 16:31:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED0D2D3ED2
+	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 16:33:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756917118; cv=none; b=S5eZZqZkBzfd3HuOg+nEn5kC4FVFj4tD2XyDpK7cdBefavKQPYIxmZgn5ltr3GPuaWFdMdlbuJ/iWptGbgboOcBQjifzVmbDdox/aXtqBZkOHIw5QOOAK8sP78g4urhBElHfrVNoYaq3K5f5mJRi3gJpahGdgRWBqUW2Sz17yg8=
+	t=1756917225; cv=none; b=ItgctMXBYBPU3CRPclgJy4XegUqPl9RsktFQCaP44YEc8sdLP8FEXLEFhOY7hDyMiFdhruzXhIekBU3ECgXU/Ua+0OVVhxPwHCztKNe6lSjG3VBri83k+XJ6ovI8meHkNLJJo6W4wjP5nNCOLk0Rogoo9WNb+qbv3Y6AoE2I2EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756917118; c=relaxed/simple;
-	bh=wwIoG7RxiK1rQPRRf6jNppPnqD9cOvuFBLmAMqqLa2s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iFhL9Zy1OO3ToSLSuJFQhCk7yg55CRjQcGVjNezkXsdCjzRoRB6xsQ5cmhsXNk80E+jROfOtLmY7OWqbK+z/86sv1f5Yehw938dCMQi4dXuL0MIXehLIZlCm04fFvio5QladtLtTdnHeEmWtFZXxSKL23HNdRpKxxaLUqhCoSEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=iOk1j/60; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5839MmGV015847;
-	Wed, 3 Sep 2025 16:31:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=uetujjfiFH+oVH/K3yB+je2XLEdDgTeM+7aBa+uNr4s=; b=
-	iOk1j/602DlVHP9hoYEDXUaDt5bdVAdKWmBpKIhKnzstdWdUFVP7mxobrAl0mOca
-	AbcD3TL7XA+tTek2+1ElSv5L/xVa8VP00ScBvIbE4D76fPfZ/dwliwyy7x098P9j
-	scB37far0Yk5oP9WyzTXF7h1a6GrmpmbM4BH96IOpRTcCfH/QQLKN8ro5NJFvS0S
-	w8LUipQa2tU2nmczgkrEilqnVu4dIRKidoEbyiQoiAeM5VfqnGQqZ8txhdi5/8cB
-	d+LKRzXTaTcW6QiP0B/B6oolAW+U1PZ0sCdq8AsDtXx7qX5NlB8YCnIJe0YTvByL
-	PYXvhgMkLpcRoDfDkLdoIw==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48usm9pwn2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 03 Sep 2025 16:31:50 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 583FvB07036197;
-	Wed, 3 Sep 2025 16:31:49 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48uqrahj04-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 03 Sep 2025 16:31:49 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 583GViLm024971;
-	Wed, 3 Sep 2025 16:31:48 GMT
-Received: from lab61.no.oracle.com (lab61.no.oracle.com [10.172.144.82])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48uqrahht8-2;
-	Wed, 03 Sep 2025 16:31:48 +0000
-From: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>
-To: Allison Henderson <allison.henderson@oracle.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: stable@vger.kernel.org,
-        =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-        rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org
-Subject: [PATCH net 2/2] rds: ib: Remove unused extern definition
-Date: Wed,  3 Sep 2025 18:31:37 +0200
-Message-ID: <20250903163140.3864215-2-haakon.bugge@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250903163140.3864215-1-haakon.bugge@oracle.com>
-References: <20250903163140.3864215-1-haakon.bugge@oracle.com>
+	s=arc-20240116; t=1756917225; c=relaxed/simple;
+	bh=wVmguet6Y18ImorR5iJz0YOu5aft7KpEU7pY0KQDr8g=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=dJtfaQVCWs8dbbxVvh+O9esMBHHTokWJZ7OQNa9oBvI7nX9S1cY+v58m0wT1wSka+kFnTrUhybYSgrSJxOuFO8Oj4XmgzhlJ8GUlimqILk/dY8apZk0LACkYUx9+Uc54DIR0OiYWIMHUzufaylrfQJhgNqS4O5Sbsxl1PBCxNqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WGHBKJNI; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756917224; x=1788453224;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=wVmguet6Y18ImorR5iJz0YOu5aft7KpEU7pY0KQDr8g=;
+  b=WGHBKJNI/dJHutlEBxJoG7IVN821CRHxebJZ9ZWERsOmnEZBZFtWUwmj
+   +eAuXps+j4wppEvD2Ust3FZaRYbkgKFUwrhwO4povkvVA7yGvm96vBxTM
+   k9GCJMVpKzwH+IyG9i1W4q+6AO1MkVjhRZT5rGxcpr/ZfqPG1Cz3FBMux
+   ze9vFs8np8JEE9Lohh7pJKIee08aLLTjuoIcqlgm60aPm/XgJX32D+DiI
+   4DHI+zIrYTn6P9ajpz1968q2vqyoy7TkChlO3IG9AgBwIYfQWh49xlvLV
+   RH5aliu0SoUai1FsN5TD35z6atxbT6Edvw2FbVbHTBDiIYSVk5LiNKtsr
+   g==;
+X-CSE-ConnectionGUID: wRt0rfGfTmicMWf9qp6Vvw==
+X-CSE-MsgGUID: A1SfVsGvTzaFtYJNHE/SEg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="59306362"
+X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; 
+   d="scan'208";a="59306362"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 09:33:43 -0700
+X-CSE-ConnectionGUID: AGe3Fp7LQGCrP56rvHdcIg==
+X-CSE-MsgGUID: pzoqwtenSYOMGWuChC/C6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; 
+   d="scan'208";a="171576600"
+Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
+  by fmviesa006.fm.intel.com with ESMTP; 03 Sep 2025 09:33:42 -0700
+Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1utqQV-0004C3-1U;
+	Wed, 03 Sep 2025 16:33:39 +0000
+Date: Thu, 4 Sep 2025 00:33:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: =?iso-8859-1?Q?H=E5kon?= Bugge <haakon.bugge@oracle.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH net 1/2] rds: ib: Increment i_fastreg_wrs before bailing
+ out
+Message-ID: <aLhtxGn7Geb1naL7@94157fd02e22>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-03_08,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0
- suspectscore=0 mlxlogscore=999 spamscore=0 bulkscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2508110000 definitions=main-2509030166
-X-Proofpoint-GUID: qOaf8KRoQ79qIhyAEqeLlWPp45D69iY-
-X-Authority-Analysis: v=2.4 cv=I7xlRMgg c=1 sm=1 tr=0 ts=68b86d76 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=M51BFTxLslgA:10 a=yPCof4ZbAAAA:8
- a=8vYhr0Zxtxouu-exVa4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMSBTYWx0ZWRfX5VAg4Olda5Py
- DrEBxPNonwy1BIDsKv8ApyKUkuBbqFf0rEZkFevhIoPhrQwaE0h/dhcVZfwOoZFl6JbFl4dIkqt
- 7ENWSKMRRolxXd+9NUlISsoA+7h5eIFf6WVqc26pvaWXqu9LWcnhAsTo80TBlYef8YjKTq8NqmY
- WAeXZgCGdwphbjUXHE6uLnoM0OXuprnaGtw2OoeIUEJ4/cV1hOVBiGd5A8wvwHDUpqkQeGt0UtH
- 8nZAXVkLqXHFPkI9ccGWX5VknRnjhDtHRB8dlU8ocXD0hUIoOetdnUHv+FgwUrFcLTtTYknk1zf
- D3oaRxHqOG4BiYjwZxp53dOsP3ORZ+GiHuZBsKxRxSKGS4G3Ze7ZgS3cS0ScN4lqFCi1c5hpfCy
- TKn7AocQ
-X-Proofpoint-ORIG-GUID: qOaf8KRoQ79qIhyAEqeLlWPp45D69iY-
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250903163140.3864215-1-haakon.bugge@oracle.com>
 
-Fixes: 2cb2912d6563 ("RDS: IB: add Fastreg MR (FRMR) detection support")
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
----
- net/rds/ib_mr.h | 1 -
- 1 file changed, 1 deletion(-)
+Hi,
 
-diff --git a/net/rds/ib_mr.h b/net/rds/ib_mr.h
-index ea5e9aee4959e..5884de8c6f45b 100644
---- a/net/rds/ib_mr.h
-+++ b/net/rds/ib_mr.h
-@@ -108,7 +108,6 @@ struct rds_ib_mr_pool {
- };
- 
- extern struct workqueue_struct *rds_ib_mr_wq;
--extern bool prefer_frmr;
- 
- struct rds_ib_mr_pool *rds_ib_create_mr_pool(struct rds_ib_device *rds_dev,
- 					     int npages);
+Thanks for your patch.
+
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH net 1/2] rds: ib: Increment i_fastreg_wrs before bailing out
+Link: https://lore.kernel.org/stable/20250903163140.3864215-1-haakon.bugge%40oracle.com
+
 -- 
-2.43.5
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
