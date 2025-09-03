@@ -1,211 +1,228 @@
-Return-Path: <stable+bounces-177568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3F8B415B1
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 08:58:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81DEDB415C9
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 09:03:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7B3B3B6EC7
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 06:58:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E00301B23B8C
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 07:04:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577812D949F;
-	Wed,  3 Sep 2025 06:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F212D8764;
+	Wed,  3 Sep 2025 07:03:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="i+en6jzg"
 X-Original-To: stable@vger.kernel.org
-Received: from mta21.hihonor.com (mta21.hihonor.com [81.70.160.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162F32D5934;
-	Wed,  3 Sep 2025 06:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.70.160.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B54B2D877A
+	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 07:03:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756882693; cv=none; b=BN9Zx0BjjoxtfBpnqXySPpmaHlPmW5InA67RHeCzAB7gRSX7jxCn/5c2g3rXcb+B1TDVSq1mAfEwCcYvrtJEyOIQp3x8nJHkuDAPXffmtJYBmRp60cetQDoPNUTGNisZfMDWntOQnrCd/WLfvd4joY3MyoY0n4kv4YEBxtD4AHw=
+	t=1756883028; cv=none; b=lQj4V8K15ZcNg9kHE0Cd/tXIFN9LJHufpiYZIGgs5LmLLp2pWtGta2wbeNKbKEau2+64QTWRdnkYt8eZ6PeQ/5Oojf9QgSu6wlg6XbCUs1jo4H6z8r2Z4y35o3O7Lm4pq2hsQsGEO10drI2u1YgUQc98b3HATdDReWVupDK8DUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756882693; c=relaxed/simple;
-	bh=2BZhoOUZheHr4Wb/vRNV2zyISKB/M04ADASgZrBV3iU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jV0yE3ml6b7ABbnYOpNHQKFmg/4mwM87leKW4IwIwQTmMxHBiIj68tGi0nmDwCEvwAsnqySFNwjH/akBWAE0wtzGOihD18gdcApEPvyMXDodRTAzov2gAz5xayJcH+beaUVaq6lcUDivSM12U8Vj1gZU9vGsCdFDcoSW+H3g1q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=honor.com; spf=pass smtp.mailfrom=honor.com; arc=none smtp.client-ip=81.70.160.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=honor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=honor.com
-Received: from w002.hihonor.com (unknown [10.68.28.120])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4cGthw6cNMzYnVPM;
-	Wed,  3 Sep 2025 14:57:36 +0800 (CST)
-Received: from a011.hihonor.com (10.68.31.243) by w002.hihonor.com
- (10.68.28.120) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 3 Sep
- 2025 14:57:58 +0800
-Received: from localhost.localdomain (10.144.23.14) by a011.hihonor.com
- (10.68.31.243) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 3 Sep
- 2025 14:57:58 +0800
-From: wangzijie <wangzijie1@honor.com>
-To: <wangzijie1@honor.com>
-CC: <adobriyan@gmail.com>, <akpm@linux-foundation.org>, <ast@kernel.org>,
-	<brauner@kernel.org>, <gregkh@linuxfoundation.org>, <jirislaby@kernel.org>,
-	<k.shutemov@gmail.com>, <linux-fsdevel@vger.kernel.org>,
-	<polynomial-c@gmx.de>, <regressions@lists.linux.dev>,
-	<rick.p.edgecombe@intel.com>, <stable@vger.kernel.org>,
-	<viro@zeniv.linux.org.uk>, <spender@grsecurity.net>
-Subject: Re: [PATCH v3] proc: fix missing pde_set_flags() for net proc files
-Date: Wed, 3 Sep 2025 14:57:58 +0800
-Message-ID: <20250903065758.3678537-1-wangzijie1@honor.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250821105806.1453833-1-wangzijie1@honor.com>
-References: <20250821105806.1453833-1-wangzijie1@honor.com>
+	s=arc-20240116; t=1756883028; c=relaxed/simple;
+	bh=+CzZMuJEXya7F5oV21pY4l6G7TTcJtH9gknq/TQ/aTw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l6TZhPb4+guNsRZ40K5VP0Yyz7FBAt4WrjmZcyryliU6Im7Cigm57njQlQgtXWKrO5lU0ACghZHZEjbzv+MZZR7TmaiKzbmpN/AHUYkT2jXHeI7O2u61KtInJuCHZyAsLZ245UqWdL8rdDWmlnZ1KGX5TOcS26024LhKd7DrPTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=i+en6jzg; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b4dc35711d9so3176240a12.0
+        for <stable@vger.kernel.org>; Wed, 03 Sep 2025 00:03:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1756883026; x=1757487826; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fL4SkVrTJ9oKe7qs7sANkBC9i27TXliw0xssBarmLsc=;
+        b=i+en6jzgbJcI1EgytFrX3QvBvWuf7sS+8u4snV43r2jZ9yBtDGKNpGv+MnpgIDIuD7
+         0WxhKxniQPtdnt9cROzjxHN/TLUAvZxJ9JjMokc9Q5oYEabPzL7N2NaLSV5An//30cxI
+         ErvePIPEMPXJdZeK+DpSRYHI6e2GiQmt4dMLJPD/v7o8oOwFaFBZOyd5yGoPE4iq2htw
+         WlzvE7ERxtF0ZYJqvT0dv3vMsAKq02yNevxHs+jKD3buHa9LGqhmpDa0R/hxLMzOfb8Z
+         qxNVMxT+nzcdNsDF3AUhCZipj+uMnun3fuFw7Fbc+zde6qJKdn3Wu2J5bwhvcyIEzWex
+         K3zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756883026; x=1757487826;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fL4SkVrTJ9oKe7qs7sANkBC9i27TXliw0xssBarmLsc=;
+        b=AkZ5sohL+rwNlpe2ex97snhzv8KgPZateCuTv4ZrxudPRz1N2Iv1jRKihCr95FeRcv
+         Ytvz5SBpLuC3uZigZwMXeCHmxIi5lNjNbQQZCsexamvn/u79f7P8WPugzQb+LNQ79rvJ
+         qe6NCZuaWHCLvqizWCCa5Sr0saEPc9HC8VmIusl3qVuKbvua5BgKYwG5OSH/7Bsjstiq
+         8ZC4vyeHvHkMaNGiR+EkOOzsBEE4yc0sq5L/eFit1DylC1dSrRra2k+KQZKPM/aWEMwO
+         CZWcfJuxssNwdEZpalpI1/lH49T9YKgdptlPVtOlZX7ZKZ+RBbFO5WesIBulbSeQjVXv
+         F+PA==
+X-Gm-Message-State: AOJu0YxzO08zJchE3jgQuOwG1w02centSV5GYYaXZuMDdmtfe9UNcggv
+	c2lq8jVX4JF69yJwU7Jn9lWLd9FbPFwUprtB5rgOH01ZWC08aUZq57b4jdLYkaIRnPgXDuLNYYs
+	y8a2IjxooqNE3TBd1Yd99xKSJsv+dmMiO/9Xo97OMbg==
+X-Gm-Gg: ASbGncsgq4XC5k456N+1AYQ08NSYxH7hRkkYY1ySqTHXJzE6B84LUMBHqoA9j7PIcMW
+	TvJ5zwmZt/LwnUWSrBsdw3pmpsZohupEH213tQLZiDjpivJmBIbHrABk6pSdGR433QgKo8IpQJ7
+	QBHMDNd5YbIY19bBm5EqxrxGZyygOelc4gBTB9yer8nHlhwRrJs9f2nV67yzH8LGuAu8wwy/pY9
+	a/Uq0+tIvU/dsMhCrsaYTFyvOhSjZ/AYnrlrfGU
+X-Google-Smtp-Source: AGHT+IE6Gxv2TMCJAdKOWCYjEhj7lI6inwVBs9oUuCCbiTP1CtDGKISOowssI7uYiatr92QpupXT3zdopt8oyZ18daA=
+X-Received: by 2002:a17:90b:17cd:b0:32a:e706:b7b6 with SMTP id
+ 98e67ed59e1d1-32ae706be21mr3502062a91.11.1756883026133; Wed, 03 Sep 2025
+ 00:03:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: w012.hihonor.com (10.68.27.189) To a011.hihonor.com
- (10.68.31.243)
+References: <20250902131927.045875971@linuxfoundation.org>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 3 Sep 2025 12:33:33 +0530
+X-Gm-Features: Ac12FXyKfC_-aqYgJLlTgXqXUoZh-SGrsO4A4Lu15UJtjPsYwvrVGOG4RJwNdq0
+Message-ID: <CA+G9fYsHzdo8BqxV9yLs_NeDE3dB6p6GE4H6RhHWGL-oVMyFsw@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/33] 5.15.191-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> To avoid potential UAF issues during module removal races, we use pde_set_flags()
-> to save proc_ops flags in PDE itself before proc_register(), and then use
-> pde_has_proc_*() helpers instead of directly dereferencing pde->proc_ops->*.
-> 
-> However, the pde_set_flags() call was missing when creating net related proc files.
-> This omission caused incorrect behavior which FMODE_LSEEK was being cleared
-> inappropriately in proc_reg_open() for net proc files. Lars reported it in this link[1].
-> 
-> Fix this by ensuring pde_set_flags() is called when register proc entry, and add
-> NULL check for proc_ops in pde_set_flags().
-> 
-> [1]: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/
-> 
-> Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al")
-> Cc: stable@vger.kernel.org
-> Reported-by: Lars Wendler <polynomial-c@gmx.de>
-> Signed-off-by: wangzijie <wangzijie1@honor.com>
-> ---
-> v3:
-> - followed by Christian's suggestion to stash pde->proc_ops in a local const variable
-> v2:
-> - followed by Jiri's suggestion to refractor code and reformat commit message
-> ---
->  fs/proc/generic.c | 38 +++++++++++++++++++++-----------------
->  1 file changed, 21 insertions(+), 17 deletions(-)
-> 
-> diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-> index 76e800e38..bd0c099cf 100644
-> --- a/fs/proc/generic.c
-> +++ b/fs/proc/generic.c
-> @@ -367,6 +367,25 @@ static const struct inode_operations proc_dir_inode_operations = {
->  	.setattr	= proc_notify_change,
->  };
->  
-> +static void pde_set_flags(struct proc_dir_entry *pde)
-> +{
-> +	const struct proc_ops *proc_ops = pde->proc_ops;
-> +
-> +	if (!proc_ops)
-> +		return;
-> +
-> +	if (proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
-> +		pde->flags |= PROC_ENTRY_PERMANENT;
-> +	if (proc_ops->proc_read_iter)
-> +		pde->flags |= PROC_ENTRY_proc_read_iter;
-> +#ifdef CONFIG_COMPAT
-> +	if (proc_ops->proc_compat_ioctl)
-> +		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
-> +#endif
-> +	if (proc_ops->proc_lseek)
-> +		pde->flags |= PROC_ENTRY_proc_lseek;
-> +}
-> +
->  /* returns the registered entry, or frees dp and returns NULL on failure */
->  struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
->  		struct proc_dir_entry *dp)
-> @@ -374,6 +393,8 @@ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
->  	if (proc_alloc_inum(&dp->low_ino))
->  		goto out_free_entry;
->  
-> +	pde_set_flags(dp);
-> +
->  	write_lock(&proc_subdir_lock);
->  	dp->parent = dir;
->  	if (pde_subdir_insert(dir, dp) == false) {
-> @@ -561,20 +582,6 @@ struct proc_dir_entry *proc_create_reg(const char *name, umode_t mode,
->  	return p;
->  }
->  
-> -static void pde_set_flags(struct proc_dir_entry *pde)
-> -{
-> -	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
-> -		pde->flags |= PROC_ENTRY_PERMANENT;
-> -	if (pde->proc_ops->proc_read_iter)
-> -		pde->flags |= PROC_ENTRY_proc_read_iter;
-> -#ifdef CONFIG_COMPAT
-> -	if (pde->proc_ops->proc_compat_ioctl)
-> -		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
-> -#endif
-> -	if (pde->proc_ops->proc_lseek)
-> -		pde->flags |= PROC_ENTRY_proc_lseek;
-> -}
-> -
->  struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
->  		struct proc_dir_entry *parent,
->  		const struct proc_ops *proc_ops, void *data)
-> @@ -585,7 +592,6 @@ struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
->  	if (!p)
->  		return NULL;
->  	p->proc_ops = proc_ops;
-> -	pde_set_flags(p);
->  	return proc_register(parent, p);
->  }
->  EXPORT_SYMBOL(proc_create_data);
-> @@ -636,7 +642,6 @@ struct proc_dir_entry *proc_create_seq_private(const char *name, umode_t mode,
->  	p->proc_ops = &proc_seq_ops;
->  	p->seq_ops = ops;
->  	p->state_size = state_size;
-> -	pde_set_flags(p);
->  	return proc_register(parent, p);
->  }
->  EXPORT_SYMBOL(proc_create_seq_private);
-> @@ -667,7 +672,6 @@ struct proc_dir_entry *proc_create_single_data(const char *name, umode_t mode,
->  		return NULL;
->  	p->proc_ops = &proc_single_ops;
->  	p->single_show = show;
-> -	pde_set_flags(p);
->  	return proc_register(parent, p);
->  }
->  EXPORT_SYMBOL(proc_create_single_data);
-> -- 
-> 2.25.1
+On Tue, 2 Sept 2025 at 19:12, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.191 release.
+> There are 33 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 04 Sep 2025 13:19:14 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.191-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Hi all,
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Sorry for disturbing, Brad reported type confusion introduced by this patch
-to me, we missed a part in the definition of proc_dir_entry:
-        union {
-                const struct proc_ops *proc_ops;
-                const struct file_operations *proc_dir_ops;
-        };
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Quoting the email he sent to me:
-"
-any dereference of ->proc_ops assuming it is a proc_ops structure results in type confusion,
-it probably won't be (easily) noticed without CONFIG_RANDSTRUCT because of the way in which
-proc_flags overlaps with the module owner pointer in the file_operations structure(and the
-alignment of the struct module pointed to).
+## Build
+* kernel: 5.15.191-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 29918c0c5b353baf87a2bbc3e2a4256c99430dba
+* git describe: v5.15.190-34-g29918c0c5b35
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
+.190-34-g29918c0c5b35
 
-With RANDSTRUCT enabled, users are likely to observe warnings on proc dir removal like:
-[ 19.093369] removing permanent /proc entry '12/i8042'
-[ 19.093396] WARNING: CPU: 0 PID: 1 at fs/proc/generic.c:886
-remove_proc_subtree+0xcc/0x218
-"
+## Test Regressions (compared to v5.15.189-645-ge09f9302f92d)
 
-I examined where proc_register() is called, we can do !S_ISDIR(dp->mode) test before calling
-pde_set_flags() to fix it(Brad also suggested to do this), or we can drop this patch and
-apply the initial version[1]. I think the former is better.
+## Metric Regressions (compared to v5.15.189-645-ge09f9302f92d)
 
-Dose anyone have any suggestions?
+## Test Fixes (compared to v5.15.189-645-ge09f9302f92d)
 
-[1] https://lore.kernel.org/all/20250818040535.564611-1-wangzijie1@honor.com/.
+## Metric Fixes (compared to v5.15.189-645-ge09f9302f92d)
 
+## Test result summary
+total: 55718, pass: 45636, fail: 2304, skip: 7414, xfail: 364
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 101 total, 101 passed, 0 failed
+* arm64: 28 total, 28 passed, 0 failed
+* i386: 18 total, 18 passed, 0 failed
+* mips: 22 total, 22 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 22 total, 22 passed, 0 failed
+* riscv: 8 total, 8 passed, 0 failed
+* s390: 9 total, 9 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 24 total, 24 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-exec
+* kselftest-fpu
+* kselftest-futex
+* kselftest-intel_pstate
+* kselftest-kcmp
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
