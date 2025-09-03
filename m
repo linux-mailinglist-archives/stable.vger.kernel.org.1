@@ -1,160 +1,141 @@
-Return-Path: <stable+bounces-177608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 150CEB41DCD
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 13:56:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E54F2B41EC9
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 14:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 389231BA8380
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 11:56:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93DAE17F8B0
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 12:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E406B30102B;
-	Wed,  3 Sep 2025 11:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1102FC873;
+	Wed,  3 Sep 2025 12:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kKny0KDG"
+	dkim=pass (2048-bit key) header.d=akendo.eu header.i=@akendo.eu header.b="EXAHpUCc"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB932FB991;
-	Wed,  3 Sep 2025 11:52:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DB02F49E2
+	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 12:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756900339; cv=none; b=dgSn4QTA17qKAgNK6Ff9WBcJe151gkhGSrp7AJTU9YUymjMID7HvDzpPHpiwVV+kBdwiyPzdkzvE4gwFSZze88lglXzB1hcuCTG5Ozr1PeeE8e9XizrT+RtxZf+8n7WwyFQwOxvEgvN7c1m32gADL3XUKZRNVH4knt3iDg1P9aM=
+	t=1756902099; cv=none; b=XgBHG0NF+6FBpOeycKS/i4Pg4/qNYxeb1vFZjqpvc4OL7ICWlTz4GqD9eJJnE5CSUnBIdQj3cmaHqJEkLGzIgznz63tczd9xQqpaZvrs9lAEFcz1g41Y2HN311QPM8/stUForpa+YQ4Y7/mRF17p/BX/e1uyP3Vmv9IZdRkK8Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756900339; c=relaxed/simple;
-	bh=rCkMsvnUjuBn7HONdhIgvsPhXdCF7ZF1EijdEX8RKxc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VuIVgkZAZYV30zfzqoWI62EY7I0e95zcUCOsyYphIxhdNJ9Cv8OKMu2cTCeVLtTNSkQgmhpQ3jXpI4r6wf7Rocks9bNw15QHy14Imo+d1U327HIiZpkdT4xLEdD40kVsW4jhx+huTUtbnAQ2mHFDBe26yF1OUj16tooIaImaEyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kKny0KDG; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756900338; x=1788436338;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=rCkMsvnUjuBn7HONdhIgvsPhXdCF7ZF1EijdEX8RKxc=;
-  b=kKny0KDGjeWU6AUNiIgDwk82a849XrXLFERs7ASz2e3leJApksTDR90g
-   WwUNd2l5X5wj/LPeYwqG23/tmTmLJZ0dc40Sx78F5TvUQRFS0fDK8fGhH
-   r48wWp8UqXymF4xEnUkgneo2wXvhbfVEozq+l5zfCxVNJAYZpq/43FEM1
-   aUD1AEDPRzBTXsDCwo6A7QDFR1eYUK0Yrtu25eQqfpTvAmgrwsEac6JIW
-   uo1x4I1SBcNSnjw0WAZMEVhChLkVfdKHyapK6Jvv931o6ETC6pZupB0In
-   QzWiE+cy+LScvIKKamERBPVwLAuzpn108fw2ngEBCbPIwAqkYPnCWxBnf
-   A==;
-X-CSE-ConnectionGUID: fK0acRAMR8e0M49SUYYmIQ==
-X-CSE-MsgGUID: bS88Lc6oR9+erFmyDuLzkA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63043870"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="63043870"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 04:52:17 -0700
-X-CSE-ConnectionGUID: LSXzFaryTGiV559A8n4EkQ==
-X-CSE-MsgGUID: vvcyrhQPS3KYbuchLY9f0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,235,1751266800"; 
-   d="scan'208";a="176849676"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 04:52:06 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1utm1v-0000000AyQf-39cY;
-	Wed, 03 Sep 2025 14:51:59 +0300
-Date: Wed, 3 Sep 2025 14:51:59 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Haojian Zhuang <haojian.zhuang@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
-	imx@lists.linux.dev, linux-omap@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	stable@vger.kernel.org, Chen-Yu Tsai <wenst@chromium.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v7 00/16] pinctrl: introduce the concept of a GPIO pin
- function category
-Message-ID: <aLgr30rvGBCcsOWa@smile.fi.intel.com>
-References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
- <CACRpkdZ-Toq9MziPisZCcT7zcL3rosQYZ1Jw=RWCH1KZTbeBug@mail.gmail.com>
+	s=arc-20240116; t=1756902099; c=relaxed/simple;
+	bh=bGlETsAzzIANrEh7VlCi1HFV766z1m/nNYMPyT0vmgA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LLsTOB4iOY6En0Aj3f9D1sK6vdFd2I1xCJA7rSvIbPxs5WaZY3X3B38cB7yavkls1thhWVEZjTpjoYCOG8UGjJVMiuAoyDr2h2mZAsFChu18+E9nnhsAn8MtD04Dl5NTWtsOrwesymNT9jr38Bp+kbSFapbowos/Nf05IdrwW5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=akendo.eu; spf=pass smtp.mailfrom=akendo.eu; dkim=pass (2048-bit key) header.d=akendo.eu header.i=@akendo.eu header.b=EXAHpUCc; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=akendo.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akendo.eu
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4cH1th0hSjz9tFV;
+	Wed,  3 Sep 2025 14:21:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akendo.eu; s=MBO0001;
+	t=1756902092;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GKa3JeqheeiDQRwZ17kpBqHnmqbGK9Y724otQcQUKoA=;
+	b=EXAHpUCc0xvHeDLfEwwYNjGBvqR+akyyJ6Tp1Fugpxbte9taoaPrN1lPS+QwVXGqi4bzBq
+	u+j8xf3tNxyl9mZRjgyEVu8ALunLeImuB850n7q3WquPZQgmC/IbV+G16lMv1NwMXhdBJi
+	hAzuvXB6DZENAb5UVa2ygSU60KZuvJvN8il2CZKzsnHz84vAgx5choGlrtua3fnlBxu1rm
+	+wBd9EBOCeWri/ziPhXvGOA5wOVb6uaxd+xyYjA7N3e9+C78IWI+2nD2IzZeZIfzCRIGa5
+	YEabNPIlH0INqdlslPi2BuYgOUTXwOyvO3eI02B83YDm86U1zlI4vJr6NtD2ug==
+Message-ID: <6c5efc80-9dcc-4943-9840-5e1046182101@akendo.eu>
+Date: Wed, 3 Sep 2025 14:21:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Subject: Re: [PATCH] net/mlx5: HWS, change error flow on matcher disconnect
+Content-Language: de-DE, en-US
+To: Greg KH <greg@kroah.com>, "Subramaniam, Sujana"
+ <sujana.subramaniam@sap.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Yevgeny Kliteynik <kliteyn@nvidia.com>, Itamar Gozlan <igozlan@nvidia.com>,
+ Mark Bloch <mbloch@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>
+References: <20250903083947.41213-1-sujana.subramaniam@sap.com>
+ <2025090322-nervy-excuse-289e@gregkh>
+From: akendo <akendo@akendo.eu>
+In-Reply-To: <2025090322-nervy-excuse-289e@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdZ-Toq9MziPisZCcT7zcL3rosQYZ1Jw=RWCH1KZTbeBug@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Sep 03, 2025 at 12:18:18AM +0200, Linus Walleij wrote:
-> On Tue, Sep 2, 2025 at 1:59 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+Hello Greg,
+
+Thank you for your responses. We’re in the process of learning the 
+process and figuring out how to get the git send-mail out.
+
+This patch aims for the kernel 6.12 and backports the changes for the 
+mlx5 from 6.13 to it. We use the 
+1ce840c7a659aa53a31ef49f0271b4fd0dc10296 commit from upsteam to do it. 
+We had to update the path within the patch to make the patch apply 
+that’s the only change we made. We roll this out in our kernel and test 
+it already.
+
+I forgot to add my full name to it, we will fix Sujana's Name is 
+correct. Please, I apologize for the puzzlement we might have caused.
+
+Best regards,
+akendo
+
+On 9/3/25 11:41 AM, Greg KH wrote:
+> On Wed, Sep 03, 2025 at 08:40:13AM +0000, Subramaniam, Sujana wrote:
+>> From: SujanaSubr <sujana.subramaniam@sap.com>
+>>
+>> [ Upstream commit 1ce840c7a659aa53a31ef49f0271b4fd0dc10296 ]
+>>
+>> Currently, when firmware failure occurs during matcher disconnect flow,
+>> the error flow of the function reconnects the matcher back and returns
+>> an error, which continues running the calling function and eventually
+>> frees the matcher that is being disconnected.
+>> This leads to a case where we have a freed matcher on the matchers list,
+>> which in turn leads to use-after-free and eventual crash.
+>>
+>> This patch fixes that by not trying to reconnect the matcher back when
+>> some FW command fails during disconnect.
+>>
+>> Note that we're dealing here with FW error. We can't overcome this
+>> problem. This might lead to bad steering state (e.g. wrong connection
+>> between matchers), and will also lead to resource leakage, as it is
+>> the case with any other error handling during resource destruction.
+>>
+>> However, the goal here is to allow the driver to continue and not crash
+>> the machine with use-after-free error.
+>>
+>> Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+>> Signed-off-by: Itamar Gozlan <igozlan@nvidia.com>
+>> Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+>> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+>> Link: https://patch.msgid.link/20250102181415.1477316-7-tariqt@nvidia.com
+>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > 
-> > We have many Qualcomm SoCs (and I can imagine it's a common pattern in
-> > other platforms as well) where we mux a pin to "gpio" function using the
-> > `pinctrl-X` property in order to configure bias or drive-strength and
-> > then access it using the gpiod API. This makes it impossible to mark the
-> > pin controller module as "strict".
-> >
-> > This series proposes to introduce a concept of a sub-category of
-> > pinfunctions: GPIO functions where the above is not true and the pin
-> > muxed as a GPIO can still be accessed via the GPIO consumer API even for
-> > strict pinmuxers.
+> Sasha didn't sign off on this original commit, did they?
 > 
-> This is what I want for pin control, and fixes an ages old issue
-> that pin control has no intrinsic awareness of if a pin is muxed
-> to a function providing GPIO.
-> So patches applied!
-
-No objections, let's move on.
-
-> Any remaining code nitpicks can be fixed in-tree, I need this
-> to be able to apply the much desired Broadcom STB driver,
-> so this needs to go into -next now for cooking.
+>> Signed-off-by: Akendo <akendo@akendo.eu>
 > 
-> I also want to strictify some drivers using this, bringing GPIO
-> function awareness into them, which is a good thing!
-
-Well said!
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> Real name?
+> 
+>> Signed-off-by: SujanaSubr <sujana.subramaniam@sap.com>
+> 
+> Correct name?
+> 
+> What is this being sent for?
+> 
+> totally confused,
+> 
+> greg k-h
 
 
