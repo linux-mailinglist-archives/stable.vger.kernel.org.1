@@ -1,170 +1,136 @@
-Return-Path: <stable+bounces-177624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F3D8B421FB
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 15:38:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29AE1B4227D
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 15:52:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1558E482C80
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 13:38:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53954484FC6
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 13:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B4030BB87;
-	Wed,  3 Sep 2025 13:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4799830EF71;
+	Wed,  3 Sep 2025 13:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="UpmHgTXV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KBbP/PXl"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D7E309DA4
-	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 13:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AE730E83D;
+	Wed,  3 Sep 2025 13:52:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756906695; cv=none; b=tBGhKqHF58T4+tM7uW049WQ52W96r8z55UjBw7tD8whOSU6kvTrq8/zSNHk4+9ZFiRNLWsrcxriBU0Fc3M78b4WJLde4lDiNZ8T1vBDE7H+i+fmddRkckiDZEvcWtreqxwm5Vjyjb04UBob8SjZK/mg8CViHU5VT8ATVq4PJgeY=
+	t=1756907523; cv=none; b=GHeQSXS0PDuYgnxU4wVH+6z5sgZsQGFAmdHnUeOh5lcRuJ4nbiWMG8GPQquaqoaMP6wtEk9vjC/lObXLHbWGfXl+dO4axXG+sTM6wWIOw1nJ9g0hSbUqf0XeL+DcuXphKlpQeduQl3crYpt+u4xSPT48mJCz/9xGiHiHV7XG/jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756906695; c=relaxed/simple;
-	bh=LOn4lvVTz9RolUVuFrhuGbcWkHCfxy2FGtDMv4SJQ+g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MUu3s4VJEvpK6FKfGozErQh8cjZ9O+rgz+ZD46XeKMnmzqfTI6PQ1cwq2DwCyWUgurqsuERystnbs0uESPXhxaC1YB+saK0VMBApcn9v6Rjmw5DHm98xDk6mMUTKod+Mq34tbq9XtKwbXYgz+00TuqBFjZui2Ugb883e1CdWcFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=UpmHgTXV; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 583BZu8e024816
-	for <stable@vger.kernel.org>; Wed, 3 Sep 2025 13:38:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	+aXgx0C/TKBcTy6Wyua/O23sUvaZBDBg9e7hKnXJ9Os=; b=UpmHgTXV3+w3B4pt
-	cREBVJYCxm0fGIOPXLriIEv6OMHG7Lal57rwNw+rbkwTCxBLFLJdPLdzXLiaUj35
-	GcqpHQ92FITlQTgIY7urCVhiTjyJUOnmVILhH8Dgf1P7FdMZSbCIc4Nw4ancUIj/
-	fDBk4mHUNyc/WTu87Kw1YwaFjssHcL1pVnnL0BYR/AK/tcJtfmfWS+sUpoc0DHsJ
-	ZsVKGYTeG9J+x3KCFGj1so4SyqRvPZm/nL+IjU5Z0rJXw4BKysDU1ggGiuCGTdfR
-	RjUxCgCcbI7OOwMYKFBkRQAJup95hfuAoAGVodfHlOBto5S+9tM1tB9ko0F4wBHb
-	zHizJA==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48xmxj0cr5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 03 Sep 2025 13:38:13 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-4b10991e9c3so11777231cf.0
-        for <stable@vger.kernel.org>; Wed, 03 Sep 2025 06:38:13 -0700 (PDT)
+	s=arc-20240116; t=1756907523; c=relaxed/simple;
+	bh=T/KSTrSwcf413M6648OAvY3x0y9kavIDZn2ShtBOwsk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LjasHx301ScyBt9JzkKWydKlCwEUPslicQ39houftBN12ifcmKbmVbAqWj81AJoMZZMFd3DDGDJAE6ACKhezqehgt5U6nBP0Jm9jJkQG0hmGRjyGwLTifwLdLWzzlMDCm/c1xMQwD21pgwRwqNYF6rVc8Ojp5uWX0LEHAY1pLOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KBbP/PXl; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-24c89867a17so8836315ad.1;
+        Wed, 03 Sep 2025 06:52:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756907520; x=1757512320; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=31pvuPyzmxy7Nu/xNQn3+yYnNi6oTH3Hxdcf+kkmhtw=;
+        b=KBbP/PXl6FUAYyZqD+q2Z+ypSDdXz/9LPHFut40fgaOUxQzKVl+HaO8luSY27uCfL+
+         PMgiN/WL6FQDIFMiEuGML5kjZUdswGt3KB8dDIMOpeBPaGvsUnLahqH+NWzuCcUnJ65y
+         28nXzfMWBiqcQRUsTvP18Ut3+5P3UEFBsDXlNUQvA4xQoUSsmXybuI7/VKJIWfeYhEpc
+         neLgpqeNZrFe+WcE2V3rUHh2r0YfgkVvRf7XB3YQP9PLH4Yf09BsIonVWSt5DQWPgwP0
+         w0rEI55qJJZibmFRsJjwz4xao7tq+DPBArs93lHrBAPKxw/SV2Tmc4sB2xlfeM7mV8ss
+         kXrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756906692; x=1757511492;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+aXgx0C/TKBcTy6Wyua/O23sUvaZBDBg9e7hKnXJ9Os=;
-        b=bk80TngE3FKc+hT2lIml0ADBwAg1j5cXbiqke8MfEDpg3YxfBS3V2c6XFn2iUpeObR
-         wst51PdySPVFsRtL6Tbw/H93h4tEJ9qdrLMP7TezpQi4T6/88WODuJSznVbQlz9+dMhl
-         siMGUvATzeJMhg5kMbXHvdDAYeQB91+DbnR65PKxHWnFCa08wmBVivHYXO5ZdvefQawN
-         p9mp6c5XE8CWiZLplayG1+6ccul6fOtSIl/KHnVxM5/Dwem2IQXjcSbktDTVGvQvWWVe
-         d8EAkuQEMpQm9TZXbDqqZ98GSHjhbK91Mq108gg3t6M8F+uZq7IQmWfxRkVGEzf5VEaf
-         xDTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUneYGgRrfVi787LH5JGMhK3KBnVNtexrYP9XD5uQMwKXwYsb4kzddBgx2/9il982jKeOS5pzA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjtstKzgsLeaZRf32lhEZDMvo8sh0slxoKCQYIWzFPaeg/JrL+
-	uaqN4cNTdFB/ZYJJNnDipdIM6DXuRpiMWe9BRtxt4zdbhmlYmRDtkMj20s5x0FiLPjb9olnrYCQ
-	Gd/jop8SzQshp0Fn1l+XwOKiimHa5mib/Mcqo4Uzm5CzR75UqIkFLHUuhosI=
-X-Gm-Gg: ASbGnctPeVLKkYpMZN9DQgomMyZ58yE97B/+uPV4DjA0qAPTOqVwadhKsfvfn9yKsgB
-	HY6aNAHvtwmm+cUegnIKURc9Z9RG3LKusls737hR8ic2skYODXMOAVuYgTCT50JNjooSvi9s23o
-	M1XqYid7QGR881CZ1XMGvNU6viE+cXOzeCjs0LgWerQUy+e0C+nlAkViCIC3ooxyD3YKg9MwELY
-	hRduBG613n9KqTNXdOumGDyKsUq8kQN489e7mK3Oz2CE5lUbVJaZfBHcjAoO5d6//G88nMNblwx
-	MsrVZXCad3RN4hc55Z8CP1bv2X9QkP3O4Vb8TjSMQtqRyTQu3/CnvXJYaQXa/IQUnXFmkAceMK4
-	iX/mSEFE/ZBGqu+3lh3eytA==
-X-Received: by 2002:ac8:5e06:0:b0:4b2:f5a8:21da with SMTP id d75a77b69052e-4b313e1a3c7mr154164661cf.5.1756906691941;
-        Wed, 03 Sep 2025 06:38:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHctp8klVVlJwh/I9Cv1/2OINdIX9gzROyxCMvF3SPTjSmgb2xzFihn2uTLcDdSBJMQgIRRKA==
-X-Received: by 2002:ac8:5e06:0:b0:4b2:f5a8:21da with SMTP id d75a77b69052e-4b313e1a3c7mr154164281cf.5.1756906691437;
-        Wed, 03 Sep 2025 06:38:11 -0700 (PDT)
-Received: from [192.168.149.223] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b046aa92242sm149794966b.59.2025.09.03.06.38.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Sep 2025 06:38:10 -0700 (PDT)
-Message-ID: <e6761fbc-9f32-4fb6-afc8-7f76b591453f@oss.qualcomm.com>
-Date: Wed, 3 Sep 2025 15:38:08 +0200
+        d=1e100.net; s=20230601; t=1756907520; x=1757512320;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=31pvuPyzmxy7Nu/xNQn3+yYnNi6oTH3Hxdcf+kkmhtw=;
+        b=CY2ORhXpoJjmb3lbbrBcRyWOpiu0vFViQ/nENBN7E7hqs6zA3fApwkkGwiQUWGeHnq
+         lBDe9iSVSaoEdFNcpVsRGAyoBPxYknQLoXBL7g5gUL3FS+uogaTODQra7RnsIIvzgN+b
+         hzuQuy8QxWkIokW8NsmyF6l21ykBR4AB9FASG0qMOkeHPSylhkvt0fq5OFZSzbnBF0nv
+         8vcZKWZCf+DjMMecwJ08c3WVQXzRYy8FV7fMYzSHRmwxmr2R4dGC9nPcoYAOrhvGvUuo
+         lFvMHGTl8gP3opxdsi83jVH6RPagKMmHg5zy9u9/gZ8lRjhxp1Q54K1eUtRfdH1dWHWo
+         u6Hw==
+X-Forwarded-Encrypted: i=1; AJvYcCW9tio98wbUg9NjmV1XnaZB7Skzyo8myR8gEI8WDtuPDKE8iJ4Ve9pOVDODOmODFJFis9hP7nWHALyo@vger.kernel.org, AJvYcCXa/XhXM5Rcu7gat9hpP+yvQ+tWwAj4p6Y8fg21121MymHZpvCkpJyNzAKF2YzkCy+f+i4D5IximxTlcRQ=@vger.kernel.org, AJvYcCXs+ZlgkvSj5gDZksr9Lom1jL6rCDeHOZlkFET+n6tOpEcK4zZqIAYBcNmIFtM7i38YclsN7by/@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqxcarDttghajvFAJcA/g1v33jvNVcEBb78uo5Z64w/AtPp2CI
+	Mwl9I1BLcOTy2/XjyrobH+ALtC4r/KoUiIdAzK9xpDjWSHXSXgk1lI9a
+X-Gm-Gg: ASbGncvKhWngz1PBQm4/jqhlbnadGPwe/1smZ0S/YpoRgRIBQDeklF+RFhwrjR1VQas
+	vfgy4TReP9Fj271cg6hAbUpDRqPelLaM4Zgs47X2Xxp3Ro7P/sR7igNPjLwWVxSZedaODFnnZBB
+	91s3vRPf12EaHC68oRH1x775rK4AnqDgf60XtipwOU5rdlwezlyIKOacIAjEOph8NfXrftcNO2D
+	kT2ksev7qhH4Fxoj3UYNnKIu2yFWC7CILrQyJaJUZ70gF1HK9cQR+U79ytnTTFJk2Ji8CmyY1zT
+	Br/hZ2rcWf0tTW1ZK3nw2RDoilviNgzCOXgHDlkAYT5yzyp7UBAavKCYjkqXRyEtiSZtckgHXtb
+	mxe3JxHg62GQPS8le0ActYKHNKe6Vpes56h2a7rDYrsQn8FFesPS+HtEuFVSg8Zs8dtlhYC6yHd
+	1fiixm/SAm65kz1/oJxRi5ZQn79jrd2jpfjtehq3/cb9ztyxxGEFLT+Jc=
+X-Google-Smtp-Source: AGHT+IGPXxKq1vceqgwEfnjmmFK1BX/HaS7d7j+fXNMkyGVFiTc/r6Px77JsUZgpTvhRMqRYHCDxOg==
+X-Received: by 2002:a17:903:350d:b0:24b:299a:a8c8 with SMTP id d9443c01a7336-24b299aab5fmr68322845ad.20.1756907519733;
+        Wed, 03 Sep 2025 06:51:59 -0700 (PDT)
+Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.22.11.163])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-24b2a5852a9sm40585005ad.150.2025.09.03.06.51.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Sep 2025 06:51:59 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Trent Piepho <tpiepho@impinj.com>,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] PCI: imx: fix device node reference leak in imx_pcie_probe
+Date: Wed,  3 Sep 2025 21:51:50 +0800
+Message-Id: <20250903135150.2527259-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.35.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] phy: qcom: edp: Make the number of clocks flexible
-To: Abel Vesa <abel.vesa@linaro.org>, Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Sibi Sankar <quic_sibis@quicinc.com>,
-        Rajendra Nayak <quic_rjendra@quicinc.com>
-Cc: Johan Hovold <johan@kernel.org>, Taniya Das <quic_tdas@quicinc.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20250903-phy-qcom-edp-add-missing-refclk-v2-0-d88c1b0cdc1b@linaro.org>
- <20250903-phy-qcom-edp-add-missing-refclk-v2-2-d88c1b0cdc1b@linaro.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250903-phy-qcom-edp-add-missing-refclk-v2-2-d88c1b0cdc1b@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTAzMDExNyBTYWx0ZWRfX+3O8hjiRniCm
- wGMOqxxgpfKd/ExNkj235d8Qt0t80G9tLjtyTs/iNYzYu2HW9BdgyDVufXGcx+UrBDdOxNujQTl
- KlehE3LBUl7iIhmPtiIWPOjv5LkTkMtZ7yxnGoNbi2edP0zOXQdRwITPJu4KdRBD4tJ5AvOA3iq
- QskSrcNrm4PK1LxKoki+oKbxpIdeDgHanXNlzV78CNr7S7WUwbUpkM6S9kvMO23LNyNcQGFe5X+
- 0vh5De6HZkBmN16Zxm6DhvDGglJQ6H74+T/t9xDL4hFh3OOH0+t6aq8PYHBP0NvbpTGCM5A0gXs
- yJaYfv4rGDn1Z5rXiNn09cv3uLOUNrluwgNsvRgKUO5k+AesupvnO3xOV8wnxClciSg6+MLqhiF
- pg73XfEF
-X-Authority-Analysis: v=2.4 cv=a5cw9VSF c=1 sm=1 tr=0 ts=68b844c5 cx=c_pps
- a=WeENfcodrlLV9YRTxbY/uA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8
- a=JahnCVLux6B-E1IX8mMA:9 a=QEXdDO2ut3YA:10 a=kacYvNCVWA4VmyqE58fU:22
- a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: gpDz5Exijq6xbpHQpE7ut5PvUP584WkE
-X-Proofpoint-ORIG-GUID: gpDz5Exijq6xbpHQpE7ut5PvUP584WkE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-03_07,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 clxscore=1015 bulkscore=0 priorityscore=1501
- phishscore=0 impostorscore=0 adultscore=0 spamscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509030117
+Content-Transfer-Encoding: 8bit
 
-On 9/3/25 2:37 PM, Abel Vesa wrote:
-> On X Elite, the DP PHY needs another clock called refclk,
-> while all other platforms do not. So get all the clocks
-> regardless of how many there are provided.
-> 
-> Cc: stable@vger.kernel.org # v6.10
-> Fixes: db83c107dc29 ("phy: qcom: edp: Add v6 specific ops and X1E80100 platform support")
-> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-> ---
+As the doc of of_parse_phandle() states:
+"The device_node pointer with refcount incremented.  Use
+ * of_node_put() on it when done."
+Add missing of_node_put() after of_parse_phandle() call to properly
+release the device node reference.
 
-[...]
+Found via static analysis.
 
+Fixes: 1df82ec46600 ("PCI: imx: Add workaround for e10728, IMX7d PCIe PLL failure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/pci/controller/dwc/pci-imx6.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> @@ -1092,11 +1094,11 @@ static int qcom_edp_phy_probe(struct platform_device *pdev)
->  	if (IS_ERR(edp->pll))
->  		return PTR_ERR(edp->pll);
->  
-> -	edp->clks[0].id = "aux";
-> -	edp->clks[1].id = "cfg_ahb";
-> -	ret = devm_clk_bulk_get(dev, ARRAY_SIZE(edp->clks), edp->clks);
-> -	if (ret)
-> -		return ret;
-> +	edp->num_clks = devm_clk_bulk_get_all(dev, &edp->clks);
-> +	if (edp->num_clks < 0) {
-> +		dev_err(dev, "Failed to get clocks\n");
-> +		return edp->num_clks;
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 80e48746bbaf..618bc4b08a8b 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1636,6 +1636,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
+ 		struct resource res;
+ 
+ 		ret = of_address_to_resource(np, 0, &res);
++		of_node_put(np);
+ 		if (ret) {
+ 			dev_err(dev, "Unable to map PCIe PHY\n");
+ 			return ret;
+-- 
+2.35.1
 
-return dev_err_probe(), also please print the ret code
-
-Konrad
 
