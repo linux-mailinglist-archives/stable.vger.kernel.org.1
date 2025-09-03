@@ -1,147 +1,132 @@
-Return-Path: <stable+bounces-177565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F5E9B413B1
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 06:52:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD353B41464
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 07:34:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC51F1B26E6C
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 04:53:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A4A03B78E4
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 05:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C8C2D481F;
-	Wed,  3 Sep 2025 04:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F112D543B;
+	Wed,  3 Sep 2025 05:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cOCEQaR1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLdgKnf5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DD02D4813;
-	Wed,  3 Sep 2025 04:52:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C072D47E0
+	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 05:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756875170; cv=none; b=uY8dBf2Jslq6/7oMRCRzu0yHrdqqvlUVa+6CMUbjcyyGP9Xd+GBa91ZkLyEgEOxDf2T2RVh0cEEGyIKhzcrz9v2wRys2ecoY4o8JS4jWBMw2OXFUm2kv2uI3KHy8hBalGVQOnmepsIRvPqRLDleM9nA83cnzTzLZW2W9Y2kiXXo=
+	t=1756877681; cv=none; b=Szj+vPSF7/gdJxnlqaAbptZJh/+ugft6amOLUk9Oh2dj++4S/gHwaGFQ2o4aEAfvpzOLJiOWg/oKDYDngDEAGNnIR4Iwy28C3CghFpDFmunLZr2Tk7sjGDjctXjYK9NE4V1MvOIvgXcyn4Z99hYlx7VDei5Ail9zA9ANtOHKOgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756875170; c=relaxed/simple;
-	bh=KyAtw1ROkQzmskX697stOWX20DsHTRWeC52X8SmVBqs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VTjsO1WTDUpIayHxbEdsllqnkn7HVpNvqlRgry3TyoGFS1YzcERaCmHY7helbYaiXTTKJTQl0N7IqOnhqT0AwBIkgzpgMDefwIjgwfzwVFhBKHnzidtHNIeAStsyPykdLIeVB/1W0c707emgN+2us5D2MpViO15J1WVdjelFap8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cOCEQaR1; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b49cf21320aso6558609a12.1;
-        Tue, 02 Sep 2025 21:52:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756875168; x=1757479968; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q7R3UA6dJinJ0I/6N9AH4Q+v9BW5iCYGVoJtMMc/Y28=;
-        b=cOCEQaR1NYJ1es1otQDAm5E4s6zSRbFd3BRNINSWJne7RTWm7ZnNnvsoboDk5ox0+G
-         UjwnwB6G8W8WiYFB/YySla9kZm7Uyesz88uLQhDAXw80Qwc8T5JvkJBkt6BOAJTzzeTQ
-         KPICARgW7Qa0WnTHqevdz+ZxpCO44LfU4ljr0uuw+81yMss9N/2dnNT3Uz/oi85D43kW
-         g4KgzVDv8XAkw/BlDDqrMxsrU6d1Brv28g+5mf4NObwQS7hTfKcKQKHXyFjl9WOkivFe
-         lTv/+ImZAwDEt5CMwi/8pGBltc+DCipMEBTw5OmNbxUpbeVHPP4tJi+MES85gu3lgmvi
-         G2RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756875168; x=1757479968;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Q7R3UA6dJinJ0I/6N9AH4Q+v9BW5iCYGVoJtMMc/Y28=;
-        b=WUmT2/lX0dUg3tQQ1zkM0onfT9eyDRUTh5FSrmNIFrJ2Kh5adKG8/2QwhWEeLH1tPg
-         bmoV6UUrZ41Zv8MwJX0FIyK4V9sn5w6TB+LSzPMl2gqTIUbsEO7CEq1K23hC5w3QVEe+
-         dNrribcoSLu9/rRSXFHEK+eFnWd4drmGQRdsLcwOb5x1R87Qo1S1ZXbLHslTrKsxKQf7
-         KpPnHVM4KGcM8BZU3fY90wJTMaSRQ2to3CxLVxHurx5lA4/7sQQVkkPoHIYvoV3vF1C4
-         oESfU4GJTeKLWbQrT99WVbzPCbpnn0ro3iDsveKl5gkSiLBTFQOPDfxvzdfsIJCXhzbh
-         TFDg==
-X-Forwarded-Encrypted: i=1; AJvYcCUeG1Tws8zxvt54BkUqwmeppWyKvSfVdQDN9wUUrAl/JX+TRbvNZRs0CQw4Ahgd3hpXKsydmhzpSn7b5So=@vger.kernel.org, AJvYcCVEUnCeBYYG5TyLFBbaZ45vgy0rZwOjmBUXMO9MQ5zcL4sOttnvlweEkxhW2l8/rQTj162fAty+@vger.kernel.org, AJvYcCXW1lqFrI/6fswX7uoSGFgO/G6CIGFV3m/bEgc+z6sr7ZnZBddixQSVjo+OsSk/sPTiXHcyemU2Mn/nBpU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8n+fgUCs1r/KLa6ErjQeCQFcpECbxo/hKLc51aTjsaoToHmdA
-	OmlqmLn2+NGK6A4qWeZ0V4YvTcv6sgXp5aQ/v9OYCs/rw2Lo8m8tzSx3
-X-Gm-Gg: ASbGnctRx5NEcNujZngH3a86D/oH+ibgT/58bCbr6Plinr8xgVJ3VhMgDSwj0K38VKN
-	ul9IHgNSas2vRgdZgi1NMGB9GwhKW5wqZxc2qfaqVy98iIKsjwdEOfltSbqXsx6SZjGr7bguwWn
-	is/oiPq0W4wBCFTeRBkEwctTQCjSvPabQkVgNlkiLHA4LsanhePHgiDvhPjW6cYvqCtupTknsiK
-	s/iydqFyXUZaEmapqZkmr0om9QYCVX2qlWJeJ5GzQO2UQPOutr3DYdKm2bESQrv7wBli29HrWW3
-	lV8uHxw35U9PeYpR/gNTc9bWgj/BzV+6WLr9ib76C7FJY4N2yjHvJOIb+xDwPapIyXc2TIJgLcE
-	hr+vJUgKnq7XprDW8ga6Qv1SYBSbIjqd2Dt4dmrd6nykMwEASWRA4hiLnNZPfN8Ot8G9FLDbF11
-	JxKuiva/Of65o+rSMZ1s3lVcCPlcvKb2CIjx5Tx6T8fP+VhtEgtI+iIKWy
-X-Google-Smtp-Source: AGHT+IG/noxDbJ2ua4C+CLSewBamCxkllBE3NpGs19mktDiXa50Eu+evBczxnqDV+nDB2Up/ZpTxbA==
-X-Received: by 2002:a17:90b:2751:b0:312:e731:5a66 with SMTP id 98e67ed59e1d1-32815412c9emr18183834a91.3.1756875167828;
-        Tue, 02 Sep 2025 21:52:47 -0700 (PDT)
-Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.116.239.34])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-3276fce1160sm21537553a91.22.2025.09.02.21.52.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 21:52:47 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: JC Kuo <jckuo@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	linux-phy@lists.infradead.org,
-	linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] phy: tegra: xusb-tegra210: Fix reference leaks in tegra210_xusb_padctl_probe
-Date: Wed,  3 Sep 2025 12:52:40 +0800
-Message-Id: <20250903045241.2489993-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.35.1
+	s=arc-20240116; t=1756877681; c=relaxed/simple;
+	bh=Dn99J/wNZcQ8cjepOF0bFowzIyB5iiQnDIx6F1w1350=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mPG6rRBK/aI6q0sYBY7fJgOR+XsSx04azsqW7M6NJ8g6PD7pCpyqia/K1YLVdO5ULF6BrWsUWvo9QmRanGo5ArYozK5LwSeQF5xusxa9J2yotIP0tiHIf6vu9rM9uF11/HAnLyhty92MChzEiZ9nSvVVXj7eTDWjd/5po7rFkt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLdgKnf5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38633C4CEF0;
+	Wed,  3 Sep 2025 05:34:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1756877680;
+	bh=Dn99J/wNZcQ8cjepOF0bFowzIyB5iiQnDIx6F1w1350=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JLdgKnf5mpupjTIzrlpoUb9vBvABQUmYezdlPzitP7YFyCk6mKabo0tptyM9Z8Cp/
+	 8zTiAEwLD2fC3QO2iLBH2KDtxKucr8yG14D+61M8YdSzf20lmBjTppCTWTZk+ejkoQ
+	 exY7fWqTAQckpsxBk5+JhJhIjyKhjYu2AFSECO3o=
+Date: Wed, 3 Sep 2025 07:34:37 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Teddy Astie <teddy.astie@vates.tech>
+Cc: xen-devel@lists.xenproject.org, stable@vger.kernel.org,
+	Juergen Gross <jgross@suse.com>, kernel test robot <lkp@intel.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Anthoine Bourgeois <anthoine.bourgeois@vates.tech>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Jiri Slaby <jirislaby@kernel.org>
+Subject: Re: [PATCH v5.10.y] xen: replace xen_remap() with memremap()
+Message-ID: <2025090335-operating-antarctic-39f7@gregkh>
+References: <4cc9c1f583fb4bfca02ff7050b9b01cb9abb7e7f.1756803599.git.teddy.astie@vates.tech>
+ <2025090203-clothes-bullish-a21f@gregkh>
+ <d4d5ce1f-8bcf-46c3-a1a5-f509375e80e9@vates.tech>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <d4d5ce1f-8bcf-46c3-a1a5-f509375e80e9@vates.tech>
 
-Add missing of_node_put() and put_device() calls to release references.
+On Tue, Sep 02, 2025 at 04:24:33PM +0000, Teddy Astie wrote:
+> Le 02/09/2025 à 13:18, Greg Kroah-Hartman a écrit :
+> > On Tue, Sep 02, 2025 at 09:28:32AM +0000, Teddy Astie wrote:
+> >> From: Juergen Gross <jgross@suse.com>
+> >>
+> >> From: Juergen Gross <jgross@suse.com>
+> >>
+> >> [ upstream commit 41925b105e345ebc84cedb64f59d20cb14a62613 ]
+> >>
+> >> xen_remap() is used to establish mappings for frames not under direct
+> >> control of the kernel: for Xenstore and console ring pages, and for
+> >> grant pages of non-PV guests.
+> >>
+> >> Today xen_remap() is defined to use ioremap() on x86 (doing uncached
+> >> mappings), and ioremap_cache() on Arm (doing cached mappings).
+> >>
+> >> Uncached mappings for those use cases are bad for performance, so they
+> >> should be avoided if possible. As all use cases of xen_remap() don't
+> >> require uncached mappings (the mapped area is always physical RAM),
+> >> a mapping using the standard WB cache mode is fine.
+> >>
+> >> As sparse is flagging some of the xen_remap() use cases to be not
+> >> appropriate for iomem(), as the result is not annotated with the
+> >> __iomem modifier, eliminate xen_remap() completely and replace all
+> >> use cases with memremap() specifying the MEMREMAP_WB caching mode.
+> >>
+> >> xen_unmap() can be replaced with memunmap().
+> >>
+> >> Reported-by: kernel test robot <lkp@intel.com>
+> >> Signed-off-by: Juergen Gross <jgross@suse.com>
+> >> Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+> >> Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+> >> Link: https://lore.kernel.org/r/20220530082634.6339-1-jgross@suse.com
+> >> Signed-off-by: Juergen Gross <jgross@suse.com>
+> >> Signed-off-by: Teddy Astie <teddy.astie@vates.tech> [backport to 5.10.y]
+> >> ---
+> >
+> > Why is this needed for 5.10.y at all?  What bug does it fix?  And why
+> > are you still using Xen on a 5.10.y kernel?  What prevents you from
+> > moving to a newer one?
+> >
+> 
+> This patch is only useful for virtual machines (DomU) that runs this
+> Linux version (a notable Linux distribution with this kernel branch is
+> Debian 11); it's not useful for Dom0 kernels.
+> 
+> On AMD platforms (and future Intel ones with TME); this patch along with
+> [1] makes the caching attribute for access as WB instead of falling back
+> to UC due to ioremap (within xen_remap) being used improving the
+> performance as explained in the commit.
 
-The function calls of_parse_phandle() and of_find_device_by_node()
-but fails to release the references.
-Both functions' documentation mentions that
-the returned references must be dropped after use.
+So this is only a performance improvement?  One that people have not
+noticed in over 3 years?  That does not feel like a real bugfix that
+stable kernels should have to me.
 
-Found through static analysis by reviewing the documentation and
-cross-checking their usage patterns.
+Again, what is preventing you from just running 5.15.y in your system
+instead?  Debian 11 is quite old as well, why not use Debian 13 or 12?
+You only have one more year left of 5.10.y kernels so you need to
+consider moving off of that as soon as possible.
 
-Fixes: 2d1021487273 ("phy: tegra: xusb: Add wake/sleepwalk for Tegra210")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- drivers/phy/tegra/xusb-tegra210.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+thanks,
 
-diff --git a/drivers/phy/tegra/xusb-tegra210.c b/drivers/phy/tegra/xusb-tegra210.c
-index ebc8a7e21a31..cbfca51a53bc 100644
---- a/drivers/phy/tegra/xusb-tegra210.c
-+++ b/drivers/phy/tegra/xusb-tegra210.c
-@@ -3164,18 +3164,23 @@ tegra210_xusb_padctl_probe(struct device *dev,
- 	}
- 
- 	pdev = of_find_device_by_node(np);
-+	of_node_put(np);
- 	if (!pdev) {
- 		dev_warn(dev, "PMC device is not available\n");
- 		goto out;
- 	}
- 
--	if (!platform_get_drvdata(pdev))
-+	if (!platform_get_drvdata(pdev)) {
-+		put_device(&pdev->dev);
- 		return ERR_PTR(-EPROBE_DEFER);
-+	}
- 
- 	padctl->regmap = dev_get_regmap(&pdev->dev, "usb_sleepwalk");
- 	if (!padctl->regmap)
- 		dev_info(dev, "failed to find PMC regmap\n");
- 
-+	put_device(&pdev->dev);
-+
- out:
- 	return &padctl->base;
- }
--- 
-2.35.1
-
+greg k-h
 
