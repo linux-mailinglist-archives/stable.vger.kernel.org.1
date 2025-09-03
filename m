@@ -1,125 +1,106 @@
-Return-Path: <stable+bounces-177579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69099B417FF
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 10:07:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829A0B41801
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 10:08:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86DC11738D4
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 08:07:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 033AE188A5FA
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 08:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9436B2E7BD0;
-	Wed,  3 Sep 2025 08:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9582E62C3;
+	Wed,  3 Sep 2025 08:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YnbBQYr+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fOMd+ClN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2E22E54C8;
-	Wed,  3 Sep 2025 08:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8F52E6CA5;
+	Wed,  3 Sep 2025 08:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756886839; cv=none; b=IB54/gBgcO+IcLS3giM6zR4e90gdJC4MmRwILjPm1a6pzRKypCdbDvWNX41RLEVtS5QvREBmSSf9dBKHMpX2f+WwKwFwpNzP6jZKbLy+FYuvrJQ1Uyhg86p2fVCXbd/e/WBWwxsC8CNSs+IFcbgK+MfjAUHbhWBJp0y7F9UrTBE=
+	t=1756886866; cv=none; b=AifADRGnSWcggVlWE0K2Hby2d0PJPy7ekCIeIESZAvg6YAvEfA33RFYQRLWtWQCV13cvS3VDxS3HZiht4bgKmKD9qPXOUAXzjIdJM28nQOdCL0x8C32WdvoFS04McbxUfb01JM0pH2d4tUuZSF6Qnv9tXoO8o2a46R0W1eNoMQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756886839; c=relaxed/simple;
-	bh=VshbNHGT/d2pjHoF9/J0MH2WYAbtTTCtbfaiPhsWUU8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BrrcK3J+VVJftdp2LPcxacLNqA/uVlZ6YATCAVjg7BkZ0Mzv0mjEnhzV+tVK/jlaYNRiM0UnXTxbqkrwjFuzSQMyE7KpXiHAfLSWTK7/w6eQM5jL20hQQ+yS0c1V0xbjpNLURJrtl4SfrZMhCWd+GAxUMDFunsadX7lGilYm/lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YnbBQYr+; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-45cb5c60ed3so694655e9.2;
-        Wed, 03 Sep 2025 01:07:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756886835; x=1757491635; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hZTy5PSuTM5rEw0pIf6nxs+pKdYAXNk6URBgB/E9ySA=;
-        b=YnbBQYr+cX9Bvd0pZf0BgdlnmPtTzRmZkAnNTxC7zpCR0rEoAXKqc7FeGJdTmay9pi
-         ODpH1G5c1Co/0u2rYNTOO1j+Cy3/WyhZDzNdvJpRNvyKzewaK1Nhzx3C3ZvYi2cH1cxZ
-         p6ZOBpXvqbe+AQOlkSvGrHuFMQjOSlmuFgijecHLJuwUBhncU7UAcGE+Q+Bs5ovtB+wU
-         CqhQFd5tKJgzXTziynBwq/+ePt/WIDIie6+9BQBvyo+SXb8+0mYiRHtglzVEd8GhCWOY
-         vT4jvLarlQ5zWaNYU4ZbwqjyWyOYZwGLaIiCWcIJDc8B7C1PB/oNQFc0Tre24HpT2Xpt
-         PX9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756886835; x=1757491635;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hZTy5PSuTM5rEw0pIf6nxs+pKdYAXNk6URBgB/E9ySA=;
-        b=mjQjuMBr7wSU9TJwUF+asPattU0Bn5V0XUb1Zh4QbAB2B+sPf7JCCa/GeYW9WoYSG6
-         Mzs07Jy1rJLs0WWvwNw122diRAk1F3lz6h1PufJhDRsIpbNIR9u4/aI+5Uut+BVT44dg
-         /Nvx9KvZp8u3BogHVUGdnAlRgpQrvxxR8N4R8BASADtdhGcpyziS3d1DzuyF/jGIeRnE
-         N/8JhLi2+fsjFCg9EiWu2XWjmxzJitrmIDRkPVTwlZLKRzR9xTFCYiRJRPtv6TzmEU5i
-         69UjFW1arXw+JEw4tCusdxJio8VVaSqh/dKpaOY4MaK2CgNZIcewGeT63G4d4fDeMDB8
-         Xoqg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUMk0kSyh412lNVd9IJYlEeE4ovCa9e+gMbGXSBXbE6lP5FSxrxXbPHWbuacg9YBR28R1Tt+abH8lK+lk=@vger.kernel.org, AJvYcCUxyp0MI2LQ4EP6HxdC8bMfKVoQRMBH1vNht1a286U3GWFurw9TucdfMmDOS8zB7OyoE8H9dd/myf9Ydtw5@vger.kernel.org, AJvYcCVBC2gKInije7QQVM6gxy+gzpAo/sA++TPPMS6ZkXHTUi9Unzwq48NRO2mTa7QNYvaJupnjW1Yk@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxph0U+Prvl8x15pWZQDW2npBwrx7Z88TjOmaAOoVtY+M9wp8bi
-	wThwFWU+u1SHpuIHyQmmeP/YSvaYqLcDwzBf4dDLfmpIuQdsGHCNtyOh
-X-Gm-Gg: ASbGnctPk3h5JvKTFlM28lxiwSdGJIpveSe+eCU1FBGDZFTgGcmUHVtbtXMHquih8Xb
-	WMDWsqkkERCYynH5qnTHNKd9RTfcugjwF84HtgxZPw8ioXTp35oUPAbsgPKTx1+jCjTcAzXHkTK
-	ZtxhBprhld9uPJI/xGRpWh8yz2xwtTdTY5twtTrbja+Ql3l3Q8xsy2uPIvM31wzv3Fd4DBw4zRV
-	kCu31D5JBRBRtb06iIsPTX2bUELdoESpEbVzarR32q3U9y8LkdGNSTlt4X+i2WWjlpsRr1p02Cj
-	qUCxi+a6BScXdZsvjARnoXichdBBKPqfhDwqdwf9MhfeY2yU2h6Cmq0Y5UpchAzaGRqhonCPzqq
-	d5s16ZFNuo3q5zMNF4dMvTcXp99bKFV348TZP6dTFkVgGKsHu+ic6QJ1+2ZX3Pw==
-X-Google-Smtp-Source: AGHT+IEpGBOP1B1Jph5fgexU4vMmswDuYQqgA49JGWQuOcwTIUvg6AkoYPsE1hTfBRhrYgvcN4/h2A==
-X-Received: by 2002:a05:6000:2883:b0:3cb:9930:78bd with SMTP id ffacd0b85a97d-3d064dfe9camr6000577f8f.5.1756886834510;
-        Wed, 03 Sep 2025 01:07:14 -0700 (PDT)
-Received: from thomas-precision3591.u-ga.fr ([2001:660:5301:24:6179:26f2:8797:e6a9])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3d3a7492001sm17768599f8f.42.2025.09.03.01.07.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 01:07:14 -0700 (PDT)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	stable@vger.kernel.org,
-	Corentin Labbe <clabbe@baylibre.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Heiko Stuebner <heiko@sntech.de>,
-	John Keeping <john@keeping.me.uk>,
-	linux-crypto@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] crypto: rockchip - Fix dma_unmap_sg() nents value
-Date: Wed,  3 Sep 2025 10:06:46 +0200
-Message-ID: <20250903080648.614539-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1756886866; c=relaxed/simple;
+	bh=oylBBl4uKf15Rl0dYmoe29/A3Jm+GijZDxeRqxsoIuk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W8rkjFgkqx3+l2lbymLv6YvP6mwzVH+TlML1GsvplzYUZxcdwqmXk/mONd+QnOasy6YO/9VbceADvASgxrNv2iY1ZxZf+W4wks+nu8QLYOrV7wZM819NOyMw7BanmB6wXW13hqFv3nYecLyMhDb2UX/0lTCUkmVLz4zBYpyrUtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fOMd+ClN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1FBAC4CEF0;
+	Wed,  3 Sep 2025 08:07:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756886865;
+	bh=oylBBl4uKf15Rl0dYmoe29/A3Jm+GijZDxeRqxsoIuk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fOMd+ClNOmVD1CadlRsVv0U/kNNM90vCdRtGb6WjRtylHsNfhk4PSkXUKmwOkDR/C
+	 vK48IXNSmvJhLfUAgQPZ4/Y3gTzF25nlGstPL81xMIuO/7arwJ3LmTesSNWB+nttjK
+	 Ea6DUGKQxzQIFZv+bWSFfZZxF0Xl9yYk0DiPAaDFm/SVZ7gKl7jCHYView402MQGca
+	 kDy41ZypNz7JVgrDCl3LO1M+UUCKtCC2YJO36/Rk4Di2pPGL8W6e+VPhPjqp8sNzH1
+	 th8NXA9hTBowv0+eWIwYAV4IsxdLsWDBYykKOEV6FUNl3jIMvxOJrKr9BcIaS8YEiU
+	 xTiHdPu2j49Uw==
+Date: Wed, 3 Sep 2025 09:07:41 +0100
+From: Lee Jones <lee@kernel.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 0/2] mfd: vexpress: convert the driver to using the new
+ generic GPIO chip API
+Message-ID: <20250903080741.GD2163762@google.com>
+References: <20250811-gpio-mmio-mfd-conv-v1-0-68c5c958cf80@linaro.org>
+ <175680785548.2247963.242433624241359060.b4-ty@kernel.org>
+ <CAMRc=MeWnrSPrLOq7yH71wpw4vP6RJiLnuLCpwXogZn0yugFgw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=MeWnrSPrLOq7yH71wpw4vP6RJiLnuLCpwXogZn0yugFgw@mail.gmail.com>
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+On Tue, 02 Sep 2025, Bartosz Golaszewski wrote:
 
-Fixes: 57d67c6e8219 ("crypto: rockchip - rework by using crypto_engine")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
----
- drivers/crypto/rockchip/rk3288_crypto_ahash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> On Tue, Sep 2, 2025 at 12:10 PM Lee Jones <lee@kernel.org> wrote:
+> >
+> > On Mon, 11 Aug 2025 15:36:15 +0200, Bartosz Golaszewski wrote:
+> > > This converts the vexpress-sysreg MFD driver to using the new generic
+> > > GPIO interface but first fixes an issue with an unchecked return value
+> > > of devm_gpiochio_add_data().
+> > >
+> > > Lee: Please, create an immutable branch containing these commits after
+> > > you pick them up, as I'd like to merge it into the GPIO tree and remove
+> > > the legacy interface in this cycle.
+> > >
+> > > [...]
+> >
+> > Applied, thanks!
+> >
+> > [1/2] mfd: vexpress-sysreg: check the return value of devm_gpiochip_add_data()
+> >       commit: 14b2b50be20bd15236bc7d4c614ecb5d9410c3ec
+> > [2/2] mfd: vexpress-sysreg: use new generic GPIO chip API
+> >       commit: 8080e2c6138e4c615c1e6bc1378ec042b6f9cd36
+> >
+> > --
+> > Lee Jones [李琼斯]
+> >
+> 
+> Thanks, you haven't pushed out the changes yet so maybe you're already
+> on it but please don't forget to set up an immutable branch for
+> merging back of these changes into the GPIO tree.
 
-diff --git a/drivers/crypto/rockchip/rk3288_crypto_ahash.c b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
-index d6928ebe9526..b9f5a8b42e66 100644
---- a/drivers/crypto/rockchip/rk3288_crypto_ahash.c
-+++ b/drivers/crypto/rockchip/rk3288_crypto_ahash.c
-@@ -254,7 +254,7 @@ static void rk_hash_unprepare(struct crypto_engine *engine, void *breq)
- 	struct rk_ahash_rctx *rctx = ahash_request_ctx(areq);
- 	struct rk_crypto_info *rkc = rctx->dev;
- 
--	dma_unmap_sg(rkc->dev, areq->src, rctx->nrsg, DMA_TO_DEVICE);
-+	dma_unmap_sg(rkc->dev, areq->src, sg_nents(areq->src), DMA_TO_DEVICE);
- }
- 
- static int rk_hash_run(struct crypto_engine *engine, void *breq)
+No, I actually missed that.  2 secs.
+
 -- 
-2.43.0
-
+Lee Jones [李琼斯]
 
