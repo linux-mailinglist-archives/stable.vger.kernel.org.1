@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-177671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C33DB42D01
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 00:51:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2044B42D02
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 00:51:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB2E51BC14F6
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 22:52:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C37BA3B076F
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 22:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6832ECEAE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFC72ED86B;
 	Wed,  3 Sep 2025 22:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="m7RGyHmk"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="CYJdCftl"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.68.102])
+Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51CFF29C339
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818652E7BAE
 	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 22:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.68.102
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756939903; cv=none; b=G2FEAj4ag+ioukAelBBj99OgJ909mYErEcrjMVQbW15zSZs8yjuYqtE1u0NeEUw1HVsbXjJAd//imqsr2jWiBpELyrrVdREho0lujU2DJnJuKnHSzhBAyD4ZH5etq7egoYJw99tY/PKK1c5bKj2QDvmLNW2U1RslcZCLtkZipDU=
+	t=1756939904; cv=none; b=f4VaVA/laMGGS+trwmCE2s2DY8hz8/oz4pQAaUD+5OT30bmYghZrxGpGOoY8xvpEl1n/c9SFuogwv8aRgg/70kjLJt9KRj1226Bmv65YrDljmb5GgaZwuBtSrRrk4oHTFdKG+9H2eyAsLFQSlg/JF94qFUtRpk3euw4JZ0KFcII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756939903; c=relaxed/simple;
-	bh=Mpu7eWr7e8AOmHVsG/NBMiQWqc8On9aiMPdRPFQ+LUg=;
+	s=arc-20240116; t=1756939904; c=relaxed/simple;
+	bh=hFbrD/0coVfyQddnGILrRkhr7q8X+/6R+jRvSG/XCOo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dhfvTs2ripqYojTjJHlmJyAh6RcbHCGJ6dl5MfQVMO8JCif3kuOjn6ZvdBX0gW+Y4psdOrO7PGaoQjJnWBhM0bpzhde81c167XOm3bibA1G25fBuSumlSKVWwaVY76QQnoXXp7HO3Q9B1PSh+wG2pMTDk4vQblsIuNYbA4hesc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=m7RGyHmk; arc=none smtp.client-ip=44.246.68.102
+	 MIME-Version:Content-Type; b=p6RgrBLjm1OuHVjjz0OoxN48v1SThllRcsSpYmm4O39HpacoGFTEpAJnXhWBV2e64Uv8kRfzmHBb5ryqO6ZSMZfrfK5mYm8nXNvRv7EDfHHFJjbazMpZ2Wkjx06W1PkUukKug/zc+LaUE/xbfigtLecSYAqKcs6j/qSpd1vGNWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=CYJdCftl; arc=none smtp.client-ip=52.34.181.151
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
@@ -36,24 +36,24 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   t=1756939902; x=1788475902;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=VYt/1WmUJEXBJPCKZSD5kih/ive7DLQ1VEhGnJMOn6c=;
-  b=m7RGyHmkBobqDX5kxEBy7DA6nRLP9UqafFPNytFR2CXfeCMy+7Vrvd2V
-   N1Ydf6VimxWehtvC4BZGZ7qmNNNePKuN8AsNmXZC7ef2vDp+hRgkq1aVd
-   4S2seIGKdosWjQWfRa0ch4n9Zpspw92WZpAkg4iLxwneK+gFNwfOLOewy
-   +ZLHtHyKc4plWldBAmAseQ6/G5IZfpH0PW8IpsFyAJiQNmZO1N/4VYcYo
-   7vhnZo4rIAjTp3s6ZNU1GoBbURADzbS1s9ul5ZwuWUIgqpnmSbNP9KjH9
-   7JvAO1zEKH4q3rYkhc1oREDpyrzVXlQbRqFDK/CroXz2cY7YQ4WWmv5VR
+  bh=gIlPnPrBrGND/kXLp6/X+PalV1vbvyxBGlqPfezTjrY=;
+  b=CYJdCftlOKRfjU8BzqlXpfAdL71f5JVnyEYnJ+HriqNSH9BzJCcyKI3T
+   /F8/PkEWDXzRkYadnaAC5G8epDrgw4dDo3iRzhmL6e7w/cFa6sjK4ZjOe
+   4ingyAlNrLy/pDiAIoI5Rm69U1dP7h+x7+2iMEkLANHsn2BGvByjVke54
+   5zgJ1v+WsMEr/fNXqKCjtQJC8zg96buNn9zxuYGxEIIQEyvosX6LzNBkg
+   NDvM+WLKL7g3XS8PxzGKG8oVCaNOD4BMSvXdQqWQ1Q+RuCqhDff+4lcce
+   U6ZV4yt2ntYbTWf5xEyoL78fpsH8/xD0A1dSOgBw6tXiHCcbBLMdkFHOG
    g==;
-X-CSE-ConnectionGUID: jrYR8khYQoeC4/Ur/4C3hg==
-X-CSE-MsgGUID: 8XwGbdpeT2iChsXP2LNeCA==
-X-IronPort-AV: E=Sophos;i="6.16,229,1744070400"; 
-   d="scan'208";a="2352089"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 22:51:41 +0000
+X-CSE-ConnectionGUID: yDHDtHG1RkeyPm9+yjSLOw==
+X-CSE-MsgGUID: LJI+es9DTUKO3nDk9yjVdQ==
+X-IronPort-AV: E=Sophos;i="6.18,236,1751241600"; 
+   d="scan'208";a="2352082"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 22:51:41 +0000
 Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:42275]
  by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.51.7:2525] with esmtp (Farcaster)
- id 64a8fb41-9078-4bba-8d97-0a81a3a93d48; Wed, 3 Sep 2025 22:51:41 +0000 (UTC)
-X-Farcaster-Flow-ID: 64a8fb41-9078-4bba-8d97-0a81a3a93d48
+ id d0d759ba-3959-4633-a68b-ca08bbeef20b; Wed, 3 Sep 2025 22:51:41 +0000 (UTC)
+X-Farcaster-Flow-ID: d0d759ba-3959-4633-a68b-ca08bbeef20b
 Received: from EX19D015UWC003.ant.amazon.com (10.13.138.179) by
  EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
@@ -64,13 +64,12 @@ Received: from u1e958862c3245e.ant.amazon.com (10.119.254.121) by
  Wed, 3 Sep 2025 22:50:31 +0000
 From: Suraj Jitindar Singh <surajjs@amazon.com>
 To: <stable@vger.kernel.org>
-CC: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Josh Poimboeuf
-	<jpoimboe@kernel.org>, Ingo Molnar <mingo@kernel.org>, Linus Torvalds
-	<torvalds@linux-foundation.org>, Peter Zijlstra <peterz@infradead.org>,
-	"Suraj Jitindar Singh" <surajjs@amazon.com>
-Subject: [PATCH 5.10 3/4] x86/speculation: Add a conditional CS prefix to CALL_NOSPEC
-Date: Wed, 3 Sep 2025 15:50:02 -0700
-Message-ID: <20250903225003.50346-4-surajjs@amazon.com>
+CC: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Ingo Molnar
+	<mingo@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, "Suraj Jitindar
+ Singh" <surajjs@amazon.com>
+Subject: [PATCH 5.10 4/4] x86/speculation: Remove the extra #ifdef around CALL_NOSPEC
+Date: Wed, 3 Sep 2025 15:50:03 -0700
+Message-ID: <20250903225003.50346-5-surajjs@amazon.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250903225003.50346-1-surajjs@amazon.com>
 References: <20250903225003.50346-1-surajjs@amazon.com>
@@ -87,72 +86,56 @@ X-ClientProxiedBy: EX19D033UWA002.ant.amazon.com (10.13.139.10) To
 
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit 052040e34c08428a5a388b85787e8531970c0c67 upstream.
+commit c8c81458863ab686cda4fe1e603fccaae0f12460 upstream.
 
-Retpoline mitigation for spectre-v2 uses thunks for indirect branches. To
-support this mitigation compilers add a CS prefix with
--mindirect-branch-cs-prefix. For an indirect branch in asm, this needs to
-be added manually.
+Commit:
 
-CS prefix is already being added to indirect branches in asm files, but not
-in inline asm. Add CS prefix to CALL_NOSPEC for inline asm as well. There
-is no JMP_NOSPEC for inline asm.
+  010c4a461c1d ("x86/speculation: Simplify and make CALL_NOSPEC consistent")
 
-Reported-by: Josh Poimboeuf <jpoimboe@kernel.org>
+added an #ifdef CONFIG_MITIGATION_RETPOLINE around the CALL_NOSPEC definition.
+This is not required as this code is already under a larger #ifdef.
+
+Remove the extra #ifdef, no functional change.
+
+vmlinux size remains same before and after this change:
+
+ CONFIG_MITIGATION_RETPOLINE=y:
+      text       data        bss         dec        hex    filename
+  25434752    7342290    2301212    35078254    217406e    vmlinux.before
+  25434752    7342290    2301212    35078254    217406e    vmlinux.after
+
+ # CONFIG_MITIGATION_RETPOLINE is not set:
+      text       data        bss         dec        hex    filename
+  22943094    6214994    1550152    30708240    1d49210    vmlinux.before
+  22943094    6214994    1550152    30708240    1d49210    vmlinux.after
+
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250228-call-nospec-v3-2-96599fed0f33@linux.intel.com
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20250320-call-nospec-extra-ifdef-v1-1-d9b084d24820@linux.intel.com
 Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
 Cc: <stable@vger.kernel.org> # 5.10.x
 ---
- arch/x86/include/asm/nospec-branch.h | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/nospec-branch.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index bb7dd09dc295..2cade6749322 100644
+index 2cade6749322..9f84a00776e2 100644
 --- a/arch/x86/include/asm/nospec-branch.h
 +++ b/arch/x86/include/asm/nospec-branch.h
-@@ -119,9 +119,8 @@
- .endm
- 
- /*
-- * Equivalent to -mindirect-branch-cs-prefix; emit the 5 byte jmp/call
-- * to the retpoline thunk with a CS prefix when the register requires
-- * a RAX prefix byte to encode. Also see apply_retpolines().
-+ * Emits a conditional CS prefix that is compatible with
-+ * -mindirect-branch-cs-prefix.
-  */
- .macro __CS_PREFIX reg:req
- 	.irp rs,r8,r9,r10,r11,r12,r13,r14,r15
-@@ -281,12 +280,24 @@ extern retpoline_thunk_t __x86_indirect_thunk_array[];
- 
- #ifdef CONFIG_X86_64
- 
-+/*
-+ * Emits a conditional CS prefix that is compatible with
-+ * -mindirect-branch-cs-prefix.
-+ */
-+#define __CS_PREFIX(reg)				\
-+	".irp rs,r8,r9,r10,r11,r12,r13,r14,r15\n"	\
-+	".ifc \\rs," reg "\n"				\
-+	".byte 0x2e\n"					\
-+	".endif\n"					\
-+	".endr\n"
-+
- /*
+@@ -295,12 +295,8 @@ extern retpoline_thunk_t __x86_indirect_thunk_array[];
   * Inline asm uses the %V modifier which is only in newer GCC
   * which is ensured when CONFIG_RETPOLINE is defined.
   */
- #ifdef CONFIG_RETPOLINE
--#define CALL_NOSPEC	"call __x86_indirect_thunk_%V[thunk_target]\n"
-+#define CALL_NOSPEC	__CS_PREFIX("%V[thunk_target]")	\
-+			"call __x86_indirect_thunk_%V[thunk_target]\n"
- #else
- #define CALL_NOSPEC	"call *%[thunk_target]\n"
- #endif
+-#ifdef CONFIG_RETPOLINE
+ #define CALL_NOSPEC	__CS_PREFIX("%V[thunk_target]")	\
+ 			"call __x86_indirect_thunk_%V[thunk_target]\n"
+-#else
+-#define CALL_NOSPEC	"call *%[thunk_target]\n"
+-#endif
+ 
+ # define THUNK_TARGET(addr) [thunk_target] "r" (addr)
+ 
 -- 
 2.34.1
 
