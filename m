@@ -1,110 +1,155 @@
-Return-Path: <stable+bounces-177639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53CB1B42645
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 18:11:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E86FB426F1
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 18:32:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AD47201BDE
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 16:11:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7B9D48844D
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 16:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0582BD58C;
-	Wed,  3 Sep 2025 16:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CAF2D23A5;
+	Wed,  3 Sep 2025 16:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kVjQVsTX"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="iqoEAIW3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0825C296BCF
-	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 16:10:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4984663CF;
+	Wed,  3 Sep 2025 16:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756915859; cv=none; b=NXey8GC+U8a3G8P6GqqcIKViNWjWR7MXc+hyuNtHpZgN5/NGOqEtdusB5Tp/1pCLn5FZNELd6/d/XKlDF8RoWz4/JHPwQtZs23WEBn71OkBV0ATVtyBD4ma6PxTden+UNqMwdDgXzwv9d+NTD35v5VyX2b90PgXtsO225HhqwDI=
+	t=1756917116; cv=none; b=t8vOh+cQd3k9tYybIuEtyDHau8UrZl5xPfcupYr+2bdGYlSesp35uil6GGjrl64cZWBLYxmKFtg3s2+l4WmlqaeCyfOaMGKEmo4E/F+zlwBEbjhnoe55fea4sGH9bCBWb2B7jkeQse1gI7VgH327Z2Q8gFmpD1/COyHh+cpk1S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756915859; c=relaxed/simple;
-	bh=mFZxFpjnHcFLVMkAbXDY4kDtUk8cmpCdtfA2GDa0gGs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A1WPfwKMaJjSAnWqdaj+7/eddVK8WABVI7rL0OITs0rhnfeaI7kUV5EiVP2FEruJ1reGmb0tp+60PHYB5V03mN87f/cT92HVjUGph/6RAwiGzEgsZhuvTQUvpVIPoajLQAU2Lfs/+nxumsK3x3BAku6K7BUfM+1E+xMnMQ58A5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kVjQVsTX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E00C4CEE7;
-	Wed,  3 Sep 2025 16:10:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756915858;
-	bh=mFZxFpjnHcFLVMkAbXDY4kDtUk8cmpCdtfA2GDa0gGs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kVjQVsTX0YGo6t20cO1yEfP2hf+xYO7vqbTv8EEtO9e6QSF1axf7muc4xEX9x/fM+
-	 kbbsoyDbDXkTlxaInZKJeouGssl7cgjHCTVdBnu68gtnxIhZ8knvW+Pog1egMzwAUD
-	 eoPpd/YERzFuIeBjMkTWSqFi/E8+2DFMcYrxrJeDvDZzJxIOkmrSNBKoFzAaYRvGNq
-	 Ua/3eeBeD/zBi892rgFYhfooepMPU7ao6ZJcMcL9ZlvfWAz4HTxvfVIfBojpoxudVt
-	 9nAOoE22LMTvoLoFdNzB4cZ0a2yuHftYzOnQFcex65r8mjKB1EhCUvdaOvC6KWf4/P
-	 0j/qaikonf4IQ==
-Date: Wed, 3 Sep 2025 12:10:57 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Brett A C Sheffield <bacs@librecast.net>
-Cc: Sedat Dilek <sedat.dilek@gmail.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org, Oscar Maes <oscmaes92@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>
-Subject: Re: [stable-6.16|lts-6.12] net: ipv4: fix regression in
- local-broadcast routes
-Message-ID: <aLhokYGMkEGhQ85Y@laps>
-References: <CA+icZUWXiz1kqR6omufFwByQ9dD9m=-UYY9JghVQnbGD2NMy1w@mail.gmail.com>
- <aLH1M-F001Nfzs7m@eldamar.lan>
- <CA+icZUXo-C9sSvqZ9nmZhyZvPtJmE8wgzTm2y+k0P6=mynWZcg@mail.gmail.com>
- <aLhVHLbqFCB6BoB2@karahi.gladserv.com>
+	s=arc-20240116; t=1756917116; c=relaxed/simple;
+	bh=3xyE6UJ3vRQeHm+xo4MVbouQ16qNTitBJ89r0M10OxA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mI5LLpvVjimxzg87BvJrP0rCtFPpAUh4Yk8AhhcHFaslSkZZTXc8mHhxNtKksYwblL8adBMUH3kgfnccw35Pwy9EsZqS9YhWDi1YVIEwBQ8inmNICjd+mmNvSGP8ayN/T6bBLfmSmdkt27GpQdrsolerV79ILB88BFQp5u8EG8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=iqoEAIW3; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5839NANb002197;
+	Wed, 3 Sep 2025 16:31:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=corp-2025-04-25; bh=3CiJIstQli0z66FK
+	STmSJyHo8ie9htn6e/FAyGuQOxE=; b=iqoEAIW3ea4+nhen2Sfa5/4LslNVZi8S
+	4RJg0HVuU1PHJffJ2LQ/t04puyrlFMF3Iu6I9gbPZa03i5gLW6WaD77Q9oXJW1qM
+	Ilvbd56xN1E+46meNNVhIjHirxziQXN0PwWkPR0mEjdZ7OdljSobfHE729AmZWz9
+	c5D3lQRJGrKOdzMGK6bV734ajNHpn8JNDSm2OG9dIe9eZ4A+yvd02QNb1YaFLgWI
+	j7Xo44dgBhJErKombctgJRvJ86YStiX7IH+tHzsWbEugWCEVfLEpm0cYqa2Mm8vn
+	IsY/VWsbpZrayyRKSaMwJ+QWqexIH7/SEUj9lEZfn3WDZFONF8O+lA==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48ushvxtw5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 03 Sep 2025 16:31:46 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 583FLRZX036092;
+	Wed, 3 Sep 2025 16:31:45 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48uqrahhvj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 03 Sep 2025 16:31:45 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 583GViLj024971;
+	Wed, 3 Sep 2025 16:31:44 GMT
+Received: from lab61.no.oracle.com (lab61.no.oracle.com [10.172.144.82])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48uqrahht8-1;
+	Wed, 03 Sep 2025 16:31:44 +0000
+From: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>
+To: Allison Henderson <allison.henderson@oracle.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: stable@vger.kernel.org,
+        =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+        rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org
+Subject: [PATCH net 1/2] rds: ib: Increment i_fastreg_wrs before bailing out
+Date: Wed,  3 Sep 2025 18:31:36 +0200
+Message-ID: <20250903163140.3864215-1-haakon.bugge@oracle.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aLhVHLbqFCB6BoB2@karahi.gladserv.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-03_08,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0
+ suspectscore=0 mlxlogscore=999 spamscore=0 bulkscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2508110000 definitions=main-2509030166
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMiBTYWx0ZWRfXxFavc3EI/yKz
+ bQEEv7BYeHvUInN+6Sioykl9cffRXg1dUDbCma7G0XZpQstWd8o5PyEL5ZAkdyq0Vcj7qDkn1BN
+ Ui/MWquX32jwLcmpyDzoKED85szHAMAE9XgrUYRSngikkEU/d+Ni4h0A/qXRMdPKSBC2gyMt8HG
+ HnaFXXxBwxFwTqWr0078m/mpmY8h2xy5LpUuKK70yhdiLAwbCBfrUtRNpwOnUMjX5BLYSKRagrO
+ 5NBYESMApdy6D+xqca+jUyK2Zobr4eNnZbe3TKZvvP+Jc2Y37HmSwkAw6RmFChh9ADdtjUWoMPb
+ HbqgiQg9Rs59JedFZoe/mMdbp2+wzBIV31RZcQOSduthcgksifr7vS8yajBZZRJ40Qwtew1yCVy
+ YSyivsTK
+X-Authority-Analysis: v=2.4 cv=fZaty1QF c=1 sm=1 tr=0 ts=68b86d72 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=M51BFTxLslgA:10 a=yPCof4ZbAAAA:8
+ a=YYmwRs4_t3Fg8bYOom4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: Ycx0PDE0knzbo5QQca7oIFSZwZZuHzDY
+X-Proofpoint-GUID: Ycx0PDE0knzbo5QQca7oIFSZwZZuHzDY
 
-On Wed, Sep 03, 2025 at 04:47:56PM +0200, Brett A C Sheffield wrote:
->On 2025-09-03 16:42, Sedat Dilek wrote:
->> On Fri, Aug 29, 2025 at 8:45 PM Salvatore Bonaccorso <carnil@debian.org> wrote:
->> >
->> > On Fri, Aug 29, 2025 at 06:56:52PM +0200, Sedat Dilek wrote:
->> > > Hi Sasha and Greg,
->> > >
->> > > Salvatore Bonaccorso <carnil@debian.org> from Debian Kernel Team
->> > > included this regression-fix already.
->> > >
->> > > Upstream commit 5189446ba995556eaa3755a6e875bc06675b88bd
->> > > "net: ipv4: fix regression in local-broadcast routes"
->> > >
->> > > As far as I have seen this should be included in stable-6.16 and
->> > > LTS-6.12 (for other stable branches I simply have no interest - please
->> > > double-check).
->> > >
->> > > I am sure Sasha's new kernel-patch-AI tool has catched this - just
->> > > kindly inform you.
->> >
->> > As 9e30ecf23b1b ("net: ipv4: fix incorrect MTU in broadcast routes")
->> > has been backported to all stable series in  v5.4.297, v5.10.241,
->> > v5.15.190, v6.1.149, v6.6.103, v6.12.43, v6.15.11 and v6.16.2 the fix
->> > fixiing commit 5189446ba995 ("net: ipv4: fix regression in
->> > local-broadcast routes") would need to go as well to all of those
->> > series IMHO.
->> >
->>
->> Looks like next stable releases will include this bugfix - checked
->> stable-6.x only.
->
->Yes, the patch has been backported to all stable RCs.
+We need to increment i_fastreg_wrs before we bail out from
+rds_ib_post_reg_frmr().
 
-Sorry, I forgot to reply - it was properly tagged for stable, so Greg would
-have picked it up at some point, but I just did so manually to address the
-regression.
+Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
+Fixes: 3a2886cca703 ("net/rds: Keep track of and wait for FRWR segments in use upon shutdown")
+Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+---
+ net/rds/ib_frmr.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
+diff --git a/net/rds/ib_frmr.c b/net/rds/ib_frmr.c
+index 28c1b00221780..7e3b04a83904d 100644
+--- a/net/rds/ib_frmr.c
++++ b/net/rds/ib_frmr.c
+@@ -133,12 +133,15 @@ static int rds_ib_post_reg_frmr(struct rds_ib_mr *ibmr)
+ 
+ 	ret = ib_map_mr_sg_zbva(frmr->mr, ibmr->sg, ibmr->sg_dma_len,
+ 				&off, PAGE_SIZE);
+-	if (unlikely(ret != ibmr->sg_dma_len))
+-		return ret < 0 ? ret : -EINVAL;
++	if (unlikely(ret != ibmr->sg_dma_len)) {
++		ret = ret < 0 ? ret : -EINVAL;
++		goto out_inc;
++	}
+ 
+-	if (cmpxchg(&frmr->fr_state,
+-		    FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE)
+-		return -EBUSY;
++	if (cmpxchg(&frmr->fr_state, FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE) {
++		ret = -EBUSY;
++		goto out_inc;
++	}
+ 
+ 	atomic_inc(&ibmr->ic->i_fastreg_inuse_count);
+ 
+@@ -178,9 +181,11 @@ static int rds_ib_post_reg_frmr(struct rds_ib_mr *ibmr)
+ 	 * being accessed while registration is still pending.
+ 	 */
+ 	wait_event(frmr->fr_reg_done, !frmr->fr_reg);
+-
+ out:
++	return ret;
+ 
++out_inc:
++	atomic_inc(&ibmr->ic->i_fastreg_wrs);
+ 	return ret;
+ }
+ 
 -- 
-Thanks,
-Sasha
+2.43.5
+
 
