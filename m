@@ -1,203 +1,252 @@
-Return-Path: <stable+bounces-177576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D16FB41784
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 09:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2339AB417AF
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 10:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FD1B3B6587
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 07:59:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77D0E7C2FF7
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 08:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F882E9EC9;
-	Wed,  3 Sep 2025 07:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE822E229E;
+	Wed,  3 Sep 2025 08:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="OjuPMrOB"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="a1v41t1U";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="x3ZbtNG8"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922552E9721
-	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 07:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756886338; cv=none; b=PBxFAIAuqT3zcZxs+hI48KzHiwy7zh1h9rg7XHc8ViWaY+fIWqVPsWhuF8ltt2gw7jh6StfSwHVGDXooyNFd25fHIJrYm2f2qYZwqtqpC7BQWGR83deQCsgTJAD1TIAma06ePz/ft7bgBoCsczIhLBZ0hyalsHaiatvpeYeGZB4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756886338; c=relaxed/simple;
-	bh=CCP6XV16ghSvc5+TmzW6tBCOJI6kcdghqrOqpvfv0TA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XU/wjTomrJ3/SnRSBu50s/Mg1CeDA6hIEtwfV62hWdRmOyD/IwaCUFTpQkm4M6i8kfQQRiVnlyZ2kC/vf3uXUh5IJLjhWpxDyVdFqbYhlFujfqnpZgUbwbg1rbyPCyrOftx0EmBCHID2tJCam/eozkN/hIhlySi9Snz6yqKZuE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=OjuPMrOB; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5835Ah9O3495252;
-	Wed, 3 Sep 2025 00:58:32 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
-	 h=cc:content-transfer-encoding:content-type:date:from
-	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	PPS06212021; bh=snGzp4jJgIFQH1DMnuVjHH89f925UJDpthNlRRxLLpU=; b=
-	OjuPMrOBxMm2lsucZ70Fz75MotVUkLs4+yAc9QuYUL/QuN6eEhS/WecZNac1h9QU
-	HgW+mNKF79LvOqPQzuYvlNXhN1wpKCw3YLS6ezq/RZz4z+3A+nkdKWpKOx8GNmCZ
-	0XgsPn7e2RNo2d+jcD3TGv4c0XgT5eaXRUFN/BDiAJZBgXyD8vWxNk0pqb1o6WmJ
-	up/nJ0raXLlbLENxpdd2NXrTUOaFgHLPPDmmeGvrSev9lQF4Sel+AESpHW56pwTB
-	op+WJjBwF1vM8x2jPsY2avzZGWu4Jvy6b8xTM1gJWmrzYaj40+g/071KHVC/Jg1v
-	wpCasIWA7yoFEaAw+ElAcQ==
-Received: from ala-exchng01.corp.ad.wrs.com ([128.224.246.36])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 48v0tfkh3r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 03 Sep 2025 00:58:32 -0700 (PDT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) by
- ala-exchng01.corp.ad.wrs.com (10.11.224.121) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 3 Sep 2025 00:58:33 -0700
-Received: from pek-lx-s14.wrs.com (10.11.232.110) by
- ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 3 Sep 2025 00:58:36 -0700
-From: <jinfeng.wang.cn@windriver.com>
-To: <gregkh@linuxfoundation.org>, <d-gole@ti.com>, <ronald.wahl@legrand.com>
-CC: <broonie@kernel.org>, <matthew.gerlach@altera.com>,
-        <khairul.anuar.romli@altera.com>, <stable@vger.kernel.org>
-Subject: [PATCH 6.6 2/2] Revert "spi: spi-cadence-quadspi: Fix pm runtime unbalance"
-Date: Wed, 3 Sep 2025 15:58:15 +0800
-Message-ID: <20250903075815.1034962-2-jinfeng.wang.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250903075815.1034962-1-jinfeng.wang.cn@windriver.com>
-References: <20250903075815.1034962-1-jinfeng.wang.cn@windriver.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEEE2E62CF;
+	Wed,  3 Sep 2025 08:01:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756886479; cv=fail; b=UVqMs1OxM1VOKuHWa/GwLfYogWbR0UUwgdMJ3N0S887qnGATErklayd3M1+umqIHGdHKDkUVtjiVchs6cXlvYsysNREZOxp4IuTs8r83wdNAYIpXtL5PJr5gYsg8U9qnFCAWo3DbyUkOD0I7o2y4TdLpejOCa9uslXqDUds+tWo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756886479; c=relaxed/simple;
+	bh=ERFoY/xapSj/Hrdy9P8K2huU5i5Cv+Ebu3k0G76Iw6M=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=i/InnECQ2CprrvWrKPxUHzLzoVVI2DyjKRo6axrqOBoIjqrtSHfvW3Kbn5emPrFUkLbmNV08Sl01t/eVoT178NN/5SxKikxgjUbpzOButSguPeTzLhJ8w9GtX5GjYKR62jn3pCq+AkBSYiawXs/XIgXDpe8DpyDoFnD1Skw3m0M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=a1v41t1U; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=x3ZbtNG8; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5837g6T6031473;
+	Wed, 3 Sep 2025 08:00:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=TF1R9PoT6TKuTuffBcNBJF5iy3RVljJuAM6QgNJZJrQ=; b=
+	a1v41t1UWbi+SnOLYUavecZuMLHDlid8EYawKX8XnwFPxs7kuwoXaE/a6+G3xcV2
+	0AKxFrHsMaDxWbB2FcCPfwjRs44823rbeVHhK9+ksKB40MF6C2hTfHdS1gcBHNF6
+	ihTXLQobkZxgRjp1Wc/80pWsI970B9u0qYze9QqA7Iduy+S1/Xv7f5+cksp5a/D3
+	bHYllnzlBk4OQWHaBTrmDGUV+LQ52qAb/zZY/FXV4cFd+yP9tYyhI52/d7aAa9kp
+	XzRWgCQqWcJMfCrOUf2waZ9H/gvDFxtDr7r1M7nZuTdxTjUdlnu5myeUj25tUZ5S
+	oJ5bC+TBTZTmE6lJwPzHvg==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48v8p4n6qv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 03 Sep 2025 08:00:23 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58377WcO036264;
+	Wed, 3 Sep 2025 08:00:22 GMT
+Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam04on2086.outbound.protection.outlook.com [40.107.100.86])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48uqra25vg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 03 Sep 2025 08:00:22 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PmjFj4GRkNxuS5TdSbt3kb7q1buzDBFI2fcpmG0jFOmf80oIuguOA5Ply5kp/zZIlZporj9+kSWDP4GepwyHBC4aVTGZR0wjzAcSwWhbaf9j8q1EZNiR9ZGUmVW5cWGy7zHKpCZVc0w7UOUAx66s5IK6H8sbrPpghu6Fy7a3seHTArtcAcKxk4LelRHSzxYVJawKz/qDfEWgwzkTgyEX4LsobJkkNVUZrj/E3CEc8lhxueOLMRv9PJAsrmuXE8tEmXgx+iE05kVICfL7KJR+b8UyoW9ryBITCLt4HmS4WfmBBCGTYLvTsNtdOwEAC6+kBTry2QFf/0rJKHVmNZ+XLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TF1R9PoT6TKuTuffBcNBJF5iy3RVljJuAM6QgNJZJrQ=;
+ b=gfdo9bwSBkLTqGMDQ7DzN77PmQYLcqfgQT3OCyWOCxmix1cq5EUxdU1EeLIM9v+Wgz2xwg2z6TvqBGEckjE+mfOG3blBrdCGilEj+X1guT/tc+Khjzreofxac4PHwCvpX/f/XSkbvFARk1UE3dXX6rrgeAKbaII0cQ43I14sASfzsjhW5Ed9fIvpf9U0Crt1lRL2Qo2cIvNIBUDO53zS2FfpUmVi4D5k3XBBQVFv7tWLUyun63WvUTkaVPE3CtYyfKsuaKFIdQ2W8XFS2vgqJDWTgvkXPlQ8gI0/tTh+/4CoOPUlDlr0/cPS3qvvoIIaggKk1wmpSVaUv4aGE3oiig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TF1R9PoT6TKuTuffBcNBJF5iy3RVljJuAM6QgNJZJrQ=;
+ b=x3ZbtNG8p88SNe9h86fdpWwnA5u+6dIVIfGRmeiplWONebqd0u+TOvnNnoM/eDVS/wzp30pEpZHt6gEC/AD0d5vKCHw28zCqm18VognA0FdFO09/K0orSBfgoGTGLgWFf02jJHLTv+c2eZHHGdJBaC8xrvkYoSd6qGs40dma0Xc=
+Received: from SJ0PR10MB5437.namprd10.prod.outlook.com (2603:10b6:a03:3aa::8)
+ by CH3PR10MB7161.namprd10.prod.outlook.com (2603:10b6:610:12b::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.16; Wed, 3 Sep
+ 2025 08:00:18 +0000
+Received: from SJ0PR10MB5437.namprd10.prod.outlook.com
+ ([fe80::e4e9:670b:5d8f:f2af]) by SJ0PR10MB5437.namprd10.prod.outlook.com
+ ([fe80::e4e9:670b:5d8f:f2af%5]) with mapi id 15.20.9052.019; Wed, 3 Sep 2025
+ 08:00:18 +0000
+Message-ID: <bde0c1ef-ea04-4510-886e-0872f72cea07@oracle.com>
+Date: Wed, 3 Sep 2025 13:30:04 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 00/33] 5.15.191-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+        rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com,
+        broonie@kernel.org, achill@achill.org
+References: <20250902131927.045875971@linuxfoundation.org>
+Content-Language: en-US
+From: Vijayendra Suman <vijayendra.suman@oracle.com>
+In-Reply-To: <20250902131927.045875971@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO2P265CA0421.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a0::25) To SJ0PR10MB5437.namprd10.prod.outlook.com
+ (2603:10b6:a03:3aa::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: Q4qTHufLZNiiq4YOJmTwu1ZhQE6KA20K
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTAzMDA3OSBTYWx0ZWRfXw93/szThcbtn
- W0DBdhkBYnyo7k0pDMqcTDbW3mt/Em9zW8Mm4Rt80STk5ko06JW3Oxlkbs9x7j8oKcmbK7JjVGt
- MBIc5U94Jcmd0N3wfVhLCuQ7aH5BHhb/dH55IiHUemYx/TqayBH5yZYPrTz7s1QhmtAJRcnUp5k
- Rpb+JguwZe0z+PZpZj6wxdYQpS8C9MenYWaIe1IRnMG42bpeWM/yxrGAeEic3cF6eQxJKfOG5C6
- 1nWqzdl/uRH7uBN5wKYz2Xn0w4g8U5BRJVynVZ7UFA14fDGqvyvt9vfJHdzfciyO9Lj8MDgFbTB
- DSjisl+2MZsZhBfUYs7WJS3UyZ2/bb+GPzE/GcW/Jp5sJggF5yKHpsQ+ckj3mg=
-X-Authority-Analysis: v=2.4 cv=XJ0wSRhE c=1 sm=1 tr=0 ts=68b7f528 cx=c_pps
- a=AbJuCvi4Y3V6hpbCNWx0WA==:117 a=AbJuCvi4Y3V6hpbCNWx0WA==:17
- a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8 a=h2D0im4ymrUyw4qnnrMA:9
- a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: Q4qTHufLZNiiq4YOJmTwu1ZhQE6KA20K
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR10MB5437:EE_|CH3PR10MB7161:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c0ed1d5-765e-4893-58e1-08ddeabfebd6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UTFpQlZOY1UwaWFUYktMbXNZVnJJMFZYdjZWTHJpQlEwazhzU2drNTB4bjFW?=
+ =?utf-8?B?OU4xd1dsb3hnbkI3Vjk4V0lTWHU5WHZrUkEwUUdmTWhOdDZCNWpQZjFpZk9M?=
+ =?utf-8?B?L0w4MGRTSzdKck1Oc3A1ckxtWkN3L3ZicVo3SzZKc1BPTjR1clNCcCtqckI2?=
+ =?utf-8?B?emJTbHJZTVAySFlhWEY5MGUyemRzdnNWaEpmSkljWEtkYmhHMTdJK2lUREFm?=
+ =?utf-8?B?aE5Oek82UnJ6NkJVWCtKUTJld1RFeUNqUkFyWldkUUxaSitjcVZER2ljN2xX?=
+ =?utf-8?B?YUpnOXRYZDRKRWFkMlNOUnZ4ODQ5aHpZbG9CWC94VVZUMm1iYjNxbHZLcXNF?=
+ =?utf-8?B?UTFlNDNKMGV5NzVyaVRyZERmckR1dXE5bGl1QjR1Q05KdTF0Q2VrOHJtUGls?=
+ =?utf-8?B?dFIvK3Z2SVFSM1VoU1JtYWhXVGJlemNEVVZTMTdPZk55UFJZQk56ZWJPWm15?=
+ =?utf-8?B?YkVMZmR4TXRVVlJacDBBaDFoS0hWOVk2bXBiVHFCYi9Cd0swSk5oRzdlRDBo?=
+ =?utf-8?B?WWRnaG9VcnFjWG4yck5FYm1mSmF4TC9BRk12Qzh4bzYyeE42cldobVoydWNr?=
+ =?utf-8?B?MXJNS3RuNm12Ui9XOEtUVFl6QVdYMkVMcCt1Z3E4M0xnMHJhdnA0MDhZbGhT?=
+ =?utf-8?B?aGVRNWg4OUNCbXRHL0FEdi9qcFQ0K05Id3ZqdXh5LytubkVKckRBZjNoT1Za?=
+ =?utf-8?B?a2ZaM2VtZnlrbXdrOFlGSVBKTXBiMXRYb1VaQmg3VWlublJrOUN2WDk4WlFL?=
+ =?utf-8?B?RVRZWUJoM1JHbkVSTzd0MGNUYzFmREFMUzk5VlRkOGoxYTEzaXVTR2FhUHUy?=
+ =?utf-8?B?Z2RJSkNOWW52R0I3UkhJaCtQNDkwaVdaQkF4ZUhOa0pCMDdvWmhuWnhIZEk5?=
+ =?utf-8?B?eTRnSGhZc2oyV3lDMTBXM2tLYjBZekNFcWlnRGRTbzRvMkliYkJxOHA0YTE3?=
+ =?utf-8?B?WFNWQUFBZHF6V0NUSzd6UEhqbThYU2tjNmNyL0hHWTVqZ0RGMU5YZHQ1Q3Rp?=
+ =?utf-8?B?Tko3eTdJdVlsUk9xMGJIZ3F0R1lreXo3c3FseXhOTzNBc2JHZHpFSzYwL0Qr?=
+ =?utf-8?B?N2Q5K2hrMUxKbXJkNlZHWWVuNVR6QnBTWnQzZTVya25SYXVIM0owVkVOSVdx?=
+ =?utf-8?B?bmNMeUFDV3dZYm0rbTV6cW4ySmxrc2xDaStDa01sb2kvdndYSGhvV3h3TjJz?=
+ =?utf-8?B?OHVmOFRIQ0RBMzB5WkkreE9OcnVjdm1KTXhvbVc5ZE9US3dDcFU5Z2ZqT1JL?=
+ =?utf-8?B?ci9aWHFrM2dSb3lObmdWYmV4enR4WGZHaHl4S0VIT2tHSHRoRUh0RnQ5dkpK?=
+ =?utf-8?B?S2VlZE5LeE5oWkorV2ZLMWd4eFRhbXorUk56MUQyTDlQV0NmOFk4bXZHYzNT?=
+ =?utf-8?B?d25kUkZkWXM0NjJoaHJmVFFvR2JnVmwxOVFtSEZHMnlScDVad3RJNFdCZE9u?=
+ =?utf-8?B?ZEltcnRpbVh2MmQxby9sZzkxUWkwcEVTdG93cklVQk1EWldMRmdQN2RiYkJL?=
+ =?utf-8?B?Uk1xQUdKdlJxNzJOR3NOR21IMDZack5TMmVEVlY0ODlLV3l0OFB2c1BQcmtL?=
+ =?utf-8?B?WEtSUGRJK0ExWXJNWjNyM2gxZS9KcjcyQ2NKR1NFUG1CbCsveXFxb1FybXpV?=
+ =?utf-8?B?VnAvenJIVW1sNlBDNDFRdkdpdi9HaHphOWhDSzJTOGVzL3ZXeS9TK2FBeXpV?=
+ =?utf-8?B?ZXNzL2YwR2ZKUk9HY0EyZDNMclhGMWo2SWtpSVo1RjFtNDRsZ3kxMFVnUnpL?=
+ =?utf-8?B?VWpieTQra3FqWkQzR2RYRjlzNFczbWZiMFFQeWVJOGwyUHpNelF5aENUOGc5?=
+ =?utf-8?Q?WD7kaJXGWmKo/puuZ1PTtn2d73hoMdquZ+0ZU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR10MB5437.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?N2VNVVV4M0xqWUxxa0x5OVIwZFUyaVZlSEM4ekp0OGR6eGJNVEhvOVAwcWJt?=
+ =?utf-8?B?WWZEVU1CMHdzOVc3OVAwVnA0MFBwZk5UcS8rWWQ0dnRTeUxRYjZncVJUNFE1?=
+ =?utf-8?B?enJKdFFOb1ZrSUwvTnZ6cGhQN2xnS21mTmZlL3RUZThJbDRyTml1d2hrbG5T?=
+ =?utf-8?B?bUFYSUpDa054eTk5bzlkU0dwa202MEwza0M5akNycVlzai9rcWV3S3c5NGQ5?=
+ =?utf-8?B?akF5dktGOGxpdlNJWnh5VlZxNUppa3FlcnY2MWVkWlAzTW9udjJUdGMzbDZr?=
+ =?utf-8?B?NFZ3czlWNHpmKzJudUYzcFFPcjRwemFWdGFQUy9MREp4ajlvblRvU29sYkZI?=
+ =?utf-8?B?R3UwU0V3UzRlWG9FNG1ycFYwY01jSG44TitxRHUyOHgrN204V1V6Y3Q1UGRt?=
+ =?utf-8?B?ZWxyRHVNb3JQS3FGY25KZm0wSE54dHJ2VnY1VWt6akM0NFhYNWluejFaVGh6?=
+ =?utf-8?B?QWlLbzBtdTdzaWltNmp4YVpKZVdBaVpSWGkzaklzeC9WVHdTREtOZmg3Y1NP?=
+ =?utf-8?B?bHl0RW9MS0Q4Q0NXU3BSL2dnTWtRcFRHaXBSN3FRUE5TdVdXRFMwT3NwNkFh?=
+ =?utf-8?B?elBCZS80K3hYU3N3SWQwcndZVFlVbm9DK25sODIxRTNjcVRNMW5JTGNkNWJG?=
+ =?utf-8?B?QjhQU3c4bnBIdzJNYUtUR0JLR0ZoY0xjM2xObGR0Vk1yTjUxZGtQY3hJYTc2?=
+ =?utf-8?B?cmlvSUxpNnpOWUFrNXBkcmd3S1VYN3dZSlpHalh0cDkvblMvL3dhOXYxaVRI?=
+ =?utf-8?B?ZVllNXU3Q2txeFl2UGwwVnJvVU81Q0JPSmJKNjhJYjdqL29oZHdxYmVWYlQw?=
+ =?utf-8?B?bXZnNHpLT2h3WExDTkt0UUFxdWVpVTdOOElyMjlFZjF2MTIrQzk1amF5UTha?=
+ =?utf-8?B?aWpzckgvdS9ZNHZmbExtc0xNZ0hRdU9lRzBVMFl1bHpRZGVBOWJqMmQ4UTJS?=
+ =?utf-8?B?UVBJdll1SUd1VnJIbGRjeTU5RjFsb1pHcXB4RlVtMGY1dUNZeVNueGk4bDVo?=
+ =?utf-8?B?Tm5KRzlYTE54Skl5eXBMQUZkN0QvZUQrWjhMSGhFMDhRM2x3RTJ3QituTy9M?=
+ =?utf-8?B?MTMwSHN5NkplbW9pQ2FSTXZCcEY5TnBvWEVncDEyMFBVelBNMkVrWHdVS3g1?=
+ =?utf-8?B?ZS90OWV5OERFdTlGaHpTU3pEMXFPZkF2TGc5V0lhYnIvQWd4VWhRRUYzMWYv?=
+ =?utf-8?B?dXFYc21oaVN3T296NVdhbXZuN2hFWnR3ZmhNMUZVQ0dpdDF5cERqRnVSSUtK?=
+ =?utf-8?B?TVN2aGFlUDhQZlJ4cGJGSDhzNVdDUFpwWlY1QXEzVWs1dmJCY3RycG40bXNy?=
+ =?utf-8?B?ZEo4d2l4Z2hQaGE5d0VTOGVTcXlIK3dNcXJFRFVxQlN6MjFCdDRDWUc1NGhT?=
+ =?utf-8?B?WWdHQUdySHMyMEFIQ0QxcXZHVFV3aUJsSlBZZ2g5aHJwaTFiK2FwdWtydGNy?=
+ =?utf-8?B?eEVVY3F6R3hwTUwzYlFhTlc3UVM3MVYzblI1eFpwSldaQk9EazYva096MDZL?=
+ =?utf-8?B?RVo2cjlCbXp0VHIrMk5rajJGWHB5YkpqazJrbFRwb1poYU53QmtIZnhCZzNV?=
+ =?utf-8?B?ZDZqMnhvZXRLMGtXTHBzNVNWY2VSL3dKcVdUZ1dvR3A4aTZDQmNudkJQcmFS?=
+ =?utf-8?B?ZUJuV2s5cStHT1o4SkdQNVVjVGQ1aGtRMDZrUlYzOHI4Z1VHa2R0Ykk3c2c5?=
+ =?utf-8?B?Sk5lUUMyZ2FCcE1PNWlJOExKRFRVcEp2T1RGdmlHeG9MTThPcm9aUzFMajVU?=
+ =?utf-8?B?cGFNdk9ZVWRQODRWQ1hlUld3Q1BFRXBNWXl5azErSkJma3ZWMlFtR3NiWFpm?=
+ =?utf-8?B?ZjB3bnBKVjh5Ujk2ZE1ZSnRoZ0FBWHBEU1JmeG9VMUhWOEttdGlpZzVmcmZ5?=
+ =?utf-8?B?UEl3T0IzMDhWbWlWd3VnSk9SN2dybzNLQkhkMDN2N2JydjRqaWE5U1cyYkpR?=
+ =?utf-8?B?NnhXSkNMR202c0paYkVSS1JKNUJVMXU3UmNhU3k2UVJsMVRKZ1BmNC9nNW92?=
+ =?utf-8?B?TjdnQmJXbjE3OHRBd1U0U0Z2NGVKRExRNUtFZDBUR0hKb2NmaWVXQjZadkZU?=
+ =?utf-8?B?bDVEQTUwQ2VpRThzaFNKRGdIaURUNm9leWZBYUpYaTBKU0Z1UEFpWUhOeGQ4?=
+ =?utf-8?B?ZG0rcVpVUEFhVjdTZGR4K3VZUEhmbzBTbXo2QTdtdEZQQ1pjZDBwNFhhcUY4?=
+ =?utf-8?B?MFE9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	VG7PIs8MKPSiYTUitiUHJbX8QMTa1/gifcreRFygjyw1S+EvFKTDCbxBk+IPAyDuAR7ZQeaBzelhchA2lSHiu7jCA2oHTnEh7NibB+19vtOX+k/WXwQsU9FNxxKwS2bM3f7UChZ+9znlyDCGlhAJYtuqOdPC3/MjP1jYllemooqGl48s+dboS3Yta8Sx/QmsUHiUISnWvFo0aAHjdG/chEyPBeFSFxT0SIwKplgQ0gjKeF+dO9jXdFkK/JVn2dGokC7yT+/aPh1L75/Si2z+HkN8LbiDlCKr+hB7T5gPSomdH7t6ZSpIWmQN7Ug3CpMEVejS7ugEDW3jHVtkVCdXNCDbchpoONFHZwn7nSROXXHhOOiCqBK9oV2MO12oMdl184DoptVC+gs5ilR8SAwbSv8g6LzIXe8bL6+LO25kMXqA9j8cK7Y/weZQ3r0fLSLMIUQ92sG6522ktp//FufeqYbWHDHQZCMxYYVS/n+Oz7KcftsdWv+Aa4o5DB4JGGhW2H9mcN0lwUCI6m1gWlPnx4OvfqTtbqz9HgrN7uOGpdYtQKfC92FyL4Zxc/fC87NnCTi2b5HnnwJRPbZFuhJIxjr4+XIES1znealqrcPtO3s=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c0ed1d5-765e-4893-58e1-08ddeabfebd6
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR10MB5437.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 08:00:18.1834
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 491fEV8V/zICzpb/6pVPGKZm48E/DMlDp3PmS78Q2wDduXOImz3rn7gpH3wsLHz/DEwqflRIdRS8da11JV7Zcz/qXzNbVDz0/UC6Q6/YicY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB7161
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-03_04,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 priorityscore=1501 spamscore=0 clxscore=1011 phishscore=0
- malwarescore=0 bulkscore=0 impostorscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2507300000 definitions=firstrun
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0
+ suspectscore=0 mlxlogscore=999 spamscore=0 bulkscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2508110000 definitions=main-2509030079
+X-Proofpoint-ORIG-GUID: CPk_5UQ2kNrLExXnO0xvpmOsuDFLHe27
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDIyMiBTYWx0ZWRfX7WAGSRI9C2sW
+ 6SBb4znB/sGi1yEJHpW5qpHUrtU3PSdiZxNvGDkJqpLMh4NGY//+XaAp3rKlCG0BN/rnRhkOnDl
+ rlM9CaZsVuCzfDtxYdLEMtzuWMI8Q4b6Iym6l5abf3pLhPyc1sXLE9gU3qllQwvPukfUCM+a0Ld
+ pm1+zYTRFi8W1ipbKa9M6Tzj0MOLsIPqxFZXtruNIU4vy+dKPacw0JGz/paCZjEt3welwR1zPEG
+ n1JMNUavLUnwsorV24Sk95XKttjWuRlIfEoODujBgkEe2o44c0k1jZqAbV0sFQQl0u5GKHFW03J
+ FCHMGI+dN8QecHQu4Y1ip7UMDYcrNHBGzj1hEt34tnuXA/rXgeTCzUhRQmKv0UdysonF5CY8fPb
+ +p04l2Tv
+X-Authority-Analysis: v=2.4 cv=doHbC0g4 c=1 sm=1 tr=0 ts=68b7f597 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
+ a=wQHQzwf_Hs2TCVCgcZgA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: CPk_5UQ2kNrLExXnO0xvpmOsuDFLHe27
 
-From: Jinfeng Wang <jinfeng.wang.cn@windriver.com>
 
-This reverts commit cdfb20e4b34ad99b3fe122aafb4f8ee7b9856e1f.
 
-There is cadence-qspi ff8d2000.spi: Unbalanced pm_runtime_enable! error
-without this revert.
+On 02/09/25 6:51 pm, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.191 release.
+> There are 33 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 04 Sep 2025 13:19:14 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/ 
+> patch-5.15.191-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 
-After reverting commit cdfb20e4b34a ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 1af6d1696ca4 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"),
-Unbalanced pm_runtime_enable! error does not appear.
+No issues were seen on x86_64 and aarch64 platforms with our testing.
 
-These two commits are backported from upstream commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths").
-
-The commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths")
-fix commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance").
-
-The commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance") fix
-commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings").
-
-The commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings") fix
-commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support").
-
-6.6.y only backport commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"),
-but does not backport commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support")
-and commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings").
-And the backport of commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-differs with the original patch. So there is Unbalanced pm_runtime_enable error.
-
-If revert the backport for commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"), there is no error.
-If backport commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support") and
-commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings"), there
-is hang during booting. I didn't find the cause of the hang.
-
-Since commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support") and
-commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings") are
-not backported, commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths") are not needed.
-So revert commits commit cdfb20e4b34a ("spi: spi-cadence-quadspi: Fix pm runtime unbalance") and
-commit 1af6d1696ca4 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths").
-
-Signed-off-by: Jinfeng Wang <jinfeng.wang.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
----
-Kernel builds successfully with patch.
-Test enviroment overview:
-Branch linux-6.6.y
-Tree: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-Hardware: compiled on X86 machine
-GCC: gcc version 11.4.0 (Ubuntu~20.04)
-commands: make clean;make allyesconfig;
-no building error is seen
-
-gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.2)
-Hardware: compiled on socfpga stratix10 board
-verified by check the dmesg log and bind/unbind spi 
-and no Unbalanced pm_runtime_enable! error is seen any more.
-cmds:
-dmesg | grep "Unbalanced pm_runtime_enable"
-echo ff8d2000.spi > /sys/bus/platform/drivers/cadence-qspi/unbind
-echo ff8d2000.spi > /sys/bus/platform/drivers/cadence-qspi/bind
----
- drivers/spi/spi-cadence-quadspi.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
-
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 9285a683324f..bf9b816637d0 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1868,13 +1868,6 @@ static int cqspi_probe(struct platform_device *pdev)
- 			goto probe_setup_failed;
- 	}
- 
--	pm_runtime_enable(dev);
--
--	if (cqspi->rx_chan) {
--		dma_release_channel(cqspi->rx_chan);
--		goto probe_setup_failed;
--	}
--
- 	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register SPI ctlr %d\n", ret);
-@@ -1884,7 +1877,6 @@ static int cqspi_probe(struct platform_device *pdev)
- 	return 0;
- probe_setup_failed:
- 	cqspi_controller_enable(cqspi, 0);
--	pm_runtime_disable(dev);
- probe_reset_failed:
- 	if (cqspi->is_jh7110)
- 		cqspi_jh7110_disable_clk(pdev, cqspi);
-@@ -1906,8 +1898,7 @@ static void cqspi_remove(struct platform_device *pdev)
- 	if (cqspi->rx_chan)
- 		dma_release_channel(cqspi->rx_chan);
- 
--	if (pm_runtime_get_sync(&pdev->dev) >= 0)
--		clk_disable(cqspi->clk);
-+	clk_disable_unprepare(cqspi->clk);
- 
- 	if (cqspi->is_jh7110)
- 		cqspi_jh7110_disable_clk(pdev, cqspi);
--- 
-2.25.1
+Tested-by: Vijayendra Suman <vijayendra.suman@oracle.com>>
+> thanks,
+> 
+> greg k-h
 
 
