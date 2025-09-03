@@ -1,243 +1,108 @@
-Return-Path: <stable+bounces-177581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 937A9B41831
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 10:16:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A529B4184B
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 10:22:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 173131B21AB8
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 08:17:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 647015E617E
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 08:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DED92E9EAE;
-	Wed,  3 Sep 2025 08:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35D62EA46B;
+	Wed,  3 Sep 2025 08:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xt5ls8Ci"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uP5iM6ne"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0907B2DE71D
-	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 08:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7B42E7631
+	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 08:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756887384; cv=none; b=e7qinerZjynmbBhmSoN64MS4YLSIOtFC6rwdNXnQDQCNbcsTrmczx5XHY46tcOHyd78rmvwPY8VPXs2tWUYJzJ6XawMvzYB7B9a8pjKD1KQydykhWHIt+nGMenW9ySbrEpCwLRFf1CTKYzGyNX242PBddyEZKTZq9GYsYmHMTvU=
+	t=1756887730; cv=none; b=VxnEqWmdUySDavRPmWS6hP5BK7xAGs9UnY/SzJdVfARPHOPGojt12Yw7IfDJsxJB6cSuGFoPhTVzTaHcBP/QMzQFPxyTEErzBKIiWRCLwXRe3XqhTlcxz+SdLHirh4D6yS8K8d/OT9AACVwbgcsyOrPV6wh0tXOT9nqziS5CmJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756887384; c=relaxed/simple;
-	bh=W7FUojUFnzxGTg8A+tqGW/iXc3ML/j8Xn4Q+Vbq/A34=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b0Yy77NDT0TjDNHO8KKeCxDbpSSEv5TJVUmJjtXVHRhAWvwMZGFXTU9eAw4qRM34CUkqr9tY/yeDyzi8B1dXQ75tOlFNmh+kbf9t9atC9d9g1mlyGurZxLDuweOq7TxgAdww98bFrW51U2a/yJqChdndiUlSE314bfkxovyBd4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xt5ls8Ci; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2445806e03cso74207795ad.1
-        for <stable@vger.kernel.org>; Wed, 03 Sep 2025 01:16:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756887380; x=1757492180; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kYJgan4idEGWGAUXtzh/kv+BKTRh2JOtbApGJr0y8I0=;
-        b=xt5ls8CiVyfc+//TEZlWQYATP3uySmz/t3o/Q7S1U/WY1zV3SFOzgv8rCg9EnBdZid
-         ERdRlKiKftV9EFGrKzMw1/hqJmo6Rpa8eSQ9wMNaxwdpmpzNfC9JcY0Cc9mWDx4dX4Ws
-         KwpQZd9J2dPJd+VRHD0rGDOqiXj8DBJxkGC4rmjA+TE5QmpgY/M+cuFSkM5+IwJ5rwJr
-         Xor77827Jy3rATSrA7RE62CzmTBETbtf6YMp5QNvf4kufeXAfukv4D0KHF+D457QTzLe
-         azIRbpQq0H38nYaBdTEwT8UlBNcSWohyBIWVIPk44618KuDifsoGrbQNVoTvSdRTJYds
-         0DoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756887380; x=1757492180;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kYJgan4idEGWGAUXtzh/kv+BKTRh2JOtbApGJr0y8I0=;
-        b=rYZmvegTkG2+pAyjWaBXusptD7pJI3laLQG4Kr6vH7+6GlFOYRQjWGBkug79m3wiSV
-         piobs2zq0IfecvkM+DriSyRys7OdevrqNX79DmlLE/II/c89MDU4pN/q6vkrItCgultx
-         r8ePvBjvuCJTiQfIrrzJdiUkoBp+WUjzA2vIFrl8qbV40bTTL+3NwYCeoO77bOSHy7BX
-         htQ4AeLObMYA7eJgXXBg+LC4iCNGWTmmYBxtHqgoaSZQ+rVYYdsF4Rn9GNrADMwFP2gr
-         2afdK1JKrN7F44JTDjlArcV+uUOi0U6tkhaI+mvs6+3x2fhjiUXOMdJ1MjEPGEDYCkWW
-         dnFQ==
-X-Gm-Message-State: AOJu0Yx9ea0CtMav4VKpa5TAEwgrkNWoqXMkVzs2+ak5gIoYXJIfDrz+
-	uX7RoJ9wVh9sO1aDBnvWxdBao79oAjvl4/gVZg+6M7KsE9UDPDIPD7GW+RPOxKs0aX841Pl026e
-	+BqFRuSZAsaoooPTWNLParJJOdR7kOYzGwGi5lSGrCw==
-X-Gm-Gg: ASbGncurQyoUgq5m+AiqDXyOLFTk3gIC9XI/uSJPdTZrdxA5AISoWWaIXOx+M8dtQ+L
-	6h3qZZJYl/toEQ58uSJ54+iSgOgwzQAu+QGFyzsc/4s8anjNGoVpJNGcD4+yDceENoXULz1FMQZ
-	YE7jX0nDKeUNqis2zAAdDLMGXv3dCLHp7dfh5B7Q+5ndAhrSyGLm4kmFAkAdf5kPpE7uIvCmbKl
-	sx112Qr0Rg/SiH6mUs3IwnsLNNzgaBbqPzWArby
-X-Google-Smtp-Source: AGHT+IHotd1w9hgcJaMKlGGOglODYjS7R49yIJBnZVxlXGew4GiiU6D6repM/2G+4YASZCQw7uWImmyPlSqOToqx6T4=
-X-Received: by 2002:a17:902:f642:b0:240:11ba:3842 with SMTP id
- d9443c01a7336-24944a9a70emr181326735ad.35.1756887380252; Wed, 03 Sep 2025
- 01:16:20 -0700 (PDT)
+	s=arc-20240116; t=1756887730; c=relaxed/simple;
+	bh=RUl8GJ69bqWBKIxbeo9sb4KKT8/NNELShyEvZp7LHII=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rkboc88BOX9KmXrzFHglV6CrAbAKHVKh6NpUTh+W30GiM1NIVdNaCcYznKUbToQdRz6C1egVH0+CeHgsvDGCZLKNP6LnefCPubckPJBTxaUvsbmW4lk5ZsKenGwPj+dj6gTT4VETVb3d0xsc5OIrVrvSzF0FZBREAZeq55pM31U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uP5iM6ne; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84757C4CEF0;
+	Wed,  3 Sep 2025 08:22:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1756887730;
+	bh=RUl8GJ69bqWBKIxbeo9sb4KKT8/NNELShyEvZp7LHII=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uP5iM6neycpKNa0iVZ5ocFoNLjijKoI3Kar5Ne3kIZiOEJh1GWue/QqmYnIeP1+tg
+	 2BMrE6sp5STWqDbx4+kla6Pp3/kDN8f0ETrPoB8aiuX4Fe3slTxJgjNcCKkmXWFZIQ
+	 5fNEko0tYhs4GUBbyYpDwViQEF+3oZaA65kG0UpM=
+Date: Wed, 3 Sep 2025 10:22:06 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: jinfeng.wang.cn@windriver.com
+Cc: d-gole@ti.com, ronald.wahl@legrand.com, broonie@kernel.org,
+	matthew.gerlach@altera.com, khairul.anuar.romli@altera.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 6.6 1/2] Revert "spi: cadence-quadspi: fix cleanup of
+ rx_chan on failure paths"
+Message-ID: <2025090339-pursuable-gradient-4781@gregkh>
+References: <20250903075815.1034962-1-jinfeng.wang.cn@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250902131939.601201881@linuxfoundation.org>
-In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 3 Sep 2025 13:46:08 +0530
-X-Gm-Features: Ac12FXxkjRNh-TPz8gdmB62ta4_Qq5beeBKaO__NWn-nGW7c-Cjby8qjDju_5Wg
-Message-ID: <CA+G9fYvEyFjh6k02caEL5JYd56A0Xv5e_RSRxkDZeX3A17UTGg@mail.gmail.com>
-Subject: Re: [PATCH 6.12 00/95] 6.12.45-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250903075815.1034962-1-jinfeng.wang.cn@windriver.com>
 
-On Tue, 2 Sept 2025 at 19:01, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.45 release.
-> There are 95 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 04 Sep 2025 13:19:14 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.45-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Wed, Sep 03, 2025 at 03:58:14PM +0800, jinfeng.wang.cn@windriver.com wrote:
+> From: Jinfeng Wang <jinfeng.wang.cn@windriver.com>
+> 
+> This reverts commit 1af6d1696ca40b2d22889b4b8bbea616f94aaa84.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+What is the upstream commit id for this?
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> There is cadence-qspi ff8d2000.spi: Unbalanced pm_runtime_enable! error
+> without this revert.
+> 
+> After reverting commit cdfb20e4b34a ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+> and commit 1af6d1696ca4 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"),
+> Unbalanced pm_runtime_enable! error does not appear.
+> 
+> These two commits are backported from upstream commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+> and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths").
+> 
+> The commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths")
+> fix commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance").
+> 
+> The commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance") fix
+> commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings").
+> 
+> The commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings") fix
+> commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support").
 
-## Build
-* kernel: 6.12.45-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 4459b7afd68d8c7f767bfedcb8ce7b7973caee3a
-* git describe: v6.12.44-96-g4459b7afd68d
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
-.44-96-g4459b7afd68d
+I am sorry, but I can not parse any of this.
 
-## Test Regressions (compared to v6.12.43-323-gc7e1bbb35205)
+> 6.6.y only backport commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+> and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"),
+> but does not backport commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support")
+> and commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings").
+> And the backport of commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+> differs with the original patch. So there is Unbalanced pm_runtime_enable error.
+> 
+> If revert the backport for commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+> and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"), there is no error.
+> If backport commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support") and
+> commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings"), there
+> is hang during booting. I didn't find the cause of the hang.
 
-## Metric Regressions (compared to v6.12.43-323-gc7e1bbb35205)
+Is this hang also in newer kernels?  Why is this only an issue in older
+kernels?
 
-## Test Fixes (compared to v6.12.43-323-gc7e1bbb35205)
+thanks,
 
-## Metric Fixes (compared to v6.12.43-323-gc7e1bbb35205)
-
-## Test result summary
-total: 323915, pass: 299363, fail: 6744, skip: 17352, xfail: 456
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 139 total, 137 passed, 2 failed
-* arm64: 57 total, 56 passed, 1 failed
-* i386: 18 total, 18 passed, 0 failed
-* mips: 34 total, 33 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 40 total, 40 passed, 0 failed
-* riscv: 25 total, 22 passed, 3 failed
-* s390: 22 total, 21 passed, 1 failed
-* sh: 5 total, 5 passed, 0 failed
-* sparc: 4 total, 3 passed, 1 failed
-* x86_64: 49 total, 48 passed, 1 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* modules
-* perf
-* rcutorture
-* rt-tests-cyclicdeadline
-* rt-tests-pi-stress
-* rt-tests-pmqtest
-* rt-tests-rt-migrate-test
-* rt-tests-signaltest
-
---
-Linaro LKFT
-https://lkft.linaro.org
+greg k-h
 
