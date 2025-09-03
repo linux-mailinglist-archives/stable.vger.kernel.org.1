@@ -1,157 +1,222 @@
-Return-Path: <stable+bounces-177596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00478B41A44
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 11:42:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E004B41A51
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 11:44:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84C9D1BA4399
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 09:42:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33692562B70
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 09:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F22062EC54B;
-	Wed,  3 Sep 2025 09:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18342EDD5E;
+	Wed,  3 Sep 2025 09:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="mlP1oUsP";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cQflpq8x"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lgHqXa1j"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D8A2EC56C
-	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 09:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E322E8B85
+	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 09:44:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756892522; cv=none; b=KWj9QdPwXSSyNGxNkVbSYiWfXaOSp5uJoGHTjQuTSA5qbS0APgvjDiUgRH6LqC9Ndmh/dDea3+UStK64QTn9Ik3zB4xeF7CLCLSCYYHdI3qPivdDqrQd0LEvY8kr4XehMCCKJfhtxtC4oSMEoItN+NSZEWKNAGAybcdjrs4UKV8=
+	t=1756892656; cv=none; b=An1rXIz6ZXMmc546os6kK/QRCRQ4526vDXzPUSoDTlGD37crS2a7c+X7Uk3a/tIvEHBMicVJqTDA7AsWRe9E/T4oZTxTvWOCjiELXg7+cTRe5bzaBxsEmtZ5JZSnbTG3WSHTX1iNtuJ6uYCc+xxPL3AVzZzb5Y3b7Mch/hYhNqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756892522; c=relaxed/simple;
-	bh=Zq+DvfasxvVlTEn5eb4BHZsMkEb1AyDrxiuwsZYk3JY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D8cq2bFPygrWYOxu7b0NjAsm1nZRQAtX0ZjDRnK9ZL7kB+YxmM9lVfM9lb7K1tnN1EylgdvCGDarLmlR3qdJDwxChA1fq1gnOKcEKXJ6owXHWimNZVhcXQzYV2qwK9YVEzO2A/o9hjH+lu7oIzufbQXjvFN5J/mDWhzqgK8HvFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=mlP1oUsP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cQflpq8x; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.phl.internal (Postfix) with ESMTP id 721BAEC02F6;
-	Wed,  3 Sep 2025 05:41:59 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Wed, 03 Sep 2025 05:41:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1756892519; x=1756978919; bh=kp1tNsHg9t
-	1wAUZLhN7vDSZ11VYDD6YUZaRVR2OT+QU=; b=mlP1oUsPivTn4Nbn4hqRqG+/L8
-	+HtEw46PG1qpBjghZOFqc7K2kgRLmSbbejoNIYJhvCjsxWf+yL6rJs+IUAufBOJw
-	yIWjEwcrZakVrKtDDanwRJF9gUMyldpv2B0m1ILi2pWjMNtZE4djrqfaFnGxtTQI
-	l523f9rFDQ+JPcjgSb4LQIqediBj1mgX7qlldb0A+XAHw3tJK5XcfYHTJLCEIt+k
-	CkQ+tAHzw1C8IvnrtmhL0bBsBYWuiBDNUpvpVS/i8RBn9Y2IW1V9CksWeutLHe9V
-	75WmV0G0C5RpQJW9DTddf1oSI+Y0IdXD/y3pU/gyV/m4tZMdkS3ZksJTIE4A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1756892519; x=1756978919; bh=kp1tNsHg9t1wAUZLhN7vDSZ11VYDD6YUZaR
-	VR2OT+QU=; b=cQflpq8xng2YO6oL4YIJrKcpDVpyjmXNOIik4umsaR6qvpFVoao
-	FoqpDGSHTleCztkjtuM8qWg0yEOOmID3IgZjQx2XsdxHSMUytrx3AJ2rmsPeOz1n
-	clyzuQipyMjF3gT6kGmhNkkwbM+VJh26MDA2lwVG9+R9IrOt04TRWcJAJdcyhb9x
-	AUjRaGpcW7QTEiKTLAg8SW1tObVgYXX3ZSiCr1ut9VMiLYb1cE17BmGn4MnTO5Fn
-	RoYFcHDKkRiVMDo8k7vX/p0TnR5BpCLgWtbx3cLCfRsFivZsIxtSH9hvfgjakWjV
-	KlXFanmyI9X7vPphpMWG3WxfavGgfMR4tJQ==
-X-ME-Sender: <xms:Zw24aFCZ6WVMcLDCLUY2J5zfYoMcGwTU-LN5weRsRT6O8iEPlB9ViQ>
-    <xme:Zw24aFDD1bwRUIY0ZleYPUBLUUnoK_wSDauUov9aw_B0UevcASsnj9MjkO5OLmHpu
-    NTd2MY81XqTHA>
-X-ME-Received: <xmr:Zw24aOPh4wR_BHu5kmUMJIgjdQN0wyx63nFQkKiWsLxa7GzZZ6Gt45-43XPnvOwqaWjb9qtI8P-elMx6tXQMk5_d4jsIZKegw7OI1w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvkeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfmjfcu
-    oehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepjeetueehteekue
-    fhleehkeffffeiffeftedtieegkedviefggfefueffkefgueffnecuffhomhgrihhnpehm
-    shhgihgurdhlihhnkhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
-    hlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepudekpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopehsuhhjrghnrgdrshhusghrrghmrghnih
-    grmhesshgrphdrtghomhdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehklhhithgvhihnsehnvhhiughirgdrtghomhdprhgtph
-    htthhopehighhoiihlrghnsehnvhhiughirgdrtghomhdprhgtphhtthhopehmsghlohgt
-    hhesnhhvihguihgrrdgtohhmpdhrtghpthhtohepthgrrhhiqhhtsehnvhhiughirgdrtg
-    homhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgr
-    shhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhgvnhguohesrghkvghnug
-    hordgvuh
-X-ME-Proxy: <xmx:Zw24aHPS_PUWf6WMbBLQX6wNPn6nUJdagdS1QRHtClujuCRKxydo5A>
-    <xmx:Zw24aKuI5TqK7wHMylPamdrjgiwY5X8d9UU-bK3tLInlwXblRxnZVw>
-    <xmx:Zw24aE_yx96O3FBzxhyon1IW9zDpzzl92WXVBnxmw2juhm7oz6u68w>
-    <xmx:Zw24aOG8w8M2Y9HLcFy2HXMDoA7OipsDlWKrkQ5Wn7x5BaTnY6GMbA>
-    <xmx:Zw24aIAJVVeaDVsi9FwNGSZadIXwiKbZFpELSCHvPeWGMICDo5EV2L3G>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 3 Sep 2025 05:41:58 -0400 (EDT)
-Date: Wed, 3 Sep 2025 11:41:56 +0200
-From: Greg KH <greg@kroah.com>
-To: "Subramaniam, Sujana" <sujana.subramaniam@sap.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Itamar Gozlan <igozlan@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Akendo <akendo@akendo.eu>
-Subject: Re: [PATCH] net/mlx5: HWS, change error flow on matcher disconnect
-Message-ID: <2025090322-nervy-excuse-289e@gregkh>
-References: <20250903083947.41213-1-sujana.subramaniam@sap.com>
+	s=arc-20240116; t=1756892656; c=relaxed/simple;
+	bh=4DO31URqLOlIMCZRzxmllm/LEhaNDOtfIDJngVNU0gQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Mob3PL6M67zMvSoEOuSaeXNnvd+eu6eEm/5x/N5rvRtMtb67a07bjyXz9KCcPzkX7WE4QYReD63jcb+h8UGJ46LoID3Y+t9+4YrD/7PxMB93IHihV38LrexwPbS5a3v2MixxJypne5usZDlV+bt8KW4t9hfayK4sfmmYmF5sqfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lgHqXa1j; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b4d118e13a1so3106497a12.3
+        for <stable@vger.kernel.org>; Wed, 03 Sep 2025 02:44:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1756892654; x=1757497454; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gtzzda4QBQAaKKzF6sjShO0A4Pr/KXZhT9QV7iIvqZg=;
+        b=lgHqXa1jx51lEQToyotxVi67zJk+zp45ZHXkDshRl2jLzdyZzNSR442oBCM2DBwoMX
+         2S0L4msGoitbGsJe6CdSmbwJkByRo78NDT9jWaf2r/VJIHz92j4qN8j6dbZJGG5yZEd7
+         haDRHdNPnpKME4i+/t7VPb0LO6e9Z1NK38ux+qe14Ey5sTpOrd7IS+7b8ZBplayPdyeU
+         nNIKzpXk3BUQvvAASUajCVW7GOoRHDm+HmcKWyy5q9UBA9cpuvBKtiq+4nPBqsNsD8ou
+         AMtZJtfscrkCwJTWFZs6EX11m8wL+Vp8me7Gou2f0rveMf3ho4ItbcyaU9wmpzxwmBEa
+         OLFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756892654; x=1757497454;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gtzzda4QBQAaKKzF6sjShO0A4Pr/KXZhT9QV7iIvqZg=;
+        b=FS8FNrihn+JHLrCAaaKCLV4CJSe+6NM7TxeqllVzdklkBH0EYF1CXKlYp968+Tp4zr
+         nYASaaUgkrU/J2GRqf+FNkK6QxLprPrkzdInx1Mb5RfcFFB8GOTLBrfPJxEmo/hCF3Tu
+         nVLxtvNOINjfOXEj3boWRVl6OrBX9++gHEubsDrdrLxxTy2Jf9mSvuNZFrfOjXUzbXXQ
+         6Q2Z5OJDx2wjHHz5t6zcyHU23Q+baDca7WDmI6hDm0C2LwQTEI7eUxx7nr/aAgzHsfVM
+         Q3XsJrSgL0nVYCi5lK/30A4DLDOm3i4gKZfXunFZDyoSyP/QgFqSfoG8T9Lp2zRmdjmB
+         s+5A==
+X-Gm-Message-State: AOJu0Yx6JNaCV64QDXguyiy6/eiJVt6UqHQFeOdeNX/L5uqZ/0JVkczE
+	Ee/55NkjEZwAjiqMHwi9MG2m+HN5G+yo2rVLyr5nsZnT2/1Bf8qzsXG1J8/1vUceNX9a+NAKiQe
+	sT1Mj6yIMbUv1FIusVoyCtujnnFOMc/3a+4Tk9rJUlg==
+X-Gm-Gg: ASbGncupDpf6AbObLatD7WcY2oG2MMnhoTU8ORFNwNYWI1sRfR115Ai4H5UJlA5pl6d
+	/cRHf5E9mnwlKAcYdEhNsV+EDxp/DvQF3etgEoYXHdKxE+sqCK/k6XAL3VbsC4oBPBG99NzKOmR
+	laNMTrrftQ+eIlY9sK/cGaoZB84rdhOkNKVibn/GZVoiqW6spRY2jPszqVnyU1v3pSHieyXc33k
+	Zj4STXzNf13VKBEkN48K8U1YcWXuhxYSFD0dBbqE7j2seuScDBvWNtXFMbwog==
+X-Google-Smtp-Source: AGHT+IHi/AIip1Etp8O6tE2+9Jrulbj7mZegJyFHVes3qPLwUuW5JJbcwOl3A+MkyPFMk+GbxU0Nie6sEeU80s96Wm8=
+X-Received: by 2002:a17:902:e88f:b0:248:e259:16ba with SMTP id
+ d9443c01a7336-249448f9912mr160615025ad.4.1756892654045; Wed, 03 Sep 2025
+ 02:44:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250903083947.41213-1-sujana.subramaniam@sap.com>
+References: <20250902131926.607219059@linuxfoundation.org>
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 3 Sep 2025 15:14:01 +0530
+X-Gm-Features: Ac12FXxnehF-f0uX9uf1w98xh_zbbMgvqVVos902X4S572K02cR0LhUNbnaqGvg
+Message-ID: <CA+G9fYvSa6TioRgDLT_KtYdWYLz4hUbNroVjg9KiBEe6niDr1g@mail.gmail.com>
+Subject: Re: [PATCH 5.10 00/34] 5.10.242-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 03, 2025 at 08:40:13AM +0000, Subramaniam, Sujana wrote:
-> From: SujanaSubr <sujana.subramaniam@sap.com>
-> 
-> [ Upstream commit 1ce840c7a659aa53a31ef49f0271b4fd0dc10296 ]
-> 
-> Currently, when firmware failure occurs during matcher disconnect flow,
-> the error flow of the function reconnects the matcher back and returns
-> an error, which continues running the calling function and eventually
-> frees the matcher that is being disconnected.
-> This leads to a case where we have a freed matcher on the matchers list,
-> which in turn leads to use-after-free and eventual crash.
-> 
-> This patch fixes that by not trying to reconnect the matcher back when
-> some FW command fails during disconnect.
-> 
-> Note that we're dealing here with FW error. We can't overcome this
-> problem. This might lead to bad steering state (e.g. wrong connection
-> between matchers), and will also lead to resource leakage, as it is
-> the case with any other error handling during resource destruction.
-> 
-> However, the goal here is to allow the driver to continue and not crash
-> the machine with use-after-free error.
-> 
-> Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-> Signed-off-by: Itamar Gozlan <igozlan@nvidia.com>
-> Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-> Link: https://patch.msgid.link/20250102181415.1477316-7-tariqt@nvidia.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Tue, 2 Sept 2025 at 19:15, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.10.242 release.
+> There are 34 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 04 Sep 2025 13:19:14 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.10.242-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.10.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Sasha didn't sign off on this original commit, did they?
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-> Signed-off-by: Akendo <akendo@akendo.eu>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Real name?
+## Build
+* kernel: 5.10.242-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 4576ee67df7a1a73a4ec410a6c8fba6afd0238a3
+* git describe: v5.10.241-35-g4576ee67df7a
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10=
+.241-35-g4576ee67df7a
 
-> Signed-off-by: SujanaSubr <sujana.subramaniam@sap.com>
+## Test Regressions (compared to v5.10.240-524-gd8db2c8f2fff)
 
-Correct name?
+## Metric Regressions (compared to v5.10.240-524-gd8db2c8f2fff)
 
-What is this being sent for?
+## Test Fixes (compared to v5.10.240-524-gd8db2c8f2fff)
 
-totally confused,
+## Metric Fixes (compared to v5.10.240-524-gd8db2c8f2fff)
 
-greg k-h
+## Test result summary
+total: 38282, pass: 31263, fail: 1860, skip: 4969, xfail: 190
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 100 total, 100 passed, 0 failed
+* arm64: 28 total, 28 passed, 0 failed
+* i386: 20 total, 20 passed, 0 failed
+* mips: 22 total, 22 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 21 total, 21 passed, 0 failed
+* riscv: 9 total, 9 passed, 0 failed
+* s390: 9 total, 9 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 24 total, 24 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-exec
+* kselftest-fpu
+* kselftest-futex
+* kselftest-intel_pstate
+* kselftest-kcmp
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* lava
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
