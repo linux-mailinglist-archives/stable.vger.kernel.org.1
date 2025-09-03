@@ -1,125 +1,160 @@
-Return-Path: <stable+bounces-177607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC19AB41DC0
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 13:56:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 150CEB41DCD
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 13:56:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47ABD189E6AE
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 11:55:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 389231BA8380
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 11:56:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC31A2FF66C;
-	Wed,  3 Sep 2025 11:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E406B30102B;
+	Wed,  3 Sep 2025 11:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="aW6MF1NT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kKny0KDG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DDC2FF66F;
-	Wed,  3 Sep 2025 11:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB932FB991;
+	Wed,  3 Sep 2025 11:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756900287; cv=none; b=VBG2o89vjm75bHRhKJ97mBaHxryk/1w73dyc2ffjgCLPmNX2wMDznB3Rhclb2AIB6DEsJi5Aa0btkw9jD5ZSENRXJmSItHZx7NtO4rO4MJxXw4+jL45lpwxngbUFDe6oLqAhovr85u8zrT1p3jjicksvBrrcdWgoY5Uv3Tgnn40=
+	t=1756900339; cv=none; b=dgSn4QTA17qKAgNK6Ff9WBcJe151gkhGSrp7AJTU9YUymjMID7HvDzpPHpiwVV+kBdwiyPzdkzvE4gwFSZze88lglXzB1hcuCTG5Ozr1PeeE8e9XizrT+RtxZf+8n7WwyFQwOxvEgvN7c1m32gADL3XUKZRNVH4knt3iDg1P9aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756900287; c=relaxed/simple;
-	bh=nLBdBuaIf1/aVBs0fJxzcj9UY0fYGaAL/FzD81BuuFE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hPh0lzM5rNsTy2dIrPts9w+DW3L1KLioCHbtiyH6cj299PQVMCS5F9qwmK0N4+L4IjuYkLVewcmwa4yzRgYuHCbKbKnbQjE9UDlWO+8FThsp9HzDl3RCvCw2P7Ny49JCln5ufocOYuzjSJX9Vn4fB47ZRc87SD17nzejnctSI+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=aW6MF1NT; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-45b8b7ac427so20654675e9.2;
-        Wed, 03 Sep 2025 04:51:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1756900284; x=1757505084; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+poAW3AComNrsNKMjhX2QMWKG3Ybru0jXQ935AA12eE=;
-        b=aW6MF1NTjC9d1dWDldSIaPeoG2fOZSfoItwdlc5jbN317moKjJPeuhajktx8502DJw
-         B6RN2OslntIeXV2LQjWx5+1z5w+0RKyfNu/ByKZks9c1BRplfQrR5dJ3g7UBtg9DHvT6
-         +Wi4YC04O+eDjg4aMde1PlPi0eGWSqU1ojSkIx0jPwy0m/ArgTxONrro8K3ddkuhkpIS
-         zufOnNyuNlT8oL6G6+OxJC2NczT2SflmoKk9/UdApTT+49TBssKtg7CJhbIii346JknV
-         LtAjqpzqwzAGUBbkwTPUExDrlUGnM7RarstU3RIgghuCqCQsy8AUDt+/O7TlzcgByyP1
-         DBeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756900284; x=1757505084;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+poAW3AComNrsNKMjhX2QMWKG3Ybru0jXQ935AA12eE=;
-        b=CYHan7Pq83pRAb1kguKxduYLkl4bjqTWDioNIxOyHcoEbZU/nry6Jn6rgHmftaMv9K
-         nRfThOwI0oemQfTSDTlgdOFVUDEK0s4o4Mn+4PA6TW28JDHLVxEB4PQ8ZI82xiWLgzni
-         lADGdosRnm/8PmaNG2g5wQLISjeIHIc+eRXPUm55QoxLmg8MpzM3gzbEtXABywfchhmd
-         uwwuZ2pxK0A3PjQeHMtLZnjI3nPyizF1Gx4bfLrtuF/sjTTSX+jzLe6vxblENrGnKG2k
-         TMFUswzkBHXwRAeqHbN2COd+k3Fx8Wa0Al8AteDJ7oox3u8XCo5JwxkF/O38IMKFf8od
-         FXpg==
-X-Forwarded-Encrypted: i=1; AJvYcCWXiksv54oJk3TQ5GvP0IVzsvOOcCuYAiuScoTjJKLjOYgXSzXDsM9JXqm0KKB8JYaZSjKjunUT@vger.kernel.org, AJvYcCXwMdJplX2ygP2RMSMy+8rJN2n0rqUUQUm2zG/q4TXnSg2sLJTURfikQJQAzu8xdRdrQi5W4AJgDlSy864=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7g6CfaTIigjpoVFRzoPv6TUyBMQ0zX0v2wUQIadDKr+Ow+Ezv
-	ELRfM0prcYJLfmU+/5NC8zn+MD3RlcBAKKpBe7iz2O0txXOyEqPWfpk=
-X-Gm-Gg: ASbGnctY3yqwvqOgMROnoY4305WS6EQcz6FZH9dOH9gv0lts6fnkXj8OXM5BbiSXxsg
-	gwXxNR0ZCnRr7jaBVabd88z7kuijWyt/wYqlLwX78BPUpq8of8S9S1eICxqShsO5P0XVk6HHoWV
-	XbVRi9X7o04cS6OspAXt3gkWVSCByrDcfFLshoVadYgP31rn12BQHc6iwR4KBmXHNdvl33rkByO
-	GLQqHk/2MGfEOwuowADOqLJjArB6dUg5G6QkHEmm8CWP6NZGz++1xI4q16NMw01LTsAsw1PiggE
-	8O9KDOT5vbDhT1GPwkPKwCVHwG2GnFghuC17VG60xoM9QuT8Qu2aXJmMM2iyQFy85/Tmbbx/XnZ
-	nsLB6Bau2VYijNhejfpwX7tU1nOCqEMXkkscK3QLu+kwmo93Ae+k/O7iEJ8PKZXOsrfmOuU32UA
-	==
-X-Google-Smtp-Source: AGHT+IH8KQaV6Ll+X0GX7vVi1QC4bMGUrCiEpULUwaoVTVKkkRFfOk03P6Y5OSqOIWzXBzBujnsLCg==
-X-Received: by 2002:a05:600c:1ca9:b0:45b:8c3f:7d5a with SMTP id 5b1f17b1804b1-45b8c3f7dc6mr90956135e9.4.1756900283871;
-        Wed, 03 Sep 2025 04:51:23 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b4f3e.dip0.t-ipconnect.de. [91.43.79.62])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45cb5693921sm30003685e9.0.2025.09.03.04.51.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Sep 2025 04:51:23 -0700 (PDT)
-Message-ID: <170ff207-cba5-44ce-9d93-75f7b711bba6@googlemail.com>
-Date: Wed, 3 Sep 2025 13:51:23 +0200
+	s=arc-20240116; t=1756900339; c=relaxed/simple;
+	bh=rCkMsvnUjuBn7HONdhIgvsPhXdCF7ZF1EijdEX8RKxc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VuIVgkZAZYV30zfzqoWI62EY7I0e95zcUCOsyYphIxhdNJ9Cv8OKMu2cTCeVLtTNSkQgmhpQ3jXpI4r6wf7Rocks9bNw15QHy14Imo+d1U327HIiZpkdT4xLEdD40kVsW4jhx+huTUtbnAQ2mHFDBe26yF1OUj16tooIaImaEyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kKny0KDG; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756900338; x=1788436338;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=rCkMsvnUjuBn7HONdhIgvsPhXdCF7ZF1EijdEX8RKxc=;
+  b=kKny0KDGjeWU6AUNiIgDwk82a849XrXLFERs7ASz2e3leJApksTDR90g
+   WwUNd2l5X5wj/LPeYwqG23/tmTmLJZ0dc40Sx78F5TvUQRFS0fDK8fGhH
+   r48wWp8UqXymF4xEnUkgneo2wXvhbfVEozq+l5zfCxVNJAYZpq/43FEM1
+   aUD1AEDPRzBTXsDCwo6A7QDFR1eYUK0Yrtu25eQqfpTvAmgrwsEac6JIW
+   uo1x4I1SBcNSnjw0WAZMEVhChLkVfdKHyapK6Jvv931o6ETC6pZupB0In
+   QzWiE+cy+LScvIKKamERBPVwLAuzpn108fw2ngEBCbPIwAqkYPnCWxBnf
+   A==;
+X-CSE-ConnectionGUID: fK0acRAMR8e0M49SUYYmIQ==
+X-CSE-MsgGUID: bS88Lc6oR9+erFmyDuLzkA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63043870"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="63043870"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 04:52:17 -0700
+X-CSE-ConnectionGUID: LSXzFaryTGiV559A8n4EkQ==
+X-CSE-MsgGUID: vvcyrhQPS3KYbuchLY9f0g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,235,1751266800"; 
+   d="scan'208";a="176849676"
+Received: from smile.fi.intel.com ([10.237.72.52])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 04:52:06 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1utm1v-0000000AyQf-39cY;
+	Wed, 03 Sep 2025 14:51:59 +0300
+Date: Wed, 3 Sep 2025 14:51:59 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Sean Wang <sean.wang@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Paul Cercueil <paul@crapouillou.net>, Kees Cook <kees@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Tony Lindgren <tony@atomide.com>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Mark Brown <broonie@kernel.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-mm@kvack.org,
+	imx@lists.linux.dev, linux-omap@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	stable@vger.kernel.org, Chen-Yu Tsai <wenst@chromium.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: Re: [PATCH v7 00/16] pinctrl: introduce the concept of a GPIO pin
+ function category
+Message-ID: <aLgr30rvGBCcsOWa@smile.fi.intel.com>
+References: <20250902-pinctrl-gpio-pinfuncs-v7-0-bb091daedc52@linaro.org>
+ <CACRpkdZ-Toq9MziPisZCcT7zcL3rosQYZ1Jw=RWCH1KZTbeBug@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.6 00/75] 6.6.104-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org
-References: <20250902131935.107897242@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250902131935.107897242@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACRpkdZ-Toq9MziPisZCcT7zcL3rosQYZ1Jw=RWCH1KZTbeBug@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Am 02.09.2025 um 15:20 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.6.104 release.
-> There are 75 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Sep 03, 2025 at 12:18:18AM +0200, Linus Walleij wrote:
+> On Tue, Sep 2, 2025 at 1:59 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> 
+> > We have many Qualcomm SoCs (and I can imagine it's a common pattern in
+> > other platforms as well) where we mux a pin to "gpio" function using the
+> > `pinctrl-X` property in order to configure bias or drive-strength and
+> > then access it using the gpiod API. This makes it impossible to mark the
+> > pin controller module as "strict".
+> >
+> > This series proposes to introduce a concept of a sub-category of
+> > pinfunctions: GPIO functions where the above is not true and the pin
+> > muxed as a GPIO can still be accessed via the GPIO consumer API even for
+> > strict pinmuxers.
+> 
+> This is what I want for pin control, and fixes an ages old issue
+> that pin control has no intrinsic awareness of if a pin is muxed
+> to a function providing GPIO.
+> So patches applied!
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+No objections, let's move on.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+> Any remaining code nitpicks can be fixed in-tree, I need this
+> to be able to apply the much desired Broadcom STB driver,
+> so this needs to go into -next now for cooking.
+> 
+> I also want to strictify some drivers using this, bringing GPIO
+> function awareness into them, which is a good thing!
 
-
-Beste Grüße,
-Peter Schneider
+Well said!
 
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+With Best Regards,
+Andy Shevchenko
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+
 
