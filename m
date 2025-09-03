@@ -1,142 +1,170 @@
-Return-Path: <stable+bounces-177672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2044B42D02
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 00:51:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01DD0B42D21
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 00:59:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C37BA3B076F
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 22:51:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1623547ABF
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 22:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFC72ED86B;
-	Wed,  3 Sep 2025 22:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A482F066A;
+	Wed,  3 Sep 2025 22:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="CYJdCftl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BySSq+sV"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818652E7BAE
-	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 22:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F25B1D88A4;
+	Wed,  3 Sep 2025 22:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756939904; cv=none; b=f4VaVA/laMGGS+trwmCE2s2DY8hz8/oz4pQAaUD+5OT30bmYghZrxGpGOoY8xvpEl1n/c9SFuogwv8aRgg/70kjLJt9KRj1226Bmv65YrDljmb5GgaZwuBtSrRrk4oHTFdKG+9H2eyAsLFQSlg/JF94qFUtRpk3euw4JZ0KFcII=
+	t=1756940365; cv=none; b=hkewLEJajMeYQzuO1sSsxcUq8+mnJb03yNrY0o3aPlhqSXATsKxJ1tf2Fs0AoAgnMSQgfkJlTEKPa/gbSHZtpgjlp/mBzZ76gkayWYEXVYu9smvTt6lO7qJ3xsZ9OKnkG17zDqbAmGn5j7EgkgDYY0nu3LSGylJwllSetNWpfMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756939904; c=relaxed/simple;
-	bh=hFbrD/0coVfyQddnGILrRkhr7q8X+/6R+jRvSG/XCOo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p6RgrBLjm1OuHVjjz0OoxN48v1SThllRcsSpYmm4O39HpacoGFTEpAJnXhWBV2e64Uv8kRfzmHBb5ryqO6ZSMZfrfK5mYm8nXNvRv7EDfHHFJjbazMpZ2Wkjx06W1PkUukKug/zc+LaUE/xbfigtLecSYAqKcs6j/qSpd1vGNWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=CYJdCftl; arc=none smtp.client-ip=52.34.181.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1756939902; x=1788475902;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gIlPnPrBrGND/kXLp6/X+PalV1vbvyxBGlqPfezTjrY=;
-  b=CYJdCftlOKRfjU8BzqlXpfAdL71f5JVnyEYnJ+HriqNSH9BzJCcyKI3T
-   /F8/PkEWDXzRkYadnaAC5G8epDrgw4dDo3iRzhmL6e7w/cFa6sjK4ZjOe
-   4ingyAlNrLy/pDiAIoI5Rm69U1dP7h+x7+2iMEkLANHsn2BGvByjVke54
-   5zgJ1v+WsMEr/fNXqKCjtQJC8zg96buNn9zxuYGxEIIQEyvosX6LzNBkg
-   NDvM+WLKL7g3XS8PxzGKG8oVCaNOD4BMSvXdQqWQ1Q+RuCqhDff+4lcce
-   U6ZV4yt2ntYbTWf5xEyoL78fpsH8/xD0A1dSOgBw6tXiHCcbBLMdkFHOG
-   g==;
-X-CSE-ConnectionGUID: yDHDtHG1RkeyPm9+yjSLOw==
-X-CSE-MsgGUID: LJI+es9DTUKO3nDk9yjVdQ==
-X-IronPort-AV: E=Sophos;i="6.18,236,1751241600"; 
-   d="scan'208";a="2352082"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 22:51:41 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:42275]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.51.7:2525] with esmtp (Farcaster)
- id d0d759ba-3959-4633-a68b-ca08bbeef20b; Wed, 3 Sep 2025 22:51:41 +0000 (UTC)
-X-Farcaster-Flow-ID: d0d759ba-3959-4633-a68b-ca08bbeef20b
-Received: from EX19D015UWC003.ant.amazon.com (10.13.138.179) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 3 Sep 2025 22:51:41 +0000
-Received: from u1e958862c3245e.ant.amazon.com (10.119.254.121) by
- EX19D015UWC003.ant.amazon.com (10.13.138.179) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 3 Sep 2025 22:50:31 +0000
-From: Suraj Jitindar Singh <surajjs@amazon.com>
-To: <stable@vger.kernel.org>
-CC: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Ingo Molnar
-	<mingo@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, "Suraj Jitindar
- Singh" <surajjs@amazon.com>
-Subject: [PATCH 5.10 4/4] x86/speculation: Remove the extra #ifdef around CALL_NOSPEC
-Date: Wed, 3 Sep 2025 15:50:03 -0700
-Message-ID: <20250903225003.50346-5-surajjs@amazon.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250903225003.50346-1-surajjs@amazon.com>
-References: <20250903225003.50346-1-surajjs@amazon.com>
+	s=arc-20240116; t=1756940365; c=relaxed/simple;
+	bh=zAZE2E5bn9s5utD0mvDXNU3x1IycGc7eg/BFJEIzRDE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u6B2uzt3ZZrLeW/Zw6r3xRUlyU0wNV33+ZZEHuSbPY/gVmvvIqltUzy8JEKmy72qlyT7b9tt3eofQVfqV8Zfp/YIwRpGjJK7tFI9UBWqwQQF+K7/W1p3gaGh0z7dp26RwaeEAWBuY8MLrwoHzPi+pPNWyZ8iRWbidWh/jxfc1fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BySSq+sV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E91AC4CEE7;
+	Wed,  3 Sep 2025 22:59:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756940365;
+	bh=zAZE2E5bn9s5utD0mvDXNU3x1IycGc7eg/BFJEIzRDE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BySSq+sVdzxn2IOx35RmUn963piXTAT31hvCzQBe2t2zJlhSCVsNlFk/iHKl4vHPH
+	 Gp5DCyewN7pcTZCAtj9tdxlG8iWTbj5HlGviIqeG9J1ZJM4IivgEoMhUQxTn+O0CVS
+	 KNBkeIZ5SsAwPRfDCVXPYosOBcwuoPel48TvlvtCwkq5tI72bYBvyiPbImOnLZPwed
+	 WeE/55OVS5qwZiyfz2v0tZ7lET/7r/pMFwwe21Qbe3BIL4WcfGBHziakuc6W8rC2v/
+	 fvVgMT3mIjQCVHdx9Dbkwk4ZB32NVaoEuDAs08a0cBqMBywUEHiF2r+4949ROVdEo0
+	 Gt2aRlBDZZV5A==
+Date: Thu, 4 Sep 2025 00:59:20 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Jonas Jelonek <jelonek.jonas@gmail.com>
+Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	linux-i2c@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Markus Stockhausen <markus.stockhausen@gmx.de>, 
+	Sven Eckelmann <sven@narfation.org>, Harshal Gohel <hg@simonwunderlich.de>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v7 03/12] i2c: rtl9300: remove broken SMBus Quick
+ operation support
+Message-ID: <cfdleondrrpfyfts423cwdcsb5mmqovej5hwke7ndghzlnwci7@d6i7ltgoxbee>
+References: <20250831100457.3114-1-jelonek.jonas@gmail.com>
+ <20250831100457.3114-4-jelonek.jonas@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D033UWA002.ant.amazon.com (10.13.139.10) To
- EX19D015UWC003.ant.amazon.com (10.13.138.179)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250831100457.3114-4-jelonek.jonas@gmail.com>
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Hi Jonas,
 
-commit c8c81458863ab686cda4fe1e603fccaae0f12460 upstream.
+On Sun, Aug 31, 2025 at 10:04:48AM +0000, Jonas Jelonek wrote:
+> Remove the SMBus Quick operation from this driver because it is not
+> natively supported by the hardware and is wrongly implemented in the
+> driver.
+> 
+> The I2C controllers in Realtek RTL9300 and RTL9310 are SMBus-compliant
+> but there doesn't seem to be native support for the SMBus Quick
+> operation. It is not explicitly mentioned in the documentation but
+> looking at the registers which configure an SMBus transaction, one can
+> see that the data length cannot be set to 0. This suggests that the
+> hardware doesn't allow any SMBus message without data bytes (except for
+> those it does on it's own, see SMBus Block Read).
+> 
+> The current implementation of SMBus Quick operation passes a length of
+> 0 (which is actually invalid). Before the fix of a bug in a previous
+> commit, this led to a read operation of 16 bytes from any register (the
+> one of a former transaction or any other value.
+> 
+> This caused issues like soft-bricked SFP modules after a simple probe
+> with i2cdetect which uses Quick by default. Running this with SFP
+> modules whose EEPROM isn't write-protected, some of the initial bytes
+> are overwritten because a 16-byte write operation is executed instead of
+> a Quick Write. (This temporarily soft-bricked one of my DAC cables.)
+> 
+> Because SMBus Quick operation is obviously not supported on these
+> controllers (because a length of 0 cannot be set, even when no register
+> address is set), remove that instead of claiming there is support. There
+> also shouldn't be any kind of emulated 'Quick' which just does another
+> kind of operation in the background. Otherwise, specific issues occur
+> in case of a 'Quick' Write which actually writes unknown data to an
+> unknown register.
+> 
+> Fixes: c366be720235 ("i2c: Add driver for the RTL9300 I2C controller")
+> Cc: <stable@vger.kernel.org> # v6.13+
+> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
+> Tested-by: Sven Eckelmann <sven@narfation.org>
+> Reviewed-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+> Tested-by: Chris Packham <chris.packham@alliedtelesis.co.nz> # On RTL9302C based board
+> Tested-by: Markus Stockhausen <markus.stockhausen@gmx.de>
 
-Commit:
+Applied from 1-3 to i2c/i2c-host-fixes.
 
-  010c4a461c1d ("x86/speculation: Simplify and make CALL_NOSPEC consistent")
+But...
 
-added an #ifdef CONFIG_MITIGATION_RETPOLINE around the CALL_NOSPEC definition.
-This is not required as this code is already under a larger #ifdef.
+> ---
+>  drivers/i2c/busses/i2c-rtl9300.c | 15 +++------------
+>  1 file changed, 3 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/i2c/busses/i2c-rtl9300.c b/drivers/i2c/busses/i2c-rtl9300.c
+> index ebd4a85e1bde..9e6232075137 100644
+> --- a/drivers/i2c/busses/i2c-rtl9300.c
+> +++ b/drivers/i2c/busses/i2c-rtl9300.c
+> @@ -235,15 +235,6 @@ static int rtl9300_i2c_smbus_xfer(struct i2c_adapter *adap, u16 addr, unsigned s
+>  	}
+>  
+>  	switch (size) {
+> -	case I2C_SMBUS_QUICK:
+> -		ret = rtl9300_i2c_config_xfer(i2c, chan, addr, 0);
+> -		if (ret)
+> -			goto out_unlock;
+> -		ret = rtl9300_i2c_reg_addr_set(i2c, 0, 0);
+> -		if (ret)
+> -			goto out_unlock;
+> -		break;
+> -
+>  	case I2C_SMBUS_BYTE:
+>  		if (read_write == I2C_SMBUS_WRITE) {
+>  			ret = rtl9300_i2c_config_xfer(i2c, chan, addr, 0);
+> @@ -344,9 +335,9 @@ static int rtl9300_i2c_smbus_xfer(struct i2c_adapter *adap, u16 addr, unsigned s
+>  
+>  static u32 rtl9300_i2c_func(struct i2c_adapter *a)
+>  {
+> -	return I2C_FUNC_SMBUS_QUICK | I2C_FUNC_SMBUS_BYTE |
+> -	       I2C_FUNC_SMBUS_BYTE_DATA | I2C_FUNC_SMBUS_WORD_DATA |
+> -	       I2C_FUNC_SMBUS_BLOCK_DATA | I2C_FUNC_SMBUS_I2C_BLOCK;
+> +	return I2C_FUNC_SMBUS_BYTE | I2C_FUNC_SMBUS_BYTE_DATA |
+> +	       I2C_FUNC_SMBUS_WORD_DATA | I2C_FUNC_SMBUS_BLOCK_DATA |
+> +	       I2C_FUNC_SMBUS_I2C_BLOCK;
 
-Remove the extra #ifdef, no functional change.
+this was creating a conflict with:
 
-vmlinux size remains same before and after this change:
+5090e2b3808e ("i2c: rtl9300: Implement I2C block read and write")
 
- CONFIG_MITIGATION_RETPOLINE=y:
-      text       data        bss         dec        hex    filename
-  25434752    7342290    2301212    35078254    217406e    vmlinux.before
-  25434752    7342290    2301212    35078254    217406e    vmlinux.after
+In the sense that I don't have this change in the fixes path, but
+I have it in the non-fixes. For now, until Wolfram pulls the
+fixes, I removed the patch and I will add it back next week to
+avoid conflicts in the -next branch.
 
- # CONFIG_MITIGATION_RETPOLINE is not set:
-      text       data        bss         dec        hex    filename
-  22943094    6214994    1550152    30708240    1d49210    vmlinux.before
-  22943094    6214994    1550152    30708240    1d49210    vmlinux.after
+Next week I will apply the rest of the patches in the series, as
+well.
 
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20250320-call-nospec-extra-ifdef-v1-1-d9b084d24820@linux.intel.com
-Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
-Cc: <stable@vger.kernel.org> # 5.10.x
----
- arch/x86/include/asm/nospec-branch.h | 4 ----
- 1 file changed, 4 deletions(-)
+Thanks,
+Andi
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 2cade6749322..9f84a00776e2 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -295,12 +295,8 @@ extern retpoline_thunk_t __x86_indirect_thunk_array[];
-  * Inline asm uses the %V modifier which is only in newer GCC
-  * which is ensured when CONFIG_RETPOLINE is defined.
-  */
--#ifdef CONFIG_RETPOLINE
- #define CALL_NOSPEC	__CS_PREFIX("%V[thunk_target]")	\
- 			"call __x86_indirect_thunk_%V[thunk_target]\n"
--#else
--#define CALL_NOSPEC	"call *%[thunk_target]\n"
--#endif
- 
- # define THUNK_TARGET(addr) [thunk_target] "r" (addr)
- 
--- 
-2.34.1
-
+>  }
+>  
+>  static const struct i2c_algorithm rtl9300_i2c_algo = {
+> -- 
+> 2.48.1
+> 
 
