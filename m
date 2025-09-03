@@ -1,72 +1,96 @@
-Return-Path: <stable+bounces-177560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73171B4116C
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 02:42:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8F4B4118E
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 02:56:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26794700328
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 00:42:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 105AD3B5C78
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 00:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2ACF1BD01D;
-	Wed,  3 Sep 2025 00:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C9F19AD70;
+	Wed,  3 Sep 2025 00:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNNtW+WH"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="XWVeHrDN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67383273FE;
-	Wed,  3 Sep 2025 00:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB666195B1A;
+	Wed,  3 Sep 2025 00:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756860173; cv=none; b=fY97rC+d/LlIMCYnELwI5Kja4Kqs047U+IixN8DRWf3vc1euLhz29qYbYtcwZozIL89sc9hLcG0i3V+9r0CHmDiMYdrisKEIXsLePPn+CrZLpRvWsG7JH6z1rIpkW2yT4GGMxyrzsoJ0ox+Bk8/+a/YevNPYXtAu7oU3QHSUg/A=
+	t=1756861012; cv=none; b=gv1o9M52tSrKlnrGKYnN/tAc0wezHiYo2anpX+Ec6o+PYANc4YbyH7t1TA0RlhMmmn67ZINkxA55KFaj5dT0+tL2kvrXKSdoMXcZwhn09HCy6LYfjmRf9zkz4N/GY9OjB0KvZzSpB+Lm8xZVFdx8T89lKMLRV+rZO3ZIvli6TF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756860173; c=relaxed/simple;
-	bh=W8gvhl8dl1yzUVTiRhWZwaQLNYWxzLCPwvBudrcMLuo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KWnIievyUJNY8tV4v81hx+tLeiU/5K65vPZsHy71IixxMh1mxPT0gmvqrpLHgju07XSgvfay+rX0l5gEraOuvkjCGUiBfmknuJYd6V8JU4sBS04LccqwZDqTVQGiR8xUnwjBnyAry91LMsGTn3MI5nAqzEAxSj96j8bySc5ukjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNNtW+WH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7041EC4CEED;
-	Wed,  3 Sep 2025 00:42:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756860172;
-	bh=W8gvhl8dl1yzUVTiRhWZwaQLNYWxzLCPwvBudrcMLuo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aNNtW+WHaqFRVrrpV++cJPKgU6YItSMPUkmHfFkJXl5OIcW7ejLcnaNOB6ljKl6uW
-	 ziyNF5d+BrmZEqYL/neFpMxkuHng4UgcDJ2MwDJ/3naW3+4AGR0HinKOV279c90wW8
-	 jALoepiIVFCm6YX54SIhmHGjLKZ4evcwjQTktRtlFtgNndFMIjLLIjLzcBZtLkrPKQ
-	 qIXMveY8RJgNsNwhgOekSl4yIEnXrWAmwayqaQvrdvUxMUvkwwJFvA3p7djXwaEPYm
-	 necAmngaHlobSB8oZ+wxycR0AXuJha76YcW0nGeHh6wb1TyGkt369wZ0iahqCY351N
-	 oL3EfKYPSvhCQ==
-Date: Tue, 2 Sep 2025 17:42:51 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Mengyuan Lou
- <mengyuanlou@net-swift.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: libwx: fix to enable RSS
-Message-ID: <20250902174251.03950c03@kernel.org>
-In-Reply-To: <11AD624D55764BDF+20250902025713.51152-1-jiawenwu@trustnetic.com>
-References: <11AD624D55764BDF+20250902025713.51152-1-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1756861012; c=relaxed/simple;
+	bh=bnb/FeqKjRBg/dUuYxe+++vOPnfmLozx+PfvJ8Pfgrk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GgaQpkVKGJig6pS3TPX0Yfw6KCLT225PFB2Z2xJln1RDup/UfqitNb0xhHJPgELUUnxfNGHWf9XionolULOnTZUpARXzk4cK6kZvhSLRBN6QZMl3YyueF3OzfpfBUAX0jjFcOtGkwXcPN2k2f4JFPlJnU8IBAFzTM9usSWXsYSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=XWVeHrDN; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id E79B314C2D3;
+	Wed,  3 Sep 2025 02:47:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1756860461;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6hO7SAVNKzoGbYPMDy6Hdq3lygn8k+Jvik7fXD5P2VM=;
+	b=XWVeHrDNp7liqYozzaAlDcFXHQt3zmBHMLesSF+uHxGIC10FNabO/JWtTUsCCls1xSpTeL
+	9J8M/wzzvPchU1F7xHGAoTL4uxSzAZAofZaco++8FMl+e33DjHPUPntV+pRIi1kHJ9WOSp
+	jQCtqrCOCyyETr4VI2WIPPmogJvGRhtyS4qNsbapxJ353njXROg444IBA9X2ssBRKBM6Ww
+	sWfIneXYlQ8xTQy9Y64kFyA0H0rN7NQShMKBf5QL7j+pwjaJQmbzMfOV35Ew8Zy4edWmzs
+	veXIoY/e4IVls7gqech+B0O8V9Us2GnQ4PcTAwHgk3AfIa0lXCgJu6EgkleSMQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id e25afc31;
+	Wed, 3 Sep 2025 00:47:34 +0000 (UTC)
+Date: Wed, 3 Sep 2025 09:47:19 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	achill@achill.org
+Subject: Re: [PATCH 5.10 00/34] 5.10.242-rc1 review
+Message-ID: <aLeQF3gYiQKyaPsY@codewreck.org>
+References: <20250902131926.607219059@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250902131926.607219059@linuxfoundation.org>
 
-On Tue,  2 Sep 2025 10:57:13 +0800 Jiawen Wu wrote:
-> When SRIOV is enabled, RSS is also supported for the functions. There is
-> an incorrect flag judgement which causes RSS to fail to be enabled.
+Greg Kroah-Hartman wrote on Tue, Sep 02, 2025 at 03:21:26PM +0200:
+> This is the start of the stable review cycle for the 5.10.242 release.
+> There are 34 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 04 Sep 2025 13:19:14 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.242-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
-Please describe user-visible behavior. Does it mean that VF with
-multiple queues will receive all traffic on queue 0?
+Tested 4576ee67df7a ("Linux 5.10.242-rc1") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
+
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 -- 
-pw-bot: cr
+Dominique Martinet
 
