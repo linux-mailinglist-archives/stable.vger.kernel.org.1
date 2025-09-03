@@ -1,136 +1,125 @@
-Return-Path: <stable+bounces-177626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29AE1B4227D
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 15:52:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 562B4B422B6
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 15:59:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53954484FC6
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 13:52:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C1D87C5B2E
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 13:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4799830EF71;
-	Wed,  3 Sep 2025 13:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C840C30EF6E;
+	Wed,  3 Sep 2025 13:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KBbP/PXl"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="LPHOKILB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97AE730E83D;
-	Wed,  3 Sep 2025 13:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF6F30EF6D;
+	Wed,  3 Sep 2025 13:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756907523; cv=none; b=GHeQSXS0PDuYgnxU4wVH+6z5sgZsQGFAmdHnUeOh5lcRuJ4nbiWMG8GPQquaqoaMP6wtEk9vjC/lObXLHbWGfXl+dO4axXG+sTM6wWIOw1nJ9g0hSbUqf0XeL+DcuXphKlpQeduQl3crYpt+u4xSPT48mJCz/9xGiHiHV7XG/jI=
+	t=1756907890; cv=none; b=R+dMpckGXIellJYOf3/Mi7F3+lBOmvh0XiR2tfrmvTyR+sFQtIvPtOxPL7ZmGJrsQOrSSCrsgwFHN5C6CrlWKTUJRpFUxExDPkcf/6dMPPwJWMWEGoyDeQ8W++7AalQnP2RvfpTfNsYj6UZuYKkh3jCQOH+H4OipNYMzGfUsGrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756907523; c=relaxed/simple;
-	bh=T/KSTrSwcf413M6648OAvY3x0y9kavIDZn2ShtBOwsk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LjasHx301ScyBt9JzkKWydKlCwEUPslicQ39houftBN12ifcmKbmVbAqWj81AJoMZZMFd3DDGDJAE6ACKhezqehgt5U6nBP0Jm9jJkQG0hmGRjyGwLTifwLdLWzzlMDCm/c1xMQwD21pgwRwqNYF6rVc8Ojp5uWX0LEHAY1pLOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KBbP/PXl; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-24c89867a17so8836315ad.1;
-        Wed, 03 Sep 2025 06:52:00 -0700 (PDT)
+	s=arc-20240116; t=1756907890; c=relaxed/simple;
+	bh=qmI9uCirdKxPoEeerlkveAtQlZ30H8oH9WlpS31AYVs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gz3qWaWYuSZjx1tS63HMki/mnlUXpPlXDRbHTEQ2mf2Pb7eme0aLaUZxNPUmfXkSN9tvNqCHn8R7OgCOqPIsaSOb/rBwmhcd917vCVZwmTxzOnADu4p0LHpZafihu3yvcsg3wG390w3tsOo5gexUdKayGtyZFXP3HbSfnD26EWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=LPHOKILB; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3c6abcfd142so3176026f8f.2;
+        Wed, 03 Sep 2025 06:58:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756907520; x=1757512320; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=31pvuPyzmxy7Nu/xNQn3+yYnNi6oTH3Hxdcf+kkmhtw=;
-        b=KBbP/PXl6FUAYyZqD+q2Z+ypSDdXz/9LPHFut40fgaOUxQzKVl+HaO8luSY27uCfL+
-         PMgiN/WL6FQDIFMiEuGML5kjZUdswGt3KB8dDIMOpeBPaGvsUnLahqH+NWzuCcUnJ65y
-         28nXzfMWBiqcQRUsTvP18Ut3+5P3UEFBsDXlNUQvA4xQoUSsmXybuI7/VKJIWfeYhEpc
-         neLgpqeNZrFe+WcE2V3rUHh2r0YfgkVvRf7XB3YQP9PLH4Yf09BsIonVWSt5DQWPgwP0
-         w0rEI55qJJZibmFRsJjwz4xao7tq+DPBArs93lHrBAPKxw/SV2Tmc4sB2xlfeM7mV8ss
-         kXrw==
+        d=googlemail.com; s=20230601; t=1756907887; x=1757512687; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wrqJd5FD6WGRiM2Koxprb9+2r6q/3m46cDuQvGJCImg=;
+        b=LPHOKILBRCU7mFQPtDlegXKs0VkkshcJegy9JWtkE5dpPMRkI2eD3VRcTiesPMEN00
+         1LKrNPdWF66VYD8aukx0P4Pl9elPRWuecEFJAZeptcBmTlx8sluwuO7bz+yzHkTGM4Ma
+         wNnooXUtfNnwUiOEryt9swWHxuesTWXFReGr8lrQS4hpVXh2dBOcdpCRyh2KkKJHFemM
+         fdbh9OyHXDn6SI23J9AIIQB+W5hv1TQZwnZoEz0Y+lEXh0DAycfEgQGdkYLGvwnSg7TK
+         DPVRRVafekdRIe/UG4+VuPykfrYlGIMPqBjXuNQ4/2IQ7FhDC3Hr3Ja+iVDSFyh1DRHL
+         K6GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756907520; x=1757512320;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=31pvuPyzmxy7Nu/xNQn3+yYnNi6oTH3Hxdcf+kkmhtw=;
-        b=CY2ORhXpoJjmb3lbbrBcRyWOpiu0vFViQ/nENBN7E7hqs6zA3fApwkkGwiQUWGeHnq
-         lBDe9iSVSaoEdFNcpVsRGAyoBPxYknQLoXBL7g5gUL3FS+uogaTODQra7RnsIIvzgN+b
-         hzuQuy8QxWkIokW8NsmyF6l21ykBR4AB9FASG0qMOkeHPSylhkvt0fq5OFZSzbnBF0nv
-         8vcZKWZCf+DjMMecwJ08c3WVQXzRYy8FV7fMYzSHRmwxmr2R4dGC9nPcoYAOrhvGvUuo
-         lFvMHGTl8gP3opxdsi83jVH6RPagKMmHg5zy9u9/gZ8lRjhxp1Q54K1eUtRfdH1dWHWo
-         u6Hw==
-X-Forwarded-Encrypted: i=1; AJvYcCW9tio98wbUg9NjmV1XnaZB7Skzyo8myR8gEI8WDtuPDKE8iJ4Ve9pOVDODOmODFJFis9hP7nWHALyo@vger.kernel.org, AJvYcCXa/XhXM5Rcu7gat9hpP+yvQ+tWwAj4p6Y8fg21121MymHZpvCkpJyNzAKF2YzkCy+f+i4D5IximxTlcRQ=@vger.kernel.org, AJvYcCXs+ZlgkvSj5gDZksr9Lom1jL6rCDeHOZlkFET+n6tOpEcK4zZqIAYBcNmIFtM7i38YclsN7by/@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqxcarDttghajvFAJcA/g1v33jvNVcEBb78uo5Z64w/AtPp2CI
-	Mwl9I1BLcOTy2/XjyrobH+ALtC4r/KoUiIdAzK9xpDjWSHXSXgk1lI9a
-X-Gm-Gg: ASbGncvKhWngz1PBQm4/jqhlbnadGPwe/1smZ0S/YpoRgRIBQDeklF+RFhwrjR1VQas
-	vfgy4TReP9Fj271cg6hAbUpDRqPelLaM4Zgs47X2Xxp3Ro7P/sR7igNPjLwWVxSZedaODFnnZBB
-	91s3vRPf12EaHC68oRH1x775rK4AnqDgf60XtipwOU5rdlwezlyIKOacIAjEOph8NfXrftcNO2D
-	kT2ksev7qhH4Fxoj3UYNnKIu2yFWC7CILrQyJaJUZ70gF1HK9cQR+U79ytnTTFJk2Ji8CmyY1zT
-	Br/hZ2rcWf0tTW1ZK3nw2RDoilviNgzCOXgHDlkAYT5yzyp7UBAavKCYjkqXRyEtiSZtckgHXtb
-	mxe3JxHg62GQPS8le0ActYKHNKe6Vpes56h2a7rDYrsQn8FFesPS+HtEuFVSg8Zs8dtlhYC6yHd
-	1fiixm/SAm65kz1/oJxRi5ZQn79jrd2jpfjtehq3/cb9ztyxxGEFLT+Jc=
-X-Google-Smtp-Source: AGHT+IGPXxKq1vceqgwEfnjmmFK1BX/HaS7d7j+fXNMkyGVFiTc/r6Px77JsUZgpTvhRMqRYHCDxOg==
-X-Received: by 2002:a17:903:350d:b0:24b:299a:a8c8 with SMTP id d9443c01a7336-24b299aab5fmr68322845ad.20.1756907519733;
-        Wed, 03 Sep 2025 06:51:59 -0700 (PDT)
-Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.22.11.163])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-24b2a5852a9sm40585005ad.150.2025.09.03.06.51.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 06:51:59 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Trent Piepho <tpiepho@impinj.com>,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: linmq006@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] PCI: imx: fix device node reference leak in imx_pcie_probe
-Date: Wed,  3 Sep 2025 21:51:50 +0800
-Message-Id: <20250903135150.2527259-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.35.1
+        d=1e100.net; s=20230601; t=1756907887; x=1757512687;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wrqJd5FD6WGRiM2Koxprb9+2r6q/3m46cDuQvGJCImg=;
+        b=Z+l+Rv55eWkqpcjR6RyCLm2P7PJD1KHXlmhg47s6b7kndxreHRUifzqlKiMwji3Xer
+         eDmg2OfBpGouJ6XTxTdoJpu0AspJuNVJYSPDHt/uSgUNAyRC/mH4G6xkq6kT4rAlMkUW
+         AO9r8BL/3A2d/Wiyi+J+CgY0PRUDKVAHoS080qUtWzpwE6OXwZ31srPizVyuMj9w3a3d
+         pvBdb0Y1m2ZQ325p3u2Ly/CAbAhxhdNEu3A1TqeEdkoQ8Ub79C8gUNA7VTwcVxNUYdxx
+         U036vy/V2fa+0SDYKifjUmo/a5HPDR+HqYKpBH0ItDzTBYGJeYYqtP5he8il0M0LDS4Q
+         SmZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVnjJJRwTh1lUu68r2sFCysa+QQiB4Gy4+q55mItcWH1lqOSt98kTwKBnEBzRlT9EgbCgAmw2g6@vger.kernel.org, AJvYcCW3covaXHvLc9Grp7L4BH9ztf/BGsnMggeIcO2r/KE/r85PdstvDBnkHB0h8BcVr93UtMLjMY+RLCMH+oA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQiUJDHNPsHz+PHMMDwQh8exDtZrpjqb93QucK+I5UM+h58L5t
+	u3Ep3D9xUaPOd9UR/UzYH08jF5oo4NX5LODtRWTUnuaR9w01baqVve4=
+X-Gm-Gg: ASbGncsXUjaNFgDGqVYAZOIixGcRew2ookck/vZ9GpttJCBhsk/AOS/46kXmBsiLYhg
+	g7F3WsSvSvwDsk2R3Z9kJ+F//Tk7jCUYm6AmKb78NYLOwqj7Tslq/gKbApulFH4gFrZ+EefKVDF
+	2iUbTLBjnWqwcVvyPHB5+sor6F8pfkersJttLl7bmoLjUAi7g9ceCSEbkwD9R5F/CaI5gv8yYSv
+	p6H7SjYZFxqe3gm6KxrtIROEa/vIbGljptq7PmudCBFyDoTHCY9j2TIbqVrvhfVRhmmfuQ1Psfm
+	Tmnv7jmU0dWs9Ae2ZbaxfeB4Zy+yV6mO4te8ofR/qD1cyfGuXSMTkcnDtlqRb9DrRTw0O19BZ5G
+	l8s/ojB8RVmPyQ4te86WkmcE4RHcMKizlPNnVyFDZk+Hk9iEQPrflZx2sopbr36CKE7rkTI48sC
+	gmxjBAfu27Cva/S/HV5jI=
+X-Google-Smtp-Source: AGHT+IEkQUc3AXEWirxMtaQehRuguWIkLYzGzZnyPoMRvYn4CXlpE1GuGBvel+XZFzm2O36gCn8Gqg==
+X-Received: by 2002:a05:6000:288b:b0:3b7:96e8:7596 with SMTP id ffacd0b85a97d-3d1e05b9583mr9467583f8f.57.1756907887009;
+        Wed, 03 Sep 2025 06:58:07 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b4f3e.dip0.t-ipconnect.de. [91.43.79.62])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf3458a67esm23797305f8f.62.2025.09.03.06.58.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Sep 2025 06:58:06 -0700 (PDT)
+Message-ID: <7d5a9c50-66d1-4e54-a4b5-ba857c1fd6be@googlemail.com>
+Date: Wed, 3 Sep 2025 15:58:05 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.12 00/95] 6.12.45-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org
+References: <20250902131939.601201881@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250902131939.601201881@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-As the doc of of_parse_phandle() states:
-"The device_node pointer with refcount incremented.  Use
- * of_node_put() on it when done."
-Add missing of_node_put() after of_parse_phandle() call to properly
-release the device node reference.
+Am 02.09.2025 um 15:19 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.12.45 release.
+> There are 95 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Found via static analysis.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-Fixes: 1df82ec46600 ("PCI: imx: Add workaround for e10728, IMX7d PCIe PLL failure")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- drivers/pci/controller/dwc/pci-imx6.c | 1 +
- 1 file changed, 1 insertion(+)
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 80e48746bbaf..618bc4b08a8b 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1636,6 +1636,7 @@ static int imx_pcie_probe(struct platform_device *pdev)
- 		struct resource res;
- 
- 		ret = of_address_to_resource(np, 0, &res);
-+		of_node_put(np);
- 		if (ret) {
- 			dev_err(dev, "Unable to map PCIe PHY\n");
- 			return ret;
+
+Beste Grüße,
+Peter Schneider
+
 -- 
-2.35.1
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
