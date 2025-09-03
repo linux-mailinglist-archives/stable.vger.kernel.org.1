@@ -1,120 +1,102 @@
-Return-Path: <stable+bounces-177664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39890B42B92
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 23:12:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C2BFB42BA7
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 23:16:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13876174BF7
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 21:12:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F3E37B2B8D
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 21:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A2D2EACE9;
-	Wed,  3 Sep 2025 21:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDDE2D63EE;
+	Wed,  3 Sep 2025 21:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pDfX1pyV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g0AvJSnm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E232C235A
-	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 21:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64FC1F948
+	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 21:16:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756933939; cv=none; b=dftk77OtnX0AklJQjoP/2m6oz9qXA0FugtcT/zH5CuvrVvP4xBVVW5LBpEkqd+Ne94ONFdyEhmCisIozvd13SufUcZO3g5BQMasDihylx7HLG5pPEheO4FremrM1z+lkxiMpVvXgekWhunWgydPAKgpFO6/n2dk74epgRmybiz0=
+	t=1756934180; cv=none; b=L5vT/YGJNo5WGVTQXmoRSI/OgwY/IIq8SusV79AK85o92euABjB5752BqFVPJ1p0potZN1GchL3yMI92hi5SptlHfylE2vnSP6tz8v+H4cIw7DHre8tWsUznNH2+MuX7YaXfEFkRUcOq2nZE8hNGiEfyHOavRjrUoBR+TwcwT5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756933939; c=relaxed/simple;
-	bh=eXH68fi0oBBW92ujAVQNdxDN9cWmORKtrc5sa0RT+xY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UZ7y8Tc+R4hlMU+nwi/R85gKXyrXNM9Be87qx08BshfVf5Kc00dTRZFA3nKCdkCmAbSVYrmfDoYWHDI46kMQMFefeSrwUbg9hlCFeOH4b3rqCOsYKu6K5hvDFZpWGhIg0UsnIeXUvlgTW/Myaof7bfW3COx978p8FrJgFrLgAa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pDfX1pyV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9759C4CEE7;
-	Wed,  3 Sep 2025 21:12:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756933938;
-	bh=eXH68fi0oBBW92ujAVQNdxDN9cWmORKtrc5sa0RT+xY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pDfX1pyVIvamffnSmVZqbAiL3Nf/w8yayG9ux8TCC9bOhGvwSLoZx0SNtwOHoGnGS
-	 zGkjJISSKMLsR10tw/R18HQXkcc9D78JU4wezCn44TlcuOhg27ADEvSlZehlOnD3U+
-	 2hEEPbePAcdgRQ8XdeRHQH4qZ9fZ/EKqU726/DS4J++5yLlY/l79hv/IttIAJFx0GB
-	 MnRhWVaf+Glb+LqweSmw08J4S2hLyTqBWC8nEq33vxNuiR/WzaD2h0IYWbgDjwuEnQ
-	 7PtFvuTQa4+hHC4OJsmKdJlDN5s7+ROt8+ZeBhn7TvWeF1/4hH959pYvjgVQ3kNGVj
-	 rXlzzzr1+Hm+A==
-From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linuxppc-dev@lists.ozlabs.org,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.4 only v2] powerpc: boot: Remove leading zero in label in udelay()
-Date: Wed,  3 Sep 2025 14:11:58 -0700
-Message-ID: <20250903211158.2844032-1-nathan@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1756934180; c=relaxed/simple;
+	bh=UzDezVzqcx6neVGBx5JVwLNDCCuoPPE1J56Dg3JVFxM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=kxWbwEa3vUUPNdwnv+ALuasak4KjBXb1/qzbwMd4oFE8te60CLGzeqklN/rNvC278u9lD2HlJwNnG9tCO24u957Wjfsfasr6IBPLkwo1KcZDIsDjx3pAyglAjBOX7yc7BibfxdlxcvLiJ3lkpaSJzOc3kEBVVeOkDC98C2b8WYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g0AvJSnm; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756934179; x=1788470179;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=UzDezVzqcx6neVGBx5JVwLNDCCuoPPE1J56Dg3JVFxM=;
+  b=g0AvJSnmre5SN8QKZUIICTFPpCRnmsf5+ti0rudDK6IBa6syWUnydVnJ
+   5Cgn5W5i4WxEEynIXk32TYu+ZyFwEA7r4a9cnMIHfEi4deneKCcRqRtKh
+   VKfXOnweVhZV8/BlLCJGHyb/jA0y0yb+fKF3y5C9tJTWdIhv4rtOq7kIb
+   n63fcifZgI8n2UCa4VtTxl9rQmykUAjCuhZItiO3Xgxw8JQf+gJvo0pA9
+   KaOlbel50PSGANEAJrCWcDNXiZpnz2RsxQzupxYpr3l4UcGwSNv/76hN9
+   PotG+v+Di0iQf7OPXtJWMJkUBihYOhjAZH9aI2bOmcOm7EDA8NcexGi/5
+   Q==;
+X-CSE-ConnectionGUID: A4ugkUJURu2xtVSrnSubFw==
+X-CSE-MsgGUID: Mcp0E48LRbaiUxG80oXO2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63095420"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="63095420"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 14:16:06 -0700
+X-CSE-ConnectionGUID: dS1Gzh/KS+OUVFXNRSXBng==
+X-CSE-MsgGUID: 97zVp05vSj2b7ur3Z9T9Jw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; 
+   d="scan'208";a="171257036"
+Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
+  by fmviesa007.fm.intel.com with ESMTP; 03 Sep 2025 14:16:04 -0700
+Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1utuoi-0004Qv-0X;
+	Wed, 03 Sep 2025 21:15:41 +0000
+Date: Thu, 4 Sep 2025 05:13:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 5.4 only v2] powerpc: boot: Remove leading zero in label
+ in udelay()
+Message-ID: <aLivXntAMi0RN47F@c0d94d4ed04f>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250903211158.2844032-1-nathan@kernel.org>
 
-When building powerpc configurations in linux-5.4.y with binutils 2.43
-or newer, there is an assembler error in arch/powerpc/boot/util.S:
+Hi,
 
-  arch/powerpc/boot/util.S: Assembler messages:
-  arch/powerpc/boot/util.S:44: Error: junk at end of line, first unrecognized character is `0'
-  arch/powerpc/boot/util.S:49: Error: syntax error; found `b', expected `,'
-  arch/powerpc/boot/util.S:49: Error: junk at end of line: `b'
+Thanks for your patch.
 
-binutils 2.43 contains stricter parsing of certain labels [1], namely
-that leading zeros are no longer allowed. The GNU assembler
-documentation already somewhat forbade this construct:
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-  To define a local label, write a label of the form 'N:' (where N
-  represents any non-negative integer).
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
 
-Eliminate the leading zero in the label to fix the syntax error. This is
-only needed in linux-5.4.y because commit 8b14e1dff067 ("powerpc: Remove
-support for PowerPC 601") removed this code altogether in 5.10.
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH 5.4 only v2] powerpc: boot: Remove leading zero in label in udelay()
+Link: https://lore.kernel.org/stable/20250903211158.2844032-1-nathan%40kernel.org
 
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=226749d5a6ff0d5c607d6428d6c81e1e7e7a994b [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
-v1 -> v2:
-- Adjust commit message to make it clearer this construct was already
-  incorrect under the existing GNU assembler documentation (Segher)
+Please ignore this mail if the patch is not relevant for upstream.
 
-v1: https://lore.kernel.org/20250902235234.2046667-1-nathan@kernel.org/
----
- arch/powerpc/boot/util.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/boot/util.S b/arch/powerpc/boot/util.S
-index f11f0589a669..5ab2bc864e66 100644
---- a/arch/powerpc/boot/util.S
-+++ b/arch/powerpc/boot/util.S
-@@ -41,12 +41,12 @@ udelay:
- 	srwi	r4,r4,16
- 	cmpwi	0,r4,1		/* 601 ? */
- 	bne	.Ludelay_not_601
--00:	li	r0,86	/* Instructions / microsecond? */
-+0:	li	r0,86	/* Instructions / microsecond? */
- 	mtctr	r0
- 10:	addi	r0,r0,0 /* NOP */
- 	bdnz	10b
- 	subic.	r3,r3,1
--	bne	00b
-+	bne	0b
- 	blr
- 
- .Ludelay_not_601:
-
-base-commit: c25f780e491e4734eb27d65aa58e0909fd78ad9f
 -- 
-2.51.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
