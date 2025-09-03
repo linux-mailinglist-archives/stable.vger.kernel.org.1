@@ -1,124 +1,157 @@
-Return-Path: <stable+bounces-177635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A31B4247E
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 17:10:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3985AB42496
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 17:12:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7E7B546AAC
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 15:10:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6D4A1A82AA1
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 15:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6108B31B11F;
-	Wed,  3 Sep 2025 15:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFC1313E2D;
+	Wed,  3 Sep 2025 15:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="pomIhLVH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AE221423C;
-	Wed,  3 Sep 2025 15:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468661F7575;
+	Wed,  3 Sep 2025 15:11:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756912186; cv=none; b=lr6DIyDqM7j5SuJ5AHbXD8f70uecF02yPoTax5CaDp+px1QuFJHJ7r8Cqp+Dwx+ZGYUXUMU86zhdPKPXzSW5mPnjSlZGJZoLwxEaX0H+KvyaiWoVPsEnXrbaJBpG/Bkf9jTM12KWJzzTZiTTH6N5zdbbMy3DheJTluXRNW/GYO8=
+	t=1756912321; cv=none; b=cMH+OUKRLKxLCTtEjnPGdGUFWUjEf5isi1zaBePQitaUZ/8qKR8lqovMiYWLRFfgIr1YgopXNdNC1dAWx9MqLNwoZBVJyv4XWfSl7DURazeUS9ByzdoQVkzdXSNJyn0Y4vesgECq0xuqtBhgRI4ItjEETvtGMYQqR+qVNejPMqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756912186; c=relaxed/simple;
-	bh=ikzhtY9rGgjgk/Rd7wHKRdyMV34Tvhe35O+3FsWsUrw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bNKim6QMRcwQqUi2Qu4/qB1QxwpYR6lXzlGFSV7nyCA2cO8EENW9cvHJ/69XWLrejR2XFLmwk2zmncLj+0QnaW60fUVdMqYDi8NHmxdzNrDb+RdJN9J32dEijCs2eOf7TkwUxe/B8RKGV1vkLLHXgIPMZZqw4nXcNbrMmP8IY9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-890190d9f89so3498107241.2;
-        Wed, 03 Sep 2025 08:09:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756912183; x=1757516983;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zVpdXnOxQkV6aoehfvXuxZwNBrwSUuUJUvgG7SPoeFc=;
-        b=RpnR0lDHAMKkPMkzOA3h+xtRoyPGp3ru+sMXziaM3lE7tzm+E+I/0QiqDj99hYID+1
-         dT2leNuVmkcPbcHWwjQiGaEqdMju4kQBBYn926742b5QRcwHUh2LhGdatFQHKj2ydt6r
-         BxCoREdUA9xIftieQ17Y5oUeNLZBzgXgHVBeH8DGhjjOLqzSOI7K3DUDvGG5Z2fofc+q
-         3WFdtZIgKMKQfDc7XOCowp8QwccJ0AOrnvVToUbkq7XEct6H7I4hQVCu4z18ZfYCDaxX
-         EGEt8v8VV7GL3zvd0Bx10yCqh8a2G/9XqpJL42IBGgVgWGfDuMs4MIfAM7Pq01L0j/CX
-         nN6w==
-X-Forwarded-Encrypted: i=1; AJvYcCUJwiuWbneZwe95Wif1BUngCiqfqwSOJs4+dn3fXlov23wpotZSjYW/pDXcPS0H6pwT87dKlGlKr2FXSzO+wwXXGC4=@vger.kernel.org, AJvYcCUaVziI4cE12pSfyChGMWJbn1PmJ7p82N1/eZlc+ljd8Mj5Ik5eb8dRB98CDbs6yvIpQPt66EHBGyK2xOg=@vger.kernel.org, AJvYcCW75S7Mbt1adKoORZtX6iXtyhADdMsMfI1x65vgHZPFajdSlEkb/kcCQXpXk+nrhMmA3P7Gipet7WJbVMo=@vger.kernel.org, AJvYcCWDODODeDhdw0mENOCM+ruczt5k8w3GcVZXVXetKIAdMLvJE8gnsVLd1Yzcn41SzVXYN4K4fYKo@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXl1yKSCL1+or6muX9vEj7mFpN8PlaUY7X2ITNY3ynDMXGPYWM
-	VOyXDBXz7dd6vZ+6Wr0iHKIvwdhzu/Jdw4xNpOdyq2R6D2iV8dA1VGe571kp9Jzd
-X-Gm-Gg: ASbGncuoLL25rOJ1YGYHa7ZyDUgFtOWYiIuzJp7QMo0pX5+UinIGDvM51P+aNuZITAk
-	KRmrmHKt+V241s81iCz+XzR+aY52Ebdn9r6v1MDV32f2MMEdmKVXkQcEWPZVe5kR6Pwzvj2Kqdw
-	5o+H0ZNxxMIzGAQn9VWaRXMiwXA8iVM1MxTA7FcQT4oEzEW/3Z4dnC/0fX1ZgrnL4Sf5vpcoDYX
-	3hZlbzM92RN9oCFFv0td4ny+XYSd9uBdPqSDAW9Osv7gX5rzg0UIml1T0IlM4atQHhc6MyX0o+u
-	nHCwgV1gJ7Fu0vVJqFpubt6+OU5LhDuywqFn9MxkIlyY8Yj9wtys11viADitRpiWzat+eCsV15p
-	2lILmxRwKlLfn05R+Zc+rbKqGDKoiXdLDYLteb7EDuE8e6wZu5mC4/U/iCiQ8MKdEgEx3hWU=
-X-Google-Smtp-Source: AGHT+IG5UiojQRSjQbp+tq8D2M4cfxB/tpyscIhxY8mjPHCycsbAyr5kgMreKJC64xDyyY/swSVSZA==
-X-Received: by 2002:a05:6102:6a8c:b0:51e:92cc:6e64 with SMTP id ada2fe7eead31-52b1bd1590cmr5999160137.29.1756912182664;
-        Wed, 03 Sep 2025 08:09:42 -0700 (PDT)
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com. [209.85.222.46])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-899a902b2cesm1580116241.14.2025.09.03.08.09.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Sep 2025 08:09:42 -0700 (PDT)
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-8943501ba3dso3022054241.3;
-        Wed, 03 Sep 2025 08:09:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVCe5xqGotqOOiambyefUEVdw73yB4jtc7WIa+xCsM45X/3oUs8284jyswBGgbYoOtD95jqRu+xv4hLENc=@vger.kernel.org, AJvYcCWA9lGubaYXUNcuy897KR/+OLzVf/1FY6XTYEAycB+/JAyqiK1wu7Sjb1Ns2SQyVZlw/YjjmMNfcvCIWjw=@vger.kernel.org, AJvYcCWM0PFJE3fhaN0FBI0I45Pi5lZ54VNjU2/V6kVgb3347MJ8q34o90QdjXuG8Jr+Fr1JH3iY+lnV@vger.kernel.org, AJvYcCWoAAr09VrMTRKBAcvSsEp0NhGDuzODsPe8vjnlCW1l6vnsUhcPwn6DyfhfQvDqmXW95ca4AMB43NueNbLDPBnnTrI=@vger.kernel.org
-X-Received: by 2002:a05:6102:4412:b0:4f9:6a91:cc96 with SMTP id
- ada2fe7eead31-52b1bb25608mr4990360137.26.1756912182120; Wed, 03 Sep 2025
- 08:09:42 -0700 (PDT)
+	s=arc-20240116; t=1756912321; c=relaxed/simple;
+	bh=fuzzdqflWKxJG/2KMhMC5oLTglkqDdupgl8/Aw9toTA=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=plIj5bLt/4NOuW20jekEKHU2A/CCA/cL9OdZ7nkXDk6fB3N9ixk26i1bU4vjyJ1DJGaTvBCcqipyJXpTdJFMeBktpwhQ0B1anYhoFIDqNS+5/rUC1LtA8VuQI5FfZl101C3Q9YIhzmUiVUhu36PYzHF5TUTshfayGEXeoDA+lVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=pomIhLVH; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1756912313; x=1757517113; i=markus.elfring@web.de;
+	bh=fuzzdqflWKxJG/2KMhMC5oLTglkqDdupgl8/Aw9toTA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=pomIhLVH9JpLeqymo/d6RPIY+zdP+2nKSmCeyVnbvLEg4q1/gsmMg/guDps1k41B
+	 +1MG5242Xe1kxgnvY2XMqi/zP4ewofH8eLUTZ6ikkiouSW2bq+WMSZUZSDNgvliHR
+	 sujKAllYvopJCy6rZjj/I5hH2jyUdrnARm7njF0LHZ8+rTWBabtvbXf4hAv2bisa4
+	 5IR2idZTifeY39ZhbTGgW4QtlURq9vc193j7aE7evXZG7knJyhrTWQSkUdb1F+wrp
+	 SQSUVLTcUZwkNZh9qWQT/gKlYh4bfBJzGbb0nZOzPjg+pyViTNM56UZjVv1Xreivb
+	 R9WBQp/p6cAnIhD3Pg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.92.225]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mc1VL-1uKTzy0p7H-00ed5L; Wed, 03
+ Sep 2025 17:11:53 +0200
+Message-ID: <a111df8d-0e1a-49d0-8bd4-9b41c60151d6@web.de>
+Date: Wed, 3 Sep 2025 17:11:51 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250903133729.2523130-1-linmq006@gmail.com>
-In-Reply-To: <20250903133729.2523130-1-linmq006@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 3 Sep 2025 17:09:31 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWBXv+vKqBXOWeFqsy0R8-3__oBFWnm4rUx1kqSq5ZUgQ@mail.gmail.com>
-X-Gm-Features: Ac12FXyAQ8jdtIgL3wkXHy-xS6MnuKfYQ1i_Sq3qEQPyIA5MCrJ91AMJ_d788Ug
-Message-ID: <CAMuHMdWBXv+vKqBXOWeFqsy0R8-3__oBFWnm4rUx1kqSq5ZUgQ@mail.gmail.com>
-Subject: Re: [PATCH] media: renesas: rcar_drif: fix device node reference leak
- in rcar_drif_bond_enabled
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Magnus Damm <magnus.damm@gmail.com>, 
-	Ramesh Shanmugasundaram <ramesh.shanmugasundaram@bp.renesas.com>, Hans Verkuil <hverkuil@kernel.org>, 
-	linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+To: Miaoqian Lin <linmq006@gmail.com>, linux-tegra@vger.kernel.org,
+ linux-phy@lists.infradead.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ JC Kuo <jckuo@nvidia.com>, Johan Hovold <johan@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Kishon Vijay Abraham I <kishon@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Thierry Reding <thierry.reding@gmail.com>, Vinod Koul <vkoul@kernel.org>
+References: <20250903045241.2489993-1-linmq006@gmail.com>
+Subject: Re: [PATCH] phy: tegra: xusb-tegra210: Fix reference leaks in
+ tegra210_xusb_padctl_probe
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250903045241.2489993-1-linmq006@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:Vto5T7HMuhv4kLXfZikyR3WNBfDL8qO34gg6b1ELJlzDUv8vfLa
+ MukUXfM+HWys/C+U+aQZX/H8YkvmBGqLW7DhJ7ZDnvTs2iv0Bknv4wBFyW6END5Qwhu/9AP
+ 208f+MuTguFgnN3u/q1uQVd0qOz68xngXnz63F2ESBouG3iBoKhB1xF3SE7rA0j3QiC/761
+ Fofy/dGCA9Dy6s/USFqhQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:34rJf0QV/6o=;z/hqGl9fupoaEARWp5RfPr3rCkc
+ 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
 
-On Wed, 3 Sept 2025 at 15:37, Miaoqian Lin <linmq006@gmail.com> wrote:
-> The function calls of_parse_phandle() which returns
-> a device node with an incremented reference count. When the bonded device
-> is not available, the function
-> returns NULL without releasing the reference, causing a reference leak.
->
-> Add of_node_put(np) to release the device node reference.
-> The of_node_put function handles NULL pointers.
->
-> Found through static analysis by reviewing the doc of of_parse_phandle()
-> and cross-checking its usage patterns across the codebase.
->
-> Fixes: 7625ee981af1 ("[media] media: platform: rcar_drif: Add DRIF support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> Add missing of_node_put() and put_device() calls to release references.
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+See also the commit bca065733afd1e3a89a02f05ffe14e966cd5f78e ("phy: tegra: xusb:
+fix device and OF node leak at probe") by Johan Hovold.
 
-Note that this is a duplicate of "[PATCH] media: rcar_drif: Fix an OF
-node leak in rcar_drif_bond_enabled()", which was never applied.
-
-[1] https://lore.kernel.org/20250105111050.3859712-1-joe@pf.is.s.u-tokyo.ac.jp
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Regards,
+Markus
 
