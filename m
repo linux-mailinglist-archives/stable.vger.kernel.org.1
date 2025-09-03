@@ -1,82 +1,83 @@
-Return-Path: <stable+bounces-177658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43DF0B42925
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 20:54:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EA81B42922
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 20:53:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8E42682F6F
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 18:53:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 939FD1BC22EA
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 18:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEDB36932F;
-	Wed,  3 Sep 2025 18:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104D5369331;
+	Wed,  3 Sep 2025 18:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="IKQmId3w"
+	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="HFdRjX2m"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63331362098
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB6B3680A0
 	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 18:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756925624; cv=none; b=HBynkUwzwpJuHM1gznYHBrROL9KRtV5qaim1/H6SiH15ii1e+xf0rEIVzRQ1xQz8U/qooWsi+Aa/uX9ob3fS32afJnHJjl/EC05CDHXA/QQ9QbEkIqiH8QkL5B8stmz5hs0uXiXvQg8Ly0MdM2xs2fzZO80+Cj83sxmrwWqP4ns=
+	t=1756925624; cv=none; b=OCc2R3ag6NJECtFjLj/sKjVNGtViDc3wMAP5ptVuYT5VtrSRRXMc02KkeV0GjSO08ped3jlDsGsMGdizpzCxcEvSJ1/BFq8hjVT3nnugX01M6XinBMigaIaN85lr3ISOoUJq5t4gQcu+hk/gEcZRFVNlXnK7cFzM8CY0Dm21WsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756925624; c=relaxed/simple;
-	bh=tb01GjZKeVYDMqeiQU+MbdxDJ+LoCTMzjQNhhcNJEgk=;
+	bh=WwDwWn8PUMqzNmPRX5AJQr10TNESZyHkO/C2KBJ6k40=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dQB5tUdPWUEG+lYwh/ccthUB9XhAyDZZ+jpEV1DhOksYmGdE1aVd2LIMBPDDehoa6C3pMI/94CvBqPdr0QBusolQzObqnnX7QynRvxLjYvYtJKB0c3u7yzIbXho7ssTqOrE+IvUl+ExnO93bMUl6PLDDO0yjmcemif03vGS51Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=IKQmId3w; arc=none smtp.client-ip=209.85.128.53
+	 In-Reply-To:To:Cc; b=WZnpyUxHiA6ld7kSBGqvQUW8Ie21mV3JkWBoFRDVwA3aEunkm+QHHolrXNI1AiDWBGdTdeFFWEXDK5VDiRLJD3lS09MiH9KM+J/VGAQ3vBFdaCvEVoFQIhUNOuma8wBlwKD6dTAOt4hfSHXq1jw7K2m8b58YWCU0UV53SEz4bj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=HFdRjX2m; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45b89147cfbso2539655e9.3
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3ceb9c3d98cso155371f8f.0
         for <stable@vger.kernel.org>; Wed, 03 Sep 2025 11:53:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=rivosinc.com; s=google; t=1756925621; x=1757530421; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=AquE8JHU3wpKOnx9hZ4dVcOYBLYMLbey8qkeKp2ZqhQ=;
-        b=IKQmId3w1XpsuZwgjqa+9vypfvBHLDUZGGKC/Ez1Fo+AtxRZs2IgRQrXEWiKrpi1mR
-         K7lB4CBlzxWPsSLGOZxZbVMhbcsz/dHojRYg0cPESEm8YAtAfxBlehuoacAMdGIHsmg/
-         Efv0Z0Y9QbOsCIl+ILcJb4x/qg4lG20Xs6Cr4LcNYve6vlHevmicqH1MpI7O/R6wuGd+
-         Vym0D83i3huWRlTJxbwLOJy7V4QV8F0KmcHqDB8301NnBsa3yaFjM3ZkCWgRANFS+4KW
-         txnvJn0Z9CP/k/hRZcyd9WdXmEWnVeDFyLdn0exrPERZVk1OR2AE2DA4V5+VfBIQ8iSG
-         NAVg==
+        bh=jw9BHN0FeRhOuxnLyFuwgicmhR7Ua+FygQwocs16V4c=;
+        b=HFdRjX2m+hw1pG9m2pDERobYQRW3I0p1KwV4T/VWdoK++FP5/8fWHgCcnxpjV6qROd
+         vk5bgaBw0PCDyubHlmypfN7tuAOsfseNg8FwHeVzUItsOBJRUvC1/j2eMGBOx93n96s4
+         dtJW8LA2ZuRa/9q2SxidIwifv/O0H3xCERQ02XWDsc+6UUOOplsNo3E8uD91wx3JDdqh
+         UgQY/Fjz2K69d5cpaYzJWiplnXS+vlTIKNjW74LLNj1PkJkNvLZTHCbfv5qSqTc3Rah7
+         Db8wR6xLW7ZsquaGi21r0njmbuRflTkQxfCe8+HHvfNaxG23hBfAiVeC6OP6jWqPt1r5
+         F6gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1756925621; x=1757530421;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AquE8JHU3wpKOnx9hZ4dVcOYBLYMLbey8qkeKp2ZqhQ=;
-        b=YLUA0qGu+wZYsYQUGuYEBUyTcwg+NxFF6iwvfhegW+dikZqRsZUPG6+7N6eZtT67O0
-         VFU6q5BqNmxuO/wCIp2fyZjhqFYgTui51GkErUNjrROmOr5KNZgpjFB6HVeWPoLMfpE8
-         8MQ7ez0qBDZqrTvOF/PQ7piwk8dmbFf65eHDXhIck95cf08cQOPlmxgaK6f1/EHUByyB
-         luR8J+T9HGcEEkzw0v5hcIHK8P10qgn3HYdBw/vuEJxePx5/3Ko+n6Y3sq5U5QlG3vVH
-         ikI4zlkcwO9v5c8vx6T+GkzIwhqZCVr1uigKxKVoMvhLvxEyBjXhSjgHSyjJHIqutsud
-         kdmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV3qKO4G102/VtEzvnvMh8TxN5aMrbGO9GkjmpqFMeiTXsb0cHRP8P30RSAEnPE07lNweNan2s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yza0UNTQVpjHMn4SW6MbzzELbwmIVzvYHMFfEYQN0XqWBh03Bvk
-	VRbbCY9apCHp1DKNtPZBssOkeoCD5Kso3nwhzRgMOWBrUsVgfgZJGbVtZaxE1lyHxuc=
-X-Gm-Gg: ASbGncucNvpoclLOUzsRfY3TMy7NMuot5ES1JbQAs56iMZvpkitOOLafBATaW7Ps/G1
-	F5hBzd0YefGfGqNXw37ww8GTPQikWpy9YCpkzSM/wmDzdH5sMaFWDQk6LaX326aojDQC5VxD8j/
-	8lgsBeMPOnz4g9q5Tgm9ZyFPZA/nJHZufynGb7OoC+uJzD69pNUm/hKRHjsjgJkLTerFDKCV2N/
-	MRNug5+GSvFx/FC4h1ppt9ernbsvTLiJu2tTeiL24LiYxFIOuTt5tyXlqWu3TPYOL4r0Nh+bjBd
-	r+cuUab9zsIf0dNumhFDtWYeoJI7JNkk2BtIDhmAFt3iU2JAPv6ivviGwRKyXMD+ilzTsdAklHh
-	lJZ+eCJSq95sGFyein1pY1RlK+6IM9ptWXZoB6kRaOCKvywyu2Bm9CFrHjNUeiFUKC6NwW8Qqpt
-	34sdo+
-X-Google-Smtp-Source: AGHT+IERl6smvjSqMpuCaH/LYojC/JM0ih8kKGx0MImSuDXXr6hrLMvQiHu6Ro0U1pMEYuo7OfIbrQ==
-X-Received: by 2002:a05:600c:4f8f:b0:456:f1e:205c with SMTP id 5b1f17b1804b1-45b85550704mr136866395e9.4.1756925620576;
-        Wed, 03 Sep 2025 11:53:40 -0700 (PDT)
+        bh=jw9BHN0FeRhOuxnLyFuwgicmhR7Ua+FygQwocs16V4c=;
+        b=GJTKQNyUOSUYZyZqcDWHWXx40wKLLOXvU+2MdMy4iEtEBEmfFa6XJKJrMW8K18eKLZ
+         ISANWJKrzqsoTyZQkHxj5iFkZlHYFQq4yPZRt+PCAa9c/bbarDETzVeVV8GcLqjUC7cX
+         8Jfad9LHP9Bb7Qz0Lr5ZBDnNv1E3YF66taKMhe1DLegQhmq3yooEo9KJ7QtsXeo2RjXf
+         RV2FltjwFQhsfXxt+qKTOGcCCTfou9MWocwSPFT7Pk+zARbJvI55qnzT/9Ol6YqRFdz8
+         Acy/BtRS+eGnzHIFIwm8km+BJFo7Wt8QKNVZ7MjJW16YjHFWNAi9crpsdTCRFTN4r/IM
+         SD2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXvSYjpfaO9mSwwB0pCINvOwRZDaNOX4vroeHdncLwNj571l8bPu1ewRntn0sHWJKMLkQagzvw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVh/ZIXF0+Xw3TuLz8j1MKvyR0v51Xh3/sFmJUIt3motAmGknK
+	0tPpeCwWmydn496cfvdSYZEddKJdbuHlm+GGjOR8/noFPXrgJm0zUZao73EkMX21E20=
+X-Gm-Gg: ASbGnculRh8ca5acsvjPxZL2tiJSzGQ7X/FEgz2D6cwDvPnRgHmCWXKGx8kqTkTCyij
+	psr3jGkgzgUS0awvGyw/511KyNEYMymys3Us69I7UdIFEVhzpdHm/DRlYKWXFx7ohoaKyq1Rymw
+	Si94J8HT73HemGIGV1AR4YFJu8i/fmtEM5bzb5lceWU6jaK1w/x9/qHQm4qabu45nD/XtlYlKaG
+	hu0HPq+i1jIN5RmgR4ABzBQ0CwX+JQvDp3Jcqt3LTdFh4hfls5ipzQsCmEb3e+QGYNQLSutBXcm
+	UwN1LA6FHd9hIYGRpQ3JhnyKufKLc4bnBuCYu0H3H/hoeUtsmRJXu1ftxP7cDGQ1izi1yD3GBbe
+	0rK3Juaj69WU2ztCUF+JuzHB+NYHzEw0Ai3xAkxZCko0iwbz7RLhP1oSZxnKZrxuH3rA3PemZt4
+	IEUxmqU9CnzlFqs+c=
+X-Google-Smtp-Source: AGHT+IHOk7OXAl6oV2267O8szo6YMPylYzzI4Dr46hL2gWcdyGl5LwYgLiSHECqfj11Wp5eTPIQCDQ==
+X-Received: by 2002:a05:6000:2381:b0:3d7:cd09:ae1e with SMTP id ffacd0b85a97d-3d7cd09b425mr7585878f8f.17.1756925621431;
+        Wed, 03 Sep 2025 11:53:41 -0700 (PDT)
 Received: from alexghiti.eu.rivosinc.com (alexghiti.eu.rivosinc.com. [141.95.202.232])
         by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d690f2edf1sm13920647f8f.16.2025.09.03.11.53.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 03 Sep 2025 11:53:40 -0700 (PDT)
 From: Alexandre Ghiti <alexghiti@rivosinc.com>
-Date: Wed, 03 Sep 2025 18:53:08 +0000
-Subject: [PATCH 1/2] riscv: Fix sparse warning in __get_user_error()
+Date: Wed, 03 Sep 2025 18:53:09 +0000
+Subject: [PATCH 2/2] riscv: Fix sparse warning about different address
+ spaces
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,7 +86,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250903-dev-alex-sparse_warnings_v1-v1-1-7e6350beb700@rivosinc.com>
+Message-Id: <20250903-dev-alex-sparse_warnings_v1-v1-2-7e6350beb700@rivosinc.com>
 References: <20250903-dev-alex-sparse_warnings_v1-v1-0-7e6350beb700@rivosinc.com>
 In-Reply-To: <20250903-dev-alex-sparse_warnings_v1-v1-0-7e6350beb700@rivosinc.com>
 To: kernel test robot <lkp@intel.com>, Al Viro <viro@zeniv.linux.org.uk>, 
@@ -96,45 +97,53 @@ To: kernel test robot <lkp@intel.com>, Al Viro <viro@zeniv.linux.org.uk>,
 Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Alexandre Ghiti <alexghiti@rivosinc.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1106;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1897;
  i=alexghiti@rivosinc.com; h=from:subject:message-id;
- bh=tb01GjZKeVYDMqeiQU+MbdxDJ+LoCTMzjQNhhcNJEgk=;
- b=owGbwMvMwCGWYr9pz6TW912Mp9WSGDJ29G3SnJAmn34r1vLZRsOeyyGHZpo9PH76uxIva6PxS
- 96P+1d7dJSyMIhxMMiKKbIomCd0tdifrZ/959J7mDmsTCBDGLg4BWAibocZ/kcbd8yp174kdHxF
- 6sf3i4o/3NqR2Hv9xkQ9ebk5od7bdN0Y/gd3lPq5tRpbKH/3+XHc/Xu55pram/3feFas3LDyk63
- JcX4A
+ bh=WwDwWn8PUMqzNmPRX5AJQr10TNESZyHkO/C2KBJ6k40=;
+ b=owGbwMvMwCGWYr9pz6TW912Mp9WSGDJ29G2qCX+T9j37/c+fnfq7dTqqNA5eXy6TvlXmVMS7P
+ PGnVtNsOkpZGMQ4GGTFFFkUzBO6WuzP1s/+c+k9zBxWJpAhDFycAjARwV0M/xQO+NxrPcCz4seK
+ jYcYj+6IT7lUv6Ak6sOCQHb/cyx8fr8Y/hc0d90o7N7GUtb3nifIusPw69mPluJuU+yUKnK7Jl9
+ p5gUA
 X-Developer-Key: i=alexghiti@rivosinc.com; a=openpgp;
  fpr=DC049C97114ED82152FE79A783E4BA75438E93E3
 
-We used to assign 0 to x without an appropriate cast which results in
-sparse complaining when x is a pointer:
+We did not propagate the __user attribute of the pointers in
+__get_kernel_nofault() and __put_kernel_nofault(), which results in
+sparse complaining:
 
->> block/ioctl.c:72:39: sparse: sparse: Using plain integer as NULL pointer
+>> mm/maccess.c:41:17: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected void const [noderef] __user *from @@     got unsigned long long [usertype] * @@
+   mm/maccess.c:41:17: sparse:     expected void const [noderef] __user *from
+   mm/maccess.c:41:17: sparse:     got unsigned long long [usertype] *
 
-So fix this by casting 0 to the correct type of x.
+So fix this by correctly casting those pointers.
 
 Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202508062321.gHv4kvuY-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202508161713.RWu30Lv1-lkp@intel.com/
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
 Fixes: f6bff7827a48 ("riscv: uaccess: use 'asm_goto_output' for get_user()")
 Cc: stable@vger.kernel.org
 Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 ---
- arch/riscv/include/asm/uaccess.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/uaccess.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/riscv/include/asm/uaccess.h b/arch/riscv/include/asm/uaccess.h
-index 22e3f52a763d1c0350e8185225e4c99aac3fc549..551e7490737effb2c238e6a4db50293ece7c9df9 100644
+index 551e7490737effb2c238e6a4db50293ece7c9df9..f5f4f7f85543f2a635b18e4bd1c6202b20e3b239 100644
 --- a/arch/riscv/include/asm/uaccess.h
 +++ b/arch/riscv/include/asm/uaccess.h
-@@ -209,7 +209,7 @@ do {									\
- 		err = 0;						\
- 		break;							\
- __gu_failed:								\
--		x = 0;							\
-+		x = (__typeof__(x))0;					\
- 		err = -EFAULT;						\
- } while (0)
+@@ -438,10 +438,10 @@ unsigned long __must_check clear_user(void __user *to, unsigned long n)
+ }
  
+ #define __get_kernel_nofault(dst, src, type, err_label)			\
+-	__get_user_nocheck(*((type *)(dst)), (type *)(src), err_label)
++	__get_user_nocheck(*((type *)(dst)), (__force __user type *)(src), err_label)
+ 
+ #define __put_kernel_nofault(dst, src, type, err_label)			\
+-	__put_user_nocheck(*((type *)(src)), (type *)(dst), err_label)
++	__put_user_nocheck(*((type *)(src)), (__force __user type *)(dst), err_label)
+ 
+ static __must_check __always_inline bool user_access_begin(const void __user *ptr, size_t len)
+ {
 
 -- 
 2.34.1
