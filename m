@@ -1,60 +1,69 @@
-Return-Path: <stable+bounces-177676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01DD0B42D21
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 00:59:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 255A2B42DAE
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 01:51:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1623547ABF
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 22:59:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83742547566
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 23:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A482F066A;
-	Wed,  3 Sep 2025 22:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B482FC01F;
+	Wed,  3 Sep 2025 23:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BySSq+sV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="djuAXn5V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F25B1D88A4;
-	Wed,  3 Sep 2025 22:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA452ECD1C;
+	Wed,  3 Sep 2025 23:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756940365; cv=none; b=hkewLEJajMeYQzuO1sSsxcUq8+mnJb03yNrY0o3aPlhqSXATsKxJ1tf2Fs0AoAgnMSQgfkJlTEKPa/gbSHZtpgjlp/mBzZ76gkayWYEXVYu9smvTt6lO7qJ3xsZ9OKnkG17zDqbAmGn5j7EgkgDYY0nu3LSGylJwllSetNWpfMw=
+	t=1756943501; cv=none; b=tjXgkKD5E2ilhYfSx1RrJRomzkcdIw8YCJvUkqpRyFXYvXynD1JPbDV3ZLCF+c+gKElrNyl96B9fGvLxv1zCbmF3+MsiKqzuSBlSspsjUaVkSSLEtwurZ2WSULqFiWDaNbb1jzwIn+EuCEyMWItyndiLt1RbLeKZ1/d3Dey+8xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756940365; c=relaxed/simple;
-	bh=zAZE2E5bn9s5utD0mvDXNU3x1IycGc7eg/BFJEIzRDE=;
+	s=arc-20240116; t=1756943501; c=relaxed/simple;
+	bh=jIL8HMWY74/M006Uey55mR2tjICrYWUq/L0Z06cYtog=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u6B2uzt3ZZrLeW/Zw6r3xRUlyU0wNV33+ZZEHuSbPY/gVmvvIqltUzy8JEKmy72qlyT7b9tt3eofQVfqV8Zfp/YIwRpGjJK7tFI9UBWqwQQF+K7/W1p3gaGh0z7dp26RwaeEAWBuY8MLrwoHzPi+pPNWyZ8iRWbidWh/jxfc1fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BySSq+sV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E91AC4CEE7;
-	Wed,  3 Sep 2025 22:59:23 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=OQtg4YxqC57mW5C2z5OxptRUmoNeIiHysZBqmZ1ULfd8mC/rdJh3Lpe1KmEMVGnf+0tJ737nWL18ksTaWv39wfGBg5YGgRrkbpMpiU67zzRrFKTmkCVW4k7gGPLmKBI4ZsNlQaPNVCHrgLjdtihMlUR5VoJo14uGq7trd3IxQkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=djuAXn5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672BBC4CEF4;
+	Wed,  3 Sep 2025 23:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756940365;
-	bh=zAZE2E5bn9s5utD0mvDXNU3x1IycGc7eg/BFJEIzRDE=;
+	s=k20201202; t=1756943501;
+	bh=jIL8HMWY74/M006Uey55mR2tjICrYWUq/L0Z06cYtog=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BySSq+sVdzxn2IOx35RmUn963piXTAT31hvCzQBe2t2zJlhSCVsNlFk/iHKl4vHPH
-	 Gp5DCyewN7pcTZCAtj9tdxlG8iWTbj5HlGviIqeG9J1ZJM4IivgEoMhUQxTn+O0CVS
-	 KNBkeIZ5SsAwPRfDCVXPYosOBcwuoPel48TvlvtCwkq5tI72bYBvyiPbImOnLZPwed
-	 WeE/55OVS5qwZiyfz2v0tZ7lET/7r/pMFwwe21Qbe3BIL4WcfGBHziakuc6W8rC2v/
-	 fvVgMT3mIjQCVHdx9Dbkwk4ZB32NVaoEuDAs08a0cBqMBywUEHiF2r+4949ROVdEo0
-	 Gt2aRlBDZZV5A==
-Date: Thu, 4 Sep 2025 00:59:20 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Jonas Jelonek <jelonek.jonas@gmail.com>
-Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	linux-i2c@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Markus Stockhausen <markus.stockhausen@gmx.de>, 
-	Sven Eckelmann <sven@narfation.org>, Harshal Gohel <hg@simonwunderlich.de>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v7 03/12] i2c: rtl9300: remove broken SMBus Quick
- operation support
-Message-ID: <cfdleondrrpfyfts423cwdcsb5mmqovej5hwke7ndghzlnwci7@d6i7ltgoxbee>
-References: <20250831100457.3114-1-jelonek.jonas@gmail.com>
- <20250831100457.3114-4-jelonek.jonas@gmail.com>
+	b=djuAXn5VMQ2y8yvgwfyLrjCfR0TOF/VhEJFie2YmnDBAgTJfdhGOjeuRbcxYx904B
+	 u8Tc2QDnzzxNnEVjJQJGw33t1B8PaE6UrAdHpk1Q6msSjjQi2+pbCEPx23xZ/dvQVl
+	 xcBUC3z51wgl7Zt3W2618KrCm0pzg4s/QIlfh2lazmDsBvci0kTlQ4lIqX43ipS2Rd
+	 A8A8vZHxFSUQTShZrZuZ3g0k9HTmxjPzO6xfcAJHOPXZsK0kYyfhhNnnoLidGnpG2A
+	 csByR51yJjs4O/EaFr4JeOHOX+Y4WgHN4oSFXZWLVg4aKURLRvnwC1gkYSGygApklV
+	 8HI4j6rXSdTSA==
+Date: Wed, 3 Sep 2025 18:51:38 -0500
+From: Rob Herring <robh@kernel.org>
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Abel Vesa <abel.vesa@linaro.org>, Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Sibi Sankar <quic_sibis@quicinc.com>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Johan Hovold <johan@kernel.org>, Taniya Das <quic_tdas@quicinc.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] dt-bindings: phy: qcom-edp: Add missing clock for
+ X Elite
+Message-ID: <20250903235138.GA3348310-robh@kernel.org>
+References: <20250903-phy-qcom-edp-add-missing-refclk-v2-0-d88c1b0cdc1b@linaro.org>
+ <20250903-phy-qcom-edp-add-missing-refclk-v2-1-d88c1b0cdc1b@linaro.org>
+ <11155d6c-cc11-4c5b-839b-2456e88fbb7f@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,108 +72,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250831100457.3114-4-jelonek.jonas@gmail.com>
+In-Reply-To: <11155d6c-cc11-4c5b-839b-2456e88fbb7f@oss.qualcomm.com>
 
-Hi Jonas,
-
-On Sun, Aug 31, 2025 at 10:04:48AM +0000, Jonas Jelonek wrote:
-> Remove the SMBus Quick operation from this driver because it is not
-> natively supported by the hardware and is wrongly implemented in the
-> driver.
+On Wed, Sep 03, 2025 at 03:37:25PM +0200, Konrad Dybcio wrote:
+> On 9/3/25 2:37 PM, Abel Vesa wrote:
+> > On X Elite platform, the eDP PHY uses one more clock called
+> > refclk. Add it to the schema.
+> > 
+> > Cc: stable@vger.kernel.org # v6.10
+> > Fixes: 5d5607861350 ("dt-bindings: phy: qcom-edp: Add X1E80100 PHY compatibles")
+> > Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+> > ---
+> >  .../devicetree/bindings/phy/qcom,edp-phy.yaml      | 28 +++++++++++++++++++++-
+> >  1 file changed, 27 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
+> > index eb97181cbb9579893b4ee26a39c3559ad87b2fba..a8ba0aa9ff9d83f317bd897a7d564f7e13f6a1e2 100644
+> > --- a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
+> > +++ b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
+> > @@ -37,12 +37,15 @@ properties:
+> >        - description: PLL register block
+> >  
+> >    clocks:
+> > -    maxItems: 2
+> > +    minItems: 2
+> > +    maxItems: 3
+> >  
+> >    clock-names:
+> > +    minItems: 2
+> >      items:
+> >        - const: aux
+> >        - const: cfg_ahb
+> > +      - const: refclk
 > 
-> The I2C controllers in Realtek RTL9300 and RTL9310 are SMBus-compliant
-> but there doesn't seem to be native support for the SMBus Quick
-> operation. It is not explicitly mentioned in the documentation but
-> looking at the registers which configure an SMBus transaction, one can
-> see that the data length cannot be set to 0. This suggests that the
-> hardware doesn't allow any SMBus message without data bytes (except for
-> those it does on it's own, see SMBus Block Read).
-> 
-> The current implementation of SMBus Quick operation passes a length of
-> 0 (which is actually invalid). Before the fix of a bug in a previous
-> commit, this led to a read operation of 16 bytes from any register (the
-> one of a former transaction or any other value.
-> 
-> This caused issues like soft-bricked SFP modules after a simple probe
-> with i2cdetect which uses Quick by default. Running this with SFP
-> modules whose EEPROM isn't write-protected, some of the initial bytes
-> are overwritten because a 16-byte write operation is executed instead of
-> a Quick Write. (This temporarily soft-bricked one of my DAC cables.)
-> 
-> Because SMBus Quick operation is obviously not supported on these
-> controllers (because a length of 0 cannot be set, even when no register
-> address is set), remove that instead of claiming there is support. There
-> also shouldn't be any kind of emulated 'Quick' which just does another
-> kind of operation in the background. Otherwise, specific issues occur
-> in case of a 'Quick' Write which actually writes unknown data to an
-> unknown register.
-> 
-> Fixes: c366be720235 ("i2c: Add driver for the RTL9300 I2C controller")
-> Cc: <stable@vger.kernel.org> # v6.13+
-> Signed-off-by: Jonas Jelonek <jelonek.jonas@gmail.com>
-> Tested-by: Sven Eckelmann <sven@narfation.org>
-> Reviewed-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-> Tested-by: Chris Packham <chris.packham@alliedtelesis.co.nz> # On RTL9302C based board
-> Tested-by: Markus Stockhausen <markus.stockhausen@gmx.de>
+> "ref"?
 
-Applied from 1-3 to i2c/i2c-host-fixes.
-
-But...
-
-> ---
->  drivers/i2c/busses/i2c-rtl9300.c | 15 +++------------
->  1 file changed, 3 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-rtl9300.c b/drivers/i2c/busses/i2c-rtl9300.c
-> index ebd4a85e1bde..9e6232075137 100644
-> --- a/drivers/i2c/busses/i2c-rtl9300.c
-> +++ b/drivers/i2c/busses/i2c-rtl9300.c
-> @@ -235,15 +235,6 @@ static int rtl9300_i2c_smbus_xfer(struct i2c_adapter *adap, u16 addr, unsigned s
->  	}
->  
->  	switch (size) {
-> -	case I2C_SMBUS_QUICK:
-> -		ret = rtl9300_i2c_config_xfer(i2c, chan, addr, 0);
-> -		if (ret)
-> -			goto out_unlock;
-> -		ret = rtl9300_i2c_reg_addr_set(i2c, 0, 0);
-> -		if (ret)
-> -			goto out_unlock;
-> -		break;
-> -
->  	case I2C_SMBUS_BYTE:
->  		if (read_write == I2C_SMBUS_WRITE) {
->  			ret = rtl9300_i2c_config_xfer(i2c, chan, addr, 0);
-> @@ -344,9 +335,9 @@ static int rtl9300_i2c_smbus_xfer(struct i2c_adapter *adap, u16 addr, unsigned s
->  
->  static u32 rtl9300_i2c_func(struct i2c_adapter *a)
->  {
-> -	return I2C_FUNC_SMBUS_QUICK | I2C_FUNC_SMBUS_BYTE |
-> -	       I2C_FUNC_SMBUS_BYTE_DATA | I2C_FUNC_SMBUS_WORD_DATA |
-> -	       I2C_FUNC_SMBUS_BLOCK_DATA | I2C_FUNC_SMBUS_I2C_BLOCK;
-> +	return I2C_FUNC_SMBUS_BYTE | I2C_FUNC_SMBUS_BYTE_DATA |
-> +	       I2C_FUNC_SMBUS_WORD_DATA | I2C_FUNC_SMBUS_BLOCK_DATA |
-> +	       I2C_FUNC_SMBUS_I2C_BLOCK;
-
-this was creating a conflict with:
-
-5090e2b3808e ("i2c: rtl9300: Implement I2C block read and write")
-
-In the sense that I don't have this change in the fixes path, but
-I have it in the non-fixes. For now, until Wolfram pulls the
-fixes, I removed the patch and I will add it back next week to
-avoid conflicts in the -next branch.
-
-Next week I will apply the rest of the patches in the series, as
-well.
-
-Thanks,
-Andi
-
->  }
->  
->  static const struct i2c_algorithm rtl9300_i2c_algo = {
-> -- 
-> 2.48.1
-> 
+Certainly more consistent with other QCom phy bindings.
 
