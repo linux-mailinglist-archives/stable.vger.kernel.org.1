@@ -1,174 +1,132 @@
-Return-Path: <stable+bounces-177622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E238B421EC
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 15:37:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA20B421FC
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 15:38:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EBC77B5F1B
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 13:35:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 034FF17A459
+	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 13:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0550C3093AA;
-	Wed,  3 Sep 2025 13:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1506F30AACA;
+	Wed,  3 Sep 2025 13:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LsmQHOXI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DfKs6bwJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5398C280CF6
-	for <stable@vger.kernel.org>; Wed,  3 Sep 2025 13:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC092EACE2;
+	Wed,  3 Sep 2025 13:37:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756906651; cv=none; b=Ldbu2rLCt1y3OQ1F3ZR4ExDcsuQZ56W5eDnRlSOkDDxgpcXQlgfX5Jp6cfwItDuTdhfoBk5++Z8aag6uqGMipXEe2VOr3ANRQjOYAYneXsJEiqvixoR0TrcxTuFKxan+3jPkjxLHBtEE+s8LJ/CF+/PbD/sIA6M9vJuzBOKjhJE=
+	t=1756906661; cv=none; b=CMKS8k080mqm+O8nZXrLqLCDNcsoLKfohAtB4ZR/JinYuun5vFrsY8LXu9TLDxQL2vt7UMUf8N6B5AQZ2oaiHT1Htp/urzbUhZyanIgt4A55yk963ehK5FGZkWQbn0ookDIhFHNDEHKV7dfk6BSQcP2YncQhYZY3Jpwal7WkP8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756906651; c=relaxed/simple;
-	bh=tacXb3I7sD82JjGMbS8Dqgx1hL17l0hk8fOJ6PMQcq4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hjwyKbHbjWEbR+djp11kr6Yn1qe1SDA6mh5Wr2kMgjJ+1CjYPRME9AROCdTK2FKJwIUdIJW5S0LgvUluZJ0B1Aadm1l6UovY15AfCJPN4cj7gUuQqx1tyPX2HWFNR2cHEmzE2UYQqZh1xvZIjPCM6+aS/5MRBP6UMLSnqV5J9Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LsmQHOXI; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 583BEtGq001969
-	for <stable@vger.kernel.org>; Wed, 3 Sep 2025 13:37:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	G6WxjVs+4qB1wpptnxje/lLl2BWE/gnMjf/dmXAtLn4=; b=LsmQHOXIM/ofd/2i
-	Gk9P9qYur8B8+LvatykrcBUBrN7ecmvdxnI4IekSsM26hRqjzhy0Q4lcw0+tH2XD
-	D0PU7/PjIpqbMxMLzKkpC765oMelSfI3HaSgloqXsqrIyKinaOLLokmJdTPcMf5a
-	Mfi3nl5T1UWSQQeyjQ+wTjpwGnIEYFwcg0YqaCkrNjGZseUL9enRcIWi1FubdYzY
-	WY7iS4wDK+vvi9vkP4fmqzngE8oZDbgSc6mlCDJNA0ee4UAyr/Ju+GF01dZ0jd6Z
-	Sl6Q5jJxYrn6RWgNABOffNV1vPKQA3BtkXIUt9Z6N5mWZjCBQeQwpTsNk+qIGdXx
-	VlKBnw==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48urw03vnr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 03 Sep 2025 13:37:29 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4b10991e9c3so11775231cf.0
-        for <stable@vger.kernel.org>; Wed, 03 Sep 2025 06:37:29 -0700 (PDT)
+	s=arc-20240116; t=1756906661; c=relaxed/simple;
+	bh=4Pv/lZEmRfsRDnM/wSl9bsAh9CeiyqAEPN2KUA1IfR8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=knFOwwrS/18T/zJIkOO4u/78uKBlgllsW8bPLP5gKxt7T/TNEsKLx9acMov/1VJEVyAUzASxGxEywMbLrx7QbrKFe8uS2UXRtY6kua8tQpPtlglJj5087AbzjuVqTiKGptQWx7QrRJ0Z593fmiw1yRewdmrMcA2mgYFZCxvCRhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DfKs6bwJ; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-24a9cc916b3so36962525ad.0;
+        Wed, 03 Sep 2025 06:37:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756906659; x=1757511459; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=j0IPIvNKxRX3PZ8lrrWw+UHXMJcK73G3kVKGuC4cM1o=;
+        b=DfKs6bwJkfyX+MH4pxXtcjOG53XUyaKhXkoq9lExEPK6Kf2FI/PsuGdZSw3lSEUhCg
+         Is2pe459S1kKCHjqYuK6RHmqsw0S6hXNWtHIwls9Rjvg18dfF7VxSnirJUL2eECnO0u2
+         ZCZENTJD8K79PaIzSXRqbnDvCDcuiPx1xbsj7pnIlSULhQt6Paq088JbbTpg6EhVTXDn
+         QiYlijyKfWhdGemMf9NGX1lgA7i2KzDcF5NaTOvSosDwMfBlZaVM2kR02xMFq6BWI0Kr
+         ZxlC+Q1iepgRmJ0uJZM96rDdhpZHYW5B3WmFi4z64gmCW6LZ7rX51czXLyYVvGIsWT2O
+         /fBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756906648; x=1757511448;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=G6WxjVs+4qB1wpptnxje/lLl2BWE/gnMjf/dmXAtLn4=;
-        b=j731WCVy1vZ7nK7ERaAnoiIBj7l6CcRz3nDzPkLh2wWJ2qqp8fftpQ5wolJNPg2twR
-         aC2Xi09u06y5ys3uZUDSbiv1c7piVe9bv8EAEUVEFiEtwq0DXJUbnW3wKX8/zvS1cNcp
-         Qhv72GLbQ0sl5h+6LWWY0QKq1lzPol/Vd3aiZ+3hV13711HqtU3dwvYbAE2KUjSlA5K7
-         Er53crWYil9VW8pE8lSYZEYtcDN2Z53eFcJlzotlMyu0c92icgsNqZptmc0l7qQ457Lq
-         ombYvS/IDvIfRqXX0F3C8XbRzETdK5NadusDJVsLL0f6AfVkMywHBSqDqTTQD9GqvS1u
-         ooeA==
-X-Forwarded-Encrypted: i=1; AJvYcCVrLOtqzpkxE8sG5rl3czvFfLm/a8YTM+4fnzqeKGKMXAfLq2fGubkiUz2e9Of+yYEyI8BXk7k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz54dNb4BWzw/5UGks2NXkWvHsfL8CWG7tkZXP/9lYL/jx/P4W4
-	wpmo5Cd/W31zl3nYa5vGepsC1EpD+YuzOd3LtkOS0cEzgeK6jzpIOXMZJGhdbVWJ+0gJp9N6yed
-	QibYvXjAMXmLIktq/9VFfnCDDsKP8ci84CAY0erb8rwzJJCSg3oTSvRXLzmI=
-X-Gm-Gg: ASbGncuqkUdph8tI856qtYqKbwXTmlq9zgSdD370ZOpWQemOcUSEtTAsaNJE00HDaDZ
-	2+ApQfQqoKo4PQOB0DR410enQJXL6K4lROEh6c6yJwfKleY+nCKxKzRkdW8cMsN+YTtiMSy/EHd
-	7RyXuGQqIEDbFT3w2q2xebH/xYkbivovzSDjg4mz1NJST5LHw2r0Sdlx/Hc+HJRBmnTil6Bx4HK
-	YbyJSlDWTi2QXMsvHyHDndxFV6JBsE0I4U4RiKF9KV0TKu7O1/9QJaAbTiwZx4Jr1uSUUEJxT8F
-	qIR92fLvfMg+8o/XFbnBcWqkQchUP2DPjiiFF/Ovz6Yv3C5rW1QVLQitYnUgen7lQuY0P5JdGA3
-	nEamltaPxLWA4fhjDDfQyCQ==
-X-Received: by 2002:a05:622a:5f0c:b0:4b4:9655:9343 with SMTP id d75a77b69052e-4b49655aba8mr8680461cf.3.1756906648235;
-        Wed, 03 Sep 2025 06:37:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE9aESjDi7u3ikl+t7p2SljGJv1hsVA1MO3GfCrupQw910Ny+G82IIly/jBPP+7T98Yksz3kw==
-X-Received: by 2002:a05:622a:5f0c:b0:4b4:9655:9343 with SMTP id d75a77b69052e-4b49655aba8mr8680251cf.3.1756906647585;
-        Wed, 03 Sep 2025 06:37:27 -0700 (PDT)
-Received: from [192.168.149.223] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b0431832a98sm699384166b.80.2025.09.03.06.37.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Sep 2025 06:37:27 -0700 (PDT)
-Message-ID: <11155d6c-cc11-4c5b-839b-2456e88fbb7f@oss.qualcomm.com>
-Date: Wed, 3 Sep 2025 15:37:25 +0200
+        d=1e100.net; s=20230601; t=1756906659; x=1757511459;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=j0IPIvNKxRX3PZ8lrrWw+UHXMJcK73G3kVKGuC4cM1o=;
+        b=trUOZnFcuRkEjxvSs2MN5Q8138MFGF0esZd1oUq8fibvFeOWXfsOhAOGrkaAS8Lrrf
+         L4duJgv4S2BOKKXyA6I/H+QpV25VUAQt/PmZ79I/JSsEk9bxstN24cqf9ex0FjJRmkVP
+         wQJQJB9uzzvpwU4cg/9+3VqJKMLCGqpdDnQ3zAf4zxm1EnBBAOcDkkWjoBWBo61Rlkv7
+         RMVLukIxqZT9NPgVMRC3RZAnRR4A2i6sOcf2OcjJVMhB/b1FKoH/6GAlTVOJ//oAm7JB
+         F0KcBXOkeqNUPOcl/HUmwjIV+47ZREwQIMzFZ0FJutQ7iMN3b2AtUrYngkZboHyG3wHA
+         mTPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9ENQ9QAfF0Ehz/UX7zIAWBg5+XW076YzBRjUJjHbdHPncS9tIDwC+Qkzgk7bN44MDSRTTd2xTFrnE3uDmxe1l07A=@vger.kernel.org, AJvYcCVZv815wdiT8roUtwQSVHVWjm2QZ5w4VP2KLlEJATTS5Frs4xUI7XYVcO1M3FlE0/SxZsivXYq2c9znEnk=@vger.kernel.org, AJvYcCXP/p5DTFQNJMWw1BiND/C9RVxawkQBxCCLtVTi9AkU8SQLY0nxvvKQVknGfLxZlHXcSNb63bf6@vger.kernel.org, AJvYcCXnW0qmWGL+HCahHpbLhnWmUryEqdnhp4jI+7cL1c/cbDBb9CYWg/N/pMZpVvdhVatxAitPHGq87Ybf9KU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9qio5D86UdaLbo21knMfeMGT9BOVbyJTLQ4/c/njYhPH/L0NT
+	jhs7hhT5ENGPqKBDR8gydyL34kUTkE4tqClqi9Zie0xkBdDKCJNr//6K
+X-Gm-Gg: ASbGncuTYmZGoInsLESgTT+yB9gtz5bU1jorVzdhIJ75ZWX5UFuap/uqsKEe52VNrRV
+	fyTWJ9xCWuXIrR4LYiPfO4d4/otZ8q4h+xWelPWQoIMCd6smFTSHREsh43e5P94K6U8qv2P+QJq
+	hjvR4V5K4i07wP+VUuzpEGc0J36KS/00Vtgt7gcjNiohAQglKITYL4CdHSEGp8hXv6HD7YUwC68
+	aV7i0pkVF5z1+FglronqUMflLb4BFbqtW/pM6F1R0E4mHJ2DCNpG9wDqefLgjxKGG4yv3tzQSDG
+	AXu0iUVxpdV1Lfi/gFjUAz5IOgzlMXD/GS7YLZ7e9v1hzBsLMkgfZb1X8gFYQsCCXmA9k4bT1vv
+	p0dM3Y1xKeKZIE+feCDKVvJNHbvAtgI0LhwNBe5C24hUJVmgvN/hyWCvbKMhHUTj5gDpfWwd1K0
+	c3B+pEvEpQLpQEmfNnb2t+ovXqrTpxbiPqOjeM28Sv6ojJ/i4l4rm27KxU
+X-Google-Smtp-Source: AGHT+IE3ddf9hK7F0KaN7V3DmayhHVnNCIX3cwwbaTIxo3HIL3JNiS8r9JtynDMZISXdX38A9mDSzA==
+X-Received: by 2002:a17:902:d4d2:b0:24a:8d33:96da with SMTP id d9443c01a7336-24a8d339826mr201854925ad.40.1756906658477;
+        Wed, 03 Sep 2025 06:37:38 -0700 (PDT)
+Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.116.239.35])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-24c9e39094dsm16152645ad.84.2025.09.03.06.37.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Sep 2025 06:37:38 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Ramesh Shanmugasundaram <ramesh.shanmugasundaram@bp.renesas.com>,
+	Hans Verkuil <hverkuil@kernel.org>,
+	linux-media@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] media: renesas: rcar_drif: fix device node reference leak in rcar_drif_bond_enabled
+Date: Wed,  3 Sep 2025 21:37:29 +0800
+Message-Id: <20250903133729.2523130-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.35.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] dt-bindings: phy: qcom-edp: Add missing clock for
- X Elite
-To: Abel Vesa <abel.vesa@linaro.org>, Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Sibi Sankar <quic_sibis@quicinc.com>,
-        Rajendra Nayak <quic_rjendra@quicinc.com>
-Cc: Johan Hovold <johan@kernel.org>, Taniya Das <quic_tdas@quicinc.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20250903-phy-qcom-edp-add-missing-refclk-v2-0-d88c1b0cdc1b@linaro.org>
- <20250903-phy-qcom-edp-add-missing-refclk-v2-1-d88c1b0cdc1b@linaro.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250903-phy-qcom-edp-add-missing-refclk-v2-1-d88c1b0cdc1b@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: d1H71awXi7LR08rH2bf4Vem-jC2FSTDr
-X-Proofpoint-ORIG-GUID: d1H71awXi7LR08rH2bf4Vem-jC2FSTDr
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAyNyBTYWx0ZWRfXxzZMc4mYSPvj
- S8uV8KCQhAi8+1QYKPIFQYEdZ8wtKX+fldKKIN21ISECgIGARQZp0OpGoEwwlIkfSiPLCsN6ZuI
- e+tlx+AiflaLwMdEd0Ssdj9+No89NnX4j5hp78Js/8Wb0+wPXMnIQJXHHXr1h/cBvxW65bOfGfu
- 4qbKm90AM32XCgBK/iLAKG1R+3mrkImcQ4LMMX/zwMym2B5VLpC+2Nv8g0nCNZZYoPDMTG2YN7j
- ypI0Zx0WoCSVC0WqM49lhBL8Jm4WQYtErKio4+PBV/dFVcl1PUsunzuxWm1wPOGeVFdBp4i7C7d
- M5EC/CYrMKQq489whqyMbXg37HpkTa25Cxm8FeUEkCxgOljW6qs06n3hl09Y5ACwLXevu5H52Pe
- Fe71qj+a
-X-Authority-Analysis: v=2.4 cv=NrDRc9dJ c=1 sm=1 tr=0 ts=68b84499 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8
- a=D1QSBg5h22RYVcxFYwcA:9 a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
- a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-03_07,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 malwarescore=0 priorityscore=1501 phishscore=0
- impostorscore=0 spamscore=0 bulkscore=0 adultscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508300027
+Content-Transfer-Encoding: 8bit
 
-On 9/3/25 2:37 PM, Abel Vesa wrote:
-> On X Elite platform, the eDP PHY uses one more clock called
-> refclk. Add it to the schema.
-> 
-> Cc: stable@vger.kernel.org # v6.10
-> Fixes: 5d5607861350 ("dt-bindings: phy: qcom-edp: Add X1E80100 PHY compatibles")
-> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-> ---
->  .../devicetree/bindings/phy/qcom,edp-phy.yaml      | 28 +++++++++++++++++++++-
->  1 file changed, 27 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> index eb97181cbb9579893b4ee26a39c3559ad87b2fba..a8ba0aa9ff9d83f317bd897a7d564f7e13f6a1e2 100644
-> --- a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> +++ b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> @@ -37,12 +37,15 @@ properties:
->        - description: PLL register block
->  
->    clocks:
-> -    maxItems: 2
-> +    minItems: 2
-> +    maxItems: 3
->  
->    clock-names:
-> +    minItems: 2
->      items:
->        - const: aux
->        - const: cfg_ahb
-> +      - const: refclk
+The function calls of_parse_phandle() which returns
+a device node with an incremented reference count. When the bonded device
+is not available, the function
+returns NULL without releasing the reference, causing a reference leak.
 
-"ref"?
+Add of_node_put(np) to release the device node reference.
+The of_node_put function handles NULL pointers.
 
-Konrad
+Found through static analysis by reviewing the doc of of_parse_phandle()
+and cross-checking its usage patterns across the codebase.
+
+Fixes: 7625ee981af1 ("[media] media: platform: rcar_drif: Add DRIF support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/media/platform/renesas/rcar_drif.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/media/platform/renesas/rcar_drif.c b/drivers/media/platform/renesas/rcar_drif.c
+index fc8b6bbef793..c5d676eb1091 100644
+--- a/drivers/media/platform/renesas/rcar_drif.c
++++ b/drivers/media/platform/renesas/rcar_drif.c
+@@ -1246,6 +1246,7 @@ static struct device_node *rcar_drif_bond_enabled(struct platform_device *p)
+ 	if (np && of_device_is_available(np))
+ 		return np;
+ 
++	of_node_put(np);
+ 	return NULL;
+ }
+ 
+-- 
+2.35.1
+
 
