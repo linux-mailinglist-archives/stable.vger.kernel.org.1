@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-177718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37693B43AE4
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 13:59:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20730B43AEA
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 14:00:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0063A170D3F
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 11:59:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4BB3480B21
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 12:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62C52FCC01;
-	Thu,  4 Sep 2025 11:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA351A314B;
+	Thu,  4 Sep 2025 12:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1f5RK73z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdBOXLnc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926762F3C01
-	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 11:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844B5EAD7
+	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 12:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756987163; cv=none; b=n/BlJZf2lsL9/UazSW3UAbRwZ+QfvzE33DjEQ2pfrjUZYzHNaOmVldHAwX8/FZfgAZREadyfTTKBwGwtY7bZQF5+SR+4WCcMr293lxZ+z49mr3NL1Z2eJOIAfG+xzmoaqmIuhe67rfGScakeu1PepNWtF7SG+Gfv4CLJYhzpcaQ=
+	t=1756987245; cv=none; b=Pv96qa7MlCecJWdpcJ3bdkJ2qYOpl5XSR7I6jxD2teqfroRfseuFsYQb4Py8xP7NWBAGVKodRHIF7TYg/dPpgui12dRtOS+drSQFRsj2XUwbGtYccT01BMS+AjrHTmLWAfneqat+yOplUoLxPXa31ajoQ32yapjsiFkpuIQHqyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756987163; c=relaxed/simple;
-	bh=Ol3DyGOjldFtDMjiwEVJYrg79VBSQO43AsP9631t5gc=;
+	s=arc-20240116; t=1756987245; c=relaxed/simple;
+	bh=eHAQ+W/4I6CC3eBj+DO0OcYiCnBTaVPzdBJxtNDrJl0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bPl+D2QlSkktefSb+pK0DjcVUogeBnLB+t4oMW+hEQZAT18LSZZ6elsQ37deHegKRDF+w1sbC1XNS7drHZ0vPM1M8NNn7FHdm6B7FjjYbdeQ4/g0k1NsKnOkBF7EnQFpkq1yDJ87klY8wH+9aHGVvSXXGiCnzMxsOHq2hHdBoWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1f5RK73z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B575C4CEF0;
-	Thu,  4 Sep 2025 11:59:22 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=BrWmC5XxctsPifUaVYHnybY1uAeQTWU++lO65Fx4ztww3ULKYU5rzahRxdtcF9d2DIDL09Ffhi2q9F715KocI1ejQpb9NJUzbfgSdLknHRUwvOUApKCZU+DycVxgrhbzSq8p65Dfea5mXb29JazxU7ZlkOykqp84l0ns/O6oaI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdBOXLnc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEBEC4CEF0;
+	Thu,  4 Sep 2025 12:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756987163;
-	bh=Ol3DyGOjldFtDMjiwEVJYrg79VBSQO43AsP9631t5gc=;
+	s=korg; t=1756987245;
+	bh=eHAQ+W/4I6CC3eBj+DO0OcYiCnBTaVPzdBJxtNDrJl0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1f5RK73z+HpUCtR4au+tdJ6IFMk+oYW6pb3cOGJ91oWwUx5xkOBWDBB8ZlkoePCVH
-	 gF9d/B88oqNcApXgyilVT8ZPouKeIGJa9UfxhVYUxRwN+Lxt/3HEhESy3rqnAPrWQF
-	 ajwEekrkYNMTiiMQFPfORkpS6dDPyAuxkQC04DLI=
-Date: Thu, 4 Sep 2025 13:59:14 +0200
+	b=sdBOXLncvnSI5y846UFKbS8FXeY3zIy+ZvuHo7dj3Hhr/OWvfUuiknRovO2B55ovs
+	 d7ngPnGWOc+AMTmARGXIQvbL3rzdZDNy+K3g+/I6j/7oKpzdoEtf5pOS9hjv3DVheP
+	 faEjLSrQBpaZEtPO7zSL0DgKjSUrxYae18T9WJ/Y=
+Date: Thu, 4 Sep 2025 14:00:41 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Cc: stable@vger.kernel.org, sashal@kernel.org, bp@alien8.de
-Subject: Re: [PATCH 5.15.y 2/2] KVM: SVM: Properly advertise TSA CPUID bits
- to guests
-Message-ID: <2025090443-pull-anchovy-1b65@gregkh>
-References: <20250827181524.2089159-1-boris.ostrovsky@oracle.com>
- <20250827181524.2089159-3-boris.ostrovsky@oracle.com>
- <2025090235-washroom-twine-5683@gregkh>
- <dddfe42e-31c1-4bf8-b15b-b7585b708a04@oracle.com>
+To: Suraj Jitindar Singh <surajjs@amazon.com>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 5.10 0/4] x86/speculation: Make {JMP,CALL}_NOSPEC
+ Consistent
+Message-ID: <2025090450-plaster-shadiness-1283@gregkh>
+References: <20250903225003.50346-1-surajjs@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,34 +54,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dddfe42e-31c1-4bf8-b15b-b7585b708a04@oracle.com>
+In-Reply-To: <20250903225003.50346-1-surajjs@amazon.com>
 
-On Wed, Sep 03, 2025 at 12:44:00PM -0400, Boris Ostrovsky wrote:
+On Wed, Sep 03, 2025 at 03:49:59PM -0700, Suraj Jitindar Singh wrote:
+> The 4 patches in this series make the JMP_NOSPEC and CALL_NOSPEC macros used
+> in the kernel consistent with what is generated by the compiler.
 > 
+> ("x86,nospec: Simplify {JMP,CALL}_NOSPEC") was merged in v6.0 and the remaining
+> 3 patches in this series were merged in v6.15. All 4 were included in kernels
+> v5.15+ as prerequisites for the backport of the ITS mitigations [1].
 > 
-> On 9/2/25 7:42 AM, Greg KH wrote:
-> > On Wed, Aug 27, 2025 at 02:15:24PM -0400, Boris Ostrovsky wrote:
-> > > Commit 31272abd5974b38ba312e9cf2ec2f09f9dd7dcba upstream.
-> > > Commit f3f9deccfc68a6b7c8c1cc51e902edba23d309d4 LTS
-> > 
-> > How about you just backport both of these independently, as this change
-> > now looks nothing like either of those commits :(
-> 
-> The trouble is that the first one was already backported by
-> c334ae4a545a1b1ae8aff4e5eb741af2c7624cc7 and it missed a few things. Some,
-> but not all, of these issues were corrected by the LTS patch (the second
-> commit above).
-> 
-> I couldn't figure out how to separate this into two patches so I merged them
-> into one.
-> 
-> I suppose I could provide an incomplete "fix" for
-> c334ae4a545a1b1ae8aff4e5eb741af2c7624cc7 as a separate patch (but the code
-> will still be broken) and then do the LTS backport.
+> None of these patches were included in the backport of the ITS mitigations to
+> the 5.10 kernel [2]. They all apply cleanly and are applicable to the 5.10
+> kernel. Thus I see no reason that they weren't applied here, unless someone can
+> correct me?
 
-Yes please.  When ever possible try to stick to what is upstream, and
-that includes backporting partial patches if needed, as then they can
-actually be tracked.
+Do they actually fix anything?
+
+> I am sending them for inclusion in the 5.10 kernel as this kernel is still
+> actively maintained for these kind of vulnerability mitigations and as such
+> having these patches will unify the handling of these cases with subsequent
+> kernel versions easing code understanding and the ease of backports in the
+> future.
+
+Does this actually allow this to happen?  I think there are a few
+speculation fixes that have not been backported to this kernel tree, so
+why not just make this as a part of that work instead?  Just adding
+infastructure that doesn't do anything isn't usually a good idea.
 
 thanks,
 
