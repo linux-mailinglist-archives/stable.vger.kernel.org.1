@@ -1,256 +1,165 @@
-Return-Path: <stable+bounces-177713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BF4B4378E
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 11:50:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B30B2B43890
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 12:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0A1F3A4B2D
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 09:50:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C545560ABE
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 10:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12BB2F9980;
-	Thu,  4 Sep 2025 09:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9E72FDC30;
+	Thu,  4 Sep 2025 10:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c2ZuVh1I"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XApCXX6N"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFFD2F8BD3;
-	Thu,  4 Sep 2025 09:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D372FC03D
+	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 10:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756979387; cv=none; b=dfsfg/bcn0wBQbZ0K2dxQZymAI+ezpHSxWz7vG3wqb7fPLPLpTHlQViVM2Mh24tk8Yd+FKVN/sY1+ETNxwxW4a/yl5TvxbeqeFDypW1vKpnHf5suqO7Shbpq5+d2fStDiEfc710ZVESLdSmRSFoadkEHUB3wGZ38w3Qq0bcRNYo=
+	t=1756981137; cv=none; b=X0lCAyG6pqlSfMoIAtmW/O9qraACbHVaR6/Sxf6G1+7vR2drMvUXSbBQA/p+Pr8G275CszH++uUoayrMkkwGqEeCq1W0Ln6Njslp68rqqh4e0D7rHgBc6eNkQ+zJDAPc3YgH+6vFQmzg2duzOUl9B1Mkp7hM6MbroHZYM2J7KFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756979387; c=relaxed/simple;
-	bh=tlQQ4A8SaD2iscfk1wzIkweYD5icMB5K/XilKna4f7w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UZDbuICGRCMtGTjeSfbE0nnEXSrqY8GSAcly/b4q2CtwG3KgASUugW85lepfq+QMdvMcFcRmzlBwk2wlwY2HOsbx/+0z5R1Xuju5kzYjCm8mQga/UfOp1xc/Ca2E2MVoadSmx23C078rZjS4BJZyzF1fePy8FHNwRcxIBukI5qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c2ZuVh1I; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-61e3b74672cso1807886a12.0;
-        Thu, 04 Sep 2025 02:49:45 -0700 (PDT)
+	s=arc-20240116; t=1756981137; c=relaxed/simple;
+	bh=0z4DvdjsLX6ePogBY1auCiBA6lQ5eI1Z0Og0lwAREbU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j2gNad/GhmnYMSYCeyZ971INJA37CIqfLByjkqNo2nA3+Yv2fmRVhrKfZIPQ8DHKxtLBzn2zxe7IpaQPrbvfF8C0v1IINVxxxXQgrLcij8Qvq6sR7UmVAUKy1kzyQ+XM0d+gl1LKYObEYWT/wf6DQf6nISUmMKJj09jHtU7GO9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XApCXX6N; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-61a54560c1fso199486a12.0
+        for <stable@vger.kernel.org>; Thu, 04 Sep 2025 03:18:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756979384; x=1757584184; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MJbNOvdwkGYJ/Frmp0x806yVuX/X2QwoxXLiar6zoiw=;
-        b=c2ZuVh1IOKdeLiDCIry4bCGIjotN0bkASA8vpHTXTLsEzCkTC3dIGhEYjkTrJgyN7M
-         T6tJ8PCBvHcPSs62P+HBoKYg1kt9RyD6f0TVpHD91L0nTfQKT43R1KfEwa+3XQK+F4hm
-         6he5H8woHlUIvcKr0D1orelL6CwAJoKAvgLHJUDShP0i53OnJ10YB9lHxgpy+4O0RCYQ
-         90nZ84esi+pljgcrr8FByREtuteb/AbiGMV1ZdFBZmBq1BYWQcUcyL8bpUP3X89dv8MW
-         Qjns595bg+vDGPXHWJWfrkVA6eynr+Ymbe/jdX9tNnkYmETddGJpasKLfpUIQEsHzqWY
-         9GcA==
+        d=linaro.org; s=google; t=1756981134; x=1757585934; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=788DvyHs5EODeIANR32XpfigfVcSqxiFxI3EsfOqEDI=;
+        b=XApCXX6NeNhNAvhmv8CVw75krY9UpYhjvZTYa59GqJjJPe/TOI8//VN5zgPEHK1BJI
+         QSs7lI7/izZE87KcZxBE/eR6DcLe8vuE7ipf1VZpcZCURX2sjonDp3yXj4cqZu+0nreR
+         0colCHAEN4emV5MzJ/TLPjVYH/fQf0ECbzthOIAjTtcCwQutEArATKMTtZfpYVD9f3z1
+         EwYofra9Qx/hmCKqnHcAI0wICaH6bNAjVW6gkKgKjcsl2BU8RYvo6LPFOwC+I1ZSm77k
+         KWwNFEa4KWsL3Uq0bOHmPfJvXwx+g9Q5MwY7K7MKfcdz7xFlabxX5uNJK0tVZQ/n/DP8
+         /zwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756979384; x=1757584184;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MJbNOvdwkGYJ/Frmp0x806yVuX/X2QwoxXLiar6zoiw=;
-        b=KIgHH6mcSR45zn10KLbHxCwEqwlZqg6RLhSJjpGVrmwIPjLubZRoeVivqm7A+kPJQK
-         VXxuGx8Jy3wC21XOTIBOPtKVPBXuUmL4We4PpNnhhRq3DATCHtfZI1JY3V7Dl9LhNsSA
-         KeFdwkPnkqyn9bMFaxK+WxBjuN17jjfl/kNaMf/hgIjks9kGLPwv3v73GnRIP2yGv+3l
-         jHh2e0iFATBeulfSppoDtAKp9HAJ8qW5BgCpOlScQe3JDNpJVW+uEHncolvZ3gjfshpP
-         tnNzg/JfpV28HLUEsJOSqWuH4noalzjdjczxa468f79FI6JkFw+x8FkAeMiyn9SPY13i
-         OLaA==
-X-Forwarded-Encrypted: i=1; AJvYcCUwS65O4PuLiCdZTxiSV4BF/EgoNAL89n1HhoIcGbjFUXWFqi03YZ8qVXaauziQGp75xj6BmEnR1iA9@vger.kernel.org, AJvYcCXOo6CcuN7QamoGdRZXPKqqA+p4ipVmHUnC5SkTionyVrNnLBFeMXL1S8m2juOe8N6T+3xtpSyS@vger.kernel.org, AJvYcCXSEn3g3BvfGvK+LWqVZZAlEiY7nFyFITYUsyZ840kJP21JT36ZSkL1z6uooQbSSyV+6Otnb5ILMZIYYj0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5EtSMnLfu//oVwEvAyn2oYRmOAqVhE6poXpSNovPvbf5VhWCG
-	aSbdsDEG5B7Jq933w4X7sVH0JKx2iWOmDqrLyiNQAO0iqd49hPBDBCGYufv8sdw6Pg048UeaPkt
-	cEGB9G/I8vKeI+/HGVKHa+kLYRKmQ1Ag=
-X-Gm-Gg: ASbGncvD7f3ohR0eeNAE0WiaJCWH8VBdYbKotsYQ3RdPpb84DWhHssNFIqTRjys2fNj
-	5yk2fNmDNSreKY7gCnryKHKU71+zZ0m+5xdD6tWyekNa/I6Y543nE86dg+lfs7Yl6PZabtUhj+c
-	R22MMrXBxDM3eEGH/Qm/LP5gYLfKSPicBOaMOuW2zVN1gGBQPsz2zrSv6USSz+8Wj6RMY3d/MNL
-	MQAzll3KVQyGOxxeQ==
-X-Google-Smtp-Source: AGHT+IEym0TH2z8qEFt9WsYQjUjil/LV/1cr0gI187BMwtPUNK+/X4B9HHmhicxhhHBU3epGxzmnQxouyxtZCL40q+M=
-X-Received: by 2002:a05:6402:5252:b0:61c:899d:90cc with SMTP id
- 4fb4d7f45d1cf-61d26d5bc94mr15686461a12.11.1756979383629; Thu, 04 Sep 2025
- 02:49:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756981134; x=1757585934;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=788DvyHs5EODeIANR32XpfigfVcSqxiFxI3EsfOqEDI=;
+        b=VWbwSygjLYATiVev5ANmwHbzz9y2LdqS7I+y5pJOKx6zIsfjopRGKNJK6suS8cTwit
+         +mkGVxPQd41Mprw2bQ/PTpy0Ll3l4gZ94z6cJN4pC+N+1VzD+UzNBKaTGCvtkZyeOlBn
+         5yVcWSJHhn/1zPhEAz8wrDSSspyJF6ysu2XuqzPTRK3GGFu9CvW41TuINOsYxGgBWwm3
+         SgajI4RLGqlnsVRxW/zkAKctE739TA5nyh/KPEwFewGucEMuFFA9F4X0PqxIJSsMQKlQ
+         EYTznzsRTO4km3b7a7orC3Jp53/N6N5u8J8zZM3JlBJyyxsvjyiVQgmU/bIRuE33+Pyf
+         xugw==
+X-Forwarded-Encrypted: i=1; AJvYcCWF8YMa1Xs7iYkKznVm3lFmcc1EJEKX00kNZT9uzWIudvMRuhJyJ6pncU5Gr2Q44I+HNHVSYws=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNz1JbUV8fy/6cn5YVK47yOLikoOeVOmUTtyYrVgOarbFe56PA
+	RwrJs4lKFbnA208GbMqzOGuhIBbgkYDulG0+w6W5Ppn/yVTU3jDViliLK1F+a1n7nSk=
+X-Gm-Gg: ASbGncuWn8w6FIAqp0HzxGlE9f/OSZx7KhVpDxOVoKCSwiUZm2npuyOL77SRmG1PAMT
+	wFYbmrET3HedaEV2W+R6WJDtG9DUNDg88Q62+fT1KrmsA7Q0DEPdf4EiYBtJN87I8PUi3/yAhOF
+	kXhCwMqIfw2AeJCEoUjW3TTf3RsVMPjqoc4cuFc3qFjkrfHjTm2XU3QX7aO/Ue6D3dGwm321wF4
+	qpeIBKnotWso/7YX/5l2s5OZru3rkexk8zcHtE1GorkW/zD5Y7060lzrQKMrP80IQN5hgnqK3HR
+	4FXmIHAS1sHFnNp0l8oRLK+qlOnTALZ4PGLKhxAQl9trClC1Fpewize0+u2RakeaOv0gcMjdcuM
+	7UBm8KLJT9pS7QBbg+KMAMyYIy10U0Ape/gUYpH7rWH+l
+X-Google-Smtp-Source: AGHT+IHWntgtcODAj/7kFve1sXTz2DdTGamGtUT21D8b3aznENuQ1mZPsX7EylSYmJeT9xBCC+l8AA==
+X-Received: by 2002:a17:907:25c3:b0:afe:b131:1820 with SMTP id a640c23a62f3a-aff0f01e9fcmr1044118066b.6.1756981133581;
+        Thu, 04 Sep 2025 03:18:53 -0700 (PDT)
+Received: from kuoka.. ([178.197.219.123])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b041f6fb232sm1103667166b.87.2025.09.04.03.18.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Sep 2025 03:18:52 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Srinivas Kandagatla <srini@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	linux-sound@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] ASoC: qcom: q6apm-lpass-dais: Fix NULL pointer dereference if source graph failed
+Date: Thu,  4 Sep 2025 12:18:50 +0200
+Message-ID: <20250904101849.121503-2-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250901094046.3903-1-benchuanggli@gmail.com> <86721a4f-1dbd-4ef5-a149-746111170352@intel.com>
- <1aaeb332-255e-4689-ad82-db6b05a6e32c@intel.com> <CACT4zj8LxG_UeL22ERaP4XVwopdSjXz7mH95TyxXJ==WKZWHLw@mail.gmail.com>
- <416be416-014c-4efb-9f85-8f7023dcdc3f@intel.com>
-In-Reply-To: <416be416-014c-4efb-9f85-8f7023dcdc3f@intel.com>
-From: Ben Chuang <benchuanggli@gmail.com>
-Date: Thu, 4 Sep 2025 17:49:31 +0800
-X-Gm-Features: Ac12FXzUZFrC1mTCqdAH4oDlb8uBabI8RAGNPVWv2KxPMYvodNfo0WIwG8me464
-Message-ID: <CACT4zj9ttNfa4FkeBQS+CRsTRuq1apqYqGUmr9xyzU2RgTsV8g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mmc: sdhci-uhs2: Fix calling incorrect
- sdhci_set_clock() function
-To: Adrian Hunter <adrian.hunter@intel.com>
-Cc: ulf.hansson@linaro.org, victor.shih@genesyslogic.com.tw, 
-	ben.chuang@genesyslogic.com.tw, HL.Liu@genesyslogic.com.tw, 
-	SeanHY.Chen@genesyslogic.com.tw, linux-mmc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2051; i=krzysztof.kozlowski@linaro.org;
+ h=from:subject; bh=0z4DvdjsLX6ePogBY1auCiBA6lQ5eI1Z0Og0lwAREbU=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBouWeJllIVY+hQGdNqHZvj/tioDr963JGTfjhCS
+ P6pL6DYWlOJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaLlniQAKCRDBN2bmhouD
+ 1xJfEACRVcFni8dKH4V2yPLhU+lrF63RMHnlRzgHV9jmPHmN+MvF6Q2Kz+dfrN9qSOaI3EQjmUq
+ qtnY7eUeCe7aPA3eUdRBbqaoumyMc56M7YQW6HWWVHBkpHQz5xipIT7lJyIUSJ7WGlr0xFJfnLa
+ TBi/sKAZKgvvjhfKe6eXwSxpl2/L1/hQ6BnWrURJH1bwxDyJl6j+wm7BNxOo6QJgHQc/J9U42u4
+ axXFpApSpaZ71EZIyaiyo/PdYPX2EULNm8C+gOFIrsggipVxt7oYTzEQhogJtblISh3H/rtBEQ+
+ vqNNlphoEEpCnwfrKdGYIKiOU2S3xp/QLm3AQCxFKSSIbg4q7PHl8mCsiIaXVRQAtVoBuDguZ3/
+ CwlY4Hl+zI9wsNdWh09G8+C95WOGbSQul5LWEzq+eNlopX/2r/50m3Yu3kmFNqEARid/PtgtcrC
+ OJTMRJW4Ohhsi8HGf0GFyv1LAl2P8xu4RUwVL/4SP2MzMg7iazAlZbbXc05O9BCvfP6s0JI2Yu+
+ KNh0uP7oXCAKQ7Jt5J4zGI0376RuS4fEgVofTdSYnHZi+9OQES9Ww3Kps13xIS96+9zrNe/j5Kl
+ CiC85g6WdbLDFSEg0I4eZ7bpdN4Rgj8GFOVVUYgLJqFXdb6q0LLrAJqodNUAVjtAeSAgitAbAhj ywZWoUCPOGTRV5A==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 3, 2025 at 7:15=E2=80=AFPM Adrian Hunter <adrian.hunter@intel.c=
-om> wrote:
->
-> On 02/09/2025 09:32, Ben Chuang wrote:
-> > On Tue, Sep 2, 2025 at 12:50=E2=80=AFAM Adrian Hunter <adrian.hunter@in=
-tel.com> wrote:
-> >>
-> >> On 01/09/2025 15:07, Adrian Hunter wrote:
-> >>> On 01/09/2025 12:40, Ben Chuang wrote:
-> >>>> From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> >>>>
-> >>>> Fix calling incorrect sdhci_set_clock() in __sdhci_uhs2_set_ios() wh=
-en the
-> >>>> vendor defines its own sdhci_set_clock().
-> >>>>
-> >>>> Fixes: 10c8298a052b ("mmc: sdhci-uhs2: add set_ios()")
-> >>>> Cc: stable@vger.kernel.org # v6.13+
-> >>>> Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> >>>> ---
-> >>>>  drivers/mmc/host/sdhci-uhs2.c | 5 ++++-
-> >>>>  1 file changed, 4 insertions(+), 1 deletion(-)
-> >>>>
-> >>>> diff --git a/drivers/mmc/host/sdhci-uhs2.c b/drivers/mmc/host/sdhci-=
-uhs2.c
-> >>>> index 0efeb9d0c376..704fdc946ac3 100644
-> >>>> --- a/drivers/mmc/host/sdhci-uhs2.c
-> >>>> +++ b/drivers/mmc/host/sdhci-uhs2.c
-> >>>> @@ -295,7 +295,10 @@ static void __sdhci_uhs2_set_ios(struct mmc_hos=
-t *mmc, struct mmc_ios *ios)
-> >>>>      else
-> >>>>              sdhci_uhs2_set_power(host, ios->power_mode, ios->vdd);
-> >>>>
-> >>>> -    sdhci_set_clock(host, host->clock);
-> >>>> +    if (host->ops->set_clock)
-> >>>> +            host->ops->set_clock(host, host->clock);
-> >>>> +    else
-> >>>> +            sdhci_set_clock(host, host->clock);
-> >>>
-> >>> host->ops->set_clock is not optional.  So this should just be:
-> >>>
-> >>>       host->ops->set_clock(host, host->clock);
-> >>>
-> >
-> > I will update it. Thank you.
-> >
-> >>
-> >> Although it seems we are setting the clock in 2 places:
-> >>
-> >>         sdhci_uhs2_set_ios()
-> >>                 sdhci_set_ios_common()
-> >>                         host->ops->set_clock(host, ios->clock)
-> >>               __sdhci_uhs2_set_ios
-> >>                         sdhci_set_clock(host, host->clock)
-> >>
-> >> Do we really need both?
-> >>
-> >
-> > We only need one sdhci_set_clock() in __sdhci_uhs2_set_ios() for the
-> > UHS-II card interface detection sequence.
-> > Refer to Section 3.13.2, "Card Interface Detection Sequence" of the SD
-> > Host Controller Standard Spec. Ver. 7.00,
-> > First set the VDD1 power on and VDD2 power on, then enable the SD clock=
- supply.
-> >
-> > Do I need to add a separate patch or add it in the same patch like this=
-?
-> >
-> > diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> > index 3a17821efa5c..bd498b1bebce 100644
-> > --- a/drivers/mmc/host/sdhci.c
-> > +++ b/drivers/mmc/host/sdhci.c
-> > @@ -2369,7 +2369,8 @@ void sdhci_set_ios_common(struct mmc_host *mmc,
-> > struct mmc_ios *ios)
-> >                 sdhci_enable_preset_value(host, false);
-> >
-> >         if (!ios->clock || ios->clock !=3D host->clock) {
-> > -               host->ops->set_clock(host, ios->clock);
-> > +               if (!mmc_card_uhs2(host->mmc))
-> > +                       host->ops->set_clock(host, ios->clock);
-> >                 host->clock =3D ios->clock;
-> >
-> >                 if (host->quirks & SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK =
-&&
->
-> It can be a separate patch, but the whole of
->
->         if (!ios->clock || ios->clock !=3D host->clock) {
->                 etc
->         }
->
-> needs to move from sdhci_set_ios_common() into
-> sdhci_set_ios() like further below.  Note, once that is done, you need
-> to add "host->clock =3D ios->clock;" to __sdhci_uhs2_set_ios()
-> like:
->         host->ops->set_clock(host, ios->clock);
->         host->clock =3D ios->clock;
->
->
-> diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
-> index 3a17821efa5c..ac7e11f37af7 100644
-> --- a/drivers/mmc/host/sdhci.c
-> +++ b/drivers/mmc/host/sdhci.c
-> @@ -2367,23 +2367,6 @@ void sdhci_set_ios_common(struct mmc_host *mmc, st=
-ruct mmc_ios *ios)
->                 (ios->power_mode =3D=3D MMC_POWER_UP) &&
->                 !(host->quirks2 & SDHCI_QUIRK2_PRESET_VALUE_BROKEN))
->                 sdhci_enable_preset_value(host, false);
-> -
-> -       if (!ios->clock || ios->clock !=3D host->clock) {
-> -               host->ops->set_clock(host, ios->clock);
-> -               host->clock =3D ios->clock;
-> -
-> -               if (host->quirks & SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK &&
-> -                   host->clock) {
-> -                       host->timeout_clk =3D mmc->actual_clock ?
-> -                                               mmc->actual_clock / 1000 =
-:
-> -                                               host->clock / 1000;
-> -                       mmc->max_busy_timeout =3D
-> -                               host->ops->get_max_timeout_count ?
-> -                               host->ops->get_max_timeout_count(host) :
-> -                               1 << 27;
-> -                       mmc->max_busy_timeout /=3D host->timeout_clk;
-> -               }
-> -       }
->  }
->  EXPORT_SYMBOL_GPL(sdhci_set_ios_common);
->
-> @@ -2410,6 +2393,23 @@ void sdhci_set_ios(struct mmc_host *mmc, struct mm=
-c_ios *ios)
->
->         sdhci_set_ios_common(mmc, ios);
->
-> +       if (!ios->clock || ios->clock !=3D host->clock) {
-> +               host->ops->set_clock(host, ios->clock);
-> +               host->clock =3D ios->clock;
-> +
-> +               if (host->quirks & SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK &&
-> +                   host->clock) {
-> +                       host->timeout_clk =3D mmc->actual_clock ?
-> +                                               mmc->actual_clock / 1000 =
-:
-> +                                               host->clock / 1000;
-> +                       mmc->max_busy_timeout =3D
-> +                               host->ops->get_max_timeout_count ?
-> +                               host->ops->get_max_timeout_count(host) :
-> +                               1 << 27;
-> +                       mmc->max_busy_timeout /=3D host->timeout_clk;
-> +               }
-> +       }
-> +
->         if (host->ops->set_power)
->                 host->ops->set_power(host, ios->power_mode, ios->vdd);
->         else
->
+If earlier opening of source graph fails (e.g. ADSP rejects due to
+incorrect audioreach topology), the graph is closed and
+"dai_data->graph[dai->id]" is assigned NULL.  Preparing the DAI for sink
+graph continues though and next call to q6apm_lpass_dai_prepare()
+receives dai_data->graph[dai->id]=NULL leading to NULL pointer
+exception:
 
-I will add this as a separate patch and modify  __sdhci_uhs2_set_ios().
+  qcom-apm gprsvc:service:2:1: Error (1) Processing 0x01001002 cmd
+  qcom-apm gprsvc:service:2:1: DSP returned error[1001002] 1
+  q6apm-lpass-dais 30000000.remoteproc:glink-edge:gpr:service@1:bedais: fail to start APM port 78
+  q6apm-lpass-dais 30000000.remoteproc:glink-edge:gpr:service@1:bedais: ASoC: error at snd_soc_pcm_dai_prepare on TX_CODEC_DMA_TX_3: -22
+  Unable to handle kernel NULL pointer dereference at virtual address 00000000000000a8
+  ...
+  Call trace:
+   q6apm_graph_media_format_pcm+0x48/0x120 (P)
+   q6apm_lpass_dai_prepare+0x110/0x1b4
+   snd_soc_pcm_dai_prepare+0x74/0x108
+   __soc_pcm_prepare+0x44/0x160
+   dpcm_be_dai_prepare+0x124/0x1c0
 
-Best regards,
-Ben Chuang
+Fixes: 30ad723b93ad ("ASoC: qdsp6: audioreach: add q6apm lpass dai support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+---
+
+Changes in v2:
+1. Use approach suggested by Srini (you gave me some code, so shall I
+   add Co-developed-by?)
+---
+ sound/soc/qcom/qdsp6/q6apm-lpass-dais.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
+index a0d90462fd6a..20974f10406b 100644
+--- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
++++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
+@@ -213,8 +213,10 @@ static int q6apm_lpass_dai_prepare(struct snd_pcm_substream *substream, struct s
+ 
+ 	return 0;
+ err:
+-	q6apm_graph_close(dai_data->graph[dai->id]);
+-	dai_data->graph[dai->id] = NULL;
++	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
++		q6apm_graph_close(dai_data->graph[dai->id]);
++		dai_data->graph[dai->id] = NULL;
++	}
+ 	return rc;
+ }
+ 
+-- 
+2.48.1
+
 
