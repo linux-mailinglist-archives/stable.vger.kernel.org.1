@@ -1,96 +1,124 @@
-Return-Path: <stable+bounces-177766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4BCB445AF
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 20:45:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E193FB4462B
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 21:10:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6D56546EB6
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 18:45:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA2C75A523A
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 19:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B4124679A;
-	Thu,  4 Sep 2025 18:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57670267AF2;
+	Thu,  4 Sep 2025 19:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u1Gozm/c"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="KrgrQzzH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711202AF00;
-	Thu,  4 Sep 2025 18:45:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757011553; cv=none; b=Gpfk3WKwBL+dTOZGIlItMdwfuQ5lyOPPprfxIoUFwkJKc816OLGxF1dPW+dEYwkIAYYJwsx4MvYT9bSa/ta/qLbT7wE0tRnEUhKM2WoaFRjihNUb6XQX6Ez01l+bgY84jatstN9CHQUZ083rKGUG+K0LzBaP2mxy3S6pqCo6L74=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757011553; c=relaxed/simple;
-	bh=9zjitpEiNjIRsHyVbtqAQ1md45Vb+8/EWgUeD2j/glM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YMGMGbstv1wg03YeUrOPiHJe2nBLEaDIlsOAkS/kxaKCXduU2wiGPj0LDleZocSZhQ+JG5u54vcOYMZNbRmLXb4yYvKnXFRyTUa2I0SLo/ZpbTorLAFRYml43J1/C3k9ywTVNsuvuTF5SJxBy7hrbQFzZVPiz1y6RSOB95sFA0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u1Gozm/c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39F8C4CEF0;
-	Thu,  4 Sep 2025 18:45:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757011553;
-	bh=9zjitpEiNjIRsHyVbtqAQ1md45Vb+8/EWgUeD2j/glM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u1Gozm/cyo+vcmGSfEfSLSWai1/BBkn37yUH15FqdDioWRqH36/LiPlvAmUCa3buS
-	 hE4TCD3mDGBr/rDI/7d06uS3oTwHbDHZYY19nK1Ys4cc+9xTfX3+DUBmper6DVPIf8
-	 WhQI0HnNWsHxiSBguSDcbiUz1yd663pjlfeZcrcbLZD54sZqPmHsZ48hn567EnV9XM
-	 oxUiUwEQ4+fJNhyasAkM1J76PLttkeoy6/qyxXmaDvt1i06Qa8Y8yiHkKyouyTdrRD
-	 yrp0lEGCPxthcu7gMhnmRHiHnaLBrtaaKlJ2/rxUNHefey/ZxGNGqT8amj2QTDCwrm
-	 8wSAp+bExX7eA==
-Date: Thu, 4 Sep 2025 19:45:48 +0100
-From: Simon Horman <horms@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Haakon Bugge <haakon.bugge@oracle.com>,
-	Allison Henderson <allison.henderson@oracle.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	OFED mailing list <linux-rdma@vger.kernel.org>,
-	"rds-devel@oss.oracle.com" <rds-devel@oss.oracle.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v2] rds: ib: Remove unused extern definition
-Message-ID: <20250904184548.GK372207@horms.kernel.org>
-References: <20250904115345.3940851-1-haakon.bugge@oracle.com>
- <20250904065502.13d94569@kernel.org>
- <44A12092-5DA9-4A3C-ACBC-FF1AACB03BD3@oracle.com>
- <20250904073343.1138ce24@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E554D599;
+	Thu,  4 Sep 2025 19:10:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757013025; cv=pass; b=GBEeIFxP/1XTIEEO4OyLiVnYtZYLecPCRbX9DD4WTw013b8GA9Ps8H+YNdcBTVD9srabDt3g0M2JvdomfTzVYd6dV+eeiZZdNRsB/EsQ6sZiCfS6swZVptAt4F1KzULlRJrEzn+i6UHeHYjkFtXcJFhBrKR9bdxEEoeyjqGU2Ho=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757013025; c=relaxed/simple;
+	bh=+h4Zse7WhDcAJDw0AavI4Al0yjN0FBx0HhqVfrpEfIg=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=GdPzBJqnf+cD60NDUSDxrpBs02zr7gaEoUtVTLML/f/wAlFRcgKJHMCYxm3nnynOtdlQRUrc7/CX1I0CQj1IMdsdLt0fm8B3uqbgAEBZ6IsKisML0HXBWf5DqFvFjFc76+RLs8Jb+iUqTTfjneFWRAHK76oOtMnY8ANmPfZUn14=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=KrgrQzzH; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1757013016; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=EyAXeSu3/4WsEdNzyrP8tAQT1gP81vdqPZpi7gqVzRlQwRcMt/DR5QJAhP0OMJGxn/1ZALfxn7gHXuxKqKzeJnGNcmxlgfLQ4lWeFrJpEChW1SL0HIuAY3xDtjJ/aYX8EhtlOfB3C/OFIx6xuP7bPHWCsjzphUCbmpK2+fPxx8s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1757013016; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=+h4Zse7WhDcAJDw0AavI4Al0yjN0FBx0HhqVfrpEfIg=; 
+	b=MWHm/Vmi+YouFlPxnuSLcdyzNM4twXnNan5Lj4mEKbosagIWAJVRxCqm0A07sXE0M9WHvWXW44vJB9inpcu4pnFOiaWV5cEo7e4kJgqJuA2e9/qpu+KVqj+Oj58kkpUX4IhsDBeyhWwehgFYFrSrC4IY9kh1wGv1nlbjWT/q2Rw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757013015;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=+h4Zse7WhDcAJDw0AavI4Al0yjN0FBx0HhqVfrpEfIg=;
+	b=KrgrQzzHT6tJrG2R3fySF+qofUY7rNqw+Mhi+ZQYTu3BLj9S8jCnt5z7AbQBoDsa
+	lxVzDpDg3zzC89uIh//UC6/VmP1/9wdkxV1zxM3x1V86Ks61eQl9bq6oe3MOaBaqnSg
+	uMxQx+rJEhXYtxAJyNKV7mMbcw7IlIUEYOrQygr8=
+Received: by mx.zohomail.com with SMTPS id 17570130111351013.0951418007742;
+	Thu, 4 Sep 2025 12:10:11 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250904073343.1138ce24@kernel.org>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 RESEND] media: vidtv: initialize local pointers upon
+ transfer of memory ownership
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250904054000.3848107-1-aha310510@gmail.com>
+Date: Thu, 4 Sep 2025 16:09:56 -0300
+Cc: mchehab@kernel.org,
+ linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org,
+ syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <67D8F9B1-3121-469A-8F50-952BD4C0C99F@collabora.com>
+References: <20250904054000.3848107-1-aha310510@gmail.com>
+To: Jeongjun Park <aha310510@gmail.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Thu, Sep 04, 2025 at 07:33:43AM -0700, Jakub Kicinski wrote:
-> On Thu, 4 Sep 2025 14:22:02 +0000 Haakon Bugge wrote:
-> > Sorry if I have mis-interpreted the collateral. From [1], I quote:
-> > 
-> > "A Fixes: tag indicates that the patch fixes an issue in a previous
-> > commit." As such, it is an "issue" and I reference the offending
-> > commit.
-> 
-> You're not the first one to misinterpret it, I guess we should fix the
-> doc :$
+Hi Jeongjun,
 
-+1
+You=E2=80=99re resending this, but there were comments on v2.
 
-FTR, a fix implies a bug. And a good rule of thumb that a bug
-is something broken that is user-visible. E.g. a system panic.
+If you=E2=80=99ve taken steps to address them, please send a v3 instead.
 
-> 
-> > As to "Cc: stable", you're quite right. My bad. You want a v3 or are
-> > you (and stable) able to handle it?
-> 
-> Please repost this one without the extra tags, and if you want it to go
-> via netdev the subject tag should be net-next in this case (it will end
-> up in 6.18)
+> On 4 Sep 2025, at 02:40, Jeongjun Park <aha310510@gmail.com> wrote:
+>=20
+> vidtv_channel_si_init() creates a temporary list (program, service, =
+event)
+> and ownership of the memory itself is transferred to the PAT/SDT/EIT
+> tables through vidtv_psi_pat_program_assign(),
+> vidtv_psi_sdt_service_assign(), vidtv_psi_eit_event_assign().
+>=20
+> The problem here is that the local pointer where the memory ownership
+> transfer was completed is not initialized to NULL. This causes the
+> vidtv_psi_pmt_create_sec_for_each_pat_entry() function to fail, and
+> in the flow that jumps to free_eit, the memory that was freed by
+> vidtv_psi_*_table_destroy() can be accessed again by
+> vidtv_psi_*_event_destroy() due to the uninitialized local pointer, so =
+it
+> is freed once again.
+>=20
+> Therefore, to prevent use-after-free and double-free vuln, local =
+pointers
+
+Please do not use =E2=80=9Cvuln=E2=80=9D instead of vulnerability.
+
+> must be initialized to NULL when transferring memory ownership.
+>=20
+> Cc: <stable@vger.kernel.org>
+> Reported-by: syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D1d9c0edea5907af239e0
+> Fixes: 3be8037960bc ("media: vidtv: add error checks")
+> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> ---
+> v2: Improved patch description wording and CC stable mailing list
+> - Link to v1: =
+https://lore.kernel.org/all/20250822065849.1145572-1-aha310510@gmail.com/
+> ---
+> drivers/media/test-drivers/vidtv/vidtv_channel.c | 3 +++
+> 1 file changed, 3 insertions(+)
+
+=E2=80=94 Daniel
+
 
