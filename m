@@ -1,92 +1,127 @@
-Return-Path: <stable+bounces-177775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 787FBB44966
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 00:20:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0F9B449FE
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 00:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3E5B94E013F
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 22:20:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 333015A441B
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 22:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81DC238C19;
-	Thu,  4 Sep 2025 22:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BDA2F6171;
+	Thu,  4 Sep 2025 22:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QLXVsbDn"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VNa3SXn3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5B028C5B8;
-	Thu,  4 Sep 2025 22:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD97B2F60CC;
+	Thu,  4 Sep 2025 22:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757024401; cv=none; b=LMlnszlQY6PJDcme4BnTiNmAPrH6UQGpUIVOcRyZgCTmmG1C4KDpM7dZiKfolosTbMPOWG01hRS03/va9aNcujxjM+AzEx4TJvVWCMqYDp/VUuYt6RLhO93bv+CDdTOLZyfuV9vyJxDsb5+m1pT78RqF/ZeJWS7zVe62qnAqW78=
+	t=1757026521; cv=none; b=LcTHf4cP8+LfBxO5wiBhEkMaFxK13Wp5f7HyOuLGxlbbiRHWx/bt8nmmOmQhqiio2U3cFzZ3ehTs1Uxew4LTDFB5TegRt/G7CfJEhfJP0BRon+OlYnZByYw4Twz2fU1UXbyv4iRWs6895xfY2FP6ep93VSeyWAM0jOfMaXhJ7qY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757024401; c=relaxed/simple;
-	bh=8+7EoiLf/43iRVtI/oWnMiMUJHq6j/EVSSsjKcIqSE4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OTkl9DkQtiNrOv0c9qP61qQ7EKSI0Onj+a+8QQ/Avum28ug2BILl6oKQrzoUVUotGP+tw6NTAn4MAYcvvRgTT2YznhZGfgp9049plIrFLMrATqJ6afENAKEUc+bwAEcEjYz0skvxX9FECls73DW/bqfgpNiyl7TDwq1U2n3y3pI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QLXVsbDn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01953C4CEF0;
-	Thu,  4 Sep 2025 22:20:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757024401;
-	bh=8+7EoiLf/43iRVtI/oWnMiMUJHq6j/EVSSsjKcIqSE4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=QLXVsbDn/f50eSGH/tzeWT2lNvEzEIONGmq14wULZynp+ozEeC6lV9Izmm9Bi+Lcq
-	 Hu7G9T5eEornyavggeAAbBX8N18b7dzNsl5q2latvPaG0E1C8eL83ny2BzdYPQ8ei2
-	 4TdYum/5FhWnZXxcLP2bFR/2EdBxMLVEUEOgndj97sC3gutx+U0h4dN5pG7wEl11xk
-	 RKtWi7GdMEirey/OLr/DnPzE8w/XfzHEkm/HiusQqOyvM1AoXwbtFKCVpf0FfQ8i+e
-	 zEtg1Z+mSEVXlaDXt8Y3CTN2pTDCH4td7JU/9sZqMnY7qvJyEtqL5ySHrlMeyQMsvd
-	 7XQfBW3aCnYVg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAE0A383BF69;
-	Thu,  4 Sep 2025 22:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1757026521; c=relaxed/simple;
+	bh=pbwL9Jb5cUDHT+JoiDDO8OJ4KwgU8acMhfnRJGUKSyk=;
+	h=Date:To:From:Subject:Message-Id; b=S/DnZwUMwHandpRl8Y/ufB7Fh67a9NUE2CcvYJqydWkqRdMqwz/m0f72nACLQc27pvxHOyStNuqZ/akTmtm5iludDiyPMEDXl1JrDYahIpEx3NOKgbjhxU8AumDDezwNHjT1Uh/Is+vTQIDnVaHhsovsFyqxXjFVnfR/UGKNQ0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VNa3SXn3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A18C4CEF0;
+	Thu,  4 Sep 2025 22:55:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757026521;
+	bh=pbwL9Jb5cUDHT+JoiDDO8OJ4KwgU8acMhfnRJGUKSyk=;
+	h=Date:To:From:Subject:From;
+	b=VNa3SXn3pn84toWftKyte6qf9qvH+4TX91lxPOnRLCFcLSRd9o4SP5pmjG6uig4MR
+	 5gSHcKywQO0ZS4XqIPo4bNQld1WA9tzFjJo4Y6x6dbRR5EYrjDzbPLRkzkkM0ykwYM
+	 p+uTU2caucyxJnVJV7on4b1+C8Fi5MEGs+C8p32Q=
+Date: Thu, 04 Sep 2025 15:55:20 -0700
+To: mm-commits@vger.kernel.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,spender@grsecurity.net,sbrivio@redhat.com,jirislaby@kernel.org,brauner@kernel.org,adobriyan@gmail.com,wangzijie1@honor.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + proc-fix-type-confusion-in-pde_set_flags.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250904225521.76A18C4CEF0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: libwx: fix to enable RSS
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175702440575.1969494.12197743418210295816.git-patchwork-notify@kernel.org>
-Date: Thu, 04 Sep 2025 22:20:05 +0000
-References: <A3B7449A08A044D0+20250904024322.87145-1-jiawenwu@trustnetic.com>
-In-Reply-To: <A3B7449A08A044D0+20250904024322.87145-1-jiawenwu@trustnetic.com>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- mengyuanlou@net-swift.com, stable@vger.kernel.org
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+The patch titled
+     Subject: proc: fix type confusion in pde_set_flags()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     proc-fix-type-confusion-in-pde_set_flags.patch
 
-On Thu,  4 Sep 2025 10:43:22 +0800 you wrote:
-> Now when SRIOV is enabled, PF with multiple queues can only receive
-> all packets on queue 0. This is caused by an incorrect flag judgement,
-> which prevents RSS from being enabled.
-> 
-> In fact, RSS is supported for the functions when SRIOV is enabled.
-> Remove the flag judgement to fix it.
-> 
-> [...]
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/proc-fix-type-confusion-in-pde_set_flags.patch
 
-Here is the summary with links:
-  - [net,v2] net: libwx: fix to enable RSS
-    https://git.kernel.org/netdev/net/c/157cf360c4a8
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: wangzijie <wangzijie1@honor.com>
+Subject: proc: fix type confusion in pde_set_flags()
+Date: Thu, 4 Sep 2025 21:57:15 +0800
+
+Commit 2ce3d282bd50 ("proc: fix missing pde_set_flags() for net proc
+files") missed a key part in the definition of proc_dir_entry:
+
+union {
+	const struct proc_ops *proc_ops;
+	const struct file_operations *proc_dir_ops;
+};
+
+So dereference of ->proc_ops assumes it is a proc_ops structure results in
+type confusion and make NULL check for 'proc_ops' not work for proc dir.
+
+Add !S_ISDIR(dp->mode) test before calling pde_set_flags() to fix it.
+
+Link: https://lkml.kernel.org/r/20250904135715.3972782-1-wangzijie1@honor.com
+Fixes: 2ce3d282bd50 ("proc: fix missing pde_set_flags() for net proc files")
+Signed-off-by: wangzijie <wangzijie1@honor.com>
+Reported-by: Brad Spengler <spender@grsecurity.net>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc: Stefano Brivio <sbrivio@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/proc/generic.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/fs/proc/generic.c~proc-fix-type-confusion-in-pde_set_flags
++++ a/fs/proc/generic.c
+@@ -393,7 +393,8 @@ struct proc_dir_entry *proc_register(str
+ 	if (proc_alloc_inum(&dp->low_ino))
+ 		goto out_free_entry;
+ 
+-	pde_set_flags(dp);
++	if (!S_ISDIR(dp->mode))
++		pde_set_flags(dp);
+ 
+ 	write_lock(&proc_subdir_lock);
+ 	dp->parent = dir;
+_
+
+Patches currently in -mm which might be from wangzijie1@honor.com are
+
+proc-fix-type-confusion-in-pde_set_flags.patch
 
 
