@@ -1,325 +1,168 @@
-Return-Path: <stable+bounces-177726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92724B43C8A
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 15:07:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 556CBB43CE5
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 15:18:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B56321884131
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 13:07:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFA407B6F2B
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 13:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44CE2FF671;
-	Thu,  4 Sep 2025 13:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4A7272E51;
+	Thu,  4 Sep 2025 13:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MCjYEDcw"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="eYmrfori"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00712FF654
-	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 13:06:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457A81B21BD;
+	Thu,  4 Sep 2025 13:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756991216; cv=none; b=B0i1W1jukXrL/DpzRbH2OlriOgxu0RpSRJ3COK0UXZMv8H2fqVv5uVxcClmfj5AnMbLX25fYo66J1xiWSeumP97TRzDymcpgwf4/50Tzq7uB6kMTP6XdIYcn6dGLz2dWjnquKAkw1YWVN80jLPETk4w6F+ZNGPdaQMQRMR/Qleg=
+	t=1756991889; cv=none; b=IYg4p+D8C333ndpw01e/Apc/abE+xHpUq1TWL3nt0N4wGPtvI6NMTtUph1wLsTAlBX5nWccoktHMU3WB4L71NLf21fy1UHTOMe+WHDxtoGCCyiWvfmg869kxOD2tytWe9aM1fPIjN40d6T5R6+7LoEw5zzM5vRyEEcXWTfP7UcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756991216; c=relaxed/simple;
-	bh=Nqw/Z++NaAMgi1mLbAHVxkQ+2bWDUVaEq2bEN6Umxb0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q5cw44nl88VkwLkZSd1VetF0yYhmPU+WqmtiQpVOMLFM7GXK/Hj+oB7kQQJt5Wv0KawxH5eTfcZJI5j8+v+kbSPm2bISgIDyD+foCQOQTQq+Q6pZXxAJ3dgo4XLN61okndS3rqSVNwt3zf3Btm+Zu+fk0mMji38OYAbqI165pCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MCjYEDcw; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756991215; x=1788527215;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Nqw/Z++NaAMgi1mLbAHVxkQ+2bWDUVaEq2bEN6Umxb0=;
-  b=MCjYEDcwlrc6dX2NXnxnVh6WOkfzHjOxIXaYCLqHwPtOvkpDP8sybvW/
-   ablepaUEVfYxhGe2WnVTOcF1igo9u1M6JraPur+hO3vUtM94HNfWQ4l0e
-   tJoTt855W+I8RB/48D9bX7+Oj88HNARoQiBv63z571ulhWmiCeVmiYE3B
-   tnV3P5WiEl7XYJAvZWhODkndSgbj3BeLWN5lvSnAJnMaD6A5iQ43zRd3j
-   ql2EppQHMvL7tlPeqLpWokTPahnUIaPdAh/xLTbelaaRNHMInl+3T8uW5
-   nMH+GtrYOR8BoVUlwqNr6X0+3xR5qjoUn/qf9NjNGQSszeqgkUiwlf1Ph
-   g==;
-X-CSE-ConnectionGUID: qR3ARKJjSaCUPEbNr9lvVA==
-X-CSE-MsgGUID: gKtnvYWBT02mg5PIxUHPNg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="76930839"
-X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
-   d="scan'208";a="76930839"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 06:06:54 -0700
-X-CSE-ConnectionGUID: +QmlO2qURWyJg/352bSNSA==
-X-CSE-MsgGUID: uztr/ZTAShSqwKyLD61v5g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,238,1751266800"; 
-   d="scan'208";a="171459090"
-Received: from abityuts-desk.ger.corp.intel.com (HELO fedora) ([10.245.244.98])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 06:06:52 -0700
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	stable@vger.kernel.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Subject: [PATCH v3 3/3] drm/xe: Block exec and rebind worker while evicting for suspend / hibernate
-Date: Thu,  4 Sep 2025 15:06:05 +0200
-Message-ID: <20250904130614.3212-4-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250904130614.3212-1-thomas.hellstrom@linux.intel.com>
-References: <20250904130614.3212-1-thomas.hellstrom@linux.intel.com>
+	s=arc-20240116; t=1756991889; c=relaxed/simple;
+	bh=yznnBoXwsc/vB4GgOEn9ieqh2kvUOUfe5kKbuGB6wQQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FAaEhisWrMtKj4INsB9eiPpU/YiYztUlO5cNjOvRyTpCvMASblRl0cpFAIsuLO8sKWB11uJAWGZITgeVJokDUD38FiMV6PLiGfTYrWcl6SfyBWYhJ3y480Y3atkkHa6DQamdCoGkYAX5q0XOrWHIANJQurvKqXY4w793kfCsSf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=eYmrfori; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 584DHlhF3018458;
+	Thu, 4 Sep 2025 08:17:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1756991867;
+	bh=mdOFbaogOROzaCgM5bfoC+kPxgFcXiCDwpNSxKIRLaE=;
+	h=From:To:CC:Subject:Date;
+	b=eYmrforixj5MTd7cg2K7z/VTaxm5NLT5nBc4Y7pY31L3JVTACsfhk8u3OBRSDNk6e
+	 0LM5Apg5yJ8HkJ7tvKt2tw3VqyyYhV4EPsZTmDSckHe3XojgKDdobP8T9x7OCtPD+R
+	 mwXi4wriJI7V3wfuZY4QvLuejX9CP7Xtmi+APl5E=
+Received: from DFLE107.ent.ti.com (dfle107.ent.ti.com [10.64.6.28])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 584DHlCw892847
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Thu, 4 Sep 2025 08:17:47 -0500
+Received: from DFLE115.ent.ti.com (10.64.6.36) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 4
+ Sep 2025 08:17:46 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Thu, 4 Sep 2025 08:17:46 -0500
+Received: from santhoshkumark.dhcp.ti.com (santhoshkumark.dhcp.ti.com [172.24.233.254])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 584DHgnX3308904;
+	Thu, 4 Sep 2025 08:17:43 -0500
+From: Santhosh Kumar K <s-k6@ti.com>
+To: <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
+        <quic_mdalam@quicinc.com>, <quic_sridsn@quicinc.com>
+CC: <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <s-k6@ti.com>, <praneeth@ti.com>, <p-mantena@ti.com>, <a-dutta@ti.com>,
+        <u-kumar1@ti.com>, <stable@vger.kernel.org>
+Subject: [PATCH v3] mtd: spinand: winbond: Fix oob_layout for W25N01JW
+Date: Thu, 4 Sep 2025 18:47:41 +0530
+Message-ID: <20250904131741.3097897-1-s-k6@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-When the xe pm_notifier evicts for suspend / hibernate, there might be
-racing tasks trying to re-validate again. This can lead to suspend taking
-excessive time or get stuck in a live-lock. This behaviour becomes
-much worse with the fix that actually makes re-validation bring back
-bos to VRAM rather than letting them remain in TT.
+Fix the W25N01JW's oob_layout according to the datasheet [1]
 
-Prevent that by having exec and the rebind worker waiting for a completion
-that is set to block by the pm_notifier before suspend and is signaled
-by the pm_notifier after resume / wakeup.
+[1] https://www.winbond.com/hq/product/code-storage-flash-memory/qspinand-flash/?__locale=en&partNo=W25N01JW
 
-It's probably still possible to craft malicious applications that block
-suspending. More work is pending to fix that.
-
-v3:
-- Avoid wait_for_completion() in the kernel worker since it could
-  potentially cause work item flushes from freezable processes to
-  wait forever. Instead terminate the rebind workers if needed and
-  re-launch at resume. (Matt Auld)
-
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4288
-Fixes: c6a4d46ec1d7 ("drm/xe: evict user memory in PM notifier")
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: <stable@vger.kernel.org> # v6.16+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 6a804fb72de5 ("mtd: spinand: winbond: add support for serial NAND flash")
+Cc: Sridharan S N <quic_sridsn@quicinc.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
 ---
- drivers/gpu/drm/xe/xe_device_types.h |  6 ++++
- drivers/gpu/drm/xe/xe_exec.c         |  9 ++++++
- drivers/gpu/drm/xe/xe_pm.c           | 20 ++++++++++++
- drivers/gpu/drm/xe/xe_vm.c           | 46 +++++++++++++++++++++++++++-
- drivers/gpu/drm/xe/xe_vm.h           |  2 ++
- drivers/gpu/drm/xe/xe_vm_types.h     |  5 +++
- 6 files changed, 87 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device_types.h b/drivers/gpu/drm/xe/xe_device_types.h
-index 092004d14db2..1e780f8a2a8c 100644
---- a/drivers/gpu/drm/xe/xe_device_types.h
-+++ b/drivers/gpu/drm/xe/xe_device_types.h
-@@ -507,6 +507,12 @@ struct xe_device {
+Changes in v3:
+ - Fix regions' offset and length aligned for Bad Block Management
+   only for section 0
+ - Rebase on next
+ - Link to v2: https://lore.kernel.org/linux-mtd/20250213060018.2664518-1-s-k6@ti.com/
+
+Changes in v2:
+ - Detach patch 3/3 from v1
+ - Rebase on next
+ - Link to v1: https://lore.kernel.org/linux-mtd/20250102115110.1402440-1-s-k6@ti.com/
+
+---
+ drivers/mtd/nand/spi/winbond.c | 37 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+index 87053389a1fc..4870b2d5edb2 100644
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -176,6 +176,36 @@ static const struct mtd_ooblayout_ops w25n02kv_ooblayout = {
+ 	.free = w25n02kv_ooblayout_free,
+ };
  
- 	/** @pm_notifier: Our PM notifier to perform actions in response to various PM events. */
- 	struct notifier_block pm_notifier;
-+	/** @pm_block: Completion to block validating tasks on suspend / hibernate prepare */
-+	struct completion pm_block;
-+	/** @rebind_resume_list: List of wq items to kick on resume. */
-+	struct list_head rebind_resume_list;
-+	/** @rebind_resume_lock: Lock to protect the rebind_resume_list */
-+	struct mutex rebind_resume_lock;
- 
- 	/** @pmt: Support the PMT driver callback interface */
- 	struct {
-diff --git a/drivers/gpu/drm/xe/xe_exec.c b/drivers/gpu/drm/xe/xe_exec.c
-index 44364c042ad7..374c831e691b 100644
---- a/drivers/gpu/drm/xe/xe_exec.c
-+++ b/drivers/gpu/drm/xe/xe_exec.c
-@@ -237,6 +237,15 @@ int xe_exec_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
- 		goto err_unlock_list;
- 	}
- 
-+	/*
-+	 * It's OK to block interruptible here with the vm lock held, since
-+	 * on task freezing during suspend / hibernate, the call will
-+	 * return -ERESTARTSYS and the IOCTL will be rerun.
-+	 */
-+	err = wait_for_completion_interruptible(&xe->pm_block);
-+	if (err)
-+		goto err_unlock_list;
++static int w25n01jw_ooblayout_ecc(struct mtd_info *mtd, int section,
++				  struct mtd_oob_region *region)
++{
++	if (section > 3)
++		return -ERANGE;
 +
- 	vm_exec.vm = &vm->gpuvm;
- 	vm_exec.flags = DRM_EXEC_INTERRUPTIBLE_WAIT;
- 	if (xe_vm_in_lr_mode(vm)) {
-diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
-index bee9aacd82e7..6d59990ff6ba 100644
---- a/drivers/gpu/drm/xe/xe_pm.c
-+++ b/drivers/gpu/drm/xe/xe_pm.c
-@@ -297,6 +297,18 @@ static u32 vram_threshold_value(struct xe_device *xe)
- 	return DEFAULT_VRAM_THRESHOLD;
++	region->offset = (16 * section) + 12;
++	region->length = 4;
++
++	return 0;
++}
++
++static int w25n01jw_ooblayout_free(struct mtd_info *mtd, int section,
++				   struct mtd_oob_region *region)
++{
++	if (section > 3)
++		return -ERANGE;
++
++	region->offset = (16 * section);
++	region->length = 12;
++
++	/* Extract BBM */
++	if (!section) {
++		region->offset += 2;
++		region->length -= 2;
++	}
++
++	return 0;
++}
++
+ static int w35n01jw_ooblayout_ecc(struct mtd_info *mtd, int section,
+ 				  struct mtd_oob_region *region)
+ {
+@@ -206,6 +236,11 @@ static int w35n01jw_ooblayout_free(struct mtd_info *mtd, int section,
+ 	return 0;
  }
  
-+static void xe_pm_wake_preempt_workers(struct xe_device *xe)
-+{
-+	struct list_head *link, *next;
++static const struct mtd_ooblayout_ops w25n01jw_ooblayout = {
++	.ecc = w25n01jw_ooblayout_ecc,
++	.free = w25n01jw_ooblayout_free,
++};
 +
-+	mutex_lock(&xe->rebind_resume_lock);
-+	list_for_each_safe(link, next, &xe->rebind_resume_list) {
-+		list_del_init(link);
-+		xe_vm_resume_preempt_worker(link);
-+	}
-+	mutex_unlock(&xe->rebind_resume_lock);
-+}
-+
- static int xe_pm_notifier_callback(struct notifier_block *nb,
- 				   unsigned long action, void *data)
- {
-@@ -306,6 +318,7 @@ static int xe_pm_notifier_callback(struct notifier_block *nb,
- 	switch (action) {
- 	case PM_HIBERNATION_PREPARE:
- 	case PM_SUSPEND_PREPARE:
-+		reinit_completion(&xe->pm_block);
- 		xe_pm_runtime_get(xe);
- 		err = xe_bo_evict_all_user(xe);
- 		if (err)
-@@ -322,6 +335,8 @@ static int xe_pm_notifier_callback(struct notifier_block *nb,
- 		break;
- 	case PM_POST_HIBERNATION:
- 	case PM_POST_SUSPEND:
-+		complete_all(&xe->pm_block);
-+		xe_pm_wake_preempt_workers(xe);
- 		xe_bo_notifier_unprepare_all_pinned(xe);
- 		xe_pm_runtime_put(xe);
- 		break;
-@@ -348,6 +363,11 @@ int xe_pm_init(struct xe_device *xe)
- 	if (err)
- 		return err;
- 
-+	init_completion(&xe->pm_block);
-+	complete_all(&xe->pm_block);
-+	mutex_init(&xe->rebind_resume_lock);
-+	INIT_LIST_HEAD(&xe->rebind_resume_list);
-+
- 	/* For now suspend/resume is only allowed with GuC */
- 	if (!xe_device_uc_enabled(xe))
- 		return 0;
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index f55f96bb240a..97aad1d53a8c 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -394,6 +394,9 @@ static int xe_gpuvm_validate(struct drm_gpuvm_bo *vm_bo, struct drm_exec *exec)
- 		list_move_tail(&gpuva_to_vma(gpuva)->combined_links.rebind,
- 			       &vm->rebind_list);
- 
-+	if (!try_wait_for_completion(&vm->xe->pm_block))
-+		return -EAGAIN;
-+
- 	ret = xe_bo_validate(gem_to_xe_bo(vm_bo->obj), vm, false);
- 	if (ret)
- 		return ret;
-@@ -480,6 +483,37 @@ static int xe_preempt_work_begin(struct drm_exec *exec, struct xe_vm *vm,
- 	return xe_vm_validate_rebind(vm, exec, vm->preempt.num_exec_queues);
- }
- 
-+static bool vm_suspend_preempt_worker(struct xe_vm *vm)
-+{
-+	struct xe_device *xe = vm->xe;
-+	bool ret = false;
-+
-+	mutex_lock(&xe->rebind_resume_lock);
-+	if (!try_wait_for_completion(&vm->xe->pm_block)) {
-+		ret = true;
-+		list_move_tail(&vm->preempt.pm_activate_link, &xe->rebind_resume_list);
-+	}
-+	pr_info("Suspending %p\n", vm);
-+	mutex_unlock(&xe->rebind_resume_lock);
-+
-+	return ret;
-+}
-+
-+/**
-+ * xe_vm_resume_preempt_worker() - Resume the preempt worker.
-+ * @vm: The vm whose preempt worker to resume.
-+ *
-+ * Resume a preempt worker that was previously suspended by
-+ * vm_suspend_preempt_worker().
-+ */
-+void xe_vm_resume_preempt_worker(struct list_head *link)
-+{
-+	struct xe_vm *vm = container_of(link, typeof(*vm), preempt.pm_activate_link);
-+
-+	pr_info("Resuming %p\n", vm);
-+	queue_work(vm->xe->ordered_wq, &vm->preempt.rebind_work);
-+}
-+
- static void preempt_rebind_work_func(struct work_struct *w)
- {
- 	struct xe_vm *vm = container_of(w, struct xe_vm, preempt.rebind_work);
-@@ -503,6 +537,11 @@ static void preempt_rebind_work_func(struct work_struct *w)
- 	}
- 
- retry:
-+	if (!try_wait_for_completion(&vm->xe->pm_block) && vm_suspend_preempt_worker(vm)) {
-+		up_write(&vm->lock);
-+		return;
-+	}
-+
- 	if (xe_vm_userptr_check_repin(vm)) {
- 		err = xe_vm_userptr_pin(vm);
- 		if (err)
-@@ -1741,6 +1780,7 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags, struct xe_file *xef)
- 	if (flags & XE_VM_FLAG_LR_MODE) {
- 		INIT_WORK(&vm->preempt.rebind_work, preempt_rebind_work_func);
- 		xe_pm_runtime_get_noresume(xe);
-+		INIT_LIST_HEAD(&vm->preempt.pm_activate_link);
- 	}
- 
- 	if (flags & XE_VM_FLAG_FAULT_MODE) {
-@@ -1922,8 +1962,12 @@ void xe_vm_close_and_put(struct xe_vm *vm)
- 	xe_assert(xe, !vm->preempt.num_exec_queues);
- 
- 	xe_vm_close(vm);
--	if (xe_vm_in_preempt_fence_mode(vm))
-+	if (xe_vm_in_preempt_fence_mode(vm)) {
-+		mutex_lock(&xe->rebind_resume_lock);
-+		list_del_init(&vm->preempt.pm_activate_link);
-+		mutex_unlock(&xe->rebind_resume_lock);
- 		flush_work(&vm->preempt.rebind_work);
-+	}
- 	if (xe_vm_in_fault_mode(vm))
- 		xe_svm_close(vm);
- 
-diff --git a/drivers/gpu/drm/xe/xe_vm.h b/drivers/gpu/drm/xe/xe_vm.h
-index b3e5bec0fa58..f2639794278b 100644
---- a/drivers/gpu/drm/xe/xe_vm.h
-+++ b/drivers/gpu/drm/xe/xe_vm.h
-@@ -281,6 +281,8 @@ struct dma_fence *xe_vm_bind_kernel_bo(struct xe_vm *vm, struct xe_bo *bo,
- 				       struct xe_exec_queue *q, u64 addr,
- 				       enum xe_cache_level cache_lvl);
- 
-+void xe_vm_resume_preempt_worker(struct list_head *link);
-+
- /**
-  * xe_vm_resv() - Return's the vm's reservation object
-  * @vm: The vm
-diff --git a/drivers/gpu/drm/xe/xe_vm_types.h b/drivers/gpu/drm/xe/xe_vm_types.h
-index b5108d010786..e1a786db5f89 100644
---- a/drivers/gpu/drm/xe/xe_vm_types.h
-+++ b/drivers/gpu/drm/xe/xe_vm_types.h
-@@ -338,6 +338,11 @@ struct xe_vm {
- 		 * BOs
- 		 */
- 		struct work_struct rebind_work;
-+		/**
-+		 * @preempt.pm_activate_link: Link to list of rebind workers to be
-+		 * kicked on resume.
-+		 */
-+		struct list_head pm_activate_link;
- 	} preempt;
- 
- 	/** @um: unified memory state */
+ static const struct mtd_ooblayout_ops w35n01jw_ooblayout = {
+ 	.ecc = w35n01jw_ooblayout_ecc,
+ 	.free = w35n01jw_ooblayout_free,
+@@ -394,7 +429,7 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
++		     SPINAND_ECCINFO(&w25n01jw_ooblayout, NULL),
+ 		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg)),
+ 	SPINAND_INFO("W25N01KV", /* 3.3V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xae, 0x21),
 -- 
-2.50.1
+2.34.1
 
 
