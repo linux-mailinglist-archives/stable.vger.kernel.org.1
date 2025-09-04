@@ -1,133 +1,180 @@
-Return-Path: <stable+bounces-177708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE68B4364E
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 10:52:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD86B436F0
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 11:22:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A4D916C93F
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 08:52:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2382548996
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 09:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9B12D1901;
-	Thu,  4 Sep 2025 08:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA72F2EE601;
+	Thu,  4 Sep 2025 09:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JSp2pW1X"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="nzIItJpK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.74.81.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DD32D0638
-	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 08:52:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3337D28153C
+	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 09:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.74.81.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756975952; cv=none; b=hcKJBPj4dwlhpPgGMnyoeRoOQr3CKfByGh4bRpA3TE+ssQylM5OTsB/2y5G2AKGWBncUN+qCdLf+KUWk2sThHbelTpcNZk0jG00tlvvLOYaGPqjgWz9zMASLBs4FX8Y+6yngYLHIzS7TeebwNauRd0quAJPw4vYMFO/yN6n6Jx8=
+	t=1756977720; cv=none; b=AMcmRqT5aon5Txo7dhvuBQrkU1oHngUNCEN/VJwlBerfWu5PedqfUylA0X4teTLpYoQNk8qynnCfvKh3Xn6LmOmj38UnyRMDYKFCq9I9IfhnB5VauziQyuzc+z+WkClmSb+yY1WpFIjENz+wZNTCAeKKOd9nccSb5uzjgATqGEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756975952; c=relaxed/simple;
-	bh=qjZa4YKZFgevyucA5IS3M7gwJDXEq9cxnfkjLJMJsNw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qio3B1lJipOZVKrpRcmSiI/Zl+u4DkdeD1vSYjZu7Pyz6y/uv94uQb9m4dryk05/tLJ9HcU4+YFsVWAGDp57CJXzUGWvahg4w8fE9nRyGl0Jd6aj0x+voP2RqI90B/2+ftl2Uhx1W1HJ6nmxfho+pIy4+LgiSR20hjq1BymLupY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JSp2pW1X; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45cb5492350so5063565e9.1
-        for <stable@vger.kernel.org>; Thu, 04 Sep 2025 01:52:30 -0700 (PDT)
+	s=arc-20240116; t=1756977720; c=relaxed/simple;
+	bh=hste1caNSFyqYtdhWnqlNmCPGnB50BXaOZVDkkiOQb0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XalbOQJjFMH9sB8oOnTd5qTKRjcBbsMixDiYzJ7KGjKU5wFA6p2j1HLKQxBUpPIkc/pO1CGBGrH7QRq6r+YeSHXuyw2lYzxAhqDKiUN4YojdJTHGXnnW9ZB9dGcVWsd1ZpcAZ6tSAKfEfXwecHK2mg3TgL0Kru5mLzLKHd6+BpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=nzIItJpK; arc=none smtp.client-ip=3.74.81.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756975949; x=1757580749; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7gK6n/g/HuSb43cbH0cdIC2KH3XWzF+uMZuIHFj3Zpo=;
-        b=JSp2pW1XWgx5EWNvIZ9CENaCNQS8HjxNimipmNAdi5cRHXsC4qw1FTX9S5XoK36wtQ
-         9wxxRe04oFWsaazBDrCg/LtQr4q04+OFmGJBWZzwvZCc1qOsLxl7CBPJkvV3xSxoQOc7
-         zdWKOlan3lXDekPXeyRJ/R7ryQBPz5ORHIx4ilryzkwIXZqSGbV4f/EqFz51yZmhbPQb
-         yqK9Jho5cch7HNH3MMP0DfudbbtxxlJ7IGjSZ0mNzH6fCaJhTMDvYh5eBui+C/F0yuLn
-         CEbOZfHK6mv4lXTQJyDE/ljrvL1LuQtzQ8rsMJAHpKB4r8qALJaWUKUgsI/cy31lVmOE
-         mzeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756975949; x=1757580749;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7gK6n/g/HuSb43cbH0cdIC2KH3XWzF+uMZuIHFj3Zpo=;
-        b=GLNG8snAcA5Wz1UIAGsTqJ3Nfyt3x2UWUXcWap4Vx1XtwldWSH1wmwkcZ65GpEZnWY
-         Qn7rX40BK9pgKgsOOmV3NpfyjDEFB2I4aQa7RHsYidUfEMg8fUvb6XwgJamykHkgQgrD
-         pIJ7FzOldHByaeFVnYeaOLlC5xnOchCMpxZMafgYbKBo4db8+xOFTWchBJSN2lWo5sn1
-         hqsFwwoopyfq2Hb7hnwjrOcn4tFg0QLl6mI6mSn0brobF8iOYTUtwsCFcOaPIFZsMcp+
-         hHGSV3l6l649UeyZgIt7aEwvnNaGk5N/6pTx98XxIVoXfexrGeO+D4kwDevDd/quQIRL
-         gunw==
-X-Forwarded-Encrypted: i=1; AJvYcCXF4ulrIPENKW2tLSIdnJryUlDZ7BiSJYk8fsdpH55vDdFv0hjzTvar4BE5s+cY3BWzXox5Pyo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpfN01wPc3GXspZb2b4oK9imqS2elzV2WurypbuouA90MkdVjq
-	2QFDQP0k8ll7Bd4fzGpX1HgX58vNd1NuVoVlhjx8Bo0afXXuDxS87fpWGRMRFqnPNWE=
-X-Gm-Gg: ASbGncs7hWoHE1adafxxA6VRZ14/hNyeM5GdTMMRTeZfVHk4qyeSRDnQz1iaGGzYSi1
-	/mNIqlKhFBTkOtM4bA48WR+AIdMuPNww/7cvrPfoDVpjAKBmbHd2144EWTiRneJXTor9jeGakXh
-	j4hQ5JWl9HEwXtl+bLUiO6rcLln3c0z5DfbC7kqOp0nwjRgb+KJ1I3hvXAFeSAle7gnt7aYDmqS
-	80GinBwvbZ0FGMCWtDwaf0ofrX2yKpxqafAgBSrGdxJvi9ZHmjbBepq9q95Qim+i9lYiBVbmt8B
-	r1MWHRyb0M7abJDlxx/YnUjzas29LP8qJnaMvAgZNb6ixwqHl5MR64v3z3nqXls+gvg0KgUIPzd
-	PRyzngYGJV18KYCi8TN8prpuqjZ/gkS5H
-X-Google-Smtp-Source: AGHT+IHtO9lhAj+5b+dFwSvHFWLll5r95zkvUmodvWJ+Fdu92nqESPLKzmEOTmjK13cRmo2Ta3LMHg==
-X-Received: by 2002:a05:600c:5253:b0:45d:98be:ee91 with SMTP id 5b1f17b1804b1-45d98bef030mr24615585e9.9.1756975949013;
-        Thu, 04 Sep 2025 01:52:29 -0700 (PDT)
-Received: from linaro.org ([86.121.170.194])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d7ac825b88sm13968312f8f.7.2025.09.04.01.52.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 01:52:28 -0700 (PDT)
-Date: Thu, 4 Sep 2025 11:52:26 +0300
-From: Abel Vesa <abel.vesa@linaro.org>
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Vinod Koul <vkoul@kernel.org>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Sibi Sankar <quic_sibis@quicinc.com>, 
-	Rajendra Nayak <quic_rjendra@quicinc.com>, Johan Hovold <johan@kernel.org>, 
-	Taniya Das <quic_tdas@quicinc.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
-	linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: Add missing TCSR refclk to the
- DP PHYs
-Message-ID: <qlqsefvnibw4esm5wz7khmyfdnszn5veinfb3k2w67f5v73kry@rzclmu57ybdh>
-References: <20250903-phy-qcom-edp-add-missing-refclk-v2-0-d88c1b0cdc1b@linaro.org>
- <20250903-phy-qcom-edp-add-missing-refclk-v2-3-d88c1b0cdc1b@linaro.org>
- <34d9e8eb-e0f4-47e9-a731-fe50e932fea1@oss.qualcomm.com>
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1756977718; x=1788513718;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=chlSD0dZKVRMJISq3f2uXOA/HYcCMS3KQxdYeKEIlxk=;
+  b=nzIItJpKDjRIk05pU5hgigXLrEx1oRcxVJiMdfdm8Hz4I5cYGyBjONj9
+   wBIfaux32WLxqwEY2GXopwN3s6ygT2reflSkjqHN7/ttEPsiYFjAipQrA
+   FQDJvht+giTOlvXm6ced4M9KmP+8cenhpThjbm7VpH3uVc3CJIl9L5xS8
+   krIc6jrv7SHelKyJY0+lAGjJ/OuR3EYg0dZf6ly6v+cpVEbCKG9CDDqkI
+   O6NAoFmwIrkZ9m4crw659sySbFesq3rN6Fu67yjNZfSAffjPKf4jaM7z4
+   FusEg8nkMi70B9qP5QTpFGtdUriU1X6v47CoJtua9CNvFS3L4Xepi9N0Z
+   Q==;
+X-CSE-ConnectionGUID: IfGFPqrPTKCyWsrvsdBqLA==
+X-CSE-MsgGUID: 15yO7JkzSZekfqjWXHc9wg==
+X-IronPort-AV: E=Sophos;i="6.18,214,1751241600"; 
+   d="scan'208";a="1627368"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 09:21:48 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:19407]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.3.140:2525] with esmtp (Farcaster)
+ id 2b56b933-5b76-4c94-9ddd-ba89d8345b8d; Thu, 4 Sep 2025 09:21:47 +0000 (UTC)
+X-Farcaster-Flow-ID: 2b56b933-5b76-4c94-9ddd-ba89d8345b8d
+Received: from EX19D002EUC004.ant.amazon.com (10.252.51.230) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Thu, 4 Sep 2025 09:21:45 +0000
+Received: from dev-dsk-nmanthey-1a-b3c7e931.eu-west-1.amazon.com
+ (172.19.120.2) by EX19D002EUC004.ant.amazon.com (10.252.51.230) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Thu, 4 Sep 2025
+ 09:21:43 +0000
+From: Norbert Manthey <nmanthey@amazon.de>
+To: <stable@vger.kernel.org>
+CC: Norbert Manthey <nmanthey@amazon.de>, Amir Goldstein <amir73il@gmail.com>,
+	<syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com>, Dmitry Safonov
+	<dima@arista.com>, Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1.y v2] fs: relax assertions on failure to encode file handles
+Date: Thu, 4 Sep 2025 09:21:38 +0000
+Message-ID: <20250904092138.10605-1-nmanthey@amazon.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2025011112-racing-handbrake-a317@gregkh>
+References: <2025011112-racing-handbrake-a317@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <34d9e8eb-e0f4-47e9-a731-fe50e932fea1@oss.qualcomm.com>
+X-ClientProxiedBy: EX19D036UWC001.ant.amazon.com (10.13.139.233) To
+ EX19D002EUC004.ant.amazon.com (10.252.51.230)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-On 25-09-04 10:40:36, Konrad Dybcio wrote:
-> On 9/3/25 2:37 PM, Abel Vesa wrote:
-> > The DP PHYs on X1E80100 need the refclk which is provided
-> > by the TCSR CC. So add it to the PHYs.
-> > 
-> > Cc: stable@vger.kernel.org # v6.9
-> 
-> You want to backport this to 6.9, but you also want to backport
-> the driver patch to 6.10, "meh"
-> 
-> I'm not sure it makes sense to backport functionally, as this would
-> only exhibit issues if:
-> 
-> a) the UEFI did no work to enable the refclk
-> or:
-> b) unused cleanup would happen
-> 
-> but the board would not survive booting with b) in v6.9, at least
-> it wouldn't have display  - see Commit b60521eff227 ("clk: qcom:
-> gcc-x1e80100: Unregister GCC_GPU_CFG_AHB_CLK/GCC_DISP_XO_CLK")
-> 
-> and a) is not something we'd hit on any of the upstream-supported
-> targets
+From: Amir Goldstein <amir73il@gmail.com>
 
-You are correct.
+Encoding file handles is usually performed by a filesystem >encode_fh()
+method that may fail for various reasons.
 
-However, HW-wise, this clock is there and is needed, regardless
-if UEFI leaves it enabled or not. So it makes sense to go all the way
-back to 6.9 and fix it.
+The legacy users of exportfs_encode_fh(), namely, nfsd and
+name_to_handle_at(2) syscall are ready to cope with the possibility
+of failure to encode a file handle.
+
+There are a few other users of exportfs_encode_{fh,fid}() that
+currently have a WARN_ON() assertion when ->encode_fh() fails.
+Relax those assertions because they are wrong.
+
+The second linked bug report states commit 16aac5ad1fa9 ("ovl: support
+encoding non-decodable file handles") in v6.6 as the regressing commit,
+but this is not accurate.
+
+The aforementioned commit only increases the chances of the assertion
+and allows triggering the assertion with the reproducer using overlayfs,
+inotify and drop_caches.
+
+Triggering this assertion was always possible with other filesystems and
+other reasons of ->encode_fh() failures and more particularly, it was
+also possible with the exact same reproducer using overlayfs that is
+mounted with options index=on,nfs_export=on also on kernels < v6.6.
+Therefore, I am not listing the aforementioned commit as a Fixes commit.
+
+Backport hint: this patch will have a trivial conflict applying to
+v6.6.y, and other trivial conflicts applying to stable kernels < v6.6.
+
+Reported-by: syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com
+Tested-by: syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-unionfs/671fd40c.050a0220.4735a.024f.GAE@google.com/
+Reported-by: Dmitry Safonov <dima@arista.com>
+Closes: https://lore.kernel.org/linux-fsdevel/CAGrbwDTLt6drB9eaUagnQVgdPBmhLfqqxAf3F+Juqy_o6oP8uw@mail.gmail.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://lore.kernel.org/r/20241219115301.465396-1-amir73il@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ git-llm-picked from commit 974e3fe0ac61de85015bbe5a4990cf4127b304b2 ]
+Signed-off-by: Norbert Manthey <nmanthey@amazon.de>
+---
+ fs/notify/fdinfo.c     | 4 +---
+ fs/overlayfs/copy_up.c | 5 ++---
+ 2 files changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/fs/notify/fdinfo.c b/fs/notify/fdinfo.c
+index 55081ae3a6ec0..dd5bc6ffae858 100644
+--- a/fs/notify/fdinfo.c
++++ b/fs/notify/fdinfo.c
+@@ -51,10 +51,8 @@ static void show_mark_fhandle(struct seq_file *m, struct inode *inode)
+ 	size = f.handle.handle_bytes >> 2;
+ 
+ 	ret = exportfs_encode_inode_fh(inode, (struct fid *)f.handle.f_handle, &size, NULL);
+-	if ((ret == FILEID_INVALID) || (ret < 0)) {
+-		WARN_ONCE(1, "Can't encode file handler for inotify: %d\n", ret);
++	if ((ret == FILEID_INVALID) || (ret < 0))
+ 		return;
+-	}
+ 
+ 	f.handle.handle_type = ret;
+ 	f.handle.handle_bytes = size * sizeof(u32);
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index 203b88293f6bb..ced56696beeb3 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -361,9 +361,8 @@ struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
+ 	buflen = (dwords << 2);
+ 
+ 	err = -EIO;
+-	if (WARN_ON(fh_type < 0) ||
+-	    WARN_ON(buflen > MAX_HANDLE_SZ) ||
+-	    WARN_ON(fh_type == FILEID_INVALID))
++	if (fh_type < 0 || fh_type == FILEID_INVALID ||
++	    WARN_ON(buflen > MAX_HANDLE_SZ))
+ 		goto out_err;
+ 
+ 	fh->fb.version = OVL_FH_VERSION;
+-- 
+2.34.1
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
 
 
