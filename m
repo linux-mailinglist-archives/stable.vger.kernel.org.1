@@ -1,50 +1,54 @@
-Return-Path: <stable+bounces-177770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349B4B446F9
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 22:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A192B446FF
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 22:08:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF250AA084A
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 20:06:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D99C0AA0895
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 20:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2804E27A928;
-	Thu,  4 Sep 2025 20:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A2327AC57;
+	Thu,  4 Sep 2025 20:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ifRrZylz"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="elKOBVFS"
 X-Original-To: stable@vger.kernel.org
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D0427C150
-	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 20:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C0E242D79
+	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 20:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757016397; cv=none; b=UCQL8MJynGx1bjEgtkczSeeoy0JGGKETDUhFghaqy/0kidCFS7BXftJAknacrZx/Dh6TGUVJridTtK0j7TcQs1fZnMl+sIUxDB+F27rTip1IwRJgkRuevAfNXhjlq9xJO4AMhpjS/StG/yYtPNHuX64PJjw3zm/a4JTa7I3Wi1A=
+	t=1757016500; cv=none; b=fJ7WwJWpkIROAfqJuR4PGMZ8NGFRcWldyhMPdifAZSHxYTFlLSFG9AaY4kDOC24VkkRL2WeOBVKIHEcSv8b0UShIuj03NZd2iz9JS2hQDSa+yXnCpPGczgbGeUryAkN2A/3SsLddZbmy8dItkxfQriSPgaov/NRUm6ENXHSp/Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757016397; c=relaxed/simple;
+	s=arc-20240116; t=1757016500; c=relaxed/simple;
 	bh=L6pJCJRQlpGz4vRVZTttL4VLEPacbukwogeVseG1pvo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Blk7iKgI8AqNeBAyffP1glT1Jy4Sl3robOaQjC6qs4CFjfDgkRbTuIp2c/diEBsWlTa/AS8Kd6RmV9m8UzIxeRmB4/a/BcxnnhCKCVenjSiTzqhDwV8QGMJDe/iT02kWEJBJ1O3mlKiNydzbY+GWSkVxIjCf/G86Y5TUw86zPTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ifRrZylz; arc=none smtp.client-ip=91.218.175.177
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BVewOy1c8R0hWZFa9kUirQfkHdiM2+v3Q/j6H0FNcUSo4S/J/TIqh1qDjf8m2Y+HfaTuv68/XwT3D3D63i+e/JEnnPTzLvft5fJeR6jqEpm9nGcDMdhU8wxW3V5ViM3WZtnJYZ1zFwvFF143U03+8wbcOr7MyBRNmMRkUQN6fzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=elKOBVFS; arc=none smtp.client-ip=95.215.58.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757016393;
+	t=1757016486;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
 	bh=5OCK17bkD8uC3U/dYZyCUkvEyfsk5UZB3M9kPb7WAEA=;
-	b=ifRrZylzsXqQIk2kH8MX03L8RIZiFrdSjK+p1QmEXrAR6dxmNEEdtGQPu3Oi3oXrC6+6TT
-	HHGf2rulwEMZtIl83+4GZpFJUEUw4dcawGz+effGaqdijf+NsLEoTSaSpIdXevT2pUYo15
-	SjLksRMHTBkBx2M4UvSCs2oDTB90feo=
+	b=elKOBVFStYy1lM/dCkjDmgRTR9IvaUh8hOHiq4dbPPmilCcV6xl2HOfp3SEhP9YTcfkaP0
+	E5lXP4mvCsayh7WcCXt3KUza22cpFBt9HRoCewrRqGg8eJnTKfakNFkEAsEhen0N8FxLM9
+	erACdpIlZMsdF5yvuQCAVdell8sxkWk=
 From: andrey.konovalov@linux.dev
-To: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: stable@vger.kernel.org
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
 Subject: [PATCH] usb: raw-gadget: do not limit transfer length
-Date: Thu,  4 Sep 2025 22:06:30 +0200
+Date: Thu,  4 Sep 2025 22:07:54 +0200
 Message-ID: <a6024e8eab679043e9b8a5defdb41c4bda62f02b.1757016152.git.andreyknvl@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
