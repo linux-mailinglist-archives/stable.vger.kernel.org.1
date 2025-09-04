@@ -1,249 +1,590 @@
-Return-Path: <stable+bounces-177773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8B9B448CA
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 23:48:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF72B44944
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 00:12:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D166E166BE3
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 21:48:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDB071750A6
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 22:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E2D28FFE7;
-	Thu,  4 Sep 2025 21:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1572DF707;
+	Thu,  4 Sep 2025 22:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kM8lRk80"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="m0NLE3mD"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2075.outbound.protection.outlook.com [40.107.244.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010B1BA4A
-	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 21:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402D0275B0A
+	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 22:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.75
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757022505; cv=fail; b=t+H10YxWTAherncaQUmnVYgv6ynk+8IDve/7pcDeZQOB6Qui7h4BTS33saaAcWaXprEOahYBMfPtDAC4Myh6jehOqZ5/gQRnwOB/KXFRVcKhf5boit1ZQhCCRRoaptwmD2Y1rr8wwLVHVR5JTeN8Z+batATwqNkJTkmdUWCJHRg=
+	t=1757023524; cv=fail; b=FPBjzQrn+7+Q9qCy/oANX0Gl3Y0Bi52FcYbFInefWOLXmckOF35AYoRE/eYqsV6iQ8JrVUCkxMMfgNlv2dFLRturHIxjwVDf11FsdndZ3+x6XS89NHwUOdaIQeE0QlsC4lrwQzF1y9b6jt8G/5+fQb7QZsenrLdOEfOHy9Mib08=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757022505; c=relaxed/simple;
-	bh=+CGDbe0dgZESqVyp8MO8EXHjG22CjsEmNaxN9oJO5/g=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qq6ayPkvKdjZCBgK10liDEvsxFyo4SUUs/G5EsYkj1AksgrUlNwnWR0PfoYMRHs4j2q/Uy/PG43sO8ltA25etiMxbJ6fnynGD9WsCqjltG5lVjfnCJbYpL/3jrdG6fBrHBxe+5Dg0tEa+A8NyvZu0o0Qm0eSQUkqAPhX360O99U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kM8lRk80; arc=fail smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757022504; x=1788558504;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=+CGDbe0dgZESqVyp8MO8EXHjG22CjsEmNaxN9oJO5/g=;
-  b=kM8lRk80lqv1x5f5Iv178sBZovRHkKGOqFkIutAms+Wy0rSz9GxVejOt
-   AiEUJq3EE3P1AyoUnEzT4JZyBC2vW22GSFpuhVNMTs9a6KEo2gC0e07e8
-   sGvoTfrFc46ofwU0vcHgdOoQ/AC0z7iPfXccMuslMlmKsYDCtf3Tq5Wug
-   t45uznFED/9ad0hwvMB/KKjc5sc1yMlzkDGHH1yEdy71MYQeiOxDTYl58
-   eJ4Gyzvm3YxSTuvPHioWAf1g4ni77h/1heLNx270g18VLQjI1rJpOK6UX
-   ipXtQfXh7Vvd+l770Mm3VnebOXcw4E2n20ty9AxjmJ5fmQwiZmhxLtj6E
-   Q==;
-X-CSE-ConnectionGUID: 4p4C9UcpT9eUU3bZOIBY6A==
-X-CSE-MsgGUID: UodVu4phQ3yqL/aOgLzBrw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59296432"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="59296432"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 14:48:24 -0700
-X-CSE-ConnectionGUID: Wc2FnocJRWmGxNcHMYvQGw==
-X-CSE-MsgGUID: 6p1mn0cQTg+zpGUEZ3zAYQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,239,1751266800"; 
-   d="scan'208";a="176341332"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 14:48:22 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 4 Sep 2025 14:48:22 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Thu, 4 Sep 2025 14:48:21 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (40.107.243.71)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 4 Sep 2025 14:48:18 -0700
+	s=arc-20240116; t=1757023524; c=relaxed/simple;
+	bh=W5cQGoSZmHdk+3AFGNpZFtLt/QkxBv7rE054sTkF7qI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EI7bI2MSYcSUAcrrMebweC1MMCrPrsCUrLQSwTsYIInZW3wYYeL8AOi9MF2McA6k6G+QfdjJvGq3AJqcDIbfsuxZ/5rxR9fKWhwO1bUA1YPY/hqZhoDbarVEW25T85DZXMUuzetly4eyTZKr2St9lSpGJIby4ztQawCpVbz1KyY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=m0NLE3mD; arc=fail smtp.client-ip=40.107.244.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YbF/0Vi0QIlR2ZFiT/SCTN5NQxn5CZlU4xo/yt0mUECtcnOOYfv+bb26994hazdppF1NcUxDZRBVFEKwOuSmXwYeK5sPm0dgBcjiqMEm1UU2vapJTeIJmwdMSGZd3khB15JY5EYPNb0hWQm4M6wpm+m6od4dR7HEN1UHb33lX7ONPxdgSZzHRji2UPOWkAAFpxQpIouKIP1J9ZdR9cGgOYoBTT39sf5YuMbnJ94pQzz1ESCPGJjRJTFE6Kg1NuoRTgzt7dkiRpPerPGDVdrSmq/d1udRoZNZEkK8bI0uoir++bC+4y0fzGwh33Rn5l7+ktu94EmaeWQpVIUgPhb2RA==
+ b=WEhqsNcIiVbA34efvMLpLJy15Sgs+qf1qstcEnX6ViOn71t02YmUBCz1dc7kIOYToVTaMihv9C/nQdaofma//PeUOmZapqhtVIy/Pp6bSwJ/4qylZcG5JuGFNzkhY0Ch5ffU1qd7sFlOzZbiDILufYha2jdbVNrVEMHNue4SIxuVf2VpuL/QEYWrQXETawuqpimUTRofsPXvaFT9JTuCt3/jKbuQw9qFtuD3SbIQ4kOQn4fM/4zKisuJr5eDNXSl0zAksGhR10y8BvNffGD2zm78aF1gmx4XExMTH5v8KEynFudaBSQOraRTnuUsVsAJy+DJu4SEugr9SvEQDDFYqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rBOU5GoPA8HnR5W9hJk+XE4+RTAI6l47skgqsmabmvU=;
- b=aypXk8fiFw/mtFYT9siRspuay+EDzrAJOva4/qKi71eOSRmIkTPCtXeorvoFoamULMMEZHHHOrZ33EKwkT2aJVGvaTnTWj2RoPt9md/YUF9VIlPB1x7WwPw4cPz4RnAfhHW+IWO894PfRP0OmCgFG7FMmIHbbpm+iYsH16rWEPCmJgkeKXOEGnmInJqPIFkF4O/xHCwrD/2k23urJuzASOVRHLmKCvzWUQSwoy3ixLqwmogBsixJagFkHtFMO7EK4KARBmkifI02Md1a5YuixdOCfDGTFDIASluC381O0RZhARsY6j8C9uos4sFZ9ibW4idX0mjY66lL2tNJX7jOQA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
- by IA4PR11MB9153.namprd11.prod.outlook.com (2603:10b6:208:56c::12) with
+ bh=KXuqTEcjj3vq5UGJZKXNivtBwXvrSioNq4aueMfHxfo=;
+ b=WlZ36ijUAmYgLvjhBMup9Qto1JENPQ36idGfdDglSoSvH//TfaC3MeuID6RxJw3hRfD5VR4Ke9IvGgrgTfdjHFHZ90rQ448hguwBFXFK/kCohq5/r70N/TxChdhgBTNxzFltRZIXQH+rJOSNdF1X/tQqUHIL7ydC9734+1UDCoQtO3/LhAhHy7tabFLFQftpjCyblw7LogJWjF+UctIQQuuo5KRFTDF4n79pox9Y04sjOwI0nrBven/wv/uu2/1nS0YdfQuPCa+Lh0obVDMV0yE0Kt7P5xIXv4KpwBfkubHt7JhULVyMCd+WMh1EdLlzSOSBiOCPucRvApmFvTqxOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KXuqTEcjj3vq5UGJZKXNivtBwXvrSioNq4aueMfHxfo=;
+ b=m0NLE3mD5K/3V7UqvJQ7mVkWsnQzblK/Ily+5zPnuLlPhllwlEpWgr+70k65w9cZy8t4dl78kGqbMnkEHBrZSlP4nqsBnfR+N46hHw/AdIBTzN4QdnQGUfygHFCNia+ruMfGk3+/Fzpi+KB5H32cwdIqiD0zUFm8h/FO7BzN+HE=
+Received: from MW4PR02CA0013.namprd02.prod.outlook.com (2603:10b6:303:16d::13)
+ by BL3PR12MB6449.namprd12.prod.outlook.com (2603:10b6:208:3b8::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Thu, 4 Sep
- 2025 21:48:17 +0000
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f]) by SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f%3]) with mapi id 15.20.9073.026; Thu, 4 Sep 2025
- 21:48:17 +0000
-Date: Fri, 5 Sep 2025 00:48:11 +0300
-From: Imre Deak <imre.deak@intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>, <patches@lists.linux.dev>,
-	<intel-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, "Sasha
- Levin" <sashal@kernel.org>
-Subject: Re: [PATCH 6.16 139/142] Revert "drm/dp: Change AUX DPCD probe
- address from DPCD_REV to LANE0_1_STATUS"
-Message-ID: <aLoJG4Tq4nNwFLu6@ideak-desk>
-Reply-To: <imre.deak@intel.com>
-References: <20250902131948.154194162@linuxfoundation.org>
- <20250902131953.603872091@linuxfoundation.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250902131953.603872091@linuxfoundation.org>
-X-ClientProxiedBy: DB9PR06CA0001.eurprd06.prod.outlook.com
- (2603:10a6:10:1db::6) To SJ0PR11MB4845.namprd11.prod.outlook.com
- (2603:10b6:a03:2d1::10)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Thu, 4 Sep
+ 2025 22:05:14 +0000
+Received: from SJ1PEPF000023D6.namprd21.prod.outlook.com
+ (2603:10b6:303:16d:cafe::cb) by MW4PR02CA0013.outlook.office365.com
+ (2603:10b6:303:16d::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9052.28 via Frontend Transport; Thu,
+ 4 Sep 2025 22:05:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF000023D6.mail.protection.outlook.com (10.167.244.71) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.9115.0 via Frontend Transport; Thu, 4 Sep 2025 22:05:13 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 4 Sep
+ 2025 17:05:12 -0500
+Received: from tr4.amd.com (10.180.168.240) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Thu, 4 Sep
+ 2025 15:05:11 -0700
+From: Alex Deucher <alexander.deucher@amd.com>
+To: <stable@vger.kernel.org>, <gregkh@linuxfoundation.org>,
+	<sashal@kernel.org>
+CC: Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH] Revert "drm/amdgpu: Add more checks to PSP mailbox"
+Date: Thu, 4 Sep 2025 18:04:57 -0400
+Message-ID: <20250904220457.473940-1-alexander.deucher@amd.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To satlexmb09.amd.com
+ (10.181.42.218)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|IA4PR11MB9153:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2168bd48-8eaa-4f8d-429a-08ddebfcc193
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D6:EE_|BL3PR12MB6449:EE_
+X-MS-Office365-Filtering-Correlation-Id: b58ad1b5-c78f-404e-5112-08ddebff1fa4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|10070799003|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?6clFN1RimHSsq74LyR9NMWK5y6wMtDK0YV+nayJ+jh3hSKJV3xNgd04RS/6B?=
- =?us-ascii?Q?ML/V34AD6Kq7jG3X1iC5KUSytqOcQRWnHRzUrzXP8w3KM5oqsOTrqOSCZxyf?=
- =?us-ascii?Q?IY/reNhj1apd4p8A0B0fu6/dz19htOWkdfWFgU1IV6ZzDmnGqZ9/HdNeeX+a?=
- =?us-ascii?Q?lINbVcnCWODUTaN9K02xZeOzt1/ZsFHNtRWwgC1kTt1nnTtoR/9aUJdB8zOq?=
- =?us-ascii?Q?Bz8IM+8s44FmVc7uYT4JpqrVye6pt0I49EtK/Via2bba3b8x4gMs5Y+FypUp?=
- =?us-ascii?Q?OphwozOYSRQSda6NDfTHt7DEsFS1nqZgZnUvfxV2CziY23wfJDuS/p6Rtnkh?=
- =?us-ascii?Q?7qevZeGtT9XomIIfARxVmWmpye7FloPkaxDek4H5tbMvC4zpHPyqsyLsVw3Q?=
- =?us-ascii?Q?KVPyUVlfSRuPkMHY8t6eB5Fb5/lwR+xiz9hzag1RU+v4Mu6a/7W3o8EDozha?=
- =?us-ascii?Q?sH7Gi5vAU47S/fwwumM9oYzzdq+lE0ygCTgCFxwEC81Q8qOLiUbAwlknazuN?=
- =?us-ascii?Q?NnJ6eEdsQ3URUuCfAhucIDnwJo7MQDlDQnhVYbgL0aploHaoZ3c5B8x0AyQ+?=
- =?us-ascii?Q?oVq7UfP3tP0zqGYzxVfF5/9MnUBQPd4E3gBbX+0osfU/LFy/MdoBTja7N8eH?=
- =?us-ascii?Q?j3UYJdB/vIw1RMrWCdJUI9VLVI0I8Nk1QT43qXtqopaAAgCP7rlL2x9TBrmY?=
- =?us-ascii?Q?Ot5rZiRTkTD3HLu9TTmmzUeVzBfJjwax96zZWr6LMgjhu0ZNXoXnf5jCFa6k?=
- =?us-ascii?Q?SZs3sro+DdWEvby4n4oRE2RcQFj7D2HYgqgBS+enEbfGnKQs8OSWFOZQm+W1?=
- =?us-ascii?Q?bLhl4ZsIpxEHe+1A2FsgtkP0CoP2W8wFiuayoRIuNLTX+I02DfjYay/z3kaa?=
- =?us-ascii?Q?CKhfEs25J9m2Y81B8I1IYzt9AeqNTGH2/xYMy+B1gX2oPV3X1en7Xr0LYL+T?=
- =?us-ascii?Q?1Pz9/lgk3cWJQe+pKMUpAjRullOiKCDqq+1UpNC0yO2y4XZaBj6Ha7WLgTBQ?=
- =?us-ascii?Q?bi0Obq2A8DgwWC1cV5Xy8KO8jeRByBaCc1vC10XO50O1eS4JEajd1dIaVwRO?=
- =?us-ascii?Q?peo4WyuvK7FbdWcKNkslrLDJKcgSioYsZB3Za2t/+2QhFYeD9kCJyb7jL2/U?=
- =?us-ascii?Q?VEeuCh2EqmBjeZ9ApN0/aHX83puLpt3AQf+OHiF4LiDZQLfd0Z6eTYI+VCwL?=
- =?us-ascii?Q?1znoRgjWK4RlqPB/YfvuhvxKHkhtwrjAVJW5sUSvhshw9oi/OV9Hq3zCqZOr?=
- =?us-ascii?Q?nHyEC8keP6jXwTVnvt9Ph0QdiVb25e+Y0EEm9xmOQbnxy01HDMDFQKz+732Z?=
- =?us-ascii?Q?blE+VhiAj1uyfh6dmiEB3Jp48rvEjCg7xQzyoJbiB6kxDtzWCFVbkmRR+PpH?=
- =?us-ascii?Q?jxxFgfg=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Q3PVI/JmPs4dNXHj2rDuDQ98vmj7KFFo3B0AgZvWP38Nll9rKwABdvzMkzP6?=
- =?us-ascii?Q?Qj0jQvjKznbMerD+W+di2BEyQuRbFF3HkmzrSbQ/7Zc9Xg7fKK3CM0v6Kwa5?=
- =?us-ascii?Q?7wiQbrFUZq2E046Zswvc2x/ue6R9bQsg5OmUahdylDVw+6TokCUcLBoTo/xN?=
- =?us-ascii?Q?BWPD8b4M0HdF88mityEosyijT0i62WsgHRxPQ6edrAN2K6J5DsvzVa1NTXWY?=
- =?us-ascii?Q?LEJXLJxmwy33uEgUVpV6Z8QU/Jz2fyZl0PdpRg105LDAshIZnneRVqUF2STr?=
- =?us-ascii?Q?o3MsNfWEFDkq4uHqby2ezg1whvwk7qVBr9nV10ZiLQHe+ozTLo3Sxql//K6e?=
- =?us-ascii?Q?+rbRK7oDjqhzta4Q7AyPHeqH6L05pK0/DXMOZxNh6sgevPzUEiFs2zoawEvd?=
- =?us-ascii?Q?TjynbOkFUP3rDUhmFItNIdx5RkpiqQSxGOM6WtyAF2Ec0OjOmWitheudYqNF?=
- =?us-ascii?Q?w/CL0Yml+JOvsfbbHCLlBkZRaHUb1PYdfC05Hz9GeCJGT864cyd2hs3r3GKC?=
- =?us-ascii?Q?vGz8AJLL3Usn6RH9jt0B1twc97Zgysbd6dBdQBuL0EmDvJW0qlbHZxxtdlw1?=
- =?us-ascii?Q?9kzw3787UDP+na1vPNiWLlM1qxcTrFVaZckQIZldTEqkjG88Tbclyjj/hRgy?=
- =?us-ascii?Q?hEgV4BWWWgQAXSqHEb3xfLxysrCRuVEiqr5sj2mUU3V/TCJTyERv5PeTeUyP?=
- =?us-ascii?Q?MRpzaXs3Mfts9xpmwivdQrW5F2i1miXnZPzJFI6FTIs3hL/NDTYwogmLM5Ka?=
- =?us-ascii?Q?iEFDffQKKVuTiME0qcr503WHzFXCKby3dZfgPdpEEei9xCBigaitz6PSAyjP?=
- =?us-ascii?Q?+Q0hveTa8y8CulKHD1317p+0BsjlkfwXZT+CKKKaRv4/kYmomUJeXTv1+q+V?=
- =?us-ascii?Q?TNi86EKNsfRdtQzDrMCrFLVfnVMcUexwmFNOfuqD9NopKGxmRgkeSM4djNI4?=
- =?us-ascii?Q?IHuNBtY+KVr3mdlASjoqTJzVtpMkuQ2gActQmtO4OWFyvaZcbgvMSn/qdqN5?=
- =?us-ascii?Q?zE+Ve9sW2onlZdEBBXMZbpJinho0Xy2P+BHKgT0VY67woo2s/bnbuy9+XEKT?=
- =?us-ascii?Q?4FOqoBU86Tcoxtx/55P6X+ggUxAGpDurfM95Tc68HfoHjX6bWtQsX6etWxDZ?=
- =?us-ascii?Q?dWkU50QVyN6VhXbF/bDhyUiWag1eHrydmmke4qxgvzjj02Fj0gskh927+yNw?=
- =?us-ascii?Q?iWvs3ND4B1ecq49aZm0Zv5Ihniovu1bqlkoMWhenPBGukM3BU3Big9P8HpOU?=
- =?us-ascii?Q?WqEUaMombWz2BjKQgbB63Tl8A8wpVHd1sF+Mvb04Fbr2IQNviLgnCt38UfN+?=
- =?us-ascii?Q?M6tyP9MKqMAtGVpxoZwRccENULCWD8gHEyKMwjZLmfHUAUjt2lYLkqbNOiS4?=
- =?us-ascii?Q?GoqIE9XhPuiKNDGYPKHO+q6xdqmYJLS8TgHIeL8Lw2E4ynvf3b/tMjNrZPDV?=
- =?us-ascii?Q?M4jG/Mbz7iEvwFLnr2Azt4aScUSXh5X0xLyP8Bqkga7ThpM4BtAXyfPIa9U0?=
- =?us-ascii?Q?uBZTPUqvX9/07Yj8NGo004WxY46vVyf6twGQcyjEHRMDzIrGG05qQfd1Ehgn?=
- =?us-ascii?Q?EOgi5o06gQMXR+MPgp4ySHXjO9bVadT/APzFXp5WnXL3KXbFmT3eZmHM5PBk?=
- =?us-ascii?Q?X7g7VjgNEwThAAfHV65jvfdS7HfAmGnKFIhGkopVm+Om?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2168bd48-8eaa-4f8d-429a-08ddebfcc193
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 21:48:17.2010
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|36860700013|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?BGjVJY5MPm767VzQ2twMV5vZe3Fjrpz4mrAHw0s3zrs6L80XE2mIX6GPFo8T?=
+ =?us-ascii?Q?mVxR6C2fYRxhAPsmAQycHxw0KGfH1YxS7OzTtfSyeb1ljLA2VpkIX0mJgrX1?=
+ =?us-ascii?Q?2T4aiGc8fQIteG59fC/tv7KdkJejvCrkT10AHAQNNz/9EcCxzDCUpTiTnuKd?=
+ =?us-ascii?Q?+vSvT2OSvYoXyL6hFYNtYgdXlLMcm0t000r8ku4XhQ+2Ksp5VctEf9KhH1ey?=
+ =?us-ascii?Q?YB6pgvky8483hNPJURRxlVOPl7OFk/uHennDYDTQzKQJAvuVB9WB5yqASdhY?=
+ =?us-ascii?Q?zE0gVrGdYlYKDaVJgcPe1gdxOCSfXN1olEZMeUA5D9VTL+xD23f8OE+F7bbb?=
+ =?us-ascii?Q?o7S5FVD1riE7misc+gIwJdhybsGiIE524EUW0vVGe30lNXUwZFJAo7c0d/sa?=
+ =?us-ascii?Q?Q0X4gMPHHV+cGSW8p+td57v0NxZWXMV0w1AqFklqb57E2DSc2PwFG7EX3B82?=
+ =?us-ascii?Q?1Zxu2aoqa9LM9ngCaP0wPKsoFy4Dl5Q0stiBvLSUOVyOibs7o6qGtTTDJh9M?=
+ =?us-ascii?Q?qJIXd770tOCZReKKMBjY4AeuYAWC4eQb3aFNfuzRp9ZWZO/O24SQ71EgShp6?=
+ =?us-ascii?Q?ESklxG1E5MsFGZE31GhAg6xvx+o6JhbRnXb9MJO6kHUp/+Z5C5ZtcrqAgh77?=
+ =?us-ascii?Q?UJ8iW15fwlDEblp1y78CFnfpHAp1rhC8WMXmw5tEHXux93zXF81sveden5tz?=
+ =?us-ascii?Q?GC/Uf0aEWQWdSUut5JkDc6WwieduMfXE7FfQT/nS9x9MZ6XErg61/QYjTh1h?=
+ =?us-ascii?Q?LUc7XxuhcTMJl8P/48Hr75gDYzMn4b2WsJhgBcKh91zvRvBwX6Kt1KglOB79?=
+ =?us-ascii?Q?iS1Irn5JvvyyhHQV8amDmZV1u2vIogooFZ2AEHtxpeiiSa+fqZAyKvLLT2+O?=
+ =?us-ascii?Q?JsjcbugOc58Y9Zl/aBpdGMw2xeeLEJhHxqwreEQT4Qs4MvqH1WJWmwZjwV6Z?=
+ =?us-ascii?Q?23oChEgAiQ4582LnkngHK+hKBX1OulDUOCW1Fe293fQ91Bkp6eOlu1omSdgb?=
+ =?us-ascii?Q?4dURawNMridAn+E9LWUGIQALL9uK3b4w+3k4xhtobC9pimH6JfcUZU3sIMi/?=
+ =?us-ascii?Q?Ka6CVUF+VDHExbs9irTNXyhiWUkCUshmUZ9KhYsEgJ4ElmfyIGylDZRM3RRt?=
+ =?us-ascii?Q?wWaZ0inRhufS8Csz6Bf4vpsNl5R9ceJg3MqbwyBQqNaaZGJS2c2ys4FCdHNw?=
+ =?us-ascii?Q?TCVMeLeAGKmvUIClD2zS2V1riUFJzsRbZp1718rvHRza+kOqbhaaR8ALyJsD?=
+ =?us-ascii?Q?YR6FamihXP3GAVPxDSxrzStvgQHGgO1Ic4p+f+w0LVR1omzWtl4oDOcBujxV?=
+ =?us-ascii?Q?T6yWGiy9OcyPwPNSG3B/srO1dWLbvYGfgzANx7uIqtiPLXvMd7IF2b0UUIz+?=
+ =?us-ascii?Q?d6Buh5jGYeSlHBp0zjKL01V2YidvWiHCHEIDRzLf8XdxT/ibx3MqNEwRQ7CW?=
+ =?us-ascii?Q?NDINjp8VuQjRkeOUas1JLsVA0zjTi+/r314E0EteCwLND3ZenIhMIajLWlCh?=
+ =?us-ascii?Q?yde5L+Ejt/9WZ7ICzjLHvcj2ZCxx/zLMf3Vf?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 22:05:13.5256
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GszleeVQcOm/o6ZeAzoG7TWA1rX3+J6HrVOMxo9dJF7Cv+kmxCEirdrokWnH9DFORDFAmxq7VG3h6rW6yuQCMw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB9153
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b58ad1b5-c78f-404e-5112-08ddebff1fa4
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000023D6.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6449
 
-Hi Greg,
+This reverts commit 165a69a87d6bde85cac2c051fa6da611ca4524f6.
 
-On Tue, Sep 02, 2025 at 03:20:41PM +0200, Greg Kroah-Hartman wrote:
-> 6.16-stable review patch.  If anyone has any objections, please let me know.
+This commit is not applicable for stable kernels and
+results in the driver failing to load on some chips on
+kernel 6.16.x.  Revert from 6.16.x.
 
-Thanks for queuing this and the corresponding reverts for the other
-stable trees. This one patch doesn't match what I sent, the address
-should be changed to DP_TRAINING_PATTERN_SET not to DP_DPCD_REV, see
-[1]. I still think that's the correct thing to do here conforming to the
-DP Standard and matching what the upstream kernel does, also solving a
-link training issue for a DP2.0 docking station.
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.16.x
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c  |  4 ---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.h  | 11 ---------
+ drivers/gpu/drm/amd/amdgpu/psp_v10_0.c   |  4 +--
+ drivers/gpu/drm/amd/amdgpu/psp_v11_0.c   | 31 +++++++++---------------
+ drivers/gpu/drm/amd/amdgpu/psp_v11_0_8.c | 25 ++++++++-----------
+ drivers/gpu/drm/amd/amdgpu/psp_v12_0.c   | 18 ++++++--------
+ drivers/gpu/drm/amd/amdgpu/psp_v13_0.c   | 25 ++++++++-----------
+ drivers/gpu/drm/amd/amdgpu/psp_v13_0_4.c | 25 ++++++++-----------
+ drivers/gpu/drm/amd/amdgpu/psp_v14_0.c   | 25 ++++++++-----------
+ 9 files changed, 61 insertions(+), 107 deletions(-)
 
-The reverts queued for the other stable trees are correct, since for
-now I do not want to change the behavior in those (i.e. those trees
-should continue to use the DP_DPCD_REV register matching what's been the
-case since the DPCD probing was introduced).
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index 7d8b98aa5271..c14f63cefe67 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -596,10 +596,6 @@ int psp_wait_for(struct psp_context *psp, uint32_t reg_index,
+ 		udelay(1);
+ 	}
+ 
+-	dev_err(adev->dev,
+-		"psp reg (0x%x) wait timed out, mask: %x, read: %x exp: %x",
+-		reg_index, mask, val, reg_val);
+-
+ 	return -ETIME;
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.h
+index a4a00855d0b2..428adc7f741d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.h
+@@ -51,17 +51,6 @@
+ #define C2PMSG_CMD_SPI_GET_ROM_IMAGE_ADDR_HI 0x10
+ #define C2PMSG_CMD_SPI_GET_FLASH_IMAGE 0x11
+ 
+-/* Command register bit 31 set to indicate readiness */
+-#define MBOX_TOS_READY_FLAG (GFX_FLAG_RESPONSE)
+-#define MBOX_TOS_READY_MASK (GFX_CMD_RESPONSE_MASK | GFX_CMD_STATUS_MASK)
+-
+-/* Values to check for a successful GFX_CMD response wait. Check against
+- * both status bits and response state - helps to detect a command failure
+- * or other unexpected cases like a device drop reading all 0xFFs
+- */
+-#define MBOX_TOS_RESP_FLAG (GFX_FLAG_RESPONSE)
+-#define MBOX_TOS_RESP_MASK (GFX_CMD_RESPONSE_MASK | GFX_CMD_STATUS_MASK)
+-
+ extern const struct attribute_group amdgpu_flash_attr_group;
+ 
+ enum psp_shared_mem_size {
+diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v10_0.c b/drivers/gpu/drm/amd/amdgpu/psp_v10_0.c
+index 2c4ebd98927f..145186a1e48f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/psp_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/psp_v10_0.c
+@@ -94,7 +94,7 @@ static int psp_v10_0_ring_create(struct psp_context *psp,
+ 
+ 	/* Wait for response flag (bit 31) in C2PMSG_64 */
+ 	ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
+-			   MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++			   0x80000000, 0x8000FFFF, false);
+ 
+ 	return ret;
+ }
+@@ -115,7 +115,7 @@ static int psp_v10_0_ring_stop(struct psp_context *psp,
+ 
+ 	/* Wait for response flag (bit 31) in C2PMSG_64 */
+ 	ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
+-			   MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++			   0x80000000, 0x80000000, false);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c b/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
+index 1a4a26e6ffd2..215543575f47 100644
+--- a/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
+@@ -277,13 +277,11 @@ static int psp_v11_0_ring_stop(struct psp_context *psp,
+ 
+ 	/* Wait for response flag (bit 31) */
+ 	if (amdgpu_sriov_vf(adev))
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
++				   0x80000000, 0x80000000, false);
+ 	else
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
++				   0x80000000, 0x80000000, false);
+ 
+ 	return ret;
+ }
+@@ -319,15 +317,13 @@ static int psp_v11_0_ring_create(struct psp_context *psp,
+ 		mdelay(20);
+ 
+ 		/* Wait for response flag (bit 31) in C2PMSG_101 */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
++				   0x80000000, 0x8000FFFF, false);
+ 
+ 	} else {
+ 		/* Wait for sOS ready for ring creation */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
+-			MBOX_TOS_READY_FLAG, MBOX_TOS_READY_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
++				   0x80000000, 0x80000000, false);
+ 		if (ret) {
+ 			DRM_ERROR("Failed to wait for sOS ready for ring creation\n");
+ 			return ret;
+@@ -351,9 +347,8 @@ static int psp_v11_0_ring_create(struct psp_context *psp,
+ 		mdelay(20);
+ 
+ 		/* Wait for response flag (bit 31) in C2PMSG_64 */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
++				   0x80000000, 0x8000FFFF, false);
+ 	}
+ 
+ 	return ret;
+@@ -386,8 +381,7 @@ static int psp_v11_0_mode1_reset(struct psp_context *psp)
+ 
+ 	offset = SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64);
+ 
+-	ret = psp_wait_for(psp, offset, MBOX_TOS_READY_FLAG,
+-			   MBOX_TOS_READY_MASK, false);
++	ret = psp_wait_for(psp, offset, 0x80000000, 0x8000FFFF, false);
+ 
+ 	if (ret) {
+ 		DRM_INFO("psp is not working correctly before mode1 reset!\n");
+@@ -401,8 +395,7 @@ static int psp_v11_0_mode1_reset(struct psp_context *psp)
+ 
+ 	offset = SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_33);
+ 
+-	ret = psp_wait_for(psp, offset, MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK,
+-			   false);
++	ret = psp_wait_for(psp, offset, 0x80000000, 0x80000000, false);
+ 
+ 	if (ret) {
+ 		DRM_INFO("psp mode 1 reset failed!\n");
+diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v11_0_8.c b/drivers/gpu/drm/amd/amdgpu/psp_v11_0_8.c
+index 338d015c0f2e..5697760a819b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/psp_v11_0_8.c
++++ b/drivers/gpu/drm/amd/amdgpu/psp_v11_0_8.c
+@@ -41,9 +41,8 @@ static int psp_v11_0_8_ring_stop(struct psp_context *psp,
+ 		/* there might be handshake issue with hardware which needs delay */
+ 		mdelay(20);
+ 		/* Wait for response flag (bit 31) */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
++				   0x80000000, 0x80000000, false);
+ 	} else {
+ 		/* Write the ring destroy command*/
+ 		WREG32_SOC15(MP0, 0, mmMP0_SMN_C2PMSG_64,
+@@ -51,9 +50,8 @@ static int psp_v11_0_8_ring_stop(struct psp_context *psp,
+ 		/* there might be handshake issue with hardware which needs delay */
+ 		mdelay(20);
+ 		/* Wait for response flag (bit 31) */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
++				   0x80000000, 0x80000000, false);
+ 	}
+ 
+ 	return ret;
+@@ -89,15 +87,13 @@ static int psp_v11_0_8_ring_create(struct psp_context *psp,
+ 		mdelay(20);
+ 
+ 		/* Wait for response flag (bit 31) in C2PMSG_101 */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
++				   0x80000000, 0x8000FFFF, false);
+ 
+ 	} else {
+ 		/* Wait for sOS ready for ring creation */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
+-			MBOX_TOS_READY_FLAG, MBOX_TOS_READY_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
++				   0x80000000, 0x80000000, false);
+ 		if (ret) {
+ 			DRM_ERROR("Failed to wait for trust OS ready for ring creation\n");
+ 			return ret;
+@@ -121,9 +117,8 @@ static int psp_v11_0_8_ring_create(struct psp_context *psp,
+ 		mdelay(20);
+ 
+ 		/* Wait for response flag (bit 31) in C2PMSG_64 */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
++				   0x80000000, 0x8000FFFF, false);
+ 	}
+ 
+ 	return ret;
+diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v12_0.c b/drivers/gpu/drm/amd/amdgpu/psp_v12_0.c
+index d54b3e0fabaf..80153f837470 100644
+--- a/drivers/gpu/drm/amd/amdgpu/psp_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/psp_v12_0.c
+@@ -163,7 +163,7 @@ static int psp_v12_0_ring_create(struct psp_context *psp,
+ 
+ 	/* Wait for response flag (bit 31) in C2PMSG_64 */
+ 	ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
+-			   MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++			   0x80000000, 0x8000FFFF, false);
+ 
+ 	return ret;
+ }
+@@ -184,13 +184,11 @@ static int psp_v12_0_ring_stop(struct psp_context *psp,
+ 
+ 	/* Wait for response flag (bit 31) */
+ 	if (amdgpu_sriov_vf(adev))
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_101),
++				   0x80000000, 0x80000000, false);
+ 	else
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64),
++				   0x80000000, 0x80000000, false);
+ 
+ 	return ret;
+ }
+@@ -221,8 +219,7 @@ static int psp_v12_0_mode1_reset(struct psp_context *psp)
+ 
+ 	offset = SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_64);
+ 
+-	ret = psp_wait_for(psp, offset, MBOX_TOS_READY_FLAG,
+-			   MBOX_TOS_READY_MASK, false);
++	ret = psp_wait_for(psp, offset, 0x80000000, 0x8000FFFF, false);
+ 
+ 	if (ret) {
+ 		DRM_INFO("psp is not working correctly before mode1 reset!\n");
+@@ -236,8 +233,7 @@ static int psp_v12_0_mode1_reset(struct psp_context *psp)
+ 
+ 	offset = SOC15_REG_OFFSET(MP0, 0, mmMP0_SMN_C2PMSG_33);
+ 
+-	ret = psp_wait_for(psp, offset, MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK,
+-			   false);
++	ret = psp_wait_for(psp, offset, 0x80000000, 0x80000000, false);
+ 
+ 	if (ret) {
+ 		DRM_INFO("psp mode 1 reset failed!\n");
+diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c b/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
+index 58b6b64dcd68..ead616c11705 100644
+--- a/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
+@@ -384,9 +384,8 @@ static int psp_v13_0_ring_stop(struct psp_context *psp,
+ 		/* there might be handshake issue with hardware which needs delay */
+ 		mdelay(20);
+ 		/* Wait for response flag (bit 31) */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
++				   0x80000000, 0x80000000, false);
+ 	} else {
+ 		/* Write the ring destroy command*/
+ 		WREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_64,
+@@ -394,9 +393,8 @@ static int psp_v13_0_ring_stop(struct psp_context *psp,
+ 		/* there might be handshake issue with hardware which needs delay */
+ 		mdelay(20);
+ 		/* Wait for response flag (bit 31) */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
++				   0x80000000, 0x80000000, false);
+ 	}
+ 
+ 	return ret;
+@@ -432,15 +430,13 @@ static int psp_v13_0_ring_create(struct psp_context *psp,
+ 		mdelay(20);
+ 
+ 		/* Wait for response flag (bit 31) in C2PMSG_101 */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
++				   0x80000000, 0x8000FFFF, false);
+ 
+ 	} else {
+ 		/* Wait for sOS ready for ring creation */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
+-			MBOX_TOS_READY_FLAG, MBOX_TOS_READY_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
++				   0x80000000, 0x80000000, false);
+ 		if (ret) {
+ 			DRM_ERROR("Failed to wait for trust OS ready for ring creation\n");
+ 			return ret;
+@@ -464,9 +460,8 @@ static int psp_v13_0_ring_create(struct psp_context *psp,
+ 		mdelay(20);
+ 
+ 		/* Wait for response flag (bit 31) in C2PMSG_64 */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
++				   0x80000000, 0x8000FFFF, false);
+ 	}
+ 
+ 	return ret;
+diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v13_0_4.c b/drivers/gpu/drm/amd/amdgpu/psp_v13_0_4.c
+index f65af52c1c19..eaa5512a21da 100644
+--- a/drivers/gpu/drm/amd/amdgpu/psp_v13_0_4.c
++++ b/drivers/gpu/drm/amd/amdgpu/psp_v13_0_4.c
+@@ -204,9 +204,8 @@ static int psp_v13_0_4_ring_stop(struct psp_context *psp,
+ 		/* there might be handshake issue with hardware which needs delay */
+ 		mdelay(20);
+ 		/* Wait for response flag (bit 31) */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
++				   0x80000000, 0x80000000, false);
+ 	} else {
+ 		/* Write the ring destroy command*/
+ 		WREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_64,
+@@ -214,9 +213,8 @@ static int psp_v13_0_4_ring_stop(struct psp_context *psp,
+ 		/* there might be handshake issue with hardware which needs delay */
+ 		mdelay(20);
+ 		/* Wait for response flag (bit 31) */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
++				   0x80000000, 0x80000000, false);
+ 	}
+ 
+ 	return ret;
+@@ -252,15 +250,13 @@ static int psp_v13_0_4_ring_create(struct psp_context *psp,
+ 		mdelay(20);
+ 
+ 		/* Wait for response flag (bit 31) in C2PMSG_101 */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_101),
++				   0x80000000, 0x8000FFFF, false);
+ 
+ 	} else {
+ 		/* Wait for sOS ready for ring creation */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
+-			MBOX_TOS_READY_FLAG, MBOX_TOS_READY_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
++				   0x80000000, 0x80000000, false);
+ 		if (ret) {
+ 			DRM_ERROR("Failed to wait for trust OS ready for ring creation\n");
+ 			return ret;
+@@ -284,9 +280,8 @@ static int psp_v13_0_4_ring_create(struct psp_context *psp,
+ 		mdelay(20);
+ 
+ 		/* Wait for response flag (bit 31) in C2PMSG_64 */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_64),
++				   0x80000000, 0x8000FFFF, false);
+ 	}
+ 
+ 	return ret;
+diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v14_0.c b/drivers/gpu/drm/amd/amdgpu/psp_v14_0.c
+index b029f301aacc..30d8eecc5674 100644
+--- a/drivers/gpu/drm/amd/amdgpu/psp_v14_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/psp_v14_0.c
+@@ -250,9 +250,8 @@ static int psp_v14_0_ring_stop(struct psp_context *psp,
+ 		/* there might be handshake issue with hardware which needs delay */
+ 		mdelay(20);
+ 		/* Wait for response flag (bit 31) */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_101),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_101),
++				   0x80000000, 0x80000000, false);
+ 	} else {
+ 		/* Write the ring destroy command*/
+ 		WREG32_SOC15(MP0, 0, regMPASP_SMN_C2PMSG_64,
+@@ -260,9 +259,8 @@ static int psp_v14_0_ring_stop(struct psp_context *psp,
+ 		/* there might be handshake issue with hardware which needs delay */
+ 		mdelay(20);
+ 		/* Wait for response flag (bit 31) */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_64),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_64),
++				   0x80000000, 0x80000000, false);
+ 	}
+ 
+ 	return ret;
+@@ -298,15 +296,13 @@ static int psp_v14_0_ring_create(struct psp_context *psp,
+ 		mdelay(20);
+ 
+ 		/* Wait for response flag (bit 31) in C2PMSG_101 */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_101),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_101),
++				   0x80000000, 0x8000FFFF, false);
+ 
+ 	} else {
+ 		/* Wait for sOS ready for ring creation */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_64),
+-			MBOX_TOS_READY_FLAG, MBOX_TOS_READY_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_64),
++				   0x80000000, 0x80000000, false);
+ 		if (ret) {
+ 			DRM_ERROR("Failed to wait for trust OS ready for ring creation\n");
+ 			return ret;
+@@ -330,9 +326,8 @@ static int psp_v14_0_ring_create(struct psp_context *psp,
+ 		mdelay(20);
+ 
+ 		/* Wait for response flag (bit 31) in C2PMSG_64 */
+-		ret = psp_wait_for(
+-			psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_64),
+-			MBOX_TOS_RESP_FLAG, MBOX_TOS_RESP_MASK, false);
++		ret = psp_wait_for(psp, SOC15_REG_OFFSET(MP0, 0, regMPASP_SMN_C2PMSG_64),
++				   0x80000000, 0x8000FFFF, false);
+ 	}
+ 
+ 	return ret;
+-- 
+2.51.0
 
-Thanks,
-Imre
-
-[1] https://lore.kernel.org/all/20250828174932.414566-7-imre.deak@intel.com
-
-> ------------------
-> 
-> From: Imre Deak <imre.deak@intel.com>
-> 
-> This reverts commit 944e732be9c3a33e64e9fb0f5451a37fc252ddfc which is
-> commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f upstream.
-> 
-> The upstream commit a40c5d727b8111b5db424a1e43e14a1dcce1e77f ("drm/dp:
-> Change AUX DPCD probe address from DPCD_REV to LANE0_1_STATUS") the
-> reverted commit backported causes a regression, on one eDP panel at
-> least resulting in display flickering, described in detail at the Link:
-> below. The issue fixed by the upstream commit will need a different
-> solution, revert the backport for now.
-> 
-> Cc: intel-gfx@lists.freedesktop.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: Sasha Levin <sashal@kernel.org>
-> Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14558
-> Signed-off-by: Imre Deak <imre.deak@intel.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  drivers/gpu/drm/display/drm_dp_helper.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> --- a/drivers/gpu/drm/display/drm_dp_helper.c
-> +++ b/drivers/gpu/drm/display/drm_dp_helper.c
-> @@ -725,7 +725,7 @@ ssize_t drm_dp_dpcd_read(struct drm_dp_a
->  	 * monitor doesn't power down exactly after the throw away read.
->  	 */
->  	if (!aux->is_remote) {
-> -		ret = drm_dp_dpcd_probe(aux, DP_LANE0_1_STATUS);
-> +		ret = drm_dp_dpcd_probe(aux, DP_DPCD_REV);
->  		if (ret < 0)
->  			return ret;
->  	}
-> 
-> 
 
