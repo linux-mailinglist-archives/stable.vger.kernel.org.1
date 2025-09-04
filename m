@@ -1,144 +1,92 @@
-Return-Path: <stable+bounces-177717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 140BCB43AC5
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 13:54:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37693B43AE4
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 13:59:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C875A3A6B9A
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 11:54:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0063A170D3F
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 11:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33A82FCC01;
-	Thu,  4 Sep 2025 11:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62C52FCC01;
+	Thu,  4 Sep 2025 11:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="j/jidoTP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1f5RK73z"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492702D5412;
-	Thu,  4 Sep 2025 11:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926762F3C01
+	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 11:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756986840; cv=none; b=CfTkqn/tz4VSUUBxDSRTBkR7J9HqW00dl+RVw4hfGcVBsQTjBH+oEEVtxfhJ7XTNblX0+n5osXMZDtlAqXUniOVRgA9ZEDEAr8Q0PP5ehTveymEPqIypvam43Z4KbarREk5ZXeNuf7YtFlrTeOXhOdC/TqRw1Yhl51SI1lCOCKc=
+	t=1756987163; cv=none; b=n/BlJZf2lsL9/UazSW3UAbRwZ+QfvzE33DjEQ2pfrjUZYzHNaOmVldHAwX8/FZfgAZREadyfTTKBwGwtY7bZQF5+SR+4WCcMr293lxZ+z49mr3NL1Z2eJOIAfG+xzmoaqmIuhe67rfGScakeu1PepNWtF7SG+Gfv4CLJYhzpcaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756986840; c=relaxed/simple;
-	bh=Uqj1mwVVRPf6dJUVHDMHYF68rIygHhhFT9n30gWW/6Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oPkDQFnJ5Y5VOeXvdiLVQfygRSNW8SaLG5nkiS0uPfXSxJ6GNwg1O6rinagxGxTpz7K66jvFWmEw9EkUWPfWQrtneAvqznh8Q5tuLIi/dMqZkP6LAQX8YF/s6MRD/HwHmO2dX4TV4Ap15kcJe3Wl3JMwkkbcjhLwck963Vgg3WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=j/jidoTP; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5849nrvS011850;
-	Thu, 4 Sep 2025 11:53:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=zJPm6nhvLd9SCgGt
-	e3OOsBo0X4yKutvdmXTTDmGybsA=; b=j/jidoTPA4hLcIRzzmpCTmr/kaiM+xs3
-	VH5IQiL83636OqBfPeJyeAUz3ss8WEeQX6VXAn4SlJ0AQicTQFq4o0kRv36FRIYx
-	yHC0OFZpQFlndLvVEr2R9/ydh4t4wjIZoArDCwZ0t1wm1Jzi45Htf44FNvC3cjKk
-	H4kVmi192fA7mNdbDHnSK33d0LYIIb+ODK3TY67Do8xmrNw+SaSqN8BRvWqOsLTB
-	QNj2uIQ+xGimIEc0g6cTGDhkZ/oeBH+EsKiPnnnMn3KGfi4Fm6bN8Y/JfykiGWBI
-	fPZKm6IYfIdXJYHwZF84bX2aEm8V2AePtIayUV1i5GISWiVl4hik4w==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48y8fq87j8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 04 Sep 2025 11:53:50 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 584Axexe015766;
-	Thu, 4 Sep 2025 11:53:49 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48v01qrb9a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 04 Sep 2025 11:53:49 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 584BrnvM007701;
-	Thu, 4 Sep 2025 11:53:49 GMT
-Received: from lab61.no.oracle.com (lab61.no.oracle.com [10.172.144.82])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48v01qrb7y-1;
-	Thu, 04 Sep 2025 11:53:48 +0000
-From: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>
-To: Allison Henderson <allison.henderson@oracle.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>
-Cc: stable@vger.kernel.org,
-        =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-        rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] rds: ib: Remove unused extern definition
-Date: Thu,  4 Sep 2025 13:53:43 +0200
-Message-ID: <20250904115345.3940851-1-haakon.bugge@oracle.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1756987163; c=relaxed/simple;
+	bh=Ol3DyGOjldFtDMjiwEVJYrg79VBSQO43AsP9631t5gc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bPl+D2QlSkktefSb+pK0DjcVUogeBnLB+t4oMW+hEQZAT18LSZZ6elsQ37deHegKRDF+w1sbC1XNS7drHZ0vPM1M8NNn7FHdm6B7FjjYbdeQ4/g0k1NsKnOkBF7EnQFpkq1yDJ87klY8wH+9aHGVvSXXGiCnzMxsOHq2hHdBoWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1f5RK73z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B575C4CEF0;
+	Thu,  4 Sep 2025 11:59:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1756987163;
+	bh=Ol3DyGOjldFtDMjiwEVJYrg79VBSQO43AsP9631t5gc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=1f5RK73z+HpUCtR4au+tdJ6IFMk+oYW6pb3cOGJ91oWwUx5xkOBWDBB8ZlkoePCVH
+	 gF9d/B88oqNcApXgyilVT8ZPouKeIGJa9UfxhVYUxRwN+Lxt/3HEhESy3rqnAPrWQF
+	 ajwEekrkYNMTiiMQFPfORkpS6dDPyAuxkQC04DLI=
+Date: Thu, 4 Sep 2025 13:59:14 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: stable@vger.kernel.org, sashal@kernel.org, bp@alien8.de
+Subject: Re: [PATCH 5.15.y 2/2] KVM: SVM: Properly advertise TSA CPUID bits
+ to guests
+Message-ID: <2025090443-pull-anchovy-1b65@gregkh>
+References: <20250827181524.2089159-1-boris.ostrovsky@oracle.com>
+ <20250827181524.2089159-3-boris.ostrovsky@oracle.com>
+ <2025090235-washroom-twine-5683@gregkh>
+ <dddfe42e-31c1-4bf8-b15b-b7585b708a04@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-04_04,2025-09-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 bulkscore=0
- suspectscore=0 adultscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509040117
-X-Proofpoint-GUID: FKuVAkVWUcajVvFAG1xNf9egSD3RhvN4
-X-Authority-Analysis: v=2.4 cv=eoPfzppX c=1 sm=1 tr=0 ts=68b97dce cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=M51BFTxLslgA:10 a=VwQbUJbxAAAA:8
- a=yPCof4ZbAAAA:8 a=vqxsdnOqdfS0dGDShygA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: FKuVAkVWUcajVvFAG1xNf9egSD3RhvN4
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA0MDA5NyBTYWx0ZWRfX2FzGZSOexjtv
- QtufhH/RcXYH89FLqcDilzTdDqMEMY8bD81oO5ZetpQvP0eoPt/eaQaCCCNsR90lrGLs4GXPFTC
- mNv3+aOZk1+D5C/T6QKy4MnhcmxN5R8Y/N32p3qBvvsJ942xYyYpmF8SnvsXyAu/m69aq/rSqwN
- X/xxmrgYTt++m3Bfi9Oh0mybTWX8xN1NSnVrs0LTPre43uDJ8PpXKzCLGXbkEWSyM83ET5zCRvx
- a6oxZxZX+mhapTaOTYlViPBxZhExkMMiGPljsc1rIh/3T1kW5igMmY8is1Y/cOkGFCcdQEa5uQp
- Qo5klO+r3I2jn1O8lNPwZ6ozYVkcrCgqg9vCFHhh6alLBE/Kq8ReP7UM/RS+F6lEeQyAITe1a9J
- Dw6hbvQX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dddfe42e-31c1-4bf8-b15b-b7585b708a04@oracle.com>
 
-In the old days, RDS used FMR (Fast Memory Registration) to register
-IB MRs to be used by RDMA. A newer and better verbs based
-registration/de-registration method called FRWR (Fast Registration
-Work Request) was added to RDS by commit 1659185fb4d0 ("RDS: IB:
-Support Fastreg MR (FRMR) memory registration mode") in 2016.
+On Wed, Sep 03, 2025 at 12:44:00PM -0400, Boris Ostrovsky wrote:
+> 
+> 
+> On 9/2/25 7:42 AM, Greg KH wrote:
+> > On Wed, Aug 27, 2025 at 02:15:24PM -0400, Boris Ostrovsky wrote:
+> > > Commit 31272abd5974b38ba312e9cf2ec2f09f9dd7dcba upstream.
+> > > Commit f3f9deccfc68a6b7c8c1cc51e902edba23d309d4 LTS
+> > 
+> > How about you just backport both of these independently, as this change
+> > now looks nothing like either of those commits :(
+> 
+> The trouble is that the first one was already backported by
+> c334ae4a545a1b1ae8aff4e5eb741af2c7624cc7 and it missed a few things. Some,
+> but not all, of these issues were corrected by the LTS patch (the second
+> commit above).
+> 
+> I couldn't figure out how to separate this into two patches so I merged them
+> into one.
+> 
+> I suppose I could provide an incomplete "fix" for
+> c334ae4a545a1b1ae8aff4e5eb741af2c7624cc7 as a separate patch (but the code
+> will still be broken) and then do the LTS backport.
 
-Detection and enablement of FRWR was done in commit 2cb2912d6563
-("RDS: IB: add Fastreg MR (FRMR) detection support"). But said commit
-added an extern bool prefer_frmr, which was not used by said commit -
-nor used by later commits. Hence, remove it.
+Yes please.  When ever possible try to stick to what is upstream, and
+that includes backporting partial patches if needed, as then they can
+actually be tracked.
 
-Fixes: 2cb2912d6563 ("RDS: IB: add Fastreg MR (FRMR) detection support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+thanks,
 
----
-
-	v1 -> v2:
-	      * Added commit message
-	      * Added Cc: stable@vger.kernel.org
----
- net/rds/ib_mr.h | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/net/rds/ib_mr.h b/net/rds/ib_mr.h
-index ea5e9aee4959e..5884de8c6f45b 100644
---- a/net/rds/ib_mr.h
-+++ b/net/rds/ib_mr.h
-@@ -108,7 +108,6 @@ struct rds_ib_mr_pool {
- };
- 
- extern struct workqueue_struct *rds_ib_mr_wq;
--extern bool prefer_frmr;
- 
- struct rds_ib_mr_pool *rds_ib_create_mr_pool(struct rds_ib_device *rds_dev,
- 					     int npages);
--- 
-2.43.5
-
+greg k-h
 
