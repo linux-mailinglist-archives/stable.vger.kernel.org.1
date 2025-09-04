@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-177719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20730B43AEA
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 14:00:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88783B43AEB
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 14:01:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4BB3480B21
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 12:00:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 459CE1C2385A
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 12:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA351A314B;
-	Thu,  4 Sep 2025 12:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905751A314B;
+	Thu,  4 Sep 2025 12:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdBOXLnc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lninPSUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844B5EAD7
-	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 12:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C022CCC0
+	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 12:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756987245; cv=none; b=Pv96qa7MlCecJWdpcJ3bdkJ2qYOpl5XSR7I6jxD2teqfroRfseuFsYQb4Py8xP7NWBAGVKodRHIF7TYg/dPpgui12dRtOS+drSQFRsj2XUwbGtYccT01BMS+AjrHTmLWAfneqat+yOplUoLxPXa31ajoQ32yapjsiFkpuIQHqyY=
+	t=1756987311; cv=none; b=RPYklqNc3oNavwN1Blcx/veS5XOx1ZQIIcN4cOGppFp6jRGoXW4r1L/fDtxHE5wSavk7Vi15/XkzZX/sT1UpNQRPPb3/laWSE1SE7vwGJpZ1q18sFijKc24vO9DNt0u8udht7LsTEyUv85ZU5AkepTmTRXOUfkDyRrJWIUK5SVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756987245; c=relaxed/simple;
-	bh=eHAQ+W/4I6CC3eBj+DO0OcYiCnBTaVPzdBJxtNDrJl0=;
+	s=arc-20240116; t=1756987311; c=relaxed/simple;
+	bh=20fHQLfw1aFaYlBAC6rNolJdM6g1VsRtYb3qsXCCUpo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BrWmC5XxctsPifUaVYHnybY1uAeQTWU++lO65Fx4ztww3ULKYU5rzahRxdtcF9d2DIDL09Ffhi2q9F715KocI1ejQpb9NJUzbfgSdLknHRUwvOUApKCZU+DycVxgrhbzSq8p65Dfea5mXb29JazxU7ZlkOykqp84l0ns/O6oaI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdBOXLnc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEBEC4CEF0;
-	Thu,  4 Sep 2025 12:00:44 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=rqbysaSY11QmXv8VZtCp5n3NsaDqtHjlpCZYgIoO/NyRAyn5SVg5WH4E2hx/Qi1hkQ6gtBjquUXgDiiWNBhg6XtgGLuZqAUdVTD2FaL51iyzAh8AS2lqN7dlGQb0PiqtI0lHLZg9J6knP1morXY7ToNsBAhB4FhuVCuNCD8q5Yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lninPSUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDD8C4CEF0;
+	Thu,  4 Sep 2025 12:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756987245;
-	bh=eHAQ+W/4I6CC3eBj+DO0OcYiCnBTaVPzdBJxtNDrJl0=;
+	s=korg; t=1756987310;
+	bh=20fHQLfw1aFaYlBAC6rNolJdM6g1VsRtYb3qsXCCUpo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sdBOXLncvnSI5y846UFKbS8FXeY3zIy+ZvuHo7dj3Hhr/OWvfUuiknRovO2B55ovs
-	 d7ngPnGWOc+AMTmARGXIQvbL3rzdZDNy+K3g+/I6j/7oKpzdoEtf5pOS9hjv3DVheP
-	 faEjLSrQBpaZEtPO7zSL0DgKjSUrxYae18T9WJ/Y=
-Date: Thu, 4 Sep 2025 14:00:41 +0200
+	b=lninPSUG0PlkpHcU7XU8V2kVzetXg2R3RzZx1mwj4iXvoHGUhm49ibD+7vPSCpKXE
+	 vFE3Ix3Wuv06N9SlXV4HPeVIio8uibKI5RLUL41Qqo0wk1IHL6HgPi+1NVM5o682QW
+	 XSUxqgTm5XkC2FaL1/ZCPYZkAZRf8g41v/2Vl8ks=
+Date: Thu, 4 Sep 2025 14:01:47 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Suraj Jitindar Singh <surajjs@amazon.com>
 Cc: stable@vger.kernel.org
 Subject: Re: [PATCH 5.10 0/4] x86/speculation: Make {JMP,CALL}_NOSPEC
  Consistent
-Message-ID: <2025090450-plaster-shadiness-1283@gregkh>
+Message-ID: <2025090447-rectangle-dastardly-b689@gregkh>
 References: <20250903225003.50346-1-surajjs@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,19 +68,20 @@ On Wed, Sep 03, 2025 at 03:49:59PM -0700, Suraj Jitindar Singh wrote:
 > the 5.10 kernel [2]. They all apply cleanly and are applicable to the 5.10
 > kernel. Thus I see no reason that they weren't applied here, unless someone can
 > correct me?
-
-Do they actually fix anything?
-
+> 
 > I am sending them for inclusion in the 5.10 kernel as this kernel is still
 > actively maintained for these kind of vulnerability mitigations and as such
 > having these patches will unify the handling of these cases with subsequent
 > kernel versions easing code understanding and the ease of backports in the
 > future.
 
-Does this actually allow this to happen?  I think there are a few
-speculation fixes that have not been backported to this kernel tree, so
-why not just make this as a part of that work instead?  Just adding
-infastructure that doesn't do anything isn't usually a good idea.
+Also, you only really have about 1 more year left for this kernel
+version, why not take the time to move any systems that are somehow
+still using this to a more modern kernel instead?  What's preventing
+that from happening?
+
+Running any x86 systems on this old kernel right now is probably not a
+good idea given the huge number of unfixed bugs in it...
 
 thanks,
 
