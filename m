@@ -1,89 +1,77 @@
-Return-Path: <stable+bounces-177720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88783B43AEB
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 14:01:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C2EDB43AFD
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 14:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 459CE1C2385A
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 12:02:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5980540321
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 12:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905751A314B;
-	Thu,  4 Sep 2025 12:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0606D2DCF71;
+	Thu,  4 Sep 2025 12:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lninPSUG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AyGpRLjM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C022CCC0
-	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 12:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4265271469;
+	Thu,  4 Sep 2025 12:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756987311; cv=none; b=RPYklqNc3oNavwN1Blcx/veS5XOx1ZQIIcN4cOGppFp6jRGoXW4r1L/fDtxHE5wSavk7Vi15/XkzZX/sT1UpNQRPPb3/laWSE1SE7vwGJpZ1q18sFijKc24vO9DNt0u8udht7LsTEyUv85ZU5AkepTmTRXOUfkDyRrJWIUK5SVI=
+	t=1756987511; cv=none; b=DjZnUhjUqzElOTnUP3I1iFscAonlv/SSxSQL3fKjs8am3AIwjyelUoUkMMf1ZYM99bjsUbYp3qpwtfeKz/XW2CC2BFcI/ruRJqrwlNJaBJ1bTZz04+JluILTnDh8SdYQ65iXoyyXjaU5RLozFa/t9ZxBxaOc1uzIUqOIAmQZxBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756987311; c=relaxed/simple;
-	bh=20fHQLfw1aFaYlBAC6rNolJdM6g1VsRtYb3qsXCCUpo=;
+	s=arc-20240116; t=1756987511; c=relaxed/simple;
+	bh=f/PtkGUUho/vUypI5PNDrwb7DLE9aEAi7b+SZrdBg38=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rqbysaSY11QmXv8VZtCp5n3NsaDqtHjlpCZYgIoO/NyRAyn5SVg5WH4E2hx/Qi1hkQ6gtBjquUXgDiiWNBhg6XtgGLuZqAUdVTD2FaL51iyzAh8AS2lqN7dlGQb0PiqtI0lHLZg9J6knP1morXY7ToNsBAhB4FhuVCuNCD8q5Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lninPSUG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDD8C4CEF0;
-	Thu,  4 Sep 2025 12:01:49 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=geaNoztbUXMNhRFKYmO+WFsAaX/duZ9dLHs15CY2oGqH1PSS7TTWMHwBvJbKbJB55dsYmrffJCTN1tMiD/qYVU7AGga9FpVupwQFXwBVlgtNqz5/NCOwX2KKZ6YW90DuVWoBofUnQN1T4gpT755X4f/Qp0nL8LaVCdIA2fQrDQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AyGpRLjM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47D8C4CEF1;
+	Thu,  4 Sep 2025 12:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756987310;
-	bh=20fHQLfw1aFaYlBAC6rNolJdM6g1VsRtYb3qsXCCUpo=;
+	s=korg; t=1756987511;
+	bh=f/PtkGUUho/vUypI5PNDrwb7DLE9aEAi7b+SZrdBg38=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lninPSUG0PlkpHcU7XU8V2kVzetXg2R3RzZx1mwj4iXvoHGUhm49ibD+7vPSCpKXE
-	 vFE3Ix3Wuv06N9SlXV4HPeVIio8uibKI5RLUL41Qqo0wk1IHL6HgPi+1NVM5o682QW
-	 XSUxqgTm5XkC2FaL1/ZCPYZkAZRf8g41v/2Vl8ks=
-Date: Thu, 4 Sep 2025 14:01:47 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Suraj Jitindar Singh <surajjs@amazon.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 5.10 0/4] x86/speculation: Make {JMP,CALL}_NOSPEC
- Consistent
-Message-ID: <2025090447-rectangle-dastardly-b689@gregkh>
-References: <20250903225003.50346-1-surajjs@amazon.com>
+	b=AyGpRLjM5E3S56B3xIptiqaSxDhICCXYklpKdzM+BGxDLtG5W3rb9odLB1kkj4Lnp
+	 eudQHFc4oNvm5mqdR+duFejTQQoiihQtKA8wm/iEJiM2OazNoBMvwjYSjw/f21//vy
+	 uLTx5DIQIbplczUIJi7YqMzb7uW2bNiZT/xYZvv0=
+Date: Thu, 4 Sep 2025 14:05:08 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: =?utf-8?B?TWljaGHFgiBHw7Nybnk=?= <mgorny@gentoo.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Brent Lu <brent.lu@intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 5.10 33/34] ASoC: Intel: sof_da7219_mx98360a: fail to
+ initialize soundcard
+Message-ID: <2025090457-unkind-caviar-4e53@gregkh>
+References: <20250902131926.607219059@linuxfoundation.org>
+ <20250902131927.927344847@linuxfoundation.org>
+ <97d648ff7cea3aecd6c2606ea60edf928e1cf1aa.camel@gentoo.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250903225003.50346-1-surajjs@amazon.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <97d648ff7cea3aecd6c2606ea60edf928e1cf1aa.camel@gentoo.org>
 
-On Wed, Sep 03, 2025 at 03:49:59PM -0700, Suraj Jitindar Singh wrote:
-> The 4 patches in this series make the JMP_NOSPEC and CALL_NOSPEC macros used
-> in the kernel consistent with what is generated by the compiler.
+On Tue, Sep 02, 2025 at 03:52:55PM +0200, Michał Górny wrote:
+> On Tue, 2025-09-02 at 15:21 +0200, Greg Kroah-Hartman wrote:
+> > 5.10-stable review patch.  If anyone has any objections, please let me know.
+> > 
 > 
-> ("x86,nospec: Simplify {JMP,CALL}_NOSPEC") was merged in v6.0 and the remaining
-> 3 patches in this series were merged in v6.15. All 4 were included in kernels
-> v5.15+ as prerequisites for the backport of the ITS mitigations [1].
+> I think the prerequisite patch is missing (4/5 in my set):
 > 
-> None of these patches were included in the backport of the ITS mitigations to
-> the 5.10 kernel [2]. They all apply cleanly and are applicable to the 5.10
-> kernel. Thus I see no reason that they weren't applied here, unless someone can
-> correct me?
-> 
-> I am sending them for inclusion in the 5.10 kernel as this kernel is still
-> actively maintained for these kind of vulnerability mitigations and as such
-> having these patches will unify the handling of these cases with subsequent
-> kernel versions easing code understanding and the ease of backports in the
-> future.
+> https://lore.kernel.org/stable/20250901141117.96236-4-mgorny@gentoo.org/T/#u
 
-Also, you only really have about 1 more year left for this kernel
-version, why not take the time to move any systems that are somehow
-still using this to a more modern kernel instead?  What's preventing
-that from happening?
-
-Running any x86 systems on this old kernel right now is probably not a
-good idea given the huge number of unfixed bugs in it...
-
-thanks,
+Ugh, I missed that somehow, thanks!  now queued up.
 
 greg k-h
 
