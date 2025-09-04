@@ -1,95 +1,96 @@
-Return-Path: <stable+bounces-177704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 142D8B435D8
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 10:35:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16284B435E8
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 10:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DBBE5E103F
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 08:35:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9893517DDC9
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 08:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792672C1589;
-	Thu,  4 Sep 2025 08:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F4E2C3761;
+	Thu,  4 Sep 2025 08:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PFwaZDlx"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wI96XdEJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80E62C028F
-	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 08:35:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84572C3268
+	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 08:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756974949; cv=none; b=pkEEYJnhZRiapwA68UZCINZSgjZqigNKbnVEgf2WAnl5IBgod3BOVZeVgwS6LX2fqAfLFAbF/BIZh46/35s8M/oeMXcCaa1Wyd5ajD50ZvgSmrcqLdJfbfn9XC0kPIGvKAI4O5uDHMsPeot4F8Jxn0WHRS8UdFJ+WBeFqNgJpyQ=
+	t=1756975039; cv=none; b=kpY3KsBcQK/wrIJdcgFZ0IcTjosq7wZ+PEsEJ21aFVo8qlBlIAftM328XRg7TmP0Oz3c5qUuS1fp4ebfPk0TaCBJvS90EWQziRmwowNPIdzA8a7f/xz8vynCMA2Ttow15fTKOnAK7IUJub0EQSxVPFYntCGT7lAJkBXtw3+tDg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756974949; c=relaxed/simple;
-	bh=h5RvIxe8l9bzN8R6dikvAkNskzPyZRDzMQGJ9HnLDwc=;
+	s=arc-20240116; t=1756975039; c=relaxed/simple;
+	bh=aAVhOAy0/IwEfcSAPp9ppgHMCgG8/TXN+Krhcl0WPdU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j9BV6dhEO1hGuJoFsgHq75rJh0/ddWEwhBK8cfiLm3T+kEPiN9RahDXZwPVE8+xi1Sj59uNsOlW0IiA5h5r458Dt+JkFrQhjm97KbQFoOO7CEzbw5DMjSZOnFJSlZsmgTycgy55YyPhtPMSZHhm0Y/sniq6pA1RLY7ZZWlJLG6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PFwaZDlx; arc=none smtp.client-ip=209.85.221.47
+	 Content-Type:Content-Disposition:In-Reply-To; b=jlDtAIxB4GSSLKrjz9D17UiTB6+Bt3ptvW9xZ+pU2+ouNpvWHSvu8qiJ05d+fIqRa7JPnNwaNkMwb44mjI/PPqGXbFZMtizxNUL9X3nfVDXrTR+Eu0kugwfzU+v/yG8kN3eh20qb+X8GWISoDl9Md4lD2gndXWpcTzRDVkGixTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wI96XdEJ; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3d3f46e231fso695840f8f.3
-        for <stable@vger.kernel.org>; Thu, 04 Sep 2025 01:35:47 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45b9814efbcso13068985e9.0
+        for <stable@vger.kernel.org>; Thu, 04 Sep 2025 01:37:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756974946; x=1757579746; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1756975036; x=1757579836; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fvYi+R5i77yXA26UvQlFEfyxfCLO5Nh7bbNkyAiJE6Y=;
-        b=PFwaZDlxI82RXm/WFSbYT61FqELc0WqAhsSHYkbXFHymbK0ayV+Y6xfqV95Ifjf+5H
-         TRLlyVoBAT+AgUNgjPZZMN/W6Zyk2t6VbnvvA1UTlxji1WK5My4knJOnuh3C2qAHOATB
-         PWdf6JLUOXkFVrm5SsT2nGw17PyKryicwZO7f2cWmUFtwuvmD5jW1wRoQVEy4oZw45LW
-         vOcpD+soWduIkzjhcsAUOTZZuX7v082pTftoiuJ7elDTw0OM+wUCRqg1G7HafedOM4XE
-         4Pe1TFx79EZ5J0W1eF2kGw3kypLGc+JV9iil5VTTF4dYdcvyT7ven5mFosiFspVVE7YR
-         Sg/g==
+        bh=8TvpDldbS6p0mFVJOieeQjela+t5WFiWiQauN+gr6YU=;
+        b=wI96XdEJBSIB2+O5feMmRh+gZvt9ZqBXzQ7I0eCmuZHDM4KG4g10fpOxxfgyhre4qN
+         00r4z3ABVe1Te5pIVV14k9z7D+cNsMYxc7Ir4MMb77NRu2sQ0Ms1+lRoqiJEkF76FPY3
+         6q+sQW55IghcXq5jJCRHRBcu2NKHXtWtmpus9yMEkpohAI4Kl/bSdg49sqM06LfoRkXv
+         n0KAue08z7cDbbum4UCubeIrYKrrKxw2hixnuvOl7DqwAoeQ3NEhrnM+DSSd52pVEatL
+         FBbNv3r4Ao8DjpU2z1BwOjn6CkgXUExYZPAC9c20lxQkws9lxNAYNDP7SEWOA+DPnQQd
+         c/9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756974946; x=1757579746;
+        d=1e100.net; s=20230601; t=1756975036; x=1757579836;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fvYi+R5i77yXA26UvQlFEfyxfCLO5Nh7bbNkyAiJE6Y=;
-        b=wvXQegB3PtBKn9FCVf9P22dcLIUFM77EVNHlIy+wxwqJstHLoQdsdzZYBAqoeKqJc8
-         Jgmxx2ivmZK9N9lW/hV94hbf3tHLvEP44GZQAf5UwPEb11REM9KXJhunENFHJTFZw7Ys
-         AeH0yVG3L589gRqByAFd/Vq8egAe5zs7VFFe5Gb+iCNnSJZs5hjokvJCwEQ/aUwMvIpJ
-         U2IjM8yfzgZdjeX1moAHi2xafpFZFSK77pwo7IdTkpoEzfwyfEoAGMx5lTCvJEKXyS0o
-         vU184Y8izk3NcXMY9HiEE64Dy0LNXrSojeNVbbO4DGHEe4V0+sQjlARk/4AFWFGB+Qll
-         ZoDw==
-X-Forwarded-Encrypted: i=1; AJvYcCW+DiB7XKkLPm1oh1ApYQkB6RBFE44aD3hEnXoReWJk/gMvfpHPdjeEcFwwFDkpTTUR9VurcGc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzdhh02vYgychzgPNSCd8ayZosUBJhSc9Od9ILR0FIh+AHcK5cl
-	JZfF3qH6pIWw76Rxay802fQ96VyV0E1YsdanoMKwn/9rit31k7Wt3nBCw4nEDKoV6ag=
-X-Gm-Gg: ASbGncs1OzhXwaxArxKgP5xVQ4sA6YQJFao3F6plBzuPdQtfUBGRzUXPwJToBLm6r9A
-	coKH7/z8uNyTmmZnwPFdUDtCHVjnWvWTms1b9z+2HN0FQt3w2HlkMYtKJ0Uj0i7ebgX+Dl1E9Xp
-	sGlqBPxKlDCFaVT/7BmvaHtZg5KUm/Db0xpckQ000EGPbv9SQlL6ru2dKbCTU9rfPWiDyfZ+Txu
-	tsC8I9CQWWmdg9rve1JGGPDzTarM2tMegb8wi7/HzP/EvxsoYkrcYN63IyThG/OAMugEaZEeuI/
-	tEkchh9R1MRgh3TsLsLhQgrYEbVFWdN9mjgEEaC0uSMpgABOzBblepo00ZTsslA/O5o/Wnq21Hb
-	4f5WOyTy4FwMjw6pByiu+iH26+pJdUu7o
-X-Google-Smtp-Source: AGHT+IH6tluwSmCG7lH+rafRzjnl/FD5MXJunjJ8MX7ouc4VDFS8i7jTuo2LLXbEBzN3/cqZwlGBAA==
-X-Received: by 2002:a5d:5887:0:b0:3db:f9f7:df86 with SMTP id ffacd0b85a97d-3dbf9f7e8d7mr4806530f8f.61.1756974945927;
-        Thu, 04 Sep 2025 01:35:45 -0700 (PDT)
+        bh=8TvpDldbS6p0mFVJOieeQjela+t5WFiWiQauN+gr6YU=;
+        b=oU3BiEH4W4ibcBtatR7NoenWEh91qO7n/JAM7Z6ppSVq2n9/RYe57/0SMD5mGYEBaq
+         xtCTUxhsuaDBoyQ4z+SJlof5khOq86+1ZPI2yjzUGE3VM92Hccge8Mq0vR/sXLiW6fGv
+         xeX0iTO6l+xXGsMitm2/RVrP8UInbNs5EO2Os4PFEoFhPw7SeB4U5oDlLsJafFvmDhVz
+         BB+n9OlweX2DiQWTfJkxIqXv1MJ/rhfCjFs9p0hGLjpbTxaIZtmymN0D6k8X3eTk8DTR
+         t4r/tGpuOamBGRjofMBz/t97jID4TrKXQjlLZEmlwVfklVNThirny8ogMzKPBUmMWj2R
+         iKkg==
+X-Forwarded-Encrypted: i=1; AJvYcCXCWjKBvKDXNGS8UL2hyqUqCuriRzHTPjBoelUcgVr7wdAcU+1tJ6WZVSPyuvZoyO+lSMU2778=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXmz8zDYXuNtSX9wUVDFLgqAxN4xSl1CxAT71k1n9jVizOyMdG
+	hLZTBslxXxQL58TbRz9is278ybbw2SQ09cFOlEMDpE6RXDkiDtsBVilZV0KKCfm9piw=
+X-Gm-Gg: ASbGncsqqi1SvoClqo8ve3aayv2RDIgBlKi2HoXAXR9Dpxk00lKR5v9tFRDrq0+Q2u0
+	70clQE6TUPJf0kktw6fv/N1Id1VrVW2ojtsv0ZZ6jjOKxcNo+OdQbPoYPRXu9dOCF3dSnPTVaCG
+	Mic4KmcAgP3CbjfBmApsuEf38VkEud2jxzWdcXm+KNMXkF28yz0UZPFujJfnAq3y72IhEoC0IlY
+	T5o5uIG6UiA+IJ1fGFhWwbnKdzvPB2YW2eW5eboLVv4W8E/v5x3zPto2JeDivuK/v4hmJBmDLMY
+	JMLHGc38WrZ/kHL3lkIS0hNtjSJhHGipWO5APtXbZlNskYJXBY1KiMTBMHD47TJRZG+WZ1gE9ty
+	91oUPM56Hl6CbDeVUYUsVcp7dCHRCZlMi
+X-Google-Smtp-Source: AGHT+IGYkXiZRUXlOQf3empsPbLwkG2nRtYg4Fk+8qLi58TcgS/9+AaJQqZP1jo3HcduMoYVw1R45A==
+X-Received: by 2002:a05:6000:1ac7:b0:3e0:854b:20f5 with SMTP id ffacd0b85a97d-3e0854b234bmr1369457f8f.21.1756975036044;
+        Thu, 04 Sep 2025 01:37:16 -0700 (PDT)
 Received: from linaro.org ([86.121.170.194])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e68c83asm297479605e9.20.2025.09.04.01.35.43
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f306c22sm362172195e9.13.2025.09.04.01.37.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 01:35:44 -0700 (PDT)
-Date: Thu, 4 Sep 2025 11:35:42 +0300
+        Thu, 04 Sep 2025 01:37:15 -0700 (PDT)
+Date: Thu, 4 Sep 2025 11:37:13 +0300
 From: Abel Vesa <abel.vesa@linaro.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Vinod Koul <vkoul@kernel.org>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Sibi Sankar <quic_sibis@quicinc.com>, 
-	Rajendra Nayak <quic_rjendra@quicinc.com>, Johan Hovold <johan@kernel.org>, 
-	Taniya Das <quic_tdas@quicinc.com>, linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Rob Herring <robh@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Dmitry Baryshkov <lumag@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Sibi Sankar <quic_sibis@quicinc.com>, Rajendra Nayak <quic_rjendra@quicinc.com>, 
+	Johan Hovold <johan@kernel.org>, Taniya Das <quic_tdas@quicinc.com>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH v2 1/3] dt-bindings: phy: qcom-edp: Add missing clock for
  X Elite
-Message-ID: <nmennvrestyn6pf54wb7bwvblrtwdczqeokjdd7srj5eljyyfv@gqobw5rexdy6>
+Message-ID: <5dqyfunemo6jcj3c3nwmhbazfbackja5dpgsmu42sjzaxwbfok@rdwj3k7nsm2n>
 References: <20250903-phy-qcom-edp-add-missing-refclk-v2-0-d88c1b0cdc1b@linaro.org>
  <20250903-phy-qcom-edp-add-missing-refclk-v2-1-d88c1b0cdc1b@linaro.org>
- <04437373-c5a2-43e4-b591-921ce450f3d8@linaro.org>
- <49a1ed5b-2afd-46b5-b5b1-74dd82dae95b@linaro.org>
+ <11155d6c-cc11-4c5b-839b-2456e88fbb7f@oss.qualcomm.com>
+ <20250903235138.GA3348310-robh@kernel.org>
+ <1b92fe18-67bd-4fda-b7c2-952ed96aaa61@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,29 +99,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <49a1ed5b-2afd-46b5-b5b1-74dd82dae95b@linaro.org>
+In-Reply-To: <1b92fe18-67bd-4fda-b7c2-952ed96aaa61@oss.qualcomm.com>
 
-On 25-09-04 08:51:49, Krzysztof Kozlowski wrote:
-> On 04/09/2025 08:50, Krzysztof Kozlowski wrote:
-> >> +allOf:
-> >> +  - if:
-> >> +      properties:
-> >> +        compatible:
-> >> +          enum:
-> >> +            - qcom,x1e80100-dp-phy
-> >> +    then:
-> >> +      properties:
-> >> +        clocks:
-> >> +          minItems: 3
+On 25-09-04 10:11:26, Konrad Dybcio wrote:
+> On 9/4/25 1:51 AM, Rob Herring wrote:
+> > On Wed, Sep 03, 2025 at 03:37:25PM +0200, Konrad Dybcio wrote:
+> >> On 9/3/25 2:37 PM, Abel Vesa wrote:
+> >>> On X Elite platform, the eDP PHY uses one more clock called
+> >>> refclk. Add it to the schema.
+> >>>
+> >>> Cc: stable@vger.kernel.org # v6.10
+> >>> Fixes: 5d5607861350 ("dt-bindings: phy: qcom-edp: Add X1E80100 PHY compatibles")
+> >>> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+> >>> ---
+> >>>  .../devicetree/bindings/phy/qcom,edp-phy.yaml      | 28 +++++++++++++++++++++-
+> >>>  1 file changed, 27 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
+> >>> index eb97181cbb9579893b4ee26a39c3559ad87b2fba..a8ba0aa9ff9d83f317bd897a7d564f7e13f6a1e2 100644
+> >>> --- a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
+> >>> +++ b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
+> >>> @@ -37,12 +37,15 @@ properties:
+> >>>        - description: PLL register block
+> >>>  
+> >>>    clocks:
+> >>> -    maxItems: 2
+> >>> +    minItems: 2
+> >>> +    maxItems: 3
+> >>>  
+> >>>    clock-names:
+> >>> +    minItems: 2
+> >>>      items:
+> >>>        - const: aux
+> >>>        - const: cfg_ahb
+> >>> +      - const: refclk
+> >>
+> >> "ref"?
 > > 
-> > That's an ABI break, so you need to explain it and mention the impact.
-> > Reason that there is one more clock, but everything was working fine, is
-> > not usually enough.
-> Heh, I already asked for that at v1 and nothing improved.
+> > Certainly more consistent with other QCom phy bindings.
+> 
+> That, and the name of a clock-names entry ending in 'clk' is simply
+> superfluous
 
-I missed that comment. Sorry about that.
-
-Will address in v3.
+Yep. Will fix in v3.
 
 Thanks for reviewing.
 
