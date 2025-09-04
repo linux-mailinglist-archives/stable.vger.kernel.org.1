@@ -1,111 +1,122 @@
-Return-Path: <stable+bounces-177677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 255A2B42DAE
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 01:51:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 944FCB42DE6
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 02:07:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83742547566
-	for <lists+stable@lfdr.de>; Wed,  3 Sep 2025 23:51:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E8D95E4935
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 00:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B482FC01F;
-	Wed,  3 Sep 2025 23:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7245695;
+	Thu,  4 Sep 2025 00:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="djuAXn5V"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="LsznzHMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA452ECD1C;
-	Wed,  3 Sep 2025 23:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CCA4C83;
+	Thu,  4 Sep 2025 00:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756943501; cv=none; b=tjXgkKD5E2ilhYfSx1RrJRomzkcdIw8YCJvUkqpRyFXYvXynD1JPbDV3ZLCF+c+gKElrNyl96B9fGvLxv1zCbmF3+MsiKqzuSBlSspsjUaVkSSLEtwurZ2WSULqFiWDaNbb1jzwIn+EuCEyMWItyndiLt1RbLeKZ1/d3Dey+8xM=
+	t=1756944437; cv=none; b=H0KheQtU5SJm5oGJPoBT0BUubFgbtvzDtI8A2KOhb3KaS1o/l29Kl2SyLk09NFbZuKbC4NP1mk1LTbJ9fJlZgKsoZuirX/gDVtZNYyuoCZPVUpB5FGFdVLsOnxZhMleokjQtVERu4iuesA4AeDAEM0XfeYC5koSIZEmLZbGFh10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756943501; c=relaxed/simple;
-	bh=jIL8HMWY74/M006Uey55mR2tjICrYWUq/L0Z06cYtog=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OQtg4YxqC57mW5C2z5OxptRUmoNeIiHysZBqmZ1ULfd8mC/rdJh3Lpe1KmEMVGnf+0tJ737nWL18ksTaWv39wfGBg5YGgRrkbpMpiU67zzRrFKTmkCVW4k7gGPLmKBI4ZsNlQaPNVCHrgLjdtihMlUR5VoJo14uGq7trd3IxQkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=djuAXn5V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672BBC4CEF4;
-	Wed,  3 Sep 2025 23:51:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756943501;
-	bh=jIL8HMWY74/M006Uey55mR2tjICrYWUq/L0Z06cYtog=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=djuAXn5VMQ2y8yvgwfyLrjCfR0TOF/VhEJFie2YmnDBAgTJfdhGOjeuRbcxYx904B
-	 u8Tc2QDnzzxNnEVjJQJGw33t1B8PaE6UrAdHpk1Q6msSjjQi2+pbCEPx23xZ/dvQVl
-	 xcBUC3z51wgl7Zt3W2618KrCm0pzg4s/QIlfh2lazmDsBvci0kTlQ4lIqX43ipS2Rd
-	 A8A8vZHxFSUQTShZrZuZ3g0k9HTmxjPzO6xfcAJHOPXZsK0kYyfhhNnnoLidGnpG2A
-	 csByR51yJjs4O/EaFr4JeOHOX+Y4WgHN4oSFXZWLVg4aKURLRvnwC1gkYSGygApklV
-	 8HI4j6rXSdTSA==
-Date: Wed, 3 Sep 2025 18:51:38 -0500
-From: Rob Herring <robh@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Abel Vesa <abel.vesa@linaro.org>, Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Rajendra Nayak <quic_rjendra@quicinc.com>,
-	Johan Hovold <johan@kernel.org>, Taniya Das <quic_tdas@quicinc.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: phy: qcom-edp: Add missing clock for
- X Elite
-Message-ID: <20250903235138.GA3348310-robh@kernel.org>
-References: <20250903-phy-qcom-edp-add-missing-refclk-v2-0-d88c1b0cdc1b@linaro.org>
- <20250903-phy-qcom-edp-add-missing-refclk-v2-1-d88c1b0cdc1b@linaro.org>
- <11155d6c-cc11-4c5b-839b-2456e88fbb7f@oss.qualcomm.com>
+	s=arc-20240116; t=1756944437; c=relaxed/simple;
+	bh=Ed6aDAdki6JS7qVRPmB0pcRQmO0mvXm2jw0QNIAp7KE=;
+	h=Date:To:From:Subject:Message-Id; b=uDkRt+9iM9vSjX+/srAdTIyvP94GMOjTdK4u7hr1ZWqfd/RlzanoJUITxfCGegcmRh3E8KQJbJvVjvIcIzjaSP6S3id3ZYr3EisMiwm7CtVaiTRAtQFwh4IMqVyUXRpFZHxZTsC9FPr0Hx6ReYiynCxb3JfnhA6NvDX9NAb9+rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=LsznzHMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1680DC4CEE7;
+	Thu,  4 Sep 2025 00:07:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1756944437;
+	bh=Ed6aDAdki6JS7qVRPmB0pcRQmO0mvXm2jw0QNIAp7KE=;
+	h=Date:To:From:Subject:From;
+	b=LsznzHMzSJWsxf6C4DNDgfTKSimKSePUnN/FA7DSbSJamDo4OIg4E0bQPdd7j8yha
+	 fGMSNf+zPug3/ou8kEIUVFdoC0F0c79qWOSvoLN54+w2Wa1ncJyNVrQ3UHXUpCCAzC
+	 LKEcIFjUd1+K8HuIRc5NCLaJdOJtjbCEBMqIvRjo=
+Date: Wed, 03 Sep 2025 17:07:16 -0700
+To: mm-commits@vger.kernel.org,vkuznets@redhat.com,stable@vger.kernel.org,ryncsn@gmail.com,okozina@redhat.com,mark.rutland@arm.com,kernelfans@gmail.com,gmazyland@gmail.com,dyoung@redhat.com,dave.hansen@intel.com,coxu@redhat.com,bhe@redhat.com,berrange@redhat.com,akpm@linux-foundation.org,leitao@debian.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [alternative-merged] arm64-kexec-initialize-kexec_buf-struct-in-image_load.patch removed from -mm tree
+Message-Id: <20250904000717.1680DC4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <11155d6c-cc11-4c5b-839b-2456e88fbb7f@oss.qualcomm.com>
 
-On Wed, Sep 03, 2025 at 03:37:25PM +0200, Konrad Dybcio wrote:
-> On 9/3/25 2:37 PM, Abel Vesa wrote:
-> > On X Elite platform, the eDP PHY uses one more clock called
-> > refclk. Add it to the schema.
-> > 
-> > Cc: stable@vger.kernel.org # v6.10
-> > Fixes: 5d5607861350 ("dt-bindings: phy: qcom-edp: Add X1E80100 PHY compatibles")
-> > Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-> > ---
-> >  .../devicetree/bindings/phy/qcom,edp-phy.yaml      | 28 +++++++++++++++++++++-
-> >  1 file changed, 27 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> > index eb97181cbb9579893b4ee26a39c3559ad87b2fba..a8ba0aa9ff9d83f317bd897a7d564f7e13f6a1e2 100644
-> > --- a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> > +++ b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
-> > @@ -37,12 +37,15 @@ properties:
-> >        - description: PLL register block
-> >  
-> >    clocks:
-> > -    maxItems: 2
-> > +    minItems: 2
-> > +    maxItems: 3
-> >  
-> >    clock-names:
-> > +    minItems: 2
-> >      items:
-> >        - const: aux
-> >        - const: cfg_ahb
-> > +      - const: refclk
-> 
-> "ref"?
 
-Certainly more consistent with other QCom phy bindings.
+The quilt patch titled
+     Subject: arm64: kexec: initialize kexec_buf struct in image_load()
+has been removed from the -mm tree.  Its filename was
+     arm64-kexec-initialize-kexec_buf-struct-in-image_load.patch
+
+This patch was dropped because an alternative patch was or shall be merged
+
+------------------------------------------------------
+From: Breno Leitao <leitao@debian.org>
+Subject: arm64: kexec: initialize kexec_buf struct in image_load()
+Date: Tue, 26 Aug 2025 05:08:51 -0700
+
+The kexec_buf structure was previously declared without initialization in
+image_load().  This led to a UBSAN warning when the structure was expanded
+and uninitialized fields were accessed [1].
+
+Zero-initializing kexec_buf at declaration ensures all fields are cleanly
+set, preventing future instances of uninitialized memory being used.
+
+Fixes this UBSAN warning:
+
+  [   32.362488] UBSAN: invalid-load in ./include/linux/kexec.h:210:10
+  [   32.362649] load of value 252 is not a valid value for type '_Bool'
+
+Andrew Morton suggested that this function is only called 3x a week[2],
+thus, the memset() cost is inexpensive.
+
+Link: https://lore.kernel.org/all/oninomspajhxp4omtdapxnckxydbk2nzmrix7rggmpukpnzadw@c67o7njgdgm3/ [1]
+Link: https://lore.kernel.org/all/20250825180531.94bfb86a26a43127c0a1296f@linux-foundation.org/ [2]
+Link: https://lkml.kernel.org/r/20250826-akpm-v1-1-3c831f0e3799@debian.org
+Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Coiby Xu <coxu@redhat.com>
+Cc: "Daniel P. Berrange" <berrange@redhat.com>
+Cc: Dave Hansen <dave.hansen@intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Kairui Song <ryncsn@gmail.com>
+Cc: Liu Pingfan <kernelfans@gmail.com>
+Cc: Milan Broz <gmazyland@gmail.com>
+Cc: Ondrej Kozina <okozina@redhat.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ arch/arm64/kernel/kexec_image.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/arch/arm64/kernel/kexec_image.c~arm64-kexec-initialize-kexec_buf-struct-in-image_load
++++ a/arch/arm64/kernel/kexec_image.c
+@@ -41,7 +41,7 @@ static void *image_load(struct kimage *i
+ 	struct arm64_image_header *h;
+ 	u64 flags, value;
+ 	bool be_image, be_kernel;
+-	struct kexec_buf kbuf;
++	struct kexec_buf kbuf = {};
+ 	unsigned long text_offset, kernel_segment_number;
+ 	struct kexec_segment *kernel_segment;
+ 	int ret;
+_
+
+Patches currently in -mm which might be from leitao@debian.org are
+
+arm64-kexec-initialize-kexec_buf-struct-in-load_other_segments.patch
+riscv-kexec-initialize-kexec_buf-struct.patch
+s390-kexec-initialize-kexec_buf-struct.patch
+
 
