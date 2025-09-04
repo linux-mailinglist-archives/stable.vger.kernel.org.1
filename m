@@ -1,86 +1,103 @@
-Return-Path: <stable+bounces-177736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F23F6B43F08
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 16:37:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D722AB43F54
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 16:43:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C63E97B57A2
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 14:36:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E79D3B1A2F
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 14:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A67430BB90;
-	Thu,  4 Sep 2025 14:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFF733A017;
+	Thu,  4 Sep 2025 14:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="caxBkIhM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uLHwLgRr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5B630AAC7;
-	Thu,  4 Sep 2025 14:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64413218C9;
+	Thu,  4 Sep 2025 14:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756996425; cv=none; b=Yb8j/N52c7JqG7+CefJ31RNChJq7yXJr+xqkV5Po8vxpk2Z6k6cmzqnLpRLJv3eoqsKIMklQQWIh8AgdKrNpC5vLjGHY1gszLEQjr4TDAkiD2vFosTXi0obLidp6NdKdijzKX93nsSUooyt9tNI2DzNWOovNkc0f0czCKROYNys=
+	t=1756996558; cv=none; b=P45u0BmA+8i+4mLP+LALId2ZRtw2uDrbmAUOGzg3WplwFgi0aEw+bol1Eb2+aDwyx3aWzfw1lz2J3IGeWbhyJoxM8dP8iol5f25J6zbKDULc7iHKslby0T+3O2VOln0i7Wue1a3FH69QdCZ9vWuP492TxlYujld6C+v3EvNk/FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756996425; c=relaxed/simple;
-	bh=aF9kWeDpl3fpdV6dkQuM0f9fEHlPUWDVl9sB8BjZwjo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o5sXZFUHpwnHk57+OpLNwEsnlmbPBWyaaECdE2Q/tazE4NBMOA35J9WGseiEOsgyNZ/H1FAnEs+M5IDWOk5Y6StyfK/m+sC39aPmrF2aL2WXbUcZ17mFXfcbqyXPi9IIGMCVABntPayko3NReO2yOn/r1JeVC12qKRNZOLP6Lg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=caxBkIhM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB8DC4CEF6;
-	Thu,  4 Sep 2025 14:33:44 +0000 (UTC)
+	s=arc-20240116; t=1756996558; c=relaxed/simple;
+	bh=PP1vNfr679OyVekRZnMjNH8sTtGmlERTNSRR8TTURCA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FvPgeBBUgifywFV5lpTHfhS2JEYmhKWEXSYCrr5YmrrcDoi05MTtVbtunbLapi9VFxGtLsqo3IY7QRhRsP9zHlVhuKIEyIqPG9HxmbtkntAWyZpCJjXIbyryWCZTT7eURLFsyWjOO5wh4mB42Nu7JyG0IPej50iMDeta0aHuDos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uLHwLgRr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4CCEC4CEF0;
+	Thu,  4 Sep 2025 14:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756996424;
-	bh=aF9kWeDpl3fpdV6dkQuM0f9fEHlPUWDVl9sB8BjZwjo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=caxBkIhMIC4FS5w3ScigznHa5TVb7eRgEn6nOsIk096Ye0DuPFIGbsVfxnn5zPd2i
-	 gPv8su2LOd0tZk5hqCUxu9/t3FEZHdcWlAdtyRvneRIhQLIYLe9ooHUiIXq4rIQe/y
-	 byfiaJ6l6q504oPccnTeWKUsPOYVwON/tEEL3bQ2Et5BBpEdH2o0I/6Y4PUrWmsxXb
-	 AEr5dHZGZ+qITWzJ7BX1sAOt6WBFPsyudOY1sklnYkcJrId5lc6D40WfA2TC/9BecP
-	 94qXvXfLQScWDapKcMN73homgB2w+akRHaeUVIj4Bu7d1+aWi2GmsL+l5c+fcM/xH1
-	 HjV1UwDc24JrA==
-Date: Thu, 4 Sep 2025 07:33:43 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Haakon Bugge <haakon.bugge@oracle.com>
-Cc: Allison Henderson <allison.henderson@oracle.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Santosh Shilimkar
- <ssantosh@kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>, OFED mailing list
- <linux-rdma@vger.kernel.org>, "rds-devel@oss.oracle.com"
- <rds-devel@oss.oracle.com>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v2] rds: ib: Remove unused extern definition
-Message-ID: <20250904073343.1138ce24@kernel.org>
-In-Reply-To: <44A12092-5DA9-4A3C-ACBC-FF1AACB03BD3@oracle.com>
-References: <20250904115345.3940851-1-haakon.bugge@oracle.com>
-	<20250904065502.13d94569@kernel.org>
-	<44A12092-5DA9-4A3C-ACBC-FF1AACB03BD3@oracle.com>
+	s=k20201202; t=1756996557;
+	bh=PP1vNfr679OyVekRZnMjNH8sTtGmlERTNSRR8TTURCA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=uLHwLgRr5YUcmI5q3NicS7id5deaPjh/DWl0WLxLjuGb6EqlrCL7CXTx1HcNzCn7E
+	 2yo4/coNkqMJvWqnJyCqJWMXTGyhzsSe/LNw+w5Gc/J/eqifBEGENvpyiro0+Jt8Mg
+	 +dM/EK8Jqt0uQmIboSVs/YeQOyKZTQs4rvYK92nzcJeR5UoznQ/tWPEGVsto8CEvYx
+	 9eKmPCR+82e9wasvPNxYD3alBBtmDRQen3SgK7KxYKzYppLO97WCKbUj3PWBidexjM
+	 RPiUfoJhXMYHkG3/ricE3qjj/aUQLof3wlEtzSVjlxOwEkOBhvN/gX9cF08MGD4EWh
+	 8nRzv7Qn9PBJQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Santhosh Kumar K <s-k6@ti.com>
+Cc: <miquel.raynal@bootlin.com>,  <broonie@kernel.org>,  <vigneshr@ti.com>,
+  <marex@denx.de>,  <computersforpeace@gmail.com>,
+  <grmoore@opensource.altera.com>,  <theo.lebrun@bootlin.com>,
+  <linux-spi@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <praneeth@ti.com>,  <p-mantena@ti.com>,  <a-dutta@ti.com>,
+  <u-kumar1@ti.com>,  Pratyush Yadav <pratyush@kernel.org>,
+  <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/4] spi: cadence-quadspi: Flush posted register writes
+ before INDAC access
+In-Reply-To: <20250904133130.3105736-2-s-k6@ti.com>
+References: <20250904133130.3105736-1-s-k6@ti.com>
+	<20250904133130.3105736-2-s-k6@ti.com>
+Date: Thu, 04 Sep 2025 16:35:53 +0200
+Message-ID: <mafs0y0quthdi.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On Thu, 4 Sep 2025 14:22:02 +0000 Haakon Bugge wrote:
-> Sorry if I have mis-interpreted the collateral. From [1], I quote:
-> 
-> "A Fixes: tag indicates that the patch fixes an issue in a previous
-> commit." As such, it is an "issue" and I reference the offending
-> commit.
+Hi,
 
-You're not the first one to misinterpret it, I guess we should fix the
-doc :$
+On Thu, Sep 04 2025, Santhosh Kumar K wrote:
 
-> As to "Cc: stable", you're quite right. My bad. You want a v3 or are
-> you (and stable) able to handle it?
+> From: Pratyush Yadav <pratyush@kernel.org>
+>
+> cqspi_indirect_read_execute() and cqspi_indirect_write_execute() first
+> set the enable bit on APB region and then start reading/writing to the
+> AHB region. On TI K3 SoCs these regions lie on different endpoints. This
+> means that the order of the two operations is not guaranteed, and they
+> might be reordered at the interconnect level.
+>
+> It is possible for the AHB write to be executed before the APB write to
+> enable the indirect controller, causing the transaction to be invalid
+> and the write erroring out. Read back the APB region write before
+> accessing the AHB region to make sure the write got flushed and the race
+> condition is eliminated.
+>
+> Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+> Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
 
-Please repost this one without the extra tags, and if you want it to go
-via netdev the subject tag should be net-next in this case (it will end
-up in 6.18)
+IIRC I wrote this patch a few years ago when I was still at TI. Nice to
+see it being upstreamed! It feels strange to review my own patch, but
+FWIW,
+
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
 
