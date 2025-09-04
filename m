@@ -1,88 +1,54 @@
-Return-Path: <stable+bounces-177702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4323EB43515
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 10:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A720B43645
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 10:50:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B116B1C82F89
-	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 08:12:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B40471B23894
+	for <lists+stable@lfdr.de>; Thu,  4 Sep 2025 08:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64BB92BEC27;
-	Thu,  4 Sep 2025 08:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PAyrJXuf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D87282D0638;
+	Thu,  4 Sep 2025 08:50:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6407F2BEFF1
-	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 08:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20BF2C0F8F
+	for <stable@vger.kernel.org>; Thu,  4 Sep 2025 08:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756973493; cv=none; b=HTLHtP7Yww9E6owNJfBqcyUUg5T92AZKAQIMoey/SRzrHYo/T1MOH9emu/w3cSbhSwgSYve+GoRuYoKG1d0Ce6waca0tqjoNNH4HDqzhZ5RrbIeIukdQRzOowZ7p//9MgoDDxHlesDThtutlg+VpRfYXErk+xwFscsACJR2Y5pQ=
+	t=1756975837; cv=none; b=U9DumgtVolQS6ZNJo0smDsUuLWZqoPmrrEJ1X2s61S6qliL8Mqd3htFHygKZLj0kMasFiaIyym6k9gD3doYFgUepIumewLcPLXewClzJkhjWw+Srtbnl4bAhEhhyqbfoIGoPvKUGZmMLMG0BO1iGI6zQYhI8wYUjzQZnsbUwN+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756973493; c=relaxed/simple;
-	bh=4h08wpz5drqqCtxh2Mgu2qUofUwO3S1QVgxWjKb5L3I=;
+	s=arc-20240116; t=1756975837; c=relaxed/simple;
+	bh=1u+k3mH+0J2izAXkehtth/RNqZF+RuGo4o+mAYoMpmc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NXyahYxKtdTpaY+eEMQjHRUyCMD4wUKIpafMXaUPyiMYVRW4xI0+YnvK+HXa/PlU5O4YCi8TuNiZA6i1WW70+sSW1C4Gs6IEGfZd9rc3SncswXtJ3BUbbYsWf38rbR+0/I568CFPdYWBGeOZCy2XquKds1uGUkDUME9sNFWhrp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PAyrJXuf; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5841Pofi005058
-	for <stable@vger.kernel.org>; Thu, 4 Sep 2025 08:11:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	L7t4dwQgkA12CDBLO/H8GwQ2txzuPeZic7pjO4qLBo4=; b=PAyrJXufetwiSgVz
-	uAdzS+qwhc3dwJknZKxoaGTAS+xCPuTAIIoVT2ZUmCGZD/mIlEkCe9snuoRBm53y
-	/N0daTcncnqxhGRTJ0qDB1TfUMCyJXFooAVkLKE6X8stOnVO6MGvOvMP9vjcmuZA
-	Z5+CTZQ5KNtG7+FDlSHessrX60NHta3TYynN+kcjyjTM/9UAiD/FxVURjzXGTPgW
-	FxFYtRn/7iBHcXiZ+Qi5HW3wDSnrSRhcX4cNPcWJBd09kqLClpPabkkpMFuak1Xm
-	xbHPuwTAaNlrmmB3LLoMz5G9Q4BXBPwM9nhtEj0CVOW1DhmP0mZO7qBJdomwTKZF
-	vSGHBw==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ur8s6se4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 04 Sep 2025 08:11:30 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4b33e296278so1210811cf.0
-        for <stable@vger.kernel.org>; Thu, 04 Sep 2025 01:11:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756973489; x=1757578289;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L7t4dwQgkA12CDBLO/H8GwQ2txzuPeZic7pjO4qLBo4=;
-        b=kPP8xAJar5flTEi3eApmDEASy5Vj4Z/4bCPnzGbssAEbPtmCK6Uj1HqqUgfNXG6u4I
-         NLWPTMR/DJ5WBHozY9I9NGOLF18tKy8RZ+RRoPM8liGPHw2kmAjQS+L6jEM1Wyfp/clx
-         bVz1e9s1T/XCiimCYncylfIea4OZPgLoxGeG8e+Qiu7x7yMFXTDRSLE+LLBNKHqgfHbE
-         4firgIercBO9LPPHgzdSJHl2E0QsMs5a0VOarTxEFW7r6QwOGvfNOpP03l3BBAkEXcc8
-         wKQzJWsoUPcahEOmXCZW2CJKlmFPhLMR8GrCgugof1+frYL/ggormqr2c8vMAsKd+s34
-         o1IA==
-X-Forwarded-Encrypted: i=1; AJvYcCU5+MAy6V1EbpXTKfiSUVN0+icziQqNyJiSELFSFFsNF+H0Nq5zxzCr+enOIDTl1vU50DRSdts=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkshQWVelWvvYdtUNu/2T8KaOnje+GxPG+5RNF2oJS3PKqiShz
-	htKY+6f3crJUTpoBwNKeYy2K1m3qGr5wNYM/cHlxBGQPqDhzO0Gm3BMrCrA0YtLzR4nugTkcrR5
-	JPWg8/mseNDxmrHi3zE4glBmArwu+busOatLOVVJAPZwmdZw1YrljiWHEIdk=
-X-Gm-Gg: ASbGnctBKO2cIjqo9TX37RF5AyIPczfIVBZAU/lSjNusCUvc13Q37rbyjFE4DFoE2eu
-	smbxSy0e12N1j/Opf4kbJz3m8ydQAox8hNYGCfBgtZsglLME31cRMTDVa+50vykdk9IwJ5eYf4L
-	DBSQvHA0TrcoWOC2ZzjlYy92BzitcfYs/lj82o8be0ATvi8pIizL51/1hU7nXT8092rvmX1DI75
-	EkYosBrpI8WOfO7sm/eceyN4KDZXrfBs1IT9w74rfryGhVpIYCjk3UAVKasrEk7pPWEGJP0ViM8
-	OgU8aHSpNd9gWu3yzuJUPIg8JblzoCNUHiahGvk7D2FZQaD+ATZ7fzjqH0QLzmUOIQh6TSUwCV6
-	TNouxJaANDJQEZd48sagS0g==
-X-Received: by 2002:ac8:5d12:0:b0:472:1d00:1fc3 with SMTP id d75a77b69052e-4b313f0e6e7mr174091041cf.8.1756973489303;
-        Thu, 04 Sep 2025 01:11:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IETRY11wlgI/tWg0eDPS0dRUFiv1L7olBCrkOPdcF5xbIyJYVEuM11SwnRqh3KhtLOSUAXIXw==
-X-Received: by 2002:ac8:5d12:0:b0:472:1d00:1fc3 with SMTP id d75a77b69052e-4b313f0e6e7mr174090681cf.8.1756973488627;
-        Thu, 04 Sep 2025 01:11:28 -0700 (PDT)
-Received: from [192.168.149.223] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b041770913fsm1097170666b.107.2025.09.04.01.11.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Sep 2025 01:11:28 -0700 (PDT)
-Message-ID: <1b92fe18-67bd-4fda-b7c2-952ed96aaa61@oss.qualcomm.com>
-Date: Thu, 4 Sep 2025 10:11:26 +0200
+	 In-Reply-To:Content-Type; b=InUjo6T0eC3kswMk8/z947GSkAC0Gh13qNvpgtxz7UTGwrbvMu4weWL0J6pq79qJnCXDsnsGyZ/L4LO+UBVQYOc2WOUPs5LHCAPZhvtBslygpJ+7tqbFKx5gqsiOzY1PklYjpaIiOtREn4paWTnti5zZR9nsrnQOxeNbeWyTESs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cHXPv6szdz9sSb;
+	Thu,  4 Sep 2025 10:16:51 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Q0bCBb93aCZt; Thu,  4 Sep 2025 10:16:51 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cHXPZ2N6dz9sSK;
+	Thu,  4 Sep 2025 10:16:34 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3C32C8B764;
+	Thu,  4 Sep 2025 10:16:34 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id zHQ165OB1h7X; Thu,  4 Sep 2025 10:16:34 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 03CAE8B763;
+	Thu,  4 Sep 2025 10:16:33 +0200 (CEST)
+Message-ID: <97fc7eed-c67e-4b5e-90bb-93eb8dd058d7@csgroup.eu>
+Date: Thu, 4 Sep 2025 10:16:33 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,94 +56,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] dt-bindings: phy: qcom-edp: Add missing clock for
- X Elite
-To: Rob Herring <robh@kernel.org>
-Cc: Abel Vesa <abel.vesa@linaro.org>, Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Sibi Sankar <quic_sibis@quicinc.com>,
-        Rajendra Nayak <quic_rjendra@quicinc.com>,
-        Johan Hovold <johan@kernel.org>, Taniya Das <quic_tdas@quicinc.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20250903-phy-qcom-edp-add-missing-refclk-v2-0-d88c1b0cdc1b@linaro.org>
- <20250903-phy-qcom-edp-add-missing-refclk-v2-1-d88c1b0cdc1b@linaro.org>
- <11155d6c-cc11-4c5b-839b-2456e88fbb7f@oss.qualcomm.com>
- <20250903235138.GA3348310-robh@kernel.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250903235138.GA3348310-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAxOSBTYWx0ZWRfX0bnexrVGMx9w
- M0GnNy/SlQiVmhrwhvmI5kqHZnfGIFh/B/EwVTiQC3nDdeu6O6ibqRp4LkKLE+VKSuIlRB1BCF3
- yLOxhVFRgApSJSUgXfnsXrcs+S+VRz33J5sy5bIbnWErREHZbVdVwHY+vNDakNkMl8qyK/5fjem
- zCLP5ktgDFXnYUMyeZnpdnzioXHAsMIlSdtBmUpe5mdAdAaZJp2+JkjUxNRFY1BjNilaCqKK/aA
- 9SR2ZUxLifOyvdNgkzprXHvljktY/Al09+Ip2ITyTshB8wyY7Y4wEzgV+BikjyutwM1OVHeLESc
- xC+VilRvmhZEUVjZoHIgRqiVZdoemOSEAiGLh3IraXPt72s671+wstq7ku5oA0gY0iIhS1lMkWg
- YCU/9gDS
-X-Proofpoint-GUID: 5-W7YUoE5sqpMG4YUGJ9eL-cz0YOjijb
-X-Proofpoint-ORIG-GUID: 5-W7YUoE5sqpMG4YUGJ9eL-cz0YOjijb
-X-Authority-Analysis: v=2.4 cv=PNkP+eqC c=1 sm=1 tr=0 ts=68b949b2 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8
- a=_W-1yxQpv4NGZoZ9-g4A:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
- a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-04_02,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 priorityscore=1501 impostorscore=0 clxscore=1011
- suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300019
+Subject: Re: [PATCH 5.4 only v2] powerpc: boot: Remove leading zero in label
+ in udelay()
+To: Nathan Chancellor <nathan@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20250903211158.2844032-1-nathan@kernel.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250903211158.2844032-1-nathan@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 9/4/25 1:51 AM, Rob Herring wrote:
-> On Wed, Sep 03, 2025 at 03:37:25PM +0200, Konrad Dybcio wrote:
->> On 9/3/25 2:37 PM, Abel Vesa wrote:
->>> On X Elite platform, the eDP PHY uses one more clock called
->>> refclk. Add it to the schema.
->>>
->>> Cc: stable@vger.kernel.org # v6.10
->>> Fixes: 5d5607861350 ("dt-bindings: phy: qcom-edp: Add X1E80100 PHY compatibles")
->>> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
->>> ---
->>>  .../devicetree/bindings/phy/qcom,edp-phy.yaml      | 28 +++++++++++++++++++++-
->>>  1 file changed, 27 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
->>> index eb97181cbb9579893b4ee26a39c3559ad87b2fba..a8ba0aa9ff9d83f317bd897a7d564f7e13f6a1e2 100644
->>> --- a/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
->>> +++ b/Documentation/devicetree/bindings/phy/qcom,edp-phy.yaml
->>> @@ -37,12 +37,15 @@ properties:
->>>        - description: PLL register block
->>>  
->>>    clocks:
->>> -    maxItems: 2
->>> +    minItems: 2
->>> +    maxItems: 3
->>>  
->>>    clock-names:
->>> +    minItems: 2
->>>      items:
->>>        - const: aux
->>>        - const: cfg_ahb
->>> +      - const: refclk
->>
->> "ref"?
+
+
+Le 03/09/2025 à 23:11, Nathan Chancellor a écrit :
+> When building powerpc configurations in linux-5.4.y with binutils 2.43
+> or newer, there is an assembler error in arch/powerpc/boot/util.S:
 > 
-> Certainly more consistent with other QCom phy bindings.
+>    arch/powerpc/boot/util.S: Assembler messages:
+>    arch/powerpc/boot/util.S:44: Error: junk at end of line, first unrecognized character is `0'
+>    arch/powerpc/boot/util.S:49: Error: syntax error; found `b', expected `,'
+>    arch/powerpc/boot/util.S:49: Error: junk at end of line: `b'
+> 
+> binutils 2.43 contains stricter parsing of certain labels [1], namely
+> that leading zeros are no longer allowed. The GNU assembler
+> documentation already somewhat forbade this construct:
+> 
+>    To define a local label, write a label of the form 'N:' (where N
+>    represents any non-negative integer).
+> 
+> Eliminate the leading zero in the label to fix the syntax error. This is
+> only needed in linux-5.4.y because commit 8b14e1dff067 ("powerpc: Remove
+> support for PowerPC 601") removed this code altogether in 5.10.
+> 
+> Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=226749d5a6ff0d5c607d6428d6c81e1e7e7a994b [1]
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
-That, and the name of a clock-names entry ending in 'clk' is simply
-superfluous
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Konrad
+> ---
+> v1 -> v2:
+> - Adjust commit message to make it clearer this construct was already
+>    incorrect under the existing GNU assembler documentation (Segher)
+> 
+> v1: https://lore.kernel.org/20250902235234.2046667-1-nathan@kernel.org/
+> ---
+>   arch/powerpc/boot/util.S | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/powerpc/boot/util.S b/arch/powerpc/boot/util.S
+> index f11f0589a669..5ab2bc864e66 100644
+> --- a/arch/powerpc/boot/util.S
+> +++ b/arch/powerpc/boot/util.S
+> @@ -41,12 +41,12 @@ udelay:
+>   	srwi	r4,r4,16
+>   	cmpwi	0,r4,1		/* 601 ? */
+>   	bne	.Ludelay_not_601
+> -00:	li	r0,86	/* Instructions / microsecond? */
+> +0:	li	r0,86	/* Instructions / microsecond? */
+>   	mtctr	r0
+>   10:	addi	r0,r0,0 /* NOP */
+>   	bdnz	10b
+>   	subic.	r3,r3,1
+> -	bne	00b
+> +	bne	0b
+>   	blr
+>   
+>   .Ludelay_not_601:
+> 
+> base-commit: c25f780e491e4734eb27d65aa58e0909fd78ad9f
+
 
