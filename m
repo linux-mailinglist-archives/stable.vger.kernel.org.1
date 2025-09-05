@@ -1,107 +1,156 @@
-Return-Path: <stable+bounces-177821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6094CB4599E
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 15:52:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B32B45A71
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 16:28:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04AB1A631AD
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 13:52:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 372F37B6845
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 14:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF9035CEDB;
-	Fri,  5 Sep 2025 13:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6133336CDFA;
+	Fri,  5 Sep 2025 14:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uJjFjj3P"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c4BSXoeu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E01B27AC5A;
-	Fri,  5 Sep 2025 13:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A30D36CDF2;
+	Fri,  5 Sep 2025 14:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757080368; cv=none; b=n2YCUP2OUsNFuVEgqobzKM2f5ovNq2qhU7vt8U/4en8PHyGZYEVY89ZzyuDg8D+TpAV1+gUUZhcV1bFl4ya5syXM0izJNqnXU4I7GB9J8/MDH61sWRz1p6oTu7nHYRXv3tDo26tl9bq8f94qMYi46MAVkVQxGRTc0Z+2yeH4AaE=
+	t=1757082342; cv=none; b=AGkD6M3GPp0PmNdImH9S10Hkkc1ssVGZRicCdLes90gkg4JHwOe4Pr9rsXsAbNqRDLLg/EEOeEwcqjSGTOrXiUfBxxgWtYUWAZ5dRXQRDAfOzXe8LaXw6s6IwAezuTOiVXQfx3LQt7dnjEv+sZoYZ4uUWCyut19Q13RKdnBA1HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757080368; c=relaxed/simple;
-	bh=ubo6F3VGGDgseE8VqlXM9lToPzfEZs6MtqOJNwZHb6I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VyYVJFeXlCMIcxTppXYhKySQ5i211UpcDz/eDW5MiHsKHW8iGsiLgoS6sReJZfRkyHC6n+37glx/4ax/ASpfGVQlXRu0LCcomf65q/kvg6japaxdS1oGqHQ6akVaKsB0/SUaQQPHRkx5ejPDdT/jRrxEDPGWtkOtULa2CIRnYVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uJjFjj3P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563ABC4CEF1;
-	Fri,  5 Sep 2025 13:52:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757080367;
-	bh=ubo6F3VGGDgseE8VqlXM9lToPzfEZs6MtqOJNwZHb6I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uJjFjj3P28pgxzAYTBzIwegwRkgGVGKSJJWL88AGN16RFLeNkgcehOTPiqStWozET
-	 yz6RNVktfDafOr+hSw1eqY9e3EhHL6nqFCeIIRJrW/bLT84XEeVjkaDAe/nXh/ZgVy
-	 3bfDTVsBS2vwuY001THHHPe5W5omokghgHfP63t4iT/whbLifEm1V2pKwOG19236Zy
-	 tqVu28MUAHSDSBxY9v5QuMhafJmnfX//lDERYOHw8tv0unPwAv9wpwf7VpRt2SEZDG
-	 bjBHSyt+u717TaaEhjQ+Rle9EOoTErHl5iWqfwPvjPDx4EJPV79nlAorkugSr3uzOp
-	 h2zWO91WCZOxg==
-Date: Fri, 5 Sep 2025 15:52:40 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Nam Cao <namcao@linutronix.de>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Xi Ruoyao <xry111@xry111.site>, 
-	Frederic Weisbecker <frederic@kernel.org>, Valentin Schneider <vschneid@redhat.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, John Ogness <john.ogness@linutronix.de>, 
-	K Prateek Nayak <kprateek.nayak@amd.com>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, linux-rt-users@vger.kernel.org, Joe Damato <jdamato@fastly.com>, 
-	Martin Karsten <mkarsten@uwaterloo.ca>, Jens Axboe <axboe@kernel.dk>, stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/1] eventpoll: Replace rwlock with spinlock
-Message-ID: <20250905-abtun-nackt-dbd1f5accc55@brauner>
-References: <cover.1752581388.git.namcao@linutronix.de>
- <ec92458ea357ec503c737ead0f10b2c6e4c37d47.1752581388.git.namcao@linutronix.de>
- <20250826084320.XeTd6XAK@linutronix.de>
- <20250903084012.A8dd-A5z@linutronix.de>
+	s=arc-20240116; t=1757082342; c=relaxed/simple;
+	bh=TNbHWEgYuW64ur9eiUhEZ/i4hYkt7scM/tDIM9pbTJg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nDJhYr8Ip6vTnMZAc38vCezxPR7QR5iHotMQ53s0UTEninw2vPB97YQe1j06z0T0VBUsFneZJWaoS8+dA/qXZsLQsa9AQ4GNiluiQWbr22+y6WWZqAzh+S21xv1n0eseds7RmTVviuFlPZZFWq2p7oGuu2f+Lv1Gcnb3mTLnY9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c4BSXoeu; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-56097de96fcso178658e87.3;
+        Fri, 05 Sep 2025 07:25:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757082338; x=1757687138; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=t49T5ieWmqvjuwDEwWCSzOWxn76CDIcibE8FOXUbAwE=;
+        b=c4BSXoeuE7IeFlfQe2V18VKIb5SWH2THmLgTulIzYDFgHMst2kAqUIyqA0s2dhNIYN
+         eqfJULy5uoo6be6MipJP3JL5JC9vyhHVAyCs5/YjWioX1zKyfx+r0RE+4uz0gKtzYGpj
+         dKz8OPAFEM+42ha6tYZXR2BaiPCoVCi2L0nGiYfLNEmh9H3ORtKQ6WVqPm1Jz8awnGla
+         FQY4BS2alLIkhDSthoSkUe8o84vpJwKTry15ps3OxrfP/hBK5yd/ipywOncfNUCH97xE
+         YRTTsUVyM5VEFJvo2U0gip0yxIOGtlTxQ/CbHaC71RQ0lSXejRGkYlCv9Hrlt6AvFFkD
+         lWRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757082338; x=1757687138;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=t49T5ieWmqvjuwDEwWCSzOWxn76CDIcibE8FOXUbAwE=;
+        b=LJgFpuEiQFa+oaGJKQrHFuwcD6TT3Z156RMhOi8jQlAOP5hoRgxLIfuZofjCQTLtTZ
+         LPYCXL3Am/oAtNup0voHflxn5aYVlT2OAiF925vpw8XWlYY6EPzFEHutUsPZ4EXVrjqO
+         A/20udgAglbobIeOkfE7ldY71a7nRvWEoeb/L1n690/3Y/cFbFcPVAAv2WORLutakV37
+         dktwx040Fa9kRJx5eNT4fLRmq9LO41QLylNnIGldZmBvXuzxoB9OhP7vS5AVOsvRaGyx
+         qZ3KhVvl4nbA9dy9mILFADyWa/ojWH593KQw6kLvX7LG28aKVXZIbjzuexGroeRk6CN2
+         d59g==
+X-Forwarded-Encrypted: i=1; AJvYcCUbDEwZ2QRFj32H+ewj6shaiYW8MQ3sjbrj4o/pHkde5Jsby3R+RSiyqSJznASulz0P0Idc5VQ9llsbnls=@vger.kernel.org, AJvYcCXPJrQJjHhf8XBLO/KLt0lxWEIUP2tkhTdnX9Ba8qm4GcWSfISFJ7SM0vjrYscKPU6Ufec8JoGH@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRva3JE25vU71GZUPOfGaCKopXT/A4wr9ipH2ZsaFIlh3lvxe9
+	OgEqcK4tzGyl/exSvm2H8QUC9S7dduwX0KaQKO8pPRw1V52lBJIBjT+X
+X-Gm-Gg: ASbGncvlGM8DM4Vacs4ar66fdqm0/+FvBoqJpXG6MNTEcZGZvgJB74fHpOShFqgtbWY
+	eLsaYzZb4rX33qJ9iOx/s1T1yeJ2FAwTZLZY1WyCapsEW6PDOaLdGKAFA1Y79bNNYtuLGJM3MBU
+	4DM618uBlgykDc4DTWfPIIkqBNJHYA07dok+K6pYOjYabChSEzBzqiqHe4PfmHYcRsT+kxW7sEw
+	1B4Umrfj3b+w3G7UBRGAZcnwv2UNd+6XbqWbCFGp5E1qoxA7dW3AQB9vjkZ5cHqdnmdQfTrh7wJ
+	djWbKRDZfO2Nq04yblWpzjoi6haSz0e/4d72ta9xYU63J0zae71tGNXDmp+Q41KdiPsqTzrAPyX
+	F1u/3UKSZLE9guTbT1WnIvJMIqyB4
+X-Google-Smtp-Source: AGHT+IFCdyxxpgiXvUfdPu0jSkipTrD4cYHne5e/pQOWtiT7Jg2VilLFWXWjFeMaxSOCIlf6n/Wo6g==
+X-Received: by 2002:a05:6512:3e1a:b0:55e:a69:f4a3 with SMTP id 2adb3069b0e04-55f6b19a1a4mr3693761e87.6.1757082338231;
+        Fri, 05 Sep 2025 07:25:38 -0700 (PDT)
+Received: from [10.214.35.248] ([80.93.240.68])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5608ace81a7sm1775871e87.74.2025.09.05.07.25.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Sep 2025 07:25:37 -0700 (PDT)
+Message-ID: <732359e4-8b8b-4925-8d66-2531e7a22b73@gmail.com>
+Date: Fri, 5 Sep 2025 16:25:14 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250903084012.A8dd-A5z@linutronix.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/vmalloc, mm/kasan: respect gfp mask in
+ kasan_populate_vmalloc()
+To: Uladzislau Rezki <urezki@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, Michal Hocko <mhocko@kernel.org>,
+ Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
+ stable@vger.kernel.org
+References: <20250831121058.92971-1-urezki@gmail.com>
+ <20250831122410.fa3dcddb4a11757ebb16b376@linux-foundation.org>
+ <aLVuw2UkYUcL_Oi0@pc638.lan>
+Content-Language: en-US
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <aLVuw2UkYUcL_Oi0@pc638.lan>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 03, 2025 at 10:40:12AM +0200, Sebastian Andrzej Siewior wrote:
-> On 2025-08-26 10:43:20 [+0200], Nam Cao wrote:
-> > On Tue, Jul 15, 2025 at 02:46:34PM +0200, Nam Cao wrote:
-> > > The ready event list of an epoll object is protected by read-write
-> > > semaphore:
-> > > 
-> > >   - The consumer (waiter) acquires the write lock and takes items.
-> > >   - the producer (waker) takes the read lock and adds items.
-> > > 
-> > > The point of this design is enabling epoll to scale well with large number
-> > > of producers, as multiple producers can hold the read lock at the same
-> > > time.
-> > > 
-> > > Unfortunately, this implementation may cause scheduling priority inversion
-> > > problem. Suppose the consumer has higher scheduling priority than the
-> > > producer. The consumer needs to acquire the write lock, but may be blocked
-> > > by the producer holding the read lock. Since read-write semaphore does not
-> > > support priority-boosting for the readers (even with CONFIG_PREEMPT_RT=y),
-> > > we have a case of priority inversion: a higher priority consumer is blocked
-> > > by a lower priority producer. This problem was reported in [1].
-> > > 
-> > > Furthermore, this could also cause stall problem, as described in [2].
-> > > 
-> > > Fix this problem by replacing rwlock with spinlock.
-> > 
-> > Hi Christian,
-> > 
-> > May I know your plan with this patch? Are you still waiting for something?
-> > 
-> > You may still understandably be paranoid about epoll due to the last
-> > regression. But it's been weeks, and this patch is quite simple, so I start
-> > to wonder if it is forgotten.
+
+
+On 9/1/25 12:00 PM, Uladzislau Rezki wrote:
+> On Sun, Aug 31, 2025 at 12:24:10PM -0700, Andrew Morton wrote:
+>> On Sun, 31 Aug 2025 14:10:58 +0200 "Uladzislau Rezki (Sony)" <urezki@gmail.com> wrote:
+>>
+>>> kasan_populate_vmalloc() and its helpers ignore the caller's gfp_mask
+>>> and always allocate memory using the hardcoded GFP_KERNEL flag. This
+>>> makes them inconsistent with vmalloc(), which was recently extended to
+>>> support GFP_NOFS and GFP_NOIO allocations.
+>>>
+>>> Page table allocations performed during shadow population also ignore
+>>> the external gfp_mask. To preserve the intended semantics of GFP_NOFS
+>>> and GFP_NOIO, wrap the apply_to_page_range() calls into the appropriate
+>>> memalloc scope.
+>>>
+>>> This patch:
+>>>  - Extends kasan_populate_vmalloc() and helpers to take gfp_mask;
+>>>  - Passes gfp_mask down to alloc_pages_bulk() and __get_free_page();
+>>>  - Enforces GFP_NOFS/NOIO semantics with memalloc_*_save()/restore()
+>>>    around apply_to_page_range();
+>>>  - Updates vmalloc.c and percpu allocator call sites accordingly.
+>>>
+>>> To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+>>> Cc: <stable@vger.kernel.org>
+>>> Fixes: 451769ebb7e7 ("mm/vmalloc: alloc GFP_NO{FS,IO} for vmalloc")
+>>> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+>>
+>> Why cc:stable?
+>>
+>> To justify this we'll need a description of the userspace visible
+>> effects of the bug please.  We should always provide this information
+>> when fixing something.  Or when adding something.  Basically, all the
+>> time ;)
+>>
+> Yes, i am not aware about any report. I was thinking more about that
+> "mm/vmalloc: alloc GFP_NO{FS,IO} for vmalloc" was incomplete and thus
+> is a good candidate for stable.
 > 
-> A friendly reminder.
+> We can drop it for the stable until there are some reports from people.
+> If there are :)
+> 
 
-Sorry, this apparently fell through the cracks. Taken care of now!
+xfs calls vmalloc with GFP_NOFS, so this bug could lead to deadlock and worth
+the stable tag.
+
+There was a report here https://lkml.kernel.org/r/686ea951.050a0220.385921.0016.GAE@google.com
+
+
+> Thanks!
+> 
+> --
+> Uladzislau Rezki
+> 
+
 
