@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-177816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF947B45803
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 14:42:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C93B4582B
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 14:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8FBF64E34F9
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 12:42:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 245D71C27FF0
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 12:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D4834AB1D;
-	Fri,  5 Sep 2025 12:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F8F34F499;
+	Fri,  5 Sep 2025 12:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="WDuZ/8jM"
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="4zKMKk0G"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BE2345745
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 12:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B062F2E;
+	Fri,  5 Sep 2025 12:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757076150; cv=none; b=BnVY+gPqef5KgUwglds61BnKeDH6t8HSsL+i1gqNs2W0lSvMepWjhcLTe+yLgAcUe/B4lNYMyHQUObX9iio9Lak+CaYTZgZzvBeMmkmOzU3HdJRtEbfp6DAtT39DKRjBZ7q7Utwn6maxD6yM1BCgoMhXEUS3Ado1kDAWzze59SQ=
+	t=1757076633; cv=none; b=hzXG9ca/0JB8PRgmVHOWau/nL+SKirj5I+0NxfCnJaQeaNAOee5bZngcxGI6ZbWLibeqGW/uCy3rAuySR2s3/n6yr+H3xDx6NKZ5YcF/d4HncO9NGINpnrwcDRdHvw15QR9Q7wlo19UMABlfuFdLhygN1jpLzmi7A1fzSrwtIjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757076150; c=relaxed/simple;
-	bh=+rbhCuPaIK4kFW2LQu3JgFwOqrKrtKGEDe6S3X2GWAA=;
+	s=arc-20240116; t=1757076633; c=relaxed/simple;
+	bh=tlGgOA/sfWBvfUawxF7mc/eLFymheu0RUCB1qgZV2Jo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QjCHfYw7U0e9KxFKmZ5z5nTx4suJPAm/f0CR5hm5qf8mhagkK+6Kd1aXq2irMRtk9iSolcFFlPMukVIs2HJiZA4+HJ2vnESyrRqLgSx9Hh69CxzXXC0VEDXt97GNSKfad91km2C8QznxU5f4vqQvAUI4mh/OYdgdxcqGHjNWvds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=WDuZ/8jM; arc=none smtp.client-ip=85.214.250.239
+	 Content-Type:Content-Disposition:In-Reply-To; b=E/GGGH5+O4EYZEOGVksw6oPtvhpLmfbyFVONrU2rNAh3UGaQu099mi/EYu0x+e8PP/AKZnBIoESMREtRBntew5TJRq+ZU0c3ZwHBwkArE/s+dB10f5HOTfkLP68yj/Gal2GTNDItfuR8jEwuvhvpzi2OIaqdAu64ANvG2LCWIVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=4zKMKk0G; arc=none smtp.client-ip=85.214.250.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Received: from 8bytes.org (p54921b16.dip0.t-ipconnect.de [84.146.27.22])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id 3A4DF54B6D;
-	Fri,  5 Sep 2025 14:42:26 +0200 (CEST)
+	by mail.8bytes.org (Postfix) with ESMTPSA id DAA5354B38;
+	Fri,  5 Sep 2025 14:50:29 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1757076146;
-	bh=+rbhCuPaIK4kFW2LQu3JgFwOqrKrtKGEDe6S3X2GWAA=;
+	s=default; t=1757076630;
+	bh=tlGgOA/sfWBvfUawxF7mc/eLFymheu0RUCB1qgZV2Jo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WDuZ/8jM/PznFTQFnbaTun4O8nHyU2C3ByGtM8ihMhTznUmRl0D6ZWWbz/UH2dP/8
-	 Soy88l1BPKOBJ2ydmPXUP/vfW2Zg7pIuO0LIbug2WZf2ZYItOQcRmQw09YeeXVJCbW
-	 TVzz3/wS/kFSgj6Kjnv5D0Pl8U1dM3GKGh9JtGXCx9GOCB4lPxxQSX4qz09qq4F5jD
-	 Z/rWtjtpdhDHum8i4zs9U1swnuvdPwcl1KmJ8hBXmF+r08W0MLVqma96auD3kQhB4Y
-	 zP0VkidO9dQo7zdHXrdXEwLfmNBY3Ac/b9IXcGuYIluXEzhDEAPbecxODxZUSpxZvd
-	 QJY7lhnEWCa8A==
-Date: Fri, 5 Sep 2025 14:42:25 +0200
+	b=4zKMKk0GBPEZ6dowrd2trNVKXuwyazxMc6H356C31kbkoQZuqTeZf7kejIT7JOk95
+	 OVLT7GKyUsGwWUxuVEm+jnN7ytz8IrDQnS8uO9OpQRKoxHzDg11TS+dRLD8FRJ7qe5
+	 5m7jdIX6WA3USuoQO2qOErHsBi2VdPvDjoqi+LmZM8xseoXJQeBctEMZE548kO6Y2Z
+	 hzVJNAvMCIOAYP9HSbfulOf+5IDJWGQxOwNyZQt/EgliEBKzHvglWaDL2luXbPsfrp
+	 nby1vZar2EkNOP6ANzfskQRBPCjQvJ2Ad7ERTxynaZFIfICYfPvzcn5bGsQTHI03p0
+	 kJWB6EnHavgNw==
+Date: Fri, 5 Sep 2025 14:50:28 +0200
 From: Joerg Roedel <joro@8bytes.org>
-To: Zhen Ni <zhen.ni@easystack.cn>
-Cc: suravee.suthikulpanit@amd.com, will@kernel.org, robin.murphy@arm.com,
-	iommu@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] iommu/amd: Fix ivrs_base memleak in
- early_amd_iommu_init()
-Message-ID: <aLrase4rA1Thk4Jy@8bytes.org>
-References: <20250822024915.673427-1-zhen.ni@easystack.cn>
+To: Matthew Rosato <mjrosato@linux.ibm.com>
+Cc: schnelle@linux.ibm.com, will@kernel.org, robin.murphy@arm.com,
+	gerald.schaefer@linux.ibm.com, jgg@ziepe.ca, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+	stable@vger.kernel.org, Cam Miller <cam@linux.ibm.com>
+Subject: Re: [PATCH] iommu/s390: Fix memory corruption when using identity
+ domain
+Message-ID: <aLrclKHjVgTrNWA_@8bytes.org>
+References: <20250827210828.274527-1-mjrosato@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,17 +64,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250822024915.673427-1-zhen.ni@easystack.cn>
+In-Reply-To: <20250827210828.274527-1-mjrosato@linux.ibm.com>
 
-On Fri, Aug 22, 2025 at 10:49:15AM +0800, Zhen Ni wrote:
-> Fix a permanent ACPI table memory leak in early_amd_iommu_init() when
-> CMPXCHG16B feature is not supported
+On Wed, Aug 27, 2025 at 05:08:27PM -0400, Matthew Rosato wrote:
+> zpci_get_iommu_ctrs() returns counter information to be reported as part
+> of device statistics; these counters are stored as part of the s390_domain.
+> The problem, however, is that the identity domain is not backed by an
+> s390_domain and so the conversion via to_s390_domain() yields a bad address
+> that is zero'd initially and read on-demand later via a sysfs read.
+> These counters aren't necessary for the identity domain; just return NULL
+> in this case.
 > 
-> Fixes: 82582f85ed22 ("iommu/amd: Disable AMD IOMMU if CMPXCHG16B feature is not supported")
+> This issue was discovered via KASAN with reports that look like:
+> BUG: KASAN: global-out-of-bounds in zpci_fmb_enable_device
+> when using the identity domain for a device on s390.
+> 
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+> Fixes: 64af12c6ec3a ("iommu/s390: implement iommu passthrough via identity domain")
+> Reported-by: Cam Miller <cam@linux.ibm.com>
+> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
 > ---
->  drivers/iommu/amd/init.c | 3 ++-
+>  drivers/iommu/s390-iommu.c | 3 ++-
 >  1 file changed, 2 insertions(+), 1 deletion(-)
 
 Applied for -rc, thanks.
