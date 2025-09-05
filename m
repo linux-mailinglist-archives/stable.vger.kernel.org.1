@@ -1,132 +1,134 @@
-Return-Path: <stable+bounces-177786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3878B44EC1
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 09:10:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58965B44EB7
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 09:09:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 748DA1C27F79
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 07:10:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36D8D7A216C
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 07:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA29289367;
-	Fri,  5 Sep 2025 07:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933112D3732;
+	Fri,  5 Sep 2025 07:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="zjR5YD3g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJrhCRVf"
 X-Original-To: stable@vger.kernel.org
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.54])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221A6DF71
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 07:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDA232F76C;
+	Fri,  5 Sep 2025 07:09:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757056198; cv=none; b=k5JwKl/u1P6tJXaxYhcFWw8VVNzqZNFXIsNBj5l/2iPBs63d7DqEi+0z42GZzmgod4K4UeY77TXPDRcBPQPM8jYjB9EuJUEgAlhbsHDwSNdBkaB0WaoMIlYy+so+pr7T/QYXOXGruXpgv/aYDYiiZGM60A4hVcDQxfQHCfHF5I8=
+	t=1757056152; cv=none; b=buMO+qa7gsxZCSnvvgoiz72FR7yALHFImNZP5h4mOaEdlpPPU9hkNiJ92nBFXZBEr8Qu/u4IuWGCTk9WVsyrLjVJU4+PLeKaXuxxMLIynPpoz3Du+MFN37GUFdozOjjkwg0T5QrzrVqDHNCdMpmpKM2CJATQbZFKgVYSuz0Ho+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757056198; c=relaxed/simple;
-	bh=OC4o1i94qVpKoZyQ/s+YuCDrzE4DA4F/IrVsGdCobkw=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=Y+yBgFL2oeCxfa+3IaoHPjc88B3FTSnv6xTS1hTPsJWk0QDqrm+Q35sQ94f1pNf74AO6swW7TMUU54W6GiZ7RnPYRUZJJbY6uq/Q3vXAbxbH7PglPGh4ZIHvtC1gDr7tUShYOCIDEk1ZzJ1KOVx9vSBxfyFMKit9B8kqpYprcCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=zjR5YD3g; arc=none smtp.client-ip=43.163.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1757055886;
-	bh=crFPl5YHNuT6YJMa1eIlpsdXSZrYTWQTPH2BOt4SdgE=;
-	h=From:To:Cc:Subject:Date;
-	b=zjR5YD3gHKccFGt1QnyqbzfveyxncbT654EPBq9OO8dTNVRPX2lKgnM2KTs59nrz4
-	 ug5j8rf9Rn2IR7v47ZNJ5YQ5NOlUDEgWJZX0NcfljPsnNAuLRL6yJc3hs+LTXU6t27
-	 G07EMw2+2EYD5S12yPSGLp5GNZERHXfHDrwz4mTQ=
-Received: from LAPTOP-HOSUGD0G.wrs.com ([120.244.194.248])
-	by newxmesmtplogicsvrszb20-0.qq.com (NewEsmtp) with SMTP
-	id 11A3C006; Fri, 05 Sep 2025 15:04:26 +0800
-X-QQ-mid: xmsmtpt1757055866tghwkxzoq
-Message-ID: <tencent_ADD77C7E5C48525937E1C0C0D836B4D02A0A@qq.com>
-X-QQ-XMAILINFO: NY3HYYTs4gYS1/jI0bDsh1R0fvDkewYvv5sKdLGIIQjgoS32DvvRf+0XfUdz8A
-	 W1L3DEp70v1/gpAChjzGGQrZhpuyiUUTn/TIB1sJkOhwHO4ARrGItHCwYlVFsDBH2THCUMeffOU+
-	 +B50hbRCENPhK6hz0QT7Seara4zNCsTwEzFi7lHSmSzftTyPIQTyZttDKn5kWfTMMkH4V5WqbOLu
-	 e3GiQV6dkowezjFBN07Mrm497VWMZvrUgXhRGdX6skc6H2UpfqrfLjdkU9vFSXXzX38JCsiUEmAZ
-	 tWgN0bnxa3NT2yLd96Z3fmNuzzGcZtQOM+oL1x7mybphIPs6FWF8Uuk64kOQU/l7FEVvcxOIjcwu
-	 5neDbKGKUHW30T50DMjCarJVOf4IDcH1lVkn1YnHqSRTxzMOMkcTmdLVrWvP6CmDU815f/eYXQZB
-	 UuJJQEwxLNnXG/3Qw0/mxf4VFFBNJok0iAEq+pmXMGyaIg98tCW0mj6KU10eDvyWYTTqQEsD+Uq9
-	 P1bdD2f9p03sQZkYArHWTxAy0/UzrZHg/EFxZVQzRSBP8/i8KXAEu2PFQpzTvtZ3wZVYdU+uzFNs
-	 kQ5W90EscRj7xu6UlvghR3u7jjVaeQzjV7XOPVs5nCmjtSuHLSKSzyYWZAGzacp+rdF1PBekCNDS
-	 /4jhWAVa3OJV7e2FRFZ2jQUdawAsserfjdya1wPSjydsHeCyAMyd87rQvXp50AOt/897kOZZCKYL
-	 Pgdhv0aj91uTehyPSGrsVOk8F4MOjz+9Nt78826P3ljEoU8LqX87y5Ya4S3ECl1/HI2F7XrJDnm7
-	 b1wG4UXFeb4Y7blzyaq0aCtPDip2fF5di8jcrZO1gFkY6pqT1rItQgmCLIOSItAOqJv2KD2jpDjz
-	 /RDmUBXVpy7evElG9rBG19EDw46Kun5S8Hcnr3AgnvmUnauO137JkV7t8sAQeBfmNjNnjjr23r4B
-	 q9JQ8oKfjZv/r6Zytn1lJ4t+eHYSdki6PrqaGPwe2o5U+izL2cZ8kO4oLKWgXU+5SD4zRWO4bsO5
-	 xO0VYlytRGAi5s4uxyS8knbSo9YRU=
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
-From: alvalan9@foxmail.com
-To: gregkh@linuxfoundation.org,
+	s=arc-20240116; t=1757056152; c=relaxed/simple;
+	bh=uW6MvFBs8s7onCuHdD02j3rhqcGvGTFKLr5+U/ZCBNc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EkN/YyCyHIgPLMBg7F3qVwCPlSl/9kNke1TdMUTbF61b9OX0b5UdDRjgvErorxQaUwTmyOTMioNT3GetAyTUhY+p2zxdqN8MYYc79ZeanVLEUja+vewiGkdZYu9UfiUGc42+Va1o28fXrffXcAOfpD8i2NCfRooQRAYOCcHKS6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJrhCRVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C477C4CEF1;
+	Fri,  5 Sep 2025 07:09:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1757056151;
+	bh=uW6MvFBs8s7onCuHdD02j3rhqcGvGTFKLr5+U/ZCBNc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kJrhCRVfXTWCWu3txFyy9ohboIYaRM+La8MSMSlWRhC6cAVnNAiJTSxeIVAPxKmc1
+	 RbGcPOaCjVAJvmlIA3WJfFjWQpmuazpWp8gxNH+QF1R2CRvri0kc/bIHGE/EWC0Ri8
+	 K7xV1SL50L01pD8a2JxL9kvXbbFgpSPFQp/6gWMs=
+Date: Fri, 5 Sep 2025 09:09:08 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ming Wang <wangming01@loongson.cn>
+Cc: WangYuli <wangyuli@uniontech.com>, ardb@kernel.org,
+	chenhuacai@kernel.org, chenhuacai@loongson.cn, kernel@xen0n.name,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, masahiroy@kernel.org, nathan@kernel.org,
+	ndesaulniers@google.com, nicolas@fjasle.eu, sashal@kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Hung <alex.hung@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.1.y] drm/amd/display: Check link_res->hpo_dp_link_enc before using it
-Date: Fri,  5 Sep 2025 15:03:58 +0800
-X-OQ-MSGID: <20250905070358.11097-1-alvalan9@foxmail.com>
-X-Mailer: git-send-email 2.34.1
+Subject: Re: [PATCH 6.1&6.6 0/3] kbuild: Avoid weak external linkage where
+ possible
+Message-ID: <2025090549-mannish-tremor-2469@gregkh>
+References: <2024120635-wham-campsite-b62b@gregkh>
+ <F6E14B0130692444+20250206083705.63378-1-wangyuli@uniontech.com>
+ <2025020611-olive-gluten-fa45@gregkh>
+ <17f2c722-a32b-482b-9363-6a415443fb40@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <17f2c722-a32b-482b-9363-6a415443fb40@loongson.cn>
 
-From: Alex Hung <alex.hung@amd.com>
+On Fri, Sep 05, 2025 at 02:49:44PM +0800, Ming Wang wrote:
+> Hi Greg, all,
+> 
+> On 2/6/25 18:03, Greg KH wrote:
+> > On Thu, Feb 06, 2025 at 04:37:02PM +0800, WangYuli wrote:
+> > > Hi, Greg,
+> > > 
+> > > It's rather unfortunate that currently, almost all Linux distributions
+> > > supporting LoongArch are using LTS kernels version v6.6 or older, such as
+> > > openEuler and deepin. [1][2]
+> > > 
+> > > If this bugfix isn't merged into linux-stable, then every single distro
+> > > kernel team will have to waste time fixing the same darn bug over and
+> > > over, even though it's already fixed in later kernels.
+> > > 
+> > > This would really make LTS look like it's failing to serve its intended
+> > > purpose. And I'm sure all of us do not want to see something so terrible
+> > > happen.
+> > 
+> > LTS is here to ensure that the original release of these branches, keeps
+> > working for that branch.  Adding support for newer toolchains sometimes
+> > happens, but is not a requirement or a normal thing to do as that really
+> > isn't a "regression", right?
+> > 
+> > Most of the time, fixing things up for newer compilers is simple.
+> > Sometimes it is not simple.  The "not simple" ones we usually just do
+> > not backport as that causes extra work for everyone over time.
+> > 
+> > As for the distros like openEuler, and deepin, they are free to add
+> > these patches there, on top of their other non-LTS patches, right?
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> I'm writing to follow up on this important discussion. I have carefully
+> read the entire thread, including your explanation of the LTS philosophy
+> regarding support for new toolchains. I understand and respect the
+> principle that LTS aims to maintain stability for the environment in
+> which it was released, and that adapting to future toolchains is
+> primarily a distributor's responsibility.
+> 
+> However, I would like to respectfully ask for a reconsideration by
+> framing this issue from a slightly different perspective, based on the
+> excellent technical analysis provided by Xi Ruoyao and Ard Biesheuvel.
 
-[ Upstream commit 0beca868cde8742240cd0038141c30482d2b7eb8 ]
+<snip>
 
-[WHAT & HOW]
-Functions dp_enable_link_phy and dp_disable_link_phy can pass link_res
-without initializing hpo_dp_link_enc and it is necessary to check for
-null before dereferencing.
+i'm sorry, but for an email thread that happened 6+ months ago, it's a
+bit hard to try to remember anything involved in it.
 
-This fixes 2 FORWARD_NULL issues reported by Coverity.
+Heck, I can't remember an email thread from last week.
 
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ Minor context change fixed. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
----
- drivers/gpu/drm/amd/display/dc/link/link_hwss_hpo_dp.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Remember, some of us get 1000+ emails a day to deal with.
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_hwss_hpo_dp.c b/drivers/gpu/drm/amd/display/dc/link/link_hwss_hpo_dp.c
-index 153a88381f2c..fd9809b17882 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_hwss_hpo_dp.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_hwss_hpo_dp.c
-@@ -29,6 +29,8 @@
- #include "dc_link_dp.h"
- #include "clk_mgr.h"
+If you feel a patch set should be applied to a stable tree, and it has
+been rejected in the past, feel free to resubmit it with all of the new
+information about why the previous rejection was wrong and why it really
+should be applied this time.  Otherwise, there's really nothing I could
+possibly do here as the patches are long gone from everyone's review
+queues.
 
-+#define DC_LOGGER link->ctx->logger
-+
- static enum phyd32clk_clock_source get_phyd32clk_src(struct dc_link *link)
- {
- 	switch (link->link_enc->transmitter) {
-@@ -224,6 +226,11 @@ static void disable_hpo_dp_link_output(struct dc_link *link,
- 		const struct link_resource *link_res,
- 		enum signal_type signal)
- {
-+	if (!link_res->hpo_dp_link_enc) {
-+		DC_LOG_ERROR("%s: invalid hpo_dp_link_enc\n", __func__);
-+		return;
-+	}
-+
- 	if (IS_FPGA_MAXIMUS_DC(link->dc->ctx->dce_environment)) {
- 		disable_hpo_dp_fpga_link_output(link, link_res, signal);
- 	} else {
---
-2.34.1
+Also, why aren't you just using 6.12.y now?  :)
 
+thanks,
+
+greg k-h
 
