@@ -1,77 +1,73 @@
-Return-Path: <stable+bounces-177795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0ABB45478
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 12:22:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A58B4551D
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 12:45:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F58458365B
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 10:22:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C64511C23296
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 10:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9BD2D542B;
-	Fri,  5 Sep 2025 10:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A172E2EFC;
+	Fri,  5 Sep 2025 10:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="fhcTe84v"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AiWYY7EU"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A482BE02D;
-	Fri,  5 Sep 2025 10:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750E52E54D3
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 10:41:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757067731; cv=none; b=SCGa1JjT+Y4uAuVZK3dsAcm1IUMyLiuUtpWmdkODp58ZCBvL48AaloKIEjDZ903sf1Kn2wvC/lyu4BX0wRvvpIZ6cOqeDu+XVx5C09p2SUMaBaMSJ5OX1z9aiuMSX1y+B9xX5arhq6CMYpJ1EHTcyk+1dUNKFyFncYDoTte2a74=
+	t=1757068919; cv=none; b=f1HNKbfW/Ri69YTVBibOjfZnIdbsuL5XFtHmIV9LkwDwLJQrJhQIg8mtkjIUq3SzPbCJbvhOApY8nJIJpHQ08ZKlSqZ01Y6wQqsXECbTiPUj6v8Dv1O5ZFtKijEAlCU36IQ9l/SrVbnBFGtQahYb8Ke/qRA1XGo/BW1sSOYhDPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757067731; c=relaxed/simple;
-	bh=9Qap+eGs7ZQYwgm1QJ8AAh/l4wMnkb7/hdNbQnyD2LA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a8sW5dJSXMncEwkp5NfOUFjcZNjP9PwUuwOcODQQdiQqRXgauiNXQsc8KZb0lDEDlUF6NuuImLL48kLpjC8T4UV3GdG0NIG4BCYiJEPPsjoRH3MJKyy6snP/59YdVD8ZiOa4mtWSjgz1MmPa+MNBgINsdQXgbfWnhVshl8DthBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=fhcTe84v; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 585AFhjU001934;
-	Fri, 5 Sep 2025 10:22:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=UthwyRnhGLwJ6SHA
-	FNKvY9tkC4zGqchzQLCene09JYE=; b=fhcTe84vcdCtp7IbDAj5J6umuB8zBzaG
-	P8EN5wecsdGzKsoWumk+nIrjTTd1dkwIsRsEnSkzf6a6EZjB8bQJPrB0rsqHD6Nr
-	jRfvBfnx7WcEORJ2KERt7JLmO8k/cbRxOxiai+gdFkxBHJOt4lC3I/t+N28GsOcp
-	gY8H2XeZD4Pm3gLLLgUfbYMYHqEHbos0LBYZbhSET7uCQkNEmOTOtboRIgtNlI/z
-	NG+tdxPucMHL5QVh29/mB9380Yl/i/Ol2oagrL1NVj2PLTf9K1Ldh8BnfT24cFIq
-	pANsFrBFF60Ds/YDFoGesAx7IBKVrB1hz5n+6oglBG9UhMBKNBu/lw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48ywxdr077-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 05 Sep 2025 10:22:03 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5859Jbf6034471;
-	Fri, 5 Sep 2025 10:22:03 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48v01s038v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 05 Sep 2025 10:22:03 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 585AM2VU011858;
-	Fri, 5 Sep 2025 10:22:02 GMT
-Received: from lab61.no.oracle.com (lab61.no.oracle.com [10.172.144.82])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48v01s036y-1;
-	Fri, 05 Sep 2025 10:22:02 +0000
-From: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>
-To: Allison Henderson <allison.henderson@oracle.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: stable@vger.kernel.org,
-        =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-        rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4] rds: ib: Remove unused extern definition
-Date: Fri,  5 Sep 2025 12:19:57 +0200
-Message-ID: <20250905101958.4028647-1-haakon.bugge@oracle.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1757068919; c=relaxed/simple;
+	bh=IoiYsvwp+n5saJuhGWWB0NI1sBGBy5zXDS1pu1r878c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KbtIOLxUrYxvSElfv63OUNrQ4SgEMozrU5hhVBwvFj9q9HA9zMyLIZbvY81ZEYi0GpjXL+bSQScrcIhCO2lLVZk+2pSB7pmv32wggMPE8rZoAwY6722q80rGGkraQti9ss5SM1dTGRrmqrKjHi3gf/dDeBTUtFk4epGws7qz5uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AiWYY7EU; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757068917; x=1788604917;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=IoiYsvwp+n5saJuhGWWB0NI1sBGBy5zXDS1pu1r878c=;
+  b=AiWYY7EUrinkd3cYzEf754uGHL+Ni1T9x0dgcK5PwhTiW65IehhNY5Fo
+   2eKZrbQFd4MMF9rXGz1SoMs/Twml7EhFFeYzfxsUMgF4RKOHKhx5jm4Ib
+   AJdzgqFbWmecSnIEWMUFpNm4hP90G6VI058kD5Qa3Kz3gE1ZVX9ToKfbr
+   1f4qR2vg4srdfM1j7A24QRUMkxsJHDJfgwOkuBIXiO/iZSo5JtstSiltN
+   uoiFGHVyi1aXarw7c7iAM60pljr2bpJOR2WkgciHW101iO42L+4Bs9lTi
+   u+ijUz4LhPpc3XSuwxcrXkgM2faONh1sQ39zoUv08TgSkVzZRRY12SftU
+   w==;
+X-CSE-ConnectionGUID: Mby6L0S6Ro+ig5WRXdZJew==
+X-CSE-MsgGUID: WCFGArhQRNSeVLGPq10Bww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11543"; a="58629836"
+X-IronPort-AV: E=Sophos;i="6.18,241,1751266800"; 
+   d="scan'208";a="58629836"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2025 03:41:57 -0700
+X-CSE-ConnectionGUID: Zd/HiO9QSAmynFucjeVVoA==
+X-CSE-MsgGUID: FeOS1KwORcqphGJDkaAltw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,241,1751266800"; 
+   d="scan'208";a="171339491"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.246.159])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2025 03:41:54 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org
+Cc: jani.nikula@intel.com,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/i915/power: fix size for for_each_set_bit() in abox iteration
+Date: Fri,  5 Sep 2025 13:41:49 +0300
+Message-ID: <20250905104149.1144751-1-jani.nikula@intel.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,72 +75,52 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-05_03,2025-09-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 bulkscore=0
- suspectscore=0 adultscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509050100
-X-Proofpoint-GUID: BMqJQNtE3aoNiSX-BXnqEAEX98lKcFiY
-X-Proofpoint-ORIG-GUID: BMqJQNtE3aoNiSX-BXnqEAEX98lKcFiY
-X-Authority-Analysis: v=2.4 cv=S7nZwJsP c=1 sm=1 tr=0 ts=68bab9cc cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=M51BFTxLslgA:10 a=yPCof4ZbAAAA:8
- a=VwQbUJbxAAAA:8 a=vqxsdnOqdfS0dGDShygA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA1MDEwMCBTYWx0ZWRfX//8KCIUpvCEi
- QFYiuDDSoUJsOEnA8UsILsvv/6ur2lffIkRy5qYNPNJkyBwYSazRRo8H7a7OKa7NyfL4gJ0VFni
- uM8BgUIA6IReItNjGof1siIt5161vvomV1VwbsKZfIVKqa6LSxmZP8CJBSRac0ieV+HRqdgRGN7
- XjbdwXqJ33BB0Z0yYt/EocER9Ks3HfRBxqiVnQPeDJac+zo6ePpYTIHXZAp4lrkbB/Pv1QeUrLw
- BssTK7kSivEahtlWRs+yS0sgYBC3ndJ96CHFWsHzhPFRThKMlXwC510zX1GeqJA5F+9vuaRHYm3
- ZuJ/rWj71OgbrIlqaGkmVh7y9LAz8+lpDl/Gas/GvrZQr7mWotUPbcqY0XKIcg7CVNL3Itc01QX
- vCa68r28
 
-In the old days, RDS used FMR (Fast Memory Registration) to register
-IB MRs to be used by RDMA. A newer and better verbs based
-registration/de-registration method called FRWR (Fast Registration
-Work Request) was added to RDS by commit 1659185fb4d0 ("RDS: IB:
-Support Fastreg MR (FRMR) memory registration mode") in 2016.
+for_each_set_bit() expects size to be in bits, not bytes. The abox mask
+iteration uses bytes, but it works by coincidence, because the local
+variable holding the mask is unsigned long, and the mask only ever has
+bit 2 as the highest bit. Using a smaller type could lead to subtle and
+very hard to track bugs.
 
-Detection and enablement of FRWR was done in commit 2cb2912d6563
-("RDS: IB: add Fastreg MR (FRMR) detection support"). But said commit
-added an extern bool prefer_frmr, which was not used by said commit -
-nor used by later commits. Hence, remove it.
-
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
-Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
-
+Fixes: 62afef2811e4 ("drm/i915/rkl: RKL uses ABOX0 for pixel transfers")
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: <stable@vger.kernel.org> # v5.9+
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
+ drivers/gpu/drm/i915/display/intel_display_power.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-v3 -> v4:
-      * Added Allison's r-b
-      * Removed indentation for this section
-
-v2 -> v3:
-      * As per Jakub's request, removed Cc: and Fixes: tags
-      * Subject to net-next (instead of net)
-
-v1 -> v2:
-      * Added commit message
-      * Added Cc: stable@vger.kernel.org
----
- net/rds/ib_mr.h | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/net/rds/ib_mr.h b/net/rds/ib_mr.h
-index ea5e9aee4959e..5884de8c6f45b 100644
---- a/net/rds/ib_mr.h
-+++ b/net/rds/ib_mr.h
-@@ -108,7 +108,6 @@ struct rds_ib_mr_pool {
- };
+diff --git a/drivers/gpu/drm/i915/display/intel_display_power.c b/drivers/gpu/drm/i915/display/intel_display_power.c
+index 7340d5a71673..6f56ce939f00 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_power.c
++++ b/drivers/gpu/drm/i915/display/intel_display_power.c
+@@ -1174,7 +1174,7 @@ static void icl_mbus_init(struct intel_display *display)
+ 	if (DISPLAY_VER(display) == 12)
+ 		abox_regs |= BIT(0);
  
- extern struct workqueue_struct *rds_ib_mr_wq;
--extern bool prefer_frmr;
+-	for_each_set_bit(i, &abox_regs, sizeof(abox_regs))
++	for_each_set_bit(i, &abox_regs, BITS_PER_TYPE(abox_regs))
+ 		intel_de_rmw(display, MBUS_ABOX_CTL(i), mask, val);
+ }
  
- struct rds_ib_mr_pool *rds_ib_create_mr_pool(struct rds_ib_device *rds_dev,
- 					     int npages);
+@@ -1639,11 +1639,11 @@ static void tgl_bw_buddy_init(struct intel_display *display)
+ 	if (table[config].page_mask == 0) {
+ 		drm_dbg_kms(display->drm,
+ 			    "Unknown memory configuration; disabling address buddy logic.\n");
+-		for_each_set_bit(i, &abox_mask, sizeof(abox_mask))
++		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask))
+ 			intel_de_write(display, BW_BUDDY_CTL(i),
+ 				       BW_BUDDY_DISABLE);
+ 	} else {
+-		for_each_set_bit(i, &abox_mask, sizeof(abox_mask)) {
++		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask)) {
+ 			intel_de_write(display, BW_BUDDY_PAGE_MASK(i),
+ 				       table[config].page_mask);
+ 
 -- 
-2.43.5
+2.47.2
 
 
