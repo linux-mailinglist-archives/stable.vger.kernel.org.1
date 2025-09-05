@@ -1,50 +1,55 @@
-Return-Path: <stable+bounces-177779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0968B44CEA
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 06:55:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EA99B44CF8
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 07:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5EC87A521B
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 04:53:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34B8D1BC0BFA
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 05:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852E41C5489;
-	Fri,  5 Sep 2025 04:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F28221287;
+	Fri,  5 Sep 2025 05:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qn379iC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKZt52X2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD61524F
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 04:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36EFD211F;
+	Fri,  5 Sep 2025 05:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757048094; cv=none; b=W2+Xvk3wovRNg3SbCdfHa4Ygy8GeHxA6QAOXAiW4Y7q2O5JAEEakSotzirdY/b5fq+C/sD5wTx7G3ZzmuBwy5uZdK0TqFTx+RqaH4zLPVCCLlnhMC0juhpHQvjwpzs/qCWO5D2G6H5w/UzsV4hSesOoHfvkGIh0RFfxRrVVbvak=
+	t=1757048864; cv=none; b=Lh1qQfeMO6/Mx8jC9ZnEO409Yge/vHvoclzg4XPTUQih0nPiITU5cP0iLhb82Ojbn0km2VpJuwMytFA1NBtFwIU+mPNba5seYoonj+8exSfc9LjifDf6ZrVz2IxYL+JXwPsgCOcGxX5XjNMAzovMdYGeA+zkWp7lxvfnd1XxT6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757048094; c=relaxed/simple;
-	bh=bYZcXibkL8oV3xSc7sTXxD4oUn7Tq+EJbDESgldCo3s=;
+	s=arc-20240116; t=1757048864; c=relaxed/simple;
+	bh=Ink7x/UMnv0pA1jyrItyKela2fO1SaLcgrzgep4j6wQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jZfgyfV/0FgYCIwBmv549H3NgAwc7l2b2q9IS4hZ3l6zGCQ6EAfH75xVl/nzVq5aZkEg/anUwXfSlYXQ8XXP463lybjHKXSEdF5GuFd6fvTRlzrj/pJcnlYH8JctejJBg86XTUcGCGoRCHRspM1QH4W7nFc76gXK5RZ3Q7o2ZmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qn379iC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F45C4CEF1;
-	Fri,  5 Sep 2025 04:54:53 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=UFOmkFFxPEDZ+/93mYXpudK3pwaakb36E7o4gfFsJ7ueVcvV4JheDsYATa+oCeyKlScqotSR182BmfHFDbknxCoaOdMaYLpVbjJT0dIgqXxdpbWKGCBDi5svX1OrvSK9ZIcnGiRaou/q3ZC5eH68shfBl3k+pQILCJ6nsnNTznM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKZt52X2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5A2C4CEF1;
+	Fri,  5 Sep 2025 05:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757048093;
-	bh=bYZcXibkL8oV3xSc7sTXxD4oUn7Tq+EJbDESgldCo3s=;
+	s=korg; t=1757048863;
+	bh=Ink7x/UMnv0pA1jyrItyKela2fO1SaLcgrzgep4j6wQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qn379iC+IkUWVML7dCRGdGr4WYqEkMRzaPGI/WSasjETybnlbRQaJNwOAQQjvhqMp
-	 a94Sn15YCVf0N2YdtTsbwKjbiv5MTrvwObVpbFSnbjY3EWir7n3yESAoMFFrwnNNPQ
-	 AQvPymDWXTEHZGgNSAPp6dgV44urwEt5Xfm+VRhM=
-Date: Fri, 5 Sep 2025 06:54:45 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org, sashal@kernel.org
-Subject: Re: [PATCH] Revert "drm/amdgpu: Add more checks to PSP mailbox"
-Message-ID: <2025090522-negligent-starless-d683@gregkh>
-References: <20250904220457.473940-1-alexander.deucher@amd.com>
+	b=PKZt52X2nhRDZT2WTYCyzMa4pjKmL0t/psW5LPAH/Uyo9R00uWucciWf11UoKD82c
+	 POVPQtfesmATN06YTys8w82ZLbD5sJFTCoDMvd5sMilc7TrJIkzkHE3o8AhYBszR6p
+	 dyVFY9aoLZeXW+CuaQOLlTSzx9GJWn1i52Lpuwaw=
+Date: Fri, 5 Sep 2025 07:07:40 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Imre Deak <imre.deak@intel.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.16 139/142] Revert "drm/dp: Change AUX DPCD probe
+ address from DPCD_REV to LANE0_1_STATUS"
+Message-ID: <2025090551-setup-crescent-a670@gregkh>
+References: <20250902131948.154194162@linuxfoundation.org>
+ <20250902131953.603872091@linuxfoundation.org>
+ <aLoJG4Tq4nNwFLu6@ideak-desk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,20 +58,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250904220457.473940-1-alexander.deucher@amd.com>
+In-Reply-To: <aLoJG4Tq4nNwFLu6@ideak-desk>
 
-On Thu, Sep 04, 2025 at 06:04:57PM -0400, Alex Deucher wrote:
-> This reverts commit 165a69a87d6bde85cac2c051fa6da611ca4524f6.
+On Fri, Sep 05, 2025 at 12:48:11AM +0300, Imre Deak wrote:
+> Hi Greg,
 > 
-> This commit is not applicable for stable kernels and
-> results in the driver failing to load on some chips on
-> kernel 6.16.x.  Revert from 6.16.x.
+> On Tue, Sep 02, 2025 at 03:20:41PM +0200, Greg Kroah-Hartman wrote:
+> > 6.16-stable review patch.  If anyone has any objections, please let me know.
 > 
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> Cc: stable@vger.kernel.org # 6.16.x
+> Thanks for queuing this and the corresponding reverts for the other
+> stable trees. This one patch doesn't match what I sent, the address
+> should be changed to DP_TRAINING_PATTERN_SET not to DP_DPCD_REV, see
+> [1]. I still think that's the correct thing to do here conforming to the
+> DP Standard and matching what the upstream kernel does, also solving a
+> link training issue for a DP2.0 docking station.
+> 
+> The reverts queued for the other stable trees are correct, since for
+> now I do not want to change the behavior in those (i.e. those trees
+> should continue to use the DP_DPCD_REV register matching what's been the
+> case since the DPCD probing was introduced).
 
-What is special about 6.16.y that causes this to fail, but yet it works
-in 6.17-rc?
+Ick, why were the values different for different branches?  That feels
+wrong, and is why I missed that.  Can you just send a fix-up patch for
+the one I got wrong?
 
 thanks,
 
