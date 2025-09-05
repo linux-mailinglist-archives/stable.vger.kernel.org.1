@@ -1,261 +1,155 @@
-Return-Path: <stable+bounces-177782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DBC1B44DBA
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 07:54:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C1EAB44DF1
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 08:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACFC0488D47
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 05:54:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16EE97A13D4
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 06:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A72527D776;
-	Fri,  5 Sep 2025 05:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1654296BA7;
+	Fri,  5 Sep 2025 06:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="evy9xbAl"
+	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="Bac3SwvD"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B90B2765E3;
-	Fri,  5 Sep 2025 05:53:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001CD2877D4
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 06:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757051631; cv=none; b=CiJn71CRMh+5VX5PYhqP5/r96PhYxIlO/ilVsHnaFJwN7nppVoR/Gmw9jPS1T20M9cSCjRi981glm8WbpjzgOifeVrCyHU9Ds/X0t8ItgEqhYc829cdaObI0UutJxO/OU9rZpM3eea+dI6yBnfGMOBpUqHmuSZJhFitYDPrPrJc=
+	t=1757053766; cv=none; b=rYYhlk1n2iUMuBooQN/e0hINuZH4H92UyYUna2YHM50kd+8PTuIzBfdJ31ti1Z8x76PZxXLhaqsnfobMSZ7UJQyHrwx3H3b6blgDWKtsnIysslDcAc3lFFx5CpP11PwkIUR+0E1jyXvuRGu+XqcEEeDm2ktnBiRoIq8eGOYBuuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757051631; c=relaxed/simple;
-	bh=6GHT4PiZ6qBzFbzaFMfbG7VyjEvCdedpy+KfqQr0cZ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fX80+qsL+5/MMvTTyyW6dl6VxYf/1XPcM/NPDztLqh9VZdNLl36Up/v3CX7D9qjDxF6WlnrUDxlrWfdKuPpEB2LTMnlJBIborBriVqEeC+An2hZ+XxuJliqqTOZi+IIIbS2LhW7xLb8oww1x3iUcAK97owF0BU5mRFuCQwGcbgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=evy9xbAl; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757051629; x=1788587629;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=6GHT4PiZ6qBzFbzaFMfbG7VyjEvCdedpy+KfqQr0cZ8=;
-  b=evy9xbAlYyNdcPPE6VxRCflsGjIJuI9JiIYpQWA0xoEIMFYwilRxadHF
-   kpG//9Ob5gerU6kHEcFY+LltQ/wO5wjbQfSgcRBIWM7+VBezM31leBB8E
-   +ogWOR+HBIsT2gliPrvREqKqYCbYSIVK87kPAhfbTMjgv4EHvwsQeQ/hY
-   qlE0ePk4rkcJu+Hjfu3SuUm7piCy20ijybBAWok60ZVjMqXtxCL3LeO1D
-   C4Lddzn80vnRm1ibd8QTkOIorTX32Rr8lD3aPc5JB4MT1iWaqXXRnws+B
-   VNmLyyKokeL38GNy9Qhq+aAdR1c3dRXe/ISh2xlwq9tKZfSIl2TPqp5BP
-   w==;
-X-CSE-ConnectionGUID: 6kwxkRpzQMi/R4n8h292ZQ==
-X-CSE-MsgGUID: 0DUBRJ6zTlq6L1LDMjQr+g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11543"; a="70015180"
-X-IronPort-AV: E=Sophos;i="6.18,240,1751266800"; 
-   d="scan'208";a="70015180"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2025 22:53:49 -0700
-X-CSE-ConnectionGUID: Z7MYerB1TmmAc0gm/frbvg==
-X-CSE-MsgGUID: Xl6B3EtVSOqbHDEK8Zr86Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,240,1751266800"; 
-   d="scan'208";a="209257788"
-Received: from allen-box.sh.intel.com ([10.239.159.52])
-  by orviesa001.jf.intel.com with ESMTP; 04 Sep 2025 22:53:45 -0700
-From: Lu Baolu <baolu.lu@linux.intel.com>
-To: Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Jann Horn <jannh@google.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Yi Lai <yi1.lai@intel.com>
-Cc: iommu@lists.linux.dev,
-	security@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4 8/8] iommu/sva: Invalidate stale IOTLB entries for kernel address space
-Date: Fri,  5 Sep 2025 13:51:03 +0800
-Message-ID: <20250905055103.3821518-9-baolu.lu@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250905055103.3821518-1-baolu.lu@linux.intel.com>
-References: <20250905055103.3821518-1-baolu.lu@linux.intel.com>
+	s=arc-20240116; t=1757053766; c=relaxed/simple;
+	bh=IewoYa4/sNEIWeRRtA4YvIv2AUnb+uETo37xTP3tPhE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GuuK+7roSyrKLd5o3lA0NVTZ6fjatbcSyBvnQUzOtI9gyaFjbyXMzt/a9SjZWCrsud3iJ6hCBl3dzKqsKogPOjXwcqqAXX28d9ADTEtLKaNMGGPWSOs4lEWnb0mZ4U0Pe1uG0SYROZzafesMafMy9Sf9Ue9ZjMX+r2YerbGQMMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=Bac3SwvD; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-32b6132e51dso1357371a91.0
+        for <stable@vger.kernel.org>; Thu, 04 Sep 2025 23:29:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc.com; s=google; t=1757053764; x=1757658564; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FW7lMn0AUODjA3RFU0eDriejARFtJxq8hraVOainqwI=;
+        b=Bac3SwvDoIDzc66sPfWaklRouxgTmQGTPBkQ6cqn1b4wVXQNcsU4qHRVPn3UP7CC3W
+         k59f/Ock967WQrwuuHWQusPqjeHVP795Q8QNmOSOI2BP5gh/MS6VWPGRMGQTVfANMbMq
+         /Z4dJNx4QyjbWa4MOkyB6OwOO+lqxilu4o2Qc5oGM/1BZGWAQh21IasiU8ZUYuTT4oXy
+         h8KrgLkH1+bK7lDjvxAOiCKOlwtjYjQFuA+nbVX6mF1+Og9fajAYAb7GlJZuTWSnkK5k
+         AaKnrDvXdLqPASaiEtFyHecq1Vp6eVtMVb48qOJFlEr/QR2fWA3+gEnZns+LGG53PgGE
+         qguw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757053764; x=1757658564;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FW7lMn0AUODjA3RFU0eDriejARFtJxq8hraVOainqwI=;
+        b=S1yR1ClDYjA35/SCMha2IeKMB7f3ekKbVvEogyJMb+thbZd9Qv0jwL3DESNyKbquvV
+         06IQMrW/Nj4gOjh5cNWdPHWnWHX+DeJoDeods8eta8p/rrLCvHcyF54yxVRbcHIQVPd2
+         6Dj3x3q1Gw9gN8AIOnYn3PDgE6DKg5Bj3j6znL2X5MmNrxmYbzIFCZZGrLObOF5Rqpk2
+         /2doYC0BXgd+YXdps73pPfq44PaLlxgy3nfJb3rX1zVptCdoMtFsnMxjEQS76zkBnt4f
+         Zi6bHMWaMmWCzcRN9SZFlRK8ml291VKOCZ7Vrcgs8gVSrezyLm3aZvESFNLaXx9wuzbN
+         eEQw==
+X-Forwarded-Encrypted: i=1; AJvYcCXmESmBQrWQA/XCC3yDZXN0CraQ6csLf1pg4NHSC4WgO7U6+sr9Vt2BzuCJZpk/m1f9JDNIJJ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyV6daXDI29dOoMKEslI0oeD56aHOW1QsdhJfYtq+qBRXP+X5A1
+	AcZUTWwtbr+DXWHJfpFFsyLXV3cL00EyJwqdn2oNzyZO6IJ8kCpe0OG3t6cPp1WlYG4=
+X-Gm-Gg: ASbGnctt9rk05t2cmk3+ulzM1qTPN2MqOf9XfD2Es0C6fwDcJq+qVkpoP1arhstZr40
+	2Q4YxTIWrujNpCWZMKZlCGrSTnzQbr0EN//dtMQpB89p6mQD8P3/QjCj/Q7VdT3MZCWv2K0HCLe
+	j/60y0NCccL6zDHoJfdQjQ86Zsh/GdOFt0FXxPIo65oCRzoXmDkneFCYhjSmHyKj5+/gDL7YK05
+	NwoHbC7vgfQ+0z43r+hb3qvWwnZtcT/5JoSv7KKslMyc51fTOvRaiSaTo9ir7a+h9J/LR2E9yCA
+	thgBl5CF3O8GSQRtbfyI/gxNoH23Gi692feJprrEn4FGrhnUq1TcOCEY4F+Pw1eMLVd5bw3mTQ6
+	tCXzF6l8plwN12KGJcEi+UWsEF+7aOMq1KEeTkWaghScxR518DQHtNvFVOD1vP2DLeyA=
+X-Google-Smtp-Source: AGHT+IGc3VU32PsX6C7ClVKA+lvc5cDeezn9b8o7ZgcI2xpiH2XwVhQRzLUpHdISHH74OneKcDaSiQ==
+X-Received: by 2002:a17:90b:3d87:b0:32b:65e6:ec39 with SMTP id 98e67ed59e1d1-32b65e6f260mr9655069a91.21.1757053764191;
+        Thu, 04 Sep 2025 23:29:24 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:e17:9700:16d2:7456:6634:9626? ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32b694fa438sm6229629a91.29.2025.09.04.23.29.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Sep 2025 23:29:23 -0700 (PDT)
+Message-ID: <97fb026b-54d7-42ec-a57c-51c8c8c44a76@rivosinc.com>
+Date: Fri, 5 Sep 2025 08:29:14 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] riscv: Fix sparse warning about different address
+ spaces
+To: Alexandre Ghiti <alexghiti@rivosinc.com>,
+ kernel test robot <lkp@intel.com>, Al Viro <viro@zeniv.linux.org.uk>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Cyril Bur <cyrilbur@tenstorrent.com>,
+ Jisheng Zhang <jszhang@kernel.org>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250903-dev-alex-sparse_warnings_v1-v1-0-7e6350beb700@rivosinc.com>
+ <20250903-dev-alex-sparse_warnings_v1-v1-2-7e6350beb700@rivosinc.com>
+Content-Language: en-US
+From: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>
+In-Reply-To: <20250903-dev-alex-sparse_warnings_v1-v1-2-7e6350beb700@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-In the IOMMU Shared Virtual Addressing (SVA) context, the IOMMU hardware
-shares and walks the CPU's page tables. The x86 architecture maps the
-kernel's virtual address space into the upper portion of every process's
-page table. Consequently, in an SVA context, the IOMMU hardware can walk
-and cache kernel page table entries.
 
-The Linux kernel currently lacks a notification mechanism for kernel page
-table changes, specifically when page table pages are freed and reused.
-The IOMMU driver is only notified of changes to user virtual address
-mappings. This can cause the IOMMU's internal caches to retain stale
-entries for kernel VA.
 
-A Use-After-Free (UAF) and Write-After-Free (WAF) condition arises when
-kernel page table pages are freed and later reallocated. The IOMMU could
-misinterpret the new data as valid page table entries. The IOMMU might
-then walk into attacker-controlled memory, leading to arbitrary physical
-memory DMA access or privilege escalation. This is also a Write-After-Free
-issue, as the IOMMU will potentially continue to write Accessed and Dirty
-bits to the freed memory while attempting to walk the stale page tables.
+On 03/09/2025 20:53, Alexandre Ghiti wrote:
+> We did not propagate the __user attribute of the pointers in
+> __get_kernel_nofault() and __put_kernel_nofault(), which results in
+> sparse complaining:
+> 
+>>> mm/maccess.c:41:17: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected void const [noderef] __user *from @@     got unsigned long long [usertype] * @@
+>    mm/maccess.c:41:17: sparse:     expected void const [noderef] __user *from
+>    mm/maccess.c:41:17: sparse:     got unsigned long long [usertype] *
+> 
+> So fix this by correctly casting those pointers.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202508161713.RWu30Lv1-lkp@intel.com/
+> Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+> Fixes: f6bff7827a48 ("riscv: uaccess: use 'asm_goto_output' for get_user()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> ---
+>  arch/riscv/include/asm/uaccess.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/riscv/include/asm/uaccess.h b/arch/riscv/include/asm/uaccess.h
+> index 551e7490737effb2c238e6a4db50293ece7c9df9..f5f4f7f85543f2a635b18e4bd1c6202b20e3b239 100644
+> --- a/arch/riscv/include/asm/uaccess.h
+> +++ b/arch/riscv/include/asm/uaccess.h
+> @@ -438,10 +438,10 @@ unsigned long __must_check clear_user(void __user *to, unsigned long n)
+>  }
+>  
+>  #define __get_kernel_nofault(dst, src, type, err_label)			\
+> -	__get_user_nocheck(*((type *)(dst)), (type *)(src), err_label)
+> +	__get_user_nocheck(*((type *)(dst)), (__force __user type *)(src), err_label)
+>  
+>  #define __put_kernel_nofault(dst, src, type, err_label)			\
+> -	__put_user_nocheck(*((type *)(src)), (type *)(dst), err_label)
+> +	__put_user_nocheck(*((type *)(src)), (__force __user type *)(dst), err_label)
+>  
+>  static __must_check __always_inline bool user_access_begin(const void __user *ptr, size_t len)
+>  {
+> 
 
-Currently, SVA contexts are unprivileged and cannot access kernel
-mappings. However, the IOMMU will still walk kernel-only page tables
-all the way down to the leaf entries, where it realizes the mapping
-is for the kernel and errors out. This means the IOMMU still caches
-these intermediate page table entries, making the described vulnerability
-a real concern.
+Hi Alex,
 
-To mitigate this, a new IOMMU interface is introduced to flush IOTLB
-entries for the kernel address space. This interface is invoked from the
-x86 architecture code that manages combined user and kernel page tables,
-specifically when a kernel page table update requires a CPU TLB flush.
+LGTM,
 
-Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
-Cc: stable@vger.kernel.org
-Suggested-by: Jann Horn <jannh@google.com>
-Co-developed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
----
- drivers/iommu/iommu-sva.c | 29 ++++++++++++++++++++++++++++-
- include/linux/iommu.h     |  4 ++++
- mm/pgtable-generic.c      |  2 ++
- 3 files changed, 34 insertions(+), 1 deletion(-)
+Reviewed-by: Clément Léger <cleger@rivosinc.com>
 
-diff --git a/drivers/iommu/iommu-sva.c b/drivers/iommu/iommu-sva.c
-index 1a51cfd82808..d236aef80a8d 100644
---- a/drivers/iommu/iommu-sva.c
-+++ b/drivers/iommu/iommu-sva.c
-@@ -10,6 +10,8 @@
- #include "iommu-priv.h"
- 
- static DEFINE_MUTEX(iommu_sva_lock);
-+static bool iommu_sva_present;
-+static LIST_HEAD(iommu_sva_mms);
- static struct iommu_domain *iommu_sva_domain_alloc(struct device *dev,
- 						   struct mm_struct *mm);
- 
-@@ -42,6 +44,7 @@ static struct iommu_mm_data *iommu_alloc_mm_data(struct mm_struct *mm, struct de
- 		return ERR_PTR(-ENOSPC);
- 	}
- 	iommu_mm->pasid = pasid;
-+	iommu_mm->mm = mm;
- 	INIT_LIST_HEAD(&iommu_mm->sva_domains);
- 	/*
- 	 * Make sure the write to mm->iommu_mm is not reordered in front of
-@@ -132,8 +135,13 @@ struct iommu_sva *iommu_sva_bind_device(struct device *dev, struct mm_struct *mm
- 	if (ret)
- 		goto out_free_domain;
- 	domain->users = 1;
--	list_add(&domain->next, &mm->iommu_mm->sva_domains);
- 
-+	if (list_empty(&iommu_mm->sva_domains)) {
-+		if (list_empty(&iommu_sva_mms))
-+			iommu_sva_present = true;
-+		list_add(&iommu_mm->mm_list_elm, &iommu_sva_mms);
-+	}
-+	list_add(&domain->next, &iommu_mm->sva_domains);
- out:
- 	refcount_set(&handle->users, 1);
- 	mutex_unlock(&iommu_sva_lock);
-@@ -175,6 +183,13 @@ void iommu_sva_unbind_device(struct iommu_sva *handle)
- 		list_del(&domain->next);
- 		iommu_domain_free(domain);
- 	}
-+
-+	if (list_empty(&iommu_mm->sva_domains)) {
-+		list_del(&iommu_mm->mm_list_elm);
-+		if (list_empty(&iommu_sva_mms))
-+			iommu_sva_present = false;
-+	}
-+
- 	mutex_unlock(&iommu_sva_lock);
- 	kfree(handle);
- }
-@@ -312,3 +327,15 @@ static struct iommu_domain *iommu_sva_domain_alloc(struct device *dev,
- 
- 	return domain;
- }
-+
-+void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end)
-+{
-+	struct iommu_mm_data *iommu_mm;
-+
-+	guard(mutex)(&iommu_sva_lock);
-+	if (!iommu_sva_present)
-+		return;
-+
-+	list_for_each_entry(iommu_mm, &iommu_sva_mms, mm_list_elm)
-+		mmu_notifier_arch_invalidate_secondary_tlbs(iommu_mm->mm, start, end);
-+}
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index c30d12e16473..66e4abb2df0d 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -1134,7 +1134,9 @@ struct iommu_sva {
- 
- struct iommu_mm_data {
- 	u32			pasid;
-+	struct mm_struct	*mm;
- 	struct list_head	sva_domains;
-+	struct list_head	mm_list_elm;
- };
- 
- int iommu_fwspec_init(struct device *dev, struct fwnode_handle *iommu_fwnode);
-@@ -1615,6 +1617,7 @@ struct iommu_sva *iommu_sva_bind_device(struct device *dev,
- 					struct mm_struct *mm);
- void iommu_sva_unbind_device(struct iommu_sva *handle);
- u32 iommu_sva_get_pasid(struct iommu_sva *handle);
-+void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end);
- #else
- static inline struct iommu_sva *
- iommu_sva_bind_device(struct device *dev, struct mm_struct *mm)
-@@ -1639,6 +1642,7 @@ static inline u32 mm_get_enqcmd_pasid(struct mm_struct *mm)
- }
- 
- static inline void mm_pasid_drop(struct mm_struct *mm) {}
-+static inline void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end) {}
- #endif /* CONFIG_IOMMU_SVA */
- 
- #ifdef CONFIG_IOMMU_IOPF
-diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index cf884e8300ca..4c81ca8b196f 100644
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -13,6 +13,7 @@
- #include <linux/swap.h>
- #include <linux/swapops.h>
- #include <linux/mm_inline.h>
-+#include <linux/iommu.h>
- #include <asm/pgalloc.h>
- #include <asm/tlb.h>
- 
-@@ -430,6 +431,7 @@ static void kernel_pgtable_work_func(struct work_struct *work)
- 	list_splice_tail_init(&kernel_pgtable_work.list, &page_list);
- 	spin_unlock(&kernel_pgtable_work.lock);
- 
-+	iommu_sva_invalidate_kva_range(PAGE_OFFSET, TLB_FLUSH_ALL);
- 	list_for_each_entry_safe(pt, next, &page_list, pt_list) {
- 		list_del(&pt->pt_list);
- 		__pagetable_free(pt);
--- 
-2.43.0
+Thanks,
+
+Clément
 
 
