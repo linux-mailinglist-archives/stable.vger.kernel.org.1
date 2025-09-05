@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-177874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D11CB46237
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 20:25:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F244B46238
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 20:25:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE1575E0146
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 18:25:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 506B55E0180
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 18:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F2123BCE7;
-	Fri,  5 Sep 2025 18:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A624254849;
+	Fri,  5 Sep 2025 18:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MLRCfZcn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t7YeD2Ba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB15C305942
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 18:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381FB33E7
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 18:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757096732; cv=none; b=la+z16XDcRWau5wF1DhPVWUwzfifv2WcvEAmhpF9ChN5CE8Q5A+ofbhS+c2Y/5itlpjWcjL/W3LqAGW8f0fhJ3MStu9jgTnOLZNhqWJs1PQZXIR9uA3Yjm+FFvg9JSUjjZM2xwiEdJolVwGU2TYqVscFmGB9ly/aXPfQBuhzG8M=
+	t=1757096734; cv=none; b=hJL3R/iI0VSRXZSiwwzyd0Za4nIKtJuwyARbe/mfQn4FkNV6OTWPdj2JWjbe/JMAa1qCQd0a1Y2QRts+3LrE63Qyihn8ZPakhrYTyOzuRl9bLM0RC744hn2dqXxIksBO0Z/b5Cs+fP3F22k2aFinl2dVsZiDv6WtpZQe3cLId6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757096732; c=relaxed/simple;
-	bh=U1/eFAOICOQpUEiki9CfpG47ni221Mmpn3uGoR9Pcy4=;
+	s=arc-20240116; t=1757096734; c=relaxed/simple;
+	bh=pD9sgzjWWpim72BNvL2qltjed3nnFI4yjdH6VOgPf6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+A546IVM2q5oRSktn4MHg8OzlLdzF7UssZPtZ6gfLP3FFcB0jH3OBIrRtKn5c60QYJloxuyz34Ie+hjg4J0FOFtsSRD0MXJRiPWdyNhVEtz3aHODGTGDifgUoVXMVaNGDYkBAytHVGcn8My2MMYFx+9K+1RFPDpS6n4/w4XNsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MLRCfZcn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0975FC4CEF1;
-	Fri,  5 Sep 2025 18:25:31 +0000 (UTC)
+	 MIME-Version; b=iyJn6o0uJCkbM3dn7+DaOGG9/A5mTyVQmS2LHjlXBM+K1V5VL2B6gLt5M8XsnkmOgwQmZWv0aJ1e2CipLThBk2VRjED1pRmVXzHzvFHlRt1elN2YMop46YkFNDMvr3vth+RphXXSMrU7QERek2a+6HWUzuRttN01OQ+8/GcR7XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t7YeD2Ba; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0205FC4CEF4;
+	Fri,  5 Sep 2025 18:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757096732;
-	bh=U1/eFAOICOQpUEiki9CfpG47ni221Mmpn3uGoR9Pcy4=;
+	s=k20201202; t=1757096733;
+	bh=pD9sgzjWWpim72BNvL2qltjed3nnFI4yjdH6VOgPf6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MLRCfZcnAk3pgqbUU7Bq2vHXPIjB6n96Yiku8ySUL0ATJJh7biVMQAACXLNmpUNBu
-	 d1XD0B0zumGicXm6jABj5cKaJ/zhQLVgh3DXNyC7dKFaWnv+mNPU8+tywmJoNRGS3c
-	 i/dBvr68Nx8Xf8TX8KXDgOSrH4Ln1Paw4um9QWIpnejJv41neCdKi0xGRjKlfRDGKm
-	 k5TJvFCHGGsT5rCwdi5zaCaNdfqNaazwv0jAdqBlzcvmrFfl+EvQocmaECDqbLUOPp
-	 wnR615XXrFFfb0WFcPcoHudiDhXBdHCSCbDCN3+0ucutBnVeGjTiRvlciaAWXwHWm6
-	 YkJyxYWr624Aw==
+	b=t7YeD2Bar+asvlEXW1QHOzVEX3ZVwGHfEx2JKl6ZROyC0YGfi/r1VKKM3QXxClyFo
+	 OQMjYTpuk4IKUzcNa75UvaRK/q7Tfkj/ool4OPFkcSLGV09/whGstmEudcNY3W+IDu
+	 F8aqZ/oP8htflaXXzDkkRejclG1A69Qtu1L1fUQ0KkYE8cXG70YpziwbAw0ST7VgDh
+	 cFkx00rAoujXaYlC3P9tvaKoj9+15lf1zHdQu4aYe5t1gJ6RABsCHaN6tPHmop+i9/
+	 shzS1/hVXbjXVoHSFQS8CB/6S8Khf5eTvQGCpSjYumVoxa5T10zyL1Nl6xj13wlSo2
+	 tiknXgAH4EcAw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Pieter Van Trappen <pieter.van.trappen@cern.ch>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+Cc: Jakob Unterwurzacher <jakobunt@gmail.com>,
+	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
+	Vladimir Oltean <olteanv@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 1/2] net: dsa: microchip: update tag_ksz masks for KSZ9477 family
-Date: Fri,  5 Sep 2025 14:25:28 -0400
-Message-ID: <20250905182530.3041307-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y 2/2] net: dsa: microchip: linearize skb for tail-tagging switches
+Date: Fri,  5 Sep 2025 14:25:29 -0400
+Message-ID: <20250905182530.3041307-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025052400-backpack-superior-fb22@gregkh>
+In-Reply-To: <20250905182530.3041307-1-sashal@kernel.org>
 References: <2025052400-backpack-superior-fb22@gregkh>
+ <20250905182530.3041307-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,47 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Pieter Van Trappen <pieter.van.trappen@cern.ch>
+From: Jakob Unterwurzacher <jakobunt@gmail.com>
 
-[ Upstream commit 3f464b193d40e49299dcd087b10cc3b77cbbea68 ]
+[ Upstream commit ba54bce747fa9e07896c1abd9b48545f7b4b31d2 ]
 
-Remove magic number 7 by introducing a GENMASK macro instead.
-Remove magic number 0x80 by using the BIT macro instead.
+The pointer arithmentic for accessing the tail tag only works
+for linear skbs.
 
-Signed-off-by: Pieter Van Trappen <pieter.van.trappen@cern.ch>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20240909134301.75448-1-vtpieter@gmail.com
+For nonlinear skbs, it reads uninitialized memory inside the
+skb headroom, essentially randomizing the tag. I have observed
+it gets set to 6 most of the time.
+
+Example where ksz9477_rcv thinks that the packet from port 1 comes from port 6
+(which does not exist for the ksz9896 that's in use), dropping the packet.
+Debug prints added by me (not included in this patch):
+
+	[  256.645337] ksz9477_rcv:323 tag0=6
+	[  256.645349] skb len=47 headroom=78 headlen=0 tailroom=0
+	               mac=(64,14) mac_len=14 net=(78,0) trans=78
+	               shinfo(txflags=0 nr_frags=1 gso(size=0 type=0 segs=0))
+	               csum(0x0 start=0 offset=0 ip_summed=0 complete_sw=0 valid=0 level=0)
+	               hash(0x0 sw=0 l4=0) proto=0x00f8 pkttype=1 iif=3
+	               priority=0x0 mark=0x0 alloc_cpu=0 vlan_all=0x0
+	               encapsulation=0 inner(proto=0x0000, mac=0, net=0, trans=0)
+	[  256.645377] dev name=end1 feat=0x0002e10200114bb3
+	[  256.645386] skb headroom: 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	[  256.645395] skb headroom: 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	[  256.645403] skb headroom: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	[  256.645411] skb headroom: 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	[  256.645420] skb headroom: 00000040: ff ff ff ff ff ff 00 1c 19 f2 e2 db 08 06
+	[  256.645428] skb frag:     00000000: 00 01 08 00 06 04 00 01 00 1c 19 f2 e2 db 0a 02
+	[  256.645436] skb frag:     00000010: 00 83 00 00 00 00 00 00 0a 02 a0 2f 00 00 00 00
+	[  256.645444] skb frag:     00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01
+	[  256.645452] ksz_common_rcv:92 dsa_conduit_find_user returned NULL
+
+Call skb_linearize before trying to access the tag.
+
+This patch fixes ksz9477_rcv which is used by the ksz9896 I have at
+hand, and also applies the same fix to ksz8795_rcv which seems to have
+the same problem.
+
+Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
+CC: stable@vger.kernel.org
+Fixes: 016e43a26bab ("net: dsa: ksz: Add KSZ8795 tag code")
+Fixes: 8b8010fb7876 ("dsa: add support for Microchip KSZ tail tagging")
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://patch.msgid.link/20250515072920.2313014-1-jakob.unterwurzacher@cherry.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: ba54bce747fa ("net: dsa: microchip: linearize skb for tail-tagging switches")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dsa/tag_ksz.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/dsa/tag_ksz.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
 diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
-index 6795dd0174996..922e5cd4d4f06 100644
+index 922e5cd4d4f06..00e4f40716dcb 100644
 --- a/net/dsa/tag_ksz.c
 +++ b/net/dsa/tag_ksz.c
-@@ -104,8 +104,9 @@ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ8795);
+@@ -70,7 +70,12 @@ static struct sk_buff *ksz8795_xmit(struct sk_buff *skb, struct net_device *dev)
  
- #define KSZ9477_INGRESS_TAG_LEN		2
- #define KSZ9477_PTP_TAG_LEN		4
--#define KSZ9477_PTP_TAG_INDICATION	0x80
-+#define KSZ9477_PTP_TAG_INDICATION	BIT(7)
- 
-+#define KSZ9477_TAIL_TAG_EG_PORT_M	GENMASK(2, 0)
- #define KSZ9477_TAIL_TAG_OVERRIDE	BIT(9)
- #define KSZ9477_TAIL_TAG_LOOKUP		BIT(10)
- 
-@@ -138,7 +139,7 @@ static struct sk_buff *ksz9477_rcv(struct sk_buff *skb, struct net_device *dev)
+ static struct sk_buff *ksz8795_rcv(struct sk_buff *skb, struct net_device *dev)
  {
- 	/* Tag decoding */
- 	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
--	unsigned int port = tag[0] & 7;
-+	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
+-	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
++	u8 *tag;
++
++	if (skb_linearize(skb))
++		return NULL;
++
++	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+ 
+ 	return ksz_common_rcv(skb, dev, tag[0] & 7, KSZ_EGRESS_TAG_LEN);
+ }
+@@ -137,10 +142,16 @@ static struct sk_buff *ksz9477_xmit(struct sk_buff *skb,
+ 
+ static struct sk_buff *ksz9477_rcv(struct sk_buff *skb, struct net_device *dev)
+ {
+-	/* Tag decoding */
+-	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+-	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
  	unsigned int len = KSZ_EGRESS_TAG_LEN;
++	unsigned int port;
++	u8 *tag;
++
++	if (skb_linearize(skb))
++		return NULL;
++
++	/* Tag decoding */
++	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
++	port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
  
  	/* Extra 4-bytes PTP timestamp */
+ 	if (tag[0] & KSZ9477_PTP_TAG_INDICATION)
 -- 
 2.50.1
 
