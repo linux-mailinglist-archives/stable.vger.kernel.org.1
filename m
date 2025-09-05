@@ -1,119 +1,143 @@
-Return-Path: <stable+bounces-177849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CC4B45E15
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 18:26:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8822B45E47
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 18:36:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3414F5C7904
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 16:26:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E13717B6A0
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 16:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6543263F2D;
-	Fri,  5 Sep 2025 16:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7AA92D47E9;
+	Fri,  5 Sep 2025 16:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="oc+RQ8U/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D2tx5eaY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACFE31D72D
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 16:26:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972B631D72C
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 16:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757089609; cv=none; b=ExFowTi/tHTRfwkeYqRC1rV0VbSROwgccIUI2JWRoRsdqBlNYrl3AqpzvNwzT/l+qBw96ppuZSfQnEslF1V7eBVP90HiYoxqeTO7cZsWZWURDiXqhEdyfkedo0kJsLQ9CkjoKwY8c81Pm9qXMdsbsgk6wZsC1dbwYhqfaVod4sk=
+	t=1757090212; cv=none; b=XocMLAcl81jOjHEkXm4t2j30FwAvDW3Z8u+IuCe71MaoU5tcCh23aWRkQ9NHH6SplTcJLuETUwEWcUcfJygXSlIBTpK0LvX+2b9ndsEbQ2THpZfTSmTfaci/r4AyhyY+/4ZM5H65SjorY7peIwbN9W0FZmqoZPsNp1hw4ftChe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757089609; c=relaxed/simple;
-	bh=2PS5JRt8rYq8ZdgH2QfqyI1JjO6i3QNO1FmCz8ytBWQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nX2wFLqBWmo8C3Ofdpryy8w6GAcJPLBi7lxXidpV1CAYASRj7GV9HWhbTQcV+4vtajyefW9BiBj7dvfFbQMxKacEkY+RADdDQfwXirBDFuUcBtyeVFBMJx27ZAwtihdursLEys41SdtHoOmXnd7zeRswxzigWjxoNVHmVHqv7ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=oc+RQ8U/; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-726dec342bbso22634966d6.1
-        for <stable@vger.kernel.org>; Fri, 05 Sep 2025 09:26:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1757089607; x=1757694407; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2PS5JRt8rYq8ZdgH2QfqyI1JjO6i3QNO1FmCz8ytBWQ=;
-        b=oc+RQ8U/IdmF+raFPFWc4kfmsKJNExqLun3iNBIUl0A4ii6A8l6Q7wvjRUAguQMX3j
-         GlPZ1rUO8tqor4vjIPtnnXDDY4kj24DmYtD12p/Mbw22zko17G71NdYGW1B8zKTdvwne
-         +U7h168qIibNrc0uLLlc2VhC/utpDCEvoDQroiWwdsBl3kyyXVCkFgASOsxR7IMgbYAr
-         5SUD0pFVQWQzzq+dMEW9dJOfjaGMN6YC55TduXwWB0eoc/emupmTQq1xSCTQ9GHLAlWY
-         Ct/4O1pOeclbTXVvpSVhZ3yXM7n3WWlRAmvRi/RZt3SooPt4yBx1szAhz/P7g530y2io
-         ZGXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757089607; x=1757694407;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2PS5JRt8rYq8ZdgH2QfqyI1JjO6i3QNO1FmCz8ytBWQ=;
-        b=fEhzzRcn8cUB9K04bx9wGD9FKlZ43vFL/HTSqfRneiPSGOk54c3WV1c3gtDeCWHOxq
-         2EfjPCTQ2ox9fZFOerw5y6HhAOTvbNd5T6Fb/iFTQ6AJjeCXfJJMIwbG+c5WObat7+Cg
-         dJIFRzbOYfa+APY54uv/ZXk/MFPXEE/tI5XuFDNepZwZOO37n8rLA4p21wkQNwC3izYU
-         nRwjmbUSZMSH+g1c+hhKnhfx40ohn+Qdv6+a//ZLqzGCg3C1YkARFixyv74Z6p+VBDIZ
-         uU2Jf9vHiX16Myd4RPt2RleYAar6dY+1EStGAKDY5JhvRIYGba/RhH+0jzEQjUnPM7RL
-         0iTw==
-X-Forwarded-Encrypted: i=1; AJvYcCWo8Tdnc+SQGYR+x3I9yGItNXkzkyxU3C6rqb+24LpoSnyIJmQgkov+v2S2d6eLV/j89R6MXWE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeTv8zuU21AuJ5utuNO8n9b47SrcQQw1OitYeHgUllGkuggjnn
-	bVGi0Dp3APXYKrsD+fTundDeoDGxC/e052Lvvcd9qUPvS5x0xqJMJD/Hn1ZaYtr/gng=
-X-Gm-Gg: ASbGncv+OXfVxe/rDuXy0DdA7cTENyNeCqTTMKnoJfTQxEskuqIBjphfCpL2FOk3UxK
-	aBxNdyADcY94zTr4rvam5oECgNWok72ZnopVw/7tGoC+HM9IxPd+bDiC5tLQH1Velm5X/cjVKaY
-	9/QNMzxxl+b8YA2/hhjVMiWlbVy59VfXmgQrikj0v1VEJaQl0rmJv+UqlqbIh3CDIvPU3NV++t/
-	FfHIkFmMFCvQY3rvXXz1X4tuXDV5lhwCSWDHf7G2f5U/odtJeItRcvQT0cDSp9/Gd1Nl1rfWhJp
-	jMVSkOAL5oua246PMpuQJz3ZYa/+o6ohCj+t9nnw3bjzhJXldB8LgGuvgfKWCs8KAlzz3h/Q+ZB
-	j95kE8wEoFvXkUa+BIXnXBBJSLYrsnkW7XJYDuY1HQSdWqE7gePhESyEW7ixcss/gJFNd
-X-Google-Smtp-Source: AGHT+IFSn5HY+WeJUt1wAviTMKOBWm+lvLAThCgWpXgEcnXeGVtNLDN/lb9+gdaDyGFY+W25tA/JJg==
-X-Received: by 2002:a05:6214:301e:b0:70d:6df4:1b21 with SMTP id 6a1803df08f44-70fac920713mr231386786d6.62.1757089606848;
-        Fri, 05 Sep 2025 09:26:46 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-720ac16e723sm68417896d6.9.2025.09.05.09.26.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 09:26:46 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1uuZGv-00000002sYM-3KbU;
-	Fri, 05 Sep 2025 13:26:45 -0300
-Date: Fri, 5 Sep 2025 13:26:45 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Cc: leon@kernel.org, stable@vger.kernel.org,
-	Nick Child <nchild@cornelisnetworks.com>,
-	linux-rdma@vger.kernel.org
-Subject: Re: [PATCH for-rc] IB/rdmavt: Fix lock dependency in rvt_send/recv_cq
-Message-ID: <20250905162645.GB483339@ziepe.ca>
-References: <175708273545.611781.8035611015794018890.stgit@awdrv-04.cornelisnetworks.com>
+	s=arc-20240116; t=1757090212; c=relaxed/simple;
+	bh=OchZs+UwklXwMBF3ww6hSZ0I+IaWJiQ/bm93TeKbxZo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oLo2g/iLT31zj5sKWw7BUM8drqbmS+epIN2faMrRB7XqtesJo93FcKD0nRorcsbPhXShM9injbIn7DhMEsr5p53PZ+83WuybMPT/kfnaZ1byUdAqZpfPeoCjrWLY10QtcnbM8sG/c5kAF3LADFICnd0TRCHa7ZyH7CokWMFb6J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D2tx5eaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A37C4CEF1;
+	Fri,  5 Sep 2025 16:36:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757090212;
+	bh=OchZs+UwklXwMBF3ww6hSZ0I+IaWJiQ/bm93TeKbxZo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=D2tx5eaYY6Yc9fWp6bKG34qRX4hkFJnmVJEPplqZaDqEiAF0NZeoZlLPbbmz2C+E8
+	 yeLXLS/pw4ADwqBWZs3nxtFewAbsRXTdj/ns8PO316blaPq6TFhNWP88sHNMl5C4zW
+	 Sm9RP7hjaaXuSr/xwOanIK7nSnF5nSVEsfMD5kgDFYQH/jMvn+d/TBjgTSNHeediNV
+	 D15LmCctotdky1+mjJ5rJ2H3+0NIhnaKTmPgKMcdPIo/L/jVHH5fKqfTIRs18QlIvD
+	 fqQ2kRLNoIF8bWe7z45gZvzDxlPyO22NKyGiYL15rv0YZs5un48lFjN5U+wgukQXEj
+	 cjhdQATIaomVQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Gabor Juhos <j4g8y7@gmail.com>,
+	Imre Kaloz <kaloz@openwrt.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] arm64: dts: marvell: uDPU: define pinctrl state for alarm LEDs
+Date: Fri,  5 Sep 2025 12:36:49 -0400
+Message-ID: <20250905163649.1746184-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025052402-pantomime-relative-1605@gregkh>
+References: <2025052402-pantomime-relative-1605@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <175708273545.611781.8035611015794018890.stgit@awdrv-04.cornelisnetworks.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 05, 2025 at 10:32:15AM -0400, Dennis Dalessandro wrote:
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-> Note there are cases when callers only held the s lock. In order to
-> prevent further ABBA spinlocks we must not attempt to grab the r lock
-> while someone else holds it. If someone holds it we must drop the s lock
-> and grab r then s.
+[ Upstream commit b04f0d89e880bc2cca6a5c73cf287082c91878da ]
 
-That's horrible, please don't do this.
+The two alarm LEDs of on the uDPU board are stopped working since
+commit 78efa53e715e ("leds: Init leds class earlier").
 
-If the caller holds a lock across a function then the function
-shouldn't randomly unlock it, it destroys any data consistency the
-caller may have had or relied on.
+The LEDs are driven by the GPIO{15,16} pins of the North Bridge
+GPIO controller. These pins are part of the 'spi_quad' pin group
+for which the 'spi' function is selected via the default pinctrl
+state of the 'spi' node. This is wrong however, since in order to
+allow controlling the LEDs, the pins should use the 'gpio' function.
 
-If the caller doesn't actually need the lock after calling this new
-callchain then have the function return with the lock unlocked. This
-is ugly too, but at least it does not expose the caller to a subtle
-bug class.
+Before the commit mentined above, the 'spi' function is selected
+first by the pinctrl core before probing the spi driver, but then
+it gets overridden to 'gpio' implicitly via the
+devm_gpiod_get_index_optional() call from the 'leds-gpio' driver.
 
-Also, this seems too big and complicated for -rc at this point :\
+After the commit, the LED subsystem gets initialized before the
+SPI subsystem, so the function of the pin group remains 'spi'
+which in turn prevents controlling of the LEDs.
 
-Jason
+Despite the change of the initialization order, the root cause is
+that the pinctrl state definition is wrong since its initial commit
+0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board"),
+
+To fix the problem, override the function in the 'spi_quad_pins'
+node to 'gpio' and move the pinctrl state definition from the
+'spi' node into the 'leds' node.
+
+Cc: stable@vger.kernel.org # needs adjustment for < 6.1
+Fixes: 0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+[ Applied to .dts instead of .dtsi ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts
+index 95d46e8d081c1..d16200a323c50 100644
+--- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts
++++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts
+@@ -28,8 +28,9 @@ memory@0 {
+ 	};
+ 
+ 	leds {
+-		pinctrl-names = "default";
+ 		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&spi_quad_pins>;
+ 
+ 		power1 {
+ 			label = "udpu:green:power";
+@@ -96,8 +97,6 @@ &sdhci0 {
+ 
+ &spi0 {
+ 	status = "okay";
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&spi_quad_pins>;
+ 
+ 	m25p80@0 {
+ 		compatible = "jedec,spi-nor";
+@@ -117,6 +116,10 @@ partition@0 {
+ 	};
+ };
+ 
++&spi_quad_pins {
++	function = "gpio";
++};
++
+ &pinctrl_nb {
+ 	i2c1_recovery_pins: i2c1-recovery-pins {
+ 		groups = "i2c1";
+-- 
+2.50.1
+
 
