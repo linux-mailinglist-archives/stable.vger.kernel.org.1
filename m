@@ -1,146 +1,119 @@
-Return-Path: <stable+bounces-177818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A2BB4583E
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 14:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EA6B45903
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 15:31:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B7581C2832C
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 12:54:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 842301B210D4
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 13:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9990B350854;
-	Fri,  5 Sep 2025 12:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A02352FE2;
+	Fri,  5 Sep 2025 13:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="V6C7LERr"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LtvAR4/W"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BF4350842;
-	Fri,  5 Sep 2025 12:54:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757076850; cv=pass; b=Bp5Au+q3cX6v6vOGfb3x4MWi7d+wPNYvHqO9urryEmI8e/G+vtqDJ/7ntt68GLji+rTegt0wnHbhA3o91Pq3zx2KA32vs8M94eyr+9Dq5RjBs0BBpfDVRtRQdO/ZALUU7vXvo8fQV1XIqdAVk2BTb6uogj3sr8zUDsvB+cm0C10=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757076850; c=relaxed/simple;
-	bh=IhV6JrFrqmw8qOU5WUVwAH8fqiEhjI9hAYG5HTMtCrU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=DDSr7BKX+/A4nZaX5SmsNvq6uCH6D6idxIgVesgJkeH+YWKJHqqpnMSH83qLEvQpBAG7eZ3L+EuVxL5gYV8y1dXBQWm+hkUcl7mSUf7IzTtveJWDyssMK2zB4NLhqG4UjLhzcKtzLRmew3dQ5XluYjgmhHqgnx6jJocRvijepxw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=V6C7LERr; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1757076843; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=SaTKMvMi6RhuoR3yzxnE16roLlxmcD7j2Q6c4VeJ37XA6Q7Hy1EowhR/zfJDis4BPJAFwvHGBkP4zHiWxqErjs2GD+my57Wbvnn1A1bDUvS9znlJ1v6v/ZCntUL4erRy/5dXJjRnf7lEKTTv9ngTRzRzJ8FKygPOhiqE3u22czI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1757076843; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=os9bh//smt/UIodGYqnwPtUu/En7lmpyHv6vRfiOJEM=; 
-	b=ihL8jBOQ0E1wAnntqtOJlGrOu0BwNxYQBsYM2y6A6e4fs5qptQhk0gKGAiha8fh887L00xa8AR3k3EFf/tYj9S37vkHBLNXa482XqK0/Sy5awULcWgVN0/GCcq2eNNwCZUkTfosQYu/a9QR6S9sXyxmJHaadQfRHGMfT7KBoAhY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757076843;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=os9bh//smt/UIodGYqnwPtUu/En7lmpyHv6vRfiOJEM=;
-	b=V6C7LERriU8u8J1eQ7SL58HjnRIzzKUnVVq+ATmhgHCyh1uFJmwQRNJL2bmbUCBT
-	Z5W5Nfs6YmTKEJH3DH00lrWlPNc6PnHhiC3ozVy8NmoxT2hUmIDa6ibM8lrB9EZApjg
-	DNBuP+Eg8qZ8hHwjzpR06pZ4CvqEXn7/QoCv+ks8=
-Received: by mx.zohomail.com with SMTPS id 1757076841256971.3020603340233;
-	Fri, 5 Sep 2025 05:54:01 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6642235206C
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 13:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757079050; cv=none; b=GIq0wKdc1LQk6CZAuaibSTrNLA+JTfg0AY1NRjzzLxhItc4ZFTNji8j4u+bW0ZSuDbBfP3LtHovBtTbfP9alE132T2h1JJ2ajF0r6Mo7rbXQX/2xk2URgVsl4r/OOAT5Zm2f7uYvbF2ROWaSNTO7fcmAnFpYqB8EyAVDeW5EvAc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757079050; c=relaxed/simple;
+	bh=ECzWVd+AzMHGkO1axC4Nxd2WiHY2CoMBXtmHlgaGTvQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=GffghDlw0juRggT6hrSrMJmXb510OljLlQKbopN8En/MXU0F6iEwfRujiO1ZD/jAA+Fmrk5lItxXTzKj/75uaLrbbH9Yj+BA6U0YdqIorJFhERZs80rm+o8A4UOwfNm2AdxtELYVe3VUpM7Xd+YjUGZ9zafwONSQ9X/siO8DgHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LtvAR4/W; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45b9ca27a11so14548685e9.1
+        for <stable@vger.kernel.org>; Fri, 05 Sep 2025 06:30:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757079047; x=1757683847; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hFUi3FlPm9KOXLVkivG1TPAn4U/BsKfwoh1VfKcakJg=;
+        b=LtvAR4/WArVQW1TnlYFCe/2oMHGblFXcqmpbcORaMDW8BmbYYVGxY1VA8sSIXH3zP8
+         XNLPcyg2xUzO5op/qC3u4P2F9aq1fD/OBY2HDUql2wzHzI7o74ywaelMUE0S9b5dvtkt
+         aNdRXPafJf7Rm65g9sgv1WTg79dvsC6XvmCh/R/9+Gd+Y7XO+ouMZrsBGdUE+dKwmBaS
+         yedP6cvdZziv8YiF6reueLrnB2pcDFS6eyk6xTMpHa4T7qhBehE/Rfo5bIiN75MiOytm
+         lK0a6yziAtk8Q8Q4Pv86lFMcOkD5H7LYGT9oJIDTydbsRI2O07MYET5h1KSV17VWudqW
+         v2lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757079047; x=1757683847;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hFUi3FlPm9KOXLVkivG1TPAn4U/BsKfwoh1VfKcakJg=;
+        b=NJeV+XFL4bXWuOHCniUXHs4KqrFP/pYgi5I9veeOYw4Y9Q4JtoOOsSN2scBArQJoIc
+         Q9SKbS9RzimL4Z6ZeRVq3ZIx2jtej2lmiN33FdS3Rnv2Y/NQxlQtiBH/2J+vuD45qMes
+         PciReDyFfrwno5MtFxXKdViVA5IKu7Bup++1sP69df2kGtXFJmjMA5/xbdm7gLH/fRh1
+         EA4JYKxbsiQDEPx1cOSuTiC31wOHcI+JmtdsDiuvAvkMQyEpHejtCush+IdH5P8s3QfV
+         BFThaFz0X8pUMXa7E63iJvNZZP6Mq/Cw8OAUr2gOimA2vcoGUSf68WzWwBVjNlq+tYON
+         VH6w==
+X-Forwarded-Encrypted: i=1; AJvYcCWj78SASxNoruEVstKlDrnGLRIrdwc/OhaCvWFTNq5LBnrFqLWRGx4F5Xw+zrMK2FnC57KSk/Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4V59p8lUIsZwiWBMnmQDqF6HtHKL+tfrIUnDk5L7I1dZZ00qV
+	hliglzt0J90bJ3ugNqj3n6A7pI4tDCVbr1aAGGJ2A+E6Mxo0wptH7VlOMxAnk7Cs6FlMmc5Meg=
+	=
+X-Google-Smtp-Source: AGHT+IGf+vRi3XmR/QGP16LgsrUNxoVVujkhlQmO0eAfjGcLlZWZe2h4Qdaq8UaJGcAf86n7aeIE74J6
+X-Received: from wmbez15.prod.google.com ([2002:a05:600c:83cf:b0:45d:d3ef:abb8])
+ (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:35d4:b0:45d:d259:9a48
+ with SMTP id 5b1f17b1804b1-45dd5b456c0mr26381175e9.9.1757079046680; Fri, 05
+ Sep 2025 06:30:46 -0700 (PDT)
+Date: Fri,  5 Sep 2025 15:30:37 +0200
+In-Reply-To: <20250905133035.275517-9-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3] media: vidtv: initialize local pointers upon transfer
- of memory ownership
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250905051816.4027814-1-aha310510@gmail.com>
-Date: Fri, 5 Sep 2025 09:53:46 -0300
-Cc: mchehab@kernel.org,
- linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org,
- syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <96EC5D66-18D8-42E6-BD3F-F07F220EA5EE@collabora.com>
-References: <20250905051816.4027814-1-aha310510@gmail.com>
-To: Jeongjun Park <aha310510@gmail.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Mime-Version: 1.0
+References: <20250905133035.275517-9-ardb+git@google.com>
+X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
+X-Developer-Signature: v=1; a=openpgp-sha256; l=804; i=ardb@kernel.org;
+ h=from:subject; bh=RXdT7wNu/pdGAxus7uiLMzLf2wBNTNItEYxQJXgozmU=;
+ b=owGbwMvMwCVmkMcZplerG8N4Wi2JIWPX07+PF7pdfzyJ+/va/jMpCWVesYfLU/VO3srL2bJD/
+ 4fqsgueHaUsDGJcDLJiiiwCs/++23l6olSt8yxZmDmsTCBDGLg4BWAilj8YGT493y9u4lk5z1xi
+ txTTy/Lzcl7Ji9u4P7zflnZWYklnqS/DP93qaRt32exPZ3yexOYXL//w9rNPK+5sdlVi/yC+SiB rAicA
+X-Mailer: git-send-email 2.51.0.355.g5224444f11-goog
+Message-ID: <20250905133035.275517-10-ardb+git@google.com>
+Subject: [PATCH v2 1/7] efi: Add missing static initializer for efi_mm::cpus_allowed_lock
+From: Ard Biesheuvel <ardb+git@google.com>
+To: linux-efi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	Ard Biesheuvel <ardb@kernel.org>, Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+From: Ard Biesheuvel <ardb@kernel.org>
 
+Initialize the cpus_allowed_lock struct member of efi_mm.
 
-> On 5 Sep 2025, at 02:18, Jeongjun Park <aha310510@gmail.com> wrote:
->=20
-> vidtv_channel_si_init() creates a temporary list (program, service, =
-event)
-> and ownership of the memory itself is transferred to the PAT/SDT/EIT
-> tables through vidtv_psi_pat_program_assign(),
-> vidtv_psi_sdt_service_assign(), vidtv_psi_eit_event_assign().
->=20
-> The problem here is that the local pointer where the memory ownership
-> transfer was completed is not initialized to NULL. This causes the
-> vidtv_psi_pmt_create_sec_for_each_pat_entry() function to fail, and
-> in the flow that jumps to free_eit, the memory that was freed by
-> vidtv_psi_*_table_destroy() can be accessed again by
-> vidtv_psi_*_event_destroy() due to the uninitialized local pointer, so =
-it
-> is freed once again.
->=20
-> Therefore, to prevent use-after-free and double-free vulnerability,
-> local pointers must be initialized to NULL when transferring memory
-> ownership.
->=20
-> Cc: <stable@vger.kernel.org>
-> Reported-by: syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D1d9c0edea5907af239e0
-> Fixes: 3be8037960bc ("media: vidtv: add error checks")
-> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-> ---
-> v3: Improved patch description wording
-> - Link to v2: =
-https://lore.kernel.org/all/20250904054000.3848107-1-aha310510@gmail.com/
-> v2: Improved patch description wording and CC stable mailing list
-> - Link to v1: =
-https://lore.kernel.org/all/20250822065849.1145572-1-aha310510@gmail.com/
-> ---
-> drivers/media/test-drivers/vidtv/vidtv_channel.c | 3 +++
-> 1 file changed, 3 insertions(+)
->=20
-> diff --git a/drivers/media/test-drivers/vidtv/vidtv_channel.c =
-b/drivers/media/test-drivers/vidtv/vidtv_channel.c
-> index f3023e91b3eb..3541155c6fc6 100644
-> --- a/drivers/media/test-drivers/vidtv/vidtv_channel.c
-> +++ b/drivers/media/test-drivers/vidtv/vidtv_channel.c
-> @@ -461,12 +461,15 @@ int vidtv_channel_si_init(struct vidtv_mux *m)
->=20
-> /* assemble all programs and assign to PAT */
-> vidtv_psi_pat_program_assign(m->si.pat, programs);
-> + programs =3D NULL;
->=20
-> /* assemble all services and assign to SDT */
-> vidtv_psi_sdt_service_assign(m->si.sdt, services);
-> + services =3D NULL;
->=20
-> /* assemble all events and assign to EIT */
-> vidtv_psi_eit_event_assign(m->si.eit, events);
-> + events =3D NULL;
->=20
-> m->si.pmt_secs =3D =
-vidtv_psi_pmt_create_sec_for_each_pat_entry(m->si.pat,
->     m->pcr_pid);
-> =E2=80=94
->=20
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+---
+ drivers/firmware/efi/efi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 1ce428e2ac8a..fc407d891348 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -74,6 +74,9 @@ struct mm_struct efi_mm = {
+ 	.page_table_lock	= __SPIN_LOCK_UNLOCKED(efi_mm.page_table_lock),
+ 	.mmlist			= LIST_HEAD_INIT(efi_mm.mmlist),
+ 	.cpu_bitmap		= { [BITS_TO_LONGS(NR_CPUS)] = 0},
++#ifdef CONFIG_SCHED_MM_CID
++	.cpus_allowed_lock	= __RAW_SPIN_LOCK_UNLOCKED(efi_mm.cpus_allowed_lock),
++#endif
+ };
+ 
+ struct workqueue_struct *efi_rts_wq;
+-- 
+2.51.0.355.g5224444f11-goog
 
 
