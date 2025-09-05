@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D98BEB46750
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 01:48:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F88FB46755
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 01:54:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 928863AC347
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 23:48:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 254A9562CA2
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 23:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4931E5B7C;
-	Fri,  5 Sep 2025 23:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F42051FBEA2;
+	Fri,  5 Sep 2025 23:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pRx+1Q9P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Za7oiTdt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB70BA4A
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 23:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF41326A0C6
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 23:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757116117; cv=none; b=FIg6nO80Kyf2OODx/L8Sqp2jb81tjj5BxIfUq09QBwIHUwUAYOIV+RcvmLS5eq4txap2ewMHdSvgV+njJLJNB5fQpkTWvN096XTaQXfYzHAbBWHbEropC86IwX/OVntIhewPdRcJGMbxZR3j3ijWETRHKH9Z2Lxl96jEAgnRFh8=
+	t=1757116437; cv=none; b=R9bR8v5pJasLDCAPdldDWvbMWbV3LYXW9IqnWFq22ZPKH6hQ5q4jskGZM6fJO4ga9yRgPJeDc6XwnSkQ2vpcU2A/oXtxpT6OCobIJJzf1Q35dCRRi7qjIURZQyQSx7tZfKZDKFSjPsLWQV0D5N0mSnj8hqzWBqf1JeGsNgW5/nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757116117; c=relaxed/simple;
-	bh=Uedx31EWjLAew3rOSoSpP4sN1oSxKxuFJpI9mXSNdw4=;
+	s=arc-20240116; t=1757116437; c=relaxed/simple;
+	bh=4VVKtUBCTQiq2e+Ev8+RZA008vPyG3HwjRW+Qhm1U2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WS+28meeIB3DUeQ82qWIx3zDZqyxiyJSN4g/jr57ZABWjhXc5dsCfk1wBZe3omRBAtMdkaAGRvpkZjvvhcxKq9qAP6FrnQPclWpmmsgMqRoo0hu2j6015gzHQBAsIhOtY1C6I8WBkHdKz15Ha+3DRmH1xjHdG9Nj8HLe5gwiOoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pRx+1Q9P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD92EC4CEF1;
-	Fri,  5 Sep 2025 23:48:35 +0000 (UTC)
+	 MIME-Version; b=Q9iDm6IXKsUT3g5WOet/4hZ2AhWsYdBW4D0qt92WeUzVFyx3ka7M4gLLncu5KZ4/gwjCcfHxL4+PkNDLy6Sx4zBmXkQImlZ1/X4FWzpnt81tj6GH0xnUrVJm6on8/PGB0ge33lGfY/L4fbQgWOB7KTlkVerz1WAlx1qa4UwY4MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Za7oiTdt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FA5C4CEF1;
+	Fri,  5 Sep 2025 23:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757116116;
-	bh=Uedx31EWjLAew3rOSoSpP4sN1oSxKxuFJpI9mXSNdw4=;
+	s=k20201202; t=1757116437;
+	bh=4VVKtUBCTQiq2e+Ev8+RZA008vPyG3HwjRW+Qhm1U2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pRx+1Q9P3pwMFzzrhwRKiFb5LGVqpLmbWJpH83ft7Q9tHvF3dkb7LgPsMDnPliiIc
-	 focT7PthxnyfP1qdPtBbErjkge58V3uYpe2dct1q53zAahEcKqzBnN/jWMM5vH50yx
-	 sz/nsCrpzzZulL5r9A0UUtr+X7jvssOSt7CJwu/RbNyUrxQNxb4Kaaa0Oq69iqD+Mx
-	 VmNIkrPSqxnug+d/Xn5Q+pXJPVKzvuyUP043Ta9CNHrOAFLFEDLTO5nul6AUQizpzT
-	 K5/SzxyGw2jzssxmtV0MQR1K6G2E/pF01XMM5P5FhcewE2iXP78a4Jt4fQS1lIluxM
-	 umP6+dbucDm4A==
+	b=Za7oiTdt8KIHXAMzoZmcBnFvTn8ih+vAUtpUbGldJU0VaQvJ2fmVHFXXNbO85sgj4
+	 TMGvFGnN+wLhLenNzgOIle7Xf90jjb0zzf0kuFw0imcpOkHzkZQG9khDOBaYP0Guwk
+	 4TnGu5toEW4ANpSL64Z1aaoXuPSEndogPDNR0LgUMDnA25zLuuRrc4A/F7w5NgTsho
+	 5k+GkurxcDoTq7IIe+8O/rmBg03sQ1Ycnw+DGhfx/L0COvc2/XW/KmbGz3mtj9ngNT
+	 AimN8j35ljBy+iDV7QOK61ngrGshVZ5SJsAgK2DgT2r+4TLMOps4bxhjcvtLiDC2rb
+	 aMV8CaVtMR+cw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Chris Chiu <chris.chiu@canonical.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] ALSA: hda/realtek - Add new HP ZBook laptop with micmute led fixup
-Date: Fri,  5 Sep 2025 19:48:33 -0400
-Message-ID: <20250905234833.3571460-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y] ALSA: hda/realtek - Add new HP ZBook laptop with micmute led fixup
+Date: Fri,  5 Sep 2025 19:53:54 -0400
+Message-ID: <20250905235354.3584137-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025052421-document-satirical-8e58@gregkh>
-References: <2025052421-document-satirical-8e58@gregkh>
+In-Reply-To: <2025052421-diffusion-untimely-a099@gregkh>
+References: <2025052421-diffusion-untimely-a099@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,12 +78,12 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index a78ca3f97967a..84dde97424080 100644
+index 3d12c489ba1e3..f9f4a914de6e5 100644
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -9322,6 +9322,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8895, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_SPEAKERS_MICMUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8896, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_MUTE_LED),
+@@ -8390,6 +8390,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x877d, "HP", ALC236_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
  	SND_PCI_QUIRK(0x103c, 0x89aa, "HP EliteBook 630 G9", ALC236_FIXUP_HP_GPIO_LED),
 +	SND_PCI_QUIRK(0x103c, 0x8e1d, "HP ZBook X Gli 16 G12", ALC236_FIXUP_HP_GPIO_LED),
  	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
