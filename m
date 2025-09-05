@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-177847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E6AB45DF5
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 18:23:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F7AB45E05
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 18:24:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CE67A614B1
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 16:23:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DA655C6F37
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 16:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268AE309EFA;
-	Fri,  5 Sep 2025 16:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAC137428F;
+	Fri,  5 Sep 2025 16:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RgaLOU8Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H7JS3m1Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C3735A28D
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 16:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0896374283
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 16:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757089256; cv=none; b=RSZKUkEYC0tmOpPjvISyDG7Ll9eV0UD1MYfpFyw22+CsPQJrfnU8D2VyttGsWxDfJIRo/1PZZJTStqvrYkJQmzSVaxe3NEpnpAaU5D0Rjmw4jqzwJ+jsrwzr7ajHh7aJwNMIYDGsn/X5OKH8EJPvwkcSmM3AnZCLhV2gwnOizc0=
+	t=1757089322; cv=none; b=rQN2Chzf0VOXY2yuxsM14P8CBKImcL03R8VidT2ZqY5Abp6V/XdYMuRdGc7cvQO73PLDLzJz6N52gNfMxpu+YJ7vbYA2+v6MBHqCiVgUjskr/54cNTm05FPU/q2gCY6h8wh5pJuS8ejb9gLO+5GTBzk8BtFmpy4NK3nWxIvVNn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757089256; c=relaxed/simple;
-	bh=vxoGN173yghFuEFOKjD5+8bPmseIMPgn8suKKfxfyow=;
+	s=arc-20240116; t=1757089322; c=relaxed/simple;
+	bh=OchZs+UwklXwMBF3ww6hSZ0I+IaWJiQ/bm93TeKbxZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dG9wwBlpE6gLuEVH9o4DcSyRpE2nuR1qqvCNsr+tjPJ/Aohkae1wpDUiBlvHMiRzIsvkOwlhvWeCuLPaAIgMjLoWLWwzfAFMi/KImV3NDEta03hD3eoB5YKkYXuLq6ADR1z52RmFeN/Qj4scNOose6CQktWUuRd5Zhdifk0PKUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RgaLOU8Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40AAC4CEF4;
-	Fri,  5 Sep 2025 16:20:55 +0000 (UTC)
+	 MIME-Version; b=Z4Xa2R4XYGFtoNzDvnOtt3db5j28qtx1vUVBJlRslMXX3kWVQ+i++rB0SHfhWPr5YmCFtHZdSoSVMm4QvIxGJ/n9Nh1ltPi36Xwl54eGCL2WOH+CkQCl2ARvZOlNkYgXYe1jcNIBiig02GOn/1SNR716q27tFdNHOtT9AnCxQ2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H7JS3m1Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECA4C4CEF1;
+	Fri,  5 Sep 2025 16:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757089256;
-	bh=vxoGN173yghFuEFOKjD5+8bPmseIMPgn8suKKfxfyow=;
+	s=k20201202; t=1757089322;
+	bh=OchZs+UwklXwMBF3ww6hSZ0I+IaWJiQ/bm93TeKbxZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RgaLOU8ZkQXqUXHYLvGBAFyyjoGgrDV5LEc2DKGCo3vKC6OT9bAPDCR8oMeKDqbNo
-	 827ZOb8YZIGvNOh9PlkP6YXJ+ApT18WgpueoyLBua7auFzB959hPsnIIQQ4uCS196J
-	 /dlmk5we1/yn8L25MZ7zbqJvEYgopGnknLjjqYe/dIQUTnmzZ+9YJBOP1k81zytdxz
-	 y1R/P2h45wSia3qT+UXTbmKPli0hap7ZQTTcBB+t9gkbdyzeifYwI0Zag/nzpg7w7s
-	 lmeCZRx/Oo/mUrSJkPelFzVVel8Zr7clXAMLYR/I7OHbCNGcxk/OVnsbSk76lEmHEi
-	 7/O9i3CI+Puzw==
+	b=H7JS3m1Q0aipO7VMdjsTe2brvFvnrwXiexpUA6tgu7+nCx6GBLMaOJqiDa8p7kfib
+	 kLVRRQeKn36+4GhOmuB5cO/LGuC7n2BnRDEoAUvhxjVPmWLYgCrtNT6oPkJuYQPOGz
+	 ff20gN0zGOtrRiON8M2reBa8P6w6ttrMsXcUHCMLxcBsn+5BervX+5e/4nnwAVUbp5
+	 Qc1pyL21xy7Ntymk04DaG5ksuWrA9yVh4TOz288GXhB+m2q5B3jezPOxBAUXM6e+Qi
+	 +k+l194bKxvZEpdF0jih2SelC2Kz5qfNx5b2GqRG/ux8QFmXiAwAut4UrrwpNxzfGi
+	 GaRYEuv6FCOww==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>,
-	Thiago Jung Bauermann <thiago.bauermann@linaro.org>,
-	Ingo Saitz <ingo@hannover.ccc.de>,
+Cc: Gabor Juhos <j4g8y7@gmail.com>,
+	Imre Kaloz <kaloz@openwrt.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 2/2] randstruct: gcc-plugin: Fix attribute addition
-Date: Fri,  5 Sep 2025 12:20:52 -0400
-Message-ID: <20250905162052.1741891-2-sashal@kernel.org>
+Subject: [PATCH 5.15.y] arm64: dts: marvell: uDPU: define pinctrl state for alarm LEDs
+Date: Fri,  5 Sep 2025 12:21:58 -0400
+Message-ID: <20250905162158.1742420-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250905162052.1741891-1-sashal@kernel.org>
-References: <2025060528-ramble-bulge-34cb@gregkh>
- <20250905162052.1741891-1-sashal@kernel.org>
+In-Reply-To: <2025052401-unbiased-designate-2089@gregkh>
+References: <2025052401-unbiased-designate-2089@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,132 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Kees Cook <kees@kernel.org>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit f39f18f3c3531aa802b58a20d39d96e82eb96c14 ]
+[ Upstream commit b04f0d89e880bc2cca6a5c73cf287082c91878da ]
 
-Based on changes in the 2021 public version of the randstruct
-out-of-tree GCC plugin[1], more carefully update the attributes on
-resulting decls, to avoid tripping checks in GCC 15's
-comptypes_check_enum_int() when it has been configured with
-"--enable-checking=misc":
+The two alarm LEDs of on the uDPU board are stopped working since
+commit 78efa53e715e ("leds: Init leds class earlier").
 
-arch/arm64/kernel/kexec_image.c:132:14: internal compiler error: in comptypes_check_enum_int, at c/c-typeck.cc:1519
-  132 | const struct kexec_file_ops kexec_image_ops = {
-      |              ^~~~~~~~~~~~~~
- internal_error(char const*, ...), at gcc/gcc/diagnostic-global-context.cc:517
- fancy_abort(char const*, int, char const*), at gcc/gcc/diagnostic.cc:1803
- comptypes_check_enum_int(tree_node*, tree_node*, bool*), at gcc/gcc/c/c-typeck.cc:1519
- ...
+The LEDs are driven by the GPIO{15,16} pins of the North Bridge
+GPIO controller. These pins are part of the 'spi_quad' pin group
+for which the 'spi' function is selected via the default pinctrl
+state of the 'spi' node. This is wrong however, since in order to
+allow controlling the LEDs, the pins should use the 'gpio' function.
 
-Link: https://archive.org/download/grsecurity/grsecurity-3.1-5.10.41-202105280954.patch.gz [1]
-Reported-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
-Closes: https://github.com/KSPP/linux/issues/367
-Closes: https://lore.kernel.org/lkml/20250530000646.104457-1-thiago.bauermann@linaro.org/
-Reported-by: Ingo Saitz <ingo@hannover.ccc.de>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1104745
-Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
-Tested-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
-Link: https://lore.kernel.org/r/20250530221824.work.623-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Before the commit mentined above, the 'spi' function is selected
+first by the pinctrl core before probing the spi driver, but then
+it gets overridden to 'gpio' implicitly via the
+devm_gpiod_get_index_optional() call from the 'leds-gpio' driver.
+
+After the commit, the LED subsystem gets initialized before the
+SPI subsystem, so the function of the pin group remains 'spi'
+which in turn prevents controlling of the LEDs.
+
+Despite the change of the initialization order, the root cause is
+that the pinctrl state definition is wrong since its initial commit
+0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board"),
+
+To fix the problem, override the function in the 'spi_quad_pins'
+node to 'gpio' and move the pinctrl state definition from the
+'spi' node into the 'leds' node.
+
+Cc: stable@vger.kernel.org # needs adjustment for < 6.1
+Fixes: 0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+[ Applied to .dts instead of .dtsi ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gcc-plugins/gcc-common.h              | 32 +++++++++++++++++++
- scripts/gcc-plugins/randomize_layout_plugin.c | 22 ++++++-------
- 2 files changed, 43 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/gcc-plugins/gcc-common.h b/scripts/gcc-plugins/gcc-common.h
-index 0c037b8845308..50fe17ce569c9 100644
---- a/scripts/gcc-plugins/gcc-common.h
-+++ b/scripts/gcc-plugins/gcc-common.h
-@@ -185,6 +185,38 @@ static inline tree build_const_char_string(int len, const char *str)
- 	return cstr;
- }
+diff --git a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts
+index 95d46e8d081c1..d16200a323c50 100644
+--- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts
++++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts
+@@ -28,8 +28,9 @@ memory@0 {
+ 	};
  
-+static inline void __add_type_attr(tree type, const char *attr, tree args)
-+{
-+	tree oldattr;
-+
-+	if (type == NULL_TREE)
-+		return;
-+	oldattr = lookup_attribute(attr, TYPE_ATTRIBUTES(type));
-+	if (oldattr != NULL_TREE) {
-+		gcc_assert(TREE_VALUE(oldattr) == args || TREE_VALUE(TREE_VALUE(oldattr)) == TREE_VALUE(args));
-+		return;
-+	}
-+
-+	TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
-+	TYPE_ATTRIBUTES(type) = tree_cons(get_identifier(attr), args, TYPE_ATTRIBUTES(type));
-+}
-+
-+static inline void add_type_attr(tree type, const char *attr, tree args)
-+{
-+	tree main_variant = TYPE_MAIN_VARIANT(type);
-+
-+	__add_type_attr(TYPE_CANONICAL(type), attr, args);
-+	__add_type_attr(TYPE_CANONICAL(main_variant), attr, args);
-+	__add_type_attr(main_variant, attr, args);
-+
-+	for (type = TYPE_NEXT_VARIANT(main_variant); type; type = TYPE_NEXT_VARIANT(type)) {
-+		if (!lookup_attribute(attr, TYPE_ATTRIBUTES(type)))
-+			TYPE_ATTRIBUTES(type) = TYPE_ATTRIBUTES(main_variant);
-+
-+		__add_type_attr(TYPE_CANONICAL(type), attr, args);
-+	}
-+}
-+
- #define PASS_INFO(NAME, REF, ID, POS)		\
- struct register_pass_info NAME##_pass_info = {	\
- 	.pass = make_##NAME##_pass(),		\
-diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
-index a5aea51ecca99..472427f169a4a 100644
---- a/scripts/gcc-plugins/randomize_layout_plugin.c
-+++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-@@ -95,6 +95,9 @@ static tree handle_randomize_layout_attr(tree *node, tree name, tree args, int f
+ 	leds {
+-		pinctrl-names = "default";
+ 		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&spi_quad_pins>;
  
- 	if (TYPE_P(*node)) {
- 		type = *node;
-+	} else if (TREE_CODE(*node) == FIELD_DECL) {
-+		*no_add_attrs = false;
-+		return NULL_TREE;
- 	} else {
- 		gcc_assert(TREE_CODE(*node) == TYPE_DECL);
- 		type = TREE_TYPE(*node);
-@@ -381,15 +384,14 @@ static int relayout_struct(tree type)
- 		TREE_CHAIN(newtree[i]) = newtree[i+1];
- 	TREE_CHAIN(newtree[num_fields - 1]) = NULL_TREE;
+ 		power1 {
+ 			label = "udpu:green:power";
+@@ -96,8 +97,6 @@ &sdhci0 {
  
-+	add_type_attr(type, "randomize_performed", NULL_TREE);
-+	add_type_attr(type, "designated_init", NULL_TREE);
-+	if (has_flexarray)
-+		add_type_attr(type, "has_flexarray", NULL_TREE);
+ &spi0 {
+ 	status = "okay";
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&spi_quad_pins>;
+ 
+ 	m25p80@0 {
+ 		compatible = "jedec,spi-nor";
+@@ -117,6 +116,10 @@ partition@0 {
+ 	};
+ };
+ 
++&spi_quad_pins {
++	function = "gpio";
++};
 +
- 	main_variant = TYPE_MAIN_VARIANT(type);
--	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant)) {
-+	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant))
- 		TYPE_FIELDS(variant) = newtree[0];
--		TYPE_ATTRIBUTES(variant) = copy_list(TYPE_ATTRIBUTES(variant));
--		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("randomize_performed"), NULL_TREE, TYPE_ATTRIBUTES(variant));
--		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("designated_init"), NULL_TREE, TYPE_ATTRIBUTES(variant));
--		if (has_flexarray)
--			TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("has_flexarray"), NULL_TREE, TYPE_ATTRIBUTES(type));
--	}
- 
- 	/*
- 	 * force a re-layout of the main variant
-@@ -457,10 +459,8 @@ static void randomize_type(tree type)
- 	if (lookup_attribute("randomize_layout", TYPE_ATTRIBUTES(TYPE_MAIN_VARIANT(type))) || is_pure_ops_struct(type))
- 		relayout_struct(type);
- 
--	for (variant = TYPE_MAIN_VARIANT(type); variant; variant = TYPE_NEXT_VARIANT(variant)) {
--		TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
--		TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("randomize_considered"), NULL_TREE, TYPE_ATTRIBUTES(type));
--	}
-+	add_type_attr(type, "randomize_considered", NULL_TREE);
-+
- #ifdef __DEBUG_PLUGIN
- 	fprintf(stderr, "Marking randomize_considered on struct %s\n", ORIG_TYPE_NAME(type));
- #ifdef __DEBUG_VERBOSE
+ &pinctrl_nb {
+ 	i2c1_recovery_pins: i2c1-recovery-pins {
+ 		groups = "i2c1";
 -- 
 2.50.1
 
