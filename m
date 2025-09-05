@@ -1,92 +1,95 @@
-Return-Path: <stable+bounces-177814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970BBB45614
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 13:17:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 132C5B456EE
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 13:53:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B984A177F77
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 11:17:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6E83188F520
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 11:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63BAF34AAE0;
-	Fri,  5 Sep 2025 11:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBE93469ED;
+	Fri,  5 Sep 2025 11:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eN/gZiQy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TwH6WZ2S"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698DE34A333
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 11:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3914F1D6DA9;
+	Fri,  5 Sep 2025 11:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757070902; cv=none; b=arMBnLO++wsOw3t0l17ROcmahAAGBi+4ACsRX8xvMuck+tU1t32WTVArG5aJ8JoLfvsnCZBQIfTSOHP8Kp9yyy6u1YKQ+WYpHUu8Jqemr/DK0jjg4/vyG2betk0oSvO3obt9tIQQsFINipOAXDHkaEVIvie+ZOCs3oWfuqbuvow=
+	t=1757073204; cv=none; b=JLp1P8fthOTKqIasJs0C8xfYA+dNGKpuPTDMCXRRFyUFEP9ww2VRhnF2XtlrnMwrvqWIGlEvak62qPBEkK+k6VA36qyYa1kmRnGG88TxgjocgrCT6UAyFDSLh0hUCaoZKW+vIo4HU41k+3wMmwgbF5cgcDtEl0cBMdSjPIcBiPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757070902; c=relaxed/simple;
-	bh=cvwzQQz20d0jNv8ol0Z3BzQXzBbvPGTacxd0sJDnC74=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XliNvAHVlExtEqIgM2RQuKlMgxRnkwokZShUJXVfFpNH7K0WoWOVhQFpnI/JXUxWS9ngXOR4yJdgRlxeDAPjr14mDamf/Tlj1SvNaiVd/ezLDKtLTyl/aUcESmgFPfpjEooCpEWbqwzzuvXjdxVktF77qtZKa0nndgmFLqQ6KBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eN/gZiQy; arc=none smtp.client-ip=209.85.218.43
+	s=arc-20240116; t=1757073204; c=relaxed/simple;
+	bh=GZfXG8CWYAUuUjKr7KhOpe/JWJt9mfIwt/Gv0dRMHKs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OGH3Xm/76gUigey8Hw3DSAuF4oq4gFlMavotaD7x16nnHDu8gVqmx3IVEFmUni2JG3pemMU59EL4HDejQiN8SiW2mJw+craFf5j60ZnttwUE1EeF62d5y+HyZqXIXaWt6DGwRvwGrVzGBqVtzNBzKaVtocx2SOYiIx8E+G51e/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TwH6WZ2S; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b043da5a55fso294315166b.0
-        for <stable@vger.kernel.org>; Fri, 05 Sep 2025 04:15:00 -0700 (PDT)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3cd151c38ceso199814f8f.3;
+        Fri, 05 Sep 2025 04:53:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757070898; x=1757675698; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZPGWjhihTe1kg8wbOKpqskH3/nQSENZdhlUEbXeePyk=;
-        b=eN/gZiQyO76V3ZMTS+FlGaXk80sG1hTM69R20Kpq59EHFLndw7kkOsRWrS14o4PBLT
-         IJmAZ3hIYsJHisF2oqKNOYPjk3+qEhEg6TK6u890jBE9HjjN7mLVzJ7A7vJlnUo52itr
-         VvNzhCmQsotNebo6wwmHc+9BF1gOf2MNAdzuCVzOBdHIpNFSxzzVemFoNPj/xns2/t0b
-         Z/sWISzdfwWh4H7VgTLd/xTQ986GLn6kqNb6fC2UtO5fxlfvD7Qtob5JYwDhI//sbEVg
-         jL4A3cci8QdDSLh6C8wtiaM3TXt2Lg6zxTsvJJKEFJaLowcZoNMJvMi52/CVOTTbSvek
-         fv2Q==
+        d=gmail.com; s=20230601; t=1757073201; x=1757678001; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ibSd1EIrnlf1T65R99x8NmkSqz8ymnGekDTIZaoFiU0=;
+        b=TwH6WZ2SY2sO99mfp4mATjAAzKjO4KgexhUMXnvKaLYTOoZUEVkc0d570BaKYAB1ec
+         kxc8k1YJbNtzt6MUVKasbWssN9ZGO/kfpE0wUhNjuqSIRahLKOkfX4MJRR2g3VlqrNqq
+         gR/SgP0aWF/E2FGIVfAnlvgx9nxS7JSmPOxfDFaOnAxPRdO7ssQ+xBvqpD0ram1rT0zQ
+         59bPEJwI3Kw7chCv3Rgod7NnGx53nle8uN0CAk14YRpgTF89+7HljvLiswnU5PdKiQ0r
+         zT+KdYI++xGdeNYw4Fz4hrSQOOUPCLl8gtPSLVrHhw7KSPZWqLB2xm+nOEYVftgxWDQs
+         4QoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757070898; x=1757675698;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZPGWjhihTe1kg8wbOKpqskH3/nQSENZdhlUEbXeePyk=;
-        b=iYBcPcwS9gzNt5xnEY4fHynQEIoVJlnI0yt8ExkC6bB+Bedzg+H0EMzzAgvLK6IOEm
-         hGAWWb6QvEMo/ERPY9CSrd0VUoc4aP0yTo0w6GtJKJeq94q/GvWBn26x0F9v87hmhJ8x
-         UKLdq2cljnzdwnHOnrL3PBoRfAX22Sow0wHw/3+Vtjv/l5DX0YLthrCafZpi8cGFHKOW
-         L8PrrK1GdOFOYn5jkPQVdj6lhfrvRKp9f3tFVs2FmR9ZVdf/eo7ZEBGnmbt4FqG9xSwv
-         hqU/c2HjCLeaYIJogJjM0XOYusFuPYflVKfoYdIiNVKDORwXMdKUhvADOy7HeDXHMmld
-         kITQ==
-X-Gm-Message-State: AOJu0YxzEB0JglB8HnCMs/LdfJItNFjALk5cLm67iQaii5kppA5D3GG1
-	PVaOlZeNDpcwP54fV6AEksUB9Oq9xCSl+XIqWIOyEzP2wb7bwvcyves+TFIFwUwL
-X-Gm-Gg: ASbGncsfYwSx/Tjif5zvJPLf5txA1opTcPM0+BTlCgOgFRtfWHsB2/LqoFqv5/OWGUv
-	D49cnhavg4yWSveVPY77YOH1V9amcgSlgeKAh4kZaLJtXKdZvfDX3hCvBu1h4L1FIWQ6MRAgytQ
-	jz7VaB4U4/zyE5xZFXTDwuAHrh0oj6zwiNIMv0N/H4kp7O4iT2Yi5Z5P3AUIjvOKOBsuSE+PSsI
-	OTqvNQSeBuoNMdnlnJymVvsMlqUBG0Lh2hiWNXn4p8iHNB9/WQ7XZXbT0pBGbSHC3b9w7oE27bf
-	5CO1d1PF5D9s5ptiGo5ezgO5RM8IEi7lU5wBcbR1rO0OU2ixAQ1W6YNgddH7WygRaRniUbzR0S1
-	J1jO8dwHc5HtrmzLjRuYrmahBTe4OBtvwwJO19WmWO5mI0eTcQ2SFdL4=
-X-Google-Smtp-Source: AGHT+IEjszx3tz8lmsbudhMhdLog8rYFdBGsxb2Ff84Hh/ehiJZK1U/eZfUF4XDcg3X84LCmpvI27g==
-X-Received: by 2002:a17:906:6a04:b0:b04:a2e4:89b4 with SMTP id a640c23a62f3a-b04a2e490d8mr97806466b.49.1757070898128;
-        Fri, 05 Sep 2025 04:14:58 -0700 (PDT)
-Received: from localhost.localdomain ([2001:b07:aac:705d:d0c3:9f59:659d:5459])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b046f888b95sm557231766b.34.2025.09.05.04.14.57
+        d=1e100.net; s=20230601; t=1757073201; x=1757678001;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ibSd1EIrnlf1T65R99x8NmkSqz8ymnGekDTIZaoFiU0=;
+        b=W5j4knI6guDWMDQNE9WVmSkPcjikowilibpS8giCQmDSahdXDwVBSq9APP3HTcM4qr
+         QXM0l1LhyPv4/1E/gO3v4Ax1GzqUy33U6JlRUTz7CTPecWgMC9t5DWdCe7ZTIe+cgFT9
+         OkwD4hYsMqm+XM62+kQDUw7zNCHmFht00pZ5vgfqGsVCe2XxMMF4Lwn0gE2iFC4wCpFN
+         zNmWNAJagxqkviZOfZXP1z3V+xKJVGVwKKwIxLPjSa7mQGKTAB6jw2dyiVS+Qjyszg5H
+         sg/JqYlJjRY6jdsehI4a5kJTM8capKip/fUFm5uK1rLI8OHNxYMJflA9F1/+faXViokv
+         n0CA==
+X-Forwarded-Encrypted: i=1; AJvYcCUletoVxSR3nCsO4CKPDcfFzbW+Wp+ff/BkEAwIttuXwfSKRmp6F21a5KQKF8tWoCwtRa0Nd6AE@vger.kernel.org, AJvYcCUm58FWmiys5g+I0FbGd+SO38hJsVGyob84HV7g0/xsF3ZiQTEqoICGGkJFfR4U9Dg32C7DJN9uFSb4eFU=@vger.kernel.org, AJvYcCVwuO8xmw6ymGpuVhi6zr4hlvXwHKJuXQzVGTNMCYTq6VXXI4hWbdqGaZWpJ6hxMwx+zOGskMw/UJ1xmodj@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlsIHLtXKw/C7nhINgzdyWGhr2nfNbz0ZejZGKAU/mGeCE6hTv
+	b1j6eDgWPCoWXrMTyi7QN2uvLdiLMasv6G5rJBoY+w15dEf6bJ7/ZA+2
+X-Gm-Gg: ASbGncvA0E9OOkdccJ1iC3LZclShGSVL1/btoVhWr1fcN4FiEPfC3B6Z1rag3dl6ZGI
+	RjMZsCQ2RJRacvOao9PSBlZeDxfc85uAVT+YFUylLZ96FblpTuC/yd75QOA01rfixQ2g1BBRRfZ
+	8+diXVh9rfEIJDbUX6Fpzgeu2S65AvWp2ckBTKfwCK3tXt7Z8BPiCF4K3t2vFS2pyV2nrRRH5yu
+	NAJXuSqP8AoCT3cNDChGNvZyhTlxBlc7uevEkHLqqq7q3sn27wO+kkqhztAHRHAOYEZcSNfLNd6
+	wxJZs9u8evSQYEljpPb4uORLb5HhU8RJoAm6sYV66sbBLzQMiq05pzNFAUz4WebQ+uij2ZSHJJd
+	LkIghOXTYLx3i6okCMHb51+y7YNfm+mgVmSX/mxjFqNCdpvS3rmMqsxPAEcKsZUc8Wb2/MVND
+X-Google-Smtp-Source: AGHT+IFgyUVRsNnagZ84Pf1RIyYo5EbfYhRyDK79C1hAlhHc/Tz4Dui23mAaHaZv4EihvJszPYZfqQ==
+X-Received: by 2002:a05:600c:3110:b0:45c:b659:6fd8 with SMTP id 5b1f17b1804b1-45cb6597198mr40677645e9.3.1757073200933;
+        Fri, 05 Sep 2025 04:53:20 -0700 (PDT)
+Received: from thomas-precision3591.imag.fr ([2001:660:5301:24:999e:a0c8:e30c:983a])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3e411219ddfsm1903897f8f.57.2025.09.05.04.53.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 04:14:57 -0700 (PDT)
-From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-To: stable@vger.kernel.org
-Cc: Jonathan Bell <jonathan@raspberrypi.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Keita Aihara <keita.aihara@sony.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Avri Altman <avri.altman@wdc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Subject: [PATCH v1 1/1] mmc: core: apply SD quirks earlier during probe
-Date: Fri,  5 Sep 2025 13:14:29 +0200
-Message-ID: <20250905111431.1914549-2-ghidoliemanuele@gmail.com>
+        Fri, 05 Sep 2025 04:53:20 -0700 (PDT)
+From: Thomas Fourier <fourier.thomas@gmail.com>
+To: 
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	stable@vger.kernel.org,
+	Neal Liu <neal_liu@aspeedtech.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Dhananjay Phadke <dphadke@linux.microsoft.com>,
+	Johnny Huang <johnny_huang@aspeedtech.com>,
+	linux-aspeed@lists.ozlabs.org,
+	linux-crypto@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] crypto: aspeed - Fix dma_unmap_sg() direction
+Date: Fri,  5 Sep 2025 13:51:11 +0200
+Message-ID: <20250905115112.26309-2-fourier.thomas@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250905111431.1914549-1-ghidoliemanuele@gmail.com>
-References: <20250905111431.1914549-1-ghidoliemanuele@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,54 +98,30 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jonathan Bell <jonathan@raspberrypi.com>
+It seems like everywhere in this file, when the request is not
+bidirectional, req->src is mapped with DMA_TO_DEVICE and req->src is
+mapped with DMA_FROM_DEVICE.
 
-Applying MMC_QUIRK_BROKEN_SD_CACHE is broken, as the card's SD quirks are
-referenced in sd_parse_ext_reg_perf() prior to the quirks being initialized
-in mmc_blk_probe().
-
-To fix this problem, let's split out an SD-specific list of quirks and
-apply in mmc_sd_init_card() instead. In this way, sd_read_ext_regs() to has
-the available information for not assigning the SD_EXT_PERF_CACHE as one of
-the (un)supported features, which in turn allows mmc_sd_init_card() to
-properly skip execution of sd_enable_cache().
-
-Fixes: 1728e17762b9 ("mmc: core: sd: Apply BROKEN_SD_DISCARD quirk earlier")
-Signed-off-by: Jonathan Bell <jonathan@raspberrypi.com>
-Co-developed-by: Keita Aihara <keita.aihara@sony.com>
-Signed-off-by: Keita Aihara <keita.aihara@sony.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240820230631.GA436523@sony.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Fixes: 62f58b1637b7 ("crypto: aspeed - add HACE crypto driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
 ---
- drivers/mmc/core/sd.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/crypto/aspeed/aspeed-hace-crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
-index 592166e53dce..7b375cebc671 100644
---- a/drivers/mmc/core/sd.c
-+++ b/drivers/mmc/core/sd.c
-@@ -23,6 +23,7 @@
- #include "host.h"
- #include "bus.h"
- #include "mmc_ops.h"
-+#include "quirks.h"
- #include "sd.h"
- #include "sd_ops.h"
+diff --git a/drivers/crypto/aspeed/aspeed-hace-crypto.c b/drivers/crypto/aspeed/aspeed-hace-crypto.c
+index a72dfebc53ff..fa201dae1f81 100644
+--- a/drivers/crypto/aspeed/aspeed-hace-crypto.c
++++ b/drivers/crypto/aspeed/aspeed-hace-crypto.c
+@@ -346,7 +346,7 @@ static int aspeed_sk_start_sg(struct aspeed_hace_dev *hace_dev)
  
-@@ -1468,6 +1469,9 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
- 			goto free_card;
+ 	} else {
+ 		dma_unmap_sg(hace_dev->dev, req->dst, rctx->dst_nents,
+-			     DMA_TO_DEVICE);
++			     DMA_FROM_DEVICE);
+ 		dma_unmap_sg(hace_dev->dev, req->src, rctx->src_nents,
+ 			     DMA_TO_DEVICE);
  	}
- 
-+	/* Apply quirks prior to card setup */
-+	mmc_fixup_device(card, mmc_sd_fixups);
-+
- 	err = mmc_sd_setup_card(host, card, oldcard != NULL);
- 	if (err)
- 		goto free_card;
 -- 
 2.43.0
 
