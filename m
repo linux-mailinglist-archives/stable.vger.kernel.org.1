@@ -1,94 +1,137 @@
-Return-Path: <stable+bounces-177900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E040B46559
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 23:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B96DB4655A
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 23:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03D04AA3A32
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 21:17:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 375B9AA3AFD
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 21:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BD61F30AD;
-	Fri,  5 Sep 2025 21:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4865127B4E8;
+	Fri,  5 Sep 2025 21:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oB5bmSJn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bNWhjYt6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877D9E55A
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 21:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A67E55A
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 21:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757107023; cv=none; b=cc6Ebp/c+MWd5kqJrdpQWhK8juw8PGv6SdFsLEyyZ8eUKNZySwL9ktMjOB9uh7rGd/gLEftgkiOGSJpm+0np4vSVrNcYqNVVsgqVhx7H0Nwy3A7JbctHOXhG3udzhmAlgGd5ALWBZZKW8/JD1ldH9xLwKX/hrKrj33gXaJ9wrY4=
+	t=1757107027; cv=none; b=DxQ5BmkmkQOVRIcUGnNbDObattmLuHizzw0bUBT6OdvAXIbr9y0Zx+2d/4ATGJnwHTlT7gWVqrlukRHsW53L96BfWOkX1TUQDRvEZQQsZxtMX/LU587dzwx9J2+V1aFMzo7LTGnge7YjThB9vicrCQYqcthmkXfyvbeiSEdre/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757107023; c=relaxed/simple;
-	bh=xnxlCZykJCYHZpW6Pv62IUASJiAHnturkR/ldKwLJPk=;
+	s=arc-20240116; t=1757107027; c=relaxed/simple;
+	bh=Ys29k4EWeUZeA0xVOoxB+f8d3rS7WkJY0wgdHoo/t+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LFzpuZ7jItx3utR7aK/JtkyJMjRs4RhS+KUq+XVo7i77JHZYI71655cq2BdRPYtOhUvCpXZnVrdDWUyVdmPje1kmJLcLkNy+xClt+yM4o5uY4Vp2W13U9e/fdgFjbpNArWZPd+iO8ViWSdTnvzIMKtqOkprgBE4ctGftnNL2bZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oB5bmSJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92062C4CEF1;
-	Fri,  5 Sep 2025 21:17:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KwlFjKir7B7rFHAvIvooOMXZlvJE8QQNxDEA5j5ICl5Q0veEiDHiZFT36G+Y1kb7Ot43ZevAFHIXbaV67V/wrNxdByygWdnp67Ot6oQIGinWNb9HgdA4t/R80GIbIYs0wn4F0yiOh/7hKiffF+2EKffDEq69lRDnRej3U7ehlHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bNWhjYt6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7136C4CEF1;
+	Fri,  5 Sep 2025 21:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757107023;
-	bh=xnxlCZykJCYHZpW6Pv62IUASJiAHnturkR/ldKwLJPk=;
+	s=k20201202; t=1757107026;
+	bh=Ys29k4EWeUZeA0xVOoxB+f8d3rS7WkJY0wgdHoo/t+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oB5bmSJnpM1BBLVHnm42/mBtWFfY7L3OEk4tcAi+cesGbhRvKlcsR2UI149fs3kl4
-	 NlE/c+dS4QD0E7NYfuPU3LKYASqz/bVQDDPFNDXTi4PGIM73SiiVp+Gd8BatoeVUgM
-	 9eN+alRstMfg2m2BIKMO10m3cFutfb4tqSskrGrNd0r/fPnOVZR6Xi4CU6u5VLD71K
-	 JokUUhmS207xx5ciBD+oZzfbZcMPpcehVbcKXD8ctKFw+77UpznlXBP8HFIpQNssNe
-	 P45JY2dWivng/Lh7hGDO432uXokjX15VKen4dJalUGiQSOfMfLqipsiy4SBhGKXmcT
-	 GvxVXLbiyq68w==
+	b=bNWhjYt64BiQ8p91oNnZ2KXfBm3Yw4JMGTdhNckTU7ZKZL/R5Cxg0zWCU+Qu22J2M
+	 kT6QuSV0MecAy1wtD4IdVgYbYDBT1RzfTSKLjGN1MD3b35IXDMx2oiLCK1NL8+87tY
+	 E6p29/qEoirm5aqcIBYF6Lz+Aw3JOTsaFJUAN3eTKR4IrElFfcgesxO5haxBgsWt2H
+	 rptQVmLh7j5oHJZS2pGIxG4cC8fIbKmBPse4Dt4WKn4VzqRdHpWlvQqBINO6Dirv9V
+	 uElIz2EVTkZzZH7B2hs3iF7GdplpfWixlf91xHJ8hdaT+brtt/kN104DExiypJzZI4
+	 RbXxHDOBg7hbQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Chris Chiu <chris.chiu@canonical.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Qiu-ji Chen <chenqiuji666@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] ALSA: hda/realtek - Add new HP ZBook laptop with micmute led fixup
-Date: Fri,  5 Sep 2025 17:17:00 -0400
-Message-ID: <20250905211700.3421432-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()
+Date: Fri,  5 Sep 2025 17:17:03 -0400
+Message-ID: <20250905211703.3421493-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025052415-fang-botanist-0180@gregkh>
-References: <2025052415-fang-botanist-0180@gregkh>
+In-Reply-To: <2025051909-laziness-boss-78ae@gregkh>
+References: <2025051909-laziness-boss-78ae@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Chris Chiu <chris.chiu@canonical.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-[ Upstream commit f709b78aecab519dbcefa9a6603b94ad18c553e3 ]
+[ Upstream commit 157ae5ffd76a2857ccb4b7ce40bc5a344ca00395 ]
 
-New HP ZBook with Realtek HDA codec ALC3247 needs the quirk
-ALC236_FIXUP_HP_GPIO_LED to fix the micmute LED.
+Fix a potential deadlock bug. Observe that in the mtk-cqdma.c
+file, functions like mtk_cqdma_issue_pending() and
+mtk_cqdma_free_active_desc() properly acquire the pc lock before the vc
+lock when handling pc and vc fields. However, mtk_cqdma_tx_status()
+violates this order by first acquiring the vc lock before invoking
+mtk_cqdma_find_active_desc(), which subsequently takes the pc lock. This
+reversed locking sequence (vc → pc) contradicts the established
+pc → vc order and creates deadlock risks.
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250520132101.120685-1-chris.chiu@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ Adjust context ]
+Fix the issue by moving the vc lock acquisition code from
+mtk_cqdma_find_active_desc() to mtk_cqdma_tx_status(). Ensure the pc lock
+is acquired before the vc lock in the calling function to maintain correct
+locking hierarchy. Note that since mtk_cqdma_find_active_desc() is a
+static function with only one caller (mtk_cqdma_tx_status()), this
+modification safely eliminates the deadlock possibility without affecting
+other components.
+
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs to extract
+function pairs that can be concurrently executed, and then analyzes the
+instructions in the paired functions to identify possible concurrency bugs
+including deadlocks, data races and atomicity violations.
+
+Fixes: b1f01e48df5a ("dmaengine: mediatek: Add MediaTek Command-Queue DMA controller for MT6765 SoC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250508073634.3719-1-chenqiuji666@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma/mediatek/mtk-cqdma.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index d4bc80780a1f9..b47820105ead4 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10249,6 +10249,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8e18, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e19, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8e1d, "HP ZBook X Gli 16 G12", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
- 	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
+diff --git a/drivers/dma/mediatek/mtk-cqdma.c b/drivers/dma/mediatek/mtk-cqdma.c
+index 41ef9f15d3d59..39e902b279e64 100644
+--- a/drivers/dma/mediatek/mtk-cqdma.c
++++ b/drivers/dma/mediatek/mtk-cqdma.c
+@@ -421,15 +421,11 @@ static struct virt_dma_desc *mtk_cqdma_find_active_desc(struct dma_chan *c,
+ {
+ 	struct mtk_cqdma_vchan *cvc = to_cqdma_vchan(c);
+ 	struct virt_dma_desc *vd;
+-	unsigned long flags;
+ 
+-	spin_lock_irqsave(&cvc->pc->lock, flags);
+ 	list_for_each_entry(vd, &cvc->pc->queue, node)
+ 		if (vd->tx.cookie == cookie) {
+-			spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 			return vd;
+ 		}
+-	spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 
+ 	list_for_each_entry(vd, &cvc->vc.desc_issued, node)
+ 		if (vd->tx.cookie == cookie)
+@@ -453,9 +449,11 @@ static enum dma_status mtk_cqdma_tx_status(struct dma_chan *c,
+ 	if (ret == DMA_COMPLETE || !txstate)
+ 		return ret;
+ 
++	spin_lock_irqsave(&cvc->pc->lock, flags);
+ 	spin_lock_irqsave(&cvc->vc.lock, flags);
+ 	vd = mtk_cqdma_find_active_desc(c, cookie);
+ 	spin_unlock_irqrestore(&cvc->vc.lock, flags);
++	spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 
+ 	if (vd) {
+ 		cvd = to_cqdma_vdesc(vd);
 -- 
 2.50.1
 
