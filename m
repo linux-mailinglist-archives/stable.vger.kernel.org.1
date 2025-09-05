@@ -1,100 +1,124 @@
-Return-Path: <stable+bounces-177865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932B6B46083
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 19:44:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6929B46093
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 19:46:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B161188902C
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 17:45:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89B5216BF9B
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 17:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EDCB35AAD4;
-	Fri,  5 Sep 2025 17:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE7523E342;
+	Fri,  5 Sep 2025 17:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WF2i0aIB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mFV7JbbN"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC3E3568E0
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 17:44:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFA63191DB
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 17:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757094286; cv=none; b=GXonFsKwXZG8Vv1p3TNFe9embIf54y7GDSp25rs87y+zV7YRY4YaSPLEoH59vhbgRd9F1+WFTN6IxweTi5yEUw/Hm6hgyGx3iXhRv49J80zmQPg6qcDInmhABxpjbtpI6C8vIMIXaWh3+AszhevdutuSuI7KGwDRVwwuyLmobC8=
+	t=1757094390; cv=none; b=RiJYCE7TnK6oho0K8XNX4OSgoInXRv04c/iyI61huwsqFQHztuTH5FMYs8uAl/eCveQf3C7x3ZxrNvS8mkQ48m05DFpljAhLsNy3rNBi0jlcn5IYmkkG8SY6rI4AuhlZPNC0wBb7pscr/xre5zTEssGY9SVPni2sljHkZ2T2+Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757094286; c=relaxed/simple;
-	bh=EnM7HnJx03NhrIaIoiZR1EbOnY88I6qE+q6C80Ge1Zw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=sOzW2ItZjUIpCT0UhJc/ZEWhe3Q5dIbo8sb+QvKvzslXcGb0YJ3oajnktzkCem02JeSgq1ZURUb1fclZHzfO8iMaj3VsEP6C2dU1bpOKQZm2K3JrY1VykfRDDPvTOGqGZZA20RDWVoc13KlfYO+wNPnMIYGEuhpOPoDLT6Bs84U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WF2i0aIB; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757094285; x=1788630285;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=EnM7HnJx03NhrIaIoiZR1EbOnY88I6qE+q6C80Ge1Zw=;
-  b=WF2i0aIBFSCgNs+RhP0DBOGmiWAAhViSKiqQ/i3RsCxzPQj1OQua2JDW
-   zrljPdCI6L8dQEPYIcv1GEDu9aKfpdM/tKobPa15lcl3rpTldkr6GA/Yh
-   Kj5NP9j7zMgYpHGePHdcxr3HZxudRv6Ckk5zuC9nUMM51T78YqYsJ+rTW
-   2r46s5Eh0eU+wtAwJx1NR+QcFGqBQdU6ithVY++R9d3iNa4VyTvjWJFlt
-   y4qZck2HvEKYBizzWXjOFPJooKuXdsC9YfVhwqPQ7Jy/tjLc1jUY6rs23
-   TygbOeuctAKEhRY+7mesLoJBxefkne785XVroUn31meI4mGIKX+ODB50l
-   A==;
-X-CSE-ConnectionGUID: 33sI+pqGSK+FzEyF9jar+g==
-X-CSE-MsgGUID: 7KLOzq8fQoeFA/qPWTbvWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11544"; a="47019593"
-X-IronPort-AV: E=Sophos;i="6.18,241,1751266800"; 
-   d="scan'208";a="47019593"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2025 10:44:44 -0700
-X-CSE-ConnectionGUID: EBQa4kR2QfqfEP9aXR06+g==
-X-CSE-MsgGUID: uq/8/WHlSs2ohh0g/kokEw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,241,1751266800"; 
-   d="scan'208";a="172661837"
-Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 05 Sep 2025 10:44:43 -0700
-Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uuaUL-0000gR-0k;
-	Fri, 05 Sep 2025 17:44:41 +0000
-Date: Sat, 6 Sep 2025 01:44:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Adam Xue <zxue@semtech.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v4] bus: mhi: host: Fix potential kernel panic by calling
- dev_err
-Message-ID: <aLshY8zmfry2pAQx@b7823f61de85>
+	s=arc-20240116; t=1757094390; c=relaxed/simple;
+	bh=MqseLuxtjjng7fZlBkERzUZtZq8rYge/7MSpbXzuB7A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Qp2BulYvjVM0Pihc/rKqAiwyyvCt8kNUlnrK1vxSm74JsSLiUC2iLVX9QcoSBI5bVesw0OuMUbiHg446e5B1HyVGXpsUnw6oDzW2VzMVj34VKu7p+/0rT9I0SyL7kVu7Reqb3jlgQCQfu7V8jz/ZJWHvSapBHlGTu1wvddt2RGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mFV7JbbN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA17EC4CEF1;
+	Fri,  5 Sep 2025 17:46:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757094389;
+	bh=MqseLuxtjjng7fZlBkERzUZtZq8rYge/7MSpbXzuB7A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mFV7JbbN1o0gWYy5H1klFMEUhQP94BSIjjazqav8DOFY47RMhSc5cl3AH2vaGf3gU
+	 9002gkFDL/0jmeaJ7ABaGjiYICINVZCHkvLSmGd2Bjph0ISPxhpjJsT/bKVvHTrBPk
+	 I8gzIHqbsjqz24h6R43Dn/Nc9Gj8FXLKlhAhDdhsGAPZSr+WA5xrbc0pC4UgqotDcc
+	 xaquxK1Z8EVz9FHGqX658gZ3VpZpW+LFViw8Ggq2kFTpoFpsgizewwvqR9bgXbZmcN
+	 jiF9BZJm+efEtMJriTIsQXVy5eICfVCUc2jjaXQRv9y7g8IMKdh3X/dZOHRK8gX9jY
+	 8VuFtErbVtHCQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Ronak Doshi <ronak.doshi@broadcom.com>,
+	Guolin Yang <guolin.yang@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] vmxnet3: update MTU after device quiesce
+Date: Fri,  5 Sep 2025 13:46:24 -0400
+Message-ID: <20250905174625.2222428-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025052425-willed-landline-ff5b@gregkh>
+References: <2025052425-willed-landline-ff5b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250905174118.38512-1-zxue@semtech.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Ronak Doshi <ronak.doshi@broadcom.com>
 
-Thanks for your patch.
+[ Upstream commit 43f0999af011fba646e015f0bb08b6c3002a0170 ]
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Currently, when device mtu is updated, vmxnet3 updates netdev mtu, quiesces
+the device and then reactivates it for the ESXi to know about the new mtu.
+So, technically the OS stack can start using the new mtu before ESXi knows
+about the new mtu.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+This can lead to issues for TSO packets which use mss as per the new mtu
+configured. This patch fixes this issue by moving the mtu write after
+device quiesce.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v4] bus: mhi: host: Fix potential kernel panic by calling dev_err
-Link: https://lore.kernel.org/stable/20250905174118.38512-1-zxue%40semtech.com
+Cc: stable@vger.kernel.org
+Fixes: d1a890fa37f2 ("net: VMware virtual Ethernet NIC driver: vmxnet3")
+Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
+Acked-by: Guolin Yang <guolin.yang@broadcom.com>
+Changes v1-> v2:
+  Moved MTU write after destroy of rx rings
+Link: https://patch.msgid.link/20250515190457.8597-1-ronak.doshi@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ no WRITE_ONCE() in older trees ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/vmxnet3/vmxnet3_drv.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
+index 8714e49004842..86b913d5ac5b7 100644
+--- a/drivers/net/vmxnet3/vmxnet3_drv.c
++++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+@@ -3315,8 +3315,6 @@ vmxnet3_change_mtu(struct net_device *netdev, int new_mtu)
+ 	struct vmxnet3_adapter *adapter = netdev_priv(netdev);
+ 	int err = 0;
+ 
+-	netdev->mtu = new_mtu;
+-
+ 	/*
+ 	 * Reset_work may be in the middle of resetting the device, wait for its
+ 	 * completion.
+@@ -3330,6 +3328,7 @@ vmxnet3_change_mtu(struct net_device *netdev, int new_mtu)
+ 
+ 		/* we need to re-create the rx queue based on the new mtu */
+ 		vmxnet3_rq_destroy_all(adapter);
++		netdev->mtu = new_mtu;
+ 		vmxnet3_adjust_rx_ring_size(adapter);
+ 		err = vmxnet3_rq_create_all(adapter);
+ 		if (err) {
+@@ -3346,6 +3345,8 @@ vmxnet3_change_mtu(struct net_device *netdev, int new_mtu)
+ 				   "Closing it\n", err);
+ 			goto out;
+ 		}
++	} else {
++		netdev->mtu = new_mtu;
+ 	}
+ 
+ out:
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.50.1
 
 
