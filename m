@@ -1,115 +1,95 @@
-Return-Path: <stable+bounces-177906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74ECFB466A2
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 00:23:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D98BEB46750
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 01:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A10A21CC1E4F
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 22:23:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 928863AC347
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 23:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3AA927E040;
-	Fri,  5 Sep 2025 22:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4931E5B7C;
+	Fri,  5 Sep 2025 23:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wwU+PRLJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pRx+1Q9P"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA5528505E
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 22:22:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB70BA4A
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 23:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757110941; cv=none; b=hiUb03m3I2D0UQi1T7+zajzY3ieSvMvA9ee2v2biY3Wh9uSC7WJcAsCygNfUcPeJqidj4VA4Ixm+M9iXM3msietJ1016bihQyuFQgc33ylDl5p8xuz8LsJ5tChtWuJ4upsGRlFo0Ne4N0ZTCifdAm/3WsVb8vLZn9uQsWL2SZiU=
+	t=1757116117; cv=none; b=FIg6nO80Kyf2OODx/L8Sqp2jb81tjj5BxIfUq09QBwIHUwUAYOIV+RcvmLS5eq4txap2ewMHdSvgV+njJLJNB5fQpkTWvN096XTaQXfYzHAbBWHbEropC86IwX/OVntIhewPdRcJGMbxZR3j3ijWETRHKH9Z2Lxl96jEAgnRFh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757110941; c=relaxed/simple;
-	bh=659ccuPtSirr1zl00uU5A9iv2ysWSzQ97IzY0N3/LQ8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=MXDu3LoGRJkU3kcFACsaDfgclMjuKEHkuJ9cvQJWIZc1EGOJLkw9Md6JXZXmwcnIvARFuy3z3LaWqpegh955h1aqEBTehe3UE4Fkuh2WrPKtDuKzeXp4rSP9ZYHbppehfHXk1gTNqy1zca3Ka0pz6e2VRsadjDUrmE6ynMihoZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wwU+PRLJ; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2445824dc27so26497215ad.3
-        for <stable@vger.kernel.org>; Fri, 05 Sep 2025 15:22:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1757110939; x=1757715739; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sg9V7A+vveZVwEgb6/4ZFeGTdbh9RAwHCgZXiFP+1HU=;
-        b=wwU+PRLJ6cY93mx72ruoWa+plZJfmNDw0FkrC9Uc3/03PufF8FtvLY2XeuhSB7NAt3
-         I2tWnWFVUPRcsxUq/PVK2UBRHRpuxjxQyfP/UQEpvy/8DSzilbQKtsbA218l09M6/w6l
-         6qhW1vvgFCKC3HKhvs3ye5JaAGeNAsKf/eqvtGjE3dlZGY7TMCIx5CyIzHjSalI6yVzJ
-         RG2Vvz6Md/bIq1Vl5O+F3Ai5sbhMUYLfrLGsW6ZRsw5Gh/UVFGasPqglA3KzMN8zBEc1
-         eVVza+kQYfInl845IV6eOevZ0hHa3NljwUy7zE2XGTwKI/h/z9ggMrAylUEx6PjsUTcw
-         HyKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757110939; x=1757715739;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sg9V7A+vveZVwEgb6/4ZFeGTdbh9RAwHCgZXiFP+1HU=;
-        b=cjv7jWKBErh4fa8Jsj2+3/wb8rgws6ecrptsp+xSeH2fnbtnTuRxHAlgIQzCuuyaBi
-         vgcBte2T2SG7iXaNxAOt8Jwt1jtyzTaL029nClNnLp8D19D+Up7oYCCU60dKDXWNc0qg
-         106KzpKcLmS9dZVSUs+qWkrJlZ3BcN7CHC8eLhNu52aFqiL+IXZr4Y+0SP8l2pbqyc4J
-         znsu6d7fxmB+Gt9ELUtlD4G0qtUiutzy43XJsABHYskf30PumgJV8WumUKDtiK71x3oL
-         UhwNOYNFViODhPXAGS8nB9stz7ZQs6O8jbS8imWEiMxeFjjN7mjn5xGJkrbk4zULwCwo
-         28Eg==
-X-Gm-Message-State: AOJu0YwT0L9Z/AQ8gQv+eJ3l1mlO8xlyfUFs4p8r9KDNA128P5XVKQkx
-	uxb11eh1R3pdyuqITg+8nZjcH8ch3W+wbhlI8r9++ym2qk5ecqREgOFMu2hBSFGkutk=
-X-Gm-Gg: ASbGncsZ0hyH4Fzkj+3iIDXALaxpUVntrQzM5cvrt5StPfpO8k+62uqxjNf/glvjPhb
-	yrRHr2Usm1yYPMTBmNPAo+lCmPlXIvhAgQd7qJFiYoK2EAhQ+hRzzxCW2KEMlg0PYpG9yskI718
-	FothHjjV4Hywx4ror82QG9a5pkKkHQcgisc6RB7hkrxo6AzzWxBg6hnMIbvHGrBm8/M9WVRlWye
-	m3f7mOw9JAYaNiWR+/hvGJ+4feyjHgnxwLpw784iGmrtcUeJ7e7Smc07YYbYBfw+iDTJNw3/6qI
-	fuHdSXEOf2yrdj9Lgli7vibapPsTIqoNg/Qx2W4wYGb0HjgG8Tq1I8YXirE5yqPFhctMU4YlZ+6
-	7KwgqDL5OS9QXAe5dlFWSs9hFkQC4zPk=
-X-Google-Smtp-Source: AGHT+IEgDKOlBK6x0QOw3W3CHGpa5Cc8uz1T8qU/XEUIc8y0zuEtK7ONrjwU8Ktw48bTs0lLqjmlXw==
-X-Received: by 2002:a17:903:3bc7:b0:24e:e5c9:ed02 with SMTP id d9443c01a7336-25174470d47mr3109805ad.54.1757110939089;
-        Fri, 05 Sep 2025 15:22:19 -0700 (PDT)
-Received: from localhost ([71.212.208.158])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-329cb6a2ec2sm13579564a91.21.2025.09.05.15.22.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 15:22:18 -0700 (PDT)
-From: Kevin Hilman <khilman@baylibre.com>
-To: Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Andreas Kemnade <andreas@kemnade.info>, Roger Quadros <rogerq@kernel.org>, 
- Tony Lindgren <tony@atomide.com>, Russell King <linux@armlinux.org.uk>, 
- Santosh Shilimkar <ssantosh@kernel.org>, linux-omap@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Miaoqian Lin <linmq006@gmail.com>
-Cc: stable@vger.kernel.org
-In-Reply-To: <20250902075943.2408832-1-linmq006@gmail.com>
-References: <20250902075943.2408832-1-linmq006@gmail.com>
-Subject: Re: [PATCH] ARM: OMAP2+: pm33xx-core: ix device node reference
- leaks in amx3_idle_init
-Message-Id: <175711093813.666031.2668373270360080348.b4-ty@baylibre.com>
-Date: Fri, 05 Sep 2025 15:22:18 -0700
+	s=arc-20240116; t=1757116117; c=relaxed/simple;
+	bh=Uedx31EWjLAew3rOSoSpP4sN1oSxKxuFJpI9mXSNdw4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WS+28meeIB3DUeQ82qWIx3zDZqyxiyJSN4g/jr57ZABWjhXc5dsCfk1wBZe3omRBAtMdkaAGRvpkZjvvhcxKq9qAP6FrnQPclWpmmsgMqRoo0hu2j6015gzHQBAsIhOtY1C6I8WBkHdKz15Ha+3DRmH1xjHdG9Nj8HLe5gwiOoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pRx+1Q9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD92EC4CEF1;
+	Fri,  5 Sep 2025 23:48:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757116116;
+	bh=Uedx31EWjLAew3rOSoSpP4sN1oSxKxuFJpI9mXSNdw4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pRx+1Q9P3pwMFzzrhwRKiFb5LGVqpLmbWJpH83ft7Q9tHvF3dkb7LgPsMDnPliiIc
+	 focT7PthxnyfP1qdPtBbErjkge58V3uYpe2dct1q53zAahEcKqzBnN/jWMM5vH50yx
+	 sz/nsCrpzzZulL5r9A0UUtr+X7jvssOSt7CJwu/RbNyUrxQNxb4Kaaa0Oq69iqD+Mx
+	 VmNIkrPSqxnug+d/Xn5Q+pXJPVKzvuyUP043Ta9CNHrOAFLFEDLTO5nul6AUQizpzT
+	 K5/SzxyGw2jzssxmtV0MQR1K6G2E/pF01XMM5P5FhcewE2iXP78a4Jt4fQS1lIluxM
+	 umP6+dbucDm4A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Chris Chiu <chris.chiu@canonical.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] ALSA: hda/realtek - Add new HP ZBook laptop with micmute led fixup
+Date: Fri,  5 Sep 2025 19:48:33 -0400
+Message-ID: <20250905234833.3571460-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025052421-document-satirical-8e58@gregkh>
+References: <2025052421-document-satirical-8e58@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3-dev-d7477
+Content-Transfer-Encoding: 8bit
 
+From: Chris Chiu <chris.chiu@canonical.com>
 
-On Tue, 02 Sep 2025 15:59:43 +0800, Miaoqian Lin wrote:
-> Add missing of_node_put() calls to release
-> device node references obtained via of_parse_phandle().
-> 
-> 
+[ Upstream commit f709b78aecab519dbcefa9a6603b94ad18c553e3 ]
 
-Applied, thanks!
+New HP ZBook with Realtek HDA codec ALC3247 needs the quirk
+ALC236_FIXUP_HP_GPIO_LED to fix the micmute LED.
 
-[1/1] ARM: OMAP2+: pm33xx-core: ix device node reference leaks in amx3_idle_init
-      commit: 74139a64e8cedb6d971c78d5d17384efeced1725
+Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250520132101.120685-1-chris.chiu@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Best regards,
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index a78ca3f97967a..84dde97424080 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9322,6 +9322,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8895, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_SPEAKERS_MICMUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8896, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x89aa, "HP EliteBook 630 G9", ALC236_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8e1d, "HP ZBook X Gli 16 G12", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
+ 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
 -- 
-Kevin Hilman <khilman@baylibre.com>
+2.50.1
 
 
