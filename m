@@ -1,79 +1,79 @@
-Return-Path: <stable+bounces-177788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0AD8B450BE
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 10:02:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4981FB450C5
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 10:03:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 440C01C20F8A
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 08:02:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7B6B17B851
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 08:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6D1308F17;
-	Fri,  5 Sep 2025 08:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20102FCC13;
+	Fri,  5 Sep 2025 08:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HRS5bqGr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eKXKd6au"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D5B307AFD;
-	Fri,  5 Sep 2025 08:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A302DF71;
+	Fri,  5 Sep 2025 08:01:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757059248; cv=none; b=Qs8KfMIy4WjW6WftH0tAZVwS+pcgJuAM99NGOdoOlVeSqcjnlkFdsVWlzxMUHhi4Zqyn7joxpu9nZNEjWRn1sXsoyDnVwKjthrcIJiX8SmWU+me/zAYyIU/kX6ZvVDsJpFAMq2lt++8OeByGVfHj0jk4Qrhaydj5CwTIJ7UKorU=
+	t=1757059288; cv=none; b=VP74puYoiv3gUGGk6RoD3PSKsyB0QLNAGFfn9/SeZosmQ8JQSR/J1LFY7arrCezD4wV3BTHgr3j6mMOXJZwKuk8/4YUoxRAND+b7Z+YJlaFa6qDalY81bHWrthPisSBYxd+ZAl/UIaT7rk5URJdgsP7Vfb8W3nUryP2XFqlRhDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757059248; c=relaxed/simple;
-	bh=vACb045QkIDhZiJ/eUdfWeAu7UePhs1aiEPZxg+4yi4=;
+	s=arc-20240116; t=1757059288; c=relaxed/simple;
+	bh=TRM2/DP7jYqlzKJ8dCu8aCpPnHP3eTcBnTwJgVeemX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pCUW5N9FdWhIj8rqPo9M2K/ldNDTW4aYtIRFKhYW7AnaBrYhIcIBX/O7KGx8FqQcSw8TBb92wH/t8QClYNUDxnS9tU9GvB/WP8aQYN4B6J3t1ScxPwFkBgD3qHlAeN9diGClbuFL6Wj1g2bi4ib7GjompT6I1L370ynIFcGa/2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HRS5bqGr; arc=none smtp.client-ip=209.85.214.170
+	 MIME-Version; b=T9teTrJYF1y/YuzGv5/9we43scJ6190mOJ46S6r210p/a+3abYF8gWLck+TTLWEWi0r5O1Wps102dJyY6TWTewRkMhXGjGiv6FczcAxeT4bg/WxYzLZPb7RWFcaO8S2f/N8JmPH9L04ZOhGxAwJgLGuixQo97MaIhwDo/HWAEHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eKXKd6au; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-24cbd9d9f09so24886425ad.2;
-        Fri, 05 Sep 2025 01:00:46 -0700 (PDT)
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-77238a3101fso1302319b3a.0;
+        Fri, 05 Sep 2025 01:01:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757059246; x=1757664046; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1757059286; x=1757664086; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=197N926JqxKxoYCk7QivC9r+n93Tl38dys0FCD1AK5A=;
-        b=HRS5bqGrdu5jmcxpZC/0XCrMr0iu5sNo065Gn+3aY8wDlffUb0YR46ZyZHErZVYSZY
-         Xna2TmHUjQL3PyqJV+0IYHHmDAwxp/pLsaONOpa20duZMC4Cu5InUGYuIECXSgX/21Yy
-         43KKu8g5Xwfghm6Y4vcnztnqanwrglnlA0hflVA05fW37Gj5NKoI9GwD1QKsmUgrSNSX
-         fLECAmwhBR5i4kiBE1xSex36cBuZn8cd3VkVzcX8JmQjPC8TCVPkr1ucRpIOM0FVGI5m
-         uGNhz0YzwQJS9GhGNiDOqx08vxuv2OuKh5YWVdA9D1EXkWi2dbNtbG6hg8OZuBez7goV
-         twRw==
+        bh=0KcirD6c38pKnpnjFRQ1YE59Dfe+Ohwn2rFz7/iVbXU=;
+        b=eKXKd6au1KUaqo5xvt8V8sS7xDVcIUQjQjWAYuvV1VmtJOMog2SnM3cljV2Cs3aBku
+         x1KYWXzVpxj9zm001iIE/4p5Lh7C3C1i7aSghvlV+u+GUikRbizML01E3SPhEHthy0pr
+         2PlA3EOxRJN/MMVUvenuUCLoNkw7CgLnC4jI+yTJoEKlPGLRV0kXPV3eO1VT+2zH4kTc
+         u47ltbmoTtgmCU7hD9CsqmZiJoJJFbeeF0kJPMT3/k+6Knmqcn4E6wSVXh4llCfcRfU3
+         NYadAXKbv4BFx/0oqp6XpAMZJ6iSybR4mxJgyaXJrSIQoX1LjbEake/cdWEc1VuGUxLe
+         jGmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757059246; x=1757664046;
+        d=1e100.net; s=20230601; t=1757059286; x=1757664086;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=197N926JqxKxoYCk7QivC9r+n93Tl38dys0FCD1AK5A=;
-        b=vRmpPkH/pmcPsr9uLNqKAVh3zmeUbrgG/TA3qK2m7sITYCD5FftpJ56HZvdMBh+zBl
-         v+weJnW5cw8h0kyeZh0M5PY2rIDss/QZBMu+YRs3Dm1G4is4wg2D6WuVyXyFrn1VZ/75
-         RxXvLTTsZaueDliwZdggQSz21rdPK7BCe/IxsOIJ+IkOEr/mKgRjWJXrBpF/A7q+Q282
-         s5o7b1ki5pFUjelpF+OoXyGqfrXMl3AUNQm3ATnC+jYL28dceybtCYGZfdDGgMs7AI5d
-         MfaWkRxa9wtAuozy1HRBlv9bXUyxO2jK6q4TcovGuTLDTCEu4OmiKio2Krlnx0lyHdU5
-         Esog==
-X-Forwarded-Encrypted: i=1; AJvYcCVAg2ysVksvvh0ojbyjQw+zWLjqvMwi5K1Ep92y9TWev59cSUZzcBo7YS8AnK3tNhOaXfe/ITw1+QnCkIk=@vger.kernel.org, AJvYcCX/ZtCmH5lNlhKmzPGHWlnse1hsFmf4f3M0Ugji/6zTe8V5pPAifiOEbMNvhvzfG6s2lyLY30Zg2el9@vger.kernel.org, AJvYcCX68LNHYVFHVaw++tMes71rD6BM6lyHmbN1mLKB1pBh/zDtiUIHgZPOSBT/jYzHXymarJ+OwB1Q@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywq8xiUeSV4RYAVbDWPfjlvdJtoBL4ywg4QCqxFTEI+8VVg6z0N
-	hPVYRX6qKTGlTzw6d/5dJqznr+uTJA6AFSbX+dYQhDsYeTBs57oAMsOw
-X-Gm-Gg: ASbGncsbxnF8Cy/1uzXCCA16weOaBGvOBQ9APjXazdijnd+sdyXmkASwsLvU64aZHsU
-	n8HCJunTv9ERtSHwH+58FQFEhNPyW+hvz0v8GiUVA/odCmxN3rGu13Kb5SpagH37DEi/U9A6So0
-	vo2Jc3houZpattGvXsLt2rZrY509fAxjYzLIUcQVH604axXHfXqtJKJtPxFeKfYOuVZtGzwjUNL
-	oB9GX+W5pGdADJhXu/50D7uWQYN2l458dMIS5HG7Xq2nrpjXHA2KdwVliQ7xhrjwdMHmNjt1Rnn
-	L+r7ghTQ66y8sEIu2lerKofPYPm0vkdOIwbHAzCwCBLG3uHjuNP6BMZUdLHvvQdTbrwzVFtf0zP
-	VuVHtV+nK+S/5NAq3AglpaNWV2zryla15lwdXgHYuNcmzkbaXQs3hHC7QLbktkmVwJmaFizEr6d
-	gMliIvEJR3YaAlA1DAEs/JCt8dnjZ0
-X-Google-Smtp-Source: AGHT+IEAAeZxluRJAwDrScg9wcdhKdRd9iBWcsaHf/WV0ErTxMECs7TLt8THiqcOOq6Vlk5JPNE79w==
-X-Received: by 2002:a17:903:41d0:b0:23f:e869:9a25 with SMTP id d9443c01a7336-24944acf3b2mr265423835ad.44.1757059246213;
-        Fri, 05 Sep 2025 01:00:46 -0700 (PDT)
-Received: from arch-pc.genesyslogic.com.tw (60-251-58-169.hinet-ip.hinet.net. [60.251.58.169])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3276fcd6232sm27910926a91.16.2025.09.05.01.00.43
+        bh=0KcirD6c38pKnpnjFRQ1YE59Dfe+Ohwn2rFz7/iVbXU=;
+        b=okylHIopKd9ksfwGI3vllWZL7zHurYJSvRI3AWUNOJm5yRKsT7NJAgZM3Q/x1LYQc0
+         /YrTPQjJiKaqg8EEliW4yXMEj8WUTVZDyLyNpGWLDcwVNavGOiXNwdfRmwWCr96Gspzz
+         1q1HM0cod6e0thKQEGlw8TTvH7SXvEgAiTLIUCZmEwPoYgetB/mHCr41Ynni7Ik8Cfzt
+         gAPHuyl7779BJwb6wPFKfNvt/dTBCHDO59D13vaM0r1igK21JsREuj3eGwtgGlKlU+Wr
+         Kphbe71+gNvaZSU0tqAyT5JvJo9lBbHNYybeCSCCSCK7V3yXlajq/9hYEjIleYbnAf9Z
+         zN5g==
+X-Forwarded-Encrypted: i=1; AJvYcCVyYrMjgaNdRfyvEXEMa/zOXaEU3sylMJMreWemT+2ebBg5/hdq2/6fsGZOGNI1UTXYeCHj+m9zVFR9@vger.kernel.org, AJvYcCWC6NdTyqJgEy3fp4tUVdA5XL6Q0Z5tEbDsWw8A0ThW6VKx4bnsrXmG81rTMQve4maCgqBp8AukUZVyEjY=@vger.kernel.org, AJvYcCWGdoJDkY9HFJeZxYwPesXpDiaLez5o/RLBMWMi30T+aah60f+6WmFZdGtPFc/PvdV/mhbwqF5e@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzq81mWpxvJFO6qQ8WCpBbxUJpfBJQBArQu+rqn/ZQ7vVCi8gPT
+	KtrzRWDfAD00GIYO70LbxbwmN2Bnm1PaKk2VO9mh1AnV/1w26BubGSSICXV64g==
+X-Gm-Gg: ASbGncsST1vtgXTGXs9wA5a4/W3LlofaNCZI7HyYvOPXxgOMi/qIsodHdSNP7FCU2Re
+	krr8lg+A0g3rezPkd+kq3DFQNLDGqCAD6NhrjXQJs9A2pM3X2YdizDRXMhmO/SuNyHT08/dlRxL
+	zTPjB2fuLdtg+OW2rtlQgKz36T4T3dDSR5fjnJ1bQpRbgrMMFgsWeWxYbcWwxwetsIZkxPf1q33
+	sN1eHSKyFvCVtULZR+fExIJ7zWnwQ50MFORRhHtLHyIdho33mFCYnYog8l73kE4zqsY2lfI1pQf
+	/J/dVkEPu3SjBFjZC2p3N6fAujZRQmYXXC0B+UpYQ/wUs+BYUTn1C3i7S22ijg8m/MM63pQWPpL
+	R+xSSQ5/Gfn8I7gUYS0MwwVyvmDid2xI7a9Ff5eZabiIGpE8PQw5F8dUxljctk36V2sNp1JVVlF
+	JeGJI=
+X-Google-Smtp-Source: AGHT+IHIO+hgMBlGeKjNyk5BQw4pQUCHTBeKAGQsTmksm3ezEmgQu+mMDCir7+NMiCL6llrEOie1wA==
+X-Received: by 2002:a05:6a20:a11c:b0:246:682:83f1 with SMTP id adf61e73a8af0-24606828644mr15757289637.43.1757059286115;
+        Fri, 05 Sep 2025 01:01:26 -0700 (PDT)
+Received: from arch-pc.genesyslogic.com.tw ([122.146.30.3])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b520d33cbd8sm993707a12.41.2025.09.05.01.01.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 01:00:45 -0700 (PDT)
+        Fri, 05 Sep 2025 01:01:25 -0700 (PDT)
 From: Ben Chuang <benchuanggli@gmail.com>
 To: adrian.hunter@intel.com,
 	ulf.hansson@linaro.org
@@ -86,9 +86,9 @@ Cc: victor.shih@genesyslogic.com.tw,
 	linux-mmc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v2 2/3] mmc: sdhci-uhs2: Fix calling incorrect sdhci_set_clock() function
-Date: Fri,  5 Sep 2025 16:00:35 +0800
-Message-ID: <a9fdc8f66a2d928cf83a3a050e5bdb7aff4d40db.1757056421.git.benchuanggli@gmail.com>
+Subject: [PATCH v2 3/3] mmc: sdhci-pci-gli: GL9767: Fix initializing the UHS-II interface during a power-on
+Date: Fri,  5 Sep 2025 16:00:56 +0800
+Message-ID: <eb3ac2d225b169f72a0ad33fd1754cabf254335a.1757056421.git.benchuanggli@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <8772b633bd936791c2adcfbc1e161a37305a8b08.1757056421.git.benchuanggli@gmail.com>
 References: <8772b633bd936791c2adcfbc1e161a37305a8b08.1757056421.git.benchuanggli@gmail.com>
@@ -102,37 +102,127 @@ Content-Transfer-Encoding: 8bit
 
 From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
 
-Fix calling incorrect sdhci_set_clock() in __sdhci_uhs2_set_ios() when the
-vendor defines its own sdhci_set_clock().
+According to the power structure of IC hardware design for UHS-II
+interface, reset control and timing must be added to the initialization
+process of powering on the UHS-II interface.
 
-Fixes: 10c8298a052b ("mmc: sdhci-uhs2: add set_ios()")
+Fixes: 27dd3b82557a ("mmc: sdhci-pci-gli: enable UHS-II mode for GL9767")
 Cc: stable@vger.kernel.org # v6.13+
 Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
 ---
 v2:
- * remove the "if (host->ops->set_clock)" statement
- * add "host->clock = ios->clock;"
+ * use sdhci_gl9767_uhs2_phy_reset() instead of
+   sdhci_gl9767_uhs2_phy_reset_assert() and sdhci_gl9767_uhs2_phy_reset_deassert()
+ * add comments for set/clean PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN and
+   PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN_VALUE
+ * use usleep_range() instead of mdelay()
 
 v1:
- * https://lore.kernel.org/all/20250901094046.3903-1-benchuanggli@gmail.com/
+ * https://lore.kernel.org/all/20250901094224.3920-1-benchuanggli@gmail.com/
 ---
- drivers/mmc/host/sdhci-uhs2.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-pci-gli.c | 68 +++++++++++++++++++++++++++++++-
+ 1 file changed, 67 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-uhs2.c b/drivers/mmc/host/sdhci-uhs2.c
-index 0efeb9d0c376..c459a08d01da 100644
---- a/drivers/mmc/host/sdhci-uhs2.c
-+++ b/drivers/mmc/host/sdhci-uhs2.c
-@@ -295,7 +295,8 @@ static void __sdhci_uhs2_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
- 	else
- 		sdhci_uhs2_set_power(host, ios->power_mode, ios->vdd);
+diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
+index 3a1de477e9af..b0f91cc9e40e 100644
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -283,6 +283,8 @@
+ #define   PCIE_GLI_9767_UHS2_CTL2_ZC_VALUE	  0xb
+ #define   PCIE_GLI_9767_UHS2_CTL2_ZC_CTL	  BIT(6)
+ #define   PCIE_GLI_9767_UHS2_CTL2_ZC_CTL_VALUE	  0x1
++#define   PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN	BIT(13)
++#define   PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE	BIT(14)
  
--	sdhci_set_clock(host, host->clock);
-+	host->ops->set_clock(host, ios->clock);
-+	host->clock = ios->clock;
+ #define GLI_MAX_TUNING_LOOP 40
+ 
+@@ -1179,6 +1181,65 @@ static void gl9767_set_low_power_negotiation(struct pci_dev *pdev, bool enable)
+ 	gl9767_vhs_read(pdev);
  }
  
- static int sdhci_uhs2_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
++static void sdhci_gl9767_uhs2_phy_reset(struct sdhci_host *host, bool assert)
++{
++	struct sdhci_pci_slot *slot = sdhci_priv(host);
++	struct pci_dev *pdev = slot->chip->pdev;
++	u32 value, set, clr;
++
++	if (assert) {
++		/* Assert reset, set RESETN and clean RESETN_VALUE */
++		set = PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN;
++		clr = PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE;
++	} else {
++		/* De-assert reset, clean RESETN and set RESETN_VALUE */
++		set = PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE;
++		clr = PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN;
++	}
++
++	gl9767_vhs_write(pdev);
++	pci_read_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, &value);
++	value |= set;
++	pci_write_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, value);
++	value &= ~clr;
++	pci_write_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, value);
++	gl9767_vhs_read(pdev);
++}
++
++static void __gl9767_uhs2_set_power(struct sdhci_host *host, unsigned char mode, unsigned short vdd)
++{
++	u8 pwr = 0;
++
++	if (mode != MMC_POWER_OFF) {
++		pwr = sdhci_get_vdd_value(vdd);
++		if (!pwr)
++			WARN(1, "%s: Invalid vdd %#x\n",
++			     mmc_hostname(host->mmc), vdd);
++		pwr |= SDHCI_VDD2_POWER_180;
++	}
++
++	if (host->pwr == pwr)
++		return;
++
++	host->pwr = pwr;
++
++	if (pwr == 0) {
++		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
++	} else {
++		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
++
++		pwr |= SDHCI_POWER_ON;
++		sdhci_writeb(host, pwr & 0xf, SDHCI_POWER_CONTROL);
++		usleep_range(5000, 6250);
++
++		/* Assert reset */
++		sdhci_gl9767_uhs2_phy_reset(host, true);
++		pwr |= SDHCI_VDD2_POWER_ON;
++		sdhci_writeb(host, pwr, SDHCI_POWER_CONTROL);
++		usleep_range(5000, 6250);
++	}
++}
++
+ static void sdhci_gl9767_set_clock(struct sdhci_host *host, unsigned int clock)
+ {
+ 	struct sdhci_pci_slot *slot = sdhci_priv(host);
+@@ -1205,6 +1266,11 @@ static void sdhci_gl9767_set_clock(struct sdhci_host *host, unsigned int clock)
+ 	}
+ 
+ 	sdhci_enable_clk(host, clk);
++
++	if (mmc_card_uhs2(host->mmc))
++		/* De-assert reset */
++		sdhci_gl9767_uhs2_phy_reset(host, false);
++
+ 	gl9767_set_low_power_negotiation(pdev, true);
+ }
+ 
+@@ -1476,7 +1542,7 @@ static void sdhci_gl9767_set_power(struct sdhci_host *host, unsigned char mode,
+ 		gl9767_vhs_read(pdev);
+ 
+ 		sdhci_gli_overcurrent_event_enable(host, false);
+-		sdhci_uhs2_set_power(host, mode, vdd);
++		__gl9767_uhs2_set_power(host, mode, vdd);
+ 		sdhci_gli_overcurrent_event_enable(host, true);
+ 	} else {
+ 		gl9767_vhs_write(pdev);
 -- 
 2.51.0
 
