@@ -1,245 +1,129 @@
-Return-Path: <stable+bounces-177841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE11B45D32
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 17:56:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1045DB45D4E
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 17:59:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB0FE17D7C0
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 15:56:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFB577C41B3
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 15:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FAD31D746;
-	Fri,  5 Sep 2025 15:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BC831D74F;
+	Fri,  5 Sep 2025 15:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H00Qdhef"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k9br9pwA"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7B531D743
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 15:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757087793; cv=fail; b=rkkL4wFoD7vpke5njDpDHl72Z0aTiF+663N+6CMkJTxJD8E4F+3Bd9mvnaepvJ6r+osuCJyJSV38hsKPoGCKm3wTOkIEmq4mbz9hZRPkkLSYAJL32AmQpqMexJ/8guK/WUBNET5AINqbxy6EaIOytqPlXn9O7loiIHQGVEHRxVM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757087793; c=relaxed/simple;
-	bh=R0cIVo03K9II5OI57bhGBltriXFNCDv4tURvKH93gFk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mXpjHC37N/Y2/QcWOIAVOudgkyHECiRFJkbNVIQD8o+JEedsxWyy2js20dgifVyElZjioaiOebFYcVYBijSTd5Du6XaOR9V73e+wX8WR4x9nz0JHIIUrV/0kiq5YbLwZAK+Yyc8ZZkox9dKhcQio0Rdl4HYM6VvhrRnonZZORrU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H00Qdhef; arc=fail smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757087792; x=1788623792;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   in-reply-to:mime-version;
-  bh=R0cIVo03K9II5OI57bhGBltriXFNCDv4tURvKH93gFk=;
-  b=H00QdhefTHcOU6CqMcyf9Cd/1bWo4cmOByPqWhmaAn5iBOsiVjsN0Soy
-   FuaoChMCmTv0s6gl13Dq1ee3vqJX2ZTcPL9st91szy6jO0BBaYbKZB9Gc
-   QfiMK3OUAP+qHR+yAKT3OLLJAt3gq4Nj/RCQE4/K1j1XGVJQee0TGbe9R
-   e92gtOx8z4Q1rbGAi3gKJ/x+oYozEUXg9s7T+X/uJOnew6WITqQ95Rhcv
-   XZKsZf0BnRa8O5MtcbbC1xz1GdBjC673V2x14bh78AkHYfnZm5O/DcHN+
-   kJ1AqueQZugq0xS3Kd5x2PRTZ0spdZejDA4XBV/TuzsqJkxMDL46JeflD
-   w==;
-X-CSE-ConnectionGUID: qpq1fM+5RPuAWNuzu3KBIw==
-X-CSE-MsgGUID: 31yp1Gi5QG+DQfVVu3/92w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11544"; a="59514921"
-X-IronPort-AV: E=Sophos;i="6.18,241,1751266800"; 
-   d="scan'208";a="59514921"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2025 08:56:32 -0700
-X-CSE-ConnectionGUID: oKKtGlI1RMSNsuBHqkRuvw==
-X-CSE-MsgGUID: +IktRkt+Q5Sw/fGOgrXgyA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,241,1751266800"; 
-   d="scan'208";a="176533171"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2025 08:56:32 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Fri, 5 Sep 2025 08:56:31 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Fri, 5 Sep 2025 08:56:31 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (40.107.220.76)
- by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Fri, 5 Sep 2025 08:56:29 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rm/cLHj/7/3jtefm232Mmbgh2Gq8ianf6fA8qaT1NCLkHWz4cVpz83lz3pDnQBJhFrndB+xD8zfgNQ7C5A/X7B0AQAVz1fjnFVo6zL+c66skmf5KQybvxpkdoFUUrftO2j5vKyb5xz+2jU0y5DCkx6lYSLXLoH609YyjOkmGny9YwMAVsRB/sDzOX0r+3IVFGp0jBh8G7yxb5zoQU6Av317lqOwIjWTHyApXzsTHNKrUBsHKIvDA3uEw8y8imsGd6gHUJUALvSKkDrvzT9k0SXEXInhFc5ohy1AVbEzx0k/PZTHuF1O1O1LUSjYCzM50G2WCtnOSdmWmXs6nUaelwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fZBovdVwnQrf+pCot+EGMWQc5cjb+tHyQcz/lMp3hLA=;
- b=MenEYFS3nF2TJ1XGHvASqCn2DMZkZlp9VxFyOylW1iwPV/ZRlKiR8zB5BIG80LHzza+mJeZ2UIPUjO8FFymyrhibYKJm5zKHqC1A+nHvE7Ji2hHikF7Ucca6m5oOUDQkzyz1X+ZulrutWraVBCkvro0T+imvdX8QcMrricLZX8iuvwBXJYDpqgMnEfwRFcRhzkT5ibD0wKsPuWWRqk7+psli5VFlWcYQEyxuaqJi7Iq8b757SxPnAhuGlmWBlpI98w2a3GJL6rPnCHhYsIXRUwqWNpcTXqD3tjq0mZLo3j48d20VGNdPXG7jOaBI+9SWOvqTMDDDXMBMpY45/AmJ6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
- by SA0PR11MB4751.namprd11.prod.outlook.com (2603:10b6:806:73::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Fri, 5 Sep
- 2025 15:56:28 +0000
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f]) by SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::8900:d137:e757:ac9f%3]) with mapi id 15.20.9073.026; Fri, 5 Sep 2025
- 15:56:27 +0000
-Date: Fri, 5 Sep 2025 18:56:22 +0300
-From: Imre Deak <imre.deak@intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>, <patches@lists.linux.dev>,
-	<intel-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, "Sasha
- Levin" <sashal@kernel.org>
-Subject: Re: [PATCH 6.16 139/142] Revert "drm/dp: Change AUX DPCD probe
- address from DPCD_REV to LANE0_1_STATUS"
-Message-ID: <aLsIJnuSf_gYv7Zt@ideak-desk>
-Reply-To: <imre.deak@intel.com>
-References: <20250902131948.154194162@linuxfoundation.org>
- <20250902131953.603872091@linuxfoundation.org>
- <aLoJG4Tq4nNwFLu6@ideak-desk>
- <2025090551-setup-crescent-a670@gregkh>
- <aLrpfoemc6jCFNVO@ideak-desk>
- <2025090530-germicide-protozoan-8d0b@gregkh>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <2025090530-germicide-protozoan-8d0b@gregkh>
-X-ClientProxiedBy: DUZPR01CA0334.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b8::25) To SJ0PR11MB4845.namprd11.prod.outlook.com
- (2603:10b6:a03:2d1::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E371096F;
+	Fri,  5 Sep 2025 15:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757087941; cv=none; b=ST4D+CWtzjce6Hpc8FX2hc6ImuVnR3D3VMQAIhpZiihpL+ihYqyoqxOFIhCi4X3Dt6oN0Ew69s1Vq/isYdASzIhUa8CJ3vkUemJyTr2BnOA8PpmoAjIFe63Ys+RE8Liy4hCfrZIdRjKpaBa/F478bYF+ggIn9mTLUYEQCmd1G68=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757087941; c=relaxed/simple;
+	bh=hIAotabxJDFefPkdBzhwJSfIdRyc+dj/8HFRNGKHQTE=;
+	h=Date:Subject:From:To:Cc:Message-ID:MIME-Version:Content-Type; b=sdPpp7h3AisLkfrGqxZDmCHFfEzsq6A5H2XYMaJguPMt3PL2KhnS+14cRsLZZMRtMd5u9UhZeLm5eQqeqh7ywqLWrJg29UIjZMSPYa1gnZCJf5XmSvr1wF+77BC6iSwrP2b0YfMzkgcdDjbs4nTd/qdAtlNR7/LTK1pNe4Ylh8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k9br9pwA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E70C4CEF4;
+	Fri,  5 Sep 2025 15:59:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757087941;
+	bh=hIAotabxJDFefPkdBzhwJSfIdRyc+dj/8HFRNGKHQTE=;
+	h=Date:Subject:From:To:Cc:From;
+	b=k9br9pwAHdI6gX2HyQ2ggbI0OciK88gtZSt+3G8NoXUqNOFZ2fsbPkaumwkWtLENS
+	 B2sfCMQdJA+YrBTzu7dFM/XeMB9U67JqSBpPG0VVr+8Kqmpug+YUl8udeSXtHLTKQy
+	 JxWgY68g7Td1S8KO4ejhjfE/q3X6z6IddNLg5tTaM4NAjfqoxxHcNDZQaIFeXaZh/z
+	 yxNHDY/HHhq97L0kjV9OTle29vH6uDWuBITjQoscWJaOEx0c2OiykY75M4LYcC/c6R
+	 ocU8O8PLqOjOg/17m6hIqYBJyLoBmZYswIjCFvqt+lz1uKt6wQdyFY9shrCEXCKys/
+	 +Oiq44EldohFA==
+Date: Fri, 05 Sep 2025 08:59:00 -0700
+Subject: [GIT PULL 6.18 1/2] xfs: improve online repair reap calculations
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: cem@kernel.org, djwong@kernel.org
+Cc: hch@lst.de, linux-xfs@vger.kernel.org, stable@vger.kernel.org
+Message-ID: <175708766712.3403120.15088787175440332819.stg-ugh@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|SA0PR11MB4751:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8db41e16-085a-4926-c26e-08ddec94c5de
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|10070799003;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?anBBIYZ4Kxl4hjc1EgB4eqE6Z3X4Xxk0c9/T26+fZaZIZUpZWZTr5TxGkdr/?=
- =?us-ascii?Q?hQqkLhFSeOt1i8vYDCK/f/sR9od6Xf3D81Yr19lvI8qGQhsow+KVBKvyDBVQ?=
- =?us-ascii?Q?uGCYmOSaKR5R0MMrxKIcRheGg3Ga8c4b5aRpgfDk2ZJCVxk9AXI7vX1tHdDP?=
- =?us-ascii?Q?fUVQc0aBbf9pfnXuuILkOupQKMZUD6/EqQjyNy4GCaTEvO0/NUy94+RRL+tF?=
- =?us-ascii?Q?1v7xpZqDwahXaei3FZ99yuTAQIosxuyyhxWGQqusN8WNyvXXu+vN/SNgY/st?=
- =?us-ascii?Q?Fc6tcn80jOWRmc4Ohtp5EzI+ov4iJ7jTBfSgkJwwUGwk1zKtbgOSRRvZskds?=
- =?us-ascii?Q?7HTTp7/Y/xsl0EhRUl9JhqK8+I/A0B4Yd/LH78+r2GEw+1vNqhOr5SbJt03y?=
- =?us-ascii?Q?dG4BwAR2F4o1h2rcPsqdZc72lcnhUiYpuzaFn0+RkBJk3KUM2dtlzfPp/FiD?=
- =?us-ascii?Q?sLyVobe5mbOoD8/ZEAiaOeY93COQtZ/LX+kjMvfPiOqdY77caCeHT4Is6cXT?=
- =?us-ascii?Q?0VkuBqI2uQ35FGR5MAwX+xzfDV/Na+nNgCpn0w7Xmn0qv3iTxywsehhX2FIq?=
- =?us-ascii?Q?0pixvWl8yOKZ/M12BXXLBbCDRhmn6B7rtd4EOXi6/UQ7S7t9xfSkRpRJgy9W?=
- =?us-ascii?Q?FwSG7YqVWIeLXq6tl7OQtqWmvHycRcstv6RVpAu+pc1TnAw0PvvBL2Zl7MbA?=
- =?us-ascii?Q?NU2oN1Vxn4UGzQKWAfBvJ0H4Vqz+A4A9CoYxkzjHaYDQvGdtfNt4/Ecr28vi?=
- =?us-ascii?Q?IRpSrIMUalFMcB1EWPtJr98kK4Z4Xp2WMGDV9xpprGNDYLt6/Jlt92sBTeHo?=
- =?us-ascii?Q?o5cy3Lr4IBhJidOo/aM+uP16bu7Fe+1cT/9MSwGaK/TsrAeIGiSvd6MzfuKx?=
- =?us-ascii?Q?1xP7eGaSHJTMDQPyPwGI3AUnrrbAgbm89mCUhy5rGEjBMcxknkTVgEQ2jf0e?=
- =?us-ascii?Q?9OixjUonK8ZRsevO7Jv5gMlBOsq1EGW2en4G2J6WDh8Wxq7vvOgLFMVGyAvX?=
- =?us-ascii?Q?fQ0gcio9jr4QIHC2WCNoY125knMUKMCTFNv/+n6xPn7Wy+pvFHmTiLgjw07b?=
- =?us-ascii?Q?+dsCOfia1oQa341vDLkTD/3fresRX+9sf4YszYpfEufrigX814LFIh9L7cau?=
- =?us-ascii?Q?UU/ymOexMcSCoaoD3bbIQKuvhEJKLyUlO5mfQv2MUUZjvpdptfNJj2F3jRTn?=
- =?us-ascii?Q?4ZcM3N2hbzLzJB4f1yzcBdNJLFL2vhBS49DqK9A5dor1YQevjoyB7t5yQq4G?=
- =?us-ascii?Q?on0y7imRW1QNK3cie2nyU1Mi71MTkEhQvtY0MrZ5PXC73Y730Jaa0GYx5fkC?=
- =?us-ascii?Q?5+jR3rV5E98Eo/9BRb9UtOKRz28/fdHmQjVxR83EeDF0GdCwfNmA7XoWjJul?=
- =?us-ascii?Q?4ztoBLtQIm3dHxcyV15p0C1GBerhlpuIdCH+KqFdiDE1p34Kqjo72W25Tn8s?=
- =?us-ascii?Q?/RUUyWNZ/Dc=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?wKLTdmuQ/hMie/KT14I9vywRubbTVrDBywrMNPb5/+EvpPaNEeLR+DJ9mXjZ?=
- =?us-ascii?Q?Ae0NcSLxsoytumeAfuFA0PytGbgnWr3mlYBFhPngFfszWZYnv1Ag+QQfQmyl?=
- =?us-ascii?Q?L61pHrNryoUtygRjrG9YZB1cvH94TYd1FNq3fojC9tYSzi0OYeKGxMzwSHYz?=
- =?us-ascii?Q?c3YWJ6RA3hIqNx0yggXxEh8T/4+qN1i6hETysEQZnzXFE0he+usTp8u8wThN?=
- =?us-ascii?Q?+RMELl39Cr7pjATHPVigeJj99BUYtvgCjvrD01r6xT7gKrIn81qsazGrT3pe?=
- =?us-ascii?Q?3ifujf9K/KqO3JAww2Xo8B5ocCKFNAxj+lt4ioBWkIlKHWyfZswfG+3qKeXE?=
- =?us-ascii?Q?1flygjCEY9Lgji3TNhb2R+ukc4x+Hkbz6sgoBCL1sYoQd/c628jus4K8jh1n?=
- =?us-ascii?Q?BAnenZm1jLfS+GsNFSVVSnNOO5S+XyeicwNCCuGdZrgqT/CdXvCkOnLx3k5t?=
- =?us-ascii?Q?VC2R0vX+uNKCcMDMEbNXMDCqwBXdoKAZkfj+kUmdh962nsYV0CO9C8WUrgBi?=
- =?us-ascii?Q?oYDGGUtPacYoILZvg1piGLAOL5+3aal+IIWu5uPVOaAfV1R+GTM+EYc1WxCK?=
- =?us-ascii?Q?pVhqoeGHe3c5h4LLPob0QG5Y8NRYVptbOJXhBXT8ZbPIh0jpqYEbID8KX6pp?=
- =?us-ascii?Q?8MxfL+8RFWObZ9YsfCtRUACS1J5LPEwaaaZoHHvVuM4CmbWCBETM8JtbrkOT?=
- =?us-ascii?Q?k43rW4pgF00y4rrV2woUwYsH2z0eOxNcx5JIYjTsFNHZKI6bnfhYjkDvE5ab?=
- =?us-ascii?Q?qyk2ed8COXwbsZ5V3HHkhUEw/uEu/PwfvaEoZDVAynxEBtUsE5nKPyFZqa/u?=
- =?us-ascii?Q?+Z24jarRyxJzzf0hXOi+4FYgr36yuUv8zvUssJ9TQO8Graa7PSsorkH4YXOW?=
- =?us-ascii?Q?gQg4KqzmR/8CprF3FLn3Al7i8OLXGTRUp2/C2oJfgMQ+UxUwpzPzXLZgr4uP?=
- =?us-ascii?Q?IVdusRaavjz+Gq0wwir7WKNPa4Z/Tg3htAuBZxGNBA/KSY+DhrwBkZrycgru?=
- =?us-ascii?Q?zn3JPN4TX/rigXHqWRRdqLoqgbfAjUlz3qDxDJ4cpEl8Dyr/GzlS4vaI2hK5?=
- =?us-ascii?Q?RQuhK2+skaPIuhc96Bz4bvK/q4+Pi1+0QiVRP25bzUU60xhuUhZvuXbVUgwm?=
- =?us-ascii?Q?JKbJqnFWrMpCdZrbtLZgwV95q7Pz0znt1tBoEmHN5gCYXR406KdnOOOrgC+3?=
- =?us-ascii?Q?uoEw8NgffVb2FpiAvKA5WbXv/FEUc9IW1ECeBI5xz36MWyC52CRPjcBieIrm?=
- =?us-ascii?Q?JIi/ukVicNiFijXo5kSjr7RsxhjDT9pJY8o0KxdrmZMR0z2p0B1N6yTccnjD?=
- =?us-ascii?Q?dmGLeIHGCZs2LAb+mzHTIJxKQzeiAq53GTnKrebC41kzoqCwuLZw0CkFddCp?=
- =?us-ascii?Q?ERkMiZ1Zrunq+GJ+0wtdhIUnC408oxLX3axJDvYg99uAoc750N2imm/03gle?=
- =?us-ascii?Q?K9bv21qqA0ADipl2JloPWpGFmsK7Xx0XTnNDEV0YZemly5M+Ql648T3uMKXg?=
- =?us-ascii?Q?LPxmyyRgTZf6yCe4FT73JGnxG3wWIdD1FRutv6ZcIZntFwOdLPOlrEzXEmq2?=
- =?us-ascii?Q?171bhKAYz3fN+IFPab9TBhbAW8yI5v/egDZSxnW1ga3Y8C4gGoCApPMCNQaU?=
- =?us-ascii?Q?zymfu2DpQBYOh3p4yg8UC9aa+/b+/oIDyHDNvE1shMT8?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8db41e16-085a-4926-c26e-08ddec94c5de
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2025 15:56:27.9111
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yXd4BpLvPhp2aS2Qm0d2IebduSYtsXpbKSmr5ZErQWIpJvpIVJDqxENK0l9QPCid4un70z39XmgRtM1ey6VKzg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4751
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 05, 2025 at 04:55:50PM +0200, Greg Kroah-Hartman wrote:
-> On Fri, Sep 05, 2025 at 04:45:34PM +0300, Imre Deak wrote:
-> > On Fri, Sep 05, 2025 at 07:07:40AM +0200, Greg Kroah-Hartman wrote:
-> > > On Fri, Sep 05, 2025 at 12:48:11AM +0300, Imre Deak wrote:
-> > > > Hi Greg,
-> > > > 
-> > > > On Tue, Sep 02, 2025 at 03:20:41PM +0200, Greg Kroah-Hartman wrote:
-> > > > > 6.16-stable review patch.  If anyone has any objections, please let me know.
-> > > > 
-> > > > Thanks for queuing this and the corresponding reverts for the other
-> > > > stable trees. This one patch doesn't match what I sent, the address
-> > > > should be changed to DP_TRAINING_PATTERN_SET not to DP_DPCD_REV, see
-> > > > [1]. I still think that's the correct thing to do here conforming to the
-> > > > DP Standard and matching what the upstream kernel does, also solving a
-> > > > link training issue for a DP2.0 docking station.
-> > > > 
-> > > > The reverts queued for the other stable trees are correct, since for
-> > > > now I do not want to change the behavior in those (i.e. those trees
-> > > > should continue to use the DP_DPCD_REV register matching what's been the
-> > > > case since the DPCD probing was introduced).
-> > > 
-> > > Ick, why were the values different for different branches? That feels
-> > > wrong, and is why I missed that.
-> > 
-> > The requirement for changing the DPCD probe address was only
-> > introduced/clarified by a recent DP Standard version (with the
-> > introducation of LTTPR / UHBR link rates), so in the DRM code this got
-> > changed only in v6.16.0. However, this change revealed a bug in the
-> > firmwares of an eDP panel and Thunderbolt host, which also had to be
-> > fixed/worked around. The only such remaining issue is the latter one
-> > tracked at [1], which is now fixed by [2].
-> > 
-> > Based on all the above I still would like to keep the change only in the
-> > v6.16 tree and not backport it to earlier stable trees, until having
-> > more confidence that the change doesn't cause an issue for any sink
-> > device.
-> > 
-> > > Can you just send a fix-up patch for the one I got wrong?
-> > 
-> > Ok, I can send a patch for v6.16.y on top of what is already queued
-> > there.
-> 
-> It's already in a release :)
+Hi Carlos,
 
-Ok, missed that. The fix would be only for the next release then, with
-the above justification.
+Please pull this branch with changes for xfs.
 
-> thanks,
-> 
-> greg k-h
+As usual, I did a test-merge with the main upstream branch as of a few
+minutes ago, and didn't see any conflicts.  Please let me know if you
+encounter any problems.
+
+--D
+
+The following changes since commit b320789d6883cc00ac78ce83bccbfe7ed58afcf0:
+
+Linux 6.17-rc4 (2025-08-31 15:33:07 -0700)
+
+are available in the Git repository at:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git tags/fix-scrub-reap-calculations_2025-09-05
+
+for you to fetch changes up to 07c34f8cef69cb8eeef69c18d6cf0c04fbee3cb3:
+
+xfs: use deferred reaping for data device cow extents (2025-09-05 08:48:23 -0700)
+
+----------------------------------------------------------------
+xfs: improve online repair reap calculations [6.18 v2 1/2]
+
+A few months ago, the multi-fsblock untorn writes patchset added a bunch
+of log intent item helper functions to estimate the number of intent
+items that could be added to a particular transaction.  Those helpers
+enabled us to compute a safe upper bound on the number of blocks that
+could be written in an untorn fashion with filesystem-provided out of
+place writes.
+
+Currently, the online fsck code employs static limits on the number of
+intent items that it's willing to accrue to a single transaction when
+it's trying to reap what it thinks are the old blocks from a corrupt
+structure.  There have been no problems reported with this approach
+after years of testing, but static limits are scary and gross because
+overestimating the intent item limit could result in transaction
+overflows and dead filesystems; and underestimating causes unnecessary
+overhead.
+
+This series uses the new log intent item size helpers to estimate the
+limits dynamically based on worst-case per-block repair work vs. the
+size of the scrub transaction.  After several months of testing this,
+there don't seem to be any problems here either.
+
+v2: rearrange patches, add review tags
+
+This has been running on the djcloud for months with no problems.  Enjoy!
+
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+
+----------------------------------------------------------------
+Darrick J. Wong (9):
+xfs: use deferred intent items for reaping crosslinked blocks
+xfs: prepare reaping code for dynamic limits
+xfs: convert the ifork reap code to use xreap_state
+xfs: compute per-AG extent reap limits dynamically
+xfs: compute data device CoW staging extent reap limits dynamically
+xfs: compute realtime device CoW staging extent reap limits dynamically
+xfs: compute file mapping reap limits dynamically
+xfs: remove static reap limits from repair.h
+xfs: use deferred reaping for data device cow extents
+
+fs/xfs/scrub/repair.h |   8 -
+fs/xfs/scrub/trace.h  |  45 ++++
+fs/xfs/scrub/newbt.c  |   9 +
+fs/xfs/scrub/reap.c   | 622 ++++++++++++++++++++++++++++++++++++++++----------
+fs/xfs/scrub/trace.c  |   1 +
+5 files changed, 554 insertions(+), 131 deletions(-)
+
 
