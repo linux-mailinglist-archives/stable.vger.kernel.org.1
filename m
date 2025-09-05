@@ -1,91 +1,146 @@
-Return-Path: <stable+bounces-177817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C93B4582B
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 14:50:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A2BB4583E
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 14:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 245D71C27FF0
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 12:51:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B7581C2832C
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 12:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F8F34F499;
-	Fri,  5 Sep 2025 12:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9990B350854;
+	Fri,  5 Sep 2025 12:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="4zKMKk0G"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="V6C7LERr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B062F2E;
-	Fri,  5 Sep 2025 12:50:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757076633; cv=none; b=hzXG9ca/0JB8PRgmVHOWau/nL+SKirj5I+0NxfCnJaQeaNAOee5bZngcxGI6ZbWLibeqGW/uCy3rAuySR2s3/n6yr+H3xDx6NKZ5YcF/d4HncO9NGINpnrwcDRdHvw15QR9Q7wlo19UMABlfuFdLhygN1jpLzmi7A1fzSrwtIjk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757076633; c=relaxed/simple;
-	bh=tlGgOA/sfWBvfUawxF7mc/eLFymheu0RUCB1qgZV2Jo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E/GGGH5+O4EYZEOGVksw6oPtvhpLmfbyFVONrU2rNAh3UGaQu099mi/EYu0x+e8PP/AKZnBIoESMREtRBntew5TJRq+ZU0c3ZwHBwkArE/s+dB10f5HOTfkLP68yj/Gal2GTNDItfuR8jEwuvhvpzi2OIaqdAu64ANvG2LCWIVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=4zKMKk0G; arc=none smtp.client-ip=85.214.250.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
-Received: from 8bytes.org (p54921b16.dip0.t-ipconnect.de [84.146.27.22])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id DAA5354B38;
-	Fri,  5 Sep 2025 14:50:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1757076630;
-	bh=tlGgOA/sfWBvfUawxF7mc/eLFymheu0RUCB1qgZV2Jo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=4zKMKk0GBPEZ6dowrd2trNVKXuwyazxMc6H356C31kbkoQZuqTeZf7kejIT7JOk95
-	 OVLT7GKyUsGwWUxuVEm+jnN7ytz8IrDQnS8uO9OpQRKoxHzDg11TS+dRLD8FRJ7qe5
-	 5m7jdIX6WA3USuoQO2qOErHsBi2VdPvDjoqi+LmZM8xseoXJQeBctEMZE548kO6Y2Z
-	 hzVJNAvMCIOAYP9HSbfulOf+5IDJWGQxOwNyZQt/EgliEBKzHvglWaDL2luXbPsfrp
-	 nby1vZar2EkNOP6ANzfskQRBPCjQvJ2Ad7ERTxynaZFIfICYfPvzcn5bGsQTHI03p0
-	 kJWB6EnHavgNw==
-Date: Fri, 5 Sep 2025 14:50:28 +0200
-From: Joerg Roedel <joro@8bytes.org>
-To: Matthew Rosato <mjrosato@linux.ibm.com>
-Cc: schnelle@linux.ibm.com, will@kernel.org, robin.murphy@arm.com,
-	gerald.schaefer@linux.ibm.com, jgg@ziepe.ca, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-	stable@vger.kernel.org, Cam Miller <cam@linux.ibm.com>
-Subject: Re: [PATCH] iommu/s390: Fix memory corruption when using identity
- domain
-Message-ID: <aLrclKHjVgTrNWA_@8bytes.org>
-References: <20250827210828.274527-1-mjrosato@linux.ibm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BF4350842;
+	Fri,  5 Sep 2025 12:54:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757076850; cv=pass; b=Bp5Au+q3cX6v6vOGfb3x4MWi7d+wPNYvHqO9urryEmI8e/G+vtqDJ/7ntt68GLji+rTegt0wnHbhA3o91Pq3zx2KA32vs8M94eyr+9Dq5RjBs0BBpfDVRtRQdO/ZALUU7vXvo8fQV1XIqdAVk2BTb6uogj3sr8zUDsvB+cm0C10=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757076850; c=relaxed/simple;
+	bh=IhV6JrFrqmw8qOU5WUVwAH8fqiEhjI9hAYG5HTMtCrU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=DDSr7BKX+/A4nZaX5SmsNvq6uCH6D6idxIgVesgJkeH+YWKJHqqpnMSH83qLEvQpBAG7eZ3L+EuVxL5gYV8y1dXBQWm+hkUcl7mSUf7IzTtveJWDyssMK2zB4NLhqG4UjLhzcKtzLRmew3dQ5XluYjgmhHqgnx6jJocRvijepxw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=V6C7LERr; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1757076843; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=SaTKMvMi6RhuoR3yzxnE16roLlxmcD7j2Q6c4VeJ37XA6Q7Hy1EowhR/zfJDis4BPJAFwvHGBkP4zHiWxqErjs2GD+my57Wbvnn1A1bDUvS9znlJ1v6v/ZCntUL4erRy/5dXJjRnf7lEKTTv9ngTRzRzJ8FKygPOhiqE3u22czI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1757076843; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=os9bh//smt/UIodGYqnwPtUu/En7lmpyHv6vRfiOJEM=; 
+	b=ihL8jBOQ0E1wAnntqtOJlGrOu0BwNxYQBsYM2y6A6e4fs5qptQhk0gKGAiha8fh887L00xa8AR3k3EFf/tYj9S37vkHBLNXa482XqK0/Sy5awULcWgVN0/GCcq2eNNwCZUkTfosQYu/a9QR6S9sXyxmJHaadQfRHGMfT7KBoAhY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1757076843;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=os9bh//smt/UIodGYqnwPtUu/En7lmpyHv6vRfiOJEM=;
+	b=V6C7LERriU8u8J1eQ7SL58HjnRIzzKUnVVq+ATmhgHCyh1uFJmwQRNJL2bmbUCBT
+	Z5W5Nfs6YmTKEJH3DH00lrWlPNc6PnHhiC3ozVy8NmoxT2hUmIDa6ibM8lrB9EZApjg
+	DNBuP+Eg8qZ8hHwjzpR06pZ4CvqEXn7/QoCv+ks8=
+Received: by mx.zohomail.com with SMTPS id 1757076841256971.3020603340233;
+	Fri, 5 Sep 2025 05:54:01 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250827210828.274527-1-mjrosato@linux.ibm.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v3] media: vidtv: initialize local pointers upon transfer
+ of memory ownership
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250905051816.4027814-1-aha310510@gmail.com>
+Date: Fri, 5 Sep 2025 09:53:46 -0300
+Cc: mchehab@kernel.org,
+ linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org,
+ syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <96EC5D66-18D8-42E6-BD3F-F07F220EA5EE@collabora.com>
+References: <20250905051816.4027814-1-aha310510@gmail.com>
+To: Jeongjun Park <aha310510@gmail.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Wed, Aug 27, 2025 at 05:08:27PM -0400, Matthew Rosato wrote:
-> zpci_get_iommu_ctrs() returns counter information to be reported as part
-> of device statistics; these counters are stored as part of the s390_domain.
-> The problem, however, is that the identity domain is not backed by an
-> s390_domain and so the conversion via to_s390_domain() yields a bad address
-> that is zero'd initially and read on-demand later via a sysfs read.
-> These counters aren't necessary for the identity domain; just return NULL
-> in this case.
-> 
-> This issue was discovered via KASAN with reports that look like:
-> BUG: KASAN: global-out-of-bounds in zpci_fmb_enable_device
-> when using the identity domain for a device on s390.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 64af12c6ec3a ("iommu/s390: implement iommu passthrough via identity domain")
-> Reported-by: Cam Miller <cam@linux.ibm.com>
-> Signed-off-by: Matthew Rosato <mjrosato@linux.ibm.com>
+
+
+> On 5 Sep 2025, at 02:18, Jeongjun Park <aha310510@gmail.com> wrote:
+>=20
+> vidtv_channel_si_init() creates a temporary list (program, service, =
+event)
+> and ownership of the memory itself is transferred to the PAT/SDT/EIT
+> tables through vidtv_psi_pat_program_assign(),
+> vidtv_psi_sdt_service_assign(), vidtv_psi_eit_event_assign().
+>=20
+> The problem here is that the local pointer where the memory ownership
+> transfer was completed is not initialized to NULL. This causes the
+> vidtv_psi_pmt_create_sec_for_each_pat_entry() function to fail, and
+> in the flow that jumps to free_eit, the memory that was freed by
+> vidtv_psi_*_table_destroy() can be accessed again by
+> vidtv_psi_*_event_destroy() due to the uninitialized local pointer, so =
+it
+> is freed once again.
+>=20
+> Therefore, to prevent use-after-free and double-free vulnerability,
+> local pointers must be initialized to NULL when transferring memory
+> ownership.
+>=20
+> Cc: <stable@vger.kernel.org>
+> Reported-by: syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=3D1d9c0edea5907af239e0
+> Fixes: 3be8037960bc ("media: vidtv: add error checks")
+> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 > ---
->  drivers/iommu/s390-iommu.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> v3: Improved patch description wording
+> - Link to v2: =
+https://lore.kernel.org/all/20250904054000.3848107-1-aha310510@gmail.com/
+> v2: Improved patch description wording and CC stable mailing list
+> - Link to v1: =
+https://lore.kernel.org/all/20250822065849.1145572-1-aha310510@gmail.com/
+> ---
+> drivers/media/test-drivers/vidtv/vidtv_channel.c | 3 +++
+> 1 file changed, 3 insertions(+)
+>=20
+> diff --git a/drivers/media/test-drivers/vidtv/vidtv_channel.c =
+b/drivers/media/test-drivers/vidtv/vidtv_channel.c
+> index f3023e91b3eb..3541155c6fc6 100644
+> --- a/drivers/media/test-drivers/vidtv/vidtv_channel.c
+> +++ b/drivers/media/test-drivers/vidtv/vidtv_channel.c
+> @@ -461,12 +461,15 @@ int vidtv_channel_si_init(struct vidtv_mux *m)
+>=20
+> /* assemble all programs and assign to PAT */
+> vidtv_psi_pat_program_assign(m->si.pat, programs);
+> + programs =3D NULL;
+>=20
+> /* assemble all services and assign to SDT */
+> vidtv_psi_sdt_service_assign(m->si.sdt, services);
+> + services =3D NULL;
+>=20
+> /* assemble all events and assign to EIT */
+> vidtv_psi_eit_event_assign(m->si.eit, events);
+> + events =3D NULL;
+>=20
+> m->si.pmt_secs =3D =
+vidtv_psi_pmt_create_sec_for_each_pat_entry(m->si.pat,
+>     m->pcr_pid);
+> =E2=80=94
+>=20
 
-Applied for -rc, thanks.
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+
+
 
