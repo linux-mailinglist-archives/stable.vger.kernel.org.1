@@ -1,88 +1,92 @@
-Return-Path: <stable+bounces-177813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D168B4561B
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 13:18:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 970BBB45614
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 13:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75F3BA068B8
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 11:17:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B984A177F77
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 11:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F1934A321;
-	Fri,  5 Sep 2025 11:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63BAF34AAE0;
+	Fri,  5 Sep 2025 11:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nv2g7wgi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eN/gZiQy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E579E34A338
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 11:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698DE34A333
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 11:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757070899; cv=none; b=p9SqJqKSd89aa4isfdXO3bHr0M6FHNxkDlnzlYfNQkhCshL8mcHoOhNWb3h+oILMztRxEGWIe4JWpZmqcRdD9yaUvcYwMFarCkT/EjosxHxq4KFPTBqLU2jIu2Exr7JbTcoGfPFCiQvqrrcTj1pYAusjrA+WU4H6knWvM5nhK7c=
+	t=1757070902; cv=none; b=arMBnLO++wsOw3t0l17ROcmahAAGBi+4ACsRX8xvMuck+tU1t32WTVArG5aJ8JoLfvsnCZBQIfTSOHP8Kp9yyy6u1YKQ+WYpHUu8Jqemr/DK0jjg4/vyG2betk0oSvO3obt9tIQQsFINipOAXDHkaEVIvie+ZOCs3oWfuqbuvow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757070899; c=relaxed/simple;
-	bh=NaVHl/13ZFFUbS6iFl4KuWLc5nNhn8qPsLiExBLqwr4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EtNmQV/iupytOZXLTezitcCmxbSUfSqiWTwOVioNhQ+Hn0Ayt50qvV0T4SWgnRVrpt4I9Loo6xtx7L6nueoktIlJVtxmMKnFcl2azf3RIBorm+XOpeQvyiDffx36fYMpyCuuZxuMxuYdFhATssgBCBnvB0Yi8JjBvte20by2gwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nv2g7wgi; arc=none smtp.client-ip=209.85.218.45
+	s=arc-20240116; t=1757070902; c=relaxed/simple;
+	bh=cvwzQQz20d0jNv8ol0Z3BzQXzBbvPGTacxd0sJDnC74=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XliNvAHVlExtEqIgM2RQuKlMgxRnkwokZShUJXVfFpNH7K0WoWOVhQFpnI/JXUxWS9ngXOR4yJdgRlxeDAPjr14mDamf/Tlj1SvNaiVd/ezLDKtLTyl/aUcESmgFPfpjEooCpEWbqwzzuvXjdxVktF77qtZKa0nndgmFLqQ6KBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eN/gZiQy; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-afcb7ae31caso324547666b.3
-        for <stable@vger.kernel.org>; Fri, 05 Sep 2025 04:14:57 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b043da5a55fso294315166b.0
+        for <stable@vger.kernel.org>; Fri, 05 Sep 2025 04:15:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757070896; x=1757675696; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/yq6sUXqwBCAkA8/hy1fWE77QQwTIePE4ZZ5+RcOkiI=;
-        b=Nv2g7wgiZRN5vpC4vvV5xbYevmJ9xnke4p4+So4esX9usd/+9zEzJF4dGMStxMZ1w7
-         +LzoA79iQ72MHOBFefpzNIQq4OOxfg2YDVXFUXP+2LkzqhB7G1HULPHa6cCfIzf994ri
-         zhiLxQGEJqF3w6EDpl8G/QNJB/8x8rwFIseGH96xaqcHrKP+UvQB8Puo6fK673d7iC3a
-         9jVBlgTcBovfjlGRwgnpAUwNQUGKW7XXh04VPKKTZwtAFqfyhpXmYxdVwXgP7oYygGs1
-         Bo2K3TF/dI0CyykRMrp37o9680X42ximJ/taVlYBuCIPceyr4u3A8XvIJ8vH7vlUnh5i
-         OQTw==
+        d=gmail.com; s=20230601; t=1757070898; x=1757675698; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZPGWjhihTe1kg8wbOKpqskH3/nQSENZdhlUEbXeePyk=;
+        b=eN/gZiQyO76V3ZMTS+FlGaXk80sG1hTM69R20Kpq59EHFLndw7kkOsRWrS14o4PBLT
+         IJmAZ3hIYsJHisF2oqKNOYPjk3+qEhEg6TK6u890jBE9HjjN7mLVzJ7A7vJlnUo52itr
+         VvNzhCmQsotNebo6wwmHc+9BF1gOf2MNAdzuCVzOBdHIpNFSxzzVemFoNPj/xns2/t0b
+         Z/sWISzdfwWh4H7VgTLd/xTQ986GLn6kqNb6fC2UtO5fxlfvD7Qtob5JYwDhI//sbEVg
+         jL4A3cci8QdDSLh6C8wtiaM3TXt2Lg6zxTsvJJKEFJaLowcZoNMJvMi52/CVOTTbSvek
+         fv2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757070896; x=1757675696;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/yq6sUXqwBCAkA8/hy1fWE77QQwTIePE4ZZ5+RcOkiI=;
-        b=FfGJrsoaZjAPkNhG0fh7LK4WGMkpDXKmlyskUmTlPsdzEXjfMxtuAhT0LpTVqutqjm
-         Iy7fx8DeEvicPxtsNIBer3Bf2JG2sSx2tm5J38LwDTZNNRwzg6G7QiTiWrOX0BoTRvvp
-         IZvxReWvPBB6Ym9gGtD2yrP9l7Q2siy5yPT/Ey2WULfSI8q88YGu+9icaCTB1hdw9AY/
-         sF0fm/Fg1A7AioHt0A7yo7b+1IzlaY0M7di5AJPGdcilSmSzES4FlN7wwLHrOOxpb89U
-         GiLVvfKxNBQGfiaI58zQR/+Q/69jYfLkX6zO2Lq4nMawJgS6bgV1kmUscSQ4oMc+7A29
-         fysg==
-X-Gm-Message-State: AOJu0YyBKyPFNEZuXcGkeXcc9SeBgM4I26TZt1N0PxzBqao5Z/dKv+yj
-	oqlhss8rIA8e7VOf3y9AbFKQzUb3M7ORO1keEAnzbl/48tpEq24xrXI85R6NVt38
-X-Gm-Gg: ASbGncvLPk0rFTLc0snuvjKlfw1T7MkkPx7xOS6px/3YNjAmj2i8wZFfg+ADfWkNjuP
-	zNas8sioQNGtC99sMokKfyMTO/d+ezOrac9Nhrlw7NjjUPz5Ywjm+LIdXvSY1fxUsBg4lBcofo3
-	VE9jHZI3OI8qnooiI1zgQjyE8mL8yYWk3BFojarxyb5xNPR7L/8s5VFcjrMJ8G4FkgH4gbJgz+i
-	npli1FM4ttmXYYlqS8ABQtupY21C7QDkLQgJCNXdwgDYYsQmKl7ki4JF8mJgSHFt54Ks/VDJ9Ts
-	qKlQX5PCA1HqfdCqmO4HH3ablCcft89Zu+C5o+K/MS4em8hV5X+/VikvRjrQAN31IZLE/6oiedf
-	So+gscX/NJFMeAuwm1NIkLLZQ0IH4TlEPPhNX9ylOQu5TwdbGN+9V8x8=
-X-Google-Smtp-Source: AGHT+IHUYR7ncupJQiFO0JDhvuML+q1hA0wpxFZoXuXAj8TJS0+VTSMGIEz8YMXFIBKjc5Oc3MGZ9A==
-X-Received: by 2002:a17:907:3c89:b0:b00:aa4d:a394 with SMTP id a640c23a62f3a-b01d8b7f96emr2344027766b.24.1757070895576;
-        Fri, 05 Sep 2025 04:14:55 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757070898; x=1757675698;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZPGWjhihTe1kg8wbOKpqskH3/nQSENZdhlUEbXeePyk=;
+        b=iYBcPcwS9gzNt5xnEY4fHynQEIoVJlnI0yt8ExkC6bB+Bedzg+H0EMzzAgvLK6IOEm
+         hGAWWb6QvEMo/ERPY9CSrd0VUoc4aP0yTo0w6GtJKJeq94q/GvWBn26x0F9v87hmhJ8x
+         UKLdq2cljnzdwnHOnrL3PBoRfAX22Sow0wHw/3+Vtjv/l5DX0YLthrCafZpi8cGFHKOW
+         L8PrrK1GdOFOYn5jkPQVdj6lhfrvRKp9f3tFVs2FmR9ZVdf/eo7ZEBGnmbt4FqG9xSwv
+         hqU/c2HjCLeaYIJogJjM0XOYusFuPYflVKfoYdIiNVKDORwXMdKUhvADOy7HeDXHMmld
+         kITQ==
+X-Gm-Message-State: AOJu0YxzEB0JglB8HnCMs/LdfJItNFjALk5cLm67iQaii5kppA5D3GG1
+	PVaOlZeNDpcwP54fV6AEksUB9Oq9xCSl+XIqWIOyEzP2wb7bwvcyves+TFIFwUwL
+X-Gm-Gg: ASbGncsfYwSx/Tjif5zvJPLf5txA1opTcPM0+BTlCgOgFRtfWHsB2/LqoFqv5/OWGUv
+	D49cnhavg4yWSveVPY77YOH1V9amcgSlgeKAh4kZaLJtXKdZvfDX3hCvBu1h4L1FIWQ6MRAgytQ
+	jz7VaB4U4/zyE5xZFXTDwuAHrh0oj6zwiNIMv0N/H4kp7O4iT2Yi5Z5P3AUIjvOKOBsuSE+PSsI
+	OTqvNQSeBuoNMdnlnJymVvsMlqUBG0Lh2hiWNXn4p8iHNB9/WQ7XZXbT0pBGbSHC3b9w7oE27bf
+	5CO1d1PF5D9s5ptiGo5ezgO5RM8IEi7lU5wBcbR1rO0OU2ixAQ1W6YNgddH7WygRaRniUbzR0S1
+	J1jO8dwHc5HtrmzLjRuYrmahBTe4OBtvwwJO19WmWO5mI0eTcQ2SFdL4=
+X-Google-Smtp-Source: AGHT+IEjszx3tz8lmsbudhMhdLog8rYFdBGsxb2Ff84Hh/ehiJZK1U/eZfUF4XDcg3X84LCmpvI27g==
+X-Received: by 2002:a17:906:6a04:b0:b04:a2e4:89b4 with SMTP id a640c23a62f3a-b04a2e490d8mr97806466b.49.1757070898128;
+        Fri, 05 Sep 2025 04:14:58 -0700 (PDT)
 Received: from localhost.localdomain ([2001:b07:aac:705d:d0c3:9f59:659d:5459])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b046f888b95sm557231766b.34.2025.09.05.04.14.54
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b046f888b95sm557231766b.34.2025.09.05.04.14.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 04:14:55 -0700 (PDT)
+        Fri, 05 Sep 2025 04:14:57 -0700 (PDT)
 From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
 To: stable@vger.kernel.org
-Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+Cc: Jonathan Bell <jonathan@raspberrypi.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jonathan Bell <jonathan@raspberrypi.com>,
 	Keita Aihara <keita.aihara@sony.com>,
 	Dragan Simic <dsimic@manjaro.org>,
 	Avri Altman <avri.altman@wdc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v1 0/1] mmc: core: apply SD quirks earlier during probe on 5.15 stable kernel 
-Date: Fri,  5 Sep 2025 13:14:28 +0200
-Message-ID: <20250905111431.1914549-1-ghidoliemanuele@gmail.com>
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Subject: [PATCH v1 1/1] mmc: core: apply SD quirks earlier during probe
+Date: Fri,  5 Sep 2025 13:14:29 +0200
+Message-ID: <20250905111431.1914549-2-ghidoliemanuele@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250905111431.1914549-1-ghidoliemanuele@gmail.com>
+References: <20250905111431.1914549-1-ghidoliemanuele@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,26 +95,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+From: Jonathan Bell <jonathan@raspberrypi.com>
 
-Hello,
+Applying MMC_QUIRK_BROKEN_SD_CACHE is broken, as the card's SD quirks are
+referenced in sd_parse_ext_reg_perf() prior to the quirks being initialized
+in mmc_blk_probe().
 
-I noticed that commit 1728e17762b9 ("mmc: core: sd: Apply BROKEN_SD_DISCARD quirk earlier") 
-introduces a regression because since it depends on the backport of 
-commit 5c4f3e1f0a2a ("mmc: core: apply SD quirks earlier during probe").
-Without this patch the quirk is not applied at all.
+To fix this problem, let's split out an SD-specific list of quirks and
+apply in mmc_sd_init_card() instead. In this way, sd_read_ext_regs() to has
+the available information for not assigning the SD_EXT_PERF_CACHE as one of
+the (un)supported features, which in turn allows mmc_sd_init_card() to
+properly skip execution of sd_enable_cache().
 
-I backported the latter commit to 5.15 stable kernel to fix the regression.
-
-Best regards,
-Emanuele Ghidoli
-
-Jonathan Bell (1):
-  mmc: core: apply SD quirks earlier during probe
-
+Fixes: 1728e17762b9 ("mmc: core: sd: Apply BROKEN_SD_DISCARD quirk earlier")
+Signed-off-by: Jonathan Bell <jonathan@raspberrypi.com>
+Co-developed-by: Keita Aihara <keita.aihara@sony.com>
+Signed-off-by: Keita Aihara <keita.aihara@sony.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240820230631.GA436523@sony.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+---
  drivers/mmc/core/sd.c | 4 ++++
  1 file changed, 4 insertions(+)
 
+diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
+index 592166e53dce..7b375cebc671 100644
+--- a/drivers/mmc/core/sd.c
++++ b/drivers/mmc/core/sd.c
+@@ -23,6 +23,7 @@
+ #include "host.h"
+ #include "bus.h"
+ #include "mmc_ops.h"
++#include "quirks.h"
+ #include "sd.h"
+ #include "sd_ops.h"
+ 
+@@ -1468,6 +1469,9 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
+ 			goto free_card;
+ 	}
+ 
++	/* Apply quirks prior to card setup */
++	mmc_fixup_device(card, mmc_sd_fixups);
++
+ 	err = mmc_sd_setup_card(host, card, oldcard != NULL);
+ 	if (err)
+ 		goto free_card;
 -- 
 2.43.0
 
