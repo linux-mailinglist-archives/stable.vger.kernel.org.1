@@ -1,216 +1,163 @@
-Return-Path: <stable+bounces-177832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982BEB45BFD
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 17:14:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4596B45BF2
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 17:13:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4841B189D96A
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 15:09:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C13E67A7E44
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 15:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F5819924D;
-	Fri,  5 Sep 2025 15:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1B131B80B;
+	Fri,  5 Sep 2025 15:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DuHsIsWj"
+	dkim=pass (2048-bit key) header.d=nigauri-org.20230601.gappssmtp.com header.i=@nigauri-org.20230601.gappssmtp.com header.b="ZDEj1IOK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E6C31B83B;
-	Fri,  5 Sep 2025 15:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FB531B80D
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 15:13:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757084831; cv=none; b=eZ+NR75H2h+kKLaT5GhFEuVJnYt0du6IecFfZkX75xBiua8vO+dUuNTar0lMitolBENFyAs2ebYoA2sqSNVvYlO9dXZuVPR5tTgHtxatonKAX7QBMWzEZhNX3sGUpkK32PrJLmuPHMVvALV2lckr6RzPZrCoE9Qs5Gx+//rkzaQ=
+	t=1757085195; cv=none; b=ufNxv353vBeeNm2gD0m66e6L10pxNvi98ULWJsBRLN7z/N8IWNst6NEHhGknOs+Hlab9bQZltTv1kAGQjEXPSzGEtukEYebWd3puBoRYUE18fR7VkRZTBCmuy1waTxTaMaTO957kH9/rhyxx2csonEgzN2fJw4bLl8tmitDfwDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757084831; c=relaxed/simple;
-	bh=DEKYvgIIgXIMpr/uTX+LEAS6Q2DGtqKgYOgRXgbXI3Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RXViz4pljiHtMR7W7Q9lbKhna7/aPt+V+PY5LXvUbVYDOinz2GJvkYK8+1Arlsp1Zud3brNU+voRa1M8Hq0GKA0R+1j6EgEW9g2IXpjqOjHKN9K1LIfMUfJ/iil8XnD0+d+0yMbNO158xuaVJYVaozFwL6qb1d3ddqEWITGHDes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DuHsIsWj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FEE4C4CEF1;
-	Fri,  5 Sep 2025 15:07:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757084830;
-	bh=DEKYvgIIgXIMpr/uTX+LEAS6Q2DGtqKgYOgRXgbXI3Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DuHsIsWjuYPIa6EBXLaqBE3y5QchSogHZ9/62uP1RU8+MjuV8M0gtbtpiGK2jSu9P
-	 s//AnQkLCc8KBD6mZ4tHrrihIvhPc5+qAY2CvGUhmbu7zXp9FoDeXCPJstyZhE1COa
-	 vBMljlSyv8AaqIsxIhKQGSl4Ma/UZG4HSWhUrIXSa4PTrYdaCg7I/pmvakkhmtVdqU
-	 Y5jcaQeyZVi0pqjXM62iLs3sU1VjLBdW8RunwaFRKx10v/71yDIBo1hHRYPvYXB9tB
-	 KpxwGkvB1N1cymhr4tayM99faCGHlGX5mVQaQ+QgL8ER1QSpFDnjWpu1J+fB4nG/M+
-	 aIFvkdnmgCyrg==
-Date: Fri, 5 Sep 2025 20:37:01 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Sumit Kumar <quic_sumk@quicinc.com>
-Cc: Alex Elder <elder@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, quic_krichai@quicinc.com, quic_akhvin@quicinc.com, 
-	quic_skananth@quicinc.com, quic_vbadigan@quicinc.com, Sumit Kumar <sumk@qti.qualcomm.com>, 
-	stable@vger.kernel.org, Akhil Vinod <akhvin@qti.qualcomm.com>
-Subject: Re: [PATCH v2] bus: mhi: ep: Fix chained transfer handling in read
- path
-Message-ID: <gdre46l3e3tpviqwly75d6zgoig2ijq3v4au6lwnenpqlhgxh6@xrihqbolefnq>
-References: <20250822-chained_transfer-v2-1-7aeb5ac215b6@quicinc.com>
+	s=arc-20240116; t=1757085195; c=relaxed/simple;
+	bh=vcbzZr+E02WokGut7C2c77Afxd5rpoCYAkJoIkII9d8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QDiPE6Mlumd+A3kWqg9OKdHcM61l/CaS+C7yl073UhspJCSFcU9NKQBAUV7iPmSMM8eu9jPTHIODLk90WZyE7sIjvnbQ7zuRRFvMvOakpAONR4eQXXxhTRpS9z6S3jGjYXoAkZjfFECXggMOkLEkXhu2GX70TajiW06BJc7CIuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org; spf=none smtp.mailfrom=nigauri.org; dkim=pass (2048-bit key) header.d=nigauri-org.20230601.gappssmtp.com header.i=@nigauri-org.20230601.gappssmtp.com header.b=ZDEj1IOK; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nigauri.org
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6188b5ad4f0so3727335a12.0
+        for <stable@vger.kernel.org>; Fri, 05 Sep 2025 08:13:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nigauri-org.20230601.gappssmtp.com; s=20230601; t=1757085192; x=1757689992; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DHMIdxjHKuTqVD8SOr4IvDDg7ji1cX6ZfEw+vHDGWBo=;
+        b=ZDEj1IOKepbUvHpZzM3m2lRtZAMUowMVafek24OUbq6KU2Yuk9ii+QaQXkAnYIQfxy
+         dy9FuNETwTcYZFNdIWkYC+dGAS8toGAG6DIsn5cIHxHryC/+F7gMkkWtAapjeFtLx1VP
+         I3wNPlt8z2s2OOaPvABV02Cs3iciXbstXd4dOVshdfCedPrgQmxytng1IeGb2LkZML1e
+         kDiuTD+OlqBPqKOQY3qA4xVp1PzAb7YUVlT6Od9S3E9HjfP/GpRqljMBhTTtj+UX2yw9
+         yFsMpTfLhX/gZ/IWde0k1nOXrsXESVYcG/g4vrVfQP0vZK/0pFrcK/raIhB9JFtF00d5
+         efMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757085192; x=1757689992;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DHMIdxjHKuTqVD8SOr4IvDDg7ji1cX6ZfEw+vHDGWBo=;
+        b=tRKKjaqwmHt/kMW0s41ZB1Zkp1RAhwwmWKRTNMaOQ8llv7VeH+ZKcyCeybZBUC6jV6
+         9q74jsEiTN/chMYXp4j49QCckGgKLeHcWzctZAkFSMGTNBOHw5e1ip0SBc5MB6R9WJ6H
+         KZ8iXR6H5bie3BiBRHIOxwgfXrE91uPvU9bLOeAAlLoqyfUmabh58X4qqFdLc8DMsV4z
+         Er3J8RUSpmEiHjSIU3ua49tBNG/MIZQgIEhjCgW1TMORntYwjMa5WN6xWx9njAJcN8u9
+         x/DyOgV66jzBahIBz7J820PCvzf/z4OL6ZfHksXgZ6qOZRXsAsMHCXDKo/Ak5uSA4dDJ
+         BT5A==
+X-Forwarded-Encrypted: i=1; AJvYcCWvOaWRbh6BrqIHPZzT69gRjqt8hXxw18+1qzM/PtDkZYnF33Oag7+eu6OZNyRTGtArl92EjeM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2IK6vZAlMtcbIF83rS24TTxANdzBI7FC6PbZ0jwetQJBPSTTv
+	SNkp6H4nzzekSWJTXOlLK1mtnvbTC7GNsUU+0pfAtkbVtPCktUlixfCZW38DrSsmmzR24TcFlL3
+	d311JFo9l9+VvsKAyukVgtWGKKQHOKDBH6ZMHNFk=
+X-Gm-Gg: ASbGncuo0ZOHWZkgMuHnSr/MJc5eYtW3DGnwo0f7gczfPSY+O0f+r3ZDOiTtas3+vBe
+	7J8ZCmkv/yY6gXIkpU9hswd94gWZjCkCpjLHw74bskSr858yVZOTqqU0aEXCCeAgOTtYKvB2+Co
+	0J0wUzmFpckcFgpe19m8Wa0IjU4Huh4YwNhlB+cupXQsPv/HrCuStLYuQRYyjYayRvP0ismV6g
+X-Google-Smtp-Source: AGHT+IE5RR3xHpHhW22PdOxC27cxpSABsoBUyfebHCL+SzRaex/Yg5PA4kv6ZoooBZkF06NN2M4yziw9mmi8ooK96Xw=
+X-Received: by 2002:a05:6402:35d6:b0:61e:d34c:d1d3 with SMTP id
+ 4fb4d7f45d1cf-61ed34cd400mr10877470a12.19.1757085191500; Fri, 05 Sep 2025
+ 08:13:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250822-chained_transfer-v2-1-7aeb5ac215b6@quicinc.com>
+References: <20241121071325.2148854-1-iwamatsu@nigauri.org> <CABMQnVJVTmnsx3RNYK01ikZ-jnn_y4pbrNAeZaKPzz0N_YFz5g@mail.gmail.com>
+In-Reply-To: <CABMQnVJVTmnsx3RNYK01ikZ-jnn_y4pbrNAeZaKPzz0N_YFz5g@mail.gmail.com>
+From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+Date: Sat, 6 Sep 2025 00:12:44 +0900
+X-Gm-Features: Ac12FXzTX4H5emedmc2ovwKAlGVEjYg6lVwTcyicNPf8FtCjYiYPI4wGLhju7oc
+Message-ID: <CABMQnVJsK3wNRQfGjomggKcwL5zaqBchoAKajbVb+ZXmrwn2iQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ARM: dts: socfpga: sodia: Fix mdio bus probe and PHY address
+To: dinguyen@kernel.org, robh+dt@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>, linux-arm-kernel@lists.infradead.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 22, 2025 at 02:54:18PM GMT, Sumit Kumar wrote:
-> From: Sumit Kumar <sumk@qti.qualcomm.com>
-> 
-> The current implementation of mhi_ep_read_channel, in case of chained
-> transactions, assumes the End of Transfer(EOT) bit is received with the
-> doorbell. As a result, it may incorrectly advance mhi_chan->rd_offset
-> beyond wr_offset during host-to-device transfers when EOT has not yet
-> arrived. This can lead to access of unmapped host memory, causing
-> IOMMU faults and processing of stale TREs.
-> 
-> This change modifies the loop condition to ensure mhi_queue is not empty,
-> allowing the function to process only valid TREs up to the current write
-> pointer. This prevents premature reads and ensures safe traversal of
-> chained TREs.
-> 
-> Removed buf_left from the while loop condition to avoid exiting prematurely
-> before reading the ring completely.
-> 
-> Removed write_offset since it will always be zero because the new cache
-> buffer is allocated everytime.
-> 
+ping?
 
-Could you please write the description in imperative mood and also as a
-continuous paragraph?
+2025=E5=B9=B41=E6=9C=8814=E6=97=A5(=E7=81=AB) 22:50 Nobuhiro Iwamatsu <iwam=
+atsu@nigauri.org>:
+>
+> Hi Dinh,
+>
+> Could you check and apply this patch?
+>
+> Thanks,
+>   Nobuhiro
+>
+> 2024=E5=B9=B411=E6=9C=8821=E6=97=A5(=E6=9C=A8) 16:13 Nobuhiro Iwamatsu <i=
+wamatsu@nigauri.org>:
+> >
+> > On SoCFPGA/Sodia board, mdio bus cannot be probed, so the PHY cannot be
+> > found and the network device does not work.
+> >
+> > ```
+> > stmmaceth ff702000.ethernet eth0: __stmmac_open: Cannot attach to PHY (=
+error: -19)
+> > ```
+> >
+> > To probe the mdio bus, add "snps,dwmac-mdio" as compatible string of th=
+e
+> > mdio bus. Also the PHY address connected to this board is 4. Therefore,
+> > change to 4.
+> >
+> > Cc: stable@vger.kernel.org # 6.3+
+> > Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+> > ---
+> >  v2: Update commit message from 'ID' to 'address'.
+> >      Drop Fixes tag, because that commit is not the cause.
+> >
+> >  arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts | 6 ++++--
+> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts=
+ b/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
+> > index ce0d6514eeb571..e4794ccb8e413f 100644
+> > --- a/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
+> > +++ b/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
+> > @@ -66,8 +66,10 @@ &gmac1 {
+> >         mdio0 {
+> >                 #address-cells =3D <1>;
+> >                 #size-cells =3D <0>;
+> > -               phy0: ethernet-phy@0 {
+> > -                       reg =3D <0>;
+> > +               compatible =3D "snps,dwmac-mdio";
+> > +
+> > +               phy0: ethernet-phy@4 {
+> > +                       reg =3D <4>;
+> >                         rxd0-skew-ps =3D <0>;
+> >                         rxd1-skew-ps =3D <0>;
+> >                         rxd2-skew-ps =3D <0>;
+> > --
+> > 2.45.2
+> >
+>
+>
+> --
+> Nobuhiro Iwamatsu
+>    iwamatsu at {nigauri.org / debian.org / kernel.org}
+>    GPG ID: 32247FBB40AD1FA6
 
-Change LGTM!
 
-- Mani
 
-> Fixes: 5301258899773 ("bus: mhi: ep: Add support for reading from the host")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Akhil Vinod <akhvin@qti.qualcomm.com>
-> Signed-off-by: Akhil Vinod <akhvin@qti.qualcomm.com>
-> Signed-off-by: Sumit Kumar <sumk@qti.qualcomm.com>
-> ---
-> Changes in v2:
-> - Use mhi_ep_queue_is_empty in while loop (Mani).
-> - Remove do while loop in mhi_ep_process_ch_ring (Mani).
-> - Remove buf_left, wr_offset, tr_done.
-> - Haven't added Reviewed-by as there is change in logic.
-> - Link to v1: https://lore.kernel.org/r/20250709-chained_transfer-v1-1-2326a4605c9c@quicinc.com
-> ---
->  drivers/bus/mhi/ep/main.c | 37 ++++++++++++-------------------------
->  1 file changed, 12 insertions(+), 25 deletions(-)
-> 
-> diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
-> index b3eafcf2a2c50d95e3efd3afb27038ecf55552a5..cdea24e9291959ae0a92487c1b9698dc8164d2f1 100644
-> --- a/drivers/bus/mhi/ep/main.c
-> +++ b/drivers/bus/mhi/ep/main.c
-> @@ -403,17 +403,13 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
->  {
->  	struct mhi_ep_chan *mhi_chan = &mhi_cntrl->mhi_chan[ring->ch_id];
->  	struct device *dev = &mhi_cntrl->mhi_dev->dev;
-> -	size_t tr_len, read_offset, write_offset;
-> +	size_t tr_len, read_offset;
->  	struct mhi_ep_buf_info buf_info = {};
->  	u32 len = MHI_EP_DEFAULT_MTU;
->  	struct mhi_ring_element *el;
-> -	bool tr_done = false;
->  	void *buf_addr;
-> -	u32 buf_left;
->  	int ret;
->  
-> -	buf_left = len;
-> -
->  	do {
->  		/* Don't process the transfer ring if the channel is not in RUNNING state */
->  		if (mhi_chan->state != MHI_CH_STATE_RUNNING) {
-> @@ -426,24 +422,23 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
->  		/* Check if there is data pending to be read from previous read operation */
->  		if (mhi_chan->tre_bytes_left) {
->  			dev_dbg(dev, "TRE bytes remaining: %u\n", mhi_chan->tre_bytes_left);
-> -			tr_len = min(buf_left, mhi_chan->tre_bytes_left);
-> +			tr_len = min(len, mhi_chan->tre_bytes_left);
->  		} else {
->  			mhi_chan->tre_loc = MHI_TRE_DATA_GET_PTR(el);
->  			mhi_chan->tre_size = MHI_TRE_DATA_GET_LEN(el);
->  			mhi_chan->tre_bytes_left = mhi_chan->tre_size;
->  
-> -			tr_len = min(buf_left, mhi_chan->tre_size);
-> +			tr_len = min(len, mhi_chan->tre_size);
->  		}
->  
->  		read_offset = mhi_chan->tre_size - mhi_chan->tre_bytes_left;
-> -		write_offset = len - buf_left;
->  
->  		buf_addr = kmem_cache_zalloc(mhi_cntrl->tre_buf_cache, GFP_KERNEL);
->  		if (!buf_addr)
->  			return -ENOMEM;
->  
->  		buf_info.host_addr = mhi_chan->tre_loc + read_offset;
-> -		buf_info.dev_addr = buf_addr + write_offset;
-> +		buf_info.dev_addr = buf_addr;
->  		buf_info.size = tr_len;
->  		buf_info.cb = mhi_ep_read_completion;
->  		buf_info.cb_buf = buf_addr;
-> @@ -459,16 +454,12 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
->  			goto err_free_buf_addr;
->  		}
->  
-> -		buf_left -= tr_len;
->  		mhi_chan->tre_bytes_left -= tr_len;
->  
-> -		if (!mhi_chan->tre_bytes_left) {
-> -			if (MHI_TRE_DATA_GET_IEOT(el))
-> -				tr_done = true;
-> -
-> +		if (!mhi_chan->tre_bytes_left)
->  			mhi_chan->rd_offset = (mhi_chan->rd_offset + 1) % ring->ring_size;
-> -		}
-> -	} while (buf_left && !tr_done);
-> +	/* Read until the some buffer is left or the ring becomes not empty */
-> +	} while (!mhi_ep_queue_is_empty(mhi_chan->mhi_dev, DMA_TO_DEVICE));
->  
->  	return 0;
->  
-> @@ -502,15 +493,11 @@ static int mhi_ep_process_ch_ring(struct mhi_ep_ring *ring)
->  		mhi_chan->xfer_cb(mhi_chan->mhi_dev, &result);
->  	} else {
->  		/* UL channel */
-> -		do {
-> -			ret = mhi_ep_read_channel(mhi_cntrl, ring);
-> -			if (ret < 0) {
-> -				dev_err(&mhi_chan->mhi_dev->dev, "Failed to read channel\n");
-> -				return ret;
-> -			}
-> -
-> -			/* Read until the ring becomes empty */
-> -		} while (!mhi_ep_queue_is_empty(mhi_chan->mhi_dev, DMA_TO_DEVICE));
-> +		ret = mhi_ep_read_channel(mhi_cntrl, ring);
-> +		if (ret < 0) {
-> +			dev_err(&mhi_chan->mhi_dev->dev, "Failed to read channel\n");
-> +			return ret;
-> +		}
->  	}
->  
->  	return 0;
-> 
-> ---
-> base-commit: 4c06e63b92038fadb566b652ec3ec04e228931e8
-> change-id: 20250709-chained_transfer-0b95f8afa487
-> 
-> Best regards,
-> -- 
-> Sumit Kumar <quic_sumk@quicinc.com>
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
+--=20
+Nobuhiro Iwamatsu
+   iwamatsu at {nigauri.org / debian.org / kernel.org}
+   GPG ID: 32247FBB40AD1FA6
 
