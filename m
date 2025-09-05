@@ -1,163 +1,96 @@
-Return-Path: <stable+bounces-177833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4596B45BF2
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 17:13:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14173B45C80
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 17:26:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C13E67A7E44
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 15:11:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0943516D066
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 15:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1B131B80B;
-	Fri,  5 Sep 2025 15:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3082F7ADB;
+	Fri,  5 Sep 2025 15:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nigauri-org.20230601.gappssmtp.com header.i=@nigauri-org.20230601.gappssmtp.com header.b="ZDEj1IOK"
+	dkim=pass (2048-bit key) header.d=janestreet.com header.i=@janestreet.com header.b="r3gubX1N"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mxout5.mail.janestreet.com (mxout5.mail.janestreet.com [64.215.233.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FB531B80D
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 15:13:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7FD221F32
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 15:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.215.233.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757085195; cv=none; b=ufNxv353vBeeNm2gD0m66e6L10pxNvi98ULWJsBRLN7z/N8IWNst6NEHhGknOs+Hlab9bQZltTv1kAGQjEXPSzGEtukEYebWd3puBoRYUE18fR7VkRZTBCmuy1waTxTaMaTO957kH9/rhyxx2csonEgzN2fJw4bLl8tmitDfwDo=
+	t=1757085822; cv=none; b=o1EPXzxE2+dsxlTl082stig5k2dwaqO2qWzBD3EndNKmRAiw0F+eCK15c7pUFpr84FjZW8xNHE+xrXL4B1qAXy8kR1JFzGcqyB6cqhQosjhmygOsU0OT2fgfuBGv51e/OD1kVsLJu3H2RxaYyzp4Qc3JQuLdNTqw6PqqyBO12gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757085195; c=relaxed/simple;
-	bh=vcbzZr+E02WokGut7C2c77Afxd5rpoCYAkJoIkII9d8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QDiPE6Mlumd+A3kWqg9OKdHcM61l/CaS+C7yl073UhspJCSFcU9NKQBAUV7iPmSMM8eu9jPTHIODLk90WZyE7sIjvnbQ7zuRRFvMvOakpAONR4eQXXxhTRpS9z6S3jGjYXoAkZjfFECXggMOkLEkXhu2GX70TajiW06BJc7CIuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org; spf=none smtp.mailfrom=nigauri.org; dkim=pass (2048-bit key) header.d=nigauri-org.20230601.gappssmtp.com header.i=@nigauri-org.20230601.gappssmtp.com header.b=ZDEj1IOK; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nigauri.org
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6188b5ad4f0so3727335a12.0
-        for <stable@vger.kernel.org>; Fri, 05 Sep 2025 08:13:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nigauri-org.20230601.gappssmtp.com; s=20230601; t=1757085192; x=1757689992; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DHMIdxjHKuTqVD8SOr4IvDDg7ji1cX6ZfEw+vHDGWBo=;
-        b=ZDEj1IOKepbUvHpZzM3m2lRtZAMUowMVafek24OUbq6KU2Yuk9ii+QaQXkAnYIQfxy
-         dy9FuNETwTcYZFNdIWkYC+dGAS8toGAG6DIsn5cIHxHryC/+F7gMkkWtAapjeFtLx1VP
-         I3wNPlt8z2s2OOaPvABV02Cs3iciXbstXd4dOVshdfCedPrgQmxytng1IeGb2LkZML1e
-         kDiuTD+OlqBPqKOQY3qA4xVp1PzAb7YUVlT6Od9S3E9HjfP/GpRqljMBhTTtj+UX2yw9
-         yFsMpTfLhX/gZ/IWde0k1nOXrsXESVYcG/g4vrVfQP0vZK/0pFrcK/raIhB9JFtF00d5
-         efMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757085192; x=1757689992;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DHMIdxjHKuTqVD8SOr4IvDDg7ji1cX6ZfEw+vHDGWBo=;
-        b=tRKKjaqwmHt/kMW0s41ZB1Zkp1RAhwwmWKRTNMaOQ8llv7VeH+ZKcyCeybZBUC6jV6
-         9q74jsEiTN/chMYXp4j49QCckGgKLeHcWzctZAkFSMGTNBOHw5e1ip0SBc5MB6R9WJ6H
-         KZ8iXR6H5bie3BiBRHIOxwgfXrE91uPvU9bLOeAAlLoqyfUmabh58X4qqFdLc8DMsV4z
-         Er3J8RUSpmEiHjSIU3ua49tBNG/MIZQgIEhjCgW1TMORntYwjMa5WN6xWx9njAJcN8u9
-         x/DyOgV66jzBahIBz7J820PCvzf/z4OL6ZfHksXgZ6qOZRXsAsMHCXDKo/Ak5uSA4dDJ
-         BT5A==
-X-Forwarded-Encrypted: i=1; AJvYcCWvOaWRbh6BrqIHPZzT69gRjqt8hXxw18+1qzM/PtDkZYnF33Oag7+eu6OZNyRTGtArl92EjeM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2IK6vZAlMtcbIF83rS24TTxANdzBI7FC6PbZ0jwetQJBPSTTv
-	SNkp6H4nzzekSWJTXOlLK1mtnvbTC7GNsUU+0pfAtkbVtPCktUlixfCZW38DrSsmmzR24TcFlL3
-	d311JFo9l9+VvsKAyukVgtWGKKQHOKDBH6ZMHNFk=
-X-Gm-Gg: ASbGncuo0ZOHWZkgMuHnSr/MJc5eYtW3DGnwo0f7gczfPSY+O0f+r3ZDOiTtas3+vBe
-	7J8ZCmkv/yY6gXIkpU9hswd94gWZjCkCpjLHw74bskSr858yVZOTqqU0aEXCCeAgOTtYKvB2+Co
-	0J0wUzmFpckcFgpe19m8Wa0IjU4Huh4YwNhlB+cupXQsPv/HrCuStLYuQRYyjYayRvP0ismV6g
-X-Google-Smtp-Source: AGHT+IE5RR3xHpHhW22PdOxC27cxpSABsoBUyfebHCL+SzRaex/Yg5PA4kv6ZoooBZkF06NN2M4yziw9mmi8ooK96Xw=
-X-Received: by 2002:a05:6402:35d6:b0:61e:d34c:d1d3 with SMTP id
- 4fb4d7f45d1cf-61ed34cd400mr10877470a12.19.1757085191500; Fri, 05 Sep 2025
- 08:13:11 -0700 (PDT)
+	s=arc-20240116; t=1757085822; c=relaxed/simple;
+	bh=S/ML7WZ1uTpSMmbmHDUhBmDT8Vs7Wg0IF2zur/NJRnU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aJQ9PBn1I1eF0y7BTHFB5mb+Jk8yME/M1kJdPkIpuPEQ2ggR33yITwCPwgogosHJJzoIm2z05OT3b16t44Z3EYXJaR+fHnWxoAt6WWqpVrtY0U340UAN+pvbgU/KVon6298YPFVntCoYK9THGcgd2dtSY9taqoXdU4USzZTtDGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=janestreet.com; spf=pass smtp.mailfrom=janestreet.com; dkim=pass (2048-bit key) header.d=janestreet.com header.i=@janestreet.com header.b=r3gubX1N; arc=none smtp.client-ip=64.215.233.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=janestreet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=janestreet.com
+From: Eric Hagberg <ehagberg@janestreet.com>
+To: linux-kernel@vger.kernel.org
+Cc: Eric Hagberg <ehagberg@janestreet.com>,
+ 	stable@vger.kernel.org
+Subject: [PATCH] x86/boot/compressed/64: clear high flags from pgd entry in configure_5level_paging
+Date: Fri,  5 Sep 2025 11:14:31 -0400
+Message-ID: <20250905151431.2825114-1-ehagberg@janestreet.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241121071325.2148854-1-iwamatsu@nigauri.org> <CABMQnVJVTmnsx3RNYK01ikZ-jnn_y4pbrNAeZaKPzz0N_YFz5g@mail.gmail.com>
-In-Reply-To: <CABMQnVJVTmnsx3RNYK01ikZ-jnn_y4pbrNAeZaKPzz0N_YFz5g@mail.gmail.com>
-From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
-Date: Sat, 6 Sep 2025 00:12:44 +0900
-X-Gm-Features: Ac12FXzTX4H5emedmc2ovwKAlGVEjYg6lVwTcyicNPf8FtCjYiYPI4wGLhju7oc
-Message-ID: <CABMQnVJsK3wNRQfGjomggKcwL5zaqBchoAKajbVb+ZXmrwn2iQ@mail.gmail.com>
-Subject: Re: [PATCH v2] ARM: dts: socfpga: sodia: Fix mdio bus probe and PHY address
-To: dinguyen@kernel.org, robh+dt@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org
-Cc: Andrew Lunn <andrew@lunn.ch>, linux-arm-kernel@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=janestreet.com;
+  s=waixah; t=1757085454;
+  bh=sQWCESy/4YoQ7ON6d1VtuvMNA3SUhWe2COWsmV3LXhc=;
+  h=From:To:Cc:Subject:Date;
+  b=r3gubX1NVHSXJIAd4gu88nrKdKp+J15IjXbBY4/Vyw+438ZgKItMXIHfa3h6In8kf
+  4w6gVWk0nIpRZz9xqCj9VysQbWfqY9USV/VoGwlr6QicuqMfJro6Bqc35LfVxRaC0D
+  WCIGFexF0IIaz5ZzV/PXNN8FoNic5061ea8bFosBWHwtE771GzC8lZeu5IZb9o0pY6
+  5wEuRoURRc8YOGpfp+QHhjBmNe4MaARt1ZcBMpsMCHZ9zjwnzQh55I6UoEp8mrezYu
+  K7M7Kq/1bkIDjyKr+nhjVwwhnZHrGGHWOwDRMTW4kAbFFPPc1CSH7wiVf6rZMJVgmF
+  963nQ3nbSHA7Q==
 
-ping?
+In commit d0ceea662d45 ("x86/mm: Add _PAGE_NOPTISHADOW bit to avoid
+updating userspace page tables") we started setting _PAGE_NOPTISHADOW (bit
+58) in identity map PTEs created by kernel_ident_mapping_init. In
+configure_5level_paging when transiting from 5-level paging to 4-level
+paging we copy the first p4d to become our new (4-level) pgd by
+dereferencing the first entry in the current pgd, but we only mask off the
+low 12 bits in the pgd entry.
 
-2025=E5=B9=B41=E6=9C=8814=E6=97=A5(=E7=81=AB) 22:50 Nobuhiro Iwamatsu <iwam=
-atsu@nigauri.org>:
->
-> Hi Dinh,
->
-> Could you check and apply this patch?
->
-> Thanks,
->   Nobuhiro
->
-> 2024=E5=B9=B411=E6=9C=8821=E6=97=A5(=E6=9C=A8) 16:13 Nobuhiro Iwamatsu <i=
-wamatsu@nigauri.org>:
-> >
-> > On SoCFPGA/Sodia board, mdio bus cannot be probed, so the PHY cannot be
-> > found and the network device does not work.
-> >
-> > ```
-> > stmmaceth ff702000.ethernet eth0: __stmmac_open: Cannot attach to PHY (=
-error: -19)
-> > ```
-> >
-> > To probe the mdio bus, add "snps,dwmac-mdio" as compatible string of th=
-e
-> > mdio bus. Also the PHY address connected to this board is 4. Therefore,
-> > change to 4.
-> >
-> > Cc: stable@vger.kernel.org # 6.3+
-> > Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
-> > ---
-> >  v2: Update commit message from 'ID' to 'address'.
-> >      Drop Fixes tag, because that commit is not the cause.
-> >
-> >  arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts=
- b/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
-> > index ce0d6514eeb571..e4794ccb8e413f 100644
-> > --- a/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
-> > +++ b/arch/arm/boot/dts/intel/socfpga/socfpga_cyclone5_sodia.dts
-> > @@ -66,8 +66,10 @@ &gmac1 {
-> >         mdio0 {
-> >                 #address-cells =3D <1>;
-> >                 #size-cells =3D <0>;
-> > -               phy0: ethernet-phy@0 {
-> > -                       reg =3D <0>;
-> > +               compatible =3D "snps,dwmac-mdio";
-> > +
-> > +               phy0: ethernet-phy@4 {
-> > +                       reg =3D <4>;
-> >                         rxd0-skew-ps =3D <0>;
-> >                         rxd1-skew-ps =3D <0>;
-> >                         rxd2-skew-ps =3D <0>;
-> > --
-> > 2.45.2
-> >
->
->
-> --
-> Nobuhiro Iwamatsu
->    iwamatsu at {nigauri.org / debian.org / kernel.org}
->    GPG ID: 32247FBB40AD1FA6
+When kexecing, the previous kernel sets up an identity map using
+kernel_ident_mapping_init before transiting to the new kernel, which means
+the new kernel gets a pgd with entries with bit 58 set. Then we mask off
+only the low 12 bits, resulting in a non-canonical address, and try to
+copy from it, and fault.
 
+Fixes: d0ceea662d45 ("x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating userspace page tables")
+Signed-off-by: Eric Hagberg <ehagberg@janestreet.com>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/boot/compressed/pgtable_64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
+index bdd26050dff7..c785c5d54a11 100644
+--- a/arch/x86/boot/compressed/pgtable_64.c
++++ b/arch/x86/boot/compressed/pgtable_64.c
+@@ -180,7 +180,7 @@ asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
+ 		 * We cannot just point to the page table from trampoline as it
+ 		 * may be above 4G.
+ 		 */
+-		src = *(unsigned long *)__native_read_cr3() & PAGE_MASK;
++		src = *(unsigned long *)__native_read_cr3() & PTE_PFN_MASK;
+ 		memcpy(trampoline_32bit, (void *)src, PAGE_SIZE);
+ 	}
+ 
+-- 
+2.43.7
 
---=20
-Nobuhiro Iwamatsu
-   iwamatsu at {nigauri.org / debian.org / kernel.org}
-   GPG ID: 32247FBB40AD1FA6
 
