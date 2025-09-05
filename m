@@ -1,138 +1,120 @@
-Return-Path: <stable+bounces-177887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED194B463C4
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 21:38:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C35B46408
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 21:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C44EE1899F28
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 19:38:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F6F616D64B
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 19:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907F5278157;
-	Fri,  5 Sep 2025 19:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2E4283121;
+	Fri,  5 Sep 2025 19:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EDFGFDDa"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="Ql523HgQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B4E275AF1
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 19:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6933EE55A
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 19:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757101104; cv=none; b=Kl2AqtYYTCGEm2tELf6io8wWQUVW9U9tDlZ/I+VXKnWDWjD+GoYb1XZwiWP1X78o5i7KShFdAKI2wsxqMiP3XpuzYTGvj2Ycyn3Mjzz365QdbyyYu8WkBTc7gzvC+QqAUhS9n43yuzGD9ljKXe8BVMDmjNaC98Wd1ccbBNKcg0M=
+	t=1757102334; cv=none; b=eLOTZvNa3CVJJ1hdCfgfcIT7BGshy5SjzeTHEoO6j4N9scrZdgog9mcq73VV5EnODlj6hcoILI7OLU9cFKVpxqNuAqD5T7LgwDuEmlAsQR7LayQFsLl865K7Roro8+BhUnnctsqdnbIhh7ZwinA4cBe7bw3OwY/sde8oA/jN4Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757101104; c=relaxed/simple;
-	bh=4TnPYnaTxMK5vnkNGfVv1Ty7bzV3HWmX7sINL8mhE4g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R2cvjaTujaALMaPjj4Sh06TsaaSLor2vethIo/SmPA1UUGyLMLTmn9snQee64ZZEcC1c1Y/vv34u0zLG2WxE2M3FmIaR2fStSrfWKbRaHv/EphzC0NyiJzLuWYLmfbi0zctFQbwRitOZCHAikCQmp4zxzI7JrCmjlqwns8L9yC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EDFGFDDa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E562C4CEF1;
-	Fri,  5 Sep 2025 19:38:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757101104;
-	bh=4TnPYnaTxMK5vnkNGfVv1Ty7bzV3HWmX7sINL8mhE4g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EDFGFDDaKyQYk76K8Vg6AI3jFb6mHz0X84YSECuldG6PR2n9SrEIXzfX+t4TYU62g
-	 T3uLRtXo/dZ/ImQKIm6RKuw3HSrWoJxcJLvS3xooOV02WWZWp51UUCr818+QmBRa23
-	 wHdOF4JMAN/cjJfF2jink9l0l7EYG1lz2ke32mvbB4pAcr0d7mr8hRZojakWyf3f11
-	 ZL7G4TJjTndeX0xAHZUWXGQ7d4kJkSm3X1lYyW+vN46t0xeZpwNuvyDagP0eGTpNk2
-	 aCEdx277zeJ2xUVQP2zrWGYPKkwYX8/68CrIbbFJ5zXH0VhTD9cXJ761Qkr7AH5uJU
-	 xiI/BU/2Y5ZEg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Qiu-ji Chen <chenqiuji666@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()
-Date: Fri,  5 Sep 2025 15:38:20 -0400
-Message-ID: <20250905193820.3342853-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025051901-axis-slush-88d7@gregkh>
-References: <2025051901-axis-slush-88d7@gregkh>
+	s=arc-20240116; t=1757102334; c=relaxed/simple;
+	bh=iNdSyDejzshlaj9Zw1X3pvuMAqTuAUgjJDLVld+JHyk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gIEzAn2PV3UNG9ctl/sWI/Fml217hITySqQQqZnfotprL2KkX8PVqMMYEET2QxQKPUWL9FqBDDxntsLzgaq75YPR8fZdZCODBByoyBCC3QmDowo/WZwmz+ZTjqp4a4awRESbzH0HN3fKAAiyf2iLAUpEEN7ActvfG3Pjy5XI1Zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=Ql523HgQ; arc=none smtp.client-ip=74.125.224.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-601b1535047so155116d50.1
+        for <stable@vger.kernel.org>; Fri, 05 Sep 2025 12:58:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1757102332; x=1757707132; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ehx7g91KCn3SyyhBVCzxIh0lsM8Vttpa6Qh9BKhIDZc=;
+        b=Ql523HgQlT43ect6/IntwO3axG3OROx0odyew24EVkFq0u0qHImB+pL4CS9pLuTw43
+         2kXGG8ZEEHvJ1v49W8pjLZzpnWfEMSL5px6vZBTx+G7Gk0fkqe+z8Ci5d0N5uS9yYy50
+         PXer2P6dF5mTLMdLQ/VDDsJ4nIycXpwbw00s0h9T6ax1BNsRfB1bbNkVrcBD/UoAI9j0
+         WErNwMGaAfN6co50tUzP+a499UsAqHix74vmsrMCA3szaYh1yqGXJNTvj1d8IpgYZ6qF
+         i74o03/jyGksKM4T2Br90kWDRXzOLhKVexSUJ/2Oxc8oX1//T1jTPKs2z48FoMnhPcpK
+         pBnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757102332; x=1757707132;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ehx7g91KCn3SyyhBVCzxIh0lsM8Vttpa6Qh9BKhIDZc=;
+        b=jBVKeEqtd90ujmcR+MNPxNFmPUr5PPHrNKOY4DtVHWqT+y0JKOsmDqLvrFj2wiSdkh
+         SdUTqz+bOlFXKvAxm1pBBHgGlCx99oR8fk3XXdQfIxCxoet0VhvaYSnEiNoA7AyinCok
+         rj3lZFUwOdLojoqu/fJnGfnbG84hGbRpQTIx8Eern8X5aqJLVqpviljF5/fvFsiRu7R0
+         mtUycJpB1fS7kcNCd/GXpKh6W0WUzRR9wNCVcQS2o8Na2KPlXpR30bqTsspCPubDSM8w
+         KPQtsl2PyPwpzmYw/cake9SuGprKYrsy5EncrO/QfOo+RTRb19qHMsaQQ/fEjTZ7WTo1
+         2SWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVd7/lGOWq658UYaL1nNsQcLgO10mklxXLoZTzBw7RNv5LXDE+aAIx1napCPLRPlv6PT6H8OLo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdR+puPjH1oheEwH2SYrJr7ebMkLaD7Hv9GQvKd4M/SYiNu+QQ
+	NLFM2x+LQBduSCZ3Z0LUmZa4WgnWEEdHXQHSsbn1gIPyINzQQJHAjHcpwQmwGvek4CM=
+X-Gm-Gg: ASbGncsJzpY96Hm1ZGPGUxFNrkCvNjvzkj6O8Djfvs0LTMivpmtw/osLqFOyz/22HBR
+	rPDI6/mkhY7HhJ7M5WAIB362JfoYl7e1mQhKL8VAQA6vwuGSDl2GdxUbhsE/JLmIoJgFvRdHhxm
+	wFDkX7r79ZxuGcvhnr6lXzU1o3ytc5fZl50spEXHU8zda/sRcC8rRYPEre+TpTWAfiuH++Q6l+L
+	pozxe4lm0EaMXVU+4ryJxL1TJph7mvKqSKMg6nMXsUHGHFTwJjxcLu/QeUsveqIqDVWrB9psN4F
+	QRbAb6YbwOPMdkYeX+g2zgOAq0jrPUKEp9rsQ+hn2f7kbounEaFlKzkBSFLdlVdLCFZ4eAMsbYM
+	jEwycox4LxLGn98YW+aAFTXMIOP3T4A==
+X-Google-Smtp-Source: AGHT+IF0YG269PD1kxm9h1z56UglbWN0AR2Z4gUkNF8/nvYEZASXFqHqthUEY3y/R49lPBhxVgpbvg==
+X-Received: by 2002:a05:690c:3804:b0:722:875f:2cb0 with SMTP id 00721157ae682-727f5e45ec8mr862137b3.49.1757102332315;
+        Fri, 05 Sep 2025 12:58:52 -0700 (PDT)
+Received: from [172.17.0.109] ([50.168.186.2])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-724c8ba45b2sm12366177b3.53.2025.09.05.12.58.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Sep 2025 12:58:51 -0700 (PDT)
+Message-ID: <f43fe976-4ef5-4dea-a2d0-336456a4deae@kernel.dk>
+Date: Fri, 5 Sep 2025 13:58:51 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12.y 11/15] io_uring/msg_ring: ensure io_kiocb freeing
+ is deferred for RCU
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+ stable@vger.kernel.org
+Cc: vegard.nossum@oracle.com,
+ syzbot+54cbbfb4db9145d26fc2@syzkaller.appspotmail.com
+References: <20250905110406.3021567-1-harshit.m.mogalapalli@oracle.com>
+ <20250905110406.3021567-12-harshit.m.mogalapalli@oracle.com>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20250905110406.3021567-12-harshit.m.mogalapalli@oracle.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+On 9/5/25 5:04 AM, Harshit Mogalapalli wrote:
+> diff --git a/include/linux/io_uring_types.h b/include/linux/io_uring_types.h
+> index 5ce332fc6ff5..3b27d9bcf298 100644
+> --- a/include/linux/io_uring_types.h
+> +++ b/include/linux/io_uring_types.h
+> @@ -648,6 +648,8 @@ struct io_kiocb {
+>  	struct io_task_work		io_task_work;
+>  	/* for polled requests, i.e. IORING_OP_POLL_ADD and async armed poll */
+>  	struct hlist_node		hash_node;
+> +	/* for private io_kiocb freeing */
+> +	struct rcu_head		rcu_head;
+>  	/* internal polling, see IORING_FEAT_FAST_POLL */
+>  	struct async_poll		*apoll;
+>  	/* opcode allocated if it needs to store data for async defer */
 
-[ Upstream commit 157ae5ffd76a2857ccb4b7ce40bc5a344ca00395 ]
+This should go into a union with hash_node, rather than bloat the
+struct. That's how it was done upstream, not sure why this one is
+different?
 
-Fix a potential deadlock bug. Observe that in the mtk-cqdma.c
-file, functions like mtk_cqdma_issue_pending() and
-mtk_cqdma_free_active_desc() properly acquire the pc lock before the vc
-lock when handling pc and vc fields. However, mtk_cqdma_tx_status()
-violates this order by first acquiring the vc lock before invoking
-mtk_cqdma_find_active_desc(), which subsequently takes the pc lock. This
-reversed locking sequence (vc → pc) contradicts the established
-pc → vc order and creates deadlock risks.
-
-Fix the issue by moving the vc lock acquisition code from
-mtk_cqdma_find_active_desc() to mtk_cqdma_tx_status(). Ensure the pc lock
-is acquired before the vc lock in the calling function to maintain correct
-locking hierarchy. Note that since mtk_cqdma_find_active_desc() is a
-static function with only one caller (mtk_cqdma_tx_status()), this
-modification safely eliminates the deadlock possibility without affecting
-other components.
-
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs to extract
-function pairs that can be concurrently executed, and then analyzes the
-instructions in the paired functions to identify possible concurrency bugs
-including deadlocks, data races and atomicity violations.
-
-Fixes: b1f01e48df5a ("dmaengine: mediatek: Add MediaTek Command-Queue DMA controller for MT6765 SoC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250508073634.3719-1-chenqiuji666@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/dma/mediatek/mtk-cqdma.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/dma/mediatek/mtk-cqdma.c b/drivers/dma/mediatek/mtk-cqdma.c
-index b69eabf12a24f..e3c887148987b 100644
---- a/drivers/dma/mediatek/mtk-cqdma.c
-+++ b/drivers/dma/mediatek/mtk-cqdma.c
-@@ -420,15 +420,11 @@ static struct virt_dma_desc *mtk_cqdma_find_active_desc(struct dma_chan *c,
- {
- 	struct mtk_cqdma_vchan *cvc = to_cqdma_vchan(c);
- 	struct virt_dma_desc *vd;
--	unsigned long flags;
- 
--	spin_lock_irqsave(&cvc->pc->lock, flags);
- 	list_for_each_entry(vd, &cvc->pc->queue, node)
- 		if (vd->tx.cookie == cookie) {
--			spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 			return vd;
- 		}
--	spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 
- 	list_for_each_entry(vd, &cvc->vc.desc_issued, node)
- 		if (vd->tx.cookie == cookie)
-@@ -452,9 +448,11 @@ static enum dma_status mtk_cqdma_tx_status(struct dma_chan *c,
- 	if (ret == DMA_COMPLETE || !txstate)
- 		return ret;
- 
-+	spin_lock_irqsave(&cvc->pc->lock, flags);
- 	spin_lock_irqsave(&cvc->vc.lock, flags);
- 	vd = mtk_cqdma_find_active_desc(c, cookie);
- 	spin_unlock_irqrestore(&cvc->vc.lock, flags);
-+	spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 
- 	if (vd) {
- 		cvd = to_cqdma_vdesc(vd);
 -- 
-2.50.1
-
+Jens Axboe
 
