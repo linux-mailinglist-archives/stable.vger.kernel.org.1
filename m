@@ -1,138 +1,210 @@
-Return-Path: <stable+bounces-177898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87601B46514
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 23:02:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C853B46551
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 23:16:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 278623BC228
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 21:02:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17D2D161294
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 21:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3822E9ED4;
-	Fri,  5 Sep 2025 21:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286462F3624;
+	Fri,  5 Sep 2025 21:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ib1Z51jF"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="QEqt2BR6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B69B28689A
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 21:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40D62F068E
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 21:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757106132; cv=none; b=g3PKMgxuQJ6X5cOXzDggGAnke3GKr3hcy+Cu70oVP8HLVKjy9PvPjW1icxpMdqBqrP9S67pKDpZV39lilyRMfMXG5Sg954z460OXWpe8cklHGQHAJMDaR2R4D0Auqq1GBVF1F5l/UYKrAFe+2OrYjHVJFHmSkBBkkqkBJOaZmf4=
+	t=1757106943; cv=none; b=sPfsBfxnVdZW7ckV9tY8dH7WZb46SsEYYJrvm5MAABbEJMSQnG0LWTjwma5cf48oNhf0XKiudZcpnzljUp4f1vAY0EFM+cipKsdqSrMKAEgeB/ewwb16j2jBmBGXQ2eoKAmLfACWh2IzzzksAIbvCiF2rttD/ZqKISl9oLDNTNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757106132; c=relaxed/simple;
-	bh=Ys29k4EWeUZeA0xVOoxB+f8d3rS7WkJY0wgdHoo/t+4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I54XfMe4XbTU237VxbELw1jZSZrDIPFn7YxWEtWfa2JIPww6VDSmEK7do3OzJwHttpbTGM3hO9sNN8CfBpZ/S8tvXQ7ZPZ3ukXRiKuXztv+uAr4VCbWz95wVTYsOlcY9fX2pXv5xMDABndww17/iZf79HnfUHwEWUJPoKGTlgXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ib1Z51jF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2015C4CEF1;
-	Fri,  5 Sep 2025 21:02:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757106131;
-	bh=Ys29k4EWeUZeA0xVOoxB+f8d3rS7WkJY0wgdHoo/t+4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ib1Z51jFf912m06DDkEvDJxAO0N7sdvoDjVG+zP2mPkTBZt+VTkOwg1uNtCK3aYug
-	 LxleSJCX20dMkemq+wpc4YNgFIG3yKXPzCaf1yUlofpBRNtu9jZXWXlxYeXps86LeO
-	 jBeV4tkBelFGTNVKIKPzWV0Vv8pJjuhvCup1jKMFQ95Z65LSEGoCuitxAY9i2/ErXb
-	 /7qYHkhyYcAG9eJJ6EQGwRY/PrP7J0kJuLxrrPHAt2IkeioZ2Ifma1/7bSoc6a0ABM
-	 xNTSGaqEYjkll8La1DnlbXQUmGEM6d5RKztNobJYOrgkdjrJv6fYl825O3baoIN9GO
-	 fEO9tpu0ptw7g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Qiu-ji Chen <chenqiuji666@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()
-Date: Fri,  5 Sep 2025 17:02:08 -0400
-Message-ID: <20250905210208.3417069-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025051905-paced-scrounger-571a@gregkh>
-References: <2025051905-paced-scrounger-571a@gregkh>
+	s=arc-20240116; t=1757106943; c=relaxed/simple;
+	bh=ZbpTJpgq5eLZVl33raMdiFnvHNLuPpzwtxq8hWiMSh4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s1A9r9t1xrLhPUqL02SHbUCRibJy6UfjGilppDEgVL5uEPaVzosZjGyzycYKEVv5MmAcOz3nKHaCgVIFQP/e5fvIzj0KIVsdgAo1ACGvTGLnRQWwJWm02+j329dM00OZhQxmYunUA98N4O64vxLJizUt17qnp8/681uWmCO3B5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=QEqt2BR6; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b03fa5c5a89so368948066b.2
+        for <stable@vger.kernel.org>; Fri, 05 Sep 2025 14:15:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1757106936; x=1757711736; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wo0Nm6QkVqDa5/FEJy5jxjvhuwrT2EEIYGSEnkzS3xU=;
+        b=QEqt2BR6/Y+P4loZL4Fxi4YgPMVPzPDPExdrMSbcCzjV+Li2LxmIWA1JRN9IRDDJ3H
+         STy7JFQnEmUgSpb6aa2g/JsGfyA+Abu1gFOLAnb9qTqmC0wJi7zXrxCj4MEaEiuMyeTJ
+         +xNSOUFn0lS4VoaDn0mLoju+Vrd5z1M0ouuJBTk8l+Z/BsVL43/1SPld+0M+CsMky1jl
+         8G2efjJGK6WylmPdsVcWlk6Zk/GmB84lhOpKw4OBd1nxE6Wl+9d7JZ2tN+S0ma06Phei
+         M/LgcdA/srbQm4l+tgGs6F0CvoKSjsCGC0o5yDwLI30hCoBCJ33HrgoWFhuzFSAxjszd
+         ouEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757106936; x=1757711736;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wo0Nm6QkVqDa5/FEJy5jxjvhuwrT2EEIYGSEnkzS3xU=;
+        b=bRd7QYfKvqLSmlB0yjYxoRjn7vq0dKxRzzSj7antjZGfWqZwI/KHrqmbGZnhH6NsUE
+         vzrU7or31GLwPJZdf2Rjp1/SA6QwsGb5u22Dt0RmQ207T8hSirrVzPg305wTVZ+khYbH
+         pSh7cguWixr36iKlNwfsWWxTMPtlTHYp7WY5+GQNxthUSFv41JGQg15vPey1VAkHkJ92
+         xkDw3KHQyqC452IPupPNu/hMhf8JBIk/ZFrQXN2skoRcW6e43cLPGh17lkqgTh9vsTr1
+         WkZC1MSssQD+4Oac8YJF3FHHFzDz++53jvQETLgwZYdewPwe1+GVzFglWM4aBGZ1rPo4
+         W4NQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVyo3wnS0AXAWC22GEXcxm42zQcfUBw9lHQ+3u+D7NU+L+Mnwry2YFS8UKO03P52oLZLYOxsvg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9iCEpuk8M7rbe315ESHfge1U3qEchtdDlmbz2XRAdPyAzSYeK
+	06cIkbZa0bu96SKaJLWpct31ye2Uz5KuWMmqOMrHdtJs+26PPoshgh4xUK6EBkhqIOg=
+X-Gm-Gg: ASbGncsdvrpiAVKle/WkDlXiLyBxQSUvlckPPNffYp4PCKJW6UbQegYzmdtr6osmqzm
+	deapovAMup2I2xE2KjxjDwGHNBG/60m1chb4DxY4JHKFBj4OkDq9EJxbYwQYYAb4XqqOBZtSpHb
+	TQQc/q8/0M9/VJiSjy0BtYmRMOp6GxH/7bXdItOp6v0xkBS60YYI7mplYx1r8O5pn8pt1us/9vb
+	Fejn89MPFGsYVAHo2WzVTqg6Vzw1UALAQ2NmkF201SxDRyrX1lml6zZhRnosmcnCEkebimxa8Iu
+	DWtVXNhKQGeO4+0rwCI2n+ZoKYzjgedYgMa7sPnFo58SJgN3UzGR62Ptvlj40bki7kgNSyIuF/6
+	0qoMO1l3PNXDon79pX4hg2Ndgmiq0Cgo868uD+sbzlQbKAHfsAf6Fumn1UvWUL2nCUX7ttjFwLL
+	cu1BoWhfadq5SKSeOqliIX+m2IcAorv7ZIYp5KznwCUwF5
+X-Google-Smtp-Source: AGHT+IEI0UMFbxLDbFHi93Xgr79JgLgv6e0CgFXtb2r6z2caSDYapP71MxTt7L0Jmccte/7ICI7YVw==
+X-Received: by 2002:a17:907:3c92:b0:b04:1249:2b24 with SMTP id a640c23a62f3a-b04b1696062mr15691166b.37.1757106936248;
+        Fri, 05 Sep 2025 14:15:36 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f356800023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f35:6800:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b047373afcesm604498166b.57.2025.09.05.14.15.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Sep 2025 14:15:35 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: slava.dubeyko@ibm.com,
+	xiubli@redhat.com,
+	idryomov@gmail.com,
+	amarkuze@redhat.com,
+	ceph-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] fs/ceph/dir: fix `i_nlink` underrun during async unlink
+Date: Fri,  5 Sep 2025 23:15:30 +0200
+Message-ID: <20250905211530.43296-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+During async unlink, we drop the `i_nlink` counter before we receive
+the completion (that will eventually update the `i_nlink`) because "we
+assume that the unlink will succeed".  That is not a bad idea, but it
+races against deletions by other clients (or against the completion of
+our own unlink) and can lead to an underrun which emits a WARNING like
+this one:
 
-[ Upstream commit 157ae5ffd76a2857ccb4b7ce40bc5a344ca00395 ]
+ WARNING: CPU: 85 PID: 25093 at fs/inode.c:407 drop_nlink+0x50/0x68
+ Modules linked in:
+ CPU: 85 UID: 3221252029 PID: 25093 Comm: php-cgi8.1 Not tainted 6.14.11-cm4all1-ampere #655
+ Hardware name: Supermicro ARS-110M-NR/R12SPD-A, BIOS 1.1b 10/17/2023
+ pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : drop_nlink+0x50/0x68
+ lr : ceph_unlink+0x6c4/0x720
+ sp : ffff80012173bc90
+ x29: ffff80012173bc90 x28: ffff086d0a45aaf8 x27: ffff0871d0eb5680
+ x26: ffff087f2a64a718 x25: 0000020000000180 x24: 0000000061c88647
+ x23: 0000000000000002 x22: ffff07ff9236d800 x21: 0000000000001203
+ x20: ffff07ff9237b000 x19: ffff088b8296afc0 x18: 00000000f3c93365
+ x17: 0000000000070000 x16: ffff08faffcbdfe8 x15: ffff08faffcbdfec
+ x14: 0000000000000000 x13: 45445f65645f3037 x12: 34385f6369706f74
+ x11: 0000a2653104bb20 x10: ffffd85f26d73290 x9 : ffffd85f25664f94
+ x8 : 00000000000000c0 x7 : 0000000000000000 x6 : 0000000000000002
+ x5 : 0000000000000081 x4 : 0000000000000481 x3 : 0000000000000000
+ x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff08727d3f91e8
+ Call trace:
+  drop_nlink+0x50/0x68 (P)
+  vfs_unlink+0xb0/0x2e8
+  do_unlinkat+0x204/0x288
+  __arm64_sys_unlinkat+0x3c/0x80
+  invoke_syscall.constprop.0+0x54/0xe8
+  do_el0_svc+0xa4/0xc8
+  el0_svc+0x18/0x58
+  el0t_64_sync_handler+0x104/0x130
+  el0t_64_sync+0x154/0x158
 
-Fix a potential deadlock bug. Observe that in the mtk-cqdma.c
-file, functions like mtk_cqdma_issue_pending() and
-mtk_cqdma_free_active_desc() properly acquire the pc lock before the vc
-lock when handling pc and vc fields. However, mtk_cqdma_tx_status()
-violates this order by first acquiring the vc lock before invoking
-mtk_cqdma_find_active_desc(), which subsequently takes the pc lock. This
-reversed locking sequence (vc → pc) contradicts the established
-pc → vc order and creates deadlock risks.
+In ceph_unlink(), a call to ceph_mdsc_submit_request() submits the
+CEPH_MDS_OP_UNLINK to the MDS, but does not wait for completion.
 
-Fix the issue by moving the vc lock acquisition code from
-mtk_cqdma_find_active_desc() to mtk_cqdma_tx_status(). Ensure the pc lock
-is acquired before the vc lock in the calling function to maintain correct
-locking hierarchy. Note that since mtk_cqdma_find_active_desc() is a
-static function with only one caller (mtk_cqdma_tx_status()), this
-modification safely eliminates the deadlock possibility without affecting
-other components.
+Meanwhile, between this call and the following drop_nlink() call, a
+worker thread may process a CEPH_CAP_OP_IMPORT, CEPH_CAP_OP_GRANT or
+just a CEPH_MSG_CLIENT_REPLY (the latter of which could be our own
+completion).  These will lead to a set_nlink() call, updating the
+`i_nlink` counter to the value received from the MDS.  If that new
+`i_nlink` value happens to be zero, it is illegal to decrement it
+further.  But that is exactly what ceph_unlink() will do then.
 
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs to extract
-function pairs that can be concurrently executed, and then analyzes the
-instructions in the paired functions to identify possible concurrency bugs
-including deadlocks, data races and atomicity violations.
+The WARNING can be reproduced this way:
 
-Fixes: b1f01e48df5a ("dmaengine: mediatek: Add MediaTek Command-Queue DMA controller for MT6765 SoC")
+1. Force async unlink; only the async code path is affected.  Having
+   no real clue about Ceph internals, I was unable to find out why the
+   MDS wouldn't give me the "Fxr" capabilities, so I patched
+   get_caps_for_async_unlink() to always succeed.
+
+   (Note that the WARNING dump above was found on an unpatched kernel,
+   without this kludge - this is not a theoretical bug.)
+
+2. Add a sleep call after ceph_mdsc_submit_request() so the unlink
+   completion gets handled by a worker thread before drop_nlink() is
+   called.  This guarantees that the `i_nlink` is already zero before
+   drop_nlink() runs.
+
+The solution is to skip the counter decrement when it is already zero,
+but doing so without a lock is still racy (TOCTOU).  Since
+ceph_fill_inode() and handle_cap_grant() both hold the
+`ceph_inode_info.i_ceph_lock` spinlock while set_nlink() runs, this
+seems like the proper lock to protect the `i_nlink` updates.
+
+I found prior art in NFS and SMB (using `inode.i_lock`) and AFS (using
+`afs_vnode.cb_lock`).  All three have the zero check as well.
+
+Fixes: 2ccb45462aea ("ceph: perform asynchronous unlink if we have sufficient caps")
 Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250508073634.3719-1-chenqiuji666@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 ---
- drivers/dma/mediatek/mtk-cqdma.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/ceph/dir.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/mediatek/mtk-cqdma.c b/drivers/dma/mediatek/mtk-cqdma.c
-index 41ef9f15d3d59..39e902b279e64 100644
---- a/drivers/dma/mediatek/mtk-cqdma.c
-+++ b/drivers/dma/mediatek/mtk-cqdma.c
-@@ -421,15 +421,11 @@ static struct virt_dma_desc *mtk_cqdma_find_active_desc(struct dma_chan *c,
- {
- 	struct mtk_cqdma_vchan *cvc = to_cqdma_vchan(c);
- 	struct virt_dma_desc *vd;
--	unsigned long flags;
- 
--	spin_lock_irqsave(&cvc->pc->lock, flags);
- 	list_for_each_entry(vd, &cvc->pc->queue, node)
- 		if (vd->tx.cookie == cookie) {
--			spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 			return vd;
- 		}
--	spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 
- 	list_for_each_entry(vd, &cvc->vc.desc_issued, node)
- 		if (vd->tx.cookie == cookie)
-@@ -453,9 +449,11 @@ static enum dma_status mtk_cqdma_tx_status(struct dma_chan *c,
- 	if (ret == DMA_COMPLETE || !txstate)
- 		return ret;
- 
-+	spin_lock_irqsave(&cvc->pc->lock, flags);
- 	spin_lock_irqsave(&cvc->vc.lock, flags);
- 	vd = mtk_cqdma_find_active_desc(c, cookie);
- 	spin_unlock_irqrestore(&cvc->vc.lock, flags);
-+	spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 
- 	if (vd) {
- 		cvd = to_cqdma_vdesc(vd);
+diff --git a/fs/ceph/dir.c b/fs/ceph/dir.c
+index 8478e7e75df6..67f04e23f78a 100644
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -1341,6 +1341,7 @@ static int ceph_unlink(struct inode *dir, struct dentry *dentry)
+ 	struct ceph_client *cl = fsc->client;
+ 	struct ceph_mds_client *mdsc = fsc->mdsc;
+ 	struct inode *inode = d_inode(dentry);
++	struct ceph_inode_info *ci = ceph_inode(inode);
+ 	struct ceph_mds_request *req;
+ 	bool try_async = ceph_test_mount_opt(fsc, ASYNC_DIROPS);
+ 	struct dentry *dn;
+@@ -1427,7 +1428,19 @@ static int ceph_unlink(struct inode *dir, struct dentry *dentry)
+ 			 * We have enough caps, so we assume that the unlink
+ 			 * will succeed. Fix up the target inode and dcache.
+ 			 */
+-			drop_nlink(inode);
++
++			/*
++			 * Protect the i_nlink update with i_ceph_lock
++			 * to precent racing against ceph_fill_inode()
++			 * handling our completion on a worker thread
++			 * and don't decrement if i_nlink has already
++			 * been updated to zero by this completion.
++			 */
++			spin_lock(&ci->i_ceph_lock);
++			if (inode->i_nlink > 0)
++				drop_nlink(inode);
++			spin_unlock(&ci->i_ceph_lock);
++
+ 			d_delete(dentry);
+ 		} else {
+ 			spin_lock(&fsc->async_unlink_conflict_lock);
 -- 
-2.50.1
+2.47.2
 
 
