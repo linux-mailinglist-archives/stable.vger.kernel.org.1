@@ -1,194 +1,175 @@
-Return-Path: <stable+bounces-177852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E53D9B45E49
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 18:36:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A7BB45E95
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 18:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5577487126
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 16:36:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87ABF16B70B
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 16:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E320330216A;
-	Fri,  5 Sep 2025 16:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7A5309EE7;
+	Fri,  5 Sep 2025 16:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UQ2gKkEO"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PdAciHQ2"
+X-Original-To: Stable@vger.kernel.org
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DD831D72C
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 16:36:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CA12FB087
+	for <Stable@vger.kernel.org>; Fri,  5 Sep 2025 16:47:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757090216; cv=none; b=F5bPDeMFBXrq5UY7FgkCUO5IW2iRC2Ua6LlHWgtriVg8J4f8Z1aSrJFJtKvzBT/6BxyWwSGk6BZZvMEMJMTp5A48dOi5T0xde25qrEBravkEIfjhGuvNKa3q0M1EYcp7JQphNnwsHLRU4sCk3+KOBLO0W8Y7Qf/5TMYXQnYHCwc=
+	t=1757090868; cv=none; b=eG3pvlIUk7rdetr/D7aAuY1KK6m6FV7ZCf9r70sc7HuLF0+bhW7n9sPuWZ2iVSgEUwHDoIoqTWpUlk969GKXMX3T9SZ3yCtBwfaN+BvlV178qt+8wxiBRfkU/A1GLFWs/SsAO7nZabWia8/04VPtrKm581eC7pkJROkJJ2Jc6zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757090216; c=relaxed/simple;
-	bh=SzgiQ/cPK7jog5A+LsqkWEnnmJdplRFEjywyVujaZ5w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGTKwbrgqfn52yc2sU2YYfKccqAPYf1hxltKwO124np5cA4XWccln0QZOqRFxlUiyK3r7MHM/UzOVd0VdV2SAiU5wKsyATDvg8iotWPy4P/DeDQv02fXgIrsfVqL04gAKXmGxzQFlsqOVTyoLHqR5cAC+UJJRc8vANPDNosoKWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UQ2gKkEO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39B1C4CEF9;
-	Fri,  5 Sep 2025 16:36:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757090216;
-	bh=SzgiQ/cPK7jog5A+LsqkWEnnmJdplRFEjywyVujaZ5w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQ2gKkEOSAMq8jYn4L3Q+g5qow7P0EkkVwmDAT9cfcz/Q3ITNFWjFATp/jtUT4Tjp
-	 jK8o6Uh7DgZyMNJsYi+FmtfQFAW/JMLp8ZR0/065Gfe8nacezFCUFXpOvH2Qw1qKkg
-	 fbQV9+ZIK0mmXcVgnKo5j/XzJ4dyb+mNUWDo/KH624h89LqOZJdD9i4XUF7gxk/yCG
-	 0FdsBcfaaPjdIhTzpRXZdZWlN/e+lXpMMT0JwoM0Wign53MiISzHWAoUsulUFiWIAB
-	 ekcuL//+v64nlusW5KNDh1sxl5utVJEUqsWIu0ug7K+S8dlRAemJaV04xqk1Z8nxpr
-	 LLvMfX2Di779g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>,
-	Thiago Jung Bauermann <thiago.bauermann@linaro.org>,
-	Ingo Saitz <ingo@hannover.ccc.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y 2/2] randstruct: gcc-plugin: Fix attribute addition
-Date: Fri,  5 Sep 2025 12:36:53 -0400
-Message-ID: <20250905163653.1746262-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250905163653.1746262-1-sashal@kernel.org>
-References: <2025060528-osmosis-arose-1289@gregkh>
- <20250905163653.1746262-1-sashal@kernel.org>
+	s=arc-20240116; t=1757090868; c=relaxed/simple;
+	bh=TkfY89RKRXEALwgB2aNVJLpg692JYnKY4FfUhrmhjUM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aVWG2ds3qHbdVb/jGC89bKAQFNo1nEV9Vn/Tty8wngIkmYbE5u+/SMf5Oni1oSVMgMpE1MPjaThdiwsf3XaOihQxDgKKuiYJtY2iFzY9Ezno5zSbIPkJBEUZoIYxFaSh+sfEQ97+VfQh+YAVj4R2LWm5HsYj+NSRpXmZM27+kb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PdAciHQ2; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 585GaIAA012043
+	for <Stable@vger.kernel.org>; Fri, 5 Sep 2025 16:47:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	UUdgNg/39urdaUGy5tuNL+v9wjA5hMimn7UR8IzRX/Q=; b=PdAciHQ2LJAlN3lz
+	mhfyemdXnUhAmCxtsYv54lZFu/YK+QqDMz9kGCQys1dPqVHD/b2muwcqnzvC4RaO
+	nkW0KBEzjPRZ7o8UL/I/qrEQCG4soGkbi6y3GUpCev3WtEY//5mc32yEInyBXeFe
+	hcjDPgfoaHE/j92vUC1xCyRznE7QMlR/3VDlzq/dsowpB4D0/Ojf6phUR90hGkSy
+	q/1w+aQ0L5hGwBSU4E7SFZEiZq++32A/Ys+XvNs0A+Kzi48Vs11OCKA8+ZTeDHyg
+	WV0KqaxhM/YrHWwFqbkZfYeJ/KjBl1/E+b8intGJlkacHB1gEEhBcm6hI/9ENAWx
+	47RKIA==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48xmxj858f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <Stable@vger.kernel.org>; Fri, 05 Sep 2025 16:47:46 +0000 (GMT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-70fa9206690so54146526d6.0
+        for <Stable@vger.kernel.org>; Fri, 05 Sep 2025 09:47:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757090865; x=1757695665;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UUdgNg/39urdaUGy5tuNL+v9wjA5hMimn7UR8IzRX/Q=;
+        b=Bug9fmUrLHN/NAvp0rpeZZ9rKPy917q5mp+tUzmaNUUTBWhYoj9H7c0CthF3UQskWU
+         Ml7xmiZ/y7kx9zpX8KhKdc2wv5tI7ALhjX3eZcP2R6ELAgOteCGoU9AOLXACKKTD/3uV
+         iNoQ5h/0iVinf9g0b9FWCh1+xnoPX397LGFL1a8wcfxQXTlT8pkbuJDgMTiR2lQU8ecb
+         MgYlGtKjF9EEhrXJZ7FdBJRRpJ+2QYYpLYI69Tl09Udgw1jGUah1LrpcltrJqQk0mocB
+         wtPYGlX/uvHpGOcz/mmv9HYyyxkDuiJbCdXfTVQxFRXiPJ3NE4JNi3x5gYdGCmxUVjn+
+         FnrA==
+X-Forwarded-Encrypted: i=1; AJvYcCXARlFBS9MXliDKA9ru/5wB91uGtep0eM/aC7VapOZCktMnUbTlPpCSbw2qcy1jZ9z+DzrmVdY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0Jd1CdEVQo3j//+jPi1mgtu5BkOpOJO+TAixIK1jxNAN7pn/C
+	15TPwGY6agC9JPj50ccvdwxY39qjGb12kFQD3SMiwfbCnTPveHgW9dHACfcAeF+TPaRY13EjcRk
+	8lnamGvPwkS36GdoE5qFp4y7IeZNj3EmJARy5EcS3/qy9R/FYMHQdGhjNBnk=
+X-Gm-Gg: ASbGncsLrMOx4i3aurgJUwwTOQMfJHxInzRjAg1vrWvbQ6u+Rrl6LRw5PqZBKImlTsK
+	Pm772wW4/teSlpFI5CE+V8AGabrJGaPui4JhV7GsgPJuFEvrsp5LwqxIM8QaSp+NllL/CdeOMHs
+	8bg3uV+98dyPWlnuVggO6nj5oT4cKzZN+Vwg2F4lpCzC7quUwbR0NnCjWMa0/wTbNg6w3K4yaNN
+	mbsMybMN/pAP5Slo6BmV+cX+gSXD+Kuqwdcw+Xja85FzXLw7i5viIP0kEUjneVfQ8Eeocx8gHGA
+	7lSUNy4aAoEytaaCNwc0UcwBNVrJE2hdg3ZrJoVh3cEB9ElYifEdpUaGYAUtQ0zVqxA=
+X-Received: by 2002:ad4:5fc5:0:b0:707:6cf8:5963 with SMTP id 6a1803df08f44-72bbf3fb0b1mr43965626d6.9.1757090864941;
+        Fri, 05 Sep 2025 09:47:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHZ8+8+MxEUmtiGkpVpKbOO3CIojnpVHP4pNFKV12I5SozNXXmspK50f6RKTZrWEioefG8OdQ==
+X-Received: by 2002:ad4:5fc5:0:b0:707:6cf8:5963 with SMTP id 6a1803df08f44-72bbf3fb0b1mr43965196d6.9.1757090864286;
+        Fri, 05 Sep 2025 09:47:44 -0700 (PDT)
+Received: from [192.168.68.119] ([5.133.47.210])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3d66b013b7dsm20987137f8f.28.2025.09.05.09.47.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Sep 2025 09:47:43 -0700 (PDT)
+Message-ID: <08afe342-e108-4f0c-9903-fb4df4eb860e@oss.qualcomm.com>
+Date: Fri, 5 Sep 2025 17:47:42 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/12] ASoC: codecs: wcd937x: set the comp soundwire
+ port correctly
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: broonie@kernel.org, lgirdwood@gmail.com, tiwai@suse.com, vkoul@kernel.org,
+        srini@kernel.org, yung-chuan.liao@linux.intel.com,
+        pierre-louis.bossart@linux.dev, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, neil.armstrong@linaro.org,
+        krzysztof.kozlowski@linaro.org, linux-sound@vger.kernel.org,
+        Stable@vger.kernel.org
+References: <20250905154430.12268-1-srinivas.kandagatla@oss.qualcomm.com>
+ <20250905154430.12268-2-srinivas.kandagatla@oss.qualcomm.com>
+ <as3wxoths3rgy2qpbqwyys6zydhjo3lbueu7ibrwbinxt3sffw@wyprroihsjs7>
+Content-Language: en-US
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+In-Reply-To: <as3wxoths3rgy2qpbqwyys6zydhjo3lbueu7ibrwbinxt3sffw@wyprroihsjs7>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTAzMDExNyBTYWx0ZWRfXx9CqE8qoZcUP
+ Jp54xgPKAoTIegejKC66EwvVk8pLMKLy7l/dzGGQwLfr6CO285TJE50MCSl2Le7kGV+jBXXQoUL
+ JFq8ubwDibhjFWxxb4aAjc+Ei0Xw/Pb6EGuK+7g3mG37R4VMoJCJsWPOBF/mHcoVTMXDOXvUelS
+ hYEQKGz5UoZ37mqfLKEmwGUycGgyd+vUoYoSYd/0kVTpMDVCNAlVyQ/F38NmLqL21vcXDpIBmu2
+ UzGxs2o4Bx0lhr0mUYeYHKuW+c9ide6vt2HhxYjUR1v4FXY1HPKakHNnXuTbftqJsSEtsDzhcbz
+ H1HU++K1pu/O7IhqJPIKOZbxtzNVc98Lw8hZcOKOhONtjz9LddEx8XLlz5mo7KQ9Wobf828V8ap
+ F+lQKUI/
+X-Authority-Analysis: v=2.4 cv=a5cw9VSF c=1 sm=1 tr=0 ts=68bb1432 cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=OWw5mONqTAKyzQI3keYA:9 a=QEXdDO2ut3YA:10 a=iYH6xdkBrDN1Jqds4HTS:22
+X-Proofpoint-GUID: FL4WWTmHMU892sOmE2yTF-PGNDU-YJNc
+X-Proofpoint-ORIG-GUID: FL4WWTmHMU892sOmE2yTF-PGNDU-YJNc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-05_05,2025-09-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0 clxscore=1015 bulkscore=0 priorityscore=1501
+ phishscore=0 impostorscore=0 adultscore=0 spamscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2509030117
 
-From: Kees Cook <kees@kernel.org>
+On 9/5/25 5:14 PM, Dmitry Baryshkov wrote:
+> On Fri, Sep 05, 2025 at 04:44:19PM +0100, Srinivas Kandagatla wrote:
+>> For some reason we endup with setting soundwire port for
+>> HPHL_COMP and HPHR_COMP as zero, this can potentially result
+>> in a memory corruption due to accessing and setting -1 th element of
+>> port_map array.
+> 
+> Nit: if passing 0 here might result in a memory corrution, then
+> corresponding code should be fixed to warn loudly and ignore that 0.
 
-[ Upstream commit f39f18f3c3531aa802b58a20d39d96e82eb96c14 ]
+Agreed, This is something that should be fixed at source am on it.
 
-Based on changes in the 2021 public version of the randstruct
-out-of-tree GCC plugin[1], more carefully update the attributes on
-resulting decls, to avoid tripping checks in GCC 15's
-comptypes_check_enum_int() when it has been configured with
-"--enable-checking=misc":
+--srini
 
-arch/arm64/kernel/kexec_image.c:132:14: internal compiler error: in comptypes_check_enum_int, at c/c-typeck.cc:1519
-  132 | const struct kexec_file_ops kexec_image_ops = {
-      |              ^~~~~~~~~~~~~~
- internal_error(char const*, ...), at gcc/gcc/diagnostic-global-context.cc:517
- fancy_abort(char const*, int, char const*), at gcc/gcc/diagnostic.cc:1803
- comptypes_check_enum_int(tree_node*, tree_node*, bool*), at gcc/gcc/c/c-typeck.cc:1519
- ...
-
-Link: https://archive.org/download/grsecurity/grsecurity-3.1-5.10.41-202105280954.patch.gz [1]
-Reported-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
-Closes: https://github.com/KSPP/linux/issues/367
-Closes: https://lore.kernel.org/lkml/20250530000646.104457-1-thiago.bauermann@linaro.org/
-Reported-by: Ingo Saitz <ingo@hannover.ccc.de>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1104745
-Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
-Tested-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
-Link: https://lore.kernel.org/r/20250530221824.work.623-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- scripts/gcc-plugins/gcc-common.h              | 32 +++++++++++++++++++
- scripts/gcc-plugins/randomize_layout_plugin.c | 22 ++++++-------
- 2 files changed, 43 insertions(+), 11 deletions(-)
-
-diff --git a/scripts/gcc-plugins/gcc-common.h b/scripts/gcc-plugins/gcc-common.h
-index 0907ab19202a1..6ec887ae71b64 100644
---- a/scripts/gcc-plugins/gcc-common.h
-+++ b/scripts/gcc-plugins/gcc-common.h
-@@ -182,6 +182,38 @@ static inline tree build_const_char_string(int len, const char *str)
- 	return cstr;
- }
- 
-+static inline void __add_type_attr(tree type, const char *attr, tree args)
-+{
-+	tree oldattr;
-+
-+	if (type == NULL_TREE)
-+		return;
-+	oldattr = lookup_attribute(attr, TYPE_ATTRIBUTES(type));
-+	if (oldattr != NULL_TREE) {
-+		gcc_assert(TREE_VALUE(oldattr) == args || TREE_VALUE(TREE_VALUE(oldattr)) == TREE_VALUE(args));
-+		return;
-+	}
-+
-+	TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
-+	TYPE_ATTRIBUTES(type) = tree_cons(get_identifier(attr), args, TYPE_ATTRIBUTES(type));
-+}
-+
-+static inline void add_type_attr(tree type, const char *attr, tree args)
-+{
-+	tree main_variant = TYPE_MAIN_VARIANT(type);
-+
-+	__add_type_attr(TYPE_CANONICAL(type), attr, args);
-+	__add_type_attr(TYPE_CANONICAL(main_variant), attr, args);
-+	__add_type_attr(main_variant, attr, args);
-+
-+	for (type = TYPE_NEXT_VARIANT(main_variant); type; type = TYPE_NEXT_VARIANT(type)) {
-+		if (!lookup_attribute(attr, TYPE_ATTRIBUTES(type)))
-+			TYPE_ATTRIBUTES(type) = TYPE_ATTRIBUTES(main_variant);
-+
-+		__add_type_attr(TYPE_CANONICAL(type), attr, args);
-+	}
-+}
-+
- #define PASS_INFO(NAME, REF, ID, POS)		\
- struct register_pass_info NAME##_pass_info = {	\
- 	.pass = make_##NAME##_pass(),		\
-diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
-index a5aea51ecca99..472427f169a4a 100644
---- a/scripts/gcc-plugins/randomize_layout_plugin.c
-+++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-@@ -95,6 +95,9 @@ static tree handle_randomize_layout_attr(tree *node, tree name, tree args, int f
- 
- 	if (TYPE_P(*node)) {
- 		type = *node;
-+	} else if (TREE_CODE(*node) == FIELD_DECL) {
-+		*no_add_attrs = false;
-+		return NULL_TREE;
- 	} else {
- 		gcc_assert(TREE_CODE(*node) == TYPE_DECL);
- 		type = TREE_TYPE(*node);
-@@ -381,15 +384,14 @@ static int relayout_struct(tree type)
- 		TREE_CHAIN(newtree[i]) = newtree[i+1];
- 	TREE_CHAIN(newtree[num_fields - 1]) = NULL_TREE;
- 
-+	add_type_attr(type, "randomize_performed", NULL_TREE);
-+	add_type_attr(type, "designated_init", NULL_TREE);
-+	if (has_flexarray)
-+		add_type_attr(type, "has_flexarray", NULL_TREE);
-+
- 	main_variant = TYPE_MAIN_VARIANT(type);
--	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant)) {
-+	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant))
- 		TYPE_FIELDS(variant) = newtree[0];
--		TYPE_ATTRIBUTES(variant) = copy_list(TYPE_ATTRIBUTES(variant));
--		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("randomize_performed"), NULL_TREE, TYPE_ATTRIBUTES(variant));
--		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("designated_init"), NULL_TREE, TYPE_ATTRIBUTES(variant));
--		if (has_flexarray)
--			TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("has_flexarray"), NULL_TREE, TYPE_ATTRIBUTES(type));
--	}
- 
- 	/*
- 	 * force a re-layout of the main variant
-@@ -457,10 +459,8 @@ static void randomize_type(tree type)
- 	if (lookup_attribute("randomize_layout", TYPE_ATTRIBUTES(TYPE_MAIN_VARIANT(type))) || is_pure_ops_struct(type))
- 		relayout_struct(type);
- 
--	for (variant = TYPE_MAIN_VARIANT(type); variant; variant = TYPE_NEXT_VARIANT(variant)) {
--		TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
--		TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("randomize_considered"), NULL_TREE, TYPE_ATTRIBUTES(type));
--	}
-+	add_type_attr(type, "randomize_considered", NULL_TREE);
-+
- #ifdef __DEBUG_PLUGIN
- 	fprintf(stderr, "Marking randomize_considered on struct %s\n", ORIG_TYPE_NAME(type));
- #ifdef __DEBUG_VERBOSE
--- 
-2.50.1
+> 
+>>
+>> Fixes: 82be8c62a38c ("ASoC: codecs: wcd937x: add basic controls")
+>> Cc: <Stable@vger.kernel.org>
+>> Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+>> ---
+>>  sound/soc/codecs/wcd937x.c | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/sound/soc/codecs/wcd937x.c b/sound/soc/codecs/wcd937x.c
+>> index 3b0a8cc314e0..de2dff3c56d3 100644
+>> --- a/sound/soc/codecs/wcd937x.c
+>> +++ b/sound/soc/codecs/wcd937x.c
+>> @@ -2046,9 +2046,9 @@ static const struct snd_kcontrol_new wcd937x_snd_controls[] = {
+>>  	SOC_ENUM_EXT("RX HPH Mode", rx_hph_mode_mux_enum,
+>>  		     wcd937x_rx_hph_mode_get, wcd937x_rx_hph_mode_put),
+>>  
+>> -	SOC_SINGLE_EXT("HPHL_COMP Switch", SND_SOC_NOPM, 0, 1, 0,
+>> +	SOC_SINGLE_EXT("HPHL_COMP Switch", WCD937X_COMP_L, 0, 1, 0,
+>>  		       wcd937x_get_compander, wcd937x_set_compander),
+>> -	SOC_SINGLE_EXT("HPHR_COMP Switch", SND_SOC_NOPM, 1, 1, 0,
+>> +	SOC_SINGLE_EXT("HPHR_COMP Switch", WCD937X_COMP_R, 1, 1, 0,
+>>  		       wcd937x_get_compander, wcd937x_set_compander),
+>>  
+>>  	SOC_SINGLE_TLV("HPHL Volume", WCD937X_HPH_L_EN, 0, 20, 1, line_gain),
+>> -- 
+>> 2.50.0
+>>
+> 
 
 
