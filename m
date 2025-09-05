@@ -1,234 +1,227 @@
-Return-Path: <stable+bounces-177861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 748E1B4606C
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 19:41:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E9EB4606E
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 19:41:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36E5A16B1B8
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 17:41:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BBCC1B2530C
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 17:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FCA34DCCF;
-	Fri,  5 Sep 2025 17:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92022353366;
+	Fri,  5 Sep 2025 17:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="sVtRkWp5"
+	dkim=pass (2048-bit key) header.d=semtech.com header.i=@semtech.com header.b="M5moMKd2";
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=SemtechCorp.onmicrosoft.com header.i=@SemtechCorp.onmicrosoft.com header.b="RM34MyKt"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2062.outbound.protection.outlook.com [40.107.93.62])
+Received: from mail1.bemta44.messagelabs.com (mail1.bemta44.messagelabs.com [67.219.246.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9696230B537
-	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 17:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EAC21FF33;
+	Fri,  5 Sep 2025 17:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.219.246.2
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757094105; cv=fail; b=IPJyG/U4g6vXp63maLBGVL6E7VUkh/K2/pXUOs599zRD0ukTPzK1f6wEGkdx+0bhWGU1nJfNe9ulZaiVqiegh2iJZGj3o6qpWqKw28a0nee2n4VTmI3Ff+339EThV+fCuQPX8fhGuyDpfcKHUZt3w9z+bameNTfxj3wR15LrGj4=
+	t=1757094112; cv=fail; b=HUhEhQT+4n6vLL0ifqjIiFwu0pjuE2UQpP5GNUn7bMWm68T2Ne8MlFEQ2SxBNciGu4fhKV/ZducwSkQMy85mmG1vqUiK1k9bEMV38KkXp5OqOhen11YFnbRkSqwETPzzAYof4XSdoosNV81QhcRGzP5bpuIe26d8jp5Mw9qz2gA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757094105; c=relaxed/simple;
-	bh=j6L81a0syUMMk+TP+07SHKzcJ8VtOFUuO+fksZHo4OA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rpS0lj9NSQOD//obuqo+PT9fZNLjqSTNSqhgCp8B4lQ5PMYhwa4Cr9zKkZWXQtlf7mFJaWOGycNGewHkmRy++g3SWSFWg2eRk/I72xRDCKckMLu0dRGWzyYR+5XiaRIVFUSDflikQIgtA6P2SMWtbDOCnHynYLWiRR9iX5dASIs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=sVtRkWp5; arc=fail smtp.client-ip=40.107.93.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1757094112; c=relaxed/simple;
+	bh=10qMxWAZkRFK2IXMTLy5ZusFOzY0jcJG4PAVGxGC3N4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GWqihMfpEfPyWyB713PMurwk4TeoRdTAzllVDeTewfixLsuLwwbWW3rZ7eT62qs37wpyAPB9N0vRZi/7kndirZdH2ejFu/3c7hgF3xSSyD/xipPmAVp/4K7A2g1M5/Aw1KSOaPyAR51xiZelCUiD287m9zVJSEPT09ThQYrxOcU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=semtech.com; spf=pass smtp.mailfrom=semtech.com; dkim=pass (2048-bit key) header.d=semtech.com header.i=@semtech.com header.b=M5moMKd2; dkim=fail (1024-bit key) header.d=SemtechCorp.onmicrosoft.com header.i=@SemtechCorp.onmicrosoft.com header.b=RM34MyKt reason="signature verification failed"; arc=fail smtp.client-ip=67.219.246.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=semtech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=semtech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=semtech.com; s=k1;
+	t=1757094109; i=@semtech.com;
+	bh=nEYuVdIZ/vv9J+5z4hknlhDd4x7jIbUpM3BDAjb7Pbc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=M5moMKd2X+AHzD1YL9J4jQk7Z5fZdh+CLtbMZH5ydE3z9Gm56SOqYDo+gOM1jb14y
+	 dqRIVIv7p1sChrkW1hweBPLHJnvfQLaUCWvda8Wi7pMwLjKP/IEza0b2IHBE7rumGY
+	 z4YFYPKb+HZksIl9QjWjYtDnj5lWxXosoUn+RQ9FpuvPtzTlL9peYQu9q5tB4lujic
+	 L+H6wEMUFpchWfjU0x5ntb5x5Shk9xSMrJacr39ws2wMKf3PMCvpw2h3PCCXkhmQc2
+	 qiXd8PnnVPIL4868M00laNHT7HVrrsLU3doSXFCR4ySB9jD/aceyT9FhAVQ4af3ggr
+	 Bzmyc0puTyNbg==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrEJsWRWlGSWpSXmKPExsWikZ3QrXtHYXe
+  GwZTVVhYT959lt7i8aw6bxYKNjxgdmD0+b5ILYIxizcxLyq9IYM3YsPAve8Eu7oqZ3RuZGhiv
+  cHYxcnIwCixjlpjaotjFyAVkL2aVuDPlIguEM41J4nHTWSYQh0VgO7NE55KbLCAtQgLzmSSWP
+  40ESQgJrGSS2Hj6OliLhMBRRolLnyeyQGTOMkrcav7PDuHcYpQ4sHcOK4QziVFiyupjrCDD2A
+  QUJVq/nGYCsUUEvjJKLL6a1MXIwcEs4Cyx+1cwSFhYIEhi56XXjCA2i4CqxNZfP5lBbF4BU4m
+  dLdPB4hIC8hKLdyyHigtKnJz5BOxWZqB489bZzBB3y0qsmNDLBlEfLLG84TuULSlx7eYFdghb
+  VuLo2TksELajxNlXTxkh5khIHHzxghnkNAkBX4n9t6ohSuQkTvWeY4I5YefG21CtIRKNN58wQ
+  kLlDr/E+T2fWCGcZ4wSl3deYoaokpFov7yAdQKjxiwkd89CcvcsJLsXMDKvYjQvTi0qSy3SNd
+  dLKspMzyjJTczM0Uus0k3UKy3WTU7NKylKzDHUS08u0EstLtYrrsxNzknRy0st2cQITC5cHyq
+  NdjCeP9Gsf4hRkoNJSZRXX3h3hhBfUn5KZUZicUZ8UWlOavEhRhkODiUJXk8ZoJxgUWp6akVa
+  Zg4w0cGkJTh4lER4vy/clSHEW1yQmFucmQ6ROsWoy/H94Mm9zEIsefl5qVLivO9BZgiAFGWU5
+  sGNgCXdS4yyUsK8jAwMDEI8BalFuZklqPKvGMU5GJWEeX/IA03hycwrgdv0CugIJqAjXJ5sBz
+  miJBEhJdXA5J8x6VHZDbOU4hqWvwnLReybD31n137Cfdfa4siizmO8/1S5Qs60nZv85mh3Jev
+  vDMHotZufBmwSWnFmx4GTXUqJJZFJBj/v3yrz5+u5O0nqlu/ZshVzTjIY8nSse1zMZ53mG/Dk
+  tbXTrDmKEhPN5x+13f0u1HCHVS8rn9oG7eq9s9tLA85ksHRP8tpz4Q1XyqzarcptP66mBDxee
+  vtRwvUCsS+6Qius58rnpe1/+THriEtP4Qf/D9MCGpJTxN5bbZi4PF5aPtNaW0CHs3cXL+Nnx6
+  R7tatdd968Vx8w39NjGQ+rRf2uACufi1tc81uN5Z8slw59PWuf/Zm5y37da5vRwHO6xDbhbK/
+  8pBc3lViKMxINtZiLihMBhZUMuTUEAAA=
+X-Env-Sender: zxue@semtech.com
+X-Msg-Ref: server-6.tower-904.messagelabs.com!1757094108!123330!1
+X-SYMC-ESS-Client-Auth: mailfrom-relay-check=pass
+X-StarScan-Received:
+X-StarScan-Version: 9.118.3; banners=semtech.com,-,-
+X-VirusChecked: Checked
+Received: (qmail 25231 invoked from network); 5 Sep 2025 17:41:48 -0000
+Received: from mail-sn1nam02on2139.outbound.protection.outlook.com (HELO NAM02-SN1-obe.outbound.protection.outlook.com) (40.107.96.139)
+  by server-6.tower-904.messagelabs.com with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP; 5 Sep 2025 17:41:48 -0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RiXb6WEQUiN+99ZBwdpQZhecraRyU9l/Z33vt0YJfHB7kG9eLs0z2QwOpG9T+4ooaT51PvB5GKvRsdZLyM0YDRuULwklrbnp2rcRp3E1eRsvEwEynPZnRaso2XkPqYWQqk1Wm6tZ12HfRw77MMW32G9t4p9uusEzxetZIa4m6mwj3Gid6XRcbuzAmp8hq/gEaNiuW1IomO9NvWYe/1pcsFZRK9ClptU8VvKAVjvcLvTHUHtrOhnYHtposR1IvxdKZsOqgZZ3XdBrMJWh4Rzc1aq2tJsTCt5Ix2E1QXSEoL2e8Z+GZSbYqznof9PttF8C8yfkiPCkWa5gb4I3KQ1NeQ==
+ b=aOGXsMhBlYoCzqIK0iNwstP53d70bAA9YePNRXVWq6TepRfP81P5hKldpB87A32n/er47F4DJrSKBhjep0VzYw4K43xiOPXncat68Gh6yqfoWQqu5DJc+utFfC3SSDRLU97mFJhvSDWJniYBhKf2t/bt6gY8Bp2kt8awRqmhNHIH6L0zopnKb2g0ZaBdbdPxObv+oqkIY6txkMlCMi7hR9fwgT43A2VMwtZikZqXRdQvUC/y82xUo7H7XU6kLZXgUiKp0hiotr87nUq2Fu5gouPfvdUH1hZvLB6mI61RPto/BZBlKsYCrOM7QHvv2b1iZUsJrpYkfkayBONEpsIXLw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AI4+nxdnAoemhoqF6F+cw1nHtpJCmYcH650x6YP5FsY=;
- b=F+uhEnnHclh11N9NxD2XQaaley0WIuncucKQXSmV1hDDBZ+MW3AJ1E/Ui4qoJZc9VbeAe/ow+iDEuU6i1g+9Sm73YTAirfCrRHidSeVrkliMFo6WZDI6jj/DKmDQAgyooOa+CIhZw98dutfShPyevQOag96fN77ArVyUd24AzbmVT1TJpyZyPv/fZlYMYnVOxGdxSH2D+82rsqbrsfJtK69h004z6Q/wfzRJm717qeDlucIFgQhwPt25nSb0Q2WJp3qbfqzGZSzSfj0EaEvbrWyCYyUqrKDZOIUtEosO8XMLeWTa+laT8cluwgx8PcjoEqGeUU8EBKjB1AQN2J4V3g==
+ bh=JCUAHh2MpfVVRwyc9QjfXW7hQa3IQzxYzqid+uLMOiM=;
+ b=bwQxzHqrkRI86qkUfgCfVKoOeM6SRW9vy9uKLd8dtWJAaPoQjhkUQ5iUdvkatPSC5ysmYHHnS8OXDSdWYU3rCYp4OIGmwZ9FCfJIgF8xSYxzxxc1o+2/ZwLRQp5P+h51UMd4xwch2xmft82KeFDnMcjKiyzFcdmD8aHUhCZrHgu8aByxj9jg+6zcKGPj99KNWNMejeOgIYmj4/N2Wq8DBSb89Fegsw4shR94i9403hlbWv2CS8zEZhqcQZSyUyWWAza/7a2wS2H/fKA2VhQRTX+nejqtv9in6j/Jx73GSLlJk247gu4U4pmzAP21AWVv1S+NCIkrQIT9VrB2Jf67FQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ 38.104.251.66) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=semtech.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none
+ header.from=semtech.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=SemtechCorp.onmicrosoft.com; s=selector1-SemtechCorp-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AI4+nxdnAoemhoqF6F+cw1nHtpJCmYcH650x6YP5FsY=;
- b=sVtRkWp5jQ/ahRgap4vnH/lywtDcOogAj2LMTy2lJt8uvJg8lkhlJu66IDONwuOMhoxsuqEV3WuZoHDn0dAXuvPj5ypPHA77LU/n30ZFTETP6kROaQ3aqquGyctU7/E2dnNb/Bz4F0V5femd34Jg1YsbM9NtSoTejmA2XpIOdLo=
-Received: from CH0P221CA0021.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:11c::17)
- by PH7PR12MB7456.namprd12.prod.outlook.com (2603:10b6:510:20f::13) with
+ bh=JCUAHh2MpfVVRwyc9QjfXW7hQa3IQzxYzqid+uLMOiM=;
+ b=RM34MyKtPDUGiK9J3aAm7c+W/N3u1GVACiRbx3vwwIjDl972+cRK6dFCX8pWtFCr+EmhGavc3qP4HDUYTd802uk+WnaI50NN98Alcb6zeCGUBE4cwBG0hyVNfW3qOHvEDb5LdO2SacKn5HYEjnrDfZYCymV9xxx1Ev52wsHQ7zA=
+Received: from SJ0PR13CA0076.namprd13.prod.outlook.com (2603:10b6:a03:2c4::21)
+ by SN7PR20MB5168.namprd20.prod.outlook.com (2603:10b6:806:268::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.16; Fri, 5 Sep
- 2025 17:41:40 +0000
-Received: from CH1PEPF0000AD76.namprd04.prod.outlook.com
- (2603:10b6:610:11c:cafe::72) by CH0P221CA0021.outlook.office365.com
- (2603:10b6:610:11c::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9094.20 via Frontend Transport; Fri,
- 5 Sep 2025 17:41:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CH1PEPF0000AD76.mail.protection.outlook.com (10.167.244.53) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9073.11 via Frontend Transport; Fri, 5 Sep 2025 17:41:40 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 5 Sep
- 2025 12:41:40 -0500
-Received: from dogwood-dvt-marlim.amd.com (10.180.168.240) by
- satlexmb07.amd.com (10.181.42.216) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.1748.10; Fri, 5 Sep 2025 10:41:39 -0700
-From: Mario Limonciello <mario.limonciello@amd.com>
-To: <mario.limonciello@amd.com>, <amd-gfx@lists.freedesktop.org>
-CC: Harry Wentland <harry.wentland@amd.com>,
-	=?UTF-8?q?Przemys=C5=82aw=20Kopa?= <prz.kopa@gmail.com>, Kalvin
-	<hikaph+oss@gmail.com>, <stable@vger.kernel.org>
-Subject: [PATCH] drm/amd/display: Drop dm_prepare_suspend() and dm_complete()
-Date: Fri, 5 Sep 2025 12:41:18 -0500
-Message-ID: <20250905174118.3493029-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.50.1
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Fri, 5 Sep
+ 2025 17:41:45 +0000
+Received: from CO1PEPF000044F4.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c4:cafe::b) by SJ0PR13CA0076.outlook.office365.com
+ (2603:10b6:a03:2c4::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9115.7 via Frontend Transport; Fri, 5
+ Sep 2025 17:41:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 38.104.251.66)
+ smtp.mailfrom=semtech.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=semtech.com;
+Received-SPF: Pass (protection.outlook.com: domain of semtech.com designates
+ 38.104.251.66 as permitted sender) receiver=protection.outlook.com;
+ client-ip=38.104.251.66; helo=CA07RELAY1.semtech.com; pr=C
+Received: from CA07RELAY1.semtech.com (38.104.251.66) by
+ CO1PEPF000044F4.mail.protection.outlook.com (10.167.241.74) with Microsoft
+ SMTP Server id 15.20.9094.14 via Frontend Transport; Fri, 5 Sep 2025 17:41:44
+ +0000
+Received: from ca08gitmail.local ([10.23.50.249]) by CA07RELAY1.semtech.com with Microsoft SMTPSVC(10.0.20348.1);
+	 Fri, 5 Sep 2025 13:41:43 -0400
+From: Adam Xue <zxue@semtech.com>
+To: mani@kernel.org,
+	jeff.hugo@oss.qualcomm.com,
+	quic_yabdulra@quicinc.com,
+	chentao@kylinos.cn,
+	quic_mattleun@quicinc.com,
+	krishna.chundru@oss.qualcomm.com,
+	mhi@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	zxue@semtech.com,
+	imocanu@semtech.com
+Subject: [PATCH v4] bus: mhi: host: Fix potential kernel panic by calling dev_err 
+Date: Fri,  5 Sep 2025 10:41:18 -0700
+Message-ID: <20250905174118.38512-1-zxue@semtech.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To satlexmb07.amd.com
- (10.181.42.216)
+X-OriginalArrivalTime: 05 Sep 2025 17:41:43.0758 (UTC) FILETIME=[58288EE0:01DC1E8C]
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD76:EE_|PH7PR12MB7456:EE_
-X-MS-Office365-Filtering-Correlation-Id: 59483a85-4fa4-404b-ddf3-08ddeca378b4
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F4:EE_|SN7PR20MB5168:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 5c07d859-2d29-4cee-81fd-08ddeca37b21
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Z2dQZ3BZdHVQZmNGVVlIbVNwa0ZkMDltMEwzemVDSzNFME5TMEtyMWh2RDkz?=
- =?utf-8?B?eHNVeHA1SXdmYkRUTVZLR0hNNVBYLytkaWJyL0ZQcHE5S3NVdzlvTk44SkVY?=
- =?utf-8?B?Vk5qQ3ZaLzJObEJHVmQyRUxRSTlpVnR6bEJvTi9nTFVlbEZCVExJTFpJUDlX?=
- =?utf-8?B?YWo2dkhxN1hIV0tKRlFPUDBuVGs2T3hDenhYb09SQ09iN3hZQ1hhVkdPNzJT?=
- =?utf-8?B?R05TcHVvU2JKYTJRRzMva1hmdTRCbzRhSHpCL1g1QlJVd09EYldzNCtSRXNW?=
- =?utf-8?B?OXdBaTBxZGhsK21TUEI3aVJmZUF5R0MySVJMZE5heTNDRFNLMk5teGJhWXdo?=
- =?utf-8?B?Y3p1RTdjWFBBclo0bmZSNFJESVdSajM3cFNheXprZjNJK1ZLWkpha2g3a1pO?=
- =?utf-8?B?MWxMaU9lcFBwR3R2ZE9lYUFVUUMrZzJHVmpHbEl4Y09taUZVa09iKzQ2ZzNX?=
- =?utf-8?B?RE5NQVVNdnJHVG81ZmZxTFNzdExnTE5PYUEzcVoyQngxckhlYktQK3ZWSWt3?=
- =?utf-8?B?MDF3M3c0c1pORTJ3MVh6WDdtZ1RFOU9lR2NRakp2emgvZnJCUlBDWHZtS002?=
- =?utf-8?B?T0dXR3c4cTBrWjFqK04rRld5Yk5PUmVOTGt2MVJLa2U1eGxXS2tRcitBVW1h?=
- =?utf-8?B?M1VFMURWbUk4WTJGMWZ0QU50QTN1MVRWaHhpSFJMMFQ3MzJLR2xBWVlKYUtV?=
- =?utf-8?B?Vi9BY1o0eTlNdDF5alp4VnBTRDVZazBaUGdNYUQ1R2dHL1RHMldJb1B6bTVV?=
- =?utf-8?B?cDJ1U3ZlSXloMVo5ZHdYUUt6WWkrVHl0eDY0NFV5a0FWOURMYUxPeHhsY1pR?=
- =?utf-8?B?VURxTyt0N2psRFJQbHU0bUNGemJWMy85VnZmY0VmdHlZVG5XdjE5QlZlMkN4?=
- =?utf-8?B?eklwc1dHZXNveUFPVVZEYW5lY21KeGZqbmp2cHBzbjdraUkxMVc4UURHSjJ4?=
- =?utf-8?B?d1N3OXV1UENBL1AwcnBFQms0QVZCTEd1ZTNndyt1SUM3d1E3NFFVcU02ai9P?=
- =?utf-8?B?U0x6NGZXOXpERk44Sy9oU3BIWU9sT2R3anlLOEdaWjAxOTgxRzE3UTF1UjZU?=
- =?utf-8?B?TUxzdGRxWittZXZLSkFSN3J5N2FHUE1pN3R0UXFSbm51NC9iVHVIeHJKakdZ?=
- =?utf-8?B?MXJUaFdwdVY2dUp4VGMrNytOdHlNRUdPUmY3bnFLVUZFZll5T3ZUQmF6ckdS?=
- =?utf-8?B?SHcrZjlEeFRXci9QVlN3ZmQvVHg2b2xoRWNITFUwUDEzN1d4Z2NDMVdiQjFV?=
- =?utf-8?B?Skw5cjUxU1ZuZDA4TXUySHJmdkpuUURocFNTK0tNKytCODRZUkNReGxzeGor?=
- =?utf-8?B?ZjRhUE0zVzk0M2dCN3FOM0lSUVYxUEhaU0ltUUZ5dTN1SHFmNlM1SjdUZHJs?=
- =?utf-8?B?SWNDL2R4VXd3R1RvbWJHcXM5U1BhQ3B5Q2ExQlQ5VWhXYkhXSW54eW9ZZXFF?=
- =?utf-8?B?TEMrZy9CUDFCTUZxU1NtMUsrZUxKUE9SYTJ3c0tGRmkva0ZqdjhVUHZnL2NM?=
- =?utf-8?B?T2hVZDdGbHNuTzRqV09TK2gvMlAwc1JXWVhUbE9va0xFUmVEWEcydXVFY1VV?=
- =?utf-8?B?Rk9OTVo1dWJDRXMwRmxocWZXNTlnUWtQcTJxYnNIOEVTTWYxTVZVZlNSRTh3?=
- =?utf-8?B?WVBjYmZLVzAxdGFnd3ZtTU9Gd2orZnVkRm5taDBERXlJNy81VDZmV0loczMr?=
- =?utf-8?B?dUVXakthdzNwK1ZIY0RiRkhrUUJvTVdDcFRmbUdZbkRld1FIcTlCNWxKVEhN?=
- =?utf-8?B?S0VKL3NCK2RlRm1uVHhFWlJNMHNBTTVEOWxqaUVQb1NaMnpVaU5lWEpNSGFR?=
- =?utf-8?B?bzlvYWwrMmRwMGRHV3NPVFp2WjZYTUNLL1pjZkZVV2NRcFh4N25MYzc4L0Jl?=
- =?utf-8?B?WXVmb0VYdktLLytUYVlrZVBZVkdBcGZtZlhpMjZhWGl3M0k3QnV3bmYyMHo2?=
- =?utf-8?B?bmUzWVpDUDZsZVFWbmxNZGpwWS9QRWFKRXdvY2NkT3FZZEZpMDd4bkF4aWxM?=
- =?utf-8?B?blRjU3U1ZUZnPT0=?=
+	=?us-ascii?Q?dEf2fx0M9r7TOpGIpnbTi2vsBL4OSe5eBQ3QFltTSsKgE5MjEZ4r/azcW9Aa?=
+ =?us-ascii?Q?mN2UnC1IWtBGTahnm1ZDVQ1D6rmljUrzZiyA9kz6wzHC8w3m1zYAlMtPzPAS?=
+ =?us-ascii?Q?bz/wtXIZJhSPOQJjjsllf2IhymXCwTvrYL3kk+WRqsVl3RJjHOkubl17aFuy?=
+ =?us-ascii?Q?xtGWLg9NVoFescpp/R/ZgJ9EhgdDAsByCeLzhIwnDOSmGW2wv/FlXVET6q/N?=
+ =?us-ascii?Q?XckBdczLXmeq5jBE5c4HIX0HMIqtJLv/udA5YZ/xbkH/prXgv0MtRDAUPVjD?=
+ =?us-ascii?Q?EQ0v+nt3RJYwSEfbNMr20HhkNygi4iRhyBvEV5d4V4FU1lK4qwU/1yltc18U?=
+ =?us-ascii?Q?2eIxcqeXw6sGLV1lsk0dP1WFLYpjgmFWsWu725rnCORqysHkoH1hOQDZoN19?=
+ =?us-ascii?Q?ZK348rl/iNLuO4EiXUXHdSi8Yx7N1LFUG7R2J4ZcccZZ/205rKV1INEqxmMr?=
+ =?us-ascii?Q?/LDztGruAGOONesOTJu7C0RCf0nkbNp8xJXTHlPV7Wl/hYbgmrz4ElFLhbGs?=
+ =?us-ascii?Q?8/X2otuhKLd60qs2m9qsY6ANyUOwIsvKjlyhY6Uhm/SIQYswUvaeA6OVJqqk?=
+ =?us-ascii?Q?EvDV/8nKtlmoqgrLStadNXx5Y7tvEx0tk2cO9IGnvufpqd0X/+Bp8KK2dxxh?=
+ =?us-ascii?Q?9KzfeRE2K5l57ZIMePSmfxm9IHpW8A/H5DK1hjQO+y/6XaAgoL4bgfxe0hDj?=
+ =?us-ascii?Q?GN3dYUyzMzyMZb4X1sD/kIKbKJVKULLpatJxfXbqRrrvylT4e1fwO2fl8jgg?=
+ =?us-ascii?Q?E1MsQZad9/rd4B46WtPEmn1EHonIrZQ2DaoGIKFipe36TYLwzmHKu9s6V5DH?=
+ =?us-ascii?Q?gjU/YoAkClwSrxrlDsXXkQodSZmE9/6ypSb2ejt9qH/ExUmcscLhIkGRM2CS?=
+ =?us-ascii?Q?4dP4XSd2Nswp1nRc2eYRNSJiAoSeobifUXp7/hcFqP9PsnwS1c96cghWDyx8?=
+ =?us-ascii?Q?XRrr0RB7YqLuHU+1Imlu/316vNYvVx3xGyVE8TwfgeknJ/bv/YOfn0Dph3RL?=
+ =?us-ascii?Q?tSao/qD95p+7GSnfDfeqMJLEGxQGS14y/FKLGEQTvfcuqIiBpIBfwMr2tB+F?=
+ =?us-ascii?Q?W9NIKQ/wgpVaCnn+nLwwajKDHQyBPH2EjrRBEDy74eGk53UVRUOg9h0Axhm5?=
+ =?us-ascii?Q?7U+ex6esxDrH+PpijQ1lY84eoBXS2dVtdEMABzXD5f13AUiVBZ/7wOhTj3p8?=
+ =?us-ascii?Q?k9mVpJIG0clFyt+aIxo6HpyhanaqYo3MUUrkUwGpQpmU6pyP/Q0ZddPDm8Z+?=
+ =?us-ascii?Q?WsHucOB+ftAx+tgYEzjeJoeRTJFvrjAFqBlpGhbgG1GefXmpSq+B5RwLHNvZ?=
+ =?us-ascii?Q?QMxHgrfjBNx4CFjh8fzYyN8laRLkm765u8HuILG6cbE409hXz7wRG2xefo+Z?=
+ =?us-ascii?Q?jwAyxo69681Xe7ik5/dAdklAoyQl8fVEHnKZ00Tjs+R14yYxs3Rwp8mMIweo?=
+ =?us-ascii?Q?nNc5+ZL8dxzzdK8VJIuRe0PMt1LGQfpxuZAE3kMsGbzMg/USTnKyvorB9QFk?=
+ =?us-ascii?Q?hi1Yj+LX/YaSBoj3kiHObkc53UyNTPqUoive?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2025 17:41:40.4862
+	CIP:38.104.251.66;CTRY:CA;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CA07RELAY1.semtech.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1102;
+X-OriginatorOrg: semtech.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2025 17:41:44.3688
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 59483a85-4fa4-404b-ddf3-08ddeca378b4
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH1PEPF0000AD76.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c07d859-2d29-4cee-81fd-08ddeca37b21
+X-MS-Exchange-CrossTenant-Id: b105310d-dc1a-4d6e-bf0d-b11c10c47b0f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=b105310d-dc1a-4d6e-bf0d-b11c10c47b0f;Ip=[38.104.251.66];Helo=[CA07RELAY1.semtech.com]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-CO1PEPF000044F4.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7456
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR20MB5168
 
-From: "Mario Limonciello" <mario.limonciello@amd.com>
+In mhi_init_irq_setup, the device pointer used for dev_err
+was not initialized. Use the pointer from mhi_cntrl instead.
 
-[Why]
-dm_prepare_suspend() was added in commit 50e0bae34fa6b
-("drm/amd/display: Add and use new dm_prepare_suspend() callback")
-to allow display to turn off earlier in the suspend sequence.
-
-This caused a regression that HDMI audio sometimes didn't work
-properly after resume unless audio was playing during suspend.
-
-[How]
-Drop dm_prepare_suspend() callback. All code in it will still run
-during dm_suspend(). Also drop unnecessary dm_complete() callback.
-dm_complete() was used for failed prepare and also for any case
-of successful resume.  The code in it already runs in dm_resume().
-
-This change will introduce more time that the display is turned on
-during suspend sequence. The compositor can turn it off sooner if
-desired.
-
-Cc: Harry Wentland <harry.wentland@amd.com>
-Reported-by: Przemysław Kopa <prz.kopa@gmail.com>
-Closes: https://lore.kernel.org/amd-gfx/1cea0d56-7739-4ad9-bf8e-c9330faea2bb@kernel.org/T/#m383d9c08397043a271b36c32b64bb80e524e4b0f
-Tested-by: Przemysław Kopa <prz.kopa@gmail.com>
-Reported-by: Kalvin <hikaph+oss@gmail.com>
-Closes: https://github.com/alsa-project/alsa-lib/issues/465
-Closes: https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/4809
-Cc: stable@vger.kernel.org
-Fixes: 50e0bae34fa6b ("drm/amd/display: Add and use new dm_prepare_suspend() callback")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Adam Xue <zxue@semtech.com>
 ---
-NOTE: The complete pmops callback is still present but does nothing right now.
-It's left for completeness sake in case another IP needs to do something in prepare()
-and undo it in a failure with complete().
+ drivers/bus/mhi/host/init.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 21 -------------------
- 1 file changed, 21 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index e34d98a945f2..fadc6098eaee 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -3182,25 +3182,6 @@ static void dm_destroy_cached_state(struct amdgpu_device *adev)
- 	dm->cached_state = NULL;
- }
- 
--static void dm_complete(struct amdgpu_ip_block *ip_block)
--{
--	struct amdgpu_device *adev = ip_block->adev;
--
--	dm_destroy_cached_state(adev);
--}
--
--static int dm_prepare_suspend(struct amdgpu_ip_block *ip_block)
--{
--	struct amdgpu_device *adev = ip_block->adev;
--
--	if (amdgpu_in_reset(adev))
--		return 0;
--
--	WARN_ON(adev->dm.cached_state);
--
--	return dm_cache_state(adev);
--}
--
- static int dm_suspend(struct amdgpu_ip_block *ip_block)
+diff --git a/drivers/bus/mhi/host/init.c b/drivers/bus/mhi/host/init.c
+index 7f72aab38ce9..099be8dd1900 100644
+--- a/drivers/bus/mhi/host/init.c
++++ b/drivers/bus/mhi/host/init.c
+@@ -194,7 +194,6 @@ static void mhi_deinit_free_irq(struct mhi_controller *mhi_cntrl)
+ static int mhi_init_irq_setup(struct mhi_controller *mhi_cntrl)
  {
- 	struct amdgpu_device *adev = ip_block->adev;
-@@ -3626,10 +3607,8 @@ static const struct amd_ip_funcs amdgpu_dm_funcs = {
- 	.early_fini = amdgpu_dm_early_fini,
- 	.hw_init = dm_hw_init,
- 	.hw_fini = dm_hw_fini,
--	.prepare_suspend = dm_prepare_suspend,
- 	.suspend = dm_suspend,
- 	.resume = dm_resume,
--	.complete = dm_complete,
- 	.is_idle = dm_is_idle,
- 	.wait_for_idle = dm_wait_for_idle,
- 	.check_soft_reset = dm_check_soft_reset,
+ 	struct mhi_event *mhi_event = mhi_cntrl->mhi_event;
+-	struct device *dev = &mhi_cntrl->mhi_dev->dev;
+ 	unsigned long irq_flags = IRQF_SHARED | IRQF_NO_SUSPEND;
+ 	int i, ret;
+ 
+@@ -221,7 +220,7 @@ static int mhi_init_irq_setup(struct mhi_controller *mhi_cntrl)
+ 			continue;
+ 
+ 		if (mhi_event->irq >= mhi_cntrl->nr_irqs) {
+-			dev_err(dev, "irq %d not available for event ring\n",
++			dev_err(mhi_cntrl->cntrl_dev, "irq %d not available for event ring\n",
+ 				mhi_event->irq);
+ 			ret = -EINVAL;
+ 			goto error_request;
+@@ -232,7 +231,7 @@ static int mhi_init_irq_setup(struct mhi_controller *mhi_cntrl)
+ 				  irq_flags,
+ 				  "mhi", mhi_event);
+ 		if (ret) {
+-			dev_err(dev, "Error requesting irq:%d for ev:%d\n",
++			dev_err(mhi_cntrl->cntrl_dev, "Error requesting irq:%d for ev:%d\n",
+ 				mhi_cntrl->irq[mhi_event->irq], i);
+ 			goto error_request;
+ 		}
 -- 
-2.49.0
+2.43.0
 
+
+To view our privacy policy, including the types of personal information we collect, process and share, and the rights and options you have in this respect, see www.semtech.com/legal.
 
