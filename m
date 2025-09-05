@@ -1,145 +1,97 @@
-Return-Path: <stable+bounces-177879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A64B46301
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 21:01:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA14B46309
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 21:02:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 031FD1D22016
-	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 19:01:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DDA55E1184
+	for <lists+stable@lfdr.de>; Fri,  5 Sep 2025 19:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A365C2773DB;
-	Fri,  5 Sep 2025 19:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBD11B0437;
+	Fri,  5 Sep 2025 19:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="wauCF+lg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EmRjjAGB"
 X-Original-To: stable@vger.kernel.org
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BF2271458;
-	Fri,  5 Sep 2025 19:00:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA5D315D54
+	for <stable@vger.kernel.org>; Fri,  5 Sep 2025 19:01:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757098847; cv=none; b=NUaVlWQtUbw8txUsoP8/osjGjG3xslbRRoQGHjzkM3MVKZqIReRrBF68nGrt33sTOEfy1WZrGaDP6YNClRwPb9h+f5nlVO/msM+eg1zYNLoeLESictWChNKjRnYN4NcyJPla6Hf2yuvfhbSssGjNKMzysYkiQylf1aMwW+Qr1Rs=
+	t=1757098880; cv=none; b=WYiqP2hgWgffKndRJrRmL4l2ofVIJNr1PMtQR9+KrQt6g2FtEdrBpAWAdOISXG/GBmdmQ2Zi+OSK2FCLraIo81eDnwZAPUfATR3o37bgbA+QhfLqtmQRMIBLCDEjiONiiAsvqi1R1ilEER+Zc060nW34Hvao5k1tkaGMZdrpTgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757098847; c=relaxed/simple;
-	bh=aKz5RerzJ0535jV+VWO23TW+VuegWL1IAuAoQFZ3CAA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kKdR4G/o8WOfv+DVoMLu4Jxu4GAS95UmPwAt+xX4edEscsJO32kygvX6Hdtf4cCSPeeJSxog8reBW2F49+cm8hYRARF6H2+418ZYIAQDrdrlnCXZH4qW5X2QpfR7D5DhZLufOwwZMGkpEGqYlRearoPe92BZBeBBx8R07OrxrM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=wauCF+lg; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 585J0S5O3385094;
-	Fri, 5 Sep 2025 14:00:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1757098828;
-	bh=ja+VhWgnaezlhzQbc00MksF1Bt+kqV49jtmkDfOdRXY=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=wauCF+lgH8ETzGv6NT3pohG628irK5Us2c9tbZjkgZVvlrUhg/8LjEmiylElAqC7P
-	 Olx34A1vAwS3514a2xPn9xILAiQSiBcqIHLnnKJ7+Tg70FvTWygUFVTBROnBIuYD6w
-	 ecBhT8vNZ8zxoJVjS6thBLP/xJdluZH8h1hKjS08=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 585J0Sc6562025
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Fri, 5 Sep 2025 14:00:28 -0500
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Fri, 5
- Sep 2025 14:00:27 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Fri, 5 Sep 2025 14:00:27 -0500
-Received: from santhoshkumark.dhcp.ti.com (santhoshkumark.dhcp.ti.com [172.24.233.254])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 585J09kR887531;
-	Fri, 5 Sep 2025 14:00:23 -0500
-From: Santhosh Kumar K <s-k6@ti.com>
-To: <miquel.raynal@bootlin.com>, <broonie@kernel.org>, <vigneshr@ti.com>,
-        <marex@denx.de>, <computersforpeace@gmail.com>,
-        <theo.lebrun@bootlin.com>
-CC: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <s-k6@ti.com>,
-        <praneeth@ti.com>, <p-mantena@ti.com>, <a-dutta@ti.com>,
-        <u-kumar1@ti.com>, <stable@vger.kernel.org>,
-        Pratyush Yadav
-	<pratyush@kernel.org>
-Subject: [PATCH v2 3/4] spi: cadence-quadspi: Fix cqspi_setup_flash()
-Date: Sat, 6 Sep 2025 00:29:57 +0530
-Message-ID: <20250905185958.3575037-4-s-k6@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250905185958.3575037-1-s-k6@ti.com>
-References: <20250905185958.3575037-1-s-k6@ti.com>
+	s=arc-20240116; t=1757098880; c=relaxed/simple;
+	bh=WdjjjTOTojafY49WcO7g79sS8XGoXqLbiy/U124V4aY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=L9J5k535G8B9m+fFdq0VKGlOKxfPQXGOEpISEaq+4FDepiuoeMn7Ds9kL+j1MN/DWMHBovfL0gGc5oIE7tFdrD8xRZuEx15M8+fIOROKZ3NOXTKpMxdRZ32j+m7/y4MLZhAAz6wjRzd0W7XHYG3cnucNKJYE4aoWRHwfqGlA+IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EmRjjAGB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C18C4CEF1;
+	Fri,  5 Sep 2025 19:01:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757098879;
+	bh=WdjjjTOTojafY49WcO7g79sS8XGoXqLbiy/U124V4aY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EmRjjAGBI4xDXe0uD9LHrHyP597DH3S9dCo2COBjN+yt2+RWf42V2lqAjjOoEjeSH
+	 DwNr4qbSYiV7tw25NK+l4a1SR5unVrAkSAYFGuxuh/6fbX1cnaA2zaOXbOak2K7sr/
+	 tjtghBI1XZ2asSAZPhKwSz32LfO9Ue0iblsZnjq0C9ktPfA3WRsC81gA3P3Xxb2vh4
+	 1W7oezkxeYGt3a4xJbWeXp7iOuzYKWe71lXFyTb+HyEZ9LMUKfnPpjZdl5plo0klxn
+	 SNjZDmZl70n9dm8Z9TJW0m7N/cPcJR25DWmvfWXnmLOtqaZNzkHcnFbefUdAy27D8Z
+	 oe0Qt2YE2Lqcw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] ALSA: hda/realtek: Add support for HP Agusta using CS35L41 HDA
+Date: Fri,  5 Sep 2025 15:01:16 -0400
+Message-ID: <20250905190116.3314799-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2025052430-aching-oval-a807@gregkh>
+References: <2025052430-aching-oval-a807@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-The 'max_cs' stores the largest chip select number. It should only
-be updated when the current 'cs' is greater than existing 'max_cs'. So,
-fix the condition accordingly.
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-Also, return failure if there are no flash device declared.
+[ Upstream commit 7150d57c370f9e61b7d0e82c58002f1c5a205ac4 ]
 
-Fixes: 0f3841a5e115 ("spi: cadence-qspi: report correct number of chip-select")
-CC: stable@vger.kernel.org
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
+Add support for HP Agusta.
+
+Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with I2C
+
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250520124757.12597-1-sbinding@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_realtek.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 447a32a08a93..6627a3059ea3 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1722,12 +1722,10 @@ static const struct spi_controller_mem_caps cqspi_mem_caps = {
- 
- static int cqspi_setup_flash(struct cqspi_st *cqspi)
- {
--	unsigned int max_cs = cqspi->num_chipselect - 1;
- 	struct platform_device *pdev = cqspi->pdev;
- 	struct device *dev = &pdev->dev;
- 	struct cqspi_flash_pdata *f_pdata;
--	unsigned int cs;
--	int ret;
-+	int ret, cs, max_cs = -1;
- 
- 	/* Get flash device data */
- 	for_each_available_child_of_node_scoped(dev->of_node, np) {
-@@ -1740,10 +1738,10 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi)
- 		if (cs >= cqspi->num_chipselect) {
- 			dev_err(dev, "Chip select %d out of range.\n", cs);
- 			return -EINVAL;
--		} else if (cs < max_cs) {
--			max_cs = cs;
- 		}
- 
-+		max_cs = max_t(int, cs, max_cs);
-+
- 		f_pdata = &cqspi->f_pdata[cs];
- 		f_pdata->cqspi = cqspi;
- 		f_pdata->cs = cs;
-@@ -1753,6 +1751,11 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi)
- 			return ret;
- 	}
- 
-+	if (max_cs < 0) {
-+		dev_err(dev, "No flash device declared\n");
-+		return -ENODEV;
-+	}
-+
- 	cqspi->num_chipselect = max_cs + 1;
- 	return 0;
- }
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index d4bc80780a1f9..e4cef382f7aa6 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10249,6 +10249,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8e18, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e19, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8e3a, "HP Agusta", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x103c, 0x8e3b, "HP Agusta", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
+ 	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
 -- 
-2.34.1
+2.50.1
 
 
