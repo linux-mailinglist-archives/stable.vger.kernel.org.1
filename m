@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-177962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41CD3B46EC8
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 15:48:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3240B46FD5
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 16:04:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA3C67C70EC
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 13:48:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DC2F1632EB
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 14:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 316A71F1921;
-	Sat,  6 Sep 2025 13:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0568329D27E;
+	Sat,  6 Sep 2025 13:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LqvX65gI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RgFRJqb1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C671B4244
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 13:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73E822DFA3
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 13:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757166529; cv=none; b=tKl+GNiXjsaOzwAxZeY2zsu6bYUdWtYKMxcjvDaUxyhGmbHNbvNI6QtyYorWA3uhAwcrG0IKMu8tZk3EoKhxhznXsRZpO6l/HJnKxYtC8FFBKEyUY4d8wtl5aHVX8dmh27d7zY9L7XaM9oRXbmSFYrYQnrnVrMUeXcfXhmVFQz4=
+	t=1757166993; cv=none; b=LCmgaqdy7CrZzkb46WeQC2JArGyuW1O6u1dTlA2xCDNWFxEoKPQa0xPdHAUjWy9QiebVlkqNIhfpqRi0DjXTNqlOJsZVqy9SWcQyf+mIrxp6sSBamThievQ9JUn8eFfFpShQkczR4sLjR+zZigxlXi1IHSrBa0R4c0nrwQ3Sp1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757166529; c=relaxed/simple;
-	bh=7bjUI+rrm2mZGbrniHbTzQo84U0pFOpKzCBSMiTgqVY=;
+	s=arc-20240116; t=1757166993; c=relaxed/simple;
+	bh=ZV3vqEnM0WAi4bjJLZPzUz7OIaGMBCuljYkxOjETmwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lze1Ou/7Uw1kdqv5GyF1Jy3UBEoFwqy8xlprP4LNtF7BtkuEBob/byVVKVTT1n/13D9dW5eS8oVmvHb6ICtb2Gva0SNB0TJQNF9Fr1wpM4KEeAGGGEyH0vLhv6bLRfPsohDIxlQeTa3CN1pkuEzICwx8L94UMJVIQpfT3SYmsbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LqvX65gI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D89CC4CEE7;
-	Sat,  6 Sep 2025 13:48:47 +0000 (UTC)
+	 MIME-Version; b=LH6K5ea/KqQncWsVrJoYD3b0GT4U8jObbVgtHkLSbMxKTgPDF5lOjy8oKR821qNhj6NWfM3D8hqGIZkxK8mMnT8kOoYuXyRz1R5eJcGb+IU6TAo58YI62eBJJaq7zvtT2j67ZF58Xs3DdlCn92qniiBHRaKb6unNjnogooY6eR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RgFRJqb1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C916C4CEE7;
+	Sat,  6 Sep 2025 13:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757166528;
-	bh=7bjUI+rrm2mZGbrniHbTzQo84U0pFOpKzCBSMiTgqVY=;
+	s=k20201202; t=1757166993;
+	bh=ZV3vqEnM0WAi4bjJLZPzUz7OIaGMBCuljYkxOjETmwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LqvX65gIOZy/42tbfojrk+ATjUuGFNRODjZ4FnVPgxMPYuixNOJoFW7xw7Re4GMC3
-	 Te/eiXQidXZW3r/C6TLFPXowC5Pyn4rFsj/R8LE3Ry+65fCIa764MSv4IRzB8f7Xn8
-	 ItqSoSSOrz52IBeKbriu5p8cIBe/XfoLhOOl32kcNarLTCXbbeZrriZfA5Pt0c+Rp9
-	 rumAfAjJ+IggzGLwTErw106o1320O9OsLDLRvowVFXofOcjJcTY92tkGfPdhsGIF7Z
-	 F/Olg9WKODfRJPhyJtIaE79MlJqjYz5GFO2oWII92OfeeQEx0ip8jhigKziaiTFimi
-	 epCwIRuH2LLAA==
+	b=RgFRJqb1YLPj6Ve5NwSmo34qAfldLv31t+OC/yypQx2TKZ+jnNX21OL4l3FZ1Cqsj
+	 F81Guk0xMA1h+bAXhAzc7P1aHkiX3gUcTp05zTy6NGCzulA5H/ly8NwccgPSc7Lm0v
+	 3uA9nplyeUwTRsYqOXSgh2X8YMlFdlvFp2Dtkxzl8cSq7aOFtofWZ9WpHVfr9DnR0I
+	 ddFjDxlbwUjmpQENqaJvokybiF/CtpYEDBdTZdrSfcnSexm1O5R9QE3rmqMoPG6xSs
+	 rP4sAWGO+vtpFgAYufNG/JEwRF2yY6piCohXZrOiKfyY2lmgsK+ccSm+KP1D7oD/S7
+	 oXKApSkhv48Yw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Shakeel Butt <shakeel.butt@linux.dev>,
@@ -50,12 +50,12 @@ Cc: Shakeel Butt <shakeel.butt@linux.dev>,
 	Muchun Song <muchun.song@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] memcg: drain obj stock on cpu hotplug teardown
-Date: Sat,  6 Sep 2025 09:48:45 -0400
-Message-ID: <20250906134845.8414-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] memcg: drain obj stock on cpu hotplug teardown
+Date: Sat,  6 Sep 2025 09:56:30 -0400
+Message-ID: <20250906135630.16941-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025032853-copy-crank-1c82@gregkh>
-References: <2025032853-copy-crank-1c82@gregkh>
+In-Reply-To: <2025050155-approve-flatly-068d@gregkh>
+References: <2025050155-approve-flatly-068d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,10 +89,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+)
 
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 2d2cada8a8a4c..87e3f7761f561 100644
+index 420efa1d2b203..8938013358997 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -2376,9 +2376,18 @@ static void drain_all_stock(struct mem_cgroup *root_memcg)
+@@ -2366,9 +2366,18 @@ static void drain_all_stock(struct mem_cgroup *root_memcg)
  static int memcg_hotplug_cpu_dead(unsigned int cpu)
  {
  	struct memcg_stock_pcp *stock;
