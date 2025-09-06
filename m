@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-177913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70EBFB467AF
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 03:04:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39A5B467DA
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 03:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 287EE3A76F7
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 01:04:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0C691CC1DF4
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 01:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101BA29CE6;
-	Sat,  6 Sep 2025 01:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AB618FC92;
+	Sat,  6 Sep 2025 01:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nGQ+huIb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uHqeM+o9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D921CD2C
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 01:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4D8145B16
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 01:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757120657; cv=none; b=a/mXvaLIVMSRwgN9JFphPS19xyNwOCGzfKd7YMMOPQxQZRKWuqiu/fysaHlTJn9K4FvOWsBnD6IkITh6QjsMU5wKn5oECk994FRFoMdVrsy9lQpukwv7DYroKjcNaaPDKVkd/pqudIL2Qke2NwuZNp+2WGK7Wp2ZkAQNrDrJJY4=
+	t=1757121035; cv=none; b=nnKw+62Ra4Cm7C/MxPJJbO8/YRaxFR69di6FNzXcn9SGIvET8XDocSHmi7I4HFr7N+0nQwG0oO6gsq9rtLLQW1Mz5/BJ5ndER9DXuw9NfsGHXeBoM6tU+Y7yZ7bgnq66VX9ZvbHmg+tg8StiIBBtRqnC8EclTZGhXr2ABOgdLY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757120657; c=relaxed/simple;
-	bh=QDof7UtiCJLH+zmIGEsufnal3iQtP48HcTwC6oD2ox8=;
+	s=arc-20240116; t=1757121035; c=relaxed/simple;
+	bh=kj/ac/K/A1upJLq10ouu023GSUL+CK9YN8rP3kyoqGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDKtShE8LMVgFuLBQSvcw5Hw7pfxIO2uh82zNKZf+kdfmWHpQRmfgqnqCnYgmTZUz+qKI3KgToaFnoDO6qTkdOtuSQ58kytAADohMOBBN9GJ7yeKXmx59w0aHs3Cdiv/YVvwI/o/mttWjk5XrKXaGkaqw0w5tKgJLgAZbnHoag8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nGQ+huIb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0199C4CEF1;
-	Sat,  6 Sep 2025 01:04:16 +0000 (UTC)
+	 MIME-Version; b=QsMZIkOsqY4owdjVwoxfCGngZzyoiZgBhpZIOXXb8glFrq6Q2WN1bONgdjdPfzko3VnV7JJFOlFpAsCwxgW+fcMTSl+OuDnA8VTSYfU/DSoE/N6avFIBEQC1jT9K9gDMsruzkfPb7zPXRSgpVBRpDz5lbIU7ojSWkwe3JW2SeCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uHqeM+o9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A3E1C4CEF1;
+	Sat,  6 Sep 2025 01:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757120657;
-	bh=QDof7UtiCJLH+zmIGEsufnal3iQtP48HcTwC6oD2ox8=;
+	s=k20201202; t=1757121035;
+	bh=kj/ac/K/A1upJLq10ouu023GSUL+CK9YN8rP3kyoqGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nGQ+huIb80XZutjDvtU8JdNnXIZOGkddNcseuid9Khn9HEfqo6yC7ztF83jV/Kdmu
-	 MmyP7oRu68F7ppOSDRy9RWODVNLqe979dl5Cmf5kanUW2+Uj53AHJpBLdpRfpiBuI0
-	 OZ2JtnmnepwCwnHSTOk+5TD4eUfZ3DxEPpGNPjHpBGJBhy+xytbzoZfMYH2PTy3udC
-	 62PL5wxo+EXAYUmGygRkJRJN1Gl7QYzzFbrWwKWvrrumsAgOAgzjchtx7VTfw2/z5v
-	 AMhxfCZFWheSQPdPWlb8q0vFJ6S7jagC2ki/VJzjiFgMIxi1SIrc2e+qVqEybtgjy3
-	 0tX+ErOMJQWlw==
+	b=uHqeM+o9q2znMaNpCPYxWAVySf+4CgvClEd2KQy30+gv9CiHqCx/aqLQ2T9gE93tR
+	 EkUiK7QWll5jAYx5gnoEGDdquPyHWAF4Tz8BvXsi0g/IgUJ+0OB4MS7pMLXlbkmoio
+	 ZJLnz5xfcISFpVTxclvDOf4z3ZLwpHUgrW1CNJNf4eKBJ4s0OYDggBUNXGogpCBkh8
+	 cbMII6inrwofMMi/41HTV2kvool+YbhBqUelddJphH4/M/7WhzCj8S+guqq8LD6xRN
+	 mmDpJ5n8odsGxRMeQX1F9AIbsG5hRu4+HPvJLjdcQ/tsvFZR4MJwl1eAjRnUfTqecp
+	 1WfwF8t/xZTAA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
@@ -49,12 +49,12 @@ Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] gpio: pca953x: fix IRQ storm on system wake up
-Date: Fri,  5 Sep 2025 21:04:14 -0400
-Message-ID: <20250906010414.3620828-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] gpio: pca953x: fix IRQ storm on system wake up
+Date: Fri,  5 Sep 2025 21:10:32 -0400
+Message-ID: <20250906011032.3638685-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025051942-diagnoses-sequence-8a2a@gregkh>
-References: <2025051942-diagnoses-sequence-8a2a@gregkh>
+In-Reply-To: <2025051943-yearly-fidelity-4578@gregkh>
+References: <2025051943-yearly-fidelity-4578@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,10 +100,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+)
 
 diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-index 45f3836c4f0fa..a8f6ef4006fef 100644
+index 64a4128b9a422..117f5a00ee703 100644
 --- a/drivers/gpio/gpio-pca953x.c
 +++ b/drivers/gpio/gpio-pca953x.c
-@@ -1145,6 +1145,9 @@ static int pca953x_suspend(struct device *dev)
+@@ -1144,6 +1144,9 @@ static int pca953x_suspend(struct device *dev)
  	struct pca953x_chip *chip = dev_get_drvdata(dev);
  
  	mutex_lock(&chip->i2c_lock);
@@ -113,7 +113,7 @@ index 45f3836c4f0fa..a8f6ef4006fef 100644
  	regcache_cache_only(chip->regmap, true);
  	mutex_unlock(&chip->i2c_lock);
  
-@@ -1170,6 +1173,8 @@ static int pca953x_resume(struct device *dev)
+@@ -1169,6 +1172,8 @@ static int pca953x_resume(struct device *dev)
  	}
  
  	mutex_lock(&chip->i2c_lock);
