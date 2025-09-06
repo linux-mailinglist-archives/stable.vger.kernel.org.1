@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C58B471C4
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 17:12:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96658B473BE
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 18:11:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E86F07A7CA9
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 15:10:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 601CE5871F3
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 16:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 165B12036FA;
-	Sat,  6 Sep 2025 15:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0D5224AEB;
+	Sat,  6 Sep 2025 16:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RX6d0FkZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQnkq4lv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CF4202C43
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 15:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF46820E6E3
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 16:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757171528; cv=none; b=ixpFUNEQQ3DSKJjD65J3aIxaqTh1UOk3JksghpOkT767T2kamEbt0IRu71TXQlSDXHZROzzQCMc3xEB5PQQoJS+DN8b6/oGe96rPgrMNd/eY5zaWxy4HTJuVtsOQnjeuHvF3jv9Gg6u7BRKORBAGTjnUSQMT4Igastxm3HZ0sGI=
+	t=1757175071; cv=none; b=F3/rNUAYw1CfTR5wWWDap71hXx+N3k225ADoVuCByGSvWQ2gfODp25CUcdtzgR6GAtVekdqzGbb+vrj635BIHCdFPVjQgqic2kBQAvVMQ+3nWYL5JdIyfK27pTanLzVbQJ+6lpYnl34nzUl1FDKKulAvHgSqnlitFS+ASiZVJEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757171528; c=relaxed/simple;
-	bh=6S0P/WTeyAnfCIPwFuakr+N7eXvd8Rjnmovbd0YQCDw=;
+	s=arc-20240116; t=1757175071; c=relaxed/simple;
+	bh=iBFXEwpj1XH88duZ1969OYqJ7T3EPT7cgsKUGHgx9QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CN5H9ltkdcUgYpvDMMAFic4Wg+WMZYFxGid6ueuXT5yNi3/ZserRbLi4XhxspzYqeNbpz7PUMwurcA0OnVouzm3bkXEW6XdM4+hoJbCpCXJuDBaPe64rj/Ta7tJ/LIb97oJW2rvOIE3ymnDJ6N8vLH1oub9KDAawNxSAUPoCUKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RX6d0FkZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3989C4CEE7;
-	Sat,  6 Sep 2025 15:12:07 +0000 (UTC)
+	 MIME-Version; b=fp8EyCQkCjisGiojCrxSw7f+dRWoihxBuJLyIdIHPogvP0htzqVv9UbeeXfyvkP2N7Fjcq3HV4DAw5ToK6suQJa0xqUwPNPNhMJnD2W1bX1yhTrCC/k/6L4t1MTv3PAa/RxLzifBnnIg8eAR26wQAwnaNFAQq4HHZ3hSfFdEqCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQnkq4lv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FD7C4CEE7;
+	Sat,  6 Sep 2025 16:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757171528;
-	bh=6S0P/WTeyAnfCIPwFuakr+N7eXvd8Rjnmovbd0YQCDw=;
+	s=k20201202; t=1757175071;
+	bh=iBFXEwpj1XH88duZ1969OYqJ7T3EPT7cgsKUGHgx9QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RX6d0FkZBc3oEiVU/V5AxxbThtX6nPl97jUoMQ9WqI1Dt604P7E+xklV5PGwgHIAw
-	 0sn9B4TfnzNRceELXorxJ4qcHIOx2jd8AMlyr4sT5GgCZ5KmOgFm0LCVgkuVwoazaU
-	 LeJfef0gbK0nsm5NQpkvititSwOhNrIIVPFdbIdaKWYdATU3GTEQV5UbLmEo6q4TIA
-	 bJxJRjVi1Gkzk+8tkrkhSaEcfRKgtITZCz6/1IK/uOyLf19bpT9rdvSX9/C+fhkEle
-	 IiwaKnAGrrRdo0eeswii1KY0ZRUTasFemtZ7bK4vuz4XCqyqhVb1ONDpqNbHVtpSrJ
-	 tCtbzUhfSDYOw==
+	b=aQnkq4lvU0m9C+PtvQpGl7UkRpPD6+jywbjWLhh+lJS1vP3WTJ8YfdWq+ut4Poc5A
+	 imrKVJhuaIZXf/0yYzLVwFhZrKZDz3G5EVHfXEkCJ7iN38xmEor5m7J43g37iYKGAH
+	 HmRfZ6/6lerHxlOQWTNqvVrdCmYfoPtPlcrhpTOY6E7riumF845yoUL4CabXBvzi7s
+	 N9QtCrMxNbNW/mVfAq7QIghj0u0ElfGZI6SXr1FY9/q9JPI+fC2FtgHXJUEDFfgKaI
+	 OBF7XuoVNoktGY12hvxonm3DmqeAJm4G+Ga7SYP3TPkLmgOQgcg2LdsDpEtemy+Gne
+	 9bb5HmwMDy3ew==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] KVM: x86: Take irqfds.lock when adding/deleting IRQ bypass producer
-Date: Sat,  6 Sep 2025 11:12:05 -0400
-Message-ID: <20250906151205.82243-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] cpufreq/sched: Explicitly synchronize limits_changed flag handling
+Date: Sat,  6 Sep 2025 12:11:09 -0400
+Message-ID: <20250906161109.141162-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025042806-rentable-announcer-3863@gregkh>
-References: <2025042806-rentable-announcer-3863@gregkh>
+In-Reply-To: <2025042156-uncurled-citizen-ae9a@gregkh>
+References: <2025042156-uncurled-citizen-ae9a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,76 +60,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sean Christopherson <seanjc@google.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit f1fb088d9cecde5c3066d8ff8846789667519b7d ]
+[ Upstream commit 79443a7e9da3c9f68290a8653837e23aba0fa89f ]
 
-Take irqfds.lock when adding/deleting an IRQ bypass producer to ensure
-irqfd->producer isn't modified while kvm_irq_routing_update() is running.
-The only lock held when a producer is added/removed is irqbypass's mutex.
+The handling of the limits_changed flag in struct sugov_policy needs to
+be explicitly synchronized to ensure that cpufreq policy limits updates
+will not be missed in some cases.
 
-Fixes: 872768800652 ("KVM: x86: select IRQ_BYPASS_MANAGER")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250404193923.1413163-5-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[ Adjust context ]
+Without that synchronization it is theoretically possible that
+the limits_changed update in sugov_should_update_freq() will be
+reordered with respect to the reads of the policy limits in
+cpufreq_driver_resolve_freq() and in that case, if the limits_changed
+update in sugov_limits() clobbers the one in sugov_should_update_freq(),
+the new policy limits may not take effect for a long time.
+
+Likewise, the limits_changed update in sugov_limits() may theoretically
+get reordered with respect to the updates of the policy limits in
+cpufreq_set_policy() and if sugov_should_update_freq() runs between
+them, the policy limits change may be missed.
+
+To ensure that the above situations will not take place, add memory
+barriers preventing the reordering in question from taking place and
+add READ_ONCE() and WRITE_ONCE() annotations around all of the
+limits_changed flag updates to prevent the compiler from messing up
+with that code.
+
+Fixes: 600f5badb78c ("cpufreq: schedutil: Don't skip freq update when limits change")
+Cc: 5.3+ <stable@vger.kernel.org> # 5.3+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/3376719.44csPzL39Z@rjwysocki.net
+[ bw_min => bw_dl ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/x86.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ kernel/sched/cpufreq_schedutil.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index b50d0da06b599..8eb62dbb3a186 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10394,11 +10394,18 @@ int kvm_arch_irq_bypass_add_producer(struct irq_bypass_consumer *cons,
+diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+index 4dcb489733181..3221bafb799da 100644
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -82,9 +82,20 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
+ 	if (!cpufreq_this_cpu_can_update(sg_policy->policy))
+ 		return false;
+ 
+-	if (unlikely(sg_policy->limits_changed)) {
+-		sg_policy->limits_changed = false;
++	if (unlikely(READ_ONCE(sg_policy->limits_changed))) {
++		WRITE_ONCE(sg_policy->limits_changed, false);
+ 		sg_policy->need_freq_update = true;
++
++		/*
++		 * The above limits_changed update must occur before the reads
++		 * of policy limits in cpufreq_driver_resolve_freq() or a policy
++		 * limits update might be missed, so use a memory barrier to
++		 * ensure it.
++		 *
++		 * This pairs with the write memory barrier in sugov_limits().
++		 */
++		smp_mb();
++
+ 		return true;
+ 	}
+ 
+@@ -318,7 +329,7 @@ static inline bool sugov_cpu_is_busy(struct sugov_cpu *sg_cpu) { return false; }
+ static inline void ignore_dl_rate_limit(struct sugov_cpu *sg_cpu)
  {
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
-+	struct kvm *kvm = irqfd->kvm;
-+	int ret;
- 
-+	spin_lock_irq(&kvm->irqfds.lock);
- 	irqfd->producer = prod;
- 
--	return kvm_x86_ops->update_pi_irte(irqfd->kvm,
-+	ret = kvm_x86_ops->update_pi_irte(irqfd->kvm,
- 					   prod->irq, irqfd->gsi, 1);
-+
-+	spin_unlock_irq(&kvm->irqfds.lock);
-+
-+	return ret;
+ 	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_dl)
+-		sg_cpu->sg_policy->limits_changed = true;
++		WRITE_ONCE(sg_cpu->sg_policy->limits_changed, true);
  }
  
- void kvm_arch_irq_bypass_del_producer(struct irq_bypass_consumer *cons,
-@@ -10407,9 +10414,9 @@ void kvm_arch_irq_bypass_del_producer(struct irq_bypass_consumer *cons,
- 	int ret;
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
-+	struct kvm *kvm = irqfd->kvm;
+ static inline bool sugov_update_single_common(struct sugov_cpu *sg_cpu,
+@@ -825,7 +836,16 @@ static void sugov_limits(struct cpufreq_policy *policy)
+ 		mutex_unlock(&sg_policy->work_lock);
+ 	}
  
- 	WARN_ON(irqfd->producer != prod);
--	irqfd->producer = NULL;
- 
- 	/*
- 	 * When producer of consumer is unregistered, we change back to
-@@ -10417,10 +10424,15 @@ void kvm_arch_irq_bypass_del_producer(struct irq_bypass_consumer *cons,
- 	 * when the irq is masked/disabled or the consumer side (KVM
- 	 * int this case doesn't want to receive the interrupts.
- 	*/
-+	spin_lock_irq(&kvm->irqfds.lock);
-+	irqfd->producer = NULL;
+-	sg_policy->limits_changed = true;
++	/*
++	 * The limits_changed update below must take place before the updates
++	 * of policy limits in cpufreq_set_policy() or a policy limits update
++	 * might be missed, so use a memory barrier to ensure it.
++	 *
++	 * This pairs with the memory barrier in sugov_should_update_freq().
++	 */
++	smp_wmb();
 +
- 	ret = kvm_x86_ops->update_pi_irte(irqfd->kvm, prod->irq, irqfd->gsi, 0);
- 	if (ret)
- 		printk(KERN_INFO "irq bypass consumer (token %p) unregistration"
- 		       " fails: %d\n", irqfd->consumer.token, ret);
-+
-+	spin_unlock_irq(&kvm->irqfds.lock);
++	WRITE_ONCE(sg_policy->limits_changed, true);
  }
  
- int kvm_arch_update_irqfd_routing(struct kvm *kvm, unsigned int host_irq,
+ struct cpufreq_governor schedutil_gov = {
 -- 
 2.51.0
 
