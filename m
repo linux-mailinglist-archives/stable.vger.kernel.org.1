@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-177920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C1B0B46804
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 03:33:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADBB6B4684C
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 04:13:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49EB21BC7370
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 01:34:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E5E95C0690
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 02:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D774A55;
-	Sat,  6 Sep 2025 01:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F8C1F8908;
+	Sat,  6 Sep 2025 02:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBaDhCGv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="To0HTPhP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2FD188000
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 01:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96141F866A
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 02:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757122431; cv=none; b=N2o9v0X86ypefKniChZl2bvmn5FqU+iYEpQcq7HHYjyAyzvFyD/WDDeF50BnctYCtFTGnOC82tTj4yau9Oe1Fc/7LLC2+v9pkn7crJTJu2i/2upjX+74Bp3FddW9Zh3jtX8fGTuyYtmNMUQxUpkmh7zI5qLM2yyiGIu6WI9ZPN0=
+	t=1757124816; cv=none; b=AaOxVAPz/88V6y1//TjbM7fytkJ3JjbipuhZeQ40aclMkPDDtHOaaypyb1YMIrTRmnHvkyY+AvAsCGPvWYjhdoFBMDbj+HJphhgMozBIbRQqjmbj9oZGpulh7etxLEHyN7y287NTtVQT6q7KpZlU6W393TpqoqmdtnGWNeInVwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757122431; c=relaxed/simple;
-	bh=sUQhfdkRfdkv8bI2QS0L/p+J0drOikhktbq/BFYqAeI=;
+	s=arc-20240116; t=1757124816; c=relaxed/simple;
+	bh=jMF0zGDUd0FUrM2MpsMmD/6vaolRKDid1hhy5gjh7y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fv1U/6sMNce4vkq+JvB31m2UIVwAYBOER03ROG7YxifsMfkHizfVfB4HEmSrnwUaIJF5xifMGCyxNxmNdo707IcsVevAm81ghS6L/h3HVHAEtsdRyLoKX7yGUBCnnwp1f/0ElCcHtYZS8NA0eH2shLglkK5DE+aTh91eHRTQFAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBaDhCGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C26C4CEF1;
-	Sat,  6 Sep 2025 01:33:49 +0000 (UTC)
+	 MIME-Version; b=rY7YHuWeQtAu53673K60Nx+WrfQYkMdlzjZShCwG9Y1s4hN8ieOJH+Jkhqxqa8hcSpnc71g2T1ra/3PdYDsC5yELt2ZyvIgCnUlK+yqq0UmI7W5N7Pv5HLjPeAwLNfAZw9CKxSl+/9SzyeAcSoJ1XVHTm6ijQhQX6mUbM5nl2B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=To0HTPhP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D1DC4CEF4;
+	Sat,  6 Sep 2025 02:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757122430;
-	bh=sUQhfdkRfdkv8bI2QS0L/p+J0drOikhktbq/BFYqAeI=;
+	s=k20201202; t=1757124816;
+	bh=jMF0zGDUd0FUrM2MpsMmD/6vaolRKDid1hhy5gjh7y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CBaDhCGvHOFEC2m6OXvOV98brLfbhXSXHSHqY0swnxjP0xrsu4/cgSmKi9mJY6d3m
-	 ga1J0zDrZpy+ihG2KEKgC+Q6pP5N9Vmb+GTHeFB4XTHOz7e/wQ/cMQOe1QjCOwn2PX
-	 yBorvFjpvSG99DJuwUDAOPu9YF2Z1vbLvyEpXIoz56+E/hlXnMFf2FoJ0j6i4EREfN
-	 Np2nDbxhLqO6xgJ4bxiR6QgJjDMAKX7mkp0ke5/zCzKOi5ya8TJwC4s2GzXE4sCjx7
-	 L5b/menvDgg5NT5jGAxkq16d8zCFV6O4v/+N/5ZoJsJ1jFe+rzbQk+DOnkItJh7rpC
-	 nVkJik8uAPHbQ==
+	b=To0HTPhPLI63VaOeMmawMSpEXgu6XdBwTFmuybGxg/Jllsr4wn+PvLWWfr3l/nEC5
+	 sIr8uTg7wym6Lv75ZxW6KBuY0rqGXdoRNx0fD1rha81syqsoEX5xANCEDNTEc25CZe
+	 d/RHkk90GRxxN9iZ0Mg61aJCVOFNbQY0BDSAyq6i1wBoFvEDOK3nNiHJprhWcALjR4
+	 OxgPWUwt3cw4ld2+gBxvgjDOcBXxZ2CUY8jnRZ6q6yUhiwxwrBzRyv1vyuJc18Oq1m
+	 QoMDCIxBHEV0zS8QzCh2uByktfI+nP0AQyhMKPzLhdqP6UQXM2bAGs3cr13qvf+jSh
+	 zRkjZCthRIORw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
+Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] iio: pressure: mprls0025pa: use aligned_s64 for timestamp
-Date: Fri,  5 Sep 2025 21:33:47 -0400
-Message-ID: <20250906013347.3653180-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] iio: light: opt3001: fix deadlock due to concurrent flag access
+Date: Fri,  5 Sep 2025 22:13:34 -0400
+Message-ID: <20250906021334.3665365-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025051224-transpire-bleach-c69f@gregkh>
-References: <2025051224-transpire-bleach-c69f@gregkh>
+In-Reply-To: <2025051215-defendant-dilation-d039@gregkh>
+References: <2025051215-defendant-dilation-d039@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,55 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: David Lechner <dlechner@baylibre.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit ffcd19e9f4cca0c8f9e23e88f968711acefbb37b ]
+[ Upstream commit f063a28002e3350088b4577c5640882bf4ea17ea ]
 
-Follow the pattern of other drivers and use aligned_s64 for the
-timestamp. This will ensure the struct itself it also 8-byte aligned.
+The threaded IRQ function in this driver is reading the flag twice: once to
+lock a mutex and once to unlock it. Even though the code setting the flag
+is designed to prevent it, there are subtle cases where the flag could be
+true at the mutex_lock stage and false at the mutex_unlock stage. This
+results in the mutex not being unlocked, resulting in a deadlock.
 
-While touching this, convert struct mpr_chan to an anonymous struct
-to consolidate the code a bit to make it easier for future readers.
+Fix it by making the opt3001_irq() code generally more robust, reading the
+flag into a variable and using the variable value at both stages.
 
-Fixes: 713337d9143e ("iio: pressure: Honeywell mprls0025pa pressure sensor")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250418-iio-more-timestamp-alignment-v2-2-d6a5d2b1c9fe@baylibre.com
-Cc: <Stable@vger.kernel.org>
+Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20250321-opt3001-irq-fix-v1-1-6c520d851562@bootlin.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Applied changes to mprls0025pa.c ]
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/mprls0025pa.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/iio/light/opt3001.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
-index e3f0de020a40c..829c472812e49 100644
---- a/drivers/iio/pressure/mprls0025pa.c
-+++ b/drivers/iio/pressure/mprls0025pa.c
-@@ -87,11 +87,6 @@ static const struct mpr_func_spec mpr_func_spec[] = {
- 	[MPR_FUNCTION_C] = {.output_min = 3355443, .output_max = 13421773},
- };
+diff --git a/drivers/iio/light/opt3001.c b/drivers/iio/light/opt3001.c
+index dc529cbe3805e..25a45c4251fbd 100644
+--- a/drivers/iio/light/opt3001.c
++++ b/drivers/iio/light/opt3001.c
+@@ -692,8 +692,9 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
+ 	struct opt3001 *opt = iio_priv(iio);
+ 	int ret;
+ 	bool wake_result_ready_queue = false;
++	bool ok_to_ignore_lock = opt->ok_to_ignore_lock;
  
--struct mpr_chan {
--	s32			pres;		/* pressure value */
--	s64			ts;		/* timestamp */
--};
--
- struct mpr_data {
- 	struct i2c_client	*client;
- 	struct mutex		lock;		/*
-@@ -120,7 +115,10 @@ struct mpr_data {
- 						 * loop until data is ready
- 						 */
- 	struct completion	completion;	/* handshake from irq to read */
--	struct mpr_chan		chan;		/*
-+	struct {
-+		s32 pres;			/* pressure value */
-+		aligned_s64 ts;			/* timestamp */
-+	} chan;				/*
- 						 * channel values for buffered
- 						 * mode
- 						 */
+-	if (!opt->ok_to_ignore_lock)
++	if (!ok_to_ignore_lock)
+ 		mutex_lock(&opt->lock);
+ 
+ 	ret = i2c_smbus_read_word_swapped(opt->client, OPT3001_CONFIGURATION);
+@@ -730,7 +731,7 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
+ 	}
+ 
+ out:
+-	if (!opt->ok_to_ignore_lock)
++	if (!ok_to_ignore_lock)
+ 		mutex_unlock(&opt->lock);
+ 
+ 	if (wake_result_ready_queue)
 -- 
 2.50.1
 
