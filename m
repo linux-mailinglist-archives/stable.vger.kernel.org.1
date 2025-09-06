@@ -1,157 +1,157 @@
-Return-Path: <stable+bounces-178005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 923CDB4772C
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 22:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C565B4773E
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 23:04:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49F81581B6C
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 20:53:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B755565D55
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 21:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10261283686;
-	Sat,  6 Sep 2025 20:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2568927EFE7;
+	Sat,  6 Sep 2025 21:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SDnoGKjQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtOBdvIA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4CEE27EFE7
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 20:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79C2279903
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 21:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757192003; cv=none; b=aAtOvK3Ro9s3OJ8iJQVwX1i/vVI41sCKDezcGIrZuqTqFjwLQkb8i9vGO+O8YJOZcsvZWAsRuYgEspw5XZmGtQ16zuva5IGU2MJzqc2cAH+IHs5ygNN86aSWUoh9JRE8yByovOYh2sE/t/Cw0bKVRHm6t7cZv1m81gnuhUnY0y4=
+	t=1757192690; cv=none; b=o3M8co1A89cQRU7Cq6CITOe7CtvcRnn3oqbzsJ/vqp/sJBTD3NDnebCrQhDwvhixlmuURzJhrjeNMFyacbh34Om1ushFilrhYvXS538oTjH1MM/5kbvVdFudk3Mlef0sIBd2jXSX7YfWmNu+P9gn1smzQspJtVBTNPWXENK4DTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757192003; c=relaxed/simple;
-	bh=0249P8GNZoeB7AAJOUzcfFNcXwJXOGPySw0Xij1YU2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOHF58Mfx9CP7O0TmibrDyuFRLD4OwvR+c3rHz8l9tnYqeEwovh6v8tWabxAo5w4JuEtIQAarubYugWBN49LJw/Ekoj+YhJGXQeeFy8liC1mWr1qvGNshLS3jkTr6e4GpGUp3d1HkGmVZS58dRBIJoPLbewrR+PS1FWvnrSrnGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SDnoGKjQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68DBC4CEE7;
-	Sat,  6 Sep 2025 20:53:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757192002;
-	bh=0249P8GNZoeB7AAJOUzcfFNcXwJXOGPySw0Xij1YU2g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SDnoGKjQcxrCrgep0ONz79jxKwkxeOvG5qWq5S3FbBsEvUTBkoBPsZoNgFqmL78Gr
-	 u1J1MHFPeRsXcWKIvUUIJk79HflF3GzaYAw/P3scOE6Bz5nWrKsUWMh747qnYk7wlo
-	 f39kZMhMYaz3+IgB9hajXB/WdeggvgUv0qfoOXOo9X6X/eWTAL7yACpY43Q2wjJ1pC
-	 9OFPV9EXbtC3VnsViKF83HMwg4tJxoHVCQcoI/QWBr8wBlDKyLjfpJweFeMET1uAni
-	 q6lpXsFVFlRRaj9PGu1CgGzNGfogO7vfH6rV+VmSAO6TQF+L++VvR1lRshkfyeils8
-	 IkfgUxmrQesjg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Han Xu <han.xu@nxp.com>,
-	Kevin Hao <haokexin@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] spi: fsl-qspi: use devm function instead of driver remove
-Date: Sat,  6 Sep 2025 16:53:20 -0400
-Message-ID: <20250906205320.288349-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025041724-sectional-germless-279b@gregkh>
-References: <2025041724-sectional-germless-279b@gregkh>
+	s=arc-20240116; t=1757192690; c=relaxed/simple;
+	bh=33YttKAmfNPbWXZrtDtAzCbwqNHVnIYUvuanr4dYJLs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jMTXvvQfEOmbRWvyzSu+/VldR7HAFWgjIiJzXtKQnfAoKPgifSVgrh4Ga3vYWv2ADEfZbOBaHGTI3eCT3sOhaXGoAY771Mqg4tcngYAaGNjlbA67IuMWQGeTxd4/4HI1v2kSZfJfcNasaURfSl1Epk4/0gXPkpbbvRxNKLYV+x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtOBdvIA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEACCC4CEE7;
+	Sat,  6 Sep 2025 21:04:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1757192690;
+	bh=33YttKAmfNPbWXZrtDtAzCbwqNHVnIYUvuanr4dYJLs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QtOBdvIAywSEN0Ng0t6kXGXKzx4uI4AVTk4iYCdZxg42yna5WzJ4yfahlTrdgkpi6
+	 tGXimYpbtFGnlJ07lsikJNw/FbJPccPC3VNwYwkCK8Ux/rKf4tQZfEoxHnhDusEfEf
+	 9nqeUl8CQDw0yOBnuzEnkBMh0iqJSYojoJqdpyP4=
+Date: Sat, 6 Sep 2025 23:04:47 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	stable@vger.kernel.org, vegard.nossum@oracle.com,
+	syzbot+54cbbfb4db9145d26fc2@syzkaller.appspotmail.com
+Subject: Re: [PATCH 6.12.y 11/15] io_uring/msg_ring: ensure io_kiocb freeing
+ is deferred for RCU
+Message-ID: <2025090635-charger-grader-8fdf@gregkh>
+References: <20250905110406.3021567-1-harshit.m.mogalapalli@oracle.com>
+ <20250905110406.3021567-12-harshit.m.mogalapalli@oracle.com>
+ <f43fe976-4ef5-4dea-a2d0-336456a4deae@kernel.dk>
+ <96857683-167a-4ba8-ad26-564e5dcae79b@kernel.dk>
+ <2025090622-crispy-germproof-3d11@gregkh>
+ <368617ee-8e77-4fec-81cd-45ee3d3532bb@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <368617ee-8e77-4fec-81cd-45ee3d3532bb@kernel.dk>
 
-From: Han Xu <han.xu@nxp.com>
+On Sat, Sep 06, 2025 at 02:47:04PM -0600, Jens Axboe wrote:
+> On 9/6/25 12:36 PM, Greg KH wrote:
+> > On Fri, Sep 05, 2025 at 07:23:00PM -0600, Jens Axboe wrote:
+> >> On 9/5/25 1:58 PM, Jens Axboe wrote:
+> >>> On 9/5/25 5:04 AM, Harshit Mogalapalli wrote:
+> >>>> diff --git a/include/linux/io_uring_types.h b/include/linux/io_uring_types.h
+> >>>> index 5ce332fc6ff5..3b27d9bcf298 100644
+> >>>> --- a/include/linux/io_uring_types.h
+> >>>> +++ b/include/linux/io_uring_types.h
+> >>>> @@ -648,6 +648,8 @@ struct io_kiocb {
+> >>>>  	struct io_task_work		io_task_work;
+> >>>>  	/* for polled requests, i.e. IORING_OP_POLL_ADD and async armed poll */
+> >>>>  	struct hlist_node		hash_node;
+> >>>> +	/* for private io_kiocb freeing */
+> >>>> +	struct rcu_head		rcu_head;
+> >>>>  	/* internal polling, see IORING_FEAT_FAST_POLL */
+> >>>>  	struct async_poll		*apoll;
+> >>>>  	/* opcode allocated if it needs to store data for async defer */
+> >>>
+> >>> This should go into a union with hash_node, rather than bloat the
+> >>> struct. That's how it was done upstream, not sure why this one is
+> >>> different?
+> >>
+> >> Here's a test variant with that sorted. Greg, I never got a FAILED email
+> >> on this one, as far as I can tell. When a patch is marked with CC:
+> >> stable@vger.kernel.org and the origin of the bug clearly marked with
+> >> Fixes, I'm expecting to have a 100% reliable notification if it fails to
+> >> apply. If not, I just kind of assume patches flow into stable.
+> >>
+> >> Was this missed on my side, or was it on the stable side? If the latter,
+> >> how did that happen? I always ensure that stable has what it needs and
+> >> play nice on my side, but if misses like this can happen with the
+> >> tooling, that makes me a bit nervous.
+> >>
+> > 
+> > This looks like a failure on my side, sorry.  I don't see any FAILED
+> > email that went out for this anywhere, so I messed up.
+> > 
+> > sorry about that, and Harshit, thanks for noticing it.
+> 
+> Thanks for confirming, because I was worried it was on my side. But I
+> thought these things were fully automated? I'm going to add something on
+> my side to catch these in the future, just in case.
 
-[ Upstream commit 40369bfe717e96e26650eeecfa5a6363563df6e4 ]
+Hah, "fully automated", I wish...
 
-Driver use devm APIs to manage clk/irq/resources and register the spi
-controller, but the legacy remove function will be called first during
-device detach and trigger kernel panic. Drop the remove function and use
-devm_add_action_or_reset() for driver cleanup to ensure the release
-sequence.
+Just because "learning how the sausage is made" is something that some
+people are curious about, here's how I apply stable patches:
+  - I get a mbox full of patches that are in Linus's tree with a
+    cc:stable in them, when he applies them to his tree.  How that
+    happens is another story...
+  - In mutt, I open the mbox, and pick a patch to look at.  if it seems
+    sane (almost all do), I look for a "Fixes:" tag.  if it's there, I
+    press a key and a script of mine + a local database I've hacked
+    together, tells me just how far back that "Fixes: " commit went.  I
+    try to remember that version number.
+  - I press a different key, and the mail is turned into a patch, and
+    then attempted to be applied to each branch of the currently active
+    stable trees using quilt.  It tells me about fuzz, or failures, or
+    other things, and can let me resolve failures if I want to, one per
+    branch (I have to manually continue on after each attempt because I
+    can cancel it all if it stops applying).
+  - If the patch didn't apply all the way back, I go to a different
+    terminal window and run 'bad_stable GIT_ID' with GIT_ID the id from
+    the original commit which I had selected in the original email.  I'm
+    then offered up which tree to say it failed for by the script, and
+    it sends the email off.
 
-Trigger kernel panic on i.MX8MQ by
-echo 30bb0000.spi >/sys/bus/platform/drivers/fsl-quadspi/unbind
+Notice the "I try to remember how far back" stage.  Normally that works
+just fine.  Sometimes it doesn't.  This time it didn't.  Overall my % is
+pretty good in the past 20+ years of doing this.  Or no one is really
+paying attention and my % is way worse, hard to tell...
 
-Cc: stable@vger.kernel.org
-Fixes: 8fcb830a00f0 ("spi: spi-fsl-qspi: use devm_spi_register_controller")
-Reported-by: Kevin Hao <haokexin@gmail.com>
-Signed-off-by: Han Xu <han.xu@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250326224152.2147099-1-han.xu@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-fsl-qspi.c | 31 +++++++++++++++++--------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+And yes, I've tried to make the "send the failed email" happen directly
+from the failure to apply, but that gets into some combinations of "did
+it really want to go that far back" (some patches do not have Fixes:
+tags) and sometimes Fixes is actually wrong (hit that just a few minutes
+ago with a drm patch), and there's some messy terminal/focus issues with
+running interactive scripts from within a mutt process that sometimes
+requires me to spawn separate windows to work around, but then I lost
+the original email involved as that was piped from mutt, and well, it's
+a mess.  So I stick to this process.
 
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index 79bac30e79af6..310350d2c5302 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -839,6 +839,19 @@ static const struct spi_controller_mem_ops fsl_qspi_mem_ops = {
- 	.get_name = fsl_qspi_get_name,
- };
- 
-+static void fsl_qspi_cleanup(void *data)
-+{
-+	struct fsl_qspi *q = data;
-+
-+	/* disable the hardware */
-+	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
-+	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
-+
-+	fsl_qspi_clk_disable_unprep(q);
-+
-+	mutex_destroy(&q->lock);
-+}
-+
- static int fsl_qspi_probe(struct platform_device *pdev)
- {
- 	struct spi_controller *ctlr;
-@@ -928,6 +941,10 @@ static int fsl_qspi_probe(struct platform_device *pdev)
- 
- 	ctlr->dev.of_node = np;
- 
-+	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
-+	if (ret)
-+		goto err_destroy_mutex;
-+
- 	ret = devm_spi_register_controller(dev, ctlr);
- 	if (ret)
- 		goto err_destroy_mutex;
-@@ -947,19 +964,6 @@ static int fsl_qspi_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static void fsl_qspi_remove(struct platform_device *pdev)
--{
--	struct fsl_qspi *q = platform_get_drvdata(pdev);
--
--	/* disable the hardware */
--	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
--	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
--
--	fsl_qspi_clk_disable_unprep(q);
--
--	mutex_destroy(&q->lock);
--}
--
- static int fsl_qspi_suspend(struct device *dev)
- {
- 	return 0;
-@@ -997,7 +1001,6 @@ static struct platform_driver fsl_qspi_driver = {
- 		.pm =   &fsl_qspi_pm_ops,
- 	},
- 	.probe          = fsl_qspi_probe,
--	.remove_new	= fsl_qspi_remove,
- };
- module_platform_driver(fsl_qspi_driver);
- 
--- 
-2.51.0
+I can process stable patches pretty fast now, I'm only rate limited by
+my test builds, not the "apply from email" dance.  And the failure rate
+is generally pretty low, with the exception of the -rc1 DRM subsystem
+merge nightmare, but that's another issue...
 
+Anyway, sorry for the wall of text that you weren't looking for :)
+
+greg k-h
 
