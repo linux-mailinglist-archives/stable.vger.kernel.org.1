@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-177954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B86A3B46D92
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 15:12:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D3FB46E01
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 15:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BE6E1C2196E
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 13:13:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CAAA1894D15
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 13:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8B12EFD9F;
-	Sat,  6 Sep 2025 13:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92992EDD7D;
+	Sat,  6 Sep 2025 13:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hO/FhkK1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lhlMeLzz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA0E131E2D
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 13:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B3D1527B4
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 13:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757164360; cv=none; b=uf5ScslAqgaG9dO3yarm1GDJu/X1mh8lc/4UnnRm5MN/ut1W2WcqsgqVONjEpuMZNrsWRSUhe8Phr/r4TYfdqEr6Laz6wIPhX0WY3sfd0Y0CS6MeV7xnky57KTkIyG1UU2J7BcdcZ7xPBORsisdeiBCfrftlF1MGWxOpRupsZDU=
+	t=1757164933; cv=none; b=RG+TN88oQqv/ykcepFqLUgvCw6zayM/rdvivUte2+V/VtxxE7W1gAYYSjY5kvaN8lmgriZeOqoWGV07BIN031TDj6mXFBHhzZ4gZLSt7SmIdeqHKQY4u7OvGPBlcbOSsPaNJ5kCjk9RvCsSk9yIfStQCZXbNS8yaQO344c+X87Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757164360; c=relaxed/simple;
-	bh=mS/hcsaXnrRoINtu/aS/rwlZrnZSz4yAvaxJTlI6WYA=;
+	s=arc-20240116; t=1757164933; c=relaxed/simple;
+	bh=aegBvUEfcOddN045APCoDtIfE8IfXSCjp1SZ4T8Kb+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fNfhvvFrSQ9SNQq75wJy/m3EwE3at/QAE2YJhiQpfB2BQ3NKn0TGYzB3ZY4YgU8rxBN+/tQpiI/Xn4qxHkfrAF9m552DZfGyLZGxUDtsWqaGv7aDlQVyTwZJ5QoFbgH+4ZvJ+wdyA/ZxKm4JWe3zIYFigSWdk9iJIGoAiSWhn5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hO/FhkK1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB62CC4CEF4;
-	Sat,  6 Sep 2025 13:12:39 +0000 (UTC)
+	 MIME-Version; b=J4/41Bdh8zXH6XeK5ya16q7SADtSGCk9C0ZsCbFn5QoThzXhPOeoRA38WQmRSqfXln2skffW3Gz5oZbvSMT+ocXm+f5v1BnCPkhN7BNDsihNawyWOt15WDrgMuoviVtBKMiEl/yjW0Ko8w2Tb0et2iSe6XPMh1k4/yR0ftrlnlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lhlMeLzz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823B2C4CEE7;
+	Sat,  6 Sep 2025 13:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757164360;
-	bh=mS/hcsaXnrRoINtu/aS/rwlZrnZSz4yAvaxJTlI6WYA=;
+	s=k20201202; t=1757164933;
+	bh=aegBvUEfcOddN045APCoDtIfE8IfXSCjp1SZ4T8Kb+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hO/FhkK1vA9FCK92Xhu7H497SyjqwngC4PIPMzdb5O/yuXTlmKBc5bD614CCBuAe5
-	 qP1lcqIi2uKV+nlT3MxEavk8baHnk5VLePS6YNvkcQeuX2q3b7dDZ3lTDv/GKQciwF
-	 U5m3yLYqLDTtvnpUCI5tbZP2ENtvnifKRrCWdGL/QBeST3cuNkNVBrqIgPgvIjggkx
-	 JiDH5nXCilDq88dg3V02IQtDZ35ZlY25d9lOrmCv4k1DbbBg7svOVdL+qg3mvGbc8C
-	 RBffGPXx6pwNkCD1Pj9jC4evCB2wQWjCKHQh7q8/gBDYYP7bLKZA5fw2FdhSsDQuaH
-	 Wlupl2WuoK7wA==
+	b=lhlMeLzz1bNrmduxeP4QKPAjN2/8ivcLKYjKoqz+Fu9cm0OqHendYWUj0Y6OEhCF7
+	 g/XFwli8J3tAIQHc7pyZFRWU5Zo7bExqEKkeMZ4DVJeMEK84qnANKT2oS6HKijZX9v
+	 CKvIYxdDeJBAoI9TV3X7Bp81ziIuaotiBATIBW6tjuk6bxaF74BjWXtymarwCa/uCI
+	 1DbUYdGdg0JhovXXjGFLIrOcdXvKPS6kgmBTl7IkIM2mB5rQhUMox+xmFIsgOqzefc
+	 7uNfE4TlJJrxdXJabJ7o+G7/tnDu7eU/YPjKYKCS4VDHBAyR+aXsYNvedu12NySKO3
+	 EcXBljR9cCt7w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Fiona Klute <fiona.klute@gmx.de>,
-	kernel-list@raspberrypi.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 3/3] net: phy: microchip: force IRQ polling mode for lan88xx
-Date: Sat,  6 Sep 2025 09:12:36 -0400
-Message-ID: <20250906131236.3883856-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250906131236.3883856-1-sashal@kernel.org>
-References: <2025042824-quiver-could-ffa2@gregkh>
- <20250906131236.3883856-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/4] cpufreq: intel_pstate: Revise global turbo disable check
+Date: Sat,  6 Sep 2025 09:22:07 -0400
+Message-ID: <20250906132210.3888723-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025050515-constrain-banter-97de@gregkh>
+References: <2025050515-constrain-banter-97de@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,110 +60,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Fiona Klute <fiona.klute@gmx.de>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 30a41ed32d3088cd0d682a13d7f30b23baed7e93 ]
+[ Upstream commit 37b6ddba967c601479bea418a7ac6ff16b6232b7 ]
 
-With lan88xx based devices the lan78xx driver can get stuck in an
-interrupt loop while bringing the device up, flooding the kernel log
-with messages like the following:
+Setting global turbo flag based on CPU 0 P-state limits is problematic
+as it limits max P-state request on every CPU on the system just based
+on its P-state limits.
 
-lan78xx 2-3:1.0 enp1s0u3: kevent 4 may have been dropped
+There are two cases in which global.turbo_disabled flag is set:
+- When the MSR_IA32_MISC_ENABLE_TURBO_DISABLE bit is set to 1
+in the MSR MSR_IA32_MISC_ENABLE. This bit can be only changed by
+the system BIOS before power up.
+- When the max non turbo P-state is same as max turbo P-state for CPU 0.
 
-Removing interrupt support from the lan88xx PHY driver forces the
-driver to use polling instead, which avoids the problem.
+The second check is not a valid to decide global turbo state based on
+the CPU 0. CPU 0 max turbo P-state can be same as max non turbo P-state,
+but for other CPUs this may not be true.
 
-The issue has been observed with Raspberry Pi devices at least since
-4.14 (see [1], bug report for their downstream kernel), as well as
-with Nvidia devices [2] in 2020, where disabling interrupts was the
-vendor-suggested workaround (together with the claim that phylib
-changes in 4.9 made the interrupt handling in lan78xx incompatible).
+There is no guarantee that max P-state limits are same for every CPU. This
+is possible that during fusing max P-state for a CPU is constrained. Also
+with the Intel Speed Select performance profile, CPU 0 may not be present
+in all profiles. In this case the max non turbo and turbo P-state can be
+set to the lowest possible P-state by the hardware when switched to
+such profile. Since max non turbo and turbo P-state is same,
+global.turbo_disabled flag will be set.
 
-Iperf reports well over 900Mbits/sec per direction with client in
---dualtest mode, so there does not seem to be a significant impact on
-throughput (lan88xx device connected via switch to the peer).
+Once global.turbo_disabled is set, any scaling max and min frequency
+update for any CPU will result in its max P-state constrained to the max
+non turbo P-state.
 
-[1] https://github.com/raspberrypi/linux/issues/2447
-[2] https://forums.developer.nvidia.com/t/jetson-xavier-and-lan7800-problem/142134/11
+Hence remove the check of max non turbo P-state equal to max turbo P-state
+of CPU 0 to set global turbo disabled flag.
 
-Link: https://lore.kernel.org/0901d90d-3f20-4a10-b680-9c978e04ddda@lunn.ch
-Fixes: 792aec47d59d ("add microchip LAN88xx phy driver")
-Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
-Cc: kernel-list@raspberrypi.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250416102413.30654-1-fiona.klute@gmx.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+[ rjw: Subject edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: ac4e04d9e378 ("cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/microchip.c | 46 +++----------------------------------
- 1 file changed, 3 insertions(+), 43 deletions(-)
+ drivers/cpufreq/intel_pstate.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
-index f2860ec7ac17e..738b24b832091 100644
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -31,47 +31,6 @@ static int lan88xx_write_page(struct phy_device *phydev, int page)
- 	return __phy_write(phydev, LAN88XX_EXT_PAGE_ACCESS, page);
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index ee676ae1bc488..15d0d498071f1 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -562,13 +562,9 @@ static void intel_pstate_hybrid_hwp_adjust(struct cpudata *cpu)
+ static inline void update_turbo_state(void)
+ {
+ 	u64 misc_en;
+-	struct cpudata *cpu;
+ 
+-	cpu = all_cpu_data[0];
+ 	rdmsrl(MSR_IA32_MISC_ENABLE, misc_en);
+-	global.turbo_disabled =
+-		(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE ||
+-		 cpu->pstate.max_pstate == cpu->pstate.turbo_pstate);
++	global.turbo_disabled = misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE;
  }
  
--static int lan88xx_phy_config_intr(struct phy_device *phydev)
--{
--	int rc;
--
--	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
--		/* unmask all source and clear them before enable */
--		rc = phy_write(phydev, LAN88XX_INT_MASK, 0x7FFF);
--		rc = phy_read(phydev, LAN88XX_INT_STS);
--		rc = phy_write(phydev, LAN88XX_INT_MASK,
--			       LAN88XX_INT_MASK_MDINTPIN_EN_ |
--			       LAN88XX_INT_MASK_LINK_CHANGE_);
--	} else {
--		rc = phy_write(phydev, LAN88XX_INT_MASK, 0);
--		if (rc)
--			return rc;
--
--		/* Ack interrupts after they have been disabled */
--		rc = phy_read(phydev, LAN88XX_INT_STS);
--	}
--
--	return rc < 0 ? rc : 0;
--}
--
--static irqreturn_t lan88xx_handle_interrupt(struct phy_device *phydev)
--{
--	int irq_status;
--
--	irq_status = phy_read(phydev, LAN88XX_INT_STS);
--	if (irq_status < 0) {
--		phy_error(phydev);
--		return IRQ_NONE;
--	}
--
--	if (!(irq_status & LAN88XX_INT_STS_LINK_CHANGE_))
--		return IRQ_NONE;
--
--	phy_trigger_machine(phydev);
--
--	return IRQ_HANDLED;
--}
--
- static int lan88xx_suspend(struct phy_device *phydev)
- {
- 	struct lan88xx_priv *priv = phydev->priv;
-@@ -388,8 +347,9 @@ static struct phy_driver microchip_phy_driver[] = {
- 	.config_aneg	= lan88xx_config_aneg,
- 	.link_change_notify = lan88xx_link_change_notify,
- 
--	.config_intr	= lan88xx_phy_config_intr,
--	.handle_interrupt = lan88xx_handle_interrupt,
-+	/* Interrupt handling is broken, do not define related
-+	 * functions to force polling.
-+	 */
- 
- 	.suspend	= lan88xx_suspend,
- 	.resume		= genphy_resume,
+ static int min_perf_pct_min(void)
 -- 
-2.50.1
+2.51.0
 
 
