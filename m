@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-177992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F970B476C6
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 21:08:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B799B476CB
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 21:13:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C92D6584294
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 19:08:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A9617C6D9C
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 19:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B257928504F;
-	Sat,  6 Sep 2025 19:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3972853FA;
+	Sat,  6 Sep 2025 19:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSnRT9Yl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDpj3Kny"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAFF25A326
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 19:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9212853E2
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 19:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757185708; cv=none; b=fFa2DyVK2TC2WBVbwu7IXyUWhx42W/99YvCxzx9OVeGtSbXYwmv+ePULUniR1UoLOWY/Duw+DT/xRhKnYCMIoWfftsAORvQGvxEwnrtX+0JegqAmT3GsOE28FgyQ7yAgXPdD26RDl0lCehRQl2TQ9fGouIlll/cz+XGsviMPuA4=
+	t=1757186009; cv=none; b=q7tFCuAZgs5VlWv63+IbTSjwPRVKtQ13kRLSADwR3m49GwUXMb4HR3shDcC5i2tbQ7YMKkZBnwQ4FIUR+s5L63frq4Rd7DuI3jUARN7fL9i/9fodTCOSfYgTV5eJaVUXn+UCZHtGDQbS5xeDHGZc68wusl+WP6OWaWinMEbZiww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757185708; c=relaxed/simple;
-	bh=Qd+aSUrxJ29Vu8jCxQEk4K7mmU9NMm0F345NxOKkNKE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BY3bOQfUchbCdLWjQ05VCfIpuS6znF3lK0nD3jjTQMBhNarsNFAa2MQ+JYblq/KUzCmQqWmQn3hJpkG1jTWqSvJcUkvMfkCsuylrD05hQHPdXFL6DzJ9f2VPTBDcwxlSUVCOpoOnvxSxNyVvGFDiykJzDuzdKLymNWRfo1qIpTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSnRT9Yl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96BAC4CEE7;
-	Sat,  6 Sep 2025 19:08:27 +0000 (UTC)
+	s=arc-20240116; t=1757186009; c=relaxed/simple;
+	bh=mtW6hx5KIBuhodRm+ZDTTS/RxaE558uh/kNwQjqaMtE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EyQ/hpcvuwKcoZCuqUBi0aIJXoan3eyZBeP+ZHXlR3J4PTWmmYYJo/H5w+3zgyNblAHoivJ9q0R+0sQAG1kYnc557ypjOytXpo8pr1g2qaeuQFUBRW2oeU1fblDLZ0CGdaiIqPoDNmZ29OC90ZgaIjTeUvveph6fH9UVUbGMF7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDpj3Kny; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70897C4CEE7;
+	Sat,  6 Sep 2025 19:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757185708;
-	bh=Qd+aSUrxJ29Vu8jCxQEk4K7mmU9NMm0F345NxOKkNKE=;
+	s=korg; t=1757186006;
+	bh=mtW6hx5KIBuhodRm+ZDTTS/RxaE558uh/kNwQjqaMtE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=eSnRT9YlD5Zdh825vCUlWqezJWiNe0P6wB7alb37wlEO/D6t7Wh659trpT6VBueHT
-	 Od7L5XXQ8kskrdExdL1XxayApx4hk1uFy1o7k+lO/FznLjdkc6FLm+QcgfwR8nz+yn
-	 wiQ2TReVDS7M9XQ5Caa6++2oBrO06wcRHFHkl6oY=
-Subject: FAILED: patch "[PATCH] kunit: kasan_test: disable fortify string checker on" failed to apply to 5.10-stable tree
-To: yeoreum.yun@arm.com,akpm@linux-foundation.org,andreyknvl@gmail.com,dvyukov@google.com,glider@google.com,ryabinin.a.a@gmail.com,stable@vger.kernel.org,vincenzo.frascino@arm.com
+	b=vDpj3Knyo247SQy1q9kZYeC/RXdGyqXDM0ktr+fP4c3YeBJsSpabiU10UMYE6k+Wo
+	 fyqher8KY9IaWtyOgbLkGvPbu9zbRVb7m1Q5jqTQeAw0kWnDNQwieBWiCrPew9gRlf
+	 LWYRgP7xdYU1RlMwgzs6LTSfziziMB+czZ2gN6OI=
+Subject: FAILED: patch "[PATCH] scsi: lpfc: Fix buffer free/clear order in deferred receive" failed to apply to 5.4-stable tree
+To: evans1210144@gmail.com,justin.tee@broadcom.com,martin.petersen@oracle.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 06 Sep 2025 21:08:19 +0200
-Message-ID: <2025090619-overdress-wistful-1ca6@gregkh>
+Date: Sat, 06 Sep 2025 21:13:24 +0200
+Message-ID: <2025090623-retiring-only-9b80@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7a19afee6fb39df63ddea7ce78976d8c521178c6
+git cherry-pick -x 9dba9a45c348e8460da97c450cddf70b2056deb3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025090619-overdress-wistful-1ca6@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025090623-retiring-only-9b80@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,60 +77,70 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7a19afee6fb39df63ddea7ce78976d8c521178c6 Mon Sep 17 00:00:00 2001
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Fri, 1 Aug 2025 13:02:36 +0100
-Subject: [PATCH] kunit: kasan_test: disable fortify string checker on
- kasan_strings() test
+From 9dba9a45c348e8460da97c450cddf70b2056deb3 Mon Sep 17 00:00:00 2001
+From: John Evans <evans1210144@gmail.com>
+Date: Thu, 28 Aug 2025 12:40:08 +0800
+Subject: [PATCH] scsi: lpfc: Fix buffer free/clear order in deferred receive
+ path
 
-Similar to commit 09c6304e38e4 ("kasan: test: fix compatibility with
-FORTIFY_SOURCE") the kernel is panicing in kasan_string().
+Fix a use-after-free window by correcting the buffer release sequence in
+the deferred receive path. The code freed the RQ buffer first and only
+then cleared the context pointer under the lock. Concurrent paths (e.g.,
+ABTS and the repost path) also inspect and release the same pointer under
+the lock, so the old order could lead to double-free/UAF.
 
-This is due to the `src` and `ptr` not being hidden from the optimizer
-which would disable the runtime fortify string checker.
+Note that the repost path already uses the correct pattern: detach the
+pointer under the lock, then free it after dropping the lock. The
+deferred path should do the same.
 
-Call trace:
-  __fortify_panic+0x10/0x20 (P)
-  kasan_strings+0x980/0x9b0
-  kunit_try_run_case+0x68/0x190
-  kunit_generic_run_threadfn_adapter+0x34/0x68
-  kthread+0x1c4/0x228
-  ret_from_fork+0x10/0x20
- Code: d503233f a9bf7bfd 910003fd 9424b243 (d4210000)
- ---[ end trace 0000000000000000 ]---
- note: kunit_try_catch[128] exited with irqs disabled
- note: kunit_try_catch[128] exited with preempt_count 1
-     # kasan_strings: try faulted: last
-** replaying previous printk message **
-     # kasan_strings: try faulted: last line seen mm/kasan/kasan_test_c.c:1600
-     # kasan_strings: internal error occurred preventing test case from running: -4
+Fixes: 472e146d1cf3 ("scsi: lpfc: Correct upcalling nvmet_fc transport during io done downcall")
+Cc: stable@vger.kernel.org
+Signed-off-by: John Evans <evans1210144@gmail.com>
+Link: https://lore.kernel.org/r/20250828044008.743-1-evans1210144@gmail.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 
-Link: https://lkml.kernel.org/r/20250801120236.2962642-1-yeoreum.yun@arm.com
-Fixes: 73228c7ecc5e ("KASAN: port KASAN Tests to KUnit")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
-index e0968acc03aa..f4b17984b627 100644
---- a/mm/kasan/kasan_test_c.c
-+++ b/mm/kasan/kasan_test_c.c
-@@ -1578,9 +1578,11 @@ static void kasan_strings(struct kunit *test)
+diff --git a/drivers/scsi/lpfc/lpfc_nvmet.c b/drivers/scsi/lpfc/lpfc_nvmet.c
+index fba2e62027b7..4cfc928bcf2d 100644
+--- a/drivers/scsi/lpfc/lpfc_nvmet.c
++++ b/drivers/scsi/lpfc/lpfc_nvmet.c
+@@ -1243,7 +1243,7 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_target_port *tgtport,
+ 	struct lpfc_nvmet_tgtport *tgtp;
+ 	struct lpfc_async_xchg_ctx *ctxp =
+ 		container_of(rsp, struct lpfc_async_xchg_ctx, hdlrctx.fcp_req);
+-	struct rqb_dmabuf *nvmebuf = ctxp->rqb_buffer;
++	struct rqb_dmabuf *nvmebuf;
+ 	struct lpfc_hba *phba = ctxp->phba;
+ 	unsigned long iflag;
  
- 	ptr = kmalloc(size, GFP_KERNEL | __GFP_ZERO);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
-+	OPTIMIZER_HIDE_VAR(ptr);
+@@ -1251,13 +1251,18 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_target_port *tgtport,
+ 	lpfc_nvmeio_data(phba, "NVMET DEFERRCV: xri x%x sz %d CPU %02x\n",
+ 			 ctxp->oxid, ctxp->size, raw_smp_processor_id());
  
- 	src = kmalloc(KASAN_GRANULE_SIZE, GFP_KERNEL | __GFP_ZERO);
- 	strscpy(src, "f0cacc1a0000000", KASAN_GRANULE_SIZE);
-+	OPTIMIZER_HIDE_VAR(src);
++	spin_lock_irqsave(&ctxp->ctxlock, iflag);
++	nvmebuf = ctxp->rqb_buffer;
+ 	if (!nvmebuf) {
++		spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ 		lpfc_printf_log(phba, KERN_INFO, LOG_NVME_IOERR,
+ 				"6425 Defer rcv: no buffer oxid x%x: "
+ 				"flg %x ste %x\n",
+ 				ctxp->oxid, ctxp->flag, ctxp->state);
+ 		return;
+ 	}
++	ctxp->rqb_buffer = NULL;
++	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
  
- 	/*
- 	 * Make sure that strscpy() does not trigger KASAN if it overreads into
+ 	tgtp = phba->targetport->private;
+ 	if (tgtp)
+@@ -1265,9 +1270,6 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_target_port *tgtport,
+ 
+ 	/* Free the nvmebuf since a new buffer already replaced it */
+ 	nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
+-	spin_lock_irqsave(&ctxp->ctxlock, iflag);
+-	ctxp->rqb_buffer = NULL;
+-	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ }
+ 
+ /**
 
 
