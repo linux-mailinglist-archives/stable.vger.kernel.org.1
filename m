@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-177957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A700B46DFF
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D3DB46E00
 	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 15:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 596D15A273B
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 13:22:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91CFF18950B5
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 13:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9EF62F0C44;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C522F069F;
 	Sat,  6 Sep 2025 13:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ko+JZK+a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kplC5QbV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FA82F0688
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 13:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0352F068C
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 13:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757164937; cv=none; b=ts13ghJ/+7OLRgWtAmLkWQXSL0OjHL+k8saw2HpBhBa/4uyi7m9iAKjqeB77dznBD3H6Ow6x/j3M0ATvRUcHJDLZ4HwI7jxqwQ5X1oZnozCRKvBuov0zXKL53ZZcGMx7KvklGC1ezry2sVHhKCAE3IhoEhLHpydmBPctnopnqic=
+	t=1757164937; cv=none; b=o6DEpK5JQr4X0Z/73Nj1ImgwvvGgbLvOZJwzkoiP8pQ9o2X5qsKUPyLcAJzK6cyAgGSOfg1leff2AkTPw0K5zqBSCZ+vPDVfOVTgBfXRSY+ysd9gHJL6Ssj7Fp8iYCbOzNvLQ477Rq23aSxAmL5d+UYL0tK6nCttk2GpHv0FiWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757164937; c=relaxed/simple;
-	bh=Z1hZ9DEsKgpYpOQLeybgvxj8+QNx0yMWT4KayQexrJw=;
+	bh=Ryh00HzG/QXTqpBA3b8W6GV9y3N8qfSfIEGeLOo9y3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxi22/NOEwO8YwjDNG8QjbJUo9dCW7/OQU5dqgWrwMqK+7rnh/n4LA8fYy4DQjNdxbyGP5DTmIY1qJdH5RysslyVk1JusyZEIc0XLVb8gBYSUl79zL0Aw7TSnzOXpyDijR09aT5LqrSInmEDkcYa/LZG+xGBo3t4LDZw+eX5KZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ko+JZK+a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8100C4CEE7;
-	Sat,  6 Sep 2025 13:22:13 +0000 (UTC)
+	 MIME-Version; b=HbarsUZqo0onA2/mjr3YIouKNUmYk7DKWZyiDUc5aC3Dfmz/8tJ9/hAGqL3d3k9hjhDm7JX0tXhGLinAqwK99M8sqj8+UNeJXoXreg8+SSPDqZ68mo8lGG8qqRSjrAW3Cp3aH2AEIqpVsqCdw6dU2Ls0Bu/h7jzlGYmAYbQucAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kplC5QbV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E761C4CEF7;
+	Sat,  6 Sep 2025 13:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757164934;
-	bh=Z1hZ9DEsKgpYpOQLeybgvxj8+QNx0yMWT4KayQexrJw=;
+	s=k20201202; t=1757164935;
+	bh=Ryh00HzG/QXTqpBA3b8W6GV9y3N8qfSfIEGeLOo9y3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ko+JZK+a2+o1xzgBcTrNvaiy+Xm+ulscsbjmYL6oaQLhRY/MIyoqZXUikvbVp5Cyk
-	 cn+z8CVwpth+g9fcjijSMgaBYYuam9zLdibtPo39ssSy6Aq0lqZFjnlD4WyqmbB4zQ
-	 AeOeWWhso7K9EEbldPic4EB5uVOjq9KXGc7YdhomGece2sqOgixQhHUnO0xu2xKOW1
-	 JsS4+yCApJdKRrySb8ZlECzxxmr0tiI7MSTHEcdJ8Mocjv/1c8H3o0VfwqMkId/Zuj
-	 4M1qMdh+ugvHp+6XCxkDkEs+VmdYM4XTOMQkrwKSv7mNKnJ93X/mF/6Q1W06+bns9/
-	 nZwxynU7LmtYQ==
+	b=kplC5QbVP2+puWjwkaShhh05rRKswrIiNMERJHsSN+w8Cac/KBH7jOaiLUoMVhQuu
+	 8rI/R9Bm9mU746K6cQyywSIgjdgRukE0Jhm/HGkddIrRgLoH3G4AdHR++uqgtU1pjH
+	 wRH9oRV0CPRjAG0gDSilG/Z4RWdT79B0dOfUPn6yzguRJyiXHQxHUsYV3rvRW+OLnW
+	 z0tEUcDYkigGlFK66WqZcLXed+cIh5ejp4J5Y4joiRqWgIEpUeAeSKHFpHcWtR/85E
+	 MgAS4QEEwCIZxEcgQ3W93kHUwF/ubaNJcDdI6liL+ecpeg7L7E3bQsfiAb0puXD3o/
+	 I0lIfqcwAKazA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 3/4] cpufreq: intel_pstate: Do not update global.turbo_disabled after initialization
-Date: Sat,  6 Sep 2025 09:22:09 -0400
-Message-ID: <20250906132210.3888723-3-sashal@kernel.org>
+Subject: [PATCH 6.1.y 4/4] cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode
+Date: Sat,  6 Sep 2025 09:22:10 -0400
+Message-ID: <20250906132210.3888723-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250906132210.3888723-1-sashal@kernel.org>
 References: <2025050515-constrain-banter-97de@gregkh>
@@ -61,193 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 0940f1a8011fd69be5082015068e0dc31c800c20 ]
+[ Upstream commit ac4e04d9e378f5aa826c2406ad7871ae1b6a6fb9 ]
 
-The global.turbo_disabled is updated quite often, especially in the
-passive mode in which case it is updated every time the scheduler calls
-into the driver.  However, this is generally not necessary and it adds
-MSR read overhead to scheduler code paths (and that particular MSR is
-slow to read).
+When turbo mode is unavailable on a Skylake-X system, executing the
+command:
 
-For this reason, make the driver read MSR_IA32_MISC_ENABLE_TURBO_DISABLE
-just once at the cpufreq driver registration time and remove all of the
-in-flight updates of global.turbo_disabled.
+ # echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
 
+results in an unchecked MSR access error:
+
+ WRMSR to 0x199 (attempted to write 0x0000000100001300).
+
+This issue was reproduced on an OEM (Original Equipment Manufacturer)
+system and is not a common problem across all Skylake-X systems.
+
+This error occurs because the MSR 0x199 Turbo Engage Bit (bit 32) is set
+when turbo mode is disabled. The issue arises when intel_pstate fails to
+detect that turbo mode is disabled. Here intel_pstate relies on
+MSR_IA32_MISC_ENABLE bit 38 to determine the status of turbo mode.
+However, on this system, bit 38 is not set even when turbo mode is
+disabled.
+
+According to the Intel Software Developer's Manual (SDM), the BIOS sets
+this bit during platform initialization to enable or disable
+opportunistic processor performance operations. Logically, this bit
+should be set in such cases. However, the SDM also specifies that "OS
+and applications must use CPUID leaf 06H to detect processors with
+opportunistic processor performance operations enabled."
+
+Therefore, in addition to checking MSR_IA32_MISC_ENABLE bit 38, verify
+that CPUID.06H:EAX[1] is 0 to accurately determine if turbo mode is
+disabled.
+
+Fixes: 4521e1a0ce17 ("cpufreq: intel_pstate: Reflect current no_turbo state correctly")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: All applicable <stable@vger.kernel.org>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Stable-dep-of: ac4e04d9e378 ("cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c | 51 ++++++----------------------------
- 1 file changed, 8 insertions(+), 43 deletions(-)
+ drivers/cpufreq/intel_pstate.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 39af2970a4297..1918cceca6cea 100644
+index 1918cceca6cea..7d28bf7548cfa 100644
 --- a/drivers/cpufreq/intel_pstate.c
 +++ b/drivers/cpufreq/intel_pstate.c
-@@ -172,7 +172,6 @@ struct vid_data {
-  *			based on the MSR_IA32_MISC_ENABLE value and whether or
-  *			not the maximum reported turbo P-state is different from
-  *			the maximum reported non-turbo one.
-- * @turbo_disabled_mf:	The @turbo_disabled value reflected by cpuinfo.max_freq.
-  * @min_perf_pct:	Minimum capacity limit in percent of the maximum turbo
-  *			P-state capacity.
-  * @max_perf_pct:	Maximum capacity limit in percent of the maximum turbo
-@@ -181,7 +180,6 @@ struct vid_data {
- struct global_params {
- 	bool no_turbo;
- 	bool turbo_disabled;
--	bool turbo_disabled_mf;
- 	int max_perf_pct;
- 	int min_perf_pct;
- };
-@@ -559,12 +557,13 @@ static void intel_pstate_hybrid_hwp_adjust(struct cpudata *cpu)
- 	cpu->pstate.min_pstate = intel_pstate_freq_to_hwp(cpu, freq);
- }
- 
--static inline void update_turbo_state(void)
-+static bool turbo_is_disabled(void)
+@@ -561,6 +561,9 @@ static bool turbo_is_disabled(void)
  {
  	u64 misc_en;
  
++	if (!cpu_feature_enabled(X86_FEATURE_IDA))
++		return true;
++
  	rdmsrl(MSR_IA32_MISC_ENABLE, misc_en);
--	global.turbo_disabled = misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE;
-+
-+	return !!(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
- }
  
- static int min_perf_pct_min(void)
-@@ -1119,40 +1118,16 @@ static void intel_pstate_update_policies(void)
- static void __intel_pstate_update_max_freq(struct cpudata *cpudata,
- 					   struct cpufreq_policy *policy)
- {
--	policy->cpuinfo.max_freq = global.turbo_disabled_mf ?
-+	policy->cpuinfo.max_freq = global.turbo_disabled ?
- 			cpudata->pstate.max_freq : cpudata->pstate.turbo_freq;
- 	refresh_frequency_limits(policy);
- }
- 
--static void intel_pstate_update_max_freq(unsigned int cpu)
--{
--	struct cpufreq_policy *policy = cpufreq_cpu_acquire(cpu);
--
--	if (!policy)
--		return;
--
--	__intel_pstate_update_max_freq(all_cpu_data[cpu], policy);
--
--	cpufreq_cpu_release(policy);
--}
--
- static void intel_pstate_update_limits(unsigned int cpu)
- {
- 	mutex_lock(&intel_pstate_driver_lock);
- 
--	update_turbo_state();
--	/*
--	 * If turbo has been turned on or off globally, policy limits for
--	 * all CPUs need to be updated to reflect that.
--	 */
--	if (global.turbo_disabled_mf != global.turbo_disabled) {
--		global.turbo_disabled_mf = global.turbo_disabled;
--		arch_set_max_freq_ratio(global.turbo_disabled);
--		for_each_possible_cpu(cpu)
--			intel_pstate_update_max_freq(cpu);
--	} else {
--		cpufreq_update_policy(cpu);
--	}
-+	cpufreq_update_policy(cpu);
- 
- 	mutex_unlock(&intel_pstate_driver_lock);
- }
-@@ -1252,7 +1227,6 @@ static ssize_t show_no_turbo(struct kobject *kobj,
- 		return -EAGAIN;
- 	}
- 
--	update_turbo_state();
- 	if (global.turbo_disabled)
- 		ret = sprintf(buf, "%u\n", global.turbo_disabled);
- 	else
-@@ -1282,7 +1256,6 @@ static ssize_t store_no_turbo(struct kobject *a, struct kobj_attribute *b,
- 
- 	mutex_lock(&intel_pstate_limits_lock);
- 
--	update_turbo_state();
- 	if (global.turbo_disabled) {
- 		pr_notice_once("Turbo disabled by BIOS or unavailable on processor\n");
- 		mutex_unlock(&intel_pstate_limits_lock);
-@@ -2253,8 +2226,6 @@ static void intel_pstate_adjust_pstate(struct cpudata *cpu)
- 	struct sample *sample;
- 	int target_pstate;
- 
--	update_turbo_state();
--
- 	target_pstate = get_target_pstate(cpu);
- 	target_pstate = intel_pstate_prepare_request(cpu, target_pstate);
- 	trace_cpu_frequency(target_pstate * cpu->pstate.scaling, cpu->cpu);
-@@ -2572,7 +2543,6 @@ static int intel_pstate_set_policy(struct cpufreq_policy *policy)
- 		 * be invoked on them.
- 		 */
- 		intel_pstate_clear_update_util_hook(policy->cpu);
--		update_turbo_state();
- 		intel_pstate_set_pstate(cpu, pstate);
- 	} else {
- 		intel_pstate_set_update_util_hook(policy->cpu);
-@@ -2616,7 +2586,6 @@ static void intel_pstate_verify_cpu_policy(struct cpudata *cpu,
- {
- 	int max_freq;
- 
--	update_turbo_state();
- 	if (hwp_active) {
- 		intel_pstate_get_hwp_cap(cpu);
- 		max_freq = global.no_turbo || global.turbo_disabled ?
-@@ -2713,8 +2682,6 @@ static int __intel_pstate_cpu_init(struct cpufreq_policy *policy)
- 
- 	/* cpuinfo and default policy values */
- 	policy->cpuinfo.min_freq = cpu->pstate.min_freq;
--	update_turbo_state();
--	global.turbo_disabled_mf = global.turbo_disabled;
- 	policy->cpuinfo.max_freq = global.turbo_disabled ?
- 			cpu->pstate.max_freq : cpu->pstate.turbo_freq;
- 
-@@ -2880,8 +2847,6 @@ static int intel_cpufreq_target(struct cpufreq_policy *policy,
- 	struct cpufreq_freqs freqs;
- 	int target_pstate;
- 
--	update_turbo_state();
--
- 	freqs.old = policy->cur;
- 	freqs.new = target_freq;
- 
-@@ -2903,8 +2868,6 @@ static unsigned int intel_cpufreq_fast_switch(struct cpufreq_policy *policy,
- 	struct cpudata *cpu = all_cpu_data[policy->cpu];
- 	int target_pstate;
- 
--	update_turbo_state();
--
- 	target_pstate = intel_pstate_freq_to_hwp(cpu, target_freq);
- 
- 	target_pstate = intel_cpufreq_update_pstate(policy, target_pstate, true);
-@@ -2922,7 +2885,6 @@ static void intel_cpufreq_adjust_perf(unsigned int cpunum,
- 	int old_pstate = cpu->pstate.current_pstate;
- 	int cap_pstate, min_pstate, max_pstate, target_pstate;
- 
--	update_turbo_state();
- 	cap_pstate = global.turbo_disabled ? HWP_GUARANTEED_PERF(hwp_cap) :
- 					     HWP_HIGHEST_PERF(hwp_cap);
- 
-@@ -3112,6 +3074,9 @@ static int intel_pstate_register_driver(struct cpufreq_driver *driver)
- 
- 	memset(&global, 0, sizeof(global));
- 	global.max_perf_pct = 100;
-+	global.turbo_disabled = turbo_is_disabled();
-+
-+	arch_set_max_freq_ratio(global.turbo_disabled);
- 
- 	intel_pstate_driver = driver;
- 	ret = cpufreq_register_driver(intel_pstate_driver);
+ 	return !!(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
 -- 
 2.51.0
 
