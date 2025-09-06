@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-178008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8CDB4776A
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 23:25:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01483B4776C
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 23:25:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 031715A0CA6
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 21:25:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5F487AD054
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 21:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6DD3284679;
-	Sat,  6 Sep 2025 21:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72A928725B;
+	Sat,  6 Sep 2025 21:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="twAmqSqb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bdfmrQy5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6025315D45
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 21:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859A7315D45
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 21:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757193934; cv=none; b=qcwK7GWUZfg+ODr25uvhaSuHrMC1ayo1O4ZP3Cf0501LRVGfMgQtAeW/3umD62ANDlWxg6FO7k+yedf0xnQgX37picYczxyWgYsVh344RkcT5fIX5Ss577kjivXu80BzMWiFrKXmEb/EdLGhaKZ3VCKpBQDyZfd9PVaENU5c6ys=
+	t=1757193935; cv=none; b=kCmEQ0dtuwPqA0GTs0j1fsjm4ymOn74pYEnsAl8tMTgZ9XhotvOopMKCicMISwhWMSnZOcoFbjBi7RxvDP2vuzgh02ITaZmeoZ1ww4lnros4vgt2s/0oP9LE0jThRyR6crBH6UONznSXhwoThZvDSoJTXxpUyd5HL2ECT5+mCBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757193934; c=relaxed/simple;
-	bh=ezVzwnuwxgJHWw1/TuXST0aCLoeEBNcZiIdH+prc9/M=;
+	s=arc-20240116; t=1757193935; c=relaxed/simple;
+	bh=N4iyWQEc3jtK01rT2CcmXDUdS61n01OLfjLbiGVh1UM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FQ2zuRGD67xRkWQpfxM7EZIKkpF0RXa5m/pj6XBLErUrG+SS5L4lY7FSI381fyk/dtNDiVoTgTdVT2gDdcdGzaaBY4J4jW+So/H7UFEBhATqhqV6b1ObODrMKt+ez6p2MHEGrVfkUXmapZWGtdCmikA/6REvu2/fo+mTpwMUdlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=twAmqSqb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E719CC4CEF8;
-	Sat,  6 Sep 2025 21:25:33 +0000 (UTC)
+	 MIME-Version; b=MVx7YvR4eH7KmG8k7khJly7IPd0A8GVeugrRCmie/kWLbk/h3hkUNbtyHQqOwfio9QSGKousUPRcr2giN8R6QCHALZ8TZYcGeGbLlFycV5m2Rcuu8zarN8VZxqeAhMwXBMr+PCZIwsvrwCOqZ5jxyhIO18AZR8eSttFgj5m548A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bdfmrQy5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B746AC4CEF5;
+	Sat,  6 Sep 2025 21:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757193934;
-	bh=ezVzwnuwxgJHWw1/TuXST0aCLoeEBNcZiIdH+prc9/M=;
+	s=k20201202; t=1757193935;
+	bh=N4iyWQEc3jtK01rT2CcmXDUdS61n01OLfjLbiGVh1UM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=twAmqSqbVOBd3MbGpfFPP4sjUNEDYvArLVtpxeatUVU5UmA25q0lp4eSPSNSSrO7u
-	 nAEuNf/amRxhsWFIJ1e5ZNUdQw/YxnHSR70fhgIhPojEuOf0G20POSvtrS+rCUc4bf
-	 x1ZUAAuAQc058PEahWHixPYT43rBYgoCX90OpF6B7MGQuVqk/F3emLNdDxy5NLupi3
-	 jwUgg7IMQ+nW+VxqmeoHtjkJe49Uc3Svk9vK2V8c+DrdFtI2jkUH/Os5onS2iQwcBD
-	 E49Cm9YSE137FvziQvTH7qUlc9EBb+kGXSJK8YVzyhnbZR1kY9/1StTyKtKd73TdB1
-	 VH3PTOPgCkZJw==
+	b=bdfmrQy52dapnyp6r+uQ7hga3Y+gxzRT89IbJBV7GAt+0XIRqtGj29gUou93QnAxV
+	 HJEtxv6mxWdMf4oe7i+uRiHBK8N8YdvpWkHnSEl1t1+amUr9KKwpAqN+KrL0iHBhZ/
+	 +y94IN+3MsNNcvfDBtOWnxtatp6wcaw+7Id3u37gV/Yd5gUThz3cP3at1L26uyYJlh
+	 OACfL6ovhzGYfjZdRxC/Hcd//L9vgQ4MSLGeNdfXBL8O5HL/QIrja3zfpY+SeozD0n
+	 0GV1P/NspHegZdOWWGLl4DINQRyjVSMfkkW0rrBL7UoENwjOL5QvQt2290K37oL89p
+	 Fm7QkD5dAr+6Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Hyesoo Yu <hyesoo.yu@samsung.com>,
+Cc: Vlastimil Babka <vbabka@suse.cz>,
 	Harry Yoo <harry.yoo@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/4] mm: slub: call WARN() when detecting a slab corruption
-Date: Sat,  6 Sep 2025 17:25:28 -0400
-Message-ID: <20250906212530.302670-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y 3/4] mm, slab: cleanup slab_bug() parameters
+Date: Sat,  6 Sep 2025 17:25:29 -0400
+Message-ID: <20250906212530.302670-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250906212530.302670-1-sashal@kernel.org>
 References: <2025090618-patient-manlike-340f@gregkh>
@@ -62,159 +61,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Hyesoo Yu <hyesoo.yu@samsung.com>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-[ Upstream commit 3f6f32b14ab35452d2ed52f7821cf2829923c98d ]
+[ Upstream commit 4b183dd9359d5772446cb634b12a383bed98c4fc ]
 
-If a slab object is corrupted or an error occurs in its internal
-validation, continuing after restoration may cause other side effects.
-At this point, it is difficult to debug because the problem occurred in
-the past. It is useful to use WARN() to catch errors at the point of
-issue because WARN() could trigger panic for system debugging when
-panic_on_warn is enabled. WARN() is added where to detect the error on
-slab_err and object_err.
+slab_err() has variadic printf arguments but instead of passing them to
+slab_bug() it does vsnprintf() to a buffer and passes %s, buf.
 
-It makes sense to only do the WARN() after printing the logs. slab_err
-is splited to __slab_err that calls the WARN() and it is called after
-printing logs.
+To allow passing them directly, turn slab_bug() to __slab_bug() with a
+va_list parameter, and slab_bug() a wrapper with fmt, ... parameters.
+Then slab_err() can call __slab_bug() without the intermediate buffer.
 
-Signed-off-by: Hyesoo Yu <hyesoo.yu@samsung.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Also constify fmt everywhere, which also simplifies object_err()'s
+call to slab_bug().
+
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 Stable-dep-of: b4efccec8d06 ("mm/slub: avoid accessing metadata when pointer is invalid in object_err()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/slub.c | 47 +++++++++++++++++++++++++++++------------------
- 1 file changed, 29 insertions(+), 18 deletions(-)
+ mm/slub.c | 28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index 7282beba8ec5e..f6323fac6a026 100644
+index f6323fac6a026..39fb2b930fdf7 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -1036,7 +1036,7 @@ static void slab_bug(struct kmem_cache *s, char *fmt, ...)
+@@ -1027,12 +1027,12 @@ void skip_orig_size_check(struct kmem_cache *s, const void *object)
+ 	set_orig_size(s, (void *)object, s->object_size);
+ }
+ 
+-static void slab_bug(struct kmem_cache *s, char *fmt, ...)
++static void __slab_bug(struct kmem_cache *s, const char *fmt, va_list argsp)
+ {
+ 	struct va_format vaf;
+ 	va_list args;
+ 
+-	va_start(args, fmt);
++	va_copy(args, argsp);
  	vaf.fmt = fmt;
  	vaf.va = &args;
  	pr_err("=============================================================================\n");
--	pr_err("BUG %s (%s): %pV\n", s->name, print_tainted(), &vaf);
-+	pr_err("BUG %s (%s): %pV\n", s ? s->name : "<unknown>", print_tainted(), &vaf);
- 	pr_err("-----------------------------------------------------------------------------\n\n");
+@@ -1041,8 +1041,17 @@ static void slab_bug(struct kmem_cache *s, char *fmt, ...)
  	va_end(args);
  }
-@@ -1095,8 +1095,6 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
- 		/* Beginning of the filler is the free pointer */
- 		print_section(KERN_ERR, "Padding  ", p + off,
- 			      size_from_object(s) - off);
--
--	dump_stack();
+ 
++static void slab_bug(struct kmem_cache *s, const char *fmt, ...)
++{
++	va_list args;
++
++	va_start(args, fmt);
++	__slab_bug(s, fmt, args);
++	va_end(args);
++}
++
+ __printf(2, 3)
+-static void slab_fix(struct kmem_cache *s, char *fmt, ...)
++static void slab_fix(struct kmem_cache *s, const char *fmt, ...)
+ {
+ 	struct va_format vaf;
+ 	va_list args;
+@@ -1098,12 +1107,12 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
  }
  
  static void object_err(struct kmem_cache *s, struct slab *slab,
-@@ -1108,6 +1106,8 @@ static void object_err(struct kmem_cache *s, struct slab *slab,
- 	slab_bug(s, "%s", reason);
+-			u8 *object, char *reason)
++			u8 *object, const char *reason)
+ {
+ 	if (slab_add_kunit_errors())
+ 		return;
+ 
+-	slab_bug(s, "%s", reason);
++	slab_bug(s, reason);
  	print_trailer(s, slab, object);
  	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
-+
-+	WARN_ON(1);
- }
  
- static bool freelist_corrupted(struct kmem_cache *s, struct slab *slab,
-@@ -1124,6 +1124,17 @@ static bool freelist_corrupted(struct kmem_cache *s, struct slab *slab,
- 	return false;
- }
- 
-+static void __slab_err(struct slab *slab)
-+{
-+	if (slab_in_kunit_test())
-+		return;
-+
-+	print_slab_info(slab);
-+	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
-+
-+	WARN_ON(1);
-+}
-+
- static __printf(3, 4) void slab_err(struct kmem_cache *s, struct slab *slab,
+@@ -1139,15 +1148,14 @@ static __printf(3, 4) void slab_err(struct kmem_cache *s, struct slab *slab,
  			const char *fmt, ...)
  {
-@@ -1137,9 +1148,7 @@ static __printf(3, 4) void slab_err(struct kmem_cache *s, struct slab *slab,
- 	vsnprintf(buf, sizeof(buf), fmt, args);
+ 	va_list args;
+-	char buf[100];
+ 
+ 	if (slab_add_kunit_errors())
+ 		return;
+ 
+ 	va_start(args, fmt);
+-	vsnprintf(buf, sizeof(buf), fmt, args);
++	__slab_bug(s, fmt, args);
  	va_end(args);
- 	slab_bug(s, "%s", buf);
--	print_slab_info(slab);
--	dump_stack();
--	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
-+	__slab_err(slab);
- }
- 
- static void init_object(struct kmem_cache *s, void *object, u8 val)
-@@ -1312,9 +1321,10 @@ slab_pad_check(struct kmem_cache *s, struct slab *slab)
- 	while (end > fault && end[-1] == POISON_INUSE)
- 		end--;
- 
--	slab_err(s, slab, "Padding overwritten. 0x%p-0x%p @offset=%tu",
--			fault, end - 1, fault - start);
-+	slab_bug(s, "Padding overwritten. 0x%p-0x%p @offset=%tu",
-+		 fault, end - 1, fault - start);
- 	print_section(KERN_ERR, "Padding ", pad, remainder);
-+	__slab_err(slab);
- 
- 	restore_bytes(s, "slab padding", POISON_INUSE, fault, end);
- }
-@@ -1630,12 +1640,12 @@ static inline int free_consistency_checks(struct kmem_cache *s,
- 			slab_err(s, slab, "Attempt to free object(0x%p) outside of slab",
- 				 object);
- 		} else if (!slab->slab_cache) {
--			pr_err("SLUB <none>: no slab for object 0x%p.\n",
--			       object);
--			dump_stack();
--		} else
-+			slab_err(NULL, slab, "No slab cache for object 0x%p",
-+				 object);
-+		} else {
- 			object_err(s, slab, object,
--					"page slab pointer corrupt.");
-+				   "page slab pointer corrupt.");
-+		}
- 		return 0;
- 	}
- 	return 1;
-@@ -5440,14 +5450,14 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
- 	return !!oo_objects(s->oo);
- }
- 
--static void list_slab_objects(struct kmem_cache *s, struct slab *slab,
--			      const char *text)
-+static void list_slab_objects(struct kmem_cache *s, struct slab *slab)
- {
- #ifdef CONFIG_SLUB_DEBUG
- 	void *addr = slab_address(slab);
- 	void *p;
- 
--	slab_err(s, slab, text, s->name);
-+	if (!slab_add_kunit_errors())
-+		slab_bug(s, "Objects remaining on __kmem_cache_shutdown()");
- 
- 	spin_lock(&object_map_lock);
- 	__fill_map(object_map, s, slab);
-@@ -5462,6 +5472,8 @@ static void list_slab_objects(struct kmem_cache *s, struct slab *slab,
- 		}
- 	}
- 	spin_unlock(&object_map_lock);
+-	slab_bug(s, "%s", buf);
 +
-+	__slab_err(slab);
- #endif
+ 	__slab_err(slab);
  }
  
-@@ -5482,8 +5494,7 @@ static void free_partial(struct kmem_cache *s, struct kmem_cache_node *n)
- 			remove_partial(n, slab);
- 			list_add(&slab->slab_list, &discard);
- 		} else {
--			list_slab_objects(s, slab,
--			  "Objects remaining in %s on __kmem_cache_shutdown()");
-+			list_slab_objects(s, slab);
- 		}
- 	}
- 	spin_unlock_irq(&n->list_lock);
+@@ -1185,7 +1193,7 @@ static void init_object(struct kmem_cache *s, void *object, u8 val)
+ 					  s->inuse - poison_size);
+ }
+ 
+-static void restore_bytes(struct kmem_cache *s, char *message, u8 data,
++static void restore_bytes(struct kmem_cache *s, const char *message, u8 data,
+ 						void *from, void *to)
+ {
+ 	slab_fix(s, "Restoring %s 0x%p-0x%p=0x%x", message, from, to - 1, data);
+@@ -1200,7 +1208,7 @@ static void restore_bytes(struct kmem_cache *s, char *message, u8 data,
+ 
+ static pad_check_attributes int
+ check_bytes_and_report(struct kmem_cache *s, struct slab *slab,
+-		       u8 *object, char *what, u8 *start, unsigned int value,
++		       u8 *object, const char *what, u8 *start, unsigned int value,
+ 		       unsigned int bytes, bool slab_obj_print)
+ {
+ 	u8 *fault;
 -- 
 2.51.0
 
