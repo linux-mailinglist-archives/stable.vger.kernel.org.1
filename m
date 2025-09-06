@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-177935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E38B468AA
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 05:37:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95818B468AD
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 05:45:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 872291BC70C8
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 03:37:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5177C3AEAF1
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 03:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25310246761;
-	Sat,  6 Sep 2025 03:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE0A4C9D;
+	Sat,  6 Sep 2025 03:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rpBC63VH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YPWQREZ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E8C27707
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 03:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D7CF510
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 03:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757129833; cv=none; b=aKUGznNuGxZAf0GVKmWIs9eZkBVtcJv7wHQAZK6CAZ5nNQuUldS60bgY07PQGYnvbTYO4NQK09Qka5bub/eXu7ygJr7UyGhf+ZZo0/yDRlF6hrxNfaFylfb06yE0ObqIMbQWRPs/5J7Ra51XfBbdb1OWdyBo8cuNEZFxxIvjX1k=
+	t=1757130316; cv=none; b=ARihKuBhHz7e6t1jpMkcyBAXiaObxafsAGu/K8b52vUpUzhbJfxdxHknTyg1RLWPJoColoddTdI8ztor5gYwDVupPQk255QIScqJlJS1CZINIQhgHmv8rxo7ixbaZ7CNzmmfwRc1ry7thr1GAW4kbIcrGrAb5t0IS96JNEfgxPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757129833; c=relaxed/simple;
-	bh=c+HBu0wkeJGqXI8LPich3PmTtK5L7yiu2NNA1Hrk2ng=;
+	s=arc-20240116; t=1757130316; c=relaxed/simple;
+	bh=ru2XICsAG1SauqGPkRcWSp2lcAHnUrg9f8prNsib0Is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r07Wgxrb/+XUH/kMQ/tElhMldDRx5KNqsV/4EyAlL/CjzfVZjbACM1dTzc3K1pgxTP4YUnHQiZ2wDgRrxRX5gORdB5cuQHcW7arLq6Yt0bb3/uLv+Eo2bscpfMerxH+dIbxTDI1TVOtDS+cIf6Mdaubb6xBS1oG2rhyh9YKFwjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rpBC63VH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21D1C4CEF9;
-	Sat,  6 Sep 2025 03:37:12 +0000 (UTC)
+	 MIME-Version; b=WTshxCv8pxUV0kd18NTSnCkOxzIo3CX8essrR/ZF5PBmqm5j3WmN9eothBRXNtWzmT2aZ/+ycxaZ0QxO/3FuCv8hMDHdcV5fSNnoEgwjVHCbOHA0IEIeSA5zeN+0BiwZ63d5Jv7S3igUxQ97xr3UhSnjA8Gt011nTG7098urjKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YPWQREZ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978F5C4CEF1;
+	Sat,  6 Sep 2025 03:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757129833;
-	bh=c+HBu0wkeJGqXI8LPich3PmTtK5L7yiu2NNA1Hrk2ng=;
+	s=k20201202; t=1757130314;
+	bh=ru2XICsAG1SauqGPkRcWSp2lcAHnUrg9f8prNsib0Is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpBC63VHRJ1pWR2jE4eIXrAtQ1vKQhebuzUvObtS4wXsJ29YbHIv90xm4GC5heKPc
-	 N3uYfi3Nm9H/KEbCUIowF1ucNzvLkamGrKUQOauwUuhFrwqjpPPIAdGX0MIxHb7fw+
-	 gHUX4GadX8fMVAbjrl0B0gPGPym5bhQF66uE2FY5suYrbrrol6erlvycBaiOF3c1ZE
-	 bDC3RmND+QwqYvt8Delso1n11acRnemc0Ow7dKo8g3ijxqTkfrP0H2+pQ13DMAglFJ
-	 JV+lf51aR8FzNDIpH2+fZpoZGjLgfBgvXVLSWncWXmiPssZn9lRExX8N6Ndc6wtEbq
-	 R8HpjLOy1/S3g==
+	b=YPWQREZ4u+yYkX1MyWNGmx/je8wdPTELnP2UMDCiH7Rv9K4GsqJkacQog+obmUhaZ
+	 3u4VFEHL/rmH80NvemCWP3BfmRKCwxIxjgbtUKKvUAlbwSoece5rKwaiXZZOlN1MB+
+	 o9nQzwSL2wu9kPsa0w/MATuz0I4JbC3NBmr8cxgwKVawPcc+1Qmf+2qQosmEL7mu72
+	 9LSYaINKKhRvhhdfTyE5ky38gfrIi6/o89nf697bigT+XNmp53767hMEMVFtI3MFcv
+	 FzzfEOf52gn2psSIc3sAUq75CtQad12po/bafNUQcfXxmLxxa5h0v7QJwWyGz14/Tn
+	 zm7BOcQH87l7w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Aaron Kling <webgeek1234@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] spi: tegra114: Don't fail set_cs_timing when delays are zero
-Date: Fri,  5 Sep 2025 23:37:10 -0400
-Message-ID: <20250906033710.3692213-2-sashal@kernel.org>
+Subject: [PATCH 5.4.y] iio: light: opt3001: fix deadlock due to concurrent flag access
+Date: Fri,  5 Sep 2025 23:45:11 -0400
+Message-ID: <20250906034511.3693987-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250906033710.3692213-1-sashal@kernel.org>
-References: <2025050535-slider-herbicide-e70d@gregkh>
- <20250906033710.3692213-1-sashal@kernel.org>
+In-Reply-To: <2025051218-shield-neuron-a082@gregkh>
+References: <2025051218-shield-neuron-a082@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,42 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Aaron Kling <webgeek1234@gmail.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit 4426e6b4ecf632bb75d973051e1179b8bfac2320 ]
+[ Upstream commit f063a28002e3350088b4577c5640882bf4ea17ea ]
 
-The original code would skip null delay pointers, but when the pointers
-were converted to point within the spi_device struct, the check was not
-updated to skip delays of zero. Hence all spi devices that didn't set
-delays would fail to probe.
+The threaded IRQ function in this driver is reading the flag twice: once to
+lock a mutex and once to unlock it. Even though the code setting the flag
+is designed to prevent it, there are subtle cases where the flag could be
+true at the mutex_lock stage and false at the mutex_unlock stage. This
+results in the mutex not being unlocked, resulting in a deadlock.
 
-Fixes: 04e6bb0d6bb1 ("spi: modify set_cs_timing parameter")
+Fix it by making the opt3001_irq() code generally more robust, reading the
+flag into a variable and using the variable value at both stages.
+
+Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
 Cc: stable@vger.kernel.org
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Link: https://patch.msgid.link/20250423-spi-tegra114-v1-1-2d608bcc12f9@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20250321-opt3001-irq-fix-v1-1-6c520d851562@bootlin.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra114.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/light/opt3001.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 6b56108308fc5..60799ab60eb45 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -729,9 +729,9 @@ static int tegra_spi_set_hw_cs_timing(struct spi_device *spi)
- 	u32 inactive_cycles;
- 	u8 cs_state;
+diff --git a/drivers/iio/light/opt3001.c b/drivers/iio/light/opt3001.c
+index 088779f723f7d..924fe985e0c6a 100644
+--- a/drivers/iio/light/opt3001.c
++++ b/drivers/iio/light/opt3001.c
+@@ -691,8 +691,9 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
+ 	struct opt3001 *opt = iio_priv(iio);
+ 	int ret;
+ 	bool wake_result_ready_queue = false;
++	bool ok_to_ignore_lock = opt->ok_to_ignore_lock;
  
--	if (setup->unit != SPI_DELAY_UNIT_SCK ||
--	    hold->unit != SPI_DELAY_UNIT_SCK ||
--	    inactive->unit != SPI_DELAY_UNIT_SCK) {
-+	if ((setup->unit && setup->unit != SPI_DELAY_UNIT_SCK) ||
-+	    (hold->unit && hold->unit != SPI_DELAY_UNIT_SCK) ||
-+	    (inactive->unit && inactive->unit != SPI_DELAY_UNIT_SCK)) {
- 		dev_err(&spi->dev,
- 			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
- 			SPI_DELAY_UNIT_SCK);
+-	if (!opt->ok_to_ignore_lock)
++	if (!ok_to_ignore_lock)
+ 		mutex_lock(&opt->lock);
+ 
+ 	ret = i2c_smbus_read_word_swapped(opt->client, OPT3001_CONFIGURATION);
+@@ -729,7 +730,7 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
+ 	}
+ 
+ out:
+-	if (!opt->ok_to_ignore_lock)
++	if (!ok_to_ignore_lock)
+ 		mutex_unlock(&opt->lock);
+ 
+ 	if (wake_result_ready_queue)
 -- 
 2.50.1
 
