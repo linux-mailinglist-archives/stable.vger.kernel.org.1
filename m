@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBD4B476ED
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 21:50:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43376B4771C
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 22:20:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 855673AE433
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 19:50:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9CC01BC2F9D
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 20:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4437E28851C;
-	Sat,  6 Sep 2025 19:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0BF2BE65A;
+	Sat,  6 Sep 2025 20:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8wZj5te"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sBd+XZOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039751E7C2D
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 19:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09892BE64A
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 20:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757188217; cv=none; b=ue4Z2Ew1PSzt5SL+lAXAI7RZRLPGOfiA7FKR4QBMqhda2Wj3ug+nSpKwwr7uEhNN1zXG60zSbjyCqFULaEjPDP1WeY5sohoBtG55W+5IHW4udgvf/85k+pkdhl2CuS/LSlrcEtZVYd+Ep3SkSkReiIk6PCg3E4pWHXlTZlKJ5Bo=
+	t=1757189960; cv=none; b=eHyZ7GCzPmD59hbKAXw2FYuoxhyFrEpglIDrfChmkx5EJFcyGLnb08ZYEyN2/x066uBRD9XGyyimakJ2x1FhXoBUIhPn3U1EMHpzSP16NdguFZ4q4MSY3ZY3we4lE5IwzXndsN8rz+d7ZL8DbIrZCx1JbHzFifvEqv0Xz9lo/l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757188217; c=relaxed/simple;
-	bh=OPNY0YWtIbCSHJY1cLKue6r0QurU2sizUExyyYeKVRk=;
+	s=arc-20240116; t=1757189960; c=relaxed/simple;
+	bh=bVpYwaj0DdhCZYbSS2cMMncHu8G/gaHPnecVaaBYuX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P1RTCxT9Ti2GvWBecUHKuYna9v59Q9ok1cHnvLY6TYmTGmEht1pkSpxAEgs9N63ca0wbzlhqZRTu/OGujr0DrjG7zxtEkRLbeTxiG6yN9UvYTJKqFlsFX1/EJeyr4aXZidQYMHjtfVYLeopUQWmxpZoyhIGcq/v2Vy59U8BalBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8wZj5te; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B4DC4CEE7;
-	Sat,  6 Sep 2025 19:50:16 +0000 (UTC)
+	 MIME-Version; b=YNl2ldXjUSRB8e7e+ALRwbo+GZhcDdSq3dBuO98K5H8bq/704T/z1dBf6MIx6F1OfokFZn6ojBgrVouRDHDkjtqw33EYueH8ap/D9pT+eTn9yBuIDD5QTc6xsRCvR1WT4ZLFDvHxw/+gv8NbU5cFAOlTVILwPIPsqPp3CdYCkHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sBd+XZOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01472C4CEE7;
+	Sat,  6 Sep 2025 20:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757188216;
-	bh=OPNY0YWtIbCSHJY1cLKue6r0QurU2sizUExyyYeKVRk=;
+	s=k20201202; t=1757189960;
+	bh=bVpYwaj0DdhCZYbSS2cMMncHu8G/gaHPnecVaaBYuX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h8wZj5teRv0kzYxxYd7baugvD8DcAgcPSuQAlfh04TKJGTT0oORS+XcswiIteDODn
-	 8j3xI2gZosRaLy/8uLGSG9lCZFAjx3Qfq48OesIq7k2meILBL8D6A2fBAet6xlNwKi
-	 FzIu6S9aZqWICbzdQj5JliiomnXbZSJiyrX7nGrIKlMaPQgWThNKRyHOYi+wlX67nE
-	 V5HLKSSjRXyp1ooRb7cqN96LSalUwQMTbAGNPo1rf26HZqWx/0vqL2hf7Q3OApF8Ap
-	 ixCGrnTiGnpA9iIvRIv8Vzkw/ZRuqg3fuX3/w0bQSR4Vajle4LsYVqrUp1+QW98rbt
-	 jsFqSbcLGVqOg==
+	b=sBd+XZOqCvrKd37Kl1CQNyahmZ6pN4LPxEjpN5+hfE1txCXNkhJq84V46PCR9Cu3F
+	 9UF/a3LaqZ0YrI5PPy5pBzfwXZsT1/ilG7vHwq+dzBXJYB0KiRsk4NC/79tU5zWqd3
+	 Bh0FRI5T6U7OutBy2oZ4qlBiAKLpADf4RX5UG6so8xWcdiSsVAcFuA1D8xEuXT/ugX
+	 XqWslGt83vZ0N3tybG75O97gUKILSAD2WjhjxHw8IIfptbRqNO/7Yt/ze74KjVu30Y
+	 8dg1s125yfwYSoacmTLBaNQ48C95zWSs87AlqOcUxLiNV+5YPKbGmhpo9ggW68YAws
+	 9g3/evG3KMoAw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jonathan Currier <dullfire@yahoo.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] PCI/MSI: Add an option to write MSIX ENTRY_DATA before any reads
-Date: Sat,  6 Sep 2025 15:50:14 -0400
-Message-ID: <20250906195014.209521-1-sashal@kernel.org>
+Subject: [PATCH 5.4.y] cpufreq/sched: Explicitly synchronize limits_changed flag handling
+Date: Sat,  6 Sep 2025 16:19:18 -0400
+Message-ID: <20250906201918.261460-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025042119-impaired-pretty-e98a@gregkh>
-References: <2025042119-impaired-pretty-e98a@gregkh>
+In-Reply-To: <2025042158-motivator-rummage-0678@gregkh>
+References: <2025042158-motivator-rummage-0678@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,58 +60,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jonathan Currier <dullfire@yahoo.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit cf761e3dacc6ad5f65a4886d00da1f9681e6805a ]
+[ Upstream commit 79443a7e9da3c9f68290a8653837e23aba0fa89f ]
 
-Commit 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries") introduced a
-readl() from ENTRY_VECTOR_CTRL before the writel() to ENTRY_DATA.
+The handling of the limits_changed flag in struct sugov_policy needs to
+be explicitly synchronized to ensure that cpufreq policy limits updates
+will not be missed in some cases.
 
-This is correct, however some hardware, like the Sun Neptune chips, the NIU
-module, will cause an error and/or fatal trap if any MSIX table entry is
-read before the corresponding ENTRY_DATA field is written to.
+Without that synchronization it is theoretically possible that
+the limits_changed update in sugov_should_update_freq() will be
+reordered with respect to the reads of the policy limits in
+cpufreq_driver_resolve_freq() and in that case, if the limits_changed
+update in sugov_limits() clobbers the one in sugov_should_update_freq(),
+the new policy limits may not take effect for a long time.
 
-Add an optional early writel() in msix_prepare_msi_desc().
+Likewise, the limits_changed update in sugov_limits() may theoretically
+get reordered with respect to the updates of the policy limits in
+cpufreq_set_policy() and if sugov_should_update_freq() runs between
+them, the policy limits change may be missed.
 
-Fixes: 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries")
-Signed-off-by: Jonathan Currier <dullfire@yahoo.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241117234843.19236-2-dullfire@yahoo.com
+To ensure that the above situations will not take place, add memory
+barriers preventing the reordering in question from taking place and
+add READ_ONCE() and WRITE_ONCE() annotations around all of the
+limits_changed flag updates to prevent the compiler from messing up
+with that code.
+
+Fixes: 600f5badb78c ("cpufreq: schedutil: Don't skip freq update when limits change")
+Cc: 5.3+ <stable@vger.kernel.org> # 5.3+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/3376719.44csPzL39Z@rjwysocki.net
 [ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/msi/msi.c | 3 +++
- include/linux/pci.h   | 2 ++
- 2 files changed, 5 insertions(+)
+ kernel/sched/cpufreq_schedutil.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
-index 053bb9fac6e3e..b638731aa5ff2 100644
---- a/drivers/pci/msi/msi.c
-+++ b/drivers/pci/msi/msi.c
-@@ -610,6 +610,9 @@ void msix_prepare_msi_desc(struct pci_dev *dev, struct msi_desc *desc)
- 	if (desc->pci.msi_attrib.can_mask) {
- 		void __iomem *addr = pci_msix_desc_addr(desc);
+diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+index 831fee509404e..babdfed7f24c1 100644
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -88,9 +88,20 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
+ 	if (!cpufreq_this_cpu_can_update(sg_policy->policy))
+ 		return false;
  
-+		/* Workaround for SUN NIU insanity, which requires write before read */
-+		if (dev->dev_flags & PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST)
-+			writel(0, addr + PCI_MSIX_ENTRY_DATA);
- 		desc->pci.msix_ctrl = readl(addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
+-	if (unlikely(sg_policy->limits_changed)) {
+-		sg_policy->limits_changed = false;
++	if (unlikely(READ_ONCE(sg_policy->limits_changed))) {
++		WRITE_ONCE(sg_policy->limits_changed, false);
+ 		sg_policy->need_freq_update = true;
++
++		/*
++		 * The above limits_changed update must occur before the reads
++		 * of policy limits in cpufreq_driver_resolve_freq() or a policy
++		 * limits update might be missed, so use a memory barrier to
++		 * ensure it.
++		 *
++		 * This pairs with the write memory barrier in sugov_limits().
++		 */
++		smp_mb();
++
+ 		return true;
  	}
- }
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index ac5bd1718af24..0511f6f9a4e6a 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -245,6 +245,8 @@ enum pci_dev_flags {
- 	PCI_DEV_FLAGS_NO_RELAXED_ORDERING = (__force pci_dev_flags_t) (1 << 11),
- 	/* Device does honor MSI masking despite saying otherwise */
- 	PCI_DEV_FLAGS_HAS_MSI_MASKING = (__force pci_dev_flags_t) (1 << 12),
-+	/* Device requires write to PCI_MSIX_ENTRY_DATA before any MSIX reads */
-+	PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST = (__force pci_dev_flags_t) (1 << 13),
- };
  
- enum pci_irq_reroute_variant {
+@@ -444,7 +455,7 @@ static inline bool sugov_cpu_is_busy(struct sugov_cpu *sg_cpu) { return false; }
+ static inline void ignore_dl_rate_limit(struct sugov_cpu *sg_cpu, struct sugov_policy *sg_policy)
+ {
+ 	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_dl)
+-		sg_policy->limits_changed = true;
++		WRITE_ONCE(sg_policy->limits_changed, true);
+ }
+ 
+ static void sugov_update_single(struct update_util_data *hook, u64 time,
+@@ -894,7 +905,16 @@ static void sugov_limits(struct cpufreq_policy *policy)
+ 		mutex_unlock(&sg_policy->work_lock);
+ 	}
+ 
+-	sg_policy->limits_changed = true;
++	/*
++	 * The limits_changed update below must take place before the updates
++	 * of policy limits in cpufreq_set_policy() or a policy limits update
++	 * might be missed, so use a memory barrier to ensure it.
++	 *
++	 * This pairs with the memory barrier in sugov_should_update_freq().
++	 */
++	smp_wmb();
++
++	WRITE_ONCE(sg_policy->limits_changed, true);
+ }
+ 
+ struct cpufreq_governor schedutil_gov = {
 -- 
 2.51.0
 
