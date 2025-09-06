@@ -1,121 +1,115 @@
-Return-Path: <stable+bounces-177919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AFF7B46803
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 03:33:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1B0B46804
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 03:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7220AA5899
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 01:33:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49EB21BC7370
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 01:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A296185B67;
-	Sat,  6 Sep 2025 01:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D774A55;
+	Sat,  6 Sep 2025 01:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GC8Peltj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBaDhCGv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E63A55
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 01:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2FD188000
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 01:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757122428; cv=none; b=if25908GsMK7fcEjGgFcgjL4oiHX5l4ReeZD9+KkotDTcddWGFDEAFz2geCdfIcDVuap09f7i5c/YGP4TyYJjt2CaD1SkUF4HoUZlfY8L2X870O8zj4lT8ZSf/GlggYHCL/Pz1kctKvU6RkarDMPo2358RK1NCrmXI5vnPyV78c=
+	t=1757122431; cv=none; b=N2o9v0X86ypefKniChZl2bvmn5FqU+iYEpQcq7HHYjyAyzvFyD/WDDeF50BnctYCtFTGnOC82tTj4yau9Oe1Fc/7LLC2+v9pkn7crJTJu2i/2upjX+74Bp3FddW9Zh3jtX8fGTuyYtmNMUQxUpkmh7zI5qLM2yyiGIu6WI9ZPN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757122428; c=relaxed/simple;
-	bh=Te4DoQh5rcFb9bYtob4gecQvEG8M1fu3ya4+VFyzrFc=;
+	s=arc-20240116; t=1757122431; c=relaxed/simple;
+	bh=sUQhfdkRfdkv8bI2QS0L/p+J0drOikhktbq/BFYqAeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tHjI+aV692AP5m+AJ1sCq6Y2//LM10brej3UbiHFc3PgC2lH3qXx1emDRYpAmfCSOXeJPZGjhYcfuz92XUg2BDfhcy4Cp7ZxWY7lQFJHvqmpydTucKNeSQGmPObvJcBpe4HR4tX/sX36V+bGcJdX9wC/W/z5Ew/SObH5PiIlOsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GC8Peltj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6A3C4CEF1;
-	Sat,  6 Sep 2025 01:33:46 +0000 (UTC)
+	 MIME-Version; b=fv1U/6sMNce4vkq+JvB31m2UIVwAYBOER03ROG7YxifsMfkHizfVfB4HEmSrnwUaIJF5xifMGCyxNxmNdo707IcsVevAm81ghS6L/h3HVHAEtsdRyLoKX7yGUBCnnwp1f/0ElCcHtYZS8NA0eH2shLglkK5DE+aTh91eHRTQFAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBaDhCGv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C26C4CEF1;
+	Sat,  6 Sep 2025 01:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757122427;
-	bh=Te4DoQh5rcFb9bYtob4gecQvEG8M1fu3ya4+VFyzrFc=;
+	s=k20201202; t=1757122430;
+	bh=sUQhfdkRfdkv8bI2QS0L/p+J0drOikhktbq/BFYqAeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GC8PeltjqHm6Qa7Op2+mx2DuiCk5nb+qtm2q/uk8e5oKuaCZGC1Arh8FTOzfPk/LP
-	 +8j7wmiDnmg41rPH3P3u8DRQMGR1RJELzi9WLdZySI8jiEOtKiCm9HA5kScFG3hyH5
-	 gUgNg/3Xwt6yUadPHurvdH9OnFr+UvICh8b7XlZaehZGkPvlE+zWStHidm1OWJnexz
-	 nR0taR00GD7cUUhiTis+JAg8xR15p8q9K3My+0OOG23NuvfWLnP4RspdkKd4oyE3i8
-	 VTabBlxxKm4DlOccKcX9HYx1m5Y6BkwKp55aOzQCY2FnS7PJgoz/zq05U4xDN1DNvB
-	 DxCQzoanKB+Ww==
+	b=CBaDhCGvHOFEC2m6OXvOV98brLfbhXSXHSHqY0swnxjP0xrsu4/cgSmKi9mJY6d3m
+	 ga1J0zDrZpy+ihG2KEKgC+Q6pP5N9Vmb+GTHeFB4XTHOz7e/wQ/cMQOe1QjCOwn2PX
+	 yBorvFjpvSG99DJuwUDAOPu9YF2Z1vbLvyEpXIoz56+E/hlXnMFf2FoJ0j6i4EREfN
+	 Np2nDbxhLqO6xgJ4bxiR6QgJjDMAKX7mkp0ke5/zCzKOi5ya8TJwC4s2GzXE4sCjx7
+	 L5b/menvDgg5NT5jGAxkq16d8zCFV6O4v/+N/5ZoJsJ1jFe+rzbQk+DOnkItJh7rpC
+	 nVkJik8uAPHbQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] iio: chemical: pms7003: use aligned_s64 for timestamp
-Date: Fri,  5 Sep 2025 21:33:44 -0400
-Message-ID: <20250906013344.3653014-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] iio: pressure: mprls0025pa: use aligned_s64 for timestamp
+Date: Fri,  5 Sep 2025 21:33:47 -0400
+Message-ID: <20250906013347.3653180-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025051249-bootleg-devious-fe49@gregkh>
-References: <2025051249-bootleg-devious-fe49@gregkh>
+In-Reply-To: <2025051224-transpire-bleach-c69f@gregkh>
+References: <2025051224-transpire-bleach-c69f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 6ffa698674053e82e811520642db2650d00d2c01 ]
+[ Upstream commit ffcd19e9f4cca0c8f9e23e88f968711acefbb37b ]
 
 Follow the pattern of other drivers and use aligned_s64 for the
-timestamp. This will ensure that the timestamp is correctly aligned on
-all architectures.
+timestamp. This will ensure the struct itself it also 8-byte aligned.
 
-Also move the unaligned.h header while touching this since it was the
-only one not in alphabetical order.
+While touching this, convert struct mpr_chan to an anonymous struct
+to consolidate the code a bit to make it easier for future readers.
 
-Fixes: 13e945631c2f ("iio:chemical:pms7003: Fix timestamp alignment and prevent data leak.")
+Fixes: 713337d9143e ("iio: pressure: Honeywell mprls0025pa pressure sensor")
 Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250417-iio-more-timestamp-alignment-v1-4-eafac1e22318@baylibre.com
+Link: https://patch.msgid.link/20250418-iio-more-timestamp-alignment-v2-2-d6a5d2b1c9fe@baylibre.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ linux/unaligned.h => asm/unaligned.h ]
+[ Applied changes to mprls0025pa.c ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/chemical/pms7003.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/iio/pressure/mprls0025pa.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/chemical/pms7003.c b/drivers/iio/chemical/pms7003.c
-index e9857d93b307e..70c92cbfc9f14 100644
---- a/drivers/iio/chemical/pms7003.c
-+++ b/drivers/iio/chemical/pms7003.c
-@@ -5,7 +5,6 @@
-  * Copyright (c) Tomasz Duszynski <tduszyns@gmail.com>
-  */
- 
--#include <asm/unaligned.h>
- #include <linux/completion.h>
- #include <linux/device.h>
- #include <linux/errno.h>
-@@ -19,6 +18,8 @@
- #include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/serdev.h>
-+#include <linux/types.h>
-+#include <asm/unaligned.h>
- 
- #define PMS7003_DRIVER_NAME "pms7003"
- 
-@@ -76,7 +77,7 @@ struct pms7003_state {
- 	/* Used to construct scan to push to the IIO buffer */
- 	struct {
- 		u16 data[3]; /* PM1, PM2P5, PM10 */
--		s64 ts;
-+		aligned_s64 ts;
- 	} scan;
+diff --git a/drivers/iio/pressure/mprls0025pa.c b/drivers/iio/pressure/mprls0025pa.c
+index e3f0de020a40c..829c472812e49 100644
+--- a/drivers/iio/pressure/mprls0025pa.c
++++ b/drivers/iio/pressure/mprls0025pa.c
+@@ -87,11 +87,6 @@ static const struct mpr_func_spec mpr_func_spec[] = {
+ 	[MPR_FUNCTION_C] = {.output_min = 3355443, .output_max = 13421773},
  };
  
+-struct mpr_chan {
+-	s32			pres;		/* pressure value */
+-	s64			ts;		/* timestamp */
+-};
+-
+ struct mpr_data {
+ 	struct i2c_client	*client;
+ 	struct mutex		lock;		/*
+@@ -120,7 +115,10 @@ struct mpr_data {
+ 						 * loop until data is ready
+ 						 */
+ 	struct completion	completion;	/* handshake from irq to read */
+-	struct mpr_chan		chan;		/*
++	struct {
++		s32 pres;			/* pressure value */
++		aligned_s64 ts;			/* timestamp */
++	} chan;				/*
+ 						 * channel values for buffered
+ 						 * mode
+ 						 */
 -- 
 2.50.1
 
