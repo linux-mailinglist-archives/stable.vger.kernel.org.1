@@ -1,146 +1,77 @@
-Return-Path: <stable+bounces-177909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50799B4676F
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 02:14:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF036B4678B
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 02:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B0BE3B3073
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 00:14:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 596E8A46CF3
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 00:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F3CAD4B;
-	Sat,  6 Sep 2025 00:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XDXAKREY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC0F2C181;
+	Sat,  6 Sep 2025 00:32:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB53523A;
-	Sat,  6 Sep 2025 00:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774D74C85;
+	Sat,  6 Sep 2025 00:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757117668; cv=none; b=AYo0ch29tLlez9xWApAvb9nfxPtmg4/zYse6eNZlngAqZ3bMB/2k29/bq0A3KdkAfGrF5JN3lwlBbu6DL8kvGGtziD9cCLmqOeDNBEMd2070J1Ha8FsOwFsS0BxAPVAsnAkFAi8ls1CUTSzniol4qSCD0GdDLcppLOeMw0NnKUU=
+	t=1757118738; cv=none; b=QPzYhT1d7kMYFu/B3005W82HvU81LeOJ5IR/QwzHj8oLWySk/s69v0qghrAaoaVryPJ5RMTsCNDiSn/VobHNY0bBuErNgj5Yy3lKiE62znp3cdewfMTzSW4b33nNyKmqOMIBt5JW2BX0q25E6LcEeI73qSGdA2nM6EcsFG1i2lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757117668; c=relaxed/simple;
-	bh=4KdJgxxG9SGBqZCqqYjQb1WwwbrpoQBJntbEZ+J9w/o=;
-	h=Date:To:From:Subject:Message-Id; b=d9RSGvdoJ5l0OWpF5jK5lbUJzx0xHFQ/WuN+B9KOeiSgS4rMWeP4IpmOM0ZtP8V2I7FG8PyY7dllmd9+xDBS9/FIR7RtN0mk8Ixu3n0IsBI4pbnFTokDNDIoQC8el+cpaMQaRjDeQQyW4yhqgwvjlWz6yoRnC03BnTR3W8h1lUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XDXAKREY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AADC0C4CEF1;
-	Sat,  6 Sep 2025 00:14:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757117667;
-	bh=4KdJgxxG9SGBqZCqqYjQb1WwwbrpoQBJntbEZ+J9w/o=;
-	h=Date:To:From:Subject:From;
-	b=XDXAKREYFk8ARsIjmiokxtBHcOOyGSeE/9/O4W5vCTIdu8Yx5IjGeuueOSfqBmZ9k
-	 DTU9NFJAtUHniFiEfayMs4faIVI1BGjNZL5hJiZdbqwvi0NGDdPhuMR93HSsI8rBLL
-	 NsGcU2KQHTlhXMpNBdZDgbp0cBPVkL0YPCiadDy8=
-Date: Fri, 05 Sep 2025 17:14:26 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,disclosure@aisle.com,stanislav.fort@aisle.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-sysfs-fix-use-after-free-in-state_show.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250906001427.AADC0C4CEF1@smtp.kernel.org>
+	s=arc-20240116; t=1757118738; c=relaxed/simple;
+	bh=lcVjKSF6IcFbX9EhaMk/oI+e7enSsODOZFdLS41L8kI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=VUwtG8sWNGxPzreBDYAM4FTulFNUcPn90YuvKUBhd/UH81Cy4GPF4tTjMzVPQscZyUTX5lMWRCaAWDMjisXWsWfX49cxdUtHmtdOUvDMuO1DNoLuJQ9U/kbmo7/ezQc8TqWj3oRQI6jxGZSanpfWr1tMbNJtU+UFFZ0hLeYC6VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65BDC4CEF5;
+	Sat,  6 Sep 2025 00:32:17 +0000 (UTC)
+Received: by venus (Postfix, from userid 1000)
+	id E9AA8180B21; Sat, 06 Sep 2025 02:32:14 +0200 (CEST)
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Sebastian Reichel <sre@kernel.org>, Jerry Lv <Jerry.Lv@axis.com>, 
+ "H. Nikolaus Schaller" <hns@goldelico.com>
+Cc: =?utf-8?q?Pali_Roh=C3=A1r?= <pali@kernel.org>, linux-pm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, letux-kernel@openphoenux.org, 
+ stable@vger.kernel.org, kernel@pyra-handheld.com, andreas@kemnade.info
+In-Reply-To: <cover.1755945297.git.hns@goldelico.com>
+References: <cover.1755945297.git.hns@goldelico.com>
+Subject: Re: [PATCH v2 0/2] power: supply: bq27xxx: bug fixes
+Message-Id: <175711873493.221416.40145614789398522.b4-ty@collabora.com>
+Date: Sat, 06 Sep 2025 02:32:14 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
 
-The patch titled
-     Subject: mm/damon/sysfs: fix use-after-free in state_show()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-sysfs-fix-use-after-free-in-state_show.patch
+On Sat, 23 Aug 2025 12:34:55 +0200, H. Nikolaus Schaller wrote:
+> PATCH V2 2025-08-23 12:33:18:
+> Changes:
+> * improved commit description of main fix
+> * new patch: adds a restriction of historical no-battery-detection logic to the bq27000 chip
+> 
+> PATCH V1 2025-07-21 14:46:09:
+> 
+> [...]
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-fix-use-after-free-in-state_show.patch
+Applied, thanks!
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+[1/2] power: supply: bq27xxx: fix error return in case of no bq27000 hdq battery
+      commit: 2c334d038466ac509468fbe06905a32d202117db
+[2/2] power: supply: bq27xxx: restrict no-battery detection to bq27000
+      commit: 1e451977e1703b6db072719b37cd1b8e250b9cc9
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Stanislav Fort <stanislav.fort@aisle.com>
-Subject: mm/damon/sysfs: fix use-after-free in state_show()
-Date: Fri, 5 Sep 2025 13:10:46 +0300
-
-state_show() reads kdamond->damon_ctx without holding damon_sysfs_lock. 
-This allows a use-after-free race:
-
-CPU 0                         CPU 1
------                         -----
-state_show()                  damon_sysfs_turn_damon_on()
-ctx = kdamond->damon_ctx;     mutex_lock(&damon_sysfs_lock);
-                              damon_destroy_ctx(kdamond->damon_ctx);
-                              kdamond->damon_ctx = NULL;
-                              mutex_unlock(&damon_sysfs_lock);
-damon_is_running(ctx);        /* ctx is freed */
-mutex_lock(&ctx->kdamond_lock); /* UAF */
-
-(The race can also occur with damon_sysfs_kdamonds_rm_dirs() and
-damon_sysfs_kdamond_release(), which free or replace the context under
-damon_sysfs_lock.)
-
-Fix by taking damon_sysfs_lock before dereferencing the context, mirroring
-the locking used in pid_show().
-
-The bug has existed since state_show() first accessed kdamond->damon_ctx.
-
-Link: https://lkml.kernel.org/r/20250905101046.2288-1-disclosure@aisle.com
-Fixes: a61ea561c871 ("mm/damon/sysfs: link DAMON for virtual address spaces monitoring")
-Signed-off-by: Stanislav Fort <disclosure@aisle.com>
-Reported-by: Stanislav Fort <disclosure@aisle.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/damon/sysfs.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
-
---- a/mm/damon/sysfs.c~mm-damon-sysfs-fix-use-after-free-in-state_show
-+++ a/mm/damon/sysfs.c
-@@ -1260,14 +1260,18 @@ static ssize_t state_show(struct kobject
- {
- 	struct damon_sysfs_kdamond *kdamond = container_of(kobj,
- 			struct damon_sysfs_kdamond, kobj);
--	struct damon_ctx *ctx = kdamond->damon_ctx;
--	bool running;
-+	struct damon_ctx *ctx;
-+	bool running = false;
- 
--	if (!ctx)
--		running = false;
--	else
-+	if (!mutex_trylock(&damon_sysfs_lock))
-+		return -EBUSY;
-+
-+	ctx = kdamond->damon_ctx;
-+	if (ctx)
- 		running = damon_is_running(ctx);
- 
-+	mutex_unlock(&damon_sysfs_lock);
-+
- 	return sysfs_emit(buf, "%s\n", running ?
- 			damon_sysfs_cmd_strs[DAMON_SYSFS_CMD_ON] :
- 			damon_sysfs_cmd_strs[DAMON_SYSFS_CMD_OFF]);
-_
-
-Patches currently in -mm which might be from stanislav.fort@aisle.com are
-
-mm-damon-sysfs-fix-use-after-free-in-state_show.patch
+Best regards,
+-- 
+Sebastian Reichel <sebastian.reichel@collabora.com>
 
 
