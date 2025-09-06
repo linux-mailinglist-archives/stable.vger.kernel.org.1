@@ -1,148 +1,118 @@
-Return-Path: <stable+bounces-178003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF63B4772A
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 22:47:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A08B4772B
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 22:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22E8DA07482
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 20:47:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 985C17A29DA
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 20:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BA671C860C;
-	Sat,  6 Sep 2025 20:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0B21C860C;
+	Sat,  6 Sep 2025 20:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="VTMQjKOt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZoZEv1FK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0174315D45
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 20:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86E7315D45
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 20:48:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757191630; cv=none; b=rDIURX/Pc1aiUYX46R2Ki1dfK8/OnCp94zUzwgZbllZUyy/uU3X91XRnefKcAZQ0qph16JtI5ceO6Av9b+aY6SP7j0XkWgLyQ2fjhkodGN83rpAlDfaO0De4dwKxEgW9kxtG8K3alq2oTZt/B99kA5s5nnl3FdyeCaxmxAWo/1g=
+	t=1757191709; cv=none; b=BVKjvsV8jtaVBf1a2qkbJUHaRs1N9E5Z/oey1cI07wGKNozS/3vUkcr9+zc82J7qB6K4XrU3koeC/rm1gUTQR0RZBMw2WVyz0HWxcGfpvr6qqLU2azZvdUMb714cEYhg/S4U3AvsmS5CbqIrZambx+JZSdFg2FNWXqDlH5Og8GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757191630; c=relaxed/simple;
-	bh=jTnEaxp9BP8/AddUH+XwLJ/cVG+SC8HH3vPYcnBn9Io=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GCRl/VJkiJWZPtccztgsH+KGbXd1AREMrueXrat9eB3b2cYDHXKMmNrM/Et2zMKMcepvr/K03GBrY59nz89btOoEsPKWNx+Xq2c2lSRA9O+SGgE6WoNRd5VrbSb3+VQRAcqP2Jr36BkvPAJtqcp27BZnc2IM4Aoc29w4EEvlQoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=VTMQjKOt; arc=none smtp.client-ip=209.85.219.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e96d65194c1so2863110276.1
-        for <stable@vger.kernel.org>; Sat, 06 Sep 2025 13:47:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1757191625; x=1757796425; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Z9ZVeJL/Emwv/SkZ0DbsDCHxEglqau8eQ790MYJRke4=;
-        b=VTMQjKOtlYVb9pH1sEOFi7QTNNWcLkmFn20ZHnPliU4ZdPvp/lMbcMeDRhcZSDq0I4
-         WMOYMbVzP/ZvKgkybBht9s+dhdd56w0mjimg9Z6EF9gKIhz9pRoe21pzFvU3AmZ9CAhW
-         9b9SvRl50IUS53RAuPRduPktlitsQ4OO6KLixHPw5/ybcqzXTE6N3TR8v0q6RlazCUg5
-         53BuHCEGYIEHukCH0WiTdXfkGHkVWy0NK3BeV1wsnR9nsxbqOPpPP48dA15eUxmtetga
-         akM08DMeN1kmrSxT1S2VsQpJ0jApLitK0oTpUhvEfKGUlpmEWEHutXyJm/ILdV+UOstL
-         0Ilg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757191625; x=1757796425;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z9ZVeJL/Emwv/SkZ0DbsDCHxEglqau8eQ790MYJRke4=;
-        b=JOyRpR5usMRYfIGi8u7g9QO3BJEl9mqNIA2II978FrdZFAQ/8jLvJjlgwWbn08w1ju
-         iNvaahbt4fsw0n+gHBoJH43cONgU4cv8K/otvFvbmjhJL+alxCG75WhMKuQ3GgVbP7XR
-         tunLhPft4GbZCZg7RMoqUF1IlgxdK6TM/X88CCdNdlIay6zZVy7AxZrLLxzRJKzahNiM
-         Fw9foZhxHliFq3S+52Sl/Q0kQXi+TOlXTT/e6c5om7/2zfbESvF0ncJFffCUxowF68+C
-         4sOZGI0pqjfffyMdgvF3PZWjE9/5wTtWcHEh4A5mlP+KI/jzB2SbahHrnSFbGSymdtrx
-         x6aQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0Am/GSVSQUOh2TXiGYz3/U+mjRiWwDKGGROPx1lcLCdsd3ahYkR99QEcGKziRHJ0Hj2hkMog=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZzGYPZFrSiyxG/cylYFY0iqsp9tS/oB3dYpLjHWsmwDRqFMOX
-	j7kq0g6t6q+WpLNuIzShX2LSto5ba1wgj9Px1a2s1AcymVxGFmh5VXm00kSJbux29geyVNoI15Q
-	7qnmW
-X-Gm-Gg: ASbGnctE/48K22Yljo3jrFPBexDjeTQVTe7nECuidZzc74FarKUqQy0ESfOFehIx7w+
-	7ekeVh/mfbSOUx3PB7Ln53Jqkb484lz69f9GH7dPAlw5rbvOLO8cSx4Kylw2heo+WwgTtMe2nNv
-	yIMSKVuVMq01fjjX7QAvSBdJindawVctwbJ5jnBNvI64oyHNXzP5RrkJwQz0coxxHgXSBmXy+dT
-	BxaRTe5BLzImu/Avw3KiZdN1vJ68JEjGFp5kiWsNfnLx0PpJJPjUhs7pP2QqOqnzaCSuwRm+YV5
-	cIBTqnt+Ym0O78fVJxd5eDFNqwyo2meHzUriOs119pHDnNerf3AHmwa3FnF5Tao+WwX1rtDoxzG
-	A3bq8Antj3sd6bwinH6JoXvFOorDH+A==
-X-Google-Smtp-Source: AGHT+IH0JU0CsJpoTew8bkpiLx7b7OMUDAjukeaJHF8Hyg7A5DBr3Lf//AEO1G0wFgAf7a0qwdbk2Q==
-X-Received: by 2002:a05:690e:42c1:b0:5fc:f7dc:571 with SMTP id 956f58d0204a3-6102191b939mr1925752d50.4.1757191625494;
-        Sat, 06 Sep 2025 13:47:05 -0700 (PDT)
-Received: from [172.17.0.109] ([50.168.186.2])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-723bd2cd669sm31849107b3.0.2025.09.06.13.47.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 06 Sep 2025 13:47:05 -0700 (PDT)
-Message-ID: <368617ee-8e77-4fec-81cd-45ee3d3532bb@kernel.dk>
-Date: Sat, 6 Sep 2025 14:47:04 -0600
+	s=arc-20240116; t=1757191709; c=relaxed/simple;
+	bh=m/Kr6UFeaFWjGi4YnpwtrrzZ5wXDjB8jXsBf/7v7Yu4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Gsxjj4awvpLbOmvD/MI02jZsillZJ0yIIq/gQjO4mUGBChQ56jDav5BjAyp1NnIfYUJZjMnZV9DVSy3xv2iO4YcY9XyRGoaIVNlY/4ISoeKfAI4NO75QJlNOcU3woArZdzQHGRIixva/quumv4r4KdsA+/88iSY3dhfX6ExFwoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZoZEv1FK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E59EC4CEE7;
+	Sat,  6 Sep 2025 20:48:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757191709;
+	bh=m/Kr6UFeaFWjGi4YnpwtrrzZ5wXDjB8jXsBf/7v7Yu4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZoZEv1FKHysbnlwJAihlnApDPtQv5v+UI2mGiUHkDf6jCWViMMpKV9fhFOj81WjT0
+	 CPXo39UNIYF77gmYQWsnxImrTR5Pzky4LIGaOcw1W5ysw0s8+o5lhOdoXyuXq0hrpI
+	 xSlmS/i2MvWG6dPL97RAKQP2zEooT1NsgcwrMOl45ilPu9leeIcUxzxGu345GWzvID
+	 +9CqRwrLfUUVdCll3VUUSE48dD72P55iwblV4hZrO5X8ZMvyIiOsr4IaHh3RK8gmdL
+	 /tBx2oT0yw22/U7H7MUNmJnj6XGqQRUe6ZAW6qPy30JT1pGNDpmKDwKLiEi9rWH9CU
+	 vO1rtAHtSiDfw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jonathan Currier <dullfire@yahoo.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] PCI/MSI: Add an option to write MSIX ENTRY_DATA before any reads
+Date: Sat,  6 Sep 2025 16:48:26 -0400
+Message-ID: <20250906204826.282978-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025042120-skimming-facing-a7af@gregkh>
+References: <2025042120-skimming-facing-a7af@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12.y 11/15] io_uring/msg_ring: ensure io_kiocb freeing
- is deferred for RCU
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
- stable@vger.kernel.org, vegard.nossum@oracle.com,
- syzbot+54cbbfb4db9145d26fc2@syzkaller.appspotmail.com
-References: <20250905110406.3021567-1-harshit.m.mogalapalli@oracle.com>
- <20250905110406.3021567-12-harshit.m.mogalapalli@oracle.com>
- <f43fe976-4ef5-4dea-a2d0-336456a4deae@kernel.dk>
- <96857683-167a-4ba8-ad26-564e5dcae79b@kernel.dk>
- <2025090622-crispy-germproof-3d11@gregkh>
-From: Jens Axboe <axboe@kernel.dk>
-Content-Language: en-US
-In-Reply-To: <2025090622-crispy-germproof-3d11@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/6/25 12:36 PM, Greg KH wrote:
-> On Fri, Sep 05, 2025 at 07:23:00PM -0600, Jens Axboe wrote:
->> On 9/5/25 1:58 PM, Jens Axboe wrote:
->>> On 9/5/25 5:04 AM, Harshit Mogalapalli wrote:
->>>> diff --git a/include/linux/io_uring_types.h b/include/linux/io_uring_types.h
->>>> index 5ce332fc6ff5..3b27d9bcf298 100644
->>>> --- a/include/linux/io_uring_types.h
->>>> +++ b/include/linux/io_uring_types.h
->>>> @@ -648,6 +648,8 @@ struct io_kiocb {
->>>>  	struct io_task_work		io_task_work;
->>>>  	/* for polled requests, i.e. IORING_OP_POLL_ADD and async armed poll */
->>>>  	struct hlist_node		hash_node;
->>>> +	/* for private io_kiocb freeing */
->>>> +	struct rcu_head		rcu_head;
->>>>  	/* internal polling, see IORING_FEAT_FAST_POLL */
->>>>  	struct async_poll		*apoll;
->>>>  	/* opcode allocated if it needs to store data for async defer */
->>>
->>> This should go into a union with hash_node, rather than bloat the
->>> struct. That's how it was done upstream, not sure why this one is
->>> different?
->>
->> Here's a test variant with that sorted. Greg, I never got a FAILED email
->> on this one, as far as I can tell. When a patch is marked with CC:
->> stable@vger.kernel.org and the origin of the bug clearly marked with
->> Fixes, I'm expecting to have a 100% reliable notification if it fails to
->> apply. If not, I just kind of assume patches flow into stable.
->>
->> Was this missed on my side, or was it on the stable side? If the latter,
->> how did that happen? I always ensure that stable has what it needs and
->> play nice on my side, but if misses like this can happen with the
->> tooling, that makes me a bit nervous.
->>
-> 
-> This looks like a failure on my side, sorry.  I don't see any FAILED
-> email that went out for this anywhere, so I messed up.
-> 
-> sorry about that, and Harshit, thanks for noticing it.
+From: Jonathan Currier <dullfire@yahoo.com>
 
-Thanks for confirming, because I was worried it was on my side. But I
-thought these things were fully automated? I'm going to add something on
-my side to catch these in the future, just in case.
+[ Upstream commit cf761e3dacc6ad5f65a4886d00da1f9681e6805a ]
 
+Commit 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries") introduced a
+readl() from ENTRY_VECTOR_CTRL before the writel() to ENTRY_DATA.
+
+This is correct, however some hardware, like the Sun Neptune chips, the NIU
+module, will cause an error and/or fatal trap if any MSIX table entry is
+read before the corresponding ENTRY_DATA field is written to.
+
+Add an optional early writel() in msix_prepare_msi_desc().
+
+Fixes: 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries")
+Signed-off-by: Jonathan Currier <dullfire@yahoo.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241117234843.19236-2-dullfire@yahoo.com
+[ Applied workaround to msix_setup_msi_descs() instead of msix_prepare_msi_desc() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/pci/msi/msi.c | 3 +++
+ include/linux/pci.h   | 2 ++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
+index c5cc3e453fd0c..7110aed956c75 100644
+--- a/drivers/pci/msi/msi.c
++++ b/drivers/pci/msi/msi.c
+@@ -534,6 +534,9 @@ static int msix_setup_msi_descs(struct pci_dev *dev, void __iomem *base,
+ 
+ 		if (desc.pci.msi_attrib.can_mask) {
+ 			addr = pci_msix_desc_addr(&desc);
++			/* Workaround for SUN NIU insanity, which requires write before read */
++			if (dev->dev_flags & PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST)
++				writel(0, addr + PCI_MSIX_ENTRY_DATA);
+ 			desc.pci.msix_ctrl = readl(addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
+ 		}
+ 
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index df36df4695ed5..59dfa59d6d597 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -244,6 +244,8 @@ enum pci_dev_flags {
+ 	PCI_DEV_FLAGS_NO_RELAXED_ORDERING = (__force pci_dev_flags_t) (1 << 11),
+ 	/* Device does honor MSI masking despite saying otherwise */
+ 	PCI_DEV_FLAGS_HAS_MSI_MASKING = (__force pci_dev_flags_t) (1 << 12),
++	/* Device requires write to PCI_MSIX_ENTRY_DATA before any MSIX reads */
++	PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST = (__force pci_dev_flags_t) (1 << 13),
+ };
+ 
+ enum pci_irq_reroute_variant {
 -- 
-Jens Axboe
+2.51.0
+
 
