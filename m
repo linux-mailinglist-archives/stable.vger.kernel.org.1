@@ -1,182 +1,222 @@
-Return-Path: <stable+bounces-177916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7B2B467F2
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 03:20:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5581B467F7
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 03:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B503A5C4A02
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 01:20:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D7907BE908
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 01:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3840D189F3B;
-	Sat,  6 Sep 2025 01:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A00717A2E8;
+	Sat,  6 Sep 2025 01:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aisle.com header.i=@aisle.com header.b="EDPobhn3"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="kd+Jywjj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D401519B4
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 01:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF95E18E3F
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 01:23:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757121622; cv=none; b=fEcAmCjrbsE/IJaMbHOJ2Nh5yuL85KfXoVv58g+6h1ANqDx/y/qkxQqJuXoOjYRy/v6bcO7BJvLaf+Q0u4EHmwPNaYUhuDk2jgyUYjraqxgMEP1FCAZ2pP3AkQBSzM48SWmXk8ZRtezNsOlwJ0dI5S5ANG2REZ+/qmREPnx6nuk=
+	t=1757121786; cv=none; b=P4D2tbjSxzTeKKQZf/zD0XQspDH1q1BRRwfkRxc9gohqWHyglEZWQV3hl9jcNMJiQcq8PcSqvEgkjsQnSyCy58viq0mzlshDYZQFsFEp9olG0T4uYXzwPZl+adLjb2DkvLEc09bT4i3mEPPW40OGD6QiLIBwa82m3gX59T2m4qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757121622; c=relaxed/simple;
-	bh=OZfmvUtSyXTRBokVQWrm6BmwrIq4AfkWxUHBYagVBJY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PWrptUd/iuFoAnIXSNsMuadxl5ds2Bl9uLK9zxE0DkIImdlr6oPgnUBlC6mJTn2PLmD/x4d5FvxZS0m7E7i9+ZzNFVud+PpIrJ0ITOw8hFzAECD1N0bewVRN7TF/YxzcffwvYZ8dmZyL9XXRJ5dG2pf8x4aNzGnxGAG86lYdX5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aisle.com; spf=pass smtp.mailfrom=aisle.com; dkim=pass (2048-bit key) header.d=aisle.com header.i=@aisle.com header.b=EDPobhn3; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aisle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aisle.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6188b5ad4f0so4303937a12.0
-        for <stable@vger.kernel.org>; Fri, 05 Sep 2025 18:20:19 -0700 (PDT)
+	s=arc-20240116; t=1757121786; c=relaxed/simple;
+	bh=mf+rej9vS1ju1RiBQZDkQEwtlSk2HxNPZfgZWyBRiYA=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:From:To:Cc:
+	 References:In-Reply-To; b=tofUiNPtTBn+OOETJ4zcBksIFHGrkZk7QzH2S03ljdh7XJKbLxec8AcjX0HKPH9ew6sq4yXvVRtxQ2D3pOoIQlfsZv8zGWC/sgeKPZCCYtBctJmL6N6nSYGlSVchI1a6A8/dv57Emccu/Ms4W2jm53U237dskAU/zC6EbxHxI60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=kd+Jywjj; arc=none smtp.client-ip=209.85.219.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e98b75eb577so3075309276.1
+        for <stable@vger.kernel.org>; Fri, 05 Sep 2025 18:23:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=aisle.com; s=google; t=1757121618; x=1757726418; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MhkCEPpqVmmHGdIendUwEnS7TAUpZx7akLTv5G7IgZ0=;
-        b=EDPobhn32aZ9nGj5SpTcN5JKbAXkMu3DWrU4z2VeH1PS3Qm9C6jhu0qC1vVaTeLMXU
-         YvHxzeHlclV6yQGfrY+yD7iAXxRQX/IzxU7TuVq4kzWUQWBAcgfsAqQjcVbB5pLmpPm5
-         H3oPILOM7b6DvrqboaXuqzv/qNiIiKBVLRMY8xG4I/VEPvPPFY0YIINXx63L9TXB7N0h
-         M0ODKa13l7qr/CvVj790JJbUQU8zKLdxP9IYWMFytMIcQWsKbqK6LbJmzSc+V3htvtUc
-         qSh0z8f4V+ucsSHuWzYmCqh901hCKxUmdSq6mWwH+HejjnVvtM8Ke/dKqILbbIB5Cx8y
-         oVPw==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1757121782; x=1757726582; darn=vger.kernel.org;
+        h=in-reply-to:content-language:references:cc:to:from:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7nBUBT3L9uK2WCevTmIF1+knbvuZuIMEpp//7yXt1gc=;
+        b=kd+Jywjjs/2OtR1Fl+xSt2CJoFeEdVVWA/bO6I5cOSmprfu85T1TDGHn1PXfHPr+G0
+         kPzMjydVRKCOSfqT8KLrrnQtbtMQhgrEl5DD2kiTqcwgf/OmquyoUGsblTaEuwsZrzfh
+         Nn/488HgYCz3XRX60UNEe7jUqKFb2nDTs5I2EWCuun418oHrUVi4Qy5cUjHM6kgfu2A0
+         /ByKN+P5NYUa40Qaqlksd5lUKzNMH5gXLCJmt/sdaO1VuXgAup7Tn9DYRgh3zHIzssq6
+         LH/lYrgyGXZkC7q261KgGy2TGcu5fNWYARRHZrOwid2kQhZHCCDEPR+My7f5SqFUPeRa
+         aKBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757121618; x=1757726418;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MhkCEPpqVmmHGdIendUwEnS7TAUpZx7akLTv5G7IgZ0=;
-        b=lyilzpE1DE43hBaRQ81TnyWEnvVjoXJXi4xbQvz24A+8IGdW9tvZsc2RvSHcpi1xqT
-         cIUA3mrOYh5pzWUWQi9onjM1fGYYQcvMDuPl6SOzVpVpF4ZIS4ZCiCu1Y+Z0BQTHP8rR
-         /KUV3/WuM1Z3mIRs5v+jytjKnPJgcHEh2ol01l/vyLdAQzuLv3BVS5b04X3kENpdSP79
-         tiPkTAKHSnI1f8gGtKFi8aplw0WXLBdRUDgDpPJQUei7V4O88oIHW48/7GdutRexuxZ9
-         xZsgQ3BRPLTxHitFUpfYbqXTOQjJAeBZpQ6BbnB/uudGmFRodceKlEOpOy1y5Qi7F2sE
-         FxXg==
-X-Forwarded-Encrypted: i=1; AJvYcCULb7wCoicAodHBLvUBCNXuqaQTBnaXL8yPueOa2kt6Q4c+p41JgSefU+G2lOvaLzzprPHAPPU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9TpDRZ9m3v6v64OySyYUTFJkQF7VKSfxlQdvzRRE27vZd2WRP
-	xsAZy12aa64J/vsuUaGdHVaSscd8Wanx8rSMP/gWuU7Hz7jcH9vEzppPljfbFJkeq3M=
-X-Gm-Gg: ASbGncv5XCicLewjrjQXgLa7lSFsHMqZolNrp9FHKqw+w5yhRaS+GoIScFHYfOpC711
-	qdH28RG7e0b0LoJATxK91lZFQNeXLq0jQ2sJVCwZxOzyTpcqVqtxI94P4MIExD1sVZ4xfYYwgNb
-	Rx6KbUsvNmqh0IKRZhvW+018a68AycZugBx/TrjrG0OLUp+vF3TyXb+cK6/WvT8ZGIRWgQcDwp6
-	GISNFYg6UYEItXRqVkXqsLDuGanvl1EWeIJThMKzXiB/iJAD1HV90zVbSRLWpLL7yDKMrVAMkDZ
-	RIRaCLhq3RVcRcW0dPxdTfYXDLKCXR6hpuiA0C7opqBOEddz/BDHY34o3mao3Exau70iy/dxcPT
-	8PKKLzagOTtTsg31GoVL8deXshLwsuCupLtB7aa7BNN7DqII=
-X-Google-Smtp-Source: AGHT+IGFMbR3iirc4diOpoMpZyM33hVySYIhjNMV95KRXjY0dEcC/hyOGyDBHtgZ0shcIt4Vk3AiBA==
-X-Received: by 2002:a05:6402:40c9:b0:61c:6fc9:daa with SMTP id 4fb4d7f45d1cf-6237edb2f07mr757777a12.20.1757121618390;
-        Fri, 05 Sep 2025 18:20:18 -0700 (PDT)
-Received: from localhost ([149.102.246.10])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-61cfc4e50fbsm17060426a12.38.2025.09.05.18.20.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 18:20:18 -0700 (PDT)
-From: Stanislav Fort <stanislav.fort@aisle.com>
-X-Google-Original-From: Stanislav Fort <disclosure@aisle.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-hams@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	security@kernel.org,
-	Stanislav Fort <disclosure@aisle.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v4] netrom: linearize and validate lengths in nr_rx_frame()
-Date: Sat,  6 Sep 2025 04:20:16 +0300
-Message-Id: <20250906012016.58856-1-disclosure@aisle.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+        d=1e100.net; s=20230601; t=1757121782; x=1757726582;
+        h=in-reply-to:content-language:references:cc:to:from:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=7nBUBT3L9uK2WCevTmIF1+knbvuZuIMEpp//7yXt1gc=;
+        b=d4mu1g/pUn4hTiUdWGS9iqbKAHd0JVdPbqdLYsCg3jwMLkmVYb1YtSS4iIeTVb2Zii
+         Th3T8gEHH7YhINMQHs3sqhn+BL3q7RgbKR/C4GB4GtU+v96BvssX7bt2Ba9JtMQ/k4ss
+         Vrq8HCN4I9ebqpV4UO1cPeWVKSB2FHeABec9gNfzj7MXBRhStGtJraVdNTvN/ToJc/Sw
+         TdmbjkR7ynxyOqKq3wItsAldACQBGpJc3HNhyOHTh1yhqwBf4xSbHPonlaPuyxB3ICHu
+         7Ccs9yCbbSnl9dPEz8U6cKOQF9eL+m687L+P5yRSvRFLCbBG+bw/0RYxQJmeuPry1xdA
+         1xDw==
+X-Forwarded-Encrypted: i=1; AJvYcCVglC15mSj4VAI9VE0qPfIlN81DUv3xQTuc2KRRENmK4RAlVU+w6t5vtMgNqSyt6PiIedeAnu0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxWIJxAPNShYhY3FIYub/8D+v4LcYd6QVDK8Ox0/hcPkiueZGQ
+	N58VSB+bRCSGFRO6GhwtafVxCqsOv/wujjDULTb4vHCV2D9IST6XMjEiQvkasEv0ln0=
+X-Gm-Gg: ASbGnctA7KOmMBizLgrDbeezhPBbTLYozWY5QT2xZgejngCW9scYtxQHnfcCB6jcVO+
+	0/tNl2pRBLbwD0GaojTW0vWI3t9gRRh1VRF4O1L5SZxRp3MkbA/4jjqxSWM9XYkqBXYl0xsACZp
+	T9jr+xN9IMBsKOYBglD2PB8jr7fjPfmaonDCGndshSgHODd65BenCWKF/6XHIKOvMT1n4BfWFcf
+	dSLZpHwehGOQbi57QawslAtLw62G0X8Tk8mhICvc7QkO5NEHMWLoRWZcdwWhPhdSeDcsCMWh+el
+	br5gj5xLtCe0CqBa4GOz3bqoB6Gwcl2a7OjdwNtE39Ri9fiWi4LgHKWClVPeuHCWeB0d9GZuxCS
+	YHnkumFsQXHdPyX10QlE=
+X-Google-Smtp-Source: AGHT+IHP+konxWyNQLlCGc+fM2fS8TY1g6xEQGVgKo47hw8J2bAGOLUQ+4uFaZDwEwHf3EyoDfyF4w==
+X-Received: by 2002:a05:690e:23c2:b0:5f3:317e:409f with SMTP id 956f58d0204a3-60b63eb9508mr3027857d50.3.1757121781646;
+        Fri, 05 Sep 2025 18:23:01 -0700 (PDT)
+Received: from [172.17.0.109] ([50.168.186.2])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-723a850287fsm34002027b3.47.2025.09.05.18.23.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Sep 2025 18:23:01 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------FYqkBqQtnHPkO04kcVamWQrq"
+Message-ID: <96857683-167a-4ba8-ad26-564e5dcae79b@kernel.dk>
+Date: Fri, 5 Sep 2025 19:23:00 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12.y 11/15] io_uring/msg_ring: ensure io_kiocb freeing
+ is deferred for RCU
+From: Jens Axboe <axboe@kernel.dk>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+ stable@vger.kernel.org
+Cc: vegard.nossum@oracle.com,
+ syzbot+54cbbfb4db9145d26fc2@syzkaller.appspotmail.com
+References: <20250905110406.3021567-1-harshit.m.mogalapalli@oracle.com>
+ <20250905110406.3021567-12-harshit.m.mogalapalli@oracle.com>
+ <f43fe976-4ef5-4dea-a2d0-336456a4deae@kernel.dk>
+Content-Language: en-US
+In-Reply-To: <f43fe976-4ef5-4dea-a2d0-336456a4deae@kernel.dk>
 
-Linearize skb and add targeted length checks in nr_rx_frame() to
-prevent out-of-bounds reads and potential use-after-free (UAF) when
-processing malformed NET/ROM frames.
+This is a multi-part message in MIME format.
+--------------FYqkBqQtnHPkO04kcVamWQrq
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-- Require skb to be linear and at least NR_NETWORK_LEN +
-  NR_TRANSPORT_LEN (20 bytes) before reading
-  network/transport fields.
-- For existing sockets path, ensure NR_CONNACK includes the window
-  byte (>= 21 bytes).
-- For CONNREQ handling, ensure window (byte 20) and user address
-  (bytes 21-27) are present (>= 28 bytes).
-- Preserve existing BPQ extension handling:
-  - NR_CONNACK len == 22 -> 1 extra byte (TTL)
-  - NR_CONNREQ len == 37 -> 2 extra bytes (timeout)
+On 9/5/25 1:58 PM, Jens Axboe wrote:
+> On 9/5/25 5:04 AM, Harshit Mogalapalli wrote:
+>> diff --git a/include/linux/io_uring_types.h b/include/linux/io_uring_types.h
+>> index 5ce332fc6ff5..3b27d9bcf298 100644
+>> --- a/include/linux/io_uring_types.h
+>> +++ b/include/linux/io_uring_types.h
+>> @@ -648,6 +648,8 @@ struct io_kiocb {
+>>  	struct io_task_work		io_task_work;
+>>  	/* for polled requests, i.e. IORING_OP_POLL_ADD and async armed poll */
+>>  	struct hlist_node		hash_node;
+>> +	/* for private io_kiocb freeing */
+>> +	struct rcu_head		rcu_head;
+>>  	/* internal polling, see IORING_FEAT_FAST_POLL */
+>>  	struct async_poll		*apoll;
+>>  	/* opcode allocated if it needs to store data for async defer */
+> 
+> This should go into a union with hash_node, rather than bloat the
+> struct. That's how it was done upstream, not sure why this one is
+> different?
 
-These validations block malformed frames from triggering bounds
-violations via short skbs. Because NET/ROM frames may originate from
-remote peers, the issue is externally triggerable and therefore
-security-relevant.
+Here's a test variant with that sorted. Greg, I never got a FAILED email
+on this one, as far as I can tell. When a patch is marked with CC:
+stable@vger.kernel.org and the origin of the bug clearly marked with
+Fixes, I'm expecting to have a 100% reliable notification if it fails to
+apply. If not, I just kind of assume patches flow into stable.
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stanislav Fort <disclosure@aisle.com>
----
-Changes since v3:
-- Wrap commit message at 74 columns
-- Add Fixes tag and Cc: stable
-- Drop Reported-by
-- Add Reviewed-by from Eric Dumazet
----
- net/netrom/af_netrom.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+Was this missed on my side, or was it on the stable side? If the latter,
+how did that happen? I always ensure that stable has what it needs and
+play nice on my side, but if misses like this can happen with the
+tooling, that makes me a bit nervous.
 
-diff --git a/net/netrom/af_netrom.c b/net/netrom/af_netrom.c
-index 3331669d8e33..f0660dd6d3b0 100644
---- a/net/netrom/af_netrom.c
-+++ b/net/netrom/af_netrom.c
-@@ -885,6 +885,11 @@ int nr_rx_frame(struct sk_buff *skb, struct net_device *dev)
- 	/*
- 	 *		skb->data points to the netrom frame start
- 	 */
-
- +	if (skb_linearize(skb))
- +		return 0;
- +	if (skb->len < NR_NETWORK_LEN + NR_TRANSPORT_LEN)
- +		return 0;
- +
- 	src 	= (ax25_address *)(skb->data + 0);
- 	dest = (ax25_address *)(skb->data + 7);
-
-@@ -927,6 +932,11 @@ int nr_rx_frame(struct sk_buff *skb, struct net_device *dev)
- 	}
-
- 	if (sk != NULL) {
- +		if (frametype == NR_CONNACK &&
- +		    skb->len < NR_NETWORK_LEN + NR_TRANSPORT_LEN + 1) {
- +			sock_put(sk);
- +			return 0;
- +		}
- 		bh_lock_sock(sk);
- 		skb_reset_transport_header(skb);
-
-@@ -961,10 +971,14 @@ int nr_rx_frame(struct sk_buff *skb, struct net_device *dev)
- 		return 0;
- 	}
-
--	sk = nr_find_listener(dest);
- +	/* Need window (byte 20) and user address (bytes 21-27) */
- +	if (skb->len < NR_NETWORK_LEN + NR_TRANSPORT_LEN + 1 + AX25_ADDR_LEN)
- +		return 0;
-
- 	user = (ax25_address *)(skb->data + 21);
-
- +	sk = nr_find_listener(dest);
- +
- 	if (sk == NULL || sk_acceptq_is_full(sk) ||
- 	    (make = nr_make_new(sk)) == NULL) {
- 		nr_transmit_refusal(skb, 0);
 -- 
-2.39.3 (Apple Git-146)
+Jens Axboe
+--------------FYqkBqQtnHPkO04kcVamWQrq
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-io_uring-msg_ring-ensure-io_kiocb-freeing-is-deferre.patch"
+Content-Disposition: attachment;
+ filename*0="0001-io_uring-msg_ring-ensure-io_kiocb-freeing-is-deferre.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
 
+RnJvbSBmOGUxM2MzZjMwMjc0ODFhYjdiMmJlZmU0ZDA2ZWQzNzI1NDc0MjBkIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
+dGU6IFR1ZSwgOCBKdWwgMjAyNSAxMTowMDozMiAtMDYwMApTdWJqZWN0OiBbUEFUQ0hdIGlv
+X3VyaW5nL21zZ19yaW5nOiBlbnN1cmUgaW9fa2lvY2IgZnJlZWluZyBpcyBkZWZlcnJlZCBm
+b3IKIFJDVQoKQ29tbWl0IGZjNTgyY2QyNmU4ODhiMDY1MmJjMTQ5NGYyNTIzMjk0NTNmZDNi
+MjMgdXBzdHJlYW0uCgpzeXpib3QgcmVwb3J0cyB0aGF0IGRlZmVyL2xvY2FsIHRhc2tfd29y
+ayBhZGRpbmcgdmlhIG1zZ19yaW5nIGNhbiBoaXQKYSByZXF1ZXN0IHRoYXQgaGFzIGJlZW4g
+ZnJlZWQ6CgpDUFU6IDEgVUlEOiAwIFBJRDogMTkzNTYgQ29tbTogaW91LXdyay0xOTM1NCBO
+b3QgdGFpbnRlZCA2LjE2LjAtcmM0LXN5emthbGxlci0wMDEwOC1nMTdiYmRlMmUxNzE2ICMw
+IFBSRUVNUFQoZnVsbCkKSGFyZHdhcmUgbmFtZTogR29vZ2xlIEdvb2dsZSBDb21wdXRlIEVu
+Z2luZS9Hb29nbGUgQ29tcHV0ZSBFbmdpbmUsIEJJT1MgR29vZ2xlIDA1LzA3LzIwMjUKQ2Fs
+bCBUcmFjZToKIDxUQVNLPgogZHVtcF9zdGFja19sdmwrMHgxODkvMHgyNTAgbGliL2R1bXBf
+c3RhY2suYzoxMjAKIHByaW50X2FkZHJlc3NfZGVzY3JpcHRpb24gbW0va2FzYW4vcmVwb3J0
+LmM6NDA4IFtpbmxpbmVdCiBwcmludF9yZXBvcnQrMHhkMi8weDJiMCBtbS9rYXNhbi9yZXBv
+cnQuYzo1MjEKIGthc2FuX3JlcG9ydCsweDExOC8weDE1MCBtbS9rYXNhbi9yZXBvcnQuYzo2
+MzQKIGlvX3JlcV9sb2NhbF93b3JrX2FkZCBpb191cmluZy9pb191cmluZy5jOjExODQgW2lu
+bGluZV0KIF9faW9fcmVxX3Rhc2tfd29ya19hZGQrMHg1ODkvMHg5NTAgaW9fdXJpbmcvaW9f
+dXJpbmcuYzoxMjUyCiBpb19tc2dfcmVtb3RlX3Bvc3QgaW9fdXJpbmcvbXNnX3JpbmcuYzox
+MDMgW2lubGluZV0KIGlvX21zZ19kYXRhX3JlbW90ZSBpb191cmluZy9tc2dfcmluZy5jOjEz
+MyBbaW5saW5lXQogX19pb19tc2dfcmluZ19kYXRhKzB4ODIwLzB4YWEwIGlvX3VyaW5nL21z
+Z19yaW5nLmM6MTUxCiBpb19tc2dfcmluZ19kYXRhIGlvX3VyaW5nL21zZ19yaW5nLmM6MTcz
+IFtpbmxpbmVdCiBpb19tc2dfcmluZysweDEzNC8weGEwMCBpb191cmluZy9tc2dfcmluZy5j
+OjMxNAogX19pb19pc3N1ZV9zcWUrMHgxN2UvMHg0YjAgaW9fdXJpbmcvaW9fdXJpbmcuYzox
+NzM5CiBpb19pc3N1ZV9zcWUrMHgxNjUvMHhmZDAgaW9fdXJpbmcvaW9fdXJpbmcuYzoxNzYy
+CiBpb193cV9zdWJtaXRfd29yaysweDZlOS8weGI5MCBpb191cmluZy9pb191cmluZy5jOjE4
+NzQKIGlvX3dvcmtlcl9oYW5kbGVfd29yaysweDdjZC8weDExODAgaW9fdXJpbmcvaW8td3Eu
+Yzo2NDIKIGlvX3dxX3dvcmtlcisweDQyZi8weGViMCBpb191cmluZy9pby13cS5jOjY5Ngog
+cmV0X2Zyb21fZm9yaysweDNmYy8weDc3MCBhcmNoL3g4Ni9rZXJuZWwvcHJvY2Vzcy5jOjE0
+OAogcmV0X2Zyb21fZm9ya19hc20rMHgxYS8weDMwIGFyY2gveDg2L2VudHJ5L2VudHJ5XzY0
+LlM6MjQ1CiA8L1RBU0s+Cgp3aGljaCBpcyBzdXBwb3NlZCB0byBiZSBzYWZlIHdpdGggaG93
+IHJlcXVlc3RzIGFyZSBhbGxvY2F0ZWQuIEJ1dCBtc2cKcmluZyByZXF1ZXN0cyBhbGxvYyBh
+bmQgZnJlZSBvbiB0aGVpciBvd24sIGFuZCBoZW5jZSBtdXN0IGRlZmVyIGZyZWVpbmcKdG8g
+YSBzYW5lIHRpbWUuCgpBZGQgYW4gcmN1X2hlYWQgYW5kIHVzZSBrZnJlZV9yY3UoKSBpbiBi
+b3RoIHNwb3RzIHdoZXJlIHJlcXVlc3RzIGFyZQpmcmVlZC4gT25seSB0aGUgb25lIGluIGlv
+X21zZ190d19jb21wbGV0ZSgpIGlzIHN0cmljdGx5IHJlcXVpcmVkIGFzIGl0CmhhcyBiZWVu
+IHZpc2libGUgb24gdGhlIG90aGVyIHJpbmcsIGJ1dCB1c2UgaXQgY29uc2lzdGVudGx5IGlu
+IHRoZSBvdGhlcgpzcG90IGFzIHdlbGwuCgpUaGlzIHNob3VsZCBub3QgY2F1c2UgYW55IG90
+aGVyIGlzc3VlcyBvdXRzaWRlIG9mIEtBU0FOIHJpZ2h0ZnVsbHkKY29tcGxhaW5pbmcgYWJv
+dXQgaXQuCgpMaW5rOiBodHRwczovL2xvcmUua2VybmVsLm9yZy9pby11cmluZy82ODZjZDJl
+YS5hMDBhMDIyMC4zMzgwMzMuMDAwNy5HQUVAZ29vZ2xlLmNvbS8KUmVwb3J0ZWQtYnk6IHN5
+emJvdCs1NGNiYmZiNGRiOTE0NWQyNmZjMkBzeXprYWxsZXIuYXBwc3BvdG1haWwuY29tCkNj
+OiBzdGFibGVAdmdlci5rZXJuZWwub3JnCkZpeGVzOiAwNjE3YmI1MDBiZmEgKCJpb191cmlu
+Zy9tc2dfcmluZzogaW1wcm92ZSBoYW5kbGluZyBvZiB0YXJnZXQgQ1FFIHBvc3RpbmciKQpT
+aWduZWQtb2ZmLWJ5OiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CihjaGVycnkgcGlj
+a2VkIGZyb20gY29tbWl0IGZjNTgyY2QyNmU4ODhiMDY1MmJjMTQ5NGYyNTIzMjk0NTNmZDNi
+MjMpCi0tLQogaW5jbHVkZS9saW51eC9pb191cmluZ190eXBlcy5oIHwgMTIgKysrKysrKysr
+Ky0tCiBpb191cmluZy9tc2dfcmluZy5jICAgICAgICAgICAgfCAgNCArKy0tCiAyIGZpbGVz
+IGNoYW5nZWQsIDEyIGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
+IGEvaW5jbHVkZS9saW51eC9pb191cmluZ190eXBlcy5oIGIvaW5jbHVkZS9saW51eC9pb191
+cmluZ190eXBlcy5oCmluZGV4IDVjZTMzMmZjNmZmNS4uNjE2NzVlYTk1ZTBiIDEwMDY0NAot
+LS0gYS9pbmNsdWRlL2xpbnV4L2lvX3VyaW5nX3R5cGVzLmgKKysrIGIvaW5jbHVkZS9saW51
+eC9pb191cmluZ190eXBlcy5oCkBAIC02NDYsOCArNjQ2LDE2IEBAIHN0cnVjdCBpb19raW9j
+YiB7CiAJYXRvbWljX3QJCQlyZWZzOwogCWJvb2wJCQkJY2FuY2VsX3NlcV9zZXQ7CiAJc3Ry
+dWN0IGlvX3Rhc2tfd29yawkJaW9fdGFza193b3JrOwotCS8qIGZvciBwb2xsZWQgcmVxdWVz
+dHMsIGkuZS4gSU9SSU5HX09QX1BPTExfQUREIGFuZCBhc3luYyBhcm1lZCBwb2xsICovCi0J
+c3RydWN0IGhsaXN0X25vZGUJCWhhc2hfbm9kZTsKKwl1bmlvbiB7CisJCS8qCisJCSAqIGZv
+ciBwb2xsZWQgcmVxdWVzdHMsIGkuZS4gSU9SSU5HX09QX1BPTExfQUREIGFuZCBhc3luYyBh
+cm1lZAorCQkgKiBwb2xsCisJCSAqLworCQlzdHJ1Y3QgaGxpc3Rfbm9kZQloYXNoX25vZGU7
+CisKKwkJLyogZm9yIHByaXZhdGUgaW9fa2lvY2IgZnJlZWluZyAqLworCQlzdHJ1Y3QgcmN1
+X2hlYWQJCXJjdV9oZWFkOworCX07CiAJLyogaW50ZXJuYWwgcG9sbGluZywgc2VlIElPUklO
+R19GRUFUX0ZBU1RfUE9MTCAqLwogCXN0cnVjdCBhc3luY19wb2xsCQkqYXBvbGw7CiAJLyog
+b3Bjb2RlIGFsbG9jYXRlZCBpZiBpdCBuZWVkcyB0byBzdG9yZSBkYXRhIGZvciBhc3luYyBk
+ZWZlciAqLwpkaWZmIC0tZ2l0IGEvaW9fdXJpbmcvbXNnX3JpbmcuYyBiL2lvX3VyaW5nL21z
+Z19yaW5nLmMKaW5kZXggMzViMWI1ODVlOWNiLi5iNjhlMDA5YmNlMjEgMTAwNjQ0Ci0tLSBh
+L2lvX3VyaW5nL21zZ19yaW5nLmMKKysrIGIvaW9fdXJpbmcvbXNnX3JpbmcuYwpAQCAtODIs
+NyArODIsNyBAQCBzdGF0aWMgdm9pZCBpb19tc2dfdHdfY29tcGxldGUoc3RydWN0IGlvX2tp
+b2NiICpyZXEsIHN0cnVjdCBpb190d19zdGF0ZSAqdHMpCiAJCXNwaW5fdW5sb2NrKCZjdHgt
+Pm1zZ19sb2NrKTsKIAl9CiAJaWYgKHJlcSkKLQkJa21lbV9jYWNoZV9mcmVlKHJlcV9jYWNo
+ZXAsIHJlcSk7CisJCWtmcmVlX3JjdShyZXEsIHJjdV9oZWFkKTsKIAlwZXJjcHVfcmVmX3B1
+dCgmY3R4LT5yZWZzKTsKIH0KIApAQCAtOTEsNyArOTEsNyBAQCBzdGF0aWMgaW50IGlvX21z
+Z19yZW1vdGVfcG9zdChzdHJ1Y3QgaW9fcmluZ19jdHggKmN0eCwgc3RydWN0IGlvX2tpb2Ni
+ICpyZXEsCiB7CiAJcmVxLT50YXNrID0gUkVBRF9PTkNFKGN0eC0+c3VibWl0dGVyX3Rhc2sp
+OwogCWlmICghcmVxLT50YXNrKSB7Ci0JCWttZW1fY2FjaGVfZnJlZShyZXFfY2FjaGVwLCBy
+ZXEpOworCQlrZnJlZV9yY3UocmVxLCByY3VfaGVhZCk7CiAJCXJldHVybiAtRU9XTkVSREVB
+RDsKIAl9CiAJcmVxLT5vcGNvZGUgPSBJT1JJTkdfT1BfTk9QOwotLSAKMi41MS4wCgo=
+
+--------------FYqkBqQtnHPkO04kcVamWQrq--
 
