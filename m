@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-177967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44702B470BF
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 16:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 831BCB4718C
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 16:57:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37B4D1C23058
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 14:39:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 567C31C21902
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 14:57:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716C01F3FDC;
-	Sat,  6 Sep 2025 14:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C9E1DB127;
+	Sat,  6 Sep 2025 14:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jULOZ7z2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p2NoCe2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3190B1F09A5
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 14:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED551E1E00
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 14:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757169509; cv=none; b=Tg/TQBYLKrMS1BYUQ8XZeHkcLeIoxjgsn9d0PzdgieYkGxMym2G1t30k6DZsTK4YZG9oKdz9/PGQHxHcdFmtatD1U5TMzxkfmYap49vNAs7gkeCbUecDDQXGxIHBUfNHRcgkPGWA/veWvnj1CktEXmdI7kAAq3ElT1aVcE2TZD0=
+	t=1757170640; cv=none; b=Tbbb73l6nLlj7dMj8NwUvLxzQGH8PVwycPalHX9CxuNg4HkFL33jIZLcsOO0RzGsIjpmpXvJWxtlqhNTIjN7ASpNfRN4SkMEgbapELfP+b+LqXCqKXsPO7DHi62Zt5Xm9nUBFyxuNMJ2esQZJXByLzGlAfwfDE78YHNwNjqa7Do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757169509; c=relaxed/simple;
-	bh=Tso8u5DXcwLjJkw4rCp9GUUtZGetcd84Y7C8hz7OiPU=;
+	s=arc-20240116; t=1757170640; c=relaxed/simple;
+	bh=EHFNCV0S3VAKHCpV2Xg24af7gNkaf9317963pqrWujM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oYX6wvDsOyjNS8Zlg/cYEBdo7lxxgSYUXELF+b74J59TbZZFFByUnACNlX3dQdlN6At7CNLDdrAaojDrB79dCKJVr9aQEf7k6qo6rRKV0OrgyYEtcBULDmDP7HWlNXvvhuvmGlRkcWo1OgszCFUQ6n98gtmF6vwOZW46De/14Zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jULOZ7z2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05DFDC4CEE7;
-	Sat,  6 Sep 2025 14:38:27 +0000 (UTC)
+	 MIME-Version; b=TIiUqPj+w3+AV24cgrm+qkLQIO8i+JtMJ+AIhLQRDtJwK4HxJd6RiwewxC+9uECVmVNsBvuOvegVpqmrUg812tf2mN4ZIZobHC+S3IVlI6uKO4YoCnPrDcEdnBC/yoF55LS9P6xIBEQP6jOJ0rYV35UMD9FaLlJWYY4x7JlOVmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p2NoCe2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07555C4CEE7;
+	Sat,  6 Sep 2025 14:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757169508;
-	bh=Tso8u5DXcwLjJkw4rCp9GUUtZGetcd84Y7C8hz7OiPU=;
+	s=k20201202; t=1757170639;
+	bh=EHFNCV0S3VAKHCpV2Xg24af7gNkaf9317963pqrWujM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jULOZ7z2TCfcbHsg4MBxPHPyKs1sE6gv0c4WCV3ltMzG6gWp/xguu1xMPnMs395GR
-	 xkGgVe+HLtYp24ymRZfjkfwIrwootPCGx2zqFU7EJfAGr2FC2qeAaTr7++xXr4iHnj
-	 DFDnojLvZAQpm+dnITuqSu8JFVeXY/++/TLvZK1zy8gC9JTnEaSA3a6sLL+RuXDP+M
-	 3E4NEZksOyL21QiHvepOvVUbJmqHv3H5uc7hSj04LoP+2m6fbQe2Es2j7Y835xUlAh
-	 KKNHh+cNMml8emR3fqj4KTBIzxHMKitk3nT62UShbt7NyNbVhI/tufj4S5tm/9SjSz
-	 y82vBRNGOq9Iw==
+	b=p2NoCe2FJTt+8VBeCbKfYLe5K/dc2+Cl3WKSPiT065950grG5UfyNQjLXKlh/rBvY
+	 oaauKvW1af6b6QaA9O71BN+Wxt29ih4hYawoL03/g9lTiU8fDzlzqde8tQlM0UKP+1
+	 a6bW88qK8s6gLgmOv+DPxkllPLTRs5t0xjy1/ITxOW3J1JJwWtr4VGqb+KGxshaCry
+	 akzyXBMP1Tu8DI5AFyFfVJz0F3hgWx4a1KVpH1CrfBf9motdpjI1mK8vAiAJmqLikS
+	 u8HhBNPgDSIRFlBMYfAIybAjlp4cplfSfzMIyCRyOz6pIEDjGTLj0KTBHJC3Y5I8sf
+	 VfKzk1KJu9w4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
+Cc: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] perf/x86/intel: Don't clear perf metrics overflow bit unconditionally
-Date: Sat,  6 Sep 2025 10:38:26 -0400
-Message-ID: <20250906143826.44231-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] KVM: x86: Take irqfds.lock when adding/deleting IRQ bypass producer
+Date: Sat,  6 Sep 2025 10:57:16 -0400
+Message-ID: <20250906145716.57721-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025042126-outgrow-kiln-e518@gregkh>
-References: <2025042126-outgrow-kiln-e518@gregkh>
+In-Reply-To: <2025042806-economic-dexterous-1dcd@gregkh>
+References: <2025042806-economic-dexterous-1dcd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,77 +60,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit a5f5e1238f4ff919816f69e77d2537a48911767b ]
+[ Upstream commit f1fb088d9cecde5c3066d8ff8846789667519b7d ]
 
-The below code would always unconditionally clear other status bits like
-perf metrics overflow bit once PEBS buffer overflows:
+Take irqfds.lock when adding/deleting an IRQ bypass producer to ensure
+irqfd->producer isn't modified while kvm_irq_routing_update() is running.
+The only lock held when a producer is added/removed is irqbypass's mutex.
 
-        status &= intel_ctrl | GLOBAL_STATUS_TRACE_TOPAPMI;
-
-This is incorrect. Perf metrics overflow bit should be cleared only when
-fixed counter 3 in PEBS counter group. Otherwise perf metrics overflow
-could be missed to handle.
-
-Closes: https://lore.kernel.org/all/20250225110012.GK31462@noisy.programming.kicks-ass.net/
-Fixes: 7b2c05a15d29 ("perf/x86/intel: Generic support for hardware TopDown metrics")
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Fixes: 872768800652 ("KVM: x86: select IRQ_BYPASS_MANAGER")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250415104135.318169-1-dapeng1.mi@linux.intel.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-5-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/core.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ arch/x86/kvm/x86.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 5e43d390f7a3d..063147d7161b6 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -3029,7 +3029,6 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
- 	int bit;
- 	int handled = 0;
--	u64 intel_ctrl = hybrid(cpuc->pmu, intel_ctrl);
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 63df6c33e3a47..8952f3567b69a 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -11417,16 +11417,22 @@ int kvm_arch_irq_bypass_add_producer(struct irq_bypass_consumer *cons,
+ {
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
++	struct kvm *kvm = irqfd->kvm;
+ 	int ret;
  
- 	inc_irq_stat(apic_perf_irqs);
- 
-@@ -3073,7 +3072,6 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
- 		handled++;
- 		x86_pmu_handle_guest_pebs(regs, &data);
- 		static_call(x86_pmu_drain_pebs)(regs, &data);
--		status &= intel_ctrl | GLOBAL_STATUS_TRACE_TOPAPMI;
- 
- 		/*
- 		 * PMI throttle may be triggered, which stops the PEBS event.
-@@ -3084,6 +3082,15 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
- 		 */
- 		if (pebs_enabled != cpuc->pebs_enabled)
- 			wrmsrl(MSR_IA32_PEBS_ENABLE, cpuc->pebs_enabled);
+-	irqfd->producer = prod;
+ 	kvm_arch_start_assignment(irqfd->kvm);
 +
-+		/*
-+		 * Above PEBS handler (PEBS counters snapshotting) has updated fixed
-+		 * counter 3 and perf metrics counts if they are in counter group,
-+		 * unnecessary to update again.
-+		 */
-+		if (cpuc->events[INTEL_PMC_IDX_FIXED_SLOTS] &&
-+		    is_pebs_counter_event_group(cpuc->events[INTEL_PMC_IDX_FIXED_SLOTS]))
-+			status &= ~GLOBAL_STATUS_PERF_METRICS_OVF_BIT;
- 	}
++	spin_lock_irq(&kvm->irqfds.lock);
++	irqfd->producer = prod;
++
+ 	ret = kvm_x86_ops.update_pi_irte(irqfd->kvm,
+ 					 prod->irq, irqfd->gsi, 1);
+-
+ 	if (ret)
+ 		kvm_arch_end_assignment(irqfd->kvm);
+ 
++	spin_unlock_irq(&kvm->irqfds.lock);
++
++
+ 	return ret;
+ }
+ 
+@@ -11436,9 +11442,9 @@ void kvm_arch_irq_bypass_del_producer(struct irq_bypass_consumer *cons,
+ 	int ret;
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
++	struct kvm *kvm = irqfd->kvm;
+ 
+ 	WARN_ON(irqfd->producer != prod);
+-	irqfd->producer = NULL;
  
  	/*
-@@ -3103,6 +3110,8 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
- 		static_call(intel_pmu_update_topdown_event)(NULL);
- 	}
- 
-+	status &= hybrid(cpuc->pmu, intel_ctrl);
+ 	 * When producer of consumer is unregistered, we change back to
+@@ -11446,11 +11452,17 @@ void kvm_arch_irq_bypass_del_producer(struct irq_bypass_consumer *cons,
+ 	 * when the irq is masked/disabled or the consumer side (KVM
+ 	 * int this case doesn't want to receive the interrupts.
+ 	*/
++	spin_lock_irq(&kvm->irqfds.lock);
++	irqfd->producer = NULL;
 +
- 	/*
- 	 * Checkpointed counters can lead to 'spurious' PMIs because the
- 	 * rollback caused by the PMI will have cleared the overflow status
+ 	ret = kvm_x86_ops.update_pi_irte(irqfd->kvm, prod->irq, irqfd->gsi, 0);
+ 	if (ret)
+ 		printk(KERN_INFO "irq bypass consumer (token %p) unregistration"
+ 		       " fails: %d\n", irqfd->consumer.token, ret);
+ 
++	spin_unlock_irq(&kvm->irqfds.lock);
++
++
+ 	kvm_arch_end_assignment(irqfd->kvm);
+ }
+ 
 -- 
 2.51.0
 
