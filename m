@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-177970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96658B473BE
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 18:11:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41407B47421
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 18:26:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 601CE5871F3
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 16:11:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35D201BC26A9
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 16:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0D5224AEB;
-	Sat,  6 Sep 2025 16:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68F225393C;
+	Sat,  6 Sep 2025 16:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQnkq4lv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nt3M8K41"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF46820E6E3
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 16:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4AA2737E7
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 16:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757175071; cv=none; b=F3/rNUAYw1CfTR5wWWDap71hXx+N3k225ADoVuCByGSvWQ2gfODp25CUcdtzgR6GAtVekdqzGbb+vrj635BIHCdFPVjQgqic2kBQAvVMQ+3nWYL5JdIyfK27pTanLzVbQJ+6lpYnl34nzUl1FDKKulAvHgSqnlitFS+ASiZVJEU=
+	t=1757175957; cv=none; b=uBW0xublHv9MVFOjw2F7mx7DVgublMLehjdhJM4lp/Zzvp4zlExWM/u16kJXv+kySYi0EOHLv7pI3X1968QpRe+TQ6o3ktkChVbwFivBWuDl+7Wrt0VS6s7lSIPbeOmTa82Yk7tDJSCT7fuZr01j8JoyXZql9JgCN89H4mVzgbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757175071; c=relaxed/simple;
-	bh=iBFXEwpj1XH88duZ1969OYqJ7T3EPT7cgsKUGHgx9QI=;
+	s=arc-20240116; t=1757175957; c=relaxed/simple;
+	bh=c5D82IzPbK89NH8tIChpRXE+5Xnq7zC6GKuCKnWPI44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fp8EyCQkCjisGiojCrxSw7f+dRWoihxBuJLyIdIHPogvP0htzqVv9UbeeXfyvkP2N7Fjcq3HV4DAw5ToK6suQJa0xqUwPNPNhMJnD2W1bX1yhTrCC/k/6L4t1MTv3PAa/RxLzifBnnIg8eAR26wQAwnaNFAQq4HHZ3hSfFdEqCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQnkq4lv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FD7C4CEE7;
-	Sat,  6 Sep 2025 16:11:10 +0000 (UTC)
+	 MIME-Version; b=DQLld0vjB0dalmN6FQ8cped/EEO6ZYH9ZNneTFgh3JTKZ9puEqtmO7ZrcYiQt3ienUgehGBQJVuBcXyp94V9ICz/rWUMg6WHkhspse1e2/lg2RN7sc9qEYqj7AqYJGW6h9Pk3kzfPGvSdSG0QEd4ESGzIIOnBDHMifQ0omiqd7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nt3M8K41; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA19C4CEE7;
+	Sat,  6 Sep 2025 16:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757175071;
-	bh=iBFXEwpj1XH88duZ1969OYqJ7T3EPT7cgsKUGHgx9QI=;
+	s=k20201202; t=1757175957;
+	bh=c5D82IzPbK89NH8tIChpRXE+5Xnq7zC6GKuCKnWPI44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aQnkq4lvU0m9C+PtvQpGl7UkRpPD6+jywbjWLhh+lJS1vP3WTJ8YfdWq+ut4Poc5A
-	 imrKVJhuaIZXf/0yYzLVwFhZrKZDz3G5EVHfXEkCJ7iN38xmEor5m7J43g37iYKGAH
-	 HmRfZ6/6lerHxlOQWTNqvVrdCmYfoPtPlcrhpTOY6E7riumF845yoUL4CabXBvzi7s
-	 N9QtCrMxNbNW/mVfAq7QIghj0u0ElfGZI6SXr1FY9/q9JPI+fC2FtgHXJUEDFfgKaI
-	 OBF7XuoVNoktGY12hvxonm3DmqeAJm4G+Ga7SYP3TPkLmgOQgcg2LdsDpEtemy+Gne
-	 9bb5HmwMDy3ew==
+	b=nt3M8K41ycLjVdicmMfxAWw4Z4Ygb+aY7/zWNzMVUZPens4iOCYIBMw/fZ2rZKK1u
+	 uaiusaXOShL1LoaX4RPPdLY/oonoTMgX0MTDL7Vzbg7iU9Wkqq1b8MMbmQRIcsGq4z
+	 VR8ASGnjH/Cb8ueJ6zR7Ua7oBITyh1YjzRlIdNR4Yv0kOGaq5V7PfEnNfcP43ESGaC
+	 FqpNekbkmXtX0B0FsHk2fUY5VyWplXITDBKkV0BOe2o3JBVNnW1ntiIYp1Gdns8UaR
+	 ASRHXe9z95vz63jxHFZt57C9zlnEN7MeyOcVDdMizW5lYlXq35xYPHq0askD6zXlo6
+	 eTsfiJ7U0T2FQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Christian Loehle <christian.loehle@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] cpufreq/sched: Explicitly synchronize limits_changed flag handling
-Date: Sat,  6 Sep 2025 12:11:09 -0400
-Message-ID: <20250906161109.141162-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] cpufreq/sched: Explicitly synchronize limits_changed flag handling
+Date: Sat,  6 Sep 2025 12:25:54 -0400
+Message-ID: <20250906162554.151159-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025042156-uncurled-citizen-ae9a@gregkh>
-References: <2025042156-uncurled-citizen-ae9a@gregkh>
+In-Reply-To: <2025042157-spinout-petted-8c6b@gregkh>
+References: <2025042157-spinout-petted-8c6b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,10 +98,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 24 insertions(+), 4 deletions(-)
 
 diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index 4dcb489733181..3221bafb799da 100644
+index 519f742d44f48..954a85b8c2758 100644
 --- a/kernel/sched/cpufreq_schedutil.c
 +++ b/kernel/sched/cpufreq_schedutil.c
-@@ -82,9 +82,20 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
+@@ -89,9 +89,20 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
  	if (!cpufreq_this_cpu_can_update(sg_policy->policy))
  		return false;
  
@@ -124,7 +124,7 @@ index 4dcb489733181..3221bafb799da 100644
  		return true;
  	}
  
-@@ -318,7 +329,7 @@ static inline bool sugov_cpu_is_busy(struct sugov_cpu *sg_cpu) { return false; }
+@@ -326,7 +337,7 @@ static inline bool sugov_cpu_is_busy(struct sugov_cpu *sg_cpu) { return false; }
  static inline void ignore_dl_rate_limit(struct sugov_cpu *sg_cpu)
  {
  	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_dl)
@@ -133,7 +133,7 @@ index 4dcb489733181..3221bafb799da 100644
  }
  
  static inline bool sugov_update_single_common(struct sugov_cpu *sg_cpu,
-@@ -825,7 +836,16 @@ static void sugov_limits(struct cpufreq_policy *policy)
+@@ -826,7 +837,16 @@ static void sugov_limits(struct cpufreq_policy *policy)
  		mutex_unlock(&sg_policy->work_lock);
  	}
  
