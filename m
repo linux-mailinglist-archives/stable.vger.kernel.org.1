@@ -1,157 +1,103 @@
-Return-Path: <stable+bounces-177971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41407B47421
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 18:26:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69D9B47623
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 20:36:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35D201BC26A9
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 16:26:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B92771C20068
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 18:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68F225393C;
-	Sat,  6 Sep 2025 16:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7518527FD6B;
+	Sat,  6 Sep 2025 18:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nt3M8K41"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ja/POPek"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4AA2737E7
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 16:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F4227FB21
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 18:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757175957; cv=none; b=uBW0xublHv9MVFOjw2F7mx7DVgublMLehjdhJM4lp/Zzvp4zlExWM/u16kJXv+kySYi0EOHLv7pI3X1968QpRe+TQ6o3ktkChVbwFivBWuDl+7Wrt0VS6s7lSIPbeOmTa82Yk7tDJSCT7fuZr01j8JoyXZql9JgCN89H4mVzgbI=
+	t=1757183782; cv=none; b=S3zAJE1JYJ7GUB5VlXsPPUFBPZ8tJqi/JdH5mOZpBm4qvSRlgGaSgSaepXfq+DdOQke3rnUeMdQjy9PHSFSM3j0KJvTE2SpPtyqrD2ZxoAZE9UzY6UtJydkkkGbpdEOs1CIDVsRcIFWwnQXZKGBQ5JuzLnMCJ8P580sB+w4X6yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757175957; c=relaxed/simple;
-	bh=c5D82IzPbK89NH8tIChpRXE+5Xnq7zC6GKuCKnWPI44=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQLld0vjB0dalmN6FQ8cped/EEO6ZYH9ZNneTFgh3JTKZ9puEqtmO7ZrcYiQt3ienUgehGBQJVuBcXyp94V9ICz/rWUMg6WHkhspse1e2/lg2RN7sc9qEYqj7AqYJGW6h9Pk3kzfPGvSdSG0QEd4ESGzIIOnBDHMifQ0omiqd7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nt3M8K41; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA19C4CEE7;
-	Sat,  6 Sep 2025 16:25:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757175957;
-	bh=c5D82IzPbK89NH8tIChpRXE+5Xnq7zC6GKuCKnWPI44=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nt3M8K41ycLjVdicmMfxAWw4Z4Ygb+aY7/zWNzMVUZPens4iOCYIBMw/fZ2rZKK1u
-	 uaiusaXOShL1LoaX4RPPdLY/oonoTMgX0MTDL7Vzbg7iU9Wkqq1b8MMbmQRIcsGq4z
-	 VR8ASGnjH/Cb8ueJ6zR7Ua7oBITyh1YjzRlIdNR4Yv0kOGaq5V7PfEnNfcP43ESGaC
-	 FqpNekbkmXtX0B0FsHk2fUY5VyWplXITDBKkV0BOe2o3JBVNnW1ntiIYp1Gdns8UaR
-	 ASRHXe9z95vz63jxHFZt57C9zlnEN7MeyOcVDdMizW5lYlXq35xYPHq0askD6zXlo6
-	 eTsfiJ7U0T2FQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] cpufreq/sched: Explicitly synchronize limits_changed flag handling
-Date: Sat,  6 Sep 2025 12:25:54 -0400
-Message-ID: <20250906162554.151159-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025042157-spinout-petted-8c6b@gregkh>
-References: <2025042157-spinout-petted-8c6b@gregkh>
+	s=arc-20240116; t=1757183782; c=relaxed/simple;
+	bh=xzoCRkUUs4/ZjBRIS10Og6kqcpPCqmYrhKSIGAEVkMg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LG7a9MMgj2KdNBc+BT40OKue9xI56/Jt2urITBsC95zt1SiAHRmY9vNL6N1w6i9HAd+yWCjarzXQvStVZFSsK0xAuQbt2I/Jpk/JhITdDa+tK5Erxag3diV5/IwGw/QxHgMZja09yR01kQ0u1zrDt4b5gmzgVFR7wd5UeCJ/HUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ja/POPek; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FDCC4CEE7;
+	Sat,  6 Sep 2025 18:36:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1757183782;
+	bh=xzoCRkUUs4/ZjBRIS10Og6kqcpPCqmYrhKSIGAEVkMg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ja/POPekoZw1JTc8jm4bfMQ7pBjixgqEeq+p3SGqn9pj8a71RKq8GU7Td1XWBSt8o
+	 xKyuM5KEMhFsMJ/asrAJUoRFSl/9xbtbEkha2jGb0o5wVLwWiRwYiQqIbrEoFUi9ni
+	 6ve08iGa2Z/231NHL+PrkQ6sl4P6N1GsfXzlRDVU=
+Date: Sat, 6 Sep 2025 20:36:19 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	stable@vger.kernel.org, vegard.nossum@oracle.com,
+	syzbot+54cbbfb4db9145d26fc2@syzkaller.appspotmail.com
+Subject: Re: [PATCH 6.12.y 11/15] io_uring/msg_ring: ensure io_kiocb freeing
+ is deferred for RCU
+Message-ID: <2025090622-crispy-germproof-3d11@gregkh>
+References: <20250905110406.3021567-1-harshit.m.mogalapalli@oracle.com>
+ <20250905110406.3021567-12-harshit.m.mogalapalli@oracle.com>
+ <f43fe976-4ef5-4dea-a2d0-336456a4deae@kernel.dk>
+ <96857683-167a-4ba8-ad26-564e5dcae79b@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <96857683-167a-4ba8-ad26-564e5dcae79b@kernel.dk>
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+On Fri, Sep 05, 2025 at 07:23:00PM -0600, Jens Axboe wrote:
+> On 9/5/25 1:58 PM, Jens Axboe wrote:
+> > On 9/5/25 5:04 AM, Harshit Mogalapalli wrote:
+> >> diff --git a/include/linux/io_uring_types.h b/include/linux/io_uring_types.h
+> >> index 5ce332fc6ff5..3b27d9bcf298 100644
+> >> --- a/include/linux/io_uring_types.h
+> >> +++ b/include/linux/io_uring_types.h
+> >> @@ -648,6 +648,8 @@ struct io_kiocb {
+> >>  	struct io_task_work		io_task_work;
+> >>  	/* for polled requests, i.e. IORING_OP_POLL_ADD and async armed poll */
+> >>  	struct hlist_node		hash_node;
+> >> +	/* for private io_kiocb freeing */
+> >> +	struct rcu_head		rcu_head;
+> >>  	/* internal polling, see IORING_FEAT_FAST_POLL */
+> >>  	struct async_poll		*apoll;
+> >>  	/* opcode allocated if it needs to store data for async defer */
+> > 
+> > This should go into a union with hash_node, rather than bloat the
+> > struct. That's how it was done upstream, not sure why this one is
+> > different?
+> 
+> Here's a test variant with that sorted. Greg, I never got a FAILED email
+> on this one, as far as I can tell. When a patch is marked with CC:
+> stable@vger.kernel.org and the origin of the bug clearly marked with
+> Fixes, I'm expecting to have a 100% reliable notification if it fails to
+> apply. If not, I just kind of assume patches flow into stable.
+> 
+> Was this missed on my side, or was it on the stable side? If the latter,
+> how did that happen? I always ensure that stable has what it needs and
+> play nice on my side, but if misses like this can happen with the
+> tooling, that makes me a bit nervous.
+> 
 
-[ Upstream commit 79443a7e9da3c9f68290a8653837e23aba0fa89f ]
+This looks like a failure on my side, sorry.  I don't see any FAILED
+email that went out for this anywhere, so I messed up.
 
-The handling of the limits_changed flag in struct sugov_policy needs to
-be explicitly synchronized to ensure that cpufreq policy limits updates
-will not be missed in some cases.
+sorry about that, and Harshit, thanks for noticing it.
 
-Without that synchronization it is theoretically possible that
-the limits_changed update in sugov_should_update_freq() will be
-reordered with respect to the reads of the policy limits in
-cpufreq_driver_resolve_freq() and in that case, if the limits_changed
-update in sugov_limits() clobbers the one in sugov_should_update_freq(),
-the new policy limits may not take effect for a long time.
-
-Likewise, the limits_changed update in sugov_limits() may theoretically
-get reordered with respect to the updates of the policy limits in
-cpufreq_set_policy() and if sugov_should_update_freq() runs between
-them, the policy limits change may be missed.
-
-To ensure that the above situations will not take place, add memory
-barriers preventing the reordering in question from taking place and
-add READ_ONCE() and WRITE_ONCE() annotations around all of the
-limits_changed flag updates to prevent the compiler from messing up
-with that code.
-
-Fixes: 600f5badb78c ("cpufreq: schedutil: Don't skip freq update when limits change")
-Cc: 5.3+ <stable@vger.kernel.org> # 5.3+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/3376719.44csPzL39Z@rjwysocki.net
-[ bw_min => bw_dl ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- kernel/sched/cpufreq_schedutil.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
-
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index 519f742d44f48..954a85b8c2758 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -89,9 +89,20 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
- 	if (!cpufreq_this_cpu_can_update(sg_policy->policy))
- 		return false;
- 
--	if (unlikely(sg_policy->limits_changed)) {
--		sg_policy->limits_changed = false;
-+	if (unlikely(READ_ONCE(sg_policy->limits_changed))) {
-+		WRITE_ONCE(sg_policy->limits_changed, false);
- 		sg_policy->need_freq_update = true;
-+
-+		/*
-+		 * The above limits_changed update must occur before the reads
-+		 * of policy limits in cpufreq_driver_resolve_freq() or a policy
-+		 * limits update might be missed, so use a memory barrier to
-+		 * ensure it.
-+		 *
-+		 * This pairs with the write memory barrier in sugov_limits().
-+		 */
-+		smp_mb();
-+
- 		return true;
- 	}
- 
-@@ -326,7 +337,7 @@ static inline bool sugov_cpu_is_busy(struct sugov_cpu *sg_cpu) { return false; }
- static inline void ignore_dl_rate_limit(struct sugov_cpu *sg_cpu)
- {
- 	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_dl)
--		sg_cpu->sg_policy->limits_changed = true;
-+		WRITE_ONCE(sg_cpu->sg_policy->limits_changed, true);
- }
- 
- static inline bool sugov_update_single_common(struct sugov_cpu *sg_cpu,
-@@ -826,7 +837,16 @@ static void sugov_limits(struct cpufreq_policy *policy)
- 		mutex_unlock(&sg_policy->work_lock);
- 	}
- 
--	sg_policy->limits_changed = true;
-+	/*
-+	 * The limits_changed update below must take place before the updates
-+	 * of policy limits in cpufreq_set_policy() or a policy limits update
-+	 * might be missed, so use a memory barrier to ensure it.
-+	 *
-+	 * This pairs with the memory barrier in sugov_should_update_freq().
-+	 */
-+	smp_wmb();
-+
-+	WRITE_ONCE(sg_policy->limits_changed, true);
- }
- 
- struct cpufreq_governor schedutil_gov = {
--- 
-2.51.0
-
+greg k-h
 
