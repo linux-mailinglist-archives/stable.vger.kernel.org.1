@@ -1,156 +1,168 @@
-Return-Path: <stable+bounces-177999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43376B4771C
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 22:20:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FCE5B4771D
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 22:20:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9CC01BC2F9D
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 20:20:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42A557B60F6
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 20:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0BF2BE65A;
-	Sat,  6 Sep 2025 20:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4F926CE2C;
+	Sat,  6 Sep 2025 20:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sBd+XZOq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Id20ptMY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09892BE64A
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 20:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32AC28468C
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 20:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757189960; cv=none; b=eHyZ7GCzPmD59hbKAXw2FYuoxhyFrEpglIDrfChmkx5EJFcyGLnb08ZYEyN2/x066uBRD9XGyyimakJ2x1FhXoBUIhPn3U1EMHpzSP16NdguFZ4q4MSY3ZY3we4lE5IwzXndsN8rz+d7ZL8DbIrZCx1JbHzFifvEqv0Xz9lo/l4=
+	t=1757189963; cv=none; b=c3kJT3po2eMiWfa/vKbw7y2pcY8GOtgsouZlugqz3psTtBV0aVoz/yVwhaX+5NaCGcPDLPkXG6LThjSLHL/5YMX4gpwIZN9JthduB30ouqNVsGzoCr0hzxzvjTcx05UUgJaP3z1KM5dcvih5o88G0PkY+QPBCkU18xd5aonvMog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757189960; c=relaxed/simple;
-	bh=bVpYwaj0DdhCZYbSS2cMMncHu8G/gaHPnecVaaBYuX4=;
+	s=arc-20240116; t=1757189963; c=relaxed/simple;
+	bh=CNSqP+8Pv3shaGSAjCYQ/bucbwhARu27PNQjJus0GSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YNl2ldXjUSRB8e7e+ALRwbo+GZhcDdSq3dBuO98K5H8bq/704T/z1dBf6MIx6F1OfokFZn6ojBgrVouRDHDkjtqw33EYueH8ap/D9pT+eTn9yBuIDD5QTc6xsRCvR1WT4ZLFDvHxw/+gv8NbU5cFAOlTVILwPIPsqPp3CdYCkHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sBd+XZOq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01472C4CEE7;
-	Sat,  6 Sep 2025 20:19:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tEnrxwuxYcBfEGm0E1+3N8sMPE6j3K23hcCrIuhPzUrqg3K9PdkitFHS7Dt+gtTwf3vz36mThjKipW/+DwrPHiH7eOup6LdpHESErVc8dlrUAHw9x5fPq1uEPsCDa+/g1a3yrn4XuV7be9ZtTGh1eJYuOT9MuH04Zy8bu3IcR5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Id20ptMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76FDC4CEE7;
+	Sat,  6 Sep 2025 20:19:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757189960;
-	bh=bVpYwaj0DdhCZYbSS2cMMncHu8G/gaHPnecVaaBYuX4=;
+	s=k20201202; t=1757189963;
+	bh=CNSqP+8Pv3shaGSAjCYQ/bucbwhARu27PNQjJus0GSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sBd+XZOqCvrKd37Kl1CQNyahmZ6pN4LPxEjpN5+hfE1txCXNkhJq84V46PCR9Cu3F
-	 9UF/a3LaqZ0YrI5PPy5pBzfwXZsT1/ilG7vHwq+dzBXJYB0KiRsk4NC/79tU5zWqd3
-	 Bh0FRI5T6U7OutBy2oZ4qlBiAKLpADf4RX5UG6so8xWcdiSsVAcFuA1D8xEuXT/ugX
-	 XqWslGt83vZ0N3tybG75O97gUKILSAD2WjhjxHw8IIfptbRqNO/7Yt/ze74KjVu30Y
-	 8dg1s125yfwYSoacmTLBaNQ48C95zWSs87AlqOcUxLiNV+5YPKbGmhpo9ggW68YAws
-	 9g3/evG3KMoAw==
+	b=Id20ptMY4xRKek9a6DFud6Ht1iy0YvNCVmYVOPTRkDVIADqgSNgPkbUtycopzFgEV
+	 5YhlRFn6QgDyxwkRjUK0Lh6qZ8YwQKi+foNZJMuN5rbCkTbL5uui4HKqrPyTuwO9xp
+	 gNS85e2zhlxFxJ6Gui1btXg5bxm76K3TKTUs3JBawnk6dXgwulOqMDm169COdEbEvF
+	 HuxfcQATcQXiVEP6lgvRNzt/6xjG/LnYSC5dXf7fRtLm3ytcVLIBxu9TZQ0nTiVtOm
+	 mxQsq1eOLAp7259qi0RN2XNeuXPIMrPsz3snVSqtLfV/348+bxQsGdelDnhAhQ51XH
+	 /WFvEmpQ7P/Mg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
+Cc: =?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?= <nfraprado@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] cpufreq/sched: Explicitly synchronize limits_changed flag handling
-Date: Sat,  6 Sep 2025 16:19:18 -0400
-Message-ID: <20250906201918.261460-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] thermal/drivers/mediatek/lvts: Disable low offset IRQ for minimum threshold
+Date: Sat,  6 Sep 2025 16:19:21 -0400
+Message-ID: <20250906201921.261506-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025042158-motivator-rummage-0678@gregkh>
-References: <2025042158-motivator-rummage-0678@gregkh>
+In-Reply-To: <2025041731-pellet-morale-d20d@gregkh>
+References: <2025041731-pellet-morale-d20d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 79443a7e9da3c9f68290a8653837e23aba0fa89f ]
+[ Upstream commit fa17ff8e325a657c84be1083f06e54ee7eea82e4 ]
 
-The handling of the limits_changed flag in struct sugov_policy needs to
-be explicitly synchronized to ensure that cpufreq policy limits updates
-will not be missed in some cases.
+In order to get working interrupts, a low offset value needs to be
+configured. The minimum value for it is 20 Celsius, which is what is
+configured when there's no lower thermal trip (ie the thermal core
+passes -INT_MAX as low trip temperature). However, when the temperature
+gets that low and fluctuates around that value it causes an interrupt
+storm.
 
-Without that synchronization it is theoretically possible that
-the limits_changed update in sugov_should_update_freq() will be
-reordered with respect to the reads of the policy limits in
-cpufreq_driver_resolve_freq() and in that case, if the limits_changed
-update in sugov_limits() clobbers the one in sugov_should_update_freq(),
-the new policy limits may not take effect for a long time.
+Prevent that interrupt storm by not enabling the low offset interrupt if
+the low threshold is the minimum one.
 
-Likewise, the limits_changed update in sugov_limits() may theoretically
-get reordered with respect to the updates of the policy limits in
-cpufreq_set_policy() and if sugov_should_update_freq() runs between
-them, the policy limits change may be missed.
-
-To ensure that the above situations will not take place, add memory
-barriers preventing the reordering in question from taking place and
-add READ_ONCE() and WRITE_ONCE() annotations around all of the
-limits_changed flag updates to prevent the compiler from messing up
-with that code.
-
-Fixes: 600f5badb78c ("cpufreq: schedutil: Don't skip freq update when limits change")
-Cc: 5.3+ <stable@vger.kernel.org> # 5.3+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/3376719.44csPzL39Z@rjwysocki.net
-[ Adjust context ]
+Cc: stable@vger.kernel.org
+Fixes: 77354eaef821 ("thermal/drivers/mediatek/lvts_thermal: Don't leave threshold zeroed")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20250113-mt8192-lvts-filtered-suspend-fix-v2-3-07a25200c7c6@collabora.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+[ Adapted interrupt mask definitions ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/cpufreq_schedutil.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ drivers/thermal/mediatek/lvts_thermal.c | 50 ++++++++++++++++++-------
+ 1 file changed, 36 insertions(+), 14 deletions(-)
 
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index 831fee509404e..babdfed7f24c1 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -88,9 +88,20 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
- 	if (!cpufreq_this_cpu_can_update(sg_policy->policy))
- 		return false;
+diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
+index 8d0ccf494ba22..603b37ce1eb8e 100644
+--- a/drivers/thermal/mediatek/lvts_thermal.c
++++ b/drivers/thermal/mediatek/lvts_thermal.c
+@@ -67,10 +67,14 @@
+ #define LVTS_CALSCALE_CONF			0x300
+ #define LVTS_MONINT_CONF			0x8300318C
  
--	if (unlikely(sg_policy->limits_changed)) {
--		sg_policy->limits_changed = false;
-+	if (unlikely(READ_ONCE(sg_policy->limits_changed))) {
-+		WRITE_ONCE(sg_policy->limits_changed, false);
- 		sg_policy->need_freq_update = true;
-+
-+		/*
-+		 * The above limits_changed update must occur before the reads
-+		 * of policy limits in cpufreq_driver_resolve_freq() or a policy
-+		 * limits update might be missed, so use a memory barrier to
-+		 * ensure it.
-+		 *
-+		 * This pairs with the write memory barrier in sugov_limits().
-+		 */
-+		smp_mb();
-+
- 		return true;
- 	}
+-#define LVTS_MONINT_OFFSET_SENSOR0		0xC
+-#define LVTS_MONINT_OFFSET_SENSOR1		0x180
+-#define LVTS_MONINT_OFFSET_SENSOR2		0x3000
+-#define LVTS_MONINT_OFFSET_SENSOR3		0x3000000
++#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR0		BIT(3)
++#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR1		BIT(8)
++#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR2		BIT(13)
++#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR3		BIT(25)
++#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR0		BIT(2)
++#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR1		BIT(7)
++#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR2		BIT(12)
++#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR3		BIT(24)
  
-@@ -444,7 +455,7 @@ static inline bool sugov_cpu_is_busy(struct sugov_cpu *sg_cpu) { return false; }
- static inline void ignore_dl_rate_limit(struct sugov_cpu *sg_cpu, struct sugov_policy *sg_policy)
+ #define LVTS_INT_SENSOR0			0x0009001F
+ #define LVTS_INT_SENSOR1			0x001203E0
+@@ -308,23 +312,41 @@ static int lvts_get_temp(struct thermal_zone_device *tz, int *temp)
+ 
+ static void lvts_update_irq_mask(struct lvts_ctrl *lvts_ctrl)
  {
- 	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_dl)
--		sg_policy->limits_changed = true;
-+		WRITE_ONCE(sg_policy->limits_changed, true);
- }
+-	u32 masks[] = {
+-		LVTS_MONINT_OFFSET_SENSOR0,
+-		LVTS_MONINT_OFFSET_SENSOR1,
+-		LVTS_MONINT_OFFSET_SENSOR2,
+-		LVTS_MONINT_OFFSET_SENSOR3,
++	static const u32 high_offset_inten_masks[] = {
++		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR0,
++		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR1,
++		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR2,
++		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR3,
++	};
++	static const u32 low_offset_inten_masks[] = {
++		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR0,
++		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR1,
++		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR2,
++		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR3,
+ 	};
+ 	u32 value = 0;
+ 	int i;
  
- static void sugov_update_single(struct update_util_data *hook, u64 time,
-@@ -894,7 +905,16 @@ static void sugov_limits(struct cpufreq_policy *policy)
- 		mutex_unlock(&sg_policy->work_lock);
+ 	value = readl(LVTS_MONINT(lvts_ctrl->base));
+ 
+-	for (i = 0; i < ARRAY_SIZE(masks); i++) {
++	for (i = 0; i < ARRAY_SIZE(high_offset_inten_masks); i++) {
+ 		if (lvts_ctrl->sensors[i].high_thresh == lvts_ctrl->high_thresh
+-		    && lvts_ctrl->sensors[i].low_thresh == lvts_ctrl->low_thresh)
+-			value |= masks[i];
+-		else
+-			value &= ~masks[i];
++		    && lvts_ctrl->sensors[i].low_thresh == lvts_ctrl->low_thresh) {
++			/*
++			 * The minimum threshold needs to be configured in the
++			 * OFFSETL register to get working interrupts, but we
++			 * don't actually want to generate interrupts when
++			 * crossing it.
++			 */
++			if (lvts_ctrl->low_thresh == -INT_MAX) {
++				value &= ~low_offset_inten_masks[i];
++				value |= high_offset_inten_masks[i];
++			} else {
++				value |= low_offset_inten_masks[i] | high_offset_inten_masks[i];
++			}
++		} else {
++			value &= ~(low_offset_inten_masks[i] | high_offset_inten_masks[i]);
++		}
  	}
  
--	sg_policy->limits_changed = true;
-+	/*
-+	 * The limits_changed update below must take place before the updates
-+	 * of policy limits in cpufreq_set_policy() or a policy limits update
-+	 * might be missed, so use a memory barrier to ensure it.
-+	 *
-+	 * This pairs with the memory barrier in sugov_should_update_freq().
-+	 */
-+	smp_wmb();
-+
-+	WRITE_ONCE(sg_policy->limits_changed, true);
- }
- 
- struct cpufreq_governor schedutil_gov = {
+ 	writel(value, LVTS_MONINT(lvts_ctrl->base));
 -- 
 2.51.0
 
