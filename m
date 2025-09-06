@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-177984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF95FB4763F
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 20:41:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58C2AB47640
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 20:41:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B67DA44972
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 18:41:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 275DA1C22149
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 18:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E7427F16A;
-	Sat,  6 Sep 2025 18:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C570C1F0E29;
+	Sat,  6 Sep 2025 18:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8nX8tvW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GV2aX0ob"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511E227E7FD
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 18:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839232586C2
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 18:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757184077; cv=none; b=RFf9aveTblFRruyMnMLQt7RmOVDAyW+ytWgiXZueR2emFX854tdIUFj5l1XPBu8rXKshdd9lenkHXcQ0NBBOQWNRS6bFqUVUIzKmSNyuacFGiRr+jMhBD9HVBFiJ8tk7G4RlrPP4rAkwNC0cMTlWmVpQivMo2ooVVLmOWUSnaRk=
+	t=1757184097; cv=none; b=bCS+MwWkzHFwTGOuaowII0yMD54oA0yw92/T/NjHNQV/3WxmkOKmlHGnZkfTARyLfipBKIWGTz4z6gfPQvZ619craRVa1SzslPlo+ORiBEChsGWRz3/6a4sDD9jbORDGONdZIYw+twPj3IuURJkxr+Nw0I6c/gTrc4uWOMM05zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757184077; c=relaxed/simple;
-	bh=M3e9b3vON9ztEv5cRZ7LHqYY8r2rkRXHdcY/euCxKUA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UMc+KRA+ky+Mq5osrXfDR/2pYz1tabh+yZhNHD3fCZInPodtJsAV9EC4ZUTdVCacYeWvmQj9Tod67wie2aUhfzTu3MNGEzMZxtE4fp7d+rfk3046i0U9JLdIpyANeoYJETV642zFCiv4isAnulxnyHuo3Wf09M8HUg43l2e5ljc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8nX8tvW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2832C4CEE7;
-	Sat,  6 Sep 2025 18:41:14 +0000 (UTC)
+	s=arc-20240116; t=1757184097; c=relaxed/simple;
+	bh=3bVWlQhydubDzeJLJVVdscgB+P5p51wOWh4CAemPphA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZNE+Fm51bjasDLdGYJKFlnyLrv7X8q0WfPWcENC/+CWYUIZWZha1fRZDoCwDB3oAJd7VtotQCXzT3LZJaT3MUf5yDoaxrnqd3w87HKfVzj0or35iCNboDs7kv0ym3ggLrJSOc9yarmHNzIN18WW6AsxjY7xurzJDBHHAwXwYJCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GV2aX0ob; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3610C4CEE7;
+	Sat,  6 Sep 2025 18:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757184075;
-	bh=M3e9b3vON9ztEv5cRZ7LHqYY8r2rkRXHdcY/euCxKUA=;
+	s=korg; t=1757184097;
+	bh=3bVWlQhydubDzeJLJVVdscgB+P5p51wOWh4CAemPphA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=c8nX8tvWu5u7NDOQ7nixBNWrV2WZRA5JvHGDdiz8M4uw6ramaQE6TqWCA+T4NoeHn
-	 Q0E6Zd4WYF/ZMe3BjX/BTF7bBc9zgSzQiMHmm1ZEJGdp9boFWfoS5WdqlEAYcNP3eS
-	 eypwQgGzABE2Ayd7puUUi8htBylCZEJx9Ciz504A=
-Subject: FAILED: patch "[PATCH] mm: introduce and use {pgd,p4d}_populate_kernel()" failed to apply to 5.15-stable tree
-To: harry.yoo@oracle.com,akpm@linux-foundation.org,andreyknvl@gmail.com,aneesh.kumar@linux.ibm.com,anshuman.khandual@arm.com,apopple@nvidia.com,ardb@kernel.org,arnd@arndb.de,bp@alien8.de,cl@gentwo.org,dave.hansen@linux.intel.com,david@redhat.com,dennis@kernel.org,dev.jain@arm.com,dvyukov@google.com,glider@google.com,gwan-gyeong.mun@intel.com,jane.chu@oracle.com,jhubbard@nvidia.com,joao.m.martins@oracle.com,joro@8bytes.org,kas@kernel.org,kevin.brodsky@arm.com,liam.howlett@oracle.com,lorenzo.stoakes@oracle.com,luto@kernel.org,maobibo@loongson.cn,mhocko@suse.com,mingo@redhat.com,osalvador@suse.de,peterx@redhat.com,peterz@infradead.org,rppt@kernel.org,ryabinin.a.a@gmail.com,ryan.roberts@arm.com,stable@vger.kernel.org,surenb@google.com,tglx@linutronix.de,thuth@redhat.com,tj@kernel.org,urezki@gmail.com,vbabka@suse.cz,vincenzo.frascino@arm.com,zhengqi.arch@bytedance.com
+	b=GV2aX0obKWtJxa0xADO+3I1ZmuttCLG61b+4Qn+5402J9t6EC+5rlMn7a/GETtUKy
+	 PTkFESuo0eAdLzX//e+btYcA8SwpG1TKfZjFQT6VNw4uS6Dwa1TRgK6LcAzU/Cvd8g
+	 vLcMTNiq1jhBtgtnNvz0nycELQZfqLOOHqHmfvao=
+Subject: FAILED: patch "[PATCH] mm: slub: avoid wake up kswapd in set_track_prepare" failed to apply to 6.6-stable tree
+To: yangshiguang@xiaomi.com,vbabka@suse.cz
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 06 Sep 2025 20:41:08 +0200
-Message-ID: <2025090608-wages-saloon-a401@gregkh>
+Date: Sat, 06 Sep 2025 20:41:34 +0200
+Message-ID: <2025090634-predator-composite-c799@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x f2d2f9598ebb0158a3fe17cda0106d7752e654a2
+git cherry-pick -x 850470a8413a8a78e772c4f6bd9fe81ec6bd5b0f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025090608-wages-saloon-a401@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025090634-predator-composite-c799@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,286 +77,163 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f2d2f9598ebb0158a3fe17cda0106d7752e654a2 Mon Sep 17 00:00:00 2001
-From: Harry Yoo <harry.yoo@oracle.com>
-Date: Mon, 18 Aug 2025 11:02:05 +0900
-Subject: [PATCH] mm: introduce and use {pgd,p4d}_populate_kernel()
+From 850470a8413a8a78e772c4f6bd9fe81ec6bd5b0f Mon Sep 17 00:00:00 2001
+From: yangshiguang <yangshiguang@xiaomi.com>
+Date: Sat, 30 Aug 2025 10:09:46 +0800
+Subject: [PATCH] mm: slub: avoid wake up kswapd in set_track_prepare
 
-Introduce and use {pgd,p4d}_populate_kernel() in core MM code when
-populating PGD and P4D entries for the kernel address space.  These
-helpers ensure proper synchronization of page tables when updating the
-kernel portion of top-level page tables.
+set_track_prepare() can incur lock recursion.
+The issue is that it is called from hrtimer_start_range_ns
+holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
+CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
+and try to hold the per_cpu(hrtimer_bases)[n].lock.
 
-Until now, the kernel has relied on each architecture to handle
-synchronization of top-level page tables in an ad-hoc manner.  For
-example, see commit 9b861528a801 ("x86-64, mem: Update all PGDs for direct
-mapping and vmemmap mapping changes").
+Avoid deadlock caused by implicitly waking up kswapd by passing in
+allocation flags, which do not contain __GFP_KSWAPD_RECLAIM in the
+debug_objects_fill_pool() case. Inside stack depot they are processed by
+gfp_nested_mask().
+Since ___slab_alloc() has preemption disabled, we mask out
+__GFP_DIRECT_RECLAIM from the flags there.
 
-However, this approach has proven fragile for following reasons:
+The oops looks something like:
 
-  1) It is easy to forget to perform the necessary page table
-     synchronization when introducing new changes.
-     For instance, commit 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory
-     savings for compound devmaps") overlooked the need to synchronize
-     page tables for the vmemmap area.
+BUG: spinlock recursion on CPU#3, swapper/3/0
+ lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
+Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
+Call trace:
+spin_bug+0x0
+_raw_spin_lock_irqsave+0x80
+hrtimer_try_to_cancel+0x94
+task_contending+0x10c
+enqueue_dl_entity+0x2a4
+dl_server_start+0x74
+enqueue_task_fair+0x568
+enqueue_task+0xac
+do_activate_task+0x14c
+ttwu_do_activate+0xcc
+try_to_wake_up+0x6c8
+default_wake_function+0x20
+autoremove_wake_function+0x1c
+__wake_up+0xac
+wakeup_kswapd+0x19c
+wake_all_kswapds+0x78
+__alloc_pages_slowpath+0x1ac
+__alloc_pages_noprof+0x298
+stack_depot_save_flags+0x6b0
+stack_depot_save+0x14
+set_track_prepare+0x5c
+___slab_alloc+0xccc
+__kmalloc_cache_noprof+0x470
+__set_page_owner+0x2bc
+post_alloc_hook[jt]+0x1b8
+prep_new_page+0x28
+get_page_from_freelist+0x1edc
+__alloc_pages_noprof+0x13c
+alloc_slab_page+0x244
+allocate_slab+0x7c
+___slab_alloc+0x8e8
+kmem_cache_alloc_noprof+0x450
+debug_objects_fill_pool+0x22c
+debug_object_activate+0x40
+enqueue_hrtimer[jt]+0xdc
+hrtimer_start_range_ns+0x5f8
+...
 
-  2) It is also easy to overlook that the vmemmap and direct mapping areas
-     must not be accessed before explicit page table synchronization.
-     For example, commit 8d400913c231 ("x86/vmemmap: handle unpopulated
-     sub-pmd ranges")) caused crashes by accessing the vmemmap area
-     before calling sync_global_pgds().
+Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
+Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-To address this, as suggested by Dave Hansen, introduce _kernel() variants
-of the page table population helpers, which invoke architecture-specific
-hooks to properly synchronize page tables.  These are introduced in a new
-header file, include/linux/pgalloc.h, so they can be called from common
-code.
-
-They reuse existing infrastructure for vmalloc and ioremap.
-Synchronization requirements are determined by ARCH_PAGE_TABLE_SYNC_MASK,
-and the actual synchronization is performed by
-arch_sync_kernel_mappings().
-
-This change currently targets only x86_64, so only PGD and P4D level
-helpers are introduced.  Currently, these helpers are no-ops since no
-architecture sets PGTBL_{PGD,P4D}_MODIFIED in ARCH_PAGE_TABLE_SYNC_MASK.
-
-In theory, PUD and PMD level helpers can be added later if needed by other
-architectures.  For now, 32-bit architectures (x86-32 and arm) only handle
-PGTBL_PMD_MODIFIED, so p*d_populate_kernel() will never affect them unless
-we introduce a PMD level helper.
-
-[harry.yoo@oracle.com: fix KASAN build error due to p*d_populate_kernel()]
-  Link: https://lkml.kernel.org/r/20250822020727.202749-1-harry.yoo@oracle.com
-Link: https://lkml.kernel.org/r/20250818020206.4517-3-harry.yoo@oracle.com
-Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Kiryl Shutsemau <kas@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: bibo mao <maobibo@loongson.cn>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Christoph Lameter (Ampere) <cl@gentwo.org>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Joao Martins <joao.m.martins@oracle.com>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: Thomas Huth <thuth@redhat.com>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/include/linux/pgalloc.h b/include/linux/pgalloc.h
-new file mode 100644
-index 000000000000..9174fa59bbc5
---- /dev/null
-+++ b/include/linux/pgalloc.h
-@@ -0,0 +1,29 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_PGALLOC_H
-+#define _LINUX_PGALLOC_H
-+
-+#include <linux/pgtable.h>
-+#include <asm/pgalloc.h>
-+
-+/*
-+ * {pgd,p4d}_populate_kernel() are defined as macros to allow
-+ * compile-time optimization based on the configured page table levels.
-+ * Without this, linking may fail because callers (e.g., KASAN) may rely
-+ * on calls to these functions being optimized away when passing symbols
-+ * that exist only for certain page table levels.
-+ */
-+#define pgd_populate_kernel(addr, pgd, p4d)				\
-+	do {								\
-+		pgd_populate(&init_mm, pgd, p4d);			\
-+		if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)	\
-+			arch_sync_kernel_mappings(addr, addr);		\
-+	} while (0)
-+
-+#define p4d_populate_kernel(addr, p4d, pud)				\
-+	do {								\
-+		p4d_populate(&init_mm, p4d, pud);			\
-+		if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_P4D_MODIFIED)	\
-+			arch_sync_kernel_mappings(addr, addr);		\
-+	} while (0)
-+
-+#endif /* _LINUX_PGALLOC_H */
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index ba699df6ef69..2b80fd456c8b 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1469,8 +1469,8 @@ static inline void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned
+diff --git a/mm/slub.c b/mm/slub.c
+index 1787e4d51e48..d257141896c9 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -962,19 +962,19 @@ static struct track *get_track(struct kmem_cache *s, void *object,
+ }
  
- /*
-  * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
-- * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
-- * needs to be called.
-+ * and let generic vmalloc, ioremap and page table update code know when
-+ * arch_sync_kernel_mappings() needs to be called.
-  */
- #ifndef ARCH_PAGE_TABLE_SYNC_MASK
- #define ARCH_PAGE_TABLE_SYNC_MASK 0
-@@ -1954,10 +1954,11 @@ static inline bool arch_has_pfn_modify_check(void)
- /*
-  * Page Table Modification bits for pgtbl_mod_mask.
-  *
-- * These are used by the p?d_alloc_track*() set of functions an in the generic
-- * vmalloc/ioremap code to track at which page-table levels entries have been
-- * modified. Based on that the code can better decide when vmalloc and ioremap
-- * mapping changes need to be synchronized to other page-tables in the system.
-+ * These are used by the p?d_alloc_track*() and p*d_populate_kernel()
-+ * functions in the generic vmalloc, ioremap and page table update code
-+ * to track at which page-table levels entries have been modified.
-+ * Based on that the code can better decide when page table changes need
-+ * to be synchronized to other page-tables in the system.
-  */
- #define		__PGTBL_PGD_MODIFIED	0
- #define		__PGTBL_P4D_MODIFIED	1
-diff --git a/mm/kasan/init.c b/mm/kasan/init.c
-index ced6b29fcf76..8fce3370c84e 100644
---- a/mm/kasan/init.c
-+++ b/mm/kasan/init.c
-@@ -13,9 +13,9 @@
- #include <linux/mm.h>
- #include <linux/pfn.h>
- #include <linux/slab.h>
-+#include <linux/pgalloc.h>
+ #ifdef CONFIG_STACKDEPOT
+-static noinline depot_stack_handle_t set_track_prepare(void)
++static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
+ {
+ 	depot_stack_handle_t handle;
+ 	unsigned long entries[TRACK_ADDRS_COUNT];
+ 	unsigned int nr_entries;
  
- #include <asm/page.h>
--#include <asm/pgalloc.h>
+ 	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
+-	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
++	handle = stack_depot_save(entries, nr_entries, gfp_flags);
  
- #include "kasan.h"
+ 	return handle;
+ }
+ #else
+-static inline depot_stack_handle_t set_track_prepare(void)
++static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
+ {
+ 	return 0;
+ }
+@@ -996,9 +996,9 @@ static void set_track_update(struct kmem_cache *s, void *object,
+ }
  
-@@ -191,7 +191,7 @@ static int __ref zero_p4d_populate(pgd_t *pgd, unsigned long addr,
- 			pud_t *pud;
- 			pmd_t *pmd;
+ static __always_inline void set_track(struct kmem_cache *s, void *object,
+-				      enum track_item alloc, unsigned long addr)
++				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
+ {
+-	depot_stack_handle_t handle = set_track_prepare();
++	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
  
--			p4d_populate(&init_mm, p4d,
-+			p4d_populate_kernel(addr, p4d,
- 					lm_alias(kasan_early_shadow_pud));
- 			pud = pud_offset(p4d, addr);
- 			pud_populate(&init_mm, pud,
-@@ -212,7 +212,7 @@ static int __ref zero_p4d_populate(pgd_t *pgd, unsigned long addr,
- 			} else {
- 				p = early_alloc(PAGE_SIZE, NUMA_NO_NODE);
- 				pud_init(p);
--				p4d_populate(&init_mm, p4d, p);
-+				p4d_populate_kernel(addr, p4d, p);
- 			}
- 		}
- 		zero_pud_populate(p4d, addr, next);
-@@ -251,10 +251,10 @@ int __ref kasan_populate_early_shadow(const void *shadow_start,
- 			 * puds,pmds, so pgd_populate(), pud_populate()
- 			 * is noops.
+ 	set_track_update(s, object, alloc, addr, handle);
+ }
+@@ -1926,9 +1926,9 @@ static inline bool free_debug_processing(struct kmem_cache *s,
+ static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
+ static inline int check_object(struct kmem_cache *s, struct slab *slab,
+ 			void *object, u8 val) { return 1; }
+-static inline depot_stack_handle_t set_track_prepare(void) { return 0; }
++static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
+ static inline void set_track(struct kmem_cache *s, void *object,
+-			     enum track_item alloc, unsigned long addr) {}
++			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
+ static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
+ 					struct slab *slab) {}
+ static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
+@@ -3881,9 +3881,14 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 			 * For debug caches here we had to go through
+ 			 * alloc_single_from_partial() so just store the
+ 			 * tracking info and return the object.
++			 *
++			 * Due to disabled preemption we need to disallow
++			 * blocking. The flags are further adjusted by
++			 * gfp_nested_mask() in stack_depot itself.
  			 */
--			pgd_populate(&init_mm, pgd,
-+			pgd_populate_kernel(addr, pgd,
- 					lm_alias(kasan_early_shadow_p4d));
- 			p4d = p4d_offset(pgd, addr);
--			p4d_populate(&init_mm, p4d,
-+			p4d_populate_kernel(addr, p4d,
- 					lm_alias(kasan_early_shadow_pud));
- 			pud = pud_offset(p4d, addr);
- 			pud_populate(&init_mm, pud,
-@@ -273,7 +273,7 @@ int __ref kasan_populate_early_shadow(const void *shadow_start,
- 				if (!p)
- 					return -ENOMEM;
- 			} else {
--				pgd_populate(&init_mm, pgd,
-+				pgd_populate_kernel(addr, pgd,
- 					early_alloc(PAGE_SIZE, NUMA_NO_NODE));
- 			}
+ 			if (s->flags & SLAB_STORE_USER)
+-				set_track(s, freelist, TRACK_ALLOC, addr);
++				set_track(s, freelist, TRACK_ALLOC, addr,
++					  gfpflags & ~(__GFP_DIRECT_RECLAIM));
+ 
+ 			return freelist;
  		}
-diff --git a/mm/percpu.c b/mm/percpu.c
-index d9cbaee92b60..a56f35dcc417 100644
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -3108,7 +3108,7 @@ int __init pcpu_embed_first_chunk(size_t reserved_size, size_t dyn_size,
- #endif /* BUILD_EMBED_FIRST_CHUNK */
+@@ -3915,7 +3920,8 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 			goto new_objects;
  
- #ifdef BUILD_PAGE_FIRST_CHUNK
--#include <asm/pgalloc.h>
-+#include <linux/pgalloc.h>
+ 		if (s->flags & SLAB_STORE_USER)
+-			set_track(s, freelist, TRACK_ALLOC, addr);
++			set_track(s, freelist, TRACK_ALLOC, addr,
++				  gfpflags & ~(__GFP_DIRECT_RECLAIM));
  
- #ifndef P4D_TABLE_SIZE
- #define P4D_TABLE_SIZE PAGE_SIZE
-@@ -3134,13 +3134,13 @@ void __init __weak pcpu_populate_pte(unsigned long addr)
- 
- 	if (pgd_none(*pgd)) {
- 		p4d = memblock_alloc_or_panic(P4D_TABLE_SIZE, P4D_TABLE_SIZE);
--		pgd_populate(&init_mm, pgd, p4d);
-+		pgd_populate_kernel(addr, pgd, p4d);
+ 		return freelist;
  	}
+@@ -4426,8 +4432,12 @@ static noinline void free_to_partial_list(
+ 	unsigned long flags;
+ 	depot_stack_handle_t handle = 0;
  
- 	p4d = p4d_offset(pgd, addr);
- 	if (p4d_none(*p4d)) {
- 		pud = memblock_alloc_or_panic(PUD_TABLE_SIZE, PUD_TABLE_SIZE);
--		p4d_populate(&init_mm, p4d, pud);
-+		p4d_populate_kernel(addr, p4d, pud);
- 	}
++	/*
++	 * We cannot use GFP_NOWAIT as there are callsites where waking up
++	 * kswapd could deadlock
++	 */
+ 	if (s->flags & SLAB_STORE_USER)
+-		handle = set_track_prepare();
++		handle = set_track_prepare(__GFP_NOWARN);
  
- 	pud = pud_offset(p4d, addr);
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 41aa0493eb03..dbd8daccade2 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -27,9 +27,9 @@
- #include <linux/spinlock.h>
- #include <linux/vmalloc.h>
- #include <linux/sched.h>
-+#include <linux/pgalloc.h>
+ 	spin_lock_irqsave(&n->list_lock, flags);
  
- #include <asm/dma.h>
--#include <asm/pgalloc.h>
- #include <asm/tlbflush.h>
- 
- #include "hugetlb_vmemmap.h"
-@@ -229,7 +229,7 @@ p4d_t * __meminit vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node)
- 		if (!p)
- 			return NULL;
- 		pud_init(p);
--		p4d_populate(&init_mm, p4d, p);
-+		p4d_populate_kernel(addr, p4d, p);
- 	}
- 	return p4d;
- }
-@@ -241,7 +241,7 @@ pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
- 		void *p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
- 		if (!p)
- 			return NULL;
--		pgd_populate(&init_mm, pgd, p);
-+		pgd_populate_kernel(addr, pgd, p);
- 	}
- 	return pgd;
- }
 
 
