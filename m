@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-177983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F124BB4763E
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 20:41:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF95FB4763F
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 20:41:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B945C1C22220
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 18:41:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B67DA44972
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 18:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D2827E079;
-	Sat,  6 Sep 2025 18:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E7427F16A;
+	Sat,  6 Sep 2025 18:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n3Y0oA5r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8nX8tvW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A001F4CAF
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 18:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511E227E7FD
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 18:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757184073; cv=none; b=aoH/CPLn4IjlM4xm6amiYi8SV7Xn8yj8MmWSM9FMrWyyGFT6erPHfeX7GhUq6GeBNLAlgznzCaoTI8ffoRNYmp4t1+dCU708lg2z/XN2kjKQjhPxcGFAPEIERZICgYZu2eYvgRyv7UtBym9L2HB3yXXFxoYfOm0ycUoo9yCWnNo=
+	t=1757184077; cv=none; b=RFf9aveTblFRruyMnMLQt7RmOVDAyW+ytWgiXZueR2emFX854tdIUFj5l1XPBu8rXKshdd9lenkHXcQ0NBBOQWNRS6bFqUVUIzKmSNyuacFGiRr+jMhBD9HVBFiJ8tk7G4RlrPP4rAkwNC0cMTlWmVpQivMo2ooVVLmOWUSnaRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757184073; c=relaxed/simple;
-	bh=5PGJqKYMTSBkUmiW/RnPyaTyy8cz71vmQyzYFIU4seU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qkhH4z4LxUzRKzxeMJvifPiFxAlXEPjH4XoENxEfsCnTnb2/wtsE7EJVXCG0t7+/znpz0g/ZJIvmWoAd2LF892b81rqeJt/LH09XXwmXZi8zpd/6Uvk2L2FQcogl3Mg9iZM2Bb7/suXLZXHv+kluoEZygoxgHOPnX0RzBm3WuMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n3Y0oA5r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDCCC4CEE7;
-	Sat,  6 Sep 2025 18:41:11 +0000 (UTC)
+	s=arc-20240116; t=1757184077; c=relaxed/simple;
+	bh=M3e9b3vON9ztEv5cRZ7LHqYY8r2rkRXHdcY/euCxKUA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UMc+KRA+ky+Mq5osrXfDR/2pYz1tabh+yZhNHD3fCZInPodtJsAV9EC4ZUTdVCacYeWvmQj9Tod67wie2aUhfzTu3MNGEzMZxtE4fp7d+rfk3046i0U9JLdIpyANeoYJETV642zFCiv4isAnulxnyHuo3Wf09M8HUg43l2e5ljc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8nX8tvW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2832C4CEE7;
+	Sat,  6 Sep 2025 18:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757184072;
-	bh=5PGJqKYMTSBkUmiW/RnPyaTyy8cz71vmQyzYFIU4seU=;
+	s=korg; t=1757184075;
+	bh=M3e9b3vON9ztEv5cRZ7LHqYY8r2rkRXHdcY/euCxKUA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=n3Y0oA5r5df7t3alGQ7/RvdaFwzGkX821ipsL7ETGs7Q4bW+NA9nedt6/PWFthxXn
-	 ek94eEQlbrNWyc+yvj0QoUFNHzuczDVuc0VOHBuPx0VpFh4WrV3zi8ihVaCZCM20Yi
-	 0vLtv9Cf87r/m5zrnynBArTNAE2cK1Htyh8+pC9U=
-Subject: FAILED: patch "[PATCH] mm: introduce and use {pgd,p4d}_populate_kernel()" failed to apply to 6.1-stable tree
+	b=c8nX8tvWu5u7NDOQ7nixBNWrV2WZRA5JvHGDdiz8M4uw6ramaQE6TqWCA+T4NoeHn
+	 Q0E6Zd4WYF/ZMe3BjX/BTF7bBc9zgSzQiMHmm1ZEJGdp9boFWfoS5WdqlEAYcNP3eS
+	 eypwQgGzABE2Ayd7puUUi8htBylCZEJx9Ciz504A=
+Subject: FAILED: patch "[PATCH] mm: introduce and use {pgd,p4d}_populate_kernel()" failed to apply to 5.15-stable tree
 To: harry.yoo@oracle.com,akpm@linux-foundation.org,andreyknvl@gmail.com,aneesh.kumar@linux.ibm.com,anshuman.khandual@arm.com,apopple@nvidia.com,ardb@kernel.org,arnd@arndb.de,bp@alien8.de,cl@gentwo.org,dave.hansen@linux.intel.com,david@redhat.com,dennis@kernel.org,dev.jain@arm.com,dvyukov@google.com,glider@google.com,gwan-gyeong.mun@intel.com,jane.chu@oracle.com,jhubbard@nvidia.com,joao.m.martins@oracle.com,joro@8bytes.org,kas@kernel.org,kevin.brodsky@arm.com,liam.howlett@oracle.com,lorenzo.stoakes@oracle.com,luto@kernel.org,maobibo@loongson.cn,mhocko@suse.com,mingo@redhat.com,osalvador@suse.de,peterx@redhat.com,peterz@infradead.org,rppt@kernel.org,ryabinin.a.a@gmail.com,ryan.roberts@arm.com,stable@vger.kernel.org,surenb@google.com,tglx@linutronix.de,thuth@redhat.com,tj@kernel.org,urezki@gmail.com,vbabka@suse.cz,vincenzo.frascino@arm.com,zhengqi.arch@bytedance.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 06 Sep 2025 20:41:06 +0200
-Message-ID: <2025090606-overthrow-bagginess-c68f@gregkh>
+Date: Sat, 06 Sep 2025 20:41:08 +0200
+Message-ID: <2025090608-wages-saloon-a401@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x f2d2f9598ebb0158a3fe17cda0106d7752e654a2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025090606-overthrow-bagginess-c68f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025090608-wages-saloon-a401@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
