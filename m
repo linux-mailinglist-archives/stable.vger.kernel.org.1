@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-177941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A0FB468BB
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 06:00:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC9DB46914
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 06:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 999A83A3393
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 04:00:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24EAC1C88640
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 04:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E21824DCE5;
-	Sat,  6 Sep 2025 04:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7CF271465;
+	Sat,  6 Sep 2025 04:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IFTNRkXt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A7irX5+S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A021FF1A1
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 03:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CBC271452
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 04:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757131199; cv=none; b=JWgZWcqveUfo09vXGJpPGG7cWXyRETyTl5zr0Mi96C+PkGgDTuU3xVo/j/aKUuZ/egvmq5uQSuwqbUL7PwWzR7aAntR/Tq78zKnGWYsCOYKIfLTOI/EzyLnJ3Z0PAuJVe3tkNEGEw16QwS8WEL00EArZIuPeSVkZqBiKTzJglpA=
+	t=1757133669; cv=none; b=sg1Gvg1X1n1yzvt13qx9zWOUb50+gnzg5ytp722u/QYc7X/T0NyuIYiPUQrof435o2yspRw+cIrkZdYCwg3f2ylygJ1/qmDZHFfiA+lSG8qtCRDAR6opi91oHKMjut5agbqUK8nKqODUFWtdwTWAi0EgiXp4EyXhRtcXDFncU+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757131199; c=relaxed/simple;
+	s=arc-20240116; t=1757133669; c=relaxed/simple;
 	bh=WT4S6ftIDjy3/ijtF6P1N94neMS2xFPGmIfG1BY2/P0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AIxuqE6OYXjJl6dfsrUDWJ2vieM7mFVK2uodyti2bs+KIoqYjL23lbm3/8TYlKj2DImIC/mDBAyQ06vN50+J1YfGJW3m0OiKYLGjBJpDc1MrleoPnb2iMEBXYtamzy7NDxef43pkCuV9MA5P02chiWqhoeEH6JeACPgpX3p0Zq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IFTNRkXt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A674FC4CEE7;
-	Sat,  6 Sep 2025 03:59:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PqNo5ZyiSAXkQ+bbpfFoVnFuQZV1tHB1DZXx2sKMsMxmtHyKmu4veZB+zXVGDIyeC5DNiF8HpdAN/sGoyVAKC3yPL6fGBSH+JX2tzo4FvfGXC9uoJ391SpiHAVY0U4hEJys+qmtITfmcrV/OurByfE7S1/w79NntOsnypD6kRPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A7irX5+S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DC9C4CEF7;
+	Sat,  6 Sep 2025 04:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757131199;
+	s=k20201202; t=1757133669;
 	bh=WT4S6ftIDjy3/ijtF6P1N94neMS2xFPGmIfG1BY2/P0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFTNRkXtMlJO1s0X51o1Te/CrQqHQ+6NBqucJIEusIXK5il1xymm3ILARSxG6DL2B
-	 +W8x7VSgzQpaLlvo36WGkjKxoLmMTNjesJsRJ2rsvgmtD4G2tuZdS65K9Woc3/ZURy
-	 5bMZ+RjpdlWwb5vXmEfoAMClq9jTji1BvJlROaNH2FLjTEHWio9O5qbQyXfCogJagM
-	 VhU5UmWk3Cc/oB6V+y1veMfCOHkmnIzngQTnURIy1GnlEm6MNlcXCVyz2doss1mgVc
-	 lNcE8XWxwGolxz/c0jRbXdlXyM2rPzr3qTIz3vz7hqO5uCG/Y9sbvIyjC0KTnIJfre
-	 9sXwnQRL/CK7w==
+	b=A7irX5+SCXJ7wPCXJMXpNp/5Di+HpUYggj1Hm2m32BsuvCZxwYlK+Aed56gO+MjwS
+	 GLkheu7byZXoHjnEnbVbAUsQ1IZjd5qoixJpZnwfKFx04QRg3wtZawBghX4Z05qDD5
+	 Go2tei9sy1+Hl9pL83gQedr5zf5aaC7aeBj8BDMgRD5KDVKWNcqeAT/MDpCkDZA/1R
+	 nwzy8MX7TGmvkV4MHgy5uzGEe3Vz5YWWbvfyZf28Ug0ORACB7cvlF54wu5FbVoHoAU
+	 MJi3e8H2BIjRkdVk43zHxV7W94e7jhKKJWquVwNc+DoTdiqlvZQmdhMWxQeWehy7Y2
+	 bh852sGCSfRBQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -49,11 +49,11 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
 Subject: [PATCH 5.10.y] iio: chemical: pms7003: use aligned_s64 for timestamp
-Date: Fri,  5 Sep 2025 23:59:56 -0400
-Message-ID: <20250906035956.3697140-1-sashal@kernel.org>
+Date: Sat,  6 Sep 2025 00:41:06 -0400
+Message-ID: <20250906044107.3724918-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2025051250-boned-reference-363b@gregkh>
-References: <2025051250-boned-reference-363b@gregkh>
+In-Reply-To: <2025051242-duplicate-mutiny-3a2a@gregkh>
+References: <2025051242-duplicate-mutiny-3a2a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
