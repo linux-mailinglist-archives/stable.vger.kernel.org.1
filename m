@@ -1,102 +1,95 @@
-Return-Path: <stable+bounces-177945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51EC8B46BBA
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 13:43:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33CD1B46BD8
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 13:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14844A03B47
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 11:43:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6EEE1BC5C5C
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 11:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9255143756;
-	Sat,  6 Sep 2025 11:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8A428313D;
+	Sat,  6 Sep 2025 11:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="izSGVuFA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OvvecUiV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028811E572F;
-	Sat,  6 Sep 2025 11:43:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AD21C8603;
+	Sat,  6 Sep 2025 11:51:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757158989; cv=none; b=qZjD2tj6M/GxLL4JrwfEEb/aDU0/J3CsupOblMKK/qOLmD/iWI+i0wzD0ojO2Paz9P2sLiikeklBjPBjUlk/Hqa5FVT0ETCmQ0eFJzmhn59/dV3JfjUTShE2VENie7FH0LL8J8p5bn6IsJliEzXRL0h/gq0n1REZatoL/0h1sMY=
+	t=1757159466; cv=none; b=ErIcv/pwtlXzvet3dQ2owLVL8NuiKnVNwElkAdG6bM4mQx/QvoJPMIv/zAj5E02hb56cvTR++j14LzBP0RSzA67IKqKb4o8orpxeZjql70z8IJ0yzZhEzW7AVLWAMbPBoDOZId0+iLdAPNDnYHiZ8CRMaAhxn4T4qhEI1V3o73Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757158989; c=relaxed/simple;
-	bh=nnHzgbiteTdO6Dn6POP6E6R5puQz4UN8iAYaejuBUyI=;
+	s=arc-20240116; t=1757159466; c=relaxed/simple;
+	bh=4oHasEn5OXPJ/cQaCoFhbbU2K1czV6PUa4jgYC+S/Wo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=opvFp8xZORYVUQIjdDH0kHpg67OBr/yjR2Qc2p0VLGLllEjhtzsWARfL4FwOYdmQDHEHYpD1f4LHbFBhAUShbz/gu3M+fr6aKbhvJQ95WnQRAatY1rHYEIEpVZQQV5J4vEUtHXkRFua67a7Z29W0UwQcXK763G7wynCYf6K7ow8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=izSGVuFA; arc=none smtp.client-ip=209.85.128.53
+	 MIME-Version:Content-Type; b=PLsPkNRjsvPUCS0qBjxJTffsEPVCS4ZNrKGnOw0mbpijlfpuJxtPjx3uYc/wBWdAuUtxPDwiB8E3ErCRYGTHpaFQj85bu8DtqsWXKW7TBes5VwDd/Sdg8bpcnlstXxGXQBK2/RzoaekEJN0U2PVKvDnk7bVbNuaKCNgeaa2N0B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OvvecUiV; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45b7d485173so19325185e9.0;
-        Sat, 06 Sep 2025 04:43:07 -0700 (PDT)
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3c46686d1e6so2032325f8f.3;
+        Sat, 06 Sep 2025 04:51:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757158986; x=1757763786; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1757159460; x=1757764260; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XX0gUaO70jVaoVg831tZPUyT1i7m1025KT/B0Hoa7H8=;
-        b=izSGVuFAAGWSNCCDzqIHbHER5WCCLuMGaQQjeORdEHQ2yGvZ+nI7x7omXdPvyvbW9M
-         rdUdVo0fPxG17rfpsckAqNNkDljLiavrGAT4cJeb1j++APqlVeZx1AQ0i0Z0SuxIIFZj
-         vRjNgREoWUR3bDrE9fb3xh8P9YL9kaiE80kzCvVElgjrhtxq00OmK+KjNoLaqQTKTALF
-         uP3cVugPKy2MpO7cuIM+QYDeurxWyhD6oVti0wQ9ThyulD8r0CB/81dQSwg5XHN5cpGr
-         3uk0Qn+jQkdl2/2x8F1Umn0RnLS+WatIG99Jnrlve4GPau83xqPDUbGnqVPGeSZcZ3Lq
-         s6GA==
+        bh=CUaDtuHpdIHoQ02i3VuBf1I08ziCp5/BpFxGCKCp2lU=;
+        b=OvvecUiVrS2rXld9wgu3aSYy0gN4m/lLb6lD+tFDJLpeW3B5rmG4iNSA2/Oq/prEfe
+         Djw7n7Va5amc0YEn1uoVS5sO7gVClflY9SoPheEdBGVJaEtIQiOToab6R0JJqMbH7blB
+         ITKPEpj7/uLk2x5/fZWRtGjvxbZlUMXUnBNqH6SVnl2IsA/o/nxhllvJWdhxTEUsINHF
+         g+tXJRKxyplgaAPOVPSyu89DXUOpJT3R99v+fnn572GJw98aQGKpaXhMfVjjzr9zmA6C
+         lw+YAu7BrI2mwkeGk7/g3WFblYPsbweGr/fyc4CTzYlvFuvOP4IyqHi4i1ABLIu5uiCd
+         bqxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757158986; x=1757763786;
+        d=1e100.net; s=20230601; t=1757159460; x=1757764260;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XX0gUaO70jVaoVg831tZPUyT1i7m1025KT/B0Hoa7H8=;
-        b=ERZv92LWN6tNm5zhMk7Lpp6tTWlgAQOjMc21EDyxDmU1hQ8vLbepW2bVANqXgbr9sa
-         I53cxTNJCtKVvP0AawwBU39ricnGCrTKPD8ArsOXGOvgLvbET2BjifVjZxIfATch1WqY
-         fP5cB7iYHrhC2/lKK2n4w6wH4O8w7fP6BfFhEHabKSBDbPCfYndRKrybF5s1Gbh6WYRO
-         lQqQ2hp/QKXHw7jXTLdqxwg9CBwXI4GcRH3g0AcnDZIthZnk2LusB/5KmbBHM4OvGGVU
-         ytqcaWanl+0CBYGVfb4lILPYCJotqaMSat3EDfgBoeMMb1RQh/d5w5noBTEInZ9kIC/v
-         0tFA==
-X-Forwarded-Encrypted: i=1; AJvYcCX4Q+d3LgNmJFdOgTrsfx2EMrovaCjHi0Wvp8jgqNduXdOMhN9M7Jjhemvjk6c7qLsRwcZEAa30GoW/hZs=@vger.kernel.org, AJvYcCXHtOFSeID7E63N6MrwcpBgnI+rGdk3L8dycHzawfGExbnf8u0QRHoBUA3BCorNwY85eQrlF0Xu@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxvku9FcFOu/37tCuj9A62oT7/g8+rEZMMvfv35dlp7YrTlrWzW
-	qF06fLwUWLz/QH63BwYiFPCpVqt1/Wjuy2D6m/6zxPMprYYkecWIByy9
-X-Gm-Gg: ASbGncuIN8IwKZmJuBBgorDtp2ERViUXCfuCNgesRcmMw6D0j1W77wHKv6979o65ixo
-	XdWfa6cvcbJJXFJBZ/SNZx7wRks5C0grbwLrz5UV68/e4up9wVmWjiaJzgUVeIhUP8k07Z6azAh
-	FTD4VzhIkoyldzrmQZQoFI41ql6NFjOqXF4ZJV/xkvw4tvvTK0q0fLvW+lfXynY9mpiCsX+5Gkm
-	KxHHD2tvJtIKvqSay+mdyGrDDWxuXZ3ZdmmVBQAxiaq0dgztr0k/QsiCR4eKRuOAueTnSIvLXF3
-	R3jT2MC5iZN0NuyXGhMchqLVbhFpW2WInt7FtvZ/qzzb8VmAVHIaiLfPgN+uM93BJ2502NMrcl/
-	R3tZ2TCqFmXcdYr1R6FjUpeLPH3epHA/LPTRaGJfyahMhzHZOjiNaD/uZZqL6Y2TW4wjkRyNmbN
-	c=
-X-Google-Smtp-Source: AGHT+IGQxryV+OqAci4zzJWd4jBsJHSl1Za8Pl683cpc6xoQVU8fxwCG7Jv66hj2eCX32tlAbKw3ig==
-X-Received: by 2002:a05:600c:358a:b0:45b:9322:43fc with SMTP id 5b1f17b1804b1-45ddded6b98mr14323965e9.29.1757158985919;
-        Sat, 06 Sep 2025 04:43:05 -0700 (PDT)
+        bh=CUaDtuHpdIHoQ02i3VuBf1I08ziCp5/BpFxGCKCp2lU=;
+        b=gIullHZPSCSZShUf+4ozU5YClnRTVNMJgy/zHH/C7vNsvGiCTbw/DCtTGJma1TrGz6
+         Ro6J2RDinDqcmBW1Ulmk6omgJdLCgNZQqs9OcmYqSrpKdPjlyDwswQ6UT9dgP5EcBNyG
+         EXqsVUr0znA2dPNeUBbYVe9Tmtponda1g4f8phXwXXHoPYWCLrnXXodUZqJ1uLXRQsMm
+         uy5qWrTEq+ETtAAdiq9/8RVUk8SEqNXMDrpQC7VyuLjp4NOhANZ/WwycFsMqTmWbNh1Y
+         hLMaweRCrEsoXfNavb6YblcEONYI8vhzAk0fRAH0l9Uz3kRgxZHdvDkBli9IUhbbb1Cj
+         yXAg==
+X-Forwarded-Encrypted: i=1; AJvYcCVkxTzRGyZP4A7oJDDDAW/E+NTdy5mjL/J8RND/74PbMeA6YHlk2KuSXT4ODpfEZud6iNRMYJiv@vger.kernel.org, AJvYcCXmgTv4+R7xJr9mVPgofGaT3pLoZuvHbq4OvCLqRjRDzAA+t+4WxuPPb1YeteC99VU3giFSIzUxW3vOqhs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJQRCVOwS66+DsEaS2RRbc1ua98IsENIHaQ9ymcvFnTK9zdHGa
+	IWI4yiSAtc2Evzr0YjPno9mW99VT0vU30LGuWFwBXZtv4A6j/4p+ftre
+X-Gm-Gg: ASbGncu6zF1C7L8LWALr5b3YrxVLcCDWC1MdQxppP79OzxH8YcEQcb0Dfk/30lu2yos
+	UxqRdue772UuXFfbToLZ6lZg03QKT1lRu97zRfW4TZpsSdLuhREAm2cek4JXnXrXNT0gVbfV1CZ
+	akxWsklhk7sLvGSln29vXPcXGLvlA1W1pB8TEViqvWcdEtHwEvftX7FGBFr8MZ8regeVmF5fYnD
+	InOa3642QEuE90omIYDb8/lKtphgKhYabZYpCDn6MAvhBgV3sqYvH4A8egiEn4/XIOZALIa5Vsc
+	S6V05oozhF4kH26/nAKQ+D6UdB5va8qdi3ET0hLO6tjFJ9h7JLoyE+EsCQzlb30l5HisZrfxwm7
+	bjKJ/ZB7qnEYrS9Hmv7USXqEELyIeKWNGC/eQgzmWTCIweWeO7AnD8DQ9OIXVIj+LCGtNbKOCxy
+	4=
+X-Google-Smtp-Source: AGHT+IGxoOhEYaH0dHcrYZ/ok6TExgsHzb59UQdVzAOZIhNKTfXT6tMptBV2Ewpb8OttN+jwhRNdiA==
+X-Received: by 2002:a05:6000:26ce:b0:3d3:8711:d934 with SMTP id ffacd0b85a97d-3e63736edd3mr1455201f8f.14.1757159459866;
+        Sat, 06 Sep 2025 04:50:59 -0700 (PDT)
 Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45dda6da5casm61063435e9.7.2025.09.06.04.43.05
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b9a6ecfafsm210514535e9.21.2025.09.06.04.50.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Sep 2025 04:43:05 -0700 (PDT)
-Date: Sat, 6 Sep 2025 12:43:04 +0100
+        Sat, 06 Sep 2025 04:50:59 -0700 (PDT)
+Date: Sat, 6 Sep 2025 12:50:58 +0100
 From: David Laight <david.laight.linux@gmail.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Lance Yang <lance.yang@linux.dev>, Finn Thain <fthain@linux-m68k.org>,
- akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
- mhiramat@kernel.org, oak@helsinkinet.fi, peterz@infradead.org,
- stable@vger.kernel.org, will@kernel.org, Lance Yang <ioworker0@gmail.com>,
+To: Eero Tamminen <oak@helsinkinet.fi>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Finn Thain
+ <fthain@linux-m68k.org>, Andrew Morton <akpm@linux-foundation.org>, Lance
+ Yang <lance.yang@linux.dev>, Masami Hiramatsu <mhiramat@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-m68k@lists.linux-m68k.org
 Subject: Re: [PATCH] atomic: Specify natural alignment for atomic_t
-Message-ID: <20250906124304.6dc17f1f@pumpkin>
-In-Reply-To: <CAMuHMdV-AtPm-W-QUC1HixJ8Koy_HdESwCCOhRs3Q26=wjWwog@mail.gmail.com>
+Message-ID: <20250906125058.1139346d@pumpkin>
+In-Reply-To: <617b6c79-2d66-467f-89a0-79d2d2efb714@helsinkinet.fi>
 References: <7d9554bfe2412ed9427bf71ce38a376e06eb9ec4.1756087385.git.fthain@linux-m68k.org>
-	<20250825032743.80641-1-ioworker0@gmail.com>
-	<c8851682-25f1-f594-e30f-5b62e019d37b@linux-m68k.org>
-	<96ae7afc-c882-4c3d-9dea-3e2ae2789caf@linux.dev>
-	<5a44c60b-650a-1f8a-d5cb-abf9f0716817@linux-m68k.org>
-	<4e7e7292-338d-4a57-84ec-ae7427f6ad7c@linux.dev>
-	<d07778f8-8990-226b-5171-4a36e6e18f32@linux-m68k.org>
-	<d95592ec-f51e-4d80-b633-7440b4e69944@linux.dev>
-	<30a55f56-93c2-4408-b1a5-5574984fb45f@linux.dev>
-	<4405ee5a-becc-7375-61a9-01304b3e0b20@linux-m68k.org>
-	<cfb62b9d-9cbd-47dd-a894-3357027e2a50@linux.dev>
-	<CAMuHMdV-AtPm-W-QUC1HixJ8Koy_HdESwCCOhRs3Q26=wjWwog@mail.gmail.com>
+	<1a5ce56a-d0d0-481e-b663-a7b176682a65@helsinkinet.fi>
+	<CAMuHMdUKgMfL+1EnkZbbqNqTv4aMs_XWocXxq5jVGeOMaQXnDQ@mail.gmail.com>
+	<617b6c79-2d66-467f-89a0-79d2d2efb714@helsinkinet.fi>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -107,90 +100,157 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 1 Sep 2025 10:45:46 +0200
-Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+On Mon, 1 Sep 2025 18:12:53 +0300
+Eero Tamminen <oak@helsinkinet.fi> wrote:
 
-> Hi Lance,
+> Hi Geert,
 > 
-> On Thu, 28 Aug 2025 at 04:05, Lance Yang <lance.yang@linux.dev> wrote:
-> > On 2025/8/28 07:43, Finn Thain wrote:  
-> > > On Mon, 25 Aug 2025, Lance Yang wrote:  
-> > >> Same here, using a global static variable instead of a local one. The
-> > >> result is consistently misaligned.
-> > >>
-> > >> ```
-> > >> #include <linux/module.h>
-> > >> #include <linux/init.h>
-> > >>
-> > >> static struct __attribute__((packed)) test_container {
-> > >>      char padding[49];
-> > >>      struct mutex io_lock;
-> > >> } cont;
-> > >>
-> > >> static int __init alignment_init(void)
-> > >> {
-> > >>      pr_info("Container base address      : %px\n", &cont);
-> > >>      pr_info("io_lock member address      : %px\n", &cont.io_lock);
-> > >>      pr_info("io_lock address offset mod 4: %lu\n", (unsigned long)&cont.io_lock % 4);
-> > >>      return 0;
-> > >> }
-> > >>
-> > >> static void __exit alignment_exit(void)
-> > >> {
-> > >>      pr_info("Module unloaded\n");
-> > >> }
-> > >>
-> > >> module_init(alignment_init);
-> > >> module_exit(alignment_exit);
-> > >> MODULE_LICENSE("GPL");
-> > >> MODULE_AUTHOR("x");
-> > >> MODULE_DESCRIPTION("x");
-> > >> ```
-> > >>
-> > >> Result from dmesg:
-> > >>
-> > >> ```
-> > >> [Mon Aug 25 19:33:28 2025] Container base address      : ffffffffc28f0940
-> > >> [Mon Aug 25 19:33:28 2025] io_lock member address      : ffffffffc28f0971
-> > >> [Mon Aug 25 19:33:28 2025] io_lock address offset mod 4: 1
-> > >> ```
-> > >>  
-> > >
-> > > FTR, I was able to reproduce that result (i.e. static storage):
-> > >
-> > > [    0.320000] Container base address      : 0055d9d0
-> > > [    0.320000] io_lock member address      : 0055da01
-> > > [    0.320000] io_lock address offset mod 4: 1
-> > >
-> > > I think the experiments you sent previously would have demonstrated the
-> > > same result, except for the unpredictable base address that you sensibly
-> > > logged in this version.  
-> >
-> > Thanks for taking the time to reproduce it!
-> >
-> > This proves the problem can happen in practice (e.g., with packed structs),
-> > so we need to ignore the unaligned pointers on the architectures that don't
-> > trap for now.  
+> On 1.9.2025 11.51, Geert Uytterhoeven wrote:
+> >> On 23.8.2025 10.49, Lance Yang wrote:  
+> >>   > Anyway, I've prepared two patches for discussion, either of which should
+> >>   > fix the alignment issue :)
+> >>   >
+> >>   > Patch A[1] adjusts the runtime checks to handle unaligned pointers.
+> >>   > Patch B[2] enforces 4-byte alignment on the core lock structures.
+> >>   >
+> >>   > Both tested on x86-64.
+> >>   >
+> >>   > [1]  
+> >> https://lore.kernel.org/lkml/20250823050036.7748-1-lance.yang@linux.dev  
+> >>   > [2] https://lore.kernel.org/lkml/20250823074048.92498-1-
+> >>   > lance.yang@linux.dev  
+> >>
+> >> Same goes for both of these, except that removing warnings makes minimal
+> >> kernel boot 1-2% faster than 4-aligning the whole struct.  
 > 
-> Putting locks inside a packed struct is definitely a Very Bad Idea
-> and a No Go.  Packed structs are meant to describe memory data and
-> MMIO register layouts, and must not contain control data for critical
-> sections.
+> Note that above result was from (emulated) 68030 Falcon, i.e. something 
+> that has really small caches (256-byte i-/d-cache), *and* a kernel 
+> config using CONFIG_CC_OPTIMIZE_FOR_SIZE=y (with GCC 12.2).
 
-Even for MMIO register layouts you don't (usually) want 'packed'.
-You may need to add explicit padding, and an 'error if padded' attribute
-you be useful.
-Sometimes you have (eg) a 64bit item on a 32bit boundary, marking the
-member 'packed' will remove the gap before it - usually what is wanted.
+If you are emulating it on x86 the misaligned memory accesses are
+likely to be zero cost.
+On a real '030 I'd expect them to be implemented as two memory accesses.
+I also doubt (but a guess) that the emulator even attempts to emulate
+the '030 caches. If they are like the '020 ones the i-cache really
+only helps short loops.
 
-In reality pretty much nothing should be 'packed'.
+It is more likely that the cost of WARN_ON_ONCE() is far more than
+you might expect.
+Especially since it will affect register allocation in the function(s).
 
-	David.
+	David
 
 > 
-> Gr{oetje,eeting}s,
 > 
->                         Geert
+> > That is an interesting outcome! So the gain of naturally-aligning the
+> > lock is more than offset by the increased cache pressure due to wasting
+> > (a bit?) more memory.  
+> 
+> Another reason could be those extra inlined warning checks in:
+> -----------------------------------------------------
+> $ git grep -e hung_task_set_blocker -e hung_task_clear_blocker kernel/
+> kernel/locking/mutex.c: hung_task_set_blocker(lock, BLOCKER_TYPE_MUTEX);
+> kernel/locking/mutex.c: hung_task_clear_blocker();
+> kernel/locking/rwsem.c:         hung_task_set_blocker(sem, 
+> BLOCKER_TYPE_RWSEM_READER);
+> kernel/locking/rwsem.c:         hung_task_clear_blocker();
+> kernel/locking/rwsem.c:         hung_task_set_blocker(sem, 
+> BLOCKER_TYPE_RWSEM_WRITER);
+> kernel/locking/rwsem.c:         hung_task_clear_blocker();
+> kernel/locking/semaphore.c:     hung_task_set_blocker(sem, 
+> BLOCKER_TYPE_SEM);
+> kernel/locking/semaphore.c:     hung_task_clear_blocker();
+> -----------------------------------------------------
+> 
+> 
+> > Do you know what was the impact on total kernel size?  
+> 
+> As expected, kernel code size is smaller with the static inlined warn 
+> checks removed:
+> -----------------------------------------------------
+> $ size vmlinux-m68k-6.16-fix1 vmlinux-m68k-6.16-fix2
+>     text	   data	    bss	    dec	    hex	filename
+> 3088520	 953532	  84224	4126276	 3ef644	vmlinux-m68k-6.16-fix1  [1]
+> 3088730	 953564	  84192	4126486	 3ef716	vmlinux-m68k-6.16-fix2  [2]
+> -----------------------------------------------------
+> 
+> But could aligning of structs have caused 32 bytes moving from BSS to 
+> DATA section?
+> 
+> 
+> 	- Eero
+> 
+> PS. I profiled these 3 kernels on emulated Falcon. According to (Hatari) 
+> profiler, main difference in the kernel with the warnings removed, is it 
+> doing less than half of the calls to  NCR5380_read() / 
+> atari_scsi_reg_read(), compared to the other 2 versions.
+> 
+> These additional 2x calls in the other two versions, seem to mostly come 
+> through chain originating from process_scheduled_works(), 
+> NCR5380_poll_politely*() functions and bus probing.
+> 
+> After quick look at the WARN_ON_ONCE()s and SCSI code, I have no idea 
+> how having those checks being inlined to locking functions, or not, 
+> would cause a difference like that.  I've tried patching & building 
+> kernels again, and repeating profiling, but result is same.
+> 
+> While Hatari call (graph) tracking might have some issue (due to kernel 
+> stack return address manipulation), I don't see how there could be a 
+> problem with the profiler instruction counts.  Kernel code at given 
+> address does not change during boot in monolithic kernel, (emulator) 
+> profiler tracks _every_ executed instruction/address, and it's clearly 
+> correct function:
+> ------------------------------------
+> # disassembly with profile data: <instructions percentage>% (<sum of 
+> instructions>, <sum of cycles>, <sum of i-cache misses>, <sum of d-cache 
+> hits>)  
+> ...
+> atari_scsi_falcon_reg_read:
+> $001dd826  link.w    a6,#$0      0.43% (414942, 1578432, 44701, 0)
+> $001dd82a  move.w    sr,d1       0.43% (414942, 224, 8, 0)
+> $001dd82c  ori.w     #$700,sr    0.43% (414942, 414368, 44705, 0)
+> $001dd830  move.l    $8(a6),d0   0.43% (414942, 357922, 44705, 414911)
+> $001dd834  addi.l    #$88,d0     0.43% (414942, 1014804, 133917, 0)
+> $001dd83a  move.w    d0,$8606.w  0.43% (414942, 3618352, 89169, 0)
+> $001dd83e  move.w    $8604.w,d0  0.43% (414942, 3620646, 89162, 0)
+> $001dd842  move.w    d1,sr       0.43% (414942, 2148, 142, 0)
+> $001dd844  unlk      a6          0.43% (414942, 436, 0, 414893)
+> $001dd846  rts                   0.43% (414942, 1073934, 134123, 414942)
+> atari_scsi_falcon_reg_write:
+> $001dd848  link.w    a6,#$0      0.00% (81, 484, 29, 0)
+> $001dd84c  move.l    $c(a6),d0   0.00% (81, 326, 29, 73)
+> ...
+> ------------------------------------
+> 
+> Maybe those WARN_ON_ONCE() checks just happen to slow down something 
+> marginally so that things get interrupted & re-started more for the SCSI 
+> code?
+> 
+> PPS. emulated machine has no SCSI drives, only one IDE drive (with 4MB 
+> Busybox partition):
+> ----------------------------------------------------
+> scsi host0: Atari native SCSI, irq 15, io_port 0x0, base 0x0, can_queue 
+> 1, cmd_per_lun 2, sg_tablesize 1, this_id 7, flags { }
+> atari-falcon-ide atari-falcon-ide: Atari Falcon and Q40/Q60 PATA controller
+> scsi host1: pata_falcon
+> ata1: PATA max PIO4 cmd fff00000 ctl fff00038 data fff00000 no IRQ, 
+> using PIO polling
+> ...
+> ata1: found unknown device (class 0)
+> ata1.00: ATA-7: Hatari  IDE disk 4M, 1.0, max UDMA/100
+> ata1.00: 8192 sectors, multi 16: LBA48
+> ata1.00: configured for PIO
+> ...
+> scsi 1:0:0:0: Direct-Access     ATA      Hatari  IDE disk 1.0  PQ: 0 ANSI: 5
+> sd 1:0:0:0: [sda] 8192 512-byte logical blocks: (4.19 MB/4.00 MiB)
+> sd 1:0:0:0: [sda] Write Protect is off
+> sd 1:0:0:0: [sda] Mode Sense: 00 3a 00 00
+> sd 1:0:0:0: [sda] Write cache: disabled, read cache: enabled, doesn't 
+> support DPO or FUA
+> sd 1:0:0:0: [sda] Preferred minimum I/O size 512 bytes
+> sd 1:0:0:0: [sda] Attached SCSI disk
+> VFS: Mounted root (ext2 filesystem) readonly on device 8:0.
+> ---------------------------------------------------
 > 
 
 
