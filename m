@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-177986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-177987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 576B4B47641
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 20:41:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB17CB476C1
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 21:08:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C50156648B
-	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 18:41:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E38341BC2C55
+	for <lists+stable@lfdr.de>; Sat,  6 Sep 2025 19:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D521255F39;
-	Sat,  6 Sep 2025 18:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8301C285050;
+	Sat,  6 Sep 2025 19:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NWHSZ9+k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DO6KqX4C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E143241C89
-	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 18:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FDD61C84B8
+	for <stable@vger.kernel.org>; Sat,  6 Sep 2025 19:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757184106; cv=none; b=DRUZf6ZIY8KX+5auJlY2AUp3xnEzBEbtvk+8582pV2PRdTXnw59UJlnuTuxlZbKMy699b4qv6lmosoDKqIRSQcZEBKkFbO1He4F43DpJanP0vja0vuwWAP+Lr56X2oR/aKJ9XydxCqPN/JMUx3vRH6Not0JjxgKhhhZbPSO888M=
+	t=1757185683; cv=none; b=tRyT89S44Otp3SaaIMkIm4YSc1Cilh8OnFxSrv71kxHUxR3eYS0whAbSn5RnChrm11fhk0y81lLkhVYpR5EkxOU9GiZo5Ff5cNvyDOYBtMU3Dwy6hXyGy+Tm0nF7nlKYYVCiak465Wcy6RW4QX9imKVlpzIX4UwlYk1y7i2y8LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757184106; c=relaxed/simple;
-	bh=2LjhBuM2tGzaNEiNG2XbjM6H/f6LRzvr7F5TE4Vp+E8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kg831bVjsT3nkxHdkVcLFEwea0aTYcIg0nVOLtymlOr7eZmQ49JJLdIq89soFtlFDTG31wxzU572oemO0lgP4iZEMJFdQMDgxDwlZzc/sRnU/YgrcHW9pNmUQm4J2UQB1j5ytRhB8kUHJahF3LDti9SRlsiYqLqldFXTKK8tyPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NWHSZ9+k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B0BC4CEE7;
-	Sat,  6 Sep 2025 18:41:45 +0000 (UTC)
+	s=arc-20240116; t=1757185683; c=relaxed/simple;
+	bh=VQe+C+8L5gsLCSANHlTig4HUwaco85cvxwTr4L3ieaY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sThnpm2c4ZzOdz+cmftsJp9yKUmmbboUbmvcMWYvAThZJ3DyDDCnvhc+DoeKU/7Ej49kR62Mf0+/K93jiuW22SmB7SSKQAeBpmPSp37KLlK/exHWQ2K147xVF11LntKU4i6RrBtcGIwRGou+A7W6Q/2xYDV7Q7YH9sYoVWa8uV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DO6KqX4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98BCC4CEE7;
+	Sat,  6 Sep 2025 19:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757184106;
-	bh=2LjhBuM2tGzaNEiNG2XbjM6H/f6LRzvr7F5TE4Vp+E8=;
+	s=korg; t=1757185683;
+	bh=VQe+C+8L5gsLCSANHlTig4HUwaco85cvxwTr4L3ieaY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=NWHSZ9+k923IpP4sgJdirGYf8CGk9XbDCrfFCaEwWDwkgw1Vm8MhSIfpfsusQ98Ph
-	 N+oaHzEZQKbSiyHpadZv/eLhHFUpn9xhvpxVIzbuFBB/uYTR5f38zDcQUQD00VlOJn
-	 rUQ84yDDzaLJkzpVdXtubPE7qE2Yizg78qafcRSc=
-Subject: FAILED: patch "[PATCH] mm: slub: avoid wake up kswapd in set_track_prepare" failed to apply to 6.1-stable tree
-To: yangshiguang@xiaomi.com,vbabka@suse.cz
+	b=DO6KqX4C+uoOhDk8+cl8BM1CciEhTTTPHIwJsyJf8960IPq4qgk6SYeB4UU7ivXpL
+	 zyzdN1IZS7PuDNGl5HHrlg25CvlAwXXWQLqxSvyk+/z6NeWxyggHfZ4NNW1C9EKdEc
+	 w06LSt+288v7zSdjO43mXSDhWlgzNyHbgOYQ7PkA=
+Subject: FAILED: patch "[PATCH] kasan: fix GCC mem-intrinsic prefix with sw tags" failed to apply to 6.6-stable tree
+To: ada.coupriediaz@arm.com,akpm@linux-foundation.org,andreyknvl@gmail.com,dvyukov@google.com,elver@google.com,glider@google.com,mark.rutland@arm.com,mpe@ellerman.id.au,nathan@kernel.org,ryabinin.a.a@gmail.com,stable@vger.kernel.org,vincenzo.frascino@arm.com,yeoreum.yun@arm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 06 Sep 2025 20:41:35 +0200
-Message-ID: <2025090635-affluent-reputable-419b@gregkh>
+Date: Sat, 06 Sep 2025 21:08:00 +0200
+Message-ID: <2025090600-revenue-discharge-a6c4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 850470a8413a8a78e772c4f6bd9fe81ec6bd5b0f
+git cherry-pick -x 51337a9a3a404fde0f5337662ffc7699793dfeb5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025090635-affluent-reputable-419b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025090600-revenue-discharge-a6c4@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,163 +77,73 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 850470a8413a8a78e772c4f6bd9fe81ec6bd5b0f Mon Sep 17 00:00:00 2001
-From: yangshiguang <yangshiguang@xiaomi.com>
-Date: Sat, 30 Aug 2025 10:09:46 +0800
-Subject: [PATCH] mm: slub: avoid wake up kswapd in set_track_prepare
+From 51337a9a3a404fde0f5337662ffc7699793dfeb5 Mon Sep 17 00:00:00 2001
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Date: Thu, 21 Aug 2025 13:07:35 +0100
+Subject: [PATCH] kasan: fix GCC mem-intrinsic prefix with sw tags
 
-set_track_prepare() can incur lock recursion.
-The issue is that it is called from hrtimer_start_range_ns
-holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
-CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
-and try to hold the per_cpu(hrtimer_bases)[n].lock.
+GCC doesn't support "hwasan-kernel-mem-intrinsic-prefix", only
+"asan-kernel-mem-intrinsic-prefix"[0], while LLVM supports both.  This is
+already taken into account when checking
+"CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX", but not in the KASAN Makefile
+adding those parameters when "CONFIG_KASAN_SW_TAGS" is enabled.
 
-Avoid deadlock caused by implicitly waking up kswapd by passing in
-allocation flags, which do not contain __GFP_KSWAPD_RECLAIM in the
-debug_objects_fill_pool() case. Inside stack depot they are processed by
-gfp_nested_mask().
-Since ___slab_alloc() has preemption disabled, we mask out
-__GFP_DIRECT_RECLAIM from the flags there.
+Replace the version check with "CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX",
+which already validates that mem-intrinsic prefix parameter can be used,
+and choose the correct name depending on compiler.
 
-The oops looks something like:
+GCC 13 and above trigger "CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX" which
+prevents `mem{cpy,move,set}()` being redefined in "mm/kasan/shadow.c"
+since commit 36be5cba99f6 ("kasan: treat meminstrinsic as builtins in
+uninstrumented files"), as we expect the compiler to prefix those calls
+with `__(hw)asan_` instead.  But as the option passed to GCC has been
+incorrect, the compiler has not been emitting those prefixes, effectively
+never calling the instrumented versions of `mem{cpy,move,set}()` with
+"CONFIG_KASAN_SW_TAGS" enabled.
 
-BUG: spinlock recursion on CPU#3, swapper/3/0
- lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
-Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
-Call trace:
-spin_bug+0x0
-_raw_spin_lock_irqsave+0x80
-hrtimer_try_to_cancel+0x94
-task_contending+0x10c
-enqueue_dl_entity+0x2a4
-dl_server_start+0x74
-enqueue_task_fair+0x568
-enqueue_task+0xac
-do_activate_task+0x14c
-ttwu_do_activate+0xcc
-try_to_wake_up+0x6c8
-default_wake_function+0x20
-autoremove_wake_function+0x1c
-__wake_up+0xac
-wakeup_kswapd+0x19c
-wake_all_kswapds+0x78
-__alloc_pages_slowpath+0x1ac
-__alloc_pages_noprof+0x298
-stack_depot_save_flags+0x6b0
-stack_depot_save+0x14
-set_track_prepare+0x5c
-___slab_alloc+0xccc
-__kmalloc_cache_noprof+0x470
-__set_page_owner+0x2bc
-post_alloc_hook[jt]+0x1b8
-prep_new_page+0x28
-get_page_from_freelist+0x1edc
-__alloc_pages_noprof+0x13c
-alloc_slab_page+0x244
-allocate_slab+0x7c
-___slab_alloc+0x8e8
-kmem_cache_alloc_noprof+0x450
-debug_objects_fill_pool+0x22c
-debug_object_activate+0x40
-enqueue_hrtimer[jt]+0xdc
-hrtimer_start_range_ns+0x5f8
-...
+If "CONFIG_FORTIFY_SOURCES" is enabled, this issue would be mitigated as
+it redefines `mem{cpy,move,set}()` and properly aliases the
+`__underlying_mem*()` that will be called to the instrumented versions.
 
-Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
-Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Link: https://lkml.kernel.org/r/20250821120735.156244-1-ada.coupriediaz@arm.com
+Link: https://gcc.gnu.org/onlinedocs/gcc-13.4.0/gcc/Optimize-Options.html [0]
+Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Fixes: 36be5cba99f6 ("kasan: treat meminstrinsic as builtins in uninstrumented files")
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Marc Rutland <mark.rutland@arm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 1787e4d51e48..d257141896c9 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -962,19 +962,19 @@ static struct track *get_track(struct kmem_cache *s, void *object,
- }
+diff --git a/scripts/Makefile.kasan b/scripts/Makefile.kasan
+index 693dbbebebba..0ba2aac3b8dc 100644
+--- a/scripts/Makefile.kasan
++++ b/scripts/Makefile.kasan
+@@ -86,10 +86,14 @@ kasan_params += hwasan-instrument-stack=$(stack_enable) \
+ 		hwasan-use-short-granules=0 \
+ 		hwasan-inline-all-checks=0
  
- #ifdef CONFIG_STACKDEPOT
--static noinline depot_stack_handle_t set_track_prepare(void)
-+static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
- {
- 	depot_stack_handle_t handle;
- 	unsigned long entries[TRACK_ADDRS_COUNT];
- 	unsigned int nr_entries;
+-# Instrument memcpy/memset/memmove calls by using instrumented __hwasan_mem*().
+-ifeq ($(call clang-min-version, 150000)$(call gcc-min-version, 130000),y)
+-	kasan_params += hwasan-kernel-mem-intrinsic-prefix=1
+-endif
++# Instrument memcpy/memset/memmove calls by using instrumented __(hw)asan_mem*().
++ifdef CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX
++	ifdef CONFIG_CC_IS_GCC
++		kasan_params += asan-kernel-mem-intrinsic-prefix=1
++	else
++		kasan_params += hwasan-kernel-mem-intrinsic-prefix=1
++	endif
++endif # CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX
  
- 	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
--	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
-+	handle = stack_depot_save(entries, nr_entries, gfp_flags);
- 
- 	return handle;
- }
- #else
--static inline depot_stack_handle_t set_track_prepare(void)
-+static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
- {
- 	return 0;
- }
-@@ -996,9 +996,9 @@ static void set_track_update(struct kmem_cache *s, void *object,
- }
- 
- static __always_inline void set_track(struct kmem_cache *s, void *object,
--				      enum track_item alloc, unsigned long addr)
-+				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
- {
--	depot_stack_handle_t handle = set_track_prepare();
-+	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
- 
- 	set_track_update(s, object, alloc, addr, handle);
- }
-@@ -1926,9 +1926,9 @@ static inline bool free_debug_processing(struct kmem_cache *s,
- static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
- static inline int check_object(struct kmem_cache *s, struct slab *slab,
- 			void *object, u8 val) { return 1; }
--static inline depot_stack_handle_t set_track_prepare(void) { return 0; }
-+static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
- static inline void set_track(struct kmem_cache *s, void *object,
--			     enum track_item alloc, unsigned long addr) {}
-+			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
- static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
- 					struct slab *slab) {}
- static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
-@@ -3881,9 +3881,14 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- 			 * For debug caches here we had to go through
- 			 * alloc_single_from_partial() so just store the
- 			 * tracking info and return the object.
-+			 *
-+			 * Due to disabled preemption we need to disallow
-+			 * blocking. The flags are further adjusted by
-+			 * gfp_nested_mask() in stack_depot itself.
- 			 */
- 			if (s->flags & SLAB_STORE_USER)
--				set_track(s, freelist, TRACK_ALLOC, addr);
-+				set_track(s, freelist, TRACK_ALLOC, addr,
-+					  gfpflags & ~(__GFP_DIRECT_RECLAIM));
- 
- 			return freelist;
- 		}
-@@ -3915,7 +3920,8 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
- 			goto new_objects;
- 
- 		if (s->flags & SLAB_STORE_USER)
--			set_track(s, freelist, TRACK_ALLOC, addr);
-+			set_track(s, freelist, TRACK_ALLOC, addr,
-+				  gfpflags & ~(__GFP_DIRECT_RECLAIM));
- 
- 		return freelist;
- 	}
-@@ -4426,8 +4432,12 @@ static noinline void free_to_partial_list(
- 	unsigned long flags;
- 	depot_stack_handle_t handle = 0;
- 
-+	/*
-+	 * We cannot use GFP_NOWAIT as there are callsites where waking up
-+	 * kswapd could deadlock
-+	 */
- 	if (s->flags & SLAB_STORE_USER)
--		handle = set_track_prepare();
-+		handle = set_track_prepare(__GFP_NOWARN);
- 
- 	spin_lock_irqsave(&n->list_lock, flags);
+ endif # CONFIG_KASAN_SW_TAGS
  
 
 
