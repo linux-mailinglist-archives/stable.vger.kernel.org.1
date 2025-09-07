@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D7E2B47E84
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4981B47F2E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:34:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89C12189ED38
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A597C3C2A5E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD01220D51C;
-	Sun,  7 Sep 2025 20:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573D1212B3D;
+	Sun,  7 Sep 2025 20:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LmFjMpoy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NEhkzqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9FE17BB21;
-	Sun,  7 Sep 2025 20:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F5B1A0BFD;
+	Sun,  7 Sep 2025 20:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276724; cv=none; b=P2RCYMuBIYY+gQcGKnEWDcR7QF8I9Qf9pwE99BsGBoi8v79rgwW7t0aK0rZ0cU9j02DRpGJNJNWBG3yAqINszruaXyWEulJ7OxdMUgLJxye9Ag+fHoyUfOV47LYtOPSWJBIbrt9pnIjQ2VJKS4a3xnRZiaFIbSf6Ap7mUbrdhUY=
+	t=1757277246; cv=none; b=XTa1j5QkcoLEiCDYOPMlT74l5DiduI7cL2rdd3nFlK3fW57W+DOzagjzPNYdZkS5usPL3sXisAZDxkJwazWGxNHR9ewRpvbWCYSCOQrCz5CxRmVYZQ89WDbv64FyVI35mNpwl59zfUjSDv2Sjpc1TTJa3VVQIOWrelFrDiHMWH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276724; c=relaxed/simple;
-	bh=aLd6q75luMGINeD0fsiYXxAavbaT9cxanKPDpd5BAqA=;
+	s=arc-20240116; t=1757277246; c=relaxed/simple;
+	bh=tkmXakmziEoP90mjasiBIgW7zbsNkVCyjHNYgHP+8qM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MIx7zX5AURpnUBXwZoPbwJXZFp9QCMpYN+apUhvtzhRnDG0YlcLzji9sBL7QvBRxZJWyIcb2MvYq9FQMoeRcoIFBBgK//euRxhK0a9NrG98kBtnplH2MK+SiQ07t5oK4NCBz8DvIRYz26onGD9mPb9VfTHAMB5sRGkzeLrFpvY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmFjMpoy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E36C4CEF0;
-	Sun,  7 Sep 2025 20:25:23 +0000 (UTC)
+	 MIME-Version; b=X91fo2y2HTKOBOxAHQ7lNdemlQsElqIu8hhQLhkSn/Pr0UMK0eLsispPyoVDD3MvU35W3GJL2o50wx1oyLY9EDOlxWRKL7lpDFldAhIU3RqVArVQBkFMGJcSnd0fu4QiBrZSn54gLfmopk729cGoxAxbDs/6XG8lbcFHT1Xf02s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NEhkzqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4F6C4CEF0;
+	Sun,  7 Sep 2025 20:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276724;
-	bh=aLd6q75luMGINeD0fsiYXxAavbaT9cxanKPDpd5BAqA=;
+	s=korg; t=1757277246;
+	bh=tkmXakmziEoP90mjasiBIgW7zbsNkVCyjHNYgHP+8qM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LmFjMpoyjiVCr8G1RhfmD6P5GSiIzbEtbkXk1BaC8GZrEUGQR9SaZUgN09bjWsTZV
-	 1NtTjNfiTYLJWQYWQGiJKh/SttZ7c9pOxjhwsjpRkYr9SCjffY6KbkM7G551Bw1bdw
-	 sabmobJ51K8wYM+qd3h+hZncIBQCa7sugUevwWdk=
+	b=2NEhkzqI/8Fjwu600jCeN5gd3rRF2v14kw42w8cQNfemu2TM7V6ON7Dml7bJIL5YJ
+	 UeZz9H0KYgmnRoOibU4s+gjyhg7ZukguyzOBWDtiTlOt+C3BmIsyfD+1WnQ8SmnRYF
+	 eDfkhZ6nUAJwtM2EdMZCHZmyIokNa1KssE41j72M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Chiu <chris.chiu@canonical.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/121] ALSA: hda/realtek - Add new HP ZBook laptop with micmute led fixup
+	Yu Kuai <yukuai3@huawei.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.12 129/175] md/raid1,raid10: dont handle IO error for REQ_RAHEAD and REQ_NOWAIT
 Date: Sun,  7 Sep 2025 21:58:44 +0200
-Message-ID: <20250907195612.099741465@linuxfoundation.org>
+Message-ID: <20250907195617.904478366@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Chiu <chris.chiu@canonical.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit f709b78aecab519dbcefa9a6603b94ad18c553e3 ]
+commit 9f346f7d4ea73692b82f5102ca8698e4040469ea upstream.
 
-New HP ZBook with Realtek HDA codec ALC3247 needs the quirk
-ALC236_FIXUP_HP_GPIO_LED to fix the micmute LED.
+IO with REQ_RAHEAD or REQ_NOWAIT can fail early, even if the storage medium
+is fine, hence record badblocks or remove the disk from array does not
+make sense.
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250520132101.120685-1-chris.chiu@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This problem if found by lvm2 test lvcreate-large-raid, where dm-zero
+will fail read ahead IO directly.
+
+Fixes: e879a0d9cb08 ("md/raid1,raid10: don't ignore IO flags")
+Reported-and-tested-by: Mikulas Patocka <mpatocka@redhat.com>
+Closes: https://lore.kernel.org/all/34fa755d-62c8-4588-8ee1-33cb1249bdf2@redhat.com/
+Link: https://lore.kernel.org/linux-raid/20250527081407.3004055-1-yukuai1@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/raid1-10.c |   10 ++++++++++
+ drivers/md/raid1.c    |   19 ++++++++++---------
+ drivers/md/raid10.c   |   11 ++++++-----
+ 3 files changed, 26 insertions(+), 14 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10249,6 +10249,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8e18, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e19, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8e1d, "HP ZBook X Gli 16 G12", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e3a, "HP Agusta", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8e3b, "HP Agusta", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+--- a/drivers/md/raid1-10.c
++++ b/drivers/md/raid1-10.c
+@@ -293,3 +293,13 @@ static inline bool raid1_should_read_fir
+ 
+ 	return false;
+ }
++
++/*
++ * bio with REQ_RAHEAD or REQ_NOWAIT can fail at anytime, before such IO is
++ * submitted to the underlying disks, hence don't record badblocks or retry
++ * in this case.
++ */
++static inline bool raid1_should_handle_error(struct bio *bio)
++{
++	return !(bio->bi_opf & (REQ_RAHEAD | REQ_NOWAIT));
++}
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -371,14 +371,16 @@ static void raid1_end_read_request(struc
+ 	 */
+ 	update_head_pos(r1_bio->read_disk, r1_bio);
+ 
+-	if (uptodate)
++	if (uptodate) {
+ 		set_bit(R1BIO_Uptodate, &r1_bio->state);
+-	else if (test_bit(FailFast, &rdev->flags) &&
+-		 test_bit(R1BIO_FailFast, &r1_bio->state))
++	} else if (test_bit(FailFast, &rdev->flags) &&
++		 test_bit(R1BIO_FailFast, &r1_bio->state)) {
+ 		/* This was a fail-fast read so we definitely
+ 		 * want to retry */
+ 		;
+-	else {
++	} else if (!raid1_should_handle_error(bio)) {
++		uptodate = 1;
++	} else {
+ 		/* If all other devices have failed, we want to return
+ 		 * the error upwards rather than fail the last device.
+ 		 * Here we redefine "uptodate" to mean "Don't want to retry"
+@@ -449,16 +451,15 @@ static void raid1_end_write_request(stru
+ 	struct bio *to_put = NULL;
+ 	int mirror = find_bio_disk(r1_bio, bio);
+ 	struct md_rdev *rdev = conf->mirrors[mirror].rdev;
+-	bool discard_error;
+ 	sector_t lo = r1_bio->sector;
+ 	sector_t hi = r1_bio->sector + r1_bio->sectors;
+-
+-	discard_error = bio->bi_status && bio_op(bio) == REQ_OP_DISCARD;
++	bool ignore_error = !raid1_should_handle_error(bio) ||
++		(bio->bi_status && bio_op(bio) == REQ_OP_DISCARD);
+ 
+ 	/*
+ 	 * 'one mirror IO has finished' event handler:
+ 	 */
+-	if (bio->bi_status && !discard_error) {
++	if (bio->bi_status && !ignore_error) {
+ 		set_bit(WriteErrorSeen,	&rdev->flags);
+ 		if (!test_and_set_bit(WantReplacement, &rdev->flags))
+ 			set_bit(MD_RECOVERY_NEEDED, &
+@@ -509,7 +510,7 @@ static void raid1_end_write_request(stru
+ 
+ 		/* Maybe we can clear some bad blocks. */
+ 		if (rdev_has_badblock(rdev, r1_bio->sector, r1_bio->sectors) &&
+-		    !discard_error) {
++		    !ignore_error) {
+ 			r1_bio->bios[mirror] = IO_MADE_GOOD;
+ 			set_bit(R1BIO_MadeGood, &r1_bio->state);
+ 		}
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -398,6 +398,8 @@ static void raid10_end_read_request(stru
+ 		 * wait for the 'master' bio.
+ 		 */
+ 		set_bit(R10BIO_Uptodate, &r10_bio->state);
++	} else if (!raid1_should_handle_error(bio)) {
++		uptodate = 1;
+ 	} else {
+ 		/* If all other devices that store this block have
+ 		 * failed, we want to return the error upwards rather
+@@ -455,9 +457,8 @@ static void raid10_end_write_request(str
+ 	int slot, repl;
+ 	struct md_rdev *rdev = NULL;
+ 	struct bio *to_put = NULL;
+-	bool discard_error;
+-
+-	discard_error = bio->bi_status && bio_op(bio) == REQ_OP_DISCARD;
++	bool ignore_error = !raid1_should_handle_error(bio) ||
++		(bio->bi_status && bio_op(bio) == REQ_OP_DISCARD);
+ 
+ 	dev = find_bio_disk(conf, r10_bio, bio, &slot, &repl);
+ 
+@@ -471,7 +472,7 @@ static void raid10_end_write_request(str
+ 	/*
+ 	 * this branch is our 'one mirror IO has finished' event handler:
+ 	 */
+-	if (bio->bi_status && !discard_error) {
++	if (bio->bi_status && !ignore_error) {
+ 		if (repl)
+ 			/* Never record new bad blocks to replacement,
+ 			 * just fail it.
+@@ -526,7 +527,7 @@ static void raid10_end_write_request(str
+ 		/* Maybe we can clear some bad blocks. */
+ 		if (rdev_has_badblock(rdev, r10_bio->devs[slot].addr,
+ 				      r10_bio->sectors) &&
+-		    !discard_error) {
++		    !ignore_error) {
+ 			bio_put(bio);
+ 			if (repl)
+ 				r10_bio->devs[slot].repl_bio = IO_MADE_GOOD;
 
 
 
