@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-178429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43128B47EA0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C40DB47F48
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:35:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFA2D1703EB
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C444717FC8A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D049920E005;
-	Sun,  7 Sep 2025 20:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724B9212B3D;
+	Sun,  7 Sep 2025 20:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBHSVEdv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8qgWYBg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5F2D528;
-	Sun,  7 Sep 2025 20:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3017B1DF246;
+	Sun,  7 Sep 2025 20:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276807; cv=none; b=OxlGbZt6ygqtwmEHRDU+bUIdBJj6DxpBwLeLjcotU/+7y60S890qQq0ddBWn8CuL7Z3JJHO4SRX9lwHVoe24J1lsoPrcyLxbFoqvWzQS1xcENOEQ2e0IzsgPg6040x7Tw0m/GhIpWwfTKcf5xX16SDVFXxB3jA45BzdaCGXTrjg=
+	t=1757277329; cv=none; b=CnBGDrSs4x5aaKV/xQuO282qLJLgdF/MmFStR1tlbCo3ys0Sst7iCdtyAlUrW6Tt3bcw8DmMoBSqoX8STkPdwCMGSER4YiHBSJuyfpQifvdCeH7I068ij7ScBNiYENcy4txDdVXIzrJcXdZ+Ze8jVmto+xsgKB221Y+zRFnfvbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276807; c=relaxed/simple;
-	bh=4XNFb+F+DYZbmh8jo5KM5r08xK7+m41NK5QID3DqJcs=;
+	s=arc-20240116; t=1757277329; c=relaxed/simple;
+	bh=7r+vjvEmyEqIUZfswRX1Dme4/QPJ5uqAJqnz0jDtyJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rAjKv/7cRSwkWDMidlhsaiug8y0mUYdg+6vhBj5lpTKLu7CHDyXoSje/Qj1xMhml1luWDQaNhBhbTAqrV3Mi47Jg37hGiRQSe6DKmEYewxa6jf2XoFQzMx3k/CieRHwxar5s2F2wBgskTWUoaSEpWFCqc8toNavHNCd3CJ5w5bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBHSVEdv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B46C4CEF0;
-	Sun,  7 Sep 2025 20:26:46 +0000 (UTC)
+	 MIME-Version; b=NSd0nVWz/ACWWFd5zu6XPnamQA0pNPLCVxxfg5f38tniPWNz4DolpvITVPiUPAdhCQWeJhYedru5vJ/8V1e9gfuVD/MOxZkt1oCuy+hztGxY3PIXVq4bJPGnciWr3c25xsZdX9vlfgaXdiLSHBBKUat5tyzJO0q40cawPdJRGBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8qgWYBg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92FAC4CEF0;
+	Sun,  7 Sep 2025 20:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276807;
-	bh=4XNFb+F+DYZbmh8jo5KM5r08xK7+m41NK5QID3DqJcs=;
+	s=korg; t=1757277329;
+	bh=7r+vjvEmyEqIUZfswRX1Dme4/QPJ5uqAJqnz0jDtyJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zBHSVEdvezsNdHqHj1pJfSL0+mYviEJxgs/5jLVNXbcvgnpIimQe0kh8o8D7k3iB9
-	 aAFxen/jui0lv/9N89mEIYIp8srqtYkfcKrL7XyHFuGfbS4XfWu4eVBNguaU5zwmrA
-	 ccDSFmNWxd7VOtgoM63uSzJOP1o00JHJIc8y2n1c=
+	b=U8qgWYBgplCqHfiUIfjJTVsgyDlaWdWq9QztfYzbIrOfwkiITRHuPuCS6XdVTbVKS
+	 4VRhdLZ9Ett+f5gNevy6WPiGmPZSEdqpu+Yywh1F1rtitEl5xKmqZKNHtIRoyHw/+I
+	 CMIYjMiM4RbhkL3K3t5gVjDpc8Y9Cf4TuwPu8E8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	=?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>,
-	Paul Walmsley <pjw@kernel.org>
-Subject: [PATCH 6.6 116/121] riscv: use lw when reading int cpu in asm_per_cpu
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	James Clark <james.clark@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 157/175] spi: spi-fsl-lpspi: Fix transmissions when using CONT
 Date: Sun,  7 Sep 2025 21:59:12 +0200
-Message-ID: <20250907195612.824246310@linuxfoundation.org>
+Message-ID: <20250907195618.569922142@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radim Krčmář <rkrcmar@ventanamicro.com>
+From: Larisa Grigore <larisa.grigore@nxp.com>
 
-commit f4ea67a722e8c9e1fb8109adebb9fb881ff0793a upstream.
+[ Upstream commit 782a7c73078e1301c0c427f21c06377d77dfa541 ]
 
-REG_L is wrong, because thread_info.cpu is 32-bit, not xlen-bit wide.
-The struct currently has a hole after cpu, so little endian accesses
-seemed fine.
+Commit 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use
+CONT") breaks transmissions when CONT is used. The TDIE interrupt should
+not be disabled in all cases. If CONT is used and the TX transfer is not
+yet completed yet, but the interrupt handler is called because there are
+characters to be received, TDIE is replaced with FCIE. When the transfer
+is finally completed, SR_TDF is set but the interrupt handler isn't
+called again.
 
-Fixes: be97d0db5f44 ("riscv: VMAP_STACK overflow detection thread-safe")
-Cc: stable@vger.kernel.org
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Radim Krčmář <rkrcmar@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250725165410.2896641-5-rkrcmar@ventanamicro.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use CONT")
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250828-james-nxp-lpspi-v2-1-6262b9aa9be4@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/asm.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-fsl-lpspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/riscv/include/asm/asm.h
-+++ b/arch/riscv/include/asm/asm.h
-@@ -90,7 +90,7 @@
- #endif
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index f8cacb9c7408f..50633115e83dd 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -3,7 +3,7 @@
+ // Freescale i.MX7ULP LPSPI driver
+ //
+ // Copyright 2016 Freescale Semiconductor, Inc.
+-// Copyright 2018 NXP Semiconductors
++// Copyright 2018, 2023, 2025 NXP
  
- .macro asm_per_cpu dst sym tmp
--	REG_L \tmp, TASK_TI_CPU_NUM(tp)
-+	lw    \tmp, TASK_TI_CPU_NUM(tp)
- 	slli  \tmp, \tmp, PER_CPU_OFFSET_SHIFT
- 	la    \dst, __per_cpu_offset
- 	add   \dst, \dst, \tmp
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+@@ -780,7 +780,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
+ 	if (temp_SR & SR_MBF ||
+ 	    readl(fsl_lpspi->base + IMX7ULP_FSR) & FSR_TXCOUNT) {
+ 		writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
+-		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE);
++		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE | (temp_IER & IER_TDIE));
+ 		return IRQ_HANDLED;
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
