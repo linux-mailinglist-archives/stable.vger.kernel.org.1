@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D9D8B47D53
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3EE5B47D43
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 603DF1894F76
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF71B189C5EF
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF35327FB21;
-	Sun,  7 Sep 2025 20:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EE427FB21;
+	Sun,  7 Sep 2025 20:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNZ2wJ1Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDLGmUsi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB6E1CDFAC;
-	Sun,  7 Sep 2025 20:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76871CDFAC;
+	Sun,  7 Sep 2025 20:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275822; cv=none; b=R3IctgN+eGhDg6XPi0gJ4FC0NDQsP3no3WeruDyAkW5qRtvFOtRS4TRODJSCLgRBKbFcpouZPQG5o983juo6IQMF4DDVuGdSpWhYMNzQ4BSmcTP1MqXmISII9Ajo1RsuqO3bcXQ8dIYbQFyBg3pUo98/bD/StyMUIAJl5ZD1yvk=
+	t=1757275773; cv=none; b=bBmYNDY5dVZE90sI3D7fTvgphrBN74V+ZwlYFCyO0vB23RKVZPbJvo7+S9Wpcx6jlMEBOq3vCNP9dnwdrdk1t2q2OZCeCO7zosmA1fk+T9PqAkuzs9GFYSDMOEa4m9JIQdl1++CQn9xVmur4+n61fK2c/jrPYUr73UmBQQsgGi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275822; c=relaxed/simple;
-	bh=sYM0xQuBycfTH+jTcBR24nf/zoAc34d56Ie/a7SLAb0=;
+	s=arc-20240116; t=1757275773; c=relaxed/simple;
+	bh=KERRDahLAzuGf1WFj2Z0h8dPYEYO5NcsltgDwjGN0Bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUteJXNG0k/DECCmqGwLsMiiYUfyVJq96+b5p/kUjmEEuBnj8qRUoPO3S3B7hOuLtR/Ve6hV0qW2byYeCQo/Vq6ITc5JmOJLSulDkd6YoVuNT/NIkile+tSO5WXUZpiQvY6JLrmgfhI9FcSMBHdVbXYY7zJrzlN4r1sYw+96CKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNZ2wJ1Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47E1C4CEF0;
-	Sun,  7 Sep 2025 20:10:21 +0000 (UTC)
+	 MIME-Version; b=YaB9HhYOaa/uyCGyZkHR91utpvqUcQhpKRjQgXvi6WhY2d26US6zk8Cx9CGXs5WpIOce2wEIC0uKENpVeDEgbTfNHVVOsIoGbA+NXdk6cE1b+bu1h6bU9W2VEcQ5tqGQQHvSSQ7bPKtZfhw2nGLgTXq8KJ+PUEbeqTP96K2LNAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDLGmUsi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1F7C4CEF0;
+	Sun,  7 Sep 2025 20:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275822;
-	bh=sYM0xQuBycfTH+jTcBR24nf/zoAc34d56Ie/a7SLAb0=;
+	s=korg; t=1757275773;
+	bh=KERRDahLAzuGf1WFj2Z0h8dPYEYO5NcsltgDwjGN0Bk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sNZ2wJ1ZimkzzCzMtiI2joYjfr87zlM1M85gcYVVhh8aiiHhsBx36t2nadGvt1yFl
-	 KLJftIOsOXyuQM2K8LDMbsVlXIY5dFlCONC6Cupy3O6z1L8ucZs59A4iXtIXOgNvOR
-	 5UCmpcSo9fXu9y5z87LgOgOODN9mBwElEPiI76X8=
+	b=wDLGmUsi3q1Pw4qHk4PJ8rtkGfR9VPmx8su7JutwDzvzwQm/WUa7ldrMP7W8xRkVm
+	 WYHEmjM0bF5di5Q7/kYv8bUbo6Q9lrm6UQgDeg1V4T2xD0NFzwSG76vxY62OKr7EVW
+	 vbGAcMamaDPJnJRt6Zb8RkvJbaiYF+zqs8Hdt9JY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Fort <disclosure@aisle.com>,
-	Stanislav Fort <stanislav.fort@aisle.com>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.4 22/45] batman-adv: fix OOB read/write in network-coding decode
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	James Clark <james.clark@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 48/52] spi: spi-fsl-lpspi: Set correct chip-select polarity bit
 Date: Sun,  7 Sep 2025 21:58:08 +0200
-Message-ID: <20250907195601.602492358@linuxfoundation.org>
+Message-ID: <20250907195603.353950192@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fort <stanislav.fort@aisle.com>
+From: Larisa Grigore <larisa.grigore@nxp.com>
 
-commit d77b6ff0ce35a6d0b0b7b9581bc3f76d041d4087 upstream.
+[ Upstream commit cbe33705864ba2697a2939de715b81538cf32430 ]
 
-batadv_nc_skb_decode_packet() trusts coded_len and checks only against
-skb->len. XOR starts at sizeof(struct batadv_unicast_packet), reducing
-payload headroom, and the source skb length is not verified, allowing an
-out-of-bounds read and a small out-of-bounds write.
+The driver currently supports multiple chip-selects, but only sets the
+polarity for the first one (CS 0). Fix it by setting the PCSPOL bit for
+the desired chip-select.
 
-Validate that coded_len fits within the payload area of both destination
-and source sk_buffs before XORing.
-
-Fixes: 2df5278b0267 ("batman-adv: network coding - receive coded packets and decode them")
-Cc: stable@vger.kernel.org
-Reported-by: Stanislav Fort <disclosure@aisle.com>
-Signed-off-by: Stanislav Fort <stanislav.fort@aisle.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250828-james-nxp-lpspi-v2-2-6262b9aa9be4@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/network-coding.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-lpspi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/net/batman-adv/network-coding.c
-+++ b/net/batman-adv/network-coding.c
-@@ -1694,7 +1694,12 @@ batadv_nc_skb_decode_packet(struct batad
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 7ece48667f52d..ab096368a1fd5 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -5,6 +5,7 @@
+ // Copyright 2016 Freescale Semiconductor, Inc.
+ // Copyright 2018, 2023, 2025 NXP
  
- 	coding_len = ntohs(coded_packet_tmp.coded_len);
- 
--	if (coding_len > skb->len)
-+	/* ensure dst buffer is large enough (payload only) */
-+	if (coding_len + h_size > skb->len)
-+		return NULL;
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+ #include <linux/delay.h>
+@@ -71,7 +72,7 @@
+ #define DER_TDDE	BIT(0)
+ #define CFGR1_PCSCFG	BIT(27)
+ #define CFGR1_PINCFG	(BIT(24)|BIT(25))
+-#define CFGR1_PCSPOL	BIT(8)
++#define CFGR1_PCSPOL_MASK	GENMASK(11, 8)
+ #define CFGR1_NOSTALL	BIT(3)
+ #define CFGR1_MASTER	BIT(0)
+ #define FSR_TXCOUNT	(0xFF)
+@@ -395,7 +396,9 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
+ 	else
+ 		temp = CFGR1_PINCFG;
+ 	if (fsl_lpspi->config.mode & SPI_CS_HIGH)
+-		temp |= CFGR1_PCSPOL;
++		temp |= FIELD_PREP(CFGR1_PCSPOL_MASK,
++				   BIT(fsl_lpspi->config.chip_select));
 +
-+	/* ensure src buffer is large enough (payload only) */
-+	if (coding_len + h_size > nc_packet->skb->len)
- 		return NULL;
+ 	writel(temp, fsl_lpspi->base + IMX7ULP_CFGR1);
  
- 	/* Here the magic is reversed:
+ 	temp = readl(fsl_lpspi->base + IMX7ULP_CR);
+-- 
+2.51.0
+
 
 
 
