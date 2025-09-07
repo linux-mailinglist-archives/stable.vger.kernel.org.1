@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F1CB47ED6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:29:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A905B47E52
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0A2E17EB39
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:29:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6CE717638A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC74922F74D;
-	Sun,  7 Sep 2025 20:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BE01D88D0;
+	Sun,  7 Sep 2025 20:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNfaxVvc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydUvF6BQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DCC189BB0;
-	Sun,  7 Sep 2025 20:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A841B424F;
+	Sun,  7 Sep 2025 20:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276966; cv=none; b=c4Zf+Q4vH8YqXixZ/eAw4GrRgfljBqmiw7zFlfvHaRRD4Mt2h6y/qQETXUCbFEGA1VnAxk86SWSphkGEyI4iVsXa6XFP8cRXhV4VT2ltgACUK6OLA6veXIf8MxZrGkee5vDhssCOUkowg+GLWqIumZO/mOU4bWRJD58ejdW7QFM=
+	t=1757276569; cv=none; b=ORGRXB+7wZkFx//pShBCmSVsxZT15N0Q4rWh5OF0rNdTAd7vxmuaghLTos+3wSeHWTc4fmG5RNtlzyrLW4xASQNoFvMurGVv/m74JF6jb6SmigFwyQjSqewIf+UyRgZaqVDYky8QFTAOAyqjYVTqdyvUaTz0YEqRqzdrKDJWOwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276966; c=relaxed/simple;
-	bh=ZnjixwBOWFw2rrdxVhbNle6xnR+NaMLkbYLyt0gizaQ=;
+	s=arc-20240116; t=1757276569; c=relaxed/simple;
+	bh=Jh6EPOcjom78P9Kxu5JG/bn4m9Eyi0nhGC8V2KIBAM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TCcaYW0MWyU/RF2LcTH4pUklTCmLU629IwmUjJ2HHxo5VbwmjedRsJFhpyLcbjUWxPO8rrFN+QHZJIOkhHKxdZom425zKIYhdOtyFWkFguVNfl2nIjdW2HS6MVcqW0FWbXqG4q5uUKlKU2NgKWjLVCv+fzzPa8aXK7qbJKr3kDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNfaxVvc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEACC4CEF0;
-	Sun,  7 Sep 2025 20:29:25 +0000 (UTC)
+	 MIME-Version; b=hA7l7UVk5O+Kz3+Fx/bCrEopDNgQ3ZO8EW0nMRabsKDJI/JrT8hOT1uSbpgEtH31Q+9yC1pLdT3Zrl6lUUu7rAjkuqALxrH9BF1TvQfYYWI2DyCFaC0CtQinR2uEYSJpNIoVTIbDtGuOvitBL1ZI+pJu4VxHiNDrMieh6PXQsiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydUvF6BQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD5DC4CEF0;
+	Sun,  7 Sep 2025 20:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276966;
-	bh=ZnjixwBOWFw2rrdxVhbNle6xnR+NaMLkbYLyt0gizaQ=;
+	s=korg; t=1757276569;
+	bh=Jh6EPOcjom78P9Kxu5JG/bn4m9Eyi0nhGC8V2KIBAM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nNfaxVvc5lm8oS2aQeVggZRakxNRnRAuJv0nMTGqRAtIyLsuh2kKwl+NUAjMfb4Ab
-	 YqMhxwJqKkB7UG4IRRTLxgx0FtsEDS9ouFtp5byoPFizll0ZzZaCgeRqSw/+WmebWd
-	 Pq0HVmuciNWZv55Im8vSz5EwlPPm5kd3dtgHnf3s=
+	b=ydUvF6BQwMjlnKD0QitQriDGPeSznBG/9/fwf00Mp9cDUbSxKjVcearUebjXwEK8u
+	 p3P4jQrbOhMrjGP4aSZd6qq9DLUGVXkOZxc2JPASdLTZnt0IP2OIgjPEd6x8fEYKRe
+	 zx72IacdOT0vEhiA8Go1I5X/RRmluqIGfiGE0tPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+72db9ee39db57c3fecc5@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lonial Con <kongln9170@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/175] net_sched: gen_estimator: fix est_timer() vs CONFIG_PREEMPT_RT=y
+Subject: [PATCH 6.6 004/121] bpf: Fix oob access in cgroup local storage
 Date: Sun,  7 Sep 2025 21:57:20 +0200
-Message-ID: <20250907195615.917372355@linuxfoundation.org>
+Message-ID: <20250907195609.930557005@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 9f74c0ea9b26d1505d55b61e36b1623dd347e1d1 ]
+[ Upstream commit abad3d0bad72a52137e0c350c59542d75ae4f513 ]
 
-syzbot reported a WARNING in est_timer() [1]
+Lonial reported that an out-of-bounds access in cgroup local storage
+can be crafted via tail calls. Given two programs each utilizing a
+cgroup local storage with a different value size, and one program
+doing a tail call into the other. The verifier will validate each of
+the indivial programs just fine. However, in the runtime context
+the bpf_cg_run_ctx holds an bpf_prog_array_item which contains the
+BPF program as well as any cgroup local storage flavor the program
+uses. Helpers such as bpf_get_local_storage() pick this up from the
+runtime context:
 
-Problem here is that with CONFIG_PREEMPT_RT=y, timer callbacks
-can be preempted.
+  ctx = container_of(current->bpf_ctx, struct bpf_cg_run_ctx, run_ctx);
+  storage = ctx->prog_item->cgroup_storage[stype];
 
-Adopt preempt_disable_nested()/preempt_enable_nested() to fix this.
+  if (stype == BPF_CGROUP_STORAGE_SHARED)
+    ptr = &READ_ONCE(storage->buf)->data[0];
+  else
+    ptr = this_cpu_ptr(storage->percpu_buf);
 
-[1]
- WARNING: CPU: 0 PID: 16 at ./include/linux/seqlock.h:221 __seqprop_assert include/linux/seqlock.h:221 [inline]
- WARNING: CPU: 0 PID: 16 at ./include/linux/seqlock.h:221 est_timer+0x6dc/0x9f0 net/core/gen_estimator.c:93
-Modules linked in:
-CPU: 0 UID: 0 PID: 16 Comm: ktimers/0 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
- RIP: 0010:__seqprop_assert include/linux/seqlock.h:221 [inline]
- RIP: 0010:est_timer+0x6dc/0x9f0 net/core/gen_estimator.c:93
-Call Trace:
- <TASK>
-  call_timer_fn+0x17e/0x5f0 kernel/time/timer.c:1747
-  expire_timers kernel/time/timer.c:1798 [inline]
-  __run_timers kernel/time/timer.c:2372 [inline]
-  __run_timer_base+0x648/0x970 kernel/time/timer.c:2384
-  run_timer_base kernel/time/timer.c:2393 [inline]
-  run_timer_softirq+0xb7/0x180 kernel/time/timer.c:2403
-  handle_softirqs+0x22c/0x710 kernel/softirq.c:579
-  __do_softirq kernel/softirq.c:613 [inline]
-  run_ktimerd+0xcf/0x190 kernel/softirq.c:1043
-  smpboot_thread_fn+0x53f/0xa60 kernel/smpboot.c:160
-  kthread+0x70e/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+For the second program which was called from the originally attached
+one, this means bpf_get_local_storage() will pick up the former
+program's map, not its own. With mismatching sizes, this can result
+in an unintended out-of-bounds access.
 
-Fixes: d2d6422f8bd1 ("x86: Allow to enable PREEMPT_RT.")
-Reported-by: syzbot+72db9ee39db57c3fecc5@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68adf6fa.a70a0220.3cafd4.0000.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/20250827162352.3960779-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To fix this issue, we need to extend bpf_map_owner with an array of
+storage_cookie[] to match on i) the exact maps from the original
+program if the second program was using bpf_get_local_storage(), or
+ii) allow the tail call combination if the second program was not
+using any of the cgroup local storage maps.
+
+Fixes: 7d9c3427894f ("bpf: Make cgroup storages shared between programs on the same cgroup")
+Reported-by: Lonial Con <kongln9170@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/r/20250730234733.530041-4-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/gen_estimator.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/bpf.h |  1 +
+ kernel/bpf/core.c   | 15 +++++++++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/net/core/gen_estimator.c b/net/core/gen_estimator.c
-index 412816076b8bc..392f1cb5cc479 100644
---- a/net/core/gen_estimator.c
-+++ b/net/core/gen_estimator.c
-@@ -90,10 +90,12 @@ static void est_timer(struct timer_list *t)
- 	rate = (b_packets - est->last_packets) << (10 - est->intvl_log);
- 	rate = (rate >> est->ewma_log) - (est->avpps >> est->ewma_log);
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index b8e0204992857..83da9c81fa86a 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -267,6 +267,7 @@ struct bpf_map_owner {
+ 	enum bpf_prog_type type;
+ 	bool jited;
+ 	bool xdp_has_frags;
++	u64 storage_cookie[MAX_BPF_CGROUP_STORAGE_TYPE];
+ 	const struct btf_type *attach_func_proto;
+ };
  
-+	preempt_disable_nested();
- 	write_seqcount_begin(&est->seq);
- 	est->avbps += brate;
- 	est->avpps += rate;
- 	write_seqcount_end(&est->seq);
-+	preempt_enable_nested();
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index c3369c66eae8f..3618be05fc352 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -2263,7 +2263,9 @@ static bool __bpf_prog_map_compatible(struct bpf_map *map,
+ {
+ 	enum bpf_prog_type prog_type = resolve_prog_type(fp);
+ 	struct bpf_prog_aux *aux = fp->aux;
++	enum bpf_cgroup_storage_type i;
+ 	bool ret = false;
++	u64 cookie;
  
- 	est->last_bytes = b_bytes;
- 	est->last_packets = b_packets;
+ 	if (fp->kprobe_override)
+ 		return ret;
+@@ -2278,11 +2280,24 @@ static bool __bpf_prog_map_compatible(struct bpf_map *map,
+ 		map->owner->jited = fp->jited;
+ 		map->owner->xdp_has_frags = aux->xdp_has_frags;
+ 		map->owner->attach_func_proto = aux->attach_func_proto;
++		for_each_cgroup_storage_type(i) {
++			map->owner->storage_cookie[i] =
++				aux->cgroup_storage[i] ?
++				aux->cgroup_storage[i]->cookie : 0;
++		}
+ 		ret = true;
+ 	} else {
+ 		ret = map->owner->type  == prog_type &&
+ 		      map->owner->jited == fp->jited &&
+ 		      map->owner->xdp_has_frags == aux->xdp_has_frags;
++		for_each_cgroup_storage_type(i) {
++			if (!ret)
++				break;
++			cookie = aux->cgroup_storage[i] ?
++				 aux->cgroup_storage[i]->cookie : 0;
++			ret = map->owner->storage_cookie[i] == cookie ||
++			      !cookie;
++		}
+ 		if (ret &&
+ 		    map->owner->attach_func_proto != aux->attach_func_proto) {
+ 			switch (prog_type) {
 -- 
 2.50.1
 
