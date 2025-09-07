@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0FE3B47DA2
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12801B47E7C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80F6A189E31B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED8D81888EC4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B440927FB21;
-	Sun,  7 Sep 2025 20:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1368F20E005;
+	Sun,  7 Sep 2025 20:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUjB5naP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHezfaOR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71ADA1B424F;
-	Sun,  7 Sep 2025 20:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5455D528;
+	Sun,  7 Sep 2025 20:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276069; cv=none; b=ZLa5zEhspfLCGJwHQKpcoSokRMk9xMbM7q512N2lx3PGXbokKN6KFiJrSfFfk2mqWPSxBPDZHOwoA2GN58TyBKnvk5dUtxzBpX3hCIirN0yynCwC/58KJA748vIJdKKZOkJUVVNx17kb8cdxEijU4iAdJDWPvkTKqAE+WV8ALgk=
+	t=1757276692; cv=none; b=FcuiNDihTfWzAS3du5igQrOV3NueK9O0tXV5d5WmhUPSnTl71egsZkrMO9PG//uVk2D9IFtLwg8O4vwpxeh+UruxR0A14N2jBJ2rrqZbSmpVjmkvDS+ZbE0HsyTVOYZQD1CuAlya5wJzE2w5hXgGTma952HmYgXxkEErfovmrF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276069; c=relaxed/simple;
-	bh=b6F4lksdyRU4UCUVXu0zRJC7wRSgpSwlnKUctArHqEU=;
+	s=arc-20240116; t=1757276692; c=relaxed/simple;
+	bh=/kLlgMRyzUtOV8/txC7im5T3XMH2h+VxvLygdamFdMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XPwEmCwBuj8vZARyj/CgRuaN/6Ol4ah2Agbvc4yubhkitwNiWMpKoRRvTnT3fjfCJc5BMZmQCnCHcYdvHauRqyBkvqXrkwSnAfCXt8nMwGgcmGbPShrYItISLoOU59rF5PaOv3PgPSAQv/WQAbc85qyiPK2Ep/i0ptiSmCas4qU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUjB5naP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3034C4CEF0;
-	Sun,  7 Sep 2025 20:14:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FTuQnvpfbwR9KIKnkBC1v4UAdt/d8rmyWA5qGPeFylOTvxEihJ+aoWi+wuF8P3T/MkqVTaN9BxYo30VXkQp7DPPA+rlyhZZqqixEeRrTM6PZ97Xn6+wlOhhepC6kbEfc8Se+mf48ooaObmwzC573N1GLpSaC2CP+v5Ba8z+ysRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHezfaOR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 013F4C4CEF0;
+	Sun,  7 Sep 2025 20:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276069;
-	bh=b6F4lksdyRU4UCUVXu0zRJC7wRSgpSwlnKUctArHqEU=;
+	s=korg; t=1757276692;
+	bh=/kLlgMRyzUtOV8/txC7im5T3XMH2h+VxvLygdamFdMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BUjB5naPlkJKUKSy1kYjnxomSDdrjB8srPfW8hrld1X7XVo0Xm0h3dp6X9PBc8S/n
-	 G/7OYeK30H3wjt2G7g0osjejUn2vlC6FSjFxmaHQFyHcokeeEbFu5P51pSDigSf6Vg
-	 ipwDdzBAZMyPTzBcCQiiYeXA80+iMalSM7D2G0TE=
+	b=VHezfaORME1qucohXaY6MjajajwL4F7+MmAhmITI/eqmYb4Ro7Yt8l8ISBvTkNK3I
+	 o0CYJMY9mdgyaheXl2vh0tmnJrtrPO/bUC4/+NBAJElcav/fRuVkWThqRDJBuv1CBS
+	 eZgxR2L/FFNdo3/MUBdEiHZ9Tgby1kYfr76orpSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thiago Jung Bauermann <thiago.bauermann@linaro.org>,
-	Ingo Saitz <ingo@hannover.ccc.de>,
-	Kees Cook <kees@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 53/64] randstruct: gcc-plugin: Fix attribute addition
+Subject: [PATCH 6.6 079/121] thermal/drivers/mediatek/lvts: Disable low offset IRQ for minimum threshold
 Date: Sun,  7 Sep 2025 21:58:35 +0200
-Message-ID: <20250907195604.877258781@linuxfoundation.org>
+Message-ID: <20250907195611.864977778@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,135 +61,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit f39f18f3c3531aa802b58a20d39d96e82eb96c14 ]
+[ Upstream commit fa17ff8e325a657c84be1083f06e54ee7eea82e4 ]
 
-Based on changes in the 2021 public version of the randstruct
-out-of-tree GCC plugin[1], more carefully update the attributes on
-resulting decls, to avoid tripping checks in GCC 15's
-comptypes_check_enum_int() when it has been configured with
-"--enable-checking=misc":
+In order to get working interrupts, a low offset value needs to be
+configured. The minimum value for it is 20 Celsius, which is what is
+configured when there's no lower thermal trip (ie the thermal core
+passes -INT_MAX as low trip temperature). However, when the temperature
+gets that low and fluctuates around that value it causes an interrupt
+storm.
 
-arch/arm64/kernel/kexec_image.c:132:14: internal compiler error: in comptypes_check_enum_int, at c/c-typeck.cc:1519
-  132 | const struct kexec_file_ops kexec_image_ops = {
-      |              ^~~~~~~~~~~~~~
- internal_error(char const*, ...), at gcc/gcc/diagnostic-global-context.cc:517
- fancy_abort(char const*, int, char const*), at gcc/gcc/diagnostic.cc:1803
- comptypes_check_enum_int(tree_node*, tree_node*, bool*), at gcc/gcc/c/c-typeck.cc:1519
- ...
+Prevent that interrupt storm by not enabling the low offset interrupt if
+the low threshold is the minimum one.
 
-Link: https://archive.org/download/grsecurity/grsecurity-3.1-5.10.41-202105280954.patch.gz [1]
-Reported-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
-Closes: https://github.com/KSPP/linux/issues/367
-Closes: https://lore.kernel.org/lkml/20250530000646.104457-1-thiago.bauermann@linaro.org/
-Reported-by: Ingo Saitz <ingo@hannover.ccc.de>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1104745
-Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
-Tested-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
-Link: https://lore.kernel.org/r/20250530221824.work.623-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 77354eaef821 ("thermal/drivers/mediatek/lvts_thermal: Don't leave threshold zeroed")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20250113-mt8192-lvts-filtered-suspend-fix-v2-3-07a25200c7c6@collabora.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+[ Adapted interrupt mask definitions ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/gcc-plugins/gcc-common.h              |   32 ++++++++++++++++++++++++++
- scripts/gcc-plugins/randomize_layout_plugin.c |   22 ++++++++---------
- 2 files changed, 43 insertions(+), 11 deletions(-)
+ drivers/thermal/mediatek/lvts_thermal.c |   50 +++++++++++++++++++++++---------
+ 1 file changed, 36 insertions(+), 14 deletions(-)
 
---- a/scripts/gcc-plugins/gcc-common.h
-+++ b/scripts/gcc-plugins/gcc-common.h
-@@ -137,6 +137,38 @@ static inline tree build_const_char_stri
- 	return cstr;
- }
+--- a/drivers/thermal/mediatek/lvts_thermal.c
++++ b/drivers/thermal/mediatek/lvts_thermal.c
+@@ -67,10 +67,14 @@
+ #define LVTS_CALSCALE_CONF			0x300
+ #define LVTS_MONINT_CONF			0x8300318C
  
-+static inline void __add_type_attr(tree type, const char *attr, tree args)
-+{
-+	tree oldattr;
-+
-+	if (type == NULL_TREE)
-+		return;
-+	oldattr = lookup_attribute(attr, TYPE_ATTRIBUTES(type));
-+	if (oldattr != NULL_TREE) {
-+		gcc_assert(TREE_VALUE(oldattr) == args || TREE_VALUE(TREE_VALUE(oldattr)) == TREE_VALUE(args));
-+		return;
-+	}
-+
-+	TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
-+	TYPE_ATTRIBUTES(type) = tree_cons(get_identifier(attr), args, TYPE_ATTRIBUTES(type));
-+}
-+
-+static inline void add_type_attr(tree type, const char *attr, tree args)
-+{
-+	tree main_variant = TYPE_MAIN_VARIANT(type);
-+
-+	__add_type_attr(TYPE_CANONICAL(type), attr, args);
-+	__add_type_attr(TYPE_CANONICAL(main_variant), attr, args);
-+	__add_type_attr(main_variant, attr, args);
-+
-+	for (type = TYPE_NEXT_VARIANT(main_variant); type; type = TYPE_NEXT_VARIANT(type)) {
-+		if (!lookup_attribute(attr, TYPE_ATTRIBUTES(type)))
-+			TYPE_ATTRIBUTES(type) = TYPE_ATTRIBUTES(main_variant);
-+
-+		__add_type_attr(TYPE_CANONICAL(type), attr, args);
-+	}
-+}
-+
- #define PASS_INFO(NAME, REF, ID, POS)		\
- struct register_pass_info NAME##_pass_info = {	\
- 	.pass = make_##NAME##_pass(),		\
---- a/scripts/gcc-plugins/randomize_layout_plugin.c
-+++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-@@ -95,6 +95,9 @@ static tree handle_randomize_layout_attr
+-#define LVTS_MONINT_OFFSET_SENSOR0		0xC
+-#define LVTS_MONINT_OFFSET_SENSOR1		0x180
+-#define LVTS_MONINT_OFFSET_SENSOR2		0x3000
+-#define LVTS_MONINT_OFFSET_SENSOR3		0x3000000
++#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR0		BIT(3)
++#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR1		BIT(8)
++#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR2		BIT(13)
++#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR3		BIT(25)
++#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR0		BIT(2)
++#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR1		BIT(7)
++#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR2		BIT(12)
++#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR3		BIT(24)
  
- 	if (TYPE_P(*node)) {
- 		type = *node;
-+	} else if (TREE_CODE(*node) == FIELD_DECL) {
-+		*no_add_attrs = false;
-+		return NULL_TREE;
- 	} else {
- 		gcc_assert(TREE_CODE(*node) == TYPE_DECL);
- 		type = TREE_TYPE(*node);
-@@ -381,15 +384,14 @@ static int relayout_struct(tree type)
- 		TREE_CHAIN(newtree[i]) = newtree[i+1];
- 	TREE_CHAIN(newtree[num_fields - 1]) = NULL_TREE;
+ #define LVTS_INT_SENSOR0			0x0009001F
+ #define LVTS_INT_SENSOR1			0x001203E0
+@@ -308,23 +312,41 @@ static int lvts_get_temp(struct thermal_
  
-+	add_type_attr(type, "randomize_performed", NULL_TREE);
-+	add_type_attr(type, "designated_init", NULL_TREE);
-+	if (has_flexarray)
-+		add_type_attr(type, "has_flexarray", NULL_TREE);
-+
- 	main_variant = TYPE_MAIN_VARIANT(type);
--	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant)) {
-+	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant))
- 		TYPE_FIELDS(variant) = newtree[0];
--		TYPE_ATTRIBUTES(variant) = copy_list(TYPE_ATTRIBUTES(variant));
--		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("randomize_performed"), NULL_TREE, TYPE_ATTRIBUTES(variant));
--		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("designated_init"), NULL_TREE, TYPE_ATTRIBUTES(variant));
--		if (has_flexarray)
--			TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("has_flexarray"), NULL_TREE, TYPE_ATTRIBUTES(type));
--	}
+ static void lvts_update_irq_mask(struct lvts_ctrl *lvts_ctrl)
+ {
+-	u32 masks[] = {
+-		LVTS_MONINT_OFFSET_SENSOR0,
+-		LVTS_MONINT_OFFSET_SENSOR1,
+-		LVTS_MONINT_OFFSET_SENSOR2,
+-		LVTS_MONINT_OFFSET_SENSOR3,
++	static const u32 high_offset_inten_masks[] = {
++		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR0,
++		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR1,
++		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR2,
++		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR3,
++	};
++	static const u32 low_offset_inten_masks[] = {
++		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR0,
++		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR1,
++		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR2,
++		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR3,
+ 	};
+ 	u32 value = 0;
+ 	int i;
  
- 	/*
- 	 * force a re-layout of the main variant
-@@ -457,10 +459,8 @@ static void randomize_type(tree type)
- 	if (lookup_attribute("randomize_layout", TYPE_ATTRIBUTES(TYPE_MAIN_VARIANT(type))) || is_pure_ops_struct(type))
- 		relayout_struct(type);
+ 	value = readl(LVTS_MONINT(lvts_ctrl->base));
  
--	for (variant = TYPE_MAIN_VARIANT(type); variant; variant = TYPE_NEXT_VARIANT(variant)) {
--		TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
--		TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("randomize_considered"), NULL_TREE, TYPE_ATTRIBUTES(type));
--	}
-+	add_type_attr(type, "randomize_considered", NULL_TREE);
-+
- #ifdef __DEBUG_PLUGIN
- 	fprintf(stderr, "Marking randomize_considered on struct %s\n", ORIG_TYPE_NAME(type));
- #ifdef __DEBUG_VERBOSE
+-	for (i = 0; i < ARRAY_SIZE(masks); i++) {
++	for (i = 0; i < ARRAY_SIZE(high_offset_inten_masks); i++) {
+ 		if (lvts_ctrl->sensors[i].high_thresh == lvts_ctrl->high_thresh
+-		    && lvts_ctrl->sensors[i].low_thresh == lvts_ctrl->low_thresh)
+-			value |= masks[i];
+-		else
+-			value &= ~masks[i];
++		    && lvts_ctrl->sensors[i].low_thresh == lvts_ctrl->low_thresh) {
++			/*
++			 * The minimum threshold needs to be configured in the
++			 * OFFSETL register to get working interrupts, but we
++			 * don't actually want to generate interrupts when
++			 * crossing it.
++			 */
++			if (lvts_ctrl->low_thresh == -INT_MAX) {
++				value &= ~low_offset_inten_masks[i];
++				value |= high_offset_inten_masks[i];
++			} else {
++				value |= low_offset_inten_masks[i] | high_offset_inten_masks[i];
++			}
++		} else {
++			value &= ~(low_offset_inten_masks[i] | high_offset_inten_masks[i]);
++		}
+ 	}
+ 
+ 	writel(value, LVTS_MONINT(lvts_ctrl->base));
 
 
 
