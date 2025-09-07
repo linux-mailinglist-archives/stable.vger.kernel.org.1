@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-178604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A9EB47F55
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B70B47FE8
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C4B364E12A3
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0925F1B22276
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7D9212B3D;
-	Sun,  7 Sep 2025 20:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29F327703A;
+	Sun,  7 Sep 2025 20:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5ioAYde"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pL4ds7Wl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FAD315D54;
-	Sun,  7 Sep 2025 20:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE444315A;
+	Sun,  7 Sep 2025 20:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277369; cv=none; b=DMYjaSyb2V3LZF3aDmHJCRNSady1EsTkfEUXsYFbaLuwzrdhc382BT5JQmJk6y4GxOGJpf1ZXMHaN+8iOzf50KDneoMDPmSfNJLO7mfSBN8N4Y+ijb3x5O0A4QfXZBFdFnN6KQngEwW6ik1bddfgBgifRQ7a4n/ctHFgmJ38j+M=
+	t=1757277832; cv=none; b=p1M5wCRgIr7AlMiwyC+o4i+z7W60qdDxojhqbAZrd0r0l3iWwq1z6ZSMifyZNfIzlTaxUF0yd5KY21yfwbapkAEUN8W+fIK1+3iS8MtmWCleSXpypmVFcVbuY5sLlWUtuOUqcxK8AhhOtZX75tEJM8gm2RYdbwpurKCkTrkqGYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277369; c=relaxed/simple;
-	bh=NZmooTos3MgoRI8/Kxpqzk+N/xUpeH6sqvK0aEuS9lk=;
+	s=arc-20240116; t=1757277832; c=relaxed/simple;
+	bh=olih+fW+k2lNvWwRcOabYVtTagEOYYVKhrcOj0YjlXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fIFRAuwwRpJCvZ1kqGQMIwM+S+5XpGg/iV81FACBn8Q6V0AmPRvRFtBfPfDbCQQVA7eZarp6GD3LAV0iuQoQganUjGbWOUBOzq340Nd/VEKpIfOrFuuKy8rzU4uTcU7LjbbDLbpJHbKPwv+XVDJSCszDmx7HK/rE5fsIccx4mKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5ioAYde; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19FCC4CEF0;
-	Sun,  7 Sep 2025 20:36:08 +0000 (UTC)
+	 MIME-Version; b=D8zB+Kwo8rT2C9JYlJW7g0rLnlupr9EuZbaOzGn/L9GWn7nEC2drmFt+w/sqYBA4D1kQkwSOvRr6dMLG4vwBeKLcEmEex7KrdA4XZfUGtEsxTUzZ/UQJU5F+3Mm/MB/61ZVTWgsdwD5/mpV9QLBuFchj9iJ+5ehqPOWLCEF8xNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pL4ds7Wl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1431EC4CEF0;
+	Sun,  7 Sep 2025 20:43:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277369;
-	bh=NZmooTos3MgoRI8/Kxpqzk+N/xUpeH6sqvK0aEuS9lk=;
+	s=korg; t=1757277832;
+	bh=olih+fW+k2lNvWwRcOabYVtTagEOYYVKhrcOj0YjlXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5ioAYdeYkp/voTLucu3GdIizTMGRYdiiLQLpk5Sj277wX0VtTIaHcusRONFWjHHv
-	 5wsT+92BUuMtNMt29mp1jarzzh/n06xRXizcEmblHew8EpPO58oRCX1ayv1kVSsmUT
-	 /18ntTU4nh16eFHVO7+jdIGFnJKfwBS8Yv3pRv4Q=
+	b=pL4ds7Wl3tHMSoEVXPLqVCi9jVnUbLiBxfaMb0LL8g09cVVbSC+qpCEr4XEzRvWJ3
+	 2pVo56QWl4VK33NXglIxo/oPGjAI3FHqBrjmiXs8nJzTxgpfv3WBvOfvcq/YbR0Ive
+	 JpsF8ccc1JhiBBJagE+W+BkAWfF+nTfXu2NT6+5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <apatel@ventanamicro.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Troy Mitchell <troy.mitchell@linux.dev>,
-	Sunil V L <sunilvl@ventanamicro.com>,
-	Nutty Liu <nutty.liu@hotmail.com>,
-	Atish Patra <atishp@rivosinc.com>,
-	Paul Walmsley <pjw@kernel.org>
-Subject: [PATCH 6.12 168/175] ACPI: RISC-V: Fix FFH_CPPC_CSR error handling
-Date: Sun,  7 Sep 2025 21:59:23 +0200
-Message-ID: <20250907195618.835784781@linuxfoundation.org>
+	Mikael Wessel <post@mikaelkw.online>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.16 137/183] e1000e: fix heap overflow in e1000_set_eeprom
+Date: Sun,  7 Sep 2025 21:59:24 +0200
+Message-ID: <20250907195619.047616948@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,53 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-commit 5b3706597b90a7b6c9ae148edd07a43531dcd49e upstream.
+commit 90fb7db49c6dbac961c6b8ebfd741141ffbc8545 upstream.
 
-The cppc_ffh_csr_read() and cppc_ffh_csr_write() returns Linux error
-code in "data->ret.error" so cpc_read_ffh() and cpc_write_ffh() must
-not use sbi_err_map_linux_errno() for FFH_CPPC_CSR.
+Fix a possible heap overflow in e1000_set_eeprom function by adding
+input validation for the requested length of the change in the EEPROM.
+In addition, change the variable type from int to size_t for better
+code practices and rearrange declarations to RCT.
 
-Fixes: 30f3ffbee86b ("ACPI: RISC-V: Add CPPC driver")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Troy Mitchell <troy.mitchell@linux.dev>
-Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
-Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250818143600.894385-2-apatel@ventanamicro.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
+Co-developed-by: Mikael Wessel <post@mikaelkw.online>
+Signed-off-by: Mikael Wessel <post@mikaelkw.online>
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/riscv/cppc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/e1000e/ethtool.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/acpi/riscv/cppc.c
-+++ b/drivers/acpi/riscv/cppc.c
-@@ -121,7 +121,7 @@ int cpc_read_ffh(int cpu, struct cpc_reg
+--- a/drivers/net/ethernet/intel/e1000e/ethtool.c
++++ b/drivers/net/ethernet/intel/e1000e/ethtool.c
+@@ -549,12 +549,12 @@ static int e1000_set_eeprom(struct net_d
+ {
+ 	struct e1000_adapter *adapter = netdev_priv(netdev);
+ 	struct e1000_hw *hw = &adapter->hw;
++	size_t total_len, max_len;
+ 	u16 *eeprom_buff;
+-	void *ptr;
+-	int max_len;
++	int ret_val = 0;
+ 	int first_word;
+ 	int last_word;
+-	int ret_val = 0;
++	void *ptr;
+ 	u16 i;
  
- 		*val = data.ret.value;
+ 	if (eeprom->len == 0)
+@@ -569,6 +569,10 @@ static int e1000_set_eeprom(struct net_d
  
--		return (data.ret.error) ? sbi_err_map_linux_errno(data.ret.error) : 0;
-+		return data.ret.error;
- 	}
+ 	max_len = hw->nvm.word_size * 2;
  
- 	return -EINVAL;
-@@ -150,7 +150,7 @@ int cpc_write_ffh(int cpu, struct cpc_re
- 
- 		smp_call_function_single(cpu, cppc_ffh_csr_write, &data, 1);
- 
--		return (data.ret.error) ? sbi_err_map_linux_errno(data.ret.error) : 0;
-+		return data.ret.error;
- 	}
- 
- 	return -EINVAL;
++	if (check_add_overflow(eeprom->offset, eeprom->len, &total_len) ||
++	    total_len > max_len)
++		return -EFBIG;
++
+ 	first_word = eeprom->offset >> 1;
+ 	last_word = (eeprom->offset + eeprom->len - 1) >> 1;
+ 	eeprom_buff = kmalloc(max_len, GFP_KERNEL);
 
 
 
