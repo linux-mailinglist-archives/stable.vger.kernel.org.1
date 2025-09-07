@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45E66B47EED
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81700B47DC6
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 194971891BE8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:31:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E26D3C063D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B491ACEDA;
-	Sun,  7 Sep 2025 20:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F3E20E005;
+	Sun,  7 Sep 2025 20:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5SpkuEY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljHBAtwV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27581DE8AF;
-	Sun,  7 Sep 2025 20:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9821814BFA2;
+	Sun,  7 Sep 2025 20:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277038; cv=none; b=KuerHqhMeQ6L1wenD7MuSRFo5/MO1eC7rwqUeZ7RZwEsDbhuiejeasB30XaDN+8A+cgqb3SPwEFKr6PSIhbGA4JU7u755VkAzQgZP8vcSb5UIcRfpLTGRlkgl2uhtgZg/ulTP85qpTvoJuFrhPyXDgB60mcE74Oh6KLskMtfdQc=
+	t=1757276178; cv=none; b=iZrGBJIKxSavFXiLf5zIRQF4K//C9NuSlokiLJP59Mnk+dr3n6Fu+zoX1JE6v+PI7AHTiobLb/Nu0ujUo4d/CpHJjIUgAUVW3/H79dIJSdnWxw+J96+h1HghVXu7lEixWKFGrvJul/2NFi3X+0M+O+k/Sj6aLXeCFQOvD9sX3yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277038; c=relaxed/simple;
-	bh=XBfY3YpwkpOF06TI3xjqH6BdaC3IuK2UdZkEuXr3OBs=;
+	s=arc-20240116; t=1757276178; c=relaxed/simple;
+	bh=v3RoLLUPlzjnoZeEa7RhfpZ1KqU3WktPy++JCIIXofg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iy/LfcCFu6Wp5dc7f+CAygy+PX9XT5ZUyFHdSVZovIiLu7Lf/BAGgc2G564G9gh3jNSH3wHg5/TSJ9TY2owrrAvjL1Ty7W33aC8ad7vqJAs1M3s0D0mk5eKUs8RwEQPhCjwe40PXDl9eHKcHx+H2G57yycIDBK0pLO5J/H8Yjx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5SpkuEY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55138C4CEF0;
-	Sun,  7 Sep 2025 20:30:38 +0000 (UTC)
+	 MIME-Version; b=pRFsUjgMqva1jz8HG5bYz+67nZitm+Ad+mAob8mnwliyZ4Qcc7ywXpJ+JdcLvxNP52a5Df4GKOcJbTsSFkVQDJW+cF8LmcfZQcT1roQvKuKQJiPqtGNaa+gkg14TpkKOYBSnzdcK4jQWmuT+gPPV0zaebeKNR4oCw8MzhL7cZV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljHBAtwV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B591C4CEF0;
+	Sun,  7 Sep 2025 20:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277038;
-	bh=XBfY3YpwkpOF06TI3xjqH6BdaC3IuK2UdZkEuXr3OBs=;
+	s=korg; t=1757276178;
+	bh=v3RoLLUPlzjnoZeEa7RhfpZ1KqU3WktPy++JCIIXofg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y5SpkuEYtGTkM4GSox7BbItoSD+8NnWOmDgAXY4s1/OkphzWhRTPJAW1B9y7DnMy9
-	 fX45epEQZIqoCWn05KQI0vW4b4ruRIY6DsjhTQ3B/eMxv4QUpF68s2XwnhnLpOQHtF
-	 +G+2GT60EO+P+fIAXSylCaLF6oYX2PVMkfKl1p1A=
+	b=ljHBAtwV16GbzlxBP/OUrHDwH6O+TpcPtike/NxOkTk/JqgCgrxm6l2RbbZ/KUDkd
+	 GjtLYrZ7fDeyMh8BokTN/Udt7kTxYr2BqnxHSqz0gZBj3UxXCy3UdQAgxiihpoZnRP
+	 jZ4uj/QvxZLtZAosY3RakHlq5p4JKsraezG4QaKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Mike Galbraith <efault@gmx.de>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 065/175] net: vxlan: add skb drop reasons to vxlan_rcv()
+Subject: [PATCH 6.1 023/104] net: macb: Fix tx_ptr_lock locking
 Date: Sun,  7 Sep 2025 21:57:40 +0200
-Message-ID: <20250907195616.375259433@linuxfoundation.org>
+Message-ID: <20250907195608.292819996@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,175 +63,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 4c06d9daf8e6215447ca8a2ddd59fa09862c9bae ]
+[ Upstream commit 6bc8a5098bf4a365c4086a4a4130bfab10a58260 ]
 
-Introduce skb drop reasons to the function vxlan_rcv(). Following new
-drop reasons are added:
+macb_start_xmit and macb_tx_poll can be called with bottom-halves
+disabled (e.g. from softirq) as well as with interrupts disabled (with
+netpoll). Because of this, all other functions taking tx_ptr_lock must
+use spin_lock_irqsave.
 
-  SKB_DROP_REASON_VXLAN_INVALID_HDR
-  SKB_DROP_REASON_VXLAN_VNI_NOT_FOUND
-  SKB_DROP_REASON_IP_TUNNEL_ECN
-
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 6ead38147ebb ("vxlan: Fix NPD when refreshing an FDB entry with a nexthop object")
+Fixes: 138badbc21a0 ("net: macb: use NAPI for TX completion path")
+Reported-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://patch.msgid.link/20250829143521.1686062-1-sean.anderson@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 26 ++++++++++++++++++++------
- include/net/dropreason-core.h  | 16 ++++++++++++++++
- 2 files changed, 36 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 28 ++++++++++++++----------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 1a70770938001..efd5e99808935 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1671,13 +1671,15 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 	struct vxlan_metadata _md;
- 	struct vxlan_metadata *md = &_md;
- 	__be16 protocol = htons(ETH_P_TEB);
-+	enum skb_drop_reason reason;
- 	bool raw_proto = false;
- 	void *oiph;
- 	__be32 vni = 0;
- 	int nh;
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 495a1cb0bc183..1ea7c86f75013 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1174,11 +1174,12 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ {
+ 	struct macb *bp = queue->bp;
+ 	u16 queue_index = queue - bp->queues;
++	unsigned long flags;
+ 	unsigned int tail;
+ 	unsigned int head;
+ 	int packets = 0;
  
- 	/* Need UDP and VXLAN header to be present */
--	if (!pskb_may_pull(skb, VXLAN_HLEN))
-+	reason = pskb_may_pull_reason(skb, VXLAN_HLEN);
-+	if (reason)
- 		goto drop;
+-	spin_lock(&queue->tx_ptr_lock);
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+ 	head = queue->tx_head;
+ 	for (tail = queue->tx_tail; tail != head && packets < budget; tail++) {
+ 		struct macb_tx_skb	*tx_skb;
+@@ -1241,7 +1242,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ 	    CIRC_CNT(queue->tx_head, queue->tx_tail,
+ 		     bp->tx_ring_size) <= MACB_TX_WAKEUP_THRESH(bp))
+ 		netif_wake_subqueue(bp->dev, queue_index);
+-	spin_unlock(&queue->tx_ptr_lock);
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
  
- 	unparsed = *vxlan_hdr(skb);
-@@ -1686,6 +1688,7 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 		netdev_dbg(skb->dev, "invalid vxlan flags=%#x vni=%#x\n",
- 			   ntohl(vxlan_hdr(skb)->vx_flags),
- 			   ntohl(vxlan_hdr(skb)->vx_vni));
-+		reason = SKB_DROP_REASON_VXLAN_INVALID_HDR;
- 		/* Return non vxlan pkt */
- 		goto drop;
- 	}
-@@ -1699,8 +1702,10 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 	vni = vxlan_vni(vxlan_hdr(skb)->vx_vni);
+ 	return packets;
+ }
+@@ -1657,8 +1658,9 @@ static void macb_tx_restart(struct macb_queue *queue)
+ {
+ 	struct macb *bp = queue->bp;
+ 	unsigned int head_idx, tbqp;
++	unsigned long flags;
  
- 	vxlan = vxlan_vs_find_vni(vs, skb->dev->ifindex, vni, &vninode);
--	if (!vxlan)
-+	if (!vxlan) {
-+		reason = SKB_DROP_REASON_VXLAN_VNI_NOT_FOUND;
- 		goto drop;
-+	}
+-	spin_lock(&queue->tx_ptr_lock);
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
  
- 	/* For backwards compatibility, only allow reserved fields to be
- 	 * used by VXLAN extensions if explicitly requested.
-@@ -1713,8 +1718,10 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 	}
+ 	if (queue->tx_head == queue->tx_tail)
+ 		goto out_tx_ptr_unlock;
+@@ -1670,19 +1672,20 @@ static void macb_tx_restart(struct macb_queue *queue)
+ 	if (tbqp == head_idx)
+ 		goto out_tx_ptr_unlock;
  
- 	if (__iptunnel_pull_header(skb, VXLAN_HLEN, protocol, raw_proto,
--				   !net_eq(vxlan->net, dev_net(vxlan->dev))))
-+				   !net_eq(vxlan->net, dev_net(vxlan->dev)))) {
-+		reason = SKB_DROP_REASON_NOMEM;
- 		goto drop;
-+	}
+-	spin_lock_irq(&bp->lock);
++	spin_lock(&bp->lock);
+ 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
+-	spin_unlock_irq(&bp->lock);
++	spin_unlock(&bp->lock);
  
- 	if (vs->flags & VXLAN_F_REMCSUM_RX)
- 		if (unlikely(!vxlan_remcsum(&unparsed, skb, vs->flags)))
-@@ -1728,8 +1735,10 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 		tun_dst = udp_tun_rx_dst(skb, vxlan_get_sk_family(vs), flags,
- 					 key32_to_tunnel_id(vni), sizeof(*md));
- 
--		if (!tun_dst)
-+		if (!tun_dst) {
-+			reason = SKB_DROP_REASON_NOMEM;
- 			goto drop;
-+		}
- 
- 		md = ip_tunnel_info_opts(&tun_dst->u.tun_info);
- 
-@@ -1753,6 +1762,7 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 		 * is more robust and provides a little more security in
- 		 * adding extensions to VXLAN.
- 		 */
-+		reason = SKB_DROP_REASON_VXLAN_INVALID_HDR;
- 		goto drop;
- 	}
- 
-@@ -1773,7 +1783,8 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 
- 	skb_reset_network_header(skb);
- 
--	if (!pskb_inet_may_pull(skb)) {
-+	reason = pskb_inet_may_pull_reason(skb);
-+	if (reason) {
- 		DEV_STATS_INC(vxlan->dev, rx_length_errors);
- 		DEV_STATS_INC(vxlan->dev, rx_errors);
- 		vxlan_vnifilter_count(vxlan, vni, vninode,
-@@ -1785,6 +1796,7 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 	oiph = skb->head + nh;
- 
- 	if (!vxlan_ecn_decapsulate(vs, oiph, skb)) {
-+		reason = SKB_DROP_REASON_IP_TUNNEL_ECN;
- 		DEV_STATS_INC(vxlan->dev, rx_frame_errors);
- 		DEV_STATS_INC(vxlan->dev, rx_errors);
- 		vxlan_vnifilter_count(vxlan, vni, vninode,
-@@ -1799,6 +1811,7 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 		dev_core_stats_rx_dropped_inc(vxlan->dev);
- 		vxlan_vnifilter_count(vxlan, vni, vninode,
- 				      VXLAN_VNI_STATS_RX_DROPS, 0);
-+		reason = SKB_DROP_REASON_DEV_READY;
- 		goto drop;
- 	}
- 
-@@ -1811,8 +1824,9 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 	return 0;
- 
- drop:
-+	reason = reason ?: SKB_DROP_REASON_NOT_SPECIFIED;
- 	/* Consume bad packet */
--	kfree_skb(skb);
-+	kfree_skb_reason(skb, reason);
- 	return 0;
+ out_tx_ptr_unlock:
+-	spin_unlock(&queue->tx_ptr_lock);
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
  }
  
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index 4748680e8c88e..98259d2b3e926 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -92,6 +92,9 @@
- 	FN(PACKET_SOCK_ERROR)		\
- 	FN(TC_CHAIN_NOTFOUND)		\
- 	FN(TC_RECLASSIFY_LOOP)		\
-+	FN(VXLAN_INVALID_HDR)		\
-+	FN(VXLAN_VNI_NOT_FOUND)		\
-+	FN(IP_TUNNEL_ECN)		\
- 	FNe(MAX)
+ static bool macb_tx_complete_pending(struct macb_queue *queue)
+ {
+ 	bool retval = false;
++	unsigned long flags;
  
- /**
-@@ -418,6 +421,19 @@ enum skb_drop_reason {
- 	 * iterations.
- 	 */
- 	SKB_DROP_REASON_TC_RECLASSIFY_LOOP,
-+	/**
-+	 * @SKB_DROP_REASON_VXLAN_INVALID_HDR: VXLAN header is invalid. E.g.:
-+	 * 1) reserved fields are not zero
-+	 * 2) "I" flag is not set
-+	 */
-+	SKB_DROP_REASON_VXLAN_INVALID_HDR,
-+	/** @SKB_DROP_REASON_VXLAN_VNI_NOT_FOUND: no VXLAN device found for VNI */
-+	SKB_DROP_REASON_VXLAN_VNI_NOT_FOUND,
-+	/**
-+	 * @SKB_DROP_REASON_IP_TUNNEL_ECN: skb is dropped according to
-+	 * RFC 6040 4.2, see __INET_ECN_decapsulate() for detail.
-+	 */
-+	SKB_DROP_REASON_IP_TUNNEL_ECN,
- 	/**
- 	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
- 	 * shouldn't be used as a real 'reason' - only for tracing code gen
+-	spin_lock(&queue->tx_ptr_lock);
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+ 	if (queue->tx_head != queue->tx_tail) {
+ 		/* Make hw descriptor updates visible to CPU */
+ 		rmb();
+@@ -1690,7 +1693,7 @@ static bool macb_tx_complete_pending(struct macb_queue *queue)
+ 		if (macb_tx_desc(queue, queue->tx_tail)->ctrl & MACB_BIT(TX_USED))
+ 			retval = true;
+ 	}
+-	spin_unlock(&queue->tx_ptr_lock);
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
+ 	return retval;
+ }
+ 
+@@ -2258,6 +2261,7 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	struct macb_queue *queue = &bp->queues[queue_index];
+ 	unsigned int desc_cnt, nr_frags, frag_size, f;
+ 	unsigned int hdrlen;
++	unsigned long flags;
+ 	bool is_lso;
+ 	netdev_tx_t ret = NETDEV_TX_OK;
+ 
+@@ -2312,7 +2316,7 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		desc_cnt += DIV_ROUND_UP(frag_size, bp->max_tx_length);
+ 	}
+ 
+-	spin_lock_bh(&queue->tx_ptr_lock);
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+ 
+ 	/* This is a hard error, log it. */
+ 	if (CIRC_SPACE(queue->tx_head, queue->tx_tail,
+@@ -2334,15 +2338,15 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	wmb();
+ 	skb_tx_timestamp(skb);
+ 
+-	spin_lock_irq(&bp->lock);
++	spin_lock(&bp->lock);
+ 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
+-	spin_unlock_irq(&bp->lock);
++	spin_unlock(&bp->lock);
+ 
+ 	if (CIRC_SPACE(queue->tx_head, queue->tx_tail, bp->tx_ring_size) < 1)
+ 		netif_stop_subqueue(dev, queue_index);
+ 
+ unlock:
+-	spin_unlock_bh(&queue->tx_ptr_lock);
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
+ 
+ 	return ret;
+ }
 -- 
 2.50.1
 
