@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-178554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035E0B47F23
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D5AB47DA1
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B38323C298A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 953B817CA7E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358EE20D51C;
-	Sun,  7 Sep 2025 20:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E8826E6FF;
+	Sun,  7 Sep 2025 20:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7kgbYfq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NrTXXnE0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AC41A0BFD;
-	Sun,  7 Sep 2025 20:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDF11B424F;
+	Sun,  7 Sep 2025 20:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277208; cv=none; b=qCitq1xGqnE9UhStOU5qcKTdxuzg4ys4bLIH11EzqKVqUyUoev5HiR7bhztdKWMtSS8e1W0xLjYkpNa362W5kOpvRV3mhtSwI+ccnpVcm+gBh2ZZ3ylDNDXyZLdkB56lAtwXDMiYUYe0lL/Dip5JxC08Z9vtipC/e1j//YNw/5g=
+	t=1757276066; cv=none; b=Gvi4cqqWAC8nQnS38ah6Q0XuySfBGGeoQxVG/u4SIFtop2uqwiehOKKo+9jQWiQqP5HovbxJGwqXAfQWCTsxfxNCBVWV/xk+Ypt9d/Wiafk0gf5/hc7d5Ja5dOisVzKeKRGADnJI93PactgykQf7Lb2AAk4QxLU95Q3f69Eh5iM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277208; c=relaxed/simple;
-	bh=B7psiQ3aryK0aUF5azCxPxtBUNE2REWNsZ0JjzFXQjM=;
+	s=arc-20240116; t=1757276066; c=relaxed/simple;
+	bh=es7VRC917doPmYjMC5Q4JdnPN/DgwGEuIMzvqN9bVto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rEvbGrT1z6RfYPI4D05OxS0fsERnks7RHrwwXJ4i+P4KMBf8EE0/r9kRrZjrVw8dlH0FMYEm4jx8j7X8CBO0wOEUxykF/FEmix4L001cFiYecMaFmobGah1KeTLLCOEaqrQAIx6OI9CQg4u/8cqIvffbipCdqF7IMs7fsFK1Lcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7kgbYfq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127ADC4CEF0;
-	Sun,  7 Sep 2025 20:33:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Kn8qISIJeK/pLUVy3qAeZw/paL26Xdct2hCuJ4BJyoxw/vxjwZz17PZj51k+kZlEdb8wYT/sU/DXH1QM9QjjyhHjcfihpniE2LL+b+mJxiCSWfJ2n3vcjtjmAayl1VnqMHhO2tiVJ5leny0hoLPwlwL1py8lvKFFiczzk7NCScM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NrTXXnE0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70D1C4CEF0;
+	Sun,  7 Sep 2025 20:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277207;
-	bh=B7psiQ3aryK0aUF5azCxPxtBUNE2REWNsZ0JjzFXQjM=;
+	s=korg; t=1757276066;
+	bh=es7VRC917doPmYjMC5Q4JdnPN/DgwGEuIMzvqN9bVto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M7kgbYfq+BXERj1tuYlNeMPj/rTe0T5Upd+1w/MfwPO+RJuO232v1C8fuDX/xxVP+
-	 2hEX6YzNO20WJ6cOLSlTqkzrKVMk8ofSxQ81dDJsgikfhqFtyaLobBtXWdBwiiN4IG
-	 7Lpho1+YdRO/3u2wcP1n28KG+Fy3EchoQ2Q8Bzz0=
+	b=NrTXXnE0HmYljKEUzOrVeDpEAXn1Mf08V0MCIHCEMIEVzGQUGr7ANEJWwV+nPvuxl
+	 FtvA2B6QcDSZcBCPjDsoqZxcQLihbXW3TC5dwbWswWinw7thiZsQ6CiPmLZp2wjTpB
+	 42Mgu4rsfLrvGDHZpsyQyRSpPb4SYDZzyTE18ACE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Makar Semyonov <m.semenov@tssltd.ru>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 118/175] cifs: prevent NULL pointer dereference in UTF16 conversion
-Date: Sun,  7 Sep 2025 21:58:33 +0200
-Message-ID: <20250907195617.649199321@linuxfoundation.org>
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Mark Brown <broonie@kernel.org>,
+	WangYuli <wangyuli@uniontech.com>,
+	Kees Cook <kees@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 52/64] randstruct: gcc-plugin: Remove bogus void member
+Date: Sun,  7 Sep 2025 21:58:34 +0200
+Message-ID: <20250907195604.847506224@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +62,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Makar Semyonov <m.semenov@tssltd.ru>
+From: Kees Cook <kees@kernel.org>
 
-commit 70bccd9855dae56942f2b18a08ba137bb54093a0 upstream.
+[ Upstream commit e136a4062174a9a8d1c1447ca040ea81accfa6a8 ]
 
-There can be a NULL pointer dereference bug here. NULL is passed to
-__cifs_sfu_make_node without checks, which passes it unchecked to
-cifs_strndup_to_utf16, which in turn passes it to
-cifs_local_to_utf16_bytes where '*from' is dereferenced, causing a crash.
+When building the randomized replacement tree of struct members, the
+randstruct GCC plugin would insert, as the first member, a 0-sized void
+member. This appears as though it was done to catch non-designated
+("unnamed") static initializers, which wouldn't be stable since they
+depend on the original struct layout order.
 
-This patch adds a check for NULL 'src' in cifs_strndup_to_utf16 and
-returns NULL early to prevent dereferencing NULL pointer.
+This was accomplished by having the side-effect of the "void member"
+tripping an assert in GCC internals (count_type_elements) if the member
+list ever needed to be counted (e.g. for figuring out the order of members
+during a non-designated initialization), which would catch impossible type
+(void) in the struct:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE
+security/landlock/fs.c: In function ‘hook_file_ioctl_common’:
+security/landlock/fs.c:1745:61: internal compiler error: in count_type_elements, at expr.cc:7075
+ 1745 |                         .u.op = &(struct lsm_ioctlop_audit) {
+      |                                                             ^
 
-Signed-off-by: Makar Semyonov <m.semenov@tssltd.ru>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+static HOST_WIDE_INT
+count_type_elements (const_tree type, bool for_ctor_p)
+{
+  switch (TREE_CODE (type))
+...
+    case VOID_TYPE:
+    default:
+      gcc_unreachable ();
+    }
+}
+
+However this is a redundant safety measure since randstruct uses the
+__designated_initializer attribute both internally and within the
+__randomized_layout attribute macro so that this would be enforced
+by the compiler directly even when randstruct was not enabled (via
+-Wdesignated-init).
+
+A recent change in Landlock ended up tripping the same member counting
+routine when using a full-struct copy initializer as part of an anonymous
+initializer. This, however, is a false positive as the initializer is
+copying between identical structs (and hence identical layouts). The
+"path" member is "struct path", a randomized struct, and is being copied
+to from another "struct path", the "f_path" member:
+
+        landlock_log_denial(landlock_cred(file->f_cred), &(struct landlock_request) {
+                .type = LANDLOCK_REQUEST_FS_ACCESS,
+                .audit = {
+                        .type = LSM_AUDIT_DATA_IOCTL_OP,
+                        .u.op = &(struct lsm_ioctlop_audit) {
+                                .path = file->f_path,
+                                .cmd = cmd,
+                        },
+                },
+	...
+
+As can be seen with the coming randstruct KUnit test, there appears to
+be no behavioral problems with this kind of initialization when the void
+member is removed from the randstruct GCC plugin, so remove it.
+
+Reported-by: "Dr. David Alan Gilbert" <linux@treblig.org>
+Closes: https://lore.kernel.org/lkml/Z_PRaKx7q70MKgCA@gallifrey/
+Reported-by: Mark Brown <broonie@kernel.org>
+Closes: https://lore.kernel.org/lkml/20250407-kbuild-disable-gcc-plugins-v1-1-5d46ae583f5e@kernel.org/
+Reported-by: WangYuli <wangyuli@uniontech.com>
+Closes: https://lore.kernel.org/lkml/337D5D4887277B27+3c677db3-a8b9-47f0-93a4-7809355f1381@uniontech.com/
+Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Stable-dep-of: f39f18f3c353 ("randstruct: gcc-plugin: Fix attribute addition")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_unicode.c |    3 +++
- 1 file changed, 3 insertions(+)
+ scripts/gcc-plugins/randomize_layout_plugin.c |   18 +-----------------
+ 1 file changed, 1 insertion(+), 17 deletions(-)
 
---- a/fs/smb/client/cifs_unicode.c
-+++ b/fs/smb/client/cifs_unicode.c
-@@ -629,6 +629,9 @@ cifs_strndup_to_utf16(const char *src, c
- 	int len;
- 	__le16 *dst;
+--- a/scripts/gcc-plugins/randomize_layout_plugin.c
++++ b/scripts/gcc-plugins/randomize_layout_plugin.c
+@@ -377,29 +377,13 @@ static int relayout_struct(tree type)
  
-+	if (!src)
-+		return NULL;
-+
- 	len = cifs_local_to_utf16_bytes(src, maxlen, cp);
- 	len += 2; /* NULL */
- 	dst = kmalloc(len, GFP_KERNEL);
+ 	shuffle(type, (tree *)newtree, shuffle_length);
+ 
+-	/*
+-	 * set up a bogus anonymous struct field designed to error out on unnamed struct initializers
+-	 * as gcc provides no other way to detect such code
+-	 */
+-	list = make_node(FIELD_DECL);
+-	TREE_CHAIN(list) = newtree[0];
+-	TREE_TYPE(list) = void_type_node;
+-	DECL_SIZE(list) = bitsize_zero_node;
+-	DECL_NONADDRESSABLE_P(list) = 1;
+-	DECL_FIELD_BIT_OFFSET(list) = bitsize_zero_node;
+-	DECL_SIZE_UNIT(list) = size_zero_node;
+-	DECL_FIELD_OFFSET(list) = size_zero_node;
+-	DECL_CONTEXT(list) = type;
+-	// to satisfy the constify plugin
+-	TREE_READONLY(list) = 1;
+-
+ 	for (i = 0; i < num_fields - 1; i++)
+ 		TREE_CHAIN(newtree[i]) = newtree[i+1];
+ 	TREE_CHAIN(newtree[num_fields - 1]) = NULL_TREE;
+ 
+ 	main_variant = TYPE_MAIN_VARIANT(type);
+ 	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant)) {
+-		TYPE_FIELDS(variant) = list;
++		TYPE_FIELDS(variant) = newtree[0];
+ 		TYPE_ATTRIBUTES(variant) = copy_list(TYPE_ATTRIBUTES(variant));
+ 		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("randomize_performed"), NULL_TREE, TYPE_ATTRIBUTES(variant));
+ 		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("designated_init"), NULL_TREE, TYPE_ATTRIBUTES(variant));
 
 
 
