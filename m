@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-178464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C70B47EC7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:28:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA6DDB47F01
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:31:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A33621B20637
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:29:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72A6416C1C5
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7C3212560;
-	Sun,  7 Sep 2025 20:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A521DE8AF;
+	Sun,  7 Sep 2025 20:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y7Jy0gZ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebbYDAbE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4916F17BB21;
-	Sun,  7 Sep 2025 20:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1046715C158;
+	Sun,  7 Sep 2025 20:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276919; cv=none; b=fB7nTl+mOfkbhTFSUPm7EeugmpP2+fWtcsVshhwwBq0VTYmcJQ5x9Gmn2H4/GEitLBfo/VVr0J7h6Mrhu262v00IXU7rH+zfHEROJz6CtDgZ0sWXGuWH4PkKEkTE3zX20nEOxN58AgHMNfrvBXBSYaRdN7MnBQyh/9c7nBDpzXg=
+	t=1757277105; cv=none; b=UoKBtJYr4dnAt0sGVhIN8APlj9N4rzribiPED+BGBZXYXgHviJHtXKfSmVOe5TXlrbIvKjeVLAR7Z0OkBM0EWZ6nOaJ+7ciJoDtTcIkVWYzuxnltkGKBrJg7RLmxvTVIfzwT2Wl8y/r4liyxRWmjqM0d6IsWPg0GBNikAnGY4Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276919; c=relaxed/simple;
-	bh=ihPxzpFVJJmZt77xL9+LE/1+sTtheDB8lD0lzH0FH7U=;
+	s=arc-20240116; t=1757277105; c=relaxed/simple;
+	bh=9YxmnxPiipSJLg0iURRI71r0c8ef35aaj44VUzHl62k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvcz/LfFteQnUoBUUQENnSQIfdmBjcVWaL3FrvWktY/Rc8lLfupNiPwb+kv10ZHf0NCps2jskaxEh0HXHUuzMgBZRTo5Zwo+hhtvh8/VygCB3vTpO4SRccmM+1bgwVOmJJ4N2NrjpG7vI8S/D6HIoIO/SJVYsP08MIei+5N9tUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y7Jy0gZ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B7EC4CEF0;
-	Sun,  7 Sep 2025 20:28:37 +0000 (UTC)
+	 MIME-Version; b=afl6A8Eg1pUCirN/qij5NYIJafpRVVwnS5fEffXOlexwjoUpb1WZ3JXlH8hb1hpMb87IFTUzDV1R8w0JK1OYiawGQryzqjvC+J47V4FNXiDFsGacG+aJQ3+6r3tWEJwbFTVui6/g1B+7Bv/HxXVqOe9swEUPjSWr79Na0fIAXqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebbYDAbE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54237C4CEF0;
+	Sun,  7 Sep 2025 20:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276917;
-	bh=ihPxzpFVJJmZt77xL9+LE/1+sTtheDB8lD0lzH0FH7U=;
+	s=korg; t=1757277104;
+	bh=9YxmnxPiipSJLg0iURRI71r0c8ef35aaj44VUzHl62k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y7Jy0gZ4T5Csw6SYWEc2mEyZctYOCW1Fpf0Y0I81nzq9ZhjlXiGyUu7T7bp7C+eZa
-	 52vMEkam/MrzAsh8N2LEwnJeWOK5D0/kERbsrZQgyFIIfEquqJAnytUr+i0+xi348u
-	 EHq+ELbU5s/ut6ZzkUdQD6/PzUFiOkatu1Apmx/I=
+	b=ebbYDAbEP7HmG4krNLCHATcRuVAgFwdfDK9S777mh2IVNJCTVr4DNe+W+BwSXQz98
+	 8Tb4uOMRNUakdfSheNChZ+/GZqFQsmv+irmktGZTL5spRy9z4p0SObIw3pU58W0+c1
+	 3bk7+aBGAtKnf+UFRu/sJ9f6CNPi9dV6xwl14Tjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
+	Yanteng Si <siyanteng@cqsoftware.com.cn>,
+	Wentao Guan <guanwentao@uniontech.com>,
 	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/175] LoongArch: vDSO: Remove --hash-style=sysv
-Date: Sun,  7 Sep 2025 21:57:04 +0200
-Message-ID: <20250907195615.557507595@linuxfoundation.org>
+Subject: [PATCH 6.12 030/175] LoongArch: vDSO: Remove -nostdlib complier flag
+Date: Sun,  7 Sep 2025 21:57:05 +0200
+Message-ID: <20250907195615.579280306@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
 References: <20250907195614.892725141@linuxfoundation.org>
@@ -66,47 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Wentao Guan <guanwentao@uniontech.com>
 
-[ Upstream commit c271c86a4c72c771b313fd9c3b06db61ab8ab8bf ]
+[ Upstream commit d35ec48fa6c8fe0cfa4a03155109fec7677911d4 ]
 
-Glibc added support for .gnu.hash in 2006 and .hash has been obsoleted
-far before the first LoongArch CPU was taped.  Using --hash-style=sysv
-might imply unaddressed issues and confuse readers.
+Since $(LD) is directly used, hence -nostdlib is unneeded, MIPS has
+removed this, we should remove it too.
 
-Some architectures use an explicit --hash-style=both for vDSO here, but
-DT_GNU_HASH has already been supported by Glibc and Musl and become the
-de-facto standard of the distros when the first LoongArch CPU was taped.
-So DT_HASH seems just wasting storage space for LoongArch.
+bdbf2038fbf4 ("MIPS: VDSO: remove -nostdlib compiler flag").
 
-Just drop the option and rely on the linker default, which is likely
-"gnu" (Arch, Debian, Gentoo, LFS) on all LoongArch distros (confirmed on
-Arch, Debian, Gentoo, and LFS; AOSC now defaults to "both" but it seems
-just an oversight).
+In fact, other architectures also use $(LD) now.
 
-Following the logic of commit 48f6430505c0b049 ("arm64/vdso: Remove
---hash-style=sysv").
+fe00e50b2db8 ("ARM: 8858/1: vdso: use $(LD) instead of $(CC) to link VDSO")
+691efbedc60d ("arm64: vdso: use $(LD) instead of $(CC) to link VDSO")
+2ff906994b6c ("MIPS: VDSO: Use $(LD) instead of $(CC) to link VDSO")
+2b2a25845d53 ("s390/vdso: Use $(LD) instead of $(CC) to link vDSO")
 
-Link: https://github.com/AOSC-Dev/aosc-os-abbs/pull/9796
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Cc: stable@vger.kernel.org
+Reviewed-by: Yanteng Si <siyanteng@cqsoftware.com.cn>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Stable-dep-of: d35ec48fa6c8 ("LoongArch: vDSO: Remove -nostdlib complier flag")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/vdso/Makefile | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/loongarch/vdso/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
-index fdde1bcd4e266..cf6c41054396a 100644
+index cf6c41054396a..49af37f781bbe 100644
 --- a/arch/loongarch/vdso/Makefile
 +++ b/arch/loongarch/vdso/Makefile
-@@ -36,8 +36,7 @@ endif
+@@ -36,7 +36,7 @@ endif
  
  # VDSO linker flags.
  ldflags-y := -Bsymbolic --no-undefined -soname=linux-vdso.so.1 \
--	$(filter -E%,$(KBUILD_CFLAGS)) -nostdlib -shared \
--	--hash-style=sysv --build-id -T
-+	$(filter -E%,$(KBUILD_CFLAGS)) -nostdlib -shared --build-id -T
+-	$(filter -E%,$(KBUILD_CFLAGS)) -nostdlib -shared --build-id -T
++	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id -T
  
  #
  # Shared build commands.
