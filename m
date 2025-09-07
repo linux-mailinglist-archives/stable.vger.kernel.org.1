@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-178392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F89B47E7A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2A04B47FB4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CA8C7A4C39
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDBEB1B216A3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C9A20D51C;
-	Sun,  7 Sep 2025 20:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA44B26E6FF;
+	Sun,  7 Sep 2025 20:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjlTHpDB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psDtDgz7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76263D528;
-	Sun,  7 Sep 2025 20:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A886F20E00B;
+	Sun,  7 Sep 2025 20:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276689; cv=none; b=GARjocgDNpdC4ycyAkJMpuP1k+sM90rsSkdhkOpycs2lk/rzyc4VjI0u45yRLKZ31lusSpWis+KbdISxybSMPyu1JQKrszIDDyD5eQaIeRo5lsJfkG38new9iilq19/i0/CPd+kBLaNdssc49YpBoapyfhi//mRPVxLBqFXSXgA=
+	t=1757277668; cv=none; b=p7GiBbCKfPf8I7Z+zSCnA9f6hQ+tLVZVdf5z9MjcG+x48MukcX0eBN9JQQ0HziZVz8nggogChs9zh3bsYBTQTgoMT1df5ivBSLBbL7KJmRh1hMRC9lvYBNMuR4REDFMF6fUPRGC3o178b6pFNnVtTZtlVpw3v4o6H9xJrfOIrSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276689; c=relaxed/simple;
-	bh=CGZh1jZxJ3RYcz6+VPERsFnDy+T9kSjOkFK/XTkQFds=;
+	s=arc-20240116; t=1757277668; c=relaxed/simple;
+	bh=OKiN3jqzfSyA1OoeSG1OoIu5XsHmrKNb02hf4gWTX5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TohieJ6+4QUyBWvuMFqS+SQDI4cKayDVIBLlmBVRtFKBAy5/ruX9YfLBDFP6y37BF1ee5oLITuRr3vQxu6c6JpDBGpOte8I67XbrsyHN22nOWMtTk4ZwUFXX4xKyRMgpCfISlBZKBNA1rVxJVNYqE8VLt2AXADxRDFmHWGRuWa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjlTHpDB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F049CC4CEF8;
-	Sun,  7 Sep 2025 20:24:48 +0000 (UTC)
+	 MIME-Version; b=IbpG/p/DD++YGSpA1UUU685JR7biCW9qlXNvh9FIDI0icn6ZINOnQdVGnhIkT7IJ+taOr54pqHU8/ApzZyJ8A8s01zdgrcWIAFi/IXgZItMnDFWwmQX8KVAgrDXOGHPDbztlGm4+TfqAseK5v6K4yBLJNCELnMCAJ8MBU953BI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psDtDgz7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28564C4CEF0;
+	Sun,  7 Sep 2025 20:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276689;
-	bh=CGZh1jZxJ3RYcz6+VPERsFnDy+T9kSjOkFK/XTkQFds=;
+	s=korg; t=1757277668;
+	bh=OKiN3jqzfSyA1OoeSG1OoIu5XsHmrKNb02hf4gWTX5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RjlTHpDBaLoa2bcjvRFptPGJEGlf6qcavROth+Uk7IPtW8jNDORyLffMXqo4sv0RQ
-	 CmdzU05HLh2snVmFqaoZbKqtys1zYRPSK9MDYXyO8k47EiwFx4syMWpNQhFkdTfFJQ
-	 gmHZ3owrqvapsTa5oehgSt9Cu4FB+cedRlGiDeqM=
+	b=psDtDgz7QBF/3HWKEmheLLUGK68xYSAgJy5/qRz14+nloNviE8+ZgrUQ0XY6g/UfM
+	 nsXe8EILtkOrzfqTzaVZzoFWUJiTYq1jzC+U/aV0OdFYoWtt0PFb7CZo0O6FIXhsai
+	 +smKXwOCkYiEDcqoSZNrU1x6PLNBiixB5910K8/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Hao <haokexin@gmail.com>,
-	Han Xu <han.xu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/121] spi: fsl-qspi: use devm function instead of driver remove
+Subject: [PATCH 6.16 087/183] mctp: return -ENOPROTOOPT for unknown getsockopt options
 Date: Sun,  7 Sep 2025 21:58:34 +0200
-Message-ID: <20250907195611.838556786@linuxfoundation.org>
+Message-ID: <20250907195617.858715067@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Han Xu <han.xu@nxp.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 40369bfe717e96e26650eeecfa5a6363563df6e4 ]
+[ Upstream commit a125c8fb9ddbcb0602103a50727a476fd30dec01 ]
 
-Driver use devm APIs to manage clk/irq/resources and register the spi
-controller, but the legacy remove function will be called first during
-device detach and trigger kernel panic. Drop the remove function and use
-devm_add_action_or_reset() for driver cleanup to ensure the release
-sequence.
+In mctp_getsockopt(), unrecognized options currently return -EINVAL.
+In contrast, mctp_setsockopt() returns -ENOPROTOOPT for unknown
+options.
 
-Trigger kernel panic on i.MX8MQ by
-echo 30bb0000.spi >/sys/bus/platform/drivers/fsl-quadspi/unbind
+Update mctp_getsockopt() to also return -ENOPROTOOPT for unknown
+options. This aligns the behavior of getsockopt() and setsockopt(),
+and matches the standard kernel socket API convention for handling
+unsupported options.
 
-Cc: stable@vger.kernel.org
-Fixes: 8fcb830a00f0 ("spi: spi-fsl-qspi: use devm_spi_register_controller")
-Reported-by: Kevin Hao <haokexin@gmail.com>
-Signed-off-by: Han Xu <han.xu@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250326224152.2147099-1-han.xu@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ Adjust context ]
+Fixes: 99ce45d5e7db ("mctp: Implement extended addressing")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250902102059.1370008-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-qspi.c |   31 +++++++++++++++++--------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+ net/mctp/af_mctp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -839,6 +839,19 @@ static const struct spi_controller_mem_o
- 	.get_name = fsl_qspi_get_name,
- };
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index 9d5db3feedec5..4dee06171361e 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -346,7 +346,7 @@ static int mctp_getsockopt(struct socket *sock, int level, int optname,
+ 		return 0;
+ 	}
  
-+static void fsl_qspi_cleanup(void *data)
-+{
-+	struct fsl_qspi *q = data;
-+
-+	/* disable the hardware */
-+	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
-+	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
-+
-+	fsl_qspi_clk_disable_unprep(q);
-+
-+	mutex_destroy(&q->lock);
-+}
-+
- static int fsl_qspi_probe(struct platform_device *pdev)
- {
- 	struct spi_controller *ctlr;
-@@ -928,6 +941,10 @@ static int fsl_qspi_probe(struct platfor
- 
- 	ctlr->dev.of_node = np;
- 
-+	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
-+	if (ret)
-+		goto err_destroy_mutex;
-+
- 	ret = devm_spi_register_controller(dev, ctlr);
- 	if (ret)
- 		goto err_destroy_mutex;
-@@ -947,19 +964,6 @@ err_put_ctrl:
- 	return ret;
+-	return -EINVAL;
++	return -ENOPROTOOPT;
  }
  
--static void fsl_qspi_remove(struct platform_device *pdev)
--{
--	struct fsl_qspi *q = platform_get_drvdata(pdev);
--
--	/* disable the hardware */
--	qspi_writel(q, QUADSPI_MCR_MDIS_MASK, q->iobase + QUADSPI_MCR);
--	qspi_writel(q, 0x0, q->iobase + QUADSPI_RSER);
--
--	fsl_qspi_clk_disable_unprep(q);
--
--	mutex_destroy(&q->lock);
--}
--
- static int fsl_qspi_suspend(struct device *dev)
- {
- 	return 0;
-@@ -997,7 +1001,6 @@ static struct platform_driver fsl_qspi_d
- 		.pm =   &fsl_qspi_pm_ops,
- 	},
- 	.probe          = fsl_qspi_probe,
--	.remove_new	= fsl_qspi_remove,
- };
- module_platform_driver(fsl_qspi_driver);
- 
+ /* helpers for reading/writing the tag ioc, handling compatibility across the
+-- 
+2.50.1
+
 
 
 
