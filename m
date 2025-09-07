@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-178747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ADB1B47FE7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:52 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A9EB47F55
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A9573C3D27
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C4B364E12A3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD90E2765C8;
-	Sun,  7 Sep 2025 20:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7D9212B3D;
+	Sun,  7 Sep 2025 20:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9Axsujq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5ioAYde"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B321F63CD;
-	Sun,  7 Sep 2025 20:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FAD315D54;
+	Sun,  7 Sep 2025 20:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277829; cv=none; b=eC+8idjeDD2/vowUBf8knxrEtTmnDJuZmXoDNJMpd6GtXFlE8z9WE/+1cs0eQlknib2jwW19Dt+CBNpt/6qELj+LsgMjBdAni20bzGANTpdhymnjcCMW/hTdkPb+fSPdWTJZG7wqioHe+DzfbLrKvaYtHTQnt+qUPxJQlCzCBEk=
+	t=1757277369; cv=none; b=DMYjaSyb2V3LZF3aDmHJCRNSady1EsTkfEUXsYFbaLuwzrdhc382BT5JQmJk6y4GxOGJpf1ZXMHaN+8iOzf50KDneoMDPmSfNJLO7mfSBN8N4Y+ijb3x5O0A4QfXZBFdFnN6KQngEwW6ik1bddfgBgifRQ7a4n/ctHFgmJ38j+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277829; c=relaxed/simple;
-	bh=SGmjffX5fuhUk1osPn5fUmhQgzZdLH7cE47dPbTQUFU=;
+	s=arc-20240116; t=1757277369; c=relaxed/simple;
+	bh=NZmooTos3MgoRI8/Kxpqzk+N/xUpeH6sqvK0aEuS9lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O++bum15O5PnSHgzKH5jyyvhXWkEXRfhfBuFLH4ZbLprAjwWDq7If98hJMiqSk/t72oUr2wytDMcdmPH8+i4o6uRzmUmvbxmKxn5YUDxpsfHNOw6Xy+gR7hN5vNNqb94ilLnblcPLLavqeokjcg646JLwpl7T+xjj9bKjjz54/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9Axsujq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBB0C4CEF0;
-	Sun,  7 Sep 2025 20:43:48 +0000 (UTC)
+	 MIME-Version; b=fIFRAuwwRpJCvZ1kqGQMIwM+S+5XpGg/iV81FACBn8Q6V0AmPRvRFtBfPfDbCQQVA7eZarp6GD3LAV0iuQoQganUjGbWOUBOzq340Nd/VEKpIfOrFuuKy8rzU4uTcU7LjbbDLbpJHbKPwv+XVDJSCszDmx7HK/rE5fsIccx4mKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5ioAYde; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19FCC4CEF0;
+	Sun,  7 Sep 2025 20:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277829;
-	bh=SGmjffX5fuhUk1osPn5fUmhQgzZdLH7cE47dPbTQUFU=;
+	s=korg; t=1757277369;
+	bh=NZmooTos3MgoRI8/Kxpqzk+N/xUpeH6sqvK0aEuS9lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9AxsujqDMtwN2RW+6GNGfyhg3Tr5cVzT5C/L4hKN4sZk61BJ2OvCP/cyqLaepcee
-	 RzmB9k0uZAGeJGscEkFpxFdjs+/LjzdmXE2r480vc1jSOdqV+8efAe+DeAWSYKjMm1
-	 EcPLeQNtg/kncQtoHtXPb4hWx17ly1nq4cnRTE+w=
+	b=f5ioAYdeYkp/voTLucu3GdIizTMGRYdiiLQLpk5Sj277wX0VtTIaHcusRONFWjHHv
+	 5wsT+92BUuMtNMt29mp1jarzzh/n06xRXizcEmblHew8EpPO58oRCX1ayv1kVSsmUT
+	 /18ntTU4nh16eFHVO7+jdIGFnJKfwBS8Yv3pRv4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Makar Semyonov <m.semenov@tssltd.ru>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.16 136/183] cifs: prevent NULL pointer dereference in UTF16 conversion
+	Anup Patel <apatel@ventanamicro.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Troy Mitchell <troy.mitchell@linux.dev>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Nutty Liu <nutty.liu@hotmail.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Paul Walmsley <pjw@kernel.org>
+Subject: [PATCH 6.12 168/175] ACPI: RISC-V: Fix FFH_CPPC_CSR error handling
 Date: Sun,  7 Sep 2025 21:59:23 +0200
-Message-ID: <20250907195619.024272252@linuxfoundation.org>
+Message-ID: <20250907195618.835784781@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +66,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Makar Semyonov <m.semenov@tssltd.ru>
+From: Anup Patel <apatel@ventanamicro.com>
 
-commit 70bccd9855dae56942f2b18a08ba137bb54093a0 upstream.
+commit 5b3706597b90a7b6c9ae148edd07a43531dcd49e upstream.
 
-There can be a NULL pointer dereference bug here. NULL is passed to
-__cifs_sfu_make_node without checks, which passes it unchecked to
-cifs_strndup_to_utf16, which in turn passes it to
-cifs_local_to_utf16_bytes where '*from' is dereferenced, causing a crash.
+The cppc_ffh_csr_read() and cppc_ffh_csr_write() returns Linux error
+code in "data->ret.error" so cpc_read_ffh() and cpc_write_ffh() must
+not use sbi_err_map_linux_errno() for FFH_CPPC_CSR.
 
-This patch adds a check for NULL 'src' in cifs_strndup_to_utf16 and
-returns NULL early to prevent dereferencing NULL pointer.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE
-
-Signed-off-by: Makar Semyonov <m.semenov@tssltd.ru>
+Fixes: 30f3ffbee86b ("ACPI: RISC-V: Add CPPC driver")
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Troy Mitchell <troy.mitchell@linux.dev>
+Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://lore.kernel.org/r/20250818143600.894385-2-apatel@ventanamicro.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_unicode.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/acpi/riscv/cppc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/cifs_unicode.c
-+++ b/fs/smb/client/cifs_unicode.c
-@@ -629,6 +629,9 @@ cifs_strndup_to_utf16(const char *src, c
- 	int len;
- 	__le16 *dst;
+--- a/drivers/acpi/riscv/cppc.c
++++ b/drivers/acpi/riscv/cppc.c
+@@ -121,7 +121,7 @@ int cpc_read_ffh(int cpu, struct cpc_reg
  
-+	if (!src)
-+		return NULL;
-+
- 	len = cifs_local_to_utf16_bytes(src, maxlen, cp);
- 	len += 2; /* NULL */
- 	dst = kmalloc(len, GFP_KERNEL);
+ 		*val = data.ret.value;
+ 
+-		return (data.ret.error) ? sbi_err_map_linux_errno(data.ret.error) : 0;
++		return data.ret.error;
+ 	}
+ 
+ 	return -EINVAL;
+@@ -150,7 +150,7 @@ int cpc_write_ffh(int cpu, struct cpc_re
+ 
+ 		smp_call_function_single(cpu, cppc_ffh_csr_write, &data, 1);
+ 
+-		return (data.ret.error) ? sbi_err_map_linux_errno(data.ret.error) : 0;
++		return data.ret.error;
+ 	}
+ 
+ 	return -EINVAL;
 
 
 
