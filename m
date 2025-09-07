@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A458B47E66
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175C6B47FAA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:40:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39CCA189FBDE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2113E1892966
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5EC20E029;
-	Sun,  7 Sep 2025 20:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D0021ADAE;
+	Sun,  7 Sep 2025 20:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVb4+FT8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCDPE9iW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B001D88D0;
-	Sun,  7 Sep 2025 20:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E114315A;
+	Sun,  7 Sep 2025 20:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276626; cv=none; b=NAmQ/rqCIPYhi4WiP8LuhFNxr3tq44gsMok4HaMgGd65Okdp4YQ0H+o3IwnUPQQQBZdyMLaes5k6mE2rShLWQkYYrOGNelv2f+adSM29uf1oOgU6iYOyl1eOlHA6j7aH8i/0A6LgfQDRM4oTPXJxU2BOzy6na+Q7DURWZFkW8uE=
+	t=1757277635; cv=none; b=DyWnAlg3WJllEzla8DlvE2mX0vJBhDYt9UuLODf1ZiKdsmzy9JqLeAAlLqWvDxTfTgfixLdu2W/Vv+G7dPXpnn82L9gDwRq6LS29jNJb5pk5hixMtT49ol2AuhHyjUEaU3mrxVa1AdiKXoebBO+ct2vs2CfZB6S2lPOVxOVqf1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276626; c=relaxed/simple;
-	bh=NBYV9/oXcgAcUOSg6vqzI4/UtpyvDn7GeCBwy98HOx0=;
+	s=arc-20240116; t=1757277635; c=relaxed/simple;
+	bh=NU58ET4J7M6strQWVIRGP7SpqqmKykpjVr1eTonEZH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nu/13O/fng+QDCvT4XIBmg4K0aJcbukJtYmnOFark4TnGq5srhOhqfeeLFrsFDDHC4rwBgd8Pesoi4ulOTQcVObj72auE17qpBbLnYEPAxHRQGxM2zGHKVwbJ3wGXQ/02lFdq8uj92bqWR4BFjpNosd9UBfn9C1p1Ouie+to3Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVb4+FT8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FB7C4CEF0;
-	Sun,  7 Sep 2025 20:23:45 +0000 (UTC)
+	 MIME-Version; b=FATFsx/huxB2IbfYQ/qAJZIUmzo0aCGVCDjyC6tAtq69SaYzJdYf5I5Am21t4+FN91o0NdYAsophjRUV8cfssKIBbiSsogi2zc2GwbtYmnyNCDM7NSKy1dnfjJlt39tptlrSMmxPaubVqj76ZPyLreLz7nWi1H3+f0xCh/Mk9Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCDPE9iW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7EAC4CEF0;
+	Sun,  7 Sep 2025 20:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276626;
-	bh=NBYV9/oXcgAcUOSg6vqzI4/UtpyvDn7GeCBwy98HOx0=;
+	s=korg; t=1757277635;
+	bh=NU58ET4J7M6strQWVIRGP7SpqqmKykpjVr1eTonEZH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CVb4+FT8OECcLrp6lZkzlM45KYkglyK2VWYQxIhnWlt/iUG8Bv4yTOQptkH7KtoNu
-	 PrC8//S5LW9RGjJYJfs4RicnJOezx+Uq4mTTp3gyETaZiY/ECSpwWNlDu/nUpCp23m
-	 Cx65dZF3RIjKRKuBHXofo56xvbJ0kyoq9yr8eEt8=
+	b=VCDPE9iWq/IdLbFJ1u7NjnS2QUtpIB+tiESU+uw7UpbVjS9kMASG/D8lO5KS2BTd1
+	 ibAmvnoHEx6Rk6vnrIv/2Kqf1DNpV3ULN86l+e5yVrpcUlYrtQAldrKzwpafWvkgsa
+	 tbalFLn24vyAXrvWOS4mYWK2wQAnoWKHLIBjCZp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 060/121] soc: qcom: mdt_loader: Deal with zero e_shentsize
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 069/183] i40e: Fix potential invalid access when MAC list is empty
 Date: Sun,  7 Sep 2025 21:58:16 +0200
-Message-ID: <20250907195611.379256816@linuxfoundation.org>
+Message-ID: <20250907195617.435343994@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-commit 25daf9af0ac1bf12490b723b5efaf8dcc85980bc upstream.
+[ Upstream commit a556f06338e1d5a85af0e32ecb46e365547f92b9 ]
 
-Firmware that doesn't provide section headers leave both e_shentsize and
-e_shnum 0, which obvious isn't compatible with the newly introduced
-stricter checks.
+list_first_entry() never returns NULL - if the list is empty, it still
+returns a pointer to an invalid object, leading to potential invalid
+memory access when dereferenced.
 
-Make the section-related checks conditional on either of these values
-being non-zero.
+Fix this by using list_first_entry_or_null instead of list_first_entry.
 
-Fixes: 9f9967fed9d0 ("soc: qcom: mdt_loader: Ensure we don't read past the ELF header")
-Reported-by: Val Packett <val@packett.cool>
-Closes: https://lore.kernel.org/all/ece307c3-7d65-440f-babd-88cf9705b908@packett.cool/
-Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
-Closes: https://lore.kernel.org/all/aec9cd03-6fc2-4dc8-b937-8b7cf7bf4128@linaro.org/
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Fixes: 9f35ab0e53cc ("soc: qcom: mdt_loader: Fix error return values in mdt_header_valid()")
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250730-mdt-loader-shentsize-zero-v1-1-04f43186229c@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e3219ce6a775 ("i40e: Add support for client interface for IWARP driver")
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/mdt_loader.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_client.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/soc/qcom/mdt_loader.c
-+++ b/drivers/soc/qcom/mdt_loader.c
-@@ -38,12 +38,14 @@ static bool mdt_header_valid(const struc
- 	if (phend > fw->size)
- 		return false;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_client.c b/drivers/net/ethernet/intel/i40e/i40e_client.c
+index 59263551c3838..0b099e5f48163 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_client.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_client.c
+@@ -359,8 +359,8 @@ static void i40e_client_add_instance(struct i40e_pf *pf)
+ 	if (i40e_client_get_params(vsi, &cdev->lan_info.params))
+ 		goto free_cdev;
  
--	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
--		return false;
-+	if (ehdr->e_shentsize || ehdr->e_shnum) {
-+		if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
-+			return false;
- 
--	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
--	if (shend > fw->size)
--		return false;
-+		shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
-+		if (shend > fw->size)
-+			return false;
-+	}
- 
- 	return true;
- }
+-	mac = list_first_entry(&cdev->lan_info.netdev->dev_addrs.list,
+-			       struct netdev_hw_addr, list);
++	mac = list_first_entry_or_null(&cdev->lan_info.netdev->dev_addrs.list,
++				       struct netdev_hw_addr, list);
+ 	if (mac)
+ 		ether_addr_copy(cdev->lan_info.lanmac, mac->addr);
+ 	else
+-- 
+2.50.1
+
 
 
 
