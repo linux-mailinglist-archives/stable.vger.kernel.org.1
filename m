@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24FE8B47D22
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:08:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B53EBB47F6D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D18FA17BC1D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 523FD7A737C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4DB284B59;
-	Sun,  7 Sep 2025 20:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3D91F63CD;
+	Sun,  7 Sep 2025 20:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aL02/adA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ii7ATQbb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684B91CDFAC;
-	Sun,  7 Sep 2025 20:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0601A704B;
+	Sun,  7 Sep 2025 20:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275681; cv=none; b=AlliHe6iAFc28StiYSZfDNQz/Tkd8C0cCtsNlBShNeabKXJSZxIMxQwimoZAUAeQ00foqjmvxR2fnH+pi3QfDugBvWhi5L02qZf36AOTmb48u7baTFaLlFHJniFdBVI69mIalSNp/Lf01oH0i0ev0W6YdrtU365f50TJwo4ClNg=
+	t=1757277440; cv=none; b=l1UwV07Efvokzhka415imif9GrRM0VzikNtpnJbVu1Q4sf4JIO8peUm2fvXnVVIUBwIilQP/G497VmweP2A++tzTdEob28ijGb50mwryFHf7K48INPNL3KXskEIKYPK65e2DQPuvsLYQ9o9M55wcsMplrhPtV8uSet+JGLu+jF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275681; c=relaxed/simple;
-	bh=PIo3p6LJjFQZIb32pX5EWnQ0Vz1UIfi6AG7phU7SOLw=;
+	s=arc-20240116; t=1757277440; c=relaxed/simple;
+	bh=pOjqnUswq6SgfRUydvotZiZs3oP8tA+UmlUTX+XOTEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlnvJs9kdfAQlGGiWvKeuvo1rDX0PHxfSTGWxXqSoTLqotb4matrSm3/oI+7pj1GSL86RMhJYIzcFYSj3eI9bwOHwMQDd81gXwn/rh2agiWGMl7mUHGaT0t2UVjNusHbrnHDcxJJJzNPZx9zH3KA3ExvTZaE3CAFxeomyaf83zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aL02/adA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33BAC4CEF0;
-	Sun,  7 Sep 2025 20:08:00 +0000 (UTC)
+	 MIME-Version; b=Cuetw+9nquxhTLppIaDXJo/pVkL66C8lQAp8FVjXYn0OIKn25rfUg9Wqh3ZDaBZcnCu9Qk6Iyyt7AyHsGrc5jjwRivXxNF5oUL9VTJxcMdRzC5avFbsiH14US6rM0TUJpOg3giFKfNHTWeTqdua84X8UodDBdgtTFyUXDLK3doQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ii7ATQbb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E974CC4CEF0;
+	Sun,  7 Sep 2025 20:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275681;
-	bh=PIo3p6LJjFQZIb32pX5EWnQ0Vz1UIfi6AG7phU7SOLw=;
+	s=korg; t=1757277439;
+	bh=pOjqnUswq6SgfRUydvotZiZs3oP8tA+UmlUTX+XOTEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aL02/adAdntWyHu9t+C7AVH9LVZtoY5xJcrJj3aHPp0LvSvYdXuB4z7RMtDKJTSwV
-	 rFzZkVA7l8uVYsXPRhOdxGDgNbfnUe8Pi2iQqi8XU2EbQshzMlRCuvjLX7IuIWQJhS
-	 YvRmKpV1tVPxFM0+EQfvDQdxl/FD5XSFLAMfxneI=
+	b=ii7ATQbbgs9zESfMTKg+iW9HyXRXWCvzvKgA+bGNnOYttGLw6xSDVL7pInivDP8pp
+	 Si/7HNCMxK37lQtlr7wFLiT1nK+NpOBbjfPbhezQj+dQZUsyWa3XCdkuReA376XtLJ
+	 ZPA9QA7R8nrll05V2A0yrTCHZKKyIu/ObBi/IKiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 03/52] arm64: dts: rockchip: Add vcc-supply to SPI flash on rk3399-pinebook-pro
+Subject: [PATCH 6.16 016/183] btrfs: zoned: skip ZONE FINISH of conventional zones
 Date: Sun,  7 Sep 2025 21:57:23 +0200
-Message-ID: <20250907195602.065185640@linuxfoundation.org>
+Message-ID: <20250907195616.175559098@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit d1f9c497618dece06a00e0b2995ed6b38fafe6b5 ]
+[ Upstream commit f0ba0e7172a222ea6043b61ecd86723c46d7bcf2 ]
 
-As described in the pinebookpro_v2.1_mainboard_schematic.pdf page 10,
-he SPI Flash's VCC connector is connected to VCC_3V0 power source.
+Don't call ZONE FINISH for conventional zones as this will result in I/O
+errors. Instead check if the zone that needs finishing is a conventional
+zone and if yes skip it.
 
-This fixes the following warning:
+Also factor out the actual handling of finishing a single zone into a
+helper function, as do_zone_finish() is growing ever bigger and the
+indentations levels are getting higher.
 
-  spi-nor spi1.0: supply vcc not found, using dummy regulator
-
-Fixes: 5a65505a69884 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250730102129.224468-1-pbrobinson@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/zoned.c | 55 ++++++++++++++++++++++++++++++------------------
+ 1 file changed, 35 insertions(+), 20 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-index 015e004bf275c..3dd00ce201f54 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-@@ -972,6 +972,7 @@ spiflash: flash@0 {
- 		reg = <0>;
- 		m25p,fast-read;
- 		spi-max-frequency = <10000000>;
-+		vcc-supply = <&vcc_3v0>;
- 	};
- };
+diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+index af5ba3ad2eb83..d7a1193332d94 100644
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -2252,6 +2252,40 @@ static void wait_eb_writebacks(struct btrfs_block_group *block_group)
+ 	rcu_read_unlock();
+ }
+ 
++static int call_zone_finish(struct btrfs_block_group *block_group,
++			    struct btrfs_io_stripe *stripe)
++{
++	struct btrfs_device *device = stripe->dev;
++	const u64 physical = stripe->physical;
++	struct btrfs_zoned_device_info *zinfo = device->zone_info;
++	int ret;
++
++	if (!device->bdev)
++		return 0;
++
++	if (zinfo->max_active_zones == 0)
++		return 0;
++
++	if (btrfs_dev_is_sequential(device, physical)) {
++		unsigned int nofs_flags;
++
++		nofs_flags = memalloc_nofs_save();
++		ret = blkdev_zone_mgmt(device->bdev, REQ_OP_ZONE_FINISH,
++				       physical >> SECTOR_SHIFT,
++				       zinfo->zone_size >> SECTOR_SHIFT);
++		memalloc_nofs_restore(nofs_flags);
++
++		if (ret)
++			return ret;
++	}
++
++	if (!(block_group->flags & BTRFS_BLOCK_GROUP_DATA))
++		zinfo->reserved_active_zones++;
++	btrfs_dev_clear_active_zone(device, physical);
++
++	return 0;
++}
++
+ static int do_zone_finish(struct btrfs_block_group *block_group, bool fully_written)
+ {
+ 	struct btrfs_fs_info *fs_info = block_group->fs_info;
+@@ -2336,31 +2370,12 @@ static int do_zone_finish(struct btrfs_block_group *block_group, bool fully_writ
+ 	down_read(&dev_replace->rwsem);
+ 	map = block_group->physical_map;
+ 	for (i = 0; i < map->num_stripes; i++) {
+-		struct btrfs_device *device = map->stripes[i].dev;
+-		const u64 physical = map->stripes[i].physical;
+-		struct btrfs_zoned_device_info *zinfo = device->zone_info;
+-		unsigned int nofs_flags;
+-
+-		if (!device->bdev)
+-			continue;
+-
+-		if (zinfo->max_active_zones == 0)
+-			continue;
+-
+-		nofs_flags = memalloc_nofs_save();
+-		ret = blkdev_zone_mgmt(device->bdev, REQ_OP_ZONE_FINISH,
+-				       physical >> SECTOR_SHIFT,
+-				       zinfo->zone_size >> SECTOR_SHIFT);
+-		memalloc_nofs_restore(nofs_flags);
+ 
++		ret = call_zone_finish(block_group, &map->stripes[i]);
+ 		if (ret) {
+ 			up_read(&dev_replace->rwsem);
+ 			return ret;
+ 		}
+-
+-		if (!(block_group->flags & BTRFS_BLOCK_GROUP_DATA))
+-			zinfo->reserved_active_zones++;
+-		btrfs_dev_clear_active_zone(device, physical);
+ 	}
+ 	up_read(&dev_replace->rwsem);
  
 -- 
 2.50.1
