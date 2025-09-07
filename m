@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-178434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB91B47EA5
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:27:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 547F7B47FDF
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBC5E17E491
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:27:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10988200913
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D3F1D88D0;
-	Sun,  7 Sep 2025 20:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F5321ADAE;
+	Sun,  7 Sep 2025 20:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDynahrG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ru/NGEse"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6879B1E1C1A;
-	Sun,  7 Sep 2025 20:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAE14315A;
+	Sun,  7 Sep 2025 20:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276823; cv=none; b=VgO5TlA4PRGOr2eGaKH7eVyU9nDgMGvUXsyl3lBBi1S64zWe1gnktH1q+41gDkFexnfsGc4rwwg2o61zHm1QAoIXRGtXWcPARpbAgh1Rj2fm/YVll4BOJvCGIBrkWa6QB4GUOtVmtlEeptyfwLxU1npN+e3dv5ODZfj1Sk+KhMg=
+	t=1757277806; cv=none; b=ks+wXvRBTXx6e7B8WvvKxtfByimnQ6t1FXJmYp5Dy1L2UMZg0+rjW+zpiMYDazxe5V4p6VfTRjvGyKy5yKmUwveAYBQHQE3BckGiOTvQozZKoYu4UNC7aj9+I5OV9D6O/5AVsN9tT9W0VzKX7vB1zYGZxMVv0F+0xZPgdizztLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276823; c=relaxed/simple;
-	bh=QZLTYNsLXQmw2hFCdasjjObk/do61j69fM2mjIf9rDE=;
+	s=arc-20240116; t=1757277806; c=relaxed/simple;
+	bh=Fq1YAtOVNvFDh7pQpVWB5eqgH74YgkBOcsOGig7b+hA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qURBIC7OXqb3D1cSyUfQdqYXm1c0TezLsVVkV3sHbrb244iSZAUTUbpBDdSjdU7n/bTu766qsOnT/fP4yODSFc/pwM51EjnUGVuEP8VP3CKOCRvYE1k2Gh0XqLm660P6KmwqUfNuup6s22TXgwlCiV5BeUbO/vUVZu7BVZI7Bt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDynahrG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16C6C4CEF0;
-	Sun,  7 Sep 2025 20:27:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A7MbZPLIXTLH5yIvYTZf1istyJInhPVt4cZinAoA1uOFogGpYU1R1Cz0tyq0bYsF/fbi6xcpnKDLTtthlRUOCqvLwKBzkfBTRMFeYtEXva0k7rpL3PRpiU7pf+x9zLKHognIr+KqceBHAnNInP+x6aZFBiXj7IJm6SpNgn1OWFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ru/NGEse; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB14C4CEF0;
+	Sun,  7 Sep 2025 20:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276823;
-	bh=QZLTYNsLXQmw2hFCdasjjObk/do61j69fM2mjIf9rDE=;
+	s=korg; t=1757277806;
+	bh=Fq1YAtOVNvFDh7pQpVWB5eqgH74YgkBOcsOGig7b+hA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDynahrGukbVS01xaGS2GQpjEg+u0Vxn3LcoJjPplruck2QhLoWqLiv/kM9T2pkEk
-	 GQWBo76fRU6I4q1t84RUniruSFbASLSoKHmrabnxY/qmS0bdln188Biqe5P1Q/l6SD
-	 fQCh6t8etUvT49LTP9y+JV87Pjp/OjjpiMGBR1E0=
+	b=ru/NGEseOluMg9tVTfp9ip0nuzGSV/EMkSEAXUMh/mKhb8NXCubXHfA/H0YXeIYhC
+	 xbd0tFUcfvqRwyJc7pFOvFuyUKxvE05UWMluf5KIHZVV5Jg90Z+P9/MY9TszdnZTBp
+	 mlmETEo0rHMO4oqxfTU7rWpViDiz3MAXmM1S27/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Hao <haokexin@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 121/121] spi: fsl-qspi: Fix double cleanup in probe error path
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.16 130/183] platform/x86/amd/pmc: Add TUXEDO IB Pro Gen10 AMD to spurious 8042 quirks list
 Date: Sun,  7 Sep 2025 21:59:17 +0200
-Message-ID: <20250907195612.957747535@linuxfoundation.org>
+Message-ID: <20250907195618.881371173@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Hao <haokexin@gmail.com>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-commit 5d07ab2a7fa1305e429d9221716582f290b58078 upstream.
+commit c96f86217bb28e019403bb8f59eacd8ad5a7ad1a upstream.
 
-Commit 40369bfe717e ("spi: fsl-qspi: use devm function instead of driver
-remove") introduced managed cleanup via fsl_qspi_cleanup(), but
-incorrectly retain manual cleanup in two scenarios:
+Prevents instant wakeup ~1s after suspend.
 
-- On devm_add_action_or_reset() failure, the function automatically call
-  fsl_qspi_cleanup(). However, the current code still jumps to
-  err_destroy_mutex, repeating cleanup.
+It seems to be kernel/system dependent if the IRQ actually manages to wake
+the system every time or if it gets ignored (and everything works as
+expected).
 
-- After the fsl_qspi_cleanup() action is added successfully, there is no
-  need to manually perform the cleanup in the subsequent error path.
-  However, the current code still jumps to err_destroy_mutex on spi
-  controller failure, repeating cleanup.
-
-Skip redundant manual cleanup calls to fix these issues.
-
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
 Cc: stable@vger.kernel.org
-Fixes: 40369bfe717e ("spi: fsl-qspi: use devm function instead of driver remove")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Link: https://patch.msgid.link/20250410-spi-v1-1-56e867cc19cf@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250827131424.16436-1-wse@tuxedocomputers.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-qspi.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -943,17 +943,14 @@ static int fsl_qspi_probe(struct platfor
- 
- 	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
- 	if (ret)
--		goto err_destroy_mutex;
-+		goto err_put_ctrl;
- 
- 	ret = devm_spi_register_controller(dev, ctlr);
- 	if (ret)
--		goto err_destroy_mutex;
-+		goto err_put_ctrl;
- 
- 	return 0;
- 
--err_destroy_mutex:
--	mutex_destroy(&q->lock);
--
- err_disable_clk:
- 	fsl_qspi_clk_disable_unprep(q);
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -248,6 +248,20 @@ static const struct dmi_system_id fwbug_
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Lafite Pro V 14M"),
+ 		}
+ 	},
++	{
++		.ident = "TUXEDO InfinityBook Pro 14/15 AMD Gen10",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "XxHP4NAx"),
++		}
++	},
++	{
++		.ident = "TUXEDO InfinityBook Pro 14/15 AMD Gen10",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "XxKK4NAx_XxSP4NAx"),
++		}
++	},
+ 	{}
+ };
  
 
 
