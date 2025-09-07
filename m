@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-178418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F270B47E95
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442C6B47FD9
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBA0A17E3CC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 180231B21F48
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEEEE20D4FC;
-	Sun,  7 Sep 2025 20:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2662139C9;
+	Sun,  7 Sep 2025 20:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjzxoEaf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="unRAe1ba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B15417BB21;
-	Sun,  7 Sep 2025 20:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11064315A;
+	Sun,  7 Sep 2025 20:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276772; cv=none; b=VPqgwVLFUykv0I2t/u/05qfQwFnKgW0L6fi8rWJSH8F5hnVbh0rq1SuA1mYoV7yctTUs8NLu8IOXa4IpoA9N8/OpJIgAQXSAscH8gipT8H4eDAUeaUwCTXZkdjMszHaTLmiBm2C1TU19T14Lb8lCCs2Jvenyv8OY0zHBzVw/OFE=
+	t=1757277784; cv=none; b=UaXi6xnHmllbABpPvmAm87cozc37fEUGFNpLjR4F0vOkUkIW8jExQcoQi4255XCEK8JNG3Va6HuxPd7awpG2oWWu3bVVuznMzIB6YGP16ZfiNCuTvSYJhLTXEWlbPkkMX8aORG0ohrz/pOSPD13HwK8/Rq+dZW+8YMB/KuGeB2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276772; c=relaxed/simple;
-	bh=Ixe6q5buBBr2a5OPdb6XAqimP0r5hC1ZiVm6u0xhLXQ=;
+	s=arc-20240116; t=1757277784; c=relaxed/simple;
+	bh=gGherhTyas3+ZjgtfYUuD9e3cv/dSBkz67YUDZtHBM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=POSaeca4K1DEyUWR1qVU8g0N0BMUewZLpwcHkGTyPtVfS4VvIOvmaS0uxD2XuyKt9WoWZzBpy0WW/Y9bQ9VxKuypYzdAs5h4tP0+NHWkS6p1qXJPxK9cNtJZDRbg4KtR/eMDNP7vAQ6LX+QyEVYiiGim5yRy2B/z7mWxA/2mlAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjzxoEaf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AC0C4CEF0;
-	Sun,  7 Sep 2025 20:26:11 +0000 (UTC)
+	 MIME-Version; b=KbqIJ6Xm33mznKqZAkR4/UDVs035XBawKagjWkNEjOYCxXbb3RIBsRrKYAu9CXZ1rWeLFel88Ul6ms6KqC+PStmDh6eXLEPX1XHmhC0zyZ/EuugTutSO/kIsbEmHQIv3+2klC6PSVl5so4vmB7ZQ2h+XIA8nvF8yUNnXhTpD248=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=unRAe1ba; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A58FC4CEF0;
+	Sun,  7 Sep 2025 20:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276772;
-	bh=Ixe6q5buBBr2a5OPdb6XAqimP0r5hC1ZiVm6u0xhLXQ=;
+	s=korg; t=1757277783;
+	bh=gGherhTyas3+ZjgtfYUuD9e3cv/dSBkz67YUDZtHBM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EjzxoEafXQBxE7/XxhY5yksDQ+Heq+Y5LzyR3cwD92Pmd8vi6rHk7AiUZOAAZXeXz
-	 +1JTqE/UaG4lhppwl/oxMPuS91aGUyyyzuq4jsrTNv8DsfmouvtOiDH/AZfhR/M6DG
-	 GfNgIcV9wX0oZ9HDl1egyBRS4VR8GX8C54DN4oaI=
+	b=unRAe1ba7JYaT6UjNaDFE60MEKaZo9cubHZQzYp7HKxe1x9sw2yJSlSy0IA1koZa7
+	 c6JVbr2L2i3PqHsME5SzuCOAUj5oEpbspy5D+aUnduOFfMxr2nM3E9nhUb/vkAw90C
+	 1wH2sJF2ebpug0XeNK9ACq68+ZoWOE7mxGDpt9Wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/121] drm/bridge: ti-sn65dsi86: fix REFCLK setting
+	Yin Tirui <yintirui@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Chen Jun <chenjun102@huawei.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Joanthan Cameron <Jonathan.Cameron@huawei.com>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 115/183] of_numa: fix uninitialized memory nodes causing kernel panic
 Date: Sun,  7 Sep 2025 21:59:02 +0200
-Message-ID: <20250907195612.569696266@linuxfoundation.org>
+Message-ID: <20250907195618.524442608@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +69,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: Yin Tirui <yintirui@huawei.com>
 
-[ Upstream commit bdd5a14e660062114bdebaef9ad52adf04970a89 ]
+commit ee4d098cbc9160f573b5c1b5a51d6158efdb2896 upstream.
 
-The bridge has three bootstrap pins which are sampled to determine the
-frequency of the external reference clock. The driver will also
-(over)write that setting. But it seems this is racy after the bridge is
-enabled. It was observed that although the driver write the correct
-value (by sniffing on the I2C bus), the register has the wrong value.
-The datasheet states that the GPIO lines have to be stable for at least
-5us after asserting the EN signal. Thus, there seems to be some logic
-which samples the GPIO lines and this logic appears to overwrite the
-register value which was set by the driver. Waiting 20us after
-asserting the EN line resolves this issue.
+When there are memory-only nodes (nodes without CPUs), these nodes are not
+properly initialized, causing kernel panic during boot.
 
-Fixes: a095f15c00e2 ("drm/bridge: add support for sn65dsi86 bridge driver")
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20250821122341.1257286-1-mwalle@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+of_numa_init
+	of_numa_parse_cpu_nodes
+		node_set(nid, numa_nodes_parsed);
+	of_numa_parse_memory_nodes
+
+In of_numa_parse_cpu_nodes, numa_nodes_parsed gets updated only for nodes
+containing CPUs.  Memory-only nodes should have been updated in
+of_numa_parse_memory_nodes, but they weren't.
+
+Subsequently, when free_area_init() attempts to access NODE_DATA() for
+these uninitialized memory nodes, the kernel panics due to NULL pointer
+dereference.
+
+This can be reproduced on ARM64 QEMU with 1 CPU and 2 memory nodes:
+
+qemu-system-aarch64 \
+-cpu host -nographic \
+-m 4G -smp 1 \
+-machine virt,accel=kvm,gic-version=3,iommu=smmuv3 \
+-object memory-backend-ram,size=2G,id=mem0 \
+-object memory-backend-ram,size=2G,id=mem1 \
+-numa node,nodeid=0,memdev=mem0 \
+-numa node,nodeid=1,memdev=mem1 \
+-kernel $IMAGE \
+-hda $DISK \
+-append "console=ttyAMA0 root=/dev/vda rw earlycon"
+
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x481fd010]
+[    0.000000] Linux version 6.17.0-rc1-00001-gabb4b3daf18c-dirty (yintirui@local) (gcc (GCC) 12.3.1, GNU ld (GNU Binutils) 2.41) #52 SMP PREEMPT Mon Aug 18 09:49:40 CST 2025
+[    0.000000] KASLR enabled
+[    0.000000] random: crng init done
+[    0.000000] Machine model: linux,dummy-virt
+[    0.000000] efi: UEFI not found.
+[    0.000000] earlycon: pl11 at MMIO 0x0000000009000000 (options '')
+[    0.000000] printk: legacy bootconsole [pl11] enabled
+[    0.000000] OF: reserved mem: Reserved memory: No reserved-memory node in the DT
+[    0.000000] NODE_DATA(0) allocated [mem 0xbfffd9c0-0xbfffffff]
+[    0.000000] node 1 must be removed before remove section 23
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000040000000-0x00000000ffffffff]
+[    0.000000]   DMA32    empty
+[    0.000000]   Normal   [mem 0x0000000100000000-0x000000013fffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000040000000-0x00000000bfffffff]
+[    0.000000]   node   1: [mem 0x00000000c0000000-0x000000013fffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000040000000-0x00000000bfffffff]
+[    0.000000] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000a0
+[    0.000000] Mem abort info:
+[    0.000000]   ESR = 0x0000000096000004
+[    0.000000]   EC = 0x25: DABT (current EL), IL = 32 bits
+[    0.000000]   SET = 0, FnV = 0
+[    0.000000]   EA = 0, S1PTW = 0
+[    0.000000]   FSC = 0x04: level 0 translation fault
+[    0.000000] Data abort info:
+[    0.000000]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+[    0.000000]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[    0.000000]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[    0.000000] [00000000000000a0] user address but active_mm is swapper
+[    0.000000] Internal error: Oops: 0000000096000004 [#1]  SMP
+[    0.000000] Modules linked in:
+[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.17.0-rc1-00001-g760c6dabf762-dirty #54 PREEMPT
+[    0.000000] Hardware name: linux,dummy-virt (DT)
+[    0.000000] pstate: 800000c5 (Nzcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    0.000000] pc : free_area_init+0x50c/0xf9c
+[    0.000000] lr : free_area_init+0x5c0/0xf9c
+[    0.000000] sp : ffffa02ca0f33c00
+[    0.000000] x29: ffffa02ca0f33cb0 x28: 0000000000000000 x27: 0000000000000000
+[    0.000000] x26: 4ec4ec4ec4ec4ec5 x25: 00000000000c0000 x24: 00000000000c0000
+[    0.000000] x23: 0000000000040000 x22: 0000000000000000 x21: ffffa02ca0f3b368
+[    0.000000] x20: ffffa02ca14c7b98 x19: 0000000000000000 x18: 0000000000000002
+[    0.000000] x17: 000000000000cacc x16: 0000000000000001 x15: 0000000000000001
+[    0.000000] x14: 0000000080000000 x13: 0000000000000018 x12: 0000000000000002
+[    0.000000] x11: ffffa02ca0fd4f00 x10: ffffa02ca14bab20 x9 : ffffa02ca14bab38
+[    0.000000] x8 : 00000000000c0000 x7 : 0000000000000001 x6 : 0000000000000002
+[    0.000000] x5 : 0000000140000000 x4 : ffffa02ca0f33c90 x3 : ffffa02ca0f33ca0
+[    0.000000] x2 : ffffa02ca0f33c98 x1 : 0000000080000000 x0 : 0000000000000001
+[    0.000000] Call trace:
+[    0.000000]  free_area_init+0x50c/0xf9c (P)
+[    0.000000]  bootmem_init+0x110/0x1dc
+[    0.000000]  setup_arch+0x278/0x60c
+[    0.000000]  start_kernel+0x70/0x748
+[    0.000000]  __primary_switched+0x88/0x90
+[    0.000000] Code: d503201f b98093e0 52800016 f8607a93 (f9405260)
+[    0.000000] ---[ end trace 0000000000000000 ]---
+[    0.000000] Kernel panic - not syncing: Attempted to kill the idle task!
+[    0.000000] ---[ end Kernel panic - not syncing: Attempted to kill the idle task! ]---
+
+Link: https://lkml.kernel.org/r/20250819075510.2079961-1-yintirui@huawei.com
+Fixes: 767507654c22 ("arch_numa: switch over to numa_memblks")
+Signed-off-by: Yin Tirui <yintirui@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Chen Jun <chenjun102@huawei.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Joanthan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Saravana Kannan <saravanak@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi86.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/of/of_numa.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-index 59cbff209acd6..560935f2e8cbe 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-@@ -375,6 +375,17 @@ static int __maybe_unused ti_sn65dsi86_resume(struct device *dev)
+--- a/drivers/of/of_numa.c
++++ b/drivers/of/of_numa.c
+@@ -59,8 +59,11 @@ static int __init of_numa_parse_memory_n
+ 			r = -EINVAL;
+ 		}
  
- 	gpiod_set_value_cansleep(pdata->enable_gpio, 1);
+-		for (i = 0; !r && !of_address_to_resource(np, i, &rsrc); i++)
++		for (i = 0; !r && !of_address_to_resource(np, i, &rsrc); i++) {
+ 			r = numa_add_memblk(nid, rsrc.start, rsrc.end + 1);
++			if (!r)
++				node_set(nid, numa_nodes_parsed);
++		}
  
-+	/*
-+	 * After EN is deasserted and an external clock is detected, the bridge
-+	 * will sample GPIO3:1 to determine its frequency. The driver will
-+	 * overwrite this setting in ti_sn_bridge_set_refclk_freq(). But this is
-+	 * racy. Thus we have to wait a couple of us. According to the datasheet
-+	 * the GPIO lines has to be stable at least 5 us (td5) but it seems that
-+	 * is not enough and the refclk frequency value is still lost or
-+	 * overwritten by the bridge itself. Waiting for 20us seems to work.
-+	 */
-+	usleep_range(20, 30);
-+
- 	/*
- 	 * If we have a reference clock we can enable communication w/ the
- 	 * panel (including the aux channel) w/out any need for an input clock
--- 
-2.51.0
-
+ 		if (!i || r) {
+ 			of_node_put(np);
 
 
 
