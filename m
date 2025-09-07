@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9307AB47E6F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9408B47D96
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50AB517E0B2
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 673F617CA05
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD5F1D88D0;
-	Sun,  7 Sep 2025 20:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F1A29B766;
+	Sun,  7 Sep 2025 20:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nykp0JUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NozbtSEW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE626189BB0;
-	Sun,  7 Sep 2025 20:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F195A22F74D;
+	Sun,  7 Sep 2025 20:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276655; cv=none; b=iigveW7obQQBLtPE8cFBgp3Zgshliw0ZcBwBtE0U41cjVi0TRYzxPe1bVSlBW64aHLbS+Uq/hcQcK3LoJBx4sTnQTs4LkP+1aBzIUwCR62b6Md+OLjjVlH9Klb/mqiwUsVaRJ54Ifu8x1ToSluEvxeHIl7yQPJbN1IbtF0riKcA=
+	t=1757276032; cv=none; b=glw92iEXE5IDailvqECXzWLWaI8qWUga8eLxM4nrL4aQRNf9lKa7vhHh5MPjjaBgyDp97zwKg1oAUJ+Gg9ZKgC2wktAzSvL2gzK/WCS+jnWLzPVkLqLeFAHjd0Jf8bDYk23x9nCr3x3sF0YT56WVI4HVSEL297DZR315MyI1N9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276655; c=relaxed/simple;
-	bh=bqEI6TIinhyktVsUdpSIj6XjbIHJY2LovLGfM8O0eZk=;
+	s=arc-20240116; t=1757276032; c=relaxed/simple;
+	bh=RJBvhWT/kysozhI5OTeofwGY+fXAJIBE1wLle83872A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSEK+yJFyX7UpF5KKG6pMKEqqd5YtAyU6qNrXvLDcnQ+ESaTwPM5cNqNatQCxTW8SkfY4FUzVJBv7E+8MUbKcxYQkxpgNbohrV4IMQl78POGnCZ1XR7/2+gG4IvNB+mPcEnCwnEIvZPmKdYdHxALM/wDrizGaog1bB7rcIpa1wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nykp0JUf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C8A3C4CEF0;
-	Sun,  7 Sep 2025 20:24:14 +0000 (UTC)
+	 MIME-Version; b=TNEcEjkKzXMNyOzQOedynoX2u0kdNsNutt5Zhu8F6Xg9JEvQqkfMr1qEnD+4KG+30xRBKvfffHf8/mMbIRa+WgJfzMzBzLwaUO6nQSm81eiSiiPfpJunCVFzPM58Zo03+BtJihuO22dL5HQvigdLG06LybBiculXV/hGjMt2A4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NozbtSEW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DC5C4CEF0;
+	Sun,  7 Sep 2025 20:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276654;
-	bh=bqEI6TIinhyktVsUdpSIj6XjbIHJY2LovLGfM8O0eZk=;
+	s=korg; t=1757276031;
+	bh=RJBvhWT/kysozhI5OTeofwGY+fXAJIBE1wLle83872A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nykp0JUfp8KEDhRaDT1QXIbohBT2hJik1qBSLv9KNCad+hyxEcWGf50c3eS95S2Ez
-	 NrMdApBnhd+ltXNwFkU/Xuhqjt5zl6EeCGXtVeQeIXmFs346/6DuMRXF+xCulxH072
-	 CBKasqhqz3W3FksfqO9WGc1f7h6NQ1FolKiNoRz8=
+	b=NozbtSEW4yQv1iEQ0CRTafXbWtKTSXb3KWwC4q70MlaeWIeKrpp+k7gAQ9T/wZ2Nj
+	 WbkVpwWJivQSSCUG8jr1isZCMZ87uf8u03yWvk0Xs+MV9N1MBe14CTDwUIC5mNmEOJ
+	 44fmxgqeDUGD1uPHZBuQdgBE43SGMYhVP2hkG/K4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikael Wessel <post@mikaelkw.online>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.6 068/121] e1000e: fix heap overflow in e1000_set_eeprom
+	Aaron Kling <webgeek1234@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 42/64] spi: tegra114: Dont fail set_cs_timing when delays are zero
 Date: Sun,  7 Sep 2025 21:58:24 +0200
-Message-ID: <20250907195611.581852978@linuxfoundation.org>
+Message-ID: <20250907195604.563963491@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-commit 90fb7db49c6dbac961c6b8ebfd741141ffbc8545 upstream.
+[ Upstream commit 4426e6b4ecf632bb75d973051e1179b8bfac2320 ]
 
-Fix a possible heap overflow in e1000_set_eeprom function by adding
-input validation for the requested length of the change in the EEPROM.
-In addition, change the variable type from int to size_t for better
-code practices and rearrange declarations to RCT.
+The original code would skip null delay pointers, but when the pointers
+were converted to point within the spi_device struct, the check was not
+updated to skip delays of zero. Hence all spi devices that didn't set
+delays would fail to probe.
 
+Fixes: 04e6bb0d6bb1 ("spi: modify set_cs_timing parameter")
 Cc: stable@vger.kernel.org
-Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
-Co-developed-by: Mikael Wessel <post@mikaelkw.online>
-Signed-off-by: Mikael Wessel <post@mikaelkw.online>
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Link: https://patch.msgid.link/20250423-spi-tegra114-v1-1-2d608bcc12f9@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/e1000e/ethtool.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/spi/spi-tegra114.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/intel/e1000e/ethtool.c
-+++ b/drivers/net/ethernet/intel/e1000e/ethtool.c
-@@ -567,12 +567,12 @@ static int e1000_set_eeprom(struct net_d
- {
- 	struct e1000_adapter *adapter = netdev_priv(netdev);
- 	struct e1000_hw *hw = &adapter->hw;
-+	size_t total_len, max_len;
- 	u16 *eeprom_buff;
--	void *ptr;
--	int max_len;
-+	int ret_val = 0;
- 	int first_word;
- 	int last_word;
--	int ret_val = 0;
-+	void *ptr;
- 	u16 i;
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -729,9 +729,9 @@ static int tegra_spi_set_hw_cs_timing(st
+ 	u32 inactive_cycles;
+ 	u8 cs_state;
  
- 	if (eeprom->len == 0)
-@@ -587,6 +587,10 @@ static int e1000_set_eeprom(struct net_d
- 
- 	max_len = hw->nvm.word_size * 2;
- 
-+	if (check_add_overflow(eeprom->offset, eeprom->len, &total_len) ||
-+	    total_len > max_len)
-+		return -EFBIG;
-+
- 	first_word = eeprom->offset >> 1;
- 	last_word = (eeprom->offset + eeprom->len - 1) >> 1;
- 	eeprom_buff = kmalloc(max_len, GFP_KERNEL);
+-	if (setup->unit != SPI_DELAY_UNIT_SCK ||
+-	    hold->unit != SPI_DELAY_UNIT_SCK ||
+-	    inactive->unit != SPI_DELAY_UNIT_SCK) {
++	if ((setup->unit && setup->unit != SPI_DELAY_UNIT_SCK) ||
++	    (hold->unit && hold->unit != SPI_DELAY_UNIT_SCK) ||
++	    (inactive->unit && inactive->unit != SPI_DELAY_UNIT_SCK)) {
+ 		dev_err(&spi->dev,
+ 			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
+ 			SPI_DELAY_UNIT_SCK);
 
 
 
