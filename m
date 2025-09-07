@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4EFB47DC8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0206CB47F81
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3A96189E616
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 937C4200175
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664FE1AF0B6;
-	Sun,  7 Sep 2025 20:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6BC21ADAE;
+	Sun,  7 Sep 2025 20:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FD6PH6vt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXvwB4ae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2219B14BFA2;
-	Sun,  7 Sep 2025 20:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85124315A;
+	Sun,  7 Sep 2025 20:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276189; cv=none; b=WmoaE9B9n7kM+Bwz7Eioz0OR/W/ssdkl+agTLTFM/PpOad+lyssGXsgOSUPe+3Kvnxb7dZ0O8f2FoOKvcqdKMpwl7bJUGH/jGgOLubI7WmIK3lWI3DGNHQRL9P+my746E7Zk9BtOr75cTwWggwxH+NKZWIzL+DfqrQqHHpk8Y1I=
+	t=1757277504; cv=none; b=oH0XwYYEg9mxL1gUtoStdjl01Nw6AM1zQadRjOfFfA5H+xpppy2LumThoTER6SNb1f1nTUwXKkGKTWE8rd/FAnR/UtkKLQbUojpy6xbygu1eBULI1ewGEtbA76XMMCHkB6ZsunlhqzxnNUqLSzKH/IbSqlo+LvlIfOU7eCCg/qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276189; c=relaxed/simple;
-	bh=vsT3RK6KKMmUdCmfbSa1PB4h0mfydP2QjUyuiliKyEo=;
+	s=arc-20240116; t=1757277504; c=relaxed/simple;
+	bh=Rct5CgoUH0bHyv5Anx6w7r1PuwByiIN5HoQez8Dfr74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=su314MjoxwPS7nqQFs5IoLavzhscpIxR9TQK8hLUsxl4xBMfSeMdD98HcjAQybKcMg5qdXl4BP76udsa7nivIK2yvZnQ1TtgMIeYEWfq5crdPm1OhhDYR/wrESr3AoMCLPXqYNCRqy1J+fMUbrXtKMiSzvj23VdVneGI22sTHeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FD6PH6vt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589B5C4CEF0;
-	Sun,  7 Sep 2025 20:16:27 +0000 (UTC)
+	 MIME-Version; b=bx0cGjVs7EmHjRJqm/MqVMAFwPndpBHDpFwT81fRpWKhTvwAOI5r2V9pohM7dYBpV8JkhNImh9HcKvOIxLHq67DGUB7jD0702a2qwtV06nt9O79C51VSI8/Y7gKkPTf0mA60VXy1DHyyIZ6qNpCOfzGhf9mDfT1h7kcJgEwpn+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXvwB4ae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D1ACC4CEF0;
+	Sun,  7 Sep 2025 20:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276187;
-	bh=vsT3RK6KKMmUdCmfbSa1PB4h0mfydP2QjUyuiliKyEo=;
+	s=korg; t=1757277503;
+	bh=Rct5CgoUH0bHyv5Anx6w7r1PuwByiIN5HoQez8Dfr74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FD6PH6vtEauItgch7tt1jIT/IjK+WLROlB4NCuaRCgbzSklfaKfs6Pqa4SVHKS7I0
-	 UBh+13snMMUTBvpeUgjrPBMHJCkSIK4uq04P8blc/gjRGoDQHmU28wMdJgxOjdmnZs
-	 +PgM/rLe0rZ9Q3Rs6NKMvwSSVzIHiliH9q8LdQcs=
+	b=UXvwB4ae5mewIthnCELlea490hLZESGQM3lSuR4eirtPWjm25AcW+v5R5pZt0rgyS
+	 lujLF27+ZyoGs5XQIC30c2ltV7qx1vfc/wrmyeEF0ykAZhLkwZG+J5fychU58Na9eK
+	 8jS+Itdl5tKYWZqCeFVxeU72ry0sCgerb3ah7t/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thibaut VARENE <hacks@slashdirt.org>,
+	Chad Monroe <chad@monroe.io>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
 	Felix Fietkau <nbd@nbd.name>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 026/104] net: ethernet: mtk_eth_soc: fix tx vlan tag for llc packets
+Subject: [PATCH 6.16 036/183] wifi: mt76: mt7996: use the correct vif link for scanning/roc
 Date: Sun,  7 Sep 2025 21:57:43 +0200
-Message-ID: <20250907195608.375194886@linuxfoundation.org>
+Message-ID: <20250907195616.633738253@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Chad Monroe <chad@monroe.io>
 
-[ Upstream commit d4736737110ffa83d29f1c5d17b26113864205f6 ]
+[ Upstream commit 4be3b46ec5190dc79cd38e3750480b2c66a791ad ]
 
-When sending llc packets with vlan tx offload, the hardware fails to
-actually add the tag. Deal with this by fixing it up in software.
+restore fix which was dropped during MLO rework
 
-Fixes: 656e705243fd ("net-next: mediatek: add support for MT7623 ethernet")
-Reported-by: Thibaut VARENE <hacks@slashdirt.org>
+Fixes: f0b0b239b8f3 ("wifi: mt76: mt7996: rework mt7996_mac_write_txwi() for MLO support")
+Signed-off-by: Chad Monroe <chad@monroe.io>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/180fffd409aa57f535a3d2c1951e41ae398ce09e.1754659732.git.chad@monroe.io
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250831182007.51619-1-nbd@nbd.name
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index fecf3dd22dfaa..3f2f725ccceb3 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -1375,6 +1375,13 @@ static netdev_tx_t mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	bool gso = false;
- 	int tx_num;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index f675cf537898a..b0fa051fc3094 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -903,8 +903,12 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 				       IEEE80211_TX_CTRL_MLO_LINK);
  
-+	if (skb_vlan_tag_present(skb) &&
-+	    !eth_proto_is_802_3(eth_hdr(skb)->h_proto)) {
-+		skb = __vlan_hwaccel_push_inside(skb);
-+		if (!skb)
-+			goto dropped;
+ 	mvif = vif ? (struct mt7996_vif *)vif->drv_priv : NULL;
+-	if (mvif)
+-		mlink = rcu_dereference(mvif->mt76.link[link_id]);
++	if (mvif) {
++		if (wcid->offchannel)
++			mlink = rcu_dereference(mvif->mt76.offchannel_link);
++		if (!mlink)
++			mlink = rcu_dereference(mvif->mt76.link[link_id]);
 +	}
-+
- 	/* normally we can rely on the stack not calling this more than once,
- 	 * however we have 2 queues running on the same ring so we need to lock
- 	 * the ring access
-@@ -1420,8 +1427,9 @@ static netdev_tx_t mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
  
- drop:
- 	spin_unlock(&eth->page_lock);
--	stats->tx_dropped++;
- 	dev_kfree_skb_any(skb);
-+dropped:
-+	stats->tx_dropped++;
- 	return NETDEV_TX_OK;
- }
- 
+ 	if (mlink) {
+ 		omac_idx = mlink->omac_idx;
 -- 
 2.50.1
 
