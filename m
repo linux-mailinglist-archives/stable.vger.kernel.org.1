@@ -1,61 +1,54 @@
-Return-Path: <stable+bounces-178699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB821B47FB6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1164B47E06
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B0DA3B6D41
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF774189EF29
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B932269CE6;
-	Sun,  7 Sep 2025 20:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB3B212B3D;
+	Sun,  7 Sep 2025 20:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTA2NyR2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNOkkgyj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C314315A;
-	Sun,  7 Sep 2025 20:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A6F1D88D0;
+	Sun,  7 Sep 2025 20:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277675; cv=none; b=bq0USklmdx4lXvz26jNkxfJx0hgtM+7FXekxT42XyQFSItybUd4/X2fLzw6mj+dmYbmOE/PLrqqxNNjC01tLw9tvL4fKuOgDBMaXZvjJX+Xci0T1+hR7JTFUkUGS/VUlnGxe9QFKe5jkO6Pf9iFWNC8vS1WLbwDWbA+XCEx5MMA=
+	t=1757276350; cv=none; b=Jo3Gi2xORDNvrqZQEAqqEQ6T+br5zEXyZm3Thg0M0sH9z8hgoNOYpk3VsY4Hc3aWykO2K+15oNX8NZXlyRz2gzZGe6n13PIIbdGxIFPczqDXRFYCZsj5yE7Or0gfTSw75fw4coWWR7NOOlx6f+SsJt5sncMI1JmEJFRM58YNWdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277675; c=relaxed/simple;
-	bh=QfCnTh7GRYFdjMpDQMY9F3wmqy4h893ZDosBU52Sw6s=;
+	s=arc-20240116; t=1757276350; c=relaxed/simple;
+	bh=hpny7kz4F3gEbLhGEDWqgQVCdisZ0q4uB2jqv5jzh0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=alaTZCVUw8uix/OWGMzzklsBveu0j3CqL0lInCqgeLz6pB+HflKGRuGPG+DBxCcElwDfySZ0zhnOgfv7fTsw0+ELBRWsHQ8+saouVOGcadeUquugYZo+kV3N3JctuYFxnSAySZv4RZajDRWESzymb8Gea+1CF6NwEMfSU5uRYUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTA2NyR2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59FF5C4CEF0;
-	Sun,  7 Sep 2025 20:41:14 +0000 (UTC)
+	 MIME-Version; b=KCa2JqBXthx+2/6vY1RLCANvzddvtOshzAmpcWq6HP/NDi6s1trb/d+6d+lMSvrMxxrKMMN0s2w/RvoC5zHhVR0Db/+YOGf4ww2lf30GcFhdZmZDpLxTPHJtoDSfa/zVGEMmpivZMUZBcQVXcdUI3nCzUen5JIVxn4EY2Guoo9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNOkkgyj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E7FC4CEF0;
+	Sun,  7 Sep 2025 20:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277674;
-	bh=QfCnTh7GRYFdjMpDQMY9F3wmqy4h893ZDosBU52Sw6s=;
+	s=korg; t=1757276350;
+	bh=hpny7kz4F3gEbLhGEDWqgQVCdisZ0q4uB2jqv5jzh0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aTA2NyR2BMFPSoE5uUDP+LXC5I7E9T8imqAm0wX0byuBfr5LTRaUt5tAWJaZ0wUHC
-	 Id4kZ2iJaadh30DV/Cj3LPUGRNe6hC9akGfcKg+f+Jc27+KcCCwjHxu+TUJlxHajoy
-	 CcMOvvPxdfm/P+8jVyvzgvoaiil+181ca3SxEg+o=
+	b=ZNOkkgyjbsjrTaheUb8k+R7bHzOc1PTrpR4gFFtUMjzTs7Mpyv3Kqfy5eVtiJPPYT
+	 JoAyKtC1zIR3GlU6Ul/fgbwmcTwu3fN6i8pLxxbXB9StZUpKMsdCgLDqP/6qlg+Bds
+	 RcjskLtXNDQTxqgUu95WdYrGZmkU+AlGucwUgrYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernard Pidoux <f6bvp@free.fr>,
-	Eric Dumazet <edumazet@google.com>,
-	Joerg Reuter <jreuter@yaina.de>,
-	David Ranch <dranch@trinnet.net>,
-	Folkert van Heusden <folkert@vanheusden.com>,
-	Dan Cross <crossd@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 088/183] ax25: properly unshare skbs in ax25_kiss_rcv()
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 078/104] Revert "drm/amdgpu: Avoid extra evict-restore process."
 Date: Sun,  7 Sep 2025 21:58:35 +0200
-Message-ID: <20250907195617.881586031@linuxfoundation.org>
+Message-ID: <20250907195609.697698934@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,64 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 8156210d36a43e76372312c87eb5ea3dbb405a85 ]
+This reverts commit 71598a5a7797f0052aaa7bcff0b8d4b8f20f1441 which is
+commit 1f02f2044bda1db1fd995bc35961ab075fa7b5a2 upstream.
 
-Bernard Pidoux reported a regression apparently caused by commit
-c353e8983e0d ("net: introduce per netns packet chains").
+This commit introduced a regression, however the fix for the regression:
+aa5fc4362fac ("drm/amdgpu: fix task hang from failed job submission
+during process kill") depends on things not yet present in 6.12.y and
+older kernels.  Since this commit is more of an optimization, just
+revert it for 6.12.y and older stable kernels.
 
-skb->dev becomes NULL and we crash in __netif_receive_skb_core().
-
-Before above commit, different kind of bugs or corruptions could happen
-without a major crash.
-
-But the root cause is that ax25_kiss_rcv() can queue/mangle input skb
-without checking if this skb is shared or not.
-
-Many thanks to Bernard Pidoux for his help, diagnosis and tests.
-
-We had a similar issue years ago fixed with commit 7aaed57c5c28
-("phonet: properly unshare skbs in phonet_rcv()").
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Bernard Pidoux <f6bvp@free.fr>
-Closes: https://lore.kernel.org/netdev/1713f383-c538-4918-bc64-13b3288cd542@free.fr/
-Tested-by: Bernard Pidoux <f6bvp@free.fr>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Joerg Reuter <jreuter@yaina.de>
-Cc: David Ranch <dranch@trinnet.net>
-Cc: Folkert van Heusden <folkert@vanheusden.com>
-Reviewed-by: Dan Cross <crossd@gmail.com>
-Link: https://patch.msgid.link/20250902124642.212705-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.x - 6.12.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ax25/ax25_in.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
-index 1cac25aca6378..f2d66af863595 100644
---- a/net/ax25/ax25_in.c
-+++ b/net/ax25/ax25_in.c
-@@ -433,6 +433,10 @@ static int ax25_rcv(struct sk_buff *skb, struct net_device *dev,
- int ax25_kiss_rcv(struct sk_buff *skb, struct net_device *dev,
- 		  struct packet_type *ptype, struct net_device *orig_dev)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2024,11 +2024,13 @@ void amdgpu_vm_adjust_size(struct amdgpu
+  */
+ long amdgpu_vm_wait_idle(struct amdgpu_vm *vm, long timeout)
  {
-+	skb = skb_share_check(skb, GFP_ATOMIC);
-+	if (!skb)
-+		return NET_RX_DROP;
-+
- 	skb_orphan(skb);
+-	timeout = drm_sched_entity_flush(&vm->immediate, timeout);
++	timeout = dma_resv_wait_timeout(vm->root.bo->tbo.base.resv,
++					DMA_RESV_USAGE_BOOKKEEP,
++					true, timeout);
+ 	if (timeout <= 0)
+ 		return timeout;
  
- 	if (!net_eq(dev_net(dev), &init_net)) {
--- 
-2.50.1
-
+-	return drm_sched_entity_flush(&vm->delayed, timeout);
++	return dma_fence_wait_timeout(vm->last_unlocked, true, timeout);
+ }
+ 
+ /**
 
 
 
