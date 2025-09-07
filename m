@@ -1,80 +1,82 @@
-Return-Path: <stable+bounces-178805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F73B4803F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 23:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C9DB48042
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 23:34:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4186189E4ED
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 21:34:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BBA1189E55C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 21:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828D021ABB9;
-	Sun,  7 Sep 2025 21:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC57315D34;
+	Sun,  7 Sep 2025 21:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJG6ltbc"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="g2aZz41L"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4319.protonmail.ch (mail-4319.protonmail.ch [185.70.43.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E13315D34;
-	Sun,  7 Sep 2025 21:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACA4212560
+	for <stable@vger.kernel.org>; Sun,  7 Sep 2025 21:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757280816; cv=none; b=fCxeX1TDxDWSb8WZC0RGIJXHQG5RB6W8zfUo2U7Ck5+p6yHBHuwTa5ok0wVPmYVoII3lhgZxxI11fcrwr+SHiJy/7/ynyrVpzm+ADW29Vp4GM5yuCoJF2Hl+wKyvWdxpGNH/H8sBdUsrkdt2HAdQg83jZj95EJHlIudI9ICRXRw=
+	t=1757280840; cv=none; b=OAcLn/p7ld8MeavN7wAuxXPWG9zJZVQfgIa0QFs+QJ6KK7b3B4bt3Z3THBdx8c/a+Krjr61owA0P1vRywcmQHP3l6PH5YHmy8Oap2LXAaH8PcYvgqoZWCk4o3pVwtFiLaxrUXkhCwXGmceG3RDD0sxKM6J+FpN8y0Us5NIl+EhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757280816; c=relaxed/simple;
-	bh=hiMCFehmnx56n2SHN3BYYz7V60JA05vff8v68I8prAo=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=urNZndVirFyrA+QMGOYNDl8AqwKa5Imh4JhylwYIrvq37OChwAoe4ekKcrCYEr/8D+PJPy2EQOu7szKml8KNdA+DGs91SO6i9ZK5ykCONO8UthoBL2QGWPGq1wjRqWGF3t40gzgEC/aR/OuHTcZeSVF5TcXpWxMSmMSDP8akeC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJG6ltbc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26086C4CEF0;
-	Sun,  7 Sep 2025 21:33:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757280815;
-	bh=hiMCFehmnx56n2SHN3BYYz7V60JA05vff8v68I8prAo=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=dJG6ltbcaFD6NwmYvMQjuz6nXV3U52qVGIYMKKSKmdeD/T4caAizPm0kndmlxcP3M
-	 lf6vzys5sEGUVUiE60ohYv9jN7t6/zAe7KLgkD8Vhxk8SdoG3yFNyvE9Sa5RhVarzF
-	 jD4SV7wWP+Qachp8XHykeGTtjsEg3I3zC+cKHHfJWfkgTshv+9pjJwDKi9MO5xRx4+
-	 t6grpthV8A/935bpCgEJ45W5M5SDz6TPDYFJ0X/ayAcNpDPIcgwCTf+Q2ngrlAA92m
-	 tAFR4m3FMbqwuFDizVpLNbPlj1tw6yBjGMGebaNx0KpnNwkpKqOpdwNdy9P0CXCyyw
-	 dSJgWToj/+i4w==
-Date: Sun, 7 Sep 2025 23:33:32 +0200 (CEST)
-From: Jiri Kosina <jikos@kernel.org>
-To: Bernard Pidoux <bernard.f6bvp@gmail.com>
-cc: stanislav.fort@aisle.com, davem@davemloft.net, disclosure@aisle.com, 
-    edumazet@google.com, horms@kernel.org, kuba@kernel.org, 
-    linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org, 
-    netdev@vger.kernel.org, pabeni@redhat.com, security@kernel.org, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH net v4] netrom: linearize and validate lengths in
- nr_rx_frame()
-In-Reply-To: <FDBA9F48-A844-4E65-A8B1-6FB660754342@gmail.com>
-Message-ID: <8q049863-056n-7o39-4373-pr9q9213q1n7@xreary.bet>
-References: <FDBA9F48-A844-4E65-A8B1-6FB660754342@gmail.com>
+	s=arc-20240116; t=1757280840; c=relaxed/simple;
+	bh=FyYr5/hk/gRito92bDyVwZ11iYwx4loOSjAlYoXIGrw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iU22qaWj4f9etbfmf0VoAjFWXDDF7D+HlYaon24vowOUVc5T+geEej7oDfhYphHImoAK9HHmjGo79fDjjY8oEjQWEvTK/BkPQ+kA11Q0/LwO5ygCIXPBtp3bvkRn5MKwW0n+fzUJc2+wYygeFn1cWvg+q6D0nMy2OSMYMoxuz78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=g2aZz41L; arc=none smtp.client-ip=185.70.43.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1757280830; x=1757540030;
+	bh=FyYr5/hk/gRito92bDyVwZ11iYwx4loOSjAlYoXIGrw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=g2aZz41LVjuGNXuCwSPbm2cef71gAq6OQ23fXNnPxIMgA38icF/yh/SI6c4jFXbWG
+	 LcqIy0AYR1VBSyoaEc0czcg/K8Rtc5RaXOmgzWF5TgU3Owkfo5XU4ud3OrR1knSqxD
+	 bAuuiFvx1YzJ1xyUHjicGWjfpBGNKSVn1GJZwZNuHvCOx1onEYF3RfsyPLLgGuR0Rx
+	 t8PKbPMBxwtNG7JGTKJ0UHM4phZ852aJn//wZw9Bh0Zpn6+M7XpfMUKBLjxRP6cHuG
+	 8305Ii7drQ1bXH/aw0rAUOa6xJNJkHk8+S/PHvcqCp/0Q5tH4tUIeeNgG1Vkv4NEpx
+	 6MbFLVqDKLm5w==
+Date: Sun, 07 Sep 2025 21:33:47 +0000
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Piotr Zalewski <pZ010001011111@proton.me>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, Diederik de Haas <didi.debian@cknow.org>, Andy Yan <andy.yan@rock-chips.com>, Heiko Stuebner <heiko@sntech.de>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 013/175] drm/rockchip: vop2: make vp registers nonvolatile
+Message-ID: <H3KxvGMniMkMPiHrpRDqCn2F7QdfdhNgkc4MJ2dt4y0L4ddta0HvB8xscoZLISq01mLVFg_o1tpoeLCBf8LgvfgIFWH_xBKxgOHerf-l9Dk=@proton.me>
+In-Reply-To: <20250907195615.203313380@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org> <20250907195615.203313380@linuxfoundation.org>
+Feedback-ID: 53478694:user:proton
+X-Pm-Message-ID: 8006cb735122e7bbb13204512b174b10fa93d2d4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 7 Sep 2025, Bernard Pidoux wrote:
+On Sunday, September 7th, 2025 at 10:27 PM, Greg Kroah-Hartman <gregkh@linu=
+xfoundation.org> wrote:
 
-> While applying netrom PATCH net v4
-> patch says that 
-> it is malformed on line 12.
-> 
-> However I cannot see any reason.
+> 6.12-stable review patch. If anyone has any objections, please let me kno=
+w.
+>=20
 
-There is a superfluous leading space on each line of the diff. (wasn't the 
-case with the previous patches, v4 is the first one to have this).
+Hello,
 
--- 
-Jiri Kosina
-SUSE Labs
+Gamma LUT support in vop2 was added in 6.14[1] and even though this bug fix
+does not explicitly depend on vop2 gamma LUT code, the bug won't happen
+if gamma LUT is not implemented.
 
+[1] https://lore.kernel.org/all/CAPM=3D9tw+ySbm80B=3DzHVhodMFoS_fqNw_v4yVUR=
+Cv3cc9ukvYYg@mail.gmail.com/
+
+Best regards, Piotr Zalewski
 
