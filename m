@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46460B47D0E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CDF6B47DDA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFC4F3B2232
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BCB9189E8BD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C0A291C3F;
-	Sun,  7 Sep 2025 20:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D641B424F;
+	Sun,  7 Sep 2025 20:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IC5ZYVFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnLzuXec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BBA1CDFAC;
-	Sun,  7 Sep 2025 20:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71C71A9FAA;
+	Sun,  7 Sep 2025 20:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275617; cv=none; b=Tq7qNIzTAHNyfPrCQcm2b8lO4S5N8OAjC2u2CLEHjrPY336T/dnFrCjrHbxdGG8OP2xfkVOC4tm2oE2btXCXhhpvmK9Zqg0mgViGZ0dm165S6/0qH8QF6yfAJRRiB4rh2FtNuFrmlMgszmGi/xA9s+0l6XedIZkG8j2+Wwg0FzI=
+	t=1757276237; cv=none; b=ObcsiVkv1wP/SadYibm2qwLPRKdHAj3qv6ZduJv2iOCAzetuDuZpW0B9KEN6abd6TeEnKXpjAhmigBXvEJ2+8ryy0iwfJ9ZaibhwcViOf1RPGeWHGzRjWTs3wPGmB1HmlB7k8j/pLamUFjgDRXQD/Bee2j21m3ct7gf/MpdSeLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275617; c=relaxed/simple;
-	bh=u5+makXpfW8Jps4QhlCi9Ytos2Li+P5hZSYSGDIxqm8=;
+	s=arc-20240116; t=1757276237; c=relaxed/simple;
+	bh=tiwY3ViueI4RmJTYGbxgGRft3v01bNGMIph0FScxpgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fL4Z5SUzIxiHm1rIcjaOtra+c0oq6+XoxTQsgM/snEDWyiNJKGsD/Ish2Bogzvfhq011Ca8ebEBjqSj9FahU6zlDPO0+tgas3Ri6Qkc3vyfKb6I8X85WfsN+zwxY3XVYUV+HBKO7EaNFF9hCLnup4oZaZ261eEB52psCaapXFDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IC5ZYVFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5039C4CEF0;
-	Sun,  7 Sep 2025 20:06:56 +0000 (UTC)
+	 MIME-Version; b=n8kYh8c8cVZmNDBHWtXcGMVFrbrxAZSKgPuSCapfVEjx9sINQj+/ucHwH3OKimjddWK6q0IxCUeS/4WBkudjGRetwoKIJh32EhWLjzOsFJJ8zuq9+0nZhT1hO1/kySOaSMeYjyuxQ3sQbTIBIMAePH7M7LoX86ByRIklcDGlpUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnLzuXec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CE4C4CEF0;
+	Sun,  7 Sep 2025 20:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275617;
-	bh=u5+makXpfW8Jps4QhlCi9Ytos2Li+P5hZSYSGDIxqm8=;
+	s=korg; t=1757276237;
+	bh=tiwY3ViueI4RmJTYGbxgGRft3v01bNGMIph0FScxpgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IC5ZYVFPeasriN5yeq4/r+0SlWFn0V2uaAEMrIMF1L8uNjOLm2A0QG1X7Y3nUjaBG
-	 Cs4Y+tpgJ3gX3ZX0BcqeRPd7Bw15z/eyCq0pU4Bj9jOExjlfWUnB2dQk8Hv7/OCuD9
-	 G+/fb7bGGQ7sWoYZMEF0J3zMgtJCDX+xkL3qVpeE=
+	b=EnLzuXec3JtFNKwcy+/OsdLEQ7NMWvTHlrokcOY6R4enb3B3txgz/blfGPUg3rU5I
+	 4K8tLqjuJBDvOeYkjwkDR5ypfMjz6r3a7YDG0iipB8oS743Kh56BBediCSQyYLb85+
+	 uujWUAOU5EBBh7KioV4A0yYwi8m3et/oHGUbjUN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thibaut VARENE <hacks@slashdirt.org>,
-	Felix Fietkau <nbd@nbd.name>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sungbae Yoo <sungbaey@nvidia.com>,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 11/52] net: ethernet: mtk_eth_soc: fix tx vlan tag for llc packets
+Subject: [PATCH 6.1 014/104] tee: optee: ffa: fix a typo of "optee_ffa_api_is_compatible"
 Date: Sun,  7 Sep 2025 21:57:31 +0200
-Message-ID: <20250907195602.302651626@linuxfoundation.org>
+Message-ID: <20250907195608.049582546@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Sungbae Yoo <sungbaey@nvidia.com>
 
-[ Upstream commit d4736737110ffa83d29f1c5d17b26113864205f6 ]
+[ Upstream commit 75dbd4304afe574fcfc4118a5b78776a9f48fdc4 ]
 
-When sending llc packets with vlan tx offload, the hardware fails to
-actually add the tag. Deal with this by fixing it up in software.
+Fixes optee_ffa_api_is_compatbile() to optee_ffa_api_is_compatible()
+because compatbile is a typo of compatible.
 
-Fixes: 656e705243fd ("net-next: mediatek: add support for MT7623 ethernet")
-Reported-by: Thibaut VARENE <hacks@slashdirt.org>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250831182007.51619-1-nbd@nbd.name
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4615e5a34b95 ("optee: add FF-A support")
+Signed-off-by: Sungbae Yoo <sungbaey@nvidia.com>
+Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/tee/optee/ffa_abi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 011210e6842de..dc29403e4b733 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -1178,6 +1178,13 @@ static netdev_tx_t mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	bool gso = false;
- 	int tx_num;
+diff --git a/drivers/tee/optee/ffa_abi.c b/drivers/tee/optee/ffa_abi.c
+index b8ba360e863ed..927c3d7947f9c 100644
+--- a/drivers/tee/optee/ffa_abi.c
++++ b/drivers/tee/optee/ffa_abi.c
+@@ -653,7 +653,7 @@ static int optee_ffa_do_call_with_arg(struct tee_context *ctx,
+  * with a matching configuration.
+  */
  
-+	if (skb_vlan_tag_present(skb) &&
-+	    !eth_proto_is_802_3(eth_hdr(skb)->h_proto)) {
-+		skb = __vlan_hwaccel_push_inside(skb);
-+		if (!skb)
-+			goto dropped;
-+	}
-+
- 	/* normally we can rely on the stack not calling this more than once,
- 	 * however we have 2 queues running on the same ring so we need to lock
- 	 * the ring access
-@@ -1223,8 +1230,9 @@ static netdev_tx_t mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
+-static bool optee_ffa_api_is_compatbile(struct ffa_device *ffa_dev,
++static bool optee_ffa_api_is_compatible(struct ffa_device *ffa_dev,
+ 					const struct ffa_ops *ops)
+ {
+ 	const struct ffa_msg_ops *msg_ops = ops->msg_ops;
+@@ -804,7 +804,7 @@ static int optee_ffa_probe(struct ffa_device *ffa_dev)
  
- drop:
- 	spin_unlock(&eth->page_lock);
--	stats->tx_dropped++;
- 	dev_kfree_skb_any(skb);
-+dropped:
-+	stats->tx_dropped++;
- 	return NETDEV_TX_OK;
- }
+ 	ffa_ops = ffa_dev->ops;
  
+-	if (!optee_ffa_api_is_compatbile(ffa_dev, ffa_ops))
++	if (!optee_ffa_api_is_compatible(ffa_dev, ffa_ops))
+ 		return -EINVAL;
+ 
+ 	if (!optee_ffa_exchange_caps(ffa_dev, ffa_ops, &sec_caps,
 -- 
 2.50.1
 
