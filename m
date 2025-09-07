@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-178564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2937B47F2C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C91CB47E0E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B13E21B213C6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:34:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79CA1189EFBF
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E995A211A14;
-	Sun,  7 Sep 2025 20:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF75F20D51C;
+	Sun,  7 Sep 2025 20:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKQap7Wa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJYoOgls"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A621B1DE8AF;
-	Sun,  7 Sep 2025 20:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AF4212B2F;
+	Sun,  7 Sep 2025 20:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277239; cv=none; b=uAaNAA4zTBKGQqDmbbjxCM2B5iN15voTTOlNXK22XrLEnyl1PEVYA9Ea6+ExSPuqsZ1ZT+SjwXWN8TMWrVqKZOeN+sStOZIMdrDZ69JVYIIBRdOz6cXeT/joY5pZ0yu3tJAISkfH83Kgy7tzcjQsgU5qWDsBfMeKY1HOkR09nyU=
+	t=1757276375; cv=none; b=GB5eXL0lpFNUF/9rGTBnW+LKnlkYVJr0t2XCCCuuCcciQZcyFBDn1elEnR/RGqErUxna9Yv91BUzHbGRwfHH00SJmS/9Kw+mkpJWiyrp4AqdMIy4SxbVcZXNED7ZJRy0VP6hcA6+8p64ZvzA9QSsxub2z2ewOPnfIf4tytH9e9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277239; c=relaxed/simple;
-	bh=X81WQiruJ6F5Ul5JT0EjDe8FvzoMesGZLx/a0C4WtoU=;
+	s=arc-20240116; t=1757276375; c=relaxed/simple;
+	bh=1HJF3yP3xk90Va3/0UYPS+NXkkuQzJqSqBvG7OEsRkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yd5qG4jE2TBvTsHQrl1DoT1EMhEX8LtE4p9hionWpBWm9j4VfVm3Ay8sUJy7mTNppYWn71oRbK0NCZDLzGNbI3CdGLOAkDzMut+gfDkVlwsZOrk/urZOaCBIM+gUrCSg6edmRBmHkDSEB6NAfY0ZHb9jGtzl+4GUYIf6nvKMBKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKQap7Wa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA02C4CEF0;
-	Sun,  7 Sep 2025 20:33:58 +0000 (UTC)
+	 MIME-Version; b=h6WtpUhNQ/z1w6Kw0e2Kwlq603o1vY9dZellOesg1WgA7oei54IfK1/U6ibqIZggzVa2wEpMF6zKgOQqZ30PLeGH+AEMEYXURIh6UgU4sS/4Xy2+hbJye4uSSvyDi0JN9h1L8w9TPZvjLH0Ss0GbKOWdeDO8i0a0Xwp5JWgXC34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJYoOgls; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F7CC4CEF0;
+	Sun,  7 Sep 2025 20:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277239;
-	bh=X81WQiruJ6F5Ul5JT0EjDe8FvzoMesGZLx/a0C4WtoU=;
+	s=korg; t=1757276375;
+	bh=1HJF3yP3xk90Va3/0UYPS+NXkkuQzJqSqBvG7OEsRkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKQap7Wa8lR0ZY5LGdzxYT+9X1hrpdRcsy9PdgYH1zllE9TcDi7IpzL2s2Ne9/vAn
-	 Z3HVLx/5sSGg5XsnS6aHjG4DywgZb+gIXxMINs79+L3BkczGmt5eJ3I+KcHLKlHdL3
-	 AuoL3nFzqu0xeCS2MXwTsi7WsRhJe/73+KEw7E1g=
+	b=JJYoOgls1XWRBBHFYXF7zgw3vpOh/b2O6SQOdVn93xKK55ssXvdSWIaQTgUb3GtRU
+	 oPmxbItvFpbyIc3Sfnm3WvK72SqvAX+bH/Coe6P02KW5/NR6X9JtRU6JM4dXFBH8/v
+	 ndQWt2jXBsGAc/ZymkClIba7kIX5JQVzcHAVpwbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 127/175] net: dsa: b53: do not enable EEE on bcm63xx
+	Michael Walle <mwalle@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 085/104] drm/bridge: ti-sn65dsi86: fix REFCLK setting
 Date: Sun,  7 Sep 2025 21:58:42 +0200
-Message-ID: <20250907195617.858902660@linuxfoundation.org>
+Message-ID: <20250907195609.876448172@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Michael Walle <mwalle@kernel.org>
 
-commit 1237c2d4a8db79dfd4369bff6930b0e385ed7d5c upstream.
+[ Upstream commit bdd5a14e660062114bdebaef9ad52adf04970a89 ]
 
-BCM63xx internal switches do not support EEE, but provide multiple RGMII
-ports where external PHYs may be connected. If one of these PHYs are EEE
-capable, we may try to enable EEE for the MACs, which then hangs the
-system on access of the (non-existent) EEE registers.
+The bridge has three bootstrap pins which are sampled to determine the
+frequency of the external reference clock. The driver will also
+(over)write that setting. But it seems this is racy after the bridge is
+enabled. It was observed that although the driver write the correct
+value (by sniffing on the I2C bus), the register has the wrong value.
+The datasheet states that the GPIO lines have to be stable for at least
+5us after asserting the EN signal. Thus, there seems to be some logic
+which samples the GPIO lines and this logic appears to overwrite the
+register value which was set by the driver. Waiting 20us after
+asserting the EN line resolves this issue.
 
-Fix this by checking if the switch actually supports EEE before
-attempting to configure it.
-
-Fixes: 22256b0afb12 ("net: dsa: b53: Move EEE functions to b53")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Tested-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20250602193953.1010487-2-jonas.gorski@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a095f15c00e2 ("drm/bridge: add support for sn65dsi86 bridge driver")
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20250821122341.1257286-1-mwalle@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -2378,6 +2378,9 @@ int b53_eee_init(struct dsa_switch *ds,
- {
- 	int ret;
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+index 6595f954135ad..d31bb9153f4fb 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+@@ -375,6 +375,17 @@ static int __maybe_unused ti_sn65dsi86_resume(struct device *dev)
  
-+	if (!b53_support_eee(ds, port))
-+		return 0;
+ 	gpiod_set_value(pdata->enable_gpio, 1);
+ 
++	/*
++	 * After EN is deasserted and an external clock is detected, the bridge
++	 * will sample GPIO3:1 to determine its frequency. The driver will
++	 * overwrite this setting in ti_sn_bridge_set_refclk_freq(). But this is
++	 * racy. Thus we have to wait a couple of us. According to the datasheet
++	 * the GPIO lines has to be stable at least 5 us (td5) but it seems that
++	 * is not enough and the refclk frequency value is still lost or
++	 * overwritten by the bridge itself. Waiting for 20us seems to work.
++	 */
++	usleep_range(20, 30);
 +
- 	ret = phy_init_eee(phy, false);
- 	if (ret)
- 		return 0;
-@@ -2392,7 +2395,7 @@ bool b53_support_eee(struct dsa_switch *
- {
- 	struct b53_device *dev = ds->priv;
- 
--	return !is5325(dev) && !is5365(dev);
-+	return !is5325(dev) && !is5365(dev) && !is63xx(dev);
- }
- EXPORT_SYMBOL(b53_support_eee);
- 
+ 	/*
+ 	 * If we have a reference clock we can enable communication w/ the
+ 	 * panel (including the aux channel) w/out any need for an input clock
+-- 
+2.51.0
+
 
 
 
