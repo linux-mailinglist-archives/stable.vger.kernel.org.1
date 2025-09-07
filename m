@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-178384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE03DB47E73
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33DE2B47FAD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:40:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBCA9189FDD7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E200A3BAEDA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22FDA1F1921;
-	Sun,  7 Sep 2025 20:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9D3212B3D;
+	Sun,  7 Sep 2025 20:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BgkVp1e6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCZKwSgE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4270D528;
-	Sun,  7 Sep 2025 20:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB5D4315A;
+	Sun,  7 Sep 2025 20:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276664; cv=none; b=kCwtfpybbZOMHoFNo2CgPL3bIbHME+9V1dKwrsF7LsxtOk15MOox/uOh6w/RkiiAZxivkoWryFXwV50gKP72RNGitHH2EVYE/il0tWvITFJB0x0r2odLLPM0JvYs1l80AhQVDBs9A0eo9bgr2qNgkjV8467CaTu14YXajw0ccug=
+	t=1757277646; cv=none; b=jeGDMX1zS+Nh3bPUY9Za06WTBarKTDtF57yCENj3yRSdP1Gfpzb9E3IB2LF9qnvI5VURa5q9kG0EqtsTJ4Hc1amWNwvQ7i+fFtjrQkp/IIWhWSHN9PKmZcePbCaS+4cWGopJZgAxbtfXwwf8i9TgfmZdjGOTPJPQol7cU9v6yzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276664; c=relaxed/simple;
-	bh=O2tjjsFPaqYlMOeHKkyN4Ch6VMnDFIXWCl26zM9Ls04=;
+	s=arc-20240116; t=1757277646; c=relaxed/simple;
+	bh=cN76D8Blb+6+MZHGn8z80NWyf2qq767np+8n57Retqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hntd0QgZWQ4TBoqLmqzqoAOCxQrMObPl0roDTBAcycZWv46+1EoFzBVhHE4cGqBw/BHq7D1MubfNy99Ohkgx2pFYvnQEQe/jK610cw6DqtEb3Igoy0/T+HcWCof3rz3nMok+p64ohl3A3IKO9sUVkKVo5mBzzyI6lVSa7rFwRGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BgkVp1e6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3412C4CEF8;
-	Sun,  7 Sep 2025 20:24:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dJPUOMK90FsBrxwvi2y2z+ALpQZmlubbgKMCEs27zJobzeM1WiLAy/7yX0MbAVU9O4kjbxLLGRbFaBtJuj9aApLwI1t/JDA1Bc6F/Zeb8OSU8PQxGKyo2TcbHkEvOm7BugP3oUb5dweagAgQ2hXv3jVO5+l4vDzVddpSjGFP05U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCZKwSgE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778A3C4CEF0;
+	Sun,  7 Sep 2025 20:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276664;
-	bh=O2tjjsFPaqYlMOeHKkyN4Ch6VMnDFIXWCl26zM9Ls04=;
+	s=korg; t=1757277646;
+	bh=cN76D8Blb+6+MZHGn8z80NWyf2qq767np+8n57Retqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BgkVp1e6lwZqTP4pkqOZgZ3pTAE3UM+67OMbmHaU0vVg2wYEhTD/6Sf/8Ir3V5jPc
-	 9MDZ8PaoptxDwThVEqPdtyZHixd7Ye6AM+7o/+qa8W1A8shGB8OYKjmsudDc8OcXoE
-	 gEy6bbcijf7XY33hYoNlNR3QdckriAr/tGXNRWyY=
+	b=OCZKwSgEGNt5UWYm9eIyjh8v28OUeR8v8XkbV6B+8vnFNInPjhXNqNmbTR0vxmnAK
+	 ZWRD8f+WRcjT3tG5q6smZX/T43OnjoV3KDY7+sUxFgGevPjZaGAUWzx1p+cJtuLEOI
+	 8fMN7LArQ4b+viWDr8WV+E3hndT/lF8VSmZ7YXME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinfeng Wang <jinfeng.wang.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.6 071/121] Revert "spi: spi-cadence-quadspi: Fix pm runtime unbalance"
+	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 080/183] tools: ynl-gen: fix nested array counting
 Date: Sun,  7 Sep 2025 21:58:27 +0200
-Message-ID: <20250907195611.658686738@linuxfoundation.org>
+Message-ID: <20250907195617.697597240@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,97 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinfeng Wang <jinfeng.wang.cn@windriver.com>
+From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 
-This reverts commit cdfb20e4b34ad99b3fe122aafb4f8ee7b9856e1f which is
-commit b07f349d1864abe29436f45e3047da2bdd476462 upstream.
+[ Upstream commit b4ada0618eed0fbd1b1630f73deb048c592b06a1 ]
 
-There is cadence-qspi ff8d2000.spi: Unbalanced pm_runtime_enable! error
-without this revert.
+The blamed commit introduced the concept of split attribute
+counting, and later allocating an array to hold them, however
+TypeArrayNest wasn't updated to use the new counting variable.
 
-After reverting commit cdfb20e4b34a ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 1af6d1696ca4 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"),
-Unbalanced pm_runtime_enable! error does not appear.
+Abbreviated example from tools/net/ynl/generated/nl80211-user.c:
+nl80211_if_combination_attributes_parse(...):
+  unsigned int n_limits = 0;
+  [...]
+  ynl_attr_for_each(attr, nlh, yarg->ys->family->hdr_len)
+	if (type == NL80211_IFACE_COMB_LIMITS)
+		ynl_attr_for_each_nested(attr2, attr)
+			dst->_count.limits++;
+  if (n_limits) {
+	dst->_count.limits = n_limits;
+	/* allocate and parse attributes */
+  }
 
-These two commits are backported from upstream commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths").
+In the above example n_limits is guaranteed to always be 0,
+hence the conditional is unsatisfiable and is optimized out.
 
-The commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths")
-fix commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance").
+This patch changes the attribute counting to use n_limits++ in the
+attribute counting loop in the above example.
 
-The commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance") fix
-commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings").
-
-The commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings") fix
-commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support").
-
-6.6.y only backport commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"),
-but does not backport commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support")
-and commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings").
-And the backport of commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-differs with the original patch. So there is Unbalanced pm_runtime_enable error.
-
-If revert the backport for commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"), there is no error.
-If backport commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support") and
-commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings"), there
-is hang during booting. I didn't find the cause of the hang.
-
-Since commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support") and
-commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings") are
-not backported, commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths") are not needed.
-So revert commits commit cdfb20e4b34a ("spi: spi-cadence-quadspi: Fix pm runtime unbalance") and
-commit 1af6d1696ca4 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths").
-
-Signed-off-by: Jinfeng Wang <jinfeng.wang.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 58da455b31ba ("tools: ynl-gen: improve unwind on parsing errors")
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Link: https://patch.msgid.link/20250902160001.760953-1-ast@fiberby.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |   11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ tools/net/ynl/pyynl/ynl_gen_c.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1868,13 +1868,6 @@ static int cqspi_probe(struct platform_d
- 			goto probe_setup_failed;
- 	}
+diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
+index 76032e01c2e75..0725a52b6ad7b 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_c.py
++++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+@@ -830,7 +830,7 @@ class TypeArrayNest(Type):
+                      'ynl_attr_for_each_nested(attr2, attr) {',
+                      '\tif (ynl_attr_validate(yarg, attr2))',
+                      '\t\treturn YNL_PARSE_CB_ERROR;',
+-                     f'\t{var}->_count.{self.c_name}++;',
++                     f'\tn_{self.c_name}++;',
+                      '}']
+         return get_lines, None, local_vars
  
--	pm_runtime_enable(dev);
--
--	if (cqspi->rx_chan) {
--		dma_release_channel(cqspi->rx_chan);
--		goto probe_setup_failed;
--	}
--
- 	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register SPI ctlr %d\n", ret);
-@@ -1884,7 +1877,6 @@ static int cqspi_probe(struct platform_d
- 	return 0;
- probe_setup_failed:
- 	cqspi_controller_enable(cqspi, 0);
--	pm_runtime_disable(dev);
- probe_reset_failed:
- 	if (cqspi->is_jh7110)
- 		cqspi_jh7110_disable_clk(pdev, cqspi);
-@@ -1906,8 +1898,7 @@ static void cqspi_remove(struct platform
- 	if (cqspi->rx_chan)
- 		dma_release_channel(cqspi->rx_chan);
- 
--	if (pm_runtime_get_sync(&pdev->dev) >= 0)
--		clk_disable(cqspi->clk);
-+	clk_disable_unprepare(cqspi->clk);
- 
- 	if (cqspi->is_jh7110)
- 		cqspi_jh7110_disable_clk(pdev, cqspi);
+-- 
+2.50.1
+
 
 
 
