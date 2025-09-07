@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE0CDB47FB9
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93024B47E08
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D58FF1B21944
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F5043C12D3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F147B212B3D;
-	Sun,  7 Sep 2025 20:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3599727B325;
+	Sun,  7 Sep 2025 20:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQrQTibO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMU13Q2s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8884315A;
-	Sun,  7 Sep 2025 20:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BBF1F1921;
+	Sun,  7 Sep 2025 20:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277684; cv=none; b=rk9k1ACKtoXJjYrnkcl3ZXpHMZrpyppBf2aQq6pGtAfUS9nlJr4wot03TJaxIh3g/y+GlI8vexPlNso/DZ1Q1jx8QvoOom6tXjUs8mUJafomba8mfo0ftWc68g4rrWUCWf5q6sU8y9fzCLtwx99ptsp/NakW7Or1b7HdVoFXeAc=
+	t=1757276360; cv=none; b=uy6FBXmmrASxb8ppXS3NZqZDA2lm5Gu4v0umSgG21girAV5TdsiGaHfC6iD70EFC4r4CQbZ2hKu52wvBVgmFuCFBj5Yvx236dVhLA/wt6cDMopKufi7CYmvvvBwhqRxGbBKKzStTXymMqRGHt+UDgyyT4uQN117p8JLgFq1PQaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277684; c=relaxed/simple;
-	bh=8AsovcY8DSr69KBFMdogeeKIrKLwHCR3oBc2X+kLepw=;
+	s=arc-20240116; t=1757276360; c=relaxed/simple;
+	bh=Dw48bgi4hFck+pbTwJ6UOguS8dQFDcB5ScbuvvtS7+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JML0aWYP92rMmc6+el+8FmxAkMyVNxHPjXZZnEE4cQI0j7mlF+yndzTXGsdVq0dRn0nWWfOUVSmki2eVnzIp7i6eQ52uaH1rku6V/iImR0WKI6VlfCD+z47YPc19g4vL9azMi0VdG3aohPMOk+ihHnjhKp0o4Z6bWVlvyAaDT94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQrQTibO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30893C4CEF0;
-	Sun,  7 Sep 2025 20:41:23 +0000 (UTC)
+	 MIME-Version; b=MO/iqKNpxWm1cHfpZE7GBdtYNkgbpGK/syR//DyNV4oG6P7epF04GQE3RgzSshiRkGSOUCW69NFJKHzLyMN8vFF5wDRFr8qbIxyvAoema7yboIMaG9l1L1osMMIUUuseW1ui2XEn4AWQH+5aGH7Jcw81IXLLoNp7aLnHovHouVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMU13Q2s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62932C4CEF0;
+	Sun,  7 Sep 2025 20:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277684;
-	bh=8AsovcY8DSr69KBFMdogeeKIrKLwHCR3oBc2X+kLepw=;
+	s=korg; t=1757276359;
+	bh=Dw48bgi4hFck+pbTwJ6UOguS8dQFDcB5ScbuvvtS7+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQrQTibOZWX2SHKUPi9H565IDzFoqghXivhsy3cnSf4iu/MzgyqUIS5Lb0xheNdfT
-	 zlsMjeagSZdPDzi+ZrEIdT4+ZX+KqPmT9UhIIXiCzgPv6xZQl3IR92IUXZsYDcY+ta
-	 ajGYVzAUQxhxZGCqtc2eTJkzbPnjHDFJePLkZwmg=
+	b=WMU13Q2sCzNUox4+STRsdz1LsqpkzhM/ovUEA6lAQgVLDxpYOFDz4RusBf+NRVDtI
+	 MADFkqKolxgKpXq/vQ+T0DxOiMk00jOFufLAOoOHxpbqIvwZplt2BqSs0MTpk9rHgI
+	 rr9cENNMDx87ZPrCm8toWgHmQb0TH7q9sp9mt/Kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 091/183] net: atm: fix memory leak in atm_register_sysfs when device_register fail
+Subject: [PATCH 6.1 081/104] hwmon: mlxreg-fan: Prevent fans from getting stuck at 0 RPM
 Date: Sun,  7 Sep 2025 21:58:38 +0200
-Message-ID: <20250907195617.954010157@linuxfoundation.org>
+Message-ID: <20250907195609.774216872@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Vadim Pasternak <vadimp@nvidia.com>
 
-[ Upstream commit 0a228624bcc00af41f281a2a84c928595a74c17d ]
+[ Upstream commit 1180c79fbf36e4c02e76ae4658509523437e52a4 ]
 
-When device_register() return error in atm_register_sysfs(), which can be
-triggered by kzalloc fail in device_private_init() or other reasons,
-kmemleak reports the following memory leaks:
+The fans controlled by the driver can get stuck at 0 RPM if they are
+configured below a 20% duty cycle. The driver tries to avoid this by
+enforcing a minimum duty cycle of 20%, but this is done after the fans
+are registered with the thermal subsystem. This is too late as the
+thermal subsystem can set their current state before the driver is able
+to enforce the minimum duty cycle.
 
-unreferenced object 0xffff88810182fb80 (size 8):
-  comm "insmod", pid 504, jiffies 4294852464
-  hex dump (first 8 bytes):
-    61 64 75 6d 6d 79 30 00                          adummy0.
-  backtrace (crc 14dfadaf):
-    __kmalloc_node_track_caller_noprof+0x335/0x450
-    kvasprintf+0xb3/0x130
-    kobject_set_name_vargs+0x45/0x120
-    dev_set_name+0xa9/0xe0
-    atm_register_sysfs+0xf3/0x220
-    atm_dev_register+0x40b/0x780
-    0xffffffffa000b089
-    do_one_initcall+0x89/0x300
-    do_init_module+0x27b/0x7d0
-    load_module+0x54cd/0x5ff0
-    init_module_from_file+0xe4/0x150
-    idempotent_init_module+0x32c/0x610
-    __x64_sys_finit_module+0xbd/0x120
-    do_syscall_64+0xa8/0x270
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Fix by setting the minimum duty cycle before registering the fans with
+the thermal subsystem.
 
-When device_create_file() return error in atm_register_sysfs(), the same
-issue also can be triggered.
-
-Function put_device() should be called to release kobj->name memory and
-other device resource, instead of kfree().
-
-Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250901063537.1472221-1-wangliang74@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: d7efb2ebc7b3 ("hwmon: (mlxreg-fan) Extend driver to support multiply cooling devices")
+Reported-by: Nikolay Aleksandrov <razor@blackwall.org>
+Tested-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
+Link: https://lore.kernel.org/r/20250730201715.1111133-1-vadimp@nvidia.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/resources.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hwmon/mlxreg-fan.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/atm/resources.c b/net/atm/resources.c
-index b19d851e1f443..7c6fdedbcf4e5 100644
---- a/net/atm/resources.c
-+++ b/net/atm/resources.c
-@@ -112,7 +112,9 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
- 
- 	if (atm_proc_dev_register(dev) < 0) {
- 		pr_err("atm_proc_dev_register failed for dev %s\n", type);
--		goto out_fail;
-+		mutex_unlock(&atm_dev_mutex);
-+		kfree(dev);
-+		return NULL;
+diff --git a/drivers/hwmon/mlxreg-fan.c b/drivers/hwmon/mlxreg-fan.c
+index 96017cc8da7ec..7514d57661048 100644
+--- a/drivers/hwmon/mlxreg-fan.c
++++ b/drivers/hwmon/mlxreg-fan.c
+@@ -551,15 +551,14 @@ static int mlxreg_fan_cooling_config(struct device *dev, struct mlxreg_fan *fan)
+ 		if (!pwm->connected)
+ 			continue;
+ 		pwm->fan = fan;
++		/* Set minimal PWM speed. */
++		pwm->last_hwmon_state = MLXREG_FAN_PWM_DUTY2STATE(MLXREG_FAN_MIN_DUTY);
+ 		pwm->cdev = devm_thermal_of_cooling_device_register(dev, NULL, mlxreg_fan_name[i],
+ 								    pwm, &mlxreg_fan_cooling_ops);
+ 		if (IS_ERR(pwm->cdev)) {
+ 			dev_err(dev, "Failed to register cooling device\n");
+ 			return PTR_ERR(pwm->cdev);
+ 		}
+-
+-		/* Set minimal PWM speed. */
+-		pwm->last_hwmon_state = MLXREG_FAN_PWM_DUTY2STATE(MLXREG_FAN_MIN_DUTY);
  	}
  
- 	if (atm_register_sysfs(dev, parent) < 0) {
-@@ -128,7 +130,7 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
- 	return dev;
- 
- out_fail:
--	kfree(dev);
-+	put_device(&dev->class_dev);
- 	dev = NULL;
- 	goto out;
- }
+ 	return 0;
 -- 
-2.50.1
+2.51.0
 
 
 
