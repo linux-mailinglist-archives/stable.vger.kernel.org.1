@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-178093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E8BCB47D39
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27CCBB47E90
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA9AB17BEAB
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26506189FEE7
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA79B29BD80;
-	Sun,  7 Sep 2025 20:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549E9212B2F;
+	Sun,  7 Sep 2025 20:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDUCAJB0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eme1GIfa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775C722F74D;
-	Sun,  7 Sep 2025 20:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A68D528;
+	Sun,  7 Sep 2025 20:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275741; cv=none; b=sOm9Qa6T3h+yDoKf3Z7CGHdzPRHKAUArrMCyRVBNMzkrurMZ/0pOwYYbJutnStQafOFIb84o8r/WdByFrRpzCMgyeSRAHcCrVU/Vb2Lba4LO+v9nrZxE5HIfJIQ3XcJZ7oe9rNuRCnLwiCsMiTtlX3Cg9bzc97wH/F41auoxw0s=
+	t=1757276760; cv=none; b=N9Ff8qaiIMTNxRCukZhxrJUQRbqAkxH+rhV/iTjetXXYn5bj+WeTgP7GiXxv8Nvv20RL58Z0K5MRrmtlY/6M5ijWp/zc1zP7ZzvAQ5LIWrsAMcukKg7pNBTa7lveD33QWfzowHKN2cFsEY+zjVA+WjgTcl29ZBoaRpame5L/V9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275741; c=relaxed/simple;
-	bh=fN/7YFl8UW7dxGok0iUFS6oKcryf8HcIkLh9if1VpBc=;
+	s=arc-20240116; t=1757276760; c=relaxed/simple;
+	bh=vIXZZ/kaHL3g7jghCmhJ/nNZ4cvSZ5WyrF7/+FdDYgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KvCQrRU0zyzfkJ/f5kWoA3gWDSUtT2pV/YoFBr1r/4s7GU+6P2aCU4wl9wFOO9NAGYd8uTYxJJ+jkFMrrL38v5Oa5o+zycUfRBoBGdDRIIyq9g3u77jUmrPxfsv7PpYkp1KrGy2BFeZnwgu8MfSh2/OtMxvMdgeezrZI9OwDdtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDUCAJB0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4C4C4CEF0;
-	Sun,  7 Sep 2025 20:09:00 +0000 (UTC)
+	 MIME-Version; b=A6s3xbEwd/c/k2pqPqB5nm0f5vKtxGg4ZwSyvllFTnHw1rn0uWKwtv4Gnr/mv0jyJWFIPlrA6dhJBdMk7L0ml1kQOcPEcpOhBcrEhWIsI95cDtwNWIu1F4ESjkOkmajD4GBEycBgYxpxVCC7dNBdlvCpIQg9VDrQGT1TA3jYktI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eme1GIfa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85182C4CEF0;
+	Sun,  7 Sep 2025 20:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275741;
-	bh=fN/7YFl8UW7dxGok0iUFS6oKcryf8HcIkLh9if1VpBc=;
+	s=korg; t=1757276759;
+	bh=vIXZZ/kaHL3g7jghCmhJ/nNZ4cvSZ5WyrF7/+FdDYgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDUCAJB0wObcVG6pM+2gCGQ9IjEPOLjmSan7Zw4oX7IXeNWfdkp01u+W/jal86j96
-	 rNEMOg7dYniSKBpO54bS/omjNyLRzsww1GnajENOXuJd9geu5BTHOS/d/uZUn/3tiM
-	 YztT8sUkDpzEME/n8Z8ujV0W8uolIkBJdPqzr8K0=
+	b=Eme1GIfa/Tepua3R43Oii8cFIDGh51/TWqXTDBIRfIDUQkgWj2pWLrhUBoPgQcT5F
+	 eZtxUn3oMX8GQ0ONbvFBIwU8HSCswl4+UEPZKuLfSlNxXJkEZq2tdtMS4Zls4Hld+g
+	 YRGuid8wYKunkrG3F0pMyahcHQy1dC88TsTld00c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Imran Shaik <quic_imrashai@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 50/52] clk: qcom: gdsc: Set retain_ff before moving to HW CTRL
+	Ma Ke <make24@iscas.ac.cn>,
+	Dominik Brodowski <linux@dominikbrodowski.net>
+Subject: [PATCH 6.6 054/121] pcmcia: Fix a NULL pointer dereference in __iodyn_find_io_region()
 Date: Sun,  7 Sep 2025 21:58:10 +0200
-Message-ID: <20250907195603.407979477@linuxfoundation.org>
+Message-ID: <20250907195611.217385052@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 25708f73ff171bb4171950c9f4be5aa8504b8459 ]
+commit 44822df89e8f3386871d9cad563ece8e2fd8f0e7 upstream.
 
-Enable the retain_ff_enable bit of GDSCR only if the GDSC is already ON.
-Once the GDSCR moves to HW control, SW no longer can determine the state
-of the GDSCR and setting the retain_ff bit could destroy all the register
-contents we intended to save.
-Therefore, move the retain_ff configuration before switching the GDSC to
-HW trigger mode.
+In __iodyn_find_io_region(), pcmcia_make_resource() is assigned to
+res and used in pci_bus_alloc_resource(). There is a dereference of res
+in pci_bus_alloc_resource(), which could lead to a NULL pointer
+dereference on failure of pcmcia_make_resource().
+
+Fix this bug by adding a check of res.
 
 Cc: stable@vger.kernel.org
-Fixes: 173722995cdb ("clk: qcom: gdsc: Add support to enable retention of GSDCR")
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Reviewed-by: Imran Shaik <quic_imrashai@quicinc.com>
-Tested-by: Imran Shaik <quic_imrashai@quicinc.com> # on QCS8300
-Link: https://lore.kernel.org/r/20250214-gdsc_fixes-v1-1-73e56d68a80f@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-[ Changed error path ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 49b1153adfe1 ("pcmcia: move all pcmcia_resource_ops providers into one module")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gdsc.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/pcmcia/rsrc_iodyn.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/clk/qcom/gdsc.c
-+++ b/drivers/clk/qcom/gdsc.c
-@@ -273,6 +273,9 @@ static int gdsc_enable(struct generic_pm
- 	 */
- 	udelay(1);
+--- a/drivers/pcmcia/rsrc_iodyn.c
++++ b/drivers/pcmcia/rsrc_iodyn.c
+@@ -62,6 +62,9 @@ static struct resource *__iodyn_find_io_
+ 	unsigned long min = base;
+ 	int ret;
  
-+	if (sc->flags & RETAIN_FF_ENABLE)
-+		gdsc_retain_ff_on(sc);
++	if (!res)
++		return NULL;
 +
- 	/* Turn on HW trigger mode if supported */
- 	if (sc->flags & HW_CTRL) {
- 		ret = gdsc_hwctrl(sc, true);
-@@ -289,9 +292,6 @@ static int gdsc_enable(struct generic_pm
- 		udelay(1);
- 	}
+ 	data.mask = align - 1;
+ 	data.offset = base & data.mask;
  
--	if (sc->flags & RETAIN_FF_ENABLE)
--		gdsc_retain_ff_on(sc);
--
- 	return 0;
- }
- 
-@@ -392,13 +392,6 @@ static int gdsc_init(struct gdsc *sc)
- 				return ret;
- 		}
- 
--		/* Turn on HW trigger mode if supported */
--		if (sc->flags & HW_CTRL) {
--			ret = gdsc_hwctrl(sc, true);
--			if (ret < 0)
--				return ret;
--		}
--
- 		/*
- 		 * Make sure the retain bit is set if the GDSC is already on,
- 		 * otherwise we end up turning off the GDSC and destroying all
-@@ -406,6 +399,14 @@ static int gdsc_init(struct gdsc *sc)
- 		 */
- 		if (sc->flags & RETAIN_FF_ENABLE)
- 			gdsc_retain_ff_on(sc);
-+
-+		/* Turn on HW trigger mode if supported */
-+		if (sc->flags & HW_CTRL) {
-+			ret = gdsc_hwctrl(sc, true);
-+			if (ret < 0)
-+				return ret;
-+		}
-+
- 	} else if (sc->flags & ALWAYS_ON) {
- 		/* If ALWAYS_ON GDSCs are not ON, turn them ON */
- 		gdsc_enable(&sc->pd);
 
 
 
