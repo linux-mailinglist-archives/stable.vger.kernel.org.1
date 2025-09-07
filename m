@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-178597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85186B47F4E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:35:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB20B47EA4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:27:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AAA117FDA4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:35:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C025517D0A8
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A30D2139C9;
-	Sun,  7 Sep 2025 20:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8D520E005;
+	Sun,  7 Sep 2025 20:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rY7uVLJN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="InoWe2H7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3141A704B;
-	Sun,  7 Sep 2025 20:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0BF1D88D0;
+	Sun,  7 Sep 2025 20:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277347; cv=none; b=Z1w83GY1Y6HJYE84UQRPETlVUM5uVvC+NGvAq3XEWa08qR8qnQuoDqlbHGuabSzdtigqDD4FsUyCEjVeSxnJF70VwMZ1vjtOlBBENxUM9fYztB1kZ6kHeHn7U9YE5oh8YEvlY646UGDp/dZODzxdf2n+pVng7FhpRnvNVmSb+lo=
+	t=1757276820; cv=none; b=e9yWCv71Js2FxS48aHkRkWqsnKhZB2v3MpvCbE7e5ARbQV1gCbCGqVl+wC/yDuSSM/YUg58i5CIBDNRf0JGTjwBCUudxPWGPhsVYJMiOg/0hsrPma5NUWWsNOFNbGQYBHdgH06PC4Lsu/Lu2gPTPtwzMs1SMQAk3jBAANpKQFPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277347; c=relaxed/simple;
-	bh=S8Hp/cu7FHGEuFsh0JvuvLJNQ51b6sv5PaQ4ckGa+Sg=;
+	s=arc-20240116; t=1757276820; c=relaxed/simple;
+	bh=lGaLkwOKpcV0gT4AowSW7pcBzNSGgZAjDHJD+0WBY7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rF1omknE67havZNC8L0jGs10ykpybNF8Vg17ZbiYNgO5keGMexl1Qe7I1/mSSI2uLc5GNccD8qrn+qszifB1XXZwFkLZOwTmcfkcjJVdFOvQJ5EnJoss+IUKyhYFaF5hjhlmwSu8yAzdovdx6RdLLEdanOoGku7eOUm/G+eG1/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rY7uVLJN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE717C4CEF0;
-	Sun,  7 Sep 2025 20:35:45 +0000 (UTC)
+	 MIME-Version; b=gVRk2BXikQixFyiPd9z+3bO1famq/W1MgLVB94uPAhm21VkzED+9oarKkMup+phFCHwH0A6oGbYdeSVVp3Gx+Xo/3sH7yXblwkXVEuY+aSKnM4YUSAKh35lV0JMv50xGhR6GE9qMa9U1Rt998261ODKTAaO1J/3G5mIIitNn0h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InoWe2H7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D9FC4CEF0;
+	Sun,  7 Sep 2025 20:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277346;
-	bh=S8Hp/cu7FHGEuFsh0JvuvLJNQ51b6sv5PaQ4ckGa+Sg=;
+	s=korg; t=1757276820;
+	bh=lGaLkwOKpcV0gT4AowSW7pcBzNSGgZAjDHJD+0WBY7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rY7uVLJNv9f4tjS20b/lapSUV/42d0f6aMS4PCmoF1FitauhaOTbEXFi82431REE1
-	 WIyY3F7bB+zN8UTDCw3SqDxyHCL6b80TH1Wg4up/71vYAPhQAbryaPVTGYJ9O47Z7t
-	 8OAc2z+f7ecFHuoOJ8Z/oe9LAmyAkwp81DoNLk/c=
+	b=InoWe2H770aqWrjdTbJzMk2hvrEIpn/aVDeed3yqSdrtOh2Pnrp5HWLycoNl9lFxo
+	 H2uPpqz/z8Rg5m3tef1jCF8pQ1JcbL7FCMSP32R+GswEhM2qXkeQ6mLe5+O8W6Ehu5
+	 H6Q6gmV/wXaFEh7ITmAmTqriG+xF6ri7XCyZ9ty0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	kernel test robot <lkp@intel.com>,
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 161/175] drm/bridge: ti-sn65dsi86: fix REFCLK setting
+Subject: [PATCH 6.6 120/121] dmaengine: mediatek: Fix a flag reuse error in mtk_cqdma_tx_status()
 Date: Sun,  7 Sep 2025 21:59:16 +0200
-Message-ID: <20250907195618.665895181@linuxfoundation.org>
+Message-ID: <20250907195612.928471086@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-[ Upstream commit bdd5a14e660062114bdebaef9ad52adf04970a89 ]
+[ Upstream commit 8eba2187391e5ab49940cd02d6bd45a5617f4daf ]
 
-The bridge has three bootstrap pins which are sampled to determine the
-frequency of the external reference clock. The driver will also
-(over)write that setting. But it seems this is racy after the bridge is
-enabled. It was observed that although the driver write the correct
-value (by sniffing on the I2C bus), the register has the wrong value.
-The datasheet states that the GPIO lines have to be stable for at least
-5us after asserting the EN signal. Thus, there seems to be some logic
-which samples the GPIO lines and this logic appears to overwrite the
-register value which was set by the driver. Waiting 20us after
-asserting the EN line resolves this issue.
+Fixed a flag reuse bug in the mtk_cqdma_tx_status() function.
 
-Fixes: a095f15c00e2 ("drm/bridge: add support for sn65dsi86 bridge driver")
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20250821122341.1257286-1-mwalle@kernel.org
+Fixes: 157ae5ffd76a ("dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505270641.MStzJUfU-lkp@intel.com/
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Reviewed-by: Eugen Hristev <eugen.hristev@linaro.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250606090017.5436-1-chenqiuji666@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi86.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/dma/mediatek/mtk-cqdma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-index 4d17d1e1c38b4..9859ec688e567 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-@@ -375,6 +375,17 @@ static int __maybe_unused ti_sn65dsi86_resume(struct device *dev)
+diff --git a/drivers/dma/mediatek/mtk-cqdma.c b/drivers/dma/mediatek/mtk-cqdma.c
+index 385eee4fd4e11..525bb92ced8f8 100644
+--- a/drivers/dma/mediatek/mtk-cqdma.c
++++ b/drivers/dma/mediatek/mtk-cqdma.c
+@@ -449,9 +449,9 @@ static enum dma_status mtk_cqdma_tx_status(struct dma_chan *c,
+ 		return ret;
  
- 	gpiod_set_value_cansleep(pdata->enable_gpio, 1);
+ 	spin_lock_irqsave(&cvc->pc->lock, flags);
+-	spin_lock_irqsave(&cvc->vc.lock, flags);
++	spin_lock(&cvc->vc.lock);
+ 	vd = mtk_cqdma_find_active_desc(c, cookie);
+-	spin_unlock_irqrestore(&cvc->vc.lock, flags);
++	spin_unlock(&cvc->vc.lock);
+ 	spin_unlock_irqrestore(&cvc->pc->lock, flags);
  
-+	/*
-+	 * After EN is deasserted and an external clock is detected, the bridge
-+	 * will sample GPIO3:1 to determine its frequency. The driver will
-+	 * overwrite this setting in ti_sn_bridge_set_refclk_freq(). But this is
-+	 * racy. Thus we have to wait a couple of us. According to the datasheet
-+	 * the GPIO lines has to be stable at least 5 us (td5) but it seems that
-+	 * is not enough and the refclk frequency value is still lost or
-+	 * overwritten by the bridge itself. Waiting for 20us seems to work.
-+	 */
-+	usleep_range(20, 30);
-+
- 	/*
- 	 * If we have a reference clock we can enable communication w/ the
- 	 * panel (including the aux channel) w/out any need for an input clock
+ 	if (vd) {
 -- 
 2.51.0
 
