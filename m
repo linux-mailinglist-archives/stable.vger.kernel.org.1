@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EBC9B47F64
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9459B47E86
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF8EF174548
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6E897A1C64
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A2E212B3D;
-	Sun,  7 Sep 2025 20:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421AE212560;
+	Sun,  7 Sep 2025 20:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZzOHll1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJxTfCXI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94F81DF246;
-	Sun,  7 Sep 2025 20:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2953D528;
+	Sun,  7 Sep 2025 20:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277413; cv=none; b=sfxWRslfQasBMxEaIB6CUbhEVX/MWwr7nTGF64FFRJfq51ZTnpCmCg14kf58neBLUgzi9frXsSyeLU/HCXaMChPPnR9rUI7pvX5tKDQvjuAtZxJRWglwL4t86bM96JEsIpyhmzTO/cKHEG0oUjVznBIbf4eMVf0i01LNUZwXe3A=
+	t=1757276728; cv=none; b=tXVnYVbPfZU7f4uLNPzWM1A+YaajjjMpkzWKomWIWDH3j5OC/R7t6z/3ghZp15n5S4jfa+bvOZiKfLGv6SqJ7Ai3mvzYzVTJKgLtSQIkk9Z3QleL3cCHvEHN6z6+z2YdVbsGGxoJufZqBa9jFwdAVaHYSvgoSt8R2W85mVu/Zv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277413; c=relaxed/simple;
-	bh=0FOvq8JqEYaehbWWJONUnyeFvJ+hBbuiS8FY3OGEips=;
+	s=arc-20240116; t=1757276728; c=relaxed/simple;
+	bh=NnehhfJ5Lh5iwW1c3134/AC0sGN0Lp6jDVrqRh3BTRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6WDp96PFiQslYBIkk70ksB7N0ux1YzzyF/PyMy3i2tcuFVBW9NNPbm3iwSp5Z2lj0r05m2Km2tUrJQ4vmio95uNMZuFtxIrGlvvqlpp5kgRXLFbJ+W3f7yg4qIbQ3qF1/1lM7Jp31kMQ4t18BUeUDzUYVkYK4oUXTLsFGpPXGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZzOHll1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6A4C4CEF0;
-	Sun,  7 Sep 2025 20:36:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dqDP2ZxZER0coYvQL9qG43TWAirWH7R/shdnDAeldLuSisN1sa/NuAwCHhYpPmFWdqShd5xVzeV0aXigQd5FzQRDYQHacVk7DqGqW6oeruTJzXeZ4Oz4q2Q1DQChEqH/3Uao6DTQXNtuG6y5oTwBzruMuAj/Ei9/+WVC/VSV9yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJxTfCXI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5C3C4CEF0;
+	Sun,  7 Sep 2025 20:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277413;
-	bh=0FOvq8JqEYaehbWWJONUnyeFvJ+hBbuiS8FY3OGEips=;
+	s=korg; t=1757276727;
+	bh=NnehhfJ5Lh5iwW1c3134/AC0sGN0Lp6jDVrqRh3BTRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LZzOHll1rNzPt9eZccWxa71fEr3Prx+jf2vdcvUG5MYYJK6vv3jt8gReFz9Vh0EWv
-	 iCS/N9JdCwe/rjqrrv2x4QvvkW5raqqUiSVJVV14retwaLgUFQx5wMC1G+Xi2kEbQt
-	 uAFqVAUsmh5ARDk7ZJ0Pgbnn6G0xzc5INo9Nr2+Y=
+	b=wJxTfCXI1tygNQ3uq2HU7W33zoX5mBnNtq2P5Y4WRoweQ4tCARaBfm0oryupWpZ9a
+	 lluv3tNSNUXDcM3i9GktsYV0RYJsu2rvtPewBaF7y5CTrmhmoLND64/3uvj+tH46/a
+	 MufSVS0L/wT0amQptq4yfXTCwKC/1FFsCiwfqalY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 130/175] md/raid1,raid10: strip REQ_NOWAIT from member bios
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 089/121] dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()
 Date: Sun,  7 Sep 2025 21:58:45 +0200
-Message-ID: <20250907195617.927482308@linuxfoundation.org>
+Message-ID: <20250907195612.126391605@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-commit 5fa31c49928139fa948f078b094d80f12ed83f5f upstream.
+[ Upstream commit 157ae5ffd76a2857ccb4b7ce40bc5a344ca00395 ]
 
-RAID layers don't implement proper non-blocking semantics for
-REQ_NOWAIT, making the flag potentially misleading when propagated
-to member disks.
+Fix a potential deadlock bug. Observe that in the mtk-cqdma.c
+file, functions like mtk_cqdma_issue_pending() and
+mtk_cqdma_free_active_desc() properly acquire the pc lock before the vc
+lock when handling pc and vc fields. However, mtk_cqdma_tx_status()
+violates this order by first acquiring the vc lock before invoking
+mtk_cqdma_find_active_desc(), which subsequently takes the pc lock. This
+reversed locking sequence (vc → pc) contradicts the established
+pc → vc order and creates deadlock risks.
 
-This patch clear REQ_NOWAIT from cloned bios in raid1/raid10. Retain
-original bio's REQ_NOWAIT flag for upper layer error handling.
+Fix the issue by moving the vc lock acquisition code from
+mtk_cqdma_find_active_desc() to mtk_cqdma_tx_status(). Ensure the pc lock
+is acquired before the vc lock in the calling function to maintain correct
+locking hierarchy. Note that since mtk_cqdma_find_active_desc() is a
+static function with only one caller (mtk_cqdma_tx_status()), this
+modification safely eliminates the deadlock possibility without affecting
+other components.
 
-Maybe we can implement non-blocking I/O handling mechanisms within
-RAID in future work.
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs to extract
+function pairs that can be concurrently executed, and then analyzes the
+instructions in the paired functions to identify possible concurrency bugs
+including deadlocks, data races and atomicity violations.
 
-Fixes: 9f346f7d4ea7 ("md/raid1,raid10: don't handle IO error for REQ_RAHEAD and REQ_NOWAIT")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Link: https://lore.kernel.org/linux-raid/20250702102341.1969154-1-zhengqixing@huaweicloud.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Fixes: b1f01e48df5a ("dmaengine: mediatek: Add MediaTek Command-Queue DMA controller for MT6765 SoC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250508073634.3719-1-chenqiuji666@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid1.c  |    3 ++-
- drivers/md/raid10.c |    2 ++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/dma/mediatek/mtk-cqdma.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -1392,7 +1392,7 @@ static void raid1_read_request(struct md
- 	}
- 	read_bio = bio_alloc_clone(mirror->rdev->bdev, bio, gfp,
- 				   &mddev->bio_set);
--
-+	read_bio->bi_opf &= ~REQ_NOWAIT;
- 	r1_bio->bios[rdisk] = read_bio;
+--- a/drivers/dma/mediatek/mtk-cqdma.c
++++ b/drivers/dma/mediatek/mtk-cqdma.c
+@@ -420,15 +420,11 @@ static struct virt_dma_desc *mtk_cqdma_f
+ {
+ 	struct mtk_cqdma_vchan *cvc = to_cqdma_vchan(c);
+ 	struct virt_dma_desc *vd;
+-	unsigned long flags;
  
- 	read_bio->bi_iter.bi_sector = r1_bio->sector +
-@@ -1613,6 +1613,7 @@ static void raid1_write_request(struct m
- 				wait_for_serialization(rdev, r1_bio);
+-	spin_lock_irqsave(&cvc->pc->lock, flags);
+ 	list_for_each_entry(vd, &cvc->pc->queue, node)
+ 		if (vd->tx.cookie == cookie) {
+-			spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 			return vd;
  		}
+-	spin_unlock_irqrestore(&cvc->pc->lock, flags);
  
-+		mbio->bi_opf &= ~REQ_NOWAIT;
- 		r1_bio->bios[i] = mbio;
+ 	list_for_each_entry(vd, &cvc->vc.desc_issued, node)
+ 		if (vd->tx.cookie == cookie)
+@@ -452,9 +448,11 @@ static enum dma_status mtk_cqdma_tx_stat
+ 	if (ret == DMA_COMPLETE || !txstate)
+ 		return ret;
  
- 		mbio->bi_iter.bi_sector	= (r1_bio->sector + rdev->data_offset);
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1218,6 +1218,7 @@ static void raid10_read_request(struct m
- 		r10_bio->master_bio = bio;
- 	}
- 	read_bio = bio_alloc_clone(rdev->bdev, bio, gfp, &mddev->bio_set);
-+	read_bio->bi_opf &= ~REQ_NOWAIT;
++	spin_lock_irqsave(&cvc->pc->lock, flags);
+ 	spin_lock_irqsave(&cvc->vc.lock, flags);
+ 	vd = mtk_cqdma_find_active_desc(c, cookie);
+ 	spin_unlock_irqrestore(&cvc->vc.lock, flags);
++	spin_unlock_irqrestore(&cvc->pc->lock, flags);
  
- 	r10_bio->devs[slot].bio = read_bio;
- 	r10_bio->devs[slot].rdev = rdev;
-@@ -1248,6 +1249,7 @@ static void raid10_write_one_disk(struct
- 			     conf->mirrors[devnum].rdev;
- 
- 	mbio = bio_alloc_clone(rdev->bdev, bio, GFP_NOIO, &mddev->bio_set);
-+	mbio->bi_opf &= ~REQ_NOWAIT;
- 	if (replacement)
- 		r10_bio->devs[n_copy].repl_bio = mbio;
- 	else
+ 	if (vd) {
+ 		cvd = to_cqdma_vdesc(vd);
 
 
 
