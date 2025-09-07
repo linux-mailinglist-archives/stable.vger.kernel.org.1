@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-178570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D78FB47F33
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:34:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8107AB47D3E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59A471B214E1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:34:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B3EB189C53A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A65B1FECCD;
-	Sun,  7 Sep 2025 20:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C1629B78F;
+	Sun,  7 Sep 2025 20:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMPrzLag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZesomPH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0746E1A0BFD;
-	Sun,  7 Sep 2025 20:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113C52836A0;
+	Sun,  7 Sep 2025 20:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277259; cv=none; b=kUDYiAo0/Vp7JTz63ZuzzCpdbsBg1Gto4zBs/g7HQxKhhuQwjcbJnX0gVe6iriwAD6hb8Nsug7bA7gFo69Oq46jAOieYyXkWtKSP+SfbmG/7gStbr+TFX744OURuMeSB4cFMvFOEgTl0C+RoNZVfmZMoXlfYdFeuh8KpNMw2dnw=
+	t=1757275758; cv=none; b=S/rsB/waP/aYMvWcYpusTq/jEz8ICGydps1XwRsnfTbLQ/Z6kc4GsOgt2T3P8KErSgjtUFIhWfpuQ4fR2K1xmhUx1u0DgyeYqsH2masK8pYF64ODS8XSNbzmBg+nE8VJBHkKQx3WiYg9CW5zW1QeppTzCcxDepSskBlWOPAyF0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277259; c=relaxed/simple;
-	bh=H1qS7zzHG3B1IObzdsa3eFnB02IxkNx4mUIdlRVZAco=;
+	s=arc-20240116; t=1757275758; c=relaxed/simple;
+	bh=zhkXpSbj09LHgwDcxHqnu/U4k+naMzHJ5ZfnPq2LGbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WO37oMinjdD7DT98hGNs0JPBRS3zrX0w3kZ1KVSTTdWB14nP5znen376THPbd5FANQ6HM8FYp8MsvEzJz/ceSYubXEhqISMJkgS25mJ88dcRuEpNrRWXDKTZkA2/2IlgwQwPSN1csExBmihsCJgMRlSyQiUzw8aWhKLNIzysGlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMPrzLag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558AAC4CEF0;
-	Sun,  7 Sep 2025 20:34:18 +0000 (UTC)
+	 MIME-Version; b=NEuPmcLfshZ/cgxI/BL2Z+cO6EZ7a4KwRfUipAcwAUhSFu+SlPiSeFi4gNK7JxMmVFDLshPV0uvfbV4v3Egru92ch6sLXC4ZkVvX2Y72J/mAllnNxeQzRP2s+ReLSeQMRs8euPgjFOfWNFKr3DXxnKPW57/o0b1xy/vjvIWCfhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZesomPH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9973C4CEF0;
+	Sun,  7 Sep 2025 20:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277258;
-	bh=H1qS7zzHG3B1IObzdsa3eFnB02IxkNx4mUIdlRVZAco=;
+	s=korg; t=1757275757;
+	bh=zhkXpSbj09LHgwDcxHqnu/U4k+naMzHJ5ZfnPq2LGbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMPrzLago8kLYpYUjYmicHJbjNaWsoc1zWWCo559LJDINPp/30q8jdkFQmZQK/AU7
-	 SNQbXsRp4ZTK+hf+ZFwhwNo5FAOOF0pceQwIyHMHYExj9TPoEJrpZ24yuc9ta01vfy
-	 uJmyrcLLDpEXf2LmTR2tAgTe413bttMG0N3bo10o=
+	b=IZesomPHdYrhjmvqA0gVhODaxaQpmhPjqpr3yodO4TLWrgmfzTv5apb9QbwgszOhe
+	 HhcjiBtp9iaMgNqV0/yR6gXfQWM41dvLGUpc3E0Ccmb2Y+GZg297duJxRjxuXfkT8k
+	 EOqogIabzNGxDEG5quUgh2mHf8ZE24WR08hFvNxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Yue Haibing <yuehaibing@huawei.com>,
+	Nisar Sayed <Nisar.Sayed@microchip.com>,
+	Yuiko Oshino <yuiko.oshino@microchip.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/175] ppp: fix memory leak in pad_compress_skb
+Subject: [PATCH 5.10 43/52] net: phy: microchip: remove the use of .ack_interrupt()
 Date: Sun,  7 Sep 2025 21:58:03 +0200
-Message-ID: <20250907195616.920181554@linuxfoundation.org>
+Message-ID: <20250907195603.217225445@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit 4844123fe0b853a4982c02666cb3fd863d701d50 ]
+[ Upstream commit cf499391982d877e9313d2adeedcf5f1ffe05d6e ]
 
-If alloc_skb() fails in pad_compress_skb(), it returns NULL without
-releasing the old skb. The caller does:
+In preparation of removing the .ack_interrupt() callback, we must replace
+its occurrences (aka phy_clear_interrupt), from the 2 places where it is
+called from (phy_enable_interrupts and phy_disable_interrupts), with
+equivalent functionality.
 
-    skb = pad_compress_skb(ppp, skb);
-    if (!skb)
-        goto drop;
+This means that clearing interrupts now becomes something that the PHY
+driver is responsible of doing, before enabling interrupts and after
+clearing them. Make this driver follow the new contract.
 
-drop:
-    kfree_skb(skb);
-
-When pad_compress_skb() returns NULL, the reference to the old skb is
-lost and kfree_skb(skb) ends up doing nothing, leading to a memory leak.
-
-Align pad_compress_skb() semantics with realloc(): only free the old
-skb if allocation and compression succeed.  At the call site, use the
-new_skb variable so the original skb is not lost when pad_compress_skb()
-fails.
-
-Fixes: b3f9b92a6ec1 ("[PPP]: add PPP MPPE encryption module")
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Yue Haibing <yuehaibing@huawei.com>
-Link: https://patch.msgid.link/20250903100726.269839-1-dqfext@gmail.com
+Cc: Nisar Sayed <Nisar.Sayed@microchip.com>
+Cc: Yuiko Oshino <yuiko.oshino@microchip.com>
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 30a41ed32d30 ("net: phy: microchip: force IRQ polling mode for lan88xx")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ppp/ppp_generic.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/phy/microchip.c    |   13 +++++--------
+ drivers/net/phy/microchip_t1.c |   17 +++++++----------
+ 2 files changed, 12 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 0553b0b356b30..afc1566488b32 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -1753,7 +1753,6 @@ pad_compress_skb(struct ppp *ppp, struct sk_buff *skb)
- 		 */
- 		if (net_ratelimit())
- 			netdev_err(ppp->dev, "ppp: compressor dropped pkt\n");
--		kfree_skb(skb);
- 		consume_skb(new_skb);
- 		new_skb = NULL;
- 	}
-@@ -1855,9 +1854,10 @@ ppp_send_frame(struct ppp *ppp, struct sk_buff *skb)
- 					   "down - pkt dropped.\n");
- 			goto drop;
- 		}
--		skb = pad_compress_skb(ppp, skb);
--		if (!skb)
-+		new_skb = pad_compress_skb(ppp, skb);
-+		if (!new_skb)
- 			goto drop;
-+		skb = new_skb;
- 	}
+--- a/drivers/net/phy/microchip.c
++++ b/drivers/net/phy/microchip.c
+@@ -44,14 +44,12 @@ static int lan88xx_phy_config_intr(struc
+ 			       LAN88XX_INT_MASK_LINK_CHANGE_);
+ 	} else {
+ 		rc = phy_write(phydev, LAN88XX_INT_MASK, 0);
+-	}
+-
+-	return rc < 0 ? rc : 0;
+-}
++		if (rc)
++			return rc;
  
- 	/*
--- 
-2.50.1
-
+-static int lan88xx_phy_ack_interrupt(struct phy_device *phydev)
+-{
+-	int rc = phy_read(phydev, LAN88XX_INT_STS);
++		/* Ack interrupts after they have been disabled */
++		rc = phy_read(phydev, LAN88XX_INT_STS);
++	}
+ 
+ 	return rc < 0 ? rc : 0;
+ }
+@@ -390,7 +388,6 @@ static struct phy_driver microchip_phy_d
+ 	.config_aneg	= lan88xx_config_aneg,
+ 	.link_change_notify = lan88xx_link_change_notify,
+ 
+-	.ack_interrupt	= lan88xx_phy_ack_interrupt,
+ 	.config_intr	= lan88xx_phy_config_intr,
+ 	.handle_interrupt = lan88xx_handle_interrupt,
+ 
+--- a/drivers/net/phy/microchip_t1.c
++++ b/drivers/net/phy/microchip_t1.c
+@@ -189,16 +189,14 @@ static int lan87xx_phy_config_intr(struc
+ 		rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, 0x7FFF);
+ 		rc = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
+ 		val = LAN87XX_MASK_LINK_UP | LAN87XX_MASK_LINK_DOWN;
+-	}
+-
+-	rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, val);
+-
+-	return rc < 0 ? rc : 0;
+-}
++		rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, val);
++	} else {
++		rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, val);
++		if (rc)
++			return rc;
+ 
+-static int lan87xx_phy_ack_interrupt(struct phy_device *phydev)
+-{
+-	int rc = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
++		rc = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
++	}
+ 
+ 	return rc < 0 ? rc : 0;
+ }
+@@ -239,7 +237,6 @@ static struct phy_driver microchip_t1_ph
+ 		.config_init	= lan87xx_config_init,
+ 		.config_aneg    = genphy_config_aneg,
+ 
+-		.ack_interrupt  = lan87xx_phy_ack_interrupt,
+ 		.config_intr    = lan87xx_phy_config_intr,
+ 		.handle_interrupt = lan87xx_handle_interrupt,
+ 
 
 
 
