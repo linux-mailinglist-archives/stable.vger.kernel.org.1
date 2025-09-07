@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-178615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC4EB47F60
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E1C5B47FC8
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD1303C1282
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AA0F2006AD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881191DF246;
-	Sun,  7 Sep 2025 20:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA4126B2AD;
+	Sun,  7 Sep 2025 20:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptlurtU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3rZImXv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46366315D54;
-	Sun,  7 Sep 2025 20:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3364315A;
+	Sun,  7 Sep 2025 20:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277404; cv=none; b=StkvLdJEZAAgQGJuUqFmI/YW9P+HiTm2bT39bfSGF5DYt6xesFwADqKCRBtE7rFMzxopt8KgtuvD/IFFmW7yDj4refQTbAdJ+ULLWVJu5JMWYxDYQ9mYpXMlxqNIZxsDc9Mb/mIPLGvf/cKKH+J5h3xA5wgcEjO8VAV2if8XIyM=
+	t=1757277732; cv=none; b=ZnIsKi34ka8McRGCd6ZRwBHic6XJHT1LK+F5i9A/5ukFtn25xmAH6EQjqjUDuvyvK+lXgV0fqOsn//8mQqP1Z5Wz2kKXnKnVAvB1051qvgN/DSME7YmMhNBQJK/lUq9/DZbu1+eUJNdFdDv4aDPPdZ8bVHH/hnjYOZpfS1garGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277404; c=relaxed/simple;
-	bh=Kf11XYkqk7Hs9841no4YFHJFTZ9vZWOFzCaa6BARRdw=;
+	s=arc-20240116; t=1757277732; c=relaxed/simple;
+	bh=wjUSVw+VFuxpb0Lm9pK+rSIQG+R/3SjGaqrf7zD0B1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uJ1q2zI5lWZ3+8qJrb1AM0f5UgCZ/FLU8pztPZXmDNrem97kCpGAHCSzCM33JjX/7UNQOUOsDZ7rNA8U7qd01xi93MB3/KTjWMl7wKC+8QswffFIgKtRiTgri//8kw+K+x/nmD9f6sP6+wyhk1He3phJ0YOepBY1zLv3uSDv83A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptlurtU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA2BC4CEF0;
-	Sun,  7 Sep 2025 20:36:43 +0000 (UTC)
+	 MIME-Version; b=lU3C5oypACHaZj+fcSMjuTcvSHY49FmqEIBcKXyGYeyJDcklU6RGHqs/9AMGrzCAqyDFUUNPSmx5YEbYM7vHDTC/JF4ZCKr3OVfbbKbZeygKgnJjv48ZL/lGZ8qSBxuJckhKyMO/kVPkpuiU2VGYf/SNrc1VrrHrwl+53Hl6xCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3rZImXv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF89C4CEF0;
+	Sun,  7 Sep 2025 20:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277404;
-	bh=Kf11XYkqk7Hs9841no4YFHJFTZ9vZWOFzCaa6BARRdw=;
+	s=korg; t=1757277732;
+	bh=wjUSVw+VFuxpb0Lm9pK+rSIQG+R/3SjGaqrf7zD0B1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ptlurtU6Nub6L5yCQsi0X0aPlYtIUPWhCBV+p0c47Az/yo9yyPKTmLU0OnWjV+piY
-	 dDBmBIKWR/yYu/VaNswIM27lF4rXwI2UbhfcEq/H8OVP13pKVcbjj6eurdXMAJGN3z
-	 vuUmiXUlXCwZWPjqIEXBcP5cFMHPFr7Gqdn+2NfY=
+	b=O3rZImXvCcKKDA2Q6iWN694+6jbLHCtq3Uc20iqSk8rgB9nmlM37UxZeZ2QRyA0AC
+	 9uV06ZEIN1ieQHsp1VnRrdpBwfBwnlScv/ZzZV7U4kPHMWfrMx9P2LOe5ofjCKPCT5
+	 ccg3XDwdvy6irxn8P09wi9Wa11EsWPg5N0gCYubw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyesoo Yu <hyesoo.yu@samsung.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 137/175] mm: slub: Print the broken data before restoring them
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 105/183] mm: fix accounting of memmap pages
 Date: Sun,  7 Sep 2025 21:58:52 +0200
-Message-ID: <20250907195618.089260273@linuxfoundation.org>
+Message-ID: <20250907195618.285804763@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +67,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyesoo Yu <hyesoo.yu@samsung.com>
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
 
-[ Upstream commit ed5ec2e952595a469eae1f6dce040737359b6da2 ]
+commit c3576889d87b603cb66b417e08844a53c1077a37 upstream.
 
-Previously, the restore occurred after printing the object in slub.
-After commit 47d911b02cbe ("slab: make check_object() more consistent"),
-the bytes are printed after the restore. This information about the bytes
-before the restore is highly valuable for debugging purpose.
-For instance, in a event of cache issue, it displays byte patterns
-by breaking them down into 64-bytes units. Without this information,
-we can only speculate on how it was broken. Hence the corrupted regions
-should be printed prior to the restoration process. However if an object
-breaks in multiple places, the same log may be output multiple times.
-Therefore the slub log is reported only once to prevent redundant printing,
-by sending a parameter indicating whether an error has occurred previously.
+For !CONFIG_SPARSEMEM_VMEMMAP, memmap page accounting is currently done
+upfront in sparse_buffer_init().  However, sparse_buffer_alloc() may
+return NULL in failure scenario.
 
-Signed-off-by: Hyesoo Yu <hyesoo.yu@samsung.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Stable-dep-of: b4efccec8d06 ("mm/slub: avoid accessing metadata when pointer is invalid in object_err()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also, memmap pages may be allocated either from the memblock allocator
+during early boot or from the buddy allocator.  When removed via
+arch_remove_memory(), accounting of memmap pages must reflect the original
+allocation source.
+
+To ensure correctness:
+* Account memmap pages after successful allocation in sparse_init_nid()
+  and section_activate().
+* Account memmap pages in section_deactivate() based on allocation
+  source.
+
+Link: https://lkml.kernel.org/r/20250807183545.1424509-1-sumanthk@linux.ibm.com
+Fixes: 15995a352474 ("mm: report per-page metadata information")
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |   32 ++++++++++++++------------------
- 1 file changed, 14 insertions(+), 18 deletions(-)
+ mm/sparse-vmemmap.c |    5 -----
+ mm/sparse.c         |   15 +++++++++------
+ 2 files changed, 9 insertions(+), 11 deletions(-)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -1191,8 +1191,8 @@ static void restore_bytes(struct kmem_ca
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -578,11 +578,6 @@ struct page * __meminit __populate_secti
+ 	if (r < 0)
+ 		return NULL;
  
- static pad_check_attributes int
- check_bytes_and_report(struct kmem_cache *s, struct slab *slab,
--		       u8 *object, char *what,
--		       u8 *start, unsigned int value, unsigned int bytes)
-+		       u8 *object, char *what, u8 *start, unsigned int value,
-+		       unsigned int bytes, bool slab_obj_print)
- {
- 	u8 *fault;
- 	u8 *end;
-@@ -1211,10 +1211,11 @@ check_bytes_and_report(struct kmem_cache
- 	if (slab_add_kunit_errors())
- 		goto skip_bug_print;
- 
--	slab_bug(s, "%s overwritten", what);
--	pr_err("0x%p-0x%p @offset=%tu. First byte 0x%x instead of 0x%x\n",
--					fault, end - 1, fault - addr,
--					fault[0], value);
-+	pr_err("[%s overwritten] 0x%p-0x%p @offset=%tu. First byte 0x%x instead of 0x%x\n",
-+	       what, fault, end - 1, fault - addr, fault[0], value);
-+
-+	if (slab_obj_print)
-+		object_err(s, slab, object, "Object corrupt");
- 
- skip_bug_print:
- 	restore_bytes(s, what, value, fault, end);
-@@ -1278,7 +1279,7 @@ static int check_pad_bytes(struct kmem_c
- 		return 1;
- 
- 	return check_bytes_and_report(s, slab, p, "Object padding",
--			p + off, POISON_INUSE, size_from_object(s) - off);
-+			p + off, POISON_INUSE, size_from_object(s) - off, true);
- }
- 
- /* Check the pad bytes at the end of a slab page */
-@@ -1328,11 +1329,11 @@ static int check_object(struct kmem_cach
- 
- 	if (s->flags & SLAB_RED_ZONE) {
- 		if (!check_bytes_and_report(s, slab, object, "Left Redzone",
--			object - s->red_left_pad, val, s->red_left_pad))
-+			object - s->red_left_pad, val, s->red_left_pad, ret))
- 			ret = 0;
- 
- 		if (!check_bytes_and_report(s, slab, object, "Right Redzone",
--			endobject, val, s->inuse - s->object_size))
-+			endobject, val, s->inuse - s->object_size, ret))
- 			ret = 0;
- 
- 		if (slub_debug_orig_size(s) && val == SLUB_RED_ACTIVE) {
-@@ -1341,7 +1342,7 @@ static int check_object(struct kmem_cach
- 			if (s->object_size > orig_size  &&
- 				!check_bytes_and_report(s, slab, object,
- 					"kmalloc Redzone", p + orig_size,
--					val, s->object_size - orig_size)) {
-+					val, s->object_size - orig_size, ret)) {
- 				ret = 0;
- 			}
- 		}
-@@ -1349,7 +1350,7 @@ static int check_object(struct kmem_cach
- 		if ((s->flags & SLAB_POISON) && s->object_size < s->inuse) {
- 			if (!check_bytes_and_report(s, slab, p, "Alignment padding",
- 				endobject, POISON_INUSE,
--				s->inuse - s->object_size))
-+				s->inuse - s->object_size, ret))
- 				ret = 0;
- 		}
- 	}
-@@ -1365,11 +1366,11 @@ static int check_object(struct kmem_cach
- 			if (kasan_meta_size < s->object_size - 1 &&
- 			    !check_bytes_and_report(s, slab, p, "Poison",
- 					p + kasan_meta_size, POISON_FREE,
--					s->object_size - kasan_meta_size - 1))
-+					s->object_size - kasan_meta_size - 1, ret))
- 				ret = 0;
- 			if (kasan_meta_size < s->object_size &&
- 			    !check_bytes_and_report(s, slab, p, "End Poison",
--					p + s->object_size - 1, POISON_END, 1))
-+					p + s->object_size - 1, POISON_END, 1, ret))
- 				ret = 0;
- 		}
- 		/*
-@@ -1395,11 +1396,6 @@ static int check_object(struct kmem_cach
- 		ret = 0;
- 	}
- 
--	if (!ret && !slab_in_kunit_test()) {
--		print_trailer(s, slab, object);
--		add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
--	}
+-	if (system_state == SYSTEM_BOOTING)
+-		memmap_boot_pages_add(DIV_ROUND_UP(end - start, PAGE_SIZE));
+-	else
+-		memmap_pages_add(DIV_ROUND_UP(end - start, PAGE_SIZE));
 -
- 	return ret;
+ 	return pfn_to_page(pfn);
  }
  
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -454,9 +454,6 @@ static void __init sparse_buffer_init(un
+ 	 */
+ 	sparsemap_buf = memmap_alloc(size, section_map_size(), addr, nid, true);
+ 	sparsemap_buf_end = sparsemap_buf + size;
+-#ifndef CONFIG_SPARSEMEM_VMEMMAP
+-	memmap_boot_pages_add(DIV_ROUND_UP(size, PAGE_SIZE));
+-#endif
+ }
+ 
+ static void __init sparse_buffer_fini(void)
+@@ -567,6 +564,8 @@ static void __init sparse_init_nid(int n
+ 				sparse_buffer_fini();
+ 				goto failed;
+ 			}
++			memmap_boot_pages_add(DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct page),
++							   PAGE_SIZE));
+ 			sparse_init_early_section(nid, map, pnum, 0);
+ 		}
+ 	}
+@@ -680,7 +679,6 @@ static void depopulate_section_memmap(un
+ 	unsigned long start = (unsigned long) pfn_to_page(pfn);
+ 	unsigned long end = start + nr_pages * sizeof(struct page);
+ 
+-	memmap_pages_add(-1L * (DIV_ROUND_UP(end - start, PAGE_SIZE)));
+ 	vmemmap_free(start, end, altmap);
+ }
+ static void free_map_bootmem(struct page *memmap)
+@@ -856,10 +854,14 @@ static void section_deactivate(unsigned
+ 	 * The memmap of early sections is always fully populated. See
+ 	 * section_activate() and pfn_valid() .
+ 	 */
+-	if (!section_is_early)
++	if (!section_is_early) {
++		memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
+ 		depopulate_section_memmap(pfn, nr_pages, altmap);
+-	else if (memmap)
++	} else if (memmap) {
++		memmap_boot_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page),
++							  PAGE_SIZE)));
+ 		free_map_bootmem(memmap);
++	}
+ 
+ 	if (empty)
+ 		ms->section_mem_map = (unsigned long)NULL;
+@@ -904,6 +906,7 @@ static struct page * __meminit section_a
+ 		section_deactivate(pfn, nr_pages, altmap);
+ 		return ERR_PTR(-ENOMEM);
+ 	}
++	memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
+ 
+ 	return memmap;
+ }
 
 
 
