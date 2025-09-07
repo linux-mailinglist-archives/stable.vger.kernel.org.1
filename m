@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-178232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C59B47DC9
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A396B47EEF
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F002164384
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE6F93B20B9
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498ED20D4FC;
-	Sun,  7 Sep 2025 20:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A7120D51C;
+	Sun,  7 Sep 2025 20:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfSI9naJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWfakl+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062171F09BF;
-	Sun,  7 Sep 2025 20:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F43418DF89;
+	Sun,  7 Sep 2025 20:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276185; cv=none; b=o4LRjuXo4KcXh/GI52Te+/dd7Q8jYl6OeW2Msf0jGL5D6yB6DJjVke/Ql6v1DTBKayYl/mm67fgSDkC18u+OgnRdQTpm2lgOEcwAT4vMlD/Qk2+V2T88CGhXskzwr/WqGWguhZSomqmhES2kvMG+njNVZibrGtUaAX8DunwY67U=
+	t=1757277045; cv=none; b=F8xkksfHmI28l7UDu50GVRjUS6vVi++36X5h+OLZNlVZNzbB5N4UEW6wemFuMgEcoJ75GNuKX9jBiL3JysacJOFHEs6fOUZXKzW3J0z3Dz8QHMToVazK3Fqtci4/Rt/lTpp6fgc/MhH3ewqrAS+E1C9M4HxkTgANbcCMriExOFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276185; c=relaxed/simple;
-	bh=p+LcjsMegpbe276hux7Csf4d+hpC0M7FbQc8emt3r80=;
+	s=arc-20240116; t=1757277045; c=relaxed/simple;
+	bh=HMxoWiCF6jn4S1sm0qHpSEdaycKwDZEDVCFa1G0xQe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wfqu9NnA7uaP8Dm3ZG1KmIfGYxW//948OmnvSybcL+SGMQOGzmEQl1jJ3BECiP84A6fWVeHVPk01hhSwQDqnGQhOf4aUTyZYZ3/Pi3PtgFuQmrKYTazGAFxC8Gsf37cpd33Ut8vCtE7P5kYPys/Cjrtgsi/yharmXjfX2JWleWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfSI9naJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37334C4CEF0;
-	Sun,  7 Sep 2025 20:16:24 +0000 (UTC)
+	 MIME-Version; b=JKEE9x1li5YKSDI+d5tri2ZZGNTlaU6LkM+jhdrR3MR0tugYwUgeTlySBh4AfwllwpswqSbAmM3qhan6JIo9kE3Wd9Wh4cnm5wyXycsJhCDV1VAGih3mDxFoqT1KsJmWUoJXetCWPQG4Mh7XpxhToFpfMlFMUgGyxy4kBQzbSNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWfakl+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AF8C4CEF0;
+	Sun,  7 Sep 2025 20:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276184;
-	bh=p+LcjsMegpbe276hux7Csf4d+hpC0M7FbQc8emt3r80=;
+	s=korg; t=1757277045;
+	bh=HMxoWiCF6jn4S1sm0qHpSEdaycKwDZEDVCFa1G0xQe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JfSI9naJJuAaRB3Yongi7khQGlrFd2c9pav8T8M+uZdMVUmJ7FB9DZei+BSTjQDqy
-	 HE1abBdVN9+hwn77r8jbrxBoWqVwULmAroINww2AkOJRYghsy7GCj51gJrS1M1mda+
-	 raFOPYAEblAjkfDBwmUKqG3lV9exd5l3S+yVIqms=
+	b=iWfakl+O84tHFO+dgzRt6eeKQRzWrOTTAFaDw5BjRqZO2zQqlA0nIWUlIY5i+tf5O
+	 iBwNaRbZ0ricZy+OyH+/RaK87AW/wTUvP6sA8caGwB9a6bCfbJd0B1rbJirYM59BBu
+	 7ZqWlEEmQxiMRk0EzSxAEAPqHNYsOZSr9i5ctS5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Marlin Cremers <mcremers@cloudbear.nl>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/104] i40e: Fix potential invalid access when MAC list is empty
+Subject: [PATCH 6.12 067/175] vxlan: Fix NPD when refreshing an FDB entry with a nexthop object
 Date: Sun,  7 Sep 2025 21:57:42 +0200
-Message-ID: <20250907195608.346152335@linuxfoundation.org>
+Message-ID: <20250907195616.421306498@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +65,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit a556f06338e1d5a85af0e32ecb46e365547f92b9 ]
+[ Upstream commit 6ead38147ebb813f08be6ea8ef547a0e4c09559a ]
 
-list_first_entry() never returns NULL - if the list is empty, it still
-returns a pointer to an invalid object, leading to potential invalid
-memory access when dereferenced.
+VXLAN FDB entries can point to either a remote destination or an FDB
+nexthop group. The latter is usually used in EVPN deployments where
+learning is disabled.
 
-Fix this by using list_first_entry_or_null instead of list_first_entry.
+However, when learning is enabled, an incoming packet might try to
+refresh an FDB entry that points to an FDB nexthop group and therefore
+does not have a remote. Such packets should be dropped, but they are
+only dropped after dereferencing the non-existent remote, resulting in a
+NPD [1] which can be reproduced using [2].
 
-Fixes: e3219ce6a775 ("i40e: Add support for client interface for IWARP driver")
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fix by dropping such packets earlier. Remove the misleading comment from
+first_remote_rcu().
+
+[1]
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+[...]
+CPU: 13 UID: 0 PID: 361 Comm: mausezahn Not tainted 6.17.0-rc1-virtme-g9f6b606b6b37 #1 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc41 04/01/2014
+RIP: 0010:vxlan_snoop+0x98/0x1e0
+[...]
+Call Trace:
+ <TASK>
+ vxlan_encap_bypass+0x209/0x240
+ encap_bypass_if_local+0xb1/0x100
+ vxlan_xmit_one+0x1375/0x17e0
+ vxlan_xmit+0x6b4/0x15f0
+ dev_hard_start_xmit+0x5d/0x1c0
+ __dev_queue_xmit+0x246/0xfd0
+ packet_sendmsg+0x113a/0x1850
+ __sock_sendmsg+0x38/0x70
+ __sys_sendto+0x126/0x180
+ __x64_sys_sendto+0x24/0x30
+ do_syscall_64+0xa4/0x260
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+[2]
+ #!/bin/bash
+
+ ip address add 192.0.2.1/32 dev lo
+ ip address add 192.0.2.2/32 dev lo
+
+ ip nexthop add id 1 via 192.0.2.3 fdb
+ ip nexthop add id 10 group 1 fdb
+
+ ip link add name vx0 up type vxlan id 10010 local 192.0.2.1 dstport 12345 localbypass
+ ip link add name vx1 up type vxlan id 10020 local 192.0.2.2 dstport 54321 learning
+
+ bridge fdb add 00:11:22:33:44:55 dev vx0 self static dst 192.0.2.2 port 54321 vni 10020
+ bridge fdb add 00:aa:bb:cc:dd:ee dev vx1 self static nhid 10
+
+ mausezahn vx0 -a 00:aa:bb:cc:dd:ee -b 00:11:22:33:44:55 -c 1 -q
+
+Fixes: 1274e1cc4226 ("vxlan: ecmp support for mac fdb entries")
+Reported-by: Marlin Cremers <mcremers@cloudbear.nl>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250901065035.159644-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_client.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/vxlan/vxlan_core.c    | 8 ++++----
+ drivers/net/vxlan/vxlan_private.h | 4 +---
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_client.c b/drivers/net/ethernet/intel/i40e/i40e_client.c
-index a289f1bb3dbfc..86fd82412e9e4 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_client.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_client.c
-@@ -362,8 +362,8 @@ static void i40e_client_add_instance(struct i40e_pf *pf)
- 	if (i40e_client_get_params(vsi, &cdev->lan_info.params))
- 		goto free_cdev;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index c4ce577eb0908..58590ddbc6a15 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1460,6 +1460,10 @@ static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
+ 	if (likely(f)) {
+ 		struct vxlan_rdst *rdst = first_remote_rcu(f);
  
--	mac = list_first_entry(&cdev->lan_info.netdev->dev_addrs.list,
--			       struct netdev_hw_addr, list);
-+	mac = list_first_entry_or_null(&cdev->lan_info.netdev->dev_addrs.list,
-+				       struct netdev_hw_addr, list);
- 	if (mac)
- 		ether_addr_copy(cdev->lan_info.lanmac, mac->addr);
- 	else
++		/* Don't override an fdb with nexthop with a learnt entry */
++		if (rcu_access_pointer(f->nh))
++			return SKB_DROP_REASON_VXLAN_ENTRY_EXISTS;
++
+ 		if (likely(vxlan_addr_equal(&rdst->remote_ip, src_ip) &&
+ 			   rdst->remote_ifindex == ifindex))
+ 			return SKB_NOT_DROPPED_YET;
+@@ -1468,10 +1472,6 @@ static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
+ 		if (f->state & (NUD_PERMANENT | NUD_NOARP))
+ 			return SKB_DROP_REASON_VXLAN_ENTRY_EXISTS;
+ 
+-		/* Don't override an fdb with nexthop with a learnt entry */
+-		if (rcu_access_pointer(f->nh))
+-			return SKB_DROP_REASON_VXLAN_ENTRY_EXISTS;
+-
+ 		if (net_ratelimit())
+ 			netdev_info(dev,
+ 				    "%pM migrated from %pIS to %pIS\n",
+diff --git a/drivers/net/vxlan/vxlan_private.h b/drivers/net/vxlan/vxlan_private.h
+index 76a351a997d51..c6279ef98a5c2 100644
+--- a/drivers/net/vxlan/vxlan_private.h
++++ b/drivers/net/vxlan/vxlan_private.h
+@@ -56,9 +56,7 @@ static inline struct hlist_head *vs_head(struct net *net, __be16 port)
+ 	return &vn->sock_list[hash_32(ntohs(port), PORT_HASH_BITS)];
+ }
+ 
+-/* First remote destination for a forwarding entry.
+- * Guaranteed to be non-NULL because remotes are never deleted.
+- */
++/* First remote destination for a forwarding entry. */
+ static inline struct vxlan_rdst *first_remote_rcu(struct vxlan_fdb *fdb)
+ {
+ 	if (rcu_access_pointer(fdb->nh))
 -- 
 2.50.1
 
