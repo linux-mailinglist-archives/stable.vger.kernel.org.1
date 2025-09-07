@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-178532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913D1B47F0C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D164EB47D5B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D0AB1B21039
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ED1A17C225
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999BA212B3D;
-	Sun,  7 Sep 2025 20:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6832C1F9F70;
+	Sun,  7 Sep 2025 20:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USxSAr1q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HV243Kee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5882915C158;
-	Sun,  7 Sep 2025 20:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E601CDFAC;
+	Sun,  7 Sep 2025 20:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277137; cv=none; b=Brt1n1s3hFjc53bXKuC4yyoqYRDyXeIl4xOYpf+r0RX5dSbjV+i2XB5xLY6jyjZpsKZcT9+2DZrrkLXUzKJDFOLryHh/KuNkBzD8he+DlPjdNIKjqpR31k1iDCyhJWn0NtLReFYA7XcYuuYlcrohAWh3L8Wx4RjVlPnXcMmVAhw=
+	t=1757275842; cv=none; b=c6TMmAyxutWCJPoFq2LPR6zAfJuSl4ixVcX+N4t/JiarAlVhVyIvnG//UEWUlY6oG8nLBxnkkQgCm4Cif+A3UaK75HK7lXjTTDc9nu23Gocbzw9ZjfjhrLZflrMr19v6hfmpjNqo8P1oF8Voj8aIkb9pbgpXIGXKfYFUEXQSs48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277137; c=relaxed/simple;
-	bh=ms/G8cy6+Xzgtlwl7VKzqe1fuTvfIs0fYA/jjrTtCZg=;
+	s=arc-20240116; t=1757275842; c=relaxed/simple;
+	bh=tBAEPsN+acLRTqhnrGWbgkGM9DaXevjj6ovyShlWJiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KpO0gqWtc+DYj7jSeOHeFRao6Q1Cv/kSvq2AaZd/+xYtzbev/lgUbafiqwxX8l3hciw5MumBKkDugePRjbeWp7Pr7Ic4bGY1m0MXoi1IVFMb/2tYJmP/MOrlRjEHTwWR15/lhsocZC4Usat8L/p8aiwZk43JbmoeB+tbjhSLVLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USxSAr1q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD84BC4CEF9;
-	Sun,  7 Sep 2025 20:32:16 +0000 (UTC)
+	 MIME-Version; b=r4wFN4A7OORgpbqRdBQHSmGLfgrM0b+GrGONmeOySsvkqJ3cfUaYoCFymTvbYvMbaIr5/wEIrZF3BRzKrTxdFBHFgSWIsONqA5iCVaKHMW1Oblt31Q1JBagbYNvCU9HXGFb4TZfLx7BpNYYlElREALWJyPOrJjb9iRgiE+pdtOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HV243Kee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0E3C4CEF0;
+	Sun,  7 Sep 2025 20:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277137;
-	bh=ms/G8cy6+Xzgtlwl7VKzqe1fuTvfIs0fYA/jjrTtCZg=;
+	s=korg; t=1757275841;
+	bh=tBAEPsN+acLRTqhnrGWbgkGM9DaXevjj6ovyShlWJiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=USxSAr1q0g+6kPLEsSrb2OcYOk1AY4W9RP6eQsdpfsgyZjnqCZQ1K2/LhZKApKg4O
-	 /lk9RB8xI5mITWLaPDl9zoY2fli4Rd3ExMlq3OZ7DUmu0GrH18mWrubXhZDbrwQGLW
-	 quBBTe12KQckpGNm0WcYujFRC8ERZF41T+3Lt0U4=
+	b=HV243KeebXqESlBMaYonxGDx32zRmDjfT+kJDOaFczZduY2TWAsHxJfwt53vBBlic
+	 VJSAnn9PfxI5jWdEJP38f18J85YJ58YQTF60lIija2uvZm8LBejsJERmV6inrqZOlr
+	 VRNFyPfKV+yiDhpkzphT00jqODgqvDlhPmC2RsMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 098/175] mm/userfaultfd: fix kmap_local LIFO ordering for CONFIG_HIGHPTE
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 27/45] cpufreq/sched: Explicitly synchronize limits_changed flag handling
 Date: Sun,  7 Sep 2025 21:58:13 +0200
-Message-ID: <20250907195617.167690906@linuxfoundation.org>
+Message-ID: <20250907195601.756101702@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Levin <sashal@kernel.org>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-commit 9614d8bee66387501f48718fa306e17f2aa3f2f3 upstream.
+[ Upstream commit 79443a7e9da3c9f68290a8653837e23aba0fa89f ]
 
-With CONFIG_HIGHPTE on 32-bit ARM, move_pages_pte() maps PTE pages using
-kmap_local_page(), which requires unmapping in Last-In-First-Out order.
+The handling of the limits_changed flag in struct sugov_policy needs to
+be explicitly synchronized to ensure that cpufreq policy limits updates
+will not be missed in some cases.
 
-The current code maps dst_pte first, then src_pte, but unmaps them in the
-same order (dst_pte, src_pte), violating the LIFO requirement.  This
-causes the warning in kunmap_local_indexed():
+Without that synchronization it is theoretically possible that
+the limits_changed update in sugov_should_update_freq() will be
+reordered with respect to the reads of the policy limits in
+cpufreq_driver_resolve_freq() and in that case, if the limits_changed
+update in sugov_limits() clobbers the one in sugov_should_update_freq(),
+the new policy limits may not take effect for a long time.
 
-  WARNING: CPU: 0 PID: 604 at mm/highmem.c:622 kunmap_local_indexed+0x178/0x17c
-  addr \!= __fix_to_virt(FIX_KMAP_BEGIN + idx)
+Likewise, the limits_changed update in sugov_limits() may theoretically
+get reordered with respect to the updates of the policy limits in
+cpufreq_set_policy() and if sugov_should_update_freq() runs between
+them, the policy limits change may be missed.
 
-Fix this by reversing the unmap order to respect LIFO ordering.
+To ensure that the above situations will not take place, add memory
+barriers preventing the reordering in question from taking place and
+add READ_ONCE() and WRITE_ONCE() annotations around all of the
+limits_changed flag updates to prevent the compiler from messing up
+with that code.
 
-This issue follows the same pattern as similar fixes:
-- commit eca6828403b8 ("crypto: skcipher - fix mismatch between mapping and unmapping order")
-- commit 8cf57c6df818 ("nilfs2: eliminate staggered calls to kunmap in nilfs_rename")
-
-Both of which addressed the same fundamental requirement that kmap_local
-operations must follow LIFO ordering.
-
-Link: https://lkml.kernel.org/r/20250731144431.773923-1-sashal@kernel.org
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Fixes: 600f5badb78c ("cpufreq: schedutil: Don't skip freq update when limits change")
+Cc: 5.3+ <stable@vger.kernel.org> # 5.3+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/3376719.44csPzL39Z@rjwysocki.net
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/userfaultfd.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ kernel/sched/cpufreq_schedutil.c |   28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1432,10 +1432,15 @@ out:
- 		folio_unlock(src_folio);
- 		folio_put(src_folio);
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -88,9 +88,20 @@ static bool sugov_should_update_freq(str
+ 	if (!cpufreq_this_cpu_can_update(sg_policy->policy))
+ 		return false;
+ 
+-	if (unlikely(sg_policy->limits_changed)) {
+-		sg_policy->limits_changed = false;
++	if (unlikely(READ_ONCE(sg_policy->limits_changed))) {
++		WRITE_ONCE(sg_policy->limits_changed, false);
+ 		sg_policy->need_freq_update = true;
++
++		/*
++		 * The above limits_changed update must occur before the reads
++		 * of policy limits in cpufreq_driver_resolve_freq() or a policy
++		 * limits update might be missed, so use a memory barrier to
++		 * ensure it.
++		 *
++		 * This pairs with the write memory barrier in sugov_limits().
++		 */
++		smp_mb();
++
+ 		return true;
  	}
--	if (dst_pte)
--		pte_unmap(dst_pte);
+ 
+@@ -444,7 +455,7 @@ static inline bool sugov_cpu_is_busy(str
+ static inline void ignore_dl_rate_limit(struct sugov_cpu *sg_cpu, struct sugov_policy *sg_policy)
+ {
+ 	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_dl)
+-		sg_policy->limits_changed = true;
++		WRITE_ONCE(sg_policy->limits_changed, true);
+ }
+ 
+ static void sugov_update_single(struct update_util_data *hook, u64 time,
+@@ -894,7 +905,16 @@ static void sugov_limits(struct cpufreq_
+ 		mutex_unlock(&sg_policy->work_lock);
+ 	}
+ 
+-	sg_policy->limits_changed = true;
 +	/*
-+	 * Unmap in reverse order (LIFO) to maintain proper kmap_local
-+	 * index ordering when CONFIG_HIGHPTE is enabled. We mapped dst_pte
-+	 * first, then src_pte, so we must unmap src_pte first, then dst_pte.
++	 * The limits_changed update below must take place before the updates
++	 * of policy limits in cpufreq_set_policy() or a policy limits update
++	 * might be missed, so use a memory barrier to ensure it.
++	 *
++	 * This pairs with the memory barrier in sugov_should_update_freq().
 +	 */
- 	if (src_pte)
- 		pte_unmap(src_pte);
-+	if (dst_pte)
-+		pte_unmap(dst_pte);
- 	mmu_notifier_invalidate_range_end(&range);
- 	if (si)
- 		put_swap_device(si);
++	smp_wmb();
++
++	WRITE_ONCE(sg_policy->limits_changed, true);
+ }
+ 
+ struct cpufreq_governor schedutil_gov = {
 
 
 
