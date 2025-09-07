@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-178276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1518B47DF6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3003EB47EEA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCFB6189ECE7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 716623ACE40
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB87C1C6FFA;
-	Sun,  7 Sep 2025 20:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E441DF246;
+	Sun,  7 Sep 2025 20:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbML5ssY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lqwqdoh9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A927714BFA2;
-	Sun,  7 Sep 2025 20:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28B11F09BF;
+	Sun,  7 Sep 2025 20:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276322; cv=none; b=W7IYf4Xd5USgrpGQqyYjxb50RemHjla8u1vs63DZWo/ow7jhYbpOxTPocg61c520bOIdT1ZIq3mmcYVKicwRBVsaBt++FH3CFEDsDR1Qafrs38RRyIGp7+CnNuOG12F007XMHdPVhtI+j8gvyWTStLndxuuDhyI9N7vv1Ync/Is=
+	t=1757277027; cv=none; b=kxAVm1aF0oCVZuM9+2QDTuYNX9NoKHyQq5odxEjCDUB/VzkTfjrdGy7dbYmOUFgHzrioZlGTDcPW3N1n8JLGDToduXCHQmIRm5U/vzrbMyJEapqRXYIMH7ntfNWtNcHubptZT5igiRQijL8VXgNMvLNXpE3mknS9IzHrksLi+Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276322; c=relaxed/simple;
-	bh=GivGVMDZnjXYIB6JRR72xM9rq9tFNXlraCjxqvTqpMc=;
+	s=arc-20240116; t=1757277027; c=relaxed/simple;
+	bh=jxzrCuseVpZGPRRHIIa1dWmJAfMLOVNXrqXX2pbQsEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HhaEudgC4eW4efsqh5PdhF1pfT9WYxnru1x9CD0DXWJJBSoVEucvBhRW7B4mVJ9h668iWJ8YO3uG/C6uQ/BL5nl3Mgx3NJw8OxGtLGPEadpyr1refW2BKVW+ZUCEiJNZtIWRLniQ6BiCclkO4VpJl/0KcWQG2BmDPrthIaqZEhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbML5ssY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320C9C4CEF0;
-	Sun,  7 Sep 2025 20:18:42 +0000 (UTC)
+	 MIME-Version; b=lQcBv/xcXj9lRjSL+T1K6sqIei3NslQdeQTZOOweTN0IJb7xXuUgVgIym0x5YDt41cYNCuWhyOuMaLNx3+I1PzIU9NtlCeK/7GQP+FbBGJ9tJu+1LBAy9Uem+higlVshut5lsLCOhjXGM/mc0zRTJOF0ZHOHi7hO3K2Vo2IOLLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lqwqdoh9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CD1FC4CEF0;
+	Sun,  7 Sep 2025 20:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276322;
-	bh=GivGVMDZnjXYIB6JRR72xM9rq9tFNXlraCjxqvTqpMc=;
+	s=korg; t=1757277027;
+	bh=jxzrCuseVpZGPRRHIIa1dWmJAfMLOVNXrqXX2pbQsEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbML5ssYREXt+CAhVz4HP+PcwuICFoc06h8n+fbOlNjstAFUB7+UgmCAm0gGyhvvL
-	 2/UThDuKoxOWLOugli8jybFeoG0Vovepgmb1qW5967boZ0r+wEmj5MIxlbE3Y4Is4N
-	 /dm7IXwFUEvoOGUEX5xkJu75D6nJGmC8d14DQuF8=
+	b=Lqwqdoh9fikmACtcNfbaFfN1JJjJ1kdTxtD+OJ75n+hO7WiR/mghJd9IxweJjgS0A
+	 2BA6ejZCrDp0RxeBD7Ho2GUelq+nOlh9RIk9qZ1cixd380BZLHjZlnyJgMavGlOaf3
+	 XVJO03OEvS0RSMTdRe6fw7Y3ONMU5o9qnaak7djA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Thibaut VARENE <hacks@slashdirt.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/104] xirc2ps_cs: fix register access when enabling FullDuplex
+Subject: [PATCH 6.12 062/175] net: ethernet: mtk_eth_soc: fix tx vlan tag for llc packets
 Date: Sun,  7 Sep 2025 21:57:37 +0200
-Message-ID: <20250907195608.211985034@linuxfoundation.org>
+Message-ID: <20250907195616.308599650@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit b79e498080b170fd94fc83bca2471f450811549b ]
+[ Upstream commit d4736737110ffa83d29f1c5d17b26113864205f6 ]
 
-The current code incorrectly passes (XIRCREG1_ECR | FullDuplex) as
-the register address to GetByte(), instead of fetching the register
-value and OR-ing it with FullDuplex. This results in an invalid
-register access.
+When sending llc packets with vlan tx offload, the hardware fails to
+actually add the tag. Deal with this by fixing it up in software.
 
-Fix it by reading XIRCREG1_ECR first, then or-ing with FullDuplex
-before writing it back.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Fixes: 656e705243fd ("net-next: mediatek: add support for MT7623 ethernet")
+Reported-by: Thibaut VARENE <hacks@slashdirt.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250827192645.658496-1-alok.a.tiwari@oracle.com
+Link: https://patch.msgid.link/20250831182007.51619-1-nbd@nbd.name
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xircom/xirc2ps_cs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/xircom/xirc2ps_cs.c b/drivers/net/ethernet/xircom/xirc2ps_cs.c
-index 9f505cf02d965..2dc1cfcd7ce99 100644
---- a/drivers/net/ethernet/xircom/xirc2ps_cs.c
-+++ b/drivers/net/ethernet/xircom/xirc2ps_cs.c
-@@ -1578,7 +1578,7 @@ do_reset(struct net_device *dev, int full)
- 	    msleep(40);			/* wait 40 msec to let it complete */
- 	}
- 	if (full_duplex)
--	    PutByte(XIRCREG1_ECR, GetByte(XIRCREG1_ECR | FullDuplex));
-+	    PutByte(XIRCREG1_ECR, GetByte(XIRCREG1_ECR) | FullDuplex);
-     } else {  /* No MII */
- 	SelectPage(0);
- 	value = GetByte(XIRCREG_ESR);	 /* read the ESR */
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 272f178906d61..64d86068b51eb 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -1606,6 +1606,13 @@ static netdev_tx_t mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	bool gso = false;
+ 	int tx_num;
+ 
++	if (skb_vlan_tag_present(skb) &&
++	    !eth_proto_is_802_3(eth_hdr(skb)->h_proto)) {
++		skb = __vlan_hwaccel_push_inside(skb);
++		if (!skb)
++			goto dropped;
++	}
++
+ 	/* normally we can rely on the stack not calling this more than once,
+ 	 * however we have 2 queues running on the same ring so we need to lock
+ 	 * the ring access
+@@ -1651,8 +1658,9 @@ static netdev_tx_t mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 
+ drop:
+ 	spin_unlock(&eth->page_lock);
+-	stats->tx_dropped++;
+ 	dev_kfree_skb_any(skb);
++dropped:
++	stats->tx_dropped++;
+ 	return NETDEV_TX_OK;
+ }
+ 
 -- 
 2.50.1
 
