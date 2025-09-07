@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-178182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E6DB47D94
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31417B47F15
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30E0417C671
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E342C17F24A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCEC29B766;
-	Sun,  7 Sep 2025 20:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E632139C9;
+	Sun,  7 Sep 2025 20:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1kIXaMJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHNO5+O+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03EC1CDFAC;
-	Sun,  7 Sep 2025 20:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8066C1A0BFD;
+	Sun,  7 Sep 2025 20:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276025; cv=none; b=HAJGFsOVvXb7qEmqX2+m+tVeyjn0dXK2YrZ9WxiYA+r7mopEfBC5yfWnCfN5/dWRDQRR1VyzbWXmwdr2t30w85rJSN+0ly6OTGYMzWq7t2o7RV8hpK2U+N5O3PyRSaBVGMuIVG+Ui1n9/DOkO28qZkTDowfFf5m4wqH6+s3Gpqk=
+	t=1757277169; cv=none; b=d2G5xQnW6hsw7p/UkF2vxlFKSAKCMGp4YZ+AC2YdRQoxNOtoho0KXQksIoeLL5+vFrBDsirIhzxThtQzil0ZHt1Kckm1N2wte+QlgDd6AmYZTsJK74Rzfzw8RsxVL4N1fGUcsVHmTNj1sNu57e9J/ScUUSHDy6XC3xbW+utzPv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276025; c=relaxed/simple;
-	bh=C6LM3FINu7C2ZCAkYqic4m0oXdV5yJ1WspWaaPgVa6o=;
+	s=arc-20240116; t=1757277169; c=relaxed/simple;
+	bh=wgg1lqswwymiS9Tbs3uq5AG2pQuESldabiRJkiD3Q1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxv5kUU42LrR27B1miKHMHnsqxq5NTeDS7vjlvIwIDVHpJKJ6FYtXHp/aRfVEnhf9T2/3wWGTlWt9HueA5QgOvD+oOCH+Nbi7RhyqTYEkd+TCLfX7WMvZPOgXCVeyxejUwLxvinRIjREX5FnEvxUglNhveT7aKWq5rM9rdgSvG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1kIXaMJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA128C4CEF0;
-	Sun,  7 Sep 2025 20:13:44 +0000 (UTC)
+	 MIME-Version; b=hQYukGHwB9fH5OssjiaM1CnBXBCLXqIShWVlFRgr4aI4RjVJ/8w/qpH+rX6sazJN+TfcI5EQgQKJagHf7+knJD4bszz0A1dOdpGlbqhiDDKJDRckTAJnO4Lw2Wae7Br3Gh7N2nGC+d/Zjl+MUgexBwo342wSfA1jh0X0yPsdvqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHNO5+O+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F298BC4CEF0;
+	Sun,  7 Sep 2025 20:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276025;
-	bh=C6LM3FINu7C2ZCAkYqic4m0oXdV5yJ1WspWaaPgVa6o=;
+	s=korg; t=1757277169;
+	bh=wgg1lqswwymiS9Tbs3uq5AG2pQuESldabiRJkiD3Q1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i1kIXaMJDg5GbbEkJ7wcyw/fX4QhC2XTWVG1wKnzSn4XsTls7F5kP1XZUSqLsuKW2
-	 agOrtEnbhxQCmCOt7fPw/DrQAmr/7Fu2gKCnJr+sAwa9SXec5VE2dEP3oNhu4yGhB2
-	 YuQJZP2Xg3luQsRFvCar+NM2cC7QOpJMcBOUMXPs=
+	b=nHNO5+O+IfC+wdCIKdU7jbUmEcP/5eH7iRGgelqrHLwgckhhLhguTklx+p75nTwsv
+	 JUnsbFLLgmtZ9obrLUqUWjrv1j2UrGrPLWcOoOAY5w2ZzWTu49/FnMTmQeEpwN/5BL
+	 SUGjfxpuDeQIrdo+ltux/tA2towzs3yogoDp/klI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 40/64] KVM: x86: Take irqfds.lock when adding/deleting IRQ bypass producer
+	Val Packett <val@packett.cool>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 107/175] soc: qcom: mdt_loader: Deal with zero e_shentsize
 Date: Sun,  7 Sep 2025 21:58:22 +0200
-Message-ID: <20250907195604.509733553@linuxfoundation.org>
+Message-ID: <20250907195617.384626091@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit f1fb088d9cecde5c3066d8ff8846789667519b7d ]
+commit 25daf9af0ac1bf12490b723b5efaf8dcc85980bc upstream.
 
-Take irqfds.lock when adding/deleting an IRQ bypass producer to ensure
-irqfd->producer isn't modified while kvm_irq_routing_update() is running.
-The only lock held when a producer is added/removed is irqbypass's mutex.
+Firmware that doesn't provide section headers leave both e_shentsize and
+e_shnum 0, which obvious isn't compatible with the newly introduced
+stricter checks.
 
-Fixes: 872768800652 ("KVM: x86: select IRQ_BYPASS_MANAGER")
+Make the section-related checks conditional on either of these values
+being non-zero.
+
+Fixes: 9f9967fed9d0 ("soc: qcom: mdt_loader: Ensure we don't read past the ELF header")
+Reported-by: Val Packett <val@packett.cool>
+Closes: https://lore.kernel.org/all/ece307c3-7d65-440f-babd-88cf9705b908@packett.cool/
+Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
+Closes: https://lore.kernel.org/all/aec9cd03-6fc2-4dc8-b937-8b7cf7bf4128@linaro.org/
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Fixes: 9f35ab0e53cc ("soc: qcom: mdt_loader: Fix error return values in mdt_header_valid()")
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250404193923.1413163-5-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20250730-mdt-loader-shentsize-zero-v1-1-04f43186229c@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/soc/qcom/mdt_loader.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -12449,16 +12449,22 @@ int kvm_arch_irq_bypass_add_producer(str
- {
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
-+	struct kvm *kvm = irqfd->kvm;
- 	int ret;
+--- a/drivers/soc/qcom/mdt_loader.c
++++ b/drivers/soc/qcom/mdt_loader.c
+@@ -39,12 +39,14 @@ static bool mdt_header_valid(const struc
+ 	if (phend > fw->size)
+ 		return false;
  
--	irqfd->producer = prod;
- 	kvm_arch_start_assignment(irqfd->kvm);
-+
-+	spin_lock_irq(&kvm->irqfds.lock);
-+	irqfd->producer = prod;
-+
- 	ret = static_call(kvm_x86_update_pi_irte)(irqfd->kvm,
- 					 prod->irq, irqfd->gsi, 1);
--
- 	if (ret)
- 		kvm_arch_end_assignment(irqfd->kvm);
+-	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
+-		return false;
++	if (ehdr->e_shentsize || ehdr->e_shnum) {
++		if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
++			return false;
  
-+	spin_unlock_irq(&kvm->irqfds.lock);
-+
-+
- 	return ret;
+-	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
+-	if (shend > fw->size)
+-		return false;
++		shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
++		if (shend > fw->size)
++			return false;
++	}
+ 
+ 	return true;
  }
- 
-@@ -12468,9 +12474,9 @@ void kvm_arch_irq_bypass_del_producer(st
- 	int ret;
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
-+	struct kvm *kvm = irqfd->kvm;
- 
- 	WARN_ON(irqfd->producer != prod);
--	irqfd->producer = NULL;
- 
- 	/*
- 	 * When producer of consumer is unregistered, we change back to
-@@ -12478,11 +12484,17 @@ void kvm_arch_irq_bypass_del_producer(st
- 	 * when the irq is masked/disabled or the consumer side (KVM
- 	 * int this case doesn't want to receive the interrupts.
- 	*/
-+	spin_lock_irq(&kvm->irqfds.lock);
-+	irqfd->producer = NULL;
-+
- 	ret = static_call(kvm_x86_update_pi_irte)(irqfd->kvm, prod->irq, irqfd->gsi, 0);
- 	if (ret)
- 		printk(KERN_INFO "irq bypass consumer (token %p) unregistration"
- 		       " fails: %d\n", irqfd->consumer.token, ret);
- 
-+	spin_unlock_irq(&kvm->irqfds.lock);
-+
-+
- 	kvm_arch_end_assignment(irqfd->kvm);
- }
- 
 
 
 
