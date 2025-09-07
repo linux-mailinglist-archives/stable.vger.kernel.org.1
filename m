@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-178704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA218B47FBB
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA6DB47DA8
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BAC41703B4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 472A617CD06
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F313212B3D;
-	Sun,  7 Sep 2025 20:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20EB127F754;
+	Sun,  7 Sep 2025 20:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EWhCaNij"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJXMcBEj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB864315A;
-	Sun,  7 Sep 2025 20:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E481B424F;
+	Sun,  7 Sep 2025 20:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277691; cv=none; b=NL8C2PObfIMkR3uQ0u6tTFy8MIWkR44uDjgHVsPItLAorpuoxd2gd5PYXKnWcvHMzsXo8k+M/rP9OBlAR2CXNQ2TGj53m9lkU5nzzYH8rHL+lWqnoYCrzpA4NG1Tn3G4ZrWGYY5ekk6jKTjcZqf+cXvHWvmH3qNCNolCrwdaWhU=
+	t=1757276088; cv=none; b=qpcLpe5pOxtLLuVedbqHCqgXD2vRHCfl+h7JvcUI9h3MaIn87zKIVrwZ1u0MSS7oWvKF0nrLvGD6SkjAP1sILvU82zbTG9yXMOkUtBDdINIi2GdFRO1O4+Y1oC+kxBRAPIj3U7FNf1Dc2X14vOVS2OOoUbxoCNuWCSImI79Lg0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277691; c=relaxed/simple;
-	bh=tnnLlZpqM4vdRtdmU8hAjrtms1Z63izcERNAQ7ZMVO4=;
+	s=arc-20240116; t=1757276088; c=relaxed/simple;
+	bh=phgFj5OYI3Prg9CBfLyWzc2seSvBfXHWPacfn1T9MJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iRvxfuxKoA+G7v9oluzokpSzWzG5jRDp9sxu3sq41hZrC0S0yLnoPBDjOz4wsEGPhgqg5Or2YrHiqgN293oJuC0ias1dItBx0XIO8OsARn18X2PmWTqMmtEpQQgDl+pc1DW1kg2V/hu8KJ/CdpzMC/kwViNJYGElt0ydRymKz6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EWhCaNij; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F19C4CEF0;
-	Sun,  7 Sep 2025 20:41:30 +0000 (UTC)
+	 MIME-Version; b=knItYW68/Iy58kGZREUGCdoXCOnrBUIGbW579bg+VHs5T4LD5VBzeExRoCf7Ex3FAc7FCZaCFwLpnB0fPTJhZMTxQc+a/oWhY49DML6B3MZ1xkcwrnN9Nh4BlZ8D6tdeDIy3WMB+PMRfiXM4p2uuHi9QUV4W+CCOpIfjuCal5mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJXMcBEj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDCEC4CEF0;
+	Sun,  7 Sep 2025 20:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277691;
-	bh=tnnLlZpqM4vdRtdmU8hAjrtms1Z63izcERNAQ7ZMVO4=;
+	s=korg; t=1757276088;
+	bh=phgFj5OYI3Prg9CBfLyWzc2seSvBfXHWPacfn1T9MJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EWhCaNij0PN+v/23RkEfW/uTSZzMZGQ8rqeEcMITFSibbY53UcxAV3ZqGkvJUkME4
-	 YBhroFPehQKYUzoEQ3FVmXHRkEAuWat495hEvkDGfIpAFhUqaW/Jg1yOMs3OLJ4snz
-	 6Ze7VRV20Nj81/T0Uvr0yuJ5J1ezJ0EpmyEf1mdk=
+	b=NJXMcBEjXYrAVbcvFe6tSljqRHJ0VwVRqdi/8rHCBOVzd5P0P+b4KQuw6WgdUSiGE
+	 6Kp3iHn/hBqza/rJLb+1P2N0fe2czcX6B8Jamc/XU9p7L7dkSMRd8b9r094zlptU5+
+	 sjLK3+eMGch/o+F74AKX1y9j/voPET+1Sgnojv3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	James Clark <james.clark@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 093/183] ppp: fix memory leak in pad_compress_skb
+Subject: [PATCH 5.15 58/64] spi: spi-fsl-lpspi: Set correct chip-select polarity bit
 Date: Sun,  7 Sep 2025 21:58:40 +0200
-Message-ID: <20250907195617.998740505@linuxfoundation.org>
+Message-ID: <20250907195605.018077339@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Larisa Grigore <larisa.grigore@nxp.com>
 
-[ Upstream commit 4844123fe0b853a4982c02666cb3fd863d701d50 ]
+[ Upstream commit cbe33705864ba2697a2939de715b81538cf32430 ]
 
-If alloc_skb() fails in pad_compress_skb(), it returns NULL without
-releasing the old skb. The caller does:
+The driver currently supports multiple chip-selects, but only sets the
+polarity for the first one (CS 0). Fix it by setting the PCSPOL bit for
+the desired chip-select.
 
-    skb = pad_compress_skb(ppp, skb);
-    if (!skb)
-        goto drop;
-
-drop:
-    kfree_skb(skb);
-
-When pad_compress_skb() returns NULL, the reference to the old skb is
-lost and kfree_skb(skb) ends up doing nothing, leading to a memory leak.
-
-Align pad_compress_skb() semantics with realloc(): only free the old
-skb if allocation and compression succeed.  At the call site, use the
-new_skb variable so the original skb is not lost when pad_compress_skb()
-fails.
-
-Fixes: b3f9b92a6ec1 ("[PPP]: add PPP MPPE encryption module")
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Yue Haibing <yuehaibing@huawei.com>
-Link: https://patch.msgid.link/20250903100726.269839-1-dqfext@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250828-james-nxp-lpspi-v2-2-6262b9aa9be4@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_generic.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 5e7672d2022c9..bb5343c039259 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -1752,7 +1752,6 @@ pad_compress_skb(struct ppp *ppp, struct sk_buff *skb)
- 		 */
- 		if (net_ratelimit())
- 			netdev_err(ppp->dev, "ppp: compressor dropped pkt\n");
--		kfree_skb(skb);
- 		consume_skb(new_skb);
- 		new_skb = NULL;
- 	}
-@@ -1854,9 +1853,10 @@ ppp_send_frame(struct ppp *ppp, struct sk_buff *skb)
- 					   "down - pkt dropped.\n");
- 			goto drop;
- 		}
--		skb = pad_compress_skb(ppp, skb);
--		if (!skb)
-+		new_skb = pad_compress_skb(ppp, skb);
-+		if (!new_skb)
- 			goto drop;
-+		skb = new_skb;
- 	}
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 7ece48667f52d..ab096368a1fd5 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -5,6 +5,7 @@
+ // Copyright 2016 Freescale Semiconductor, Inc.
+ // Copyright 2018, 2023, 2025 NXP
  
- 	/*
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+ #include <linux/delay.h>
+@@ -71,7 +72,7 @@
+ #define DER_TDDE	BIT(0)
+ #define CFGR1_PCSCFG	BIT(27)
+ #define CFGR1_PINCFG	(BIT(24)|BIT(25))
+-#define CFGR1_PCSPOL	BIT(8)
++#define CFGR1_PCSPOL_MASK	GENMASK(11, 8)
+ #define CFGR1_NOSTALL	BIT(3)
+ #define CFGR1_MASTER	BIT(0)
+ #define FSR_TXCOUNT	(0xFF)
+@@ -395,7 +396,9 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
+ 	else
+ 		temp = CFGR1_PINCFG;
+ 	if (fsl_lpspi->config.mode & SPI_CS_HIGH)
+-		temp |= CFGR1_PCSPOL;
++		temp |= FIELD_PREP(CFGR1_PCSPOL_MASK,
++				   BIT(fsl_lpspi->config.chip_select));
++
+ 	writel(temp, fsl_lpspi->base + IMX7ULP_CFGR1);
+ 
+ 	temp = readl(fsl_lpspi->base + IMX7ULP_CR);
 -- 
-2.50.1
+2.51.0
 
 
 
