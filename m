@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0789B47E89
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E36B47FC5
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F0C03B20CA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCC1A20068D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20221E1C1A;
-	Sun,  7 Sep 2025 20:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7831021ADAE;
+	Sun,  7 Sep 2025 20:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgButk0k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a+gpG5Lc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5C8D528;
-	Sun,  7 Sep 2025 20:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371844315A;
+	Sun,  7 Sep 2025 20:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276737; cv=none; b=YE/RrOtfqZdCvtPIw5tSzTVcLJfmp42gHn8En+pZ9nZ+y0dWyQYc63Gdu3jtj2iON+J9JhCuMFOpaLWMDSsIup7U4/dON1hPf3xz4sYRvkljJdNbp0TjR2oq7pnh0KacS2Ch2XtVpZflNDYjO+X+UMDGS3wC+Mho0Ym/TUtGKFE=
+	t=1757277723; cv=none; b=XwqntP7fitC5dxOiIHDeEFqF4OKiWVjqK9xPwYnezWjJla0NwQbjjhcJ0TE8oVaeqDJBOhROcQeELTM6jR94VVOvzNHQMkwfZF30pJrdNJkwPkCfJfYO0FnK9on95bOmjq0e4c3NGpnAFqlyCC8/0i+eo78cAaSK8IjWsVaHshY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276737; c=relaxed/simple;
-	bh=aRom7zeGvHFJ1H9qcMZehFAR5y+d9taatrVXYXbPN6k=;
+	s=arc-20240116; t=1757277723; c=relaxed/simple;
+	bh=yetg9vO4HPMF4bPzu8Kj1qTuDMIFzFq6QAwivpL7uTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L+kBQH7Gy6q2uDn3XMlTkeiLJSyfM8jX51y3NeMucskrxalYeaXgLkh+iVPNDY1HhiJynJGoO0+E3TwAg2s2ULHY/c2k4GB2evOuQpNg871cSDCqUsRUxfyyth5MNblC2q4FebYjRpc56t1hQR1O9BBHpGw0Y5q0PUXNd5KdlO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgButk0k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22507C4CEF0;
-	Sun,  7 Sep 2025 20:25:36 +0000 (UTC)
+	 MIME-Version; b=FH+AP7UlrDMIWCzvfn39JQ76zAXj/WKJLWoykVKrOexS8SAvfRc5rUz0KGhWp7MKG95iA45FX5jbIvLLKrpKZ47xq4GSs22wcTI83yP3eGE6LvnrkDLgGE0NEJ28qnQdO30/qEHCjbEOXXZex0sT/tARzLUhVQE6NYGH7rpIokw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+gpG5Lc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86676C4CEF0;
+	Sun,  7 Sep 2025 20:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276737;
-	bh=aRom7zeGvHFJ1H9qcMZehFAR5y+d9taatrVXYXbPN6k=;
+	s=korg; t=1757277723;
+	bh=yetg9vO4HPMF4bPzu8Kj1qTuDMIFzFq6QAwivpL7uTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MgButk0kGHTwIrOYIQ8LJNdD9qim4ISuKqu7ph3bRTBozq2PfFPOnTTNtV01OFShx
-	 EmlZYCAUKoco0jn363SSYAgkeUB+kIWC/tlxWJmeQGN/3UFv5wno+frn5eUXdrjaRN
-	 JgdblkiFq/zpeZa91XYGvFboE0gKkPhLGJxPpASQ=
+	b=a+gpG5LcYQWyYqcNmRONYxgwEtSBbMCNvXYLW7kSHGhdoSqwXJSREZYSN+msJl9uv
+	 bMelW5Dte5g74RMOPCK3LGCdn5rSHB8fG1xHUj4ZyCTOkZTQOyG7oWOAjZaXK5cy2U
+	 FfPrO5I0WYzadRfuXO2Fqb+s9KJlsvrGcyU2/dKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronak Doshi <ronak.doshi@broadcom.com>,
-	Guolin Yang <guolin.yang@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/121] vmxnet3: update MTU after device quiesce
-Date: Sun,  7 Sep 2025 21:58:48 +0200
-Message-ID: <20250907195612.211648073@linuxfoundation.org>
+	Li Qiong <liqiong@nfschina.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 6.16 102/183] mm/slub: avoid accessing metadata when pointer is invalid in object_err()
+Date: Sun,  7 Sep 2025 21:58:49 +0200
+Message-ID: <20250907195618.212876035@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronak Doshi <ronak.doshi@broadcom.com>
+From: Li Qiong <liqiong@nfschina.com>
 
-[ Upstream commit 43f0999af011fba646e015f0bb08b6c3002a0170 ]
+commit b4efccec8d06ceb10a7d34d7b1c449c569d53770 upstream.
 
-Currently, when device mtu is updated, vmxnet3 updates netdev mtu, quiesces
-the device and then reactivates it for the ESXi to know about the new mtu.
-So, technically the OS stack can start using the new mtu before ESXi knows
-about the new mtu.
+object_err() reports details of an object for further debugging, such as
+the freelist pointer, redzone, etc. However, if the pointer is invalid,
+attempting to access object metadata can lead to a crash since it does
+not point to a valid object.
 
-This can lead to issues for TSO packets which use mss as per the new mtu
-configured. This patch fixes this issue by moving the mtu write after
-device quiesce.
+One known path to the crash is when alloc_consistency_checks()
+determines the pointer to the allocated object is invalid because of a
+freelist corruption, and calls object_err() to report it. The debug code
+should report and handle the corruption gracefully and not crash in the
+process.
 
-Cc: stable@vger.kernel.org
-Fixes: d1a890fa37f2 ("net: VMware virtual Ethernet NIC driver: vmxnet3")
-Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
-Acked-by: Guolin Yang <guolin.yang@broadcom.com>
-Changes v1-> v2:
-  Moved MTU write after destroy of rx rings
-Link: https://patch.msgid.link/20250515190457.8597-1-ronak.doshi@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ no WRITE_ONCE() in older trees ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In case the pointer is NULL or check_valid_pointer() returns false for
+the pointer, only print the pointer value and skip accessing metadata.
+
+Fixes: 81819f0fc828 ("SLUB core")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Li Qiong <liqiong@nfschina.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vmxnet3/vmxnet3_drv.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ mm/slub.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/net/vmxnet3/vmxnet3_drv.c
-+++ b/drivers/net/vmxnet3/vmxnet3_drv.c
-@@ -3483,8 +3483,6 @@ vmxnet3_change_mtu(struct net_device *ne
- 	struct vmxnet3_adapter *adapter = netdev_priv(netdev);
- 	int err = 0;
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -1104,7 +1104,12 @@ static void object_err(struct kmem_cache
+ 		return;
  
--	netdev->mtu = new_mtu;
--
- 	/*
- 	 * Reset_work may be in the middle of resetting the device, wait for its
- 	 * completion.
-@@ -3498,6 +3496,7 @@ vmxnet3_change_mtu(struct net_device *ne
- 
- 		/* we need to re-create the rx queue based on the new mtu */
- 		vmxnet3_rq_destroy_all(adapter);
-+		netdev->mtu = new_mtu;
- 		vmxnet3_adjust_rx_ring_size(adapter);
- 		err = vmxnet3_rq_create_all(adapter);
- 		if (err) {
-@@ -3514,6 +3513,8 @@ vmxnet3_change_mtu(struct net_device *ne
- 				   "Closing it\n", err);
- 			goto out;
- 		}
+ 	slab_bug(s, reason);
+-	print_trailer(s, slab, object);
++	if (!object || !check_valid_pointer(s, slab, object)) {
++		print_slab_info(slab);
++		pr_err("Invalid pointer 0x%p\n", object);
 +	} else {
-+		netdev->mtu = new_mtu;
- 	}
++		print_trailer(s, slab, object);
++	}
+ 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
  
- out:
+ 	WARN_ON(1);
 
 
 
