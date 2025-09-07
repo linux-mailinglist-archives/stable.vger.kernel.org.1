@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-178658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6C6B47F8D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:39:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F466B47DD7
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0F6184E12CC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:39:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CF5B3AF4BE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A68269CE6;
-	Sun,  7 Sep 2025 20:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E641E0DE8;
+	Sun,  7 Sep 2025 20:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qxFB2jKR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwvBVnbX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3652B4315A;
-	Sun,  7 Sep 2025 20:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE8014BFA2;
+	Sun,  7 Sep 2025 20:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277542; cv=none; b=mRBU+iaUaNCoRcUFD+my/vVS1ztpQg0DnOTLatcRwirCstrKx2oe42vrb3Cdzjw/pkRi6OzWHETpW8B9vYpL6ogLlCViIxU0VZM1BKxxKw+92IGdlcmBJONCINjR3qF2e7Hj1UT0wJVDyWm8BHbsFoAYfFPI7HDM8RM2vcfL/ik=
+	t=1757276225; cv=none; b=LnpPPxXqJ3IQf6unfeCwn0Tq6y/YS09Z9PrX1ZVpZlx3TRlfjr29sGN4O3D6fidjRWlNlcFnpoJs8d47XK9ZUTXf7ffaZGEMQBHwIxpbpyhqKYwdAl3sKAlBix94IQ7E9/1OY7MtCpkGmoio+fJBzNhUU+43/uP1jqp5EDSD7oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277542; c=relaxed/simple;
-	bh=5LKZV9QrdIpezDJDe7iIWhRiDVJgUmXyBSMiQlkvw3Y=;
+	s=arc-20240116; t=1757276225; c=relaxed/simple;
+	bh=pYT+XW04jwk02pD2S2UMQFEThYp6y9uEdwf3ifsumYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VW67n2UJEBDkZ4uXdS3hJklLEsB/wnfc5gpLsyPGFhuscrPZ2WygnFzVtRWTiFUm7sF4TRqSO7X5eKy4fGXna4TH7UqmIfmn9nPCC30pNs5Sz+T48CLzt5z/znxAkBLuUBlS/OhLO9IUepN3z/wxVz1lGl8gU/ntCPiyHLf4jnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxFB2jKR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA273C4CEF0;
-	Sun,  7 Sep 2025 20:39:01 +0000 (UTC)
+	 MIME-Version; b=h3JGk1fsUj8bceWOss+kogFPFTZS13qrefP+7HTtnapUxLBjD/Cf4gx9eoHIQWpaB6ZjWAMimP/aMKMK9wkckv9eS8RmDci2F7OrxFBZD168CWVS+y78ETS/bJt1vCIE3bhgvciTOiSHoDjoPMiOD+r/hsdo6bsj1P16LYKzWuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwvBVnbX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBDFFC4CEF0;
+	Sun,  7 Sep 2025 20:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277542;
-	bh=5LKZV9QrdIpezDJDe7iIWhRiDVJgUmXyBSMiQlkvw3Y=;
+	s=korg; t=1757276225;
+	bh=pYT+XW04jwk02pD2S2UMQFEThYp6y9uEdwf3ifsumYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qxFB2jKRFw5qJSSHRY90nRsHa1GwyeTKYEz9RTDCxs26tqo+7FsOx8vn/FcAr/FC9
-	 ItX5Gmk3YcHOO1b0MJ7giBxbc6i9418IxYH5fdveFopbAeAhTicm1VSMDJ21147Q0n
-	 3SaF4AqzTb3cOCRNrc20VKZEz638Vv2iG49yX2Y0=
+	b=MwvBVnbXhzJw5oQA8Q9066z2gf5XSoeHqbv15Pdj4GpCux+D9NxVUgbaONFoSYnW8
+	 TEejWzexdVCTgcMol18On/YkhoZ0+bqrEt3bwACsRIMumHS6gBjRF0EMK5QWUJW3Et
+	 wCGFkIpyhG6AdFkJaflcAp9DKClDkWnoraQaM8fo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Qingfang Deng <dqfext@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Yue Haibing <yuehaibing@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 047/183] wifi: iwlwifi: cfg: add back more lost PCI IDs
+Subject: [PATCH 6.1 037/104] ppp: fix memory leak in pad_compress_skb
 Date: Sun,  7 Sep 2025 21:57:54 +0200
-Message-ID: <20250907195616.894030079@linuxfoundation.org>
+Message-ID: <20250907195608.660189685@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Qingfang Deng <dqfext@gmail.com>
 
-[ Upstream commit 019f71a6760a6f89d388c3cd45622d1aae7d3641 ]
+[ Upstream commit 4844123fe0b853a4982c02666cb3fd863d701d50 ]
 
-Add back a few more PCI IDs to the config match table that
-evidently I lost during the cleanups.
+If alloc_skb() fails in pad_compress_skb(), it returns NULL without
+releasing the old skb. The caller does:
 
-Fixes: 1fb053d9876f ("wifi: iwlwifi: cfg: remove unnecessary configs")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250828095500.46fee422651e.I8f6c3e9eea9523bb1658f5690b715eb443740e07@changeid
+    skb = pad_compress_skb(ppp, skb);
+    if (!skb)
+        goto drop;
+
+drop:
+    kfree_skb(skb);
+
+When pad_compress_skb() returns NULL, the reference to the old skb is
+lost and kfree_skb(skb) ends up doing nothing, leading to a memory leak.
+
+Align pad_compress_skb() semantics with realloc(): only free the old
+skb if allocation and compression succeed.  At the call site, use the
+new_skb variable so the original skb is not lost when pad_compress_skb()
+fails.
+
+Fixes: b3f9b92a6ec1 ("[PPP]: add PPP MPPE encryption module")
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Yue Haibing <yuehaibing@huawei.com>
+Link: https://patch.msgid.link/20250903100726.269839-1-dqfext@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ppp/ppp_generic.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index b66a581c2e564..4e47ccb43bd86 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -670,6 +670,8 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index cbf1c1f23281d..f184368d5c5e7 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -1753,7 +1753,6 @@ pad_compress_skb(struct ppp *ppp, struct sk_buff *skb)
+ 		 */
+ 		if (net_ratelimit())
+ 			netdev_err(ppp->dev, "ppp: compressor dropped pkt\n");
+-		kfree_skb(skb);
+ 		consume_skb(new_skb);
+ 		new_skb = NULL;
+ 	}
+@@ -1855,9 +1854,10 @@ ppp_send_frame(struct ppp *ppp, struct sk_buff *skb)
+ 					   "down - pkt dropped.\n");
+ 			goto drop;
+ 		}
+-		skb = pad_compress_skb(ppp, skb);
+-		if (!skb)
++		new_skb = pad_compress_skb(ppp, skb);
++		if (!new_skb)
+ 			goto drop;
++		skb = new_skb;
+ 	}
  
- 	IWL_DEV_INFO(iwl6005_n_cfg, iwl6005_2agn_sff_name,
- 		     DEVICE(0x0082), SUBDEV_MASKED(0xC000, 0xF000)),
-+	IWL_DEV_INFO(iwl6005_n_cfg, iwl6005_2agn_sff_name,
-+		     DEVICE(0x0085), SUBDEV_MASKED(0xC000, 0xF000)),
- 	IWL_DEV_INFO(iwl6005_n_cfg, iwl6005_2agn_d_name,
- 		     DEVICE(0x0082), SUBDEV(0x4820)),
- 	IWL_DEV_INFO(iwl6005_n_cfg, iwl6005_2agn_mow1_name,
-@@ -961,6 +963,12 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
- 		     DEVICE(0x24F3), SUBDEV(0x0004)),
- 	IWL_DEV_INFO(iwl8260_cfg, iwl8260_2n_name,
- 		     DEVICE(0x24F3), SUBDEV(0x0044)),
-+	IWL_DEV_INFO(iwl8260_cfg, iwl8260_2ac_name,
-+		     DEVICE(0x24F4)),
-+	IWL_DEV_INFO(iwl8260_cfg, iwl4165_2ac_name,
-+		     DEVICE(0x24F5)),
-+	IWL_DEV_INFO(iwl8260_cfg, iwl4165_2ac_name,
-+		     DEVICE(0x24F6)),
- 	IWL_DEV_INFO(iwl8265_cfg, iwl8265_2ac_name,
- 		     DEVICE(0x24FD)),
- 	IWL_DEV_INFO(iwl8265_cfg, iwl8275_2ac_name,
+ 	/*
 -- 
 2.50.1
 
