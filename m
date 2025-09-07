@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5376AB47EF2
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2BEB47F71
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:37:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 106E317EF8C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:30:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 891D23C2F51
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFBDE1DE8AF;
-	Sun,  7 Sep 2025 20:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F9C212B3D;
+	Sun,  7 Sep 2025 20:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z22Apxr4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rq9BFp7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEC515C158;
-	Sun,  7 Sep 2025 20:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2BB1A704B;
+	Sun,  7 Sep 2025 20:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277054; cv=none; b=Ysv5EiFUcNl1t4OT3L/6czZRTwtdWowN41l44PssGF3EmM7xnYc5GJACqIG3imCbqCM7zLTBkfB2Dp0jcGAmawIv+CY7bId4QVgPkzgom7gP9Tf9vZtIQrf+T0sMlh1BfgSbWtlPGRy0AuSc0/53aD+o/r6/DKgbvxvtQd78LSY=
+	t=1757277453; cv=none; b=sFdKw7b1PURkXTuDPSmkMkTZrB1LMsPrvkRnpIiKk6neYGTj8jY9hJnngKYvP3ra0iUSSob+hhj5py8TSa39JAPEmWe999EUF65AcradKx9Hmr7uO+ddlq0g/oWgqXWq2gjz7bhmYutFUzpTxFL9aS72uJmiNZNkVjZMmH8YTKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277054; c=relaxed/simple;
-	bh=qvpR87kurjvnpoGjxiRMi05aJHg3Dbf/c/d9p7hdCCw=;
+	s=arc-20240116; t=1757277453; c=relaxed/simple;
+	bh=AONa4pnHiSvzjTVJG9cyESXJ/1QYTHrE0bEKQtmSBFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qbc8zf7ev12jFXhoVz6kVruUwydw9SyCDi4+iwSUGGUK6iMJ8osxv3q/y2I1M4kI7QnVayLb/wtvxmE3mc0f9aJL5i/e9b+YSCtSTPc6cso61xWNl9DUlr5RRLFtjkkyHDb2NuSwyHKaRFOYn4N0dvo/rPpNmNTqACiNk/ancI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z22Apxr4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F60DC4CEF8;
-	Sun,  7 Sep 2025 20:30:53 +0000 (UTC)
+	 MIME-Version; b=cYh+EO183WSQXFdfoYsPHcl0K3mr/gjijgEX4xP7eCcAn4Wyetz+5hxXDeLmm+GENEDy4kSuqIwWHNIjQ7p9br9y8qsszYjnFl9OxOdbThPXQRWAm802prDQIb3XEkE+qhhIVYh7ageOeht5IEMrlcORjyFbrq5pGbKILUdEyJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rq9BFp7n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5A3C4CEF0;
+	Sun,  7 Sep 2025 20:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277054;
-	bh=qvpR87kurjvnpoGjxiRMi05aJHg3Dbf/c/d9p7hdCCw=;
+	s=korg; t=1757277452;
+	bh=AONa4pnHiSvzjTVJG9cyESXJ/1QYTHrE0bEKQtmSBFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z22Apxr4cXJmT5lKkb0UNMvZbDbT1YS7cKYL39NaGIYpSoAJEPctVTqbCFfKhDR67
-	 2FPbj9Jcqw09lBxGYKAvgYFDVZze5IoNnSvUiXqBqYRHASvrT8uVDpiTKPFfUtEowV
-	 l5msfJXe2u4NqoIkmleWRgHQVWlkmNXQ6f4Nigfo=
+	b=Rq9BFp7nRSPj0ljxjYjz5j5PB9CtqqaIlPwJh3dOLDAVrTCMPMr1QImS99sr6/49R
+	 J6b9tL9xpm5HO+H43PLGFx6q5nI7YyXb5j0+wPFpwlFCUSUxswiAqKu5CL3OWGRo/p
+	 B3DjFAIYm8ZdOaX3hxTS9E2sSiOIHe8IgZX3ky74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 034/175] wifi: brcmfmac: fix use-after-free when rescheduling brcmf_btcoex_info work
+Subject: [PATCH 6.16 002/183] btrfs: fix race between setting last_dir_index_offset and inode logging
 Date: Sun,  7 Sep 2025 21:57:09 +0200
-Message-ID: <20250907195615.664055916@linuxfoundation.org>
+Message-ID: <20250907195615.861779397@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,107 +61,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 9cb83d4be0b9b697eae93d321e0da999f9cdfcfc ]
+[ Upstream commit 59a0dd4ab98970086fd096281b1606c506ff2698 ]
 
-The brcmf_btcoex_detach() only shuts down the btcoex timer, if the
-flag timer_on is false. However, the brcmf_btcoex_timerfunc(), which
-runs as timer handler, sets timer_on to false. This creates critical
-race conditions:
+At inode_logged() if we find that the inode was not logged before we
+update its ->last_dir_index_offset to (u64)-1 with the goal that the
+next directory log operation will see the (u64)-1 and then figure out
+it must check what was the index of the last logged dir index key and
+update ->last_dir_index_offset to that key's offset (this is done in
+update_last_dir_index_offset()).
 
-1.If brcmf_btcoex_detach() is called while brcmf_btcoex_timerfunc()
-is executing, it may observe timer_on as false and skip the call to
-timer_shutdown_sync().
+This however has a possibility for a time window where a race can happen
+and lead to directory logging skipping dir index keys that should be
+logged. The race happens like this:
 
-2.The brcmf_btcoex_timerfunc() may then reschedule the brcmf_btcoex_info
-worker after the cancel_work_sync() has been executed, resulting in
-use-after-free bugs.
+1) Task A calls inode_logged(), sees ->logged_trans as 0 and then checks
+   that the inode item was logged before, but before it sets the inode's
+   ->last_dir_index_offset to (u64)-1...
 
-The use-after-free bugs occur in two distinct scenarios, depending on
-the timing of when the brcmf_btcoex_info struct is freed relative to
-the execution of its worker thread.
+2) Task B is at btrfs_log_inode() which calls inode_logged() early, and
+   that has set ->last_dir_index_offset to (u64)-1;
 
-Scenario 1: Freed before the worker is scheduled
+3) Task B then enters log_directory_changes() which calls
+   update_last_dir_index_offset(). There it sees ->last_dir_index_offset
+   is (u64)-1 and that the inode was logged before (ctx->logged_before is
+   true), and so it searches for the last logged dir index key in the log
+   tree and it finds that it has an offset (index) value of N, so it sets
+   ->last_dir_index_offset to N, so that we can skip index keys that are
+   less than or equal to N (later at process_dir_items_leaf());
 
-The brcmf_btcoex_info is deallocated before the worker is scheduled.
-A race condition can occur when schedule_work(&bt_local->work) is
-called after the target memory has been freed. The sequence of events
-is detailed below:
+4) Task A now sets ->last_dir_index_offset to (u64)-1, undoing the update
+   that task B just did;
 
-CPU0                           | CPU1
-brcmf_btcoex_detach            | brcmf_btcoex_timerfunc
-                               |   bt_local->timer_on = false;
-  if (cfg->btcoex->timer_on)   |
-    ...                        |
-  cancel_work_sync();          |
-  ...                          |
-  kfree(cfg->btcoex); // FREE  |
-                               |   schedule_work(&bt_local->work); // USE
+5) Task B will now skip every index key when it enters
+   process_dir_items_leaf(), since ->last_dir_index_offset is (u64)-1.
 
-Scenario 2: Freed after the worker is scheduled
+Fix this by making inode_logged() not touch ->last_dir_index_offset and
+initializing it to 0 when an inode is loaded (at btrfs_alloc_inode()) and
+then having update_last_dir_index_offset() treat a value of 0 as meaning
+we must check the log tree and update with the index of the last logged
+index key. This is fine since the minimum possible value for
+->last_dir_index_offset is 1 (BTRFS_DIR_START_INDEX - 1 = 2 - 1 = 1).
+This also simplifies the management of ->last_dir_index_offset and now
+all accesses to it are done under the inode's log_mutex.
 
-The brcmf_btcoex_info is freed after the worker has been scheduled
-but before or during its execution. In this case, statements within
-the brcmf_btcoex_handler() — such as the container_of macro and
-subsequent dereferences of the brcmf_btcoex_info object will cause
-a use-after-free access. The following timeline illustrates this
-scenario:
-
-CPU0                            | CPU1
-brcmf_btcoex_detach             | brcmf_btcoex_timerfunc
-                                |   bt_local->timer_on = false;
-  if (cfg->btcoex->timer_on)    |
-    ...                         |
-  cancel_work_sync();           |
-  ...                           |   schedule_work(); // Reschedule
-                                |
-  kfree(cfg->btcoex); // FREE   |   brcmf_btcoex_handler() // Worker
-  /*                            |     btci = container_of(....); // USE
-   The kfree() above could      |     ...
-   also occur at any point      |     btci-> // USE
-   during the worker's execution|
-   */                           |
-
-To resolve the race conditions, drop the conditional check and call
-timer_shutdown_sync() directly. It can deactivate the timer reliably,
-regardless of its current state. Once stopped, the timer_on state is
-then set to false.
-
-Fixes: 61730d4dfffc ("brcmfmac: support critical protocol API for DHCP")
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Link: https://patch.msgid.link/20250822050839.4413-1-duoming@zju.edu.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 0f8ce49821de ("btrfs: avoid inode logging during rename and link when possible")
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/btrfs/btrfs_inode.h |  2 +-
+ fs/btrfs/inode.c       |  1 +
+ fs/btrfs/tree-log.c    | 17 ++---------------
+ 3 files changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-index 1e8495f50c16a..6531cff58ae9f 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-@@ -392,10 +392,8 @@ void brcmf_btcoex_detach(struct brcmf_cfg80211_info *cfg)
- 	if (!cfg->btcoex)
- 		return;
+diff --git a/fs/btrfs/btrfs_inode.h b/fs/btrfs/btrfs_inode.h
+index a79fa0726f1d9..216eff293ffec 100644
+--- a/fs/btrfs/btrfs_inode.h
++++ b/fs/btrfs/btrfs_inode.h
+@@ -248,7 +248,7 @@ struct btrfs_inode {
+ 		u64 new_delalloc_bytes;
+ 		/*
+ 		 * The offset of the last dir index key that was logged.
+-		 * This is used only for directories.
++		 * This is used only for directories. Protected by 'log_mutex'.
+ 		 */
+ 		u64 last_dir_index_offset;
+ 	};
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index df4c8312aae39..ffa5d6c159405 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -7827,6 +7827,7 @@ struct inode *btrfs_alloc_inode(struct super_block *sb)
+ 	ei->last_sub_trans = 0;
+ 	ei->logged_trans = 0;
+ 	ei->delalloc_bytes = 0;
++	/* new_delalloc_bytes and last_dir_index_offset are in a union. */
+ 	ei->new_delalloc_bytes = 0;
+ 	ei->defrag_bytes = 0;
+ 	ei->disk_i_size = 0;
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 17003f3d9dd1c..5f82e8c59cd17 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -3435,19 +3435,6 @@ static int inode_logged(const struct btrfs_trans_handle *trans,
+ 	inode->logged_trans = trans->transid;
+ 	spin_unlock(&inode->lock);
  
--	if (cfg->btcoex->timer_on) {
--		cfg->btcoex->timer_on = false;
--		timer_shutdown_sync(&cfg->btcoex->timer);
--	}
-+	timer_shutdown_sync(&cfg->btcoex->timer);
-+	cfg->btcoex->timer_on = false;
+-	/*
+-	 * If it's a directory, then we must set last_dir_index_offset to the
+-	 * maximum possible value, so that the next attempt to log the inode does
+-	 * not skip checking if dir index keys found in modified subvolume tree
+-	 * leaves have been logged before, otherwise it would result in attempts
+-	 * to insert duplicate dir index keys in the log tree. This must be done
+-	 * because last_dir_index_offset is an in-memory only field, not persisted
+-	 * in the inode item or any other on-disk structure, so its value is lost
+-	 * once the inode is evicted.
+-	 */
+-	if (S_ISDIR(inode->vfs_inode.i_mode))
+-		inode->last_dir_index_offset = (u64)-1;
+-
+ 	return 1;
+ }
  
- 	cancel_work_sync(&cfg->btcoex->work);
+@@ -4038,7 +4025,7 @@ static noinline int log_dir_items(struct btrfs_trans_handle *trans,
  
+ /*
+  * If the inode was logged before and it was evicted, then its
+- * last_dir_index_offset is (u64)-1, so we don't the value of the last index
++ * last_dir_index_offset is 0, so we don't know the value of the last index
+  * key offset. If that's the case, search for it and update the inode. This
+  * is to avoid lookups in the log tree every time we try to insert a dir index
+  * key from a leaf changed in the current transaction, and to allow us to always
+@@ -4054,7 +4041,7 @@ static int update_last_dir_index_offset(struct btrfs_inode *inode,
+ 
+ 	lockdep_assert_held(&inode->log_mutex);
+ 
+-	if (inode->last_dir_index_offset != (u64)-1)
++	if (inode->last_dir_index_offset != 0)
+ 		return 0;
+ 
+ 	if (!ctx->logged_before) {
 -- 
 2.50.1
 
