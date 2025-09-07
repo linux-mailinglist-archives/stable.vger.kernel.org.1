@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A22E7B47E91
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8277B47F9D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46A1E7A1DB1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EA5A200426
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021F91D88D0;
-	Sun,  7 Sep 2025 20:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA721DF246;
+	Sun,  7 Sep 2025 20:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZC2f5Tct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMdir4iX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4995D528;
-	Sun,  7 Sep 2025 20:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E174315A;
+	Sun,  7 Sep 2025 20:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276756; cv=none; b=sdB3hl5t3HMYNZCqZKm7pHre7tJ9cRIJUne4EfSOhl3sHY6X6rQ553CRYD83+Wgkdt2VYlGwpkl0Lyf9M0O/w5uM+d8+EG4hg0LW4AzP4YSxTl0R1H89GjZ6fqjk+seUfaD7VMyK87H4q3WseO7NzfFoYNlPUJB3iYDBq05nqTs=
+	t=1757277597; cv=none; b=Jgr9UQiT8R45TDtCFnW3LYq9Yw9mYCmIa1l6irVDoY3okdx938Vfy0iqon4zzeoCwDbNAmGDzejewvcw5fRfTgl/LFQKIe/2JFEt0fkpFvgASGzYZJR9ntTAojwId3Sb6XS4jw1pwndId1jmyXAaJKqCNzziUxMiSOpJGyFULu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276756; c=relaxed/simple;
-	bh=7GMT5v7GYmu8rNwnsyBu96IvwSE8GQS0lWuXroVvoyU=;
+	s=arc-20240116; t=1757277597; c=relaxed/simple;
+	bh=Z8SsJDerRv2ho0DAJZuNC5xGr4Q0JBTU69G0xTZ7g4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MKVLeSBjM2Iy8hFlLR0kYFPwpFfVnwitK1g2yg2E0ODIHYPsVex+3rkirKiLD3NhAb3Kkx5GJ3CeiDavqqpUg7Uhm7m+OR9ZkWhWytvWp90tS/KY1k9cv2cF1+y9s459QBCl73kqMRAr+nWHZWvbLKZ0wCpv2ad67j1YtEV1zco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZC2f5Tct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E500C4CEF0;
-	Sun,  7 Sep 2025 20:25:56 +0000 (UTC)
+	 MIME-Version; b=GrH3Nl3qkiA9t+bTLzAoy1EibG/5WkrFEDH6eO/h660oFrp5BZsqA6a8dIi/Ftgk7MWrU9BeQjIbqgD4h/BhfPuj/xmbwAeJca+m7ToSi4Y+byWK9Z/T9L8KxNhSgsIimLFv6hqRcUD7OLS04HAW79Prp/Sa9DFkLScN0spY3GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMdir4iX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347DFC4CEF0;
+	Sun,  7 Sep 2025 20:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276756;
-	bh=7GMT5v7GYmu8rNwnsyBu96IvwSE8GQS0lWuXroVvoyU=;
+	s=korg; t=1757277596;
+	bh=Z8SsJDerRv2ho0DAJZuNC5xGr4Q0JBTU69G0xTZ7g4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZC2f5TctErrwUsveBZBAIXhlSA/Cy0nPwMCSOn/iL9QOiMdvoSUaYj472lb7KSg+b
-	 LIvqT/wA1icCOiQDYteU9ejOiMvsRxatTKNdTwrH205CsZIAZuxwBtty0EiCJw9oN2
-	 YclQo5kkhJSht8snpySocb2PAxdqN9DT4gyevICg=
+	b=lMdir4iX3JBqgH9CfqOgt8M/YH+VeB2elpUDD/MiWY68zXd6G00vk6bStc7iibQ2A
+	 6wj98bDQuYKtE5yCKYegMxcaLn1g3l48VcdiqpKJvYut6vAYjQ1fjK4BTOneFsCbY2
+	 PQUZVUmPoYM4fXu2odaUIoisPNL9MI3Oa0OW0PXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	panfan <panfan@qti.qualcomm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 053/121] arm64: ftrace: fix unreachable PLT for ftrace_caller in init_module with CONFIG_DYNAMIC_FTRACE
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 062/183] net: mctp: mctp_fraq_queue should take ownership of passed skb
 Date: Sun,  7 Sep 2025 21:58:09 +0200
-Message-ID: <20250907195611.190365661@linuxfoundation.org>
+Message-ID: <20250907195617.264481994@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,154 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: panfan <panfan@qti.qualcomm.com>
+From: Jeremy Kerr <jk@codeconstruct.com.au>
 
-commit a7ed7b9d0ebb038db9963d574da0311cab0b666a upstream.
+[ Upstream commit 773b27a8a2f00ce3134e92e50ea4794a98ba2b76 ]
 
-On arm64, it has been possible for a module's sections to be placed more
-than 128M away from each other since commit:
+As of commit f5d83cf0eeb9 ("net: mctp: unshare packets when
+reassembling"), we skb_unshare() in mctp_frag_queue(). The unshare may
+invalidate the original skb pointer, so we need to treat the skb as
+entirely owned by the fraq queue, even on failure.
 
-  commit 3e35d303ab7d ("arm64: module: rework module VA range selection")
-
-Due to this, an ftrace callsite in a module's .init.text section can be
-out of branch range for the module's ftrace PLT entry (in the module's
-.text section). Any attempt to enable tracing of that callsite will
-result in a BRK being patched into the callsite, resulting in a fatal
-exception when the callsite is later executed.
-
-Fix this by adding an additional trampoline for .init.text, which will
-be within range.
-
-No additional trampolines are necessary due to the way a given
-module's executable sections are packed together. Any executable
-section beginning with ".init" will be placed in MOD_INIT_TEXT,
-and any other executable section, including those beginning with ".exit",
- will be placed in MOD_TEXT.
-
-Fixes: 3e35d303ab7d ("arm64: module: rework module VA range selection")
-Cc: <stable@vger.kernel.org> # 6.5.x
-Signed-off-by: panfan <panfan@qti.qualcomm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20250905032236.3220885-1-panfan@qti.qualcomm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f5d83cf0eeb9 ("net: mctp: unshare packets when reassembling")
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Link: https://patch.msgid.link/20250829-mctp-skb-unshare-v1-1-1c28fe10235a@codeconstruct.com.au
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/module.h     |    1 +
- arch/arm64/include/asm/module.lds.h |    1 +
- arch/arm64/kernel/ftrace.c          |   13 ++++++++++---
- arch/arm64/kernel/module-plts.c     |   12 +++++++++++-
- arch/arm64/kernel/module.c          |   11 +++++++++++
- 5 files changed, 34 insertions(+), 4 deletions(-)
+ net/mctp/route.c | 35 +++++++++++++++++++----------------
+ 1 file changed, 19 insertions(+), 16 deletions(-)
 
---- a/arch/arm64/include/asm/module.h
-+++ b/arch/arm64/include/asm/module.h
-@@ -19,6 +19,7 @@ struct mod_arch_specific {
- 
- 	/* for CONFIG_DYNAMIC_FTRACE */
- 	struct plt_entry	*ftrace_trampolines;
-+	struct plt_entry	*init_ftrace_trampolines;
- };
- 
- u64 module_emit_plt_entry(struct module *mod, Elf64_Shdr *sechdrs,
---- a/arch/arm64/include/asm/module.lds.h
-+++ b/arch/arm64/include/asm/module.lds.h
-@@ -2,6 +2,7 @@ SECTIONS {
- 	.plt 0 : { BYTE(0) }
- 	.init.plt 0 : { BYTE(0) }
- 	.text.ftrace_trampoline 0 : { BYTE(0) }
-+	.init.text.ftrace_trampoline 0 : { BYTE(0) }
- 
- #ifdef CONFIG_KASAN_SW_TAGS
- 	/*
---- a/arch/arm64/kernel/ftrace.c
-+++ b/arch/arm64/kernel/ftrace.c
-@@ -195,10 +195,17 @@ int ftrace_update_ftrace_func(ftrace_fun
- 	return ftrace_modify_code(pc, 0, new, false);
- }
- 
--static struct plt_entry *get_ftrace_plt(struct module *mod)
-+static struct plt_entry *get_ftrace_plt(struct module *mod, unsigned long addr)
- {
- #ifdef CONFIG_MODULES
--	struct plt_entry *plt = mod->arch.ftrace_trampolines;
-+	struct plt_entry *plt = NULL;
-+
-+	if (within_module_mem_type(addr, mod, MOD_INIT_TEXT))
-+		plt = mod->arch.init_ftrace_trampolines;
-+	else if (within_module_mem_type(addr, mod, MOD_TEXT))
-+		plt = mod->arch.ftrace_trampolines;
-+	else
-+		return NULL;
- 
- 	return &plt[FTRACE_PLT_IDX];
- #else
-@@ -270,7 +277,7 @@ static bool ftrace_find_callable_addr(st
- 	if (WARN_ON(!mod))
- 		return false;
- 
--	plt = get_ftrace_plt(mod);
-+	plt = get_ftrace_plt(mod, pc);
- 	if (!plt) {
- 		pr_err("ftrace: no module PLT for %ps\n", (void *)*addr);
- 		return false;
---- a/arch/arm64/kernel/module-plts.c
-+++ b/arch/arm64/kernel/module-plts.c
-@@ -284,7 +284,7 @@ int module_frob_arch_sections(Elf_Ehdr *
- 	unsigned long core_plts = 0;
- 	unsigned long init_plts = 0;
- 	Elf64_Sym *syms = NULL;
--	Elf_Shdr *pltsec, *tramp = NULL;
-+	Elf_Shdr *pltsec, *tramp = NULL, *init_tramp = NULL;
- 	int i;
- 
- 	/*
-@@ -299,6 +299,9 @@ int module_frob_arch_sections(Elf_Ehdr *
- 		else if (!strcmp(secstrings + sechdrs[i].sh_name,
- 				 ".text.ftrace_trampoline"))
- 			tramp = sechdrs + i;
-+		else if (!strcmp(secstrings + sechdrs[i].sh_name,
-+				 ".init.text.ftrace_trampoline"))
-+			init_tramp = sechdrs + i;
- 		else if (sechdrs[i].sh_type == SHT_SYMTAB)
- 			syms = (Elf64_Sym *)sechdrs[i].sh_addr;
- 	}
-@@ -364,5 +367,12 @@ int module_frob_arch_sections(Elf_Ehdr *
- 		tramp->sh_size = NR_FTRACE_PLTS * sizeof(struct plt_entry);
- 	}
- 
-+	if (init_tramp) {
-+		init_tramp->sh_type = SHT_NOBITS;
-+		init_tramp->sh_flags = SHF_EXECINSTR | SHF_ALLOC;
-+		init_tramp->sh_addralign = __alignof__(struct plt_entry);
-+		init_tramp->sh_size = NR_FTRACE_PLTS * sizeof(struct plt_entry);
-+	}
-+
- 	return 0;
- }
---- a/arch/arm64/kernel/module.c
-+++ b/arch/arm64/kernel/module.c
-@@ -579,6 +579,17 @@ static int module_init_ftrace_plt(const
- 	__init_plt(&plts[FTRACE_PLT_IDX], FTRACE_ADDR);
- 
- 	mod->arch.ftrace_trampolines = plts;
-+
-+	s = find_section(hdr, sechdrs, ".init.text.ftrace_trampoline");
-+	if (!s)
-+		return -ENOEXEC;
-+
-+	plts = (void *)s->sh_addr;
-+
-+	__init_plt(&plts[FTRACE_PLT_IDX], FTRACE_ADDR);
-+
-+	mod->arch.init_ftrace_trampolines = plts;
-+
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index d9c8e5a5f9ce9..19ff259d7bc43 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -325,6 +325,7 @@ static void mctp_skb_set_flow(struct sk_buff *skb, struct mctp_sk_key *key) {}
+ static void mctp_flow_prepare_output(struct sk_buff *skb, struct mctp_dev *dev) {}
  #endif
+ 
++/* takes ownership of skb, both in success and failure cases */
+ static int mctp_frag_queue(struct mctp_sk_key *key, struct sk_buff *skb)
+ {
+ 	struct mctp_hdr *hdr = mctp_hdr(skb);
+@@ -334,8 +335,10 @@ static int mctp_frag_queue(struct mctp_sk_key *key, struct sk_buff *skb)
+ 		& MCTP_HDR_SEQ_MASK;
+ 
+ 	if (!key->reasm_head) {
+-		/* Since we're manipulating the shared frag_list, ensure it isn't
+-		 * shared with any other SKBs.
++		/* Since we're manipulating the shared frag_list, ensure it
++		 * isn't shared with any other SKBs. In the cloned case,
++		 * this will free the skb; callers can no longer access it
++		 * safely.
+ 		 */
+ 		key->reasm_head = skb_unshare(skb, GFP_ATOMIC);
+ 		if (!key->reasm_head)
+@@ -349,10 +352,10 @@ static int mctp_frag_queue(struct mctp_sk_key *key, struct sk_buff *skb)
+ 	exp_seq = (key->last_seq + 1) & MCTP_HDR_SEQ_MASK;
+ 
+ 	if (this_seq != exp_seq)
+-		return -EINVAL;
++		goto err_free;
+ 
+ 	if (key->reasm_head->len + skb->len > mctp_message_maxlen)
+-		return -EINVAL;
++		goto err_free;
+ 
+ 	skb->next = NULL;
+ 	skb->sk = NULL;
+@@ -366,6 +369,10 @@ static int mctp_frag_queue(struct mctp_sk_key *key, struct sk_buff *skb)
+ 	key->reasm_head->truesize += skb->truesize;
+ 
  	return 0;
++
++err_free:
++	kfree_skb(skb);
++	return -EINVAL;
  }
+ 
+ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
+@@ -476,18 +483,16 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
+ 			 * key isn't observable yet
+ 			 */
+ 			mctp_frag_queue(key, skb);
++			skb = NULL;
+ 
+ 			/* if the key_add fails, we've raced with another
+ 			 * SOM packet with the same src, dest and tag. There's
+ 			 * no way to distinguish future packets, so all we
+-			 * can do is drop; we'll free the skb on exit from
+-			 * this function.
++			 * can do is drop.
+ 			 */
+ 			rc = mctp_key_add(key, msk);
+-			if (!rc) {
++			if (!rc)
+ 				trace_mctp_key_acquire(key);
+-				skb = NULL;
+-			}
+ 
+ 			/* we don't need to release key->lock on exit, so
+ 			 * clean up here and suppress the unlock via
+@@ -505,8 +510,7 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
+ 				key = NULL;
+ 			} else {
+ 				rc = mctp_frag_queue(key, skb);
+-				if (!rc)
+-					skb = NULL;
++				skb = NULL;
+ 			}
+ 		}
+ 
+@@ -516,17 +520,16 @@ static int mctp_route_input(struct mctp_route *route, struct sk_buff *skb)
+ 		 */
+ 
+ 		/* we need to be continuing an existing reassembly... */
+-		if (!key->reasm_head)
++		if (!key->reasm_head) {
+ 			rc = -EINVAL;
+-		else
++		} else {
+ 			rc = mctp_frag_queue(key, skb);
++			skb = NULL;
++		}
+ 
+ 		if (rc)
+ 			goto out_unlock;
+ 
+-		/* we've queued; the queue owns the skb now */
+-		skb = NULL;
+-
+ 		/* end of message? deliver to socket, and we're done with
+ 		 * the reassembly/response key
+ 		 */
+-- 
+2.50.1
+
 
 
 
