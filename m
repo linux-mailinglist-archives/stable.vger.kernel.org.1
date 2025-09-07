@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7798B47BE6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 16:57:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E522CB47BE7
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 16:58:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B34F1189BFBE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 14:57:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A04623BA8ED
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 14:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256C326F29F;
-	Sun,  7 Sep 2025 14:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF24F26E6FF;
+	Sun,  7 Sep 2025 14:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W6PsCiQx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y6LupHcw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85811A0BD0
-	for <stable@vger.kernel.org>; Sun,  7 Sep 2025 14:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCDF1A0BD0
+	for <stable@vger.kernel.org>; Sun,  7 Sep 2025 14:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757257038; cv=none; b=Yg1/19bHF0c9IFTNam5axElR5tLI2/BeRMoQvEcnhY9/t8ClaVr2veyFNGHCw2fINEmxR6uvYwI3REUPiadCwL24BIOTX6HTvZiMSQSBCWcFxDHWU84tQH0VcGFtOSPZAejZLul9zsIwHJArw3mORCfB1dkO0COIUeSTU82bZxM=
+	t=1757257097; cv=none; b=a6RpvV0cxRiK/RQ/C+43Zv0cHXXtNLM/mOrRS10cEosA0XB6Fy4Ta0Y2SfLCl1UU0HEKy21kuNQduJRXzNQUOi34kmMqFVyJ9ADdhu4tGsMAx82Yke2AK7DL/LoNjJ64l7KhC+WLHO8z1RJSa51RDPijiKKXuzcA0G8UQwGQAzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757257038; c=relaxed/simple;
-	bh=t8iJjYJxfCGrr5eWr3chvNjaW9C8YhbD2SQjFNwV/kM=;
+	s=arc-20240116; t=1757257097; c=relaxed/simple;
+	bh=kdvlffME5iCfRo5GlNwUpJUM2z++oGufwG64qiHLfTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rXp9hkJLHI7xwU2ndu5zgCdZTknh2mbc0myQEQBo7/oF0NunTmtKhH6ivKC8AMCRWHb7XfJjWt2uWkefrSz4xR8zaQijxDhAChyxpuQXGbHpDHyALRJlj9JEVpgzMr35UMFpc8dOL6yqeLv5YqAj5YIUhQU3K39ruI0cN4ilPDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W6PsCiQx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C57C3C4CEF0;
-	Sun,  7 Sep 2025 14:57:17 +0000 (UTC)
+	 MIME-Version; b=fJ8abCaqWQ5yka1axZjywQYK65s5fB21etLpfTCNhWTYZGrHT1IXVnZ9c8mkYnXqi4bc64H0jOSlbxMSTctVCmLpZNnm4qWNJLfLM3DFCXqnWK+FrDOQF+1HUUZD87Kp1mPvUs1wxiWTy6hvYEeplnhmUv7WYhCBpT3T8Q+E4dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y6LupHcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E262FC4CEF0;
+	Sun,  7 Sep 2025 14:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757257038;
-	bh=t8iJjYJxfCGrr5eWr3chvNjaW9C8YhbD2SQjFNwV/kM=;
+	s=k20201202; t=1757257096;
+	bh=kdvlffME5iCfRo5GlNwUpJUM2z++oGufwG64qiHLfTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W6PsCiQxlEdlYST6ahAIFn/ia2izMP/asdXPlkdSf0RnK00TPFwrP++R3//kvISh/
-	 cdoxkCyflQFlL53PXmHFHSV97HBwy5wY/VxdCQ5onvWWMRD7A7HmSl/Z052d/OCsul
-	 ojfk+j0dSbdsYncFR5QDcBgNGfOseaWeVK6bo9xAxbzDOmllH6gHWO9tQD0nLi2I+M
-	 oZIzCJy86g/pjIixiPzk796B6076gwFDKJ+M8qNTXZssKAH+uOFeb9ZV8r3bRjNZeJ
-	 qLU+X7ahDu50AvtfSJVBkq1WILd8ZxABFsAC2osH+njKgC3wJI7OFwGhq2sRJlIre1
-	 t0WGSOnyk6Icg==
+	b=Y6LupHcw4XbETyh/R4+zOtTpBkVgODlYIW0xRGXRc9HoprbnlQ2hWsQkC2CKUO9w9
+	 8KQIGCmBK+c4nimIKzBJyOsaJA3tyNl/TCqBm1nneSt9FIDeMVpr7gEQIQRo8TlEak
+	 BgAq3Uab3h3VPPCHBbim7id9Ovb8/2LgAB7b9BLuErT2pxsmLcUF4ZT28Vg8KQkbp4
+	 LSs/Wp+vxQmMeKDHq3hNIoT5UKMO3b7inQy4O5cxyD3XuE9DOEOpe1EpFpbjTyf5oM
+	 wcamXiklRR93dU3P3ulaIkBZZaRkyjj7m2Ouy1jzsWIJiwkxYKQYF6Jg31nZ0mmvDs
+	 iRaQykTzg+iDw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Taniya Das <quic_tdas@quicinc.com>,
-	Imran Shaik <quic_imrashai@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+Cc: Roman Smirnov <r.smirnov@omp.ru>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] clk: qcom: gdsc: Set retain_ff before moving to HW CTRL
-Date: Sun,  7 Sep 2025 10:57:15 -0400
-Message-ID: <20250907145715.636498-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] cifs: fix integer overflow in match_server()
+Date: Sun,  7 Sep 2025 10:58:14 -0400
+Message-ID: <20250907145814.636984-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025041712-antibody-octane-7c74@gregkh>
-References: <2025041712-antibody-octane-7c74@gregkh>
+In-Reply-To: <2025041700-valuables-hardened-45b4@gregkh>
+References: <2025041700-valuables-hardened-45b4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,83 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit 25708f73ff171bb4171950c9f4be5aa8504b8459 ]
+[ Upstream commit 2510859475d7f46ed7940db0853f3342bf1b65ee ]
 
-Enable the retain_ff_enable bit of GDSCR only if the GDSC is already ON.
-Once the GDSCR moves to HW control, SW no longer can determine the state
-of the GDSCR and setting the retain_ff bit could destroy all the register
-contents we intended to save.
-Therefore, move the retain_ff configuration before switching the GDSC to
-HW trigger mode.
+The echo_interval is not limited in any way during mounting,
+which makes it possible to write a large number to it. This can
+cause an overflow when multiplying ctx->echo_interval by HZ in
+match_server().
 
+Add constraints for echo_interval to smb3_fs_context_parse_param().
+
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+Fixes: adfeb3e00e8e1 ("cifs: Make echo interval tunable")
 Cc: stable@vger.kernel.org
-Fixes: 173722995cdb ("clk: qcom: gdsc: Add support to enable retention of GSDCR")
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Reviewed-by: Imran Shaik <quic_imrashai@quicinc.com>
-Tested-by: Imran Shaik <quic_imrashai@quicinc.com> # on QCS8300
-Link: https://lore.kernel.org/r/20250214-gdsc_fixes-v1-1-73e56d68a80f@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-[ Changed error path ]
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Adapted to older CIFS filesystem structure and mount option parsing ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gdsc.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ fs/cifs/connect.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/clk/qcom/gdsc.c b/drivers/clk/qcom/gdsc.c
-index cf23cfd7e4674..da3797241f319 100644
---- a/drivers/clk/qcom/gdsc.c
-+++ b/drivers/clk/qcom/gdsc.c
-@@ -273,6 +273,9 @@ static int gdsc_enable(struct generic_pm_domain *domain)
- 	 */
- 	udelay(1);
- 
-+	if (sc->flags & RETAIN_FF_ENABLE)
-+		gdsc_retain_ff_on(sc);
-+
- 	/* Turn on HW trigger mode if supported */
- 	if (sc->flags & HW_CTRL) {
- 		ret = gdsc_hwctrl(sc, true);
-@@ -289,9 +292,6 @@ static int gdsc_enable(struct generic_pm_domain *domain)
- 		udelay(1);
- 	}
- 
--	if (sc->flags & RETAIN_FF_ENABLE)
--		gdsc_retain_ff_on(sc);
--
- 	return 0;
- }
- 
-@@ -392,13 +392,6 @@ static int gdsc_init(struct gdsc *sc)
- 				return ret;
- 		}
- 
--		/* Turn on HW trigger mode if supported */
--		if (sc->flags & HW_CTRL) {
--			ret = gdsc_hwctrl(sc, true);
--			if (ret < 0)
--				return ret;
--		}
--
- 		/*
- 		 * Make sure the retain bit is set if the GDSC is already on,
- 		 * otherwise we end up turning off the GDSC and destroying all
-@@ -406,6 +399,14 @@ static int gdsc_init(struct gdsc *sc)
- 		 */
- 		if (sc->flags & RETAIN_FF_ENABLE)
- 			gdsc_retain_ff_on(sc);
-+
-+		/* Turn on HW trigger mode if supported */
-+		if (sc->flags & HW_CTRL) {
-+			ret = gdsc_hwctrl(sc, true);
-+			if (ret < 0)
-+				return ret;
-+		}
-+
- 	} else if (sc->flags & ALWAYS_ON) {
- 		/* If ALWAYS_ON GDSCs are not ON, turn them ON */
- 		gdsc_enable(&sc->pd);
+diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
+index 2c0522d97e037..5fc418f9210a5 100644
+--- a/fs/cifs/connect.c
++++ b/fs/cifs/connect.c
+@@ -1915,6 +1915,11 @@ cifs_parse_mount_options(const char *mountdata, const char *devname,
+ 					 __func__);
+ 				goto cifs_parse_mount_err;
+ 			}
++			if (option < SMB_ECHO_INTERVAL_MIN ||
++			    option > SMB_ECHO_INTERVAL_MAX) {
++				cifs_dbg(VFS, "echo interval is out of bounds\n");
++				goto cifs_parse_mount_err;
++			}
+ 			vol->echo_interval = option;
+ 			break;
+ 		case Opt_snapshot:
 -- 
 2.51.0
 
