@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6F2AB47D0F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AEF8B47E36
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:21:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AAAB1896472
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BDA53C14E3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFE6284B59;
-	Sun,  7 Sep 2025 20:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3145A212B2F;
+	Sun,  7 Sep 2025 20:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JaMLi3YI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouWhGpzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D761CDFAC;
-	Sun,  7 Sep 2025 20:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24E0189BB0;
+	Sun,  7 Sep 2025 20:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275620; cv=none; b=YftpOMv3wJDogvdPJtSrSBcByYN965qmZ8WkrwDOv5OKTfsx3hTBTuFJw1vCXf4MquTlSKBp3Q0cxBvyQ1JnK/hKeiX7G/Brs3OLheSk+Fk67gUCf40HH0xecXLEv0vEerWW2lLNrgak/UD8JRSDrEeDAloKIzbkdjPRJ8JmdI4=
+	t=1757276488; cv=none; b=FG43HF+sl3JHWe/opoLYC45ynHJZqRXUnad2jwS7whizeP302g+r6In1wxLe4ONhGH0cTEBY4H4b33mLxWM8GWIVDcJnvJE0wRc69WyE61rqye+F+vio5U61MoFnd57W4Fy/E2SQDJilgo0Uhy7w4KbGZ59oxZQFMDnuc5IqFL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275620; c=relaxed/simple;
-	bh=W7wVPuhFVqICvKCN5QLPk1P8HXS3KwxLwp/onrZEUNw=;
+	s=arc-20240116; t=1757276488; c=relaxed/simple;
+	bh=WrMU+g0Cmlu7qYMA9qa1KP4iFc4a8TmHvDYjKQ7buY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7X7cBUgLyCeftQBS0Nm7aAYdnor513ycuk00mFu6V4oKllFkJ2CTci0vnaNoe4O9tbBXOiQY7T3HjycMsv0mjLh44Zt8FWaSiuyiUpOPVQlo9KVuYwRuhU4qbT9yKmeVB9H755xGQzhpyFHwEolOtJDZQCNdXRXA85Od7mQ0ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JaMLi3YI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B666DC4CEF0;
-	Sun,  7 Sep 2025 20:06:59 +0000 (UTC)
+	 MIME-Version; b=bDm+Zn+SsP3svAIKb0qaGkURV01LE//miHOYuJxIomMOV1zIprFcmLsHm3AwVM05LSnkKzXKYID01QJ7hT856PnEkOP5e7MjhwvDCOfI7Dt+syMqz3qaXwansQDmK0dVdUawNxlyb6uSlaqn807K47teN/0JFXDK9dQ1zrmVFL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouWhGpzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D05C4CEF0;
+	Sun,  7 Sep 2025 20:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275620;
-	bh=W7wVPuhFVqICvKCN5QLPk1P8HXS3KwxLwp/onrZEUNw=;
+	s=korg; t=1757276487;
+	bh=WrMU+g0Cmlu7qYMA9qa1KP4iFc4a8TmHvDYjKQ7buY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JaMLi3YITpDOalH4S+gzRSzSuGDjCM7fT5ZHGPDOBjieM17jR7kkmjS3s5ExUKlp7
-	 VJSWRh05D9pmpXwlv5lIivNbpux0fIq0inSjo/SggzD7Uk/QAB6hPsC1M6yD5Sms3k
-	 fPdfUTjAZX0E7MoIYGEizThaRG3YmGucl/s+BYYs=
+	b=ouWhGpzchlYKp+SbiAlKLdsEVgOM+Q9RofowlDZ0mksbs6reFXtKSYPSmIfLfzQ5J
+	 PfTVJC1cdsBe+r05Tq8cEtCem8jidX59+Ceg6O2XmcnEhNSp/nKO5TIixMuFGoR/bE
+	 Ecu87GEXLMQCXGtEbF82Unz8rduyN76Srn7ynS1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Sungbae Yoo <sungbaey@nvidia.com>,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 12/52] wifi: cw1200: cap SSID length in cw1200_do_join()
+Subject: [PATCH 6.6 016/121] tee: optee: ffa: fix a typo of "optee_ffa_api_is_compatible"
 Date: Sun,  7 Sep 2025 21:57:32 +0200
-Message-ID: <20250907195602.334250435@linuxfoundation.org>
+Message-ID: <20250907195610.230653075@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Sungbae Yoo <sungbaey@nvidia.com>
 
-[ Upstream commit f8f15f6742b8874e59c9c715d0af3474608310ad ]
+[ Upstream commit 75dbd4304afe574fcfc4118a5b78776a9f48fdc4 ]
 
-If the ssidie[1] length is more that 32 it leads to memory corruption.
+Fixes optee_ffa_api_is_compatbile() to optee_ffa_api_is_compatible()
+because compatbile is a typo of compatible.
 
-Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/e91fb43fcedc4893b604dfb973131661510901a7.1756456951.git.dan.carpenter@linaro.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 4615e5a34b95 ("optee: add FF-A support")
+Signed-off-by: Sungbae Yoo <sungbaey@nvidia.com>
+Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/st/cw1200/sta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tee/optee/ffa_abi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/st/cw1200/sta.c b/drivers/net/wireless/st/cw1200/sta.c
-index 236022d4ae2a3..0f2d1ec34cd82 100644
---- a/drivers/net/wireless/st/cw1200/sta.c
-+++ b/drivers/net/wireless/st/cw1200/sta.c
-@@ -1289,7 +1289,7 @@ static void cw1200_do_join(struct cw1200_common *priv)
- 		rcu_read_lock();
- 		ssidie = ieee80211_bss_get_ie(bss, WLAN_EID_SSID);
- 		if (ssidie) {
--			join.ssid_len = ssidie[1];
-+			join.ssid_len = min(ssidie[1], IEEE80211_MAX_SSID_LEN);
- 			memcpy(join.ssid, &ssidie[2], join.ssid_len);
- 		}
- 		rcu_read_unlock();
+diff --git a/drivers/tee/optee/ffa_abi.c b/drivers/tee/optee/ffa_abi.c
+index b8ba360e863ed..927c3d7947f9c 100644
+--- a/drivers/tee/optee/ffa_abi.c
++++ b/drivers/tee/optee/ffa_abi.c
+@@ -653,7 +653,7 @@ static int optee_ffa_do_call_with_arg(struct tee_context *ctx,
+  * with a matching configuration.
+  */
+ 
+-static bool optee_ffa_api_is_compatbile(struct ffa_device *ffa_dev,
++static bool optee_ffa_api_is_compatible(struct ffa_device *ffa_dev,
+ 					const struct ffa_ops *ops)
+ {
+ 	const struct ffa_msg_ops *msg_ops = ops->msg_ops;
+@@ -804,7 +804,7 @@ static int optee_ffa_probe(struct ffa_device *ffa_dev)
+ 
+ 	ffa_ops = ffa_dev->ops;
+ 
+-	if (!optee_ffa_api_is_compatbile(ffa_dev, ffa_ops))
++	if (!optee_ffa_api_is_compatible(ffa_dev, ffa_ops))
+ 		return -EINVAL;
+ 
+ 	if (!optee_ffa_exchange_caps(ffa_dev, ffa_ops, &sec_caps,
 -- 
 2.50.1
 
