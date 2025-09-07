@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-178670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8332BB47F99
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:39:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 910EEB47D40
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 443673C337F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:39:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5650B17BF6B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5BB21F63CD;
-	Sun,  7 Sep 2025 20:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD5329ACC6;
+	Sun,  7 Sep 2025 20:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXviU3zR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZctN+tms"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A9E1A704B;
-	Sun,  7 Sep 2025 20:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2C21F09A5;
+	Sun,  7 Sep 2025 20:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277580; cv=none; b=YyZokorDBXZii8WxKzjrAawkdEJcQz/HljaLWrUXugyXmFZ3hYbx5WQGBbdlA8CmTZdwVNa42eQIWuGUDMcvAV6Br1VAlRSH3SZJ7jsKp+GCgEC6B4A1ywG4jnXNUFRwfd6vdNwKAHuYYNvzR7bZKynRthd49/6gfIb7+RgLlL0=
+	t=1757275763; cv=none; b=nXa7Z1ekmXzELSHxFgL7ed2u/BOJwfHi8IVu5isHYi8D+uqdaRgvulvYuGKrc/i5iso343U3hhGBn7DIIIsHq4Hql4MVujvinnjDhY0gmbKgEhx5+FRgxrUQrGWNe/e4XC20OIdACCfuXUWOT3XshcPHYtOFMKTDhRr9MpIb0bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277580; c=relaxed/simple;
-	bh=P7+/SWifkn0/r8+JOU0xtEpSpeJKleNU4/1SbzexJEk=;
+	s=arc-20240116; t=1757275763; c=relaxed/simple;
+	bh=NqO1AYCPSLpBD0ma8XrARYVRu4rvqsmcXctWwwKz18I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUCk0v7FRjgAk2UBOTdb1ymD9A0IeS9vI+L4kHk5zTua7nDgXaGeNEadg0OZg1EnGVxE4Jz7f2OLlpIJ4d1lVZrMq+RHc8973kQOt9m5IaZY+d7oMzy1WgXG6KjDboh3+FPap9w59E/N7LOaUfJMZeuhA1DN0gXkcSk+JFV7NN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXviU3zR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00402C4CEF0;
-	Sun,  7 Sep 2025 20:39:39 +0000 (UTC)
+	 MIME-Version; b=m4u+2NvvEJRFUDEO0mBABmyICsdgK9sc+Jm2sIZyVvD+wa0HxhwdIhm36OHT2c4IGzGcHrDupbjkNb2/nxPgXBlq0SO3oq7335csDCBN4xq7nEfFMmtTJ8nMENWkagviVSLTMzpdILf0c+MOalctpOPbIhAlWeWuDD0cAAwEZ4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZctN+tms; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35835C4CEF0;
+	Sun,  7 Sep 2025 20:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277580;
-	bh=P7+/SWifkn0/r8+JOU0xtEpSpeJKleNU4/1SbzexJEk=;
+	s=korg; t=1757275763;
+	bh=NqO1AYCPSLpBD0ma8XrARYVRu4rvqsmcXctWwwKz18I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CXviU3zRRY6r7Y94dkfDXV/IUUthfYieTkAaY5Hr7SbQfNaguBcVMDgXdfBn+cgPh
-	 6gnzWF1MJgwU2oupENqhwyBcIwOjtHyYcgWOYMvP9gmyDv6NvhE649f+qclLr0ma+1
-	 OOwZYrvf2V79p0L2+8qDgcj+ADpLkM4ebuSIrL1Y=
+	b=ZctN+tmsQgC9kxp/Klfel8MLJ5hIWCBtwYXXFhaXnh+2tREtbub75x6EuqkmkBnTy
+	 cWbZ9LTlrXgdr75sqLMhiOk3wfLVhiB4w9E2cb1kboPqjmpCCL+DwgSgl6KtjC1KDD
+	 K13mKeiKRtH+l156KojQDRX/vQr6LJlP4ArB2otg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 058/183] eth: mlx4: Fix IS_ERR() vs NULL check bug in mlx4_en_create_rx_ring
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 45/52] ALSA: hda/hdmi: Add pin fix for another HP EliteDesk 800 G4 model
 Date: Sun,  7 Sep 2025 21:58:05 +0200
-Message-ID: <20250907195617.167722963@linuxfoundation.org>
+Message-ID: <20250907195603.272192697@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit e580beaf43d563aaf457f1c7f934002355ebfe7b ]
+commit bcd6659d4911c528381531472a0cefbd4003e29e upstream.
 
-Replace NULL check with IS_ERR() check after calling page_pool_create()
-since this function returns error pointers (ERR_PTR).
-Using NULL check could lead to invalid pointer dereference.
+It was reported that HP EliteDesk 800 G4 DM 65W (SSID 103c:845a) needs
+the similar quirk for enabling HDMI outputs, too.  This patch adds the
+corresponding quirk entry.
 
-Fixes: 8533b14b3d65 ("eth: mlx4: create a page pool for Rx")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20250828121858.67639-1-linmq006@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250901115009.27498-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/en_rx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_hdmi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_rx.c b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
-index b33285d755b90..a626fd0d20735 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
-@@ -267,8 +267,10 @@ int mlx4_en_create_rx_ring(struct mlx4_en_priv *priv,
- 	pp.dma_dir = priv->dma_dir;
- 
- 	ring->pp = page_pool_create(&pp);
--	if (!ring->pp)
-+	if (IS_ERR(ring->pp)) {
-+		err = PTR_ERR(ring->pp);
- 		goto err_ring;
-+	}
- 
- 	if (xdp_rxq_info_reg(&ring->xdp_rxq, priv->dev, queue_index, 0) < 0)
- 		goto err_pp;
--- 
-2.50.1
-
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1965,6 +1965,7 @@ static int hdmi_add_cvt(struct hda_codec
+ static const struct snd_pci_quirk force_connect_list[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x83e2, "HP EliteDesk 800 G4", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
++	SND_PCI_QUIRK(0x103c, 0x845a, "HP EliteDesk 800 G4 DM 65W", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x870f, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x8711, "HP", 1),
 
 
 
