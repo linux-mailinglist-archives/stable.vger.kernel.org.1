@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-178494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E84DB47EE8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 396B5B47DF3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9ECDD3A861F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:30:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8F4F3C10F1
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA971F09BF;
-	Sun,  7 Sep 2025 20:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999ED1AF0B6;
+	Sun,  7 Sep 2025 20:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L7a3KP5o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xckG7IiF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0931C1ACEDA;
-	Sun,  7 Sep 2025 20:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5738714BFA2;
+	Sun,  7 Sep 2025 20:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277015; cv=none; b=lnKp8kz6I7/3/YMLMlRAeXbSrAOTV2SzHgtC1F+gt/mbhpKqgc6LZGbySBDyN//9GhRybZUfuA8/Q+fYfYe214pztyQTUPlg0bIGJF6OfoSbJ5s1HjV1hWxZzPZ6gaQTnpcPNI7q0RDKDn41IfcGlinPkCDqiKou2rTLPww1a8w=
+	t=1757276313; cv=none; b=QpM+KP2CP0zSaxn6+5fvixpXFA+1TjXMTV+BTDHyQA4dW8JYOfiLdRdhEVBEyoikTkolObMT/ccvWQnnccO7zQ2tPDSLDpuuwRlD1kTAN6O+aJALQL95F0Vf2OOJUFlQWt3e0YmobBEBqwYxLGzUAtGFMpFN1bj3fUySSsjsXNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277015; c=relaxed/simple;
-	bh=cKTUfbbcT36CHPmfWG/6sjoB2fK6Jw/Ddhg2SPVIyCg=;
+	s=arc-20240116; t=1757276313; c=relaxed/simple;
+	bh=mOs834qi8Bo0H4Gfk5UDnPSGNfHTpFGFeQFzc1nPjdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYRmN8ZT0vXS4VlcHhXFjzSGR+/rzOYMhzR8eBreXqKTOcbfdzYr6ZK2npk/07Cpk4zDEGhlaeS7Llk9v8Te4MCtIdZtItpQ2ufAYMX/GJXKB58sGx5d3UOGY8LXz3HkjhnOKuakrii/IiC1z9smshtXjJyY5iiPgJ+DwgzLnb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7a3KP5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8557CC4CEF0;
-	Sun,  7 Sep 2025 20:30:14 +0000 (UTC)
+	 MIME-Version; b=ag9/0m83PlUBbacXoMIDWPEveUU7z9E3ccpYD2qLKlGzd9i4wb1Xu37QEe2yJl3hD92Qb6jyLAemFoJqsBmBY+BZ/P3zCUKX6eqXj0dvHXyRqfJlBAM3/1lHK1KlMUF9LTnA5HsOifQWpr5r0RHOBoBaz6yn338ebit8SL0y0Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xckG7IiF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDD6C4CEF0;
+	Sun,  7 Sep 2025 20:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277014;
-	bh=cKTUfbbcT36CHPmfWG/6sjoB2fK6Jw/Ddhg2SPVIyCg=;
+	s=korg; t=1757276313;
+	bh=mOs834qi8Bo0H4Gfk5UDnPSGNfHTpFGFeQFzc1nPjdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L7a3KP5o99I2lflp+2ExziLg4uPU/86TiWPeSZJ8+BFQnjS72O5KytkRZvJDpJMo/
-	 38TyRM8MdQFbuMbilOmGlIbzBcBQpsnHGpjzSVMD+kgL1TdBy70q14JSLPTcr70ILv
-	 9QZJUJFlm0KMbo3xZDsfWH9r8G1YHk571zsBdHMQ=
+	b=xckG7IiFamgvL9a0/E4Uv/kHgB+MFJmeK8sBsyNB5ibtt6vNYi9Y+fTUt08i9Z8Z4
+	 gQRyMsYfT8AyfHQeu7mJYnuos0WO/WAY10NgLSshfD1NhanjavCRCVdkxMhDxlfXz1
+	 Vq5UxgTC849bXVQsoSMAxlnqvlClp6e8jI/WgFA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.12 059/175] ixgbe: fix incorrect map used in eee linkmode
+	Florian Westphal <fw@strlen.de>,
+	Wang Liang <wangliang74@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 017/104] netfilter: br_netfilter: do not check confirmed bit in br_nf_local_in() after confirm
 Date: Sun,  7 Sep 2025 21:57:34 +0200
-Message-ID: <20250907195616.235439398@linuxfoundation.org>
+Message-ID: <20250907195608.129223084@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit b7e5c3e3bfa9dc8af75ff6d8633ad7070e1985e4 ]
+[ Upstream commit 479a54ab92087318514c82428a87af2d7af1a576 ]
 
-incorrectly used ixgbe_lp_map in loops intended to populate the
-supported and advertised EEE linkmode bitmaps based on ixgbe_ls_map.
-This results in incorrect bit setting and potential out-of-bounds
-access, since ixgbe_lp_map and ixgbe_ls_map have different sizes
-and purposes.
+When send a broadcast packet to a tap device, which was added to a bridge,
+br_nf_local_in() is called to confirm the conntrack. If another conntrack
+with the same hash value is added to the hash table, which can be
+triggered by a normal packet to a non-bridge device, the below warning
+may happen.
 
-ixgbe_lp_map[i] -> ixgbe_ls_map[i]
+  ------------[ cut here ]------------
+  WARNING: CPU: 1 PID: 96 at net/bridge/br_netfilter_hooks.c:632 br_nf_local_in+0x168/0x200
+  CPU: 1 UID: 0 PID: 96 Comm: tap_send Not tainted 6.17.0-rc2-dirty #44 PREEMPT(voluntary)
+  RIP: 0010:br_nf_local_in+0x168/0x200
+  Call Trace:
+   <TASK>
+   nf_hook_slow+0x3e/0xf0
+   br_pass_frame_up+0x103/0x180
+   br_handle_frame_finish+0x2de/0x5b0
+   br_nf_hook_thresh+0xc0/0x120
+   br_nf_pre_routing_finish+0x168/0x3a0
+   br_nf_pre_routing+0x237/0x5e0
+   br_handle_frame+0x1ec/0x3c0
+   __netif_receive_skb_core+0x225/0x1210
+   __netif_receive_skb_one_core+0x37/0xa0
+   netif_receive_skb+0x36/0x160
+   tun_get_user+0xa54/0x10c0
+   tun_chr_write_iter+0x65/0xb0
+   vfs_write+0x305/0x410
+   ksys_write+0x60/0xd0
+   do_syscall_64+0xa4/0x260
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
-Use ixgbe_ls_map for supported and advertised linkmodes, and keep
-ixgbe_lp_map usage only for link partner (lp_advertised) mapping.
+To solve the hash conflict, nf_ct_resolve_clash() try to merge the
+conntracks, and update skb->_nfct. However, br_nf_local_in() still use the
+old ct from local variable 'nfct' after confirm(), which leads to this
+warning.
 
-Fixes: 9356b6db9d05 ("net: ethernet: ixgbe: Convert EEE to use linkmodes")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+If confirm() does not insert the conntrack entry and return NF_DROP, the
+warning may also occur. There is no need to reserve the WARN_ON_ONCE, just
+remove it.
+
+Link: https://lore.kernel.org/netdev/20250820043329.2902014-1-wangliang74@huawei.com/
+Fixes: 62e7151ae3eb ("netfilter: bridge: confirm multicast packets before passing them up the stack")
+Suggested-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bridge/br_netfilter_hooks.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index 9482e0cca8b7d..0b9ecb10aa7cf 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -3443,13 +3443,13 @@ ixgbe_get_eee_fw(struct ixgbe_adapter *adapter, struct ethtool_keee *edata)
- 
- 	for (i = 0; i < ARRAY_SIZE(ixgbe_ls_map); ++i) {
- 		if (hw->phy.eee_speeds_supported & ixgbe_ls_map[i].mac_speed)
--			linkmode_set_bit(ixgbe_lp_map[i].link_mode,
-+			linkmode_set_bit(ixgbe_ls_map[i].link_mode,
- 					 edata->supported);
+diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
+index b4d661fe7886d..c4765691e7815 100644
+--- a/net/bridge/br_netfilter_hooks.c
++++ b/net/bridge/br_netfilter_hooks.c
+@@ -648,9 +648,6 @@ static unsigned int br_nf_local_in(void *priv,
+ 		break;
  	}
  
- 	for (i = 0; i < ARRAY_SIZE(ixgbe_ls_map); ++i) {
- 		if (hw->phy.eee_speeds_advertised & ixgbe_ls_map[i].mac_speed)
--			linkmode_set_bit(ixgbe_lp_map[i].link_mode,
-+			linkmode_set_bit(ixgbe_ls_map[i].link_mode,
- 					 edata->advertised);
- 	}
- 
+-	ct = container_of(nfct, struct nf_conn, ct_general);
+-	WARN_ON_ONCE(!nf_ct_is_confirmed(ct));
+-
+ 	return ret;
+ }
+ #endif
 -- 
 2.50.1
 
