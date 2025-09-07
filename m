@@ -1,103 +1,140 @@
-Return-Path: <stable+bounces-178041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D92CB47B7E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 15:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC5FB47BE4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 16:56:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAB0D3A2FB9
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 13:10:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA9DB3BA759
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 14:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DAA26E702;
-	Sun,  7 Sep 2025 13:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5E226F29F;
+	Sun,  7 Sep 2025 14:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dph8UJdu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I5WbdQWr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91022217716;
-	Sun,  7 Sep 2025 13:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDE31A0BD0
+	for <stable@vger.kernel.org>; Sun,  7 Sep 2025 14:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757250606; cv=none; b=EFMojJU+i1YJp7qdALJVJ2Xnyq4/YMXU8GubEDbGljMIlUui4UjD+dWQZEooGUMQbDf1rWBhiE1MnyBksFwk9fHE79679wBuroU/sL3eENMwIWaXsIhPSvMXMXl1y7UrBIKw6mV0+10xyKR38MPW2uvEhY93TZJWGB9i97vn9P0=
+	t=1757256991; cv=none; b=ANe4ziDe9+mhrNz8X3yn9iuw1p/Zqv2YydA7UTzWdnP7AV8908IKs5ytrqezT+4Rbd9CV/G7ZhHtgD9QhJXHYBsg+wn4xQ+CULv6JmMSCWKWvHT9/fYkAfk6qPTzgx+U4tdlUDpJSqNdN22l9Ilwi1r7KzNxQUy2QlokzNtMupo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757250606; c=relaxed/simple;
-	bh=hzoFaHAIdZp2haJZbagmxAgkiZGTROGPUGuinQ8WjrA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XP/mLV99gvPYMW30mTANE9VJo7+kklu5JUp2eISXcHfMeW0v3hoBgYTt0UomaXGxK0ODtlOkwFcL8jOUGWF0vPTH0rj/RwqckUenpDtsKwuOkRYswmGsoRFx5Qc4qQCyYUqKxHlooAI2fjg0ZIxyX5hUDVJmdig7lEiFI0mWs6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dph8UJdu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E05C4CEF0;
-	Sun,  7 Sep 2025 13:10:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757250606;
-	bh=hzoFaHAIdZp2haJZbagmxAgkiZGTROGPUGuinQ8WjrA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Dph8UJduGjbCAOusaVKDWVM0Nbup/WEtW2XPVYZyxABS6fnmFsoMr73WpsXRlussQ
-	 HxY2rKJit6AUd3+Osf46yikDJKhoOHijn52a49QXH1e9jJEph4b5+zVKg0QsAfKqPL
-	 RHEp+t/rxhvcm/EDfDvWIWH0yMtLyIW/lra9m5iQ=
-Date: Sun, 7 Sep 2025 15:10:03 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Andrew Guerrero <ajgja@amazon.com>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, hannes@cmpxchg.org, mhocko@kernel.org,
-	vdavydov.dev@gmail.com, akpm@linux-foundation.org,
-	shakeelb@google.com, guro@fb.com, gunnarku@amazon.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm: memcontrol: fix memcg accounting during cpu hotplug
-Message-ID: <2025090735-glade-paralegal-cdd1@gregkh>
-References: <20250906032108.30539-1-ajgja@amazon.com>
+	s=arc-20240116; t=1757256991; c=relaxed/simple;
+	bh=FCNkxAzCLezaF3m8ARL4NpMRtxd5iSnRq10wVClobL8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gegn2vFw7Ynd4XQhLaH4U8VVNbW3OeOCTSYWr88aBT8B9fMqdsfH4zU0TxyxImQscwdVwhRN7czGjvxFlSS9ftj20ofaq9+QPVyoVNCsUxcNj16k/2/8u2ppFTFsJEHkNDSP5wfrX+pLDP1FoGDLLivhiN4llKpHoJ2ahFNQWz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I5WbdQWr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B259C4CEF0;
+	Sun,  7 Sep 2025 14:56:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757256991;
+	bh=FCNkxAzCLezaF3m8ARL4NpMRtxd5iSnRq10wVClobL8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=I5WbdQWr15VfP11kW0dnWiCpnTRLSJ1zsteBVbPyjy1GKwfxt9JQVa9YaJDM2q4RG
+	 q3lLriNpdG+AVsUiaw2LnIET1NLVdzvzPkEvDrNdAT0Onvx7kcoryov4OrxwjW2UbA
+	 Ssa0EcRl/XTTpKAnYD0zSUji8a1oO4jZSwtTyFRmsb4S327jaqsBR5R21wJIumKr2C
+	 YYAt1fT2MMiTcs/5hc5/pdgEFkOmH1vT1140JLjGIw8L3FD59/kl0PS3mLZpipJzGn
+	 dAr707oYC0whVG6aCD+AJVHs5rTriAwh1NOAM4XgDXQZQzUH1QJaGDJ89YCmtbtszS
+	 wIB4ww7eu75+g==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Chengming Zhou <zhouchengming@bytedance.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] slub: Reflow ___slab_alloc()
+Date: Sun,  7 Sep 2025 10:56:27 -0400
+Message-ID: <20250907145628.635865-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025090634-predator-composite-c799@gregkh>
+References: <2025090634-predator-composite-c799@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250906032108.30539-1-ajgja@amazon.com>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Sep 06, 2025 at 03:21:08AM +0000, Andrew Guerrero wrote:
-> A filesystem writeback performance issue was discovered by repeatedly
-> running CPU hotplug operations while a process in a cgroup with memory
-> and io controllers enabled wrote to an ext4 file in a loop.
-> 
-> When a CPU is offlined, the memcg_hotplug_cpu_dead() callback function
-> flushes per-cpu vmstats counters. However, instead of applying a per-cpu
-> counter once to each cgroup in the heirarchy, the per-cpu counter is
-> applied repeatedly just to the nested cgroup. Under certain conditions,
-> the per-cpu NR_FILE_DIRTY counter is routinely positive during hotplug
-> events and the dirty file count artifically inflates. Once the dirty
-> file count grows past the dirty_freerun_ceiling(), balance_dirty_pages()
-> starts a backgroup writeback each time a file page is marked dirty
-> within the nested cgroup.
-> 
-> This change fixes memcg_hotplug_cpu_dead() so that the per-cpu vmstats
-> and vmevents counters are applied once to each cgroup in the heirarchy,
-> similar to __mod_memcg_state() and __count_memcg_events().
-> 
-> Fixes: 42a300353577 ("mm: memcontrol: fix recursive statistics correctness & scalabilty")
-> Signed-off-by: Andrew Guerrero <ajgja@amazon.com>
-> Reviewed-by: Gunnar Kudrjavets <gunnarku@amazon.com>
-> ---
-> Hey all,
-> 
-> This patch is intended for the 5.10 longterm release branch. It will not apply
-> cleanly to mainline and is inadvertantly fixed by a larger series of changes in 
-> later release branches:
-> a3d4c05a4474 ("mm: memcontrol: fix cpuhotplug statistics flushing").
+From: Chengming Zhou <zhouchengming@bytedance.com>
 
-Why can't we take those instead?
+[ Upstream commit 24c6a097b5a270e05c6e99a99da66b91be81fd7d ]
 
-> In 5.15, the counter flushing code is completely removed. This may be another
-> viable option here too, though it's a larger change.
+The get_partial() interface used in ___slab_alloc() may return a single
+object in the "kmem_cache_debug(s)" case, in which we will just return
+the "freelist" object.
 
-If it's not needed anymore, why not just remove it with the upstream
-commits as well?
+Move this handling up to prepare for later changes.
 
-thanks,
+And the "pfmemalloc_match()" part is not needed for node partial slab,
+since we already check this in the get_partial_node().
 
-greg k-h
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Tested-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Reviewed-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Stable-dep-of: 850470a8413a ("mm: slub: avoid wake up kswapd in set_track_prepare")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ mm/slub.c | 31 +++++++++++++++----------------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index d2544c88a5c43..b7ee815d5d6cd 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -3223,8 +3223,21 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 	pc.slab = &slab;
+ 	pc.orig_size = orig_size;
+ 	freelist = get_partial(s, node, &pc);
+-	if (freelist)
+-		goto check_new_slab;
++	if (freelist) {
++		if (kmem_cache_debug(s)) {
++			/*
++			 * For debug caches here we had to go through
++			 * alloc_single_from_partial() so just store the
++			 * tracking info and return the object.
++			 */
++			if (s->flags & SLAB_STORE_USER)
++				set_track(s, freelist, TRACK_ALLOC, addr);
++
++			return freelist;
++		}
++
++		goto retry_load_slab;
++	}
+ 
+ 	slub_put_cpu_ptr(s->cpu_slab);
+ 	slab = new_slab(s, gfpflags, node);
+@@ -3260,20 +3273,6 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 
+ 	inc_slabs_node(s, slab_nid(slab), slab->objects);
+ 
+-check_new_slab:
+-
+-	if (kmem_cache_debug(s)) {
+-		/*
+-		 * For debug caches here we had to go through
+-		 * alloc_single_from_partial() so just store the tracking info
+-		 * and return the object
+-		 */
+-		if (s->flags & SLAB_STORE_USER)
+-			set_track(s, freelist, TRACK_ALLOC, addr);
+-
+-		return freelist;
+-	}
+-
+ 	if (unlikely(!pfmemalloc_match(slab, gfpflags))) {
+ 		/*
+ 		 * For !pfmemalloc_match() case we don't load freelist so that
+-- 
+2.51.0
+
 
