@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-178433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB20B47EA4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:27:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B20B47FDE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C025517D0A8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:27:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 292553C3C2F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8D520E005;
-	Sun,  7 Sep 2025 20:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7922139C9;
+	Sun,  7 Sep 2025 20:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="InoWe2H7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSnN8wKb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0BF1D88D0;
-	Sun,  7 Sep 2025 20:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE1C4315A;
+	Sun,  7 Sep 2025 20:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276820; cv=none; b=e9yWCv71Js2FxS48aHkRkWqsnKhZB2v3MpvCbE7e5ARbQV1gCbCGqVl+wC/yDuSSM/YUg58i5CIBDNRf0JGTjwBCUudxPWGPhsVYJMiOg/0hsrPma5NUWWsNOFNbGQYBHdgH06PC4Lsu/Lu2gPTPtwzMs1SMQAk3jBAANpKQFPc=
+	t=1757277803; cv=none; b=mGzwvq4KVlB/Jg7ZRYTPuCarhNAZRiXsjr09hq6TzQIoZfXVviwqilQyDGYedE0dgsF3svyfka0DHM3TMOye7t4eYY6fWu21FvkyqsZVNxdRgB6bKo8l2Fn3vJCKo/I2sYZi2SuVcjO9smfy1TuhFda43Oq3Zg+WDphM4vXGr40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276820; c=relaxed/simple;
-	bh=lGaLkwOKpcV0gT4AowSW7pcBzNSGgZAjDHJD+0WBY7I=;
+	s=arc-20240116; t=1757277803; c=relaxed/simple;
+	bh=d3FnGpuZ2Fe2NBC3VQGarTpVYvGciAq+1mFGv26oVMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gVRk2BXikQixFyiPd9z+3bO1famq/W1MgLVB94uPAhm21VkzED+9oarKkMup+phFCHwH0A6oGbYdeSVVp3Gx+Xo/3sH7yXblwkXVEuY+aSKnM4YUSAKh35lV0JMv50xGhR6GE9qMa9U1Rt998261ODKTAaO1J/3G5mIIitNn0h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InoWe2H7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D9FC4CEF0;
-	Sun,  7 Sep 2025 20:26:59 +0000 (UTC)
+	 MIME-Version; b=nF3K4qlPMHs7OCvgQkATGw7y2nosKO2r8Ik+VhNOL+E3rs3bGi5RKS4joy6PVr3LSnho13DoQfpindbA6i1X4DHCbN3l+2dVJj3omWdFSfuMtjcadR+0VjyU1OdQMFSvcCbMzNdIIN6moQYGD2BeNB4OP/UEI9cBDE4IsuZc90c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSnN8wKb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CF3C4CEF0;
+	Sun,  7 Sep 2025 20:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276820;
-	bh=lGaLkwOKpcV0gT4AowSW7pcBzNSGgZAjDHJD+0WBY7I=;
+	s=korg; t=1757277803;
+	bh=d3FnGpuZ2Fe2NBC3VQGarTpVYvGciAq+1mFGv26oVMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=InoWe2H770aqWrjdTbJzMk2hvrEIpn/aVDeed3yqSdrtOh2Pnrp5HWLycoNl9lFxo
-	 H2uPpqz/z8Rg5m3tef1jCF8pQ1JcbL7FCMSP32R+GswEhM2qXkeQ6mLe5+O8W6Ehu5
-	 H6Q6gmV/wXaFEh7ITmAmTqriG+xF6ri7XCyZ9ty0=
+	b=HSnN8wKbqG6a7VoUCdbQt9ScH7l85NWr9NOzYvjNOTbMQgvzrXrudG1hXBHd45p3O
+	 PUztklgTCTQSdNBqTB5HwAc5otChw2OzAjHSfJysjvb58QIr4uF30/3LXA2Y+i1iv4
+	 KlSuohn9q0YeM5ZpieF5Nhy1BPw1rK0DYElj1eXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 120/121] dmaengine: mediatek: Fix a flag reuse error in mtk_cqdma_tx_status()
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>
+Subject: [PATCH 6.16 129/183] drm/amdgpu/sdma: bump firmware version checks for user queue support
 Date: Sun,  7 Sep 2025 21:59:16 +0200
-Message-ID: <20250907195612.928471086@linuxfoundation.org>
+Message-ID: <20250907195618.858323301@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Jesse.Zhang <Jesse.Zhang@amd.com>
 
-[ Upstream commit 8eba2187391e5ab49940cd02d6bd45a5617f4daf ]
+commit 2d41a4bfee6e9941ff19728c691ab00d19cf882a upstream.
 
-Fixed a flag reuse bug in the mtk_cqdma_tx_status() function.
+Using the previous firmware could lead to problems with
+PROTECTED_FENCE_SIGNAL commands, specifically causing register
+conflicts between MCU_DBG0 and MCU_DBG1.
 
-Fixes: 157ae5ffd76a ("dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()")
+The updated firmware versions ensure proper alignment
+and unification of the SDMA_SUBOP_PROTECTED_FENCE_SIGNAL value with SDMA 7.x,
+resolving these hardware coordination issues
+
+Fixes: e8cca30d8b34 ("drm/amdgpu/sdma6: add ucode version checks for userq support")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit aab8b689aded255425db3d80c0030d1ba02fe2ef)
 Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202505270641.MStzJUfU-lkp@intel.com/
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Reviewed-by: Eugen Hristev <eugen.hristev@linaro.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250606090017.5436-1-chenqiuji666@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/mediatek/mtk-cqdma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/sdma_v6_0.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/mediatek/mtk-cqdma.c b/drivers/dma/mediatek/mtk-cqdma.c
-index 385eee4fd4e11..525bb92ced8f8 100644
---- a/drivers/dma/mediatek/mtk-cqdma.c
-+++ b/drivers/dma/mediatek/mtk-cqdma.c
-@@ -449,9 +449,9 @@ static enum dma_status mtk_cqdma_tx_status(struct dma_chan *c,
- 		return ret;
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v6_0.c
+@@ -1376,15 +1376,15 @@ static int sdma_v6_0_sw_init(struct amdg
  
- 	spin_lock_irqsave(&cvc->pc->lock, flags);
--	spin_lock_irqsave(&cvc->vc.lock, flags);
-+	spin_lock(&cvc->vc.lock);
- 	vd = mtk_cqdma_find_active_desc(c, cookie);
--	spin_unlock_irqrestore(&cvc->vc.lock, flags);
-+	spin_unlock(&cvc->vc.lock);
- 	spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 
- 	if (vd) {
--- 
-2.51.0
-
+ 	switch (amdgpu_ip_version(adev, SDMA0_HWIP, 0)) {
+ 	case IP_VERSION(6, 0, 0):
+-		if ((adev->sdma.instance[0].fw_version >= 24) && !adev->sdma.disable_uq)
++		if ((adev->sdma.instance[0].fw_version >= 27) && !adev->sdma.disable_uq)
+ 			adev->userq_funcs[AMDGPU_HW_IP_DMA] = &userq_mes_funcs;
+ 		break;
+ 	case IP_VERSION(6, 0, 2):
+-		if ((adev->sdma.instance[0].fw_version >= 21) && !adev->sdma.disable_uq)
++		if ((adev->sdma.instance[0].fw_version >= 23) && !adev->sdma.disable_uq)
+ 			adev->userq_funcs[AMDGPU_HW_IP_DMA] = &userq_mes_funcs;
+ 		break;
+ 	case IP_VERSION(6, 0, 3):
+-		if ((adev->sdma.instance[0].fw_version >= 25) && !adev->sdma.disable_uq)
++		if ((adev->sdma.instance[0].fw_version >= 27) && !adev->sdma.disable_uq)
+ 			adev->userq_funcs[AMDGPU_HW_IP_DMA] = &userq_mes_funcs;
+ 		break;
+ 	default:
 
 
 
