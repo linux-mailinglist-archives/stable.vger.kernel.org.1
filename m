@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-178186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BD6B47D98
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6E5B47E71
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52AF917CA63
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C76E3C1B25
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F1D1CDFAC;
-	Sun,  7 Sep 2025 20:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F9D61D88D0;
+	Sun,  7 Sep 2025 20:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBMAPSzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/A9Gg6k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA50B1B424F;
-	Sun,  7 Sep 2025 20:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E199D528;
+	Sun,  7 Sep 2025 20:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276037; cv=none; b=KGEZxLGaIIi2QEPOE3BWNDtxHt05kE4v6Qt+cDWCove+BcdAC0n5QjBuCLwrjnftMFJFjpqxzXzrC2JfxyCL40RLcOIRUCxh+xla7dqSH8G8zuOB4gf9Yfspt+jn//rIBGogtBWzuLhzZXYEyLuNOjR9DJ8JMVFCnAHKk/IyvEo=
+	t=1757276661; cv=none; b=AmzWx/9t8Q8zLEYKpU1iQurMM2tYlEmGP/Fn5iL1OX37/nELuthmCpE/4pwRUx4hKQki8jIN0ISgo5QU9UDo/eAbxqBpzXw5Z8Jue40wdFzk6O13zoST2oSKYfz2KPpyTDSeQ/Gi4y5pxl8cM5fOBNAFf6d1Jd+xvTYQQ4P5eTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276037; c=relaxed/simple;
-	bh=OfN17h7nffr5RM3qkkmuQKOB2cuP9ppxWKySqyyDGSc=;
+	s=arc-20240116; t=1757276661; c=relaxed/simple;
+	bh=fOpYYoSEiS2VzZROy0nEMafWGQAd4rY7edpFL92jd3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3fpiq61Hj7Za9V996ypTOsyf2MHq5RWQJG/U+phkSYFnTlWQOThK6YCPMQhSmLQUTLrZ75TyRuFgdJ+V08FE80OYCvJikQK9VWaZoFsEO9CjW3TOXjdZpwaOF/j4b06+AX5JIsX+PIHAvGZGdkweSIyAP8GN3A6WlNdy9yD+18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBMAPSzM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F5CC4CEF0;
-	Sun,  7 Sep 2025 20:13:57 +0000 (UTC)
+	 MIME-Version; b=XbSob8CJ0CWeM51wmbpuqSEMd4UJdbnul16lYdsAZNEG2U+R26OSFEPWPE1ctay+YaGAS1irriIEbf080Ndwv5VkQrT6CGGcX9kGhiGNPW/4Yil3Tu/KvpPEx0s9MZAUrOG2w3d40W9jj8nmZN5XZUg2FVO1ooR44pr0wGfwp8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/A9Gg6k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8965C4CEF0;
+	Sun,  7 Sep 2025 20:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276037;
-	bh=OfN17h7nffr5RM3qkkmuQKOB2cuP9ppxWKySqyyDGSc=;
+	s=korg; t=1757276661;
+	bh=fOpYYoSEiS2VzZROy0nEMafWGQAd4rY7edpFL92jd3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RBMAPSzMLIO4Ddwza7sXm+8nzB0HOnaB/0Hs0nPjNgM/tRN0/YIW3tkfcMnVJa8hq
-	 0qSh+fTQ1nG9BZtFqnIZWoc7LFSi7jPdITIk5kjHBE79tTQL3z845IsVq9REN3P5I/
-	 01mNbC0KvI14fp+/GwA7BQOyD0QvOjfi92E6VT0M=
+	b=i/A9Gg6kZ1HK7ehl4KsXVA/KdJJ3ThakAayO7sEdLxEWK/ezv8AbcK3dXAVH+EWB9
+	 O4hGM3kTZd4bIEq7NP1BcKYXVi0njq0To3rbnI1TN8XDB9iZsdsQqer4dTUFQ8dliH
+	 PWYFTiBakTOIOIWGLV1XUg09EkVrEAIL1x7/Cthc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 44/64] iio: light: opt3001: fix deadlock due to concurrent flag access
+	Jinfeng Wang <jinfeng.wang.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.6 070/121] Revert "spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"
 Date: Sun,  7 Sep 2025 21:58:26 +0200
-Message-ID: <20250907195604.620072926@linuxfoundation.org>
+Message-ID: <20250907195611.633723750@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Jinfeng Wang <jinfeng.wang.cn@windriver.com>
 
-[ Upstream commit f063a28002e3350088b4577c5640882bf4ea17ea ]
+This reverts commit 1af6d1696ca40b2d22889b4b8bbea616f94aaa84 which is
+commit 04a8ff1bc3514808481ddebd454342ad902a3f60 upstream.
 
-The threaded IRQ function in this driver is reading the flag twice: once to
-lock a mutex and once to unlock it. Even though the code setting the flag
-is designed to prevent it, there are subtle cases where the flag could be
-true at the mutex_lock stage and false at the mutex_unlock stage. This
-results in the mutex not being unlocked, resulting in a deadlock.
+There is cadence-qspi ff8d2000.spi: Unbalanced pm_runtime_enable! error
+without this revert.
 
-Fix it by making the opt3001_irq() code generally more robust, reading the
-flag into a variable and using the variable value at both stages.
+After reverting commit cdfb20e4b34a ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+and commit 1af6d1696ca4 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"),
+Unbalanced pm_runtime_enable! error does not appear.
 
-Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Link: https://patch.msgid.link/20250321-opt3001-irq-fix-v1-1-6c520d851562@bootlin.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+These two commits are backported from upstream commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths").
+
+The commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths")
+fix commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance").
+
+The commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance") fix
+commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings").
+
+The commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings") fix
+commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support").
+
+6.6.y only backport commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"),
+but does not backport commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support")
+and commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings").
+And the backport of commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+differs with the original patch. So there is Unbalanced pm_runtime_enable error.
+
+If revert the backport for commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"), there is no error.
+If backport commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support") and
+commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings"), there
+is hang during booting. I didn't find the cause of the hang.
+
+Since commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support") and
+commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings") are
+not backported, commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths") are not needed.
+So revert commits commit cdfb20e4b34a ("spi: spi-cadence-quadspi: Fix pm runtime unbalance") and
+commit 1af6d1696ca4 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths").
+
+Signed-off-by: Jinfeng Wang <jinfeng.wang.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/opt3001.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/iio/light/opt3001.c
-+++ b/drivers/iio/light/opt3001.c
-@@ -692,8 +692,9 @@ static irqreturn_t opt3001_irq(int irq,
- 	struct opt3001 *opt = iio_priv(iio);
- 	int ret;
- 	bool wake_result_ready_queue = false;
-+	bool ok_to_ignore_lock = opt->ok_to_ignore_lock;
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1870,6 +1870,11 @@ static int cqspi_probe(struct platform_d
  
--	if (!opt->ok_to_ignore_lock)
-+	if (!ok_to_ignore_lock)
- 		mutex_lock(&opt->lock);
+ 	pm_runtime_enable(dev);
  
- 	ret = i2c_smbus_read_word_swapped(opt->client, OPT3001_CONFIGURATION);
-@@ -730,7 +731,7 @@ static irqreturn_t opt3001_irq(int irq,
- 	}
- 
- out:
--	if (!opt->ok_to_ignore_lock)
-+	if (!ok_to_ignore_lock)
- 		mutex_unlock(&opt->lock);
- 
- 	if (wake_result_ready_queue)
++	if (cqspi->rx_chan) {
++		dma_release_channel(cqspi->rx_chan);
++		goto probe_setup_failed;
++	}
++
+ 	ret = spi_register_controller(host);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to register SPI ctlr %d\n", ret);
 
 
 
