@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-178155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070AAB47D78
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 806A9B47E53
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBF8F3B7EAB
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A9937B05C0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D76C284883;
-	Sun,  7 Sep 2025 20:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D311F09BF;
+	Sun,  7 Sep 2025 20:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AT9ecns/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PYyLIAo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F9622F74D;
-	Sun,  7 Sep 2025 20:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44DC41B4247;
+	Sun,  7 Sep 2025 20:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275940; cv=none; b=pMHHE4CO0nsbk6fvkgplOS9HfJf2XDZEIHHM5NItSbJbcJf+xnLs7zLY7qKmQTtkVuXmxcnbHGf1FbM+FHeWI1TNx9YMz/fs+6NZM/vldgxtgoWq/ifYnpHLgJbERaR5HV3IWElECefoyA6QAbATj45FvrfhQ9ezrlUU05kRmt0=
+	t=1757276566; cv=none; b=RDeAg82yHCvWkP5GN5edH8EeEkVI/QMY+kA0BcEFPbHH8ADoAcL0r30D4AUjz8+wRW5QYhJboHWA23cTX7ILeh10Cekl/Lva2STW7b+PHpXmNeA7J+nzCiaWUoc7vkkoBWVolBiuS5aCfp2LXQ7JyDbeTmpZcLLjQYhSsafgxq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275940; c=relaxed/simple;
-	bh=V08e2t77JNH3v3Uo84deDsZzTfGOWIZycvf34JbVWkE=;
+	s=arc-20240116; t=1757276566; c=relaxed/simple;
+	bh=UtZdKcs9GpokCbarbCjH9/4S5fvKQsR9HcWi3wt8OxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S+dyzFRqS9dSx66R0vyXiOxIqrvSsXKksjlgWktjXe0c856AxDej5o3URnIv67X8EdBTPHZ/QEMeB9NtDgow2oSEsttGlXRtzsNJbUY6RY8gCKneoJAC4YjBnyPqIlUv+DAqTiJf3KVm3wLw77RnseSNKZCUbmc74l2b25RWkng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AT9ecns/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC5CC4CEF0;
-	Sun,  7 Sep 2025 20:12:19 +0000 (UTC)
+	 MIME-Version; b=qlmvnxqoB8b6f6x8y9pZe+R2Eu7JnrNtw9o4Ds4xKH/GBxXvKgaU1dkjqrWNDbZ9ow4YBG3ewnuZPuH7tugA9SY2YkbbmT0JFdEkyOzCkWRhns8LqkdQK2ikD//2nkbv0MlRyF6yxMMGdH7wR2P7soNReyPdPLsbyI6sG7nJFLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1PYyLIAo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBADCC4CEF0;
+	Sun,  7 Sep 2025 20:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275940;
-	bh=V08e2t77JNH3v3Uo84deDsZzTfGOWIZycvf34JbVWkE=;
+	s=korg; t=1757276566;
+	bh=UtZdKcs9GpokCbarbCjH9/4S5fvKQsR9HcWi3wt8OxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AT9ecns/vpO9Tx4o11XNxwUNIwxpcHOG+9gMw07o0jHnRwS9ea1cevBSodplqLx4J
-	 4+IWM3Pjrm3BlZllwZ7BNpB8c6xsrcpQ268DGN5yrqy6ZmqXHyXZI0jsZ9D/D2Xfpb
-	 Dkikx9K/uxmmTtPXTe5bu2V6H5k/9vCjv0YSAUIc=
+	b=1PYyLIAoji7qWs7UGngz7FT/zjgZJMd91Kd0xmz/FBIIlVRwZw43cdmZvL9/rQ4JP
+	 I6YC/8jqbLfJ94X6XnnjBZrUJIUc8oUR0e0+YPBeZRiaP7PyfF0W/P80pmtaMxdcvN
+	 rpe71LhAaXnCMRMwMNFA1wmb6DVqHLpA4Fs3pyyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 13/64] xirc2ps_cs: fix register access when enabling FullDuplex
+Subject: [PATCH 6.6 039/121] wifi: libertas: cap SSID len in lbs_associate()
 Date: Sun,  7 Sep 2025 21:57:55 +0200
-Message-ID: <20250907195603.771300477@linuxfoundation.org>
+Message-ID: <20250907195610.829849070@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit b79e498080b170fd94fc83bca2471f450811549b ]
+[ Upstream commit c786794bd27b0d7a5fd9063695df83206009be59 ]
 
-The current code incorrectly passes (XIRCREG1_ECR | FullDuplex) as
-the register address to GetByte(), instead of fetching the register
-value and OR-ing it with FullDuplex. This results in an invalid
-register access.
+If the ssid_eid[1] length is more that 32 it leads to memory corruption.
 
-Fix it by reading XIRCREG1_ECR first, then or-ing with FullDuplex
-before writing it back.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250827192645.658496-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/2a40f5ec7617144aef412034c12919a4927d90ad.1756456951.git.dan.carpenter@linaro.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xircom/xirc2ps_cs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/marvell/libertas/cfg.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/xircom/xirc2ps_cs.c b/drivers/net/ethernet/xircom/xirc2ps_cs.c
-index 10f42b7df8b35..efbd337b8bb8e 100644
---- a/drivers/net/ethernet/xircom/xirc2ps_cs.c
-+++ b/drivers/net/ethernet/xircom/xirc2ps_cs.c
-@@ -1582,7 +1582,7 @@ do_reset(struct net_device *dev, int full)
- 	    msleep(40);			/* wait 40 msec to let it complete */
- 	}
- 	if (full_duplex)
--	    PutByte(XIRCREG1_ECR, GetByte(XIRCREG1_ECR | FullDuplex));
-+	    PutByte(XIRCREG1_ECR, GetByte(XIRCREG1_ECR) | FullDuplex);
-     } else {  /* No MII */
- 	SelectPage(0);
- 	value = GetByte(XIRCREG_ESR);	 /* read the ESR */
+diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
+index b700c213d10c4..38ad49033d0ba 100644
+--- a/drivers/net/wireless/marvell/libertas/cfg.c
++++ b/drivers/net/wireless/marvell/libertas/cfg.c
+@@ -1150,10 +1150,13 @@ static int lbs_associate(struct lbs_private *priv,
+ 	/* add SSID TLV */
+ 	rcu_read_lock();
+ 	ssid_eid = ieee80211_bss_get_ie(bss, WLAN_EID_SSID);
+-	if (ssid_eid)
+-		pos += lbs_add_ssid_tlv(pos, ssid_eid + 2, ssid_eid[1]);
+-	else
++	if (ssid_eid) {
++		u32 ssid_len = min(ssid_eid[1], IEEE80211_MAX_SSID_LEN);
++
++		pos += lbs_add_ssid_tlv(pos, ssid_eid + 2, ssid_len);
++	} else {
+ 		lbs_deb_assoc("no SSID\n");
++	}
+ 	rcu_read_unlock();
+ 
+ 	/* add DS param TLV */
 -- 
 2.50.1
 
