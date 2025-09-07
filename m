@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-178385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4D83B47E72
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 973D7B47F1E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AD0C3C1B30
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 954CC1B2126B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97381D88D0;
-	Sun,  7 Sep 2025 20:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6544B2139C9;
+	Sun,  7 Sep 2025 20:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXiV0dxS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyQ09Uav"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8789D528;
-	Sun,  7 Sep 2025 20:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2313A1A0BFD;
+	Sun,  7 Sep 2025 20:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276667; cv=none; b=KC04HGbO68Me8pNo4u/KEuAhsisUwYP5df3diYLi0R4hgFcjAQ+4Iqo18NaBdwl3bgoIr3SwQnhumuAU07tuF+pTlSFZE/IFB5WbvZ/mgv1YPo+rod+eAy+yE1330oGBZ/KrPlpiGbHKUMcOk8dQl6iRWuukyKL+dAQo3M1zxeY=
+	t=1757277192; cv=none; b=TI7WtdeWSJuhzUX23l7bacQhUHRT35nM0065fv0Kh5txr0kgK/d++d5V6V78J+nqaNkg5Yd+w+mBCOPS/QNsmYMIy7o1huAOfSwNOqpXHUVmASdc+ZXxebBFM6we3yjWuaiSkGCXvsGUZmwQaBoJ38i9M70uWhbkfisJ1y7VoNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276667; c=relaxed/simple;
-	bh=ldqTci8YK70u1QLMCNNoLqAXdJ+hXK7rIWvQyM3Z358=;
+	s=arc-20240116; t=1757277192; c=relaxed/simple;
+	bh=4bU5VCykL30PXe6z/tyek9ya3PxZmFUkofrSDMXJvIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=keW0cJyYbwWn0cpMYV/JjJGttyLGdNAzNT7Dj8f4CXAPe29wJgExAC1uohn0FH6+Z8oO8T6uAwEfaCdOI2YBL0t8T3lj1QuJD7hg7cDjlZBSnosNfq42cNPon41l6IKz7vFDSgr9LbVp7dqhJQCI22Gj+z/GPdl2LSJj+PnQgAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXiV0dxS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD5CC4CEF0;
-	Sun,  7 Sep 2025 20:24:26 +0000 (UTC)
+	 MIME-Version; b=dBGDljq5iFZpVmtUzRI8Pj2gp7MGbGIBs6M2tMEIYE8g0utpn9ys7i9DH1cZGKhz3951x/VafebZA+jGlx8aMz6Yb9ftmtCGG5HFta8RaTTGo/YVyEUY6qTW+W/gcwLZH/YUOHGSL0pj9/tbygzWFjeClkiWzpdsd0vBeCiUoiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyQ09Uav; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991A4C4CEF0;
+	Sun,  7 Sep 2025 20:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276667;
-	bh=ldqTci8YK70u1QLMCNNoLqAXdJ+hXK7rIWvQyM3Z358=;
+	s=korg; t=1757277192;
+	bh=4bU5VCykL30PXe6z/tyek9ya3PxZmFUkofrSDMXJvIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TXiV0dxS87IKGuMJ5y3k4o0ca4b9302pZiPPvy0yTnNubwyNqUj3zWHKtYQeCiac1
-	 fHJW+Hs+44eRIg4ug3jZsFvr+IINAg4wG/7luNDe4NVsSG601KHPptrdTv+tZ/KPc7
-	 KPC5YhqKgjOuMn09DZO+dImG96pxYDOGeMnmuHYo=
+	b=XyQ09UavnN3Sp/2t1SiB6GESiuTYpk1egf3YQcmS9yBC81TWQfWeXyGyIk271cxNU
+	 Dh55/RJP8I9pNHHYSEO4UIFigPh85ffMCfmt9wNOHE+UBIzLD1JqN8OkQc9ClxHSZr
+	 qjliE8/tUsls3yorH5hP1sLo+ss3V8jXQovhxclg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 072/121] cpufreq: intel_pstate: Revise global turbo disable check
+	oushixiong <oushixiong1025@163.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 113/175] drm/amdgpu: drop hw access in non-DC audio fini
 Date: Sun,  7 Sep 2025 21:58:28 +0200
-Message-ID: <20250907195611.684928447@linuxfoundation.org>
+Message-ID: <20250907195617.531680346@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 37b6ddba967c601479bea418a7ac6ff16b6232b7 ]
+commit 71403f58b4bb6c13b71c05505593a355f697fd94 upstream.
 
-Setting global turbo flag based on CPU 0 P-state limits is problematic
-as it limits max P-state request on every CPU on the system just based
-on its P-state limits.
+We already disable the audio pins in hw_fini so
+there is no need to do it again in sw_fini.
 
-There are two cases in which global.turbo_disabled flag is set:
-- When the MSR_IA32_MISC_ENABLE_TURBO_DISABLE bit is set to 1
-in the MSR MSR_IA32_MISC_ENABLE. This bit can be only changed by
-the system BIOS before power up.
-- When the max non turbo P-state is same as max turbo P-state for CPU 0.
-
-The second check is not a valid to decide global turbo state based on
-the CPU 0. CPU 0 max turbo P-state can be same as max non turbo P-state,
-but for other CPUs this may not be true.
-
-There is no guarantee that max P-state limits are same for every CPU. This
-is possible that during fusing max P-state for a CPU is constrained. Also
-with the Intel Speed Select performance profile, CPU 0 may not be present
-in all profiles. In this case the max non turbo and turbo P-state can be
-set to the lowest possible P-state by the hardware when switched to
-such profile. Since max non turbo and turbo P-state is same,
-global.turbo_disabled flag will be set.
-
-Once global.turbo_disabled is set, any scaling max and min frequency
-update for any CPU will result in its max P-state constrained to the max
-non turbo P-state.
-
-Hence remove the check of max non turbo P-state equal to max turbo P-state
-of CPU 0 to set global turbo disabled flag.
-
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-[ rjw: Subject edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: ac4e04d9e378 ("cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4481
+Cc: oushixiong <oushixiong1025@163.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5eeb16ca727f11278b2917fd4311a7d7efb0bbd6)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/intel_pstate.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/dce_v10_0.c |    5 -----
+ drivers/gpu/drm/amd/amdgpu/dce_v11_0.c |    5 -----
+ drivers/gpu/drm/amd/amdgpu/dce_v6_0.c  |    5 -----
+ drivers/gpu/drm/amd/amdgpu/dce_v8_0.c  |    5 -----
+ 4 files changed, 20 deletions(-)
 
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -595,13 +595,9 @@ static void intel_pstate_hybrid_hwp_adju
- static inline void update_turbo_state(void)
- {
- 	u64 misc_en;
--	struct cpudata *cpu;
+--- a/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
+@@ -1462,17 +1462,12 @@ static int dce_v10_0_audio_init(struct a
  
--	cpu = all_cpu_data[0];
- 	rdmsrl(MSR_IA32_MISC_ENABLE, misc_en);
--	global.turbo_disabled =
--		(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE ||
--		 cpu->pstate.max_pstate == cpu->pstate.turbo_pstate);
-+	global.turbo_disabled = misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE;
+ static void dce_v10_0_audio_fini(struct amdgpu_device *adev)
+ {
+-	int i;
+-
+ 	if (!amdgpu_audio)
+ 		return;
+ 
+ 	if (!adev->mode_info.audio.enabled)
+ 		return;
+ 
+-	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
+-		dce_v10_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+-
+ 	adev->mode_info.audio.enabled = false;
  }
  
- static int min_perf_pct_min(void)
+--- a/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
+@@ -1511,17 +1511,12 @@ static int dce_v11_0_audio_init(struct a
+ 
+ static void dce_v11_0_audio_fini(struct amdgpu_device *adev)
+ {
+-	int i;
+-
+ 	if (!amdgpu_audio)
+ 		return;
+ 
+ 	if (!adev->mode_info.audio.enabled)
+ 		return;
+ 
+-	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
+-		dce_v11_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+-
+ 	adev->mode_info.audio.enabled = false;
+ }
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
+@@ -1394,17 +1394,12 @@ static int dce_v6_0_audio_init(struct am
+ 
+ static void dce_v6_0_audio_fini(struct amdgpu_device *adev)
+ {
+-	int i;
+-
+ 	if (!amdgpu_audio)
+ 		return;
+ 
+ 	if (!adev->mode_info.audio.enabled)
+ 		return;
+ 
+-	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
+-		dce_v6_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+-
+ 	adev->mode_info.audio.enabled = false;
+ }
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
+@@ -1443,17 +1443,12 @@ static int dce_v8_0_audio_init(struct am
+ 
+ static void dce_v8_0_audio_fini(struct amdgpu_device *adev)
+ {
+-	int i;
+-
+ 	if (!amdgpu_audio)
+ 		return;
+ 
+ 	if (!adev->mode_info.audio.enabled)
+ 		return;
+ 
+-	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
+-		dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+-
+ 	adev->mode_info.audio.enabled = false;
+ }
+ 
 
 
 
