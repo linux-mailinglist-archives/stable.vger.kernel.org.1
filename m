@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-178583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84E59B47F40
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:35:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01CB2B47FF1
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:44:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 522B77A214F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BE4F1B225BA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7EB3212B3D;
-	Sun,  7 Sep 2025 20:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531152765C8;
+	Sun,  7 Sep 2025 20:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V51p1TaO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipTdTa73"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662181DE8AF;
-	Sun,  7 Sep 2025 20:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119154315A;
+	Sun,  7 Sep 2025 20:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277300; cv=none; b=B9VTYdRPiHnoeSAckswJMAzrzFPD3s3ge2lY/rb2LwzQtusE3erN0oP53sxmuL+QsWecpCT/zlfV1rD3IOb5uEo9o2E8rVwyODCe3skZZ6AbvUYpCEGw3Pe73lY6LreiKDZCYq7Xq9GWtTy4pPo8bWoT6IAyyjwQbCCubrHeqWg=
+	t=1757277855; cv=none; b=OoQ+2EfmrIhuaWHELKiMAFDiJf01ngc4YwXs5ZexfjHXyV5qX38wnH3iC6KSgKwJ9+xtnAZfIds5KtsAdhzq/3kaRY83WmB8d1sXodmX8k23E+iTa6jUFIIFic5KGr4V8KqcsEOIPWASfE035OPtA6Pw8tPJP28zybjghIlGBcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277300; c=relaxed/simple;
-	bh=rQzHRK7+JQ4neuRN9VeQQ5jd4Lax/7FUKAss6bc8ctQ=;
+	s=arc-20240116; t=1757277855; c=relaxed/simple;
+	bh=QqDsaFyxhmez6DvgpSugps0OW2ynd7hmXjuE8gIH6QE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iH3BdJ7ynWDXeDrj0vzjaDIMN+mJT5xmuUlN0+7w0Jn4RG4pEFqIQniNLGq5X2WRrgj+fAXBCn5DyHkp+VHIF8T2+wvZ6Fk33xXad1J8EmpbEjZ/AiNPRSjPfCaJdaUOZ2faqcnAfnlemMUWzdJNljAW/1pnVJF5uuGMymumdzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V51p1TaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDCCC4CEF0;
-	Sun,  7 Sep 2025 20:34:59 +0000 (UTC)
+	 MIME-Version; b=fbknBqf2H7WT7xHlYNz7pYCaQxiBSvxkUlxlwjzEsowx7ZE678Rku/tnm19PrJdC9OTgJ9lUrkbIccHttLUSci4H2wwtGeHTxAlpvYDr/FQ3GHRe07dZer/Awld+V4rf4zWuyWPLrsNQwl09YC3be7z45QmlB1NugceS0DAh6Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipTdTa73; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B883C4CEF0;
+	Sun,  7 Sep 2025 20:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277300;
-	bh=rQzHRK7+JQ4neuRN9VeQQ5jd4Lax/7FUKAss6bc8ctQ=;
+	s=korg; t=1757277854;
+	bh=QqDsaFyxhmez6DvgpSugps0OW2ynd7hmXjuE8gIH6QE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V51p1TaOXRZgjLZflj3x8z/13zLnZfmBiD/04eYeDWvnNt0I7GmOeyIQwdzxKYajp
-	 UfSniGSsaZWpBqI0AxBn1tleLMPYkYTOAKhc4Z7pFDvnrOsIGkdRlYU/T4zhuz82Ox
-	 DLoqOtGWQ3mGp76xYFtZhMoS0YC82wliWaHSr7Vw=
+	b=ipTdTa73TeAFm9wU5KAmg1tCmn9FfXv+9ICyuOIXVvgMg94lzJwQYtKyIM+r1wryn
+	 7Cd4FHTgdYtS9ifVVX2iNKfWgpFv+lfQv/CTA0HHvdFwBc6W7URHyo56KA82j58TXn
+	 d/yZJfxMZ4wXgdLQzVlkqueKaY3EhWziO9aaaVg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 149/175] Revert "drm/amdgpu: Avoid extra evict-restore process."
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH 6.16 117/183] wifi: mac80211: do not permit 40 MHz EHT operation on 5/6 GHz
 Date: Sun,  7 Sep 2025 21:59:04 +0200
-Message-ID: <20250907195618.379899492@linuxfoundation.org>
+Message-ID: <20250907195618.570645208@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-This reverts commit 71598a5a7797f0052aaa7bcff0b8d4b8f20f1441 which is
-commit 1f02f2044bda1db1fd995bc35961ab075fa7b5a2 upstream.
+commit 75575e2d252afb29fdbcbeec4d67e042007add52 upstream.
 
-This commit introduced a regression, however the fix for the regression:
-aa5fc4362fac ("drm/amdgpu: fix task hang from failed job submission
-during process kill") depends on things not yet present in 6.12.y and
-older kernels.  Since this commit is more of an optimization, just
-revert it for 6.12.y and older stable kernels.
+The EHT PHY requirements state that 80 MHz must be supported on the 5
+and 6 GHz bands unless the STA is 20 MHz only. So if the channel width
+is limited to 40 MHz on a band other than 2.4 GHz, then disable EHT and
+downgrade to HE.
 
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.1.x - 6.12.x
+The primary case where this can happen is if the hardware disables
+puncturing using IEEE80211_HW_DISALLOW_PUNCTURING.
+
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250826202553.a6582f3abf57.Ic670429dc7127f68c818b4290d950ebfb5a0b9e1@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/mac80211/mlme.c            |    8 ++++++++
+ net/mac80211/tests/chan-mode.c |   30 +++++++++++++++++++++++++-----
+ 2 files changed, 33 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2292,11 +2292,13 @@ void amdgpu_vm_adjust_size(struct amdgpu
-  */
- long amdgpu_vm_wait_idle(struct amdgpu_vm *vm, long timeout)
- {
--	timeout = drm_sched_entity_flush(&vm->immediate, timeout);
-+	timeout = dma_resv_wait_timeout(vm->root.bo->tbo.base.resv,
-+					DMA_RESV_USAGE_BOOKKEEP,
-+					true, timeout);
- 	if (timeout <= 0)
- 		return timeout;
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -1193,6 +1193,14 @@ again:
+ 			     "required MCSes not supported, disabling EHT\n");
+ 	}
  
--	return drm_sched_entity_flush(&vm->delayed, timeout);
-+	return dma_fence_wait_timeout(vm->last_unlocked, true, timeout);
++	if (conn->mode >= IEEE80211_CONN_MODE_EHT &&
++	    channel->band != NL80211_BAND_2GHZ &&
++	    conn->bw_limit == IEEE80211_CONN_BW_LIMIT_40) {
++		conn->mode = IEEE80211_CONN_MODE_HE;
++		link_id_info(sdata, link_id,
++			     "required bandwidth not supported, disabling EHT\n");
++	}
++
+ 	/* the mode can only decrease, so this must terminate */
+ 	if (ap_mode != conn->mode) {
+ 		kfree(elems);
+--- a/net/mac80211/tests/chan-mode.c
++++ b/net/mac80211/tests/chan-mode.c
+@@ -2,7 +2,7 @@
+ /*
+  * KUnit tests for channel mode functions
+  *
+- * Copyright (C) 2024 Intel Corporation
++ * Copyright (C) 2024-2025 Intel Corporation
+  */
+ #include <net/cfg80211.h>
+ #include <kunit/test.h>
+@@ -28,6 +28,10 @@ static const struct determine_chan_mode_
+ 	u8 vht_basic_mcs_1_4, vht_basic_mcs_5_8;
+ 	u8 he_basic_mcs_1_4, he_basic_mcs_5_8;
+ 	u8 eht_mcs7_min_nss;
++	u16 eht_disabled_subchannels;
++	u8 eht_bw;
++	enum ieee80211_conn_bw_limit conn_bw_limit;
++	enum ieee80211_conn_bw_limit expected_bw_limit;
+ 	int error;
+ } determine_chan_mode_cases[] = {
+ 	{
+@@ -128,6 +132,14 @@ static const struct determine_chan_mode_
+ 		.conn_mode = IEEE80211_CONN_MODE_EHT,
+ 		.eht_mcs7_min_nss = 0x15,
+ 		.error = EINVAL,
++	}, {
++		.desc = "80 MHz EHT is downgraded to 40 MHz HE due to puncturing",
++		.conn_mode = IEEE80211_CONN_MODE_EHT,
++		.expected_mode = IEEE80211_CONN_MODE_HE,
++		.conn_bw_limit = IEEE80211_CONN_BW_LIMIT_80,
++		.expected_bw_limit = IEEE80211_CONN_BW_LIMIT_40,
++		.eht_disabled_subchannels = 0x08,
++		.eht_bw = IEEE80211_EHT_OPER_CHAN_WIDTH_80MHZ,
+ 	}
+ };
+ KUNIT_ARRAY_PARAM_DESC(determine_chan_mode, determine_chan_mode_cases, desc)
+@@ -138,7 +150,7 @@ static void test_determine_chan_mode(str
+ 	struct t_sdata *t_sdata = T_SDATA(test);
+ 	struct ieee80211_conn_settings conn = {
+ 		.mode = params->conn_mode,
+-		.bw_limit = IEEE80211_CONN_BW_LIMIT_20,
++		.bw_limit = params->conn_bw_limit,
+ 	};
+ 	struct cfg80211_bss cbss = {
+ 		.channel = &t_sdata->band_5ghz.channels[0],
+@@ -191,14 +203,21 @@ static void test_determine_chan_mode(str
+ 		0x7f, 0x01, 0x00, 0x88, 0x88, 0x88, 0x00, 0x00,
+ 		0x00,
+ 		/* EHT Operation */
+-		WLAN_EID_EXTENSION, 0x09, WLAN_EID_EXT_EHT_OPERATION,
+-		0x01, params->eht_mcs7_min_nss ? params->eht_mcs7_min_nss : 0x11,
+-		0x00, 0x00, 0x00, 0x00, 0x24, 0x00,
++		WLAN_EID_EXTENSION, 0x0b, WLAN_EID_EXT_EHT_OPERATION,
++		0x03, params->eht_mcs7_min_nss ? params->eht_mcs7_min_nss : 0x11,
++		0x00, 0x00, 0x00, params->eht_bw,
++		params->eht_bw == IEEE80211_EHT_OPER_CHAN_WIDTH_80MHZ ? 42 : 36,
++		0x00,
++		u16_get_bits(params->eht_disabled_subchannels, 0xff),
++		u16_get_bits(params->eht_disabled_subchannels, 0xff00),
+ 	};
+ 	struct ieee80211_chan_req chanreq = {};
+ 	struct cfg80211_chan_def ap_chandef = {};
+ 	struct ieee802_11_elems *elems;
+ 
++	/* To force EHT downgrade to HE on punctured 80 MHz downgraded to 40 MHz */
++	set_bit(IEEE80211_HW_DISALLOW_PUNCTURING, t_sdata->local.hw.flags);
++
+ 	if (params->strict)
+ 		set_bit(IEEE80211_HW_STRICT, t_sdata->local.hw.flags);
+ 	else
+@@ -237,6 +256,7 @@ static void test_determine_chan_mode(str
+ 	} else {
+ 		KUNIT_ASSERT_NOT_ERR_OR_NULL(test, elems);
+ 		KUNIT_ASSERT_EQ(test, conn.mode, params->expected_mode);
++		KUNIT_ASSERT_EQ(test, conn.bw_limit, params->expected_bw_limit);
+ 	}
  }
  
- static void amdgpu_vm_destroy_task_info(struct kref *kref)
 
 
 
