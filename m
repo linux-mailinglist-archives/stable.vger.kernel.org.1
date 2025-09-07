@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-178677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E78B47FA1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:40:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BCAB47DEA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EB27188F1C3
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:40:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2527189EB63
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CBF1A704B;
-	Sun,  7 Sep 2025 20:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A291F03FB;
+	Sun,  7 Sep 2025 20:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AeSyueWj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGAzi1us"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2B31DF246;
-	Sun,  7 Sep 2025 20:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E781AF0B6;
+	Sun,  7 Sep 2025 20:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277603; cv=none; b=Fw5RzBpEsBDs/Sqf4+4p020AZWR9ZPcL+N5eBX+vi7sVQyx1Mwi9KwMHnBjz5kuLNUAEjfu2t6zWkMNxTPRsu5hwCZVZwvUZxG2aQ3DrfDpmE5eLk9jRpSGyX2CzowFsOJX/0kg6aHF/csNL2y4sp5vtkZfShpHPf0XtIoznKuc=
+	t=1757276284; cv=none; b=jBTNej87mNC6DeRR7saOakb4rtPUVxgS21rlZ3LyzmRbppf05G7jut5ulGPuROthmCdW5epYfFPIeSCVJtLVUi30D+9D5PxrgNiyZ8kb8Ghwl9rTQH5q9jTxfoFIg5d/xUyjJldCm9bwA6jAMyp7MVlX7gMaarezUJKnef3NjWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277603; c=relaxed/simple;
-	bh=lLXH/5362AJzd4/7j3vuqB3ax9GyTlN3xoW9jJJo4LM=;
+	s=arc-20240116; t=1757276284; c=relaxed/simple;
+	bh=ZwkILo+7bANYFJVxpgv7xK4QYly9iWbCursW/EBjZ6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBcpSXaeP4E/RzQ8oDHTOKdZLi1mex8rEZVG/QvcWBnC/DXiUd/5aEgKEGXhIyrwDl24nUSG9v0573XAeNhpsYUm80J2hzPVmb75AIJ0tcxZEyoub1Yb+QsdEfmNC86M3enJC1UYIYHxUKKmnwiS6fUE5bXQ4dcfR2AHIHzz6ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AeSyueWj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908DFC4CEF0;
-	Sun,  7 Sep 2025 20:40:02 +0000 (UTC)
+	 MIME-Version; b=W8/FFLAGUkAcfp72kHIsmICSyTWLSPu4vyxQSUDlm2xOQOqBsIuVGTBoix7cc6Bl53igwqo5M4zPYVOqrSP/LxjsgqeTWCGZ9CENqCXOhNW/WjfAGieDulcpXLKiCn+KPp312PW5oZ77WIEvhSeYE9ELU/EsrTXTdjK1hIqqP6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGAzi1us; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D43FC4CEF0;
+	Sun,  7 Sep 2025 20:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277603;
-	bh=lLXH/5362AJzd4/7j3vuqB3ax9GyTlN3xoW9jJJo4LM=;
+	s=korg; t=1757276284;
+	bh=ZwkILo+7bANYFJVxpgv7xK4QYly9iWbCursW/EBjZ6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AeSyueWjZsN0uat33Kx72MVikVTy7+AybWIWi0hOEHgCyBuGlsLNw2bt0tzjSeQdl
-	 OMJS1UuNxy6KUq9fZgz7B2xZ0o/b+q3ZY10cuHiWfGWh6mD2xYJ8WNqSZ/5MSquuCk
-	 om7S6TdS23qwm1FmPGbz/Krye/kxLYKVtWaDTOs0=
+	b=TGAzi1usXX9yPE55PXNBsqZ3/UVyv+XP2N428RIL7+zPuCNag+UCfPwTuV3mMk/VC
+	 W0bhMHrp/bnYudXX2Rurgd0DMr9VkhFtXgOAHlzuE0YMWB9K/m09gVonxcDNFirknR
+	 KHFJ1WwlfZLtisEtg6aw5q8s00Xec+tStZcfMtPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nishanth Menon <nm@ti.com>,
-	Chintan Vankar <c-vankar@ti.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Li Qiong <liqiong@nfschina.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 064/183] net: ethernet: ti: am65-cpsw-nuss: Fix null pointer dereference for ndev
+Subject: [PATCH 6.1 054/104] mm/slub: avoid accessing metadata when pointer is invalid in object_err()
 Date: Sun,  7 Sep 2025 21:58:11 +0200
-Message-ID: <20250907195617.311541826@linuxfoundation.org>
+Message-ID: <20250907195609.086456590@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nishanth Menon <nm@ti.com>
+From: Li Qiong <liqiong@nfschina.com>
 
-[ Upstream commit a6099f263e1f408bcc7913c9df24b0677164fc5d ]
+[ Upstream commit b4efccec8d06ceb10a7d34d7b1c449c569d53770 ]
 
-In the TX completion packet stage of TI SoCs with CPSW2G instance, which
-has single external ethernet port, ndev is accessed without being
-initialized if no TX packets have been processed. It results into null
-pointer dereference, causing kernel to crash. Fix this by having a check
-on the number of TX packets which have been processed.
+object_err() reports details of an object for further debugging, such as
+the freelist pointer, redzone, etc. However, if the pointer is invalid,
+attempting to access object metadata can lead to a crash since it does
+not point to a valid object.
 
-Fixes: 9a369ae3d143 ("net: ethernet: ti: am65-cpsw: remove am65_cpsw_nuss_tx_compl_packets_2g()")
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Chintan Vankar <c-vankar@ti.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250829121051.2031832-1-c-vankar@ti.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+One known path to the crash is when alloc_consistency_checks()
+determines the pointer to the allocated object is invalid because of a
+freelist corruption, and calls object_err() to report it. The debug code
+should report and handle the corruption gracefully and not crash in the
+process.
+
+In case the pointer is NULL or check_valid_pointer() returns false for
+the pointer, only print the pointer value and skip accessing metadata.
+
+Fixes: 81819f0fc828 ("SLUB core")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Li Qiong <liqiong@nfschina.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/slub.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 231ca141331f5..dbdbc40109c51 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -1522,7 +1522,7 @@ static int am65_cpsw_nuss_tx_compl_packets(struct am65_cpsw_common *common,
- 		}
- 	}
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -927,7 +927,12 @@ static void object_err(struct kmem_cache
+ 		return;
  
--	if (single_port) {
-+	if (single_port && num_tx) {
- 		netif_txq = netdev_get_tx_queue(ndev, chn);
- 		netdev_tx_completed_queue(netif_txq, num_tx, total_bytes);
- 		am65_cpsw_nuss_tx_wake(tx_chn, ndev, netif_txq);
--- 
-2.50.1
-
+ 	slab_bug(s, "%s", reason);
+-	print_trailer(s, slab, object);
++	if (!object || !check_valid_pointer(s, slab, object)) {
++		print_slab_info(slab);
++		pr_err("Invalid pointer 0x%p\n", object);
++	} else {
++		print_trailer(s, slab, object);
++	}
+ 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
+ }
+ 
 
 
 
