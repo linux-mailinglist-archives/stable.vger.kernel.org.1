@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-178359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F5FAB47E58
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF538B47D7E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEE0C3C18F1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB4247A1D1D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C341F09BF;
-	Sun,  7 Sep 2025 20:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F2626E6FF;
+	Sun,  7 Sep 2025 20:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2nJl/6C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRipC7Fj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0E4189BB0;
-	Sun,  7 Sep 2025 20:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6C51B424F;
+	Sun,  7 Sep 2025 20:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276585; cv=none; b=PM5yynIksj0rSyb14yBLn4Sg4eydu+AHAYae7qrve7vlBvzvK+uGrOuu9q2sPrhhynzxDtUCa0B7eJibVrA9+WiqmEyBaYreGpQABAiXc1AcVUFzC09V6DnpCcoU5NuD4ILJqA9E3PtxOtGnf80BbLkXLuSCmPE+2/Da+bsqN+A=
+	t=1757275955; cv=none; b=mJM0pI4Wr5NWHzZ1E+8wHIybnZtonWUjjwySpBosREhshUHaUJUeKTRWyav0eT9tFBSPCXqlQLjX25zt1jxSzhF47ofcLw67w7QajzHqjIjk2a9LfU01DdBaXoKHQ842x42eLyIN+6vFvp90OvmV0eS9wth+FBNPKL7ppG7UlV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276585; c=relaxed/simple;
-	bh=rlglJNLRI7PXdaT/kfWAbBusYUuMQfP7m4iwYefB9m8=;
+	s=arc-20240116; t=1757275955; c=relaxed/simple;
+	bh=6t9gbSLkRkNe818WWzsrj5rrtal1VFgu8BZnoZnJsZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXqv2qO8Q4f4Znb7+TTe95TW5tM+FG7OhMzXPj/WXsThl2GiH2tfEgcXkk6qWUc2hVtxI2NY2CBB76efU6cM6aTTgQbPv9yMIxb4xd8OHO9P/0w+MQcuqfVZ/HUMsDbuwfoLkbgUkwAyQ/41auxfg9iLggdDipJ6Uhecdou91R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2nJl/6C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA58C4CEF0;
-	Sun,  7 Sep 2025 20:23:04 +0000 (UTC)
+	 MIME-Version; b=FQPc0K2a1ruk8PkmbODmbGxi/96MMXHfEPz0PGfqv2uu0xrOGgO1bfkX4Qze3EZu983E+OGVMQkKpTYRh0EnaFvX3E18OjU3JxcBa+an5nOrk3jzLjAAqhf1sjkCpt3OpeOmQWRWWuJ4p50lHeXELrbEWXOXlcGSV/pnQ+vK/ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRipC7Fj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42AB5C4CEF0;
+	Sun,  7 Sep 2025 20:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276585;
-	bh=rlglJNLRI7PXdaT/kfWAbBusYUuMQfP7m4iwYefB9m8=;
+	s=korg; t=1757275955;
+	bh=6t9gbSLkRkNe818WWzsrj5rrtal1VFgu8BZnoZnJsZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b2nJl/6Cn5G7wu362gYuEA7HdszD9hilDFoLKQ/y8r6pZwABJwOW/hMFrznl1x7cc
-	 aVuuzFHMwqFvSiEGtdl4WxBVUcPjCFreMbhpMLgW0up8vV5LVMkovJkFxLY8vGSiWw
-	 WCaWQG7HixMhbDxisriCCfMSPTdagKlylP1YU950=
+	b=jRipC7FjXkrsF4rv694XhjFJSzSMQifcgQECKo32F6dA6x1AE8kf0P2zGO0tXds/9
+	 m3eO8b8HfoLU8yHbCJp6u2Y1X9uHFfnksD/tjbKZrVdJ47ywS6IUJ4Acw8wcV1Eaz7
+	 Lq3wW7V6Z1K9K0IIKNlAOVyFYXH27rV3Wgjvq6Bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/121] net/smc: Remove validation of reserved bits in CLC Decline message
+Subject: [PATCH 5.15 18/64] wifi: cw1200: cap SSID length in cw1200_do_join()
 Date: Sun,  7 Sep 2025 21:58:00 +0200
-Message-ID: <20250907195610.952041260@linuxfoundation.org>
+Message-ID: <20250907195603.902418792@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit cc282f73bc0cbdf3ee7af2f2d3a2ef4e6b19242d ]
+[ Upstream commit f8f15f6742b8874e59c9c715d0af3474608310ad ]
 
-Currently SMC code is validating the reserved bits while parsing the incoming
-CLC decline message & when this validation fails, its treated as a protocol
-error. As a result, the SMC connection is terminated instead of falling back to
-TCP. As per RFC7609[1] specs we shouldn't be validating the reserved bits that
-is part of CLC message. This patch fixes this issue.
+If the ssidie[1] length is more that 32 it leads to memory corruption.
 
-CLC Decline message format can viewed here[2].
-
-[1] https://datatracker.ietf.org/doc/html/rfc7609#page-92
-[2] https://datatracker.ietf.org/doc/html/rfc7609#page-105
-
-Fixes: 8ade200c269f ("net/smc: add v2 format of CLC decline message")
-Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Link: https://patch.msgid.link/20250902082041.98996-1-mjambigi@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/e91fb43fcedc4893b604dfb973131661510901a7.1756456951.git.dan.carpenter@linaro.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_clc.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wireless/st/cw1200/sta.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index dbce904c03cf7..4f485b9b31b28 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -426,8 +426,6 @@ smc_clc_msg_decl_valid(struct smc_clc_msg_decline *dclc)
- {
- 	struct smc_clc_msg_hdr *hdr = &dclc->hdr;
- 
--	if (hdr->typev1 != SMC_TYPE_R && hdr->typev1 != SMC_TYPE_D)
--		return false;
- 	if (hdr->version == SMC_V1) {
- 		if (ntohs(hdr->length) != sizeof(struct smc_clc_msg_decline))
- 			return false;
+diff --git a/drivers/net/wireless/st/cw1200/sta.c b/drivers/net/wireless/st/cw1200/sta.c
+index 236022d4ae2a3..0f2d1ec34cd82 100644
+--- a/drivers/net/wireless/st/cw1200/sta.c
++++ b/drivers/net/wireless/st/cw1200/sta.c
+@@ -1289,7 +1289,7 @@ static void cw1200_do_join(struct cw1200_common *priv)
+ 		rcu_read_lock();
+ 		ssidie = ieee80211_bss_get_ie(bss, WLAN_EID_SSID);
+ 		if (ssidie) {
+-			join.ssid_len = ssidie[1];
++			join.ssid_len = min(ssidie[1], IEEE80211_MAX_SSID_LEN);
+ 			memcpy(join.ssid, &ssidie[2], join.ssid_len);
+ 		}
+ 		rcu_read_unlock();
 -- 
 2.50.1
 
