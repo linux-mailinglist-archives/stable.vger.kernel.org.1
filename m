@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-178522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA6DDB47F01
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:31:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBEBEB47ED0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:29:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72A6416C1C5
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:31:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E24893C2266
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A521DE8AF;
-	Sun,  7 Sep 2025 20:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15E12765C8;
+	Sun,  7 Sep 2025 20:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebbYDAbE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AN6aNeJu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1046715C158;
-	Sun,  7 Sep 2025 20:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4D626FA77;
+	Sun,  7 Sep 2025 20:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277105; cv=none; b=UoKBtJYr4dnAt0sGVhIN8APlj9N4rzribiPED+BGBZXYXgHviJHtXKfSmVOe5TXlrbIvKjeVLAR7Z0OkBM0EWZ6nOaJ+7ciJoDtTcIkVWYzuxnltkGKBrJg7RLmxvTVIfzwT2Wl8y/r4liyxRWmjqM0d6IsWPg0GBNikAnGY4Ac=
+	t=1757276947; cv=none; b=LWeGvrUEcyRdQrMi+BMPpUOEmf0HJM7HyVIwUW/9RiENzizj/PDbfaJWTX51wE+sU9eYwrh3rvN16z8fjx6sAAk9zr5douYjTn+4BFU7faUo+8fdfpsjKOTCXDR5Hkbq56w8zbhFqIij4xOCYnII+QeVQLwLPdYcj2wcwqO94Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277105; c=relaxed/simple;
-	bh=9YxmnxPiipSJLg0iURRI71r0c8ef35aaj44VUzHl62k=;
+	s=arc-20240116; t=1757276947; c=relaxed/simple;
+	bh=nbrU8vYZVyTMWZjsAZiQuu3QbpSLBPwd9ICqWXLELhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=afl6A8Eg1pUCirN/qij5NYIJafpRVVwnS5fEffXOlexwjoUpb1WZ3JXlH8hb1hpMb87IFTUzDV1R8w0JK1OYiawGQryzqjvC+J47V4FNXiDFsGacG+aJQ3+6r3tWEJwbFTVui6/g1B+7Bv/HxXVqOe9swEUPjSWr79Na0fIAXqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebbYDAbE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54237C4CEF0;
-	Sun,  7 Sep 2025 20:31:44 +0000 (UTC)
+	 MIME-Version; b=lLhOMpxXhjCkH7ckPvqgqW52MVIcUbJY6EC+rZFgH4f4M3j7GzSUcisv1K0K93T7UnJuOYADb2GEQGhvdtxoV4GjWJ5cWuymnwUhLnKcK0ffgC/DBjZ6iB8npEJ2eaqrbXkErJ6IYnsIAU7oqeE8FMzAtI55lRPkODpaFRGp18Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AN6aNeJu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6F4C4CEF9;
+	Sun,  7 Sep 2025 20:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277104;
-	bh=9YxmnxPiipSJLg0iURRI71r0c8ef35aaj44VUzHl62k=;
+	s=korg; t=1757276946;
+	bh=nbrU8vYZVyTMWZjsAZiQuu3QbpSLBPwd9ICqWXLELhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ebbYDAbEP7HmG4krNLCHATcRuVAgFwdfDK9S777mh2IVNJCTVr4DNe+W+BwSXQz98
-	 8Tb4uOMRNUakdfSheNChZ+/GZqFQsmv+irmktGZTL5spRy9z4p0SObIw3pU58W0+c1
-	 3bk7+aBGAtKnf+UFRu/sJ9f6CNPi9dV6xwl14Tjg=
+	b=AN6aNeJuObdHTmoCczhCclHPCgeUsyCJt+71DUKIaistrIvsjofeJXDdsZRIUp/ko
+	 TAqkoPzbEGroC+y12BnqrdaIu4wrwEWtZJZP6atH5U1rtg/5HKNtPCLNBEXbkhpZNc
+	 wyJMSCG1c6vPZWZM546BEhVXiygHMhs4lBlqhud8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanteng Si <siyanteng@cqsoftware.com.cn>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Paul Alvin <alvin.paulp@amd.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 030/175] LoongArch: vDSO: Remove -nostdlib complier flag
-Date: Sun,  7 Sep 2025 21:57:05 +0200
-Message-ID: <20250907195615.579280306@linuxfoundation.org>
+Subject: [PATCH 6.12 031/175] mmc: sdhci-of-arasan: Support for emmc hardware reset
+Date: Sun,  7 Sep 2025 21:57:06 +0200
+Message-ID: <20250907195615.601620547@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
 References: <20250907195614.892725141@linuxfoundation.org>
@@ -67,44 +67,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wentao Guan <guanwentao@uniontech.com>
+From: Paul Alvin <alvin.paulp@amd.com>
 
-[ Upstream commit d35ec48fa6c8fe0cfa4a03155109fec7677911d4 ]
+[ Upstream commit 11c7d665181c1879b0d5561102c3834ff14a5615 ]
 
-Since $(LD) is directly used, hence -nostdlib is unneeded, MIPS has
-removed this, we should remove it too.
+Add hw_reset callback to support emmc hardware reset, this callback get
+called from the mmc core only when "cap-mmc-hw-reset" property is
+defined in the DT.
 
-bdbf2038fbf4 ("MIPS: VDSO: remove -nostdlib compiler flag").
-
-In fact, other architectures also use $(LD) now.
-
-fe00e50b2db8 ("ARM: 8858/1: vdso: use $(LD) instead of $(CC) to link VDSO")
-691efbedc60d ("arm64: vdso: use $(LD) instead of $(CC) to link VDSO")
-2ff906994b6c ("MIPS: VDSO: Use $(LD) instead of $(CC) to link VDSO")
-2b2a25845d53 ("s390/vdso: Use $(LD) instead of $(CC) to link vDSO")
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Yanteng Si <siyanteng@cqsoftware.com.cn>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Paul Alvin <alvin.paulp@amd.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20241007095445.19340-1-alvin.paulp@amd.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: e251709aaddb ("mmc: sdhci-of-arasan: Ensure CD logic stabilization before power-up")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/vdso/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-of-arasan.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
-index cf6c41054396a..49af37f781bbe 100644
---- a/arch/loongarch/vdso/Makefile
-+++ b/arch/loongarch/vdso/Makefile
-@@ -36,7 +36,7 @@ endif
+diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
+index 5edd024347bd5..0cb05bdec34d5 100644
+--- a/drivers/mmc/host/sdhci-of-arasan.c
++++ b/drivers/mmc/host/sdhci-of-arasan.c
+@@ -76,6 +76,8 @@
+ #define FREQSEL_225M_200M		0x7
+ #define PHY_DLL_TIMEOUT_MS		100
  
- # VDSO linker flags.
- ldflags-y := -Bsymbolic --no-undefined -soname=linux-vdso.so.1 \
--	$(filter -E%,$(KBUILD_CFLAGS)) -nostdlib -shared --build-id -T
-+	$(filter -E%,$(KBUILD_CFLAGS)) -shared --build-id -T
++#define SDHCI_HW_RST_EN		BIT(4)
++
+ /* Default settings for ZynqMP Clock Phases */
+ #define ZYNQMP_ICLK_PHASE {0, 63, 63, 0, 63,  0,   0, 183, 54,  0, 0}
+ #define ZYNQMP_OCLK_PHASE {0, 72, 60, 0, 60, 72, 135, 48, 72, 135, 0}
+@@ -475,6 +477,21 @@ static void sdhci_arasan_reset(struct sdhci_host *host, u8 mask)
+ 	}
+ }
  
- #
- # Shared build commands.
++static void sdhci_arasan_hw_reset(struct sdhci_host *host)
++{
++	u8 reg;
++
++	reg = sdhci_readb(host, SDHCI_POWER_CONTROL);
++	reg |= SDHCI_HW_RST_EN;
++	sdhci_writeb(host, reg, SDHCI_POWER_CONTROL);
++	/* As per eMMC spec, minimum 1us is required but give it 2us for good measure */
++	usleep_range(2, 5);
++	reg &= ~SDHCI_HW_RST_EN;
++	sdhci_writeb(host, reg, SDHCI_POWER_CONTROL);
++	/* As per eMMC spec, minimum 200us is required but give it 300us for good measure */
++	usleep_range(300, 500);
++}
++
+ static int sdhci_arasan_voltage_switch(struct mmc_host *mmc,
+ 				       struct mmc_ios *ios)
+ {
+@@ -505,6 +522,7 @@ static const struct sdhci_ops sdhci_arasan_ops = {
+ 	.reset = sdhci_arasan_reset,
+ 	.set_uhs_signaling = sdhci_set_uhs_signaling,
+ 	.set_power = sdhci_set_power_and_bus_voltage,
++	.hw_reset = sdhci_arasan_hw_reset,
+ };
+ 
+ static u32 sdhci_arasan_cqhci_irq(struct sdhci_host *host, u32 intmask)
 -- 
 2.50.1
 
