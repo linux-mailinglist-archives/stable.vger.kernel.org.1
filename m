@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1B8FB47FDC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE184B47EA3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88D1D2007B6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 768CE17591A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6797321ADAE;
-	Sun,  7 Sep 2025 20:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CB31E1C1A;
+	Sun,  7 Sep 2025 20:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/CHLQqw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blPYhW+E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257F04315A;
-	Sun,  7 Sep 2025 20:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14860D528;
+	Sun,  7 Sep 2025 20:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277797; cv=none; b=I4lvikTxvHx6LpgIiEe97cv26UN2Wj7SSbI9gJm4WsZiJ3MkkT/enlMRbD54G21v6W5ncWY4MsMuRKVqGALk0ntkR3DRqz/U4jo4onyG1qn+JVfo74/A6Hy3wjPZBpIQ2BgR5qc2HhgFgtcmi4tR/1G9E+Wz2quIcjJ77Rpryvg=
+	t=1757276817; cv=none; b=fGZ94Kbu56nzGpkDMHduhzozswih3a6WbX7INv7nzSjHXwLr5PcP0NUq7ksafBF/rm7ucMfSgT4USI8dO2kELb2sVChGCl2mwUqw9TNKsnW3qSlkLtSLNwPKEtWpulcvYEuvt9wuceDMLp5eQLNH4aQOU7nnFXfbron/fvdpk5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277797; c=relaxed/simple;
-	bh=/LaBln+rZmxa2XQ3BPLHzBtB13i/OQu0Doh0WsWMKEU=;
+	s=arc-20240116; t=1757276817; c=relaxed/simple;
+	bh=de9RJlHZKonUIZ3IIz/xoxOBiuPAqVbXc2V89eD91Dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lfi6cf0L0Dkp3i3jDHbhaYAMmhSBum5r/hEE/1dcYW6UdUvHt6LvOZiPPoOIXr7xYyAxpHmatBXiE+/+K0FO0+uzipNeCF3ya61YbZle5N+jFE2TMBP9bhVWkgQJdqfHalBHIctuPJvNQ3lZPrSuEsDmRF0VuZHgTj+rOgYMasA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/CHLQqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A107C4CEF0;
-	Sun,  7 Sep 2025 20:43:16 +0000 (UTC)
+	 MIME-Version; b=lX9t6V8I/E7GPQJoRJWPT7M/4gWo5BI0oNQzfdKNmQPNOfnL499AI6vjlvUQtvvTMxyxThqTFsve+2f8seYqCqRdmM9+L/XtDKY1RXSrlmQe5Kj68ITg+rufT3/AouwSiegzVMQBaQGN47upv49JiGpEt+dM/r6r9LMOFgpRQQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blPYhW+E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C618C4CEF0;
+	Sun,  7 Sep 2025 20:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277797;
-	bh=/LaBln+rZmxa2XQ3BPLHzBtB13i/OQu0Doh0WsWMKEU=;
+	s=korg; t=1757276817;
+	bh=de9RJlHZKonUIZ3IIz/xoxOBiuPAqVbXc2V89eD91Dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q/CHLQqw0oVw/+lYGgm9gM7dd6/z1oCLOPDZwLajJRxEqdGIoWdv+MIx9+PTv4K8y
-	 rQPowOLtym/Xrj3H84HtW46bTY4FSZAWbENBeM5G2Hr/V+jXaxgRNkAz8s6rB4tsxg
-	 3LY4xB6HNGJ2bfwduhGVcPpjB2QYzJg2ardBd/6w=
+	b=blPYhW+EA+CghQvE7lJy68c4AByiaCLBR1ilbyYHbE/k8hPWxOjLyd9mk8ci1U/E+
+	 PMNKdkpSfaV1fDjeB3Gxy3aXz38EPuYdrNPkzPDxdynEmHq4pqrAoNgf+ndeaeCzvE
+	 dXpJc1Xq7sgnvW1xw0/m+TDlcUrhjdLwxeRlu/Qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	shaoyun.Liu@amd.com,
-	"Shaoyun.liu" <Shaoyun.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.16 127/183] drm/amdgpu/mes11: make MES_MISC_OP_CHANGE_CONFIG failure non-fatal
-Date: Sun,  7 Sep 2025 21:59:14 +0200
-Message-ID: <20250907195618.810276823@linuxfoundation.org>
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Xi Ruoyao <xry111@xry111.site>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 119/121] cpufreq: intel_pstate: Check turbo_is_disabled() in store_no_turbo()
+Date: Sun,  7 Sep 2025 21:59:15 +0200
+Message-ID: <20250907195612.904297654@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 5171848bdfb8bf87f38331d3f8c0fd5e2b676d3e upstream.
+[ Upstream commit 350cbb5d2f676bff22c49e5e81764c3b8da342a9 ]
 
-If the firmware is too old, just warn and return success.
+After recent changes in intel_pstate, global.turbo_disabled is only set
+at the initialization time and never changed.  However, it turns out
+that on some systems the "turbo disabled" bit in MSR_IA32_MISC_ENABLE,
+the initial state of which is reflected by global.turbo_disabled, can be
+flipped later and there should be a way to take that into account (other
+than checking that MSR every time the driver runs which is costly and
+useless overhead on the vast majority of systems).
 
-Fixes: 27b791514789 ("drm/amdgpu/mes: keep enforce isolation up to date")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4414
-Cc: shaoyun.Liu@amd.com
-Reviewed-by: Shaoyun.liu <Shaoyun.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9f28af76fab0948b59673f69c10aeec47de11c60)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For this purpose, notice that before the changes in question,
+store_no_turbo() contained a turbo_is_disabled() check that was used
+for updating global.turbo_disabled if the "turbo disabled" bit in
+MSR_IA32_MISC_ENABLE had been flipped and that functionality can be
+restored.  Then, users will be able to reset global.turbo_disabled
+by writing 0 to no_turbo which used to work before on systems with
+flipping "turbo disabled" bit.
+
+This guarantees the driver state to remain in sync, but READ_ONCE()
+annotations need to be added in two places where global.turbo_disabled
+is accessed locklessly, so modify the driver to make that happen.
+
+Fixes: 0940f1a8011f ("cpufreq: intel_pstate: Do not update global.turbo_disabled after initialization")
+Closes: https://lore.kernel.org/linux-pm/bf3ebf1571a4788e97daf861eb493c12d42639a3.camel@xry111.site
+Suggested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Reported-by: Xi Ruoyao <xry111@xry111.site>
+Tested-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/cpufreq/intel_pstate.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -641,8 +641,9 @@ static int mes_v11_0_misc_op(struct amdg
- 		break;
- 	case MES_MISC_OP_CHANGE_CONFIG:
- 		if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) < 0x63) {
--			dev_err(mes->adev->dev, "MES FW version must be larger than 0x63 to support limit single process feature.\n");
--			return -EINVAL;
-+			dev_warn_once(mes->adev->dev,
-+				      "MES FW version must be larger than 0x63 to support limit single process feature.\n");
-+			return 0;
- 		}
- 		misc_pkt.opcode = MESAPI_MISC__CHANGE_CONFIG;
- 		misc_pkt.change_config.opcode =
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 05aae7e6da157..ed782c0b48af2 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -1288,12 +1288,17 @@ static ssize_t store_no_turbo(struct kobject *a, struct kobj_attribute *b,
+ 
+ 	no_turbo = !!clamp_t(int, input, 0, 1);
+ 
+-	if (no_turbo == global.no_turbo)
+-		goto unlock_driver;
+-
+-	if (global.turbo_disabled) {
+-		pr_notice_once("Turbo disabled by BIOS or unavailable on processor\n");
++	WRITE_ONCE(global.turbo_disabled, turbo_is_disabled());
++	if (global.turbo_disabled && !no_turbo) {
++		pr_notice("Turbo disabled by BIOS or unavailable on processor\n");
+ 		count = -EPERM;
++		if (global.no_turbo)
++			goto unlock_driver;
++		else
++			no_turbo = 1;
++	}
++
++	if (no_turbo == global.no_turbo) {
+ 		goto unlock_driver;
+ 	}
+ 
+@@ -1766,7 +1771,7 @@ static u64 atom_get_val(struct cpudata *cpudata, int pstate)
+ 	u32 vid;
+ 
+ 	val = (u64)pstate << 8;
+-	if (READ_ONCE(global.no_turbo) && !global.turbo_disabled)
++	if (READ_ONCE(global.no_turbo) && !READ_ONCE(global.turbo_disabled))
+ 		val |= (u64)1 << 32;
+ 
+ 	vid_fp = cpudata->vid.min + mul_fp(
+@@ -1931,7 +1936,7 @@ static u64 core_get_val(struct cpudata *cpudata, int pstate)
+ 	u64 val;
+ 
+ 	val = (u64)pstate << 8;
+-	if (READ_ONCE(global.no_turbo) && !global.turbo_disabled)
++	if (READ_ONCE(global.no_turbo) && !READ_ONCE(global.turbo_disabled))
+ 		val |= (u64)1 << 32;
+ 
+ 	return val;
+-- 
+2.51.0
+
 
 
 
