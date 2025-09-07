@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-178776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89FDFB48004
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:45:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82AC0B47E9C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444373AE588
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:45:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A9B9167CF9
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F86A212560;
-	Sun,  7 Sep 2025 20:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1660E1D88D0;
+	Sun,  7 Sep 2025 20:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDwPbMYz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJ/Lpj0/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB8C7E107;
-	Sun,  7 Sep 2025 20:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C989C17BB21;
+	Sun,  7 Sep 2025 20:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277922; cv=none; b=tromoW+odOtOy059oS8dva2tsiFJagLXVJMNyjrk0IXeH3xF42dPjmcs6DIu8VQeUm5KFcZofgWTt83DELVhDB1XWog7QfcW/t4ahLdYD9WFFMJZSPaFDeEqWqWkKOmeCV0+/ERQT+0oQl+diWsIT64OggeugpdYXpV+yl9DgQw=
+	t=1757276794; cv=none; b=XQTjkTIqNtS1JkpfUQo0noTtOlc98ySqJ4MePic07xp1tOT6NHuKjRZla6+5H2/wyjnV8OBkaQCMefgtjQD4ULMaYSvhwNd2YjCvy+BaJi5x/Uva84XLNO5F68VBdN0F/4v5htqEPxeqYRA/1T8HDseIQw+1HusYpwbz5KBwlO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277922; c=relaxed/simple;
-	bh=fuEzeCrPhVCCyWrAmPUtXMkKmbU9d2dnnxKrFr+d3oA=;
+	s=arc-20240116; t=1757276794; c=relaxed/simple;
+	bh=gf12MweqRvaG41qjwBk/7KI/+7bY6ccMdv9vXzx+GjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t8YGj5Qr6yemitDu0nxqtNKdnr4hrxvbodwCENcUdWodacdn9z/AYUs9+eJ2tgkJccqOe/ul2MKeVV3eyuptqsP1ZdMPODbzWuoLZopv5QH1/GSY1axwEA8jHfFiT+dPXbFJhYVbjQimBIoInDSGY7a6OtBKKMIz8Fv2jDX5pfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDwPbMYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D61C4CEF0;
-	Sun,  7 Sep 2025 20:45:21 +0000 (UTC)
+	 MIME-Version; b=mmtxxpCxUs6Bv1Si7Ozid+m0+GUhuVVQ2QyRJYafyoAF12nv70VbnbYep1p51M/9JUh6lnmWIEBS8NfLPG0AkivruMAX5EYQQJjVCOBq8opAzedwnHB9SGbe6cJv+612mMVGUa6AN8FLAJiN2UAkNwPwLnAXZpLITZwty6G/aR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJ/Lpj0/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242ACC4CEF0;
+	Sun,  7 Sep 2025 20:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277921;
-	bh=fuEzeCrPhVCCyWrAmPUtXMkKmbU9d2dnnxKrFr+d3oA=;
+	s=korg; t=1757276794;
+	bh=gf12MweqRvaG41qjwBk/7KI/+7bY6ccMdv9vXzx+GjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDwPbMYzQRdIWzv5D9gZnp8J/d6r+gWHHy2itRTqsdWD6UDQXVZ2vt1QJ0IeJIkVt
-	 2pka4eO8R4zpYDLNf4/0EaGpSb0LNFiZ8lTKu+YYrXhbIFBWt2xb49MpgnbirN9HcZ
-	 Yt04avB+gCcaP3I6WP6VW3GxX44Cyzv8CMmcMYS0=
+	b=wJ/Lpj0/Gz5YtD8P01OQG/NyJVNVzZueymuP1jgzO0QwQGFgQ3jLbN+qJGUl0E/fB
+	 KY5Ihwd7g7KtCZ19GoNkXlBKCm8/J/SjXwBCA0wzOENB2h86wGX/uIEufrUY1FD5e8
+	 fB4aRd7/JjpKRxsMJAIIworfmaiZ2TaQKR3P2cUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.16 121/183] wifi: mt76: mt7925: fix the wrong bss cleanup for SAP
-Date: Sun,  7 Sep 2025 21:59:08 +0200
-Message-ID: <20250907195618.665892806@linuxfoundation.org>
+	Zhang Jiao <zhangjiao2@cmss.chinamobile.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 113/121] tools: gpio: remove the include directory on make clean
+Date: Sun,  7 Sep 2025 21:59:09 +0200
+Message-ID: <20250907195612.747150157@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 
-commit 55424e7b9eeb141d9c8d8a8740ee131c28490425 upstream.
+[ Upstream commit ed42d80f3bae89592fbb2ffaf8b6b2e720d53f6a ]
 
-When in SAP mode, if a STA disconnect, the SAP's BSS
-should not be cleared.
+Remove the generated include directory when running make clean.
 
-Fixes: 0ebb60da8416 ("wifi: mt76: mt7925: adjust rm BSS flow to prevent next connection failure")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250728052612.39751-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8674cea84dc6 ("tools/gpio: move to tools buildsystem")
+Signed-off-by: Zhang Jiao <zhangjiao2@cmss.chinamobile.com>
+Link: https://lore.kernel.org/r/20250903063621.2424-1-zhangjiao2@cmss.chinamobile.com
+[Bartosz: add Fixes tag, improve the commit message]
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c |    3 +++
- 1 file changed, 3 insertions(+)
+ tools/gpio/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1191,6 +1191,9 @@ mt7925_mac_sta_remove_links(struct mt792
- 		struct mt792x_bss_conf *mconf;
- 		struct mt792x_link_sta *mlink;
+diff --git a/tools/gpio/Makefile b/tools/gpio/Makefile
+index ed565eb52275f..342e056c8c665 100644
+--- a/tools/gpio/Makefile
++++ b/tools/gpio/Makefile
+@@ -77,7 +77,7 @@ $(OUTPUT)gpio-watch: $(GPIO_WATCH_IN)
  
-+		if (vif->type == NL80211_IFTYPE_AP)
-+			break;
-+
- 		link_sta = mt792x_sta_to_link_sta(vif, sta, link_id);
- 		if (!link_sta)
- 			continue;
+ clean:
+ 	rm -f $(ALL_PROGRAMS)
+-	rm -f $(OUTPUT)include/linux/gpio.h
++	rm -rf $(OUTPUT)include
+ 	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete -o -name '\.*.cmd' -delete
+ 
+ install: $(ALL_PROGRAMS)
+-- 
+2.51.0
+
 
 
 
