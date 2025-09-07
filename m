@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-178332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B2EB47E3A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:21:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8AFB47F67
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E6EC3C1643
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9E28189D872
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC58320E00B;
-	Sun,  7 Sep 2025 20:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7CD1F63CD;
+	Sun,  7 Sep 2025 20:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wu+8xxZp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzDjmgrC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B10E189BB0;
-	Sun,  7 Sep 2025 20:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7334315A;
+	Sun,  7 Sep 2025 20:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276500; cv=none; b=Z3kUe8M1qC80J28ZV1Ry4qHJ/J5yEsR+gue+QluYOqwau/d70Ssy8ZSLYIlFPUvdWBL3a/yiWT/NzjeMjqihCqZpCA8HAv20imBkjSUO4/W+iO626SyxwhGNVjENtgSQk1iR72rm6W0UO6fEPZmmInNfb7oe45VXN6//vFABRR0=
+	t=1757277423; cv=none; b=nA/DM4PchjbIhLN/oennP/9BXuNbFzxE1IBpYmhQkEQpHo2BNFeUtUd/5Gp0/4dzzfsDXEzEk1sIaTsFF3ZqbuDeqhf6C0Gl9INIwTkFT7YGGMqECfn62ROwob7g7jgo7lMbwsEOLyy/rnxG17w7onTbdPdvw/nR0j6uGAw82AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276500; c=relaxed/simple;
-	bh=t+R5QBuUHxk2UnNSmdxUsS4KekTvCZa28cUgRQi4VJQ=;
+	s=arc-20240116; t=1757277423; c=relaxed/simple;
+	bh=wEC4+jCS7mmC8v4P31DVukKeAPg8Hsf+2y9tQ3nxfdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKx6j8q5pkGBMgiXR/TUvE4KdgbAim6mKfi08ldeZ0+j1h7y1lxKaQ92JtzjVSBPbeENhEu4+qG5tAq/E9Y4MOMUM/E6roonHco1fbHi50N+BH4ACDdjw0zy9MQGDcvQHaswxjZcrhKoVDgdwHx3LeisQ2hxIKKwN9/1fHNzHYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wu+8xxZp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DEFC4CEF0;
-	Sun,  7 Sep 2025 20:21:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PcxqOQ45WtbOnzbibTGs7CUmCT27paNP5ojLjKYnv0esttDGKde8SMl/Ux44YXH7j0eq9LiR8yfMH42g0i593JKUVJtoSEvk7OMA1Of9JOrpX/1nc5DPaatR7nJR04/dTejPV//I99uwoUBF8bklaR9G8zL7gndK4jhjBxu7UTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzDjmgrC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F67C4CEF0;
+	Sun,  7 Sep 2025 20:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276500;
-	bh=t+R5QBuUHxk2UnNSmdxUsS4KekTvCZa28cUgRQi4VJQ=;
+	s=korg; t=1757277423;
+	bh=wEC4+jCS7mmC8v4P31DVukKeAPg8Hsf+2y9tQ3nxfdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wu+8xxZpipFboDMvm45Hoxdc2dHDDIvCOWaTCUwsmvhBaevz36suU/ccMzpZXfURY
-	 4RYUZpHakq2iQgXNaCxWNsS0T5sUTC61i+iMtcfg5Wya4moEzxMoYhZbxi+YmNsxz7
-	 T5iCW/5z4YX54sTf2PibuudK4doH46lsbrO0xdXA=
+	b=PzDjmgrCXL+Pj4tffGA9m8EM6ZmUsLlWv7pFJ7sS27PGjpCZJwjjSmkwSlbbdd0Jh
+	 07a62JPL8itJVbWU9TdWGFSI2h/+RVVB3CRA4Yif68N3ugoEj8US6h2JRKZzTdXvcL
+	 AwsdlpulEd6Kyw5zpFts37PoR5jm52R07SpxWevI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 002/121] bpf: Move cgroup iterator helpers to bpf.h
+Subject: [PATCH 6.16 011/183] drm/amd/display: Dont warn when missing DCE encoder caps
 Date: Sun,  7 Sep 2025 21:57:18 +0200
-Message-ID: <20250907195609.879512593@linuxfoundation.org>
+Message-ID: <20250907195616.062042512@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 9621e60f59eae87eb9ffe88d90f24f391a1ef0f0 ]
+[ Upstream commit 8246147f1fbaed522b8bcc02ca34e4260747dcfb ]
 
-Move them into bpf.h given we also need them in core code.
+On some GPUs the VBIOS just doesn't have encoder caps,
+or maybe not for every encoder.
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20250730234733.530041-3-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: abad3d0bad72 ("bpf: Fix oob access in cgroup local storage")
+This isn't really a problem and it's handled well,
+so let's not litter the logs with it.
+
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 33e0227ee96e62d034781e91f215e32fd0b1d512)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf-cgroup.h |  5 -----
- include/linux/bpf.h        | 22 ++++++++++++++--------
- 2 files changed, 14 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
-index 2331cd8174fe3..684c4822f76a3 100644
---- a/include/linux/bpf-cgroup.h
-+++ b/include/linux/bpf-cgroup.h
-@@ -72,9 +72,6 @@ to_cgroup_bpf_attach_type(enum bpf_attach_type attach_type)
- extern struct static_key_false cgroup_bpf_enabled_key[MAX_CGROUP_BPF_ATTACH_TYPE];
- #define cgroup_bpf_enabled(atype) static_branch_unlikely(&cgroup_bpf_enabled_key[atype])
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+index 4a9d07c31bc5b..0c50fe266c8a1 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+@@ -896,13 +896,13 @@ void dce110_link_encoder_construct(
+ 						enc110->base.id, &bp_cap_info);
  
--#define for_each_cgroup_storage_type(stype) \
--	for (stype = 0; stype < MAX_BPF_CGROUP_STORAGE_TYPE; stype++)
--
- struct bpf_cgroup_storage_map;
+ 	/* Override features with DCE-specific values */
+-	if (BP_RESULT_OK == result) {
++	if (result == BP_RESULT_OK) {
+ 		enc110->base.features.flags.bits.IS_HBR2_CAPABLE =
+ 				bp_cap_info.DP_HBR2_EN;
+ 		enc110->base.features.flags.bits.IS_HBR3_CAPABLE =
+ 				bp_cap_info.DP_HBR3_EN;
+ 		enc110->base.features.flags.bits.HDMI_6GB_EN = bp_cap_info.HDMI_6GB_EN;
+-	} else {
++	} else if (result != BP_RESULT_NORECORD) {
+ 		DC_LOG_WARNING("%s: Failed to get encoder_cap_info from VBIOS with error code %d!\n",
+ 				__func__,
+ 				result);
+@@ -1798,13 +1798,13 @@ void dce60_link_encoder_construct(
+ 						enc110->base.id, &bp_cap_info);
  
- struct bpf_storage_buffer {
-@@ -500,8 +497,6 @@ static inline int bpf_percpu_cgroup_storage_update(struct bpf_map *map,
- #define BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock, level, optname, optval, optlen, \
- 				       kernel_optval) ({ 0; })
- 
--#define for_each_cgroup_storage_type(stype) for (; false; )
--
- #endif /* CONFIG_CGROUP_BPF */
- 
- #endif /* _BPF_CGROUP_H */
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 0a097087f0a7c..730e692e002ff 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -194,6 +194,20 @@ enum btf_field_type {
- 	BPF_REFCOUNT   = (1 << 8),
- };
- 
-+enum bpf_cgroup_storage_type {
-+	BPF_CGROUP_STORAGE_SHARED,
-+	BPF_CGROUP_STORAGE_PERCPU,
-+	__BPF_CGROUP_STORAGE_MAX
-+#define MAX_BPF_CGROUP_STORAGE_TYPE __BPF_CGROUP_STORAGE_MAX
-+};
-+
-+#ifdef CONFIG_CGROUP_BPF
-+# define for_each_cgroup_storage_type(stype) \
-+	for (stype = 0; stype < MAX_BPF_CGROUP_STORAGE_TYPE; stype++)
-+#else
-+# define for_each_cgroup_storage_type(stype) for (; false; )
-+#endif /* CONFIG_CGROUP_BPF */
-+
- typedef void (*btf_dtor_kfunc_t)(void *);
- 
- struct btf_field_kptr {
-@@ -995,14 +1009,6 @@ struct bpf_prog_offload {
- 	u32			jited_len;
- };
- 
--enum bpf_cgroup_storage_type {
--	BPF_CGROUP_STORAGE_SHARED,
--	BPF_CGROUP_STORAGE_PERCPU,
--	__BPF_CGROUP_STORAGE_MAX
--};
--
--#define MAX_BPF_CGROUP_STORAGE_TYPE __BPF_CGROUP_STORAGE_MAX
--
- /* The longest tracepoint has 12 args.
-  * See include/trace/bpf_probe.h
-  */
+ 	/* Override features with DCE-specific values */
+-	if (BP_RESULT_OK == result) {
++	if (result == BP_RESULT_OK) {
+ 		enc110->base.features.flags.bits.IS_HBR2_CAPABLE =
+ 				bp_cap_info.DP_HBR2_EN;
+ 		enc110->base.features.flags.bits.IS_HBR3_CAPABLE =
+ 				bp_cap_info.DP_HBR3_EN;
+ 		enc110->base.features.flags.bits.HDMI_6GB_EN = bp_cap_info.HDMI_6GB_EN;
+-	} else {
++	} else if (result != BP_RESULT_NORECORD) {
+ 		DC_LOG_WARNING("%s: Failed to get encoder_cap_info from VBIOS with error code %d!\n",
+ 				__func__,
+ 				result);
 -- 
 2.50.1
 
