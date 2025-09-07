@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D570FB47DF7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6915B47D33
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4B37189ED1A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E134A189A7EE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126F61B424F;
-	Sun,  7 Sep 2025 20:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF48F29B77E;
+	Sun,  7 Sep 2025 20:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJgOGwsZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfIH4TDQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37E214BFA2;
-	Sun,  7 Sep 2025 20:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C59527F754;
+	Sun,  7 Sep 2025 20:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276325; cv=none; b=IaI3+AJNoMujBZLncYiUa4+OKZVgoiNiyg6D5j/R1cXOe527Yfqz1Is/jWBL/OIzq5IQBvqT9GHeN1tlHwlYOL9leM7Tu6SCp5IT90iIf0mNNMmE3WDyjueEptw5LSgct6ZHvwHFBBwTQ/fiEn9hyrVAGkNPHTsUqLvAXtlle84=
+	t=1757275725; cv=none; b=ar8s70eY/ZfRi2jf7HtAzZ75uxdhiV+SDLv6iOO4MEaBUl7o5XPNELn1hB8+5HgidhZa1IbUyzHnxH9FJmuYFJjBo//f/+zAvDTsfj/sWkukegWrkVenE4khAO8QNK7iRWqNJpExMLvzLJa4ywXAsfs24+0vEt5bGLmc0+69d7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276325; c=relaxed/simple;
-	bh=6EnJGBPK+R02n5bwgF9uGq/JZEMXKjhGXTF0chUD9DY=;
+	s=arc-20240116; t=1757275725; c=relaxed/simple;
+	bh=QPs10Z9EsajfY40m4yWhbT1M/hFhdc2bN9//1oOSmQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgwHuHM12/hE8dYEboNPXk9GQpyeIQIET45XSemeT8ymr5aaBGl7ar2fNscSsPTW2HQ9JpFT11tWT/ag8eqv9BxmEsG6KP1z1gaiKUrMpMtV2khPjqpdlEG59HYWKol4UsHeAipLuS9j6votjy6i8BjMYEm7BBYMrkyU31nkclk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJgOGwsZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409DBC4CEF0;
-	Sun,  7 Sep 2025 20:18:45 +0000 (UTC)
+	 MIME-Version; b=DVWrHOY9skqYxYecYR4L5VssyENuE56o2wwzU4NFK75KaYBsxPX2tV5w5v2wFOI0OqUpCE1MgU0AI5WXks13QzkrF/McdGSeMBh5qE4j9du8qVpUy9nkMHshdK0p/fD/dDE5TS/WVbyJf2oV0M339rVGTJROyNb24Xnk4HGauLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfIH4TDQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4054C4CEF0;
+	Sun,  7 Sep 2025 20:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276325;
-	bh=6EnJGBPK+R02n5bwgF9uGq/JZEMXKjhGXTF0chUD9DY=;
+	s=korg; t=1757275725;
+	bh=QPs10Z9EsajfY40m4yWhbT1M/hFhdc2bN9//1oOSmQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJgOGwsZSoAW6vBW5PqQcz8NGaTDxr6dmMbyvr6z5Up80MRfre6N4rxfVn3ISs1uO
-	 rodvUBvDZRHf97KXSVYPhx4ylSrVSt0L595Vz2gmkLueHwHgmKkLlSONYd8x0vXUe4
-	 +MCGDBsHTCPfT3l0ESJaSFb78mYNv5n77PZQ8JsU=
+	b=dfIH4TDQt/2zkbvv1aXD6uB7sRVGbaoDpYY+OMPhbamzZKatqB6N6syaHxQWyW3gn
+	 oh6KYrA8UNs2VPRlOdlfe4cKKMvt9yMJRDkQtsy+pS4hnPc5zvfnUUifiLlgAE4MT3
+	 f0F5Tnl/b8ekAYMhSOFSSiX6Z4uz9BEo3kFtABQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiufei Xue <jiufei.xue@samsung.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/104] fs: writeback: fix use-after-free in __mark_inode_dirty()
+Subject: [PATCH 5.10 08/52] mISDN: Fix memory leak in dsp_hwec_enable()
 Date: Sun,  7 Sep 2025 21:57:28 +0200
-Message-ID: <20250907195607.968720276@linuxfoundation.org>
+Message-ID: <20250907195602.217382097@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiufei Xue <jiufei.xue@samsung.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit d02d2c98d25793902f65803ab853b592c7a96b29 ]
+[ Upstream commit 0704a3da7ce50f972e898bbda88d2692a22922d9 ]
 
-An use-after-free issue occurred when __mark_inode_dirty() get the
-bdi_writeback that was in the progress of switching.
+dsp_hwec_enable() allocates dup pointer by kstrdup(arg),
+but then it updates dup variable by strsep(&dup, ",").
+As a result when it calls kfree(dup), the dup variable may be
+a modified pointer that no longer points to the original allocated
+memory, causing a memory leak.
 
-CPU: 1 PID: 562 Comm: systemd-random- Not tainted 6.6.56-gb4403bd46a8e #1
-......
-pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : __mark_inode_dirty+0x124/0x418
-lr : __mark_inode_dirty+0x118/0x418
-sp : ffffffc08c9dbbc0
-........
-Call trace:
- __mark_inode_dirty+0x124/0x418
- generic_update_time+0x4c/0x60
- file_modified+0xcc/0xd0
- ext4_buffered_write_iter+0x58/0x124
- ext4_file_write_iter+0x54/0x704
- vfs_write+0x1c0/0x308
- ksys_write+0x74/0x10c
- __arm64_sys_write+0x1c/0x28
- invoke_syscall+0x48/0x114
- el0_svc_common.constprop.0+0xc0/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x40/0xe4
- el0t_64_sync_handler+0x120/0x12c
- el0t_64_sync+0x194/0x198
+The issue is the same pattern as fixed in commit c6a502c22999
+("mISDN: Fix memory leak in dsp_pipeline_build()").
 
-Root cause is:
-
-systemd-random-seed                         kworker
-----------------------------------------------------------------------
-___mark_inode_dirty                     inode_switch_wbs_work_fn
-
-  spin_lock(&inode->i_lock);
-  inode_attach_wb
-  locked_inode_to_wb_and_lock_list
-     get inode->i_wb
-     spin_unlock(&inode->i_lock);
-     spin_lock(&wb->list_lock)
-  spin_lock(&inode->i_lock)
-  inode_io_list_move_locked
-  spin_unlock(&wb->list_lock)
-  spin_unlock(&inode->i_lock)
-                                    spin_lock(&old_wb->list_lock)
-                                      inode_do_switch_wbs
-                                        spin_lock(&inode->i_lock)
-                                        inode->i_wb = new_wb
-                                        spin_unlock(&inode->i_lock)
-                                    spin_unlock(&old_wb->list_lock)
-                                    wb_put_many(old_wb, nr_switched)
-                                      cgwb_release
-                                      old wb released
-  wb_wakeup_delayed() accesses wb,
-  then trigger the use-after-free
-  issue
-
-Fix this race condition by holding inode spinlock until
-wb_wakeup_delayed() finished.
-
-Signed-off-by: Jiufei Xue <jiufei.xue@samsung.com>
-Link: https://lore.kernel.org/20250728100715.3863241-1-jiufei.xue@samsung.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 9a4381618262 ("mISDN: Remove VLAs")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250828081457.36061-1-linmq006@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fs-writeback.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/isdn/mISDN/dsp_hwec.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index be2d329843d44..41f8ae8a416fb 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2514,10 +2514,6 @@ void __mark_inode_dirty(struct inode *inode, int flags)
- 			wakeup_bdi = inode_io_list_move_locked(inode, wb,
- 							       dirty_list);
+diff --git a/drivers/isdn/mISDN/dsp_hwec.c b/drivers/isdn/mISDN/dsp_hwec.c
+index 0b3f29195330a..0cd216e28f009 100644
+--- a/drivers/isdn/mISDN/dsp_hwec.c
++++ b/drivers/isdn/mISDN/dsp_hwec.c
+@@ -51,14 +51,14 @@ void dsp_hwec_enable(struct dsp *dsp, const char *arg)
+ 		goto _do;
  
--			spin_unlock(&wb->list_lock);
--			spin_unlock(&inode->i_lock);
--			trace_writeback_dirty_inode_enqueue(inode);
--
- 			/*
- 			 * If this is the first dirty inode for this bdi,
- 			 * we have to wake-up the corresponding bdi thread
-@@ -2527,6 +2523,11 @@ void __mark_inode_dirty(struct inode *inode, int flags)
- 			if (wakeup_bdi &&
- 			    (wb->bdi->capabilities & BDI_CAP_WRITEBACK))
- 				wb_wakeup_delayed(wb);
-+
-+			spin_unlock(&wb->list_lock);
-+			spin_unlock(&inode->i_lock);
-+			trace_writeback_dirty_inode_enqueue(inode);
-+
+ 	{
+-		char *dup, *tok, *name, *val;
++		char *dup, *next, *tok, *name, *val;
+ 		int tmp;
+ 
+-		dup = kstrdup(arg, GFP_ATOMIC);
++		dup = next = kstrdup(arg, GFP_ATOMIC);
+ 		if (!dup)
  			return;
- 		}
- 	}
+ 
+-		while ((tok = strsep(&dup, ","))) {
++		while ((tok = strsep(&next, ","))) {
+ 			if (!strlen(tok))
+ 				continue;
+ 			name = strsep(&tok, "=");
 -- 
 2.50.1
 
