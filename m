@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63538B47EF0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B4EFB47DC8
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C17617EE9B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:30:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3A96189E616
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9BB1F63CD;
-	Sun,  7 Sep 2025 20:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664FE1AF0B6;
+	Sun,  7 Sep 2025 20:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BH2T1H3A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FD6PH6vt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F1715C158;
-	Sun,  7 Sep 2025 20:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2219B14BFA2;
+	Sun,  7 Sep 2025 20:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277048; cv=none; b=JFAxKhNxd7nxSPiJTKCDhoIna/erq4PkeqhtGPFyqpcewUug98I4HbqtYfvtYFJ3+iLriJCIN3uGS9m5ZKvuUIysNBFHYz2gpHiAf36YEsYMZN3h96U6ZsqIBO7SeYr5IVGaMuUsomFAt28PCRM72rLUEHD/p52dYA9Iq932T1o=
+	t=1757276189; cv=none; b=WmoaE9B9n7kM+Bwz7Eioz0OR/W/ssdkl+agTLTFM/PpOad+lyssGXsgOSUPe+3Kvnxb7dZ0O8f2FoOKvcqdKMpwl7bJUGH/jGgOLubI7WmIK3lWI3DGNHQRL9P+my746E7Zk9BtOr75cTwWggwxH+NKZWIzL+DfqrQqHHpk8Y1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277048; c=relaxed/simple;
-	bh=/SzOusGzzTof5H22YrgPmRncnZaAqXfDyksb+dwaNgs=;
+	s=arc-20240116; t=1757276189; c=relaxed/simple;
+	bh=vsT3RK6KKMmUdCmfbSa1PB4h0mfydP2QjUyuiliKyEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7W70G9k/fVG/qL8ioRuMJVXb0aRVTYmaueTSu1PQzhLP0VxGJBxB/P/rWPOWaRams56ECkzMLz1jtEEivlXf+AhPBFtnKO/Xx/+1pZNOmYYpwcbqOymj70C4lisukYeg5ha3e/WY3ptCQnGlSrYtO3uRs76DPlEzhfyVGEShYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BH2T1H3A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0818C4CEF0;
-	Sun,  7 Sep 2025 20:30:47 +0000 (UTC)
+	 MIME-Version; b=su314MjoxwPS7nqQFs5IoLavzhscpIxR9TQK8hLUsxl4xBMfSeMdD98HcjAQybKcMg5qdXl4BP76udsa7nivIK2yvZnQ1TtgMIeYEWfq5crdPm1OhhDYR/wrESr3AoMCLPXqYNCRqy1J+fMUbrXtKMiSzvj23VdVneGI22sTHeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FD6PH6vt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589B5C4CEF0;
+	Sun,  7 Sep 2025 20:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277048;
-	bh=/SzOusGzzTof5H22YrgPmRncnZaAqXfDyksb+dwaNgs=;
+	s=korg; t=1757276187;
+	bh=vsT3RK6KKMmUdCmfbSa1PB4h0mfydP2QjUyuiliKyEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BH2T1H3AkBAGm2xKLo07nbMqXAvQjKiJNcb+OxteUvougV1d1SS8ZkPRcGEMsOhGf
-	 Sj95S+sqei71LGQFYsSBt7eLl9V8O7VQl32p43U6bX5C76tUd1iroyq4hzyMLO7Val
-	 AcL7PsE2Vrctmp/VjMH9KjJB7N/zhnWjPb2Y6+M8=
+	b=FD6PH6vtEauItgch7tt1jIT/IjK+WLROlB4NCuaRCgbzSklfaKfs6Pqa4SVHKS7I0
+	 UBh+13snMMUTBvpeUgjrPBMHJCkSIK4uq04P8blc/gjRGoDQHmU28wMdJgxOjdmnZs
+	 +PgM/rLe0rZ9Q3Rs6NKMvwSSVzIHiliH9q8LdQcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
+	Thibaut VARENE <hacks@slashdirt.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 068/175] net: vxlan: make vxlan_set_mac() return drop reasons
+Subject: [PATCH 6.1 026/104] net: ethernet: mtk_eth_soc: fix tx vlan tag for llc packets
 Date: Sun,  7 Sep 2025 21:57:43 +0200
-Message-ID: <20250907195616.446034399@linuxfoundation.org>
+Message-ID: <20250907195608.375194886@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit d209706f562ee4fa81bdf24cf6b679c3222aa06c ]
+[ Upstream commit d4736737110ffa83d29f1c5d17b26113864205f6 ]
 
-Change the return type of vxlan_set_mac() from bool to enum
-skb_drop_reason. In this commit, the drop reason
-"SKB_DROP_REASON_LOCAL_MAC" is introduced for the case that the source
-mac of the packet is a local mac.
+When sending llc packets with vlan tx offload, the hardware fails to
+actually add the tag. Deal with this by fixing it up in software.
 
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Fixes: 656e705243fd ("net-next: mediatek: add support for MT7623 ethernet")
+Reported-by: Thibaut VARENE <hacks@slashdirt.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 1f5d2fd1ca04 ("vxlan: Fix NPD in {arp,neigh}_reduce() when using nexthop objects")
+Link: https://patch.msgid.link/20250831182007.51619-1-nbd@nbd.name
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 19 ++++++++++---------
- include/net/dropreason-core.h  |  6 ++++++
- 2 files changed, 16 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 58590ddbc6a15..d9077698c5a89 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1605,9 +1605,9 @@ static void vxlan_parse_gbp_hdr(struct vxlanhdr *unparsed,
- 	unparsed->vx_flags &= ~VXLAN_GBP_USED_BITS;
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index fecf3dd22dfaa..3f2f725ccceb3 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -1375,6 +1375,13 @@ static netdev_tx_t mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	bool gso = false;
+ 	int tx_num;
+ 
++	if (skb_vlan_tag_present(skb) &&
++	    !eth_proto_is_802_3(eth_hdr(skb)->h_proto)) {
++		skb = __vlan_hwaccel_push_inside(skb);
++		if (!skb)
++			goto dropped;
++	}
++
+ 	/* normally we can rely on the stack not calling this more than once,
+ 	 * however we have 2 queues running on the same ring so we need to lock
+ 	 * the ring access
+@@ -1420,8 +1427,9 @@ static netdev_tx_t mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 
+ drop:
+ 	spin_unlock(&eth->page_lock);
+-	stats->tx_dropped++;
+ 	dev_kfree_skb_any(skb);
++dropped:
++	stats->tx_dropped++;
+ 	return NETDEV_TX_OK;
  }
  
--static bool vxlan_set_mac(struct vxlan_dev *vxlan,
--			  struct vxlan_sock *vs,
--			  struct sk_buff *skb, __be32 vni)
-+static enum skb_drop_reason vxlan_set_mac(struct vxlan_dev *vxlan,
-+					  struct vxlan_sock *vs,
-+					  struct sk_buff *skb, __be32 vni)
- {
- 	union vxlan_addr saddr;
- 	u32 ifindex = skb->dev->ifindex;
-@@ -1618,7 +1618,7 @@ static bool vxlan_set_mac(struct vxlan_dev *vxlan,
- 
- 	/* Ignore packet loops (and multicast echo) */
- 	if (ether_addr_equal(eth_hdr(skb)->h_source, vxlan->dev->dev_addr))
--		return false;
-+		return SKB_DROP_REASON_LOCAL_MAC;
- 
- 	/* Get address from the outer IP header */
- 	if (vxlan_get_sk_family(vs) == AF_INET) {
-@@ -1631,11 +1631,11 @@ static bool vxlan_set_mac(struct vxlan_dev *vxlan,
- #endif
- 	}
- 
--	if ((vxlan->cfg.flags & VXLAN_F_LEARN) &&
--	    vxlan_snoop(skb->dev, &saddr, eth_hdr(skb)->h_source, ifindex, vni))
--		return false;
-+	if (!(vxlan->cfg.flags & VXLAN_F_LEARN))
-+		return SKB_NOT_DROPPED_YET;
- 
--	return true;
-+	return vxlan_snoop(skb->dev, &saddr, eth_hdr(skb)->h_source,
-+			   ifindex, vni);
- }
- 
- static bool vxlan_ecn_decapsulate(struct vxlan_sock *vs, void *oiph,
-@@ -1768,7 +1768,8 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 	}
- 
- 	if (!raw_proto) {
--		if (!vxlan_set_mac(vxlan, vs, skb, vni))
-+		reason = vxlan_set_mac(vxlan, vs, skb, vni);
-+		if (reason)
- 			goto drop;
- 	} else {
- 		skb_reset_mac_header(skb);
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index 1cb8d7c953beb..fbf92d442c1b2 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -97,6 +97,7 @@
- 	FN(MAC_INVALID_SOURCE)		\
- 	FN(VXLAN_ENTRY_EXISTS)		\
- 	FN(IP_TUNNEL_ECN)		\
-+	FN(LOCAL_MAC)			\
- 	FNe(MAX)
- 
- /**
-@@ -443,6 +444,11 @@ enum skb_drop_reason {
- 	 * RFC 6040 4.2, see __INET_ECN_decapsulate() for detail.
- 	 */
- 	SKB_DROP_REASON_IP_TUNNEL_ECN,
-+	/**
-+	 * @SKB_DROP_REASON_LOCAL_MAC: the source MAC address is equal to
-+	 * the MAC address of the local netdev.
-+	 */
-+	SKB_DROP_REASON_LOCAL_MAC,
- 	/**
- 	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
- 	 * shouldn't be used as a real 'reason' - only for tracing code gen
 -- 
 2.50.1
 
