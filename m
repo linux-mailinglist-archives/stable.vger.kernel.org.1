@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-178084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5E5B47D2C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:08:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E387DB47EDA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:29:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 407EA17BCEC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9DD917EB0C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB322836A0;
-	Sun,  7 Sep 2025 20:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852D5212B2F;
+	Sun,  7 Sep 2025 20:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpjWFVnV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUwIybD7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC0B1CDFAC;
-	Sun,  7 Sep 2025 20:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433B6189BB0;
+	Sun,  7 Sep 2025 20:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275712; cv=none; b=N7j8tCEtgR/b70hwzgTo4vjIGV/hP1RwtCWKjGC8lk3lIYScbFHTxyMi0q0AHDBn9YENG4JuLH+RDwwMOVIaJFiJ6u+zVNHK3+ExmH7o722Ehc+4PoQaqrdPOkXIfLeUBM8eG7FzySPJ+1k65gPw4+/cQk1VJPBS75VCPCjBDmY=
+	t=1757276979; cv=none; b=TZLbCge52TiCWnWNvDn2j7aZzBUojcBdho73IbnZ2v9VdVuILGLWFWQBxnhbBtorX8Bb54w6KeN33ywICEMiCvg4PieFNoL9JaImnUxhYTVl0QwJ6J3oclMBZCoMNRmR81unX84WV9Zf9kXwCphG+1XYPatEPjYxe1i6FvDR71U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275712; c=relaxed/simple;
-	bh=sKyRFV3eSSAy6GDcU3rB9wMIfSmEBXP3kuyW90J3cz4=;
+	s=arc-20240116; t=1757276979; c=relaxed/simple;
+	bh=sE90EDh4drFZLaF7yVur5drJqkrn06eG4ysZqsJ0Zmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uufWRM51nhbunZ2FSrc/PgQkjLGFHKnyEo/VhNQYs3QeeYKw3wjTk35Ag/dWXMzKp72av6n28VygxvzgZtXLQHAsnYU/0uafvyYRacYvrEmYaM3Nov5E/z2NxiZ3qCoDA54XxNXMJ1V1H3KPLW72C0kvbHPQmKnGQBA90iP9CBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpjWFVnV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5A6C4CEF0;
-	Sun,  7 Sep 2025 20:08:31 +0000 (UTC)
+	 MIME-Version; b=LyOG3T2xjDTatFpscmH+jx2ov7Z/IIS8E5V3KdyiqVBLg7Dmbt0Y6FU10eRMvUjnkN8rpkwhct4/U386AogqQEF5acipGchZt01S2ewjLIZR6ohLb3+/xgghbpzBUcA7Y4Jhgh/hVX3dMdFALcsTABR3Xsy4wUlPFYWe7REbJ9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUwIybD7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E07C4CEF0;
+	Sun,  7 Sep 2025 20:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275712;
-	bh=sKyRFV3eSSAy6GDcU3rB9wMIfSmEBXP3kuyW90J3cz4=;
+	s=korg; t=1757276979;
+	bh=sE90EDh4drFZLaF7yVur5drJqkrn06eG4ysZqsJ0Zmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bpjWFVnVrhSePwq8UgEbtA7ONyHu4U6Re8xPyjJouuNWtoUA/uRQ/KT27x5wRqO6f
-	 a40S1m8iBWHgc/HAtv0jkt0HfpHW7uzfkN2sUS4ZJmOtXkTK0JtVsPJyarT3VAETZ7
-	 oFu97wbxWD8Jhy5TWP8O/HcVaUerUPDCFkKfloEM=
+	b=SUwIybD77IHaz44VmYrJMB06pN2+/Tw2M3dNhI98EtUO3kboBWdIy47z+tum3RaTo
+	 bin7+duB1iEfU4+K/6tOpQpiI/5KoklMqikCl6wRSdLkCyeJBGVnGns+L/JSsujmES
+	 jyPCQ0CiEUfWsJDPQEH4s2OJHACUIUJHo77NcF/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+30754ca335e6fb7e3092@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 04/52] wifi: cfg80211: fix use-after-free in cmp_bss()
+Subject: [PATCH 6.12 049/175] bnxt_en: fix incorrect page count in RX aggr ring log
 Date: Sun,  7 Sep 2025 21:57:24 +0200
-Message-ID: <20250907195602.096514932@linuxfoundation.org>
+Message-ID: <20250907195616.007776955@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 26e84445f02ce6b2fe5f3e0e28ff7add77f35e08 ]
+[ Upstream commit 7000f4fa9b24ae2511b07babd0d49e888db5d265 ]
 
-Following bss_free() quirk introduced in commit 776b3580178f
-("cfg80211: track hidden SSID networks properly"), adjust
-cfg80211_update_known_bss() to free the last beacon frame
-elements only if they're not shared via the corresponding
-'hidden_beacon_bss' pointer.
+The warning in bnxt_alloc_one_rx_ring_netmem() reports the number
+of pages allocated for the RX aggregation ring. However, it
+mistakenly used bp->rx_ring_size instead of bp->rx_agg_ring_size,
+leading to confusing or misleading log output.
 
-Reported-by: syzbot+30754ca335e6fb7e3092@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=30754ca335e6fb7e3092
-Fixes: 3ab8227d3e7d ("cfg80211: refactor cfg80211_bss_update")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20250813135236.799384-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Use the correct bp->rx_agg_ring_size value to fix this.
+
+Fixes: c0c050c58d84 ("bnxt_en: New Broadcom ethernet driver.")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Link: https://patch.msgid.link/20250830062331.783783-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 670fcdbef95be..a09fb52910082 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1761,7 +1761,8 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
- 			 */
- 
- 			f = rcu_access_pointer(new->pub.beacon_ies);
--			kfree_rcu((struct cfg80211_bss_ies *)f, rcu_head);
-+			if (!new->pub.hidden_beacon_bss)
-+				kfree_rcu((struct cfg80211_bss_ies *)f, rcu_head);
- 			return false;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 08886c3a28c61..8a6f3e230fce6 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -4207,7 +4207,7 @@ static void bnxt_alloc_one_rx_ring_page(struct bnxt *bp,
+ 	for (i = 0; i < bp->rx_agg_ring_size; i++) {
+ 		if (bnxt_alloc_rx_page(bp, rxr, prod, GFP_KERNEL)) {
+ 			netdev_warn(bp->dev, "init'ed rx ring %d with %d/%d pages only\n",
+-				    ring_nr, i, bp->rx_ring_size);
++				    ring_nr, i, bp->rx_agg_ring_size);
+ 			break;
  		}
- 
+ 		prod = NEXT_RX_AGG(prod);
 -- 
 2.50.1
 
