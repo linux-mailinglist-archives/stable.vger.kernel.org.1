@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-178589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC786B47F46
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:35:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C370B48006
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7CE31895B43
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:35:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B938200D99
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFDB820E00B;
-	Sun,  7 Sep 2025 20:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4C6212560;
+	Sun,  7 Sep 2025 20:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MsaUaiBv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYC4GJKd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E33B315D54;
-	Sun,  7 Sep 2025 20:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAF2126C02;
+	Sun,  7 Sep 2025 20:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277319; cv=none; b=W9wI3mPIjUM6YAtvh8XhNe7QDbXgs6XdTcXTL2AAOO8r2wYrAp7ifjdEWZ3iU09T3a5SR+O0EryAtQFP96nvm6UuTx1MveY2up6JjdxbvqnfWOzJ3Hk0tL5+GCrGb9xlfwuv9ZbbyADeuQcRgPW4144bMXyKnY7EveDY4vpufNI=
+	t=1757277925; cv=none; b=k0lgPhYb8Wx+HEeCPbIhbzvz7KYAVpaw3NUF6PtJjBffCxI83lmEWvpXif8Od1DIsEhBW5tDd7WNbYSKIGDJIoGSwoZmejD4vIhIKwQCPozdO9umu1PBllSmq0g0MmmoXt3RE/9OuAgNLZ05KytEwnM5SWhmFSJflwdKHxrWOmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277319; c=relaxed/simple;
-	bh=vV+HMt466sbpMwESVGwErsr554rG/FaGBJGpk2IBeNw=;
+	s=arc-20240116; t=1757277925; c=relaxed/simple;
+	bh=oU7hjnPAoJL7VUGMVBaMcutCpnxivep30iz5n+aL1LA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BVEsWoMsDdNMHuRlCYqG7U3Kkpickt1fz4SYZn08ZrMCpv/wFdm/adwwYfYILz5cztngboPQm+/cTV376Z0AlBctT3uHV42NLDjz49lLecad9SuBBLvqK+Nj3ERe2Lc0eYcmtGjx6qYudUWEZ+grjJ1j5eOq/MQG5s+BNu1TsMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MsaUaiBv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAF2C4CEF0;
-	Sun,  7 Sep 2025 20:35:18 +0000 (UTC)
+	 MIME-Version; b=k9un8u1U3bmjrBmNevjGBudeHOmq7ZQsEAXolB+FEi+KRGRu+VsLM0yqNT7x5QnFoGnGHlt+sbMxd69geZesAtuZJMTkuH5M2l7T6UPErEmNGP1exXyg2er8s8Y9FXA1cZOIa4wWFyLUCGvwxlv9rjsM2UAlRhlC3UQkfDO9L3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYC4GJKd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E45C4CEF0;
+	Sun,  7 Sep 2025 20:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277319;
-	bh=vV+HMt466sbpMwESVGwErsr554rG/FaGBJGpk2IBeNw=;
+	s=korg; t=1757277924;
+	bh=oU7hjnPAoJL7VUGMVBaMcutCpnxivep30iz5n+aL1LA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MsaUaiBv9LxiiyzAXgxra6xbLXlq7ildOXTSOR1X8Dfh2wlueHAMuq57nIBAZCIdJ
-	 eziF/dDLImR8GjfKcEK3f6pZ/laD+aEZaRnkPNf0P3MJyQAmnUuhh3XEJXPoSq5IB1
-	 rS/J+P4Gr/YrZzmsR8c8CC3nFCCImHhLN4Jm7Wr0=
+	b=xYC4GJKdutgkF9EVEt+0EEAufwicgRydeOl1MAE4ux5JVT7ca/0hgcyN2Cc94c260
+	 WrwdKSkdwSdoy3tJknnjGW8Ap92zyC2ZHBPJrIImyRx0MJ2Mmlx+a+dBGpIMRqweLJ
+	 lme5aaew7LDm8f3uMwO8SQViMPr928r6EEeMF7Pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 154/175] hwmon: mlxreg-fan: Prevent fans from getting stuck at 0 RPM
+	Tal Inbar <inbartdev@gmail.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.16 122/183] wifi: mt76: mt7925: skip EHT MLD TLV on non-MLD and pass conn_state for sta_cmd
 Date: Sun,  7 Sep 2025 21:59:09 +0200
-Message-ID: <20250907195618.500511385@linuxfoundation.org>
+Message-ID: <20250907195618.689914264@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Pasternak <vadimp@nvidia.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 1180c79fbf36e4c02e76ae4658509523437e52a4 ]
+commit dd6e89cad9951acef3723f3f21b2e892a23b371b upstream.
 
-The fans controlled by the driver can get stuck at 0 RPM if they are
-configured below a 20% duty cycle. The driver tries to avoid this by
-enforcing a minimum duty cycle of 20%, but this is done after the fans
-are registered with the thermal subsystem. This is too late as the
-thermal subsystem can set their current state before the driver is able
-to enforce the minimum duty cycle.
+Return early in mt7925_mcu_sta_eht_mld_tlv() for non-MLD vifs to avoid bogus
+MLD TLVs, and pass the proper connection state to sta_basic TLV.
 
-Fix by setting the minimum duty cycle before registering the fans with
-the thermal subsystem.
-
-Fixes: d7efb2ebc7b3 ("hwmon: (mlxreg-fan) Extend driver to support multiply cooling devices")
-Reported-by: Nikolay Aleksandrov <razor@blackwall.org>
-Tested-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
-Link: https://lore.kernel.org/r/20250730201715.1111133-1-vadimp@nvidia.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: cb1353ef3473 ("wifi: mt76: mt7925: integrate *mlo_sta_cmd and *sta_cmd")
+Reported-by: Tal Inbar <inbartdev@gmail.com>
+Tested-by: Tal Inbar <inbartdev@gmail.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250818030201.997940-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/mlxreg-fan.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/mlxreg-fan.c b/drivers/hwmon/mlxreg-fan.c
-index a5f89aab3fb4d..c25a54d5b39ad 100644
---- a/drivers/hwmon/mlxreg-fan.c
-+++ b/drivers/hwmon/mlxreg-fan.c
-@@ -561,15 +561,14 @@ static int mlxreg_fan_cooling_config(struct device *dev, struct mlxreg_fan *fan)
- 		if (!pwm->connected)
- 			continue;
- 		pwm->fan = fan;
-+		/* Set minimal PWM speed. */
-+		pwm->last_hwmon_state = MLXREG_FAN_PWM_DUTY2STATE(MLXREG_FAN_MIN_DUTY);
- 		pwm->cdev = devm_thermal_of_cooling_device_register(dev, NULL, mlxreg_fan_name[i],
- 								    pwm, &mlxreg_fan_cooling_ops);
- 		if (IS_ERR(pwm->cdev)) {
- 			dev_err(dev, "Failed to register cooling device\n");
- 			return PTR_ERR(pwm->cdev);
- 		}
--
--		/* Set minimal PWM speed. */
--		pwm->last_hwmon_state = MLXREG_FAN_PWM_DUTY2STATE(MLXREG_FAN_MIN_DUTY);
- 	}
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -1834,13 +1834,13 @@ mt7925_mcu_sta_eht_mld_tlv(struct sk_buf
+ 	struct tlv *tlv;
+ 	u16 eml_cap;
  
- 	return 0;
--- 
-2.51.0
-
++	if (!ieee80211_vif_is_mld(vif))
++		return;
++
+ 	tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_EHT_MLD, sizeof(*eht_mld));
+ 	eht_mld = (struct sta_rec_eht_mld *)tlv;
+ 	eht_mld->mld_type = 0xff;
+ 
+-	if (!ieee80211_vif_is_mld(vif))
+-		return;
+-
+ 	ext_capa = cfg80211_get_iftype_ext_capa(wiphy,
+ 						ieee80211_vif_type_p2p(vif));
+ 	if (!ext_capa)
+@@ -1912,6 +1912,7 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
+ 	struct mt76_dev *dev = phy->dev;
+ 	struct mt792x_bss_conf *mconf;
+ 	struct sk_buff *skb;
++	int conn_state;
+ 
+ 	mconf = mt792x_vif_to_link(mvif, info->wcid->link_id);
+ 
+@@ -1920,10 +1921,13 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
+ 	if (IS_ERR(skb))
+ 		return PTR_ERR(skb);
+ 
++	conn_state = info->enable ? CONN_STATE_PORT_SECURE :
++				    CONN_STATE_DISCONNECT;
++
+ 	if (info->enable && info->link_sta) {
+ 		mt76_connac_mcu_sta_basic_tlv(dev, skb, info->link_conf,
+ 					      info->link_sta,
+-					      info->enable, info->newly);
++					      conn_state, info->newly);
+ 		mt7925_mcu_sta_phy_tlv(skb, info->vif, info->link_sta);
+ 		mt7925_mcu_sta_ht_tlv(skb, info->link_sta);
+ 		mt7925_mcu_sta_vht_tlv(skb, info->link_sta);
 
 
 
