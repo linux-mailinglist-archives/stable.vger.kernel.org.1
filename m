@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-178268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2E9B47DEE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A6B8B47F0F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7852E189EB1A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8954D1B21083
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADDB1C6FFA;
-	Sun,  7 Sep 2025 20:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8ACA1DF246;
+	Sun,  7 Sep 2025 20:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOC9TiG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4gwJOzC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680F314BFA2;
-	Sun,  7 Sep 2025 20:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771B315C158;
+	Sun,  7 Sep 2025 20:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276297; cv=none; b=Q7OxmEw8UrRVQPJsMPQmwklzDXsJ2YX4IuqAAfMHrcqcL8eZPAm5388ecIvRUp4jJfiz1iylGOl+nX1Umr3JPAKo0er9W+zK0iq2kwvm6O/MvsLUjsHyavftF6Mh1O6f9RGOpCwBJKFjhXlR25hN4NdJagLPtYkVRscCw4qL5DI=
+	t=1757277147; cv=none; b=OL7BWd9FGS+DtJOgbe8g4R5mVX596YrD9r6UWQVmhO6v0xM7+P+SANfh1m7DlOSc+yauIo3jxENj+UcS58GUc0KKJV7q7PHn9wsnddCfHz647loyQ6+AqJgRFq5+TJfp+a7mB9Fo4sEeCrxDYT6tJG07EmHdK33pkDyWPYgbeu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276297; c=relaxed/simple;
-	bh=Xeq64IVs1l/osP8kTyvKMOCjXgfqpz9IxRlVEgW9syM=;
+	s=arc-20240116; t=1757277147; c=relaxed/simple;
+	bh=bWAO+ze6NWmsIEvV9Axx9oJJkOJqlXM1deZOwOGnLNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjIalMwJSHfCtoZELKdUeX4BkPNRe5wI5feFYhjRBjmGFrIn7ju+76hS4m9zzpvX9H+8wqtVCmY1WJAxj3elX7ZbXF6IbjFS5KFwODG8mEZf6MhtnHgO2wrNaUoFtWC7vl+DcJq3a+nQeljFJ8RDapolvkQikXB7q4+UBs4aM08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOC9TiG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB87DC4CEF0;
-	Sun,  7 Sep 2025 20:18:16 +0000 (UTC)
+	 MIME-Version; b=JFAT6gjbXbukBA9O0y3RE5vPSer6meLBRbXh7R8P/WMTIvD4/o4ky0TxjwiVZvLiGGtMJX9LXJqFWJ2UB+yGUTulhQL154eR2OUQCOHTNr1+D5A5dMEW1d1/cYlwFD0spQJb3D+cqDM8+uHASSMkfMpP2+CM1z6a+jdl2eEgh8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4gwJOzC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBFA6C4CEF0;
+	Sun,  7 Sep 2025 20:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276297;
-	bh=Xeq64IVs1l/osP8kTyvKMOCjXgfqpz9IxRlVEgW9syM=;
+	s=korg; t=1757277147;
+	bh=bWAO+ze6NWmsIEvV9Axx9oJJkOJqlXM1deZOwOGnLNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dOC9TiG7MRnpzsp2KgPPKdW6YsmiIDKOAqoltet2McChcQv4axkGTb0JurDrqAP1m
-	 fXDimelzW17pV0kzetyPOTQ6CJWG4NbmVgrg1exHRTB6uUQykbMpFHTL+7+YV+Jc7U
-	 6tdCwvPHgSvZgxYNL36hFGoRERbDVdrkmTTprPtw=
+	b=a4gwJOzCfwFM8sWit7OZPLc+MFBgQQv2/eH36BCw+36oThk61SsHSukoUD19Msb6h
+	 i4CVpgseVfZPBUn8xJRfKmJm9nqyVlckyhgK3Sd8U3/KHX2SQOPvZk3ylf1Am8d/l2
+	 u5RDrF2RkAZJbRB96pJ6xP9uCR+8wz0BsINuVEtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/104] btrfs: adjust subpage bit start based on sectorsize
+	Gu Bowen <gubowen5@huawei.com>,
+	Waiman Long <longman@redhat.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Breno Leitao <leitao@debian.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Lu Jialin <lujialin4@huawei.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 100/175] mm: fix possible deadlock in kmemleak
 Date: Sun,  7 Sep 2025 21:58:15 +0200
-Message-ID: <20250907195609.188611902@linuxfoundation.org>
+Message-ID: <20250907195617.217293935@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +67,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Gu Bowen <gubowen5@huawei.com>
 
-[ Upstream commit e08e49d986f82c30f42ad0ed43ebbede1e1e3739 ]
+commit c873ccbb2f8db46ad9b4a989ea924b6d8f19abf1 upstream.
 
-When running machines with 64k page size and a 16k nodesize we started
-seeing tree log corruption in production.  This turned out to be because
-we were not writing out dirty blocks sometimes, so this in fact affects
-all metadata writes.
+There are some AA deadlock issues in kmemleak, similar to the situation
+reported by Breno [1].  The deadlock path is as follows:
 
-When writing out a subpage EB we scan the subpage bitmap for a dirty
-range.  If the range isn't dirty we do
+mem_pool_alloc()
+  -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+      -> pr_warn()
+          -> netconsole subsystem
+	     -> netpoll
+	         -> __alloc_skb
+		   -> __create_object
+		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
 
-	bit_start++;
+To solve this problem, switch to printk_safe mode before printing warning
+message, this will redirect all printk()-s to a special per-CPU buffer,
+which will be flushed later from a safe context (irq work), and this
+deadlock problem can be avoided.  The proper API to use should be
+printk_deferred_enter()/printk_deferred_exit() [2].  Another way is to
+place the warn print after kmemleak is released.
 
-to move onto the next bit.  The problem is the bitmap is based on the
-number of sectors that an EB has.  So in this case, we have a 64k
-pagesize, 16k nodesize, but a 4k sectorsize.  This means our bitmap is 4
-bits for every node.  With a 64k page size we end up with 4 nodes per
-page.
-
-To make this easier this is how everything looks
-
-[0         16k       32k       48k     ] logical address
-[0         4         8         12      ] radix tree offset
-[               64k page               ] folio
-[ 16k eb ][ 16k eb ][ 16k eb ][ 16k eb ] extent buffers
-[ | | | |  | | | |   | | | |   | | | | ] bitmap
-
-Now we use all of our addressing based on fs_info->sectorsize_bits, so
-as you can see the above our 16k eb->start turns into radix entry 4.
-
-When we find a dirty range for our eb, we correctly do bit_start +=
-sectors_per_node, because if we start at bit 0, the next bit for the
-next eb is 4, to correspond to eb->start 16k.
-
-However if our range is clean, we will do bit_start++, which will now
-put us offset from our radix tree entries.
-
-In our case, assume that the first time we check the bitmap the block is
-not dirty, we increment bit_start so now it == 1, and then we loop
-around and check again.  This time it is dirty, and we go to find that
-start using the following equation
-
-	start = folio_start + bit_start * fs_info->sectorsize;
-
-so in the case above, eb->start 0 is now dirty, and we calculate start
-as
-
-	0 + 1 * fs_info->sectorsize = 4096
-	4096 >> 12 = 1
-
-Now we're looking up the radix tree for 1, and we won't find an eb.
-What's worse is now we're using bit_start == 1, so we do bit_start +=
-sectors_per_node, which is now 5.  If that eb is dirty we will run into
-the same thing, we will look at an offset that is not populated in the
-radix tree, and now we're skipping the writeout of dirty extent buffers.
-
-The best fix for this is to not use sectorsize_bits to address nodes,
-but that's a larger change.  Since this is a fs corruption problem fix
-it simply by always using sectors_per_node to increment the start bit.
-
-Fixes: c4aec299fa8f ("btrfs: introduce submit_eb_subpage() to submit a subpage metadata page")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250822073541.1886469-1-gubowen5@huawei.com
+Link: https://lore.kernel.org/all/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org/#t [1]
+Link: https://lore.kernel.org/all/5ca375cd-4a20-4807-b897-68b289626550@redhat.com/ [2]
+Signed-off-by: Gu Bowen <gubowen5@huawei.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: John Ogness <john.ogness@linutronix.de>
+Cc: Lu Jialin <lujialin4@huawei.com>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/kmemleak.c |   27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -2807,7 +2807,7 @@ static int submit_eb_subpage(struct page
- 			      subpage->bitmaps)) {
- 			spin_unlock_irqrestore(&subpage->lock, flags);
- 			spin_unlock(&page->mapping->private_lock);
--			bit_start++;
-+			bit_start += sectors_per_node;
- 			continue;
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -432,9 +432,15 @@ static struct kmemleak_object *__lookup_
+ 		else if (untagged_objp == untagged_ptr || alias)
+ 			return object;
+ 		else {
++			/*
++			 * Printk deferring due to the kmemleak_lock held.
++			 * This is done to avoid deadlock.
++			 */
++			printk_deferred_enter();
+ 			kmemleak_warn("Found object by alias at 0x%08lx\n",
+ 				      ptr);
+ 			dump_object_info(object);
++			printk_deferred_exit();
+ 			break;
  		}
+ 	}
+@@ -731,6 +737,11 @@ static int __link_object(struct kmemleak
+ 		else if (untagged_objp + parent->size <= untagged_ptr)
+ 			link = &parent->rb_node.rb_right;
+ 		else {
++			/*
++			 * Printk deferring due to the kmemleak_lock held.
++			 * This is done to avoid deadlock.
++			 */
++			printk_deferred_enter();
+ 			kmemleak_stop("Cannot insert 0x%lx into the object search tree (overlaps existing)\n",
+ 				      ptr);
+ 			/*
+@@ -738,6 +749,7 @@ static int __link_object(struct kmemleak
+ 			 * be freed while the kmemleak_lock is held.
+ 			 */
+ 			dump_object_info(parent);
++			printk_deferred_exit();
+ 			return -EEXIST;
+ 		}
+ 	}
+@@ -851,13 +863,8 @@ static void delete_object_part(unsigned
  
+ 	raw_spin_lock_irqsave(&kmemleak_lock, flags);
+ 	object = __find_and_remove_object(ptr, 1, objflags);
+-	if (!object) {
+-#ifdef DEBUG
+-		kmemleak_warn("Partially freeing unknown object at 0x%08lx (size %zu)\n",
+-			      ptr, size);
+-#endif
++	if (!object)
+ 		goto unlock;
+-	}
+ 
+ 	/*
+ 	 * Create one or two objects that may result from the memory block
+@@ -877,8 +884,14 @@ static void delete_object_part(unsigned
+ 
+ unlock:
+ 	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
+-	if (object)
++	if (object) {
+ 		__delete_object(object);
++	} else {
++#ifdef DEBUG
++		kmemleak_warn("Partially freeing unknown object at 0x%08lx (size %zu)\n",
++			      ptr, size);
++#endif
++	}
+ 
+ out:
+ 	if (object_l)
 
 
 
