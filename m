@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CC4B47F8E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:39:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A058B47D6C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEE9A3C3238
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:39:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84145189C128
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95041DF246;
-	Sun,  7 Sep 2025 20:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8661A284883;
+	Sun,  7 Sep 2025 20:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W45VB5J8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bb0JWBAA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F8E4315A;
-	Sun,  7 Sep 2025 20:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451331CDFAC;
+	Sun,  7 Sep 2025 20:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277545; cv=none; b=LiQ2+SDrSO+kytwprOn45n0deOmSndROBeMhOwzZYC58uRjn+M7gj5vJyWPsZcKphJc/iBr8anKXBl4fWP7HzVHK5nBZQWSwziSmQp7I9Hx8kbGfYC9YpujN0wsrxZ0S/gYknp4LYJ6PGIl/RoCwnPn1CpgHJ2NJDJF3FAsFxAQ=
+	t=1757275902; cv=none; b=Y7fyJDjMlkv72n5NRThwGorI6nbPKkidjNh9t6wZDHnpSYmcWI5sNfio5BGbWvdK6O9sbGgpdR88RVfXTs2UsfaK9t4xWmi79QEcFlrjaFeWCxIQbQSo9QEhAZwN8BTxFrSWHiJ4AepkUnWLejtNFPMlNWY5jmaBpDB9q+/+4Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277545; c=relaxed/simple;
-	bh=Lm3JiAMFosrAE6+PT44RB107eosPaQoBDCzJH8979Fo=;
+	s=arc-20240116; t=1757275902; c=relaxed/simple;
+	bh=KazUa/4IWJCfb4iC1jktZMAQ7xK2YfDgtMHJerFmqsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZ1EpgUiOpbE3kz47wNszMcsHcawvD5OrJGyxseri0IosVqdwHqjCn7OLr4XN9c0kNZggnL/a2B9fSFFXcExFx6eoV8UGYr9vy/h5VD5mwM5PKNibLRJvOq9m6SQahBhpsfJ+IE5KiP0/OGmO6WgYgXsVmibksmR8nViP/N27e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W45VB5J8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03751C4CEF0;
-	Sun,  7 Sep 2025 20:39:04 +0000 (UTC)
+	 MIME-Version; b=GCnAt4Kcj4m71cuo1C/K68xRpEiksy3rW1MUVHerR+/ovbz1AYVCXb0X9xLyQPp1IPW3fTVwx1PmN4/7GDS4oWYpz2Zd9JdOro0Gq1VaOQYH2IkrPPjedVMeH4rRa0rHOU7sXOZ8efb7V2r21EdRmhPf3lUWVijo9lzdlKJM2+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bb0JWBAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF519C4CEF0;
+	Sun,  7 Sep 2025 20:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277545;
-	bh=Lm3JiAMFosrAE6+PT44RB107eosPaQoBDCzJH8979Fo=;
+	s=korg; t=1757275902;
+	bh=KazUa/4IWJCfb4iC1jktZMAQ7xK2YfDgtMHJerFmqsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W45VB5J8ASwLnuVABGAq2Yd5QYLdMOGZUTGHeZfHbhEWwUcR7bylhYZqeAIwSoRrw
-	 YFKjoAa/yJGeb3nnpcYCpeWzHD/CRIqwScu8btG+l/IxK34F54yKv+zkvr1HWQ3bOW
-	 4p1Hm39CLlwK9wxl/cwBDqg8hHPGxwBr8yAf6zG4=
+	b=Bb0JWBAAUgZRKQfNGSZeYURf4nzM+zKs6D6Hqop2cvuZYa9UhUoG2j9sm+S/yh4HE
+	 rGyQUqXFfvTNfP0GFgGBLUO3n9YJDC1BvDJgNsNYR2Yr7FfXE+97o8au7syXeA9y8P
+	 55XypR3ruXeN0aFw9Tk8z7ur8W6VmI1oR0nz3P5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Pravdin <ipravdin.official@gmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Thibaut VARENE <hacks@slashdirt.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 048/183] Bluetooth: vhci: Prevent use-after-free by removing debugfs files early
+Subject: [PATCH 5.4 09/45] net: ethernet: mtk_eth_soc: fix tx vlan tag for llc packets
 Date: Sun,  7 Sep 2025 21:57:55 +0200
-Message-ID: <20250907195616.919191345@linuxfoundation.org>
+Message-ID: <20250907195601.233779827@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,126 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Pravdin <ipravdin.official@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 28010791193a4503f054e8d69a950ef815deb539 ]
+[ Upstream commit d4736737110ffa83d29f1c5d17b26113864205f6 ]
 
-Move the creation of debugfs files into a dedicated function, and ensure
-they are explicitly removed during vhci_release(), before associated
-data structures are freed.
+When sending llc packets with vlan tx offload, the hardware fails to
+actually add the tag. Deal with this by fixing it up in software.
 
-Previously, debugfs files such as "force_suspend", "force_wakeup", and
-others were created under hdev->debugfs but not removed in
-vhci_release(). Since vhci_release() frees the backing vhci_data
-structure, any access to these files after release would result in
-use-after-free errors.
-
-Although hdev->debugfs is later freed in hci_release_dev(), user can
-access files after vhci_data is freed but before hdev->debugfs is
-released.
-
-Fixes: ab4e4380d4e1 ("Bluetooth: Add vhci devcoredump support")
-Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 656e705243fd ("net-next: mediatek: add support for MT7623 ethernet")
+Reported-by: Thibaut VARENE <hacks@slashdirt.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250831182007.51619-1-nbd@nbd.name
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_vhci.c | 57 ++++++++++++++++++++++++++----------
- 1 file changed, 41 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/hci_vhci.c b/drivers/bluetooth/hci_vhci.c
-index f7d8c3c00655a..2fef08254d78d 100644
---- a/drivers/bluetooth/hci_vhci.c
-+++ b/drivers/bluetooth/hci_vhci.c
-@@ -380,6 +380,28 @@ static const struct file_operations force_devcoredump_fops = {
- 	.write		= force_devcd_write,
- };
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 7b9f5eba78dcc..6ab4c84bc22ef 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -1173,6 +1173,13 @@ static int mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	bool gso = false;
+ 	int tx_num;
  
-+static void vhci_debugfs_init(struct vhci_data *data)
-+{
-+	struct hci_dev *hdev = data->hdev;
++	if (skb_vlan_tag_present(skb) &&
++	    !eth_proto_is_802_3(eth_hdr(skb)->h_proto)) {
++		skb = __vlan_hwaccel_push_inside(skb);
++		if (!skb)
++			goto dropped;
++	}
 +
-+	debugfs_create_file("force_suspend", 0644, hdev->debugfs, data,
-+			    &force_suspend_fops);
-+
-+	debugfs_create_file("force_wakeup", 0644, hdev->debugfs, data,
-+			    &force_wakeup_fops);
-+
-+	if (IS_ENABLED(CONFIG_BT_MSFTEXT))
-+		debugfs_create_file("msft_opcode", 0644, hdev->debugfs, data,
-+				    &msft_opcode_fops);
-+
-+	if (IS_ENABLED(CONFIG_BT_AOSPEXT))
-+		debugfs_create_file("aosp_capable", 0644, hdev->debugfs, data,
-+				    &aosp_capable_fops);
-+
-+	debugfs_create_file("force_devcoredump", 0644, hdev->debugfs, data,
-+			    &force_devcoredump_fops);
-+}
-+
- static int __vhci_create_device(struct vhci_data *data, __u8 opcode)
- {
- 	struct hci_dev *hdev;
-@@ -434,22 +456,8 @@ static int __vhci_create_device(struct vhci_data *data, __u8 opcode)
- 		return -EBUSY;
- 	}
+ 	/* normally we can rely on the stack not calling this more than once,
+ 	 * however we have 2 queues running on the same ring so we need to lock
+ 	 * the ring access
+@@ -1218,8 +1225,9 @@ static int mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
  
--	debugfs_create_file("force_suspend", 0644, hdev->debugfs, data,
--			    &force_suspend_fops);
--
--	debugfs_create_file("force_wakeup", 0644, hdev->debugfs, data,
--			    &force_wakeup_fops);
--
--	if (IS_ENABLED(CONFIG_BT_MSFTEXT))
--		debugfs_create_file("msft_opcode", 0644, hdev->debugfs, data,
--				    &msft_opcode_fops);
--
--	if (IS_ENABLED(CONFIG_BT_AOSPEXT))
--		debugfs_create_file("aosp_capable", 0644, hdev->debugfs, data,
--				    &aosp_capable_fops);
--
--	debugfs_create_file("force_devcoredump", 0644, hdev->debugfs, data,
--			    &force_devcoredump_fops);
-+	if (!IS_ERR_OR_NULL(hdev->debugfs))
-+		vhci_debugfs_init(data);
- 
- 	hci_skb_pkt_type(skb) = HCI_VENDOR_PKT;
- 
-@@ -651,6 +659,21 @@ static int vhci_open(struct inode *inode, struct file *file)
- 	return 0;
+ drop:
+ 	spin_unlock(&eth->page_lock);
+-	stats->tx_dropped++;
+ 	dev_kfree_skb_any(skb);
++dropped:
++	stats->tx_dropped++;
+ 	return NETDEV_TX_OK;
  }
  
-+static void vhci_debugfs_remove(struct hci_dev *hdev)
-+{
-+	debugfs_lookup_and_remove("force_suspend", hdev->debugfs);
-+
-+	debugfs_lookup_and_remove("force_wakeup", hdev->debugfs);
-+
-+	if (IS_ENABLED(CONFIG_BT_MSFTEXT))
-+		debugfs_lookup_and_remove("msft_opcode", hdev->debugfs);
-+
-+	if (IS_ENABLED(CONFIG_BT_AOSPEXT))
-+		debugfs_lookup_and_remove("aosp_capable", hdev->debugfs);
-+
-+	debugfs_lookup_and_remove("force_devcoredump", hdev->debugfs);
-+}
-+
- static int vhci_release(struct inode *inode, struct file *file)
- {
- 	struct vhci_data *data = file->private_data;
-@@ -662,6 +685,8 @@ static int vhci_release(struct inode *inode, struct file *file)
- 	hdev = data->hdev;
- 
- 	if (hdev) {
-+		if (!IS_ERR_OR_NULL(hdev->debugfs))
-+			vhci_debugfs_remove(hdev);
- 		hci_unregister_dev(hdev);
- 		hci_free_dev(hdev);
- 	}
 -- 
 2.50.1
 
