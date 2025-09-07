@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53EBB47F6D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:37:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED100B47ED9
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 523FD7A737C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:35:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A823E3C234A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3D91F63CD;
-	Sun,  7 Sep 2025 20:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C61D17BB21;
+	Sun,  7 Sep 2025 20:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ii7ATQbb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5zBdHsf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0601A704B;
-	Sun,  7 Sep 2025 20:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA01189BB0;
+	Sun,  7 Sep 2025 20:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277440; cv=none; b=l1UwV07Efvokzhka415imif9GrRM0VzikNtpnJbVu1Q4sf4JIO8peUm2fvXnVVIUBwIilQP/G497VmweP2A++tzTdEob28ijGb50mwryFHf7K48INPNL3KXskEIKYPK65e2DQPuvsLYQ9o9M55wcsMplrhPtV8uSet+JGLu+jF4=
+	t=1757276976; cv=none; b=RruPFw3B2XtpCPIIbivi1JXv+8gefebQ3Y1+TzN2K5QiE90SLSB4g/S4Y6aRKYquCPc4TJuVdx/soA3LUluTo5b5JPdWwuD9FCjP4wsxJQ8Flq3qNTJRFeQcOM14TNdRRywA/9sLjRF2cZ0KbA8w8WWbyjRqJ2bvxOA8L7R+koA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277440; c=relaxed/simple;
-	bh=pOjqnUswq6SgfRUydvotZiZs3oP8tA+UmlUTX+XOTEc=;
+	s=arc-20240116; t=1757276976; c=relaxed/simple;
+	bh=pyoiXh5VL4XTt+Ojmb9eBtVZqTRLq5lasqUA/M2emN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cuetw+9nquxhTLppIaDXJo/pVkL66C8lQAp8FVjXYn0OIKn25rfUg9Wqh3ZDaBZcnCu9Qk6Iyyt7AyHsGrc5jjwRivXxNF5oUL9VTJxcMdRzC5avFbsiH14US6rM0TUJpOg3giFKfNHTWeTqdua84X8UodDBdgtTFyUXDLK3doQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ii7ATQbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E974CC4CEF0;
-	Sun,  7 Sep 2025 20:37:18 +0000 (UTC)
+	 MIME-Version; b=f6nVP6UpGx42Uo1HO/xn3L4u+eKMN72tzACn2i2ZlU0BsDHQvycZLJ9piP6bSQoh0s8CGttrmyXgvv6sKJmEqtG7cLYyynzM5mNMIQuOtNuf8A4caBm9llxbIdey3nqk7t0hQVUXaLMlsLX+Qj+NzN2gthbmbfy8HX+HOZrcl/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5zBdHsf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69722C4CEF0;
+	Sun,  7 Sep 2025 20:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277439;
-	bh=pOjqnUswq6SgfRUydvotZiZs3oP8tA+UmlUTX+XOTEc=;
+	s=korg; t=1757276976;
+	bh=pyoiXh5VL4XTt+Ojmb9eBtVZqTRLq5lasqUA/M2emN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ii7ATQbbgs9zESfMTKg+iW9HyXRXWCvzvKgA+bGNnOYttGLw6xSDVL7pInivDP8pp
-	 Si/7HNCMxK37lQtlr7wFLiT1nK+NpOBbjfPbhezQj+dQZUsyWa3XCdkuReA376XtLJ
-	 ZPA9QA7R8nrll05V2A0yrTCHZKKyIu/ObBi/IKiQ=
+	b=H5zBdHsfjl+1gzbeyYDwVHWt8oLrfJEeXUJ9xpgm4sskdfbZMXymzW45gAfBBoYtK
+	 cC4pZHkBmgV1ppvQjgXRD90OKtuNYRfcl/7YiNg7qhPFWz1CAIr3Qa77vBXDyMekPW
+	 p1WWSG0nHaw9jFSiuQ6Vh/BrJgvvabTVdPe2hVjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 016/183] btrfs: zoned: skip ZONE FINISH of conventional zones
+Subject: [PATCH 6.12 048/175] selftests: drv-net: csum: fix interface name for remote host
 Date: Sun,  7 Sep 2025 21:57:23 +0200
-Message-ID: <20250907195616.175559098@linuxfoundation.org>
+Message-ID: <20250907195615.984933299@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit f0ba0e7172a222ea6043b61ecd86723c46d7bcf2 ]
+[ Upstream commit 49c2502b5946ebf454d7e16fd0189769a82b6117 ]
 
-Don't call ZONE FINISH for conventional zones as this will result in I/O
-errors. Instead check if the zone that needs finishing is a conventional
-zone and if yes skip it.
+Use cfg.remote_ifname for arguments of remote command.
+Without this UDP tests fail in NIPA where local interface
+is called enp1s0 and remote enp0s4.
 
-Also factor out the actual handling of finishing a single zone into a
-helper function, as do_zone_finish() is growing ever bigger and the
-indentations levels are getting higher.
-
-Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 1d0dc857b5d8 ("selftests: drv-net: add checksum tests")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20250830183842.688935-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/zoned.c | 55 ++++++++++++++++++++++++++++++------------------
- 1 file changed, 35 insertions(+), 20 deletions(-)
+ tools/testing/selftests/drivers/net/hw/csum.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index af5ba3ad2eb83..d7a1193332d94 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -2252,6 +2252,40 @@ static void wait_eb_writebacks(struct btrfs_block_group *block_group)
- 	rcu_read_unlock();
- }
+diff --git a/tools/testing/selftests/drivers/net/hw/csum.py b/tools/testing/selftests/drivers/net/hw/csum.py
+index cb40497faee44..b7e55be9bd9fd 100755
+--- a/tools/testing/selftests/drivers/net/hw/csum.py
++++ b/tools/testing/selftests/drivers/net/hw/csum.py
+@@ -20,7 +20,7 @@ def test_receive(cfg, ipv4=False, extra_args=None):
+         ip_args = f"-6 -S {cfg.remote_v6} -D {cfg.v6}"
  
-+static int call_zone_finish(struct btrfs_block_group *block_group,
-+			    struct btrfs_io_stripe *stripe)
-+{
-+	struct btrfs_device *device = stripe->dev;
-+	const u64 physical = stripe->physical;
-+	struct btrfs_zoned_device_info *zinfo = device->zone_info;
-+	int ret;
-+
-+	if (!device->bdev)
-+		return 0;
-+
-+	if (zinfo->max_active_zones == 0)
-+		return 0;
-+
-+	if (btrfs_dev_is_sequential(device, physical)) {
-+		unsigned int nofs_flags;
-+
-+		nofs_flags = memalloc_nofs_save();
-+		ret = blkdev_zone_mgmt(device->bdev, REQ_OP_ZONE_FINISH,
-+				       physical >> SECTOR_SHIFT,
-+				       zinfo->zone_size >> SECTOR_SHIFT);
-+		memalloc_nofs_restore(nofs_flags);
-+
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (!(block_group->flags & BTRFS_BLOCK_GROUP_DATA))
-+		zinfo->reserved_active_zones++;
-+	btrfs_dev_clear_active_zone(device, physical);
-+
-+	return 0;
-+}
-+
- static int do_zone_finish(struct btrfs_block_group *block_group, bool fully_written)
- {
- 	struct btrfs_fs_info *fs_info = block_group->fs_info;
-@@ -2336,31 +2370,12 @@ static int do_zone_finish(struct btrfs_block_group *block_group, bool fully_writ
- 	down_read(&dev_replace->rwsem);
- 	map = block_group->physical_map;
- 	for (i = 0; i < map->num_stripes; i++) {
--		struct btrfs_device *device = map->stripes[i].dev;
--		const u64 physical = map->stripes[i].physical;
--		struct btrfs_zoned_device_info *zinfo = device->zone_info;
--		unsigned int nofs_flags;
--
--		if (!device->bdev)
--			continue;
--
--		if (zinfo->max_active_zones == 0)
--			continue;
--
--		nofs_flags = memalloc_nofs_save();
--		ret = blkdev_zone_mgmt(device->bdev, REQ_OP_ZONE_FINISH,
--				       physical >> SECTOR_SHIFT,
--				       zinfo->zone_size >> SECTOR_SHIFT);
--		memalloc_nofs_restore(nofs_flags);
+     rx_cmd = f"{cfg.bin_local} -i {cfg.ifname} -n 100 {ip_args} -r 1 -R {extra_args}"
+-    tx_cmd = f"{cfg.bin_remote} -i {cfg.ifname} -n 100 {ip_args} -r 1 -T {extra_args}"
++    tx_cmd = f"{cfg.bin_remote} -i {cfg.remote_ifname} -n 100 {ip_args} -r 1 -T {extra_args}"
  
-+		ret = call_zone_finish(block_group, &map->stripes[i]);
- 		if (ret) {
- 			up_read(&dev_replace->rwsem);
- 			return ret;
- 		}
--
--		if (!(block_group->flags & BTRFS_BLOCK_GROUP_DATA))
--			zinfo->reserved_active_zones++;
--		btrfs_dev_clear_active_zone(device, physical);
- 	}
- 	up_read(&dev_replace->rwsem);
+     with bkg(rx_cmd, exit_wait=True):
+         wait_port_listen(34000, proto="udp")
+@@ -43,7 +43,7 @@ def test_transmit(cfg, ipv4=False, extra_args=None):
+     if extra_args != "-U -Z":
+         extra_args += " -r 1"
  
+-    rx_cmd = f"{cfg.bin_remote} -i {cfg.ifname} -L 1 -n 100 {ip_args} -R {extra_args}"
++    rx_cmd = f"{cfg.bin_remote} -i {cfg.remote_ifname} -L 1 -n 100 {ip_args} -R {extra_args}"
+     tx_cmd = f"{cfg.bin_local} -i {cfg.ifname} -L 1 -n 100 {ip_args} -T {extra_args}"
+ 
+     with bkg(rx_cmd, host=cfg.remote, exit_wait=True):
 -- 
 2.50.1
 
