@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC3CB47E54
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FACEB47D79
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A2263C184C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:22:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDA0C17A15F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18151B4247;
-	Sun,  7 Sep 2025 20:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7885B1CDFAC;
+	Sun,  7 Sep 2025 20:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bdimp0Ty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GaO2acy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE461F09BF;
-	Sun,  7 Sep 2025 20:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358C51B424F;
+	Sun,  7 Sep 2025 20:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276572; cv=none; b=AqVQIWdElg9j049oSS/2Z2TDBOMgqC1gIrxxWBtYDVHsf63IoC2SmFDvZFj3AjfNBU8CdHvFGCxPUAioy2g1Kdq8waFwfJxSaXGWRv8KWUULg387DxWE5MnCYphWAI7Zqt10Ro0Sj10fJpDgXxGZJMvwzNZ72yGKxffKc1XvvOU=
+	t=1757275943; cv=none; b=WNAMps57oHYHP1YE9o832tpy+ySC90T7r3G4kc5PuGCIhSXHy3/qpyy4eFkxRoczTWAPFIfunm69TCzm2n5X6EVeTRdAayFUBr760C7jJA9lIXRzCOwAcweAUEZLS/2IOAGrCNRSGsKRpZH7ak0IFITL0rN+63ZJBHF6XR50FSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276572; c=relaxed/simple;
-	bh=OpTleShsZYroUx3quEKgoW7eJ72DXP9lW0msH4oYJbY=;
+	s=arc-20240116; t=1757275943; c=relaxed/simple;
+	bh=vUV3mnv1XWvqToZsZBLVLHAVJ/Tz+TfcBna68vVxRo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=toGkSxesNs2wpotEC9L+Ox8wGV4z32GbXJVvfoFtt7yScznpSQoHpOjvmRvNGsbvVgWHChMUVgpCiQKQ79HQqQ9AMavqwRuUmB6N/uraa3S1X1azL96goedVZODu2VZ80T0JNelQmKITYHKUxmSjsqDZcMXGDWuHXAvBZN92PEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bdimp0Ty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185FDC4CEF0;
-	Sun,  7 Sep 2025 20:22:51 +0000 (UTC)
+	 MIME-Version; b=iRlqe36viJAgOqNaxhJUGebAAn4/F7an7NEEYUYjnXWDWJzm19fXKsPWW1JghDWzZDym+vrTgvDCcJiCrQU9aFfPY5gvNWWOOJY80t7UCrKD1BW6IxKBuyGqOB0lpz2qI5PtuOFRPrDXeJfiEseWBrlpI6rw/D5v1qRq7sGl17Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GaO2acy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD508C4CEF0;
+	Sun,  7 Sep 2025 20:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276572;
-	bh=OpTleShsZYroUx3quEKgoW7eJ72DXP9lW0msH4oYJbY=;
+	s=korg; t=1757275943;
+	bh=vUV3mnv1XWvqToZsZBLVLHAVJ/Tz+TfcBna68vVxRo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bdimp0TyX61ynC5yYjUSPT/ocHva+jewgofNmwqEaDrnUDZG19JpHQhe3s7uf5ha4
-	 hZ0oVVEouvw1Mn7Md8dNb8ttX0P+YPvtt7zFjS4qJB3xNjOsEbElNTTMnU9K7WeUaQ
-	 3R5WWHwSk/C7fxbl4rlTI2BON/N3tIhikCnWa/wE=
+	b=1GaO2acyhLWvhAwyZiPc9fDvTVB0JVxP7IJ0bNuR1eKh8k7nbZyGYhHM/ON9+8als
+	 kGgkEz6ur3M6Q/mdB3cPKEItENtWi1xNywQ4NnwjrEUeZJgBq+aPws5zuN3IRqohlN
+	 yu/uojrkhR0GxPtJyL9ggrR7dHaTAc7s0xOv4BgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/121] wifi: cfg80211: sme: cap SSID length in __cfg80211_connect_result()
+Subject: [PATCH 5.15 14/64] mISDN: Fix memory leak in dsp_hwec_enable()
 Date: Sun,  7 Sep 2025 21:57:56 +0200
-Message-ID: <20250907195610.854592407@linuxfoundation.org>
+Message-ID: <20250907195603.798177392@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 62b635dcd69c4fde7ce1de4992d71420a37e51e3 ]
+[ Upstream commit 0704a3da7ce50f972e898bbda88d2692a22922d9 ]
 
-If the ssid->datalen is more than IEEE80211_MAX_SSID_LEN (32) it would
-lead to memory corruption so add some bounds checking.
+dsp_hwec_enable() allocates dup pointer by kstrdup(arg),
+but then it updates dup variable by strsep(&dup, ",").
+As a result when it calls kfree(dup), the dup variable may be
+a modified pointer that no longer points to the original allocated
+memory, causing a memory leak.
 
-Fixes: c38c70185101 ("wifi: cfg80211: Set SSID if it is not already set")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/0aaaae4a3ed37c6252363c34ae4904b1604e8e32.1756456951.git.dan.carpenter@linaro.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The issue is the same pattern as fixed in commit c6a502c22999
+("mISDN: Fix memory leak in dsp_pipeline_build()").
+
+Fixes: 9a4381618262 ("mISDN: Remove VLAs")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250828081457.36061-1-linmq006@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/sme.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/isdn/mISDN/dsp_hwec.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index 70881782c25c6..5904c869085c8 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -915,13 +915,16 @@ void __cfg80211_connect_result(struct net_device *dev,
- 	if (!wdev->u.client.ssid_len) {
- 		rcu_read_lock();
- 		for_each_valid_link(cr, link) {
-+			u32 ssid_len;
-+
- 			ssid = ieee80211_bss_get_elem(cr->links[link].bss,
- 						      WLAN_EID_SSID);
+diff --git a/drivers/isdn/mISDN/dsp_hwec.c b/drivers/isdn/mISDN/dsp_hwec.c
+index 0b3f29195330a..0cd216e28f009 100644
+--- a/drivers/isdn/mISDN/dsp_hwec.c
++++ b/drivers/isdn/mISDN/dsp_hwec.c
+@@ -51,14 +51,14 @@ void dsp_hwec_enable(struct dsp *dsp, const char *arg)
+ 		goto _do;
  
- 			if (!ssid || !ssid->datalen)
+ 	{
+-		char *dup, *tok, *name, *val;
++		char *dup, *next, *tok, *name, *val;
+ 		int tmp;
+ 
+-		dup = kstrdup(arg, GFP_ATOMIC);
++		dup = next = kstrdup(arg, GFP_ATOMIC);
+ 		if (!dup)
+ 			return;
+ 
+-		while ((tok = strsep(&dup, ","))) {
++		while ((tok = strsep(&next, ","))) {
+ 			if (!strlen(tok))
  				continue;
- 
--			memcpy(wdev->u.client.ssid, ssid->data, ssid->datalen);
-+			ssid_len = min(ssid->datalen, IEEE80211_MAX_SSID_LEN);
-+			memcpy(wdev->u.client.ssid, ssid->data, ssid_len);
- 			wdev->u.client.ssid_len = ssid->datalen;
- 			break;
- 		}
+ 			name = strsep(&tok, "=");
 -- 
 2.50.1
 
