@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1850CB47E67
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3244B47DF2
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D031517DF79
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AEE817D4EC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0840B20E005;
-	Sun,  7 Sep 2025 20:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A64B1B424F;
+	Sun,  7 Sep 2025 20:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfNqf6+r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjwxBvBC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78B71F09BF;
-	Sun,  7 Sep 2025 20:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C211A2389;
+	Sun,  7 Sep 2025 20:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276629; cv=none; b=PLjqUUr5i4AWtqfayi+f8hVbRLe23hjnxWkz5GTJK7tKfLxpZ5uLdAs0m4Y2bNivNlPVQ0jZkV/5vheBkRxle7xxXHD6+go6/ZEFlS0xYBgk2pLZnUDuXQIq2vbTWY5H+cJ37njwnAaJjeOLsJyReatZ3AK53MTfFlsVKH7rWKE=
+	t=1757276310; cv=none; b=mcRKDLgQp3O6iUW5ReBcwNutu5ONCfiS9z7BdiCAsnZsRrm1dgmx4ce/RTVAuIw/jtGoSN4/WlgrIpL7sQN/ne66Mn9xIem1KvdSdCT293xylReAqphlCjaw2jbyikoQrhoBEy8HCux6cs0g7rTl1N152DaEYaJ2mrE0ALlsmGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276629; c=relaxed/simple;
-	bh=L7joZfE6G/FA9vpuK6tvLKonF409V00UzBeBiMpUeRs=;
+	s=arc-20240116; t=1757276310; c=relaxed/simple;
+	bh=gS3W3mDP0lslAeUayjZJgePr5IoB1uU+FSyYPoM1WgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TNCu3Rq2/kpe2gR7o2t0Lz/p+LgJ6yv8WiCL3aYuq7b0WMcphGyjm9a0Pu0TTsh0KySuRX/3Z1JybHShjCo1TCMu6hfytsISv8Od+jwHNY6U8SjnXLYUWaL/kp9Pk7zQpJlwnwCvMJXdwb/Wj0y48rvr6eHp6EzlKE35jEuTxWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfNqf6+r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE731C4CEF0;
-	Sun,  7 Sep 2025 20:23:48 +0000 (UTC)
+	 MIME-Version; b=XhWYyIznZUXWlKouhWHDL1LBpd2CmieWijauraVxm9tTxfqAwng04OkpcYdp4VyPmqepKnzWbdjzjlBjCWhlFZMi1Th4OEwIzJ/kh2WF8TOLPUEFx1uiVrvQSaa4Y0LPsPTBv5IVOke+wAR7JOT3KSq5sQCw94WcKU81hykqZ/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjwxBvBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E63EC4CEF0;
+	Sun,  7 Sep 2025 20:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276629;
-	bh=L7joZfE6G/FA9vpuK6tvLKonF409V00UzBeBiMpUeRs=;
+	s=korg; t=1757276310;
+	bh=gS3W3mDP0lslAeUayjZJgePr5IoB1uU+FSyYPoM1WgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dfNqf6+rtUD2YFKk6MWlikYxxLzD/L48GUv/QoUZUaqivxs/o/Q/n7kbpfJpeQQdQ
-	 f0w25PrbzQxGllUql5z4X3Kl3be0EqUQKy23ckT2jRldr1m8yDsiimgOIwWzWlhr28
-	 Rd0s02CHpYMeyRDYh2LViY4i9LzHii6LHxhHxkgU=
+	b=cjwxBvBColpukIpiNDHgvbhxZSiH0nowo0SBwlL8eLNsiqRekky5EZKSBuzlM92vd
+	 K/nOL9gHOF8VXuNh9aVWO95jLEFmqq4x16J3IxkK8KFE5AmdT90Fv6UngiOMCSKL1W
+	 Ny00wytA7QCCwMlpmovFvMoiJbvKx0fwc0jRhcvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.6 061/121] wifi: mwifiex: Initialize the chan_stats array to zero
-Date: Sun,  7 Sep 2025 21:58:17 +0200
-Message-ID: <20250907195611.402857970@linuxfoundation.org>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 061/104] i2c: designware: Fix an error handling path in i2c_dw_pci_probe()
+Date: Sun,  7 Sep 2025 21:58:18 +0200
+Message-ID: <20250907195609.262996262@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 0e20450829ca3c1dbc2db536391537c57a40fe0b upstream.
+[ Upstream commit 1cfe51ef07ca3286581d612debfb0430eeccbb65 ]
 
-The adapter->chan_stats[] array is initialized in
-mwifiex_init_channel_scan_gap() with vmalloc(), which doesn't zero out
-memory.  The array is filled in mwifiex_update_chan_statistics()
-and then the user can query the data in mwifiex_cfg80211_dump_survey().
+If navi_amd_register_client() fails, the previous i2c_dw_probe() call
+should be undone by a corresponding i2c_del_adapter() call, as already done
+in the remove function.
 
-There are two potential issues here.  What if the user calls
-mwifiex_cfg80211_dump_survey() before the data has been filled in.
-Also the mwifiex_update_chan_statistics() function doesn't necessarily
-initialize the whole array.  Since the array was not initialized at
-the start that could result in an information leak.
-
-Also this array is pretty small.  It's a maximum of 900 bytes so it's
-more appropriate to use kcalloc() instead vmalloc().
-
-Cc: stable@vger.kernel.org
-Fixes: bf35443314ac ("mwifiex: channel statistics support for mwifiex")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250815023055.477719-1-rongqianfeng@vivo.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 17631e8ca2d3 ("i2c: designware: Add driver support for AMD NAVI GPU")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: <stable@vger.kernel.org> # v5.13+
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/fcd9651835a32979df8802b2db9504c523a8ebbb.1747158983.git.christophe.jaillet@wanadoo.fr
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c |    5 +++--
- drivers/net/wireless/marvell/mwifiex/main.c     |    4 ++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-designware-pcidrv.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -4316,8 +4316,9 @@ int mwifiex_init_channel_scan_gap(struct
- 	 * additional active scan request for hidden SSIDs on passive channels.
- 	 */
- 	adapter->num_in_chan_stats = 2 * (n_channels_bg + n_channels_a);
--	adapter->chan_stats = vmalloc(array_size(sizeof(*adapter->chan_stats),
--						 adapter->num_in_chan_stats));
-+	adapter->chan_stats = kcalloc(adapter->num_in_chan_stats,
-+				      sizeof(*adapter->chan_stats),
-+				      GFP_KERNEL);
+--- a/drivers/i2c/busses/i2c-designware-pcidrv.c
++++ b/drivers/i2c/busses/i2c-designware-pcidrv.c
+@@ -337,9 +337,11 @@ static int i2c_dw_pci_probe(struct pci_d
  
- 	if (!adapter->chan_stats)
- 		return -ENOMEM;
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -664,7 +664,7 @@ static int _mwifiex_fw_dpc(const struct
- 	goto done;
+ 	if ((dev->flags & MODEL_MASK) == MODEL_AMD_NAVI_GPU) {
+ 		dev->slave = i2c_new_ccgx_ucsi(&dev->adapter, dev->irq, &dgpu_node);
+-		if (IS_ERR(dev->slave))
++		if (IS_ERR(dev->slave)) {
++			i2c_del_adapter(&dev->adapter);
+ 			return dev_err_probe(dev->dev, PTR_ERR(dev->slave),
+ 					     "register UCSI failed\n");
++		}
+ 	}
  
- err_add_intf:
--	vfree(adapter->chan_stats);
-+	kfree(adapter->chan_stats);
- err_init_chan_scan:
- 	wiphy_unregister(adapter->wiphy);
- 	wiphy_free(adapter->wiphy);
-@@ -1481,7 +1481,7 @@ static void mwifiex_uninit_sw(struct mwi
- 	wiphy_free(adapter->wiphy);
- 	adapter->wiphy = NULL;
- 
--	vfree(adapter->chan_stats);
-+	kfree(adapter->chan_stats);
- 	mwifiex_free_cmd_buffers(adapter);
- }
- 
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, 1000);
 
 
 
