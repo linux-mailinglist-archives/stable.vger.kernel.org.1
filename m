@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-178217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC87B47DB8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:15:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BC5FB47E32
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:21:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EAE43B1817
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D080E3AD36F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F7E15D5B6;
-	Sun,  7 Sep 2025 20:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED5727A931;
+	Sun,  7 Sep 2025 20:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mJEy5Po"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVliceEY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7601A2389;
-	Sun,  7 Sep 2025 20:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A29122F74D;
+	Sun,  7 Sep 2025 20:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276137; cv=none; b=Rzyf2Y9NE/xmhxowLBYSvo2C3Oa1ghwAkj5gYe/bnZ5d7A0QIPIf7OBEsCONiX49M/P0BSxU6fpyhlid+aUhKKf+9zB98uA5eHLG+GLUjRC8hUKmDyIN4eZMi/ekGH8vCfIFC5TjM4AZcCGFy8wH1/3oIf5nBJMDZ0aba/8SK4Q=
+	t=1757276475; cv=none; b=QstT1qM/mjkIx28MT6fPiPYPNnKMFjMnCW6iVjY/fRpIt2euNoR6lObSed3HCzdGIl1AOv8O7sdPcMgl1gDknmjeVrn6j850o5uWHxOXQ4QuYWW901gn4R2zXXP2bko21M6A9jXyufJwc3jZXbdKBnaE7ugnhzkuJ0k6/H6R0WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276137; c=relaxed/simple;
-	bh=eOixkJ6nJJLywTkv/LM32m98FbEmOd8Oq1qZ3MTjM+I=;
+	s=arc-20240116; t=1757276475; c=relaxed/simple;
+	bh=hNQF7A4XXpT8EhtrZw0bpUgbO5kZdcAIZrq1E+DFux0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LemW5QicDxvcgU0AMXTeYssk4iCQu9vV/on+lKMat9vGb9N9GXUAUc9ZeMrzunHSN8gwiOR0qOMl799NWfEzHHQdQ0T3179nynKuVXWvPVO4clydaaC3YIg32LWcRlg3MJqQbomN9DIS6gntf7wxGDywC3cJXF0uoS0pYh6U1c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mJEy5Po; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64593C4CEF0;
-	Sun,  7 Sep 2025 20:15:37 +0000 (UTC)
+	 MIME-Version; b=R9hU+J8BEwqYKW9xfMF/Ap5uwY2PDhCdH0mGH4IYOmeous81WGcg53bYCNpfEaU0CWDWPLlen8FYsAZeEtjQpgyy8P2L0N5INfdGnfa6g5VeQFHnpF8BMNmyjP0DeXCheTUyqkAjnuWChCDon8o/6qAQB8o6yRaKVq+iKcbtuvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVliceEY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D4AC4CEF8;
+	Sun,  7 Sep 2025 20:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276137;
-	bh=eOixkJ6nJJLywTkv/LM32m98FbEmOd8Oq1qZ3MTjM+I=;
+	s=korg; t=1757276475;
+	bh=hNQF7A4XXpT8EhtrZw0bpUgbO5kZdcAIZrq1E+DFux0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2mJEy5PoGY5YFJikP6iaSonVbOvOtU0Wnprz3aLAStPSFU8f+UW7J8k7DpZsVaI5o
-	 pQKaWE+mZnykE+f5CTYiS/9AufkB7yuvpgzx6TuQrKbhPTdnPAN9qroigQE++lV/MB
-	 DxIlGGUZhmQfQ2GrWyQY/s5KGcedXDdiqQrRCR+c=
+	b=VVliceEYXYd4cdkSsVBZK2Rltw6UjAQyY0W8ZLC2zBVWBZn8YS3S/QOA7muGLXWmJ
+	 FQX9Zjkbzhl+NF1nIfincWaN+NAxh+xEyZmdJm24gHmFIud20OAjMqDd8nLpcXoGu7
+	 puec2CO34ux2BDy0G9dSvj+Kdm355hKjLvuI/soA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Yang Li <yang.li@amlogic.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/104] Bluetooth: hci_sync: Avoid adding default advertising on startup
-Date: Sun,  7 Sep 2025 21:57:27 +0200
-Message-ID: <20250907195607.942416826@linuxfoundation.org>
+Subject: [PATCH 6.6 012/121] Bluetooth: hci_sync: Avoid adding default advertising on startup
+Date: Sun,  7 Sep 2025 21:57:28 +0200
+Message-ID: <20250907195610.128247243@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -99,10 +99,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 965b0f2b43a72..a2c3b58db54c2 100644
+index 020f1809fc994..7f3f700faebc2 100644
 --- a/net/bluetooth/hci_sync.c
 +++ b/net/bluetooth/hci_sync.c
-@@ -3287,7 +3287,7 @@ static int hci_powered_update_adv_sync(struct hci_dev *hdev)
+@@ -3354,7 +3354,7 @@ static int hci_powered_update_adv_sync(struct hci_dev *hdev)
  	 * advertising data. This also applies to the case
  	 * where BR/EDR was toggled during the AUTO_OFF phase.
  	 */
