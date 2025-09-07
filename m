@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-178647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A596DB47F82
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C7BB47DCB
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 656C63C3116
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F6591672CE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8E521ADAE;
-	Sun,  7 Sep 2025 20:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A8E1E0DE8;
+	Sun,  7 Sep 2025 20:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mL9h/ie8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSma95N3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5F01A704B;
-	Sun,  7 Sep 2025 20:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30ED215D5B6;
+	Sun,  7 Sep 2025 20:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277507; cv=none; b=WSQLffAH/IpKmRdJSE9Ts2Uo9Fy5z8xDcO3C4+i1PEN6GbfLOO9OcDrp9Le5YNvCUywjRIXYGKm1bweOTenc/FQN4BC2bb88e9FgYWUwyisJ9yvAwsTAvRqRjrNxYHxx+5pkaI8t5N1Dc1U7F/F1hu6fDTJQLwY/h5T9BSxOBJ4=
+	t=1757276191; cv=none; b=WHy7MNtvm1DtUWQaGNSNjs2d41sGgm+xjd0PHf40RVTtxWTGq2G/jYTsbMnxSNTKoKh3b4XcSriQMCL0rrCJJS3bUfUhU9N1xeH6MIe/C/c2R3EzWolay0GaVYepnqAFgUYC9cW8GTl7p/3w35fpYuiiRmOslNI6s4TW0LJidKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277507; c=relaxed/simple;
-	bh=7DfoF6dItP0KHvvduVp1jpeKtut2C6eqKJtLEyN3meY=;
+	s=arc-20240116; t=1757276191; c=relaxed/simple;
+	bh=mNHB/PZoBeUazc3+Y7/SV5RNlRmXR8D8lvo+f3O95Bw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lShkibvKjza0K0pRjGFXrs8IZgJWl8AM9Y4rfZ0IZtddaKqszixw/ubuDeaF2TCUidWvOsVZGkXXjqF1Xo/JiGlNclOrbKMWrs7i50Wfc3zAAHHp8R46ZqLiS2GYWEwMG6jWjOAiJRuxgohSAxNlZcFkVoUaFaht27ErF4VW/n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mL9h/ie8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D58AC4CEF0;
-	Sun,  7 Sep 2025 20:38:26 +0000 (UTC)
+	 MIME-Version; b=rFV1rK/0Yl6g+cZM0gvjfsP4vscfTXbVeWDVZYOlgL2vDULNjZdiV1n1cuCPgDuDM/d5EaSev0n196ib8IvrIOmhrmEZ149+Ob0TkYICczfcdOvXoBnUOb/aR5MiELyv94iTim5NoJc3BeV+D4VaLBsyf/74+AcdmfJ+zmUjVWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSma95N3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A946C4CEF0;
+	Sun,  7 Sep 2025 20:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277506;
-	bh=7DfoF6dItP0KHvvduVp1jpeKtut2C6eqKJtLEyN3meY=;
+	s=korg; t=1757276190;
+	bh=mNHB/PZoBeUazc3+Y7/SV5RNlRmXR8D8lvo+f3O95Bw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mL9h/ie8NLr+adsVjkCFXYOS5+HpkBZ2cwbKFbaFqLY53gZA+2Aa8+Fstz3vuEOte
-	 cte7K/ZYQfqbfuu3O10Vz6ile0S7ABQT/fUCMZvFRAIPj/dk+YWWPqHx79iWKf1tVS
-	 AQhOaWqHQug5l8FeU9/IwwtIAFtCEevuFEPjIK3w=
+	b=QSma95N3cySCEY1E/yW+KeqG4wVPiU4zuGOPeBdJLPoJtVejYNO/ziZnK81VoTnOZ
+	 R/6un01kWiaXzCLnOOtQocT4YMI+GQVR0nY8VRMUqIrBrFlP+PyUdIZwQop5BEpy9X
+	 emWBAvMYZXXaw/jnMuITlWKoNfllGpbjxmEVgMhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 037/183] wifi: mt76: mt7996: add missing check for rx wcid entries
+Subject: [PATCH 6.1 027/104] wifi: cw1200: cap SSID length in cw1200_do_join()
 Date: Sun,  7 Sep 2025 21:57:44 +0200
-Message-ID: <20250907195616.656326639@linuxfoundation.org>
+Message-ID: <20250907195608.402170347@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 4a522b01e368eec58d182ecc47d24f49a39e440d ]
+[ Upstream commit f8f15f6742b8874e59c9c715d0af3474608310ad ]
 
-Non-station wcid entries must not be passed to the rx functions.
-In case of the global wcid entry, it could even lead to corruption in the wcid
-array due to pointer being casted to struct mt7996_sta_link using container_of.
+If the ssidie[1] length is more that 32 it leads to memory corruption.
 
-Fixes: 7464b12b7d92 ("wifi: mt76: mt7996: rework mt7996_rx_get_wcid to support MLO")
-Link: https://patch.msgid.link/20250827085352.51636-3-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/e91fb43fcedc4893b604dfb973131661510901a7.1756456951.git.dan.carpenter@linaro.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 2 +-
+ drivers/net/wireless/st/cw1200/sta.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index b0fa051fc3094..a7a5ac8b7d265 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -62,7 +62,7 @@ static struct mt76_wcid *mt7996_rx_get_wcid(struct mt7996_dev *dev,
- 	int i;
- 
- 	wcid = mt76_wcid_ptr(dev, idx);
--	if (!wcid)
-+	if (!wcid || !wcid->sta)
- 		return NULL;
- 
- 	if (!mt7996_band_valid(dev, band_idx))
+diff --git a/drivers/net/wireless/st/cw1200/sta.c b/drivers/net/wireless/st/cw1200/sta.c
+index 8ef1d06b9bbdd..121d810c8839e 100644
+--- a/drivers/net/wireless/st/cw1200/sta.c
++++ b/drivers/net/wireless/st/cw1200/sta.c
+@@ -1290,7 +1290,7 @@ static void cw1200_do_join(struct cw1200_common *priv)
+ 		rcu_read_lock();
+ 		ssidie = ieee80211_bss_get_ie(bss, WLAN_EID_SSID);
+ 		if (ssidie) {
+-			join.ssid_len = ssidie[1];
++			join.ssid_len = min(ssidie[1], IEEE80211_MAX_SSID_LEN);
+ 			memcpy(join.ssid, &ssidie[2], join.ssid_len);
+ 		}
+ 		rcu_read_unlock();
 -- 
 2.50.1
 
