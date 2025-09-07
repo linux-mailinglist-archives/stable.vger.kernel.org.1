@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1152FB47E98
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1061FB47FFB
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:44:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 172F91B20027
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F13B1883864
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A79120D4FC;
-	Sun,  7 Sep 2025 20:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC082773FE;
+	Sun,  7 Sep 2025 20:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0eL3Hkn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOEjFIKh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC076D528;
-	Sun,  7 Sep 2025 20:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBE14315A;
+	Sun,  7 Sep 2025 20:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276781; cv=none; b=FC3EErFSfbt0CEvhzR173h15zV32Q8ZDBRzCyPlGE47XdgjC/5UdJu2eKEshXmprkP0UGIwADCumMaR5s42LbxTboHrls3hBKYP4gsF1Qes+EomcA/LO8j3yPpQUqbPaKmOGXL9DMilBTjTZQDyv2Ol/YOnx7sThVuZQrhcVpFw=
+	t=1757277890; cv=none; b=qsFC45+2gm0PD053HIK+Qi4XWhv4IsTa6+F5ek6B1pkpY6Ki8zt9mmHsVF348GsYQpNH/GZhX69yNCGbfbfogp0zYWcKapQ8Ppp6/hBimFJvwB0hXgCwEk31CnHoBudaqRzBeiWePHFB9P3U5VhJAS09Gj/0Y6Pym8U/6d4Q0XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276781; c=relaxed/simple;
-	bh=yqeIKel0lo373o4rRsAu+pIz/si+ILYqpUbDRYaXveY=;
+	s=arc-20240116; t=1757277890; c=relaxed/simple;
+	bh=SxIEbSgrXyULR9IXbUGNGIZDrWDY6Oh02FrQwEdyeKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utqxvag95E3aOUXhnuR0vwGdnH3/OalxcdvUt1fYSaMjODlpF5Qf8esM+NLd+KNG9nGG4ZWgdT0OmFleCz6AS0aXwXhR1de5JOmRxiVclKQqdh2Tu+WyrnCMH8uAZL2INQdA6wbzsL6dDpF3MM+4Qjy2c3/YDzVqd5hfrkWSfMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0eL3Hkn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D995C4CEF0;
-	Sun,  7 Sep 2025 20:26:21 +0000 (UTC)
+	 MIME-Version; b=Iy+hRBsLK5ExDcreLkVaKXrNKR9rK4WCSvpYQOviRIhvKmdNblN/UxDXRplb7d6n0+yXWDXAJ+YgXzaZcGYyf9C2Zbo8r0kZLjCZkpT7grZnqWS+9BK3w35k1xSNNkyBv2F/Ua+q2Mtxo8N5mCOLz973f6f+CLxcVQ6Tvnkek0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOEjFIKh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750D6C4CEF0;
+	Sun,  7 Sep 2025 20:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276781;
-	bh=yqeIKel0lo373o4rRsAu+pIz/si+ILYqpUbDRYaXveY=;
+	s=korg; t=1757277889;
+	bh=SxIEbSgrXyULR9IXbUGNGIZDrWDY6Oh02FrQwEdyeKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j0eL3HkntNtumhR6JUgx3XdD6wZfYegnmrvxK8b9cT/nuIlcarrEpOYk7MXDUx2/n
-	 TrwWRUSPDkeGIBwk+zRzXB56EGiywKcu28Lv9Z4/28m4UN99rV2aK4U7Z2995ydLt1
-	 2qbEsWrPH6/ePSHWdOwU4VXBL7U+iieVKCOf9omg=
+	b=rOEjFIKh0mhBO5wKqYr56SIZPp73DI6SEJ4aBIjyiE34O/N5Xnx54jG4nWw58dZK7
+	 CHjxLhtdwP5xrITzrbdAa7jx/czbvxXh+v/sKzeQo+7YqiWCr/wNQQ4oG7MwYD6fRT
+	 2nG9fLUKSpfOekCj7WSONqMBvL55uNaHROCVSWto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 109/121] perf bpf-utils: Harden get_bpf_prog_info_linear
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.16 118/183] wifi: mwifiex: Initialize the chan_stats array to zero
 Date: Sun,  7 Sep 2025 21:59:05 +0200
-Message-ID: <20250907195612.643628263@linuxfoundation.org>
+Message-ID: <20250907195618.596474924@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,125 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit 01be43f2a0eaeed83e94dee054742f37625c86d9 ]
+commit 0e20450829ca3c1dbc2db536391537c57a40fe0b upstream.
 
-In get_bpf_prog_info_linear two calls to bpf_obj_get_info_by_fd are
-made, the first to compute memory requirements for a struct perf_bpil
-and the second to fill it in. Previously the code would warn when the
-second call didn't match the first. Such races can be common place in
-things like perf test, whose perf trace tests will frequently load BPF
-programs. Rather than a debug message, return actual errors for this
-case. Out of paranoia also validate the read bpf_prog_info array
-value. Change the type of ptr to avoid mismatched pointer type
-compiler warnings. Add some additional debug print outs and sanity
-asserts.
+The adapter->chan_stats[] array is initialized in
+mwifiex_init_channel_scan_gap() with vmalloc(), which doesn't zero out
+memory.  The array is filled in mwifiex_update_chan_statistics()
+and then the user can query the data in mwifiex_cfg80211_dump_survey().
 
-Closes: https://lore.kernel.org/lkml/CAP-5=fWJQcmUOP7MuCA2ihKnDAHUCOBLkQFEkQES-1ZZTrgf8Q@mail.gmail.com/
-Fixes: 6ac22d036f86 ("perf bpf: Pull in bpf_program__get_prog_info_linear()")
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250902181713.309797-4-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+There are two potential issues here.  What if the user calls
+mwifiex_cfg80211_dump_survey() before the data has been filled in.
+Also the mwifiex_update_chan_statistics() function doesn't necessarily
+initialize the whole array.  Since the array was not initialized at
+the start that could result in an information leak.
+
+Also this array is pretty small.  It's a maximum of 900 bytes so it's
+more appropriate to use kcalloc() instead vmalloc().
+
+Cc: stable@vger.kernel.org
+Fixes: bf35443314ac ("mwifiex: channel statistics support for mwifiex")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20250815023055.477719-1-rongqianfeng@vivo.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/bpf-utils.c | 43 ++++++++++++++++++++++++++++---------
- 1 file changed, 33 insertions(+), 10 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |    5 +++--
+ drivers/net/wireless/marvell/mwifiex/main.c     |    4 ++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/bpf-utils.c b/tools/perf/util/bpf-utils.c
-index 64a5583446964..5a66dc8594aa8 100644
---- a/tools/perf/util/bpf-utils.c
-+++ b/tools/perf/util/bpf-utils.c
-@@ -115,7 +115,7 @@ get_bpf_prog_info_linear(int fd, __u64 arrays)
- 	__u32 info_len = sizeof(info);
- 	__u32 data_len = 0;
- 	int i, err;
--	void *ptr;
-+	__u8 *ptr;
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -4668,8 +4668,9 @@ int mwifiex_init_channel_scan_gap(struct
+ 	 * additional active scan request for hidden SSIDs on passive channels.
+ 	 */
+ 	adapter->num_in_chan_stats = 2 * (n_channels_bg + n_channels_a);
+-	adapter->chan_stats = vmalloc(array_size(sizeof(*adapter->chan_stats),
+-						 adapter->num_in_chan_stats));
++	adapter->chan_stats = kcalloc(adapter->num_in_chan_stats,
++				      sizeof(*adapter->chan_stats),
++				      GFP_KERNEL);
  
- 	if (arrays >> PERF_BPIL_LAST_ARRAY)
- 		return ERR_PTR(-EINVAL);
-@@ -126,6 +126,8 @@ get_bpf_prog_info_linear(int fd, __u64 arrays)
- 		pr_debug("can't get prog info: %s", strerror(errno));
- 		return ERR_PTR(-EFAULT);
- 	}
-+	if (info.type >= __MAX_BPF_PROG_TYPE)
-+		pr_debug("%s:%d: unexpected program type %u\n", __func__, __LINE__, info.type);
+ 	if (!adapter->chan_stats)
+ 		return -ENOMEM;
+--- a/drivers/net/wireless/marvell/mwifiex/main.c
++++ b/drivers/net/wireless/marvell/mwifiex/main.c
+@@ -642,7 +642,7 @@ static int _mwifiex_fw_dpc(const struct
+ 	goto done;
  
- 	/* step 2: calculate total size of all arrays */
- 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
-@@ -173,6 +175,8 @@ get_bpf_prog_info_linear(int fd, __u64 arrays)
- 					     desc->count_offset, count);
- 		bpf_prog_info_set_offset_u32(&info_linear->info,
- 					     desc->size_offset, size);
-+		assert(ptr >= info_linear->data);
-+		assert(ptr < &info_linear->data[data_len]);
- 		bpf_prog_info_set_offset_u64(&info_linear->info,
- 					     desc->array_offset,
- 					     ptr_to_u64(ptr));
-@@ -186,26 +190,45 @@ get_bpf_prog_info_linear(int fd, __u64 arrays)
- 		free(info_linear);
- 		return ERR_PTR(-EFAULT);
- 	}
-+	if (info_linear->info.type >= __MAX_BPF_PROG_TYPE) {
-+		pr_debug("%s:%d: unexpected program type %u\n",
-+			 __func__, __LINE__, info_linear->info.type);
-+	}
+ err_add_intf:
+-	vfree(adapter->chan_stats);
++	kfree(adapter->chan_stats);
+ err_init_chan_scan:
+ 	wiphy_unregister(adapter->wiphy);
+ 	wiphy_free(adapter->wiphy);
+@@ -1485,7 +1485,7 @@ static void mwifiex_uninit_sw(struct mwi
+ 	wiphy_free(adapter->wiphy);
+ 	adapter->wiphy = NULL;
  
- 	/* step 6: verify the data */
-+	ptr = info_linear->data;
- 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
- 		const struct bpil_array_desc *desc = &bpil_array_desc[i];
--		__u32 v1, v2;
-+		__u32 count1, count2, size1, size2;
-+		__u64 ptr2;
+-	vfree(adapter->chan_stats);
++	kfree(adapter->chan_stats);
+ 	mwifiex_free_cmd_buffers(adapter);
+ }
  
- 		if ((arrays & (1UL << i)) == 0)
- 			continue;
- 
--		v1 = bpf_prog_info_read_offset_u32(&info, desc->count_offset);
--		v2 = bpf_prog_info_read_offset_u32(&info_linear->info,
-+		count1 = bpf_prog_info_read_offset_u32(&info, desc->count_offset);
-+		count2 = bpf_prog_info_read_offset_u32(&info_linear->info,
- 						   desc->count_offset);
--		if (v1 != v2)
--			pr_warning("%s: mismatch in element count\n", __func__);
-+		if (count1 != count2) {
-+			pr_warning("%s: mismatch in element count %u vs %u\n", __func__, count1, count2);
-+			free(info_linear);
-+			return ERR_PTR(-ERANGE);
-+		}
- 
--		v1 = bpf_prog_info_read_offset_u32(&info, desc->size_offset);
--		v2 = bpf_prog_info_read_offset_u32(&info_linear->info,
-+		size1 = bpf_prog_info_read_offset_u32(&info, desc->size_offset);
-+		size2 = bpf_prog_info_read_offset_u32(&info_linear->info,
- 						   desc->size_offset);
--		if (v1 != v2)
--			pr_warning("%s: mismatch in rec size\n", __func__);
-+		if (size1 != size2) {
-+			pr_warning("%s: mismatch in rec size %u vs %u\n", __func__, size1, size2);
-+			free(info_linear);
-+			return ERR_PTR(-ERANGE);
-+		}
-+		ptr2 = bpf_prog_info_read_offset_u64(&info_linear->info, desc->array_offset);
-+		if (ptr_to_u64(ptr) != ptr2) {
-+			pr_warning("%s: mismatch in array %p vs %llx\n", __func__, ptr, ptr2);
-+			free(info_linear);
-+			return ERR_PTR(-ERANGE);
-+		}
-+		ptr += roundup(count1 * size1, sizeof(__u64));
- 	}
- 
- 	/* step 7: update info_len and data_len */
--- 
-2.51.0
-
 
 
 
