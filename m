@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0206CB47F81
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700E8B47D74
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 937C4200175
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B6BA3B4467
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6BC21ADAE;
-	Sun,  7 Sep 2025 20:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D184727FB21;
+	Sun,  7 Sep 2025 20:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXvwB4ae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzJmXRPr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85124315A;
-	Sun,  7 Sep 2025 20:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1FF1CDFAC;
+	Sun,  7 Sep 2025 20:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277504; cv=none; b=oH0XwYYEg9mxL1gUtoStdjl01Nw6AM1zQadRjOfFfA5H+xpppy2LumThoTER6SNb1f1nTUwXKkGKTWE8rd/FAnR/UtkKLQbUojpy6xbygu1eBULI1ewGEtbA76XMMCHkB6ZsunlhqzxnNUqLSzKH/IbSqlo+LvlIfOU7eCCg/qg=
+	t=1757275927; cv=none; b=OW87nKdoDR4JLb9Km/ia+3oSZHQqA5u2SAgaBMhG8VcgmbhfT9Qr8iNQjuwiO8uDH2eUcgOK633A/CV5Fr0FXlaf/lU5Iq+zvvREo7GnK8qJp8vQ1Q22tpzUvEJVBGAQ5j7F5qi8dYyV4biCFvYhbF4WALvkEOo4bIl7FOn3cPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277504; c=relaxed/simple;
-	bh=Rct5CgoUH0bHyv5Anx6w7r1PuwByiIN5HoQez8Dfr74=;
+	s=arc-20240116; t=1757275927; c=relaxed/simple;
+	bh=Qt8eTSViy+KfMiVdqoX3u4Hv3QVFKh7eCMTPnJFL088=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bx0cGjVs7EmHjRJqm/MqVMAFwPndpBHDpFwT81fRpWKhTvwAOI5r2V9pohM7dYBpV8JkhNImh9HcKvOIxLHq67DGUB7jD0702a2qwtV06nt9O79C51VSI8/Y7gKkPTf0mA60VXy1DHyyIZ6qNpCOfzGhf9mDfT1h7kcJgEwpn+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXvwB4ae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D1ACC4CEF0;
-	Sun,  7 Sep 2025 20:38:23 +0000 (UTC)
+	 MIME-Version; b=qPcwyRaQ3OYRuNh6iuqC2A1XhbtLVFsLpWYOVZ8c5FZK7m4NrKrElPzKZJRu0Exya9qINNa6yl2s98qHWpchl8el0XYsitBrgn1vYDtef4tYpZ48BYQLdJ6gpfGkFttqAQ+Kv/lP9KqU0v2i8xAbuy3GNWAWYHDCWw4HJKhg9lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzJmXRPr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129D8C4CEF0;
+	Sun,  7 Sep 2025 20:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277503;
-	bh=Rct5CgoUH0bHyv5Anx6w7r1PuwByiIN5HoQez8Dfr74=;
+	s=korg; t=1757275927;
+	bh=Qt8eTSViy+KfMiVdqoX3u4Hv3QVFKh7eCMTPnJFL088=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXvwB4ae5mewIthnCELlea490hLZESGQM3lSuR4eirtPWjm25AcW+v5R5pZt0rgyS
-	 lujLF27+ZyoGs5XQIC30c2ltV7qx1vfc/wrmyeEF0ykAZhLkwZG+J5fychU58Na9eK
-	 8jS+Itdl5tKYWZqCeFVxeU72ry0sCgerb3ah7t/c=
+	b=EzJmXRPrVeM5YH8f/idWxWqNTBCVlhIXBkN2XxOXOzR/qjZhB+pN55fepb8tLjEFR
+	 QeL6+UUDlIISOeONCkYSktMq6Ea0KWlpFp0ui1FVdP83FqRa28Lep765lj1E5J+6p2
+	 Kus4zs0Z8eFYu1rOkuim2J5C+rSkZ4TEOdNodk6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chad Monroe <chad@monroe.io>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 036/183] wifi: mt76: mt7996: use the correct vif link for scanning/roc
+Subject: [PATCH 5.15 01/64] bpf: Add cookie object to bpf maps
 Date: Sun,  7 Sep 2025 21:57:43 +0200
-Message-ID: <20250907195616.633738253@linuxfoundation.org>
+Message-ID: <20250907195603.435311129@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chad Monroe <chad@monroe.io>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 4be3b46ec5190dc79cd38e3750480b2c66a791ad ]
+[ Upstream commit 12df58ad294253ac1d8df0c9bb9cf726397a671d ]
 
-restore fix which was dropped during MLO rework
+Add a cookie to BPF maps to uniquely identify BPF maps for the timespan
+when the node is up. This is different to comparing a pointer or BPF map
+id which could get rolled over and reused.
 
-Fixes: f0b0b239b8f3 ("wifi: mt76: mt7996: rework mt7996_mac_write_txwi() for MLO support")
-Signed-off-by: Chad Monroe <chad@monroe.io>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/180fffd409aa57f535a3d2c1951e41ae398ce09e.1754659732.git.chad@monroe.io
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/r/20250730234733.530041-1-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/linux/bpf.h  | 1 +
+ kernel/bpf/syscall.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index f675cf537898a..b0fa051fc3094 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -903,8 +903,12 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 				       IEEE80211_TX_CTRL_MLO_LINK);
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 4236de05a8e70..dd6a62134e7d1 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -200,6 +200,7 @@ struct bpf_map {
+ 	struct mutex freeze_mutex;
+ 	atomic64_t writecnt;
+ 	bool free_after_mult_rcu_gp;
++	u64 cookie; /* write-once */
+ };
  
- 	mvif = vif ? (struct mt7996_vif *)vif->drv_priv : NULL;
--	if (mvif)
--		mlink = rcu_dereference(mvif->mt76.link[link_id]);
-+	if (mvif) {
-+		if (wcid->offchannel)
-+			mlink = rcu_dereference(mvif->mt76.offchannel_link);
-+		if (!mlink)
-+			mlink = rcu_dereference(mvif->mt76.link[link_id]);
-+	}
+ static inline bool map_value_has_spin_lock(const struct bpf_map *map)
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 6f309248f13fc..6d4d08f57ad38 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -31,6 +31,7 @@
+ #include <linux/bpf-netns.h>
+ #include <linux/rcupdate_trace.h>
+ #include <linux/memcontrol.h>
++#include <linux/cookie.h>
  
- 	if (mlink) {
- 		omac_idx = mlink->omac_idx;
+ #define IS_FD_ARRAY(map) ((map)->map_type == BPF_MAP_TYPE_PERF_EVENT_ARRAY || \
+ 			  (map)->map_type == BPF_MAP_TYPE_CGROUP_ARRAY || \
+@@ -43,6 +44,7 @@
+ #define BPF_OBJ_FLAG_MASK   (BPF_F_RDONLY | BPF_F_WRONLY)
+ 
+ DEFINE_PER_CPU(int, bpf_prog_active);
++DEFINE_COOKIE(bpf_map_cookie);
+ static DEFINE_IDR(prog_idr);
+ static DEFINE_SPINLOCK(prog_idr_lock);
+ static DEFINE_IDR(map_idr);
+@@ -886,6 +888,10 @@ static int map_create(union bpf_attr *attr)
+ 	if (err < 0)
+ 		goto free_map;
+ 
++	preempt_disable();
++	map->cookie = gen_cookie_next(&bpf_map_cookie);
++	preempt_enable();
++
+ 	atomic64_set(&map->refcnt, 1);
+ 	atomic64_set(&map->usercnt, 1);
+ 	mutex_init(&map->freeze_mutex);
 -- 
 2.50.1
 
