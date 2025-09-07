@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-178558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 664FCB47F27
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 955B5B47DA3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 215243C29DC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 936F8189E2CE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C631A212B3D;
-	Sun,  7 Sep 2025 20:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F6F26E6FF;
+	Sun,  7 Sep 2025 20:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUsVoL/X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tU6p83I+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8245C1A0BFD;
-	Sun,  7 Sep 2025 20:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893D31B424F;
+	Sun,  7 Sep 2025 20:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277220; cv=none; b=G9fyUIvUt+z6A/OWQVuNXQWTTbpeamnKP3uVScg3uADxmehx9D1teOC8OR4H8yaUZapt0GeXqFYwOmz5Uc4yuGSEsqIsUgoT/dwBadh61zamprPpTikEX1K9JC6SBVBjfvPN1FAXcW7TqwyjbegON5zurq9Zc47Sd5/1pPlirGI=
+	t=1757276072; cv=none; b=ry6Zd7ZciXVVcNLrreaA4JsGJGC1iiD1ZAvwbdYdfElIC4tS1WoiGay6RpZGjCwGG8NChEod4adNm2hihFAQmNttFPM0nu6PKUXXhTqyKQ2I94U5mmhKsUWyoOuUTHlfazqYRl/BWa9JGF1H6w1PADSvUdTGJ/SM0fGi38SXxv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277220; c=relaxed/simple;
-	bh=gJxVOj3zgu9y0zSJJwO+3vrwHZDHWNDTLxqPf3XcfCQ=;
+	s=arc-20240116; t=1757276072; c=relaxed/simple;
+	bh=tZM9X24HLYmAprcD2e6fC/geX49FocoUWDtihRNpW5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WFmCvOQd2iIEXjWAV4BXaQUqCcxJ4OMPD6ySCtal0RDEMHpQuzLIO2CWociADkCM88bYorpXKBlDlM4lLzdQMf2qLhoQLXDb/6yxx3NCPhEkqx7Wnd2rlwLhlC6pkCSpCeFnxbU2gGYrCBdI15m/WCme+1AKsbGiPrcp8r4Wah8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUsVoL/X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B1FC4CEF0;
-	Sun,  7 Sep 2025 20:33:39 +0000 (UTC)
+	 MIME-Version; b=SjWxzlYupUFop1/xCLZae5N8uPpBHYjLOHT/FgaDBTIdHif4ACwW+W0Ytsbv8GNwhB/DfqGqUPQewFrl/N51Ag8np/rK58N/7zDZ1+J4fq5Pg0jSvL8au+h/L9D7f2CrhWqDygiwUMzN+FYZGhtp78NJjgFj3rksTaBj+ocRQPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tU6p83I+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB2BC4CEF0;
+	Sun,  7 Sep 2025 20:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277220;
-	bh=gJxVOj3zgu9y0zSJJwO+3vrwHZDHWNDTLxqPf3XcfCQ=;
+	s=korg; t=1757276072;
+	bh=tZM9X24HLYmAprcD2e6fC/geX49FocoUWDtihRNpW5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GUsVoL/XB6E7tkFe32FFt0FcukZkp9sXp+7AbX4Q9kKhdmKslIUih1RfwBupsYErg
-	 EdAGcCsx49MvV9Bt7M8gcYVsM26ue/gdCt5wcIdfo2CDWC/W4j+TsCSFpERwa+udbi
-	 aBBNYzylbb617WmFLB0X7TWvnTAU3BYNRse8nRjQ=
+	b=tU6p83I+HFx5+lh5NoHpm5rwPEISoYnyuFK8I9f1tsOPnMUydBhSRttFG7fOV9f4P
+	 o/qSTMfSvyKSihgI0dwAuVZ2lwNVwRjkCZNMt36aq0/cIdUfdLk99RBdr+UMtkh6Yi
+	 vHKqjsDYnpMHWKw8ut+l3OCBiIN55JKQHMlHnXRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	stable@kernel.org,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 121/175] microchip: lan865x: Fix module autoloading
+	Li Qiong <liqiong@nfschina.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 54/64] mm/slub: avoid accessing metadata when pointer is invalid in object_err()
 Date: Sun,  7 Sep 2025 21:58:36 +0200
-Message-ID: <20250907195617.722079371@linuxfoundation.org>
+Message-ID: <20250907195604.905205454@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Li Qiong <liqiong@nfschina.com>
 
-commit c7217963eb779be0a7627dd2121152fa6786ecf7 upstream.
+[ Upstream commit b4efccec8d06ceb10a7d34d7b1c449c569d53770 ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
-based on the alias from spi_device_id table. While at this, fix
-the misleading variable name (spidev is unrelated to this driver).
+object_err() reports details of an object for further debugging, such as
+the freelist pointer, redzone, etc. However, if the pointer is invalid,
+attempting to access object metadata can lead to a crash since it does
+not point to a valid object.
 
-Fixes: 5cd2340cb6a3 ("microchip: lan865x: add driver support for Microchip's LAN865X MAC-PHY")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Cc: stable@kernel.org
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250827115341.34608-3-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+One known path to the crash is when alloc_consistency_checks()
+determines the pointer to the allocated object is invalid because of a
+freelist corruption, and calls object_err() to report it. The debug code
+should report and handle the corruption gracefully and not crash in the
+process.
+
+In case the pointer is NULL or check_valid_pointer() returns false for
+the pointer, only print the pointer value and skip accessing metadata.
+
+Fixes: 81819f0fc828 ("SLUB core")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Li Qiong <liqiong@nfschina.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+[ struct page instead of slab ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan865x/lan865x.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ mm/slub.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-index 84c41f193561..9d94c8fb8b91 100644
---- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
-+++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-@@ -423,10 +423,11 @@ static void lan865x_remove(struct spi_device *spi)
- 	free_netdev(priv->netdev);
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -864,7 +864,12 @@ void object_err(struct kmem_cache *s, st
+ 		return;
+ 
+ 	slab_bug(s, "%s", reason);
+-	print_trailer(s, page, object);
++	if (!object || !check_valid_pointer(s, page, object)) {
++		print_page_info(page);
++		pr_err("Invalid pointer 0x%p\n", object);
++	} else {
++		print_trailer(s, page, object);
++	}
+ 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
  }
  
--static const struct spi_device_id spidev_spi_ids[] = {
-+static const struct spi_device_id lan865x_ids[] = {
- 	{ .name = "lan8650" },
- 	{},
- };
-+MODULE_DEVICE_TABLE(spi, lan865x_ids);
- 
- static const struct of_device_id lan865x_dt_ids[] = {
- 	{ .compatible = "microchip,lan8650" },
-@@ -441,7 +442,7 @@ static struct spi_driver lan865x_driver = {
- 	 },
- 	.probe = lan865x_probe,
- 	.remove = lan865x_remove,
--	.id_table = spidev_spi_ids,
-+	.id_table = lan865x_ids,
- };
- module_spi_driver(lan865x_driver);
- 
--- 
-2.51.0
-
 
 
 
