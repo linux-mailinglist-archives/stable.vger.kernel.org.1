@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE184B47EA3
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6479AB47FDD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 768CE17591A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 188873C3BFD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CB31E1C1A;
-	Sun,  7 Sep 2025 20:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C71E269CE6;
+	Sun,  7 Sep 2025 20:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blPYhW+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9Fa8EU3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14860D528;
-	Sun,  7 Sep 2025 20:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499454315A;
+	Sun,  7 Sep 2025 20:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276817; cv=none; b=fGZ94Kbu56nzGpkDMHduhzozswih3a6WbX7INv7nzSjHXwLr5PcP0NUq7ksafBF/rm7ucMfSgT4USI8dO2kELb2sVChGCl2mwUqw9TNKsnW3qSlkLtSLNwPKEtWpulcvYEuvt9wuceDMLp5eQLNH4aQOU7nnFXfbron/fvdpk5g=
+	t=1757277800; cv=none; b=rojA8/ivEmab1xrjxDzI6hvSdtUeVdoDz4/e2NVZZ2zLUmTrGB8N0o1ZvS9qycM0UgCVgTxUbDthQ6yRyjGBROjsdp4MbUgjNiPdqSJ+oYFVEKXZzUyV3pSbx/c+cHdhnsnq5niMqZzk23Jgrl1KgT49YNjKiQbefKX4h3wUPHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276817; c=relaxed/simple;
-	bh=de9RJlHZKonUIZ3IIz/xoxOBiuPAqVbXc2V89eD91Dk=;
+	s=arc-20240116; t=1757277800; c=relaxed/simple;
+	bh=/wAfvfA523OhhkSMCcqz10j+Rt/2skyH1yzi6rVzOW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lX9t6V8I/E7GPQJoRJWPT7M/4gWo5BI0oNQzfdKNmQPNOfnL499AI6vjlvUQtvvTMxyxThqTFsve+2f8seYqCqRdmM9+L/XtDKY1RXSrlmQe5Kj68ITg+rufT3/AouwSiegzVMQBaQGN47upv49JiGpEt+dM/r6r9LMOFgpRQQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blPYhW+E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C618C4CEF0;
-	Sun,  7 Sep 2025 20:26:56 +0000 (UTC)
+	 MIME-Version; b=hKVM8Ush+Lighc4k1TPsvX7n0NBE2XZz+/7HvKCdMrKhTk5f2660GV9y1t9yWMhU9yNY21XIR0aCNlVawyiKTxae+yluo72iBtG9JZlJsZsAZg/2oYK7gg59GTWGGkQ+3Bk8nCGBjCoLnp7PyFr2wOzaMReqfKEQS4A06ZoftmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9Fa8EU3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1F8C4CEF0;
+	Sun,  7 Sep 2025 20:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276817;
-	bh=de9RJlHZKonUIZ3IIz/xoxOBiuPAqVbXc2V89eD91Dk=;
+	s=korg; t=1757277800;
+	bh=/wAfvfA523OhhkSMCcqz10j+Rt/2skyH1yzi6rVzOW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=blPYhW+EA+CghQvE7lJy68c4AByiaCLBR1ilbyYHbE/k8hPWxOjLyd9mk8ci1U/E+
-	 PMNKdkpSfaV1fDjeB3Gxy3aXz38EPuYdrNPkzPDxdynEmHq4pqrAoNgf+ndeaeCzvE
-	 dXpJc1Xq7sgnvW1xw0/m+TDlcUrhjdLwxeRlu/Qs=
+	b=u9Fa8EU3SNnLOcF7gq2UJ7ZV0ecI09E3CxiaFddrBMJzL9KskDkcymglQRIX0gL71
+	 UVLX5Twp5NPxZrrTonLhQbOKAlRmTHl9ZbWN9+siDA/t6/JyiFX7g7Z4DPgxFcCzRJ
+	 +IATrX9ugDGuKc01UzP4+b7cYss6MXJM1Jte1oTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Xi Ruoyao <xry111@xry111.site>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/121] cpufreq: intel_pstate: Check turbo_is_disabled() in store_no_turbo()
+	"Sun peng (Leo) Li" <sunpeng.li@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.16 128/183] drm/amd/display: Clear the CUR_ENABLE register on DCN314 w/out DPP PG
 Date: Sun,  7 Sep 2025 21:59:15 +0200
-Message-ID: <20250907195612.904297654@linuxfoundation.org>
+Message-ID: <20250907195618.835263556@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +64,186 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Ivan Lipski <ivan.lipski@amd.com>
 
-[ Upstream commit 350cbb5d2f676bff22c49e5e81764c3b8da342a9 ]
+commit 3ebf766c35464ebdeefb6068246267147503dc04 upstream.
 
-After recent changes in intel_pstate, global.turbo_disabled is only set
-at the initialization time and never changed.  However, it turns out
-that on some systems the "turbo disabled" bit in MSR_IA32_MISC_ENABLE,
-the initial state of which is reflected by global.turbo_disabled, can be
-flipped later and there should be a way to take that into account (other
-than checking that MSR every time the driver runs which is costly and
-useless overhead on the vast majority of systems).
+[Why&How]
+ON DCN314, clearing DPP SW structure without power gating it can cause a
+double cursor in full screen with non-native scaling.
 
-For this purpose, notice that before the changes in question,
-store_no_turbo() contained a turbo_is_disabled() check that was used
-for updating global.turbo_disabled if the "turbo disabled" bit in
-MSR_IA32_MISC_ENABLE had been flipped and that functionality can be
-restored.  Then, users will be able to reset global.turbo_disabled
-by writing 0 to no_turbo which used to work before on systems with
-flipping "turbo disabled" bit.
+A W/A that clears CURSOR0_CONTROL cursor_enable flag if
+dcn10_plane_atomic_power_down is called and DPP power gating is disabled.
 
-This guarantees the driver state to remain in sync, but READ_ONCE()
-annotations need to be added in two places where global.turbo_disabled
-is accessed locklessly, so modify the driver to make that happen.
-
-Fixes: 0940f1a8011f ("cpufreq: intel_pstate: Do not update global.turbo_disabled after initialization")
-Closes: https://lore.kernel.org/linux-pm/bf3ebf1571a4788e97daf861eb493c12d42639a3.camel@xry111.site
-Suggested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Reported-by: Xi Ruoyao <xry111@xry111.site>
-Tested-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4168
+Reviewed-by: Sun peng (Leo) Li <sunpeng.li@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 645f74f1dc119dad5a2c7bbc05cc315e76883011)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/intel_pstate.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c      |    9 +
+ drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.h      |    2 
+ drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c      |    1 
+ drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c |   72 ++++++++++++++
+ drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.h |    2 
+ drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_init.c  |    1 
+ drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h               |    3 
+ 7 files changed, 90 insertions(+)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 05aae7e6da157..ed782c0b48af2 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -1288,12 +1288,17 @@ static ssize_t store_no_turbo(struct kobject *a, struct kobj_attribute *b,
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
+@@ -520,6 +520,15 @@ void dpp1_dppclk_control(
+ 		REG_UPDATE(DPP_CONTROL, DPP_CLOCK_ENABLE, 0);
+ }
  
- 	no_turbo = !!clamp_t(int, input, 0, 1);
- 
--	if (no_turbo == global.no_turbo)
--		goto unlock_driver;
--
--	if (global.turbo_disabled) {
--		pr_notice_once("Turbo disabled by BIOS or unavailable on processor\n");
-+	WRITE_ONCE(global.turbo_disabled, turbo_is_disabled());
-+	if (global.turbo_disabled && !no_turbo) {
-+		pr_notice("Turbo disabled by BIOS or unavailable on processor\n");
- 		count = -EPERM;
-+		if (global.no_turbo)
-+			goto unlock_driver;
-+		else
-+			no_turbo = 1;
-+	}
++void dpp_force_disable_cursor(struct dpp *dpp_base)
++{
++	struct dcn10_dpp *dpp = TO_DCN10_DPP(dpp_base);
 +
-+	if (no_turbo == global.no_turbo) {
- 		goto unlock_driver;
- 	}
++	/* Force disable cursor */
++	REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, 0);
++	dpp_base->pos.cur0_ctl.bits.cur0_enable = 0;
++}
++
+ static const struct dpp_funcs dcn10_dpp_funcs = {
+ 		.dpp_read_state = dpp_read_state,
+ 		.dpp_reset = dpp_reset,
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.h
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.h
+@@ -1525,4 +1525,6 @@ void dpp1_construct(struct dcn10_dpp *dp
  
-@@ -1766,7 +1771,7 @@ static u64 atom_get_val(struct cpudata *cpudata, int pstate)
- 	u32 vid;
+ void dpp1_cm_get_gamut_remap(struct dpp *dpp_base,
+ 			     struct dpp_grph_csc_adjustment *adjust);
++void dpp_force_disable_cursor(struct dpp *dpp_base);
++
+ #endif
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
+@@ -1494,6 +1494,7 @@ static struct dpp_funcs dcn30_dpp_funcs
+ 	.dpp_dppclk_control		= dpp1_dppclk_control,
+ 	.dpp_set_hdr_multiplier		= dpp3_set_hdr_multiplier,
+ 	.dpp_get_gamut_remap		= dpp3_cm_get_gamut_remap,
++	.dpp_force_disable_cursor 	= dpp_force_disable_cursor,
+ };
  
- 	val = (u64)pstate << 8;
--	if (READ_ONCE(global.no_turbo) && !global.turbo_disabled)
-+	if (READ_ONCE(global.no_turbo) && !READ_ONCE(global.turbo_disabled))
- 		val |= (u64)1 << 32;
  
- 	vid_fp = cpudata->vid.min + mul_fp(
-@@ -1931,7 +1936,7 @@ static u64 core_get_val(struct cpudata *cpudata, int pstate)
- 	u64 val;
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c
+@@ -528,3 +528,75 @@ void dcn314_disable_link_output(struct d
  
- 	val = (u64)pstate << 8;
--	if (READ_ONCE(global.no_turbo) && !global.turbo_disabled)
-+	if (READ_ONCE(global.no_turbo) && !READ_ONCE(global.turbo_disabled))
- 		val |= (u64)1 << 32;
+ 	apply_symclk_on_tx_off_wa(link);
+ }
++
++/**
++ * dcn314_dpp_pg_control - DPP power gate control.
++ *
++ * @hws: dce_hwseq reference.
++ * @dpp_inst: DPP instance reference.
++ * @power_on: true if we want to enable power gate, false otherwise.
++ *
++ * Enable or disable power gate in the specific DPP instance.
++ * If power gating is disabled, will force disable cursor in the DPP instance.
++ */
++void dcn314_dpp_pg_control(
++		struct dce_hwseq *hws,
++		unsigned int dpp_inst,
++		bool power_on)
++{
++	uint32_t power_gate = power_on ? 0 : 1;
++	uint32_t pwr_status = power_on ? 0 : 2;
++
++
++	if (hws->ctx->dc->debug.disable_dpp_power_gate) {
++		/* Workaround for DCN314 with disabled power gating */
++		if (!power_on) {
++
++			/* Force disable cursor if power gating is disabled */
++			struct dpp *dpp = hws->ctx->dc->res_pool->dpps[dpp_inst];
++			if (dpp && dpp->funcs->dpp_force_disable_cursor)
++				dpp->funcs->dpp_force_disable_cursor(dpp);
++		}
++		return;
++	}
++	if (REG(DOMAIN1_PG_CONFIG) == 0)
++		return;
++
++	switch (dpp_inst) {
++	case 0: /* DPP0 */
++		REG_UPDATE(DOMAIN1_PG_CONFIG,
++				DOMAIN1_POWER_GATE, power_gate);
++
++		REG_WAIT(DOMAIN1_PG_STATUS,
++				DOMAIN1_PGFSM_PWR_STATUS, pwr_status,
++				1, 1000);
++		break;
++	case 1: /* DPP1 */
++		REG_UPDATE(DOMAIN3_PG_CONFIG,
++				DOMAIN3_POWER_GATE, power_gate);
++
++		REG_WAIT(DOMAIN3_PG_STATUS,
++				DOMAIN3_PGFSM_PWR_STATUS, pwr_status,
++				1, 1000);
++		break;
++	case 2: /* DPP2 */
++		REG_UPDATE(DOMAIN5_PG_CONFIG,
++				DOMAIN5_POWER_GATE, power_gate);
++
++		REG_WAIT(DOMAIN5_PG_STATUS,
++				DOMAIN5_PGFSM_PWR_STATUS, pwr_status,
++				1, 1000);
++		break;
++	case 3: /* DPP3 */
++		REG_UPDATE(DOMAIN7_PG_CONFIG,
++				DOMAIN7_POWER_GATE, power_gate);
++
++		REG_WAIT(DOMAIN7_PG_STATUS,
++				DOMAIN7_PGFSM_PWR_STATUS, pwr_status,
++				1, 1000);
++		break;
++	default:
++		BREAK_TO_DEBUGGER();
++		break;
++	}
++}
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.h
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.h
+@@ -47,4 +47,6 @@ void dcn314_dpp_root_clock_control(struc
  
- 	return val;
--- 
-2.51.0
-
+ void dcn314_disable_link_output(struct dc_link *link, const struct link_resource *link_res, enum signal_type signal);
+ 
++void dcn314_dpp_pg_control(struct dce_hwseq *hws, unsigned int dpp_inst, bool power_on);
++
+ #endif /* __DC_HWSS_DCN314_H__ */
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_init.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_init.c
+@@ -141,6 +141,7 @@ static const struct hwseq_private_funcs
+ 	.enable_power_gating_plane = dcn314_enable_power_gating_plane,
+ 	.dpp_root_clock_control = dcn314_dpp_root_clock_control,
+ 	.hubp_pg_control = dcn31_hubp_pg_control,
++	.dpp_pg_control = dcn314_dpp_pg_control,
+ 	.program_all_writeback_pipes_in_tree = dcn30_program_all_writeback_pipes_in_tree,
+ 	.update_odm = dcn314_update_odm,
+ 	.dsc_pg_control = dcn314_dsc_pg_control,
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h
+@@ -349,6 +349,9 @@ struct dpp_funcs {
+ 		struct dpp *dpp_base,
+ 		enum dc_color_space color_space,
+ 		struct dc_csc_transform cursor_csc_color_matrix);
++
++	void (*dpp_force_disable_cursor)(struct dpp *dpp_base);
++
+ };
+ 
+ 
 
 
 
