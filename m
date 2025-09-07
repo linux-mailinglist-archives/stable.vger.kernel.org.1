@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-178166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C384B47D83
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE817B47E77
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6458F7A2C6D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:11:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EC713C1B49
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D8126FA67;
-	Sun,  7 Sep 2025 20:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403091F1921;
+	Sun,  7 Sep 2025 20:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQE52Yjn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rUZu/ICY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09681B424F;
-	Sun,  7 Sep 2025 20:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27CAD528;
+	Sun,  7 Sep 2025 20:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275974; cv=none; b=B+W9hnPajiAp7KH2fqF7C0kkTkvayw9UsWnn48HzwkFpk8znYqIllefJ4wNjAnj3eX0V2UcdY24EkB/IUx6j69q+ScN+Nbp+5bxpzfV1q031UlXoharGX4kzeiY3zp5WNAiEIOz+WfiOAHle6LV2/Oidq2HcvM9jNimRdFiH8bA=
+	t=1757276680; cv=none; b=fZuzMOBMCOvWoHFaAk2iMTk+ez9Z9eNBV4YavaA475aIChUGJMnn1Ygb0nSP+4MZDWyYt4xlLYcZRc9znID4vjpdepHWwnNVVK5OV1KrzYCNRjLXBp/n77kw55VCGvL47sPPtSQHCSHA5R8J76cw9ONe05umH0zFvT9CiCscmAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275974; c=relaxed/simple;
-	bh=3MjvQOXKy4ibVPF29qoKLZuyn1Qolw5q3MfaRnUhgmg=;
+	s=arc-20240116; t=1757276680; c=relaxed/simple;
+	bh=KhdVGlKCG0c2INA6xP3n5MBbOh7ZuRU3NCoKmUJ7V8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o/WcyV6V/eQFuLK9A6N/1/ol2zI35XGkk8Nkr/k+v3I0B9+5WX/S2mDDVXcDNzm2dXf/RmTGO+3gx3STVittQ5SCQs45Nat9THCb1qnbvRCWp0RDoi3ELzoFZtImgvieuPC38e/MbH7jJdqcivgfASWpNsx+XfgQ3+dNjE2EUAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQE52Yjn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277A3C4CEF0;
-	Sun,  7 Sep 2025 20:12:53 +0000 (UTC)
+	 MIME-Version; b=Crh65XDTX23RdufU8U0rFOoMXukUp5RIIEn6yVND0EZ2ZFKXqv1VfqPz1L/e5RhO8yzvnyGunMaOcqAFQRzrnScKpTcGul6r9xjQcFq4BUJq2JUhEZFjwQy8qGPLgT0Yel8TlNlD8Dd/9ry2uKf3e8ItTZ2KiKQt6I3h1bR8k28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rUZu/ICY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BEBC4CEF0;
+	Sun,  7 Sep 2025 20:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275974;
-	bh=3MjvQOXKy4ibVPF29qoKLZuyn1Qolw5q3MfaRnUhgmg=;
+	s=korg; t=1757276679;
+	bh=KhdVGlKCG0c2INA6xP3n5MBbOh7ZuRU3NCoKmUJ7V8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQE52YjnYRnK/4BNkwFB61eq1kHG6iryGbqowZxSaO7NklVyUbCpZz3l+60PlsxnM
-	 5NO58znqk0E2K/R1sj/6Df+7f9PVJilmLDv7ePczRB7GoAkBKUhp3MzaBqQlP57idy
-	 2zK2WxRGYJAyh+iEpyHgsunEz2x0ru3qeBBIWWgU=
+	b=rUZu/ICYCOe6wluNSZgbbE8uM6o8Q/pZ4K2VsmaVlIHqhVrf6j24e2oDgDJVy/Mh7
+	 VgmhNwR1gqBzLT0cLh8tUlyR20cUHyTCHnVBMJkAu5xqKlIzG+v767p9/9KjX5GRCj
+	 uTqLXJywYv08/jrS9dygtZGUx+MPpKUfUOiAE7yY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernard Pidoux <f6bvp@free.fr>,
-	Eric Dumazet <edumazet@google.com>,
-	Joerg Reuter <jreuter@yaina.de>,
-	David Ranch <dranch@trinnet.net>,
-	Folkert van Heusden <folkert@vanheusden.com>,
-	Dan Cross <crossd@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 23/64] ax25: properly unshare skbs in ax25_kiss_rcv()
+Subject: [PATCH 6.6 049/121] selftest: net: Fix weird setsockopt() in bind_bhash.c.
 Date: Sun,  7 Sep 2025 21:58:05 +0200
-Message-ID: <20250907195604.031800087@linuxfoundation.org>
+Message-ID: <20250907195611.084186589@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,61 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 8156210d36a43e76372312c87eb5ea3dbb405a85 ]
+[ Upstream commit fd2004d82d8d8faa94879e3de3096c8511728637 ]
 
-Bernard Pidoux reported a regression apparently caused by commit
-c353e8983e0d ("net: introduce per netns packet chains").
+bind_bhash.c passes (SO_REUSEADDR | SO_REUSEPORT) to setsockopt().
 
-skb->dev becomes NULL and we crash in __netif_receive_skb_core().
+In the asm-generic definition, the value happens to match with the
+bare SO_REUSEPORT, (2 | 15) == 15, but not on some arch.
 
-Before above commit, different kind of bugs or corruptions could happen
-without a major crash.
+arch/alpha/include/uapi/asm/socket.h:18:#define SO_REUSEADDR	0x0004
+arch/alpha/include/uapi/asm/socket.h:24:#define SO_REUSEPORT	0x0200
+arch/mips/include/uapi/asm/socket.h:24:#define SO_REUSEADDR	0x0004	/* Allow reuse of local addresses.  */
+arch/mips/include/uapi/asm/socket.h:33:#define SO_REUSEPORT 0x0200	/* Allow local address and port reuse.  */
+arch/parisc/include/uapi/asm/socket.h:12:#define SO_REUSEADDR	0x0004
+arch/parisc/include/uapi/asm/socket.h:18:#define SO_REUSEPORT	0x0200
+arch/sparc/include/uapi/asm/socket.h:13:#define SO_REUSEADDR	0x0004
+arch/sparc/include/uapi/asm/socket.h:20:#define SO_REUSEPORT	0x0200
+include/uapi/asm-generic/socket.h:12:#define SO_REUSEADDR	2
+include/uapi/asm-generic/socket.h:27:#define SO_REUSEPORT	15
 
-But the root cause is that ax25_kiss_rcv() can queue/mangle input skb
-without checking if this skb is shared or not.
+Let's pass SO_REUSEPORT only.
 
-Many thanks to Bernard Pidoux for his help, diagnosis and tests.
-
-We had a similar issue years ago fixed with commit 7aaed57c5c28
-("phonet: properly unshare skbs in phonet_rcv()").
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Bernard Pidoux <f6bvp@free.fr>
-Closes: https://lore.kernel.org/netdev/1713f383-c538-4918-bc64-13b3288cd542@free.fr/
-Tested-by: Bernard Pidoux <f6bvp@free.fr>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Joerg Reuter <jreuter@yaina.de>
-Cc: David Ranch <dranch@trinnet.net>
-Cc: Folkert van Heusden <folkert@vanheusden.com>
-Reviewed-by: Dan Cross <crossd@gmail.com>
-Link: https://patch.msgid.link/20250902124642.212705-1-edumazet@google.com
+Fixes: c35ecb95c448 ("selftests/net: Add test for timing a bind request to a port with a populated bhash entry")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250903222938.2601522-1-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ax25/ax25_in.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/net/bind_bhash.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
-index cd6afe895db99..e43f92372cba5 100644
---- a/net/ax25/ax25_in.c
-+++ b/net/ax25/ax25_in.c
-@@ -433,6 +433,10 @@ static int ax25_rcv(struct sk_buff *skb, struct net_device *dev,
- int ax25_kiss_rcv(struct sk_buff *skb, struct net_device *dev,
- 		  struct packet_type *ptype, struct net_device *orig_dev)
- {
-+	skb = skb_share_check(skb, GFP_ATOMIC);
-+	if (!skb)
-+		return NET_RX_DROP;
-+
- 	skb_orphan(skb);
+diff --git a/tools/testing/selftests/net/bind_bhash.c b/tools/testing/selftests/net/bind_bhash.c
+index 57ff67a3751eb..da04b0b19b73c 100644
+--- a/tools/testing/selftests/net/bind_bhash.c
++++ b/tools/testing/selftests/net/bind_bhash.c
+@@ -75,7 +75,7 @@ static void *setup(void *arg)
+ 	int *array = (int *)arg;
  
- 	if (!net_eq(dev_net(dev), &init_net)) {
+ 	for (i = 0; i < MAX_CONNECTIONS; i++) {
+-		sock_fd = bind_socket(SO_REUSEADDR | SO_REUSEPORT, setup_addr);
++		sock_fd = bind_socket(SO_REUSEPORT, setup_addr);
+ 		if (sock_fd < 0) {
+ 			ret = sock_fd;
+ 			pthread_exit(&ret);
+@@ -103,7 +103,7 @@ int main(int argc, const char *argv[])
+ 
+ 	setup_addr = use_v6 ? setup_addr_v6 : setup_addr_v4;
+ 
+-	listener_fd = bind_socket(SO_REUSEADDR | SO_REUSEPORT, setup_addr);
++	listener_fd = bind_socket(SO_REUSEPORT, setup_addr);
+ 	if (listen(listener_fd, 100) < 0) {
+ 		perror("listen failed");
+ 		return -1;
 -- 
 2.50.1
 
