@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A09B47F7B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1518B47DF6
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B54423C3088
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCFB6189ECE7
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02897281375;
-	Sun,  7 Sep 2025 20:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB87C1C6FFA;
+	Sun,  7 Sep 2025 20:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pidboR9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbML5ssY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD04026FA77;
-	Sun,  7 Sep 2025 20:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A927714BFA2;
+	Sun,  7 Sep 2025 20:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277484; cv=none; b=iR8jYhbb7h8TcQhOdHdE3iMC9Yp6sks1sfWHIR9S61IlIlh7JP6phyxvY7dEkk6HMyE/s+5UDmtLb8R0p062XNL6ALuoasRY2fq2T7qZ1YaxJi8hFM7UBFhecMA1JQGOiZYANyg3UHY/I+vVO7HxDI7Zcx8em4P5EaoZmR6gtDg=
+	t=1757276322; cv=none; b=W7IYf4Xd5USgrpGQqyYjxb50RemHjla8u1vs63DZWo/ow7jhYbpOxTPocg61c520bOIdT1ZIq3mmcYVKicwRBVsaBt++FH3CFEDsDR1Qafrs38RRyIGp7+CnNuOG12F007XMHdPVhtI+j8gvyWTStLndxuuDhyI9N7vv1Ync/Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277484; c=relaxed/simple;
-	bh=BSmjbbNmwCcN+iSNrjchxQ6SpgqBszMhOh3THAWlcME=;
+	s=arc-20240116; t=1757276322; c=relaxed/simple;
+	bh=GivGVMDZnjXYIB6JRR72xM9rq9tFNXlraCjxqvTqpMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Efp0B0muvpwvgjgJ9VMN8imE6e8LCmGQqg+3qiM2/WTj3J/jilTtp48YqyYN6s5S7KELWOiDFn/pdBg68FTy7vALDdCgNO5GPA1S3DuKeZLTzYBDN66cw1HKbGc6fu+tQwAS309M97xiMqium0F95aq2ou8dsK7lY4RST95ACQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pidboR9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B23C4CEF0;
-	Sun,  7 Sep 2025 20:38:03 +0000 (UTC)
+	 MIME-Version; b=HhaEudgC4eW4efsqh5PdhF1pfT9WYxnru1x9CD0DXWJJBSoVEucvBhRW7B4mVJ9h668iWJ8YO3uG/C6uQ/BL5nl3Mgx3NJw8OxGtLGPEadpyr1refW2BKVW+ZUCEiJNZtIWRLniQ6BiCclkO4VpJl/0KcWQG2BmDPrthIaqZEhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbML5ssY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320C9C4CEF0;
+	Sun,  7 Sep 2025 20:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277484;
-	bh=BSmjbbNmwCcN+iSNrjchxQ6SpgqBszMhOh3THAWlcME=;
+	s=korg; t=1757276322;
+	bh=GivGVMDZnjXYIB6JRR72xM9rq9tFNXlraCjxqvTqpMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pidboR9HcwBz5RROaHeN592fnCD246RGY+/I3ogMzHE52TKbomKOhcex/mr3OA3dC
-	 CiCCWdf6u8jhc83sfjod/s9ZyknEBmFUMjYwGkj8ZJljVpjvlRRFseqQawvejmhYcx
-	 PSRi/kxPOen1+Hnq0qmYNHASyTV+BwX39KPuxX5I=
+	b=gbML5ssYREXt+CAhVz4HP+PcwuICFoc06h8n+fbOlNjstAFUB7+UgmCAm0gGyhvvL
+	 2/UThDuKoxOWLOugli8jybFeoG0Vovepgmb1qW5967boZ0r+wEmj5MIxlbE3Y4Is4N
+	 /dm7IXwFUEvoOGUEX5xkJu75D6nJGmC8d14DQuF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+30754ca335e6fb7e3092@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 030/183] wifi: cfg80211: fix use-after-free in cmp_bss()
+Subject: [PATCH 6.1 020/104] xirc2ps_cs: fix register access when enabling FullDuplex
 Date: Sun,  7 Sep 2025 21:57:37 +0200
-Message-ID: <20250907195616.492407971@linuxfoundation.org>
+Message-ID: <20250907195608.211985034@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 26e84445f02ce6b2fe5f3e0e28ff7add77f35e08 ]
+[ Upstream commit b79e498080b170fd94fc83bca2471f450811549b ]
 
-Following bss_free() quirk introduced in commit 776b3580178f
-("cfg80211: track hidden SSID networks properly"), adjust
-cfg80211_update_known_bss() to free the last beacon frame
-elements only if they're not shared via the corresponding
-'hidden_beacon_bss' pointer.
+The current code incorrectly passes (XIRCREG1_ECR | FullDuplex) as
+the register address to GetByte(), instead of fetching the register
+value and OR-ing it with FullDuplex. This results in an invalid
+register access.
 
-Reported-by: syzbot+30754ca335e6fb7e3092@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=30754ca335e6fb7e3092
-Fixes: 3ab8227d3e7d ("cfg80211: refactor cfg80211_bss_update")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20250813135236.799384-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix it by reading XIRCREG1_ECR first, then or-ing with FullDuplex
+before writing it back.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250827192645.658496-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/xircom/xirc2ps_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index e8a4fe44ec2d8..f2a66af385dcb 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1905,7 +1905,8 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
- 			 */
- 
- 			f = rcu_access_pointer(new->pub.beacon_ies);
--			kfree_rcu((struct cfg80211_bss_ies *)f, rcu_head);
-+			if (!new->pub.hidden_beacon_bss)
-+				kfree_rcu((struct cfg80211_bss_ies *)f, rcu_head);
- 			return false;
- 		}
- 
+diff --git a/drivers/net/ethernet/xircom/xirc2ps_cs.c b/drivers/net/ethernet/xircom/xirc2ps_cs.c
+index 9f505cf02d965..2dc1cfcd7ce99 100644
+--- a/drivers/net/ethernet/xircom/xirc2ps_cs.c
++++ b/drivers/net/ethernet/xircom/xirc2ps_cs.c
+@@ -1578,7 +1578,7 @@ do_reset(struct net_device *dev, int full)
+ 	    msleep(40);			/* wait 40 msec to let it complete */
+ 	}
+ 	if (full_duplex)
+-	    PutByte(XIRCREG1_ECR, GetByte(XIRCREG1_ECR | FullDuplex));
++	    PutByte(XIRCREG1_ECR, GetByte(XIRCREG1_ECR) | FullDuplex);
+     } else {  /* No MII */
+ 	SelectPage(0);
+ 	value = GetByte(XIRCREG_ESR);	 /* read the ESR */
 -- 
 2.50.1
 
