@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-178318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB8C3B47E28
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE03DB47E73
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 683FD17D9F0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:20:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBCA9189FDD7
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467C41B4247;
-	Sun,  7 Sep 2025 20:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22FDA1F1921;
+	Sun,  7 Sep 2025 20:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIm4Gcnj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BgkVp1e6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040A314BFA2;
-	Sun,  7 Sep 2025 20:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4270D528;
+	Sun,  7 Sep 2025 20:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276456; cv=none; b=RfUh67KEU3EezoqdZ1A4gWqCG1I7cwQNAf31R4gv/syD70uUXpsTn1xS6a1sdus5uI/zK3tUZYBQ2cVeK8UoBx2iVLu1a0cohPOj7OmiJ/MmNwGZMZLJz8LYXP2HsETYcAOyUboR+F/ptwJmlFfnS1rzCaDv0Z3ZjIb25S33IDM=
+	t=1757276664; cv=none; b=kCwtfpybbZOMHoFNo2CgPL3bIbHME+9V1dKwrsF7LsxtOk15MOox/uOh6w/RkiiAZxivkoWryFXwV50gKP72RNGitHH2EVYE/il0tWvITFJB0x0r2odLLPM0JvYs1l80AhQVDBs9A0eo9bgr2qNgkjV8467CaTu14YXajw0ccug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276456; c=relaxed/simple;
-	bh=YZe9Sa9C3pgHXZ0tHd+sCQbj8gBGWC0UuzFcQv/VJFE=;
+	s=arc-20240116; t=1757276664; c=relaxed/simple;
+	bh=O2tjjsFPaqYlMOeHKkyN4Ch6VMnDFIXWCl26zM9Ls04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=prF45y54JPly1XvaMUbe6+JfNcRwDC/t4tq+2IJIi4kK0lSwuEdWNzAZfug+puzCPGaWKmb0oDfGnKMCdUMaICfEcQBLQd2GxIuY39nvmKmEmlTmBX21HkW41U97oFZLDAZoHYRANE2k4EG/yxn5GvlF8SB4espKwlGu9ardxzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIm4Gcnj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A086C4CEF0;
-	Sun,  7 Sep 2025 20:20:55 +0000 (UTC)
+	 MIME-Version; b=hntd0QgZWQ4TBoqLmqzqoAOCxQrMObPl0roDTBAcycZWv46+1EoFzBVhHE4cGqBw/BHq7D1MubfNy99Ohkgx2pFYvnQEQe/jK610cw6DqtEb3Igoy0/T+HcWCof3rz3nMok+p64ohl3A3IKO9sUVkKVo5mBzzyI6lVSa7rFwRGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BgkVp1e6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3412C4CEF8;
+	Sun,  7 Sep 2025 20:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276455;
-	bh=YZe9Sa9C3pgHXZ0tHd+sCQbj8gBGWC0UuzFcQv/VJFE=;
+	s=korg; t=1757276664;
+	bh=O2tjjsFPaqYlMOeHKkyN4Ch6VMnDFIXWCl26zM9Ls04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jIm4GcnjhMGCGqsC2l4khO9d7ptIDifmqhT2bbMl0cYdpT9FrRl62D26IqDLILV6D
-	 M4Jbi08L4k5xD8Fz0s7XCt4jm29LYUGzZHSbvFcW/8FhmJzWCzELXoqhET+jxsD6sx
-	 eYW/X+DZ88BCrRL7oUoPE+YIniZ1x41bBfYXLuvs=
+	b=BgkVp1e6lwZqTP4pkqOZgZ3pTAE3UM+67OMbmHaU0vVg2wYEhTD/6Sf/8Ir3V5jPc
+	 9MDZ8PaoptxDwThVEqPdtyZHixd7Ye6AM+7o/+qa8W1A8shGB8OYKjmsudDc8OcXoE
+	 gEy6bbcijf7XY33hYoNlNR3QdckriAr/tGXNRWyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/104] cpufreq: intel_pstate: Fold intel_pstate_max_within_limits() into caller
+	Jinfeng Wang <jinfeng.wang.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.6 071/121] Revert "spi: spi-cadence-quadspi: Fix pm runtime unbalance"
 Date: Sun,  7 Sep 2025 21:58:27 +0200
-Message-ID: <20250907195609.495930320@linuxfoundation.org>
+Message-ID: <20250907195611.658686738@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Jinfeng Wang <jinfeng.wang.cn@windriver.com>
 
-[ Upstream commit 032c5565eb80edb6f2faeb31939540c897987119 ]
+This reverts commit cdfb20e4b34ad99b3fe122aafb4f8ee7b9856e1f which is
+commit b07f349d1864abe29436f45e3047da2bdd476462 upstream.
 
-Fold intel_pstate_max_within_limits() into its only caller.
+There is cadence-qspi ff8d2000.spi: Unbalanced pm_runtime_enable! error
+without this revert.
 
-No functional impact.
+After reverting commit cdfb20e4b34a ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+and commit 1af6d1696ca4 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"),
+Unbalanced pm_runtime_enable! error does not appear.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Stable-dep-of: ac4e04d9e378 ("cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+These two commits are backported from upstream commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths").
+
+The commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths")
+fix commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance").
+
+The commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance") fix
+commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings").
+
+The commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings") fix
+commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support").
+
+6.6.y only backport commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"),
+but does not backport commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support")
+and commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings").
+And the backport of commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+differs with the original patch. So there is Unbalanced pm_runtime_enable error.
+
+If revert the backport for commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"), there is no error.
+If backport commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support") and
+commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings"), there
+is hang during booting. I didn't find the cause of the hang.
+
+Since commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support") and
+commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings") are
+not backported, commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
+and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths") are not needed.
+So revert commits commit cdfb20e4b34a ("spi: spi-cadence-quadspi: Fix pm runtime unbalance") and
+commit 1af6d1696ca4 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths").
+
+Signed-off-by: Jinfeng Wang <jinfeng.wang.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/intel_pstate.c |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c |   11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -1984,14 +1984,6 @@ static void intel_pstate_set_min_pstate(
- 	intel_pstate_set_pstate(cpu, cpu->pstate.min_pstate);
- }
- 
--static void intel_pstate_max_within_limits(struct cpudata *cpu)
--{
--	int pstate = max(cpu->pstate.min_pstate, cpu->max_perf_ratio);
--
--	update_turbo_state();
--	intel_pstate_set_pstate(cpu, pstate);
--}
--
- static void intel_pstate_get_cpu_pstates(struct cpudata *cpu)
- {
- 	int perf_ctl_max_phys = pstate_funcs.get_max_physical(cpu->cpu);
-@@ -2573,12 +2565,15 @@ static int intel_pstate_set_policy(struc
- 	intel_pstate_update_perf_limits(cpu, policy->min, policy->max);
- 
- 	if (cpu->policy == CPUFREQ_POLICY_PERFORMANCE) {
-+		int pstate = max(cpu->pstate.min_pstate, cpu->max_perf_ratio);
-+
- 		/*
- 		 * NOHZ_FULL CPUs need this as the governor callback may not
- 		 * be invoked on them.
- 		 */
- 		intel_pstate_clear_update_util_hook(policy->cpu);
--		intel_pstate_max_within_limits(cpu);
-+		update_turbo_state();
-+		intel_pstate_set_pstate(cpu, pstate);
- 	} else {
- 		intel_pstate_set_update_util_hook(policy->cpu);
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1868,13 +1868,6 @@ static int cqspi_probe(struct platform_d
+ 			goto probe_setup_failed;
  	}
+ 
+-	pm_runtime_enable(dev);
+-
+-	if (cqspi->rx_chan) {
+-		dma_release_channel(cqspi->rx_chan);
+-		goto probe_setup_failed;
+-	}
+-
+ 	ret = spi_register_controller(host);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to register SPI ctlr %d\n", ret);
+@@ -1884,7 +1877,6 @@ static int cqspi_probe(struct platform_d
+ 	return 0;
+ probe_setup_failed:
+ 	cqspi_controller_enable(cqspi, 0);
+-	pm_runtime_disable(dev);
+ probe_reset_failed:
+ 	if (cqspi->is_jh7110)
+ 		cqspi_jh7110_disable_clk(pdev, cqspi);
+@@ -1906,8 +1898,7 @@ static void cqspi_remove(struct platform
+ 	if (cqspi->rx_chan)
+ 		dma_release_channel(cqspi->rx_chan);
+ 
+-	if (pm_runtime_get_sync(&pdev->dev) >= 0)
+-		clk_disable(cqspi->clk);
++	clk_disable_unprepare(cqspi->clk);
+ 
+ 	if (cqspi->is_jh7110)
+ 		cqspi_jh7110_disable_clk(pdev, cqspi);
 
 
 
