@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5435B47D87
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4603B47E44
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F8623BF04C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4FD2189F587
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F71127F754;
-	Sun,  7 Sep 2025 20:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001251B4247;
+	Sun,  7 Sep 2025 20:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1ou2IMo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OuASZY78"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF11B1B424F;
-	Sun,  7 Sep 2025 20:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD0C189BB0;
+	Sun,  7 Sep 2025 20:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275987; cv=none; b=T0Bgv6MD6O2Aa8RcMmi0hPYhmv9l8cgsbCO/VKtuI7Qpyn3i1bGULFn4iX/+kfZJKOHMsGqaSjK4nZ4HlsjzGT1CZc7482paxXXGaHp10241e22Eg0sEpCxRZDSy4jiaev3tCo0HhThT4z7cRr0p7uI6FajOgVlnDmdX1E6YD6M=
+	t=1757276531; cv=none; b=EoujIvZJn+ao+X8zUB6LMMsbGG6fI8IGE6lXg2kG4wvh9zd3krgL4185thaddKT3m84ETLcIiQ211BH+mcDV5rlGZ/EonaqCgvOfynVtD1L1Q2EVxENfBnK6G9YPns/qpwZvrBIe2g9OVnTBzbYXgzViubbGjriWltneuM2ncGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275987; c=relaxed/simple;
-	bh=ImRZFlMejHtBl+EAekETkuEOIyCclLJuXh78Yv5065U=;
+	s=arc-20240116; t=1757276531; c=relaxed/simple;
+	bh=YGfKPKpj0eJrWUDCSEQ4A5zyEtzUTbI/Pkrx5cssLm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJk9VdUY9h8fkivqVXkaS2KgD4IYWXzq2S2MMd+XcX9XAa36VjVM0CQpusvV47F9f7lv6rEkUdpEw++rCZwNoP7gmFmpPzCC63W2PEdapUs95SVWgQ6xsq82+nIf5RNObDeY10QVujH9tG9LwmDLUQZRgeyZ419BV8bG2EbaM6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1ou2IMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C6A9C4CEF0;
-	Sun,  7 Sep 2025 20:13:07 +0000 (UTC)
+	 MIME-Version; b=NGItu4D48ovDhOex+v6vNolAJBdzu0VihvyyGp6AYCMqJYxnaWpBCabnmlyMLlFI+cN7qo18DhHOTlcIKGrziPCK2N8uR9T0F1Lnbg2W6lQP9bcX4Y1WmX8MXX0wNVpBYG5I3J5QjBSNUL53wBRCWnrOTqBTkqmfWs0WDsko/UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OuASZY78; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34415C4CEF8;
+	Sun,  7 Sep 2025 20:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275987;
-	bh=ImRZFlMejHtBl+EAekETkuEOIyCclLJuXh78Yv5065U=;
+	s=korg; t=1757276531;
+	bh=YGfKPKpj0eJrWUDCSEQ4A5zyEtzUTbI/Pkrx5cssLm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1ou2IMom68bVilAMXm4nTiU3dMeQLU80FLaHMk6rcC5q2Na2RwR0a3Nu2WXK/cWZ
-	 8GjVAxzmrNeBvt74jnZkqRlTRDjj19UCZj8NybOmQZwfX3La9IkZKv6mpjgSjNOnd0
-	 WTl+Xp8tVVR7TJ5zSGhZ3iDPFRKikXMg29IH+/2A=
+	b=OuASZY78rQ/JeHi1xqi4hIV50xH0ngR2sLsH2D9QhM+h07+ijUFpcyHQbavQVxvO0
+	 Oy2sXWuEjRRu4EMExxTACOK2YsBcOzyt3FZ20AjuAHTP+sIHaLMJ+k+RNT7c84C1Cf
+	 JkEY9Mb/hY+nxQgCFPg2CjKhBksXkJs+JdXapyRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 03/64] bpf: Move bpf map owner out of common struct
+Subject: [PATCH 6.6 029/121] netlink: add variable-length / auto integers
 Date: Sun,  7 Sep 2025 21:57:45 +0200
-Message-ID: <20250907195603.489323792@linuxfoundation.org>
+Message-ID: <20250907195610.576201372@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,220 +63,428 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit fd1c98f0ef5cbcec842209776505d9e70d8fcd53 ]
+[ Upstream commit 374d345d9b5e13380c66d7042f9533a6ac6d1195 ]
 
-Given this is only relevant for BPF tail call maps, it is adding up space
-and penalizing other map types. We also need to extend this with further
-objects to track / compare to. Therefore, lets move this out into a separate
-structure and dynamically allocate it only for BPF tail call maps.
+We currently push everyone to use padding to align 64b values
+in netlink. Un-padded nla_put_u64() doesn't even exist any more.
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20250730234733.530041-2-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+The story behind this possibly start with this thread:
+https://lore.kernel.org/netdev/20121204.130914.1457976839967676240.davem@davemloft.net/
+where DaveM was concerned about the alignment of a structure
+containing 64b stats. If user space tries to access such struct
+directly:
+
+	struct some_stats *stats = nla_data(attr);
+	printf("A: %llu", stats->a);
+
+lack of alignment may become problematic for some architectures.
+These days we most often put every single member in a separate
+attribute, meaning that the code above would use a helper like
+nla_get_u64(), which can deal with alignment internally.
+Even for arches which don't have good unaligned access - access
+aligned to 4B should be pretty efficient.
+Kernel and well known libraries deal with unaligned input already.
+
+Padded 64b is quite space-inefficient (64b + pad means at worst 16B
+per attr vs 32b which takes 8B). It is also more typing:
+
+    if (nla_put_u64_pad(rsp, NETDEV_A_SOMETHING_SOMETHING,
+                        value, NETDEV_A_SOMETHING_PAD))
+
+Create a new attribute type which will use 32 bits at netlink
+level if value is small enough (probably most of the time?),
+and (4B-aligned) 64 bits otherwise. Kernel API is just:
+
+    if (nla_put_uint(rsp, NETDEV_A_SOMETHING_SOMETHING, value))
+
+Calling this new type "just" sint / uint with no specific size
+will hopefully also make people more comfortable with using it.
+Currently telling people "don't use u8, you may need the bits,
+and netlink will round up to 4B, anyway" is the #1 comment
+we give to newcomers.
+
+In terms of netlink layout it looks like this:
+
+         0       4       8       12      16
+32b:     [nlattr][ u32  ]
+64b:     [  pad ][nlattr][     u64      ]
+uint(32) [nlattr][ u32  ]
+uint(64) [nlattr][     u64      ]
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 030e1c456666 ("macsec: read MACSEC_SA_ATTR_PN with nla_get_uint")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h   | 23 +++++++++--------
- kernel/bpf/arraymap.c |  1 -
- kernel/bpf/core.c     | 58 ++++++++++++++++++++++++++++++++-----------
- kernel/bpf/syscall.c  | 16 ++++++------
- 4 files changed, 64 insertions(+), 34 deletions(-)
+ Documentation/userspace-api/netlink/specs.rst | 18 ++++-
+ include/net/netlink.h                         | 69 ++++++++++++++++++-
+ include/uapi/linux/netlink.h                  |  5 ++
+ lib/nlattr.c                                  | 22 ++++++
+ net/netlink/policy.c                          | 14 +++-
+ 5 files changed, 121 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 6cf63f4240bdd..ea6728c304fe0 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -258,6 +258,7 @@ struct bpf_map_owner {
- 	bool xdp_has_frags;
- 	const struct btf_type *attach_func_proto;
- };
+diff --git a/Documentation/userspace-api/netlink/specs.rst b/Documentation/userspace-api/netlink/specs.rst
+index cc4e2430997ef..a8218284e67a4 100644
+--- a/Documentation/userspace-api/netlink/specs.rst
++++ b/Documentation/userspace-api/netlink/specs.rst
+@@ -408,10 +408,21 @@ This section describes the attribute types supported by the ``genetlink``
+ compatibility level. Refer to documentation of different levels for additional
+ attribute types.
+ 
+-Scalar integer types
++Common integer types
+ --------------------
+ 
+-Fixed-width integer types:
++``sint`` and ``uint`` represent signed and unsigned 64 bit integers.
++If the value can fit on 32 bits only 32 bits are carried in netlink
++messages, otherwise full 64 bits are carried. Note that the payload
++is only aligned to 4B, so the full 64 bit value may be unaligned!
 +
- struct bpf_map {
- 	/* The first two cachelines with read-mostly members of which some
- 	 * are also accessed in fast-path (e.g. ops, max_entries).
-@@ -300,6 +301,8 @@ struct bpf_map {
- 	};
- 	struct mutex freeze_mutex;
- 	atomic64_t writecnt;
-+	spinlock_t owner_lock;
-+	struct bpf_map_owner *owner;
- 	bool free_after_mult_rcu_gp;
- 	u64 cookie; /* write-once */
- };
-@@ -1091,16 +1094,6 @@ struct bpf_prog_aux {
++Common integer types should be preferred over fix-width types in majority
++of cases.
++
++Fix-width integer types
++-----------------------
++
++Fixed-width integer types include:
+ ``u8``, ``u16``, ``u32``, ``u64``, ``s8``, ``s16``, ``s32``, ``s64``.
+ 
+ Note that types smaller than 32 bit should be avoided as using them
+@@ -421,6 +432,9 @@ See :ref:`pad_type` for padding of 64 bit attributes.
+ The payload of the attribute is the integer in host order unless ``byte-order``
+ specifies otherwise.
+ 
++64 bit values are usually aligned by the kernel but it is recommended
++that the user space is able to deal with unaligned values.
++
+ .. _pad_type:
+ 
+ pad
+diff --git a/include/net/netlink.h b/include/net/netlink.h
+index 8a7cd1170e1f7..aba2b162a2260 100644
+--- a/include/net/netlink.h
++++ b/include/net/netlink.h
+@@ -128,6 +128,8 @@
+  *   nla_len(nla)			length of attribute payload
+  *
+  * Attribute Payload Access for Basic Types:
++ *   nla_get_uint(nla)			get payload for a uint attribute
++ *   nla_get_sint(nla)			get payload for a sint attribute
+  *   nla_get_u8(nla)			get payload for a u8 attribute
+  *   nla_get_u16(nla)			get payload for a u16 attribute
+  *   nla_get_u32(nla)			get payload for a u32 attribute
+@@ -183,6 +185,8 @@ enum {
+ 	NLA_REJECT,
+ 	NLA_BE16,
+ 	NLA_BE32,
++	NLA_SINT,
++	NLA_UINT,
+ 	__NLA_TYPE_MAX,
  };
  
- struct bpf_array_aux {
--	/* 'Ownership' of prog array is claimed by the first program that
--	 * is going to use this map or by the first program which FD is
--	 * stored in the map to make sure that all callers and callees have
--	 * the same prog type and JITed flag.
--	 */
--	struct {
--		spinlock_t lock;
--		enum bpf_prog_type type;
--		bool jited;
--	} owner;
- 	/* Programs with direct jumps into programs part of this array. */
- 	struct list_head poke_progs;
- 	struct bpf_map *map;
-@@ -1248,6 +1241,16 @@ static inline bool bpf_map_flags_access_ok(u32 access_flags)
- 	       (BPF_F_RDONLY_PROG | BPF_F_WRONLY_PROG);
+@@ -229,6 +233,7 @@ enum nla_policy_validation {
+  *                         nested header (or empty); len field is used if
+  *                         nested_policy is also used, for the max attr
+  *                         number in the nested policy.
++ *    NLA_SINT, NLA_UINT,
+  *    NLA_U8, NLA_U16,
+  *    NLA_U32, NLA_U64,
+  *    NLA_S8, NLA_S16,
+@@ -260,12 +265,14 @@ enum nla_policy_validation {
+  *                         while an array has the nested attributes at another
+  *                         level down and the attribute types directly in the
+  *                         nesting don't matter.
++ *    NLA_UINT,
+  *    NLA_U8,
+  *    NLA_U16,
+  *    NLA_U32,
+  *    NLA_U64,
+  *    NLA_BE16,
+  *    NLA_BE32,
++ *    NLA_SINT,
+  *    NLA_S8,
+  *    NLA_S16,
+  *    NLA_S32,
+@@ -280,6 +287,7 @@ enum nla_policy_validation {
+  *                         or NLA_POLICY_FULL_RANGE_SIGNED() macros instead.
+  *                         Use the NLA_POLICY_MIN(), NLA_POLICY_MAX() and
+  *                         NLA_POLICY_RANGE() macros.
++ *    NLA_UINT,
+  *    NLA_U8,
+  *    NLA_U16,
+  *    NLA_U32,
+@@ -288,6 +296,7 @@ enum nla_policy_validation {
+  *                         to a struct netlink_range_validation that indicates
+  *                         the min/max values.
+  *                         Use NLA_POLICY_FULL_RANGE().
++ *    NLA_SINT,
+  *    NLA_S8,
+  *    NLA_S16,
+  *    NLA_S32,
+@@ -377,9 +386,11 @@ struct nla_policy {
+ 
+ #define __NLA_IS_UINT_TYPE(tp)					\
+ 	(tp == NLA_U8 || tp == NLA_U16 || tp == NLA_U32 ||	\
+-	 tp == NLA_U64 || tp == NLA_BE16 || tp == NLA_BE32)
++	 tp == NLA_U64 || tp == NLA_UINT ||			\
++	 tp == NLA_BE16 || tp == NLA_BE32)
+ #define __NLA_IS_SINT_TYPE(tp)						\
+-	(tp == NLA_S8 || tp == NLA_S16 || tp == NLA_S32 || tp == NLA_S64)
++	(tp == NLA_S8 || tp == NLA_S16 || tp == NLA_S32 || tp == NLA_S64 || \
++	 tp == NLA_SINT)
+ 
+ #define __NLA_ENSURE(condition) BUILD_BUG_ON_ZERO(!(condition))
+ #define NLA_ENSURE_UINT_TYPE(tp)			\
+@@ -1357,6 +1368,22 @@ static inline int nla_put_u32(struct sk_buff *skb, int attrtype, u32 value)
+ 	return nla_put(skb, attrtype, sizeof(u32), &tmp);
  }
  
-+static inline struct bpf_map_owner *bpf_map_owner_alloc(struct bpf_map *map)
++/**
++ * nla_put_uint - Add a variable-size unsigned int to a socket buffer
++ * @skb: socket buffer to add attribute to
++ * @attrtype: attribute type
++ * @value: numeric value
++ */
++static inline int nla_put_uint(struct sk_buff *skb, int attrtype, u64 value)
 +{
-+	return kzalloc(sizeof(*map->owner), GFP_ATOMIC);
++	u64 tmp64 = value;
++	u32 tmp32 = value;
++
++	if (tmp64 == tmp32)
++		return nla_put_u32(skb, attrtype, tmp32);
++	return nla_put(skb, attrtype, sizeof(u64), &tmp64);
 +}
 +
-+static inline void bpf_map_owner_free(struct bpf_map *map)
-+{
-+	kfree(map->owner);
-+}
-+
- struct bpf_event_entry {
- 	struct perf_event *event;
- 	struct file *perf_file;
-diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
-index 2788da290c216..dc42970dda975 100644
---- a/kernel/bpf/arraymap.c
-+++ b/kernel/bpf/arraymap.c
-@@ -1044,7 +1044,6 @@ static struct bpf_map *prog_array_map_alloc(union bpf_attr *attr)
- 	INIT_WORK(&aux->work, prog_array_map_clear_deferred);
- 	INIT_LIST_HEAD(&aux->poke_progs);
- 	mutex_init(&aux->poke_mutex);
--	spin_lock_init(&aux->owner.lock);
- 
- 	map = array_map_alloc(attr);
- 	if (IS_ERR(map)) {
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 1ded3eb492b8e..aa3487e244549 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -1832,31 +1832,59 @@ static unsigned int __bpf_prog_ret0_warn(const void *ctx,
+ /**
+  * nla_put_be32 - Add a __be32 netlink attribute to a socket buffer
+  * @skb: socket buffer to add attribute to
+@@ -1511,6 +1538,22 @@ static inline int nla_put_s64(struct sk_buff *skb, int attrtype, s64 value,
+ 	return nla_put_64bit(skb, attrtype, sizeof(s64), &tmp, padattr);
  }
- #endif
  
--bool bpf_prog_array_compatible(struct bpf_array *array,
--			       const struct bpf_prog *fp)
-+static bool __bpf_prog_map_compatible(struct bpf_map *map,
-+				      const struct bpf_prog *fp)
- {
--	bool ret;
-+	enum bpf_prog_type prog_type = fp->aux->dst_prog ? fp->aux->dst_prog->type : fp->type;
-+	struct bpf_prog_aux *aux = fp->aux;
-+	bool ret = false;
++/**
++ * nla_put_sint - Add a variable-size signed int to a socket buffer
++ * @skb: socket buffer to add attribute to
++ * @attrtype: attribute type
++ * @value: numeric value
++ */
++static inline int nla_put_sint(struct sk_buff *skb, int attrtype, s64 value)
++{
++	s64 tmp64 = value;
++	s32 tmp32 = value;
++
++	if (tmp64 == tmp32)
++		return nla_put_s32(skb, attrtype, tmp32);
++	return nla_put(skb, attrtype, sizeof(s64), &tmp64);
++}
++
+ /**
+  * nla_put_string - Add a string netlink attribute to a socket buffer
+  * @skb: socket buffer to add attribute to
+@@ -1667,6 +1710,17 @@ static inline u64 nla_get_u64(const struct nlattr *nla)
+ 	return tmp;
+ }
  
- 	if (fp->kprobe_override)
--		return false;
--
--	spin_lock(&array->aux->owner.lock);
-+		return ret;
++/**
++ * nla_get_uint - return payload of uint attribute
++ * @nla: uint netlink attribute
++ */
++static inline u64 nla_get_uint(const struct nlattr *nla)
++{
++	if (nla_len(nla) == sizeof(u32))
++		return nla_get_u32(nla);
++	return nla_get_u64(nla);
++}
++
+ /**
+  * nla_get_be64 - return payload of __be64 attribute
+  * @nla: __be64 netlink attribute
+@@ -1729,6 +1783,17 @@ static inline s64 nla_get_s64(const struct nlattr *nla)
+ 	return tmp;
+ }
  
--	if (!array->aux->owner.type) {
--		/* There's no owner yet where we could check for
--		 * compatibility.
--		 */
--		array->aux->owner.type  = fp->type;
--		array->aux->owner.jited = fp->jited;
-+	spin_lock(&map->owner_lock);
-+	/* There's no owner yet where we could check for compatibility. */
-+	if (!map->owner) {
-+		map->owner = bpf_map_owner_alloc(map);
-+		if (!map->owner)
-+			goto err;
-+		map->owner->type  = prog_type;
-+		map->owner->jited = fp->jited;
-+		/* Note: xdp_has_frags doesn't exist in aux yet in our branch */
-+		/* map->owner->xdp_has_frags = aux->xdp_has_frags; */
-+		map->owner->attach_func_proto = aux->attach_func_proto;
- 		ret = true;
- 	} else {
--		ret = array->aux->owner.type  == fp->type &&
--		      array->aux->owner.jited == fp->jited;
-+		ret = map->owner->type  == prog_type &&
-+		      map->owner->jited == fp->jited;
-+		/* Note: xdp_has_frags check would go here when available */
-+		/* && map->owner->xdp_has_frags == aux->xdp_has_frags; */
-+		if (ret &&
-+		    map->owner->attach_func_proto != aux->attach_func_proto) {
-+			switch (prog_type) {
-+			case BPF_PROG_TYPE_TRACING:
-+			case BPF_PROG_TYPE_LSM:
-+			case BPF_PROG_TYPE_EXT:
-+			case BPF_PROG_TYPE_STRUCT_OPS:
-+				ret = false;
-+				break;
-+			default:
-+				break;
-+			}
++/**
++ * nla_get_sint - return payload of uint attribute
++ * @nla: uint netlink attribute
++ */
++static inline s64 nla_get_sint(const struct nlattr *nla)
++{
++	if (nla_len(nla) == sizeof(s32))
++		return nla_get_s32(nla);
++	return nla_get_s64(nla);
++}
++
+ /**
+  * nla_get_flag - return payload of flag attribute
+  * @nla: flag netlink attribute
+diff --git a/include/uapi/linux/netlink.h b/include/uapi/linux/netlink.h
+index e2ae82e3f9f71..f87aaf28a6491 100644
+--- a/include/uapi/linux/netlink.h
++++ b/include/uapi/linux/netlink.h
+@@ -298,6 +298,8 @@ struct nla_bitfield32 {
+  *	entry has attributes again, the policy for those inner ones
+  *	and the corresponding maxtype may be specified.
+  * @NL_ATTR_TYPE_BITFIELD32: &struct nla_bitfield32 attribute
++ * @NL_ATTR_TYPE_SINT: 32-bit or 64-bit signed attribute, aligned to 4B
++ * @NL_ATTR_TYPE_UINT: 32-bit or 64-bit unsigned attribute, aligned to 4B
+  */
+ enum netlink_attribute_type {
+ 	NL_ATTR_TYPE_INVALID,
+@@ -322,6 +324,9 @@ enum netlink_attribute_type {
+ 	NL_ATTR_TYPE_NESTED_ARRAY,
+ 
+ 	NL_ATTR_TYPE_BITFIELD32,
++
++	NL_ATTR_TYPE_SINT,
++	NL_ATTR_TYPE_UINT,
+ };
+ 
+ /**
+diff --git a/lib/nlattr.c b/lib/nlattr.c
+index ba698a097fc81..0319e811bb10a 100644
+--- a/lib/nlattr.c
++++ b/lib/nlattr.c
+@@ -138,6 +138,7 @@ void nla_get_range_unsigned(const struct nla_policy *pt,
+ 		range->max = U32_MAX;
+ 		break;
+ 	case NLA_U64:
++	case NLA_UINT:
+ 	case NLA_MSECS:
+ 		range->max = U64_MAX;
+ 		break;
+@@ -187,6 +188,9 @@ static int nla_validate_range_unsigned(const struct nla_policy *pt,
+ 	case NLA_U64:
+ 		value = nla_get_u64(nla);
+ 		break;
++	case NLA_UINT:
++		value = nla_get_uint(nla);
++		break;
+ 	case NLA_MSECS:
+ 		value = nla_get_u64(nla);
+ 		break;
+@@ -252,6 +256,7 @@ void nla_get_range_signed(const struct nla_policy *pt,
+ 		range->max = S32_MAX;
+ 		break;
+ 	case NLA_S64:
++	case NLA_SINT:
+ 		range->min = S64_MIN;
+ 		range->max = S64_MAX;
+ 		break;
+@@ -299,6 +304,9 @@ static int nla_validate_int_range_signed(const struct nla_policy *pt,
+ 	case NLA_S64:
+ 		value = nla_get_s64(nla);
+ 		break;
++	case NLA_SINT:
++		value = nla_get_sint(nla);
++		break;
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -324,6 +332,7 @@ static int nla_validate_int_range(const struct nla_policy *pt,
+ 	case NLA_U16:
+ 	case NLA_U32:
+ 	case NLA_U64:
++	case NLA_UINT:
+ 	case NLA_MSECS:
+ 	case NLA_BINARY:
+ 	case NLA_BE16:
+@@ -333,6 +342,7 @@ static int nla_validate_int_range(const struct nla_policy *pt,
+ 	case NLA_S16:
+ 	case NLA_S32:
+ 	case NLA_S64:
++	case NLA_SINT:
+ 		return nla_validate_int_range_signed(pt, nla, extack);
+ 	default:
+ 		WARN_ON(1);
+@@ -359,6 +369,9 @@ static int nla_validate_mask(const struct nla_policy *pt,
+ 	case NLA_U64:
+ 		value = nla_get_u64(nla);
+ 		break;
++	case NLA_UINT:
++		value = nla_get_uint(nla);
++		break;
+ 	case NLA_BE16:
+ 		value = ntohs(nla_get_be16(nla));
+ 		break;
+@@ -437,6 +450,15 @@ static int validate_nla(const struct nlattr *nla, int maxtype,
+ 			goto out_err;
+ 		break;
+ 
++	case NLA_SINT:
++	case NLA_UINT:
++		if (attrlen != sizeof(u32) && attrlen != sizeof(u64)) {
++			NL_SET_ERR_MSG_ATTR_POL(extack, nla, pt,
++						"invalid attribute length");
++			return -EINVAL;
 +		}
- 	}
--	spin_unlock(&array->aux->owner.lock);
-+err:
-+	spin_unlock(&map->owner_lock);
- 	return ret;
- }
- 
-+bool bpf_prog_array_compatible(struct bpf_array *array,
-+			       const struct bpf_prog *fp)
-+{
-+	struct bpf_map *map = &array->map;
-+	return __bpf_prog_map_compatible(map, fp);
-+}
++		break;
 +
- static int bpf_check_tail_call(const struct bpf_prog *fp)
- {
- 	struct bpf_prog_aux *aux = fp->aux;
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 6d4d08f57ad38..b80d125dcea97 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -477,6 +477,7 @@ static void bpf_map_free_deferred(struct work_struct *work)
+ 	case NLA_BITFIELD32:
+ 		if (attrlen != sizeof(struct nla_bitfield32))
+ 			goto out_err;
+diff --git a/net/netlink/policy.c b/net/netlink/policy.c
+index 87e3de0fde896..ef542a142b980 100644
+--- a/net/netlink/policy.c
++++ b/net/netlink/policy.c
+@@ -229,6 +229,8 @@ int netlink_policy_dump_attr_size_estimate(const struct nla_policy *pt)
+ 	case NLA_S16:
+ 	case NLA_S32:
+ 	case NLA_S64:
++	case NLA_SINT:
++	case NLA_UINT:
+ 		/* maximum is common, u64 min/max with padding */
+ 		return common +
+ 		       2 * (nla_attr_size(0) + nla_attr_size(sizeof(u64)));
+@@ -287,6 +289,7 @@ __netlink_policy_dump_write_attr(struct netlink_policy_dump_state *state,
+ 	case NLA_U16:
+ 	case NLA_U32:
+ 	case NLA_U64:
++	case NLA_UINT:
+ 	case NLA_MSECS: {
+ 		struct netlink_range_validation range;
  
- 	security_bpf_map_free(map);
- 	bpf_map_release_memcg(map);
-+	bpf_map_owner_free(map);
- 	/* implementation dependent freeing */
- 	map->ops->map_free(map);
- }
-@@ -576,17 +577,15 @@ static unsigned long bpf_map_memory_footprint(const struct bpf_map *map)
+@@ -296,8 +299,10 @@ __netlink_policy_dump_write_attr(struct netlink_policy_dump_state *state,
+ 			type = NL_ATTR_TYPE_U16;
+ 		else if (pt->type == NLA_U32)
+ 			type = NL_ATTR_TYPE_U32;
+-		else
++		else if (pt->type == NLA_U64)
+ 			type = NL_ATTR_TYPE_U64;
++		else
++			type = NL_ATTR_TYPE_UINT;
  
- static void bpf_map_show_fdinfo(struct seq_file *m, struct file *filp)
- {
--	const struct bpf_map *map = filp->private_data;
--	const struct bpf_array *array;
-+	struct bpf_map *map = filp->private_data;
- 	u32 type = 0, jited = 0;
+ 		if (pt->validation_type == NLA_VALIDATE_MASK) {
+ 			if (nla_put_u64_64bit(skb, NL_POLICY_TYPE_ATTR_MASK,
+@@ -319,7 +324,8 @@ __netlink_policy_dump_write_attr(struct netlink_policy_dump_state *state,
+ 	case NLA_S8:
+ 	case NLA_S16:
+ 	case NLA_S32:
+-	case NLA_S64: {
++	case NLA_S64:
++	case NLA_SINT: {
+ 		struct netlink_range_validation_signed range;
  
--	if (map->map_type == BPF_MAP_TYPE_PROG_ARRAY) {
--		array = container_of(map, struct bpf_array, map);
--		spin_lock(&array->aux->owner.lock);
--		type  = array->aux->owner.type;
--		jited = array->aux->owner.jited;
--		spin_unlock(&array->aux->owner.lock);
-+	spin_lock(&map->owner_lock);
-+	if (map->owner) {
-+		type  = map->owner->type;
-+		jited = map->owner->jited;
- 	}
-+	spin_unlock(&map->owner_lock);
+ 		if (pt->type == NLA_S8)
+@@ -328,8 +334,10 @@ __netlink_policy_dump_write_attr(struct netlink_policy_dump_state *state,
+ 			type = NL_ATTR_TYPE_S16;
+ 		else if (pt->type == NLA_S32)
+ 			type = NL_ATTR_TYPE_S32;
+-		else
++		else if (pt->type == NLA_S64)
+ 			type = NL_ATTR_TYPE_S64;
++		else
++			type = NL_ATTR_TYPE_SINT;
  
- 	seq_printf(m,
- 		   "map_type:\t%u\n"
-@@ -895,6 +894,7 @@ static int map_create(union bpf_attr *attr)
- 	atomic64_set(&map->refcnt, 1);
- 	atomic64_set(&map->usercnt, 1);
- 	mutex_init(&map->freeze_mutex);
-+	spin_lock_init(&map->owner_lock);
+ 		nla_get_range_signed(pt, &range);
  
- 	map->spin_lock_off = -EINVAL;
- 	map->timer_off = -EINVAL;
 -- 
 2.50.1
 
