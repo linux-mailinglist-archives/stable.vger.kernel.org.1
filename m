@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C732EB47DF9
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35669B47E75
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FFC17A1F2E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D54047A3E33
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCA61AF0B6;
-	Sun,  7 Sep 2025 20:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62108D528;
+	Sun,  7 Sep 2025 20:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNaENlEG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Br89MDqe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF53914BFA2;
-	Sun,  7 Sep 2025 20:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201DD189BB0;
+	Sun,  7 Sep 2025 20:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276332; cv=none; b=J9QRIozdOGf08+tmKB1VmUW/qRVgmxrsBR7+NCWteJoJgyzeZ9rVFZCh1En6iyYww63/DP1mIvl7oigH002eD6sgbpnx2eHFwGS8cXrFm8NpmtRo7dLVN30SQeAASfiOD0F95EY1TkkG9jSgb0lgd6DRPqgiF3eKdc5FsE6X4DI=
+	t=1757276671; cv=none; b=b9054EI5fTVB2pK5q1cuqxuB7Udxf5TSKlYEQ4r+ZhPKWqshgvOL1HGKGkCxTklE9W0qhkafSg88SfeOJsyEgXplvxzBoW7C87VyoLjzCH2itoQgPiUXxaiae8Y1G9RnBK8Z0CKodFIO4ZufVljJyn2GFKqLkBnnEBnN44VGN3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276332; c=relaxed/simple;
-	bh=X7YoYod6HqTF9kWC1LtHPtXIurCG9pIKDTnHUDe40CA=;
+	s=arc-20240116; t=1757276671; c=relaxed/simple;
+	bh=4gSoPuqSifWUWBhTniE00uH+H5IZTN+pVgRoztjXKrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Us3nF90b8bmxhxig5UKuO7+8jLE0AfSSfyohvp4H05tU1xKQ/gTA+W3XiBnP0FA24FMg8TpptC4ftGkqRB8LO0dhZAf/lO5USbS7Ltq8eWbMn61DEtw6NWdlzFSXI59QZXqZjVPS5YvkPWJ9gNX0h7YlnPDvAKkN/oyhpOaxLqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNaENlEG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6300AC4CEF0;
-	Sun,  7 Sep 2025 20:18:51 +0000 (UTC)
+	 MIME-Version; b=htZom+CFqPW3u892lOpS2tyl4PXiH9vKkfpQxyZnEZ8ZGpDlIjmk5qwSYrNZQd2oWXkfhJwCzB16QAeoouxbhjahgLJwy8G8jme1khWmcw+yKNPLA+noIqGmbjqIlE3gZ4tk2YkAANegVZxRzmH76h/OM2JZHQT4/C4hfHWXWxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Br89MDqe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F431C4CEF0;
+	Sun,  7 Sep 2025 20:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276331;
-	bh=X7YoYod6HqTF9kWC1LtHPtXIurCG9pIKDTnHUDe40CA=;
+	s=korg; t=1757276670;
+	bh=4gSoPuqSifWUWBhTniE00uH+H5IZTN+pVgRoztjXKrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rNaENlEGKTZ6JAUWqv5aqmx8OyO8jwqevmCzC9IuPn/tuJYUcdXo9Tk0naPHxqUl2
-	 n3flG2AhyyTMuZTOBQ0yDU+3ai2pPuY2/Mx2MMmLRvT5aSBelu3couBC6SSHhRjnC8
-	 tvyJlorZX/gngCUGI5+G60iCvU8g9wGMbUikPt5A=
+	b=Br89MDqecIbZ6BzLQ/wZFZEh1m8+9AUkECOojgjYIcQLFwUScR2Ml2u+Dyrbrk0k3
+	 MgZ+s+iMgrIShm2md8o8IUo94LKstuyBSfRTRxqRIEa3j798S2ujZggjlI7CrCHOBy
+	 8hBF0Kpc8btV0+vU8Y0e+ldPD5NHjMv6wxutPRuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/104] cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode
+Subject: [PATCH 6.6 073/121] cpufreq: intel_pstate: Fold intel_pstate_max_within_limits() into caller
 Date: Sun,  7 Sep 2025 21:58:29 +0200
-Message-ID: <20250907195609.548509911@linuxfoundation.org>
+Message-ID: <20250907195611.710168076@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit ac4e04d9e378f5aa826c2406ad7871ae1b6a6fb9 ]
+[ Upstream commit 032c5565eb80edb6f2faeb31939540c897987119 ]
 
-When turbo mode is unavailable on a Skylake-X system, executing the
-command:
+Fold intel_pstate_max_within_limits() into its only caller.
 
- # echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
+No functional impact.
 
-results in an unchecked MSR access error:
-
- WRMSR to 0x199 (attempted to write 0x0000000100001300).
-
-This issue was reproduced on an OEM (Original Equipment Manufacturer)
-system and is not a common problem across all Skylake-X systems.
-
-This error occurs because the MSR 0x199 Turbo Engage Bit (bit 32) is set
-when turbo mode is disabled. The issue arises when intel_pstate fails to
-detect that turbo mode is disabled. Here intel_pstate relies on
-MSR_IA32_MISC_ENABLE bit 38 to determine the status of turbo mode.
-However, on this system, bit 38 is not set even when turbo mode is
-disabled.
-
-According to the Intel Software Developer's Manual (SDM), the BIOS sets
-this bit during platform initialization to enable or disable
-opportunistic processor performance operations. Logically, this bit
-should be set in such cases. However, the SDM also specifies that "OS
-and applications must use CPUID leaf 06H to detect processors with
-opportunistic processor performance operations enabled."
-
-Therefore, in addition to checking MSR_IA32_MISC_ENABLE bit 38, verify
-that CPUID.06H:EAX[1] is 0 to accurately determine if turbo mode is
-disabled.
-
-Fixes: 4521e1a0ce17 ("cpufreq: intel_pstate: Reflect current no_turbo state correctly")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: All applicable <stable@vger.kernel.org>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Stable-dep-of: ac4e04d9e378 ("cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/intel_pstate.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/cpufreq/intel_pstate.c |   13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
 --- a/drivers/cpufreq/intel_pstate.c
 +++ b/drivers/cpufreq/intel_pstate.c
-@@ -561,6 +561,9 @@ static bool turbo_is_disabled(void)
+@@ -2027,14 +2027,6 @@ static void intel_pstate_set_min_pstate(
+ 	intel_pstate_set_pstate(cpu, cpu->pstate.min_pstate);
+ }
+ 
+-static void intel_pstate_max_within_limits(struct cpudata *cpu)
+-{
+-	int pstate = max(cpu->pstate.min_pstate, cpu->max_perf_ratio);
+-
+-	update_turbo_state();
+-	intel_pstate_set_pstate(cpu, pstate);
+-}
+-
+ static void intel_pstate_get_cpu_pstates(struct cpudata *cpu)
  {
- 	u64 misc_en;
+ 	int perf_ctl_max_phys = pstate_funcs.get_max_physical(cpu->cpu);
+@@ -2608,12 +2600,15 @@ static int intel_pstate_set_policy(struc
+ 	intel_pstate_update_perf_limits(cpu, policy->min, policy->max);
  
-+	if (!cpu_feature_enabled(X86_FEATURE_IDA))
-+		return true;
+ 	if (cpu->policy == CPUFREQ_POLICY_PERFORMANCE) {
++		int pstate = max(cpu->pstate.min_pstate, cpu->max_perf_ratio);
 +
- 	rdmsrl(MSR_IA32_MISC_ENABLE, misc_en);
- 
- 	return !!(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
+ 		/*
+ 		 * NOHZ_FULL CPUs need this as the governor callback may not
+ 		 * be invoked on them.
+ 		 */
+ 		intel_pstate_clear_update_util_hook(policy->cpu);
+-		intel_pstate_max_within_limits(cpu);
++		update_turbo_state();
++		intel_pstate_set_pstate(cpu, pstate);
+ 	} else {
+ 		intel_pstate_set_update_util_hook(policy->cpu);
+ 	}
 
 
 
