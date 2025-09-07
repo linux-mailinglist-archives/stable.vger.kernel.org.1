@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1F3B47F04
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:31:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4EDB47F76
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:37:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D252016CBD1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:31:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22C3F3C2FF8
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29091FECCD;
-	Sun,  7 Sep 2025 20:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9FF920E00B;
+	Sun,  7 Sep 2025 20:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCapFbn9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGS/PVls"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A9015C158;
-	Sun,  7 Sep 2025 20:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FC41DF246;
+	Sun,  7 Sep 2025 20:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277101; cv=none; b=umEIhDTiXGD4Ob3DPygaoyJXCxyqWyuDOKWxOMgFsANdNADgkw/wGsmLEikR70o08viI/HytrSIVqXI49/PnAovUAr2yIagEmUXvN4HkHsIv1F2XeSTLU9htJU1whgSkAKJ7ZQBUHbyeyOwIQN8xo2WHhToAR4Ey++6URbfTofE=
+	t=1757277471; cv=none; b=cjtWugUCAuaWpWFYCxDqnlFWOFekYaqqRIgKLi6YNxTHUM8JWrQdUkKYkrayVZLP+pF23kF8u4RN0hhV9HpIlk4ABdAribp/uJwxvrDCBCW5wVICPPObb5g9DDqEUg6LANJcOHE75n1SyyaG1F9KFoMU5KthgDEYuO5FHQbtboU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277101; c=relaxed/simple;
-	bh=BKyt8ME2G1VzO2GB5YTnD3RUPgfBr1yONHjoYc5w/fI=;
+	s=arc-20240116; t=1757277471; c=relaxed/simple;
+	bh=5jqmBrGWjeqgLSYfDH0U5NsidLnC2BaWgmcNC1PtMEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmuchtWe/UCIEJPFyHa3uSM8E2v4btc0jWJEVI9nIbRWpCi2M9EbfOPWDBsRuW5NuNzX2F5CqttZOJRW53zjfGcYdyT1A9oqIFizr687V9QdOOpGh8wPd4MTdp4narYnstU+RnFZssEFviMCIA9dpIZYc5Z4FwiMaHC66Obz8IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCapFbn9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ED5C4CEF0;
-	Sun,  7 Sep 2025 20:31:41 +0000 (UTC)
+	 MIME-Version; b=oTJmMAEDG401GDsuH5BvG9BEuHzJ33U7iCwAsHS344aqg2uyWPMg9gM/HGE037QFiRsoGF8VSdAzC5HRJthbmoBZgTzDJMyvRwoRulMq58fVIB0jSZNtPXO+fxgwRa9xKWcqX4EAVABIcx9lKT4IH2SMMK2jFgkJnUnfd5Uof78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGS/PVls; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08DA0C4CEF0;
+	Sun,  7 Sep 2025 20:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277101;
-	bh=BKyt8ME2G1VzO2GB5YTnD3RUPgfBr1yONHjoYc5w/fI=;
+	s=korg; t=1757277471;
+	bh=5jqmBrGWjeqgLSYfDH0U5NsidLnC2BaWgmcNC1PtMEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gCapFbn91KE8PNw2snTW2l1FL1exn7GtupPG/jM3w+kSoXEwrw6Z13nDg6/WxRrsG
-	 QxwC/uz6QbU9Zr4DWTuFziAgD+J24sdeqTo1lXNIxE1e5ht+DZe1aM3n2mhXVIFDyN
-	 VaW/pe/PtKaWCGO2gOB0+uP3t1pjZbkSQ9shME3E=
+	b=aGS/PVlspEw9QUiFXqoC6tB+JzF6jCHd+RStfWj49D6Fc1MwcWpaCC8kZWhmR8O67
+	 XN9MN+Gz+hH2OCs+MFBM1T32WAJwoPb3pc+TMz0nUzsAhcFctSR1W7gVYVv7WSBuPj
+	 +51reZfFldrAMjiydfcgPYau582+1nhJJl8UTh+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Wang Liang <wangliang74@huawei.com>,
+	Hanlu Li <lihanlu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/175] netfilter: br_netfilter: do not check confirmed bit in br_nf_local_in() after confirm
-Date: Sun,  7 Sep 2025 21:57:14 +0200
-Message-ID: <20250907195615.781250759@linuxfoundation.org>
+Subject: [PATCH 6.16 008/183] LoongArch: Save LBT before FPU in setup_sigcontext()
+Date: Sun,  7 Sep 2025 21:57:15 +0200
+Message-ID: <20250907195615.993854673@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 479a54ab92087318514c82428a87af2d7af1a576 ]
+[ Upstream commit 112ca94f6c3b3e0b2002a240de43c487a33e0234 ]
 
-When send a broadcast packet to a tap device, which was added to a bridge,
-br_nf_local_in() is called to confirm the conntrack. If another conntrack
-with the same hash value is added to the hash table, which can be
-triggered by a normal packet to a non-bridge device, the below warning
-may happen.
+Now if preemption happens between protected_save_fpu_context() and
+protected_save_lbt_context(), FTOP context is lost. Because FTOP is
+saved by protected_save_lbt_context() but protected_save_fpu_context()
+disables TM before that. So save LBT before FPU in setup_sigcontext()
+to avoid this potential risk.
 
-  ------------[ cut here ]------------
-  WARNING: CPU: 1 PID: 96 at net/bridge/br_netfilter_hooks.c:632 br_nf_local_in+0x168/0x200
-  CPU: 1 UID: 0 PID: 96 Comm: tap_send Not tainted 6.17.0-rc2-dirty #44 PREEMPT(voluntary)
-  RIP: 0010:br_nf_local_in+0x168/0x200
-  Call Trace:
-   <TASK>
-   nf_hook_slow+0x3e/0xf0
-   br_pass_frame_up+0x103/0x180
-   br_handle_frame_finish+0x2de/0x5b0
-   br_nf_hook_thresh+0xc0/0x120
-   br_nf_pre_routing_finish+0x168/0x3a0
-   br_nf_pre_routing+0x237/0x5e0
-   br_handle_frame+0x1ec/0x3c0
-   __netif_receive_skb_core+0x225/0x1210
-   __netif_receive_skb_one_core+0x37/0xa0
-   netif_receive_skb+0x36/0x160
-   tun_get_user+0xa54/0x10c0
-   tun_chr_write_iter+0x65/0xb0
-   vfs_write+0x305/0x410
-   ksys_write+0x60/0xd0
-   do_syscall_64+0xa4/0x260
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-
-To solve the hash conflict, nf_ct_resolve_clash() try to merge the
-conntracks, and update skb->_nfct. However, br_nf_local_in() still use the
-old ct from local variable 'nfct' after confirm(), which leads to this
-warning.
-
-If confirm() does not insert the conntrack entry and return NF_DROP, the
-warning may also occur. There is no need to reserve the WARN_ON_ONCE, just
-remove it.
-
-Link: https://lore.kernel.org/netdev/20250820043329.2902014-1-wangliang74@huawei.com/
-Fixes: 62e7151ae3eb ("netfilter: bridge: confirm multicast packets before passing them up the stack")
-Suggested-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Hanlu Li <lihanlu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_netfilter_hooks.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/loongarch/kernel/signal.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index 17a5f5923d615..5ad3f3ef4ca75 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -653,9 +653,6 @@ static unsigned int br_nf_local_in(void *priv,
- 		break;
- 	}
+diff --git a/arch/loongarch/kernel/signal.c b/arch/loongarch/kernel/signal.c
+index 4740cb5b23889..c9f7ca778364e 100644
+--- a/arch/loongarch/kernel/signal.c
++++ b/arch/loongarch/kernel/signal.c
+@@ -677,6 +677,11 @@ static int setup_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc,
+ 	for (i = 1; i < 32; i++)
+ 		err |= __put_user(regs->regs[i], &sc->sc_regs[i]);
  
--	ct = container_of(nfct, struct nf_conn, ct_general);
--	WARN_ON_ONCE(!nf_ct_is_confirmed(ct));
++#ifdef CONFIG_CPU_HAS_LBT
++	if (extctx->lbt.addr)
++		err |= protected_save_lbt_context(extctx);
++#endif
++
+ 	if (extctx->lasx.addr)
+ 		err |= protected_save_lasx_context(extctx);
+ 	else if (extctx->lsx.addr)
+@@ -684,11 +689,6 @@ static int setup_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc,
+ 	else if (extctx->fpu.addr)
+ 		err |= protected_save_fpu_context(extctx);
+ 
+-#ifdef CONFIG_CPU_HAS_LBT
+-	if (extctx->lbt.addr)
+-		err |= protected_save_lbt_context(extctx);
+-#endif
 -
- 	return ret;
- }
- #endif
+ 	/* Set the "end" magic */
+ 	info = (struct sctx_info *)extctx->end.addr;
+ 	err |= __put_user(0, &info->magic);
 -- 
 2.50.1
 
