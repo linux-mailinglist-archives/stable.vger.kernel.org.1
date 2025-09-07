@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87AB1B47E41
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C59B47DC9
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85CA0189F5AD
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:22:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F002164384
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846671F09BF;
-	Sun,  7 Sep 2025 20:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498ED20D4FC;
+	Sun,  7 Sep 2025 20:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRgmohBP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfSI9naJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438C8189BB0;
-	Sun,  7 Sep 2025 20:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062171F09BF;
+	Sun,  7 Sep 2025 20:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276522; cv=none; b=vF5tak/i7DHTE7oN1lzugQGoM5tSyoGEDub1S98ctWadQTVd5dIZ6swabp3+PqcIaZgt+gts9Du5KF5cqNggvjmJnVxcI0JHNhtWdEeNLbaPj0niqFOjzSZcphnS1C4aE3S/XCQSyh68KC25W91arc6jKjyznpFyLRJ9h4AuDAw=
+	t=1757276185; cv=none; b=o4LRjuXo4KcXh/GI52Te+/dd7Q8jYl6OeW2Msf0jGL5D6yB6DJjVke/Ql6v1DTBKayYl/mm67fgSDkC18u+OgnRdQTpm2lgOEcwAT4vMlD/Qk2+V2T88CGhXskzwr/WqGWguhZSomqmhES2kvMG+njNVZibrGtUaAX8DunwY67U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276522; c=relaxed/simple;
-	bh=6BGksWNGQF/n+dVPImQ9W6Q5jbNvVjo3b2PUXx3JNPo=;
+	s=arc-20240116; t=1757276185; c=relaxed/simple;
+	bh=p+LcjsMegpbe276hux7Csf4d+hpC0M7FbQc8emt3r80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UjTLuJNNLJFEbxMvPWHZnbf2lRVlS9VBRfnIL5CO/dioBbl0Vf4ORFXWdNzz2weLqfvrU0O0Iq1n6xrNJGpsL8onq+Uv9TLevk3yZoJQ8xdEiklsSqtjFSu0D0QJaLXl++9v53Sa2M4Mn/ZLO5Uv4iMafsvHYMi8VqzioS7JuIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRgmohBP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD47EC4CEF0;
-	Sun,  7 Sep 2025 20:22:01 +0000 (UTC)
+	 MIME-Version; b=Wfqu9NnA7uaP8Dm3ZG1KmIfGYxW//948OmnvSybcL+SGMQOGzmEQl1jJ3BECiP84A6fWVeHVPk01hhSwQDqnGQhOf4aUTyZYZ3/Pi3PtgFuQmrKYTazGAFxC8Gsf37cpd33Ut8vCtE7P5kYPys/Cjrtgsi/yharmXjfX2JWleWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfSI9naJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37334C4CEF0;
+	Sun,  7 Sep 2025 20:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276522;
-	bh=6BGksWNGQF/n+dVPImQ9W6Q5jbNvVjo3b2PUXx3JNPo=;
+	s=korg; t=1757276184;
+	bh=p+LcjsMegpbe276hux7Csf4d+hpC0M7FbQc8emt3r80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fRgmohBPMV/YXe3IzQLRpiBZiO7v1Iyj7x5nAsWyxonwaRLqgG/J+bPdl5CKwCi/h
-	 X+za/Ttm8o8znCOiiFuJWo9ZomTgRKwJBqr6HzEUuQ0FW7FBIv27gt/ahlmWf+L6pf
-	 3OawNYfVlzFTkANRjXJ7VBOOeaw4v2Goo8CQLbT4=
+	b=JfSI9naJJuAaRB3Yongi7khQGlrFd2c9pav8T8M+uZdMVUmJ7FB9DZei+BSTjQDqy
+	 HE1abBdVN9+hwn77r8jbrxBoWqVwULmAroINww2AkOJRYghsy7GCj51gJrS1M1mda+
+	 raFOPYAEblAjkfDBwmUKqG3lV9exd5l3S+yVIqms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/121] mISDN: Fix memory leak in dsp_hwec_enable()
+Subject: [PATCH 6.1 025/104] i40e: Fix potential invalid access when MAC list is empty
 Date: Sun,  7 Sep 2025 21:57:42 +0200
-Message-ID: <20250907195610.495391344@linuxfoundation.org>
+Message-ID: <20250907195608.346152335@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-[ Upstream commit 0704a3da7ce50f972e898bbda88d2692a22922d9 ]
+[ Upstream commit a556f06338e1d5a85af0e32ecb46e365547f92b9 ]
 
-dsp_hwec_enable() allocates dup pointer by kstrdup(arg),
-but then it updates dup variable by strsep(&dup, ",").
-As a result when it calls kfree(dup), the dup variable may be
-a modified pointer that no longer points to the original allocated
-memory, causing a memory leak.
+list_first_entry() never returns NULL - if the list is empty, it still
+returns a pointer to an invalid object, leading to potential invalid
+memory access when dereferenced.
 
-The issue is the same pattern as fixed in commit c6a502c22999
-("mISDN: Fix memory leak in dsp_pipeline_build()").
+Fix this by using list_first_entry_or_null instead of list_first_entry.
 
-Fixes: 9a4381618262 ("mISDN: Remove VLAs")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250828081457.36061-1-linmq006@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e3219ce6a775 ("i40e: Add support for client interface for IWARP driver")
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/isdn/mISDN/dsp_hwec.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_client.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/isdn/mISDN/dsp_hwec.c b/drivers/isdn/mISDN/dsp_hwec.c
-index 0b3f29195330a..0cd216e28f009 100644
---- a/drivers/isdn/mISDN/dsp_hwec.c
-+++ b/drivers/isdn/mISDN/dsp_hwec.c
-@@ -51,14 +51,14 @@ void dsp_hwec_enable(struct dsp *dsp, const char *arg)
- 		goto _do;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_client.c b/drivers/net/ethernet/intel/i40e/i40e_client.c
+index a289f1bb3dbfc..86fd82412e9e4 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_client.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_client.c
+@@ -362,8 +362,8 @@ static void i40e_client_add_instance(struct i40e_pf *pf)
+ 	if (i40e_client_get_params(vsi, &cdev->lan_info.params))
+ 		goto free_cdev;
  
- 	{
--		char *dup, *tok, *name, *val;
-+		char *dup, *next, *tok, *name, *val;
- 		int tmp;
- 
--		dup = kstrdup(arg, GFP_ATOMIC);
-+		dup = next = kstrdup(arg, GFP_ATOMIC);
- 		if (!dup)
- 			return;
- 
--		while ((tok = strsep(&dup, ","))) {
-+		while ((tok = strsep(&next, ","))) {
- 			if (!strlen(tok))
- 				continue;
- 			name = strsep(&tok, "=");
+-	mac = list_first_entry(&cdev->lan_info.netdev->dev_addrs.list,
+-			       struct netdev_hw_addr, list);
++	mac = list_first_entry_or_null(&cdev->lan_info.netdev->dev_addrs.list,
++				       struct netdev_hw_addr, list);
+ 	if (mac)
+ 		ether_addr_copy(cdev->lan_info.lanmac, mac->addr);
+ 	else
 -- 
 2.50.1
 
