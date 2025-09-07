@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F49B47E15
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:04 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D8D2B47FC1
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B8D918832F6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:20:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1010E4E1351
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590DA213237;
-	Sun,  7 Sep 2025 20:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D66626B2AD;
+	Sun,  7 Sep 2025 20:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WjsMp6Wk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ets2I5CQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A6E1A9FAA;
-	Sun,  7 Sep 2025 20:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2EC20E00B;
+	Sun,  7 Sep 2025 20:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276385; cv=none; b=PAOMuVm9MGOE/CMem1vZlNKKcwL21X2K0zWDtl3+gujwz9NsY1cPoSh+T1Rp7Zf4jkYKzBuJfU4UOy+f63wbaWc+mwCGdYuC395wRkjRXkmXrjeN/YhjsyjfGGPsbjCVMsapgCug/HKHDxmZavrbSDKYaak0NSBmwcJ/v19OquE=
+	t=1757277710; cv=none; b=vEK65AcPfpTsz2YRmxKAr9ol9B85/KZFJglLR08yywknEnTIhjv9ZoV5dibgXj2C9geEJNopUGlC9Ic43lm9gOQg+uMZxxuDsB0H4IfxNNAyjemcURcOobbK/2g/s0EKWPIseg2tjDI1b8uSDD4CRCl05+KF0nXwmo5dyoCRyK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276385; c=relaxed/simple;
-	bh=cunvF/uwGZsRfoBEPN/+x2Qj/G5A4LDPY2w9ZB590Kk=;
+	s=arc-20240116; t=1757277710; c=relaxed/simple;
+	bh=8VTPDvEbNX+m8K/0uj3fZyouJ6KKJoNQVKh0+tUx8X8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ainyeYg4zWFnxZdNAVjUsdNdsW/skzRXEH7B7NRxYTrO8lreax3958+cG0Eq1MCz00U+dSTr2YsyDUahJ+XdEvrBHdjjHXv0KsH74bFYgNnWnPFQwjWADuIgbl8FENOhF+wWVuuesriuzYodz3mUgIbBD002kjA5sSI4CMCDrUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WjsMp6Wk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3302DC4CEF0;
-	Sun,  7 Sep 2025 20:19:43 +0000 (UTC)
+	 MIME-Version; b=eoGHrn92+EqHzJuTaXRPya5UC96rVkSITJF0MXtW2KE81Dsu/S7CA+7+Tm8Uz4TlHk2zA/jlLD08MCwykP6fffgj0U6slDi0ESiobej67FOSKmP6ekyURW7yM+G6TBYifFILZXVnbrh32zl946yjq2wNxsEwt9zpYWXWnoQ0kac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ets2I5CQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81A0C4CEF0;
+	Sun,  7 Sep 2025 20:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276384;
-	bh=cunvF/uwGZsRfoBEPN/+x2Qj/G5A4LDPY2w9ZB590Kk=;
+	s=korg; t=1757277710;
+	bh=8VTPDvEbNX+m8K/0uj3fZyouJ6KKJoNQVKh0+tUx8X8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WjsMp6WkpOfp1Pnec5sc+Csh6cxzMan19CDZ2aR7I3SCJvZ67FyjHjacM17fT4LdG
-	 9tgD6ljLIchLA+R1fYzIoUKW7sOCJYzf/YjVsKTD5LRDz4yTum8XlNvGVddAYQEuhM
-	 gDvP0QcyeuFFHtmn9cdjaG2w+Kqe0NYIINq2iCbE=
+	b=ets2I5CQ1DODNnhzT9zJiuZM75P6oAj7NjLpFqyjibXN8GQmL0aI+g3KwegBW8448
+	 FXSPgz5outk6GxKpm2eR8j1zdwEx7u77iskKyeAZe6k/ypoKDcOXZJF72EwBgxKbk6
+	 yvdCXd9Q8DQfwg/tCUCE5JuJmGzN8c38GLfUp8W4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Candice Li <candice.li@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/104] drm/amdgpu: Optimize RAS TA initialization and TA unload funcs
+	Miaoqian Lin <linmq006@gmail.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.16 098/183] ACPI/IORT: Fix memory leak in iort_rmr_alloc_sids()
 Date: Sun,  7 Sep 2025 21:58:45 +0200
-Message-ID: <20250907195609.953620312@linuxfoundation.org>
+Message-ID: <20250907195618.112604970@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Candice Li <candice.li@amd.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit bf7d777289d106963fd2080d298e6b88b7263b66 ]
+commit f3ef7110924b897f4b79db9f7ac75d319ec09c4a upstream.
 
-1. Save TA unload psp response status
-2. Add RAS TA loading status check for initializaiton
-3. Drop RAS context teardown to allow RAS TA to be reloaded
+If krealloc_array() fails in iort_rmr_alloc_sids(), the function returns
+NULL but does not free the original 'sids' allocation. This results in a
+memory leak since the caller overwrites the original pointer with the
+NULL return value.
 
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Candice Li <candice.li@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 467e00b30dfe ("drm/amd/amdgpu: Fix missing error return on kzalloc failure")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 491cf4a6735a ("ACPI/IORT: Add support to retrieve IORT RMR reserved regions")
+Cc: <stable@vger.kernel.org> # 6.0.x
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://lore.kernel.org/r/20250828112243.61460-1-linmq006@gmail.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/acpi/arm64/iort.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-index ae6643c8ade6c..d101333fe3a57 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -994,6 +994,8 @@ int psp_ta_unload(struct psp_context *psp, struct ta_context *context)
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -937,8 +937,10 @@ static u32 *iort_rmr_alloc_sids(u32 *sid
  
- 	ret = psp_cmd_submit_buf(psp, NULL, cmd, psp->fence_buf_mc_addr);
- 
-+	context->resp_status = cmd->resp.status;
-+
- 	release_psp_cmd_buf(psp);
- 
- 	return ret;
-@@ -1569,6 +1571,11 @@ static int psp_ras_initialize(struct psp_context *psp)
- 	if (amdgpu_sriov_vf(adev))
- 		return 0;
- 
-+	if (psp->ras_context.context.initialized) {
-+		dev_warn(adev->dev, "RAS WARN: TA has already been loaded\n");
-+		return 0;
+ 	new_sids = krealloc_array(sids, count + new_count,
+ 				  sizeof(*new_sids), GFP_KERNEL);
+-	if (!new_sids)
++	if (!new_sids) {
++		kfree(sids);
+ 		return NULL;
 +	}
-+
- 	if (!adev->psp.ras_context.context.bin_desc.size_bytes ||
- 	    !adev->psp.ras_context.context.bin_desc.start_addr) {
- 		dev_info(adev->dev, "RAS: optional ras ta ucode is not available\n");
-@@ -1619,7 +1626,7 @@ static int psp_ras_initialize(struct psp_context *psp)
- 	psp->ras_context.context.mem_context.shared_mem_size = PSP_RAS_SHARED_MEM_SIZE;
- 	psp->ras_context.context.ta_load_type = GFX_CMD_ID_LOAD_TA;
  
--	if (!psp->ras_context.context.initialized) {
-+	if (!psp->ras_context.context.mem_context.shared_buf) {
- 		ret = psp_ta_init_shared_buf(psp, &psp->ras_context.context.mem_context);
- 		if (ret)
- 			return ret;
-@@ -1640,7 +1647,6 @@ static int psp_ras_initialize(struct psp_context *psp)
- 	else {
- 		if (ras_cmd->ras_status)
- 			dev_warn(psp->adev->dev, "RAS Init Status: 0x%X\n", ras_cmd->ras_status);
--		amdgpu_ras_fini(psp->adev);
- 	}
- 
- 	return ret;
--- 
-2.51.0
-
+ 	for (i = count; i < total_count; i++)
+ 		new_sids[i] = id_start++;
 
 
 
