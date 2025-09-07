@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD8E1B47E2B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:21:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23CFDB47FD2
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6886C3AC11E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21C451B21E70
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A851F14BFA2;
-	Sun,  7 Sep 2025 20:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD3E21ADAE;
+	Sun,  7 Sep 2025 20:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dmv0z3M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPp8x08O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663FA189BB0;
-	Sun,  7 Sep 2025 20:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19EA4315A;
+	Sun,  7 Sep 2025 20:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276462; cv=none; b=mQdSsHpmi4mryzc1FWZlLG86FNrT1Iva1rRfa5PVxh5Xu1yvS4gy/5BrsXmqkRwWw+D5N0Yb5/uHfhdHfe6Cfaw2oRLq1sJZR7cM32aXMYzEwd98Fr+Z8/yYa1bKikFF068mKVS1iRUEVe8Cyib7w/oWnFtoFCYEM8jsWiWyWXQ=
+	t=1757277764; cv=none; b=UKcr9WfUtsJp7tliBZoqn66XAMR1FmMDePlyo0jqbtmVB0yEN3iEMOPyX0sa2VVHfXHedGbOrwowP0WET+isyr7/uA6qbjrGZ/qeK8ei9bAExAtQBoMYy8goKh1/v6XOpCQ2fPtqltAAYsQbd2P7NAxvKWh4Y5Kbd9P1+/t7oAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276462; c=relaxed/simple;
-	bh=HYT40DUnmccF2uBeaMEt3ap3sED4K5q8NOWrLFw2jKw=;
+	s=arc-20240116; t=1757277764; c=relaxed/simple;
+	bh=bkJXxjf350oC+XtJiVpGNInDihFovxHtGywTjZMvwKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ecUPDFJj88T2dI+Jgkf02m+IGa2RLq/iLR7VvN1P/7mD0Hv3nDvaXhq3yrfwQ9fcYsOFm3UwKeavwKuCJ+jxbEd6mcCjI71T1OhwHCElffecmltsDeGe0wABfVrSqKtg5ls40DZcuRo5g4LbOaPrNRNyQapzN2shHDKXTZN+vEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dmv0z3M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D730EC4CEF0;
-	Sun,  7 Sep 2025 20:21:01 +0000 (UTC)
+	 MIME-Version; b=Hqzq9ai1Lyyl9wfRBzG1K5J3AMBWErg/45fiEjxY6a2zHuEpC4baKd4nZEgXFRzNfuTGxBnYOseKNiTefEibDmMBekcPTOpwZlRaGZkePXyJW+Vg+K9brtjf8MV/B74KjXj2XlyrTrjiD/2kRdxSjPNkTM9hOdjO7hEcRJcoMjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPp8x08O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55175C4CEF0;
+	Sun,  7 Sep 2025 20:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276462;
-	bh=HYT40DUnmccF2uBeaMEt3ap3sED4K5q8NOWrLFw2jKw=;
+	s=korg; t=1757277764;
+	bh=bkJXxjf350oC+XtJiVpGNInDihFovxHtGywTjZMvwKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1dmv0z3Mb39BgWPEh19xD4bqQm+BHcNf5y5gjsFp5mmIIxjy3dRZ+eedbi0mHNobd
-	 yBZ7qFQ2L7IBL1BSv76sWDWKqJiIaLv2LKlpoO96k2GBSGdcYBcCfi/9FKrykJCO7Y
-	 tWA2MItgCXZvh5cvXoBY2SYcdpxmNnEXc0h5zrd0=
+	b=DPp8x08O6Q5pJMItw/pRmW3p8T0wxYEp5H8tuRZNrjNeaqsMHHmjs48b0HZR3/lSZ
+	 +DTcR87qZpE4VvlpbERB9Xjr3123RmfszaHbddNC3UyNAh0homzn3ONtwAYBOdmtUp
+	 6LZHUJ1N/ztO9OV8YaENjbyl3ZyoByv6eQ78e3iQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Christoph Paasch <cpaasch@openai.com>,
+	Dmitry Safonov <0x7f454c46@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/104] dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()
-Date: Sun,  7 Sep 2025 21:58:19 +0200
-Message-ID: <20250907195609.287199377@linuxfoundation.org>
+Subject: [PATCH 6.16 073/183] net/tcp: Fix socket memory leak in TCP-AO failure handling for IPv6
+Date: Sun,  7 Sep 2025 21:58:20 +0200
+Message-ID: <20250907195617.531781267@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +61,142 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Christoph Paasch <cpaasch@openai.com>
 
-[ Upstream commit 157ae5ffd76a2857ccb4b7ce40bc5a344ca00395 ]
+[ Upstream commit fa390321aba0a54d0f7ae95ee4ecde1358bb9234 ]
 
-Fix a potential deadlock bug. Observe that in the mtk-cqdma.c
-file, functions like mtk_cqdma_issue_pending() and
-mtk_cqdma_free_active_desc() properly acquire the pc lock before the vc
-lock when handling pc and vc fields. However, mtk_cqdma_tx_status()
-violates this order by first acquiring the vc lock before invoking
-mtk_cqdma_find_active_desc(), which subsequently takes the pc lock. This
-reversed locking sequence (vc → pc) contradicts the established
-pc → vc order and creates deadlock risks.
+When tcp_ao_copy_all_matching() fails in tcp_v6_syn_recv_sock() it just
+exits the function. This ends up causing a memory-leak:
 
-Fix the issue by moving the vc lock acquisition code from
-mtk_cqdma_find_active_desc() to mtk_cqdma_tx_status(). Ensure the pc lock
-is acquired before the vc lock in the calling function to maintain correct
-locking hierarchy. Note that since mtk_cqdma_find_active_desc() is a
-static function with only one caller (mtk_cqdma_tx_status()), this
-modification safely eliminates the deadlock possibility without affecting
-other components.
+unreferenced object 0xffff0000281a8200 (size 2496):
+  comm "softirq", pid 0, jiffies 4295174684
+  hex dump (first 32 bytes):
+    7f 00 00 06 7f 00 00 06 00 00 00 00 cb a8 88 13  ................
+    0a 00 03 61 00 00 00 00 00 00 00 00 00 00 00 00  ...a............
+  backtrace (crc 5ebdbe15):
+    kmemleak_alloc+0x44/0xe0
+    kmem_cache_alloc_noprof+0x248/0x470
+    sk_prot_alloc+0x48/0x120
+    sk_clone_lock+0x38/0x3b0
+    inet_csk_clone_lock+0x34/0x150
+    tcp_create_openreq_child+0x3c/0x4a8
+    tcp_v6_syn_recv_sock+0x1c0/0x620
+    tcp_check_req+0x588/0x790
+    tcp_v6_rcv+0x5d0/0xc18
+    ip6_protocol_deliver_rcu+0x2d8/0x4c0
+    ip6_input_finish+0x74/0x148
+    ip6_input+0x50/0x118
+    ip6_sublist_rcv+0x2fc/0x3b0
+    ipv6_list_rcv+0x114/0x170
+    __netif_receive_skb_list_core+0x16c/0x200
+    netif_receive_skb_list_internal+0x1f0/0x2d0
 
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs to extract
-function pairs that can be concurrently executed, and then analyzes the
-instructions in the paired functions to identify possible concurrency bugs
-including deadlocks, data races and atomicity violations.
+This is because in tcp_v6_syn_recv_sock (and the IPv4 counterpart), when
+exiting upon error, inet_csk_prepare_forced_close() and tcp_done() need
+to be called. They make sure the newsk will end up being correctly
+free'd.
 
-Fixes: b1f01e48df5a ("dmaengine: mediatek: Add MediaTek Command-Queue DMA controller for MT6765 SoC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250508073634.3719-1-chenqiuji666@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+tcp_v4_syn_recv_sock() makes this very clear by having the put_and_exit
+label that takes care of things. So, this patch here makes sure
+tcp_v4_syn_recv_sock and tcp_v6_syn_recv_sock have similar
+error-handling and thus fixes the leak for TCP-AO.
+
+Fixes: 06b22ef29591 ("net/tcp: Wire TCP-AO to request sockets")
+Signed-off-by: Christoph Paasch <cpaasch@openai.com>
+Reviewed-by: Dmitry Safonov <0x7f454c46@gmail.com>
+Link: https://patch.msgid.link/20250830-tcpao_leak-v1-1-e5878c2c3173@openai.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/mediatek/mtk-cqdma.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/ipv6/tcp_ipv6.c | 32 +++++++++++++++-----------------
+ 1 file changed, 15 insertions(+), 17 deletions(-)
 
---- a/drivers/dma/mediatek/mtk-cqdma.c
-+++ b/drivers/dma/mediatek/mtk-cqdma.c
-@@ -421,15 +421,11 @@ static struct virt_dma_desc *mtk_cqdma_f
- {
- 	struct mtk_cqdma_vchan *cvc = to_cqdma_vchan(c);
- 	struct virt_dma_desc *vd;
--	unsigned long flags;
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index f61b0396ef6b1..3e83c7b5c14a7 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1431,17 +1431,17 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ 	ireq = inet_rsk(req);
  
--	spin_lock_irqsave(&cvc->pc->lock, flags);
- 	list_for_each_entry(vd, &cvc->pc->queue, node)
- 		if (vd->tx.cookie == cookie) {
--			spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 			return vd;
+ 	if (sk_acceptq_is_full(sk))
+-		goto out_overflow;
++		goto exit_overflow;
+ 
+ 	if (!dst) {
+ 		dst = inet6_csk_route_req(sk, &fl6, req, IPPROTO_TCP);
+ 		if (!dst)
+-			goto out;
++			goto exit;
+ 	}
+ 
+ 	newsk = tcp_create_openreq_child(sk, req, skb);
+ 	if (!newsk)
+-		goto out_nonewsk;
++		goto exit_nonewsk;
+ 
+ 	/*
+ 	 * No need to charge this sock to the relevant IPv6 refcnt debug socks
+@@ -1525,25 +1525,19 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ 			const union tcp_md5_addr *addr;
+ 
+ 			addr = (union tcp_md5_addr *)&newsk->sk_v6_daddr;
+-			if (tcp_md5_key_copy(newsk, addr, AF_INET6, 128, l3index, key)) {
+-				inet_csk_prepare_forced_close(newsk);
+-				tcp_done(newsk);
+-				goto out;
+-			}
++			if (tcp_md5_key_copy(newsk, addr, AF_INET6, 128, l3index, key))
++				goto put_and_exit;
  		}
--	spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 	}
+ #endif
+ #ifdef CONFIG_TCP_AO
+ 	/* Copy over tcp_ao_info if any */
+ 	if (tcp_ao_copy_all_matching(sk, newsk, req, skb, AF_INET6))
+-		goto out; /* OOM */
++		goto put_and_exit; /* OOM */
+ #endif
  
- 	list_for_each_entry(vd, &cvc->vc.desc_issued, node)
- 		if (vd->tx.cookie == cookie)
-@@ -453,9 +449,11 @@ static enum dma_status mtk_cqdma_tx_stat
- 	if (ret == DMA_COMPLETE || !txstate)
- 		return ret;
+-	if (__inet_inherit_port(sk, newsk) < 0) {
+-		inet_csk_prepare_forced_close(newsk);
+-		tcp_done(newsk);
+-		goto out;
+-	}
++	if (__inet_inherit_port(sk, newsk) < 0)
++		goto put_and_exit;
+ 	*own_req = inet_ehash_nolisten(newsk, req_to_sk(req_unhash),
+ 				       &found_dup_sk);
+ 	if (*own_req) {
+@@ -1570,13 +1564,17 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
  
-+	spin_lock_irqsave(&cvc->pc->lock, flags);
- 	spin_lock_irqsave(&cvc->vc.lock, flags);
- 	vd = mtk_cqdma_find_active_desc(c, cookie);
- 	spin_unlock_irqrestore(&cvc->vc.lock, flags);
-+	spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 	return newsk;
  
- 	if (vd) {
- 		cvd = to_cqdma_vdesc(vd);
+-out_overflow:
++exit_overflow:
+ 	__NET_INC_STATS(sock_net(sk), LINUX_MIB_LISTENOVERFLOWS);
+-out_nonewsk:
++exit_nonewsk:
+ 	dst_release(dst);
+-out:
++exit:
+ 	tcp_listendrop(sk);
+ 	return NULL;
++put_and_exit:
++	inet_csk_prepare_forced_close(newsk);
++	tcp_done(newsk);
++	goto exit;
+ }
+ 
+ INDIRECT_CALLABLE_DECLARE(struct dst_entry *ipv4_dst_check(struct dst_entry *,
+-- 
+2.50.1
+
 
 
 
