@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-178254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACAA2B47DE0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5C7B47F96
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:39:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 689E03BEA39
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A06B1B200A0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24381A9FAA;
-	Sun,  7 Sep 2025 20:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F636212B3D;
+	Sun,  7 Sep 2025 20:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8/fbbQT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vL6XPgN7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B93D1AF0B6;
-	Sun,  7 Sep 2025 20:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D86F4315A;
+	Sun,  7 Sep 2025 20:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276253; cv=none; b=QxIrM6uuHyc7eIaTA32MKaXMMQCbN+DeDUZCxYGdFgWmP/IfivbkUaCIz+GEB5wktNZhvNHhNLD5nSrZOQOmDUV1cGBW4Si2T/OZGqz3bRv+jzBc4T7pW/c0cc2e9bBkt3mGpTOjJuqn48b23lg6XzRltXrIGNBHgsuNI1oEEFo=
+	t=1757277571; cv=none; b=o/kj4xMwkpZ1PGCnfEUFtbQoWs+u+DrTjN6esbKQTluCncqOTl/EQ0I9RHSacrY1pZaD4M9gk5rvHrXydvG16HSB/SYjydhTfAldRJvfrK3MHxYX0pLKhAiPyoQ4f+Nm0Xm10cPxIwbsWY1zwDv3BrOXd5//BPvSs1cpZC27/u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276253; c=relaxed/simple;
-	bh=RKoCDRLMfXKVFAdQSfb3SyJBs5IVqnjPFy+uamRKeLs=;
+	s=arc-20240116; t=1757277571; c=relaxed/simple;
+	bh=VHPdX9JHW/KaVqWfuWeBzvWDxq2sRLB7kaPtEhkY4LQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0LjtC6IEZ/wxA/3m3rr9INzaK9G4NVpWPhzc6vCb86OMycA2eAL7MBFPKKruaQ4d8zI9fI4Lgx4JiO4YvidBusbywf14srsUcLgRw6X9jeODcIot4nN6Q9qvbUs56B/YoAkQ4xfJlMBX5+zp0iXLQaKzCWtj3It1pZJTL2QMxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8/fbbQT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5A9C4CEF0;
-	Sun,  7 Sep 2025 20:17:32 +0000 (UTC)
+	 MIME-Version; b=CYaQ7Mh6k7awMKrqfRIaeDR7MP+DGLV5qnxliDZNdTRCWABn0WnqhpduDzvUEKG9ErfGu+hvi5ngzS5v0kpcuFkRqpdwVTXAo0x9U82vq96ZQr9W4VL5YF896gyzba6WJitKUExveJcjTa3PQ7eyQv1bZXArpQVEAwQMh0nezug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vL6XPgN7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4022C4CEF0;
+	Sun,  7 Sep 2025 20:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276253;
-	bh=RKoCDRLMfXKVFAdQSfb3SyJBs5IVqnjPFy+uamRKeLs=;
+	s=korg; t=1757277571;
+	bh=VHPdX9JHW/KaVqWfuWeBzvWDxq2sRLB7kaPtEhkY4LQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8/fbbQTAxHmzAMBCk4PfYtT+oEjLqHSUnPPY6CIDuV00Dd7KAPaZgcEeFvgcMAQm
-	 fgE5THDAf3uQM3NvgITlxpvEED8wm+FfhVC0X8F19gqdluzKN83xG3jIGcdOdg8A/H
-	 UkfGyrszWI2LZ7OO3WheJllXrC+HkNqsVTwxyvoU=
+	b=vL6XPgN7Ucf2SZScqVDZAJfmXFt3mX+W2NrW0Gg16FpCW1433fTRqGQJDJHvX2vdW
+	 qC6xTBRswcmn+Pz7nNL7VWMUAlGeukfUBn2i+5CgN+C3Q5PGKFVzU7MX3DLYZTkFRC
+	 5JJyylr3pSRYdoD0urhMUvkBr4Py8smYEHcYvEwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com,
-	Mark Tinguely <mark.tinguely@oracle.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 045/104] ocfs2: prevent release journal inode after journal shutdown
+	Willem de Bruijn <willemb@google.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 055/183] selftests: drv-net: csum: fix interface name for remote host
 Date: Sun,  7 Sep 2025 21:58:02 +0200
-Message-ID: <20250907195608.863444800@linuxfoundation.org>
+Message-ID: <20250907195617.093037031@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,63 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit f46e8ef8bb7b452584f2e75337b619ac51a7cadf upstream.
+[ Upstream commit 49c2502b5946ebf454d7e16fd0189769a82b6117 ]
 
-Before calling ocfs2_delete_osb(), ocfs2_journal_shutdown() has already
-been executed in ocfs2_dismount_volume(), so osb->journal must be NULL.
-Therefore, the following calltrace will inevitably fail when it reaches
-jbd2_journal_release_jbd_inode().
+Use cfg.remote_ifname for arguments of remote command.
+Without this UDP tests fail in NIPA where local interface
+is called enp1s0 and remote enp0s4.
 
-ocfs2_dismount_volume()->
-  ocfs2_delete_osb()->
-    ocfs2_free_slot_info()->
-      __ocfs2_free_slot_info()->
-        evict()->
-          ocfs2_evict_inode()->
-            ocfs2_clear_inode()->
-	      jbd2_journal_release_jbd_inode(osb->journal->j_journal,
-
-Adding osb->journal checks will prevent null-ptr-deref during the above
-execution path.
-
-Link: https://lkml.kernel.org/r/tencent_357489BEAEE4AED74CBD67D246DBD2C4C606@qq.com
-Fixes: da5e7c87827e ("ocfs2: cleanup journal init and shutdown")
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reported-by: syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=47d8cb2f2cc1517e515a
-Tested-by: syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com
-Reviewed-by: Mark Tinguely <mark.tinguely@oracle.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1d0dc857b5d8 ("selftests: drv-net: add checksum tests")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20250830183842.688935-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/inode.c |    3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/drivers/net/hw/csum.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ocfs2/inode.c
-+++ b/fs/ocfs2/inode.c
-@@ -1205,6 +1205,9 @@ static void ocfs2_clear_inode(struct ino
- 	 * the journal is flushed before journal shutdown. Thus it is safe to
- 	 * have inodes get cleaned up after journal shutdown.
- 	 */
-+	if (!osb->journal)
-+		return;
-+
- 	jbd2_journal_release_jbd_inode(osb->journal->j_journal,
- 				       &oi->ip_jinode);
- }
+diff --git a/tools/testing/selftests/drivers/net/hw/csum.py b/tools/testing/selftests/drivers/net/hw/csum.py
+index cd23af8753170..3e3a89a34afe7 100755
+--- a/tools/testing/selftests/drivers/net/hw/csum.py
++++ b/tools/testing/selftests/drivers/net/hw/csum.py
+@@ -17,7 +17,7 @@ def test_receive(cfg, ipver="6", extra_args=None):
+     ip_args = f"-{ipver} -S {cfg.remote_addr_v[ipver]} -D {cfg.addr_v[ipver]}"
+ 
+     rx_cmd = f"{cfg.bin_local} -i {cfg.ifname} -n 100 {ip_args} -r 1 -R {extra_args}"
+-    tx_cmd = f"{cfg.bin_remote} -i {cfg.ifname} -n 100 {ip_args} -r 1 -T {extra_args}"
++    tx_cmd = f"{cfg.bin_remote} -i {cfg.remote_ifname} -n 100 {ip_args} -r 1 -T {extra_args}"
+ 
+     with bkg(rx_cmd, exit_wait=True):
+         wait_port_listen(34000, proto="udp")
+@@ -37,7 +37,7 @@ def test_transmit(cfg, ipver="6", extra_args=None):
+     if extra_args != "-U -Z":
+         extra_args += " -r 1"
+ 
+-    rx_cmd = f"{cfg.bin_remote} -i {cfg.ifname} -L 1 -n 100 {ip_args} -R {extra_args}"
++    rx_cmd = f"{cfg.bin_remote} -i {cfg.remote_ifname} -L 1 -n 100 {ip_args} -R {extra_args}"
+     tx_cmd = f"{cfg.bin_local} -i {cfg.ifname} -L 1 -n 100 {ip_args} -T {extra_args}"
+ 
+     with bkg(rx_cmd, host=cfg.remote, exit_wait=True):
+-- 
+2.50.1
+
 
 
 
