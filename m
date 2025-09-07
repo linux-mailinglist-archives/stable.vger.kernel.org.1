@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-178428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF25B47E9F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38148B47EA6
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:27:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE10616E147
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA5F816733B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCDEF1E5B94;
-	Sun,  7 Sep 2025 20:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C883420E005;
+	Sun,  7 Sep 2025 20:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKftRTXB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X928jXfL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B279D528;
-	Sun,  7 Sep 2025 20:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853C517BB21;
+	Sun,  7 Sep 2025 20:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276804; cv=none; b=ivVSB7SvJUus2dq4cOJIhAsuvVjDRMcDbQPbtT01fPaL5OUISrZ/bgJBuHOoS+cYFKfK59dxUIbvHAWweCgKiHUuHg0hDNWPdT4ZafZFZXYEBIVfVMUbZCdfyeporJbTPpeAju5LQIgHMkC3FHhlb4kxyXq2t3PTkIAzn6lHsQM=
+	t=1757276826; cv=none; b=B5iandU7zTkBylirZwHnjx38eh9IfBsuquMgZJ0knsqcBaQ3ZEH6XGcyYAdAdtdQ4/62/ZPP18Jw5JdCqwy+WUUEzW0adW+URIOdyTf21zJ9ecU1P9JoSDyTgA5CaJ/u+gNrH94+AhFHKdIJBDPdnz0E9e1+bnWXot9W6vLRoU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276804; c=relaxed/simple;
-	bh=9nwNBIALRDMR3h/I35sq213paScKty787gFU/aYQVfA=;
+	s=arc-20240116; t=1757276826; c=relaxed/simple;
+	bh=erX9nhufKdKG2VloRWHCmp0er7/5bBFMQcBPORrqVYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PLb/fozGt4TIXs1NbkR7HoBXz90xrEuihPjzSMxqpjdgqURy8QdxDnaf8ahqsjt1x8is6m4k9ethwUL50ZvKdf4HuvbXUOVU5NnrdKp4osRSFzwNWHDqf8uK8J4toACDfnewY1qWiQ6bGqANF25F00KJbaiskJkEkDDXDUomgOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKftRTXB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF52C4CEF0;
-	Sun,  7 Sep 2025 20:26:43 +0000 (UTC)
+	 MIME-Version; b=HuG8b1S6onm0eQ23OkvNLdUg9E+lNaC39Q45BeFUsZX9OMTgEajaE97m5hjJkjYARY56Zk7YqcaWc2wgtfPrqPDcjh0fSH34S6vfXwBlN1h/WLfgMx1/cV4qApI5kEGITofN/LwAXoveADgDXdUI8zy9nAE2O+nPqpnmVFTOYnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X928jXfL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072E8C4CEF0;
+	Sun,  7 Sep 2025 20:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276804;
-	bh=9nwNBIALRDMR3h/I35sq213paScKty787gFU/aYQVfA=;
+	s=korg; t=1757276826;
+	bh=erX9nhufKdKG2VloRWHCmp0er7/5bBFMQcBPORrqVYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DKftRTXBvLXWVMSKIog8BbqhRBsIfSy+DQ5YgpmtDDHYI9JEuFLwWJm3quw3TKvfa
-	 SY5eP1VWZuGOwxdS+WgxFa6QAK/vJk0mNoe3cmWgfu7x3sonMoG5FyksKoNUhoqZui
-	 aQy2I6Lh9DSgpEHDV+vVrmpc3zq313Ybyms338vI=
+	b=X928jXfLLJH2dMCHogZXhJj5lNuwhdgwH6DvTb+ONDVTfB6w6t5Rh3CpmsoUMNNHh
+	 hhOx2g8XededA2iAQbSlvUCLtZH3e7Sal+mYlWzCE9BjjBYzblShXWwG4XluhO6lbg
+	 tTBO6xvtQk0+1yg3cjbSvwYEjD/HV7PfZV3osu1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 098/121] Revert "drm/amdgpu: Avoid extra evict-restore process."
-Date: Sun,  7 Sep 2025 21:58:54 +0200
-Message-ID: <20250907195612.368834750@linuxfoundation.org>
+	Chen Ni <nichen@iscas.ac.cn>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 099/121] pcmcia: omap: Add missing check for platform_get_resource
+Date: Sun,  7 Sep 2025 21:58:55 +0200
+Message-ID: <20250907195612.392750538@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
 References: <20250907195609.817339617@linuxfoundation.org>
@@ -64,42 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-This reverts commit a3201e3b7cf10bcd3d7eef4859d275eb6d98e12a which is
-commit 1f02f2044bda1db1fd995bc35961ab075fa7b5a2 upstream.
+[ Upstream commit ecef14f70ec9344a10c817248d2ac6cddee5921e ]
 
-This commit introduced a regression, however the fix for the regression:
-aa5fc4362fac ("drm/amdgpu: fix task hang from failed job submission
-during process kill") depends on things not yet present in 6.12.y and
-older kernels.  Since this commit is more of an optimization, just
-revert it for 6.12.y and older stable kernels.
+Add missing check for platform_get_resource() and return error if it fails
+to catch the error.
 
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.1.x - 6.12.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d87d44f7ab35 ("ARM: omap1: move CF chipselect setup to board file")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/pcmcia/omap_cf.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2125,11 +2125,13 @@ void amdgpu_vm_adjust_size(struct amdgpu
-  */
- long amdgpu_vm_wait_idle(struct amdgpu_vm *vm, long timeout)
- {
--	timeout = drm_sched_entity_flush(&vm->immediate, timeout);
-+	timeout = dma_resv_wait_timeout(vm->root.bo->tbo.base.resv,
-+					DMA_RESV_USAGE_BOOKKEEP,
-+					true, timeout);
- 	if (timeout <= 0)
- 		return timeout;
+diff --git a/drivers/pcmcia/omap_cf.c b/drivers/pcmcia/omap_cf.c
+index e613818dc0bc9..25382612e48ac 100644
+--- a/drivers/pcmcia/omap_cf.c
++++ b/drivers/pcmcia/omap_cf.c
+@@ -215,6 +215,8 @@ static int __init omap_cf_probe(struct platform_device *pdev)
+ 		return -EINVAL;
  
--	return drm_sched_entity_flush(&vm->delayed, timeout);
-+	return dma_fence_wait_timeout(vm->last_unlocked, true, timeout);
- }
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res)
++		return -EINVAL;
  
- /**
+ 	cf = kzalloc(sizeof *cf, GFP_KERNEL);
+ 	if (!cf)
+-- 
+2.51.0
+
 
 
 
