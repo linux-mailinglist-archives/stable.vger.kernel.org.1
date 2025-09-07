@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-178391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0C5B47E79
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B03A3B47E02
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4AA33C1B79
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70E923C0FDA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E4D1F1921;
-	Sun,  7 Sep 2025 20:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C859029B8E6;
+	Sun,  7 Sep 2025 20:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oc/1nLqH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kotealg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57505D528;
-	Sun,  7 Sep 2025 20:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8334F296BB8;
+	Sun,  7 Sep 2025 20:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276686; cv=none; b=VlmtUo11LYqEP3EhpKlCifYOsziQV7MlxxoK9wPwKpMH1/MNqlfu1huzr2VAUWucZGydOU+DbyfgKT+AA8bNz0wCrpYIKPxJicOx4SHxmCtFuKUNhyAkDBIwZ+SgxLJ+est1YnRfTkuUvWZGWgwAZ2xL9SNV3/hwJIUfWRpjfw0=
+	t=1757276344; cv=none; b=eCCQIrmXP2EDsB4Op/2GvcKcnCuxU573DJm7sIVJuboKTJS76yH1FNDiybV9yB/7yiQqipmgWqZvsK9APLK9/moUeqVfnnHbKCOTsykCelwROMUUGv1b/5y8+s7ULvhg35aHz4z173B1pEdnxLLu2QtxyDdaJJ2qOrBxPw+HRJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276686; c=relaxed/simple;
-	bh=/nWa69YyEo9gI+g0tylMWRIEdR0MLukCGgjSdYD1BJU=;
+	s=arc-20240116; t=1757276344; c=relaxed/simple;
+	bh=dyzijL+szvMEBLvvzXIMeaKLwdAtfNuLZKDPZsV2rVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BCrmpPEz2z5B23AAn3Wtj3rf/ZIytImNB4Mpmr/j4fkQurt2G0+cJxHCVabaYeD6/ITHJMvdxNqNx0U8RC6ykLActh2OSVFWzJlKdBBznuZP+PDgH6sVs8sO+5Iym6ciLNkRq66qEZGTPrHL6GCo0G6REBas29ZWWSTyr2WEugo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oc/1nLqH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCED6C4CEF0;
-	Sun,  7 Sep 2025 20:24:45 +0000 (UTC)
+	 MIME-Version; b=PA/ItJ8nLrYPjlFD7SX3NqpFv0mO7xAs0E9TNgkVE8CIiMBYyDGWRmUI/SRZucmE6NGI9cQzOk4FVAxC0nqP9n8Crsr/bl48njJRbpQQXiH8FPklfthvetGlN6GQDpgf6Wsu72g8F9hdBqT2JzKDGLVOsYjzlSrQIciQY0PWTuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kotealg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002CAC4CEF0;
+	Sun,  7 Sep 2025 20:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276686;
-	bh=/nWa69YyEo9gI+g0tylMWRIEdR0MLukCGgjSdYD1BJU=;
+	s=korg; t=1757276344;
+	bh=dyzijL+szvMEBLvvzXIMeaKLwdAtfNuLZKDPZsV2rVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oc/1nLqHtPh9Xk93daq/eLzbLN54QlT68/A0CO/0d5JM4zd/LLEt/bdeqXR3iD7VI
-	 /LPPkqIOaeu1ScHhJkcHrxumEtSewGIsIoAjz9NNCAvlUAZCK5HWx6LELuv3/NmRku
-	 9FCBiYMSiiOKbo2sDFar9II5YAF9j3d8R/s58DaQ=
+	b=Kotealg6XzV9CYm5IIXT1dm3pl7+XLGAkVKnVWG/R7X1fZT75krrfR4GLitKyC2lE
+	 MafX7AdE7fDW9phknNnaHQ+bEmnxpz4SZgQyiiZaHOhDAlzgNlj8FlIiOmPErCmM/0
+	 zXdIbchwiSYF+7MNPuTWhYZ9jU7pIkOf3Aq1oKoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Qiong <liqiong@nfschina.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/121] mm/slub: avoid accessing metadata when pointer is invalid in object_err()
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 076/104] ALSA: hda/hdmi: Add pin fix for another HP EliteDesk 800 G4 model
 Date: Sun,  7 Sep 2025 21:58:33 +0200
-Message-ID: <20250907195611.811975508@linuxfoundation.org>
+Message-ID: <20250907195609.649982525@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Qiong <liqiong@nfschina.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit b4efccec8d06ceb10a7d34d7b1c449c569d53770 ]
+commit bcd6659d4911c528381531472a0cefbd4003e29e upstream.
 
-object_err() reports details of an object for further debugging, such as
-the freelist pointer, redzone, etc. However, if the pointer is invalid,
-attempting to access object metadata can lead to a crash since it does
-not point to a valid object.
+It was reported that HP EliteDesk 800 G4 DM 65W (SSID 103c:845a) needs
+the similar quirk for enabling HDMI outputs, too.  This patch adds the
+corresponding quirk entry.
 
-One known path to the crash is when alloc_consistency_checks()
-determines the pointer to the allocated object is invalid because of a
-freelist corruption, and calls object_err() to report it. The debug code
-should report and handle the corruption gracefully and not crash in the
-process.
-
-In case the pointer is NULL or check_valid_pointer() returns false for
-the pointer, only print the pointer value and skip accessing metadata.
-
-Fixes: 81819f0fc828 ("SLUB core")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Li Qiong <liqiong@nfschina.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/20250901115009.27498-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_hdmi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -988,7 +988,12 @@ static void object_err(struct kmem_cache
- 		return;
- 
- 	slab_bug(s, "%s", reason);
--	print_trailer(s, slab, object);
-+	if (!object || !check_valid_pointer(s, slab, object)) {
-+		print_slab_info(slab);
-+		pr_err("Invalid pointer 0x%p\n", object);
-+	} else {
-+		print_trailer(s, slab, object);
-+	}
- 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
- }
- 
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1991,6 +1991,7 @@ static int hdmi_add_cvt(struct hda_codec
+ static const struct snd_pci_quirk force_connect_list[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x83e2, "HP EliteDesk 800 G4", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
++	SND_PCI_QUIRK(0x103c, 0x845a, "HP EliteDesk 800 G4 DM 65W", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x870f, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x8711, "HP", 1),
 
 
 
