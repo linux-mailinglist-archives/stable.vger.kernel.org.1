@@ -1,173 +1,129 @@
-Return-Path: <stable+bounces-178813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A457B48101
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 00:20:49 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B6FDB48103
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 00:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADF341676C6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2815F4E1489
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 766341E51FB;
-	Sun,  7 Sep 2025 22:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072BA221546;
+	Sun,  7 Sep 2025 22:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VVMT9Til"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XQCKUSBv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FAD11187;
-	Sun,  7 Sep 2025 22:20:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD5F7E107
+	for <stable@vger.kernel.org>; Sun,  7 Sep 2025 22:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757283642; cv=none; b=D+fBUML0unDoNunxH3VaH2dfEWvdMoXhBn76hl09s4GLvSQva84cc8b4Oi/Xg1fSWdu3fvcZtlWs0ZScGvin2yRgyEap5uI5Lj0LA+m9zdXXconx+T9Uxp3FQrVdBnPWrACayho256pRchGUykiAR1rodCnfkFhHedY8L1yK80U=
+	t=1757283935; cv=none; b=VQ7P3vCauWc1lV3YG/o9LMN2+lxX00wyWWRPm/nwsqCG++15aNWF4sO43XiTLMMLPsjESl3SRLy0tfMKMq9njh5XGWQGBTpsq4s7uUVigMIx/GxSgjEVjxmKJw2U4vzdKl5Gx3Owp0SVFARGOkJA330vDL7UxXK9ougXB1V1TbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757283642; c=relaxed/simple;
-	bh=kcvUFSrJv+jkpfKb7L8QHdcJV9eVN+MhuAwAcboBabI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dV9KRUIJ7u2vygGSdwW2L9YQzTyWDrcOcX9kl9hGPc4cOV+IsiCwGJ6dP2UQbWLrRo8fISBViAwnQrqYQNAdJCMVtf6FvDWLd5AlHcwdSzwfbfugKQbx5tJGiCQ0PAddF//6Kvxl7IDlxC9XUXMH8Pq+Lj1iuU/k9B13NcAK6SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VVMT9Til; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-772627dd50aso5183761b3a.1;
-        Sun, 07 Sep 2025 15:20:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757283640; x=1757888440; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=slhL5gALLAb5HLPloJnYUoGrHds7XWTQt9kurpt8JMM=;
-        b=VVMT9TilSXxvBwd/t7RYjuuskB24PdhTI4igpT7C6KPIoR7UwkTygcxX96U+e1nGbq
-         aeg94/KGL1l0/I6QzjqbYhoAa1bmn5RAj2Zj//nWlzRdEOT6Q60ugfmYxRtF2uuQHv98
-         6e0u/yqDK9iAJhiPKmFEnZ5ui295KL90J1vbPnHdXbeUh+UGL5apSW7rgO4Spr/US1ce
-         5Xp5YkEdc3vMX7ssE7P/sarQzBidwEb4Lvgi9iyCgL+gSZ/eqT2sM+kqeZvNrDteY5PU
-         7meEhjsnx2X+qCnswOcKkIeU7sT9X3QAalszcUCb/GN24LTHfE71rao8LNghN/0RV8Jt
-         TUog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757283640; x=1757888440;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=slhL5gALLAb5HLPloJnYUoGrHds7XWTQt9kurpt8JMM=;
-        b=FzZ9gPHHTfkjiGgoprjxkQ3/yQvCBjMEfSTQmYaMA8WzB9s4dkEwd13Wiu8l/BzBxy
-         dgXr+1iPfbSixfklhLiEaTWJjugH24OhOzKsu+FrX0oAVjLsJSMpGz4e20FaAKJOPu87
-         R3hZbwQE9MfBIrhYUTbvdCqHYIlpOla9Y62eGVJAgmxfIxGaJh3pdJnEJjoqwJBZlLlr
-         jReG/wMruZ22fZXSbADJ9bjrRnQEk615sAu+p8mcVGz7ThFQu1J9NYd9hCiEeHYW3zJy
-         Ym23w2ZBC0tLY2jAQ2qk+2gi/E4WIiFQ4B9J2KBxlWpAw78nzc+xaDsCBpg3v4WZR5A8
-         eFTg==
-X-Forwarded-Encrypted: i=1; AJvYcCVOM7nb8c+CCEjsLvPYFDqtweXEXqzqEer+v9pJ745YvCmXcdbnbgWKFyLK5plcdVGDeolBOB93y7oe@vger.kernel.org, AJvYcCWF8hi6Hm7xQxZuTCfJibymToMQL9zQSkQUdiuZnACMK+mFK9Ai59WgGkzGRXYgzKcaZqhMTHBUbaN9ZIgB@vger.kernel.org, AJvYcCWqKIgh0GOLI9sLYMNOFQu+wCUkji5BS3gqWHh36gl1556N+0W/JILyPC5woOaJhsRW8E0hzu5PXUQy@vger.kernel.org, AJvYcCXKM9Kqi2YYAQ0nUvHgH2/43zRQ2T4n8i5M1muyVU8wdej/f1CaIYSo6Uy8mo2mcY6KcIM065mBfZ+erjc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWT5c/UveBfNulbONXdmlnZHVJHA9VxPh8tTxwulTvMUkIxr4Y
-	MAL1RvOntU9zNx0ADarMTsjE3iSbhj3lUXHlW3BGjwVv+jQPmrMY8w7V
-X-Gm-Gg: ASbGncu+yj09RJqWds9jIda+V3jPIdPQ0glNFZEEJjI6s6ZRIEi/7KU1BV6xR9/sj0R
-	gdjKiF6mj8sW4K6BSZOAHIg5knuM3NpTfd6qrpy+k7APL59ptl1PR3wtU2hQ38NSfeB0vJwtOWk
-	mtrEWd0nwlk3ByNrzG9knjujqMiR9YEHZZk2XdTpxqbbZ9qKroBCJu6rHtVKJm7aHQrGDQpgVOd
-	83CuYQXgADEtFGpp63nPaGS/IenmH3pMhsCN+I9PaXGnknYPsQgfGvriCpEnPFAnaOj3mED0sFy
-	m8hlPpTCmviEekDnSipx8yMGNXtBeOaI7Y4xvPR1sVPynbDM0aIELE/Exdz6fhcG0GFx+BKAm1a
-	OtzjkOcyg04bqQckh5+NI5aSy/gGuQK1MEvHaGw8HvJHD0cd8L7UhMrZxEaMsSE6mafOgAw8=
-X-Google-Smtp-Source: AGHT+IFK1nOTVndi5cmVnLwerb7HT45x5TTE76Lt95SA+/ZDiLNqL2EVoJ5psJLW2EIQthdMgRcurA==
-X-Received: by 2002:a05:6a20:6a0a:b0:23d:c7aa:a6f0 with SMTP id adf61e73a8af0-2537cebbcffmr7749782637.22.1757283639887;
-        Sun, 07 Sep 2025 15:20:39 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b5238e43c48sm122110a12.52.2025.09.07.15.20.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 Sep 2025 15:20:39 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <abe17127-ea61-4ef5-b5ab-664eefaef6ca@roeck-us.net>
-Date: Sun, 7 Sep 2025 15:20:38 -0700
+	s=arc-20240116; t=1757283935; c=relaxed/simple;
+	bh=yLyVxa55Zo5qEB405XWXc94a82DqtQFrSWc0PVC5Q9Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=km70pOP2AI2mVW3m7jZy0YfXCiETCpIYBxw/TPAyIDGfBE3RpxsLc/FPu0nURNZ4mx5BllYTriQs90RgGsAdKLUIZ5fDMEFzXcrw2ZrI/Q8vRfpISNdZVY2d9wC0vnLnDE9eThz1l91DRWj6H/1F2PIgC3kLgIij+6CEzWjrXhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XQCKUSBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F48C4CEF0;
+	Sun,  7 Sep 2025 22:25:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757283935;
+	bh=yLyVxa55Zo5qEB405XWXc94a82DqtQFrSWc0PVC5Q9Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XQCKUSBvZ40D4JktKdAfMqmaP6jk190EjoOzab18q6KRAaYX8TTUeyYb75p6ICWG1
+	 zuWffLQVyXTZxtlcpjwxTqI9E5oH1Ij2T7Qc6tzVcmvvtksZ02NLJnxVNRBaAVVWzM
+	 jI9ahKroCRdLns9I20k/RZq1wJKtoUU9DuuGP7CUG5vuHRyHNELf4ZTvOAm/pPQrpM
+	 /glEHWa+8j0hktsRJQZkyiyWKzGn6FHiwRS6WoTXFPPA6sHmxpVmH1aOi1+a8Pugk2
+	 ewrzlfd9ykEqt4oGjoGrIU6k9oPQ4TciLQ+XAYmTlie6wAcwQgw1pZIYytYGyRzIRK
+	 Ge/2fRVG4Al0Q==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tom Zanussi <zanussi@kernel.org>,
+	Douglas Raillard <douglas.raillard@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] tracing: Do not add length to print format in synthetic events
+Date: Sun,  7 Sep 2025 18:25:32 -0400
+Message-ID: <20250907222532.932220-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025041706-ambiance-zen-5f4e@gregkh>
+References: <2025041706-ambiance-zen-5f4e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] dt-bindings: trivial-devices: Add sht2x sensors
-To: Kurt Borja <kuurtb@gmail.com>, Jean Delvare <jdelvare@suse.com>,
- Jonathan Corbet <corbet@lwn.net>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: stable@vger.kernel.org, linux-hwmon@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20250907-sht2x-v1-0-fd56843b1b43@gmail.com>
- <20250907-sht2x-v1-3-fd56843b1b43@gmail.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20250907-sht2x-v1-3-fd56843b1b43@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/7/25 15:06, Kurt Borja wrote:
-> Add sensirion,sht2x trivial sensors.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-> ---
->   Documentation/devicetree/bindings/trivial-devices.yaml | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-> index f3dd18681aa6f81255141bdda6daf8e45369a2c2..736b8b6819036a183f26f84dc489ce27ec7d8bc4 100644
-> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> @@ -362,6 +362,7 @@ properties:
->               # Sensirion low power multi-pixel gas sensor with I2C interface
->             - sensirion,sgpc3
->               # Sensirion temperature & humidity sensor with I2C interface
-> +          - sensirion,sht2x
+From: Steven Rostedt <rostedt@goodmis.org>
 
-I think this should list the individual chips, not a "x" placeholder.
+[ Upstream commit e1a453a57bc76be678bd746f84e3d73f378a9511 ]
 
->             - sensirion,sht4x
->               # Sensortek 3 axis accelerometer
->             - sensortek,stk8312
-> 
+The following causes a vsnprintf fault:
+
+  # echo 's:wake_lat char[] wakee; u64 delta;' >> /sys/kernel/tracing/dynamic_events
+  # echo 'hist:keys=pid:ts=common_timestamp.usecs if !(common_flags & 0x18)' > /sys/kernel/tracing/events/sched/sched_waking/trigger
+  # echo 'hist:keys=next_pid:delta=common_timestamp.usecs-$ts:onmatch(sched.sched_waking).trace(wake_lat,next_comm,$delta)' > /sys/kernel/tracing/events/sched/sched_switch/trigger
+
+Because the synthetic event's "wakee" field is created as a dynamic string
+(even though the string copied is not). The print format to print the
+dynamic string changed from "%*s" to "%s" because another location
+(__set_synth_event_print_fmt()) exported this to user space, and user
+space did not need that. But it is still used in print_synth_event(), and
+the output looks like:
+
+          <idle>-0       [001] d..5.   193.428167: wake_lat: wakee=(efault)sshd-sessiondelta=155
+    sshd-session-879     [001] d..5.   193.811080: wake_lat: wakee=(efault)kworker/u34:5delta=58
+          <idle>-0       [002] d..5.   193.811198: wake_lat: wakee=(efault)bashdelta=91
+            bash-880     [002] d..5.   193.811371: wake_lat: wakee=(efault)kworker/u35:2delta=21
+          <idle>-0       [001] d..5.   193.811516: wake_lat: wakee=(efault)sshd-sessiondelta=129
+    sshd-session-879     [001] d..5.   193.967576: wake_lat: wakee=(efault)kworker/u34:5delta=50
+
+The length isn't needed as the string is always nul terminated. Just print
+the string and not add the length (which was hard coded to the max string
+length anyway).
+
+Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Cc: Douglas Raillard <douglas.raillard@arm.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/20250407154139.69955768@gandalf.local.home
+Fixes: 4d38328eb442d ("tracing: Fix synth event printk format for str fields");
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[ offset calculations instead of union-based data structures ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/trace/trace_events_synth.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
+index 385e9fbbfbe7c..c2817d0c05b69 100644
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -383,13 +383,11 @@ static enum print_line_t print_synth_event(struct trace_iterator *iter,
+ 				str_field = (char *)entry + data_offset;
+ 
+ 				trace_seq_printf(s, print_fmt, se->fields[i]->name,
+-						 STR_VAR_LEN_MAX,
+ 						 str_field,
+ 						 i == se->n_fields - 1 ? "" : " ");
+ 				n_u64++;
+ 			} else {
+ 				trace_seq_printf(s, print_fmt, se->fields[i]->name,
+-						 STR_VAR_LEN_MAX,
+ 						 (char *)&entry->fields[n_u64],
+ 						 i == se->n_fields - 1 ? "" : " ");
+ 				n_u64 += STR_VAR_LEN_MAX / sizeof(u64);
+-- 
+2.51.0
 
 
