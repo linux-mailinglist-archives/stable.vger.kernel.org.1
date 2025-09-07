@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-178201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295B0B47DA6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62AFBB47E80
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE7FA3C0B1C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61772189136A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9225226FA67;
-	Sun,  7 Sep 2025 20:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970FE1D88D0;
+	Sun,  7 Sep 2025 20:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rf8VhDmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04wVTlM5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA8322F74D;
-	Sun,  7 Sep 2025 20:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A41D528;
+	Sun,  7 Sep 2025 20:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276085; cv=none; b=gJyF8OA/iMKOeWsNTPCCXv5WnGWqLOa32FG9fq6j0y+VvazqrY7QpMdyiilCrCysj2iNP7qxZ03h6JirtMee5+a7lKg62ecniFak9LL4PoqxSA1FLY/m1PpIHbmrTWaq34WyXIQ2ehlobhRARAcnC2LBWYBFb6JGfKJAE9Yr9fw=
+	t=1757276708; cv=none; b=tZPx2ks+8uZMWBFuoXjyPKWfgLSQxEtmK/wFP82+tWrI5lbFmfawgccDZd8qxxu9SV1sNHT73W1e1regPpH3bokGlFHx68MsaOcZKTG9Wsx19C1xNrdHddfQgLIEMXCI7yNwXy0ufHgb0sMrbSvg9n//dRzOnFt07D30styo3lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276085; c=relaxed/simple;
-	bh=vRDv2LV+MFFfRnh2z3mvifir8gtnwLz6HRCdDRshJZM=;
+	s=arc-20240116; t=1757276708; c=relaxed/simple;
+	bh=igrXCwscfSPLSIGGOao5u1c2yF7I2ItQ82+1QBK1Qls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tk96PQefCEpkMuMFJQZk1dB+dF6O/V/Zp5jwbsiOSd9i1wjSCKRHIXYCsq14FosPb/JgfNfKzPHIv7SbzzAyxaw3B1h5gEXPnKPrIwwazVpcA9EdWMc7HtyZ+So7c3cBWOX9WmZs52mbbpAd6Ik1jboUgKrnsZdcgX6Cz6DPd30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rf8VhDmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98A5C4CEF0;
-	Sun,  7 Sep 2025 20:14:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SG94WWbIIIUAQcRmOp5jIdroiTDYcdaWrz5HdOa3+b0MpwIh9h6Pt9CwPhpIjJkxGk23NVn1KR+iEZBPV7eyAeAvMPSMj+HCslX62I4qdk+M5ioQIaS6V8/XwWh5HHaVIRm1OZbGyVrqx1BE279p4chd14zozZ180xH+fZa0pDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04wVTlM5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30A2C4CEF0;
+	Sun,  7 Sep 2025 20:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276085;
-	bh=vRDv2LV+MFFfRnh2z3mvifir8gtnwLz6HRCdDRshJZM=;
+	s=korg; t=1757276708;
+	bh=igrXCwscfSPLSIGGOao5u1c2yF7I2ItQ82+1QBK1Qls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rf8VhDmpSn8jJ/cIN/DfAg4rj/j0RgD3Av4Fcf2An+WWLdRcbqRa8XUfwTuBoN2Dq
-	 DVWUuOyOHCIEO9cf8fKBS3A6dRJ9M/PNDKvK4YT41C0sbrhhU2MZu2LeJ6ceWa4+FB
-	 dDl85uzRcfBciioSwbvP4hbfBCT6XF1Ky09EOqHw=
+	b=04wVTlM5ADXIWa6nfslKKzbUwt7Xk1/4IWv/q5p7A8V7bEAucHBy1V1/7teWbRb6g
+	 vTxWqduj9ANoX7mpZFx1NXC96F/JRWf/MW+94ITkPJcPGatMNSualL7MDSDmYcASie
+	 xaiWxGPtvxzy20iwMOzchw30/Llc7EHCS47EeGRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	James Clark <james.clark@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 57/64] spi: spi-fsl-lpspi: Fix transmissions when using CONT
-Date: Sun,  7 Sep 2025 21:58:39 +0200
-Message-ID: <20250907195604.991317966@linuxfoundation.org>
+Subject: [PATCH 6.6 084/121] iio: chemical: pms7003: use aligned_s64 for timestamp
+Date: Sun,  7 Sep 2025 21:58:40 +0200
+Message-ID: <20250907195611.993491155@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 782a7c73078e1301c0c427f21c06377d77dfa541 ]
+[ Upstream commit 6ffa698674053e82e811520642db2650d00d2c01 ]
 
-Commit 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use
-CONT") breaks transmissions when CONT is used. The TDIE interrupt should
-not be disabled in all cases. If CONT is used and the TX transfer is not
-yet completed yet, but the interrupt handler is called because there are
-characters to be received, TDIE is replaced with FCIE. When the transfer
-is finally completed, SR_TDF is set but the interrupt handler isn't
-called again.
+Follow the pattern of other drivers and use aligned_s64 for the
+timestamp. This will ensure that the timestamp is correctly aligned on
+all architectures.
 
-Fixes: 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use CONT")
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250828-james-nxp-lpspi-v2-1-6262b9aa9be4@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Also move the unaligned.h header while touching this since it was the
+only one not in alphabetical order.
+
+Fixes: 13e945631c2f ("iio:chemical:pms7003: Fix timestamp alignment and prevent data leak.")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250417-iio-more-timestamp-alignment-v1-4-eafac1e22318@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ linux/unaligned.h => asm/unaligned.h ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/chemical/pms7003.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index bf3f600bdd2c8..7ece48667f52d 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -3,7 +3,7 @@
- // Freescale i.MX7ULP LPSPI driver
- //
- // Copyright 2016 Freescale Semiconductor, Inc.
--// Copyright 2018 NXP Semiconductors
-+// Copyright 2018, 2023, 2025 NXP
+--- a/drivers/iio/chemical/pms7003.c
++++ b/drivers/iio/chemical/pms7003.c
+@@ -5,7 +5,6 @@
+  * Copyright (c) Tomasz Duszynski <tduszyns@gmail.com>
+  */
  
- #include <linux/clk.h>
+-#include <asm/unaligned.h>
  #include <linux/completion.h>
-@@ -755,7 +755,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
- 	if (temp_SR & SR_MBF ||
- 	    readl(fsl_lpspi->base + IMX7ULP_FSR) & FSR_TXCOUNT) {
- 		writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
--		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE);
-+		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE | (temp_IER & IER_TDIE));
- 		return IRQ_HANDLED;
- 	}
+ #include <linux/device.h>
+ #include <linux/errno.h>
+@@ -19,6 +18,8 @@
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/serdev.h>
++#include <linux/types.h>
++#include <asm/unaligned.h>
  
--- 
-2.51.0
-
+ #define PMS7003_DRIVER_NAME "pms7003"
+ 
+@@ -76,7 +77,7 @@ struct pms7003_state {
+ 	/* Used to construct scan to push to the IIO buffer */
+ 	struct {
+ 		u16 data[3]; /* PM1, PM2P5, PM10 */
+-		s64 ts;
++		aligned_s64 ts;
+ 	} scan;
+ };
+ 
 
 
 
