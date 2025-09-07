@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-178358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E27B47E57
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBDCB47DDC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21FC1189FA25
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 381EB189E8F9
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF2C20D51C;
-	Sun,  7 Sep 2025 20:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F68B1A9FAA;
+	Sun,  7 Sep 2025 20:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFcOamnT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXJZe0le"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17460189BB0;
-	Sun,  7 Sep 2025 20:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF97714BFA2;
+	Sun,  7 Sep 2025 20:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276582; cv=none; b=OcGtCfuuXMTqQjEoTSYVc2ky05WdzTxy4c6LwRR5rdL6BYGwK1PExLyfs9nsWDSaCQ6mloPhSqzXU0qYOUYi2DJacO0yu3J67Kup3QLRmrlY6UHhnzHgfadJvk0NodmLqZtsXNcoEkOwu/1WRb2YgX9YI/L3zbSErzP2tfEnPdM=
+	t=1757276244; cv=none; b=tSg4fyrykmsxxTiy5Er3zoYnw4V+nnRzp9w4QTP7LfpFP+4s0x91b+cpYY7UBPJ68zNXuDd5vc9NZwOcAzTQCLLe8iNJIB5+2wasxDWeiscXgc2aUWOUXYE+EX3f8bHV081rUOaqI1EGpDrGYOvYYhr2K4ItTeq95Osakh6rtaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276582; c=relaxed/simple;
-	bh=cDoPR+668u9df/T/1wJQ1AGmd8YZWsMKn3MsDUSMWAc=;
+	s=arc-20240116; t=1757276244; c=relaxed/simple;
+	bh=m4jhKvHN+gDMFVAzYkqvesXLsOM6bdggRsYvVmD9dfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YuMzIrkXRqsxjXdLJFeKjEoU/kJZTF6zVv07LCxLs/HiV8NzXdNzJRgHzY9RI998eTUJ+z5/s8nNRFbQi8W2NB1pKjNhi9y9Vzj1nulvbs6GVUnOm3/I2Jhq3sF+lgxD+FfjIGAgtKlUKc6GAeesDYUyKoALuIQdotkFWRHxk4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFcOamnT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91AE6C4CEF0;
-	Sun,  7 Sep 2025 20:23:01 +0000 (UTC)
+	 MIME-Version; b=rsapAXpE00QSHr43WBom8mnXpnGvjSfgyn3/jlNHYcPgjr15YTSsHDbZoaYuvuZ4fVF/cNFoALphw57H/Rtxx2X/Ef1/2UdNnVk9bZs6nQSnOLlOUD+Lg2GJg6IxfkAlXLLd2+zlxOz11Z29Q7BCOSkKnOCSt9+R7oH8fLTHQ54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXJZe0le; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F5DC4CEF0;
+	Sun,  7 Sep 2025 20:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276582;
-	bh=cDoPR+668u9df/T/1wJQ1AGmd8YZWsMKn3MsDUSMWAc=;
+	s=korg; t=1757276243;
+	bh=m4jhKvHN+gDMFVAzYkqvesXLsOM6bdggRsYvVmD9dfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eFcOamnTOLyeI5+k8ere/5zh1TqBi+PR8HhJvlkUrPMLL0srKSOCE08L6Rn9NVR8C
-	 nmnQp7KODe6MczDj4CRTG1nn6v1Q+mPTqcJtmqkqpWe94Zi7F4lenWwCDnieYmyGV2
-	 AnkgKQdlIYlt/rRfzm8QkGssC6gzGtKqE6x/MvWE=
+	b=qXJZe0leuPfXu7iWbaOdQ2NIav5oCkq3TJ8F1FB/dXbuOO4SJx0ybDrt077MDZOqy
+	 GezrpS/n2aMDzWKwpZZ0Bw8tJ/sHwTK1MfHpQIQz/YG0EPxa1jVbCYfQP39g5ZJ9SP
+	 a3YLDPw2NXDRl5yzSglRe37VizyPJTaHi5DbceFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/121] ipv4: Fix NULL vs error pointer check in inet_blackhole_dev_init()
+	Ma Ke <make24@iscas.ac.cn>,
+	Dominik Brodowski <linux@dominikbrodowski.net>
+Subject: [PATCH 6.1 042/104] pcmcia: Fix a NULL pointer dereference in __iodyn_find_io_region()
 Date: Sun,  7 Sep 2025 21:57:59 +0200
-Message-ID: <20250907195610.927293174@linuxfoundation.org>
+Message-ID: <20250907195608.789161361@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit a51160f8da850a65afbf165f5bbac7ffb388bf74 ]
+commit 44822df89e8f3386871d9cad563ece8e2fd8f0e7 upstream.
 
-The inetdev_init() function never returns NULL.  Check for error
-pointers instead.
+In __iodyn_find_io_region(), pcmcia_make_resource() is assigned to
+res and used in pci_bus_alloc_resource(). There is a dereference of res
+in pci_bus_alloc_resource(), which could lead to a NULL pointer
+dereference on failure of pcmcia_make_resource().
 
-Fixes: 22600596b675 ("ipv4: give an IPv4 dev to blackhole_netdev")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/aLaQWL9NguWmeM1i@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this bug by adding a check of res.
+
+Cc: stable@vger.kernel.org
+Fixes: 49b1153adfe1 ("pcmcia: move all pcmcia_resource_ops providers into one module")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/devinet.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/pcmcia/rsrc_iodyn.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index c33b1ecc591e4..798497c8b1923 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -336,14 +336,13 @@ static void inetdev_destroy(struct in_device *in_dev)
+--- a/drivers/pcmcia/rsrc_iodyn.c
++++ b/drivers/pcmcia/rsrc_iodyn.c
+@@ -62,6 +62,9 @@ static struct resource *__iodyn_find_io_
+ 	unsigned long min = base;
+ 	int ret;
  
- static int __init inet_blackhole_dev_init(void)
- {
--	int err = 0;
-+	struct in_device *in_dev;
++	if (!res)
++		return NULL;
++
+ 	data.mask = align - 1;
+ 	data.offset = base & data.mask;
  
- 	rtnl_lock();
--	if (!inetdev_init(blackhole_netdev))
--		err = -ENOMEM;
-+	in_dev = inetdev_init(blackhole_netdev);
- 	rtnl_unlock();
- 
--	return err;
-+	return PTR_ERR_OR_ZERO(in_dev);
- }
- late_initcall(inet_blackhole_dev_init);
- 
--- 
-2.50.1
-
 
 
 
