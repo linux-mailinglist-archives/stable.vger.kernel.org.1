@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885C2B47E1A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A81B47F37
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 410BD17D8EF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:20:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 907711B2153B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13531F1921;
-	Sun,  7 Sep 2025 20:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFFF212B3D;
+	Sun,  7 Sep 2025 20:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzsa2Yn5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzAliNYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC531B424F;
-	Sun,  7 Sep 2025 20:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871531A0BFD;
+	Sun,  7 Sep 2025 20:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276420; cv=none; b=DF95bn+HuLcOyk0resydnXUVP54nas6frK69/dSLpCkyKLTul/qpl0tgP63mw7FPU5ZC1xC0PXrsMoi3dJBXjY7qIKRE9PkQ3vCOM6gKRijQ7QZOz3BRpQdlwm96AXlqqEVKjG5cKuaOJKD2eQmqfINnuZclV/I5J/VTz8OsR00=
+	t=1757277271; cv=none; b=Ed8BB0Uq8XegVxHvgELBu0kLR6/QxpR0JtFoAtWvuIabF7dWmR12+EK4ho5OwrMmuMnIdzrb6ebl8ATSeyv/d3QPdOWsc1yaTwbkxXhgMDRjvQCFzTQFKTdmkhDY24zHRMpD9gB7B18hDhE6xHFYriD7fcRaRJm489Y9hmN1ZJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276420; c=relaxed/simple;
-	bh=0kSSfDF1/2HmgJjZTS4zsgqH5epobYJchujoneG/3wA=;
+	s=arc-20240116; t=1757277271; c=relaxed/simple;
+	bh=DzdOHpCN1i+PlqXaiGPMkDDUYLnzP7ACjLApxuc8tHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fHSm5ukEa/8al2naQ+r5sNzpZXsn1u/7cbGaHZA5GbdYyJPp+3l2ryKmBxVJtAO8FxOmHFcqfQtMSO1Qc3z/WClxv7ltXvtKPurELTyz9R4DeTLl0c4l1Cm40AlmC2sFp7axVRWra28+QvkE4qwNt9Yk0lK2ysvPAOk6WH+u6f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzsa2Yn5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F10C4C4CEF0;
-	Sun,  7 Sep 2025 20:20:19 +0000 (UTC)
+	 MIME-Version; b=niWXtwdgjMmpRgxi6FApLakl3JWBPCjH0W/KZbCuZj0GvnRoNbzV2S3QBJKH0fsqpbGNPVd8YP2ePmHCl32X0Lotc+yQTCN3iBLdD6LqTa+nvB1Cm9VN/RUzBz97a4LzQs/Kwy4hC+YBgKmhKjr0PvpXGi0LbdFMeqaIbukqRAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzAliNYQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB28EC4CEF0;
+	Sun,  7 Sep 2025 20:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276420;
-	bh=0kSSfDF1/2HmgJjZTS4zsgqH5epobYJchujoneG/3wA=;
+	s=korg; t=1757277271;
+	bh=DzdOHpCN1i+PlqXaiGPMkDDUYLnzP7ACjLApxuc8tHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lzsa2Yn5dMAwNfITH3mn20UvMtK46TA4kmrCFk9M4ebTxOG75cqt4pT7kkKfoL58W
-	 QruP3gc+vvAOVudqExXTOOjoPH+cVGgmqF3mPKZ6INYMHv05MZ34RXpo7nXssJKQCl
-	 650KrX5nPEltypQAWbxfJpRvwEvbxV8HzTExOukg=
+	b=LzAliNYQNM7UZbLxm6uxLOZiV7OCY5cYXksn7yyWkb62QYmvNSuCp1SS2e6ElonTM
+	 2koZ3SffkvLim/DUdQG76aTKevj/aOE997T6J93rsjn7WPMkU/7iwv8PURdCNUooyT
+	 XFuyJQFbscDTc7siWYHj86C1Kkg/2bc+YGeK3XHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengming Zhou <zhouchengming@bytedance.com>,
+	Li Qiong <liqiong@nfschina.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Vlastimil Babka <vbabka@suse.cz>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/104] slub: Reflow ___slab_alloc()
+Subject: [PATCH 6.12 140/175] mm/slub: avoid accessing metadata when pointer is invalid in object_err()
 Date: Sun,  7 Sep 2025 21:58:55 +0200
-Message-ID: <20250907195610.203682363@linuxfoundation.org>
+Message-ID: <20250907195618.164031691@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengming Zhou <zhouchengming@bytedance.com>
+From: Li Qiong <liqiong@nfschina.com>
 
-[ Upstream commit 24c6a097b5a270e05c6e99a99da66b91be81fd7d ]
+[ Upstream commit b4efccec8d06ceb10a7d34d7b1c449c569d53770 ]
 
-The get_partial() interface used in ___slab_alloc() may return a single
-object in the "kmem_cache_debug(s)" case, in which we will just return
-the "freelist" object.
+object_err() reports details of an object for further debugging, such as
+the freelist pointer, redzone, etc. However, if the pointer is invalid,
+attempting to access object metadata can lead to a crash since it does
+not point to a valid object.
 
-Move this handling up to prepare for later changes.
+One known path to the crash is when alloc_consistency_checks()
+determines the pointer to the allocated object is invalid because of a
+freelist corruption, and calls object_err() to report it. The debug code
+should report and handle the corruption gracefully and not crash in the
+process.
 
-And the "pfmemalloc_match()" part is not needed for node partial slab,
-since we already check this in the get_partial_node().
+In case the pointer is NULL or check_valid_pointer() returns false for
+the pointer, only print the pointer value and skip accessing metadata.
 
-Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Tested-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Reviewed-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Fixes: 81819f0fc828 ("SLUB core")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Li Qiong <liqiong@nfschina.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Stable-dep-of: 850470a8413a ("mm: slub: avoid wake up kswapd in set_track_prepare")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |   31 +++++++++++++++----------------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+ mm/slub.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -3129,8 +3129,21 @@ new_objects:
- 	pc.slab = &slab;
- 	pc.orig_size = orig_size;
- 	freelist = get_partial(s, node, &pc);
--	if (freelist)
--		goto check_new_slab;
-+	if (freelist) {
-+		if (kmem_cache_debug(s)) {
-+			/*
-+			 * For debug caches here we had to go through
-+			 * alloc_single_from_partial() so just store the
-+			 * tracking info and return the object.
-+			 */
-+			if (s->flags & SLAB_STORE_USER)
-+				set_track(s, freelist, TRACK_ALLOC, addr);
-+
-+			return freelist;
-+		}
-+
-+		goto retry_load_slab;
+@@ -1113,7 +1113,12 @@ static void object_err(struct kmem_cache
+ 		return;
+ 
+ 	slab_bug(s, reason);
+-	print_trailer(s, slab, object);
++	if (!object || !check_valid_pointer(s, slab, object)) {
++		print_slab_info(slab);
++		pr_err("Invalid pointer 0x%p\n", object);
++	} else {
++		print_trailer(s, slab, object);
 +	}
+ 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
  
- 	slub_put_cpu_ptr(s->cpu_slab);
- 	slab = new_slab(s, gfpflags, node);
-@@ -3166,20 +3179,6 @@ new_objects:
- 
- 	inc_slabs_node(s, slab_nid(slab), slab->objects);
- 
--check_new_slab:
--
--	if (kmem_cache_debug(s)) {
--		/*
--		 * For debug caches here we had to go through
--		 * alloc_single_from_partial() so just store the tracking info
--		 * and return the object
--		 */
--		if (s->flags & SLAB_STORE_USER)
--			set_track(s, freelist, TRACK_ALLOC, addr);
--
--		return freelist;
--	}
--
- 	if (unlikely(!pfmemalloc_match(slab, gfpflags))) {
- 		/*
- 		 * For !pfmemalloc_match() case we don't load freelist so that
+ 	WARN_ON(1);
 
 
 
