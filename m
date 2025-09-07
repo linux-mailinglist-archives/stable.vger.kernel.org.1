@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C49B47D1F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FED7B47DCC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 077FF7AAF42
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:06:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6EED3A5A13
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E5D27F754;
-	Sun,  7 Sep 2025 20:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A3361A9FAA;
+	Sun,  7 Sep 2025 20:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHau/+n2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B76c81bn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C69722F74D;
-	Sun,  7 Sep 2025 20:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4709014BFA2;
+	Sun,  7 Sep 2025 20:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275668; cv=none; b=kzoOjbGYr2/0h+rjvIINtasDN6XsnOSPQjfkF/lbNhHLpzHjV3huzrotlZTkjBHdnA5IOp1y2yudVzXzW1a0mKUHEKcftgvqd75P9Xn4GSIFANN6FjNrbNKBeNnStN9gifN1B9iWfE8GYGR6Ou/gVYUM9fAmsU5/AE1qe//7240=
+	t=1757276197; cv=none; b=ThQtx6gNf1cU1+QlL9dsNJdkjxHc4LLAlrjN75KheZDEZw5JZDlfMqUwz3R/fnf2DAR6e1XlViYESRL2dygRHoyOCo9JpHI55Q3BOa9c5cldxMF4gxGWiwvYnlBIH8kTkf7dnllaDVY21nZ8+mtRDDSci7W6Y9MXRG7vPEQzlGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275668; c=relaxed/simple;
-	bh=5trj6v4aER9nP5BpB28RMibGEOLw/Mdcvj8Dfne/kso=;
+	s=arc-20240116; t=1757276197; c=relaxed/simple;
+	bh=CGYA2gC7JeNFPDvctMTfa5e1Kn6qSloL3decvYSg2Ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nZOhF3URkpSHlDPrNbrl/5OUo3UBDiy9tzCvZW/VoJ/fhuN5XGRvjP/4RuvzqnomPwIbDRWNg5QR8Z2HQnf6oQx5BlHHuT/RgxSEb0316N73oMxMHlX2ohGL5DdL3SfLDw5mXcUcBNDmSIg8i1EsBZoYZ4yInXb/Zw6xW8nqFK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHau/+n2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD507C4CEF0;
-	Sun,  7 Sep 2025 20:07:47 +0000 (UTC)
+	 MIME-Version; b=UXXKbYp1unbiTUpWN/IvAFbsy04lRm254bRI8Ov5t86Kf4Gu3r8zUT7u94Ztmq4MmOqzOTnJaR0DCJoF75YRZpG2sZ6YBLgIj+51VWgrJ33DVfhPV/KLnNI1/8dhBGZQyx8ubYX2xuE1YlHW2cAtYiXl0GUY+YkrwpQDasHvs1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B76c81bn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3757C4CEF0;
+	Sun,  7 Sep 2025 20:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275668;
-	bh=5trj6v4aER9nP5BpB28RMibGEOLw/Mdcvj8Dfne/kso=;
+	s=korg; t=1757276197;
+	bh=CGYA2gC7JeNFPDvctMTfa5e1Kn6qSloL3decvYSg2Ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fHau/+n2mA5LODEPAgjrgrBOtZK9R+mVCeYgG/6JYeo+5JOTH3jx5oM7rOw8d/GC3
-	 /WXCWyI2SUNEOYAlFCox3tpbFM4N5wcRgB/ybEJ3rNAJRbhnvyzMKFPSdPDUONqNtu
-	 Y+e7bOB9gysHTY+AP2wkds/KhiW5bGe3EALTzT/s=
+	b=B76c81bnZyPmv9YNLE+ypcAu7ME6iOXIGuOWN4Ij/X4imqjO5/0VVQaF/Ce++Zl4i
+	 BfbWrBXvH1IPSwu4hV6gBUZlGmtfmxCj5+GLUDG97TLnS5afSgAqSB4YZjeyCN/FKi
+	 EMInigu7TvgIU5Eb1hUbHdW/ZVjclvgIFKY3Nr0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikael Wessel <post@mikaelkw.online>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 5.10 26/52] e1000e: fix heap overflow in e1000_set_eeprom
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 029/104] wifi: cfg80211: sme: cap SSID length in __cfg80211_connect_result()
 Date: Sun,  7 Sep 2025 21:57:46 +0200
-Message-ID: <20250907195602.752505443@linuxfoundation.org>
+Message-ID: <20250907195608.454863919@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 90fb7db49c6dbac961c6b8ebfd741141ffbc8545 upstream.
+[ Upstream commit 62b635dcd69c4fde7ce1de4992d71420a37e51e3 ]
 
-Fix a possible heap overflow in e1000_set_eeprom function by adding
-input validation for the requested length of the change in the EEPROM.
-In addition, change the variable type from int to size_t for better
-code practices and rearrange declarations to RCT.
+If the ssid->datalen is more than IEEE80211_MAX_SSID_LEN (32) it would
+lead to memory corruption so add some bounds checking.
 
-Cc: stable@vger.kernel.org
-Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
-Co-developed-by: Mikael Wessel <post@mikaelkw.online>
-Signed-off-by: Mikael Wessel <post@mikaelkw.online>
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c38c70185101 ("wifi: cfg80211: Set SSID if it is not already set")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/0aaaae4a3ed37c6252363c34ae4904b1604e8e32.1756456951.git.dan.carpenter@linaro.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/ethtool.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/wireless/sme.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/e1000e/ethtool.c
-+++ b/drivers/net/ethernet/intel/e1000e/ethtool.c
-@@ -559,12 +559,12 @@ static int e1000_set_eeprom(struct net_d
- {
- 	struct e1000_adapter *adapter = netdev_priv(netdev);
- 	struct e1000_hw *hw = &adapter->hw;
-+	size_t total_len, max_len;
- 	u16 *eeprom_buff;
--	void *ptr;
--	int max_len;
-+	int ret_val = 0;
- 	int first_word;
- 	int last_word;
--	int ret_val = 0;
-+	void *ptr;
- 	u16 i;
- 
- 	if (eeprom->len == 0)
-@@ -579,6 +579,10 @@ static int e1000_set_eeprom(struct net_d
- 
- 	max_len = hw->nvm.word_size * 2;
- 
-+	if (check_add_overflow(eeprom->offset, eeprom->len, &total_len) ||
-+	    total_len > max_len)
-+		return -EFBIG;
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index e35c3c29cec7d..ed16e852133e7 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -886,13 +886,16 @@ void __cfg80211_connect_result(struct net_device *dev,
+ 	if (!wdev->u.client.ssid_len) {
+ 		rcu_read_lock();
+ 		for_each_valid_link(cr, link) {
++			u32 ssid_len;
 +
- 	first_word = eeprom->offset >> 1;
- 	last_word = (eeprom->offset + eeprom->len - 1) >> 1;
- 	eeprom_buff = kmalloc(max_len, GFP_KERNEL);
+ 			ssid = ieee80211_bss_get_elem(cr->links[link].bss,
+ 						      WLAN_EID_SSID);
+ 
+ 			if (!ssid || !ssid->datalen)
+ 				continue;
+ 
+-			memcpy(wdev->u.client.ssid, ssid->data, ssid->datalen);
++			ssid_len = min(ssid->datalen, IEEE80211_MAX_SSID_LEN);
++			memcpy(wdev->u.client.ssid, ssid->data, ssid_len);
+ 			wdev->u.client.ssid_len = ssid->datalen;
+ 			break;
+ 		}
+-- 
+2.50.1
+
 
 
 
