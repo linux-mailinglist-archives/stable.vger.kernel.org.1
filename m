@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32937B47F22
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E00B47E78
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 312E41B212B2
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0318D189FE07
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238BC211A14;
-	Sun,  7 Sep 2025 20:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9331D88D0;
+	Sun,  7 Sep 2025 20:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGw3trjZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8RuojOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D384F1A0BFD;
-	Sun,  7 Sep 2025 20:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C71ED528;
+	Sun,  7 Sep 2025 20:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277204; cv=none; b=UB3NikvVL7WAQOJx3eberOTIA0Ta6CL0i+xTbGvTyR3NbBjvNRKH273FiWdlb+CcPRMWj7M7ysWOm2L5gW37rxF3AaDutcIaUzxrRgfbdjlxfXvLzGmgQAd+atJoJSGGfbnGE+Ern2P+ZFNmdX17zuXbupWqU9CWlGih1Az6Ks0=
+	t=1757276683; cv=none; b=kt4UcAjuH23IN9CrHH5ESwoYVZxTZ2g/Lgy6/eZ2TFp+1MsSgO4Y8N/QLfbyxqzSUSfD72tgS+PPN8lptFmBAqTpsJaoctCUHQR/UdkTFdczQcwfpuiA2TDXW95Uj6CIqCgccYIcBB4DWCpnd6CRFSblgvoDePYY7I5nfmDidyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277204; c=relaxed/simple;
-	bh=DRdKA+mAM4cT60PctQOV96VY7BLF9NlPvslN5KTYsQY=;
+	s=arc-20240116; t=1757276683; c=relaxed/simple;
+	bh=8eqZCmVy2sCEs8mv9MMXL07J+OLv+E1rw8wv/NByAEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMBK+tFsn/GeRKMz/g3CDeKCrcGDP9WGNzo09NWDqbTuqJGiIJpnCmhWTXlEh9qLgKvh/73yTr21KXF2XHDn7DxwSSduWSk3oJZuyWUl+LAa57vPErwoO/X1P+EW0q24gcikfL3olfTcW8bDtwNSk43bkqiKmoF/YT1ryehV1N4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGw3trjZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0202EC4CEF0;
-	Sun,  7 Sep 2025 20:33:23 +0000 (UTC)
+	 MIME-Version; b=DsC7fFMzehGOU0Sb54qf5zDz42gVaTvc0XZ3VAXxdwy4RNbcVfAWuX31gEKHyQbm/rv1ehap4VITvfwWSzmSupuKpKc9MAU22AxpcngIJCPjKw0rkzJuFgff9ai8PQiAR+ipWsc+lQIqA5eQfC8A5cp+VIjlAyI1yBelffda28A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8RuojOW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA1BCC4CEF0;
+	Sun,  7 Sep 2025 20:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277204;
-	bh=DRdKA+mAM4cT60PctQOV96VY7BLF9NlPvslN5KTYsQY=;
+	s=korg; t=1757276683;
+	bh=8eqZCmVy2sCEs8mv9MMXL07J+OLv+E1rw8wv/NByAEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lGw3trjZYVnrwkX8U0eH+OMIO1OTnjxzaW2Lfzxyw+6xAVmYBnVHixX8Zi4JqnyrT
-	 AH0Y2VAnrHUi5gvK3rCOkn2GHOVs17CRNDyR03f/hDRouhBqJGkayCXWvaupCj+FOq
-	 Zc9NH+uDz1r/fpbyJLQxi33PD9ra3vPmy8gdZTms=
+	b=r8RuojOWXedG1/b1OJkJ1MgI5f1M5mbLzqX2gN1TQpAb7gg07nVFM/ttU3L5KGzg5
+	 BfIDrmH5Ztza3z2eK4QzJ6WAVCHFw2Vaw/Ab5wuBlfltehxaSY43XiThTHVNAgZ7kN
+	 /bIcT1WlCmPp7GaH3wJiwMrb/xMNqYws6ceCfwXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Fort <disclosure@aisle.com>,
-	Stanislav Fort <stanislav.fort@aisle.com>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.12 117/175] batman-adv: fix OOB read/write in network-coding decode
+	Dave Airlie <airlied@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 076/121] nouveau: fix disabling the nonstall irq due to storm code
 Date: Sun,  7 Sep 2025 21:58:32 +0200
-Message-ID: <20250907195617.626065964@linuxfoundation.org>
+Message-ID: <20250907195611.787160933@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fort <stanislav.fort@aisle.com>
+From: Dave Airlie <airlied@redhat.com>
 
-commit d77b6ff0ce35a6d0b0b7b9581bc3f76d041d4087 upstream.
+[ Upstream commit 0ef5c4e4dbbfcebaa9b2eca18097b43016727dfe ]
 
-batadv_nc_skb_decode_packet() trusts coded_len and checks only against
-skb->len. XOR starts at sizeof(struct batadv_unicast_packet), reducing
-payload headroom, and the source skb length is not verified, allowing an
-out-of-bounds read and a small out-of-bounds write.
+Nouveau has code that when it gets an IRQ with no allowed handler
+it disables it to avoid storms.
 
-Validate that coded_len fits within the payload area of both destination
-and source sk_buffs before XORing.
+However with nonstall interrupts, we often disable them from
+the drm driver, but still request their emission via the push submission.
 
-Fixes: 2df5278b0267 ("batman-adv: network coding - receive coded packets and decode them")
+Just don't disable nonstall irqs ever in normal operation, the
+event handling code will filter them out, and the driver will
+just enable/disable them at load time.
+
+This fixes timeouts we've been seeing on/off for a long time,
+but they became a lot more noticeable on Blackwell.
+
+This doesn't fix all of them, there is a subsequent fence emission
+fix to fix the last few.
+
+Fixes: 3ebd64aa3c4f ("drm/nouveau/intr: support multiple trees, and explicit interfaces")
 Cc: stable@vger.kernel.org
-Reported-by: Stanislav Fort <disclosure@aisle.com>
-Signed-off-by: Stanislav Fort <stanislav.fort@aisle.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://lore.kernel.org/r/20250829021633.1674524-1-airlied@gmail.com
+[ Fix a typo and a minor checkpatch.pl warning; remove "v2" from commit
+  subject. - Danilo ]
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+[ File renames + drop r535 changes ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/network-coding.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nvkm/engine/fifo/base.c  |    2 ++
+ drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga100.c |   23 +++++++++++++++--------
+ drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga102.c |    1 +
+ drivers/gpu/drm/nouveau/nvkm/engine/fifo/priv.h  |    2 ++
+ 4 files changed, 20 insertions(+), 8 deletions(-)
 
---- a/net/batman-adv/network-coding.c
-+++ b/net/batman-adv/network-coding.c
-@@ -1687,7 +1687,12 @@ batadv_nc_skb_decode_packet(struct batad
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/base.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/base.c
+@@ -348,6 +348,8 @@ nvkm_fifo_dtor(struct nvkm_engine *engin
+ 	nvkm_chid_unref(&fifo->chid);
  
- 	coding_len = ntohs(coded_packet_tmp.coded_len);
+ 	nvkm_event_fini(&fifo->nonstall.event);
++	if (fifo->func->nonstall_dtor)
++		fifo->func->nonstall_dtor(fifo);
+ 	mutex_destroy(&fifo->mutex);
+ 	return fifo;
+ }
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga100.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga100.c
+@@ -516,19 +516,11 @@ ga100_fifo_nonstall_intr(struct nvkm_int
+ static void
+ ga100_fifo_nonstall_block(struct nvkm_event *event, int type, int index)
+ {
+-	struct nvkm_fifo *fifo = container_of(event, typeof(*fifo), nonstall.event);
+-	struct nvkm_runl *runl = nvkm_runl_get(fifo, index, 0);
+-
+-	nvkm_inth_block(&runl->nonstall.inth);
+ }
  
--	if (coding_len > skb->len)
-+	/* ensure dst buffer is large enough (payload only) */
-+	if (coding_len + h_size > skb->len)
-+		return NULL;
+ static void
+ ga100_fifo_nonstall_allow(struct nvkm_event *event, int type, int index)
+ {
+-	struct nvkm_fifo *fifo = container_of(event, typeof(*fifo), nonstall.event);
+-	struct nvkm_runl *runl = nvkm_runl_get(fifo, index, 0);
+-
+-	nvkm_inth_allow(&runl->nonstall.inth);
+ }
+ 
+ const struct nvkm_event_func
+@@ -559,12 +551,26 @@ ga100_fifo_nonstall_ctor(struct nvkm_fif
+ 		if (ret)
+ 			return ret;
+ 
++		nvkm_inth_allow(&runl->nonstall.inth);
 +
-+	/* ensure src buffer is large enough (payload only) */
-+	if (coding_len + h_size > nc_packet->skb->len)
- 		return NULL;
+ 		nr = max(nr, runl->id + 1);
+ 	}
  
- 	/* Here the magic is reversed:
+ 	return nr;
+ }
+ 
++void
++ga100_fifo_nonstall_dtor(struct nvkm_fifo *fifo)
++{
++	struct nvkm_runl *runl;
++
++	nvkm_runl_foreach(runl, fifo) {
++		if (runl->nonstall.vector < 0)
++			continue;
++		nvkm_inth_block(&runl->nonstall.inth);
++	}
++}
++
+ int
+ ga100_fifo_runl_ctor(struct nvkm_fifo *fifo)
+ {
+@@ -594,6 +600,7 @@ ga100_fifo = {
+ 	.runl_ctor = ga100_fifo_runl_ctor,
+ 	.mmu_fault = &tu102_fifo_mmu_fault,
+ 	.nonstall_ctor = ga100_fifo_nonstall_ctor,
++	.nonstall_dtor = ga100_fifo_nonstall_dtor,
+ 	.nonstall = &ga100_fifo_nonstall,
+ 	.runl = &ga100_runl,
+ 	.runq = &ga100_runq,
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga102.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga102.c
+@@ -28,6 +28,7 @@ ga102_fifo = {
+ 	.runl_ctor = ga100_fifo_runl_ctor,
+ 	.mmu_fault = &tu102_fifo_mmu_fault,
+ 	.nonstall_ctor = ga100_fifo_nonstall_ctor,
++	.nonstall_dtor = ga100_fifo_nonstall_dtor,
+ 	.nonstall = &ga100_fifo_nonstall,
+ 	.runl = &ga100_runl,
+ 	.runq = &ga100_runq,
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/priv.h
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/priv.h
+@@ -38,6 +38,7 @@ struct nvkm_fifo_func {
+ 	void (*start)(struct nvkm_fifo *, unsigned long *);
+ 
+ 	int (*nonstall_ctor)(struct nvkm_fifo *);
++	void (*nonstall_dtor)(struct nvkm_fifo *);
+ 	const struct nvkm_event_func *nonstall;
+ 
+ 	const struct nvkm_runl_func *runl;
+@@ -194,6 +195,7 @@ extern const struct nvkm_fifo_func_mmu_f
+ 
+ int ga100_fifo_runl_ctor(struct nvkm_fifo *);
+ int ga100_fifo_nonstall_ctor(struct nvkm_fifo *);
++void ga100_fifo_nonstall_dtor(struct nvkm_fifo *);
+ extern const struct nvkm_event_func ga100_fifo_nonstall;
+ extern const struct nvkm_runl_func ga100_runl;
+ extern const struct nvkm_runq_func ga100_runq;
 
 
 
