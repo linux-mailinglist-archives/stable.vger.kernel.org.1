@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-178543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B273EB47F17
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E09EB47E6E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A6DB17F2B3
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2902A189FD01
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5FB211A14;
-	Sun,  7 Sep 2025 20:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F321F1921;
+	Sun,  7 Sep 2025 20:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqnoOadP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6Nu8jNg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076E71DE8AF;
-	Sun,  7 Sep 2025 20:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A126F189BB0;
+	Sun,  7 Sep 2025 20:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277173; cv=none; b=slg09vurqyiCtflc5tA7c4YMfpdoli4qZIIjv4FAh3DrdQnPlkJRzt6WTiAKbtF6jIoOfesM3dGKrhu519kcADMIUwlDpLYr0K//SJIsLFLWel7sbo3RRjThhvz2LXvTduQGu88y9bx3vZT1ffn6WQFfW5NXqcJidKT4jdVUN8s=
+	t=1757276651; cv=none; b=o5IqKD+Oere9/DWs+Tur0L6Xau/xZR5S7fXUb0Pr5kv0VKBLO1xuIHCU2m8031tq9Ccjh/4xE2w6A5Q73oA7mBGM7WQXNqlIG0KCaOEQQzkeMr6c52V0x6LcW5+GzFhm7ELMTufAiLGtqa3YeqsET2vqllhHHibQ17A1nXlBdyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277173; c=relaxed/simple;
-	bh=8Acv5Ul8VPybbfGDO0eji1ZaNvR+nR1k5U9rQYIH788=;
+	s=arc-20240116; t=1757276651; c=relaxed/simple;
+	bh=dbMJbiajU2zfee9HGm19yh4UvBCB07FAPbcPur9me7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YEMjzldN3wiGRj3RqP/YE/wIHKlOPw906Ay4i0A/gFJsEFTX/54q7Jl3FX1tvajE9i0j6a1eeMxTcbo1JTtT63V0ka1UkoW9PV6xRN50Ty96KRfJvBgk61oiqq0YZGDjbROAvdzHjyJAlHWrCBeaQebOUfkPAVGLR8Dhwz1gvOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqnoOadP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE1CC4CEF0;
-	Sun,  7 Sep 2025 20:32:52 +0000 (UTC)
+	 MIME-Version; b=m9yeohyUc4tr1t+w04zjiI2bt5QNgBxxx7pXoI300qnmX/rCJfZujAW88L6YEAs43DdVnnPX7CJftFX3oEruUoK131ZdG72PSI0bIi9hCkKzmqZJ9jPofNy8L2vKA/Q/mNhLDdc3VoV5p40DE68rAMh1mEnfj7DsDmZaQYmNrGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6Nu8jNg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6FEC4CEF0;
+	Sun,  7 Sep 2025 20:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277172;
-	bh=8Acv5Ul8VPybbfGDO0eji1ZaNvR+nR1k5U9rQYIH788=;
+	s=korg; t=1757276651;
+	bh=dbMJbiajU2zfee9HGm19yh4UvBCB07FAPbcPur9me7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VqnoOadPMW3GfGDrN1fLv1LEUYXQC6N4Q8F4bNP10NYAcL+r+nK127WdRDn1aYcI9
-	 W4BYVf81hRd/7nIqPfpo5/+bifoAXzJ2mqzm1HD6ly7e+iG7HD7zMzk7z0s6ZCApDU
-	 m6pjZqYceueH0BUO2cvtb45eNujAxIqW5ypBKdaE=
+	b=Q6Nu8jNgmbFHhrotCJPMqJLTYEw69gZOfkH8ovNml7D085eJ9DlnqEDZYUv9lmsZq
+	 nAc0M/4weY6a7uhE+OZB4qJkiiy3soLWtRyoErX7CBc2QzS/bSF5RksxOChje1Z/Z9
+	 Cdo3a2BSLNtcu/cYE8fZWvG790Ak7Zb/8e0Zlapk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 108/175] wifi: mwifiex: Initialize the chan_stats array to zero
+	Makar Semyonov <m.semenov@tssltd.ru>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 067/121] cifs: prevent NULL pointer dereference in UTF16 conversion
 Date: Sun,  7 Sep 2025 21:58:23 +0200
-Message-ID: <20250907195617.408483701@linuxfoundation.org>
+Message-ID: <20250907195611.557553691@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: Makar Semyonov <m.semenov@tssltd.ru>
 
-commit 0e20450829ca3c1dbc2db536391537c57a40fe0b upstream.
+commit 70bccd9855dae56942f2b18a08ba137bb54093a0 upstream.
 
-The adapter->chan_stats[] array is initialized in
-mwifiex_init_channel_scan_gap() with vmalloc(), which doesn't zero out
-memory.  The array is filled in mwifiex_update_chan_statistics()
-and then the user can query the data in mwifiex_cfg80211_dump_survey().
+There can be a NULL pointer dereference bug here. NULL is passed to
+__cifs_sfu_make_node without checks, which passes it unchecked to
+cifs_strndup_to_utf16, which in turn passes it to
+cifs_local_to_utf16_bytes where '*from' is dereferenced, causing a crash.
 
-There are two potential issues here.  What if the user calls
-mwifiex_cfg80211_dump_survey() before the data has been filled in.
-Also the mwifiex_update_chan_statistics() function doesn't necessarily
-initialize the whole array.  Since the array was not initialized at
-the start that could result in an information leak.
+This patch adds a check for NULL 'src' in cifs_strndup_to_utf16 and
+returns NULL early to prevent dereferencing NULL pointer.
 
-Also this array is pretty small.  It's a maximum of 900 bytes so it's
-more appropriate to use kcalloc() instead vmalloc().
+Found by Linux Verification Center (linuxtesting.org) with SVACE
 
+Signed-off-by: Makar Semyonov <m.semenov@tssltd.ru>
 Cc: stable@vger.kernel.org
-Fixes: bf35443314ac ("mwifiex: channel statistics support for mwifiex")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250815023055.477719-1-rongqianfeng@vivo.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c |    5 +++--
- drivers/net/wireless/marvell/mwifiex/main.c     |    4 ++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ fs/smb/client/cifs_unicode.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -4680,8 +4680,9 @@ int mwifiex_init_channel_scan_gap(struct
- 	 * additional active scan request for hidden SSIDs on passive channels.
- 	 */
- 	adapter->num_in_chan_stats = 2 * (n_channels_bg + n_channels_a);
--	adapter->chan_stats = vmalloc(array_size(sizeof(*adapter->chan_stats),
--						 adapter->num_in_chan_stats));
-+	adapter->chan_stats = kcalloc(adapter->num_in_chan_stats,
-+				      sizeof(*adapter->chan_stats),
-+				      GFP_KERNEL);
+--- a/fs/smb/client/cifs_unicode.c
++++ b/fs/smb/client/cifs_unicode.c
+@@ -629,6 +629,9 @@ cifs_strndup_to_utf16(const char *src, c
+ 	int len;
+ 	__le16 *dst;
  
- 	if (!adapter->chan_stats)
- 		return -ENOMEM;
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -667,7 +667,7 @@ static int _mwifiex_fw_dpc(const struct
- 	goto done;
- 
- err_add_intf:
--	vfree(adapter->chan_stats);
-+	kfree(adapter->chan_stats);
- err_init_chan_scan:
- 	wiphy_unregister(adapter->wiphy);
- 	wiphy_free(adapter->wiphy);
-@@ -1515,7 +1515,7 @@ static void mwifiex_uninit_sw(struct mwi
- 	wiphy_free(adapter->wiphy);
- 	adapter->wiphy = NULL;
- 
--	vfree(adapter->chan_stats);
-+	kfree(adapter->chan_stats);
- 	mwifiex_free_cmd_buffers(adapter);
- }
- 
++	if (!src)
++		return NULL;
++
+ 	len = cifs_local_to_utf16_bytes(src, maxlen, cp);
+ 	len += 2; /* NULL */
+ 	dst = kmalloc(len, GFP_KERNEL);
 
 
 
