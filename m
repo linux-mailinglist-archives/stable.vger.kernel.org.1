@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-178525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7881B47F05
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:31:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1A9B47E8F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B67C31B20EA6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 182637A22F9
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC74A20D51C;
-	Sun,  7 Sep 2025 20:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311D820D51C;
+	Sun,  7 Sep 2025 20:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v27K+VdR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpMO8rIe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A978D1ACEDA;
-	Sun,  7 Sep 2025 20:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C9B17BB21;
+	Sun,  7 Sep 2025 20:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277114; cv=none; b=Je83eItdWxwU/w4+A27Jv64xHcelduOizKloh4XPIue0yW7Tpqt5UXrwSagEq62DVrFOYLyuYZ/T27tv/luMGr79ybvI0CquFjJYSl9RFR/9ajrp/apGcuIEivFALgOZdTguyg0w6h0WWY8GHagwMe8UD7eec+x0+LOKVAvu29A=
+	t=1757276752; cv=none; b=GzCaGFQxjMWjzHMJFEjEnEWHOhYvNeTxZV32eP0xC6tMp8xJYTncH8CfhwcYnz6hPNtH51w3c+tuKBRM3IPpIb7Vs5PIxFMyHT0RZxLfI6UDftZg89riqaXUlY95Li22q/FjcnSJTYaJOVKEQnHYaoIB5gWZ44qBP96RrWaitNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277114; c=relaxed/simple;
-	bh=1vvv7bfZie2NxLaUkyO6UtKSWq9naqKrAkfW2utNKng=;
+	s=arc-20240116; t=1757276752; c=relaxed/simple;
+	bh=drMpN1R8JJSKJLcFFYNghgYBK/Plv1gag8zMOBldsn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqEr/SMGCeXzsMywL95HGwxrYOqnqaaygpOOqGjOEA7l/O4nAlCgnzBrEuA1XYpe9/oJCplUsOUGwRM/rcUb+yi7WHKnsJGxPBj9NhLEAst7c4lwdGKzKjJ5RV72JL+i1CRr62zGZQHR3sqx7UJoi24O4DIbRPM+Szu14MuP8dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v27K+VdR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D34CC4CEF0;
-	Sun,  7 Sep 2025 20:31:53 +0000 (UTC)
+	 MIME-Version; b=H8a8ORj8IRTelhr969yEMd+3Zzq/GTdrEfq5L9pvHyYmrhrOwQLX4/5zktIAPgIgBZG0RrXQA6O4INXqgwYkqOHj5I1v/bw2mnKhv0n7SjBm+st/f5S4BZJ99+3WgYSA9R75R9ulWZrNoRPVGZy43w2CI46z9krTREaksTDahy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpMO8rIe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F54C4CEF0;
+	Sun,  7 Sep 2025 20:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277114;
-	bh=1vvv7bfZie2NxLaUkyO6UtKSWq9naqKrAkfW2utNKng=;
+	s=korg; t=1757276750;
+	bh=drMpN1R8JJSKJLcFFYNghgYBK/Plv1gag8zMOBldsn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v27K+VdRWDw2eRvyJBQ5vk2FFTYq3iFPOtAezocpnxU+hMiZ6ldnmfxibZq0dT535
-	 7q6rEE0ImLpFgWJr+lCnzE2p3cqIHmVAAOYFUCbZJBiBSW0fTbaSmvxVlDCOMiaPQM
-	 Y6NaiJs9ys2Wis311KktcWOKJMoMdFwTCFJZH/X8=
+	b=kpMO8rIefcVPP2v3DvneSBcVa+orCdclEsymfTFk4ztkC9AYIaVvr9MbY4bi04OVy
+	 q7HLqiMaotrBaRr7HSMDbnOBgioGYluYM9QtvCIW36p/Y2w3IdekasRUpFUYu5MitS
+	 6T43B7WfY3t3SycsreXp4/3TglRexFQBjycgW1f4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Guoli An <anguoli@uniontech.com>,
 	Cryolitia PukNgae <cryolitia@uniontech.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 091/175] ALSA: usb-audio: Add mute TLV for playback volumes on some devices
-Date: Sun,  7 Sep 2025 21:58:06 +0200
-Message-ID: <20250907195616.993773983@linuxfoundation.org>
+Subject: [PATCH 6.6 051/121] ALSA: usb-audio: Add mute TLV for playback volumes on some devices
+Date: Sun,  7 Sep 2025 21:58:07 +0200
+Message-ID: <20250907195611.136933589@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -86,7 +86,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/sound/usb/mixer_quirks.c
 +++ b/sound/usb/mixer_quirks.c
-@@ -4212,9 +4212,11 @@ void snd_usb_mixer_fu_apply_quirk(struct
+@@ -3631,9 +3631,11 @@ void snd_usb_mixer_fu_apply_quirk(struct
  			snd_dragonfly_quirk_db_scale(mixer, cval, kctl);
  		break;
  	/* lowest playback value is muted on some devices */
