@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-178216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17314B47DB7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:15:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8CB7B47DB9
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:15:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 216F1189D2B2
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A532517CFDB
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B19E1D88D0;
-	Sun,  7 Sep 2025 20:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532791AF0B6;
+	Sun,  7 Sep 2025 20:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShKf2rkv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRw5OEV4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0956A15D5B6;
-	Sun,  7 Sep 2025 20:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1109F14BFA2;
+	Sun,  7 Sep 2025 20:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276135; cv=none; b=mU0r9RIWE6PFHn5NpKa4seNfzoQhUdiKt/xaQa3aVoyOO243ubAA9zer7RJ8rWrx1+FVvkBfYRp/7aYzcJOflYbG1ALz1B/U8BGcgOFrLez1TP6I5tR11R1ib6c0UK2oJGfuVsglZa0GUW3WjYQdNQ4uFketqJ3xwtCTYbInOAA=
+	t=1757276141; cv=none; b=CnED5fsKS9ySbKhl/ZU94WW4IQgep8LDL9jToa+0JVZKHni8McXM0FG7OL1It9nJCbQRfcP59tJPhWVQez8NVDYI1aWQ3u6JHKtEL91hdgYQBysKu8qxEKzlQr0ivvfMtER3ioJMaziXug9J6lzvqOluARmhaBW3ZGGcGLzachs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276135; c=relaxed/simple;
-	bh=lWU9TgQwgJtVJ2J3qfhoLQhxruOfomTrHgxUxF33wbQ=;
+	s=arc-20240116; t=1757276141; c=relaxed/simple;
+	bh=uASFbptLkACjNVUR+HF0sUHQmw+biqwOs4B5aYiU8Rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FbVno9Rgz9gqJygcYbO5PHSpfNKYoSXp4tGfb0Guyz6YJmx38JeT49PIw1hxg64IFuLC5GXVdy7Sh86R2G9uyLw+6jh+VUhgZHfKWamR8kjcRyyLjaaYN7Dg/qKIyVcvo8pJurJTRvOshmucfqWTROEcnpKerR/MfdIw9YxRl/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShKf2rkv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3F2C4CEF0;
-	Sun,  7 Sep 2025 20:15:34 +0000 (UTC)
+	 MIME-Version; b=aMTcE+MNnqskeBOr9xA273LOFplOvnyrB/YGOQVEbRTcWAVN9El2D16ziIrMuQomrIPYOI+/odHtmHwZVpUC4fB4FxFENvd4PVE6YdFTOLN6sbbE2vnKroQG4gnAMY5pvli1sGI+7tfiDeksCihSmvXYRYIlXJgArTSbUNe2M1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRw5OEV4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D04EC4CEF0;
+	Sun,  7 Sep 2025 20:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276134;
-	bh=lWU9TgQwgJtVJ2J3qfhoLQhxruOfomTrHgxUxF33wbQ=;
+	s=korg; t=1757276140;
+	bh=uASFbptLkACjNVUR+HF0sUHQmw+biqwOs4B5aYiU8Rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ShKf2rkv6uD60dDdLytFPDKft0qRH8wU65JaUkReSX1Vfu9olesB9wLyibkbegAoe
-	 APnSr2CbQWaMtvC979U7ZPOyGo3zO1N3YvsH1UHhCAnM1SRvgbs/gYfjsSymNurUsT
-	 UZnWz38n5l589CyaJTVMBj16xIcro9c6biDawAkU=
+	b=pRw5OEV4fQrAk21Bu1r3ghCYxpkOfmWoupequT27HjDajQrhvpenCwGEh3VS01SF3
+	 BoiAR9yGERM0R54cwjGj/4AJYj2Tv/r7VqFEkDaGf7t1zT2Vwwnvdaoi7yiXpYVrhT
+	 u2Lvfr3/MjHpBxZzmzxMv5GhrI5peO+WyzBzPrlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Daniel Borkmann <daniel@iogearbox.net>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/104] bpf: Add cookie object to bpf maps
-Date: Sun,  7 Sep 2025 21:57:18 +0200
-Message-ID: <20250907195607.706543012@linuxfoundation.org>
+Subject: [PATCH 6.1 002/104] bpf: Move cgroup iterator helpers to bpf.h
+Date: Sun,  7 Sep 2025 21:57:19 +0200
+Message-ID: <20250907195607.730414871@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
 References: <20250907195607.664912704@linuxfoundation.org>
@@ -68,64 +68,82 @@ Content-Transfer-Encoding: 8bit
 
 From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 12df58ad294253ac1d8df0c9bb9cf726397a671d ]
+[ Upstream commit 9621e60f59eae87eb9ffe88d90f24f391a1ef0f0 ]
 
-Add a cookie to BPF maps to uniquely identify BPF maps for the timespan
-when the node is up. This is different to comparing a pointer or BPF map
-id which could get rolled over and reused.
+Move them into bpf.h given we also need them in core code.
 
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20250730234733.530041-1-daniel@iogearbox.net
+Link: https://lore.kernel.org/r/20250730234733.530041-3-daniel@iogearbox.net
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h  | 1 +
- kernel/bpf/syscall.c | 6 ++++++
- 2 files changed, 7 insertions(+)
+ include/linux/bpf-cgroup.h |  5 -----
+ include/linux/bpf.h        | 22 ++++++++++++++--------
+ 2 files changed, 14 insertions(+), 13 deletions(-)
 
+diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
+index 57e9e109257e5..429c766310c07 100644
+--- a/include/linux/bpf-cgroup.h
++++ b/include/linux/bpf-cgroup.h
+@@ -72,9 +72,6 @@ to_cgroup_bpf_attach_type(enum bpf_attach_type attach_type)
+ extern struct static_key_false cgroup_bpf_enabled_key[MAX_CGROUP_BPF_ATTACH_TYPE];
+ #define cgroup_bpf_enabled(atype) static_branch_unlikely(&cgroup_bpf_enabled_key[atype])
+ 
+-#define for_each_cgroup_storage_type(stype) \
+-	for (stype = 0; stype < MAX_BPF_CGROUP_STORAGE_TYPE; stype++)
+-
+ struct bpf_cgroup_storage_map;
+ 
+ struct bpf_storage_buffer {
+@@ -506,8 +503,6 @@ static inline int bpf_percpu_cgroup_storage_update(struct bpf_map *map,
+ #define BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock, level, optname, optval, optlen, \
+ 				       kernel_optval) ({ 0; })
+ 
+-#define for_each_cgroup_storage_type(stype) for (; false; )
+-
+ #endif /* CONFIG_CGROUP_BPF */
+ 
+ #endif /* _BPF_CGROUP_H */
 diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index e9c1338851e34..2aaa1ed738303 100644
+index 2aaa1ed738303..9fac355afde7a 100644
 --- a/include/linux/bpf.h
 +++ b/include/linux/bpf.h
-@@ -260,6 +260,7 @@ struct bpf_map {
- 	bool frozen; /* write-once; write-protected by freeze_mutex */
- 	bool free_after_mult_rcu_gp;
- 	s64 __percpu *elem_count;
-+	u64 cookie; /* write-once */
+@@ -181,6 +181,20 @@ enum bpf_kptr_type {
+ 	BPF_KPTR_REF,
  };
  
- static inline bool map_value_has_spin_lock(const struct bpf_map *map)
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index b145f3ef3695e..377bb60b79164 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -35,6 +35,7 @@
- #include <linux/rcupdate_trace.h>
- #include <linux/memcontrol.h>
- #include <linux/trace_events.h>
-+#include <linux/cookie.h>
- 
- #define IS_FD_ARRAY(map) ((map)->map_type == BPF_MAP_TYPE_PERF_EVENT_ARRAY || \
- 			  (map)->map_type == BPF_MAP_TYPE_CGROUP_ARRAY || \
-@@ -47,6 +48,7 @@
- #define BPF_OBJ_FLAG_MASK   (BPF_F_RDONLY | BPF_F_WRONLY)
- 
- DEFINE_PER_CPU(int, bpf_prog_active);
-+DEFINE_COOKIE(bpf_map_cookie);
- static DEFINE_IDR(prog_idr);
- static DEFINE_SPINLOCK(prog_idr_lock);
- static DEFINE_IDR(map_idr);
-@@ -1152,6 +1154,10 @@ static int map_create(union bpf_attr *attr)
- 	if (err < 0)
- 		goto free_map;
- 
-+	preempt_disable();
-+	map->cookie = gen_cookie_next(&bpf_map_cookie);
-+	preempt_enable();
++enum bpf_cgroup_storage_type {
++	BPF_CGROUP_STORAGE_SHARED,
++	BPF_CGROUP_STORAGE_PERCPU,
++	__BPF_CGROUP_STORAGE_MAX
++#define MAX_BPF_CGROUP_STORAGE_TYPE __BPF_CGROUP_STORAGE_MAX
++};
 +
- 	atomic64_set(&map->refcnt, 1);
- 	atomic64_set(&map->usercnt, 1);
- 	mutex_init(&map->freeze_mutex);
++#ifdef CONFIG_CGROUP_BPF
++# define for_each_cgroup_storage_type(stype) \
++	for (stype = 0; stype < MAX_BPF_CGROUP_STORAGE_TYPE; stype++)
++#else
++# define for_each_cgroup_storage_type(stype) for (; false; )
++#endif /* CONFIG_CGROUP_BPF */
++
+ struct bpf_map_value_off_desc {
+ 	u32 offset;
+ 	enum bpf_kptr_type type;
+@@ -794,14 +808,6 @@ struct bpf_prog_offload {
+ 	u32			jited_len;
+ };
+ 
+-enum bpf_cgroup_storage_type {
+-	BPF_CGROUP_STORAGE_SHARED,
+-	BPF_CGROUP_STORAGE_PERCPU,
+-	__BPF_CGROUP_STORAGE_MAX
+-};
+-
+-#define MAX_BPF_CGROUP_STORAGE_TYPE __BPF_CGROUP_STORAGE_MAX
+-
+ /* The longest tracepoint has 12 args.
+  * See include/trace/bpf_probe.h
+  */
 -- 
 2.50.1
 
