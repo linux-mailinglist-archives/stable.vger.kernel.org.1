@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B965CB47DD6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 210D8B47E4F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3976189E7D6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12F7E189F8BA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691FC1C6FFA;
-	Sun,  7 Sep 2025 20:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D0F20E005;
+	Sun,  7 Sep 2025 20:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AOI/QOnb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtMWO+Gu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246551D88D0;
-	Sun,  7 Sep 2025 20:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE920189BB0;
+	Sun,  7 Sep 2025 20:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276222; cv=none; b=ifHDGRCRhsqhuoDzQrktRku6MYZyMBqjiAOlrpPx4Nr9oaGQVEiuS4qnQOQBjk7mWGleqSCc+z+6RgXV5Pol8FCiz5nIvFn+Fr0dn7Qq2G8qdlLS5AM5UBHDSIOwTi/01p7u0t4wQPwj/uwxicuM6zU6Ck2JA++Up2b4hjmuBcg=
+	t=1757276559; cv=none; b=PKlB/Tvve3D1rN+sUNSzb8mmpOQonnWJTZTvLU2QTwhK6J5VGzvnEM+Oa+OjJ8xmceGxxeE75ob3tAP5vvxZs9qb0Pa0ujr0TWjVoRrR4oFKtnicaNs9KRgrbv5nei0+y83cgqHvBiWd4lYdGGkglZCbMLNCK7Jv4Q5GzZTvdGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276222; c=relaxed/simple;
-	bh=1x6pbrbZybFi9HTBfxA4Cdgu3EwuC/T4BvEJmQIDTr8=;
+	s=arc-20240116; t=1757276559; c=relaxed/simple;
+	bh=z8+w+bDcqIxz5pMwdQlSr2pmX6hzFS+g13brUvvryw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PpyJPZG0v8aJsW1ckUVvKNsjq7TjcriSZ8hQWSBEPFXYKThH+7l9JpUxIhcBW+Nk/LqYhKWRvLWJ31n8e7YI1omyNbHlWurCXK7U+VRbMbzX9JneNQyoXmj6NNsjACGk/P/buzxLqP/HtRWOkSwvm1NYab8uZaQdVfE/ogCaAzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AOI/QOnb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F90C4CEF0;
-	Sun,  7 Sep 2025 20:17:01 +0000 (UTC)
+	 MIME-Version; b=UmNfBx/0jw1cVSaTbn16X/9HiH3v5lemB5AwStI+VDSz6qL/5oB+bHpR1O1KDVY8NkZp1HqRl+8ErFShwmSl3/so/Uj2LmHjIt+uSG9+o3UegAkEuOuGgZc7K96ZKFaugQBdpqfOE/pbrDwHpojc6gTgzWkAl2L/OVMLf5xFnfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtMWO+Gu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5252EC4CEF0;
+	Sun,  7 Sep 2025 20:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276222;
-	bh=1x6pbrbZybFi9HTBfxA4Cdgu3EwuC/T4BvEJmQIDTr8=;
+	s=korg; t=1757276559;
+	bh=z8+w+bDcqIxz5pMwdQlSr2pmX6hzFS+g13brUvvryw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AOI/QOnbZxJTv9jM69MjDA05NEM6C1wWWMKNTZblcCoi7mjquhhTVGW0sbVl07zwP
-	 V8GjXM9RyQCZ6FSYuEeVolfWZc7nsj1PCi1p155TrigHd0EwOwdtNyvGoqQs1TEMnb
-	 hgNwLQNY1i9PSxPHY85QNqXTjkKmPvz3r+gy10ms=
+	b=OtMWO+GukKoy7IxX51meSlfOP3H/G5O/0kW8F2Fokg7TM/69WpU+6EZtq+TqTSKHm
+	 oByZm5ZGVPJjB2cTuefqjVGBG4oRIzyB4fQGXAXnJPSx64azUFjRxAMBBTXGQhIgKH
+	 wceBANIQcdrOfj23/Gflo4Y6WtI5l0PuEptp9EnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
+	Thibaut VARENE <hacks@slashdirt.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/104] net: atm: fix memory leak in atm_register_sysfs when device_register fail
+Subject: [PATCH 6.6 037/121] net: ethernet: mtk_eth_soc: fix tx vlan tag for llc packets
 Date: Sun,  7 Sep 2025 21:57:53 +0200
-Message-ID: <20250907195608.634215118@linuxfoundation.org>
+Message-ID: <20250907195610.780716212@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 0a228624bcc00af41f281a2a84c928595a74c17d ]
+[ Upstream commit d4736737110ffa83d29f1c5d17b26113864205f6 ]
 
-When device_register() return error in atm_register_sysfs(), which can be
-triggered by kzalloc fail in device_private_init() or other reasons,
-kmemleak reports the following memory leaks:
+When sending llc packets with vlan tx offload, the hardware fails to
+actually add the tag. Deal with this by fixing it up in software.
 
-unreferenced object 0xffff88810182fb80 (size 8):
-  comm "insmod", pid 504, jiffies 4294852464
-  hex dump (first 8 bytes):
-    61 64 75 6d 6d 79 30 00                          adummy0.
-  backtrace (crc 14dfadaf):
-    __kmalloc_node_track_caller_noprof+0x335/0x450
-    kvasprintf+0xb3/0x130
-    kobject_set_name_vargs+0x45/0x120
-    dev_set_name+0xa9/0xe0
-    atm_register_sysfs+0xf3/0x220
-    atm_dev_register+0x40b/0x780
-    0xffffffffa000b089
-    do_one_initcall+0x89/0x300
-    do_init_module+0x27b/0x7d0
-    load_module+0x54cd/0x5ff0
-    init_module_from_file+0xe4/0x150
-    idempotent_init_module+0x32c/0x610
-    __x64_sys_finit_module+0xbd/0x120
-    do_syscall_64+0xa8/0x270
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-When device_create_file() return error in atm_register_sysfs(), the same
-issue also can be triggered.
-
-Function put_device() should be called to release kobj->name memory and
-other device resource, instead of kfree().
-
-Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Fixes: 656e705243fd ("net-next: mediatek: add support for MT7623 ethernet")
+Reported-by: Thibaut VARENE <hacks@slashdirt.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250901063537.1472221-1-wangliang74@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/20250831182007.51619-1-nbd@nbd.name
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/resources.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/atm/resources.c b/net/atm/resources.c
-index b19d851e1f443..7c6fdedbcf4e5 100644
---- a/net/atm/resources.c
-+++ b/net/atm/resources.c
-@@ -112,7 +112,9 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index cb8efc952dfda..aefe2af6f01d4 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -1586,6 +1586,13 @@ static netdev_tx_t mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	bool gso = false;
+ 	int tx_num;
  
- 	if (atm_proc_dev_register(dev) < 0) {
- 		pr_err("atm_proc_dev_register failed for dev %s\n", type);
--		goto out_fail;
-+		mutex_unlock(&atm_dev_mutex);
-+		kfree(dev);
-+		return NULL;
- 	}
++	if (skb_vlan_tag_present(skb) &&
++	    !eth_proto_is_802_3(eth_hdr(skb)->h_proto)) {
++		skb = __vlan_hwaccel_push_inside(skb);
++		if (!skb)
++			goto dropped;
++	}
++
+ 	/* normally we can rely on the stack not calling this more than once,
+ 	 * however we have 2 queues running on the same ring so we need to lock
+ 	 * the ring access
+@@ -1631,8 +1638,9 @@ static netdev_tx_t mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
  
- 	if (atm_register_sysfs(dev, parent) < 0) {
-@@ -128,7 +130,7 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
- 	return dev;
- 
- out_fail:
--	kfree(dev);
-+	put_device(&dev->class_dev);
- 	dev = NULL;
- 	goto out;
+ drop:
+ 	spin_unlock(&eth->page_lock);
+-	stats->tx_dropped++;
+ 	dev_kfree_skb_any(skb);
++dropped:
++	stats->tx_dropped++;
+ 	return NETDEV_TX_OK;
  }
+ 
 -- 
 2.50.1
 
