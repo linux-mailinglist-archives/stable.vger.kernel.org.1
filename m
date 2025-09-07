@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C40DB47F48
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:35:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0D4B47FDA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C444717FC8A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:35:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E04F3C3B45
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724B9212B3D;
-	Sun,  7 Sep 2025 20:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C9921ADAE;
+	Sun,  7 Sep 2025 20:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8qgWYBg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvvGkgPw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3017B1DF246;
-	Sun,  7 Sep 2025 20:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CC84315A;
+	Sun,  7 Sep 2025 20:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277329; cv=none; b=CnBGDrSs4x5aaKV/xQuO282qLJLgdF/MmFStR1tlbCo3ys0Sst7iCdtyAlUrW6Tt3bcw8DmMoBSqoX8STkPdwCMGSER4YiHBSJuyfpQifvdCeH7I068ij7ScBNiYENcy4txDdVXIzrJcXdZ+Ze8jVmto+xsgKB221Y+zRFnfvbE=
+	t=1757277790; cv=none; b=XplfacgUV62Kxu+rMpigNYljJoJ4uxlhnkjzHPkYqHA1q4d2Dmu8rZHmJo23o6IOaig+mS3AfAHuTZo0MBiivopFie+kauEOY+3nGDhtSy9LNq0Zij/p4+m6ogc63Q35rcwK/i1TWEZvZhGtABio/sskwDr9e7bjSCyNUVt/gJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277329; c=relaxed/simple;
-	bh=7r+vjvEmyEqIUZfswRX1Dme4/QPJ5uqAJqnz0jDtyJw=;
+	s=arc-20240116; t=1757277790; c=relaxed/simple;
+	bh=KX3nbM39NPj5WSYM/mG/vqfy3MsDs/Aif/xN8HsOA2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSd0nVWz/ACWWFd5zu6XPnamQA0pNPLCVxxfg5f38tniPWNz4DolpvITVPiUPAdhCQWeJhYedru5vJ/8V1e9gfuVD/MOxZkt1oCuy+hztGxY3PIXVq4bJPGnciWr3c25xsZdX9vlfgaXdiLSHBBKUat5tyzJO0q40cawPdJRGBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8qgWYBg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92FAC4CEF0;
-	Sun,  7 Sep 2025 20:35:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s6EmqAEmM6+EHd6GsUxFdeFVjzH+oKS371IU+043dd5hrhHh3tq5LSm2m6Qgvp3rDTVJ58vuEY2pWvfwcH+SNNvXxD8601s/LGsglAdtVEULr6E+yRd4yRhUW8BiMbFEfjczSrxz1VL5yl8Lzh5LuMk1J3FUiEZoyadn4mqgDak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvvGkgPw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A93C4CEF0;
+	Sun,  7 Sep 2025 20:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277329;
-	bh=7r+vjvEmyEqIUZfswRX1Dme4/QPJ5uqAJqnz0jDtyJw=;
+	s=korg; t=1757277790;
+	bh=KX3nbM39NPj5WSYM/mG/vqfy3MsDs/Aif/xN8HsOA2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8qgWYBgplCqHfiUIfjJTVsgyDlaWdWq9QztfYzbIrOfwkiITRHuPuCS6XdVTbVKS
-	 4VRhdLZ9Ett+f5gNevy6WPiGmPZSEdqpu+Yywh1F1rtitEl5xKmqZKNHtIRoyHw/+I
-	 CMIYjMiM4RbhkL3K3t5gVjDpc8Y9Cf4TuwPu8E8Q=
+	b=XvvGkgPwlN0+SvnTFXSxQa5r4sNfs0e+Ii1SUzYUHXXqGBNqCgFF67g1O7v7qo6QS
+	 sKRttqvwQpYgo+x0ZWNfPIWJAcQdxyQ+/YXKv6CiSxvgkDpA3QwgSwxI7aGusS/E/E
+	 JdxWNn19ZpuZU5+2he/vsYa/rmVVXEB0gwq8ahuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	James Clark <james.clark@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 157/175] spi: spi-fsl-lpspi: Fix transmissions when using CONT
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.16 125/183] drm/xe: Fix incorrect migration of backed-up object to VRAM
 Date: Sun,  7 Sep 2025 21:59:12 +0200
-Message-ID: <20250907195618.569922142@linuxfoundation.org>
+Message-ID: <20250907195618.760629865@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-[ Upstream commit 782a7c73078e1301c0c427f21c06377d77dfa541 ]
+commit 379b3c983fc0257c183052278832ac68e3ccd33b upstream.
 
-Commit 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use
-CONT") breaks transmissions when CONT is used. The TDIE interrupt should
-not be disabled in all cases. If CONT is used and the TX transfer is not
-yet completed yet, but the interrupt handler is called because there are
-characters to be received, TDIE is replaced with FCIE. When the transfer
-is finally completed, SR_TDF is set but the interrupt handler isn't
-called again.
+If an object is backed up to shmem it is incorrectly identified
+as not having valid data by the move code. This means moving
+to VRAM skips the -EMULTIHOP step and the bo is cleared. This
+causes all sorts of weird behaviour on DGFX if an already evicted
+object is targeted by the shrinker.
 
-Fixes: 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use CONT")
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250828-james-nxp-lpspi-v2-1-6262b9aa9be4@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by using ttm_tt_is_swapped() to identify backed-up
+objects.
+
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5996
+Fixes: 00c8efc3180f ("drm/xe: Add a shrinker for xe bos")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: <stable@vger.kernel.org> # v6.15+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://lore.kernel.org/r/20250828134837.5709-1-thomas.hellstrom@linux.intel.com
+(cherry picked from commit 1047bd82794a1eab64d643f196d09171ce983f44)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_bo.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index f8cacb9c7408f..50633115e83dd 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -3,7 +3,7 @@
- // Freescale i.MX7ULP LPSPI driver
- //
- // Copyright 2016 Freescale Semiconductor, Inc.
--// Copyright 2018 NXP Semiconductors
-+// Copyright 2018, 2023, 2025 NXP
- 
- #include <linux/clk.h>
- #include <linux/completion.h>
-@@ -780,7 +780,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
- 	if (temp_SR & SR_MBF ||
- 	    readl(fsl_lpspi->base + IMX7ULP_FSR) & FSR_TXCOUNT) {
- 		writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
--		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE);
-+		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE | (temp_IER & IER_TDIE));
- 		return IRQ_HANDLED;
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -803,8 +803,7 @@ static int xe_bo_move(struct ttm_buffer_
+ 		return ret;
  	}
  
--- 
-2.51.0
-
+-	tt_has_data = ttm && (ttm_tt_is_populated(ttm) ||
+-			      (ttm->page_flags & TTM_TT_FLAG_SWAPPED));
++	tt_has_data = ttm && (ttm_tt_is_populated(ttm) || ttm_tt_is_swapped(ttm));
+ 
+ 	move_lacks_source = !old_mem || (handle_system_ccs ? (!bo->ccs_cleared) :
+ 					 (!mem_type_is_vram(old_mem_type) && !tt_has_data));
 
 
 
