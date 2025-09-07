@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-178014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86C4B4789A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 03:44:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 325E6B478A8
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 03:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64C4B3C5A55
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 01:44:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECAEC3C7751
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 01:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48A8194A73;
-	Sun,  7 Sep 2025 01:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF3819F48D;
+	Sun,  7 Sep 2025 01:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r8AQjb1g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHQWrlyh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7506B1078F
-	for <stable@vger.kernel.org>; Sun,  7 Sep 2025 01:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E434419CC28
+	for <stable@vger.kernel.org>; Sun,  7 Sep 2025 01:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757209480; cv=none; b=OmuPN5EaEoo8vxILV/1czxwT0kRx4e7gTed6tRauS2jPVhTm9EvhQSvnHa48wzePoE+Qrmcw1Rg23Oa6Us7E6KJ2xdpo8YUI/cljH2Bh65JBZN9U2q82tksUHZT3HcJQe1zjar43e+U0mj6IGHNgFbcPe2zZ4oxQKudmmwDZgOE=
+	t=1757210338; cv=none; b=U2k/H456KpUZtJt0TLhvr+Cn8YLZPrkSm3BivYyCeMScKQ+9en4Qi+PWy2kOd7VH/+Uj1Uqns77hdTXKZ5jLbwyFR+dtnjIyGllw4lZSUTd/QcHsGQyXQ9IODaOwSlyRlo6FvEA0VTmobH3qxynJEBVlrrWZ2tnzzSh/ZQFwLEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757209480; c=relaxed/simple;
-	bh=vrdmjDeQ5CEvN3cUcBCMQFmJeAM00TJg+ET4gguiqKc=;
+	s=arc-20240116; t=1757210338; c=relaxed/simple;
+	bh=q4/yEhIcDZAOLmALzD1m5DNAZOkt6MoPC343J22Gws8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmzlAbi90sVijV0ZEIP94lx2XWjW5vlKFE7I1n79xtp0sIRRLn90DB+WPfRdTph802eUQJf9WDrJJ13dGbyB1CBnrlkgxfQNZffVu5sdhXmXc3Dl/O9845SYneg2Qj8WSaoOQeis2k57Jw68oiSOK3TlptmHjruzV9rBNoczUJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r8AQjb1g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61A0C4CEFB;
-	Sun,  7 Sep 2025 01:44:37 +0000 (UTC)
+	 MIME-Version; b=B0uVwZfv/xdS+kJlr+rVkULcsBaPjLL8soU5NA+8ady98+kqDA5F4UryfLGlwUhL6Ivoc3KFtw20pljrjpZh0zuKtTSLL7AV2Nu7ZBsbB3/RDb7eObkRl2ZJx8GxPC6kQqQldI3n1331eQ7LbmsghwVyPYQ/S9vMAGSapfQXrDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aHQWrlyh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D73C4CEE7;
+	Sun,  7 Sep 2025 01:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757209478;
-	bh=vrdmjDeQ5CEvN3cUcBCMQFmJeAM00TJg+ET4gguiqKc=;
+	s=k20201202; t=1757210337;
+	bh=q4/yEhIcDZAOLmALzD1m5DNAZOkt6MoPC343J22Gws8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r8AQjb1gye80sKCf15WbE3uz3rvEY0e5tk/hTM6HZoO3fNbrNvfL9cKJgF2E7z9Qp
-	 TS+nM8uL9a+KfQFDN5KFvD234FNkFwxXE90VMOHpTovoGfuqDOS15zyNgscI5LHLXn
-	 sOD9Q0zwvDblyaJFuBm/Cr3FaCiAnZQ95fNs9+iidEYeUEMXdzJohgPHIRVx4aueQB
-	 AJhH1bD4g3G2/SK9i6wpRvree7Odf/S0hXcj/ZqTzuz5EAadcrWoR/wkomfoTMLvns
-	 07GOuCntvEpqUleqp9kbt9U7NPj9ySR2IKJ4SxyOx+agOepFT8J5ZXsiYC/pER9RkS
-	 ajACo+y2TNGGA==
+	b=aHQWrlyhEE1bUB1l1fsC7DUSdr9h7wKIERLvekDJQuO0Zg3mS0O4YX7Ih+xSDY0Bc
+	 KF6i7s9lL+13jgdA+mS2hXAThUIeSlYgXCV1aeMWK1BqH9caKErWJttZAXZUxQ19pI
+	 cNOgXnyNkSskxFOgyYjIeM3d5BzFOvLj+ew+keAC5NWVitI/nKEdzKk/LEQ9W9Itzs
+	 I7p+NBdLMkjVPT49H8BJ7oJr/006avY01McDAy5EAJzFAHW3pAgeQd6wlrT7Kt/wxq
+	 3q657dWlEirf+2EK7WLgfT7kkMH/+n8MZcew1OP1715NZI9wzj4pTkV7fpBqzHnmKD
+	 nT34OZN6weqPw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: Li Qiong <liqiong@nfschina.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] mm: fix accounting of memmap pages
-Date: Sat,  6 Sep 2025 21:44:36 -0400
-Message-ID: <20250907014436.393471-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] mm/slub: avoid accessing metadata when pointer is invalid in object_err()
+Date: Sat,  6 Sep 2025 21:58:55 -0400
+Message-ID: <20250907015855.398489-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025090629-cargo-udder-f24a@gregkh>
-References: <2025090629-cargo-udder-f24a@gregkh>
+In-Reply-To: <2025090620-plaza-trench-7364@gregkh>
+References: <2025090620-plaza-trench-7364@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,113 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+From: Li Qiong <liqiong@nfschina.com>
 
-[ Upstream commit c3576889d87b603cb66b417e08844a53c1077a37 ]
+[ Upstream commit b4efccec8d06ceb10a7d34d7b1c449c569d53770 ]
 
-For !CONFIG_SPARSEMEM_VMEMMAP, memmap page accounting is currently done
-upfront in sparse_buffer_init().  However, sparse_buffer_alloc() may
-return NULL in failure scenario.
+object_err() reports details of an object for further debugging, such as
+the freelist pointer, redzone, etc. However, if the pointer is invalid,
+attempting to access object metadata can lead to a crash since it does
+not point to a valid object.
 
-Also, memmap pages may be allocated either from the memblock allocator
-during early boot or from the buddy allocator.  When removed via
-arch_remove_memory(), accounting of memmap pages must reflect the original
-allocation source.
+One known path to the crash is when alloc_consistency_checks()
+determines the pointer to the allocated object is invalid because of a
+freelist corruption, and calls object_err() to report it. The debug code
+should report and handle the corruption gracefully and not crash in the
+process.
 
-To ensure correctness:
-* Account memmap pages after successful allocation in sparse_init_nid()
-  and section_activate().
-* Account memmap pages in section_deactivate() based on allocation
-  source.
+In case the pointer is NULL or check_valid_pointer() returns false for
+the pointer, only print the pointer value and skip accessing metadata.
 
-Link: https://lkml.kernel.org/r/20250807183545.1424509-1-sumanthk@linux.ibm.com
-Fixes: 15995a352474 ("mm: report per-page metadata information")
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: 81819f0fc828 ("SLUB core")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Li Qiong <liqiong@nfschina.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+[ struct page instead of slab ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/sparse-vmemmap.c |  5 -----
- mm/sparse.c         | 15 +++++++++------
- 2 files changed, 9 insertions(+), 11 deletions(-)
+ mm/slub.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index c0388b2e959da..2628fc02be08b 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -474,10 +474,5 @@ struct page * __meminit __populate_section_memmap(unsigned long pfn,
- 	if (r < 0)
- 		return NULL;
+diff --git a/mm/slub.c b/mm/slub.c
+index f95ae136a0698..97ac0c7da0f0b 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -864,7 +864,12 @@ void object_err(struct kmem_cache *s, struct page *page,
+ 		return;
  
--	if (system_state == SYSTEM_BOOTING)
--		memmap_boot_pages_add(DIV_ROUND_UP(end - start, PAGE_SIZE));
--	else
--		memmap_pages_add(DIV_ROUND_UP(end - start, PAGE_SIZE));
--
- 	return pfn_to_page(pfn);
- }
-diff --git a/mm/sparse.c b/mm/sparse.c
-index dc38539f85603..eb6c5cb27ed1e 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -462,9 +462,6 @@ static void __init sparse_buffer_init(unsigned long size, int nid)
- 	 */
- 	sparsemap_buf = memmap_alloc(size, section_map_size(), addr, nid, true);
- 	sparsemap_buf_end = sparsemap_buf + size;
--#ifndef CONFIG_SPARSEMEM_VMEMMAP
--	memmap_boot_pages_add(DIV_ROUND_UP(size, PAGE_SIZE));
--#endif
- }
- 
- static void __init sparse_buffer_fini(void)
-@@ -532,6 +529,8 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
- 			sparse_buffer_fini();
- 			goto failed;
- 		}
-+		memmap_boot_pages_add(DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct page),
-+						   PAGE_SIZE));
- 		check_usemap_section_nr(nid, usage);
- 		sparse_init_one_section(__nr_to_section(pnum), pnum, map, usage,
- 				SECTION_IS_EARLY);
-@@ -643,7 +642,6 @@ static void depopulate_section_memmap(unsigned long pfn, unsigned long nr_pages,
- 	unsigned long start = (unsigned long) pfn_to_page(pfn);
- 	unsigned long end = start + nr_pages * sizeof(struct page);
- 
--	memmap_pages_add(-1L * (DIV_ROUND_UP(end - start, PAGE_SIZE)));
- 	vmemmap_free(start, end, altmap);
- }
- static void free_map_bootmem(struct page *memmap)
-@@ -819,10 +817,14 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
- 	 * The memmap of early sections is always fully populated. See
- 	 * section_activate() and pfn_valid() .
- 	 */
--	if (!section_is_early)
-+	if (!section_is_early) {
-+		memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
- 		depopulate_section_memmap(pfn, nr_pages, altmap);
--	else if (memmap)
-+	} else if (memmap) {
-+		memmap_boot_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page),
-+							  PAGE_SIZE)));
- 		free_map_bootmem(memmap);
+ 	slab_bug(s, "%s", reason);
+-	print_trailer(s, page, object);
++	if (!object || !check_valid_pointer(s, page, object)) {
++		print_page_info(page);
++		pr_err("Invalid pointer 0x%p\n", object);
++	} else {
++		print_trailer(s, page, object);
 +	}
- 
- 	if (empty)
- 		ms->section_mem_map = (unsigned long)NULL;
-@@ -867,6 +869,7 @@ static struct page * __meminit section_activate(int nid, unsigned long pfn,
- 		section_deactivate(pfn, nr_pages, altmap);
- 		return ERR_PTR(-ENOMEM);
- 	}
-+	memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
- 
- 	return memmap;
+ 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
  }
+ 
 -- 
 2.51.0
 
