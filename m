@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9B70B47DEF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3938B47DB5
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:15:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9498B3C10C1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85F301893341
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B0D1D88D0;
-	Sun,  7 Sep 2025 20:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93591AF0B6;
+	Sun,  7 Sep 2025 20:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cv8cgt/U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3vlQyfl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C627F1A9FAA;
-	Sun,  7 Sep 2025 20:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A0C1A2389;
+	Sun,  7 Sep 2025 20:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276303; cv=none; b=VpZBWZm0kV2KCz7RHyM+saGMgKWHq8D+Pkam5kDORSPXkkF33vSzI0bTP3slgT4Uz+qmUW/m9oQcFrxbQTFzHFUUF/uCh5z1NCzeSWPDU0FJ96nZPzQwrgWIJi/hqwoU8QRileWWYelyv6ml7momyF6qBNP1ZJ5RSdtGMbDThjg=
+	t=1757276125; cv=none; b=Y/N/GJFx2jZhAbqwkIfrmHYs8ceF8QZyEyrk2UyhL/7TfzFrTmOJ0Rj92eF12Ymi/+yxRkQPRfifl8gbpeO4qiql5KQ7d+7EH8uMkF0vt67namA9wpWsPxTd7fK8mR5c81BeJ0CT/Q2FXPiGfegqn1NdV4n9fEJGLqLjXBj2JxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276303; c=relaxed/simple;
-	bh=Ytxi8mw+Z5oRAtU+WUW2vcqy2VSqDnSrGoOMz6gFIAg=;
+	s=arc-20240116; t=1757276125; c=relaxed/simple;
+	bh=DeJ6DsZ/JNnYKLyEqazkUNhJDhA6l9Zz0gEaxaKTpOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/uj/Eb27LrEKThnTd7fwWyRa036O0iWQDVNeCQ+LafrBvakNqNUKuCtWLhlxlbaXnLa5gWEB1t6BHZAOF1IqSsVfTCjcmBAL5/U0GM9+pa9RcRktsLf2w33ni1c6NcJPRJDX6cykPMGzmPHVzRSyLqHbY9/by/XRvHZ0w0VNHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cv8cgt/U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49858C4CEF0;
-	Sun,  7 Sep 2025 20:18:23 +0000 (UTC)
+	 MIME-Version; b=h2RgiNuJ+VvApqMsZIoqw6N87vEZsjv22uVO+MfvdYAsMK1J3yOin7UlYXFJZBn/5idhS7H9UiDYqKBRxoacf+hubiOIdTVzhnF7ijHSlfhiFi8mGTzneU3uP175MmDUYkGmxzwtz70vtVlQSJaQpZmy4e7b9PtnRAzJp8CHEaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3vlQyfl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20DBC4CEF0;
+	Sun,  7 Sep 2025 20:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276303;
-	bh=Ytxi8mw+Z5oRAtU+WUW2vcqy2VSqDnSrGoOMz6gFIAg=;
+	s=korg; t=1757276125;
+	bh=DeJ6DsZ/JNnYKLyEqazkUNhJDhA6l9Zz0gEaxaKTpOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cv8cgt/UjCKUI9LbNMYGeLwc/9RrURC7P1QU2BcnOKUA6Z0H8i8mZuAvwE3sQ8r2a
-	 HoHrtn2+Utfr2YoAXsISWxGmJ/KwSpHOakq568Ef1V+Uno/y19GqqGWMZcQ8VkOJNw
-	 uY8Svwx6KeaQhtD4hceXlNhtymYGPrwrHP3Kh0eQ=
+	b=w3vlQyflOSgUtEzQ3D3Id8+vB3MYvsi0IDtbvAd1TT8fVvPMNtY7JgnNXhot6+OPo
+	 9+5g0CT5aLfFTx1goYr/o5whJ8vYeo7/chtC8EhA/nT+VF4n+97ADyGm4H9KtnaCRQ
+	 wdzrg1qM3OtrQ0yZfz/sGrwTP0lKf91Wq2NkzcQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/104] iio: light: opt3001: fix deadlock due to concurrent flag access
+	John Evans <evans1210144@gmail.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 35/64] scsi: lpfc: Fix buffer free/clear order in deferred receive path
 Date: Sun,  7 Sep 2025 21:58:17 +0200
-Message-ID: <20250907195609.238591305@linuxfoundation.org>
+Message-ID: <20250907195604.372985060@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: John Evans <evans1210144@gmail.com>
 
-[ Upstream commit f063a28002e3350088b4577c5640882bf4ea17ea ]
+commit 9dba9a45c348e8460da97c450cddf70b2056deb3 upstream.
 
-The threaded IRQ function in this driver is reading the flag twice: once to
-lock a mutex and once to unlock it. Even though the code setting the flag
-is designed to prevent it, there are subtle cases where the flag could be
-true at the mutex_lock stage and false at the mutex_unlock stage. This
-results in the mutex not being unlocked, resulting in a deadlock.
+Fix a use-after-free window by correcting the buffer release sequence in
+the deferred receive path. The code freed the RQ buffer first and only
+then cleared the context pointer under the lock. Concurrent paths (e.g.,
+ABTS and the repost path) also inspect and release the same pointer under
+the lock, so the old order could lead to double-free/UAF.
 
-Fix it by making the opt3001_irq() code generally more robust, reading the
-flag into a variable and using the variable value at both stages.
+Note that the repost path already uses the correct pattern: detach the
+pointer under the lock, then free it after dropping the lock. The
+deferred path should do the same.
 
-Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
+Fixes: 472e146d1cf3 ("scsi: lpfc: Correct upcalling nvmet_fc transport during io done downcall")
 Cc: stable@vger.kernel.org
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Link: https://patch.msgid.link/20250321-opt3001-irq-fix-v1-1-6c520d851562@bootlin.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John Evans <evans1210144@gmail.com>
+Link: https://lore.kernel.org/r/20250828044008.743-1-evans1210144@gmail.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/opt3001.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/scsi/lpfc/lpfc_nvmet.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/light/opt3001.c
-+++ b/drivers/iio/light/opt3001.c
-@@ -692,8 +692,9 @@ static irqreturn_t opt3001_irq(int irq,
- 	struct opt3001 *opt = iio_priv(iio);
- 	int ret;
- 	bool wake_result_ready_queue = false;
-+	bool ok_to_ignore_lock = opt->ok_to_ignore_lock;
+--- a/drivers/scsi/lpfc/lpfc_nvmet.c
++++ b/drivers/scsi/lpfc/lpfc_nvmet.c
+@@ -1244,7 +1244,7 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+ 	struct lpfc_nvmet_tgtport *tgtp;
+ 	struct lpfc_async_xchg_ctx *ctxp =
+ 		container_of(rsp, struct lpfc_async_xchg_ctx, hdlrctx.fcp_req);
+-	struct rqb_dmabuf *nvmebuf = ctxp->rqb_buffer;
++	struct rqb_dmabuf *nvmebuf;
+ 	struct lpfc_hba *phba = ctxp->phba;
+ 	unsigned long iflag;
  
--	if (!opt->ok_to_ignore_lock)
-+	if (!ok_to_ignore_lock)
- 		mutex_lock(&opt->lock);
+@@ -1252,13 +1252,18 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+ 	lpfc_nvmeio_data(phba, "NVMET DEFERRCV: xri x%x sz %d CPU %02x\n",
+ 			 ctxp->oxid, ctxp->size, raw_smp_processor_id());
  
- 	ret = i2c_smbus_read_word_swapped(opt->client, OPT3001_CONFIGURATION);
-@@ -730,7 +731,7 @@ static irqreturn_t opt3001_irq(int irq,
++	spin_lock_irqsave(&ctxp->ctxlock, iflag);
++	nvmebuf = ctxp->rqb_buffer;
+ 	if (!nvmebuf) {
++		spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ 		lpfc_printf_log(phba, KERN_INFO, LOG_NVME_IOERR,
+ 				"6425 Defer rcv: no buffer oxid x%x: "
+ 				"flg %x ste %x\n",
+ 				ctxp->oxid, ctxp->flag, ctxp->state);
+ 		return;
  	}
++	ctxp->rqb_buffer = NULL;
++	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
  
- out:
--	if (!opt->ok_to_ignore_lock)
-+	if (!ok_to_ignore_lock)
- 		mutex_unlock(&opt->lock);
+ 	tgtp = phba->targetport->private;
+ 	if (tgtp)
+@@ -1266,9 +1271,6 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
  
- 	if (wake_result_ready_queue)
+ 	/* Free the nvmebuf since a new buffer already replaced it */
+ 	nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
+-	spin_lock_irqsave(&ctxp->ctxlock, iflag);
+-	ctxp->rqb_buffer = NULL;
+-	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ }
+ 
+ /**
 
 
 
