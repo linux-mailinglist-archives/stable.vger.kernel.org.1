@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-178473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBEBEB47ED0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:29:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3425AB47EDB
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:29:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E24893C2266
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:29:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D82E917EC38
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15E12765C8;
-	Sun,  7 Sep 2025 20:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BC720E005;
+	Sun,  7 Sep 2025 20:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AN6aNeJu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7QLjXxP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4D626FA77;
-	Sun,  7 Sep 2025 20:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7485F189BB0;
+	Sun,  7 Sep 2025 20:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276947; cv=none; b=LWeGvrUEcyRdQrMi+BMPpUOEmf0HJM7HyVIwUW/9RiENzizj/PDbfaJWTX51wE+sU9eYwrh3rvN16z8fjx6sAAk9zr5douYjTn+4BFU7faUo+8fdfpsjKOTCXDR5Hkbq56w8zbhFqIij4xOCYnII+QeVQLwLPdYcj2wcwqO94Mg=
+	t=1757276982; cv=none; b=N6zkIyk9Wt6weF6QPsKNHpJHzqFOZ25D1XuWIaSUVIbQ5O0jSrt9TY+xh94jIeeGdhCimgLX+1LqA3Q3cz7Ypjh8Z/pW23aY7SLx/14JcyMQzdJt3roxOI+j1mGsSXB9qv8alHt4MJVYfUNE/MU0INIYzZV3ecNUJDviowdyHUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276947; c=relaxed/simple;
-	bh=nbrU8vYZVyTMWZjsAZiQuu3QbpSLBPwd9ICqWXLELhc=;
+	s=arc-20240116; t=1757276982; c=relaxed/simple;
+	bh=1jQhRe7rrwnRhEdL4PSG37YyzmtEImpzMCnxN2xk/XA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lLhOMpxXhjCkH7ckPvqgqW52MVIcUbJY6EC+rZFgH4f4M3j7GzSUcisv1K0K93T7UnJuOYADb2GEQGhvdtxoV4GjWJ5cWuymnwUhLnKcK0ffgC/DBjZ6iB8npEJ2eaqrbXkErJ6IYnsIAU7oqeE8FMzAtI55lRPkODpaFRGp18Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AN6aNeJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6F4C4CEF9;
-	Sun,  7 Sep 2025 20:29:06 +0000 (UTC)
+	 MIME-Version; b=ujlwbtO0ys2bIAwgub1UPQ+5/EMBsxk//481+Z0/7BYd2QZUi+AZIxwPZrAfNcSsm2taDzUjVcFN03P5UCo4vClDNHcjq0LFSMxBKWJLWGq85joP6GYA61qWvz+jeagQXs+bCKAAkjXaFJv8eSlX+Ip73Xez1DJ+uSH4+ESH1ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7QLjXxP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FABC4CEF0;
+	Sun,  7 Sep 2025 20:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276946;
-	bh=nbrU8vYZVyTMWZjsAZiQuu3QbpSLBPwd9ICqWXLELhc=;
+	s=korg; t=1757276982;
+	bh=1jQhRe7rrwnRhEdL4PSG37YyzmtEImpzMCnxN2xk/XA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AN6aNeJuObdHTmoCczhCclHPCgeUsyCJt+71DUKIaistrIvsjofeJXDdsZRIUp/ko
-	 TAqkoPzbEGroC+y12BnqrdaIu4wrwEWtZJZP6atH5U1rtg/5HKNtPCLNBEXbkhpZNc
-	 wyJMSCG1c6vPZWZM546BEhVXiygHMhs4lBlqhud8=
+	b=W7QLjXxPy9oPMEnao/vrucpZcaTelNt8GCsz90R1o6DE8c7i/dxYlCI8b4H/hVcqb
+	 0B8apoOA4t9vtTC+OspXm56Q4TCC/uqYxNStXJwWwGlBoVsmot7QXXvaKeQw5ZsA88
+	 Q7CLKug7euN2MAg8VGccxSs8MpPefPpGJhwYgjWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Alvin <alvin.paulp@amd.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
+	Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/175] mmc: sdhci-of-arasan: Support for emmc hardware reset
-Date: Sun,  7 Sep 2025 21:57:06 +0200
-Message-ID: <20250907195615.601620547@linuxfoundation.org>
+Subject: [PATCH 6.12 032/175] mmc: sdhci-of-arasan: Ensure CD logic stabilization before power-up
+Date: Sun,  7 Sep 2025 21:57:07 +0200
+Message-ID: <20250907195615.622160841@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
 References: <20250907195614.892725141@linuxfoundation.org>
@@ -67,67 +66,136 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paul Alvin <alvin.paulp@amd.com>
+From: Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>
 
-[ Upstream commit 11c7d665181c1879b0d5561102c3834ff14a5615 ]
+[ Upstream commit e251709aaddb3ee1e8ac1ed5e361a608a1cc92de ]
 
-Add hw_reset callback to support emmc hardware reset, this callback get
-called from the mmc core only when "cap-mmc-hw-reset" property is
-defined in the DT.
+During SD suspend/resume without a full card rescan (when using
+non-removable SD cards for rootfs), the SD card initialization may fail
+after resume. This occurs because, after a host controller reset, the
+card detect logic may take time to stabilize due to debounce logic.
+Without waiting for stabilization, the host may attempt powering up the
+card prematurely, leading to command timeouts during resume flow.
+Add sdhci_arasan_set_power_and_bus_voltage() to wait for the card detect
+stable bit before power up the card. Since the stabilization time
+is not fixed, a maximum timeout of one second is used to ensure
+sufficient wait time for the card detect signal to stabilize.
 
-Signed-off-by: Paul Alvin <alvin.paulp@amd.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20241007095445.19340-1-alvin.paulp@amd.com
+Signed-off-by: Sai Krishna Potthuri <sai.krishna.potthuri@amd.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250730060543.1735971-1-sai.krishna.potthuri@amd.com
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: e251709aaddb ("mmc: sdhci-of-arasan: Ensure CD logic stabilization before power-up")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-of-arasan.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/mmc/host/sdhci-of-arasan.c | 33 ++++++++++++++++++++++++++++--
+ 1 file changed, 31 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/mmc/host/sdhci-of-arasan.c b/drivers/mmc/host/sdhci-of-arasan.c
-index 5edd024347bd5..0cb05bdec34d5 100644
+index 0cb05bdec34d5..30daa2db80b19 100644
 --- a/drivers/mmc/host/sdhci-of-arasan.c
 +++ b/drivers/mmc/host/sdhci-of-arasan.c
-@@ -76,6 +76,8 @@
- #define FREQSEL_225M_200M		0x7
- #define PHY_DLL_TIMEOUT_MS		100
+@@ -99,6 +99,9 @@
+ #define HIWORD_UPDATE(val, mask, shift) \
+ 		((val) << (shift) | (mask) << ((shift) + 16))
  
-+#define SDHCI_HW_RST_EN		BIT(4)
++#define CD_STABLE_TIMEOUT_US		1000000
++#define CD_STABLE_MAX_SLEEP_US		10
 +
- /* Default settings for ZynqMP Clock Phases */
- #define ZYNQMP_ICLK_PHASE {0, 63, 63, 0, 63,  0,   0, 183, 54,  0, 0}
- #define ZYNQMP_OCLK_PHASE {0, 72, 60, 0, 60, 72, 135, 48, 72, 135, 0}
-@@ -475,6 +477,21 @@ static void sdhci_arasan_reset(struct sdhci_host *host, u8 mask)
- 	}
- }
- 
-+static void sdhci_arasan_hw_reset(struct sdhci_host *host)
-+{
-+	u8 reg;
-+
-+	reg = sdhci_readb(host, SDHCI_POWER_CONTROL);
-+	reg |= SDHCI_HW_RST_EN;
-+	sdhci_writeb(host, reg, SDHCI_POWER_CONTROL);
-+	/* As per eMMC spec, minimum 1us is required but give it 2us for good measure */
-+	usleep_range(2, 5);
-+	reg &= ~SDHCI_HW_RST_EN;
-+	sdhci_writeb(host, reg, SDHCI_POWER_CONTROL);
-+	/* As per eMMC spec, minimum 200us is required but give it 300us for good measure */
-+	usleep_range(300, 500);
-+}
-+
- static int sdhci_arasan_voltage_switch(struct mmc_host *mmc,
- 				       struct mmc_ios *ios)
- {
-@@ -505,6 +522,7 @@ static const struct sdhci_ops sdhci_arasan_ops = {
- 	.reset = sdhci_arasan_reset,
- 	.set_uhs_signaling = sdhci_set_uhs_signaling,
- 	.set_power = sdhci_set_power_and_bus_voltage,
-+	.hw_reset = sdhci_arasan_hw_reset,
+ /**
+  * struct sdhci_arasan_soc_ctl_field - Field used in sdhci_arasan_soc_ctl_map
+  *
+@@ -206,12 +209,15 @@ struct sdhci_arasan_data {
+  * 19MHz instead
+  */
+ #define SDHCI_ARASAN_QUIRK_CLOCK_25_BROKEN BIT(2)
++/* Enable CD stable check before power-up */
++#define SDHCI_ARASAN_QUIRK_ENSURE_CD_STABLE	BIT(3)
  };
  
- static u32 sdhci_arasan_cqhci_irq(struct sdhci_host *host, u32 intmask)
+ struct sdhci_arasan_of_data {
+ 	const struct sdhci_arasan_soc_ctl_map *soc_ctl_map;
+ 	const struct sdhci_pltfm_data *pdata;
+ 	const struct sdhci_arasan_clk_ops *clk_ops;
++	u32 quirks;
+ };
+ 
+ static const struct sdhci_arasan_soc_ctl_map rk3399_soc_ctl_map = {
+@@ -514,6 +520,24 @@ static int sdhci_arasan_voltage_switch(struct mmc_host *mmc,
+ 	return -EINVAL;
+ }
+ 
++static void sdhci_arasan_set_power_and_bus_voltage(struct sdhci_host *host, unsigned char mode,
++						   unsigned short vdd)
++{
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++	struct sdhci_arasan_data *sdhci_arasan = sdhci_pltfm_priv(pltfm_host);
++	u32 reg;
++
++	/*
++	 * Ensure that the card detect logic has stabilized before powering up, this is
++	 * necessary after a host controller reset.
++	 */
++	if (mode == MMC_POWER_UP && sdhci_arasan->quirks & SDHCI_ARASAN_QUIRK_ENSURE_CD_STABLE)
++		read_poll_timeout(sdhci_readl, reg, reg & SDHCI_CD_STABLE, CD_STABLE_MAX_SLEEP_US,
++				  CD_STABLE_TIMEOUT_US, false, host, SDHCI_PRESENT_STATE);
++
++	sdhci_set_power_and_bus_voltage(host, mode, vdd);
++}
++
+ static const struct sdhci_ops sdhci_arasan_ops = {
+ 	.set_clock = sdhci_arasan_set_clock,
+ 	.get_max_clock = sdhci_pltfm_clk_get_max_clock,
+@@ -521,7 +545,7 @@ static const struct sdhci_ops sdhci_arasan_ops = {
+ 	.set_bus_width = sdhci_set_bus_width,
+ 	.reset = sdhci_arasan_reset,
+ 	.set_uhs_signaling = sdhci_set_uhs_signaling,
+-	.set_power = sdhci_set_power_and_bus_voltage,
++	.set_power = sdhci_arasan_set_power_and_bus_voltage,
+ 	.hw_reset = sdhci_arasan_hw_reset,
+ };
+ 
+@@ -570,7 +594,7 @@ static const struct sdhci_ops sdhci_arasan_cqe_ops = {
+ 	.set_bus_width = sdhci_set_bus_width,
+ 	.reset = sdhci_arasan_reset,
+ 	.set_uhs_signaling = sdhci_set_uhs_signaling,
+-	.set_power = sdhci_set_power_and_bus_voltage,
++	.set_power = sdhci_arasan_set_power_and_bus_voltage,
+ 	.irq = sdhci_arasan_cqhci_irq,
+ };
+ 
+@@ -1447,6 +1471,7 @@ static const struct sdhci_arasan_clk_ops zynqmp_clk_ops = {
+ static struct sdhci_arasan_of_data sdhci_arasan_zynqmp_data = {
+ 	.pdata = &sdhci_arasan_zynqmp_pdata,
+ 	.clk_ops = &zynqmp_clk_ops,
++	.quirks = SDHCI_ARASAN_QUIRK_ENSURE_CD_STABLE,
+ };
+ 
+ static const struct sdhci_arasan_clk_ops versal_clk_ops = {
+@@ -1457,6 +1482,7 @@ static const struct sdhci_arasan_clk_ops versal_clk_ops = {
+ static struct sdhci_arasan_of_data sdhci_arasan_versal_data = {
+ 	.pdata = &sdhci_arasan_zynqmp_pdata,
+ 	.clk_ops = &versal_clk_ops,
++	.quirks = SDHCI_ARASAN_QUIRK_ENSURE_CD_STABLE,
+ };
+ 
+ static const struct sdhci_arasan_clk_ops versal_net_clk_ops = {
+@@ -1467,6 +1493,7 @@ static const struct sdhci_arasan_clk_ops versal_net_clk_ops = {
+ static struct sdhci_arasan_of_data sdhci_arasan_versal_net_data = {
+ 	.pdata = &sdhci_arasan_versal_net_pdata,
+ 	.clk_ops = &versal_net_clk_ops,
++	.quirks = SDHCI_ARASAN_QUIRK_ENSURE_CD_STABLE,
+ };
+ 
+ static struct sdhci_arasan_of_data intel_keembay_emmc_data = {
+@@ -1945,6 +1972,8 @@ static int sdhci_arasan_probe(struct platform_device *pdev)
+ 	if (of_device_is_compatible(np, "rockchip,rk3399-sdhci-5.1"))
+ 		sdhci_arasan_update_clockmultiplier(host, 0x0);
+ 
++	sdhci_arasan->quirks |= data->quirks;
++
+ 	if (of_device_is_compatible(np, "intel,keembay-sdhci-5.1-emmc") ||
+ 	    of_device_is_compatible(np, "intel,keembay-sdhci-5.1-sd") ||
+ 	    of_device_is_compatible(np, "intel,keembay-sdhci-5.1-sdio")) {
 -- 
 2.50.1
 
