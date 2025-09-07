@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-178559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D29B47F28
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B16BAB47DA4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85FCD7A087C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0760189E2F7
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C941FECCD;
-	Sun,  7 Sep 2025 20:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D3427F754;
+	Sun,  7 Sep 2025 20:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TC6A3FyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5d626op"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA50F1A0BFD;
-	Sun,  7 Sep 2025 20:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48841B424F;
+	Sun,  7 Sep 2025 20:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277223; cv=none; b=B4GIyBiMCLBmN4qhuR3jacUZivREyKDSRIOnnuhToPlUqJXY4qAwSwyaAHTzFyAmIWO29cLApcbzlfe3rmmIjyxh8s3t/5of0H3VSTzBy7G6E+xWCThN5/15vMPJvU2hJyyuPExFMmq/ygLiYc+K3rlNacttdRSXcrnqjdnkhBQ=
+	t=1757276075; cv=none; b=fnayT3YzO9WvBWTnTLOT6oiyfE4XJ83V+M41jrLr71SvzI1WUCNYD98KO0/rLzMYYJvfFuZSQTjM67TwS8+ktZY/d8V0CAK9G88vqYhbEBjMFdYwWSZdMKdYct0hhrlz8R7+VDZvF3nKpFI/4wIrRh6IPNGntCbQbtUoP0exqE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277223; c=relaxed/simple;
-	bh=wUSwxsLWlSsLw4XIgDVq+YuLUnkp/xkyTs7gLNF+BeY=;
+	s=arc-20240116; t=1757276075; c=relaxed/simple;
+	bh=LgePqHYOqcj4uIuWRNFc5iiilTRRyZbN1EstbVUgsdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GVRnSj/qMxk8A1TkvnS9rLT8Jl2KfpsRWfYFZiVjS+uevqq+QRmnZ09bpRBUCo6cipwH8OCfzeznI+3ZnyBFCQ4i2eWofcR3J7Ox4I7DU2Tix/GRBfqlNyswO59qrFO0B1YkzD+SSzjhpTk71pQH4uXizm0zSbYr09TX2gJFaKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TC6A3FyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A43AC4CEF0;
-	Sun,  7 Sep 2025 20:33:43 +0000 (UTC)
+	 MIME-Version; b=f4XdP8IRxLzkaA2EP+KtAjyvZmfkfPTsyNoa50GmaSXMwTwbC6mB9AV6adBqckQNV4NUhAvMNpDuOJ9ssfauMfngNwduguUeY4COFwDkI9r+No4PCJpb0wZ5bqqaqYbia2b6UlNX291X+Md7afTp/8zZ/2oOlBOA/p98s2YUj9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5d626op; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A358C4CEF0;
+	Sun,  7 Sep 2025 20:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277223;
-	bh=wUSwxsLWlSsLw4XIgDVq+YuLUnkp/xkyTs7gLNF+BeY=;
+	s=korg; t=1757276075;
+	bh=LgePqHYOqcj4uIuWRNFc5iiilTRRyZbN1EstbVUgsdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TC6A3FyZA3ZBc4Tpcr8tFkTq5ceBUX4hkUSqG4igVKPrE4CJ6xwrOMSg36JpvVIvR
-	 dBv4ET36mK6BZzZKdvJ0tdBST8obb9AhAJJpZFqxJus5Aez1lLJHk9Q+aWSwNq4Y9z
-	 JlLjm2aJTj/xW7KRm04S3R4lOl7JXDEPnKpkSKh4=
+	b=Z5d626oppujpLm+cT22+kZJYDJ1wYC2yd5bGKwDlG5h61aKYyY/MKg7Q0r98obj8Z
+	 err0bjWTS7Ixy68F5/TXDj2MLips3ITNP1H2tRf4VQfjep6B7DWqU6uI/MDo8/0wOK
+	 Gitjakx8bgBiGKmR1m0ioJGD5u3TpAEfko66AHBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	stable@kernel.org,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 122/175] microchip: lan865x: Fix LAN8651 autoloading
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 55/64] ALSA: hda/hdmi: Add pin fix for another HP EliteDesk 800 G4 model
 Date: Sun,  7 Sep 2025 21:58:37 +0200
-Message-ID: <20250907195617.744404176@linuxfoundation.org>
+Message-ID: <20250907195604.934480717@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit ca47c44d36a9ad3268d17f89789104a471c07f81 upstream.
+commit bcd6659d4911c528381531472a0cefbd4003e29e upstream.
 
-Add missing IDs for LAN8651 devices, which are also defined in the
-DT bindings.
+It was reported that HP EliteDesk 800 G4 DM 65W (SSID 103c:845a) needs
+the similar quirk for enabling HDMI outputs, too.  This patch adds the
+corresponding quirk entry.
 
-Fixes: 5cd2340cb6a3 ("microchip: lan865x: add driver support for Microchip's LAN865X MAC-PHY")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Cc: stable@kernel.org
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250827115341.34608-4-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250901115009.27498-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan865x/lan865x.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_hdmi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-index 9d94c8fb8b91..79b800d2b72c 100644
---- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
-+++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-@@ -425,12 +425,14 @@ static void lan865x_remove(struct spi_device *spi)
- 
- static const struct spi_device_id lan865x_ids[] = {
- 	{ .name = "lan8650" },
-+	{ .name = "lan8651" },
- 	{},
- };
- MODULE_DEVICE_TABLE(spi, lan865x_ids);
- 
- static const struct of_device_id lan865x_dt_ids[] = {
- 	{ .compatible = "microchip,lan8650" },
-+	{ .compatible = "microchip,lan8651" },
- 	{ /* Sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, lan865x_dt_ids);
--- 
-2.51.0
-
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1962,6 +1962,7 @@ static int hdmi_add_cvt(struct hda_codec
+ static const struct snd_pci_quirk force_connect_list[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x83e2, "HP EliteDesk 800 G4", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
++	SND_PCI_QUIRK(0x103c, 0x845a, "HP EliteDesk 800 G4 DM 65W", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x870f, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x8711, "HP", 1),
 
 
 
