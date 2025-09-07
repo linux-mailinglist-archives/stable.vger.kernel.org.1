@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-178261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77EDBB47DE7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BB8B47F07
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 336F73C0519
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1DF7A4E11C2
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88EA1D88D0;
-	Sun,  7 Sep 2025 20:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8581FECCD;
+	Sun,  7 Sep 2025 20:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1MhYUfTp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zAHVSA5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9569B14BFA2;
-	Sun,  7 Sep 2025 20:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C1915C158;
+	Sun,  7 Sep 2025 20:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276275; cv=none; b=PvODqiLZSed1sDbhw4W1EacSC79A31dR7m4+TxuAIu8Diy6mv4K39asAXWAIBefIyaBp0DEqCS+VFK07Rr/8Rg+m5IVhLYrudHr//dik9wOnND+bp9MPNvGXhzBeJFukMF5u8pf5aQke9c+Bje8jmOzf7GytpaTZQ3r9HoVjLc4=
+	t=1757277121; cv=none; b=YDtA22Qe0r/xtFSURIPNVsxLCI5uhsTmIlBGr0dVyNSe1h+6OUtn2WJPRIZwfXoPr03JnrFKfuFIxrcRT3FRoKktIeEHsrBtlZDwCr3IpyAp/eSuXYhdkRJ/DCmE/I/mRGV7UX9bEO6sGwZGyjpUI5HxMdYohrK/hVCPrVpPAww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276275; c=relaxed/simple;
-	bh=P0F6xxlV7Yoag49kvrpzB/O4vUVO1FX2s4ZvTjso9PI=;
+	s=arc-20240116; t=1757277121; c=relaxed/simple;
+	bh=gg8XX91kMUME/8/GF2V409B9Y2Bz3J1W3PshP5Ndzw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ClE9Us/BSa4J2d/v9UTw9EmyHZTJFKzr5jaMvvZKH+9LPdPGTMR/coBT48NvM6LPb8do/8tZjRoABeijM84/NwCPEK5hp3U2wzRZUDLtkRvxbOLVZeJcdC07Hdfmgal9Pk5GJ5HdzGMdADbEUX/ZYANFhy+UDBM0NnGYtVXbowE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1MhYUfTp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E67C4C4CEF0;
-	Sun,  7 Sep 2025 20:17:54 +0000 (UTC)
+	 MIME-Version; b=ifTEJbdGIP15itmfhSLB7MpByIl9q+Qa+s27dVnoEr0BTJlpcC2ccP4JqD5EEXXWtBBHeG7uEhrSO5zNcJqd+eQt7WQWy92pOC19Ri4q36ISFALzVZl4gq0sv1s8QsyZiQXmxMJoxmgnGFefpwlQ2QPnv/O5PEa04SzxLPJC9mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zAHVSA5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD141C4CEF0;
+	Sun,  7 Sep 2025 20:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276275;
-	bh=P0F6xxlV7Yoag49kvrpzB/O4vUVO1FX2s4ZvTjso9PI=;
+	s=korg; t=1757277121;
+	bh=gg8XX91kMUME/8/GF2V409B9Y2Bz3J1W3PshP5Ndzw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1MhYUfTp8MVCK2IXrB3rJBCi4iOAHJh2vW05bwupo6zfLyfXpTE3XZyWxEhWtlMQD
-	 FRiPCKIiPlHq9UjX9VBK3YoZxLlSGWcz4gdV9joCn+3E0Tpod+GCrwmsCAVezIKeKK
-	 aeEq4jmot0/iCv3kcRj+or5f3lMWTH/smMPqyfrE=
+	b=0zAHVSA5nOHIIqu8yR3kQpE6g95GoeJZYCMXIz3vURi3X2bCEqo/zQRxGHcKmBxoj
+	 u0KQvhThQ6dTp2NkV9pn1T3gCltnyHleBJczo/zR5mOl46LKW2A/ADyM2Wz82eQAiv
+	 ri9s6CN2sEUTBaOAfujkCAW29tMwTwVxYsDK87Lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Makar Semyonov <m.semenov@tssltd.ru>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 051/104] cifs: prevent NULL pointer dereference in UTF16 conversion
+	Miaoqian Lin <linmq006@gmail.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 093/175] ACPI/IORT: Fix memory leak in iort_rmr_alloc_sids()
 Date: Sun,  7 Sep 2025 21:58:08 +0200
-Message-ID: <20250907195609.012822604@linuxfoundation.org>
+Message-ID: <20250907195617.044013405@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Makar Semyonov <m.semenov@tssltd.ru>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 70bccd9855dae56942f2b18a08ba137bb54093a0 upstream.
+commit f3ef7110924b897f4b79db9f7ac75d319ec09c4a upstream.
 
-There can be a NULL pointer dereference bug here. NULL is passed to
-__cifs_sfu_make_node without checks, which passes it unchecked to
-cifs_strndup_to_utf16, which in turn passes it to
-cifs_local_to_utf16_bytes where '*from' is dereferenced, causing a crash.
+If krealloc_array() fails in iort_rmr_alloc_sids(), the function returns
+NULL but does not free the original 'sids' allocation. This results in a
+memory leak since the caller overwrites the original pointer with the
+NULL return value.
 
-This patch adds a check for NULL 'src' in cifs_strndup_to_utf16 and
-returns NULL early to prevent dereferencing NULL pointer.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE
-
-Signed-off-by: Makar Semyonov <m.semenov@tssltd.ru>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 491cf4a6735a ("ACPI/IORT: Add support to retrieve IORT RMR reserved regions")
+Cc: <stable@vger.kernel.org> # 6.0.x
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://lore.kernel.org/r/20250828112243.61460-1-linmq006@gmail.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_unicode.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/acpi/arm64/iort.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/cifs_unicode.c
-+++ b/fs/smb/client/cifs_unicode.c
-@@ -619,6 +619,9 @@ cifs_strndup_to_utf16(const char *src, c
- 	int len;
- 	__le16 *dst;
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -937,8 +937,10 @@ static u32 *iort_rmr_alloc_sids(u32 *sid
  
-+	if (!src)
-+		return NULL;
-+
- 	len = cifs_local_to_utf16_bytes(src, maxlen, cp);
- 	len += 2; /* NULL */
- 	dst = kmalloc(len, GFP_KERNEL);
+ 	new_sids = krealloc_array(sids, count + new_count,
+ 				  sizeof(*new_sids), GFP_KERNEL);
+-	if (!new_sids)
++	if (!new_sids) {
++		kfree(sids);
+ 		return NULL;
++	}
+ 
+ 	for (i = count; i < total_count; i++)
+ 		new_sids[i] = id_start++;
 
 
 
