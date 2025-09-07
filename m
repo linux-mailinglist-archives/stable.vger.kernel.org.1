@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47AFAB47FEC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:44:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4976B47F5B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 096D6200A91
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:44:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 065F8165A9F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1FC22D9E9;
-	Sun,  7 Sep 2025 20:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EAD1F63CD;
+	Sun,  7 Sep 2025 20:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfR00+TG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSlqjKOZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981EE4315A;
-	Sun,  7 Sep 2025 20:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942531A704B;
+	Sun,  7 Sep 2025 20:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277845; cv=none; b=sjLBgKjPzGMm4X0cnVAH8H3k7j0QYG/qa0CJtRhChK/U6Pn/IT/ER2/I19s/Xp7e0dr21olEP5hnRIts0SBXRBU5kHKbzh1g/lT8Qxf2VdueNn7Rwu1vFkgEdZGyY8lYflvz6ymf3SzC4fFx+Dm3JA3xi2UH3glVR7mRHJ+AMzk=
+	t=1757277388; cv=none; b=MhA4IHfBP43K6vwVQPtWeoFHCq3WGTMv0xkdhht5F922cJu7nieKY7Rh5y8G0Iq2Woc+TybPH+2S2GSg3Zr8a7Rrqm+C/iSVA7M/EMF1F8fWBwk6eCJbaS+42jkewgiTf0ymR719WEb5qRsk+PxHp32pCP/RoCyqitjFlOrlwHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277845; c=relaxed/simple;
-	bh=zKGgEzDSpgAepktmDH/Ewky7Rr4u748ux61qteQRMZQ=;
+	s=arc-20240116; t=1757277388; c=relaxed/simple;
+	bh=QczqCFI7TaiH+TwSnQ4qnzU/xS5r1rRJOYIuTdpomtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rcAw/7xR/3RI5IzMAL/oByHX3xu7LcLeSzTsPzPY28Y4qFber0uWrRv8HxMukCpcFQXd4Hu5A2zWFu19C23gtb9YNQZ+H9CuKxhZ0XFRhNrsFMG5jBa8xufLpjLCKpzyzkVE7B4RmrIujnvhOfLb8N3umChUSRPfRlHfhEBAEmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfR00+TG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087EAC4CEF0;
-	Sun,  7 Sep 2025 20:44:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X5BTl5tsNDOvgODatU8CKezM2B/yTn53lfdDSz1FgJHBSqz9y3NNyw30SrwB3xg0urrXYmfklvJLDjj7Rzd22cFbcE6ZsMYCjAdPs/zYw62c3pIUL+UrKs8vXiBHP3nmBg1Sgwwa9+9hadhI7H+pDKF0vG8AIzaFsGUXkDrk/w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSlqjKOZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F36C4CEF0;
+	Sun,  7 Sep 2025 20:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277845;
-	bh=zKGgEzDSpgAepktmDH/Ewky7Rr4u748ux61qteQRMZQ=;
+	s=korg; t=1757277388;
+	bh=QczqCFI7TaiH+TwSnQ4qnzU/xS5r1rRJOYIuTdpomtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bfR00+TGjvGr/3qjcTGvBmIbsTadl4ZTU6WoU2dU9M9oPfrsV5ERkaI/pZVspDS1G
-	 C4Flj2ZT2T9+8ksrn+5NAvPFOdg7bTU9lJUS3BlyYA2JHQuHzr68/5gkUUKD4QbiOA
-	 IkYGTn4MDuatmpR+J8vKkfuSOgoDLq0vOOBURinc=
+	b=fSlqjKOZ43VqP43aD81ljoJ3wFZ9XI36k3k9twAxWwizhTypodBngGt0IjgcgxPj2
+	 sBLWQHgJp7JnWsHMr262dS2cKpIAfu9vfSkTHfLUajuAWkcxNSWsyyfSUn0Q+ACQP7
+	 VQatuakIhwfHAnzpLwAKq/6jszB87sUDfu2uguV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	stable@kernel.org,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.16 141/183] microchip: lan865x: Fix LAN8651 autoloading
+	=?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>,
+	Pu Lehui <pulehui@huawei.com>,
+	Paul Walmsley <pjw@kernel.org>
+Subject: [PATCH 6.12 173/175] riscv, bpf: use lw when reading int cpu in bpf_get_smp_processor_id
 Date: Sun,  7 Sep 2025 21:59:28 +0200
-Message-ID: <20250907195619.146288720@linuxfoundation.org>
+Message-ID: <20250907195618.954558732@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Radim Krčmář <rkrcmar@ventanamicro.com>
 
-commit ca47c44d36a9ad3268d17f89789104a471c07f81 upstream.
+commit 8a16586fa7b8a01360890d284896b90c217dca44 upstream.
 
-Add missing IDs for LAN8651 devices, which are also defined in the
-DT bindings.
+emit_ld is wrong, because thread_info.cpu is 32-bit, not xlen-bit wide.
+The struct currently has a hole after cpu, so little endian accesses
+seemed fine.
 
-Fixes: 5cd2340cb6a3 ("microchip: lan865x: add driver support for Microchip's LAN865X MAC-PHY")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Cc: stable@kernel.org
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250827115341.34608-4-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2ddec2c80b44 ("riscv, bpf: inline bpf_get_smp_processor_id()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Radim Krčmář <rkrcmar@ventanamicro.com>
+Reviewed-by: Pu Lehui <pulehui@huawei.com>
+Link: https://lore.kernel.org/r/20250812090256.757273-4-rkrcmar@ventanamicro.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan865x/lan865x.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/riscv/net/bpf_jit_comp64.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
-+++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-@@ -425,12 +425,14 @@ static void lan865x_remove(struct spi_de
- 
- static const struct spi_device_id lan865x_ids[] = {
- 	{ .name = "lan8650" },
-+	{ .name = "lan8651" },
- 	{},
- };
- MODULE_DEVICE_TABLE(spi, lan865x_ids);
- 
- static const struct of_device_id lan865x_dt_ids[] = {
- 	{ .compatible = "microchip,lan8650" },
-+	{ .compatible = "microchip,lan8651" },
- 	{ /* Sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, lan865x_dt_ids);
+--- a/arch/riscv/net/bpf_jit_comp64.c
++++ b/arch/riscv/net/bpf_jit_comp64.c
+@@ -1557,7 +1557,7 @@ int bpf_jit_emit_insn(const struct bpf_i
+ 		 */
+ 		if (insn->src_reg == 0 && insn->imm == BPF_FUNC_get_smp_processor_id) {
+ 			/* Load current CPU number in R0 */
+-			emit_ld(bpf_to_rv_reg(BPF_REG_0, ctx), offsetof(struct thread_info, cpu),
++			emit_lw(bpf_to_rv_reg(BPF_REG_0, ctx), offsetof(struct thread_info, cpu),
+ 				RV_REG_TP, ctx);
+ 			break;
+ 		}
 
 
 
