@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A44FFB47F6E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:37:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E45D8B47DBF
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5343B7A7743
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:35:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 794FA3BA114
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E0C1F63CD;
-	Sun,  7 Sep 2025 20:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291581B424F;
+	Sun,  7 Sep 2025 20:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1LYne2A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bXWB4bz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767454315A;
-	Sun,  7 Sep 2025 20:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1AC14BFA2;
+	Sun,  7 Sep 2025 20:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277446; cv=none; b=LiaAllIejwFtbj1PC5gJZJTc4/XLDQW1X/QZ9OxILRQA0kdaaA70klBHUd3naW5RhWZYiuK96NxmEf+442vqwZVemtNJJgOZR1sKS+2V32+el2Spa7wklS2NtD7vj+9bIbh7PR9uuzVRybSBARIYrxqPVGBy3s6xlIX0mn2ONYo=
+	t=1757276159; cv=none; b=n2G2LXtrnx9PONAlLmq+M/biP1BJmaiICwPdVI2X3StMz8Y+hnSeF49vGpvprJSPkA46NQ4J5OpGnZzQYix3doEMvtRUVRH0MVuC/rKX6LOF5uCgqOMy932GFA9Vt4S0rIHl7SYpVXc2PEDypMaa+eDr83zbas7E6Y1HOpMoedo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277446; c=relaxed/simple;
-	bh=+Cxg2ypJ6HtB+Y7RLO9oM/TgHcp0grnuPQZ6vOFpdWk=;
+	s=arc-20240116; t=1757276159; c=relaxed/simple;
+	bh=Jvr/QMrh03N2p3R5FOu7NYDAozbX6Dx2ntneFMG1AGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lEDnsBDYlX9njgxyKEWWH4hw6Z/uIidU3W8SkuanSU2eJKjIL/aROcsFCbqC6oM742CSgJV1N2Or8OINBSeaRwKR5JnaEMt97c59Qn58y0MxkjD0IN33HWmmcTigbdlDg4YPQhyETqtqhW/pBdz09TclraCfBCKNpKshD2zfZOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1LYne2A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F926C4CEF0;
-	Sun,  7 Sep 2025 20:37:25 +0000 (UTC)
+	 MIME-Version; b=qjeadfOXyVwhr2asytTtYez5RpgdzHNTEhBctiVDsV+1XsrKLhCw6e5DA7ma9lQ0fdMUOEccLYjOzWkYIU6C/6dzIAnWMdKcZmv1MzCY9+/0Caqnapqm9t2WzcZg/rKtiMGTa/AUeUtqtX0KXM7XZKTP5mvljv3VmuTJCt939Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bXWB4bz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A67EC4CEF0;
+	Sun,  7 Sep 2025 20:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277445;
-	bh=+Cxg2ypJ6HtB+Y7RLO9oM/TgHcp0grnuPQZ6vOFpdWk=;
+	s=korg; t=1757276159;
+	bh=Jvr/QMrh03N2p3R5FOu7NYDAozbX6Dx2ntneFMG1AGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L1LYne2AVuVZ2aUx5R8ZZOR3mdg/vAmg6Ucjf9QpOlyLBTkKOzIv/5PtYFWRaD1kH
-	 CSnK0g3aLZKCBLVOYwOSvtGDcFmnlz6lJheoA7KMdy0yM78/CHaNQ6GA7nyZNUe5rr
-	 N3D/hvKlgN780ghJVC3elpzk+cAxShz1yxg8bGx0=
+	b=0bXWB4bzcHE6zZDDm1JtOMhNDVGLb1X8buOvwQNVgkVIB6WANtLun4zTVNEi/t0/Z
+	 u22JQWGwnC7GsIiq6Fr/oNmZKx610oTo+qwpLWgCRl88mwhAitsbtrLQhx/RBOx3cf
+	 0bofHijDQ4YlNSOBHinYklcRpmKEfDzXvOUAUNHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiufei Xue <jiufei.xue@samsung.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Lubomir Rintel <lkundrak@v3.sk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 018/183] fs: writeback: fix use-after-free in __mark_inode_dirty()
+Subject: [PATCH 6.1 008/104] cdc_ncm: Flag Intel OEM version of Fibocom L850-GL as WWAN
 Date: Sun,  7 Sep 2025 21:57:25 +0200
-Message-ID: <20250907195616.218324465@linuxfoundation.org>
+Message-ID: <20250907195607.888965757@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiufei Xue <jiufei.xue@samsung.com>
+From: Lubomir Rintel <lkundrak@v3.sk>
 
-[ Upstream commit d02d2c98d25793902f65803ab853b592c7a96b29 ]
+[ Upstream commit 4a73a36cb704813f588af13d9842d0ba5a185758 ]
 
-An use-after-free issue occurred when __mark_inode_dirty() get the
-bdi_writeback that was in the progress of switching.
+This lets NetworkManager/ModemManager know that this is a modem and
+needs to be connected first.
 
-CPU: 1 PID: 562 Comm: systemd-random- Not tainted 6.6.56-gb4403bd46a8e #1
-......
-pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : __mark_inode_dirty+0x124/0x418
-lr : __mark_inode_dirty+0x118/0x418
-sp : ffffffc08c9dbbc0
-........
-Call trace:
- __mark_inode_dirty+0x124/0x418
- generic_update_time+0x4c/0x60
- file_modified+0xcc/0xd0
- ext4_buffered_write_iter+0x58/0x124
- ext4_file_write_iter+0x54/0x704
- vfs_write+0x1c0/0x308
- ksys_write+0x74/0x10c
- __arm64_sys_write+0x1c/0x28
- invoke_syscall+0x48/0x114
- el0_svc_common.constprop.0+0xc0/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x40/0xe4
- el0t_64_sync_handler+0x120/0x12c
- el0t_64_sync+0x194/0x198
-
-Root cause is:
-
-systemd-random-seed                         kworker
-----------------------------------------------------------------------
-___mark_inode_dirty                     inode_switch_wbs_work_fn
-
-  spin_lock(&inode->i_lock);
-  inode_attach_wb
-  locked_inode_to_wb_and_lock_list
-     get inode->i_wb
-     spin_unlock(&inode->i_lock);
-     spin_lock(&wb->list_lock)
-  spin_lock(&inode->i_lock)
-  inode_io_list_move_locked
-  spin_unlock(&wb->list_lock)
-  spin_unlock(&inode->i_lock)
-                                    spin_lock(&old_wb->list_lock)
-                                      inode_do_switch_wbs
-                                        spin_lock(&inode->i_lock)
-                                        inode->i_wb = new_wb
-                                        spin_unlock(&inode->i_lock)
-                                    spin_unlock(&old_wb->list_lock)
-                                    wb_put_many(old_wb, nr_switched)
-                                      cgwb_release
-                                      old wb released
-  wb_wakeup_delayed() accesses wb,
-  then trigger the use-after-free
-  issue
-
-Fix this race condition by holding inode spinlock until
-wb_wakeup_delayed() finished.
-
-Signed-off-by: Jiufei Xue <jiufei.xue@samsung.com>
-Link: https://lore.kernel.org/20250728100715.3863241-1-jiufei.xue@samsung.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Lubomir Rintel <lkundrak@v3.sk>
+Link: https://patch.msgid.link/20250814154214.250103-1-lkundrak@v3.sk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fs-writeback.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/usb/cdc_ncm.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index cc57367fb641d..a07b8cf73ae27 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2608,10 +2608,6 @@ void __mark_inode_dirty(struct inode *inode, int flags)
- 			wakeup_bdi = inode_io_list_move_locked(inode, wb,
- 							       dirty_list);
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index 9eb3c6b66a38b..c3b1e9af922b1 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -2042,6 +2042,13 @@ static const struct usb_device_id cdc_devs[] = {
+ 	  .driver_info = (unsigned long)&wwan_info,
+ 	},
  
--			spin_unlock(&wb->list_lock);
--			spin_unlock(&inode->i_lock);
--			trace_writeback_dirty_inode_enqueue(inode);
--
- 			/*
- 			 * If this is the first dirty inode for this bdi,
- 			 * we have to wake-up the corresponding bdi thread
-@@ -2621,6 +2617,11 @@ void __mark_inode_dirty(struct inode *inode, int flags)
- 			if (wakeup_bdi &&
- 			    (wb->bdi->capabilities & BDI_CAP_WRITEBACK))
- 				wb_wakeup_delayed(wb);
++	/* Intel modem (label from OEM reads Fibocom L850-GL) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x8087, 0x095a,
++		USB_CLASS_COMM,
++		USB_CDC_SUBCLASS_NCM, USB_CDC_PROTO_NONE),
++	  .driver_info = (unsigned long)&wwan_info,
++	},
 +
-+			spin_unlock(&wb->list_lock);
-+			spin_unlock(&inode->i_lock);
-+			trace_writeback_dirty_inode_enqueue(inode);
-+
- 			return;
- 		}
- 	}
+ 	/* DisplayLink docking stations */
+ 	{ .match_flags = USB_DEVICE_ID_MATCH_INT_INFO
+ 		| USB_DEVICE_ID_MATCH_VENDOR,
 -- 
 2.50.1
 
