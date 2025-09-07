@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75512B47DDB
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6DFB47D6F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:11:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 433757AFBCE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99374189C8EC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93EA1D88D0;
-	Sun,  7 Sep 2025 20:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE23D27F754;
+	Sun,  7 Sep 2025 20:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/Dyc3cL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cM+38jnR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D131B424F;
-	Sun,  7 Sep 2025 20:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D381CDFAC;
+	Sun,  7 Sep 2025 20:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276234; cv=none; b=e6S5jqNeJ/G96Ie8ScIRptBA0Qbp2tpmFUcfsvYRXtX50T5H5f/Cb83cYBsjhQxvvEn5ssU90ypk51AWfmbGvyIu8I/B/Nc3vi40gQq/f1KBuaCFltg45JEqEtcO9H/074teP9UIyqZLFXdBtL15o4igLluT9JQlvlSrr+N4pCE=
+	t=1757275911; cv=none; b=kyMmqenmK8kZscK1mfq5J7X9ldotKE9EM9yTwRttjamTN4+cIb1OE2Qw6bbpkFwYVYfxDOs3Xhslt/t4UfxDzdJ0Ap2ccolXSqYgjfLz0OmejElwsNEh2UV1vNEI8atnGOGr4WZJHyhFvxhvo2Tc16ECRq+DHN3Qacrs7kWqPkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276234; c=relaxed/simple;
-	bh=cU2p20Aan+N9w2VVWtscWfK6M6Re1PhMOVPOKVzRxEQ=;
+	s=arc-20240116; t=1757275911; c=relaxed/simple;
+	bh=aK1Ql1f3WVf46bjoObd2Yj2u28Ylyn/QyV2H/n+JYw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HGzKosjU6m7Myt/3Utd7dxsRQ+gNnuDohgeB3ly7g3vuKJ/kazpwMeA3mzb97WUXJa3HSZrGzmlT7nz2L8qr8CSPdiZvCjEwQLCUrwuSTNGir6kKfjhFcNJCIoD8IsZsIdWshfYylk5IFOJUnUQ4ZXppv/Ac9aHLKWbf1VFfgX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/Dyc3cL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 024F4C4CEF0;
-	Sun,  7 Sep 2025 20:17:13 +0000 (UTC)
+	 MIME-Version; b=fuICc7FJ1jeMv7rwLqdDH4zUOO6/3k6jHIGUlKM/wHWFKBiLwT8eDjXnTTexwKuJAXb616QcP2YJ6Ij/wOlT5vkV/5GHKtZcZd+YgTo8RVgS4PIwjF4JchiFh7fLq9rdlUdtpFZXRyygpjFMMjioUO73HQhW3fJNenTC3Cn1xjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cM+38jnR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06875C4CEF0;
+	Sun,  7 Sep 2025 20:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276234;
-	bh=cU2p20Aan+N9w2VVWtscWfK6M6Re1PhMOVPOKVzRxEQ=;
+	s=korg; t=1757275911;
+	bh=aK1Ql1f3WVf46bjoObd2Yj2u28Ylyn/QyV2H/n+JYw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R/Dyc3cLra7bD4+nAqLO+0aRmdk9mbaA93cHUzX0aLnBHt5JuLnzOYKTPASfdLvIY
-	 lRa3oyUBWp3TZqiw8OxHU1ucCikUPyyuxxt0cE9OaZaxVq5KBZyO13PUEeVxP6a+IP
-	 3pb8//pMqtlwxpaZZyISW2OeJn/QdUaXmjPcGzkw=
+	b=cM+38jnRLr8JJiTiXp82WyAS4aZSg7KVfYokwb1E5TENYjTDxDNRWK4v03YpCRxnG
+	 HkIUgXeb4DU9fj/kNp7Jv1k3jvn4L+1+BSR0nN8dGHGkKWI2x0hupXaMlH2UGyw7Of
+	 grfW4AB2xFwWF+ukq9ZzoofWVThGSDcrCZYK6Ofo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guoli An <anguoli@uniontech.com>,
-	Cryolitia PukNgae <cryolitia@uniontech.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 040/104] ALSA: usb-audio: Add mute TLV for playback volumes on some devices
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 11/45] wifi: libertas: cap SSID len in lbs_associate()
 Date: Sun,  7 Sep 2025 21:57:57 +0200
-Message-ID: <20250907195608.736005929@linuxfoundation.org>
+Message-ID: <20250907195601.289040343@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cryolitia PukNgae <cryolitia@uniontech.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 9c6182843b0d02ca04cc1d946954a65a2286c7db upstream.
+[ Upstream commit c786794bd27b0d7a5fd9063695df83206009be59 ]
 
-Applying the quirk of that, the lowest Playback mixer volume setting
-mutes the audio output, on more devices.
+If the ssid_eid[1] length is more that 32 it leads to memory corruption.
 
-Link: https://gitlab.freedesktop.org/pipewire/pipewire/-/merge_requests/2514
-Cc: <stable@vger.kernel.org>
-Tested-by: Guoli An <anguoli@uniontech.com>
-Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
-Link: https://patch.msgid.link/20250822-mixer-quirk-v1-1-b19252239c1c@uniontech.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/2a40f5ec7617144aef412034c12919a4927d90ad.1756456951.git.dan.carpenter@linaro.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/marvell/libertas/cfg.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -3631,9 +3631,11 @@ void snd_usb_mixer_fu_apply_quirk(struct
- 			snd_dragonfly_quirk_db_scale(mixer, cval, kctl);
- 		break;
- 	/* lowest playback value is muted on some devices */
-+	case USB_ID(0x0572, 0x1b09): /* Conexant Systems (Rockwell), Inc. */
- 	case USB_ID(0x0d8c, 0x000c): /* C-Media */
- 	case USB_ID(0x0d8c, 0x0014): /* C-Media */
- 	case USB_ID(0x19f7, 0x0003): /* RODE NT-USB */
-+	case USB_ID(0x2d99, 0x0026): /* HECATE G2 GAMING HEADSET */
- 		if (strstr(kctl->id.name, "Playback"))
- 			cval->min_mute = 1;
- 		break;
+diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
+index 4e3de684928bf..a659054c1bcd9 100644
+--- a/drivers/net/wireless/marvell/libertas/cfg.c
++++ b/drivers/net/wireless/marvell/libertas/cfg.c
+@@ -1102,10 +1102,13 @@ static int lbs_associate(struct lbs_private *priv,
+ 	/* add SSID TLV */
+ 	rcu_read_lock();
+ 	ssid_eid = ieee80211_bss_get_ie(bss, WLAN_EID_SSID);
+-	if (ssid_eid)
+-		pos += lbs_add_ssid_tlv(pos, ssid_eid + 2, ssid_eid[1]);
+-	else
++	if (ssid_eid) {
++		u32 ssid_len = min(ssid_eid[1], IEEE80211_MAX_SSID_LEN);
++
++		pos += lbs_add_ssid_tlv(pos, ssid_eid + 2, ssid_len);
++	} else {
+ 		lbs_deb_assoc("no SSID\n");
++	}
+ 	rcu_read_unlock();
+ 
+ 	/* add DS param TLV */
+-- 
+2.50.1
+
 
 
 
