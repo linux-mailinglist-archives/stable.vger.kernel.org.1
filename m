@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-178130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3BFAB47D5F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:11:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D32B47F13
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64CD27AFE5D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F7A717EFB4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80E829A32D;
-	Sun,  7 Sep 2025 20:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D73C1FECCD;
+	Sun,  7 Sep 2025 20:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPAJMHp6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpk7ciXT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D281CDFAC;
-	Sun,  7 Sep 2025 20:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FFB15C158;
+	Sun,  7 Sep 2025 20:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275860; cv=none; b=UTLHSI9HHLqJQ3KPDZUjDFnineJTeLKFr+ZFaLou/vkOYBJfjVOyFz1xi6JR8vL2To8+0JpnlM7F1VOHefa5MuJhlNw3Agd9DoQIeEdN4c1dnlkiomrrmHUOOtaW5DkrKyKzwmuv2PPpGndNg8FCiC/QnoSL4yPFbn/vXhSqwAM=
+	t=1757277160; cv=none; b=MoGFB6FFITc9dA3+d7xAAvMyDnFq1OuCJZSRQmXCUeW9aMtgVgtm3FGRareNl/ehZbDzO1AhA/2XPeNza5f3jfpUFEKp2q4woQaS+yw4eqUXLnTCQJ9QEbYB+ZpBmBZPDn+7FyfUGHAdBcO+zok2ESLpPcYf2/7fLC8qC9FV45o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275860; c=relaxed/simple;
-	bh=jtigppWEtTMecOzkK6zh+1GjI1cqLZqkJ2fbXWihWuE=;
+	s=arc-20240116; t=1757277160; c=relaxed/simple;
+	bh=14Kd7xQisqnWiQTD0ho6LyY1iqXyoR/pYsk4lQBvSQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=or3wQb+YO0YEyn1vP+iR3KS4zKDNQkYHfnNMdPyf4uMnIy+eMRmNiW3c45TnxQ64QR08hc504ebZtY2iD/RUDIYDJPs/czIS8VfAl4jpUBX6rXnpNh3rkxARTUNR4Dtx81qQjUemqXrMkdUJgFtOmp4luXQhd34Hu+xLZ4ew3uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPAJMHp6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16BEC4CEF0;
-	Sun,  7 Sep 2025 20:10:59 +0000 (UTC)
+	 MIME-Version; b=KghRoDJuB3E/LF11lMAOelXmR1r1z4COV4xn8HmVSNh9xcwMZF9V0G2kKDVk9KUN8CQSajj6lN19uk4nd6uavh8B9ZrqKHyOdHANNLp6y610VQnicQIcqQ+OsT4f01nGDoEyRopv1Nt5SKarCkBfd52CzYwlIEpfeK3weReMKE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpk7ciXT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C12AC4CEF0;
+	Sun,  7 Sep 2025 20:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275860;
-	bh=jtigppWEtTMecOzkK6zh+1GjI1cqLZqkJ2fbXWihWuE=;
+	s=korg; t=1757277159;
+	bh=14Kd7xQisqnWiQTD0ho6LyY1iqXyoR/pYsk4lQBvSQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bPAJMHp6+jV/M3LQH23+uqUskmJXuq2E8IkkkI3SsYP/ezp6RQJqFq1DXe1h/GgFz
-	 V9yX7LkeX8oP8FOurFUm1Ff18sDDsKLTtWuctKrwIUdsztCIABOw8NjPw/S3Y8YDNm
-	 pFPQukkUqfyMuuOTxF0Nsh5jlpkCJYDKFgO4nC+U=
+	b=lpk7ciXTRARaQw6kc6qKeS+402cqMfHjhQXkRjpmPxvKVYRTAiASKrXVFxy1rzHYX
+	 5EjN14N/Ri4rIzr88JYowk871qII0dGRr5cQMaXn9fm4o5zjm22nL+8ZeWtY+roaI0
+	 jJhu2qBJkrG4ijBU6PGDrPwqFB2BUFTvGPEQOopY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 33/45] dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()
+	Edward Adam Davis <eadavis@qq.com>,
+	syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com,
+	Mark Tinguely <mark.tinguely@oracle.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 104/175] ocfs2: prevent release journal inode after journal shutdown
 Date: Sun,  7 Sep 2025 21:58:19 +0200
-Message-ID: <20250907195601.945384670@linuxfoundation.org>
+Message-ID: <20250907195617.311674803@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +67,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 157ae5ffd76a2857ccb4b7ce40bc5a344ca00395 ]
+commit f46e8ef8bb7b452584f2e75337b619ac51a7cadf upstream.
 
-Fix a potential deadlock bug. Observe that in the mtk-cqdma.c
-file, functions like mtk_cqdma_issue_pending() and
-mtk_cqdma_free_active_desc() properly acquire the pc lock before the vc
-lock when handling pc and vc fields. However, mtk_cqdma_tx_status()
-violates this order by first acquiring the vc lock before invoking
-mtk_cqdma_find_active_desc(), which subsequently takes the pc lock. This
-reversed locking sequence (vc → pc) contradicts the established
-pc → vc order and creates deadlock risks.
+Before calling ocfs2_delete_osb(), ocfs2_journal_shutdown() has already
+been executed in ocfs2_dismount_volume(), so osb->journal must be NULL.
+Therefore, the following calltrace will inevitably fail when it reaches
+jbd2_journal_release_jbd_inode().
 
-Fix the issue by moving the vc lock acquisition code from
-mtk_cqdma_find_active_desc() to mtk_cqdma_tx_status(). Ensure the pc lock
-is acquired before the vc lock in the calling function to maintain correct
-locking hierarchy. Note that since mtk_cqdma_find_active_desc() is a
-static function with only one caller (mtk_cqdma_tx_status()), this
-modification safely eliminates the deadlock possibility without affecting
-other components.
+ocfs2_dismount_volume()->
+  ocfs2_delete_osb()->
+    ocfs2_free_slot_info()->
+      __ocfs2_free_slot_info()->
+        evict()->
+          ocfs2_evict_inode()->
+            ocfs2_clear_inode()->
+	      jbd2_journal_release_jbd_inode(osb->journal->j_journal,
 
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs to extract
-function pairs that can be concurrently executed, and then analyzes the
-instructions in the paired functions to identify possible concurrency bugs
-including deadlocks, data races and atomicity violations.
+Adding osb->journal checks will prevent null-ptr-deref during the above
+execution path.
 
-Fixes: b1f01e48df5a ("dmaengine: mediatek: Add MediaTek Command-Queue DMA controller for MT6765 SoC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250508073634.3719-1-chenqiuji666@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/tencent_357489BEAEE4AED74CBD67D246DBD2C4C606@qq.com
+Fixes: da5e7c87827e ("ocfs2: cleanup journal init and shutdown")
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reported-by: syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=47d8cb2f2cc1517e515a
+Tested-by: syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com
+Reviewed-by: Mark Tinguely <mark.tinguely@oracle.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/mediatek/mtk-cqdma.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/ocfs2/inode.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/dma/mediatek/mtk-cqdma.c
-+++ b/drivers/dma/mediatek/mtk-cqdma.c
-@@ -421,15 +421,11 @@ static struct virt_dma_desc *mtk_cqdma_f
- {
- 	struct mtk_cqdma_vchan *cvc = to_cqdma_vchan(c);
- 	struct virt_dma_desc *vd;
--	unsigned long flags;
- 
--	spin_lock_irqsave(&cvc->pc->lock, flags);
- 	list_for_each_entry(vd, &cvc->pc->queue, node)
- 		if (vd->tx.cookie == cookie) {
--			spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 			return vd;
- 		}
--	spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 
- 	list_for_each_entry(vd, &cvc->vc.desc_issued, node)
- 		if (vd->tx.cookie == cookie)
-@@ -453,9 +449,11 @@ static enum dma_status mtk_cqdma_tx_stat
- 	if (ret == DMA_COMPLETE || !txstate)
- 		return ret;
- 
-+	spin_lock_irqsave(&cvc->pc->lock, flags);
- 	spin_lock_irqsave(&cvc->vc.lock, flags);
- 	vd = mtk_cqdma_find_active_desc(c, cookie);
- 	spin_unlock_irqrestore(&cvc->vc.lock, flags);
-+	spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 
- 	if (vd) {
- 		cvd = to_cqdma_vdesc(vd);
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -1205,6 +1205,9 @@ static void ocfs2_clear_inode(struct ino
+ 	 * the journal is flushed before journal shutdown. Thus it is safe to
+ 	 * have inodes get cleaned up after journal shutdown.
+ 	 */
++	if (!osb->journal)
++		return;
++
+ 	jbd2_journal_release_jbd_inode(osb->journal->j_journal,
+ 				       &oi->ip_jinode);
+ }
 
 
 
