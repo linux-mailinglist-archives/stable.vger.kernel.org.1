@@ -1,56 +1,95 @@
-Return-Path: <stable+bounces-178556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB532B47F25
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B021B47DDE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CDA63C2908
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 085887AFF0E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40186212B3D;
-	Sun,  7 Sep 2025 20:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551EF1D88D0;
+	Sun,  7 Sep 2025 20:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fny99jMj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1bTspXS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F085F1A0BFD;
-	Sun,  7 Sep 2025 20:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1041114BFA2;
+	Sun,  7 Sep 2025 20:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277214; cv=none; b=HVaf4aOpEtOuM4h/w6LOtTAWDWYnMMovByk2sziqNx353GSHCnEGoF1m7rbJ7alFWctuHiOORYO8/hPOyJ3Xxi+R1VksK+DoW3YINxehhpgi6JifaRNNuc+RGs/SBgvT5gG1v2RkF6f+KmMLTmij5/6flhbVctuZZTio/tkaWDo=
+	t=1757276247; cv=none; b=ja/YgW/jGInr9TrrkDHKGVdXCj5pBTjNkdTAEwAyRH36xi23rXPZ5gwmCF808lu9jya+WkaM8V+xUSUT7YruX4jOgycthThmQqH9CuaG6G/GHcufoACC1tKSkV6YptE3oSBEwDyFQMNsYHgrSEhCwUDOIMDitPJ+APIQU5vyb9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277214; c=relaxed/simple;
-	bh=wrFCrBoYG6pryKCORuPjJRLfkdlQaRNMoeBvaHfHA5M=;
+	s=arc-20240116; t=1757276247; c=relaxed/simple;
+	bh=3akfshxqOVvYdW2rsxcYba1XY35sJrwaWBHTwm4xgZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iv48D9gQScNl48ru2IolCGN7CK7usx3WNxRwA8VWAPZ/dRMhLTOs9zOeYigv9s1iohhvpCQZIXkpgTcJ37+cC83r42eriw2WGMRtqdZT/IL9seVgYl0CXo+zr750+afnWg2EBpHXplSluGZmlWNhl1POH/hlVMCU+kwxzDtqfw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fny99jMj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700C9C4CEF0;
-	Sun,  7 Sep 2025 20:33:33 +0000 (UTC)
+	 MIME-Version; b=fEEh6qcslOauZvVPFhUkrFh6wcBKvTJ21/I4QG9pIbL8xmz9lHnbTklPxBS4WCcepNxpKTmWRbfKzecl2ypKeatSIVMydtrdR37/4b1n2AgO/MrJgliQyF3YYTR9Dr/0oYTB7W0TXk7xG71aiJBsHUvl1fBSBXwNl9oyeAIBn+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1bTspXS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CCAC4CEF0;
+	Sun,  7 Sep 2025 20:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277213;
-	bh=wrFCrBoYG6pryKCORuPjJRLfkdlQaRNMoeBvaHfHA5M=;
+	s=korg; t=1757276246;
+	bh=3akfshxqOVvYdW2rsxcYba1XY35sJrwaWBHTwm4xgZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fny99jMj9TlkCc7O1lAHZ12UZZqDmZrvfB4UmBuyCybo+dK5wXyQ4N3zNSLbtSSCX
-	 pUa8k00/U8oRYDwUjsyoY6KVIJGjWCRnJHfq+L3amUzPQwUXB1fW2NtrlF77W1mqYh
-	 aCxQULHG03SOJaB3ZAyxAZoRDMP51n4+nTaaYLZU=
+	b=Y1bTspXSbPs3BGpxe1IGqPPl6JN+fTiEB6ny2F3fLtA0RoRMqqUik77nLgX/kG2nN
+	 f/upQZTq8HGUty2nSDh+i1JZBvlmckV68A77chjjd9j0kSOdiZqn32KHRV7rMHoqYt
+	 c33zDeJwK4Wlv0HNuGZsJeIaveIZxxrGkAYRvXXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/175] mctp: return -ENOPROTOOPT for unknown getsockopt options
-Date: Sun,  7 Sep 2025 21:57:59 +0200
-Message-ID: <20250907195616.824062477@linuxfoundation.org>
+	Harry Yoo <harry.yoo@oracle.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	bibo mao <maobibo@loongson.cn>,
+	Borislav Betkov <bp@alien8.de>,
+	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Thomas Huth <thuth@redhat.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 043/104] x86/mm/64: define ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings()
+Date: Sun,  7 Sep 2025 21:58:00 +0200
+Message-ID: <20250907195608.811975335@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +101,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Harry Yoo <harry.yoo@oracle.com>
 
-[ Upstream commit a125c8fb9ddbcb0602103a50727a476fd30dec01 ]
+commit 6659d027998083fbb6d42a165b0c90dc2e8ba989 upstream.
 
-In mctp_getsockopt(), unrecognized options currently return -EINVAL.
-In contrast, mctp_setsockopt() returns -ENOPROTOOPT for unknown
-options.
+Define ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings() to ensure
+page tables are properly synchronized when calling p*d_populate_kernel().
 
-Update mctp_getsockopt() to also return -ENOPROTOOPT for unknown
-options. This aligns the behavior of getsockopt() and setsockopt(),
-and matches the standard kernel socket API convention for handling
-unsupported options.
+For 5-level paging, synchronization is performed via
+pgd_populate_kernel().  In 4-level paging, pgd_populate() is a no-op, so
+synchronization is instead performed at the P4D level via
+p4d_populate_kernel().
 
-Fixes: 99ce45d5e7db ("mctp: Implement extended addressing")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250902102059.1370008-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes intermittent boot failures on systems using 4-level paging and
+a large amount of persistent memory:
+
+  BUG: unable to handle page fault for address: ffffe70000000034
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  PGD 0 P4D 0
+  Oops: 0002 [#1] SMP NOPTI
+  RIP: 0010:__init_single_page+0x9/0x6d
+  Call Trace:
+   <TASK>
+   __init_zone_device_page+0x17/0x5d
+   memmap_init_zone_device+0x154/0x1bb
+   pagemap_range+0x2e0/0x40f
+   memremap_pages+0x10b/0x2f0
+   devm_memremap_pages+0x1e/0x60
+   dev_dax_probe+0xce/0x2ec [device_dax]
+   dax_bus_probe+0x6d/0xc9
+   [... snip ...]
+   </TASK>
+
+It also fixes a crash in vmemmap_set_pmd() caused by accessing vmemmap
+before sync_global_pgds() [1]:
+
+  BUG: unable to handle page fault for address: ffffeb3ff1200000
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  PGD 0 P4D 0
+  Oops: Oops: 0002 [#1] PREEMPT SMP NOPTI
+  Tainted: [W]=WARN
+  RIP: 0010:vmemmap_set_pmd+0xff/0x230
+   <TASK>
+   vmemmap_populate_hugepages+0x176/0x180
+   vmemmap_populate+0x34/0x80
+   __populate_section_memmap+0x41/0x90
+   sparse_add_section+0x121/0x3e0
+   __add_pages+0xba/0x150
+   add_pages+0x1d/0x70
+   memremap_pages+0x3dc/0x810
+   devm_memremap_pages+0x1c/0x60
+   xe_devm_add+0x8b/0x100 [xe]
+   xe_tile_init_noalloc+0x6a/0x70 [xe]
+   xe_device_probe+0x48c/0x740 [xe]
+   [... snip ...]
+
+Link: https://lkml.kernel.org/r/20250818020206.4517-4-harry.yoo@oracle.com
+Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Closes: https://lore.kernel.org/linux-mm/20250311114420.240341-1-gwan-gyeong.mun@intel.com [1]
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Kiryl Shutsemau <kas@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: bibo mao <maobibo@loongson.cn>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Christoph Lameter (Ampere) <cl@gentwo.org>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Joao Martins <joao.m.martins@oracle.com>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mctp/af_mctp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/pgtable_64_types.h |    3 +++
+ arch/x86/mm/init_64.c                   |   18 ++++++++++++++++++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index 70aeebfc4182e..9a552569143bb 100644
---- a/net/mctp/af_mctp.c
-+++ b/net/mctp/af_mctp.c
-@@ -346,7 +346,7 @@ static int mctp_getsockopt(struct socket *sock, int level, int optname,
- 		return 0;
- 	}
+--- a/arch/x86/include/asm/pgtable_64_types.h
++++ b/arch/x86/include/asm/pgtable_64_types.h
+@@ -40,6 +40,9 @@ static inline bool pgtable_l5_enabled(vo
+ #define pgtable_l5_enabled() 0
+ #endif /* CONFIG_X86_5LEVEL */
  
--	return -EINVAL;
-+	return -ENOPROTOOPT;
++#define ARCH_PAGE_TABLE_SYNC_MASK \
++	(pgtable_l5_enabled() ? PGTBL_PGD_MODIFIED : PGTBL_P4D_MODIFIED)
++
+ extern unsigned int pgdir_shift;
+ extern unsigned int ptrs_per_p4d;
+ 
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -224,6 +224,24 @@ static void sync_global_pgds(unsigned lo
  }
  
- /* helpers for reading/writing the tag ioc, handling compatibility across the
--- 
-2.50.1
-
+ /*
++ * Make kernel mappings visible in all page tables in the system.
++ * This is necessary except when the init task populates kernel mappings
++ * during the boot process. In that case, all processes originating from
++ * the init task copies the kernel mappings, so there is no issue.
++ * Otherwise, missing synchronization could lead to kernel crashes due
++ * to missing page table entries for certain kernel mappings.
++ *
++ * Synchronization is performed at the top level, which is the PGD in
++ * 5-level paging systems. But in 4-level paging systems, however,
++ * pgd_populate() is a no-op, so synchronization is done at the P4D level.
++ * sync_global_pgds() handles this difference between paging levels.
++ */
++void arch_sync_kernel_mappings(unsigned long start, unsigned long end)
++{
++	sync_global_pgds(start, end);
++}
++
++/*
+  * NOTE: This function is marked __ref because it calls __init function
+  * (alloc_bootmem_pages). It's safe to do it ONLY when after_bootmem == 0.
+  */
 
 
 
