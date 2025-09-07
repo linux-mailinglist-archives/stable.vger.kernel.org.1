@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 098C6B47FB7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FCC5B47E07
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B51182005F1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F046189EF43
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BAE26B2AD;
-	Sun,  7 Sep 2025 20:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026C92139C9;
+	Sun,  7 Sep 2025 20:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFmhMn0P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vG6E3xtE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5743F4315A;
-	Sun,  7 Sep 2025 20:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B382414BFA2;
+	Sun,  7 Sep 2025 20:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277678; cv=none; b=SwzAdLClAW3QFzF7mXxVy37Stzcq6AYTADGZSItBNhfzQypvOSzzK6KKHeb+xa7Imkh34RPsW/VCSiHlcGQSlg7i1V6ajE/5/AwagOvCR5yK11YH48AZPyG7RyKzw3laYYV36HTxOhufgjy4EdhNsc6QKoNLarA70Gmrd0RbVDE=
+	t=1757276353; cv=none; b=hn1rskrIlHzLGjN9rUaDDIFonTuGidm/NHcv3sO8fGsnPQFLyRzg8t6ZBNJlOxWsbV8bVrBt7pMiOPOw6BRQaLpvqHQ1kw01Y1/ODsYSnVmwi1wtyzbBKyvqXcYhghUL/qrgSwLIOdLf2U85o37v4a/T34/4BxwZ2fH5kXLn2Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277678; c=relaxed/simple;
-	bh=W09LrDqSV900QIT6+f5BZo7a7QWl+0U6Aq//i1ds1Ic=;
+	s=arc-20240116; t=1757276353; c=relaxed/simple;
+	bh=YcsWqAWqOtWX2eTSJqyb8qdhyzSGW5eKL2Vid9t1Gug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jdVDsevl2EZZ3x2y2sN1y2nKeIkOsA21GnqkGshKNp4CgsIPkGmDpBOHoknc9W6BazyZExwGRp1l677h5++lLF43m4Z7ZpGpkibsKuaxLtKm0l76kFCoUbC69Tvuvh/heBbZAbeA/rWnnpi41i46x4goHo+fD0ZBnAf4mJ0Jcck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFmhMn0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F5CC4CEF0;
-	Sun,  7 Sep 2025 20:41:17 +0000 (UTC)
+	 MIME-Version; b=lHKn+18u0DgBlEULPfPq0zdfNn43zKpKE0HHqnIMvZRJ+7ZgHH0EsWhXtpAb0NAiTQhVSUFBPDr+IcM0MRCOr1BFIZwWhTHUR4pwFNnIzqJMg8M6wre+KpHMFdaFzwv/snXcIc1+J0teBFdzO7ItXhD/kKdiXOw5nxgjgB9x4Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vG6E3xtE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367DBC4CEF0;
+	Sun,  7 Sep 2025 20:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277678;
-	bh=W09LrDqSV900QIT6+f5BZo7a7QWl+0U6Aq//i1ds1Ic=;
+	s=korg; t=1757276353;
+	bh=YcsWqAWqOtWX2eTSJqyb8qdhyzSGW5eKL2Vid9t1Gug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yFmhMn0PmnTboCoQ7o1L7l+IjqCsPStaIcBJQpzYDoTnpBwJ0ZMZSGIAxcC0iAIZF
-	 lzzGEMMelinekg628Gm2iqMqQbCvFP9hCs3DiAgWsOPlTyWxZrTZdwONbroFK+gNQR
-	 ff0hocz9Q7NXd+aWw80d9g/joSxNOjReEbHyrEFk=
+	b=vG6E3xtE8vkqt3Mfgfg/bVNfQ7MiBLVSi3iNlh1+vj3M1l5OoONjJn/uCw6VPmQcr
+	 ZGFmVh4TW9G8ZPlVBGhOfTQKM2+MddFKM7CXOovPnNONbo/Vlys7df3OvolbBGg2Oj
+	 qrdLo7ydtKoSKynNMw5iidIJzxCT2PkkAxO1Y8/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Chen <yiche@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 089/183] selftests: netfilter: fix udpclash tool hang
+Subject: [PATCH 6.1 079/104] pcmcia: omap: Add missing check for platform_get_resource
 Date: Sun,  7 Sep 2025 21:58:36 +0200
-Message-ID: <20250907195617.904585223@linuxfoundation.org>
+Message-ID: <20250907195609.723190270@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 661a4f307fe0f80c1d544e09476ccba9037e8e65 ]
+[ Upstream commit ecef14f70ec9344a10c817248d2ac6cddee5921e ]
 
-Yi Chen reports that 'udpclash' loops forever depending on compiler
-(and optimization level used); while (x == 1) gets optimized into
-for (;;).  Add volatile qualifier to avoid that.
+Add missing check for platform_get_resource() and return error if it fails
+to catch the error.
 
-While at it, also run it under timeout(1) and fix the resize script
-to not ignore the timeout passed as second parameter to insert_flood.
-
-Reported-by: Yi Chen <yiche@redhat.com>
-Suggested-by: Yi Chen <yiche@redhat.com>
-Fixes: 78a588363587 ("selftests: netfilter: add conntrack clash resolution test case")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: d87d44f7ab35 ("ARM: omap1: move CF chipselect setup to board file")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/netfilter/conntrack_clash.sh  | 2 +-
- tools/testing/selftests/net/netfilter/conntrack_resize.sh | 5 +++--
- tools/testing/selftests/net/netfilter/udpclash.c          | 2 +-
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/pcmcia/omap_cf.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/net/netfilter/conntrack_clash.sh b/tools/testing/selftests/net/netfilter/conntrack_clash.sh
-index 606a43a60f736..7fc6c5dbd5516 100755
---- a/tools/testing/selftests/net/netfilter/conntrack_clash.sh
-+++ b/tools/testing/selftests/net/netfilter/conntrack_clash.sh
-@@ -99,7 +99,7 @@ run_one_clash_test()
- 	local entries
- 	local cre
+diff --git a/drivers/pcmcia/omap_cf.c b/drivers/pcmcia/omap_cf.c
+index d3f827d4224a3..e22a752052f2f 100644
+--- a/drivers/pcmcia/omap_cf.c
++++ b/drivers/pcmcia/omap_cf.c
+@@ -215,6 +215,8 @@ static int __init omap_cf_probe(struct platform_device *pdev)
+ 		return -EINVAL;
  
--	if ! ip netns exec "$ns" ./udpclash $daddr $dport;then
-+	if ! ip netns exec "$ns" timeout 30 ./udpclash $daddr $dport;then
- 		echo "INFO: did not receive expected number of replies for $daddr:$dport"
- 		ip netns exec "$ctns" conntrack -S
- 		# don't fail: check if clash resolution triggered after all.
-diff --git a/tools/testing/selftests/net/netfilter/conntrack_resize.sh b/tools/testing/selftests/net/netfilter/conntrack_resize.sh
-index 788cd56ea4a0d..615fe3c6f405d 100755
---- a/tools/testing/selftests/net/netfilter/conntrack_resize.sh
-+++ b/tools/testing/selftests/net/netfilter/conntrack_resize.sh
-@@ -187,7 +187,7 @@ ct_udpclash()
- 	[ -x udpclash ] || return
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res)
++		return -EINVAL;
  
-         while [ $now -lt $end ]; do
--		ip netns exec "$ns" ./udpclash 127.0.0.1 $((RANDOM%65536)) > /dev/null 2>&1
-+		ip netns exec "$ns" timeout 30 ./udpclash 127.0.0.1 $((RANDOM%65536)) > /dev/null 2>&1
- 
- 		now=$(date +%s)
- 	done
-@@ -277,6 +277,7 @@ check_taint()
- insert_flood()
- {
- 	local n="$1"
-+	local timeout="$2"
- 	local r=0
- 
- 	r=$((RANDOM%$insert_count))
-@@ -302,7 +303,7 @@ test_floodresize_all()
- 	read tainted_then < /proc/sys/kernel/tainted
- 
- 	for n in "$nsclient1" "$nsclient2";do
--		insert_flood "$n" &
-+		insert_flood "$n" "$timeout" &
- 	done
- 
- 	# resize table constantly while flood/insert/dump/flushs
-diff --git a/tools/testing/selftests/net/netfilter/udpclash.c b/tools/testing/selftests/net/netfilter/udpclash.c
-index 85c7b906ad08f..79de163d61ab7 100644
---- a/tools/testing/selftests/net/netfilter/udpclash.c
-+++ b/tools/testing/selftests/net/netfilter/udpclash.c
-@@ -29,7 +29,7 @@ struct thread_args {
- 	int sockfd;
- };
- 
--static int wait = 1;
-+static volatile int wait = 1;
- 
- static void *thread_main(void *varg)
- {
+ 	cf = kzalloc(sizeof *cf, GFP_KERNEL);
+ 	if (!cf)
 -- 
-2.50.1
+2.51.0
 
 
 
