@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D69EB47FAC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:40:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8048B47E29
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6A04A4E1341
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:40:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09857188B79D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A741D26E6FF;
-	Sun,  7 Sep 2025 20:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DED1D88D0;
+	Sun,  7 Sep 2025 20:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsRzKn7P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y06nVsQt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BFD20E00B;
-	Sun,  7 Sep 2025 20:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F354B14BFA2;
+	Sun,  7 Sep 2025 20:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277641; cv=none; b=WhelBhUDtLFS08sDVcGcEsftSCSFdKDtXSV0ocBS2O4CJUTkPlT+CcDDPijP78LsWpaXl3tZkxNWuvLBuuhuWIAZY9X0rAcDmsERnLPl3+1z5kX647Udh9yx1K/4o09KyJOonrGu0TQHdZipXvgLZ8F4xYlLgwGdMHREEiz9E48=
+	t=1757276453; cv=none; b=gYKaXuwQm/8BKYOTv7Tt868U2TmlY6UNOzoHhohu0zWwj4CiQnmZytbdEslNHm0yT0ZF1AW/Zu4zcpDImTq8vBjGxTQ0YtOmmQXowBW4Q2ySmbcPwC5URRRZTgx0+uSNdTFK7veqXgbpgFOr0kvVPHIn9G/kp1FGepjftRqa2Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277641; c=relaxed/simple;
-	bh=4R+8gBJWuqaO48vcZXShH9r1EFZy12rZRxgqppP0fcs=;
+	s=arc-20240116; t=1757276453; c=relaxed/simple;
+	bh=JDcHFHwQ+zk92n0MrhE02tSS74CaETD4vw98tQMZcS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=THM/Q6FgOx8B3R91rljNukP0zkUZ1Qo+SFWIdLaMe2QXEvqAfH6O+Z6eR6pj6Mr55dTeogk+hywdlHeq9I7n2/iDBGHTtTjW5bJQYKTnKxssntAFC6Mk6O8fCDiSerPfjANtDy3QmKkzlU1mGJcGLDejZ78Bt2YfTtdu3k8uLZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsRzKn7P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1749C4CEF0;
-	Sun,  7 Sep 2025 20:40:40 +0000 (UTC)
+	 MIME-Version; b=b/Czc9bItcv3R5/9hEySBoZSrpuFoIVtmzWUWWiCKKt1P6xx42vtI2HHqSg0w7Fqd/siIW/C76p+SKHTCL2zhkVLA/fTHEECc+RAkuXT0faG76IY3/TmB8mlaNRs6Z3NWyKXXIx/Uhzw74tMJEf4Zs+GzexiRFX/PWWrLeIsD3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y06nVsQt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B26EC4CEF0;
+	Sun,  7 Sep 2025 20:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277641;
-	bh=4R+8gBJWuqaO48vcZXShH9r1EFZy12rZRxgqppP0fcs=;
+	s=korg; t=1757276452;
+	bh=JDcHFHwQ+zk92n0MrhE02tSS74CaETD4vw98tQMZcS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nsRzKn7PMX8uBJOrUMrdffagH2iJVBVcvbk13ruGsjLn1iAT+tb2jzBXwEO+RQKxE
-	 AdpkDvMJTkOWyWIOnEBmcJSkL/FAgoVXduGc5+kIKXselFMFxiyqSZ7ImTWp/INWd7
-	 ChRHI0yO4dKFhTVYvS7y1tNluSQJvG29MRTaZ/kE=
+	b=Y06nVsQtj6yMbNAYKGdOfdg/41Hp7g7J72UAX6fYHS1PmTwfpXReIxipX8ns2a4ht
+	 J0z3QNvuD9/HELST6r6xmZfuFKOO3iNISJdQ+FxgbkW4tLrJd47DeuLAvc7xU4HPJ1
+	 18dbIyS4YCXkYMlDHx2750Ittc/ntulLm7efX84M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 079/183] wifi: cfg80211: sme: cap SSID length in __cfg80211_connect_result()
+Subject: [PATCH 6.1 069/104] cpufreq: intel_pstate: Revise global turbo disable check
 Date: Sun,  7 Sep 2025 21:58:26 +0200
-Message-ID: <20250907195617.672690056@linuxfoundation.org>
+Message-ID: <20250907195609.468573735@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 62b635dcd69c4fde7ce1de4992d71420a37e51e3 ]
+[ Upstream commit 37b6ddba967c601479bea418a7ac6ff16b6232b7 ]
 
-If the ssid->datalen is more than IEEE80211_MAX_SSID_LEN (32) it would
-lead to memory corruption so add some bounds checking.
+Setting global turbo flag based on CPU 0 P-state limits is problematic
+as it limits max P-state request on every CPU on the system just based
+on its P-state limits.
 
-Fixes: c38c70185101 ("wifi: cfg80211: Set SSID if it is not already set")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/0aaaae4a3ed37c6252363c34ae4904b1604e8e32.1756456951.git.dan.carpenter@linaro.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+There are two cases in which global.turbo_disabled flag is set:
+- When the MSR_IA32_MISC_ENABLE_TURBO_DISABLE bit is set to 1
+in the MSR MSR_IA32_MISC_ENABLE. This bit can be only changed by
+the system BIOS before power up.
+- When the max non turbo P-state is same as max turbo P-state for CPU 0.
+
+The second check is not a valid to decide global turbo state based on
+the CPU 0. CPU 0 max turbo P-state can be same as max non turbo P-state,
+but for other CPUs this may not be true.
+
+There is no guarantee that max P-state limits are same for every CPU. This
+is possible that during fusing max P-state for a CPU is constrained. Also
+with the Intel Speed Select performance profile, CPU 0 may not be present
+in all profiles. In this case the max non turbo and turbo P-state can be
+set to the lowest possible P-state by the hardware when switched to
+such profile. Since max non turbo and turbo P-state is same,
+global.turbo_disabled flag will be set.
+
+Once global.turbo_disabled is set, any scaling max and min frequency
+update for any CPU will result in its max P-state constrained to the max
+non turbo P-state.
+
+Hence remove the check of max non turbo P-state equal to max turbo P-state
+of CPU 0 to set global turbo disabled flag.
+
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+[ rjw: Subject edit ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: ac4e04d9e378 ("cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/sme.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/cpufreq/intel_pstate.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index cf998500a9654..05d06512983c2 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -901,13 +901,16 @@ void __cfg80211_connect_result(struct net_device *dev,
- 	if (!wdev->u.client.ssid_len) {
- 		rcu_read_lock();
- 		for_each_valid_link(cr, link) {
-+			u32 ssid_len;
-+
- 			ssid = ieee80211_bss_get_elem(cr->links[link].bss,
- 						      WLAN_EID_SSID);
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -562,13 +562,9 @@ static void intel_pstate_hybrid_hwp_adju
+ static inline void update_turbo_state(void)
+ {
+ 	u64 misc_en;
+-	struct cpudata *cpu;
  
- 			if (!ssid || !ssid->datalen)
- 				continue;
+-	cpu = all_cpu_data[0];
+ 	rdmsrl(MSR_IA32_MISC_ENABLE, misc_en);
+-	global.turbo_disabled =
+-		(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE ||
+-		 cpu->pstate.max_pstate == cpu->pstate.turbo_pstate);
++	global.turbo_disabled = misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE;
+ }
  
--			memcpy(wdev->u.client.ssid, ssid->data, ssid->datalen);
-+			ssid_len = min(ssid->datalen, IEEE80211_MAX_SSID_LEN);
-+			memcpy(wdev->u.client.ssid, ssid->data, ssid_len);
- 			wdev->u.client.ssid_len = ssid->datalen;
- 			break;
- 		}
--- 
-2.50.1
-
+ static int min_perf_pct_min(void)
 
 
 
