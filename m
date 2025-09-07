@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-178123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F3E9B47D58
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E772B47DEB
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 884E6189B6A5
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:11:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CB64189EB42
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C188127F754;
-	Sun,  7 Sep 2025 20:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA0114BFA2;
+	Sun,  7 Sep 2025 20:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+LQrqEu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqtBqBVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF361CDFAC;
-	Sun,  7 Sep 2025 20:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5191A9FAA;
+	Sun,  7 Sep 2025 20:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275838; cv=none; b=Gqh0dr1wKxOEPWRBrNjlJ3PfJBdYJMva8YEKflf8ajoe3SZKI5ZaOZWtqoQPc0ZrvVszCpNS28iYTHzkIqj0U57onLt020NWqyAoYudqz6BpmgRS1Ngf3mHbyInk9HL3ZJmF+qFBBKVTUDZwK58gP4yYOb+AochZ7Y3u0Gbh04I=
+	t=1757276288; cv=none; b=P2mvqzGtS+E1K4R7Vyg058t2X4Hu+3/pFXrYqxwqhkdPGOHz7uIQxVsCcHVDNR9MIQBYvD1mD8DYTJSjwOrvcGb+KhgrTolWKqFMNPA8DfBIKgTVk3P95bl/iFlg4UFL+rCRD38Snlb2Rnf3Bw3+7xsWXQhKCfaz+y+J2P6kq74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275838; c=relaxed/simple;
-	bh=/Xg+KOCSD0by8C9zqiak6rOpKs8WoVuacsHM0xZl7Zs=;
+	s=arc-20240116; t=1757276288; c=relaxed/simple;
+	bh=dQVJ0YlzUYsxA7FJaFiFc1IZxErGHEU/Bd4erPjkI3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPHVySOJc5IrbtuU1XjYjDz4Bb0P88k7AGCfGkr70j9Pe/aD7rBy+Pm3hvrxnKxpZA+Riv9/K2a7dQgddDLVPUyGzSay4Z5x/p+7cSzl9gEauovS2j+2EGVhUPvLc/68QvEODtwsiYnWqNgQp/2z4f0ZZJwMGs9UeVAwrNa8Vmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+LQrqEu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1AB7C4CEF8;
-	Sun,  7 Sep 2025 20:10:37 +0000 (UTC)
+	 MIME-Version; b=Ln4k5oS/HnVg3T+6GUPIE7gWLKZjM1sehReOXZe8Ef5TDykSA3l/2ZYCqVN/KTiCfAY0fEfqNraIWyVneZcpQmIvAVsaJ+OmyIkGCwh+GqfVA3VxPTT1zPQyvnzofpES3gGyKN9ixCaquwtDDqVijIV7u9/VpfhAcEs80OvfYQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqtBqBVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71894C4CEF0;
+	Sun,  7 Sep 2025 20:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275838;
-	bh=/Xg+KOCSD0by8C9zqiak6rOpKs8WoVuacsHM0xZl7Zs=;
+	s=korg; t=1757276287;
+	bh=dQVJ0YlzUYsxA7FJaFiFc1IZxErGHEU/Bd4erPjkI3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H+LQrqEu/bNIc5DujrP3ii9rstCwRqFJqRKiGZOixSHhQr6B0NCTh8NAmmsL7RGbN
-	 qOfjCmtgR1+sU7yxtWz4NXK5woF8w+plKgJlKSqF8aCgllvT9a91k5QKYkmbbUIvGL
-	 pEK9XVuMGa6Vc5F+WbeHn2m3zVxZW7LuWYTJUy4Q=
+	b=TqtBqBVfFkyD7WZx7ZsDbidKQw0Fzbw+ciEvGv6Duv46tCt1ri2s1zaSSgTIM5Dmt
+	 0mloUuk3bC8aPhZxZVt+uLYNNsLTwsYWgQ4bdOYupeKx6kG+AjrsJwN/r8xJejxNQi
+	 TzEl9c2j2wBWiSGMVswiNnR2a2U4Kb/JUOuhRU4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Qiong <liqiong@nfschina.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
+	Jonathan Currier <dullfire@yahoo.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 26/45] mm/slub: avoid accessing metadata when pointer is invalid in object_err()
+Subject: [PATCH 6.1 055/104] PCI/MSI: Add an option to write MSIX ENTRY_DATA before any reads
 Date: Sun,  7 Sep 2025 21:58:12 +0200
-Message-ID: <20250907195601.723158870@linuxfoundation.org>
+Message-ID: <20250907195609.111892123@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Qiong <liqiong@nfschina.com>
+From: Jonathan Currier <dullfire@yahoo.com>
 
-[ Upstream commit b4efccec8d06ceb10a7d34d7b1c449c569d53770 ]
+[ Upstream commit cf761e3dacc6ad5f65a4886d00da1f9681e6805a ]
 
-object_err() reports details of an object for further debugging, such as
-the freelist pointer, redzone, etc. However, if the pointer is invalid,
-attempting to access object metadata can lead to a crash since it does
-not point to a valid object.
+Commit 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries") introduced a
+readl() from ENTRY_VECTOR_CTRL before the writel() to ENTRY_DATA.
 
-One known path to the crash is when alloc_consistency_checks()
-determines the pointer to the allocated object is invalid because of a
-freelist corruption, and calls object_err() to report it. The debug code
-should report and handle the corruption gracefully and not crash in the
-process.
+This is correct, however some hardware, like the Sun Neptune chips, the NIU
+module, will cause an error and/or fatal trap if any MSIX table entry is
+read before the corresponding ENTRY_DATA field is written to.
 
-In case the pointer is NULL or check_valid_pointer() returns false for
-the pointer, only print the pointer value and skip accessing metadata.
+Add an optional early writel() in msix_prepare_msi_desc().
 
-Fixes: 81819f0fc828 ("SLUB core")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Li Qiong <liqiong@nfschina.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-[ struct page + print_page_info() ]
+Fixes: 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries")
+Signed-off-by: Jonathan Currier <dullfire@yahoo.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241117234843.19236-2-dullfire@yahoo.com
+[ Applied workaround to msix_setup_msi_descs() instead of msix_prepare_msi_desc() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/pci/msi/msi.c |    3 +++
+ include/linux/pci.h   |    2 ++
+ 2 files changed, 5 insertions(+)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -719,7 +719,12 @@ void object_err(struct kmem_cache *s, st
- 			u8 *object, char *reason)
- {
- 	slab_bug(s, "%s", reason);
--	print_trailer(s, page, object);
-+	if (!object || !check_valid_pointer(s, page, object)) {
-+		print_page_info(page);
-+		pr_err("Invalid pointer 0x%p\n", object);
-+	} else {
-+		print_trailer(s, page, object);
-+	}
- }
+--- a/drivers/pci/msi/msi.c
++++ b/drivers/pci/msi/msi.c
+@@ -534,6 +534,9 @@ static int msix_setup_msi_descs(struct p
  
- static __printf(3, 4) void slab_err(struct kmem_cache *s, struct page *page,
+ 		if (desc.pci.msi_attrib.can_mask) {
+ 			addr = pci_msix_desc_addr(&desc);
++			/* Workaround for SUN NIU insanity, which requires write before read */
++			if (dev->dev_flags & PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST)
++				writel(0, addr + PCI_MSIX_ENTRY_DATA);
+ 			desc.pci.msix_ctrl = readl(addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
+ 		}
+ 
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -244,6 +244,8 @@ enum pci_dev_flags {
+ 	PCI_DEV_FLAGS_NO_RELAXED_ORDERING = (__force pci_dev_flags_t) (1 << 11),
+ 	/* Device does honor MSI masking despite saying otherwise */
+ 	PCI_DEV_FLAGS_HAS_MSI_MASKING = (__force pci_dev_flags_t) (1 << 12),
++	/* Device requires write to PCI_MSIX_ENTRY_DATA before any MSIX reads */
++	PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST = (__force pci_dev_flags_t) (1 << 13),
+ };
+ 
+ enum pci_irq_reroute_variant {
 
 
 
