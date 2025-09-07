@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9205AB47F6C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:37:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9919DB47DBE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:15:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D6E13C2EBA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:37:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9817A188EE35
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815DE21B191;
-	Sun,  7 Sep 2025 20:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF34A1AF0B6;
+	Sun,  7 Sep 2025 20:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kubza1HL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpfoPZiK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA0E4315A;
-	Sun,  7 Sep 2025 20:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1EA14BFA2;
+	Sun,  7 Sep 2025 20:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277443; cv=none; b=D6pGCR3V8iBnV8lTuvl4dgy6TCk9G1kdUcMxvRMX022hGSqPDadl+EGbhZI5KdnbA6D9VW8UPyE2IypGaNpip6661eYvC579tOtQkPU8qPCeRs/z+qxbbg2rxOELr8vVXZpDHZ8nYh5Mi4adCdpJVYnq2aTypFja1QCTlpq8/3Y=
+	t=1757276156; cv=none; b=YSWw3EtHYyRe0rSOFQhoVSmb/BbzvLmOca48zDEwLPBrtiSUT4x5XRnNRTT8C+w1i3X1HNhB39fUIgTQQBkZk/5dXztThE09Gmcwhnc0EMesvIWpWYl+4XdYPVLvesAPO1+IJVWFk/dys8M9MrCBcFV0VI/1yb27M6hAjn/m98M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277443; c=relaxed/simple;
-	bh=kjGeaF7TZ2PUkRO8IU3aLqhwmY/vxrtVdVqfQe+LwUw=;
+	s=arc-20240116; t=1757276156; c=relaxed/simple;
+	bh=gAzWGimyvQKWCEbao7+7vZ0DnQgwc+70WSYl4+zq+Dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b0QJOHbCfErQNZyRYZjAA+DKB2sMXQ/fgBjSYjFb5WCP3qqEDVaEmNt/Z1V0/Xmy+mTRz6CE/lysQlmNg2hHp9RY/6cRsOihd2tQpIFAwVTo4eT/hm+O2Vlj7l5k4QNYfVoLg4Pv8UG+3OArarX6yPQn8XS2TikhmZRen1Oad84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kubza1HL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68450C4CEF0;
-	Sun,  7 Sep 2025 20:37:22 +0000 (UTC)
+	 MIME-Version; b=MOd5cn/toobUkrWJs/1ZnvJETbuEqEvr/GjLGxiU6XMRMiKjL9Ge0FoCn2iEWiKpqXK2dB9CLRspb3uEOtcgDlQbO3u5/CR9hX1huKUe8Vvtcc4fnhyHxMl8p/1tJmo3GKB7hBEg45pnBVafFi0u3OiRDgIycRxIkxfzlcvPc3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpfoPZiK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5CBC4CEF0;
+	Sun,  7 Sep 2025 20:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277442;
-	bh=kjGeaF7TZ2PUkRO8IU3aLqhwmY/vxrtVdVqfQe+LwUw=;
+	s=korg; t=1757276156;
+	bh=gAzWGimyvQKWCEbao7+7vZ0DnQgwc+70WSYl4+zq+Dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kubza1HL64vraRS9qR7nI0AKPN8mXWRtg8BpzN+tKT7a8h2wDzfQwAjPZ2DyZmv+7
-	 YC6KoV+DOCNAjM5fzJRHOvyojTpniaLpdewIg9D621/x+ty/JwfOH0WdO0ALjLTsGP
-	 RpwDzr2hCqi8TlnqkG2L37irTLgM9T0Eqxkc9xZg=
+	b=dpfoPZiKz7XNQHGPxxaGlWm2dENfzjUBIT1Hn1a9hi3N6rbgvj8zoIpk/FGbqD0Xj
+	 IqCJOogpQTmibmNT/1wkhsUi6yBT9h21DOSYCuXP+0nSpuyGQUwQhZ4vDkX/H/R8RK
+	 ZqrkSMdEkjfO6mWvaBVSVbMehm4CTcQKQQceCFC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 017/183] platform/x86/amd: pmc: Drop SMU F/W match for Cezanne
+Subject: [PATCH 6.1 007/104] btrfs: avoid load/store tearing races when checking if an inode was logged
 Date: Sun,  7 Sep 2025 21:57:24 +0200
-Message-ID: <20250907195616.198376634@linuxfoundation.org>
+Message-ID: <20250907195607.864233106@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,272 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 5b9e07551faa7bb2f26cb039cc6e8d00bc4d0831 ]
+[ Upstream commit 986bf6ed44dff7fbae7b43a0882757ee7f5ba21b ]
 
-Chris reported that even on a BIOS that has a new enough SMU F/W
-version there is still a spurious IRQ1.  Although the solution was
-added to SMU F/W 64.66.0 it turns out there needs to be a matching
-SBIOS change to activate it.  Thus Linux shouldn't be avoiding the
-IRQ1 workaround on newer SMU F/W because there is no indication the
-BIOS change is in place.
+At inode_logged() we do a couple lockless checks for ->logged_trans, and
+these are generally safe except the second one in case we get a load or
+store tearing due to a concurrent call updating ->logged_trans (either at
+btrfs_log_inode() or later at inode_logged()).
 
-Drop the match for 64.66.0+ and instead match all RN/CZN/BRC (they
-all share same SMU F/W). Adjust the quirk infrastructure to allow
-quirking the workaround on or off and also adjust existing quirks
-to match properly.
+In the first case it's safe to compare to the current transaction ID since
+once ->logged_trans is set the current transaction, we never set it to a
+lower value.
 
-Unfortunately this may cause some systems that did have the SBIOS
-change in place to regress in keyboard wakeup but we don't have a
-way to know.  If a user reports a keyboard wakeup regression they can
-run with amd_pmc.disable_workarounds=1 to deactivate the workaround
-and share DMI data so that their system can be quirked not to use
-the workaround in the upstream kernel.
+In the second case, where we check if it's greater than zero, we are prone
+to load/store tearing races, since we can have a concurrent task updating
+to the current transaction ID with store tearing for example, instead of
+updating with a single 64 bits write, to update with two 32 bits writes or
+four 16 bits writes. In that case the reading side at inode_logged() could
+see a positive value that does not match the current transaction and then
+return a false negative.
 
-Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4449
-Tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20250724185156.1827592-1-superm1@kernel.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fix this by doing the second check while holding the inode's spinlock, add
+some comments about it too. Also add the data_race() annotation to the
+first check to avoid any reports from KCSAN (or similar tools) and comment
+about it.
+
+Fixes: 0f8ce49821de ("btrfs: avoid inode logging during rename and link when possible")
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 54 ++++++++++++++---------
- drivers/platform/x86/amd/pmc/pmc.c        | 13 ------
- 2 files changed, 34 insertions(+), 33 deletions(-)
+ fs/btrfs/tree-log.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index ded4c84f5ed14..7ffc659b27944 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -28,10 +28,15 @@ static struct quirk_entry quirk_spurious_8042 = {
- 	.spurious_8042 = true,
- };
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index f04eff44e8645..6e8e90bce0467 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -3344,15 +3344,32 @@ static int inode_logged(struct btrfs_trans_handle *trans,
+ 	struct btrfs_key key;
+ 	int ret;
  
-+static struct quirk_entry quirk_s2idle_spurious_8042 = {
-+	.s2idle_bug_mmio = FCH_PM_BASE + FCH_PM_SCRATCH,
-+	.spurious_8042 = true,
-+};
-+
- static const struct dmi_system_id fwbug_list[] = {
- 	{
- 		.ident = "L14 Gen2 AMD",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "20X5"),
-@@ -39,7 +44,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "T14s Gen2 AMD",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "20XF"),
-@@ -47,7 +52,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "X13 Gen2 AMD",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "20XH"),
-@@ -55,7 +60,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "T14 Gen2 AMD",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "20XK"),
-@@ -63,7 +68,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "T14 Gen1 AMD",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "20UD"),
-@@ -71,7 +76,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "T14 Gen1 AMD",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "20UE"),
-@@ -79,7 +84,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "T14s Gen1 AMD",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "20UH"),
-@@ -87,7 +92,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "T14s Gen1 AMD",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "20UJ"),
-@@ -95,7 +100,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "P14s Gen1 AMD",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "20Y1"),
-@@ -103,7 +108,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "P14s Gen2 AMD",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21A0"),
-@@ -111,7 +116,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "P14s Gen2 AMD",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21A1"),
-@@ -152,7 +157,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "IdeaPad 1 14AMN7",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82VF"),
-@@ -160,7 +165,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "IdeaPad 1 15AMN7",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82VG"),
-@@ -168,7 +173,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "IdeaPad 1 15AMN7",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82X5"),
-@@ -176,7 +181,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "IdeaPad Slim 3 14AMN8",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82XN"),
-@@ -184,7 +189,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	},
- 	{
- 		.ident = "IdeaPad Slim 3 15AMN8",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82XQ"),
-@@ -193,7 +198,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4434 */
- 	{
- 		.ident = "Lenovo Yoga 6 13ALC6",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82ND"),
-@@ -202,7 +207,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 	/* https://gitlab.freedesktop.org/drm/amd/-/issues/2684 */
- 	{
- 		.ident = "HP Laptop 15s-eq2xxx",
--		.driver_data = &quirk_s2idle_bug,
-+		.driver_data = &quirk_s2idle_spurious_8042,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "HP Laptop 15s-eq2xxx"),
-@@ -285,6 +290,16 @@ void amd_pmc_quirks_init(struct amd_pmc_dev *dev)
- {
- 	const struct dmi_system_id *dmi_id;
- 
+-	if (inode->logged_trans == trans->transid)
 +	/*
-+	 * IRQ1 may cause an interrupt during resume even without a keyboard
-+	 * press.
-+	 *
-+	 * Affects Renoir, Cezanne and Barcelo SoCs
-+	 *
-+	 * A solution is available in PMFW 64.66.0, but it must be activated by
-+	 * SBIOS. If SBIOS is known to have the fix a quirk can be added for
-+	 * a given system to avoid workaround.
++	 * Quick lockless call, since once ->logged_trans is set to the current
++	 * transaction, we never set it to a lower value anywhere else.
 +	 */
- 	if (dev->cpu_id == AMD_CPU_ID_CZN)
- 		dev->disable_8042_wakeup = true;
++	if (data_race(inode->logged_trans) == trans->transid)
+ 		return 1;
  
-@@ -295,6 +310,5 @@ void amd_pmc_quirks_init(struct amd_pmc_dev *dev)
- 	if (dev->quirks->s2idle_bug_mmio)
- 		pr_info("Using s2idle quirk to avoid %s platform firmware bug\n",
- 			dmi_id->ident);
--	if (dev->quirks->spurious_8042)
--		dev->disable_8042_wakeup = true;
-+	dev->disable_8042_wakeup = dev->quirks->spurious_8042;
- }
-diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
-index 0b9b23eb7c2c3..bd318fd02ccf4 100644
---- a/drivers/platform/x86/amd/pmc/pmc.c
-+++ b/drivers/platform/x86/amd/pmc/pmc.c
-@@ -530,19 +530,6 @@ static int amd_pmc_get_os_hint(struct amd_pmc_dev *dev)
- static int amd_pmc_wa_irq1(struct amd_pmc_dev *pdev)
- {
- 	struct device *d;
--	int rc;
--
--	/* cezanne platform firmware has a fix in 64.66.0 */
--	if (pdev->cpu_id == AMD_CPU_ID_CZN) {
--		if (!pdev->major) {
--			rc = amd_pmc_get_smu_version(pdev);
--			if (rc)
--				return rc;
--		}
--
--		if (pdev->major > 64 || (pdev->major == 64 && pdev->minor > 65))
--			return 0;
--	}
+ 	/*
+-	 * If logged_trans is not 0, then we know the inode logged was not logged
+-	 * in this transaction, so we can return false right away.
++	 * If logged_trans is not 0 and not trans->transid, then we know the
++	 * inode was not logged in this transaction, so we can return false
++	 * right away. We take the lock to avoid a race caused by load/store
++	 * tearing with a concurrent btrfs_log_inode() call or a concurrent task
++	 * in this function further below - an update to trans->transid can be
++	 * teared into two 32 bits updates for example, in which case we could
++	 * see a positive value that is not trans->transid and assume the inode
++	 * was not logged when it was.
+ 	 */
+-	if (inode->logged_trans > 0)
++	spin_lock(&inode->lock);
++	if (inode->logged_trans == trans->transid) {
++		spin_unlock(&inode->lock);
++		return 1;
++	} else if (inode->logged_trans > 0) {
++		spin_unlock(&inode->lock);
+ 		return 0;
++	}
++	spin_unlock(&inode->lock);
  
- 	d = bus_find_device_by_name(&serio_bus, NULL, "serio0");
- 	if (!d)
+ 	/*
+ 	 * If no log tree was created for this root in this transaction, then
 -- 
 2.50.1
 
