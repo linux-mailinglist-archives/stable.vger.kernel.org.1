@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-178272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3244B47DF2
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F40B47E69
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AEE817D4EC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F12B1189FC0E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A64B1B424F;
-	Sun,  7 Sep 2025 20:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F181120E005;
+	Sun,  7 Sep 2025 20:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjwxBvBC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbkHunku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C211A2389;
-	Sun,  7 Sep 2025 20:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA961B4247;
+	Sun,  7 Sep 2025 20:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276310; cv=none; b=mcRKDLgQp3O6iUW5ReBcwNutu5ONCfiS9z7BdiCAsnZsRrm1dgmx4ce/RTVAuIw/jtGoSN4/WlgrIpL7sQN/ne66Mn9xIem1KvdSdCT293xylReAqphlCjaw2jbyikoQrhoBEy8HCux6cs0g7rTl1N152DaEYaJ2mrE0ALlsmGE=
+	t=1757276632; cv=none; b=dzi6G95zQ23PdMsUxgqiGpWfE5jRfazmdAN3E+6ONERSOl+6oW9SkdjfXDKuMqYGubmQY2d/fBbGY2SNWvgWHqyTt5zzpSDrY9zA/VN1/QpfNePXQ94ueOpN49IpMR8OzN8DrqshyDuFQSL11TTRty2r9776wSVlkF+G3bQKsRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276310; c=relaxed/simple;
-	bh=gS3W3mDP0lslAeUayjZJgePr5IoB1uU+FSyYPoM1WgE=;
+	s=arc-20240116; t=1757276632; c=relaxed/simple;
+	bh=0FXYVwPz2OiapgqyhfXW6zlsFaGK4DYuN6M1Podmavg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XhWYyIznZUXWlKouhWHDL1LBpd2CmieWijauraVxm9tTxfqAwng04OkpcYdp4VyPmqepKnzWbdjzjlBjCWhlFZMi1Th4OEwIzJ/kh2WF8TOLPUEFx1uiVrvQSaa4Y0LPsPTBv5IVOke+wAR7JOT3KSq5sQCw94WcKU81hykqZ/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjwxBvBC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E63EC4CEF0;
-	Sun,  7 Sep 2025 20:18:29 +0000 (UTC)
+	 MIME-Version; b=D31H1Sq0qVqtPER4W3MHKArnAGP+wCDhd1wxIArM9+GwyBpO4DhjaCUufuCS0KD/++2KKsOOzH3ajuy0fklNEy3Ha48nlnnFRRisLbMVzFXtoU4sllvSKhI/87TEL0L+AePk7Sdk3CJLvRmVO3jpDmFZsrPgS/th/HSFDdvThjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbkHunku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A0DC4CEF0;
+	Sun,  7 Sep 2025 20:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276310;
-	bh=gS3W3mDP0lslAeUayjZJgePr5IoB1uU+FSyYPoM1WgE=;
+	s=korg; t=1757276632;
+	bh=0FXYVwPz2OiapgqyhfXW6zlsFaGK4DYuN6M1Podmavg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cjwxBvBColpukIpiNDHgvbhxZSiH0nowo0SBwlL8eLNsiqRekky5EZKSBuzlM92vd
-	 K/nOL9gHOF8VXuNh9aVWO95jLEFmqq4x16J3IxkK8KFE5AmdT90Fv6UngiOMCSKL1W
-	 Ny00wytA7QCCwMlpmovFvMoiJbvKx0fwc0jRhcvE=
+	b=vbkHunku+Ds044XRpknh4BtZD0hb1zwajFIeHQiQHesrmvaEmUbeJXvD/9BBlqkVO
+	 5yLIXhJAymYCfzIZfcgfa5lr0GQEfRSxl8aoby+VlVdR6/Ktb6Bmi0a1UVJxjUdrzZ
+	 rpYGhjXpZVNY81/4w3WjpRMVZ5z2aW+AVEVZ3zTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/104] i2c: designware: Fix an error handling path in i2c_dw_pci_probe()
+	Nathan Chancellor <nathan@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.6 062/121] wifi: mt76: mt7996: Initialize hdr before passing to skb_put_data()
 Date: Sun,  7 Sep 2025 21:58:18 +0200
-Message-ID: <20250907195609.262996262@linuxfoundation.org>
+Message-ID: <20250907195611.429223159@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 1cfe51ef07ca3286581d612debfb0430eeccbb65 ]
+commit 87b07a1fbc6b5c23d3b3584ab4288bc9106d3274 upstream.
 
-If navi_amd_register_client() fails, the previous i2c_dw_probe() call
-should be undone by a corresponding i2c_del_adapter() call, as already done
-in the remove function.
+A new warning in clang [1] points out a couple of places where a hdr
+variable is not initialized then passed along to skb_put_data().
 
-Fixes: 17631e8ca2d3 ("i2c: designware: Add driver support for AMD NAVI GPU")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: <stable@vger.kernel.org> # v5.13+
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/fcd9651835a32979df8802b2db9504c523a8ebbb.1747158983.git.christophe.jaillet@wanadoo.fr
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:1894:21: warning: variable 'hdr' is uninitialized when passed as a const pointer argument here [-Wuninitialized-const-pointer]
+   1894 |         skb_put_data(skb, &hdr, sizeof(hdr));
+        |                            ^~~
+  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:3386:21: warning: variable 'hdr' is uninitialized when passed as a const pointer argument here [-Wuninitialized-const-pointer]
+   3386 |         skb_put_data(skb, &hdr, sizeof(hdr));
+        |                            ^~~
+
+Zero initialize these headers as done in other places in the driver when
+there is nothing stored in the header.
+
+Cc: stable@vger.kernel.org
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2104
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://patch.msgid.link/20250715-mt7996-fix-uninit-const-pointer-v1-1-b5d8d11d7b78@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-designware-pcidrv.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/i2c/busses/i2c-designware-pcidrv.c
-+++ b/drivers/i2c/busses/i2c-designware-pcidrv.c
-@@ -337,9 +337,11 @@ static int i2c_dw_pci_probe(struct pci_d
- 
- 	if ((dev->flags & MODEL_MASK) == MODEL_AMD_NAVI_GPU) {
- 		dev->slave = i2c_new_ccgx_ucsi(&dev->adapter, dev->irq, &dgpu_node);
--		if (IS_ERR(dev->slave))
-+		if (IS_ERR(dev->slave)) {
-+			i2c_del_adapter(&dev->adapter);
- 			return dev_err_probe(dev->dev, PTR_ERR(dev->slave),
- 					     "register UCSI failed\n");
-+		}
- 	}
- 
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, 1000);
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1616,8 +1616,8 @@ mt7996_mcu_get_mmps_mode(enum ieee80211_
+ int mt7996_mcu_set_fixed_rate_ctrl(struct mt7996_dev *dev,
+ 				   void *data, u16 version)
+ {
++	struct uni_header hdr = {};
+ 	struct ra_fixed_rate *req;
+-	struct uni_header hdr;
+ 	struct sk_buff *skb;
+ 	struct tlv *tlv;
+ 	int len;
+@@ -2638,7 +2638,7 @@ int mt7996_mcu_set_hdr_trans(struct mt79
+ {
+ 	struct {
+ 		u8 __rsv[4];
+-	} __packed hdr;
++	} __packed hdr = {};
+ 	struct hdr_trans_blacklist *req_blacklist;
+ 	struct hdr_trans_en *req_en;
+ 	struct sk_buff *skb;
 
 
 
