@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-178503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A396B47EEF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B4BB47F80
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE6F93B20B9
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:30:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF8CB1B201AF
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A7120D51C;
-	Sun,  7 Sep 2025 20:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D935126B2AD;
+	Sun,  7 Sep 2025 20:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWfakl+O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1myebY2u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F43418DF89;
-	Sun,  7 Sep 2025 20:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CC31DF246;
+	Sun,  7 Sep 2025 20:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277045; cv=none; b=F8xkksfHmI28l7UDu50GVRjUS6vVi++36X5h+OLZNlVZNzbB5N4UEW6wemFuMgEcoJ75GNuKX9jBiL3JysacJOFHEs6fOUZXKzW3J0z3Dz8QHMToVazK3Fqtci4/Rt/lTpp6fgc/MhH3ewqrAS+E1C9M4HxkTgANbcCMriExOFk=
+	t=1757277500; cv=none; b=EdVPTh5a9O/iJ+hsTTDa6XfwzQdd4qCkucVT2LetBsiwP3JlqpPDt2iq1LP5LNU8OkXQfhkxLsJCkiqnjrz284JgqB0Q1GVoJ6IU3SqeF6LUZ8c866EtbrbkvYLqPcd9fgBGWvnpooJbhUET9oBuGnychZsX3LnjrwlmDZEzREI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277045; c=relaxed/simple;
-	bh=HMxoWiCF6jn4S1sm0qHpSEdaycKwDZEDVCFa1G0xQe4=;
+	s=arc-20240116; t=1757277500; c=relaxed/simple;
+	bh=oO6NO3amkGwQmS3g6AS6dA6jwrzJa6uzUJc51YmRvTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JKEE9x1li5YKSDI+d5tri2ZZGNTlaU6LkM+jhdrR3MR0tugYwUgeTlySBh4AfwllwpswqSbAmM3qhan6JIo9kE3Wd9Wh4cnm5wyXycsJhCDV1VAGih3mDxFoqT1KsJmWUoJXetCWPQG4Mh7XpxhToFpfMlFMUgGyxy4kBQzbSNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWfakl+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AF8C4CEF0;
-	Sun,  7 Sep 2025 20:30:44 +0000 (UTC)
+	 MIME-Version; b=gyYbxds99YXOn3QYvaPjwW/OJgmwv51gYsbZG73oCLiDgf7PhJsC9/5bs15UpmvJx41te0SqQ1ckw/LsaxUNzu3WjzyYFX/tH/kDmnInShJnbNWVEsNbC/w/pbBMCiEUzOGfW+1Z7DAFbzHG5qxUJzFpv2a54s0tagQog2h9nMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1myebY2u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAFCC4CEF0;
+	Sun,  7 Sep 2025 20:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277045;
-	bh=HMxoWiCF6jn4S1sm0qHpSEdaycKwDZEDVCFa1G0xQe4=;
+	s=korg; t=1757277500;
+	bh=oO6NO3amkGwQmS3g6AS6dA6jwrzJa6uzUJc51YmRvTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iWfakl+O84tHFO+dgzRt6eeKQRzWrOTTAFaDw5BjRqZO2zQqlA0nIWUlIY5i+tf5O
-	 iBwNaRbZ0ricZy+OyH+/RaK87AW/wTUvP6sA8caGwB9a6bCfbJd0B1rbJirYM59BBu
-	 7ZqWlEEmQxiMRk0EzSxAEAPqHNYsOZSr9i5ctS5I=
+	b=1myebY2unhzuEgV4vnf/ocPmpJh3CvN1tKUmpR9jIBhcAvJQAtlqNfBjXvUktK5U8
+	 grz+nmncF5qVYXFctXzFAvDJj7JUAkpmDta0TBM277D2twjrS8SS37kA5Rv28t8AzY
+	 I8vbgHsnkbrs1YJrIO6NlQ4jbIxPq706yclD/fFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marlin Cremers <mcremers@cloudbear.nl>,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chad Monroe <chad.monroe@adtran.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 067/175] vxlan: Fix NPD when refreshing an FDB entry with a nexthop object
+Subject: [PATCH 6.16 035/183] wifi: mt76: mt7996: disable beacons when going offchannel
 Date: Sun,  7 Sep 2025 21:57:42 +0200
-Message-ID: <20250907195616.421306498@linuxfoundation.org>
+Message-ID: <20250907195616.608516434@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,120 +62,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 6ead38147ebb813f08be6ea8ef547a0e4c09559a ]
+[ Upstream commit f30906c55a400a9b7fc677e3f4c614b9069bd4a8 ]
 
-VXLAN FDB entries can point to either a remote destination or an FDB
-nexthop group. The latter is usually used in EVPN deployments where
-learning is disabled.
+Avoid leaking beacons on unrelated channels during scanning/roc
 
-However, when learning is enabled, an incoming packet might try to
-refresh an FDB entry that points to an FDB nexthop group and therefore
-does not have a remote. Such packets should be dropped, but they are
-only dropped after dereferencing the non-existent remote, resulting in a
-NPD [1] which can be reproduced using [2].
-
-Fix by dropping such packets earlier. Remove the misleading comment from
-first_remote_rcu().
-
-[1]
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-[...]
-CPU: 13 UID: 0 PID: 361 Comm: mausezahn Not tainted 6.17.0-rc1-virtme-g9f6b606b6b37 #1 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc41 04/01/2014
-RIP: 0010:vxlan_snoop+0x98/0x1e0
-[...]
-Call Trace:
- <TASK>
- vxlan_encap_bypass+0x209/0x240
- encap_bypass_if_local+0xb1/0x100
- vxlan_xmit_one+0x1375/0x17e0
- vxlan_xmit+0x6b4/0x15f0
- dev_hard_start_xmit+0x5d/0x1c0
- __dev_queue_xmit+0x246/0xfd0
- packet_sendmsg+0x113a/0x1850
- __sock_sendmsg+0x38/0x70
- __sys_sendto+0x126/0x180
- __x64_sys_sendto+0x24/0x30
- do_syscall_64+0xa4/0x260
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-[2]
- #!/bin/bash
-
- ip address add 192.0.2.1/32 dev lo
- ip address add 192.0.2.2/32 dev lo
-
- ip nexthop add id 1 via 192.0.2.3 fdb
- ip nexthop add id 10 group 1 fdb
-
- ip link add name vx0 up type vxlan id 10010 local 192.0.2.1 dstport 12345 localbypass
- ip link add name vx1 up type vxlan id 10020 local 192.0.2.2 dstport 54321 learning
-
- bridge fdb add 00:11:22:33:44:55 dev vx0 self static dst 192.0.2.2 port 54321 vni 10020
- bridge fdb add 00:aa:bb:cc:dd:ee dev vx1 self static nhid 10
-
- mausezahn vx0 -a 00:aa:bb:cc:dd:ee -b 00:11:22:33:44:55 -c 1 -q
-
-Fixes: 1274e1cc4226 ("vxlan: ecmp support for mac fdb entries")
-Reported-by: Marlin Cremers <mcremers@cloudbear.nl>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250901065035.159644-2-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c56d6edebc1f ("wifi: mt76: mt7996: use emulated hardware scan support")
+Reported-by: Chad Monroe <chad.monroe@adtran.com>
+Link: https://patch.msgid.link/20250813121106.81559-1-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c    | 8 ++++----
- drivers/net/vxlan/vxlan_private.h | 4 +---
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7996/mac.c   | 46 +++++++++++--------
+ .../net/wireless/mediatek/mt76/mt7996/main.c  |  5 ++
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 11 +++--
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    |  1 +
+ 4 files changed, 42 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index c4ce577eb0908..58590ddbc6a15 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1460,6 +1460,10 @@ static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
- 	if (likely(f)) {
- 		struct vxlan_rdst *rdst = first_remote_rcu(f);
- 
-+		/* Don't override an fdb with nexthop with a learnt entry */
-+		if (rcu_access_pointer(f->nh))
-+			return SKB_DROP_REASON_VXLAN_ENTRY_EXISTS;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 37b21ad828b96..f675cf537898a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -1696,43 +1696,53 @@ mt7996_wait_reset_state(struct mt7996_dev *dev, u32 state)
+ static void
+ mt7996_update_vif_beacon(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ {
+-	struct ieee80211_hw *hw = priv;
++	struct ieee80211_bss_conf *link_conf;
++	struct mt7996_phy *phy = priv;
++	struct mt7996_dev *dev = phy->dev;
++	unsigned int link_id;
 +
- 		if (likely(vxlan_addr_equal(&rdst->remote_ip, src_ip) &&
- 			   rdst->remote_ifindex == ifindex))
- 			return SKB_NOT_DROPPED_YET;
-@@ -1468,10 +1472,6 @@ static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
- 		if (f->state & (NUD_PERMANENT | NUD_NOARP))
- 			return SKB_DROP_REASON_VXLAN_ENTRY_EXISTS;
  
--		/* Don't override an fdb with nexthop with a learnt entry */
--		if (rcu_access_pointer(f->nh))
--			return SKB_DROP_REASON_VXLAN_ENTRY_EXISTS;
--
- 		if (net_ratelimit())
- 			netdev_info(dev,
- 				    "%pM migrated from %pIS to %pIS\n",
-diff --git a/drivers/net/vxlan/vxlan_private.h b/drivers/net/vxlan/vxlan_private.h
-index 76a351a997d51..c6279ef98a5c2 100644
---- a/drivers/net/vxlan/vxlan_private.h
-+++ b/drivers/net/vxlan/vxlan_private.h
-@@ -56,9 +56,7 @@ static inline struct hlist_head *vs_head(struct net *net, __be16 port)
- 	return &vn->sock_list[hash_32(ntohs(port), PORT_HASH_BITS)];
+ 	switch (vif->type) {
+ 	case NL80211_IFTYPE_MESH_POINT:
+ 	case NL80211_IFTYPE_ADHOC:
+ 	case NL80211_IFTYPE_AP:
+-		mt7996_mcu_add_beacon(hw, vif, &vif->bss_conf);
+ 		break;
+ 	default:
+-		break;
++		return;
++	}
++
++	for_each_vif_active_link(vif, link_conf, link_id) {
++		struct mt7996_vif_link *link;
++
++		link = mt7996_vif_link(dev, vif, link_id);
++		if (!link || link->phy != phy)
++			continue;
++
++		mt7996_mcu_add_beacon(dev->mt76.hw, vif, link_conf);
+ 	}
  }
  
--/* First remote destination for a forwarding entry.
-- * Guaranteed to be non-NULL because remotes are never deleted.
-- */
-+/* First remote destination for a forwarding entry. */
- static inline struct vxlan_rdst *first_remote_rcu(struct vxlan_fdb *fdb)
++void mt7996_mac_update_beacons(struct mt7996_phy *phy)
++{
++	ieee80211_iterate_active_interfaces(phy->mt76->hw,
++					    IEEE80211_IFACE_ITER_RESUME_ALL,
++					    mt7996_update_vif_beacon, phy);
++}
++
+ static void
+ mt7996_update_beacons(struct mt7996_dev *dev)
  {
- 	if (rcu_access_pointer(fdb->nh))
+ 	struct mt76_phy *phy2, *phy3;
+ 
+-	ieee80211_iterate_active_interfaces(dev->mt76.hw,
+-					    IEEE80211_IFACE_ITER_RESUME_ALL,
+-					    mt7996_update_vif_beacon, dev->mt76.hw);
++	mt7996_mac_update_beacons(&dev->phy);
+ 
+ 	phy2 = dev->mt76.phys[MT_BAND1];
+-	if (!phy2)
+-		return;
+-
+-	ieee80211_iterate_active_interfaces(phy2->hw,
+-					    IEEE80211_IFACE_ITER_RESUME_ALL,
+-					    mt7996_update_vif_beacon, phy2->hw);
++	if (phy2)
++		mt7996_mac_update_beacons(phy2->priv);
+ 
+ 	phy3 = dev->mt76.phys[MT_BAND2];
+-	if (!phy3)
+-		return;
+-
+-	ieee80211_iterate_active_interfaces(phy3->hw,
+-					    IEEE80211_IFACE_ITER_RESUME_ALL,
+-					    mt7996_update_vif_beacon, phy3->hw);
++	if (phy3)
++		mt7996_mac_update_beacons(phy3->priv);
+ }
+ 
+ void mt7996_tx_token_put(struct mt7996_dev *dev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index f41b2c98bc451..f6590ef85c0d0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -516,6 +516,9 @@ int mt7996_set_channel(struct mt76_phy *mphy)
+ 	struct mt7996_phy *phy = mphy->priv;
+ 	int ret;
+ 
++	if (mphy->offchannel)
++		mt7996_mac_update_beacons(phy);
++
+ 	ret = mt7996_mcu_set_chan_info(phy, UNI_CHANNEL_SWITCH);
+ 	if (ret)
+ 		goto out;
+@@ -533,6 +536,8 @@ int mt7996_set_channel(struct mt76_phy *mphy)
+ 
+ 	mt7996_mac_reset_counters(phy);
+ 	phy->noise = 0;
++	if (!mphy->offchannel)
++		mt7996_mac_update_beacons(phy);
+ 
+ out:
+ 	ieee80211_queue_delayed_work(mphy->hw, &mphy->mac_work,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index dd4b7b8c34ea1..655950276840d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -2755,13 +2755,15 @@ int mt7996_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			  struct ieee80211_bss_conf *link_conf)
+ {
+ 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
+-	struct mt76_vif_link *mlink = mt76_vif_conf_link(&dev->mt76, vif, link_conf);
++	struct mt7996_vif_link *link = mt7996_vif_conf_link(dev, vif, link_conf);
++	struct mt76_vif_link *mlink = link ? &link->mt76 : NULL;
+ 	struct ieee80211_mutable_offsets offs;
+ 	struct ieee80211_tx_info *info;
+ 	struct sk_buff *skb, *rskb;
+ 	struct tlv *tlv;
+ 	struct bss_bcn_content_tlv *bcn;
+ 	int len, extra_len = 0;
++	bool enabled = link_conf->enable_beacon;
+ 
+ 	if (link_conf->nontransmitted)
+ 		return 0;
+@@ -2769,13 +2771,16 @@ int mt7996_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	if (!mlink)
+ 		return -EINVAL;
+ 
++	if (link->phy && link->phy->mt76->offchannel)
++		enabled = false;
++
+ 	rskb = __mt7996_mcu_alloc_bss_req(&dev->mt76, mlink,
+ 					  MT7996_MAX_BSS_OFFLOAD_SIZE);
+ 	if (IS_ERR(rskb))
+ 		return PTR_ERR(rskb);
+ 
+ 	skb = ieee80211_beacon_get_template(hw, vif, &offs, link_conf->link_id);
+-	if (link_conf->enable_beacon && !skb) {
++	if (enabled && !skb) {
+ 		dev_kfree_skb(rskb);
+ 		return -EINVAL;
+ 	}
+@@ -2794,7 +2799,7 @@ int mt7996_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	len = ALIGN(sizeof(*bcn) + MT_TXD_SIZE + extra_len, 4);
+ 	tlv = mt7996_mcu_add_uni_tlv(rskb, UNI_BSS_INFO_BCN_CONTENT, len);
+ 	bcn = (struct bss_bcn_content_tlv *)tlv;
+-	bcn->enable = link_conf->enable_beacon;
++	bcn->enable = enabled;
+ 	if (!bcn->enable)
+ 		goto out;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 33ac16b64ef11..8509d508e1e19 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -732,6 +732,7 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 			   struct sk_buff *skb, struct mt76_wcid *wcid,
+ 			   struct ieee80211_key_conf *key, int pid,
+ 			   enum mt76_txq_id qid, u32 changed);
++void mt7996_mac_update_beacons(struct mt7996_phy *phy);
+ void mt7996_mac_set_coverage_class(struct mt7996_phy *phy);
+ void mt7996_mac_work(struct work_struct *work);
+ void mt7996_mac_reset_work(struct work_struct *work);
 -- 
 2.50.1
 
