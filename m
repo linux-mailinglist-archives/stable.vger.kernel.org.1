@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-178573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1748B47F35
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:34:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC544B47DB2
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:15:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A958617F8F8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:34:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92B3F188A8E8
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89AAF1DE8AF;
-	Sun,  7 Sep 2025 20:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BDE1B424F;
+	Sun,  7 Sep 2025 20:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySjwwS0J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yx6wrqf1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484D31DF246;
-	Sun,  7 Sep 2025 20:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED3420E005;
+	Sun,  7 Sep 2025 20:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277268; cv=none; b=F94STQMnQoRH4E2e0/SMhnVMah2QBQrarCwfiyDISzfdtNVV7xDJLxuUFDSI7Ds2AU3etC76uzJym9MNNw3MiuGvFErAawqhFH0bCH7MuV20E979U+2thYkSPmrLyXGOiSB19SAcirZSN24Ki62idVURpMP2T7aCJRn1uhdKwc4=
+	t=1757276108; cv=none; b=Q+reI0+bNfzQu6Mzl+J8VLsWhLRPAt6XzF7JsTp0y0dJM6HVIu9DO84dBtGE6Ju4d2C8NI/8PwdpoSeDnYtJjm+W6MAx3P4d64NRlE2YtPPBU1QqW8rK9jGOjQa1G70smAmSOiPFHprJ5vsIAjexZ2DX10bhN50k+4Qp1OdXbJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277268; c=relaxed/simple;
-	bh=S/Tw3cD5+OdjWsFvhwUnjIJaWuY+X2JkHaF4r2vQOPQ=;
+	s=arc-20240116; t=1757276108; c=relaxed/simple;
+	bh=PfwQK2KPcMbJSgo+LFjja/hs4gntIpl1aT8HpzZRyro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CNGKDycsZ+0a2cIsrkKxe5vpgdeUCggs5JitiulKAC9rGG4KYYVO+XKUQWGyC9ZffTjWqvUZO0JmIztOj6II2CfhKSHCrMl5nhqR2dZVr7gv+CzPcbMW2d9SxqB0vh+U+jn4mIfsr+gr9LAGATQpQeyvPjwi5lJ3tnfEodbfTko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySjwwS0J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C170DC4CEF0;
-	Sun,  7 Sep 2025 20:34:27 +0000 (UTC)
+	 MIME-Version; b=K7d2CAQ8+27MtTAJV3RFqZlEsmVnIqSMaD1xninLLYNQ9DK+24iG+MnH5eofO7IXiJH5XLoPbCq0HZir6WMw8rDJgGjL88+my5h9O9RjVJtg4nlTtYUZVOIEhpmxEa5NDA1EjETajJlVJ2t/K6yQI+0Sodo8Fqpmk0ePsgx4eGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yx6wrqf1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0DFC4CEF0;
+	Sun,  7 Sep 2025 20:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277268;
-	bh=S/Tw3cD5+OdjWsFvhwUnjIJaWuY+X2JkHaF4r2vQOPQ=;
+	s=korg; t=1757276108;
+	bh=PfwQK2KPcMbJSgo+LFjja/hs4gntIpl1aT8HpzZRyro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ySjwwS0JmPnu+/s6jNMj4T26FUs34G+8bdjrqgvy768r9DHnTJh4u4GqcKN5gPY9q
-	 Y7AgB+k+E4E4mjYbRDdLwJ4DbSFbVAIHKjtSgsWyqTJSFFXdxHn9l9eaZwUWFPRSrm
-	 YBhGVVCMyUShVkJjAnwfBNPgBfsha164JtQN3a50=
+	b=yx6wrqf1XtqXWDGja6NL2RPQjfTenLK6Dn4gZ6bPW+EXrNa/u3yz7sQuPPkxkRvdi
+	 nIxrCq4kjetKj0so066DKe2tgzho2InOWf/F9Z3UwTiMnJHt2ZQ3EGVZFxqOsXxwJc
+	 KZR4q7sH1MKnuFedpquZh0w/MFqi6daqLNDY6LBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 131/175] ext4: define ext4_journal_destroy wrapper
+	kernel test robot <lkp@intel.com>,
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 64/64] dmaengine: mediatek: Fix a flag reuse error in mtk_cqdma_tx_status()
 Date: Sun,  7 Sep 2025 21:58:46 +0200
-Message-ID: <20250907195617.955445603@linuxfoundation.org>
+Message-ID: <20250907195605.181810792@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-commit 5a02a6204ca37e7c22fbb55a789c503f05e8e89a upstream.
+[ Upstream commit 8eba2187391e5ab49940cd02d6bd45a5617f4daf ]
 
-Define an ext4 wrapper over jbd2_journal_destroy to make sure we
-have consistent behavior during journal destruction. This will also
-come useful in the next patch where we add some ext4 specific logic
-in the destroy path.
+Fixed a flag reuse bug in the mtk_cqdma_tx_status() function.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/c3ba78c5c419757e6d5f2d8ebb4a8ce9d21da86a.1742279837.git.ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 157ae5ffd76a ("dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505270641.MStzJUfU-lkp@intel.com/
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Reviewed-by: Eugen Hristev <eugen.hristev@linaro.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250606090017.5436-1-chenqiuji666@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ext4_jbd2.h |   14 ++++++++++++++
- fs/ext4/super.c     |   16 ++++++----------
- 2 files changed, 20 insertions(+), 10 deletions(-)
+ drivers/dma/mediatek/mtk-cqdma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/ext4_jbd2.h
-+++ b/fs/ext4/ext4_jbd2.h
-@@ -513,4 +513,18 @@ static inline int ext4_should_dioread_no
- 	return 1;
- }
+diff --git a/drivers/dma/mediatek/mtk-cqdma.c b/drivers/dma/mediatek/mtk-cqdma.c
+index 39e902b279e64..60d1d56b98317 100644
+--- a/drivers/dma/mediatek/mtk-cqdma.c
++++ b/drivers/dma/mediatek/mtk-cqdma.c
+@@ -450,9 +450,9 @@ static enum dma_status mtk_cqdma_tx_status(struct dma_chan *c,
+ 		return ret;
  
-+/*
-+ * Pass journal explicitly as it may not be cached in the sbi->s_journal in some
-+ * cases
-+ */
-+static inline int ext4_journal_destroy(struct ext4_sb_info *sbi, journal_t *journal)
-+{
-+	int err = 0;
-+
-+	err = jbd2_journal_destroy(journal);
-+	sbi->s_journal = NULL;
-+
-+	return err;
-+}
-+
- #endif	/* _EXT4_JBD2_H */
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1312,8 +1312,7 @@ static void ext4_put_super(struct super_
+ 	spin_lock_irqsave(&cvc->pc->lock, flags);
+-	spin_lock_irqsave(&cvc->vc.lock, flags);
++	spin_lock(&cvc->vc.lock);
+ 	vd = mtk_cqdma_find_active_desc(c, cookie);
+-	spin_unlock_irqrestore(&cvc->vc.lock, flags);
++	spin_unlock(&cvc->vc.lock);
+ 	spin_unlock_irqrestore(&cvc->pc->lock, flags);
  
- 	if (sbi->s_journal) {
- 		aborted = is_journal_aborted(sbi->s_journal);
--		err = jbd2_journal_destroy(sbi->s_journal);
--		sbi->s_journal = NULL;
-+		err = ext4_journal_destroy(sbi, sbi->s_journal);
- 		if ((err < 0) && !aborted) {
- 			ext4_abort(sb, -err, "Couldn't clean up the journal");
- 		}
-@@ -4957,8 +4956,7 @@ static int ext4_load_and_init_journal(st
- out:
- 	/* flush s_sb_upd_work before destroying the journal. */
- 	flush_work(&sbi->s_sb_upd_work);
--	jbd2_journal_destroy(sbi->s_journal);
--	sbi->s_journal = NULL;
-+	ext4_journal_destroy(sbi, sbi->s_journal);
- 	return -EINVAL;
- }
- 
-@@ -5649,8 +5647,7 @@ failed_mount_wq:
- 	if (sbi->s_journal) {
- 		/* flush s_sb_upd_work before journal destroy. */
- 		flush_work(&sbi->s_sb_upd_work);
--		jbd2_journal_destroy(sbi->s_journal);
--		sbi->s_journal = NULL;
-+		ext4_journal_destroy(sbi, sbi->s_journal);
- 	}
- failed_mount3a:
- 	ext4_es_unregister_shrinker(sbi);
-@@ -5958,7 +5955,7 @@ static journal_t *ext4_open_dev_journal(
- 	return journal;
- 
- out_journal:
--	jbd2_journal_destroy(journal);
-+	ext4_journal_destroy(EXT4_SB(sb), journal);
- out_bdev:
- 	bdev_fput(bdev_file);
- 	return ERR_PTR(errno);
-@@ -6075,8 +6072,7 @@ static int ext4_load_journal(struct supe
- 	EXT4_SB(sb)->s_journal = journal;
- 	err = ext4_clear_journal_err(sb, es);
- 	if (err) {
--		EXT4_SB(sb)->s_journal = NULL;
--		jbd2_journal_destroy(journal);
-+		ext4_journal_destroy(EXT4_SB(sb), journal);
- 		return err;
- 	}
- 
-@@ -6094,7 +6090,7 @@ static int ext4_load_journal(struct supe
- 	return 0;
- 
- err_out:
--	jbd2_journal_destroy(journal);
-+	ext4_journal_destroy(EXT4_SB(sb), journal);
- 	return err;
- }
- 
+ 	if (vd) {
+-- 
+2.51.0
+
 
 
 
