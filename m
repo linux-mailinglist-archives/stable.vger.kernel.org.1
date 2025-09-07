@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-178262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB525B47DE8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8AB6B47D54
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA809189EAF0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37A901896647
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BB21C6FFA;
-	Sun,  7 Sep 2025 20:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBD7284883;
+	Sun,  7 Sep 2025 20:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BXmS8eG6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFBelXWT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81D814BFA2;
-	Sun,  7 Sep 2025 20:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0BD1CDFAC;
+	Sun,  7 Sep 2025 20:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276278; cv=none; b=pHGa4BsUfFWL8aM3dUIx1M67nADm2BTrhQbyvDrC896j4idyPXIIv9Ofs9jJMz/3YJibsZTLK5h1L+EBvgrNuOwIvrsFKAsHnjPGa6vSFuzAr+yNOO68BeNgkZAuWdMuPKVVxA05K22Wt0/hkM/nhuLL75pFMdmmY7nNe9aNt5M=
+	t=1757275825; cv=none; b=j8I57dxzlXfvc2mNITOTus13lClb1TczKhb1LZSaLba30KRFPQ59mD6OhcAdkHGrf1MHO2OutKVx8bL6/CNM1eQjLq6lCfxQKTG056Z9Bv3CC3F6NIVoG1npNJudpKmw9kNMAU4TZHx+JJHm4+kDmb9Bohfmc+e2Q4FGPAQdQj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276278; c=relaxed/simple;
-	bh=ChCpEGZGyEQ9YMuFvcmu7GPLbB+FArCMCnIQ72d9Owo=;
+	s=arc-20240116; t=1757275825; c=relaxed/simple;
+	bh=bWFeUWwborG5GdIdPVfmwyTiCIeKyJ/Twc2ZUpWCeSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oUah0NTZyPNU4Hzl44tKzB4ThGpL7Dw35Mrjg/bs1/mlTpuDdtTOBpvYhkt3yrx9ma3GHYOBV+pMecEihfDXIBKbZPJ+pZhb8lICZfMqXk7IPqjvNIjRST/7DZKSWVlpcXy12hoANQwX+eqG7Ug2JJVmDtmhF6yTy5oyPpIu1wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BXmS8eG6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A577C4CEF0;
-	Sun,  7 Sep 2025 20:17:57 +0000 (UTC)
+	 MIME-Version; b=KSINkqauvSiGRBSnGMcqv1AObNfF39AzEYaf7BtY9X97yGnwl4nbWUHTy66jSdEI4U+NiL0/TcJnDJMGWC9+lhi/yeXVw87CQwZMz7B3Eng3fSWP4901JBrUFKzCc5XqQxvzN6kFrYXpqU4gDCsmIJJe/M1VM8cSI8O3CoK3Qew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFBelXWT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B962C4CEF0;
+	Sun,  7 Sep 2025 20:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276278;
-	bh=ChCpEGZGyEQ9YMuFvcmu7GPLbB+FArCMCnIQ72d9Owo=;
+	s=korg; t=1757275825;
+	bh=bWFeUWwborG5GdIdPVfmwyTiCIeKyJ/Twc2ZUpWCeSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BXmS8eG6HiSZLMpx1NhLO+pyTeoVzL+z/qsAtVFBShdrFzkN28Qv9vSrqOwr+Ijtg
-	 EjpS3MzT80c2HLhbHQpQSWOoMFct3IkOILl01Uc0PPLPMy8tMvKG3zfBHstBYjHSuQ
-	 jbco/0uz8nwcsR34lgX0ixFQNsoCPn5oFEBHz6t8=
+	b=EFBelXWTAqcyhCWJspNAEyecU/DDsC12Tl6VWF06kXqjVy+8/UmSgnNp2ZUSyYRpq
+	 wEjijfWjRQIfItKkkLTmD9WUeOl6nxpctQU7pqnvwJI+YJFbtnMEaAwtwRrR2g4ara
+	 ME0SMohs+jPTd1d+enX9zWUARyAV+j9K4n9b3iwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Vitaly Lifshits <vitaly.lifshits@intel.com>,
 	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.1 052/104] e1000e: fix heap overflow in e1000_set_eeprom
+Subject: [PATCH 5.4 23/45] e1000e: fix heap overflow in e1000_set_eeprom
 Date: Sun,  7 Sep 2025 21:58:09 +0200
-Message-ID: <20250907195609.037868703@linuxfoundation.org>
+Message-ID: <20250907195601.630505520@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -90,7 +90,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/net/ethernet/intel/e1000e/ethtool.c
 +++ b/drivers/net/ethernet/intel/e1000e/ethtool.c
-@@ -559,12 +559,12 @@ static int e1000_set_eeprom(struct net_d
+@@ -552,12 +552,12 @@ static int e1000_set_eeprom(struct net_d
  {
  	struct e1000_adapter *adapter = netdev_priv(netdev);
  	struct e1000_hw *hw = &adapter->hw;
@@ -106,7 +106,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	u16 i;
  
  	if (eeprom->len == 0)
-@@ -579,6 +579,10 @@ static int e1000_set_eeprom(struct net_d
+@@ -572,6 +572,10 @@ static int e1000_set_eeprom(struct net_d
  
  	max_len = hw->nvm.word_size * 2;
  
