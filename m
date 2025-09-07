@@ -1,58 +1,53 @@
-Return-Path: <stable+bounces-178020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05232B478C4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 05:18:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0ED9B478CC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 05:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BAC024E05A8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 03:18:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38D2D1889F34
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 03:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7EE41AF4D5;
-	Sun,  7 Sep 2025 03:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663C21A9F82;
+	Sun,  7 Sep 2025 03:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKEi3wtm"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="DFUq5Dng"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B3E35950
-	for <stable@vger.kernel.org>; Sun,  7 Sep 2025 03:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA91C14A0B5;
+	Sun,  7 Sep 2025 03:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757215128; cv=none; b=pvi1Xjzi1yoIVEiswCjlXCKaQrq3mx20gaO4Yjfc2hzymzoViftxHUScvTLbD513N9BF/BLCqs6oy3bR51GdBUjPywvvv4qNd8mr6z6NSSFLEShPOgfLGnrevKQSbFdQGp0kVEAubeGfQC7IvTlfEDXw5NogxUJPRv1Bmv8dDec=
+	t=1757216387; cv=none; b=fu6Yk5tVNypjgu1LIi/WvGWCMePLxxjdXCC33puRrUfAStUZQnC90FrXxUP9uRjZ0forbNO5C2CCLRRHGK7agrSr2WptYbKMyBP6vWF6GxmKISmIHZ3jKSEJEWXSZd2CetFoalb4u+P2ab6Bv/8t4Bq9+K61nAMeuGA4P9hfDHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757215128; c=relaxed/simple;
-	bh=EpizMBGt1bnJpPnI2wCzxFiy2BVfKl+1r9CoiQRaAVs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYoSnG8uPkK3Ds4VQW6dTYoqH+pf/NUWO3At5falyFafcJubvUDXJ4TzwK7/cYCBSJUa7m80pazj+NlmYZUUd3TfrmICI0TsuzrexB2hIZ0zxPu7jx9QoMHjCk//lXFnRHwsHHpHGh00PEm/fKcqwDqq+RxJmPA8gNYDbx0sz3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKEi3wtm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD2DC4CEF4;
-	Sun,  7 Sep 2025 03:18:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757215128;
-	bh=EpizMBGt1bnJpPnI2wCzxFiy2BVfKl+1r9CoiQRaAVs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FKEi3wtmKbDT4OBK/Hr4qcm/vhwBreFgNVq2Mg8cD2XGmUKdCFtM/0U+KrPUnnIcg
-	 T1aX2t4NVsWPX+86B/cS9mCBh+mGaYz2W+F6jbWfOxz2vM3Ptmw0kLKUaANlcFlkfq
-	 swRQ0akW8Acp1D6UggCtjOGqGW4ahdooRTBvt7CN5wX3feLLNLB3OhrqledU3kvKIW
-	 JyqfYzgTGdBKdI83fQDtow0YitVQ5q4OQ1X3lIDYWgjZ6V8Om/7EwxW/l8fk2t1qDm
-	 haTlHSFWJkBKoUrgRrVuXezpxl5b0G8VjAJ0c6Fz+YHQ4/7c8u9Gq8oUXx0l/6Ex7B
-	 /2TqH3CLRdGsQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: John Evans <evans1210144@gmail.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4.y] scsi: lpfc: Fix buffer free/clear order in deferred receive path
-Date: Sat,  6 Sep 2025 23:18:45 -0400
-Message-ID: <20250907031845.445653-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025090623-retiring-only-9b80@gregkh>
-References: <2025090623-retiring-only-9b80@gregkh>
+	s=arc-20240116; t=1757216387; c=relaxed/simple;
+	bh=FtjgBkxlqi7pcdUqJq/lM2rJ3zdR6XfU4qGM0BZmf7w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sN3NY8/TXIhCwaBCUhSVFThTjbseE+OD2AmIXTxlDs24ObKTsvn3K79zPfNpumicTN1KJjLpD/+69+86SAwz3MNc1cunzBr2jFB7MciJJDJV64ikJUMKaewzBZXeVBY8GhJjzWh7bjc6MGdDMKRx4Uhbq1SxOmnCCqvHcTsJjHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DFUq5Dng; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=UA
+	/GHr2DPUYc0ydI7Q4Kl3YbzgHpnAu+yoZiXnVHT0k=; b=DFUq5DngCFnUp1PapN
+	fXJsAVzMNH0ctGzjNANn4955bi7RUCapsUOoVSlhJZhF1/7ri0fTl77v2+JvlX41
+	nbiWkAknmYEwAXHbq4JziXsqzbKNwcXgAVOJNsjP4XCnn1CJuhZINGY3EQtUWEAJ
+	F8kU1dCJXmyS5QYfn2P3Rn/Ic=
+Received: from MS-CMFLBWVCLQRG.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDXBiVu_rxoeI9OHA--.48406S2;
+	Sun, 07 Sep 2025 11:39:28 +0800 (CST)
+From: GuangFei Luo <luogf2025@163.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	luogf2025@163.com
+Subject: [PATCH] ACPI: battery: prevent sysfs_add_battery re-entry on rapid events
+Date: Sun,  7 Sep 2025 11:39:24 +0800
+Message-ID: <20250907033925.223849-1-luogf2025@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,76 +55,116 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDXBiVu_rxoeI9OHA--.48406S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZr1xWrykKF1xuw4UGr4xtFb_yoW7Gr17pa
+	1rKa1UKrW8JF4kJwsI9F4UKFyxWFs0qF9rWr95Jrn2kasrGw1DAryxZFyUXF17GrykZ3yx
+	ZFn5t3Wrtw1xWw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U9eOAUUUUU=
+X-CM-SenderInfo: poxrwwisqskqqrwthudrp/1tbizQa8mWi27eJixwAFsf
 
-From: John Evans <evans1210144@gmail.com>
+When removing and reinserting the laptop battery, ACPI can trigger
+two notifications in quick succession:
 
-[ Upstream commit 9dba9a45c348e8460da97c450cddf70b2056deb3 ]
+  - ACPI_BATTERY_NOTIFY_STATUS (0x80)
+  - ACPI_BATTERY_NOTIFY_INFO   (0x81)
 
-Fix a use-after-free window by correcting the buffer release sequence in
-the deferred receive path. The code freed the RQ buffer first and only
-then cleared the context pointer under the lock. Concurrent paths (e.g.,
-ABTS and the repost path) also inspect and release the same pointer under
-the lock, so the old order could lead to double-free/UAF.
+Both notifications call acpi_battery_update(). Because the events
+happen very close in time, sysfs_add_battery() can be re-entered
+before battery->bat is set, causing a duplicate sysfs entry error.
 
-Note that the repost path already uses the correct pattern: detach the
-pointer under the lock, then free it after dropping the lock. The
-deferred path should do the same.
+This patch ensures that sysfs_add_battery() is not re-entered
+when battery->bat is already non-NULL, preventing the duplicate
+sysfs creation and stabilizing battery hotplug handling.
 
-Fixes: 472e146d1cf3 ("scsi: lpfc: Correct upcalling nvmet_fc transport during io done downcall")
-Cc: stable@vger.kernel.org
-Signed-off-by: John Evans <evans1210144@gmail.com>
-Link: https://lore.kernel.org/r/20250828044008.743-1-evans1210144@gmail.com
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[  476.117945] sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
+[  476.118896] CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
+[  476.118903] Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
+[  476.118906] Workqueue: kacpi_notify acpi_os_execute_deferred
+[  476.118917] Call Trace:
+[  476.118922]  <TASK>
+[  476.118929]  dump_stack_lvl+0x5d/0x80
+[  476.118938]  sysfs_warn_dup.cold+0x17/0x23
+[  476.118943]  sysfs_create_dir_ns+0xce/0xe0
+[  476.118952]  kobject_add_internal+0xba/0x250
+[  476.118959]  kobject_add+0x96/0xc0
+[  476.118964]  ? get_device_parent+0xde/0x1e0
+[  476.118970]  device_add+0xe2/0x870
+[  476.118975]  __power_supply_register.part.0+0x20f/0x3f0
+[  476.118981]  ? wake_up_q+0x4e/0x90
+[  476.118990]  sysfs_add_battery+0xa4/0x1d0 [battery]
+[  476.118998]  acpi_battery_update+0x19e/0x290 [battery]
+[  476.119002]  acpi_battery_notify+0x50/0x120 [battery]
+[  476.119006]  acpi_ev_notify_dispatch+0x49/0x70
+[  476.119012]  acpi_os_execute_deferred+0x1a/0x30
+[  476.119015]  process_one_work+0x177/0x330
+[  476.119022]  worker_thread+0x251/0x390
+[  476.119026]  ? __pfx_worker_thread+0x10/0x10
+[  476.119030]  kthread+0xd2/0x100
+[  476.119033]  ? __pfx_kthread+0x10/0x10
+[  476.119035]  ret_from_fork+0x34/0x50
+[  476.119040]  ? __pfx_kthread+0x10/0x10
+[  476.119042]  ret_from_fork_asm+0x1a/0x30
+[  476.119049]  </TASK>
+[  476.142552] kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
+[  476.415022] ata1.00: unexpected _GTF length (8)
+[  476.428076] sd 0:0:0:0: [sda] Starting disk
+[  476.835035] ata1.00: unexpected _GTF length (8)
+[  476.839720] ata1.00: configured for UDMA/133
+[  491.328831] sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
+[  491.329720] CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
+[  491.329727] Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
+[  491.329731] Workqueue: kacpi_notify acpi_os_execute_deferred
+[  491.329741] Call Trace:
+[  491.329745]  <TASK>
+[  491.329751]  dump_stack_lvl+0x5d/0x80
+[  491.329758]  sysfs_warn_dup.cold+0x17/0x23
+[  491.329762]  sysfs_create_dir_ns+0xce/0xe0
+[  491.329770]  kobject_add_internal+0xba/0x250
+[  491.329775]  kobject_add+0x96/0xc0
+[  491.329779]  ? get_device_parent+0xde/0x1e0
+[  491.329784]  device_add+0xe2/0x870
+[  491.329790]  __power_supply_register.part.0+0x20f/0x3f0
+[  491.329797]  sysfs_add_battery+0xa4/0x1d0 [battery]
+[  491.329805]  acpi_battery_update+0x19e/0x290 [battery]
+[  491.329809]  acpi_battery_notify+0x50/0x120 [battery]
+[  491.329812]  acpi_ev_notify_dispatch+0x49/0x70
+[  491.329817]  acpi_os_execute_deferred+0x1a/0x30
+[  491.329820]  process_one_work+0x177/0x330
+[  491.329826]  worker_thread+0x251/0x390
+[  491.329830]  ? __pfx_worker_thread+0x10/0x10
+[  491.329833]  kthread+0xd2/0x100
+[  491.329836]  ? __pfx_kthread+0x10/0x10
+[  491.329838]  ret_from_fork+0x34/0x50
+[  491.329842]  ? __pfx_kthread+0x10/0x10
+[  491.329844]  ret_from_fork_asm+0x1a/0x30
+[  491.329850]  </TASK>
+[  491.329855] kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
+
+Fixes: 508df92d1f8d ("ACPI: battery: register power_supply subdevice only when battery is present")
+Signed-off-by: GuangFei Luo <luogf2025@163.com>
 ---
- drivers/scsi/lpfc/lpfc_nvmet.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/acpi/battery.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_nvmet.c b/drivers/scsi/lpfc/lpfc_nvmet.c
-index 979a6d11b1b71..728ec3f47e023 100644
---- a/drivers/scsi/lpfc/lpfc_nvmet.c
-+++ b/drivers/scsi/lpfc/lpfc_nvmet.c
-@@ -1172,7 +1172,7 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_target_port *tgtport,
- 	struct lpfc_nvmet_tgtport *tgtp;
- 	struct lpfc_nvmet_rcv_ctx *ctxp =
- 		container_of(rsp, struct lpfc_nvmet_rcv_ctx, ctx.fcp_req);
--	struct rqb_dmabuf *nvmebuf = ctxp->rqb_buffer;
-+	struct rqb_dmabuf *nvmebuf;
- 	struct lpfc_hba *phba = ctxp->phba;
- 	unsigned long iflag;
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index 6905b56bf3e4..3801fd34c969 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -1026,11 +1026,13 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
+ 		return result;
+ 	acpi_battery_quirks(battery);
  
-@@ -1180,13 +1180,18 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_target_port *tgtport,
- 	lpfc_nvmeio_data(phba, "NVMET DEFERRCV: xri x%x sz %d CPU %02x\n",
- 			 ctxp->oxid, ctxp->size, raw_smp_processor_id());
- 
-+	spin_lock_irqsave(&ctxp->ctxlock, iflag);
-+	nvmebuf = ctxp->rqb_buffer;
- 	if (!nvmebuf) {
-+		spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
- 		lpfc_printf_log(phba, KERN_INFO, LOG_NVME_IOERR,
- 				"6425 Defer rcv: no buffer oxid x%x: "
- 				"flg %x ste %x\n",
- 				ctxp->oxid, ctxp->flag, ctxp->state);
- 		return;
++	mutex_lock(&battery->sysfs_lock);
+ 	if (!battery->bat) {
+ 		result = sysfs_add_battery(battery);
+ 		if (result)
+ 			return result;
  	}
-+	ctxp->rqb_buffer = NULL;
-+	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
++	mutex_unlock(&battery->sysfs_lock);
  
- 	tgtp = phba->targetport->private;
- 	if (tgtp)
-@@ -1194,9 +1199,6 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_target_port *tgtport,
- 
- 	/* Free the nvmebuf since a new buffer already replaced it */
- 	nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
--	spin_lock_irqsave(&ctxp->ctxlock, iflag);
--	ctxp->rqb_buffer = NULL;
--	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
- }
- 
- static void
+ 	/*
+ 	 * Wakeup the system if battery is critical low
 -- 
-2.51.0
+2.43.0
 
 
