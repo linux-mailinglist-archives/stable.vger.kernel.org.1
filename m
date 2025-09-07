@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-178120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABDA8B47D56
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9BBB47DE9
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 873837AB141
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C4CB3C0758
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15EE727FB21;
-	Sun,  7 Sep 2025 20:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0441E0DE8;
+	Sun,  7 Sep 2025 20:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZR2aC/XV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ac2MTL3G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C629D1CDFAC;
-	Sun,  7 Sep 2025 20:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2BB14BFA2;
+	Sun,  7 Sep 2025 20:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275828; cv=none; b=HueA33aSc+PUdBvdMfqX6Ru0++qs90vxQ+EG8DqGbyujusrHsorvfsYKuka6W2GLobzXKb15qp4E8t9dpq5BGHE++lryUPS2/6pvkC5WXECmgLTmcCuC1N6WT3EZoIqRvKip0JM/B9BTBUePG+MRvaIi7XTL5XO1nvOZxL7aYd8=
+	t=1757276281; cv=none; b=sm5N1ch2dWvrO7xAL+pVPkkyopQsHT1rt1FvGpSrOm1rEW2cgmmDGzSE9Sp+KrCCOUVitH31p9Dm+6Pvzg6r3QD0jcmLd9vthEdcR3ryXDZrr+db92kbnLxVXCLo3HygKsjixo4wA8lM0X09sGUp+0dFk0U79b8zukK6kAJdjQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275828; c=relaxed/simple;
-	bh=RgqxXhlmfyHoGj7rlkr7o6gvcVGtKbEno8tVXdK80v8=;
+	s=arc-20240116; t=1757276281; c=relaxed/simple;
+	bh=r0PlFK3yMBJZ0aWhUfMrGeM0odUjROdkjUqnUShpftU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OuTwQ0KNhtMZeZiD2QmLhChi3HgAov/mEhYZSj19Y7RUFb5Kll9HRTuPvDRpHTcrXxtQVVUZpBBedK1Agr43SRjLKGL+PAdjsvuH7gsM7AHCSZUJfEbLKDZFos3X7cDgPrBkWrUIAf2anxOWw168GM+YJtCzdWMtZ7sMyaiogr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZR2aC/XV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A598C4CEF0;
-	Sun,  7 Sep 2025 20:10:28 +0000 (UTC)
+	 MIME-Version; b=dfg4n/ilrOeY6QEXkd5paRyFCU2L1p0h1GBNUwqXwFooWzGnxz/4D2ID0IAXVZfcbITajIWaYmL4Twjl7z4NeW84I4dTTcxYNMUuvwjm8NURVD98fUZrWjhP14THFnEe3Ndhu1WWNwbrIhxDZ2ddklPsi/NIJGc89ZxOIaVRtOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ac2MTL3G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40921C4CEF8;
+	Sun,  7 Sep 2025 20:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275828;
-	bh=RgqxXhlmfyHoGj7rlkr7o6gvcVGtKbEno8tVXdK80v8=;
+	s=korg; t=1757276281;
+	bh=r0PlFK3yMBJZ0aWhUfMrGeM0odUjROdkjUqnUShpftU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZR2aC/XVthI4pd0Np6ilDdK2FNpsM90EAQvdWjutI7sKUhwpx0Q9nkfSr4JJGVSfI
-	 VyftNblRNe1QSqp8+jDdVLV4pfK2gbd27NosqV/tOTXzL0fcLtYIVyDE+4GE9DznCJ
-	 Z4eGIShZXVn+npLRrED2OIbnrGz7m3637N0Hz300=
+	b=Ac2MTL3GqzLMsRaA1AGds13zeXgyTtPgZt7gki69/W+jqpGepr5CGXM4m24CsPNQq
+	 9TCGCyABk2smS4IwPywQG4+6Zk8WNbDfEwg2ZhVmbD1wWsEgthKnYEy85lj3W5+9Do
+	 heWXg5P78gQpwizegBr7J/jWJilTEiHtjVtZV8g4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Zach OKeefe <zokeefe@google.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@intel.linux.com>,
-	Yang Shi <shy828301@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjoern Doebel <doebel@amazon.de>
-Subject: [PATCH 5.4 24/45] mm/khugepaged: fix ->anon_vma race
+	stable@kernel.org,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 053/104] net: pcs: rzn1-miic: Correct MODCTRL register offset
 Date: Sun,  7 Sep 2025 21:58:10 +0200
-Message-ID: <20250907195601.663025674@linuxfoundation.org>
+Message-ID: <20250907195609.063418216@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-commit 023f47a8250c6bdb4aebe744db4bf7f73414028b upstream.
+commit a7195a3d67dace056af7ca65144a11874df79562 upstream.
 
-If an ->anon_vma is attached to the VMA, collapse_and_free_pmd() requires
-it to be locked.
+Correct the Mode Control Register (MODCTRL) offset for RZ/N MIIC.
+According to the R-IN Engine and Ethernet Peripherals Manual (Rev.1.30)
+[0], Table 10.1 "Ethernet Accessory Register List", MODCTRL is at offset
+0x8, not 0x20 as previously defined.
 
-Page table traversal is allowed under any one of the mmap lock, the
-anon_vma lock (if the VMA is associated with an anon_vma), and the
-mapping lock (if the VMA is associated with a mapping); and so to be
-able to remove page tables, we must hold all three of them.
-retract_page_tables() bails out if an ->anon_vma is attached, but does
-this check before holding the mmap lock (as the comment above the check
-explains).
+Offset 0x20 actually maps to the Port Trigger Control Register (PTCTRL),
+which controls PTP_MODE[3:0] and RGMII_CLKSEL[4]. Using this incorrect
+definition prevented the driver from configuring the SW_MODE[4:0] bits
+in MODCTRL, which control the internal connection of Ethernet ports. As
+a result, the MIIC could not be switched into the correct mode, leading
+to link setup failures and non-functional Ethernet ports on affected
+systems.
 
-If we racily merged an existing ->anon_vma (shared with a child
-process) from a neighboring VMA, subsequent rmap traversals on pages
-belonging to the child will be able to see the page tables that we are
-concurrently removing while assuming that nothing else can access them.
+[0] https://www.renesas.com/en/document/mah/rzn1d-group-rzn1s-group-rzn1l-group-users-manual-r-engine-and-ethernet-peripherals?r=1054571
 
-Repeat the ->anon_vma check once we hold the mmap lock to ensure that
-there really is no concurrent page table access.
-
-Hitting this bug causes a lockdep warning in collapse_and_free_pmd(),
-in the line "lockdep_assert_held_write(&vma->anon_vma->root->rwsem)".
-It can also lead to use-after-free access.
-
-Link: https://lore.kernel.org/linux-mm/CAG48ez3434wZBKFFbdx4M9j6eUwSUVPd4dxhzW_k_POneSDF+A@mail.gmail.com/
-Link: https://lkml.kernel.org/r/20230111133351.807024-1-jannh@google.com
-Fixes: f3f0e1d2150b ("khugepaged: add support of collapse for tmpfs/shmem pages")
-Signed-off-by: Jann Horn <jannh@google.com>
-Reported-by: Zach O'Keefe <zokeefe@google.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@intel.linux.com>
-Reviewed-by: Yang Shi <shy828301@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[doebel@amazon.de: Kernel 5.4 uses different control flow and locking
-    mechanism. Context adjustments.]
-Signed-off-by: Bjoern Doebel <doebel@amazon.de>
+Fixes: 7dc54d3b8d91 ("net: pcs: add Renesas MII converter driver")
+Cc: stable@kernel.org
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://patch.msgid.link/20250901112019.16278-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/khugepaged.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/net/pcs/pcs-rzn1-miic.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1476,7 +1476,7 @@ static void retract_page_tables(struct a
- 		 * has higher cost too. It would also probably require locking
- 		 * the anon_vma.
- 		 */
--		if (vma->anon_vma)
-+		if (READ_ONCE(vma->anon_vma))
- 			continue;
- 		addr = vma->vm_start + ((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
- 		if (addr & ~HPAGE_PMD_MASK)
-@@ -1498,6 +1498,18 @@ static void retract_page_tables(struct a
- 			if (!khugepaged_test_exit(mm)) {
- 				struct mmu_notifier_range range;
+--- a/drivers/net/pcs/pcs-rzn1-miic.c
++++ b/drivers/net/pcs/pcs-rzn1-miic.c
+@@ -18,7 +18,7 @@
+ #define MIIC_PRCMD			0x0
+ #define MIIC_ESID_CODE			0x4
  
-+				/*
-+				 * Re-check whether we have an ->anon_vma, because
-+				 * collapse_and_free_pmd() requires that either no
-+				 * ->anon_vma exists or the anon_vma is locked.
-+				 * We already checked ->anon_vma above, but that check
-+				 * is racy because ->anon_vma can be populated under the
-+				 * mmap_sem in read mode.
-+				 */
-+				if (vma->anon_vma) {
-+					up_write(&mm->mmap_sem);
-+					continue;
-+				}
- 				mmu_notifier_range_init(&range,
- 							MMU_NOTIFY_CLEAR, 0,
- 							NULL, mm, addr,
+-#define MIIC_MODCTRL			0x20
++#define MIIC_MODCTRL			0x8
+ #define MIIC_MODCTRL_SW_MODE		GENMASK(4, 0)
+ 
+ #define MIIC_CONVCTRL(port)		(0x100 + (port) * 4)
 
 
 
