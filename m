@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E426B47D7F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7EEB47D1D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7AD4189DE70
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8ACF57AADE7
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C0A27F754;
-	Sun,  7 Sep 2025 20:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120B927FB21;
+	Sun,  7 Sep 2025 20:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgWXZaOH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPNK/Xwu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67471B424F;
-	Sun,  7 Sep 2025 20:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CE21CDFAC;
+	Sun,  7 Sep 2025 20:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275961; cv=none; b=p8FK461dUnMZ7dr0BxdVZrZ8u7DZazAEc4TQa2WJNz1V7+QJShm762HvUwlQMvnxJcv6a0FAj4KZG6Nnod+py8TWYskQds1COBwvAurpZoXZG5+zyym1d5yZXJxN1VBKGe/UBbHO3z3f5n4QR8pDRFb6rbrQ+iwOBI/nvazozc8=
+	t=1757275661; cv=none; b=hjwtoiZlIX3YXsa78LqvARxaa/xjZxLVDbM9On131gWnulgJSN81xLCYIZV5KCf+B20fAIQ2NRgo1QA4TkyakRMcRupMTYQtWjzQ5cRhkG7zmL97M53tKSQqq7SMNrMV5NMbM5I5mRCJbITLL/3RdfE1+1aoK/a50EutG2VdR44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275961; c=relaxed/simple;
-	bh=XAUcrVrfyQ+iKEo9chtZqLVg3xmT7xGTtbn4V7cf/zw=;
+	s=arc-20240116; t=1757275661; c=relaxed/simple;
+	bh=oGbdt+cmnhkwT8GUVkGy684cK4CoWWrOPdgsv/LcAog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgadRzR6C3wYyJWIIpW6jNagTNr74ibczhsMvPWcV0GcSm6Y98mnO1bZQOD/LJz3+HEdJEN8hJX7TFSqaegQ9cUiuYJKcc/rbGOl5SrqQfIJ6I9L6Wawn6uY/mvUFHsrgLmlJ6QlwEGAl/pN7IuIittqblOmMYHlysA8Nh4F9hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgWXZaOH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B449C4CEF0;
-	Sun,  7 Sep 2025 20:12:41 +0000 (UTC)
+	 MIME-Version; b=cBx1b/0K0Ffp7oLMLCa/vAMyu4i+/XgwqUYXr+gWtm3vshaGD8esuifc7y5jVLmKTERPnqyPdMI4zlOFpOckXH3dzKglzG4liLDFRP9mgBcjQ9VJ5fo0d0O3Tbleyx8qu4uP9LGWpDdFXB1oLw5Xn/608MR2k9ftvNL1vWbL5fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPNK/Xwu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E46C4CEF0;
+	Sun,  7 Sep 2025 20:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275961;
-	bh=XAUcrVrfyQ+iKEo9chtZqLVg3xmT7xGTtbn4V7cf/zw=;
+	s=korg; t=1757275661;
+	bh=oGbdt+cmnhkwT8GUVkGy684cK4CoWWrOPdgsv/LcAog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VgWXZaOHm2V/IQsM39+T45FXPT1XyZoGWYFB/k8qMReTcaX2vG8mCvH08MC47DWhF
-	 DVkwY1g3oW+R7bk7GopsOouznfMsN/x5fDNe0g7r8Fc38ryY9Hm1Ea4zaAay1HQwTb
-	 RxVZA/UAnORJHGJWtT1IP+iH08pHw6NHKmS8drhk=
+	b=PPNK/XwuyOrecS4FULmV2hoZSY6C3bFPdDJCyn3/TWmw8XODsXXpQ3CdJ4NSu+0xf
+	 lMkxjdo+gLQyG7IyYaviZZgA87/9R4iY6plr1SPzqdtnnPj4tpsxriuK2+J3kesGG6
+	 nW5rRnSmsolkqYCkr1v9vS7qirdzPpjZajivgS14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 02/64] bpf: Move cgroup iterator helpers to bpf.h
+	John Evans <evans1210144@gmail.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 24/52] scsi: lpfc: Fix buffer free/clear order in deferred receive path
 Date: Sun,  7 Sep 2025 21:57:44 +0200
-Message-ID: <20250907195603.462681962@linuxfoundation.org>
+Message-ID: <20250907195602.699053186@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,178 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: John Evans <evans1210144@gmail.com>
 
-[ Upstream commit 9621e60f59eae87eb9ffe88d90f24f391a1ef0f0 ]
+commit 9dba9a45c348e8460da97c450cddf70b2056deb3 upstream.
 
-Move them into bpf.h given we also need them in core code.
+Fix a use-after-free window by correcting the buffer release sequence in
+the deferred receive path. The code freed the RQ buffer first and only
+then cleared the context pointer under the lock. Concurrent paths (e.g.,
+ABTS and the repost path) also inspect and release the same pointer under
+the lock, so the old order could lead to double-free/UAF.
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20250730234733.530041-3-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that the repost path already uses the correct pattern: detach the
+pointer under the lock, then free it after dropping the lock. The
+deferred path should do the same.
+
+Fixes: 472e146d1cf3 ("scsi: lpfc: Correct upcalling nvmet_fc transport during io done downcall")
+Cc: stable@vger.kernel.org
+Signed-off-by: John Evans <evans1210144@gmail.com>
+Link: https://lore.kernel.org/r/20250828044008.743-1-evans1210144@gmail.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bpf-cgroup.h |   5 --
- include/linux/bpf.h        | 109 ++++++++++++++++++++++++++++++++++---
- 2 files changed, 101 insertions(+), 13 deletions(-)
+ drivers/scsi/lpfc/lpfc_nvmet.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
-index 3536ab432b30c..79c9d3d412cb6 100644
---- a/include/linux/bpf-cgroup.h
-+++ b/include/linux/bpf-cgroup.h
-@@ -91,9 +91,6 @@ to_cgroup_bpf_attach_type(enum bpf_attach_type attach_type)
- extern struct static_key_false cgroup_bpf_enabled_key[MAX_CGROUP_BPF_ATTACH_TYPE];
- #define cgroup_bpf_enabled(atype) static_branch_unlikely(&cgroup_bpf_enabled_key[atype])
+--- a/drivers/scsi/lpfc/lpfc_nvmet.c
++++ b/drivers/scsi/lpfc/lpfc_nvmet.c
+@@ -1245,7 +1245,7 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+ 	struct lpfc_nvmet_tgtport *tgtp;
+ 	struct lpfc_async_xchg_ctx *ctxp =
+ 		container_of(rsp, struct lpfc_async_xchg_ctx, hdlrctx.fcp_req);
+-	struct rqb_dmabuf *nvmebuf = ctxp->rqb_buffer;
++	struct rqb_dmabuf *nvmebuf;
+ 	struct lpfc_hba *phba = ctxp->phba;
+ 	unsigned long iflag;
  
--#define for_each_cgroup_storage_type(stype) \
--	for (stype = 0; stype < MAX_BPF_CGROUP_STORAGE_TYPE; stype++)
--
- struct bpf_cgroup_storage_map;
+@@ -1253,13 +1253,18 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+ 	lpfc_nvmeio_data(phba, "NVMET DEFERRCV: xri x%x sz %d CPU %02x\n",
+ 			 ctxp->oxid, ctxp->size, raw_smp_processor_id());
  
- struct bpf_storage_buffer {
-@@ -545,8 +542,6 @@ static inline int bpf_percpu_cgroup_storage_update(struct bpf_map *map,
- #define BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock, level, optname, optval, optlen, \
- 				       kernel_optval) ({ 0; })
++	spin_lock_irqsave(&ctxp->ctxlock, iflag);
++	nvmebuf = ctxp->rqb_buffer;
+ 	if (!nvmebuf) {
++		spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ 		lpfc_printf_log(phba, KERN_INFO, LOG_NVME_IOERR,
+ 				"6425 Defer rcv: no buffer oxid x%x: "
+ 				"flg %x ste %x\n",
+ 				ctxp->oxid, ctxp->flag, ctxp->state);
+ 		return;
+ 	}
++	ctxp->rqb_buffer = NULL;
++	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
  
--#define for_each_cgroup_storage_type(stype) for (; false; )
--
- #endif /* CONFIG_CGROUP_BPF */
+ 	tgtp = phba->targetport->private;
+ 	if (tgtp)
+@@ -1267,9 +1272,6 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
  
- #endif /* _BPF_CGROUP_H */
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index dd6a62134e7d1..6cf63f4240bdd 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -157,6 +157,107 @@ struct bpf_map_ops {
- 	const struct bpf_iter_seq_info *iter_seq_info;
- };
+ 	/* Free the nvmebuf since a new buffer already replaced it */
+ 	nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
+-	spin_lock_irqsave(&ctxp->ctxlock, iflag);
+-	ctxp->rqb_buffer = NULL;
+-	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ }
  
-+enum {
-+	/* Support at most 11 fields in a BTF type */
-+	BTF_FIELDS_MAX	   = 11,
-+};
-+
-+enum btf_field_type {
-+	BPF_SPIN_LOCK  = (1 << 0),
-+	BPF_TIMER      = (1 << 1),
-+	BPF_KPTR_UNREF = (1 << 2),
-+	BPF_KPTR_REF   = (1 << 3),
-+	BPF_KPTR_PERCPU = (1 << 4),
-+	BPF_KPTR       = BPF_KPTR_UNREF | BPF_KPTR_REF | BPF_KPTR_PERCPU,
-+	BPF_LIST_HEAD  = (1 << 5),
-+	BPF_LIST_NODE  = (1 << 6),
-+	BPF_RB_ROOT    = (1 << 7),
-+	BPF_RB_NODE    = (1 << 8),
-+	BPF_GRAPH_NODE = BPF_RB_NODE | BPF_LIST_NODE,
-+	BPF_GRAPH_ROOT = BPF_RB_ROOT | BPF_LIST_HEAD,
-+	BPF_REFCOUNT   = (1 << 9),
-+	BPF_WORKQUEUE  = (1 << 10),
-+	BPF_UPTR       = (1 << 11),
-+	BPF_RES_SPIN_LOCK = (1 << 12),
-+};
-+
-+enum bpf_cgroup_storage_type {
-+	BPF_CGROUP_STORAGE_SHARED,
-+	BPF_CGROUP_STORAGE_PERCPU,
-+	__BPF_CGROUP_STORAGE_MAX
-+#define MAX_BPF_CGROUP_STORAGE_TYPE __BPF_CGROUP_STORAGE_MAX
-+};
-+
-+#ifdef CONFIG_CGROUP_BPF
-+# define for_each_cgroup_storage_type(stype) \
-+	for (stype = 0; stype < MAX_BPF_CGROUP_STORAGE_TYPE; stype++)
-+#else
-+# define for_each_cgroup_storage_type(stype) for (; false; )
-+#endif /* CONFIG_CGROUP_BPF */
-+
-+typedef void (*btf_dtor_kfunc_t)(void *);
-+
-+struct btf_field_kptr {
-+	struct btf *btf;
-+	struct module *module;
-+	/* dtor used if btf_is_kernel(btf), otherwise the type is
-+	 * program-allocated, dtor is NULL,  and __bpf_obj_drop_impl is used
-+	 */
-+	btf_dtor_kfunc_t dtor;
-+	u32 btf_id;
-+};
-+
-+struct btf_field_graph_root {
-+	struct btf *btf;
-+	u32 value_btf_id;
-+	u32 node_offset;
-+	struct btf_record *value_rec;
-+};
-+
-+struct btf_field {
-+	u32 offset;
-+	u32 size;
-+	enum btf_field_type type;
-+	union {
-+		struct btf_field_kptr kptr;
-+		struct btf_field_graph_root graph_root;
-+	};
-+};
-+
-+struct btf_record {
-+	u32 cnt;
-+	u32 field_mask;
-+	int spin_lock_off;
-+	int res_spin_lock_off;
-+	int timer_off;
-+	int wq_off;
-+	int refcount_off;
-+	struct btf_field fields[];
-+};
-+
-+/* Non-opaque version of bpf_rb_node in uapi/linux/bpf.h */
-+struct bpf_rb_node_kern {
-+	struct rb_node rb_node;
-+	void *owner;
-+} __attribute__((aligned(8)));
-+
-+/* Non-opaque version of bpf_list_node in uapi/linux/bpf.h */
-+struct bpf_list_node_kern {
-+	struct list_head list_head;
-+	void *owner;
-+} __attribute__((aligned(8)));
-+
-+/* 'Ownership' of program-containing map is claimed by the first program
-+ * that is going to use this map or by the first program which FD is
-+ * stored in the map to make sure that all callers and callees have the
-+ * same prog type, JITed flag and xdp_has_frags flag.
-+ */
-+struct bpf_map_owner {
-+	enum bpf_prog_type type;
-+	bool jited;
-+	bool xdp_has_frags;
-+	const struct btf_type *attach_func_proto;
-+};
- struct bpf_map {
- 	/* The first two cachelines with read-mostly members of which some
- 	 * are also accessed in fast-path (e.g. ops, max_entries).
-@@ -614,14 +715,6 @@ struct bpf_prog_offload {
- 	u32			jited_len;
- };
- 
--enum bpf_cgroup_storage_type {
--	BPF_CGROUP_STORAGE_SHARED,
--	BPF_CGROUP_STORAGE_PERCPU,
--	__BPF_CGROUP_STORAGE_MAX
--};
--
--#define MAX_BPF_CGROUP_STORAGE_TYPE __BPF_CGROUP_STORAGE_MAX
--
- /* The longest tracepoint has 12 args.
-  * See include/trace/bpf_probe.h
-  */
--- 
-2.50.1
-
+ /**
 
 
 
