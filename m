@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089F6B47D41
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F014B47DE6
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06376189C5AE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DA907B071A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC55F284B59;
-	Sun,  7 Sep 2025 20:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0F11D88D0;
+	Sun,  7 Sep 2025 20:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXj3NuMj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOffJsns"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791B022F74D;
-	Sun,  7 Sep 2025 20:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB971A2389;
+	Sun,  7 Sep 2025 20:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275770; cv=none; b=W0ThTCYv6skeGOstwk+W/b2c9nq8OZXAMCsxt3/K3Fz1q5cyt41rjYSElYzw5JLfNZM/wTzX4CmkJRHoaHDsMdstEFFjM5RfrhlPmSM15oT9Tpl5dHigIuoMBJNbYDlooOEcfdIJMQXJEAsQjwaVSSHZ1wRhqJT9STzqhwuypoU=
+	t=1757276269; cv=none; b=DUsOUVQ13BSe7UbwAT8eaVhQLqPH0hiNjyGJHMR/JnCNcPmK2iL8VcxPeckRgokxNXIa8k1XhCW1IyCpxbFFSihHm3m8XH7UvOA7nSit67RvO+IDKtg/u7WqJhWvvD46IeWlfarwNzCIn/N/gbqZKEUYJOpJGNaxJoEvJP2xjyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275770; c=relaxed/simple;
-	bh=ubLyV7glfflDnnIk18oJ8n0NDECjzOLsdHeP4/ckrcs=;
+	s=arc-20240116; t=1757276269; c=relaxed/simple;
+	bh=Hw+Ps97Klan/3N0enzmi6sx3JZQpV7l1dEEQZLJZk3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ic3qa6v4L8RwGZrNGj7x1EstA8hGA91Uw63jb1ndDVJjw3jX4IbinFAcqQlt0pk24dybOPR7EbyGaj/+wmM4nBn/3n526JZZvXTQJI2vq2Dd5sbHFUQQYvZO8jgYMLFExwoF/7Lcf8mTQPLJMPDth0lYoVw69U2DhdWhBTBibNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXj3NuMj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D4DC4CEF0;
-	Sun,  7 Sep 2025 20:09:29 +0000 (UTC)
+	 MIME-Version; b=r3Q7gohan3IzPKvD2mFYUPhEwJyMYtQzLaKxJ9mOhE3eGB0q16D1tO631gCBiJu57BAi+nv0MfB+MpVAKxtMH5rwpJY/ahPVrQIixKj37kV22487rmS6Zq2RvMCvAEPkgGIAhI2l1yryWkOprgMBb/d/uaXAi1dLVBRsMq7UfKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOffJsns; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55FFC4CEF0;
+	Sun,  7 Sep 2025 20:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275770;
-	bh=ubLyV7glfflDnnIk18oJ8n0NDECjzOLsdHeP4/ckrcs=;
+	s=korg; t=1757276269;
+	bh=Hw+Ps97Klan/3N0enzmi6sx3JZQpV7l1dEEQZLJZk3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DXj3NuMjq5q//GcvPS60LR1zCW6IDJlK2wWOnW8abGOBQut7KDGk/a9tmakldiUSr
-	 wxegu5Wmu7QVysGz6Sc8sDpWUZwM2ugWF4UPn1LjyGUMNZVwPMzSQNbifwM/+dNvAJ
-	 Sk3E87R76ARqUXam60PiFrFn4i6mb2blI22pVdLQ=
+	b=nOffJsns2IBcPlLglkUklFRsf3mdYj6yZ2dh+QCCdkhDZNI8q3ZW029KLRKjpLKFo
+	 n5ot5Pc8IZ9koLe9s4uOVodhmRYCySXJ19dJtuCgug8YeRCYeJWIW+vNbW8H9PXZ2w
+	 WrRr/7K4M5uPY3XdvsBnYQYM+cKNJVQ/7HelYcEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	James Clark <james.clark@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 47/52] spi: spi-fsl-lpspi: Fix transmissions when using CONT
+	Stanislav Fort <disclosure@aisle.com>,
+	Stanislav Fort <stanislav.fort@aisle.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.1 050/104] batman-adv: fix OOB read/write in network-coding decode
 Date: Sun,  7 Sep 2025 21:58:07 +0200
-Message-ID: <20250907195603.327230000@linuxfoundation.org>
+Message-ID: <20250907195608.989076600@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
+From: Stanislav Fort <stanislav.fort@aisle.com>
 
-[ Upstream commit 782a7c73078e1301c0c427f21c06377d77dfa541 ]
+commit d77b6ff0ce35a6d0b0b7b9581bc3f76d041d4087 upstream.
 
-Commit 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use
-CONT") breaks transmissions when CONT is used. The TDIE interrupt should
-not be disabled in all cases. If CONT is used and the TX transfer is not
-yet completed yet, but the interrupt handler is called because there are
-characters to be received, TDIE is replaced with FCIE. When the transfer
-is finally completed, SR_TDF is set but the interrupt handler isn't
-called again.
+batadv_nc_skb_decode_packet() trusts coded_len and checks only against
+skb->len. XOR starts at sizeof(struct batadv_unicast_packet), reducing
+payload headroom, and the source skb length is not verified, allowing an
+out-of-bounds read and a small out-of-bounds write.
 
-Fixes: 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use CONT")
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250828-james-nxp-lpspi-v2-1-6262b9aa9be4@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Validate that coded_len fits within the payload area of both destination
+and source sk_buffs before XORing.
+
+Fixes: 2df5278b0267 ("batman-adv: network coding - receive coded packets and decode them")
+Cc: stable@vger.kernel.org
+Reported-by: Stanislav Fort <disclosure@aisle.com>
+Signed-off-by: Stanislav Fort <stanislav.fort@aisle.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/batman-adv/network-coding.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index bf3f600bdd2c8..7ece48667f52d 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -3,7 +3,7 @@
- // Freescale i.MX7ULP LPSPI driver
- //
- // Copyright 2016 Freescale Semiconductor, Inc.
--// Copyright 2018 NXP Semiconductors
-+// Copyright 2018, 2023, 2025 NXP
+--- a/net/batman-adv/network-coding.c
++++ b/net/batman-adv/network-coding.c
+@@ -1687,7 +1687,12 @@ batadv_nc_skb_decode_packet(struct batad
  
- #include <linux/clk.h>
- #include <linux/completion.h>
-@@ -755,7 +755,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
- 	if (temp_SR & SR_MBF ||
- 	    readl(fsl_lpspi->base + IMX7ULP_FSR) & FSR_TXCOUNT) {
- 		writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
--		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE);
-+		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE | (temp_IER & IER_TDIE));
- 		return IRQ_HANDLED;
- 	}
+ 	coding_len = ntohs(coded_packet_tmp.coded_len);
  
--- 
-2.51.0
-
+-	if (coding_len > skb->len)
++	/* ensure dst buffer is large enough (payload only) */
++	if (coding_len + h_size > skb->len)
++		return NULL;
++
++	/* ensure src buffer is large enough (payload only) */
++	if (coding_len + h_size > nc_packet->skb->len)
+ 		return NULL;
+ 
+ 	/* Here the magic is reversed:
 
 
 
