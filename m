@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2FA0B47D28
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04CC4B47F8E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:39:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A327F3BE9F4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEE9A3C3238
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559AA284B59;
-	Sun,  7 Sep 2025 20:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95041DF246;
+	Sun,  7 Sep 2025 20:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRnWJ/Px"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W45VB5J8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EB51CDFAC;
-	Sun,  7 Sep 2025 20:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F8E4315A;
+	Sun,  7 Sep 2025 20:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275700; cv=none; b=rlhZGpnVGoTQGfSsL3jn6NiSK4LY0PEOUrR7YKulwczhVB+mCmhA+vXV5fqUeiEkZSNCvvMs2+rKbwNjSq/kYq53VORHln7uotySbEkhzXf1Dg+1ifexYqTvpuvaqP8ifCBaVjGyzDyFigyryE4nK12qako7YXiZHcp6ZowlHWI=
+	t=1757277545; cv=none; b=LiQ2+SDrSO+kytwprOn45n0deOmSndROBeMhOwzZYC58uRjn+M7gj5vJyWPsZcKphJc/iBr8anKXBl4fWP7HzVHK5nBZQWSwziSmQp7I9Hx8kbGfYC9YpujN0wsrxZ0S/gYknp4LYJ6PGIl/RoCwnPn1CpgHJ2NJDJF3FAsFxAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275700; c=relaxed/simple;
-	bh=8JX7oIJznOvNnq9ITa22+ApSk7avQ9XJudq4gfBHubg=;
+	s=arc-20240116; t=1757277545; c=relaxed/simple;
+	bh=Lm3JiAMFosrAE6+PT44RB107eosPaQoBDCzJH8979Fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZpvVbUQnfJe7hancJoAY0ZMGyxygXq+HAt1hRQMPs/ALFIjMeTTs9zCKIfiD9lK4+W89eHvEKpUrerfCAmq3wNgu/oHNEQavz+Ai9nbjMthi+BoakiA19z8MYx0GpOeK2QzpkbfJLUdeoP96cnXSQLp60Lrds8EhXzO3PuIAgRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRnWJ/Px; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA36C4CEF0;
-	Sun,  7 Sep 2025 20:08:19 +0000 (UTC)
+	 MIME-Version; b=HZ1EpgUiOpbE3kz47wNszMcsHcawvD5OrJGyxseri0IosVqdwHqjCn7OLr4XN9c0kNZggnL/a2B9fSFFXcExFx6eoV8UGYr9vy/h5VD5mwM5PKNibLRJvOq9m6SQahBhpsfJ+IE5KiP0/OGmO6WgYgXsVmibksmR8nViP/N27e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W45VB5J8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03751C4CEF0;
+	Sun,  7 Sep 2025 20:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275699;
-	bh=8JX7oIJznOvNnq9ITa22+ApSk7avQ9XJudq4gfBHubg=;
+	s=korg; t=1757277545;
+	bh=Lm3JiAMFosrAE6+PT44RB107eosPaQoBDCzJH8979Fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRnWJ/Pxu32wTeuURcXLHhTqF4nEhcpg8Uo2LREv5rL8WJf5M1FrzUMYHxdCDL6L3
-	 /DzuJyh4gleTlFedUjk4fewL1A9e0fX5lcnrJl65OiOcLaNHcTqVss8zquPMY8MzU5
-	 ccH1GUWSox2CMLofQ5XUERYlm+l2STbjaf1JRDdg=
+	b=W45VB5J8ASwLnuVABGAq2Yd5QYLdMOGZUTGHeZfHbhEWwUcR7bylhYZqeAIwSoRrw
+	 YFKjoAa/yJGeb3nnpcYCpeWzHD/CRIqwScu8btG+l/IxK34F54yKv+zkvr1HWQ3bOW
+	 4p1Hm39CLlwK9wxl/cwBDqg8hHPGxwBr8yAf6zG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Ivan Pravdin <ipravdin.official@gmail.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 35/52] dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()
+Subject: [PATCH 6.16 048/183] Bluetooth: vhci: Prevent use-after-free by removing debugfs files early
 Date: Sun,  7 Sep 2025 21:57:55 +0200
-Message-ID: <20250907195602.995117188@linuxfoundation.org>
+Message-ID: <20250907195616.919191345@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +61,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Ivan Pravdin <ipravdin.official@gmail.com>
 
-[ Upstream commit 157ae5ffd76a2857ccb4b7ce40bc5a344ca00395 ]
+[ Upstream commit 28010791193a4503f054e8d69a950ef815deb539 ]
 
-Fix a potential deadlock bug. Observe that in the mtk-cqdma.c
-file, functions like mtk_cqdma_issue_pending() and
-mtk_cqdma_free_active_desc() properly acquire the pc lock before the vc
-lock when handling pc and vc fields. However, mtk_cqdma_tx_status()
-violates this order by first acquiring the vc lock before invoking
-mtk_cqdma_find_active_desc(), which subsequently takes the pc lock. This
-reversed locking sequence (vc → pc) contradicts the established
-pc → vc order and creates deadlock risks.
+Move the creation of debugfs files into a dedicated function, and ensure
+they are explicitly removed during vhci_release(), before associated
+data structures are freed.
 
-Fix the issue by moving the vc lock acquisition code from
-mtk_cqdma_find_active_desc() to mtk_cqdma_tx_status(). Ensure the pc lock
-is acquired before the vc lock in the calling function to maintain correct
-locking hierarchy. Note that since mtk_cqdma_find_active_desc() is a
-static function with only one caller (mtk_cqdma_tx_status()), this
-modification safely eliminates the deadlock possibility without affecting
-other components.
+Previously, debugfs files such as "force_suspend", "force_wakeup", and
+others were created under hdev->debugfs but not removed in
+vhci_release(). Since vhci_release() frees the backing vhci_data
+structure, any access to these files after release would result in
+use-after-free errors.
 
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs to extract
-function pairs that can be concurrently executed, and then analyzes the
-instructions in the paired functions to identify possible concurrency bugs
-including deadlocks, data races and atomicity violations.
+Although hdev->debugfs is later freed in hci_release_dev(), user can
+access files after vhci_data is freed but before hdev->debugfs is
+released.
 
-Fixes: b1f01e48df5a ("dmaengine: mediatek: Add MediaTek Command-Queue DMA controller for MT6765 SoC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250508073634.3719-1-chenqiuji666@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: ab4e4380d4e1 ("Bluetooth: Add vhci devcoredump support")
+Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/mediatek/mtk-cqdma.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/bluetooth/hci_vhci.c | 57 ++++++++++++++++++++++++++----------
+ 1 file changed, 41 insertions(+), 16 deletions(-)
 
---- a/drivers/dma/mediatek/mtk-cqdma.c
-+++ b/drivers/dma/mediatek/mtk-cqdma.c
-@@ -421,15 +421,11 @@ static struct virt_dma_desc *mtk_cqdma_f
+diff --git a/drivers/bluetooth/hci_vhci.c b/drivers/bluetooth/hci_vhci.c
+index f7d8c3c00655a..2fef08254d78d 100644
+--- a/drivers/bluetooth/hci_vhci.c
++++ b/drivers/bluetooth/hci_vhci.c
+@@ -380,6 +380,28 @@ static const struct file_operations force_devcoredump_fops = {
+ 	.write		= force_devcd_write,
+ };
+ 
++static void vhci_debugfs_init(struct vhci_data *data)
++{
++	struct hci_dev *hdev = data->hdev;
++
++	debugfs_create_file("force_suspend", 0644, hdev->debugfs, data,
++			    &force_suspend_fops);
++
++	debugfs_create_file("force_wakeup", 0644, hdev->debugfs, data,
++			    &force_wakeup_fops);
++
++	if (IS_ENABLED(CONFIG_BT_MSFTEXT))
++		debugfs_create_file("msft_opcode", 0644, hdev->debugfs, data,
++				    &msft_opcode_fops);
++
++	if (IS_ENABLED(CONFIG_BT_AOSPEXT))
++		debugfs_create_file("aosp_capable", 0644, hdev->debugfs, data,
++				    &aosp_capable_fops);
++
++	debugfs_create_file("force_devcoredump", 0644, hdev->debugfs, data,
++			    &force_devcoredump_fops);
++}
++
+ static int __vhci_create_device(struct vhci_data *data, __u8 opcode)
  {
- 	struct mtk_cqdma_vchan *cvc = to_cqdma_vchan(c);
- 	struct virt_dma_desc *vd;
--	unsigned long flags;
+ 	struct hci_dev *hdev;
+@@ -434,22 +456,8 @@ static int __vhci_create_device(struct vhci_data *data, __u8 opcode)
+ 		return -EBUSY;
+ 	}
  
--	spin_lock_irqsave(&cvc->pc->lock, flags);
- 	list_for_each_entry(vd, &cvc->pc->queue, node)
- 		if (vd->tx.cookie == cookie) {
--			spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 			return vd;
- 		}
--	spin_unlock_irqrestore(&cvc->pc->lock, flags);
+-	debugfs_create_file("force_suspend", 0644, hdev->debugfs, data,
+-			    &force_suspend_fops);
+-
+-	debugfs_create_file("force_wakeup", 0644, hdev->debugfs, data,
+-			    &force_wakeup_fops);
+-
+-	if (IS_ENABLED(CONFIG_BT_MSFTEXT))
+-		debugfs_create_file("msft_opcode", 0644, hdev->debugfs, data,
+-				    &msft_opcode_fops);
+-
+-	if (IS_ENABLED(CONFIG_BT_AOSPEXT))
+-		debugfs_create_file("aosp_capable", 0644, hdev->debugfs, data,
+-				    &aosp_capable_fops);
+-
+-	debugfs_create_file("force_devcoredump", 0644, hdev->debugfs, data,
+-			    &force_devcoredump_fops);
++	if (!IS_ERR_OR_NULL(hdev->debugfs))
++		vhci_debugfs_init(data);
  
- 	list_for_each_entry(vd, &cvc->vc.desc_issued, node)
- 		if (vd->tx.cookie == cookie)
-@@ -453,9 +449,11 @@ static enum dma_status mtk_cqdma_tx_stat
- 	if (ret == DMA_COMPLETE || !txstate)
- 		return ret;
+ 	hci_skb_pkt_type(skb) = HCI_VENDOR_PKT;
  
-+	spin_lock_irqsave(&cvc->pc->lock, flags);
- 	spin_lock_irqsave(&cvc->vc.lock, flags);
- 	vd = mtk_cqdma_find_active_desc(c, cookie);
- 	spin_unlock_irqrestore(&cvc->vc.lock, flags);
-+	spin_unlock_irqrestore(&cvc->pc->lock, flags);
+@@ -651,6 +659,21 @@ static int vhci_open(struct inode *inode, struct file *file)
+ 	return 0;
+ }
  
- 	if (vd) {
- 		cvd = to_cqdma_vdesc(vd);
++static void vhci_debugfs_remove(struct hci_dev *hdev)
++{
++	debugfs_lookup_and_remove("force_suspend", hdev->debugfs);
++
++	debugfs_lookup_and_remove("force_wakeup", hdev->debugfs);
++
++	if (IS_ENABLED(CONFIG_BT_MSFTEXT))
++		debugfs_lookup_and_remove("msft_opcode", hdev->debugfs);
++
++	if (IS_ENABLED(CONFIG_BT_AOSPEXT))
++		debugfs_lookup_and_remove("aosp_capable", hdev->debugfs);
++
++	debugfs_lookup_and_remove("force_devcoredump", hdev->debugfs);
++}
++
+ static int vhci_release(struct inode *inode, struct file *file)
+ {
+ 	struct vhci_data *data = file->private_data;
+@@ -662,6 +685,8 @@ static int vhci_release(struct inode *inode, struct file *file)
+ 	hdev = data->hdev;
+ 
+ 	if (hdev) {
++		if (!IS_ERR_OR_NULL(hdev->debugfs))
++			vhci_debugfs_remove(hdev);
+ 		hci_unregister_dev(hdev);
+ 		hci_free_dev(hdev);
+ 	}
+-- 
+2.50.1
+
 
 
 
