@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-178409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8408B47E8B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C388B47F5E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 802DB17E349
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2FD816B341
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769991E1C1A;
-	Sun,  7 Sep 2025 20:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC9D20E00B;
+	Sun,  7 Sep 2025 20:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBoL2Ppj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hfEiMjC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34038D528;
-	Sun,  7 Sep 2025 20:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF3D315D54;
+	Sun,  7 Sep 2025 20:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276744; cv=none; b=bv7oVeN1DSI9/5gtg37MD6/GWRxBggYQ6KKalYsP6QBhPg0EhMzC8+iXb1y0sUiMMroky0aSyohAtLrVYbtSCqa+xe7yYVUHS1WQ7LWitTblZCps7dDU0gS8B7knLS2p59rM1ZYU96NBhNZlhaSXwRAZgXiEHDhBAuLqjiWOuPY=
+	t=1757277398; cv=none; b=jcbMHh/pJh3DGWm9Aw0uRU0CaNiXewpLPetMqL/cx3hzWoW4xFtr0Jp8ma9bdhWHRJFX69g42MN4dGwa8XPae9zrlpgLZqrGMRMT6NlqIcMaA8vq2uGa6TxPT4WNls3aBOPDbIKsPIjkn3AXWWWHOBr8ctWlVwz1uH/SWfD9Vl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276744; c=relaxed/simple;
-	bh=gDssaU6KHpVkQqFgJTQEH9It95lbAMYmnj0nEF4oLzI=;
+	s=arc-20240116; t=1757277398; c=relaxed/simple;
+	bh=awBrJn5koY5FwMwbZ+f9SnqiKS5NhzRpJeYVoTLj27U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZn8FuJAeqPJAbycad1Cme2y1ym/GR6w2RitEcA/TAr0ml5+S5TfK2TO3pOJfxRMep63570HbrmdOruSvR+s6i13wu5tp9Jy8mszYvXlgjtqesp9Tkejhmkl6IvnU8dqZgMcv4fsAJ3W5VC3D4Qkjdtl2c8hY0R1wF86HVHgOdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBoL2Ppj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A3BC4CEF0;
-	Sun,  7 Sep 2025 20:25:43 +0000 (UTC)
+	 MIME-Version; b=uYdxWCXZOgoTRf5Yd20BmiPcrxnnjnp7mnCy5vrWTuPVms+YrUu+8g9Zh6SVdg2K+O8FjFUrZr7kDKiQX1JMay5xW369sBwiSVjtZ7DTwQT4NpUNnACtmuu90/JpN2Ad3Tu+r6iPU9hcb0tL+7Lh35QmnvIw3+W3EeyHc++Xq9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hfEiMjC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 944ABC4CEF0;
+	Sun,  7 Sep 2025 20:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276744;
-	bh=gDssaU6KHpVkQqFgJTQEH9It95lbAMYmnj0nEF4oLzI=;
+	s=korg; t=1757277398;
+	bh=awBrJn5koY5FwMwbZ+f9SnqiKS5NhzRpJeYVoTLj27U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VBoL2PpjJNfsLYHF9oKXukMa5HH+5wiHlFWBzC/ui7vqUGqWavqYtenwyHrODXjF7
-	 sl+3Qojc2tWmiRo0eMLi61ADsmui1+B/o2874IFhE7ATcee6hpiuyw3zAoDxQWTAlQ
-	 pg8DbO8Gl4Z7o0bI02uW4GP/oEReSZJ39LmixgmM=
+	b=1hfEiMjCIXtjH7jQPgu5GFqznsHA1p1hiawCNUJVYqBjxONN0KmNskZlShzgCrimm
+	 zWAfeOauq/NSXzycu66V7epsZzN9M5UQ4d+prtHgxt9c5kLjEArWILU6XTP3riu9Kv
+	 JSiJW6dS/jT1OdWnRbJa+IIBc3dq/wromHQtJUTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Fei Shao <fshao@chromium.org>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/121] drm/mediatek: Fix using wrong drm private data to bind mediatek-drm
+	David Ahern <dsahern@kernel.org>,
+	Wang Liang <wangliang74@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.12 135/175] net: fix NULL pointer dereference in l3mdev_l3_rcv
 Date: Sun,  7 Sep 2025 21:58:50 +0200
-Message-ID: <20250907195612.264219352@linuxfoundation.org>
+Message-ID: <20250907195618.044360141@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Jason-JH.Lin" <jason-jh.lin@mediatek.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit ebba0960993045787ca00bb0932d83dad98c2e26 ]
+commit 0032c99e83b9ce6d5995d65900aa4b6ffb501cce upstream.
 
-According to mtk_drm_kms_init(), the all_drm_private array in each
-drm private data stores all drm private data in display path order.
+When delete l3s ipvlan:
 
-In mtk_drm_get_all_drm_priv(), each element in all_drm_priv should have one
-display path private data, such as:
-all_drm_priv[CRTC_MAIN] should only have main_path data
-all_drm_priv[CRTC_EXT] should only have ext_path data
-all_drm_priv[CRTC_THIRD] should only have third_path data
+    ip link del link eth0 ipvlan1 type ipvlan mode l3s
 
-So we need to add the length checking for each display path before
-assigning their drm private data into all_drm_priv array.
+This may cause a null pointer dereference:
 
-Then the all_drm_private array in each drm private data needs to be
-assigned in their display path order.
+    Call trace:
+     ip_rcv_finish+0x48/0xd0
+     ip_rcv+0x5c/0x100
+     __netif_receive_skb_one_core+0x64/0xb0
+     __netif_receive_skb+0x20/0x80
+     process_backlog+0xb4/0x204
+     napi_poll+0xe8/0x294
+     net_rx_action+0xd8/0x22c
+     __do_softirq+0x12c/0x354
 
-Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Tested-by: Fei Shao <fshao@chromium.org>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20231004024013.18956-4-jason-jh.lin@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Stable-dep-of: 1f403699c40f ("drm/mediatek: Fix device/node reference count leaks in mtk_drm_get_all_drm_priv")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is because l3mdev_l3_rcv() visit dev->l3mdev_ops after
+ipvlan_l3s_unregister() assign the dev->l3mdev_ops to NULL. The process
+like this:
+
+    (CPU1)                     | (CPU2)
+    l3mdev_l3_rcv()            |
+      check dev->priv_flags:   |
+        master = skb->dev;     |
+                               |
+                               | ipvlan_l3s_unregister()
+                               |   set dev->priv_flags
+                               |   dev->l3mdev_ops = NULL;
+                               |
+      visit master->l3mdev_ops |
+
+To avoid this by do not set dev->l3mdev_ops when unregister l3s ipvlan.
+
+Suggested-by: David Ahern <dsahern@kernel.org>
+Fixes: c675e06a98a4 ("ipvlan: decouple l3s mode dependencies from other modes")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250321090353.1170545-1-wangliang74@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_drv.c |   17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/net/ipvlan/ipvlan_l3s.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -352,6 +352,7 @@ static bool mtk_drm_get_all_drm_priv(str
- {
- 	struct mtk_drm_private *drm_priv = dev_get_drvdata(dev);
- 	struct mtk_drm_private *all_drm_priv[MAX_CRTC];
-+	struct mtk_drm_private *temp_drm_priv;
- 	struct device_node *phandle = dev->parent->of_node;
- 	const struct of_device_id *of_id;
- 	struct device_node *node;
-@@ -371,11 +372,21 @@ static bool mtk_drm_get_all_drm_priv(str
- 			continue;
+--- a/drivers/net/ipvlan/ipvlan_l3s.c
++++ b/drivers/net/ipvlan/ipvlan_l3s.c
+@@ -224,5 +224,4 @@ void ipvlan_l3s_unregister(struct ipvl_p
  
- 		drm_dev = device_find_child(&pdev->dev, NULL, mtk_drm_match);
--		if (!drm_dev || !dev_get_drvdata(drm_dev))
-+		if (!drm_dev)
- 			continue;
- 
--		all_drm_priv[cnt] = dev_get_drvdata(drm_dev);
--		if (all_drm_priv[cnt] && all_drm_priv[cnt]->mtk_drm_bound)
-+		temp_drm_priv = dev_get_drvdata(drm_dev);
-+		if (!temp_drm_priv)
-+			continue;
-+
-+		if (temp_drm_priv->data->main_len)
-+			all_drm_priv[CRTC_MAIN] = temp_drm_priv;
-+		else if (temp_drm_priv->data->ext_len)
-+			all_drm_priv[CRTC_EXT] = temp_drm_priv;
-+		else if (temp_drm_priv->data->third_len)
-+			all_drm_priv[CRTC_THIRD] = temp_drm_priv;
-+
-+		if (temp_drm_priv->mtk_drm_bound)
- 			cnt++;
- 
- 		if (cnt == MAX_CRTC) {
+ 	dev->priv_flags &= ~IFF_L3MDEV_RX_HANDLER;
+ 	ipvlan_unregister_nf_hook(read_pnet(&port->pnet));
+-	dev->l3mdev_ops = NULL;
+ }
 
 
 
