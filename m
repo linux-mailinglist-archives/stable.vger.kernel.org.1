@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-178395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7DDB47E7D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF01B47E09
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EADC118904DA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A4587A2F67
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D44B20E029;
-	Sun,  7 Sep 2025 20:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FC7264A9C;
+	Sun,  7 Sep 2025 20:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eifVOTTv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Mb3xY3K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF697D528;
-	Sun,  7 Sep 2025 20:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0BA1D88D0;
+	Sun,  7 Sep 2025 20:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276699; cv=none; b=YXsfBHeeGe1JKMVD0nZEPmIrp6o9eD38LTNuS2sE3+EY20LQUl/TlqB0tMyg2Nv9SjrRRwg+ZvZYIGoBiFsP3PAfMwBeh5Agwlc3N0ACm1PBr2PTRdf4OpgQi/4Zww++dr2IU+hy1JmcOZzfn8uUks4s+t5epC85021HMPifA24=
+	t=1757276359; cv=none; b=us3q94gaaywMQ4iy2lCmuTbzcNmvndzGny0zGyEGVf3vU0djOy2NOCCanWjYDIP6bbjHOqD3WBp7/UKdOzS/S+Wl6SHQLySg7VRHaEpByRTECPLTd9/airJR/s0CE4dl9hNZXz3CHQZD/kG+C/IZbPFF4nBaXp1mRHhLT6ZTiB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276699; c=relaxed/simple;
-	bh=UMSmyIRqCohQZyOI6fG6GNHvQr4QEjKuXOMTmnOD29Y=;
+	s=arc-20240116; t=1757276359; c=relaxed/simple;
+	bh=4+uGD51F76N8QcijdU94gFNKQqfQMr+Jaw8OWr42t1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TwLZ10rfzBhEe6I+1KffgxkdckENXL5TDUWhGDIjg+uUF0n+ZKqsywD0OiHRuAP5J9jaURGmu7jgxtRkOFhGlBX8JkRX7tat0tim2eHnnTEg8mFgrsfFAWdZnYqvBubtAIPCX9RsHqjk1EvlUosg7wf5fLGWpsUS5OmYOtRgmOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eifVOTTv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657B2C4CEF9;
-	Sun,  7 Sep 2025 20:24:58 +0000 (UTC)
+	 MIME-Version; b=NqlGs1YxIoAgRiwNvr2/01U8N9+qyUUFD5VWE7l1/encqsoChvi1GznwDBWM3x1AIvES3qPfEPBKUq4G1mJLbqpjwsqmNG/PayYc1TeBUq+TQ0OjSgKoMYtUX03S6qTAlbjLo2mYh0lu0bLUlsR3pa98HtorVzeSaoNSe+wwOoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Mb3xY3K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5070DC4CEF0;
+	Sun,  7 Sep 2025 20:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276698;
-	bh=UMSmyIRqCohQZyOI6fG6GNHvQr4QEjKuXOMTmnOD29Y=;
+	s=korg; t=1757276356;
+	bh=4+uGD51F76N8QcijdU94gFNKQqfQMr+Jaw8OWr42t1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eifVOTTvYFtXzjig9JbSzW/go1HvXsRD+dH0oEXFEPilH3GHHU35dwxDuZSbOSOmb
-	 9THnxH0yjTie0nzMUG+S174O4pva0IQ+Yr9bYw0c13hF1eC6n6U9rGeaRp0KeKVEfi
-	 4qKwNEshOI8Evw7bCgRYHPe5olU6EHE2y8bIBPWM=
+	b=0Mb3xY3KVzNHog3zWvhhPQlul7T836uJqogJx90/wgzUT4154/ekThvZqlbnyjSbc
+	 iG/CgEG5xUcUGMpwzfzrO6qR2ts59qlNrggH1Gp0/uzMSyYtdHvCJA+dqwg/1BGiHK
+	 E5ceTYiJbhTFlYQvaLQ9PSpP+8Jko2MNxCrB1QkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/121] memcg: drain obj stock on cpu hotplug teardown
+Subject: [PATCH 6.1 080/104] pcmcia: Add error handling for add_interval() in do_validate_mem()
 Date: Sun,  7 Sep 2025 21:58:37 +0200
-Message-ID: <20250907195611.916719134@linuxfoundation.org>
+Message-ID: <20250907195609.750434061@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,56 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shakeel Butt <shakeel.butt@linux.dev>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 9f01b4954490d4ccdbcc2b9be34a9921ceee9cbb ]
+[ Upstream commit 4a81f78caa53e0633cf311ca1526377d9bff7479 ]
 
-Currently on cpu hotplug teardown, only memcg stock is drained but we
-need to drain the obj stock as well otherwise we will miss the stats
-accumulated on the target cpu as well as the nr_bytes cached. The stats
-include MEMCG_KMEM, NR_SLAB_RECLAIMABLE_B & NR_SLAB_UNRECLAIMABLE_B. In
-addition we are leaking reference to struct obj_cgroup object.
+In the do_validate_mem(), the call to add_interval() does not
+handle errors. If kmalloc() fails in add_interval(), it could
+result in a null pointer being inserted into the linked list,
+leading to illegal memory access when sub_interval() is called
+next.
 
-Link: https://lkml.kernel.org/r/20250310230934.2913113-1-shakeel.butt@linux.dev
-Fixes: bf4f059954dc ("mm: memcg/slab: obj_cgroup API")
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This patch adds an error handling for the add_interval(). If
+add_interval() returns an error, the function will return early
+with the error code.
+
+Fixes: 7b4884ca8853 ("pcmcia: validate late-added resources")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memcontrol.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/pcmcia/rsrc_nonstatic.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2376,9 +2376,18 @@ static void drain_all_stock(struct mem_c
- static int memcg_hotplug_cpu_dead(unsigned int cpu)
- {
- 	struct memcg_stock_pcp *stock;
-+	struct obj_cgroup *old;
-+	unsigned long flags;
+diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
+index 8bda75990bce5..0a4e439d46094 100644
+--- a/drivers/pcmcia/rsrc_nonstatic.c
++++ b/drivers/pcmcia/rsrc_nonstatic.c
+@@ -375,7 +375,9 @@ static int do_validate_mem(struct pcmcia_socket *s,
  
- 	stock = &per_cpu(memcg_stock, cpu);
-+
-+	/* drain_obj_stock requires stock_lock */
-+	local_lock_irqsave(&memcg_stock.stock_lock, flags);
-+	old = drain_obj_stock(stock);
-+	local_unlock_irqrestore(&memcg_stock.stock_lock, flags);
-+
- 	drain_stock(stock);
-+	obj_cgroup_put(old);
+ 	if (validate && !s->fake_cis) {
+ 		/* move it to the validated data set */
+-		add_interval(&s_data->mem_db_valid, base, size);
++		ret = add_interval(&s_data->mem_db_valid, base, size);
++		if (ret)
++			return ret;
+ 		sub_interval(&s_data->mem_db, base, size);
+ 	}
  
- 	return 0;
- }
+-- 
+2.51.0
+
 
 
 
