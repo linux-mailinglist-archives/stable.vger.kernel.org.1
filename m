@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-178644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA03B47F7F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5432B47D19
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F102F3C314C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A10F03BE8A6
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29654315A;
-	Sun,  7 Sep 2025 20:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E9A29BD90;
+	Sun,  7 Sep 2025 20:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cowYLTYF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5noasYg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8D1269CE6;
-	Sun,  7 Sep 2025 20:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ECB22F74D;
+	Sun,  7 Sep 2025 20:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277497; cv=none; b=tvhcGQWFzidjHRQID5BeIPWZMuaFEtWwb2a4Kae76NS8CaEaGabgTZNvFYF+P+98zNC6mpkA3WgiOIADjbjJsNTgJZXaHcCTO1482b4fDs5siCQhmM0QrsHp9J16q8q2SuENvEv6JmGeeLl5Q7qC4xxekblFEi0bknulV9vOeSI=
+	t=1757275652; cv=none; b=VdtnL4COHEOuMZfKuxLYX2KoKjBWZ+LW1zZuoDAJhYRSPz9KSz9jFf+dzQyptQMc5zc2qHtgKhw4vxPWDtXB1U1teFSjFluuyOE1WcBlPavoLLHYQwxrkysXvjrwA9wnum8eWZ5c1cKTYkPeYdU3K5zK3cJLmtDPSImrqe36Qko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277497; c=relaxed/simple;
-	bh=3dXzWXuGELxDotgHvglIGULrjJiuxpvCEnz2oC8U3Hg=;
+	s=arc-20240116; t=1757275652; c=relaxed/simple;
+	bh=T4bDNjhXnxQKFeZj82i3pYB3D3XrO3v+ERC4T088WmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U99PhjLNM0OHIorT32IFcQnH7/5o5w3tGjjjErcbFyEqnX9VXIH2TrWQVx3JLlqf+yQwQ/bW6eW6I48RZBNR3iHcB78kbOv/OUtLsRw6qlAu3OrPbzmbxAWxDb9C7M0RCOJj7RRqg6X58C/CSbOg+pEHohU1UBIxAX0O9QAVTOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cowYLTYF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C750FC4CEF0;
-	Sun,  7 Sep 2025 20:38:16 +0000 (UTC)
+	 MIME-Version; b=gfOJnrHtSYF73mE3N/X8c0yWewnl6l8uopt1L25rKT/euhD+uWisvqsGqGnSMcFKTi9+CnE4rHrdStMIVT7SGONMbnS7oJpdvEuXzsv/gE2Pb0z+cyzwxOuFbJ4yUwGtcg5swUu3KFvLX/3v0dJkjEEHCSv6HIjqdPQyoDbEtDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5noasYg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92F2C4CEF8;
+	Sun,  7 Sep 2025 20:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277497;
-	bh=3dXzWXuGELxDotgHvglIGULrjJiuxpvCEnz2oC8U3Hg=;
+	s=korg; t=1757275652;
+	bh=T4bDNjhXnxQKFeZj82i3pYB3D3XrO3v+ERC4T088WmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cowYLTYFgy9iG6n1N4QYVxeG/ljG8vZjBlSzHQ1RSRTaHfelWfA71GnqS9o7fw/nl
-	 l+21vOQTzoeiJTt8wv2lqLT3gJUTqxBIE2OHMsEXWXO9hxH9XUzH2+AiN8DPkDWxXZ
-	 zFEXFoOtGNG2kwvbFLn+2NS58ikekuZ7R7ELNw+I=
+	b=E5noasYgtvnYD4YOPgBDXFD3zFjRAKhPOqo9pexfy/EE0sMrcEaCOYm9Xyrd4CAVq
+	 wIh3DmxPp6XlvRRzAdv/tGgSfxvLpAYklZEBSmwNtVsKR+kCtOjDsHb0wL4XpcNh1v
+	 YYxucRTCDuC9IJ7f38g0umjh5oRYaVPcCaHazm/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chad Monroe <chad.monroe@adtran.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 034/183] wifi: mt76: prevent non-offchannel mgmt tx during scan/roc
+	Ma Ke <make24@iscas.ac.cn>,
+	Dominik Brodowski <linux@dominikbrodowski.net>
+Subject: [PATCH 5.10 21/52] pcmcia: Fix a NULL pointer dereference in __iodyn_find_io_region()
 Date: Sun,  7 Sep 2025 21:57:41 +0200
-Message-ID: <20250907195616.583419282@linuxfoundation.org>
+Message-ID: <20250907195602.615538486@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 4c2334587b0a13b8f4eda1336ae657297fcd743b ]
+commit 44822df89e8f3386871d9cad563ece8e2fd8f0e7 upstream.
 
-Only put probe request packets in the offchannel queue if
-IEEE80211_TX_CTRL_DONT_USE_RATE_MASK is set and IEEE80211_TX_CTL_TX_OFFCHAN
-is unset.
+In __iodyn_find_io_region(), pcmcia_make_resource() is assigned to
+res and used in pci_bus_alloc_resource(). There is a dereference of res
+in pci_bus_alloc_resource(), which could lead to a NULL pointer
+dereference on failure of pcmcia_make_resource().
 
-Fixes: 0b3be9d1d34e ("wifi: mt76: add separate tx scheduling queue for off-channel tx")
-Reported-by: Chad Monroe <chad.monroe@adtran.com>
-Link: https://patch.msgid.link/20250813121106.81559-2-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this bug by adding a check of res.
+
+Cc: stable@vger.kernel.org
+Fixes: 49b1153adfe1 ("pcmcia: move all pcmcia_resource_ops providers into one module")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pcmcia/rsrc_iodyn.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
-index e6cf16706667e..03b042fdf997f 100644
---- a/drivers/net/wireless/mediatek/mt76/tx.c
-+++ b/drivers/net/wireless/mediatek/mt76/tx.c
-@@ -332,6 +332,7 @@ mt76_tx(struct mt76_phy *phy, struct ieee80211_sta *sta,
- 	struct mt76_wcid *wcid, struct sk_buff *skb)
- {
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
-+	struct ieee80211_hdr *hdr = (void *)skb->data;
- 	struct sk_buff_head *head;
+--- a/drivers/pcmcia/rsrc_iodyn.c
++++ b/drivers/pcmcia/rsrc_iodyn.c
+@@ -62,6 +62,9 @@ static struct resource *__iodyn_find_io_
+ 	unsigned long min = base;
+ 	int ret;
  
- 	if (mt76_testmode_enabled(phy)) {
-@@ -349,7 +350,8 @@ mt76_tx(struct mt76_phy *phy, struct ieee80211_sta *sta,
- 	info->hw_queue |= FIELD_PREP(MT_TX_HW_QUEUE_PHY, phy->band_idx);
++	if (!res)
++		return NULL;
++
+ 	data.mask = align - 1;
+ 	data.offset = base & data.mask;
  
- 	if ((info->flags & IEEE80211_TX_CTL_TX_OFFCHAN) ||
--	    (info->control.flags & IEEE80211_TX_CTRL_DONT_USE_RATE_MASK))
-+	    ((info->control.flags & IEEE80211_TX_CTRL_DONT_USE_RATE_MASK) &&
-+	     ieee80211_is_probe_req(hdr->frame_control)))
- 		head = &wcid->tx_offchannel;
- 	else
- 		head = &wcid->tx_pending;
--- 
-2.50.1
-
 
 
 
