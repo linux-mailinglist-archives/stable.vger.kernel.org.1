@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE817B47E77
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99358B47F02
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:31:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EC713C1B49
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EFDB1B20E3E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403091F1921;
-	Sun,  7 Sep 2025 20:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D37211A14;
+	Sun,  7 Sep 2025 20:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rUZu/ICY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKiJibzJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27CAD528;
-	Sun,  7 Sep 2025 20:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CDC18DF89;
+	Sun,  7 Sep 2025 20:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276680; cv=none; b=fZuzMOBMCOvWoHFaAk2iMTk+ez9Z9eNBV4YavaA475aIChUGJMnn1Ygb0nSP+4MZDWyYt4xlLYcZRc9znID4vjpdepHWwnNVVK5OV1KrzYCNRjLXBp/n77kw55VCGvL47sPPtSQHCSHA5R8J76cw9ONe05umH0zFvT9CiCscmAY=
+	t=1757277111; cv=none; b=FS0gPV3rdFI2IUZjCmsC/bx6MVv6cPkTkB6uH1amMujVQD/+pAVBpWdAlya5YcQ82fHM0YWPPp8m3TI4SbnWR5o2jadYEjq7vYnoM0KvnjT9uvihUTt2gr1EiXVUffsJhHiOJb0C7q3iLn0s9lyy1+kK1iKhEwVyjx0UEO+OWXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276680; c=relaxed/simple;
-	bh=KhdVGlKCG0c2INA6xP3n5MBbOh7ZuRU3NCoKmUJ7V8s=;
+	s=arc-20240116; t=1757277111; c=relaxed/simple;
+	bh=gxxX7ixSHKw6VjA+QUds+4aYVKFIL+fR6SMIU/Q+hK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Crh65XDTX23RdufU8U0rFOoMXukUp5RIIEn6yVND0EZ2ZFKXqv1VfqPz1L/e5RhO8yzvnyGunMaOcqAFQRzrnScKpTcGul6r9xjQcFq4BUJq2JUhEZFjwQy8qGPLgT0Yel8TlNlD8Dd/9ry2uKf3e8ItTZ2KiKQt6I3h1bR8k28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rUZu/ICY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BEBC4CEF0;
-	Sun,  7 Sep 2025 20:24:39 +0000 (UTC)
+	 MIME-Version; b=gIhARFBATPMfuXMsygTIJkwddhR+cRj4qz8IXGkpWZgygBFJI9izzeocvf8jI6ezxmTqO0QRsQwe+TRihqbKSHAtYoU6VuHEFSB3AJWYVXxIGnFHLnbiaaJqdyr7CYeSKQ9Qr49ZNi03L5wNxlEzhe1/fpha+k6GMQaVQlkPIAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rKiJibzJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2517C4CEF0;
+	Sun,  7 Sep 2025 20:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276679;
-	bh=KhdVGlKCG0c2INA6xP3n5MBbOh7ZuRU3NCoKmUJ7V8s=;
+	s=korg; t=1757277111;
+	bh=gxxX7ixSHKw6VjA+QUds+4aYVKFIL+fR6SMIU/Q+hK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rUZu/ICYCOe6wluNSZgbbE8uM6o8Q/pZ4K2VsmaVlIHqhVrf6j24e2oDgDJVy/Mh7
-	 VgmhNwR1gqBzLT0cLh8tUlyR20cUHyTCHnVBMJkAu5xqKlIzG+v767p9/9KjX5GRCj
-	 uTqLXJywYv08/jrS9dygtZGUx+MPpKUfUOiAE7yY=
+	b=rKiJibzJaxnYTVBBSKKWOhNeVZTJ781Wmz7PH3ddtezexn9Nqum3FSywfjPxrbUHb
+	 QqkcGSV+o71Y/OrnyyuLBShuuMWvRq8AMOTQ1NwcEUPKYxaQumG0liTVUHoP0rxnIa
+	 72OLk+Q+ykMrSzlBNerMNWVjN7YBk7vSHT//2c9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/121] selftest: net: Fix weird setsockopt() in bind_bhash.c.
+Subject: [PATCH 6.12 090/175] phy: mscc: Stop taking ts_lock for tx_queue and use its own lock
 Date: Sun,  7 Sep 2025 21:58:05 +0200
-Message-ID: <20250907195611.084186589@linuxfoundation.org>
+Message-ID: <20250907195616.968205473@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit fd2004d82d8d8faa94879e3de3096c8511728637 ]
+[ Upstream commit 9b2bfdbf43adb9929c5ddcdd96efedbf1c88cf53 ]
 
-bind_bhash.c passes (SO_REUSEADDR | SO_REUSEPORT) to setsockopt().
+When transmitting a PTP frame which is timestamp using 2 step, the
+following warning appears if CONFIG_PROVE_LOCKING is enabled:
+=============================
+[ BUG: Invalid wait context ]
+6.17.0-rc1-00326-ge6160462704e #427 Not tainted
+-----------------------------
+ptp4l/119 is trying to lock:
+c2a44ed4 (&vsc8531->ts_lock){+.+.}-{3:3}, at: vsc85xx_txtstamp+0x50/0xac
+other info that might help us debug this:
+context-{4:4}
+4 locks held by ptp4l/119:
+ #0: c145f068 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0x58/0x1440
+ #1: c29df974 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_queue_xmit+0x5c4/0x1440
+ #2: c2aaaad0 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x108/0x350
+ #3: c2aac170 (&lan966x->tx_lock){+.-.}-{2:2}, at: lan966x_port_xmit+0xd0/0x350
+stack backtrace:
+CPU: 0 UID: 0 PID: 119 Comm: ptp4l Not tainted 6.17.0-rc1-00326-ge6160462704e #427 NONE
+Hardware name: Generic DT based system
+Call trace:
+ unwind_backtrace from show_stack+0x10/0x14
+ show_stack from dump_stack_lvl+0x7c/0xac
+ dump_stack_lvl from __lock_acquire+0x8e8/0x29dc
+ __lock_acquire from lock_acquire+0x108/0x38c
+ lock_acquire from __mutex_lock+0xb0/0xe78
+ __mutex_lock from mutex_lock_nested+0x1c/0x24
+ mutex_lock_nested from vsc85xx_txtstamp+0x50/0xac
+ vsc85xx_txtstamp from lan966x_fdma_xmit+0xd8/0x3a8
+ lan966x_fdma_xmit from lan966x_port_xmit+0x1bc/0x350
+ lan966x_port_xmit from dev_hard_start_xmit+0xc8/0x2c0
+ dev_hard_start_xmit from sch_direct_xmit+0x8c/0x350
+ sch_direct_xmit from __dev_queue_xmit+0x680/0x1440
+ __dev_queue_xmit from packet_sendmsg+0xfa4/0x1568
+ packet_sendmsg from __sys_sendto+0x110/0x19c
+ __sys_sendto from sys_send+0x18/0x20
+ sys_send from ret_fast_syscall+0x0/0x1c
+Exception stack(0xf0b05fa8 to 0xf0b05ff0)
+5fa0:                   00000001 0000000e 0000000e 0004b47a 0000003a 00000000
+5fc0: 00000001 0000000e 00000000 00000121 0004af58 00044874 00000000 00000000
+5fe0: 00000001 bee9d420 00025a10 b6e75c7c
 
-In the asm-generic definition, the value happens to match with the
-bare SO_REUSEPORT, (2 | 15) == 15, but not on some arch.
+So, instead of using the ts_lock for tx_queue, use the spinlock that
+skb_buff_head has.
 
-arch/alpha/include/uapi/asm/socket.h:18:#define SO_REUSEADDR	0x0004
-arch/alpha/include/uapi/asm/socket.h:24:#define SO_REUSEPORT	0x0200
-arch/mips/include/uapi/asm/socket.h:24:#define SO_REUSEADDR	0x0004	/* Allow reuse of local addresses.  */
-arch/mips/include/uapi/asm/socket.h:33:#define SO_REUSEPORT 0x0200	/* Allow local address and port reuse.  */
-arch/parisc/include/uapi/asm/socket.h:12:#define SO_REUSEADDR	0x0004
-arch/parisc/include/uapi/asm/socket.h:18:#define SO_REUSEPORT	0x0200
-arch/sparc/include/uapi/asm/socket.h:13:#define SO_REUSEADDR	0x0004
-arch/sparc/include/uapi/asm/socket.h:20:#define SO_REUSEPORT	0x0200
-include/uapi/asm-generic/socket.h:12:#define SO_REUSEADDR	2
-include/uapi/asm-generic/socket.h:27:#define SO_REUSEPORT	15
-
-Let's pass SO_REUSEPORT only.
-
-Fixes: c35ecb95c448 ("selftests/net: Add test for timing a bind request to a port with a populated bhash entry")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250903222938.2601522-1-kuniyu@google.com
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://patch.msgid.link/20250902121259.3257536-1-horatiu.vultur@microchip.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/bind_bhash.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/phy/mscc/mscc_ptp.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/net/bind_bhash.c b/tools/testing/selftests/net/bind_bhash.c
-index 57ff67a3751eb..da04b0b19b73c 100644
---- a/tools/testing/selftests/net/bind_bhash.c
-+++ b/tools/testing/selftests/net/bind_bhash.c
-@@ -75,7 +75,7 @@ static void *setup(void *arg)
- 	int *array = (int *)arg;
+diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
+index 920f35f8f84e7..fa24ba8f6bff0 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.c
++++ b/drivers/net/phy/mscc/mscc_ptp.c
+@@ -455,12 +455,12 @@ static void vsc85xx_dequeue_skb(struct vsc85xx_ptp *ptp)
+ 		*p++ = (reg >> 24) & 0xff;
+ 	}
  
- 	for (i = 0; i < MAX_CONNECTIONS; i++) {
--		sock_fd = bind_socket(SO_REUSEADDR | SO_REUSEPORT, setup_addr);
-+		sock_fd = bind_socket(SO_REUSEPORT, setup_addr);
- 		if (sock_fd < 0) {
- 			ret = sock_fd;
- 			pthread_exit(&ret);
-@@ -103,7 +103,7 @@ int main(int argc, const char *argv[])
+-	len = skb_queue_len(&ptp->tx_queue);
++	len = skb_queue_len_lockless(&ptp->tx_queue);
+ 	if (len < 1)
+ 		return;
  
- 	setup_addr = use_v6 ? setup_addr_v6 : setup_addr_v4;
+ 	while (len--) {
+-		skb = __skb_dequeue(&ptp->tx_queue);
++		skb = skb_dequeue(&ptp->tx_queue);
+ 		if (!skb)
+ 			return;
  
--	listener_fd = bind_socket(SO_REUSEADDR | SO_REUSEPORT, setup_addr);
-+	listener_fd = bind_socket(SO_REUSEPORT, setup_addr);
- 	if (listen(listener_fd, 100) < 0) {
- 		perror("listen failed");
- 		return -1;
+@@ -485,7 +485,7 @@ static void vsc85xx_dequeue_skb(struct vsc85xx_ptp *ptp)
+ 		 * packet in the FIFO right now, reschedule it for later
+ 		 * packets.
+ 		 */
+-		__skb_queue_tail(&ptp->tx_queue, skb);
++		skb_queue_tail(&ptp->tx_queue, skb);
+ 	}
+ }
+ 
+@@ -1065,6 +1065,7 @@ static int vsc85xx_hwtstamp(struct mii_timestamper *mii_ts,
+ 	case HWTSTAMP_TX_ON:
+ 		break;
+ 	case HWTSTAMP_TX_OFF:
++		skb_queue_purge(&vsc8531->ptp->tx_queue);
+ 		break;
+ 	default:
+ 		return -ERANGE;
+@@ -1089,9 +1090,6 @@ static int vsc85xx_hwtstamp(struct mii_timestamper *mii_ts,
+ 
+ 	mutex_lock(&vsc8531->ts_lock);
+ 
+-	__skb_queue_purge(&vsc8531->ptp->tx_queue);
+-	__skb_queue_head_init(&vsc8531->ptp->tx_queue);
+-
+ 	/* Disable predictor while configuring the 1588 block */
+ 	val = vsc85xx_ts_read_csr(phydev, PROCESSOR,
+ 				  MSCC_PHY_PTP_INGR_PREDICTOR);
+@@ -1177,9 +1175,7 @@ static void vsc85xx_txtstamp(struct mii_timestamper *mii_ts,
+ 
+ 	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
+ 
+-	mutex_lock(&vsc8531->ts_lock);
+-	__skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
+-	mutex_unlock(&vsc8531->ts_lock);
++	skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
+ 	return;
+ 
+ out:
+@@ -1545,6 +1541,7 @@ void vsc8584_ptp_deinit(struct phy_device *phydev)
+ 	if (vsc8531->ptp->ptp_clock) {
+ 		ptp_clock_unregister(vsc8531->ptp->ptp_clock);
+ 		skb_queue_purge(&vsc8531->rx_skbs_list);
++		skb_queue_purge(&vsc8531->ptp->tx_queue);
+ 	}
+ }
+ 
+@@ -1568,7 +1565,7 @@ irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev)
+ 	if (rc & VSC85XX_1588_INT_FIFO_ADD) {
+ 		vsc85xx_get_tx_ts(priv->ptp);
+ 	} else if (rc & VSC85XX_1588_INT_FIFO_OVERFLOW) {
+-		__skb_queue_purge(&priv->ptp->tx_queue);
++		skb_queue_purge(&priv->ptp->tx_queue);
+ 		vsc85xx_ts_reset_fifo(phydev);
+ 	}
+ 
+@@ -1588,6 +1585,7 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
+ 	mutex_init(&vsc8531->phc_lock);
+ 	mutex_init(&vsc8531->ts_lock);
+ 	skb_queue_head_init(&vsc8531->rx_skbs_list);
++	skb_queue_head_init(&vsc8531->ptp->tx_queue);
+ 
+ 	/* Retrieve the shared load/save GPIO. Request it as non exclusive as
+ 	 * the same GPIO can be requested by all the PHYs of the same package.
 -- 
 2.50.1
 
