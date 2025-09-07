@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1370BB47F06
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C32EAB47F9E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 115EC1B20ECC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5FB11884522
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42077212B3D;
-	Sun,  7 Sep 2025 20:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A5D4315A;
+	Sun,  7 Sep 2025 20:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIACaxwV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JI+T9fq1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38DD1DF246;
-	Sun,  7 Sep 2025 20:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313321A704B;
+	Sun,  7 Sep 2025 20:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277118; cv=none; b=dOkB3CflvO7CHvIlpL0rSld3/yxG00qlQOTNGUX0wFjdi8c06kbbEJz+mKg0ORYsnFpARxykkKk8gCGBCqk0A1YP8tNoleXtL8vfiBNp3FbogN0pXQ/Q6wzE6g7K8oDMVZJIfK1Q0cX6lVleQ8JpfQW1RleAO7NnEJE3opmUSCU=
+	t=1757277590; cv=none; b=LhA5/XBz1lhmWatwoBZBl7HxZ4AEqZn/e2p9nT08EdscHITupAUUxYukTcDB+NFqPbtyRQE6V5lMMbo+WrHCZbQnOsNJUoCfOIxtV2ne3GjpmWKUDtwlSEX/BdYAvbTr3RsMNkUJHMsrJ8p5c0x3kFjhNJ9ixkkMCENISsCo55c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277118; c=relaxed/simple;
-	bh=zPu6F4StMjNk1DidTomFti5mwhUFkIWcaQ3IVC5xaNI=;
+	s=arc-20240116; t=1757277590; c=relaxed/simple;
+	bh=N7e0vUEvw6rgvQIYl0l66fDQlonk/WnXMYIxNmktcpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfH5x0qaNPf5MOCyGVKI9HZ58SGz5Ao73JnlR0cxmx1opnCpwzdpg/cgOG8Vel146X9DN0L/9P2NdruvY3YvhMl8sHG08VzmgOUnf/GZKk9G9QbXvKyBoRBcy84CKsrRSYHWwV4qwDdB03k/8PaIzv71NsI19S5AQEkyQyYGtek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIACaxwV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F49C4CEF0;
-	Sun,  7 Sep 2025 20:31:57 +0000 (UTC)
+	 MIME-Version; b=W1PI+hXhy02MqEoZL20pRTSWxuhAV1lWOfPIcVjKsCiO8zaZNG4ABviEuO+7/+sI6X929ryRgctxVZMDRBZ3OPeYFZTM5NUlXqXGf4z5pkRZMJvqXgtfO2T8Sgcf3JHmqrtDKypPDUlNA9ZwL3DmfYIEVaw9ZUGGCwHCmbYP/MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JI+T9fq1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FD7C4CEF0;
+	Sun,  7 Sep 2025 20:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277117;
-	bh=zPu6F4StMjNk1DidTomFti5mwhUFkIWcaQ3IVC5xaNI=;
+	s=korg; t=1757277590;
+	bh=N7e0vUEvw6rgvQIYl0l66fDQlonk/WnXMYIxNmktcpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sIACaxwVkQ2VSbFhaCgKchbYCyYJISAsPXUR2UNNIJcsX22UDC7WXdeDrc7nDcyUu
-	 JVHNP/TGYksegWHoV0vSOK1T79TwrfT6ddlWkB9PdZKWimzidX/RDjj2eqW8J+CB9U
-	 L5td+sQM5qQv09rNFCUWczjVWkHqIxGn0cxdSORo=
+	b=JI+T9fq11LqII2KXK6VSYLu819dudYhAc/VqqWHLwcjEW68uZQPP/2KmgIUryYL9i
+	 CxT2NMkXdvmQv0WbU5/FD6CrMhqI1tUYpWL9CSS4XzY/d6ePsEsblBaaa0bkdrMvUj
+	 QCSOn0i65i5p7juvTDsrOi02m+bh2cKlaeijLsAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karol Wachowski <karol.wachowski@intel.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.12 092/175] accel/ivpu: Prevent recovery work from being queued during device removal
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 060/183] macsec: read MACSEC_SA_ATTR_PN with nla_get_uint
 Date: Sun,  7 Sep 2025 21:58:07 +0200
-Message-ID: <20250907195617.017743200@linuxfoundation.org>
+Message-ID: <20250907195617.217107528@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Wachowski <karol.wachowski@intel.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-commit 69a79ada8eb034ce016b5b78fb7d08d8687223de upstream.
+[ Upstream commit 030e1c45666629f72d0fc1d040f9d2915680de8e ]
 
-Use disable_work_sync() instead of cancel_work_sync() in ivpu_dev_fini()
-to ensure that no new recovery work items can be queued after device
-removal has started. Previously, recovery work could be scheduled even
-after canceling existing work, potentially leading to use-after-free
-bugs if recovery accessed freed resources.
+The code currently reads both U32 attributes and U64 attributes as
+U64, so when a U32 attribute is provided by userspace (ie, when not
+using XPN), on big endian systems, we'll load that value into the
+upper 32bits of the next_pn field instead of the lower 32bits. This
+means that the value that userspace provided is ignored (we only care
+about the lower 32bits for non-XPN), and we'll start using PNs from 0.
 
-Rename ivpu_pm_cancel_recovery() to ivpu_pm_disable_recovery() to better
-reflect its new behavior.
+Switch to nla_get_uint, which will read the value correctly on all
+arches, whether it's 32b or 64b.
 
-Fixes: 58cde80f45a2 ("accel/ivpu: Use dedicated work for job timeout detection")
-Cc: stable@vger.kernel.org # v6.8+
-Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://lore.kernel.org/r/20250808110939.328366-1-jacek.lawrynowicz@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 48ef50fa866a ("macsec: Netlink support of XPN cipher suites (IEEE 802.1AEbw)")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/1c1df1661b89238caf5beefb84a10ebfd56c66ea.1756459839.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_drv.c |    2 +-
- drivers/accel/ivpu/ivpu_pm.c  |    4 ++--
- drivers/accel/ivpu/ivpu_pm.h  |    2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/macsec.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/accel/ivpu/ivpu_drv.c
-+++ b/drivers/accel/ivpu/ivpu_drv.c
-@@ -689,7 +689,7 @@ static void ivpu_bo_unbind_all_user_cont
- static void ivpu_dev_fini(struct ivpu_device *vdev)
- {
- 	ivpu_jobs_abort_all(vdev);
--	ivpu_pm_cancel_recovery(vdev);
-+	ivpu_pm_disable_recovery(vdev);
- 	ivpu_pm_disable(vdev);
- 	ivpu_prepare_for_reset(vdev);
- 	ivpu_shutdown(vdev);
---- a/drivers/accel/ivpu/ivpu_pm.c
-+++ b/drivers/accel/ivpu/ivpu_pm.c
-@@ -382,10 +382,10 @@ void ivpu_pm_init(struct ivpu_device *vd
- 	ivpu_dbg(vdev, PM, "Autosuspend delay = %d\n", delay);
- }
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index 4c75d1fea5527..01329fe7451a1 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -1844,7 +1844,7 @@ static int macsec_add_rxsa(struct sk_buff *skb, struct genl_info *info)
  
--void ivpu_pm_cancel_recovery(struct ivpu_device *vdev)
-+void ivpu_pm_disable_recovery(struct ivpu_device *vdev)
- {
- 	drm_WARN_ON(&vdev->drm, delayed_work_pending(&vdev->pm->job_timeout_work));
--	cancel_work_sync(&vdev->pm->recovery_work);
-+	disable_work_sync(&vdev->pm->recovery_work);
- }
+ 	if (tb_sa[MACSEC_SA_ATTR_PN]) {
+ 		spin_lock_bh(&rx_sa->lock);
+-		rx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
++		rx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
+ 		spin_unlock_bh(&rx_sa->lock);
+ 	}
  
- void ivpu_pm_enable(struct ivpu_device *vdev)
---- a/drivers/accel/ivpu/ivpu_pm.h
-+++ b/drivers/accel/ivpu/ivpu_pm.h
-@@ -25,7 +25,7 @@ struct ivpu_pm_info {
- void ivpu_pm_init(struct ivpu_device *vdev);
- void ivpu_pm_enable(struct ivpu_device *vdev);
- void ivpu_pm_disable(struct ivpu_device *vdev);
--void ivpu_pm_cancel_recovery(struct ivpu_device *vdev);
-+void ivpu_pm_disable_recovery(struct ivpu_device *vdev);
+@@ -2086,7 +2086,7 @@ static int macsec_add_txsa(struct sk_buff *skb, struct genl_info *info)
+ 	}
  
- int ivpu_pm_suspend_cb(struct device *dev);
- int ivpu_pm_resume_cb(struct device *dev);
+ 	spin_lock_bh(&tx_sa->lock);
+-	tx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
++	tx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
+ 	spin_unlock_bh(&tx_sa->lock);
+ 
+ 	if (tb_sa[MACSEC_SA_ATTR_ACTIVE])
+@@ -2398,7 +2398,7 @@ static int macsec_upd_txsa(struct sk_buff *skb, struct genl_info *info)
+ 
+ 		spin_lock_bh(&tx_sa->lock);
+ 		prev_pn = tx_sa->next_pn_halves;
+-		tx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
++		tx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
+ 		spin_unlock_bh(&tx_sa->lock);
+ 	}
+ 
+@@ -2496,7 +2496,7 @@ static int macsec_upd_rxsa(struct sk_buff *skb, struct genl_info *info)
+ 
+ 		spin_lock_bh(&rx_sa->lock);
+ 		prev_pn = rx_sa->next_pn_halves;
+-		rx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
++		rx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
+ 		spin_unlock_bh(&rx_sa->lock);
+ 	}
+ 
+-- 
+2.50.1
+
 
 
 
