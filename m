@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-178530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE590B47F0A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24FEAB47D57
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93FB83B566A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBCCB3AD16B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6F81DF246;
-	Sun,  7 Sep 2025 20:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C23E27FB21;
+	Sun,  7 Sep 2025 20:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cB2fxhrd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/L793zK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A4415C158;
-	Sun,  7 Sep 2025 20:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EA51CDFAC;
+	Sun,  7 Sep 2025 20:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277131; cv=none; b=VzWQ6ropBvCJLuoKuxJDkuUgu+QaBVQrOYLsj4js6UKbtpXL7kyTLmYnU8J6orFXlIj5BwFXIyj49Cl8wwxH4mZ+TeP6y1xgFqMWSHs9DVeLAKPkIeK4NXKEBJlLIDF/mnw3NddDjO926b71leQwh9+K9YyfGFfl9FptdQzCPj8=
+	t=1757275835; cv=none; b=B7lHFdmM1F1NwX7Kbw496rUc/n+TLBV4LyAsMP61UzxhdoSCl5BAztj/xsFsdlLKzrA3u4oodNE4ftxvEOUyQXKSLv6NfBF0TYJtFZ8MW/9BxwuUlCU/sFy98jO+wjTo97HPEzht8dJ4ypqYjlCarGTJG8oZjevpFxnUJ2qPr8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277131; c=relaxed/simple;
-	bh=3jLUxKBRlW7mCaRuuEqTOlnh1yDyKz1kIPl/O/l9vKA=;
+	s=arc-20240116; t=1757275835; c=relaxed/simple;
+	bh=l++jVezVhN6JKFW7fiaF043se6LkkvUrTQ/y3EgQYuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L7Ga8bJWPtFjQ3PAvcXaZHXKw5vPCVSiJ59PLw8AhAIoGpHJlQkrDF3+mw5UPdGwFYsJYRykbzOqdShSbKEpsLQIlV/JFj7x2Zfsudyk0FF1Pc42J1h6oOQZiDt5kG7RDYLOTQKBR11GOYmsD0A2t/NX+C25vW/G7/cMmbWu+sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cB2fxhrd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6A3C4CEF0;
-	Sun,  7 Sep 2025 20:32:10 +0000 (UTC)
+	 MIME-Version; b=V12vz7aur+7mRouwxmwkhSX6ZGOwE7Ayy0dZlJEEr6cjXvDbPtmWiv2Hr4ba8qc0zfxKMXbngbsX2tDBd6w5lkixW6VknL9WBetKtRkfCFQvf0YmMClDZG8EehKlWh+eadyYbHm7y2E/F2Lkxyi7adED3tdUjLtRHgUFloxBTWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/L793zK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D859C4CEF0;
+	Sun,  7 Sep 2025 20:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277130;
-	bh=3jLUxKBRlW7mCaRuuEqTOlnh1yDyKz1kIPl/O/l9vKA=;
+	s=korg; t=1757275835;
+	bh=l++jVezVhN6JKFW7fiaF043se6LkkvUrTQ/y3EgQYuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cB2fxhrdnGvn4pLcsvNkKTqUh2l9ADPe4k5S48cDwb5wrWErcr+czXrnAgLuaBR6b
-	 cEQAbVZCvROa8tLba1kfo2n9ZOiehfBbtmIZo+nXEQX+DOvKlMogBdkoA11gK5NXT/
-	 kRHV13dN5o0ty6xmTTOgPZ1nPildJQ9VJXAWO9rQ=
+	b=m/L793zKFvCRKi6JqSyr7mh6lgdmTdjf2Oo1OgC6s/2b76TIJUpb1x6dKt/N3SpvZ
+	 cqRVpzkdP663hJxa8zt3ji4QkQDpxUUylDeTIbcEBrHl7GU4sxVFC7cvvm2mpdHaWV
+	 Vqi9ryJmSqBMb8HoBalX0m7rr1xAFrDtVxj+2wHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+54cbbfb4db9145d26fc2@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 096/175] io_uring/msg_ring: ensure io_kiocb freeing is deferred for RCU
+	John Evans <evans1210144@gmail.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 25/45] scsi: lpfc: Fix buffer free/clear order in deferred receive path
 Date: Sun,  7 Sep 2025 21:58:11 +0200
-Message-ID: <20250907195617.117187904@linuxfoundation.org>
+Message-ID: <20250907195601.693319640@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: John Evans <evans1210144@gmail.com>
 
-Commit fc582cd26e888b0652bc1494f252329453fd3b23 upstream.
+[ Upstream commit 9dba9a45c348e8460da97c450cddf70b2056deb3 ]
 
-syzbot reports that defer/local task_work adding via msg_ring can hit
-a request that has been freed:
+Fix a use-after-free window by correcting the buffer release sequence in
+the deferred receive path. The code freed the RQ buffer first and only
+then cleared the context pointer under the lock. Concurrent paths (e.g.,
+ABTS and the repost path) also inspect and release the same pointer under
+the lock, so the old order could lead to double-free/UAF.
 
-CPU: 1 UID: 0 PID: 19356 Comm: iou-wrk-19354 Not tainted 6.16.0-rc4-syzkaller-00108-g17bbde2e1716 #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xd2/0x2b0 mm/kasan/report.c:521
- kasan_report+0x118/0x150 mm/kasan/report.c:634
- io_req_local_work_add io_uring/io_uring.c:1184 [inline]
- __io_req_task_work_add+0x589/0x950 io_uring/io_uring.c:1252
- io_msg_remote_post io_uring/msg_ring.c:103 [inline]
- io_msg_data_remote io_uring/msg_ring.c:133 [inline]
- __io_msg_ring_data+0x820/0xaa0 io_uring/msg_ring.c:151
- io_msg_ring_data io_uring/msg_ring.c:173 [inline]
- io_msg_ring+0x134/0xa00 io_uring/msg_ring.c:314
- __io_issue_sqe+0x17e/0x4b0 io_uring/io_uring.c:1739
- io_issue_sqe+0x165/0xfd0 io_uring/io_uring.c:1762
- io_wq_submit_work+0x6e9/0xb90 io_uring/io_uring.c:1874
- io_worker_handle_work+0x7cd/0x1180 io_uring/io-wq.c:642
- io_wq_worker+0x42f/0xeb0 io_uring/io-wq.c:696
- ret_from_fork+0x3fc/0x770 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+Note that the repost path already uses the correct pattern: detach the
+pointer under the lock, then free it after dropping the lock. The
+deferred path should do the same.
 
-which is supposed to be safe with how requests are allocated. But msg
-ring requests alloc and free on their own, and hence must defer freeing
-to a sane time.
-
-Add an rcu_head and use kfree_rcu() in both spots where requests are
-freed. Only the one in io_msg_tw_complete() is strictly required as it
-has been visible on the other ring, but use it consistently in the other
-spot as well.
-
-This should not cause any other issues outside of KASAN rightfully
-complaining about it.
-
-Link: https://lore.kernel.org/io-uring/686cd2ea.a00a0220.338033.0007.GAE@google.com/
-Reported-by: syzbot+54cbbfb4db9145d26fc2@syzkaller.appspotmail.com
+Fixes: 472e146d1cf3 ("scsi: lpfc: Correct upcalling nvmet_fc transport during io done downcall")
 Cc: stable@vger.kernel.org
-Fixes: 0617bb500bfa ("io_uring/msg_ring: improve handling of target CQE posting")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-(cherry picked from commit fc582cd26e888b0652bc1494f252329453fd3b23)
+Signed-off-by: John Evans <evans1210144@gmail.com>
+Link: https://lore.kernel.org/r/20250828044008.743-1-evans1210144@gmail.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/io_uring_types.h |   12 ++++++++++--
- io_uring/msg_ring.c            |    4 ++--
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/scsi/lpfc/lpfc_nvmet.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/include/linux/io_uring_types.h
-+++ b/include/linux/io_uring_types.h
-@@ -646,8 +646,16 @@ struct io_kiocb {
- 	atomic_t			refs;
- 	bool				cancel_seq_set;
- 	struct io_task_work		io_task_work;
--	/* for polled requests, i.e. IORING_OP_POLL_ADD and async armed poll */
--	struct hlist_node		hash_node;
-+	union {
-+		/*
-+		 * for polled requests, i.e. IORING_OP_POLL_ADD and async armed
-+		 * poll
-+		 */
-+		struct hlist_node	hash_node;
-+
-+		/* for private io_kiocb freeing */
-+		struct rcu_head		rcu_head;
-+	};
- 	/* internal polling, see IORING_FEAT_FAST_POLL */
- 	struct async_poll		*apoll;
- 	/* opcode allocated if it needs to store data for async defer */
---- a/io_uring/msg_ring.c
-+++ b/io_uring/msg_ring.c
-@@ -82,7 +82,7 @@ static void io_msg_tw_complete(struct io
- 		spin_unlock(&ctx->msg_lock);
+--- a/drivers/scsi/lpfc/lpfc_nvmet.c
++++ b/drivers/scsi/lpfc/lpfc_nvmet.c
+@@ -1172,7 +1172,7 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+ 	struct lpfc_nvmet_tgtport *tgtp;
+ 	struct lpfc_nvmet_rcv_ctx *ctxp =
+ 		container_of(rsp, struct lpfc_nvmet_rcv_ctx, ctx.fcp_req);
+-	struct rqb_dmabuf *nvmebuf = ctxp->rqb_buffer;
++	struct rqb_dmabuf *nvmebuf;
+ 	struct lpfc_hba *phba = ctxp->phba;
+ 	unsigned long iflag;
+ 
+@@ -1180,13 +1180,18 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+ 	lpfc_nvmeio_data(phba, "NVMET DEFERRCV: xri x%x sz %d CPU %02x\n",
+ 			 ctxp->oxid, ctxp->size, raw_smp_processor_id());
+ 
++	spin_lock_irqsave(&ctxp->ctxlock, iflag);
++	nvmebuf = ctxp->rqb_buffer;
+ 	if (!nvmebuf) {
++		spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ 		lpfc_printf_log(phba, KERN_INFO, LOG_NVME_IOERR,
+ 				"6425 Defer rcv: no buffer oxid x%x: "
+ 				"flg %x ste %x\n",
+ 				ctxp->oxid, ctxp->flag, ctxp->state);
+ 		return;
  	}
- 	if (req)
--		kmem_cache_free(req_cachep, req);
-+		kfree_rcu(req, rcu_head);
- 	percpu_ref_put(&ctx->refs);
++	ctxp->rqb_buffer = NULL;
++	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ 
+ 	tgtp = phba->targetport->private;
+ 	if (tgtp)
+@@ -1194,9 +1199,6 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+ 
+ 	/* Free the nvmebuf since a new buffer already replaced it */
+ 	nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
+-	spin_lock_irqsave(&ctxp->ctxlock, iflag);
+-	ctxp->rqb_buffer = NULL;
+-	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
  }
  
-@@ -91,7 +91,7 @@ static int io_msg_remote_post(struct io_
- {
- 	req->task = READ_ONCE(ctx->submitter_task);
- 	if (!req->task) {
--		kmem_cache_free(req_cachep, req);
-+		kfree_rcu(req, rcu_head);
- 		return -EOWNERDEAD;
- 	}
- 	req->opcode = IORING_OP_NOP;
+ static void
 
 
 
