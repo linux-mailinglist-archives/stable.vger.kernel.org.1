@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-178139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D88BAB47D68
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:11:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F46B47F1D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6B7C1887DDD
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:11:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7710B3C2557
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1145A27F754;
-	Sun,  7 Sep 2025 20:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E27C1FECCD;
+	Sun,  7 Sep 2025 20:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWByrM0T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsdKKhzw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C497D1CDFAC;
-	Sun,  7 Sep 2025 20:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE0A1A0BFD;
+	Sun,  7 Sep 2025 20:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275889; cv=none; b=hE+gPv0a7vUkQ2k5Py1Xvx3IrU/bhukGRlWC7CIXI+9gK0OtLgL7iujsEmiv49aI5kFXden1kmHDt62JWwvi0VKDzuRkGNmcf+kuhY0pYg/XsBJPhjrD0suea1UNfAt9VWipgiGcdpydd3NKMoe4PY3P3U3mUGmHQpmWjBlJEdg=
+	t=1757277188; cv=none; b=QH1r8cZSmXeBuzwZW88AEWvrZFgAUel1qNUVS4DCzOQ+No4Vgk9RMqkcuY9HJlhznU8hi96K6wDVkpi2845eTQrzZipLjnxgPgjIjblHWndsdYXwMET/VGqawReJSUW6AtNjnQgWviUFXroB+CUkvvzRXnuPnt+/GfTugxni4Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275889; c=relaxed/simple;
-	bh=yq4WpluKe2Z8ubFQbyIDirKXt2I9jX9ECo0+v0RWpU0=;
+	s=arc-20240116; t=1757277188; c=relaxed/simple;
+	bh=ea7LXbuo5ZAVpr4DqDnI8rg7XYrSlRBhXC1zhNF6FXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m9+qLLWDB5CZQGWP4K0c4VJrTfemAjTPqg69QU/Ny07G74VtJ4HlEH6Zgc+bhuiuDf0UZiAO62kMnvRTVF5ztot7sQx5/4xJ8slSBGc6eERyPfraoVUxQLOA0dUN7FhjpO8EtKiOKMqS0DrNPS8DEAkUKGoYjQw0L9wo3tVlGBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWByrM0T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E53C4CEF0;
-	Sun,  7 Sep 2025 20:11:28 +0000 (UTC)
+	 MIME-Version; b=W81EMud52otQlArAGSqY2U39UXQlyaXFDg561bh7Qt7I3zWIlO1sMxGvfv/9kXvWhboRULWcXNBzyYBuAk94u4tH8N9wBlVFydawtogBpHtJENUSonLG+BzI21+GV1HPpekquIxmBX78b1VimBzF931nBFIAAzGr2Twv2FPgSQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsdKKhzw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 554F4C4CEF0;
+	Sun,  7 Sep 2025 20:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275889;
-	bh=yq4WpluKe2Z8ubFQbyIDirKXt2I9jX9ECo0+v0RWpU0=;
+	s=korg; t=1757277188;
+	bh=ea7LXbuo5ZAVpr4DqDnI8rg7XYrSlRBhXC1zhNF6FXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KWByrM0T64Yfv+8/a87FPYze3R9XuEWAM2EVJBnHvK6vdiPg/YWS20NagpRY2mP9/
-	 TmQjg+uF132hUJk3Up7WQXJ5zV2wj9c/CP2eUn3qDFK2NHhcGbtsJQPWtAv4EjpL/5
-	 gCiv6quVu+4uCS8qg4E9aPOSFDlL8+HObjnsmsu8=
+	b=bsdKKhzwAGvOGt5OpvSgqfy3nrnRc6qw/KF071/jfxqJZvcxKldoK1AqfDUKPFefd
+	 h1jBuT0uA1Bh7ttxRS5GoBIVJw2pgImDa29NLyU8kxLYgv9u5j/FlMEvMcelonHcZD
+	 TRRoFVHUzzHUE5dZFhgQ5O/VdHT7N8k+u4Mha8DI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	James Clark <james.clark@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 41/45] spi: spi-fsl-lpspi: Fix transmissions when using CONT
+	Stefan Wahren <wahrenst@gmx.net>,
+	stable@kernel.org,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 112/175] net: ethernet: oa_tc6: Handle failure of spi_setup
 Date: Sun,  7 Sep 2025 21:58:27 +0200
-Message-ID: <20250907195602.198058785@linuxfoundation.org>
+Message-ID: <20250907195617.506945321@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 782a7c73078e1301c0c427f21c06377d77dfa541 ]
+commit b3852ae3105ec1048535707545d23c1e519c190f upstream.
 
-Commit 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use
-CONT") breaks transmissions when CONT is used. The TDIE interrupt should
-not be disabled in all cases. If CONT is used and the TX transfer is not
-yet completed yet, but the interrupt handler is called because there are
-characters to be received, TDIE is replaced with FCIE. When the transfer
-is finally completed, SR_TDF is set but the interrupt handler isn't
-called again.
+There is no guarantee that spi_setup succeed, so properly handle
+the error case.
 
-Fixes: 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use CONT")
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250828-james-nxp-lpspi-v2-1-6262b9aa9be4@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: aa58bec064ab ("net: ethernet: oa_tc6: implement register write operation")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Cc: stable@kernel.org
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250827115341.34608-2-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/oa_tc6.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 2708bf15e1263..8a4925469dfb9 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -3,7 +3,7 @@
- // Freescale i.MX7ULP LPSPI driver
- //
- // Copyright 2016 Freescale Semiconductor, Inc.
--// Copyright 2018 NXP Semiconductors
-+// Copyright 2018, 2023, 2025 NXP
+--- a/drivers/net/ethernet/oa_tc6.c
++++ b/drivers/net/ethernet/oa_tc6.c
+@@ -1249,7 +1249,8 @@ struct oa_tc6 *oa_tc6_init(struct spi_de
  
- #include <linux/clk.h>
- #include <linux/completion.h>
-@@ -772,7 +772,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
- 	if (temp_SR & SR_MBF ||
- 	    readl(fsl_lpspi->base + IMX7ULP_FSR) & FSR_TXCOUNT) {
- 		writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
--		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE);
-+		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE | (temp_IER & IER_TDIE));
- 		return IRQ_HANDLED;
- 	}
+ 	/* Set the SPI controller to pump at realtime priority */
+ 	tc6->spi->rt = true;
+-	spi_setup(tc6->spi);
++	if (spi_setup(tc6->spi) < 0)
++		return NULL;
  
--- 
-2.51.0
-
+ 	tc6->spi_ctrl_tx_buf = devm_kzalloc(&tc6->spi->dev,
+ 					    OA_TC6_CTRL_SPI_BUF_SIZE,
 
 
 
