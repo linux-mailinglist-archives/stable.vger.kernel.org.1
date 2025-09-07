@@ -1,55 +1,65 @@
-Return-Path: <stable+bounces-178374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F40B47E69
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BEB2B47F12
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F12B1189FC0E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 426EE172842
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F181120E005;
-	Sun,  7 Sep 2025 20:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DB820D51C;
+	Sun,  7 Sep 2025 20:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbkHunku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPj2MOzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA961B4247;
-	Sun,  7 Sep 2025 20:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA79915C158;
+	Sun,  7 Sep 2025 20:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276632; cv=none; b=dzi6G95zQ23PdMsUxgqiGpWfE5jRfazmdAN3E+6ONERSOl+6oW9SkdjfXDKuMqYGubmQY2d/fBbGY2SNWvgWHqyTt5zzpSDrY9zA/VN1/QpfNePXQ94ueOpN49IpMR8OzN8DrqshyDuFQSL11TTRty2r9776wSVlkF+G3bQKsRo=
+	t=1757277157; cv=none; b=QmQADs0ODT7J8ftsmR0P5luj/W7JT8Aih+PtECEUyNCRlBsVCe6do+csvs0zKEVMPEHew8jmzmiEctgLLoVHmPm2T8L7B3Y3hyQFrSYKBa49PJlKpo7NUSVJ3ih0yjOrTxtqjgnX5MZG+QHXrIWZvYfOCOaqZLAS+TZ34jpimZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276632; c=relaxed/simple;
-	bh=0FXYVwPz2OiapgqyhfXW6zlsFaGK4DYuN6M1Podmavg=;
+	s=arc-20240116; t=1757277157; c=relaxed/simple;
+	bh=v6uQY5Zn9vPiiZtLV5vq7ID7CKXGAa0ZbBEd0fCd/SQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D31H1Sq0qVqtPER4W3MHKArnAGP+wCDhd1wxIArM9+GwyBpO4DhjaCUufuCS0KD/++2KKsOOzH3ajuy0fklNEy3Ha48nlnnFRRisLbMVzFXtoU4sllvSKhI/87TEL0L+AePk7Sdk3CJLvRmVO3jpDmFZsrPgS/th/HSFDdvThjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbkHunku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A0DC4CEF0;
-	Sun,  7 Sep 2025 20:23:51 +0000 (UTC)
+	 MIME-Version; b=JPqiO7UomRtNFp6gtxX012eDEDiDeJMCgQDFuNBwtiFk+Dfz5DqwglaaX804ANtp/XhVURN0Zc+rSnGRGZ++1AQlEzcyFs2ilAZ9wPlw/NnhyDEfF3/P91/gkowVNWKXsCDHxsq+Hp1KVLdwBeYqMYiIi7o1bvU8MBbVMIad+io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPj2MOzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4326AC4CEF0;
+	Sun,  7 Sep 2025 20:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276632;
-	bh=0FXYVwPz2OiapgqyhfXW6zlsFaGK4DYuN6M1Podmavg=;
+	s=korg; t=1757277156;
+	bh=v6uQY5Zn9vPiiZtLV5vq7ID7CKXGAa0ZbBEd0fCd/SQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vbkHunku+Ds044XRpknh4BtZD0hb1zwajFIeHQiQHesrmvaEmUbeJXvD/9BBlqkVO
-	 5yLIXhJAymYCfzIZfcgfa5lr0GQEfRSxl8aoby+VlVdR6/Ktb6Bmi0a1UVJxjUdrzZ
-	 rpYGhjXpZVNY81/4w3WjpRMVZ5z2aW+AVEVZ3zTw=
+	b=nPj2MOznFaLnIu6l5cZIckGHzlalCVKiN1lXVZTqQ/gcOWgevVckrpa0x1Ple1d2u
+	 tgIZgozzoJDyhkXxg3QmevdHVINF/J3yvUTFIn47EdBLJcQkd1WdpHA6iDMA2M6lKt
+	 UkVfZ2JvwRju+3QBp/cDVeST0Cs9nDg6ib7pOLJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
+	Marc Rutland <mark.rutland@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Nathan Chancellor <nathan@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.6 062/121] wifi: mt76: mt7996: Initialize hdr before passing to skb_put_data()
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 103/175] kasan: fix GCC mem-intrinsic prefix with sw tags
 Date: Sun,  7 Sep 2025 21:58:18 +0200
-Message-ID: <20250907195611.429223159@linuxfoundation.org>
+Message-ID: <20250907195617.288371662@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +71,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 
-commit 87b07a1fbc6b5c23d3b3584ab4288bc9106d3274 upstream.
+commit 51337a9a3a404fde0f5337662ffc7699793dfeb5 upstream.
 
-A new warning in clang [1] points out a couple of places where a hdr
-variable is not initialized then passed along to skb_put_data().
+GCC doesn't support "hwasan-kernel-mem-intrinsic-prefix", only
+"asan-kernel-mem-intrinsic-prefix"[0], while LLVM supports both.  This is
+already taken into account when checking
+"CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX", but not in the KASAN Makefile
+adding those parameters when "CONFIG_KASAN_SW_TAGS" is enabled.
 
-  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:1894:21: warning: variable 'hdr' is uninitialized when passed as a const pointer argument here [-Wuninitialized-const-pointer]
-   1894 |         skb_put_data(skb, &hdr, sizeof(hdr));
-        |                            ^~~
-  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:3386:21: warning: variable 'hdr' is uninitialized when passed as a const pointer argument here [-Wuninitialized-const-pointer]
-   3386 |         skb_put_data(skb, &hdr, sizeof(hdr));
-        |                            ^~~
+Replace the version check with "CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX",
+which already validates that mem-intrinsic prefix parameter can be used,
+and choose the correct name depending on compiler.
 
-Zero initialize these headers as done in other places in the driver when
-there is nothing stored in the header.
+GCC 13 and above trigger "CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX" which
+prevents `mem{cpy,move,set}()` being redefined in "mm/kasan/shadow.c"
+since commit 36be5cba99f6 ("kasan: treat meminstrinsic as builtins in
+uninstrumented files"), as we expect the compiler to prefix those calls
+with `__(hw)asan_` instead.  But as the option passed to GCC has been
+incorrect, the compiler has not been emitting those prefixes, effectively
+never calling the instrumented versions of `mem{cpy,move,set}()` with
+"CONFIG_KASAN_SW_TAGS" enabled.
 
-Cc: stable@vger.kernel.org
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2104
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20250715-mt7996-fix-uninit-const-pointer-v1-1-b5d8d11d7b78@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+If "CONFIG_FORTIFY_SOURCES" is enabled, this issue would be mitigated as
+it redefines `mem{cpy,move,set}()` and properly aliases the
+`__underlying_mem*()` that will be called to the instrumented versions.
+
+Link: https://lkml.kernel.org/r/20250821120735.156244-1-ada.coupriediaz@arm.com
+Link: https://gcc.gnu.org/onlinedocs/gcc-13.4.0/gcc/Optimize-Options.html [0]
+Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Fixes: 36be5cba99f6 ("kasan: treat meminstrinsic as builtins in uninstrumented files")
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Marc Rutland <mark.rutland@arm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/Makefile.kasan |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1616,8 +1616,8 @@ mt7996_mcu_get_mmps_mode(enum ieee80211_
- int mt7996_mcu_set_fixed_rate_ctrl(struct mt7996_dev *dev,
- 				   void *data, u16 version)
- {
-+	struct uni_header hdr = {};
- 	struct ra_fixed_rate *req;
--	struct uni_header hdr;
- 	struct sk_buff *skb;
- 	struct tlv *tlv;
- 	int len;
-@@ -2638,7 +2638,7 @@ int mt7996_mcu_set_hdr_trans(struct mt79
- {
- 	struct {
- 		u8 __rsv[4];
--	} __packed hdr;
-+	} __packed hdr = {};
- 	struct hdr_trans_blacklist *req_blacklist;
- 	struct hdr_trans_en *req_en;
- 	struct sk_buff *skb;
+--- a/scripts/Makefile.kasan
++++ b/scripts/Makefile.kasan
+@@ -86,10 +86,14 @@ kasan_params += hwasan-instrument-stack=
+ 		hwasan-use-short-granules=0 \
+ 		hwasan-inline-all-checks=0
+ 
+-# Instrument memcpy/memset/memmove calls by using instrumented __hwasan_mem*().
+-ifeq ($(call clang-min-version, 150000)$(call gcc-min-version, 130000),y)
+-	kasan_params += hwasan-kernel-mem-intrinsic-prefix=1
+-endif
++# Instrument memcpy/memset/memmove calls by using instrumented __(hw)asan_mem*().
++ifdef CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX
++	ifdef CONFIG_CC_IS_GCC
++		kasan_params += asan-kernel-mem-intrinsic-prefix=1
++	else
++		kasan_params += hwasan-kernel-mem-intrinsic-prefix=1
++	endif
++endif # CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX
+ 
+ endif # CONFIG_KASAN_SW_TAGS
+ 
 
 
 
