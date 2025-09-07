@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-178649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156DEB47F83
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92ABCB47D88
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C13E520019B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53D3B3C00CB
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A981A704B;
-	Sun,  7 Sep 2025 20:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2AD26E6FF;
+	Sun,  7 Sep 2025 20:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOeNbhQj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDSGRYjM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0BC4315A;
-	Sun,  7 Sep 2025 20:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A31F1CDFAC;
+	Sun,  7 Sep 2025 20:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277513; cv=none; b=GuCcXk0JAzvT5w+8N7wXowyt9mVlV0LuVkF/YNbMcvKeVon/JuvYf9CQ2SxUPMfHG7DCjn4cpdQ/YkSKPQ0nuC6692qfAlaFouJmY4LwLe80fh/0pPT7QgFPvXnhxRp6SIPO/BeYXb8QwkRqoCylFVkx3Je2jfE3VgnWOGx/clg=
+	t=1757275991; cv=none; b=D7TjBmHInTtBWl5fhgDUuh4BvXHncdb1i9znb82K7ACSlrxNTIvGkyUF5pfo40giNvwYlCV3PBmtMUvbvUvXmhzgyI54VRiEFYmscGJ28c28dOi6rMhqldXqjE4DRt5NogE9Na8/sOiy/a7jkiqv9VyoI6JEldxCxNSWLk09bJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277513; c=relaxed/simple;
-	bh=TI9+VOPjz6Q4snpJ1Nkp9nZ14D/2KBxFoHGLnLE5hcs=;
+	s=arc-20240116; t=1757275991; c=relaxed/simple;
+	bh=brAl6CDQW3vAzOmU76K1DoevL2m3PJIL4pX25Fdh/gU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EkOXIkUmA4g8aADX0xdgNa3afLeCwte/6pCRAAqAj7revegcJi/q19siWYTXXFJ/mLTJAAgAc6dsvrJO/5TYG7DdsfQwXYVMdVMWDtruJ3Vpvb91cuAbYlRbhG4mDgfcMK0Qg6YP7Pw8M95b575JvPEDCoqLfx4JD+upKOHhecQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOeNbhQj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FEEC4CEF0;
-	Sun,  7 Sep 2025 20:38:32 +0000 (UTC)
+	 MIME-Version; b=DvPXcWI93xFNQ8OtsZdKt5WckKpNzO0Y8vo2lRBk6AZynAMO/f+aWgQYy+fRsm5QM9YCjZY2H2ZgEuZWfeiL7wfQxuYQCFIktMC86zMBGHSWQf3QuBIQiBtrXwYnTd+fI6cWlMtKzvcfLZeq6VdB7TODy7ePAhdTQPWi8Ty7riE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDSGRYjM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C8DC4CEF0;
+	Sun,  7 Sep 2025 20:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277513;
-	bh=TI9+VOPjz6Q4snpJ1Nkp9nZ14D/2KBxFoHGLnLE5hcs=;
+	s=korg; t=1757275990;
+	bh=brAl6CDQW3vAzOmU76K1DoevL2m3PJIL4pX25Fdh/gU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FOeNbhQjy0J4FNkMzcLHZK/fsHCmRiHTUTKT8TJD0mRzyWrQVB4/g6QWu3bbhV3YI
-	 4Gq4DqTKwyZgWHSognNar1krvelWh+RXoMmLg4DYyyDNTd1Y8vcEou4QhSoNKZRXpn
-	 FAWInQhf8mTbgAnTza14ojxYreCp4ZJ6qdGVbHHU=
+	b=JDSGRYjMA3lO9dBH4NcwxQ4i3U9UrPnb4VH2bsYC2y9yt8YCEi0dnDYUTKdOU0ZSb
+	 RyPpSRj8LhCjmUwXMWZuTDklUF+AbhfcnOhhBBQ7nvluSPc77lfXS28wf0Tjn18Tuv
+	 JdZvz+zmJ0Lfx1pzUhaLu0coj1lenLKpNa1EX4hA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Lonial Con <kongln9170@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 039/183] wifi: mt76: free pending offchannel tx frames on wcid cleanup
+Subject: [PATCH 5.15 04/64] bpf: Fix oob access in cgroup local storage
 Date: Sun,  7 Sep 2025 21:57:46 +0200
-Message-ID: <20250907195616.704468101@linuxfoundation.org>
+Message-ID: <20250907195603.518574121@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit bdeac7815629c1a32b8784922368742e183747ea ]
+[ Upstream commit abad3d0bad72a52137e0c350c59542d75ae4f513 ]
 
-Avoid leaking them or keeping the wcid on the tx list
+Lonial reported that an out-of-bounds access in cgroup local storage
+can be crafted via tail calls. Given two programs each utilizing a
+cgroup local storage with a different value size, and one program
+doing a tail call into the other. The verifier will validate each of
+the indivial programs just fine. However, in the runtime context
+the bpf_cg_run_ctx holds an bpf_prog_array_item which contains the
+BPF program as well as any cgroup local storage flavor the program
+uses. Helpers such as bpf_get_local_storage() pick this up from the
+runtime context:
 
-Fixes: 0b3be9d1d34e ("wifi: mt76: add separate tx scheduling queue for off-channel tx")
-Link: https://patch.msgid.link/20250827085352.51636-5-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+  ctx = container_of(current->bpf_ctx, struct bpf_cg_run_ctx, run_ctx);
+  storage = ctx->prog_item->cgroup_storage[stype];
+
+  if (stype == BPF_CGROUP_STORAGE_SHARED)
+    ptr = &READ_ONCE(storage->buf)->data[0];
+  else
+    ptr = this_cpu_ptr(storage->percpu_buf);
+
+For the second program which was called from the originally attached
+one, this means bpf_get_local_storage() will pick up the former
+program's map, not its own. With mismatching sizes, this can result
+in an unintended out-of-bounds access.
+
+To fix this issue, we need to extend bpf_map_owner with an array of
+storage_cookie[] to match on i) the exact maps from the original
+program if the second program was using bpf_get_local_storage(), or
+ii) allow the tail call combination if the second program was not
+using any of the cgroup local storage maps.
+
+Fixes: 7d9c3427894f ("bpf: Make cgroup storages shared between programs on the same cgroup")
+Reported-by: Lonial Con <kongln9170@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/r/20250730234733.530041-4-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mac80211.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/bpf.h |  1 +
+ kernel/bpf/core.c   | 15 +++++++++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index 4e435bec828b5..8e6ce16ab5b88 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -1716,6 +1716,10 @@ void mt76_wcid_cleanup(struct mt76_dev *dev, struct mt76_wcid *wcid)
- 	skb_queue_splice_tail_init(&wcid->tx_pending, &list);
- 	spin_unlock(&wcid->tx_pending.lock);
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index ea6728c304fe0..1046f290b4b2b 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -256,6 +256,7 @@ struct bpf_map_owner {
+ 	enum bpf_prog_type type;
+ 	bool jited;
+ 	bool xdp_has_frags;
++	u64 storage_cookie[MAX_BPF_CGROUP_STORAGE_TYPE];
+ 	const struct btf_type *attach_func_proto;
+ };
  
-+	spin_lock(&wcid->tx_offchannel.lock);
-+	skb_queue_splice_tail_init(&wcid->tx_offchannel, &list);
-+	spin_unlock(&wcid->tx_offchannel.lock);
-+
- 	spin_unlock_bh(&phy->tx_lock);
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index aa3487e244549..73a1c66e54175 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -1837,7 +1837,9 @@ static bool __bpf_prog_map_compatible(struct bpf_map *map,
+ {
+ 	enum bpf_prog_type prog_type = fp->aux->dst_prog ? fp->aux->dst_prog->type : fp->type;
+ 	struct bpf_prog_aux *aux = fp->aux;
++	enum bpf_cgroup_storage_type i;
+ 	bool ret = false;
++	u64 cookie;
  
- 	while ((skb = __skb_dequeue(&list)) != NULL) {
+ 	if (fp->kprobe_override)
+ 		return ret;
+@@ -1853,12 +1855,25 @@ static bool __bpf_prog_map_compatible(struct bpf_map *map,
+ 		/* Note: xdp_has_frags doesn't exist in aux yet in our branch */
+ 		/* map->owner->xdp_has_frags = aux->xdp_has_frags; */
+ 		map->owner->attach_func_proto = aux->attach_func_proto;
++		for_each_cgroup_storage_type(i) {
++			map->owner->storage_cookie[i] =
++				aux->cgroup_storage[i] ?
++				aux->cgroup_storage[i]->cookie : 0;
++		}
+ 		ret = true;
+ 	} else {
+ 		ret = map->owner->type  == prog_type &&
+ 		      map->owner->jited == fp->jited;
+ 		/* Note: xdp_has_frags check would go here when available */
+ 		/* && map->owner->xdp_has_frags == aux->xdp_has_frags; */
++		for_each_cgroup_storage_type(i) {
++			if (!ret)
++				break;
++			cookie = aux->cgroup_storage[i] ?
++				 aux->cgroup_storage[i]->cookie : 0;
++			ret = map->owner->storage_cookie[i] == cookie ||
++			      !cookie;
++		}
+ 		if (ret &&
+ 		    map->owner->attach_func_proto != aux->attach_func_proto) {
+ 			switch (prog_type) {
 -- 
 2.50.1
 
