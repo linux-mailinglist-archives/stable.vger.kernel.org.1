@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BDF3B47D23
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:08:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16CBBB47F89
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13A7B189BB21
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEAC220026F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432D32836A0;
-	Sun,  7 Sep 2025 20:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A998A269CE6;
+	Sun,  7 Sep 2025 20:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiyFFtsd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBRa19qM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17CA1CDFAC;
-	Sun,  7 Sep 2025 20:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642C21A704B;
+	Sun,  7 Sep 2025 20:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275685; cv=none; b=jhE/gjJjrnPrsPrz4DmShacCxUcxnRMlPumazrQq4VX2BcYhvH8HGqZLsnvVpcbWA1l6t5yEEgVy2njARMUYtZaDOuc3tVh+YLZZtOkmx0qDYX/d/TU0BB4erMLzXgWNXjT1/BvHWU88MSG1hev6Y46uHqgkIpZGvz6+HISLo9A=
+	t=1757277529; cv=none; b=TG0M60i7o0T1PDmqEvrjU1dnYYIrV+sX41i+Pi8YrWj2IpHrwXm78ufZfv0skcWZFU6afwSdhK1/0zdutfCMGyLyC1KNMWxoqihI1aibVsbi0SyJY+B7edFROsbOV3Pv+G5m2r9ljoGmnC8vW5k1Xcg7JssfTRAlSXnpTUj6BQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275685; c=relaxed/simple;
-	bh=b3xMUPv4CT6/gF4aaXd+n+pqXmbP6CevkiEaDlX21+Y=;
+	s=arc-20240116; t=1757277529; c=relaxed/simple;
+	bh=ylGUFb9R6RkcA7b+LxHLlF0OtEvWMKkV28xG2xT3qbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KapmzQlXyeeT0FVSyMKbsJcvpTdKEGeyABitB23YVcoU6o5ZM+hCS0kF2e3KxV1vbcR3zk7krcgKmBShXmgvRF3S0CscLf+kUQPMn1XE3CUGtD6n/1OG0WMqAsw0wwT7OHxhpDFpxFwGL/GkQNjpXq9za2fJH87/oE2i2ivzvF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiyFFtsd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02864C4CEF0;
-	Sun,  7 Sep 2025 20:08:03 +0000 (UTC)
+	 MIME-Version; b=LRfl/qzY1Kd1ASEXCzCBTSduXEjqHh+zGtnXxKSpILy4TnyI1593aLUfe6VLwipBDE+nIqt9vnppdEK94vhHrVlSjwjdiAg73Lpj2G41+Wn9zSENmcF7jnjQmSjqMTnRncrCc+XxJkZm84RftxyxzZYQKBv4O1nrFjChsdxbaIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBRa19qM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF76FC4CEF0;
+	Sun,  7 Sep 2025 20:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275684;
-	bh=b3xMUPv4CT6/gF4aaXd+n+pqXmbP6CevkiEaDlX21+Y=;
+	s=korg; t=1757277529;
+	bh=ylGUFb9R6RkcA7b+LxHLlF0OtEvWMKkV28xG2xT3qbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiyFFtsd3IXp1uoPItYL7XqXxmor3sVgKAUDKSZ2k2M97h61Vk1eaK+l5J/dIi9fc
-	 XLoHnWQ5DizfRpdWha5mp5cOT/INQL+IxuIOvxu6SP2C/BghKDBQRcWiIBACZKuqVd
-	 GNQRx1DA42mK9+7Or8DN4LQvUGQzJxmOc/isFE0I=
+	b=XBRa19qMD3juvANX65GddVPZjup+wSl899E46vCLw88vmAGnec8ljRSC5ri6Ak84I
+	 wtFHmnRZujoWeTeKHv3o/qp4ke3C8vaEA+F5hPyfyX5HsC4hB+fdYrEBfz4xgu91on
+	 SzwNQw+WBBsDOXRLZ06cVa7T5I92U0hLbl6XOTfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 30/52] KVM: x86: Take irqfds.lock when adding/deleting IRQ bypass producer
+Subject: [PATCH 6.16 043/183] wifi: iwlwifi: if scratch is ~0U, consider it a failure
 Date: Sun,  7 Sep 2025 21:57:50 +0200
-Message-ID: <20250907195602.859951366@linuxfoundation.org>
+Message-ID: <20250907195616.800796142@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit f1fb088d9cecde5c3066d8ff8846789667519b7d ]
+[ Upstream commit 224476613c8499f00ce4de975dd65749c5ca498c ]
 
-Take irqfds.lock when adding/deleting an IRQ bypass producer to ensure
-irqfd->producer isn't modified while kvm_irq_routing_update() is running.
-The only lock held when a producer is added/removed is irqbypass's mutex.
+We want to see bits being set in the scratch register upon resume, but
+if all the bits are set, it means that we were kicked out of the PCI bus
+and that clearly doesn't mean we can assume the firmware is still alive
+after the suspend / resume cycle.
 
-Fixes: 872768800652 ("KVM: x86: select IRQ_BYPASS_MANAGER")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250404193923.1413163-5-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[ Adjust context ]
+Fixes: cb347bd29d0d ("wifi: iwlwifi: mvm: fix hibernation")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250828095500.0f203e559242.I59eff718cb5fda575db41081a1a389f7af488717@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -11417,16 +11417,22 @@ int kvm_arch_irq_bypass_add_producer(str
- {
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
-+	struct kvm *kvm = irqfd->kvm;
- 	int ret;
- 
--	irqfd->producer = prod;
- 	kvm_arch_start_assignment(irqfd->kvm);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 0a9e0dbb58fbf..e4e06bf9161c3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1503,11 +1503,15 @@ static int _iwl_pci_resume(struct device *device, bool restore)
+ 	 * Note: MAC (bits 0:7) will be cleared upon suspend even with wowlan,
+ 	 * but not bits [15:8]. So if we have bits set in lower word, assume
+ 	 * the device is alive.
++	 * Alternatively, if the scratch value is 0xFFFFFFFF, then we no longer
++	 * have access to the device and consider it powered off.
+ 	 * For older devices, just try silently to grab the NIC.
+ 	 */
+ 	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
+-		if (!(iwl_read32(trans, CSR_FUNC_SCRATCH) &
+-		      CSR_FUNC_SCRATCH_POWER_OFF_MASK))
++		u32 scratch = iwl_read32(trans, CSR_FUNC_SCRATCH);
 +
-+	spin_lock_irq(&kvm->irqfds.lock);
-+	irqfd->producer = prod;
-+
- 	ret = kvm_x86_ops.update_pi_irte(irqfd->kvm,
- 					 prod->irq, irqfd->gsi, 1);
--
- 	if (ret)
- 		kvm_arch_end_assignment(irqfd->kvm);
- 
-+	spin_unlock_irq(&kvm->irqfds.lock);
-+
-+
- 	return ret;
- }
- 
-@@ -11436,9 +11442,9 @@ void kvm_arch_irq_bypass_del_producer(st
- 	int ret;
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
-+	struct kvm *kvm = irqfd->kvm;
- 
- 	WARN_ON(irqfd->producer != prod);
--	irqfd->producer = NULL;
- 
- 	/*
- 	 * When producer of consumer is unregistered, we change back to
-@@ -11446,11 +11452,17 @@ void kvm_arch_irq_bypass_del_producer(st
- 	 * when the irq is masked/disabled or the consumer side (KVM
- 	 * int this case doesn't want to receive the interrupts.
- 	*/
-+	spin_lock_irq(&kvm->irqfds.lock);
-+	irqfd->producer = NULL;
-+
- 	ret = kvm_x86_ops.update_pi_irte(irqfd->kvm, prod->irq, irqfd->gsi, 0);
- 	if (ret)
- 		printk(KERN_INFO "irq bypass consumer (token %p) unregistration"
- 		       " fails: %d\n", irqfd->consumer.token, ret);
- 
-+	spin_unlock_irq(&kvm->irqfds.lock);
-+
-+
- 	kvm_arch_end_assignment(irqfd->kvm);
- }
- 
++		if (!(scratch & CSR_FUNC_SCRATCH_POWER_OFF_MASK) ||
++		    scratch == ~0U)
+ 			device_was_powered_off = true;
+ 	} else {
+ 		/*
+-- 
+2.50.1
+
 
 
 
