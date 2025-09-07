@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0AFB47FA0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:40:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E8BCB47D39
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6D3D188C49E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:40:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA9AB17BEAB
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A621F63CD;
-	Sun,  7 Sep 2025 20:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA79B29BD80;
+	Sun,  7 Sep 2025 20:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lc7+HMDH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDUCAJB0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D4F1A704B;
-	Sun,  7 Sep 2025 20:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775C722F74D;
+	Sun,  7 Sep 2025 20:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277599; cv=none; b=gNQoiPzjBRR7a3kgDvUe2bKFAGSzEqaXjwQStMOt2g8fMXR6Ts4qMtDisPCWK9s+x3rHW/oFY9o1sl6juR/oKVcCjNmUzz77iuxWaWyxapBoDACXQT1LN0HbDs8m2igZZ/FXSO2jT2gtzbOlMjzJfYrO67Je50qlqpXkGemDo9s=
+	t=1757275741; cv=none; b=sOm9Qa6T3h+yDoKf3Z7CGHdzPRHKAUArrMCyRVBNMzkrurMZ/0pOwYYbJutnStQafOFIb84o8r/WdByFrRpzCMgyeSRAHcCrVU/Vb2Lba4LO+v9nrZxE5HIfJIQ3XcJZ7oe9rNuRCnLwiCsMiTtlX3Cg9bzc97wH/F41auoxw0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277599; c=relaxed/simple;
-	bh=mKgtjXX73+PL8ybNZko9+OeSstLmstQ72an+WoTXlSE=;
+	s=arc-20240116; t=1757275741; c=relaxed/simple;
+	bh=fN/7YFl8UW7dxGok0iUFS6oKcryf8HcIkLh9if1VpBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IZF2tPa2zrPCco7ORKS/eq+qFnzUlx4mH7SMkwwL3y36jb7OqQ4zMM/Pztr+ZbSR3E+seHdDVINHYpqU98ZmqozjDlFhEr9deJHUQ9GJev2TdIbC9wRrkRlEHEPupp79NWsbWvgl2XWBLTyi3dQDHhW02NI8ZIX+twotnC5ng/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lc7+HMDH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54355C4CEF0;
-	Sun,  7 Sep 2025 20:39:59 +0000 (UTC)
+	 MIME-Version; b=KvCQrRU0zyzfkJ/f5kWoA3gWDSUtT2pV/YoFBr1r/4s7GU+6P2aCU4wl9wFOO9NAGYd8uTYxJJ+jkFMrrL38v5Oa5o+zycUfRBoBGdDRIIyq9g3u77jUmrPxfsv7PpYkp1KrGy2BFeZnwgu8MfSh2/OtMxvMdgeezrZI9OwDdtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDUCAJB0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4C4C4CEF0;
+	Sun,  7 Sep 2025 20:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277599;
-	bh=mKgtjXX73+PL8ybNZko9+OeSstLmstQ72an+WoTXlSE=;
+	s=korg; t=1757275741;
+	bh=fN/7YFl8UW7dxGok0iUFS6oKcryf8HcIkLh9if1VpBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lc7+HMDHgIhmwyVVB57EXd7al9NC+hkavti7RfALrBgERE0MHwThrT9RmgGBglILE
-	 cm9O7WmklEgNsE8zhOGuergXmNhSIS/vwI7JhoXoL3Rswc8FvFSaT/Q1XwoWsqsy2z
-	 MbIqttT/XRIA2ZkW6smMPkkkdrRBtmCxr6NjMIAE=
+	b=YDUCAJB0wObcVG6pM+2gCGQ9IjEPOLjmSan7Zw4oX7IXeNWfdkp01u+W/jal86j96
+	 rNEMOg7dYniSKBpO54bS/omjNyLRzsww1GnajENOXuJd9geu5BTHOS/d/uZUn/3tiM
+	 YztT8sUkDpzEME/n8Z8ujV0W8uolIkBJdPqzr8K0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Imran Shaik <quic_imrashai@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 063/183] net: mctp: usb: initialise mac header in RX path
+Subject: [PATCH 5.10 50/52] clk: qcom: gdsc: Set retain_ff before moving to HW CTRL
 Date: Sun,  7 Sep 2025 21:58:10 +0200
-Message-ID: <20250907195617.288781281@linuxfoundation.org>
+Message-ID: <20250907195603.407979477@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit e27e34bc99413a29cafae02ad572ea3c9beba2ce ]
+[ Upstream commit 25708f73ff171bb4171950c9f4be5aa8504b8459 ]
 
-We're not currently setting skb->mac_header on ingress, and the netdev
-core rx path expects it. Without it, we'll hit a warning on DEBUG_NETDEV
-from commit 1e4033b53db4 ("net: skb_reset_mac_len() must check if
-mac_header was set")
+Enable the retain_ff_enable bit of GDSCR only if the GDSC is already ON.
+Once the GDSCR moves to HW control, SW no longer can determine the state
+of the GDSCR and setting the retain_ff bit could destroy all the register
+contents we intended to save.
+Therefore, move the retain_ff configuration before switching the GDSC to
+HW trigger mode.
 
-Initialise the mac_header to refer to the USB transport header.
-
-Fixes: 0791c0327a6e ("net: mctp: Add MCTP USB transport driver")
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://patch.msgid.link/20250829-mctp-usb-mac-header-v1-1-338ad725e183@codeconstruct.com.au
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 173722995cdb ("clk: qcom: gdsc: Add support to enable retention of GSDCR")
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Reviewed-by: Imran Shaik <quic_imrashai@quicinc.com>
+Tested-by: Imran Shaik <quic_imrashai@quicinc.com> # on QCS8300
+Link: https://lore.kernel.org/r/20250214-gdsc_fixes-v1-1-73e56d68a80f@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+[ Changed error path ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/mctp/mctp-usb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/qcom/gdsc.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
-index 775a386d0aca1..36ccc53b17975 100644
---- a/drivers/net/mctp/mctp-usb.c
-+++ b/drivers/net/mctp/mctp-usb.c
-@@ -183,6 +183,7 @@ static void mctp_usb_in_complete(struct urb *urb)
- 		struct mctp_usb_hdr *hdr;
- 		u8 pkt_len; /* length of MCTP packet, no USB header */
+--- a/drivers/clk/qcom/gdsc.c
++++ b/drivers/clk/qcom/gdsc.c
+@@ -273,6 +273,9 @@ static int gdsc_enable(struct generic_pm
+ 	 */
+ 	udelay(1);
  
-+		skb_reset_mac_header(skb);
- 		hdr = skb_pull_data(skb, sizeof(*hdr));
- 		if (!hdr)
- 			break;
--- 
-2.50.1
-
++	if (sc->flags & RETAIN_FF_ENABLE)
++		gdsc_retain_ff_on(sc);
++
+ 	/* Turn on HW trigger mode if supported */
+ 	if (sc->flags & HW_CTRL) {
+ 		ret = gdsc_hwctrl(sc, true);
+@@ -289,9 +292,6 @@ static int gdsc_enable(struct generic_pm
+ 		udelay(1);
+ 	}
+ 
+-	if (sc->flags & RETAIN_FF_ENABLE)
+-		gdsc_retain_ff_on(sc);
+-
+ 	return 0;
+ }
+ 
+@@ -392,13 +392,6 @@ static int gdsc_init(struct gdsc *sc)
+ 				return ret;
+ 		}
+ 
+-		/* Turn on HW trigger mode if supported */
+-		if (sc->flags & HW_CTRL) {
+-			ret = gdsc_hwctrl(sc, true);
+-			if (ret < 0)
+-				return ret;
+-		}
+-
+ 		/*
+ 		 * Make sure the retain bit is set if the GDSC is already on,
+ 		 * otherwise we end up turning off the GDSC and destroying all
+@@ -406,6 +399,14 @@ static int gdsc_init(struct gdsc *sc)
+ 		 */
+ 		if (sc->flags & RETAIN_FF_ENABLE)
+ 			gdsc_retain_ff_on(sc);
++
++		/* Turn on HW trigger mode if supported */
++		if (sc->flags & HW_CTRL) {
++			ret = gdsc_hwctrl(sc, true);
++			if (ret < 0)
++				return ret;
++		}
++
+ 	} else if (sc->flags & ALWAYS_ON) {
+ 		/* If ALWAYS_ON GDSCs are not ON, turn them ON */
+ 		gdsc_enable(&sc->pd);
 
 
 
