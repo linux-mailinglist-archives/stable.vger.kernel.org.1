@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 347F4B47D7A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B08B47D2A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E14CD17A2B9
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5551517BCE6
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB5526FA67;
-	Sun,  7 Sep 2025 20:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BFF284B59;
+	Sun,  7 Sep 2025 20:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bj4BPbEN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFfnW0Eq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496051B424F;
-	Sun,  7 Sep 2025 20:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF151CDFAC;
+	Sun,  7 Sep 2025 20:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275946; cv=none; b=i4T4kxGvlPEVd20Jbl1srOAmABCkAUhtxj3hENWrHuSClD+TbQ+stFZINzaR8qZOTipq/D77QzwTJG5GDfUpmvvLwNpboiaDe500Y0rO5gIA5wbT4fMd5dpzilARstsVqmiYg4NTWNFay37CAtFBswHTCe0H2y2nhh/VsXT8TjQ=
+	t=1757275706; cv=none; b=YLWe9vAZqzI0c9r4NK8CgdAVLGKRYWY2QhLsCEWXzICmzz27cKWJzSUxZkUKhNiJYed1CRrBAPMF3RjZErGNGUoOjl2coEH68M+jmT6tfgtuv/dsDBW29H1mW7vQzKOuhoYXndiJdci2yMQ0Z6FmUkOm2iAXXIQD8OtwD1yhPrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275946; c=relaxed/simple;
-	bh=K+DrRUnipUeUEfJps3pe3ilBYNJewS7hYKO7smGpids=;
+	s=arc-20240116; t=1757275706; c=relaxed/simple;
+	bh=jqqnjoB2LgdwlCynWsnbqp1uPXsMjS+U/SQ43Qv9ixY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UtYj/9Ro+3g3281iaQmscTrjCjlLeiEeTQTPixpsQtyFCZ1G668thBBFS3Yx3mwcUBu02OX4aK+6CBLbwF4li65uebgwqc4h4XM4wTcRjqubD7KyumCfY4/tF92V6laqeeEaupoDLOdMujpbJZheGx0lu5pVpbWIWjBtvNMYmAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bj4BPbEN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3472C4CEF0;
-	Sun,  7 Sep 2025 20:12:25 +0000 (UTC)
+	 MIME-Version; b=Vc6xLvyjZq9ccp64jY1OTHK1q+uU5zFpjpP0lJoOS9OMfWI+sAli4V7uu2TDBDeFouyOPfOaRfVhzWW4qXxfuVM+oGSG97khWa47DEpHvFrVAJLj/qTg8zDkfDyJeHY4/DS052REBsGdAeGkAq67z+vf/BDOBnFKzibNzWp/stk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFfnW0Eq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01223C4CEF0;
+	Sun,  7 Sep 2025 20:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275946;
-	bh=K+DrRUnipUeUEfJps3pe3ilBYNJewS7hYKO7smGpids=;
+	s=korg; t=1757275706;
+	bh=jqqnjoB2LgdwlCynWsnbqp1uPXsMjS+U/SQ43Qv9ixY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bj4BPbEN9E5JV22nQ64bygmif7EDOeZ1lEaL9PwnH5c/Q9WBMab0BPjZW8jivsZrp
-	 VmvZ9PZDYNP/bTLEKYwM4LMkWorXsLm45votkP6d0/7J8IIMIdczGZiVyX8eTakY/X
-	 y0lWhWe4FJKh7HQVSul6MdxuUzE5IqiFwkqd2YI0=
+	b=WFfnW0EqtTNyhvoNBBu6pOpYbARc/ZgtRo0mzNp96WiB3NvjnPqOuIAhUq8IkMbaj
+	 a7EexJUMwowMvrt7O4gVCM3EtsQ1xx+8g0XgsWkMdfN5YJFu6K68/jrNLHN4iANkiS
+	 Qls7tOgLvfwSW8dsNuPhkQhhCJFkUWNfX9VcPzcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Fabian=20Bl=C3=A4se?= <fabian@blaese.de>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Florian Westphal <fw@strlen.de>,
+	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
+	Vladimir Oltean <olteanv@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 15/64] icmp: fix icmp_ndo_send address translation for reply direction
+Subject: [PATCH 5.10 37/52] net: dsa: microchip: linearize skb for tail-tagging switches
 Date: Sun,  7 Sep 2025 21:57:57 +0200
-Message-ID: <20250907195603.824491528@linuxfoundation.org>
+Message-ID: <20250907195603.050730332@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +61,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabian Bläse <fabian@blaese.de>
+From: Jakob Unterwurzacher <jakobunt@gmail.com>
 
-[ Upstream commit c6dd1aa2cbb72b33e0569f3e71d95792beab5042 ]
+[ Upstream commit ba54bce747fa9e07896c1abd9b48545f7b4b31d2 ]
 
-The icmp_ndo_send function was originally introduced to ensure proper
-rate limiting when icmp_send is called by a network device driver,
-where the packet's source address may have already been transformed
-by SNAT.
+The pointer arithmentic for accessing the tail tag only works
+for linear skbs.
 
-However, the original implementation only considers the
-IP_CT_DIR_ORIGINAL direction for SNAT and always replaced the packet's
-source address with that of the original-direction tuple. This causes
-two problems:
+For nonlinear skbs, it reads uninitialized memory inside the
+skb headroom, essentially randomizing the tag. I have observed
+it gets set to 6 most of the time.
 
-1. For SNAT:
-   Reply-direction packets were incorrectly translated using the source
-   address of the CT original direction, even though no translation is
-   required.
+Example where ksz9477_rcv thinks that the packet from port 1 comes from port 6
+(which does not exist for the ksz9896 that's in use), dropping the packet.
+Debug prints added by me (not included in this patch):
 
-2. For DNAT:
-   Reply-direction packets were not handled at all. In DNAT, the original
-   direction's destination is translated. Therefore, in the reply
-   direction the source address must be set to the reply-direction
-   source, so rate limiting works as intended.
+	[  256.645337] ksz9477_rcv:323 tag0=6
+	[  256.645349] skb len=47 headroom=78 headlen=0 tailroom=0
+	               mac=(64,14) mac_len=14 net=(78,0) trans=78
+	               shinfo(txflags=0 nr_frags=1 gso(size=0 type=0 segs=0))
+	               csum(0x0 start=0 offset=0 ip_summed=0 complete_sw=0 valid=0 level=0)
+	               hash(0x0 sw=0 l4=0) proto=0x00f8 pkttype=1 iif=3
+	               priority=0x0 mark=0x0 alloc_cpu=0 vlan_all=0x0
+	               encapsulation=0 inner(proto=0x0000, mac=0, net=0, trans=0)
+	[  256.645377] dev name=end1 feat=0x0002e10200114bb3
+	[  256.645386] skb headroom: 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	[  256.645395] skb headroom: 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	[  256.645403] skb headroom: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	[  256.645411] skb headroom: 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	[  256.645420] skb headroom: 00000040: ff ff ff ff ff ff 00 1c 19 f2 e2 db 08 06
+	[  256.645428] skb frag:     00000000: 00 01 08 00 06 04 00 01 00 1c 19 f2 e2 db 0a 02
+	[  256.645436] skb frag:     00000010: 00 83 00 00 00 00 00 00 0a 02 a0 2f 00 00 00 00
+	[  256.645444] skb frag:     00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01
+	[  256.645452] ksz_common_rcv:92 dsa_conduit_find_user returned NULL
 
-Fix this by using the connection direction to select the correct tuple
-for source address translation, and adjust the pre-checks to handle
-reply-direction packets in case of DNAT.
+Call skb_linearize before trying to access the tag.
 
-Additionally, wrap the `ct->status` access in READ_ONCE(). This avoids
-possible KCSAN reports about concurrent updates to `ct->status`.
+This patch fixes ksz9477_rcv which is used by the ksz9896 I have at
+hand, and also applies the same fix to ksz8795_rcv which seems to have
+the same problem.
 
-Fixes: 0b41713b6066 ("icmp: introduce helper for nat'd source address in network device context")
-Signed-off-by: Fabian Bläse <fabian@blaese.de>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
+CC: stable@vger.kernel.org
+Fixes: 016e43a26bab ("net: dsa: ksz: Add KSZ8795 tag code")
+Fixes: 8b8010fb7876 ("dsa: add support for Microchip KSZ tail tagging")
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://patch.msgid.link/20250515072920.2313014-1-jakob.unterwurzacher@cherry.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/icmp.c     | 6 ++++--
- net/ipv6/ip6_icmp.c | 6 ++++--
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ net/dsa/tag_ksz.c |   19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 38b30f6790294..8a70e51654264 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -792,11 +792,12 @@ void icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __be32 info)
- 	struct sk_buff *cloned_skb = NULL;
- 	struct ip_options opts = { 0 };
- 	enum ip_conntrack_info ctinfo;
-+	enum ip_conntrack_dir dir;
- 	struct nf_conn *ct;
- 	__be32 orig_ip;
+--- a/net/dsa/tag_ksz.c
++++ b/net/dsa/tag_ksz.c
+@@ -68,7 +68,12 @@ static struct sk_buff *ksz8795_xmit(stru
+ static struct sk_buff *ksz8795_rcv(struct sk_buff *skb, struct net_device *dev,
+ 				  struct packet_type *pt)
+ {
+-	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
++	u8 *tag;
++
++	if (skb_linearize(skb))
++		return NULL;
++
++	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
  
- 	ct = nf_ct_get(skb_in, &ctinfo);
--	if (!ct || !(ct->status & IPS_SRC_NAT)) {
-+	if (!ct || !(READ_ONCE(ct->status) & IPS_NAT_MASK)) {
- 		__icmp_send(skb_in, type, code, info, &opts);
- 		return;
- 	}
-@@ -811,7 +812,8 @@ void icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __be32 info)
- 		goto out;
+ 	return ksz_common_rcv(skb, dev, tag[0] & 7, KSZ_EGRESS_TAG_LEN);
+ }
+@@ -134,10 +139,16 @@ static struct sk_buff *ksz9477_xmit(stru
+ static struct sk_buff *ksz9477_rcv(struct sk_buff *skb, struct net_device *dev,
+ 				   struct packet_type *pt)
+ {
+-	/* Tag decoding */
+-	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+-	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
+ 	unsigned int len = KSZ_EGRESS_TAG_LEN;
++	unsigned int port;
++	u8 *tag;
++
++	if (skb_linearize(skb))
++		return NULL;
++
++	/* Tag decoding */
++	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
++	port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
  
- 	orig_ip = ip_hdr(skb_in)->saddr;
--	ip_hdr(skb_in)->saddr = ct->tuplehash[0].tuple.src.u3.ip;
-+	dir = CTINFO2DIR(ctinfo);
-+	ip_hdr(skb_in)->saddr = ct->tuplehash[dir].tuple.src.u3.ip;
- 	__icmp_send(skb_in, type, code, info, &opts);
- 	ip_hdr(skb_in)->saddr = orig_ip;
- out:
-diff --git a/net/ipv6/ip6_icmp.c b/net/ipv6/ip6_icmp.c
-index 9e3574880cb03..233914b63bdb8 100644
---- a/net/ipv6/ip6_icmp.c
-+++ b/net/ipv6/ip6_icmp.c
-@@ -54,11 +54,12 @@ void icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 code, __u32 info)
- 	struct inet6_skb_parm parm = { 0 };
- 	struct sk_buff *cloned_skb = NULL;
- 	enum ip_conntrack_info ctinfo;
-+	enum ip_conntrack_dir dir;
- 	struct in6_addr orig_ip;
- 	struct nf_conn *ct;
- 
- 	ct = nf_ct_get(skb_in, &ctinfo);
--	if (!ct || !(ct->status & IPS_SRC_NAT)) {
-+	if (!ct || !(READ_ONCE(ct->status) & IPS_NAT_MASK)) {
- 		__icmpv6_send(skb_in, type, code, info, &parm);
- 		return;
- 	}
-@@ -73,7 +74,8 @@ void icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 code, __u32 info)
- 		goto out;
- 
- 	orig_ip = ipv6_hdr(skb_in)->saddr;
--	ipv6_hdr(skb_in)->saddr = ct->tuplehash[0].tuple.src.u3.in6;
-+	dir = CTINFO2DIR(ctinfo);
-+	ipv6_hdr(skb_in)->saddr = ct->tuplehash[dir].tuple.src.u3.in6;
- 	__icmpv6_send(skb_in, type, code, info, &parm);
- 	ipv6_hdr(skb_in)->saddr = orig_ip;
- out:
--- 
-2.50.1
-
+ 	/* Extra 4-bytes PTP timestamp */
+ 	if (tag[0] & KSZ9477_PTP_TAG_INDICATION)
 
 
 
