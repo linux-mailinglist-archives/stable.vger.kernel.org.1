@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-178135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40B5B47D64
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:11:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B273EB47F17
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B39547B0012
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A6DB17F2B3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4010E27F754;
-	Sun,  7 Sep 2025 20:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5FB211A14;
+	Sun,  7 Sep 2025 20:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4B/JNXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqnoOadP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F251CDFAC;
-	Sun,  7 Sep 2025 20:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076E71DE8AF;
+	Sun,  7 Sep 2025 20:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275877; cv=none; b=NX8Vsv+fuYtVJVv2rdQvy49kEEV4IdzI0abeq4yFLc959WnZME7bFbJPi517sE6kK98Na9TUKWznLrKCrxrJYQzRHCZCIaYIgssFs7zbEFzBVLypRJf7p9wcqjCOpwR+ipN1umvRa9/Lxn731DadLhs01M1YwjcWcrwb4VWjkM8=
+	t=1757277173; cv=none; b=slg09vurqyiCtflc5tA7c4YMfpdoli4qZIIjv4FAh3DrdQnPlkJRzt6WTiAKbtF6jIoOfesM3dGKrhu519kcADMIUwlDpLYr0K//SJIsLFLWel7sbo3RRjThhvz2LXvTduQGu88y9bx3vZT1ffn6WQFfW5NXqcJidKT4jdVUN8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275877; c=relaxed/simple;
-	bh=TWrgYwLb5cGRN9C3izxWzylDlnVbFy30G4Ri5olK7hU=;
+	s=arc-20240116; t=1757277173; c=relaxed/simple;
+	bh=8Acv5Ul8VPybbfGDO0eji1ZaNvR+nR1k5U9rQYIH788=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fcrCbsVdTSuXHFQ5bQpvrXjYyCUC41xJp2tyeWjfXmCY/EBAPnrynMkfhAUCAqDcmLwmp89BsX/oTVM+JPMFQsycXFKWzkaro7IhdZSF4h8nUVXYlT0oxnbNRbhEFK6ogNo4MAKtVmsVdpYmPmeyrU5ETYB7MajrlLYIs77DD2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4B/JNXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AF5C4CEF0;
-	Sun,  7 Sep 2025 20:11:16 +0000 (UTC)
+	 MIME-Version; b=YEMjzldN3wiGRj3RqP/YE/wIHKlOPw906Ay4i0A/gFJsEFTX/54q7Jl3FX1tvajE9i0j6a1eeMxTcbo1JTtT63V0ka1UkoW9PV6xRN50Ty96KRfJvBgk61oiqq0YZGDjbROAvdzHjyJAlHWrCBeaQebOUfkPAVGLR8Dhwz1gvOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqnoOadP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE1CC4CEF0;
+	Sun,  7 Sep 2025 20:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275876;
-	bh=TWrgYwLb5cGRN9C3izxWzylDlnVbFy30G4Ri5olK7hU=;
+	s=korg; t=1757277172;
+	bh=8Acv5Ul8VPybbfGDO0eji1ZaNvR+nR1k5U9rQYIH788=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4B/JNXe0nXr0AzrYUP5Q1cBUtlAH6eEOsL30Oo5fFk+8U/gNWNY5hgFJTksdIX01
-	 6t5UhASCsFs9+WEG5O5mb2JyGqPmDGA+yHNgTBYc8m2xqcy5zyN2Pi/DYPmPhrYrXl
-	 Cqj/jTv9ESvrKP5s+qLzcnQzVAwQqDEKn1Z9+1bo=
+	b=VqnoOadPMW3GfGDrN1fLv1LEUYXQC6N4Q8F4bNP10NYAcL+r+nK127WdRDn1aYcI9
+	 W4BYVf81hRd/7nIqPfpo5/+bifoAXzJ2mqzm1HD6ly7e+iG7HD7zMzk7z0s6ZCApDU
+	 m6pjZqYceueH0BUO2cvtb45eNujAxIqW5ypBKdaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Mark Brown <broonie@kernel.org>,
-	WangYuli <wangyuli@uniontech.com>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 37/45] randstruct: gcc-plugin: Remove bogus void member
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 108/175] wifi: mwifiex: Initialize the chan_stats array to zero
 Date: Sun,  7 Sep 2025 21:58:23 +0200
-Message-ID: <20250907195602.071212376@linuxfoundation.org>
+Message-ID: <20250907195617.408483701@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +60,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit e136a4062174a9a8d1c1447ca040ea81accfa6a8 ]
+commit 0e20450829ca3c1dbc2db536391537c57a40fe0b upstream.
 
-When building the randomized replacement tree of struct members, the
-randstruct GCC plugin would insert, as the first member, a 0-sized void
-member. This appears as though it was done to catch non-designated
-("unnamed") static initializers, which wouldn't be stable since they
-depend on the original struct layout order.
+The adapter->chan_stats[] array is initialized in
+mwifiex_init_channel_scan_gap() with vmalloc(), which doesn't zero out
+memory.  The array is filled in mwifiex_update_chan_statistics()
+and then the user can query the data in mwifiex_cfg80211_dump_survey().
 
-This was accomplished by having the side-effect of the "void member"
-tripping an assert in GCC internals (count_type_elements) if the member
-list ever needed to be counted (e.g. for figuring out the order of members
-during a non-designated initialization), which would catch impossible type
-(void) in the struct:
+There are two potential issues here.  What if the user calls
+mwifiex_cfg80211_dump_survey() before the data has been filled in.
+Also the mwifiex_update_chan_statistics() function doesn't necessarily
+initialize the whole array.  Since the array was not initialized at
+the start that could result in an information leak.
 
-security/landlock/fs.c: In function ‘hook_file_ioctl_common’:
-security/landlock/fs.c:1745:61: internal compiler error: in count_type_elements, at expr.cc:7075
- 1745 |                         .u.op = &(struct lsm_ioctlop_audit) {
-      |                                                             ^
+Also this array is pretty small.  It's a maximum of 900 bytes so it's
+more appropriate to use kcalloc() instead vmalloc().
 
-static HOST_WIDE_INT
-count_type_elements (const_tree type, bool for_ctor_p)
-{
-  switch (TREE_CODE (type))
-...
-    case VOID_TYPE:
-    default:
-      gcc_unreachable ();
-    }
-}
-
-However this is a redundant safety measure since randstruct uses the
-__designated_initializer attribute both internally and within the
-__randomized_layout attribute macro so that this would be enforced
-by the compiler directly even when randstruct was not enabled (via
--Wdesignated-init).
-
-A recent change in Landlock ended up tripping the same member counting
-routine when using a full-struct copy initializer as part of an anonymous
-initializer. This, however, is a false positive as the initializer is
-copying between identical structs (and hence identical layouts). The
-"path" member is "struct path", a randomized struct, and is being copied
-to from another "struct path", the "f_path" member:
-
-        landlock_log_denial(landlock_cred(file->f_cred), &(struct landlock_request) {
-                .type = LANDLOCK_REQUEST_FS_ACCESS,
-                .audit = {
-                        .type = LSM_AUDIT_DATA_IOCTL_OP,
-                        .u.op = &(struct lsm_ioctlop_audit) {
-                                .path = file->f_path,
-                                .cmd = cmd,
-                        },
-                },
-	...
-
-As can be seen with the coming randstruct KUnit test, there appears to
-be no behavioral problems with this kind of initialization when the void
-member is removed from the randstruct GCC plugin, so remove it.
-
-Reported-by: "Dr. David Alan Gilbert" <linux@treblig.org>
-Closes: https://lore.kernel.org/lkml/Z_PRaKx7q70MKgCA@gallifrey/
-Reported-by: Mark Brown <broonie@kernel.org>
-Closes: https://lore.kernel.org/lkml/20250407-kbuild-disable-gcc-plugins-v1-1-5d46ae583f5e@kernel.org/
-Reported-by: WangYuli <wangyuli@uniontech.com>
-Closes: https://lore.kernel.org/lkml/337D5D4887277B27+3c677db3-a8b9-47f0-93a4-7809355f1381@uniontech.com/
-Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Stable-dep-of: f39f18f3c353 ("randstruct: gcc-plugin: Fix attribute addition")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: bf35443314ac ("mwifiex: channel statistics support for mwifiex")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20250815023055.477719-1-rongqianfeng@vivo.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/gcc-plugins/randomize_layout_plugin.c |   18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |    5 +++--
+ drivers/net/wireless/marvell/mwifiex/main.c     |    4 ++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
---- a/scripts/gcc-plugins/randomize_layout_plugin.c
-+++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-@@ -377,29 +377,13 @@ static int relayout_struct(tree type)
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -4680,8 +4680,9 @@ int mwifiex_init_channel_scan_gap(struct
+ 	 * additional active scan request for hidden SSIDs on passive channels.
+ 	 */
+ 	adapter->num_in_chan_stats = 2 * (n_channels_bg + n_channels_a);
+-	adapter->chan_stats = vmalloc(array_size(sizeof(*adapter->chan_stats),
+-						 adapter->num_in_chan_stats));
++	adapter->chan_stats = kcalloc(adapter->num_in_chan_stats,
++				      sizeof(*adapter->chan_stats),
++				      GFP_KERNEL);
  
- 	shuffle(type, (tree *)newtree, shuffle_length);
+ 	if (!adapter->chan_stats)
+ 		return -ENOMEM;
+--- a/drivers/net/wireless/marvell/mwifiex/main.c
++++ b/drivers/net/wireless/marvell/mwifiex/main.c
+@@ -667,7 +667,7 @@ static int _mwifiex_fw_dpc(const struct
+ 	goto done;
  
--	/*
--	 * set up a bogus anonymous struct field designed to error out on unnamed struct initializers
--	 * as gcc provides no other way to detect such code
--	 */
--	list = make_node(FIELD_DECL);
--	TREE_CHAIN(list) = newtree[0];
--	TREE_TYPE(list) = void_type_node;
--	DECL_SIZE(list) = bitsize_zero_node;
--	DECL_NONADDRESSABLE_P(list) = 1;
--	DECL_FIELD_BIT_OFFSET(list) = bitsize_zero_node;
--	DECL_SIZE_UNIT(list) = size_zero_node;
--	DECL_FIELD_OFFSET(list) = size_zero_node;
--	DECL_CONTEXT(list) = type;
--	// to satisfy the constify plugin
--	TREE_READONLY(list) = 1;
--
- 	for (i = 0; i < num_fields - 1; i++)
- 		TREE_CHAIN(newtree[i]) = newtree[i+1];
- 	TREE_CHAIN(newtree[num_fields - 1]) = NULL_TREE;
+ err_add_intf:
+-	vfree(adapter->chan_stats);
++	kfree(adapter->chan_stats);
+ err_init_chan_scan:
+ 	wiphy_unregister(adapter->wiphy);
+ 	wiphy_free(adapter->wiphy);
+@@ -1515,7 +1515,7 @@ static void mwifiex_uninit_sw(struct mwi
+ 	wiphy_free(adapter->wiphy);
+ 	adapter->wiphy = NULL;
  
- 	main_variant = TYPE_MAIN_VARIANT(type);
- 	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant)) {
--		TYPE_FIELDS(variant) = list;
-+		TYPE_FIELDS(variant) = newtree[0];
- 		TYPE_ATTRIBUTES(variant) = copy_list(TYPE_ATTRIBUTES(variant));
- 		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("randomize_performed"), NULL_TREE, TYPE_ATTRIBUTES(variant));
- 		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("designated_init"), NULL_TREE, TYPE_ATTRIBUTES(variant));
+-	vfree(adapter->chan_stats);
++	kfree(adapter->chan_stats);
+ 	mwifiex_free_cmd_buffers(adapter);
+ }
+ 
 
 
 
