@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD0EB47F6F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:37:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE15B47E2D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:21:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F5973C2F0D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:37:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07C1317DA54
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924A820E00B;
-	Sun,  7 Sep 2025 20:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E881D88D0;
+	Sun,  7 Sep 2025 20:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvEPdZiH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcdvCkIU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B194315A;
-	Sun,  7 Sep 2025 20:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9976C14BFA2;
+	Sun,  7 Sep 2025 20:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277449; cv=none; b=oI7ySkYEW3jkDd2X2mFl2txcDBQr3uQkXxKxejB2hwY78aTBmGNl39Qd+jrcAO1Q6qRxbMRpYozY9iC22c+LRrBzEG6xxh/jjujdZ3AK6HB4a5NhSkrM+YkX004TWeRGZVYj/ItIAHLK03yDLxzMAHRPDAADl/b7vznORjlaHmY=
+	t=1757276468; cv=none; b=KA9qaasbDZsTnbmN4L3cwebWb9VSo4MrA3PUikWS7hv/SQTo+MjzROV8jF4ELdG9Uag4vNHSEH5Ji/fwqggoU7iX87RN4gRiQuJNvfK0CxtPLhfo805GMEWSQmUezUqnZpzxHdZ8RxSFpQKHut0VR5bc0BfN+1FkCZ1gpZi6+II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277449; c=relaxed/simple;
-	bh=f1cCr/FmUFPgZ2VW2Ot3J1Z6RVFPJBrkGrBV8OKKvuQ=;
+	s=arc-20240116; t=1757276468; c=relaxed/simple;
+	bh=GpXORY65/uFftunlTNh2psIigAlMRF31jdHGkQ4rrTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dnp3vGnMz6hQeoj9r09Q3VaX16rgCZ+6hAB1XZosZupNYn1whSGPhKSN8AULWi2BQ4g/9Bkt2jH+uSEW8c7FfjV70DyW3XfpJBnj/b+guGl2n97DWKnLz+qMrUh/gC2ViW999SESuBEeNxM5WG8pfhCpxuUENw41ozsQ0df4Gfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvEPdZiH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58EDC4CEF0;
-	Sun,  7 Sep 2025 20:37:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i9FRdu07wdY0JSA5lACqWKATdJxkW3IkXQeFfkfSBP+q/j4PomrgN1/NU3bAXeFOxhceSnyVqlKW0QYWcHKvnzU97T9z6DraIhZvhs+Ce6pGnPTWKqV2bSWwHfWRZvsgSofLBAHmAjR2SvghKUNaQdk9EtTLWjWDL5e3N/iZ770=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcdvCkIU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E49C4CEF0;
+	Sun,  7 Sep 2025 20:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277449;
-	bh=f1cCr/FmUFPgZ2VW2Ot3J1Z6RVFPJBrkGrBV8OKKvuQ=;
+	s=korg; t=1757276468;
+	bh=GpXORY65/uFftunlTNh2psIigAlMRF31jdHGkQ4rrTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvEPdZiHyWy0Wgdzxk9ZbQmH1I5jsuyfWkYqprPvc5Tf6yPC3Iyj5eiyhfDBNa/UQ
-	 PjPRZjCQU135DTp/zSTtzpjJH4OFgY4ZTQzNCu82e6aCZdSBujJSFQHHbJy4KJXgVu
-	 HwLD5XowADu9bJOx/wpnkegxhRU7J+u6BQjhTre8=
+	b=zcdvCkIUa/2UmOmGanL0X8fPxrZywCzp8kVZjnK8VgpB2qq1yb/1++jGg5VowU9TW
+	 /MxsCEyYQvS3JOA2KtcYHPIfBAPjIm4bORCclhP55EDvrMtjiA4azqZqgiKAzE4N6s
+	 YfeEqLkYpMWXFOJsCrriEOoXl28ZqIWg05uvYBjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Hung <alex.hung@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 019/183] tee: fix NULL pointer dereference in tee_shm_put
+Subject: [PATCH 6.6 010/121] drm/amd/display: Dont warn when missing DCE encoder caps
 Date: Sun,  7 Sep 2025 21:57:26 +0200
-Message-ID: <20250907195616.240276459@linuxfoundation.org>
+Message-ID: <20250907195610.078286836@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit e4a718a3a47e89805c3be9d46a84de1949a98d5d ]
+[ Upstream commit 8246147f1fbaed522b8bcc02ca34e4260747dcfb ]
 
-tee_shm_put have NULL pointer dereference:
+On some GPUs the VBIOS just doesn't have encoder caps,
+or maybe not for every encoder.
 
-__optee_disable_shm_cache -->
-	shm = reg_pair_to_ptr(...);//shm maybe return NULL
-        tee_shm_free(shm); -->
-		tee_shm_put(shm);//crash
+This isn't really a problem and it's handled well,
+so let's not litter the logs with it.
 
-Add check in tee_shm_put to fix it.
-
-panic log:
-Unable to handle kernel paging request at virtual address 0000000000100cca
-Mem abort info:
-ESR = 0x0000000096000004
-EC = 0x25: DABT (current EL), IL = 32 bits
-SET = 0, FnV = 0
-EA = 0, S1PTW = 0
-FSC = 0x04: level 0 translation fault
-Data abort info:
-ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-user pgtable: 4k pages, 48-bit VAs, pgdp=0000002049d07000
-[0000000000100cca] pgd=0000000000000000, p4d=0000000000000000
-Internal error: Oops: 0000000096000004 [#1] SMP
-CPU: 2 PID: 14442 Comm: systemd-sleep Tainted: P OE ------- ----
-6.6.0-39-generic #38
-Source Version: 938b255f6cb8817c95b0dd5c8c2944acfce94b07
-Hardware name: greatwall GW-001Y1A-FTH, BIOS Great Wall BIOS V3.0
-10/26/2022
-pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : tee_shm_put+0x24/0x188
-lr : tee_shm_free+0x14/0x28
-sp : ffff001f98f9faf0
-x29: ffff001f98f9faf0 x28: ffff0020df543cc0 x27: 0000000000000000
-x26: ffff001f811344a0 x25: ffff8000818dac00 x24: ffff800082d8d048
-x23: ffff001f850fcd18 x22: 0000000000000001 x21: ffff001f98f9fb88
-x20: ffff001f83e76218 x19: ffff001f83e761e0 x18: 000000000000ffff
-x17: 303a30303a303030 x16: 0000000000000000 x15: 0000000000000003
-x14: 0000000000000001 x13: 0000000000000000 x12: 0101010101010101
-x11: 0000000000000001 x10: 0000000000000001 x9 : ffff800080e08d0c
-x8 : ffff001f98f9fb88 x7 : 0000000000000000 x6 : 0000000000000000
-x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
-x2 : ffff001f83e761e0 x1 : 00000000ffff001f x0 : 0000000000100cca
-Call trace:
-tee_shm_put+0x24/0x188
-tee_shm_free+0x14/0x28
-__optee_disable_shm_cache+0xa8/0x108
-optee_shutdown+0x28/0x38
-platform_shutdown+0x28/0x40
-device_shutdown+0x144/0x2b0
-kernel_power_off+0x3c/0x80
-hibernate+0x35c/0x388
-state_store+0x64/0x80
-kobj_attr_store+0x14/0x28
-sysfs_kf_write+0x48/0x60
-kernfs_fop_write_iter+0x128/0x1c0
-vfs_write+0x270/0x370
-ksys_write+0x6c/0x100
-__arm64_sys_write+0x20/0x30
-invoke_syscall+0x4c/0x120
-el0_svc_common.constprop.0+0x44/0xf0
-do_el0_svc+0x24/0x38
-el0_svc+0x24/0x88
-el0t_64_sync_handler+0x134/0x150
-el0t_64_sync+0x14c/0x15
-
-Fixes: dfd0743f1d9e ("tee: handle lookup of shm with reference count 0")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 33e0227ee96e62d034781e91f215e32fd0b1d512)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tee/tee_shm.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/tee/tee_shm.c b/drivers/tee/tee_shm.c
-index daf6e5cfd59ae..915239b033f5f 100644
---- a/drivers/tee/tee_shm.c
-+++ b/drivers/tee/tee_shm.c
-@@ -560,9 +560,13 @@ EXPORT_SYMBOL_GPL(tee_shm_get_from_id);
-  */
- void tee_shm_put(struct tee_shm *shm)
- {
--	struct tee_device *teedev = shm->ctx->teedev;
-+	struct tee_device *teedev;
- 	bool do_release = false;
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+index 136bd93c3b655..0a33f8f117e92 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
+@@ -896,13 +896,13 @@ void dce110_link_encoder_construct(
+ 						enc110->base.id, &bp_cap_info);
  
-+	if (!shm || !shm->ctx || !shm->ctx->teedev)
-+		return;
-+
-+	teedev = shm->ctx->teedev;
- 	mutex_lock(&teedev->mutex);
- 	if (refcount_dec_and_test(&shm->refcount)) {
- 		/*
+ 	/* Override features with DCE-specific values */
+-	if (BP_RESULT_OK == result) {
++	if (result == BP_RESULT_OK) {
+ 		enc110->base.features.flags.bits.IS_HBR2_CAPABLE =
+ 				bp_cap_info.DP_HBR2_EN;
+ 		enc110->base.features.flags.bits.IS_HBR3_CAPABLE =
+ 				bp_cap_info.DP_HBR3_EN;
+ 		enc110->base.features.flags.bits.HDMI_6GB_EN = bp_cap_info.HDMI_6GB_EN;
+-	} else {
++	} else if (result != BP_RESULT_NORECORD) {
+ 		DC_LOG_WARNING("%s: Failed to get encoder_cap_info from VBIOS with error code %d!\n",
+ 				__func__,
+ 				result);
+@@ -1795,13 +1795,13 @@ void dce60_link_encoder_construct(
+ 						enc110->base.id, &bp_cap_info);
+ 
+ 	/* Override features with DCE-specific values */
+-	if (BP_RESULT_OK == result) {
++	if (result == BP_RESULT_OK) {
+ 		enc110->base.features.flags.bits.IS_HBR2_CAPABLE =
+ 				bp_cap_info.DP_HBR2_EN;
+ 		enc110->base.features.flags.bits.IS_HBR3_CAPABLE =
+ 				bp_cap_info.DP_HBR3_EN;
+ 		enc110->base.features.flags.bits.HDMI_6GB_EN = bp_cap_info.HDMI_6GB_EN;
+-	} else {
++	} else if (result != BP_RESULT_NORECORD) {
+ 		DC_LOG_WARNING("%s: Failed to get encoder_cap_info from VBIOS with error code %d!\n",
+ 				__func__,
+ 				result);
 -- 
 2.50.1
 
