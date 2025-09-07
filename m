@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C29B47E37
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:21:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E596B47DF0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8878F3C15FD
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3C6B3C10CE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41213215077;
-	Sun,  7 Sep 2025 20:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551951C6FFA;
+	Sun,  7 Sep 2025 20:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xc4XqMZD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4BOnmNx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AC8189BB0;
-	Sun,  7 Sep 2025 20:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AC21A2389;
+	Sun,  7 Sep 2025 20:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276491; cv=none; b=XkPExC4Ng9BhpDQwVefJuR47bQvSeWHeX/svQR62VyVLLDQRmlSDLeQIhjd/8Isd/IZ8u+3yBPFwaZ6s3hkkaYDuUFY9yfuNZ3bWFqTc3u9ywwzVa+ju5bW0n1kyhh+gR1/2Ytdh7lEvO0gyavHedq6bwuxNEGNfp+3zunU31Yo=
+	t=1757276307; cv=none; b=GNnuLbBlX/qQE3zA9YTcbo+zqK2QDvtxw/2Tb2Pe6mArWFDbwQXMwAO0nd3OFrORP9urSUnKyZGgIN6m9p63HcKFkIHK7QZUtn3oDKckpcRCo+OGhOHDtF+/X+8q/e1Wl92l136S8GcSZmyRf+W+QkM4h3HDNSjD/DhPBtzMAjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276491; c=relaxed/simple;
-	bh=eq/4dzH4MBCBOexBNHZsplYC9793aqJne01l+17qaLs=;
+	s=arc-20240116; t=1757276307; c=relaxed/simple;
+	bh=PFZr9Eu0YYoxK8BlTkNRkYoaisn8WWb/5HEXFeqlnt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=glI30ajYLYArBdDpTe7x1cCDInwOFbnq9Bh6aDSGsonuC2W6rOJWXuT/JZcVeGFhiaj+eFFaFEH8zMY+xJeab+PtqmPue+nu35OZE99wK8LgY1aR0iOEkygjpfaWkmFTcS+YQGxK2Qye0Uk6EtTKpgaT+boEwf9dCMybTl+lZd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xc4XqMZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 517C6C4CEF0;
-	Sun,  7 Sep 2025 20:21:30 +0000 (UTC)
+	 MIME-Version; b=ui23IdsTBG8ajCtBL+ycJL1JlEKXAKttqy2PyCoVo+e4ZhfsBg3l6z+nXVIPC/fkTALUEEiMs6R6u6TcN6g+ZCITDx/RWqfOhDa4Bd8d2qEvCF7ln7ZcnsFbBiW9+4ZAp/svaeTytstHWX8b3d3TwajXhrkL91izL/8zTLnSWpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4BOnmNx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACF3C4CEF0;
+	Sun,  7 Sep 2025 20:18:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276490;
-	bh=eq/4dzH4MBCBOexBNHZsplYC9793aqJne01l+17qaLs=;
+	s=korg; t=1757276306;
+	bh=PFZr9Eu0YYoxK8BlTkNRkYoaisn8WWb/5HEXFeqlnt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xc4XqMZD4HE592jgBpO6BkTgy8cTR/UUgkuLJLADfW6m8D4LsYmNKFn4McoNiJnrx
-	 jKxuM+A0gW3KBFOcq7vpBR/v8VcCthnJgplFWvQZSJmvd7AOGSreni3DFwEMdmBCHa
-	 FvzvEJVSnuEjUQWNDeoyiPUTX8nXd8DaMc+bRERk=
+	b=D4BOnmNxtPy/MtUmo29rdFanI9pQdjK77M6rFsfkToWC4PHHH6ukn+Mia6l9bwdes
+	 GW9I1+c4P7NukyZck/ubsW7pzZwy1Rt36j+GXp8RIEluLfL3hFiScwMCX8+T5qk3Zy
+	 AN6EutfpQjkwWplLIW2xkd4ojMg8Wx24QYYjzvYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut@mailbox.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	syzbot+30754ca335e6fb7e3092@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/121] arm64: dts: imx8mp: Fix missing microSD slot vqmmc on DH electronics i.MX8M Plus DHCOM
+Subject: [PATCH 6.1 016/104] wifi: cfg80211: fix use-after-free in cmp_bss()
 Date: Sun,  7 Sep 2025 21:57:33 +0200
-Message-ID: <20250907195610.257762701@linuxfoundation.org>
+Message-ID: <20250907195608.102747476@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut@mailbox.org>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit c53cf8ce3bfe1309cb4fd4d74c5be27c26a86e52 ]
+[ Upstream commit 26e84445f02ce6b2fe5f3e0e28ff7add77f35e08 ]
 
-Add missing microSD slot vqmmc-supply property, otherwise the kernel
-might shut down LDO5 regulator and that would power off the microSD
-card slot, possibly while it is in use. Add the property to make sure
-the kernel is aware of the LDO5 regulator which supplies the microSD
-slot and keeps the LDO5 enabled.
+Following bss_free() quirk introduced in commit 776b3580178f
+("cfg80211: track hidden SSID networks properly"), adjust
+cfg80211_update_known_bss() to free the last beacon frame
+elements only if they're not shared via the corresponding
+'hidden_beacon_bss' pointer.
 
-Fixes: 8d6712695bc8 ("arm64: dts: imx8mp: Add support for DH electronics i.MX8M Plus DHCOM and PDK2")
-Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Reported-by: syzbot+30754ca335e6fb7e3092@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=30754ca335e6fb7e3092
+Fixes: 3ab8227d3e7d ("cfg80211: refactor cfg80211_bss_update")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20250813135236.799384-1-dmantipov@yandex.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ net/wireless/scan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-index eae39c1cb9856..2e93d922c8611 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-@@ -571,6 +571,7 @@ &usdhc2 {
- 	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
- 	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
- 	vmmc-supply = <&reg_usdhc2_vmmc>;
-+	vqmmc-supply = <&ldo5>;
- 	bus-width = <4>;
- 	status = "okay";
- };
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 810293f160a8c..7369172819fdf 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1785,7 +1785,8 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
+ 			 */
+ 
+ 			f = rcu_access_pointer(new->pub.beacon_ies);
+-			kfree_rcu((struct cfg80211_bss_ies *)f, rcu_head);
++			if (!new->pub.hidden_beacon_bss)
++				kfree_rcu((struct cfg80211_bss_ies *)f, rcu_head);
+ 			return false;
+ 		}
+ 
 -- 
 2.50.1
 
