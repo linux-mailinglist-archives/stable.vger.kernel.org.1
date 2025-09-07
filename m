@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12801B47E7C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 098C6B47FB7
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED8D81888EC4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B51182005F1
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1368F20E005;
-	Sun,  7 Sep 2025 20:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BAE26B2AD;
+	Sun,  7 Sep 2025 20:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHezfaOR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFmhMn0P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5455D528;
-	Sun,  7 Sep 2025 20:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5743F4315A;
+	Sun,  7 Sep 2025 20:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276692; cv=none; b=FcuiNDihTfWzAS3du5igQrOV3NueK9O0tXV5d5WmhUPSnTl71egsZkrMO9PG//uVk2D9IFtLwg8O4vwpxeh+UruxR0A14N2jBJ2rrqZbSmpVjmkvDS+ZbE0HsyTVOYZQD1CuAlya5wJzE2w5hXgGTma952HmYgXxkEErfovmrF8=
+	t=1757277678; cv=none; b=SwzAdLClAW3QFzF7mXxVy37Stzcq6AYTADGZSItBNhfzQypvOSzzK6KKHeb+xa7Imkh34RPsW/VCSiHlcGQSlg7i1V6ajE/5/AwagOvCR5yK11YH48AZPyG7RyKzw3laYYV36HTxOhufgjy4EdhNsc6QKoNLarA70Gmrd0RbVDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276692; c=relaxed/simple;
-	bh=/kLlgMRyzUtOV8/txC7im5T3XMH2h+VxvLygdamFdMg=;
+	s=arc-20240116; t=1757277678; c=relaxed/simple;
+	bh=W09LrDqSV900QIT6+f5BZo7a7QWl+0U6Aq//i1ds1Ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FTuQnvpfbwR9KIKnkBC1v4UAdt/d8rmyWA5qGPeFylOTvxEihJ+aoWi+wuF8P3T/MkqVTaN9BxYo30VXkQp7DPPA+rlyhZZqqixEeRrTM6PZ97Xn6+wlOhhepC6kbEfc8Se+mf48ooaObmwzC573N1GLpSaC2CP+v5Ba8z+ysRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHezfaOR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 013F4C4CEF0;
-	Sun,  7 Sep 2025 20:24:51 +0000 (UTC)
+	 MIME-Version; b=jdVDsevl2EZZ3x2y2sN1y2nKeIkOsA21GnqkGshKNp4CgsIPkGmDpBOHoknc9W6BazyZExwGRp1l677h5++lLF43m4Z7ZpGpkibsKuaxLtKm0l76kFCoUbC69Tvuvh/heBbZAbeA/rWnnpi41i46x4goHo+fD0ZBnAf4mJ0Jcck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFmhMn0P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F5CC4CEF0;
+	Sun,  7 Sep 2025 20:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276692;
-	bh=/kLlgMRyzUtOV8/txC7im5T3XMH2h+VxvLygdamFdMg=;
+	s=korg; t=1757277678;
+	bh=W09LrDqSV900QIT6+f5BZo7a7QWl+0U6Aq//i1ds1Ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VHezfaORME1qucohXaY6MjajajwL4F7+MmAhmITI/eqmYb4Ro7Yt8l8ISBvTkNK3I
-	 o0CYJMY9mdgyaheXl2vh0tmnJrtrPO/bUC4/+NBAJElcav/fRuVkWThqRDJBuv1CBS
-	 eZgxR2L/FFNdo3/MUBdEiHZ9Tgby1kYfr76orpSo=
+	b=yFmhMn0PmnTboCoQ7o1L7l+IjqCsPStaIcBJQpzYDoTnpBwJ0ZMZSGIAxcC0iAIZF
+	 lzzGEMMelinekg628Gm2iqMqQbCvFP9hCs3DiAgWsOPlTyWxZrTZdwONbroFK+gNQR
+	 ff0hocz9Q7NXd+aWw80d9g/joSxNOjReEbHyrEFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Yi Chen <yiche@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/121] thermal/drivers/mediatek/lvts: Disable low offset IRQ for minimum threshold
-Date: Sun,  7 Sep 2025 21:58:35 +0200
-Message-ID: <20250907195611.864977778@linuxfoundation.org>
+Subject: [PATCH 6.16 089/183] selftests: netfilter: fix udpclash tool hang
+Date: Sun,  7 Sep 2025 21:58:36 +0200
+Message-ID: <20250907195617.904585223@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +60,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit fa17ff8e325a657c84be1083f06e54ee7eea82e4 ]
+[ Upstream commit 661a4f307fe0f80c1d544e09476ccba9037e8e65 ]
 
-In order to get working interrupts, a low offset value needs to be
-configured. The minimum value for it is 20 Celsius, which is what is
-configured when there's no lower thermal trip (ie the thermal core
-passes -INT_MAX as low trip temperature). However, when the temperature
-gets that low and fluctuates around that value it causes an interrupt
-storm.
+Yi Chen reports that 'udpclash' loops forever depending on compiler
+(and optimization level used); while (x == 1) gets optimized into
+for (;;).  Add volatile qualifier to avoid that.
 
-Prevent that interrupt storm by not enabling the low offset interrupt if
-the low threshold is the minimum one.
+While at it, also run it under timeout(1) and fix the resize script
+to not ignore the timeout passed as second parameter to insert_flood.
 
-Cc: stable@vger.kernel.org
-Fixes: 77354eaef821 ("thermal/drivers/mediatek/lvts_thermal: Don't leave threshold zeroed")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20250113-mt8192-lvts-filtered-suspend-fix-v2-3-07a25200c7c6@collabora.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-[ Adapted interrupt mask definitions ]
+Reported-by: Yi Chen <yiche@redhat.com>
+Suggested-by: Yi Chen <yiche@redhat.com>
+Fixes: 78a588363587 ("selftests: netfilter: add conntrack clash resolution test case")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/mediatek/lvts_thermal.c |   50 +++++++++++++++++++++++---------
- 1 file changed, 36 insertions(+), 14 deletions(-)
+ tools/testing/selftests/net/netfilter/conntrack_clash.sh  | 2 +-
+ tools/testing/selftests/net/netfilter/conntrack_resize.sh | 5 +++--
+ tools/testing/selftests/net/netfilter/udpclash.c          | 2 +-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/thermal/mediatek/lvts_thermal.c
-+++ b/drivers/thermal/mediatek/lvts_thermal.c
-@@ -67,10 +67,14 @@
- #define LVTS_CALSCALE_CONF			0x300
- #define LVTS_MONINT_CONF			0x8300318C
+diff --git a/tools/testing/selftests/net/netfilter/conntrack_clash.sh b/tools/testing/selftests/net/netfilter/conntrack_clash.sh
+index 606a43a60f736..7fc6c5dbd5516 100755
+--- a/tools/testing/selftests/net/netfilter/conntrack_clash.sh
++++ b/tools/testing/selftests/net/netfilter/conntrack_clash.sh
+@@ -99,7 +99,7 @@ run_one_clash_test()
+ 	local entries
+ 	local cre
  
--#define LVTS_MONINT_OFFSET_SENSOR0		0xC
--#define LVTS_MONINT_OFFSET_SENSOR1		0x180
--#define LVTS_MONINT_OFFSET_SENSOR2		0x3000
--#define LVTS_MONINT_OFFSET_SENSOR3		0x3000000
-+#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR0		BIT(3)
-+#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR1		BIT(8)
-+#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR2		BIT(13)
-+#define LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR3		BIT(25)
-+#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR0		BIT(2)
-+#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR1		BIT(7)
-+#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR2		BIT(12)
-+#define LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR3		BIT(24)
+-	if ! ip netns exec "$ns" ./udpclash $daddr $dport;then
++	if ! ip netns exec "$ns" timeout 30 ./udpclash $daddr $dport;then
+ 		echo "INFO: did not receive expected number of replies for $daddr:$dport"
+ 		ip netns exec "$ctns" conntrack -S
+ 		# don't fail: check if clash resolution triggered after all.
+diff --git a/tools/testing/selftests/net/netfilter/conntrack_resize.sh b/tools/testing/selftests/net/netfilter/conntrack_resize.sh
+index 788cd56ea4a0d..615fe3c6f405d 100755
+--- a/tools/testing/selftests/net/netfilter/conntrack_resize.sh
++++ b/tools/testing/selftests/net/netfilter/conntrack_resize.sh
+@@ -187,7 +187,7 @@ ct_udpclash()
+ 	[ -x udpclash ] || return
  
- #define LVTS_INT_SENSOR0			0x0009001F
- #define LVTS_INT_SENSOR1			0x001203E0
-@@ -308,23 +312,41 @@ static int lvts_get_temp(struct thermal_
+         while [ $now -lt $end ]; do
+-		ip netns exec "$ns" ./udpclash 127.0.0.1 $((RANDOM%65536)) > /dev/null 2>&1
++		ip netns exec "$ns" timeout 30 ./udpclash 127.0.0.1 $((RANDOM%65536)) > /dev/null 2>&1
  
- static void lvts_update_irq_mask(struct lvts_ctrl *lvts_ctrl)
+ 		now=$(date +%s)
+ 	done
+@@ -277,6 +277,7 @@ check_taint()
+ insert_flood()
  {
--	u32 masks[] = {
--		LVTS_MONINT_OFFSET_SENSOR0,
--		LVTS_MONINT_OFFSET_SENSOR1,
--		LVTS_MONINT_OFFSET_SENSOR2,
--		LVTS_MONINT_OFFSET_SENSOR3,
-+	static const u32 high_offset_inten_masks[] = {
-+		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR0,
-+		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR1,
-+		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR2,
-+		LVTS_MONINT_OFFSET_HIGH_INTEN_SENSOR3,
-+	};
-+	static const u32 low_offset_inten_masks[] = {
-+		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR0,
-+		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR1,
-+		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR2,
-+		LVTS_MONINT_OFFSET_LOW_INTEN_SENSOR3,
- 	};
- 	u32 value = 0;
- 	int i;
+ 	local n="$1"
++	local timeout="$2"
+ 	local r=0
  
- 	value = readl(LVTS_MONINT(lvts_ctrl->base));
+ 	r=$((RANDOM%$insert_count))
+@@ -302,7 +303,7 @@ test_floodresize_all()
+ 	read tainted_then < /proc/sys/kernel/tainted
  
--	for (i = 0; i < ARRAY_SIZE(masks); i++) {
-+	for (i = 0; i < ARRAY_SIZE(high_offset_inten_masks); i++) {
- 		if (lvts_ctrl->sensors[i].high_thresh == lvts_ctrl->high_thresh
--		    && lvts_ctrl->sensors[i].low_thresh == lvts_ctrl->low_thresh)
--			value |= masks[i];
--		else
--			value &= ~masks[i];
-+		    && lvts_ctrl->sensors[i].low_thresh == lvts_ctrl->low_thresh) {
-+			/*
-+			 * The minimum threshold needs to be configured in the
-+			 * OFFSETL register to get working interrupts, but we
-+			 * don't actually want to generate interrupts when
-+			 * crossing it.
-+			 */
-+			if (lvts_ctrl->low_thresh == -INT_MAX) {
-+				value &= ~low_offset_inten_masks[i];
-+				value |= high_offset_inten_masks[i];
-+			} else {
-+				value |= low_offset_inten_masks[i] | high_offset_inten_masks[i];
-+			}
-+		} else {
-+			value &= ~(low_offset_inten_masks[i] | high_offset_inten_masks[i]);
-+		}
- 	}
+ 	for n in "$nsclient1" "$nsclient2";do
+-		insert_flood "$n" &
++		insert_flood "$n" "$timeout" &
+ 	done
  
- 	writel(value, LVTS_MONINT(lvts_ctrl->base));
+ 	# resize table constantly while flood/insert/dump/flushs
+diff --git a/tools/testing/selftests/net/netfilter/udpclash.c b/tools/testing/selftests/net/netfilter/udpclash.c
+index 85c7b906ad08f..79de163d61ab7 100644
+--- a/tools/testing/selftests/net/netfilter/udpclash.c
++++ b/tools/testing/selftests/net/netfilter/udpclash.c
+@@ -29,7 +29,7 @@ struct thread_args {
+ 	int sockfd;
+ };
+ 
+-static int wait = 1;
++static volatile int wait = 1;
+ 
+ static void *thread_main(void *varg)
+ {
+-- 
+2.50.1
+
 
 
 
