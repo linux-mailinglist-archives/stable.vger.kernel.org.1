@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1FF6B47E3E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:21:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30FE1B47DC5
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA7881784A4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6A523C0766
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A021B4247;
-	Sun,  7 Sep 2025 20:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F251F1921;
+	Sun,  7 Sep 2025 20:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjafhVbd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fE7ERhC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124FD189BB0;
-	Sun,  7 Sep 2025 20:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7691614BFA2;
+	Sun,  7 Sep 2025 20:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276513; cv=none; b=nL1CZtWuB3kkZC2eLKDMBWOkps76HQAYpPTnRzxkHKUc997jAWRjs6QP+xoD1ZlJUi9b3EZiYdGXJlw8U7IphIbBGidaeOXVhA8QZTs3X2DVSvldrmFeWllzj/HLYCLiW6x22IpU3Bn4w45IF0sPJzh24vS/fVUwGZDSm1hXAB0=
+	t=1757276175; cv=none; b=t+ez3iNBZqAHZFUI3kRKMDI6iefoK+DotHMLLTOGFu55Rt6YSklt1uaPFhqB1Yk2YIGci24v31QB1gGkq3hBAD43bfj7MlCpUFPeob6z6UC/xsY6XUfK/tP0uwllUoCLGrqjX6RtigzqV4y9npAj/6P5YdoIFKbJTHBMKspsHHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276513; c=relaxed/simple;
-	bh=vlFZ+r7s4A6xI2POb9cJbPD9ZVUFBRrUgw4qkRRyFCY=;
+	s=arc-20240116; t=1757276175; c=relaxed/simple;
+	bh=QANFqbKg8J8bp1BrsEIVUK12z9hOnyHCGS9Hz4YnbFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b5TREOwkTMpy9Tr+K1D1oCaCdyEcsAlWZ05J5vXuNOt/FS4fDmVfdP20QTPyfYryEMOO6sCpL9l4761cHQSb3btqX4T2ij+kuZNmVoLdLLxcP2h4RtscpetyWe6v3Xfp1nD2hvWf9Iy34OJsYZAzk4fI2OYAHQXyoEOGNkipNfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjafhVbd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E11C4CEF0;
-	Sun,  7 Sep 2025 20:21:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oPpkwKbvC2nKp1zRlX/ZAdpjPs5/futepIKJXzPmVmlht8lUSpHRW/T3iw7iASUdmWQqtmDVxhnbqaOgtRUoWr10Ip/nRPKylzFWxbEDuWiaUsQ8lfN7wyY2SJlR3T9IxvvJNNqUKTEYie4EyNidBhwKqbcZlJvXmyqtuEfaUro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fE7ERhC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D89C4CEF0;
+	Sun,  7 Sep 2025 20:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276512;
-	bh=vlFZ+r7s4A6xI2POb9cJbPD9ZVUFBRrUgw4qkRRyFCY=;
+	s=korg; t=1757276175;
+	bh=QANFqbKg8J8bp1BrsEIVUK12z9hOnyHCGS9Hz4YnbFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xjafhVbdGfqx0wsDQcxrPQWwJqrHT6K31Jlt/xWcM5n3yw0fnnRs0/MXY6MfXPTCq
-	 MjKu0crwQeiF/hZ/c/r50L91X+bSX7wCMbedyiD6iNUEQr+7kCNuu5t1J2sv4nmEY1
-	 mQKuWfdNRhtqLYo3cRqoKXAtshmtMOHuNA3LMOYQ=
+	b=1fE7ERhCnZ83vF0ivuAAIeK7VwYOmQh2gCKgEuWiv6GM5xUfPBGn24m6cEd+Xg9nd
+	 UaUsFmiI6TjNv5/dH/ef6Ivfd/RX0Ph3Un3LNTPYpu1e8Ex9MMwLADV8Vi7wkyR74N
+	 4P+G74mKBdalgGDkaPrTg2JxFb3YNMkvJ6sMXeiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Pravdin <ipravdin.official@gmail.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	=?UTF-8?q?Fabian=20Bl=C3=A4se?= <fabian@blaese.de>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Florian Westphal <fw@strlen.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/121] Bluetooth: vhci: Prevent use-after-free by removing debugfs files early
+Subject: [PATCH 6.1 022/104] icmp: fix icmp_ndo_send address translation for reply direction
 Date: Sun,  7 Sep 2025 21:57:39 +0200
-Message-ID: <20250907195610.412520163@linuxfoundation.org>
+Message-ID: <20250907195608.267472323@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +62,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Pravdin <ipravdin.official@gmail.com>
+From: Fabian Bläse <fabian@blaese.de>
 
-[ Upstream commit 28010791193a4503f054e8d69a950ef815deb539 ]
+[ Upstream commit c6dd1aa2cbb72b33e0569f3e71d95792beab5042 ]
 
-Move the creation of debugfs files into a dedicated function, and ensure
-they are explicitly removed during vhci_release(), before associated
-data structures are freed.
+The icmp_ndo_send function was originally introduced to ensure proper
+rate limiting when icmp_send is called by a network device driver,
+where the packet's source address may have already been transformed
+by SNAT.
 
-Previously, debugfs files such as "force_suspend", "force_wakeup", and
-others were created under hdev->debugfs but not removed in
-vhci_release(). Since vhci_release() frees the backing vhci_data
-structure, any access to these files after release would result in
-use-after-free errors.
+However, the original implementation only considers the
+IP_CT_DIR_ORIGINAL direction for SNAT and always replaced the packet's
+source address with that of the original-direction tuple. This causes
+two problems:
 
-Although hdev->debugfs is later freed in hci_release_dev(), user can
-access files after vhci_data is freed but before hdev->debugfs is
-released.
+1. For SNAT:
+   Reply-direction packets were incorrectly translated using the source
+   address of the CT original direction, even though no translation is
+   required.
 
-Fixes: ab4e4380d4e1 ("Bluetooth: Add vhci devcoredump support")
-Signed-off-by: Ivan Pravdin <ipravdin.official@gmail.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+2. For DNAT:
+   Reply-direction packets were not handled at all. In DNAT, the original
+   direction's destination is translated. Therefore, in the reply
+   direction the source address must be set to the reply-direction
+   source, so rate limiting works as intended.
+
+Fix this by using the connection direction to select the correct tuple
+for source address translation, and adjust the pre-checks to handle
+reply-direction packets in case of DNAT.
+
+Additionally, wrap the `ct->status` access in READ_ONCE(). This avoids
+possible KCSAN reports about concurrent updates to `ct->status`.
+
+Fixes: 0b41713b6066 ("icmp: introduce helper for nat'd source address in network device context")
+Signed-off-by: Fabian Bläse <fabian@blaese.de>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_vhci.c | 57 ++++++++++++++++++++++++++----------
- 1 file changed, 41 insertions(+), 16 deletions(-)
+ net/ipv4/icmp.c     | 6 ++++--
+ net/ipv6/ip6_icmp.c | 6 ++++--
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_vhci.c b/drivers/bluetooth/hci_vhci.c
-index 4bfc78f9781ed..0935045051699 100644
---- a/drivers/bluetooth/hci_vhci.c
-+++ b/drivers/bluetooth/hci_vhci.c
-@@ -380,6 +380,28 @@ static const struct file_operations force_devcoredump_fops = {
- 	.write		= force_devcd_write,
- };
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 94501bb30c431..b17549c4e5de8 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -801,11 +801,12 @@ void icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __be32 info)
+ 	struct sk_buff *cloned_skb = NULL;
+ 	struct ip_options opts = { 0 };
+ 	enum ip_conntrack_info ctinfo;
++	enum ip_conntrack_dir dir;
+ 	struct nf_conn *ct;
+ 	__be32 orig_ip;
  
-+static void vhci_debugfs_init(struct vhci_data *data)
-+{
-+	struct hci_dev *hdev = data->hdev;
-+
-+	debugfs_create_file("force_suspend", 0644, hdev->debugfs, data,
-+			    &force_suspend_fops);
-+
-+	debugfs_create_file("force_wakeup", 0644, hdev->debugfs, data,
-+			    &force_wakeup_fops);
-+
-+	if (IS_ENABLED(CONFIG_BT_MSFTEXT))
-+		debugfs_create_file("msft_opcode", 0644, hdev->debugfs, data,
-+				    &msft_opcode_fops);
-+
-+	if (IS_ENABLED(CONFIG_BT_AOSPEXT))
-+		debugfs_create_file("aosp_capable", 0644, hdev->debugfs, data,
-+				    &aosp_capable_fops);
-+
-+	debugfs_create_file("force_devcoredump", 0644, hdev->debugfs, data,
-+			    &force_devcoredump_fops);
-+}
-+
- static int __vhci_create_device(struct vhci_data *data, __u8 opcode)
- {
- 	struct hci_dev *hdev;
-@@ -435,22 +457,8 @@ static int __vhci_create_device(struct vhci_data *data, __u8 opcode)
- 		return -EBUSY;
+ 	ct = nf_ct_get(skb_in, &ctinfo);
+-	if (!ct || !(ct->status & IPS_SRC_NAT)) {
++	if (!ct || !(READ_ONCE(ct->status) & IPS_NAT_MASK)) {
+ 		__icmp_send(skb_in, type, code, info, &opts);
+ 		return;
  	}
+@@ -820,7 +821,8 @@ void icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __be32 info)
+ 		goto out;
  
--	debugfs_create_file("force_suspend", 0644, hdev->debugfs, data,
--			    &force_suspend_fops);
--
--	debugfs_create_file("force_wakeup", 0644, hdev->debugfs, data,
--			    &force_wakeup_fops);
--
--	if (IS_ENABLED(CONFIG_BT_MSFTEXT))
--		debugfs_create_file("msft_opcode", 0644, hdev->debugfs, data,
--				    &msft_opcode_fops);
--
--	if (IS_ENABLED(CONFIG_BT_AOSPEXT))
--		debugfs_create_file("aosp_capable", 0644, hdev->debugfs, data,
--				    &aosp_capable_fops);
--
--	debugfs_create_file("force_devcoredump", 0644, hdev->debugfs, data,
--			    &force_devcoredump_fops);
-+	if (!IS_ERR_OR_NULL(hdev->debugfs))
-+		vhci_debugfs_init(data);
+ 	orig_ip = ip_hdr(skb_in)->saddr;
+-	ip_hdr(skb_in)->saddr = ct->tuplehash[0].tuple.src.u3.ip;
++	dir = CTINFO2DIR(ctinfo);
++	ip_hdr(skb_in)->saddr = ct->tuplehash[dir].tuple.src.u3.ip;
+ 	__icmp_send(skb_in, type, code, info, &opts);
+ 	ip_hdr(skb_in)->saddr = orig_ip;
+ out:
+diff --git a/net/ipv6/ip6_icmp.c b/net/ipv6/ip6_icmp.c
+index 9e3574880cb03..233914b63bdb8 100644
+--- a/net/ipv6/ip6_icmp.c
++++ b/net/ipv6/ip6_icmp.c
+@@ -54,11 +54,12 @@ void icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 code, __u32 info)
+ 	struct inet6_skb_parm parm = { 0 };
+ 	struct sk_buff *cloned_skb = NULL;
+ 	enum ip_conntrack_info ctinfo;
++	enum ip_conntrack_dir dir;
+ 	struct in6_addr orig_ip;
+ 	struct nf_conn *ct;
  
- 	hci_skb_pkt_type(skb) = HCI_VENDOR_PKT;
- 
-@@ -652,6 +660,21 @@ static int vhci_open(struct inode *inode, struct file *file)
- 	return 0;
- }
- 
-+static void vhci_debugfs_remove(struct hci_dev *hdev)
-+{
-+	debugfs_lookup_and_remove("force_suspend", hdev->debugfs);
-+
-+	debugfs_lookup_and_remove("force_wakeup", hdev->debugfs);
-+
-+	if (IS_ENABLED(CONFIG_BT_MSFTEXT))
-+		debugfs_lookup_and_remove("msft_opcode", hdev->debugfs);
-+
-+	if (IS_ENABLED(CONFIG_BT_AOSPEXT))
-+		debugfs_lookup_and_remove("aosp_capable", hdev->debugfs);
-+
-+	debugfs_lookup_and_remove("force_devcoredump", hdev->debugfs);
-+}
-+
- static int vhci_release(struct inode *inode, struct file *file)
- {
- 	struct vhci_data *data = file->private_data;
-@@ -663,6 +686,8 @@ static int vhci_release(struct inode *inode, struct file *file)
- 	hdev = data->hdev;
- 
- 	if (hdev) {
-+		if (!IS_ERR_OR_NULL(hdev->debugfs))
-+			vhci_debugfs_remove(hdev);
- 		hci_unregister_dev(hdev);
- 		hci_free_dev(hdev);
+ 	ct = nf_ct_get(skb_in, &ctinfo);
+-	if (!ct || !(ct->status & IPS_SRC_NAT)) {
++	if (!ct || !(READ_ONCE(ct->status) & IPS_NAT_MASK)) {
+ 		__icmpv6_send(skb_in, type, code, info, &parm);
+ 		return;
  	}
+@@ -73,7 +74,8 @@ void icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 code, __u32 info)
+ 		goto out;
+ 
+ 	orig_ip = ipv6_hdr(skb_in)->saddr;
+-	ipv6_hdr(skb_in)->saddr = ct->tuplehash[0].tuple.src.u3.in6;
++	dir = CTINFO2DIR(ctinfo);
++	ipv6_hdr(skb_in)->saddr = ct->tuplehash[dir].tuple.src.u3.in6;
+ 	__icmpv6_send(skb_in, type, code, info, &parm);
+ 	ipv6_hdr(skb_in)->saddr = orig_ip;
+ out:
 -- 
 2.50.1
 
