@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25775B47D11
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F53B47FA6
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D773617B504
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5414200482
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D7827FB21;
-	Sun,  7 Sep 2025 20:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6D24315A;
+	Sun,  7 Sep 2025 20:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywGJNSzU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2UkWa6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A871CDFAC;
-	Sun,  7 Sep 2025 20:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C6320E00B;
+	Sun,  7 Sep 2025 20:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275627; cv=none; b=aKYMAT9iHxDgpFEnazTcj2iHOBZrNV1j0d573x2F4qhPcyhmnaZXvnpAT5Gh3KXLqTRNM//Z8D9V6t9mLQqF+mIfOw57oB0FZFQEhrYypmvQ+huJkS6oKOsuinuXSgtv3TRqTZkx+Z4o7kDD/+mniLQCb/R/yg236BKsaDO5a8M=
+	t=1757277622; cv=none; b=T1ZnN4Fpwu6RM7/tRu/c0rGKQwvfdRFkUh23j4uYDvV3MksjAWe0WGwdudfwG4cFs96ud1M6psHOUAOKCOtjNBMWKfMZI9XBEUFAaqNOi2ygFOcF2n0zgImpll97u8Ae4UWpvE20MevDmd+EOT3NgENQnAs16SrWLdpUIN92do0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275627; c=relaxed/simple;
-	bh=rauZ2p14W0TgA8AiqRQ2UQtTUYO7dnEYFe/rtKkBubY=;
+	s=arc-20240116; t=1757277622; c=relaxed/simple;
+	bh=TWfh7j8s7soES57xijcAqQMlSSlKspA/Uy3dFEpb+Vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+o7ncUOBJIqtm465O8Ytq+JQcxANmdZ/ZNn4WRzokcP5ObRV1QCyHuz06PDB6vHfUTJWaeUCu1fX0dZPclfE7RSOXuOwIQMMnxtXnJ3bWXLti5zW5aMG3u8dvCVsXUyRbFTG5wZOj5tXPYRQnkWiKhGqoN+UfvnDgRktBjC3mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywGJNSzU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CCA3C4CEF0;
-	Sun,  7 Sep 2025 20:07:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TpIC7/okBL+FEEqZsEUoEzQKgYWkcNnRbGLSyxfvkFXgto4uMTNclbmxUOXDAXPUwuCRngv5hI47cBV+8N/LBktNCx2qsw91WPZhbm3qUNKdvdrcHyHcXgZ1pgCTivSraYDAYKaTJbAFENn6+L7NiwPXLyPr5+mPSid56Fmwu3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2UkWa6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0736C4CEF0;
+	Sun,  7 Sep 2025 20:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275626;
-	bh=rauZ2p14W0TgA8AiqRQ2UQtTUYO7dnEYFe/rtKkBubY=;
+	s=korg; t=1757277622;
+	bh=TWfh7j8s7soES57xijcAqQMlSSlKspA/Uy3dFEpb+Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ywGJNSzUYXAMWQp1tgdVBjv4C3+Jbo96sRpyPF2Oxr1nw40V504dCNYRP4wTORDRM
-	 8Bs6QwD25B+VoeVMQLc6R2o+j+dJkWKu2d3AKC8jFZQMWIj0Ck/t3SWP5OexkFczd4
-	 VG0Obm9s9jjJ/pQMVNcJPU+Q1cBQWnyYo8JUROjU=
+	b=s2UkWa6sZ4FFydnWS46prNSHoQdM7fFnaoWceaQ5xcHYAsvjuulzthdF2gIqvlUYw
+	 su+Cx2aJ1pWAnkqNzqnbZ54WsaFmzXE9GJEL69jqnjYBijFMy4nfIwjYUNUsydgUaC
+	 YtWhAYLOgN0ozpTiVn+bjksPyon5fMtj0v+Fuysk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Maud Spierings <maud_spierings@hotmail.com>,
+	=?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 14/52] net: thunder_bgx: add a missing of_node_put
+Subject: [PATCH 6.16 027/183] arm64: dts: rockchip: Fix the headphone detection on the orangepi 5 plus
 Date: Sun,  7 Sep 2025 21:57:34 +0200
-Message-ID: <20250907195602.400757058@linuxfoundation.org>
+Message-ID: <20250907195616.420976428@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Maud Spierings <maud_spierings@hotmail.com>
 
-[ Upstream commit 9d28f94912589f04ab51fbccaef287d4f40e0d1f ]
+[ Upstream commit 8976583832579fe7e450034d6143d74d9f8c8608 ]
 
-phy_np needs to get freed, just like the other child nodes.
+The logic of the headphone detect pin seems to be inverted, with this
+change headphones actually output sound when plugged in.
 
-Fixes: 5fc7cf179449 ("net: thunderx: Cleanup PHY probing code.")
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250901213018.47392-1-rosenp@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Verified by checking /sys/kernel/debug/gpio and by listening.
+
+Fixes: 236d225e1ee7 ("arm64: dts: rockchip: Add board device tree for rk3588-orangepi-5-plus")
+Signed-off-by: Maud Spierings <maud_spierings@hotmail.com>
+Reviewed-by: Ondřej Jirman <megi@xff.cz>
+Link: https://lore.kernel.org/r/20250823-orangepi5-v1-1-ae77dd0e06d7@hotmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/cavium/thunder/thunder_bgx.c  | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3588-orangepi-5-plus.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-index 0a71909bb2ee5..f5dbe2f5af659 100644
---- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-+++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-@@ -1497,13 +1497,17 @@ static int bgx_init_of_phy(struct bgx *bgx)
- 		 * this cortina phy, for which there is no driver
- 		 * support, ignore it.
- 		 */
--		if (phy_np &&
--		    !of_device_is_compatible(phy_np, "cortina,cs4223-slice")) {
--			/* Wait until the phy drivers are available */
--			pd = of_phy_find_device(phy_np);
--			if (!pd)
--				goto defer;
--			bgx->lmac[lmac].phydev = pd;
-+		if (phy_np) {
-+			if (!of_device_is_compatible(phy_np, "cortina,cs4223-slice")) {
-+				/* Wait until the phy drivers are available */
-+				pd = of_phy_find_device(phy_np);
-+				if (!pd) {
-+					of_node_put(phy_np);
-+					goto defer;
-+				}
-+				bgx->lmac[lmac].phydev = pd;
-+			}
-+			of_node_put(phy_np);
- 		}
- 
- 		lmac++;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-orangepi-5-plus.dts b/arch/arm64/boot/dts/rockchip/rk3588-orangepi-5-plus.dts
+index 121e4d1c3fa5d..8222f1fae8fad 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-orangepi-5-plus.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588-orangepi-5-plus.dts
+@@ -77,7 +77,7 @@ &analog_sound {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&hp_detect>;
+ 	simple-audio-card,aux-devs = <&speaker_amp>, <&headphone_amp>;
+-	simple-audio-card,hp-det-gpios = <&gpio1 RK_PD3 GPIO_ACTIVE_LOW>;
++	simple-audio-card,hp-det-gpios = <&gpio1 RK_PD3 GPIO_ACTIVE_HIGH>;
+ 	simple-audio-card,widgets =
+ 		"Microphone", "Onboard Microphone",
+ 		"Microphone", "Microphone Jack",
 -- 
 2.50.1
 
