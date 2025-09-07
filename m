@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-178668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64657B47F97
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:39:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5766FB47D81
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 629761B204AA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:39:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55137189DEE6
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9175821ADAE;
-	Sun,  7 Sep 2025 20:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C7527FB21;
+	Sun,  7 Sep 2025 20:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2PoI6or"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjYPlYzA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2621A704B;
-	Sun,  7 Sep 2025 20:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41AB91B424F;
+	Sun,  7 Sep 2025 20:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277574; cv=none; b=qcw470bAwZ+YDGX3SXebDKZgMgN8oKUeCsj8QlFp7oJhBsMW1+5zK/Nj7wqNSdbDqc4TBpJUyFXktfIFRiLXOl0A1FgYNlciVBzUyHCYpwlrrKPLzz5V0LbJ8LQAOyZmgN9Ju1B7hlbrO1VvEu4X8LbO0nhcUiL+FUC+UKcNXSM=
+	t=1757275968; cv=none; b=Ij39qLUThX9Z+eu4IRYJB+5cHATdtSFKv+aK/+RflngcAJSyufC/wKzbVNJwBuFXaNIQcrpS4XjFKCVImWxOwN1VqgjXwIOufy3ssyQvUWUySLzSDyTVvfrIS7du9CK45jQwNv9EF0WEJAXOHBhto1FjlwDWUdtgO64iQyr0jN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277574; c=relaxed/simple;
-	bh=Ez8HvcrETu5iSWfpifBO+vOYYaUXCLI0qlkmDwjO04U=;
+	s=arc-20240116; t=1757275968; c=relaxed/simple;
+	bh=7nO8MYcInSzxWDSVik7MAksElUQXcNA68IA4v7bOge0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SyQlK6VZ3YchF1eDR4PvAOMCnjTWro4Gg9DiwViz/7XcvAgBoXn+1+G2ryt2VEdLTNGuX2sERIvFMXT0Mi0+SaxDFpgoc6jth+NYl5rYU5FcSa+ypVVDK8mEzx46hHqAk6x1TY2EAXvFG7/zLR9hCNxz9Ol8wN6A+J4p0ntT9B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2PoI6or; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5225C4CEF0;
-	Sun,  7 Sep 2025 20:39:33 +0000 (UTC)
+	 MIME-Version; b=n3W6hUKWUs1o01r5fNwbAiGVfr8iZhJIgwECe1nNqlzaXVkGNr28hjhE9YCHbeRqeQ1GjJVrkMDEt4j4KgPzaDoiIis6FdV6rLyDYx/ZAbLIZUmPi+G06k4wHH4z3VVjJ6+6sFg6DXAsG8avcT5cXFYALEb7ROEShU7Z2T7oZhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjYPlYzA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B761BC4CEF0;
+	Sun,  7 Sep 2025 20:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277574;
-	bh=Ez8HvcrETu5iSWfpifBO+vOYYaUXCLI0qlkmDwjO04U=;
+	s=korg; t=1757275968;
+	bh=7nO8MYcInSzxWDSVik7MAksElUQXcNA68IA4v7bOge0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2PoI6orzlTfgNZ6wiKH3NvIrANjoMl5OVrL7mzsuXII9va17pRMM6UHGaA5ens2e
-	 XPyOIhWgQ89cLzSzFw390iKs2fGEVaZyxwwkb2n3SL/XKIdDdVOonpW5d9Yzho5Spn
-	 oCiXFiS7hCqTW9ggy6cBwchLTPIKQPaHCUp5HDvo=
+	b=PjYPlYzABtMhoBhKHDb4Oi5Qyecw6qCFz/E+wCrFIPmMhXpi9cuDx6Qdq0J5YxKmG
+	 +QPstmfa4joZvu29T85BbyTlSvaTLs8lj5WKzuS+rSNs7KOGyMzA6iWiC6exedVRgR
+	 DlgfD0ppUx3oyIE5pqfD1ABAiaWi33Bn7PPbBZdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 056/183] bnxt_en: fix incorrect page count in RX aggr ring log
+Subject: [PATCH 5.15 21/64] net: thunder_bgx: decrement cleanup index before use
 Date: Sun,  7 Sep 2025 21:58:03 +0200
-Message-ID: <20250907195617.116188197@linuxfoundation.org>
+Message-ID: <20250907195603.977612891@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 7000f4fa9b24ae2511b07babd0d49e888db5d265 ]
+[ Upstream commit 9e3d71a92e561ccc77025689dab25d201fee7a3e ]
 
-The warning in bnxt_alloc_one_rx_ring_netmem() reports the number
-of pages allocated for the RX aggregation ring. However, it
-mistakenly used bp->rx_ring_size instead of bp->rx_agg_ring_size,
-leading to confusing or misleading log output.
+All paths in probe that call goto defer do so before assigning phydev
+and thus it makes sense to cleanup the prior index. It also fixes a bug
+where index 0 does not get cleaned up.
 
-Use the correct bp->rx_agg_ring_size value to fix this.
-
-Fixes: c0c050c58d84 ("bnxt_en: New Broadcom ethernet driver.")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Link: https://patch.msgid.link/20250830062331.783783-1-alok.a.tiwari@oracle.com
+Fixes: b7d3e3d3d21a ("net: thunderx: Don't leak phy device references on -EPROBE_DEFER condition.")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250901213314.48599-1-rosenp@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 +-
+ drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index cb76ab78904fc..d47c1d81c49b8 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -4390,7 +4390,7 @@ static void bnxt_alloc_one_rx_ring_netmem(struct bnxt *bp,
- 	for (i = 0; i < bp->rx_agg_ring_size; i++) {
- 		if (bnxt_alloc_rx_netmem(bp, rxr, prod, GFP_KERNEL)) {
- 			netdev_warn(bp->dev, "init'ed rx ring %d with %d/%d pages only\n",
--				    ring_nr, i, bp->rx_ring_size);
-+				    ring_nr, i, bp->rx_agg_ring_size);
- 			break;
+diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+index d749431803e2e..460f8c0989947 100644
+--- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
++++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+@@ -1517,11 +1517,11 @@ static int bgx_init_of_phy(struct bgx *bgx)
+ 	 * for phy devices we may have already found.
+ 	 */
+ 	while (lmac) {
++		lmac--;
+ 		if (bgx->lmac[lmac].phydev) {
+ 			put_device(&bgx->lmac[lmac].phydev->mdio.dev);
+ 			bgx->lmac[lmac].phydev = NULL;
  		}
- 		prod = NEXT_RX_AGG(prod);
+-		lmac--;
+ 	}
+ 	of_node_put(node);
+ 	return -EPROBE_DEFER;
 -- 
 2.50.1
 
