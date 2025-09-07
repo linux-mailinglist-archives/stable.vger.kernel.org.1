@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-178021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0ED9B478CC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 05:39:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5C4B478CE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 05:40:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38D2D1889F34
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 03:40:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C96272067DD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 03:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663C21A9F82;
-	Sun,  7 Sep 2025 03:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571901A0BFD;
+	Sun,  7 Sep 2025 03:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="DFUq5Dng"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pfj8RMgg"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA91C14A0B5;
-	Sun,  7 Sep 2025 03:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED79814A0B5
+	for <stable@vger.kernel.org>; Sun,  7 Sep 2025 03:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757216387; cv=none; b=fu6Yk5tVNypjgu1LIi/WvGWCMePLxxjdXCC33puRrUfAStUZQnC90FrXxUP9uRjZ0forbNO5C2CCLRRHGK7agrSr2WptYbKMyBP6vWF6GxmKISmIHZ3jKSEJEWXSZd2CetFoalb4u+P2ab6Bv/8t4Bq9+K61nAMeuGA4P9hfDHo=
+	t=1757216399; cv=none; b=HzOnoDVxOV9DRj1lwBjZaETv1ciKY3xJYgma7i1lzR7wA8XVYtz09yGU9ev170chK0RBQwXglPKaN76elfQAdlHjhUt3RRWlMlupxscvpqB/OcpGszVIU2pAykDomd7YWQxwpA149my/76trtXMQQmyUXdfOwEDBPbk+Bh179YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757216387; c=relaxed/simple;
-	bh=FtjgBkxlqi7pcdUqJq/lM2rJ3zdR6XfU4qGM0BZmf7w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sN3NY8/TXIhCwaBCUhSVFThTjbseE+OD2AmIXTxlDs24ObKTsvn3K79zPfNpumicTN1KJjLpD/+69+86SAwz3MNc1cunzBr2jFB7MciJJDJV64ikJUMKaewzBZXeVBY8GhJjzWh7bjc6MGdDMKRx4Uhbq1SxOmnCCqvHcTsJjHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DFUq5Dng; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=UA
-	/GHr2DPUYc0ydI7Q4Kl3YbzgHpnAu+yoZiXnVHT0k=; b=DFUq5DngCFnUp1PapN
-	fXJsAVzMNH0ctGzjNANn4955bi7RUCapsUOoVSlhJZhF1/7ri0fTl77v2+JvlX41
-	nbiWkAknmYEwAXHbq4JziXsqzbKNwcXgAVOJNsjP4XCnn1CJuhZINGY3EQtUWEAJ
-	F8kU1dCJXmyS5QYfn2P3Rn/Ic=
-Received: from MS-CMFLBWVCLQRG.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDXBiVu_rxoeI9OHA--.48406S2;
-	Sun, 07 Sep 2025 11:39:28 +0800 (CST)
-From: GuangFei Luo <luogf2025@163.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	luogf2025@163.com
-Subject: [PATCH] ACPI: battery: prevent sysfs_add_battery re-entry on rapid events
-Date: Sun,  7 Sep 2025 11:39:24 +0800
-Message-ID: <20250907033925.223849-1-luogf2025@163.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1757216399; c=relaxed/simple;
+	bh=YnlL/9iC7iaAmUMt27GYwdN6Fow0oxYQsVo8UIyyhUY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=suhi3vvz/vAutTCZDbkgj5GzP+hs9xy/1X5YNM8CLkrTBIF2HA7DefE8DHVT5OPW9etmNq8F20KRz2URlenPOu0rEe6QYPZA2PDDdMd5LtrBA2HFS6Wb0Wq65ICKngGaNhNPZGBBL/eKjusWrdTmWdY/9qwQY6Tf43KoYTbKUtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pfj8RMgg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6732C4CEF4;
+	Sun,  7 Sep 2025 03:39:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757216398;
+	bh=YnlL/9iC7iaAmUMt27GYwdN6Fow0oxYQsVo8UIyyhUY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pfj8RMggDvaZ45f28+FJUT4quWMHG59WpXjX8yJzXXUP1+EryYzp1SmO/nyArfV+f
+	 8+PSDl8sykYt2xewfJ/NkhFjhPRGijOp9BfsRCL/4nBnC/CY0sAdJmLBR71a7Esb4k
+	 IOEOrP75ELsYO9lU/2WfNcYuIF8CHUQbNOZcDV1+bPfYPOpi2n59eTHbDp2vYdlnMk
+	 6rNoCTBzUzArwiFD0Qzj+851bATTNKpkaijKBD1FN90mGZ2tY+9qyzY68KA1mfORZx
+	 gzEuEal30kdGdNPKPEq8TCANWiWPDTC4lCpWg+Lal/tAUwn6PEdueXs/mG2EYnz1kN
+	 a9ui3Cwb2orVA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Dave Airlie <airlied@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] nouveau: fix disabling the nonstall irq due to storm code
+Date: Sat,  6 Sep 2025 23:39:56 -0400
+Message-ID: <20250907033956.451552-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025090649-reverb-refusal-eb8b@gregkh>
+References: <2025090649-reverb-refusal-eb8b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,116 +59,148 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXBiVu_rxoeI9OHA--.48406S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZr1xWrykKF1xuw4UGr4xtFb_yoW7Gr17pa
-	1rKa1UKrW8JF4kJwsI9F4UKFyxWFs0qF9rWr95Jrn2kasrGw1DAryxZFyUXF17GrykZ3yx
-	ZFn5t3Wrtw1xWw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U9eOAUUUUU=
-X-CM-SenderInfo: poxrwwisqskqqrwthudrp/1tbizQa8mWi27eJixwAFsf
 
-When removing and reinserting the laptop battery, ACPI can trigger
-two notifications in quick succession:
+From: Dave Airlie <airlied@redhat.com>
 
-  - ACPI_BATTERY_NOTIFY_STATUS (0x80)
-  - ACPI_BATTERY_NOTIFY_INFO   (0x81)
+[ Upstream commit 0ef5c4e4dbbfcebaa9b2eca18097b43016727dfe ]
 
-Both notifications call acpi_battery_update(). Because the events
-happen very close in time, sysfs_add_battery() can be re-entered
-before battery->bat is set, causing a duplicate sysfs entry error.
+Nouveau has code that when it gets an IRQ with no allowed handler
+it disables it to avoid storms.
 
-This patch ensures that sysfs_add_battery() is not re-entered
-when battery->bat is already non-NULL, preventing the duplicate
-sysfs creation and stabilizing battery hotplug handling.
+However with nonstall interrupts, we often disable them from
+the drm driver, but still request their emission via the push submission.
 
-[  476.117945] sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
-[  476.118896] CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
-[  476.118903] Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
-[  476.118906] Workqueue: kacpi_notify acpi_os_execute_deferred
-[  476.118917] Call Trace:
-[  476.118922]  <TASK>
-[  476.118929]  dump_stack_lvl+0x5d/0x80
-[  476.118938]  sysfs_warn_dup.cold+0x17/0x23
-[  476.118943]  sysfs_create_dir_ns+0xce/0xe0
-[  476.118952]  kobject_add_internal+0xba/0x250
-[  476.118959]  kobject_add+0x96/0xc0
-[  476.118964]  ? get_device_parent+0xde/0x1e0
-[  476.118970]  device_add+0xe2/0x870
-[  476.118975]  __power_supply_register.part.0+0x20f/0x3f0
-[  476.118981]  ? wake_up_q+0x4e/0x90
-[  476.118990]  sysfs_add_battery+0xa4/0x1d0 [battery]
-[  476.118998]  acpi_battery_update+0x19e/0x290 [battery]
-[  476.119002]  acpi_battery_notify+0x50/0x120 [battery]
-[  476.119006]  acpi_ev_notify_dispatch+0x49/0x70
-[  476.119012]  acpi_os_execute_deferred+0x1a/0x30
-[  476.119015]  process_one_work+0x177/0x330
-[  476.119022]  worker_thread+0x251/0x390
-[  476.119026]  ? __pfx_worker_thread+0x10/0x10
-[  476.119030]  kthread+0xd2/0x100
-[  476.119033]  ? __pfx_kthread+0x10/0x10
-[  476.119035]  ret_from_fork+0x34/0x50
-[  476.119040]  ? __pfx_kthread+0x10/0x10
-[  476.119042]  ret_from_fork_asm+0x1a/0x30
-[  476.119049]  </TASK>
-[  476.142552] kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
-[  476.415022] ata1.00: unexpected _GTF length (8)
-[  476.428076] sd 0:0:0:0: [sda] Starting disk
-[  476.835035] ata1.00: unexpected _GTF length (8)
-[  476.839720] ata1.00: configured for UDMA/133
-[  491.328831] sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
-[  491.329720] CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
-[  491.329727] Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
-[  491.329731] Workqueue: kacpi_notify acpi_os_execute_deferred
-[  491.329741] Call Trace:
-[  491.329745]  <TASK>
-[  491.329751]  dump_stack_lvl+0x5d/0x80
-[  491.329758]  sysfs_warn_dup.cold+0x17/0x23
-[  491.329762]  sysfs_create_dir_ns+0xce/0xe0
-[  491.329770]  kobject_add_internal+0xba/0x250
-[  491.329775]  kobject_add+0x96/0xc0
-[  491.329779]  ? get_device_parent+0xde/0x1e0
-[  491.329784]  device_add+0xe2/0x870
-[  491.329790]  __power_supply_register.part.0+0x20f/0x3f0
-[  491.329797]  sysfs_add_battery+0xa4/0x1d0 [battery]
-[  491.329805]  acpi_battery_update+0x19e/0x290 [battery]
-[  491.329809]  acpi_battery_notify+0x50/0x120 [battery]
-[  491.329812]  acpi_ev_notify_dispatch+0x49/0x70
-[  491.329817]  acpi_os_execute_deferred+0x1a/0x30
-[  491.329820]  process_one_work+0x177/0x330
-[  491.329826]  worker_thread+0x251/0x390
-[  491.329830]  ? __pfx_worker_thread+0x10/0x10
-[  491.329833]  kthread+0xd2/0x100
-[  491.329836]  ? __pfx_kthread+0x10/0x10
-[  491.329838]  ret_from_fork+0x34/0x50
-[  491.329842]  ? __pfx_kthread+0x10/0x10
-[  491.329844]  ret_from_fork_asm+0x1a/0x30
-[  491.329850]  </TASK>
-[  491.329855] kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
+Just don't disable nonstall irqs ever in normal operation, the
+event handling code will filter them out, and the driver will
+just enable/disable them at load time.
 
-Fixes: 508df92d1f8d ("ACPI: battery: register power_supply subdevice only when battery is present")
-Signed-off-by: GuangFei Luo <luogf2025@163.com>
+This fixes timeouts we've been seeing on/off for a long time,
+but they became a lot more noticeable on Blackwell.
+
+This doesn't fix all of them, there is a subsequent fence emission
+fix to fix the last few.
+
+Fixes: 3ebd64aa3c4f ("drm/nouveau/intr: support multiple trees, and explicit interfaces")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://lore.kernel.org/r/20250829021633.1674524-1-airlied@gmail.com
+[ Fix a typo and a minor checkpatch.pl warning; remove "v2" from commit
+  subject. - Danilo ]
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+[ File renames + drop r535 changes ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/battery.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../gpu/drm/nouveau/nvkm/engine/fifo/base.c   |  2 ++
+ .../gpu/drm/nouveau/nvkm/engine/fifo/ga100.c  | 23 ++++++++++++-------
+ .../gpu/drm/nouveau/nvkm/engine/fifo/ga102.c  |  1 +
+ .../gpu/drm/nouveau/nvkm/engine/fifo/priv.h   |  2 ++
+ 4 files changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 6905b56bf3e4..3801fd34c969 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -1026,11 +1026,13 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
- 		return result;
- 	acpi_battery_quirks(battery);
+diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/base.c b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/base.c
+index 5db37247dc29b..572c54a370913 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/base.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/base.c
+@@ -348,6 +348,8 @@ nvkm_fifo_dtor(struct nvkm_engine *engine)
+ 	nvkm_chid_unref(&fifo->chid);
  
-+	mutex_lock(&battery->sysfs_lock);
- 	if (!battery->bat) {
- 		result = sysfs_add_battery(battery);
- 		if (result)
- 			return result;
+ 	nvkm_event_fini(&fifo->nonstall.event);
++	if (fifo->func->nonstall_dtor)
++		fifo->func->nonstall_dtor(fifo);
+ 	mutex_destroy(&fifo->mutex);
+ 	return fifo;
+ }
+diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga100.c b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga100.c
+index c56d2a839efba..686a2c9fec46d 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga100.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga100.c
+@@ -516,19 +516,11 @@ ga100_fifo_nonstall_intr(struct nvkm_inth *inth)
+ static void
+ ga100_fifo_nonstall_block(struct nvkm_event *event, int type, int index)
+ {
+-	struct nvkm_fifo *fifo = container_of(event, typeof(*fifo), nonstall.event);
+-	struct nvkm_runl *runl = nvkm_runl_get(fifo, index, 0);
+-
+-	nvkm_inth_block(&runl->nonstall.inth);
+ }
+ 
+ static void
+ ga100_fifo_nonstall_allow(struct nvkm_event *event, int type, int index)
+ {
+-	struct nvkm_fifo *fifo = container_of(event, typeof(*fifo), nonstall.event);
+-	struct nvkm_runl *runl = nvkm_runl_get(fifo, index, 0);
+-
+-	nvkm_inth_allow(&runl->nonstall.inth);
+ }
+ 
+ const struct nvkm_event_func
+@@ -559,12 +551,26 @@ ga100_fifo_nonstall_ctor(struct nvkm_fifo *fifo)
+ 		if (ret)
+ 			return ret;
+ 
++		nvkm_inth_allow(&runl->nonstall.inth);
++
+ 		nr = max(nr, runl->id + 1);
  	}
-+	mutex_unlock(&battery->sysfs_lock);
  
- 	/*
- 	 * Wakeup the system if battery is critical low
+ 	return nr;
+ }
+ 
++void
++ga100_fifo_nonstall_dtor(struct nvkm_fifo *fifo)
++{
++	struct nvkm_runl *runl;
++
++	nvkm_runl_foreach(runl, fifo) {
++		if (runl->nonstall.vector < 0)
++			continue;
++		nvkm_inth_block(&runl->nonstall.inth);
++	}
++}
++
+ int
+ ga100_fifo_runl_ctor(struct nvkm_fifo *fifo)
+ {
+@@ -594,6 +600,7 @@ ga100_fifo = {
+ 	.runl_ctor = ga100_fifo_runl_ctor,
+ 	.mmu_fault = &tu102_fifo_mmu_fault,
+ 	.nonstall_ctor = ga100_fifo_nonstall_ctor,
++	.nonstall_dtor = ga100_fifo_nonstall_dtor,
+ 	.nonstall = &ga100_fifo_nonstall,
+ 	.runl = &ga100_runl,
+ 	.runq = &ga100_runq,
+diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga102.c b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga102.c
+index 2cdf5da339b60..dccf38101fd9e 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga102.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga102.c
+@@ -28,6 +28,7 @@ ga102_fifo = {
+ 	.runl_ctor = ga100_fifo_runl_ctor,
+ 	.mmu_fault = &tu102_fifo_mmu_fault,
+ 	.nonstall_ctor = ga100_fifo_nonstall_ctor,
++	.nonstall_dtor = ga100_fifo_nonstall_dtor,
+ 	.nonstall = &ga100_fifo_nonstall,
+ 	.runl = &ga100_runl,
+ 	.runq = &ga100_runq,
+diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/priv.h b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/priv.h
+index 4d448be19224a..b4ccf6b8bd21a 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/priv.h
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/priv.h
+@@ -38,6 +38,7 @@ struct nvkm_fifo_func {
+ 	void (*start)(struct nvkm_fifo *, unsigned long *);
+ 
+ 	int (*nonstall_ctor)(struct nvkm_fifo *);
++	void (*nonstall_dtor)(struct nvkm_fifo *);
+ 	const struct nvkm_event_func *nonstall;
+ 
+ 	const struct nvkm_runl_func *runl;
+@@ -194,6 +195,7 @@ extern const struct nvkm_fifo_func_mmu_fault tu102_fifo_mmu_fault;
+ 
+ int ga100_fifo_runl_ctor(struct nvkm_fifo *);
+ int ga100_fifo_nonstall_ctor(struct nvkm_fifo *);
++void ga100_fifo_nonstall_dtor(struct nvkm_fifo *);
+ extern const struct nvkm_event_func ga100_fifo_nonstall;
+ extern const struct nvkm_runl_func ga100_runl;
+ extern const struct nvkm_runq_func ga100_runq;
 -- 
-2.43.0
+2.51.0
 
 
