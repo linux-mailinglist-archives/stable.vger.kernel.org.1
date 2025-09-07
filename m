@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027D9B47DC4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22FECB47D15
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3A2F3C0591
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDC953BD949
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E4620E029;
-	Sun,  7 Sep 2025 20:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED65284B59;
+	Sun,  7 Sep 2025 20:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzMrMVvo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y7KbHCMy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649081E0DE8;
-	Sun,  7 Sep 2025 20:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC6E1CDFAC;
+	Sun,  7 Sep 2025 20:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276172; cv=none; b=Q3QjXX4Z4D21sxeeuq0Bi+HpZVkxgrpZiV8mX94ugBo1NtJ/vXps6hco1hDy9JoRwat92il8RrrR8XTh9MLYZ9nQyZrD6xgwKyKfQ47Q+PPdjP1tkRI+kTUgrC6dlSc1s2If6+k3XwDAQWdpJ5ngTirOd5gIGeHepdwlSkiRSBc=
+	t=1757275641; cv=none; b=hIrrLmUFNYu8657xOtCzlv7mwiUkvuiXQjPoQKqVGhvRP+gjAdAuVPKPqHfdOexO1+8f/obgxS39YRe+X2GalMby7S/I4QDRMtwXDHctMxf1VNE8DUJT88rsaTJDhlgRC06crgclhKKJv5i5mNdSmlsoUtatsuXAFGG7HxUYUGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276172; c=relaxed/simple;
-	bh=181bgDtRwH+aTUX9PpIovI9fL7yQe3gyhSMqWNgbTHo=;
+	s=arc-20240116; t=1757275641; c=relaxed/simple;
+	bh=xI2D8o+uVFXBiMREgZHvdRtiXcjcOGPRuly7K0wBczo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=py9aZVrFWLgElZLhaUAZtOr3+6G92Pr363KMSuBcl71Sd6Gv1cregGOLHiparehWDSnbypuYtXkjnCY3lVSKr241+tV8EQUnVfwcwByCWX43uDauneSFeNLCLFJDAoCvd03vUtJMuct6S3DRArB4+2Rrani8sUflQlNtFQRTYVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzMrMVvo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5FCC4CEF9;
-	Sun,  7 Sep 2025 20:16:11 +0000 (UTC)
+	 MIME-Version; b=UrOJMb6YIDgvsiMs+rSy1ztvKuLCKnQ5FMBDMaOa7ff8Gpw3+p1usXrm7emW41Sz1vx5I2hlEoaaKpxG5GU2XbTIJd4S02EoNK6zZC8wd+Yagj3uS96xBewJZDEFIVv+AZihhBZ3IV2dHOS2/mGKIHHmlr+A3/eHWeP3d1XfOkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y7KbHCMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2157AC4CEF0;
+	Sun,  7 Sep 2025 20:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276172;
-	bh=181bgDtRwH+aTUX9PpIovI9fL7yQe3gyhSMqWNgbTHo=;
+	s=korg; t=1757275639;
+	bh=xI2D8o+uVFXBiMREgZHvdRtiXcjcOGPRuly7K0wBczo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IzMrMVvoVE6EWlUY5MxJHELU6iv9nnXQuWU4x8ZnkRIqrHX0UzM25jg5KYjPSsLGX
-	 QC0gWyxOmiSh9L4jHNr55uX59D6CDz2Y9I6Afcp4IJduCFlw5Ny6JMyB1cfN1bONCM
-	 khqN6TsS4+WIJAd5TuLEMAk+lXPtHtAB5TN8A+LI=
+	b=y7KbHCMygaxevirlIrTQN2L7DyuydtIwUsSdRo7lHsZmnWp5ey0/4LZM18peWzKOe
+	 756KJZhL9NLWHQ3Qc88Bo+jJLBlOzqoi5ejGgzm6trvoyreHfpejUFUA1e4tgSxVGr
+	 7fAbGv4nK9SSB4NAPnU+wBF+WsMLlFO/GyUg0qLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
+	Wang Liang <wangliang74@huawei.com>,
 	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/104] mISDN: Fix memory leak in dsp_hwec_enable()
+Subject: [PATCH 5.10 18/52] net: atm: fix memory leak in atm_register_sysfs when device_register fail
 Date: Sun,  7 Sep 2025 21:57:38 +0200
-Message-ID: <20250907195608.240924290@linuxfoundation.org>
+Message-ID: <20250907195602.524521236@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit 0704a3da7ce50f972e898bbda88d2692a22922d9 ]
+[ Upstream commit 0a228624bcc00af41f281a2a84c928595a74c17d ]
 
-dsp_hwec_enable() allocates dup pointer by kstrdup(arg),
-but then it updates dup variable by strsep(&dup, ",").
-As a result when it calls kfree(dup), the dup variable may be
-a modified pointer that no longer points to the original allocated
-memory, causing a memory leak.
+When device_register() return error in atm_register_sysfs(), which can be
+triggered by kzalloc fail in device_private_init() or other reasons,
+kmemleak reports the following memory leaks:
 
-The issue is the same pattern as fixed in commit c6a502c22999
-("mISDN: Fix memory leak in dsp_pipeline_build()").
+unreferenced object 0xffff88810182fb80 (size 8):
+  comm "insmod", pid 504, jiffies 4294852464
+  hex dump (first 8 bytes):
+    61 64 75 6d 6d 79 30 00                          adummy0.
+  backtrace (crc 14dfadaf):
+    __kmalloc_node_track_caller_noprof+0x335/0x450
+    kvasprintf+0xb3/0x130
+    kobject_set_name_vargs+0x45/0x120
+    dev_set_name+0xa9/0xe0
+    atm_register_sysfs+0xf3/0x220
+    atm_dev_register+0x40b/0x780
+    0xffffffffa000b089
+    do_one_initcall+0x89/0x300
+    do_init_module+0x27b/0x7d0
+    load_module+0x54cd/0x5ff0
+    init_module_from_file+0xe4/0x150
+    idempotent_init_module+0x32c/0x610
+    __x64_sys_finit_module+0xbd/0x120
+    do_syscall_64+0xa8/0x270
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 9a4381618262 ("mISDN: Remove VLAs")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+When device_create_file() return error in atm_register_sysfs(), the same
+issue also can be triggered.
+
+Function put_device() should be called to release kobj->name memory and
+other device resource, instead of kfree().
+
+Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250828081457.36061-1-linmq006@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20250901063537.1472221-1-wangliang74@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/isdn/mISDN/dsp_hwec.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/atm/resources.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/isdn/mISDN/dsp_hwec.c b/drivers/isdn/mISDN/dsp_hwec.c
-index 0b3f29195330a..0cd216e28f009 100644
---- a/drivers/isdn/mISDN/dsp_hwec.c
-+++ b/drivers/isdn/mISDN/dsp_hwec.c
-@@ -51,14 +51,14 @@ void dsp_hwec_enable(struct dsp *dsp, const char *arg)
- 		goto _do;
+diff --git a/net/atm/resources.c b/net/atm/resources.c
+index fb8cf4cd6c1d7..932f7b383dba7 100644
+--- a/net/atm/resources.c
++++ b/net/atm/resources.c
+@@ -114,7 +114,9 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
  
- 	{
--		char *dup, *tok, *name, *val;
-+		char *dup, *next, *tok, *name, *val;
- 		int tmp;
+ 	if (atm_proc_dev_register(dev) < 0) {
+ 		pr_err("atm_proc_dev_register failed for dev %s\n", type);
+-		goto out_fail;
++		mutex_unlock(&atm_dev_mutex);
++		kfree(dev);
++		return NULL;
+ 	}
  
--		dup = kstrdup(arg, GFP_ATOMIC);
-+		dup = next = kstrdup(arg, GFP_ATOMIC);
- 		if (!dup)
- 			return;
+ 	if (atm_register_sysfs(dev, parent) < 0) {
+@@ -130,7 +132,7 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
+ 	return dev;
  
--		while ((tok = strsep(&dup, ","))) {
-+		while ((tok = strsep(&next, ","))) {
- 			if (!strlen(tok))
- 				continue;
- 			name = strsep(&tok, "=");
+ out_fail:
+-	kfree(dev);
++	put_device(&dev->class_dev);
+ 	dev = NULL;
+ 	goto out;
+ }
 -- 
 2.50.1
 
