@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C66AB47D52
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFBEDB47DE4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2585D3A7FBC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C20D1760D1
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980E727FB21;
-	Sun,  7 Sep 2025 20:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4621B424F;
+	Sun,  7 Sep 2025 20:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1CtBCIiI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPXK7Z8v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5548D284883;
-	Sun,  7 Sep 2025 20:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270B31A2389;
+	Sun,  7 Sep 2025 20:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275817; cv=none; b=uqDCZDnAQ2Z5eegkpnHnjZB3pj61OLCo+d//w+xAnAXBftyuTGv48V/KrjCXCoPnPgIpAVI+kSnlxl2zx8++Yk/PqMeL2b1VgpfmyGGR3CU0m97kG2MlN3QcSqHnP9MljUoDMiKyYDnAIjhPpuAlcVUMWyU0KVA3cmBRPuCW5W8=
+	t=1757276266; cv=none; b=lRRaH1N16gODjwcqA4SpJ8a6CK2zfvh+mUf+BaPBKLtIIsK+COF8cvfMW1flqanE7nNDyCwuVyGl4CI2WjjSkuCQIXAn2ut9yd9Jvbky9YfZK9+k0NmP82BSRT0fh9e9eqsYvzLZ1xaY3V4P6SJlJP8s88OGAZLRMjAXWsnzi6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275817; c=relaxed/simple;
-	bh=5lBMWgcIWpoq2yi2jib0PWpRT054TfapiP9mmesrGHQ=;
+	s=arc-20240116; t=1757276266; c=relaxed/simple;
+	bh=kVMNap5HIHCrBg9AISUj4sFqjr7A0FcYyhPsntMlD/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xs1xCegpUaxaEn277jO6wMQ6GAw+SOe2iEP9tSiMNo6omlllaICaK6ruyKIlcQgSdoPzk0iMQQydk6aUlPJAZQv37u8PVSVZl5stNxk9KpclNbQov0LKgeGEZBCgkkhw2TEPWulADqfbhj/cgjspQbbcj8ErPKxc1RTmBq9k6ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1CtBCIiI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B98C4CEF0;
-	Sun,  7 Sep 2025 20:10:15 +0000 (UTC)
+	 MIME-Version; b=U/zCZXgCq/dF/JBy+K2m/jI0S5J9/WUSmEnczmgML3VPRhPSHc75IcKso9352zLsitNRZ8vxxPTidG0JnGdoD4Jq6Jg6P6j3tSg7UWisuAlCndyyA4a23IoGpc80OuhkFU9UGRBhj0765bTw2EzE6jw08Y69JHhx82yIeUHUrTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPXK7Z8v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A965C4CEF0;
+	Sun,  7 Sep 2025 20:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275815;
-	bh=5lBMWgcIWpoq2yi2jib0PWpRT054TfapiP9mmesrGHQ=;
+	s=korg; t=1757276266;
+	bh=kVMNap5HIHCrBg9AISUj4sFqjr7A0FcYyhPsntMlD/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1CtBCIiIL4RDZCufO4RSbmZoFU82h54Z7Vy+wgaigjT/1W5LPbTwgzK2shFkRRF5K
-	 i/XfAxcgGN65kcYfgNVYsTMQmAEWg55+NGDOXjuua5B/wTzaQD5uCRHzkQp9/1x1fE
-	 NFZ8SRh2dkaEcx0hDRf4wLBQvWMruY0RnRpDi4K8=
+	b=TPXK7Z8vgcmOLYcuQzGnMxlSYGtH29q7zk905bSkh9ED3QFUQ+fq4NIEYRGmyesqG
+	 cDBtWYVUTQKFZL8joSxJyMPksCSe5FJcjbrNnhH69SoJjk2yUUGto8UPDzXJ+PG78T
+	 EbwtLrnFZJTHvKeYJRv2uHMDAcr194gT0/MGT/hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.4 20/45] wifi: mwifiex: Initialize the chan_stats array to zero
+	John Evans <evans1210144@gmail.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 049/104] scsi: lpfc: Fix buffer free/clear order in deferred receive path
 Date: Sun,  7 Sep 2025 21:58:06 +0200
-Message-ID: <20250907195601.545864073@linuxfoundation.org>
+Message-ID: <20250907195608.964607529@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: John Evans <evans1210144@gmail.com>
 
-commit 0e20450829ca3c1dbc2db536391537c57a40fe0b upstream.
+commit 9dba9a45c348e8460da97c450cddf70b2056deb3 upstream.
 
-The adapter->chan_stats[] array is initialized in
-mwifiex_init_channel_scan_gap() with vmalloc(), which doesn't zero out
-memory.  The array is filled in mwifiex_update_chan_statistics()
-and then the user can query the data in mwifiex_cfg80211_dump_survey().
+Fix a use-after-free window by correcting the buffer release sequence in
+the deferred receive path. The code freed the RQ buffer first and only
+then cleared the context pointer under the lock. Concurrent paths (e.g.,
+ABTS and the repost path) also inspect and release the same pointer under
+the lock, so the old order could lead to double-free/UAF.
 
-There are two potential issues here.  What if the user calls
-mwifiex_cfg80211_dump_survey() before the data has been filled in.
-Also the mwifiex_update_chan_statistics() function doesn't necessarily
-initialize the whole array.  Since the array was not initialized at
-the start that could result in an information leak.
+Note that the repost path already uses the correct pattern: detach the
+pointer under the lock, then free it after dropping the lock. The
+deferred path should do the same.
 
-Also this array is pretty small.  It's a maximum of 900 bytes so it's
-more appropriate to use kcalloc() instead vmalloc().
-
+Fixes: 472e146d1cf3 ("scsi: lpfc: Correct upcalling nvmet_fc transport during io done downcall")
 Cc: stable@vger.kernel.org
-Fixes: bf35443314ac ("mwifiex: channel statistics support for mwifiex")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250815023055.477719-1-rongqianfeng@vivo.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: John Evans <evans1210144@gmail.com>
+Link: https://lore.kernel.org/r/20250828044008.743-1-evans1210144@gmail.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c |    5 +++--
- drivers/net/wireless/marvell/mwifiex/main.c     |    4 ++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/scsi/lpfc/lpfc_nvmet.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -4273,8 +4273,9 @@ int mwifiex_init_channel_scan_gap(struct
- 	 * additional active scan request for hidden SSIDs on passive channels.
- 	 */
- 	adapter->num_in_chan_stats = 2 * (n_channels_bg + n_channels_a);
--	adapter->chan_stats = vmalloc(array_size(sizeof(*adapter->chan_stats),
--						 adapter->num_in_chan_stats));
-+	adapter->chan_stats = kcalloc(adapter->num_in_chan_stats,
-+				      sizeof(*adapter->chan_stats),
-+				      GFP_KERNEL);
+--- a/drivers/scsi/lpfc/lpfc_nvmet.c
++++ b/drivers/scsi/lpfc/lpfc_nvmet.c
+@@ -1243,7 +1243,7 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+ 	struct lpfc_nvmet_tgtport *tgtp;
+ 	struct lpfc_async_xchg_ctx *ctxp =
+ 		container_of(rsp, struct lpfc_async_xchg_ctx, hdlrctx.fcp_req);
+-	struct rqb_dmabuf *nvmebuf = ctxp->rqb_buffer;
++	struct rqb_dmabuf *nvmebuf;
+ 	struct lpfc_hba *phba = ctxp->phba;
+ 	unsigned long iflag;
  
- 	if (!adapter->chan_stats)
- 		return -ENOMEM;
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -635,7 +635,7 @@ static int _mwifiex_fw_dpc(const struct
- 	goto done;
+@@ -1251,13 +1251,18 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+ 	lpfc_nvmeio_data(phba, "NVMET DEFERRCV: xri x%x sz %d CPU %02x\n",
+ 			 ctxp->oxid, ctxp->size, raw_smp_processor_id());
  
- err_add_intf:
--	vfree(adapter->chan_stats);
-+	kfree(adapter->chan_stats);
- err_init_chan_scan:
- 	wiphy_unregister(adapter->wiphy);
- 	wiphy_free(adapter->wiphy);
-@@ -1448,7 +1448,7 @@ static void mwifiex_uninit_sw(struct mwi
- 	wiphy_free(adapter->wiphy);
- 	adapter->wiphy = NULL;
++	spin_lock_irqsave(&ctxp->ctxlock, iflag);
++	nvmebuf = ctxp->rqb_buffer;
+ 	if (!nvmebuf) {
++		spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ 		lpfc_printf_log(phba, KERN_INFO, LOG_NVME_IOERR,
+ 				"6425 Defer rcv: no buffer oxid x%x: "
+ 				"flg %x ste %x\n",
+ 				ctxp->oxid, ctxp->flag, ctxp->state);
+ 		return;
+ 	}
++	ctxp->rqb_buffer = NULL;
++	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
  
--	vfree(adapter->chan_stats);
-+	kfree(adapter->chan_stats);
- 	mwifiex_free_cmd_buffers(adapter);
+ 	tgtp = phba->targetport->private;
+ 	if (tgtp)
+@@ -1265,9 +1270,6 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+ 
+ 	/* Free the nvmebuf since a new buffer already replaced it */
+ 	nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
+-	spin_lock_irqsave(&ctxp->ctxlock, iflag);
+-	ctxp->rqb_buffer = NULL;
+-	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
  }
  
+ /**
 
 
 
