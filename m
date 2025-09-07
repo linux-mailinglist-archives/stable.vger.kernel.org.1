@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806A9B47E53
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78DECB47DD8
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A9937B05C0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA2F6189E84F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D311F09BF;
-	Sun,  7 Sep 2025 20:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A6F1B424F;
+	Sun,  7 Sep 2025 20:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PYyLIAo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZhf9iaY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44DC41B4247;
-	Sun,  7 Sep 2025 20:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519761A2389;
+	Sun,  7 Sep 2025 20:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276566; cv=none; b=RDeAg82yHCvWkP5GN5edH8EeEkVI/QMY+kA0BcEFPbHH8ADoAcL0r30D4AUjz8+wRW5QYhJboHWA23cTX7ILeh10Cekl/Lva2STW7b+PHpXmNeA7J+nzCiaWUoc7vkkoBWVolBiuS5aCfp2LXQ7JyDbeTmpZcLLjQYhSsafgxq4=
+	t=1757276228; cv=none; b=EYrtEyWnUOtlgFProl1Q1YPbwv240eGO25ODk5H+W66zZYlf1PZlMV3Yrbse+N4Q7lWmeTYyClOblBlBJOJaCDS/sC2DWUElGTOlNcF6T2kmAL6FszSggfIxhz8ZuhV1SrP+jOX+IlSau3MGi9hn48XqHp2lJDHnSwnguwFPg2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276566; c=relaxed/simple;
-	bh=UtZdKcs9GpokCbarbCjH9/4S5fvKQsR9HcWi3wt8OxI=;
+	s=arc-20240116; t=1757276228; c=relaxed/simple;
+	bh=iLAjGRdmSCmtcHCrwHweJnRCtgrIGUYN6o0mK5M4okk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlmvnxqoB8b6f6x8y9pZe+R2Eu7JnrNtw9o4Ds4xKH/GBxXvKgaU1dkjqrWNDbZ9ow4YBG3ewnuZPuH7tugA9SY2YkbbmT0JFdEkyOzCkWRhns8LqkdQK2ikD//2nkbv0MlRyF6yxMMGdH7wR2P7soNReyPdPLsbyI6sG7nJFLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1PYyLIAo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBADCC4CEF0;
-	Sun,  7 Sep 2025 20:22:45 +0000 (UTC)
+	 MIME-Version; b=q5lyGiiDlgmfCoSKGg/pm7hBVPObk4AL9x6wwyq9mra4Zr4Kc2V8IkCVB9sLIAqvpTx2iHLUNlt9H4SJQ3WpTy7RMWjzkios5WmKnQB4VyoQZpS7wMsdS/utJDqjfwfwY9GwP5GPXaCtMYK2qUC64bBkDKFAFpHtPsJOz4AUOjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZhf9iaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFC6C4CEF0;
+	Sun,  7 Sep 2025 20:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276566;
-	bh=UtZdKcs9GpokCbarbCjH9/4S5fvKQsR9HcWi3wt8OxI=;
+	s=korg; t=1757276228;
+	bh=iLAjGRdmSCmtcHCrwHweJnRCtgrIGUYN6o0mK5M4okk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1PYyLIAoji7qWs7UGngz7FT/zjgZJMd91Kd0xmz/FBIIlVRwZw43cdmZvL9/rQ4JP
-	 I6YC/8jqbLfJ94X6XnnjBZrUJIUc8oUR0e0+YPBeZRiaP7PyfF0W/P80pmtaMxdcvN
-	 rpe71LhAaXnCMRMwMNFA1wmb6DVqHLpA4Fs3pyyE=
+	b=nZhf9iaYWQsXRQxiosk/XhW6PQklWGwI/DO5g1XakJworDDWgNyCzBgehBynTj269
+	 227GVVQ0BJp1du86AHEFAoQB9e2t+NZ2X1x0nIYCEl3JtMZwfH1jJRz6DqcKuwPc35
+	 zIEL3JCvL5ycSIiXYC0DG1k6VBRVgLJjmqUYDwF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/121] wifi: libertas: cap SSID len in lbs_associate()
+Subject: [PATCH 6.1 038/104] selftest: net: Fix weird setsockopt() in bind_bhash.c.
 Date: Sun,  7 Sep 2025 21:57:55 +0200
-Message-ID: <20250907195610.829849070@linuxfoundation.org>
+Message-ID: <20250907195608.685692894@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit c786794bd27b0d7a5fd9063695df83206009be59 ]
+[ Upstream commit fd2004d82d8d8faa94879e3de3096c8511728637 ]
 
-If the ssid_eid[1] length is more that 32 it leads to memory corruption.
+bind_bhash.c passes (SO_REUSEADDR | SO_REUSEPORT) to setsockopt().
 
-Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/2a40f5ec7617144aef412034c12919a4927d90ad.1756456951.git.dan.carpenter@linaro.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+In the asm-generic definition, the value happens to match with the
+bare SO_REUSEPORT, (2 | 15) == 15, but not on some arch.
+
+arch/alpha/include/uapi/asm/socket.h:18:#define SO_REUSEADDR	0x0004
+arch/alpha/include/uapi/asm/socket.h:24:#define SO_REUSEPORT	0x0200
+arch/mips/include/uapi/asm/socket.h:24:#define SO_REUSEADDR	0x0004	/* Allow reuse of local addresses.  */
+arch/mips/include/uapi/asm/socket.h:33:#define SO_REUSEPORT 0x0200	/* Allow local address and port reuse.  */
+arch/parisc/include/uapi/asm/socket.h:12:#define SO_REUSEADDR	0x0004
+arch/parisc/include/uapi/asm/socket.h:18:#define SO_REUSEPORT	0x0200
+arch/sparc/include/uapi/asm/socket.h:13:#define SO_REUSEADDR	0x0004
+arch/sparc/include/uapi/asm/socket.h:20:#define SO_REUSEPORT	0x0200
+include/uapi/asm-generic/socket.h:12:#define SO_REUSEADDR	2
+include/uapi/asm-generic/socket.h:27:#define SO_REUSEPORT	15
+
+Let's pass SO_REUSEPORT only.
+
+Fixes: c35ecb95c448 ("selftests/net: Add test for timing a bind request to a port with a populated bhash entry")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250903222938.2601522-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/libertas/cfg.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/bind_bhash.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
-index b700c213d10c4..38ad49033d0ba 100644
---- a/drivers/net/wireless/marvell/libertas/cfg.c
-+++ b/drivers/net/wireless/marvell/libertas/cfg.c
-@@ -1150,10 +1150,13 @@ static int lbs_associate(struct lbs_private *priv,
- 	/* add SSID TLV */
- 	rcu_read_lock();
- 	ssid_eid = ieee80211_bss_get_ie(bss, WLAN_EID_SSID);
--	if (ssid_eid)
--		pos += lbs_add_ssid_tlv(pos, ssid_eid + 2, ssid_eid[1]);
--	else
-+	if (ssid_eid) {
-+		u32 ssid_len = min(ssid_eid[1], IEEE80211_MAX_SSID_LEN);
-+
-+		pos += lbs_add_ssid_tlv(pos, ssid_eid + 2, ssid_len);
-+	} else {
- 		lbs_deb_assoc("no SSID\n");
-+	}
- 	rcu_read_unlock();
+diff --git a/tools/testing/selftests/net/bind_bhash.c b/tools/testing/selftests/net/bind_bhash.c
+index 57ff67a3751eb..da04b0b19b73c 100644
+--- a/tools/testing/selftests/net/bind_bhash.c
++++ b/tools/testing/selftests/net/bind_bhash.c
+@@ -75,7 +75,7 @@ static void *setup(void *arg)
+ 	int *array = (int *)arg;
  
- 	/* add DS param TLV */
+ 	for (i = 0; i < MAX_CONNECTIONS; i++) {
+-		sock_fd = bind_socket(SO_REUSEADDR | SO_REUSEPORT, setup_addr);
++		sock_fd = bind_socket(SO_REUSEPORT, setup_addr);
+ 		if (sock_fd < 0) {
+ 			ret = sock_fd;
+ 			pthread_exit(&ret);
+@@ -103,7 +103,7 @@ int main(int argc, const char *argv[])
+ 
+ 	setup_addr = use_v6 ? setup_addr_v6 : setup_addr_v4;
+ 
+-	listener_fd = bind_socket(SO_REUSEADDR | SO_REUSEPORT, setup_addr);
++	listener_fd = bind_socket(SO_REUSEPORT, setup_addr);
+ 	if (listen(listener_fd, 100) < 0) {
+ 		perror("listen failed");
+ 		return -1;
 -- 
 2.50.1
 
