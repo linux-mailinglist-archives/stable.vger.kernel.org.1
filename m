@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D4CB47E5D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9205AB47F6C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:37:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50C3C189FAA2
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D6E13C2EBA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89FBC20E005;
-	Sun,  7 Sep 2025 20:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815DE21B191;
+	Sun,  7 Sep 2025 20:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/GK3J2o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kubza1HL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F91189BB0;
-	Sun,  7 Sep 2025 20:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA0E4315A;
+	Sun,  7 Sep 2025 20:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276601; cv=none; b=O/UjdQZV56ruV6w2GRhNddAbxoRJcVPLDXSPbWdSY0qALGbt+V0MUE1KKKrjix1C3di4WrUuG2mxVLeQKBFDzUWAqIQl0uswOtbeAN3jCJHRMwOxpnFpfspzfgOmIj/kTMPEOfnwb5dy/hlhS7Unq5tObixA37sStKHWzVhY2NQ=
+	t=1757277443; cv=none; b=D6pGCR3V8iBnV8lTuvl4dgy6TCk9G1kdUcMxvRMX022hGSqPDadl+EGbhZI5KdnbA6D9VW8UPyE2IypGaNpip6661eYvC579tOtQkPU8qPCeRs/z+qxbbg2rxOELr8vVXZpDHZ8nYh5Mi4adCdpJVYnq2aTypFja1QCTlpq8/3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276601; c=relaxed/simple;
-	bh=YvjT7sXF/aTkFIVoZ1f48iVZzMDD9PgV/kbidwehzE8=;
+	s=arc-20240116; t=1757277443; c=relaxed/simple;
+	bh=kjGeaF7TZ2PUkRO8IU3aLqhwmY/vxrtVdVqfQe+LwUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6ugZ/VTgxPzMPPFhTosTq3rYjgrRqpcAgBgJMJF66kFPTDz7MOky8TysUVyPgM0wDHCSqtiYpeGCtDpUqElhimvaXFyf9CXQMtxHxk6p3AXCFW9K/HRAxxLyKidcVQ1ZGOcS8//VSQbXG9Ef9OABnc4dz8Xm44nJ9owwXi7axk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/GK3J2o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB29EC4CEF0;
-	Sun,  7 Sep 2025 20:23:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b0QJOHbCfErQNZyRYZjAA+DKB2sMXQ/fgBjSYjFb5WCP3qqEDVaEmNt/Z1V0/Xmy+mTRz6CE/lysQlmNg2hHp9RY/6cRsOihd2tQpIFAwVTo4eT/hm+O2Vlj7l5k4QNYfVoLg4Pv8UG+3OArarX6yPQn8XS2TikhmZRen1Oad84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kubza1HL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68450C4CEF0;
+	Sun,  7 Sep 2025 20:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276601;
-	bh=YvjT7sXF/aTkFIVoZ1f48iVZzMDD9PgV/kbidwehzE8=;
+	s=korg; t=1757277442;
+	bh=kjGeaF7TZ2PUkRO8IU3aLqhwmY/vxrtVdVqfQe+LwUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/GK3J2oB88Gjv+oqPNnMP49VMYeaZ3vCyByV4EsPiGwZP0j5YT63cS+VuOF41jpf
-	 +muzlvn7bmiyNHKxaZ06urHVMmIVwmqNCVihrraR1WLWg2d/Uo4kee2tfxcN1XRlXB
-	 G8fgCOISno6c80FiAW33O5HIqGFC6aPPn5B1Ly4U=
+	b=kubza1HL64vraRS9qR7nI0AKPN8mXWRtg8BpzN+tKT7a8h2wDzfQwAjPZ2DyZmv+7
+	 YC6KoV+DOCNAjM5fzJRHOvyojTpniaLpdewIg9D621/x+ty/JwfOH0WdO0ALjLTsGP
+	 RpwDzr2hCqi8TlnqkG2L37irTLgM9T0Eqxkc9xZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hanlu Li <lihanlu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/121] LoongArch: Save LBT before FPU in setup_sigcontext()
+Subject: [PATCH 6.16 017/183] platform/x86/amd: pmc: Drop SMU F/W match for Cezanne
 Date: Sun,  7 Sep 2025 21:57:24 +0200
-Message-ID: <20250907195610.029338010@linuxfoundation.org>
+Message-ID: <20250907195616.198376634@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,272 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 112ca94f6c3b3e0b2002a240de43c487a33e0234 ]
+[ Upstream commit 5b9e07551faa7bb2f26cb039cc6e8d00bc4d0831 ]
 
-Now if preemption happens between protected_save_fpu_context() and
-protected_save_lbt_context(), FTOP context is lost. Because FTOP is
-saved by protected_save_lbt_context() but protected_save_fpu_context()
-disables TM before that. So save LBT before FPU in setup_sigcontext()
-to avoid this potential risk.
+Chris reported that even on a BIOS that has a new enough SMU F/W
+version there is still a spurious IRQ1.  Although the solution was
+added to SMU F/W 64.66.0 it turns out there needs to be a matching
+SBIOS change to activate it.  Thus Linux shouldn't be avoiding the
+IRQ1 workaround on newer SMU F/W because there is no indication the
+BIOS change is in place.
 
-Signed-off-by: Hanlu Li <lihanlu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Drop the match for 64.66.0+ and instead match all RN/CZN/BRC (they
+all share same SMU F/W). Adjust the quirk infrastructure to allow
+quirking the workaround on or off and also adjust existing quirks
+to match properly.
+
+Unfortunately this may cause some systems that did have the SBIOS
+change in place to regress in keyboard wakeup but we don't have a
+way to know.  If a user reports a keyboard wakeup regression they can
+run with amd_pmc.disable_workarounds=1 to deactivate the workaround
+and share DMI data so that their system can be quirked not to use
+the workaround in the upstream kernel.
+
+Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4449
+Tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20250724185156.1827592-1-superm1@kernel.org
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/signal.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 54 ++++++++++++++---------
+ drivers/platform/x86/amd/pmc/pmc.c        | 13 ------
+ 2 files changed, 34 insertions(+), 33 deletions(-)
 
-diff --git a/arch/loongarch/kernel/signal.c b/arch/loongarch/kernel/signal.c
-index 4a3686d133494..0e90cd2df0ea3 100644
---- a/arch/loongarch/kernel/signal.c
-+++ b/arch/loongarch/kernel/signal.c
-@@ -697,6 +697,11 @@ static int setup_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc,
- 	for (i = 1; i < 32; i++)
- 		err |= __put_user(regs->regs[i], &sc->sc_regs[i]);
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index ded4c84f5ed14..7ffc659b27944 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -28,10 +28,15 @@ static struct quirk_entry quirk_spurious_8042 = {
+ 	.spurious_8042 = true,
+ };
  
-+#ifdef CONFIG_CPU_HAS_LBT
-+	if (extctx->lbt.addr)
-+		err |= protected_save_lbt_context(extctx);
-+#endif
++static struct quirk_entry quirk_s2idle_spurious_8042 = {
++	.s2idle_bug_mmio = FCH_PM_BASE + FCH_PM_SCRATCH,
++	.spurious_8042 = true,
++};
 +
- 	if (extctx->lasx.addr)
- 		err |= protected_save_lasx_context(extctx);
- 	else if (extctx->lsx.addr)
-@@ -704,11 +709,6 @@ static int setup_sigcontext(struct pt_regs *regs, struct sigcontext __user *sc,
- 	else if (extctx->fpu.addr)
- 		err |= protected_save_fpu_context(extctx);
+ static const struct dmi_system_id fwbug_list[] = {
+ 	{
+ 		.ident = "L14 Gen2 AMD",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "20X5"),
+@@ -39,7 +44,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "T14s Gen2 AMD",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "20XF"),
+@@ -47,7 +52,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "X13 Gen2 AMD",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "20XH"),
+@@ -55,7 +60,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "T14 Gen2 AMD",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "20XK"),
+@@ -63,7 +68,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "T14 Gen1 AMD",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "20UD"),
+@@ -71,7 +76,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "T14 Gen1 AMD",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "20UE"),
+@@ -79,7 +84,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "T14s Gen1 AMD",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "20UH"),
+@@ -87,7 +92,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "T14s Gen1 AMD",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "20UJ"),
+@@ -95,7 +100,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "P14s Gen1 AMD",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "20Y1"),
+@@ -103,7 +108,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "P14s Gen2 AMD",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21A0"),
+@@ -111,7 +116,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "P14s Gen2 AMD",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21A1"),
+@@ -152,7 +157,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "IdeaPad 1 14AMN7",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "82VF"),
+@@ -160,7 +165,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "IdeaPad 1 15AMN7",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "82VG"),
+@@ -168,7 +173,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "IdeaPad 1 15AMN7",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "82X5"),
+@@ -176,7 +181,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "IdeaPad Slim 3 14AMN8",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "82XN"),
+@@ -184,7 +189,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	},
+ 	{
+ 		.ident = "IdeaPad Slim 3 15AMN8",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "82XQ"),
+@@ -193,7 +198,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	/* https://gitlab.freedesktop.org/drm/amd/-/issues/4434 */
+ 	{
+ 		.ident = "Lenovo Yoga 6 13ALC6",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "82ND"),
+@@ -202,7 +207,7 @@ static const struct dmi_system_id fwbug_list[] = {
+ 	/* https://gitlab.freedesktop.org/drm/amd/-/issues/2684 */
+ 	{
+ 		.ident = "HP Laptop 15s-eq2xxx",
+-		.driver_data = &quirk_s2idle_bug,
++		.driver_data = &quirk_s2idle_spurious_8042,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "HP Laptop 15s-eq2xxx"),
+@@ -285,6 +290,16 @@ void amd_pmc_quirks_init(struct amd_pmc_dev *dev)
+ {
+ 	const struct dmi_system_id *dmi_id;
  
--#ifdef CONFIG_CPU_HAS_LBT
--	if (extctx->lbt.addr)
--		err |= protected_save_lbt_context(extctx);
--#endif
++	/*
++	 * IRQ1 may cause an interrupt during resume even without a keyboard
++	 * press.
++	 *
++	 * Affects Renoir, Cezanne and Barcelo SoCs
++	 *
++	 * A solution is available in PMFW 64.66.0, but it must be activated by
++	 * SBIOS. If SBIOS is known to have the fix a quirk can be added for
++	 * a given system to avoid workaround.
++	 */
+ 	if (dev->cpu_id == AMD_CPU_ID_CZN)
+ 		dev->disable_8042_wakeup = true;
+ 
+@@ -295,6 +310,5 @@ void amd_pmc_quirks_init(struct amd_pmc_dev *dev)
+ 	if (dev->quirks->s2idle_bug_mmio)
+ 		pr_info("Using s2idle quirk to avoid %s platform firmware bug\n",
+ 			dmi_id->ident);
+-	if (dev->quirks->spurious_8042)
+-		dev->disable_8042_wakeup = true;
++	dev->disable_8042_wakeup = dev->quirks->spurious_8042;
+ }
+diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
+index 0b9b23eb7c2c3..bd318fd02ccf4 100644
+--- a/drivers/platform/x86/amd/pmc/pmc.c
++++ b/drivers/platform/x86/amd/pmc/pmc.c
+@@ -530,19 +530,6 @@ static int amd_pmc_get_os_hint(struct amd_pmc_dev *dev)
+ static int amd_pmc_wa_irq1(struct amd_pmc_dev *pdev)
+ {
+ 	struct device *d;
+-	int rc;
 -
- 	/* Set the "end" magic */
- 	info = (struct sctx_info *)extctx->end.addr;
- 	err |= __put_user(0, &info->magic);
+-	/* cezanne platform firmware has a fix in 64.66.0 */
+-	if (pdev->cpu_id == AMD_CPU_ID_CZN) {
+-		if (!pdev->major) {
+-			rc = amd_pmc_get_smu_version(pdev);
+-			if (rc)
+-				return rc;
+-		}
+-
+-		if (pdev->major > 64 || (pdev->major == 64 && pdev->minor > 65))
+-			return 0;
+-	}
+ 
+ 	d = bus_find_device_by_name(&serio_bus, NULL, "serio0");
+ 	if (!d)
 -- 
 2.50.1
 
