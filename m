@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-178241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4888B47DD1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A59B9B47E4D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3DC9188F2A1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A540C189F80D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED47B1A9FAA;
-	Sun,  7 Sep 2025 20:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92C7215077;
+	Sun,  7 Sep 2025 20:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZfnyhQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kv6O1bAe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF2C1A2389;
-	Sun,  7 Sep 2025 20:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC4D1A9FAA;
+	Sun,  7 Sep 2025 20:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276212; cv=none; b=mGW841sLyuCoLljaFiI3V/cRuUHX41/UX7DfP96F4hGL2J84Eeags4gC8RLiyttjYmVtzA9W3jXSokPcviuL7Gv4CYvQG/qjxKzw0WJeLqJYMyjQxD4Vd/1sxPxCTwBmkKllv9vSP0xdmK7L+0qCu6q1nHzb7XGjq43RcL++VZM=
+	t=1757276550; cv=none; b=rC2nIq9xRIQ/kiLT26D2Ton4EpHLlshkGVEs2v0oGXpimfmF0biFxCk9/Ost+u28QXVlnz2RT33UTYM0RIiK/sHuuhfVrWjtmxH42Qs/slRDtqUdEM2eo3zHGvZbuI1J5odjNQXSwacxAmt0RWknoe5LTxbCMKSN0SWabMzeGnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276212; c=relaxed/simple;
-	bh=X3PU7JZYCzDrg28GqrNpgSuD3D0eN0oECxk0In4Hc54=;
+	s=arc-20240116; t=1757276550; c=relaxed/simple;
+	bh=Y9KVGBmJxi4xPRos8FBB6riJXeg/8Cl9nysMa6w10xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLM0ibv81xC/fvAtD6s22RkWbmh+C0ifu2QQKWJqSC4fFqTe2CoUTMfEcjzQXyOxK8WX0TnpKYnaOFF/GS77SGxSNixZCEqzjTEmpKIOhevgElCM4hAkCusWaU7mblm27RpbFNSuEUPu7VKbUR4+levFvjl/qxzO62QZsjZaMAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZfnyhQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A2BC4CEF0;
-	Sun,  7 Sep 2025 20:16:51 +0000 (UTC)
+	 MIME-Version; b=cwcqRZTTTFgIXTjYridUsP8ZuNWR9IDmITi8FDU76ukOr0GQY28aYmb3ZjlycM8vuQCTdHgG4z06YgJO9ePbL15rgqH1HCWY/YOhYJcyXIOVbHjVCBEoeTCP8FmUky32aBRVVR5lB/jLg77DbEBY72NQT/b0QRLepWNuic7Z6v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kv6O1bAe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23ECCC4CEF0;
+	Sun,  7 Sep 2025 20:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276212;
-	bh=X3PU7JZYCzDrg28GqrNpgSuD3D0eN0oECxk0In4Hc54=;
+	s=korg; t=1757276550;
+	bh=Y9KVGBmJxi4xPRos8FBB6riJXeg/8Cl9nysMa6w10xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CZfnyhQvULEYHt855mQ+cCU3mzTkDZ2eBuH+JQI1IH0N6UZxyK+jVKtorP/SwffRg
-	 Q8AbT/E0SXK1bXkMWaMUSAf5YzdbJBvUmP60v0sxBUfLwVbBX+lUx+SKS5jpLTqKza
-	 odH4qOahDK3P1Djuw2GjglbvF3ewe8kKatHUol1E=
+	b=Kv6O1bAeZV/N28GeiQ7500IdtatVxxF2vD64aW4T6b/SS/BU/Cx3GSveMx0Cx6BMW
+	 LW0gw44MO16L7bt3PwM0+HnsmlNXPG3zZYMzOxAvSb0jOvEpLe7K9YCbPXsz17UGw7
+	 hnEp1T5DPhlcX9PE6hBkMhFTJX9sTllo1kGD/Qmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/104] net/smc: Remove validation of reserved bits in CLC Decline message
+Subject: [PATCH 6.6 034/121] wifi: ath11k: rename ath11k_start_vdev_delay()
 Date: Sun,  7 Sep 2025 21:57:50 +0200
-Message-ID: <20250907195608.559852130@linuxfoundation.org>
+Message-ID: <20250907195610.706051649@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit cc282f73bc0cbdf3ee7af2f2d3a2ef4e6b19242d ]
+[ Upstream commit 629642fa8b25b8dfecefc9e2177a44c009858da7 ]
 
-Currently SMC code is validating the reserved bits while parsing the incoming
-CLC decline message & when this validation fails, its treated as a protocol
-error. As a result, the SMC connection is terminated instead of falling back to
-TCP. As per RFC7609[1] specs we shouldn't be validating the reserved bits that
-is part of CLC message. This patch fixes this issue.
+Rename ath11k_start_vdev_delay() as ath11k_mac_start_vdev_delay()
+to follow naming convention.
 
-CLC Decline message format can viewed here[2].
+Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-01740-QCAHSTSWPLZ_V2_TO_X86-1
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
 
-[1] https://datatracker.ietf.org/doc/html/rfc7609#page-92
-[2] https://datatracker.ietf.org/doc/html/rfc7609#page-105
-
-Fixes: 8ade200c269f ("net/smc: add v2 format of CLC decline message")
-Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Link: https://patch.msgid.link/20250902082041.98996-1-mjambigi@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240123025700.2929-3-quic_bqiang@quicinc.com
+Stable-dep-of: 97acb0259cc9 ("wifi: ath11k: fix group data packet drops during rekey")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_clc.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index a48fdc83fe6b2..6ed77f02ceac0 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -422,8 +422,6 @@ smc_clc_msg_decl_valid(struct smc_clc_msg_decline *dclc)
- {
- 	struct smc_clc_msg_hdr *hdr = &dclc->hdr;
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index cc9c09d05f63f..58cc079f0df4a 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -254,8 +254,8 @@ static const u32 ath11k_smps_map[] = {
+ 	[WLAN_HT_CAP_SM_PS_DISABLED] = WMI_PEER_SMPS_PS_NONE,
+ };
  
--	if (hdr->typev1 != SMC_TYPE_R && hdr->typev1 != SMC_TYPE_D)
--		return false;
- 	if (hdr->version == SMC_V1) {
- 		if (ntohs(hdr->length) != sizeof(struct smc_clc_msg_decline))
- 			return false;
+-static int ath11k_start_vdev_delay(struct ieee80211_hw *hw,
+-				   struct ieee80211_vif *vif);
++static int ath11k_mac_start_vdev_delay(struct ieee80211_hw *hw,
++				       struct ieee80211_vif *vif);
+ 
+ enum nl80211_he_ru_alloc ath11k_mac_phy_he_ru_to_nl80211_he_ru_alloc(u16 ru_phy)
+ {
+@@ -4966,7 +4966,7 @@ static int ath11k_mac_station_add(struct ath11k *ar,
+ 	if (ab->hw_params.vdev_start_delay &&
+ 	    !arvif->is_started &&
+ 	    arvif->vdev_type != WMI_VDEV_TYPE_AP) {
+-		ret = ath11k_start_vdev_delay(ar->hw, vif);
++		ret = ath11k_mac_start_vdev_delay(ar->hw, vif);
+ 		if (ret) {
+ 			ath11k_warn(ab, "failed to delay vdev start: %d\n", ret);
+ 			goto free_tx_stats;
+@@ -7546,8 +7546,8 @@ static void ath11k_mac_op_change_chanctx(struct ieee80211_hw *hw,
+ 	mutex_unlock(&ar->conf_mutex);
+ }
+ 
+-static int ath11k_start_vdev_delay(struct ieee80211_hw *hw,
+-				   struct ieee80211_vif *vif)
++static int ath11k_mac_start_vdev_delay(struct ieee80211_hw *hw,
++				       struct ieee80211_vif *vif)
+ {
+ 	struct ath11k *ar = hw->priv;
+ 	struct ath11k_base *ab = ar->ab;
 -- 
 2.50.1
 
