@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B61BB47FBC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC79B47E81
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B95F3C3713
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B44718963E3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDB5269CE6;
-	Sun,  7 Sep 2025 20:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4A320D51C;
+	Sun,  7 Sep 2025 20:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r47DnM6L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lbctb0sp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9905A4315A;
-	Sun,  7 Sep 2025 20:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C97D528;
+	Sun,  7 Sep 2025 20:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277694; cv=none; b=Y4a+suzCuU1vVpPElfV30ZDYrN5svymiwiUiNdp7IUPGG/P/9XB5JiqHAh6r4KfvZmU90TAC/Pivl6qezdrdr8Wvzr2Ko77+LYUgYlpJZ498bT7HUhqL2d7bqU5AwYiycyNFCQsFKCklTUR5D3bEQwHVeChMWXctLVZJo1OCNnI=
+	t=1757276711; cv=none; b=Qeas2BgFcYkog6F3yVZXs/bntu2sJctQ2BZ+/BvZNFyJLgSaezF7XQLjGSEyTplcG7OxdVboOsaZTfuBkdPQbRtPnuBSzPOk43hLEtFemy6hUHk2ukt2484dO71e+CtEHrzGw+hPfUqsvZakprMDHFox8LgedgsRfppaNQkuVFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277694; c=relaxed/simple;
-	bh=+z61LuF95V3XqHMsNkLQr5B1UiZ4NhXcYtsr0g0PRXw=;
+	s=arc-20240116; t=1757276711; c=relaxed/simple;
+	bh=CbnLXd3awonDj6lFbFDN+xV5yiXjACkKY3mkUv02yBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DthRi1WpsMH8MPwRPU5TNUwGenLsXOX6MPscwuJUfcMa8yZITXIjBGoFuQVm5dcvp+EXGm3ccEtt+sbIitb/HxRLXOT694YefNW7vaOhhTq+iPxhSO6x7RfSipTNyWeWfBnJOq1j4UTjITkz8iRFn2ACA/kt6fpmbN3Jco1VonU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r47DnM6L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEBDC4CEF0;
-	Sun,  7 Sep 2025 20:41:33 +0000 (UTC)
+	 MIME-Version; b=qYxiGN41HQqmo0og/SMk0uhQaLscChJBN/K9D+6rM/0RsabgCgUwKcoKyBPbni0aK+/26VqkyG+DpzMV2Y4Q6NvLyVocLOybLz3ZfWN/M+0BnRhoPkhRCtMRQwRdaw46qaXCPxDc7NhlqDSxEoM96GM+XivCUh/0vRrVRMQFWdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lbctb0sp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC301C4CEF0;
+	Sun,  7 Sep 2025 20:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277694;
-	bh=+z61LuF95V3XqHMsNkLQr5B1UiZ4NhXcYtsr0g0PRXw=;
+	s=korg; t=1757276711;
+	bh=CbnLXd3awonDj6lFbFDN+xV5yiXjACkKY3mkUv02yBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r47DnM6L/lQROOBHfZtcs2IKbH/lK/v8DQH6zu1us4m9gmkBvq1PyU8+4F01Xz2Qx
-	 dcQm+n3je0tgNtonZhIVJ+ZJWxaxtzNqXpTq4lxZIfflN+HPfOTJt1WjIqjI3X3+sb
-	 r9jMiYefubFODdAQB9pOrV1KRJLI0mbPUkzWwCqQ=
+	b=Lbctb0spo+CzdCWQUU9huu2EJAQHIjmKcdXoa+XNa7158XSySCC1b6FsqCc3hzMYS
+	 ELz+M/jJ7nF2Qdluit1CbUe+v5K9/17PcPYSztj1rBgo5IpWjXTXbv/inmMH2/hyce
+	 FiiddBZ35I/uMd4M1DiiBFkHs0v9y8Hfpqgu6Wwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 094/183] selftest: net: Fix weird setsockopt() in bind_bhash.c.
+Subject: [PATCH 6.6 085/121] iio: light: opt3001: fix deadlock due to concurrent flag access
 Date: Sun,  7 Sep 2025 21:58:41 +0200
-Message-ID: <20250907195618.021322955@linuxfoundation.org>
+Message-ID: <20250907195612.019381423@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit fd2004d82d8d8faa94879e3de3096c8511728637 ]
+[ Upstream commit f063a28002e3350088b4577c5640882bf4ea17ea ]
 
-bind_bhash.c passes (SO_REUSEADDR | SO_REUSEPORT) to setsockopt().
+The threaded IRQ function in this driver is reading the flag twice: once to
+lock a mutex and once to unlock it. Even though the code setting the flag
+is designed to prevent it, there are subtle cases where the flag could be
+true at the mutex_lock stage and false at the mutex_unlock stage. This
+results in the mutex not being unlocked, resulting in a deadlock.
 
-In the asm-generic definition, the value happens to match with the
-bare SO_REUSEPORT, (2 | 15) == 15, but not on some arch.
+Fix it by making the opt3001_irq() code generally more robust, reading the
+flag into a variable and using the variable value at both stages.
 
-arch/alpha/include/uapi/asm/socket.h:18:#define SO_REUSEADDR	0x0004
-arch/alpha/include/uapi/asm/socket.h:24:#define SO_REUSEPORT	0x0200
-arch/mips/include/uapi/asm/socket.h:24:#define SO_REUSEADDR	0x0004	/* Allow reuse of local addresses.  */
-arch/mips/include/uapi/asm/socket.h:33:#define SO_REUSEPORT 0x0200	/* Allow local address and port reuse.  */
-arch/parisc/include/uapi/asm/socket.h:12:#define SO_REUSEADDR	0x0004
-arch/parisc/include/uapi/asm/socket.h:18:#define SO_REUSEPORT	0x0200
-arch/sparc/include/uapi/asm/socket.h:13:#define SO_REUSEADDR	0x0004
-arch/sparc/include/uapi/asm/socket.h:20:#define SO_REUSEPORT	0x0200
-include/uapi/asm-generic/socket.h:12:#define SO_REUSEADDR	2
-include/uapi/asm-generic/socket.h:27:#define SO_REUSEPORT	15
-
-Let's pass SO_REUSEPORT only.
-
-Fixes: c35ecb95c448 ("selftests/net: Add test for timing a bind request to a port with a populated bhash entry")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250903222938.2601522-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20250321-opt3001-irq-fix-v1-1-6c520d851562@bootlin.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/bind_bhash.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/light/opt3001.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/bind_bhash.c b/tools/testing/selftests/net/bind_bhash.c
-index 57ff67a3751eb..da04b0b19b73c 100644
---- a/tools/testing/selftests/net/bind_bhash.c
-+++ b/tools/testing/selftests/net/bind_bhash.c
-@@ -75,7 +75,7 @@ static void *setup(void *arg)
- 	int *array = (int *)arg;
+--- a/drivers/iio/light/opt3001.c
++++ b/drivers/iio/light/opt3001.c
+@@ -692,8 +692,9 @@ static irqreturn_t opt3001_irq(int irq,
+ 	struct opt3001 *opt = iio_priv(iio);
+ 	int ret;
+ 	bool wake_result_ready_queue = false;
++	bool ok_to_ignore_lock = opt->ok_to_ignore_lock;
  
- 	for (i = 0; i < MAX_CONNECTIONS; i++) {
--		sock_fd = bind_socket(SO_REUSEADDR | SO_REUSEPORT, setup_addr);
-+		sock_fd = bind_socket(SO_REUSEPORT, setup_addr);
- 		if (sock_fd < 0) {
- 			ret = sock_fd;
- 			pthread_exit(&ret);
-@@ -103,7 +103,7 @@ int main(int argc, const char *argv[])
+-	if (!opt->ok_to_ignore_lock)
++	if (!ok_to_ignore_lock)
+ 		mutex_lock(&opt->lock);
  
- 	setup_addr = use_v6 ? setup_addr_v6 : setup_addr_v4;
+ 	ret = i2c_smbus_read_word_swapped(opt->client, OPT3001_CONFIGURATION);
+@@ -730,7 +731,7 @@ static irqreturn_t opt3001_irq(int irq,
+ 	}
  
--	listener_fd = bind_socket(SO_REUSEADDR | SO_REUSEPORT, setup_addr);
-+	listener_fd = bind_socket(SO_REUSEPORT, setup_addr);
- 	if (listen(listener_fd, 100) < 0) {
- 		perror("listen failed");
- 		return -1;
--- 
-2.50.1
-
+ out:
+-	if (!opt->ok_to_ignore_lock)
++	if (!ok_to_ignore_lock)
+ 		mutex_unlock(&opt->lock);
+ 
+ 	if (wake_result_ready_queue)
 
 
 
