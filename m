@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-178520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 526AAB47F00
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:31:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 276A5B47F74
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 103EA169FD6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:31:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D854F200033
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB9E1DE8AF;
-	Sun,  7 Sep 2025 20:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DE14315A;
+	Sun,  7 Sep 2025 20:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pt55ZSWm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IQKAiajR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE1915C158;
-	Sun,  7 Sep 2025 20:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE5F1A704B;
+	Sun,  7 Sep 2025 20:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277098; cv=none; b=Bbi5tNOYKEfNElS2zbIhtYn8iIkrfXiBltwikToXffXeflPKvz8Amdhsf53JcMbXydEjxBTdK495F1iMMs9rfueX+pjAxfmUuICWHSr+TgEY0xfDNvrxnvVCDG5PRIkmCCKkibSNBenKksFMsg0nsNiW1BG9kQmKm5cLiDBPsMw=
+	t=1757277468; cv=none; b=iT3ubJP2yXPykhbs4SxfayRsFnU5RPCr4xpoaauNErNBhhTnlJ4nU0q8gWcwLfWzHhoAhNlGe5m8IIdftqwGzlQkrlDuxXK1AbpLTfHBkorR5Tsyib3SHkd3q7jichwIBkgqAFMqUWew0+87flisColZbPMLEI+L4IHgmwCHSic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277098; c=relaxed/simple;
-	bh=3xYJJxHmY9HFOwBgbVIbxcAsRHqblrU5MvhAEzYrWnQ=;
+	s=arc-20240116; t=1757277468; c=relaxed/simple;
+	bh=AkAIJB0Mk2213+xXBKJp1TVdBjt62tE76v3LylNl7xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=neZcOy6V36ggtyUMAdiK0t+pO44BsdOF1qETQmvL4/WoiEl80MqZEprtCxJS1d2WjS2gPjBA2iTfovvW8XjSuTihdqzTDhO+/WdDJvaPKULqmHR83S0YVjQRZkCUuGmGmrhR7blzz/aCHg3bx9TTma2f/jisr/Xl0uctqky07iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pt55ZSWm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA47C4CEF9;
-	Sun,  7 Sep 2025 20:31:37 +0000 (UTC)
+	 MIME-Version; b=XsqypGcCL9xQB1WBv9ZzKL9tOeQ3EK6EtdzB/CXc7GpmEIs975xpb3Bs1tZCybAr9FE3RJD4hQaFiW+1uEGKnKSVLFtIFIdy/IBgI67YcWVr7Vp0AQLs9nn83QyBVzRt8YSQZAw6/PN94V6hdBpVCbnW7QcqUFVQIIRWKEUDhEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IQKAiajR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3977C4CEF0;
+	Sun,  7 Sep 2025 20:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277098;
-	bh=3xYJJxHmY9HFOwBgbVIbxcAsRHqblrU5MvhAEzYrWnQ=;
+	s=korg; t=1757277468;
+	bh=AkAIJB0Mk2213+xXBKJp1TVdBjt62tE76v3LylNl7xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pt55ZSWmD2qGjo7Z7QV2KumhcT9NfeyvGn/Y0Y7woiAH/abfACZyXtWleA0chj6tZ
-	 2lG+xyQ89r+VsPDmieVuTIScqbnPNKdHRuLPEHpA0GlRQ2LTnKEyGtzLSePicW04ro
-	 u1UeDs/75s1ZsW1Bfl+aXd100yFnolHAZXo3dhb4=
+	b=IQKAiajRCbIkWZbMoWPKPVpyRHB06srZJXoptYRkxIq1IjCcs9XZBxJyw99zj6RUN
+	 Q2TSBXxW7YekKeq13NhzxwSgGuP25YxrAK2ocNqK1/olwKEQiHs4dBhdMj0wziiWA7
+	 GWphnDN1xTTYmn0P5PUAXkNlzzMOFuuCnyXs7hKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Tina Wuest <tina@wuest.me>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/175] wifi: mt76: fix linked list corruption
-Date: Sun,  7 Sep 2025 21:57:13 +0200
-Message-ID: <20250907195615.758484277@linuxfoundation.org>
+Subject: [PATCH 6.16 007/183] ALSA: usb-audio: Allow Focusrite devices to use low samplerates
+Date: Sun,  7 Sep 2025 21:57:14 +0200
+Message-ID: <20250907195615.972586564@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Tina Wuest <tina@wuest.me>
 
-[ Upstream commit 49fba87205bec14a0f6bd997635bf3968408161e ]
+[ Upstream commit cc8e91054c0a778074ecffaf12bd0944e884d71c ]
 
-Never leave scheduled wcid entries on the temporary on-stack list
+Commit 05f254a6369ac020fc0382a7cbd3ef64ad997c92 ("ALSA: usb-audio:
+Improve filtering of sample rates on Focusrite devices") changed the
+check for max_rate in a way which was overly restrictive, forcing
+devices to use very high samplerates if they support them, despite
+support existing for lower rates as well.
 
-Fixes: 0b3be9d1d34e ("wifi: mt76: add separate tx scheduling queue for off-channel tx")
-Link: https://patch.msgid.link/20250827085352.51636-6-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+This maintains the intended outcome (ensuring samplerates selected are
+supported) while allowing devices with higher maximum samplerates to be
+opened at all supported samplerates.
+
+This patch was tested with a Clarett+ 8Pre USB
+
+Fixes: 05f254a6369a ("ALSA: usb-audio: Improve filtering of sample rates on Focusrite devices")
+Signed-off-by: Tina Wuest <tina@wuest.me>
+Link: https://patch.msgid.link/20250901092024.140993-1-tina@wuest.me
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/tx.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ sound/usb/format.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
-index 5e081972bf445..634b6dacd1e0d 100644
---- a/drivers/net/wireless/mediatek/mt76/tx.c
-+++ b/drivers/net/wireless/mediatek/mt76/tx.c
-@@ -645,6 +645,7 @@ mt76_txq_schedule_pending_wcid(struct mt76_phy *phy, struct mt76_wcid *wcid,
- static void mt76_txq_schedule_pending(struct mt76_phy *phy)
- {
- 	LIST_HEAD(tx_list);
-+	int ret = 0;
+diff --git a/sound/usb/format.c b/sound/usb/format.c
+index 0ee532acbb603..ec95a063beb10 100644
+--- a/sound/usb/format.c
++++ b/sound/usb/format.c
+@@ -327,12 +327,16 @@ static bool focusrite_valid_sample_rate(struct snd_usb_audio *chip,
+ 		max_rate = combine_quad(&fmt[6]);
  
- 	if (list_empty(&phy->tx_list))
- 		return;
-@@ -656,13 +657,13 @@ static void mt76_txq_schedule_pending(struct mt76_phy *phy)
- 	list_splice_init(&phy->tx_list, &tx_list);
- 	while (!list_empty(&tx_list)) {
- 		struct mt76_wcid *wcid;
--		int ret;
- 
- 		wcid = list_first_entry(&tx_list, struct mt76_wcid, tx_list);
- 		list_del_init(&wcid->tx_list);
- 
- 		spin_unlock(&phy->tx_lock);
--		ret = mt76_txq_schedule_pending_wcid(phy, wcid, &wcid->tx_offchannel);
-+		if (ret >= 0)
-+			ret = mt76_txq_schedule_pending_wcid(phy, wcid, &wcid->tx_offchannel);
- 		if (ret >= 0 && !phy->offchannel)
- 			ret = mt76_txq_schedule_pending_wcid(phy, wcid, &wcid->tx_pending);
- 		spin_lock(&phy->tx_lock);
-@@ -671,9 +672,6 @@ static void mt76_txq_schedule_pending(struct mt76_phy *phy)
- 		    !skb_queue_empty(&wcid->tx_offchannel) &&
- 		    list_empty(&wcid->tx_list))
- 			list_add_tail(&wcid->tx_list, &phy->tx_list);
--
--		if (ret < 0)
--			break;
- 	}
- 	spin_unlock(&phy->tx_lock);
- 
+ 		switch (max_rate) {
++		case 192000:
++			if (rate == 176400 || rate == 192000)
++				return true;
++			fallthrough;
++		case 96000:
++			if (rate == 88200 || rate == 96000)
++				return true;
++			fallthrough;
+ 		case 48000:
+ 			return (rate == 44100 || rate == 48000);
+-		case 96000:
+-			return (rate == 88200 || rate == 96000);
+-		case 192000:
+-			return (rate == 176400 || rate == 192000);
+ 		default:
+ 			usb_audio_info(chip,
+ 				"%u:%d : unexpected max rate: %u\n",
 -- 
 2.50.1
 
