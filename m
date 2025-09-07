@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-178111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1C5B47D4D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACAA2B47DE0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 476D4188B1E8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 689E03BEA39
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A9A296BB8;
-	Sun,  7 Sep 2025 20:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24381A9FAA;
+	Sun,  7 Sep 2025 20:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEPNzkd7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8/fbbQT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D481CDFAC;
-	Sun,  7 Sep 2025 20:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B93D1AF0B6;
+	Sun,  7 Sep 2025 20:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275799; cv=none; b=SzyDRqSTYwYg0az7z4O8OFxavZNUMaAyDqUxzvjyOR005NXrvU+1766OJK6gRG7IKzqkt4YLFykLIeYMgjd+YZw6RTej58h7D+c9px5+DpJbBPd6N0GJkauiJ99rGkOVziFcetgxU0p19X9S3LeGxDSG6CuwuKeegJ7RwSjRKnQ=
+	t=1757276253; cv=none; b=QxIrM6uuHyc7eIaTA32MKaXMMQCbN+DeDUZCxYGdFgWmP/IfivbkUaCIz+GEB5wktNZhvNHhNLD5nSrZOQOmDUV1cGBW4Si2T/OZGqz3bRv+jzBc4T7pW/c0cc2e9bBkt3mGpTOjJuqn48b23lg6XzRltXrIGNBHgsuNI1oEEFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275799; c=relaxed/simple;
-	bh=DOIX+yATZjRld/IBWetyyU8KQQdtV51cIXgxVP8sAO8=;
+	s=arc-20240116; t=1757276253; c=relaxed/simple;
+	bh=RKoCDRLMfXKVFAdQSfb3SyJBs5IVqnjPFy+uamRKeLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DsZ3pCPQ1gTAI6MmSMDAfy1jYmElQ3xklLWSEEx5C2NCdG4PP2Wjt+7GmbCoAm9tFzxMb61ONShKk+qFMzoDcRhcjV1kLeDm3fNwVL44k2mcdDYXrmpws8jHamz1BYLD5tW7QVlPzyKvtEQOGZuUuZoKwVDjliYbTcegX/CcJgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEPNzkd7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9569EC4CEF0;
-	Sun,  7 Sep 2025 20:09:58 +0000 (UTC)
+	 MIME-Version; b=Y0LjtC6IEZ/wxA/3m3rr9INzaK9G4NVpWPhzc6vCb86OMycA2eAL7MBFPKKruaQ4d8zI9fI4Lgx4JiO4YvidBusbywf14srsUcLgRw6X9jeODcIot4nN6Q9qvbUs56B/YoAkQ4xfJlMBX5+zp0iXLQaKzCWtj3It1pZJTL2QMxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8/fbbQT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5A9C4CEF0;
+	Sun,  7 Sep 2025 20:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275799;
-	bh=DOIX+yATZjRld/IBWetyyU8KQQdtV51cIXgxVP8sAO8=;
+	s=korg; t=1757276253;
+	bh=RKoCDRLMfXKVFAdQSfb3SyJBs5IVqnjPFy+uamRKeLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oEPNzkd7rb5astcB12pb5emx+RXDWYV3AOUyM89Q7HM8IfQJF54zFYBIcxQgkVvXN
-	 hRF4/5GvnYx8+7/aFgb9znwpWCNYwU4TcddAl8TRNVtToWHz6NegIunX0DZ8MdJCsX
-	 lcUiCDwPxmSxoI5zgNeEOt1bXVRLZ3vAY/k9auaY=
+	b=t8/fbbQTAxHmzAMBCk4PfYtT+oEjLqHSUnPPY6CIDuV00Dd7KAPaZgcEeFvgcMAQm
+	 fgE5THDAf3uQM3NvgITlxpvEED8wm+FfhVC0X8F19gqdluzKN83xG3jIGcdOdg8A/H
+	 UkfGyrszWI2LZ7OO3WheJllXrC+HkNqsVTwxyvoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernard Pidoux <f6bvp@free.fr>,
-	Eric Dumazet <edumazet@google.com>,
-	Joerg Reuter <jreuter@yaina.de>,
-	David Ranch <dranch@trinnet.net>,
-	Folkert van Heusden <folkert@vanheusden.com>,
-	Dan Cross <crossd@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 15/45] ax25: properly unshare skbs in ax25_kiss_rcv()
-Date: Sun,  7 Sep 2025 21:58:01 +0200
-Message-ID: <20250907195601.405093006@linuxfoundation.org>
+	Edward Adam Davis <eadavis@qq.com>,
+	syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com,
+	Mark Tinguely <mark.tinguely@oracle.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 045/104] ocfs2: prevent release journal inode after journal shutdown
+Date: Sun,  7 Sep 2025 21:58:02 +0200
+Message-ID: <20250907195608.863444800@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,64 +69,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 8156210d36a43e76372312c87eb5ea3dbb405a85 ]
+commit f46e8ef8bb7b452584f2e75337b619ac51a7cadf upstream.
 
-Bernard Pidoux reported a regression apparently caused by commit
-c353e8983e0d ("net: introduce per netns packet chains").
+Before calling ocfs2_delete_osb(), ocfs2_journal_shutdown() has already
+been executed in ocfs2_dismount_volume(), so osb->journal must be NULL.
+Therefore, the following calltrace will inevitably fail when it reaches
+jbd2_journal_release_jbd_inode().
 
-skb->dev becomes NULL and we crash in __netif_receive_skb_core().
+ocfs2_dismount_volume()->
+  ocfs2_delete_osb()->
+    ocfs2_free_slot_info()->
+      __ocfs2_free_slot_info()->
+        evict()->
+          ocfs2_evict_inode()->
+            ocfs2_clear_inode()->
+	      jbd2_journal_release_jbd_inode(osb->journal->j_journal,
 
-Before above commit, different kind of bugs or corruptions could happen
-without a major crash.
+Adding osb->journal checks will prevent null-ptr-deref during the above
+execution path.
 
-But the root cause is that ax25_kiss_rcv() can queue/mangle input skb
-without checking if this skb is shared or not.
-
-Many thanks to Bernard Pidoux for his help, diagnosis and tests.
-
-We had a similar issue years ago fixed with commit 7aaed57c5c28
-("phonet: properly unshare skbs in phonet_rcv()").
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Bernard Pidoux <f6bvp@free.fr>
-Closes: https://lore.kernel.org/netdev/1713f383-c538-4918-bc64-13b3288cd542@free.fr/
-Tested-by: Bernard Pidoux <f6bvp@free.fr>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Joerg Reuter <jreuter@yaina.de>
-Cc: David Ranch <dranch@trinnet.net>
-Cc: Folkert van Heusden <folkert@vanheusden.com>
-Reviewed-by: Dan Cross <crossd@gmail.com>
-Link: https://patch.msgid.link/20250902124642.212705-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/tencent_357489BEAEE4AED74CBD67D246DBD2C4C606@qq.com
+Fixes: da5e7c87827e ("ocfs2: cleanup journal init and shutdown")
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reported-by: syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=47d8cb2f2cc1517e515a
+Tested-by: syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com
+Reviewed-by: Mark Tinguely <mark.tinguely@oracle.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ax25/ax25_in.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ocfs2/inode.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
-index dcdbaeeb2358a..506a88b2357bf 100644
---- a/net/ax25/ax25_in.c
-+++ b/net/ax25/ax25_in.c
-@@ -433,6 +433,10 @@ static int ax25_rcv(struct sk_buff *skb, struct net_device *dev,
- int ax25_kiss_rcv(struct sk_buff *skb, struct net_device *dev,
- 		  struct packet_type *ptype, struct net_device *orig_dev)
- {
-+	skb = skb_share_check(skb, GFP_ATOMIC);
-+	if (!skb)
-+		return NET_RX_DROP;
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -1205,6 +1205,9 @@ static void ocfs2_clear_inode(struct ino
+ 	 * the journal is flushed before journal shutdown. Thus it is safe to
+ 	 * have inodes get cleaned up after journal shutdown.
+ 	 */
++	if (!osb->journal)
++		return;
 +
- 	skb_orphan(skb);
- 
- 	if (!net_eq(dev_net(dev), &init_net)) {
--- 
-2.50.1
-
+ 	jbd2_journal_release_jbd_inode(osb->journal->j_journal,
+ 				       &oi->ip_jinode);
+ }
 
 
 
