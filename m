@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78233B47FC6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:42:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE35B47E8C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E62320066C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:42:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F2CD189EE38
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF83F2139C9;
-	Sun,  7 Sep 2025 20:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7C620D51C;
+	Sun,  7 Sep 2025 20:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7spYLCr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XF732v1O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3374315A;
-	Sun,  7 Sep 2025 20:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D23AD528;
+	Sun,  7 Sep 2025 20:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277729; cv=none; b=LQopMeFh96fT5ze9Ci+zDNp/QdtAgVfN9sNgc6v6YTh8R9gFdScCOPsZI2RAnbYB52CTPq2YneCrlIfF47uVSxUFh+0g5aMVQv8BKBbSN31ORBWRY7acMNVbzT0G+Jxx3CQO04oa1RyF6boPsou3NUAsfv64myg+QuBJCSANpRA=
+	t=1757276747; cv=none; b=f5ao2vmNNkOe4jZfh5xm+yXdBtBzLeFf885MgnX63IJ/TReRGIDnMt0FQw0KVzEcbdWS77TsADN0cfR7G0eAlM9s2ZzWyj4cZ09Nc1JeZv9WiM4FDma8EPv30T+2thDbybcoJYFoWHv0Z+RJelSFNCBcW9xOCDPkthxFCopDkys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277729; c=relaxed/simple;
-	bh=PCinbxoggPxYFE6+XxbTYEvu1UkXuPOkQtAr798dwzk=;
+	s=arc-20240116; t=1757276747; c=relaxed/simple;
+	bh=NT5IFHJhD5L0oBD84LmdQrMCUL6eGV5MxZ5HCkasmSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nKMIjhKMcOnQ7NgnI+67Vx2wlnYrUJSzLQxBdKCPBYb4llnZjclGvbL9EGVw8OLoiq2f/TKVrwRrr9Kr96+xaCAQzhrnOn3BDwdKTt/umtfUDr1SGLXylBm57pOKCP/Bphf0vsHygZbN5AulIjjgxid6bxVbvUJmovKpsrg5GWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7spYLCr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1FBC4CEF0;
-	Sun,  7 Sep 2025 20:42:08 +0000 (UTC)
+	 MIME-Version; b=VWMAA8O3DsicEg7ESASV4srkHijsK2huQLvDhu4MDMVVhuvmvRnBTAZ5CdpwPuJO+EScVAJQCQ9e4c24r2zrkLYoclfGa8LW1EWY/G/3K2pFkEbuReLegkNR5OpcJAUpk4tpZzzpac+/gGAPHoAb6OH1qW9MretT6o6ELvcM5Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XF732v1O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47D5C4CEF0;
+	Sun,  7 Sep 2025 20:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277729;
-	bh=PCinbxoggPxYFE6+XxbTYEvu1UkXuPOkQtAr798dwzk=;
+	s=korg; t=1757276747;
+	bh=NT5IFHJhD5L0oBD84LmdQrMCUL6eGV5MxZ5HCkasmSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M7spYLCr5WLU7q0niCJUn94mhU6YMUj0u2V5wjFV2H27rR+5hQP4UZWtR4RLAx0Iy
-	 LJ8Rj09hXHA07Gw1Tm94pZ1s8CVrvazAWt4/VUozWCYJxY8RGPwdWVbkeyEGdPz4qu
-	 mrYjS2LWqEPyJPWSbzKjxtYChinzIbD36BAHO5vc=
+	b=XF732v1OhyW23XDg+jBRxW1nG7gnlD+ovMTtqjKJ86RMgBzzkgJbl2ahJzm9P/q+Y
+	 kaHyQBa4j4Utfwso8+D6ee1A7QfhNUcBViNz4xW+p/OxqPpqJ1PYHx+4ROkYRsUODM
+	 MW6y6whjgLpi8h+P6q3MspKXY6dozjCES6ZsVPUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 104/183] mm/userfaultfd: fix kmap_local LIFO ordering for CONFIG_HIGHPTE
+	Ma Ke <make24@iscas.ac.cn>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 095/121] drm/mediatek: Fix device/node reference count leaks in mtk_drm_get_all_drm_priv
 Date: Sun,  7 Sep 2025 21:58:51 +0200
-Message-ID: <20250907195618.262100314@linuxfoundation.org>
+Message-ID: <20250907195612.290388636@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Levin <sashal@kernel.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 9614d8bee66387501f48718fa306e17f2aa3f2f3 upstream.
+[ Upstream commit 1f403699c40f0806a707a9a6eed3b8904224021a ]
 
-With CONFIG_HIGHPTE on 32-bit ARM, move_pages_pte() maps PTE pages using
-kmap_local_page(), which requires unmapping in Last-In-First-Out order.
+Using device_find_child() and of_find_device_by_node() to locate
+devices could cause an imbalance in the device's reference count.
+device_find_child() and of_find_device_by_node() both call
+get_device() to increment the reference count of the found device
+before returning the pointer. In mtk_drm_get_all_drm_priv(), these
+references are never released through put_device(), resulting in
+permanent reference count increments. Additionally, the
+for_each_child_of_node() iterator fails to release node references in
+all code paths. This leaks device node references when loop
+termination occurs before reaching MAX_CRTC. These reference count
+leaks may prevent device/node resources from being properly released
+during driver unbind operations.
 
-The current code maps dst_pte first, then src_pte, but unmaps them in the
-same order (dst_pte, src_pte), violating the LIFO requirement.  This
-causes the warning in kunmap_local_indexed():
+As comment of device_find_child() says, 'NOTE: you will need to drop
+the reference with put_device() after use'.
 
-  WARNING: CPU: 0 PID: 604 at mm/highmem.c:622 kunmap_local_indexed+0x178/0x17c
-  addr \!= __fix_to_virt(FIX_KMAP_BEGIN + idx)
-
-Fix this by reversing the unmap order to respect LIFO ordering.
-
-This issue follows the same pattern as similar fixes:
-- commit eca6828403b8 ("crypto: skcipher - fix mismatch between mapping and unmapping order")
-- commit 8cf57c6df818 ("nilfs2: eliminate staggered calls to kunmap in nilfs_rename")
-
-Both of which addressed the same fundamental requirement that kmap_local
-operations must follow LIFO ordering.
-
-Link: https://lkml.kernel.org/r/20250731144431.773923-1-sashal@kernel.org
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Cc: stable@vger.kernel.org
+Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250812071932.471730-1-make24@iscas.ac.cn/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/userfaultfd.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c |   21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1453,10 +1453,15 @@ out:
- 		folio_unlock(src_folio);
- 		folio_put(src_folio);
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -365,19 +365,19 @@ static bool mtk_drm_get_all_drm_priv(str
+ 
+ 		of_id = of_match_node(mtk_drm_of_ids, node);
+ 		if (!of_id)
+-			continue;
++			goto next_put_node;
+ 
+ 		pdev = of_find_device_by_node(node);
+ 		if (!pdev)
+-			continue;
++			goto next_put_node;
+ 
+ 		drm_dev = device_find_child(&pdev->dev, NULL, mtk_drm_match);
+ 		if (!drm_dev)
+-			continue;
++			goto next_put_device_pdev_dev;
+ 
+ 		temp_drm_priv = dev_get_drvdata(drm_dev);
+ 		if (!temp_drm_priv)
+-			continue;
++			goto next_put_device_drm_dev;
+ 
+ 		if (temp_drm_priv->data->main_len)
+ 			all_drm_priv[CRTC_MAIN] = temp_drm_priv;
+@@ -389,10 +389,17 @@ static bool mtk_drm_get_all_drm_priv(str
+ 		if (temp_drm_priv->mtk_drm_bound)
+ 			cnt++;
+ 
+-		if (cnt == MAX_CRTC) {
+-			of_node_put(node);
++next_put_device_drm_dev:
++		put_device(drm_dev);
++
++next_put_device_pdev_dev:
++		put_device(&pdev->dev);
++
++next_put_node:
++		of_node_put(node);
++
++		if (cnt == MAX_CRTC)
+ 			break;
+-		}
  	}
--	if (dst_pte)
--		pte_unmap(dst_pte);
-+	/*
-+	 * Unmap in reverse order (LIFO) to maintain proper kmap_local
-+	 * index ordering when CONFIG_HIGHPTE is enabled. We mapped dst_pte
-+	 * first, then src_pte, so we must unmap src_pte first, then dst_pte.
-+	 */
- 	if (src_pte)
- 		pte_unmap(src_pte);
-+	if (dst_pte)
-+		pte_unmap(dst_pte);
- 	mmu_notifier_invalidate_range_end(&range);
- 	if (si)
- 		put_swap_device(si);
+ 
+ 	if (drm_priv->data->mmsys_dev_num == cnt) {
 
 
 
