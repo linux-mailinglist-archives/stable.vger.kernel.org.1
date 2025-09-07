@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-178236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FED7B47DCC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AF2FB47EF4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:31:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6EED3A5A13
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48D5917EF5C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A3361A9FAA;
-	Sun,  7 Sep 2025 20:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525041DF246;
+	Sun,  7 Sep 2025 20:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B76c81bn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBdz8IZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4709014BFA2;
-	Sun,  7 Sep 2025 20:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104BF18DF89;
+	Sun,  7 Sep 2025 20:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276197; cv=none; b=ThQtx6gNf1cU1+QlL9dsNJdkjxHc4LLAlrjN75KheZDEZw5JZDlfMqUwz3R/fnf2DAR6e1XlViYESRL2dygRHoyOCo9JpHI55Q3BOa9c5cldxMF4gxGWiwvYnlBIH8kTkf7dnllaDVY21nZ8+mtRDDSci7W6Y9MXRG7vPEQzlGs=
+	t=1757277061; cv=none; b=Qvqzsa/vVg01ORydrLhxy5nOfQCIBemqiVBcVL0ersxeLPQp7r+o+oFmVCu1FO2HJIBhVtopBDzR796+5KHujlYiKa1Ssn+iW5KhJPd+Hwuq248Wqba/gcFqCXaK2V3o/eSJEpdF6qcSWBy5kznRqLqo2m87exz2shxgVA7G91c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276197; c=relaxed/simple;
-	bh=CGYA2gC7JeNFPDvctMTfa5e1Kn6qSloL3decvYSg2Ss=;
+	s=arc-20240116; t=1757277061; c=relaxed/simple;
+	bh=mptv2yhY5GXz8Vd14kjy6Aq8CfHJeFoVTQMY/kymrMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UXXKbYp1unbiTUpWN/IvAFbsy04lRm254bRI8Ov5t86Kf4Gu3r8zUT7u94Ztmq4MmOqzOTnJaR0DCJoF75YRZpG2sZ6YBLgIj+51VWgrJ33DVfhPV/KLnNI1/8dhBGZQyx8ubYX2xuE1YlHW2cAtYiXl0GUY+YkrwpQDasHvs1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B76c81bn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3757C4CEF0;
-	Sun,  7 Sep 2025 20:16:36 +0000 (UTC)
+	 MIME-Version; b=r0dyNr3tozm1/SNQC86Oa8/eyGY+kUSePsaP/HVUIW9CDYToRBWHGNqhb1qlbMqSIZ+FVF6bYs7N4d9abcFpFDQ6Gb4deG06s0pHyQJE0qGWnyudnQFK6U3vBWu87y0IyCI0dq5oCOj1x7/85ym7rLPKdIrSTVIcUKo56f+HHFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBdz8IZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CFFC4CEF0;
+	Sun,  7 Sep 2025 20:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276197;
-	bh=CGYA2gC7JeNFPDvctMTfa5e1Kn6qSloL3decvYSg2Ss=;
+	s=korg; t=1757277060;
+	bh=mptv2yhY5GXz8Vd14kjy6Aq8CfHJeFoVTQMY/kymrMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B76c81bnZyPmv9YNLE+ypcAu7ME6iOXIGuOWN4Ij/X4imqjO5/0VVQaF/Ce++Zl4i
-	 BfbWrBXvH1IPSwu4hV6gBUZlGmtfmxCj5+GLUDG97TLnS5afSgAqSB4YZjeyCN/FKi
-	 EMInigu7TvgIU5Eb1hUbHdW/ZVjclvgIFKY3Nr0E=
+	b=DBdz8IZsEAS+huKlFbpaYXKnKf0cMGSEaWbhGFWMRnzAAzIFUBVM1F+Oo+kEmxaOJ
+	 +oDJK9LxRnlWN4f1xDwwrfzsjcN6U6U9FkjJyMcvZqIps52E8FrQxEAMN1GPXRWOhD
+	 ymeHsUbh0ZVfkf10OxnO3tQmi6UtL6WBg/RbVZgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Radu Rendec <rrendec@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/104] wifi: cfg80211: sme: cap SSID length in __cfg80211_connect_result()
+Subject: [PATCH 6.12 071/175] net: vxlan: rename SKB_DROP_REASON_VXLAN_NO_REMOTE
 Date: Sun,  7 Sep 2025 21:57:46 +0200
-Message-ID: <20250907195608.454863919@linuxfoundation.org>
+Message-ID: <20250907195616.515585259@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Radu Rendec <rrendec@redhat.com>
 
-[ Upstream commit 62b635dcd69c4fde7ce1de4992d71420a37e51e3 ]
+[ Upstream commit 46e0ccfb88f02ab2eb20a41d519d6e4c028652f2 ]
 
-If the ssid->datalen is more than IEEE80211_MAX_SSID_LEN (32) it would
-lead to memory corruption so add some bounds checking.
+The SKB_DROP_REASON_VXLAN_NO_REMOTE skb drop reason was introduced in
+the specific context of vxlan. As it turns out, there are similar cases
+when a packet needs to be dropped in other parts of the network stack,
+such as the bridge module.
 
-Fixes: c38c70185101 ("wifi: cfg80211: Set SSID if it is not already set")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/0aaaae4a3ed37c6252363c34ae4904b1604e8e32.1756456951.git.dan.carpenter@linaro.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Rename SKB_DROP_REASON_VXLAN_NO_REMOTE and give it a more generic name,
+so that it can be used in other parts of the network stack. This is not
+a functional change, and the numeric value of the drop reason even
+remains unchanged.
+
+Signed-off-by: Radu Rendec <rrendec@redhat.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20241219163606.717758-2-rrendec@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 1f5d2fd1ca04 ("vxlan: Fix NPD in {arp,neigh}_reduce() when using nexthop objects")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/sme.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/vxlan/vxlan_core.c | 4 ++--
+ drivers/net/vxlan/vxlan_mdb.c  | 2 +-
+ include/net/dropreason-core.h  | 6 +++---
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index e35c3c29cec7d..ed16e852133e7 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -886,13 +886,16 @@ void __cfg80211_connect_result(struct net_device *dev,
- 	if (!wdev->u.client.ssid_len) {
- 		rcu_read_lock();
- 		for_each_valid_link(cr, link) {
-+			u32 ssid_len;
-+
- 			ssid = ieee80211_bss_get_elem(cr->links[link].bss,
- 						      WLAN_EID_SSID);
- 
- 			if (!ssid || !ssid->datalen)
- 				continue;
- 
--			memcpy(wdev->u.client.ssid, ssid->data, ssid->datalen);
-+			ssid_len = min(ssid->datalen, IEEE80211_MAX_SSID_LEN);
-+			memcpy(wdev->u.client.ssid, ssid->data, ssid_len);
- 			wdev->u.client.ssid_len = ssid->datalen;
- 			break;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 40f01a6aaed38..ce9dcd8e74a93 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -2787,7 +2787,7 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			dev_core_stats_tx_dropped_inc(dev);
+ 			vxlan_vnifilter_count(vxlan, vni, NULL,
+ 					      VXLAN_VNI_STATS_TX_DROPS, 0);
+-			kfree_skb_reason(skb, SKB_DROP_REASON_VXLAN_NO_REMOTE);
++			kfree_skb_reason(skb, SKB_DROP_REASON_NO_TX_TARGET);
+ 			return NETDEV_TX_OK;
  		}
+ 	}
+@@ -2810,7 +2810,7 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		if (fdst)
+ 			vxlan_xmit_one(skb, dev, vni, fdst, did_rsc);
+ 		else
+-			kfree_skb_reason(skb, SKB_DROP_REASON_VXLAN_NO_REMOTE);
++			kfree_skb_reason(skb, SKB_DROP_REASON_NO_TX_TARGET);
+ 	}
+ 
+ 	return NETDEV_TX_OK;
+diff --git a/drivers/net/vxlan/vxlan_mdb.c b/drivers/net/vxlan/vxlan_mdb.c
+index e1173ae134284..ec86d1c024834 100644
+--- a/drivers/net/vxlan/vxlan_mdb.c
++++ b/drivers/net/vxlan/vxlan_mdb.c
+@@ -1712,7 +1712,7 @@ netdev_tx_t vxlan_mdb_xmit(struct vxlan_dev *vxlan,
+ 		vxlan_xmit_one(skb, vxlan->dev, src_vni,
+ 			       rcu_dereference(fremote->rd), false);
+ 	else
+-		kfree_skb_reason(skb, SKB_DROP_REASON_VXLAN_NO_REMOTE);
++		kfree_skb_reason(skb, SKB_DROP_REASON_NO_TX_TARGET);
+ 
+ 	return NETDEV_TX_OK;
+ }
+diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
+index d59bb96c5a02c..02e7be19b0428 100644
+--- a/include/net/dropreason-core.h
++++ b/include/net/dropreason-core.h
+@@ -96,7 +96,7 @@
+ 	FN(VXLAN_VNI_NOT_FOUND)		\
+ 	FN(MAC_INVALID_SOURCE)		\
+ 	FN(VXLAN_ENTRY_EXISTS)		\
+-	FN(VXLAN_NO_REMOTE)		\
++	FN(NO_TX_TARGET)		\
+ 	FN(IP_TUNNEL_ECN)		\
+ 	FN(TUNNEL_TXINFO)		\
+ 	FN(LOCAL_MAC)			\
+@@ -441,8 +441,8 @@ enum skb_drop_reason {
+ 	 * entry or an entry pointing to a nexthop.
+ 	 */
+ 	SKB_DROP_REASON_VXLAN_ENTRY_EXISTS,
+-	/** @SKB_DROP_REASON_VXLAN_NO_REMOTE: no remote found for xmit */
+-	SKB_DROP_REASON_VXLAN_NO_REMOTE,
++	/** @SKB_DROP_REASON_NO_TX_TARGET: no target found for xmit */
++	SKB_DROP_REASON_NO_TX_TARGET,
+ 	/**
+ 	 * @SKB_DROP_REASON_IP_TUNNEL_ECN: skb is dropped according to
+ 	 * RFC 6040 4.2, see __INET_ECN_decapsulate() for detail.
 -- 
 2.50.1
 
