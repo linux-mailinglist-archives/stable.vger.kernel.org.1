@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D5D4B47D7B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B535B47D45
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 195CD7A1A64
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BD19189C682
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A524C27F754;
-	Sun,  7 Sep 2025 20:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A752836A0;
+	Sun,  7 Sep 2025 20:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjxQZqej"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4EFgQuz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617B51B424F;
-	Sun,  7 Sep 2025 20:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366061CDFAC;
+	Sun,  7 Sep 2025 20:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275949; cv=none; b=huWHzJ7oAMVCSdFaZNa3UmGxHfFpf9qp28F+I7uhC841mlqjurasWT8Ce2fqO9qW3khxPsLlxQN5flgrBnLRvcwAcQ8MhEzbIrpFvLQqC7jNLCXXiyO7vMtB7w5Y1/WGdD1r8rCnIVwvzcJQN9ouC0yPrURevUI7u1V/ZyyPTU8=
+	t=1757275778; cv=none; b=hmHW9aT72eWoY/pUTaXWzyUo3siLwk0yJWldCc7SLJtJr4kSXWBbw6TRTQ5wZFJ51LVtLcz/0XymHkg8hvB72Xll/g4Lb4J9CLV/II4Pm6YUl3GeH5RYWzO1FW9q8O3ROZXm86bs+1yFv+9jlnekyGQuv3b0ng+4CeT4Mk+ky+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275949; c=relaxed/simple;
-	bh=lAvU5x2uhqLG9Ur5/R6x6gnhAzw8UrCs6CSaEvu1ErY=;
+	s=arc-20240116; t=1757275778; c=relaxed/simple;
+	bh=64aOqgjix7/IQbXz6rq8sO+Rg8yvUWmKrfqemUnMDbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bK3wGlYYswuQaz48MIzrsEZbY9wiormNzIgeyRlm3oOD2LPl6YRl9UUoauLB0sp2D6eJcIqXjGN+ssySDxAuuLPJ6fLy7hypjVNy73eB5zoZ/kacmN2mN1/zPoxyqf66QB/YowV0hh4QcjA7+Oge7ie86uAM/BfPKNU2CAQCo8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjxQZqej; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D806DC4CEF0;
-	Sun,  7 Sep 2025 20:12:28 +0000 (UTC)
+	 MIME-Version; b=ioWTUeXmAM6L0QtpF88RoOF60gBJYSBbMVi3VbFHu0tk6u44YykYYbQYgSP9AnVmu6pTLCZI4xLOYp6yC5SSm5xm0teT49S6YmsqaOIfbS9nDwYKCfRgd0cj/hpTNwFlpNmaUgUwbz4e52zw2RtVAfcYS4QBTPqg1aFWxLByIhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4EFgQuz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61AF0C4CEF0;
+	Sun,  7 Sep 2025 20:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275949;
-	bh=lAvU5x2uhqLG9Ur5/R6x6gnhAzw8UrCs6CSaEvu1ErY=;
+	s=korg; t=1757275776;
+	bh=64aOqgjix7/IQbXz6rq8sO+Rg8yvUWmKrfqemUnMDbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjxQZqejKK+lBV0mJaTDrBEKbmW0eUOBAZWFbzl00c6jz6PmUkJ/JjLAMaaNvpXl/
-	 pIXjSQQMNFfNUyGUOiyMI6WEngu1AQ8dj7a3PNU15SDAKFjQiE1mPfSs2jR8fdl95Y
-	 qRAug+7VtUJb+5WP18RxdnH4mPfk59OtkcKRij7s=
+	b=C4EFgQuzZk69rLvWmVUx86lRw6UTiprH4XWvIy1xMW4AFLhsy3NLMjWnJ2d2VjgUh
+	 pGPQ2aEL9zJfGVi4rxUy7QEmBnkYHwstsRi5sZnbs2HSSQzaTEkISexmhjloNMXMLe
+	 Fr/voyKlK2xN/IeivmME12rC4+l7COvvDKPGG2Jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Imre Kaloz <kaloz@openwrt.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 16/64] i40e: Fix potential invalid access when MAC list is empty
-Date: Sun,  7 Sep 2025 21:57:58 +0200
-Message-ID: <20250907195603.851453929@linuxfoundation.org>
+Subject: [PATCH 5.10 39/52] arm64: dts: marvell: uDPU: define pinctrl state for alarm LEDs
+Date: Sun,  7 Sep 2025 21:57:59 +0200
+Message-ID: <20250907195603.106100079@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit a556f06338e1d5a85af0e32ecb46e365547f92b9 ]
+[ Upstream commit b04f0d89e880bc2cca6a5c73cf287082c91878da ]
 
-list_first_entry() never returns NULL - if the list is empty, it still
-returns a pointer to an invalid object, leading to potential invalid
-memory access when dereferenced.
+The two alarm LEDs of on the uDPU board are stopped working since
+commit 78efa53e715e ("leds: Init leds class earlier").
 
-Fix this by using list_first_entry_or_null instead of list_first_entry.
+The LEDs are driven by the GPIO{15,16} pins of the North Bridge
+GPIO controller. These pins are part of the 'spi_quad' pin group
+for which the 'spi' function is selected via the default pinctrl
+state of the 'spi' node. This is wrong however, since in order to
+allow controlling the LEDs, the pins should use the 'gpio' function.
 
-Fixes: e3219ce6a775 ("i40e: Add support for client interface for IWARP driver")
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Before the commit mentined above, the 'spi' function is selected
+first by the pinctrl core before probing the spi driver, but then
+it gets overridden to 'gpio' implicitly via the
+devm_gpiod_get_index_optional() call from the 'leds-gpio' driver.
+
+After the commit, the LED subsystem gets initialized before the
+SPI subsystem, so the function of the pin group remains 'spi'
+which in turn prevents controlling of the LEDs.
+
+Despite the change of the initialization order, the root cause is
+that the pinctrl state definition is wrong since its initial commit
+0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board"),
+
+To fix the problem, override the function in the 'spi_quad_pins'
+node to 'gpio' and move the pinctrl state definition from the
+'spi' node into the 'leds' node.
+
+Cc: stable@vger.kernel.org # needs adjustment for < 6.1
+Fixes: 0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+[ Applied to .dts instead of .dtsi ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_client.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_client.c b/drivers/net/ethernet/intel/i40e/i40e_client.c
-index 8bcb98b85e3d9..4af2a4c591067 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_client.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_client.c
-@@ -362,8 +362,8 @@ static void i40e_client_add_instance(struct i40e_pf *pf)
- 	if (i40e_client_get_params(vsi, &cdev->lan_info.params))
- 		goto free_cdev;
+--- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts
++++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts
+@@ -28,8 +28,9 @@
+ 	};
  
--	mac = list_first_entry(&cdev->lan_info.netdev->dev_addrs.list,
--			       struct netdev_hw_addr, list);
-+	mac = list_first_entry_or_null(&cdev->lan_info.netdev->dev_addrs.list,
-+				       struct netdev_hw_addr, list);
- 	if (mac)
- 		ether_addr_copy(cdev->lan_info.lanmac, mac->addr);
- 	else
--- 
-2.50.1
-
+ 	leds {
+-		pinctrl-names = "default";
+ 		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&spi_quad_pins>;
+ 
+ 		power1 {
+ 			label = "udpu:green:power";
+@@ -96,8 +97,6 @@
+ 
+ &spi0 {
+ 	status = "okay";
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&spi_quad_pins>;
+ 
+ 	m25p80@0 {
+ 		compatible = "jedec,spi-nor";
+@@ -117,6 +116,10 @@
+ 	};
+ };
+ 
++&spi_quad_pins {
++	function = "gpio";
++};
++
+ &pinctrl_nb {
+ 	i2c1_recovery_pins: i2c1-recovery-pins {
+ 		groups = "i2c1";
 
 
 
