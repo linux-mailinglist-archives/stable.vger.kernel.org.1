@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-178151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 700E8B47D74
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C624B47D1B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B6BA3B4467
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8CFB17BB2F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D184727FB21;
-	Sun,  7 Sep 2025 20:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0538B296BB8;
+	Sun,  7 Sep 2025 20:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzJmXRPr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y01/4hvi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1FF1CDFAC;
-	Sun,  7 Sep 2025 20:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A9C1CDFAC;
+	Sun,  7 Sep 2025 20:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275927; cv=none; b=OW87nKdoDR4JLb9Km/ia+3oSZHQqA5u2SAgaBMhG8VcgmbhfT9Qr8iNQjuwiO8uDH2eUcgOK633A/CV5Fr0FXlaf/lU5Iq+zvvREo7GnK8qJp8vQ1Q22tpzUvEJVBGAQ5j7F5qi8dYyV4biCFvYhbF4WALvkEOo4bIl7FOn3cPY=
+	t=1757275658; cv=none; b=QRP9eD38V3GaEM1XvJcu3nwtgiABgLaiotZacXTAhkU4bel2lcrAxmWpjjRF8pMHWS3OeWlBGFDvKdW5dUF05RK3pC1qN7ndeCsL/387PlLWL40I8LC0XXESFS5U+FAvRtfHeaLGm9rX5A3dT3AJAywfQBN55X+l51xMOA2wIkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275927; c=relaxed/simple;
-	bh=Qt8eTSViy+KfMiVdqoX3u4Hv3QVFKh7eCMTPnJFL088=;
+	s=arc-20240116; t=1757275658; c=relaxed/simple;
+	bh=EOkqqw2deM5MzUjnMR5WLva/JNV7wlGPEAB2QX9qh94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qPcwyRaQ3OYRuNh6iuqC2A1XhbtLVFsLpWYOVZ8c5FZK7m4NrKrElPzKZJRu0Exya9qINNa6yl2s98qHWpchl8el0XYsitBrgn1vYDtef4tYpZ48BYQLdJ6gpfGkFttqAQ+Kv/lP9KqU0v2i8xAbuy3GNWAWYHDCWw4HJKhg9lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzJmXRPr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129D8C4CEF0;
-	Sun,  7 Sep 2025 20:12:06 +0000 (UTC)
+	 MIME-Version; b=jiC1HMPj7Y+KBV+SfNY+f+l5l3gF4+sedAXYMF/6IQzS2zk+COqG2/kGnB7XdAvNqPf06SNakZLhSCC68sAQapnZF7dl85iKv/GFb6r8N0TCDPsyWYiJhL5UtwHOZqA0/mu7Nozr4Vtn9hrPBpsi9zoNq/Jp1TnbJVmw/cVMVsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y01/4hvi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E852C4CEF0;
+	Sun,  7 Sep 2025 20:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275927;
-	bh=Qt8eTSViy+KfMiVdqoX3u4Hv3QVFKh7eCMTPnJFL088=;
+	s=korg; t=1757275658;
+	bh=EOkqqw2deM5MzUjnMR5WLva/JNV7wlGPEAB2QX9qh94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EzJmXRPrVeM5YH8f/idWxWqNTBCVlhIXBkN2XxOXOzR/qjZhB+pN55fepb8tLjEFR
-	 QeL6+UUDlIISOeONCkYSktMq6Ea0KWlpFp0ui1FVdP83FqRa28Lep765lj1E5J+6p2
-	 Kus4zs0Z8eFYu1rOkuim2J5C+rSkZ4TEOdNodk6k=
+	b=y01/4hvi67OfkrT8bKcYAVRjjcB2wT+eAMpRkyaN0zECRkrl5wA33sz8O70H/COMx
+	 UIaDLteTZEAz1wB8WeI/KXaJlSPQFO5lG1oW3xD3jNJ07dC5TWgKqn9BgevuxytNuQ
+	 L5cwcc8qjy9Eukrg44/f8CP1lF8WmqAdDZd9A3q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 01/64] bpf: Add cookie object to bpf maps
+	oushixiong <oushixiong1025@163.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 23/52] drm/amdgpu: drop hw access in non-DC audio fini
 Date: Sun,  7 Sep 2025 21:57:43 +0200
-Message-ID: <20250907195603.435311129@linuxfoundation.org>
+Message-ID: <20250907195602.672975323@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 12df58ad294253ac1d8df0c9bb9cf726397a671d ]
+commit 71403f58b4bb6c13b71c05505593a355f697fd94 upstream.
 
-Add a cookie to BPF maps to uniquely identify BPF maps for the timespan
-when the node is up. This is different to comparing a pointer or BPF map
-id which could get rolled over and reused.
+We already disable the audio pins in hw_fini so
+there is no need to do it again in sw_fini.
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20250730234733.530041-1-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4481
+Cc: oushixiong <oushixiong1025@163.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5eeb16ca727f11278b2917fd4311a7d7efb0bbd6)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bpf.h  | 1 +
- kernel/bpf/syscall.c | 6 ++++++
- 2 files changed, 7 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/dce_v10_0.c |    5 -----
+ drivers/gpu/drm/amd/amdgpu/dce_v11_0.c |    5 -----
+ drivers/gpu/drm/amd/amdgpu/dce_v6_0.c  |    5 -----
+ drivers/gpu/drm/amd/amdgpu/dce_v8_0.c  |    5 -----
+ 4 files changed, 20 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 4236de05a8e70..dd6a62134e7d1 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -200,6 +200,7 @@ struct bpf_map {
- 	struct mutex freeze_mutex;
- 	atomic64_t writecnt;
- 	bool free_after_mult_rcu_gp;
-+	u64 cookie; /* write-once */
- };
+--- a/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
+@@ -1463,17 +1463,12 @@ static int dce_v10_0_audio_init(struct a
  
- static inline bool map_value_has_spin_lock(const struct bpf_map *map)
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 6f309248f13fc..6d4d08f57ad38 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -31,6 +31,7 @@
- #include <linux/bpf-netns.h>
- #include <linux/rcupdate_trace.h>
- #include <linux/memcontrol.h>
-+#include <linux/cookie.h>
+ static void dce_v10_0_audio_fini(struct amdgpu_device *adev)
+ {
+-	int i;
+-
+ 	if (!amdgpu_audio)
+ 		return;
  
- #define IS_FD_ARRAY(map) ((map)->map_type == BPF_MAP_TYPE_PERF_EVENT_ARRAY || \
- 			  (map)->map_type == BPF_MAP_TYPE_CGROUP_ARRAY || \
-@@ -43,6 +44,7 @@
- #define BPF_OBJ_FLAG_MASK   (BPF_F_RDONLY | BPF_F_WRONLY)
+ 	if (!adev->mode_info.audio.enabled)
+ 		return;
  
- DEFINE_PER_CPU(int, bpf_prog_active);
-+DEFINE_COOKIE(bpf_map_cookie);
- static DEFINE_IDR(prog_idr);
- static DEFINE_SPINLOCK(prog_idr_lock);
- static DEFINE_IDR(map_idr);
-@@ -886,6 +888,10 @@ static int map_create(union bpf_attr *attr)
- 	if (err < 0)
- 		goto free_map;
+-	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
+-		dce_v10_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+-
+ 	adev->mode_info.audio.enabled = false;
+ }
  
-+	preempt_disable();
-+	map->cookie = gen_cookie_next(&bpf_map_cookie);
-+	preempt_enable();
-+
- 	atomic64_set(&map->refcnt, 1);
- 	atomic64_set(&map->usercnt, 1);
- 	mutex_init(&map->freeze_mutex);
--- 
-2.50.1
-
+--- a/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
+@@ -1505,17 +1505,12 @@ static int dce_v11_0_audio_init(struct a
+ 
+ static void dce_v11_0_audio_fini(struct amdgpu_device *adev)
+ {
+-	int i;
+-
+ 	if (!amdgpu_audio)
+ 		return;
+ 
+ 	if (!adev->mode_info.audio.enabled)
+ 		return;
+ 
+-	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
+-		dce_v11_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+-
+ 	adev->mode_info.audio.enabled = false;
+ }
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
+@@ -1375,17 +1375,12 @@ static int dce_v6_0_audio_init(struct am
+ 
+ static void dce_v6_0_audio_fini(struct amdgpu_device *adev)
+ {
+-	int i;
+-
+ 	if (!amdgpu_audio)
+ 		return;
+ 
+ 	if (!adev->mode_info.audio.enabled)
+ 		return;
+ 
+-	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
+-		dce_v6_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+-
+ 	adev->mode_info.audio.enabled = false;
+ }
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
+@@ -1426,17 +1426,12 @@ static int dce_v8_0_audio_init(struct am
+ 
+ static void dce_v8_0_audio_fini(struct amdgpu_device *adev)
+ {
+-	int i;
+-
+ 	if (!amdgpu_audio)
+ 		return;
+ 
+ 	if (!adev->mode_info.audio.enabled)
+ 		return;
+ 
+-	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
+-		dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+-
+ 	adev->mode_info.audio.enabled = false;
+ }
+ 
 
 
 
