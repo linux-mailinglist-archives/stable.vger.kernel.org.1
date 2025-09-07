@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-178124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D164EB47D5B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1841AB47E63
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ED1A17C225
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2CDA189FA3C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6832C1F9F70;
-	Sun,  7 Sep 2025 20:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508F3212B3D;
+	Sun,  7 Sep 2025 20:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HV243Kee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IEeLFY9G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E601CDFAC;
-	Sun,  7 Sep 2025 20:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1AF20E029;
+	Sun,  7 Sep 2025 20:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275842; cv=none; b=c6TMmAyxutWCJPoFq2LPR6zAfJuSl4ixVcX+N4t/JiarAlVhVyIvnG//UEWUlY6oG8nLBxnkkQgCm4Cif+A3UaK75HK7lXjTTDc9nu23Gocbzw9ZjfjhrLZflrMr19v6hfmpjNqo8P1oF8Voj8aIkb9pbgpXIGXKfYFUEXQSs48=
+	t=1757276617; cv=none; b=oZYxtI4s1s9pz2jCABElkuilkEGPNQprgjRzmaB0/WG86KTJFqLTtN4DuijA9BTG1wPbxuxghLDCS3y2jgyxb9rfrvx9kgDkUhVCAT0GAsjzHUxtXv6EfhWnRl3V1qmhbX5mXdyBgM9s6L7eQgiS60XcS9qaq+D811IKKqpHyjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275842; c=relaxed/simple;
-	bh=tBAEPsN+acLRTqhnrGWbgkGM9DaXevjj6ovyShlWJiI=;
+	s=arc-20240116; t=1757276617; c=relaxed/simple;
+	bh=rs1o7EKI9jlO/KnUqx0VNKS9GhKPalBivu6NVlUJh3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r4wFN4A7OORgpbqRdBQHSmGLfgrM0b+GrGONmeOySsvkqJ3cfUaYoCFymTvbYvMbaIr5/wEIrZF3BRzKrTxdFBHFgSWIsONqA5iCVaKHMW1Oblt31Q1JBagbYNvCU9HXGFb4TZfLx7BpNYYlElREALWJyPOrJjb9iRgiE+pdtOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HV243Kee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0E3C4CEF0;
-	Sun,  7 Sep 2025 20:10:41 +0000 (UTC)
+	 MIME-Version; b=XMT2VZOME8f4Y1wM2+flabkNG3hWBDt+YRwKYg93KCeIbp40uYDj0bdTuG63zQInrphwYGxDaYMA/Xz/Rfe0rLE7z0LF9AiHUN+FOKODsAu+9elrM7bORXezA76qmifPPY1wvq0KOovB654UK6/QFgSsBj6HlL+xHKkBeha/bYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IEeLFY9G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E2CC4CEF0;
+	Sun,  7 Sep 2025 20:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275841;
-	bh=tBAEPsN+acLRTqhnrGWbgkGM9DaXevjj6ovyShlWJiI=;
+	s=korg; t=1757276616;
+	bh=rs1o7EKI9jlO/KnUqx0VNKS9GhKPalBivu6NVlUJh3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HV243KeebXqESlBMaYonxGDx32zRmDjfT+kJDOaFczZduY2TWAsHxJfwt53vBBlic
-	 VJSAnn9PfxI5jWdEJP38f18J85YJ58YQTF60lIija2uvZm8LBejsJERmV6inrqZOlr
-	 VRNFyPfKV+yiDhpkzphT00jqODgqvDlhPmC2RsMA=
+	b=IEeLFY9GPjxfid3qzw0e8dexg/LMCgeJSCa2Q1JiIdEfIWMuzz1337LXyOXvVfCQ4
+	 3e0AftdIfTvRbSEdQYr9tAjgslhkByLetHMHtABH3tDCLolCOIcTH0vPaZRV3JEtaG
+	 XbfJIcgVQb7g8Y+asOdskYKScx8kTKq3jcMQI8IE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Christian Loehle <christian.loehle@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 27/45] cpufreq/sched: Explicitly synchronize limits_changed flag handling
+	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>
+Subject: [PATCH 6.6 057/121] sched: Fix sched_numa_find_nth_cpu() if mask offline
 Date: Sun,  7 Sep 2025 21:58:13 +0200
-Message-ID: <20250907195601.756101702@linuxfoundation.org>
+Message-ID: <20250907195611.300378525@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +61,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+From: Christian Loehle <christian.loehle@arm.com>
 
-[ Upstream commit 79443a7e9da3c9f68290a8653837e23aba0fa89f ]
+commit 5ebf512f335053a42482ebff91e46c6dc156bf8c upstream.
 
-The handling of the limits_changed flag in struct sugov_policy needs to
-be explicitly synchronized to ensure that cpufreq policy limits updates
-will not be missed in some cases.
+sched_numa_find_nth_cpu() uses a bsearch to look for the 'closest'
+CPU in sched_domains_numa_masks and given cpus mask. However they
+might not intersect if all CPUs in the cpus mask are offline. bsearch
+will return NULL in that case, bail out instead of dereferencing a
+bogus pointer.
 
-Without that synchronization it is theoretically possible that
-the limits_changed update in sugov_should_update_freq() will be
-reordered with respect to the reads of the policy limits in
-cpufreq_driver_resolve_freq() and in that case, if the limits_changed
-update in sugov_limits() clobbers the one in sugov_should_update_freq(),
-the new policy limits may not take effect for a long time.
+The previous behaviour lead to this bug when using maxcpus=4 on an
+rk3399 (LLLLbb) (i.e. booting with all big CPUs offline):
 
-Likewise, the limits_changed update in sugov_limits() may theoretically
-get reordered with respect to the updates of the policy limits in
-cpufreq_set_policy() and if sugov_should_update_freq() runs between
-them, the policy limits change may be missed.
+[    1.422922] Unable to handle kernel paging request at virtual address ffffff8000000000
+[    1.423635] Mem abort info:
+[    1.423889]   ESR = 0x0000000096000006
+[    1.424227]   EC = 0x25: DABT (current EL), IL = 32 bits
+[    1.424715]   SET = 0, FnV = 0
+[    1.424995]   EA = 0, S1PTW = 0
+[    1.425279]   FSC = 0x06: level 2 translation fault
+[    1.425735] Data abort info:
+[    1.425998]   ISV = 0, ISS = 0x00000006, ISS2 = 0x00000000
+[    1.426499]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[    1.426952]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[    1.427428] swapper pgtable: 4k pages, 39-bit VAs, pgdp=0000000004a9f000
+[    1.428038] [ffffff8000000000] pgd=18000000f7fff403, p4d=18000000f7fff403, pud=18000000f7fff403, pmd=0000000000000000
+[    1.429014] Internal error: Oops: 0000000096000006 [#1]  SMP
+[    1.429525] Modules linked in:
+[    1.429813] CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.17.0-rc4-dirty #343 PREEMPT
+[    1.430559] Hardware name: Pine64 RockPro64 v2.1 (DT)
+[    1.431012] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    1.431634] pc : sched_numa_find_nth_cpu+0x2a0/0x488
+[    1.432094] lr : sched_numa_find_nth_cpu+0x284/0x488
+[    1.432543] sp : ffffffc084e1b960
+[    1.432843] x29: ffffffc084e1b960 x28: ffffff80078a8800 x27: ffffffc0846eb1d0
+[    1.433495] x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
+[    1.434144] x23: 0000000000000000 x22: fffffffffff7f093 x21: ffffffc081de6378
+[    1.434792] x20: 0000000000000000 x19: 0000000ffff7f093 x18: 00000000ffffffff
+[    1.435441] x17: 3030303866666666 x16: 66663d736b73616d x15: ffffffc104e1b5b7
+[    1.436091] x14: 0000000000000000 x13: ffffffc084712860 x12: 0000000000000372
+[    1.436739] x11: 0000000000000126 x10: ffffffc08476a860 x9 : ffffffc084712860
+[    1.437389] x8 : 00000000ffffefff x7 : ffffffc08476a860 x6 : 0000000000000000
+[    1.438036] x5 : 000000000000bff4 x4 : 0000000000000000 x3 : 0000000000000000
+[    1.438683] x2 : 0000000000000000 x1 : ffffffc0846eb000 x0 : ffffff8000407b68
+[    1.439332] Call trace:
+[    1.439559]  sched_numa_find_nth_cpu+0x2a0/0x488 (P)
+[    1.440016]  smp_call_function_any+0xc8/0xd0
+[    1.440416]  armv8_pmu_init+0x58/0x27c
+[    1.440770]  armv8_cortex_a72_pmu_init+0x20/0x2c
+[    1.441199]  arm_pmu_device_probe+0x1e4/0x5e8
+[    1.441603]  armv8_pmu_device_probe+0x1c/0x28
+[    1.442007]  platform_probe+0x5c/0xac
+[    1.442347]  really_probe+0xbc/0x298
+[    1.442683]  __driver_probe_device+0x78/0x12c
+[    1.443087]  driver_probe_device+0xdc/0x160
+[    1.443475]  __driver_attach+0x94/0x19c
+[    1.443833]  bus_for_each_dev+0x74/0xd4
+[    1.444190]  driver_attach+0x24/0x30
+[    1.444525]  bus_add_driver+0xe4/0x208
+[    1.444874]  driver_register+0x60/0x128
+[    1.445233]  __platform_driver_register+0x24/0x30
+[    1.445662]  armv8_pmu_driver_init+0x28/0x4c
+[    1.446059]  do_one_initcall+0x44/0x25c
+[    1.446416]  kernel_init_freeable+0x1dc/0x3bc
+[    1.446820]  kernel_init+0x20/0x1d8
+[    1.447151]  ret_from_fork+0x10/0x20
+[    1.447493] Code: 90022e21 f000e5f5 910de2b5 2a1703e2 (f8767803)
+[    1.448040] ---[ end trace 0000000000000000 ]---
+[    1.448483] note: swapper/0[1] exited with preempt_count 1
+[    1.449047] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+[    1.449741] SMP: stopping secondary CPUs
+[    1.450105] Kernel Offset: disabled
+[    1.450419] CPU features: 0x000000,00080000,20002001,0400421b
+[    1.450935] Memory Limit: none
+[    1.451217] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b ]---
 
-To ensure that the above situations will not take place, add memory
-barriers preventing the reordering in question from taking place and
-add READ_ONCE() and WRITE_ONCE() annotations around all of the
-limits_changed flag updates to prevent the compiler from messing up
-with that code.
+Yury: with the fix, the function returns cpu == nr_cpu_ids, and later in
 
-Fixes: 600f5badb78c ("cpufreq: schedutil: Don't skip freq update when limits change")
-Cc: 5.3+ <stable@vger.kernel.org> # 5.3+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/3376719.44csPzL39Z@rjwysocki.net
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	smp_call_function_any ->
+	  smp_call_function_single ->
+	     generic_exec_single
+
+we test the cpu for '>= nr_cpu_ids' and return -ENXIO. So everything is
+handled correctly.
+
+Fixes: cd7f55359c90 ("sched: add sched_numa_find_nth_cpu()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Loehle <christian.loehle@arm.com>
+Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/cpufreq_schedutil.c |   28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ kernel/sched/topology.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -88,9 +88,20 @@ static bool sugov_should_update_freq(str
- 	if (!cpufreq_this_cpu_can_update(sg_policy->policy))
- 		return false;
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -2140,6 +2140,8 @@ int sched_numa_find_nth_cpu(const struct
+ 		goto unlock;
  
--	if (unlikely(sg_policy->limits_changed)) {
--		sg_policy->limits_changed = false;
-+	if (unlikely(READ_ONCE(sg_policy->limits_changed))) {
-+		WRITE_ONCE(sg_policy->limits_changed, false);
- 		sg_policy->need_freq_update = true;
-+
-+		/*
-+		 * The above limits_changed update must occur before the reads
-+		 * of policy limits in cpufreq_driver_resolve_freq() or a policy
-+		 * limits update might be missed, so use a memory barrier to
-+		 * ensure it.
-+		 *
-+		 * This pairs with the write memory barrier in sugov_limits().
-+		 */
-+		smp_mb();
-+
- 		return true;
- 	}
+ 	hop_masks = bsearch(&k, k.masks, sched_domains_numa_levels, sizeof(k.masks[0]), hop_cmp);
++	if (!hop_masks)
++		goto unlock;
+ 	hop = hop_masks	- k.masks;
  
-@@ -444,7 +455,7 @@ static inline bool sugov_cpu_is_busy(str
- static inline void ignore_dl_rate_limit(struct sugov_cpu *sg_cpu, struct sugov_policy *sg_policy)
- {
- 	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_dl)
--		sg_policy->limits_changed = true;
-+		WRITE_ONCE(sg_policy->limits_changed, true);
- }
- 
- static void sugov_update_single(struct update_util_data *hook, u64 time,
-@@ -894,7 +905,16 @@ static void sugov_limits(struct cpufreq_
- 		mutex_unlock(&sg_policy->work_lock);
- 	}
- 
--	sg_policy->limits_changed = true;
-+	/*
-+	 * The limits_changed update below must take place before the updates
-+	 * of policy limits in cpufreq_set_policy() or a policy limits update
-+	 * might be missed, so use a memory barrier to ensure it.
-+	 *
-+	 * This pairs with the memory barrier in sugov_should_update_freq().
-+	 */
-+	smp_wmb();
-+
-+	WRITE_ONCE(sg_policy->limits_changed, true);
- }
- 
- struct cpufreq_governor schedutil_gov = {
+ 	ret = hop ?
 
 
 
