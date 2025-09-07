@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-178710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8D2B47FC1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1748B47F35
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1010E4E1351
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A958617F8F8
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D66626B2AD;
-	Sun,  7 Sep 2025 20:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89AAF1DE8AF;
+	Sun,  7 Sep 2025 20:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ets2I5CQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySjwwS0J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2EC20E00B;
-	Sun,  7 Sep 2025 20:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484D31DF246;
+	Sun,  7 Sep 2025 20:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277710; cv=none; b=vEK65AcPfpTsz2YRmxKAr9ol9B85/KZFJglLR08yywknEnTIhjv9ZoV5dibgXj2C9geEJNopUGlC9Ic43lm9gOQg+uMZxxuDsB0H4IfxNNAyjemcURcOobbK/2g/s0EKWPIseg2tjDI1b8uSDD4CRCl05+KF0nXwmo5dyoCRyK4=
+	t=1757277268; cv=none; b=F94STQMnQoRH4E2e0/SMhnVMah2QBQrarCwfiyDISzfdtNVV7xDJLxuUFDSI7Ds2AU3etC76uzJym9MNNw3MiuGvFErAawqhFH0bCH7MuV20E979U+2thYkSPmrLyXGOiSB19SAcirZSN24Ki62idVURpMP2T7aCJRn1uhdKwc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277710; c=relaxed/simple;
-	bh=8VTPDvEbNX+m8K/0uj3fZyouJ6KKJoNQVKh0+tUx8X8=;
+	s=arc-20240116; t=1757277268; c=relaxed/simple;
+	bh=S/Tw3cD5+OdjWsFvhwUnjIJaWuY+X2JkHaF4r2vQOPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eoGHrn92+EqHzJuTaXRPya5UC96rVkSITJF0MXtW2KE81Dsu/S7CA+7+Tm8Uz4TlHk2zA/jlLD08MCwykP6fffgj0U6slDi0ESiobej67FOSKmP6ekyURW7yM+G6TBYifFILZXVnbrh32zl946yjq2wNxsEwt9zpYWXWnoQ0kac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ets2I5CQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81A0C4CEF0;
-	Sun,  7 Sep 2025 20:41:49 +0000 (UTC)
+	 MIME-Version; b=CNGKDycsZ+0a2cIsrkKxe5vpgdeUCggs5JitiulKAC9rGG4KYYVO+XKUQWGyC9ZffTjWqvUZO0JmIztOj6II2CfhKSHCrMl5nhqR2dZVr7gv+CzPcbMW2d9SxqB0vh+U+jn4mIfsr+gr9LAGATQpQeyvPjwi5lJ3tnfEodbfTko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySjwwS0J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C170DC4CEF0;
+	Sun,  7 Sep 2025 20:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277710;
-	bh=8VTPDvEbNX+m8K/0uj3fZyouJ6KKJoNQVKh0+tUx8X8=;
+	s=korg; t=1757277268;
+	bh=S/Tw3cD5+OdjWsFvhwUnjIJaWuY+X2JkHaF4r2vQOPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ets2I5CQ1DODNnhzT9zJiuZM75P6oAj7NjLpFqyjibXN8GQmL0aI+g3KwegBW8448
-	 FXSPgz5outk6GxKpm2eR8j1zdwEx7u77iskKyeAZe6k/ypoKDcOXZJF72EwBgxKbk6
-	 yvdCXd9Q8DQfwg/tCUCE5JuJmGzN8c38GLfUp8W4=
+	b=ySjwwS0JmPnu+/s6jNMj4T26FUs34G+8bdjrqgvy768r9DHnTJh4u4GqcKN5gPY9q
+	 Y7AgB+k+E4E4mjYbRDdLwJ4DbSFbVAIHKjtSgsWyqTJSFFXdxHn9l9eaZwUWFPRSrm
+	 YBhGVVCMyUShVkJjAnwfBNPgBfsha164JtQN3a50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.16 098/183] ACPI/IORT: Fix memory leak in iort_rmr_alloc_sids()
-Date: Sun,  7 Sep 2025 21:58:45 +0200
-Message-ID: <20250907195618.112604970@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.12 131/175] ext4: define ext4_journal_destroy wrapper
+Date: Sun,  7 Sep 2025 21:58:46 +0200
+Message-ID: <20250907195617.955445603@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-commit f3ef7110924b897f4b79db9f7ac75d319ec09c4a upstream.
+commit 5a02a6204ca37e7c22fbb55a789c503f05e8e89a upstream.
 
-If krealloc_array() fails in iort_rmr_alloc_sids(), the function returns
-NULL but does not free the original 'sids' allocation. This results in a
-memory leak since the caller overwrites the original pointer with the
-NULL return value.
+Define an ext4 wrapper over jbd2_journal_destroy to make sure we
+have consistent behavior during journal destruction. This will also
+come useful in the next patch where we add some ext4 specific logic
+in the destroy path.
 
-Fixes: 491cf4a6735a ("ACPI/IORT: Add support to retrieve IORT RMR reserved regions")
-Cc: <stable@vger.kernel.org> # 6.0.x
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
-Link: https://lore.kernel.org/r/20250828112243.61460-1-linmq006@gmail.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/c3ba78c5c419757e6d5f2d8ebb4a8ce9d21da86a.1742279837.git.ojaswin@linux.ibm.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/arm64/iort.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ext4/ext4_jbd2.h |   14 ++++++++++++++
+ fs/ext4/super.c     |   16 ++++++----------
+ 2 files changed, 20 insertions(+), 10 deletions(-)
 
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -937,8 +937,10 @@ static u32 *iort_rmr_alloc_sids(u32 *sid
+--- a/fs/ext4/ext4_jbd2.h
++++ b/fs/ext4/ext4_jbd2.h
+@@ -513,4 +513,18 @@ static inline int ext4_should_dioread_no
+ 	return 1;
+ }
  
- 	new_sids = krealloc_array(sids, count + new_count,
- 				  sizeof(*new_sids), GFP_KERNEL);
--	if (!new_sids)
-+	if (!new_sids) {
-+		kfree(sids);
- 		return NULL;
-+	}
++/*
++ * Pass journal explicitly as it may not be cached in the sbi->s_journal in some
++ * cases
++ */
++static inline int ext4_journal_destroy(struct ext4_sb_info *sbi, journal_t *journal)
++{
++	int err = 0;
++
++	err = jbd2_journal_destroy(journal);
++	sbi->s_journal = NULL;
++
++	return err;
++}
++
+ #endif	/* _EXT4_JBD2_H */
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1312,8 +1312,7 @@ static void ext4_put_super(struct super_
  
- 	for (i = count; i < total_count; i++)
- 		new_sids[i] = id_start++;
+ 	if (sbi->s_journal) {
+ 		aborted = is_journal_aborted(sbi->s_journal);
+-		err = jbd2_journal_destroy(sbi->s_journal);
+-		sbi->s_journal = NULL;
++		err = ext4_journal_destroy(sbi, sbi->s_journal);
+ 		if ((err < 0) && !aborted) {
+ 			ext4_abort(sb, -err, "Couldn't clean up the journal");
+ 		}
+@@ -4957,8 +4956,7 @@ static int ext4_load_and_init_journal(st
+ out:
+ 	/* flush s_sb_upd_work before destroying the journal. */
+ 	flush_work(&sbi->s_sb_upd_work);
+-	jbd2_journal_destroy(sbi->s_journal);
+-	sbi->s_journal = NULL;
++	ext4_journal_destroy(sbi, sbi->s_journal);
+ 	return -EINVAL;
+ }
+ 
+@@ -5649,8 +5647,7 @@ failed_mount_wq:
+ 	if (sbi->s_journal) {
+ 		/* flush s_sb_upd_work before journal destroy. */
+ 		flush_work(&sbi->s_sb_upd_work);
+-		jbd2_journal_destroy(sbi->s_journal);
+-		sbi->s_journal = NULL;
++		ext4_journal_destroy(sbi, sbi->s_journal);
+ 	}
+ failed_mount3a:
+ 	ext4_es_unregister_shrinker(sbi);
+@@ -5958,7 +5955,7 @@ static journal_t *ext4_open_dev_journal(
+ 	return journal;
+ 
+ out_journal:
+-	jbd2_journal_destroy(journal);
++	ext4_journal_destroy(EXT4_SB(sb), journal);
+ out_bdev:
+ 	bdev_fput(bdev_file);
+ 	return ERR_PTR(errno);
+@@ -6075,8 +6072,7 @@ static int ext4_load_journal(struct supe
+ 	EXT4_SB(sb)->s_journal = journal;
+ 	err = ext4_clear_journal_err(sb, es);
+ 	if (err) {
+-		EXT4_SB(sb)->s_journal = NULL;
+-		jbd2_journal_destroy(journal);
++		ext4_journal_destroy(EXT4_SB(sb), journal);
+ 		return err;
+ 	}
+ 
+@@ -6094,7 +6090,7 @@ static int ext4_load_journal(struct supe
+ 	return 0;
+ 
+ err_out:
+-	jbd2_journal_destroy(journal);
++	ext4_journal_destroy(EXT4_SB(sb), journal);
+ 	return err;
+ }
+ 
 
 
 
