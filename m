@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26EAEB47FD8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43128B47EA0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC7883C3B40
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFA2D1703EB
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906F3269CE6;
-	Sun,  7 Sep 2025 20:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D049920E005;
+	Sun,  7 Sep 2025 20:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1wGKxfp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBHSVEdv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFB94315A;
-	Sun,  7 Sep 2025 20:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5F2D528;
+	Sun,  7 Sep 2025 20:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277787; cv=none; b=Cty5WYtOwzoA/iK7yKcCLIT+ZNNrDOJyuSxWAQcNNDy/Cm+cOdVtEpNukIFQNXU7Bz9Oa2fXSykTcG+2attsIcyWe7tQ+ZKBAqgVMuLLAC9SlWvCX/ii2KBHAq6kTTbao8ZOK00Msp5cpLrcTn7qyEEv4tEzi3790dZ7i3yHbO0=
+	t=1757276807; cv=none; b=OxlGbZt6ygqtwmEHRDU+bUIdBJj6DxpBwLeLjcotU/+7y60S890qQq0ddBWn8CuL7Z3JJHO4SRX9lwHVoe24J1lsoPrcyLxbFoqvWzQS1xcENOEQ2e0IzsgPg6040x7Tw0m/GhIpWwfTKcf5xX16SDVFXxB3jA45BzdaCGXTrjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277787; c=relaxed/simple;
-	bh=ldyay+VKRnGPd0zILKcxYdCI+6Xchs3CMxIBm5kP/CA=;
+	s=arc-20240116; t=1757276807; c=relaxed/simple;
+	bh=4XNFb+F+DYZbmh8jo5KM5r08xK7+m41NK5QID3DqJcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DARLW8XGN/bVkQdwjCO6pKgAU8vnuOl1uocDixlvkCGLx7JKTUJmdyuQuX1l2VfhAzxDiL1SaN6jc/zOh0we16enNorQeo6x5ZamU8FQVVpm9h5cjuxMDYjvHy7xu/OF1MWzGvkuz6EdM3siqDrrXL4XaNQAEmHQrIbv4le7fNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1wGKxfp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C72BC4CEF0;
-	Sun,  7 Sep 2025 20:43:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rAjKv/7cRSwkWDMidlhsaiug8y0mUYdg+6vhBj5lpTKLu7CHDyXoSje/Qj1xMhml1luWDQaNhBhbTAqrV3Mi47Jg37hGiRQSe6DKmEYewxa6jf2XoFQzMx3k/CieRHwxar5s2F2wBgskTWUoaSEpWFCqc8toNavHNCd3CJ5w5bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBHSVEdv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B46C4CEF0;
+	Sun,  7 Sep 2025 20:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277787;
-	bh=ldyay+VKRnGPd0zILKcxYdCI+6Xchs3CMxIBm5kP/CA=;
+	s=korg; t=1757276807;
+	bh=4XNFb+F+DYZbmh8jo5KM5r08xK7+m41NK5QID3DqJcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r1wGKxfpvUkOBcog6QS9DWA9iG0cOtBeG5L6ICASOOLykRFVMDVt1hZQ4NvJkFq+G
-	 QYted3IW/lLwE/DKKYGfUgpKFxgb0avUGunuE1/3j/KPAfpj7lgz+dVcEY6x5rcHt3
-	 +T8JiYhIH8unMrmXVlFdPh+lVVhuUzlOwYLmCjtI=
+	b=zBHSVEdvezsNdHqHj1pJfSL0+mYviEJxgs/5jLVNXbcvgnpIimQe0kh8o8D7k3iB9
+	 aAFxen/jui0lv/9N89mEIYIp8srqtYkfcKrL7XyHFuGfbS4XfWu4eVBNguaU5zwmrA
+	 ccDSFmNWxd7VOtgoM63uSzJOP1o00JHJIc8y2n1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Valentina Fernandez <valentina.fernandezalanis@microchip.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.16 124/183] spi: microchip-core-qspi: stop checking viability of op->max_freq in supports_op callback
-Date: Sun,  7 Sep 2025 21:59:11 +0200
-Message-ID: <20250907195618.736898108@linuxfoundation.org>
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	=?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>,
+	Paul Walmsley <pjw@kernel.org>
+Subject: [PATCH 6.6 116/121] riscv: use lw when reading int cpu in asm_per_cpu
+Date: Sun,  7 Sep 2025 21:59:12 +0200
+Message-ID: <20250907195612.824246310@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Radim Krčmář <rkrcmar@ventanamicro.com>
 
-commit 89e7353f522f5cf70cb48c01ce2dcdcb275b8022 upstream.
+commit f4ea67a722e8c9e1fb8109adebb9fb881ff0793a upstream.
 
-In commit 13529647743d9 ("spi: microchip-core-qspi: Support per spi-mem
-operation frequency switches") the logic for checking the viability of
-op->max_freq in mchp_coreqspi_setup_clock() was copied into
-mchp_coreqspi_supports_op(). Unfortunately, op->max_freq is not valid
-when this function is called during probe but is instead zero.
-Accordingly, baud_rate_val is calculated to be INT_MAX due to division
-by zero, causing probe of the attached memory device to fail.
+REG_L is wrong, because thread_info.cpu is 32-bit, not xlen-bit wide.
+The struct currently has a hole after cpu, so little endian accesses
+seemed fine.
 
-Seemingly spi-microchip-core-qspi was the only driver that had such a
-modification made to its supports_op callback when the per_op_freq
-capability was added, so just remove it to restore prior functionality.
-
-CC: stable@vger.kernel.org
-Reported-by: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
-Fixes: 13529647743d9 ("spi: microchip-core-qspi: Support per spi-mem operation frequency switches")
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Message-ID: <20250825-during-ploy-939bdd068593@spud>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: be97d0db5f44 ("riscv: VMAP_STACK overflow detection thread-safe")
+Cc: stable@vger.kernel.org
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Radim Krčmář <rkrcmar@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250725165410.2896641-5-rkrcmar@ventanamicro.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-microchip-core-qspi.c |   12 ------------
- 1 file changed, 12 deletions(-)
+ arch/riscv/include/asm/asm.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-microchip-core-qspi.c
-+++ b/drivers/spi/spi-microchip-core-qspi.c
-@@ -458,10 +458,6 @@ error:
+--- a/arch/riscv/include/asm/asm.h
++++ b/arch/riscv/include/asm/asm.h
+@@ -90,7 +90,7 @@
+ #endif
  
- static bool mchp_coreqspi_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
- {
--	struct mchp_coreqspi *qspi = spi_controller_get_devdata(mem->spi->controller);
--	unsigned long clk_hz;
--	u32 baud_rate_val;
--
- 	if (!spi_mem_default_supports_op(mem, op))
- 		return false;
- 
-@@ -484,14 +480,6 @@ static bool mchp_coreqspi_supports_op(st
- 			return false;
- 	}
- 
--	clk_hz = clk_get_rate(qspi->clk);
--	if (!clk_hz)
--		return false;
--
--	baud_rate_val = DIV_ROUND_UP(clk_hz, 2 * op->max_freq);
--	if (baud_rate_val > MAX_DIVIDER || baud_rate_val < MIN_DIVIDER)
--		return false;
--
- 	return true;
- }
- 
+ .macro asm_per_cpu dst sym tmp
+-	REG_L \tmp, TASK_TI_CPU_NUM(tp)
++	lw    \tmp, TASK_TI_CPU_NUM(tp)
+ 	slli  \tmp, \tmp, PER_CPU_OFFSET_SHIFT
+ 	la    \dst, __per_cpu_offset
+ 	add   \dst, \dst, \tmp
 
 
 
