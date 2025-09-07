@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B4BB47F80
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03670B47D1A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF8CB1B201AF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4CB517BAF3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D935126B2AD;
-	Sun,  7 Sep 2025 20:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A302836A0;
+	Sun,  7 Sep 2025 20:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1myebY2u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+sMfl9q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CC31DF246;
-	Sun,  7 Sep 2025 20:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739521CDFAC;
+	Sun,  7 Sep 2025 20:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277500; cv=none; b=EdVPTh5a9O/iJ+hsTTDa6XfwzQdd4qCkucVT2LetBsiwP3JlqpPDt2iq1LP5LNU8OkXQfhkxLsJCkiqnjrz284JgqB0Q1GVoJ6IU3SqeF6LUZ8c866EtbrbkvYLqPcd9fgBGWvnpooJbhUET9oBuGnychZsX3LnjrwlmDZEzREI=
+	t=1757275655; cv=none; b=ptRZL7eItQWtpQgwFbhzpQ232OWP/3KTelebG1gAupyJQ17O8AUKhj3tJWc/mz9F/2K3OyH/l9hkLuhDTCeE6yeBtvBWa0AUnGamF37k9HWqBmizui/b8m9ohgNrfGkAmBBgUaGyq2cay+n23gGSGm9wBCRWUJIa+1RbZJabCFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277500; c=relaxed/simple;
-	bh=oO6NO3amkGwQmS3g6AS6dA6jwrzJa6uzUJc51YmRvTs=;
+	s=arc-20240116; t=1757275655; c=relaxed/simple;
+	bh=sRCSgrIgdMBUqCS7kYPpLQUbnUBs91cEOUNqTchfTeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gyYbxds99YXOn3QYvaPjwW/OJgmwv51gYsbZG73oCLiDgf7PhJsC9/5bs15UpmvJx41te0SqQ1ckw/LsaxUNzu3WjzyYFX/tH/kDmnInShJnbNWVEsNbC/w/pbBMCiEUzOGfW+1Z7DAFbzHG5qxUJzFpv2a54s0tagQog2h9nMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1myebY2u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAFCC4CEF0;
-	Sun,  7 Sep 2025 20:38:19 +0000 (UTC)
+	 MIME-Version; b=XHVobk639qcgYcWdP+ZK6IWSwgx6IEhChUwotGa5jBUJYc3JaFORI+aWJli1/Q0UiJLCvqIJh9vd4IVtvN0rD3w7aUxN3jM0vZjh3E+4gs+jhbJR2pH+S708PqoP5J4yq8XxSC1RvGkcaH0OSyKslumDf2phCPWW7bQCFC2ACws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+sMfl9q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAFC6C4CEF0;
+	Sun,  7 Sep 2025 20:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277500;
-	bh=oO6NO3amkGwQmS3g6AS6dA6jwrzJa6uzUJc51YmRvTs=;
+	s=korg; t=1757275655;
+	bh=sRCSgrIgdMBUqCS7kYPpLQUbnUBs91cEOUNqTchfTeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1myebY2unhzuEgV4vnf/ocPmpJh3CvN1tKUmpR9jIBhcAvJQAtlqNfBjXvUktK5U8
-	 grz+nmncF5qVYXFctXzFAvDJj7JUAkpmDta0TBM277D2twjrS8SS37kA5Rv28t8AzY
-	 I8vbgHsnkbrs1YJrIO6NlQ4jbIxPq706yclD/fFc=
+	b=R+sMfl9qqcLVM1/ER3+QQ0iN8hVpmp5HurUkqgAb+DGupCqlcVDme2w8H0pWcEIo+
+	 Zhs9GcIHsQ8HTR/WCGmq/N1RUdHR5InG84aVOAjMHafPALnrKrUsgrxec3IRw8c4VL
+	 x5LBfwfae0+4I49FlTDkZiCbSUKxcSYrcwoLM86E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chad Monroe <chad.monroe@adtran.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 035/183] wifi: mt76: mt7996: disable beacons when going offchannel
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.10 22/52] wifi: mwifiex: Initialize the chan_stats array to zero
 Date: Sun,  7 Sep 2025 21:57:42 +0200
-Message-ID: <20250907195616.608516434@linuxfoundation.org>
+Message-ID: <20250907195602.645813455@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,190 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit f30906c55a400a9b7fc677e3f4c614b9069bd4a8 ]
+commit 0e20450829ca3c1dbc2db536391537c57a40fe0b upstream.
 
-Avoid leaking beacons on unrelated channels during scanning/roc
+The adapter->chan_stats[] array is initialized in
+mwifiex_init_channel_scan_gap() with vmalloc(), which doesn't zero out
+memory.  The array is filled in mwifiex_update_chan_statistics()
+and then the user can query the data in mwifiex_cfg80211_dump_survey().
 
-Fixes: c56d6edebc1f ("wifi: mt76: mt7996: use emulated hardware scan support")
-Reported-by: Chad Monroe <chad.monroe@adtran.com>
-Link: https://patch.msgid.link/20250813121106.81559-1-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+There are two potential issues here.  What if the user calls
+mwifiex_cfg80211_dump_survey() before the data has been filled in.
+Also the mwifiex_update_chan_statistics() function doesn't necessarily
+initialize the whole array.  Since the array was not initialized at
+the start that could result in an information leak.
+
+Also this array is pretty small.  It's a maximum of 900 bytes so it's
+more appropriate to use kcalloc() instead vmalloc().
+
+Cc: stable@vger.kernel.org
+Fixes: bf35443314ac ("mwifiex: channel statistics support for mwifiex")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20250815023055.477719-1-rongqianfeng@vivo.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/wireless/mediatek/mt76/mt7996/mac.c   | 46 +++++++++++--------
- .../net/wireless/mediatek/mt76/mt7996/main.c  |  5 ++
- .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 11 +++--
- .../wireless/mediatek/mt76/mt7996/mt7996.h    |  1 +
- 4 files changed, 42 insertions(+), 21 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |    5 +++--
+ drivers/net/wireless/marvell/mwifiex/main.c     |    4 ++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 37b21ad828b96..f675cf537898a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1696,43 +1696,53 @@ mt7996_wait_reset_state(struct mt7996_dev *dev, u32 state)
- static void
- mt7996_update_vif_beacon(void *priv, u8 *mac, struct ieee80211_vif *vif)
- {
--	struct ieee80211_hw *hw = priv;
-+	struct ieee80211_bss_conf *link_conf;
-+	struct mt7996_phy *phy = priv;
-+	struct mt7996_dev *dev = phy->dev;
-+	unsigned int link_id;
-+
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -4268,8 +4268,9 @@ int mwifiex_init_channel_scan_gap(struct
+ 	 * additional active scan request for hidden SSIDs on passive channels.
+ 	 */
+ 	adapter->num_in_chan_stats = 2 * (n_channels_bg + n_channels_a);
+-	adapter->chan_stats = vmalloc(array_size(sizeof(*adapter->chan_stats),
+-						 adapter->num_in_chan_stats));
++	adapter->chan_stats = kcalloc(adapter->num_in_chan_stats,
++				      sizeof(*adapter->chan_stats),
++				      GFP_KERNEL);
  
- 	switch (vif->type) {
- 	case NL80211_IFTYPE_MESH_POINT:
- 	case NL80211_IFTYPE_ADHOC:
- 	case NL80211_IFTYPE_AP:
--		mt7996_mcu_add_beacon(hw, vif, &vif->bss_conf);
- 		break;
- 	default:
--		break;
-+		return;
-+	}
-+
-+	for_each_vif_active_link(vif, link_conf, link_id) {
-+		struct mt7996_vif_link *link;
-+
-+		link = mt7996_vif_link(dev, vif, link_id);
-+		if (!link || link->phy != phy)
-+			continue;
-+
-+		mt7996_mcu_add_beacon(dev->mt76.hw, vif, link_conf);
- 	}
+ 	if (!adapter->chan_stats)
+ 		return -ENOMEM;
+--- a/drivers/net/wireless/marvell/mwifiex/main.c
++++ b/drivers/net/wireless/marvell/mwifiex/main.c
+@@ -635,7 +635,7 @@ static int _mwifiex_fw_dpc(const struct
+ 	goto done;
+ 
+ err_add_intf:
+-	vfree(adapter->chan_stats);
++	kfree(adapter->chan_stats);
+ err_init_chan_scan:
+ 	wiphy_unregister(adapter->wiphy);
+ 	wiphy_free(adapter->wiphy);
+@@ -1448,7 +1448,7 @@ static void mwifiex_uninit_sw(struct mwi
+ 	wiphy_free(adapter->wiphy);
+ 	adapter->wiphy = NULL;
+ 
+-	vfree(adapter->chan_stats);
++	kfree(adapter->chan_stats);
+ 	mwifiex_free_cmd_buffers(adapter);
  }
  
-+void mt7996_mac_update_beacons(struct mt7996_phy *phy)
-+{
-+	ieee80211_iterate_active_interfaces(phy->mt76->hw,
-+					    IEEE80211_IFACE_ITER_RESUME_ALL,
-+					    mt7996_update_vif_beacon, phy);
-+}
-+
- static void
- mt7996_update_beacons(struct mt7996_dev *dev)
- {
- 	struct mt76_phy *phy2, *phy3;
- 
--	ieee80211_iterate_active_interfaces(dev->mt76.hw,
--					    IEEE80211_IFACE_ITER_RESUME_ALL,
--					    mt7996_update_vif_beacon, dev->mt76.hw);
-+	mt7996_mac_update_beacons(&dev->phy);
- 
- 	phy2 = dev->mt76.phys[MT_BAND1];
--	if (!phy2)
--		return;
--
--	ieee80211_iterate_active_interfaces(phy2->hw,
--					    IEEE80211_IFACE_ITER_RESUME_ALL,
--					    mt7996_update_vif_beacon, phy2->hw);
-+	if (phy2)
-+		mt7996_mac_update_beacons(phy2->priv);
- 
- 	phy3 = dev->mt76.phys[MT_BAND2];
--	if (!phy3)
--		return;
--
--	ieee80211_iterate_active_interfaces(phy3->hw,
--					    IEEE80211_IFACE_ITER_RESUME_ALL,
--					    mt7996_update_vif_beacon, phy3->hw);
-+	if (phy3)
-+		mt7996_mac_update_beacons(phy3->priv);
- }
- 
- void mt7996_tx_token_put(struct mt7996_dev *dev)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index f41b2c98bc451..f6590ef85c0d0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -516,6 +516,9 @@ int mt7996_set_channel(struct mt76_phy *mphy)
- 	struct mt7996_phy *phy = mphy->priv;
- 	int ret;
- 
-+	if (mphy->offchannel)
-+		mt7996_mac_update_beacons(phy);
-+
- 	ret = mt7996_mcu_set_chan_info(phy, UNI_CHANNEL_SWITCH);
- 	if (ret)
- 		goto out;
-@@ -533,6 +536,8 @@ int mt7996_set_channel(struct mt76_phy *mphy)
- 
- 	mt7996_mac_reset_counters(phy);
- 	phy->noise = 0;
-+	if (!mphy->offchannel)
-+		mt7996_mac_update_beacons(phy);
- 
- out:
- 	ieee80211_queue_delayed_work(mphy->hw, &mphy->mac_work,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index dd4b7b8c34ea1..655950276840d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -2755,13 +2755,15 @@ int mt7996_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			  struct ieee80211_bss_conf *link_conf)
- {
- 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
--	struct mt76_vif_link *mlink = mt76_vif_conf_link(&dev->mt76, vif, link_conf);
-+	struct mt7996_vif_link *link = mt7996_vif_conf_link(dev, vif, link_conf);
-+	struct mt76_vif_link *mlink = link ? &link->mt76 : NULL;
- 	struct ieee80211_mutable_offsets offs;
- 	struct ieee80211_tx_info *info;
- 	struct sk_buff *skb, *rskb;
- 	struct tlv *tlv;
- 	struct bss_bcn_content_tlv *bcn;
- 	int len, extra_len = 0;
-+	bool enabled = link_conf->enable_beacon;
- 
- 	if (link_conf->nontransmitted)
- 		return 0;
-@@ -2769,13 +2771,16 @@ int mt7996_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	if (!mlink)
- 		return -EINVAL;
- 
-+	if (link->phy && link->phy->mt76->offchannel)
-+		enabled = false;
-+
- 	rskb = __mt7996_mcu_alloc_bss_req(&dev->mt76, mlink,
- 					  MT7996_MAX_BSS_OFFLOAD_SIZE);
- 	if (IS_ERR(rskb))
- 		return PTR_ERR(rskb);
- 
- 	skb = ieee80211_beacon_get_template(hw, vif, &offs, link_conf->link_id);
--	if (link_conf->enable_beacon && !skb) {
-+	if (enabled && !skb) {
- 		dev_kfree_skb(rskb);
- 		return -EINVAL;
- 	}
-@@ -2794,7 +2799,7 @@ int mt7996_mcu_add_beacon(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	len = ALIGN(sizeof(*bcn) + MT_TXD_SIZE + extra_len, 4);
- 	tlv = mt7996_mcu_add_uni_tlv(rskb, UNI_BSS_INFO_BCN_CONTENT, len);
- 	bcn = (struct bss_bcn_content_tlv *)tlv;
--	bcn->enable = link_conf->enable_beacon;
-+	bcn->enable = enabled;
- 	if (!bcn->enable)
- 		goto out;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-index 33ac16b64ef11..8509d508e1e19 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
-@@ -732,6 +732,7 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 			   struct sk_buff *skb, struct mt76_wcid *wcid,
- 			   struct ieee80211_key_conf *key, int pid,
- 			   enum mt76_txq_id qid, u32 changed);
-+void mt7996_mac_update_beacons(struct mt7996_phy *phy);
- void mt7996_mac_set_coverage_class(struct mt7996_phy *phy);
- void mt7996_mac_work(struct work_struct *work);
- void mt7996_mac_reset_work(struct work_struct *work);
--- 
-2.50.1
-
 
 
 
