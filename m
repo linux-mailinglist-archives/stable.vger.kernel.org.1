@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-178729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F2CB47FD4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:42:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E6DB47D94
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 42C814E1395
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:42:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30E0417C671
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFCB2139C9;
-	Sun,  7 Sep 2025 20:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCEC29B766;
+	Sun,  7 Sep 2025 20:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhe/iEZj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1kIXaMJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CCB4315A;
-	Sun,  7 Sep 2025 20:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03EC1CDFAC;
+	Sun,  7 Sep 2025 20:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277771; cv=none; b=DZFnXmK6pyywatyJSl9cw7v7sdgilx6yUJ3MSDXWky6/c90tmZJLDN/03P4x1klnxi/xtU9yyU3+/xk4IRkCECIRSBMYxE/KNtARNBHVSl9I6OUvtYufiauyhGNIOnqT+hfkiYPApVmNUiDoYNshe2aetwG9X3+iTwmLVtZF7Ck=
+	t=1757276025; cv=none; b=HAJGFsOVvXb7qEmqX2+m+tVeyjn0dXK2YrZ9WxiYA+r7mopEfBC5yfWnCfN5/dWRDQRR1VyzbWXmwdr2t30w85rJSN+0ly6OTGYMzWq7t2o7RV8hpK2U+N5O3PyRSaBVGMuIVG+Ui1n9/DOkO28qZkTDowfFf5m4wqH6+s3Gpqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277771; c=relaxed/simple;
-	bh=LCzIG5RfxEenet2JLdD5E711s+LAIoh7QJvZm1DkgWI=;
+	s=arc-20240116; t=1757276025; c=relaxed/simple;
+	bh=C6LM3FINu7C2ZCAkYqic4m0oXdV5yJ1WspWaaPgVa6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WErCQNLCSLUKXP9BN6ll6kiq3HR7qc7JO/chm5fdR69eXAAHmOKEGuTgvtwSx0w4lMrHSh17SmbD8fIQqpR//PUjdY+iQZFeywKrPVLkb3CBulNbtRoy3cD/7sGeOXQ3IyF7yJokDCzNH9JgRu3zZEG7l0RAaX/JfpBHcwNnG1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhe/iEZj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A18C4CEF0;
-	Sun,  7 Sep 2025 20:42:50 +0000 (UTC)
+	 MIME-Version; b=gxv5kUU42LrR27B1miKHMHnsqxq5NTeDS7vjlvIwIDVHpJKJ6FYtXHp/aRfVEnhf9T2/3wWGTlWt9HueA5QgOvD+oOCH+Nbi7RhyqTYEkd+TCLfX7WMvZPOgXCVeyxejUwLxvinRIjREX5FnEvxUglNhveT7aKWq5rM9rdgSvG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1kIXaMJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA128C4CEF0;
+	Sun,  7 Sep 2025 20:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277771;
-	bh=LCzIG5RfxEenet2JLdD5E711s+LAIoh7QJvZm1DkgWI=;
+	s=korg; t=1757276025;
+	bh=C6LM3FINu7C2ZCAkYqic4m0oXdV5yJ1WspWaaPgVa6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dhe/iEZjZMZpJnkHrObrqCPUbANWe7Uh4ji/53IVRy0CHk6YNFzlhlAjoEVZZKwBO
-	 n4y1UqN3JHfm3tbXZPu70PtefL85lNS/cfao6Axizzmr9VGGmYnKgyf70C6Q858UOH
-	 4DyQd5QFnIK+H8N+95lGavyaHapiESAejoi7dYXg=
+	b=i1kIXaMJDg5GbbEkJ7wcyw/fX4QhC2XTWVG1wKnzSn4XsTls7F5kP1XZUSqLsuKW2
+	 agOrtEnbhxQCmCOt7fPw/DrQAmr/7Fu2gKCnJr+sAwa9SXec5VE2dEP3oNhu4yGhB2
+	 YuQJZP2Xg3luQsRFvCar+NM2cC7QOpJMcBOUMXPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marlin Cremers <mcremers@cloudbear.nl>,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 075/183] vxlan: Fix NPD when refreshing an FDB entry with a nexthop object
+Subject: [PATCH 5.15 40/64] KVM: x86: Take irqfds.lock when adding/deleting IRQ bypass producer
 Date: Sun,  7 Sep 2025 21:58:22 +0200
-Message-ID: <20250907195617.578382800@linuxfoundation.org>
+Message-ID: <20250907195604.509733553@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,123 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 6ead38147ebb813f08be6ea8ef547a0e4c09559a ]
+[ Upstream commit f1fb088d9cecde5c3066d8ff8846789667519b7d ]
 
-VXLAN FDB entries can point to either a remote destination or an FDB
-nexthop group. The latter is usually used in EVPN deployments where
-learning is disabled.
+Take irqfds.lock when adding/deleting an IRQ bypass producer to ensure
+irqfd->producer isn't modified while kvm_irq_routing_update() is running.
+The only lock held when a producer is added/removed is irqbypass's mutex.
 
-However, when learning is enabled, an incoming packet might try to
-refresh an FDB entry that points to an FDB nexthop group and therefore
-does not have a remote. Such packets should be dropped, but they are
-only dropped after dereferencing the non-existent remote, resulting in a
-NPD [1] which can be reproduced using [2].
-
-Fix by dropping such packets earlier. Remove the misleading comment from
-first_remote_rcu().
-
-[1]
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-[...]
-CPU: 13 UID: 0 PID: 361 Comm: mausezahn Not tainted 6.17.0-rc1-virtme-g9f6b606b6b37 #1 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc41 04/01/2014
-RIP: 0010:vxlan_snoop+0x98/0x1e0
-[...]
-Call Trace:
- <TASK>
- vxlan_encap_bypass+0x209/0x240
- encap_bypass_if_local+0xb1/0x100
- vxlan_xmit_one+0x1375/0x17e0
- vxlan_xmit+0x6b4/0x15f0
- dev_hard_start_xmit+0x5d/0x1c0
- __dev_queue_xmit+0x246/0xfd0
- packet_sendmsg+0x113a/0x1850
- __sock_sendmsg+0x38/0x70
- __sys_sendto+0x126/0x180
- __x64_sys_sendto+0x24/0x30
- do_syscall_64+0xa4/0x260
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-[2]
- #!/bin/bash
-
- ip address add 192.0.2.1/32 dev lo
- ip address add 192.0.2.2/32 dev lo
-
- ip nexthop add id 1 via 192.0.2.3 fdb
- ip nexthop add id 10 group 1 fdb
-
- ip link add name vx0 up type vxlan id 10010 local 192.0.2.1 dstport 12345 localbypass
- ip link add name vx1 up type vxlan id 10020 local 192.0.2.2 dstport 54321 learning
-
- bridge fdb add 00:11:22:33:44:55 dev vx0 self static dst 192.0.2.2 port 54321 vni 10020
- bridge fdb add 00:aa:bb:cc:dd:ee dev vx1 self static nhid 10
-
- mausezahn vx0 -a 00:aa:bb:cc:dd:ee -b 00:11:22:33:44:55 -c 1 -q
-
-Fixes: 1274e1cc4226 ("vxlan: ecmp support for mac fdb entries")
-Reported-by: Marlin Cremers <mcremers@cloudbear.nl>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250901065035.159644-2-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 872768800652 ("KVM: x86: select IRQ_BYPASS_MANAGER")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-5-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_core.c    | 8 ++++----
- drivers/net/vxlan/vxlan_private.h | 4 +---
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ arch/x86/kvm/x86.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 97792de896b72..cea9dd067b68a 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1445,6 +1445,10 @@ static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
- 		if (READ_ONCE(f->updated) != now)
- 			WRITE_ONCE(f->updated, now);
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -12449,16 +12449,22 @@ int kvm_arch_irq_bypass_add_producer(str
+ {
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
++	struct kvm *kvm = irqfd->kvm;
+ 	int ret;
  
-+		/* Don't override an fdb with nexthop with a learnt entry */
-+		if (rcu_access_pointer(f->nh))
-+			return SKB_DROP_REASON_VXLAN_ENTRY_EXISTS;
+-	irqfd->producer = prod;
+ 	kvm_arch_start_assignment(irqfd->kvm);
 +
- 		if (likely(vxlan_addr_equal(&rdst->remote_ip, src_ip) &&
- 			   rdst->remote_ifindex == ifindex))
- 			return SKB_NOT_DROPPED_YET;
-@@ -1453,10 +1457,6 @@ static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
- 		if (f->state & (NUD_PERMANENT | NUD_NOARP))
- 			return SKB_DROP_REASON_VXLAN_ENTRY_EXISTS;
- 
--		/* Don't override an fdb with nexthop with a learnt entry */
--		if (rcu_access_pointer(f->nh))
--			return SKB_DROP_REASON_VXLAN_ENTRY_EXISTS;
++	spin_lock_irq(&kvm->irqfds.lock);
++	irqfd->producer = prod;
++
+ 	ret = static_call(kvm_x86_update_pi_irte)(irqfd->kvm,
+ 					 prod->irq, irqfd->gsi, 1);
 -
- 		if (net_ratelimit())
- 			netdev_info(dev,
- 				    "%pM migrated from %pIS to %pIS\n",
-diff --git a/drivers/net/vxlan/vxlan_private.h b/drivers/net/vxlan/vxlan_private.h
-index d328aed9feefd..55b84c0cbd65e 100644
---- a/drivers/net/vxlan/vxlan_private.h
-+++ b/drivers/net/vxlan/vxlan_private.h
-@@ -61,9 +61,7 @@ static inline struct hlist_head *vs_head(struct net *net, __be16 port)
- 	return &vn->sock_list[hash_32(ntohs(port), PORT_HASH_BITS)];
+ 	if (ret)
+ 		kvm_arch_end_assignment(irqfd->kvm);
+ 
++	spin_unlock_irq(&kvm->irqfds.lock);
++
++
+ 	return ret;
  }
  
--/* First remote destination for a forwarding entry.
-- * Guaranteed to be non-NULL because remotes are never deleted.
-- */
-+/* First remote destination for a forwarding entry. */
- static inline struct vxlan_rdst *first_remote_rcu(struct vxlan_fdb *fdb)
- {
- 	if (rcu_access_pointer(fdb->nh))
--- 
-2.50.1
-
+@@ -12468,9 +12474,9 @@ void kvm_arch_irq_bypass_del_producer(st
+ 	int ret;
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
++	struct kvm *kvm = irqfd->kvm;
+ 
+ 	WARN_ON(irqfd->producer != prod);
+-	irqfd->producer = NULL;
+ 
+ 	/*
+ 	 * When producer of consumer is unregistered, we change back to
+@@ -12478,11 +12484,17 @@ void kvm_arch_irq_bypass_del_producer(st
+ 	 * when the irq is masked/disabled or the consumer side (KVM
+ 	 * int this case doesn't want to receive the interrupts.
+ 	*/
++	spin_lock_irq(&kvm->irqfds.lock);
++	irqfd->producer = NULL;
++
+ 	ret = static_call(kvm_x86_update_pi_irte)(irqfd->kvm, prod->irq, irqfd->gsi, 0);
+ 	if (ret)
+ 		printk(KERN_INFO "irq bypass consumer (token %p) unregistration"
+ 		       " fails: %d\n", irqfd->consumer.token, ret);
+ 
++	spin_unlock_irq(&kvm->irqfds.lock);
++
++
+ 	kvm_arch_end_assignment(irqfd->kvm);
+ }
+ 
 
 
 
