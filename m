@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CB7B47DB9
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:15:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83171B47F68
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:37:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A532517CFDB
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42AA83BA870
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532791AF0B6;
-	Sun,  7 Sep 2025 20:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8F721B191;
+	Sun,  7 Sep 2025 20:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRw5OEV4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhuiADLv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1109F14BFA2;
-	Sun,  7 Sep 2025 20:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CD420E00B;
+	Sun,  7 Sep 2025 20:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276141; cv=none; b=CnED5fsKS9ySbKhl/ZU94WW4IQgep8LDL9jToa+0JVZKHni8McXM0FG7OL1It9nJCbQRfcP59tJPhWVQez8NVDYI1aWQ3u6JHKtEL91hdgYQBysKu8qxEKzlQr0ivvfMtER3ioJMaziXug9J6lzvqOluARmhaBW3ZGGcGLzachs=
+	t=1757277426; cv=none; b=YZkgmNlL8sAkZ7ChHSWjHkuoF3223w2c/cdNvJMkwQ7lMoQf4Cm2P2s0lEdhrgHVBCmz0hpGbyAnE+wGgjpeHVzre/MsgygCt138jmC9kpTkbuCSPm0D8no+kwDNfLmIfqaVDEnGS4aoZuz5zs1bG1Svq+YBoYQaKpXY30s9Rr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276141; c=relaxed/simple;
-	bh=uASFbptLkACjNVUR+HF0sUHQmw+biqwOs4B5aYiU8Rs=;
+	s=arc-20240116; t=1757277426; c=relaxed/simple;
+	bh=IwJzX6Vyu8Io2xcfzaTjiiBHKO/PYs5rAVazGNCR9dU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aMTcE+MNnqskeBOr9xA273LOFplOvnyrB/YGOQVEbRTcWAVN9El2D16ziIrMuQomrIPYOI+/odHtmHwZVpUC4fB4FxFENvd4PVE6YdFTOLN6sbbE2vnKroQG4gnAMY5pvli1sGI+7tfiDeksCihSmvXYRYIlXJgArTSbUNe2M1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRw5OEV4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D04EC4CEF0;
-	Sun,  7 Sep 2025 20:15:40 +0000 (UTC)
+	 MIME-Version; b=V5tuFiufKblVTWOdsl7Vq6v62hO515PdJD7lDeE6hRuwVi5UzCBulfwD6LhUNeHMEk/qMAZwMzGU0NWlD+W2R9EeSBGBrPflI0gLgyPrmMiXuxTw/Zpbnv8+jPWrtjzIplMYO9fZTAs+KwMtfayEyXyLoPeYabrjTZyfxKBmoRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhuiADLv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC49C4CEF0;
+	Sun,  7 Sep 2025 20:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276140;
-	bh=uASFbptLkACjNVUR+HF0sUHQmw+biqwOs4B5aYiU8Rs=;
+	s=korg; t=1757277426;
+	bh=IwJzX6Vyu8Io2xcfzaTjiiBHKO/PYs5rAVazGNCR9dU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pRw5OEV4fQrAk21Bu1r3ghCYxpkOfmWoupequT27HjDajQrhvpenCwGEh3VS01SF3
-	 BoiAR9yGERM0R54cwjGj/4AJYj2Tv/r7VqFEkDaGf7t1zT2Vwwnvdaoi7yiXpYVrhT
-	 u2Lvfr3/MjHpBxZzmzxMv5GhrI5peO+WyzBzPrlo=
+	b=qhuiADLvyTnBhubzcx0CgvMFt5BEbf/8DOeD23TI5QBbRDcKGoz4OnY2D0aUEDJ0q
+	 igjrNt0aYa+IFO08ZDeCl8NgiYwCe2YoaB383ggvsjKuguOM1lz5CvxqPgNoYTarax
+	 6Q9DHTffvdmZs7GsnkU5pHsmFEQIYkudotfCppO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Shinji Nomoto <fj5851bi@fujitsu.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/104] bpf: Move cgroup iterator helpers to bpf.h
+Subject: [PATCH 6.16 012/183] cpupower: Fix a bug where the -t option of the set subcommand was not working.
 Date: Sun,  7 Sep 2025 21:57:19 +0200
-Message-ID: <20250907195607.730414871@linuxfoundation.org>
+Message-ID: <20250907195616.082680164@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Shinji Nomoto <fj5851bi@fujitsu.com>
 
-[ Upstream commit 9621e60f59eae87eb9ffe88d90f24f391a1ef0f0 ]
+[ Upstream commit b3eaf14f4c63fd6abc7b68c6d7a07c5680a6d8e5 ]
 
-Move them into bpf.h given we also need them in core code.
+The set subcommand's -t option is documented as being available for boost
+configuration, but it was not actually functioning due to a bug
+in the option handling.
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20250730234733.530041-3-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/r/20250522061122.2149188-2-fj5851bi@fujitsu.com
+Signed-off-by: Shinji Nomoto <fj5851bi@fujitsu.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf-cgroup.h |  5 -----
- include/linux/bpf.h        | 22 ++++++++++++++--------
- 2 files changed, 14 insertions(+), 13 deletions(-)
+ tools/power/cpupower/utils/cpupower-set.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
-index 57e9e109257e5..429c766310c07 100644
---- a/include/linux/bpf-cgroup.h
-+++ b/include/linux/bpf-cgroup.h
-@@ -72,9 +72,6 @@ to_cgroup_bpf_attach_type(enum bpf_attach_type attach_type)
- extern struct static_key_false cgroup_bpf_enabled_key[MAX_CGROUP_BPF_ATTACH_TYPE];
- #define cgroup_bpf_enabled(atype) static_branch_unlikely(&cgroup_bpf_enabled_key[atype])
+diff --git a/tools/power/cpupower/utils/cpupower-set.c b/tools/power/cpupower/utils/cpupower-set.c
+index 0677b58374abf..59ace394cf3ef 100644
+--- a/tools/power/cpupower/utils/cpupower-set.c
++++ b/tools/power/cpupower/utils/cpupower-set.c
+@@ -62,8 +62,8 @@ int cmd_set(int argc, char **argv)
  
--#define for_each_cgroup_storage_type(stype) \
--	for (stype = 0; stype < MAX_BPF_CGROUP_STORAGE_TYPE; stype++)
--
- struct bpf_cgroup_storage_map;
- 
- struct bpf_storage_buffer {
-@@ -506,8 +503,6 @@ static inline int bpf_percpu_cgroup_storage_update(struct bpf_map *map,
- #define BPF_CGROUP_RUN_PROG_SETSOCKOPT(sock, level, optname, optval, optlen, \
- 				       kernel_optval) ({ 0; })
- 
--#define for_each_cgroup_storage_type(stype) for (; false; )
--
- #endif /* CONFIG_CGROUP_BPF */
- 
- #endif /* _BPF_CGROUP_H */
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 2aaa1ed738303..9fac355afde7a 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -181,6 +181,20 @@ enum bpf_kptr_type {
- 	BPF_KPTR_REF,
- };
- 
-+enum bpf_cgroup_storage_type {
-+	BPF_CGROUP_STORAGE_SHARED,
-+	BPF_CGROUP_STORAGE_PERCPU,
-+	__BPF_CGROUP_STORAGE_MAX
-+#define MAX_BPF_CGROUP_STORAGE_TYPE __BPF_CGROUP_STORAGE_MAX
-+};
-+
-+#ifdef CONFIG_CGROUP_BPF
-+# define for_each_cgroup_storage_type(stype) \
-+	for (stype = 0; stype < MAX_BPF_CGROUP_STORAGE_TYPE; stype++)
-+#else
-+# define for_each_cgroup_storage_type(stype) for (; false; )
-+#endif /* CONFIG_CGROUP_BPF */
-+
- struct bpf_map_value_off_desc {
- 	u32 offset;
- 	enum bpf_kptr_type type;
-@@ -794,14 +808,6 @@ struct bpf_prog_offload {
- 	u32			jited_len;
- };
- 
--enum bpf_cgroup_storage_type {
--	BPF_CGROUP_STORAGE_SHARED,
--	BPF_CGROUP_STORAGE_PERCPU,
--	__BPF_CGROUP_STORAGE_MAX
--};
--
--#define MAX_BPF_CGROUP_STORAGE_TYPE __BPF_CGROUP_STORAGE_MAX
--
- /* The longest tracepoint has 12 args.
-  * See include/trace/bpf_probe.h
-  */
+ 	params.params = 0;
+ 	/* parameter parsing */
+-	while ((ret = getopt_long(argc, argv, "b:e:m:",
+-						set_opts, NULL)) != -1) {
++	while ((ret = getopt_long(argc, argv, "b:e:m:t:",
++				  set_opts, NULL)) != -1) {
+ 		switch (ret) {
+ 		case 'b':
+ 			if (params.perf_bias)
 -- 
 2.50.1
 
