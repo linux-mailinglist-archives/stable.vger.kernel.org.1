@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-178419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9516B47E96
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9FC4B47FE4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B807B189FFB8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C17F81B221F3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E7020D51C;
-	Sun,  7 Sep 2025 20:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58FC1F63CD;
+	Sun,  7 Sep 2025 20:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNZcoMGV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1mUspBc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F3417BB21;
-	Sun,  7 Sep 2025 20:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C0A20E00B;
+	Sun,  7 Sep 2025 20:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276775; cv=none; b=f7eRwiIkEz3tIttZXnDJNAQgsGk4wrjexxfozB4vGeyT3gSmQ09erRDrj0/zOcngn51rbR61WEA+XAoiYeIl0krHO/sV+F+wBW4Idk1x3MY8ixYZBzUEFYIz3M8Fxmp8JEXHspGsMmT1YeKzMuMIetF9PL9Q7xk9ZQq+WKcPn08=
+	t=1757277819; cv=none; b=KmhGIfzGqH6EqAFFIpfPVHWgWYd/1a+6i7mYo7jQL+6VRKRI3ABaDV1+QpY8QT8jAgCbmlWar9LNwYY+wwE/+1ZqQHLap6VY+cdIJaukTi88/nIAFxtufrhr49Z1wTFAlV8ACyaOcIzFiWvfs7rFx7190qvQS3UJf0t15lbXD7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276775; c=relaxed/simple;
-	bh=eGxe5BIkR5fcoOpWEry7/7P327QA1QOw3cZbS75iv3U=;
+	s=arc-20240116; t=1757277819; c=relaxed/simple;
+	bh=av6MYqKx3L4zkLZXei0UoORSapLwGoZKrQSaThv9m8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pBd3iJ/CArsj2fo7qXq9Ddl9s3wPSYkQ6/pkCwvepGZfuv81yuBakJApKjZlB1/3xK6Db/Q44Moi+jjbhNxJdppeVBvxo98nBiUphM9WhbzaPA6+sjfJdxpebxyW+ponLCX8Pm+lGbeV0cd4zn9DzEQFrupwMb9WWr0dPluyObk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNZcoMGV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29052C4CEF0;
-	Sun,  7 Sep 2025 20:26:14 +0000 (UTC)
+	 MIME-Version; b=NNFnDS6CnG8FEayoWbE0pY6XOBASnjP3Y2tb2wKy/l24LYUfzLQB66lr7UEA4m0y339+1MeVuoEmqYUIdqt6PcUqAtx6+eVMm3FiEpyUkEAvmXnnR8Y9t7bWiZbXc7WQkt6vVb3jvmyORDKCfM4VO8lYW87KqV5onTZdGXU5ca0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1mUspBc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE58FC4CEF0;
+	Sun,  7 Sep 2025 20:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276775;
-	bh=eGxe5BIkR5fcoOpWEry7/7P327QA1QOw3cZbS75iv3U=;
+	s=korg; t=1757277819;
+	bh=av6MYqKx3L4zkLZXei0UoORSapLwGoZKrQSaThv9m8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNZcoMGVcwoI5/VAINvqJGTkvLjnUtoSAdZy4oyqJd0ZyahZMJvVA9FmTTTS9SLDw
-	 RWwHaTq6xWVmEaBoKg+bLa8Sex7vIJHyoeZD4lNXsFRKeQ3J+ZA7IroTMdx7Ps5bCt
-	 GB7BryvMxkzlolwzPFtSyNmasri2h9mCWTRf31Zs=
+	b=G1mUspBcfESlh2wsR1T2rzpcV0DnYXABcMUmquiUbRlh9+7F2nj+juBwLiKp4VnAm
+	 bTY3nMceqxhbcPP25expYPPm/IY7as8m/vAIrEh9CRyyTp/h1Ov30lLHoDdCKjABMr
+	 vzGiVAl9NtBdhHZAU7wakY/2VvA3hFC3alYUNvOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 107/121] perf bpf-event: Fix use-after-free in synthesis
+	Val Packett <val@packett.cool>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.16 116/183] soc: qcom: mdt_loader: Deal with zero e_shentsize
 Date: Sun,  7 Sep 2025 21:59:03 +0200
-Message-ID: <20250907195612.593856638@linuxfoundation.org>
+Message-ID: <20250907195618.547356315@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,152 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit d7b67dd6f9db7bd2c49b415e901849b182ff0735 ]
+commit 25daf9af0ac1bf12490b723b5efaf8dcc85980bc upstream.
 
-Calls to perf_env__insert_bpf_prog_info may fail as a sideband thread
-may already have inserted the bpf_prog_info. Such failures may yield
-info_linear being freed which then causes use-after-free issues with
-the internal bpf_prog_info info struct. Make it so that
-perf_env__insert_bpf_prog_info trigger early non-error paths and fix
-the use-after-free in perf_event__synthesize_one_bpf_prog. Add proper
-return error handling to perf_env__add_bpf_info (that calls
-perf_env__insert_bpf_prog_info) and propagate the return value in its
-callers.
+Firmware that doesn't provide section headers leave both e_shentsize and
+e_shnum 0, which obvious isn't compatible with the newly introduced
+stricter checks.
 
-Closes: https://lore.kernel.org/lkml/CAP-5=fWJQcmUOP7MuCA2ihKnDAHUCOBLkQFEkQES-1ZZTrgf8Q@mail.gmail.com/
-Fixes: 03edb7020bb9 ("perf bpf: Fix two memory leakages when calling perf_env__insert_bpf_prog_info()")
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250902181713.309797-2-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Make the section-related checks conditional on either of these values
+being non-zero.
+
+Fixes: 9f9967fed9d0 ("soc: qcom: mdt_loader: Ensure we don't read past the ELF header")
+Reported-by: Val Packett <val@packett.cool>
+Closes: https://lore.kernel.org/all/ece307c3-7d65-440f-babd-88cf9705b908@packett.cool/
+Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
+Closes: https://lore.kernel.org/all/aec9cd03-6fc2-4dc8-b937-8b7cf7bf4128@linaro.org/
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Fixes: 9f35ab0e53cc ("soc: qcom: mdt_loader: Fix error return values in mdt_header_valid()")
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250730-mdt-loader-shentsize-zero-v1-1-04f43186229c@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/bpf-event.c | 39 +++++++++++++++++++++++++------------
- 1 file changed, 27 insertions(+), 12 deletions(-)
+ drivers/soc/qcom/mdt_loader.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/util/bpf-event.c b/tools/perf/util/bpf-event.c
-index b94b4f16a60a5..1573d6b6478d2 100644
---- a/tools/perf/util/bpf-event.c
-+++ b/tools/perf/util/bpf-event.c
-@@ -289,9 +289,15 @@ static int perf_event__synthesize_one_bpf_prog(struct perf_session *session,
+--- a/drivers/soc/qcom/mdt_loader.c
++++ b/drivers/soc/qcom/mdt_loader.c
+@@ -39,12 +39,14 @@ static bool mdt_header_valid(const struc
+ 	if (phend > fw->size)
+ 		return false;
  
- 		info_node->info_linear = info_linear;
- 		if (!perf_env__insert_bpf_prog_info(env, info_node)) {
--			free(info_linear);
-+			/*
-+			 * Insert failed, likely because of a duplicate event
-+			 * made by the sideband thread. Ignore synthesizing the
-+			 * metadata.
-+			 */
- 			free(info_node);
-+			goto out;
- 		}
-+		/* info_linear is now owned by info_node and shouldn't be freed below. */
- 		info_linear = NULL;
+-	if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
+-		return false;
++	if (ehdr->e_shentsize || ehdr->e_shnum) {
++		if (ehdr->e_shentsize != sizeof(struct elf32_shdr))
++			return false;
  
- 		/*
-@@ -447,18 +453,18 @@ int perf_event__synthesize_bpf_events(struct perf_session *session,
- 	return err;
- }
- 
--static void perf_env__add_bpf_info(struct perf_env *env, u32 id)
-+static int perf_env__add_bpf_info(struct perf_env *env, u32 id)
- {
- 	struct bpf_prog_info_node *info_node;
- 	struct perf_bpil *info_linear;
- 	struct btf *btf = NULL;
- 	u64 arrays;
- 	u32 btf_id;
--	int fd;
-+	int fd, err = 0;
- 
- 	fd = bpf_prog_get_fd_by_id(id);
- 	if (fd < 0)
--		return;
-+		return -EINVAL;
- 
- 	arrays = 1UL << PERF_BPIL_JITED_KSYMS;
- 	arrays |= 1UL << PERF_BPIL_JITED_FUNC_LENS;
-@@ -471,6 +477,7 @@ static void perf_env__add_bpf_info(struct perf_env *env, u32 id)
- 	info_linear = get_bpf_prog_info_linear(fd, arrays);
- 	if (IS_ERR_OR_NULL(info_linear)) {
- 		pr_debug("%s: failed to get BPF program info. aborting\n", __func__);
-+		err = PTR_ERR(info_linear);
- 		goto out;
- 	}
- 
-@@ -480,38 +487,46 @@ static void perf_env__add_bpf_info(struct perf_env *env, u32 id)
- 	if (info_node) {
- 		info_node->info_linear = info_linear;
- 		if (!perf_env__insert_bpf_prog_info(env, info_node)) {
-+			pr_debug("%s: duplicate add bpf info request for id %u\n",
-+				 __func__, btf_id);
- 			free(info_linear);
- 			free(info_node);
-+			goto out;
- 		}
--	} else
-+	} else {
- 		free(info_linear);
-+		err = -ENOMEM;
-+		goto out;
+-	shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
+-	if (shend > fw->size)
+-		return false;
++		shend = size_add(size_mul(sizeof(struct elf32_shdr), ehdr->e_shnum), ehdr->e_shoff);
++		if (shend > fw->size)
++			return false;
 +	}
  
- 	if (btf_id == 0)
- 		goto out;
- 
- 	btf = btf__load_from_kernel_by_id(btf_id);
--	if (libbpf_get_error(btf)) {
--		pr_debug("%s: failed to get BTF of id %u, aborting\n",
--			 __func__, btf_id);
--		goto out;
-+	if (!btf) {
-+		err = -errno;
-+		pr_debug("%s: failed to get BTF of id %u %d\n", __func__, btf_id, err);
-+	} else {
-+		perf_env__fetch_btf(env, btf_id, btf);
- 	}
--	perf_env__fetch_btf(env, btf_id, btf);
- 
- out:
- 	btf__free(btf);
- 	close(fd);
-+	return err;
+ 	return true;
  }
- 
- static int bpf_event__sb_cb(union perf_event *event, void *data)
- {
- 	struct perf_env *env = data;
-+	int ret = 0;
- 
- 	if (event->header.type != PERF_RECORD_BPF_EVENT)
- 		return -1;
- 
- 	switch (event->bpf.type) {
- 	case PERF_BPF_EVENT_PROG_LOAD:
--		perf_env__add_bpf_info(env, event->bpf.id);
-+		ret = perf_env__add_bpf_info(env, event->bpf.id);
- 
- 	case PERF_BPF_EVENT_PROG_UNLOAD:
- 		/*
-@@ -525,7 +540,7 @@ static int bpf_event__sb_cb(union perf_event *event, void *data)
- 		break;
- 	}
- 
--	return 0;
-+	return ret;
- }
- 
- int evlist__add_bpf_sb_event(struct evlist *evlist, struct perf_env *env)
--- 
-2.51.0
-
 
 
 
