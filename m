@@ -1,82 +1,83 @@
-Return-Path: <stable+bounces-178811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D81B480F7
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 00:19:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5767B480FC
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 00:20:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 67B1C4E13CB
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59B063A06FC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7341C84A0;
-	Sun,  7 Sep 2025 22:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7811E51FB;
+	Sun,  7 Sep 2025 22:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JGodD0lJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dtm/ZfD2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A522811187;
-	Sun,  7 Sep 2025 22:19:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C163715853B;
+	Sun,  7 Sep 2025 22:19:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757283567; cv=none; b=g8bVbOMnYeTAoQiJgDVLuk1hyxejqOUoqwDx+VRTYRnZFCRgvRI1kxfOcu4ZV04SR7UbQ9QSAF/68vEpyHBEIHsh+FzdyH+aqfXUuWEK5Cy3CdZMSjo8mV0DDXLZsbD8zp5X4eSHuhWpYoxu6lgDqIpvo/FivaHgf2zqyMXMGTY=
+	t=1757283596; cv=none; b=TyAHP85ErCqbAB6ligXk4G2PcnpDW0nEri5qEKGGcYCqNHWER9b71YnZi9UHlUL/jeqS6OdW8QDMPIUD7mxp2iBdZ6oJtd+DwDVHM2rfRXUcO8lF9npCk2xA+PDEbys82LcIb2OqiKyIicZERRWVwwInUcecRzePoagP4uFOmjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757283567; c=relaxed/simple;
-	bh=eZTsOkoKMhjbme01dEVhw58QFdW+25N2Q5pfF93MP3I=;
+	s=arc-20240116; t=1757283596; c=relaxed/simple;
+	bh=REDt9tBHgqC0yaPap13tTQHVOMVnE1p/e1kEg+EkQH8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z8IEndAAoRlWO0SJ8dGXE+KAK9GSy0eBRkNc79+1weq9na3WpgNbSd16YzCRE1wInyYZaAvmvBwjYHQW/12fvs2kvnntxuXjbuspqZMq9HNo/gyB05V+1MiV3wK5XqJVAKO4uPSVNvCqG/U16zbdcqPh2NaTjQdfj7SEjR0iwIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JGodD0lJ; arc=none smtp.client-ip=209.85.215.169
+	 In-Reply-To:Content-Type; b=cxDmMzILBCHzqOQYAcQ12h7JQIauHn52QGQV8bkRtvj7/Tvds1QLE6VViP3jbRlV1YfRKcXFQGr4dlknxXDWAQl221HxiTzZ703ooD3cKLaKXV88niNkPtpQ+QV6WTigbjjsm8rvs1psi3Lkp93R1dXozK8ttOMcxjQK3XLtacg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dtm/ZfD2; arc=none smtp.client-ip=209.85.215.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b52196e8464so1268324a12.3;
-        Sun, 07 Sep 2025 15:19:25 -0700 (PDT)
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b49c1c130c9so2585750a12.0;
+        Sun, 07 Sep 2025 15:19:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757283565; x=1757888365; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1757283593; x=1757888393; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=nOFINSsardnktHpLa8/z21dgEWAihHseyXSOQbkPZEs=;
-        b=JGodD0lJXi59MkGF1VWkb4GKLURiSLfrCIUznoY8hlcwamboT9QFvlNuTH71QRHpvw
-         xQfmdfxHe+avyQhwO3Sq0BwlHWjsX7YRuxfILWYvy+Pn0paG6e1o9tFkwEGdAfOPJ8bV
-         2nHkFGhzN9rasV5yS5qqNTGnjoAn/1mfKtLzYfwxkQQJKNWw0MIHP0qMYFaP9xiqL/uC
-         3ifvsq/nk+Mg3nuVedFM1r5PWpNIS35urncFJu7eKrCsIs+8STT3m0skY7qNdvOBjCLE
-         bzlKfSmeKfT7X8HuMG45cHtp0pgHki1xgafJsdyXXcniTUzJP7M6qRrjDwu8MFtThcxK
-         YADg==
+        bh=4J4fibk9ng0A+ggW+gAsxsjjd90wsaSlu+bA481AQwI=;
+        b=dtm/ZfD2tD4n21VdrK6RPS9sxyKzltiHNoIcsVkRyy+ofMDpYS2eFLwGKywBmHKV6R
+         NQTILLmIoB1bYMuvMzZaoD0nmILsZnpKGZ9k2vAInA+I5PtePc8pMs1n8mWgeZhcRDod
+         E9ZJrZ8cSl3nF/ztMQOctJqtqKMrLs0U0MFPzkD2q5T8ElnzFHl2IoxcrZyX4iMfHTAX
+         ybWcJkMWwen0Gy75OZSvI+1LeNgK6npdw02k8P8YHp2iQpJ4BT/uUsyAhDKmRE38SmnF
+         zBSUYao7NZecczwfiKgxPOhRO67C8pUyyueXEQJmAMDPx0aOPVnj8mWAdM3TY72u7g0Y
+         Vl0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757283565; x=1757888365;
+        d=1e100.net; s=20230601; t=1757283593; x=1757888393;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nOFINSsardnktHpLa8/z21dgEWAihHseyXSOQbkPZEs=;
-        b=BoxjZ/bHLZ0+UDhU6QN3Y6Sh3i8qv8/o+HD4LWGHpMCxEv8o9pQydZY0zawwSwE5E/
-         Ncv5WBE4ant2xLB+qJtEIMpH9J6qynNlfeUAv5ZnzUbc4SrFq28dkEGtdvozRazkUhPM
-         SU0smVSzL5zc+VF7VdXFx5V5DqnGcNhQ0XxELSgyG6QPdcqGYNUIGgLFBNbytG+QTGXr
-         M0W5kl0DmZ0skdHfxdio5Sfb9OXxygiV49wNq4VfAT9MR27GIfB0AxiLi/SA9XSZOTqg
-         5M4UKAZRQNGGyrzpnMGH1wIY8vzgbUbSm0tyThdHDXjMHswXrbYtYA9S4V6eNwPIWKaF
-         swzg==
-X-Forwarded-Encrypted: i=1; AJvYcCUAsUu/iob8PYFBM/Uqqc0W4bHcwKbqfP6vDvHVLVUnYfG5aQgE814u5N+xWYEv5NGKRz0cpHq6EwwA@vger.kernel.org, AJvYcCV4Qm+QzKz7C3ttOWVtaBYNEERaWI0tmCy46OPqAffYtYOv+FzkTAlzD9GuzqdPaqDUw9GBCS6I84C2@vger.kernel.org, AJvYcCVAgEczISs8UgGrONeEcaiBmgVt6gtCKQP7s0/uVKiT6JjS5PA7EGSZvnWd2GUJ4fy6F08XOE7N/3cwlf2p@vger.kernel.org, AJvYcCWrMuBtjLsZNaOlWuBb8z31AzeWjMVlAeGc4G+3TlMVpsRpQd5vkjNWR+wDbaGeyY80xphwIUFL/fvZwHk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytM/uiEg/xVDg8226u7nuIPCgeLFtOVkdOEulc/jHtzsWMNdRC
-	Lp62mLpYeEWctrYo3YikN3hACAEfNKgVku81lNOGqpFJDbt7UpbOMMfC
-X-Gm-Gg: ASbGncsgBI5eibz/6b69pGsKrMqCuxeiNWG8k8Z7qCZr0XrDrV6VGrIvd7d9IGJ6tYK
-	r/au6a+bc+7Ow67Y1CJxBXXaugsShD7j5jDoiR32gtZbD9VAvvx9uaVHZ8UREpNtBeSJhDYQbVO
-	HLOSczwZsO9xPeetWXkAOZqo1NmTKvnFV2FUMt6wDCe5yQFnQIrToxzoCflefqbx5CabW9wiVVX
-	IpiTVvj5Fk/i5p87d8QQfRPM7zpz727uHK8lFX069pE1rfUVY8jM+v4Iwr5x7EfIEgYxVWmg+pl
-	2lPbdty7vIJUbdurY2FboUzh8Awcn3+17xb25s92jQb18xe8G9lV89wT8B/A7My3j35FjBhlGNY
-	SrgLhoUoh5HAhPffzuAkySdCyT7vUEYYFq73qDy5qDIryj0LzhsBfK8fDjsY3HrjlTAJoIn8=
-X-Google-Smtp-Source: AGHT+IHhVp/+lDlmHkN/kg743agblfHXogH2wRJm6g2H/7DhB2sYLgdi/C4FmHam27b11HDYbLM68A==
-X-Received: by 2002:a17:902:d2ce:b0:24c:c8fe:e272 with SMTP id d9443c01a7336-2516e9816eemr85688645ad.19.1757283564876;
-        Sun, 07 Sep 2025 15:19:24 -0700 (PDT)
+        bh=4J4fibk9ng0A+ggW+gAsxsjjd90wsaSlu+bA481AQwI=;
+        b=bcVkVIulXJ1S5cPv4cJ5aaVv21ej7zJWPwalXxL4wmxHHKSZ2y8KMZcJ4ielRvMF0+
+         p7FhwXP0LeMryB2erjjv+G5CsemyaZzmehu5wcUu0CtN+Tb6cgN1gg25bk35XMFp1gDe
+         tMRN8VEp2yEn+/z/oS44ewp/aPr2LiPlhE66PXDpyiynaI5L+1AXLVxqYukPVbqNyuJX
+         ngM5fNiDLEzqv1+1wWB5LSq1MAQ5fPWL0wFz3u182rQwe5+3qcSLiYLF+JjjshnDZCqf
+         7ERRa6FCKhR4ti65nQHcHxAp3zZpEw8nKKcLzjq0Rk6U3qIRT6BqJs4Tr3iFqLKoMsJf
+         pyRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUfsAXAbzs9eniv6JtskWr+9h5F/OLuFqO3n23GAUWXFl8Y6FfDVYq+Z+pkDIZTbGK4UjfSy88YDc6L@vger.kernel.org, AJvYcCVqdfKwjoECf/VmC634U3IaaRjYf7Wn6boiNjxTHcAbz7kGre0duVG9nqytcQ0TSLd6WqaIvScvlwnEMMg=@vger.kernel.org, AJvYcCW0K+RSLW9lv4bgFHDb9WVL6CY04+vpf4xBjD+pdbAGamihe/eRE+eBF4MYE2qUyoBfkBPmqpbqflwF@vger.kernel.org, AJvYcCX8i5o/ebHu7LQ9gabO1gP1Zgrk9KPNPctCGtZx5AaKbti0YKHFIXn6SvInxUCQeWkRRmaWLH08RjlVgUi0@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmyrMkLAoJ+NgeToLif3k+A3N4QSY1H+R48O4qIiNANzI3iuua
+	MjlgAcg9XgVqBm7qD5ZWuC7JYAugPLE5O7DqimoLkkFM71rEghkl5un0
+X-Gm-Gg: ASbGncsANDtRi41YmF3ff3FgwpJjMOqGB9HnyxmPOdbkR7tb9Aay7eFD1VkV66lrHWu
+	4N15PA7JtaghqN15ZUi9pNNDayfS8jO2M8Se8PhQUWooG5/cyKwfM2JfORcoXLDFW9pFU9NTK+E
+	soB30BdTkij/9UNehMZMG7GGuwb0ieCtVSHcedH4z0Axm77ZyS/odKowLY84aR8u9aqiJRiv8y7
+	tRTQ/gOKRaP8RsiPyFH1kaF57AUodvAqMdeMjwGCl8xrwN0rPlUELDtLaWB+Aww6/PgltPUmpcW
+	x0XF93QAHH66H1uhGMwaNNXyaC34NvBzJOiOA4jyoOet8sbfOv+sjdYBNqkJgc0NWHp7xOr0ReZ
+	BlMmQODocs3gR7O6fmNPLg0nq5QGde8ZMgyxGz1ZUa11r6vPT+TKmHIdk+nUMxAfQNB7xiypcrh
+	H6Pevzew==
+X-Google-Smtp-Source: AGHT+IHoe3rt0UnIql4riTkuMzFWommXpgYmzwxexPBtTMwXbWo2fhzz6inLleq0ElNdDt4/P3AuFA==
+X-Received: by 2002:a17:90b:1fcc:b0:327:ca0a:67b4 with SMTP id 98e67ed59e1d1-32d43f00255mr9242086a91.12.1757283593085;
+        Sun, 07 Sep 2025 15:19:53 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24cbc8706a2sm100903925ad.79.2025.09.07.15.19.23
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32b5d95709fsm14200455a91.10.2025.09.07.15.19.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 Sep 2025 15:19:24 -0700 (PDT)
+        Sun, 07 Sep 2025 15:19:52 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <6d385692-a4be-4fce-9628-274f95fb24ba@roeck-us.net>
-Date: Sun, 7 Sep 2025 15:19:22 -0700
+Message-ID: <502a7a9d-3b5d-4bf9-9cd3-fc3d387ebe62@roeck-us.net>
+Date: Sun, 7 Sep 2025 15:19:51 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,7 +85,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] hwmon: (sht21) Add support for all sht2x chips
+Subject: Re: [PATCH 2/3] hwmon: (sht21) Add devicetree support
 To: Kurt Borja <kuurtb@gmail.com>, Jean Delvare <jdelvare@suse.com>,
  Jonathan Corbet <corbet@lwn.net>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -94,7 +95,7 @@ Cc: stable@vger.kernel.org, linux-hwmon@vger.kernel.org,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org
 References: <20250907-sht2x-v1-0-fd56843b1b43@gmail.com>
- <20250907-sht2x-v1-1-fd56843b1b43@gmail.com>
+ <20250907-sht2x-v1-2-fd56843b1b43@gmail.com>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -140,67 +141,44 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  F0WaMvQMNrk9UAUziVcUkLU52NS9SXqpVg8vgrO0JKx97IXFPcNh0DWsSj/0Y8HO/RDkGXYn
  FDMj7fZSPKyPQPmEHg+W/KzxSSfdgWIHF2QaQ0b2q1wOSec4Rti52ohmNSY+KNIW/zODhugJ
  np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20250907-sht2x-v1-1-fd56843b1b43@gmail.com>
+In-Reply-To: <20250907-sht2x-v1-2-fd56843b1b43@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 9/7/25 15:06, Kurt Borja wrote:
-> All sht2x chips share the same communication protocol so add support for
-> them.
+> Add DT support for sht2x chips.
 > 
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Kurt Borja <kuurtb@gmail.com>
 > ---
->   Documentation/hwmon/sht21.rst | 11 +++++++++++
->   drivers/hwmon/sht21.c         |  3 +++
->   2 files changed, 14 insertions(+)
+>   drivers/hwmon/sht21.c | 10 +++++++++-
+>   1 file changed, 9 insertions(+), 1 deletion(-)
 > 
-> diff --git a/Documentation/hwmon/sht21.rst b/Documentation/hwmon/sht21.rst
-> index 1bccc8e8aac8d3532ec17dcdbc6a172102877085..65f85ca68ecac1cba6ad23f783fd648305c40927 100644
-> --- a/Documentation/hwmon/sht21.rst
-> +++ b/Documentation/hwmon/sht21.rst
-> @@ -2,6 +2,17 @@ Kernel driver sht21
->   ===================
->   
->   Supported chips:
-> +  * Sensirion SHT20
-> +
-> +    Prefix: 'sht20'
-> +
-> +    Addresses scanned: none
-> +
-> +    Datasheet: Publicly available at the Sensirion website
-> +
-> +    https://www.sensirion.com/file/datasheet_sht20
-> +
-> +
-
-Too many empty lines.
-
-Please add SHT20 to Kconfig as well.
-
->   
->     * Sensirion SHT21
->   
 > diff --git a/drivers/hwmon/sht21.c b/drivers/hwmon/sht21.c
-> index 97327313529b467ed89d8f6b06c2d78efd54efbf..a2748659edc262dac9d87771f849a4fc0a29d981 100644
+> index a2748659edc262dac9d87771f849a4fc0a29d981..9813e04f60430f8e60f614d9c68785428978c4a4 100644
 > --- a/drivers/hwmon/sht21.c
 > +++ b/drivers/hwmon/sht21.c
-> @@ -275,7 +275,10 @@ static int sht21_probe(struct i2c_client *client)
->   
->   /* Device ID table */
->   static const struct i2c_device_id sht21_id[] = {
-> +	{ "sht20" },
->   	{ "sht21" },
-> +	{ "sht25" },
-> +	{ "sht2x" },
-
-AFAICS there is no sht2x chip.
-
-
->   	{ }
+> @@ -283,8 +283,16 @@ static const struct i2c_device_id sht21_id[] = {
 >   };
 >   MODULE_DEVICE_TABLE(i2c, sht21_id);
+>   
+> +static const struct of_device_id sht21_of_match[] = {
+> +	{ .compatible = "sensirion,sht2x" },
+
+This should be individual entries, not a placeholder for multiple chips.
+
+> +	{ }
+> +};
+> +
+>   static struct i2c_driver sht21_driver = {
+> -	.driver.name = "sht21",
+> +	.driver = {
+> +		.name = "sht21",
+> +		.of_match_table = sht21_of_match,
+> +	},
+>   	.probe       = sht21_probe,
+>   	.id_table    = sht21_id,
+>   };
 > 
 
 
