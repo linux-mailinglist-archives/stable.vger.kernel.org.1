@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E0FB47EF8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:31:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E27AB47D8C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA1EF17F00C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:31:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C3C617A5C9
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C894A20D51C;
-	Sun,  7 Sep 2025 20:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA5827F754;
+	Sun,  7 Sep 2025 20:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q70EzOte"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XF5XB/Vb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F4418DF89;
-	Sun,  7 Sep 2025 20:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799461B424F;
+	Sun,  7 Sep 2025 20:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277073; cv=none; b=sk1QJ5svUJCJCBpkj673j5HWSj/wNJ97409rKM0htAAeBQRO9qXAhDtTzUfNc9ppg4cyQGJNnfa2maXk5nsAUPgBxie/fIaUVncq3jwkMLGWlRYGuBd0rB8L0ifmR9TTWpy6/jfgzxRYeX4dZAiQGXwBp7s9Yca3M/SzRaoHiGM=
+	t=1757276003; cv=none; b=SQtOjpwf9tHEnP4GE8hVyTayF7GONrULJPu0hHA1c3xpy9DzYlspo7K6Fla2qP9Jfqe+EDmWprSNg6Ycb1tkLNZDGbLvfUjz+QCYgeusMOQi+SxOb8yTWbxR3xvF6SFl4JIkKQrQffT5XJ12FnnO8bRgIN+QAmuOzzE8wAqZULM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277073; c=relaxed/simple;
-	bh=bQPPgCytxfDXBTGmjs3pG+CvckCu2C1KdpSASALOqp4=;
+	s=arc-20240116; t=1757276003; c=relaxed/simple;
+	bh=nYfzOBun+qLydD+timVj7tyIvjiqxFppRKmShQqS7SQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWJZbkYg+KZZBalzRC1TEJnfgP197o7nfw6A5Ms7FCoYuWhsnIBHpU39cxcyIaxCltTZAwPzLFUYdz1Rjg8iw6G1LcgW8YpPOEOBalXQXMSitwZtqOHMQbx7Sp/lyNK0gO07wWbrM93rx/5SozDhujQlJlllSzutsn0Het0HI8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q70EzOte; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B1AC4CEF0;
-	Sun,  7 Sep 2025 20:31:12 +0000 (UTC)
+	 MIME-Version; b=NfcVE9niWLUigdA1CPJWVDmAm4Bl+pMQGMEv2e2RHvrXTDW8sAsNj/qZxGSckVku/iSBvV8ajYdKWm5ydMR+e/+eIxjDgJG//KipFygqOWV4YxQfkQEiDXT2LZpOnemZE3muKcFr4pxFEgadeICsD3y9TLW+iY9wPwBnQjAEaVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XF5XB/Vb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2803C4CEF0;
+	Sun,  7 Sep 2025 20:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277073;
-	bh=bQPPgCytxfDXBTGmjs3pG+CvckCu2C1KdpSASALOqp4=;
+	s=korg; t=1757276003;
+	bh=nYfzOBun+qLydD+timVj7tyIvjiqxFppRKmShQqS7SQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q70EzOteg0zMIWtn7nGoih5p99WtpQ/P1kAZicnRdzXSNo73YCkcn7p4PdmyZLiYu
-	 ZqC/PQm/PnzrKNThc0ks76fIQrHty1PYCGTXDph/5p7r3/P78LoAb9U5UdbcAESwrB
-	 1GwuXvXkWfoPzCVsrBF5UpnCfLqJPlgGLUmk+rEs=
+	b=XF5XB/VbueVM9b2b6w2I+/Gs2qj1D+RyLUW85yGAFraqNLjqTA4mCpbRqeNZiTpVy
+	 KT/CqIhFlW1qRM5LrPXoK0T0mwoxgU4vPDTwl9oKCjw5FYl4r5dFfLEjQDkLlYm0E1
+	 cM2O5Q2e/5y0mx1wiKyY7nOGGkeu4FnHskHGf5Qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Peter Robinson <pbrobinson@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/175] vxlan: Rename FDB Tx lookup function
+Subject: [PATCH 5.15 08/64] arm64: dts: rockchip: Add vcc-supply to SPI flash on rk3399-pinebook-pro
 Date: Sun,  7 Sep 2025 21:57:50 +0200
-Message-ID: <20250907195616.607202093@linuxfoundation.org>
+Message-ID: <20250907195603.634917672@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Peter Robinson <pbrobinson@gmail.com>
 
-[ Upstream commit 5cde39ea38813ebb5bf07922a3ba60871edebf99 ]
+[ Upstream commit d1f9c497618dece06a00e0b2995ed6b38fafe6b5 ]
 
-vxlan_find_mac() is only expected to be called from the Tx path as it
-updates the 'used' timestamp. Rename it to vxlan_find_mac_tx() to
-reflect that and to avoid incorrect updates of this timestamp like those
-addressed by commit 9722f834fe9a ("vxlan: Avoid unnecessary updates to
-FDB 'used' time").
+As described in the pinebookpro_v2.1_mainboard_schematic.pdf page 10,
+he SPI Flash's VCC connector is connected to VCC_3V0 power source.
 
-No functional changes intended.
+This fixes the following warning:
 
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250415121143.345227-12-idosch@nvidia.com
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 1f5d2fd1ca04 ("vxlan: Fix NPD in {arp,neigh}_reduce() when using nexthop objects")
+  spi-nor spi1.0: supply vcc not found, using dummy regulator
+
+Fixes: 5a65505a69884 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/20250730102129.224468-1-pbrobinson@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 1d431e3fc71ea..6b4b4b0484d6e 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -428,8 +428,8 @@ static struct vxlan_fdb *__vxlan_find_mac(struct vxlan_dev *vxlan,
- 	return NULL;
- }
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index 60a909a100eeb..ab2e2ee4ce6fe 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -978,6 +978,7 @@ spiflash: flash@0 {
+ 		reg = <0>;
+ 		m25p,fast-read;
+ 		spi-max-frequency = <10000000>;
++		vcc-supply = <&vcc_3v0>;
+ 	};
+ };
  
--static struct vxlan_fdb *vxlan_find_mac(struct vxlan_dev *vxlan,
--					const u8 *mac, __be32 vni)
-+static struct vxlan_fdb *vxlan_find_mac_tx(struct vxlan_dev *vxlan,
-+					   const u8 *mac, __be32 vni)
- {
- 	struct vxlan_fdb *f;
- 
-@@ -1910,7 +1910,7 @@ static int arp_reduce(struct net_device *dev, struct sk_buff *skb, __be32 vni)
- 		}
- 
- 		rcu_read_lock();
--		f = vxlan_find_mac(vxlan, n->ha, vni);
-+		f = vxlan_find_mac_tx(vxlan, n->ha, vni);
- 		if (f && vxlan_addr_any(&(first_remote_rcu(f)->remote_ip))) {
- 			/* bridge-local neighbor */
- 			neigh_release(n);
-@@ -2076,7 +2076,7 @@ static int neigh_reduce(struct net_device *dev, struct sk_buff *skb, __be32 vni)
- 			goto out;
- 		}
- 
--		f = vxlan_find_mac(vxlan, n->ha, vni);
-+		f = vxlan_find_mac_tx(vxlan, n->ha, vni);
- 		if (f && vxlan_addr_any(&(first_remote_rcu(f)->remote_ip))) {
- 			/* bridge-local neighbor */
- 			neigh_release(n);
-@@ -2766,7 +2766,7 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- 	eth = eth_hdr(skb);
- 	rcu_read_lock();
--	f = vxlan_find_mac(vxlan, eth->h_dest, vni);
-+	f = vxlan_find_mac_tx(vxlan, eth->h_dest, vni);
- 	did_rsc = false;
- 
- 	if (f && (f->flags & NTF_ROUTER) && (vxlan->cfg.flags & VXLAN_F_RSC) &&
-@@ -2774,11 +2774,11 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
- 	     ntohs(eth->h_proto) == ETH_P_IPV6)) {
- 		did_rsc = route_shortcircuit(dev, skb);
- 		if (did_rsc)
--			f = vxlan_find_mac(vxlan, eth->h_dest, vni);
-+			f = vxlan_find_mac_tx(vxlan, eth->h_dest, vni);
- 	}
- 
- 	if (f == NULL) {
--		f = vxlan_find_mac(vxlan, all_zeros_mac, vni);
-+		f = vxlan_find_mac_tx(vxlan, all_zeros_mac, vni);
- 		if (f == NULL) {
- 			if ((vxlan->cfg.flags & VXLAN_F_L2MISS) &&
- 			    !is_multicast_ether_addr(eth->h_dest))
 -- 
 2.50.1
 
