@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C32EAB47F9E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:39:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B39AFB47D85
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5FB11884522
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:40:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B145D189DFA5
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A5D4315A;
-	Sun,  7 Sep 2025 20:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B396D26FA67;
+	Sun,  7 Sep 2025 20:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JI+T9fq1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jNw6ig/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313321A704B;
-	Sun,  7 Sep 2025 20:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720A222F74D;
+	Sun,  7 Sep 2025 20:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277590; cv=none; b=LhA5/XBz1lhmWatwoBZBl7HxZ4AEqZn/e2p9nT08EdscHITupAUUxYukTcDB+NFqPbtyRQE6V5lMMbo+WrHCZbQnOsNJUoCfOIxtV2ne3GjpmWKUDtwlSEX/BdYAvbTr3RsMNkUJHMsrJ8p5c0x3kFjhNJ9ixkkMCENISsCo55c=
+	t=1757275981; cv=none; b=NRzxYyNjBW/iRE3LH1tT5NRVjyWRUfn+/0SffSVYGMy/nFgshpbK1DfJw/SzXhfuHfBEfIWpFdJeyjb827I/5kdxmbdVnTNvjJyAgYMhlgmVzdHnsJEtUVwKG2dtBM//ifc97Ghw+ldAImQncxkxuJIgTTkHhYRftwo+VxGWQ7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277590; c=relaxed/simple;
-	bh=N7e0vUEvw6rgvQIYl0l66fDQlonk/WnXMYIxNmktcpo=;
+	s=arc-20240116; t=1757275981; c=relaxed/simple;
+	bh=LFjSyzjGEfmSQzaovEz4g3FNiDhdpObhpwlwTT4VTPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1PI+hXhy02MqEoZL20pRTSWxuhAV1lWOfPIcVjKsCiO8zaZNG4ABviEuO+7/+sI6X929ryRgctxVZMDRBZ3OPeYFZTM5NUlXqXGf4z5pkRZMJvqXgtfO2T8Sgcf3JHmqrtDKypPDUlNA9ZwL3DmfYIEVaw9ZUGGCwHCmbYP/MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JI+T9fq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FD7C4CEF0;
-	Sun,  7 Sep 2025 20:39:49 +0000 (UTC)
+	 MIME-Version; b=c4liXNTG78giqeqJ5AsQmla7xvu+5uF4zaX5iqVYl8m4tiqJl5ZJZclQ/vnEzQISGP5bb76urtSOvbB7K2u50kcBeNyyRzaxyHyhq/Njf6f1UViSVIA/HUCkL198ArYSM0v+eSR0BYZ33IUrFD0AxEhkQzZEoJt7l3cwvi06UIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jNw6ig/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B217DC4CEF0;
+	Sun,  7 Sep 2025 20:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277590;
-	bh=N7e0vUEvw6rgvQIYl0l66fDQlonk/WnXMYIxNmktcpo=;
+	s=korg; t=1757275981;
+	bh=LFjSyzjGEfmSQzaovEz4g3FNiDhdpObhpwlwTT4VTPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JI+T9fq11LqII2KXK6VSYLu819dudYhAc/VqqWHLwcjEW68uZQPP/2KmgIUryYL9i
-	 CxT2NMkXdvmQv0WbU5/FD6CrMhqI1tUYpWL9CSS4XzY/d6ePsEsblBaaa0bkdrMvUj
-	 QCSOn0i65i5p7juvTDsrOi02m+bh2cKlaeijLsAs=
+	b=jNw6ig/AIjU4FTELJoMNMGtgaWQ0Kv1vC66hUmExeVSL5N98LwTcO5hPudgsD3ORE
+	 MtCfbtLY8JmW1TnNhkgnVeeGG6/gs1opyOgVbXtAFBkfKXMCV86A28rjbUsl4RBxbX
+	 ejCOAtquU69ucZ+AWer3lA435gx16SVg9fxPoan0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
+	Qingfang Deng <dqfext@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Yue Haibing <yuehaibing@huawei.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 060/183] macsec: read MACSEC_SA_ATTR_PN with nla_get_uint
+Subject: [PATCH 5.15 25/64] ppp: fix memory leak in pad_compress_skb
 Date: Sun,  7 Sep 2025 21:58:07 +0200
-Message-ID: <20250907195617.217107528@linuxfoundation.org>
+Message-ID: <20250907195604.085282027@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Qingfang Deng <dqfext@gmail.com>
 
-[ Upstream commit 030e1c45666629f72d0fc1d040f9d2915680de8e ]
+[ Upstream commit 4844123fe0b853a4982c02666cb3fd863d701d50 ]
 
-The code currently reads both U32 attributes and U64 attributes as
-U64, so when a U32 attribute is provided by userspace (ie, when not
-using XPN), on big endian systems, we'll load that value into the
-upper 32bits of the next_pn field instead of the lower 32bits. This
-means that the value that userspace provided is ignored (we only care
-about the lower 32bits for non-XPN), and we'll start using PNs from 0.
+If alloc_skb() fails in pad_compress_skb(), it returns NULL without
+releasing the old skb. The caller does:
 
-Switch to nla_get_uint, which will read the value correctly on all
-arches, whether it's 32b or 64b.
+    skb = pad_compress_skb(ppp, skb);
+    if (!skb)
+        goto drop;
 
-Fixes: 48ef50fa866a ("macsec: Netlink support of XPN cipher suites (IEEE 802.1AEbw)")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1c1df1661b89238caf5beefb84a10ebfd56c66ea.1756459839.git.sd@queasysnail.net
+drop:
+    kfree_skb(skb);
+
+When pad_compress_skb() returns NULL, the reference to the old skb is
+lost and kfree_skb(skb) ends up doing nothing, leading to a memory leak.
+
+Align pad_compress_skb() semantics with realloc(): only free the old
+skb if allocation and compression succeed.  At the call site, use the
+new_skb variable so the original skb is not lost when pad_compress_skb()
+fails.
+
+Fixes: b3f9b92a6ec1 ("[PPP]: add PPP MPPE encryption module")
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Yue Haibing <yuehaibing@huawei.com>
+Link: https://patch.msgid.link/20250903100726.269839-1-dqfext@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ppp/ppp_generic.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 4c75d1fea5527..01329fe7451a1 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -1844,7 +1844,7 @@ static int macsec_add_rxsa(struct sk_buff *skb, struct genl_info *info)
- 
- 	if (tb_sa[MACSEC_SA_ATTR_PN]) {
- 		spin_lock_bh(&rx_sa->lock);
--		rx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
-+		rx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
- 		spin_unlock_bh(&rx_sa->lock);
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index 5cb06e04293e3..91a19ed03bc7d 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -1752,7 +1752,6 @@ pad_compress_skb(struct ppp *ppp, struct sk_buff *skb)
+ 		 */
+ 		if (net_ratelimit())
+ 			netdev_err(ppp->dev, "ppp: compressor dropped pkt\n");
+-		kfree_skb(skb);
+ 		consume_skb(new_skb);
+ 		new_skb = NULL;
+ 	}
+@@ -1854,9 +1853,10 @@ ppp_send_frame(struct ppp *ppp, struct sk_buff *skb)
+ 					   "down - pkt dropped.\n");
+ 			goto drop;
+ 		}
+-		skb = pad_compress_skb(ppp, skb);
+-		if (!skb)
++		new_skb = pad_compress_skb(ppp, skb);
++		if (!new_skb)
+ 			goto drop;
++		skb = new_skb;
  	}
  
-@@ -2086,7 +2086,7 @@ static int macsec_add_txsa(struct sk_buff *skb, struct genl_info *info)
- 	}
- 
- 	spin_lock_bh(&tx_sa->lock);
--	tx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
-+	tx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
- 	spin_unlock_bh(&tx_sa->lock);
- 
- 	if (tb_sa[MACSEC_SA_ATTR_ACTIVE])
-@@ -2398,7 +2398,7 @@ static int macsec_upd_txsa(struct sk_buff *skb, struct genl_info *info)
- 
- 		spin_lock_bh(&tx_sa->lock);
- 		prev_pn = tx_sa->next_pn_halves;
--		tx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
-+		tx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
- 		spin_unlock_bh(&tx_sa->lock);
- 	}
- 
-@@ -2496,7 +2496,7 @@ static int macsec_upd_rxsa(struct sk_buff *skb, struct genl_info *info)
- 
- 		spin_lock_bh(&rx_sa->lock);
- 		prev_pn = rx_sa->next_pn_halves;
--		rx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
-+		rx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
- 		spin_unlock_bh(&rx_sa->lock);
- 	}
- 
+ 	/*
 -- 
 2.50.1
 
