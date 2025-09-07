@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6BBB47F5F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7F2B47E20
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B845189D795
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:37:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3023118958E4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7660421ADAE;
-	Sun,  7 Sep 2025 20:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BEAE1F09BF;
+	Sun,  7 Sep 2025 20:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAkxbi2d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhGZ9b3l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328AC1DF246;
-	Sun,  7 Sep 2025 20:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A72D1D88D0;
+	Sun,  7 Sep 2025 20:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277401; cv=none; b=hi/4tB55v0km+Ya6RaZBLMCGiFfQyAQ5Buna7klVP1tuTQijKUTilLB1NeJkzAiA5W7hiuu9BH4dWs2LXjC2wOT38NR5BLF6EfG+yYyJ0Y3vjdHK0+WpVWsoHau6SDyNXI5o6Xjz++O96ciqgYLVPqiBLjYibMBS5MBQMioi64o=
+	t=1757276407; cv=none; b=AYm77aRDufqiTuvQffTQK2qmk5kER5zCdeYbzUfBKgpWZChsqrS+136HpsNfFiUtzqd9o6+8ehqFDshWDPN2RU9e+9Rfk3W0eThI8juRNT1hgcuMG6Spor289XzgOXwVuSvMOQS9gjv4FvthOwHu1ra2VlD+7L8kzlEb+WzSEZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277401; c=relaxed/simple;
-	bh=SBkeksSaFEyR/F4XIhnnAITuwtMvrAcacRq5P9g16lU=;
+	s=arc-20240116; t=1757276407; c=relaxed/simple;
+	bh=FlkPpJ2pG4+0W6TwLolt/7hGy7zuz4UtKRQwUdwsdrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sdt0dIZo8OKlqJJd7bH4+Wy4Yll1kp7nXhLt9cYyIL5ZuzjtaGVb7ZkJ6p3Ek12F9uvJSHD40U47G+6FcGhg32TUsch7s/SPlES8fcNw94H6jbQ2+gVxG7XHPS1u4biKINmymV+F4/XRAMv31KrtOznu0NMcW9ffunY4iUZeI8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAkxbi2d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6124C4CEF0;
-	Sun,  7 Sep 2025 20:36:40 +0000 (UTC)
+	 MIME-Version; b=RjSF9ZF1efarDUp71wrLK5LmvGFdGi4zLXQ2170Bo10ODHcPOgmi1bzYGbiYz96MVneV24LVAw/jqQEOAwQajRHUtaCTdtVGwd4mesdh3MO3y8QhJ7f0SVLx8lNaTTPa60rmau3Qa5SB4GgCmVAkmevCXKaoUbwxBXhC17tW510=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhGZ9b3l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99B9C4CEF0;
+	Sun,  7 Sep 2025 20:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277401;
-	bh=SBkeksSaFEyR/F4XIhnnAITuwtMvrAcacRq5P9g16lU=;
+	s=korg; t=1757276407;
+	bh=FlkPpJ2pG4+0W6TwLolt/7hGy7zuz4UtKRQwUdwsdrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AAkxbi2dp+K8DqKGU1M5N5CBclwCgtA44dFEwfNNoActOatL6//OsMbhbFXk8WmpL
-	 1vAyOgy5z1gIx3Ur8YigItomyAHRdS0ifZXOWJ0uERo/igoH8J6wRY0OPQleB/EzjJ
-	 nc+AShzZE6+h3TGyFtWY4Cy5iddsc90XxU2PyNj4=
+	b=PhGZ9b3lK40DKadOOhFHunVQ3nazSCPcosHrnY1dyJ4gGMx7wLVlrLM3eXuIYgolU
+	 34on4DZvMu+z5lzUvcgEacit3lll+gZaVkccAzFuC+o7cTrHffSlN18G/ngk4T1XBx
+	 4wmKuhSr30rEPa7GeCW094tce0nNmVXkxjb76bJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Yue <glass.su@suse.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 136/175] md/md-bitmap: fix wrong bitmap_limit for clustermd when write sb
+	Colin Ian King <colin.i.king@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 094/104] drm/amd/amdgpu: Fix missing error return on kzalloc failure
 Date: Sun,  7 Sep 2025 21:58:51 +0200
-Message-ID: <20250907195618.067930425@linuxfoundation.org>
+Message-ID: <20250907195610.103602452@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Yue <glass.su@suse.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-commit 6130825f34d41718c98a9b1504a79a23e379701e upstream.
+[ Upstream commit 467e00b30dfe75c4cfc2197ceef1fddca06adc25 ]
 
-In clustermd, separate write-intent-bitmaps are used for each cluster
-node:
+Currently the kzalloc failure check just sets reports the failure
+and sets the variable ret to -ENOMEM, which is not checked later
+for this specific error. Fix this by just returning -ENOMEM rather
+than setting ret.
 
-0                    4k                     8k                    12k
--------------------------------------------------------------------
-| idle                | md super            | bm super [0] + bits |
-| bm bits[0, contd]   | bm super[1] + bits  | bm bits[1, contd]   |
-| bm super[2] + bits  | bm bits [2, contd]  | bm super[3] + bits  |
-| bm bits [3, contd]  |                     |                     |
-
-So in node 1, pg_index in __write_sb_page() could equal to
-bitmap->storage.file_pages. Then bitmap_limit will be calculated to
-0. md_super_write() will be called with 0 size.
-That means the first 4k sb area of node 1 will never be updated
-through filemap_write_page().
-This bug causes hang of mdadm/clustermd_tests/01r1_Grow_resize.
-
-Here use (pg_index % bitmap->storage.file_pages) to make calculation
-of bitmap_limit correct.
-
-Fixes: ab99a87542f1 ("md/md-bitmap: fix writing non bitmap pages")
-Signed-off-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Link: https://lore.kernel.org/linux-raid/20250303033918.32136-1-glass.su@suse.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4fb930715468 ("drm/amd/amdgpu: remove redundant host to psp cmd buf allocations")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1ee9d1a0962c13ba5ab7e47d33a80e3b8dc4b52e)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -426,8 +426,8 @@ static int __write_sb_page(struct md_rde
- 	struct block_device *bdev;
- 	struct mddev *mddev = bitmap->mddev;
- 	struct bitmap_storage *store = &bitmap->storage;
--	unsigned int bitmap_limit = (bitmap->storage.file_pages - pg_index) <<
--		PAGE_SHIFT;
-+	unsigned long num_pages = bitmap->storage.file_pages;
-+	unsigned int bitmap_limit = (num_pages - pg_index % num_pages) << PAGE_SHIFT;
- 	loff_t sboff, offset = mddev->bitmap_info.offset;
- 	sector_t ps = pg_index * PAGE_SIZE / SECTOR_SIZE;
- 	unsigned int size = PAGE_SIZE;
-@@ -436,7 +436,7 @@ static int __write_sb_page(struct md_rde
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index df38eb9604ec3..0bc21106d9e87 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -373,7 +373,7 @@ static int psp_sw_init(void *handle)
+ 	psp->cmd = kzalloc(sizeof(struct psp_gfx_cmd_resp), GFP_KERNEL);
+ 	if (!psp->cmd) {
+ 		dev_err(adev->dev, "Failed to allocate memory to command buffer!\n");
+-		ret = -ENOMEM;
++		return -ENOMEM;
+ 	}
  
- 	bdev = (rdev->meta_bdev) ? rdev->meta_bdev : rdev->bdev;
- 	/* we compare length (page numbers), not page offset. */
--	if ((pg_index - store->sb_index) == store->file_pages - 1) {
-+	if ((pg_index - store->sb_index) == num_pages - 1) {
- 		unsigned int last_page_size = store->bytes & (PAGE_SIZE - 1);
- 
- 		if (last_page_size == 0)
+ 	if (amdgpu_sriov_vf(adev))
+-- 
+2.51.0
+
 
 
 
