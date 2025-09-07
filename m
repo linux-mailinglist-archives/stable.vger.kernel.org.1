@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE006B47D20
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 807D5B47E4B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9306C3BE972
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3982E1694D3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4EA2836A0;
-	Sun,  7 Sep 2025 20:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B795B1F1921;
+	Sun,  7 Sep 2025 20:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcn/iyk9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1CY7f/Pm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8613E1CDFAC;
-	Sun,  7 Sep 2025 20:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723D21A9FAA;
+	Sun,  7 Sep 2025 20:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275674; cv=none; b=SEa587vHfW80IoluZl6PYSQw9qgjX3sGzm+WSpEp3m6kKAYbX8PQXI5P6UG0Ba2MS+47DdGuwK04gls8sxSuoUlrS2x1DhSLV00AmgF/hc1RvNKN3NC2vKilaZWX/jaB/epWfmIWp41UB0MaOIdXH1+ybVuoHTcCdtwiRm9SU08=
+	t=1757276544; cv=none; b=PH8YIekLgQ/F3JvQbNDC4Itx80b8mn8SPMXSjjFC1Tp68ZUB5C8PjK72Yh2lQamE8ZVTj9OMMI8BWozdRr0/jcl+Hb96KyKUnOt2dvp1P2cw2Blz6XSPRTybbCWV2dTjD7wtQOOU8oSVCCrS6vuk1VPdorinpqZ40tBqGw3gQfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275674; c=relaxed/simple;
-	bh=JVPYUKgwvLZxrAaAJVCSYQlG4IyI6BTwWZ+lXUvK48M=;
+	s=arc-20240116; t=1757276544; c=relaxed/simple;
+	bh=WDFplE1AB3GI+VpN0aGegtvE2jAd/PVi89QwfCf1ElU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b41wJAB1CYtKQUlE3e5uZQV8GdYPqfO64ARnSqG59CDQJkSgXJEN2J163EgsQ5YLppZh2sRquVTutNnfDcRPNqZumwJQBQJS4qRzClPWnuJw7ITE8SHkBUvlndukIvjxK4N+r/Yp5fI7lSwS0GfT6h6qJhHfnckxlAjqgFOsvgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcn/iyk9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A31C4CEF0;
-	Sun,  7 Sep 2025 20:07:53 +0000 (UTC)
+	 MIME-Version; b=qV9gLvjQL0yIVqyjftUMATkoR8VyzhfVz7Ke8TAf8sYeR07kYad1IPn2ImhOI9LDrbCapUdJsD92vJXSBUxFQvDh7s8QvtZqL3OzVGD+IIkzE6zryxadDjeqX8AHBXWgPZFn2GbGum9z1WvKrOFnYN+mKvn+duKahMbuqrjUC2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1CY7f/Pm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB42FC4CEF0;
+	Sun,  7 Sep 2025 20:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275674;
-	bh=JVPYUKgwvLZxrAaAJVCSYQlG4IyI6BTwWZ+lXUvK48M=;
+	s=korg; t=1757276544;
+	bh=WDFplE1AB3GI+VpN0aGegtvE2jAd/PVi89QwfCf1ElU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dcn/iyk9V5dQabBl161c1zeaKk70483syfMqEDIsrGrQqsjlDTHkgrs6Vxp1RHZd4
-	 eoCNzAveLrcKhE0ur2Rh2Ibe3FwQ/EImS6bjxgDZs4d8Y7MH85jLs+f5TogOaFR1GS
-	 jD+UA4cT751XqULAn9no7W+8dMuZK2TVBYC++0mw=
+	b=1CY7f/Pmfj8hlNhaRgItA3VOmLsSbA2bTZr5r7eUNPeMYMFDjlrIdrHlq2PSylbFg
+	 NxQxUi5dr0cTiceBLSILYX5qeyZ/QefutyRxjwqQUKWkU7z6TfsBen2yLUqR0Rb+J2
+	 bgDcjF2qymzJLGD3KWx6q5fSspj4L8/PZwf4Q3fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Qiong <liqiong@nfschina.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 28/52] mm/slub: avoid accessing metadata when pointer is invalid in object_err()
+Subject: [PATCH 6.6 032/121] i40e: Fix potential invalid access when MAC list is empty
 Date: Sun,  7 Sep 2025 21:57:48 +0200
-Message-ID: <20250907195602.805897148@linuxfoundation.org>
+Message-ID: <20250907195610.655819351@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Qiong <liqiong@nfschina.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-[ Upstream commit b4efccec8d06ceb10a7d34d7b1c449c569d53770 ]
+[ Upstream commit a556f06338e1d5a85af0e32ecb46e365547f92b9 ]
 
-object_err() reports details of an object for further debugging, such as
-the freelist pointer, redzone, etc. However, if the pointer is invalid,
-attempting to access object metadata can lead to a crash since it does
-not point to a valid object.
+list_first_entry() never returns NULL - if the list is empty, it still
+returns a pointer to an invalid object, leading to potential invalid
+memory access when dereferenced.
 
-One known path to the crash is when alloc_consistency_checks()
-determines the pointer to the allocated object is invalid because of a
-freelist corruption, and calls object_err() to report it. The debug code
-should report and handle the corruption gracefully and not crash in the
-process.
+Fix this by using list_first_entry_or_null instead of list_first_entry.
 
-In case the pointer is NULL or check_valid_pointer() returns false for
-the pointer, only print the pointer value and skip accessing metadata.
-
-Fixes: 81819f0fc828 ("SLUB core")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Li Qiong <liqiong@nfschina.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-[ struct page + print_page_info() ]
+Fixes: e3219ce6a775 ("i40e: Add support for client interface for IWARP driver")
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_client.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -729,7 +729,12 @@ void object_err(struct kmem_cache *s, st
- 			u8 *object, char *reason)
- {
- 	slab_bug(s, "%s", reason);
--	print_trailer(s, page, object);
-+	if (!object || !check_valid_pointer(s, page, object)) {
-+		print_page_info(page);
-+		pr_err("Invalid pointer 0x%p\n", object);
-+	} else {
-+		print_trailer(s, page, object);
-+	}
- }
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_client.c b/drivers/net/ethernet/intel/i40e/i40e_client.c
+index 306758428aefd..a569d2fcc90af 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_client.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_client.c
+@@ -361,8 +361,8 @@ static void i40e_client_add_instance(struct i40e_pf *pf)
+ 	if (i40e_client_get_params(vsi, &cdev->lan_info.params))
+ 		goto free_cdev;
  
- static __printf(3, 4) void slab_err(struct kmem_cache *s, struct page *page,
+-	mac = list_first_entry(&cdev->lan_info.netdev->dev_addrs.list,
+-			       struct netdev_hw_addr, list);
++	mac = list_first_entry_or_null(&cdev->lan_info.netdev->dev_addrs.list,
++				       struct netdev_hw_addr, list);
+ 	if (mac)
+ 		ether_addr_copy(cdev->lan_info.lanmac, mac->addr);
+ 	else
+-- 
+2.50.1
+
 
 
 
