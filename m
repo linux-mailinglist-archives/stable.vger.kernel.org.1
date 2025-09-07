@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-178322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE15B47E2D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0546B47DC0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07C1317DA54
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DCBC17CEFD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E881D88D0;
-	Sun,  7 Sep 2025 20:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB1C14BFA2;
+	Sun,  7 Sep 2025 20:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcdvCkIU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFShME0i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9976C14BFA2;
-	Sun,  7 Sep 2025 20:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E28215D5B6;
+	Sun,  7 Sep 2025 20:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276468; cv=none; b=KA9qaasbDZsTnbmN4L3cwebWb9VSo4MrA3PUikWS7hv/SQTo+MjzROV8jF4ELdG9Uag4vNHSEH5Ji/fwqggoU7iX87RN4gRiQuJNvfK0CxtPLhfo805GMEWSQmUezUqnZpzxHdZ8RxSFpQKHut0VR5bc0BfN+1FkCZ1gpZi6+II=
+	t=1757276163; cv=none; b=DhgkMEVdVov3G8HrBRVlXssMvnUyp8ESCBDFZA24PuieE5paOcEeXGsb8h6+lIs6PncuhJpPdK9hmdqZFDznYdqk6W5TrZOrUZoye+0xwisEiuBpAClWJHSed1IvP5mrs7qxgmpmrRDGfw4Tvyd3fX764f7XsHXx9NPfnMVkBoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276468; c=relaxed/simple;
-	bh=GpXORY65/uFftunlTNh2psIigAlMRF31jdHGkQ4rrTQ=;
+	s=arc-20240116; t=1757276163; c=relaxed/simple;
+	bh=UYofmJvBHffT3FXGpsK4dcjlHIh7Ysy9oee8Oui5+rU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i9FRdu07wdY0JSA5lACqWKATdJxkW3IkXQeFfkfSBP+q/j4PomrgN1/NU3bAXeFOxhceSnyVqlKW0QYWcHKvnzU97T9z6DraIhZvhs+Ce6pGnPTWKqV2bSWwHfWRZvsgSofLBAHmAjR2SvghKUNaQdk9EtTLWjWDL5e3N/iZ770=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcdvCkIU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E49C4CEF0;
-	Sun,  7 Sep 2025 20:21:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HsdKpCd1vzQ0RnLDhTmC1ANXoq7aiUBkOz2P2pMwn6Pdq4kjJC+oWicT+hCM3IO4jzjQrO78yi1Z0BF2+r+gcSej5OQ079nPfzCJh38n6JTS8xUVZLLOBaWVzN4s29Hbn7QoibiS/cY3XJhV+gfF6nWVi5/xgKdc/qhcZ2qWrgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NFShME0i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCD2C4CEF0;
+	Sun,  7 Sep 2025 20:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276468;
-	bh=GpXORY65/uFftunlTNh2psIigAlMRF31jdHGkQ4rrTQ=;
+	s=korg; t=1757276163;
+	bh=UYofmJvBHffT3FXGpsK4dcjlHIh7Ysy9oee8Oui5+rU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zcdvCkIUa/2UmOmGanL0X8fPxrZywCzp8kVZjnK8VgpB2qq1yb/1++jGg5VowU9TW
-	 /MxsCEyYQvS3JOA2KtcYHPIfBAPjIm4bORCclhP55EDvrMtjiA4azqZqgiKAzE4N6s
-	 YfeEqLkYpMWXFOJsCrriEOoXl28ZqIWg05uvYBjo=
+	b=NFShME0iUSbaSy46Iy+vHMduZ04anwcQA6W8GjjDfP+lYNwFdE26nSWE2VMyyA3+e
+	 Z6DezvHe64IwzjX5cjR0aFIkOgZUvnCZ26Ro4FF6rWNc8bhiVX0Zws5M82hebbGHwm
+	 2rTNI9s3p6QR8F7tcHQEUlWxCBRGR6HXHxFIM6AY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Rodrigo Siqueira <siqueira@igalia.com>,
 	Alex Hung <alex.hung@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/121] drm/amd/display: Dont warn when missing DCE encoder caps
+Subject: [PATCH 6.1 009/104] drm/amd/display: Dont warn when missing DCE encoder caps
 Date: Sun,  7 Sep 2025 21:57:26 +0200
-Message-ID: <20250907195610.078286836@linuxfoundation.org>
+Message-ID: <20250907195607.914819220@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -91,10 +91,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
-index 136bd93c3b655..0a33f8f117e92 100644
+index 09260c23c3bde..85926d2300444 100644
 --- a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
 +++ b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
-@@ -896,13 +896,13 @@ void dce110_link_encoder_construct(
+@@ -897,13 +897,13 @@ void dce110_link_encoder_construct(
  						enc110->base.id, &bp_cap_info);
  
  	/* Override features with DCE-specific values */
@@ -110,7 +110,7 @@ index 136bd93c3b655..0a33f8f117e92 100644
  		DC_LOG_WARNING("%s: Failed to get encoder_cap_info from VBIOS with error code %d!\n",
  				__func__,
  				result);
-@@ -1795,13 +1795,13 @@ void dce60_link_encoder_construct(
+@@ -1798,13 +1798,13 @@ void dce60_link_encoder_construct(
  						enc110->base.id, &bp_cap_info);
  
  	/* Override features with DCE-specific values */
