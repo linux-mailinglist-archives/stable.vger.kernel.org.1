@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-178187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF4DB47D99
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8C3B47E28
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5370817CAD0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 683FD17D9F0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4E926FA67;
-	Sun,  7 Sep 2025 20:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467C41B4247;
+	Sun,  7 Sep 2025 20:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9498OUN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIm4Gcnj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D581B424F;
-	Sun,  7 Sep 2025 20:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040A314BFA2;
+	Sun,  7 Sep 2025 20:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276041; cv=none; b=TgJWPUZ8qA2d+f26aMtGSRRjx8mxahkb678y5aHU3wHiWo62rcTOBJBB4iyvUhlq4LNDlZno6ZCO3lnsVUOZZoKsunAs26StyAMzUvhspyVZx1MkhQkfABbNMOsLD4pie7W+xC1xsv4858366zY6dsAobjBeEY8fDpI6nM2jPG0=
+	t=1757276456; cv=none; b=RfUh67KEU3EezoqdZ1A4gWqCG1I7cwQNAf31R4gv/syD70uUXpsTn1xS6a1sdus5uI/zK3tUZYBQ2cVeK8UoBx2iVLu1a0cohPOj7OmiJ/MmNwGZMZLJz8LYXP2HsETYcAOyUboR+F/ptwJmlFfnS1rzCaDv0Z3ZjIb25S33IDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276041; c=relaxed/simple;
-	bh=ioBNiOS/xiKMKpI62xAfKC8hFX6Cm4/LdjNzmdpPSqs=;
+	s=arc-20240116; t=1757276456; c=relaxed/simple;
+	bh=YZe9Sa9C3pgHXZ0tHd+sCQbj8gBGWC0UuzFcQv/VJFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aw/SJkXbWjYMRRksvlWVMov5O+gNiL0LxbLkC1UTTW38yIvu+cpLKnJcetHrjlLBSzZXtmbJW5fCQFRcMKZtoDhe21VjjrteNXPU4QfwgRjMNrqmeS4oOJuTqEyWEay95pWsE8EGz2yQuBRxHd3ZxkDdOzwr7agITqgRE2OtYE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9498OUN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611ADC4CEF8;
-	Sun,  7 Sep 2025 20:14:00 +0000 (UTC)
+	 MIME-Version; b=prF45y54JPly1XvaMUbe6+JfNcRwDC/t4tq+2IJIi4kK0lSwuEdWNzAZfug+puzCPGaWKmb0oDfGnKMCdUMaICfEcQBLQd2GxIuY39nvmKmEmlTmBX21HkW41U97oFZLDAZoHYRANE2k4EG/yxn5GvlF8SB4espKwlGu9ardxzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIm4Gcnj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A086C4CEF0;
+	Sun,  7 Sep 2025 20:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276040;
-	bh=ioBNiOS/xiKMKpI62xAfKC8hFX6Cm4/LdjNzmdpPSqs=;
+	s=korg; t=1757276455;
+	bh=YZe9Sa9C3pgHXZ0tHd+sCQbj8gBGWC0UuzFcQv/VJFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9498OUN8UHGNshfa9gPmLvQQgHxYY1fOoC5M67trtM8BjQuTuoUrusqEO09HgGmz
-	 vKPjC2utkynJfxDE+WI86UzdNP/fyrEM5wuElQ2pOsbnl39Elt2KQNhHProQIOoTXy
-	 5Yz0G27awoCf/irpOG7GdeRnfwC/PZcyMY2N3X28=
+	b=jIm4GcnjhMGCGqsC2l4khO9d7ptIDifmqhT2bbMl0cYdpT9FrRl62D26IqDLILV6D
+	 M4Jbi08L4k5xD8Fz0s7XCt4jm29LYUGzZHSbvFcW/8FhmJzWCzELXoqhET+jxsD6sx
+	 eYW/X+DZ88BCrRL7oUoPE+YIniZ1x41bBfYXLuvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 45/64] gpio: pca953x: fix IRQ storm on system wake up
+Subject: [PATCH 6.1 070/104] cpufreq: intel_pstate: Fold intel_pstate_max_within_limits() into caller
 Date: Sun,  7 Sep 2025 21:58:27 +0200
-Message-ID: <20250907195604.648449402@linuxfoundation.org>
+Message-ID: <20250907195609.495930320@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 3e38f946062b4845961ab86b726651b4457b2af8 ]
+[ Upstream commit 032c5565eb80edb6f2faeb31939540c897987119 ]
 
-If an input changes state during wake-up and is used as an interrupt
-source, the IRQ handler reads the volatile input register to clear the
-interrupt mask and deassert the IRQ line. However, the IRQ handler is
-triggered before access to the register is granted, causing the read
-operation to fail.
+Fold intel_pstate_max_within_limits() into its only caller.
 
-As a result, the IRQ handler enters a loop, repeatedly printing the
-"failed reading register" message, until `pca953x_resume()` is eventually
-called, which restores the driver context and enables access to
-registers.
+No functional impact.
 
-Fix by disabling the IRQ line before entering suspend mode, and
-re-enabling it after the driver context is restored in `pca953x_resume()`.
-
-An IRQ can be disabled with disable_irq() and still wake the system as
-long as the IRQ has wake enabled, so the wake-up functionality is
-preserved.
-
-Fixes: b76574300504 ("gpio: pca953x: Restore registers after suspend/resume cycle")
-Cc: stable@vger.kernel.org
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20250512095441.31645-1-francesco@dolcini.it
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-[ Apply directly to suspend/resume functions ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Stable-dep-of: ac4e04d9e378 ("cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-pca953x.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/cpufreq/intel_pstate.c |   13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -1145,6 +1145,9 @@ static int pca953x_suspend(struct device
- 	struct pca953x_chip *chip = dev_get_drvdata(dev);
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -1984,14 +1984,6 @@ static void intel_pstate_set_min_pstate(
+ 	intel_pstate_set_pstate(cpu, cpu->pstate.min_pstate);
+ }
  
- 	mutex_lock(&chip->i2c_lock);
-+	/* Disable IRQ to prevent early triggering while regmap "cache only" is on */
-+	if (chip->client->irq > 0)
-+		disable_irq(chip->client->irq);
- 	regcache_cache_only(chip->regmap, true);
- 	mutex_unlock(&chip->i2c_lock);
+-static void intel_pstate_max_within_limits(struct cpudata *cpu)
+-{
+-	int pstate = max(cpu->pstate.min_pstate, cpu->max_perf_ratio);
+-
+-	update_turbo_state();
+-	intel_pstate_set_pstate(cpu, pstate);
+-}
+-
+ static void intel_pstate_get_cpu_pstates(struct cpudata *cpu)
+ {
+ 	int perf_ctl_max_phys = pstate_funcs.get_max_physical(cpu->cpu);
+@@ -2573,12 +2565,15 @@ static int intel_pstate_set_policy(struc
+ 	intel_pstate_update_perf_limits(cpu, policy->min, policy->max);
  
-@@ -1170,6 +1173,8 @@ static int pca953x_resume(struct device
+ 	if (cpu->policy == CPUFREQ_POLICY_PERFORMANCE) {
++		int pstate = max(cpu->pstate.min_pstate, cpu->max_perf_ratio);
++
+ 		/*
+ 		 * NOHZ_FULL CPUs need this as the governor callback may not
+ 		 * be invoked on them.
+ 		 */
+ 		intel_pstate_clear_update_util_hook(policy->cpu);
+-		intel_pstate_max_within_limits(cpu);
++		update_turbo_state();
++		intel_pstate_set_pstate(cpu, pstate);
+ 	} else {
+ 		intel_pstate_set_update_util_hook(policy->cpu);
  	}
- 
- 	mutex_lock(&chip->i2c_lock);
-+	if (chip->client->irq > 0)
-+		enable_irq(chip->client->irq);
- 	regcache_cache_only(chip->regmap, false);
- 	regcache_mark_dirty(chip->regmap);
- 	ret = pca953x_regcache_sync(dev);
 
 
 
