@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-178546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00AE1B47F1B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A73B47D97
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAF363C1BDA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B255517CA74
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE0326FA67;
-	Sun,  7 Sep 2025 20:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3F5296BB8;
+	Sun,  7 Sep 2025 20:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4yWw5Fv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHHyb7VO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784962139C9;
-	Sun,  7 Sep 2025 20:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A14326E6FF;
+	Sun,  7 Sep 2025 20:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277182; cv=none; b=U1JBbEq5cYihVjM4H/+649Ak1RqGZ231H0A9s37iJO4A365T6bZfq8MicY10LJUixhD6pE2Pkam/8VELpQcTtXBUgyhDWKazlIzgyA7gsYIPUf5Mtylj1f5epTRstHLXs97AYRWs6WSexscuvKRRSYhjYVgNYQeiULa2bPkfYRc=
+	t=1757276035; cv=none; b=AO6dmhss0chcaZj0pme7k2wpkyxj3v3S9H+pKXna8NK1h9jllMoarQ7VdnUYvsktlb3KbE1A2vnjWDD7nLP6Qvq6ZsEdeZ71uaJRIqd0KQlsZQrXN1wO+QXz/6KivpG4RQob0qNEkdoHrn34Nnil8124KEAAKTc/2/iMxcdMaHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277182; c=relaxed/simple;
-	bh=pGVypDUrUc3+B2tlKzekorDtuo82CrgMLZv8pKWQeDc=;
+	s=arc-20240116; t=1757276035; c=relaxed/simple;
+	bh=dzNvq67mWx12Lr/5dklSUPYQNYNr4xIe6KcBBU6p/qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVT9xHWn1Tz/Ty5u9P+tVxIJDoGSf3UdAnRWq7EH65rrlllMUYBZh4vP7jWg93IDUxZx1JDxEiXeLGUVMXKRM3WlODVHic2u24f7XEhU9/20RKkIp/7wg4RiTUixGaPorvzeNgIjoluIUgK8WHbivf//k9mYg8wjuH8zY4HDXI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4yWw5Fv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0194C4CEF8;
-	Sun,  7 Sep 2025 20:33:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MGdVKWz0k+/faOSgp5P+kT8+ekwaQIt6dWTz8XOE4rm6ZN8iY/6emh/nPgWUIFltKCQFoqSsq+ynYZWqqVWn2B2/dpIJz6eWsBw4OtJEdhVyRl0aeldYxbBwYnNWWxRMWo6KudQeJlNE1zZVsAoZADH5vnksAP36EsNsM5lsQs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHHyb7VO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31692C4CEF0;
+	Sun,  7 Sep 2025 20:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277182;
-	bh=pGVypDUrUc3+B2tlKzekorDtuo82CrgMLZv8pKWQeDc=;
+	s=korg; t=1757276034;
+	bh=dzNvq67mWx12Lr/5dklSUPYQNYNr4xIe6KcBBU6p/qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t4yWw5FvE4g9cKuQ+R3qmyj5MJQAgDl/YzkXwoD+CQvbPvc0euVUvLUQBh2DEj6dr
-	 lv7Sx/x1EAuy8svO2qkozHbcO+MspCOhkHDTzp+tusNisY1YY0Ky+P79NIS7dSCiqq
-	 w/RwaQG3sNVKa2Pt4UxfBh3VsNPtqORMuR+iltzg=
+	b=MHHyb7VOmoelJrXU2rdP0UIqgLMEJMzDQgWhbWi7+1ARjtlUY8JuCCe0bCrgO5H7H
+	 hBD+dtNnyQJE8xvEDHhQ7b5krwD6tDn8DvBSeRiBz0fcct9fJpOegrqVzGgmba0Jrq
+	 IXkrarhH6fzNJsa/ChFiTQ0tnKO8hpGblvume1YA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.12 110/175] wifi: mt76: mt7996: Initialize hdr before passing to skb_put_data()
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 43/64] iio: chemical: pms7003: use aligned_s64 for timestamp
 Date: Sun,  7 Sep 2025 21:58:25 +0200
-Message-ID: <20250907195617.456775950@linuxfoundation.org>
+Message-ID: <20250907195604.590865340@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +62,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: David Lechner <dlechner@baylibre.com>
 
-commit 87b07a1fbc6b5c23d3b3584ab4288bc9106d3274 upstream.
+[ Upstream commit 6ffa698674053e82e811520642db2650d00d2c01 ]
 
-A new warning in clang [1] points out a couple of places where a hdr
-variable is not initialized then passed along to skb_put_data().
+Follow the pattern of other drivers and use aligned_s64 for the
+timestamp. This will ensure that the timestamp is correctly aligned on
+all architectures.
 
-  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:1894:21: warning: variable 'hdr' is uninitialized when passed as a const pointer argument here [-Wuninitialized-const-pointer]
-   1894 |         skb_put_data(skb, &hdr, sizeof(hdr));
-        |                            ^~~
-  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c:3386:21: warning: variable 'hdr' is uninitialized when passed as a const pointer argument here [-Wuninitialized-const-pointer]
-   3386 |         skb_put_data(skb, &hdr, sizeof(hdr));
-        |                            ^~~
+Also move the unaligned.h header while touching this since it was the
+only one not in alphabetical order.
 
-Zero initialize these headers as done in other places in the driver when
-there is nothing stored in the header.
-
-Cc: stable@vger.kernel.org
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Link: https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e [1]
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2104
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20250715-mt7996-fix-uninit-const-pointer-v1-1-b5d8d11d7b78@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 13e945631c2f ("iio:chemical:pms7003: Fix timestamp alignment and prevent data leak.")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250417-iio-more-timestamp-alignment-v1-4-eafac1e22318@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ linux/unaligned.h => asm/unaligned.h ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/chemical/pms7003.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1834,8 +1834,8 @@ mt7996_mcu_get_mmps_mode(enum ieee80211_
- int mt7996_mcu_set_fixed_rate_ctrl(struct mt7996_dev *dev,
- 				   void *data, u16 version)
- {
-+	struct uni_header hdr = {};
- 	struct ra_fixed_rate *req;
--	struct uni_header hdr;
- 	struct sk_buff *skb;
- 	struct tlv *tlv;
- 	int len;
-@@ -3115,7 +3115,7 @@ int mt7996_mcu_set_hdr_trans(struct mt79
- {
+--- a/drivers/iio/chemical/pms7003.c
++++ b/drivers/iio/chemical/pms7003.c
+@@ -5,7 +5,6 @@
+  * Copyright (c) Tomasz Duszynski <tduszyns@gmail.com>
+  */
+ 
+-#include <asm/unaligned.h>
+ #include <linux/completion.h>
+ #include <linux/device.h>
+ #include <linux/errno.h>
+@@ -19,6 +18,8 @@
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/serdev.h>
++#include <linux/types.h>
++#include <asm/unaligned.h>
+ 
+ #define PMS7003_DRIVER_NAME "pms7003"
+ 
+@@ -76,7 +77,7 @@ struct pms7003_state {
+ 	/* Used to construct scan to push to the IIO buffer */
  	struct {
- 		u8 __rsv[4];
--	} __packed hdr;
-+	} __packed hdr = {};
- 	struct hdr_trans_blacklist *req_blacklist;
- 	struct hdr_trans_en *req_en;
- 	struct sk_buff *skb;
+ 		u16 data[3]; /* PM1, PM2P5, PM10 */
+-		s64 ts;
++		aligned_s64 ts;
+ 	} scan;
+ };
+ 
 
 
 
