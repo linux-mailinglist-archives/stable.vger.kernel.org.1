@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AEF8B47E36
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:21:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08AF6B47DE5
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BDA53C14E3
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5C4117770B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3145A212B2F;
-	Sun,  7 Sep 2025 20:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977C11C6FFA;
+	Sun,  7 Sep 2025 20:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouWhGpzc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRDUbzkp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24E0189BB0;
-	Sun,  7 Sep 2025 20:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AF314BFA2;
+	Sun,  7 Sep 2025 20:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276488; cv=none; b=FG43HF+sl3JHWe/opoLYC45ynHJZqRXUnad2jwS7whizeP302g+r6In1wxLe4ONhGH0cTEBY4H4b33mLxWM8GWIVDcJnvJE0wRc69WyE61rqye+F+vio5U61MoFnd57W4Fy/E2SQDJilgo0Uhy7w4KbGZ59oxZQFMDnuc5IqFL0=
+	t=1757276272; cv=none; b=hbfWDoGsBUTeWnuo2mhvqd50si1XCkTK3kC5mSSEOWdHci2Kl7U7L1wH0633KidlU+OZ/WrDUtiQKL5KPtQG0kfjZq60Kb1ifAbGBknjLdsCT7gR3/XH+LiOitzqnuCSkT0Ee2siiqhFwL+GdXuoJLMXq9+33+fzKhNk6ucTumo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276488; c=relaxed/simple;
-	bh=WrMU+g0Cmlu7qYMA9qa1KP4iFc4a8TmHvDYjKQ7buY4=;
+	s=arc-20240116; t=1757276272; c=relaxed/simple;
+	bh=gdwXxc0mGXTwWX84/aD6kCpYcFwM4/OEZB/v1WplQXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDm+Zn+SsP3svAIKb0qaGkURV01LE//miHOYuJxIomMOV1zIprFcmLsHm3AwVM05LSnkKzXKYID01QJ7hT856PnEkOP5e7MjhwvDCOfI7Dt+syMqz3qaXwansQDmK0dVdUawNxlyb6uSlaqn807K47teN/0JFXDK9dQ1zrmVFL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouWhGpzc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D05C4CEF0;
-	Sun,  7 Sep 2025 20:21:27 +0000 (UTC)
+	 MIME-Version; b=rLwXZvFcquP1knX9+EL2ay2SQuuNU/cUGlPZAdZ1QXLlWglGwq+ZojCduYBhhjBHgINvdiI2cdalP+9q8UlCCSuZGEIP1BF2xIYDtLO0vykk56fYsJ+dYh71sDrSjaHLU5CLMpuDupcCOYfgmUctDK9CRpD7MMJEpwYzkfbe29g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRDUbzkp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D9BC4CEF0;
+	Sun,  7 Sep 2025 20:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276487;
-	bh=WrMU+g0Cmlu7qYMA9qa1KP4iFc4a8TmHvDYjKQ7buY4=;
+	s=korg; t=1757276272;
+	bh=gdwXxc0mGXTwWX84/aD6kCpYcFwM4/OEZB/v1WplQXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ouWhGpzchlYKp+SbiAlKLdsEVgOM+Q9RofowlDZ0mksbs6reFXtKSYPSmIfLfzQ5J
-	 PfTVJC1cdsBe+r05Tq8cEtCem8jidX59+Ceg6O2XmcnEhNSp/nKO5TIixMuFGoR/bE
-	 Ecu87GEXLMQCXGtEbF82Unz8rduyN76Srn7ynS1A=
+	b=nRDUbzkp+HhXE2u7DrG4mOaDKteuQ7GdjKEIILtaWsGkoaLFxnSEq/ROR5gL+UDLu
+	 0MBE4OBn9eWOGTMvcH5JJnLTF7NksxUVMOMiX0QQyAdPStLbH18DBRyFDeKOStj7bK
+	 OvZnJsK9BnyDODG1Jx+5tTOGvzkntIwViXdP1FcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sungbae Yoo <sungbaey@nvidia.com>,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
+	Marek Vasut <marek.vasut@mailbox.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/121] tee: optee: ffa: fix a typo of "optee_ffa_api_is_compatible"
+Subject: [PATCH 6.1 015/104] arm64: dts: imx8mp: Fix missing microSD slot vqmmc on DH electronics i.MX8M Plus DHCOM
 Date: Sun,  7 Sep 2025 21:57:32 +0200
-Message-ID: <20250907195610.230653075@linuxfoundation.org>
+Message-ID: <20250907195608.076689797@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungbae Yoo <sungbaey@nvidia.com>
+From: Marek Vasut <marek.vasut@mailbox.org>
 
-[ Upstream commit 75dbd4304afe574fcfc4118a5b78776a9f48fdc4 ]
+[ Upstream commit c53cf8ce3bfe1309cb4fd4d74c5be27c26a86e52 ]
 
-Fixes optee_ffa_api_is_compatbile() to optee_ffa_api_is_compatible()
-because compatbile is a typo of compatible.
+Add missing microSD slot vqmmc-supply property, otherwise the kernel
+might shut down LDO5 regulator and that would power off the microSD
+card slot, possibly while it is in use. Add the property to make sure
+the kernel is aware of the LDO5 regulator which supplies the microSD
+slot and keeps the LDO5 enabled.
 
-Fixes: 4615e5a34b95 ("optee: add FF-A support")
-Signed-off-by: Sungbae Yoo <sungbaey@nvidia.com>
-Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Fixes: 8d6712695bc8 ("arm64: dts: imx8mp: Add support for DH electronics i.MX8M Plus DHCOM and PDK2")
+Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tee/optee/ffa_abi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tee/optee/ffa_abi.c b/drivers/tee/optee/ffa_abi.c
-index b8ba360e863ed..927c3d7947f9c 100644
---- a/drivers/tee/optee/ffa_abi.c
-+++ b/drivers/tee/optee/ffa_abi.c
-@@ -653,7 +653,7 @@ static int optee_ffa_do_call_with_arg(struct tee_context *ctx,
-  * with a matching configuration.
-  */
- 
--static bool optee_ffa_api_is_compatbile(struct ffa_device *ffa_dev,
-+static bool optee_ffa_api_is_compatible(struct ffa_device *ffa_dev,
- 					const struct ffa_ops *ops)
- {
- 	const struct ffa_msg_ops *msg_ops = ops->msg_ops;
-@@ -804,7 +804,7 @@ static int optee_ffa_probe(struct ffa_device *ffa_dev)
- 
- 	ffa_ops = ffa_dev->ops;
- 
--	if (!optee_ffa_api_is_compatbile(ffa_dev, ffa_ops))
-+	if (!optee_ffa_api_is_compatible(ffa_dev, ffa_ops))
- 		return -EINVAL;
- 
- 	if (!optee_ffa_exchange_caps(ffa_dev, ffa_ops, &sec_caps,
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
+index 0f13ee3627715..2fd50b5890afa 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
+@@ -508,6 +508,7 @@ &usdhc2 {
+ 	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+ 	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
++	vqmmc-supply = <&ldo5>;
+ 	bus-width = <4>;
+ 	status = "okay";
+ };
 -- 
 2.50.1
 
