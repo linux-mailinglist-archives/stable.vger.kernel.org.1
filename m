@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750AEB47EE3
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C024B47D0D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85996188CE01
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:30:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 290391896770
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD99C275AF6;
-	Sun,  7 Sep 2025 20:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D069427F754;
+	Sun,  7 Sep 2025 20:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1rJWRGV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghHsql4d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF371C84A0;
-	Sun,  7 Sep 2025 20:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E671CDFAC;
+	Sun,  7 Sep 2025 20:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277002; cv=none; b=OVA2YeA47Mlf+wIhhsVcEsNMtZvbjmWrB+n/NMXTkaRvIOGZyufrPZpB6OcQtDQmM5eW/xbUwD0r5mD6iwUItUpJHobLRzvReMdvwwWsUi0oWXaozm9F9xaAPqpoMdQJGQpxBpMAMhdt/3G4xYmQFlKMo+o3UQdSLAcgiTKLUDA=
+	t=1757275615; cv=none; b=iygF2BmjwkIziDd0s9qA3LL0RW5uJ8O8qX4x/bAh7tyPtm3JfMbqBBuQT8mYKr/TMo+u7A+9e4fVJWFPsnk3/V1J9DfNO5hMH24hMj7eadc2Kg913rYleYr6JQ5tvwbCLXKo6PsmMruQ5oefQ4tl+uiGG8N8Zd7aluA+ZNoD7uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277002; c=relaxed/simple;
-	bh=u8zplHa06fFwpCSSRCfmkD8W7xuNH/WFrli2d33XDNY=;
+	s=arc-20240116; t=1757275615; c=relaxed/simple;
+	bh=nPQxtFuWq5SPfsur8T0HTOWWQ0xFxWWv2X6Io3jnZB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKpvOZhiRdYa/rgeFjFpmO3OcUHZq56JEHU3CV6Y1mITqgySQLs2O0stdTwg5v9g5yBUmbh3F4xNYYLc2JwznqtqLZyHwLk2NHFUxq0GVzb9LAcohF+82WCGO1wzEqTf/3u4/Zyx0AMRyPXlSniNceJifFzyBBC5OnLW/iUDIQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1rJWRGV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE164C4CEF8;
-	Sun,  7 Sep 2025 20:30:01 +0000 (UTC)
+	 MIME-Version; b=tz4OH/rLwIj+8T91MvrDF0wM955XR/gF0DgIYsIrcoOOmsNWQ8qDk7y3q9Zk8YWVG0jV5zQlVSuTGGbZ9/ktuFRnOAUiDorM65fwJJ104I3ZjsrVb/NWxN8Aw77Qfyhcj6i0y/Irm3+baUJ7WargxbuxmO0kjvdDcUZBmqH7DAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghHsql4d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AD8C4CEF0;
+	Sun,  7 Sep 2025 20:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277002;
-	bh=u8zplHa06fFwpCSSRCfmkD8W7xuNH/WFrli2d33XDNY=;
+	s=korg; t=1757275614;
+	bh=nPQxtFuWq5SPfsur8T0HTOWWQ0xFxWWv2X6Io3jnZB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u1rJWRGVsOi1XeDDXvdrwztJwfoEpyLZAW7CcpVpQc+U6PYt9PLlyakXI1hcD0LAj
-	 vv6g2kPRfk7ZXkczMoqMeK3GsSF0/1brgGkqR/kCl8uXvpf9JtC4axbxk7MtBc0xip
-	 cOjYbNifwyV6bgqcnJUsyoB+UJ9NjiL6Y9aZnibc=
+	b=ghHsql4dS3zlk5wJGptHszrajrgbaAjN0uQGNzknkBQ0SKU6fKQ+Xh49cChRPwfvR
+	 riGX1SpzxkuYNfNYz3Ot2D6yW1wkmlLtl4jI1vAbrpwSnH5sCyOV6+6fFRmCpA1tnZ
+	 VQtH8QTZ4gOlR3WOHl7NLWds32KP1K37Nre6Te5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
+	Zhen Ni <zhen.ni@easystack.cn>,
 	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.12 055/175] ice: fix NULL access of tx->in_use in ice_ll_ts_intr
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 10/52] i40e: Fix potential invalid access when MAC list is empty
 Date: Sun,  7 Sep 2025 21:57:30 +0200
-Message-ID: <20250907195616.141756661@linuxfoundation.org>
+Message-ID: <20250907195602.273245761@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-[ Upstream commit f6486338fde3f04ed0ec59fe67a69a208c32734f ]
+[ Upstream commit a556f06338e1d5a85af0e32ecb46e365547f92b9 ]
 
-Recent versions of the E810 firmware have support for an extra interrupt to
-handle report of the "low latency" Tx timestamps coming from the
-specialized low latency firmware interface. Instead of polling the
-registers, software can wait until the low latency interrupt is fired.
+list_first_entry() never returns NULL - if the list is empty, it still
+returns a pointer to an invalid object, leading to potential invalid
+memory access when dereferenced.
 
-This logic makes use of the Tx timestamp tracking structure, ice_ptp_tx, as
-it uses the same "ready" bitmap to track which Tx timestamps complete.
+Fix this by using list_first_entry_or_null instead of list_first_entry.
 
-Unfortunately, the ice_ll_ts_intr() function does not check if the
-tracker is initialized before its first access. This results in NULL
-dereference or use-after-free bugs similar to the issues fixed in the
-ice_ptp_ts_irq() function.
-
-Fix this by only checking the in_use bitmap (and other fields) if the
-tracker is marked as initialized. The reset flow will clear the init field
-under lock before it tears the tracker down, thus preventing any
-use-after-free or NULL access.
-
-Fixes: 82e71b226e0e ("ice: Enable SW interrupt from FW for LL TS")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Fixes: e3219ce6a775 ("i40e: Add support for client interface for IWARP driver")
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
 Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_client.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 74d4f2fde3e0f..bd5db525f1939 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -3193,12 +3193,14 @@ static irqreturn_t ice_ll_ts_intr(int __always_unused irq, void *data)
- 	hw = &pf->hw;
- 	tx = &pf->ptp.port.tx;
- 	spin_lock_irqsave(&tx->lock, flags);
--	ice_ptp_complete_tx_single_tstamp(tx);
-+	if (tx->init) {
-+		ice_ptp_complete_tx_single_tstamp(tx);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_client.c b/drivers/net/ethernet/intel/i40e/i40e_client.c
+index b3cb5d1033260..af65321a68886 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_client.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_client.c
+@@ -318,8 +318,8 @@ static void i40e_client_add_instance(struct i40e_pf *pf)
+ 		return;
+ 	}
  
--	idx = find_next_bit_wrap(tx->in_use, tx->len,
--				 tx->last_ll_ts_idx_read + 1);
--	if (idx != tx->len)
--		ice_ptp_req_tx_single_tstamp(tx, idx);
-+		idx = find_next_bit_wrap(tx->in_use, tx->len,
-+					 tx->last_ll_ts_idx_read + 1);
-+		if (idx != tx->len)
-+			ice_ptp_req_tx_single_tstamp(tx, idx);
-+	}
- 	spin_unlock_irqrestore(&tx->lock, flags);
- 
- 	val = GLINT_DYN_CTL_INTENA_M | GLINT_DYN_CTL_CLEARPBA_M |
+-	mac = list_first_entry(&cdev->lan_info.netdev->dev_addrs.list,
+-			       struct netdev_hw_addr, list);
++	mac = list_first_entry_or_null(&cdev->lan_info.netdev->dev_addrs.list,
++				       struct netdev_hw_addr, list);
+ 	if (mac)
+ 		ether_addr_copy(cdev->lan_info.lanmac, mac->addr);
+ 	else
 -- 
 2.50.1
 
