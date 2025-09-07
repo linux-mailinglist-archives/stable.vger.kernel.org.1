@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 210D8B47E4F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFBFB47D76
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12F7E189F8BA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC62F179833
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D0F20E005;
-	Sun,  7 Sep 2025 20:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996D027F754;
+	Sun,  7 Sep 2025 20:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtMWO+Gu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KARu9hmG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE920189BB0;
-	Sun,  7 Sep 2025 20:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582761CDFAC;
+	Sun,  7 Sep 2025 20:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276559; cv=none; b=PKlB/Tvve3D1rN+sUNSzb8mmpOQonnWJTZTvLU2QTwhK6J5VGzvnEM+Oa+OjJ8xmceGxxeE75ob3tAP5vvxZs9qb0Pa0ujr0TWjVoRrR4oFKtnicaNs9KRgrbv5nei0+y83cgqHvBiWd4lYdGGkglZCbMLNCK7Jv4Q5GzZTvdGE=
+	t=1757275934; cv=none; b=chWDD/Wi5VS8yVnbSpvNEZr2uuWW2NizLNpTH4ThjZKRC0aBXIsY5qg6kNFzkVM/9FkzHdnf0OQkK+71Qt5QQNqSPvPsxMFOn4mRLnJHlbKHn1UxwqCispPMEE9VHuOhPeXWO6vKCd2NOAZF7kxmBAxMl5h8kCwm9h7GHzp72JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276559; c=relaxed/simple;
-	bh=z8+w+bDcqIxz5pMwdQlSr2pmX6hzFS+g13brUvvryw4=;
+	s=arc-20240116; t=1757275934; c=relaxed/simple;
+	bh=PM+ENQZLkulpFeLxq4rK9e5+wwOFtxxA//qxHHYRrOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UmNfBx/0jw1cVSaTbn16X/9HiH3v5lemB5AwStI+VDSz6qL/5oB+bHpR1O1KDVY8NkZp1HqRl+8ErFShwmSl3/so/Uj2LmHjIt+uSG9+o3UegAkEuOuGgZc7K96ZKFaugQBdpqfOE/pbrDwHpojc6gTgzWkAl2L/OVMLf5xFnfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtMWO+Gu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5252EC4CEF0;
-	Sun,  7 Sep 2025 20:22:39 +0000 (UTC)
+	 MIME-Version; b=A42fMXkHGP+7+PrFPF227qFXIbSS6DCpmP3w97oPe95s0mrM1wa7CoeHBgJtMiCtchOXkMKRvFm2wRcVEH64hwV3brlta9xxFmUF4lwyrTUG80VCwZvA762huGt5oGl88UZRK42/JULpjnsDzuX7ekwlnggs/0z3wczmlsRuZ1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KARu9hmG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B77C4CEF0;
+	Sun,  7 Sep 2025 20:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276559;
-	bh=z8+w+bDcqIxz5pMwdQlSr2pmX6hzFS+g13brUvvryw4=;
+	s=korg; t=1757275933;
+	bh=PM+ENQZLkulpFeLxq4rK9e5+wwOFtxxA//qxHHYRrOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OtMWO+GukKoy7IxX51meSlfOP3H/G5O/0kW8F2Fokg7TM/69WpU+6EZtq+TqTSKHm
-	 oByZm5ZGVPJjB2cTuefqjVGBG4oRIzyB4fQGXAXnJPSx64azUFjRxAMBBTXGQhIgKH
-	 wceBANIQcdrOfj23/Gflo4Y6WtI5l0PuEptp9EnA=
+	b=KARu9hmGpMF3G6jQlfpCW7W1/nNzelqpupTdc92dByTxXE6VR7SWIslSbsvgjXzu9
+	 1ytC+4SVDZNPndI12bAntloRVK2bCevBiyhqirvN/0x9cZ/HxtWfN3L1O7c9eqUuOV
+	 vr9GhtLlme9ye1+7jJyyDhyEv9atQmM+5XaQeQvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thibaut VARENE <hacks@slashdirt.org>,
-	Felix Fietkau <nbd@nbd.name>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Phil Sutter <phil@nwl.cc>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/121] net: ethernet: mtk_eth_soc: fix tx vlan tag for llc packets
+Subject: [PATCH 5.15 11/64] netfilter: conntrack: helper: Replace -EEXIST by -EBUSY
 Date: Sun,  7 Sep 2025 21:57:53 +0200
-Message-ID: <20250907195610.780716212@linuxfoundation.org>
+Message-ID: <20250907195603.717309185@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit d4736737110ffa83d29f1c5d17b26113864205f6 ]
+[ Upstream commit 54416fd76770bd04fc3c501810e8d673550bab26 ]
 
-When sending llc packets with vlan tx offload, the hardware fails to
-actually add the tag. Deal with this by fixing it up in software.
+The helper registration return value is passed-through by module_init
+callbacks which modprobe confuses with the harmless -EEXIST returned
+when trying to load an already loaded module.
 
-Fixes: 656e705243fd ("net-next: mediatek: add support for MT7623 ethernet")
-Reported-by: Thibaut VARENE <hacks@slashdirt.org>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250831182007.51619-1-nbd@nbd.name
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Make sure modprobe fails so users notice their helper has not been
+registered and won't work.
+
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index cb8efc952dfda..aefe2af6f01d4 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -1586,6 +1586,13 @@ static netdev_tx_t mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	bool gso = false;
- 	int tx_num;
- 
-+	if (skb_vlan_tag_present(skb) &&
-+	    !eth_proto_is_802_3(eth_hdr(skb)->h_proto)) {
-+		skb = __vlan_hwaccel_push_inside(skb);
-+		if (!skb)
-+			goto dropped;
-+	}
-+
- 	/* normally we can rely on the stack not calling this more than once,
- 	 * however we have 2 queues running on the same ring so we need to lock
- 	 * the ring access
-@@ -1631,8 +1638,9 @@ static netdev_tx_t mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- drop:
- 	spin_unlock(&eth->page_lock);
--	stats->tx_dropped++;
- 	dev_kfree_skb_any(skb);
-+dropped:
-+	stats->tx_dropped++;
- 	return NETDEV_TX_OK;
- }
- 
+diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
+index 41c9708b50575..de5ac9f431031 100644
+--- a/net/netfilter/nf_conntrack_helper.c
++++ b/net/netfilter/nf_conntrack_helper.c
+@@ -418,7 +418,7 @@ int nf_conntrack_helper_register(struct nf_conntrack_helper *me)
+ 			    (cur->tuple.src.l3num == NFPROTO_UNSPEC ||
+ 			     cur->tuple.src.l3num == me->tuple.src.l3num) &&
+ 			    cur->tuple.dst.protonum == me->tuple.dst.protonum) {
+-				ret = -EEXIST;
++				ret = -EBUSY;
+ 				goto out;
+ 			}
+ 		}
+@@ -429,7 +429,7 @@ int nf_conntrack_helper_register(struct nf_conntrack_helper *me)
+ 		hlist_for_each_entry(cur, &nf_ct_helper_hash[h], hnode) {
+ 			if (nf_ct_tuple_src_mask_cmp(&cur->tuple, &me->tuple,
+ 						     &mask)) {
+-				ret = -EEXIST;
++				ret = -EBUSY;
+ 				goto out;
+ 			}
+ 		}
 -- 
 2.50.1
 
