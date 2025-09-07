@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-178603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB96B47F54
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ADB1B47FE7
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 028DD4E1291
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A9573C3D27
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6802139C9;
-	Sun,  7 Sep 2025 20:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD90E2765C8;
+	Sun,  7 Sep 2025 20:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmYLzYFR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9Axsujq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB41315D54;
-	Sun,  7 Sep 2025 20:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B321F63CD;
+	Sun,  7 Sep 2025 20:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277366; cv=none; b=UpeB0Pu6RK1Z5jHk9sox2hEZ19gsOzfepQY6wvtC0A1kbfz0n66pACHaxsZ+pz8vKOtR48AJu5RehAQ04ECmfBHqHmpMJanjhW30liJ9Rob8EtJNDoxwZAeb1kJCQChfTisGJ4jAGuDt7nSc8U3frrTmPI0rQaCN8ToiSyIm34c=
+	t=1757277829; cv=none; b=eC+8idjeDD2/vowUBf8knxrEtTmnDJuZmXoDNJMpd6GtXFlE8z9WE/+1cs0eQlknib2jwW19Dt+CBNpt/6qELj+LsgMjBdAni20bzGANTpdhymnjcCMW/hTdkPb+fSPdWTJZG7wqioHe+DzfbLrKvaYtHTQnt+qUPxJQlCzCBEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277366; c=relaxed/simple;
-	bh=HWjArLJjF0dMCGA+SbAuHdznI9KinTqMzptIsYHIVRY=;
+	s=arc-20240116; t=1757277829; c=relaxed/simple;
+	bh=SGmjffX5fuhUk1osPn5fUmhQgzZdLH7cE47dPbTQUFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBkymNcyOIUGwAekWL3JaL9FINtuEX6I7/kAwZmYGE9LHB1fhCryXEPqvj+JU1Mi4zt0zoxs40sQFvFt2Z8/GeYx8NkC2a3Kab1BfaEcGMAPIMug1e/k1LbXLZ6o8HMUREO3p9R5tW1XSuW4SHQ1BNDK4Jb9AFJEJv6Cpx4nBMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmYLzYFR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4242EC4CEF0;
-	Sun,  7 Sep 2025 20:36:05 +0000 (UTC)
+	 MIME-Version; b=O++bum15O5PnSHgzKH5jyyvhXWkEXRfhfBuFLH4ZbLprAjwWDq7If98hJMiqSk/t72oUr2wytDMcdmPH8+i4o6uRzmUmvbxmKxn5YUDxpsfHNOw6Xy+gR7hN5vNNqb94ilLnblcPLLavqeokjcg646JLwpl7T+xjj9bKjjz54/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9Axsujq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBB0C4CEF0;
+	Sun,  7 Sep 2025 20:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277365;
-	bh=HWjArLJjF0dMCGA+SbAuHdznI9KinTqMzptIsYHIVRY=;
+	s=korg; t=1757277829;
+	bh=SGmjffX5fuhUk1osPn5fUmhQgzZdLH7cE47dPbTQUFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YmYLzYFReiT1xMzwW2WtKFqvT5RNVHasWhtdnTnRiAqv88yO6aDfSt6UtAV/VkO/i
-	 XE6fq65ecaOQRhyyzfkJfeXlceTYiLnBtMJO6nbmakHrQgYX3yAnn88rrHqWApw7fK
-	 mv9KwBZXEZ0LDQNRAAB6VPoiFg5siAl407XpfWMw=
+	b=j9AxsujqDMtwN2RW+6GNGfyhg3Tr5cVzT5C/L4hKN4sZk61BJ2OvCP/cyqLaepcee
+	 RzmB9k0uZAGeJGscEkFpxFdjs+/LjzdmXE2r480vc1jSOdqV+8efAe+DeAWSYKjMm1
+	 EcPLeQNtg/kncQtoHtXPb4hWx17ly1nq4cnRTE+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 167/175] md: prevent incorrect update of resync/recovery offset
-Date: Sun,  7 Sep 2025 21:59:22 +0200
-Message-ID: <20250907195618.810448982@linuxfoundation.org>
+	Makar Semyonov <m.semenov@tssltd.ru>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.16 136/183] cifs: prevent NULL pointer dereference in UTF16 conversion
+Date: Sun,  7 Sep 2025 21:59:23 +0200
+Message-ID: <20250907195619.024272252@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Makar Semyonov <m.semenov@tssltd.ru>
 
-[ Upstream commit 7202082b7b7a256d04ec96131c7f859df0a79f64 ]
+commit 70bccd9855dae56942f2b18a08ba137bb54093a0 upstream.
 
-In md_do_sync(), when md_sync_action returns ACTION_FROZEN, subsequent
-call to md_sync_position() will return MaxSector. This causes
-'curr_resync' (and later 'recovery_offset') to be set to MaxSector too,
-which incorrectly signals that recovery/resync has completed, even though
-disk data has not actually been updated.
+There can be a NULL pointer dereference bug here. NULL is passed to
+__cifs_sfu_make_node without checks, which passes it unchecked to
+cifs_strndup_to_utf16, which in turn passes it to
+cifs_local_to_utf16_bytes where '*from' is dereferenced, causing a crash.
 
-To fix this issue, skip updating any offset values when the sync action
-is FROZEN. The same holds true for IDLE.
+This patch adds a check for NULL 'src' in cifs_strndup_to_utf16 and
+returns NULL early to prevent dereferencing NULL pointer.
 
-Fixes: 7d9f107a4e94 ("md: use new helpers in md_do_sync()")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Link: https://lore.kernel.org/linux-raid/20250904073452.3408516-1-linan666@huaweicloud.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE
+
+Signed-off-by: Makar Semyonov <m.semenov@tssltd.ru>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/smb/client/cifs_unicode.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 4b32917236703..d263076442924 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -8996,6 +8996,11 @@ void md_do_sync(struct md_thread *thread)
- 	}
+--- a/fs/smb/client/cifs_unicode.c
++++ b/fs/smb/client/cifs_unicode.c
+@@ -629,6 +629,9 @@ cifs_strndup_to_utf16(const char *src, c
+ 	int len;
+ 	__le16 *dst;
  
- 	action = md_sync_action(mddev);
-+	if (action == ACTION_FROZEN || action == ACTION_IDLE) {
-+		set_bit(MD_RECOVERY_INTR, &mddev->recovery);
-+		goto skip;
-+	}
++	if (!src)
++		return NULL;
 +
- 	desc = md_sync_action_name(action);
- 	mddev->last_sync_action = action;
- 
--- 
-2.51.0
-
+ 	len = cifs_local_to_utf16_bytes(src, maxlen, cp);
+ 	len += 2; /* NULL */
+ 	dst = kmalloc(len, GFP_KERNEL);
 
 
 
