@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C9B5B47E1C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D229B47F38
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:34:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B4F317D8E9
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:20:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6E6D1B2156D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5F41D88D0;
-	Sun,  7 Sep 2025 20:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240171FECCD;
+	Sun,  7 Sep 2025 20:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnaZ8fFr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GV3PHXm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9637A189BB0;
-	Sun,  7 Sep 2025 20:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D433C1A0BFD;
+	Sun,  7 Sep 2025 20:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276424; cv=none; b=RLce5BUitgMdgCtfmZo31fRbCcBUlIFOlE2H5f0T+EerCnw06j8vxCic4++ZTxnhhLV6yhkM6HWwz3VJaNvHwjnNYj0Dk4JDaZUWb3isNsC25zaBH+9Ko81EYlvX3EW1/sWBzzT/SHs/TdNCdJ2ZYuAvuUJWvL44DnncrYGfWEE=
+	t=1757277274; cv=none; b=b6Y9wF6Jg2EjHXT2kjCxEsRgHndSkK0HTlFjHmEf0zn6cO9RcFGaUUSciKKYIRJrqaOkF8nnaM1xBO1eyOT7h9/ADBaK6WWOKF6P6WVuk4TMdRp+Rf+/OIFAyuqzoupoIvNzyMPFGkq9cVGDTwkgGHjyBDo52f1vqHw+aulYy/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276424; c=relaxed/simple;
-	bh=FwTDyTUYo7Q3Qo4hCk1NAqU2NFO30eaOqkC8oDaZFDw=;
+	s=arc-20240116; t=1757277274; c=relaxed/simple;
+	bh=BHCefXjOo9RomAaHR7wZ4G1AlPAIAafkJ96h149EFN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JY4T1n+dOP9glo8BteyNEewOe0NoqqXVy66opLVZPzQ8iiZ4/LbDuWFbBSJYvN3hZbKYF9SYz8R42r4kg6Hn83dyLvfeyzbtPGYXy+9nmEJH8owve263KZj+WG2VMYcT0dem47sypgJDDZ5u09qnVB0x7krrd5V+JRpJ+dPqRIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnaZ8fFr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087C8C4CEF0;
-	Sun,  7 Sep 2025 20:20:23 +0000 (UTC)
+	 MIME-Version; b=f5JAbfBt+aybMJ4VUd7nT6WAxVRstc9Zs049bGZxPzEFoLUg08N1FhKW7orskkBI10H1i8rhANnynbBcxECd8wJUt+9JvCZB635g4KGXtUWv0jl44tDCkOzCnukONuFBGT7Nsa0CHiCA0Ru84aV0ys6Nc7etj7+7hqWcKcEkQmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GV3PHXm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AC2C4CEF0;
+	Sun,  7 Sep 2025 20:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276424;
-	bh=FwTDyTUYo7Q3Qo4hCk1NAqU2NFO30eaOqkC8oDaZFDw=;
+	s=korg; t=1757277274;
+	bh=BHCefXjOo9RomAaHR7wZ4G1AlPAIAafkJ96h149EFN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnaZ8fFreAZtf7xX7o4Xk8FdaO7owZqo7xEqMgBKe2/liID21txODUmhfkt15cM/9
-	 9SHZjHi7T4hrJ1iNTrxZqBmNutac5pLu9/eUGWUFiZken2K2Mgp541LBmCeL14n9Ki
-	 p4+kZDXUujnZu732bc0i9ZrOB7j7lrH2G2mjcJgs=
+	b=GV3PHXm+sGHqM9lMCH070znkImsH70s8fFbBc5KwZbxf2I7PqZECb23r8I61QtvZi
+	 RTiZuVIpq/7BrThzthQSXoihb1xdpaTTOodQfrUy/mOd1zQjejsD5YyFcGCRhXY4eA
+	 AyuAE99mY/E4Pu5fNrZjUB5HQgeBIS0GxVlWDz8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	yangshiguang <yangshiguang@xiaomi.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
+	Dave Airlie <airlied@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/104] mm: slub: avoid wake up kswapd in set_track_prepare
+Subject: [PATCH 6.12 141/175] nouveau: fix disabling the nonstall irq due to storm code
 Date: Sun,  7 Sep 2025 21:58:56 +0200
-Message-ID: <20250907195610.231454503@linuxfoundation.org>
+Message-ID: <20250907195618.189069478@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,170 +62,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yangshiguang <yangshiguang@xiaomi.com>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit 850470a8413a8a78e772c4f6bd9fe81ec6bd5b0f ]
+[ Upstream commit 0ef5c4e4dbbfcebaa9b2eca18097b43016727dfe ]
 
-set_track_prepare() can incur lock recursion.
-The issue is that it is called from hrtimer_start_range_ns
-holding the per_cpu(hrtimer_bases)[n].lock, but when enabled
-CONFIG_DEBUG_OBJECTS_TIMERS, may wake up kswapd in set_track_prepare,
-and try to hold the per_cpu(hrtimer_bases)[n].lock.
+Nouveau has code that when it gets an IRQ with no allowed handler
+it disables it to avoid storms.
 
-Avoid deadlock caused by implicitly waking up kswapd by passing in
-allocation flags, which do not contain __GFP_KSWAPD_RECLAIM in the
-debug_objects_fill_pool() case. Inside stack depot they are processed by
-gfp_nested_mask().
-Since ___slab_alloc() has preemption disabled, we mask out
-__GFP_DIRECT_RECLAIM from the flags there.
+However with nonstall interrupts, we often disable them from
+the drm driver, but still request their emission via the push submission.
 
-The oops looks something like:
+Just don't disable nonstall irqs ever in normal operation, the
+event handling code will filter them out, and the driver will
+just enable/disable them at load time.
 
-BUG: spinlock recursion on CPU#3, swapper/3/0
- lock: 0xffffff8a4bf29c80, .magic: dead4ead, .owner: swapper/3/0, .owner_cpu: 3
-Hardware name: Qualcomm Technologies, Inc. Popsicle based on SM8850 (DT)
-Call trace:
-spin_bug+0x0
-_raw_spin_lock_irqsave+0x80
-hrtimer_try_to_cancel+0x94
-task_contending+0x10c
-enqueue_dl_entity+0x2a4
-dl_server_start+0x74
-enqueue_task_fair+0x568
-enqueue_task+0xac
-do_activate_task+0x14c
-ttwu_do_activate+0xcc
-try_to_wake_up+0x6c8
-default_wake_function+0x20
-autoremove_wake_function+0x1c
-__wake_up+0xac
-wakeup_kswapd+0x19c
-wake_all_kswapds+0x78
-__alloc_pages_slowpath+0x1ac
-__alloc_pages_noprof+0x298
-stack_depot_save_flags+0x6b0
-stack_depot_save+0x14
-set_track_prepare+0x5c
-___slab_alloc+0xccc
-__kmalloc_cache_noprof+0x470
-__set_page_owner+0x2bc
-post_alloc_hook[jt]+0x1b8
-prep_new_page+0x28
-get_page_from_freelist+0x1edc
-__alloc_pages_noprof+0x13c
-alloc_slab_page+0x244
-allocate_slab+0x7c
-___slab_alloc+0x8e8
-kmem_cache_alloc_noprof+0x450
-debug_objects_fill_pool+0x22c
-debug_object_activate+0x40
-enqueue_hrtimer[jt]+0xdc
-hrtimer_start_range_ns+0x5f8
-...
+This fixes timeouts we've been seeing on/off for a long time,
+but they became a lot more noticeable on Blackwell.
 
-Signed-off-by: yangshiguang <yangshiguang@xiaomi.com>
-Fixes: 5cf909c553e9 ("mm/slub: use stackdepot to save stack trace in objects")
+This doesn't fix all of them, there is a subsequent fence emission
+fix to fix the last few.
+
+Fixes: 3ebd64aa3c4f ("drm/nouveau/intr: support multiple trees, and explicit interfaces")
 Cc: stable@vger.kernel.org
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://lore.kernel.org/r/20250829021633.1674524-1-airlied@gmail.com
+[ Fix a typo and a minor checkpatch.pl warning; remove "v2" from commit
+  subject. - Danilo ]
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+[ Apply to drivers/gpu/drm/nouveau/nvkm/engine/fifo/r535.c ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |   30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/nouveau/nvkm/engine/fifo/base.c  |    2 ++
+ drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga100.c |   23 +++++++++++++++--------
+ drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga102.c |    1 +
+ drivers/gpu/drm/nouveau/nvkm/engine/fifo/priv.h  |    2 ++
+ drivers/gpu/drm/nouveau/nvkm/engine/fifo/r535.c  |    1 +
+ 5 files changed, 21 insertions(+), 8 deletions(-)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -726,19 +726,19 @@ static struct track *get_track(struct km
- }
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/base.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/base.c
+@@ -352,6 +352,8 @@ nvkm_fifo_dtor(struct nvkm_engine *engin
+ 	mutex_destroy(&fifo->userd.mutex);
  
- #ifdef CONFIG_STACKDEPOT
--static noinline depot_stack_handle_t set_track_prepare(void)
-+static noinline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
+ 	nvkm_event_fini(&fifo->nonstall.event);
++	if (fifo->func->nonstall_dtor)
++		fifo->func->nonstall_dtor(fifo);
+ 	mutex_destroy(&fifo->mutex);
+ 
+ 	if (fifo->func->dtor)
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga100.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga100.c
+@@ -517,19 +517,11 @@ ga100_fifo_nonstall_intr(struct nvkm_int
+ static void
+ ga100_fifo_nonstall_block(struct nvkm_event *event, int type, int index)
  {
- 	depot_stack_handle_t handle;
- 	unsigned long entries[TRACK_ADDRS_COUNT];
- 	unsigned int nr_entries;
- 
- 	nr_entries = stack_trace_save(entries, ARRAY_SIZE(entries), 3);
--	handle = stack_depot_save(entries, nr_entries, GFP_NOWAIT);
-+	handle = stack_depot_save(entries, nr_entries, gfp_flags);
- 
- 	return handle;
+-	struct nvkm_fifo *fifo = container_of(event, typeof(*fifo), nonstall.event);
+-	struct nvkm_runl *runl = nvkm_runl_get(fifo, index, 0);
+-
+-	nvkm_inth_block(&runl->nonstall.inth);
  }
- #else
--static inline depot_stack_handle_t set_track_prepare(void)
-+static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags)
+ 
+ static void
+ ga100_fifo_nonstall_allow(struct nvkm_event *event, int type, int index)
  {
- 	return 0;
+-	struct nvkm_fifo *fifo = container_of(event, typeof(*fifo), nonstall.event);
+-	struct nvkm_runl *runl = nvkm_runl_get(fifo, index, 0);
+-
+-	nvkm_inth_allow(&runl->nonstall.inth);
  }
-@@ -760,9 +760,9 @@ static void set_track_update(struct kmem
- }
  
- static __always_inline void set_track(struct kmem_cache *s, void *object,
--				      enum track_item alloc, unsigned long addr)
-+				      enum track_item alloc, unsigned long addr, gfp_t gfp_flags)
- {
--	depot_stack_handle_t handle = set_track_prepare();
-+	depot_stack_handle_t handle = set_track_prepare(gfp_flags);
+ const struct nvkm_event_func
+@@ -564,12 +556,26 @@ ga100_fifo_nonstall_ctor(struct nvkm_fif
+ 		if (ret)
+ 			return ret;
  
- 	set_track_update(s, object, alloc, addr, handle);
- }
-@@ -1656,9 +1656,9 @@ static inline bool free_debug_processing
- static inline void slab_pad_check(struct kmem_cache *s, struct slab *slab) {}
- static inline int check_object(struct kmem_cache *s, struct slab *slab,
- 			void *object, u8 val) { return 1; }
--static inline depot_stack_handle_t set_track_prepare(void) { return 0; }
-+static inline depot_stack_handle_t set_track_prepare(gfp_t gfp_flags) { return 0; }
- static inline void set_track(struct kmem_cache *s, void *object,
--			     enum track_item alloc, unsigned long addr) {}
-+			     enum track_item alloc, unsigned long addr, gfp_t gfp_flags) {}
- static inline void add_full(struct kmem_cache *s, struct kmem_cache_node *n,
- 					struct slab *slab) {}
- static inline void remove_full(struct kmem_cache *s, struct kmem_cache_node *n,
-@@ -3135,9 +3135,14 @@ new_objects:
- 			 * For debug caches here we had to go through
- 			 * alloc_single_from_partial() so just store the
- 			 * tracking info and return the object.
-+			 *
-+			 * Due to disabled preemption we need to disallow
-+			 * blocking. The flags are further adjusted by
-+			 * gfp_nested_mask() in stack_depot itself.
- 			 */
- 			if (s->flags & SLAB_STORE_USER)
--				set_track(s, freelist, TRACK_ALLOC, addr);
-+				set_track(s, freelist, TRACK_ALLOC, addr,
-+					  gfpflags & ~(__GFP_DIRECT_RECLAIM));
- 
- 			return freelist;
- 		}
-@@ -3163,7 +3168,8 @@ new_objects:
- 			goto new_objects;
- 
- 		if (s->flags & SLAB_STORE_USER)
--			set_track(s, freelist, TRACK_ALLOC, addr);
-+			set_track(s, freelist, TRACK_ALLOC, addr,
-+				  gfpflags & ~(__GFP_DIRECT_RECLAIM));
- 
- 		return freelist;
++		nvkm_inth_allow(&runl->nonstall.inth);
++
+ 		nr = max(nr, runl->id + 1);
  	}
-@@ -3414,8 +3420,12 @@ static noinline void free_to_partial_lis
- 	unsigned long flags;
- 	depot_stack_handle_t handle = 0;
  
-+	/*
-+	 * We cannot use GFP_NOWAIT as there are callsites where waking up
-+	 * kswapd could deadlock
-+	 */
- 	if (s->flags & SLAB_STORE_USER)
--		handle = set_track_prepare();
-+		handle = set_track_prepare(__GFP_NOWARN);
+ 	return nr;
+ }
  
- 	spin_lock_irqsave(&n->list_lock, flags);
++void
++ga100_fifo_nonstall_dtor(struct nvkm_fifo *fifo)
++{
++	struct nvkm_runl *runl;
++
++	nvkm_runl_foreach(runl, fifo) {
++		if (runl->nonstall.vector < 0)
++			continue;
++		nvkm_inth_block(&runl->nonstall.inth);
++	}
++}
++
+ int
+ ga100_fifo_runl_ctor(struct nvkm_fifo *fifo)
+ {
+@@ -599,6 +605,7 @@ ga100_fifo = {
+ 	.runl_ctor = ga100_fifo_runl_ctor,
+ 	.mmu_fault = &tu102_fifo_mmu_fault,
+ 	.nonstall_ctor = ga100_fifo_nonstall_ctor,
++	.nonstall_dtor = ga100_fifo_nonstall_dtor,
+ 	.nonstall = &ga100_fifo_nonstall,
+ 	.runl = &ga100_runl,
+ 	.runq = &ga100_runq,
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga102.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga102.c
+@@ -30,6 +30,7 @@ ga102_fifo = {
+ 	.runl_ctor = ga100_fifo_runl_ctor,
+ 	.mmu_fault = &tu102_fifo_mmu_fault,
+ 	.nonstall_ctor = ga100_fifo_nonstall_ctor,
++	.nonstall_dtor = ga100_fifo_nonstall_dtor,
+ 	.nonstall = &ga100_fifo_nonstall,
+ 	.runl = &ga100_runl,
+ 	.runq = &ga100_runq,
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/priv.h
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/priv.h
+@@ -40,6 +40,7 @@ struct nvkm_fifo_func {
+ 	void (*start)(struct nvkm_fifo *, unsigned long *);
  
+ 	int (*nonstall_ctor)(struct nvkm_fifo *);
++	void (*nonstall_dtor)(struct nvkm_fifo *);
+ 	const struct nvkm_event_func *nonstall;
+ 
+ 	const struct nvkm_runl_func *runl;
+@@ -198,6 +199,7 @@ extern const struct nvkm_fifo_func_mmu_f
+ 
+ int ga100_fifo_runl_ctor(struct nvkm_fifo *);
+ int ga100_fifo_nonstall_ctor(struct nvkm_fifo *);
++void ga100_fifo_nonstall_dtor(struct nvkm_fifo *);
+ extern const struct nvkm_event_func ga100_fifo_nonstall;
+ extern const struct nvkm_runl_func ga100_runl;
+ extern const struct nvkm_runq_func ga100_runq;
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/r535.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/r535.c
+@@ -660,6 +660,7 @@ r535_fifo_new(const struct nvkm_fifo_fun
+ 	rm->chan.func = &r535_chan;
+ 	rm->nonstall = &ga100_fifo_nonstall;
+ 	rm->nonstall_ctor = ga100_fifo_nonstall_ctor;
++	rm->nonstall_dtor = ga100_fifo_nonstall_dtor;
+ 
+ 	return nvkm_fifo_new_(rm, device, type, inst, pfifo);
+ }
 
 
 
