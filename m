@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-178202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA6DB47DA8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2578B47E0C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 472A617CD06
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 464343C1337
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20EB127F754;
-	Sun,  7 Sep 2025 20:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FEF284883;
+	Sun,  7 Sep 2025 20:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJXMcBEj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBa+Rn05"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E481B424F;
-	Sun,  7 Sep 2025 20:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C4C1D88D0;
+	Sun,  7 Sep 2025 20:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276088; cv=none; b=qpcLpe5pOxtLLuVedbqHCqgXD2vRHCfl+h7JvcUI9h3MaIn87zKIVrwZ1u0MSS7oWvKF0nrLvGD6SkjAP1sILvU82zbTG9yXMOkUtBDdINIi2GdFRO1O4+Y1oC+kxBRAPIj3U7FNf1Dc2X14vOVS2OOoUbxoCNuWCSImI79Lg0I=
+	t=1757276369; cv=none; b=pfomhlbrMfE+VdyB8iFlm3Hb5gYciVbL0MEeWZhbPWcgLwFo9Nnvex6Jthn0aaXlwQ5oUmZg2RM70Evy5I+R2leHk9+6uJccSL3qs/G6pQSzWN/jFQNDoBvGcH+qdAVi03qPk+nWOiwyiNNqUoyVIKh0v7pDAD4wej7X1jVwDO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276088; c=relaxed/simple;
-	bh=phgFj5OYI3Prg9CBfLyWzc2seSvBfXHWPacfn1T9MJE=;
+	s=arc-20240116; t=1757276369; c=relaxed/simple;
+	bh=kJcu3zgKWwNtq//XfTzsTXXcPmM2Bvr/Dap3dTJg2wI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=knItYW68/Iy58kGZREUGCdoXCOnrBUIGbW579bg+VHs5T4LD5VBzeExRoCf7Ex3FAc7FCZaCFwLpnB0fPTJhZMTxQc+a/oWhY49DML6B3MZ1xkcwrnN9Nh4BlZ8D6tdeDIy3WMB+PMRfiXM4p2uuHi9QUV4W+CCOpIfjuCal5mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJXMcBEj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDCEC4CEF0;
-	Sun,  7 Sep 2025 20:14:47 +0000 (UTC)
+	 MIME-Version; b=Sv5Eik0jbAsSs30ESYYnCvKVLYBFf9jF4xMpC1EnPqc+k0pCLPzlzt/m8IV4dLI8JC67dG8/d8lItdb/m+3HR5ImDz6nZMGm6xUXiMs9Evl8G412apmr6cFTCDTUG82RAsU9v4Bv9dVrV1ndkJQHAlsOVRTOBk8AEH8hZe47wL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBa+Rn05; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DFC1C4CEF0;
+	Sun,  7 Sep 2025 20:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276088;
-	bh=phgFj5OYI3Prg9CBfLyWzc2seSvBfXHWPacfn1T9MJE=;
+	s=korg; t=1757276369;
+	bh=kJcu3zgKWwNtq//XfTzsTXXcPmM2Bvr/Dap3dTJg2wI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJXMcBEjXYrAVbcvFe6tSljqRHJ0VwVRqdi/8rHCBOVzd5P0P+b4KQuw6WgdUSiGE
-	 6Kp3iHn/hBqza/rJLb+1P2N0fe2czcX6B8Jamc/XU9p7L7dkSMRd8b9r094zlptU5+
-	 sjLK3+eMGch/o+F74AKX1y9j/voPET+1Sgnojv3g=
+	b=cBa+Rn05ok8O6m4Rm6oprR4SBYxlKFna1B4E9KMLPIueEKj+2fzc0tfc2ReoOQHp7
+	 RP3AxyX3ySo2fAO5lhzhdvYkc19Q+SjliuE+P6mz+LyPJo7lKsu8P9TkJE+rGqLqMp
+	 J6yz7q1qbqjN7y4VPPP/OUJmK8rZsLQRpUHIa4mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Frank Li <Frank.Li@nxp.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 58/64] spi: spi-fsl-lpspi: Set correct chip-select polarity bit
+Subject: [PATCH 6.1 083/104] spi: spi-fsl-lpspi: Set correct chip-select polarity bit
 Date: Sun,  7 Sep 2025 21:58:40 +0200
-Message-ID: <20250907195605.018077339@linuxfoundation.org>
+Message-ID: <20250907195609.822852252@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -88,7 +88,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 7ece48667f52d..ab096368a1fd5 100644
+index e8d915a8914c7..ca773ca9ed77b 100644
 --- a/drivers/spi/spi-fsl-lpspi.c
 +++ b/drivers/spi/spi-fsl-lpspi.c
 @@ -5,6 +5,7 @@
