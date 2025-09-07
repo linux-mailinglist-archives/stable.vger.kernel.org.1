@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F466B47DD7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38DABB47D61
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:11:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CF5B3AF4BE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2E393B8D23
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E641E0DE8;
-	Sun,  7 Sep 2025 20:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8475E27F754;
+	Sun,  7 Sep 2025 20:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwvBVnbX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9tIFnAY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE8014BFA2;
-	Sun,  7 Sep 2025 20:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435FE1CDFAC;
+	Sun,  7 Sep 2025 20:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276225; cv=none; b=LnpPPxXqJ3IQf6unfeCwn0Tq6y/YS09Z9PrX1ZVpZlx3TRlfjr29sGN4O3D6fidjRWlNlcFnpoJs8d47XK9ZUTXf7ffaZGEMQBHwIxpbpyhqKYwdAl3sKAlBix94IQ7E9/1OY7MtCpkGmoio+fJBzNhUU+43/uP1jqp5EDSD7oI=
+	t=1757275867; cv=none; b=PvZVh5OQciwIRmdxZl7uuQuXvAKyP9uvuqzzV5Z3lfBAsn4RnCyx9RxzeN1LE/C7vdwvbDBGzxSl1S/SAeLXwVJnrsbCY+paMMABgtqb7NePPeLni8RL/Ae/HfVxEnzE0k3aEvDSqDQFg94PcsNppRTx5q8z+bTCspnD3TmFxxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276225; c=relaxed/simple;
-	bh=pYT+XW04jwk02pD2S2UMQFEThYp6y9uEdwf3ifsumYU=;
+	s=arc-20240116; t=1757275867; c=relaxed/simple;
+	bh=4nBV7uUXuf4pQ8FmdnSxKLWSOVM79yApOG+LCxzKdao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3JGk1fsUj8bceWOss+kogFPFTZS13qrefP+7HTtnapUxLBjD/Cf4gx9eoHIQWpaB6ZjWAMimP/aMKMK9wkckv9eS8RmDci2F7OrxFBZD168CWVS+y78ETS/bJt1vCIE3bhgvciTOiSHoDjoPMiOD+r/hsdo6bsj1P16LYKzWuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwvBVnbX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBDFFC4CEF0;
-	Sun,  7 Sep 2025 20:17:04 +0000 (UTC)
+	 MIME-Version; b=T40TUot+cO48KSSBmOpKQrWex00nbrWBO3EACDi0u5XX8dDzyLAZburhzLaZU7CmsEQKeJUSLaYToKWfy9yFZrtr6tPIg8PMQvhBLtpPOfQtskYFtR9ZCmT4XJcKAsERM6QXNGf6b0+lXt+hf9ncMDRYIVaEdwcduH35yYDMnBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9tIFnAY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA111C4CEF0;
+	Sun,  7 Sep 2025 20:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276225;
-	bh=pYT+XW04jwk02pD2S2UMQFEThYp6y9uEdwf3ifsumYU=;
+	s=korg; t=1757275867;
+	bh=4nBV7uUXuf4pQ8FmdnSxKLWSOVM79yApOG+LCxzKdao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwvBVnbXhzJw5oQA8Q9066z2gf5XSoeHqbv15Pdj4GpCux+D9NxVUgbaONFoSYnW8
-	 TEejWzexdVCTgcMol18On/YkhoZ0+bqrEt3bwACsRIMumHS6gBjRF0EMK5QWUJW3Et
-	 wCGFkIpyhG6AdFkJaflcAp9DKClDkWnoraQaM8fo=
+	b=O9tIFnAYmP5yLMnBmhYNe7M64I2AzTLDgUYY5lkX9ynmJHHmaK9qyH36fCya9mQTJ
+	 Qg+34juPvAwOy6F3jd+o1U3heaES3JxrS/S7+6Uk5UvG9V26nKCO6YKRDR/J/LfL/I
+	 JK4q6HrWa9gSNBl0wgIo2PhHM/dIvzEtYlWBmf20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/104] ppp: fix memory leak in pad_compress_skb
+Subject: [PATCH 5.4 08/45] i40e: Fix potential invalid access when MAC list is empty
 Date: Sun,  7 Sep 2025 21:57:54 +0200
-Message-ID: <20250907195608.660189685@linuxfoundation.org>
+Message-ID: <20250907195601.205513770@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-[ Upstream commit 4844123fe0b853a4982c02666cb3fd863d701d50 ]
+[ Upstream commit a556f06338e1d5a85af0e32ecb46e365547f92b9 ]
 
-If alloc_skb() fails in pad_compress_skb(), it returns NULL without
-releasing the old skb. The caller does:
+list_first_entry() never returns NULL - if the list is empty, it still
+returns a pointer to an invalid object, leading to potential invalid
+memory access when dereferenced.
 
-    skb = pad_compress_skb(ppp, skb);
-    if (!skb)
-        goto drop;
+Fix this by using list_first_entry_or_null instead of list_first_entry.
 
-drop:
-    kfree_skb(skb);
-
-When pad_compress_skb() returns NULL, the reference to the old skb is
-lost and kfree_skb(skb) ends up doing nothing, leading to a memory leak.
-
-Align pad_compress_skb() semantics with realloc(): only free the old
-skb if allocation and compression succeed.  At the call site, use the
-new_skb variable so the original skb is not lost when pad_compress_skb()
-fails.
-
-Fixes: b3f9b92a6ec1 ("[PPP]: add PPP MPPE encryption module")
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Yue Haibing <yuehaibing@huawei.com>
-Link: https://patch.msgid.link/20250903100726.269839-1-dqfext@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e3219ce6a775 ("i40e: Add support for client interface for IWARP driver")
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_generic.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_client.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index cbf1c1f23281d..f184368d5c5e7 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -1753,7 +1753,6 @@ pad_compress_skb(struct ppp *ppp, struct sk_buff *skb)
- 		 */
- 		if (net_ratelimit())
- 			netdev_err(ppp->dev, "ppp: compressor dropped pkt\n");
--		kfree_skb(skb);
- 		consume_skb(new_skb);
- 		new_skb = NULL;
- 	}
-@@ -1855,9 +1854,10 @@ ppp_send_frame(struct ppp *ppp, struct sk_buff *skb)
- 					   "down - pkt dropped.\n");
- 			goto drop;
- 		}
--		skb = pad_compress_skb(ppp, skb);
--		if (!skb)
-+		new_skb = pad_compress_skb(ppp, skb);
-+		if (!new_skb)
- 			goto drop;
-+		skb = new_skb;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_client.c b/drivers/net/ethernet/intel/i40e/i40e_client.c
+index 10125b02d1543..b7c3625aec154 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_client.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_client.c
+@@ -320,8 +320,8 @@ static void i40e_client_add_instance(struct i40e_pf *pf)
+ 		return;
  	}
  
- 	/*
+-	mac = list_first_entry(&cdev->lan_info.netdev->dev_addrs.list,
+-			       struct netdev_hw_addr, list);
++	mac = list_first_entry_or_null(&cdev->lan_info.netdev->dev_addrs.list,
++				       struct netdev_hw_addr, list);
+ 	if (mac)
+ 		ether_addr_copy(cdev->lan_info.lanmac, mac->addr);
+ 	else
 -- 
 2.50.1
 
