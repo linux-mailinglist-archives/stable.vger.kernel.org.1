@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70FFBB47D4F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4616FB47F34
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:34:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19224188DC41
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DD941B214E2
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C17029A32D;
-	Sun,  7 Sep 2025 20:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7067D211A14;
+	Sun,  7 Sep 2025 20:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/2bJaDg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAX7oTfk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC52A27FB21;
-	Sun,  7 Sep 2025 20:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F37C1A0BFD;
+	Sun,  7 Sep 2025 20:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275809; cv=none; b=FwPAvE7i+vO71GYzwAQ5Nt5FRaqATFqIw0coBrYBicXxY2ercwt38Ki3abygdAqGTHj8IK2TiQ2USQkP7spuiLxVpCJ1sriWfeQt65klNpSBba3mBOaJlUwWT4ObKIRPKqdnX/TNK9UMCieEMEVKnlI59Fd/txqzTraJTfjVnCQ=
+	t=1757277262; cv=none; b=S1s9L29oMiTS/OZHYKZJyMfnxWCYAAWyQBVoFuOKOPM5JMxaNZgYEDKaWeyBtXdlQoZ8Aj1mbWCIVs+xyV1NiAkz4TFhfMOxFitiB4zp9/cOUt9gRsLnxnA+4geGehUmTjRYtzWnusKt9OTIRQ6Wdzrkv1pzFEls4Z3zAYXi2vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275809; c=relaxed/simple;
-	bh=viD2OxfyT2Ca2eDpaS6oPbzUxg2Cd3q4zjL0/dzGGjI=;
+	s=arc-20240116; t=1757277262; c=relaxed/simple;
+	bh=wYfmWlUKtKodyoa37o/1KLWC9YGbky6YqHzzCeTtNwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pxQAuHP4Qka2LC5OyAw4O9YRYDLCd540Q5kv5sbuqnYJDXCLt0OpNcMapZ5jHNcQSm83tB2DdSebmI7Q9nH3vuIcvuYMnKAhwwxJLd0+WRQeW8JSQPsqKrATwjwbCYmdNxzpeUQg80SPI16pNDKY6dZ+qsZ6MH2sBJxMPM0MsPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/2bJaDg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A01C4CEF0;
-	Sun,  7 Sep 2025 20:10:09 +0000 (UTC)
+	 MIME-Version; b=TCvysmxUdc6uJzd1+u+Nb22B/LKkcdFo3jCgBVp5SjOEiTcGDwKkZv8EIXuVKrGHfAPwKoZjIFkpqVfD8EnFFC8WiBDdVHb0k5QtMqupcy25ZB826+bqAi5blSzs2qc9rcZSApdRLgbA49LDKH0v8LT2VxPVtPIba9UWyKIX7qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAX7oTfk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D918C4CEF0;
+	Sun,  7 Sep 2025 20:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275809;
-	bh=viD2OxfyT2Ca2eDpaS6oPbzUxg2Cd3q4zjL0/dzGGjI=;
+	s=korg; t=1757277262;
+	bh=wYfmWlUKtKodyoa37o/1KLWC9YGbky6YqHzzCeTtNwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/2bJaDgkqqh0HP1WINIw7D2sKhkNui3Jc6bakgif4w5iFfD6KbAtJtEoRFvu2zru
-	 QHwakEFBDEJOvNKbBMWu2ChQClsHN/4bzc0NUaZIdI6C2OFL+ennE1zpzzNp3o89ax
-	 YSJgD+2ihWQTNhPnHheWWZPrzJJezXiL4YlbQlPw=
+	b=aAX7oTfkqW4ffWXryFkCyhtmrq9RgQJcAyF35Rvzepmrcoj/WkbeUOP1Q3KxCoHyG
+	 qbn8k7AzpGzb1bMsPhBaBmyza9u3O0ZvTl4tPEOBPh25BPNdZtQAl/f+vu3wn8snx7
+	 sU9ztt7b/i0IgPFl0cplL4b2DmB1scPVzfDJFNbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guoli An <anguoli@uniontech.com>,
-	Cryolitia PukNgae <cryolitia@uniontech.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 18/45] ALSA: usb-audio: Add mute TLV for playback volumes on some devices
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 089/175] selftest: net: Fix weird setsockopt() in bind_bhash.c.
 Date: Sun,  7 Sep 2025 21:58:04 +0200
-Message-ID: <20250907195601.489303463@linuxfoundation.org>
+Message-ID: <20250907195616.944426224@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cryolitia PukNgae <cryolitia@uniontech.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 9c6182843b0d02ca04cc1d946954a65a2286c7db upstream.
+[ Upstream commit fd2004d82d8d8faa94879e3de3096c8511728637 ]
 
-Applying the quirk of that, the lowest Playback mixer volume setting
-mutes the audio output, on more devices.
+bind_bhash.c passes (SO_REUSEADDR | SO_REUSEPORT) to setsockopt().
 
-Link: https://gitlab.freedesktop.org/pipewire/pipewire/-/merge_requests/2514
-Cc: <stable@vger.kernel.org>
-Tested-by: Guoli An <anguoli@uniontech.com>
-Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
-Link: https://patch.msgid.link/20250822-mixer-quirk-v1-1-b19252239c1c@uniontech.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the asm-generic definition, the value happens to match with the
+bare SO_REUSEPORT, (2 | 15) == 15, but not on some arch.
+
+arch/alpha/include/uapi/asm/socket.h:18:#define SO_REUSEADDR	0x0004
+arch/alpha/include/uapi/asm/socket.h:24:#define SO_REUSEPORT	0x0200
+arch/mips/include/uapi/asm/socket.h:24:#define SO_REUSEADDR	0x0004	/* Allow reuse of local addresses.  */
+arch/mips/include/uapi/asm/socket.h:33:#define SO_REUSEPORT 0x0200	/* Allow local address and port reuse.  */
+arch/parisc/include/uapi/asm/socket.h:12:#define SO_REUSEADDR	0x0004
+arch/parisc/include/uapi/asm/socket.h:18:#define SO_REUSEPORT	0x0200
+arch/sparc/include/uapi/asm/socket.h:13:#define SO_REUSEADDR	0x0004
+arch/sparc/include/uapi/asm/socket.h:20:#define SO_REUSEPORT	0x0200
+include/uapi/asm-generic/socket.h:12:#define SO_REUSEADDR	2
+include/uapi/asm-generic/socket.h:27:#define SO_REUSEPORT	15
+
+Let's pass SO_REUSEPORT only.
+
+Fixes: c35ecb95c448 ("selftests/net: Add test for timing a bind request to a port with a populated bhash entry")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250903222938.2601522-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/net/bind_bhash.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -2587,9 +2587,11 @@ void snd_usb_mixer_fu_apply_quirk(struct
- 			snd_dragonfly_quirk_db_scale(mixer, cval, kctl);
- 		break;
- 	/* lowest playback value is muted on some devices */
-+	case USB_ID(0x0572, 0x1b09): /* Conexant Systems (Rockwell), Inc. */
- 	case USB_ID(0x0d8c, 0x000c): /* C-Media */
- 	case USB_ID(0x0d8c, 0x0014): /* C-Media */
- 	case USB_ID(0x19f7, 0x0003): /* RODE NT-USB */
-+	case USB_ID(0x2d99, 0x0026): /* HECATE G2 GAMING HEADSET */
- 		if (strstr(kctl->id.name, "Playback"))
- 			cval->min_mute = 1;
- 		break;
+diff --git a/tools/testing/selftests/net/bind_bhash.c b/tools/testing/selftests/net/bind_bhash.c
+index 57ff67a3751eb..da04b0b19b73c 100644
+--- a/tools/testing/selftests/net/bind_bhash.c
++++ b/tools/testing/selftests/net/bind_bhash.c
+@@ -75,7 +75,7 @@ static void *setup(void *arg)
+ 	int *array = (int *)arg;
+ 
+ 	for (i = 0; i < MAX_CONNECTIONS; i++) {
+-		sock_fd = bind_socket(SO_REUSEADDR | SO_REUSEPORT, setup_addr);
++		sock_fd = bind_socket(SO_REUSEPORT, setup_addr);
+ 		if (sock_fd < 0) {
+ 			ret = sock_fd;
+ 			pthread_exit(&ret);
+@@ -103,7 +103,7 @@ int main(int argc, const char *argv[])
+ 
+ 	setup_addr = use_v6 ? setup_addr_v6 : setup_addr_v4;
+ 
+-	listener_fd = bind_socket(SO_REUSEADDR | SO_REUSEPORT, setup_addr);
++	listener_fd = bind_socket(SO_REUSEPORT, setup_addr);
+ 	if (listen(listener_fd, 100) < 0) {
+ 		perror("listen failed");
+ 		return -1;
+-- 
+2.50.1
+
 
 
 
