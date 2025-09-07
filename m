@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-178790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3EBB48013
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:46:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D049DB48015
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:46:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35D437A6CA6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:44:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E196F1B227B9
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31891F12F4;
-	Sun,  7 Sep 2025 20:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C55120E005;
+	Sun,  7 Sep 2025 20:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ra7+2BMs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCkHfweh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70125125B2;
-	Sun,  7 Sep 2025 20:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF424126C02;
+	Sun,  7 Sep 2025 20:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277967; cv=none; b=K9ZeS+N2HBcQOKgLonhltkEx6pdLUM7gAv9kfA5NdoiGwOI0RMzVfkJCnVoMJRwtnTBdqemn8F3Uhvrh9aCRAOM2+Qb/VANqYj7He7DztXz00B7wOZFOLcijUgNhjLwZvr+xORczmM5zvAy+HKotdxAJm0ZDrK3rtIvD8xVtfa0=
+	t=1757277973; cv=none; b=QF847BeSVVS9SvaQa90KRCfoeBgw76SkX2+zSk4X9s8BhUhThs/IndTV79g3sbZminHjWYKaAh7MsilWj/Y+phB8YuKjk1I1yHsLgbBbkh/nMfbX3HmyKN1y4BhHMh2ll9LABRkqKkgeRTorhx+uY3Vb9ZGnCJ9u98X9+iZ9LiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277967; c=relaxed/simple;
-	bh=GhyRlseENMbeYsYUBcGQVOFyWNjMadt5bO8jlCXNsHg=;
+	s=arc-20240116; t=1757277973; c=relaxed/simple;
+	bh=sm4rjEt2/cfk1rbL9MoMwt4cpLuKHfVgt9n7KiCWaMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SW9+DBVVWWozjbbKHeZm1yXeH+7lgm647o/MX1XzXdfjXBbWUR7KrT/k3NpsroOwJCDvfEz2JELP/qqGdifzcJu0d4uWqAVOO9a8rigBtUWd+BXUHWsZcaU7KqzpNeevyNk5i2AQLT1Ik/7K05/ZnW6ywpiTFlgRg5kOxRAYFYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ra7+2BMs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC14C4CEF0;
-	Sun,  7 Sep 2025 20:46:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SHr3puHLq8J3SWn53VdfbdZkAsJTxrrqhDHAgCZog3uN7ofdysXA/xmwb9Uc9WVxaGaREXGomDpGEtdAfdRzl3z1ZbV7HGmOLqbJYtQP789an5zKWyogocUobqqnTUtrCPvwA5AKQzSflA1ESe9Pl/q/pcxEwBSTIX6WHic650A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCkHfweh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479B4C4CEF0;
+	Sun,  7 Sep 2025 20:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277967;
-	bh=GhyRlseENMbeYsYUBcGQVOFyWNjMadt5bO8jlCXNsHg=;
+	s=korg; t=1757277973;
+	bh=sm4rjEt2/cfk1rbL9MoMwt4cpLuKHfVgt9n7KiCWaMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ra7+2BMs+Txvf3ZLL+wR9g9LMD72XO9MuK2Yvm966UbjRBz2N+lisrQ2RLhQeQKRo
-	 dRipZp/lzS+HW5qaRBgMVG1IPFze3WQbP0nFwWCMltAh79XTyVLl1xzrc1q9Ufpn6p
-	 7r9PmhdZ6RcpdcS1Mts2n8yzXDVVZjFRZyM+dYR4=
+	b=JCkHfweh5YZi2UkEhVaUnO84jZIfrY1qnXIQ+Ki2NQBiTk46z9/loaK0Dx3kZGWKL
+	 4ukrlVO3qFizTpr1VRLexjMUZN39QgHoiDNB6Kmd2Rhuy40Hgrmk1sFG5GkwYbJAgK
+	 /VJKwotfexIGLlS7+BMj4g2c02cKi5k28nkD0fMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
+	kernel test robot <lkp@intel.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Cyril Bur <cyrilbur@tenstorrent.com>,
 	Paul Walmsley <pjw@kernel.org>
-Subject: [PATCH 6.16 180/183] riscv: kexec: Initialize kexec_buf struct
-Date: Sun,  7 Sep 2025 22:00:07 +0200
-Message-ID: <20250907195620.107840418@linuxfoundation.org>
+Subject: [PATCH 6.16 181/183] riscv: Fix sparse warning in __get_user_error()
+Date: Sun,  7 Sep 2025 22:00:08 +0200
+Message-ID: <20250907195620.132449590@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
 References: <20250907195615.802693401@linuxfoundation.org>
@@ -59,92 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-commit 95c54cd9c769a198118772e196adfaa1f002e365 upstream.
+commit fef7ded169ed7e133612f90a032dc2af1ce19bef upstream.
 
-The kexec_buf structure was previously declared without initialization.
-commit bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-added a field that is always read but not consistently populated by all
-architectures. This un-initialized field will contain garbage.
+We used to assign 0 to x without an appropriate cast which results in
+sparse complaining when x is a pointer:
 
-This is also triggering a UBSAN warning when the uninitialized data was
-accessed:
+>> block/ioctl.c:72:39: sparse: sparse: Using plain integer as NULL pointer
 
-	------------[ cut here ]------------
-	UBSAN: invalid-load in ./include/linux/kexec.h:210:10
-	load of value 252 is not a valid value for type '_Bool'
+So fix this by casting 0 to the correct type of x.
 
-Zero-initializing kexec_buf at declaration ensures all fields are
-cleanly set, preventing future instances of uninitialized memory being
-used.
-
-Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-Signed-off-by: Breno Leitao <leitao@debian.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202508062321.gHv4kvuY-lkp@intel.com/
+Fixes: f6bff7827a48 ("riscv: uaccess: use 'asm_goto_output' for get_user()")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250827-kbuf_all-v1-2-1df9882bb01a@debian.org
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Cyril Bur <cyrilbur@tenstorrent.com>
+Link: https://lore.kernel.org/r/20250903-dev-alex-sparse_warnings_v1-v1-1-7e6350beb700@rivosinc.com
 Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/kexec_elf.c          | 4 ++--
- arch/riscv/kernel/kexec_image.c        | 2 +-
- arch/riscv/kernel/machine_kexec_file.c | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ arch/riscv/include/asm/uaccess.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/kexec_elf.c b/arch/riscv/kernel/kexec_elf.c
-index 56444c7bd34e..531d348db84d 100644
---- a/arch/riscv/kernel/kexec_elf.c
-+++ b/arch/riscv/kernel/kexec_elf.c
-@@ -28,7 +28,7 @@ static int riscv_kexec_elf_load(struct kimage *image, struct elfhdr *ehdr,
- 	int i;
- 	int ret = 0;
- 	size_t size;
--	struct kexec_buf kbuf;
-+	struct kexec_buf kbuf = {};
- 	const struct elf_phdr *phdr;
+diff --git a/arch/riscv/include/asm/uaccess.h b/arch/riscv/include/asm/uaccess.h
+index 22e3f52a763d..551e7490737e 100644
+--- a/arch/riscv/include/asm/uaccess.h
++++ b/arch/riscv/include/asm/uaccess.h
+@@ -209,7 +209,7 @@ do {									\
+ 		err = 0;						\
+ 		break;							\
+ __gu_failed:								\
+-		x = 0;							\
++		x = (__typeof__(x))0;					\
+ 		err = -EFAULT;						\
+ } while (0)
  
- 	kbuf.image = image;
-@@ -66,7 +66,7 @@ static int elf_find_pbase(struct kimage *image, unsigned long kernel_len,
- {
- 	int i;
- 	int ret;
--	struct kexec_buf kbuf;
-+	struct kexec_buf kbuf = {};
- 	const struct elf_phdr *phdr;
- 	unsigned long lowest_paddr = ULONG_MAX;
- 	unsigned long lowest_vaddr = ULONG_MAX;
-diff --git a/arch/riscv/kernel/kexec_image.c b/arch/riscv/kernel/kexec_image.c
-index 26a81774a78a..8f2eb900910b 100644
---- a/arch/riscv/kernel/kexec_image.c
-+++ b/arch/riscv/kernel/kexec_image.c
-@@ -41,7 +41,7 @@ static void *image_load(struct kimage *image,
- 	struct riscv_image_header *h;
- 	u64 flags;
- 	bool be_image, be_kernel;
--	struct kexec_buf kbuf;
-+	struct kexec_buf kbuf = {};
- 	int ret;
- 
- 	/* Check Image header */
-diff --git a/arch/riscv/kernel/machine_kexec_file.c b/arch/riscv/kernel/machine_kexec_file.c
-index e36104af2e24..b9eb41b0a975 100644
---- a/arch/riscv/kernel/machine_kexec_file.c
-+++ b/arch/riscv/kernel/machine_kexec_file.c
-@@ -261,7 +261,7 @@ int load_extra_segments(struct kimage *image, unsigned long kernel_start,
- 	int ret;
- 	void *fdt;
- 	unsigned long initrd_pbase = 0UL;
--	struct kexec_buf kbuf;
-+	struct kexec_buf kbuf = {};
- 	char *modified_cmdline = NULL;
- 
- 	kbuf.image = image;
 -- 
 2.51.0
 
