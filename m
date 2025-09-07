@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-178505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9F9B47EF1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66773B47F84
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B86D189F52B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:31:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05B037A0387
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2381FECCD;
-	Sun,  7 Sep 2025 20:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F5C269CE6;
+	Sun,  7 Sep 2025 20:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpNm0WFc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PudQW5GM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1CA18DF89;
-	Sun,  7 Sep 2025 20:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417341DF246;
+	Sun,  7 Sep 2025 20:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277051; cv=none; b=NFAosVZLtqGmxz9yO1CmfyetzWLlYjkeC9fKcSkLbvh+agiDpNgVWq1AEWozybM9G3ztE+fkaXWQeql9Z5DD3ml5p1c2CinpPL86G9+cQCPaQvI8Jr5GK+xeNKthtipXRA/ywO3npEOwiqYV5ayfzOlMURUZ0XCCfyz5U5UBT0A=
+	t=1757277510; cv=none; b=B80/b4rk7QmjqUPKvtmQHvmZO84SqG1RtvKdIdgFAzmLBXUjLxURaLwqN6iSlQr5bevhFAsZzeHm510zgp3CQqJrdmX3bz4trYjc+wEhVKa7lOk5fKH8rFBTb18I3O7mt1vwXGFoWQ/3PtECeImj43cXlxX4gKLmj/61W/oppO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277051; c=relaxed/simple;
-	bh=OOyqdf+KtD1fcpVuqQCyfxMlNz129YS2PyzN/Q49TX8=;
+	s=arc-20240116; t=1757277510; c=relaxed/simple;
+	bh=Xi2jyFGyuRmpmrKaqmfnEwLnroJlSz6AXVI2aNgaHEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqWSHn16tVkhSxxubBnGNZ9AqVVq8m0UfpoRfThkaj5lnvl7a/6VGV7cVMoYbc6CmxuD0XsocutKWdLDzSI9i6wZaoytgrJ4BNiK94KbQhQ67JaGYbbMWr0neijUIaqRc5hZOudOYusTIBebb+rRel2KVZoj7b3uKdPIoE7JJrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpNm0WFc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D43D7C4CEF0;
-	Sun,  7 Sep 2025 20:30:50 +0000 (UTC)
+	 MIME-Version; b=Kgvxf4K0cmDzQDkVUACtrq+UyplSw8guJcL97k/E+g/FdKjPPi3VHWZoh/GfllGaA8MFZCH5dWiLpnfDxXcJOhDNCL8/ENoYkXf+0Bni9SyYIuoAVY63exEWrIl7ghxmEjJUFQfwAmK66z/B1w0rEVVllw2erH/IVUhRZUo1VAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PudQW5GM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CE0C4CEF0;
+	Sun,  7 Sep 2025 20:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277051;
-	bh=OOyqdf+KtD1fcpVuqQCyfxMlNz129YS2PyzN/Q49TX8=;
+	s=korg; t=1757277510;
+	bh=Xi2jyFGyuRmpmrKaqmfnEwLnroJlSz6AXVI2aNgaHEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RpNm0WFcU4xeFMp4L6NAqd/flQoHlZ/MXWq//Mmgf1vC4u3tSSkwLkEk087Z8bo6d
-	 4KfCQV5TP3Pu0nTXqshG3JE3kmafggH3SrZ5xbE7Ij6LQl7goe7c6cJqm9XGYL1P+i
-	 xeXmrtlZ5espY2d7Wi3FkvLX5lg00QQ0ApGd4T/s=
+	b=PudQW5GM+O3OEIvYAJt5szvm8jzy63hTmCHeTEMyX+bS57KIowa57ztuqqr6keSkf
+	 1kJhReRAR7eTMzZY8l84i4m9GfMcnI5T1zgI8NumlLlz/Ifir4T6rBlmMF/UKJTYrK
+	 o1kAwy8+Jg/HyPKy3W2CcHTiYoGhccPy6GkYSqQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/175] net: vxlan: use kfree_skb_reason() in vxlan_xmit()
-Date: Sun,  7 Sep 2025 21:57:44 +0200
-Message-ID: <20250907195616.469344664@linuxfoundation.org>
+Subject: [PATCH 6.16 038/183] wifi: mt76: mt7915: fix list corruption after hardware restart
+Date: Sun,  7 Sep 2025 21:57:45 +0200
+Message-ID: <20250907195616.682019816@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +61,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit b71a576e452b800efeac49ecca116d954601d911 ]
+[ Upstream commit 065c79df595af21d6d1b27d642860faa1d938774 ]
 
-Replace kfree_skb() with kfree_skb_reason() in vxlan_xmit(). Following
-new skb drop reasons are introduced for vxlan:
+Since stations are recreated from scratch, all lists that wcids are added
+to must be cleared before calling ieee80211_restart_hw.
+Set wcid->sta = 0 for each wcid entry in order to ensure that they are
+not added again before they are ready.
 
-/* no remote found for xmit */
-SKB_DROP_REASON_VXLAN_NO_REMOTE
-/* packet without necessary metadata reached a device which is
- * in "external" mode
- */
-SKB_DROP_REASON_TUNNEL_TXINFO
-
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 1f5d2fd1ca04 ("vxlan: Fix NPD in {arp,neigh}_reduce() when using nexthop objects")
+Fixes: 8a55712d124f ("wifi: mt76: mt7915: enable full system reset support")
+Link: https://patch.msgid.link/20250827085352.51636-4-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 6 +++---
- include/net/dropreason-core.h  | 9 +++++++++
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 37 +++++++++++++++++++
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  1 +
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 12 +++---
+ 3 files changed, 43 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index d9077698c5a89..40f01a6aaed38 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -2724,7 +2724,7 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
- 			if (info && info->mode & IP_TUNNEL_INFO_TX)
- 				vxlan_xmit_one(skb, dev, vni, NULL, false);
- 			else
--				kfree_skb(skb);
-+				kfree_skb_reason(skb, SKB_DROP_REASON_TUNNEL_TXINFO);
- 			return NETDEV_TX_OK;
- 		}
- 	}
-@@ -2787,7 +2787,7 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
- 			dev_core_stats_tx_dropped_inc(dev);
- 			vxlan_vnifilter_count(vxlan, vni, NULL,
- 					      VXLAN_VNI_STATS_TX_DROPS, 0);
--			kfree_skb(skb);
-+			kfree_skb_reason(skb, SKB_DROP_REASON_VXLAN_NO_REMOTE);
- 			return NETDEV_TX_OK;
- 		}
- 	}
-@@ -2810,7 +2810,7 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
- 		if (fdst)
- 			vxlan_xmit_one(skb, dev, vni, fdst, did_rsc);
- 		else
--			kfree_skb(skb);
-+			kfree_skb_reason(skb, SKB_DROP_REASON_VXLAN_NO_REMOTE);
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 45c8db939d554..4e435bec828b5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -818,6 +818,43 @@ void mt76_free_device(struct mt76_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(mt76_free_device);
  
- 	return NETDEV_TX_OK;
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index fbf92d442c1b2..d59bb96c5a02c 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -96,7 +96,9 @@
- 	FN(VXLAN_VNI_NOT_FOUND)		\
- 	FN(MAC_INVALID_SOURCE)		\
- 	FN(VXLAN_ENTRY_EXISTS)		\
-+	FN(VXLAN_NO_REMOTE)		\
- 	FN(IP_TUNNEL_ECN)		\
-+	FN(TUNNEL_TXINFO)		\
- 	FN(LOCAL_MAC)			\
- 	FNe(MAX)
++static void mt76_reset_phy(struct mt76_phy *phy)
++{
++	if (!phy)
++		return;
++
++	INIT_LIST_HEAD(&phy->tx_list);
++}
++
++void mt76_reset_device(struct mt76_dev *dev)
++{
++	int i;
++
++	rcu_read_lock();
++	for (i = 0; i < ARRAY_SIZE(dev->wcid); i++) {
++		struct mt76_wcid *wcid;
++
++		wcid = rcu_dereference(dev->wcid[i]);
++		if (!wcid)
++			continue;
++
++		wcid->sta = 0;
++		mt76_wcid_cleanup(dev, wcid);
++		rcu_assign_pointer(dev->wcid[i], NULL);
++	}
++	rcu_read_unlock();
++
++	INIT_LIST_HEAD(&dev->wcid_list);
++	INIT_LIST_HEAD(&dev->sta_poll_list);
++	dev->vif_mask = 0;
++	memset(dev->wcid_mask, 0, sizeof(dev->wcid_mask));
++
++	mt76_reset_phy(&dev->phy);
++	for (i = 0; i < ARRAY_SIZE(dev->phys); i++)
++		mt76_reset_phy(dev->phys[i]);
++}
++EXPORT_SYMBOL_GPL(mt76_reset_device);
++
+ struct mt76_phy *mt76_vif_phy(struct ieee80211_hw *hw,
+ 			      struct ieee80211_vif *vif)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 0ecf77fcbe3d0..0290ddbb2424e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1241,6 +1241,7 @@ int mt76_register_device(struct mt76_dev *dev, bool vht,
+ 			 struct ieee80211_rate *rates, int n_rates);
+ void mt76_unregister_device(struct mt76_dev *dev);
+ void mt76_free_device(struct mt76_dev *dev);
++void mt76_reset_device(struct mt76_dev *dev);
+ void mt76_unregister_phy(struct mt76_phy *phy);
  
-@@ -439,11 +441,18 @@ enum skb_drop_reason {
- 	 * entry or an entry pointing to a nexthop.
- 	 */
- 	SKB_DROP_REASON_VXLAN_ENTRY_EXISTS,
-+	/** @SKB_DROP_REASON_VXLAN_NO_REMOTE: no remote found for xmit */
-+	SKB_DROP_REASON_VXLAN_NO_REMOTE,
- 	/**
- 	 * @SKB_DROP_REASON_IP_TUNNEL_ECN: skb is dropped according to
- 	 * RFC 6040 4.2, see __INET_ECN_decapsulate() for detail.
- 	 */
- 	SKB_DROP_REASON_IP_TUNNEL_ECN,
-+	/**
-+	 * @SKB_DROP_REASON_TUNNEL_TXINFO: packet without necessary metadata
-+	 * reached a device which is in "external" mode.
-+	 */
-+	SKB_DROP_REASON_TUNNEL_TXINFO,
- 	/**
- 	 * @SKB_DROP_REASON_LOCAL_MAC: the source MAC address is equal to
- 	 * the MAC address of the local netdev.
+ struct mt76_phy *mt76_alloc_radio_phy(struct mt76_dev *dev, unsigned int size,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 6639976afcee6..1c0d310146d63 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1460,17 +1460,15 @@ mt7915_mac_full_reset(struct mt7915_dev *dev)
+ 	if (i == 10)
+ 		dev_err(dev->mt76.dev, "chip full reset failed\n");
+ 
+-	spin_lock_bh(&dev->mt76.sta_poll_lock);
+-	while (!list_empty(&dev->mt76.sta_poll_list))
+-		list_del_init(dev->mt76.sta_poll_list.next);
+-	spin_unlock_bh(&dev->mt76.sta_poll_lock);
+-
+-	memset(dev->mt76.wcid_mask, 0, sizeof(dev->mt76.wcid_mask));
+-	dev->mt76.vif_mask = 0;
+ 	dev->phy.omac_mask = 0;
+ 	if (phy2)
+ 		phy2->omac_mask = 0;
+ 
++	mt76_reset_device(&dev->mt76);
++
++	INIT_LIST_HEAD(&dev->sta_rc_list);
++	INIT_LIST_HEAD(&dev->twt_list);
++
+ 	i = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7915_WTBL_STA);
+ 	dev->mt76.global_wcid.idx = i;
+ 	dev->recovery.hw_full_reset = false;
 -- 
 2.50.1
 
