@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-178779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53068B48008
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:45:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F270B47E95
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19B08200E0E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:45:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBA0A17E3CC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A3B21579F;
-	Sun,  7 Sep 2025 20:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEEEE20D4FC;
+	Sun,  7 Sep 2025 20:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwYNlRkW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjzxoEaf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53331E572F;
-	Sun,  7 Sep 2025 20:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B15417BB21;
+	Sun,  7 Sep 2025 20:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277931; cv=none; b=eiml70/q7wXSsRzd+LJUZEhdCmHDqH0h2y7uqXJJK821PTYgfTYTU8asw23T8Li0TcpXoWlfIXcM5NhWgezqI4vuzKbsUoielTuVqcTNc78YvzdIjUTDA9tez3ATyabLb3+y4YF0O36+ZbandK9RhyvEdaBTiinIjibj9Xs7IMs=
+	t=1757276772; cv=none; b=VPqgwVLFUykv0I2t/u/05qfQwFnKgW0L6fi8rWJSH8F5hnVbh0rq1SuA1mYoV7yctTUs8NLu8IOXa4IpoA9N8/OpJIgAQXSAscH8gipT8H4eDAUeaUwCTXZkdjMszHaTLmiBm2C1TU19T14Lb8lCCs2Jvenyv8OY0zHBzVw/OFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277931; c=relaxed/simple;
-	bh=35CRD2ebdJsvdQz51fv1Hyb+WKEYiEHlNUi668VQRxA=;
+	s=arc-20240116; t=1757276772; c=relaxed/simple;
+	bh=Ixe6q5buBBr2a5OPdb6XAqimP0r5hC1ZiVm6u0xhLXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sktUyIn+uIhYpMr10cWEQFL/mehyBLgBctbzgAiKkCNA7Px5wFc//J17sqfRi70CSZEiAugj7JhfmDN0P5HT1FXGtjnbYJHL9ZrYVAo7vtFn0QwGwqWrwdgyoKq6O1oXiS69GBMGWFxhotqklem0VUh6U1b58gCrwr+rWgtJGdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwYNlRkW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C14C4CEF0;
-	Sun,  7 Sep 2025 20:45:30 +0000 (UTC)
+	 MIME-Version; b=POSaeca4K1DEyUWR1qVU8g0N0BMUewZLpwcHkGTyPtVfS4VvIOvmaS0uxD2XuyKt9WoWZzBpy0WW/Y9bQ9VxKuypYzdAs5h4tP0+NHWkS6p1qXJPxK9cNtJZDRbg4KtR/eMDNP7vAQ6LX+QyEVYiiGim5yRy2B/z7mWxA/2mlAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjzxoEaf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AC0C4CEF0;
+	Sun,  7 Sep 2025 20:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277931;
-	bh=35CRD2ebdJsvdQz51fv1Hyb+WKEYiEHlNUi668VQRxA=;
+	s=korg; t=1757276772;
+	bh=Ixe6q5buBBr2a5OPdb6XAqimP0r5hC1ZiVm6u0xhLXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JwYNlRkWDIr5mRZ8F7u/47jkp9oC01BahkDXhnT4RBJ+EC4r3amFU24rll/7Cis+7
-	 JQaBxg6bLRZ6u0tgCgFqoaYFHXdfYWS1fLjtrNuVVp/sExpe5an5RG4gHHMrY0eoyn
-	 Dn3QqCPdR0PPqY9/r9bx6j673YBoLJu0M2xz0/8s=
+	b=EjzxoEafXQBxE7/XxhY5yksDQ+Heq+Y5LzyR3cwD92Pmd8vi6rHk7AiUZOAAZXeXz
+	 +1JTqE/UaG4lhppwl/oxMPuS91aGUyyyzuq4jsrTNv8DsfmouvtOiDH/AZfhR/M6DG
+	 GfNgIcV9wX0oZ9HDl1egyBRS4VR8GX8C54DN4oaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangzijie <wangzijie1@honor.com>,
-	Lars Wendler <polynomial-c@gmx.de>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	=?UTF-8?q?Petr=20Van=C4=9Bk?= <pv@excello.cz>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	"Kirill A. Shutemov" <k.shutemov@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 114/183] proc: fix missing pde_set_flags() for net proc files
-Date: Sun,  7 Sep 2025 21:59:01 +0200
-Message-ID: <20250907195618.500506635@linuxfoundation.org>
+	Michael Walle <mwalle@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 106/121] drm/bridge: ti-sn65dsi86: fix REFCLK setting
+Date: Sun,  7 Sep 2025 21:59:02 +0200
+Message-ID: <20250907195612.569696266@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,137 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangzijie <wangzijie1@honor.com>
+From: Michael Walle <mwalle@kernel.org>
 
-commit 2ce3d282bd5050fca8577defeff08ada0d55d062 upstream.
+[ Upstream commit bdd5a14e660062114bdebaef9ad52adf04970a89 ]
 
-To avoid potential UAF issues during module removal races, we use
-pde_set_flags() to save proc_ops flags in PDE itself before
-proc_register(), and then use pde_has_proc_*() helpers instead of directly
-dereferencing pde->proc_ops->*.
+The bridge has three bootstrap pins which are sampled to determine the
+frequency of the external reference clock. The driver will also
+(over)write that setting. But it seems this is racy after the bridge is
+enabled. It was observed that although the driver write the correct
+value (by sniffing on the I2C bus), the register has the wrong value.
+The datasheet states that the GPIO lines have to be stable for at least
+5us after asserting the EN signal. Thus, there seems to be some logic
+which samples the GPIO lines and this logic appears to overwrite the
+register value which was set by the driver. Waiting 20us after
+asserting the EN line resolves this issue.
 
-However, the pde_set_flags() call was missing when creating net related
-proc files.  This omission caused incorrect behavior which FMODE_LSEEK was
-being cleared inappropriately in proc_reg_open() for net proc files.  Lars
-reported it in this link[1].
-
-Fix this by ensuring pde_set_flags() is called when register proc entry,
-and add NULL check for proc_ops in pde_set_flags().
-
-[wangzijie1@honor.com: stash pde->proc_ops in a local const variable, per Christian]
-  Link: https://lkml.kernel.org/r/20250821105806.1453833-1-wangzijie1@honor.com
-Link: https://lkml.kernel.org/r/20250818123102.959595-1-wangzijie1@honor.com
-Link: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/ [1]
-Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al")
-Signed-off-by: wangzijie <wangzijie1@honor.com>
-Reported-by: Lars Wendler <polynomial-c@gmx.de>
-Tested-by: Stefano Brivio <sbrivio@redhat.com>
-Tested-by: Petr Vaněk <pv@excello.cz>
-Tested by: Lars Wendler <polynomial-c@gmx.de>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Kirill A. Shutemov <k.shutemov@gmail.com>
-Cc: wangzijie <wangzijie1@honor.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a095f15c00e2 ("drm/bridge: add support for sn65dsi86 bridge driver")
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20250821122341.1257286-1-mwalle@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/generic.c |   38 +++++++++++++++++++++-----------------
- 1 file changed, 21 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -364,6 +364,25 @@ static const struct inode_operations pro
- 	.setattr	= proc_notify_change,
- };
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+index 59cbff209acd6..560935f2e8cbe 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+@@ -375,6 +375,17 @@ static int __maybe_unused ti_sn65dsi86_resume(struct device *dev)
  
-+static void pde_set_flags(struct proc_dir_entry *pde)
-+{
-+	const struct proc_ops *proc_ops = pde->proc_ops;
-+
-+	if (!proc_ops)
-+		return;
-+
-+	if (proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
-+		pde->flags |= PROC_ENTRY_PERMANENT;
-+	if (proc_ops->proc_read_iter)
-+		pde->flags |= PROC_ENTRY_proc_read_iter;
-+#ifdef CONFIG_COMPAT
-+	if (proc_ops->proc_compat_ioctl)
-+		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
-+#endif
-+	if (proc_ops->proc_lseek)
-+		pde->flags |= PROC_ENTRY_proc_lseek;
-+}
-+
- /* returns the registered entry, or frees dp and returns NULL on failure */
- struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
- 		struct proc_dir_entry *dp)
-@@ -371,6 +390,8 @@ struct proc_dir_entry *proc_register(str
- 	if (proc_alloc_inum(&dp->low_ino))
- 		goto out_free_entry;
+ 	gpiod_set_value_cansleep(pdata->enable_gpio, 1);
  
-+	pde_set_flags(dp);
++	/*
++	 * After EN is deasserted and an external clock is detected, the bridge
++	 * will sample GPIO3:1 to determine its frequency. The driver will
++	 * overwrite this setting in ti_sn_bridge_set_refclk_freq(). But this is
++	 * racy. Thus we have to wait a couple of us. According to the datasheet
++	 * the GPIO lines has to be stable at least 5 us (td5) but it seems that
++	 * is not enough and the refclk frequency value is still lost or
++	 * overwritten by the bridge itself. Waiting for 20us seems to work.
++	 */
++	usleep_range(20, 30);
 +
- 	write_lock(&proc_subdir_lock);
- 	dp->parent = dir;
- 	if (pde_subdir_insert(dir, dp) == false) {
-@@ -559,20 +580,6 @@ struct proc_dir_entry *proc_create_reg(c
- 	return p;
- }
- 
--static void pde_set_flags(struct proc_dir_entry *pde)
--{
--	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
--		pde->flags |= PROC_ENTRY_PERMANENT;
--	if (pde->proc_ops->proc_read_iter)
--		pde->flags |= PROC_ENTRY_proc_read_iter;
--#ifdef CONFIG_COMPAT
--	if (pde->proc_ops->proc_compat_ioctl)
--		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
--#endif
--	if (pde->proc_ops->proc_lseek)
--		pde->flags |= PROC_ENTRY_proc_lseek;
--}
--
- struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
- 		struct proc_dir_entry *parent,
- 		const struct proc_ops *proc_ops, void *data)
-@@ -583,7 +590,6 @@ struct proc_dir_entry *proc_create_data(
- 	if (!p)
- 		return NULL;
- 	p->proc_ops = proc_ops;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_data);
-@@ -634,7 +640,6 @@ struct proc_dir_entry *proc_create_seq_p
- 	p->proc_ops = &proc_seq_ops;
- 	p->seq_ops = ops;
- 	p->state_size = state_size;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_seq_private);
-@@ -665,7 +670,6 @@ struct proc_dir_entry *proc_create_singl
- 		return NULL;
- 	p->proc_ops = &proc_single_ops;
- 	p->single_show = show;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_single_data);
+ 	/*
+ 	 * If we have a reference clock we can enable communication w/ the
+ 	 * panel (including the aux channel) w/out any need for an input clock
+-- 
+2.51.0
+
 
 
 
