@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-178588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8DCEB47F45
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:35:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89FDFB48004
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:45:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A4B917FB76
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:35:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 444373AE588
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BA7212B3D;
-	Sun,  7 Sep 2025 20:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F86A212560;
+	Sun,  7 Sep 2025 20:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eq88XfV/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDwPbMYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364C41DF246;
-	Sun,  7 Sep 2025 20:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB8C7E107;
+	Sun,  7 Sep 2025 20:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277316; cv=none; b=j37QnGYb5gvThbQhICoB0pEfU1sfHbbsqiJZA5u0KwkyuVUuQEUEQpD7nbGx7sVSATcH7Hu+Jjo3Si0Mz0iwOGSXqZDMEBp031tatGHuas5uIH2t0kfl896UbiIhE49cSKrYzd5AJgBsj1nSKmWFK+PT/tPfy75NMD9HHFBuv9w=
+	t=1757277922; cv=none; b=tromoW+odOtOy059oS8dva2tsiFJagLXVJMNyjrk0IXeH3xF42dPjmcs6DIu8VQeUm5KFcZofgWTt83DELVhDB1XWog7QfcW/t4ahLdYD9WFFMJZSPaFDeEqWqWkKOmeCV0+/ERQT+0oQl+diWsIT64OggeugpdYXpV+yl9DgQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277316; c=relaxed/simple;
-	bh=h9bcyqWyH1Zc4zeNhewdS0T18O1HrrCCwUVXxEo9FFQ=;
+	s=arc-20240116; t=1757277922; c=relaxed/simple;
+	bh=fuEzeCrPhVCCyWrAmPUtXMkKmbU9d2dnnxKrFr+d3oA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uEUVo7k//DnZcwFyG7Y9zWfT9AuYnzyxmHc6rC94Q6mYolW7GIBziefbF2tWWAjDIAnJ+Hh3bbUhOeN2ZRfJhMH/Zj2l/lzB2BGrJLVzceRGMhuLc2bHKaM5NdYWDJVL+/uV21zshpKHiN65+or7wINMcuLiEMnktJk0eKuvmB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eq88XfV/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A85C4CEF0;
-	Sun,  7 Sep 2025 20:35:15 +0000 (UTC)
+	 MIME-Version; b=t8YGj5Qr6yemitDu0nxqtNKdnr4hrxvbodwCENcUdWodacdn9z/AYUs9+eJ2tgkJccqOe/ul2MKeVV3eyuptqsP1ZdMPODbzWuoLZopv5QH1/GSY1axwEA8jHfFiT+dPXbFJhYVbjQimBIoInDSGY7a6OtBKKMIz8Fv2jDX5pfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDwPbMYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D61C4CEF0;
+	Sun,  7 Sep 2025 20:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277316;
-	bh=h9bcyqWyH1Zc4zeNhewdS0T18O1HrrCCwUVXxEo9FFQ=;
+	s=korg; t=1757277921;
+	bh=fuEzeCrPhVCCyWrAmPUtXMkKmbU9d2dnnxKrFr+d3oA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eq88XfV/JETW5yiq4TM9W7jAjyz98Uw8q82bTQKpICcdBvtn1XJMH1G7LlQOyyKyL
-	 LC3jWcGGelH/JGX4Wl31gQCj79xEX71mtB1+/RW8poWD4GVIRT7wjxjiCDZRLomMNE
-	 iuzs6/5gQzNKr/emvWbxwXGwug8E2Zu0iFj6D5ok=
+	b=JDwPbMYzQRdIWzv5D9gZnp8J/d6r+gWHHy2itRTqsdWD6UDQXVZ2vt1QJ0IeJIkVt
+	 2pka4eO8R4zpYDLNf4/0EaGpSb0LNFiZ8lTKu+YYrXhbIFBWt2xb49MpgnbirN9HcZ
+	 Yt04avB+gCcaP3I6WP6VW3GxX44Cyzv8CMmcMYS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Arcari <darcari@redhat.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 153/175] platform/x86/intel: power-domains: Use topology_logical_package_id() for package ID
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.16 121/183] wifi: mt76: mt7925: fix the wrong bss cleanup for SAP
 Date: Sun,  7 Sep 2025 21:59:08 +0200
-Message-ID: <20250907195618.476100492@linuxfoundation.org>
+Message-ID: <20250907195618.665892806@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Arcari <darcari@redhat.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit aa28991fd5dc4c01a40caab2bd9af8c5e06f9899 ]
+commit 55424e7b9eeb141d9c8d8a8740ee131c28490425 upstream.
 
-Currently, tpmi_get_logical_id() calls topology_physical_package_id()
-to set the pkg_id of the info structure. Since some VM hosts assign non
-contiguous package IDs, topology_physical_package_id() can return a
-larger value than topology_max_packages(). This will result in an
-invalid reference into tpmi_power_domain_mask[] as that is allocatead
-based on topology_max_packages() as the maximum package ID.
+When in SAP mode, if a STA disconnect, the SAP's BSS
+should not be cleared.
 
-Fixes: 17ca2780458c ("platform/x86/intel: TPMI domain id and CPU mapping")
-Signed-off-by: David Arcari <darcari@redhat.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://lore.kernel.org/r/20250829113859.1772827-1-darcari@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0ebb60da8416 ("wifi: mt76: mt7925: adjust rm BSS flow to prevent next connection failure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250728052612.39751-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/tpmi_power_domains.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/tpmi_power_domains.c b/drivers/platform/x86/intel/tpmi_power_domains.c
-index 12fb0943b5dc3..7e0b86535d02c 100644
---- a/drivers/platform/x86/intel/tpmi_power_domains.c
-+++ b/drivers/platform/x86/intel/tpmi_power_domains.c
-@@ -167,7 +167,7 @@ static int tpmi_get_logical_id(unsigned int cpu, struct tpmi_cpu_info *info)
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1191,6 +1191,9 @@ mt7925_mac_sta_remove_links(struct mt792
+ 		struct mt792x_bss_conf *mconf;
+ 		struct mt792x_link_sta *mlink;
  
- 	info->punit_thread_id = FIELD_GET(LP_ID_MASK, data);
- 	info->punit_core_id = FIELD_GET(MODULE_ID_MASK, data);
--	info->pkg_id = topology_physical_package_id(cpu);
-+	info->pkg_id = topology_logical_package_id(cpu);
- 	info->linux_cpu = cpu;
- 
- 	return 0;
--- 
-2.51.0
-
++		if (vif->type == NL80211_IFTYPE_AP)
++			break;
++
+ 		link_sta = mt792x_sta_to_link_sta(vif, sta, link_id);
+ 		if (!link_sta)
+ 			continue;
 
 
 
