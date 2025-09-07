@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-178383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6E5B47E71
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE6EB47F1C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C76E3C1B25
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEFEA3C240E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F9D61D88D0;
-	Sun,  7 Sep 2025 20:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1352C212B3D;
+	Sun,  7 Sep 2025 20:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/A9Gg6k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glmgW+p6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E199D528;
-	Sun,  7 Sep 2025 20:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8BB1A0BFD;
+	Sun,  7 Sep 2025 20:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276661; cv=none; b=AmzWx/9t8Q8zLEYKpU1iQurMM2tYlEmGP/Fn5iL1OX37/nELuthmCpE/4pwRUx4hKQki8jIN0ISgo5QU9UDo/eAbxqBpzXw5Z8Jue40wdFzk6O13zoST2oSKYfz2KPpyTDSeQ/Gi4y5pxl8cM5fOBNAFf6d1Jd+xvTYQQ4P5eTA=
+	t=1757277185; cv=none; b=puVsFxBKuA38nWqyyOiN4IC9WYY7MZp2sCcRfQGQjx+/6ESv54/NPi1rvwsnm9JZUFkPiS7eX8A1EimCJYtADmimJnc3WBKfVTrharTBIMbMkPVwEPHLPzhPDYNKEuaJ/Fnad9B9f9I1YsCUDu8UKRZebtsxhwXjNgXYBSp2jPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276661; c=relaxed/simple;
-	bh=fOpYYoSEiS2VzZROy0nEMafWGQAd4rY7edpFL92jd3Q=;
+	s=arc-20240116; t=1757277185; c=relaxed/simple;
+	bh=PyFSkBSah4LGqPgmfsq69F35sJUWGI2MEN8y7qrWFKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XbSob8CJ0CWeM51wmbpuqSEMd4UJdbnul16lYdsAZNEG2U+R26OSFEPWPE1ctay+YaGAS1irriIEbf080Ndwv5VkQrT6CGGcX9kGhiGNPW/4Yil3Tu/KvpPEx0s9MZAUrOG2w3d40W9jj8nmZN5XZUg2FVO1ooR44pr0wGfwp8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/A9Gg6k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8965C4CEF0;
-	Sun,  7 Sep 2025 20:24:20 +0000 (UTC)
+	 MIME-Version; b=aUG9wk5FJVv3H0SWCi+HkPcWl1se57HlPp4lb0WKfmfzesIFmEdO7KCXOpv70P5oyfedS+u6fwgVpIJ0V4t2/MAlGklfY0n3xkotoCjOMI9ljeWH5QP9mBf3am/OCaSl2mqzpx/xcXgri48Sqfe5I9QFfDgdbzVd/InVtj+gMe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glmgW+p6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181AFC4CEF0;
+	Sun,  7 Sep 2025 20:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276661;
-	bh=fOpYYoSEiS2VzZROy0nEMafWGQAd4rY7edpFL92jd3Q=;
+	s=korg; t=1757277185;
+	bh=PyFSkBSah4LGqPgmfsq69F35sJUWGI2MEN8y7qrWFKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/A9Gg6kZ1HK7ehl4KsXVA/KdJJ3ThakAayO7sEdLxEWK/ezv8AbcK3dXAVH+EWB9
-	 O4hGM3kTZd4bIEq7NP1BcKYXVi0njq0To3rbnI1TN8XDB9iZsdsQqer4dTUFQ8dliH
-	 PWYFTiBakTOIOIWGLV1XUg09EkVrEAIL1x7/Cthc=
+	b=glmgW+p6M0rHEJQZHY3f9sdIwmexklJuG5lhMy0g0/YNJkCE6Oud+jsuXHD8VLu49
+	 +dCKwIuPuQiTR+ELi5iwdH3kGo8NwF7HB+kFnjUZ/HdG82T8AZSGY71u68LuLflZl5
+	 i32QiQ6kSLbsCBiboTo6HmTrkjcpMVhUXwUjx24A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinfeng Wang <jinfeng.wang.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.6 070/121] Revert "spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.12 111/175] wifi: mt76: mt7925: fix the wrong bss cleanup for SAP
 Date: Sun,  7 Sep 2025 21:58:26 +0200
-Message-ID: <20250907195611.633723750@linuxfoundation.org>
+Message-ID: <20250907195617.482672155@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinfeng Wang <jinfeng.wang.cn@windriver.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-This reverts commit 1af6d1696ca40b2d22889b4b8bbea616f94aaa84 which is
-commit 04a8ff1bc3514808481ddebd454342ad902a3f60 upstream.
+commit 55424e7b9eeb141d9c8d8a8740ee131c28490425 upstream.
 
-There is cadence-qspi ff8d2000.spi: Unbalanced pm_runtime_enable! error
-without this revert.
+When in SAP mode, if a STA disconnect, the SAP's BSS
+should not be cleared.
 
-After reverting commit cdfb20e4b34a ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 1af6d1696ca4 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"),
-Unbalanced pm_runtime_enable! error does not appear.
-
-These two commits are backported from upstream commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths").
-
-The commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths")
-fix commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance").
-
-The commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance") fix
-commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings").
-
-The commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings") fix
-commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support").
-
-6.6.y only backport commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"),
-but does not backport commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support")
-and commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings").
-And the backport of commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-differs with the original patch. So there is Unbalanced pm_runtime_enable error.
-
-If revert the backport for commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"), there is no error.
-If backport commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support") and
-commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings"), there
-is hang during booting. I didn't find the cause of the hang.
-
-Since commit 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support") and
-commit 86401132d7bb ("spi: spi-cadence-quadspi: Fix missing unwind goto warnings") are
-not backported, commit b07f349d1864 ("spi: spi-cadence-quadspi: Fix pm runtime unbalance")
-and commit 04a8ff1bc351 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths") are not needed.
-So revert commits commit cdfb20e4b34a ("spi: spi-cadence-quadspi: Fix pm runtime unbalance") and
-commit 1af6d1696ca4 ("spi: cadence-quadspi: fix cleanup of rx_chan on failure paths").
-
-Signed-off-by: Jinfeng Wang <jinfeng.wang.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: 0ebb60da8416 ("wifi: mt76: mt7925: adjust rm BSS flow to prevent next connection failure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250728052612.39751-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1870,6 +1870,11 @@ static int cqspi_probe(struct platform_d
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1187,6 +1187,9 @@ mt7925_mac_sta_remove_links(struct mt792
+ 		struct mt792x_bss_conf *mconf;
+ 		struct mt792x_link_sta *mlink;
  
- 	pm_runtime_enable(dev);
- 
-+	if (cqspi->rx_chan) {
-+		dma_release_channel(cqspi->rx_chan);
-+		goto probe_setup_failed;
-+	}
++		if (vif->type == NL80211_IFTYPE_AP)
++			break;
 +
- 	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register SPI ctlr %d\n", ret);
+ 		link_sta = mt792x_sta_to_link_sta(vif, sta, link_id);
+ 		if (!link_sta)
+ 			continue;
 
 
 
