@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2A04B47FB4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79BD1B47F24
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDBEB1B216A3
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DAE317F592
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA44B26E6FF;
-	Sun,  7 Sep 2025 20:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA4E211A14;
+	Sun,  7 Sep 2025 20:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psDtDgz7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDwc+RD8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A886F20E00B;
-	Sun,  7 Sep 2025 20:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01641A0BFD;
+	Sun,  7 Sep 2025 20:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277668; cv=none; b=p7GiBbCKfPf8I7Z+zSCnA9f6hQ+tLVZVdf5z9MjcG+x48MukcX0eBN9JQQ0HziZVz8nggogChs9zh3bsYBTQTgoMT1df5ivBSLBbL7KJmRh1hMRC9lvYBNMuR4REDFMF6fUPRGC3o178b6pFNnVtTZtlVpw3v4o6H9xJrfOIrSo=
+	t=1757277210; cv=none; b=PLLtrP7cOZjAs5LVy8mdsoQaXH4uau+PH+SV0gSgcIvbIlQu1Ii9EVzeFcDL7hYZ/LREKYqphown+SMW55sU+ypqE5BGEwr0Py+ugc9ovJgbTmm7GXrHUVYtIqosdzEqeXq3/T7GzPxIcPVNmZzY8QBq1E+Tu4T5jQjeuPMuhhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277668; c=relaxed/simple;
-	bh=OKiN3jqzfSyA1OoeSG1OoIu5XsHmrKNb02hf4gWTX5s=;
+	s=arc-20240116; t=1757277210; c=relaxed/simple;
+	bh=LpBpWtQ+J0lXpM0geiBAJAHLT+IGWuBKX64nabaIRIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IbpG/p/DD++YGSpA1UUU685JR7biCW9qlXNvh9FIDI0icn6ZINOnQdVGnhIkT7IJ+taOr54pqHU8/ApzZyJ8A8s01zdgrcWIAFi/IXgZItMnDFWwmQX8KVAgrDXOGHPDbztlGm4+TfqAseK5v6K4yBLJNCELnMCAJ8MBU953BI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psDtDgz7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28564C4CEF0;
-	Sun,  7 Sep 2025 20:41:07 +0000 (UTC)
+	 MIME-Version; b=jTpG8dP9yNSD4Ivh5wT0ZfZopkmFOR84xGjJ9WKnuNm7bXphH3/MtHttuMdfn4TGXwu7fS46jItc0/PAvBTwBKQ5LY2uleWPsREte2pKszrB4eaHmYN9fozZB16jLRVlDITYkLhjj82FcTO94LUXA6+OQP3Wo9oFQhdnYVOqEK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDwc+RD8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD85C4CEF0;
+	Sun,  7 Sep 2025 20:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277668;
-	bh=OKiN3jqzfSyA1OoeSG1OoIu5XsHmrKNb02hf4gWTX5s=;
+	s=korg; t=1757277210;
+	bh=LpBpWtQ+J0lXpM0geiBAJAHLT+IGWuBKX64nabaIRIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=psDtDgz7QBF/3HWKEmheLLUGK68xYSAgJy5/qRz14+nloNviE8+ZgrUQ0XY6g/UfM
-	 nsXe8EILtkOrzfqTzaVZzoFWUJiTYq1jzC+U/aV0OdFYoWtt0PFb7CZo0O6FIXhsai
-	 +smKXwOCkYiEDcqoSZNrU1x6PLNBiixB5910K8/4=
+	b=rDwc+RD8eRke0j+SsGYl2KwC2s7LiRDL9ZxY9i7h9zJlPBkrWWLoC5bgByQeWQ+md
+	 q1CqGM8AX+lrg/vzi6Qr8mPOsfcMjLEKBbtrx/Na260rp0d9J35zrjNW1fXC/mVQRQ
+	 ThGzTPYJcGGnc2i9jAnlner8BTJk8DGtfHv6EhJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 087/183] mctp: return -ENOPROTOOPT for unknown getsockopt options
+	Mikael Wessel <post@mikaelkw.online>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.12 119/175] e1000e: fix heap overflow in e1000_set_eeprom
 Date: Sun,  7 Sep 2025 21:58:34 +0200
-Message-ID: <20250907195617.858715067@linuxfoundation.org>
+Message-ID: <20250907195617.673884480@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-[ Upstream commit a125c8fb9ddbcb0602103a50727a476fd30dec01 ]
+commit 90fb7db49c6dbac961c6b8ebfd741141ffbc8545 upstream.
 
-In mctp_getsockopt(), unrecognized options currently return -EINVAL.
-In contrast, mctp_setsockopt() returns -ENOPROTOOPT for unknown
-options.
+Fix a possible heap overflow in e1000_set_eeprom function by adding
+input validation for the requested length of the change in the EEPROM.
+In addition, change the variable type from int to size_t for better
+code practices and rearrange declarations to RCT.
 
-Update mctp_getsockopt() to also return -ENOPROTOOPT for unknown
-options. This aligns the behavior of getsockopt() and setsockopt(),
-and matches the standard kernel socket API convention for handling
-unsupported options.
-
-Fixes: 99ce45d5e7db ("mctp: Implement extended addressing")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250902102059.1370008-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
+Co-developed-by: Mikael Wessel <post@mikaelkw.online>
+Signed-off-by: Mikael Wessel <post@mikaelkw.online>
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mctp/af_mctp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/e1000e/ethtool.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index 9d5db3feedec5..4dee06171361e 100644
---- a/net/mctp/af_mctp.c
-+++ b/net/mctp/af_mctp.c
-@@ -346,7 +346,7 @@ static int mctp_getsockopt(struct socket *sock, int level, int optname,
- 		return 0;
- 	}
+--- a/drivers/net/ethernet/intel/e1000e/ethtool.c
++++ b/drivers/net/ethernet/intel/e1000e/ethtool.c
+@@ -549,12 +549,12 @@ static int e1000_set_eeprom(struct net_d
+ {
+ 	struct e1000_adapter *adapter = netdev_priv(netdev);
+ 	struct e1000_hw *hw = &adapter->hw;
++	size_t total_len, max_len;
+ 	u16 *eeprom_buff;
+-	void *ptr;
+-	int max_len;
++	int ret_val = 0;
+ 	int first_word;
+ 	int last_word;
+-	int ret_val = 0;
++	void *ptr;
+ 	u16 i;
  
--	return -EINVAL;
-+	return -ENOPROTOOPT;
- }
+ 	if (eeprom->len == 0)
+@@ -569,6 +569,10 @@ static int e1000_set_eeprom(struct net_d
  
- /* helpers for reading/writing the tag ioc, handling compatibility across the
--- 
-2.50.1
-
+ 	max_len = hw->nvm.word_size * 2;
+ 
++	if (check_add_overflow(eeprom->offset, eeprom->len, &total_len) ||
++	    total_len > max_len)
++		return -EFBIG;
++
+ 	first_word = eeprom->offset >> 1;
+ 	last_word = (eeprom->offset + eeprom->len - 1) >> 1;
+ 	eeprom_buff = kmalloc(max_len, GFP_KERNEL);
 
 
 
