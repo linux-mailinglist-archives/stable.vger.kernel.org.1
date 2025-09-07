@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B118B47E87
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14561B47E11
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49856189ED42
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85A697A0197
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7C61D88D0;
-	Sun,  7 Sep 2025 20:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A289014BFA2;
+	Sun,  7 Sep 2025 20:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOSygmEU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUo/Uh6L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E59D528;
-	Sun,  7 Sep 2025 20:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605381A9FAA;
+	Sun,  7 Sep 2025 20:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276731; cv=none; b=M2I0Ns9um8l9VT+LXs5su4r+PnLfLpzn1jYF00ocB2d6hQLwHYD+Es4o8IEi6z5UsSV3KfCj7nt2rTo4w+XKJBA0VrUO/qTPn3n6X9AJaQkFxvJkwetLeToAPFI2Ykq3i7fTvgnJC8fABcZUJ5GNL1RyaCmrJSm8wioIGKAyNgw=
+	t=1757276389; cv=none; b=VQVAb/AxEWEhZhk7sqjWAmdgkRjAq/1C/trHjc6O8oAFc6szcGBRhK8puaeWQ1pvMnxbUWr9KESQP+9jFOeZruKetKhzqgLpsCwPYGzq+nvaylt38BO4fPMH06oWagCee2WPaplq2IgtWCJTn9eoIWz4HbTYgmj2QdoOihaO17U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276731; c=relaxed/simple;
-	bh=usjPrkwXl571CUNLSeGJUx5SAWs534OIZqoFirvPxBI=;
+	s=arc-20240116; t=1757276389; c=relaxed/simple;
+	bh=9CIYPPP6LkUHaOuqIHkyiVd+lhoYQGsP8otSxE0rJsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r9iUXVDQuX9CF1jjWJ+Y8LC61m9cQHT5H4RANBlMRo3Zv27WuEaq2f2mmduWxbNACR5/sF7UaKgrU8k9etMUuDuDNyD+LoHbT46X6aE+jDHh4V3tnZfNiOVObWeN9grEw3Y811iiIds/hekfZLq0i97n1I4IG3ZM0NoPuIy3u9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOSygmEU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B206AC4CEF0;
-	Sun,  7 Sep 2025 20:25:30 +0000 (UTC)
+	 MIME-Version; b=WTWraVK6O09fZna2+aNzgr0CwzJUC6haieW3GhxAr7iXtRQE/4PI/9EyBxt/iPpLUY25EVWVzh7Q2cHhmQRnKD2IiTABXYIfgY3/G7TR1ut7wHhEtt/g7RLOHq/dSYv2ZTDkzzPVFmLAZuL4rwiV995r9dv8JkifmsCGBCQbIOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUo/Uh6L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C161C4CEF0;
+	Sun,  7 Sep 2025 20:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276731;
-	bh=usjPrkwXl571CUNLSeGJUx5SAWs534OIZqoFirvPxBI=;
+	s=korg; t=1757276387;
+	bh=9CIYPPP6LkUHaOuqIHkyiVd+lhoYQGsP8otSxE0rJsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOSygmEUl2RTxfgXAsha05Wu4hwTawyfmNaaG9ASnIQ8rHkLHlEIEJFpyCvBh800+
-	 LoBCdXOupHzPFq+O8tVwsMXsLdeuBzfQ6TSKrJvK4NhseWd06ytiiomfuqRIjp1w3K
-	 nFShO03G9ccB7udU+UArNrPnMMAw+/kzOYrFFm/0=
+	b=aUo/Uh6L1TKQYaq/nuHPc/2DiiFV07NcY/1pA/wd4hwYhsyoK+1pwZELgwkrD6gx1
+	 UnxmVlESCv6++erVL1PJSk3Rdukc4+zqCKi5gF+N28F6EzZvmYVtCuVb4iIQ8FtJua
+	 7CL6NzQU1jGHPELXgeSpC8akveCW1YWG0waaAdxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pieter Van Trappen <pieter.van.trappen@cern.ch>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Candice Li <candice.li@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/121] net: dsa: microchip: update tag_ksz masks for KSZ9477 family
+Subject: [PATCH 6.1 089/104] drm/amdgpu: remove the check of init status in psp_ras_initialize
 Date: Sun,  7 Sep 2025 21:58:46 +0200
-Message-ID: <20250907195612.154459383@linuxfoundation.org>
+Message-ID: <20250907195609.979663743@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pieter Van Trappen <pieter.van.trappen@cern.ch>
+From: Tao Zhou <tao.zhou1@amd.com>
 
-[ Upstream commit 3f464b193d40e49299dcd087b10cc3b77cbbea68 ]
+[ Upstream commit 3e931368091f7d5d7902cee9d410eb6db2eea419 ]
 
-Remove magic number 7 by introducing a GENMASK macro instead.
-Remove magic number 0x80 by using the BIT macro instead.
+The initialized status indicates RAS TA is loaded, but in some cases
+(such as RAS fatal error) RAS TA could be destroyed although it's not
+unloaded. Hence we load RAS TA unconditionally here.
 
-Signed-off-by: Pieter Van Trappen <pieter.van.trappen@cern.ch>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20240909134301.75448-1-vtpieter@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: ba54bce747fa ("net: dsa: microchip: linearize skb for tail-tagging switches")
+Signed-off-by: Tao Zhou <tao.zhou1@amd.com>
+Reviewed-by: Candice Li <candice.li@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 467e00b30dfe ("drm/amd/amdgpu: Fix missing error return on kzalloc failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dsa/tag_ksz.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/net/dsa/tag_ksz.c
-+++ b/net/dsa/tag_ksz.c
-@@ -176,8 +176,9 @@ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROT
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index d101333fe3a57..ff3678a1c0296 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -1571,11 +1571,6 @@ static int psp_ras_initialize(struct psp_context *psp)
+ 	if (amdgpu_sriov_vf(adev))
+ 		return 0;
  
- #define KSZ9477_INGRESS_TAG_LEN		2
- #define KSZ9477_PTP_TAG_LEN		4
--#define KSZ9477_PTP_TAG_INDICATION	0x80
-+#define KSZ9477_PTP_TAG_INDICATION	BIT(7)
+-	if (psp->ras_context.context.initialized) {
+-		dev_warn(adev->dev, "RAS WARN: TA has already been loaded\n");
+-		return 0;
+-	}
+-
+ 	if (!adev->psp.ras_context.context.bin_desc.size_bytes ||
+ 	    !adev->psp.ras_context.context.bin_desc.start_addr) {
+ 		dev_info(adev->dev, "RAS: optional ras ta ucode is not available\n");
+@@ -1647,6 +1642,9 @@ static int psp_ras_initialize(struct psp_context *psp)
+ 	else {
+ 		if (ras_cmd->ras_status)
+ 			dev_warn(psp->adev->dev, "RAS Init Status: 0x%X\n", ras_cmd->ras_status);
++
++		/* fail to load RAS TA */
++		psp->ras_context.context.initialized = false;
+ 	}
  
-+#define KSZ9477_TAIL_TAG_EG_PORT_M	GENMASK(2, 0)
- #define KSZ9477_TAIL_TAG_PRIO		GENMASK(8, 7)
- #define KSZ9477_TAIL_TAG_OVERRIDE	BIT(9)
- #define KSZ9477_TAIL_TAG_LOOKUP		BIT(10)
-@@ -302,7 +303,7 @@ static struct sk_buff *ksz9477_rcv(struc
- {
- 	/* Tag decoding */
- 	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
--	unsigned int port = tag[0] & 7;
-+	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
- 	unsigned int len = KSZ_EGRESS_TAG_LEN;
- 
- 	/* Extra 4-bytes PTP timestamp */
+ 	return ret;
+-- 
+2.51.0
+
 
 
 
