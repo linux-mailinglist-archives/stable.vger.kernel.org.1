@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-178442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA02B47EAE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:27:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57662B47E22
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09A2E7A6106
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FDAD189DF7E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D921D88D0;
-	Sun,  7 Sep 2025 20:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D95A20E005;
+	Sun,  7 Sep 2025 20:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOWwnpEb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DI731v7l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EA7D528;
-	Sun,  7 Sep 2025 20:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5821F1921;
+	Sun,  7 Sep 2025 20:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276849; cv=none; b=t+f29wx8kk5MUdw5kqwwXd/u8Y3sk7TFz41kdcQSiDVsejxoIhaZ9EYGK6rHg/dHea7mmMf07gBQ2KehJFXkknCihKquFOabK+EcuP6s+V0X/uwzO4U5a20CnD7nJ2XV/1I30z3PDRtOf/mBsG+LxbuCBfFXQjk29BP2JkTewPc=
+	t=1757276411; cv=none; b=NiPssF+cISHuwzHuYVO4XO/p7xPZVUJwERiErQ/cOdxUvzpXzWiXe5KR/qBVdiwTm4ZV/Qj1thkQUcmiKeRo4x2vUc/zbKtK5AxIJIm2PTWkf9FOzcsx1rR9uPT4ldjUyshjHk35sM+79RzpPMiXk4h644hPWvUnM4THUxSuaDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276849; c=relaxed/simple;
-	bh=2MZIRB25ab24HTIyxr657zMiYlcszLfcWne7NUnDw/A=;
+	s=arc-20240116; t=1757276411; c=relaxed/simple;
+	bh=ZSJP/df9KSCWl5sruw0QGPUVG7z7FBHekDEhZ1Dq/DI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=apdbEmXr9dNnTRfixGG3UDQ9N6ij8oJ/B2ikK0EGOf16DRxHy47g8W2Iw6dgzJPLlZbOoK64E+TM7S4u8P/iBx5NIEflut8V17NQ5z/e1igL5xzixhNcGIfx0wdY8KpQ9eU/ASpbh56DC/UYgmkvM04bxrDLiMPQ9Te7poWdX0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOWwnpEb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C79BC4CEF0;
-	Sun,  7 Sep 2025 20:27:28 +0000 (UTC)
+	 MIME-Version; b=lGjKE/4+M1y8Z6mop7P/F3Mg6aa+bA28ZvMTIWRGeNT9OWPkKjGXrfq1bvJTA9f/9kOr1UbFnp3zg+hGsNGanlyMgfWHHsHeK+n3aAcWnb+mBCwNpATpSFZ3r3K6CzgHtDt6H5433bcCPDwLxKcHelCatIrQ3ilxLH7Ql95XRXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DI731v7l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F212DC4CEF0;
+	Sun,  7 Sep 2025 20:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276848;
-	bh=2MZIRB25ab24HTIyxr657zMiYlcszLfcWne7NUnDw/A=;
+	s=korg; t=1757276410;
+	bh=ZSJP/df9KSCWl5sruw0QGPUVG7z7FBHekDEhZ1Dq/DI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DOWwnpEbfQXZKmhkUpdSD6w8KqX46rSHNqjhIxL/xPc5FgK+1qNwuuz7SQzARJEgE
-	 O/pw95w9Yg75RsVoRzIFOpftzNVCULRncsjQuMtj/UCY774g6DWnVO8tecGCCkwYcI
-	 6ePPPTGTt1UI5zYywshDTF23aChoxfGFbOC5fxIU=
+	b=DI731v7l2shV1gOHD6PvSBoBSwxOJ44kgAUcomtBlnvv0EYqk5+o+b/tE7DXBpo2g
+	 R7Ocq8xywXiizJm4Xlh29BH9hgMnUplnSkOmLrMdJXIo904HlPE/jYfQTr3SMVx4/D
+	 KxAz7cSny+TMYPJqjAdgnzXar4eIFss4Y+lgvPTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 096/121] ALSA: hda/hdmi: Add pin fix for another HP EliteDesk 800 G4 model
+	zhangjiao <zhangjiao2@cmss.chinamobile.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 095/104] tools: gpio: rm .*.cmd on make clean
 Date: Sun,  7 Sep 2025 21:58:52 +0200
-Message-ID: <20250907195612.317010282@linuxfoundation.org>
+Message-ID: <20250907195610.128606995@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,36 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: zhangjiao <zhangjiao2@cmss.chinamobile.com>
 
-commit bcd6659d4911c528381531472a0cefbd4003e29e upstream.
+[ Upstream commit 931a36c4138ac418d487bd4db0d03780b46a77ba ]
 
-It was reported that HP EliteDesk 800 G4 DM 65W (SSID 103c:845a) needs
-the similar quirk for enabling HDMI outputs, too.  This patch adds the
-corresponding quirk entry.
+rm .*.cmd when calling make clean
 
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250901115009.27498-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: zhangjiao <zhangjiao2@cmss.chinamobile.com>
+Link: https://lore.kernel.org/r/20240829062942.11487-1-zhangjiao2@cmss.chinamobile.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: ed42d80f3bae ("tools: gpio: remove the include directory on make clean")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_hdmi.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/gpio/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -1991,6 +1991,7 @@ static int hdmi_add_cvt(struct hda_codec
- static const struct snd_pci_quirk force_connect_list[] = {
- 	SND_PCI_QUIRK(0x103c, 0x83e2, "HP EliteDesk 800 G4", 1),
- 	SND_PCI_QUIRK(0x103c, 0x83ef, "HP MP9 G4 Retail System AMS", 1),
-+	SND_PCI_QUIRK(0x103c, 0x845a, "HP EliteDesk 800 G4 DM 65W", 1),
- 	SND_PCI_QUIRK(0x103c, 0x870f, "HP", 1),
- 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
- 	SND_PCI_QUIRK(0x103c, 0x8711, "HP", 1),
+diff --git a/tools/gpio/Makefile b/tools/gpio/Makefile
+index d29c9c49e2512..ed565eb52275f 100644
+--- a/tools/gpio/Makefile
++++ b/tools/gpio/Makefile
+@@ -78,7 +78,7 @@ $(OUTPUT)gpio-watch: $(GPIO_WATCH_IN)
+ clean:
+ 	rm -f $(ALL_PROGRAMS)
+ 	rm -f $(OUTPUT)include/linux/gpio.h
+-	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
++	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete -o -name '\.*.cmd' -delete
+ 
+ install: $(ALL_PROGRAMS)
+ 	install -d -m 755 $(DESTDIR)$(bindir);		\
+-- 
+2.51.0
+
 
 
 
