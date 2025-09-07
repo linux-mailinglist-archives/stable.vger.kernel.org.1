@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D04CB47E82
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C66AB47D52
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E03AD17E271
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2585D3A7FBC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00851D88D0;
-	Sun,  7 Sep 2025 20:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980E727FB21;
+	Sun,  7 Sep 2025 20:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZd5UxnZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1CtBCIiI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC2017BB21;
-	Sun,  7 Sep 2025 20:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5548D284883;
+	Sun,  7 Sep 2025 20:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276714; cv=none; b=e+QZkj1nj+n4ih/QJWxKFxvBXNIGnntFzXOqzetQ7MUikwCNf74zrooyP5ScbwJmP4lLALpKcjJZgVkSusudih67MzPy4/XRtxMoWDPWjTbHIb5bT88JkbUoOG/5/jq//vJF40F4ouk0Nvlb/T5WQsZ5nfOeN3n8YGapdCJWjAM=
+	t=1757275817; cv=none; b=uqDCZDnAQ2Z5eegkpnHnjZB3pj61OLCo+d//w+xAnAXBftyuTGv48V/KrjCXCoPnPgIpAVI+kSnlxl2zx8++Yk/PqMeL2b1VgpfmyGGR3CU0m97kG2MlN3QcSqHnP9MljUoDMiKyYDnAIjhPpuAlcVUMWyU0KVA3cmBRPuCW5W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276714; c=relaxed/simple;
-	bh=kEaw/rWEl/gB/6w5Jc9FCpVbAy628dt9c4cogae1wBA=;
+	s=arc-20240116; t=1757275817; c=relaxed/simple;
+	bh=5lBMWgcIWpoq2yi2jib0PWpRT054TfapiP9mmesrGHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gzoQMRVN7FXe3jluPfaGkUQROGFSL/HKKoSpiDpO3QPdZqLkCmE0Qa/Rhe39DxF5Oii9klGYIozepeT4agBosg8IM5i1/ooMpk0+8P4Ed8w2e+PnZ0wri07y7JNItMAMyIXlGFiwEQXSSSbu0rGD6yo2MZVCYkTF7PraBnH6UNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZd5UxnZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C40C4CEF0;
-	Sun,  7 Sep 2025 20:25:13 +0000 (UTC)
+	 MIME-Version; b=Xs1xCegpUaxaEn277jO6wMQ6GAw+SOe2iEP9tSiMNo6omlllaICaK6ruyKIlcQgSdoPzk0iMQQydk6aUlPJAZQv37u8PVSVZl5stNxk9KpclNbQov0LKgeGEZBCgkkhw2TEPWulADqfbhj/cgjspQbbcj8ErPKxc1RTmBq9k6ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1CtBCIiI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B98C4CEF0;
+	Sun,  7 Sep 2025 20:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276714;
-	bh=kEaw/rWEl/gB/6w5Jc9FCpVbAy628dt9c4cogae1wBA=;
+	s=korg; t=1757275815;
+	bh=5lBMWgcIWpoq2yi2jib0PWpRT054TfapiP9mmesrGHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xZd5UxnZbegrP6n3NBPNccwnT/Zt7FLjgqUFjePpI6TljYaoquT/3uzUg6S0OrXrj
-	 pF/kMu8lGZjTRZ9kDEZsU50bLNvXnbMmGx44V0FQXjftWZvmVJQdJ2LXr0eTupP3BX
-	 ecLapY/K9GlMnK6iwpq8SZ807MmtlLw5Sffb6sL8=
+	b=1CtBCIiIL4RDZCufO4RSbmZoFU82h54Z7Vy+wgaigjT/1W5LPbTwgzK2shFkRRF5K
+	 i/XfAxcgGN65kcYfgNVYsTMQmAEWg55+NGDOXjuua5B/wTzaQD5uCRHzkQp9/1x1fE
+	 NFZ8SRh2dkaEcx0hDRf4wLBQvWMruY0RnRpDi4K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/121] phy: mscc: Stop taking ts_lock for tx_queue and use its own lock
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.4 20/45] wifi: mwifiex: Initialize the chan_stats array to zero
 Date: Sun,  7 Sep 2025 21:58:06 +0200
-Message-ID: <20250907195611.110862850@linuxfoundation.org>
+Message-ID: <20250907195601.545864073@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,152 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit 9b2bfdbf43adb9929c5ddcdd96efedbf1c88cf53 ]
+commit 0e20450829ca3c1dbc2db536391537c57a40fe0b upstream.
 
-When transmitting a PTP frame which is timestamp using 2 step, the
-following warning appears if CONFIG_PROVE_LOCKING is enabled:
-=============================
-[ BUG: Invalid wait context ]
-6.17.0-rc1-00326-ge6160462704e #427 Not tainted
------------------------------
-ptp4l/119 is trying to lock:
-c2a44ed4 (&vsc8531->ts_lock){+.+.}-{3:3}, at: vsc85xx_txtstamp+0x50/0xac
-other info that might help us debug this:
-context-{4:4}
-4 locks held by ptp4l/119:
- #0: c145f068 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0x58/0x1440
- #1: c29df974 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_queue_xmit+0x5c4/0x1440
- #2: c2aaaad0 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x108/0x350
- #3: c2aac170 (&lan966x->tx_lock){+.-.}-{2:2}, at: lan966x_port_xmit+0xd0/0x350
-stack backtrace:
-CPU: 0 UID: 0 PID: 119 Comm: ptp4l Not tainted 6.17.0-rc1-00326-ge6160462704e #427 NONE
-Hardware name: Generic DT based system
-Call trace:
- unwind_backtrace from show_stack+0x10/0x14
- show_stack from dump_stack_lvl+0x7c/0xac
- dump_stack_lvl from __lock_acquire+0x8e8/0x29dc
- __lock_acquire from lock_acquire+0x108/0x38c
- lock_acquire from __mutex_lock+0xb0/0xe78
- __mutex_lock from mutex_lock_nested+0x1c/0x24
- mutex_lock_nested from vsc85xx_txtstamp+0x50/0xac
- vsc85xx_txtstamp from lan966x_fdma_xmit+0xd8/0x3a8
- lan966x_fdma_xmit from lan966x_port_xmit+0x1bc/0x350
- lan966x_port_xmit from dev_hard_start_xmit+0xc8/0x2c0
- dev_hard_start_xmit from sch_direct_xmit+0x8c/0x350
- sch_direct_xmit from __dev_queue_xmit+0x680/0x1440
- __dev_queue_xmit from packet_sendmsg+0xfa4/0x1568
- packet_sendmsg from __sys_sendto+0x110/0x19c
- __sys_sendto from sys_send+0x18/0x20
- sys_send from ret_fast_syscall+0x0/0x1c
-Exception stack(0xf0b05fa8 to 0xf0b05ff0)
-5fa0:                   00000001 0000000e 0000000e 0004b47a 0000003a 00000000
-5fc0: 00000001 0000000e 00000000 00000121 0004af58 00044874 00000000 00000000
-5fe0: 00000001 bee9d420 00025a10 b6e75c7c
+The adapter->chan_stats[] array is initialized in
+mwifiex_init_channel_scan_gap() with vmalloc(), which doesn't zero out
+memory.  The array is filled in mwifiex_update_chan_statistics()
+and then the user can query the data in mwifiex_cfg80211_dump_survey().
 
-So, instead of using the ts_lock for tx_queue, use the spinlock that
-skb_buff_head has.
+There are two potential issues here.  What if the user calls
+mwifiex_cfg80211_dump_survey() before the data has been filled in.
+Also the mwifiex_update_chan_statistics() function doesn't necessarily
+initialize the whole array.  Since the array was not initialized at
+the start that could result in an information leak.
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://patch.msgid.link/20250902121259.3257536-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also this array is pretty small.  It's a maximum of 900 bytes so it's
+more appropriate to use kcalloc() instead vmalloc().
+
+Cc: stable@vger.kernel.org
+Fixes: bf35443314ac ("mwifiex: channel statistics support for mwifiex")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20250815023055.477719-1-rongqianfeng@vivo.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/mscc/mscc_ptp.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |    5 +++--
+ drivers/net/wireless/marvell/mwifiex/main.c     |    4 ++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index 1f6237705b44b..939a8a17595ef 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -455,12 +455,12 @@ static void vsc85xx_dequeue_skb(struct vsc85xx_ptp *ptp)
- 		*p++ = (reg >> 24) & 0xff;
- 	}
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -4273,8 +4273,9 @@ int mwifiex_init_channel_scan_gap(struct
+ 	 * additional active scan request for hidden SSIDs on passive channels.
+ 	 */
+ 	adapter->num_in_chan_stats = 2 * (n_channels_bg + n_channels_a);
+-	adapter->chan_stats = vmalloc(array_size(sizeof(*adapter->chan_stats),
+-						 adapter->num_in_chan_stats));
++	adapter->chan_stats = kcalloc(adapter->num_in_chan_stats,
++				      sizeof(*adapter->chan_stats),
++				      GFP_KERNEL);
  
--	len = skb_queue_len(&ptp->tx_queue);
-+	len = skb_queue_len_lockless(&ptp->tx_queue);
- 	if (len < 1)
- 		return;
+ 	if (!adapter->chan_stats)
+ 		return -ENOMEM;
+--- a/drivers/net/wireless/marvell/mwifiex/main.c
++++ b/drivers/net/wireless/marvell/mwifiex/main.c
+@@ -635,7 +635,7 @@ static int _mwifiex_fw_dpc(const struct
+ 	goto done;
  
- 	while (len--) {
--		skb = __skb_dequeue(&ptp->tx_queue);
-+		skb = skb_dequeue(&ptp->tx_queue);
- 		if (!skb)
- 			return;
+ err_add_intf:
+-	vfree(adapter->chan_stats);
++	kfree(adapter->chan_stats);
+ err_init_chan_scan:
+ 	wiphy_unregister(adapter->wiphy);
+ 	wiphy_free(adapter->wiphy);
+@@ -1448,7 +1448,7 @@ static void mwifiex_uninit_sw(struct mwi
+ 	wiphy_free(adapter->wiphy);
+ 	adapter->wiphy = NULL;
  
-@@ -485,7 +485,7 @@ static void vsc85xx_dequeue_skb(struct vsc85xx_ptp *ptp)
- 		 * packet in the FIFO right now, reschedule it for later
- 		 * packets.
- 		 */
--		__skb_queue_tail(&ptp->tx_queue, skb);
-+		skb_queue_tail(&ptp->tx_queue, skb);
- 	}
+-	vfree(adapter->chan_stats);
++	kfree(adapter->chan_stats);
+ 	mwifiex_free_cmd_buffers(adapter);
  }
  
-@@ -1067,6 +1067,7 @@ static int vsc85xx_hwtstamp(struct mii_timestamper *mii_ts, struct ifreq *ifr)
- 	case HWTSTAMP_TX_ON:
- 		break;
- 	case HWTSTAMP_TX_OFF:
-+		skb_queue_purge(&vsc8531->ptp->tx_queue);
- 		break;
- 	default:
- 		return -ERANGE;
-@@ -1091,9 +1092,6 @@ static int vsc85xx_hwtstamp(struct mii_timestamper *mii_ts, struct ifreq *ifr)
- 
- 	mutex_lock(&vsc8531->ts_lock);
- 
--	__skb_queue_purge(&vsc8531->ptp->tx_queue);
--	__skb_queue_head_init(&vsc8531->ptp->tx_queue);
--
- 	/* Disable predictor while configuring the 1588 block */
- 	val = vsc85xx_ts_read_csr(phydev, PROCESSOR,
- 				  MSCC_PHY_PTP_INGR_PREDICTOR);
-@@ -1179,9 +1177,7 @@ static void vsc85xx_txtstamp(struct mii_timestamper *mii_ts,
- 
- 	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
- 
--	mutex_lock(&vsc8531->ts_lock);
--	__skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
--	mutex_unlock(&vsc8531->ts_lock);
-+	skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
- 	return;
- 
- out:
-@@ -1547,6 +1543,7 @@ void vsc8584_ptp_deinit(struct phy_device *phydev)
- 	if (vsc8531->ptp->ptp_clock) {
- 		ptp_clock_unregister(vsc8531->ptp->ptp_clock);
- 		skb_queue_purge(&vsc8531->rx_skbs_list);
-+		skb_queue_purge(&vsc8531->ptp->tx_queue);
- 	}
- }
- 
-@@ -1570,7 +1567,7 @@ irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev)
- 	if (rc & VSC85XX_1588_INT_FIFO_ADD) {
- 		vsc85xx_get_tx_ts(priv->ptp);
- 	} else if (rc & VSC85XX_1588_INT_FIFO_OVERFLOW) {
--		__skb_queue_purge(&priv->ptp->tx_queue);
-+		skb_queue_purge(&priv->ptp->tx_queue);
- 		vsc85xx_ts_reset_fifo(phydev);
- 	}
- 
-@@ -1590,6 +1587,7 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
- 	mutex_init(&vsc8531->phc_lock);
- 	mutex_init(&vsc8531->ts_lock);
- 	skb_queue_head_init(&vsc8531->rx_skbs_list);
-+	skb_queue_head_init(&vsc8531->ptp->tx_queue);
- 
- 	/* Retrieve the shared load/save GPIO. Request it as non exclusive as
- 	 * the same GPIO can be requested by all the PHYs of the same package.
--- 
-2.50.1
-
 
 
 
