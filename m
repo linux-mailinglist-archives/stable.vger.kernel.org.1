@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90729B47FE5
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C210B47F53
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E94D31B222CD
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:44:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FE2917FE65
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029B14315A;
-	Sun,  7 Sep 2025 20:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C4E20E00B;
+	Sun,  7 Sep 2025 20:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUSGdt4E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjKaZLie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DE820E00B;
-	Sun,  7 Sep 2025 20:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA67315D54;
+	Sun,  7 Sep 2025 20:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277822; cv=none; b=KMNZlkGXkJsurGuP/YXUn1OjnMZS7+EtR7FRrpYgzgFQbfvHtCCg0WbqHSvBsqs2giIZMgnal+YldGo7Cjg2wYG3hsCroy9dq4i1ZqkbzxM6Gws3T5a+SP1XGARDMPzO4yfk7mT46wB/9TPYAojZmesgvsra2Rt74ixGrogMmOQ=
+	t=1757277362; cv=none; b=Szg4eAf61pL3xxa75WDEhaqDD6x9NJ278/P2vm2fXc+FVTf4j5wYM9rNykyCuGoNRO/2kW2qxSdCQp/Se0wE93bLcUD2NRMTTAQqrjX6l3AHx8/DVmnOzahDt+wVZDjjbItw/D80tVK4y17G/9kRztA7VY4JlVPmvEXqGURqfoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277822; c=relaxed/simple;
-	bh=szYtjo6hHl4ASM9vEdjmBdnDGdGjZFQ+yVzjHPdiqRo=;
+	s=arc-20240116; t=1757277362; c=relaxed/simple;
+	bh=hCGesd9M3tOlhljLjyjBbQkQimo6E4Gkqlj4siE7V4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RTxElAFdS7tLmwQFGYEsGiMl7ZjFjj11zgJvt1AI2PjW/RgGoZKeQzndcy5XpguFF+UAS8PwuHdpEnboUEssWrc55dnvHn6gByzlA18FjNnAriVmvF1PDrMVhM7uiww0Tx6uf96h5MTz7ZdCoGmbnqV5tqABBEFjRLbeB++3SME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUSGdt4E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31758C4CEF0;
-	Sun,  7 Sep 2025 20:43:42 +0000 (UTC)
+	 MIME-Version; b=j0pdSQuGkzSrqogJkfivJAo/GV4bcC2tlP6Ez1D7x5w3Juum0BWMtHfyZDRnRzD3sqPHO0uDx8d79oowPyy1I4+uSJoSU2tFEj1MBRGhrLGJlCW54RDFXGxtut28pzUWNEeR8k/vRaovzt6lYkuE/VkXOKoKswp+ZBNcqNSSOxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjKaZLie; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24903C4CEF0;
+	Sun,  7 Sep 2025 20:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277822;
-	bh=szYtjo6hHl4ASM9vEdjmBdnDGdGjZFQ+yVzjHPdiqRo=;
+	s=korg; t=1757277362;
+	bh=hCGesd9M3tOlhljLjyjBbQkQimo6E4Gkqlj4siE7V4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QUSGdt4Eh5GQqpPjXAyxe7LOvLzfAx4v2c9wXiCCLJlX3JuCMPG3n1LVFb0n1PtNQ
-	 SgNx3EFD3c/p/0uOzsSKoIrvyLgrQ93SI2W73BXJpzwpXuWZ6xzipCrM+sBZtWPgPB
-	 VsoeyjVcE5HwcaP+v0EF6kXcuoL6njpC7w2DVrzM=
+	b=MjKaZLieqbImhps2l3cUo+qAU5u2z5xgN1KQAUNar2sGkj2sTrR19SS4XTyGYOdzM
+	 wnd+6kytKduW6VLmSnWZrMH82Qd59YGKMflWfTJtL6rknpuqRxjWyXTYPPg1MExPG8
+	 W7EMrcubAlh7ODjovBKKDEXOs9pDkD8mv8FA2g9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Fort <disclosure@aisle.com>,
-	Linus Torvalds <torvalds@linuxfoundation.org>,
-	Stanislav Fort <stanislav.fort@aisle.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.16 134/183] audit: fix out-of-bounds read in audit_compare_dname_path()
+	Zhang Jiao <zhangjiao2@cmss.chinamobile.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 166/175] tools: gpio: remove the include directory on make clean
 Date: Sun,  7 Sep 2025 21:59:21 +0200
-Message-ID: <20250907195618.978297613@linuxfoundation.org>
+Message-ID: <20250907195618.783948441@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fort <stanislav.fort@aisle.com>
+From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 
-commit 4540f1d23e7f387880ce46d11b5cd3f27248bf8d upstream.
+[ Upstream commit ed42d80f3bae89592fbb2ffaf8b6b2e720d53f6a ]
 
-When a watch on dir=/ is combined with an fsnotify event for a
-single-character name directly under / (e.g., creating /a), an
-out-of-bounds read can occur in audit_compare_dname_path().
+Remove the generated include directory when running make clean.
 
-The helper parent_len() returns 1 for "/". In audit_compare_dname_path(),
-when parentlen equals the full path length (1), the code sets p = path + 1
-and pathlen = 1 - 1 = 0. The subsequent loop then dereferences
-p[pathlen - 1] (i.e., p[-1]), causing an out-of-bounds read.
-
-Fix this by adding a pathlen > 0 check to the while loop condition
-to prevent the out-of-bounds access.
-
-Cc: stable@vger.kernel.org
-Fixes: e92eebb0d611 ("audit: fix suffixed '/' filename matching")
-Reported-by: Stanislav Fort <disclosure@aisle.com>
-Suggested-by: Linus Torvalds <torvalds@linuxfoundation.org>
-Signed-off-by: Stanislav Fort <stanislav.fort@aisle.com>
-[PM: subject tweak, sign-off email fixes]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8674cea84dc6 ("tools/gpio: move to tools buildsystem")
+Signed-off-by: Zhang Jiao <zhangjiao2@cmss.chinamobile.com>
+Link: https://lore.kernel.org/r/20250903063621.2424-1-zhangjiao2@cmss.chinamobile.com
+[Bartosz: add Fixes tag, improve the commit message]
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/auditfilter.c |    2 +-
+ tools/gpio/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/auditfilter.c
-+++ b/kernel/auditfilter.c
-@@ -1326,7 +1326,7 @@ int audit_compare_dname_path(const struc
+diff --git a/tools/gpio/Makefile b/tools/gpio/Makefile
+index ed565eb52275f..342e056c8c665 100644
+--- a/tools/gpio/Makefile
++++ b/tools/gpio/Makefile
+@@ -77,7 +77,7 @@ $(OUTPUT)gpio-watch: $(GPIO_WATCH_IN)
  
- 	/* handle trailing slashes */
- 	pathlen -= parentlen;
--	while (p[pathlen - 1] == '/')
-+	while (pathlen > 0 && p[pathlen - 1] == '/')
- 		pathlen--;
+ clean:
+ 	rm -f $(ALL_PROGRAMS)
+-	rm -f $(OUTPUT)include/linux/gpio.h
++	rm -rf $(OUTPUT)include
+ 	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete -o -name '\.*.cmd' -delete
  
- 	if (pathlen != dlen)
+ install: $(ALL_PROGRAMS)
+-- 
+2.51.0
+
 
 
 
