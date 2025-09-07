@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FC4B47EFA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:31:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC63B47F8C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C7513B76F8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:31:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D71573C3240
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067B31DF246;
-	Sun,  7 Sep 2025 20:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58AA51F63CD;
+	Sun,  7 Sep 2025 20:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xD8znbPC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9+GkPFQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83AB15C158;
-	Sun,  7 Sep 2025 20:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159214315A;
+	Sun,  7 Sep 2025 20:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277079; cv=none; b=X+Cikc/5/0AMRSVuMTntBt62URZ6PUG24DGexWVQmrOol34FMh6B7hdnJ91FUT4V3RSnoI0NHrQoVIHMSRSTTs+FzxqG3/IqJTWcEbB3oB0oWNnjM/3sm2yoN4KYkjNTaWWe+qUwyUhwnYfuZ3rd85wWe+vJvGRqUsKVMaVapWA=
+	t=1757277541; cv=none; b=fonHF2fRZsvBh30yl3+RtSkiXYppojBfX839DP0fIOknIj9w02lY/MLjBtC99CHGKQuaatljxYi2/A+eiTWd2YAiDcTRuF2F+hbw1I+jOW6bVktmEEPKfcbRY4N/w2nJO7bqNPnlQaI5g8r87YhYT2+F6++tM4Vypz2d3QkJUq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277079; c=relaxed/simple;
-	bh=B+Ii3YGmTPOTvVknve90yo3k93GiW0MBg2q2egjA200=;
+	s=arc-20240116; t=1757277541; c=relaxed/simple;
+	bh=YMaD3E1xWEnCe5thLlTBMsP4GHBwZ2RQz3Rc1+lQOqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lOwclRr9UqAH8tDKvj8O1bCMaZ0dD+cRj3w7NJRGmGBRz5FMGF+jKh07a/MAh44Qh+9gSF0S26wKTc0zp2ShD62ZoYcsxoMCRo0VJUaVsHi/t7FMSVJ2ktfO019hz37LyvbNNHttoCTdRS+wcwMfvzt4Qnz7sDhl+vR4dxtvfTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xD8znbPC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E80DC4CEF0;
-	Sun,  7 Sep 2025 20:31:19 +0000 (UTC)
+	 MIME-Version; b=CS9lfNrOWnGbzLguvdyLsr6ppE4T2HMRruokhpIpUxZt6yc1pp57yfTNdfSYPAnB5rAoGOB0+X8tdtPMBXtJz8+IIMmoD9F2Q2oTyZG3lYYieILa7C4uBifD9ErrNtyDCWeQ6QxpGY3xRrh9xUIj0RG6UN013za51Rzcc00byFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9+GkPFQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AFF8C4CEF0;
+	Sun,  7 Sep 2025 20:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277079;
-	bh=B+Ii3YGmTPOTvVknve90yo3k93GiW0MBg2q2egjA200=;
+	s=korg; t=1757277538;
+	bh=YMaD3E1xWEnCe5thLlTBMsP4GHBwZ2RQz3Rc1+lQOqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xD8znbPCo/gE5c4CpnEsLHrkMC2xJo+YxavX4ueJmF57aeLZoftoIJLjx/emZcTJ6
-	 F3LLI0rh3M6krSTHEiFxUJcY7LHtqX0F9KtNr2oqdsqPocROP/akBukRErrrq92l1e
-	 DL/cFLrf9mDIaGprsQQgtCSIzWnOKcer1V6MM0mY=
+	b=K9+GkPFQWJQkajmPA0GLxkGy+hgjoVgYJX4iZ9ooicaJoBoRXoND3lK6Z4ly8JO+2
+	 zJPS1xo+RNtKK4wAtCywAza308JUE1s3oCIGLufrYfLPwr9ITbTDdP2QLTWCEH3RFB
+	 UBIGR321melAh3Q65J38xIv8YV3xOlQineIF74KI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
 	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/175] wifi: cw1200: cap SSID length in cw1200_do_join()
-Date: Sun,  7 Sep 2025 21:57:52 +0200
-Message-ID: <20250907195616.657276479@linuxfoundation.org>
+Subject: [PATCH 6.16 046/183] wifi: iwlwifi: cfg: restore some 1000 series configs
+Date: Sun,  7 Sep 2025 21:57:53 +0200
+Message-ID: <20250907195616.871439318@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit f8f15f6742b8874e59c9c715d0af3474608310ad ]
+[ Upstream commit 22e6bdb129ec64e640f5cccef9686f7c1a7d559b ]
 
-If the ssidie[1] length is more that 32 it leads to memory corruption.
+In the fixed commit, I inadvertently removed two configurations
+while combining the 0x0083/0x0084 device IDs. Replace the fixed
+matches for the BG versions by a masked match and add the BGN
+version back with a similar masked match.
 
-Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/e91fb43fcedc4893b604dfb973131661510901a7.1756456951.git.dan.carpenter@linaro.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220477
+Fixes: 1fb053d9876f ("wifi: iwlwifi: cfg: remove unnecessary configs")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20250828095500.fabb99c2df9e.If0ad87bf9ab360da5f613e879fd416c17c544733@changeid
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/st/cw1200/sta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/st/cw1200/sta.c b/drivers/net/wireless/st/cw1200/sta.c
-index c259da8161e4d..2bce867dd4acf 100644
---- a/drivers/net/wireless/st/cw1200/sta.c
-+++ b/drivers/net/wireless/st/cw1200/sta.c
-@@ -1290,7 +1290,7 @@ static void cw1200_do_join(struct cw1200_common *priv)
- 		rcu_read_lock();
- 		ssidie = ieee80211_bss_get_ie(bss, WLAN_EID_SSID);
- 		if (ssidie) {
--			join.ssid_len = ssidie[1];
-+			join.ssid_len = min(ssidie[1], IEEE80211_MAX_SSID_LEN);
- 			memcpy(join.ssid, &ssidie[2], join.ssid_len);
- 		}
- 		rcu_read_unlock();
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index e4e06bf9161c3..b66a581c2e564 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -726,10 +726,10 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
+ 		     DEVICE(0x0083), SUBDEV_MASKED(0x5, 0xF)),
+ 	IWL_DEV_INFO(iwl1000_bg_cfg, iwl1000_bg_name,
+ 		     DEVICE(0x0083), SUBDEV_MASKED(0x6, 0xF)),
++	IWL_DEV_INFO(iwl1000_bgn_cfg, iwl1000_bgn_name,
++		     DEVICE(0x0084), SUBDEV_MASKED(0x5, 0xF)),
+ 	IWL_DEV_INFO(iwl1000_bg_cfg, iwl1000_bg_name,
+-		     DEVICE(0x0084), SUBDEV(0x1216)),
+-	IWL_DEV_INFO(iwl1000_bg_cfg, iwl1000_bg_name,
+-		     DEVICE(0x0084), SUBDEV(0x1316)),
++		     DEVICE(0x0084), SUBDEV_MASKED(0x6, 0xF)),
+ 
+ /* 100 Series WiFi */
+ 	IWL_DEV_INFO(iwl100_bgn_cfg, iwl100_bgn_name,
 -- 
 2.50.1
 
