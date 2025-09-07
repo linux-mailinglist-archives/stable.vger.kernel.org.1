@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6915B47D33
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:08:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045EEB47F7A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E134A189A7EE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D047A7AA707
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF48F29B77E;
-	Sun,  7 Sep 2025 20:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50C627FB0E;
+	Sun,  7 Sep 2025 20:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfIH4TDQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQeOYsR3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C59527F754;
-	Sun,  7 Sep 2025 20:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A4E2765C8;
+	Sun,  7 Sep 2025 20:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275725; cv=none; b=ar8s70eY/ZfRi2jf7HtAzZ75uxdhiV+SDLv6iOO4MEaBUl7o5XPNELn1hB8+5HgidhZa1IbUyzHnxH9FJmuYFJjBo//f/+zAvDTsfj/sWkukegWrkVenE4khAO8QNK7iRWqNJpExMLvzLJa4ywXAsfs24+0vEt5bGLmc0+69d7A=
+	t=1757277482; cv=none; b=TbGWkWBrQ44BavkUYJEaFEkA6BWJYCKBoL+sdfA/6ZsM3JiyA8Asx1ammqKKOoOuRhrMw/eYC5PC0ZQzhcZcjP3zGwLkoX2uEnK2/9qB8YXmZaCnabEzeeqCYYFB4o73SfpdJS5MdXR68VFIRdFHQvmJxpxCq6wKkwGXL5+5yPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275725; c=relaxed/simple;
-	bh=QPs10Z9EsajfY40m4yWhbT1M/hFhdc2bN9//1oOSmQU=;
+	s=arc-20240116; t=1757277482; c=relaxed/simple;
+	bh=Y1TM7Ft+37fJUezX3v/6cER7wQUq9CprCFwAwp+gydo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVWrHOY9skqYxYecYR4L5VssyENuE56o2wwzU4NFK75KaYBsxPX2tV5w5v2wFOI0OqUpCE1MgU0AI5WXks13QzkrF/McdGSeMBh5qE4j9du8qVpUy9nkMHshdK0p/fD/dDE5TS/WVbyJf2oV0M339rVGTJROyNb24Xnk4HGauLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfIH4TDQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4054C4CEF0;
-	Sun,  7 Sep 2025 20:08:44 +0000 (UTC)
+	 MIME-Version; b=fMEXX8THzgs/cLJTR4lahC1p91D+sWfXdGzY3rWPALkBFueyenCRT5YwWOVPWHlvBPSGuEZTUpVEsvCnM49D0WDhqtZZvkTcux4iI6vPIvNao/X9QU2gRd/M80tNl5+baSvu0kjpLRMmHVLad5qURndxZwNsf8FlASQps+up2Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQeOYsR3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B277DC4CEF0;
+	Sun,  7 Sep 2025 20:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275725;
-	bh=QPs10Z9EsajfY40m4yWhbT1M/hFhdc2bN9//1oOSmQU=;
+	s=korg; t=1757277481;
+	bh=Y1TM7Ft+37fJUezX3v/6cER7wQUq9CprCFwAwp+gydo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dfIH4TDQt/2zkbvv1aXD6uB7sRVGbaoDpYY+OMPhbamzZKatqB6N6syaHxQWyW3gn
-	 oh6KYrA8UNs2VPRlOdlfe4cKKMvt9yMJRDkQtsy+pS4hnPc5zvfnUUifiLlgAE4MT3
-	 f0F5Tnl/b8ekAYMhSOFSSiX6Z4uz9BEo3kFtABQQ=
+	b=PQeOYsR3QDq5G79D7pUF1iOoU4rm6f8VG02ZhvsHHzTrFCRWMNp6NwLS+7yu6zvDJ
+	 6ns1SrJxd6Q7tLqFnsW4FddRCk9420cVi08fPfEywd+iGJrNZys/oiIl+cI7jQohCL
+	 Yc+ZidD3XpnBaADxJ4PhFJF74Vah403bVBGY0OQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 08/52] mISDN: Fix memory leak in dsp_hwec_enable()
+Subject: [PATCH 6.16 021/183] arm64: dts: rockchip: mark eeprom as read-only for Radxa E52C
 Date: Sun,  7 Sep 2025 21:57:28 +0200
-Message-ID: <20250907195602.217382097@linuxfoundation.org>
+Message-ID: <20250907195616.286378139@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Chukun Pan <amadeus@jmu.edu.cn>
 
-[ Upstream commit 0704a3da7ce50f972e898bbda88d2692a22922d9 ]
+[ Upstream commit f18c9e79bbe65627805fff6aac3ea96b6b55b53d ]
 
-dsp_hwec_enable() allocates dup pointer by kstrdup(arg),
-but then it updates dup variable by strsep(&dup, ",").
-As a result when it calls kfree(dup), the dup variable may be
-a modified pointer that no longer points to the original allocated
-memory, causing a memory leak.
+The eeprom on the Radxa E52C SBC contains manufacturer data
+such as the mac address, so it should be marked as read-only.
 
-The issue is the same pattern as fixed in commit c6a502c22999
-("mISDN: Fix memory leak in dsp_pipeline_build()").
-
-Fixes: 9a4381618262 ("mISDN: Remove VLAs")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250828081457.36061-1-linmq006@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9be4171219b6 ("arm64: dts: rockchip: Add Radxa E52C")
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+Link: https://lore.kernel.org/r/20250810100020.445053-2-amadeus@jmu.edu.cn
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/isdn/mISDN/dsp_hwec.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3582-radxa-e52c.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/isdn/mISDN/dsp_hwec.c b/drivers/isdn/mISDN/dsp_hwec.c
-index 0b3f29195330a..0cd216e28f009 100644
---- a/drivers/isdn/mISDN/dsp_hwec.c
-+++ b/drivers/isdn/mISDN/dsp_hwec.c
-@@ -51,14 +51,14 @@ void dsp_hwec_enable(struct dsp *dsp, const char *arg)
- 		goto _do;
- 
- 	{
--		char *dup, *tok, *name, *val;
-+		char *dup, *next, *tok, *name, *val;
- 		int tmp;
- 
--		dup = kstrdup(arg, GFP_ATOMIC);
-+		dup = next = kstrdup(arg, GFP_ATOMIC);
- 		if (!dup)
- 			return;
- 
--		while ((tok = strsep(&dup, ","))) {
-+		while ((tok = strsep(&next, ","))) {
- 			if (!strlen(tok))
- 				continue;
- 			name = strsep(&tok, "=");
+diff --git a/arch/arm64/boot/dts/rockchip/rk3582-radxa-e52c.dts b/arch/arm64/boot/dts/rockchip/rk3582-radxa-e52c.dts
+index e04f21d8c831e..431ff77d45180 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3582-radxa-e52c.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3582-radxa-e52c.dts
+@@ -250,6 +250,7 @@ eeprom@50 {
+ 		compatible = "belling,bl24c16a", "atmel,24c16";
+ 		reg = <0x50>;
+ 		pagesize = <16>;
++		read-only;
+ 		vcc-supply = <&vcc_3v3_pmu>;
+ 	};
+ };
 -- 
 2.50.1
 
