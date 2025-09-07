@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 651C8B47D75
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FBF0B47D4B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C7091793BB
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F6A77AA0BE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE65122F74D;
-	Sun,  7 Sep 2025 20:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FD329BDB6;
+	Sun,  7 Sep 2025 20:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MiYETvE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+KfPhnO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A585A1CDFAC;
-	Sun,  7 Sep 2025 20:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0446129BDAE;
+	Sun,  7 Sep 2025 20:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275930; cv=none; b=PWcG87okyI8BT4tEpccATU1YInmI3gjJY8Eexqwg03noY5tV9DavUKWGKsPrzdyPOjUKYvYOQDgrK7tAlitT0AMu3bZnOVmDlwN4bvf9TPxSe3FFdWANB96ifpzuy08V/ilPK72GLEHLsOy7kDyUUKYsmoHvfvZWR896IaZaUz0=
+	t=1757275796; cv=none; b=b0qtIlG4J87xDWGn/0J5wKb4xetO5j6i9vpQbrZtK8Ex/VRogssYoy2OIe69UNIQYNU+A7EjNGLcU71bxBhbWY5P7bz8BaB1WnOByIlm/qN9eOJjmdytpFa9xl9dzdVnXFHRDJ0Yms2auRqayssg59w5iw8G09qOYg9hLQG6i14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275930; c=relaxed/simple;
-	bh=RVYWxlYtKQvEaTBtQfGT0piYrwf+oVdcBxMCFTgDGSM=;
+	s=arc-20240116; t=1757275796; c=relaxed/simple;
+	bh=oHpsOwOOh1eRYgBghrBa9gZ/ffEHUMn7Cl5hjqn0mtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B7YLgTI04iCwD7Z9oZbWCi7IIW+yhIkYdwnIi+P+AVr9e7Anxmkd0VFIa+cvNwWpKRQBJnwAG8jioBr7iVUjsXBx+V1YJx5Qh7UeTtZuzCZ39dbNXSKB4eR+CtQxIfU57AxC3K5peg6wwy+vW5VLVf3i26tqACmP2y1OwVFi4xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MiYETvE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF8BC4CEF0;
-	Sun,  7 Sep 2025 20:12:09 +0000 (UTC)
+	 MIME-Version; b=SiK0sAygGRvifFgNI1E6VSK7Ju9Kos0kJ3pKY+sukIIMNEoRc9Tume/uJtmy2ULfevJ5xKuq0Tq5vav95534h1V1LIQZxV5BIiJeQnC9uqYO7hSrKABlhfWL17FZLDMOsfbWhEowyZWMRpVCxymDpF0gpZreNLnGdoF2dvrhn/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+KfPhnO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527AEC4CEF0;
+	Sun,  7 Sep 2025 20:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275930;
-	bh=RVYWxlYtKQvEaTBtQfGT0piYrwf+oVdcBxMCFTgDGSM=;
+	s=korg; t=1757275795;
+	bh=oHpsOwOOh1eRYgBghrBa9gZ/ffEHUMn7Cl5hjqn0mtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MiYETvE6KOBtFqE6Gaht7pSxb3HAgFq5tqCHst+j/S4axeFuG+X4R9VQuCV2qOnrs
-	 Bbpc4gTNphtCr0TGIwwCT6bMBYVEKImyLsqas/iN+uedSQYryloGSB4l6bGsOJSbou
-	 2oGGJWs3NVOz5PgxMzL5jS3fsvwR/EwxjSf4V1jo=
+	b=q+KfPhnOsmmP8zKShGUyD3nkY5GSNKlho66lG5phhEKpqXHr+h4S+dGnza1GZOJls
+	 wmwFb7R9acD72clL+RzD0/GHRgX26qPk1nIvmphxHFwaHTYkpIOIC3cfIJnny2nNcn
+	 hTzj3hIPHR2SJMJnR4swEStJfLpBSZp7MoQ3cQ9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Wang Liang <wangliang74@huawei.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 10/64] netfilter: br_netfilter: do not check confirmed bit in br_nf_local_in() after confirm
+Subject: [PATCH 5.4 06/45] mISDN: Fix memory leak in dsp_hwec_enable()
 Date: Sun,  7 Sep 2025 21:57:52 +0200
-Message-ID: <20250907195603.691225386@linuxfoundation.org>
+Message-ID: <20250907195601.147463099@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 479a54ab92087318514c82428a87af2d7af1a576 ]
+[ Upstream commit 0704a3da7ce50f972e898bbda88d2692a22922d9 ]
 
-When send a broadcast packet to a tap device, which was added to a bridge,
-br_nf_local_in() is called to confirm the conntrack. If another conntrack
-with the same hash value is added to the hash table, which can be
-triggered by a normal packet to a non-bridge device, the below warning
-may happen.
+dsp_hwec_enable() allocates dup pointer by kstrdup(arg),
+but then it updates dup variable by strsep(&dup, ",").
+As a result when it calls kfree(dup), the dup variable may be
+a modified pointer that no longer points to the original allocated
+memory, causing a memory leak.
 
-  ------------[ cut here ]------------
-  WARNING: CPU: 1 PID: 96 at net/bridge/br_netfilter_hooks.c:632 br_nf_local_in+0x168/0x200
-  CPU: 1 UID: 0 PID: 96 Comm: tap_send Not tainted 6.17.0-rc2-dirty #44 PREEMPT(voluntary)
-  RIP: 0010:br_nf_local_in+0x168/0x200
-  Call Trace:
-   <TASK>
-   nf_hook_slow+0x3e/0xf0
-   br_pass_frame_up+0x103/0x180
-   br_handle_frame_finish+0x2de/0x5b0
-   br_nf_hook_thresh+0xc0/0x120
-   br_nf_pre_routing_finish+0x168/0x3a0
-   br_nf_pre_routing+0x237/0x5e0
-   br_handle_frame+0x1ec/0x3c0
-   __netif_receive_skb_core+0x225/0x1210
-   __netif_receive_skb_one_core+0x37/0xa0
-   netif_receive_skb+0x36/0x160
-   tun_get_user+0xa54/0x10c0
-   tun_chr_write_iter+0x65/0xb0
-   vfs_write+0x305/0x410
-   ksys_write+0x60/0xd0
-   do_syscall_64+0xa4/0x260
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
+The issue is the same pattern as fixed in commit c6a502c22999
+("mISDN: Fix memory leak in dsp_pipeline_build()").
 
-To solve the hash conflict, nf_ct_resolve_clash() try to merge the
-conntracks, and update skb->_nfct. However, br_nf_local_in() still use the
-old ct from local variable 'nfct' after confirm(), which leads to this
-warning.
-
-If confirm() does not insert the conntrack entry and return NF_DROP, the
-warning may also occur. There is no need to reserve the WARN_ON_ONCE, just
-remove it.
-
-Link: https://lore.kernel.org/netdev/20250820043329.2902014-1-wangliang74@huawei.com/
-Fixes: 62e7151ae3eb ("netfilter: bridge: confirm multicast packets before passing them up the stack")
-Suggested-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 9a4381618262 ("mISDN: Remove VLAs")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250828081457.36061-1-linmq006@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_netfilter_hooks.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/isdn/mISDN/dsp_hwec.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index 7cd2bef583312..9ad0feb248b5d 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -630,9 +630,6 @@ static unsigned int br_nf_local_in(void *priv,
- 		break;
- 	}
+diff --git a/drivers/isdn/mISDN/dsp_hwec.c b/drivers/isdn/mISDN/dsp_hwec.c
+index 0b3f29195330a..0cd216e28f009 100644
+--- a/drivers/isdn/mISDN/dsp_hwec.c
++++ b/drivers/isdn/mISDN/dsp_hwec.c
+@@ -51,14 +51,14 @@ void dsp_hwec_enable(struct dsp *dsp, const char *arg)
+ 		goto _do;
  
--	ct = container_of(nfct, struct nf_conn, ct_general);
--	WARN_ON_ONCE(!nf_ct_is_confirmed(ct));
--
- 	return ret;
- }
- #endif
+ 	{
+-		char *dup, *tok, *name, *val;
++		char *dup, *next, *tok, *name, *val;
+ 		int tmp;
+ 
+-		dup = kstrdup(arg, GFP_ATOMIC);
++		dup = next = kstrdup(arg, GFP_ATOMIC);
+ 		if (!dup)
+ 			return;
+ 
+-		while ((tok = strsep(&dup, ","))) {
++		while ((tok = strsep(&next, ","))) {
+ 			if (!strlen(tok))
+ 				continue;
+ 			name = strsep(&tok, "=");
 -- 
 2.50.1
 
