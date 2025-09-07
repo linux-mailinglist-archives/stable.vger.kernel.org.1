@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-178015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 325E6B478A8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 03:59:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7046AB478B4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 04:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECAEC3C7751
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 01:59:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 113603C2748
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 02:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF3819F48D;
-	Sun,  7 Sep 2025 01:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BA31AA7BF;
+	Sun,  7 Sep 2025 02:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHQWrlyh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vDugXCVI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E434419CC28
-	for <stable@vger.kernel.org>; Sun,  7 Sep 2025 01:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349A627707
+	for <stable@vger.kernel.org>; Sun,  7 Sep 2025 02:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757210338; cv=none; b=U2k/H456KpUZtJt0TLhvr+Cn8YLZPrkSm3BivYyCeMScKQ+9en4Qi+PWy2kOd7VH/+Uj1Uqns77hdTXKZ5jLbwyFR+dtnjIyGllw4lZSUTd/QcHsGQyXQ9IODaOwSlyRlo6FvEA0VTmobH3qxynJEBVlrrWZ2tnzzSh/ZQFwLEk=
+	t=1757212056; cv=none; b=us11Ml8l1wRI6Y0EGpGMV42dtl89/4CpgsflDbGBw1X7X1h+3zOmOVBa72rubTremkLFWieMdAzoOmMOFb9VkG8xFbnPPxfpnqCZJ7aMynOAc84x0DTPKCP7ioPKlaqtI1T616s3kOXCErOr4b7sbAlK3Y44BON8DmPu/JKR0rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757210338; c=relaxed/simple;
-	bh=q4/yEhIcDZAOLmALzD1m5DNAZOkt6MoPC343J22Gws8=;
+	s=arc-20240116; t=1757212056; c=relaxed/simple;
+	bh=0rB1T3W8IbmzS2nz38OFj8dj/ItPzLmz4eJ/5it+KcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0uVwZfv/xdS+kJlr+rVkULcsBaPjLL8soU5NA+8ady98+kqDA5F4UryfLGlwUhL6Ivoc3KFtw20pljrjpZh0zuKtTSLL7AV2Nu7ZBsbB3/RDb7eObkRl2ZJx8GxPC6kQqQldI3n1331eQ7LbmsghwVyPYQ/S9vMAGSapfQXrDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aHQWrlyh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D73C4CEE7;
-	Sun,  7 Sep 2025 01:58:56 +0000 (UTC)
+	 MIME-Version; b=LWLnKXIxX4bGUQG47q/ocIRci4S5oUqyD+uvF7kqrmnLQq0+DKYGZjoqOyW52qBxK6GA9BK0GVaao4l8ImTMoq5r0OyaRFAhSughLx0FA3XNpYzzN5OZJ7FHoMc8O8mevZn1alRXnDG2Yf1VPnkAs+2LG7jXmAnrlI5nApcyzek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vDugXCVI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160D9C4CEE7;
+	Sun,  7 Sep 2025 02:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757210337;
-	bh=q4/yEhIcDZAOLmALzD1m5DNAZOkt6MoPC343J22Gws8=;
+	s=k20201202; t=1757212055;
+	bh=0rB1T3W8IbmzS2nz38OFj8dj/ItPzLmz4eJ/5it+KcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHQWrlyhEE1bUB1l1fsC7DUSdr9h7wKIERLvekDJQuO0Zg3mS0O4YX7Ih+xSDY0Bc
-	 KF6i7s9lL+13jgdA+mS2hXAThUIeSlYgXCV1aeMWK1BqH9caKErWJttZAXZUxQ19pI
-	 cNOgXnyNkSskxFOgyYjIeM3d5BzFOvLj+ew+keAC5NWVitI/nKEdzKk/LEQ9W9Itzs
-	 I7p+NBdLMkjVPT49H8BJ7oJr/006avY01McDAy5EAJzFAHW3pAgeQd6wlrT7Kt/wxq
-	 3q657dWlEirf+2EK7WLgfT7kkMH/+n8MZcew1OP1715NZI9wzj4pTkV7fpBqzHnmKD
-	 nT34OZN6weqPw==
+	b=vDugXCVI1koh/aLVVASqLCMXMGJfBY26mjhSTYNHSYT1kw9IWvK4JLEjWdhSEFaWR
+	 K+aSW69UznIKQwsNFKuIuV9lJq4W4+zCxV5b9V95oGFSjWJQrPz0zr7CNfjwRPBYU4
+	 XOITMlvEmuE0wjO928LFSX2kK1rvXlz0SZUnazQdBFDnA9VXIab0PBIbPwuEUlLz7Y
+	 ZdmxPWlCcox8SbTbONxjmSDw2ANDdPCQ3lbdLx+CwDP9IfeE5f19kbvcEl2jk/mkdp
+	 9d6ShqeuqwtV0FYUQKERcMvPPQLfYogob1WT7nZ06pk7yQoG7Z+l/Vhdn1XqmKXmzb
+	 wMKhAkO7I0rEg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Li Qiong <liqiong@nfschina.com>,
@@ -48,12 +48,12 @@ Cc: Li Qiong <liqiong@nfschina.com>,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] mm/slub: avoid accessing metadata when pointer is invalid in object_err()
-Date: Sat,  6 Sep 2025 21:58:55 -0400
-Message-ID: <20250907015855.398489-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] mm/slub: avoid accessing metadata when pointer is invalid in object_err()
+Date: Sat,  6 Sep 2025 22:27:33 -0400
+Message-ID: <20250907022733.411422-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025090620-plaza-trench-7364@gregkh>
-References: <2025090620-plaza-trench-7364@gregkh>
+In-Reply-To: <2025090621-plank-carry-3541@gregkh>
+References: <2025090621-plank-carry-3541@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,19 +86,19 @@ Signed-off-by: Li Qiong <liqiong@nfschina.com>
 Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-[ struct page instead of slab ]
+[ struct page + print_page_info() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  mm/slub.c | 7 ++++++-
  1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index f95ae136a0698..97ac0c7da0f0b 100644
+index b0f637519ac99..30daba09da35d 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -864,7 +864,12 @@ void object_err(struct kmem_cache *s, struct page *page,
- 		return;
- 
+@@ -729,7 +729,12 @@ void object_err(struct kmem_cache *s, struct page *page,
+ 			u8 *object, char *reason)
+ {
  	slab_bug(s, "%s", reason);
 -	print_trailer(s, page, object);
 +	if (!object || !check_valid_pointer(s, page, object)) {
@@ -107,9 +107,9 @@ index f95ae136a0698..97ac0c7da0f0b 100644
 +	} else {
 +		print_trailer(s, page, object);
 +	}
- 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
  }
  
+ static __printf(3, 4) void slab_err(struct kmem_cache *s, struct page *page,
 -- 
 2.51.0
 
