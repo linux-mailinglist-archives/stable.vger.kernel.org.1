@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-178180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA6BB47D91
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 992DDB47F14
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D14323BF91C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 951C31B210E6
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657C326E6FF;
-	Sun,  7 Sep 2025 20:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B842426B2AD;
+	Sun,  7 Sep 2025 20:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKrY0Mza"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1x2SZPIG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218BA1B424F;
-	Sun,  7 Sep 2025 20:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57871125B2;
+	Sun,  7 Sep 2025 20:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276019; cv=none; b=qwjyiooBzzcRLVHUwzrRwHV64TzRE25U50SRf7wQ3C27+05VJOoT8LYZxARc/ZMrrL+vQwh7ZMiqvdbg5MN7ahrKjiOb4GhThCIYLZiMTASMEbuj4a+tMJ0OumNxbAhxc7EvMQ7sDRIHetAqyi01Vm1XKMAvVMfzcuxxxehFg6c=
+	t=1757277163; cv=none; b=g04ePU8hV9ZgjZ1/oKCgniObGn7IQS67HM0TrgMxdlkNoqjY8uQGmxwsUhPUf5duF0Wh5/98NSF+R2r7jlTndJTmYpHAEyYRWrnDcI6GEkKWZExSSRM8qF2jXOzrIF+COvfTZKK7tHnLbxEGcjdnxMNiSG8k+gO5IL9qk965R64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276019; c=relaxed/simple;
-	bh=XHMyexvUlI0RS58RhhB6bpo3yHXIm+XKtzjyUKdTJ6M=;
+	s=arc-20240116; t=1757277163; c=relaxed/simple;
+	bh=FLNZV7eJQxA9LyAJ3rZmmh9ACwXamOu3F4UoKf/Blrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rOGdgMPAqRXPNlgGQ6B2HJLJPsDvs3uO/7XmoVHhjGb9OUrErL/AstRLOvFsXB1tTeKCbFDU57KkCrzeYCPqjKOwNXyPgLGfX5dOe7Q6FVxCVjDZpniSOItkRlZ7vHY45k4Df7VImMnQdrWQhcN2+rj/tsQBYI0QDPXthDXFbo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKrY0Mza; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927FEC4CEF0;
-	Sun,  7 Sep 2025 20:13:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=huy60RSvwPpIqgMUGJP9a8pxBidUQzD6jP//IKcrwhZ19FF2EAIqdd+Tx2MUYho1WOhzaObAs3Eog01wHRa/WGegJT022gHiCRcM/pLrglbfcx91OdyE2rQZZT29dSEiNbmnEECet+uTW7UNoHFJr9qa/PLEJuURqQC2pyC0ECs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1x2SZPIG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67415C4CEF0;
+	Sun,  7 Sep 2025 20:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276019;
-	bh=XHMyexvUlI0RS58RhhB6bpo3yHXIm+XKtzjyUKdTJ6M=;
+	s=korg; t=1757277163;
+	bh=FLNZV7eJQxA9LyAJ3rZmmh9ACwXamOu3F4UoKf/Blrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKrY0Mza03Ylu3qWwoCPy7eWqA84PsNL3Nt6CU8bRZicWIboGd62RUhUP0G36PD6l
-	 rjp8iBO4koQCD/eDBu7LQvoXhPEn8x0wqHZe0hDTQJKAaTHlpQGaW2MOpWEnfTErZM
-	 Qinu7MiIqDRACZbN3a69vR+xBDxTcrwWQdKZx2kw=
+	b=1x2SZPIGE3TZWUxd3TKzGcUVOTxnaeohKTIegtZvWu6djkuyFcfpaW+uaV5QPV4xz
+	 aTllQhw93qzzq+3r0y6naKf2bO9gQ+1wxoxLCkyb5efTmuKFEy309SFf1wR/igqn9M
+	 Mg6g7PivcOAXCIpL8KH5a12uDZQu23Sb8NXCH7pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Zach OKeefe <zokeefe@google.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@intel.linux.com>,
-	Yang Shi <shy828301@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjoern Doebel <doebel@amazon.de>
-Subject: [PATCH 5.15 38/64] mm/khugepaged: fix ->anon_vma race
+	wangzijie <wangzijie1@honor.com>,
+	Lars Wendler <polynomial-c@gmx.de>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	=?UTF-8?q?Petr=20Van=C4=9Bk?= <pv@excello.cz>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	"Kirill A. Shutemov" <k.shutemov@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 105/175] proc: fix missing pde_set_flags() for net proc files
 Date: Sun,  7 Sep 2025 21:58:20 +0200
-Message-ID: <20250907195604.457007923@linuxfoundation.org>
+Message-ID: <20250907195617.337324050@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +68,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: wangzijie <wangzijie1@honor.com>
 
-commit 023f47a8250c6bdb4aebe744db4bf7f73414028b upstream.
+commit 2ce3d282bd5050fca8577defeff08ada0d55d062 upstream.
 
-If an ->anon_vma is attached to the VMA, collapse_and_free_pmd() requires
-it to be locked.
+To avoid potential UAF issues during module removal races, we use
+pde_set_flags() to save proc_ops flags in PDE itself before
+proc_register(), and then use pde_has_proc_*() helpers instead of directly
+dereferencing pde->proc_ops->*.
 
-Page table traversal is allowed under any one of the mmap lock, the
-anon_vma lock (if the VMA is associated with an anon_vma), and the
-mapping lock (if the VMA is associated with a mapping); and so to be
-able to remove page tables, we must hold all three of them.
-retract_page_tables() bails out if an ->anon_vma is attached, but does
-this check before holding the mmap lock (as the comment above the check
-explains).
+However, the pde_set_flags() call was missing when creating net related
+proc files.  This omission caused incorrect behavior which FMODE_LSEEK was
+being cleared inappropriately in proc_reg_open() for net proc files.  Lars
+reported it in this link[1].
 
-If we racily merged an existing ->anon_vma (shared with a child
-process) from a neighboring VMA, subsequent rmap traversals on pages
-belonging to the child will be able to see the page tables that we are
-concurrently removing while assuming that nothing else can access them.
+Fix this by ensuring pde_set_flags() is called when register proc entry,
+and add NULL check for proc_ops in pde_set_flags().
 
-Repeat the ->anon_vma check once we hold the mmap lock to ensure that
-there really is no concurrent page table access.
-
-Hitting this bug causes a lockdep warning in collapse_and_free_pmd(),
-in the line "lockdep_assert_held_write(&vma->anon_vma->root->rwsem)".
-It can also lead to use-after-free access.
-
-Link: https://lore.kernel.org/linux-mm/CAG48ez3434wZBKFFbdx4M9j6eUwSUVPd4dxhzW_k_POneSDF+A@mail.gmail.com/
-Link: https://lkml.kernel.org/r/20230111133351.807024-1-jannh@google.com
-Fixes: f3f0e1d2150b ("khugepaged: add support of collapse for tmpfs/shmem pages")
-Signed-off-by: Jann Horn <jannh@google.com>
-Reported-by: Zach O'Keefe <zokeefe@google.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@intel.linux.com>
-Reviewed-by: Yang Shi <shy828301@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
+[wangzijie1@honor.com: stash pde->proc_ops in a local const variable, per Christian]
+  Link: https://lkml.kernel.org/r/20250821105806.1453833-1-wangzijie1@honor.com
+Link: https://lkml.kernel.org/r/20250818123102.959595-1-wangzijie1@honor.com
+Link: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/ [1]
+Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al")
+Signed-off-by: wangzijie <wangzijie1@honor.com>
+Reported-by: Lars Wendler <polynomial-c@gmx.de>
+Tested-by: Stefano Brivio <sbrivio@redhat.com>
+Tested-by: Petr Vaněk <pv@excello.cz>
+Tested by: Lars Wendler <polynomial-c@gmx.de>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Alexey Dobriyan <adobriyan@gmail.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc: Kirill A. Shutemov <k.shutemov@gmail.com>
+Cc: wangzijie <wangzijie1@honor.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[doebel@amazon.de: Kernel 5.15 uses a different control flow pattern,
- context adjustments.]
-Signed-off-by: Bjoern Doebel <doebel@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/khugepaged.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ fs/proc/generic.c |   38 +++++++++++++++++++++-----------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
 
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1609,7 +1609,7 @@ static void retract_page_tables(struct a
- 		 * has higher cost too. It would also probably require locking
- 		 * the anon_vma.
- 		 */
--		if (vma->anon_vma)
-+		if (READ_ONCE(vma->anon_vma))
- 			continue;
- 		addr = vma->vm_start + ((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
- 		if (addr & ~HPAGE_PMD_MASK)
-@@ -1631,6 +1631,19 @@ static void retract_page_tables(struct a
- 			if (!khugepaged_test_exit(mm)) {
- 				struct mmu_notifier_range range;
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -362,6 +362,25 @@ static const struct inode_operations pro
+ 	.setattr	= proc_notify_change,
+ };
  
-+				/*
-+				 * Re-check whether we have an ->anon_vma, because
-+				 * collapse_and_free_pmd() requires that either no
-+				 * ->anon_vma exists or the anon_vma is locked.
-+				 * We already checked ->anon_vma above, but that check
-+				 * is racy because ->anon_vma can be populated under the
-+				 * mmap lock in read mode.
-+				 */
-+				if (vma->anon_vma) {
-+					mmap_write_unlock(mm);
-+					continue;
-+				}
++static void pde_set_flags(struct proc_dir_entry *pde)
++{
++	const struct proc_ops *proc_ops = pde->proc_ops;
 +
- 				mmu_notifier_range_init(&range,
- 							MMU_NOTIFY_CLEAR, 0,
- 							NULL, mm, addr,
++	if (!proc_ops)
++		return;
++
++	if (proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
++		pde->flags |= PROC_ENTRY_PERMANENT;
++	if (proc_ops->proc_read_iter)
++		pde->flags |= PROC_ENTRY_proc_read_iter;
++#ifdef CONFIG_COMPAT
++	if (proc_ops->proc_compat_ioctl)
++		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
++#endif
++	if (proc_ops->proc_lseek)
++		pde->flags |= PROC_ENTRY_proc_lseek;
++}
++
+ /* returns the registered entry, or frees dp and returns NULL on failure */
+ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
+ 		struct proc_dir_entry *dp)
+@@ -369,6 +388,8 @@ struct proc_dir_entry *proc_register(str
+ 	if (proc_alloc_inum(&dp->low_ino))
+ 		goto out_free_entry;
+ 
++	pde_set_flags(dp);
++
+ 	write_lock(&proc_subdir_lock);
+ 	dp->parent = dir;
+ 	if (pde_subdir_insert(dir, dp) == false) {
+@@ -557,20 +578,6 @@ struct proc_dir_entry *proc_create_reg(c
+ 	return p;
+ }
+ 
+-static void pde_set_flags(struct proc_dir_entry *pde)
+-{
+-	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
+-		pde->flags |= PROC_ENTRY_PERMANENT;
+-	if (pde->proc_ops->proc_read_iter)
+-		pde->flags |= PROC_ENTRY_proc_read_iter;
+-#ifdef CONFIG_COMPAT
+-	if (pde->proc_ops->proc_compat_ioctl)
+-		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
+-#endif
+-	if (pde->proc_ops->proc_lseek)
+-		pde->flags |= PROC_ENTRY_proc_lseek;
+-}
+-
+ struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
+ 		struct proc_dir_entry *parent,
+ 		const struct proc_ops *proc_ops, void *data)
+@@ -581,7 +588,6 @@ struct proc_dir_entry *proc_create_data(
+ 	if (!p)
+ 		return NULL;
+ 	p->proc_ops = proc_ops;
+-	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_data);
+@@ -632,7 +638,6 @@ struct proc_dir_entry *proc_create_seq_p
+ 	p->proc_ops = &proc_seq_ops;
+ 	p->seq_ops = ops;
+ 	p->state_size = state_size;
+-	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_seq_private);
+@@ -663,7 +668,6 @@ struct proc_dir_entry *proc_create_singl
+ 		return NULL;
+ 	p->proc_ops = &proc_single_ops;
+ 	p->single_show = show;
+-	pde_set_flags(p);
+ 	return proc_register(parent, p);
+ }
+ EXPORT_SYMBOL(proc_create_single_data);
 
 
 
