@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01CB2B47FF1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:44:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C77AEB47E97
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BE4F1B225BA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:44:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1369189FFD4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531152765C8;
-	Sun,  7 Sep 2025 20:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB1E1E1C1A;
+	Sun,  7 Sep 2025 20:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipTdTa73"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtDxmmwT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119154315A;
-	Sun,  7 Sep 2025 20:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEF5D528;
+	Sun,  7 Sep 2025 20:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277855; cv=none; b=OoQ+2EfmrIhuaWHELKiMAFDiJf01ngc4YwXs5ZexfjHXyV5qX38wnH3iC6KSgKwJ9+xtnAZfIds5KtsAdhzq/3kaRY83WmB8d1sXodmX8k23E+iTa6jUFIIFic5KGr4V8KqcsEOIPWASfE035OPtA6Pw8tPJP28zybjghIlGBcM=
+	t=1757276778; cv=none; b=SU2UXDi+mBKE6+TF1YwD+CeQ1WxEKrHQaGWgtTfsFy+iBAhm3MprNe8H4OcSwxaXXKrHiyBNQshKGYY+g/SnVEonCA06PLOvt3gPmVPabXRt1Sex1orYsWm1ZSfoJxoL0Bhk+lTfEV4HHZrqHlXQTJV6QIIQxSjin0Ibs2Uz38o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277855; c=relaxed/simple;
-	bh=QqDsaFyxhmez6DvgpSugps0OW2ynd7hmXjuE8gIH6QE=;
+	s=arc-20240116; t=1757276778; c=relaxed/simple;
+	bh=dskBJn+Kw/KbtJnLcRZ/gdiJ8H0uN1DxEDlA84joXjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fbknBqf2H7WT7xHlYNz7pYCaQxiBSvxkUlxlwjzEsowx7ZE678Rku/tnm19PrJdC9OTgJ9lUrkbIccHttLUSci4H2wwtGeHTxAlpvYDr/FQ3GHRe07dZer/Awld+V4rf4zWuyWPLrsNQwl09YC3be7z45QmlB1NugceS0DAh6Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipTdTa73; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B883C4CEF0;
-	Sun,  7 Sep 2025 20:44:14 +0000 (UTC)
+	 MIME-Version; b=r6PHgmnCvVhWNWRqDhimRmsN6VbiOwmykmOD5B577b8quqI07J554X6NTBWry5uvf9FvgCNHDzfdlfunrK63ajDyjlDQq+t/KjsI7S+wmMxpEMlYVw3rnXp/DUCadTnJufpGEHz1M6gtKl9666jV2unKk7o3IfJImzPjywGwwGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtDxmmwT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BE5C4CEF0;
+	Sun,  7 Sep 2025 20:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277854;
-	bh=QqDsaFyxhmez6DvgpSugps0OW2ynd7hmXjuE8gIH6QE=;
+	s=korg; t=1757276778;
+	bh=dskBJn+Kw/KbtJnLcRZ/gdiJ8H0uN1DxEDlA84joXjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ipTdTa73TeAFm9wU5KAmg1tCmn9FfXv+9ICyuOIXVvgMg94lzJwQYtKyIM+r1wryn
-	 7Cd4FHTgdYtS9ifVVX2iNKfWgpFv+lfQv/CTA0HHvdFwBc6W7URHyo56KA82j58TXn
-	 d/yZJfxMZ4wXgdLQzVlkqueKaY3EhWziO9aaaVg4=
+	b=GtDxmmwThQ7to14yCPNbM7YIdqtwn24BvAYgjXNgoAT2DhhOU4oHtx/cBDXT8Ia7w
+	 U00Nf8wb0dID9rur9jTTyQcJeQcI09SgqeHoFVoBhXo/BArXJ3t9ugi/KJBiFXIDgU
+	 0XcEqR1EjYdEf6Ts9tKMLAsu70dQBuRPspGoOqRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 6.16 117/183] wifi: mac80211: do not permit 40 MHz EHT operation on 5/6 GHz
+	Namhyung Kim <namhyung@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 108/121] perf bpf-utils: Constify bpil_array_desc
 Date: Sun,  7 Sep 2025 21:59:04 +0200
-Message-ID: <20250907195618.570645208@linuxfoundation.org>
+Message-ID: <20250907195612.618958539@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,130 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Ian Rogers <irogers@google.com>
 
-commit 75575e2d252afb29fdbcbeec4d67e042007add52 upstream.
+[ Upstream commit 1654a0e4d576d9e43fbb10ccf6a1b307c5c18566 ]
 
-The EHT PHY requirements state that 80 MHz must be supported on the 5
-and 6 GHz bands unless the STA is 20 MHz only. So if the channel width
-is limited to 40 MHz on a band other than 2.4 GHz, then disable EHT and
-downgrade to HE.
+The array's contents is a compile time constant. Constify to make the
+code more intention revealing and avoid unintended errors.
 
-The primary case where this can happen is if the hardware disables
-puncturing using IEEE80211_HW_DISALLOW_PUNCTURING.
-
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250826202553.a6582f3abf57.Ic670429dc7127f68c818b4290d950ebfb5a0b9e1@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250902181713.309797-3-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Stable-dep-of: 01be43f2a0ea ("perf bpf-utils: Harden get_bpf_prog_info_linear")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c            |    8 ++++++++
- net/mac80211/tests/chan-mode.c |   30 +++++++++++++++++++++++++-----
- 2 files changed, 33 insertions(+), 5 deletions(-)
+ tools/perf/util/bpf-utils.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -1193,6 +1193,14 @@ again:
- 			     "required MCSes not supported, disabling EHT\n");
- 	}
- 
-+	if (conn->mode >= IEEE80211_CONN_MODE_EHT &&
-+	    channel->band != NL80211_BAND_2GHZ &&
-+	    conn->bw_limit == IEEE80211_CONN_BW_LIMIT_40) {
-+		conn->mode = IEEE80211_CONN_MODE_HE;
-+		link_id_info(sdata, link_id,
-+			     "required bandwidth not supported, disabling EHT\n");
-+	}
-+
- 	/* the mode can only decrease, so this must terminate */
- 	if (ap_mode != conn->mode) {
- 		kfree(elems);
---- a/net/mac80211/tests/chan-mode.c
-+++ b/net/mac80211/tests/chan-mode.c
-@@ -2,7 +2,7 @@
- /*
-  * KUnit tests for channel mode functions
-  *
-- * Copyright (C) 2024 Intel Corporation
-+ * Copyright (C) 2024-2025 Intel Corporation
-  */
- #include <net/cfg80211.h>
- #include <kunit/test.h>
-@@ -28,6 +28,10 @@ static const struct determine_chan_mode_
- 	u8 vht_basic_mcs_1_4, vht_basic_mcs_5_8;
- 	u8 he_basic_mcs_1_4, he_basic_mcs_5_8;
- 	u8 eht_mcs7_min_nss;
-+	u16 eht_disabled_subchannels;
-+	u8 eht_bw;
-+	enum ieee80211_conn_bw_limit conn_bw_limit;
-+	enum ieee80211_conn_bw_limit expected_bw_limit;
- 	int error;
- } determine_chan_mode_cases[] = {
- 	{
-@@ -128,6 +132,14 @@ static const struct determine_chan_mode_
- 		.conn_mode = IEEE80211_CONN_MODE_EHT,
- 		.eht_mcs7_min_nss = 0x15,
- 		.error = EINVAL,
-+	}, {
-+		.desc = "80 MHz EHT is downgraded to 40 MHz HE due to puncturing",
-+		.conn_mode = IEEE80211_CONN_MODE_EHT,
-+		.expected_mode = IEEE80211_CONN_MODE_HE,
-+		.conn_bw_limit = IEEE80211_CONN_BW_LIMIT_80,
-+		.expected_bw_limit = IEEE80211_CONN_BW_LIMIT_40,
-+		.eht_disabled_subchannels = 0x08,
-+		.eht_bw = IEEE80211_EHT_OPER_CHAN_WIDTH_80MHZ,
- 	}
+diff --git a/tools/perf/util/bpf-utils.c b/tools/perf/util/bpf-utils.c
+index 80b1d2b3729ba..64a5583446964 100644
+--- a/tools/perf/util/bpf-utils.c
++++ b/tools/perf/util/bpf-utils.c
+@@ -20,7 +20,7 @@ struct bpil_array_desc {
+ 				 */
  };
- KUNIT_ARRAY_PARAM_DESC(determine_chan_mode, determine_chan_mode_cases, desc)
-@@ -138,7 +150,7 @@ static void test_determine_chan_mode(str
- 	struct t_sdata *t_sdata = T_SDATA(test);
- 	struct ieee80211_conn_settings conn = {
- 		.mode = params->conn_mode,
--		.bw_limit = IEEE80211_CONN_BW_LIMIT_20,
-+		.bw_limit = params->conn_bw_limit,
- 	};
- 	struct cfg80211_bss cbss = {
- 		.channel = &t_sdata->band_5ghz.channels[0],
-@@ -191,14 +203,21 @@ static void test_determine_chan_mode(str
- 		0x7f, 0x01, 0x00, 0x88, 0x88, 0x88, 0x00, 0x00,
- 		0x00,
- 		/* EHT Operation */
--		WLAN_EID_EXTENSION, 0x09, WLAN_EID_EXT_EHT_OPERATION,
--		0x01, params->eht_mcs7_min_nss ? params->eht_mcs7_min_nss : 0x11,
--		0x00, 0x00, 0x00, 0x00, 0x24, 0x00,
-+		WLAN_EID_EXTENSION, 0x0b, WLAN_EID_EXT_EHT_OPERATION,
-+		0x03, params->eht_mcs7_min_nss ? params->eht_mcs7_min_nss : 0x11,
-+		0x00, 0x00, 0x00, params->eht_bw,
-+		params->eht_bw == IEEE80211_EHT_OPER_CHAN_WIDTH_80MHZ ? 42 : 36,
-+		0x00,
-+		u16_get_bits(params->eht_disabled_subchannels, 0xff),
-+		u16_get_bits(params->eht_disabled_subchannels, 0xff00),
- 	};
- 	struct ieee80211_chan_req chanreq = {};
- 	struct cfg80211_chan_def ap_chandef = {};
- 	struct ieee802_11_elems *elems;
  
-+	/* To force EHT downgrade to HE on punctured 80 MHz downgraded to 40 MHz */
-+	set_bit(IEEE80211_HW_DISALLOW_PUNCTURING, t_sdata->local.hw.flags);
-+
- 	if (params->strict)
- 		set_bit(IEEE80211_HW_STRICT, t_sdata->local.hw.flags);
- 	else
-@@ -237,6 +256,7 @@ static void test_determine_chan_mode(str
- 	} else {
- 		KUNIT_ASSERT_NOT_ERR_OR_NULL(test, elems);
- 		KUNIT_ASSERT_EQ(test, conn.mode, params->expected_mode);
-+		KUNIT_ASSERT_EQ(test, conn.bw_limit, params->expected_bw_limit);
- 	}
- }
+-static struct bpil_array_desc bpil_array_desc[] = {
++static const struct bpil_array_desc bpil_array_desc[] = {
+ 	[PERF_BPIL_JITED_INSNS] = {
+ 		offsetof(struct bpf_prog_info, jited_prog_insns),
+ 		offsetof(struct bpf_prog_info, jited_prog_len),
+@@ -129,12 +129,10 @@ get_bpf_prog_info_linear(int fd, __u64 arrays)
  
+ 	/* step 2: calculate total size of all arrays */
+ 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
++		const struct bpil_array_desc *desc = &bpil_array_desc[i];
+ 		bool include_array = (arrays & (1UL << i)) > 0;
+-		struct bpil_array_desc *desc;
+ 		__u32 count, size;
+ 
+-		desc = bpil_array_desc + i;
+-
+ 		/* kernel is too old to support this field */
+ 		if (info_len < desc->array_offset + sizeof(__u32) ||
+ 		    info_len < desc->count_offset + sizeof(__u32) ||
+@@ -163,13 +161,12 @@ get_bpf_prog_info_linear(int fd, __u64 arrays)
+ 	ptr = info_linear->data;
+ 
+ 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
+-		struct bpil_array_desc *desc;
++		const struct bpil_array_desc *desc = &bpil_array_desc[i];
+ 		__u32 count, size;
+ 
+ 		if ((arrays & (1UL << i)) == 0)
+ 			continue;
+ 
+-		desc  = bpil_array_desc + i;
+ 		count = bpf_prog_info_read_offset_u32(&info, desc->count_offset);
+ 		size  = bpf_prog_info_read_offset_u32(&info, desc->size_offset);
+ 		bpf_prog_info_set_offset_u32(&info_linear->info,
+@@ -192,13 +189,12 @@ get_bpf_prog_info_linear(int fd, __u64 arrays)
+ 
+ 	/* step 6: verify the data */
+ 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
+-		struct bpil_array_desc *desc;
++		const struct bpil_array_desc *desc = &bpil_array_desc[i];
+ 		__u32 v1, v2;
+ 
+ 		if ((arrays & (1UL << i)) == 0)
+ 			continue;
+ 
+-		desc = bpil_array_desc + i;
+ 		v1 = bpf_prog_info_read_offset_u32(&info, desc->count_offset);
+ 		v2 = bpf_prog_info_read_offset_u32(&info_linear->info,
+ 						   desc->count_offset);
+@@ -224,13 +220,12 @@ void bpil_addr_to_offs(struct perf_bpil *info_linear)
+ 	int i;
+ 
+ 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
+-		struct bpil_array_desc *desc;
++		const struct bpil_array_desc *desc = &bpil_array_desc[i];
+ 		__u64 addr, offs;
+ 
+ 		if ((info_linear->arrays & (1UL << i)) == 0)
+ 			continue;
+ 
+-		desc = bpil_array_desc + i;
+ 		addr = bpf_prog_info_read_offset_u64(&info_linear->info,
+ 						     desc->array_offset);
+ 		offs = addr - ptr_to_u64(info_linear->data);
+@@ -244,13 +239,12 @@ void bpil_offs_to_addr(struct perf_bpil *info_linear)
+ 	int i;
+ 
+ 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
+-		struct bpil_array_desc *desc;
++		const struct bpil_array_desc *desc = &bpil_array_desc[i];
+ 		__u64 addr, offs;
+ 
+ 		if ((info_linear->arrays & (1UL << i)) == 0)
+ 			continue;
+ 
+-		desc = bpil_array_desc + i;
+ 		offs = bpf_prog_info_read_offset_u64(&info_linear->info,
+ 						     desc->array_offset);
+ 		addr = offs + ptr_to_u64(info_linear->data);
+-- 
+2.51.0
+
 
 
 
