@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54EDB47DF8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E74B6B47D60
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:11:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2FFF189ED00
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FD5F17C3AD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBE11C6FFA;
-	Sun,  7 Sep 2025 20:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790C627FB21;
+	Sun,  7 Sep 2025 20:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ID4jOzkm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hcb2mef/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFF714BFA2;
-	Sun,  7 Sep 2025 20:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A5A1CDFAC;
+	Sun,  7 Sep 2025 20:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276328; cv=none; b=TS8XGxuEYQCoPIsI0rg669Wdb5PaNF+yJswgBq793nCcHfRDfjr4YWwKr3D8mUSWCR2lLCjvTMJMQNOLbD00TCOcyBLgBv8m9ANfp9zKhjNoeK4au6uUUZg0XYD+cBg4XtP0UXnZr8Kdah/Wfk0NFpb+8V+Hv8vXxodfACSyZL8=
+	t=1757275864; cv=none; b=KlC3FCxh77UDByy2E/8xsf26OtLMIaHrYWCBFea3rgAxDr1H8U+K3FZ5GFzLGHefVGQJG7GjV1YThY5IpCwCLnCGrHhskdqksQB1RtxJeptwo5oB0LarL0eWYUfjTH3WS0KLx84XP4u5RmLfp+b5fdk8kJxw9lzi8UauKVYfnf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276328; c=relaxed/simple;
-	bh=TPhfzhoVDnbNL0+kvqoo/eDHZTPSDL0q7E8qYkhq+y8=;
+	s=arc-20240116; t=1757275864; c=relaxed/simple;
+	bh=elX7YnwNj4uNlcwep6VqeW+BWHU00Z7Yab6eOs51XgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o50SHtVIHf/YDZ2Xx0uWfFN9lrIYyezE+lf/Y2ctXX56HENxVwNZuzA39qt1yd1MAArMfptFV1Gb6Hkst8XgjIR9Ps41N+FwR6XZIRUdMhkQif/pcZLsUDtZKiuSFNlTHsi7cSkMlk0yNDLDiDif/kA4DD8con5+BIdTbPWAMKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ID4jOzkm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D600C4CEF0;
-	Sun,  7 Sep 2025 20:18:48 +0000 (UTC)
+	 MIME-Version; b=MQ0jP0aA31oC2pNEB8Q3k2KNRdKSNG6xFSOTxLXTqCNOblY8XyvdJalIMafk/QE2f8ftRX96JMXYsWN2PByeOFXIEkaTY0PQHc+0Z4hJcKyP2A9RAIt+1cTy6w6j/apeiNafdo2O2lpJZ/tMeIlrRj6L1q0rW84tP3n8eadWxyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hcb2mef/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D75C4CEF0;
+	Sun,  7 Sep 2025 20:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276328;
-	bh=TPhfzhoVDnbNL0+kvqoo/eDHZTPSDL0q7E8qYkhq+y8=;
+	s=korg; t=1757275864;
+	bh=elX7YnwNj4uNlcwep6VqeW+BWHU00Z7Yab6eOs51XgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ID4jOzkmA29XyPBhATUzhzbqo1OIBHklkW9Z5XTu3CX0p9+LHBWh9/WmP2I+VXYeD
-	 CKC25KZ8QlZuygC3q4+WLxc0Z0UIPBdSOy0tG3PL51nDAPnyffYxeitPKUYPIFxEGg
-	 kOT+NyIQPoNQhq0cl43INV9M3loCceqxViYMD1p0=
+	b=Hcb2mef/HJsp08XvWRyZBMC1jYuApx6lCE8QCOJM4fJcvvsZqH1LB+2Gtqn6c3jlw
+	 sKpqoxkTfvR2T5DWtbpzGGxfcTAaF6fGltIR7rqfy0ixAHTKsCBJCj2mQ6UFf4/QlA
+	 UGgvSRnVeN+Qf4NfGVB2HwIqih/guWlOdvUA7NjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Chiu <chris.chiu@canonical.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Pieter Van Trappen <pieter.van.trappen@cern.ch>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/104] ALSA: hda/realtek - Add new HP ZBook laptop with micmute led fixup
+Subject: [PATCH 5.4 34/45] net: dsa: microchip: update tag_ksz masks for KSZ9477 family
 Date: Sun,  7 Sep 2025 21:58:20 +0200
-Message-ID: <20250907195609.313559817@linuxfoundation.org>
+Message-ID: <20250907195601.976101315@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Chiu <chris.chiu@canonical.com>
+From: Pieter Van Trappen <pieter.van.trappen@cern.ch>
 
-[ Upstream commit f709b78aecab519dbcefa9a6603b94ad18c553e3 ]
+[ Upstream commit 3f464b193d40e49299dcd087b10cc3b77cbbea68 ]
 
-New HP ZBook with Realtek HDA codec ALC3247 needs the quirk
-ALC236_FIXUP_HP_GPIO_LED to fix the micmute LED.
+Remove magic number 7 by introducing a GENMASK macro instead.
+Remove magic number 0x80 by using the BIT macro instead.
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250520132101.120685-1-chris.chiu@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ Adjust context ]
+Signed-off-by: Pieter Van Trappen <pieter.van.trappen@cern.ch>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20240909134301.75448-1-vtpieter@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ba54bce747fa ("net: dsa: microchip: linearize skb for tail-tagging switches")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/dsa/tag_ksz.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10093,6 +10093,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8e18, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e19, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8e1d, "HP ZBook X Gli 16 G12", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
- 	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
+--- a/net/dsa/tag_ksz.c
++++ b/net/dsa/tag_ksz.c
+@@ -149,8 +149,9 @@ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROT
+ 
+ #define KSZ9477_INGRESS_TAG_LEN		2
+ #define KSZ9477_PTP_TAG_LEN		4
+-#define KSZ9477_PTP_TAG_INDICATION	0x80
++#define KSZ9477_PTP_TAG_INDICATION	BIT(7)
+ 
++#define KSZ9477_TAIL_TAG_EG_PORT_M	GENMASK(2, 0)
+ #define KSZ9477_TAIL_TAG_OVERRIDE	BIT(9)
+ #define KSZ9477_TAIL_TAG_LOOKUP		BIT(10)
+ 
+@@ -185,7 +186,7 @@ static struct sk_buff *ksz9477_rcv(struc
+ {
+ 	/* Tag decoding */
+ 	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+-	unsigned int port = tag[0] & 7;
++	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
+ 	unsigned int len = KSZ_EGRESS_TAG_LEN;
+ 
+ 	/* Extra 4-bytes PTP timestamp */
 
 
 
