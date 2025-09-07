@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-178435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38148B47EA6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:27:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1F7AB47FCC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:42:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA5F816733B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:27:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A17EC1B21D2B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C883420E005;
-	Sun,  7 Sep 2025 20:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2B31F63CD;
+	Sun,  7 Sep 2025 20:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X928jXfL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/SIegyw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853C517BB21;
-	Sun,  7 Sep 2025 20:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A0D20E00B;
+	Sun,  7 Sep 2025 20:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276826; cv=none; b=B5iandU7zTkBylirZwHnjx38eh9IfBsuquMgZJ0knsqcBaQ3ZEH6XGcyYAdAdtdQ4/62/ZPP18Jw5JdCqwy+WUUEzW0adW+URIOdyTf21zJ9ecU1P9JoSDyTgA5CaJ/u+gNrH94+AhFHKdIJBDPdnz0E9e1+bnWXot9W6vLRoU4=
+	t=1757277745; cv=none; b=njezJhbmzdsCGVI9tSAFx1Hjkrt56i7zfzkwhf+xh4G8F7B16r8dDweGGQU/4v6yagA2Wv4q7YiVXAQB5ovNO6uvvHRxbtQoPs/nTtfq7klCxAf3/b5qS87WKR3ywwIJgq89VvZpkS0cTzS6AgUWJwo7JWDn6Jhz/ClL2OgMm2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276826; c=relaxed/simple;
-	bh=erX9nhufKdKG2VloRWHCmp0er7/5bBFMQcBPORrqVYQ=;
+	s=arc-20240116; t=1757277745; c=relaxed/simple;
+	bh=7HCUe+SVUOcNAZavS0hKpLwVs5iiUkOfqknvsXDJiLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HuG8b1S6onm0eQ23OkvNLdUg9E+lNaC39Q45BeFUsZX9OMTgEajaE97m5hjJkjYARY56Zk7YqcaWc2wgtfPrqPDcjh0fSH34S6vfXwBlN1h/WLfgMx1/cV4qApI5kEGITofN/LwAXoveADgDXdUI8zy9nAE2O+nPqpnmVFTOYnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X928jXfL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072E8C4CEF0;
-	Sun,  7 Sep 2025 20:27:05 +0000 (UTC)
+	 MIME-Version; b=our5DiCH/NAN/rVCQzUhljeOdIwetwOmvHE9emS2jTYhBXr3zBB3i66kCrzm0B5tKrc9PFjPV+jKtIRgt3dylxL9s16KBj5gZlvwvlpLdKicQP2XqtdQr5BnPgiVQBgdB13J8IPWKuqc+oeDWGFwQHfYCc4WeU0dJ4kLC89I9fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/SIegyw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2FEC4CEF0;
+	Sun,  7 Sep 2025 20:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276826;
-	bh=erX9nhufKdKG2VloRWHCmp0er7/5bBFMQcBPORrqVYQ=;
+	s=korg; t=1757277745;
+	bh=7HCUe+SVUOcNAZavS0hKpLwVs5iiUkOfqknvsXDJiLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X928jXfLLJH2dMCHogZXhJj5lNuwhdgwH6DvTb+ONDVTfB6w6t5Rh3CpmsoUMNNHh
-	 hhOx2g8XededA2iAQbSlvUCLtZH3e7Sal+mYlWzCE9BjjBYzblShXWwG4XluhO6lbg
-	 tTBO6xvtQk0+1yg3cjbSvwYEjD/HV7PfZV3osu1E=
+	b=R/SIegyw1c0A0SZdszGCJqmLM8/MzPxQ+6qmKLPwnfxcMdvOwL+BVBKJbJKMiidVM
+	 uB9Z6Ixje9w6e0Kyfto6BogJBDCfnEnzMFVNxp5IrzQ8frs1wtQt9/JKY3fmFjydeR
+	 luD8YjkhDs3UB+tSEd82Frg8rFA2HqWsXAga5NCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Dominik Brodowski <linux@dominikbrodowski.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/121] pcmcia: omap: Add missing check for platform_get_resource
+	Gu Bowen <gubowen5@huawei.com>,
+	Waiman Long <longman@redhat.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Breno Leitao <leitao@debian.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Lu Jialin <lujialin4@huawei.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 108/183] mm: fix possible deadlock in kmemleak
 Date: Sun,  7 Sep 2025 21:58:55 +0200
-Message-ID: <20250907195612.392750538@linuxfoundation.org>
+Message-ID: <20250907195618.357580623@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +67,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Gu Bowen <gubowen5@huawei.com>
 
-[ Upstream commit ecef14f70ec9344a10c817248d2ac6cddee5921e ]
+commit c873ccbb2f8db46ad9b4a989ea924b6d8f19abf1 upstream.
 
-Add missing check for platform_get_resource() and return error if it fails
-to catch the error.
+There are some AA deadlock issues in kmemleak, similar to the situation
+reported by Breno [1].  The deadlock path is as follows:
 
-Fixes: d87d44f7ab35 ("ARM: omap1: move CF chipselect setup to board file")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+mem_pool_alloc()
+  -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+      -> pr_warn()
+          -> netconsole subsystem
+	     -> netpoll
+	         -> __alloc_skb
+		   -> __create_object
+		     -> raw_spin_lock_irqsave(&kmemleak_lock, flags);
+
+To solve this problem, switch to printk_safe mode before printing warning
+message, this will redirect all printk()-s to a special per-CPU buffer,
+which will be flushed later from a safe context (irq work), and this
+deadlock problem can be avoided.  The proper API to use should be
+printk_deferred_enter()/printk_deferred_exit() [2].  Another way is to
+place the warn print after kmemleak is released.
+
+Link: https://lkml.kernel.org/r/20250822073541.1886469-1-gubowen5@huawei.com
+Link: https://lore.kernel.org/all/20250731-kmemleak_lock-v1-1-728fd470198f@debian.org/#t [1]
+Link: https://lore.kernel.org/all/5ca375cd-4a20-4807-b897-68b289626550@redhat.com/ [2]
+Signed-off-by: Gu Bowen <gubowen5@huawei.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: John Ogness <john.ogness@linutronix.de>
+Cc: Lu Jialin <lujialin4@huawei.com>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pcmcia/omap_cf.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/kmemleak.c |   27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pcmcia/omap_cf.c b/drivers/pcmcia/omap_cf.c
-index e613818dc0bc9..25382612e48ac 100644
---- a/drivers/pcmcia/omap_cf.c
-+++ b/drivers/pcmcia/omap_cf.c
-@@ -215,6 +215,8 @@ static int __init omap_cf_probe(struct platform_device *pdev)
- 		return -EINVAL;
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -437,9 +437,15 @@ static struct kmemleak_object *__lookup_
+ 		else if (untagged_objp == untagged_ptr || alias)
+ 			return object;
+ 		else {
++			/*
++			 * Printk deferring due to the kmemleak_lock held.
++			 * This is done to avoid deadlock.
++			 */
++			printk_deferred_enter();
+ 			kmemleak_warn("Found object by alias at 0x%08lx\n",
+ 				      ptr);
+ 			dump_object_info(object);
++			printk_deferred_exit();
+ 			break;
+ 		}
+ 	}
+@@ -736,6 +742,11 @@ static int __link_object(struct kmemleak
+ 		else if (untagged_objp + parent->size <= untagged_ptr)
+ 			link = &parent->rb_node.rb_right;
+ 		else {
++			/*
++			 * Printk deferring due to the kmemleak_lock held.
++			 * This is done to avoid deadlock.
++			 */
++			printk_deferred_enter();
+ 			kmemleak_stop("Cannot insert 0x%lx into the object search tree (overlaps existing)\n",
+ 				      ptr);
+ 			/*
+@@ -743,6 +754,7 @@ static int __link_object(struct kmemleak
+ 			 * be freed while the kmemleak_lock is held.
+ 			 */
+ 			dump_object_info(parent);
++			printk_deferred_exit();
+ 			return -EEXIST;
+ 		}
+ 	}
+@@ -856,13 +868,8 @@ static void delete_object_part(unsigned
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res)
-+		return -EINVAL;
+ 	raw_spin_lock_irqsave(&kmemleak_lock, flags);
+ 	object = __find_and_remove_object(ptr, 1, objflags);
+-	if (!object) {
+-#ifdef DEBUG
+-		kmemleak_warn("Partially freeing unknown object at 0x%08lx (size %zu)\n",
+-			      ptr, size);
+-#endif
++	if (!object)
+ 		goto unlock;
+-	}
  
- 	cf = kzalloc(sizeof *cf, GFP_KERNEL);
- 	if (!cf)
--- 
-2.51.0
-
+ 	/*
+ 	 * Create one or two objects that may result from the memory block
+@@ -882,8 +889,14 @@ static void delete_object_part(unsigned
+ 
+ unlock:
+ 	raw_spin_unlock_irqrestore(&kmemleak_lock, flags);
+-	if (object)
++	if (object) {
+ 		__delete_object(object);
++	} else {
++#ifdef DEBUG
++		kmemleak_warn("Partially freeing unknown object at 0x%08lx (size %zu)\n",
++			      ptr, size);
++#endif
++	}
+ 
+ out:
+ 	if (object_l)
 
 
 
