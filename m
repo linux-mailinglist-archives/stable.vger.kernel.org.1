@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-178112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 526C8B47D4C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23AD0B47E93
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C9D417C1A2
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D426817E43F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D694527F754;
-	Sun,  7 Sep 2025 20:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD7EC20D4FC;
+	Sun,  7 Sep 2025 20:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s34oDegd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVxnLsvZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BFE1CDFAC;
-	Sun,  7 Sep 2025 20:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCB8D528;
+	Sun,  7 Sep 2025 20:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275802; cv=none; b=dA7DRt1uR+0GSfSQ7vsDrQGdNG0MEOiRaWfb8hjwopPKI9RPw81bs+HHpcDUpi9asgKedq8XebWGZ5F1vcqvIAb33tiR1jBI/d/Q0l+h10VVd2zZZe2yCmDLlub+229+KW4rfm5rKjZ7DEaWwMMEmHAX+b6KoZWybSFRaIV1mvw=
+	t=1757276766; cv=none; b=BuaG866jnhUKGPo9LOH1eNYg0uj3U+z+AErQrSGpe1F6IVnhPgxOVLWEKEoN75vZnXkSt+dTLJKPO6QgYhKIg1TlEvnTlXzbJDxw1m5frFWUbhxyx4raIxPWaxCNnGyeCzHATibjhGgD/JA8o98S6rpUQRcKJc42go3FstaIzAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275802; c=relaxed/simple;
-	bh=vqhGcQEmxIi3YyvMhbmkY40Yv6Dh5iN4ph/8DZyetSQ=;
+	s=arc-20240116; t=1757276766; c=relaxed/simple;
+	bh=fK+/eo+VxZ7N5/XUhH7cOJIA9s/hXtTkQ9XGymu28vQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ohjOvQUMOhR5I44bKAxdPEj43/4yFlEcZpTFSEfAYlf6hzs8ur2ETG4XQcizVyQ3miQEF6CwsYGGv5NYediG67Mnfn8TXoccmIyNwejP/XFBPWFYYx9Ng5mgst5svtgAylsdTDALXVWipG7TKhub9JUizG1iTvs1O+8RoItmqCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s34oDegd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFF1C4CEF0;
-	Sun,  7 Sep 2025 20:10:01 +0000 (UTC)
+	 MIME-Version; b=Bzsk1PmUBZATp5mVZR5Rkhy49X6CLDyKLyMnSgxy9GcvIswy8ngpzljek8jftaNhtopBOyWECTXDlTruaSu8ROU/5cwCYZ2iH9FC1INJjmYmLGN6pi5SNrjreu+rppioaWQvi3Bcl7rm1dkRLBF5z/T2FIikFpN7Ut/1mgQps6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVxnLsvZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F31C4CEF0;
+	Sun,  7 Sep 2025 20:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275802;
-	bh=vqhGcQEmxIi3YyvMhbmkY40Yv6Dh5iN4ph/8DZyetSQ=;
+	s=korg; t=1757276766;
+	bh=fK+/eo+VxZ7N5/XUhH7cOJIA9s/hXtTkQ9XGymu28vQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s34oDegdPWh6eGEbqUcWBLVwVewS+WV8PDeI8MlzPYDXBm0DofwC/DaJk6xStv4pA
-	 FG3mB3OI16IXNOmYxnJN9IJuygqzMLloeS3J6gszOj/TSlewpoDK5sanmWtE5N7/k7
-	 jKYi8gY59UHiRPRvsx0Uqt83B+xYfa12rJwMt54k=
+	b=vVxnLsvZoIFFjbz5XPooduZc1pUAlOO0amL5ZCh2tGvaXgZHoaBqA+34RwROAAh+i
+	 CE8I8wDTtdIMHoOBZ2QfAE1k/d0IbB+SGPd7LMRX2qmVqwuLHAvZbgIQkQ3I02VvY/
+	 GO4+FK39v6MrHvlENwol31DMaGWFtRcE67426MJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Bernard Pidoux <f6bvp@free.fr>,
+	Eric Dumazet <edumazet@google.com>,
+	Joerg Reuter <jreuter@yaina.de>,
+	David Ranch <dranch@trinnet.net>,
+	Folkert van Heusden <folkert@vanheusden.com>,
+	Dan Cross <crossd@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 16/45] net: atm: fix memory leak in atm_register_sysfs when device_register fail
+Subject: [PATCH 6.6 046/121] ax25: properly unshare skbs in ax25_kiss_rcv()
 Date: Sun,  7 Sep 2025 21:58:02 +0200
-Message-ID: <20250907195601.432697736@linuxfoundation.org>
+Message-ID: <20250907195611.003958338@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +67,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0a228624bcc00af41f281a2a84c928595a74c17d ]
+[ Upstream commit 8156210d36a43e76372312c87eb5ea3dbb405a85 ]
 
-When device_register() return error in atm_register_sysfs(), which can be
-triggered by kzalloc fail in device_private_init() or other reasons,
-kmemleak reports the following memory leaks:
+Bernard Pidoux reported a regression apparently caused by commit
+c353e8983e0d ("net: introduce per netns packet chains").
 
-unreferenced object 0xffff88810182fb80 (size 8):
-  comm "insmod", pid 504, jiffies 4294852464
-  hex dump (first 8 bytes):
-    61 64 75 6d 6d 79 30 00                          adummy0.
-  backtrace (crc 14dfadaf):
-    __kmalloc_node_track_caller_noprof+0x335/0x450
-    kvasprintf+0xb3/0x130
-    kobject_set_name_vargs+0x45/0x120
-    dev_set_name+0xa9/0xe0
-    atm_register_sysfs+0xf3/0x220
-    atm_dev_register+0x40b/0x780
-    0xffffffffa000b089
-    do_one_initcall+0x89/0x300
-    do_init_module+0x27b/0x7d0
-    load_module+0x54cd/0x5ff0
-    init_module_from_file+0xe4/0x150
-    idempotent_init_module+0x32c/0x610
-    __x64_sys_finit_module+0xbd/0x120
-    do_syscall_64+0xa8/0x270
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+skb->dev becomes NULL and we crash in __netif_receive_skb_core().
 
-When device_create_file() return error in atm_register_sysfs(), the same
-issue also can be triggered.
+Before above commit, different kind of bugs or corruptions could happen
+without a major crash.
 
-Function put_device() should be called to release kobj->name memory and
-other device resource, instead of kfree().
+But the root cause is that ax25_kiss_rcv() can queue/mangle input skb
+without checking if this skb is shared or not.
 
-Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250901063537.1472221-1-wangliang74@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Many thanks to Bernard Pidoux for his help, diagnosis and tests.
+
+We had a similar issue years ago fixed with commit 7aaed57c5c28
+("phonet: properly unshare skbs in phonet_rcv()").
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Bernard Pidoux <f6bvp@free.fr>
+Closes: https://lore.kernel.org/netdev/1713f383-c538-4918-bc64-13b3288cd542@free.fr/
+Tested-by: Bernard Pidoux <f6bvp@free.fr>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Joerg Reuter <jreuter@yaina.de>
+Cc: David Ranch <dranch@trinnet.net>
+Cc: Folkert van Heusden <folkert@vanheusden.com>
+Reviewed-by: Dan Cross <crossd@gmail.com>
+Link: https://patch.msgid.link/20250902124642.212705-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/resources.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ax25/ax25_in.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/atm/resources.c b/net/atm/resources.c
-index e244c2576d1e0..a00799254e2d6 100644
---- a/net/atm/resources.c
-+++ b/net/atm/resources.c
-@@ -114,7 +114,9 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
+diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
+index 1cac25aca6378..f2d66af863595 100644
+--- a/net/ax25/ax25_in.c
++++ b/net/ax25/ax25_in.c
+@@ -433,6 +433,10 @@ static int ax25_rcv(struct sk_buff *skb, struct net_device *dev,
+ int ax25_kiss_rcv(struct sk_buff *skb, struct net_device *dev,
+ 		  struct packet_type *ptype, struct net_device *orig_dev)
+ {
++	skb = skb_share_check(skb, GFP_ATOMIC);
++	if (!skb)
++		return NET_RX_DROP;
++
+ 	skb_orphan(skb);
  
- 	if (atm_proc_dev_register(dev) < 0) {
- 		pr_err("atm_proc_dev_register failed for dev %s\n", type);
--		goto out_fail;
-+		mutex_unlock(&atm_dev_mutex);
-+		kfree(dev);
-+		return NULL;
- 	}
- 
- 	if (atm_register_sysfs(dev, parent) < 0) {
-@@ -130,7 +132,7 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
- 	return dev;
- 
- out_fail:
--	kfree(dev);
-+	put_device(&dev->class_dev);
- 	dev = NULL;
- 	goto out;
- }
+ 	if (!net_eq(dev_net(dev), &init_net)) {
 -- 
 2.50.1
 
