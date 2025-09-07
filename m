@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-178146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F6DFB47D6F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:11:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1737DB47F0E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99374189C8EC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C37A517117F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE23D27F754;
-	Sun,  7 Sep 2025 20:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7153B15C158;
+	Sun,  7 Sep 2025 20:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cM+38jnR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXImGWm0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D381CDFAC;
-	Sun,  7 Sep 2025 20:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC641DE8AF;
+	Sun,  7 Sep 2025 20:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275911; cv=none; b=kyMmqenmK8kZscK1mfq5J7X9ldotKE9EM9yTwRttjamTN4+cIb1OE2Qw6bbpkFwYVYfxDOs3Xhslt/t4UfxDzdJ0Ap2ccolXSqYgjfLz0OmejElwsNEh2UV1vNEI8atnGOGr4WZJHyhFvxhvo2Tc16ECRq+DHN3Qacrs7kWqPkE=
+	t=1757277144; cv=none; b=Y8IUyBYtcy7ZHMIb3+uTUKMLAuzT7PpK3hDRmbQUQgEr5vls4QVL8r7ChThIWHwBr2ichchIYUEh+KUo+0rqvtjLqlbe4ojblEsRqnf+J+7Fy2wxWo72OG/r5y1ZwJ59dB/ukL3CrKnUf9vIOH5oWDmx8PWICRQhLNhNrC8kut0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275911; c=relaxed/simple;
-	bh=aK1Ql1f3WVf46bjoObd2Yj2u28Ylyn/QyV2H/n+JYw8=;
+	s=arc-20240116; t=1757277144; c=relaxed/simple;
+	bh=umpYmhIrbr9/BZ26QdLqGa0pjJh8VQAJHqTCQBZPWL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fuICc7FJ1jeMv7rwLqdDH4zUOO6/3k6jHIGUlKM/wHWFKBiLwT8eDjXnTTexwKuJAXb616QcP2YJ6Ij/wOlT5vkV/5GHKtZcZd+YgTo8RVgS4PIwjF4JchiFh7fLq9rdlUdtpFZXRyygpjFMMjioUO73HQhW3fJNenTC3Cn1xjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cM+38jnR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06875C4CEF0;
-	Sun,  7 Sep 2025 20:11:50 +0000 (UTC)
+	 MIME-Version; b=Zyv1Ae7DtbW9ht9bw1AJvSq/qtPK6Q0Z65yOmPqYhN5YDw1D4PF35+ocm1VMoD8eWxcziyh1dVtf+0Kq4OC4IibbRlxsrCQkNqBsjNyjThgfCwCJUuEPY/LUbl3livDG2kYud9AYXBh2MF5eeFq52NzCWpZHBTmnOzKkZ+IH82I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXImGWm0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3692C4CEF0;
+	Sun,  7 Sep 2025 20:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275911;
-	bh=aK1Ql1f3WVf46bjoObd2Yj2u28Ylyn/QyV2H/n+JYw8=;
+	s=korg; t=1757277144;
+	bh=umpYmhIrbr9/BZ26QdLqGa0pjJh8VQAJHqTCQBZPWL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cM+38jnRLr8JJiTiXp82WyAS4aZSg7KVfYokwb1E5TENYjTDxDNRWK4v03YpCRxnG
-	 HkIUgXeb4DU9fj/kNp7Jv1k3jvn4L+1+BSR0nN8dGHGkKWI2x0hupXaMlH2UGyw7Of
-	 grfW4AB2xFwWF+ukq9ZzoofWVThGSDcrCZYK6Ofo=
+	b=dXImGWm0H6Jjmaztf42mwkMueuTH9Jt99DO6CKOYpHKov7we8kw8HsW6l1VrIbykG
+	 sx1Wp/CiqXpiQ/A0hRTJzpE05t699ODlAvcB4G5qtZp70M6J25iRXIS8hW8QduuXki
+	 4NA/0H3K4s9l2xz87zMhJphsUtuWv41foG0HBCPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 11/45] wifi: libertas: cap SSID len in lbs_associate()
+Subject: [PATCH 6.12 082/175] ipv4: Fix NULL vs error pointer check in inet_blackhole_dev_init()
 Date: Sun,  7 Sep 2025 21:57:57 +0200
-Message-ID: <20250907195601.289040343@linuxfoundation.org>
+Message-ID: <20250907195616.776765186@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit c786794bd27b0d7a5fd9063695df83206009be59 ]
+[ Upstream commit a51160f8da850a65afbf165f5bbac7ffb388bf74 ]
 
-If the ssid_eid[1] length is more that 32 it leads to memory corruption.
+The inetdev_init() function never returns NULL.  Check for error
+pointers instead.
 
-Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Fixes: 22600596b675 ("ipv4: give an IPv4 dev to blackhole_netdev")
 Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/2a40f5ec7617144aef412034c12919a4927d90ad.1756456951.git.dan.carpenter@linaro.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/aLaQWL9NguWmeM1i@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/libertas/cfg.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/ipv4/devinet.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
-index 4e3de684928bf..a659054c1bcd9 100644
---- a/drivers/net/wireless/marvell/libertas/cfg.c
-+++ b/drivers/net/wireless/marvell/libertas/cfg.c
-@@ -1102,10 +1102,13 @@ static int lbs_associate(struct lbs_private *priv,
- 	/* add SSID TLV */
- 	rcu_read_lock();
- 	ssid_eid = ieee80211_bss_get_ie(bss, WLAN_EID_SSID);
--	if (ssid_eid)
--		pos += lbs_add_ssid_tlv(pos, ssid_eid + 2, ssid_eid[1]);
--	else
-+	if (ssid_eid) {
-+		u32 ssid_len = min(ssid_eid[1], IEEE80211_MAX_SSID_LEN);
-+
-+		pos += lbs_add_ssid_tlv(pos, ssid_eid + 2, ssid_len);
-+	} else {
- 		lbs_deb_assoc("no SSID\n");
-+	}
- 	rcu_read_unlock();
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index a55e95046984d..46fa50576f581 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -351,14 +351,13 @@ static void inetdev_destroy(struct in_device *in_dev)
  
- 	/* add DS param TLV */
+ static int __init inet_blackhole_dev_init(void)
+ {
+-	int err = 0;
++	struct in_device *in_dev;
+ 
+ 	rtnl_lock();
+-	if (!inetdev_init(blackhole_netdev))
+-		err = -ENOMEM;
++	in_dev = inetdev_init(blackhole_netdev);
+ 	rtnl_unlock();
+ 
+-	return err;
++	return PTR_ERR_OR_ZERO(in_dev);
+ }
+ late_initcall(inet_blackhole_dev_init);
+ 
 -- 
 2.50.1
 
