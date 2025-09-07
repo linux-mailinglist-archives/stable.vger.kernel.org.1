@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22FECB47D15
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C0EAB47E3D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:21:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDC953BD949
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 092357AB8FE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED65284B59;
-	Sun,  7 Sep 2025 20:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B593189BB0;
+	Sun,  7 Sep 2025 20:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y7KbHCMy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDp6VbTo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC6E1CDFAC;
-	Sun,  7 Sep 2025 20:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAC01A9FAA;
+	Sun,  7 Sep 2025 20:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275641; cv=none; b=hIrrLmUFNYu8657xOtCzlv7mwiUkvuiXQjPoQKqVGhvRP+gjAdAuVPKPqHfdOexO1+8f/obgxS39YRe+X2GalMby7S/I4QDRMtwXDHctMxf1VNE8DUJT88rsaTJDhlgRC06crgclhKKJv5i5mNdSmlsoUtatsuXAFGG7HxUYUGo=
+	t=1757276510; cv=none; b=ubPT+zL2zzCnsVfyhfPUzFqoxN7ElaSdK5jO46KPwn2Bo1Lsv1QDe2ncKFR7sQGDscnw/s9TdetierlmM27iDSAhRX4EVz7OBCFxtEkLUVw4zD8JPYuGXbsiefeu7xZk07r1Ni3QXtDaOCWgvpfnP1yQsfQhlVNmInaMVGpbFCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275641; c=relaxed/simple;
-	bh=xI2D8o+uVFXBiMREgZHvdRtiXcjcOGPRuly7K0wBczo=;
+	s=arc-20240116; t=1757276510; c=relaxed/simple;
+	bh=f9ZAj6sU1t9S2PZIyDI+zLcVVRRJHgpoU20UzrYchcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UrOJMb6YIDgvsiMs+rSy1ztvKuLCKnQ5FMBDMaOa7ff8Gpw3+p1usXrm7emW41Sz1vx5I2hlEoaaKpxG5GU2XbTIJd4S02EoNK6zZC8wd+Yagj3uS96xBewJZDEFIVv+AZihhBZ3IV2dHOS2/mGKIHHmlr+A3/eHWeP3d1XfOkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y7KbHCMy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2157AC4CEF0;
-	Sun,  7 Sep 2025 20:07:18 +0000 (UTC)
+	 MIME-Version; b=bE96mEqXJUo2LPPGiZNGTnfy/vWQpBPUDkrdmCrnUxtMMt4InaN/1CAqwkyFxMs/iKknMd81kmOMH5ZxXshFDSw5dCPKPm57+q+DVoU6szAtt67o6dROWG17cKtZjc4FFvJTFZcRr3ieLiIPoAmVlaqYEGVBSZdVzLVMD4n6O78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDp6VbTo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2FCC4CEF0;
+	Sun,  7 Sep 2025 20:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275639;
-	bh=xI2D8o+uVFXBiMREgZHvdRtiXcjcOGPRuly7K0wBczo=;
+	s=korg; t=1757276509;
+	bh=f9ZAj6sU1t9S2PZIyDI+zLcVVRRJHgpoU20UzrYchcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y7KbHCMygaxevirlIrTQN2L7DyuydtIwUsSdRo7lHsZmnWp5ey0/4LZM18peWzKOe
-	 756KJZhL9NLWHQ3Qc88Bo+jJLBlOzqoi5ejGgzm6trvoyreHfpejUFUA1e4tgSxVGr
-	 7fAbGv4nK9SSB4NAPnU+wBF+WsMLlFO/GyUg0qLg=
+	b=vDp6VbTo4ZbVY3I+xkU+G+XjoG+QS3Foi/4J2ip6Lr2IbkzpTev1RnjG/mnuCkZvs
+	 0KT1gSWPpzDi4n9NkEZAm6tqOK0IAKuciXl1+aS27FKbolft6JcApFEBfKrIbvoYS4
+	 2ln4I+lJeeLBV6MvmJZ3pwXDVYLfNktAA4376u+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Phil Sutter <phil@nwl.cc>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 18/52] net: atm: fix memory leak in atm_register_sysfs when device_register fail
+Subject: [PATCH 6.6 022/121] netfilter: conntrack: helper: Replace -EEXIST by -EBUSY
 Date: Sun,  7 Sep 2025 21:57:38 +0200
-Message-ID: <20250907195602.524521236@linuxfoundation.org>
+Message-ID: <20250907195610.385887831@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit 0a228624bcc00af41f281a2a84c928595a74c17d ]
+[ Upstream commit 54416fd76770bd04fc3c501810e8d673550bab26 ]
 
-When device_register() return error in atm_register_sysfs(), which can be
-triggered by kzalloc fail in device_private_init() or other reasons,
-kmemleak reports the following memory leaks:
+The helper registration return value is passed-through by module_init
+callbacks which modprobe confuses with the harmless -EEXIST returned
+when trying to load an already loaded module.
 
-unreferenced object 0xffff88810182fb80 (size 8):
-  comm "insmod", pid 504, jiffies 4294852464
-  hex dump (first 8 bytes):
-    61 64 75 6d 6d 79 30 00                          adummy0.
-  backtrace (crc 14dfadaf):
-    __kmalloc_node_track_caller_noprof+0x335/0x450
-    kvasprintf+0xb3/0x130
-    kobject_set_name_vargs+0x45/0x120
-    dev_set_name+0xa9/0xe0
-    atm_register_sysfs+0xf3/0x220
-    atm_dev_register+0x40b/0x780
-    0xffffffffa000b089
-    do_one_initcall+0x89/0x300
-    do_init_module+0x27b/0x7d0
-    load_module+0x54cd/0x5ff0
-    init_module_from_file+0xe4/0x150
-    idempotent_init_module+0x32c/0x610
-    __x64_sys_finit_module+0xbd/0x120
-    do_syscall_64+0xa8/0x270
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Make sure modprobe fails so users notice their helper has not been
+registered and won't work.
 
-When device_create_file() return error in atm_register_sysfs(), the same
-issue also can be triggered.
-
-Function put_device() should be called to release kobj->name memory and
-other device resource, instead of kfree().
-
-Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250901063537.1472221-1-wangliang74@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/resources.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/netfilter/nf_conntrack_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/atm/resources.c b/net/atm/resources.c
-index fb8cf4cd6c1d7..932f7b383dba7 100644
---- a/net/atm/resources.c
-+++ b/net/atm/resources.c
-@@ -114,7 +114,9 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
- 
- 	if (atm_proc_dev_register(dev) < 0) {
- 		pr_err("atm_proc_dev_register failed for dev %s\n", type);
--		goto out_fail;
-+		mutex_unlock(&atm_dev_mutex);
-+		kfree(dev);
-+		return NULL;
- 	}
- 
- 	if (atm_register_sysfs(dev, parent) < 0) {
-@@ -130,7 +132,7 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
- 	return dev;
- 
- out_fail:
--	kfree(dev);
-+	put_device(&dev->class_dev);
- 	dev = NULL;
- 	goto out;
- }
+diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
+index f22691f838536..10f72b5b4e1ad 100644
+--- a/net/netfilter/nf_conntrack_helper.c
++++ b/net/netfilter/nf_conntrack_helper.c
+@@ -373,7 +373,7 @@ int nf_conntrack_helper_register(struct nf_conntrack_helper *me)
+ 			    (cur->tuple.src.l3num == NFPROTO_UNSPEC ||
+ 			     cur->tuple.src.l3num == me->tuple.src.l3num) &&
+ 			    cur->tuple.dst.protonum == me->tuple.dst.protonum) {
+-				ret = -EEXIST;
++				ret = -EBUSY;
+ 				goto out;
+ 			}
+ 		}
+@@ -384,7 +384,7 @@ int nf_conntrack_helper_register(struct nf_conntrack_helper *me)
+ 		hlist_for_each_entry(cur, &nf_ct_helper_hash[h], hnode) {
+ 			if (nf_ct_tuple_src_mask_cmp(&cur->tuple, &me->tuple,
+ 						     &mask)) {
+-				ret = -EEXIST;
++				ret = -EBUSY;
+ 				goto out;
+ 			}
+ 		}
 -- 
 2.50.1
 
