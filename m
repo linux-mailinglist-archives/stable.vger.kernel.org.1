@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC6A6B47DF5
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0736B47EE9
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B08CF189EB9A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A39543AC195
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DADB01E0DE8;
-	Sun,  7 Sep 2025 20:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14D91FECCD;
+	Sun,  7 Sep 2025 20:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jH6FUByA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPHBcizB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D9E14BFA2;
-	Sun,  7 Sep 2025 20:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2A715C158;
+	Sun,  7 Sep 2025 20:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276319; cv=none; b=sh/GKgbJPyQMc4ROzetZBbAkOxwgkz9xAhNV7VQtvkEZu+NoMZV9AEW51OHw8d+itYtfUGlY1hUmmJJzMqpOPTVpFiVbU/os5Z00TJuyrAmgsg/ekGmkaPcerD4LVX0hb+if/8YtWLImZhwNcXeB5e6x4uEprRyeav06NHuWXeI=
+	t=1757277024; cv=none; b=iCxlPbLI5J6km8LOPQOHe1RJxUB6a2SqGave8CvPmlOfDH+geg9Hy03LYo8QfV+08D3cvDetEAVW7pd4ig8Y0pjDWjr0K9cjVG8mJD7fvcrA4xwVubdtqWSesN6nV1qIxLljvdcjy84euWlvl6DFYQJVDs8BsscWyLl+uzbZz/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276319; c=relaxed/simple;
-	bh=KJ4jwzq6PEXrBFIvqwyit9+i+wyNwzJUviO1DvWz/uk=;
+	s=arc-20240116; t=1757277024; c=relaxed/simple;
+	bh=H1X5dP+pxkrNCWAk1djZWO+JZKEfi42TnsQyTqemHXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ClIOnr7JhdKx+F12Qnrcrv/CRlZkBVQyeaufrJdcy8tp2GPlQUy6HZXjDaHN9o9cM+IhcJi7yczYlNUbviRuVxOdi/UTrTr5cBcSg22fk1cJD0CIi/hu9lnRAanUlxY0iiBB3vHBu9BxLJqcLYWqnLpbbLiEDTmvzyfH/b46O4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jH6FUByA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F06C4CEF0;
-	Sun,  7 Sep 2025 20:18:38 +0000 (UTC)
+	 MIME-Version; b=CLVSbjecUU2UUmQ1K0fA6UbgQN5DfZgJCmk2qjL1ZAkX14GS3Pn7cQxmDMs6iWSqPy9itGOmpSIxPLMEcBb6MxwHHxpHa+OYFn8yoyLumbgBGJFTu2rLF2SwAGdAP2Dg7W/n2NXvZReRd9HCCNyf+2R6LRwMkkxLQLqujPl4m30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPHBcizB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D67C4CEF0;
+	Sun,  7 Sep 2025 20:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276319;
-	bh=KJ4jwzq6PEXrBFIvqwyit9+i+wyNwzJUviO1DvWz/uk=;
+	s=korg; t=1757277024;
+	bh=H1X5dP+pxkrNCWAk1djZWO+JZKEfi42TnsQyTqemHXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jH6FUByAHcVib9uTQAlecqeXeQbp1P1TEIiYJ4IxLht5LwZDQoxiTmhy5ygY2iL7c
-	 ZeOOlV+vTmGOVvMUKsEZkdIcUBnseo4g3yN0/PaPQUKciScrOYwCaIvisKUK2/r48u
-	 q7X32bDU8PBZmGZ/lmQaGeAJGTzC30T/Lkwswk9Q=
+	b=QPHBcizBjTM4pfcu8viIZmbS1WkwuYmtoxrAmQ703Qtvig5XDngYQFHkMiiwFLCVR
+	 s1LykNQcjfiLj/zXsBouN0aE0W2I13AI7NhLJP/UveYOnCV0OjQORZiTzXkZoXpeO1
+	 hhZhIalYIgrSdFyOgeGq4GqiFPKxG1jQ/t6N7nG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e5e64cdf8e92046dd3e1@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Christoph Paasch <cpaasch@openai.com>,
+	Dmitry Safonov <0x7f454c46@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/104] Bluetooth: Fix use-after-free in l2cap_sock_cleanup_listen()
+Subject: [PATCH 6.12 061/175] net/tcp: Fix socket memory leak in TCP-AO failure handling for IPv6
 Date: Sun,  7 Sep 2025 21:57:36 +0200
-Message-ID: <20250907195608.185079623@linuxfoundation.org>
+Message-ID: <20250907195616.282184594@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,173 +63,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Christoph Paasch <cpaasch@openai.com>
 
-[ Upstream commit 862c628108562d8c7a516a900034823b381d3cba ]
+[ Upstream commit fa390321aba0a54d0f7ae95ee4ecde1358bb9234 ]
 
-syzbot reported the splat below without a repro.
+When tcp_ao_copy_all_matching() fails in tcp_v6_syn_recv_sock() it just
+exits the function. This ends up causing a memory-leak:
 
-In the splat, a single thread calling bt_accept_dequeue() freed sk
-and touched it after that.
+unreferenced object 0xffff0000281a8200 (size 2496):
+  comm "softirq", pid 0, jiffies 4295174684
+  hex dump (first 32 bytes):
+    7f 00 00 06 7f 00 00 06 00 00 00 00 cb a8 88 13  ................
+    0a 00 03 61 00 00 00 00 00 00 00 00 00 00 00 00  ...a............
+  backtrace (crc 5ebdbe15):
+    kmemleak_alloc+0x44/0xe0
+    kmem_cache_alloc_noprof+0x248/0x470
+    sk_prot_alloc+0x48/0x120
+    sk_clone_lock+0x38/0x3b0
+    inet_csk_clone_lock+0x34/0x150
+    tcp_create_openreq_child+0x3c/0x4a8
+    tcp_v6_syn_recv_sock+0x1c0/0x620
+    tcp_check_req+0x588/0x790
+    tcp_v6_rcv+0x5d0/0xc18
+    ip6_protocol_deliver_rcu+0x2d8/0x4c0
+    ip6_input_finish+0x74/0x148
+    ip6_input+0x50/0x118
+    ip6_sublist_rcv+0x2fc/0x3b0
+    ipv6_list_rcv+0x114/0x170
+    __netif_receive_skb_list_core+0x16c/0x200
+    netif_receive_skb_list_internal+0x1f0/0x2d0
 
-The root cause would be the racy l2cap_sock_cleanup_listen() call
-added by the cited commit.
+This is because in tcp_v6_syn_recv_sock (and the IPv4 counterpart), when
+exiting upon error, inet_csk_prepare_forced_close() and tcp_done() need
+to be called. They make sure the newsk will end up being correctly
+free'd.
 
-bt_accept_dequeue() is called under lock_sock() except for
-l2cap_sock_release().
+tcp_v4_syn_recv_sock() makes this very clear by having the put_and_exit
+label that takes care of things. So, this patch here makes sure
+tcp_v4_syn_recv_sock and tcp_v6_syn_recv_sock have similar
+error-handling and thus fixes the leak for TCP-AO.
 
-Two threads could see the same socket during the list iteration
-in bt_accept_dequeue():
-
-  CPU1                        CPU2 (close())
-  ----                        ----
-  sock_hold(sk)               sock_hold(sk);
-  lock_sock(sk)   <-- block close()
-  sock_put(sk)
-  bt_accept_unlink(sk)
-    sock_put(sk)  <-- refcnt by bt_accept_enqueue()
-  release_sock(sk)
-                              lock_sock(sk)
-                              sock_put(sk)
-                              bt_accept_unlink(sk)
-                                sock_put(sk)        <-- last refcnt
-                              bt_accept_unlink(sk)  <-- UAF
-
-Depending on the timing, the other thread could show up in the
-"Freed by task" part.
-
-Let's call l2cap_sock_cleanup_listen() under lock_sock() in
-l2cap_sock_release().
-
-[0]:
-BUG: KASAN: slab-use-after-free in debug_spin_lock_before kernel/locking/spinlock_debug.c:86 [inline]
-BUG: KASAN: slab-use-after-free in do_raw_spin_lock+0x26f/0x2b0 kernel/locking/spinlock_debug.c:115
-Read of size 4 at addr ffff88803b7eb1c4 by task syz.5.3276/16995
-CPU: 3 UID: 0 PID: 16995 Comm: syz.5.3276 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xcd/0x630 mm/kasan/report.c:482
- kasan_report+0xe0/0x110 mm/kasan/report.c:595
- debug_spin_lock_before kernel/locking/spinlock_debug.c:86 [inline]
- do_raw_spin_lock+0x26f/0x2b0 kernel/locking/spinlock_debug.c:115
- spin_lock_bh include/linux/spinlock.h:356 [inline]
- release_sock+0x21/0x220 net/core/sock.c:3746
- bt_accept_dequeue+0x505/0x600 net/bluetooth/af_bluetooth.c:312
- l2cap_sock_cleanup_listen+0x5c/0x2a0 net/bluetooth/l2cap_sock.c:1451
- l2cap_sock_release+0x5c/0x210 net/bluetooth/l2cap_sock.c:1425
- __sock_release+0xb3/0x270 net/socket.c:649
- sock_close+0x1c/0x30 net/socket.c:1439
- __fput+0x3ff/0xb70 fs/file_table.c:468
- task_work_run+0x14d/0x240 kernel/task_work.c:227
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop+0xeb/0x110 kernel/entry/common.c:43
- exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
- do_syscall_64+0x3f6/0x4c0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2accf8ebe9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffdb6cb1378 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
-RAX: 0000000000000000 RBX: 00000000000426fb RCX: 00007f2accf8ebe9
-RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
-RBP: 00007f2acd1b7da0 R08: 0000000000000001 R09: 00000012b6cb166f
-R10: 0000001b30e20000 R11: 0000000000000246 R12: 00007f2acd1b609c
-R13: 00007f2acd1b6090 R14: ffffffffffffffff R15: 00007ffdb6cb1490
- </TASK>
-
-Allocated by task 5326:
- kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
- kasan_save_track+0x14/0x30 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:388 [inline]
- __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:405
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __do_kmalloc_node mm/slub.c:4365 [inline]
- __kmalloc_noprof+0x223/0x510 mm/slub.c:4377
- kmalloc_noprof include/linux/slab.h:909 [inline]
- sk_prot_alloc+0x1a8/0x2a0 net/core/sock.c:2239
- sk_alloc+0x36/0xc20 net/core/sock.c:2295
- bt_sock_alloc+0x3b/0x3a0 net/bluetooth/af_bluetooth.c:151
- l2cap_sock_alloc.constprop.0+0x33/0x1d0 net/bluetooth/l2cap_sock.c:1894
- l2cap_sock_new_connection_cb+0x101/0x240 net/bluetooth/l2cap_sock.c:1482
- l2cap_connect_cfm+0x4c4/0xf80 net/bluetooth/l2cap_core.c:7287
- hci_connect_cfm include/net/bluetooth/hci_core.h:2050 [inline]
- hci_remote_features_evt+0x4dd/0x970 net/bluetooth/hci_event.c:3712
- hci_event_func net/bluetooth/hci_event.c:7519 [inline]
- hci_event_packet+0xa0d/0x11c0 net/bluetooth/hci_event.c:7573
- hci_rx_work+0x2c5/0x16b0 net/bluetooth/hci_core.c:4071
- process_one_work+0x9cf/0x1b70 kernel/workqueue.c:3236
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c2/0x780 kernel/kthread.c:463
- ret_from_fork+0x5d7/0x6f0 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Freed by task 16995:
- kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
- kasan_save_track+0x14/0x30 mm/kasan/common.c:68
- kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:576
- poison_slab_object mm/kasan/common.c:243 [inline]
- __kasan_slab_free+0x60/0x70 mm/kasan/common.c:275
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2417 [inline]
- slab_free mm/slub.c:4680 [inline]
- kfree+0x2b4/0x4d0 mm/slub.c:4879
- sk_prot_free net/core/sock.c:2278 [inline]
- __sk_destruct+0x75f/0x9a0 net/core/sock.c:2373
- sk_destruct+0xc2/0xf0 net/core/sock.c:2401
- __sk_free+0xf4/0x3e0 net/core/sock.c:2412
- sk_free+0x6a/0x90 net/core/sock.c:2423
- sock_put include/net/sock.h:1960 [inline]
- bt_accept_unlink+0x245/0x2e0 net/bluetooth/af_bluetooth.c:262
- bt_accept_dequeue+0x517/0x600 net/bluetooth/af_bluetooth.c:308
- l2cap_sock_cleanup_listen+0x5c/0x2a0 net/bluetooth/l2cap_sock.c:1451
- l2cap_sock_release+0x5c/0x210 net/bluetooth/l2cap_sock.c:1425
- __sock_release+0xb3/0x270 net/socket.c:649
- sock_close+0x1c/0x30 net/socket.c:1439
- __fput+0x3ff/0xb70 fs/file_table.c:468
- task_work_run+0x14d/0x240 kernel/task_work.c:227
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop+0xeb/0x110 kernel/entry/common.c:43
- exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
- do_syscall_64+0x3f6/0x4c0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: 1728137b33c0 ("Bluetooth: L2CAP: Fix use-after-free in l2cap_sock_ready_cb")
-Reported-by: syzbot+e5e64cdf8e92046dd3e1@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-bluetooth/68af6b9d.a70a0220.3cafd4.0032.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 06b22ef29591 ("net/tcp: Wire TCP-AO to request sockets")
+Signed-off-by: Christoph Paasch <cpaasch@openai.com>
+Reviewed-by: Dmitry Safonov <0x7f454c46@gmail.com>
+Link: https://patch.msgid.link/20250830-tcpao_leak-v1-1-e5878c2c3173@openai.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv6/tcp_ipv6.c | 32 +++++++++++++++-----------------
+ 1 file changed, 15 insertions(+), 17 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index c89277848ca83..7b822445f8ce4 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1442,7 +1442,10 @@ static int l2cap_sock_release(struct socket *sock)
- 	if (!sk)
- 		return 0;
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index 59173f58ce992..882ce5444572e 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -1417,17 +1417,17 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ 	ireq = inet_rsk(req);
  
-+	lock_sock_nested(sk, L2CAP_NESTING_PARENT);
- 	l2cap_sock_cleanup_listen(sk);
-+	release_sock(sk);
-+
- 	bt_sock_unlink(&l2cap_sk_list, sk);
+ 	if (sk_acceptq_is_full(sk))
+-		goto out_overflow;
++		goto exit_overflow;
  
- 	err = l2cap_sock_shutdown(sock, SHUT_RDWR);
+ 	if (!dst) {
+ 		dst = inet6_csk_route_req(sk, &fl6, req, IPPROTO_TCP);
+ 		if (!dst)
+-			goto out;
++			goto exit;
+ 	}
+ 
+ 	newsk = tcp_create_openreq_child(sk, req, skb);
+ 	if (!newsk)
+-		goto out_nonewsk;
++		goto exit_nonewsk;
+ 
+ 	/*
+ 	 * No need to charge this sock to the relevant IPv6 refcnt debug socks
+@@ -1517,25 +1517,19 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ 			const union tcp_md5_addr *addr;
+ 
+ 			addr = (union tcp_md5_addr *)&newsk->sk_v6_daddr;
+-			if (tcp_md5_key_copy(newsk, addr, AF_INET6, 128, l3index, key)) {
+-				inet_csk_prepare_forced_close(newsk);
+-				tcp_done(newsk);
+-				goto out;
+-			}
++			if (tcp_md5_key_copy(newsk, addr, AF_INET6, 128, l3index, key))
++				goto put_and_exit;
+ 		}
+ 	}
+ #endif
+ #ifdef CONFIG_TCP_AO
+ 	/* Copy over tcp_ao_info if any */
+ 	if (tcp_ao_copy_all_matching(sk, newsk, req, skb, AF_INET6))
+-		goto out; /* OOM */
++		goto put_and_exit; /* OOM */
+ #endif
+ 
+-	if (__inet_inherit_port(sk, newsk) < 0) {
+-		inet_csk_prepare_forced_close(newsk);
+-		tcp_done(newsk);
+-		goto out;
+-	}
++	if (__inet_inherit_port(sk, newsk) < 0)
++		goto put_and_exit;
+ 	*own_req = inet_ehash_nolisten(newsk, req_to_sk(req_unhash),
+ 				       &found_dup_sk);
+ 	if (*own_req) {
+@@ -1562,13 +1556,17 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ 
+ 	return newsk;
+ 
+-out_overflow:
++exit_overflow:
+ 	__NET_INC_STATS(sock_net(sk), LINUX_MIB_LISTENOVERFLOWS);
+-out_nonewsk:
++exit_nonewsk:
+ 	dst_release(dst);
+-out:
++exit:
+ 	tcp_listendrop(sk);
+ 	return NULL;
++put_and_exit:
++	inet_csk_prepare_forced_close(newsk);
++	tcp_done(newsk);
++	goto exit;
+ }
+ 
+ INDIRECT_CALLABLE_DECLARE(struct dst_entry *ipv4_dst_check(struct dst_entry *,
 -- 
 2.50.1
 
