@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-178549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973D7B47F1E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24981B47D9A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 954CC1B2126B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D654917CA96
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6544B2139C9;
-	Sun,  7 Sep 2025 20:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B327E27F754;
+	Sun,  7 Sep 2025 20:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyQ09Uav"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHV3/uFD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2313A1A0BFD;
-	Sun,  7 Sep 2025 20:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7084A1B424F;
+	Sun,  7 Sep 2025 20:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277192; cv=none; b=TI7WtdeWSJuhzUX23l7bacQhUHRT35nM0065fv0Kh5txr0kgK/d++d5V6V78J+nqaNkg5Yd+w+mBCOPS/QNsmYMIy7o1huAOfSwNOqpXHUVmASdc+ZXxebBFM6we3yjWuaiSkGCXvsGUZmwQaBoJ38i9M70uWhbkfisJ1y7VoNE=
+	t=1757276044; cv=none; b=prT0KCtGBour0QsBZmdOUBjyjSH/MEcX/ABR4smJIAiqjhkfbNyCAw+HtPKwOir9K/DVwEFJ+GykuMaXmPEnIhli48goQC8jjJTcJ1PG5/1o0/2+vzTrDe6K/rOQHaA++9rH5gWIT0zBMLhldSjEOttXtlrf0myGA/LV5HVEFPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277192; c=relaxed/simple;
-	bh=4bU5VCykL30PXe6z/tyek9ya3PxZmFUkofrSDMXJvIU=;
+	s=arc-20240116; t=1757276044; c=relaxed/simple;
+	bh=RAg7jlcFzOV3DgV16wE3nLp20HUiUDBGRa+hp+VD+oI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dBGDljq5iFZpVmtUzRI8Pj2gp7MGbGIBs6M2tMEIYE8g0utpn9ys7i9DH1cZGKhz3951x/VafebZA+jGlx8aMz6Yb9ftmtCGG5HFta8RaTTGo/YVyEUY6qTW+W/gcwLZH/YUOHGSL0pj9/tbygzWFjeClkiWzpdsd0vBeCiUoiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyQ09Uav; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991A4C4CEF0;
-	Sun,  7 Sep 2025 20:33:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s3WawLkz3EaPqeEAkroCsTkfAqg/mX7UMz32q9Wk4A9mEzkn1q49RsblIVcImOiHWiRlBV7WIpWmts+32EB2YCW46KnTRjYwbrNYM0eN380j4dOaUlHAYM6OlvWBPVtgpNyobijvU1KL9mcXvto0gQ9+cr9/hBybSYId2bMUFc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHV3/uFD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4AEC4CEF0;
+	Sun,  7 Sep 2025 20:14:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277192;
-	bh=4bU5VCykL30PXe6z/tyek9ya3PxZmFUkofrSDMXJvIU=;
+	s=korg; t=1757276044;
+	bh=RAg7jlcFzOV3DgV16wE3nLp20HUiUDBGRa+hp+VD+oI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XyQ09UavnN3Sp/2t1SiB6GESiuTYpk1egf3YQcmS9yBC81TWQfWeXyGyIk271cxNU
-	 Dh55/RJP8I9pNHHYSEO4UIFigPh85ffMCfmt9wNOHE+UBIzLD1JqN8OkQc9ClxHSZr
-	 qjliE8/tUsls3yorH5hP1sLo+ss3V8jXQovhxclg=
+	b=lHV3/uFDjk98If12R6j803xeR8J9iAGQjFRIqUG1CoX67AEwerfAvzrjBhSh9KCy0
+	 LH/RUTJ8vPtuKi1XkVSVgkuXeHzGXY7bYmNlJOySZ7mB5v9y63FJnHRJTUsDHjMJa6
+	 ifTGbp0sQQCPBl/bu7APLjjOPD2T8TjatLi/8QnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	oushixiong <oushixiong1025@163.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 113/175] drm/amdgpu: drop hw access in non-DC audio fini
+	Hyejeong Choi <hjeong.choi@samsung.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 46/64] dma-buf: insert memory barrier before updating num_fences
 Date: Sun,  7 Sep 2025 21:58:28 +0200
-Message-ID: <20250907195617.531680346@linuxfoundation.org>
+Message-ID: <20250907195604.675358375@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,112 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Hyejeong Choi <hjeong.choi@samsung.com>
 
-commit 71403f58b4bb6c13b71c05505593a355f697fd94 upstream.
+[ Upstream commit 72c7d62583ebce7baeb61acce6057c361f73be4a ]
 
-We already disable the audio pins in hw_fini so
-there is no need to do it again in sw_fini.
+smp_store_mb() inserts memory barrier after storing operation.
+It is different with what the comment is originally aiming so Null
+pointer dereference can be happened if memory update is reordered.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4481
-Cc: oushixiong <oushixiong1025@163.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5eeb16ca727f11278b2917fd4311a7d7efb0bbd6)
-Cc: stable@vger.kernel.org
+Signed-off-by: Hyejeong Choi <hjeong.choi@samsung.com>
+Fixes: a590d0fdbaa5 ("dma-buf: Update reservation shared_count after adding the new fence")
+CC: stable@vger.kernel.org
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250513020638.GA2329653@au1-maretx-p37.eng.sarc.samsung.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
+[ adjusted `fobj->num_fences` to `fobj->shared_count` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/dce_v10_0.c |    5 -----
- drivers/gpu/drm/amd/amdgpu/dce_v11_0.c |    5 -----
- drivers/gpu/drm/amd/amdgpu/dce_v6_0.c  |    5 -----
- drivers/gpu/drm/amd/amdgpu/dce_v8_0.c  |    5 -----
- 4 files changed, 20 deletions(-)
+ drivers/dma-buf/dma-resv.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
-@@ -1462,17 +1462,12 @@ static int dce_v10_0_audio_init(struct a
+--- a/drivers/dma-buf/dma-resv.c
++++ b/drivers/dma-buf/dma-resv.c
+@@ -267,8 +267,9 @@ void dma_resv_add_shared_fence(struct dm
  
- static void dce_v10_0_audio_fini(struct amdgpu_device *adev)
- {
--	int i;
--
- 	if (!amdgpu_audio)
- 		return;
+ replace:
+ 	RCU_INIT_POINTER(fobj->shared[i], fence);
+-	/* pointer update must be visible before we extend the shared_count */
+-	smp_store_mb(fobj->shared_count, count);
++	/* fence update must be visible before we extend the shared_count */
++	smp_wmb();
++	fobj->shared_count = count;
  
- 	if (!adev->mode_info.audio.enabled)
- 		return;
- 
--	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
--		dce_v10_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
--
- 	adev->mode_info.audio.enabled = false;
- }
- 
---- a/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
-@@ -1511,17 +1511,12 @@ static int dce_v11_0_audio_init(struct a
- 
- static void dce_v11_0_audio_fini(struct amdgpu_device *adev)
- {
--	int i;
--
- 	if (!amdgpu_audio)
- 		return;
- 
- 	if (!adev->mode_info.audio.enabled)
- 		return;
- 
--	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
--		dce_v11_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
--
- 	adev->mode_info.audio.enabled = false;
- }
- 
---- a/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
-@@ -1394,17 +1394,12 @@ static int dce_v6_0_audio_init(struct am
- 
- static void dce_v6_0_audio_fini(struct amdgpu_device *adev)
- {
--	int i;
--
- 	if (!amdgpu_audio)
- 		return;
- 
- 	if (!adev->mode_info.audio.enabled)
- 		return;
- 
--	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
--		dce_v6_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
--
- 	adev->mode_info.audio.enabled = false;
- }
- 
---- a/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
-@@ -1443,17 +1443,12 @@ static int dce_v8_0_audio_init(struct am
- 
- static void dce_v8_0_audio_fini(struct amdgpu_device *adev)
- {
--	int i;
--
- 	if (!amdgpu_audio)
- 		return;
- 
- 	if (!adev->mode_info.audio.enabled)
- 		return;
- 
--	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
--		dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
--
- 	adev->mode_info.audio.enabled = false;
- }
- 
+ 	write_seqcount_end(&obj->seq);
+ 	dma_fence_put(old);
 
 
 
