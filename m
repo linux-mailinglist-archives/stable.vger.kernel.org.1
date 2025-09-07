@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ADDDB47DA9
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B61BB47FBC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4854B17CD0D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B95F3C3713
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2811F26FA67;
-	Sun,  7 Sep 2025 20:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDB5269CE6;
+	Sun,  7 Sep 2025 20:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Juy5j9Ny"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r47DnM6L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E5F1B424F;
-	Sun,  7 Sep 2025 20:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9905A4315A;
+	Sun,  7 Sep 2025 20:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276091; cv=none; b=pRZnMDHE50beqFmhXDseJkhOUch3CzWZjeY/eRv7mT2rH1PLRyHoFVZt41xUtpTL4PKHNFO5WlsN/rl9lKl33ERO53v7zjg5J5hdv0NFh2oAR/rX+dW+JSb2x13ztV4OZZfmK8P2/vH9QodSi3IWHAZpmOiv0cgIeDv+8w93bJI=
+	t=1757277694; cv=none; b=Y4a+suzCuU1vVpPElfV30ZDYrN5svymiwiUiNdp7IUPGG/P/9XB5JiqHAh6r4KfvZmU90TAC/Pivl6qezdrdr8Wvzr2Ko77+LYUgYlpJZ498bT7HUhqL2d7bqU5AwYiycyNFCQsFKCklTUR5D3bEQwHVeChMWXctLVZJo1OCNnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276091; c=relaxed/simple;
-	bh=twNSZMT2s/dfk3nct/z3qZxQp8UIXNrS3a/HzG/7GRQ=;
+	s=arc-20240116; t=1757277694; c=relaxed/simple;
+	bh=+z61LuF95V3XqHMsNkLQr5B1UiZ4NhXcYtsr0g0PRXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qGGFGqon19gSlygXdAVMLXEtome49MpZvAW1I2Ka2PoDpMFJu6juEvipPqGQbvHvWf7GlU2IofOv7WYryQm9X9ucomaHk49+sBPy0VbjhM0o4vBp1NATUKVaJ7zoPCWItm+H3U9VK6+fRTYnrL0iBnfwzB9gj/gBejt6SP2JsTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Juy5j9Ny; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7B6C4CEF0;
-	Sun,  7 Sep 2025 20:14:51 +0000 (UTC)
+	 MIME-Version; b=DthRi1WpsMH8MPwRPU5TNUwGenLsXOX6MPscwuJUfcMa8yZITXIjBGoFuQVm5dcvp+EXGm3ccEtt+sbIitb/HxRLXOT694YefNW7vaOhhTq+iPxhSO6x7RfSipTNyWeWfBnJOq1j4UTjITkz8iRFn2ACA/kt6fpmbN3Jco1VonU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r47DnM6L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEBDC4CEF0;
+	Sun,  7 Sep 2025 20:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276091;
-	bh=twNSZMT2s/dfk3nct/z3qZxQp8UIXNrS3a/HzG/7GRQ=;
+	s=korg; t=1757277694;
+	bh=+z61LuF95V3XqHMsNkLQr5B1UiZ4NhXcYtsr0g0PRXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Juy5j9Nyc0CT4xxve9ow0U2+VrsJ93iABX86QeQVLsMrLjiKoByIyUceeJkevCIbr
-	 U0jkLUZQSpwSho8pQvFzfxq2mrMqtppdbBhHw2r0SJ2Nn8GtHUyFNR94RdfZ/fo2p8
-	 NyE9exh1TWLs7Bv4tlFcr7pFBPrYYF74rpxzXJsM=
+	b=r47DnM6L/lQROOBHfZtcs2IKbH/lK/v8DQH6zu1us4m9gmkBvq1PyU8+4F01Xz2Qx
+	 dcQm+n3je0tgNtonZhIVJ+ZJWxaxtzNqXpTq4lxZIfflN+HPfOTJt1WjIqjI3X3+sb
+	 r9jMiYefubFODdAQB9pOrV1KRJLI0mbPUkzWwCqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	James Clark <james.clark@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 59/64] spi: spi-fsl-lpspi: Reset FIFO and disable module on transfer abort
+Subject: [PATCH 6.16 094/183] selftest: net: Fix weird setsockopt() in bind_bhash.c.
 Date: Sun,  7 Sep 2025 21:58:41 +0200
-Message-ID: <20250907195605.046483498@linuxfoundation.org>
+Message-ID: <20250907195618.021322955@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit e811b088a3641861fc9d2b2b840efc61a0f1907d ]
+[ Upstream commit fd2004d82d8d8faa94879e3de3096c8511728637 ]
 
-In DMA mode fsl_lpspi_reset() is always called at the end, even when the
-transfer is aborted. In PIO mode aborts skip the reset leaving the FIFO
-filled and the module enabled.
+bind_bhash.c passes (SO_REUSEADDR | SO_REUSEPORT) to setsockopt().
 
-Fix it by always calling fsl_lpspi_reset().
+In the asm-generic definition, the value happens to match with the
+bare SO_REUSEPORT, (2 | 15) == 15, but not on some arch.
 
-Fixes: a15dc3d657fa ("spi: lpspi: Fix CLK pin becomes low before one transfer")
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://patch.msgid.link/20250828-james-nxp-lpspi-v2-3-6262b9aa9be4@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+arch/alpha/include/uapi/asm/socket.h:18:#define SO_REUSEADDR	0x0004
+arch/alpha/include/uapi/asm/socket.h:24:#define SO_REUSEPORT	0x0200
+arch/mips/include/uapi/asm/socket.h:24:#define SO_REUSEADDR	0x0004	/* Allow reuse of local addresses.  */
+arch/mips/include/uapi/asm/socket.h:33:#define SO_REUSEPORT 0x0200	/* Allow local address and port reuse.  */
+arch/parisc/include/uapi/asm/socket.h:12:#define SO_REUSEADDR	0x0004
+arch/parisc/include/uapi/asm/socket.h:18:#define SO_REUSEPORT	0x0200
+arch/sparc/include/uapi/asm/socket.h:13:#define SO_REUSEADDR	0x0004
+arch/sparc/include/uapi/asm/socket.h:20:#define SO_REUSEPORT	0x0200
+include/uapi/asm-generic/socket.h:12:#define SO_REUSEADDR	2
+include/uapi/asm-generic/socket.h:27:#define SO_REUSEPORT	15
+
+Let's pass SO_REUSEPORT only.
+
+Fixes: c35ecb95c448 ("selftests/net: Add test for timing a bind request to a port with a populated bhash entry")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250903222938.2601522-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ tools/testing/selftests/net/bind_bhash.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index ab096368a1fd5..319cd96bd201b 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -705,12 +705,10 @@ static int fsl_lpspi_pio_transfer(struct spi_controller *controller,
- 	fsl_lpspi_write_tx_fifo(fsl_lpspi);
+diff --git a/tools/testing/selftests/net/bind_bhash.c b/tools/testing/selftests/net/bind_bhash.c
+index 57ff67a3751eb..da04b0b19b73c 100644
+--- a/tools/testing/selftests/net/bind_bhash.c
++++ b/tools/testing/selftests/net/bind_bhash.c
+@@ -75,7 +75,7 @@ static void *setup(void *arg)
+ 	int *array = (int *)arg;
  
- 	ret = fsl_lpspi_wait_for_completion(controller);
--	if (ret)
--		return ret;
+ 	for (i = 0; i < MAX_CONNECTIONS; i++) {
+-		sock_fd = bind_socket(SO_REUSEADDR | SO_REUSEPORT, setup_addr);
++		sock_fd = bind_socket(SO_REUSEPORT, setup_addr);
+ 		if (sock_fd < 0) {
+ 			ret = sock_fd;
+ 			pthread_exit(&ret);
+@@ -103,7 +103,7 @@ int main(int argc, const char *argv[])
  
- 	fsl_lpspi_reset(fsl_lpspi);
+ 	setup_addr = use_v6 ? setup_addr_v6 : setup_addr_v4;
  
--	return 0;
-+	return ret;
- }
- 
- static int fsl_lpspi_transfer_one(struct spi_controller *controller,
+-	listener_fd = bind_socket(SO_REUSEADDR | SO_REUSEPORT, setup_addr);
++	listener_fd = bind_socket(SO_REUSEPORT, setup_addr);
+ 	if (listen(listener_fd, 100) < 0) {
+ 		perror("listen failed");
+ 		return -1;
 -- 
-2.51.0
+2.50.1
 
 
 
