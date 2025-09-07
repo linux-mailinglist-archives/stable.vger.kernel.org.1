@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0627B47F43
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:35:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B18B47E9A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B5F13A8657
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:35:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80CE0189FF54
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54038212B3D;
-	Sun,  7 Sep 2025 20:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEAC31E1C1A;
+	Sun,  7 Sep 2025 20:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9DpbP/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="po4TokM/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101001DF246;
-	Sun,  7 Sep 2025 20:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA1017BB21;
+	Sun,  7 Sep 2025 20:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277310; cv=none; b=MaknGofTXYSoN4UKUe72zfgrmTHV6dNpJIeLWzQHarj1oQzykYOOD7WdBT8/YmBpHkJZIWNjolAog4Ft+b6qeQ4ukU5znnAiVaN9PRY3kteLXPDfvec38SeF9mHjg2bEl6W1Y2gwIb79cYO3yUuzywu8+PSLMKK1yuRq2MW6d/c=
+	t=1757276788; cv=none; b=joftdSq4BfI27ymmYNgS35BITlSxZVjBYIWeUZjlkkb3mu2/63Qc4Q9sij7KtbkDUgCk6ZGbah2AVJlMqMcTSUJsAmSyX6yJbr34sffgvC4CTodRGTrQI0FG47MilJBXqubeUSUxmQbn+LUtWH7iSwDhyvWtdyUo4y+ay7jpajM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277310; c=relaxed/simple;
-	bh=uMi6u899tckvjFCJT4hcehMsJVZZ7UURJRSWqp3M/c8=;
+	s=arc-20240116; t=1757276788; c=relaxed/simple;
+	bh=LeTBdRjHCyARXTHGVW39E6mrapaDBCn2413WF5moaVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iph7bG0lSYGVWRS95ZChAxNMC6bxXm/TdzC5k6WymjBh4xb8yHgvLj/WqM+/MQuCjF+o6CZOWrmzgKkc1M8NcNBriGQJ1zstSr4i1LBwPQeMuWdzaa2bDiosIXWAF15qAzicVu4D7xpYS1RXbApeHx2Yn5GFf8Pvh+VRIsKe2p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9DpbP/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86151C4CEF0;
-	Sun,  7 Sep 2025 20:35:09 +0000 (UTC)
+	 MIME-Version; b=boWkysnDahFcy5oUvyT29fUkQ9iIouUpjuPyC839RhLx9ZqmZVLggQvaRyo384iOHLaaHyPcgdzpk5QeiXwy0YjhEJaoR19qgOtqvg7ci8KIvc8AhLGfiOfU19/8ARVivUVOYicRuIFosDgQ6C4/61jAgCNyAV4OgjYOZAvrLno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=po4TokM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB334C4CEF0;
+	Sun,  7 Sep 2025 20:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277309;
-	bh=uMi6u899tckvjFCJT4hcehMsJVZZ7UURJRSWqp3M/c8=;
+	s=korg; t=1757276788;
+	bh=LeTBdRjHCyARXTHGVW39E6mrapaDBCn2413WF5moaVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H9DpbP/C8+t2ywAKipK4kLHlhaqabnPrE+opg+2ygckiBGiLeLW4kXQ+VtHAHPLnG
-	 zV5bclLhV0o+Io6w3+OuvsnMouACcD9uTFNNfERRbyer2B0sRlHGIqw7EMnjOT+WzF
-	 wuog38zwvbYnb0rZXLlwgNYyk/hoO1emwdBcDdQk=
+	b=po4TokM/R7XpAyjmCGDcQA3a7eGRBDx+8G04IjlXk+5BqijdEDElHw7CFTGeQadK1
+	 WlIGKqZ/FzgLZ6uXUa+8XjfS8VTbLV+UCOuBzRYb0p5HPc9XGcMlJk9uikguM+lE91
+	 +43nxRh7ERemVTtNhdjkma9k2mOGqmu+um08DXRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Dominik Brodowski <linux@dominikbrodowski.net>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 151/175] pcmcia: Add error handling for add_interval() in do_validate_mem()
-Date: Sun,  7 Sep 2025 21:59:06 +0200
-Message-ID: <20250907195618.428545557@linuxfoundation.org>
+Subject: [PATCH 6.6 111/121] drm/amd/amdgpu: Fix missing error return on kzalloc failure
+Date: Sun,  7 Sep 2025 21:59:07 +0200
+Message-ID: <20250907195612.696343206@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 4a81f78caa53e0633cf311ca1526377d9bff7479 ]
+[ Upstream commit 467e00b30dfe75c4cfc2197ceef1fddca06adc25 ]
 
-In the do_validate_mem(), the call to add_interval() does not
-handle errors. If kmalloc() fails in add_interval(), it could
-result in a null pointer being inserted into the linked list,
-leading to illegal memory access when sub_interval() is called
-next.
+Currently the kzalloc failure check just sets reports the failure
+and sets the variable ret to -ENOMEM, which is not checked later
+for this specific error. Fix this by just returning -ENOMEM rather
+than setting ret.
 
-This patch adds an error handling for the add_interval(). If
-add_interval() returns an error, the function will return early
-with the error code.
-
-Fixes: 7b4884ca8853 ("pcmcia: validate late-added resources")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Fixes: 4fb930715468 ("drm/amd/amdgpu: remove redundant host to psp cmd buf allocations")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1ee9d1a0962c13ba5ab7e47d33a80e3b8dc4b52e)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/rsrc_nonstatic.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
-index bf9d070a44966..da494fe451baf 100644
---- a/drivers/pcmcia/rsrc_nonstatic.c
-+++ b/drivers/pcmcia/rsrc_nonstatic.c
-@@ -375,7 +375,9 @@ static int do_validate_mem(struct pcmcia_socket *s,
- 
- 	if (validate && !s->fake_cis) {
- 		/* move it to the validated data set */
--		add_interval(&s_data->mem_db_valid, base, size);
-+		ret = add_interval(&s_data->mem_db_valid, base, size);
-+		if (ret)
-+			return ret;
- 		sub_interval(&s_data->mem_db, base, size);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index e9a83865ae012..c83445c2e37f3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -409,7 +409,7 @@ static int psp_sw_init(void *handle)
+ 	psp->cmd = kzalloc(sizeof(struct psp_gfx_cmd_resp), GFP_KERNEL);
+ 	if (!psp->cmd) {
+ 		dev_err(adev->dev, "Failed to allocate memory to command buffer!\n");
+-		ret = -ENOMEM;
++		return -ENOMEM;
  	}
  
+ 	adev->psp.xgmi_context.supports_extended_data =
 -- 
 2.51.0
 
