@@ -1,56 +1,96 @@
-Return-Path: <stable+bounces-178125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE16B47D59
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C02B47F0D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C99C17C198
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9431F16DF93
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB791F09A5;
-	Sun,  7 Sep 2025 20:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731C41DF246;
+	Sun,  7 Sep 2025 20:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIlHF+mK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4+9tULt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6F91CDFAC;
-	Sun,  7 Sep 2025 20:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B2615C158;
+	Sun,  7 Sep 2025 20:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275844; cv=none; b=NadA6fFvbFKDQBPvlziKTiiFA33boDcFY/2OAM4kSpuAVkk4ZJ2yXrqHA6JlLINEyUvy1rZ/ZoOLNTTDez+8htntPd7QRKLJQQs/4NXaTxdzH2lN4gwtEfhc13Sx4MJ7SqZfypfZoIkbcCPyXWww+za9p1VlW/PI42Zy4xlcdr0=
+	t=1757277142; cv=none; b=WRV0ChY5eJG9k0qYBb31WEzwx+cV2l4/1BoFSysUpnxEP4G/+zjaVVAIizG86fL9GAJvDAF3W1ZqfJXshCc+MTtGGN0UIN8C8wDFixvTYARVYGdxI2KpatNCWM0UYqAcFjvCAoFB3XST/0+f0PutNtjmL7rItiDPOKgDg9ki6zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275844; c=relaxed/simple;
-	bh=bJfV83o661DJSftCwJP6kQy/P+cHU5gi//4G+5IPHCw=;
+	s=arc-20240116; t=1757277142; c=relaxed/simple;
+	bh=gPew25D8mByQZWKv+Yrngac+Fwtd0xkECNH23+Y57z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qOyq3MF+XyRU4n+wLC6+rKvdEoZ36v2Sv9QoKYxtdTRPSNoEp9H7GCCunMI9ufO6gqKVHpJ3ssHTgWLdHgQ9s9/o3UrbInuJtUVl5Fuzy5cSt2xGL+5vp1mcpZSrAlu5uKih4FT6akI3qd1Fm3xI4e6Y0SuroYC58FcQPat3qAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIlHF+mK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E91AC4CEF0;
-	Sun,  7 Sep 2025 20:10:44 +0000 (UTC)
+	 MIME-Version; b=ZwMknvQ4Rcw1UVRg61qrK0+BhqGCHamOmSVmz26s994xEz1gt9anarmfBRuBva2Lmj390xwpfVWIqhQotZbGNHu3YPQQH/xeuCvfPQFlFta+FGOauW/e/HHq5lsG7UgEWt+fzyqazokubfDIcSn82CVSABCvYT0+fN4/G8Kh70w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4+9tULt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2552CC4CEF0;
+	Sun,  7 Sep 2025 20:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275844;
-	bh=bJfV83o661DJSftCwJP6kQy/P+cHU5gi//4G+5IPHCw=;
+	s=korg; t=1757277141;
+	bh=gPew25D8mByQZWKv+Yrngac+Fwtd0xkECNH23+Y57z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GIlHF+mK9E2KrXZmXeUcvyANHmjWTu39U4tQtAmFq8MNH9kEdF9kGH50Ngd4/UdNl
-	 988l+8Q1zKq4iKpHlildnLOIcHrZCA/YF0liJOpAhG6vjLfDprOueG8WBO+0CQOVCB
-	 f+LFKvzo3TgqRgJkGd71s5M8JIvefkP0LeAPq+jI=
+	b=B4+9tULt5LPe3SCub4VPcENX4qriPNKlxsHXosVq0/COTXDwYxhoFH2XJRdD57/ZG
+	 N8RdoC8nHqIdIL3Cz5MF1JN351RcYwpLHcHNJa339VjYmPgDHK45ckexdM9adb4gQv
+	 FR9pHkjX5RDxU2VHsXxjZgKTdK0TAgIV3RK0XIHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 28/45] KVM: x86: Take irqfds.lock when adding/deleting IRQ bypass producer
+	Harry Yoo <harry.yoo@oracle.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	bibo mao <maobibo@loongson.cn>,
+	Borislav Betkov <bp@alien8.de>,
+	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Thomas Huth <thuth@redhat.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 099/175] mm: move page table sync declarations to linux/pgtable.h
 Date: Sun,  7 Sep 2025 21:58:14 +0200
-Message-ID: <20250907195601.789753353@linuxfoundation.org>
+Message-ID: <20250907195617.192425932@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +102,221 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Harry Yoo <harry.yoo@oracle.com>
 
-[ Upstream commit f1fb088d9cecde5c3066d8ff8846789667519b7d ]
+commit 7cc183f2e67d19b03ee5c13a6664b8c6cc37ff9d upstream.
 
-Take irqfds.lock when adding/deleting an IRQ bypass producer to ensure
-irqfd->producer isn't modified while kvm_irq_routing_update() is running.
-The only lock held when a producer is added/removed is irqbypass's mutex.
+During our internal testing, we started observing intermittent boot
+failures when the machine uses 4-level paging and has a large amount of
+persistent memory:
 
-Fixes: 872768800652 ("KVM: x86: select IRQ_BYPASS_MANAGER")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250404193923.1413163-5-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  BUG: unable to handle page fault for address: ffffe70000000034
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  PGD 0 P4D 0
+  Oops: 0002 [#1] SMP NOPTI
+  RIP: 0010:__init_single_page+0x9/0x6d
+  Call Trace:
+   <TASK>
+   __init_zone_device_page+0x17/0x5d
+   memmap_init_zone_device+0x154/0x1bb
+   pagemap_range+0x2e0/0x40f
+   memremap_pages+0x10b/0x2f0
+   devm_memremap_pages+0x1e/0x60
+   dev_dax_probe+0xce/0x2ec [device_dax]
+   dax_bus_probe+0x6d/0xc9
+   [... snip ...]
+   </TASK>
+
+It turns out that the kernel panics while initializing vmemmap (struct
+page array) when the vmemmap region spans two PGD entries, because the new
+PGD entry is only installed in init_mm.pgd, but not in the page tables of
+other tasks.
+
+And looking at __populate_section_memmap():
+  if (vmemmap_can_optimize(altmap, pgmap))
+          // does not sync top level page tables
+          r = vmemmap_populate_compound_pages(pfn, start, end, nid, pgmap);
+  else
+          // sync top level page tables in x86
+          r = vmemmap_populate(start, end, nid, altmap);
+
+In the normal path, vmemmap_populate() in arch/x86/mm/init_64.c
+synchronizes the top level page table (See commit 9b861528a801 ("x86-64,
+mem: Update all PGDs for direct mapping and vmemmap mapping changes")) so
+that all tasks in the system can see the new vmemmap area.
+
+However, when vmemmap_can_optimize() returns true, the optimized path
+skips synchronization of top-level page tables.  This is because
+vmemmap_populate_compound_pages() is implemented in core MM code, which
+does not handle synchronization of the top-level page tables.  Instead,
+the core MM has historically relied on each architecture to perform this
+synchronization manually.
+
+We're not the first party to encounter a crash caused by not-sync'd top
+level page tables: earlier this year, Gwan-gyeong Mun attempted to address
+the issue [1] [2] after hitting a kernel panic when x86 code accessed the
+vmemmap area before the corresponding top-level entries were synced.  At
+that time, the issue was believed to be triggered only when struct page
+was enlarged for debugging purposes, and the patch did not get further
+updates.
+
+It turns out that current approach of relying on each arch to handle the
+page table sync manually is fragile because 1) it's easy to forget to sync
+the top level page table, and 2) it's also easy to overlook that the
+kernel should not access the vmemmap and direct mapping areas before the
+sync.
+
+# The solution: Make page table sync more code robust and harder to miss
+
+To address this, Dave Hansen suggested [3] [4] introducing
+{pgd,p4d}_populate_kernel() for updating kernel portion of the page tables
+and allow each architecture to explicitly perform synchronization when
+installing top-level entries.  With this approach, we no longer need to
+worry about missing the sync step, reducing the risk of future
+regressions.
+
+The new interface reuses existing ARCH_PAGE_TABLE_SYNC_MASK,
+PGTBL_P*D_MODIFIED and arch_sync_kernel_mappings() facility used by
+vmalloc and ioremap to synchronize page tables.
+
+pgd_populate_kernel() looks like this:
+static inline void pgd_populate_kernel(unsigned long addr, pgd_t *pgd,
+                                       p4d_t *p4d)
+{
+        pgd_populate(&init_mm, pgd, p4d);
+        if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)
+                arch_sync_kernel_mappings(addr, addr);
+}
+
+It is worth noting that vmalloc() and apply_to_range() carefully
+synchronizes page tables by calling p*d_alloc_track() and
+arch_sync_kernel_mappings(), and thus they are not affected by this patch
+series.
+
+This series was hugely inspired by Dave Hansen's suggestion and hence
+added Suggested-by: Dave Hansen.
+
+Cc stable because lack of this series opens the door to intermittent
+boot failures.
+
+
+This patch (of 3):
+
+Move ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings() to
+linux/pgtable.h so that they can be used outside of vmalloc and ioremap.
+
+Link: https://lkml.kernel.org/r/20250818020206.4517-1-harry.yoo@oracle.com
+Link: https://lkml.kernel.org/r/20250818020206.4517-2-harry.yoo@oracle.com
+Link: https://lore.kernel.org/linux-mm/20250220064105.808339-1-gwan-gyeong.mun@intel.com [1]
+Link: https://lore.kernel.org/linux-mm/20250311114420.240341-1-gwan-gyeong.mun@intel.com [2]
+Link: https://lore.kernel.org/linux-mm/d1da214c-53d3-45ac-a8b6-51821c5416e4@intel.com [3]
+Link: https://lore.kernel.org/linux-mm/4d800744-7b88-41aa-9979-b245e8bf794b@intel.com  [4]
+Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Acked-by: Kiryl Shutsemau <kas@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: bibo mao <maobibo@loongson.cn>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Christoph Lameter (Ampere) <cl@gentwo.org>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Joao Martins <joao.m.martins@oracle.com>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ include/linux/pgtable.h |   16 ++++++++++++++++
+ include/linux/vmalloc.h |   16 ----------------
+ 2 files changed, 16 insertions(+), 16 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10394,11 +10394,18 @@ int kvm_arch_irq_bypass_add_producer(str
- {
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
-+	struct kvm *kvm = irqfd->kvm;
-+	int ret;
- 
-+	spin_lock_irq(&kvm->irqfds.lock);
- 	irqfd->producer = prod;
- 
--	return kvm_x86_ops->update_pi_irte(irqfd->kvm,
-+	ret = kvm_x86_ops->update_pi_irte(irqfd->kvm,
- 					   prod->irq, irqfd->gsi, 1);
-+
-+	spin_unlock_irq(&kvm->irqfds.lock);
-+
-+	return ret;
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1697,6 +1697,22 @@ static inline int pmd_protnone(pmd_t pmd
  }
+ #endif /* CONFIG_NUMA_BALANCING */
  
- void kvm_arch_irq_bypass_del_producer(struct irq_bypass_consumer *cons,
-@@ -10407,9 +10414,9 @@ void kvm_arch_irq_bypass_del_producer(st
- 	int ret;
- 	struct kvm_kernel_irqfd *irqfd =
- 		container_of(cons, struct kvm_kernel_irqfd, consumer);
-+	struct kvm *kvm = irqfd->kvm;
- 
- 	WARN_ON(irqfd->producer != prod);
--	irqfd->producer = NULL;
- 
- 	/*
- 	 * When producer of consumer is unregistered, we change back to
-@@ -10417,10 +10424,15 @@ void kvm_arch_irq_bypass_del_producer(st
- 	 * when the irq is masked/disabled or the consumer side (KVM
- 	 * int this case doesn't want to receive the interrupts.
- 	*/
-+	spin_lock_irq(&kvm->irqfds.lock);
-+	irqfd->producer = NULL;
++/*
++ * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
++ * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
++ * needs to be called.
++ */
++#ifndef ARCH_PAGE_TABLE_SYNC_MASK
++#define ARCH_PAGE_TABLE_SYNC_MASK 0
++#endif
 +
- 	ret = kvm_x86_ops->update_pi_irte(irqfd->kvm, prod->irq, irqfd->gsi, 0);
- 	if (ret)
- 		printk(KERN_INFO "irq bypass consumer (token %p) unregistration"
- 		       " fails: %d\n", irqfd->consumer.token, ret);
++/*
++ * There is no default implementation for arch_sync_kernel_mappings(). It is
++ * relied upon the compiler to optimize calls out if ARCH_PAGE_TABLE_SYNC_MASK
++ * is 0.
++ */
++void arch_sync_kernel_mappings(unsigned long start, unsigned long end);
 +
-+	spin_unlock_irq(&kvm->irqfds.lock);
- }
+ #endif /* CONFIG_MMU */
  
- int kvm_arch_update_irqfd_routing(struct kvm *kvm, unsigned int host_irq,
+ #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+--- a/include/linux/vmalloc.h
++++ b/include/linux/vmalloc.h
+@@ -210,22 +210,6 @@ extern int remap_vmalloc_range(struct vm
+ 							unsigned long pgoff);
+ 
+ /*
+- * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
+- * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
+- * needs to be called.
+- */
+-#ifndef ARCH_PAGE_TABLE_SYNC_MASK
+-#define ARCH_PAGE_TABLE_SYNC_MASK 0
+-#endif
+-
+-/*
+- * There is no default implementation for arch_sync_kernel_mappings(). It is
+- * relied upon the compiler to optimize calls out if ARCH_PAGE_TABLE_SYNC_MASK
+- * is 0.
+- */
+-void arch_sync_kernel_mappings(unsigned long start, unsigned long end);
+-
+-/*
+  *	Lowlevel-APIs (not for driver use!)
+  */
+ 
 
 
 
