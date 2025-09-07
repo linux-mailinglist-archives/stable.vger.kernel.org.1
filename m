@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BEAB47D31
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:08:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8CFCB47EDD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:29:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5D7A3BEB6A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 805AE17EC82
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7974F29A32D;
-	Sun,  7 Sep 2025 20:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60943212B3D;
+	Sun,  7 Sep 2025 20:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BAK4OVl5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tob2L8Do"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365D829C33D;
-	Sun,  7 Sep 2025 20:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFEB17BB21;
+	Sun,  7 Sep 2025 20:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275719; cv=none; b=lH4d/O+Chbd8WWhj3Jd1tYKu45jlaonr0LJ7ndymbqda60iLcLsO/BMTtOKnHmHOJLaW6DIhKL7ecFBMcchP43CfSL8eS/WRjRSuk7LZ2eUAsj0S1qtAancChwqRrW1hQ/NfZUN11nyx/mKMdFXoYVw5HCkZZc7/hPmdDljS5ao=
+	t=1757276989; cv=none; b=Ar39Z3RXqg3BJx6H3245wKShwNbGekQRxvXlpncy/xWTZovqvsnCJ6cb7QA2qugMWjUJuay/V5kbzr4HuS69WskJWdbiXnGBNMsDKOlE2LGwCQvbceBq4/rmeYu21ucGa6nmXhiUNJi4khjWSLUr2X8H/j8WlFW7rmm3WfJ8sRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275719; c=relaxed/simple;
-	bh=JrELVE+VPD+cVb/6/7mn3IDRphpLlORqvEqeNR00+g0=;
+	s=arc-20240116; t=1757276989; c=relaxed/simple;
+	bh=hXsTp8vqw4X7Ycryt1SgQj76WKBo09Btcut3KWP1/4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y4HrpXDsiwFv2EYLw/dj7EqVMEfJd+eROpuY/ZCjRsjJcl6uE3++yYJkJ8dTiUA+Q4QwMjNqNWplSn9/y02I8PW6zBpkk+tFe+x3A2aLHa9PqBModS4Qhd+CVdMxAZD6RWFf3HEw1YByb6rCW45XlhPZwiDB+9pI4OOQ99rJNcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BAK4OVl5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACEAFC4CEF0;
-	Sun,  7 Sep 2025 20:08:38 +0000 (UTC)
+	 MIME-Version; b=UyRi3W15bRpfgSaNHM4SF6sG9e8uEQSr6penxT9l/CqpI1/vpmj/3HnRT+QIua4fzeMgUDEQjfb0IWZSGaq1pTxMPiwViFbHJEqGlvTjsUOJwOwaBUBWXTtRpkQmFkS9eBwXeOlggTcLVmlZBJuz3UewdGEaEl0qbzhtaeWvlT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tob2L8Do; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE01C4CEF0;
+	Sun,  7 Sep 2025 20:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275719;
-	bh=JrELVE+VPD+cVb/6/7mn3IDRphpLlORqvEqeNR00+g0=;
+	s=korg; t=1757276989;
+	bh=hXsTp8vqw4X7Ycryt1SgQj76WKBo09Btcut3KWP1/4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BAK4OVl5gqcagQk48KD2tCI7CI4nKVlMMTrado5pmIwQCR6p+x1Ajoog4ov5zuPDc
-	 ZCPYe0tZEgw1JoXF5d41UJV93VHs4zckX2DzV4w2f72DXVpMwySeewCRc/NC4n6DdL
-	 zBQeaf1NkIGjRaXaiB5I6DQCD8QBGMsEA9q9bOI8=
+	b=Tob2L8DoUX9qmZLD1HCOODyVDQBQxOctn0FxV9A8Qi/vpO5tZDWrFwoaKYIIoikyj
+	 gUMhejlBpuUnsQM5NVZ1hvIx6uLqsP4/XdU7/aY2bQviLmYyZcXXUsg3eO9QhVkmGQ
+	 VKOsxqZikO1ttm4MDAqo1/hqdWAWQ3mq2BrBD7RA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e5e64cdf8e92046dd3e1@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Mike Galbraith <efault@gmx.de>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 06/52] Bluetooth: Fix use-after-free in l2cap_sock_cleanup_listen()
+Subject: [PATCH 6.12 051/175] net: macb: Fix tx_ptr_lock locking
 Date: Sun,  7 Sep 2025 21:57:26 +0200
-Message-ID: <20250907195602.158831573@linuxfoundation.org>
+Message-ID: <20250907195616.050203941@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,173 +63,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 862c628108562d8c7a516a900034823b381d3cba ]
+[ Upstream commit 6bc8a5098bf4a365c4086a4a4130bfab10a58260 ]
 
-syzbot reported the splat below without a repro.
+macb_start_xmit and macb_tx_poll can be called with bottom-halves
+disabled (e.g. from softirq) as well as with interrupts disabled (with
+netpoll). Because of this, all other functions taking tx_ptr_lock must
+use spin_lock_irqsave.
 
-In the splat, a single thread calling bt_accept_dequeue() freed sk
-and touched it after that.
-
-The root cause would be the racy l2cap_sock_cleanup_listen() call
-added by the cited commit.
-
-bt_accept_dequeue() is called under lock_sock() except for
-l2cap_sock_release().
-
-Two threads could see the same socket during the list iteration
-in bt_accept_dequeue():
-
-  CPU1                        CPU2 (close())
-  ----                        ----
-  sock_hold(sk)               sock_hold(sk);
-  lock_sock(sk)   <-- block close()
-  sock_put(sk)
-  bt_accept_unlink(sk)
-    sock_put(sk)  <-- refcnt by bt_accept_enqueue()
-  release_sock(sk)
-                              lock_sock(sk)
-                              sock_put(sk)
-                              bt_accept_unlink(sk)
-                                sock_put(sk)        <-- last refcnt
-                              bt_accept_unlink(sk)  <-- UAF
-
-Depending on the timing, the other thread could show up in the
-"Freed by task" part.
-
-Let's call l2cap_sock_cleanup_listen() under lock_sock() in
-l2cap_sock_release().
-
-[0]:
-BUG: KASAN: slab-use-after-free in debug_spin_lock_before kernel/locking/spinlock_debug.c:86 [inline]
-BUG: KASAN: slab-use-after-free in do_raw_spin_lock+0x26f/0x2b0 kernel/locking/spinlock_debug.c:115
-Read of size 4 at addr ffff88803b7eb1c4 by task syz.5.3276/16995
-CPU: 3 UID: 0 PID: 16995 Comm: syz.5.3276 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xcd/0x630 mm/kasan/report.c:482
- kasan_report+0xe0/0x110 mm/kasan/report.c:595
- debug_spin_lock_before kernel/locking/spinlock_debug.c:86 [inline]
- do_raw_spin_lock+0x26f/0x2b0 kernel/locking/spinlock_debug.c:115
- spin_lock_bh include/linux/spinlock.h:356 [inline]
- release_sock+0x21/0x220 net/core/sock.c:3746
- bt_accept_dequeue+0x505/0x600 net/bluetooth/af_bluetooth.c:312
- l2cap_sock_cleanup_listen+0x5c/0x2a0 net/bluetooth/l2cap_sock.c:1451
- l2cap_sock_release+0x5c/0x210 net/bluetooth/l2cap_sock.c:1425
- __sock_release+0xb3/0x270 net/socket.c:649
- sock_close+0x1c/0x30 net/socket.c:1439
- __fput+0x3ff/0xb70 fs/file_table.c:468
- task_work_run+0x14d/0x240 kernel/task_work.c:227
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop+0xeb/0x110 kernel/entry/common.c:43
- exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
- do_syscall_64+0x3f6/0x4c0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2accf8ebe9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffdb6cb1378 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
-RAX: 0000000000000000 RBX: 00000000000426fb RCX: 00007f2accf8ebe9
-RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
-RBP: 00007f2acd1b7da0 R08: 0000000000000001 R09: 00000012b6cb166f
-R10: 0000001b30e20000 R11: 0000000000000246 R12: 00007f2acd1b609c
-R13: 00007f2acd1b6090 R14: ffffffffffffffff R15: 00007ffdb6cb1490
- </TASK>
-
-Allocated by task 5326:
- kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
- kasan_save_track+0x14/0x30 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:388 [inline]
- __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:405
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __do_kmalloc_node mm/slub.c:4365 [inline]
- __kmalloc_noprof+0x223/0x510 mm/slub.c:4377
- kmalloc_noprof include/linux/slab.h:909 [inline]
- sk_prot_alloc+0x1a8/0x2a0 net/core/sock.c:2239
- sk_alloc+0x36/0xc20 net/core/sock.c:2295
- bt_sock_alloc+0x3b/0x3a0 net/bluetooth/af_bluetooth.c:151
- l2cap_sock_alloc.constprop.0+0x33/0x1d0 net/bluetooth/l2cap_sock.c:1894
- l2cap_sock_new_connection_cb+0x101/0x240 net/bluetooth/l2cap_sock.c:1482
- l2cap_connect_cfm+0x4c4/0xf80 net/bluetooth/l2cap_core.c:7287
- hci_connect_cfm include/net/bluetooth/hci_core.h:2050 [inline]
- hci_remote_features_evt+0x4dd/0x970 net/bluetooth/hci_event.c:3712
- hci_event_func net/bluetooth/hci_event.c:7519 [inline]
- hci_event_packet+0xa0d/0x11c0 net/bluetooth/hci_event.c:7573
- hci_rx_work+0x2c5/0x16b0 net/bluetooth/hci_core.c:4071
- process_one_work+0x9cf/0x1b70 kernel/workqueue.c:3236
- process_scheduled_works kernel/workqueue.c:3319 [inline]
- worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
- kthread+0x3c2/0x780 kernel/kthread.c:463
- ret_from_fork+0x5d7/0x6f0 arch/x86/kernel/process.c:148
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-Freed by task 16995:
- kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
- kasan_save_track+0x14/0x30 mm/kasan/common.c:68
- kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:576
- poison_slab_object mm/kasan/common.c:243 [inline]
- __kasan_slab_free+0x60/0x70 mm/kasan/common.c:275
- kasan_slab_free include/linux/kasan.h:233 [inline]
- slab_free_hook mm/slub.c:2417 [inline]
- slab_free mm/slub.c:4680 [inline]
- kfree+0x2b4/0x4d0 mm/slub.c:4879
- sk_prot_free net/core/sock.c:2278 [inline]
- __sk_destruct+0x75f/0x9a0 net/core/sock.c:2373
- sk_destruct+0xc2/0xf0 net/core/sock.c:2401
- __sk_free+0xf4/0x3e0 net/core/sock.c:2412
- sk_free+0x6a/0x90 net/core/sock.c:2423
- sock_put include/net/sock.h:1960 [inline]
- bt_accept_unlink+0x245/0x2e0 net/bluetooth/af_bluetooth.c:262
- bt_accept_dequeue+0x517/0x600 net/bluetooth/af_bluetooth.c:308
- l2cap_sock_cleanup_listen+0x5c/0x2a0 net/bluetooth/l2cap_sock.c:1451
- l2cap_sock_release+0x5c/0x210 net/bluetooth/l2cap_sock.c:1425
- __sock_release+0xb3/0x270 net/socket.c:649
- sock_close+0x1c/0x30 net/socket.c:1439
- __fput+0x3ff/0xb70 fs/file_table.c:468
- task_work_run+0x14d/0x240 kernel/task_work.c:227
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop+0xeb/0x110 kernel/entry/common.c:43
- exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
- do_syscall_64+0x3f6/0x4c0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: 1728137b33c0 ("Bluetooth: L2CAP: Fix use-after-free in l2cap_sock_ready_cb")
-Reported-by: syzbot+e5e64cdf8e92046dd3e1@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-bluetooth/68af6b9d.a70a0220.3cafd4.0032.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 138badbc21a0 ("net: macb: use NAPI for TX completion path")
+Reported-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://patch.msgid.link/20250829143521.1686062-1-sean.anderson@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_sock.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/cadence/macb_main.c | 28 ++++++++++++++----------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
-index 7d7f4ba60a208..5465b537f0e72 100644
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1404,7 +1404,10 @@ static int l2cap_sock_release(struct socket *sock)
- 	if (!sk)
- 		return 0;
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 6c2d69ef1a8db..f7e8c08d84415 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1234,11 +1234,12 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ {
+ 	struct macb *bp = queue->bp;
+ 	u16 queue_index = queue - bp->queues;
++	unsigned long flags;
+ 	unsigned int tail;
+ 	unsigned int head;
+ 	int packets = 0;
  
-+	lock_sock_nested(sk, L2CAP_NESTING_PARENT);
- 	l2cap_sock_cleanup_listen(sk);
-+	release_sock(sk);
-+
- 	bt_sock_unlink(&l2cap_sk_list, sk);
+-	spin_lock(&queue->tx_ptr_lock);
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+ 	head = queue->tx_head;
+ 	for (tail = queue->tx_tail; tail != head && packets < budget; tail++) {
+ 		struct macb_tx_skb	*tx_skb;
+@@ -1297,7 +1298,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ 	    CIRC_CNT(queue->tx_head, queue->tx_tail,
+ 		     bp->tx_ring_size) <= MACB_TX_WAKEUP_THRESH(bp))
+ 		netif_wake_subqueue(bp->dev, queue_index);
+-	spin_unlock(&queue->tx_ptr_lock);
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
  
- 	err = l2cap_sock_shutdown(sock, SHUT_RDWR);
+ 	return packets;
+ }
+@@ -1713,8 +1714,9 @@ static void macb_tx_restart(struct macb_queue *queue)
+ {
+ 	struct macb *bp = queue->bp;
+ 	unsigned int head_idx, tbqp;
++	unsigned long flags;
+ 
+-	spin_lock(&queue->tx_ptr_lock);
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+ 
+ 	if (queue->tx_head == queue->tx_tail)
+ 		goto out_tx_ptr_unlock;
+@@ -1726,19 +1728,20 @@ static void macb_tx_restart(struct macb_queue *queue)
+ 	if (tbqp == head_idx)
+ 		goto out_tx_ptr_unlock;
+ 
+-	spin_lock_irq(&bp->lock);
++	spin_lock(&bp->lock);
+ 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
+-	spin_unlock_irq(&bp->lock);
++	spin_unlock(&bp->lock);
+ 
+ out_tx_ptr_unlock:
+-	spin_unlock(&queue->tx_ptr_lock);
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
+ }
+ 
+ static bool macb_tx_complete_pending(struct macb_queue *queue)
+ {
+ 	bool retval = false;
++	unsigned long flags;
+ 
+-	spin_lock(&queue->tx_ptr_lock);
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+ 	if (queue->tx_head != queue->tx_tail) {
+ 		/* Make hw descriptor updates visible to CPU */
+ 		rmb();
+@@ -1746,7 +1749,7 @@ static bool macb_tx_complete_pending(struct macb_queue *queue)
+ 		if (macb_tx_desc(queue, queue->tx_tail)->ctrl & MACB_BIT(TX_USED))
+ 			retval = true;
+ 	}
+-	spin_unlock(&queue->tx_ptr_lock);
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
+ 	return retval;
+ }
+ 
+@@ -2314,6 +2317,7 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	struct macb_queue *queue = &bp->queues[queue_index];
+ 	unsigned int desc_cnt, nr_frags, frag_size, f;
+ 	unsigned int hdrlen;
++	unsigned long flags;
+ 	bool is_lso;
+ 	netdev_tx_t ret = NETDEV_TX_OK;
+ 
+@@ -2374,7 +2378,7 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		desc_cnt += DIV_ROUND_UP(frag_size, bp->max_tx_length);
+ 	}
+ 
+-	spin_lock_bh(&queue->tx_ptr_lock);
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+ 
+ 	/* This is a hard error, log it. */
+ 	if (CIRC_SPACE(queue->tx_head, queue->tx_tail,
+@@ -2396,15 +2400,15 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	wmb();
+ 	skb_tx_timestamp(skb);
+ 
+-	spin_lock_irq(&bp->lock);
++	spin_lock(&bp->lock);
+ 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
+-	spin_unlock_irq(&bp->lock);
++	spin_unlock(&bp->lock);
+ 
+ 	if (CIRC_SPACE(queue->tx_head, queue->tx_tail, bp->tx_ring_size) < 1)
+ 		netif_stop_subqueue(dev, queue_index);
+ 
+ unlock:
+-	spin_unlock_bh(&queue->tx_ptr_lock);
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
+ 
+ 	return ret;
+ }
 -- 
 2.50.1
 
