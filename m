@@ -1,96 +1,57 @@
-Return-Path: <stable+bounces-178253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D647B47DDF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22232B47D3C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D109189E894
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04386189C4EC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EAAB1B424F;
-	Sun,  7 Sep 2025 20:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB38429BDA1;
+	Sun,  7 Sep 2025 20:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1M4ihVu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3f3nx8D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2C814BFA2;
-	Sun,  7 Sep 2025 20:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689CB284B59;
+	Sun,  7 Sep 2025 20:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276250; cv=none; b=ALi7SvTykrXemvQmWSQ44NTsou13Ksq1OrH29wzJ6T+EVNC1Tql2gmsihQ+Dv5PhJiHspYzacvL4vHqMsPpdz8aWCfZ56NbZ97jVcf21e56ck2m1fZPOyED32pslAiV09LCLQbHxIHh9ieaCTvwdgs0G3UloYz9wqTP8ZlWACXk=
+	t=1757275751; cv=none; b=mbVcA2vGLQZlcbXVKsyy4W3DwZnn+O8SWgUyqjectAhHuBMHAgxMEGfacheIKAxPxFW9EtQg+Y6MiygLK3gQje5qHPOfe3wdQBxW7ezLbmfLvjUadf7xi5863Y9Fn21EJll3Ic974YkvznPltM9zfkPa0UCqA+XuWrkEIFaEzgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276250; c=relaxed/simple;
-	bh=Bb49aacZafNiZ2q64jy7aVETtEK/sieHV2I25lWhfsc=;
+	s=arc-20240116; t=1757275751; c=relaxed/simple;
+	bh=WH4ei/OppLWiskhTSjoQsiCBkpxWF/nVFBv/LXVOBUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HrpBDmCs6P2WKWxkKk6VEyC3cmdaePT9AC3P5WsrNwCbzM3AR8smreJi0C25rBH159v9WOgU0Z2disXJfcc1pAtTPyFEcy8BPUfnE2ga1ZP+DrifwJ1XnGEnOluZP9W56TL3N+UEl8IX+SG74sN8FGpHiLFSZRxypPr7xtcTzXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1M4ihVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FE9C4CEF0;
-	Sun,  7 Sep 2025 20:17:29 +0000 (UTC)
+	 MIME-Version; b=A4WyB/dCDUOe9Tj9b5xJ2QVK8a2Y2yJv/K3sziPHajbZbT48IiZjkmHKZbH4n1DNvYzN+K6y6qMUejFaZuvbpTjSOSp5M4ZZjVwEFlpcdHI/3oFtPo3XIJZIXrFdmdeNxbDY7siqJHWJj155DLiGHSKug1DWEzxd5s6i92tvPHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3f3nx8D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955E4C4CEF0;
+	Sun,  7 Sep 2025 20:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276250;
-	bh=Bb49aacZafNiZ2q64jy7aVETtEK/sieHV2I25lWhfsc=;
+	s=korg; t=1757275751;
+	bh=WH4ei/OppLWiskhTSjoQsiCBkpxWF/nVFBv/LXVOBUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y1M4ihVuydL8L7B9H02/YI3BCxSz9dGHefDM0lfFP5RbT84y8Cjq9ALdW2IUXFScY
-	 qX/fyfpfjC9td3xyLO1v3T868HG+fLPwZLSr645i5vSnWHQ7BJuIMusp5jiKybMgSe
-	 lTY8viUd7uuffBnqDXV/9W59awOjCsrFkhSXVhqg=
+	b=s3f3nx8D0xoid/vI9v3Xrzb1R9cOIMZhl/ixninUz3qAYLz4rE/YZxi2u8d5QyzID
+	 dQsGrzTPxvbRphtOoDOErLJGrX/Ipi34YXeYmDkE3JOGUZvo7ZJTp9Aapy8reheb45
+	 K5WKeve6+LrVMO0ufu0yzXUCyVgN3rk2cfYRicvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	bibo mao <maobibo@loongson.cn>,
-	Borislav Betkov <bp@alien8.de>,
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Thomas Huth <thuth@redhat.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 044/104] mm: move page table sync declarations to linux/pgtable.h
+	Thiago Jung Bauermann <thiago.bauermann@linaro.org>,
+	Ingo Saitz <ingo@hannover.ccc.de>,
+	Kees Cook <kees@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 41/52] randstruct: gcc-plugin: Fix attribute addition
 Date: Sun,  7 Sep 2025 21:58:01 +0200
-Message-ID: <20250907195608.838068632@linuxfoundation.org>
+Message-ID: <20250907195603.161656232@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -102,221 +63,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Yoo <harry.yoo@oracle.com>
+From: Kees Cook <kees@kernel.org>
 
-commit 7cc183f2e67d19b03ee5c13a6664b8c6cc37ff9d upstream.
+[ Upstream commit f39f18f3c3531aa802b58a20d39d96e82eb96c14 ]
 
-During our internal testing, we started observing intermittent boot
-failures when the machine uses 4-level paging and has a large amount of
-persistent memory:
+Based on changes in the 2021 public version of the randstruct
+out-of-tree GCC plugin[1], more carefully update the attributes on
+resulting decls, to avoid tripping checks in GCC 15's
+comptypes_check_enum_int() when it has been configured with
+"--enable-checking=misc":
 
-  BUG: unable to handle page fault for address: ffffe70000000034
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  PGD 0 P4D 0
-  Oops: 0002 [#1] SMP NOPTI
-  RIP: 0010:__init_single_page+0x9/0x6d
-  Call Trace:
-   <TASK>
-   __init_zone_device_page+0x17/0x5d
-   memmap_init_zone_device+0x154/0x1bb
-   pagemap_range+0x2e0/0x40f
-   memremap_pages+0x10b/0x2f0
-   devm_memremap_pages+0x1e/0x60
-   dev_dax_probe+0xce/0x2ec [device_dax]
-   dax_bus_probe+0x6d/0xc9
-   [... snip ...]
-   </TASK>
+arch/arm64/kernel/kexec_image.c:132:14: internal compiler error: in comptypes_check_enum_int, at c/c-typeck.cc:1519
+  132 | const struct kexec_file_ops kexec_image_ops = {
+      |              ^~~~~~~~~~~~~~
+ internal_error(char const*, ...), at gcc/gcc/diagnostic-global-context.cc:517
+ fancy_abort(char const*, int, char const*), at gcc/gcc/diagnostic.cc:1803
+ comptypes_check_enum_int(tree_node*, tree_node*, bool*), at gcc/gcc/c/c-typeck.cc:1519
+ ...
 
-It turns out that the kernel panics while initializing vmemmap (struct
-page array) when the vmemmap region spans two PGD entries, because the new
-PGD entry is only installed in init_mm.pgd, but not in the page tables of
-other tasks.
-
-And looking at __populate_section_memmap():
-  if (vmemmap_can_optimize(altmap, pgmap))
-          // does not sync top level page tables
-          r = vmemmap_populate_compound_pages(pfn, start, end, nid, pgmap);
-  else
-          // sync top level page tables in x86
-          r = vmemmap_populate(start, end, nid, altmap);
-
-In the normal path, vmemmap_populate() in arch/x86/mm/init_64.c
-synchronizes the top level page table (See commit 9b861528a801 ("x86-64,
-mem: Update all PGDs for direct mapping and vmemmap mapping changes")) so
-that all tasks in the system can see the new vmemmap area.
-
-However, when vmemmap_can_optimize() returns true, the optimized path
-skips synchronization of top-level page tables.  This is because
-vmemmap_populate_compound_pages() is implemented in core MM code, which
-does not handle synchronization of the top-level page tables.  Instead,
-the core MM has historically relied on each architecture to perform this
-synchronization manually.
-
-We're not the first party to encounter a crash caused by not-sync'd top
-level page tables: earlier this year, Gwan-gyeong Mun attempted to address
-the issue [1] [2] after hitting a kernel panic when x86 code accessed the
-vmemmap area before the corresponding top-level entries were synced.  At
-that time, the issue was believed to be triggered only when struct page
-was enlarged for debugging purposes, and the patch did not get further
-updates.
-
-It turns out that current approach of relying on each arch to handle the
-page table sync manually is fragile because 1) it's easy to forget to sync
-the top level page table, and 2) it's also easy to overlook that the
-kernel should not access the vmemmap and direct mapping areas before the
-sync.
-
-# The solution: Make page table sync more code robust and harder to miss
-
-To address this, Dave Hansen suggested [3] [4] introducing
-{pgd,p4d}_populate_kernel() for updating kernel portion of the page tables
-and allow each architecture to explicitly perform synchronization when
-installing top-level entries.  With this approach, we no longer need to
-worry about missing the sync step, reducing the risk of future
-regressions.
-
-The new interface reuses existing ARCH_PAGE_TABLE_SYNC_MASK,
-PGTBL_P*D_MODIFIED and arch_sync_kernel_mappings() facility used by
-vmalloc and ioremap to synchronize page tables.
-
-pgd_populate_kernel() looks like this:
-static inline void pgd_populate_kernel(unsigned long addr, pgd_t *pgd,
-                                       p4d_t *p4d)
-{
-        pgd_populate(&init_mm, pgd, p4d);
-        if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)
-                arch_sync_kernel_mappings(addr, addr);
-}
-
-It is worth noting that vmalloc() and apply_to_range() carefully
-synchronizes page tables by calling p*d_alloc_track() and
-arch_sync_kernel_mappings(), and thus they are not affected by this patch
-series.
-
-This series was hugely inspired by Dave Hansen's suggestion and hence
-added Suggested-by: Dave Hansen.
-
-Cc stable because lack of this series opens the door to intermittent
-boot failures.
-
-
-This patch (of 3):
-
-Move ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings() to
-linux/pgtable.h so that they can be used outside of vmalloc and ioremap.
-
-Link: https://lkml.kernel.org/r/20250818020206.4517-1-harry.yoo@oracle.com
-Link: https://lkml.kernel.org/r/20250818020206.4517-2-harry.yoo@oracle.com
-Link: https://lore.kernel.org/linux-mm/20250220064105.808339-1-gwan-gyeong.mun@intel.com [1]
-Link: https://lore.kernel.org/linux-mm/20250311114420.240341-1-gwan-gyeong.mun@intel.com [2]
-Link: https://lore.kernel.org/linux-mm/d1da214c-53d3-45ac-a8b6-51821c5416e4@intel.com [3]
-Link: https://lore.kernel.org/linux-mm/4d800744-7b88-41aa-9979-b245e8bf794b@intel.com  [4]
-Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Acked-by: Kiryl Shutsemau <kas@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: bibo mao <maobibo@loongson.cn>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Christoph Lameter (Ampere) <cl@gentwo.org>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Joao Martins <joao.m.martins@oracle.com>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: Thomas Huth <thuth@redhat.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://archive.org/download/grsecurity/grsecurity-3.1-5.10.41-202105280954.patch.gz [1]
+Reported-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
+Closes: https://github.com/KSPP/linux/issues/367
+Closes: https://lore.kernel.org/lkml/20250530000646.104457-1-thiago.bauermann@linaro.org/
+Reported-by: Ingo Saitz <ingo@hannover.ccc.de>
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1104745
+Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
+Tested-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
+Link: https://lore.kernel.org/r/20250530221824.work.623-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/pgtable.h |   16 ++++++++++++++++
- include/linux/vmalloc.h |   16 ----------------
- 2 files changed, 16 insertions(+), 16 deletions(-)
+ scripts/gcc-plugins/gcc-common.h              |   32 ++++++++++++++++++++++++++
+ scripts/gcc-plugins/randomize_layout_plugin.c |   22 ++++++++---------
+ 2 files changed, 43 insertions(+), 11 deletions(-)
 
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1472,6 +1472,22 @@ static inline int pmd_protnone(pmd_t pmd
+--- a/scripts/gcc-plugins/gcc-common.h
++++ b/scripts/gcc-plugins/gcc-common.h
+@@ -185,6 +185,38 @@ static inline tree build_const_char_stri
+ 	return cstr;
  }
- #endif /* CONFIG_NUMA_BALANCING */
  
-+/*
-+ * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
-+ * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
-+ * needs to be called.
-+ */
-+#ifndef ARCH_PAGE_TABLE_SYNC_MASK
-+#define ARCH_PAGE_TABLE_SYNC_MASK 0
-+#endif
++static inline void __add_type_attr(tree type, const char *attr, tree args)
++{
++	tree oldattr;
 +
-+/*
-+ * There is no default implementation for arch_sync_kernel_mappings(). It is
-+ * relied upon the compiler to optimize calls out if ARCH_PAGE_TABLE_SYNC_MASK
-+ * is 0.
-+ */
-+void arch_sync_kernel_mappings(unsigned long start, unsigned long end);
++	if (type == NULL_TREE)
++		return;
++	oldattr = lookup_attribute(attr, TYPE_ATTRIBUTES(type));
++	if (oldattr != NULL_TREE) {
++		gcc_assert(TREE_VALUE(oldattr) == args || TREE_VALUE(TREE_VALUE(oldattr)) == TREE_VALUE(args));
++		return;
++	}
 +
- #endif /* CONFIG_MMU */
++	TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
++	TYPE_ATTRIBUTES(type) = tree_cons(get_identifier(attr), args, TYPE_ATTRIBUTES(type));
++}
++
++static inline void add_type_attr(tree type, const char *attr, tree args)
++{
++	tree main_variant = TYPE_MAIN_VARIANT(type);
++
++	__add_type_attr(TYPE_CANONICAL(type), attr, args);
++	__add_type_attr(TYPE_CANONICAL(main_variant), attr, args);
++	__add_type_attr(main_variant, attr, args);
++
++	for (type = TYPE_NEXT_VARIANT(main_variant); type; type = TYPE_NEXT_VARIANT(type)) {
++		if (!lookup_attribute(attr, TYPE_ATTRIBUTES(type)))
++			TYPE_ATTRIBUTES(type) = TYPE_ATTRIBUTES(main_variant);
++
++		__add_type_attr(TYPE_CANONICAL(type), attr, args);
++	}
++}
++
+ #define PASS_INFO(NAME, REF, ID, POS)		\
+ struct register_pass_info NAME##_pass_info = {	\
+ 	.pass = make_##NAME##_pass(),		\
+--- a/scripts/gcc-plugins/randomize_layout_plugin.c
++++ b/scripts/gcc-plugins/randomize_layout_plugin.c
+@@ -95,6 +95,9 @@ static tree handle_randomize_layout_attr
  
- #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
---- a/include/linux/vmalloc.h
-+++ b/include/linux/vmalloc.h
-@@ -176,22 +176,6 @@ extern int remap_vmalloc_range(struct vm
- 							unsigned long pgoff);
+ 	if (TYPE_P(*node)) {
+ 		type = *node;
++	} else if (TREE_CODE(*node) == FIELD_DECL) {
++		*no_add_attrs = false;
++		return NULL_TREE;
+ 	} else {
+ 		gcc_assert(TREE_CODE(*node) == TYPE_DECL);
+ 		type = TREE_TYPE(*node);
+@@ -381,15 +384,14 @@ static int relayout_struct(tree type)
+ 		TREE_CHAIN(newtree[i]) = newtree[i+1];
+ 	TREE_CHAIN(newtree[num_fields - 1]) = NULL_TREE;
  
- /*
-- * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
-- * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
-- * needs to be called.
-- */
--#ifndef ARCH_PAGE_TABLE_SYNC_MASK
--#define ARCH_PAGE_TABLE_SYNC_MASK 0
--#endif
--
--/*
-- * There is no default implementation for arch_sync_kernel_mappings(). It is
-- * relied upon the compiler to optimize calls out if ARCH_PAGE_TABLE_SYNC_MASK
-- * is 0.
-- */
--void arch_sync_kernel_mappings(unsigned long start, unsigned long end);
--
--/*
-  *	Lowlevel-APIs (not for driver use!)
-  */
++	add_type_attr(type, "randomize_performed", NULL_TREE);
++	add_type_attr(type, "designated_init", NULL_TREE);
++	if (has_flexarray)
++		add_type_attr(type, "has_flexarray", NULL_TREE);
++
+ 	main_variant = TYPE_MAIN_VARIANT(type);
+-	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant)) {
++	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant))
+ 		TYPE_FIELDS(variant) = newtree[0];
+-		TYPE_ATTRIBUTES(variant) = copy_list(TYPE_ATTRIBUTES(variant));
+-		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("randomize_performed"), NULL_TREE, TYPE_ATTRIBUTES(variant));
+-		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("designated_init"), NULL_TREE, TYPE_ATTRIBUTES(variant));
+-		if (has_flexarray)
+-			TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("has_flexarray"), NULL_TREE, TYPE_ATTRIBUTES(type));
+-	}
  
+ 	/*
+ 	 * force a re-layout of the main variant
+@@ -457,10 +459,8 @@ static void randomize_type(tree type)
+ 	if (lookup_attribute("randomize_layout", TYPE_ATTRIBUTES(TYPE_MAIN_VARIANT(type))) || is_pure_ops_struct(type))
+ 		relayout_struct(type);
+ 
+-	for (variant = TYPE_MAIN_VARIANT(type); variant; variant = TYPE_NEXT_VARIANT(variant)) {
+-		TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
+-		TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("randomize_considered"), NULL_TREE, TYPE_ATTRIBUTES(type));
+-	}
++	add_type_attr(type, "randomize_considered", NULL_TREE);
++
+ #ifdef __DEBUG_PLUGIN
+ 	fprintf(stderr, "Marking randomize_considered on struct %s\n", ORIG_TYPE_NAME(type));
+ #ifdef __DEBUG_VERBOSE
 
 
 
