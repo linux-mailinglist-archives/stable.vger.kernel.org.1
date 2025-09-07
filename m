@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-178696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A042B47FB3
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE673B47D9F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DEAE2005E5
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8592817CB7A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3EA26B2AD;
-	Sun,  7 Sep 2025 20:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637A627F754;
+	Sun,  7 Sep 2025 20:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvKunA9A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aeFnui24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA9E1F63CD;
-	Sun,  7 Sep 2025 20:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9B01B424F;
+	Sun,  7 Sep 2025 20:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277665; cv=none; b=nxSBlIM7Oz8hfkdmy9NX8MbvF07I8W6Elg5mxldo/q3436ze+5a7mS/M33uG+dqla3cPLXkmwDc5+N+Q13dRkH2G6L1IiRkkzZ4Ktq2L3rEqRx9O2RblOetzi71x5LsW/UXAlkPIwUyy6arDHqYy1mRHzWuuPP3Szkuyk3DxIho=
+	t=1757276063; cv=none; b=byIl3fvKUiGZVc397RSgT3gPyeCMVgRTACSIZgo0ab5NuB+5SJxi4T8eU6x4MFMYX3ro32RyEybG6WghAW7E81ghPmJFDsrfP/4Csrr51r9q8WPUXF6UIcrU0FjyFBBafJ1mGmQsjR+nrl+Y7cSuESNxV/2nOgzpA8lXAK9ERHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277665; c=relaxed/simple;
-	bh=lY0NoaTalgMEKxy2swrFaCKdRi2oEz/ULo1Uo3qgPms=;
+	s=arc-20240116; t=1757276063; c=relaxed/simple;
+	bh=rQKhdC2TiiWzyuggWW4PwjZi3omNH1OzJOG4Zdmzh04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsSppX5kjNTiQV9pK9ZGsIeR1AlYPb4q8fw7seUljLB/J+6B5sKJsIey7g16x/5gmm4+3nuk/grpk/RiQugKDAphBcUBf74n8fZjv5hshMf9B8q3qs/vmrO1kCAe9S5T6pD3ZrEqlGj4MXhadmumu4+OolEttRchFjQiWY364BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvKunA9A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F878C4CEF0;
-	Sun,  7 Sep 2025 20:41:04 +0000 (UTC)
+	 MIME-Version; b=jbp79wAhJYhKn5a6b+LrSER0C1uRwNSdyRL98V+KMJAMXTurvawQ8LYkEI6Oqzfjy0vGxu8uHQFD14/5ptPqY97DUCIqosC77zYgf4aK+i1Idabg2DYgDQXa+zCyhflF4jajhgHWjEPHttaqjjKPoynbhPjsg3QK6vYdwhFHiJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aeFnui24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9628CC4CEF0;
+	Sun,  7 Sep 2025 20:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277665;
-	bh=lY0NoaTalgMEKxy2swrFaCKdRi2oEz/ULo1Uo3qgPms=;
+	s=korg; t=1757276063;
+	bh=rQKhdC2TiiWzyuggWW4PwjZi3omNH1OzJOG4Zdmzh04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QvKunA9Aatzmq6pIj4ho/qyx1gjavTz33MffDrOycv6XSPLfIoaUTVCHYRcd6hjSJ
-	 5cA3RhGFdbTRC8riQcmuir1tlstHPqvT1C+b0DasCP2FFOJfouiUzxhnXmLpM6UNsa
-	 VNeiDRNOyhlL19g2o2atuJ/bJzgA2iUHENHCPNAw=
+	b=aeFnui24mF0X4+SAhjdbdMikNg5/wlHplYJVmhfcOHA3cQPSso8XozrpPo/+WEfSY
+	 ElHyCs7DtlrmH983gskwfBFOJxSFc6xGFgLC4nEKABoni3dIAsT4VCU7BnwwvnK9aL
+	 +IZNxi0fJTEi+bfOmn3eCxEv9dadqCe3B2Q5cqYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Imre Kaloz <kaloz@openwrt.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 086/183] net/smc: Remove validation of reserved bits in CLC Decline message
+Subject: [PATCH 5.15 51/64] arm64: dts: marvell: uDPU: define pinctrl state for alarm LEDs
 Date: Sun,  7 Sep 2025 21:58:33 +0200
-Message-ID: <20250907195617.836323772@linuxfoundation.org>
+Message-ID: <20250907195604.818724879@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit cc282f73bc0cbdf3ee7af2f2d3a2ef4e6b19242d ]
+[ Upstream commit b04f0d89e880bc2cca6a5c73cf287082c91878da ]
 
-Currently SMC code is validating the reserved bits while parsing the incoming
-CLC decline message & when this validation fails, its treated as a protocol
-error. As a result, the SMC connection is terminated instead of falling back to
-TCP. As per RFC7609[1] specs we shouldn't be validating the reserved bits that
-is part of CLC message. This patch fixes this issue.
+The two alarm LEDs of on the uDPU board are stopped working since
+commit 78efa53e715e ("leds: Init leds class earlier").
 
-CLC Decline message format can viewed here[2].
+The LEDs are driven by the GPIO{15,16} pins of the North Bridge
+GPIO controller. These pins are part of the 'spi_quad' pin group
+for which the 'spi' function is selected via the default pinctrl
+state of the 'spi' node. This is wrong however, since in order to
+allow controlling the LEDs, the pins should use the 'gpio' function.
 
-[1] https://datatracker.ietf.org/doc/html/rfc7609#page-92
-[2] https://datatracker.ietf.org/doc/html/rfc7609#page-105
+Before the commit mentined above, the 'spi' function is selected
+first by the pinctrl core before probing the spi driver, but then
+it gets overridden to 'gpio' implicitly via the
+devm_gpiod_get_index_optional() call from the 'leds-gpio' driver.
 
-Fixes: 8ade200c269f ("net/smc: add v2 format of CLC decline message")
-Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Link: https://patch.msgid.link/20250902082041.98996-1-mjambigi@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+After the commit, the LED subsystem gets initialized before the
+SPI subsystem, so the function of the pin group remains 'spi'
+which in turn prevents controlling of the LEDs.
+
+Despite the change of the initialization order, the root cause is
+that the pinctrl state definition is wrong since its initial commit
+0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board"),
+
+To fix the problem, override the function in the 'spi_quad_pins'
+node to 'gpio' and move the pinctrl state definition from the
+'spi' node into the 'leds' node.
+
+Cc: stable@vger.kernel.org # needs adjustment for < 6.1
+Fixes: 0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+[ Applied to .dts instead of .dtsi ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/smc_clc.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index 521f5df80e10c..8a794333e9927 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -426,8 +426,6 @@ smc_clc_msg_decl_valid(struct smc_clc_msg_decline *dclc)
- {
- 	struct smc_clc_msg_hdr *hdr = &dclc->hdr;
+--- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts
++++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts
+@@ -28,8 +28,9 @@
+ 	};
  
--	if (hdr->typev1 != SMC_TYPE_R && hdr->typev1 != SMC_TYPE_D)
--		return false;
- 	if (hdr->version == SMC_V1) {
- 		if (ntohs(hdr->length) != sizeof(struct smc_clc_msg_decline))
- 			return false;
--- 
-2.50.1
-
+ 	leds {
+-		pinctrl-names = "default";
+ 		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&spi_quad_pins>;
+ 
+ 		power1 {
+ 			label = "udpu:green:power";
+@@ -96,8 +97,6 @@
+ 
+ &spi0 {
+ 	status = "okay";
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&spi_quad_pins>;
+ 
+ 	m25p80@0 {
+ 		compatible = "jedec,spi-nor";
+@@ -117,6 +116,10 @@
+ 	};
+ };
+ 
++&spi_quad_pins {
++	function = "gpio";
++};
++
+ &pinctrl_nb {
+ 	i2c1_recovery_pins: i2c1-recovery-pins {
+ 		groups = "i2c1";
 
 
 
