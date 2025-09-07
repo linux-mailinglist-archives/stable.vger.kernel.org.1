@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-178255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36852B47DE1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84765B47E61
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E20E516B9F7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80350189FB80
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF56A1C6FFA;
-	Sun,  7 Sep 2025 20:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB12277C94;
+	Sun,  7 Sep 2025 20:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZyOSjbL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IRUFzcBG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C03C14BFA2;
-	Sun,  7 Sep 2025 20:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC90264A9C;
+	Sun,  7 Sep 2025 20:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276256; cv=none; b=cQxFe1Fq4tsiGJf3dFApsTRNYjtlulzAGK7yh/zCYRyBTeQCUTWL0/aJq2nTFqe+4WylfBJkngfx8rmoRvvEdDSuCtlPT0bAszlCBNzZig567TPpU6uhLATHEwMweJICn8aPHUQ/K7LDkwdQSmelxHbJ+204OiaoPX61fAnJIDU=
+	t=1757276610; cv=none; b=HiRJ9ACA8HT5Bfhq9pmVPrQ8i0pBlABX98Dj2QUfBBm1z8P2l6eptQOoIyWqx+SFNvEaMqFP7x0Dq1LfssjsP7Ip+XautU9SZGd4bMswswjK3fwAvtvtBd32LrG9fNnF+iV93y+Gd1kB3fwg1o/AT3exrDsaT1q77rXHv7uMW+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276256; c=relaxed/simple;
-	bh=GCqteRMXE2XlQgSY266vW29RlDxDbA/b9UkwPm5n5D8=;
+	s=arc-20240116; t=1757276610; c=relaxed/simple;
+	bh=G7p5M6Lyg0ewZb5b5f5g7D1X/kNF4qsLqebQVuW+GP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SmlWRnNyqSGS6ZLE/iJjCAHcdruy9O7ueE/+w/JOACh/sKT7l3FfjUiKE8n8KpEbRIdo04CHo9GxRbG8SBKvRB/xVYuuemFGuWpJ2oEQtV5895pOOshR8OYqGKXNyEjbGHcIkZu1BRzvX/y7DnNI9cKWgvR0uht2Ndf7gGiphNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZyOSjbL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69C7C4CEF0;
-	Sun,  7 Sep 2025 20:17:35 +0000 (UTC)
+	 MIME-Version; b=ekEuv4dRCpUfYXKl/khVDzUN/f3L4S6MdmZD5VO88VwhqloDFA6B5P1wk2agggoomt4mIBDjyYWx4+BQxMmuM+K+/AA40DI3zupDObQumM7WFYbO4We0xIf1SO2wjc12lVzzoDwKTqWmmtj8u9bTHD0ikoxZ3uMxtn66jci4cXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IRUFzcBG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D6CC4CEF8;
+	Sun,  7 Sep 2025 20:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276256;
-	bh=GCqteRMXE2XlQgSY266vW29RlDxDbA/b9UkwPm5n5D8=;
+	s=korg; t=1757276610;
+	bh=G7p5M6Lyg0ewZb5b5f5g7D1X/kNF4qsLqebQVuW+GP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZyOSjbLKEP6QsCxHeC5rCqG8KKle6QdyqQBJJ4tOM26Zy9BvTrof7D2sHpt9PJo8
-	 aLguobTK4UZfgWsD1m25L34sP6yxw64kiyGes4nBPPganp2lLAVxSvP0SUm4GlE3Ja
-	 rm4MWesl0Qu4BWE5n4A4dBWlE7kZj4jrj3cbyHdA=
+	b=IRUFzcBGbbZvffYRjlrhX+WsnVmcji3T4LlrLObc/+/nJaJ/+oougJ/pS1u2rdajs
+	 8tLmZBjuLUQD8NS5PBVtA7nuXvTFLwqScZNwZswqmO4fqqLfKf9MSP+Ly3Qbr5ZJVT
+	 apl3UuHvoDI06eJD/gdwgsymSVOL5176DZvvJw08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangzijie <wangzijie1@honor.com>,
-	Lars Wendler <polynomial-c@gmx.de>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	=?UTF-8?q?Petr=20Van=C4=9Bk?= <pv@excello.cz>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	"Kirill A. Shutemov" <k.shutemov@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 046/104] proc: fix missing pde_set_flags() for net proc files
+	Wang Liang <wangliang74@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 047/121] net: atm: fix memory leak in atm_register_sysfs when device_register fail
 Date: Sun,  7 Sep 2025 21:58:03 +0200
-Message-ID: <20250907195608.887605172@linuxfoundation.org>
+Message-ID: <20250907195611.031853957@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,137 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangzijie <wangzijie1@honor.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-commit 2ce3d282bd5050fca8577defeff08ada0d55d062 upstream.
+[ Upstream commit 0a228624bcc00af41f281a2a84c928595a74c17d ]
 
-To avoid potential UAF issues during module removal races, we use
-pde_set_flags() to save proc_ops flags in PDE itself before
-proc_register(), and then use pde_has_proc_*() helpers instead of directly
-dereferencing pde->proc_ops->*.
+When device_register() return error in atm_register_sysfs(), which can be
+triggered by kzalloc fail in device_private_init() or other reasons,
+kmemleak reports the following memory leaks:
 
-However, the pde_set_flags() call was missing when creating net related
-proc files.  This omission caused incorrect behavior which FMODE_LSEEK was
-being cleared inappropriately in proc_reg_open() for net proc files.  Lars
-reported it in this link[1].
+unreferenced object 0xffff88810182fb80 (size 8):
+  comm "insmod", pid 504, jiffies 4294852464
+  hex dump (first 8 bytes):
+    61 64 75 6d 6d 79 30 00                          adummy0.
+  backtrace (crc 14dfadaf):
+    __kmalloc_node_track_caller_noprof+0x335/0x450
+    kvasprintf+0xb3/0x130
+    kobject_set_name_vargs+0x45/0x120
+    dev_set_name+0xa9/0xe0
+    atm_register_sysfs+0xf3/0x220
+    atm_dev_register+0x40b/0x780
+    0xffffffffa000b089
+    do_one_initcall+0x89/0x300
+    do_init_module+0x27b/0x7d0
+    load_module+0x54cd/0x5ff0
+    init_module_from_file+0xe4/0x150
+    idempotent_init_module+0x32c/0x610
+    __x64_sys_finit_module+0xbd/0x120
+    do_syscall_64+0xa8/0x270
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fix this by ensuring pde_set_flags() is called when register proc entry,
-and add NULL check for proc_ops in pde_set_flags().
+When device_create_file() return error in atm_register_sysfs(), the same
+issue also can be triggered.
 
-[wangzijie1@honor.com: stash pde->proc_ops in a local const variable, per Christian]
-  Link: https://lkml.kernel.org/r/20250821105806.1453833-1-wangzijie1@honor.com
-Link: https://lkml.kernel.org/r/20250818123102.959595-1-wangzijie1@honor.com
-Link: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/ [1]
-Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al")
-Signed-off-by: wangzijie <wangzijie1@honor.com>
-Reported-by: Lars Wendler <polynomial-c@gmx.de>
-Tested-by: Stefano Brivio <sbrivio@redhat.com>
-Tested-by: Petr Vaněk <pv@excello.cz>
-Tested by: Lars Wendler <polynomial-c@gmx.de>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Kirill A. Shutemov <k.shutemov@gmail.com>
-Cc: wangzijie <wangzijie1@honor.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Function put_device() should be called to release kobj->name memory and
+other device resource, instead of kfree().
+
+Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250901063537.1472221-1-wangliang74@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/generic.c |   38 +++++++++++++++++++++-----------------
- 1 file changed, 21 insertions(+), 17 deletions(-)
+ net/atm/resources.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -363,6 +363,25 @@ static const struct inode_operations pro
- 	.setattr	= proc_notify_change,
- };
+diff --git a/net/atm/resources.c b/net/atm/resources.c
+index b19d851e1f443..7c6fdedbcf4e5 100644
+--- a/net/atm/resources.c
++++ b/net/atm/resources.c
+@@ -112,7 +112,9 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
  
-+static void pde_set_flags(struct proc_dir_entry *pde)
-+{
-+	const struct proc_ops *proc_ops = pde->proc_ops;
-+
-+	if (!proc_ops)
-+		return;
-+
-+	if (proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
-+		pde->flags |= PROC_ENTRY_PERMANENT;
-+	if (proc_ops->proc_read_iter)
-+		pde->flags |= PROC_ENTRY_proc_read_iter;
-+#ifdef CONFIG_COMPAT
-+	if (proc_ops->proc_compat_ioctl)
-+		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
-+#endif
-+	if (proc_ops->proc_lseek)
-+		pde->flags |= PROC_ENTRY_proc_lseek;
-+}
-+
- /* returns the registered entry, or frees dp and returns NULL on failure */
- struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
- 		struct proc_dir_entry *dp)
-@@ -370,6 +389,8 @@ struct proc_dir_entry *proc_register(str
- 	if (proc_alloc_inum(&dp->low_ino))
- 		goto out_free_entry;
+ 	if (atm_proc_dev_register(dev) < 0) {
+ 		pr_err("atm_proc_dev_register failed for dev %s\n", type);
+-		goto out_fail;
++		mutex_unlock(&atm_dev_mutex);
++		kfree(dev);
++		return NULL;
+ 	}
  
-+	pde_set_flags(dp);
-+
- 	write_lock(&proc_subdir_lock);
- 	dp->parent = dir;
- 	if (pde_subdir_insert(dir, dp) == false) {
-@@ -558,20 +579,6 @@ struct proc_dir_entry *proc_create_reg(c
- 	return p;
- }
+ 	if (atm_register_sysfs(dev, parent) < 0) {
+@@ -128,7 +130,7 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
+ 	return dev;
  
--static void pde_set_flags(struct proc_dir_entry *pde)
--{
--	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
--		pde->flags |= PROC_ENTRY_PERMANENT;
--	if (pde->proc_ops->proc_read_iter)
--		pde->flags |= PROC_ENTRY_proc_read_iter;
--#ifdef CONFIG_COMPAT
--	if (pde->proc_ops->proc_compat_ioctl)
--		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
--#endif
--	if (pde->proc_ops->proc_lseek)
--		pde->flags |= PROC_ENTRY_proc_lseek;
--}
--
- struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
- 		struct proc_dir_entry *parent,
- 		const struct proc_ops *proc_ops, void *data)
-@@ -582,7 +589,6 @@ struct proc_dir_entry *proc_create_data(
- 	if (!p)
- 		return NULL;
- 	p->proc_ops = proc_ops;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
+ out_fail:
+-	kfree(dev);
++	put_device(&dev->class_dev);
+ 	dev = NULL;
+ 	goto out;
  }
- EXPORT_SYMBOL(proc_create_data);
-@@ -633,7 +639,6 @@ struct proc_dir_entry *proc_create_seq_p
- 	p->proc_ops = &proc_seq_ops;
- 	p->seq_ops = ops;
- 	p->state_size = state_size;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_seq_private);
-@@ -664,7 +669,6 @@ struct proc_dir_entry *proc_create_singl
- 		return NULL;
- 	p->proc_ops = &proc_single_ops;
- 	p->single_show = show;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_single_data);
+-- 
+2.50.1
+
 
 
 
