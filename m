@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-178375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBB5B47E68
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8E1B47E2B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6109F17DF5F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6886C3AC11E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417BF20E00B;
-	Sun,  7 Sep 2025 20:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A851F14BFA2;
+	Sun,  7 Sep 2025 20:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRdlk//n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dmv0z3M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6AC1F09BF;
-	Sun,  7 Sep 2025 20:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663FA189BB0;
+	Sun,  7 Sep 2025 20:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276636; cv=none; b=I+U/pO70qiD6OjTm+lApW0/x0YDBN/Vgg37frRasuuZe+cIBHs1DWHtgM62u4FYEpqQvhaTpVoeNwcKWkGaB1a0hoo5A0Y+AV0itmnZqp7yIiLThJ8EMhBZJ6J6ogAJZA3q9u+H0/Pi3AKfIasJntxWSTNe15IhYfUAlkUbGHWo=
+	t=1757276462; cv=none; b=mQdSsHpmi4mryzc1FWZlLG86FNrT1Iva1rRfa5PVxh5Xu1yvS4gy/5BrsXmqkRwWw+D5N0Yb5/uHfhdHfe6Cfaw2oRLq1sJZR7cM32aXMYzEwd98Fr+Z8/yYa1bKikFF068mKVS1iRUEVe8Cyib7w/oWnFtoFCYEM8jsWiWyWXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276636; c=relaxed/simple;
-	bh=ML0BShXLh/EYWJOmtFJryVEqvN3R/T0H4ePcvSGRBMk=;
+	s=arc-20240116; t=1757276462; c=relaxed/simple;
+	bh=HYT40DUnmccF2uBeaMEt3ap3sED4K5q8NOWrLFw2jKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgBXRypP7Hm7kz3Ugt+jEbQmrTbbxWRJEi7XzHLSNHavjRf5eVcMkeb1y6Mq/UDTz2octl8ZbXEhxGshZi8Qgd/mahsa7+QH5hC12xs3XFMFKzMlVtE3sR7a7AtuM7rQQQBxTKfuLeByJ3UmxL+AIXoEmO7+yepGMzr/1Mq3KAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRdlk//n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3C7C4CEF0;
-	Sun,  7 Sep 2025 20:23:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ecUPDFJj88T2dI+Jgkf02m+IGa2RLq/iLR7VvN1P/7mD0Hv3nDvaXhq3yrfwQ9fcYsOFm3UwKeavwKuCJ+jxbEd6mcCjI71T1OhwHCElffecmltsDeGe0wABfVrSqKtg5ls40DZcuRo5g4LbOaPrNRNyQapzN2shHDKXTZN+vEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dmv0z3M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D730EC4CEF0;
+	Sun,  7 Sep 2025 20:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276635;
-	bh=ML0BShXLh/EYWJOmtFJryVEqvN3R/T0H4ePcvSGRBMk=;
+	s=korg; t=1757276462;
+	bh=HYT40DUnmccF2uBeaMEt3ap3sED4K5q8NOWrLFw2jKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YRdlk//nQ0F7UY+FoyvzVOoc30LNYqWG5ag+WKQ4St79OXJy25x/QyJHR4EkDY5tt
-	 wMsg6CY8V/7U9b5t3XJlG2pj7B7sDf/zFZUKjglUFwpa4bDZiuZABYr5i8eTQudHEj
-	 FUoqkhnhT44lFvfEqlIVNdxHbmHV33GfeqYHMRds=
+	b=1dmv0z3Mb39BgWPEh19xD4bqQm+BHcNf5y5gjsFp5mmIIxjy3dRZ+eedbi0mHNobd
+	 yBZ7qFQ2L7IBL1BSv76sWDWKqJiIaLv2LKlpoO96k2GBSGdcYBcCfi/9FKrykJCO7Y
+	 tWA2MItgCXZvh5cvXoBY2SYcdpxmNnEXc0h5zrd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	oushixiong <oushixiong1025@163.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 063/121] drm/amdgpu: drop hw access in non-DC audio fini
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 062/104] dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()
 Date: Sun,  7 Sep 2025 21:58:19 +0200
-Message-ID: <20250907195611.456303103@linuxfoundation.org>
+Message-ID: <20250907195609.287199377@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,112 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-commit 71403f58b4bb6c13b71c05505593a355f697fd94 upstream.
+[ Upstream commit 157ae5ffd76a2857ccb4b7ce40bc5a344ca00395 ]
 
-We already disable the audio pins in hw_fini so
-there is no need to do it again in sw_fini.
+Fix a potential deadlock bug. Observe that in the mtk-cqdma.c
+file, functions like mtk_cqdma_issue_pending() and
+mtk_cqdma_free_active_desc() properly acquire the pc lock before the vc
+lock when handling pc and vc fields. However, mtk_cqdma_tx_status()
+violates this order by first acquiring the vc lock before invoking
+mtk_cqdma_find_active_desc(), which subsequently takes the pc lock. This
+reversed locking sequence (vc → pc) contradicts the established
+pc → vc order and creates deadlock risks.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4481
-Cc: oushixiong <oushixiong1025@163.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5eeb16ca727f11278b2917fd4311a7d7efb0bbd6)
+Fix the issue by moving the vc lock acquisition code from
+mtk_cqdma_find_active_desc() to mtk_cqdma_tx_status(). Ensure the pc lock
+is acquired before the vc lock in the calling function to maintain correct
+locking hierarchy. Note that since mtk_cqdma_find_active_desc() is a
+static function with only one caller (mtk_cqdma_tx_status()), this
+modification safely eliminates the deadlock possibility without affecting
+other components.
+
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs to extract
+function pairs that can be concurrently executed, and then analyzes the
+instructions in the paired functions to identify possible concurrency bugs
+including deadlocks, data races and atomicity violations.
+
+Fixes: b1f01e48df5a ("dmaengine: mediatek: Add MediaTek Command-Queue DMA controller for MT6765 SoC")
 Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250508073634.3719-1-chenqiuji666@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/dce_v10_0.c |    5 -----
- drivers/gpu/drm/amd/amdgpu/dce_v11_0.c |    5 -----
- drivers/gpu/drm/amd/amdgpu/dce_v6_0.c  |    5 -----
- drivers/gpu/drm/amd/amdgpu/dce_v8_0.c  |    5 -----
- 4 files changed, 20 deletions(-)
+ drivers/dma/mediatek/mtk-cqdma.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
-@@ -1459,17 +1459,12 @@ static int dce_v10_0_audio_init(struct a
- 
- static void dce_v10_0_audio_fini(struct amdgpu_device *adev)
+--- a/drivers/dma/mediatek/mtk-cqdma.c
++++ b/drivers/dma/mediatek/mtk-cqdma.c
+@@ -421,15 +421,11 @@ static struct virt_dma_desc *mtk_cqdma_f
  {
--	int i;
--
- 	if (!amdgpu_audio)
- 		return;
+ 	struct mtk_cqdma_vchan *cvc = to_cqdma_vchan(c);
+ 	struct virt_dma_desc *vd;
+-	unsigned long flags;
  
- 	if (!adev->mode_info.audio.enabled)
- 		return;
+-	spin_lock_irqsave(&cvc->pc->lock, flags);
+ 	list_for_each_entry(vd, &cvc->pc->queue, node)
+ 		if (vd->tx.cookie == cookie) {
+-			spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 			return vd;
+ 		}
+-	spin_unlock_irqrestore(&cvc->pc->lock, flags);
  
--	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
--		dce_v10_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
--
- 	adev->mode_info.audio.enabled = false;
- }
+ 	list_for_each_entry(vd, &cvc->vc.desc_issued, node)
+ 		if (vd->tx.cookie == cookie)
+@@ -453,9 +449,11 @@ static enum dma_status mtk_cqdma_tx_stat
+ 	if (ret == DMA_COMPLETE || !txstate)
+ 		return ret;
  
---- a/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
-@@ -1508,17 +1508,12 @@ static int dce_v11_0_audio_init(struct a
++	spin_lock_irqsave(&cvc->pc->lock, flags);
+ 	spin_lock_irqsave(&cvc->vc.lock, flags);
+ 	vd = mtk_cqdma_find_active_desc(c, cookie);
+ 	spin_unlock_irqrestore(&cvc->vc.lock, flags);
++	spin_unlock_irqrestore(&cvc->pc->lock, flags);
  
- static void dce_v11_0_audio_fini(struct amdgpu_device *adev)
- {
--	int i;
--
- 	if (!amdgpu_audio)
- 		return;
- 
- 	if (!adev->mode_info.audio.enabled)
- 		return;
- 
--	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
--		dce_v11_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
--
- 	adev->mode_info.audio.enabled = false;
- }
- 
---- a/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
-@@ -1377,17 +1377,12 @@ static int dce_v6_0_audio_init(struct am
- 
- static void dce_v6_0_audio_fini(struct amdgpu_device *adev)
- {
--	int i;
--
- 	if (!amdgpu_audio)
- 		return;
- 
- 	if (!adev->mode_info.audio.enabled)
- 		return;
- 
--	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
--		dce_v6_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
--
- 	adev->mode_info.audio.enabled = false;
- }
- 
---- a/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
-@@ -1426,17 +1426,12 @@ static int dce_v8_0_audio_init(struct am
- 
- static void dce_v8_0_audio_fini(struct amdgpu_device *adev)
- {
--	int i;
--
- 	if (!amdgpu_audio)
- 		return;
- 
- 	if (!adev->mode_info.audio.enabled)
- 		return;
- 
--	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
--		dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
--
- 	adev->mode_info.audio.enabled = false;
- }
- 
+ 	if (vd) {
+ 		cvd = to_cqdma_vdesc(vd);
 
 
 
