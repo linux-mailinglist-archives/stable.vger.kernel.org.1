@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-178406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA65B47E88
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E14B47FC3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DBED189EDEC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2CE31B21AFE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70961E1C1A;
-	Sun,  7 Sep 2025 20:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB68A21ADAE;
+	Sun,  7 Sep 2025 20:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQX29tDK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCjhNk3+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82834D528;
-	Sun,  7 Sep 2025 20:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9857F4315A;
+	Sun,  7 Sep 2025 20:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276734; cv=none; b=aQeqSx+6yRifoCjQdbsl5leqiVFwfyAwBZxFyhQUMkFjgWdKM8Hcwv5eStXhLXh/Oz8r6z5LaOGazC62ztMlum1FqNWjE2nOkmkN6uG5k/qRdRDM+uhznJ4sYXoq2VcUxt0C8nTOe9pek4zVnsKw7SBopwczWFqy50yx5HrKm0I=
+	t=1757277716; cv=none; b=q6nStkqoHuzVxZvDGPsaczGrShimAMyszgya6zeUsb3HR9WsfAARokd4W9EdhhCfYeCs+01TYQR4DudcH23mk9LiwlgOp1OivZWc/f/nN5Nr6es4OjoDydJO+Is/USnPXN9cWid05qodi8YtJBNZMDzGa+GQe7iOX1WZGoosNJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276734; c=relaxed/simple;
-	bh=LED9HTjEDzlVV7OSkgZhOc8iRZF1IqIU46jibXweLuI=;
+	s=arc-20240116; t=1757277716; c=relaxed/simple;
+	bh=k3BHoZCUqVxJZK/g4q2a1npD2g2c/V+O8orbOXMUvYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=quH15rroxqTv991dHdtepaLkXOPJSzuZyywVTLsPAazMn6Cv83CZfakG145lKB3f+AeWHTcR3KQjmUjFPBZMpClOm3c+bLt7BZJ41j/tIjQArZjYLNPvgydzarXcANTXKibNgCDrWxENfBmu2WSNlJYVl4Lbe6QxRvLJvuSxL7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQX29tDK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0686AC4CEF0;
-	Sun,  7 Sep 2025 20:25:33 +0000 (UTC)
+	 MIME-Version; b=ZOerSetEzWFISor6cvXJA3IrenpY+t57UJc8iWYTfNIfRy1BAAkAbuUSTlUE8FoDIIdKbeqAdy/20WukfvgNBc51bitTHeTyiShhMDwTjEP8u5PIB7QYEFTIdBTn+kZShmAwVmkzx6Op28R7qPttUb5cfX0l9aSIkuF7AAca+0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCjhNk3+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BDE7C4CEF0;
+	Sun,  7 Sep 2025 20:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276734;
-	bh=LED9HTjEDzlVV7OSkgZhOc8iRZF1IqIU46jibXweLuI=;
+	s=korg; t=1757277716;
+	bh=k3BHoZCUqVxJZK/g4q2a1npD2g2c/V+O8orbOXMUvYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQX29tDKREkumf4qLTaM5rOiENFp+Mekzz/iPaoG06ewna2FTYRqmPs2+vBLRYKUf
-	 JAdpjAjKbKQ8sSkPlmXV8xidCXGvTLRtq4o6O7dWLXydWba382SMnxAjnSfSyyWmJ7
-	 viw7Y77P5cZM7gy76hOTmm8ZJxno1JzAc8GfVpAA=
+	b=dCjhNk3+AUYiOV9GwLdBO/swzjhidk/BlpHt5nttj2MH3LUrZwP9uIty9Nm8QF+9S
+	 G0CILI1k9ClSDc9Y2nu7auDJ5LjRCp/47FlzrQy3FuiNNErYkifsTbM4hjRnLEyG2x
+	 tndNkkbWfV1yeaxbTCmlbuwRZNgdduAqUJZxety8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/121] net: dsa: microchip: linearize skb for tail-tagging switches
+	Ma Ke <make24@iscas.ac.cn>,
+	Dominik Brodowski <linux@dominikbrodowski.net>
+Subject: [PATCH 6.16 100/183] pcmcia: Fix a NULL pointer dereference in __iodyn_find_io_region()
 Date: Sun,  7 Sep 2025 21:58:47 +0200
-Message-ID: <20250907195612.182109230@linuxfoundation.org>
+Message-ID: <20250907195618.163823914@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakob Unterwurzacher <jakobunt@gmail.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit ba54bce747fa9e07896c1abd9b48545f7b4b31d2 ]
+commit 44822df89e8f3386871d9cad563ece8e2fd8f0e7 upstream.
 
-The pointer arithmentic for accessing the tail tag only works
-for linear skbs.
+In __iodyn_find_io_region(), pcmcia_make_resource() is assigned to
+res and used in pci_bus_alloc_resource(). There is a dereference of res
+in pci_bus_alloc_resource(), which could lead to a NULL pointer
+dereference on failure of pcmcia_make_resource().
 
-For nonlinear skbs, it reads uninitialized memory inside the
-skb headroom, essentially randomizing the tag. I have observed
-it gets set to 6 most of the time.
+Fix this bug by adding a check of res.
 
-Example where ksz9477_rcv thinks that the packet from port 1 comes from port 6
-(which does not exist for the ksz9896 that's in use), dropping the packet.
-Debug prints added by me (not included in this patch):
-
-	[  256.645337] ksz9477_rcv:323 tag0=6
-	[  256.645349] skb len=47 headroom=78 headlen=0 tailroom=0
-	               mac=(64,14) mac_len=14 net=(78,0) trans=78
-	               shinfo(txflags=0 nr_frags=1 gso(size=0 type=0 segs=0))
-	               csum(0x0 start=0 offset=0 ip_summed=0 complete_sw=0 valid=0 level=0)
-	               hash(0x0 sw=0 l4=0) proto=0x00f8 pkttype=1 iif=3
-	               priority=0x0 mark=0x0 alloc_cpu=0 vlan_all=0x0
-	               encapsulation=0 inner(proto=0x0000, mac=0, net=0, trans=0)
-	[  256.645377] dev name=end1 feat=0x0002e10200114bb3
-	[  256.645386] skb headroom: 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645395] skb headroom: 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645403] skb headroom: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645411] skb headroom: 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645420] skb headroom: 00000040: ff ff ff ff ff ff 00 1c 19 f2 e2 db 08 06
-	[  256.645428] skb frag:     00000000: 00 01 08 00 06 04 00 01 00 1c 19 f2 e2 db 0a 02
-	[  256.645436] skb frag:     00000010: 00 83 00 00 00 00 00 00 0a 02 a0 2f 00 00 00 00
-	[  256.645444] skb frag:     00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01
-	[  256.645452] ksz_common_rcv:92 dsa_conduit_find_user returned NULL
-
-Call skb_linearize before trying to access the tag.
-
-This patch fixes ksz9477_rcv which is used by the ksz9896 I have at
-hand, and also applies the same fix to ksz8795_rcv which seems to have
-the same problem.
-
-Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
-CC: stable@vger.kernel.org
-Fixes: 016e43a26bab ("net: dsa: ksz: Add KSZ8795 tag code")
-Fixes: 8b8010fb7876 ("dsa: add support for Microchip KSZ tail tagging")
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://patch.msgid.link/20250515072920.2313014-1-jakob.unterwurzacher@cherry.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 49b1153adfe1 ("pcmcia: move all pcmcia_resource_ops providers into one module")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dsa/tag_ksz.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/pcmcia/rsrc_iodyn.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/dsa/tag_ksz.c
-+++ b/net/dsa/tag_ksz.c
-@@ -139,7 +139,12 @@ static struct sk_buff *ksz8795_xmit(stru
+--- a/drivers/pcmcia/rsrc_iodyn.c
++++ b/drivers/pcmcia/rsrc_iodyn.c
+@@ -62,6 +62,9 @@ static struct resource *__iodyn_find_io_
+ 	unsigned long min = base;
+ 	int ret;
  
- static struct sk_buff *ksz8795_rcv(struct sk_buff *skb, struct net_device *dev)
- {
--	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
-+	u8 *tag;
-+
-+	if (skb_linearize(skb))
++	if (!res)
 +		return NULL;
 +
-+	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+ 	data.mask = align - 1;
+ 	data.offset = base & data.mask;
  
- 	return ksz_common_rcv(skb, dev, tag[0] & 7, KSZ_EGRESS_TAG_LEN);
- }
-@@ -301,10 +306,16 @@ static struct sk_buff *ksz9477_xmit(stru
- 
- static struct sk_buff *ksz9477_rcv(struct sk_buff *skb, struct net_device *dev)
- {
--	/* Tag decoding */
--	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
--	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
- 	unsigned int len = KSZ_EGRESS_TAG_LEN;
-+	unsigned int port;
-+	u8 *tag;
-+
-+	if (skb_linearize(skb))
-+		return NULL;
-+
-+	/* Tag decoding */
-+	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
-+	port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
- 
- 	/* Extra 4-bytes PTP timestamp */
- 	if (tag[0] & KSZ9477_PTP_TAG_INDICATION) {
 
 
 
