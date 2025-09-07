@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-178067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C624B47D1B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A596DB47F82
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8CFB17BB2F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 656C63C3116
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0538B296BB8;
-	Sun,  7 Sep 2025 20:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8E521ADAE;
+	Sun,  7 Sep 2025 20:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y01/4hvi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mL9h/ie8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A9C1CDFAC;
-	Sun,  7 Sep 2025 20:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5F01A704B;
+	Sun,  7 Sep 2025 20:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275658; cv=none; b=QRP9eD38V3GaEM1XvJcu3nwtgiABgLaiotZacXTAhkU4bel2lcrAxmWpjjRF8pMHWS3OeWlBGFDvKdW5dUF05RK3pC1qN7ndeCsL/387PlLWL40I8LC0XXESFS5U+FAvRtfHeaLGm9rX5A3dT3AJAywfQBN55X+l51xMOA2wIkI=
+	t=1757277507; cv=none; b=WSQLffAH/IpKmRdJSE9Ts2Uo9Fy5z8xDcO3C4+i1PEN6GbfLOO9OcDrp9Le5YNvCUywjRIXYGKm1bweOTenc/FQN4BC2bb88e9FgYWUwyisJ9yvAwsTAvRqRjrNxYHxx+5pkaI8t5N1Dc1U7F/F1hu6fDTJQLwY/h5T9BSxOBJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275658; c=relaxed/simple;
-	bh=EOkqqw2deM5MzUjnMR5WLva/JNV7wlGPEAB2QX9qh94=;
+	s=arc-20240116; t=1757277507; c=relaxed/simple;
+	bh=7DfoF6dItP0KHvvduVp1jpeKtut2C6eqKJtLEyN3meY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jiC1HMPj7Y+KBV+SfNY+f+l5l3gF4+sedAXYMF/6IQzS2zk+COqG2/kGnB7XdAvNqPf06SNakZLhSCC68sAQapnZF7dl85iKv/GFb6r8N0TCDPsyWYiJhL5UtwHOZqA0/mu7Nozr4Vtn9hrPBpsi9zoNq/Jp1TnbJVmw/cVMVsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y01/4hvi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E852C4CEF0;
-	Sun,  7 Sep 2025 20:07:37 +0000 (UTC)
+	 MIME-Version; b=lShkibvKjza0K0pRjGFXrs8IZgJWl8AM9Y4rfZ0IZtddaKqszixw/ubuDeaF2TCUidWvOsVZGkXXjqF1Xo/JiGlNclOrbKMWrs7i50Wfc3zAAHHp8R46ZqLiS2GYWEwMG6jWjOAiJRuxgohSAxNlZcFkVoUaFaht27ErF4VW/n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mL9h/ie8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D58AC4CEF0;
+	Sun,  7 Sep 2025 20:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275658;
-	bh=EOkqqw2deM5MzUjnMR5WLva/JNV7wlGPEAB2QX9qh94=;
+	s=korg; t=1757277506;
+	bh=7DfoF6dItP0KHvvduVp1jpeKtut2C6eqKJtLEyN3meY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y01/4hvi67OfkrT8bKcYAVRjjcB2wT+eAMpRkyaN0zECRkrl5wA33sz8O70H/COMx
-	 UIaDLteTZEAz1wB8WeI/KXaJlSPQFO5lG1oW3xD3jNJ07dC5TWgKqn9BgevuxytNuQ
-	 L5cwcc8qjy9Eukrg44/f8CP1lF8WmqAdDZd9A3q0=
+	b=mL9h/ie8NLr+adsVjkCFXYOS5+HpkBZ2cwbKFbaFqLY53gZA+2Aa8+Fstz3vuEOte
+	 cte7K/ZYQfqbfuu3O10Vz6ile0S7ABQT/fUCMZvFRAIPj/dk+YWWPqHx79iWKf1tVS
+	 AQhOaWqHQug5l8FeU9/IwwtIAFtCEevuFEPjIK3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	oushixiong <oushixiong1025@163.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 23/52] drm/amdgpu: drop hw access in non-DC audio fini
-Date: Sun,  7 Sep 2025 21:57:43 +0200
-Message-ID: <20250907195602.672975323@linuxfoundation.org>
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 037/183] wifi: mt76: mt7996: add missing check for rx wcid entries
+Date: Sun,  7 Sep 2025 21:57:44 +0200
+Message-ID: <20250907195616.656326639@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 71403f58b4bb6c13b71c05505593a355f697fd94 upstream.
+[ Upstream commit 4a522b01e368eec58d182ecc47d24f49a39e440d ]
 
-We already disable the audio pins in hw_fini so
-there is no need to do it again in sw_fini.
+Non-station wcid entries must not be passed to the rx functions.
+In case of the global wcid entry, it could even lead to corruption in the wcid
+array due to pointer being casted to struct mt7996_sta_link using container_of.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4481
-Cc: oushixiong <oushixiong1025@163.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5eeb16ca727f11278b2917fd4311a7d7efb0bbd6)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7464b12b7d92 ("wifi: mt76: mt7996: rework mt7996_rx_get_wcid to support MLO")
+Link: https://patch.msgid.link/20250827085352.51636-3-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/dce_v10_0.c |    5 -----
- drivers/gpu/drm/amd/amdgpu/dce_v11_0.c |    5 -----
- drivers/gpu/drm/amd/amdgpu/dce_v6_0.c  |    5 -----
- drivers/gpu/drm/amd/amdgpu/dce_v8_0.c  |    5 -----
- 4 files changed, 20 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
-@@ -1463,17 +1463,12 @@ static int dce_v10_0_audio_init(struct a
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index b0fa051fc3094..a7a5ac8b7d265 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -62,7 +62,7 @@ static struct mt76_wcid *mt7996_rx_get_wcid(struct mt7996_dev *dev,
+ 	int i;
  
- static void dce_v10_0_audio_fini(struct amdgpu_device *adev)
- {
--	int i;
--
- 	if (!amdgpu_audio)
- 		return;
+ 	wcid = mt76_wcid_ptr(dev, idx);
+-	if (!wcid)
++	if (!wcid || !wcid->sta)
+ 		return NULL;
  
- 	if (!adev->mode_info.audio.enabled)
- 		return;
- 
--	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
--		dce_v10_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
--
- 	adev->mode_info.audio.enabled = false;
- }
- 
---- a/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
-@@ -1505,17 +1505,12 @@ static int dce_v11_0_audio_init(struct a
- 
- static void dce_v11_0_audio_fini(struct amdgpu_device *adev)
- {
--	int i;
--
- 	if (!amdgpu_audio)
- 		return;
- 
- 	if (!adev->mode_info.audio.enabled)
- 		return;
- 
--	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
--		dce_v11_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
--
- 	adev->mode_info.audio.enabled = false;
- }
- 
---- a/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
-@@ -1375,17 +1375,12 @@ static int dce_v6_0_audio_init(struct am
- 
- static void dce_v6_0_audio_fini(struct amdgpu_device *adev)
- {
--	int i;
--
- 	if (!amdgpu_audio)
- 		return;
- 
- 	if (!adev->mode_info.audio.enabled)
- 		return;
- 
--	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
--		dce_v6_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
--
- 	adev->mode_info.audio.enabled = false;
- }
- 
---- a/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
-@@ -1426,17 +1426,12 @@ static int dce_v8_0_audio_init(struct am
- 
- static void dce_v8_0_audio_fini(struct amdgpu_device *adev)
- {
--	int i;
--
- 	if (!amdgpu_audio)
- 		return;
- 
- 	if (!adev->mode_info.audio.enabled)
- 		return;
- 
--	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
--		dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
--
- 	adev->mode_info.audio.enabled = false;
- }
- 
+ 	if (!mt7996_band_valid(dev, band_idx))
+-- 
+2.50.1
+
 
 
 
