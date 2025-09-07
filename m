@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-178251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CBDCB47DDC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB532B47F25
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 381EB189E8F9
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CDA63C2908
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F68B1A9FAA;
-	Sun,  7 Sep 2025 20:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40186212B3D;
+	Sun,  7 Sep 2025 20:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXJZe0le"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fny99jMj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF97714BFA2;
-	Sun,  7 Sep 2025 20:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F085F1A0BFD;
+	Sun,  7 Sep 2025 20:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276244; cv=none; b=tSg4fyrykmsxxTiy5Er3zoYnw4V+nnRzp9w4QTP7LfpFP+4s0x91b+cpYY7UBPJ68zNXuDd5vc9NZwOcAzTQCLLe8iNJIB5+2wasxDWeiscXgc2aUWOUXYE+EX3f8bHV081rUOaqI1EGpDrGYOvYYhr2K4ItTeq95Osakh6rtaY=
+	t=1757277214; cv=none; b=HVaf4aOpEtOuM4h/w6LOtTAWDWYnMMovByk2sziqNx353GSHCnEGoF1m7rbJ7alFWctuHiOORYO8/hPOyJ3Xxi+R1VksK+DoW3YINxehhpgi6JifaRNNuc+RGs/SBgvT5gG1v2RkF6f+KmMLTmij5/6flhbVctuZZTio/tkaWDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276244; c=relaxed/simple;
-	bh=m4jhKvHN+gDMFVAzYkqvesXLsOM6bdggRsYvVmD9dfc=;
+	s=arc-20240116; t=1757277214; c=relaxed/simple;
+	bh=wrFCrBoYG6pryKCORuPjJRLfkdlQaRNMoeBvaHfHA5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsapAXpE00QSHr43WBom8mnXpnGvjSfgyn3/jlNHYcPgjr15YTSsHDbZoaYuvuZ4fVF/cNFoALphw57H/Rtxx2X/Ef1/2UdNnVk9bZs6nQSnOLlOUD+Lg2GJg6IxfkAlXLLd2+zlxOz11Z29Q7BCOSkKnOCSt9+R7oH8fLTHQ54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXJZe0le; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F5DC4CEF0;
-	Sun,  7 Sep 2025 20:17:23 +0000 (UTC)
+	 MIME-Version; b=iv48D9gQScNl48ru2IolCGN7CK7usx3WNxRwA8VWAPZ/dRMhLTOs9zOeYigv9s1iohhvpCQZIXkpgTcJ37+cC83r42eriw2WGMRtqdZT/IL9seVgYl0CXo+zr750+afnWg2EBpHXplSluGZmlWNhl1POH/hlVMCU+kwxzDtqfw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fny99jMj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700C9C4CEF0;
+	Sun,  7 Sep 2025 20:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276243;
-	bh=m4jhKvHN+gDMFVAzYkqvesXLsOM6bdggRsYvVmD9dfc=;
+	s=korg; t=1757277213;
+	bh=wrFCrBoYG6pryKCORuPjJRLfkdlQaRNMoeBvaHfHA5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qXJZe0leuPfXu7iWbaOdQ2NIav5oCkq3TJ8F1FB/dXbuOO4SJx0ybDrt077MDZOqy
-	 GezrpS/n2aMDzWKwpZZ0Bw8tJ/sHwTK1MfHpQIQz/YG0EPxa1jVbCYfQP39g5ZJ9SP
-	 a3YLDPw2NXDRl5yzSglRe37VizyPJTaHi5DbceFI=
+	b=fny99jMj9TlkCc7O1lAHZ12UZZqDmZrvfB4UmBuyCybo+dK5wXyQ4N3zNSLbtSSCX
+	 pUa8k00/U8oRYDwUjsyoY6KVIJGjWCRnJHfq+L3amUzPQwUXB1fW2NtrlF77W1mqYh
+	 aCxQULHG03SOJaB3ZAyxAZoRDMP51n4+nTaaYLZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Dominik Brodowski <linux@dominikbrodowski.net>
-Subject: [PATCH 6.1 042/104] pcmcia: Fix a NULL pointer dereference in __iodyn_find_io_region()
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 084/175] mctp: return -ENOPROTOOPT for unknown getsockopt options
 Date: Sun,  7 Sep 2025 21:57:59 +0200
-Message-ID: <20250907195608.789161361@linuxfoundation.org>
+Message-ID: <20250907195616.824062477@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 44822df89e8f3386871d9cad563ece8e2fd8f0e7 upstream.
+[ Upstream commit a125c8fb9ddbcb0602103a50727a476fd30dec01 ]
 
-In __iodyn_find_io_region(), pcmcia_make_resource() is assigned to
-res and used in pci_bus_alloc_resource(). There is a dereference of res
-in pci_bus_alloc_resource(), which could lead to a NULL pointer
-dereference on failure of pcmcia_make_resource().
+In mctp_getsockopt(), unrecognized options currently return -EINVAL.
+In contrast, mctp_setsockopt() returns -ENOPROTOOPT for unknown
+options.
 
-Fix this bug by adding a check of res.
+Update mctp_getsockopt() to also return -ENOPROTOOPT for unknown
+options. This aligns the behavior of getsockopt() and setsockopt(),
+and matches the standard kernel socket API convention for handling
+unsupported options.
 
-Cc: stable@vger.kernel.org
-Fixes: 49b1153adfe1 ("pcmcia: move all pcmcia_resource_ops providers into one module")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 99ce45d5e7db ("mctp: Implement extended addressing")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250902102059.1370008-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/rsrc_iodyn.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/mctp/af_mctp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pcmcia/rsrc_iodyn.c
-+++ b/drivers/pcmcia/rsrc_iodyn.c
-@@ -62,6 +62,9 @@ static struct resource *__iodyn_find_io_
- 	unsigned long min = base;
- 	int ret;
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index 70aeebfc4182e..9a552569143bb 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -346,7 +346,7 @@ static int mctp_getsockopt(struct socket *sock, int level, int optname,
+ 		return 0;
+ 	}
  
-+	if (!res)
-+		return NULL;
-+
- 	data.mask = align - 1;
- 	data.offset = base & data.mask;
+-	return -EINVAL;
++	return -ENOPROTOOPT;
+ }
  
+ /* helpers for reading/writing the tag ioc, handling compatibility across the
+-- 
+2.50.1
+
 
 
 
