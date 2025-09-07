@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-178281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D593B47DFB
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D28DB47F21
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27EE9189ED6E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDF7517F4D0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED8B1E0DE8;
-	Sun,  7 Sep 2025 20:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE8A212B3D;
+	Sun,  7 Sep 2025 20:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKxYmGYn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koj55zi1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5611A9FAA;
-	Sun,  7 Sep 2025 20:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8581A0BFD;
+	Sun,  7 Sep 2025 20:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276338; cv=none; b=KlbWHNdEiiqOq2t6bYKWdV7+z+1B0ykAFMljffyJdAHevKLGIUyHWbqFUQ/Dco5ngbyTn8upVM8iaGzVoIof7GwGyBlBnVL4av8i0Udwk/4G20f3My2JTCShqz+9on4g+3CcyVyqbgdRnGBSsEgLUE3vkgVZyep/q9yKpcWOFQ0=
+	t=1757277201; cv=none; b=fGLAawO6TSr6BiJUpbQbNyWAdLXHV9ZvVhhYllzMLleQq6op4jA3H4ZQMX6iauzVOMjGv3zxt7k6z+qfoV3gStbMjLeCy2gjec8ibXeXJKk9gS6fro6MU2gsEuHvl7L5XOMMrDcGUn7DS5zQJAEHi5sOPDFPTF1oeykJq6aRwu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276338; c=relaxed/simple;
-	bh=WCe+V0NwshP61nhZpXIhfYWXaGxaz91VNxf4bLD6C/o=;
+	s=arc-20240116; t=1757277201; c=relaxed/simple;
+	bh=xE3SQt/6LVo06kxDMpeO6R3R+jmwnsj4n7yqiIe9IpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TlxqurXni4HwfcV47CzVjil8jc4k29dgJ5yOn+AVW4ZWO64/X9PbjQVnsAkqL0VoTwREB6O/i2jO8/WLVDl3r/HKYgTP1828HaV08Y2e/FmuDt2VoOFuHyo30g1uxU3rL6PBGG7b4tdE3dz86zui0fKTsK5t2wcSgszDEYTNznY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKxYmGYn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9069DC4CEF8;
-	Sun,  7 Sep 2025 20:18:57 +0000 (UTC)
+	 MIME-Version; b=pr+MFfq30hcSdL3srFwnzWp9nYcZsMx84RxP9NT4T555nJY/zzW/AlbgVZY+IqLK+91fR6IjH4JJGWPLTEam5d9sQYSZ42dZi71+QNYG+t6EVbJk1HKEKwFcBGUIg2mB9fvq2IjmaizTTCv2dUlFNX6ddqmeW9aqqAea2voqajQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koj55zi1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D03B1C4CEF0;
+	Sun,  7 Sep 2025 20:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276338;
-	bh=WCe+V0NwshP61nhZpXIhfYWXaGxaz91VNxf4bLD6C/o=;
+	s=korg; t=1757277201;
+	bh=xE3SQt/6LVo06kxDMpeO6R3R+jmwnsj4n7yqiIe9IpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKxYmGYnKxUt0xo5FpFZ0XBI+s5J2BjzCL3xxblfEHUXzsZ7lNpFlNb34/bxhSXw6
-	 KwS+m/FBC6YcvgKhP2dj73sC/6CSSOknna5Pt/kXrpW8giT0ngCvGt3T/hPN3WCGC6
-	 gGNM4zqqr5DzFUWNl7lESIN5esIXkzipZzrxi0J4=
+	b=koj55zi1cPa1g7MRQ2FGndJRNM2VWESGn6sn5H3F++djdjWxJsLvhFXK00xB/RELo
+	 7xKDy4n2N91/DdOBgQdld5WrYWYvfqUpmNmpoFgpZ4hpZ66Ibl6HDC1E3G8hUf1Wg6
+	 wnh2LPvo0dglSOIykVeOezZDjDArIhPywRExZkX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com,
-	Dmitry Safonov <dima@arista.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Norbert Manthey <nmanthey@amazon.de>
-Subject: [PATCH 6.1 074/104] fs: relax assertions on failure to encode file handles
+	John Evans <evans1210144@gmail.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 116/175] scsi: lpfc: Fix buffer free/clear order in deferred receive path
 Date: Sun,  7 Sep 2025 21:58:31 +0200
-Message-ID: <20250907195609.600295198@linuxfoundation.org>
+Message-ID: <20250907195617.602367452@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: John Evans <evans1210144@gmail.com>
 
-commit 974e3fe0ac61de85015bbe5a4990cf4127b304b2 upstream.
+commit 9dba9a45c348e8460da97c450cddf70b2056deb3 upstream.
 
-Encoding file handles is usually performed by a filesystem >encode_fh()
-method that may fail for various reasons.
+Fix a use-after-free window by correcting the buffer release sequence in
+the deferred receive path. The code freed the RQ buffer first and only
+then cleared the context pointer under the lock. Concurrent paths (e.g.,
+ABTS and the repost path) also inspect and release the same pointer under
+the lock, so the old order could lead to double-free/UAF.
 
-The legacy users of exportfs_encode_fh(), namely, nfsd and
-name_to_handle_at(2) syscall are ready to cope with the possibility
-of failure to encode a file handle.
+Note that the repost path already uses the correct pattern: detach the
+pointer under the lock, then free it after dropping the lock. The
+deferred path should do the same.
 
-There are a few other users of exportfs_encode_{fh,fid}() that
-currently have a WARN_ON() assertion when ->encode_fh() fails.
-Relax those assertions because they are wrong.
-
-The second linked bug report states commit 16aac5ad1fa9 ("ovl: support
-encoding non-decodable file handles") in v6.6 as the regressing commit,
-but this is not accurate.
-
-The aforementioned commit only increases the chances of the assertion
-and allows triggering the assertion with the reproducer using overlayfs,
-inotify and drop_caches.
-
-Triggering this assertion was always possible with other filesystems and
-other reasons of ->encode_fh() failures and more particularly, it was
-also possible with the exact same reproducer using overlayfs that is
-mounted with options index=on,nfs_export=on also on kernels < v6.6.
-Therefore, I am not listing the aforementioned commit as a Fixes commit.
-
-Backport hint: this patch will have a trivial conflict applying to
-v6.6.y, and other trivial conflicts applying to stable kernels < v6.6.
-
-Reported-by: syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com
-Tested-by: syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-unionfs/671fd40c.050a0220.4735a.024f.GAE@google.com/
-Reported-by: Dmitry Safonov <dima@arista.com>
-Closes: https://lore.kernel.org/linux-fsdevel/CAGrbwDTLt6drB9eaUagnQVgdPBmhLfqqxAf3F+Juqy_o6oP8uw@mail.gmail.com/
+Fixes: 472e146d1cf3 ("scsi: lpfc: Correct upcalling nvmet_fc transport during io done downcall")
 Cc: stable@vger.kernel.org
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Link: https://lore.kernel.org/r/20241219115301.465396-1-amir73il@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Norbert Manthey <nmanthey@amazon.de>
+Signed-off-by: John Evans <evans1210144@gmail.com>
+Link: https://lore.kernel.org/r/20250828044008.743-1-evans1210144@gmail.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/notify/fdinfo.c     |    4 +---
- fs/overlayfs/copy_up.c |    5 ++---
- 2 files changed, 3 insertions(+), 6 deletions(-)
+ drivers/scsi/lpfc/lpfc_nvmet.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/fs/notify/fdinfo.c
-+++ b/fs/notify/fdinfo.c
-@@ -51,10 +51,8 @@ static void show_mark_fhandle(struct seq
- 	size = f.handle.handle_bytes >> 2;
+--- a/drivers/scsi/lpfc/lpfc_nvmet.c
++++ b/drivers/scsi/lpfc/lpfc_nvmet.c
+@@ -1243,7 +1243,7 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+ 	struct lpfc_nvmet_tgtport *tgtp;
+ 	struct lpfc_async_xchg_ctx *ctxp =
+ 		container_of(rsp, struct lpfc_async_xchg_ctx, hdlrctx.fcp_req);
+-	struct rqb_dmabuf *nvmebuf = ctxp->rqb_buffer;
++	struct rqb_dmabuf *nvmebuf;
+ 	struct lpfc_hba *phba = ctxp->phba;
+ 	unsigned long iflag;
  
- 	ret = exportfs_encode_inode_fh(inode, (struct fid *)f.handle.f_handle, &size, NULL);
--	if ((ret == FILEID_INVALID) || (ret < 0)) {
--		WARN_ONCE(1, "Can't encode file handler for inotify: %d\n", ret);
-+	if ((ret == FILEID_INVALID) || (ret < 0))
+@@ -1251,13 +1251,18 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+ 	lpfc_nvmeio_data(phba, "NVMET DEFERRCV: xri x%x sz %d CPU %02x\n",
+ 			 ctxp->oxid, ctxp->size, raw_smp_processor_id());
+ 
++	spin_lock_irqsave(&ctxp->ctxlock, iflag);
++	nvmebuf = ctxp->rqb_buffer;
+ 	if (!nvmebuf) {
++		spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ 		lpfc_printf_log(phba, KERN_INFO, LOG_NVME_IOERR,
+ 				"6425 Defer rcv: no buffer oxid x%x: "
+ 				"flg %x ste %x\n",
+ 				ctxp->oxid, ctxp->flag, ctxp->state);
  		return;
--	}
+ 	}
++	ctxp->rqb_buffer = NULL;
++	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
  
- 	f.handle.handle_type = ret;
- 	f.handle.handle_bytes = size * sizeof(u32);
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -361,9 +361,8 @@ struct ovl_fh *ovl_encode_real_fh(struct
- 	buflen = (dwords << 2);
+ 	tgtp = phba->targetport->private;
+ 	if (tgtp)
+@@ -1265,9 +1270,6 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
  
- 	err = -EIO;
--	if (WARN_ON(fh_type < 0) ||
--	    WARN_ON(buflen > MAX_HANDLE_SZ) ||
--	    WARN_ON(fh_type == FILEID_INVALID))
-+	if (fh_type < 0 || fh_type == FILEID_INVALID ||
-+	    WARN_ON(buflen > MAX_HANDLE_SZ))
- 		goto out_err;
+ 	/* Free the nvmebuf since a new buffer already replaced it */
+ 	nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
+-	spin_lock_irqsave(&ctxp->ctxlock, iflag);
+-	ctxp->rqb_buffer = NULL;
+-	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ }
  
- 	fh->fb.version = OVL_FH_VERSION;
+ /**
 
 
 
