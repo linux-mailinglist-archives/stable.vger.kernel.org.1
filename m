@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9657BB47D9E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D593B47DFB
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 513B03C0A4D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27EE9189ED6E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027C027F754;
-	Sun,  7 Sep 2025 20:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED8B1E0DE8;
+	Sun,  7 Sep 2025 20:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdFfjJB4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKxYmGYn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30FC1B424F;
-	Sun,  7 Sep 2025 20:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5611A9FAA;
+	Sun,  7 Sep 2025 20:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276056; cv=none; b=fbsQ73qCgWfkqiBSYAh/HV/a6pEbypc5QVLwPFCv2lXEWR021CjeD4iZGSVJ0Vq3s2sIADbFnCWiIFVRKIQpGubRq9mihfMUNb6Mr+Apz6bGeJ6J8NLs2RKUe5eM4g7paHWx0izPi/8yrBlB3uBHC+sldhN64cRZUh/4/bJCFgU=
+	t=1757276338; cv=none; b=KlbWHNdEiiqOq2t6bYKWdV7+z+1B0ykAFMljffyJdAHevKLGIUyHWbqFUQ/Dco5ngbyTn8upVM8iaGzVoIof7GwGyBlBnVL4av8i0Udwk/4G20f3My2JTCShqz+9on4g+3CcyVyqbgdRnGBSsEgLUE3vkgVZyep/q9yKpcWOFQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276056; c=relaxed/simple;
-	bh=9MS2qNmcpI20pkUUSI/2s10bRsEH+/dQOvYq2gESgQA=;
+	s=arc-20240116; t=1757276338; c=relaxed/simple;
+	bh=WCe+V0NwshP61nhZpXIhfYWXaGxaz91VNxf4bLD6C/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2ItQ0qw+GImJg8POJCDSH0OOsmrcHKlAsewAHdhNT3eg896qBSRXuzIzQvc9gl6x3j2dfLeDNJ5oWZwQsxHBkOQ51h//WtEpFvZ3yY0zObevg+JmVgtE/Pk7YiRth45iw3QqnBBnJVG/s6JSVi8tDl7u3MlFuhvuYAghisnYNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdFfjJB4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380C6C4CEF0;
-	Sun,  7 Sep 2025 20:14:16 +0000 (UTC)
+	 MIME-Version; b=TlxqurXni4HwfcV47CzVjil8jc4k29dgJ5yOn+AVW4ZWO64/X9PbjQVnsAkqL0VoTwREB6O/i2jO8/WLVDl3r/HKYgTP1828HaV08Y2e/FmuDt2VoOFuHyo30g1uxU3rL6PBGG7b4tdE3dz86zui0fKTsK5t2wcSgszDEYTNznY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKxYmGYn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9069DC4CEF8;
+	Sun,  7 Sep 2025 20:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276056;
-	bh=9MS2qNmcpI20pkUUSI/2s10bRsEH+/dQOvYq2gESgQA=;
+	s=korg; t=1757276338;
+	bh=WCe+V0NwshP61nhZpXIhfYWXaGxaz91VNxf4bLD6C/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TdFfjJB4yTypfOrzx8gDnQ6GHIfOoEQ2NgEpt3+41puTcUR6yCRo2Mpvc4yYiIl0h
-	 geOU25nsPPvXmz5EgQxbskFNjIxfJ7czYtk0KSZfWqlmy08rgUdi/vWL2IYk3a4m/q
-	 4o351mgxc0SmPlVjdwomNX148IaA1M/a58cWlAOU=
+	b=hKxYmGYnKxUt0xo5FpFZ0XBI+s5J2BjzCL3xxblfEHUXzsZ7lNpFlNb34/bxhSXw6
+	 KwS+m/FBC6YcvgKhP2dj73sC/6CSSOknna5Pt/kXrpW8giT0ngCvGt3T/hPN3WCGC6
+	 gGNM4zqqr5DzFUWNl7lESIN5esIXkzipZzrxi0J4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 49/64] net: dsa: microchip: linearize skb for tail-tagging switches
+	syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com,
+	Dmitry Safonov <dima@arista.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Norbert Manthey <nmanthey@amazon.de>
+Subject: [PATCH 6.1 074/104] fs: relax assertions on failure to encode file handles
 Date: Sun,  7 Sep 2025 21:58:31 +0200
-Message-ID: <20250907195604.760855865@linuxfoundation.org>
+Message-ID: <20250907195609.600295198@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakob Unterwurzacher <jakobunt@gmail.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit ba54bce747fa9e07896c1abd9b48545f7b4b31d2 ]
+commit 974e3fe0ac61de85015bbe5a4990cf4127b304b2 upstream.
 
-The pointer arithmentic for accessing the tail tag only works
-for linear skbs.
+Encoding file handles is usually performed by a filesystem >encode_fh()
+method that may fail for various reasons.
 
-For nonlinear skbs, it reads uninitialized memory inside the
-skb headroom, essentially randomizing the tag. I have observed
-it gets set to 6 most of the time.
+The legacy users of exportfs_encode_fh(), namely, nfsd and
+name_to_handle_at(2) syscall are ready to cope with the possibility
+of failure to encode a file handle.
 
-Example where ksz9477_rcv thinks that the packet from port 1 comes from port 6
-(which does not exist for the ksz9896 that's in use), dropping the packet.
-Debug prints added by me (not included in this patch):
+There are a few other users of exportfs_encode_{fh,fid}() that
+currently have a WARN_ON() assertion when ->encode_fh() fails.
+Relax those assertions because they are wrong.
 
-	[  256.645337] ksz9477_rcv:323 tag0=6
-	[  256.645349] skb len=47 headroom=78 headlen=0 tailroom=0
-	               mac=(64,14) mac_len=14 net=(78,0) trans=78
-	               shinfo(txflags=0 nr_frags=1 gso(size=0 type=0 segs=0))
-	               csum(0x0 start=0 offset=0 ip_summed=0 complete_sw=0 valid=0 level=0)
-	               hash(0x0 sw=0 l4=0) proto=0x00f8 pkttype=1 iif=3
-	               priority=0x0 mark=0x0 alloc_cpu=0 vlan_all=0x0
-	               encapsulation=0 inner(proto=0x0000, mac=0, net=0, trans=0)
-	[  256.645377] dev name=end1 feat=0x0002e10200114bb3
-	[  256.645386] skb headroom: 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645395] skb headroom: 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645403] skb headroom: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645411] skb headroom: 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645420] skb headroom: 00000040: ff ff ff ff ff ff 00 1c 19 f2 e2 db 08 06
-	[  256.645428] skb frag:     00000000: 00 01 08 00 06 04 00 01 00 1c 19 f2 e2 db 0a 02
-	[  256.645436] skb frag:     00000010: 00 83 00 00 00 00 00 00 0a 02 a0 2f 00 00 00 00
-	[  256.645444] skb frag:     00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01
-	[  256.645452] ksz_common_rcv:92 dsa_conduit_find_user returned NULL
+The second linked bug report states commit 16aac5ad1fa9 ("ovl: support
+encoding non-decodable file handles") in v6.6 as the regressing commit,
+but this is not accurate.
 
-Call skb_linearize before trying to access the tag.
+The aforementioned commit only increases the chances of the assertion
+and allows triggering the assertion with the reproducer using overlayfs,
+inotify and drop_caches.
 
-This patch fixes ksz9477_rcv which is used by the ksz9896 I have at
-hand, and also applies the same fix to ksz8795_rcv which seems to have
-the same problem.
+Triggering this assertion was always possible with other filesystems and
+other reasons of ->encode_fh() failures and more particularly, it was
+also possible with the exact same reproducer using overlayfs that is
+mounted with options index=on,nfs_export=on also on kernels < v6.6.
+Therefore, I am not listing the aforementioned commit as a Fixes commit.
 
-Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
-CC: stable@vger.kernel.org
-Fixes: 016e43a26bab ("net: dsa: ksz: Add KSZ8795 tag code")
-Fixes: 8b8010fb7876 ("dsa: add support for Microchip KSZ tail tagging")
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://patch.msgid.link/20250515072920.2313014-1-jakob.unterwurzacher@cherry.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Backport hint: this patch will have a trivial conflict applying to
+v6.6.y, and other trivial conflicts applying to stable kernels < v6.6.
+
+Reported-by: syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com
+Tested-by: syzbot+ec07f6f5ce62b858579f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-unionfs/671fd40c.050a0220.4735a.024f.GAE@google.com/
+Reported-by: Dmitry Safonov <dima@arista.com>
+Closes: https://lore.kernel.org/linux-fsdevel/CAGrbwDTLt6drB9eaUagnQVgdPBmhLfqqxAf3F+Juqy_o6oP8uw@mail.gmail.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://lore.kernel.org/r/20241219115301.465396-1-amir73il@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Norbert Manthey <nmanthey@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dsa/tag_ksz.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ fs/notify/fdinfo.c     |    4 +---
+ fs/overlayfs/copy_up.c |    5 ++---
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
---- a/net/dsa/tag_ksz.c
-+++ b/net/dsa/tag_ksz.c
-@@ -70,7 +70,12 @@ static struct sk_buff *ksz8795_xmit(stru
+--- a/fs/notify/fdinfo.c
++++ b/fs/notify/fdinfo.c
+@@ -51,10 +51,8 @@ static void show_mark_fhandle(struct seq
+ 	size = f.handle.handle_bytes >> 2;
  
- static struct sk_buff *ksz8795_rcv(struct sk_buff *skb, struct net_device *dev)
- {
--	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
-+	u8 *tag;
-+
-+	if (skb_linearize(skb))
-+		return NULL;
-+
-+	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+ 	ret = exportfs_encode_inode_fh(inode, (struct fid *)f.handle.f_handle, &size, NULL);
+-	if ((ret == FILEID_INVALID) || (ret < 0)) {
+-		WARN_ONCE(1, "Can't encode file handler for inotify: %d\n", ret);
++	if ((ret == FILEID_INVALID) || (ret < 0))
+ 		return;
+-	}
  
- 	return ksz_common_rcv(skb, dev, tag[0] & 7, KSZ_EGRESS_TAG_LEN);
- }
-@@ -137,10 +142,16 @@ static struct sk_buff *ksz9477_xmit(stru
+ 	f.handle.handle_type = ret;
+ 	f.handle.handle_bytes = size * sizeof(u32);
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -361,9 +361,8 @@ struct ovl_fh *ovl_encode_real_fh(struct
+ 	buflen = (dwords << 2);
  
- static struct sk_buff *ksz9477_rcv(struct sk_buff *skb, struct net_device *dev)
- {
--	/* Tag decoding */
--	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
--	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
- 	unsigned int len = KSZ_EGRESS_TAG_LEN;
-+	unsigned int port;
-+	u8 *tag;
-+
-+	if (skb_linearize(skb))
-+		return NULL;
-+
-+	/* Tag decoding */
-+	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
-+	port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
+ 	err = -EIO;
+-	if (WARN_ON(fh_type < 0) ||
+-	    WARN_ON(buflen > MAX_HANDLE_SZ) ||
+-	    WARN_ON(fh_type == FILEID_INVALID))
++	if (fh_type < 0 || fh_type == FILEID_INVALID ||
++	    WARN_ON(buflen > MAX_HANDLE_SZ))
+ 		goto out_err;
  
- 	/* Extra 4-bytes PTP timestamp */
- 	if (tag[0] & KSZ9477_PTP_TAG_INDICATION)
+ 	fh->fb.version = OVL_FH_VERSION;
 
 
 
