@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8FDDB47D72
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7B2B47F94
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:39:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96B4517872E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C5901B205AC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EF5284883;
-	Sun,  7 Sep 2025 20:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FF121ADAE;
+	Sun,  7 Sep 2025 20:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frj2vxXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdEbe5U0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B82A1CDFAC;
-	Sun,  7 Sep 2025 20:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551D74315A;
+	Sun,  7 Sep 2025 20:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275921; cv=none; b=KfGLLhS5wWdbWcZqxMsA2RbAiLMAPURkSteteKuSuQB5maFr8FVcdIiE27PVzUkX6IZ4CLW9pxlX8YZlWVu7RRqW38XAR8LH3RRjDRa570EQkF+WGMpZHH4pouFy6le1BvAflCiDLork4RL7Ed/WoZGOC7SLWdIkGWC4xyxFuMU=
+	t=1757277568; cv=none; b=sKLDbIyGi+qrJc47OWaOKajzg1FxCqjlk6Jgz9kE7UtR06nE8/FGc8Gc6Su5EOgSMPx4GDcnDRwtLdntE85xZFfECIOHzMMdgvcyw9JSsT2bBBOwKqaklB2+HbwP7y7dPsdzSKDT79O+/CoMJhDentZRV6GxOaSWFshnSnMuhVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275921; c=relaxed/simple;
-	bh=wkC2S2c8URLONPg0R8ewjpRNXgB0ZyOGVYR99kR6QTw=;
+	s=arc-20240116; t=1757277568; c=relaxed/simple;
+	bh=8ATidPw5XOd4/KnU9dZrFNgRhE8rtO3FCUcFVU9/4qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pozmvR93ZKxLpDtfJaaC9rK0sZttqoYf/4Lq1Fb1KgW03G5b0BiC/EFQdZIewU10wemEEE0XgPSQGfhgH8/e3eDjCe5rYugG8dCHg2Q0NqZjkR/r27s2Fln5ltl5beMtfv67KaAipHc4dL/VQdAC7uckwetyOfsHNPuUXyEeLDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frj2vxXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63B9C4CEF0;
-	Sun,  7 Sep 2025 20:12:00 +0000 (UTC)
+	 MIME-Version; b=ToHbqFtD+wAQZGTEWqEuYgzHRKyIF33pEiOZUqGavxUoYVUlhEi59HV5sOS9S8FtqKrzd/hA9Oq0+gF3X7VTTSwCpKIqzqyh3ppaz3qKLXQByoHEzFANbQGIkDtmTJn5msFtMV6h7ynXXSkqTYoYnPS+9JPt+UP0bNkRbYqG7JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdEbe5U0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2559C4CEF0;
+	Sun,  7 Sep 2025 20:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275921;
-	bh=wkC2S2c8URLONPg0R8ewjpRNXgB0ZyOGVYR99kR6QTw=;
+	s=korg; t=1757277568;
+	bh=8ATidPw5XOd4/KnU9dZrFNgRhE8rtO3FCUcFVU9/4qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frj2vxXeL6p9cSmISKy1Kmi+jeLxSgfmd7SYOyOnuuYHtO5hfO6+53esOndL3rV2T
-	 zEUoA3noRV6hqelxumEeRNeZZAk//0iP/k8cmLu8ftUWttaAZfxGFh4uf+OSiAMlzf
-	 WjTqGvuord924rPS8RdPHSgvCFKzeaM14lL2n/A4=
+	b=jdEbe5U0i/wgT3RYtjKDyiGWgIqshppysATlt/eqG8epQLsCiBNXwCCQcvHmKyzPk
+	 wWuTecwBJk5XUhKjBFzW/WnjFTzNYpGiG0zhgJIcjG+TSAzgOH85DK08NAEk+P3J9w
+	 H+FaFyfZF+UQUEQoaHXSHxQzSe9RCBGWHHYtb8JQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
 	Simon Horman <horms@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 14/45] ipv4: Fix NULL vs error pointer check in inet_blackhole_dev_init()
-Date: Sun,  7 Sep 2025 21:58:00 +0200
-Message-ID: <20250907195601.376859006@linuxfoundation.org>
+Subject: [PATCH 6.16 054/183] mISDN: Fix memory leak in dsp_hwec_enable()
+Date: Sun,  7 Sep 2025 21:58:01 +0200
+Message-ID: <20250907195617.066366706@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit a51160f8da850a65afbf165f5bbac7ffb388bf74 ]
+[ Upstream commit 0704a3da7ce50f972e898bbda88d2692a22922d9 ]
 
-The inetdev_init() function never returns NULL.  Check for error
-pointers instead.
+dsp_hwec_enable() allocates dup pointer by kstrdup(arg),
+but then it updates dup variable by strsep(&dup, ",").
+As a result when it calls kfree(dup), the dup variable may be
+a modified pointer that no longer points to the original allocated
+memory, causing a memory leak.
 
-Fixes: 22600596b675 ("ipv4: give an IPv4 dev to blackhole_netdev")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+The issue is the same pattern as fixed in commit c6a502c22999
+("mISDN: Fix memory leak in dsp_pipeline_build()").
+
+Fixes: 9a4381618262 ("mISDN: Remove VLAs")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/aLaQWL9NguWmeM1i@stanley.mountain
+Link: https://patch.msgid.link/20250828081457.36061-1-linmq006@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/devinet.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/isdn/mISDN/dsp_hwec.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index 6855372d57a34..b4fb75be24d9c 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -332,14 +332,13 @@ static void inetdev_destroy(struct in_device *in_dev)
+diff --git a/drivers/isdn/mISDN/dsp_hwec.c b/drivers/isdn/mISDN/dsp_hwec.c
+index 0b3f29195330a..0cd216e28f009 100644
+--- a/drivers/isdn/mISDN/dsp_hwec.c
++++ b/drivers/isdn/mISDN/dsp_hwec.c
+@@ -51,14 +51,14 @@ void dsp_hwec_enable(struct dsp *dsp, const char *arg)
+ 		goto _do;
  
- static int __init inet_blackhole_dev_init(void)
- {
--	int err = 0;
-+	struct in_device *in_dev;
+ 	{
+-		char *dup, *tok, *name, *val;
++		char *dup, *next, *tok, *name, *val;
+ 		int tmp;
  
- 	rtnl_lock();
--	if (!inetdev_init(blackhole_netdev))
--		err = -ENOMEM;
-+	in_dev = inetdev_init(blackhole_netdev);
- 	rtnl_unlock();
+-		dup = kstrdup(arg, GFP_ATOMIC);
++		dup = next = kstrdup(arg, GFP_ATOMIC);
+ 		if (!dup)
+ 			return;
  
--	return err;
-+	return PTR_ERR_OR_ZERO(in_dev);
- }
- late_initcall(inet_blackhole_dev_init);
- 
+-		while ((tok = strsep(&dup, ","))) {
++		while ((tok = strsep(&next, ","))) {
+ 			if (!strlen(tok))
+ 				continue;
+ 			name = strsep(&tok, "=");
 -- 
 2.50.1
 
