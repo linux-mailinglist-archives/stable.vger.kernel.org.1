@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-178313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549EFB47E25
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70289B47EAB
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:27:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D0E6188E34B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A43A3C1ED2
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2F514BFA2;
-	Sun,  7 Sep 2025 20:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA96189BB0;
+	Sun,  7 Sep 2025 20:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vn3u0hT6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hi1GJVV5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F871A2389;
-	Sun,  7 Sep 2025 20:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C13A1D88D0;
+	Sun,  7 Sep 2025 20:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276440; cv=none; b=oMrZ2mGTUwQYffZwUIneWWA7bhWUbUWfLyOeFkTuaP2A1MpvBslQCteNe1xEK+NFkikMOefoN3nUKT46wIbcGCMdPe++XrZGizvK842s15cI4pVzaLDGBei8/hYMu8PuZZ/1hSt1FPcS5HczlWZMnPzmAFY4/8+Nm8f6tzEZVsE=
+	t=1757276842; cv=none; b=lvfAZZATAjNiYHPwJMP38+XUPE2me3eQGxQl3bomeuc8LSH7XvYHK9D+tShIKa2JQAuJ14nWhZivaUrqgP/1xaMCjOKecY7xo2BIClcArzUCe3E5cY14jCxCRCbv5ujg/d8VBszPMERkUWRHpHYsQqPj2tlfERcQsoD3Sko/7SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276440; c=relaxed/simple;
-	bh=N3Us1O8027yb6VRehi/XzhI6zFjFjhjJoOz7AcuYDEs=;
+	s=arc-20240116; t=1757276842; c=relaxed/simple;
+	bh=O1nzX3F6VN/Ei87rOZM8cKeszaJF3x1jhf+mVGZKAmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sL8t0gjj4GlaZitsDK3FKuPHzq9l952EKitP+Lo5Qf5rf2hdXTRfqokyt1Ajj9kPk74vg34FWBwpHNrL4J89qcr2UxwV2LqcZFfGWmENVeHyk63NSbVDas2+r/vJ6noskqm9ef/V3B5Dr44VAs9rUAZpCQ+FUmiUtAQtuTKOv2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vn3u0hT6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E9BC4CEF0;
-	Sun,  7 Sep 2025 20:20:39 +0000 (UTC)
+	 MIME-Version; b=hGhN8e/pZbdMTfSnQhvMbJhtcRpX+8zkEuOMJB/yc55X/XPTmPN3IwFBM75TggHmTCD36jMcMn1b4viD7/1QBiTzRMKpo526NIejY0NF8MHZZDKl07iACLiLxoCTSfFZCIZFHucjdveQ5r0FuWduyEzigiQc7SFBwMfL41O6Nbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hi1GJVV5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15645C4CEF0;
+	Sun,  7 Sep 2025 20:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276440;
-	bh=N3Us1O8027yb6VRehi/XzhI6zFjFjhjJoOz7AcuYDEs=;
+	s=korg; t=1757276842;
+	bh=O1nzX3F6VN/Ei87rOZM8cKeszaJF3x1jhf+mVGZKAmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vn3u0hT6sW0B09E3+kozJPdGwkY01gViUXPrhGOtVoAmkJpSzb1KtSCpahbX7UKXy
-	 3MdULlrfaal6qUxKvzD3jJyMMbbZdG5jILFqluQGB45+D5PYXGeLsrY0aBFXlGrml+
-	 eBjVz0MAZ2MZdESLWkAl9ETX/BKHT1+fxbQa8ztk=
+	b=Hi1GJVV5XQaSbUujwkl8zqS9KlAn8HLj/OsCTAtOXjfYB1DsYMk8A8Fs9QMUprKiH
+	 80JtRX8zgMdyQXG3OeFUV8F4TFOSJ6roUmNmlq0w8+xtcwhs6+T2w8u8PaOcWrAyIV
+	 khFItn4Od5xQqIJHbIefi04ipJdjsMiJRZymp9Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	James Clark <james.clark@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 103/104] cpufreq: intel_pstate: Read global.no_turbo under READ_ONCE()
+Subject: [PATCH 6.6 104/121] spi: spi-fsl-lpspi: Reset FIFO and disable module on transfer abort
 Date: Sun,  7 Sep 2025 21:59:00 +0200
-Message-ID: <20250907195610.334686696@linuxfoundation.org>
+Message-ID: <20250907195612.518241048@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Larisa Grigore <larisa.grigore@nxp.com>
 
-[ Upstream commit 9558fae8ce97b3b320b387dd7c88309df2c36d4d ]
+[ Upstream commit e811b088a3641861fc9d2b2b840efc61a0f1907d ]
 
-Because global.no_turbo is generally not read under intel_pstate_driver_lock
-make store_no_turbo() use WRITE_ONCE() for updating it (this is the only
-place at which it is updated except for the initialization) and make the
-majority of places reading it use READ_ONCE().
+In DMA mode fsl_lpspi_reset() is always called at the end, even when the
+transfer is aborted. In PIO mode aborts skip the reset leaving the FIFO
+filled and the module enabled.
 
-Also remove redundant global.turbo_disabled checks from places that
-depend on the 'true' value of global.no_turbo because it can only be
-'true' if global.turbo_disabled is also 'true'.
+Fix it by always calling fsl_lpspi_reset().
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Stable-dep-of: 350cbb5d2f67 ("cpufreq: intel_pstate: Check turbo_is_disabled() in store_no_turbo()")
+Fixes: a15dc3d657fa ("spi: lpspi: Fix CLK pin becomes low before one transfer")
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Link: https://patch.msgid.link/20250828-james-nxp-lpspi-v2-3-6262b9aa9be4@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 0395bc0317a18..7570d6d1ca8c0 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -1264,7 +1264,7 @@ static ssize_t store_no_turbo(struct kobject *a, struct kobj_attribute *b,
- 		goto unlock_driver;
- 	}
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index b1ed34d237948..d437ed1349edb 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -730,12 +730,10 @@ static int fsl_lpspi_pio_transfer(struct spi_controller *controller,
+ 	fsl_lpspi_write_tx_fifo(fsl_lpspi);
  
--	global.no_turbo = no_turbo;
-+	WRITE_ONCE(global.no_turbo, no_turbo);
+ 	ret = fsl_lpspi_wait_for_completion(controller);
+-	if (ret)
+-		return ret;
  
- 	mutex_lock(&intel_pstate_limits_lock);
+ 	fsl_lpspi_reset(fsl_lpspi);
  
-@@ -1730,7 +1730,7 @@ static u64 atom_get_val(struct cpudata *cpudata, int pstate)
- 	u32 vid;
- 
- 	val = (u64)pstate << 8;
--	if (global.no_turbo && !global.turbo_disabled)
-+	if (READ_ONCE(global.no_turbo) && !global.turbo_disabled)
- 		val |= (u64)1 << 32;
- 
- 	vid_fp = cpudata->vid.min + mul_fp(
-@@ -1900,7 +1900,7 @@ static u64 core_get_val(struct cpudata *cpudata, int pstate)
- 	u64 val;
- 
- 	val = (u64)pstate << 8;
--	if (global.no_turbo && !global.turbo_disabled)
-+	if (READ_ONCE(global.no_turbo) && !global.turbo_disabled)
- 		val |= (u64)1 << 32;
- 
- 	return val;
-@@ -2186,7 +2186,7 @@ static inline int32_t get_target_pstate(struct cpudata *cpu)
- 
- 	sample->busy_scaled = busy_frac * 100;
- 
--	target = global.no_turbo || global.turbo_disabled ?
-+	target = READ_ONCE(global.no_turbo) ?
- 			cpu->pstate.max_pstate : cpu->pstate.turbo_pstate;
- 	target += target >> 2;
- 	target = mul_fp(target, busy_frac);
-@@ -2455,7 +2455,7 @@ static void intel_pstate_clear_update_util_hook(unsigned int cpu)
- 
- static int intel_pstate_get_max_freq(struct cpudata *cpu)
- {
--	return global.turbo_disabled || global.no_turbo ?
-+	return READ_ONCE(global.no_turbo) ?
- 			cpu->pstate.max_freq : cpu->pstate.turbo_freq;
+-	return 0;
++	return ret;
  }
  
-@@ -2592,7 +2592,7 @@ static void intel_pstate_verify_cpu_policy(struct cpudata *cpu,
- 
- 	if (hwp_active) {
- 		intel_pstate_get_hwp_cap(cpu);
--		max_freq = global.no_turbo || global.turbo_disabled ?
-+		max_freq = READ_ONCE(global.no_turbo) ?
- 				cpu->pstate.max_freq : cpu->pstate.turbo_freq;
- 	} else {
- 		max_freq = intel_pstate_get_max_freq(cpu);
+ static int fsl_lpspi_transfer_one(struct spi_controller *controller,
 -- 
 2.51.0
 
