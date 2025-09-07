@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E75B47E0A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0BE8B47E6D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 990CB3C1301
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB444189FD24
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837F927A931;
-	Sun,  7 Sep 2025 20:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB12D528;
+	Sun,  7 Sep 2025 20:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nc0y2gAm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqrW8jRi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418DF1F1921;
-	Sun,  7 Sep 2025 20:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE77189BB0;
+	Sun,  7 Sep 2025 20:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276363; cv=none; b=o8GrUY90GrKR+tvEJSt45buG04Hquzbho0an0KhVcfsSutcXDqRcfBsdDtBpnh+bjm3FfBlAo2A9+TLckIJOYWkhkt86BQdOjiEwLgdOcnwgShjWNkw5yUvIV87gWml6UaOE0UdZMWZCuPHG+97Q+UjuC5sxntjNvXh7WKR1x5s=
+	t=1757276648; cv=none; b=NV8htbnVUDVC5v/HBTgvc5cOO94Xx6TcRWELw+5OkuCnoBVP98pQZX3d3GMKvz/V41C9LimFIyQNrphCqKgzrU5Vpjlcr3ImJvgE0WCVwIiAGDVn6Jt/HC+82nX16QlqnhmPYREuHAfMMZV/OBGpCRfOtfInwP6OaWXeTlez1tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276363; c=relaxed/simple;
-	bh=9c4L6rHQcDLeCoKiOyLG48wg8EiHcXCVSbxfa62DyvM=;
+	s=arc-20240116; t=1757276648; c=relaxed/simple;
+	bh=LGxiJeOMdGpLba+5fPTiYY8IseYuesels9kU380Yshk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ileRKq6SUYj+UAzdEZNsUVtUopPfMLqSAgmHWu6Vth+v3OTd7wUci9QHo+ojKhsJa2YKeBLYRJTsxqF8lb6P3OiZ/EuGtGMNeQh2S7DWkdjv0VEjzg1r8M4Vspu1SIKgbJkZp8JfTp/CZB+5Z9KJwhHLdY9SstrWuzGXapWxzFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nc0y2gAm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD1EC4CEF0;
-	Sun,  7 Sep 2025 20:19:22 +0000 (UTC)
+	 MIME-Version; b=d7Ik0Vww+zCOAfTQumyGN/K6BpY3dwSEUAcZWCM7gKnAQBuPmvWfE7CXp4MjdhivROoWyyqTsSLA3xphjcALdJuXpwEBypJpsg2KdMJar0AmyF+qUHzXUr++iZ6PEaSju90d3Rkm079l7EGm5Ri89F1gW8I9BJxE2t2BoEr+tF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqrW8jRi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04AC6C4CEF0;
+	Sun,  7 Sep 2025 20:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276362;
-	bh=9c4L6rHQcDLeCoKiOyLG48wg8EiHcXCVSbxfa62DyvM=;
+	s=korg; t=1757276648;
+	bh=LGxiJeOMdGpLba+5fPTiYY8IseYuesels9kU380Yshk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nc0y2gAm1XMntVoPz9mHvuzzxPlC4YZhh3mwDZ1f8bH5EBd8VUE22RfHiy6eDsurl
-	 KRSLHHDLCy9rIlM+ClrhrP3tnkaeY+1HR8WhZvEcjQtfTQZYNKCB019LvHLZOWAOsw
-	 8rDED7d40ATh0lAKth0O4YTui8GpEnumAwXKsEPs=
+	b=vqrW8jRiYRRzS5lowxW8lz1fgFif+X0gGuMh1agqkKJYsvcLgIHWJmtrKFin8uf18
+	 lHzW/aaig0iVIZSwjyipsFKWEsP8ETdju/336ejz9yGyXJhSzJ9TZi0o68xg+AGs0/
+	 JvlT8n2bnCYM4rQlRSbjvxZL7E9W91J9oQstgXR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pieter Van Trappen <pieter.van.trappen@cern.ch>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/104] net: dsa: microchip: update tag_ksz masks for KSZ9477 family
-Date: Sun,  7 Sep 2025 21:58:21 +0200
-Message-ID: <20250907195609.337854354@linuxfoundation.org>
+	Stanislav Fort <disclosure@aisle.com>,
+	Stanislav Fort <stanislav.fort@aisle.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.6 066/121] batman-adv: fix OOB read/write in network-coding decode
+Date: Sun,  7 Sep 2025 21:58:22 +0200
+Message-ID: <20250907195611.532485034@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pieter Van Trappen <pieter.van.trappen@cern.ch>
+From: Stanislav Fort <stanislav.fort@aisle.com>
 
-[ Upstream commit 3f464b193d40e49299dcd087b10cc3b77cbbea68 ]
+commit d77b6ff0ce35a6d0b0b7b9581bc3f76d041d4087 upstream.
 
-Remove magic number 7 by introducing a GENMASK macro instead.
-Remove magic number 0x80 by using the BIT macro instead.
+batadv_nc_skb_decode_packet() trusts coded_len and checks only against
+skb->len. XOR starts at sizeof(struct batadv_unicast_packet), reducing
+payload headroom, and the source skb length is not verified, allowing an
+out-of-bounds read and a small out-of-bounds write.
 
-Signed-off-by: Pieter Van Trappen <pieter.van.trappen@cern.ch>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20240909134301.75448-1-vtpieter@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: ba54bce747fa ("net: dsa: microchip: linearize skb for tail-tagging switches")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Validate that coded_len fits within the payload area of both destination
+and source sk_buffs before XORing.
+
+Fixes: 2df5278b0267 ("batman-adv: network coding - receive coded packets and decode them")
+Cc: stable@vger.kernel.org
+Reported-by: Stanislav Fort <disclosure@aisle.com>
+Signed-off-by: Stanislav Fort <stanislav.fort@aisle.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dsa/tag_ksz.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/batman-adv/network-coding.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/dsa/tag_ksz.c
-+++ b/net/dsa/tag_ksz.c
-@@ -103,8 +103,9 @@ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROT
+--- a/net/batman-adv/network-coding.c
++++ b/net/batman-adv/network-coding.c
+@@ -1687,7 +1687,12 @@ batadv_nc_skb_decode_packet(struct batad
  
- #define KSZ9477_INGRESS_TAG_LEN		2
- #define KSZ9477_PTP_TAG_LEN		4
--#define KSZ9477_PTP_TAG_INDICATION	0x80
-+#define KSZ9477_PTP_TAG_INDICATION	BIT(7)
+ 	coding_len = ntohs(coded_packet_tmp.coded_len);
  
-+#define KSZ9477_TAIL_TAG_EG_PORT_M	GENMASK(2, 0)
- #define KSZ9477_TAIL_TAG_OVERRIDE	BIT(9)
- #define KSZ9477_TAIL_TAG_LOOKUP		BIT(10)
+-	if (coding_len > skb->len)
++	/* ensure dst buffer is large enough (payload only) */
++	if (coding_len + h_size > skb->len)
++		return NULL;
++
++	/* ensure src buffer is large enough (payload only) */
++	if (coding_len + h_size > nc_packet->skb->len)
+ 		return NULL;
  
-@@ -137,7 +138,7 @@ static struct sk_buff *ksz9477_rcv(struc
- {
- 	/* Tag decoding */
- 	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
--	unsigned int port = tag[0] & 7;
-+	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
- 	unsigned int len = KSZ_EGRESS_TAG_LEN;
- 
- 	/* Extra 4-bytes PTP timestamp */
+ 	/* Here the magic is reversed:
 
 
 
