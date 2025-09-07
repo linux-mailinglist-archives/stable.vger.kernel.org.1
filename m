@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396B5B47DF3
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCAFB47E39
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8F4F3C10F1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82D9A189F4C0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999ED1AF0B6;
-	Sun,  7 Sep 2025 20:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583A11D88D0;
+	Sun,  7 Sep 2025 20:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xckG7IiF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bzl8QqaL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5738714BFA2;
-	Sun,  7 Sep 2025 20:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C3A212560;
+	Sun,  7 Sep 2025 20:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276313; cv=none; b=QpM+KP2CP0zSaxn6+5fvixpXFA+1TjXMTV+BTDHyQA4dW8JYOfiLdRdhEVBEyoikTkolObMT/ccvWQnnccO7zQ2tPDSLDpuuwRlD1kTAN6O+aJALQL95F0Vf2OOJUFlQWt3e0YmobBEBqwYxLGzUAtGFMpFN1bj3fUySSsjsXNM=
+	t=1757276494; cv=none; b=jd3BhjyFP+aJHMIN/PgT6lM81ey8yxj/jTanBOrjYPBWD3AK1LLq2uL/W+EPiJsJ2xyfwm8PrMR4bZckZ697wFgZGz2dlItTe49czeXmFGLr+WWKmE2VKoBUySKnS5/E2PvqAmJgse452ROj4Mh6mMGG9ppvl0kVlnhlsO+06i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276313; c=relaxed/simple;
-	bh=mOs834qi8Bo0H4Gfk5UDnPSGNfHTpFGFeQFzc1nPjdo=;
+	s=arc-20240116; t=1757276494; c=relaxed/simple;
+	bh=F0e2xUmkabh+LrMd4wZ6L5xO2DHOCbm/+k1ggbIqPpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ag9/0m83PlUBbacXoMIDWPEveUU7z9E3ccpYD2qLKlGzd9i4wb1Xu37QEe2yJl3hD92Qb6jyLAemFoJqsBmBY+BZ/P3zCUKX6eqXj0dvHXyRqfJlBAM3/1lHK1KlMUF9LTnA5HsOifQWpr5r0RHOBoBaz6yn338ebit8SL0y0Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xckG7IiF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDD6C4CEF0;
-	Sun,  7 Sep 2025 20:18:32 +0000 (UTC)
+	 MIME-Version; b=jRB5g8cO91i0mBZ3NgZDvLUkUqIKHqG4wGGT+K5IkXF83+X1hNq5N1zyk3HjpjDVUnTK7bCqrQvOSgS13Jcpa3BzvZpjb/B3vu9C6Dd8KyaiNWkBkqTpENkbBbkTqgivx8ZS42jOhQk3muhEmD018ljHYokPhq/oQbPcy6pgQrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bzl8QqaL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924A3C4CEF0;
+	Sun,  7 Sep 2025 20:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276313;
-	bh=mOs834qi8Bo0H4Gfk5UDnPSGNfHTpFGFeQFzc1nPjdo=;
+	s=korg; t=1757276494;
+	bh=F0e2xUmkabh+LrMd4wZ6L5xO2DHOCbm/+k1ggbIqPpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xckG7IiFamgvL9a0/E4Uv/kHgB+MFJmeK8sBsyNB5ibtt6vNYi9Y+fTUt08i9Z8Z4
-	 gQRyMsYfT8AyfHQeu7mJYnuos0WO/WAY10NgLSshfD1NhanjavCRCVdkxMhDxlfXz1
-	 Vq5UxgTC849bXVQsoSMAxlnqvlClp6e8jI/WgFA8=
+	b=Bzl8QqaLbxq0ckisTaaHysYtdPgyicLCqYDU5QXUny/We4eTlo/7j4xDZrMJqRFMw
+	 Msbv+bOsQKm+SSt863mVMowC9jEt4XKImpD3M5dgbfrOx67NdDbRqOk1r1TNaZqZIf
+	 BvMFsVm/GHdkupmBPHR+QNzX1Q3uKLs5X2rQZ7rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Wang Liang <wangliang74@huawei.com>,
+	Marek Vasut <marek.vasut@mailbox.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/104] netfilter: br_netfilter: do not check confirmed bit in br_nf_local_in() after confirm
+Subject: [PATCH 6.6 018/121] arm64: dts: imx8mp: Fix missing microSD slot vqmmc on Data Modul i.MX8M Plus eDM SBC
 Date: Sun,  7 Sep 2025 21:57:34 +0200
-Message-ID: <20250907195608.129223084@linuxfoundation.org>
+Message-ID: <20250907195610.283954544@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Marek Vasut <marek.vasut@mailbox.org>
 
-[ Upstream commit 479a54ab92087318514c82428a87af2d7af1a576 ]
+[ Upstream commit 80733306290f6d2e05f0632e5d3e98cd16105c3c ]
 
-When send a broadcast packet to a tap device, which was added to a bridge,
-br_nf_local_in() is called to confirm the conntrack. If another conntrack
-with the same hash value is added to the hash table, which can be
-triggered by a normal packet to a non-bridge device, the below warning
-may happen.
+Add missing microSD slot vqmmc-supply property, otherwise the kernel
+might shut down LDO5 regulator and that would power off the microSD
+card slot, possibly while it is in use. Add the property to make sure
+the kernel is aware of the LDO5 regulator which supplies the microSD
+slot and keeps the LDO5 enabled.
 
-  ------------[ cut here ]------------
-  WARNING: CPU: 1 PID: 96 at net/bridge/br_netfilter_hooks.c:632 br_nf_local_in+0x168/0x200
-  CPU: 1 UID: 0 PID: 96 Comm: tap_send Not tainted 6.17.0-rc2-dirty #44 PREEMPT(voluntary)
-  RIP: 0010:br_nf_local_in+0x168/0x200
-  Call Trace:
-   <TASK>
-   nf_hook_slow+0x3e/0xf0
-   br_pass_frame_up+0x103/0x180
-   br_handle_frame_finish+0x2de/0x5b0
-   br_nf_hook_thresh+0xc0/0x120
-   br_nf_pre_routing_finish+0x168/0x3a0
-   br_nf_pre_routing+0x237/0x5e0
-   br_handle_frame+0x1ec/0x3c0
-   __netif_receive_skb_core+0x225/0x1210
-   __netif_receive_skb_one_core+0x37/0xa0
-   netif_receive_skb+0x36/0x160
-   tun_get_user+0xa54/0x10c0
-   tun_chr_write_iter+0x65/0xb0
-   vfs_write+0x305/0x410
-   ksys_write+0x60/0xd0
-   do_syscall_64+0xa4/0x260
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-
-To solve the hash conflict, nf_ct_resolve_clash() try to merge the
-conntracks, and update skb->_nfct. However, br_nf_local_in() still use the
-old ct from local variable 'nfct' after confirm(), which leads to this
-warning.
-
-If confirm() does not insert the conntrack entry and return NF_DROP, the
-warning may also occur. There is no need to reserve the WARN_ON_ONCE, just
-remove it.
-
-Link: https://lore.kernel.org/netdev/20250820043329.2902014-1-wangliang74@huawei.com/
-Fixes: 62e7151ae3eb ("netfilter: bridge: confirm multicast packets before passing them up the stack")
-Suggested-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 562d222f23f0 ("arm64: dts: imx8mp: Add support for Data Modul i.MX8M Plus eDM SBC")
+Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_netfilter_hooks.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index b4d661fe7886d..c4765691e7815 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -648,9 +648,6 @@ static unsigned int br_nf_local_in(void *priv,
- 		break;
- 	}
- 
--	ct = container_of(nfct, struct nf_conn, ct_general);
--	WARN_ON_ONCE(!nf_ct_is_confirmed(ct));
--
- 	return ret;
- }
- #endif
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
+index cd44bf83745ca..678ecc9f81dbb 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
+@@ -442,6 +442,7 @@ &usdhc2 {
+ 	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+ 	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
++	vqmmc-supply = <&ldo5>;
+ 	bus-width = <4>;
+ 	status = "okay";
+ };
 -- 
 2.50.1
 
