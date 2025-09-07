@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-178150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2602CB47D73
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA49B47DD2
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E17971787F4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 795D27ABA97
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF65426FA67;
-	Sun,  7 Sep 2025 20:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A4E15D5B6;
+	Sun,  7 Sep 2025 20:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCrBlbDb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EU+6WqJ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD851CDFAC;
-	Sun,  7 Sep 2025 20:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5B41A2389;
+	Sun,  7 Sep 2025 20:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275924; cv=none; b=QuIs6o0vdwkVE4gzfpBc35ZJrWXFQ8ZonhYQwu8N2cwbBArjDiERRVusNVYfQuzFUtrXV5xnA/WkeSbM1RJMOpx4Ak1pg3bPugu0RV+/NkW+xVjxa8d333OvV8w5uBbW2hOpaXGfw0x1ZIgb1qp3cOfnlUYXwHLSiKyhnC8dpSA=
+	t=1757276215; cv=none; b=o2dM7HGj9kbYzjPJXGL65YuZt3cnGXgwbRGIKz2/BVSzmneCozAnXYqmf547+KOUD1LPtBM4CcVmEQNyzAAaTZF80P/Ajbc8Tg2dtJOnchDl1fE+CupyydgJImPBpTE/Ko7oviR2WmBPb+IZTzQl3xW4GpHvQbELF3kOncchQss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275924; c=relaxed/simple;
-	bh=NFmI68oZUN4OrXpg7YMe8uCocV+515/qeICAl+Z8A5w=;
+	s=arc-20240116; t=1757276215; c=relaxed/simple;
+	bh=PiYc0q6QaKemUWOXCLGgZeFFJMmc/MI0vvSMRdyEmTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YKArK31uU690wkuMgnjxzJDHpuDMLF3xTngSBsVPabQjUxxg7P8peQscFPbyg0X2pQFU0xMMX50fD9qV8fQDWgDt+Rg+ZxxaRNgfzBlzDk8FJHZ17vOCfNI/3EJC+7AlUHUeNPhhgB4HB03Ud2JSPnGW+GBJjmbBrw7HwFrurUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCrBlbDb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C6EC4CEF0;
-	Sun,  7 Sep 2025 20:12:03 +0000 (UTC)
+	 MIME-Version; b=HaXFZKug2FMe1sI0LFAQZlXVVozOiStr+JUZkutMpe1pZ2B2GDIFa7SsdsdzMoomRAErpVQJRn9CZkXJjzxoMe1F9tXJFcryjnxjjxeePeVx9C/WIyYNdoLntLbKP8hX5EqZiGdZw+jafBFIrMRer0a+wAVC9eYfgSrMVF7No2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EU+6WqJ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7D0C4CEF0;
+	Sun,  7 Sep 2025 20:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275924;
-	bh=NFmI68oZUN4OrXpg7YMe8uCocV+515/qeICAl+Z8A5w=;
+	s=korg; t=1757276215;
+	bh=PiYc0q6QaKemUWOXCLGgZeFFJMmc/MI0vvSMRdyEmTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UCrBlbDbyN8pz1jm+fKZIOUgRr3RDN/eXTofFniO+fdso4EVdprNItE9JTYxzsV3e
-	 GvBrSpAb0yx03h2f8I8/B1bAKabT3LYBDxo4gscf0H1Lag8U+oBrGlfEOuIhFdlAiy
-	 OwL6k/TVVMZzpYvT7yu66H3bMLwFQ70SY6wn8Di0=
+	b=EU+6WqJ2hPBzqyPQkX4DPai8Ghk+awPPeVkacx1MbAkApX2on0Id5995nADO1lwt9
+	 DjTp0jcjcyyHb2gRVpEXfHQQIiSAc3wfzlG3VEM+UVwc5xoT7tQoRK7PWtSNHi0ykk
+	 rxrUxJ992sZskUz7EqI8uxHVoYvqRU6185BWDyxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 05/45] xirc2ps_cs: fix register access when enabling FullDuplex
+Subject: [PATCH 6.1 034/104] mctp: return -ENOPROTOOPT for unknown getsockopt options
 Date: Sun,  7 Sep 2025 21:57:51 +0200
-Message-ID: <20250907195601.119286089@linuxfoundation.org>
+Message-ID: <20250907195608.584963530@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit b79e498080b170fd94fc83bca2471f450811549b ]
+[ Upstream commit a125c8fb9ddbcb0602103a50727a476fd30dec01 ]
 
-The current code incorrectly passes (XIRCREG1_ECR | FullDuplex) as
-the register address to GetByte(), instead of fetching the register
-value and OR-ing it with FullDuplex. This results in an invalid
-register access.
+In mctp_getsockopt(), unrecognized options currently return -EINVAL.
+In contrast, mctp_setsockopt() returns -ENOPROTOOPT for unknown
+options.
 
-Fix it by reading XIRCREG1_ECR first, then or-ing with FullDuplex
-before writing it back.
+Update mctp_getsockopt() to also return -ENOPROTOOPT for unknown
+options. This aligns the behavior of getsockopt() and setsockopt(),
+and matches the standard kernel socket API convention for handling
+unsupported options.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 99ce45d5e7db ("mctp: Implement extended addressing")
 Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250827192645.658496-1-alok.a.tiwari@oracle.com
+Link: https://patch.msgid.link/20250902102059.1370008-1-alok.a.tiwari@oracle.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xircom/xirc2ps_cs.c | 2 +-
+ net/mctp/af_mctp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/xircom/xirc2ps_cs.c b/drivers/net/ethernet/xircom/xirc2ps_cs.c
-index e3438cef5f9c6..4d8a1728e8ed6 100644
---- a/drivers/net/ethernet/xircom/xirc2ps_cs.c
-+++ b/drivers/net/ethernet/xircom/xirc2ps_cs.c
-@@ -1584,7 +1584,7 @@ do_reset(struct net_device *dev, int full)
- 	    msleep(40);			/* wait 40 msec to let it complete */
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index 0f49b41570f56..8f241c92e03d8 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -346,7 +346,7 @@ static int mctp_getsockopt(struct socket *sock, int level, int optname,
+ 		return 0;
  	}
- 	if (full_duplex)
--	    PutByte(XIRCREG1_ECR, GetByte(XIRCREG1_ECR | FullDuplex));
-+	    PutByte(XIRCREG1_ECR, GetByte(XIRCREG1_ECR) | FullDuplex);
-     } else {  /* No MII */
- 	SelectPage(0);
- 	value = GetByte(XIRCREG_ESR);	 /* read the ESR */
+ 
+-	return -EINVAL;
++	return -ENOPROTOOPT;
+ }
+ 
+ static int mctp_ioctl_alloctag(struct mctp_sock *msk, unsigned long arg)
 -- 
 2.50.1
 
