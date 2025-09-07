@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C7CB47D6B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:11:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE01CB47D9D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6C5916C0C5
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:11:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9FF3189E2AD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7314726E6FF;
-	Sun,  7 Sep 2025 20:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F9F26FA67;
+	Sun,  7 Sep 2025 20:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0ht7UPU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GugPqJhk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3002F1CDFAC;
-	Sun,  7 Sep 2025 20:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957BD1B424F;
+	Sun,  7 Sep 2025 20:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275899; cv=none; b=j8syS7r3rKADm+CbsObwLqh+Vvwbgs2uf9M4plXnvv5wHVPTbXjnkWHtZIClJLCkvleMCJD8KIowDLp8uH67XhYcIgO0mbP9XgGEkuSn2lrOF3dhPngVSHsE6suYO/7AtnOxIyY6NJOr0BxK9c+zIdPkaIjljJdRWABePmroAAc=
+	t=1757276053; cv=none; b=nCnZRlVREYB+s1yDiSeDZLi8riBLQPvME4tpi1cGolD+Ytf8u+kZayCLYo1Yb0mPS9K0A/uUrL3NQJBm8hwf0txpM1k3WDUzZMzQgCY0nGGgcyILAwFVI4R/A9tTgH33C48wLUqStgvJQ/YtDVsUexx9Pl6vAflH3OU4SavfNN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275899; c=relaxed/simple;
-	bh=Vm9pVUwsOoChfKly9iTIGInufvnBost7BHaMDFAFWjs=;
+	s=arc-20240116; t=1757276053; c=relaxed/simple;
+	bh=O6uKuLhSfEVJ4P735Khfb2LQXYKIXQ1FujrFG2VfDNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YhRSYTlxwQMVjlDs9TKTs8hjFrt+3HqXYSCa7qkhHLon5wqa6r7BCt0tpFbmVikuTkc8wT07VTdPrYIyjzxO0V5geg2GQTtc6iVD3UeRQyN6Igkn7ZfLK5TRE/M0u2JR+70V7vn09/Hi4mQBxgk6uGXSiDDlAfCvx4d7DfxX4js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0ht7UPU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA690C4CEF0;
-	Sun,  7 Sep 2025 20:11:38 +0000 (UTC)
+	 MIME-Version; b=omyWoQey/vnfgWRrnTayKNhnppiGyuMiJjTlpQicPkh4oQbZt4QM9GFO5NmoCqIN4MLC2wDkQPhKvhK1TZIznE3zjHwDWnJ00IJauu56SW9vNUMU21k3SGPkbFRIsBzeMNUBBJ5ErIwG6rEz4rC6oG9mmyyVWdj5+a48zZPf8hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GugPqJhk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB87C4CEF0;
+	Sun,  7 Sep 2025 20:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275899;
-	bh=Vm9pVUwsOoChfKly9iTIGInufvnBost7BHaMDFAFWjs=;
+	s=korg; t=1757276053;
+	bh=O6uKuLhSfEVJ4P735Khfb2LQXYKIXQ1FujrFG2VfDNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f0ht7UPUPHwDGrPDiH75M/OwazljAro89dzmxk/ESHjUYOwm7osHoDUZ5QgDhpXaf
-	 A7xK7fpOjhR6R8jISwVks2o5BqFKl/Sf30eSVg2H/dXNaWB8NbsTz6JcDBMZHSnpal
-	 OLEwsfoKQDfGAjxgS2TQWXIcDL98n81IPuuTXt58=
+	b=GugPqJhkO8CcLC3M3mCUnn1ktReVDZINilg1CJpOMz7//DT/lAP0PBeXftuA1H+xS
+	 lWp31Xb8riBguDfOQicZVm47yWT3NR2mH7Ssbup+REm2NbZfftje+2ZN4vkUsmQCla
+	 LUyYh9HemTVrt34GcY54IoUbzCjih0YP9gQLNqnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Smirnov <r.smirnov@omp.ru>,
-	Steve French <stfrench@microsoft.com>,
+	Pieter Van Trappen <pieter.van.trappen@cern.ch>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 44/45] cifs: fix integer overflow in match_server()
+Subject: [PATCH 5.15 48/64] net: dsa: microchip: update tag_ksz masks for KSZ9477 family
 Date: Sun,  7 Sep 2025 21:58:30 +0200
-Message-ID: <20250907195602.287382945@linuxfoundation.org>
+Message-ID: <20250907195604.733986074@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Pieter Van Trappen <pieter.van.trappen@cern.ch>
 
-[ Upstream commit 2510859475d7f46ed7940db0853f3342bf1b65ee ]
+[ Upstream commit 3f464b193d40e49299dcd087b10cc3b77cbbea68 ]
 
-The echo_interval is not limited in any way during mounting,
-which makes it possible to write a large number to it. This can
-cause an overflow when multiplying ctx->echo_interval by HZ in
-match_server().
+Remove magic number 7 by introducing a GENMASK macro instead.
+Remove magic number 0x80 by using the BIT macro instead.
 
-Add constraints for echo_interval to smb3_fs_context_parse_param().
-
-Found by Linux Verification Center (linuxtesting.org) with Svace.
-
-Fixes: adfeb3e00e8e1 ("cifs: Make echo interval tunable")
-Cc: stable@vger.kernel.org
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Adapted to older CIFS filesystem structure and mount option parsing ]
+Signed-off-by: Pieter Van Trappen <pieter.van.trappen@cern.ch>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20240909134301.75448-1-vtpieter@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ba54bce747fa ("net: dsa: microchip: linearize skb for tail-tagging switches")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/connect.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/dsa/tag_ksz.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -2144,6 +2144,11 @@ cifs_parse_mount_options(const char *mou
- 					 __func__);
- 				goto cifs_parse_mount_err;
- 			}
-+			if (option < SMB_ECHO_INTERVAL_MIN ||
-+			    option > SMB_ECHO_INTERVAL_MAX) {
-+				cifs_dbg(VFS, "echo interval is out of bounds\n");
-+				goto cifs_parse_mount_err;
-+			}
- 			vol->echo_interval = option;
- 			break;
- 		case Opt_snapshot:
+--- a/net/dsa/tag_ksz.c
++++ b/net/dsa/tag_ksz.c
+@@ -104,8 +104,9 @@ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROT
+ 
+ #define KSZ9477_INGRESS_TAG_LEN		2
+ #define KSZ9477_PTP_TAG_LEN		4
+-#define KSZ9477_PTP_TAG_INDICATION	0x80
++#define KSZ9477_PTP_TAG_INDICATION	BIT(7)
+ 
++#define KSZ9477_TAIL_TAG_EG_PORT_M	GENMASK(2, 0)
+ #define KSZ9477_TAIL_TAG_OVERRIDE	BIT(9)
+ #define KSZ9477_TAIL_TAG_LOOKUP		BIT(10)
+ 
+@@ -138,7 +139,7 @@ static struct sk_buff *ksz9477_rcv(struc
+ {
+ 	/* Tag decoding */
+ 	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+-	unsigned int port = tag[0] & 7;
++	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
+ 	unsigned int len = KSZ_EGRESS_TAG_LEN;
+ 
+ 	/* Extra 4-bytes PTP timestamp */
 
 
 
