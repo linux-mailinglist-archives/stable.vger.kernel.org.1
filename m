@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83855B47FE6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:49 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB96B47F54
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC5B83C3D49
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 028DD4E1291
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3DD27703A;
-	Sun,  7 Sep 2025 20:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6802139C9;
+	Sun,  7 Sep 2025 20:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEt2V91t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmYLzYFR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED99C1F63CD;
-	Sun,  7 Sep 2025 20:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB41315D54;
+	Sun,  7 Sep 2025 20:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277826; cv=none; b=VovgW5O+GQA7/Hg/55M+29U1jec9SGh4SQU7wQBcDXSxNvBFRH4U9IQ9IqjNRMVyXyhNNzPV3UvzhuryCUrW82wDJlHxxJKaI7gcECBJuFmYaiibQ9X6nkF8N++McM4ElCdY3YBONvSlnPIjMBfbys5nnowlhm1VdkX5FVXU5as=
+	t=1757277366; cv=none; b=UpeB0Pu6RK1Z5jHk9sox2hEZ19gsOzfepQY6wvtC0A1kbfz0n66pACHaxsZ+pz8vKOtR48AJu5RehAQ04ECmfBHqHmpMJanjhW30liJ9Rob8EtJNDoxwZAeb1kJCQChfTisGJ4jAGuDt7nSc8U3frrTmPI0rQaCN8ToiSyIm34c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277826; c=relaxed/simple;
-	bh=AVpvz9iepwxd1Dmv1PJlwGvbn7XOaZPUwHOEcHLhAIc=;
+	s=arc-20240116; t=1757277366; c=relaxed/simple;
+	bh=HWjArLJjF0dMCGA+SbAuHdznI9KinTqMzptIsYHIVRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6+H687iHFeZRmHljTOtrr7+NDAdva/I2Q+FF916l003PYrhGLV/1kXta+rUqUu346XlOS/+9B+ETyg1xPz7XdX0pnzT8UIc4HURMZMu4yIsm5ug/E6X3fWHWt75s8OEFXoQIi3bsg1DHxGsBvBIVWTCoxwao32uwqdOD/Cls9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEt2V91t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4906DC4CEF0;
-	Sun,  7 Sep 2025 20:43:45 +0000 (UTC)
+	 MIME-Version; b=mBkymNcyOIUGwAekWL3JaL9FINtuEX6I7/kAwZmYGE9LHB1fhCryXEPqvj+JU1Mi4zt0zoxs40sQFvFt2Z8/GeYx8NkC2a3Kab1BfaEcGMAPIMug1e/k1LbXLZ6o8HMUREO3p9R5tW1XSuW4SHQ1BNDK4Jb9AFJEJv6Cpx4nBMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmYLzYFR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4242EC4CEF0;
+	Sun,  7 Sep 2025 20:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277825;
-	bh=AVpvz9iepwxd1Dmv1PJlwGvbn7XOaZPUwHOEcHLhAIc=;
+	s=korg; t=1757277365;
+	bh=HWjArLJjF0dMCGA+SbAuHdznI9KinTqMzptIsYHIVRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qEt2V91tTEz5ooo1yS3fi+NpuMqfqaOk28pHZ1lYEU2kmnzgnYoNNu3NCRuL3WB3f
-	 GZHG7lrt7iE/iTfAHpWetrGiT0QCkABTtT6/qcWcUz5Cuud2gac1ArDqnC5Z9i4c6u
-	 lARsbqrXWM7+l/po1YdgVTjpih42j4KNl5RA+zSs=
+	b=YmYLzYFReiT1xMzwW2WtKFqvT5RNVHasWhtdnTnRiAqv88yO6aDfSt6UtAV/VkO/i
+	 XE6fq65ecaOQRhyyzfkJfeXlceTYiLnBtMJO6nbmakHrQgYX3yAnn88rrHqWApw7fK
+	 mv9KwBZXEZ0LDQNRAAB6VPoiFg5siAl407XpfWMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Fort <disclosure@aisle.com>,
-	Stanislav Fort <stanislav.fort@aisle.com>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.16 135/183] batman-adv: fix OOB read/write in network-coding decode
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 167/175] md: prevent incorrect update of resync/recovery offset
 Date: Sun,  7 Sep 2025 21:59:22 +0200
-Message-ID: <20250907195619.001388227@linuxfoundation.org>
+Message-ID: <20250907195618.810448982@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fort <stanislav.fort@aisle.com>
+From: Li Nan <linan122@huawei.com>
 
-commit d77b6ff0ce35a6d0b0b7b9581bc3f76d041d4087 upstream.
+[ Upstream commit 7202082b7b7a256d04ec96131c7f859df0a79f64 ]
 
-batadv_nc_skb_decode_packet() trusts coded_len and checks only against
-skb->len. XOR starts at sizeof(struct batadv_unicast_packet), reducing
-payload headroom, and the source skb length is not verified, allowing an
-out-of-bounds read and a small out-of-bounds write.
+In md_do_sync(), when md_sync_action returns ACTION_FROZEN, subsequent
+call to md_sync_position() will return MaxSector. This causes
+'curr_resync' (and later 'recovery_offset') to be set to MaxSector too,
+which incorrectly signals that recovery/resync has completed, even though
+disk data has not actually been updated.
 
-Validate that coded_len fits within the payload area of both destination
-and source sk_buffs before XORing.
+To fix this issue, skip updating any offset values when the sync action
+is FROZEN. The same holds true for IDLE.
 
-Fixes: 2df5278b0267 ("batman-adv: network coding - receive coded packets and decode them")
-Cc: stable@vger.kernel.org
-Reported-by: Stanislav Fort <disclosure@aisle.com>
-Signed-off-by: Stanislav Fort <stanislav.fort@aisle.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7d9f107a4e94 ("md: use new helpers in md_do_sync()")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Link: https://lore.kernel.org/linux-raid/20250904073452.3408516-1-linan666@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/network-coding.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/md/md.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/batman-adv/network-coding.c
-+++ b/net/batman-adv/network-coding.c
-@@ -1687,7 +1687,12 @@ batadv_nc_skb_decode_packet(struct batad
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 4b32917236703..d263076442924 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -8996,6 +8996,11 @@ void md_do_sync(struct md_thread *thread)
+ 	}
  
- 	coding_len = ntohs(coded_packet_tmp.coded_len);
- 
--	if (coding_len > skb->len)
-+	/* ensure dst buffer is large enough (payload only) */
-+	if (coding_len + h_size > skb->len)
-+		return NULL;
+ 	action = md_sync_action(mddev);
++	if (action == ACTION_FROZEN || action == ACTION_IDLE) {
++		set_bit(MD_RECOVERY_INTR, &mddev->recovery);
++		goto skip;
++	}
 +
-+	/* ensure src buffer is large enough (payload only) */
-+	if (coding_len + h_size > nc_packet->skb->len)
- 		return NULL;
+ 	desc = md_sync_action_name(action);
+ 	mddev->last_sync_action = action;
  
- 	/* Here the magic is reversed:
+-- 
+2.51.0
+
 
 
 
