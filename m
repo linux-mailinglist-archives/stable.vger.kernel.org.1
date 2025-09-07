@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-178231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDD1B47DC7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4F3B47E40
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6670616367B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5917E189F3E4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA7F1C6FFA;
-	Sun,  7 Sep 2025 20:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DCA1D88D0;
+	Sun,  7 Sep 2025 20:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzn1r2jY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzXA/78I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD4B1AF0B6;
-	Sun,  7 Sep 2025 20:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2256E1A9FAA;
+	Sun,  7 Sep 2025 20:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276181; cv=none; b=BV7c7dkAImO9esJ3Qj59O7Ze8joRKSEEPhBwcc6A0hB0Bhs8BPTBz1Mt5jataXtj5v4o799J3erVOmQ+ACudauHfgyTmOismGm5j/jm91PmANgoYm4DU3W/PWHxvwykef2PI+uFVD+o+RpnNWl5KAMbLO9B8qr9w+7XFPaeDb38=
+	t=1757276519; cv=none; b=Ly8uvWcOPP8LEYnVv1k2MVtcyrNymxaug4fUabcHtXZWPi7cgy/tzqKRHfvsqG7gIxvqDsRgIlYz/5NNUYzv+LfTcInEUXbqWN4x5tWVJfhFmJJMV6YhW3OoJpN7AsJpC+NVYMRtRfvhNX4pJ8rk74QkP6EEbiRqr9FLms5myqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276181; c=relaxed/simple;
-	bh=e9t3VRtqQDI366+OOGfNXqn/rh/1HFITj4OFIzUDJHs=;
+	s=arc-20240116; t=1757276519; c=relaxed/simple;
+	bh=5t/ssg/NiKAuzIS/22CuhMZ4IbAGFu8LSrvOwstp/PY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CNE2K6q0YCfW4fVCIZ37gqSp7yHwlBx9d2vY0fXk2kxm5Ey30/zn0mehb/zH09RBRsMKsQarevj0h8Kp2uz6MvZ8Hl238+tEHXq6D0cFveVfZb29NQrxdyl6jwPLR7R6FvrXWqokN8Xl/GUyXCkRSOjXNpW5748wBPd+7hqk8hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzn1r2jY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E45EC4CEF0;
-	Sun,  7 Sep 2025 20:16:21 +0000 (UTC)
+	 MIME-Version; b=Y4zF9PxlgdqSBQhzPzKYqIO2ewQ8b8PkkhsEZqySy49TRH4b5EL8idsZ5TxrEk6kIdx+NjPG6Nc8+5Qz7kprXM9hmuBeIZYY1VjYZ1ADCUipvDZEbUqWqeamlrGhUtveWHPg38V9YSDDXbr5uJmZ+bL3WuSxtlIA33nQRUKL5wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzXA/78I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C967C4CEF8;
+	Sun,  7 Sep 2025 20:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276181;
-	bh=e9t3VRtqQDI366+OOGfNXqn/rh/1HFITj4OFIzUDJHs=;
+	s=korg; t=1757276519;
+	bh=5t/ssg/NiKAuzIS/22CuhMZ4IbAGFu8LSrvOwstp/PY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nzn1r2jY7RMZNh/6CUpIAfRaWymItdE+qxGCayQdzNrm2i8mYPF4AhOcnS5WWPUhO
-	 +XElu9nZvxUnZVH9U8rOn7hf9XftgkEa8/z0DBSLjZoDY73CUhNUyncfYvak5rvldX
-	 diE1xCDU2uwPDwL8LCN6f+S5P8QlOKxUNbGuRh8Q=
+	b=ZzXA/78I0hPNSvzBEMU53YQkL/vF8CwrnLWbM7qPIdrFNrVq+OEPHf93VH28uUZPo
+	 9e1C4MzibiVNSsFL0Mojr9S6/l9BXS0iesNql7m6iRcvnf2uVBYanx01E15S2XnpV/
+	 EK35lZ6qb07mqIRv96VX7ef3FG/pHSU+wPiIMJ/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Jian <liujian56@huawei.com>,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/104] net/smc: fix one NULL pointer dereference in smc_ib_is_sg_need_sync()
+Subject: [PATCH 6.6 025/121] xirc2ps_cs: fix register access when enabling FullDuplex
 Date: Sun,  7 Sep 2025 21:57:41 +0200
-Message-ID: <20250907195608.319493883@linuxfoundation.org>
+Message-ID: <20250907195610.467471979@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Jian <liujian56@huawei.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit ba1e9421cf1a8369d25c3832439702a015d6b5f9 ]
+[ Upstream commit b79e498080b170fd94fc83bca2471f450811549b ]
 
-BUG: kernel NULL pointer dereference, address: 00000000000002ec
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP PTI
-CPU: 28 UID: 0 PID: 343 Comm: kworker/28:1 Kdump: loaded Tainted: G        OE       6.17.0-rc2+ #9 NONE
-Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-Workqueue: smc_hs_wq smc_listen_work [smc]
-RIP: 0010:smc_ib_is_sg_need_sync+0x9e/0xd0 [smc]
-...
-Call Trace:
- <TASK>
- smcr_buf_map_link+0x211/0x2a0 [smc]
- __smc_buf_create+0x522/0x970 [smc]
- smc_buf_create+0x3a/0x110 [smc]
- smc_find_rdma_v2_device_serv+0x18f/0x240 [smc]
- ? smc_vlan_by_tcpsk+0x7e/0xe0 [smc]
- smc_listen_find_device+0x1dd/0x2b0 [smc]
- smc_listen_work+0x30f/0x580 [smc]
- process_one_work+0x18c/0x340
- worker_thread+0x242/0x360
- kthread+0xe7/0x220
- ret_from_fork+0x13a/0x160
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+The current code incorrectly passes (XIRCREG1_ECR | FullDuplex) as
+the register address to GetByte(), instead of fetching the register
+value and OR-ing it with FullDuplex. This results in an invalid
+register access.
 
-If the software RoCE device is used, ibdev->dma_device is a null pointer.
-As a result, the problem occurs. Null pointer detection is added to
-prevent problems.
+Fix it by reading XIRCREG1_ECR first, then or-ing with FullDuplex
+before writing it back.
 
-Fixes: 0ef69e788411c ("net/smc: optimize for smc_sndbuf_sync_sg_for_device and smc_rmb_sync_sg_for_cpu")
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Reviewed-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
-Link: https://patch.msgid.link/20250828124117.2622624-1-liujian56@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250827192645.658496-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_ib.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/xircom/xirc2ps_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
-index 6de53431629ca..8e41034d8d96f 100644
---- a/net/smc/smc_ib.c
-+++ b/net/smc/smc_ib.c
-@@ -743,6 +743,9 @@ bool smc_ib_is_sg_need_sync(struct smc_link *lnk,
- 	unsigned int i;
- 	bool ret = false;
- 
-+	if (!lnk->smcibdev->ibdev->dma_device)
-+		return ret;
-+
- 	/* for now there is just one DMA address */
- 	for_each_sg(buf_slot->sgt[lnk->link_idx].sgl, sg,
- 		    buf_slot->sgt[lnk->link_idx].nents, i) {
+diff --git a/drivers/net/ethernet/xircom/xirc2ps_cs.c b/drivers/net/ethernet/xircom/xirc2ps_cs.c
+index 9f505cf02d965..2dc1cfcd7ce99 100644
+--- a/drivers/net/ethernet/xircom/xirc2ps_cs.c
++++ b/drivers/net/ethernet/xircom/xirc2ps_cs.c
+@@ -1578,7 +1578,7 @@ do_reset(struct net_device *dev, int full)
+ 	    msleep(40);			/* wait 40 msec to let it complete */
+ 	}
+ 	if (full_duplex)
+-	    PutByte(XIRCREG1_ECR, GetByte(XIRCREG1_ECR | FullDuplex));
++	    PutByte(XIRCREG1_ECR, GetByte(XIRCREG1_ECR) | FullDuplex);
+     } else {  /* No MII */
+ 	SelectPage(0);
+ 	value = GetByte(XIRCREG_ESR);	 /* read the ESR */
 -- 
 2.50.1
 
