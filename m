@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDC8CB47FBF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D7E2B47E84
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8D021B219EF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:42:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89C12189ED38
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCA826E6FF;
-	Sun,  7 Sep 2025 20:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD01220D51C;
+	Sun,  7 Sep 2025 20:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aWq3JY8/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LmFjMpoy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCE14315A;
-	Sun,  7 Sep 2025 20:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9FE17BB21;
+	Sun,  7 Sep 2025 20:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277704; cv=none; b=Bzi500h752jQS2XOc3ZaoRcVntpctAmmhWpDDLrb13AKIl7f8UIHC9vz5tTuu2xC/97GW1Lw9hM0lFS6AGF5YjHJvA7428BgQ63hXYiGPBkVdVjZkqf9zZbncc2tUTdryyob/oFzopy+czxGZoDaRb4Rhjt1dWrV7CpAm/CWOlg=
+	t=1757276724; cv=none; b=P2RCYMuBIYY+gQcGKnEWDcR7QF8I9Qf9pwE99BsGBoi8v79rgwW7t0aK0rZ0cU9j02DRpGJNJNWBG3yAqINszruaXyWEulJ7OxdMUgLJxye9Ag+fHoyUfOV47LYtOPSWJBIbrt9pnIjQ2VJKS4a3xnRZiaFIbSf6Ap7mUbrdhUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277704; c=relaxed/simple;
-	bh=HD+HbMS3IrWZeQIO9KmJ9uRcikiM1Y0h2rtstT0uH5k=;
+	s=arc-20240116; t=1757276724; c=relaxed/simple;
+	bh=aLd6q75luMGINeD0fsiYXxAavbaT9cxanKPDpd5BAqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXj8gfZvF5Ls73KgF2yNGU3CZjgXrulT82asJxtRtmSB8bN5OB+dnMYPAOzujH3Uw8b0EHsuyVMPnmD0uiWgCM3jtwmT2N/PBIDmid/QdakA3vCgZeHKcOlYOncTiDlLE0UGvKJXNCw1Lu44NTzhXnYXCEn6cj4dlKV4iMiOVBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aWq3JY8/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FDDC4CEF0;
-	Sun,  7 Sep 2025 20:41:43 +0000 (UTC)
+	 MIME-Version; b=MIx7zX5AURpnUBXwZoPbwJXZFp9QCMpYN+apUhvtzhRnDG0YlcLzji9sBL7QvBRxZJWyIcb2MvYq9FQMoeRcoIFBBgK//euRxhK0a9NrG98kBtnplH2MK+SiQ07t5oK4NCBz8DvIRYz26onGD9mPb9VfTHAMB5sRGkzeLrFpvY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmFjMpoy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E36C4CEF0;
+	Sun,  7 Sep 2025 20:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277703;
-	bh=HD+HbMS3IrWZeQIO9KmJ9uRcikiM1Y0h2rtstT0uH5k=;
+	s=korg; t=1757276724;
+	bh=aLd6q75luMGINeD0fsiYXxAavbaT9cxanKPDpd5BAqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aWq3JY8/gHhnXSK7t0k1Pd3llsACmv8+2Ql/twOh4Vn4TGhidsrn1nnmnt1yXnZG2
-	 us1/HIKY49U0asOvGTeF8PCinzavPgq6KpijYIYuSPpiIHMkT1AjxYg8e1rv8oLYgf
-	 tXayNWKT0lLHYqBKyw+Q1a5pJgii/c3ZakOlm8/4=
+	b=LmFjMpoyjiVCr8G1RhfmD6P5GSiIzbEtbkXk1BaC8GZrEUGQR9SaZUgN09bjWsTZV
+	 1NtTjNfiTYLJWQYWQGiJKh/SttZ7c9pOxjhwsjpRkYr9SCjffY6KbkM7G551Bw1bdw
+	 sabmobJ51K8wYM+qd3h+hZncIBQCa7sugUevwWdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karol Wachowski <karol.wachowski@intel.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.16 097/183] accel/ivpu: Prevent recovery work from being queued during device removal
+	Chris Chiu <chris.chiu@canonical.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 088/121] ALSA: hda/realtek - Add new HP ZBook laptop with micmute led fixup
 Date: Sun,  7 Sep 2025 21:58:44 +0200
-Message-ID: <20250907195618.090313408@linuxfoundation.org>
+Message-ID: <20250907195612.099741465@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Wachowski <karol.wachowski@intel.com>
+From: Chris Chiu <chris.chiu@canonical.com>
 
-commit 69a79ada8eb034ce016b5b78fb7d08d8687223de upstream.
+[ Upstream commit f709b78aecab519dbcefa9a6603b94ad18c553e3 ]
 
-Use disable_work_sync() instead of cancel_work_sync() in ivpu_dev_fini()
-to ensure that no new recovery work items can be queued after device
-removal has started. Previously, recovery work could be scheduled even
-after canceling existing work, potentially leading to use-after-free
-bugs if recovery accessed freed resources.
+New HP ZBook with Realtek HDA codec ALC3247 needs the quirk
+ALC236_FIXUP_HP_GPIO_LED to fix the micmute LED.
 
-Rename ivpu_pm_cancel_recovery() to ivpu_pm_disable_recovery() to better
-reflect its new behavior.
-
-Fixes: 58cde80f45a2 ("accel/ivpu: Use dedicated work for job timeout detection")
-Cc: stable@vger.kernel.org # v6.8+
-Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://lore.kernel.org/r/20250808110939.328366-1-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250520132101.120685-1-chris.chiu@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_drv.c |    2 +-
- drivers/accel/ivpu/ivpu_pm.c  |    4 ++--
- drivers/accel/ivpu/ivpu_pm.h  |    2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/accel/ivpu/ivpu_drv.c
-+++ b/drivers/accel/ivpu/ivpu_drv.c
-@@ -677,7 +677,7 @@ static void ivpu_bo_unbind_all_user_cont
- static void ivpu_dev_fini(struct ivpu_device *vdev)
- {
- 	ivpu_jobs_abort_all(vdev);
--	ivpu_pm_cancel_recovery(vdev);
-+	ivpu_pm_disable_recovery(vdev);
- 	ivpu_pm_disable(vdev);
- 	ivpu_prepare_for_reset(vdev);
- 	ivpu_shutdown(vdev);
---- a/drivers/accel/ivpu/ivpu_pm.c
-+++ b/drivers/accel/ivpu/ivpu_pm.c
-@@ -408,10 +408,10 @@ void ivpu_pm_init(struct ivpu_device *vd
- 	ivpu_dbg(vdev, PM, "Autosuspend delay = %d\n", delay);
- }
- 
--void ivpu_pm_cancel_recovery(struct ivpu_device *vdev)
-+void ivpu_pm_disable_recovery(struct ivpu_device *vdev)
- {
- 	drm_WARN_ON(&vdev->drm, delayed_work_pending(&vdev->pm->job_timeout_work));
--	cancel_work_sync(&vdev->pm->recovery_work);
-+	disable_work_sync(&vdev->pm->recovery_work);
- }
- 
- void ivpu_pm_enable(struct ivpu_device *vdev)
---- a/drivers/accel/ivpu/ivpu_pm.h
-+++ b/drivers/accel/ivpu/ivpu_pm.h
-@@ -25,7 +25,7 @@ struct ivpu_pm_info {
- void ivpu_pm_init(struct ivpu_device *vdev);
- void ivpu_pm_enable(struct ivpu_device *vdev);
- void ivpu_pm_disable(struct ivpu_device *vdev);
--void ivpu_pm_cancel_recovery(struct ivpu_device *vdev);
-+void ivpu_pm_disable_recovery(struct ivpu_device *vdev);
- 
- int ivpu_pm_suspend_cb(struct device *dev);
- int ivpu_pm_resume_cb(struct device *dev);
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10249,6 +10249,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x8e18, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e19, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8e1d, "HP ZBook X Gli 16 G12", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e3a, "HP Agusta", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8e3b, "HP Agusta", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
 
 
 
