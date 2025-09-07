@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7EEB47D1D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C09B47E43
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8ACF57AADE7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:06:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A28DC189F5CA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120B927FB21;
-	Sun,  7 Sep 2025 20:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CAB1D88D0;
+	Sun,  7 Sep 2025 20:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPNK/Xwu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjD62dpH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CE21CDFAC;
-	Sun,  7 Sep 2025 20:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E38189BB0;
+	Sun,  7 Sep 2025 20:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275661; cv=none; b=hjwtoiZlIX3YXsa78LqvARxaa/xjZxLVDbM9On131gWnulgJSN81xLCYIZV5KCf+B20fAIQ2NRgo1QA4TkyakRMcRupMTYQtWjzQ5cRhkG7zmL97M53tKSQqq7SMNrMV5NMbM5I5mRCJbITLL/3RdfE1+1aoK/a50EutG2VdR44=
+	t=1757276528; cv=none; b=CjLI+aLvTaEJPJziUCyZXT71h9rL2aEtGdgSqN37RpiJSiuIMi0ziPhdtqxBCgsqeGDvltyeuxhS1oMFIPhbp4TGg+2z+hR+Selt1HbXHRY9MfH8fZLRjrZvpRUOlcS0T3Fj6zkH+qyDisnmAsj1+VPOy2H97L5SIYbygkpEYJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275661; c=relaxed/simple;
-	bh=oGbdt+cmnhkwT8GUVkGy684cK4CoWWrOPdgsv/LcAog=;
+	s=arc-20240116; t=1757276528; c=relaxed/simple;
+	bh=OCm5px5OwBL0GI8P46ctVhf7XDwfG4IQ9Orbgq19Bn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cBx1b/0K0Ffp7oLMLCa/vAMyu4i+/XgwqUYXr+gWtm3vshaGD8esuifc7y5jVLmKTERPnqyPdMI4zlOFpOckXH3dzKglzG4liLDFRP9mgBcjQ9VJ5fo0d0O3Tbleyx8qu4uP9LGWpDdFXB1oLw5Xn/608MR2k9ftvNL1vWbL5fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPNK/Xwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E46C4CEF0;
-	Sun,  7 Sep 2025 20:07:41 +0000 (UTC)
+	 MIME-Version; b=D7DMRrjkKoDI78ApmfsQ/ONRkYuak0iAnabkgxXc1cHO4+qdBPToy/5PvuCL11KROLmP1EFMAsSM5CiQOztwMn85P0aDVt3xkIAnDkrwA8dJx78ZJUG1Df5VsJ9h4ofQ8ufMZ+wDVyncF2OOisNfHD5CLboqK45DGYny2vm6Dqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjD62dpH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1525BC4CEF0;
+	Sun,  7 Sep 2025 20:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275661;
-	bh=oGbdt+cmnhkwT8GUVkGy684cK4CoWWrOPdgsv/LcAog=;
+	s=korg; t=1757276528;
+	bh=OCm5px5OwBL0GI8P46ctVhf7XDwfG4IQ9Orbgq19Bn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPNK/XwuyOrecS4FULmV2hoZSY6C3bFPdDJCyn3/TWmw8XODsXXpQ3CdJ4NSu+0xf
-	 lMkxjdo+gLQyG7IyYaviZZgA87/9R4iY6plr1SPzqdtnnPj4tpsxriuK2+J3kesGG6
-	 nW5rRnSmsolkqYCkr1v9vS7qirdzPpjZajivgS14=
+	b=LjD62dpH1Lqq2hr42PTXny9d5BsBAh966AKO/+9XY5CmJM4Yp1c1yMOFkl0xNNYTY
+	 vCyxIf5S2P027BqT/7qteEn+7WX5wA28bJPK1J42y+1Xt6bxsPUW14Vq2KjULu4X8x
+	 hHVgKRnf4csA/TGWJEB3dUoxMPVJFFnrheIoSOg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Evans <evans1210144@gmail.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 24/52] scsi: lpfc: Fix buffer free/clear order in deferred receive path
+	Mike Galbraith <efault@gmx.de>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 028/121] net: macb: Fix tx_ptr_lock locking
 Date: Sun,  7 Sep 2025 21:57:44 +0200
-Message-ID: <20250907195602.699053186@linuxfoundation.org>
+Message-ID: <20250907195610.548209582@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Evans <evans1210144@gmail.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-commit 9dba9a45c348e8460da97c450cddf70b2056deb3 upstream.
+[ Upstream commit 6bc8a5098bf4a365c4086a4a4130bfab10a58260 ]
 
-Fix a use-after-free window by correcting the buffer release sequence in
-the deferred receive path. The code freed the RQ buffer first and only
-then cleared the context pointer under the lock. Concurrent paths (e.g.,
-ABTS and the repost path) also inspect and release the same pointer under
-the lock, so the old order could lead to double-free/UAF.
+macb_start_xmit and macb_tx_poll can be called with bottom-halves
+disabled (e.g. from softirq) as well as with interrupts disabled (with
+netpoll). Because of this, all other functions taking tx_ptr_lock must
+use spin_lock_irqsave.
 
-Note that the repost path already uses the correct pattern: detach the
-pointer under the lock, then free it after dropping the lock. The
-deferred path should do the same.
-
-Fixes: 472e146d1cf3 ("scsi: lpfc: Correct upcalling nvmet_fc transport during io done downcall")
-Cc: stable@vger.kernel.org
-Signed-off-by: John Evans <evans1210144@gmail.com>
-Link: https://lore.kernel.org/r/20250828044008.743-1-evans1210144@gmail.com
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 138badbc21a0 ("net: macb: use NAPI for TX completion path")
+Reported-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Link: https://patch.msgid.link/20250829143521.1686062-1-sean.anderson@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_nvmet.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 28 ++++++++++++++----------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
 
---- a/drivers/scsi/lpfc/lpfc_nvmet.c
-+++ b/drivers/scsi/lpfc/lpfc_nvmet.c
-@@ -1245,7 +1245,7 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
- 	struct lpfc_nvmet_tgtport *tgtp;
- 	struct lpfc_async_xchg_ctx *ctxp =
- 		container_of(rsp, struct lpfc_async_xchg_ctx, hdlrctx.fcp_req);
--	struct rqb_dmabuf *nvmebuf = ctxp->rqb_buffer;
-+	struct rqb_dmabuf *nvmebuf;
- 	struct lpfc_hba *phba = ctxp->phba;
- 	unsigned long iflag;
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 534e7f7bca4c2..b836ab2a649a2 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1234,11 +1234,12 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ {
+ 	struct macb *bp = queue->bp;
+ 	u16 queue_index = queue - bp->queues;
++	unsigned long flags;
+ 	unsigned int tail;
+ 	unsigned int head;
+ 	int packets = 0;
  
-@@ -1253,13 +1253,18 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
- 	lpfc_nvmeio_data(phba, "NVMET DEFERRCV: xri x%x sz %d CPU %02x\n",
- 			 ctxp->oxid, ctxp->size, raw_smp_processor_id());
+-	spin_lock(&queue->tx_ptr_lock);
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+ 	head = queue->tx_head;
+ 	for (tail = queue->tx_tail; tail != head && packets < budget; tail++) {
+ 		struct macb_tx_skb	*tx_skb;
+@@ -1297,7 +1298,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ 	    CIRC_CNT(queue->tx_head, queue->tx_tail,
+ 		     bp->tx_ring_size) <= MACB_TX_WAKEUP_THRESH(bp))
+ 		netif_wake_subqueue(bp->dev, queue_index);
+-	spin_unlock(&queue->tx_ptr_lock);
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
  
-+	spin_lock_irqsave(&ctxp->ctxlock, iflag);
-+	nvmebuf = ctxp->rqb_buffer;
- 	if (!nvmebuf) {
-+		spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
- 		lpfc_printf_log(phba, KERN_INFO, LOG_NVME_IOERR,
- 				"6425 Defer rcv: no buffer oxid x%x: "
- 				"flg %x ste %x\n",
- 				ctxp->oxid, ctxp->flag, ctxp->state);
- 		return;
- 	}
-+	ctxp->rqb_buffer = NULL;
-+	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ 	return packets;
+ }
+@@ -1713,8 +1714,9 @@ static void macb_tx_restart(struct macb_queue *queue)
+ {
+ 	struct macb *bp = queue->bp;
+ 	unsigned int head_idx, tbqp;
++	unsigned long flags;
  
- 	tgtp = phba->targetport->private;
- 	if (tgtp)
-@@ -1267,9 +1272,6 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+-	spin_lock(&queue->tx_ptr_lock);
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
  
- 	/* Free the nvmebuf since a new buffer already replaced it */
- 	nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
--	spin_lock_irqsave(&ctxp->ctxlock, iflag);
--	ctxp->rqb_buffer = NULL;
--	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ 	if (queue->tx_head == queue->tx_tail)
+ 		goto out_tx_ptr_unlock;
+@@ -1726,19 +1728,20 @@ static void macb_tx_restart(struct macb_queue *queue)
+ 	if (tbqp == head_idx)
+ 		goto out_tx_ptr_unlock;
+ 
+-	spin_lock_irq(&bp->lock);
++	spin_lock(&bp->lock);
+ 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
+-	spin_unlock_irq(&bp->lock);
++	spin_unlock(&bp->lock);
+ 
+ out_tx_ptr_unlock:
+-	spin_unlock(&queue->tx_ptr_lock);
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
  }
  
- /**
+ static bool macb_tx_complete_pending(struct macb_queue *queue)
+ {
+ 	bool retval = false;
++	unsigned long flags;
+ 
+-	spin_lock(&queue->tx_ptr_lock);
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+ 	if (queue->tx_head != queue->tx_tail) {
+ 		/* Make hw descriptor updates visible to CPU */
+ 		rmb();
+@@ -1746,7 +1749,7 @@ static bool macb_tx_complete_pending(struct macb_queue *queue)
+ 		if (macb_tx_desc(queue, queue->tx_tail)->ctrl & MACB_BIT(TX_USED))
+ 			retval = true;
+ 	}
+-	spin_unlock(&queue->tx_ptr_lock);
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
+ 	return retval;
+ }
+ 
+@@ -2314,6 +2317,7 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	struct macb_queue *queue = &bp->queues[queue_index];
+ 	unsigned int desc_cnt, nr_frags, frag_size, f;
+ 	unsigned int hdrlen;
++	unsigned long flags;
+ 	bool is_lso;
+ 	netdev_tx_t ret = NETDEV_TX_OK;
+ 
+@@ -2374,7 +2378,7 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		desc_cnt += DIV_ROUND_UP(frag_size, bp->max_tx_length);
+ 	}
+ 
+-	spin_lock_bh(&queue->tx_ptr_lock);
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+ 
+ 	/* This is a hard error, log it. */
+ 	if (CIRC_SPACE(queue->tx_head, queue->tx_tail,
+@@ -2396,15 +2400,15 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	wmb();
+ 	skb_tx_timestamp(skb);
+ 
+-	spin_lock_irq(&bp->lock);
++	spin_lock(&bp->lock);
+ 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
+-	spin_unlock_irq(&bp->lock);
++	spin_unlock(&bp->lock);
+ 
+ 	if (CIRC_SPACE(queue->tx_head, queue->tx_tail, bp->tx_ring_size) < 1)
+ 		netif_stop_subqueue(dev, queue_index);
+ 
+ unlock:
+-	spin_unlock_bh(&queue->tx_ptr_lock);
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
+ 
+ 	return ret;
+ }
+-- 
+2.50.1
+
 
 
 
