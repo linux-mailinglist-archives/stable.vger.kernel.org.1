@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-178229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30FE1B47DC5
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B80B47D16
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6A523C0766
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0435417BAAF
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F251F1921;
-	Sun,  7 Sep 2025 20:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2E2296BB8;
+	Sun,  7 Sep 2025 20:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fE7ERhC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYaCG1Tu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7691614BFA2;
-	Sun,  7 Sep 2025 20:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C5F1CDFAC;
+	Sun,  7 Sep 2025 20:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276175; cv=none; b=t+ez3iNBZqAHZFUI3kRKMDI6iefoK+DotHMLLTOGFu55Rt6YSklt1uaPFhqB1Yk2YIGci24v31QB1gGkq3hBAD43bfj7MlCpUFPeob6z6UC/xsY6XUfK/tP0uwllUoCLGrqjX6RtigzqV4y9npAj/6P5YdoIFKbJTHBMKspsHHk=
+	t=1757275643; cv=none; b=K7amjvtbKIhshOxtnUgMoqdImSfwXjo2FlFsSVNtpPpdZNkOoskpWvqdBlSHwXs0rEFm1wZ5rLPZWp+7PPRk9FMofU9W7vM6i1V04rB4+xbLRdd/zNnNlEiRaSF5L8YtufYtu0cQruTXDGHZgPi8f136itJeusANkMDv45/6drY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276175; c=relaxed/simple;
-	bh=QANFqbKg8J8bp1BrsEIVUK12z9hOnyHCGS9Hz4YnbFM=;
+	s=arc-20240116; t=1757275643; c=relaxed/simple;
+	bh=LU2Zb1coWTUH6DRAeWpRwWUuZnsZu/6li7X8z5KdSpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oPpkwKbvC2nKp1zRlX/ZAdpjPs5/futepIKJXzPmVmlht8lUSpHRW/T3iw7iASUdmWQqtmDVxhnbqaOgtRUoWr10Ip/nRPKylzFWxbEDuWiaUsQ8lfN7wyY2SJlR3T9IxvvJNNqUKTEYie4EyNidBhwKqbcZlJvXmyqtuEfaUro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fE7ERhC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D89C4CEF0;
-	Sun,  7 Sep 2025 20:16:14 +0000 (UTC)
+	 MIME-Version; b=LTgcCmKBcIT6bvRRJA/qYlTt0Dyj71/1ZmyDnnuRcPYIhijW0mDrnGS4TCx+e2Gi7gdNvhzAWa2UIeEwJWk68PI46zxZ9nKGIK1tBFWQiJC2vSGg8zl7++ZcA3ZeowJ3WUjQFacgYpQ7DzH1KQP/ltOR+9cTA40p1CAS6ElWWqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYaCG1Tu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245A6C4CEF0;
+	Sun,  7 Sep 2025 20:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276175;
-	bh=QANFqbKg8J8bp1BrsEIVUK12z9hOnyHCGS9Hz4YnbFM=;
+	s=korg; t=1757275642;
+	bh=LU2Zb1coWTUH6DRAeWpRwWUuZnsZu/6li7X8z5KdSpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1fE7ERhCnZ83vF0ivuAAIeK7VwYOmQh2gCKgEuWiv6GM5xUfPBGn24m6cEd+Xg9nd
-	 UaUsFmiI6TjNv5/dH/ef6Ivfd/RX0Ph3Un3LNTPYpu1e8Ex9MMwLADV8Vi7wkyR74N
-	 4P+G74mKBdalgGDkaPrTg2JxFb3YNMkvJ6sMXeiQ=
+	b=QYaCG1TuBKYKGrPUWC2MR+kAjQTfu3kBvrEr7W/EasIGLHqnkylXqfiUcy77bZ2rY
+	 WOnhQ9FulBu1zP0OQyUp9Oz7iHELergKdquSC4vNM4DqwNkfJ06H/SGSJmHZ3lH/G4
+	 4Y3WhGLp6GhnmaMHwjHbZg6L00OuuUpS3VzC2zzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Fabian=20Bl=C3=A4se?= <fabian@blaese.de>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Florian Westphal <fw@strlen.de>,
+	Qingfang Deng <dqfext@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Yue Haibing <yuehaibing@huawei.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/104] icmp: fix icmp_ndo_send address translation for reply direction
+Subject: [PATCH 5.10 19/52] ppp: fix memory leak in pad_compress_skb
 Date: Sun,  7 Sep 2025 21:57:39 +0200
-Message-ID: <20250907195608.267472323@linuxfoundation.org>
+Message-ID: <20250907195602.555562014@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabian Bläse <fabian@blaese.de>
+From: Qingfang Deng <dqfext@gmail.com>
 
-[ Upstream commit c6dd1aa2cbb72b33e0569f3e71d95792beab5042 ]
+[ Upstream commit 4844123fe0b853a4982c02666cb3fd863d701d50 ]
 
-The icmp_ndo_send function was originally introduced to ensure proper
-rate limiting when icmp_send is called by a network device driver,
-where the packet's source address may have already been transformed
-by SNAT.
+If alloc_skb() fails in pad_compress_skb(), it returns NULL without
+releasing the old skb. The caller does:
 
-However, the original implementation only considers the
-IP_CT_DIR_ORIGINAL direction for SNAT and always replaced the packet's
-source address with that of the original-direction tuple. This causes
-two problems:
+    skb = pad_compress_skb(ppp, skb);
+    if (!skb)
+        goto drop;
 
-1. For SNAT:
-   Reply-direction packets were incorrectly translated using the source
-   address of the CT original direction, even though no translation is
-   required.
+drop:
+    kfree_skb(skb);
 
-2. For DNAT:
-   Reply-direction packets were not handled at all. In DNAT, the original
-   direction's destination is translated. Therefore, in the reply
-   direction the source address must be set to the reply-direction
-   source, so rate limiting works as intended.
+When pad_compress_skb() returns NULL, the reference to the old skb is
+lost and kfree_skb(skb) ends up doing nothing, leading to a memory leak.
 
-Fix this by using the connection direction to select the correct tuple
-for source address translation, and adjust the pre-checks to handle
-reply-direction packets in case of DNAT.
+Align pad_compress_skb() semantics with realloc(): only free the old
+skb if allocation and compression succeed.  At the call site, use the
+new_skb variable so the original skb is not lost when pad_compress_skb()
+fails.
 
-Additionally, wrap the `ct->status` access in READ_ONCE(). This avoids
-possible KCSAN reports about concurrent updates to `ct->status`.
-
-Fixes: 0b41713b6066 ("icmp: introduce helper for nat'd source address in network device context")
-Signed-off-by: Fabian Bläse <fabian@blaese.de>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
+Fixes: b3f9b92a6ec1 ("[PPP]: add PPP MPPE encryption module")
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Yue Haibing <yuehaibing@huawei.com>
+Link: https://patch.msgid.link/20250903100726.269839-1-dqfext@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/icmp.c     | 6 ++++--
- net/ipv6/ip6_icmp.c | 6 ++++--
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/ppp/ppp_generic.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 94501bb30c431..b17549c4e5de8 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -801,11 +801,12 @@ void icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __be32 info)
- 	struct sk_buff *cloned_skb = NULL;
- 	struct ip_options opts = { 0 };
- 	enum ip_conntrack_info ctinfo;
-+	enum ip_conntrack_dir dir;
- 	struct nf_conn *ct;
- 	__be32 orig_ip;
- 
- 	ct = nf_ct_get(skb_in, &ctinfo);
--	if (!ct || !(ct->status & IPS_SRC_NAT)) {
-+	if (!ct || !(READ_ONCE(ct->status) & IPS_NAT_MASK)) {
- 		__icmp_send(skb_in, type, code, info, &opts);
- 		return;
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index d9d1f3519f0a7..b2b5a994dd0ee 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -1616,7 +1616,6 @@ pad_compress_skb(struct ppp *ppp, struct sk_buff *skb)
+ 		 */
+ 		if (net_ratelimit())
+ 			netdev_err(ppp->dev, "ppp: compressor dropped pkt\n");
+-		kfree_skb(skb);
+ 		consume_skb(new_skb);
+ 		new_skb = NULL;
  	}
-@@ -820,7 +821,8 @@ void icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __be32 info)
- 		goto out;
- 
- 	orig_ip = ip_hdr(skb_in)->saddr;
--	ip_hdr(skb_in)->saddr = ct->tuplehash[0].tuple.src.u3.ip;
-+	dir = CTINFO2DIR(ctinfo);
-+	ip_hdr(skb_in)->saddr = ct->tuplehash[dir].tuple.src.u3.ip;
- 	__icmp_send(skb_in, type, code, info, &opts);
- 	ip_hdr(skb_in)->saddr = orig_ip;
- out:
-diff --git a/net/ipv6/ip6_icmp.c b/net/ipv6/ip6_icmp.c
-index 9e3574880cb03..233914b63bdb8 100644
---- a/net/ipv6/ip6_icmp.c
-+++ b/net/ipv6/ip6_icmp.c
-@@ -54,11 +54,12 @@ void icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 code, __u32 info)
- 	struct inet6_skb_parm parm = { 0 };
- 	struct sk_buff *cloned_skb = NULL;
- 	enum ip_conntrack_info ctinfo;
-+	enum ip_conntrack_dir dir;
- 	struct in6_addr orig_ip;
- 	struct nf_conn *ct;
- 
- 	ct = nf_ct_get(skb_in, &ctinfo);
--	if (!ct || !(ct->status & IPS_SRC_NAT)) {
-+	if (!ct || !(READ_ONCE(ct->status) & IPS_NAT_MASK)) {
- 		__icmpv6_send(skb_in, type, code, info, &parm);
- 		return;
+@@ -1718,9 +1717,10 @@ ppp_send_frame(struct ppp *ppp, struct sk_buff *skb)
+ 					   "down - pkt dropped.\n");
+ 			goto drop;
+ 		}
+-		skb = pad_compress_skb(ppp, skb);
+-		if (!skb)
++		new_skb = pad_compress_skb(ppp, skb);
++		if (!new_skb)
+ 			goto drop;
++		skb = new_skb;
  	}
-@@ -73,7 +74,8 @@ void icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 code, __u32 info)
- 		goto out;
  
- 	orig_ip = ipv6_hdr(skb_in)->saddr;
--	ipv6_hdr(skb_in)->saddr = ct->tuplehash[0].tuple.src.u3.in6;
-+	dir = CTINFO2DIR(ctinfo);
-+	ipv6_hdr(skb_in)->saddr = ct->tuplehash[dir].tuple.src.u3.in6;
- 	__icmpv6_send(skb_in, type, code, info, &parm);
- 	ipv6_hdr(skb_in)->saddr = orig_ip;
- out:
+ 	/*
 -- 
 2.50.1
 
