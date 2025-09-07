@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98BEEB47F7D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53351B47D18
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 560B5200146
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 117F817BB14
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6705B275AF6;
-	Sun,  7 Sep 2025 20:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7634F291C3F;
+	Sun,  7 Sep 2025 20:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFD5hhNS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NR+v3wzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2225B1DF246;
-	Sun,  7 Sep 2025 20:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD3D1CDFAC;
+	Sun,  7 Sep 2025 20:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277491; cv=none; b=ahqRk9Z4ccxMraBR4TxQu+1tnYx6WtiAcrzKG/7Rodkd+/t1v8vS55v3yo4NKtAqK0XTGp5H1s1YizRcXBaM3w3r5bSZXIxV+TbF2HKc5xiJ+/jPF4T0fu9aDnQvXiRcOp+sFvoSVSWED3pRfBGwxKTmpCrommbDNXarXxoHLMg=
+	t=1757275649; cv=none; b=LSZKHS3DIqTM7r5cCJHR8ozUGcnvOm4kSq90qj0oNvrAol9Jqb+u2cza+hj7QgWwpe2P0Y7E/I8eWVwKZ2dQp25M60gkWsIVK8BYs0xITRh32m3SortiOemOUXQgbYM9qDVkK0uylUrKajnc+Bafg67//ju4XlMWNEbdNNwRjfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277491; c=relaxed/simple;
-	bh=W2ptkzTShpI+ACNEns4ZfqhAjc6vYYabOsSaGl8aP7Q=;
+	s=arc-20240116; t=1757275649; c=relaxed/simple;
+	bh=3miHTiIiuXmGstWpgLtFKAyo8iYVqA2F5zllCGJP1Aw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CsHa+VQTwHpC8LmiyivzccBV2qaldQkyTQhfRz6o5nwqPFV9q+dFl7q/AgAoLzithPmGNif3DLuq8xwVIJhLwzsCmBkpL/1f6jMeYI67Uf/Rn7fRG2FYcXJEhW8r2r0L0V3qdjGeuWXkegVhOAiAFf0IZfkJGTGB11vTFBH7Cgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFD5hhNS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC35C4CEF0;
-	Sun,  7 Sep 2025 20:38:10 +0000 (UTC)
+	 MIME-Version; b=R4LBDIbvgP+i3uwAJfb6Bn7qZrC5cpkBP/NoG/rFBmbDqdimpUTnmSmrjgFt07UGtEJozej209HxDPoG6LGPu6lwRBXoTyeuXQ1xsHZcriH0zesDGe28MamJUw6v/kMzCgP/uZ2IQQOBEX91cbMvQTDatThItLvlPhYIKAfVXQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NR+v3wzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF53C4CEF0;
+	Sun,  7 Sep 2025 20:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277490;
-	bh=W2ptkzTShpI+ACNEns4ZfqhAjc6vYYabOsSaGl8aP7Q=;
+	s=korg; t=1757275648;
+	bh=3miHTiIiuXmGstWpgLtFKAyo8iYVqA2F5zllCGJP1Aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vFD5hhNSDiJ/gkPFtTPH1nA8pzri7j3LPHNaWwkEuF3JqNz+vDeZzQSFxSYYEV3uR
-	 cgN7UgrBOTMAVWFfh6/Zv8TtKslRTyxbXW1FjZ5qnr7Ovg8/WNt/v5x8m0zPGa2qKF
-	 WDQkXzVJOEdT0fBxqn1Ne2o0K98Ss6+VcDW5RKVw=
+	b=NR+v3wzc6uJWgv1eOUPIR9wpgDecm8d3XELn+2yHO4zkMgYyifugdej+QPVIzUvgU
+	 n54oqA8uDKQt17FNDje3afiWYSZOo+z21xTOU2koniXRspr4NtLQsgpQsX80tL6JLh
+	 wLUqp5WDL0zVR0bbkGp9q/l/9RQs5qi4hjKq16iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janusz Dziedzic <janusz.dziedzic@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 032/183] wifi: mt76: mt7921: dont disconnect when CSA to DFS chan
-Date: Sun,  7 Sep 2025 21:57:39 +0200
-Message-ID: <20250907195616.539473739@linuxfoundation.org>
+	Guoli An <anguoli@uniontech.com>,
+	Cryolitia PukNgae <cryolitia@uniontech.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 20/52] ALSA: usb-audio: Add mute TLV for playback volumes on some devices
+Date: Sun,  7 Sep 2025 21:57:40 +0200
+Message-ID: <20250907195602.584362356@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
+From: Cryolitia PukNgae <cryolitia@uniontech.com>
 
-[ Upstream commit 87f38519d27a514c9909f84b8f1334125df9778e ]
+commit 9c6182843b0d02ca04cc1d946954a65a2286c7db upstream.
 
-When station mode, don't disconnect when we get
-channel switch from AP to DFS channel. Most APs
-send CSA request after pass background CAC. In other
-case we should disconnect after detect beacon miss.
+Applying the quirk of that, the lowest Playback mixer volume setting
+mutes the audio output, on more devices.
 
-Without patch when we get CSA to DFS channel get:
-"kernel: wlo1: preparing for channel switch failed, disconnecting"
-
-Fixes: 8aa2f59260eb ("wifi: mt76: mt7921: introduce CSA support")
-Signed-off-by: Janusz Dziedzic <janusz.dziedzic@gmail.com>
-Link: https://patch.msgid.link/20250716165443.28354-1-janusz.dziedzic@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://gitlab.freedesktop.org/pipewire/pipewire/-/merge_requests/2514
+Cc: <stable@vger.kernel.org>
+Tested-by: Guoli An <anguoli@uniontech.com>
+Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
+Link: https://patch.msgid.link/20250822-mixer-quirk-v1-1-b19252239c1c@uniontech.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ sound/usb/mixer_quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 77f73ae1d7ecc..f6b431c422ebc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1457,11 +1457,8 @@ static int mt7921_pre_channel_switch(struct ieee80211_hw *hw,
- 	if (vif->type != NL80211_IFTYPE_STATION || !vif->cfg.assoc)
- 		return -EOPNOTSUPP;
- 
--	/* Avoid beacon loss due to the CAC(Channel Availability Check) time
--	 * of the AP.
--	 */
- 	if (!cfg80211_chandef_usable(hw->wiphy, &chsw->chandef,
--				     IEEE80211_CHAN_RADAR))
-+				     IEEE80211_CHAN_DISABLED))
- 		return -EOPNOTSUPP;
- 
- 	return 0;
--- 
-2.50.1
-
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -3352,9 +3352,11 @@ void snd_usb_mixer_fu_apply_quirk(struct
+ 			snd_dragonfly_quirk_db_scale(mixer, cval, kctl);
+ 		break;
+ 	/* lowest playback value is muted on some devices */
++	case USB_ID(0x0572, 0x1b09): /* Conexant Systems (Rockwell), Inc. */
+ 	case USB_ID(0x0d8c, 0x000c): /* C-Media */
+ 	case USB_ID(0x0d8c, 0x0014): /* C-Media */
+ 	case USB_ID(0x19f7, 0x0003): /* RODE NT-USB */
++	case USB_ID(0x2d99, 0x0026): /* HECATE G2 GAMING HEADSET */
+ 		if (strstr(kctl->id.name, "Playback"))
+ 			cval->min_mute = 1;
+ 		break;
 
 
 
