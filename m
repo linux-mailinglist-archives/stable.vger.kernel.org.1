@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-178739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B20B47FDE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB91B47EA5
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 292553C3C2F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBC5E17E491
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7922139C9;
-	Sun,  7 Sep 2025 20:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D3F1D88D0;
+	Sun,  7 Sep 2025 20:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSnN8wKb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDynahrG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE1C4315A;
-	Sun,  7 Sep 2025 20:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6879B1E1C1A;
+	Sun,  7 Sep 2025 20:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277803; cv=none; b=mGzwvq4KVlB/Jg7ZRYTPuCarhNAZRiXsjr09hq6TzQIoZfXVviwqilQyDGYedE0dgsF3svyfka0DHM3TMOye7t4eYY6fWu21FvkyqsZVNxdRgB6bKo8l2Fn3vJCKo/I2sYZi2SuVcjO9smfy1TuhFda43Oq3Zg+WDphM4vXGr40=
+	t=1757276823; cv=none; b=VgO5TlA4PRGOr2eGaKH7eVyU9nDgMGvUXsyl3lBBi1S64zWe1gnktH1q+41gDkFexnfsGc4rwwg2o61zHm1QAoIXRGtXWcPARpbAgh1Rj2fm/YVll4BOJvCGIBrkWa6QB4GUOtVmtlEeptyfwLxU1npN+e3dv5ODZfj1Sk+KhMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277803; c=relaxed/simple;
-	bh=d3FnGpuZ2Fe2NBC3VQGarTpVYvGciAq+1mFGv26oVMY=;
+	s=arc-20240116; t=1757276823; c=relaxed/simple;
+	bh=QZLTYNsLXQmw2hFCdasjjObk/do61j69fM2mjIf9rDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nF3K4qlPMHs7OCvgQkATGw7y2nosKO2r8Ik+VhNOL+E3rs3bGi5RKS4joy6PVr3LSnho13DoQfpindbA6i1X4DHCbN3l+2dVJj3omWdFSfuMtjcadR+0VjyU1OdQMFSvcCbMzNdIIN6moQYGD2BeNB4OP/UEI9cBDE4IsuZc90c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSnN8wKb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CF3C4CEF0;
-	Sun,  7 Sep 2025 20:43:22 +0000 (UTC)
+	 MIME-Version; b=qURBIC7OXqb3D1cSyUfQdqYXm1c0TezLsVVkV3sHbrb244iSZAUTUbpBDdSjdU7n/bTu766qsOnT/fP4yODSFc/pwM51EjnUGVuEP8VP3CKOCRvYE1k2Gh0XqLm660P6KmwqUfNuup6s22TXgwlCiV5BeUbO/vUVZu7BVZI7Bt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDynahrG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16C6C4CEF0;
+	Sun,  7 Sep 2025 20:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277803;
-	bh=d3FnGpuZ2Fe2NBC3VQGarTpVYvGciAq+1mFGv26oVMY=;
+	s=korg; t=1757276823;
+	bh=QZLTYNsLXQmw2hFCdasjjObk/do61j69fM2mjIf9rDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HSnN8wKbqG6a7VoUCdbQt9ScH7l85NWr9NOzYvjNOTbMQgvzrXrudG1hXBHd45p3O
-	 PUztklgTCTQSdNBqTB5HwAc5otChw2OzAjHSfJysjvb58QIr4uF30/3LXA2Y+i1iv4
-	 KlSuohn9q0YeM5ZpieF5Nhy1BPw1rK0DYElj1eXc=
+	b=NDynahrGukbVS01xaGS2GQpjEg+u0Vxn3LcoJjPplruck2QhLoWqLiv/kM9T2pkEk
+	 GQWBo76fRU6I4q1t84RUniruSFbASLSoKHmrabnxY/qmS0bdln188Biqe5P1Q/l6SD
+	 fQCh6t8etUvT49LTP9y+JV87Pjp/OjjpiMGBR1E0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Jesse Zhang <Jesse.Zhang@amd.com>
-Subject: [PATCH 6.16 129/183] drm/amdgpu/sdma: bump firmware version checks for user queue support
-Date: Sun,  7 Sep 2025 21:59:16 +0200
-Message-ID: <20250907195618.858323301@linuxfoundation.org>
+	Kevin Hao <haokexin@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 121/121] spi: fsl-qspi: Fix double cleanup in probe error path
+Date: Sun,  7 Sep 2025 21:59:17 +0200
+Message-ID: <20250907195612.957747535@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse.Zhang <Jesse.Zhang@amd.com>
+From: Kevin Hao <haokexin@gmail.com>
 
-commit 2d41a4bfee6e9941ff19728c691ab00d19cf882a upstream.
+commit 5d07ab2a7fa1305e429d9221716582f290b58078 upstream.
 
-Using the previous firmware could lead to problems with
-PROTECTED_FENCE_SIGNAL commands, specifically causing register
-conflicts between MCU_DBG0 and MCU_DBG1.
+Commit 40369bfe717e ("spi: fsl-qspi: use devm function instead of driver
+remove") introduced managed cleanup via fsl_qspi_cleanup(), but
+incorrectly retain manual cleanup in two scenarios:
 
-The updated firmware versions ensure proper alignment
-and unification of the SDMA_SUBOP_PROTECTED_FENCE_SIGNAL value with SDMA 7.x,
-resolving these hardware coordination issues
+- On devm_add_action_or_reset() failure, the function automatically call
+  fsl_qspi_cleanup(). However, the current code still jumps to
+  err_destroy_mutex, repeating cleanup.
 
-Fixes: e8cca30d8b34 ("drm/amdgpu/sdma6: add ucode version checks for userq support")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit aab8b689aded255425db3d80c0030d1ba02fe2ef)
+- After the fsl_qspi_cleanup() action is added successfully, there is no
+  need to manually perform the cleanup in the subsequent error path.
+  However, the current code still jumps to err_destroy_mutex on spi
+  controller failure, repeating cleanup.
+
+Skip redundant manual cleanup calls to fix these issues.
+
 Cc: stable@vger.kernel.org
+Fixes: 40369bfe717e ("spi: fsl-qspi: use devm function instead of driver remove")
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Link: https://patch.msgid.link/20250410-spi-v1-1-56e867cc19cf@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v6_0.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-fsl-qspi.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v6_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v6_0.c
-@@ -1376,15 +1376,15 @@ static int sdma_v6_0_sw_init(struct amdg
+--- a/drivers/spi/spi-fsl-qspi.c
++++ b/drivers/spi/spi-fsl-qspi.c
+@@ -943,17 +943,14 @@ static int fsl_qspi_probe(struct platfor
  
- 	switch (amdgpu_ip_version(adev, SDMA0_HWIP, 0)) {
- 	case IP_VERSION(6, 0, 0):
--		if ((adev->sdma.instance[0].fw_version >= 24) && !adev->sdma.disable_uq)
-+		if ((adev->sdma.instance[0].fw_version >= 27) && !adev->sdma.disable_uq)
- 			adev->userq_funcs[AMDGPU_HW_IP_DMA] = &userq_mes_funcs;
- 		break;
- 	case IP_VERSION(6, 0, 2):
--		if ((adev->sdma.instance[0].fw_version >= 21) && !adev->sdma.disable_uq)
-+		if ((adev->sdma.instance[0].fw_version >= 23) && !adev->sdma.disable_uq)
- 			adev->userq_funcs[AMDGPU_HW_IP_DMA] = &userq_mes_funcs;
- 		break;
- 	case IP_VERSION(6, 0, 3):
--		if ((adev->sdma.instance[0].fw_version >= 25) && !adev->sdma.disable_uq)
-+		if ((adev->sdma.instance[0].fw_version >= 27) && !adev->sdma.disable_uq)
- 			adev->userq_funcs[AMDGPU_HW_IP_DMA] = &userq_mes_funcs;
- 		break;
- 	default:
+ 	ret = devm_add_action_or_reset(dev, fsl_qspi_cleanup, q);
+ 	if (ret)
+-		goto err_destroy_mutex;
++		goto err_put_ctrl;
+ 
+ 	ret = devm_spi_register_controller(dev, ctlr);
+ 	if (ret)
+-		goto err_destroy_mutex;
++		goto err_put_ctrl;
+ 
+ 	return 0;
+ 
+-err_destroy_mutex:
+-	mutex_destroy(&q->lock);
+-
+ err_disable_clk:
+ 	fsl_qspi_clk_disable_unprep(q);
+ 
 
 
 
