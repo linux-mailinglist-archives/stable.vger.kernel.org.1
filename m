@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F95DB47DAA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 136B6B47E83
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D81C1883BC0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7F7D189EA06
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2EE284883;
-	Sun,  7 Sep 2025 20:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31FC1F1921;
+	Sun,  7 Sep 2025 20:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vzb8fGKB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/91wvvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375ED27FB21;
-	Sun,  7 Sep 2025 20:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D59917BB21;
+	Sun,  7 Sep 2025 20:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276095; cv=none; b=BuV7uO0erglMOW2jHk8df58lCpuy2H2fg8vWZaa96fC2v0togNIeCwgjsGLDO7KR5YsaA014m3x2PsaL6phQKwvEQuRrwz5S9OCo4JHiCj8bNrmMFLFX/YFNmFB5eayutB6VgAHbOoUPQoT22AcRI+6IJA2FrnauiI34ujsVVBM=
+	t=1757276717; cv=none; b=H1rv4pOkq0Qx9NH2/0qGGx+gwfeZmp3QZyVJ6N+/H+VFlX5YqOTKL9xLddEugyypieIyUhqqc+KYDgHEFqSGW7f8ZwyzS2ZYXfsDQB7R7vG0cz7AQ7SONIn/tE52sOL7398KJhmOeQX4WNrWpcnXfMeC5uGZKPh99RJUdNNFpiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276095; c=relaxed/simple;
-	bh=QtSGXVZ0q1IzWyNZbslM7+g15VUBrgFb6yt1SlxLz/E=;
+	s=arc-20240116; t=1757276717; c=relaxed/simple;
+	bh=wzuWmMHSwNyF1QfHNnvP9KNzpB6ADRelzdSqMwT5kLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UgqpBnbTUWr2P+oeDTKG/qBq9DnPe+hALRtMAQO/+0cL5WZ2yb+ZHQqJeU6tTN030dwk8rEy5GpoklluSUkoVlm2XsNPOjFg8KopRy40ruK2WVdGPI0UtO+0ookXpBAr9x3iCo0a2VV8PVT2i4i74q3AvN094wu1qVEdc7+GnHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vzb8fGKB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C8FC4CEF0;
-	Sun,  7 Sep 2025 20:14:54 +0000 (UTC)
+	 MIME-Version; b=oDn4snNTP/nkKT5MTumDY3dymhy2RpsqgiB5SELvzX9yObBAOVGGFLVQZPuEU5gEGgvBC8Ll7U4mToKda29A2zpwMP7EChNPkQRjJTU2eEVIuVLkIPT58aw3BqloVKNeu6PF78Wu6BwFBQoNt4q60ZC3ydJznjppYCe18hoTiwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/91wvvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20212C4CEF0;
+	Sun,  7 Sep 2025 20:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276095;
-	bh=QtSGXVZ0q1IzWyNZbslM7+g15VUBrgFb6yt1SlxLz/E=;
+	s=korg; t=1757276717;
+	bh=wzuWmMHSwNyF1QfHNnvP9KNzpB6ADRelzdSqMwT5kLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vzb8fGKBW2XyGEFAO2STwMRWlWN5JWIw2ilOPjcPbdUFOI1/v/tsByA1OWZlhJmJ8
-	 aVBOa8EsnWW6OjHL6DY3RJhI1nZkhNKDcbVEoShbmS5Y+lPj2smA73+DqzUi5vP/5B
-	 rpU+2OyRBbOIKzPt+mKCpRt5lNO/bJkW0UKoO1n4=
+	b=e/91wvvY/8DrhkaPORq8YZ2aABsxciKiYsMcCXhrKhqI91CHFh4euvfdeHuBzblOb
+	 kNPBxJEIoEDnBLAfGToNXCuLmxT3daXB+tqeYbz9gqijpnQJgJ+mxjxPEJIBFhvhqT
+	 akMHEPqXVLooFhww71dy30R94F9sxY7mS4k+x8eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 60/64] drm/bridge: ti-sn65dsi86: fix REFCLK setting
+Subject: [PATCH 6.6 086/121] iio: pressure: mprls0025pa: use aligned_s64 for timestamp
 Date: Sun,  7 Sep 2025 21:58:42 +0200
-Message-ID: <20250907195605.075066564@linuxfoundation.org>
+Message-ID: <20250907195612.046483926@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit bdd5a14e660062114bdebaef9ad52adf04970a89 ]
+[ Upstream commit ffcd19e9f4cca0c8f9e23e88f968711acefbb37b ]
 
-The bridge has three bootstrap pins which are sampled to determine the
-frequency of the external reference clock. The driver will also
-(over)write that setting. But it seems this is racy after the bridge is
-enabled. It was observed that although the driver write the correct
-value (by sniffing on the I2C bus), the register has the wrong value.
-The datasheet states that the GPIO lines have to be stable for at least
-5us after asserting the EN signal. Thus, there seems to be some logic
-which samples the GPIO lines and this logic appears to overwrite the
-register value which was set by the driver. Waiting 20us after
-asserting the EN line resolves this issue.
+Follow the pattern of other drivers and use aligned_s64 for the
+timestamp. This will ensure the struct itself it also 8-byte aligned.
 
-Fixes: a095f15c00e2 ("drm/bridge: add support for sn65dsi86 bridge driver")
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20250821122341.1257286-1-mwalle@kernel.org
+While touching this, convert struct mpr_chan to an anonymous struct
+to consolidate the code a bit to make it easier for future readers.
+
+Fixes: 713337d9143e ("iio: pressure: Honeywell mprls0025pa pressure sensor")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250418-iio-more-timestamp-alignment-v2-2-d6a5d2b1c9fe@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Applied changes to mprls0025pa.c ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi86.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/iio/pressure/mprls0025pa.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-index 1c9dd62d3c47b..1187bfb449f29 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-@@ -313,6 +313,17 @@ static int __maybe_unused ti_sn65dsi86_resume(struct device *dev)
+--- a/drivers/iio/pressure/mprls0025pa.c
++++ b/drivers/iio/pressure/mprls0025pa.c
+@@ -87,11 +87,6 @@ static const struct mpr_func_spec mpr_fu
+ 	[MPR_FUNCTION_C] = {.output_min = 3355443, .output_max = 13421773},
+ };
  
- 	gpiod_set_value(pdata->enable_gpio, 1);
- 
-+	/*
-+	 * After EN is deasserted and an external clock is detected, the bridge
-+	 * will sample GPIO3:1 to determine its frequency. The driver will
-+	 * overwrite this setting in ti_sn_bridge_set_refclk_freq(). But this is
-+	 * racy. Thus we have to wait a couple of us. According to the datasheet
-+	 * the GPIO lines has to be stable at least 5 us (td5) but it seems that
-+	 * is not enough and the refclk frequency value is still lost or
-+	 * overwritten by the bridge itself. Waiting for 20us seems to work.
-+	 */
-+	usleep_range(20, 30);
-+
- 	/*
- 	 * If we have a reference clock we can enable communication w/ the
- 	 * panel (including the aux channel) w/out any need for an input clock
--- 
-2.51.0
-
+-struct mpr_chan {
+-	s32			pres;		/* pressure value */
+-	s64			ts;		/* timestamp */
+-};
+-
+ struct mpr_data {
+ 	struct i2c_client	*client;
+ 	struct mutex		lock;		/*
+@@ -120,7 +115,10 @@ struct mpr_data {
+ 						 * loop until data is ready
+ 						 */
+ 	struct completion	completion;	/* handshake from irq to read */
+-	struct mpr_chan		chan;		/*
++	struct {
++		s32 pres;			/* pressure value */
++		aligned_s64 ts;			/* timestamp */
++	} chan;				/*
+ 						 * channel values for buffered
+ 						 * mode
+ 						 */
 
 
 
