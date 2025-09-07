@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-178692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 441BEB47FAF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:40:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E7E3B47F1F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A8441B2151F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEA753C28C5
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211E126B2AD;
-	Sun,  7 Sep 2025 20:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF09320D51C;
+	Sun,  7 Sep 2025 20:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BiY1KoS/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OoDuFiIC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35F94315A;
-	Sun,  7 Sep 2025 20:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9595A1DE8AF;
+	Sun,  7 Sep 2025 20:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277652; cv=none; b=SaCFCQLqN9mh/iAoPiINjvLneWIaMNHS8LYGGJbeqZ7cfK+bYayMLG8t+yMPEJa0bHMKu4L/KZisP4UYFSsNn2F+lQusIEmMi/4e7Oyn7q7LaAi+3GVFaARPMSzzY8j5RPzD+lV0BfDSOSFxKIWTx34PqrwdTiSWGpvSNe4bd4s=
+	t=1757277197; cv=none; b=P69I+UnHSCQcD4p5ZmhSdFbDf7Ck0DLwVUqnZKtjs/pxrNcs4noPWmfHngigHGJLOZscnVMfHITu9tGMpWYxa8JQ/N2QUKmrGytEz1fR1fv7qxzgIffowRzYuzAgXAFcOGeK58GCloSr0kPFOB0+f4mK4c12jamj20xMD7memhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277652; c=relaxed/simple;
-	bh=FWzush1vtC3QOtq71bE0DRHoZ55gOROvcJD4uM3dkXw=;
+	s=arc-20240116; t=1757277197; c=relaxed/simple;
+	bh=5vn0H7fOwKvmZb0yit+CRf5gb8ChuGt+iYOk4LTt0w8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4dK6iVn0nB5h0wVrKiXjz2hyaMyMmN56+TwiffbOiH9ZBJS9rtvpq9XL37XXHMkng5shG+dR/3J6/ABL8fj3/h0/a+533CsEmIi+HKGFGaBVThzO51FjmVHWXuvf62BMAidhAcGzBh9LUBn0DYDMhYhkkGNQoixPh3gs1tkp70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BiY1KoS/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F03C4CEF0;
-	Sun,  7 Sep 2025 20:40:52 +0000 (UTC)
+	 MIME-Version; b=ZpHvTXvduPz2fZWnAK/vdOVDQlVLBo4blIhnr7cJDCOC4gkb0XNNZ1fYcD3JCV/LZ6CXTWO+g4OF60KyKYKWABem1zt8zTduQq+Q2El6zBjNmjoYpwJmSRYyZaVC5iWmcU1ApTmiz/QwG9WZ+Ri1ZCdpDuAxREZMxzb09yeqFF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OoDuFiIC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC901C4CEF0;
+	Sun,  7 Sep 2025 20:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277652;
-	bh=FWzush1vtC3QOtq71bE0DRHoZ55gOROvcJD4uM3dkXw=;
+	s=korg; t=1757277195;
+	bh=5vn0H7fOwKvmZb0yit+CRf5gb8ChuGt+iYOk4LTt0w8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BiY1KoS/OvG44SXKhkr0clETQ1brvYZoRT0RxQP7w5/qpMMuQcUF5ofs5c3PR0D5w
-	 pkn4EsJm10/d/aaKgpYk+7PW3EK1sdhYJ/UwB4+LMDVKwBgfIBvXHhzqIQdF8DajD7
-	 LJujUW5NjAWVnrAHQUNLi2ryVXgoKNyiTjKaL/+k=
+	b=OoDuFiICOfmOfMOEBfLulVEADN0vU6vJsDw2AS6DpewH74k5SR/hB3TRHLIvYYvqj
+	 nZBYDExtJRZbrlZBRsAWWAep4lNZGJvF2JVWQi9sSNu/EJY/Lt4osshjewwrOagO7V
+	 EV/RsNQUNehRu+95pBUZJjLUZgOo6GJnC3m84sbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+50603c05bbdf4dfdaffa@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 082/183] net: lockless sock_i_ino()
+	"Sun peng (Leo) Li" <sunpeng.li@amd.com>,
+	Ivan Lipski <ivan.lipski@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 114/175] drm/amd/display: Clear the CUR_ENABLE register on DCN314 w/out DPP PG
 Date: Sun,  7 Sep 2025 21:58:29 +0200
-Message-ID: <20250907195617.744469478@linuxfoundation.org>
+Message-ID: <20250907195617.556237276@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,179 +64,186 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ivan Lipski <ivan.lipski@amd.com>
 
-[ Upstream commit 5d6b58c932ec451a5c41482790eb5b1ecf165a94 ]
+commit 3ebf766c35464ebdeefb6068246267147503dc04 upstream.
 
-Followup of commit c51da3f7a161 ("net: remove sock_i_uid()")
+[Why&How]
+ON DCN314, clearing DPP SW structure without power gating it can cause a
+double cursor in full screen with non-native scaling.
 
-A recent syzbot report was the trigger for this change.
+A W/A that clears CURSOR0_CONTROL cursor_enable flag if
+dcn10_plane_atomic_power_down is called and DPP power gating is disabled.
 
-Over the years, we had many problems caused by the
-read_lock[_bh](&sk->sk_callback_lock) in sock_i_uid().
-
-We could fix smc_diag_dump_proto() or make a more radical move:
-
-Instead of waiting for new syzbot reports, cache the socket
-inode number in sk->sk_ino, so that we no longer
-need to acquire sk->sk_callback_lock in sock_i_ino().
-
-This makes socket dumps faster (one less cache line miss,
-and two atomic ops avoided).
-
-Prior art:
-
-commit 25a9c8a4431c ("netlink: Add __sock_i_ino() for __netlink_diag_dump().")
-commit 4f9bf2a2f5aa ("tcp: Don't acquire inet_listen_hashbucket::lock with disabled BH.")
-commit efc3dbc37412 ("rds: Make rds_sock_lock BH rather than IRQ safe.")
-
-Fixes: d2d6422f8bd1 ("x86: Allow to enable PREEMPT_RT.")
-Reported-by: syzbot+50603c05bbdf4dfdaffa@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68b73804.050a0220.3db4df.01d8.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/20250902183603.740428-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4168
+Reviewed-by: Sun peng (Leo) Li <sunpeng.li@amd.com>
+Signed-off-by: Ivan Lipski <ivan.lipski@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 645f74f1dc119dad5a2c7bbc05cc315e76883011)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h   | 17 +++++++++++++----
- net/core/sock.c      | 22 ----------------------
- net/mptcp/protocol.c |  1 -
- net/netlink/diag.c   |  2 +-
- 4 files changed, 14 insertions(+), 28 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c      |    9 +
+ drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.h      |    2 
+ drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c      |    1 
+ drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c |   72 ++++++++++++++
+ drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.h |    2 
+ drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_init.c  |    1 
+ drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h               |    3 
+ 7 files changed, 90 insertions(+)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index da644ab5ae7f4..a348ae145eda4 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -285,6 +285,7 @@ struct sk_filter;
-   *	@sk_ack_backlog: current listen backlog
-   *	@sk_max_ack_backlog: listen backlog set in listen()
-   *	@sk_uid: user id of owner
-+  *	@sk_ino: inode number (zero if orphaned)
-   *	@sk_prefer_busy_poll: prefer busypolling over softirq processing
-   *	@sk_busy_poll_budget: napi processing budget when busypolling
-   *	@sk_priority: %SO_PRIORITY setting
-@@ -518,6 +519,7 @@ struct sock {
- 	u32			sk_ack_backlog;
- 	u32			sk_max_ack_backlog;
- 	kuid_t			sk_uid;
-+	unsigned long		sk_ino;
- 	spinlock_t		sk_peer_lock;
- 	int			sk_bind_phc;
- 	struct pid		*sk_peer_pid;
-@@ -2056,6 +2058,10 @@ static inline int sk_rx_queue_get(const struct sock *sk)
- static inline void sk_set_socket(struct sock *sk, struct socket *sock)
- {
- 	sk->sk_socket = sock;
-+	if (sock) {
-+		WRITE_ONCE(sk->sk_uid, SOCK_INODE(sock)->i_uid);
-+		WRITE_ONCE(sk->sk_ino, SOCK_INODE(sock)->i_ino);
-+	}
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
+@@ -520,6 +520,15 @@ void dpp1_dppclk_control(
+ 		REG_UPDATE(DPP_CONTROL, DPP_CLOCK_ENABLE, 0);
  }
  
- static inline wait_queue_head_t *sk_sleep(struct sock *sk)
-@@ -2077,6 +2083,7 @@ static inline void sock_orphan(struct sock *sk)
- 	sk_set_socket(sk, NULL);
- 	sk->sk_wq  = NULL;
- 	/* Note: sk_uid is unchanged. */
-+	WRITE_ONCE(sk->sk_ino, 0);
- 	write_unlock_bh(&sk->sk_callback_lock);
- }
- 
-@@ -2087,20 +2094,22 @@ static inline void sock_graft(struct sock *sk, struct socket *parent)
- 	rcu_assign_pointer(sk->sk_wq, &parent->wq);
- 	parent->sk = sk;
- 	sk_set_socket(sk, parent);
--	WRITE_ONCE(sk->sk_uid, SOCK_INODE(parent)->i_uid);
- 	security_sock_graft(sk, parent);
- 	write_unlock_bh(&sk->sk_callback_lock);
- }
- 
-+static inline unsigned long sock_i_ino(const struct sock *sk)
++void dpp_force_disable_cursor(struct dpp *dpp_base)
 +{
-+	/* Paired with WRITE_ONCE() in sock_graft() and sock_orphan() */
-+	return READ_ONCE(sk->sk_ino);
++	struct dcn10_dpp *dpp = TO_DCN10_DPP(dpp_base);
++
++	/* Force disable cursor */
++	REG_UPDATE(CURSOR0_CONTROL, CUR0_ENABLE, 0);
++	dpp_base->pos.cur0_ctl.bits.cur0_enable = 0;
 +}
 +
- static inline kuid_t sk_uid(const struct sock *sk)
- {
- 	/* Paired with WRITE_ONCE() in sockfs_setattr() */
- 	return READ_ONCE(sk->sk_uid);
+ static const struct dpp_funcs dcn10_dpp_funcs = {
+ 		.dpp_read_state = dpp_read_state,
+ 		.dpp_reset = dpp_reset,
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.h
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.h
+@@ -1525,4 +1525,6 @@ void dpp1_construct(struct dcn10_dpp *dp
+ 
+ void dpp1_cm_get_gamut_remap(struct dpp *dpp_base,
+ 			     struct dpp_grph_csc_adjustment *adjust);
++void dpp_force_disable_cursor(struct dpp *dpp_base);
++
+ #endif
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
+@@ -1497,6 +1497,7 @@ static struct dpp_funcs dcn30_dpp_funcs
+ 	.dpp_dppclk_control		= dpp1_dppclk_control,
+ 	.dpp_set_hdr_multiplier		= dpp3_set_hdr_multiplier,
+ 	.dpp_get_gamut_remap		= dpp3_cm_get_gamut_remap,
++	.dpp_force_disable_cursor 	= dpp_force_disable_cursor,
+ };
+ 
+ 
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.c
+@@ -502,3 +502,75 @@ void dcn314_disable_link_output(struct d
+ 
+ 	apply_symclk_on_tx_off_wa(link);
  }
++
++/**
++ * dcn314_dpp_pg_control - DPP power gate control.
++ *
++ * @hws: dce_hwseq reference.
++ * @dpp_inst: DPP instance reference.
++ * @power_on: true if we want to enable power gate, false otherwise.
++ *
++ * Enable or disable power gate in the specific DPP instance.
++ * If power gating is disabled, will force disable cursor in the DPP instance.
++ */
++void dcn314_dpp_pg_control(
++		struct dce_hwseq *hws,
++		unsigned int dpp_inst,
++		bool power_on)
++{
++	uint32_t power_gate = power_on ? 0 : 1;
++	uint32_t pwr_status = power_on ? 0 : 2;
++
++
++	if (hws->ctx->dc->debug.disable_dpp_power_gate) {
++		/* Workaround for DCN314 with disabled power gating */
++		if (!power_on) {
++
++			/* Force disable cursor if power gating is disabled */
++			struct dpp *dpp = hws->ctx->dc->res_pool->dpps[dpp_inst];
++			if (dpp && dpp->funcs->dpp_force_disable_cursor)
++				dpp->funcs->dpp_force_disable_cursor(dpp);
++		}
++		return;
++	}
++	if (REG(DOMAIN1_PG_CONFIG) == 0)
++		return;
++
++	switch (dpp_inst) {
++	case 0: /* DPP0 */
++		REG_UPDATE(DOMAIN1_PG_CONFIG,
++				DOMAIN1_POWER_GATE, power_gate);
++
++		REG_WAIT(DOMAIN1_PG_STATUS,
++				DOMAIN1_PGFSM_PWR_STATUS, pwr_status,
++				1, 1000);
++		break;
++	case 1: /* DPP1 */
++		REG_UPDATE(DOMAIN3_PG_CONFIG,
++				DOMAIN3_POWER_GATE, power_gate);
++
++		REG_WAIT(DOMAIN3_PG_STATUS,
++				DOMAIN3_PGFSM_PWR_STATUS, pwr_status,
++				1, 1000);
++		break;
++	case 2: /* DPP2 */
++		REG_UPDATE(DOMAIN5_PG_CONFIG,
++				DOMAIN5_POWER_GATE, power_gate);
++
++		REG_WAIT(DOMAIN5_PG_STATUS,
++				DOMAIN5_PGFSM_PWR_STATUS, pwr_status,
++				1, 1000);
++		break;
++	case 3: /* DPP3 */
++		REG_UPDATE(DOMAIN7_PG_CONFIG,
++				DOMAIN7_POWER_GATE, power_gate);
++
++		REG_WAIT(DOMAIN7_PG_STATUS,
++				DOMAIN7_PGFSM_PWR_STATUS, pwr_status,
++				1, 1000);
++		break;
++	default:
++		BREAK_TO_DEBUGGER();
++		break;
++	}
++}
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.h
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_hwseq.h
+@@ -47,4 +47,6 @@ void dcn314_dpp_root_clock_control(struc
  
--unsigned long __sock_i_ino(struct sock *sk);
--unsigned long sock_i_ino(struct sock *sk);
--
- static inline kuid_t sock_net_uid(const struct net *net, const struct sock *sk)
- {
- 	return sk ? sk_uid(sk) : make_kuid(net->user_ns, 0);
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 1689eaf42f25b..10c1df62338be 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2788,28 +2788,6 @@ void sock_pfree(struct sk_buff *skb)
- EXPORT_SYMBOL(sock_pfree);
- #endif /* CONFIG_INET */
+ void dcn314_disable_link_output(struct dc_link *link, const struct link_resource *link_res, enum signal_type signal);
  
--unsigned long __sock_i_ino(struct sock *sk)
--{
--	unsigned long ino;
--
--	read_lock(&sk->sk_callback_lock);
--	ino = sk->sk_socket ? SOCK_INODE(sk->sk_socket)->i_ino : 0;
--	read_unlock(&sk->sk_callback_lock);
--	return ino;
--}
--EXPORT_SYMBOL(__sock_i_ino);
--
--unsigned long sock_i_ino(struct sock *sk)
--{
--	unsigned long ino;
--
--	local_bh_disable();
--	ino = __sock_i_ino(sk);
--	local_bh_enable();
--	return ino;
--}
--EXPORT_SYMBOL(sock_i_ino);
--
- /*
-  * Allocate a skb from the socket's send buffer.
-  */
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 76cb699885b38..1063c53850c05 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3537,7 +3537,6 @@ void mptcp_sock_graft(struct sock *sk, struct socket *parent)
- 	write_lock_bh(&sk->sk_callback_lock);
- 	rcu_assign_pointer(sk->sk_wq, &parent->wq);
- 	sk_set_socket(sk, parent);
--	WRITE_ONCE(sk->sk_uid, SOCK_INODE(parent)->i_uid);
- 	write_unlock_bh(&sk->sk_callback_lock);
- }
++void dcn314_dpp_pg_control(struct dce_hwseq *hws, unsigned int dpp_inst, bool power_on);
++
+ #endif /* __DC_HWSS_DCN314_H__ */
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_init.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn314/dcn314_init.c
+@@ -141,6 +141,7 @@ static const struct hwseq_private_funcs
+ 	.enable_power_gating_plane = dcn314_enable_power_gating_plane,
+ 	.dpp_root_clock_control = dcn314_dpp_root_clock_control,
+ 	.hubp_pg_control = dcn31_hubp_pg_control,
++	.dpp_pg_control = dcn314_dpp_pg_control,
+ 	.program_all_writeback_pipes_in_tree = dcn30_program_all_writeback_pipes_in_tree,
+ 	.update_odm = dcn314_update_odm,
+ 	.dsc_pg_control = dcn314_dsc_pg_control,
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h
+@@ -349,6 +349,9 @@ struct dpp_funcs {
+ 		struct dpp *dpp_base,
+ 		enum dc_color_space color_space,
+ 		struct dc_csc_transform cursor_csc_color_matrix);
++
++	void (*dpp_force_disable_cursor)(struct dpp *dpp_base);
++
+ };
  
-diff --git a/net/netlink/diag.c b/net/netlink/diag.c
-index 61981e01fd6ff..b8e58132e8af1 100644
---- a/net/netlink/diag.c
-+++ b/net/netlink/diag.c
-@@ -168,7 +168,7 @@ static int __netlink_diag_dump(struct sk_buff *skb, struct netlink_callback *cb,
- 				 NETLINK_CB(cb->skb).portid,
- 				 cb->nlh->nlmsg_seq,
- 				 NLM_F_MULTI,
--				 __sock_i_ino(sk)) < 0) {
-+				 sock_i_ino(sk)) < 0) {
- 			ret = 1;
- 			break;
- 		}
--- 
-2.50.1
-
+ 
 
 
 
