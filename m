@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-178098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8107AB47D3E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64657B47F97
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:39:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B3EB189C53A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 629761B204AA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C1629B78F;
-	Sun,  7 Sep 2025 20:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9175821ADAE;
+	Sun,  7 Sep 2025 20:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZesomPH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2PoI6or"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113C52836A0;
-	Sun,  7 Sep 2025 20:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2621A704B;
+	Sun,  7 Sep 2025 20:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275758; cv=none; b=S/rsB/waP/aYMvWcYpusTq/jEz8ICGydps1XwRsnfTbLQ/Z6kc4GsOgt2T3P8KErSgjtUFIhWfpuQ4fR2K1xmhUx1u0DgyeYqsH2masK8pYF64ODS8XSNbzmBg+nE8VJBHkKQx3WiYg9CW5zW1QeppTzCcxDepSskBlWOPAyF0A=
+	t=1757277574; cv=none; b=qcw470bAwZ+YDGX3SXebDKZgMgN8oKUeCsj8QlFp7oJhBsMW1+5zK/Nj7wqNSdbDqc4TBpJUyFXktfIFRiLXOl0A1FgYNlciVBzUyHCYpwlrrKPLzz5V0LbJ8LQAOyZmgN9Ju1B7hlbrO1VvEu4X8LbO0nhcUiL+FUC+UKcNXSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275758; c=relaxed/simple;
-	bh=zhkXpSbj09LHgwDcxHqnu/U4k+naMzHJ5ZfnPq2LGbk=;
+	s=arc-20240116; t=1757277574; c=relaxed/simple;
+	bh=Ez8HvcrETu5iSWfpifBO+vOYYaUXCLI0qlkmDwjO04U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NEuPmcLfshZ/cgxI/BL2Z+cO6EZ7a4KwRfUipAcwAUhSFu+SlPiSeFi4gNK7JxMmVFDLshPV0uvfbV4v3Egru92ch6sLXC4ZkVvX2Y72J/mAllnNxeQzRP2s+ReLSeQMRs8euPgjFOfWNFKr3DXxnKPW57/o0b1xy/vjvIWCfhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZesomPH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9973C4CEF0;
-	Sun,  7 Sep 2025 20:09:16 +0000 (UTC)
+	 MIME-Version; b=SyQlK6VZ3YchF1eDR4PvAOMCnjTWro4Gg9DiwViz/7XcvAgBoXn+1+G2ryt2VEdLTNGuX2sERIvFMXT0Mi0+SaxDFpgoc6jth+NYl5rYU5FcSa+ypVVDK8mEzx46hHqAk6x1TY2EAXvFG7/zLR9hCNxz9Ol8wN6A+J4p0ntT9B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2PoI6or; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5225C4CEF0;
+	Sun,  7 Sep 2025 20:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275757;
-	bh=zhkXpSbj09LHgwDcxHqnu/U4k+naMzHJ5ZfnPq2LGbk=;
+	s=korg; t=1757277574;
+	bh=Ez8HvcrETu5iSWfpifBO+vOYYaUXCLI0qlkmDwjO04U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZesomPHdYrhjmvqA0gVhODaxaQpmhPjqpr3yodO4TLWrgmfzTv5apb9QbwgszOhe
-	 HhcjiBtp9iaMgNqV0/yR6gXfQWM41dvLGUpc3E0Ccmb2Y+GZg297duJxRjxuXfkT8k
-	 EOqogIabzNGxDEG5quUgh2mHf8ZE24WR08hFvNxw=
+	b=I2PoI6orzlTfgNZ6wiKH3NvIrANjoMl5OVrL7mzsuXII9va17pRMM6UHGaA5ens2e
+	 XPyOIhWgQ89cLzSzFw390iKs2fGEVaZyxwwkb2n3SL/XKIdDdVOonpW5d9Yzho5Spn
+	 oCiXFiS7hCqTW9ggy6cBwchLTPIKQPaHCUp5HDvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nisar Sayed <Nisar.Sayed@microchip.com>,
-	Yuiko Oshino <yuiko.oshino@microchip.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 43/52] net: phy: microchip: remove the use of .ack_interrupt()
+Subject: [PATCH 6.16 056/183] bnxt_en: fix incorrect page count in RX aggr ring log
 Date: Sun,  7 Sep 2025 21:58:03 +0200
-Message-ID: <20250907195603.217225445@linuxfoundation.org>
+Message-ID: <20250907195617.116188197@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit cf499391982d877e9313d2adeedcf5f1ffe05d6e ]
+[ Upstream commit 7000f4fa9b24ae2511b07babd0d49e888db5d265 ]
 
-In preparation of removing the .ack_interrupt() callback, we must replace
-its occurrences (aka phy_clear_interrupt), from the 2 places where it is
-called from (phy_enable_interrupts and phy_disable_interrupts), with
-equivalent functionality.
+The warning in bnxt_alloc_one_rx_ring_netmem() reports the number
+of pages allocated for the RX aggregation ring. However, it
+mistakenly used bp->rx_ring_size instead of bp->rx_agg_ring_size,
+leading to confusing or misleading log output.
 
-This means that clearing interrupts now becomes something that the PHY
-driver is responsible of doing, before enabling interrupts and after
-clearing them. Make this driver follow the new contract.
+Use the correct bp->rx_agg_ring_size value to fix this.
 
-Cc: Nisar Sayed <Nisar.Sayed@microchip.com>
-Cc: Yuiko Oshino <yuiko.oshino@microchip.com>
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Fixes: c0c050c58d84 ("bnxt_en: New Broadcom ethernet driver.")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Link: https://patch.msgid.link/20250830062331.783783-1-alok.a.tiwari@oracle.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 30a41ed32d30 ("net: phy: microchip: force IRQ polling mode for lan88xx")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/microchip.c    |   13 +++++--------
- drivers/net/phy/microchip_t1.c |   17 +++++++----------
- 2 files changed, 12 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -44,14 +44,12 @@ static int lan88xx_phy_config_intr(struc
- 			       LAN88XX_INT_MASK_LINK_CHANGE_);
- 	} else {
- 		rc = phy_write(phydev, LAN88XX_INT_MASK, 0);
--	}
--
--	return rc < 0 ? rc : 0;
--}
-+		if (rc)
-+			return rc;
- 
--static int lan88xx_phy_ack_interrupt(struct phy_device *phydev)
--{
--	int rc = phy_read(phydev, LAN88XX_INT_STS);
-+		/* Ack interrupts after they have been disabled */
-+		rc = phy_read(phydev, LAN88XX_INT_STS);
-+	}
- 
- 	return rc < 0 ? rc : 0;
- }
-@@ -390,7 +388,6 @@ static struct phy_driver microchip_phy_d
- 	.config_aneg	= lan88xx_config_aneg,
- 	.link_change_notify = lan88xx_link_change_notify,
- 
--	.ack_interrupt	= lan88xx_phy_ack_interrupt,
- 	.config_intr	= lan88xx_phy_config_intr,
- 	.handle_interrupt = lan88xx_handle_interrupt,
- 
---- a/drivers/net/phy/microchip_t1.c
-+++ b/drivers/net/phy/microchip_t1.c
-@@ -189,16 +189,14 @@ static int lan87xx_phy_config_intr(struc
- 		rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, 0x7FFF);
- 		rc = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
- 		val = LAN87XX_MASK_LINK_UP | LAN87XX_MASK_LINK_DOWN;
--	}
--
--	rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, val);
--
--	return rc < 0 ? rc : 0;
--}
-+		rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, val);
-+	} else {
-+		rc = phy_write(phydev, LAN87XX_INTERRUPT_MASK, val);
-+		if (rc)
-+			return rc;
- 
--static int lan87xx_phy_ack_interrupt(struct phy_device *phydev)
--{
--	int rc = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
-+		rc = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
-+	}
- 
- 	return rc < 0 ? rc : 0;
- }
-@@ -239,7 +237,6 @@ static struct phy_driver microchip_t1_ph
- 		.config_init	= lan87xx_config_init,
- 		.config_aneg    = genphy_config_aneg,
- 
--		.ack_interrupt  = lan87xx_phy_ack_interrupt,
- 		.config_intr    = lan87xx_phy_config_intr,
- 		.handle_interrupt = lan87xx_handle_interrupt,
- 
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index cb76ab78904fc..d47c1d81c49b8 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -4390,7 +4390,7 @@ static void bnxt_alloc_one_rx_ring_netmem(struct bnxt *bp,
+ 	for (i = 0; i < bp->rx_agg_ring_size; i++) {
+ 		if (bnxt_alloc_rx_netmem(bp, rxr, prod, GFP_KERNEL)) {
+ 			netdev_warn(bp->dev, "init'ed rx ring %d with %d/%d pages only\n",
+-				    ring_nr, i, bp->rx_ring_size);
++				    ring_nr, i, bp->rx_agg_ring_size);
+ 			break;
+ 		}
+ 		prod = NEXT_RX_AGG(prod);
+-- 
+2.50.1
+
 
 
 
