@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92ABCB47D88
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4C49B47D1F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53D3B3C00CB
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 077FF7AAF42
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2AD26E6FF;
-	Sun,  7 Sep 2025 20:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E5D27F754;
+	Sun,  7 Sep 2025 20:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDSGRYjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHau/+n2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A31F1CDFAC;
-	Sun,  7 Sep 2025 20:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C69722F74D;
+	Sun,  7 Sep 2025 20:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275991; cv=none; b=D7TjBmHInTtBWl5fhgDUuh4BvXHncdb1i9znb82K7ACSlrxNTIvGkyUF5pfo40giNvwYlCV3PBmtMUvbvUvXmhzgyI54VRiEFYmscGJ28c28dOi6rMhqldXqjE4DRt5NogE9Na8/sOiy/a7jkiqv9VyoI6JEldxCxNSWLk09bJU=
+	t=1757275668; cv=none; b=kzoOjbGYr2/0h+rjvIINtasDN6XsnOSPQjfkF/lbNhHLpzHjV3huzrotlZTkjBHdnA5IOp1y2yudVzXzW1a0mKUHEKcftgvqd75P9Xn4GSIFANN6FjNrbNKBeNnStN9gifN1B9iWfE8GYGR6Ou/gVYUM9fAmsU5/AE1qe//7240=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275991; c=relaxed/simple;
-	bh=brAl6CDQW3vAzOmU76K1DoevL2m3PJIL4pX25Fdh/gU=;
+	s=arc-20240116; t=1757275668; c=relaxed/simple;
+	bh=5trj6v4aER9nP5BpB28RMibGEOLw/Mdcvj8Dfne/kso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DvPXcWI93xFNQ8OtsZdKt5WckKpNzO0Y8vo2lRBk6AZynAMO/f+aWgQYy+fRsm5QM9YCjZY2H2ZgEuZWfeiL7wfQxuYQCFIktMC86zMBGHSWQf3QuBIQiBtrXwYnTd+fI6cWlMtKzvcfLZeq6VdB7TODy7ePAhdTQPWi8Ty7riE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDSGRYjM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C8DC4CEF0;
-	Sun,  7 Sep 2025 20:13:10 +0000 (UTC)
+	 MIME-Version; b=nZOhF3URkpSHlDPrNbrl/5OUo3UBDiy9tzCvZW/VoJ/fhuN5XGRvjP/4RuvzqnomPwIbDRWNg5QR8Z2HQnf6oQx5BlHHuT/RgxSEb0316N73oMxMHlX2ohGL5DdL3SfLDw5mXcUcBNDmSIg8i1EsBZoYZ4yInXb/Zw6xW8nqFK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHau/+n2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD507C4CEF0;
+	Sun,  7 Sep 2025 20:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275990;
-	bh=brAl6CDQW3vAzOmU76K1DoevL2m3PJIL4pX25Fdh/gU=;
+	s=korg; t=1757275668;
+	bh=5trj6v4aER9nP5BpB28RMibGEOLw/Mdcvj8Dfne/kso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDSGRYjMA3lO9dBH4NcwxQ4i3U9UrPnb4VH2bsYC2y9yt8YCEi0dnDYUTKdOU0ZSb
-	 RyPpSRj8LhCjmUwXMWZuTDklUF+AbhfcnOhhBBQ7nvluSPc77lfXS28wf0Tjn18Tuv
-	 JdZvz+zmJ0Lfx1pzUhaLu0coj1lenLKpNa1EX4hA=
+	b=fHau/+n2mA5LODEPAgjrgrBOtZK9R+mVCeYgG/6JYeo+5JOTH3jx5oM7rOw8d/GC3
+	 /WXCWyI2SUNEOYAlFCox3tpbFM4N5wcRgB/ybEJ3rNAJRbhnvyzMKFPSdPDUONqNtu
+	 Y+e7bOB9gysHTY+AP2wkds/KhiW5bGe3EALTzT/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lonial Con <kongln9170@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 04/64] bpf: Fix oob access in cgroup local storage
+	Mikael Wessel <post@mikaelkw.online>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 5.10 26/52] e1000e: fix heap overflow in e1000_set_eeprom
 Date: Sun,  7 Sep 2025 21:57:46 +0200
-Message-ID: <20250907195603.518574121@linuxfoundation.org>
+Message-ID: <20250907195602.752505443@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-[ Upstream commit abad3d0bad72a52137e0c350c59542d75ae4f513 ]
+commit 90fb7db49c6dbac961c6b8ebfd741141ffbc8545 upstream.
 
-Lonial reported that an out-of-bounds access in cgroup local storage
-can be crafted via tail calls. Given two programs each utilizing a
-cgroup local storage with a different value size, and one program
-doing a tail call into the other. The verifier will validate each of
-the indivial programs just fine. However, in the runtime context
-the bpf_cg_run_ctx holds an bpf_prog_array_item which contains the
-BPF program as well as any cgroup local storage flavor the program
-uses. Helpers such as bpf_get_local_storage() pick this up from the
-runtime context:
+Fix a possible heap overflow in e1000_set_eeprom function by adding
+input validation for the requested length of the change in the EEPROM.
+In addition, change the variable type from int to size_t for better
+code practices and rearrange declarations to RCT.
 
-  ctx = container_of(current->bpf_ctx, struct bpf_cg_run_ctx, run_ctx);
-  storage = ctx->prog_item->cgroup_storage[stype];
-
-  if (stype == BPF_CGROUP_STORAGE_SHARED)
-    ptr = &READ_ONCE(storage->buf)->data[0];
-  else
-    ptr = this_cpu_ptr(storage->percpu_buf);
-
-For the second program which was called from the originally attached
-one, this means bpf_get_local_storage() will pick up the former
-program's map, not its own. With mismatching sizes, this can result
-in an unintended out-of-bounds access.
-
-To fix this issue, we need to extend bpf_map_owner with an array of
-storage_cookie[] to match on i) the exact maps from the original
-program if the second program was using bpf_get_local_storage(), or
-ii) allow the tail call combination if the second program was not
-using any of the cgroup local storage maps.
-
-Fixes: 7d9c3427894f ("bpf: Make cgroup storages shared between programs on the same cgroup")
-Reported-by: Lonial Con <kongln9170@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/r/20250730234733.530041-4-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
+Co-developed-by: Mikael Wessel <post@mikaelkw.online>
+Signed-off-by: Mikael Wessel <post@mikaelkw.online>
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bpf.h |  1 +
- kernel/bpf/core.c   | 15 +++++++++++++++
- 2 files changed, 16 insertions(+)
+ drivers/net/ethernet/intel/e1000e/ethtool.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index ea6728c304fe0..1046f290b4b2b 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -256,6 +256,7 @@ struct bpf_map_owner {
- 	enum bpf_prog_type type;
- 	bool jited;
- 	bool xdp_has_frags;
-+	u64 storage_cookie[MAX_BPF_CGROUP_STORAGE_TYPE];
- 	const struct btf_type *attach_func_proto;
- };
- 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index aa3487e244549..73a1c66e54175 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -1837,7 +1837,9 @@ static bool __bpf_prog_map_compatible(struct bpf_map *map,
+--- a/drivers/net/ethernet/intel/e1000e/ethtool.c
++++ b/drivers/net/ethernet/intel/e1000e/ethtool.c
+@@ -559,12 +559,12 @@ static int e1000_set_eeprom(struct net_d
  {
- 	enum bpf_prog_type prog_type = fp->aux->dst_prog ? fp->aux->dst_prog->type : fp->type;
- 	struct bpf_prog_aux *aux = fp->aux;
-+	enum bpf_cgroup_storage_type i;
- 	bool ret = false;
-+	u64 cookie;
+ 	struct e1000_adapter *adapter = netdev_priv(netdev);
+ 	struct e1000_hw *hw = &adapter->hw;
++	size_t total_len, max_len;
+ 	u16 *eeprom_buff;
+-	void *ptr;
+-	int max_len;
++	int ret_val = 0;
+ 	int first_word;
+ 	int last_word;
+-	int ret_val = 0;
++	void *ptr;
+ 	u16 i;
  
- 	if (fp->kprobe_override)
- 		return ret;
-@@ -1853,12 +1855,25 @@ static bool __bpf_prog_map_compatible(struct bpf_map *map,
- 		/* Note: xdp_has_frags doesn't exist in aux yet in our branch */
- 		/* map->owner->xdp_has_frags = aux->xdp_has_frags; */
- 		map->owner->attach_func_proto = aux->attach_func_proto;
-+		for_each_cgroup_storage_type(i) {
-+			map->owner->storage_cookie[i] =
-+				aux->cgroup_storage[i] ?
-+				aux->cgroup_storage[i]->cookie : 0;
-+		}
- 		ret = true;
- 	} else {
- 		ret = map->owner->type  == prog_type &&
- 		      map->owner->jited == fp->jited;
- 		/* Note: xdp_has_frags check would go here when available */
- 		/* && map->owner->xdp_has_frags == aux->xdp_has_frags; */
-+		for_each_cgroup_storage_type(i) {
-+			if (!ret)
-+				break;
-+			cookie = aux->cgroup_storage[i] ?
-+				 aux->cgroup_storage[i]->cookie : 0;
-+			ret = map->owner->storage_cookie[i] == cookie ||
-+			      !cookie;
-+		}
- 		if (ret &&
- 		    map->owner->attach_func_proto != aux->attach_func_proto) {
- 			switch (prog_type) {
--- 
-2.50.1
-
+ 	if (eeprom->len == 0)
+@@ -579,6 +579,10 @@ static int e1000_set_eeprom(struct net_d
+ 
+ 	max_len = hw->nvm.word_size * 2;
+ 
++	if (check_add_overflow(eeprom->offset, eeprom->len, &total_len) ||
++	    total_len > max_len)
++		return -EFBIG;
++
+ 	first_word = eeprom->offset >> 1;
+ 	last_word = (eeprom->offset + eeprom->len - 1) >> 1;
+ 	eeprom_buff = kmalloc(max_len, GFP_KERNEL);
 
 
 
