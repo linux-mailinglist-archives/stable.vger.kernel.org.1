@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BBE2B47DF4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EBF5B47D12
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 654FD189EC98
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D82A4177C52
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929481D88D0;
-	Sun,  7 Sep 2025 20:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8487C284B59;
+	Sun,  7 Sep 2025 20:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kwbc+wW+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsLhAdQT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFCE14BFA2;
-	Sun,  7 Sep 2025 20:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB4E1CDFAC;
+	Sun,  7 Sep 2025 20:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276316; cv=none; b=iDqU3aq6u1+ybKCDG6zYUoNXXRHbNYJu59HkkSrzfjzqD6bHSCFZvRDaqZnQsgNBhfD5/tnGwrLwcwqhgRDc1tleFOBTI8msifNuzVphmvLRlXTQk0rM2HIJlrWXGREZkTtu0jKxkPvxDS7/5wakUNLMlpGnu4BBeRZDHA6VaAI=
+	t=1757275630; cv=none; b=sRc41wMBLEOO+aAzAggvWHvGjGChgw6ZDlLXzYl4MwGsBG72wJUA219qsIuMJy7y+4C9Ck/cefMXBTD0R//ss3mK9KsV3P8uTNpwpMSIpIL73vLnsd9ZwAVko9cDFmMCHA56WnH84O0QofneSjWpZ+/Nw9qFm9Y1bV4rrQH9CCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276316; c=relaxed/simple;
-	bh=2JkCv590iNQphYE+dJSExbgMSYmB4EcmUWlzpvvMm1A=;
+	s=arc-20240116; t=1757275630; c=relaxed/simple;
+	bh=UPVBD489bpfNMgTb0fyYpiNa4V6gUwrSj3Ef4uo8W9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xm/qMYAjfsW+d9lwWvtRlcQYJn502YgLa0pe+3KJd1NDAWKLpzoLUOd2elOEd6EU6nqtaGXZQR1R6X1AFbnvEMVyuqCpWGaKRDLWMihTEuaGt6kSHKMd5kM4FG74HmpAjMHvYmIPoYZG5jcILuh8oRCLwloLDZtTiXMPcthqtf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kwbc+wW+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F4DC4CEF0;
-	Sun,  7 Sep 2025 20:18:35 +0000 (UTC)
+	 MIME-Version; b=D1RPkMEDf8DFrEIZXWDD8yXFyKkwTp6mvuBvn45HJWdB5ORTnFNj3fSv8rDT/zJHi0zICOwcfgoKBlzSYWuIK5+pwl/HQBGhZtOYeJxqGC1uTQO0gQPOVXX+lHkDiEwEl2EBjcQ0Qk9+DJGealZzQF6F5GSiLWk3bj4ht21psN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsLhAdQT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F86FC4CEF0;
+	Sun,  7 Sep 2025 20:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276316;
-	bh=2JkCv590iNQphYE+dJSExbgMSYmB4EcmUWlzpvvMm1A=;
+	s=korg; t=1757275629;
+	bh=UPVBD489bpfNMgTb0fyYpiNa4V6gUwrSj3Ef4uo8W9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kwbc+wW+NyYOXj8B+tELZnZenIGvxo+d0FwOm+zplZbZC7XGeMyXQ8y8qx6LOAxKL
-	 3ayDjv9mBD2fFKHoEqmXKnByC6Y56uBK5M13xv1MSKoY3GVTbPFp/TVXfiUIBdzfri
-	 J/PhIWkQ+ccZAND7gZwZyaumOU/XTHTUE3KiX7fs=
+	b=BsLhAdQTqWXXDPodNV6XywlMHgnL+UFkYUpQ49JI7vvf1QQOKXPvKAN4SwFrFETKT
+	 oF46/uG2T/YW/NA3yulyGJFoVHXhLBwiG4H8I65gQlf40JzfmlmUp5Ou0vm1aR4QJI
+	 WodBjRDmm5BsO7jve/QcAygK4laVRxporeQ0We4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Phil Sutter <phil@nwl.cc>,
-	Florian Westphal <fw@strlen.de>,
+	Rosen Penev <rosenp@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/104] netfilter: conntrack: helper: Replace -EEXIST by -EBUSY
+Subject: [PATCH 5.10 15/52] net: thunder_bgx: decrement cleanup index before use
 Date: Sun,  7 Sep 2025 21:57:35 +0200
-Message-ID: <20250907195608.157765781@linuxfoundation.org>
+Message-ID: <20250907195602.434826639@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 54416fd76770bd04fc3c501810e8d673550bab26 ]
+[ Upstream commit 9e3d71a92e561ccc77025689dab25d201fee7a3e ]
 
-The helper registration return value is passed-through by module_init
-callbacks which modprobe confuses with the harmless -EEXIST returned
-when trying to load an already loaded module.
+All paths in probe that call goto defer do so before assigning phydev
+and thus it makes sense to cleanup the prior index. It also fixes a bug
+where index 0 does not get cleaned up.
 
-Make sure modprobe fails so users notice their helper has not been
-registered and won't work.
-
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: b7d3e3d3d21a ("net: thunderx: Don't leak phy device references on -EPROBE_DEFER condition.")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250901213314.48599-1-rosenp@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
-index bf09a1e062481..5545016c107db 100644
---- a/net/netfilter/nf_conntrack_helper.c
-+++ b/net/netfilter/nf_conntrack_helper.c
-@@ -371,7 +371,7 @@ int nf_conntrack_helper_register(struct nf_conntrack_helper *me)
- 			    (cur->tuple.src.l3num == NFPROTO_UNSPEC ||
- 			     cur->tuple.src.l3num == me->tuple.src.l3num) &&
- 			    cur->tuple.dst.protonum == me->tuple.dst.protonum) {
--				ret = -EEXIST;
-+				ret = -EBUSY;
- 				goto out;
- 			}
+diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+index f5dbe2f5af659..daabd851dae87 100644
+--- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
++++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+@@ -1523,11 +1523,11 @@ static int bgx_init_of_phy(struct bgx *bgx)
+ 	 * for phy devices we may have already found.
+ 	 */
+ 	while (lmac) {
++		lmac--;
+ 		if (bgx->lmac[lmac].phydev) {
+ 			put_device(&bgx->lmac[lmac].phydev->mdio.dev);
+ 			bgx->lmac[lmac].phydev = NULL;
  		}
-@@ -382,7 +382,7 @@ int nf_conntrack_helper_register(struct nf_conntrack_helper *me)
- 		hlist_for_each_entry(cur, &nf_ct_helper_hash[h], hnode) {
- 			if (nf_ct_tuple_src_mask_cmp(&cur->tuple, &me->tuple,
- 						     &mask)) {
--				ret = -EEXIST;
-+				ret = -EBUSY;
- 				goto out;
- 			}
- 		}
+-		lmac--;
+ 	}
+ 	of_node_put(node);
+ 	return -EPROBE_DEFER;
 -- 
 2.50.1
 
