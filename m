@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04DBB47FBE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A070B47E0F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DED511B219F6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:42:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F7043C130A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18641269CE6;
-	Sun,  7 Sep 2025 20:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3B3212B3D;
+	Sun,  7 Sep 2025 20:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9VMqf/s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhFpwb6C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C344315A;
-	Sun,  7 Sep 2025 20:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC02212560;
+	Sun,  7 Sep 2025 20:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277700; cv=none; b=R8TdmU3hwEFCE5c2qC+nYZSqPREd9+PykzfimV8K14z5dWypVFVGLDVTKR40bF9RVH2Yisa5DBfZnL8bhbFulfKNJxjHZz9CTLcjQ34yhN+XVWXhwAv4/tRkoeQILI3ZPhzVzQcknnEXgWf6Z9wdmkO4lXwmo9o0BQkM2uRecuo=
+	t=1757276378; cv=none; b=mjWPi+GfnLlH/E6QtRlyXc7Sl317dy5hIxDlGrnSh0K+SSmGzhfyOOtKVZfg4kRZ16cLs7iq+oTsukFConx1DIbLOcRsme/QSDf2DyWa5yPpiPtWAQ/TS9kY8Q91rIn5kkXWFQN5eWU2LKt6ER6e50xVNO/Ihfb3iHscJum6tXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277700; c=relaxed/simple;
-	bh=7RKQ1+mRuJVFNpoJOYv6YH10HSSOENx2jdE0Cf/iM/A=;
+	s=arc-20240116; t=1757276378; c=relaxed/simple;
+	bh=Xj31I819bfz9X+gttTIb/yz1yIhqW+sHbWD60OUdH5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVqZ8/P64xNZGzvn6RTrnX/gxCE7feCDIQcJurZizPZDd57mJlq71Rum6j4wYLYQdJy+S+kPF8gmlBQW9gT5ByuYdvVoUISMbcw7QuGzaKjGRT4vqMJozbFHXDx3YIEXmAa7SIACXIAOz1b1E40UhElH1o1xfGfH3pMng3RbdA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9VMqf/s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F470C4CEF0;
-	Sun,  7 Sep 2025 20:41:40 +0000 (UTC)
+	 MIME-Version; b=cjX6uoVm6Vdf4jCEYeD/UyfcSe2rqVOHpqkP2KAWSipKbQbiA+jDFB0qfHwZ++sHQ8LfnDz5XRiE7clpfESc5DCYEN2yMqlyt2l0JD7/rs03Gyz9BP7EzeNqMNbo0/kSpc+PJKRRpbC0sA2FAD1Z8m/riJROGAEX1W27QzhxzKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhFpwb6C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA844C4CEF0;
+	Sun,  7 Sep 2025 20:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277700;
-	bh=7RKQ1+mRuJVFNpoJOYv6YH10HSSOENx2jdE0Cf/iM/A=;
+	s=korg; t=1757276378;
+	bh=Xj31I819bfz9X+gttTIb/yz1yIhqW+sHbWD60OUdH5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y9VMqf/sCtqe8unp7ceQDVZqoyFD/2r4qDsR9tKChdhjvu+Wdbgf6EK3SwUwxO5oY
-	 2+CmUm0uKj5OUNOLuX3c1B59x05aER8aElC2lDY5oqSqdcgwMw8c93A6qmnKc+tA4e
-	 3vug+ZeE2D/ZvWvGei056t2zoOnw/1E9J2g5qFEA=
+	b=lhFpwb6Cz269cROiFJ9wizYu5r9WZ081JU8SBIAgptFtlb2lcRgYDu6GTcoVvfmJ1
+	 yc4HgU5imyM0OU84SzyjCyzWvC0Secl6eGAaeH4vi/p7Uu1u1u6oFDAMKY/aB+SpG8
+	 WD34gAD+DcBfDmZFNtAkp3d53pqwzuW6c9sjy9UU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guoli An <anguoli@uniontech.com>,
-	Cryolitia PukNgae <cryolitia@uniontech.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.16 096/183] ALSA: usb-audio: Add mute TLV for playback volumes on some devices
+	Namhyung Kim <namhyung@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 086/104] perf bpf-utils: Constify bpil_array_desc
 Date: Sun,  7 Sep 2025 21:58:43 +0200
-Message-ID: <20250907195618.067191924@linuxfoundation.org>
+Message-ID: <20250907195609.903227728@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cryolitia PukNgae <cryolitia@uniontech.com>
+From: Ian Rogers <irogers@google.com>
 
-commit 9c6182843b0d02ca04cc1d946954a65a2286c7db upstream.
+[ Upstream commit 1654a0e4d576d9e43fbb10ccf6a1b307c5c18566 ]
 
-Applying the quirk of that, the lowest Playback mixer volume setting
-mutes the audio output, on more devices.
+The array's contents is a compile time constant. Constify to make the
+code more intention revealing and avoid unintended errors.
 
-Link: https://gitlab.freedesktop.org/pipewire/pipewire/-/merge_requests/2514
-Cc: <stable@vger.kernel.org>
-Tested-by: Guoli An <anguoli@uniontech.com>
-Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
-Link: https://patch.msgid.link/20250822-mixer-quirk-v1-1-b19252239c1c@uniontech.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/20250902181713.309797-3-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Stable-dep-of: 01be43f2a0ea ("perf bpf-utils: Harden get_bpf_prog_info_linear")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/util/bpf-utils.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -4339,9 +4339,11 @@ void snd_usb_mixer_fu_apply_quirk(struct
- 			snd_dragonfly_quirk_db_scale(mixer, cval, kctl);
- 		break;
- 	/* lowest playback value is muted on some devices */
-+	case USB_ID(0x0572, 0x1b09): /* Conexant Systems (Rockwell), Inc. */
- 	case USB_ID(0x0d8c, 0x000c): /* C-Media */
- 	case USB_ID(0x0d8c, 0x0014): /* C-Media */
- 	case USB_ID(0x19f7, 0x0003): /* RODE NT-USB */
-+	case USB_ID(0x2d99, 0x0026): /* HECATE G2 GAMING HEADSET */
- 		if (strstr(kctl->id.name, "Playback"))
- 			cval->min_mute = 1;
- 		break;
+diff --git a/tools/perf/util/bpf-utils.c b/tools/perf/util/bpf-utils.c
+index 80b1d2b3729ba..64a5583446964 100644
+--- a/tools/perf/util/bpf-utils.c
++++ b/tools/perf/util/bpf-utils.c
+@@ -20,7 +20,7 @@ struct bpil_array_desc {
+ 				 */
+ };
+ 
+-static struct bpil_array_desc bpil_array_desc[] = {
++static const struct bpil_array_desc bpil_array_desc[] = {
+ 	[PERF_BPIL_JITED_INSNS] = {
+ 		offsetof(struct bpf_prog_info, jited_prog_insns),
+ 		offsetof(struct bpf_prog_info, jited_prog_len),
+@@ -129,12 +129,10 @@ get_bpf_prog_info_linear(int fd, __u64 arrays)
+ 
+ 	/* step 2: calculate total size of all arrays */
+ 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
++		const struct bpil_array_desc *desc = &bpil_array_desc[i];
+ 		bool include_array = (arrays & (1UL << i)) > 0;
+-		struct bpil_array_desc *desc;
+ 		__u32 count, size;
+ 
+-		desc = bpil_array_desc + i;
+-
+ 		/* kernel is too old to support this field */
+ 		if (info_len < desc->array_offset + sizeof(__u32) ||
+ 		    info_len < desc->count_offset + sizeof(__u32) ||
+@@ -163,13 +161,12 @@ get_bpf_prog_info_linear(int fd, __u64 arrays)
+ 	ptr = info_linear->data;
+ 
+ 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
+-		struct bpil_array_desc *desc;
++		const struct bpil_array_desc *desc = &bpil_array_desc[i];
+ 		__u32 count, size;
+ 
+ 		if ((arrays & (1UL << i)) == 0)
+ 			continue;
+ 
+-		desc  = bpil_array_desc + i;
+ 		count = bpf_prog_info_read_offset_u32(&info, desc->count_offset);
+ 		size  = bpf_prog_info_read_offset_u32(&info, desc->size_offset);
+ 		bpf_prog_info_set_offset_u32(&info_linear->info,
+@@ -192,13 +189,12 @@ get_bpf_prog_info_linear(int fd, __u64 arrays)
+ 
+ 	/* step 6: verify the data */
+ 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
+-		struct bpil_array_desc *desc;
++		const struct bpil_array_desc *desc = &bpil_array_desc[i];
+ 		__u32 v1, v2;
+ 
+ 		if ((arrays & (1UL << i)) == 0)
+ 			continue;
+ 
+-		desc = bpil_array_desc + i;
+ 		v1 = bpf_prog_info_read_offset_u32(&info, desc->count_offset);
+ 		v2 = bpf_prog_info_read_offset_u32(&info_linear->info,
+ 						   desc->count_offset);
+@@ -224,13 +220,12 @@ void bpil_addr_to_offs(struct perf_bpil *info_linear)
+ 	int i;
+ 
+ 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
+-		struct bpil_array_desc *desc;
++		const struct bpil_array_desc *desc = &bpil_array_desc[i];
+ 		__u64 addr, offs;
+ 
+ 		if ((info_linear->arrays & (1UL << i)) == 0)
+ 			continue;
+ 
+-		desc = bpil_array_desc + i;
+ 		addr = bpf_prog_info_read_offset_u64(&info_linear->info,
+ 						     desc->array_offset);
+ 		offs = addr - ptr_to_u64(info_linear->data);
+@@ -244,13 +239,12 @@ void bpil_offs_to_addr(struct perf_bpil *info_linear)
+ 	int i;
+ 
+ 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
+-		struct bpil_array_desc *desc;
++		const struct bpil_array_desc *desc = &bpil_array_desc[i];
+ 		__u64 addr, offs;
+ 
+ 		if ((info_linear->arrays & (1UL << i)) == 0)
+ 			continue;
+ 
+-		desc = bpil_array_desc + i;
+ 		offs = bpf_prog_info_read_offset_u64(&info_linear->info,
+ 						     desc->array_offset);
+ 		addr = offs + ptr_to_u64(info_linear->data);
+-- 
+2.51.0
+
 
 
 
