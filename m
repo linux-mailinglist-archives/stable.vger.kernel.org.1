@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-178754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC7ABB47FEF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:44:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E942FB47F5C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FEC51B22447
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:44:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFE7C189D776
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECE4284B59;
-	Sun,  7 Sep 2025 20:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146C81F63CD;
+	Sun,  7 Sep 2025 20:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xijc0Vm2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AaU6H0j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1A94315A;
-	Sun,  7 Sep 2025 20:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A90315D54;
+	Sun,  7 Sep 2025 20:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277852; cv=none; b=HFkzFtYBkBtNr6IvO3r+GEGjzl5/08XPX7VcXI43UoYdlg+CHt62a5v+jSyYkiKRuWoGDPcQpk6Dz3HkbkQZEYDh4XaCA1iSDyS0IgwamNWOl5E4SlwXN+abxYWzXmqF/yw2EcRiQqXc0ucCYIqb6K6ilIOpq6TFdus/CM9hyNI=
+	t=1757277394; cv=none; b=dzxd+PuYVrOUs4ecJnPF4LCnazdxgzmBCgyv9X9A1MiPlU0MT/9Klahc08noYvmyiVsvfucvyU/2paLLytYtuVVkt25C1fB+1MGsPmeItk8/CMaxZPcu+tg/LAnys9sEpXtU0qjX+GARJb9vJsb4s7sju3oFppmZo6McMXvrE8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277852; c=relaxed/simple;
-	bh=J5fxbx9K8u1UmpQGPXkzIW3+gkmoMSwuzP7LUdQwznM=;
+	s=arc-20240116; t=1757277394; c=relaxed/simple;
+	bh=6Ca2ikZGmjB7b3FNdSZ/BtmTnDAdefB3pgo6IBMqUqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0m7K9w1K2T/fxj0POYx7CAmTNDGykVizZjvxXAmmMZey5v0Wx0A9donK4nvnpO/c7CI94i3e2ozKehs360b5dz9RXexL3Tfp6fTdeZc3lPJRRmrquqWnW4K4ucobLbjt+RZqYw0H/fKiHFUJ8uQbf9ugSlJuQvf1Xz0+8iGU0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xijc0Vm2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E866C4CEF0;
-	Sun,  7 Sep 2025 20:44:11 +0000 (UTC)
+	 MIME-Version; b=luJ1lTDpIZjkdr3o9DSJuks62XxpBYB/bnDKR3EcNHgtTwIMaI2UIFR9HnIbno3MHI+lweZtdF7m91LAiliaaxXX1rs8qGrt0cpSOYMmyNpeX0UBbtkG0Is9PS7W357biOT2rPncElVQvSUT2/m+fY+L9YAAOdcJKWl6a8iipeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AaU6H0j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46506C4CEF0;
+	Sun,  7 Sep 2025 20:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277851;
-	bh=J5fxbx9K8u1UmpQGPXkzIW3+gkmoMSwuzP7LUdQwznM=;
+	s=korg; t=1757277394;
+	bh=6Ca2ikZGmjB7b3FNdSZ/BtmTnDAdefB3pgo6IBMqUqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xijc0Vm2glGOCyq+4hZjQRylsmmoGR0aXS4YZpbr/qHGXGlxrVfioTaL3y/CDLVbk
-	 k+T1OcAViZFYhzi/MWwiAJLkz3bTb6wHIYbNFBWd7Q0C7b7GmvB+xMLC8I7jkOhSkI
-	 BeG3RgR9XvEOFS/qF8xhs/pVEOfhNS3x7ytvT/LM=
+	b=0AaU6H0jFzA1Ub7eAItwKmR6x+76Ac8qHyKfZC7MR3DIlHdhDVBV8OMnjW6iJzUPK
+	 +T3xan3JvtH3IgkuP8MGsVQVaT9PUEH63waQnijzxZYvb8LrmwS0n/1XlxiFSbsqD1
+	 JMr4GY5mdp8QfeVdC3VRj8GvNspUr+4/AQT4Y4Uw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waffle Maybe <waffle.lapkin@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.16 143/183] rust: support Rust >= 1.91.0 target spec
+	kernel test robot <lkp@intel.com>,
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 175/175] dmaengine: mediatek: Fix a flag reuse error in mtk_cqdma_tx_status()
 Date: Sun,  7 Sep 2025 21:59:30 +0200
-Message-ID: <20250907195619.201791443@linuxfoundation.org>
+Message-ID: <20250907195619.001041536@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-commit 8851e27d2cb947ea8bbbe8e812068f7bf5cbd00b upstream.
+[ Upstream commit 8eba2187391e5ab49940cd02d6bd45a5617f4daf ]
 
-Starting with Rust 1.91.0 (expected 2025-10-30), the target spec format
-has changed the type of the `target-pointer-width` key from string
-to integer [1].
+Fixed a flag reuse bug in the mtk_cqdma_tx_status() function.
 
-Thus conditionally use one or the other depending on the version.
-
-Cc: Waffle Maybe <waffle.lapkin@gmail.com>
-Link: https://github.com/rust-lang/rust/pull/144443 [1]
-Link: https://lore.kernel.org/r/20250829195525.721664-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 157ae5ffd76a ("dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505270641.MStzJUfU-lkp@intel.com/
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Reviewed-by: Eugen Hristev <eugen.hristev@linaro.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250606090017.5436-1-chenqiuji666@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/generate_rust_target.rs |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/dma/mediatek/mtk-cqdma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -225,7 +225,11 @@ fn main() {
-         ts.push("features", features);
-         ts.push("llvm-target", "x86_64-linux-gnu");
-         ts.push("supported-sanitizers", ["kcfi", "kernel-address"]);
--        ts.push("target-pointer-width", "64");
-+        if cfg.rustc_version_atleast(1, 91, 0) {
-+            ts.push("target-pointer-width", 64);
-+        } else {
-+            ts.push("target-pointer-width", "64");
-+        }
-     } else if cfg.has("X86_32") {
-         // This only works on UML, as i386 otherwise needs regparm support in rustc
-         if !cfg.has("UML") {
-@@ -245,7 +249,11 @@ fn main() {
-         }
-         ts.push("features", features);
-         ts.push("llvm-target", "i386-unknown-linux-gnu");
--        ts.push("target-pointer-width", "32");
-+        if cfg.rustc_version_atleast(1, 91, 0) {
-+            ts.push("target-pointer-width", 32);
-+        } else {
-+            ts.push("target-pointer-width", "32");
-+        }
-     } else if cfg.has("LOONGARCH") {
-         panic!("loongarch uses the builtin rustc loongarch64-unknown-none-softfloat target");
-     } else {
+diff --git a/drivers/dma/mediatek/mtk-cqdma.c b/drivers/dma/mediatek/mtk-cqdma.c
+index e3c887148987b..1bf4fc461a8cc 100644
+--- a/drivers/dma/mediatek/mtk-cqdma.c
++++ b/drivers/dma/mediatek/mtk-cqdma.c
+@@ -449,9 +449,9 @@ static enum dma_status mtk_cqdma_tx_status(struct dma_chan *c,
+ 		return ret;
+ 
+ 	spin_lock_irqsave(&cvc->pc->lock, flags);
+-	spin_lock_irqsave(&cvc->vc.lock, flags);
++	spin_lock(&cvc->vc.lock);
+ 	vd = mtk_cqdma_find_active_desc(c, cookie);
+-	spin_unlock_irqrestore(&cvc->vc.lock, flags);
++	spin_unlock(&cvc->vc.lock);
+ 	spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 
+ 	if (vd) {
+-- 
+2.51.0
+
 
 
 
