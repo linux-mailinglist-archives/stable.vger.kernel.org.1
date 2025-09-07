@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D3CB47E21
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF74B47D95
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E8AF17D950
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:20:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A91C63C0972
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D887189BB0;
-	Sun,  7 Sep 2025 20:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C5A296BB8;
+	Sun,  7 Sep 2025 20:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddEP2I+G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6nJTiNn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C027617BB21;
-	Sun,  7 Sep 2025 20:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA32A22F74D;
+	Sun,  7 Sep 2025 20:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276433; cv=none; b=Ax/IgtXE3fELKBb8uLP6rWbD0DZwm5uEra4G+uq0vOIuysUYTg6GYWIvjCkqFowibbNcY1WZbiJxQOhdhsWVhC1R5u9a8uGz0R18uNx5As4CU7kkDPXJrQJXcQqtg2lxms6w4mosW45rKgOBQBZRdqQVrOnfZABOfKDqxkyU5bE=
+	t=1757276029; cv=none; b=smxEWp+xqzeLX0ea/LG/VgxNHlQnkQCTAUO8rblAIGjX28DPdQnuqsVJrXws/W3CcGp+yMuG00tM3o91x9Qn4X95SiGRPKQN7y9a7zsMKsXUuUJAvztLocpKL/HIfWffow3F4yCOMRhGMnPRmTKbMN6HS9fvVgkzb9YBcmBDRL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276433; c=relaxed/simple;
-	bh=xUev/Yg4HcEQKGeZM+9t3Abos9vo8HRaBP7uAQVau/k=;
+	s=arc-20240116; t=1757276029; c=relaxed/simple;
+	bh=HZ2W35B8BEzu0wx8M96bsIjKaE0rSa3QxPZKfd5EJH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mDURSeBF5g5wvxd5ZMamg/953qwo7w+WbwwCnq2umYSGxst56Obghw4nfioW2iFPK5gn3P3OlJjQKfwpUOxWHYHfoFKG0OfSZ4sC0Iy2IM85RLVKW5V47/vvjR602Zc3BmOkdZ5E7espc4zHXzYairo8XqmB9DWq3qG3A5P6z3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddEP2I+G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43453C4CEF0;
-	Sun,  7 Sep 2025 20:20:33 +0000 (UTC)
+	 MIME-Version; b=HosK2Dd9wZDfINix7HtITmCNitryPEPrOUs4e0BMf9xdEODOJEzmpYkZfw/5d/wQ8pBLF/Fu5uyuaf8iodoHc1lXo/vwMpC4lYQTHZaY6ww2YXgLfZA9sv28t19WR9cDyABN4RLIGGi6py9Ub5hTQrjCmWWHdKDhY/nHHvxam2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6nJTiNn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1997DC4CEF0;
+	Sun,  7 Sep 2025 20:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276433;
-	bh=xUev/Yg4HcEQKGeZM+9t3Abos9vo8HRaBP7uAQVau/k=;
+	s=korg; t=1757276028;
+	bh=HZ2W35B8BEzu0wx8M96bsIjKaE0rSa3QxPZKfd5EJH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ddEP2I+GIKm45IiExNj59XSC5HFFoztusbgcHeWSYKIMU0CtCVu/XIpimqiG+own3
-	 WEAzZSw/8utm4lHXw7dpEQeGX/My7Vpaq1hBzAVURy/+avU229G6GWExRBEN/qutYy
-	 dlnkvTxj8v6TcFX0OJA81ffN9xqDfiwO8NBhJgUg=
+	b=r6nJTiNnnq5Kl3Qi0KTANOQHsGuYvoczWMC9XT0tMHKbNtI6UrivSPrndC/0awx7j
+	 xfun2sPdE7ZqkwRWECCawgJZ8VZMtzRFcwrKSo1ix6NWN8TMBBgPapaJeGNqPgTJru
+	 vFIOy6nCfEC6D08T4WXknkVvyJepNh0zRwrPOtAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronak Doshi <ronak.doshi@broadcom.com>,
-	Guolin Yang <guolin.yang@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Danilenko <al.b.danilenko@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/104] vmxnet3: update MTU after device quiesce
+Subject: [PATCH 5.15 41/64] spi: tegra114: Remove unnecessary NULL-pointer checks
 Date: Sun,  7 Sep 2025 21:58:23 +0200
-Message-ID: <20250907195609.389820111@linuxfoundation.org>
+Message-ID: <20250907195604.537415458@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronak Doshi <ronak.doshi@broadcom.com>
+From: Alexander Danilenko <al.b.danilenko@gmail.com>
 
-[ Upstream commit 43f0999af011fba646e015f0bb08b6c3002a0170 ]
+[ Upstream commit 373c36bf7914e3198ac2654dede499f340c52950 ]
 
-Currently, when device mtu is updated, vmxnet3 updates netdev mtu, quiesces
-the device and then reactivates it for the ESXi to know about the new mtu.
-So, technically the OS stack can start using the new mtu before ESXi knows
-about the new mtu.
+cs_setup, cs_hold and cs_inactive points to fields of spi_device struct,
+so there is no sense in checking them for NULL.
 
-This can lead to issues for TSO packets which use mss as per the new mtu
-configured. This patch fixes this issue by moving the mtu write after
-device quiesce.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Cc: stable@vger.kernel.org
-Fixes: d1a890fa37f2 ("net: VMware virtual Ethernet NIC driver: vmxnet3")
-Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
-Acked-by: Guolin Yang <guolin.yang@broadcom.com>
-Changes v1-> v2:
-  Moved MTU write after destroy of rx rings
-Link: https://patch.msgid.link/20250515190457.8597-1-ronak.doshi@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ no WRITE_ONCE() in older trees ]
+Fixes: 04e6bb0d6bb1 ("spi: modify set_cs_timing parameter")
+Signed-off-by: Alexander Danilenko <al.b.danilenko@gmail.com>
+Link: https://lore.kernel.org/r/20230815092058.4083-1-al.b.danilenko@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 4426e6b4ecf6 ("spi: tegra114: Don't fail set_cs_timing when delays are zero")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vmxnet3/vmxnet3_drv.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-tegra114.c |   18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
---- a/drivers/net/vmxnet3/vmxnet3_drv.c
-+++ b/drivers/net/vmxnet3/vmxnet3_drv.c
-@@ -3315,8 +3315,6 @@ vmxnet3_change_mtu(struct net_device *ne
- 	struct vmxnet3_adapter *adapter = netdev_priv(netdev);
- 	int err = 0;
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -723,27 +723,23 @@ static int tegra_spi_set_hw_cs_timing(st
+ 	struct spi_delay *setup = &spi->cs_setup;
+ 	struct spi_delay *hold = &spi->cs_hold;
+ 	struct spi_delay *inactive = &spi->cs_inactive;
+-	u8 setup_dly, hold_dly, inactive_dly;
++	u8 setup_dly, hold_dly;
+ 	u32 setup_hold;
+ 	u32 spi_cs_timing;
+ 	u32 inactive_cycles;
+ 	u8 cs_state;
  
--	netdev->mtu = new_mtu;
--
- 	/*
- 	 * Reset_work may be in the middle of resetting the device, wait for its
- 	 * completion.
-@@ -3330,6 +3328,7 @@ vmxnet3_change_mtu(struct net_device *ne
- 
- 		/* we need to re-create the rx queue based on the new mtu */
- 		vmxnet3_rq_destroy_all(adapter);
-+		netdev->mtu = new_mtu;
- 		vmxnet3_adjust_rx_ring_size(adapter);
- 		err = vmxnet3_rq_create_all(adapter);
- 		if (err) {
-@@ -3346,6 +3345,8 @@ vmxnet3_change_mtu(struct net_device *ne
- 				   "Closing it\n", err);
- 			goto out;
- 		}
-+	} else {
-+		netdev->mtu = new_mtu;
+-	if ((setup && setup->unit != SPI_DELAY_UNIT_SCK) ||
+-	    (hold && hold->unit != SPI_DELAY_UNIT_SCK) ||
+-	    (inactive && inactive->unit != SPI_DELAY_UNIT_SCK)) {
++	if (setup->unit != SPI_DELAY_UNIT_SCK ||
++	    hold->unit != SPI_DELAY_UNIT_SCK ||
++	    inactive->unit != SPI_DELAY_UNIT_SCK) {
+ 		dev_err(&spi->dev,
+ 			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
+ 			SPI_DELAY_UNIT_SCK);
+ 		return -EINVAL;
  	}
  
- out:
+-	setup_dly = setup ? setup->value : 0;
+-	hold_dly = hold ? hold->value : 0;
+-	inactive_dly = inactive ? inactive->value : 0;
+-
+-	setup_dly = min_t(u8, setup_dly, MAX_SETUP_HOLD_CYCLES);
+-	hold_dly = min_t(u8, hold_dly, MAX_SETUP_HOLD_CYCLES);
++	setup_dly = min_t(u8, setup->value, MAX_SETUP_HOLD_CYCLES);
++	hold_dly = min_t(u8, hold->value, MAX_SETUP_HOLD_CYCLES);
+ 	if (setup_dly && hold_dly) {
+ 		setup_hold = SPI_SETUP_HOLD(setup_dly - 1, hold_dly - 1);
+ 		spi_cs_timing = SPI_CS_SETUP_HOLD(tspi->spi_cs_timing1,
+@@ -755,7 +751,7 @@ static int tegra_spi_set_hw_cs_timing(st
+ 		}
+ 	}
+ 
+-	inactive_cycles = min_t(u8, inactive_dly, MAX_INACTIVE_CYCLES);
++	inactive_cycles = min_t(u8, inactive->value, MAX_INACTIVE_CYCLES);
+ 	if (inactive_cycles)
+ 		inactive_cycles--;
+ 	cs_state = inactive_cycles ? 0 : 1;
 
 
 
