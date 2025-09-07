@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF7BBB47E26
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8AB1B47FAB
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DD621893F8E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7A9C1B21230
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9152F1A9FAA;
-	Sun,  7 Sep 2025 20:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E33269CE6;
+	Sun,  7 Sep 2025 20:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpFftCz3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUcCyf46"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F25214BFA2;
-	Sun,  7 Sep 2025 20:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916414315A;
+	Sun,  7 Sep 2025 20:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276446; cv=none; b=WxFxExxjY6l1v9vVvN+gSE16AqPQWZS4/ZFyF2wKngqTGZkHeMAXWSwrLL8TGpaM8AAl3HTA6IajXCISqdFYQeVb7Nk0PUQ5/6OwNJCCwzXfM3JTAx3RQ0UgKol/0/MtzFDmkzMcHk+z7fhgmBplU7xjXuEhIs8wpA3DZHXI93g=
+	t=1757277638; cv=none; b=DxbAcUNYDbM6Vyd5di4sL0QgDzLfofjQTd8xtV+S+CXRKSQpcuVETvpK1iImMhzn2p8v/RRR1BM/14KGotjGI6ir9XAK0XVJ7p2gDOr4T2vwyNn2TqPae2nZ5iD1wxi3pGC5oj8QeHrvG7xWmw3JtfvHyvsGLGrw7SE5HDrV0tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276446; c=relaxed/simple;
-	bh=h4D34a6LLxbF2+UrcJSr8Kv2yF0Pw5bRjDFXiwAMjCk=;
+	s=arc-20240116; t=1757277638; c=relaxed/simple;
+	bh=59nwwKuokVUsOAH5sHeVZXnvbQjaXk+h8vT69nSsWkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SdQr9FrE7mceqw3SiaDA9xMdJ4MYcEcy85TtLV2CVSM7E8GloufIthCO7heqiFuMfOc7QDKr3FZViEacgLxBbi7+Fu5JgE87l5VRnaDTsMY2K5BzG11GMpNO7+hdyZDxL1Ohs1N+NPw7hgDgX+ISa54/AL0K28q6rIchXxeqVTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpFftCz3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50B2C4CEF0;
-	Sun,  7 Sep 2025 20:20:45 +0000 (UTC)
+	 MIME-Version; b=l8TxBK/YK2u37bvm4BmJP/P7k8wK3u8rbj9cr/+Nygh/TAshqWvqLe1VEL+mQ9lBmNmi97f3xlI5Msc3A+WfxPC2hbKw/CsnrYhMptS7ICP13R78FNhKJthDMvhcT8b+kioEHfwt4Apg6mC9p6guSSJIevfYT5k1qA4+kvKsQHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUcCyf46; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC3DC4CEF0;
+	Sun,  7 Sep 2025 20:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276446;
-	bh=h4D34a6LLxbF2+UrcJSr8Kv2yF0Pw5bRjDFXiwAMjCk=;
+	s=korg; t=1757277638;
+	bh=59nwwKuokVUsOAH5sHeVZXnvbQjaXk+h8vT69nSsWkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpFftCz3rbpjquW3CFKPJ5EOA/QkJLPvigOP2he7rGAwiQZ4+U+xhizf3g39ysQe5
-	 WAo8aiwzXRp8V5QkmQeo0ZYoJjbH73UtNg7xuesrzv/EqChRC0wuhQskvjxcItuApd
-	 Ja+4ZpMIt5uLUZQDcpL0+azdP0twsbRsz45q2KxA=
+	b=iUcCyf46emsE8LNNKprZK04QCuao/8I42D10aurfg2PR7ZWh7pfR246xZw4L6v51b
+	 5xhIcfdAuguraJPCN4OOBoIec1h5K/YfjExuSTvhEDoDkEr7ZiaYeTdocfEeTKWdCr
+	 aDQM+Kn9gjzpkFbgrymwRql/57VSiEpq77A0X/xU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Danilenko <al.b.danilenko@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/104] spi: tegra114: Remove unnecessary NULL-pointer checks
-Date: Sun,  7 Sep 2025 21:58:24 +0200
-Message-ID: <20250907195609.416850188@linuxfoundation.org>
+Subject: [PATCH 6.16 078/183] wifi: libertas: cap SSID len in lbs_associate()
+Date: Sun,  7 Sep 2025 21:58:25 +0200
+Message-ID: <20250907195617.648194865@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Danilenko <al.b.danilenko@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 373c36bf7914e3198ac2654dede499f340c52950 ]
+[ Upstream commit c786794bd27b0d7a5fd9063695df83206009be59 ]
 
-cs_setup, cs_hold and cs_inactive points to fields of spi_device struct,
-so there is no sense in checking them for NULL.
+If the ssid_eid[1] length is more that 32 it leads to memory corruption.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 04e6bb0d6bb1 ("spi: modify set_cs_timing parameter")
-Signed-off-by: Alexander Danilenko <al.b.danilenko@gmail.com>
-Link: https://lore.kernel.org/r/20230815092058.4083-1-al.b.danilenko@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 4426e6b4ecf6 ("spi: tegra114: Don't fail set_cs_timing when delays are zero")
+Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/2a40f5ec7617144aef412034c12919a4927d90ad.1756456951.git.dan.carpenter@linaro.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra114.c |   18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ drivers/net/wireless/marvell/libertas/cfg.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -723,27 +723,23 @@ static int tegra_spi_set_hw_cs_timing(st
- 	struct spi_delay *setup = &spi->cs_setup;
- 	struct spi_delay *hold = &spi->cs_hold;
- 	struct spi_delay *inactive = &spi->cs_inactive;
--	u8 setup_dly, hold_dly, inactive_dly;
-+	u8 setup_dly, hold_dly;
- 	u32 setup_hold;
- 	u32 spi_cs_timing;
- 	u32 inactive_cycles;
- 	u8 cs_state;
+diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
+index 2e2c193716d96..309556541a83e 100644
+--- a/drivers/net/wireless/marvell/libertas/cfg.c
++++ b/drivers/net/wireless/marvell/libertas/cfg.c
+@@ -1151,10 +1151,13 @@ static int lbs_associate(struct lbs_private *priv,
+ 	/* add SSID TLV */
+ 	rcu_read_lock();
+ 	ssid_eid = ieee80211_bss_get_ie(bss, WLAN_EID_SSID);
+-	if (ssid_eid)
+-		pos += lbs_add_ssid_tlv(pos, ssid_eid + 2, ssid_eid[1]);
+-	else
++	if (ssid_eid) {
++		u32 ssid_len = min(ssid_eid[1], IEEE80211_MAX_SSID_LEN);
++
++		pos += lbs_add_ssid_tlv(pos, ssid_eid + 2, ssid_len);
++	} else {
+ 		lbs_deb_assoc("no SSID\n");
++	}
+ 	rcu_read_unlock();
  
--	if ((setup && setup->unit != SPI_DELAY_UNIT_SCK) ||
--	    (hold && hold->unit != SPI_DELAY_UNIT_SCK) ||
--	    (inactive && inactive->unit != SPI_DELAY_UNIT_SCK)) {
-+	if (setup->unit != SPI_DELAY_UNIT_SCK ||
-+	    hold->unit != SPI_DELAY_UNIT_SCK ||
-+	    inactive->unit != SPI_DELAY_UNIT_SCK) {
- 		dev_err(&spi->dev,
- 			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
- 			SPI_DELAY_UNIT_SCK);
- 		return -EINVAL;
- 	}
- 
--	setup_dly = setup ? setup->value : 0;
--	hold_dly = hold ? hold->value : 0;
--	inactive_dly = inactive ? inactive->value : 0;
--
--	setup_dly = min_t(u8, setup_dly, MAX_SETUP_HOLD_CYCLES);
--	hold_dly = min_t(u8, hold_dly, MAX_SETUP_HOLD_CYCLES);
-+	setup_dly = min_t(u8, setup->value, MAX_SETUP_HOLD_CYCLES);
-+	hold_dly = min_t(u8, hold->value, MAX_SETUP_HOLD_CYCLES);
- 	if (setup_dly && hold_dly) {
- 		setup_hold = SPI_SETUP_HOLD(setup_dly - 1, hold_dly - 1);
- 		spi_cs_timing = SPI_CS_SETUP_HOLD(tspi->spi_cs_timing1,
-@@ -755,7 +751,7 @@ static int tegra_spi_set_hw_cs_timing(st
- 		}
- 	}
- 
--	inactive_cycles = min_t(u8, inactive_dly, MAX_INACTIVE_CYCLES);
-+	inactive_cycles = min_t(u8, inactive->value, MAX_INACTIVE_CYCLES);
- 	if (inactive_cycles)
- 		inactive_cycles--;
- 	cs_state = inactive_cycles ? 0 : 1;
+ 	/* add DS param TLV */
+-- 
+2.50.1
+
 
 
 
