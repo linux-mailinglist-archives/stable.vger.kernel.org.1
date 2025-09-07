@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D50DB47EF3
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:31:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E719BB47D1C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B0D81B20A10
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:31:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB1197AFB23
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B7015C158;
-	Sun,  7 Sep 2025 20:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD18284B59;
+	Sun,  7 Sep 2025 20:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBm6YgC2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ba+GS6WI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBBF18DF89;
-	Sun,  7 Sep 2025 20:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B63B22F74D;
+	Sun,  7 Sep 2025 20:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277058; cv=none; b=JAOpUDtwPDnc6BSWClLOkyWFshDKEtfTR34RIyT6t1kV2wIou+VGqfner1z8hzb4+09Fhx3HTttxaSOQ51BwBez797WlnjwhS8sV2siQBiBt61a8N5srcQgNiDMBbriaHTWBPjSVrgRPlXcFvoGiemUfnb9mD+IAPpWGfj71tbM=
+	t=1757275665; cv=none; b=Khyty3XNX278PlJZlcjCuHqMqwQryWKwZ/s3okROSSrFHwuXukRRit3lUgWJZESOOrCrn/e9qOyKTPeMPZdTjukD0FrQ8i1hwYlpQ3DgQzbhbw+jU9vkjFogPQ1EnuSR2Xl8wGvB0UmRD4s03518PVZPb2eHEpIiH37DQb5hk4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277058; c=relaxed/simple;
-	bh=PCuhmKA0LlT/6zo9ae6hHj8VEFYIkcIX9IeEqgPSfnQ=;
+	s=arc-20240116; t=1757275665; c=relaxed/simple;
+	bh=WThjMvazsoflfMpWqmpix0/eb4Rqt4RVP/OWVwNTOFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IYPu9ISzIRDzs3BPQybH5SSqDqtkCX5LTmPENBUa54OR94sQUSxwqaaTaeGI7dUUMY82y87H1j4xDFpnJ/WaZbYp1ME8vDVTOK7I9ezWc8/P8kHKvTCSCk5sWXsK4zFu3M1chfLTMfPY0L4K7eFyggc9pS+BDpPeCeKscQoJG34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBm6YgC2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A364C4CEF9;
-	Sun,  7 Sep 2025 20:30:57 +0000 (UTC)
+	 MIME-Version; b=MBMAoHkWSyrbHQ/xB5vySOoJCqb1xAa50580QGb4Hov2REwrVbvxrN2UMo2zScWU8B8S+GFuue+RRXXa//Ij7QBRKiIKIZuj5u7NTXnO63BeDas4VnDGhVp7y2uEpTT3+ICxDSmvVpCsk82RllnDvsidMdSZSX0VGosLKdH/4iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ba+GS6WI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B911C4CEF0;
+	Sun,  7 Sep 2025 20:07:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277057;
-	bh=PCuhmKA0LlT/6zo9ae6hHj8VEFYIkcIX9IeEqgPSfnQ=;
+	s=korg; t=1757275665;
+	bh=WThjMvazsoflfMpWqmpix0/eb4Rqt4RVP/OWVwNTOFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gBm6YgC2l4cor+6d75mc94L+UxBsnJmqFhJs2724raNwhwEhEzrSNlvsqkLZ+9EkO
-	 rFq08+Gyp6Pjuj0/2WwRMWk9BtLKlRpJjT+NyyuCCH/uuJtWx6HLBBJZ+nop4gxh+0
-	 Suo6Pi5E7nUjkK/jue5HXgYISWIJLM1bf/99Frxg=
+	b=ba+GS6WIv9KYPgRzGlufZs5Eo1XzfjRi6gF7yvLIJT8XSn3eLmaT7gyX39nyV+wGF
+	 Pyv6SkUBo35a7xQ424L0x+9LViejOBi6yu6i4vH1R0UKZJ5CVs1mK2eROldGnlri4v
+	 1yqlTlZXcCgWi8TGw7Y6utLfsd8YsQrKX41SvAfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/175] net: vxlan: use kfree_skb_reason() in vxlan_mdb_xmit()
+	Stanislav Fort <disclosure@aisle.com>,
+	Stanislav Fort <stanislav.fort@aisle.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.10 25/52] batman-adv: fix OOB read/write in network-coding decode
 Date: Sun,  7 Sep 2025 21:57:45 +0200
-Message-ID: <20250907195616.492966002@linuxfoundation.org>
+Message-ID: <20250907195602.725469429@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Stanislav Fort <stanislav.fort@aisle.com>
 
-[ Upstream commit 03483dbde80d102146a61ec09b9e90cfc4bb8be0 ]
+commit d77b6ff0ce35a6d0b0b7b9581bc3f76d041d4087 upstream.
 
-Replace kfree_skb() with kfree_skb_reason() in vxlan_mdb_xmit. No drop
-reasons are introduced in this commit.
+batadv_nc_skb_decode_packet() trusts coded_len and checks only against
+skb->len. XOR starts at sizeof(struct batadv_unicast_packet), reducing
+payload headroom, and the source skb length is not verified, allowing an
+out-of-bounds read and a small out-of-bounds write.
 
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 1f5d2fd1ca04 ("vxlan: Fix NPD in {arp,neigh}_reduce() when using nexthop objects")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Validate that coded_len fits within the payload area of both destination
+and source sk_buffs before XORing.
+
+Fixes: 2df5278b0267 ("batman-adv: network coding - receive coded packets and decode them")
+Cc: stable@vger.kernel.org
+Reported-by: Stanislav Fort <disclosure@aisle.com>
+Signed-off-by: Stanislav Fort <stanislav.fort@aisle.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_mdb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/network-coding.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/vxlan/vxlan_mdb.c b/drivers/net/vxlan/vxlan_mdb.c
-index 60eb95a06d551..e1173ae134284 100644
---- a/drivers/net/vxlan/vxlan_mdb.c
-+++ b/drivers/net/vxlan/vxlan_mdb.c
-@@ -1712,7 +1712,7 @@ netdev_tx_t vxlan_mdb_xmit(struct vxlan_dev *vxlan,
- 		vxlan_xmit_one(skb, vxlan->dev, src_vni,
- 			       rcu_dereference(fremote->rd), false);
- 	else
--		kfree_skb(skb);
-+		kfree_skb_reason(skb, SKB_DROP_REASON_VXLAN_NO_REMOTE);
+--- a/net/batman-adv/network-coding.c
++++ b/net/batman-adv/network-coding.c
+@@ -1700,7 +1700,12 @@ batadv_nc_skb_decode_packet(struct batad
  
- 	return NETDEV_TX_OK;
- }
--- 
-2.50.1
-
+ 	coding_len = ntohs(coded_packet_tmp.coded_len);
+ 
+-	if (coding_len > skb->len)
++	/* ensure dst buffer is large enough (payload only) */
++	if (coding_len + h_size > skb->len)
++		return NULL;
++
++	/* ensure src buffer is large enough (payload only) */
++	if (coding_len + h_size > nc_packet->skb->len)
+ 		return NULL;
+ 
+ 	/* Here the magic is reversed:
 
 
 
