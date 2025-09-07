@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57662B47E22
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC4EB47F60
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FDAD189DF7E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:20:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD1303C1282
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D95A20E005;
-	Sun,  7 Sep 2025 20:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881191DF246;
+	Sun,  7 Sep 2025 20:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DI731v7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptlurtU6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5821F1921;
-	Sun,  7 Sep 2025 20:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46366315D54;
+	Sun,  7 Sep 2025 20:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276411; cv=none; b=NiPssF+cISHuwzHuYVO4XO/p7xPZVUJwERiErQ/cOdxUvzpXzWiXe5KR/qBVdiwTm4ZV/Qj1thkQUcmiKeRo4x2vUc/zbKtK5AxIJIm2PTWkf9FOzcsx1rR9uPT4ldjUyshjHk35sM+79RzpPMiXk4h644hPWvUnM4THUxSuaDM=
+	t=1757277404; cv=none; b=StkvLdJEZAAgQGJuUqFmI/YW9P+HiTm2bT39bfSGF5DYt6xesFwADqKCRBtE7rFMzxopt8KgtuvD/IFFmW7yDj4refQTbAdJ+ULLWVJu5JMWYxDYQ9mYpXMlxqNIZxsDc9Mb/mIPLGvf/cKKH+J5h3xA5wgcEjO8VAV2if8XIyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276411; c=relaxed/simple;
-	bh=ZSJP/df9KSCWl5sruw0QGPUVG7z7FBHekDEhZ1Dq/DI=;
+	s=arc-20240116; t=1757277404; c=relaxed/simple;
+	bh=Kf11XYkqk7Hs9841no4YFHJFTZ9vZWOFzCaa6BARRdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lGjKE/4+M1y8Z6mop7P/F3Mg6aa+bA28ZvMTIWRGeNT9OWPkKjGXrfq1bvJTA9f/9kOr1UbFnp3zg+hGsNGanlyMgfWHHsHeK+n3aAcWnb+mBCwNpATpSFZ3r3K6CzgHtDt6H5433bcCPDwLxKcHelCatIrQ3ilxLH7Ql95XRXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DI731v7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F212DC4CEF0;
-	Sun,  7 Sep 2025 20:20:09 +0000 (UTC)
+	 MIME-Version; b=uJ1q2zI5lWZ3+8qJrb1AM0f5UgCZ/FLU8pztPZXmDNrem97kCpGAHCSzCM33JjX/7UNQOUOsDZ7rNA8U7qd01xi93MB3/KTjWMl7wKC+8QswffFIgKtRiTgri//8kw+K+x/nmD9f6sP6+wyhk1He3phJ0YOepBY1zLv3uSDv83A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptlurtU6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA2BC4CEF0;
+	Sun,  7 Sep 2025 20:36:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276410;
-	bh=ZSJP/df9KSCWl5sruw0QGPUVG7z7FBHekDEhZ1Dq/DI=;
+	s=korg; t=1757277404;
+	bh=Kf11XYkqk7Hs9841no4YFHJFTZ9vZWOFzCaa6BARRdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DI731v7l2shV1gOHD6PvSBoBSwxOJ44kgAUcomtBlnvv0EYqk5+o+b/tE7DXBpo2g
-	 R7Ocq8xywXiizJm4Xlh29BH9hgMnUplnSkOmLrMdJXIo904HlPE/jYfQTr3SMVx4/D
-	 KxAz7cSny+TMYPJqjAdgnzXar4eIFss4Y+lgvPTs=
+	b=ptlurtU6Nub6L5yCQsi0X0aPlYtIUPWhCBV+p0c47Az/yo9yyPKTmLU0OnWjV+piY
+	 dDBmBIKWR/yYu/VaNswIM27lF4rXwI2UbhfcEq/H8OVP13pKVcbjj6eurdXMAJGN3z
+	 vuUmiXUlXCwZWPjqIEXBcP5cFMHPFr7Gqdn+2NfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhangjiao <zhangjiao2@cmss.chinamobile.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Hyesoo Yu <hyesoo.yu@samsung.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/104] tools: gpio: rm .*.cmd on make clean
+Subject: [PATCH 6.12 137/175] mm: slub: Print the broken data before restoring them
 Date: Sun,  7 Sep 2025 21:58:52 +0200
-Message-ID: <20250907195610.128606995@linuxfoundation.org>
+Message-ID: <20250907195618.089260273@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhangjiao <zhangjiao2@cmss.chinamobile.com>
+From: Hyesoo Yu <hyesoo.yu@samsung.com>
 
-[ Upstream commit 931a36c4138ac418d487bd4db0d03780b46a77ba ]
+[ Upstream commit ed5ec2e952595a469eae1f6dce040737359b6da2 ]
 
-rm .*.cmd when calling make clean
+Previously, the restore occurred after printing the object in slub.
+After commit 47d911b02cbe ("slab: make check_object() more consistent"),
+the bytes are printed after the restore. This information about the bytes
+before the restore is highly valuable for debugging purpose.
+For instance, in a event of cache issue, it displays byte patterns
+by breaking them down into 64-bytes units. Without this information,
+we can only speculate on how it was broken. Hence the corrupted regions
+should be printed prior to the restoration process. However if an object
+breaks in multiple places, the same log may be output multiple times.
+Therefore the slub log is reported only once to prevent redundant printing,
+by sending a parameter indicating whether an error has occurred previously.
 
-Signed-off-by: zhangjiao <zhangjiao2@cmss.chinamobile.com>
-Link: https://lore.kernel.org/r/20240829062942.11487-1-zhangjiao2@cmss.chinamobile.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Stable-dep-of: ed42d80f3bae ("tools: gpio: remove the include directory on make clean")
+Signed-off-by: Hyesoo Yu <hyesoo.yu@samsung.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Stable-dep-of: b4efccec8d06 ("mm/slub: avoid accessing metadata when pointer is invalid in object_err()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/gpio/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/slub.c |   32 ++++++++++++++------------------
+ 1 file changed, 14 insertions(+), 18 deletions(-)
 
-diff --git a/tools/gpio/Makefile b/tools/gpio/Makefile
-index d29c9c49e2512..ed565eb52275f 100644
---- a/tools/gpio/Makefile
-+++ b/tools/gpio/Makefile
-@@ -78,7 +78,7 @@ $(OUTPUT)gpio-watch: $(GPIO_WATCH_IN)
- clean:
- 	rm -f $(ALL_PROGRAMS)
- 	rm -f $(OUTPUT)include/linux/gpio.h
--	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
-+	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete -o -name '\.*.cmd' -delete
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -1191,8 +1191,8 @@ static void restore_bytes(struct kmem_ca
  
- install: $(ALL_PROGRAMS)
- 	install -d -m 755 $(DESTDIR)$(bindir);		\
--- 
-2.51.0
-
+ static pad_check_attributes int
+ check_bytes_and_report(struct kmem_cache *s, struct slab *slab,
+-		       u8 *object, char *what,
+-		       u8 *start, unsigned int value, unsigned int bytes)
++		       u8 *object, char *what, u8 *start, unsigned int value,
++		       unsigned int bytes, bool slab_obj_print)
+ {
+ 	u8 *fault;
+ 	u8 *end;
+@@ -1211,10 +1211,11 @@ check_bytes_and_report(struct kmem_cache
+ 	if (slab_add_kunit_errors())
+ 		goto skip_bug_print;
+ 
+-	slab_bug(s, "%s overwritten", what);
+-	pr_err("0x%p-0x%p @offset=%tu. First byte 0x%x instead of 0x%x\n",
+-					fault, end - 1, fault - addr,
+-					fault[0], value);
++	pr_err("[%s overwritten] 0x%p-0x%p @offset=%tu. First byte 0x%x instead of 0x%x\n",
++	       what, fault, end - 1, fault - addr, fault[0], value);
++
++	if (slab_obj_print)
++		object_err(s, slab, object, "Object corrupt");
+ 
+ skip_bug_print:
+ 	restore_bytes(s, what, value, fault, end);
+@@ -1278,7 +1279,7 @@ static int check_pad_bytes(struct kmem_c
+ 		return 1;
+ 
+ 	return check_bytes_and_report(s, slab, p, "Object padding",
+-			p + off, POISON_INUSE, size_from_object(s) - off);
++			p + off, POISON_INUSE, size_from_object(s) - off, true);
+ }
+ 
+ /* Check the pad bytes at the end of a slab page */
+@@ -1328,11 +1329,11 @@ static int check_object(struct kmem_cach
+ 
+ 	if (s->flags & SLAB_RED_ZONE) {
+ 		if (!check_bytes_and_report(s, slab, object, "Left Redzone",
+-			object - s->red_left_pad, val, s->red_left_pad))
++			object - s->red_left_pad, val, s->red_left_pad, ret))
+ 			ret = 0;
+ 
+ 		if (!check_bytes_and_report(s, slab, object, "Right Redzone",
+-			endobject, val, s->inuse - s->object_size))
++			endobject, val, s->inuse - s->object_size, ret))
+ 			ret = 0;
+ 
+ 		if (slub_debug_orig_size(s) && val == SLUB_RED_ACTIVE) {
+@@ -1341,7 +1342,7 @@ static int check_object(struct kmem_cach
+ 			if (s->object_size > orig_size  &&
+ 				!check_bytes_and_report(s, slab, object,
+ 					"kmalloc Redzone", p + orig_size,
+-					val, s->object_size - orig_size)) {
++					val, s->object_size - orig_size, ret)) {
+ 				ret = 0;
+ 			}
+ 		}
+@@ -1349,7 +1350,7 @@ static int check_object(struct kmem_cach
+ 		if ((s->flags & SLAB_POISON) && s->object_size < s->inuse) {
+ 			if (!check_bytes_and_report(s, slab, p, "Alignment padding",
+ 				endobject, POISON_INUSE,
+-				s->inuse - s->object_size))
++				s->inuse - s->object_size, ret))
+ 				ret = 0;
+ 		}
+ 	}
+@@ -1365,11 +1366,11 @@ static int check_object(struct kmem_cach
+ 			if (kasan_meta_size < s->object_size - 1 &&
+ 			    !check_bytes_and_report(s, slab, p, "Poison",
+ 					p + kasan_meta_size, POISON_FREE,
+-					s->object_size - kasan_meta_size - 1))
++					s->object_size - kasan_meta_size - 1, ret))
+ 				ret = 0;
+ 			if (kasan_meta_size < s->object_size &&
+ 			    !check_bytes_and_report(s, slab, p, "End Poison",
+-					p + s->object_size - 1, POISON_END, 1))
++					p + s->object_size - 1, POISON_END, 1, ret))
+ 				ret = 0;
+ 		}
+ 		/*
+@@ -1395,11 +1396,6 @@ static int check_object(struct kmem_cach
+ 		ret = 0;
+ 	}
+ 
+-	if (!ret && !slab_in_kunit_test()) {
+-		print_trailer(s, slab, object);
+-		add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
+-	}
+-
+ 	return ret;
+ }
+ 
 
 
 
