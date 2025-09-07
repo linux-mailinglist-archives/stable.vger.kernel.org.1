@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-178148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1CAB47D71
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E27B47E57
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A5D1189CC22
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21FC1189FA25
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C845284883;
-	Sun,  7 Sep 2025 20:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF2C20D51C;
+	Sun,  7 Sep 2025 20:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijWAIw8y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFcOamnT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217FB1CDFAC;
-	Sun,  7 Sep 2025 20:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17460189BB0;
+	Sun,  7 Sep 2025 20:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275918; cv=none; b=gQBPRcb9CeY5zoTAClkYCoi4K1tK/pZWlYUzBVo+TYENygvf8YrLtODW9jopJF7xPC2XditNr1vVsfS8825vgerDPV/Ne6FjrtoiTgdJGRx3cjLze3C2ZpDJZEb0m6Hg1QgLnP5XWbkrC3VvZ46noa7tlCbs6nASHTowzC41B1c=
+	t=1757276582; cv=none; b=OcGtCfuuXMTqQjEoTSYVc2ky05WdzTxy4c6LwRR5rdL6BYGwK1PExLyfs9nsWDSaCQ6mloPhSqzXU0qYOUYi2DJacO0yu3J67Kup3QLRmrlY6UHhnzHgfadJvk0NodmLqZtsXNcoEkOwu/1WRb2YgX9YI/L3zbSErzP2tfEnPdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275918; c=relaxed/simple;
-	bh=HJUJOrljI1ejWc20DbZsrlB7tSGXq8bhabQiPqrVzQM=;
+	s=arc-20240116; t=1757276582; c=relaxed/simple;
+	bh=cDoPR+668u9df/T/1wJQ1AGmd8YZWsMKn3MsDUSMWAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DWIcWOwVJzX508QUiC0p5SiaEz9PLWwVD8RXJNBrFzFKmoJf0Q7qJaUoggdjPFGNVLfGFwqBSRlVSYFPI9sVk6Q53mbQaiabLhsxzRZH69w1qDFHFLjrjR9/lT+jNkbqJq7J0ftRplLjRgkWp3BnDTAp6YO6wMhCbp2FxZYR4Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijWAIw8y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B56AC4CEF0;
-	Sun,  7 Sep 2025 20:11:57 +0000 (UTC)
+	 MIME-Version; b=YuMzIrkXRqsxjXdLJFeKjEoU/kJZTF6zVv07LCxLs/HiV8NzXdNzJRgHzY9RI998eTUJ+z5/s8nNRFbQi8W2NB1pKjNhi9y9Vzj1nulvbs6GVUnOm3/I2Jhq3sF+lgxD+FfjIGAgtKlUKc6GAeesDYUyKoALuIQdotkFWRHxk4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFcOamnT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91AE6C4CEF0;
+	Sun,  7 Sep 2025 20:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275918;
-	bh=HJUJOrljI1ejWc20DbZsrlB7tSGXq8bhabQiPqrVzQM=;
+	s=korg; t=1757276582;
+	bh=cDoPR+668u9df/T/1wJQ1AGmd8YZWsMKn3MsDUSMWAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijWAIw8y7Yb7Mtoi8T/+IR+LVm5+lzaC6OYUK4wAvAor71KnsyRMQl4D9xlt8ENZh
-	 wcGkT6umLBeGUBusBe6NGxUqaejkKwhjVgRy22eemeL///OdLnWaN3+c+riJTFVKcc
-	 JRURVa9owdwafJaH3uwwf/iZphmQGfo7dOn5y80g=
+	b=eFcOamnTOLyeI5+k8ere/5zh1TqBi+PR8HhJvlkUrPMLL0srKSOCE08L6Rn9NVR8C
+	 nmnQp7KODe6MczDj4CRTG1nn6v1Q+mPTqcJtmqkqpWe94Zi7F4lenWwCDnieYmyGV2
+	 AnkgKQdlIYlt/rRfzm8QkGssC6gzGtKqE6x/MvWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Simon Horman <horms@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 13/45] net: thunder_bgx: decrement cleanup index before use
+Subject: [PATCH 6.6 043/121] ipv4: Fix NULL vs error pointer check in inet_blackhole_dev_init()
 Date: Sun,  7 Sep 2025 21:57:59 +0200
-Message-ID: <20250907195601.347917375@linuxfoundation.org>
+Message-ID: <20250907195610.927293174@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 9e3d71a92e561ccc77025689dab25d201fee7a3e ]
+[ Upstream commit a51160f8da850a65afbf165f5bbac7ffb388bf74 ]
 
-All paths in probe that call goto defer do so before assigning phydev
-and thus it makes sense to cleanup the prior index. It also fixes a bug
-where index 0 does not get cleaned up.
+The inetdev_init() function never returns NULL.  Check for error
+pointers instead.
 
-Fixes: b7d3e3d3d21a ("net: thunderx: Don't leak phy device references on -EPROBE_DEFER condition.")
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Fixes: 22600596b675 ("ipv4: give an IPv4 dev to blackhole_netdev")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250901213314.48599-1-rosenp@gmail.com
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/aLaQWL9NguWmeM1i@stanley.mountain
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/devinet.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-index e3acbdbc80993..8f4f831237cd2 100644
---- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-+++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-@@ -1523,11 +1523,11 @@ static int bgx_init_of_phy(struct bgx *bgx)
- 	 * for phy devices we may have already found.
- 	 */
- 	while (lmac) {
-+		lmac--;
- 		if (bgx->lmac[lmac].phydev) {
- 			put_device(&bgx->lmac[lmac].phydev->mdio.dev);
- 			bgx->lmac[lmac].phydev = NULL;
- 		}
--		lmac--;
- 	}
- 	of_node_put(node);
- 	return -EPROBE_DEFER;
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index c33b1ecc591e4..798497c8b1923 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -336,14 +336,13 @@ static void inetdev_destroy(struct in_device *in_dev)
+ 
+ static int __init inet_blackhole_dev_init(void)
+ {
+-	int err = 0;
++	struct in_device *in_dev;
+ 
+ 	rtnl_lock();
+-	if (!inetdev_init(blackhole_netdev))
+-		err = -ENOMEM;
++	in_dev = inetdev_init(blackhole_netdev);
+ 	rtnl_unlock();
+ 
+-	return err;
++	return PTR_ERR_OR_ZERO(in_dev);
+ }
+ late_initcall(inet_blackhole_dev_init);
+ 
 -- 
 2.50.1
 
