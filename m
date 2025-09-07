@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93419B47F85
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA5EB47E33
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:21:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A7442001E1
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D313D189F43F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DF04315A;
-	Sun,  7 Sep 2025 20:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F88929B77E;
+	Sun,  7 Sep 2025 20:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZpDGQ1B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcXWOlAC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A101DF246;
-	Sun,  7 Sep 2025 20:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBB81B424F;
+	Sun,  7 Sep 2025 20:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277516; cv=none; b=GkaeWzjG/G4R4mHWznvDdyRZq5zghNxB+LCs+tKAFxfxTpQ7OsblWWKIPodYVqjMcpbz0XQy7O8N5jZ2i7rbtQoaN1nikYNlULjancYlvF8pzovuvhoWcUDeDb5b0dsMaMJH51cKLqmoROqeiFaB5R9CwLf1PDcnZdIZQebOqrQ=
+	t=1757276478; cv=none; b=jhfQT3uSDIp4QFjAWgYnYfDF6Afob245E1hDxkS9YM248X9rHdvI12om7w/HgLR+x6gnm/ByTxK1D5RJ/zUnI81e26mgDGvg5xj92PJMwdNLd47kG9cRRddTfLLol6Ko2SPzHexHx3ROTzN7iiOphNB+ykrtgDCXfDxubOJJHfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277516; c=relaxed/simple;
-	bh=IOneR6NCt33/Xp/FVrn56JnNv2nOmkOw28BHeFXbGU0=;
+	s=arc-20240116; t=1757276478; c=relaxed/simple;
+	bh=uPHazi7ST8e3CWC1XephXK9MNwarKgbkjR4XVX1FtLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aRz3C5w+uX0AUu8jufYKd4WnylE7xnwlFqweMyK/PK6hPBrbzdoUAwp3iBHxajzXHfLnkpi46fTRlRGotzQgzC07Jl6Qvny347i4WhgzJgxhJ6gj9J690VjGYT8eD7WMBCu/SpnAYK7IVeKhrsJMnEhMT/hh3Yj9HR13GBedwQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZpDGQ1B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA6C3C4CEF8;
-	Sun,  7 Sep 2025 20:38:35 +0000 (UTC)
+	 MIME-Version; b=d6x/xz15wB1gAcCgQhO/anaU+9Is1vFbB9PRZIqtEO9aNd7g8TEKs9FV23RWWIqQnqUEXN5ktZOcfI6kVpVcA75TPC0wTnmU1zHvA4QENM+IygbE78ITZD/6XV06h9TUkLg5aGip/UMhFcdZT1ol3bl03Ck1Pa2E3aKKOD5CGBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcXWOlAC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBEAC4CEF0;
+	Sun,  7 Sep 2025 20:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277516;
-	bh=IOneR6NCt33/Xp/FVrn56JnNv2nOmkOw28BHeFXbGU0=;
+	s=korg; t=1757276478;
+	bh=uPHazi7ST8e3CWC1XephXK9MNwarKgbkjR4XVX1FtLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZpDGQ1BLM0PwL14kDX0MwAcgyJWRJL+8n1WZimbxLwGj3NMDH1HRqWpbItFrLP9J
-	 LfEuo2kjDqYLdi7qo2Etw2gjTEKeEtJ2iSt3lbpDchuChZooFwkzU64kxc0nN0jZ/8
-	 28aElmCrkl9OB9IYIYdsuZuryYtGCys2QhZSrbm8=
+	b=fcXWOlACCkz7eRmUQQ16EnxqHaUfF8lAdkkwipe8owxSOvQLR5SIxQlh6EjT6qfnp
+	 Ni4Cer2lKT8bFICxGiCr45k3a5m4ygCx+58FNcCd26tqYhTE7ZXQJvy7y1QlEFrWSH
+	 6il1govARyUQDGXh/UtVrPPxTv7WVSxrOr7gqbb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Jiufei Xue <jiufei.xue@samsung.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 022/183] arm64: dts: rockchip: Add vcc-supply to SPI flash on rk3399-pinebook-pro
+Subject: [PATCH 6.6 013/121] fs: writeback: fix use-after-free in __mark_inode_dirty()
 Date: Sun,  7 Sep 2025 21:57:29 +0200
-Message-ID: <20250907195616.309340525@linuxfoundation.org>
+Message-ID: <20250907195610.153427506@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Jiufei Xue <jiufei.xue@samsung.com>
 
-[ Upstream commit d1f9c497618dece06a00e0b2995ed6b38fafe6b5 ]
+[ Upstream commit d02d2c98d25793902f65803ab853b592c7a96b29 ]
 
-As described in the pinebookpro_v2.1_mainboard_schematic.pdf page 10,
-he SPI Flash's VCC connector is connected to VCC_3V0 power source.
+An use-after-free issue occurred when __mark_inode_dirty() get the
+bdi_writeback that was in the progress of switching.
 
-This fixes the following warning:
+CPU: 1 PID: 562 Comm: systemd-random- Not tainted 6.6.56-gb4403bd46a8e #1
+......
+pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __mark_inode_dirty+0x124/0x418
+lr : __mark_inode_dirty+0x118/0x418
+sp : ffffffc08c9dbbc0
+........
+Call trace:
+ __mark_inode_dirty+0x124/0x418
+ generic_update_time+0x4c/0x60
+ file_modified+0xcc/0xd0
+ ext4_buffered_write_iter+0x58/0x124
+ ext4_file_write_iter+0x54/0x704
+ vfs_write+0x1c0/0x308
+ ksys_write+0x74/0x10c
+ __arm64_sys_write+0x1c/0x28
+ invoke_syscall+0x48/0x114
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x40/0xe4
+ el0t_64_sync_handler+0x120/0x12c
+ el0t_64_sync+0x194/0x198
 
-  spi-nor spi1.0: supply vcc not found, using dummy regulator
+Root cause is:
 
-Fixes: 5a65505a69884 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250730102129.224468-1-pbrobinson@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+systemd-random-seed                         kworker
+----------------------------------------------------------------------
+___mark_inode_dirty                     inode_switch_wbs_work_fn
+
+  spin_lock(&inode->i_lock);
+  inode_attach_wb
+  locked_inode_to_wb_and_lock_list
+     get inode->i_wb
+     spin_unlock(&inode->i_lock);
+     spin_lock(&wb->list_lock)
+  spin_lock(&inode->i_lock)
+  inode_io_list_move_locked
+  spin_unlock(&wb->list_lock)
+  spin_unlock(&inode->i_lock)
+                                    spin_lock(&old_wb->list_lock)
+                                      inode_do_switch_wbs
+                                        spin_lock(&inode->i_lock)
+                                        inode->i_wb = new_wb
+                                        spin_unlock(&inode->i_lock)
+                                    spin_unlock(&old_wb->list_lock)
+                                    wb_put_many(old_wb, nr_switched)
+                                      cgwb_release
+                                      old wb released
+  wb_wakeup_delayed() accesses wb,
+  then trigger the use-after-free
+  issue
+
+Fix this race condition by holding inode spinlock until
+wb_wakeup_delayed() finished.
+
+Signed-off-by: Jiufei Xue <jiufei.xue@samsung.com>
+Link: https://lore.kernel.org/20250728100715.3863241-1-jiufei.xue@samsung.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 1 +
- 1 file changed, 1 insertion(+)
+ fs/fs-writeback.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-index 5473070823cb1..6cadde440fff4 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-@@ -966,6 +966,7 @@ spiflash: flash@0 {
- 		reg = <0>;
- 		m25p,fast-read;
- 		spi-max-frequency = <10000000>;
-+		vcc-supply = <&vcc_3v0>;
- 	};
- };
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index 0a498bc60f557..ed110568d6127 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -2536,10 +2536,6 @@ void __mark_inode_dirty(struct inode *inode, int flags)
+ 			wakeup_bdi = inode_io_list_move_locked(inode, wb,
+ 							       dirty_list);
  
+-			spin_unlock(&wb->list_lock);
+-			spin_unlock(&inode->i_lock);
+-			trace_writeback_dirty_inode_enqueue(inode);
+-
+ 			/*
+ 			 * If this is the first dirty inode for this bdi,
+ 			 * we have to wake-up the corresponding bdi thread
+@@ -2549,6 +2545,11 @@ void __mark_inode_dirty(struct inode *inode, int flags)
+ 			if (wakeup_bdi &&
+ 			    (wb->bdi->capabilities & BDI_CAP_WRITEBACK))
+ 				wb_wakeup_delayed(wb);
++
++			spin_unlock(&wb->list_lock);
++			spin_unlock(&inode->i_lock);
++			trace_writeback_dirty_inode_enqueue(inode);
++
+ 			return;
+ 		}
+ 	}
 -- 
 2.50.1
 
