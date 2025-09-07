@@ -1,95 +1,57 @@
-Return-Path: <stable+bounces-178715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D9B6B47FC7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C115EB47E1E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E19571B21C0D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:42:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7E47189F42C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D894C269CE6;
-	Sun,  7 Sep 2025 20:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E752C14BFA2;
+	Sun,  7 Sep 2025 20:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0XOn+Lf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6nmSWvc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971F34315A;
-	Sun,  7 Sep 2025 20:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F771D5AC6;
+	Sun,  7 Sep 2025 20:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277726; cv=none; b=hpFSprCQ7zvtDoQ9mkoMORcKpWKD5767v2fOM+SrYVs7NdS6lc8MgQVcHgenaG1lqSWHHd/iXNUyEtzEPzlSnYoQ0kkuBNZGZ8X63ZwzhWz4G8c19tcXqsFHaX4bO+6nUDctecgHh4Fupd8qkGJph1mk+5DAY75s4VkUpU5RRLY=
+	t=1757276405; cv=none; b=u9GmrQpLniiQISQK1DgO6+kud+UzVYZpcxeV0506ufaVL7QSI+Y/NXOT8eIPPVP1cqWQ0kfaS5dUNyLwO0pTu0lcoAKGKNYUq2fSTyTWwVLhUtIfLVuFV/3L+R4EKAANworj/xjCvvK5rclT6cQY2iZ5dVvndaR1LC0gy554Pgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277726; c=relaxed/simple;
-	bh=KkdftB+EHLgYX0r26BUR2awjx0T4vOvcldby9jS7K8g=;
+	s=arc-20240116; t=1757276405; c=relaxed/simple;
+	bh=rixECtrJ/ATRH3HHkYtQN8cL3eb4eimewVqUEVkiJpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pe36QmoNr/HxI+GScnmMXEmUZBBubC86njB5To3R/3N8SF6R5X3gWES7SqEwihanZXpmWOBhUtMz12yO1do7nQu49WvVbOpxuqGFOpU7kTPNsKW5U3E581tO3E1AkpsbpeEoyZCd4UP04ofsQEQYXcct2T9l4BYDueLJyhC1QDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0XOn+Lf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8FAC4CEF0;
-	Sun,  7 Sep 2025 20:42:05 +0000 (UTC)
+	 MIME-Version; b=iiM7sf/fLoI51K//lzhV/seQKfL8vbFv04d10xu73/CgbZleM9AI4u3HzCWhV84G/XNfV9phRV0Zsoppk2/D6SalweXVgZvOLCfrMb5MbeA1/NTiDoywvROsxoNY1w79ohozmcSvHinDh8W9Sjt3R4pQ82ffGcLw1nCDLrHXXCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6nmSWvc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E04BC4CEF8;
+	Sun,  7 Sep 2025 20:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277726;
-	bh=KkdftB+EHLgYX0r26BUR2awjx0T4vOvcldby9jS7K8g=;
+	s=korg; t=1757276404;
+	bh=rixECtrJ/ATRH3HHkYtQN8cL3eb4eimewVqUEVkiJpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A0XOn+LfiiIqtE5FnMnLkLP6LkPNi5FD1rhEDVwuKYzQuvWGuE7yX8JmQcqoaTYz8
-	 eKzftmA0kwcgsxsmJY5zHnMtVM7m/4nLSvy+ThGNsN3u+gBOm5bKpTIDfWsyVZHuBk
-	 ZzUqbomPQnC41NJoyOwZ114cqDvCgnztHu+F7bcQ=
+	b=R6nmSWvcYR8DL5au9ixROx3g5IB6QdpuGos6r5li5tgziSsFUjHO4S0fY2koh6G4e
+	 Xgy6GacN5zNpy1XHjdRDruAWHFG5dmblvfMQZWQqCyVB0ZH7rvxDljmvwVi9M9IxtI
+	 c01YqQgQfGkpsn08+O+DDBTsZr+035dzjeshV4NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	bibo mao <maobibo@loongson.cn>,
-	Borislav Betkov <bp@alien8.de>,
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Thomas Huth <thuth@redhat.com>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 103/183] x86/mm/64: define ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings()
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 093/104] drm/amdgpu: Replace DRM_* with dev_* in amdgpu_psp.c
 Date: Sun,  7 Sep 2025 21:58:50 +0200
-Message-ID: <20250907195618.236489062@linuxfoundation.org>
+Message-ID: <20250907195610.078700017@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -101,158 +63,568 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Yoo <harry.yoo@oracle.com>
+From: Hawking Zhang <Hawking.Zhang@amd.com>
 
-commit 6659d027998083fbb6d42a165b0c90dc2e8ba989 upstream.
+[ Upstream commit ac3ff8a90637e813005404a0110802aa384af4aa ]
 
-Define ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings() to ensure
-page tables are properly synchronized when calling p*d_populate_kernel().
+So kernel message has the device pcie bdf information,
+which helps issue debugging especially in multiple GPU
+system.
 
-For 5-level paging, synchronization is performed via
-pgd_populate_kernel().  In 4-level paging, pgd_populate() is a no-op, so
-synchronization is instead performed at the P4D level via
-p4d_populate_kernel().
-
-This fixes intermittent boot failures on systems using 4-level paging and
-a large amount of persistent memory:
-
-  BUG: unable to handle page fault for address: ffffe70000000034
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  PGD 0 P4D 0
-  Oops: 0002 [#1] SMP NOPTI
-  RIP: 0010:__init_single_page+0x9/0x6d
-  Call Trace:
-   <TASK>
-   __init_zone_device_page+0x17/0x5d
-   memmap_init_zone_device+0x154/0x1bb
-   pagemap_range+0x2e0/0x40f
-   memremap_pages+0x10b/0x2f0
-   devm_memremap_pages+0x1e/0x60
-   dev_dax_probe+0xce/0x2ec [device_dax]
-   dax_bus_probe+0x6d/0xc9
-   [... snip ...]
-   </TASK>
-
-It also fixes a crash in vmemmap_set_pmd() caused by accessing vmemmap
-before sync_global_pgds() [1]:
-
-  BUG: unable to handle page fault for address: ffffeb3ff1200000
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  PGD 0 P4D 0
-  Oops: Oops: 0002 [#1] PREEMPT SMP NOPTI
-  Tainted: [W]=WARN
-  RIP: 0010:vmemmap_set_pmd+0xff/0x230
-   <TASK>
-   vmemmap_populate_hugepages+0x176/0x180
-   vmemmap_populate+0x34/0x80
-   __populate_section_memmap+0x41/0x90
-   sparse_add_section+0x121/0x3e0
-   __add_pages+0xba/0x150
-   add_pages+0x1d/0x70
-   memremap_pages+0x3dc/0x810
-   devm_memremap_pages+0x1c/0x60
-   xe_devm_add+0x8b/0x100 [xe]
-   xe_tile_init_noalloc+0x6a/0x70 [xe]
-   xe_device_probe+0x48c/0x740 [xe]
-   [... snip ...]
-
-Link: https://lkml.kernel.org/r/20250818020206.4517-4-harry.yoo@oracle.com
-Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Closes: https://lore.kernel.org/linux-mm/20250311114420.240341-1-gwan-gyeong.mun@intel.com [1]
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Kiryl Shutsemau <kas@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: bibo mao <maobibo@loongson.cn>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Christoph Lameter (Ampere) <cl@gentwo.org>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Joao Martins <joao.m.martins@oracle.com>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: Thomas Huth <thuth@redhat.com>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 467e00b30dfe ("drm/amd/amdgpu: Fix missing error return on kzalloc failure")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/pgtable_64_types.h |    3 +++
- arch/x86/mm/init_64.c                   |   18 ++++++++++++++++++
- 2 files changed, 21 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 144 ++++++++++++------------
+ 1 file changed, 75 insertions(+), 69 deletions(-)
 
---- a/arch/x86/include/asm/pgtable_64_types.h
-+++ b/arch/x86/include/asm/pgtable_64_types.h
-@@ -36,6 +36,9 @@ static inline bool pgtable_l5_enabled(vo
- #define pgtable_l5_enabled() cpu_feature_enabled(X86_FEATURE_LA57)
- #endif /* USE_EARLY_PGTABLE_L5 */
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index f720aa06fb3d6..df38eb9604ec3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -222,21 +222,22 @@ static int psp_memory_training_init(struct psp_context *psp)
+ 	struct psp_memory_training_context *ctx = &psp->mem_train_ctx;
  
-+#define ARCH_PAGE_TABLE_SYNC_MASK \
-+	(pgtable_l5_enabled() ? PGTBL_PGD_MODIFIED : PGTBL_P4D_MODIFIED)
-+
- extern unsigned int pgdir_shift;
- extern unsigned int ptrs_per_p4d;
+ 	if (ctx->init != PSP_MEM_TRAIN_RESERVE_SUCCESS) {
+-		DRM_DEBUG("memory training is not supported!\n");
++		dev_dbg(psp->adev->dev, "memory training is not supported!\n");
+ 		return 0;
+ 	}
  
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -224,6 +224,24 @@ static void sync_global_pgds(unsigned lo
+ 	ctx->sys_cache = kzalloc(ctx->train_data_size, GFP_KERNEL);
+ 	if (ctx->sys_cache == NULL) {
+-		DRM_ERROR("alloc mem_train_ctx.sys_cache failed!\n");
++		dev_err(psp->adev->dev, "alloc mem_train_ctx.sys_cache failed!\n");
+ 		ret = -ENOMEM;
+ 		goto Err_out;
+ 	}
+ 
+-	DRM_DEBUG("train_data_size:%llx,p2c_train_data_offset:%llx,c2p_train_data_offset:%llx.\n",
+-		  ctx->train_data_size,
+-		  ctx->p2c_train_data_offset,
+-		  ctx->c2p_train_data_offset);
++	dev_dbg(psp->adev->dev,
++		"train_data_size:%llx,p2c_train_data_offset:%llx,c2p_train_data_offset:%llx.\n",
++		ctx->train_data_size,
++		ctx->p2c_train_data_offset,
++		ctx->c2p_train_data_offset);
+ 	ctx->init = PSP_MEM_TRAIN_INIT_SUCCESS;
+ 	return 0;
+ 
+@@ -371,7 +372,7 @@ static int psp_sw_init(void *handle)
+ 
+ 	psp->cmd = kzalloc(sizeof(struct psp_gfx_cmd_resp), GFP_KERNEL);
+ 	if (!psp->cmd) {
+-		DRM_ERROR("Failed to allocate memory to command buffer!\n");
++		dev_err(adev->dev, "Failed to allocate memory to command buffer!\n");
+ 		ret = -ENOMEM;
+ 	}
+ 
+@@ -426,13 +427,13 @@ static int psp_sw_init(void *handle)
+ 	if (mem_training_ctx->enable_mem_training) {
+ 		ret = psp_memory_training_init(psp);
+ 		if (ret) {
+-			DRM_ERROR("Failed to initialize memory training!\n");
++			dev_err(adev->dev, "Failed to initialize memory training!\n");
+ 			return ret;
+ 		}
+ 
+ 		ret = psp_mem_training(psp, PSP_MEM_TRAIN_COLD_BOOT);
+ 		if (ret) {
+-			DRM_ERROR("Failed to process memory training!\n");
++			dev_err(adev->dev, "Failed to process memory training!\n");
+ 			return ret;
+ 		}
+ 	}
+@@ -651,9 +652,11 @@ psp_cmd_submit_buf(struct psp_context *psp,
+ 	 */
+ 	if (!skip_unsupport && (psp->cmd_buf_mem->resp.status || !timeout) && !ras_intr) {
+ 		if (ucode)
+-			DRM_WARN("failed to load ucode %s(0x%X) ",
+-				  amdgpu_ucode_name(ucode->ucode_id), ucode->ucode_id);
+-		DRM_WARN("psp gfx command %s(0x%X) failed and response status is (0x%X)\n",
++			dev_warn(psp->adev->dev,
++				 "failed to load ucode %s(0x%X) ",
++				 amdgpu_ucode_name(ucode->ucode_id), ucode->ucode_id);
++		dev_warn(psp->adev->dev,
++			 "psp gfx command %s(0x%X) failed and response status is (0x%X)\n",
+ 			 psp_gfx_cmd_name(psp->cmd_buf_mem->cmd_id), psp->cmd_buf_mem->cmd_id,
+ 			 psp->cmd_buf_mem->resp.status);
+ 		/* If any firmware (including CAP) load fails under SRIOV, it should
+@@ -783,7 +786,7 @@ static int psp_tmr_init(struct psp_context *psp)
+ 	    psp->fw_pri_buf) {
+ 		ret = psp_load_toc(psp, &tmr_size);
+ 		if (ret) {
+-			DRM_ERROR("Failed to load toc\n");
++			dev_err(psp->adev->dev, "Failed to load toc\n");
+ 			return ret;
+ 		}
+ 	}
+@@ -826,7 +829,7 @@ static int psp_tmr_load(struct psp_context *psp)
+ 
+ 	psp_prep_tmr_cmd_buf(psp, cmd, psp->tmr_mc_addr, psp->tmr_bo);
+ 	if (psp->tmr_bo)
+-		DRM_INFO("reserve 0x%lx from 0x%llx for PSP TMR\n",
++		dev_info(psp->adev->dev, "reserve 0x%lx from 0x%llx for PSP TMR\n",
+ 			 amdgpu_bo_size(psp->tmr_bo), psp->tmr_mc_addr);
+ 
+ 	ret = psp_cmd_submit_buf(psp, NULL, cmd,
+@@ -1055,7 +1058,7 @@ int psp_reg_program(struct psp_context *psp, enum psp_reg_prog_id reg,
+ 	psp_prep_reg_prog_cmd_buf(cmd, reg, value);
+ 	ret = psp_cmd_submit_buf(psp, NULL, cmd, psp->fence_buf_mc_addr);
+ 	if (ret)
+-		DRM_ERROR("PSP failed to program reg id %d", reg);
++		dev_err(psp->adev->dev, "PSP failed to program reg id %d\n", reg);
+ 
+ 	release_psp_cmd_buf(psp);
+ 
+@@ -1466,22 +1469,22 @@ static void psp_ras_ta_check_status(struct psp_context *psp)
+ 	switch (ras_cmd->ras_status) {
+ 	case TA_RAS_STATUS__ERROR_UNSUPPORTED_IP:
+ 		dev_warn(psp->adev->dev,
+-				"RAS WARNING: cmd failed due to unsupported ip\n");
++			 "RAS WARNING: cmd failed due to unsupported ip\n");
+ 		break;
+ 	case TA_RAS_STATUS__ERROR_UNSUPPORTED_ERROR_INJ:
+ 		dev_warn(psp->adev->dev,
+-				"RAS WARNING: cmd failed due to unsupported error injection\n");
++			 "RAS WARNING: cmd failed due to unsupported error injection\n");
+ 		break;
+ 	case TA_RAS_STATUS__SUCCESS:
+ 		break;
+ 	case TA_RAS_STATUS__TEE_ERROR_ACCESS_DENIED:
+ 		if (ras_cmd->cmd_id == TA_RAS_COMMAND__TRIGGER_ERROR)
+ 			dev_warn(psp->adev->dev,
+-					"RAS WARNING: Inject error to critical region is not allowed\n");
++				 "RAS WARNING: Inject error to critical region is not allowed\n");
+ 		break;
+ 	default:
+ 		dev_warn(psp->adev->dev,
+-				"RAS WARNING: ras status = 0x%X\n", ras_cmd->ras_status);
++			 "RAS WARNING: ras status = 0x%X\n", ras_cmd->ras_status);
+ 		break;
+ 	}
+ }
+@@ -1505,7 +1508,7 @@ int psp_ras_invoke(struct psp_context *psp, uint32_t ta_cmd_id)
+ 		return ret;
+ 
+ 	if (ras_cmd->if_version > RAS_TA_HOST_IF_VER) {
+-		DRM_WARN("RAS: Unsupported Interface");
++		dev_warn(psp->adev->dev, "RAS: Unsupported Interface\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -1652,7 +1655,7 @@ static int psp_ras_initialize(struct psp_context *psp)
+ 		psp->ras_context.context.initialized = true;
+ 	else {
+ 		if (ras_cmd->ras_status)
+-			dev_warn(psp->adev->dev, "RAS Init Status: 0x%X\n", ras_cmd->ras_status);
++			dev_warn(adev->dev, "RAS Init Status: 0x%X\n", ras_cmd->ras_status);
+ 
+ 		/* fail to load RAS TA */
+ 		psp->ras_context.context.initialized = false;
+@@ -2036,7 +2039,7 @@ static int psp_hw_start(struct psp_context *psp)
+ 		    (psp->funcs->bootloader_load_kdb != NULL)) {
+ 			ret = psp_bootloader_load_kdb(psp);
+ 			if (ret) {
+-				DRM_ERROR("PSP load kdb failed!\n");
++				dev_err(adev->dev, "PSP load kdb failed!\n");
+ 				return ret;
+ 			}
+ 		}
+@@ -2045,7 +2048,7 @@ static int psp_hw_start(struct psp_context *psp)
+ 		    (psp->funcs->bootloader_load_spl != NULL)) {
+ 			ret = psp_bootloader_load_spl(psp);
+ 			if (ret) {
+-				DRM_ERROR("PSP load spl failed!\n");
++				dev_err(adev->dev, "PSP load spl failed!\n");
+ 				return ret;
+ 			}
+ 		}
+@@ -2054,7 +2057,7 @@ static int psp_hw_start(struct psp_context *psp)
+ 		    (psp->funcs->bootloader_load_sysdrv != NULL)) {
+ 			ret = psp_bootloader_load_sysdrv(psp);
+ 			if (ret) {
+-				DRM_ERROR("PSP load sys drv failed!\n");
++				dev_err(adev->dev, "PSP load sys drv failed!\n");
+ 				return ret;
+ 			}
+ 		}
+@@ -2063,7 +2066,7 @@ static int psp_hw_start(struct psp_context *psp)
+ 		    (psp->funcs->bootloader_load_soc_drv != NULL)) {
+ 			ret = psp_bootloader_load_soc_drv(psp);
+ 			if (ret) {
+-				DRM_ERROR("PSP load soc drv failed!\n");
++				dev_err(adev->dev, "PSP load soc drv failed!\n");
+ 				return ret;
+ 			}
+ 		}
+@@ -2072,7 +2075,7 @@ static int psp_hw_start(struct psp_context *psp)
+ 		    (psp->funcs->bootloader_load_intf_drv != NULL)) {
+ 			ret = psp_bootloader_load_intf_drv(psp);
+ 			if (ret) {
+-				DRM_ERROR("PSP load intf drv failed!\n");
++				dev_err(adev->dev, "PSP load intf drv failed!\n");
+ 				return ret;
+ 			}
+ 		}
+@@ -2081,7 +2084,7 @@ static int psp_hw_start(struct psp_context *psp)
+ 		    (psp->funcs->bootloader_load_dbg_drv != NULL)) {
+ 			ret = psp_bootloader_load_dbg_drv(psp);
+ 			if (ret) {
+-				DRM_ERROR("PSP load dbg drv failed!\n");
++				dev_err(adev->dev, "PSP load dbg drv failed!\n");
+ 				return ret;
+ 			}
+ 		}
+@@ -2090,7 +2093,7 @@ static int psp_hw_start(struct psp_context *psp)
+ 		    (psp->funcs->bootloader_load_ras_drv != NULL)) {
+ 			ret = psp_bootloader_load_ras_drv(psp);
+ 			if (ret) {
+-				DRM_ERROR("PSP load ras_drv failed!\n");
++				dev_err(adev->dev, "PSP load ras_drv failed!\n");
+ 				return ret;
+ 			}
+ 		}
+@@ -2099,7 +2102,7 @@ static int psp_hw_start(struct psp_context *psp)
+ 		    (psp->funcs->bootloader_load_sos != NULL)) {
+ 			ret = psp_bootloader_load_sos(psp);
+ 			if (ret) {
+-				DRM_ERROR("PSP load sos failed!\n");
++				dev_err(adev->dev, "PSP load sos failed!\n");
+ 				return ret;
+ 			}
+ 		}
+@@ -2107,7 +2110,7 @@ static int psp_hw_start(struct psp_context *psp)
+ 
+ 	ret = psp_ring_create(psp, PSP_RING_TYPE__KM);
+ 	if (ret) {
+-		DRM_ERROR("PSP create ring failed!\n");
++		dev_err(adev->dev, "PSP create ring failed!\n");
+ 		return ret;
+ 	}
+ 
+@@ -2117,7 +2120,7 @@ static int psp_hw_start(struct psp_context *psp)
+ 	if (!psp_boottime_tmr(psp)) {
+ 		ret = psp_tmr_init(psp);
+ 		if (ret) {
+-			DRM_ERROR("PSP tmr init failed!\n");
++			dev_err(adev->dev, "PSP tmr init failed!\n");
+ 			return ret;
+ 		}
+ 	}
+@@ -2136,7 +2139,7 @@ static int psp_hw_start(struct psp_context *psp)
+ 
+ 	ret = psp_tmr_load(psp);
+ 	if (ret) {
+-		DRM_ERROR("PSP load tmr failed!\n");
++		dev_err(adev->dev, "PSP load tmr failed!\n");
+ 		return ret;
+ 	}
+ 
+@@ -2383,7 +2386,8 @@ static void psp_print_fw_hdr(struct psp_context *psp,
+ 	}
  }
  
- /*
-+ * Make kernel mappings visible in all page tables in the system.
-+ * This is necessary except when the init task populates kernel mappings
-+ * during the boot process. In that case, all processes originating from
-+ * the init task copies the kernel mappings, so there is no issue.
-+ * Otherwise, missing synchronization could lead to kernel crashes due
-+ * to missing page table entries for certain kernel mappings.
-+ *
-+ * Synchronization is performed at the top level, which is the PGD in
-+ * 5-level paging systems. But in 4-level paging systems, however,
-+ * pgd_populate() is a no-op, so synchronization is done at the P4D level.
-+ * sync_global_pgds() handles this difference between paging levels.
-+ */
-+void arch_sync_kernel_mappings(unsigned long start, unsigned long end)
-+{
-+	sync_global_pgds(start, end);
-+}
-+
-+/*
-  * NOTE: This function is marked __ref because it calls __init function
-  * (alloc_bootmem_pages). It's safe to do it ONLY when after_bootmem == 0.
-  */
+-static int psp_prep_load_ip_fw_cmd_buf(struct amdgpu_firmware_info *ucode,
++static int psp_prep_load_ip_fw_cmd_buf(struct psp_context *psp,
++				       struct amdgpu_firmware_info *ucode,
+ 				       struct psp_gfx_cmd_resp *cmd)
+ {
+ 	int ret;
+@@ -2396,7 +2400,7 @@ static int psp_prep_load_ip_fw_cmd_buf(struct amdgpu_firmware_info *ucode,
+ 
+ 	ret = psp_get_fw_type(ucode, &cmd->cmd.cmd_load_ip_fw.fw_type);
+ 	if (ret)
+-		DRM_ERROR("Unknown firmware type\n");
++		dev_err(psp->adev->dev, "Unknown firmware type\n");
+ 
+ 	return ret;
+ }
+@@ -2407,7 +2411,7 @@ static int psp_execute_non_psp_fw_load(struct psp_context *psp,
+ 	int ret = 0;
+ 	struct psp_gfx_cmd_resp *cmd = acquire_psp_cmd_buf(psp);
+ 
+-	ret = psp_prep_load_ip_fw_cmd_buf(ucode, cmd);
++	ret = psp_prep_load_ip_fw_cmd_buf(psp, ucode, cmd);
+ 	if (!ret) {
+ 		ret = psp_cmd_submit_buf(psp, ucode, cmd,
+ 					 psp->fence_buf_mc_addr);
+@@ -2442,13 +2446,13 @@ static int psp_load_smu_fw(struct psp_context *psp)
+ 	      adev->ip_versions[MP0_HWIP][0] == IP_VERSION(11, 0, 2)))) {
+ 		ret = amdgpu_dpm_set_mp1_state(adev, PP_MP1_STATE_UNLOAD);
+ 		if (ret)
+-			DRM_WARN("Failed to set MP1 state prepare for reload\n");
++			dev_err(adev->dev, "Failed to set MP1 state prepare for reload\n");
+ 	}
+ 
+ 	ret = psp_execute_non_psp_fw_load(psp, ucode);
+ 
+ 	if (ret)
+-		DRM_ERROR("PSP load smu failed!\n");
++		dev_err(adev->dev, "PSP load smu failed!\n");
+ 
+ 	return ret;
+ }
+@@ -2543,7 +2547,7 @@ static int psp_load_non_psp_fw(struct psp_context *psp)
+ 		    adev->virt.autoload_ucode_id : AMDGPU_UCODE_ID_RLC_G)) {
+ 			ret = psp_rlc_autoload_start(psp);
+ 			if (ret) {
+-				DRM_ERROR("Failed to start rlc autoload\n");
++				dev_err(adev->dev, "Failed to start rlc autoload\n");
+ 				return ret;
+ 			}
+ 		}
+@@ -2565,7 +2569,7 @@ static int psp_load_fw(struct amdgpu_device *adev)
+ 
+ 		ret = psp_ring_init(psp, PSP_RING_TYPE__KM);
+ 		if (ret) {
+-			DRM_ERROR("PSP ring init failed!\n");
++			dev_err(adev->dev, "PSP ring init failed!\n");
+ 			goto failed;
+ 		}
+ 	}
+@@ -2580,13 +2584,13 @@ static int psp_load_fw(struct amdgpu_device *adev)
+ 
+ 	ret = psp_asd_initialize(psp);
+ 	if (ret) {
+-		DRM_ERROR("PSP load asd failed!\n");
++		dev_err(adev->dev, "PSP load asd failed!\n");
+ 		goto failed1;
+ 	}
+ 
+ 	ret = psp_rl_load(adev);
+ 	if (ret) {
+-		DRM_ERROR("PSP load RL failed!\n");
++		dev_err(adev->dev, "PSP load RL failed!\n");
+ 		goto failed1;
+ 	}
+ 
+@@ -2606,7 +2610,7 @@ static int psp_load_fw(struct amdgpu_device *adev)
+ 		ret = psp_ras_initialize(psp);
+ 		if (ret)
+ 			dev_err(psp->adev->dev,
+-					"RAS: Failed to initialize RAS\n");
++				"RAS: Failed to initialize RAS\n");
+ 
+ 		ret = psp_hdcp_initialize(psp);
+ 		if (ret)
+@@ -2659,7 +2663,7 @@ static int psp_hw_init(void *handle)
+ 
+ 	ret = psp_load_fw(adev);
+ 	if (ret) {
+-		DRM_ERROR("PSP firmware loading failed\n");
++		dev_err(adev->dev, "PSP firmware loading failed\n");
+ 		goto failed;
+ 	}
+ 
+@@ -2706,7 +2710,7 @@ static int psp_suspend(void *handle)
+ 	    psp->xgmi_context.context.initialized) {
+ 		ret = psp_xgmi_terminate(psp);
+ 		if (ret) {
+-			DRM_ERROR("Failed to terminate xgmi ta\n");
++			dev_err(adev->dev, "Failed to terminate xgmi ta\n");
+ 			goto out;
+ 		}
+ 	}
+@@ -2714,46 +2718,46 @@ static int psp_suspend(void *handle)
+ 	if (psp->ta_fw) {
+ 		ret = psp_ras_terminate(psp);
+ 		if (ret) {
+-			DRM_ERROR("Failed to terminate ras ta\n");
++			dev_err(adev->dev, "Failed to terminate ras ta\n");
+ 			goto out;
+ 		}
+ 		ret = psp_hdcp_terminate(psp);
+ 		if (ret) {
+-			DRM_ERROR("Failed to terminate hdcp ta\n");
++			dev_err(adev->dev, "Failed to terminate hdcp ta\n");
+ 			goto out;
+ 		}
+ 		ret = psp_dtm_terminate(psp);
+ 		if (ret) {
+-			DRM_ERROR("Failed to terminate dtm ta\n");
++			dev_err(adev->dev, "Failed to terminate dtm ta\n");
+ 			goto out;
+ 		}
+ 		ret = psp_rap_terminate(psp);
+ 		if (ret) {
+-			DRM_ERROR("Failed to terminate rap ta\n");
++			dev_err(adev->dev, "Failed to terminate rap ta\n");
+ 			goto out;
+ 		}
+ 		ret = psp_securedisplay_terminate(psp);
+ 		if (ret) {
+-			DRM_ERROR("Failed to terminate securedisplay ta\n");
++			dev_err(adev->dev, "Failed to terminate securedisplay ta\n");
+ 			goto out;
+ 		}
+ 	}
+ 
+ 	ret = psp_asd_terminate(psp);
+ 	if (ret) {
+-		DRM_ERROR("Failed to terminate asd\n");
++		dev_err(adev->dev, "Failed to terminate asd\n");
+ 		goto out;
+ 	}
+ 
+ 	ret = psp_tmr_terminate(psp);
+ 	if (ret) {
+-		DRM_ERROR("Failed to terminate tmr\n");
++		dev_err(adev->dev, "Failed to terminate tmr\n");
+ 		goto out;
+ 	}
+ 
+ 	ret = psp_ring_stop(psp, PSP_RING_TYPE__KM);
+ 	if (ret)
+-		DRM_ERROR("PSP ring stop failed\n");
++		dev_err(adev->dev, "PSP ring stop failed\n");
+ 
+ out:
+ 	return ret;
+@@ -2765,12 +2769,12 @@ static int psp_resume(void *handle)
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 	struct psp_context *psp = &adev->psp;
+ 
+-	DRM_INFO("PSP is resuming...\n");
++	dev_info(adev->dev, "PSP is resuming...\n");
+ 
+ 	if (psp->mem_train_ctx.enable_mem_training) {
+ 		ret = psp_mem_training(psp, PSP_MEM_TRAIN_RESUME);
+ 		if (ret) {
+-			DRM_ERROR("Failed to process memory training!\n");
++			dev_err(adev->dev, "Failed to process memory training!\n");
+ 			return ret;
+ 		}
+ 	}
+@@ -2787,7 +2791,7 @@ static int psp_resume(void *handle)
+ 
+ 	ret = psp_asd_initialize(psp);
+ 	if (ret) {
+-		DRM_ERROR("PSP load asd failed!\n");
++		dev_err(adev->dev, "PSP load asd failed!\n");
+ 		goto failed;
+ 	}
+ 
+@@ -2811,7 +2815,7 @@ static int psp_resume(void *handle)
+ 		ret = psp_ras_initialize(psp);
+ 		if (ret)
+ 			dev_err(psp->adev->dev,
+-					"RAS: Failed to initialize RAS\n");
++				"RAS: Failed to initialize RAS\n");
+ 
+ 		ret = psp_hdcp_initialize(psp);
+ 		if (ret)
+@@ -2839,7 +2843,7 @@ static int psp_resume(void *handle)
+ 	return 0;
+ 
+ failed:
+-	DRM_ERROR("PSP resume failed\n");
++	dev_err(adev->dev, "PSP resume failed\n");
+ 	mutex_unlock(&adev->firmware.mutex);
+ 	return ret;
+ }
+@@ -2913,9 +2917,11 @@ int psp_ring_cmd_submit(struct psp_context *psp,
+ 		write_frame = ring_buffer_start + (psp_write_ptr_reg / rb_frame_size_dw);
+ 	/* Check invalid write_frame ptr address */
+ 	if ((write_frame < ring_buffer_start) || (ring_buffer_end < write_frame)) {
+-		DRM_ERROR("ring_buffer_start = %p; ring_buffer_end = %p; write_frame = %p\n",
+-			  ring_buffer_start, ring_buffer_end, write_frame);
+-		DRM_ERROR("write_frame is pointing to address out of bounds\n");
++		dev_err(adev->dev,
++			"ring_buffer_start = %p; ring_buffer_end = %p; write_frame = %p\n",
++			ring_buffer_start, ring_buffer_end, write_frame);
++		dev_err(adev->dev,
++			"write_frame is pointing to address out of bounds\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -3427,7 +3433,7 @@ static ssize_t psp_usbc_pd_fw_sysfs_read(struct device *dev,
+ 	int ret;
+ 
+ 	if (!adev->ip_blocks[AMD_IP_BLOCK_TYPE_PSP].status.late_initialized) {
+-		DRM_INFO("PSP block is not ready yet.");
++		dev_info(adev->dev, "PSP block is not ready yet\n.");
+ 		return -EBUSY;
+ 	}
+ 
+@@ -3436,7 +3442,7 @@ static ssize_t psp_usbc_pd_fw_sysfs_read(struct device *dev,
+ 	mutex_unlock(&adev->psp.mutex);
+ 
+ 	if (ret) {
+-		DRM_ERROR("Failed to read USBC PD FW, err = %d", ret);
++		dev_err(adev->dev, "Failed to read USBC PD FW, err = %d\n", ret);
+ 		return ret;
+ 	}
+ 
+@@ -3458,7 +3464,7 @@ static ssize_t psp_usbc_pd_fw_sysfs_write(struct device *dev,
+ 	void *fw_pri_cpu_addr;
+ 
+ 	if (!adev->ip_blocks[AMD_IP_BLOCK_TYPE_PSP].status.late_initialized) {
+-		DRM_INFO("PSP block is not ready yet.");
++		dev_err(adev->dev, "PSP block is not ready yet.");
+ 		return -EBUSY;
+ 	}
+ 
+@@ -3491,7 +3497,7 @@ static ssize_t psp_usbc_pd_fw_sysfs_write(struct device *dev,
+ 	release_firmware(usbc_pd_fw);
+ fail:
+ 	if (ret) {
+-		DRM_ERROR("Failed to load USBC PD FW, err = %d", ret);
++		dev_err(adev->dev, "Failed to load USBC PD FW, err = %d", ret);
+ 		count = ret;
+ 	}
+ 
+@@ -3533,7 +3539,7 @@ static ssize_t amdgpu_psp_vbflash_write(struct file *filp, struct kobject *kobj,
+ 
+ 	/* Safeguard against memory drain */
+ 	if (adev->psp.vbflash_image_size > AMD_VBIOS_FILE_MAX_SIZE_B) {
+-		dev_err(adev->dev, "File size cannot exceed %u", AMD_VBIOS_FILE_MAX_SIZE_B);
++		dev_err(adev->dev, "File size cannot exceed %u\n", AMD_VBIOS_FILE_MAX_SIZE_B);
+ 		kvfree(adev->psp.vbflash_tmp_buf);
+ 		adev->psp.vbflash_tmp_buf = NULL;
+ 		adev->psp.vbflash_image_size = 0;
+@@ -3552,7 +3558,7 @@ static ssize_t amdgpu_psp_vbflash_write(struct file *filp, struct kobject *kobj,
+ 	adev->psp.vbflash_image_size += count;
+ 	mutex_unlock(&adev->psp.mutex);
+ 
+-	dev_dbg(adev->dev, "IFWI staged for update");
++	dev_dbg(adev->dev, "IFWI staged for update\n");
+ 
+ 	return count;
+ }
+@@ -3572,7 +3578,7 @@ static ssize_t amdgpu_psp_vbflash_read(struct file *filp, struct kobject *kobj,
+ 	if (adev->psp.vbflash_image_size == 0)
+ 		return -EINVAL;
+ 
+-	dev_dbg(adev->dev, "PSP IFWI flash process initiated");
++	dev_dbg(adev->dev, "PSP IFWI flash process initiated\n");
+ 
+ 	ret = amdgpu_bo_create_kernel(adev, adev->psp.vbflash_image_size,
+ 					AMDGPU_GPU_PAGE_SIZE,
+@@ -3597,11 +3603,11 @@ static ssize_t amdgpu_psp_vbflash_read(struct file *filp, struct kobject *kobj,
+ 	adev->psp.vbflash_image_size = 0;
+ 
+ 	if (ret) {
+-		dev_err(adev->dev, "Failed to load IFWI, err = %d", ret);
++		dev_err(adev->dev, "Failed to load IFWI, err = %d\n", ret);
+ 		return ret;
+ 	}
+ 
+-	dev_dbg(adev->dev, "PSP IFWI flash process done");
++	dev_dbg(adev->dev, "PSP IFWI flash process done\n");
+ 	return 0;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
