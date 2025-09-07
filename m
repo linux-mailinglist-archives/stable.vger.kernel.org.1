@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B535B47D45
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2788EB47D7C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BD19189C682
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D96C517AA36
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A752836A0;
-	Sun,  7 Sep 2025 20:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92B21B424F;
+	Sun,  7 Sep 2025 20:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4EFgQuz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xb4gVz1Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366061CDFAC;
-	Sun,  7 Sep 2025 20:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F4E1CDFAC;
+	Sun,  7 Sep 2025 20:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275778; cv=none; b=hmHW9aT72eWoY/pUTaXWzyUo3siLwk0yJWldCc7SLJtJr4kSXWBbw6TRTQ5wZFJ51LVtLcz/0XymHkg8hvB72Xll/g4Lb4J9CLV/II4Pm6YUl3GeH5RYWzO1FW9q8O3ROZXm86bs+1yFv+9jlnekyGQuv3b0ng+4CeT4Mk+ky+s=
+	t=1757275952; cv=none; b=Zk+xV+6Eo5oXD92/Y+LYtGCEcvj3VWcz901EghtoQp0bB9JQtUoF8AyXMLYbNYeEn9h9CSNhVDcNC6LUt1K5jX3emkz9MKHrEK5NmHjfgWdlvh9n7H2ui75K+RzTVwIbjRLdGuRSRAELG+rfoMbCyIF8OZz+dxuhfiPyVgskxJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275778; c=relaxed/simple;
-	bh=64aOqgjix7/IQbXz6rq8sO+Rg8yvUWmKrfqemUnMDbg=;
+	s=arc-20240116; t=1757275952; c=relaxed/simple;
+	bh=gWYuooB2mcUaiQJ5UWCvyxpNlNxCs/c2nKRPDaHcHYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ioWTUeXmAM6L0QtpF88RoOF60gBJYSBbMVi3VbFHu0tk6u44YykYYbQYgSP9AnVmu6pTLCZI4xLOYp6yC5SSm5xm0teT49S6YmsqaOIfbS9nDwYKCfRgd0cj/hpTNwFlpNmaUgUwbz4e52zw2RtVAfcYS4QBTPqg1aFWxLByIhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4EFgQuz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61AF0C4CEF0;
-	Sun,  7 Sep 2025 20:09:36 +0000 (UTC)
+	 MIME-Version; b=kEC5SjsaXcEyxGObGvOJOvA8/bCeSckakURquy4b4dcpDPQg/YBxtqjxlMS5aKN8jJQdwF6bkrzrT+42GBd3cnaGrxRaWco7Of1WM2Cen8hS7U9HCFfUhWoy8rIajZk6ZvACcRwYLvWqx2xsBELhYcyVjCy81gF5Tbo6GplVs8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xb4gVz1Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3B9C4CEF0;
+	Sun,  7 Sep 2025 20:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275776;
-	bh=64aOqgjix7/IQbXz6rq8sO+Rg8yvUWmKrfqemUnMDbg=;
+	s=korg; t=1757275952;
+	bh=gWYuooB2mcUaiQJ5UWCvyxpNlNxCs/c2nKRPDaHcHYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4EFgQuzZk69rLvWmVUx86lRw6UTiprH4XWvIy1xMW4AFLhsy3NLMjWnJ2d2VjgUh
-	 pGPQ2aEL9zJfGVi4rxUy7QEmBnkYHwstsRi5sZnbs2HSSQzaTEkISexmhjloNMXMLe
-	 Fr/voyKlK2xN/IeivmME12rC4+l7COvvDKPGG2Jo=
+	b=Xb4gVz1Yqa0xc872rz1WxhQwpy0gt2ncD2A6LF7GjdDLNXEI2rPf1F+kHY7dY5Ldz
+	 f2GUeAzZ93ImpEbZB5qsVhlGEshP0QGyEGVPVuoK3qOi/nFg1EhzFFBu9rJpAd/rXH
+	 cVn4AKbx9d+DCyzzm/RDneyNG0h9y5RoMCdpuoGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Thibaut VARENE <hacks@slashdirt.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 39/52] arm64: dts: marvell: uDPU: define pinctrl state for alarm LEDs
+Subject: [PATCH 5.15 17/64] net: ethernet: mtk_eth_soc: fix tx vlan tag for llc packets
 Date: Sun,  7 Sep 2025 21:57:59 +0200
-Message-ID: <20250907195603.106100079@linuxfoundation.org>
+Message-ID: <20250907195603.877601842@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit b04f0d89e880bc2cca6a5c73cf287082c91878da ]
+[ Upstream commit d4736737110ffa83d29f1c5d17b26113864205f6 ]
 
-The two alarm LEDs of on the uDPU board are stopped working since
-commit 78efa53e715e ("leds: Init leds class earlier").
+When sending llc packets with vlan tx offload, the hardware fails to
+actually add the tag. Deal with this by fixing it up in software.
 
-The LEDs are driven by the GPIO{15,16} pins of the North Bridge
-GPIO controller. These pins are part of the 'spi_quad' pin group
-for which the 'spi' function is selected via the default pinctrl
-state of the 'spi' node. This is wrong however, since in order to
-allow controlling the LEDs, the pins should use the 'gpio' function.
-
-Before the commit mentined above, the 'spi' function is selected
-first by the pinctrl core before probing the spi driver, but then
-it gets overridden to 'gpio' implicitly via the
-devm_gpiod_get_index_optional() call from the 'leds-gpio' driver.
-
-After the commit, the LED subsystem gets initialized before the
-SPI subsystem, so the function of the pin group remains 'spi'
-which in turn prevents controlling of the LEDs.
-
-Despite the change of the initialization order, the root cause is
-that the pinctrl state definition is wrong since its initial commit
-0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board"),
-
-To fix the problem, override the function in the 'spi_quad_pins'
-node to 'gpio' and move the pinctrl state definition from the
-'spi' node into the 'leds' node.
-
-Cc: stable@vger.kernel.org # needs adjustment for < 6.1
-Fixes: 0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-[ Applied to .dts instead of .dtsi ]
+Fixes: 656e705243fd ("net-next: mediatek: add support for MT7623 ethernet")
+Reported-by: Thibaut VARENE <hacks@slashdirt.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250831182007.51619-1-nbd@nbd.name
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts
-+++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dts
-@@ -28,8 +28,9 @@
- 	};
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 711acc6059a4f..4d7a72bcee614 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -1196,6 +1196,13 @@ static netdev_tx_t mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	bool gso = false;
+ 	int tx_num;
  
- 	leds {
--		pinctrl-names = "default";
- 		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&spi_quad_pins>;
- 
- 		power1 {
- 			label = "udpu:green:power";
-@@ -96,8 +97,6 @@
- 
- &spi0 {
- 	status = "okay";
--	pinctrl-names = "default";
--	pinctrl-0 = <&spi_quad_pins>;
- 
- 	m25p80@0 {
- 		compatible = "jedec,spi-nor";
-@@ -117,6 +116,10 @@
- 	};
- };
- 
-+&spi_quad_pins {
-+	function = "gpio";
-+};
++	if (skb_vlan_tag_present(skb) &&
++	    !eth_proto_is_802_3(eth_hdr(skb)->h_proto)) {
++		skb = __vlan_hwaccel_push_inside(skb);
++		if (!skb)
++			goto dropped;
++	}
 +
- &pinctrl_nb {
- 	i2c1_recovery_pins: i2c1-recovery-pins {
- 		groups = "i2c1";
+ 	/* normally we can rely on the stack not calling this more than once,
+ 	 * however we have 2 queues running on the same ring so we need to lock
+ 	 * the ring access
+@@ -1241,8 +1248,9 @@ static netdev_tx_t mtk_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 
+ drop:
+ 	spin_unlock(&eth->page_lock);
+-	stats->tx_dropped++;
+ 	dev_kfree_skb_any(skb);
++dropped:
++	stats->tx_dropped++;
+ 	return NETDEV_TX_OK;
+ }
+ 
+-- 
+2.50.1
+
 
 
 
