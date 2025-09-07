@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-178213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3938B47DB5
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:15:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A1BEB47D5D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85F301893341
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DEE2189CA54
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93591AF0B6;
-	Sun,  7 Sep 2025 20:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED13284883;
+	Sun,  7 Sep 2025 20:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3vlQyfl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/0tzzCo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A0C1A2389;
-	Sun,  7 Sep 2025 20:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC3A1F09A5;
+	Sun,  7 Sep 2025 20:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276125; cv=none; b=Y/N/GJFx2jZhAbqwkIfrmHYs8ceF8QZyEyrk2UyhL/7TfzFrTmOJ0Rj92eF12Ymi/+yxRkQPRfifl8gbpeO4qiql5KQ7d+7EH8uMkF0vt67namA9wpWsPxTd7fK8mR5c81BeJ0CT/Q2FXPiGfegqn1NdV4n9fEJGLqLjXBj2JxM=
+	t=1757275854; cv=none; b=ZqJqetDKBTh2dTvK6HKy/HLXC5U5HA59eCHeFRkowpx7snF8mqinaTGn/xJBcLpd6c3Gjdd6Jf/Lp01VOWMSbCCnmmaisuw6+yw781V10AmFx/3SJ34Uciy2K6kV8AmbEKc6Faub0S8Ep9aPp7kI5zSkHtMB/M3zFNseokDNmfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276125; c=relaxed/simple;
-	bh=DeJ6DsZ/JNnYKLyEqazkUNhJDhA6l9Zz0gEaxaKTpOw=;
+	s=arc-20240116; t=1757275854; c=relaxed/simple;
+	bh=1tnaEUhxiVc0wFzPAX/9tgO9wW7i/R1iJnQie2ZEzfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h2RgiNuJ+VvApqMsZIoqw6N87vEZsjv22uVO+MfvdYAsMK1J3yOin7UlYXFJZBn/5idhS7H9UiDYqKBRxoacf+hubiOIdTVzhnF7ijHSlfhiFi8mGTzneU3uP175MmDUYkGmxzwtz70vtVlQSJaQpZmy4e7b9PtnRAzJp8CHEaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3vlQyfl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20DBC4CEF0;
-	Sun,  7 Sep 2025 20:15:24 +0000 (UTC)
+	 MIME-Version; b=Du/SaOR9RaHGqiI6NMHuf8G/QHOYpiIMF1yj8dlYmceITe9Ea8At1DIkol0DyUhrKedXMs+pIfF6psvDmcvqd9dN2Fqt3815CvBqDKrf9DnGc7LtbJx7e5Fq1U0GhQGtdj6gXPMXi9Ph/RK0SFuDd4PHnip5wUBJvGjQ+/UZ6wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/0tzzCo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C86CDC4CEF0;
+	Sun,  7 Sep 2025 20:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276125;
-	bh=DeJ6DsZ/JNnYKLyEqazkUNhJDhA6l9Zz0gEaxaKTpOw=;
+	s=korg; t=1757275854;
+	bh=1tnaEUhxiVc0wFzPAX/9tgO9wW7i/R1iJnQie2ZEzfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w3vlQyflOSgUtEzQ3D3Id8+vB3MYvsi0IDtbvAd1TT8fVvPMNtY7JgnNXhot6+OPo
-	 9+5g0CT5aLfFTx1goYr/o5whJ8vYeo7/chtC8EhA/nT+VF4n+97ADyGm4H9KtnaCRQ
-	 wdzrg1qM3OtrQ0yZfz/sGrwTP0lKf91Wq2NkzcQk=
+	b=P/0tzzCo5+TKj2nZz9CmGe0C8RSbSc/X0wfRQvzS7lBLNSGCBLvWMIuwMHKwXC6sw
+	 YXb2sYRE6YCbFVg22sqkRxY1ZW/gF3OxjEntilezsobTH9s/2KuqIlzmPA4szEiDA7
+	 oT4W6Rojtkjm52xkAA9LzA/8hmohI8kNmpyi1MjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Evans <evans1210144@gmail.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 35/64] scsi: lpfc: Fix buffer free/clear order in deferred receive path
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 31/45] gpio: pca953x: fix IRQ storm on system wake up
 Date: Sun,  7 Sep 2025 21:58:17 +0200
-Message-ID: <20250907195604.372985060@linuxfoundation.org>
+Message-ID: <20250907195601.880352674@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Evans <evans1210144@gmail.com>
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-commit 9dba9a45c348e8460da97c450cddf70b2056deb3 upstream.
+[ Upstream commit 3e38f946062b4845961ab86b726651b4457b2af8 ]
 
-Fix a use-after-free window by correcting the buffer release sequence in
-the deferred receive path. The code freed the RQ buffer first and only
-then cleared the context pointer under the lock. Concurrent paths (e.g.,
-ABTS and the repost path) also inspect and release the same pointer under
-the lock, so the old order could lead to double-free/UAF.
+If an input changes state during wake-up and is used as an interrupt
+source, the IRQ handler reads the volatile input register to clear the
+interrupt mask and deassert the IRQ line. However, the IRQ handler is
+triggered before access to the register is granted, causing the read
+operation to fail.
 
-Note that the repost path already uses the correct pattern: detach the
-pointer under the lock, then free it after dropping the lock. The
-deferred path should do the same.
+As a result, the IRQ handler enters a loop, repeatedly printing the
+"failed reading register" message, until `pca953x_resume()` is eventually
+called, which restores the driver context and enables access to
+registers.
 
-Fixes: 472e146d1cf3 ("scsi: lpfc: Correct upcalling nvmet_fc transport during io done downcall")
+Fix by disabling the IRQ line before entering suspend mode, and
+re-enabling it after the driver context is restored in `pca953x_resume()`.
+
+An IRQ can be disabled with disable_irq() and still wake the system as
+long as the IRQ has wake enabled, so the wake-up functionality is
+preserved.
+
+Fixes: b76574300504 ("gpio: pca953x: Restore registers after suspend/resume cycle")
 Cc: stable@vger.kernel.org
-Signed-off-by: John Evans <evans1210144@gmail.com>
-Link: https://lore.kernel.org/r/20250828044008.743-1-evans1210144@gmail.com
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20250512095441.31645-1-francesco@dolcini.it
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+[ Apply directly to suspend/resume functions ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_nvmet.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpio/gpio-pca953x.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/scsi/lpfc/lpfc_nvmet.c
-+++ b/drivers/scsi/lpfc/lpfc_nvmet.c
-@@ -1244,7 +1244,7 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
- 	struct lpfc_nvmet_tgtport *tgtp;
- 	struct lpfc_async_xchg_ctx *ctxp =
- 		container_of(rsp, struct lpfc_async_xchg_ctx, hdlrctx.fcp_req);
--	struct rqb_dmabuf *nvmebuf = ctxp->rqb_buffer;
-+	struct rqb_dmabuf *nvmebuf;
- 	struct lpfc_hba *phba = ctxp->phba;
- 	unsigned long iflag;
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -1199,6 +1199,9 @@ static int pca953x_suspend(struct device
+ 	struct pca953x_chip *chip = dev_get_drvdata(dev);
  
-@@ -1252,13 +1252,18 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
- 	lpfc_nvmeio_data(phba, "NVMET DEFERRCV: xri x%x sz %d CPU %02x\n",
- 			 ctxp->oxid, ctxp->size, raw_smp_processor_id());
+ 	mutex_lock(&chip->i2c_lock);
++	/* Disable IRQ to prevent early triggering while regmap "cache only" is on */
++	if (chip->client->irq > 0)
++		disable_irq(chip->client->irq);
+ 	regcache_cache_only(chip->regmap, true);
+ 	mutex_unlock(&chip->i2c_lock);
  
-+	spin_lock_irqsave(&ctxp->ctxlock, iflag);
-+	nvmebuf = ctxp->rqb_buffer;
- 	if (!nvmebuf) {
-+		spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
- 		lpfc_printf_log(phba, KERN_INFO, LOG_NVME_IOERR,
- 				"6425 Defer rcv: no buffer oxid x%x: "
- 				"flg %x ste %x\n",
- 				ctxp->oxid, ctxp->flag, ctxp->state);
- 		return;
+@@ -1224,6 +1227,8 @@ static int pca953x_resume(struct device
  	}
-+	ctxp->rqb_buffer = NULL;
-+	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
  
- 	tgtp = phba->targetport->private;
- 	if (tgtp)
-@@ -1266,9 +1271,6 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
- 
- 	/* Free the nvmebuf since a new buffer already replaced it */
- 	nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
--	spin_lock_irqsave(&ctxp->ctxlock, iflag);
--	ctxp->rqb_buffer = NULL;
--	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
- }
- 
- /**
+ 	mutex_lock(&chip->i2c_lock);
++	if (chip->client->irq > 0)
++		enable_irq(chip->client->irq);
+ 	regcache_cache_only(chip->regmap, false);
+ 	regcache_mark_dirty(chip->regmap);
+ 	ret = pca953x_regcache_sync(dev);
 
 
 
