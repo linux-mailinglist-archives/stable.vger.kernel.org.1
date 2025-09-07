@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-178103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3EE5B47D43
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C9C3B47F9C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:39:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF71B189C5EF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D0F73C3418
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EE427FB21;
-	Sun,  7 Sep 2025 20:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B0E1A704B;
+	Sun,  7 Sep 2025 20:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDLGmUsi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Uv2iCiI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76871CDFAC;
-	Sun,  7 Sep 2025 20:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4491DF246;
+	Sun,  7 Sep 2025 20:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275773; cv=none; b=bBmYNDY5dVZE90sI3D7fTvgphrBN74V+ZwlYFCyO0vB23RKVZPbJvo7+S9Wpcx6jlMEBOq3vCNP9dnwdrdk1t2q2OZCeCO7zosmA1fk+T9PqAkuzs9GFYSDMOEa4m9JIQdl1++CQn9xVmur4+n61fK2c/jrPYUr73UmBQQsgGi0=
+	t=1757277593; cv=none; b=hoqznqPPfBdeZQpSKBGWyk5yEAJMX9PS6KGJNUxeOKvf0ozxsloHKBCjNoenWiMjTNNUcOUZogvY2t9E/QCsrIEXDPVdALsuU/d6b04Tv7FYtrfCrsqP1NFK8epxKvsH9ZXHoQWXo8wdWGhNnrSpBsJCn+b3cFDONeonvQ1tYqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275773; c=relaxed/simple;
-	bh=KERRDahLAzuGf1WFj2Z0h8dPYEYO5NcsltgDwjGN0Bk=;
+	s=arc-20240116; t=1757277593; c=relaxed/simple;
+	bh=24OdXIYd2z52mQwke4dgpgctKNp10B6YbB7R0+f8IPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YaB9HhYOaa/uyCGyZkHR91utpvqUcQhpKRjQgXvi6WhY2d26US6zk8Cx9CGXs5WpIOce2wEIC0uKENpVeDEgbTfNHVVOsIoGbA+NXdk6cE1b+bu1h6bU9W2VEcQ5tqGQQHvSSQ7bPKtZfhw2nGLgTXq8KJ+PUEbeqTP96K2LNAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDLGmUsi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C1F7C4CEF0;
-	Sun,  7 Sep 2025 20:09:32 +0000 (UTC)
+	 MIME-Version; b=Y0ioJhto4W98qV+1eCk3RSl5eKhCc9h7WfX0EJQi2rSbjvZ+ZMuRuXckO37LyLfWoAoz60r/iuadCW9jCmg+xD1jcgAGEO0bJpTOn+t+H6xRSfwWaP3YQB/iXILvKliWj2MpiL1+fy11rT/9VkIBKIdnytHOlksgi1HPNkN7yio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Uv2iCiI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B64C4CEF0;
+	Sun,  7 Sep 2025 20:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275773;
-	bh=KERRDahLAzuGf1WFj2Z0h8dPYEYO5NcsltgDwjGN0Bk=;
+	s=korg; t=1757277593;
+	bh=24OdXIYd2z52mQwke4dgpgctKNp10B6YbB7R0+f8IPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDLGmUsi3q1Pw4qHk4PJ8rtkGfR9VPmx8su7JutwDzvzwQm/WUa7ldrMP7W8xRkVm
-	 WYHEmjM0bF5di5Q7/kYv8bUbo6Q9lrm6UQgDeg1V4T2xD0NFzwSG76vxY62OKr7EVW
-	 vbGAcMamaDPJnJRt6Zb8RkvJbaiYF+zqs8Hdt9JY=
+	b=1Uv2iCiIc6fxR9XhLujvggl2I0Ua3ss3TbGdGQu1VldawAzfaKfDxhGxXIILu3zgI
+	 ooidlvHOzoRYIAs399ftKZOxRl3ccVq8QJ1OWf11POzQXkgHmWW5pVRBdm7CyGF32u
+	 5aCz9Ex1IKNXF7g/4ZavpPocW+bFQuihPtM8E8/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	James Clark <james.clark@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Liu Jian <liujian56@huawei.com>,
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 48/52] spi: spi-fsl-lpspi: Set correct chip-select polarity bit
+Subject: [PATCH 6.16 061/183] net/smc: fix one NULL pointer dereference in smc_ib_is_sg_need_sync()
 Date: Sun,  7 Sep 2025 21:58:08 +0200
-Message-ID: <20250907195603.353950192@linuxfoundation.org>
+Message-ID: <20250907195617.241483989@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit cbe33705864ba2697a2939de715b81538cf32430 ]
+[ Upstream commit ba1e9421cf1a8369d25c3832439702a015d6b5f9 ]
 
-The driver currently supports multiple chip-selects, but only sets the
-polarity for the first one (CS 0). Fix it by setting the PCSPOL bit for
-the desired chip-select.
+BUG: kernel NULL pointer dereference, address: 00000000000002ec
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP PTI
+CPU: 28 UID: 0 PID: 343 Comm: kworker/28:1 Kdump: loaded Tainted: G        OE       6.17.0-rc2+ #9 NONE
+Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+Workqueue: smc_hs_wq smc_listen_work [smc]
+RIP: 0010:smc_ib_is_sg_need_sync+0x9e/0xd0 [smc]
+...
+Call Trace:
+ <TASK>
+ smcr_buf_map_link+0x211/0x2a0 [smc]
+ __smc_buf_create+0x522/0x970 [smc]
+ smc_buf_create+0x3a/0x110 [smc]
+ smc_find_rdma_v2_device_serv+0x18f/0x240 [smc]
+ ? smc_vlan_by_tcpsk+0x7e/0xe0 [smc]
+ smc_listen_find_device+0x1dd/0x2b0 [smc]
+ smc_listen_work+0x30f/0x580 [smc]
+ process_one_work+0x18c/0x340
+ worker_thread+0x242/0x360
+ kthread+0xe7/0x220
+ ret_from_fork+0x13a/0x160
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20250828-james-nxp-lpspi-v2-2-6262b9aa9be4@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+If the software RoCE device is used, ibdev->dma_device is a null pointer.
+As a result, the problem occurs. Null pointer detection is added to
+prevent problems.
+
+Fixes: 0ef69e788411c ("net/smc: optimize for smc_sndbuf_sync_sg_for_device and smc_rmb_sync_sg_for_cpu")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Reviewed-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
+Link: https://patch.msgid.link/20250828124117.2622624-1-liujian56@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/smc/smc_ib.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 7ece48667f52d..ab096368a1fd5 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -5,6 +5,7 @@
- // Copyright 2016 Freescale Semiconductor, Inc.
- // Copyright 2018, 2023, 2025 NXP
+diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
+index 53828833a3f7f..a42ef3f77b961 100644
+--- a/net/smc/smc_ib.c
++++ b/net/smc/smc_ib.c
+@@ -742,6 +742,9 @@ bool smc_ib_is_sg_need_sync(struct smc_link *lnk,
+ 	unsigned int i;
+ 	bool ret = false;
  
-+#include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <linux/completion.h>
- #include <linux/delay.h>
-@@ -71,7 +72,7 @@
- #define DER_TDDE	BIT(0)
- #define CFGR1_PCSCFG	BIT(27)
- #define CFGR1_PINCFG	(BIT(24)|BIT(25))
--#define CFGR1_PCSPOL	BIT(8)
-+#define CFGR1_PCSPOL_MASK	GENMASK(11, 8)
- #define CFGR1_NOSTALL	BIT(3)
- #define CFGR1_MASTER	BIT(0)
- #define FSR_TXCOUNT	(0xFF)
-@@ -395,7 +396,9 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
- 	else
- 		temp = CFGR1_PINCFG;
- 	if (fsl_lpspi->config.mode & SPI_CS_HIGH)
--		temp |= CFGR1_PCSPOL;
-+		temp |= FIELD_PREP(CFGR1_PCSPOL_MASK,
-+				   BIT(fsl_lpspi->config.chip_select));
++	if (!lnk->smcibdev->ibdev->dma_device)
++		return ret;
 +
- 	writel(temp, fsl_lpspi->base + IMX7ULP_CFGR1);
- 
- 	temp = readl(fsl_lpspi->base + IMX7ULP_CR);
+ 	/* for now there is just one DMA address */
+ 	for_each_sg(buf_slot->sgt[lnk->link_idx].sgl, sg,
+ 		    buf_slot->sgt[lnk->link_idx].nents, i) {
 -- 
-2.51.0
+2.50.1
 
 
 
