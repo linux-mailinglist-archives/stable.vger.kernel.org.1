@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-178690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33DE2B47FAD
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:40:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D554B47D69
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E200A3BAEDA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:40:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 358F5161F58
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9D3212B3D;
-	Sun,  7 Sep 2025 20:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1315C27FB21;
+	Sun,  7 Sep 2025 20:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCZKwSgE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1DzS0PU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB5D4315A;
-	Sun,  7 Sep 2025 20:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53081CDFAC;
+	Sun,  7 Sep 2025 20:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277646; cv=none; b=jeGDMX1zS+Nh3bPUY9Za06WTBarKTDtF57yCENj3yRSdP1Gfpzb9E3IB2LF9qnvI5VURa5q9kG0EqtsTJ4Hc1amWNwvQ7i+fFtjrQkp/IIWhWSHN9PKmZcePbCaS+4cWGopJZgAxbtfXwwf8i9TgfmZdjGOTPJPQol7cU9v6yzY=
+	t=1757275892; cv=none; b=nmKVCTQggOZBCx7+a+DrjAdRhNjFJLU0Sg93g7TsbSJtYZrAfPjXxAHUsO3B5piRXBhkQJEbDurICboh4bVFBWc9c3+IfX8NjDwskzxo3V7Z6b6dsT3cEP3SvoUYRe3+IXM9squXca6WJfPCXA/k88YxdPQ45/L59URKc5JK+kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277646; c=relaxed/simple;
-	bh=cN76D8Blb+6+MZHGn8z80NWyf2qq767np+8n57Retqc=;
+	s=arc-20240116; t=1757275892; c=relaxed/simple;
+	bh=W4G2qHiwIE3OcY509rGB12qKRRy9tF1fbUZ8VjoHquY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dJPUOMK90FsBrxwvi2y2z+ALpQZmlubbgKMCEs27zJobzeM1WiLAy/7yX0MbAVU9O4kjbxLLGRbFaBtJuj9aApLwI1t/JDA1Bc6F/Zeb8OSU8PQxGKyo2TcbHkEvOm7BugP3oUb5dweagAgQ2hXv3jVO5+l4vDzVddpSjGFP05U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCZKwSgE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778A3C4CEF0;
-	Sun,  7 Sep 2025 20:40:45 +0000 (UTC)
+	 MIME-Version; b=sEwbKM0DiiW0DruyjJt0DdGl4qaKuH5UZnZuax9d7QuVEVOWMCGtatD2eaJTykufkc3ah5WKxFGfb0nwzhlkKkzv6AVu0ADpJ3aQq1rT9ZgkWI8QyPHmWrL1uLhPUcX0ZmPNyg2Xch7UXwe/NXo3GMitnVml5QVVasz+Vg9Eb9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1DzS0PU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465BCC4CEF0;
+	Sun,  7 Sep 2025 20:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277646;
-	bh=cN76D8Blb+6+MZHGn8z80NWyf2qq767np+8n57Retqc=;
+	s=korg; t=1757275892;
+	bh=W4G2qHiwIE3OcY509rGB12qKRRy9tF1fbUZ8VjoHquY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OCZKwSgEGNt5UWYm9eIyjh8v28OUeR8v8XkbV6B+8vnFNInPjhXNqNmbTR0vxmnAK
-	 ZWRD8f+WRcjT3tG5q6smZX/T43OnjoV3KDY7+sUxFgGevPjZaGAUWzx1p+cJtuLEOI
-	 8fMN7LArQ4b+viWDr8WV+E3hndT/lF8VSmZ7YXME=
+	b=i1DzS0PU+rEu5GASA33AeSRZOpHvJ4Lqc25EEwGH3b1gAcm77+8RTExGa/nzymfZj
+	 irskhHW4H8VRFiCMYpuplXv9ToqARrbMZAfTAFZk0hbDrAiR2W66I5Hthwh4Mp+5eJ
+	 ZqQH/vxH/3KYbuHa7KGP6sVktjwe861r+jEsWiQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	James Clark <james.clark@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 080/183] tools: ynl-gen: fix nested array counting
-Date: Sun,  7 Sep 2025 21:58:27 +0200
-Message-ID: <20250907195617.697597240@linuxfoundation.org>
+Subject: [PATCH 5.4 42/45] spi: spi-fsl-lpspi: Set correct chip-select polarity bit
+Date: Sun,  7 Sep 2025 21:58:28 +0200
+Message-ID: <20250907195602.228467919@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +62,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+From: Larisa Grigore <larisa.grigore@nxp.com>
 
-[ Upstream commit b4ada0618eed0fbd1b1630f73deb048c592b06a1 ]
+[ Upstream commit cbe33705864ba2697a2939de715b81538cf32430 ]
 
-The blamed commit introduced the concept of split attribute
-counting, and later allocating an array to hold them, however
-TypeArrayNest wasn't updated to use the new counting variable.
+The driver currently supports multiple chip-selects, but only sets the
+polarity for the first one (CS 0). Fix it by setting the PCSPOL bit for
+the desired chip-select.
 
-Abbreviated example from tools/net/ynl/generated/nl80211-user.c:
-nl80211_if_combination_attributes_parse(...):
-  unsigned int n_limits = 0;
-  [...]
-  ynl_attr_for_each(attr, nlh, yarg->ys->family->hdr_len)
-	if (type == NL80211_IFACE_COMB_LIMITS)
-		ynl_attr_for_each_nested(attr2, attr)
-			dst->_count.limits++;
-  if (n_limits) {
-	dst->_count.limits = n_limits;
-	/* allocate and parse attributes */
-  }
-
-In the above example n_limits is guaranteed to always be 0,
-hence the conditional is unsatisfiable and is optimized out.
-
-This patch changes the attribute counting to use n_limits++ in the
-attribute counting loop in the above example.
-
-Fixes: 58da455b31ba ("tools: ynl-gen: improve unwind on parsing errors")
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
-Link: https://patch.msgid.link/20250902160001.760953-1-ast@fiberby.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250828-james-nxp-lpspi-v2-2-6262b9aa9be4@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-fsl-lpspi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 76032e01c2e75..0725a52b6ad7b 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -830,7 +830,7 @@ class TypeArrayNest(Type):
-                      'ynl_attr_for_each_nested(attr2, attr) {',
-                      '\tif (ynl_attr_validate(yarg, attr2))',
-                      '\t\treturn YNL_PARSE_CB_ERROR;',
--                     f'\t{var}->_count.{self.c_name}++;',
-+                     f'\tn_{self.c_name}++;',
-                      '}']
-         return get_lines, None, local_vars
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 8a4925469dfb9..6cabad2923aec 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -5,6 +5,7 @@
+ // Copyright 2016 Freescale Semiconductor, Inc.
+ // Copyright 2018, 2023, 2025 NXP
  
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+ #include <linux/delay.h>
+@@ -74,7 +75,7 @@
+ #define DER_TDDE	BIT(0)
+ #define CFGR1_PCSCFG	BIT(27)
+ #define CFGR1_PINCFG	(BIT(24)|BIT(25))
+-#define CFGR1_PCSPOL	BIT(8)
++#define CFGR1_PCSPOL_MASK	GENMASK(11, 8)
+ #define CFGR1_NOSTALL	BIT(3)
+ #define CFGR1_MASTER	BIT(0)
+ #define FSR_TXCOUNT	(0xFF)
+@@ -415,7 +416,9 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
+ 	else
+ 		temp = CFGR1_PINCFG;
+ 	if (fsl_lpspi->config.mode & SPI_CS_HIGH)
+-		temp |= CFGR1_PCSPOL;
++		temp |= FIELD_PREP(CFGR1_PCSPOL_MASK,
++				   BIT(fsl_lpspi->config.chip_select));
++
+ 	writel(temp, fsl_lpspi->base + IMX7ULP_CFGR1);
+ 
+ 	temp = readl(fsl_lpspi->base + IMX7ULP_CR);
 -- 
-2.50.1
+2.51.0
 
 
 
