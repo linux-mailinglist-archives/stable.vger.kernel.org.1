@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-178802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79791B4801F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:46:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0092AB48009
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:45:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17B967A89E7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:45:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EBFA3B2D8E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6741F12F4;
-	Sun,  7 Sep 2025 20:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B621E572F;
+	Sun,  7 Sep 2025 20:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aaFfxU5h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiKYIKIl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0E7125B2;
-	Sun,  7 Sep 2025 20:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1877E107;
+	Sun,  7 Sep 2025 20:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757278006; cv=none; b=N8+fNQiGaow1fetr7+o41KXV3PIRn+/5vM8nI3DERDNpQy7q+kK+hYupniJpyscla74XojrQd/8vxiXWDMYorlqf74Q0mqahYppotZookyIOQzqmh5jAix5ZLgwTmSlNt1wOXjxB9edhA2lSh+QUMoBqRVNJ0Of51RYD3wuaqOQ=
+	t=1757277934; cv=none; b=un2ZOjWNSA3jgfcjUp/OI8Ny8CveaMaCFwEtCfoNgc4tOIUGGCp097IbNTquwAxI/tIlufhRvWfnsqyjmYpvyOvCYVDlPSv/eXqqQmXdYs2uym8p3CNitthOT6iHQKbzWX5cv0wi8IoNVkwEPsjk9/WHJ6pGzYE1QEqw/AsJtIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757278006; c=relaxed/simple;
-	bh=bXMToLhIK6JC66BhQEDhleWRd7ynMVpIkp/Zr55bYqY=;
+	s=arc-20240116; t=1757277934; c=relaxed/simple;
+	bh=/VZT04UBQTs5Hp45ZvgL2st9U0GHKvIArXFwYf8Lk1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdINkA503OsbkV2mfoFfZ5D665/DcR2XTyGhaWYYC6NBmsuWNBDSUOMbNuz1rQu53FnWvRUkrgns6UznBxva540YrXOBOBK00QL3Ps8n+p1FetDonggMTcsFaz+c9nPLApWS34D/rcRwt2No974m/TnSHlbXUXtEawJg0EmaVI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aaFfxU5h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0113C4CEF0;
-	Sun,  7 Sep 2025 20:46:45 +0000 (UTC)
+	 MIME-Version; b=Dzi3nkuHq33nIgt72G0IEwbc+wPaqcbUeNbFDecg8DmGjv73LEJWKcLIDpI/MTOktHcTeDz5KE0c6cYCC4QEK7EAqIIZ4EtWVVHabeqXel0K/P1u3QO+BKjxPCjvIDqAN274CzHIaGKhS3olsBvbeElHgOb84Sa+Sogg2EkXyYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eiKYIKIl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 209F0C4CEF0;
+	Sun,  7 Sep 2025 20:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757278006;
-	bh=bXMToLhIK6JC66BhQEDhleWRd7ynMVpIkp/Zr55bYqY=;
+	s=korg; t=1757277934;
+	bh=/VZT04UBQTs5Hp45ZvgL2st9U0GHKvIArXFwYf8Lk1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aaFfxU5hSUxjStjCxcD4hJuupHc2K9PiExYx1ukGnfpcoGKHImojqS1wQugduqL6T
-	 eEx8+SpgNV4g71a9fNFYKe39fG+z1URJ51paqpPPhaNFvtkD3j12KQF9jOCiAZ4VEX
-	 Wy1J9989qjBFVkZ/PwXLGMnq7HNO3PJ9pcVZmQYE=
+	b=eiKYIKIloGLeecp7fESwhBKFO3P6/EpvmLWOwOvYZBga/4WoZvN7rrHxeRwbDTN6f
+	 v+jtZHtIln0Irw3vZ95gQcM/p5T+gbjnhkvVMCTxdou6TvCkz4+RssBLYmF3spo0AJ
+	 /p9b6DNhKPyY48gtYxpmZ4yXRg1jZwtWoIP6bzgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Rossi <nathan.rossi@digi.com>,
+	Wenliang Yan <wenliang202407@163.com>,
 	Chris Packham <chris.packham@alliedtelesis.co.nz>,
 	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 161/183] hwmon: (ina238) Correctly clamp shunt voltage limit
-Date: Sun,  7 Sep 2025 21:59:48 +0200
-Message-ID: <20250907195619.642308316@linuxfoundation.org>
+Subject: [PATCH 6.16 162/183] hwmon: (ina238) Correctly clamp power limits
+Date: Sun,  7 Sep 2025 21:59:49 +0200
+Message-ID: <20250907195619.664649745@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
 References: <20250907195615.802693401@linuxfoundation.org>
@@ -69,35 +69,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit bd7e7bc2cc2024035dfbc8239c9f4d8675793445 ]
+[ Upstream commit c2623573178bab32990695fb729e9b69710ed66d ]
 
-When clamping a register value, the result needs to be masked against the
-register size. This was missing, resulting in errors when trying to write
-negative limits. Fix by masking the clamping result against the register
-size.
+ina238_write_power() was attempting to clamp the user input but was
+throwing away the result. Ensure that we clamp the value to the
+appropriate range before it is converted into a register value.
 
-Fixes: eacb52f010a80 ("hwmon: Driver for Texas Instruments INA238")
-Cc: Nathan Rossi <nathan.rossi@digi.com>
+Fixes: 0d9f596b1fe34 ("hwmon: (ina238) Modify the calculation formula to adapt to different chips")
+Cc: Wenliang Yan <wenliang202407@163.com>
 Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/ina238.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/ina238.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/hwmon/ina238.c b/drivers/hwmon/ina238.c
-index a2cb615fa2789..0562f9a4dcf12 100644
+index 0562f9a4dcf12..5c90c3e59f80c 100644
 --- a/drivers/hwmon/ina238.c
 +++ b/drivers/hwmon/ina238.c
-@@ -300,7 +300,7 @@ static int ina238_write_in(struct device *dev, u32 attr, int channel,
- 		regval = clamp_val(val, -163, 163);
- 		regval = (regval * 1000 * 4) /
- 			 (INA238_SHUNT_VOLTAGE_LSB * data->gain);
--		regval = clamp_val(regval, S16_MIN, S16_MAX);
-+		regval = clamp_val(regval, S16_MIN, S16_MAX) & 0xffff;
+@@ -426,9 +426,10 @@ static int ina238_write_power(struct device *dev, u32 attr, long val)
+ 	 * Unsigned postive values. Compared against the 24-bit power register,
+ 	 * lower 8-bits are truncated. Same conversion to/from uW as POWER
+ 	 * register.
++	 * The first clamp_val() is to establish a baseline to avoid overflows.
+ 	 */
+-	regval = clamp_val(val, 0, LONG_MAX);
+-	regval = div_u64(val * 4 * 100 * data->rshunt, data->config->power_calculate_factor *
++	regval = clamp_val(val, 0, LONG_MAX / 2);
++	regval = div_u64(regval * 4 * 100 * data->rshunt, data->config->power_calculate_factor *
+ 			1000ULL * INA238_FIXED_SHUNT * data->gain);
+ 	regval = clamp_val(regval >> 8, 0, U16_MAX);
  
- 		switch (attr) {
- 		case hwmon_in_max:
 -- 
 2.51.0
 
