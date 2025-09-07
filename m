@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78C6CB47F3E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 549EFB47E25
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA3191884089
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:35:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D0E6188E34B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8AD212B3D;
-	Sun,  7 Sep 2025 20:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2F514BFA2;
+	Sun,  7 Sep 2025 20:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYhji/v7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vn3u0hT6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F621A0BFD;
-	Sun,  7 Sep 2025 20:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F871A2389;
+	Sun,  7 Sep 2025 20:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277287; cv=none; b=bsXl33VRVWh90dn/sAYP+48ZokaUIpFF2cbhK1JNLt3lPIuluQxVdGhMe0oDa7tch95MGWALD97oNsGsiOcqU7wUjQy2TJuaAwTKDPG33PdJSfhvZXCBKDrcXgXmSsM9dzvh0f+7sl5SRnsA5+Yw7uaweRu8ho/7e7Rn+FT1wrg=
+	t=1757276440; cv=none; b=oMrZ2mGTUwQYffZwUIneWWA7bhWUbUWfLyOeFkTuaP2A1MpvBslQCteNe1xEK+NFkikMOefoN3nUKT46wIbcGCMdPe++XrZGizvK842s15cI4pVzaLDGBei8/hYMu8PuZZ/1hSt1FPcS5HczlWZMnPzmAFY4/8+Nm8f6tzEZVsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277287; c=relaxed/simple;
-	bh=7LoeOI7rBEWC0rUquzaU+q091ZH8psnfoP0ajfKxOZw=;
+	s=arc-20240116; t=1757276440; c=relaxed/simple;
+	bh=N3Us1O8027yb6VRehi/XzhI6zFjFjhjJoOz7AcuYDEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cuLZUxu/iK48EwUiAb/UTTYng/NglQkjuCv5zQs3Ij0Wf0uYC3EorQE2SB1dILk42zAgDzZNkinbzprxbpYRFHehWmOCdFpcAKEkSm2Ekp+C/cdBRS+ge+MwA/NIUmnoVhEkel9PvmUXvXShZUHpSun9XkIa1wKfZ38Gev521ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYhji/v7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286A6C4CEF0;
-	Sun,  7 Sep 2025 20:34:46 +0000 (UTC)
+	 MIME-Version; b=sL8t0gjj4GlaZitsDK3FKuPHzq9l952EKitP+Lo5Qf5rf2hdXTRfqokyt1Ajj9kPk74vg34FWBwpHNrL4J89qcr2UxwV2LqcZFfGWmENVeHyk63NSbVDas2+r/vJ6noskqm9ef/V3B5Dr44VAs9rUAZpCQ+FUmiUtAQtuTKOv2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vn3u0hT6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E9BC4CEF0;
+	Sun,  7 Sep 2025 20:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277287;
-	bh=7LoeOI7rBEWC0rUquzaU+q091ZH8psnfoP0ajfKxOZw=;
+	s=korg; t=1757276440;
+	bh=N3Us1O8027yb6VRehi/XzhI6zFjFjhjJoOz7AcuYDEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYhji/v7CPTzhVsUP2ESs+RIspP1uf8CXWfSrE4OmKH0bp4+ERr5aSYFIC3eQTHvf
-	 EwRg0rq1FuYU8sm+4YBxbbGv8GdC4m9ybWKXn4UoWrPITb4iQCBbRwvazrX1wh3HqT
-	 zaI3Db1bC2W19FpJ40y5iU2LAkNyMkXxqn6BQ9Ao=
+	b=vn3u0hT6sW0B09E3+kozJPdGwkY01gViUXPrhGOtVoAmkJpSzb1KtSCpahbX7UKXy
+	 3MdULlrfaal6qUxKvzD3jJyMMbbZdG5jILFqluQGB45+D5PYXGeLsrY0aBFXlGrml+
+	 eBjVz0MAZ2MZdESLWkAl9ETX/BKHT1+fxbQa8ztk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 145/175] dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()
+Subject: [PATCH 6.1 103/104] cpufreq: intel_pstate: Read global.no_turbo under READ_ONCE()
 Date: Sun,  7 Sep 2025 21:59:00 +0200
-Message-ID: <20250907195618.288550989@linuxfoundation.org>
+Message-ID: <20250907195610.334686696@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +60,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 157ae5ffd76a2857ccb4b7ce40bc5a344ca00395 ]
+[ Upstream commit 9558fae8ce97b3b320b387dd7c88309df2c36d4d ]
 
-Fix a potential deadlock bug. Observe that in the mtk-cqdma.c
-file, functions like mtk_cqdma_issue_pending() and
-mtk_cqdma_free_active_desc() properly acquire the pc lock before the vc
-lock when handling pc and vc fields. However, mtk_cqdma_tx_status()
-violates this order by first acquiring the vc lock before invoking
-mtk_cqdma_find_active_desc(), which subsequently takes the pc lock. This
-reversed locking sequence (vc → pc) contradicts the established
-pc → vc order and creates deadlock risks.
+Because global.no_turbo is generally not read under intel_pstate_driver_lock
+make store_no_turbo() use WRITE_ONCE() for updating it (this is the only
+place at which it is updated except for the initialization) and make the
+majority of places reading it use READ_ONCE().
 
-Fix the issue by moving the vc lock acquisition code from
-mtk_cqdma_find_active_desc() to mtk_cqdma_tx_status(). Ensure the pc lock
-is acquired before the vc lock in the calling function to maintain correct
-locking hierarchy. Note that since mtk_cqdma_find_active_desc() is a
-static function with only one caller (mtk_cqdma_tx_status()), this
-modification safely eliminates the deadlock possibility without affecting
-other components.
+Also remove redundant global.turbo_disabled checks from places that
+depend on the 'true' value of global.no_turbo because it can only be
+'true' if global.turbo_disabled is also 'true'.
 
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs to extract
-function pairs that can be concurrently executed, and then analyzes the
-instructions in the paired functions to identify possible concurrency bugs
-including deadlocks, data races and atomicity violations.
-
-Fixes: b1f01e48df5a ("dmaengine: mediatek: Add MediaTek Command-Queue DMA controller for MT6765 SoC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250508073634.3719-1-chenqiuji666@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Stable-dep-of: 350cbb5d2f67 ("cpufreq: intel_pstate: Check turbo_is_disabled() in store_no_turbo()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/mediatek/mtk-cqdma.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/cpufreq/intel_pstate.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/dma/mediatek/mtk-cqdma.c
-+++ b/drivers/dma/mediatek/mtk-cqdma.c
-@@ -420,15 +420,11 @@ static struct virt_dma_desc *mtk_cqdma_f
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 0395bc0317a18..7570d6d1ca8c0 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -1264,7 +1264,7 @@ static ssize_t store_no_turbo(struct kobject *a, struct kobj_attribute *b,
+ 		goto unlock_driver;
+ 	}
+ 
+-	global.no_turbo = no_turbo;
++	WRITE_ONCE(global.no_turbo, no_turbo);
+ 
+ 	mutex_lock(&intel_pstate_limits_lock);
+ 
+@@ -1730,7 +1730,7 @@ static u64 atom_get_val(struct cpudata *cpudata, int pstate)
+ 	u32 vid;
+ 
+ 	val = (u64)pstate << 8;
+-	if (global.no_turbo && !global.turbo_disabled)
++	if (READ_ONCE(global.no_turbo) && !global.turbo_disabled)
+ 		val |= (u64)1 << 32;
+ 
+ 	vid_fp = cpudata->vid.min + mul_fp(
+@@ -1900,7 +1900,7 @@ static u64 core_get_val(struct cpudata *cpudata, int pstate)
+ 	u64 val;
+ 
+ 	val = (u64)pstate << 8;
+-	if (global.no_turbo && !global.turbo_disabled)
++	if (READ_ONCE(global.no_turbo) && !global.turbo_disabled)
+ 		val |= (u64)1 << 32;
+ 
+ 	return val;
+@@ -2186,7 +2186,7 @@ static inline int32_t get_target_pstate(struct cpudata *cpu)
+ 
+ 	sample->busy_scaled = busy_frac * 100;
+ 
+-	target = global.no_turbo || global.turbo_disabled ?
++	target = READ_ONCE(global.no_turbo) ?
+ 			cpu->pstate.max_pstate : cpu->pstate.turbo_pstate;
+ 	target += target >> 2;
+ 	target = mul_fp(target, busy_frac);
+@@ -2455,7 +2455,7 @@ static void intel_pstate_clear_update_util_hook(unsigned int cpu)
+ 
+ static int intel_pstate_get_max_freq(struct cpudata *cpu)
  {
- 	struct mtk_cqdma_vchan *cvc = to_cqdma_vchan(c);
- 	struct virt_dma_desc *vd;
--	unsigned long flags;
+-	return global.turbo_disabled || global.no_turbo ?
++	return READ_ONCE(global.no_turbo) ?
+ 			cpu->pstate.max_freq : cpu->pstate.turbo_freq;
+ }
  
--	spin_lock_irqsave(&cvc->pc->lock, flags);
- 	list_for_each_entry(vd, &cvc->pc->queue, node)
- 		if (vd->tx.cookie == cookie) {
--			spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 			return vd;
- 		}
--	spin_unlock_irqrestore(&cvc->pc->lock, flags);
+@@ -2592,7 +2592,7 @@ static void intel_pstate_verify_cpu_policy(struct cpudata *cpu,
  
- 	list_for_each_entry(vd, &cvc->vc.desc_issued, node)
- 		if (vd->tx.cookie == cookie)
-@@ -452,9 +448,11 @@ static enum dma_status mtk_cqdma_tx_stat
- 	if (ret == DMA_COMPLETE || !txstate)
- 		return ret;
- 
-+	spin_lock_irqsave(&cvc->pc->lock, flags);
- 	spin_lock_irqsave(&cvc->vc.lock, flags);
- 	vd = mtk_cqdma_find_active_desc(c, cookie);
- 	spin_unlock_irqrestore(&cvc->vc.lock, flags);
-+	spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 
- 	if (vd) {
- 		cvd = to_cqdma_vdesc(vd);
+ 	if (hwp_active) {
+ 		intel_pstate_get_hwp_cap(cpu);
+-		max_freq = global.no_turbo || global.turbo_disabled ?
++		max_freq = READ_ONCE(global.no_turbo) ?
+ 				cpu->pstate.max_freq : cpu->pstate.turbo_freq;
+ 	} else {
+ 		max_freq = intel_pstate_get_max_freq(cpu);
+-- 
+2.51.0
+
 
 
 
