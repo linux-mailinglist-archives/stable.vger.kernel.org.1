@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC366B47FB0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 674D9B47F20
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86EEA2005B4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 669CC1B212B5
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641F4269CE6;
-	Sun,  7 Sep 2025 20:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A2C21ADAE;
+	Sun,  7 Sep 2025 20:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkjcqCef"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pq+pN79v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EBA4315A;
-	Sun,  7 Sep 2025 20:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526D61DE8AF;
+	Sun,  7 Sep 2025 20:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277656; cv=none; b=UZyC+gzzZ8ai6sRdSA5yLebojsQ0GBPoqPaNNenONfq2q6/n+0h7IEXqL3GrJiDY9avLN/E4QwmuU8g4xFePjcJgczn6w3wRqOTDmIS3bHLGyhKA3IR8+lDHSaXP8EqzZSoG4snCD4kYi/Wta0Z6tl7TOrOI0A+og0DnVgKtueU=
+	t=1757277198; cv=none; b=JTOi5WY4x4iy0/KUaIxCrqHitnU91no2uZY23DBl6ESKR2+t4nJ163OQ1hshSDGITaa8lNCcgZ7W+o8YWzZpP0j0MneDvIIiFqttvXFXyY22zxgAFG6dYRg1sY7byfL1pfzy2EK4lHL8RodDxfFtLxgAN22RO3/O434eIpOHOS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277656; c=relaxed/simple;
-	bh=yXM6x6yFBx7QgghWDPbW9g33Si6yqEr6mLGCJu5UQE0=;
+	s=arc-20240116; t=1757277198; c=relaxed/simple;
+	bh=jSsjJfJpVzDNoFybEsdKCSl2zSwsHOc5PDbWe7lF3dU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r1WlStxPgYdOxOepcQ+LEbnql1bqX2xM7LUH1maz40m1PJZ4CW3+Ca4Ts2IpoJDSAewb8cQsIg7m1ajB+aauiJr9+NvL4Ee3LgO9Lw4FIQoLllMIJTX4COpddoimsmAQLaOnNmpOY8tgrk1jq2dzY2hT2FPIW3ZzXMMeZidgE9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkjcqCef; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9632CC4CEF0;
-	Sun,  7 Sep 2025 20:40:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W7Z/5CV11NlCrQQkqY8ycYfq1wEiJHQzqBUJOVAX3XPHbNxz1TQRIskTG+BRDG80X+MFYIA1B02MyxZZtGCtv2uhgOBwcXG2X+3gsH4uNCuUaicYVXa9tq35ZOPVpGrF9pClorE97wUqC/c+c0Ch8bLkj0I5h8Q3IskIVNLITew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pq+pN79v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC78C4CEF0;
+	Sun,  7 Sep 2025 20:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277656;
-	bh=yXM6x6yFBx7QgghWDPbW9g33Si6yqEr6mLGCJu5UQE0=;
+	s=korg; t=1757277198;
+	bh=jSsjJfJpVzDNoFybEsdKCSl2zSwsHOc5PDbWe7lF3dU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EkjcqCefp2eHSrSCcAeLVkJ7GFza3+HhZsEv4uu4z7P6gikME7cgN+3P98p0uArtD
-	 J2IcBz44CIfThgiirR30I4c8T3Ex4YuWWcbstgKOUpLL8CoCp0q40O4CaPfbymPA7D
-	 EJ99Rk3ILvDL3e7UMI9VIs8Rm1Npvz04MESe+U24=
+	b=pq+pN79vR/Tz1bz7auMllO17Ig8wdIeSllmAEXgtwe915unzBh5LlpBs5LULdp++p
+	 S2a2sJU4hwUlKOT8r3BiwM4Jzrmt5aUibbfbYsU/mjEoLGpMQWLQKJE+VQIklPzr96
+	 nkpxgQlclKLm+gEHK9/YaVhFy2OIlxGujRC547YA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 083/183] net: thunder_bgx: add a missing of_node_put
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.12 115/175] platform/x86/amd/pmc: Add TUXEDO IB Pro Gen10 AMD to spurious 8042 quirks list
 Date: Sun,  7 Sep 2025 21:58:30 +0200
-Message-ID: <20250907195617.768397139@linuxfoundation.org>
+Message-ID: <20250907195617.578507467@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-[ Upstream commit 9d28f94912589f04ab51fbccaef287d4f40e0d1f ]
+commit c96f86217bb28e019403bb8f59eacd8ad5a7ad1a upstream.
 
-phy_np needs to get freed, just like the other child nodes.
+Prevents instant wakeup ~1s after suspend.
 
-Fixes: 5fc7cf179449 ("net: thunderx: Cleanup PHY probing code.")
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250901213018.47392-1-rosenp@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It seems to be kernel/system dependent if the IRQ actually manages to wake
+the system every time or if it gets ignored (and everything works as
+expected).
+
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250827131424.16436-1-wse@tuxedocomputers.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/cavium/thunder/thunder_bgx.c  | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-index 21495b5dce254..0f913db4814ea 100644
---- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-+++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-@@ -1493,13 +1493,17 @@ static int bgx_init_of_phy(struct bgx *bgx)
- 		 * this cortina phy, for which there is no driver
- 		 * support, ignore it.
- 		 */
--		if (phy_np &&
--		    !of_device_is_compatible(phy_np, "cortina,cs4223-slice")) {
--			/* Wait until the phy drivers are available */
--			pd = of_phy_find_device(phy_np);
--			if (!pd)
--				goto defer;
--			bgx->lmac[lmac].phydev = pd;
-+		if (phy_np) {
-+			if (!of_device_is_compatible(phy_np, "cortina,cs4223-slice")) {
-+				/* Wait until the phy drivers are available */
-+				pd = of_phy_find_device(phy_np);
-+				if (!pd) {
-+					of_node_put(phy_np);
-+					goto defer;
-+				}
-+				bgx->lmac[lmac].phydev = pd;
-+			}
-+			of_node_put(phy_np);
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -242,6 +242,20 @@ static const struct dmi_system_id fwbug_
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Lafite Pro V 14M"),
  		}
+ 	},
++	{
++		.ident = "TUXEDO InfinityBook Pro 14/15 AMD Gen10",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "XxHP4NAx"),
++		}
++	},
++	{
++		.ident = "TUXEDO InfinityBook Pro 14/15 AMD Gen10",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "XxKK4NAx_XxSP4NAx"),
++		}
++	},
+ 	{}
+ };
  
- 		lmac++;
--- 
-2.50.1
-
 
 
 
