@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 878D8B47D24
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:08:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 651C8B47D75
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F5C117BBBC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C7091793BB
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB682836A0;
-	Sun,  7 Sep 2025 20:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE65122F74D;
+	Sun,  7 Sep 2025 20:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tDMTDY61"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MiYETvE6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEB21CDFAC;
-	Sun,  7 Sep 2025 20:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A585A1CDFAC;
+	Sun,  7 Sep 2025 20:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275690; cv=none; b=MW3I1G2e/+VEBfxuIwZe7e3bhQZjlgNEGpsJSUZxi+HKtYinIKpPZ6LO4qvHO2O7AlmkPgY0zTvA250deneIaTMZyjF8QJt4CehaTCO8E4UybdcC7kCRcSZfN5AY9/COvLGyz86l0iH6sdVbcvcnQfGmbs+WZM2GqHcBNNTH2hc=
+	t=1757275930; cv=none; b=PWcG87okyI8BT4tEpccATU1YInmI3gjJY8Eexqwg03noY5tV9DavUKWGKsPrzdyPOjUKYvYOQDgrK7tAlitT0AMu3bZnOVmDlwN4bvf9TPxSe3FFdWANB96ifpzuy08V/ilPK72GLEHLsOy7kDyUUKYsmoHvfvZWR896IaZaUz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275690; c=relaxed/simple;
-	bh=4JJ1F9I0rU/z4ZOD8CwiTp0dRrKcfX0999VJwcOzsms=;
+	s=arc-20240116; t=1757275930; c=relaxed/simple;
+	bh=RVYWxlYtKQvEaTBtQfGT0piYrwf+oVdcBxMCFTgDGSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwhOEiQKHJTf/3T4nqtsvZwcrbZsRb9dJ49N2B6duRejGGpI349+/oXeGAxVdwT7DZ5Q3eLDGodsZhA/ueTl40B6UVewz+HdwXJo1u4SNmPWtfoQNStyDDk5h94KoPFNJyB+ymyg+I7TipaAxvzO1X+S5LgSz11NXIA1iUeENwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tDMTDY61; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53458C4CEF0;
-	Sun,  7 Sep 2025 20:08:10 +0000 (UTC)
+	 MIME-Version; b=B7YLgTI04iCwD7Z9oZbWCi7IIW+yhIkYdwnIi+P+AVr9e7Anxmkd0VFIa+cvNwWpKRQBJnwAG8jioBr7iVUjsXBx+V1YJx5Qh7UeTtZuzCZ39dbNXSKB4eR+CtQxIfU57AxC3K5peg6wwy+vW5VLVf3i26tqACmP2y1OwVFi4xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MiYETvE6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF8BC4CEF0;
+	Sun,  7 Sep 2025 20:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275690;
-	bh=4JJ1F9I0rU/z4ZOD8CwiTp0dRrKcfX0999VJwcOzsms=;
+	s=korg; t=1757275930;
+	bh=RVYWxlYtKQvEaTBtQfGT0piYrwf+oVdcBxMCFTgDGSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tDMTDY61mCeqV+Vr1fZKzgPag5iL17N5ubMybMcQ+hhhOToM3MLz67BB2Vvif9KBK
-	 Bfsv2KAAdkgqU8NILG2h6wPuEBF1nzm7pV+Rbw7dipsDmRNTDdHFt5GTBBK6z80+Vw
-	 oIQDpfJ2JJ6CQvgUMTeaSy6BkUZnD0FvEC2YW3xQ=
+	b=MiYETvE6KOBtFqE6Gaht7pSxb3HAgFq5tqCHst+j/S4axeFuG+X4R9VQuCV2qOnrs
+	 Bbpc4gTNphtCr0TGIwwCT6bMBYVEKImyLsqas/iN+uedSQYryloGSB4l6bGsOJSbou
+	 2oGGJWs3NVOz5PgxMzL5jS3fsvwR/EwxjSf4V1jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Florian Westphal <fw@strlen.de>,
+	Wang Liang <wangliang74@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 32/52] iio: light: opt3001: fix deadlock due to concurrent flag access
+Subject: [PATCH 5.15 10/64] netfilter: br_netfilter: do not check confirmed bit in br_nf_local_in() after confirm
 Date: Sun,  7 Sep 2025 21:57:52 +0200
-Message-ID: <20250907195602.913311014@linuxfoundation.org>
+Message-ID: <20250907195603.691225386@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit f063a28002e3350088b4577c5640882bf4ea17ea ]
+[ Upstream commit 479a54ab92087318514c82428a87af2d7af1a576 ]
 
-The threaded IRQ function in this driver is reading the flag twice: once to
-lock a mutex and once to unlock it. Even though the code setting the flag
-is designed to prevent it, there are subtle cases where the flag could be
-true at the mutex_lock stage and false at the mutex_unlock stage. This
-results in the mutex not being unlocked, resulting in a deadlock.
+When send a broadcast packet to a tap device, which was added to a bridge,
+br_nf_local_in() is called to confirm the conntrack. If another conntrack
+with the same hash value is added to the hash table, which can be
+triggered by a normal packet to a non-bridge device, the below warning
+may happen.
 
-Fix it by making the opt3001_irq() code generally more robust, reading the
-flag into a variable and using the variable value at both stages.
+  ------------[ cut here ]------------
+  WARNING: CPU: 1 PID: 96 at net/bridge/br_netfilter_hooks.c:632 br_nf_local_in+0x168/0x200
+  CPU: 1 UID: 0 PID: 96 Comm: tap_send Not tainted 6.17.0-rc2-dirty #44 PREEMPT(voluntary)
+  RIP: 0010:br_nf_local_in+0x168/0x200
+  Call Trace:
+   <TASK>
+   nf_hook_slow+0x3e/0xf0
+   br_pass_frame_up+0x103/0x180
+   br_handle_frame_finish+0x2de/0x5b0
+   br_nf_hook_thresh+0xc0/0x120
+   br_nf_pre_routing_finish+0x168/0x3a0
+   br_nf_pre_routing+0x237/0x5e0
+   br_handle_frame+0x1ec/0x3c0
+   __netif_receive_skb_core+0x225/0x1210
+   __netif_receive_skb_one_core+0x37/0xa0
+   netif_receive_skb+0x36/0x160
+   tun_get_user+0xa54/0x10c0
+   tun_chr_write_iter+0x65/0xb0
+   vfs_write+0x305/0x410
+   ksys_write+0x60/0xd0
+   do_syscall_64+0xa4/0x260
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
-Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Link: https://patch.msgid.link/20250321-opt3001-irq-fix-v1-1-6c520d851562@bootlin.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Adjust context ]
+To solve the hash conflict, nf_ct_resolve_clash() try to merge the
+conntracks, and update skb->_nfct. However, br_nf_local_in() still use the
+old ct from local variable 'nfct' after confirm(), which leads to this
+warning.
+
+If confirm() does not insert the conntrack entry and return NF_DROP, the
+warning may also occur. There is no need to reserve the WARN_ON_ONCE, just
+remove it.
+
+Link: https://lore.kernel.org/netdev/20250820043329.2902014-1-wangliang74@huawei.com/
+Fixes: 62e7151ae3eb ("netfilter: bridge: confirm multicast packets before passing them up the stack")
+Suggested-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/opt3001.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/bridge/br_netfilter_hooks.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/iio/light/opt3001.c
-+++ b/drivers/iio/light/opt3001.c
-@@ -692,8 +692,9 @@ static irqreturn_t opt3001_irq(int irq,
- 	struct opt3001 *opt = iio_priv(iio);
- 	int ret;
- 	bool wake_result_ready_queue = false;
-+	bool ok_to_ignore_lock = opt->ok_to_ignore_lock;
- 
--	if (!opt->ok_to_ignore_lock)
-+	if (!ok_to_ignore_lock)
- 		mutex_lock(&opt->lock);
- 
- 	ret = i2c_smbus_read_word_swapped(opt->client, OPT3001_CONFIGURATION);
-@@ -730,7 +731,7 @@ static irqreturn_t opt3001_irq(int irq,
+diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
+index 7cd2bef583312..9ad0feb248b5d 100644
+--- a/net/bridge/br_netfilter_hooks.c
++++ b/net/bridge/br_netfilter_hooks.c
+@@ -630,9 +630,6 @@ static unsigned int br_nf_local_in(void *priv,
+ 		break;
  	}
  
- out:
--	if (!opt->ok_to_ignore_lock)
-+	if (!ok_to_ignore_lock)
- 		mutex_unlock(&opt->lock);
- 
- 	if (wake_result_ready_queue)
+-	ct = container_of(nfct, struct nf_conn, ct_general);
+-	WARN_ON_ONCE(!nf_ct_is_confirmed(ct));
+-
+ 	return ret;
+ }
+ #endif
+-- 
+2.50.1
+
 
 
 
