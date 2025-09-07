@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-178161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5140B47D7D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB1C5B47D4D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64C433BE1F0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 476D4188B1E8
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1577426FA67;
-	Sun,  7 Sep 2025 20:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A9A296BB8;
+	Sun,  7 Sep 2025 20:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mK7ewgCW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEPNzkd7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69A21B424F;
-	Sun,  7 Sep 2025 20:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D481CDFAC;
+	Sun,  7 Sep 2025 20:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275958; cv=none; b=n6DVsdKDBsiKJTr91ODQPQv4Vlc1WOMVQTIMQGGxEqAVuK5VLD7vjHMXP+EP9f9LQWpaAqQ6pYgxiqC+Ux4cP5fNzoWOgWT4ZWpY3xEmZnmz/SqFyxi5dwH8tD1P5e97OQ8gUN87SsdGNUVc2ourb8wG43e/TCboU2ZsgXl2pO4=
+	t=1757275799; cv=none; b=SzyDRqSTYwYg0az7z4O8OFxavZNUMaAyDqUxzvjyOR005NXrvU+1766OJK6gRG7IKzqkt4YLFykLIeYMgjd+YZw6RTej58h7D+c9px5+DpJbBPd6N0GJkauiJ99rGkOVziFcetgxU0p19X9S3LeGxDSG6CuwuKeegJ7RwSjRKnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275958; c=relaxed/simple;
-	bh=abZzG/9NWtVtgFcAMhEnm98XWCdUHY8t4GXMwfXKvLQ=;
+	s=arc-20240116; t=1757275799; c=relaxed/simple;
+	bh=DOIX+yATZjRld/IBWetyyU8KQQdtV51cIXgxVP8sAO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WOQAD69p1ntvFT0TPunDGjVZNMzs+C1hvTjO5O47m0CxW3ux5wAQXGhVnfyisB22ukWAAAk8XBElvXYL8QQTN1tAJKh5LQppJKn4yizq0VCbHcTkRj0ITn7/tq79kFj+7F/o55pajh+GgtgF7lmDVMnwoi57C3wwy1WNic5nWtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mK7ewgCW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDD7C4CEF0;
-	Sun,  7 Sep 2025 20:12:38 +0000 (UTC)
+	 MIME-Version; b=DsZ3pCPQ1gTAI6MmSMDAfy1jYmElQ3xklLWSEEx5C2NCdG4PP2Wjt+7GmbCoAm9tFzxMb61ONShKk+qFMzoDcRhcjV1kLeDm3fNwVL44k2mcdDYXrmpws8jHamz1BYLD5tW7QVlPzyKvtEQOGZuUuZoKwVDjliYbTcegX/CcJgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEPNzkd7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9569EC4CEF0;
+	Sun,  7 Sep 2025 20:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275958;
-	bh=abZzG/9NWtVtgFcAMhEnm98XWCdUHY8t4GXMwfXKvLQ=;
+	s=korg; t=1757275799;
+	bh=DOIX+yATZjRld/IBWetyyU8KQQdtV51cIXgxVP8sAO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mK7ewgCW7ChO2NldBQ0ljIZlDttaUkjrB8BK4s+UwlUDh4StPwK+CbyRnxEE1D8CP
-	 H7177tU59jSTnLlgW8M/IHjlFBVjamtCQmZ7a5YK6iGY3H/5kNmDsWMohofxUNq/Qm
-	 lHdoDu7BADWjIrvlLRU/gtcxODRDZZV6kLceRCkU=
+	b=oEPNzkd7rb5astcB12pb5emx+RXDWYV3AOUyM89Q7HM8IfQJF54zFYBIcxQgkVvXN
+	 hRF4/5GvnYx8+7/aFgb9znwpWCNYwU4TcddAl8TRNVtToWHz6NegIunX0DZ8MdJCsX
+	 lcUiCDwPxmSxoI5zgNeEOt1bXVRLZ3vAY/k9auaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Bernard Pidoux <f6bvp@free.fr>,
+	Eric Dumazet <edumazet@google.com>,
+	Joerg Reuter <jreuter@yaina.de>,
+	David Ranch <dranch@trinnet.net>,
+	Folkert van Heusden <folkert@vanheusden.com>,
+	Dan Cross <crossd@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 19/64] wifi: libertas: cap SSID len in lbs_associate()
+Subject: [PATCH 5.4 15/45] ax25: properly unshare skbs in ax25_kiss_rcv()
 Date: Sun,  7 Sep 2025 21:58:01 +0200
-Message-ID: <20250907195603.927992052@linuxfoundation.org>
+Message-ID: <20250907195601.405093006@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +67,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c786794bd27b0d7a5fd9063695df83206009be59 ]
+[ Upstream commit 8156210d36a43e76372312c87eb5ea3dbb405a85 ]
 
-If the ssid_eid[1] length is more that 32 it leads to memory corruption.
+Bernard Pidoux reported a regression apparently caused by commit
+c353e8983e0d ("net: introduce per netns packet chains").
 
-Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/2a40f5ec7617144aef412034c12919a4927d90ad.1756456951.git.dan.carpenter@linaro.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+skb->dev becomes NULL and we crash in __netif_receive_skb_core().
+
+Before above commit, different kind of bugs or corruptions could happen
+without a major crash.
+
+But the root cause is that ax25_kiss_rcv() can queue/mangle input skb
+without checking if this skb is shared or not.
+
+Many thanks to Bernard Pidoux for his help, diagnosis and tests.
+
+We had a similar issue years ago fixed with commit 7aaed57c5c28
+("phonet: properly unshare skbs in phonet_rcv()").
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Bernard Pidoux <f6bvp@free.fr>
+Closes: https://lore.kernel.org/netdev/1713f383-c538-4918-bc64-13b3288cd542@free.fr/
+Tested-by: Bernard Pidoux <f6bvp@free.fr>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Joerg Reuter <jreuter@yaina.de>
+Cc: David Ranch <dranch@trinnet.net>
+Cc: Folkert van Heusden <folkert@vanheusden.com>
+Reviewed-by: Dan Cross <crossd@gmail.com>
+Link: https://patch.msgid.link/20250902124642.212705-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/libertas/cfg.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/ax25/ax25_in.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
-index 4e3de684928bf..a659054c1bcd9 100644
---- a/drivers/net/wireless/marvell/libertas/cfg.c
-+++ b/drivers/net/wireless/marvell/libertas/cfg.c
-@@ -1102,10 +1102,13 @@ static int lbs_associate(struct lbs_private *priv,
- 	/* add SSID TLV */
- 	rcu_read_lock();
- 	ssid_eid = ieee80211_bss_get_ie(bss, WLAN_EID_SSID);
--	if (ssid_eid)
--		pos += lbs_add_ssid_tlv(pos, ssid_eid + 2, ssid_eid[1]);
--	else
-+	if (ssid_eid) {
-+		u32 ssid_len = min(ssid_eid[1], IEEE80211_MAX_SSID_LEN);
+diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
+index dcdbaeeb2358a..506a88b2357bf 100644
+--- a/net/ax25/ax25_in.c
++++ b/net/ax25/ax25_in.c
+@@ -433,6 +433,10 @@ static int ax25_rcv(struct sk_buff *skb, struct net_device *dev,
+ int ax25_kiss_rcv(struct sk_buff *skb, struct net_device *dev,
+ 		  struct packet_type *ptype, struct net_device *orig_dev)
+ {
++	skb = skb_share_check(skb, GFP_ATOMIC);
++	if (!skb)
++		return NET_RX_DROP;
 +
-+		pos += lbs_add_ssid_tlv(pos, ssid_eid + 2, ssid_len);
-+	} else {
- 		lbs_deb_assoc("no SSID\n");
-+	}
- 	rcu_read_unlock();
+ 	skb_orphan(skb);
  
- 	/* add DS param TLV */
+ 	if (!net_eq(dev_net(dev), &init_net)) {
 -- 
 2.50.1
 
