@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-178065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5432B47D19
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEABB47EEE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A10F03BE8A6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BA3A3B114E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E9A29BD90;
-	Sun,  7 Sep 2025 20:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7B31FECCD;
+	Sun,  7 Sep 2025 20:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5noasYg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taltiNxS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ECB22F74D;
-	Sun,  7 Sep 2025 20:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA8515C158;
+	Sun,  7 Sep 2025 20:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275652; cv=none; b=VdtnL4COHEOuMZfKuxLYX2KoKjBWZ+LW1zZuoDAJhYRSPz9KSz9jFf+dzQyptQMc5zc2qHtgKhw4vxPWDtXB1U1teFSjFluuyOE1WcBlPavoLLHYQwxrkysXvjrwA9wnum8eWZ5c1cKTYkPeYdU3K5zK3cJLmtDPSImrqe36Qko=
+	t=1757277042; cv=none; b=sx9tYFHaHVAhRVIxcrY41YtkNH+NatSBmD4qiVqrpWW7ql6YxnDFTik9sxgb+UoECP9x/Q1paluMzSs1OpGlBYJJ1S9dnKTjAdwgux5ycsDVwCnRjktzBJXCneB16soSqfmm/Nrl1mDXbwlxQJqBAyBLYwNokhIv++Vyh4BgL8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275652; c=relaxed/simple;
-	bh=T4bDNjhXnxQKFeZj82i3pYB3D3XrO3v+ERC4T088WmM=;
+	s=arc-20240116; t=1757277042; c=relaxed/simple;
+	bh=+PYN3QyNLYXuxCIt3NLE6vIN65lk5sE3OJGwsrVNA/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gfOJnrHtSYF73mE3N/X8c0yWewnl6l8uopt1L25rKT/euhD+uWisvqsGqGnSMcFKTi9+CnE4rHrdStMIVT7SGONMbnS7oJpdvEuXzsv/gE2Pb0z+cyzwxOuFbJ4yUwGtcg5swUu3KFvLX/3v0dJkjEEHCSv6HIjqdPQyoDbEtDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5noasYg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92F2C4CEF8;
-	Sun,  7 Sep 2025 20:07:31 +0000 (UTC)
+	 MIME-Version; b=P2PvuCIVg3fXCJip+Rk18Ey+TY3C/K1kyc/Cjc4V0J17JlHC4qrssT8MUiZlxrgAGPCuWtN09fOPnfaTVpJQYMZQgDqUriZo2nuqvUNSzDs6S8mj3WS9E/OifnzYMkw8S9VnhaTZ4UWBiN1nncwhqblXqg8s7qM1ttHpvX9uN8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taltiNxS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D15C4CEF0;
+	Sun,  7 Sep 2025 20:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275652;
-	bh=T4bDNjhXnxQKFeZj82i3pYB3D3XrO3v+ERC4T088WmM=;
+	s=korg; t=1757277041;
+	bh=+PYN3QyNLYXuxCIt3NLE6vIN65lk5sE3OJGwsrVNA/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E5noasYgtvnYD4YOPgBDXFD3zFjRAKhPOqo9pexfy/EE0sMrcEaCOYm9Xyrd4CAVq
-	 wIh3DmxPp6XlvRRzAdv/tGgSfxvLpAYklZEBSmwNtVsKR+kCtOjDsHb0wL4XpcNh1v
-	 YYxucRTCDuC9IJ7f38g0umjh5oRYaVPcCaHazm/w=
+	b=taltiNxSNIjuCNWzWYqe0mo/4JeDvRcqRW5xaI/NZ0YSS8t+t/kiddx2Bt1/9ZYnj
+	 VcX9fmNMYp73498eiDDdJ1yTMkUFN5vm8JoHbSBm9cSbMql0CDTAhyVaT1gSOJ/vBs
+	 DBqq9cTwGcndmwtdyeztj99FhIgFp/yHra9IJ2CY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Dominik Brodowski <linux@dominikbrodowski.net>
-Subject: [PATCH 5.10 21/52] pcmcia: Fix a NULL pointer dereference in __iodyn_find_io_region()
+	Menglong Dong <dongml2@chinatelecom.cn>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 066/175] net: vxlan: make vxlan_snoop() return drop reasons
 Date: Sun,  7 Sep 2025 21:57:41 +0200
-Message-ID: <20250907195602.615538486@linuxfoundation.org>
+Message-ID: <20250907195616.398456905@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Menglong Dong <menglong8.dong@gmail.com>
 
-commit 44822df89e8f3386871d9cad563ece8e2fd8f0e7 upstream.
+[ Upstream commit 289fd4e75219a96f77c5d679166035cd5118d139 ]
 
-In __iodyn_find_io_region(), pcmcia_make_resource() is assigned to
-res and used in pci_bus_alloc_resource(). There is a dereference of res
-in pci_bus_alloc_resource(), which could lead to a NULL pointer
-dereference on failure of pcmcia_make_resource().
+Change the return type of vxlan_snoop() from bool to enum
+skb_drop_reason. In this commit, two drop reasons are introduced:
 
-Fix this bug by adding a check of res.
+  SKB_DROP_REASON_MAC_INVALID_SOURCE
+  SKB_DROP_REASON_VXLAN_ENTRY_EXISTS
 
-Cc: stable@vger.kernel.org
-Fixes: 49b1153adfe1 ("pcmcia: move all pcmcia_resource_ops providers into one module")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 6ead38147ebb ("vxlan: Fix NPD when refreshing an FDB entry with a nexthop object")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/rsrc_iodyn.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/vxlan/vxlan_core.c | 17 +++++++++--------
+ include/net/dropreason-core.h  |  9 +++++++++
+ 2 files changed, 18 insertions(+), 8 deletions(-)
 
---- a/drivers/pcmcia/rsrc_iodyn.c
-+++ b/drivers/pcmcia/rsrc_iodyn.c
-@@ -62,6 +62,9 @@ static struct resource *__iodyn_find_io_
- 	unsigned long min = base;
- 	int ret;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index efd5e99808935..c4ce577eb0908 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1437,9 +1437,10 @@ static int vxlan_fdb_get(struct sk_buff *skb,
+  * and Tunnel endpoint.
+  * Return true if packet is bogus and should be dropped.
+  */
+-static bool vxlan_snoop(struct net_device *dev,
+-			union vxlan_addr *src_ip, const u8 *src_mac,
+-			u32 src_ifindex, __be32 vni)
++static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
++					union vxlan_addr *src_ip,
++					const u8 *src_mac, u32 src_ifindex,
++					__be32 vni)
+ {
+ 	struct vxlan_dev *vxlan = netdev_priv(dev);
+ 	struct vxlan_fdb *f;
+@@ -1447,7 +1448,7 @@ static bool vxlan_snoop(struct net_device *dev,
  
-+	if (!res)
-+		return NULL;
-+
- 	data.mask = align - 1;
- 	data.offset = base & data.mask;
+ 	/* Ignore packets from invalid src-address */
+ 	if (!is_valid_ether_addr(src_mac))
+-		return true;
++		return SKB_DROP_REASON_MAC_INVALID_SOURCE;
  
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	if (src_ip->sa.sa_family == AF_INET6 &&
+@@ -1461,15 +1462,15 @@ static bool vxlan_snoop(struct net_device *dev,
+ 
+ 		if (likely(vxlan_addr_equal(&rdst->remote_ip, src_ip) &&
+ 			   rdst->remote_ifindex == ifindex))
+-			return false;
++			return SKB_NOT_DROPPED_YET;
+ 
+ 		/* Don't migrate static entries, drop packets */
+ 		if (f->state & (NUD_PERMANENT | NUD_NOARP))
+-			return true;
++			return SKB_DROP_REASON_VXLAN_ENTRY_EXISTS;
+ 
+ 		/* Don't override an fdb with nexthop with a learnt entry */
+ 		if (rcu_access_pointer(f->nh))
+-			return true;
++			return SKB_DROP_REASON_VXLAN_ENTRY_EXISTS;
+ 
+ 		if (net_ratelimit())
+ 			netdev_info(dev,
+@@ -1497,7 +1498,7 @@ static bool vxlan_snoop(struct net_device *dev,
+ 		spin_unlock(&vxlan->hash_lock[hash_index]);
+ 	}
+ 
+-	return false;
++	return SKB_NOT_DROPPED_YET;
+ }
+ 
+ static bool __vxlan_sock_release_prep(struct vxlan_sock *vs)
+diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
+index 98259d2b3e926..1cb8d7c953beb 100644
+--- a/include/net/dropreason-core.h
++++ b/include/net/dropreason-core.h
+@@ -94,6 +94,8 @@
+ 	FN(TC_RECLASSIFY_LOOP)		\
+ 	FN(VXLAN_INVALID_HDR)		\
+ 	FN(VXLAN_VNI_NOT_FOUND)		\
++	FN(MAC_INVALID_SOURCE)		\
++	FN(VXLAN_ENTRY_EXISTS)		\
+ 	FN(IP_TUNNEL_ECN)		\
+ 	FNe(MAX)
+ 
+@@ -429,6 +431,13 @@ enum skb_drop_reason {
+ 	SKB_DROP_REASON_VXLAN_INVALID_HDR,
+ 	/** @SKB_DROP_REASON_VXLAN_VNI_NOT_FOUND: no VXLAN device found for VNI */
+ 	SKB_DROP_REASON_VXLAN_VNI_NOT_FOUND,
++	/** @SKB_DROP_REASON_MAC_INVALID_SOURCE: source mac is invalid */
++	SKB_DROP_REASON_MAC_INVALID_SOURCE,
++	/**
++	 * @SKB_DROP_REASON_VXLAN_ENTRY_EXISTS: trying to migrate a static
++	 * entry or an entry pointing to a nexthop.
++	 */
++	SKB_DROP_REASON_VXLAN_ENTRY_EXISTS,
+ 	/**
+ 	 * @SKB_DROP_REASON_IP_TUNNEL_ECN: skb is dropped according to
+ 	 * RFC 6040 4.2, see __INET_ECN_decapsulate() for detail.
+-- 
+2.50.1
+
 
 
 
