@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE82B47F50
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:35:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF29B47FE0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03CC8189D5C0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8366920098A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE7F20E00B;
-	Sun,  7 Sep 2025 20:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5A14315A;
+	Sun,  7 Sep 2025 20:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUUgbZOG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQUC6t1X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2572315D54;
-	Sun,  7 Sep 2025 20:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7ED1F63CD;
+	Sun,  7 Sep 2025 20:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277353; cv=none; b=ta0lSFkQdvfU7mGQjOeWbj0Z6nG0EeLdE2ZUoIltb7aUgfl55oY2QjVKb7pOWgkhr69KyPbG0I9PNrpqBDEL/i200pU5AUUVnNRqVst5RchS0RE9eUr9yHET7MoK5BmIDg6LS4HalPzNeJW69manwIzMvPcCHB5xmcF1l4dx4ZQ=
+	t=1757277810; cv=none; b=rBDkXDrWN8z6TgO4HPmQDdGq5Xq0RkIuYITa9tixEJpY+cibGPf2dggheFrSw6TINuvuHDAJLXKlgQVMK7LVrtObvOr/fIChQPa1k8WEenXdeWMUA2WWhki0hJepKZemY7d2CeXI8E5jzIf+KGq1M3P7FrVc8iwoK+9m0L9gFZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277353; c=relaxed/simple;
-	bh=W6Zm7gwyDBRszEAeAHEB/BWDGxm0Jy7Qs/EEW4YEApQ=;
+	s=arc-20240116; t=1757277810; c=relaxed/simple;
+	bh=S4IHXW3XG+gmq8wkjmhHmyOoc5YtCUr/hmL4Co6vSLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MeZDGXkid6a1V2/QuoLHbfMzoW9GdV9FXQx/1YFyavGR8qLcAA4921shU0zaVFuoXVQH7aV0xqe3g/rJ8U2dTy0dvtX9yu/+1CGhRBZ8cKFyhii+tIE6g0tp8dCMDXCho8ZXaF0MIv9LAeyds9cpEkPI0WLpSmgsAQCyAHg7Qiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUUgbZOG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AA5C4CEF0;
-	Sun,  7 Sep 2025 20:35:52 +0000 (UTC)
+	 MIME-Version; b=jDJA1dj+id8bZZNEbxuvta0/GVBpy3DeiT+7uxmbdcJjMAyHrl5VZal52KJ2UEwET60QkYZmoqdk+vB8DJIPzDdhabTFeXETprEtKKOUv/TbjkuyjvjmHc4xDrKbBYXjnTZjecJyrQVp96Ln17ap7luhsfC5JEy+JBXdRNyzHvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQUC6t1X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7D0C4CEF8;
+	Sun,  7 Sep 2025 20:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277352;
-	bh=W6Zm7gwyDBRszEAeAHEB/BWDGxm0Jy7Qs/EEW4YEApQ=;
+	s=korg; t=1757277809;
+	bh=S4IHXW3XG+gmq8wkjmhHmyOoc5YtCUr/hmL4Co6vSLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SUUgbZOGbLmvljR1GNaddF3IYZ5opyjL8ev7/mF/g8f1xBPuJJxYdlK75Sz6DyXkq
-	 iEPEPcyWxaUW6P3dEvoUWfq9P2fFmfhbvkAJSGWzjuN09yacyB8vjYnnTTfU6XbSNv
-	 qHtx/ChJqfsYOH1/mpsjEiLRRjLLbPPJ7kf+c04s=
+	b=nQUC6t1Xtd3lsduvX+890GhxEuV1lL1zJWC3H+bVEB9Ei7ry/DGXlb4//v5enxdr9
+	 sviDxmWn3O3mIR/5IVhI8nD+UQYTDMa+uSpEqiHJzwFMWQGn8H81XDEh+4ML1ZEBTy
+	 4+CCQ/Et1jIK7lhZwv07O9R3oQ+TJFYGg56rnYpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 163/175] perf bpf-utils: Constify bpil_array_desc
+	John Evans <evans1210144@gmail.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.16 131/183] scsi: lpfc: Fix buffer free/clear order in deferred receive path
 Date: Sun,  7 Sep 2025 21:59:18 +0200
-Message-ID: <20250907195618.712964510@linuxfoundation.org>
+Message-ID: <20250907195618.905608719@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: John Evans <evans1210144@gmail.com>
 
-[ Upstream commit 1654a0e4d576d9e43fbb10ccf6a1b307c5c18566 ]
+commit 9dba9a45c348e8460da97c450cddf70b2056deb3 upstream.
 
-The array's contents is a compile time constant. Constify to make the
-code more intention revealing and avoid unintended errors.
+Fix a use-after-free window by correcting the buffer release sequence in
+the deferred receive path. The code freed the RQ buffer first and only
+then cleared the context pointer under the lock. Concurrent paths (e.g.,
+ABTS and the repost path) also inspect and release the same pointer under
+the lock, so the old order could lead to double-free/UAF.
 
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250902181713.309797-3-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Stable-dep-of: 01be43f2a0ea ("perf bpf-utils: Harden get_bpf_prog_info_linear")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that the repost path already uses the correct pattern: detach the
+pointer under the lock, then free it after dropping the lock. The
+deferred path should do the same.
+
+Fixes: 472e146d1cf3 ("scsi: lpfc: Correct upcalling nvmet_fc transport during io done downcall")
+Cc: stable@vger.kernel.org
+Signed-off-by: John Evans <evans1210144@gmail.com>
+Link: https://lore.kernel.org/r/20250828044008.743-1-evans1210144@gmail.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/bpf-utils.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ drivers/scsi/lpfc/lpfc_nvmet.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/bpf-utils.c b/tools/perf/util/bpf-utils.c
-index 80b1d2b3729ba..64a5583446964 100644
---- a/tools/perf/util/bpf-utils.c
-+++ b/tools/perf/util/bpf-utils.c
-@@ -20,7 +20,7 @@ struct bpil_array_desc {
- 				 */
- };
+--- a/drivers/scsi/lpfc/lpfc_nvmet.c
++++ b/drivers/scsi/lpfc/lpfc_nvmet.c
+@@ -1243,7 +1243,7 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+ 	struct lpfc_nvmet_tgtport *tgtp;
+ 	struct lpfc_async_xchg_ctx *ctxp =
+ 		container_of(rsp, struct lpfc_async_xchg_ctx, hdlrctx.fcp_req);
+-	struct rqb_dmabuf *nvmebuf = ctxp->rqb_buffer;
++	struct rqb_dmabuf *nvmebuf;
+ 	struct lpfc_hba *phba = ctxp->phba;
+ 	unsigned long iflag;
  
--static struct bpil_array_desc bpil_array_desc[] = {
-+static const struct bpil_array_desc bpil_array_desc[] = {
- 	[PERF_BPIL_JITED_INSNS] = {
- 		offsetof(struct bpf_prog_info, jited_prog_insns),
- 		offsetof(struct bpf_prog_info, jited_prog_len),
-@@ -129,12 +129,10 @@ get_bpf_prog_info_linear(int fd, __u64 arrays)
+@@ -1251,13 +1251,18 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
+ 	lpfc_nvmeio_data(phba, "NVMET DEFERRCV: xri x%x sz %d CPU %02x\n",
+ 			 ctxp->oxid, ctxp->size, raw_smp_processor_id());
  
- 	/* step 2: calculate total size of all arrays */
- 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
-+		const struct bpil_array_desc *desc = &bpil_array_desc[i];
- 		bool include_array = (arrays & (1UL << i)) > 0;
--		struct bpil_array_desc *desc;
- 		__u32 count, size;
++	spin_lock_irqsave(&ctxp->ctxlock, iflag);
++	nvmebuf = ctxp->rqb_buffer;
+ 	if (!nvmebuf) {
++		spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ 		lpfc_printf_log(phba, KERN_INFO, LOG_NVME_IOERR,
+ 				"6425 Defer rcv: no buffer oxid x%x: "
+ 				"flg %x ste %x\n",
+ 				ctxp->oxid, ctxp->flag, ctxp->state);
+ 		return;
+ 	}
++	ctxp->rqb_buffer = NULL;
++	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
  
--		desc = bpil_array_desc + i;
--
- 		/* kernel is too old to support this field */
- 		if (info_len < desc->array_offset + sizeof(__u32) ||
- 		    info_len < desc->count_offset + sizeof(__u32) ||
-@@ -163,13 +161,12 @@ get_bpf_prog_info_linear(int fd, __u64 arrays)
- 	ptr = info_linear->data;
+ 	tgtp = phba->targetport->private;
+ 	if (tgtp)
+@@ -1265,9 +1270,6 @@ lpfc_nvmet_defer_rcv(struct nvmet_fc_tar
  
- 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
--		struct bpil_array_desc *desc;
-+		const struct bpil_array_desc *desc = &bpil_array_desc[i];
- 		__u32 count, size;
+ 	/* Free the nvmebuf since a new buffer already replaced it */
+ 	nvmebuf->hrq->rqbp->rqb_free_buffer(phba, nvmebuf);
+-	spin_lock_irqsave(&ctxp->ctxlock, iflag);
+-	ctxp->rqb_buffer = NULL;
+-	spin_unlock_irqrestore(&ctxp->ctxlock, iflag);
+ }
  
- 		if ((arrays & (1UL << i)) == 0)
- 			continue;
- 
--		desc  = bpil_array_desc + i;
- 		count = bpf_prog_info_read_offset_u32(&info, desc->count_offset);
- 		size  = bpf_prog_info_read_offset_u32(&info, desc->size_offset);
- 		bpf_prog_info_set_offset_u32(&info_linear->info,
-@@ -192,13 +189,12 @@ get_bpf_prog_info_linear(int fd, __u64 arrays)
- 
- 	/* step 6: verify the data */
- 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
--		struct bpil_array_desc *desc;
-+		const struct bpil_array_desc *desc = &bpil_array_desc[i];
- 		__u32 v1, v2;
- 
- 		if ((arrays & (1UL << i)) == 0)
- 			continue;
- 
--		desc = bpil_array_desc + i;
- 		v1 = bpf_prog_info_read_offset_u32(&info, desc->count_offset);
- 		v2 = bpf_prog_info_read_offset_u32(&info_linear->info,
- 						   desc->count_offset);
-@@ -224,13 +220,12 @@ void bpil_addr_to_offs(struct perf_bpil *info_linear)
- 	int i;
- 
- 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
--		struct bpil_array_desc *desc;
-+		const struct bpil_array_desc *desc = &bpil_array_desc[i];
- 		__u64 addr, offs;
- 
- 		if ((info_linear->arrays & (1UL << i)) == 0)
- 			continue;
- 
--		desc = bpil_array_desc + i;
- 		addr = bpf_prog_info_read_offset_u64(&info_linear->info,
- 						     desc->array_offset);
- 		offs = addr - ptr_to_u64(info_linear->data);
-@@ -244,13 +239,12 @@ void bpil_offs_to_addr(struct perf_bpil *info_linear)
- 	int i;
- 
- 	for (i = PERF_BPIL_FIRST_ARRAY; i < PERF_BPIL_LAST_ARRAY; ++i) {
--		struct bpil_array_desc *desc;
-+		const struct bpil_array_desc *desc = &bpil_array_desc[i];
- 		__u64 addr, offs;
- 
- 		if ((info_linear->arrays & (1UL << i)) == 0)
- 			continue;
- 
--		desc = bpil_array_desc + i;
- 		offs = bpf_prog_info_read_offset_u64(&info_linear->info,
- 						     desc->array_offset);
- 		addr = offs + ptr_to_u64(info_linear->data);
--- 
-2.51.0
-
+ /**
 
 
 
