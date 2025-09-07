@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-178500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF294B47EEC
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98BEEB47F7D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E88A3B00CD
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:30:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 560B5200146
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011CC15C158;
-	Sun,  7 Sep 2025 20:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6705B275AF6;
+	Sun,  7 Sep 2025 20:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cChsM0bQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFD5hhNS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35EF18DF89;
-	Sun,  7 Sep 2025 20:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2225B1DF246;
+	Sun,  7 Sep 2025 20:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277035; cv=none; b=CdQ3vuql+FeBS9UGQwi5YSnCHS0+8hkGYEYH//a4aPddK/wJwcySJD6ZYoJDbiWEWGoHt1lXhbKSCzKBK6MRbWqeO/Xc+yWMbfUD4+SLzVbsSv4ayaAkgdTrQVS4Ge6fopCl1igCAKRYkS+x+62Xjvy8x/KTdwP5yl/1BVGKito=
+	t=1757277491; cv=none; b=ahqRk9Z4ccxMraBR4TxQu+1tnYx6WtiAcrzKG/7Rodkd+/t1v8vS55v3yo4NKtAqK0XTGp5H1s1YizRcXBaM3w3r5bSZXIxV+TbF2HKc5xiJ+/jPF4T0fu9aDnQvXiRcOp+sFvoSVSWED3pRfBGwxKTmpCrommbDNXarXxoHLMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277035; c=relaxed/simple;
-	bh=rfThUlZLibanzRcr32pMkI9/DrMv7pRuEM818p1WCps=;
+	s=arc-20240116; t=1757277491; c=relaxed/simple;
+	bh=W2ptkzTShpI+ACNEns4ZfqhAjc6vYYabOsSaGl8aP7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u4ePQoIXDqTaIKwF8aHd95/+Ikfk+bBUfMLCMPhSUe9IfzWzOIabNLfAh1YprSIyuyMbM2IWyKbX28GlV70EMZ4C4iWOnpLFFs/Z7abx9Dbl2AKo4w417OhzwE4bXIXsn+sMCJJLW/sB26IWqWQEcOcj/c866lPrlACUcyB8YAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cChsM0bQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E31AC4CEF0;
-	Sun,  7 Sep 2025 20:30:34 +0000 (UTC)
+	 MIME-Version; b=CsHa+VQTwHpC8LmiyivzccBV2qaldQkyTQhfRz6o5nwqPFV9q+dFl7q/AgAoLzithPmGNif3DLuq8xwVIJhLwzsCmBkpL/1f6jMeYI67Uf/Rn7fRG2FYcXJEhW8r2r0L0V3qdjGeuWXkegVhOAiAFf0IZfkJGTGB11vTFBH7Cgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFD5hhNS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC35C4CEF0;
+	Sun,  7 Sep 2025 20:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277035;
-	bh=rfThUlZLibanzRcr32pMkI9/DrMv7pRuEM818p1WCps=;
+	s=korg; t=1757277490;
+	bh=W2ptkzTShpI+ACNEns4ZfqhAjc6vYYabOsSaGl8aP7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cChsM0bQmAvNj2ZdiOLzi9L37ObGxsF70+FTMou3T3+WZ9QJJIoV+XDTZYG4HgAdv
-	 PIRyIGgl4hRYEQDQJJxK2+1gV9MpKSaFyjOG5E1XfnzfhlFR+Q6qMGCNv3lyYljUxn
-	 7Ra0+zK17Ng2q+3YZPmPuXQY9oBDLO8795ZRRjrs=
+	b=vFD5hhNSDiJ/gkPFtTPH1nA8pzri7j3LPHNaWwkEuF3JqNz+vDeZzQSFxSYYEV3uR
+	 cgN7UgrBOTMAVWFfh6/Zv8TtKslRTyxbXW1FjZ5qnr7Ovg8/WNt/v5x8m0zPGa2qKF
+	 WDQkXzVJOEdT0fBxqn1Ne2o0K98Ss6+VcDW5RKVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Simon Horman <horms@kernel.org>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Janusz Dziedzic <janusz.dziedzic@gmail.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 064/175] net: tunnel: add pskb_inet_may_pull_reason() helper
+Subject: [PATCH 6.16 032/183] wifi: mt76: mt7921: dont disconnect when CSA to DFS chan
 Date: Sun,  7 Sep 2025 21:57:39 +0200
-Message-ID: <20250907195616.353724182@linuxfoundation.org>
+Message-ID: <20250907195616.539473739@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
 
-[ Upstream commit 7f20dbd7de7b9b2804e6bf54b0c22f2bc447cd64 ]
+[ Upstream commit 87f38519d27a514c9909f84b8f1334125df9778e ]
 
-Introduce the function pskb_inet_may_pull_reason() and make
-pskb_inet_may_pull a simple inline call to it. The drop reasons of it just
-come from pskb_may_pull_reason().
+When station mode, don't disconnect when we get
+channel switch from AP to DFS channel. Most APs
+send CSA request after pass background CAC. In other
+case we should disconnect after detect beacon miss.
 
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 6ead38147ebb ("vxlan: Fix NPD when refreshing an FDB entry with a nexthop object")
+Without patch when we get CSA to DFS channel get:
+"kernel: wlo1: preparing for channel switch failed, disconnecting"
+
+Fixes: 8aa2f59260eb ("wifi: mt76: mt7921: introduce CSA support")
+Signed-off-by: Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Link: https://patch.msgid.link/20250716165443.28354-1-janusz.dziedzic@gmail.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_tunnels.h | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 6a070478254d8..ae83a969ae64b 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -439,7 +439,8 @@ int ip_tunnel_encap_del_ops(const struct ip_tunnel_encap_ops *op,
- int ip_tunnel_encap_setup(struct ip_tunnel *t,
- 			  struct ip_tunnel_encap *ipencap);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 77f73ae1d7ecc..f6b431c422ebc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -1457,11 +1457,8 @@ static int mt7921_pre_channel_switch(struct ieee80211_hw *hw,
+ 	if (vif->type != NL80211_IFTYPE_STATION || !vif->cfg.assoc)
+ 		return -EOPNOTSUPP;
  
--static inline bool pskb_inet_may_pull(struct sk_buff *skb)
-+static inline enum skb_drop_reason
-+pskb_inet_may_pull_reason(struct sk_buff *skb)
- {
- 	int nhlen;
+-	/* Avoid beacon loss due to the CAC(Channel Availability Check) time
+-	 * of the AP.
+-	 */
+ 	if (!cfg80211_chandef_usable(hw->wiphy, &chsw->chandef,
+-				     IEEE80211_CHAN_RADAR))
++				     IEEE80211_CHAN_DISABLED))
+ 		return -EOPNOTSUPP;
  
-@@ -456,7 +457,12 @@ static inline bool pskb_inet_may_pull(struct sk_buff *skb)
- 		nhlen = 0;
- 	}
- 
--	return pskb_network_may_pull(skb, nhlen);
-+	return pskb_network_may_pull_reason(skb, nhlen);
-+}
-+
-+static inline bool pskb_inet_may_pull(struct sk_buff *skb)
-+{
-+	return pskb_inet_may_pull_reason(skb) == SKB_NOT_DROPPED_YET;
- }
- 
- /* Variant of pskb_inet_may_pull().
+ 	return 0;
 -- 
 2.50.1
 
