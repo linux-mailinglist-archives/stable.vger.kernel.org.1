@@ -1,58 +1,95 @@
-Return-Path: <stable+bounces-178264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BCAB47DEA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D6BAB47E92
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2527189EB63
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E79853AE48D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A291F03FB;
-	Sun,  7 Sep 2025 20:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB6C1D88D0;
+	Sun,  7 Sep 2025 20:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGAzi1us"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJqeam4l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E781AF0B6;
-	Sun,  7 Sep 2025 20:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A04D528;
+	Sun,  7 Sep 2025 20:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276284; cv=none; b=jBTNej87mNC6DeRR7saOakb4rtPUVxgS21rlZ3LyzmRbppf05G7jut5ulGPuROthmCdW5epYfFPIeSCVJtLVUi30D+9D5PxrgNiyZ8kb8Ghwl9rTQH5q9jTxfoFIg5d/xUyjJldCm9bwA6jAMyp7MVlX7gMaarezUJKnef3NjWQ=
+	t=1757276763; cv=none; b=pL2inj3xVsxmARRBAFNm323FiFHIA8r1WE67B2GBQJ6LbFyzzJiN1SwXrnvSu15G5zAgxSs7cwEwX1wG8Pdaa3KWEo4C/9qrwNKmHa3LAANFtN97DXzI+L2Q2NmBTyUFLsuJsvCMv0yoOMHyGoEiy7yGlcbJGrLsvVwNZsixIqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276284; c=relaxed/simple;
-	bh=ZwkILo+7bANYFJVxpgv7xK4QYly9iWbCursW/EBjZ6o=;
+	s=arc-20240116; t=1757276763; c=relaxed/simple;
+	bh=uR+5zBgTEp2vKwwkG8pfONF7qo0QDMgGB+KikvqgmbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8/FFLAGUkAcfp72kHIsmICSyTWLSPu4vyxQSUDlm2xOQOqBsIuVGTBoix7cc6Bl53igwqo5M4zPYVOqrSP/LxjsgqeTWCGZ9CENqCXOhNW/WjfAGieDulcpXLKiCn+KPp312PW5oZ77WIEvhSeYE9ELU/EsrTXTdjK1hIqqP6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGAzi1us; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D43FC4CEF0;
-	Sun,  7 Sep 2025 20:18:04 +0000 (UTC)
+	 MIME-Version; b=hBrOYP3I3X75MOdyOFhZX7EoxClBOVIx3k1CAdgAJEFT29inQVtnnBVekMAdgnGdGFEo2QB3q/0phzhrl97cwUaeF74cXnDHBTnZuoytN7rpDLvhLA3WzNEMUM1J24R9rF/2qs6hN6mvfhgjTV5GB2lO/7PHe8RE9/tsayuWikA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJqeam4l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D6AC4CEF0;
+	Sun,  7 Sep 2025 20:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276284;
-	bh=ZwkILo+7bANYFJVxpgv7xK4QYly9iWbCursW/EBjZ6o=;
+	s=korg; t=1757276763;
+	bh=uR+5zBgTEp2vKwwkG8pfONF7qo0QDMgGB+KikvqgmbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGAzi1usXX9yPE55PXNBsqZ3/UVyv+XP2N428RIL7+zPuCNag+UCfPwTuV3mMk/VC
-	 W0bhMHrp/bnYudXX2Rurgd0DMr9VkhFtXgOAHlzuE0YMWB9K/m09gVonxcDNFirknR
-	 KHFJ1WwlfZLtisEtg6aw5q8s00Xec+tStZcfMtPs=
+	b=SJqeam4l/GYcfu/EL1BgsgQnZT3KzxCcNiGESBlnEY3HdV8Pfb0b+4GtPtkn0Swfw
+	 sTdn4M1v3XhhqxsffySI67YzVXTkqwomkAFwSkwNXCTsXnUmeE3w024QDifQzA+GYU
+	 OXp64LqMpP/niP3D3AARDzZmDshX0BYoWMTWPZhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Qiong <liqiong@nfschina.com>,
 	Harry Yoo <harry.yoo@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	bibo mao <maobibo@loongson.cn>,
+	Borislav Betkov <bp@alien8.de>,
+	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jane Chu <jane.chu@oracle.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Thomas Huth <thuth@redhat.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/104] mm/slub: avoid accessing metadata when pointer is invalid in object_err()
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 055/121] x86/mm/64: define ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings()
 Date: Sun,  7 Sep 2025 21:58:11 +0200
-Message-ID: <20250907195609.086456590@linuxfoundation.org>
+Message-ID: <20250907195611.244437688@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +101,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Qiong <liqiong@nfschina.com>
+From: Harry Yoo <harry.yoo@oracle.com>
 
-[ Upstream commit b4efccec8d06ceb10a7d34d7b1c449c569d53770 ]
+commit 6659d027998083fbb6d42a165b0c90dc2e8ba989 upstream.
 
-object_err() reports details of an object for further debugging, such as
-the freelist pointer, redzone, etc. However, if the pointer is invalid,
-attempting to access object metadata can lead to a crash since it does
-not point to a valid object.
+Define ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings() to ensure
+page tables are properly synchronized when calling p*d_populate_kernel().
 
-One known path to the crash is when alloc_consistency_checks()
-determines the pointer to the allocated object is invalid because of a
-freelist corruption, and calls object_err() to report it. The debug code
-should report and handle the corruption gracefully and not crash in the
-process.
+For 5-level paging, synchronization is performed via
+pgd_populate_kernel().  In 4-level paging, pgd_populate() is a no-op, so
+synchronization is instead performed at the P4D level via
+p4d_populate_kernel().
 
-In case the pointer is NULL or check_valid_pointer() returns false for
-the pointer, only print the pointer value and skip accessing metadata.
+This fixes intermittent boot failures on systems using 4-level paging and
+a large amount of persistent memory:
 
-Fixes: 81819f0fc828 ("SLUB core")
+  BUG: unable to handle page fault for address: ffffe70000000034
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  PGD 0 P4D 0
+  Oops: 0002 [#1] SMP NOPTI
+  RIP: 0010:__init_single_page+0x9/0x6d
+  Call Trace:
+   <TASK>
+   __init_zone_device_page+0x17/0x5d
+   memmap_init_zone_device+0x154/0x1bb
+   pagemap_range+0x2e0/0x40f
+   memremap_pages+0x10b/0x2f0
+   devm_memremap_pages+0x1e/0x60
+   dev_dax_probe+0xce/0x2ec [device_dax]
+   dax_bus_probe+0x6d/0xc9
+   [... snip ...]
+   </TASK>
+
+It also fixes a crash in vmemmap_set_pmd() caused by accessing vmemmap
+before sync_global_pgds() [1]:
+
+  BUG: unable to handle page fault for address: ffffeb3ff1200000
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  PGD 0 P4D 0
+  Oops: Oops: 0002 [#1] PREEMPT SMP NOPTI
+  Tainted: [W]=WARN
+  RIP: 0010:vmemmap_set_pmd+0xff/0x230
+   <TASK>
+   vmemmap_populate_hugepages+0x176/0x180
+   vmemmap_populate+0x34/0x80
+   __populate_section_memmap+0x41/0x90
+   sparse_add_section+0x121/0x3e0
+   __add_pages+0xba/0x150
+   add_pages+0x1d/0x70
+   memremap_pages+0x3dc/0x810
+   devm_memremap_pages+0x1c/0x60
+   xe_devm_add+0x8b/0x100 [xe]
+   xe_tile_init_noalloc+0x6a/0x70 [xe]
+   xe_device_probe+0x48c/0x740 [xe]
+   [... snip ...]
+
+Link: https://lkml.kernel.org/r/20250818020206.4517-4-harry.yoo@oracle.com
+Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Closes: https://lore.kernel.org/linux-mm/20250311114420.240341-1-gwan-gyeong.mun@intel.com [1]
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Kiryl Shutsemau <kas@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: bibo mao <maobibo@loongson.cn>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Christoph Lameter (Ampere) <cl@gentwo.org>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Joao Martins <joao.m.martins@oracle.com>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Li Qiong <liqiong@nfschina.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/pgtable_64_types.h |    3 +++
+ arch/x86/mm/init_64.c                   |   18 ++++++++++++++++++
+ 2 files changed, 21 insertions(+)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -927,7 +927,12 @@ static void object_err(struct kmem_cache
- 		return;
+--- a/arch/x86/include/asm/pgtable_64_types.h
++++ b/arch/x86/include/asm/pgtable_64_types.h
+@@ -41,6 +41,9 @@ static inline bool pgtable_l5_enabled(vo
+ #define pgtable_l5_enabled() 0
+ #endif /* CONFIG_X86_5LEVEL */
  
- 	slab_bug(s, "%s", reason);
--	print_trailer(s, slab, object);
-+	if (!object || !check_valid_pointer(s, slab, object)) {
-+		print_slab_info(slab);
-+		pr_err("Invalid pointer 0x%p\n", object);
-+	} else {
-+		print_trailer(s, slab, object);
-+	}
- 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
++#define ARCH_PAGE_TABLE_SYNC_MASK \
++	(pgtable_l5_enabled() ? PGTBL_PGD_MODIFIED : PGTBL_P4D_MODIFIED)
++
+ extern unsigned int pgdir_shift;
+ extern unsigned int ptrs_per_p4d;
+ 
+--- a/arch/x86/mm/init_64.c
++++ b/arch/x86/mm/init_64.c
+@@ -224,6 +224,24 @@ static void sync_global_pgds(unsigned lo
  }
  
+ /*
++ * Make kernel mappings visible in all page tables in the system.
++ * This is necessary except when the init task populates kernel mappings
++ * during the boot process. In that case, all processes originating from
++ * the init task copies the kernel mappings, so there is no issue.
++ * Otherwise, missing synchronization could lead to kernel crashes due
++ * to missing page table entries for certain kernel mappings.
++ *
++ * Synchronization is performed at the top level, which is the PGD in
++ * 5-level paging systems. But in 4-level paging systems, however,
++ * pgd_populate() is a no-op, so synchronization is done at the P4D level.
++ * sync_global_pgds() handles this difference between paging levels.
++ */
++void arch_sync_kernel_mappings(unsigned long start, unsigned long end)
++{
++	sync_global_pgds(start, end);
++}
++
++/*
+  * NOTE: This function is marked __ref because it calls __init function
+  * (alloc_bootmem_pages). It's safe to do it ONLY when after_bootmem == 0.
+  */
 
 
 
