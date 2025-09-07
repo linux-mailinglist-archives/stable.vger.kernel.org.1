@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B08B47D2A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:08:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBE0B47E56
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5551517BCE6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6234189F9ED
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BFF284B59;
-	Sun,  7 Sep 2025 20:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22ADC1F09BF;
+	Sun,  7 Sep 2025 20:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFfnW0Eq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HD7owQfu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF151CDFAC;
-	Sun,  7 Sep 2025 20:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38C8189BB0;
+	Sun,  7 Sep 2025 20:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275706; cv=none; b=YLWe9vAZqzI0c9r4NK8CgdAVLGKRYWY2QhLsCEWXzICmzz27cKWJzSUxZkUKhNiJYed1CRrBAPMF3RjZErGNGUoOjl2coEH68M+jmT6tfgtuv/dsDBW29H1mW7vQzKOuhoYXndiJdci2yMQ0Z6FmUkOm2iAXXIQD8OtwD1yhPrA=
+	t=1757276578; cv=none; b=m35cyyhzahFqvI/ojk0Q8QFBdaue18JpICP/zq5scyBGgYPpV0xRSc77GEcKGr6OvKdQrr8uGx7D7cA/LcRG2Wo/EQQZl8UoP5jluHSlewZj2BwWPEeXg3OlrzHgyQXK9ifHFj2e7lZ6MMNOJEv9ybCYz1hTdcUNPStr9ycx7x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275706; c=relaxed/simple;
-	bh=jqqnjoB2LgdwlCynWsnbqp1uPXsMjS+U/SQ43Qv9ixY=;
+	s=arc-20240116; t=1757276578; c=relaxed/simple;
+	bh=7Boa/kntQrdI8jPewXB4AxfzGHrn/x2S24b38Bcjj5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vc6xLvyjZq9ccp64jY1OTHK1q+uU5zFpjpP0lJoOS9OMfWI+sAli4V7uu2TDBDeFouyOPfOaRfVhzWW4qXxfuVM+oGSG97khWa47DEpHvFrVAJLj/qTg8zDkfDyJeHY4/DS052REBsGdAeGkAq67z+vf/BDOBnFKzibNzWp/stk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFfnW0Eq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01223C4CEF0;
-	Sun,  7 Sep 2025 20:08:25 +0000 (UTC)
+	 MIME-Version; b=kC5nXS8wUKk1ANy3v47ZTjyoPW96Ye07/0HkKpe6jLv2hE0Vsz16cUt6zd7g6OldPuu2qoWXh1TD+h/S0cOUHxZ8dSYlpX4eQq/Wzwmz7S4f5cxVeIBH4H2wMDDAN39CIVr0nMjdFelii3bV8AwOYfsIfeoOnNX0PKFNrTmGE4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HD7owQfu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C5DC4CEF0;
+	Sun,  7 Sep 2025 20:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275706;
-	bh=jqqnjoB2LgdwlCynWsnbqp1uPXsMjS+U/SQ43Qv9ixY=;
+	s=korg; t=1757276578;
+	bh=7Boa/kntQrdI8jPewXB4AxfzGHrn/x2S24b38Bcjj5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WFfnW0EqtTNyhvoNBBu6pOpYbARc/ZgtRo0mzNp96WiB3NvjnPqOuIAhUq8IkMbaj
-	 a7EexJUMwowMvrt7O4gVCM3EtsQ1xx+8g0XgsWkMdfN5YJFu6K68/jrNLHN4iANkiS
-	 Qls7tOgLvfwSW8dsNuPhkQhhCJFkUWNfX9VcPzcs=
+	b=HD7owQfuTSB/PXBGQXTzIHf+cva4NgX8KJRYSBL7OeXGT3+s8bcfTiO2kHv8+4Lk5
+	 JT7bevqR3AvQBHFv/WrN9GMQmyo3fM0iDlJz558zcNxGDTuRmWjrKPlGF3oVGtCvXO
+	 2x6xB+c/eEJJo68xymLV0eOjgS77nX1opZlBflHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
-	Vladimir Oltean <olteanv@gmail.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 37/52] net: dsa: microchip: linearize skb for tail-tagging switches
-Date: Sun,  7 Sep 2025 21:57:57 +0200
-Message-ID: <20250907195603.050730332@linuxfoundation.org>
+Subject: [PATCH 6.6 042/121] net: thunder_bgx: decrement cleanup index before use
+Date: Sun,  7 Sep 2025 21:57:58 +0200
+Message-ID: <20250907195610.903354827@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakob Unterwurzacher <jakobunt@gmail.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit ba54bce747fa9e07896c1abd9b48545f7b4b31d2 ]
+[ Upstream commit 9e3d71a92e561ccc77025689dab25d201fee7a3e ]
 
-The pointer arithmentic for accessing the tail tag only works
-for linear skbs.
+All paths in probe that call goto defer do so before assigning phydev
+and thus it makes sense to cleanup the prior index. It also fixes a bug
+where index 0 does not get cleaned up.
 
-For nonlinear skbs, it reads uninitialized memory inside the
-skb headroom, essentially randomizing the tag. I have observed
-it gets set to 6 most of the time.
-
-Example where ksz9477_rcv thinks that the packet from port 1 comes from port 6
-(which does not exist for the ksz9896 that's in use), dropping the packet.
-Debug prints added by me (not included in this patch):
-
-	[  256.645337] ksz9477_rcv:323 tag0=6
-	[  256.645349] skb len=47 headroom=78 headlen=0 tailroom=0
-	               mac=(64,14) mac_len=14 net=(78,0) trans=78
-	               shinfo(txflags=0 nr_frags=1 gso(size=0 type=0 segs=0))
-	               csum(0x0 start=0 offset=0 ip_summed=0 complete_sw=0 valid=0 level=0)
-	               hash(0x0 sw=0 l4=0) proto=0x00f8 pkttype=1 iif=3
-	               priority=0x0 mark=0x0 alloc_cpu=0 vlan_all=0x0
-	               encapsulation=0 inner(proto=0x0000, mac=0, net=0, trans=0)
-	[  256.645377] dev name=end1 feat=0x0002e10200114bb3
-	[  256.645386] skb headroom: 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645395] skb headroom: 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645403] skb headroom: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645411] skb headroom: 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645420] skb headroom: 00000040: ff ff ff ff ff ff 00 1c 19 f2 e2 db 08 06
-	[  256.645428] skb frag:     00000000: 00 01 08 00 06 04 00 01 00 1c 19 f2 e2 db 0a 02
-	[  256.645436] skb frag:     00000010: 00 83 00 00 00 00 00 00 0a 02 a0 2f 00 00 00 00
-	[  256.645444] skb frag:     00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01
-	[  256.645452] ksz_common_rcv:92 dsa_conduit_find_user returned NULL
-
-Call skb_linearize before trying to access the tag.
-
-This patch fixes ksz9477_rcv which is used by the ksz9896 I have at
-hand, and also applies the same fix to ksz8795_rcv which seems to have
-the same problem.
-
-Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
-CC: stable@vger.kernel.org
-Fixes: 016e43a26bab ("net: dsa: ksz: Add KSZ8795 tag code")
-Fixes: 8b8010fb7876 ("dsa: add support for Microchip KSZ tail tagging")
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://patch.msgid.link/20250515072920.2313014-1-jakob.unterwurzacher@cherry.de
+Fixes: b7d3e3d3d21a ("net: thunderx: Don't leak phy device references on -EPROBE_DEFER condition.")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250901213314.48599-1-rosenp@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dsa/tag_ksz.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/dsa/tag_ksz.c
-+++ b/net/dsa/tag_ksz.c
-@@ -68,7 +68,12 @@ static struct sk_buff *ksz8795_xmit(stru
- static struct sk_buff *ksz8795_rcv(struct sk_buff *skb, struct net_device *dev,
- 				  struct packet_type *pt)
- {
--	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
-+	u8 *tag;
-+
-+	if (skb_linearize(skb))
-+		return NULL;
-+
-+	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
- 
- 	return ksz_common_rcv(skb, dev, tag[0] & 7, KSZ_EGRESS_TAG_LEN);
- }
-@@ -134,10 +139,16 @@ static struct sk_buff *ksz9477_xmit(stru
- static struct sk_buff *ksz9477_rcv(struct sk_buff *skb, struct net_device *dev,
- 				   struct packet_type *pt)
- {
--	/* Tag decoding */
--	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
--	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
- 	unsigned int len = KSZ_EGRESS_TAG_LEN;
-+	unsigned int port;
-+	u8 *tag;
-+
-+	if (skb_linearize(skb))
-+		return NULL;
-+
-+	/* Tag decoding */
-+	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
-+	port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
- 
- 	/* Extra 4-bytes PTP timestamp */
- 	if (tag[0] & KSZ9477_PTP_TAG_INDICATION)
+diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+index 7ef1b88c8c535..a423a93882115 100644
+--- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
++++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
+@@ -1517,11 +1517,11 @@ static int bgx_init_of_phy(struct bgx *bgx)
+ 	 * for phy devices we may have already found.
+ 	 */
+ 	while (lmac) {
++		lmac--;
+ 		if (bgx->lmac[lmac].phydev) {
+ 			put_device(&bgx->lmac[lmac].phydev->mdio.dev);
+ 			bgx->lmac[lmac].phydev = NULL;
+ 		}
+-		lmac--;
+ 	}
+ 	of_node_put(node);
+ 	return -EPROBE_DEFER;
+-- 
+2.50.1
+
 
 
 
