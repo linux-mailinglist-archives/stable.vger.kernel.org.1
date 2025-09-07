@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-178282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A14B47DFE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1CAB47FB2
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04E713C11EE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FFA22005DA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C494215077;
-	Sun,  7 Sep 2025 20:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5DA269CE6;
+	Sun,  7 Sep 2025 20:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmAHGEUH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuedrjdE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E12212B3D;
-	Sun,  7 Sep 2025 20:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B23D1F63CD;
+	Sun,  7 Sep 2025 20:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276341; cv=none; b=jUAgk238Ghoyp/D0U/DdkAj/ANQJiytbqWKSdrZZG1A4dPnqO6uf/CMgm6L5aWQxPHaXnrQbXQwL7uyr2xG/b4pykFHVjF8IPoWxK0frjRB98ReJDkORS0BeescyWj5vPE0zJMNHsLB9BgpW7+ELgT+/Dt6fdrqazyCer4SCszA=
+	t=1757277662; cv=none; b=cd0pyosvErFYLPh1fwz28q9L/pPucD1scwKMG+VKHiiGj6cdMQEqE8DaWajVOnKPHfTAYWzHfXTBMzEo29D9JfEb2NLF04xom92DoAu6ctZm12rst61mXQm7DuEImGsAsOEsat6ppGePWBifMBLSNqgan6DvQXIElLBA3AwvDK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276341; c=relaxed/simple;
-	bh=/oifftiKl62f21GY+POulFhnS75HbT/t4okkbi5A2UA=;
+	s=arc-20240116; t=1757277662; c=relaxed/simple;
+	bh=LKI7Unqnd3hX0Di47kdGSeL9CvrWkhdsnZBeFdePPZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t2dQ1Nk5E4faqveBx2hRz38+rUXylSvbGXBs81jN4pjrMfVHoJAqp7GljraSrozjI/clgxLENhKbTQqnmMNQAhR72XcVoG9DpQrMTswpb99hHkYFMMbJcmSst75GYEztK90QWi5OmPbhNTh3okn2l1w8tEOZsXRZVYgU991JVPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmAHGEUH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1FDFC4CEF0;
-	Sun,  7 Sep 2025 20:19:00 +0000 (UTC)
+	 MIME-Version; b=sED4F9Ig67cN2jN2Lie08Mqu9fXzvTrl98/m8KQKxH4R1MRMRzpW6dj4KQ/GYbIwg/3kmi5SyuTh1JLb6Mwg80rKoV3dfGHpFJc6zPnisdr8u5715jp5Rrt2r/ZBOmKuM8wc2P686RtifcOtScJ+Ckw9TGM8+2OjbP3kSwzqLWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuedrjdE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05BAC4CEF0;
+	Sun,  7 Sep 2025 20:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276341;
-	bh=/oifftiKl62f21GY+POulFhnS75HbT/t4okkbi5A2UA=;
+	s=korg; t=1757277662;
+	bh=LKI7Unqnd3hX0Di47kdGSeL9CvrWkhdsnZBeFdePPZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KmAHGEUHI2LTCstTNaalv8vanfSX74Qgq0OuOfH64tAlf/gSecIU17rKBU5Ou2T7f
-	 tzEAewaL++HpVFJDuImO2RtSIJjA6Q3NZSIHwuxxhe/s5m7Sh1lh06tXeNGRhv0V61
-	 26Yzjgi3Pvd3aKUEYsyN4gEeeq/3jZsGZ2sUx8nI=
+	b=HuedrjdE2pzK0mTo6WSeFH94xRvtXixBuhFFkKMfTOk9dDGcvYqzSqH4esE3TkqPW
+	 lOKznzOZo+NwSqR8MQYegYIVItFmCsVHc7RjLJr1cQTAWMyPOMp9ueVbocWJLKmw9O
+	 l6pY6KNCgBhEIfaCKo5hCuY45EsSbejYkllyRYo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.1 075/104] drm/amd/display: Check link_res->hpo_dp_link_enc before using it
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 085/183] ipv4: Fix NULL vs error pointer check in inet_blackhole_dev_init()
 Date: Sun,  7 Sep 2025 21:58:32 +0200
-Message-ID: <20250907195609.625253436@linuxfoundation.org>
+Message-ID: <20250907195617.814124820@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 0beca868cde8742240cd0038141c30482d2b7eb8 upstream.
+[ Upstream commit a51160f8da850a65afbf165f5bbac7ffb388bf74 ]
 
-[WHAT & HOW]
-Functions dp_enable_link_phy and dp_disable_link_phy can pass link_res
-without initializing hpo_dp_link_enc and it is necessary to check for
-null before dereferencing.
+The inetdev_init() function never returns NULL.  Check for error
+pointers instead.
 
-This fixes 2 FORWARD_NULL issues reported by Coverity.
-
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ Minor context change fixed. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 22600596b675 ("ipv4: give an IPv4 dev to blackhole_netdev")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/aLaQWL9NguWmeM1i@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_hwss_hpo_dp.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ net/ipv4/devinet.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/link/link_hwss_hpo_dp.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_hwss_hpo_dp.c
-@@ -29,6 +29,8 @@
- #include "dc_link_dp.h"
- #include "clk_mgr.h"
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index c47d3828d4f65..942a887bf0893 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -340,14 +340,13 @@ static void inetdev_destroy(struct in_device *in_dev)
  
-+#define DC_LOGGER link->ctx->logger
-+
- static enum phyd32clk_clock_source get_phyd32clk_src(struct dc_link *link)
+ static int __init inet_blackhole_dev_init(void)
  {
- 	switch (link->link_enc->transmitter) {
-@@ -224,6 +226,11 @@ static void disable_hpo_dp_link_output(s
- 		const struct link_resource *link_res,
- 		enum signal_type signal)
- {
-+	if (!link_res->hpo_dp_link_enc) {
-+		DC_LOG_ERROR("%s: invalid hpo_dp_link_enc\n", __func__);
-+		return;
-+	}
-+
- 	if (IS_FPGA_MAXIMUS_DC(link->dc->ctx->dce_environment)) {
- 		disable_hpo_dp_fpga_link_output(link, link_res, signal);
- 	} else {
+-	int err = 0;
++	struct in_device *in_dev;
+ 
+ 	rtnl_lock();
+-	if (!inetdev_init(blackhole_netdev))
+-		err = -ENOMEM;
++	in_dev = inetdev_init(blackhole_netdev);
+ 	rtnl_unlock();
+ 
+-	return err;
++	return PTR_ERR_OR_ZERO(in_dev);
+ }
+ late_initcall(inet_blackhole_dev_init);
+ 
+-- 
+2.50.1
+
 
 
 
