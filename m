@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-178698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B999B47FB5
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B70B47DEF
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CB5A3AE257
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9498B3C10C1
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3CB212B3D;
-	Sun,  7 Sep 2025 20:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B0D1D88D0;
+	Sun,  7 Sep 2025 20:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOwgvpK9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cv8cgt/U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AC54315A;
-	Sun,  7 Sep 2025 20:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C627F1A9FAA;
+	Sun,  7 Sep 2025 20:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277671; cv=none; b=fmCLpSvY5UW1X+Q/JjbjRvCs9PjbLgZuRSfZYkuIyHeMSP08b8xx+8ol+jGQTrR23AdvT8NcPdaUjjXBrfxvOtQh6jtu0oguYhJtNbR+jb6595E+5fzkyLFM6OpDUYb3HtalvyFf+htcIVXsewzYOVvQBgtocTtotCnYTfRayCo=
+	t=1757276303; cv=none; b=VpZBWZm0kV2KCz7RHyM+saGMgKWHq8D+Pkam5kDORSPXkkF33vSzI0bTP3slgT4Uz+qmUW/m9oQcFrxbQTFzHFUUF/uCh5z1NCzeSWPDU0FJ96nZPzQwrgWIJi/hqwoU8QRileWWYelyv6ml7momyF6qBNP1ZJ5RSdtGMbDThjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277671; c=relaxed/simple;
-	bh=f3em8CjfNE5UzV0/tFqMFvJ8tteHz85voXW4k+pEkeU=;
+	s=arc-20240116; t=1757276303; c=relaxed/simple;
+	bh=Ytxi8mw+Z5oRAtU+WUW2vcqy2VSqDnSrGoOMz6gFIAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9eY4wrkLs8+s+FujpLTCS5H9Lg4j6aO85cz+6CxP3EpvknmAsOaEGWqD+A8GTYXPPCX4j8Yg+SI9FtK0yd2KZXaEQh7S2hbgAztFnrUdIIRd/ONF7Dl631g0IW8Cth77C6jxk1wJsYIfmCWGgKiA0Xr0xgATXiflp2E7jIjxi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOwgvpK9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42ED1C4CEF0;
-	Sun,  7 Sep 2025 20:41:11 +0000 (UTC)
+	 MIME-Version; b=X/uj/Eb27LrEKThnTd7fwWyRa036O0iWQDVNeCQ+LafrBvakNqNUKuCtWLhlxlbaXnLa5gWEB1t6BHZAOF1IqSsVfTCjcmBAL5/U0GM9+pa9RcRktsLf2w33ni1c6NcJPRJDX6cykPMGzmPHVzRSyLqHbY9/by/XRvHZ0w0VNHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cv8cgt/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49858C4CEF0;
+	Sun,  7 Sep 2025 20:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277671;
-	bh=f3em8CjfNE5UzV0/tFqMFvJ8tteHz85voXW4k+pEkeU=;
+	s=korg; t=1757276303;
+	bh=Ytxi8mw+Z5oRAtU+WUW2vcqy2VSqDnSrGoOMz6gFIAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TOwgvpK9u3/E9LC1B5YN56Vt5y7tBFhTP7te4Q+Qv5Mi4YZzU4+jv2OK3eHlJTFM/
-	 OoF2PjCb+2CFNEs31PZCul2HFUXCucDLi3VcLnOOmD0Zm+g69OpK1QztMWYdywd0bG
-	 FV1W+zPvPetoKGTwXY0FIBJPAnUwpMHiHHETarJI=
+	b=cv8cgt/UjCKUI9LbNMYGeLwc/9RrURC7P1QU2BcnOKUA6Z0H8i8mZuAvwE3sQ8r2a
+	 HoHrtn2+Utfr2YoAXsISWxGmJ/KwSpHOakq568Ef1V+Uno/y19GqqGWMZcQ8VkOJNw
+	 uY8Svwx6KeaQhtD4hceXlNhtymYGPrwrHP3Kh0eQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.16 070/183] ixgbe: fix incorrect map used in eee linkmode
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 060/104] iio: light: opt3001: fix deadlock due to concurrent flag access
 Date: Sun,  7 Sep 2025 21:58:17 +0200
-Message-ID: <20250907195617.458531967@linuxfoundation.org>
+Message-ID: <20250907195609.238591305@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit b7e5c3e3bfa9dc8af75ff6d8633ad7070e1985e4 ]
+[ Upstream commit f063a28002e3350088b4577c5640882bf4ea17ea ]
 
-incorrectly used ixgbe_lp_map in loops intended to populate the
-supported and advertised EEE linkmode bitmaps based on ixgbe_ls_map.
-This results in incorrect bit setting and potential out-of-bounds
-access, since ixgbe_lp_map and ixgbe_ls_map have different sizes
-and purposes.
+The threaded IRQ function in this driver is reading the flag twice: once to
+lock a mutex and once to unlock it. Even though the code setting the flag
+is designed to prevent it, there are subtle cases where the flag could be
+true at the mutex_lock stage and false at the mutex_unlock stage. This
+results in the mutex not being unlocked, resulting in a deadlock.
 
-ixgbe_lp_map[i] -> ixgbe_ls_map[i]
+Fix it by making the opt3001_irq() code generally more robust, reading the
+flag into a variable and using the variable value at both stages.
 
-Use ixgbe_ls_map for supported and advertised linkmodes, and keep
-ixgbe_lp_map usage only for link partner (lp_advertised) mapping.
-
-Fixes: 9356b6db9d05 ("net: ethernet: ixgbe: Convert EEE to use linkmodes")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20250321-opt3001-irq-fix-v1-1-6c520d851562@bootlin.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/light/opt3001.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index d8a919ab7027a..05a1f9f5914fd 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -3565,13 +3565,13 @@ ixgbe_get_eee_fw(struct ixgbe_adapter *adapter, struct ethtool_keee *edata)
+--- a/drivers/iio/light/opt3001.c
++++ b/drivers/iio/light/opt3001.c
+@@ -692,8 +692,9 @@ static irqreturn_t opt3001_irq(int irq,
+ 	struct opt3001 *opt = iio_priv(iio);
+ 	int ret;
+ 	bool wake_result_ready_queue = false;
++	bool ok_to_ignore_lock = opt->ok_to_ignore_lock;
  
- 	for (i = 0; i < ARRAY_SIZE(ixgbe_ls_map); ++i) {
- 		if (hw->phy.eee_speeds_supported & ixgbe_ls_map[i].mac_speed)
--			linkmode_set_bit(ixgbe_lp_map[i].link_mode,
-+			linkmode_set_bit(ixgbe_ls_map[i].link_mode,
- 					 edata->supported);
+-	if (!opt->ok_to_ignore_lock)
++	if (!ok_to_ignore_lock)
+ 		mutex_lock(&opt->lock);
+ 
+ 	ret = i2c_smbus_read_word_swapped(opt->client, OPT3001_CONFIGURATION);
+@@ -730,7 +731,7 @@ static irqreturn_t opt3001_irq(int irq,
  	}
  
- 	for (i = 0; i < ARRAY_SIZE(ixgbe_ls_map); ++i) {
- 		if (hw->phy.eee_speeds_advertised & ixgbe_ls_map[i].mac_speed)
--			linkmode_set_bit(ixgbe_lp_map[i].link_mode,
-+			linkmode_set_bit(ixgbe_ls_map[i].link_mode,
- 					 edata->advertised);
- 	}
+ out:
+-	if (!opt->ok_to_ignore_lock)
++	if (!ok_to_ignore_lock)
+ 		mutex_unlock(&opt->lock);
  
--- 
-2.50.1
-
+ 	if (wake_result_ready_queue)
 
 
 
