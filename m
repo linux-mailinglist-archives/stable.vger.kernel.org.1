@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-178411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F1A9B47E8F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 767D0B47D50
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 182637A22F9
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C47717C206
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311D820D51C;
-	Sun,  7 Sep 2025 20:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955B927F754;
+	Sun,  7 Sep 2025 20:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpMO8rIe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7oi9XNq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C9B17BB21;
-	Sun,  7 Sep 2025 20:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D911CDFAC;
+	Sun,  7 Sep 2025 20:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276752; cv=none; b=GzCaGFQxjMWjzHMJFEjEnEWHOhYvNeTxZV32eP0xC6tMp8xJYTncH8CfhwcYnz6hPNtH51w3c+tuKBRM3IPpIb7Vs5PIxFMyHT0RZxLfI6UDftZg89riqaXUlY95Li22q/FjcnSJTYaJOVKEQnHYaoIB5gWZ44qBP96RrWaitNM=
+	t=1757275819; cv=none; b=OFuaZZBOuZ3jgAQsWBV61ipVseeCoUuw1Xn83/CvwmV1baOD97OhRZ9tWJO1OR1tI8O+J9cAhJ6lH/eaZWBbLADXjYgz3eRJ8TSuvt3GEAOtpSRuXzMx4M/HUon4c5uT9LSRPw+4s8DGOZZMagiAbevD5nCg7aCfzz//lsYNy0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276752; c=relaxed/simple;
-	bh=drMpN1R8JJSKJLcFFYNghgYBK/Plv1gag8zMOBldsn4=;
+	s=arc-20240116; t=1757275819; c=relaxed/simple;
+	bh=QfgGWkT2ce22Wmyl56AEvDknJx7pYCYK7BlLdujFYfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H8a8ORj8IRTelhr969yEMd+3Zzq/GTdrEfq5L9pvHyYmrhrOwQLX4/5zktIAPgIgBZG0RrXQA6O4INXqgwYkqOHj5I1v/bw2mnKhv0n7SjBm+st/f5S4BZJ99+3WgYSA9R75R9ulWZrNoRPVGZy43w2CI46z9krTREaksTDahy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpMO8rIe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F54C4CEF0;
-	Sun,  7 Sep 2025 20:25:49 +0000 (UTC)
+	 MIME-Version; b=uvD8H4HJvuQ05Wxr2vv6eeNhzy/8IPl1Xs0n/Tqs+9ienDz1XV9lrFaDDFduxrxfJoAWu7/8VFVRI5fYkhgXGyN9j72kZ0afWKz9PJYoyZvOh6EF71Prt0GMXGQ7zU4SscJXjbbLkkvtNq/FqL4U3IiJ+7l1kQ9wXVDbJ2ZS3w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7oi9XNq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3915C4CEF0;
+	Sun,  7 Sep 2025 20:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276750;
-	bh=drMpN1R8JJSKJLcFFYNghgYBK/Plv1gag8zMOBldsn4=;
+	s=korg; t=1757275819;
+	bh=QfgGWkT2ce22Wmyl56AEvDknJx7pYCYK7BlLdujFYfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kpMO8rIefcVPP2v3DvneSBcVa+orCdclEsymfTFk4ztkC9AYIaVvr9MbY4bi04OVy
-	 q7HLqiMaotrBaRr7HSMDbnOBgioGYluYM9QtvCIW36p/Y2w3IdekasRUpFUYu5MitS
-	 6T43B7WfY3t3SycsreXp4/3TglRexFQBjycgW1f4=
+	b=Z7oi9XNqykStha2jF9crMyOsHSHAyhwh+NJoO2004JSdZmdDVbvKHmYb7utnpW+E8
+	 iQiYam+4bU3w6xo8FDDjEI8PrVwmktHhKS7Dt23U4VDbMJk8Qg+r6U0bUn53xMl25g
+	 6TxF6no37ZD70SCSeYeQkhMCpOeMAX6+E24KEPyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guoli An <anguoli@uniontech.com>,
-	Cryolitia PukNgae <cryolitia@uniontech.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 051/121] ALSA: usb-audio: Add mute TLV for playback volumes on some devices
+	oushixiong <oushixiong1025@163.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.4 21/45] drm/amdgpu: drop hw access in non-DC audio fini
 Date: Sun,  7 Sep 2025 21:58:07 +0200
-Message-ID: <20250907195611.136933589@linuxfoundation.org>
+Message-ID: <20250907195601.575022979@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cryolitia PukNgae <cryolitia@uniontech.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 9c6182843b0d02ca04cc1d946954a65a2286c7db upstream.
+commit 71403f58b4bb6c13b71c05505593a355f697fd94 upstream.
 
-Applying the quirk of that, the lowest Playback mixer volume setting
-mutes the audio output, on more devices.
+We already disable the audio pins in hw_fini so
+there is no need to do it again in sw_fini.
 
-Link: https://gitlab.freedesktop.org/pipewire/pipewire/-/merge_requests/2514
-Cc: <stable@vger.kernel.org>
-Tested-by: Guoli An <anguoli@uniontech.com>
-Signed-off-by: Cryolitia PukNgae <cryolitia@uniontech.com>
-Link: https://patch.msgid.link/20250822-mixer-quirk-v1-1-b19252239c1c@uniontech.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4481
+Cc: oushixiong <oushixiong1025@163.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5eeb16ca727f11278b2917fd4311a7d7efb0bbd6)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/dce_v10_0.c |    5 -----
+ drivers/gpu/drm/amd/amdgpu/dce_v11_0.c |    5 -----
+ drivers/gpu/drm/amd/amdgpu/dce_v6_0.c  |    5 -----
+ drivers/gpu/drm/amd/amdgpu/dce_v8_0.c  |    5 -----
+ 4 files changed, 20 deletions(-)
 
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -3631,9 +3631,11 @@ void snd_usb_mixer_fu_apply_quirk(struct
- 			snd_dragonfly_quirk_db_scale(mixer, cval, kctl);
- 		break;
- 	/* lowest playback value is muted on some devices */
-+	case USB_ID(0x0572, 0x1b09): /* Conexant Systems (Rockwell), Inc. */
- 	case USB_ID(0x0d8c, 0x000c): /* C-Media */
- 	case USB_ID(0x0d8c, 0x0014): /* C-Media */
- 	case USB_ID(0x19f7, 0x0003): /* RODE NT-USB */
-+	case USB_ID(0x2d99, 0x0026): /* HECATE G2 GAMING HEADSET */
- 		if (strstr(kctl->id.name, "Playback"))
- 			cval->min_mute = 1;
- 		break;
+--- a/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/dce_v10_0.c
+@@ -1445,17 +1445,12 @@ static int dce_v10_0_audio_init(struct a
+ 
+ static void dce_v10_0_audio_fini(struct amdgpu_device *adev)
+ {
+-	int i;
+-
+ 	if (!amdgpu_audio)
+ 		return;
+ 
+ 	if (!adev->mode_info.audio.enabled)
+ 		return;
+ 
+-	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
+-		dce_v10_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+-
+ 	adev->mode_info.audio.enabled = false;
+ }
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/dce_v11_0.c
+@@ -1487,17 +1487,12 @@ static int dce_v11_0_audio_init(struct a
+ 
+ static void dce_v11_0_audio_fini(struct amdgpu_device *adev)
+ {
+-	int i;
+-
+ 	if (!amdgpu_audio)
+ 		return;
+ 
+ 	if (!adev->mode_info.audio.enabled)
+ 		return;
+ 
+-	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
+-		dce_v11_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+-
+ 	adev->mode_info.audio.enabled = false;
+ }
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/dce_v6_0.c
+@@ -1358,17 +1358,12 @@ static int dce_v6_0_audio_init(struct am
+ 
+ static void dce_v6_0_audio_fini(struct amdgpu_device *adev)
+ {
+-	int i;
+-
+ 	if (!amdgpu_audio)
+ 		return;
+ 
+ 	if (!adev->mode_info.audio.enabled)
+ 		return;
+ 
+-	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
+-		dce_v6_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+-
+ 	adev->mode_info.audio.enabled = false;
+ }
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/dce_v8_0.c
+@@ -1408,17 +1408,12 @@ static int dce_v8_0_audio_init(struct am
+ 
+ static void dce_v8_0_audio_fini(struct amdgpu_device *adev)
+ {
+-	int i;
+-
+ 	if (!amdgpu_audio)
+ 		return;
+ 
+ 	if (!adev->mode_info.audio.enabled)
+ 		return;
+ 
+-	for (i = 0; i < adev->mode_info.audio.num_pins; i++)
+-		dce_v8_0_audio_enable(adev, &adev->mode_info.audio.pin[i], false);
+-
+ 	adev->mode_info.audio.enabled = false;
+ }
+ 
 
 
 
