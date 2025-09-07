@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-178402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E565B47E85
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F355B47F2F
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:34:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1BF87A1B61
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA0CD3C2A9E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508AA1D88D0;
-	Sun,  7 Sep 2025 20:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689C61FECCD;
+	Sun,  7 Sep 2025 20:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPlgXg+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEEHX70v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E22BD528;
-	Sun,  7 Sep 2025 20:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B711A0BFD;
+	Sun,  7 Sep 2025 20:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276723; cv=none; b=bOJdHnhXA7cwg60M73hL9t8/EhOOhtgXj+bCQplSUmqD9c1IHwdHUrCV+fWmRINYK4CChistjBAfwwRqSXl0f3q/I/iVCbtO3l0eA1WetWsXHqH0mD9oDf6ZI2wUKvpluwx+M0XYkQ1vimewC0IwvfyGZCEUIHXbczEED1ijcJ0=
+	t=1757277243; cv=none; b=q001C8GIF3e+Xbvw+6Uaib2msQVqZfR+g2LRyxiHyvioAmLOvz0orkarOT1MxOTXVY3JNpHg5nVJnJvqQAPvwV+Qf/Nr4pFilsvrCJKjUSLVJL5npS7JQrzIhr5VXj9GyrrHnRl6EXSRqgcXmjpzSX3EWqM80GD4aYJj4BWxLKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276723; c=relaxed/simple;
-	bh=LpdZbKNv/5DZ8rSrGz+X6y7/ySoynVrvpAFmECHCdDw=;
+	s=arc-20240116; t=1757277243; c=relaxed/simple;
+	bh=vM4XYjf7SxROcOm+ivn/fZhtKHbOl6+pGBXLIw8nINQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iLWWi8C8lpZiUspUxQotuc1pGM1rsdmNDP2lpEMUN99Rd2pM0CGTMUEUqPi6kRtcn471m0/AhK7N6AAyNs/ACLpm6t/B9c/kwmGVm0TkvLRJ7vD/XM32JDgsxfjwllHTdz6jydPzgXoFjU28m0nNpO/O4SwawQ7L7aXx0Uj/1fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPlgXg+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324F2C4CEF0;
-	Sun,  7 Sep 2025 20:25:20 +0000 (UTC)
+	 MIME-Version; b=r9NhYz9aXGnkPvtN5VlnYFEkvnHdqWeH0tCd+kbPXs3a8/d/EgRPxx4GEF48ijnyyJnPKztIZTqLTlEJjXfBglf0BeAXuEbWomK/l5q1cqNS2/NndDNUh8+7I0jsk9zcmvjDwr2yOB3GEuCDVxYYS4GgGRyqHJbQl0pl2XVIy2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEEHX70v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E88C4CEF0;
+	Sun,  7 Sep 2025 20:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276720;
-	bh=LpdZbKNv/5DZ8rSrGz+X6y7/ySoynVrvpAFmECHCdDw=;
+	s=korg; t=1757277242;
+	bh=vM4XYjf7SxROcOm+ivn/fZhtKHbOl6+pGBXLIw8nINQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gPlgXg+WgN1Xa6PuHEo8UgCB+5ZJSav0ZBceRXeNF5kyzQ/BZ4yfSOL0jLdEXVf56
-	 3OVux+8mUAs4T/uZrctPKoj8SPP3WuVoy+EvSjlqJ8slyaxvBPL38HACkytbo6BKRO
-	 bbtbAo/FE2sLA9IOvz6JEtNYLgA5ia/4vGI2dH/U=
+	b=BEEHX70vsyrl8mGjggne/2Ezatkc4YnSJ45vfgNdvjyiIKXSZNNbXzhhHSC8ST3I0
+	 sok37hcgdZ9cEJgD4jvJzFv0PTHVvcdSPxFrNoklnAE1LrIdMFhlVA/g0eLMYyZv2a
+	 dq3++XtP4ScZYB2yMK4RajOQf+4iMb7KPwx9rOrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/121] ALSA: hda/realtek: Add support for HP Agusta using CS35L41 HDA
+	Yu Kuai <yukuai3@huawei.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.12 128/175] md/raid1,raid10: dont ignore IO flags
 Date: Sun,  7 Sep 2025 21:58:43 +0200
-Message-ID: <20250907195612.073072327@linuxfoundation.org>
+Message-ID: <20250907195617.880836844@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 7150d57c370f9e61b7d0e82c58002f1c5a205ac4 ]
+commit e879a0d9cb086c8e52ce6c04e5bfa63825a6213c upstream.
 
-Add support for HP Agusta.
+If blk-wbt is enabled by default, it's found that raid write performance
+is quite bad because all IO are throttled by wbt of underlying disks,
+due to flag REQ_IDLE is ignored. And turns out this behaviour exist since
+blk-wbt is introduced.
 
-Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with I2C
+Other than REQ_IDLE, other flags should not be ignored as well, for
+example REQ_META can be set for filesystems, clearing it can cause priority
+reverse problems; And REQ_NOWAIT should not be cleared as well, because
+io will wait instead of failing directly in underlying disks.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250520124757.12597-1-sbinding@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix those problems by keep IO flags from master bio.
+
+Fises: f51d46d0e7cb ("md: add support for REQ_NOWAIT")
+Fixes: e34cbd307477 ("blk-wbt: add general throttling mechanism")
+Fixes: 5404bc7a87b9 ("[PATCH] Allow file systems to differentiate between data and meta reads")
+Link: https://lore.kernel.org/linux-raid/20250227121657.832356-1-yukuai1@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+[ Harshit: Resolve conflicts due to missing commit: f2a38abf5f1c
+  ("md/raid1: Atomic write support") and  commit: a1d9b4fd42d9
+  ("md/raid10: Atomic write support") in 6.12.y, we don't have Atomic
+  writes feature in 6.12.y ]
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/raid1.c  |    4 ----
+ drivers/md/raid10.c |    7 -------
+ 2 files changed, 11 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10249,6 +10249,8 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8e18, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e19, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8e3a, "HP Agusta", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8e3b, "HP Agusta", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
- 	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -1315,8 +1315,6 @@ static void raid1_read_request(struct md
+ 	struct r1conf *conf = mddev->private;
+ 	struct raid1_info *mirror;
+ 	struct bio *read_bio;
+-	const enum req_op op = bio_op(bio);
+-	const blk_opf_t do_sync = bio->bi_opf & REQ_SYNC;
+ 	int max_sectors;
+ 	int rdisk;
+ 	bool r1bio_existed = !!r1_bio;
+@@ -1399,7 +1397,6 @@ static void raid1_read_request(struct md
+ 	read_bio->bi_iter.bi_sector = r1_bio->sector +
+ 		mirror->rdev->data_offset;
+ 	read_bio->bi_end_io = raid1_end_read_request;
+-	read_bio->bi_opf = op | do_sync;
+ 	if (test_bit(FailFast, &mirror->rdev->flags) &&
+ 	    test_bit(R1BIO_FailFast, &r1_bio->state))
+ 	        read_bio->bi_opf |= MD_FAILFAST;
+@@ -1619,7 +1616,6 @@ static void raid1_write_request(struct m
+ 
+ 		mbio->bi_iter.bi_sector	= (r1_bio->sector + rdev->data_offset);
+ 		mbio->bi_end_io	= raid1_end_write_request;
+-		mbio->bi_opf = bio_op(bio) | (bio->bi_opf & (REQ_SYNC | REQ_FUA));
+ 		if (test_bit(FailFast, &rdev->flags) &&
+ 		    !test_bit(WriteMostly, &rdev->flags) &&
+ 		    conf->raid_disks - mddev->degraded > 1)
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -1146,8 +1146,6 @@ static void raid10_read_request(struct m
+ {
+ 	struct r10conf *conf = mddev->private;
+ 	struct bio *read_bio;
+-	const enum req_op op = bio_op(bio);
+-	const blk_opf_t do_sync = bio->bi_opf & REQ_SYNC;
+ 	int max_sectors;
+ 	struct md_rdev *rdev;
+ 	char b[BDEVNAME_SIZE];
+@@ -1226,7 +1224,6 @@ static void raid10_read_request(struct m
+ 	read_bio->bi_iter.bi_sector = r10_bio->devs[slot].addr +
+ 		choose_data_offset(r10_bio, rdev);
+ 	read_bio->bi_end_io = raid10_end_read_request;
+-	read_bio->bi_opf = op | do_sync;
+ 	if (test_bit(FailFast, &rdev->flags) &&
+ 	    test_bit(R10BIO_FailFast, &r10_bio->state))
+ 	        read_bio->bi_opf |= MD_FAILFAST;
+@@ -1240,9 +1237,6 @@ static void raid10_write_one_disk(struct
+ 				  struct bio *bio, bool replacement,
+ 				  int n_copy)
+ {
+-	const enum req_op op = bio_op(bio);
+-	const blk_opf_t do_sync = bio->bi_opf & REQ_SYNC;
+-	const blk_opf_t do_fua = bio->bi_opf & REQ_FUA;
+ 	unsigned long flags;
+ 	struct r10conf *conf = mddev->private;
+ 	struct md_rdev *rdev;
+@@ -1261,7 +1255,6 @@ static void raid10_write_one_disk(struct
+ 	mbio->bi_iter.bi_sector	= (r10_bio->devs[n_copy].addr +
+ 				   choose_data_offset(r10_bio, rdev));
+ 	mbio->bi_end_io	= raid10_end_write_request;
+-	mbio->bi_opf = op | do_sync | do_fua;
+ 	if (!replacement && test_bit(FailFast,
+ 				     &conf->mirrors[devnum].rdev->flags)
+ 			 && enough(conf, devnum))
 
 
 
