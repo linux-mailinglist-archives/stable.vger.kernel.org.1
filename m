@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B2A1B47E5C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24FE8B47D22
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:08:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A456189FAD3
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D18FA17BC1D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE7C1F1921;
-	Sun,  7 Sep 2025 20:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4DB284B59;
+	Sun,  7 Sep 2025 20:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BczK3QBm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aL02/adA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0FC1B4247;
-	Sun,  7 Sep 2025 20:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684B91CDFAC;
+	Sun,  7 Sep 2025 20:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276598; cv=none; b=PLVzOClAewyvGek9I9PG7CJSnx6hOahr6Gkvua0hnU99jEUHhko7vnGw4tudZGM+d6MLsOoKBOvrrrjpeSUmdjagTOlvGfGCI49ShPxYMiNLut7A5SICB6gn8PB3EHZZFaJHFiVqvI6iZhB8FYuHmF+OsalLM7lJ9JLYk7gDfqw=
+	t=1757275681; cv=none; b=AlliHe6iAFc28StiYSZfDNQz/Tkd8C0cCtsNlBShNeabKXJSZxIMxQwimoZAUAeQ00foqjmvxR2fnH+pi3QfDugBvWhi5L02qZf36AOTmb48u7baTFaLlFHJniFdBVI69mIalSNp/Lf01oH0i0ev0W6YdrtU365f50TJwo4ClNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276598; c=relaxed/simple;
-	bh=ead2nRnc8x0X2M1/Jep9lJDIIxiH9qpqzkhbJENLUCw=;
+	s=arc-20240116; t=1757275681; c=relaxed/simple;
+	bh=PIo3p6LJjFQZIb32pX5EWnQ0Vz1UIfi6AG7phU7SOLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tnc/NOlZ8Dp/a2LF9lu5pM8ri++V+9mbWBxY063mpEG+X/nEYcL0suZbtxdPdp49k5O5KGWSoMwxZFbhmSZku/gbJhVYWJkErL9dyKOYf6doqxxmWXjiwMpj4mdvRpeyQXskXBynzBob/WiDzSPslTVCQLpLRlHfLkPh7wDcsI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BczK3QBm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E71C4CEF0;
-	Sun,  7 Sep 2025 20:23:17 +0000 (UTC)
+	 MIME-Version; b=HlnvJs9kdfAQlGGiWvKeuvo1rDX0PHxfSTGWxXqSoTLqotb4matrSm3/oI+7pj1GSL86RMhJYIzcFYSj3eI9bwOHwMQDd81gXwn/rh2agiWGMl7mUHGaT0t2UVjNusHbrnHDcxJJJzNPZx9zH3KA3ExvTZaE3CAFxeomyaf83zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aL02/adA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33BAC4CEF0;
+	Sun,  7 Sep 2025 20:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276598;
-	bh=ead2nRnc8x0X2M1/Jep9lJDIIxiH9qpqzkhbJENLUCw=;
+	s=korg; t=1757275681;
+	bh=PIo3p6LJjFQZIb32pX5EWnQ0Vz1UIfi6AG7phU7SOLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BczK3QBm67zb+oqolUaI9xuWB+HQI43sfPM3dTunGg5b6eCSOjR610yj8OgwPnScX
-	 AlKV6vS3ZqHpE/HNv17+C/SJIuS+IbzP5XwxM8cvoftIBrCbh3oWxZN2NVS1cdRI3t
-	 1BL2JvUMQobASi2wv0ytuQSYlt1X5m0D4C8DIdpM=
+	b=aL02/adAdntWyHu9t+C7AVH9LVZtoY5xJcrJj3aHPp0LvSvYdXuB4z7RMtDKJTSwV
+	 rFzZkVA7l8uVYsXPRhOdxGDgNbfnUe8Pi2iQqi8XU2EbQshzMlRCuvjLX7IuIWQJhS
+	 YvRmKpV1tVPxFM0+EQfvDQdxl/FD5XSFLAMfxneI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Peter Robinson <pbrobinson@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/121] btrfs: avoid load/store tearing races when checking if an inode was logged
+Subject: [PATCH 5.10 03/52] arm64: dts: rockchip: Add vcc-supply to SPI flash on rk3399-pinebook-pro
 Date: Sun,  7 Sep 2025 21:57:23 +0200
-Message-ID: <20250907195610.004226610@linuxfoundation.org>
+Message-ID: <20250907195602.065185640@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Peter Robinson <pbrobinson@gmail.com>
 
-[ Upstream commit 986bf6ed44dff7fbae7b43a0882757ee7f5ba21b ]
+[ Upstream commit d1f9c497618dece06a00e0b2995ed6b38fafe6b5 ]
 
-At inode_logged() we do a couple lockless checks for ->logged_trans, and
-these are generally safe except the second one in case we get a load or
-store tearing due to a concurrent call updating ->logged_trans (either at
-btrfs_log_inode() or later at inode_logged()).
+As described in the pinebookpro_v2.1_mainboard_schematic.pdf page 10,
+he SPI Flash's VCC connector is connected to VCC_3V0 power source.
 
-In the first case it's safe to compare to the current transaction ID since
-once ->logged_trans is set the current transaction, we never set it to a
-lower value.
+This fixes the following warning:
 
-In the second case, where we check if it's greater than zero, we are prone
-to load/store tearing races, since we can have a concurrent task updating
-to the current transaction ID with store tearing for example, instead of
-updating with a single 64 bits write, to update with two 32 bits writes or
-four 16 bits writes. In that case the reading side at inode_logged() could
-see a positive value that does not match the current transaction and then
-return a false negative.
+  spi-nor spi1.0: supply vcc not found, using dummy regulator
 
-Fix this by doing the second check while holding the inode's spinlock, add
-some comments about it too. Also add the data_race() annotation to the
-first check to avoid any reports from KCSAN (or similar tools) and comment
-about it.
-
-Fixes: 0f8ce49821de ("btrfs: avoid inode logging during rename and link when possible")
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 5a65505a69884 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/20250730102129.224468-1-pbrobinson@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index afd76dff1d2bb..e5d6bc1bb5e5d 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -3398,15 +3398,32 @@ static int inode_logged(const struct btrfs_trans_handle *trans,
- 	struct btrfs_key key;
- 	int ret;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+index 015e004bf275c..3dd00ce201f54 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+@@ -972,6 +972,7 @@ spiflash: flash@0 {
+ 		reg = <0>;
+ 		m25p,fast-read;
+ 		spi-max-frequency = <10000000>;
++		vcc-supply = <&vcc_3v0>;
+ 	};
+ };
  
--	if (inode->logged_trans == trans->transid)
-+	/*
-+	 * Quick lockless call, since once ->logged_trans is set to the current
-+	 * transaction, we never set it to a lower value anywhere else.
-+	 */
-+	if (data_race(inode->logged_trans) == trans->transid)
- 		return 1;
- 
- 	/*
--	 * If logged_trans is not 0, then we know the inode logged was not logged
--	 * in this transaction, so we can return false right away.
-+	 * If logged_trans is not 0 and not trans->transid, then we know the
-+	 * inode was not logged in this transaction, so we can return false
-+	 * right away. We take the lock to avoid a race caused by load/store
-+	 * tearing with a concurrent btrfs_log_inode() call or a concurrent task
-+	 * in this function further below - an update to trans->transid can be
-+	 * teared into two 32 bits updates for example, in which case we could
-+	 * see a positive value that is not trans->transid and assume the inode
-+	 * was not logged when it was.
- 	 */
--	if (inode->logged_trans > 0)
-+	spin_lock(&inode->lock);
-+	if (inode->logged_trans == trans->transid) {
-+		spin_unlock(&inode->lock);
-+		return 1;
-+	} else if (inode->logged_trans > 0) {
-+		spin_unlock(&inode->lock);
- 		return 0;
-+	}
-+	spin_unlock(&inode->lock);
- 
- 	/*
- 	 * If no log tree was created for this root in this transaction, then
 -- 
 2.50.1
 
