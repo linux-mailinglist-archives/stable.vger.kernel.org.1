@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B05B47D6D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:11:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E35B47D29
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:08:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D67E3BF94A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:11:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C649717BCA2
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B687E27FB21;
-	Sun,  7 Sep 2025 20:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38162836A0;
+	Sun,  7 Sep 2025 20:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CShbQExL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHZdfUZ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732291CDFAC;
-	Sun,  7 Sep 2025 20:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A2C1CDFAC;
+	Sun,  7 Sep 2025 20:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275908; cv=none; b=fM7I9W5mdO+vHgHTJ+T1AOjCUsWJyUqz1Kap1sRACPbVYjkMRPisVwOCy+oR8WSv7pyMSTrN56tZfmcARCpUffe/KAU6KeO5fasNOQo4JafZZYl7VAJyzTQkFfn7+i5gndIDfcY3KKUyrnbZacX6WbosU8uRPddVqw96ajckn6I=
+	t=1757275703; cv=none; b=Z/L2qhvq6reFxVxs+v1QZiKRSC++CIJAnXHoMq657+lkNiLFzLqwBBMslyLMKcPWh8EwlI8Cu4DKd+d+ZHeK5EokOOTGN2+D/PzLHCVMT9JnX2EKOs9QDVC6wspgZXmrWk35jC8M+OvPKqBLyOts6tvtRut5NF3QBvS7cg3pH2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275908; c=relaxed/simple;
-	bh=gQ59zgsOPvIUhHYfENu9sfEv1lyUdJIDB9OwcaPlpUA=;
+	s=arc-20240116; t=1757275703; c=relaxed/simple;
+	bh=8Ggx4srDd65c3qKcH2lnU8f8CENK3Kt8uZmqPQx806c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q0XyfJ+PGjsQHajVZx7hSwHiCc4zTBMzMKP/GpzpkhYbcG0iQ+qenOqhv4+qoA9yCJq/AbP3KoA2PTnJw9nkAjdV73e1ZDt1o958+rB/TGu2n3nAo73yxf7mJTZy7rw3IG5fLDHWnMGZx+QbzzAjLFemqA0WbS66l0lzt+56PA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CShbQExL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC57AC4CEF0;
-	Sun,  7 Sep 2025 20:11:47 +0000 (UTC)
+	 MIME-Version; b=aVJpXMIQHXvVlsweyL0PBdZ7+JiaOtNF9yYRflag9TFOOjCvg8yVZv/cydmeAVRInnhjyAD/KVQdElQFgED6x8389k8ttFyLWJMjywIhxuZtOAB2Ac0TK4EhsIYoj8wXMANbgZ2yLvzMPesgt+8qyT6KJIROfhPC/L8cb/iG7f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHZdfUZ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4960C4CEF0;
+	Sun,  7 Sep 2025 20:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275908;
-	bh=gQ59zgsOPvIUhHYfENu9sfEv1lyUdJIDB9OwcaPlpUA=;
+	s=korg; t=1757275703;
+	bh=8Ggx4srDd65c3qKcH2lnU8f8CENK3Kt8uZmqPQx806c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CShbQExLmLknBxB9I3/u4OvtU2BS0q3iEDHYqADnlxHJrU+R70tCgoqWdpZcbYG/b
-	 tkMkbL8dJWVm52JbKFY4wIdfFul3rBhJoiRAbQ31TVjh0bbqTyaXCUw4y6kCqMh+rM
-	 D7MayAGwiCivpCQlAVOqbzPd7U+MrQG3vCiU9vjk=
+	b=cHZdfUZ0cLN9DP6Cds85YzaViAFDA/oSKu/Tk/1QO2tVDyMGNgx8fDT+32HuHBC9V
+	 NbBED8HV628ngGzjvNL9cnn3Q7CuQA7Zf+nsxH+krm51sJqiVzab80/CQsniGYfMyW
+	 rbsHEGxBmZdZYCcoVG1JQ7Oxu2UKLKshyVpJutNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Pieter Van Trappen <pieter.van.trappen@cern.ch>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 10/45] wifi: cw1200: cap SSID length in cw1200_do_join()
+Subject: [PATCH 5.10 36/52] net: dsa: microchip: update tag_ksz masks for KSZ9477 family
 Date: Sun,  7 Sep 2025 21:57:56 +0200
-Message-ID: <20250907195601.261496164@linuxfoundation.org>
+Message-ID: <20250907195603.022489208@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Pieter Van Trappen <pieter.van.trappen@cern.ch>
 
-[ Upstream commit f8f15f6742b8874e59c9c715d0af3474608310ad ]
+[ Upstream commit 3f464b193d40e49299dcd087b10cc3b77cbbea68 ]
 
-If the ssidie[1] length is more that 32 it leads to memory corruption.
+Remove magic number 7 by introducing a GENMASK macro instead.
+Remove magic number 0x80 by using the BIT macro instead.
 
-Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/e91fb43fcedc4893b604dfb973131661510901a7.1756456951.git.dan.carpenter@linaro.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Pieter Van Trappen <pieter.van.trappen@cern.ch>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20240909134301.75448-1-vtpieter@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ba54bce747fa ("net: dsa: microchip: linearize skb for tail-tagging switches")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/st/cw1200/sta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/dsa/tag_ksz.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/st/cw1200/sta.c b/drivers/net/wireless/st/cw1200/sta.c
-index 236022d4ae2a3..0f2d1ec34cd82 100644
---- a/drivers/net/wireless/st/cw1200/sta.c
-+++ b/drivers/net/wireless/st/cw1200/sta.c
-@@ -1289,7 +1289,7 @@ static void cw1200_do_join(struct cw1200_common *priv)
- 		rcu_read_lock();
- 		ssidie = ieee80211_bss_get_ie(bss, WLAN_EID_SSID);
- 		if (ssidie) {
--			join.ssid_len = ssidie[1];
-+			join.ssid_len = min(ssidie[1], IEEE80211_MAX_SSID_LEN);
- 			memcpy(join.ssid, &ssidie[2], join.ssid_len);
- 		}
- 		rcu_read_unlock();
--- 
-2.50.1
-
+--- a/net/dsa/tag_ksz.c
++++ b/net/dsa/tag_ksz.c
+@@ -103,8 +103,9 @@ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROT
+ 
+ #define KSZ9477_INGRESS_TAG_LEN		2
+ #define KSZ9477_PTP_TAG_LEN		4
+-#define KSZ9477_PTP_TAG_INDICATION	0x80
++#define KSZ9477_PTP_TAG_INDICATION	BIT(7)
+ 
++#define KSZ9477_TAIL_TAG_EG_PORT_M	GENMASK(2, 0)
+ #define KSZ9477_TAIL_TAG_OVERRIDE	BIT(9)
+ #define KSZ9477_TAIL_TAG_LOOKUP		BIT(10)
+ 
+@@ -135,7 +136,7 @@ static struct sk_buff *ksz9477_rcv(struc
+ {
+ 	/* Tag decoding */
+ 	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+-	unsigned int port = tag[0] & 7;
++	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
+ 	unsigned int len = KSZ_EGRESS_TAG_LEN;
+ 
+ 	/* Extra 4-bytes PTP timestamp */
 
 
 
