@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-178453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9626CB47EB8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:28:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B7DB47EBD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:28:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ED4417E769
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:28:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E2DE1B20539
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A6C1E1C1A;
-	Sun,  7 Sep 2025 20:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B258329B8E0;
+	Sun,  7 Sep 2025 20:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ycsLVCZ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugnAVdTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC58B17BB21;
-	Sun,  7 Sep 2025 20:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4001D88D0;
+	Sun,  7 Sep 2025 20:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276883; cv=none; b=YMxdIdnjJvnkX+M186n64RXQNblTmlvxjkjUoeLZPGnkKprjTfPdRPPcBs8g3J/dqrXk6Y1Z1A6rLZsEfnOnp2rs9lvW4nqkGtUVRrZnfghbi1Ee6jCHOZHED8TiY2lRbHv6P83gGGyU8ZTvrUPzx6o6Ttw3jvvXUtbR7yWqSuQ=
+	t=1757276890; cv=none; b=VNl1DYLoTi0SjM2DNSXfVsA/51DzKaI50bV2lfmAQZw86ciebZm08gA0QK4SabfBaI39x3ENmawTKuW2y0igz8kXJCZQi8ah4OcfFWOKsUcSb+2l07/uDjplKHNZZN/yeGTRljSDId0AJVK72v8ALzv1KtSCPUYrDQgpEf9N5zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276883; c=relaxed/simple;
-	bh=IVg7cLOTezMDMD1eL4RjCPfEJg3lNlNXGKoLLM/CAY4=;
+	s=arc-20240116; t=1757276890; c=relaxed/simple;
+	bh=8Vhytdea7GI5nN7ShNCtAeVCxn2vxiVVkoGy8I1FvSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CtbmFCx0O2XqBZkibPkk8z8QFzZsz2+mLHmHpLtHs6+0iZvQ/siC5WZ7jqrFQ3t0JvS/hHGGkhBvwflrO0eS6VEmJH1veEDNeUljObmN15qO5bruoWHWR7nipg7AJvFZHONBytpjGapzhAfiuX2tU0oVmnMbDtfCaRXDdiPpRo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycsLVCZ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E5EC4CEF0;
-	Sun,  7 Sep 2025 20:28:03 +0000 (UTC)
+	 MIME-Version; b=r2bI3S1ntgAbB5PHWj0ZaOYY47Fw9EzoMNF7gOKvpj4V0LRGzkLzWXg0uMi4orXUnZ2yekEBUEMAWZwGEXVsgMJNQHL10DqFzt7GCdRdrXIns1DBtuqDBtxY7F4ilCSLh0K47q5CP7WDOOgHKCC7LqmQrWLt9uRXBGJ23U9wQ5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugnAVdTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97662C4CEF9;
+	Sun,  7 Sep 2025 20:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276883;
-	bh=IVg7cLOTezMDMD1eL4RjCPfEJg3lNlNXGKoLLM/CAY4=;
+	s=korg; t=1757276890;
+	bh=8Vhytdea7GI5nN7ShNCtAeVCxn2vxiVVkoGy8I1FvSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ycsLVCZ8XQFJRimmcoRGNFTbhh8z1Ed1FOa6Gw2MwvZdvSLZwgKVLAVTecnzgolVE
-	 kZMC/jwq9f5bgiAFanQ4xEzIzhmqiFvthR7tf9e1fBy16Zg076VEpJHeTy2l8lZ1g1
-	 tsESZbpIMEVgCNHki4DCxoXsf+qX1VRIECASPd+s=
+	b=ugnAVdTGenhZhUkZJymUJnsYCaI61sEVEWWGl25pzcxyE2WjQ5/VTrZyijVC8vqSY
+	 pnNvCj0QrE4/TxS/i6fG/HkPFmM0ODRirxsLi23wr4vfv2YLrqGitMQCOfqH1mWhHE
+	 xkszx7xkKl+Dcw3y2AZ1akKLPcpfPn5qif8bSb5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sungbae Yoo <sungbaey@nvidia.com>,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/175] tee: optee: ffa: fix a typo of "optee_ffa_api_is_compatible"
-Date: Sun,  7 Sep 2025 21:56:54 +0200
-Message-ID: <20250907195615.340115299@linuxfoundation.org>
+Subject: [PATCH 6.12 020/175] arm64: dts: imx8mp-tqma8mpql: fix LDO5 power off
+Date: Sun,  7 Sep 2025 21:56:55 +0200
+Message-ID: <20250907195615.363350764@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
 References: <20250907195614.892725141@linuxfoundation.org>
@@ -67,44 +67,171 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sungbae Yoo <sungbaey@nvidia.com>
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
-[ Upstream commit 75dbd4304afe574fcfc4118a5b78776a9f48fdc4 ]
+[ Upstream commit 5245dc5ff9b1f6c02ef948f623432805ea148fca ]
 
-Fixes optee_ffa_api_is_compatbile() to optee_ffa_api_is_compatible()
-because compatbile is a typo of compatible.
+Fix SD card removal caused by automatic LDO5 power off after boot:
 
-Fixes: 4615e5a34b95 ("optee: add FF-A support")
-Signed-off-by: Sungbae Yoo <sungbaey@nvidia.com>
-Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+LDO5: disabling
+mmc1: card 59b4 removed
+EXT4-fs (mmcblk1p2): shut down requested (2)
+Aborting journal on device mmcblk1p2-8.
+JBD2: I/O error when updating journal superblock for mmcblk1p2-8.
+
+To prevent this, add vqmmc regulator for USDHC, using a GPIO-controlled
+regulator that is supplied by LDO5. Since this is implemented on SoM but
+used on baseboards with SD-card interface, implement the functionality
+on SoM part and optionally enable it on baseboards if needed.
+
+Fixes: 418d1d840e42 ("arm64: dts: freescale: add initial device tree for TQMa8MPQL with i.MX8MP")
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tee/optee/ffa_abi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../imx8mp-tqma8mpql-mba8mp-ras314.dts        | 13 ++++++-----
+ .../freescale/imx8mp-tqma8mpql-mba8mpxl.dts   | 13 ++++++-----
+ .../boot/dts/freescale/imx8mp-tqma8mpql.dtsi  | 22 +++++++++++++++++++
+ 3 files changed, 36 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/tee/optee/ffa_abi.c b/drivers/tee/optee/ffa_abi.c
-index f9ef7d94cebd7..a963eed70c1d4 100644
---- a/drivers/tee/optee/ffa_abi.c
-+++ b/drivers/tee/optee/ffa_abi.c
-@@ -657,7 +657,7 @@ static int optee_ffa_do_call_with_arg(struct tee_context *ctx,
-  * with a matching configuration.
-  */
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
+index d7fd9d36f8240..f7346b3d35fe5 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
+@@ -467,6 +467,10 @@ &pwm4 {
+ 	status = "okay";
+ };
  
--static bool optee_ffa_api_is_compatbile(struct ffa_device *ffa_dev,
-+static bool optee_ffa_api_is_compatible(struct ffa_device *ffa_dev,
- 					const struct ffa_ops *ops)
- {
- 	const struct ffa_msg_ops *msg_ops = ops->msg_ops;
-@@ -908,7 +908,7 @@ static int optee_ffa_probe(struct ffa_device *ffa_dev)
- 	ffa_ops = ffa_dev->ops;
- 	notif_ops = ffa_ops->notifier_ops;
++&reg_usdhc2_vqmmc {
++	status = "okay";
++};
++
+ &sai5 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_sai5>;
+@@ -876,8 +880,7 @@ pinctrl_usdhc2: usdhc2grp {
+ 			   <MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d2>,
+ 			   <MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d2>,
+ 			   <MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d2>,
+-			   <MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d2>,
+-			   <MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT	0xc0>;
++			   <MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d2>;
+ 	};
  
--	if (!optee_ffa_api_is_compatbile(ffa_dev, ffa_ops))
-+	if (!optee_ffa_api_is_compatible(ffa_dev, ffa_ops))
- 		return -EINVAL;
+ 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+@@ -886,8 +889,7 @@ pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+ 			   <MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d4>,
+ 			   <MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d4>,
+ 			   <MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d4>,
+-			   <MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d4>,
+-			   <MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT	0xc0>;
++			   <MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d4>;
+ 	};
  
- 	if (!optee_ffa_exchange_caps(ffa_dev, ffa_ops, &sec_caps,
+ 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+@@ -896,8 +898,7 @@ pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+ 			   <MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d4>,
+ 			   <MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d4>,
+ 			   <MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d4>,
+-			   <MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d4>,
+-			   <MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT	0xc0>;
++			   <MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d4>;
+ 	};
+ 
+ 	pinctrl_usdhc2_gpio: usdhc2-gpiogrp {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+index ae64731266f35..e7c16a7ee6c26 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+@@ -603,6 +603,10 @@ &pwm3 {
+ 	status = "okay";
+ };
+ 
++&reg_usdhc2_vqmmc {
++	status = "okay";
++};
++
+ &sai3 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_sai3>;
+@@ -982,8 +986,7 @@ pinctrl_usdhc2: usdhc2grp {
+ 			   <MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d2>,
+ 			   <MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d2>,
+ 			   <MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d2>,
+-			   <MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d2>,
+-			   <MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT	0xc0>;
++			   <MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d2>;
+ 	};
+ 
+ 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+@@ -992,8 +995,7 @@ pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+ 			   <MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d4>,
+ 			   <MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d4>,
+ 			   <MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d4>,
+-			   <MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d4>,
+-			   <MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT	0xc0>;
++			   <MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d4>;
+ 	};
+ 
+ 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+@@ -1002,8 +1004,7 @@ pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+ 			   <MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d4>,
+ 			   <MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d4>,
+ 			   <MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d4>,
+-			   <MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d4>,
+-			   <MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT	0xc0>;
++			   <MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d4>;
+ 	};
+ 
+ 	pinctrl_usdhc2_gpio: usdhc2-gpiogrp {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
+index 3ddc5aaa7c5f0..9eac178ab2c20 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql.dtsi
+@@ -24,6 +24,20 @@ reg_vcc3v3: regulator-vcc3v3 {
+ 		regulator-max-microvolt = <3300000>;
+ 		regulator-always-on;
+ 	};
++
++	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
++		compatible = "regulator-gpio";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_reg_usdhc2_vqmmc>;
++		regulator-name = "V_SD2";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <3300000>;
++		gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
++		states = <1800000 0x1>,
++			 <3300000 0x0>;
++		vin-supply = <&ldo5_reg>;
++		status = "disabled";
++	};
+ };
+ 
+ &A53_0 {
+@@ -179,6 +193,10 @@ m24c64: eeprom@57 {
+ 	};
+ };
+ 
++&usdhc2 {
++	vqmmc-supply = <&reg_usdhc2_vqmmc>;
++};
++
+ &usdhc3 {
+ 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+ 	pinctrl-0 = <&pinctrl_usdhc3>;
+@@ -228,6 +246,10 @@ pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+ 		fsl,pins = <MX8MP_IOMUXC_SD2_RESET_B__GPIO2_IO19	0x10>;
+ 	};
+ 
++	pinctrl_reg_usdhc2_vqmmc: regusdhc2vqmmcgrp {
++		fsl,pins = <MX8MP_IOMUXC_GPIO1_IO04__GPIO1_IO04		0xc0>;
++	};
++
+ 	pinctrl_usdhc3: usdhc3grp {
+ 		fsl,pins = <MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK		0x194>,
+ 			   <MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD		0x1d4>,
 -- 
 2.50.1
 
