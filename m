@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-178344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B8FB47E46
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 156DEB47F83
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC1EF167271
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:22:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C13E520019B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936191B4247;
-	Sun,  7 Sep 2025 20:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A981A704B;
+	Sun,  7 Sep 2025 20:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMa8kaUI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOeNbhQj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526DC1A2389;
-	Sun,  7 Sep 2025 20:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0BC4315A;
+	Sun,  7 Sep 2025 20:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276538; cv=none; b=YBEX/6spzPw8jwEZ12VVVqfzu9/AreP2rxVUcP3hdGyzJfyf6NmlK7tCI51vGzP5kIdi1hq/JZQcZIahx4CBWOmGL/OB2DxcxST+ddxKnwIAwfpJFLz6lhlDMjm4MtdB0ZfjpRH8ObRKwtbZvwx6XXHaYv8JZmDZjO3yHGQI9fA=
+	t=1757277513; cv=none; b=GuCcXk0JAzvT5w+8N7wXowyt9mVlV0LuVkF/YNbMcvKeVon/JuvYf9CQ2SxUPMfHG7DCjn4cpdQ/YkSKPQ0nuC6692qfAlaFouJmY4LwLe80fh/0pPT7QgFPvXnhxRp6SIPO/BeYXb8QwkRqoCylFVkx3Je2jfE3VgnWOGx/clg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276538; c=relaxed/simple;
-	bh=RUd08G9+vFp10WX3c4L+LUkeeFe6TDKzy9KKuNizum8=;
+	s=arc-20240116; t=1757277513; c=relaxed/simple;
+	bh=TI9+VOPjz6Q4snpJ1Nkp9nZ14D/2KBxFoHGLnLE5hcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BQvQRf/KReh6BvbTOfsnbgCewHQ+meOfI1IVkNihsTNInUAPDj/9ECbpC21w6YrwAMsDRWJF2CwpKhYHIyGFpGOy9O5Suki49DKLFQZ8pKmk5ylYbda7lNMktAzjx0jJths/1Ino/WReWsTeeoW2/U84AXbpOezpES528uoYbzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMa8kaUI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AABFC4CEF0;
-	Sun,  7 Sep 2025 20:22:17 +0000 (UTC)
+	 MIME-Version; b=EkOXIkUmA4g8aADX0xdgNa3afLeCwte/6pCRAAqAj7revegcJi/q19siWYTXXFJ/mLTJAAgAc6dsvrJO/5TYG7DdsfQwXYVMdVMWDtruJ3Vpvb91cuAbYlRbhG4mDgfcMK0Qg6YP7Pw8M95b575JvPEDCoqLfx4JD+upKOHhecQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOeNbhQj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FEEC4CEF0;
+	Sun,  7 Sep 2025 20:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276538;
-	bh=RUd08G9+vFp10WX3c4L+LUkeeFe6TDKzy9KKuNizum8=;
+	s=korg; t=1757277513;
+	bh=TI9+VOPjz6Q4snpJ1Nkp9nZ14D/2KBxFoHGLnLE5hcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bMa8kaUIUcx4Od95jsqZvzyLHfhaihYN/4y9AGUdIFCnOx+0ZQ5fcrEx5zyHGWNd7
-	 dUolkxXHp9soLcekmaqffKv3Kuoq57ZZS6RFD3fijlcWUZUSOeoknjLN+5KqD9DvBc
-	 9wMIVEcToFIlRPAKQCTBr0T5T2PcZCI23isHEeow=
+	b=FOeNbhQjy0J4FNkMzcLHZK/fsHCmRiHTUTKT8TJD0mRzyWrQVB4/g6QWu3bbhV3YI
+	 4Gq4DqTKwyZgWHSognNar1krvelWh+RXoMmLg4DYyyDNTd1Y8vcEou4QhSoNKZRXpn
+	 FAWInQhf8mTbgAnTza14ojxYreCp4ZJ6qdGVbHHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/121] macsec: read MACSEC_SA_ATTR_PN with nla_get_uint
+Subject: [PATCH 6.16 039/183] wifi: mt76: free pending offchannel tx frames on wcid cleanup
 Date: Sun,  7 Sep 2025 21:57:46 +0200
-Message-ID: <20250907195610.602535691@linuxfoundation.org>
+Message-ID: <20250907195616.704468101@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 030e1c45666629f72d0fc1d040f9d2915680de8e ]
+[ Upstream commit bdeac7815629c1a32b8784922368742e183747ea ]
 
-The code currently reads both U32 attributes and U64 attributes as
-U64, so when a U32 attribute is provided by userspace (ie, when not
-using XPN), on big endian systems, we'll load that value into the
-upper 32bits of the next_pn field instead of the lower 32bits. This
-means that the value that userspace provided is ignored (we only care
-about the lower 32bits for non-XPN), and we'll start using PNs from 0.
+Avoid leaking them or keeping the wcid on the tx list
 
-Switch to nla_get_uint, which will read the value correctly on all
-arches, whether it's 32b or 64b.
-
-Fixes: 48ef50fa866a ("macsec: Netlink support of XPN cipher suites (IEEE 802.1AEbw)")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1c1df1661b89238caf5beefb84a10ebfd56c66ea.1756459839.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0b3be9d1d34e ("wifi: mt76: add separate tx scheduling queue for off-channel tx")
+Link: https://patch.msgid.link/20250827085352.51636-5-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 767053d6c6b6f..af6cc3e90ef7c 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -1840,7 +1840,7 @@ static int macsec_add_rxsa(struct sk_buff *skb, struct genl_info *info)
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 4e435bec828b5..8e6ce16ab5b88 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -1716,6 +1716,10 @@ void mt76_wcid_cleanup(struct mt76_dev *dev, struct mt76_wcid *wcid)
+ 	skb_queue_splice_tail_init(&wcid->tx_pending, &list);
+ 	spin_unlock(&wcid->tx_pending.lock);
  
- 	if (tb_sa[MACSEC_SA_ATTR_PN]) {
- 		spin_lock_bh(&rx_sa->lock);
--		rx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
-+		rx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
- 		spin_unlock_bh(&rx_sa->lock);
- 	}
++	spin_lock(&wcid->tx_offchannel.lock);
++	skb_queue_splice_tail_init(&wcid->tx_offchannel, &list);
++	spin_unlock(&wcid->tx_offchannel.lock);
++
+ 	spin_unlock_bh(&phy->tx_lock);
  
-@@ -2082,7 +2082,7 @@ static int macsec_add_txsa(struct sk_buff *skb, struct genl_info *info)
- 	}
- 
- 	spin_lock_bh(&tx_sa->lock);
--	tx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
-+	tx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
- 	spin_unlock_bh(&tx_sa->lock);
- 
- 	if (tb_sa[MACSEC_SA_ATTR_ACTIVE])
-@@ -2394,7 +2394,7 @@ static int macsec_upd_txsa(struct sk_buff *skb, struct genl_info *info)
- 
- 		spin_lock_bh(&tx_sa->lock);
- 		prev_pn = tx_sa->next_pn_halves;
--		tx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
-+		tx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
- 		spin_unlock_bh(&tx_sa->lock);
- 	}
- 
-@@ -2492,7 +2492,7 @@ static int macsec_upd_rxsa(struct sk_buff *skb, struct genl_info *info)
- 
- 		spin_lock_bh(&rx_sa->lock);
- 		prev_pn = rx_sa->next_pn_halves;
--		rx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
-+		rx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
- 		spin_unlock_bh(&rx_sa->lock);
- 	}
- 
+ 	while ((skb = __skb_dequeue(&list)) != NULL) {
 -- 
 2.50.1
 
