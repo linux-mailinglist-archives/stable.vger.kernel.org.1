@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-178110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FBF0B47D4B
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2644B47DD4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F6A77AA0BE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98B693BB4BE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FD329BDB6;
-	Sun,  7 Sep 2025 20:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174751B424F;
+	Sun,  7 Sep 2025 20:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+KfPhnO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SB5Xaide"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0446129BDAE;
-	Sun,  7 Sep 2025 20:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3B114BFA2;
+	Sun,  7 Sep 2025 20:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275796; cv=none; b=b0qtIlG4J87xDWGn/0J5wKb4xetO5j6i9vpQbrZtK8Ex/VRogssYoy2OIe69UNIQYNU+A7EjNGLcU71bxBhbWY5P7bz8BaB1WnOByIlm/qN9eOJjmdytpFa9xl9dzdVnXFHRDJ0Yms2auRqayssg59w5iw8G09qOYg9hLQG6i14=
+	t=1757276218; cv=none; b=F2x8k8wAlMClkP8LezblFxUhzB4qlqj8ng/s4WJY1RECm2CsVPBHePLedf6vFLP6VpwIrlWiE+gzj4DZU/iOlhJJycfC10taV3XqJwxs5Hp6oNTrgcXjkGN3jmIk+wjfdb5qoJYdd+/ht23wxfedIpS92272zTLL12+cW/m4THM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275796; c=relaxed/simple;
-	bh=oHpsOwOOh1eRYgBghrBa9gZ/ffEHUMn7Cl5hjqn0mtg=;
+	s=arc-20240116; t=1757276218; c=relaxed/simple;
+	bh=ocF/ATrxcwsumxrgHbBuWKPKOMnxABNPomQI22sxWxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SiK0sAygGRvifFgNI1E6VSK7Ju9Kos0kJ3pKY+sukIIMNEoRc9Tume/uJtmy2ULfevJ5xKuq0Tq5vav95534h1V1LIQZxV5BIiJeQnC9uqYO7hSrKABlhfWL17FZLDMOsfbWhEowyZWMRpVCxymDpF0gpZreNLnGdoF2dvrhn/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+KfPhnO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527AEC4CEF0;
-	Sun,  7 Sep 2025 20:09:55 +0000 (UTC)
+	 MIME-Version; b=D75XCTSasebF7XXI3rCDoyHc5jcObGGXQ+QiNsI4IVfj1VBhaQVQ6p7p90Sa0BQ7ibXxNFDPulO8USgmc0LuxcJ/ybM5gFW9ijoG7ypOrp2ldyKPbbeUrrXz+d15JtlBLvme2ScMBGff18MCPx6IteyOsgtJqjPqIMN8MrLjYBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SB5Xaide; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA7BC4CEF0;
+	Sun,  7 Sep 2025 20:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275795;
-	bh=oHpsOwOOh1eRYgBghrBa9gZ/ffEHUMn7Cl5hjqn0mtg=;
+	s=korg; t=1757276218;
+	bh=ocF/ATrxcwsumxrgHbBuWKPKOMnxABNPomQI22sxWxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+KfPhnOsmmP8zKShGUyD3nkY5GSNKlho66lG5phhEKpqXHr+h4S+dGnza1GZOJls
-	 wmwFb7R9acD72clL+RzD0/GHRgX26qPk1nIvmphxHFwaHTYkpIOIC3cfIJnny2nNcn
-	 hTzj3hIPHR2SJMJnR4swEStJfLpBSZp7MoQ3cQ9w=
+	b=SB5XaidelF+ztl/eV+MJW6OpnpIBSPSlIBCzQoyYEXsiClQ73ZvPPfkNIwxB+Apy3
+	 BTloZFIcIn+cFFHWjrqhNxAlhc9bGFgBR0C1V+6Mpd0K6duMMS2NeVEDAS972C9Bs4
+	 eAKO5j5SSH1UzrNaUqF447NGthCaQFgyqNCHpD2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Simon Horman <horms@kernel.org>,
+	Bernard Pidoux <f6bvp@free.fr>,
+	Eric Dumazet <edumazet@google.com>,
+	Joerg Reuter <jreuter@yaina.de>,
+	David Ranch <dranch@trinnet.net>,
+	Folkert van Heusden <folkert@vanheusden.com>,
+	Dan Cross <crossd@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 06/45] mISDN: Fix memory leak in dsp_hwec_enable()
+Subject: [PATCH 6.1 035/104] ax25: properly unshare skbs in ax25_kiss_rcv()
 Date: Sun,  7 Sep 2025 21:57:52 +0200
-Message-ID: <20250907195601.147463099@linuxfoundation.org>
+Message-ID: <20250907195608.609097782@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +67,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0704a3da7ce50f972e898bbda88d2692a22922d9 ]
+[ Upstream commit 8156210d36a43e76372312c87eb5ea3dbb405a85 ]
 
-dsp_hwec_enable() allocates dup pointer by kstrdup(arg),
-but then it updates dup variable by strsep(&dup, ",").
-As a result when it calls kfree(dup), the dup variable may be
-a modified pointer that no longer points to the original allocated
-memory, causing a memory leak.
+Bernard Pidoux reported a regression apparently caused by commit
+c353e8983e0d ("net: introduce per netns packet chains").
 
-The issue is the same pattern as fixed in commit c6a502c22999
-("mISDN: Fix memory leak in dsp_pipeline_build()").
+skb->dev becomes NULL and we crash in __netif_receive_skb_core().
 
-Fixes: 9a4381618262 ("mISDN: Remove VLAs")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250828081457.36061-1-linmq006@gmail.com
+Before above commit, different kind of bugs or corruptions could happen
+without a major crash.
+
+But the root cause is that ax25_kiss_rcv() can queue/mangle input skb
+without checking if this skb is shared or not.
+
+Many thanks to Bernard Pidoux for his help, diagnosis and tests.
+
+We had a similar issue years ago fixed with commit 7aaed57c5c28
+("phonet: properly unshare skbs in phonet_rcv()").
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Bernard Pidoux <f6bvp@free.fr>
+Closes: https://lore.kernel.org/netdev/1713f383-c538-4918-bc64-13b3288cd542@free.fr/
+Tested-by: Bernard Pidoux <f6bvp@free.fr>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Joerg Reuter <jreuter@yaina.de>
+Cc: David Ranch <dranch@trinnet.net>
+Cc: Folkert van Heusden <folkert@vanheusden.com>
+Reviewed-by: Dan Cross <crossd@gmail.com>
+Link: https://patch.msgid.link/20250902124642.212705-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/isdn/mISDN/dsp_hwec.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/ax25/ax25_in.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/isdn/mISDN/dsp_hwec.c b/drivers/isdn/mISDN/dsp_hwec.c
-index 0b3f29195330a..0cd216e28f009 100644
---- a/drivers/isdn/mISDN/dsp_hwec.c
-+++ b/drivers/isdn/mISDN/dsp_hwec.c
-@@ -51,14 +51,14 @@ void dsp_hwec_enable(struct dsp *dsp, const char *arg)
- 		goto _do;
+diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
+index 1cac25aca6378..f2d66af863595 100644
+--- a/net/ax25/ax25_in.c
++++ b/net/ax25/ax25_in.c
+@@ -433,6 +433,10 @@ static int ax25_rcv(struct sk_buff *skb, struct net_device *dev,
+ int ax25_kiss_rcv(struct sk_buff *skb, struct net_device *dev,
+ 		  struct packet_type *ptype, struct net_device *orig_dev)
+ {
++	skb = skb_share_check(skb, GFP_ATOMIC);
++	if (!skb)
++		return NET_RX_DROP;
++
+ 	skb_orphan(skb);
  
- 	{
--		char *dup, *tok, *name, *val;
-+		char *dup, *next, *tok, *name, *val;
- 		int tmp;
- 
--		dup = kstrdup(arg, GFP_ATOMIC);
-+		dup = next = kstrdup(arg, GFP_ATOMIC);
- 		if (!dup)
- 			return;
- 
--		while ((tok = strsep(&dup, ","))) {
-+		while ((tok = strsep(&next, ","))) {
- 			if (!strlen(tok))
- 				continue;
- 			name = strsep(&tok, "=");
+ 	if (!net_eq(dev_net(dev), &init_net)) {
 -- 
 2.50.1
 
