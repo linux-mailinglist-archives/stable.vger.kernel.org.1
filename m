@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71EA4B47D9C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C732EB47DF9
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FB9217CAEE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FFC17A1F2E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D072127F754;
-	Sun,  7 Sep 2025 20:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCA61AF0B6;
+	Sun,  7 Sep 2025 20:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jhkn2x8Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNaENlEG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DACB1B424F;
-	Sun,  7 Sep 2025 20:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF53914BFA2;
+	Sun,  7 Sep 2025 20:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276050; cv=none; b=KNn6m2tzNKWxEakz3yskcaGscfC7Yu1sMwaCgShigaOJFTwhmu7fjLv7aW3P1Jo5pFkRaQc+LgweAzehqPlfUbNAm5DHKropuWOPU9tAakrphGeFIIhlQbzo3K/viJGUoY5xhXkR1OVZZpMSrALK4fZEq9PcUqJIo+l6TUglL6E=
+	t=1757276332; cv=none; b=J9QRIozdOGf08+tmKB1VmUW/qRVgmxrsBR7+NCWteJoJgyzeZ9rVFZCh1En6iyYww63/DP1mIvl7oigH002eD6sgbpnx2eHFwGS8cXrFm8NpmtRo7dLVN30SQeAASfiOD0F95EY1TkkG9jSgb0lgd6DRPqgiF3eKdc5FsE6X4DI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276050; c=relaxed/simple;
-	bh=VesKrZfDFIRgYU4DA+j1XzFILqp8v5eelBypPOpaK9c=;
+	s=arc-20240116; t=1757276332; c=relaxed/simple;
+	bh=X7YoYod6HqTF9kWC1LtHPtXIurCG9pIKDTnHUDe40CA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hx5+f7iSTZ1hmiaat3ahZX6F9paN82JdeKx0VRwNzsapsE8BtQSsQXwA1gDOWSoHYSKYe2mge1EJpmvc15uCSWuvNddLnu1mNOXJeRZl9xbB79h+iKzVjElKO+tGbnzmvKcIKF+fOsBMG3MY0tQpJNttaRd/9OWFgkNbvkt1qPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jhkn2x8Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D545EC4CEF0;
-	Sun,  7 Sep 2025 20:14:09 +0000 (UTC)
+	 MIME-Version; b=Us3nF90b8bmxhxig5UKuO7+8jLE0AfSSfyohvp4H05tU1xKQ/gTA+W3XiBnP0FA24FMg8TpptC4ftGkqRB8LO0dhZAf/lO5USbS7Ltq8eWbMn61DEtw6NWdlzFSXI59QZXqZjVPS5YvkPWJ9gNX0h7YlnPDvAKkN/oyhpOaxLqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNaENlEG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6300AC4CEF0;
+	Sun,  7 Sep 2025 20:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276050;
-	bh=VesKrZfDFIRgYU4DA+j1XzFILqp8v5eelBypPOpaK9c=;
+	s=korg; t=1757276331;
+	bh=X7YoYod6HqTF9kWC1LtHPtXIurCG9pIKDTnHUDe40CA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jhkn2x8QEAB+f1kxGA09/2PegdY9Od+tDV+uCxZGuoP8RvF6qNlK7GpW0zoTG+p8x
-	 KS0uCB9n1hbpK3CFVTzmb0eCYq5o6c0PeKibBn5wMu66m0r11WYxh94d94ogMj0Xa1
-	 15aOrFsOxzGBTu52dt73yo8YeXOE6xaGHBwuwuw0=
+	b=rNaENlEGKTZ6JAUWqv5aqmx8OyO8jwqevmCzC9IuPn/tuJYUcdXo9Tk0naPHxqUl2
+	 n3flG2AhyyTMuZTOBQ0yDU+3ai2pPuY2/Mx2MMmLRvT5aSBelu3couBC6SSHhRjnC8
+	 tvyJlorZX/gngCUGI5+G60iCvU8g9wGMbUikPt5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 47/64] dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()
+Subject: [PATCH 6.1 072/104] cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode
 Date: Sun,  7 Sep 2025 21:58:29 +0200
-Message-ID: <20250907195604.704244202@linuxfoundation.org>
+Message-ID: <20250907195609.548509911@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 157ae5ffd76a2857ccb4b7ce40bc5a344ca00395 ]
+[ Upstream commit ac4e04d9e378f5aa826c2406ad7871ae1b6a6fb9 ]
 
-Fix a potential deadlock bug. Observe that in the mtk-cqdma.c
-file, functions like mtk_cqdma_issue_pending() and
-mtk_cqdma_free_active_desc() properly acquire the pc lock before the vc
-lock when handling pc and vc fields. However, mtk_cqdma_tx_status()
-violates this order by first acquiring the vc lock before invoking
-mtk_cqdma_find_active_desc(), which subsequently takes the pc lock. This
-reversed locking sequence (vc → pc) contradicts the established
-pc → vc order and creates deadlock risks.
+When turbo mode is unavailable on a Skylake-X system, executing the
+command:
 
-Fix the issue by moving the vc lock acquisition code from
-mtk_cqdma_find_active_desc() to mtk_cqdma_tx_status(). Ensure the pc lock
-is acquired before the vc lock in the calling function to maintain correct
-locking hierarchy. Note that since mtk_cqdma_find_active_desc() is a
-static function with only one caller (mtk_cqdma_tx_status()), this
-modification safely eliminates the deadlock possibility without affecting
-other components.
+ # echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
 
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs to extract
-function pairs that can be concurrently executed, and then analyzes the
-instructions in the paired functions to identify possible concurrency bugs
-including deadlocks, data races and atomicity violations.
+results in an unchecked MSR access error:
 
-Fixes: b1f01e48df5a ("dmaengine: mediatek: Add MediaTek Command-Queue DMA controller for MT6765 SoC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250508073634.3719-1-chenqiuji666@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+ WRMSR to 0x199 (attempted to write 0x0000000100001300).
+
+This issue was reproduced on an OEM (Original Equipment Manufacturer)
+system and is not a common problem across all Skylake-X systems.
+
+This error occurs because the MSR 0x199 Turbo Engage Bit (bit 32) is set
+when turbo mode is disabled. The issue arises when intel_pstate fails to
+detect that turbo mode is disabled. Here intel_pstate relies on
+MSR_IA32_MISC_ENABLE bit 38 to determine the status of turbo mode.
+However, on this system, bit 38 is not set even when turbo mode is
+disabled.
+
+According to the Intel Software Developer's Manual (SDM), the BIOS sets
+this bit during platform initialization to enable or disable
+opportunistic processor performance operations. Logically, this bit
+should be set in such cases. However, the SDM also specifies that "OS
+and applications must use CPUID leaf 06H to detect processors with
+opportunistic processor performance operations enabled."
+
+Therefore, in addition to checking MSR_IA32_MISC_ENABLE bit 38, verify
+that CPUID.06H:EAX[1] is 0 to accurately determine if turbo mode is
+disabled.
+
+Fixes: 4521e1a0ce17 ("cpufreq: intel_pstate: Reflect current no_turbo state correctly")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/mediatek/mtk-cqdma.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/cpufreq/intel_pstate.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/dma/mediatek/mtk-cqdma.c
-+++ b/drivers/dma/mediatek/mtk-cqdma.c
-@@ -421,15 +421,11 @@ static struct virt_dma_desc *mtk_cqdma_f
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -561,6 +561,9 @@ static bool turbo_is_disabled(void)
  {
- 	struct mtk_cqdma_vchan *cvc = to_cqdma_vchan(c);
- 	struct virt_dma_desc *vd;
--	unsigned long flags;
+ 	u64 misc_en;
  
--	spin_lock_irqsave(&cvc->pc->lock, flags);
- 	list_for_each_entry(vd, &cvc->pc->queue, node)
- 		if (vd->tx.cookie == cookie) {
--			spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 			return vd;
- 		}
--	spin_unlock_irqrestore(&cvc->pc->lock, flags);
++	if (!cpu_feature_enabled(X86_FEATURE_IDA))
++		return true;
++
+ 	rdmsrl(MSR_IA32_MISC_ENABLE, misc_en);
  
- 	list_for_each_entry(vd, &cvc->vc.desc_issued, node)
- 		if (vd->tx.cookie == cookie)
-@@ -453,9 +449,11 @@ static enum dma_status mtk_cqdma_tx_stat
- 	if (ret == DMA_COMPLETE || !txstate)
- 		return ret;
- 
-+	spin_lock_irqsave(&cvc->pc->lock, flags);
- 	spin_lock_irqsave(&cvc->vc.lock, flags);
- 	vd = mtk_cqdma_find_active_desc(c, cookie);
- 	spin_unlock_irqrestore(&cvc->vc.lock, flags);
-+	spin_unlock_irqrestore(&cvc->pc->lock, flags);
- 
- 	if (vd) {
- 		cvd = to_cqdma_vdesc(vd);
+ 	return !!(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
 
 
 
