@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-178555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79BD1B47F24
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ACA4B47F26
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DAE317F592
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A5A51B21325
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA4E211A14;
-	Sun,  7 Sep 2025 20:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD86211A14;
+	Sun,  7 Sep 2025 20:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDwc+RD8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJ0GdwVk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01641A0BFD;
-	Sun,  7 Sep 2025 20:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8E31A0BFD;
+	Sun,  7 Sep 2025 20:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277210; cv=none; b=PLLtrP7cOZjAs5LVy8mdsoQaXH4uau+PH+SV0gSgcIvbIlQu1Ii9EVzeFcDL7hYZ/LREKYqphown+SMW55sU+ypqE5BGEwr0Py+ugc9ovJgbTmm7GXrHUVYtIqosdzEqeXq3/T7GzPxIcPVNmZzY8QBq1E+Tu4T5jQjeuPMuhhQ=
+	t=1757277217; cv=none; b=LRj2uwoNg5HtoxG+lY9BSkoKrGC1fDQ3lnGnJ+QSH+8BevF4F03FUBtky2oa10er3QDiH8gI8JBkw/Cglnh+oLxvLnX6fslNJCKr6tbkvAuA3ymsaUFuOeK8S3cp6KoTede67MKdpeEqtLFOGwpOYcRc4zu334jo2ZvdxyzgRYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277210; c=relaxed/simple;
-	bh=LpBpWtQ+J0lXpM0geiBAJAHLT+IGWuBKX64nabaIRIk=;
+	s=arc-20240116; t=1757277217; c=relaxed/simple;
+	bh=ZLkiQ7dLl7nRKSOPXSDR+jdvMdEGLmX4Gk6Wz/OGhgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jTpG8dP9yNSD4Ivh5wT0ZfZopkmFOR84xGjJ9WKnuNm7bXphH3/MtHttuMdfn4TGXwu7fS46jItc0/PAvBTwBKQ5LY2uleWPsREte2pKszrB4eaHmYN9fozZB16jLRVlDITYkLhjj82FcTO94LUXA6+OQP3Wo9oFQhdnYVOqEK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rDwc+RD8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD85C4CEF0;
-	Sun,  7 Sep 2025 20:33:30 +0000 (UTC)
+	 MIME-Version; b=MjTG45o0TdDLQFk8Sqtd7l+B5V/tJaYDoXTuJPWSJPxrU/YveLYtiYa/VdrpwalERKJhYB7bB/rxXCt2s1cBWrD5hoO8rlQd2Gg8Iwk/e6u219e1RU/HMw28/hCdItBjnnSGZHSI50ZMjhNmuMvRkV6PivU7Z2UKCP/RB5Eww24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJ0GdwVk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B059AC4CEF0;
+	Sun,  7 Sep 2025 20:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277210;
-	bh=LpBpWtQ+J0lXpM0geiBAJAHLT+IGWuBKX64nabaIRIk=;
+	s=korg; t=1757277217;
+	bh=ZLkiQ7dLl7nRKSOPXSDR+jdvMdEGLmX4Gk6Wz/OGhgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rDwc+RD8eRke0j+SsGYl2KwC2s7LiRDL9ZxY9i7h9zJlPBkrWWLoC5bgByQeWQ+md
-	 q1CqGM8AX+lrg/vzi6Qr8mPOsfcMjLEKBbtrx/Na260rp0d9J35zrjNW1fXC/mVQRQ
-	 ThGzTPYJcGGnc2i9jAnlner8BTJk8DGtfHv6EhJo=
+	b=SJ0GdwVkG2435OwLHM2liPvomSD05hmcpi5G5Gt6ROSDRSaRkAkTev5vMcJLTX+yX
+	 +Tt16GQqbLJfccWbbq3zSJPsTrgW0YN9AhCq6DP1S/m3H/VLJwlf7uGxXh3vLPSTLf
+	 ZEbm35oCEUgJVXSIc704IsL9oMFhXovR+vmV0pYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikael Wessel <post@mikaelkw.online>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.12 119/175] e1000e: fix heap overflow in e1000_set_eeprom
-Date: Sun,  7 Sep 2025 21:58:34 +0200
-Message-ID: <20250907195617.673884480@linuxfoundation.org>
+	stable@kernel.org,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 120/175] net: pcs: rzn1-miic: Correct MODCTRL register offset
+Date: Sun,  7 Sep 2025 21:58:35 +0200
+Message-ID: <20250907195617.698011608@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
 References: <20250907195614.892725141@linuxfoundation.org>
@@ -67,56 +69,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-commit 90fb7db49c6dbac961c6b8ebfd741141ffbc8545 upstream.
+commit a7195a3d67dace056af7ca65144a11874df79562 upstream.
 
-Fix a possible heap overflow in e1000_set_eeprom function by adding
-input validation for the requested length of the change in the EEPROM.
-In addition, change the variable type from int to size_t for better
-code practices and rearrange declarations to RCT.
+Correct the Mode Control Register (MODCTRL) offset for RZ/N MIIC.
+According to the R-IN Engine and Ethernet Peripherals Manual (Rev.1.30)
+[0], Table 10.1 "Ethernet Accessory Register List", MODCTRL is at offset
+0x8, not 0x20 as previously defined.
 
-Cc: stable@vger.kernel.org
-Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
-Co-developed-by: Mikael Wessel <post@mikaelkw.online>
-Signed-off-by: Mikael Wessel <post@mikaelkw.online>
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Offset 0x20 actually maps to the Port Trigger Control Register (PTCTRL),
+which controls PTP_MODE[3:0] and RGMII_CLKSEL[4]. Using this incorrect
+definition prevented the driver from configuring the SW_MODE[4:0] bits
+in MODCTRL, which control the internal connection of Ethernet ports. As
+a result, the MIIC could not be switched into the correct mode, leading
+to link setup failures and non-functional Ethernet ports on affected
+systems.
+
+[0] https://www.renesas.com/en/document/mah/rzn1d-group-rzn1s-group-rzn1l-group-users-manual-r-engine-and-ethernet-peripherals?r=1054571
+
+Fixes: 7dc54d3b8d91 ("net: pcs: add Renesas MII converter driver")
+Cc: stable@kernel.org
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://patch.msgid.link/20250901112019.16278-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/e1000e/ethtool.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/pcs/pcs-rzn1-miic.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/e1000e/ethtool.c
-+++ b/drivers/net/ethernet/intel/e1000e/ethtool.c
-@@ -549,12 +549,12 @@ static int e1000_set_eeprom(struct net_d
- {
- 	struct e1000_adapter *adapter = netdev_priv(netdev);
- 	struct e1000_hw *hw = &adapter->hw;
-+	size_t total_len, max_len;
- 	u16 *eeprom_buff;
--	void *ptr;
--	int max_len;
-+	int ret_val = 0;
- 	int first_word;
- 	int last_word;
--	int ret_val = 0;
-+	void *ptr;
- 	u16 i;
+--- a/drivers/net/pcs/pcs-rzn1-miic.c
++++ b/drivers/net/pcs/pcs-rzn1-miic.c
+@@ -19,7 +19,7 @@
+ #define MIIC_PRCMD			0x0
+ #define MIIC_ESID_CODE			0x4
  
- 	if (eeprom->len == 0)
-@@ -569,6 +569,10 @@ static int e1000_set_eeprom(struct net_d
+-#define MIIC_MODCTRL			0x20
++#define MIIC_MODCTRL			0x8
+ #define MIIC_MODCTRL_SW_MODE		GENMASK(4, 0)
  
- 	max_len = hw->nvm.word_size * 2;
- 
-+	if (check_add_overflow(eeprom->offset, eeprom->len, &total_len) ||
-+	    total_len > max_len)
-+		return -EFBIG;
-+
- 	first_word = eeprom->offset >> 1;
- 	last_word = (eeprom->offset + eeprom->len - 1) >> 1;
- 	eeprom_buff = kmalloc(max_len, GFP_KERNEL);
+ #define MIIC_CONVCTRL(port)		(0x100 + (port) * 4)
 
 
 
