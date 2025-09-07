@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-178263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9BBB47DE9
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E78B47FA1
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:40:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C4CB3C0758
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EB27188F1C3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0441E0DE8;
-	Sun,  7 Sep 2025 20:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CBF1A704B;
+	Sun,  7 Sep 2025 20:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ac2MTL3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AeSyueWj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2BB14BFA2;
-	Sun,  7 Sep 2025 20:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2B31DF246;
+	Sun,  7 Sep 2025 20:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276281; cv=none; b=sm5N1ch2dWvrO7xAL+pVPkkyopQsHT1rt1FvGpSrOm1rEW2cgmmDGzSE9Sp+KrCCOUVitH31p9Dm+6Pvzg6r3QD0jcmLd9vthEdcR3ryXDZrr+db92kbnLxVXCLo3HygKsjixo4wA8lM0X09sGUp+0dFk0U79b8zukK6kAJdjQs=
+	t=1757277603; cv=none; b=Fw5RzBpEsBDs/Sqf4+4p020AZWR9ZPcL+N5eBX+vi7sVQyx1Mwi9KwMHnBjz5kuLNUAEjfu2t6zWkMNxTPRsu5hwCZVZwvUZxG2aQ3DrfDpmE5eLk9jRpSGyX2CzowFsOJX/0kg6aHF/csNL2y4sp5vtkZfShpHPf0XtIoznKuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276281; c=relaxed/simple;
-	bh=r0PlFK3yMBJZ0aWhUfMrGeM0odUjROdkjUqnUShpftU=;
+	s=arc-20240116; t=1757277603; c=relaxed/simple;
+	bh=lLXH/5362AJzd4/7j3vuqB3ax9GyTlN3xoW9jJJo4LM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dfg4n/ilrOeY6QEXkd5paRyFCU2L1p0h1GBNUwqXwFooWzGnxz/4D2ID0IAXVZfcbITajIWaYmL4Twjl7z4NeW84I4dTTcxYNMUuvwjm8NURVD98fUZrWjhP14THFnEe3Ndhu1WWNwbrIhxDZ2ddklPsi/NIJGc89ZxOIaVRtOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ac2MTL3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40921C4CEF8;
-	Sun,  7 Sep 2025 20:18:01 +0000 (UTC)
+	 MIME-Version; b=mBcpSXaeP4E/RzQ8oDHTOKdZLi1mex8rEZVG/QvcWBnC/DXiUd/5aEgKEGXhIyrwDl24nUSG9v0573XAeNhpsYUm80J2hzPVmb75AIJ0tcxZEyoub1Yb+QsdEfmNC86M3enJC1UYIYHxUKKmnwiS6fUE5bXQ4dcfR2AHIHzz6ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AeSyueWj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908DFC4CEF0;
+	Sun,  7 Sep 2025 20:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276281;
-	bh=r0PlFK3yMBJZ0aWhUfMrGeM0odUjROdkjUqnUShpftU=;
+	s=korg; t=1757277603;
+	bh=lLXH/5362AJzd4/7j3vuqB3ax9GyTlN3xoW9jJJo4LM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ac2MTL3GqzLMsRaA1AGds13zeXgyTtPgZt7gki69/W+jqpGepr5CGXM4m24CsPNQq
-	 9TCGCyABk2smS4IwPywQG4+6Zk8WNbDfEwg2ZhVmbD1wWsEgthKnYEy85lj3W5+9Do
-	 heWXg5P78gQpwizegBr7J/jWJilTEiHtjVtZV8g4=
+	b=AeSyueWjZsN0uat33Kx72MVikVTy7+AybWIWi0hOEHgCyBuGlsLNw2bt0tzjSeQdl
+	 OMJS1UuNxy6KUq9fZgz7B2xZ0o/b+q3ZY10cuHiWfGWh6mD2xYJ8WNqSZ/5MSquuCk
+	 om7S6TdS23qwm1FmPGbz/Krye/kxLYKVtWaDTOs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 053/104] net: pcs: rzn1-miic: Correct MODCTRL register offset
-Date: Sun,  7 Sep 2025 21:58:10 +0200
-Message-ID: <20250907195609.063418216@linuxfoundation.org>
+	Nishanth Menon <nm@ti.com>,
+	Chintan Vankar <c-vankar@ti.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 064/183] net: ethernet: ti: am65-cpsw-nuss: Fix null pointer dereference for ndev
+Date: Sun,  7 Sep 2025 21:58:11 +0200
+Message-ID: <20250907195617.311541826@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Nishanth Menon <nm@ti.com>
 
-commit a7195a3d67dace056af7ca65144a11874df79562 upstream.
+[ Upstream commit a6099f263e1f408bcc7913c9df24b0677164fc5d ]
 
-Correct the Mode Control Register (MODCTRL) offset for RZ/N MIIC.
-According to the R-IN Engine and Ethernet Peripherals Manual (Rev.1.30)
-[0], Table 10.1 "Ethernet Accessory Register List", MODCTRL is at offset
-0x8, not 0x20 as previously defined.
+In the TX completion packet stage of TI SoCs with CPSW2G instance, which
+has single external ethernet port, ndev is accessed without being
+initialized if no TX packets have been processed. It results into null
+pointer dereference, causing kernel to crash. Fix this by having a check
+on the number of TX packets which have been processed.
 
-Offset 0x20 actually maps to the Port Trigger Control Register (PTCTRL),
-which controls PTP_MODE[3:0] and RGMII_CLKSEL[4]. Using this incorrect
-definition prevented the driver from configuring the SW_MODE[4:0] bits
-in MODCTRL, which control the internal connection of Ethernet ports. As
-a result, the MIIC could not be switched into the correct mode, leading
-to link setup failures and non-functional Ethernet ports on affected
-systems.
-
-[0] https://www.renesas.com/en/document/mah/rzn1d-group-rzn1s-group-rzn1l-group-users-manual-r-engine-and-ethernet-peripherals?r=1054571
-
-Fixes: 7dc54d3b8d91 ("net: pcs: add Renesas MII converter driver")
-Cc: stable@kernel.org
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://patch.msgid.link/20250901112019.16278-1-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9a369ae3d143 ("net: ethernet: ti: am65-cpsw: remove am65_cpsw_nuss_tx_compl_packets_2g()")
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Chintan Vankar <c-vankar@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250829121051.2031832-1-c-vankar@ti.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/pcs/pcs-rzn1-miic.c |    2 +-
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/pcs/pcs-rzn1-miic.c
-+++ b/drivers/net/pcs/pcs-rzn1-miic.c
-@@ -18,7 +18,7 @@
- #define MIIC_PRCMD			0x0
- #define MIIC_ESID_CODE			0x4
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 231ca141331f5..dbdbc40109c51 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -1522,7 +1522,7 @@ static int am65_cpsw_nuss_tx_compl_packets(struct am65_cpsw_common *common,
+ 		}
+ 	}
  
--#define MIIC_MODCTRL			0x20
-+#define MIIC_MODCTRL			0x8
- #define MIIC_MODCTRL_SW_MODE		GENMASK(4, 0)
- 
- #define MIIC_CONVCTRL(port)		(0x100 + (port) * 4)
+-	if (single_port) {
++	if (single_port && num_tx) {
+ 		netif_txq = netdev_get_tx_queue(ndev, chn);
+ 		netdev_tx_completed_queue(netif_txq, num_tx, total_bytes);
+ 		am65_cpsw_nuss_tx_wake(tx_chn, ndev, netif_txq);
+-- 
+2.50.1
+
 
 
 
