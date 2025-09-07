@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49560B47EF6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:31:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D9BB47D8A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 042664E11B3
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:31:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 330CE3C08DD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8281DE8AF;
-	Sun,  7 Sep 2025 20:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEA1284B59;
+	Sun,  7 Sep 2025 20:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FfxG8qn2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShzIJby2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C83115C158;
-	Sun,  7 Sep 2025 20:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7471B424F;
+	Sun,  7 Sep 2025 20:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277067; cv=none; b=UYO/jO8qqszBLhH3uZ4KbLxuLyzRPrE8ltrvDNpwgTMWgfC5+MzzpfChOeUGQelEM/yGDqPZHQ07NbgYLVURorieWQ6wR7BJg3GYbCid8xfgVFA21rzGSWelI7lpp3rfgRrM1Tj/HcGFrubwJa+g5g7uM2G8NtSlCZaaV5Hl7dI=
+	t=1757275997; cv=none; b=kOY/Bcf1dP/TbYWxBbxNkgKft8V4zhzBdA2eNpAhoOFVdVhpeN9gcxYb49FOMKiqFOfRlzPd4Wlt7qqnfJXnyJoqfBclGB0nxTiqskN6C5xwfdwjJkzWrDNln+lH+D5K/26AA0H6pwDN11LVhW7+5Noxd3Mb2ntIG9Iz9t5Y7pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277067; c=relaxed/simple;
-	bh=GkXiaD/STlOLfTcfsGT5W7OGeOLT7gZuuxm21mS/w/8=;
+	s=arc-20240116; t=1757275997; c=relaxed/simple;
+	bh=PAY2xKINwj+zbL7/veVI/0cqnwtXb/wqWYab5v9F62A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gc1ZT7lVR4m73DKAGjrJ2rBkH75M+K6vvhOaDi4TwHg8OPCsluNR67aC+rzulvuWie7Rpm8GF0izIwfrxohgmGB20V1Tizy5k0X4VYPWixYCwHOT97OgK4LnGibsosl8hjbM66zrjvAYwZiIId0olIK8ao9bL2ByOROB/aeC0e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FfxG8qn2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68D6C4CEF0;
-	Sun,  7 Sep 2025 20:31:06 +0000 (UTC)
+	 MIME-Version; b=MBMoQ419cXHDfGdourH8VLs3QbLPs6GCFB/XCTz42X8+0MJYJu+bIRUCCdDbgVA9eKqdcjdQiiutP9WMsiubI43teahdJ2JTIgmb+Hlf2TdNn4GwiTpCmKykQpV3S9/Y07Vt+HBCJzhH+O2B4RiidYHpv0D3zsQ66AZ9RVXR3uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShzIJby2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C165AC4CEF0;
+	Sun,  7 Sep 2025 20:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277067;
-	bh=GkXiaD/STlOLfTcfsGT5W7OGeOLT7gZuuxm21mS/w/8=;
+	s=korg; t=1757275997;
+	bh=PAY2xKINwj+zbL7/veVI/0cqnwtXb/wqWYab5v9F62A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FfxG8qn2dpK4SZMjnMF/ubBkcVUYb2cB+IvATC5MeOkWM/3hsthdWGjjngAsSmIyr
-	 r085yFZWjKiSL5f7B1XTII6uKgpP6kNymdi2dPTHBlAXvcMQ2CR1bR/yDJyOUelfae
-	 gEfVV9EBLsEOGqKu2y0mWgwt2kuGEGG+4aKA2EPU=
+	b=ShzIJby2syDFPo6isWGEBQE3p2L6CioPrfhRQ4zIac+XmVnpfxYxWwbXeoooUHnry
+	 MKRUZwnOKz+69ssLtb7j8mTCS6k2rFV5OVjQkboSjUxbJ7/e2mxaZ5Fl4ITQG6GLgP
+	 YYsrD7/xGhuwXx8TvDKYtXHiwLg8x43jjd1q7X4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jiufei Xue <jiufei.xue@samsung.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/175] vxlan: Avoid unnecessary updates to FDB used time
+Subject: [PATCH 5.15 06/64] fs: writeback: fix use-after-free in __mark_inode_dirty()
 Date: Sun,  7 Sep 2025 21:57:48 +0200
-Message-ID: <20250907195616.561987326@linuxfoundation.org>
+Message-ID: <20250907195603.577432156@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
+References: <20250907195603.394640159@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Jiufei Xue <jiufei.xue@samsung.com>
 
-[ Upstream commit 9722f834fe9a7c583591defa2cab3f652f50a5f0 ]
+[ Upstream commit d02d2c98d25793902f65803ab853b592c7a96b29 ]
 
-Now that the VXLAN driver ages out FDB entries based on their 'updated'
-time we can remove unnecessary updates of the 'used' time from the Rx
-path and the control path, so that the 'used' time is only updated by
-the Tx path.
+An use-after-free issue occurred when __mark_inode_dirty() get the
+bdi_writeback that was in the progress of switching.
 
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250204145549.1216254-8-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 1f5d2fd1ca04 ("vxlan: Fix NPD in {arp,neigh}_reduce() when using nexthop objects")
+CPU: 1 PID: 562 Comm: systemd-random- Not tainted 6.6.56-gb4403bd46a8e #1
+......
+pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __mark_inode_dirty+0x124/0x418
+lr : __mark_inode_dirty+0x118/0x418
+sp : ffffffc08c9dbbc0
+........
+Call trace:
+ __mark_inode_dirty+0x124/0x418
+ generic_update_time+0x4c/0x60
+ file_modified+0xcc/0xd0
+ ext4_buffered_write_iter+0x58/0x124
+ ext4_file_write_iter+0x54/0x704
+ vfs_write+0x1c0/0x308
+ ksys_write+0x74/0x10c
+ __arm64_sys_write+0x1c/0x28
+ invoke_syscall+0x48/0x114
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x40/0xe4
+ el0t_64_sync_handler+0x120/0x12c
+ el0t_64_sync+0x194/0x198
+
+Root cause is:
+
+systemd-random-seed                         kworker
+----------------------------------------------------------------------
+___mark_inode_dirty                     inode_switch_wbs_work_fn
+
+  spin_lock(&inode->i_lock);
+  inode_attach_wb
+  locked_inode_to_wb_and_lock_list
+     get inode->i_wb
+     spin_unlock(&inode->i_lock);
+     spin_lock(&wb->list_lock)
+  spin_lock(&inode->i_lock)
+  inode_io_list_move_locked
+  spin_unlock(&wb->list_lock)
+  spin_unlock(&inode->i_lock)
+                                    spin_lock(&old_wb->list_lock)
+                                      inode_do_switch_wbs
+                                        spin_lock(&inode->i_lock)
+                                        inode->i_wb = new_wb
+                                        spin_unlock(&inode->i_lock)
+                                    spin_unlock(&old_wb->list_lock)
+                                    wb_put_many(old_wb, nr_switched)
+                                      cgwb_release
+                                      old wb released
+  wb_wakeup_delayed() accesses wb,
+  then trigger the use-after-free
+  issue
+
+Fix this race condition by holding inode spinlock until
+wb_wakeup_delayed() finished.
+
+Signed-off-by: Jiufei Xue <jiufei.xue@samsung.com>
+Link: https://lore.kernel.org/20250728100715.3863241-1-jiufei.xue@samsung.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ fs/fs-writeback.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index ce9c979080bb4..8853fcb7eb7f2 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1047,10 +1047,8 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
- 		notify |= rc;
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index 672d176524f5c..cb3f1790a296e 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -2545,10 +2545,6 @@ void __mark_inode_dirty(struct inode *inode, int flags)
+ 			wakeup_bdi = inode_io_list_move_locked(inode, wb,
+ 							       dirty_list);
+ 
+-			spin_unlock(&wb->list_lock);
+-			spin_unlock(&inode->i_lock);
+-			trace_writeback_dirty_inode_enqueue(inode);
+-
+ 			/*
+ 			 * If this is the first dirty inode for this bdi,
+ 			 * we have to wake-up the corresponding bdi thread
+@@ -2558,6 +2554,11 @@ void __mark_inode_dirty(struct inode *inode, int flags)
+ 			if (wakeup_bdi &&
+ 			    (wb->bdi->capabilities & BDI_CAP_WRITEBACK))
+ 				wb_wakeup_delayed(wb);
++
++			spin_unlock(&wb->list_lock);
++			spin_unlock(&inode->i_lock);
++			trace_writeback_dirty_inode_enqueue(inode);
++
+ 			return;
+ 		}
  	}
- 
--	if (ndm_flags & NTF_USE) {
--		WRITE_ONCE(f->used, jiffies);
-+	if (ndm_flags & NTF_USE)
- 		WRITE_ONCE(f->updated, jiffies);
--	}
- 
- 	if (notify) {
- 		if (rd == NULL)
-@@ -1294,7 +1292,7 @@ int __vxlan_fdb_delete(struct vxlan_dev *vxlan,
- 	struct vxlan_fdb *f;
- 	int err = -ENOENT;
- 
--	f = vxlan_find_mac(vxlan, addr, src_vni);
-+	f = __vxlan_find_mac(vxlan, addr, src_vni);
- 	if (!f)
- 		return err;
- 
-@@ -1458,7 +1456,7 @@ static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
- 		ifindex = src_ifindex;
- #endif
- 
--	f = vxlan_find_mac(vxlan, src_mac, vni);
-+	f = __vxlan_find_mac(vxlan, src_mac, vni);
- 	if (likely(f)) {
- 		struct vxlan_rdst *rdst = first_remote_rcu(f);
- 
-@@ -4718,7 +4716,7 @@ vxlan_fdb_offloaded_set(struct net_device *dev,
- 
- 	spin_lock_bh(&vxlan->hash_lock[hash_index]);
- 
--	f = vxlan_find_mac(vxlan, fdb_info->eth_addr, fdb_info->vni);
-+	f = __vxlan_find_mac(vxlan, fdb_info->eth_addr, fdb_info->vni);
- 	if (!f)
- 		goto out;
- 
-@@ -4774,7 +4772,7 @@ vxlan_fdb_external_learn_del(struct net_device *dev,
- 	hash_index = fdb_head_index(vxlan, fdb_info->eth_addr, fdb_info->vni);
- 	spin_lock_bh(&vxlan->hash_lock[hash_index]);
- 
--	f = vxlan_find_mac(vxlan, fdb_info->eth_addr, fdb_info->vni);
-+	f = __vxlan_find_mac(vxlan, fdb_info->eth_addr, fdb_info->vni);
- 	if (!f)
- 		err = -ENOENT;
- 	else if (f->flags & NTF_EXT_LEARNED)
 -- 
 2.50.1
 
