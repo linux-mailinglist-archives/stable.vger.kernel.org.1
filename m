@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-178062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B80B47D16
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF294B47EEC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0435417BAAF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E88A3B00CD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2E2296BB8;
-	Sun,  7 Sep 2025 20:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011CC15C158;
+	Sun,  7 Sep 2025 20:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYaCG1Tu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cChsM0bQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C5F1CDFAC;
-	Sun,  7 Sep 2025 20:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35EF18DF89;
+	Sun,  7 Sep 2025 20:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275643; cv=none; b=K7amjvtbKIhshOxtnUgMoqdImSfwXjo2FlFsSVNtpPpdZNkOoskpWvqdBlSHwXs0rEFm1wZ5rLPZWp+7PPRk9FMofU9W7vM6i1V04rB4+xbLRdd/zNnNlEiRaSF5L8YtufYtu0cQruTXDGHZgPi8f136itJeusANkMDv45/6drY=
+	t=1757277035; cv=none; b=CdQ3vuql+FeBS9UGQwi5YSnCHS0+8hkGYEYH//a4aPddK/wJwcySJD6ZYoJDbiWEWGoHt1lXhbKSCzKBK6MRbWqeO/Xc+yWMbfUD4+SLzVbsSv4ayaAkgdTrQVS4Ge6fopCl1igCAKRYkS+x+62Xjvy8x/KTdwP5yl/1BVGKito=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275643; c=relaxed/simple;
-	bh=LU2Zb1coWTUH6DRAeWpRwWUuZnsZu/6li7X8z5KdSpk=;
+	s=arc-20240116; t=1757277035; c=relaxed/simple;
+	bh=rfThUlZLibanzRcr32pMkI9/DrMv7pRuEM818p1WCps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTgcCmKBcIT6bvRRJA/qYlTt0Dyj71/1ZmyDnnuRcPYIhijW0mDrnGS4TCx+e2Gi7gdNvhzAWa2UIeEwJWk68PI46zxZ9nKGIK1tBFWQiJC2vSGg8zl7++ZcA3ZeowJ3WUjQFacgYpQ7DzH1KQP/ltOR+9cTA40p1CAS6ElWWqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYaCG1Tu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245A6C4CEF0;
-	Sun,  7 Sep 2025 20:07:21 +0000 (UTC)
+	 MIME-Version; b=u4ePQoIXDqTaIKwF8aHd95/+Ikfk+bBUfMLCMPhSUe9IfzWzOIabNLfAh1YprSIyuyMbM2IWyKbX28GlV70EMZ4C4iWOnpLFFs/Z7abx9Dbl2AKo4w417OhzwE4bXIXsn+sMCJJLW/sB26IWqWQEcOcj/c866lPrlACUcyB8YAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cChsM0bQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E31AC4CEF0;
+	Sun,  7 Sep 2025 20:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275642;
-	bh=LU2Zb1coWTUH6DRAeWpRwWUuZnsZu/6li7X8z5KdSpk=;
+	s=korg; t=1757277035;
+	bh=rfThUlZLibanzRcr32pMkI9/DrMv7pRuEM818p1WCps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QYaCG1TuBKYKGrPUWC2MR+kAjQTfu3kBvrEr7W/EasIGLHqnkylXqfiUcy77bZ2rY
-	 WOnhQ9FulBu1zP0OQyUp9Oz7iHELergKdquSC4vNM4DqwNkfJ06H/SGSJmHZ3lH/G4
-	 4Y3WhGLp6GhnmaMHwjHbZg6L00OuuUpS3VzC2zzY=
+	b=cChsM0bQmAvNj2ZdiOLzi9L37ObGxsF70+FTMou3T3+WZ9QJJIoV+XDTZYG4HgAdv
+	 PIRyIGgl4hRYEQDQJJxK2+1gV9MpKSaFyjOG5E1XfnzfhlFR+Q6qMGCNv3lyYljUxn
+	 7Ra0+zK17Ng2q+3YZPmPuXQY9oBDLO8795ZRRjrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Menglong Dong <dongml2@chinatelecom.cn>,
+	Simon Horman <horms@kernel.org>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 19/52] ppp: fix memory leak in pad_compress_skb
+Subject: [PATCH 6.12 064/175] net: tunnel: add pskb_inet_may_pull_reason() helper
 Date: Sun,  7 Sep 2025 21:57:39 +0200
-Message-ID: <20250907195602.555562014@linuxfoundation.org>
+Message-ID: <20250907195616.353724182@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <dqfext@gmail.com>
+From: Menglong Dong <menglong8.dong@gmail.com>
 
-[ Upstream commit 4844123fe0b853a4982c02666cb3fd863d701d50 ]
+[ Upstream commit 7f20dbd7de7b9b2804e6bf54b0c22f2bc447cd64 ]
 
-If alloc_skb() fails in pad_compress_skb(), it returns NULL without
-releasing the old skb. The caller does:
+Introduce the function pskb_inet_may_pull_reason() and make
+pskb_inet_may_pull a simple inline call to it. The drop reasons of it just
+come from pskb_may_pull_reason().
 
-    skb = pad_compress_skb(ppp, skb);
-    if (!skb)
-        goto drop;
-
-drop:
-    kfree_skb(skb);
-
-When pad_compress_skb() returns NULL, the reference to the old skb is
-lost and kfree_skb(skb) ends up doing nothing, leading to a memory leak.
-
-Align pad_compress_skb() semantics with realloc(): only free the old
-skb if allocation and compression succeed.  At the call site, use the
-new_skb variable so the original skb is not lost when pad_compress_skb()
-fails.
-
-Fixes: b3f9b92a6ec1 ("[PPP]: add PPP MPPE encryption module")
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Yue Haibing <yuehaibing@huawei.com>
-Link: https://patch.msgid.link/20250903100726.269839-1-dqfext@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 6ead38147ebb ("vxlan: Fix NPD when refreshing an FDB entry with a nexthop object")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_generic.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/net/ip_tunnels.h | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index d9d1f3519f0a7..b2b5a994dd0ee 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -1616,7 +1616,6 @@ pad_compress_skb(struct ppp *ppp, struct sk_buff *skb)
- 		 */
- 		if (net_ratelimit())
- 			netdev_err(ppp->dev, "ppp: compressor dropped pkt\n");
--		kfree_skb(skb);
- 		consume_skb(new_skb);
- 		new_skb = NULL;
- 	}
-@@ -1718,9 +1717,10 @@ ppp_send_frame(struct ppp *ppp, struct sk_buff *skb)
- 					   "down - pkt dropped.\n");
- 			goto drop;
- 		}
--		skb = pad_compress_skb(ppp, skb);
--		if (!skb)
-+		new_skb = pad_compress_skb(ppp, skb);
-+		if (!new_skb)
- 			goto drop;
-+		skb = new_skb;
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index 6a070478254d8..ae83a969ae64b 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -439,7 +439,8 @@ int ip_tunnel_encap_del_ops(const struct ip_tunnel_encap_ops *op,
+ int ip_tunnel_encap_setup(struct ip_tunnel *t,
+ 			  struct ip_tunnel_encap *ipencap);
+ 
+-static inline bool pskb_inet_may_pull(struct sk_buff *skb)
++static inline enum skb_drop_reason
++pskb_inet_may_pull_reason(struct sk_buff *skb)
+ {
+ 	int nhlen;
+ 
+@@ -456,7 +457,12 @@ static inline bool pskb_inet_may_pull(struct sk_buff *skb)
+ 		nhlen = 0;
  	}
  
- 	/*
+-	return pskb_network_may_pull(skb, nhlen);
++	return pskb_network_may_pull_reason(skb, nhlen);
++}
++
++static inline bool pskb_inet_may_pull(struct sk_buff *skb)
++{
++	return pskb_inet_may_pull_reason(skb) == SKB_NOT_DROPPED_YET;
+ }
+ 
+ /* Variant of pskb_inet_may_pull().
 -- 
 2.50.1
 
