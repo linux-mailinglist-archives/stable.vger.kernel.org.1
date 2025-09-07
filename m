@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-178654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16CBBB47F89
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4888B47DD1
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEAC220026F
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3DC9188F2A1
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A998A269CE6;
-	Sun,  7 Sep 2025 20:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED47B1A9FAA;
+	Sun,  7 Sep 2025 20:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBRa19qM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZfnyhQv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642C21A704B;
-	Sun,  7 Sep 2025 20:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF2C1A2389;
+	Sun,  7 Sep 2025 20:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277529; cv=none; b=TG0M60i7o0T1PDmqEvrjU1dnYYIrV+sX41i+Pi8YrWj2IpHrwXm78ufZfv0skcWZFU6afwSdhK1/0zdutfCMGyLyC1KNMWxoqihI1aibVsbi0SyJY+B7edFROsbOV3Pv+G5m2r9ljoGmnC8vW5k1Xcg7JssfTRAlSXnpTUj6BQI=
+	t=1757276212; cv=none; b=mGW841sLyuCoLljaFiI3V/cRuUHX41/UX7DfP96F4hGL2J84Eeags4gC8RLiyttjYmVtzA9W3jXSokPcviuL7Gv4CYvQG/qjxKzw0WJeLqJYMyjQxD4Vd/1sxPxCTwBmkKllv9vSP0xdmK7L+0qCu6q1nHzb7XGjq43RcL++VZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277529; c=relaxed/simple;
-	bh=ylGUFb9R6RkcA7b+LxHLlF0OtEvWMKkV28xG2xT3qbE=;
+	s=arc-20240116; t=1757276212; c=relaxed/simple;
+	bh=X3PU7JZYCzDrg28GqrNpgSuD3D0eN0oECxk0In4Hc54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LRfl/qzY1Kd1ASEXCzCBTSduXEjqHh+zGtnXxKSpILy4TnyI1593aLUfe6VLwipBDE+nIqt9vnppdEK94vhHrVlSjwjdiAg73Lpj2G41+Wn9zSENmcF7jnjQmSjqMTnRncrCc+XxJkZm84RftxyxzZYQKBv4O1nrFjChsdxbaIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBRa19qM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF76FC4CEF0;
-	Sun,  7 Sep 2025 20:38:48 +0000 (UTC)
+	 MIME-Version; b=MLM0ibv81xC/fvAtD6s22RkWbmh+C0ifu2QQKWJqSC4fFqTe2CoUTMfEcjzQXyOxK8WX0TnpKYnaOFF/GS77SGxSNixZCEqzjTEmpKIOhevgElCM4hAkCusWaU7mblm27RpbFNSuEUPu7VKbUR4+levFvjl/qxzO62QZsjZaMAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZfnyhQv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A2BC4CEF0;
+	Sun,  7 Sep 2025 20:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277529;
-	bh=ylGUFb9R6RkcA7b+LxHLlF0OtEvWMKkV28xG2xT3qbE=;
+	s=korg; t=1757276212;
+	bh=X3PU7JZYCzDrg28GqrNpgSuD3D0eN0oECxk0In4Hc54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XBRa19qMD3juvANX65GddVPZjup+wSl899E46vCLw88vmAGnec8ljRSC5ri6Ak84I
-	 wtFHmnRZujoWeTeKHv3o/qp4ke3C8vaEA+F5hPyfyX5HsC4hB+fdYrEBfz4xgu91on
-	 SzwNQw+WBBsDOXRLZ06cVa7T5I92U0hLbl6XOTfs=
+	b=CZfnyhQvULEYHt855mQ+cCU3mzTkDZ2eBuH+JQI1IH0N6UZxyK+jVKtorP/SwffRg
+	 Q8AbT/E0SXK1bXkMWaMUSAf5YzdbJBvUmP60v0sxBUfLwVbBX+lUx+SKS5jpLTqKza
+	 odH4qOahDK3P1Djuw2GjglbvF3ewe8kKatHUol1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 043/183] wifi: iwlwifi: if scratch is ~0U, consider it a failure
+Subject: [PATCH 6.1 033/104] net/smc: Remove validation of reserved bits in CLC Decline message
 Date: Sun,  7 Sep 2025 21:57:50 +0200
-Message-ID: <20250907195616.800796142@linuxfoundation.org>
+Message-ID: <20250907195608.559852130@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
 
-[ Upstream commit 224476613c8499f00ce4de975dd65749c5ca498c ]
+[ Upstream commit cc282f73bc0cbdf3ee7af2f2d3a2ef4e6b19242d ]
 
-We want to see bits being set in the scratch register upon resume, but
-if all the bits are set, it means that we were kicked out of the PCI bus
-and that clearly doesn't mean we can assume the firmware is still alive
-after the suspend / resume cycle.
+Currently SMC code is validating the reserved bits while parsing the incoming
+CLC decline message & when this validation fails, its treated as a protocol
+error. As a result, the SMC connection is terminated instead of falling back to
+TCP. As per RFC7609[1] specs we shouldn't be validating the reserved bits that
+is part of CLC message. This patch fixes this issue.
 
-Fixes: cb347bd29d0d ("wifi: iwlwifi: mvm: fix hibernation")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250828095500.0f203e559242.I59eff718cb5fda575db41081a1a389f7af488717@changeid
+CLC Decline message format can viewed here[2].
+
+[1] https://datatracker.ietf.org/doc/html/rfc7609#page-92
+[2] https://datatracker.ietf.org/doc/html/rfc7609#page-105
+
+Fixes: 8ade200c269f ("net/smc: add v2 format of CLC decline message")
+Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Link: https://patch.msgid.link/20250902082041.98996-1-mjambigi@linux.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/smc/smc_clc.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 0a9e0dbb58fbf..e4e06bf9161c3 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1503,11 +1503,15 @@ static int _iwl_pci_resume(struct device *device, bool restore)
- 	 * Note: MAC (bits 0:7) will be cleared upon suspend even with wowlan,
- 	 * but not bits [15:8]. So if we have bits set in lower word, assume
- 	 * the device is alive.
-+	 * Alternatively, if the scratch value is 0xFFFFFFFF, then we no longer
-+	 * have access to the device and consider it powered off.
- 	 * For older devices, just try silently to grab the NIC.
- 	 */
- 	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
--		if (!(iwl_read32(trans, CSR_FUNC_SCRATCH) &
--		      CSR_FUNC_SCRATCH_POWER_OFF_MASK))
-+		u32 scratch = iwl_read32(trans, CSR_FUNC_SCRATCH);
-+
-+		if (!(scratch & CSR_FUNC_SCRATCH_POWER_OFF_MASK) ||
-+		    scratch == ~0U)
- 			device_was_powered_off = true;
- 	} else {
- 		/*
+diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
+index a48fdc83fe6b2..6ed77f02ceac0 100644
+--- a/net/smc/smc_clc.c
++++ b/net/smc/smc_clc.c
+@@ -422,8 +422,6 @@ smc_clc_msg_decl_valid(struct smc_clc_msg_decline *dclc)
+ {
+ 	struct smc_clc_msg_hdr *hdr = &dclc->hdr;
+ 
+-	if (hdr->typev1 != SMC_TYPE_R && hdr->typev1 != SMC_TYPE_D)
+-		return false;
+ 	if (hdr->version == SMC_V1) {
+ 		if (ntohs(hdr->length) != sizeof(struct smc_clc_msg_decline))
+ 			return false;
 -- 
 2.50.1
 
