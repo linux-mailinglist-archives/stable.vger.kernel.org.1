@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B70B47FE8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6ACB47F56
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0925F1B22276
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:44:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 979E4189D65D
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29F327703A;
-	Sun,  7 Sep 2025 20:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911FB2139C9;
+	Sun,  7 Sep 2025 20:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pL4ds7Wl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcp30mqJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE444315A;
-	Sun,  7 Sep 2025 20:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507F6315D54;
+	Sun,  7 Sep 2025 20:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277832; cv=none; b=p1M5wCRgIr7AlMiwyC+o4i+z7W60qdDxojhqbAZrd0r0l3iWwq1z6ZSMifyZNfIzlTaxUF0yd5KY21yfwbapkAEUN8W+fIK1+3iS8MtmWCleSXpypmVFcVbuY5sLlWUtuOUqcxK8AhhOtZX75tEJM8gm2RYdbwpurKCkTrkqGYE=
+	t=1757277372; cv=none; b=br44tQMXyBCPWD0+Fz2/OzXPNhTySDcv7hx21i1HYc8MYDzn/dxKs2fuctPvKlq8ihsWpole4+mlQ0jhjbI313Zi8NAXKk+w2GX3RZ+V0fXKyc3q2YUOCPw+jy8PG3cye7a5WCB9fhtB7yMc1BFKxmc850regQ4K5dlHEWx8CQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277832; c=relaxed/simple;
-	bh=olih+fW+k2lNvWwRcOabYVtTagEOYYVKhrcOj0YjlXs=;
+	s=arc-20240116; t=1757277372; c=relaxed/simple;
+	bh=qZ0SqWuGT2GwuB6b8UZ4WArN+yF5AQWqxorRGT3UXpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8zB+Kwo8rT2C9JYlJW7g0rLnlupr9EuZbaOzGn/L9GWn7nEC2drmFt+w/sqYBA4D1kQkwSOvRr6dMLG4vwBeKLcEmEex7KrdA4XZfUGtEsxTUzZ/UQJU5F+3Mm/MB/61ZVTWgsdwD5/mpV9QLBuFchj9iJ+5ehqPOWLCEF8xNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pL4ds7Wl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1431EC4CEF0;
-	Sun,  7 Sep 2025 20:43:51 +0000 (UTC)
+	 MIME-Version; b=cxf4fs7l+7Z8FfrZsodd0gyZ35S1qzn+gGZlTcFZ8hDlzxabpzm1GX6X8ReepyTyaLI432D8lxrNUTS5AMJhx12qHDNxpFx5oTZ0EdZvK4WQ3M4cH4v7U+5ek2q3vMoKDi2hxP1gf7xZsIQSvgxWD21CRObVwiVLGq5PlcBE38w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcp30mqJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA33BC4CEF0;
+	Sun,  7 Sep 2025 20:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277832;
-	bh=olih+fW+k2lNvWwRcOabYVtTagEOYYVKhrcOj0YjlXs=;
+	s=korg; t=1757277372;
+	bh=qZ0SqWuGT2GwuB6b8UZ4WArN+yF5AQWqxorRGT3UXpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pL4ds7Wl3tHMSoEVXPLqVCi9jVnUbLiBxfaMb0LL8g09cVVbSC+qpCEr4XEzRvWJ3
-	 2pVo56QWl4VK33NXglIxo/oPGjAI3FHqBrjmiXs8nJzTxgpfv3WBvOfvcq/YbR0Ive
-	 JpsF8ccc1JhiBBJagE+W+BkAWfF+nTfXu2NT6+5Q=
+	b=fcp30mqJ5WMBsSKZRDfEfw1P2n5o/1MofWOn2P1ywbzJJBKe0IKvYQIgd4mXx5GCh
+	 R79ZOBPNCQQyuwbDHlEbvySFBjHSgo8lfsCradpeY+717cy2fVaZcgKVOe1cJ8nWKl
+	 aMpXRGZMJLhUabSQAWY6aHHoEyIiHoySJiaf9Kwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikael Wessel <post@mikaelkw.online>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.16 137/183] e1000e: fix heap overflow in e1000_set_eeprom
+	kernel test robot <lkp@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>
+Subject: [PATCH 6.12 169/175] riscv: Only allow LTO with CMODEL_MEDANY
 Date: Sun,  7 Sep 2025 21:59:24 +0200
-Message-ID: <20250907195619.047616948@linuxfoundation.org>
+Message-ID: <20250907195618.858117898@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 90fb7db49c6dbac961c6b8ebfd741141ffbc8545 upstream.
+commit 41f9049cff324b7033e6ed1ded7dfff803cf550a upstream.
 
-Fix a possible heap overflow in e1000_set_eeprom function by adding
-input validation for the requested length of the change in the EEPROM.
-In addition, change the variable type from int to size_t for better
-code practices and rearrange declarations to RCT.
+When building with CONFIG_CMODEL_MEDLOW and CONFIG_LTO_CLANG, there is a
+series of errors due to some files being unconditionally compiled with
+'-mcmodel=medany', mismatching with the rest of the kernel built with
+'-mcmodel=medlow':
+
+  ld.lld: error: Function Import: link error: linking module flags 'Code Model': IDs have conflicting values: 'i32 3' from vmlinux.a(init.o at 899908), and 'i32 1' from vmlinux.a(net-traces.o at 1014628)
+
+Only allow LTO to be performed when CONFIG_CMODEL_MEDANY is enabled to
+ensure there will be no code model mismatch errors. An alternative
+solution would be disabling LTO for the files with a different code
+model than the main kernel like some specialized areas of the kernel do
+but doing that for individual files is not as sustainable than
+forbidding the combination altogether.
 
 Cc: stable@vger.kernel.org
-Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
-Co-developed-by: Mikael Wessel <post@mikaelkw.online>
-Signed-off-by: Mikael Wessel <post@mikaelkw.online>
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 021d23428bdb ("RISC-V: build: Allow LTO to be selected")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506290255.KBVM83vZ-lkp@intel.com/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250710-riscv-restrict-lto-to-medany-v1-1-b1dac9871ecf@kernel.org
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/e1000e/ethtool.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/riscv/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/e1000e/ethtool.c
-+++ b/drivers/net/ethernet/intel/e1000e/ethtool.c
-@@ -549,12 +549,12 @@ static int e1000_set_eeprom(struct net_d
- {
- 	struct e1000_adapter *adapter = netdev_priv(netdev);
- 	struct e1000_hw *hw = &adapter->hw;
-+	size_t total_len, max_len;
- 	u16 *eeprom_buff;
--	void *ptr;
--	int max_len;
-+	int ret_val = 0;
- 	int first_word;
- 	int last_word;
--	int ret_val = 0;
-+	void *ptr;
- 	u16 i;
- 
- 	if (eeprom->len == 0)
-@@ -569,6 +569,10 @@ static int e1000_set_eeprom(struct net_d
- 
- 	max_len = hw->nvm.word_size * 2;
- 
-+	if (check_add_overflow(eeprom->offset, eeprom->len, &total_len) ||
-+	    total_len > max_len)
-+		return -EFBIG;
-+
- 	first_word = eeprom->offset >> 1;
- 	last_word = (eeprom->offset + eeprom->len - 1) >> 1;
- 	eeprom_buff = kmalloc(max_len, GFP_KERNEL);
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -61,7 +61,7 @@ config RISCV
+ 	select ARCH_SUPPORTS_DEBUG_PAGEALLOC if MMU
+ 	select ARCH_SUPPORTS_HUGETLBFS if MMU
+ 	# LLD >= 14: https://github.com/llvm/llvm-project/issues/50505
+-	select ARCH_SUPPORTS_LTO_CLANG if LLD_VERSION >= 140000
++	select ARCH_SUPPORTS_LTO_CLANG if LLD_VERSION >= 140000 && CMODEL_MEDANY
+ 	select ARCH_SUPPORTS_LTO_CLANG_THIN if LLD_VERSION >= 140000
+ 	select ARCH_SUPPORTS_PAGE_TABLE_CHECK if MMU
+ 	select ARCH_SUPPORTS_PER_VMA_LOCK if MMU
 
 
 
