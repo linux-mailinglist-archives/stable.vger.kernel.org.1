@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BEC1B47D3D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C340AB47F32
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7FBA3BECB4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1D7D1B2143A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22B129B77E;
-	Sun,  7 Sep 2025 20:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3372211A14;
+	Sun,  7 Sep 2025 20:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tM/tIOXh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGVvuSSg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CEA2836A0;
-	Sun,  7 Sep 2025 20:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B3E1A0BFD;
+	Sun,  7 Sep 2025 20:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275754; cv=none; b=BlTjcACfBEKNjxqkTW+w6wWpzLJiPc2ND7qj0UNGBpf1gmt+dZMHCHmYiF2Bih9lN8zyCrEHpdeXXydSnN7szUHuBriPW8Pvm77gHB/iCPYxJytjxM3ikby7x4YoA7eZJslM6bMbituCAbn2kjDcuuUasz33yK7P/NCXMA7P9Jg=
+	t=1757277255; cv=none; b=AfITr7LI4kNGQK1bokYn6C6f84e4OyrWmpL4/nLySW40EUaY6nWV794nGgs29sMmhy7a6LE4lcO0a+ZvAR44TUIIDqgi9lf9hCPvVQWcyHERDFkmdt85bmHq1EK4nAcp+cQlgFE88SP2tu+xIJxU72NjIskW7HjgdhW55PaHs3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275754; c=relaxed/simple;
-	bh=Z3h3XkNEoSCit2xQpEHJJJiBpzAs96sUlq9dlmXfn5I=;
+	s=arc-20240116; t=1757277255; c=relaxed/simple;
+	bh=XLpqoV3p7ineqnA0xhVJAl/Nwsc4wjfnZpy8dlajidM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IShiN7UXyfDFFidDTQ0MvggObcL3zhObkzApMsBQiyNaODxcEOLPlcTOwqaDDlTsmgNmt8J88K3UiwUubOAPbc7MmEElQEEpL6aJEbPkuEi9gvJ4XxsRN0/+oNqK0iAi1ciHyQdvY1GIlr4n1mE8UJJLypo+Oy/OlDwjrwzWY/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tM/tIOXh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68C7C4CEF0;
-	Sun,  7 Sep 2025 20:09:13 +0000 (UTC)
+	 MIME-Version; b=ISWVH/LcuIhEvq0TjGyiL6EzDMWau4hXpd/gN/eZYZaUNFqmGbuv9840FRWWIWiuII4yWnqszZSCcMrk2eY8bO3F4lVWVldSar/yzAo39gPiGohIxWzCHAjvYNStJHchOZkuMqqazWLEyVjKDbVxdKQFcDFVw+arV7p4JRlaBvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGVvuSSg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC02C4CEF0;
+	Sun,  7 Sep 2025 20:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275754;
-	bh=Z3h3XkNEoSCit2xQpEHJJJiBpzAs96sUlq9dlmXfn5I=;
+	s=korg; t=1757277255;
+	bh=XLpqoV3p7ineqnA0xhVJAl/Nwsc4wjfnZpy8dlajidM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tM/tIOXh5ZCyZ5pOCvSlbRGoGVYqCc1hWV9/00/STdkuM5bLKZmjtMgPBE2vJTOM5
-	 2hluNck2QBFFcgz/fBSFLY4rgOqJnkrwfKVZ8sji3yLv+H9fAJ23YtsIacnTyzWz6U
-	 yHZjea3LONitofwC6lL160GoPfRM9S3sCK6bZNJY=
+	b=gGVvuSSgEhJzqVTiZkgGEZPrAU5y9ODeNID0HGD4NHFP9/qubjuhx/Ror7Q89V1pw
+	 B1xQwvUeEosu5oo75ZZrOgUm+gtLWcy5GaPHXVZbdDqKBOxlnp30ZBfURUSnEpwF3B
+	 ozM+AxB/4KYiA0qZ7h7pqt6z4WIQPJ8NFC1Dud5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nisar Sayed <Nisar.Sayed@microchip.com>,
-	Yuiko Oshino <yuiko.oshino@microchip.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Abin Joseph <abin.joseph@amd.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 42/52] net: phy: microchip: implement generic .handle_interrupt() callback
+Subject: [PATCH 6.12 087/175] net: xilinx: axienet: Add error handling for RX metadata pointer retrieval
 Date: Sun,  7 Sep 2025 21:58:02 +0200
-Message-ID: <20250907195603.189751318@linuxfoundation.org>
+Message-ID: <20250907195616.894246168@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Abin Joseph <abin.joseph@amd.com>
 
-[ Upstream commit e01a3feb8f69ab620b0016498603cad364f65224 ]
+[ Upstream commit 8bbceba7dc5090c00105e006ce28d1292cfda8dd ]
 
-In an attempt to actually support shared IRQs in phylib, we now move the
-responsibility of triggering the phylib state machine or just returning
-IRQ_NONE, based on the IRQ status register, to the PHY driver. Having
-3 different IRQ handling callbacks (.handle_interrupt(),
-.did_interrupt() and .ack_interrupt() ) is confusing so let the PHY
-driver implement directly an IRQ handler like any other device driver.
-Make this driver follow the new convention.
+Add proper error checking for dmaengine_desc_get_metadata_ptr() which
+can return an error pointer and lead to potential crashes or undefined
+behaviour if the pointer retrieval fails.
 
-Cc: Nisar Sayed <Nisar.Sayed@microchip.com>
-Cc: Yuiko Oshino <yuiko.oshino@microchip.com>
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Properly handle the error by unmapping DMA buffer, freeing the skb and
+returning early to prevent further processing with invalid data.
+
+Fixes: 6a91b846af85 ("net: axienet: Introduce dmaengine support")
+Signed-off-by: Abin Joseph <abin.joseph@amd.com>
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Link: https://patch.msgid.link/20250903025213.3120181-1-abin.joseph@amd.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 30a41ed32d30 ("net: phy: microchip: force IRQ polling mode for lan88xx")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/microchip.c    |   19 +++++++++++++++++++
- drivers/net/phy/microchip_t1.c |   19 +++++++++++++++++++
- 2 files changed, 38 insertions(+)
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -56,6 +56,24 @@ static int lan88xx_phy_ack_interrupt(str
- 	return rc < 0 ? rc : 0;
- }
- 
-+static irqreturn_t lan88xx_handle_interrupt(struct phy_device *phydev)
-+{
-+	int irq_status;
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 1775e060d39d3..3339c5e1a57a9 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -1127,6 +1127,15 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
+ 						       &meta_max_len);
+ 	dma_unmap_single(lp->dev, skbuf_dma->dma_address, lp->max_frm_size,
+ 			 DMA_FROM_DEVICE);
 +
-+	irq_status = phy_read(phydev, LAN88XX_INT_STS);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
++	if (IS_ERR(app_metadata)) {
++		if (net_ratelimit())
++			netdev_err(lp->ndev, "Failed to get RX metadata pointer\n");
++		dev_kfree_skb_any(skb);
++		lp->ndev->stats.rx_dropped++;
++		goto rx_submit;
 +	}
 +
-+	if (!(irq_status & LAN88XX_INT_STS_LINK_CHANGE_))
-+		return IRQ_NONE;
-+
-+	phy_trigger_machine(phydev);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int lan88xx_suspend(struct phy_device *phydev)
- {
- 	struct lan88xx_priv *priv = phydev->priv;
-@@ -374,6 +392,7 @@ static struct phy_driver microchip_phy_d
+ 	/* TODO: Derive app word index programmatically */
+ 	rx_len = (app_metadata[LEN_APP] & 0xFFFF);
+ 	skb_put(skb, rx_len);
+@@ -1139,6 +1148,7 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
+ 	u64_stats_add(&lp->rx_bytes, rx_len);
+ 	u64_stats_update_end(&lp->rx_stat_sync);
  
- 	.ack_interrupt	= lan88xx_phy_ack_interrupt,
- 	.config_intr	= lan88xx_phy_config_intr,
-+	.handle_interrupt = lan88xx_handle_interrupt,
- 
- 	.suspend	= lan88xx_suspend,
- 	.resume		= genphy_resume,
---- a/drivers/net/phy/microchip_t1.c
-+++ b/drivers/net/phy/microchip_t1.c
-@@ -203,6 +203,24 @@ static int lan87xx_phy_ack_interrupt(str
- 	return rc < 0 ? rc : 0;
- }
- 
-+static irqreturn_t lan87xx_handle_interrupt(struct phy_device *phydev)
-+{
-+	int irq_status;
-+
-+	irq_status = phy_read(phydev, LAN87XX_INTERRUPT_SOURCE);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+
-+	if (irq_status == 0)
-+		return IRQ_NONE;
-+
-+	phy_trigger_machine(phydev);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int lan87xx_config_init(struct phy_device *phydev)
- {
- 	int rc = lan87xx_phy_init(phydev);
-@@ -223,6 +241,7 @@ static struct phy_driver microchip_t1_ph
- 
- 		.ack_interrupt  = lan87xx_phy_ack_interrupt,
- 		.config_intr    = lan87xx_phy_config_intr,
-+		.handle_interrupt = lan87xx_handle_interrupt,
- 
- 		.suspend        = genphy_suspend,
- 		.resume         = genphy_resume,
++rx_submit:
+ 	for (i = 0; i < CIRC_SPACE(lp->rx_ring_head, lp->rx_ring_tail,
+ 				   RX_BUF_NUM_DEFAULT); i++)
+ 		axienet_rx_submit_desc(lp->ndev);
+-- 
+2.50.1
+
 
 
 
