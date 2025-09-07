@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-178172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4FA6B47D89
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D49B47D1E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:07:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CB4F1796CF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7C5617BBA5
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4071027FB21;
-	Sun,  7 Sep 2025 20:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FFA2836A0;
+	Sun,  7 Sep 2025 20:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kiGXgFqr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yN9ipPrk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F238C1B424F;
-	Sun,  7 Sep 2025 20:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759CE1CDFAC;
+	Sun,  7 Sep 2025 20:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275994; cv=none; b=TOYw+w+cLa6xKgfGAkWbbX9iTE5NmWDNxCfNyPCtXuWbZTNgCkypcrBHFME9BMe9eIDD11WBeapMK8dXgc7i3uL05D3Fh5oa7faR8QXeq/crb77F4/evyGm3fV/KCfFPrmBoCn5lDhRnK72nBkxtm8tBoKlJhG7Mrd3AV/gpd+U=
+	t=1757275671; cv=none; b=pQmzJFGnoyKikEexmdp3oW7cbynOvJGPTpb/Isur1XWE93BuE+7vefm/3f4PUYo0LhHB5Gmq0/niAdp2X5T4FD+Ngd6QXZraxpd4ew/xXsEs12ee5ClnscnP19Dlk5a23iCD9m9BWZjOv/K16C2wkaUGXFzhYaYUUrE1lHLOFZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275994; c=relaxed/simple;
-	bh=fmthEVT5z9E4whzgYrc2g/wUpVGeTIe3feR6zZJCGDY=;
+	s=arc-20240116; t=1757275671; c=relaxed/simple;
+	bh=19YQuDzu+JKlanDCTHkAcXkHPrzBMxmUVGRQaByYBvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U0fvbTHvq9j+GMEEf9rc1+SvEo9xu2pHmG88dkaSmO9SaFT+RpLJSYMW/3AMz9S6U13FlAna51INhiccZ6Lt7jEF77Uz4v8lAoiesG+aRrbILMbtqMMcIQolvr5D12trtG64LVc8wZ0NBAGuZdGQ/Muzkh3ylM9E0Q4GcHubpIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kiGXgFqr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C4FC4CEF0;
-	Sun,  7 Sep 2025 20:13:13 +0000 (UTC)
+	 MIME-Version; b=L9YdKAEK2UCfnkYriFaG3lAA+3AnrMpgerAaYsnPfb57m/mCsfJ3jRkLzVu1vGIeB5aoA9Jy/BDAcpWvK7GHDqEoHIYG6yw5n6LxLBOxNkBKcrDKL+oq/wiHI2i0/PqwoFPsJXeBIju3ausFRJX/Emvc57/AbWWfGHZeCLaz/uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yN9ipPrk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC541C4CEF0;
+	Sun,  7 Sep 2025 20:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275993;
-	bh=fmthEVT5z9E4whzgYrc2g/wUpVGeTIe3feR6zZJCGDY=;
+	s=korg; t=1757275671;
+	bh=19YQuDzu+JKlanDCTHkAcXkHPrzBMxmUVGRQaByYBvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kiGXgFqrFFaRB39S1wJGfwWCnCX7Ls9WKgecQdUZ6rmZ4aMoO7OPZM/GDtuXTF8pw
-	 pa+uySumwkbqYrLwWNZdemLxjG+p+77Zft4/4Wt8Xg1ID0aeznFgK3v1obGt1F7c3I
-	 hqWHvkAVIbNYqcglnm6nS4zEY7izj8fWtrFI1w30=
+	b=yN9ipPrkDVLOxw8CuMDE7STgc0aEgBLE2WKpSwfWPkAfcP1VWBk8UYdbUhYrpr8Kk
+	 PqlLKDj7cFpVyVRoChvAX9EiFflDfF9wuDUmALsKsoR8sMIQCF7SJej0OSozCHuiFX
+	 ZuydDgR80G22jJhfULusyXRtwooHL2F5+lWj3eFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 05/64] drm/amd/display: Dont warn when missing DCE encoder caps
+	Jann Horn <jannh@google.com>,
+	Zach OKeefe <zokeefe@google.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@intel.linux.com>,
+	Yang Shi <shy828301@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjoern Doebel <doebel@amazon.de>
+Subject: [PATCH 5.10 27/52] mm/khugepaged: fix ->anon_vma race
 Date: Sun,  7 Sep 2025 21:57:47 +0200
-Message-ID: <20250907195603.550943487@linuxfoundation.org>
+Message-ID: <20250907195602.778434893@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +64,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 8246147f1fbaed522b8bcc02ca34e4260747dcfb ]
+commit 023f47a8250c6bdb4aebe744db4bf7f73414028b upstream.
 
-On some GPUs the VBIOS just doesn't have encoder caps,
-or maybe not for every encoder.
+If an ->anon_vma is attached to the VMA, collapse_and_free_pmd() requires
+it to be locked.
 
-This isn't really a problem and it's handled well,
-so let's not litter the logs with it.
+Page table traversal is allowed under any one of the mmap lock, the
+anon_vma lock (if the VMA is associated with an anon_vma), and the
+mapping lock (if the VMA is associated with a mapping); and so to be
+able to remove page tables, we must hold all three of them.
+retract_page_tables() bails out if an ->anon_vma is attached, but does
+this check before holding the mmap lock (as the comment above the check
+explains).
 
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 33e0227ee96e62d034781e91f215e32fd0b1d512)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If we racily merged an existing ->anon_vma (shared with a child
+process) from a neighboring VMA, subsequent rmap traversals on pages
+belonging to the child will be able to see the page tables that we are
+concurrently removing while assuming that nothing else can access them.
+
+Repeat the ->anon_vma check once we hold the mmap lock to ensure that
+there really is no concurrent page table access.
+
+Hitting this bug causes a lockdep warning in collapse_and_free_pmd(),
+in the line "lockdep_assert_held_write(&vma->anon_vma->root->rwsem)".
+It can also lead to use-after-free access.
+
+Link: https://lore.kernel.org/linux-mm/CAG48ez3434wZBKFFbdx4M9j6eUwSUVPd4dxhzW_k_POneSDF+A@mail.gmail.com/
+Link: https://lkml.kernel.org/r/20230111133351.807024-1-jannh@google.com
+Fixes: f3f0e1d2150b ("khugepaged: add support of collapse for tmpfs/shmem pages")
+Signed-off-by: Jann Horn <jannh@google.com>
+Reported-by: Zach O'Keefe <zokeefe@google.com>
+Acked-by: Kirill A. Shutemov <kirill.shutemov@intel.linux.com>
+Reviewed-by: Yang Shi <shy828301@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[doebel@amazon.de: Kernel 5.10 uses different control flow pattern,
+    context adjustments]
+Signed-off-by: Bjoern Doebel <doebel@amazon.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/khugepaged.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
-index 1e77ffee71b30..fce0c5d72c1a0 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
-@@ -899,13 +899,13 @@ void dce110_link_encoder_construct(
- 						enc110->base.id, &bp_cap_info);
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1611,7 +1611,7 @@ static void retract_page_tables(struct a
+ 		 * has higher cost too. It would also probably require locking
+ 		 * the anon_vma.
+ 		 */
+-		if (vma->anon_vma)
++		if (READ_ONCE(vma->anon_vma))
+ 			continue;
+ 		addr = vma->vm_start + ((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
+ 		if (addr & ~HPAGE_PMD_MASK)
+@@ -1633,6 +1633,19 @@ static void retract_page_tables(struct a
+ 			if (!khugepaged_test_exit(mm)) {
+ 				struct mmu_notifier_range range;
  
- 	/* Override features with DCE-specific values */
--	if (BP_RESULT_OK == result) {
-+	if (result == BP_RESULT_OK) {
- 		enc110->base.features.flags.bits.IS_HBR2_CAPABLE =
- 				bp_cap_info.DP_HBR2_EN;
- 		enc110->base.features.flags.bits.IS_HBR3_CAPABLE =
- 				bp_cap_info.DP_HBR3_EN;
- 		enc110->base.features.flags.bits.HDMI_6GB_EN = bp_cap_info.HDMI_6GB_EN;
--	} else {
-+	} else if (result != BP_RESULT_NORECORD) {
- 		DC_LOG_WARNING("%s: Failed to get encoder_cap_info from VBIOS with error code %d!\n",
- 				__func__,
- 				result);
-@@ -1799,13 +1799,13 @@ void dce60_link_encoder_construct(
- 						enc110->base.id, &bp_cap_info);
- 
- 	/* Override features with DCE-specific values */
--	if (BP_RESULT_OK == result) {
-+	if (result == BP_RESULT_OK) {
- 		enc110->base.features.flags.bits.IS_HBR2_CAPABLE =
- 				bp_cap_info.DP_HBR2_EN;
- 		enc110->base.features.flags.bits.IS_HBR3_CAPABLE =
- 				bp_cap_info.DP_HBR3_EN;
- 		enc110->base.features.flags.bits.HDMI_6GB_EN = bp_cap_info.HDMI_6GB_EN;
--	} else {
-+	} else if (result != BP_RESULT_NORECORD) {
- 		DC_LOG_WARNING("%s: Failed to get encoder_cap_info from VBIOS with error code %d!\n",
- 				__func__,
- 				result);
--- 
-2.50.1
-
++				/*
++				 * Re-check whether we have an ->anon_vma, because
++				 * collapse_and_free_pmd() requires that either no
++				 * ->anon_vma exists or the anon_vma is locked.
++				 * We already checked ->anon_vma above, but that check
++				 * is racy because ->anon_vma can be populated under the
++				 * mmap lock in read mode.
++				 */
++				if (vma->anon_vma) {
++					mmap_write_unlock(mm);
++					continue;
++				}
++
+ 				mmu_notifier_range_init(&range,
+ 							MMU_NOTIFY_CLEAR, 0,
+ 							NULL, mm, addr,
 
 
 
