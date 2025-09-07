@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-178425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82AC0B47E9C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC786B47F46
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:35:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A9B9167CF9
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:26:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7CE31895B43
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1660E1D88D0;
-	Sun,  7 Sep 2025 20:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFDB820E00B;
+	Sun,  7 Sep 2025 20:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJ/Lpj0/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MsaUaiBv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C989C17BB21;
-	Sun,  7 Sep 2025 20:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E33B315D54;
+	Sun,  7 Sep 2025 20:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276794; cv=none; b=XQTjkTIqNtS1JkpfUQo0noTtOlc98ySqJ4MePic07xp1tOT6NHuKjRZla6+5H2/wyjnV8OBkaQCMefgtjQD4ULMaYSvhwNd2YjCvy+BaJi5x/Uva84XLNO5F68VBdN0F/4v5htqEPxeqYRA/1T8HDseIQw+1HusYpwbz5KBwlO4=
+	t=1757277319; cv=none; b=W9wI3mPIjUM6YAtvh8XhNe7QDbXgs6XdTcXTL2AAOO8r2wYrAp7ifjdEWZ3iU09T3a5SR+O0EryAtQFP96nvm6UuTx1MveY2up6JjdxbvqnfWOzJ3Hk0tL5+GCrGb9xlfwuv9ZbbyADeuQcRgPW4144bMXyKnY7EveDY4vpufNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276794; c=relaxed/simple;
-	bh=gf12MweqRvaG41qjwBk/7KI/+7bY6ccMdv9vXzx+GjE=;
+	s=arc-20240116; t=1757277319; c=relaxed/simple;
+	bh=vV+HMt466sbpMwESVGwErsr554rG/FaGBJGpk2IBeNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mmtxxpCxUs6Bv1Si7Ozid+m0+GUhuVVQ2QyRJYafyoAF12nv70VbnbYep1p51M/9JUh6lnmWIEBS8NfLPG0AkivruMAX5EYQQJjVCOBq8opAzedwnHB9SGbe6cJv+612mMVGUa6AN8FLAJiN2UAkNwPwLnAXZpLITZwty6G/aR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJ/Lpj0/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242ACC4CEF0;
-	Sun,  7 Sep 2025 20:26:33 +0000 (UTC)
+	 MIME-Version; b=BVEsWoMsDdNMHuRlCYqG7U3Kkpickt1fz4SYZn08ZrMCpv/wFdm/adwwYfYILz5cztngboPQm+/cTV376Z0AlBctT3uHV42NLDjz49lLecad9SuBBLvqK+Nj3ERe2Lc0eYcmtGjx6qYudUWEZ+grjJ1j5eOq/MQG5s+BNu1TsMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MsaUaiBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAF2C4CEF0;
+	Sun,  7 Sep 2025 20:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276794;
-	bh=gf12MweqRvaG41qjwBk/7KI/+7bY6ccMdv9vXzx+GjE=;
+	s=korg; t=1757277319;
+	bh=vV+HMt466sbpMwESVGwErsr554rG/FaGBJGpk2IBeNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJ/Lpj0/Gz5YtD8P01OQG/NyJVNVzZueymuP1jgzO0QwQGFgQ3jLbN+qJGUl0E/fB
-	 KY5Ihwd7g7KtCZ19GoNkXlBKCm8/J/SjXwBCA0wzOENB2h86wGX/uIEufrUY1FD5e8
-	 fB4aRd7/JjpKRxsMJAIIworfmaiZ2TaQKR3P2cUE=
+	b=MsaUaiBv9LxiiyzAXgxra6xbLXlq7ildOXTSOR1X8Dfh2wlueHAMuq57nIBAZCIdJ
+	 eziF/dDLImR8GjfKcEK3f6pZ/laD+aEZaRnkPNf0P3MJyQAmnUuhh3XEJXPoSq5IB1
+	 rS/J+P4Gr/YrZzmsR8c8CC3nFCCImHhLN4Jm7Wr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Jiao <zhangjiao2@cmss.chinamobile.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/121] tools: gpio: remove the include directory on make clean
+Subject: [PATCH 6.12 154/175] hwmon: mlxreg-fan: Prevent fans from getting stuck at 0 RPM
 Date: Sun,  7 Sep 2025 21:59:09 +0200
-Message-ID: <20250907195612.747150157@linuxfoundation.org>
+Message-ID: <20250907195618.500511385@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+From: Vadim Pasternak <vadimp@nvidia.com>
 
-[ Upstream commit ed42d80f3bae89592fbb2ffaf8b6b2e720d53f6a ]
+[ Upstream commit 1180c79fbf36e4c02e76ae4658509523437e52a4 ]
 
-Remove the generated include directory when running make clean.
+The fans controlled by the driver can get stuck at 0 RPM if they are
+configured below a 20% duty cycle. The driver tries to avoid this by
+enforcing a minimum duty cycle of 20%, but this is done after the fans
+are registered with the thermal subsystem. This is too late as the
+thermal subsystem can set their current state before the driver is able
+to enforce the minimum duty cycle.
 
-Fixes: 8674cea84dc6 ("tools/gpio: move to tools buildsystem")
-Signed-off-by: Zhang Jiao <zhangjiao2@cmss.chinamobile.com>
-Link: https://lore.kernel.org/r/20250903063621.2424-1-zhangjiao2@cmss.chinamobile.com
-[Bartosz: add Fixes tag, improve the commit message]
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fix by setting the minimum duty cycle before registering the fans with
+the thermal subsystem.
+
+Fixes: d7efb2ebc7b3 ("hwmon: (mlxreg-fan) Extend driver to support multiply cooling devices")
+Reported-by: Nikolay Aleksandrov <razor@blackwall.org>
+Tested-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
+Link: https://lore.kernel.org/r/20250730201715.1111133-1-vadimp@nvidia.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/gpio/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/mlxreg-fan.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tools/gpio/Makefile b/tools/gpio/Makefile
-index ed565eb52275f..342e056c8c665 100644
---- a/tools/gpio/Makefile
-+++ b/tools/gpio/Makefile
-@@ -77,7 +77,7 @@ $(OUTPUT)gpio-watch: $(GPIO_WATCH_IN)
+diff --git a/drivers/hwmon/mlxreg-fan.c b/drivers/hwmon/mlxreg-fan.c
+index a5f89aab3fb4d..c25a54d5b39ad 100644
+--- a/drivers/hwmon/mlxreg-fan.c
++++ b/drivers/hwmon/mlxreg-fan.c
+@@ -561,15 +561,14 @@ static int mlxreg_fan_cooling_config(struct device *dev, struct mlxreg_fan *fan)
+ 		if (!pwm->connected)
+ 			continue;
+ 		pwm->fan = fan;
++		/* Set minimal PWM speed. */
++		pwm->last_hwmon_state = MLXREG_FAN_PWM_DUTY2STATE(MLXREG_FAN_MIN_DUTY);
+ 		pwm->cdev = devm_thermal_of_cooling_device_register(dev, NULL, mlxreg_fan_name[i],
+ 								    pwm, &mlxreg_fan_cooling_ops);
+ 		if (IS_ERR(pwm->cdev)) {
+ 			dev_err(dev, "Failed to register cooling device\n");
+ 			return PTR_ERR(pwm->cdev);
+ 		}
+-
+-		/* Set minimal PWM speed. */
+-		pwm->last_hwmon_state = MLXREG_FAN_PWM_DUTY2STATE(MLXREG_FAN_MIN_DUTY);
+ 	}
  
- clean:
- 	rm -f $(ALL_PROGRAMS)
--	rm -f $(OUTPUT)include/linux/gpio.h
-+	rm -rf $(OUTPUT)include
- 	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete -o -name '\.*.cmd' -delete
- 
- install: $(ALL_PROGRAMS)
+ 	return 0;
 -- 
 2.51.0
 
