@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-178540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 992DDB47F14
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75ADCB47E6A
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:24:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 951C31B210E6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 365C43C1AA0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B842426B2AD;
-	Sun,  7 Sep 2025 20:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9651F1921;
+	Sun,  7 Sep 2025 20:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1x2SZPIG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dv3ceh2P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57871125B2;
-	Sun,  7 Sep 2025 20:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C9E1D88D0;
+	Sun,  7 Sep 2025 20:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277163; cv=none; b=g04ePU8hV9ZgjZ1/oKCgniObGn7IQS67HM0TrgMxdlkNoqjY8uQGmxwsUhPUf5duF0Wh5/98NSF+R2r7jlTndJTmYpHAEyYRWrnDcI6GEkKWZExSSRM8qF2jXOzrIF+COvfTZKK7tHnLbxEGcjdnxMNiSG8k+gO5IL9qk965R64=
+	t=1757276639; cv=none; b=hK2cIkP9ggSOlrF6osMeItibWZRi8ZAKP2PmS6+olqjJTMNJXnNdCuu9PRkGk9GzWbozuC9f6J0if9kmSYoY89QgGkCS0mebQyiLNIAC9SxU37N5NX7tXqS/ArN4xcc/csH3HE1onwhaf+Ks2jTpz3y/A159ENnt2mdjfz+usvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277163; c=relaxed/simple;
-	bh=FLNZV7eJQxA9LyAJ3rZmmh9ACwXamOu3F4UoKf/Blrw=;
+	s=arc-20240116; t=1757276639; c=relaxed/simple;
+	bh=Vau0zAnSmIpazJXlgVYjOZPp25rWiyd+/EFXTw9yrVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=huy60RSvwPpIqgMUGJP9a8pxBidUQzD6jP//IKcrwhZ19FF2EAIqdd+Tx2MUYho1WOhzaObAs3Eog01wHRa/WGegJT022gHiCRcM/pLrglbfcx91OdyE2rQZZT29dSEiNbmnEECet+uTW7UNoHFJr9qa/PLEJuURqQC2pyC0ECs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1x2SZPIG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67415C4CEF0;
-	Sun,  7 Sep 2025 20:32:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iMNCIP1EgCJc/FK8N8eoDnZ0zt5Fbv6YuiFyJjWhBjkujieiceSXNnHrWLyCTSb6bnvPNu6ZfMH+05SbG6QHY14shyvY7HOfpPBRrlEhnwwS/mBZQ9SMXCRdmDEbGatmb5bHVxqiGVTHAZoEyIgODMvUD4PiNWzlBjjq0X7G1W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dv3ceh2P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88255C4CEF0;
+	Sun,  7 Sep 2025 20:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277163;
-	bh=FLNZV7eJQxA9LyAJ3rZmmh9ACwXamOu3F4UoKf/Blrw=;
+	s=korg; t=1757276638;
+	bh=Vau0zAnSmIpazJXlgVYjOZPp25rWiyd+/EFXTw9yrVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1x2SZPIGE3TZWUxd3TKzGcUVOTxnaeohKTIegtZvWu6djkuyFcfpaW+uaV5QPV4xz
-	 aTllQhw93qzzq+3r0y6naKf2bO9gQ+1wxoxLCkyb5efTmuKFEy309SFf1wR/igqn9M
-	 Mg6g7PivcOAXCIpL8KH5a12uDZQu23Sb8NXCH7pc=
+	b=Dv3ceh2PYEKYzqhcObq5iJTJzqbJ8SCkwWGyOIDrapgH9TI/m8ha5uDWA8rB5ISKE
+	 27OTC8dMYgVMQBKCJ5poha40Ko6SuV4GctyRwrPCnk7K8YErCF3ErMbJsFoLUopWQJ
+	 FBFuPMX5XaOLPDNUiAAyGpJtKrQovKfY9BTPJ9C4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangzijie <wangzijie1@honor.com>,
-	Lars Wendler <polynomial-c@gmx.de>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	=?UTF-8?q?Petr=20Van=C4=9Bk?= <pv@excello.cz>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	"Kirill A. Shutemov" <k.shutemov@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 105/175] proc: fix missing pde_set_flags() for net proc files
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.6 064/121] platform/x86/amd/pmc: Add TUXEDO IB Pro Gen10 AMD to spurious 8042 quirks list
 Date: Sun,  7 Sep 2025 21:58:20 +0200
-Message-ID: <20250907195617.337324050@linuxfoundation.org>
+Message-ID: <20250907195611.481873988@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,134 +63,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangzijie <wangzijie1@honor.com>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-commit 2ce3d282bd5050fca8577defeff08ada0d55d062 upstream.
+commit c96f86217bb28e019403bb8f59eacd8ad5a7ad1a upstream.
 
-To avoid potential UAF issues during module removal races, we use
-pde_set_flags() to save proc_ops flags in PDE itself before
-proc_register(), and then use pde_has_proc_*() helpers instead of directly
-dereferencing pde->proc_ops->*.
+Prevents instant wakeup ~1s after suspend.
 
-However, the pde_set_flags() call was missing when creating net related
-proc files.  This omission caused incorrect behavior which FMODE_LSEEK was
-being cleared inappropriately in proc_reg_open() for net proc files.  Lars
-reported it in this link[1].
+It seems to be kernel/system dependent if the IRQ actually manages to wake
+the system every time or if it gets ignored (and everything works as
+expected).
 
-Fix this by ensuring pde_set_flags() is called when register proc entry,
-and add NULL check for proc_ops in pde_set_flags().
-
-[wangzijie1@honor.com: stash pde->proc_ops in a local const variable, per Christian]
-  Link: https://lkml.kernel.org/r/20250821105806.1453833-1-wangzijie1@honor.com
-Link: https://lkml.kernel.org/r/20250818123102.959595-1-wangzijie1@honor.com
-Link: https://lore.kernel.org/all/20250815195616.64497967@chagall.paradoxon.rec/ [1]
-Fixes: ff7ec8dc1b64 ("proc: use the same treatment to check proc_lseek as ones for proc_read_iter et.al")
-Signed-off-by: wangzijie <wangzijie1@honor.com>
-Reported-by: Lars Wendler <polynomial-c@gmx.de>
-Tested-by: Stefano Brivio <sbrivio@redhat.com>
-Tested-by: Petr Vaněk <pv@excello.cz>
-Tested by: Lars Wendler <polynomial-c@gmx.de>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Kirill A. Shutemov <k.shutemov@gmail.com>
-Cc: wangzijie <wangzijie1@honor.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250827131424.16436-1-wse@tuxedocomputers.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/generic.c |   38 +++++++++++++++++++++-----------------
- 1 file changed, 21 insertions(+), 17 deletions(-)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -362,6 +362,25 @@ static const struct inode_operations pro
- 	.setattr	= proc_notify_change,
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -242,6 +242,20 @@ static const struct dmi_system_id fwbug_
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Lafite Pro V 14M"),
+ 		}
+ 	},
++	{
++		.ident = "TUXEDO InfinityBook Pro 14/15 AMD Gen10",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "XxHP4NAx"),
++		}
++	},
++	{
++		.ident = "TUXEDO InfinityBook Pro 14/15 AMD Gen10",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "XxKK4NAx_XxSP4NAx"),
++		}
++	},
+ 	{}
  };
  
-+static void pde_set_flags(struct proc_dir_entry *pde)
-+{
-+	const struct proc_ops *proc_ops = pde->proc_ops;
-+
-+	if (!proc_ops)
-+		return;
-+
-+	if (proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
-+		pde->flags |= PROC_ENTRY_PERMANENT;
-+	if (proc_ops->proc_read_iter)
-+		pde->flags |= PROC_ENTRY_proc_read_iter;
-+#ifdef CONFIG_COMPAT
-+	if (proc_ops->proc_compat_ioctl)
-+		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
-+#endif
-+	if (proc_ops->proc_lseek)
-+		pde->flags |= PROC_ENTRY_proc_lseek;
-+}
-+
- /* returns the registered entry, or frees dp and returns NULL on failure */
- struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
- 		struct proc_dir_entry *dp)
-@@ -369,6 +388,8 @@ struct proc_dir_entry *proc_register(str
- 	if (proc_alloc_inum(&dp->low_ino))
- 		goto out_free_entry;
- 
-+	pde_set_flags(dp);
-+
- 	write_lock(&proc_subdir_lock);
- 	dp->parent = dir;
- 	if (pde_subdir_insert(dir, dp) == false) {
-@@ -557,20 +578,6 @@ struct proc_dir_entry *proc_create_reg(c
- 	return p;
- }
- 
--static void pde_set_flags(struct proc_dir_entry *pde)
--{
--	if (pde->proc_ops->proc_flags & PROC_ENTRY_PERMANENT)
--		pde->flags |= PROC_ENTRY_PERMANENT;
--	if (pde->proc_ops->proc_read_iter)
--		pde->flags |= PROC_ENTRY_proc_read_iter;
--#ifdef CONFIG_COMPAT
--	if (pde->proc_ops->proc_compat_ioctl)
--		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
--#endif
--	if (pde->proc_ops->proc_lseek)
--		pde->flags |= PROC_ENTRY_proc_lseek;
--}
--
- struct proc_dir_entry *proc_create_data(const char *name, umode_t mode,
- 		struct proc_dir_entry *parent,
- 		const struct proc_ops *proc_ops, void *data)
-@@ -581,7 +588,6 @@ struct proc_dir_entry *proc_create_data(
- 	if (!p)
- 		return NULL;
- 	p->proc_ops = proc_ops;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_data);
-@@ -632,7 +638,6 @@ struct proc_dir_entry *proc_create_seq_p
- 	p->proc_ops = &proc_seq_ops;
- 	p->seq_ops = ops;
- 	p->state_size = state_size;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_seq_private);
-@@ -663,7 +668,6 @@ struct proc_dir_entry *proc_create_singl
- 		return NULL;
- 	p->proc_ops = &proc_single_ops;
- 	p->single_show = show;
--	pde_set_flags(p);
- 	return proc_register(parent, p);
- }
- EXPORT_SYMBOL(proc_create_single_data);
 
 
 
