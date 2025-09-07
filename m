@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-178679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51857B47FA3
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:40:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 102C5B47E64
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14DEC3A7A7C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:40:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCFF817DDDF
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B972026E6FF;
-	Sun,  7 Sep 2025 20:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65ECF264A9C;
+	Sun,  7 Sep 2025 20:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNynWODK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UpkssgDX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BA54315A;
-	Sun,  7 Sep 2025 20:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234D420E029;
+	Sun,  7 Sep 2025 20:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277609; cv=none; b=us9q0LmdhqmheMGR7AjWMYHBq/M2oO60a9hKxb37gYQwq9QEPofGXmsoMCfWaqDXZmhxuzzzKaokN3OKB8jsAkNKa/mWihBwGqRATIQEUfHKYSN/Lem+MxID38cU32YgRnremH2kUo5TFNfqWedV82V4MqlWD/l6hydlTegzK+0=
+	t=1757276620; cv=none; b=slpF9/HxpYX9XQ5kdClBf/rJptMEB4su4kw2o2yNUkd/VyhyAuP18Ac+WqHgBj/RA/Mkoq4GJXSnn6TOZu+l5jzas7MG3UtXAmCLMmoGSJZh09nbk2vgKSewg/KUqK+WS97gu9bBqIZaOzZY0XJMnJRaT+XJMLByiNAQbo9zCu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277609; c=relaxed/simple;
-	bh=BZW0VxspeSrWz+QopmwwzyqsmFgo9F6cOWgfn1ThB+Y=;
+	s=arc-20240116; t=1757276620; c=relaxed/simple;
+	bh=5LpCb30qiBEjsmQRT6B9ZBh8cfgmBUXwU9K/UrKInEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bZrKocqJUycpvW9XdxTGt+HvvUc08pdseFzHuiaxe7CLf+c/Ohaq6vSkmZrqFqW1rIxQTxmjy8Bv7+PQmooY6Ne7qV4ONmEo2YFA5wU/nsm3CD8n4J6vFPQU6j0r1zEITnBWA+910SJS8DGzj1Jlvwi3c84uT74nMSPbmeL+GZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNynWODK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F342BC4CEF0;
-	Sun,  7 Sep 2025 20:40:08 +0000 (UTC)
+	 MIME-Version; b=gYaZAUGtmMdPKwPwefmPdZoI023WhVYPVidp90Dan2yLxBzGzxwuqtMBe5VdeW0A3AlkRCnWlcWEKHoAeIHVjf5iAO9+p15Y4L1FVMH6f8Av0eI+T2O200avCo9lAaD6l1QmqWvjr3bvWM+aoMOwPCYiNN6Ar9PDRlBqO093VLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UpkssgDX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1E4C4CEF0;
+	Sun,  7 Sep 2025 20:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277609;
-	bh=BZW0VxspeSrWz+QopmwwzyqsmFgo9F6cOWgfn1ThB+Y=;
+	s=korg; t=1757276620;
+	bh=5LpCb30qiBEjsmQRT6B9ZBh8cfgmBUXwU9K/UrKInEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iNynWODKJfbslnBfSJFZhooUXtXNHNqLyHfRq7UjI8a7HEg+3A/E66Pg212BBTzcm
-	 P5HEznL22CoWGFJcBFPc8pgY3Ug731OnzjpyP7tm24ri3ZcXOHtVXCdB/oeaoFZ9Xf
-	 gcnaEscv6m1lCwMpy1kMlAKLVvT0TX/i8UGVvKfQ=
+	b=UpkssgDXSr6nIg1COWl2HroJE2RZjffPzXsEZiLfF7rfKeqLl8tHfwcBQW82tNLWg
+	 YopBXaKhNnyGDdXKCHTGXf9/NdcBTg6IbOOcgCBwZKfwjs//1HEsV0l+ebgK7RhuPF
+	 wj3Rhwd/tHzvoqmlgjjpHYidl1PUyFvIP0D2KN60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.16 066/183] ice: fix NULL access of tx->in_use in ice_ll_ts_intr
-Date: Sun,  7 Sep 2025 21:58:13 +0200
-Message-ID: <20250907195617.362824884@linuxfoundation.org>
+	Edward Adam Davis <eadavis@qq.com>,
+	syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com,
+	Mark Tinguely <mark.tinguely@oracle.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 058/121] ocfs2: prevent release journal inode after journal shutdown
+Date: Sun,  7 Sep 2025 21:58:14 +0200
+Message-ID: <20250907195611.325885296@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +69,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit f6486338fde3f04ed0ec59fe67a69a208c32734f ]
+commit f46e8ef8bb7b452584f2e75337b619ac51a7cadf upstream.
 
-Recent versions of the E810 firmware have support for an extra interrupt to
-handle report of the "low latency" Tx timestamps coming from the
-specialized low latency firmware interface. Instead of polling the
-registers, software can wait until the low latency interrupt is fired.
+Before calling ocfs2_delete_osb(), ocfs2_journal_shutdown() has already
+been executed in ocfs2_dismount_volume(), so osb->journal must be NULL.
+Therefore, the following calltrace will inevitably fail when it reaches
+jbd2_journal_release_jbd_inode().
 
-This logic makes use of the Tx timestamp tracking structure, ice_ptp_tx, as
-it uses the same "ready" bitmap to track which Tx timestamps complete.
+ocfs2_dismount_volume()->
+  ocfs2_delete_osb()->
+    ocfs2_free_slot_info()->
+      __ocfs2_free_slot_info()->
+        evict()->
+          ocfs2_evict_inode()->
+            ocfs2_clear_inode()->
+	      jbd2_journal_release_jbd_inode(osb->journal->j_journal,
 
-Unfortunately, the ice_ll_ts_intr() function does not check if the
-tracker is initialized before its first access. This results in NULL
-dereference or use-after-free bugs similar to the issues fixed in the
-ice_ptp_ts_irq() function.
+Adding osb->journal checks will prevent null-ptr-deref during the above
+execution path.
 
-Fix this by only checking the in_use bitmap (and other fields) if the
-tracker is marked as initialized. The reset flow will clear the init field
-under lock before it tears the tracker down, thus preventing any
-use-after-free or NULL access.
-
-Fixes: 82e71b226e0e ("ice: Enable SW interrupt from FW for LL TS")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/tencent_357489BEAEE4AED74CBD67D246DBD2C4C606@qq.com
+Fixes: da5e7c87827e ("ocfs2: cleanup journal init and shutdown")
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reported-by: syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=47d8cb2f2cc1517e515a
+Tested-by: syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com
+Reviewed-by: Mark Tinguely <mark.tinguely@oracle.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ fs/ocfs2/inode.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index d42892c8c5a12..a34faa4894739 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -3172,12 +3172,14 @@ static irqreturn_t ice_ll_ts_intr(int __always_unused irq, void *data)
- 	hw = &pf->hw;
- 	tx = &pf->ptp.port.tx;
- 	spin_lock_irqsave(&tx->lock, flags);
--	ice_ptp_complete_tx_single_tstamp(tx);
-+	if (tx->init) {
-+		ice_ptp_complete_tx_single_tstamp(tx);
- 
--	idx = find_next_bit_wrap(tx->in_use, tx->len,
--				 tx->last_ll_ts_idx_read + 1);
--	if (idx != tx->len)
--		ice_ptp_req_tx_single_tstamp(tx, idx);
-+		idx = find_next_bit_wrap(tx->in_use, tx->len,
-+					 tx->last_ll_ts_idx_read + 1);
-+		if (idx != tx->len)
-+			ice_ptp_req_tx_single_tstamp(tx, idx);
-+	}
- 	spin_unlock_irqrestore(&tx->lock, flags);
- 
- 	val = GLINT_DYN_CTL_INTENA_M | GLINT_DYN_CTL_CLEARPBA_M |
--- 
-2.50.1
-
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -1205,6 +1205,9 @@ static void ocfs2_clear_inode(struct ino
+ 	 * the journal is flushed before journal shutdown. Thus it is safe to
+ 	 * have inodes get cleaned up after journal shutdown.
+ 	 */
++	if (!osb->journal)
++		return;
++
+ 	jbd2_journal_release_jbd_inode(osb->journal->j_journal,
+ 				       &oi->ip_jinode);
+ }
 
 
 
