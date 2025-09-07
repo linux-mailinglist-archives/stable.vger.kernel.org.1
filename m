@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-178557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ACA4B47F26
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB821B47FB6
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A5A51B21325
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:34:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B0DA3B6D41
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD86211A14;
-	Sun,  7 Sep 2025 20:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B932269CE6;
+	Sun,  7 Sep 2025 20:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJ0GdwVk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTA2NyR2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8E31A0BFD;
-	Sun,  7 Sep 2025 20:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C314315A;
+	Sun,  7 Sep 2025 20:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277217; cv=none; b=LRj2uwoNg5HtoxG+lY9BSkoKrGC1fDQ3lnGnJ+QSH+8BevF4F03FUBtky2oa10er3QDiH8gI8JBkw/Cglnh+oLxvLnX6fslNJCKr6tbkvAuA3ymsaUFuOeK8S3cp6KoTede67MKdpeEqtLFOGwpOYcRc4zu334jo2ZvdxyzgRYw=
+	t=1757277675; cv=none; b=bq0USklmdx4lXvz26jNkxfJx0hgtM+7FXekxT42XyQFSItybUd4/X2fLzw6mj+dmYbmOE/PLrqqxNNjC01tLw9tvL4fKuOgDBMaXZvjJX+Xci0T1+hR7JTFUkUGS/VUlnGxe9QFKe5jkO6Pf9iFWNC8vS1WLbwDWbA+XCEx5MMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277217; c=relaxed/simple;
-	bh=ZLkiQ7dLl7nRKSOPXSDR+jdvMdEGLmX4Gk6Wz/OGhgA=;
+	s=arc-20240116; t=1757277675; c=relaxed/simple;
+	bh=QfCnTh7GRYFdjMpDQMY9F3wmqy4h893ZDosBU52Sw6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MjTG45o0TdDLQFk8Sqtd7l+B5V/tJaYDoXTuJPWSJPxrU/YveLYtiYa/VdrpwalERKJhYB7bB/rxXCt2s1cBWrD5hoO8rlQd2Gg8Iwk/e6u219e1RU/HMw28/hCdItBjnnSGZHSI50ZMjhNmuMvRkV6PivU7Z2UKCP/RB5Eww24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJ0GdwVk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B059AC4CEF0;
-	Sun,  7 Sep 2025 20:33:36 +0000 (UTC)
+	 MIME-Version; b=alaTZCVUw8uix/OWGMzzklsBveu0j3CqL0lInCqgeLz6pB+HflKGRuGPG+DBxCcElwDfySZ0zhnOgfv7fTsw0+ELBRWsHQ8+saouVOGcadeUquugYZo+kV3N3JctuYFxnSAySZv4RZajDRWESzymb8Gea+1CF6NwEMfSU5uRYUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTA2NyR2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59FF5C4CEF0;
+	Sun,  7 Sep 2025 20:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277217;
-	bh=ZLkiQ7dLl7nRKSOPXSDR+jdvMdEGLmX4Gk6Wz/OGhgA=;
+	s=korg; t=1757277674;
+	bh=QfCnTh7GRYFdjMpDQMY9F3wmqy4h893ZDosBU52Sw6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJ0GdwVkG2435OwLHM2liPvomSD05hmcpi5G5Gt6ROSDRSaRkAkTev5vMcJLTX+yX
-	 +Tt16GQqbLJfccWbbq3zSJPsTrgW0YN9AhCq6DP1S/m3H/VLJwlf7uGxXh3vLPSTLf
-	 ZEbm35oCEUgJVXSIc704IsL9oMFhXovR+vmV0pYo=
+	b=aTA2NyR2BMFPSoE5uUDP+LXC5I7E9T8imqAm0wX0byuBfr5LTRaUt5tAWJaZ0wUHC
+	 Id4kZ2iJaadh30DV/Cj3LPUGRNe6hC9akGfcKg+f+Jc27+KcCCwjHxu+TUJlxHajoy
+	 CcMOvvPxdfm/P+8jVyvzgvoaiil+181ca3SxEg+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 120/175] net: pcs: rzn1-miic: Correct MODCTRL register offset
+	Bernard Pidoux <f6bvp@free.fr>,
+	Eric Dumazet <edumazet@google.com>,
+	Joerg Reuter <jreuter@yaina.de>,
+	David Ranch <dranch@trinnet.net>,
+	Folkert van Heusden <folkert@vanheusden.com>,
+	Dan Cross <crossd@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 088/183] ax25: properly unshare skbs in ax25_kiss_rcv()
 Date: Sun,  7 Sep 2025 21:58:35 +0200
-Message-ID: <20250907195617.698011608@linuxfoundation.org>
+Message-ID: <20250907195617.881586031@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +67,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit a7195a3d67dace056af7ca65144a11874df79562 upstream.
+[ Upstream commit 8156210d36a43e76372312c87eb5ea3dbb405a85 ]
 
-Correct the Mode Control Register (MODCTRL) offset for RZ/N MIIC.
-According to the R-IN Engine and Ethernet Peripherals Manual (Rev.1.30)
-[0], Table 10.1 "Ethernet Accessory Register List", MODCTRL is at offset
-0x8, not 0x20 as previously defined.
+Bernard Pidoux reported a regression apparently caused by commit
+c353e8983e0d ("net: introduce per netns packet chains").
 
-Offset 0x20 actually maps to the Port Trigger Control Register (PTCTRL),
-which controls PTP_MODE[3:0] and RGMII_CLKSEL[4]. Using this incorrect
-definition prevented the driver from configuring the SW_MODE[4:0] bits
-in MODCTRL, which control the internal connection of Ethernet ports. As
-a result, the MIIC could not be switched into the correct mode, leading
-to link setup failures and non-functional Ethernet ports on affected
-systems.
+skb->dev becomes NULL and we crash in __netif_receive_skb_core().
 
-[0] https://www.renesas.com/en/document/mah/rzn1d-group-rzn1s-group-rzn1l-group-users-manual-r-engine-and-ethernet-peripherals?r=1054571
+Before above commit, different kind of bugs or corruptions could happen
+without a major crash.
 
-Fixes: 7dc54d3b8d91 ("net: pcs: add Renesas MII converter driver")
-Cc: stable@kernel.org
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://patch.msgid.link/20250901112019.16278-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+But the root cause is that ax25_kiss_rcv() can queue/mangle input skb
+without checking if this skb is shared or not.
+
+Many thanks to Bernard Pidoux for his help, diagnosis and tests.
+
+We had a similar issue years ago fixed with commit 7aaed57c5c28
+("phonet: properly unshare skbs in phonet_rcv()").
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Bernard Pidoux <f6bvp@free.fr>
+Closes: https://lore.kernel.org/netdev/1713f383-c538-4918-bc64-13b3288cd542@free.fr/
+Tested-by: Bernard Pidoux <f6bvp@free.fr>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Joerg Reuter <jreuter@yaina.de>
+Cc: David Ranch <dranch@trinnet.net>
+Cc: Folkert van Heusden <folkert@vanheusden.com>
+Reviewed-by: Dan Cross <crossd@gmail.com>
+Link: https://patch.msgid.link/20250902124642.212705-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/pcs/pcs-rzn1-miic.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ax25/ax25_in.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/pcs/pcs-rzn1-miic.c
-+++ b/drivers/net/pcs/pcs-rzn1-miic.c
-@@ -19,7 +19,7 @@
- #define MIIC_PRCMD			0x0
- #define MIIC_ESID_CODE			0x4
+diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
+index 1cac25aca6378..f2d66af863595 100644
+--- a/net/ax25/ax25_in.c
++++ b/net/ax25/ax25_in.c
+@@ -433,6 +433,10 @@ static int ax25_rcv(struct sk_buff *skb, struct net_device *dev,
+ int ax25_kiss_rcv(struct sk_buff *skb, struct net_device *dev,
+ 		  struct packet_type *ptype, struct net_device *orig_dev)
+ {
++	skb = skb_share_check(skb, GFP_ATOMIC);
++	if (!skb)
++		return NET_RX_DROP;
++
+ 	skb_orphan(skb);
  
--#define MIIC_MODCTRL			0x20
-+#define MIIC_MODCTRL			0x8
- #define MIIC_MODCTRL_SW_MODE		GENMASK(4, 0)
- 
- #define MIIC_CONVCTRL(port)		(0x100 + (port) * 4)
+ 	if (!net_eq(dev_net(dev), &init_net)) {
+-- 
+2.50.1
+
 
 
 
