@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-178128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1BEB47D5D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1850CB47E67
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DEE2189CA54
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:11:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D031517DF79
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED13284883;
-	Sun,  7 Sep 2025 20:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0840B20E005;
+	Sun,  7 Sep 2025 20:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/0tzzCo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfNqf6+r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC3A1F09A5;
-	Sun,  7 Sep 2025 20:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78B71F09BF;
+	Sun,  7 Sep 2025 20:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275854; cv=none; b=ZqJqetDKBTh2dTvK6HKy/HLXC5U5HA59eCHeFRkowpx7snF8mqinaTGn/xJBcLpd6c3Gjdd6Jf/Lp01VOWMSbCCnmmaisuw6+yw781V10AmFx/3SJ34Uciy2K6kV8AmbEKc6Faub0S8Ep9aPp7kI5zSkHtMB/M3zFNseokDNmfA=
+	t=1757276629; cv=none; b=PLjqUUr5i4AWtqfayi+f8hVbRLe23hjnxWkz5GTJK7tKfLxpZ5uLdAs0m4Y2bNivNlPVQ0jZkV/5vheBkRxle7xxXHD6+go6/ZEFlS0xYBgk2pLZnUDuXQIq2vbTWY5H+cJ37njwnAaJjeOLsJyReatZ3AK53MTfFlsVKH7rWKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275854; c=relaxed/simple;
-	bh=1tnaEUhxiVc0wFzPAX/9tgO9wW7i/R1iJnQie2ZEzfg=;
+	s=arc-20240116; t=1757276629; c=relaxed/simple;
+	bh=L7joZfE6G/FA9vpuK6tvLKonF409V00UzBeBiMpUeRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Du/SaOR9RaHGqiI6NMHuf8G/QHOYpiIMF1yj8dlYmceITe9Ea8At1DIkol0DyUhrKedXMs+pIfF6psvDmcvqd9dN2Fqt3815CvBqDKrf9DnGc7LtbJx7e5Fq1U0GhQGtdj6gXPMXi9Ph/RK0SFuDd4PHnip5wUBJvGjQ+/UZ6wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/0tzzCo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C86CDC4CEF0;
-	Sun,  7 Sep 2025 20:10:53 +0000 (UTC)
+	 MIME-Version; b=TNCu3Rq2/kpe2gR7o2t0Lz/p+LgJ6yv8WiCL3aYuq7b0WMcphGyjm9a0Pu0TTsh0KySuRX/3Z1JybHShjCo1TCMu6hfytsISv8Od+jwHNY6U8SjnXLYUWaL/kp9Pk7zQpJlwnwCvMJXdwb/Wj0y48rvr6eHp6EzlKE35jEuTxWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfNqf6+r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE731C4CEF0;
+	Sun,  7 Sep 2025 20:23:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275854;
-	bh=1tnaEUhxiVc0wFzPAX/9tgO9wW7i/R1iJnQie2ZEzfg=;
+	s=korg; t=1757276629;
+	bh=L7joZfE6G/FA9vpuK6tvLKonF409V00UzBeBiMpUeRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/0tzzCo5+TKj2nZz9CmGe0C8RSbSc/X0wfRQvzS7lBLNSGCBLvWMIuwMHKwXC6sw
-	 YXb2sYRE6YCbFVg22sqkRxY1ZW/gF3OxjEntilezsobTH9s/2KuqIlzmPA4szEiDA7
-	 oT4W6Rojtkjm52xkAA9LzA/8hmohI8kNmpyi1MjI=
+	b=dfNqf6+rtUD2YFKk6MWlikYxxLzD/L48GUv/QoUZUaqivxs/o/Q/n7kbpfJpeQQdQ
+	 f0w25PrbzQxGllUql5z4X3Kl3be0EqUQKy23ckT2jRldr1m8yDsiimgOIwWzWlhr28
+	 Rd0s02CHpYMeyRDYh2LViY4i9LzHii6LHxhHxkgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 31/45] gpio: pca953x: fix IRQ storm on system wake up
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Qianfeng Rong <rongqianfeng@vivo.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 061/121] wifi: mwifiex: Initialize the chan_stats array to zero
 Date: Sun,  7 Sep 2025 21:58:17 +0200
-Message-ID: <20250907195601.880352674@linuxfoundation.org>
+Message-ID: <20250907195611.402857970@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
-References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+From: Qianfeng Rong <rongqianfeng@vivo.com>
 
-[ Upstream commit 3e38f946062b4845961ab86b726651b4457b2af8 ]
+commit 0e20450829ca3c1dbc2db536391537c57a40fe0b upstream.
 
-If an input changes state during wake-up and is used as an interrupt
-source, the IRQ handler reads the volatile input register to clear the
-interrupt mask and deassert the IRQ line. However, the IRQ handler is
-triggered before access to the register is granted, causing the read
-operation to fail.
+The adapter->chan_stats[] array is initialized in
+mwifiex_init_channel_scan_gap() with vmalloc(), which doesn't zero out
+memory.  The array is filled in mwifiex_update_chan_statistics()
+and then the user can query the data in mwifiex_cfg80211_dump_survey().
 
-As a result, the IRQ handler enters a loop, repeatedly printing the
-"failed reading register" message, until `pca953x_resume()` is eventually
-called, which restores the driver context and enables access to
-registers.
+There are two potential issues here.  What if the user calls
+mwifiex_cfg80211_dump_survey() before the data has been filled in.
+Also the mwifiex_update_chan_statistics() function doesn't necessarily
+initialize the whole array.  Since the array was not initialized at
+the start that could result in an information leak.
 
-Fix by disabling the IRQ line before entering suspend mode, and
-re-enabling it after the driver context is restored in `pca953x_resume()`.
+Also this array is pretty small.  It's a maximum of 900 bytes so it's
+more appropriate to use kcalloc() instead vmalloc().
 
-An IRQ can be disabled with disable_irq() and still wake the system as
-long as the IRQ has wake enabled, so the wake-up functionality is
-preserved.
-
-Fixes: b76574300504 ("gpio: pca953x: Restore registers after suspend/resume cycle")
 Cc: stable@vger.kernel.org
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20250512095441.31645-1-francesco@dolcini.it
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-[ Apply directly to suspend/resume functions ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bf35443314ac ("mwifiex: channel statistics support for mwifiex")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20250815023055.477719-1-rongqianfeng@vivo.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-pca953x.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |    5 +++--
+ drivers/net/wireless/marvell/mwifiex/main.c     |    4 ++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -1199,6 +1199,9 @@ static int pca953x_suspend(struct device
- 	struct pca953x_chip *chip = dev_get_drvdata(dev);
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -4316,8 +4316,9 @@ int mwifiex_init_channel_scan_gap(struct
+ 	 * additional active scan request for hidden SSIDs on passive channels.
+ 	 */
+ 	adapter->num_in_chan_stats = 2 * (n_channels_bg + n_channels_a);
+-	adapter->chan_stats = vmalloc(array_size(sizeof(*adapter->chan_stats),
+-						 adapter->num_in_chan_stats));
++	adapter->chan_stats = kcalloc(adapter->num_in_chan_stats,
++				      sizeof(*adapter->chan_stats),
++				      GFP_KERNEL);
  
- 	mutex_lock(&chip->i2c_lock);
-+	/* Disable IRQ to prevent early triggering while regmap "cache only" is on */
-+	if (chip->client->irq > 0)
-+		disable_irq(chip->client->irq);
- 	regcache_cache_only(chip->regmap, true);
- 	mutex_unlock(&chip->i2c_lock);
+ 	if (!adapter->chan_stats)
+ 		return -ENOMEM;
+--- a/drivers/net/wireless/marvell/mwifiex/main.c
++++ b/drivers/net/wireless/marvell/mwifiex/main.c
+@@ -664,7 +664,7 @@ static int _mwifiex_fw_dpc(const struct
+ 	goto done;
  
-@@ -1224,6 +1227,8 @@ static int pca953x_resume(struct device
- 	}
+ err_add_intf:
+-	vfree(adapter->chan_stats);
++	kfree(adapter->chan_stats);
+ err_init_chan_scan:
+ 	wiphy_unregister(adapter->wiphy);
+ 	wiphy_free(adapter->wiphy);
+@@ -1481,7 +1481,7 @@ static void mwifiex_uninit_sw(struct mwi
+ 	wiphy_free(adapter->wiphy);
+ 	adapter->wiphy = NULL;
  
- 	mutex_lock(&chip->i2c_lock);
-+	if (chip->client->irq > 0)
-+		enable_irq(chip->client->irq);
- 	regcache_cache_only(chip->regmap, false);
- 	regcache_mark_dirty(chip->regmap);
- 	ret = pca953x_regcache_sync(dev);
+-	vfree(adapter->chan_stats);
++	kfree(adapter->chan_stats);
+ 	mwifiex_free_cmd_buffers(adapter);
+ }
+ 
 
 
 
