@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-178621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8AFB47F67
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:37:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17314B47DB7
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:15:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9E28189D872
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:37:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 216F1189D2B2
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7CD1F63CD;
-	Sun,  7 Sep 2025 20:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B19E1D88D0;
+	Sun,  7 Sep 2025 20:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzDjmgrC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShKf2rkv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7334315A;
-	Sun,  7 Sep 2025 20:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0956A15D5B6;
+	Sun,  7 Sep 2025 20:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277423; cv=none; b=nA/DM4PchjbIhLN/oennP/9BXuNbFzxE1IBpYmhQkEQpHo2BNFeUtUd/5Gp0/4dzzfsDXEzEk1sIaTsFF3ZqbuDeqhf6C0Gl9INIwTkFT7YGGMqECfn62ROwob7g7jgo7lMbwsEOLyy/rnxG17w7onTbdPdvw/nR0j6uGAw82AQ=
+	t=1757276135; cv=none; b=mU0r9RIWE6PFHn5NpKa4seNfzoQhUdiKt/xaQa3aVoyOO243ubAA9zer7RJ8rWrx1+FVvkBfYRp/7aYzcJOflYbG1ALz1B/U8BGcgOFrLez1TP6I5tR11R1ib6c0UK2oJGfuVsglZa0GUW3WjYQdNQ4uFketqJ3xwtCTYbInOAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277423; c=relaxed/simple;
-	bh=wEC4+jCS7mmC8v4P31DVukKeAPg8Hsf+2y9tQ3nxfdU=;
+	s=arc-20240116; t=1757276135; c=relaxed/simple;
+	bh=lWU9TgQwgJtVJ2J3qfhoLQhxruOfomTrHgxUxF33wbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PcxqOQ45WtbOnzbibTGs7CUmCT27paNP5ojLjKYnv0esttDGKde8SMl/Ux44YXH7j0eq9LiR8yfMH42g0i593JKUVJtoSEvk7OMA1Of9JOrpX/1nc5DPaatR7nJR04/dTejPV//I99uwoUBF8bklaR9G8zL7gndK4jhjBxu7UTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzDjmgrC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F67C4CEF0;
-	Sun,  7 Sep 2025 20:37:02 +0000 (UTC)
+	 MIME-Version; b=FbVno9Rgz9gqJygcYbO5PHSpfNKYoSXp4tGfb0Guyz6YJmx38JeT49PIw1hxg64IFuLC5GXVdy7Sh86R2G9uyLw+6jh+VUhgZHfKWamR8kjcRyyLjaaYN7Dg/qKIyVcvo8pJurJTRvOshmucfqWTROEcnpKerR/MfdIw9YxRl/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShKf2rkv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3F2C4CEF0;
+	Sun,  7 Sep 2025 20:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277423;
-	bh=wEC4+jCS7mmC8v4P31DVukKeAPg8Hsf+2y9tQ3nxfdU=;
+	s=korg; t=1757276134;
+	bh=lWU9TgQwgJtVJ2J3qfhoLQhxruOfomTrHgxUxF33wbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PzDjmgrCXL+Pj4tffGA9m8EM6ZmUsLlWv7pFJ7sS27PGjpCZJwjjSmkwSlbbdd0Jh
-	 07a62JPL8itJVbWU9TdWGFSI2h/+RVVB3CRA4Yif68N3ugoEj8US6h2JRKZzTdXvcL
-	 AwsdlpulEd6Kyw5zpFts37PoR5jm52R07SpxWevI=
+	b=ShKf2rkv6uD60dDdLytFPDKft0qRH8wU65JaUkReSX1Vfu9olesB9wLyibkbegAoe
+	 APnSr2CbQWaMtvC979U7ZPOyGo3zO1N3YvsH1UHhCAnM1SRvgbs/gYfjsSymNurUsT
+	 UZnWz38n5l589CyaJTVMBj16xIcro9c6biDawAkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Hung <alex.hung@amd.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 011/183] drm/amd/display: Dont warn when missing DCE encoder caps
+Subject: [PATCH 6.1 001/104] bpf: Add cookie object to bpf maps
 Date: Sun,  7 Sep 2025 21:57:18 +0200
-Message-ID: <20250907195616.062042512@linuxfoundation.org>
+Message-ID: <20250907195607.706543012@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 8246147f1fbaed522b8bcc02ca34e4260747dcfb ]
+[ Upstream commit 12df58ad294253ac1d8df0c9bb9cf726397a671d ]
 
-On some GPUs the VBIOS just doesn't have encoder caps,
-or maybe not for every encoder.
+Add a cookie to BPF maps to uniquely identify BPF maps for the timespan
+when the node is up. This is different to comparing a pointer or BPF map
+id which could get rolled over and reused.
 
-This isn't really a problem and it's handled well,
-so let's not litter the logs with it.
-
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 33e0227ee96e62d034781e91f215e32fd0b1d512)
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/r/20250730234733.530041-1-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/bpf.h  | 1 +
+ kernel/bpf/syscall.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
-index 4a9d07c31bc5b..0c50fe266c8a1 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_link_encoder.c
-@@ -896,13 +896,13 @@ void dce110_link_encoder_construct(
- 						enc110->base.id, &bp_cap_info);
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index e9c1338851e34..2aaa1ed738303 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -260,6 +260,7 @@ struct bpf_map {
+ 	bool frozen; /* write-once; write-protected by freeze_mutex */
+ 	bool free_after_mult_rcu_gp;
+ 	s64 __percpu *elem_count;
++	u64 cookie; /* write-once */
+ };
  
- 	/* Override features with DCE-specific values */
--	if (BP_RESULT_OK == result) {
-+	if (result == BP_RESULT_OK) {
- 		enc110->base.features.flags.bits.IS_HBR2_CAPABLE =
- 				bp_cap_info.DP_HBR2_EN;
- 		enc110->base.features.flags.bits.IS_HBR3_CAPABLE =
- 				bp_cap_info.DP_HBR3_EN;
- 		enc110->base.features.flags.bits.HDMI_6GB_EN = bp_cap_info.HDMI_6GB_EN;
--	} else {
-+	} else if (result != BP_RESULT_NORECORD) {
- 		DC_LOG_WARNING("%s: Failed to get encoder_cap_info from VBIOS with error code %d!\n",
- 				__func__,
- 				result);
-@@ -1798,13 +1798,13 @@ void dce60_link_encoder_construct(
- 						enc110->base.id, &bp_cap_info);
+ static inline bool map_value_has_spin_lock(const struct bpf_map *map)
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index b145f3ef3695e..377bb60b79164 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -35,6 +35,7 @@
+ #include <linux/rcupdate_trace.h>
+ #include <linux/memcontrol.h>
+ #include <linux/trace_events.h>
++#include <linux/cookie.h>
  
- 	/* Override features with DCE-specific values */
--	if (BP_RESULT_OK == result) {
-+	if (result == BP_RESULT_OK) {
- 		enc110->base.features.flags.bits.IS_HBR2_CAPABLE =
- 				bp_cap_info.DP_HBR2_EN;
- 		enc110->base.features.flags.bits.IS_HBR3_CAPABLE =
- 				bp_cap_info.DP_HBR3_EN;
- 		enc110->base.features.flags.bits.HDMI_6GB_EN = bp_cap_info.HDMI_6GB_EN;
--	} else {
-+	} else if (result != BP_RESULT_NORECORD) {
- 		DC_LOG_WARNING("%s: Failed to get encoder_cap_info from VBIOS with error code %d!\n",
- 				__func__,
- 				result);
+ #define IS_FD_ARRAY(map) ((map)->map_type == BPF_MAP_TYPE_PERF_EVENT_ARRAY || \
+ 			  (map)->map_type == BPF_MAP_TYPE_CGROUP_ARRAY || \
+@@ -47,6 +48,7 @@
+ #define BPF_OBJ_FLAG_MASK   (BPF_F_RDONLY | BPF_F_WRONLY)
+ 
+ DEFINE_PER_CPU(int, bpf_prog_active);
++DEFINE_COOKIE(bpf_map_cookie);
+ static DEFINE_IDR(prog_idr);
+ static DEFINE_SPINLOCK(prog_idr_lock);
+ static DEFINE_IDR(map_idr);
+@@ -1152,6 +1154,10 @@ static int map_create(union bpf_attr *attr)
+ 	if (err < 0)
+ 		goto free_map;
+ 
++	preempt_disable();
++	map->cookie = gen_cookie_next(&bpf_map_cookie);
++	preempt_enable();
++
+ 	atomic64_set(&map->refcnt, 1);
+ 	atomic64_set(&map->usercnt, 1);
+ 	mutex_init(&map->freeze_mutex);
 -- 
 2.50.1
 
