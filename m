@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2CFB47DB6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:15:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D89BB47F08
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2E2317CEDD
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34B8C1B20EBC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA0F14BFA2;
-	Sun,  7 Sep 2025 20:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2888211A14;
+	Sun,  7 Sep 2025 20:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5tre0Rl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLRPphdm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCBF115D5B6;
-	Sun,  7 Sep 2025 20:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2CD1ACEDA;
+	Sun,  7 Sep 2025 20:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276131; cv=none; b=EnbtSrZuk7ytIbspZsV7tn7Z2XztYBdKYNUwYqItmq9nto4dARSaEqDxAjmHVj34S8AJ3aQfEw93tmutrhjZ4IGi7Q6kOcfWilqtud+TdpcIg+q6AhOWZM7tDvWWYgZrxi0DwFf8QHZTNi1q1HnjL1qFg76hrRu6/Os19QUMAqw=
+	t=1757277124; cv=none; b=Saq+Q5EX2X1P4NEiltCyuY8GnWrdLbD6U5D0rqDmXWM3Y5MVCNHpu5ptZxhCa9htUK175zeVIeq8aDSx0W4OWgOezWwAIKjIPDKtV8CxXBoYJg6xUc+VnO53A+O+8Q+5IUNkYt6UJ0Ah1mqVlgzMnrwgl4U7IDTTNPbtW7VCEaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276131; c=relaxed/simple;
-	bh=lMGVR/QIN3M6vNfgWBnAj5PqsP0ss4UTwvwsvHlnwyU=;
+	s=arc-20240116; t=1757277124; c=relaxed/simple;
+	bh=Kcer0ZndHogvKe61CZVqbUsstQD/RflnTlddoLTdXUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fVv6kFOIfEJAVPaFIUcqCCUKrob64v3TjMy8wPos5Bc61drAiKX+A2gUflF6FhotjV2MPX14TqjeiWslhqpu1rk/XIE1jz3Cdj36q1rxjT5KIaUGlbMPR2PpVDGkbjbRMQux83cIlhtNw6CNwSU3FC8yC2wDPiPWu5rLSS/LlsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5tre0Rl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F039CC4CEF0;
-	Sun,  7 Sep 2025 20:15:30 +0000 (UTC)
+	 MIME-Version; b=IEcLMM6qOoJ/u5HEeAY6W6EKV9HtjTcSQG3h08NfNFxf0Z8ipKp4X8ZTywzPb+4F3hmTEESqKcJhSPkKcMBIW6cPbc/NqRoTxFGwFRS8QyQTVyJMoMRXWdkOrCAE0uEIHTPBAAH9NCuIRhkRbQgvApTH11Av/XLDSiuFf/ryAIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLRPphdm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185CFC4CEF0;
+	Sun,  7 Sep 2025 20:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276131;
-	bh=lMGVR/QIN3M6vNfgWBnAj5PqsP0ss4UTwvwsvHlnwyU=;
+	s=korg; t=1757277124;
+	bh=Kcer0ZndHogvKe61CZVqbUsstQD/RflnTlddoLTdXUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P5tre0RlBvr3rslKwLHTgkryy//CWzE3GY+mebrVXHa4c0ucWI38A69P6WHTT1+jk
-	 DSU21feTVrRs/tq6y8okQS9K6NOEey3Q6BlxYgb6iivbP9GOrNqCDo9Y+v7uKsaITG
-	 gJmgjo3g84diwAKmQr4VqpFZiUpQDdJzbmgNF2I0=
+	b=OLRPphdm0ZKi1V9Miyw22XFXblAOO0XyoAXwZnG7zLSpBzeR/gYycz1KnZghcUJcL
+	 LRgNnRGB3Kg0B4fWxy2USxKByj4XBAvR8w9wpaF07p1YU/ySd4prbW7If3DioknU9M
+	 TLU7CI4w8aKT5CZCKXTjigw5TUNF0Zc2ytyiSUK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 27/64] net: phy: mscc: Fix memory leak when using one step timestamping
+	panfan <panfan@qti.qualcomm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 094/175] arm64: ftrace: fix unreachable PLT for ftrace_caller in init_module with CONFIG_DYNAMIC_FTRACE
 Date: Sun,  7 Sep 2025 21:58:09 +0200
-Message-ID: <20250907195604.141237112@linuxfoundation.org>
+Message-ID: <20250907195617.067616933@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: panfan <panfan@qti.qualcomm.com>
 
-[ Upstream commit 846992645b25ec4253167e3f931e4597eb84af56 ]
+commit a7ed7b9d0ebb038db9963d574da0311cab0b666a upstream.
 
-Fix memory leak when running one-step timestamping. When running
-one-step sync timestamping, the HW is configured to insert the TX time
-into the frame, so there is no reason to keep the skb anymore. As in
-this case the HW will never generate an interrupt to say that the frame
-was timestamped, then the frame will never released.
-Fix this by freeing the frame in case of one-step timestamping.
+On arm64, it has been possible for a module's sections to be placed more
+than 128M away from each other since commit:
 
-Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://patch.msgid.link/20250522115722.2827199-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 9b2bfdbf43ad ("phy: mscc: Stop taking ts_lock for tx_queue and use its own lock")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  commit 3e35d303ab7d ("arm64: module: rework module VA range selection")
+
+Due to this, an ftrace callsite in a module's .init.text section can be
+out of branch range for the module's ftrace PLT entry (in the module's
+.text section). Any attempt to enable tracing of that callsite will
+result in a BRK being patched into the callsite, resulting in a fatal
+exception when the callsite is later executed.
+
+Fix this by adding an additional trampoline for .init.text, which will
+be within range.
+
+No additional trampolines are necessary due to the way a given
+module's executable sections are packed together. Any executable
+section beginning with ".init" will be placed in MOD_INIT_TEXT,
+and any other executable section, including those beginning with ".exit",
+ will be placed in MOD_TEXT.
+
+Fixes: 3e35d303ab7d ("arm64: module: rework module VA range selection")
+Cc: <stable@vger.kernel.org> # 6.5.x
+Signed-off-by: panfan <panfan@qti.qualcomm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250905032236.3220885-1-panfan@qti.qualcomm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/mscc/mscc_ptp.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ arch/arm64/include/asm/module.h     |    1 +
+ arch/arm64/include/asm/module.lds.h |    1 +
+ arch/arm64/kernel/ftrace.c          |   13 ++++++++++---
+ arch/arm64/kernel/module-plts.c     |   12 +++++++++++-
+ arch/arm64/kernel/module.c          |   11 +++++++++++
+ 5 files changed, 34 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index e30e6ba9da2f4..717435562f1c5 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -1171,18 +1171,24 @@ static void vsc85xx_txtstamp(struct mii_timestamper *mii_ts,
- 		container_of(mii_ts, struct vsc8531_private, mii_ts);
+--- a/arch/arm64/include/asm/module.h
++++ b/arch/arm64/include/asm/module.h
+@@ -19,6 +19,7 @@ struct mod_arch_specific {
  
- 	if (!vsc8531->ptp->configured)
--		return;
-+		goto out;
+ 	/* for CONFIG_DYNAMIC_FTRACE */
+ 	struct plt_entry	*ftrace_trampolines;
++	struct plt_entry	*init_ftrace_trampolines;
+ };
  
--	if (vsc8531->ptp->tx_type == HWTSTAMP_TX_OFF) {
--		kfree_skb(skb);
--		return;
--	}
-+	if (vsc8531->ptp->tx_type == HWTSTAMP_TX_OFF)
-+		goto out;
-+
-+	if (vsc8531->ptp->tx_type == HWTSTAMP_TX_ONESTEP_SYNC)
-+		if (ptp_msg_is_sync(skb, type))
-+			goto out;
+ u64 module_emit_plt_entry(struct module *mod, Elf64_Shdr *sechdrs,
+--- a/arch/arm64/include/asm/module.lds.h
++++ b/arch/arm64/include/asm/module.lds.h
+@@ -2,6 +2,7 @@ SECTIONS {
+ 	.plt 0 : { BYTE(0) }
+ 	.init.plt 0 : { BYTE(0) }
+ 	.text.ftrace_trampoline 0 : { BYTE(0) }
++	.init.text.ftrace_trampoline 0 : { BYTE(0) }
  
- 	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
- 
- 	mutex_lock(&vsc8531->ts_lock);
- 	__skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
- 	mutex_unlock(&vsc8531->ts_lock);
-+	return;
-+
-+out:
-+	kfree_skb(skb);
+ #ifdef CONFIG_KASAN_SW_TAGS
+ 	/*
+--- a/arch/arm64/kernel/ftrace.c
++++ b/arch/arm64/kernel/ftrace.c
+@@ -195,10 +195,17 @@ int ftrace_update_ftrace_func(ftrace_fun
+ 	return ftrace_modify_code(pc, 0, new, false);
  }
  
- static bool vsc85xx_rxtstamp(struct mii_timestamper *mii_ts,
--- 
-2.50.1
-
+-static struct plt_entry *get_ftrace_plt(struct module *mod)
++static struct plt_entry *get_ftrace_plt(struct module *mod, unsigned long addr)
+ {
+ #ifdef CONFIG_MODULES
+-	struct plt_entry *plt = mod->arch.ftrace_trampolines;
++	struct plt_entry *plt = NULL;
++
++	if (within_module_mem_type(addr, mod, MOD_INIT_TEXT))
++		plt = mod->arch.init_ftrace_trampolines;
++	else if (within_module_mem_type(addr, mod, MOD_TEXT))
++		plt = mod->arch.ftrace_trampolines;
++	else
++		return NULL;
+ 
+ 	return &plt[FTRACE_PLT_IDX];
+ #else
+@@ -270,7 +277,7 @@ static bool ftrace_find_callable_addr(st
+ 	if (WARN_ON(!mod))
+ 		return false;
+ 
+-	plt = get_ftrace_plt(mod);
++	plt = get_ftrace_plt(mod, pc);
+ 	if (!plt) {
+ 		pr_err("ftrace: no module PLT for %ps\n", (void *)*addr);
+ 		return false;
+--- a/arch/arm64/kernel/module-plts.c
++++ b/arch/arm64/kernel/module-plts.c
+@@ -283,7 +283,7 @@ int module_frob_arch_sections(Elf_Ehdr *
+ 	unsigned long core_plts = 0;
+ 	unsigned long init_plts = 0;
+ 	Elf64_Sym *syms = NULL;
+-	Elf_Shdr *pltsec, *tramp = NULL;
++	Elf_Shdr *pltsec, *tramp = NULL, *init_tramp = NULL;
+ 	int i;
+ 
+ 	/*
+@@ -298,6 +298,9 @@ int module_frob_arch_sections(Elf_Ehdr *
+ 		else if (!strcmp(secstrings + sechdrs[i].sh_name,
+ 				 ".text.ftrace_trampoline"))
+ 			tramp = sechdrs + i;
++		else if (!strcmp(secstrings + sechdrs[i].sh_name,
++				 ".init.text.ftrace_trampoline"))
++			init_tramp = sechdrs + i;
+ 		else if (sechdrs[i].sh_type == SHT_SYMTAB)
+ 			syms = (Elf64_Sym *)sechdrs[i].sh_addr;
+ 	}
+@@ -363,5 +366,12 @@ int module_frob_arch_sections(Elf_Ehdr *
+ 		tramp->sh_size = NR_FTRACE_PLTS * sizeof(struct plt_entry);
+ 	}
+ 
++	if (init_tramp) {
++		init_tramp->sh_type = SHT_NOBITS;
++		init_tramp->sh_flags = SHF_EXECINSTR | SHF_ALLOC;
++		init_tramp->sh_addralign = __alignof__(struct plt_entry);
++		init_tramp->sh_size = NR_FTRACE_PLTS * sizeof(struct plt_entry);
++	}
++
+ 	return 0;
+ }
+--- a/arch/arm64/kernel/module.c
++++ b/arch/arm64/kernel/module.c
+@@ -453,6 +453,17 @@ static int module_init_ftrace_plt(const
+ 	__init_plt(&plts[FTRACE_PLT_IDX], FTRACE_ADDR);
+ 
+ 	mod->arch.ftrace_trampolines = plts;
++
++	s = find_section(hdr, sechdrs, ".init.text.ftrace_trampoline");
++	if (!s)
++		return -ENOEXEC;
++
++	plts = (void *)s->sh_addr;
++
++	__init_plt(&plts[FTRACE_PLT_IDX], FTRACE_ADDR);
++
++	mod->arch.init_ftrace_trampolines = plts;
++
+ #endif
+ 	return 0;
+ }
 
 
 
