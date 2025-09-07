@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3C09B47E43
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB9F9B47EF1
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A28DC189F5CA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:22:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B86D189F52B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CAB1D88D0;
-	Sun,  7 Sep 2025 20:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2381FECCD;
+	Sun,  7 Sep 2025 20:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjD62dpH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpNm0WFc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E38189BB0;
-	Sun,  7 Sep 2025 20:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1CA18DF89;
+	Sun,  7 Sep 2025 20:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276528; cv=none; b=CjLI+aLvTaEJPJziUCyZXT71h9rL2aEtGdgSqN37RpiJSiuIMi0ziPhdtqxBCgsqeGDvltyeuxhS1oMFIPhbp4TGg+2z+hR+Selt1HbXHRY9MfH8fZLRjrZvpRUOlcS0T3Fj6zkH+qyDisnmAsj1+VPOy2H97L5SIYbygkpEYJs=
+	t=1757277051; cv=none; b=NFAosVZLtqGmxz9yO1CmfyetzWLlYjkeC9fKcSkLbvh+agiDpNgVWq1AEWozybM9G3ztE+fkaXWQeql9Z5DD3ml5p1c2CinpPL86G9+cQCPaQvI8Jr5GK+xeNKthtipXRA/ywO3npEOwiqYV5ayfzOlMURUZ0XCCfyz5U5UBT0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276528; c=relaxed/simple;
-	bh=OCm5px5OwBL0GI8P46ctVhf7XDwfG4IQ9Orbgq19Bn8=;
+	s=arc-20240116; t=1757277051; c=relaxed/simple;
+	bh=OOyqdf+KtD1fcpVuqQCyfxMlNz129YS2PyzN/Q49TX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D7DMRrjkKoDI78ApmfsQ/ONRkYuak0iAnabkgxXc1cHO4+qdBPToy/5PvuCL11KROLmP1EFMAsSM5CiQOztwMn85P0aDVt3xkIAnDkrwA8dJx78ZJUG1Df5VsJ9h4ofQ8ufMZ+wDVyncF2OOisNfHD5CLboqK45DGYny2vm6Dqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjD62dpH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1525BC4CEF0;
-	Sun,  7 Sep 2025 20:22:07 +0000 (UTC)
+	 MIME-Version; b=nqWSHn16tVkhSxxubBnGNZ9AqVVq8m0UfpoRfThkaj5lnvl7a/6VGV7cVMoYbc6CmxuD0XsocutKWdLDzSI9i6wZaoytgrJ4BNiK94KbQhQ67JaGYbbMWr0neijUIaqRc5hZOudOYusTIBebb+rRel2KVZoj7b3uKdPIoE7JJrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpNm0WFc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D43D7C4CEF0;
+	Sun,  7 Sep 2025 20:30:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276528;
-	bh=OCm5px5OwBL0GI8P46ctVhf7XDwfG4IQ9Orbgq19Bn8=;
+	s=korg; t=1757277051;
+	bh=OOyqdf+KtD1fcpVuqQCyfxMlNz129YS2PyzN/Q49TX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LjD62dpH1Lqq2hr42PTXny9d5BsBAh966AKO/+9XY5CmJM4Yp1c1yMOFkl0xNNYTY
-	 vCyxIf5S2P027BqT/7qteEn+7WX5wA28bJPK1J42y+1Xt6bxsPUW14Vq2KjULu4X8x
-	 hHVgKRnf4csA/TGWJEB3dUoxMPVJFFnrheIoSOg0=
+	b=RpNm0WFcU4xeFMp4L6NAqd/flQoHlZ/MXWq//Mmgf1vC4u3tSSkwLkEk087Z8bo6d
+	 4KfCQV5TP3Pu0nTXqshG3JE3kmafggH3SrZ5xbE7Ij6LQl7goe7c6cJqm9XGYL1P+i
+	 xeXmrtlZ5espY2d7Wi3FkvLX5lg00QQ0ApGd4T/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Galbraith <efault@gmx.de>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Menglong Dong <dongml2@chinatelecom.cn>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/121] net: macb: Fix tx_ptr_lock locking
+Subject: [PATCH 6.12 069/175] net: vxlan: use kfree_skb_reason() in vxlan_xmit()
 Date: Sun,  7 Sep 2025 21:57:44 +0200
-Message-ID: <20250907195610.548209582@linuxfoundation.org>
+Message-ID: <20250907195616.469344664@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,137 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Menglong Dong <menglong8.dong@gmail.com>
 
-[ Upstream commit 6bc8a5098bf4a365c4086a4a4130bfab10a58260 ]
+[ Upstream commit b71a576e452b800efeac49ecca116d954601d911 ]
 
-macb_start_xmit and macb_tx_poll can be called with bottom-halves
-disabled (e.g. from softirq) as well as with interrupts disabled (with
-netpoll). Because of this, all other functions taking tx_ptr_lock must
-use spin_lock_irqsave.
+Replace kfree_skb() with kfree_skb_reason() in vxlan_xmit(). Following
+new skb drop reasons are introduced for vxlan:
 
-Fixes: 138badbc21a0 ("net: macb: use NAPI for TX completion path")
-Reported-by: Mike Galbraith <efault@gmx.de>
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Link: https://patch.msgid.link/20250829143521.1686062-1-sean.anderson@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+/* no remote found for xmit */
+SKB_DROP_REASON_VXLAN_NO_REMOTE
+/* packet without necessary metadata reached a device which is
+ * in "external" mode
+ */
+SKB_DROP_REASON_TUNNEL_TXINFO
+
+Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 1f5d2fd1ca04 ("vxlan: Fix NPD in {arp,neigh}_reduce() when using nexthop objects")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 28 ++++++++++++++----------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ drivers/net/vxlan/vxlan_core.c | 6 +++---
+ include/net/dropreason-core.h  | 9 +++++++++
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 534e7f7bca4c2..b836ab2a649a2 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1234,11 +1234,12 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
- {
- 	struct macb *bp = queue->bp;
- 	u16 queue_index = queue - bp->queues;
-+	unsigned long flags;
- 	unsigned int tail;
- 	unsigned int head;
- 	int packets = 0;
- 
--	spin_lock(&queue->tx_ptr_lock);
-+	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
- 	head = queue->tx_head;
- 	for (tail = queue->tx_tail; tail != head && packets < budget; tail++) {
- 		struct macb_tx_skb	*tx_skb;
-@@ -1297,7 +1298,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
- 	    CIRC_CNT(queue->tx_head, queue->tx_tail,
- 		     bp->tx_ring_size) <= MACB_TX_WAKEUP_THRESH(bp))
- 		netif_wake_subqueue(bp->dev, queue_index);
--	spin_unlock(&queue->tx_ptr_lock);
-+	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
- 
- 	return packets;
- }
-@@ -1713,8 +1714,9 @@ static void macb_tx_restart(struct macb_queue *queue)
- {
- 	struct macb *bp = queue->bp;
- 	unsigned int head_idx, tbqp;
-+	unsigned long flags;
- 
--	spin_lock(&queue->tx_ptr_lock);
-+	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
- 
- 	if (queue->tx_head == queue->tx_tail)
- 		goto out_tx_ptr_unlock;
-@@ -1726,19 +1728,20 @@ static void macb_tx_restart(struct macb_queue *queue)
- 	if (tbqp == head_idx)
- 		goto out_tx_ptr_unlock;
- 
--	spin_lock_irq(&bp->lock);
-+	spin_lock(&bp->lock);
- 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
--	spin_unlock_irq(&bp->lock);
-+	spin_unlock(&bp->lock);
- 
- out_tx_ptr_unlock:
--	spin_unlock(&queue->tx_ptr_lock);
-+	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
- }
- 
- static bool macb_tx_complete_pending(struct macb_queue *queue)
- {
- 	bool retval = false;
-+	unsigned long flags;
- 
--	spin_lock(&queue->tx_ptr_lock);
-+	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
- 	if (queue->tx_head != queue->tx_tail) {
- 		/* Make hw descriptor updates visible to CPU */
- 		rmb();
-@@ -1746,7 +1749,7 @@ static bool macb_tx_complete_pending(struct macb_queue *queue)
- 		if (macb_tx_desc(queue, queue->tx_tail)->ctrl & MACB_BIT(TX_USED))
- 			retval = true;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index d9077698c5a89..40f01a6aaed38 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -2724,7 +2724,7 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			if (info && info->mode & IP_TUNNEL_INFO_TX)
+ 				vxlan_xmit_one(skb, dev, vni, NULL, false);
+ 			else
+-				kfree_skb(skb);
++				kfree_skb_reason(skb, SKB_DROP_REASON_TUNNEL_TXINFO);
+ 			return NETDEV_TX_OK;
+ 		}
  	}
--	spin_unlock(&queue->tx_ptr_lock);
-+	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
- 	return retval;
- }
- 
-@@ -2314,6 +2317,7 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	struct macb_queue *queue = &bp->queues[queue_index];
- 	unsigned int desc_cnt, nr_frags, frag_size, f;
- 	unsigned int hdrlen;
-+	unsigned long flags;
- 	bool is_lso;
- 	netdev_tx_t ret = NETDEV_TX_OK;
- 
-@@ -2374,7 +2378,7 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 		desc_cnt += DIV_ROUND_UP(frag_size, bp->max_tx_length);
+@@ -2787,7 +2787,7 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			dev_core_stats_tx_dropped_inc(dev);
+ 			vxlan_vnifilter_count(vxlan, vni, NULL,
+ 					      VXLAN_VNI_STATS_TX_DROPS, 0);
+-			kfree_skb(skb);
++			kfree_skb_reason(skb, SKB_DROP_REASON_VXLAN_NO_REMOTE);
+ 			return NETDEV_TX_OK;
+ 		}
+ 	}
+@@ -2810,7 +2810,7 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		if (fdst)
+ 			vxlan_xmit_one(skb, dev, vni, fdst, did_rsc);
+ 		else
+-			kfree_skb(skb);
++			kfree_skb_reason(skb, SKB_DROP_REASON_VXLAN_NO_REMOTE);
  	}
  
--	spin_lock_bh(&queue->tx_ptr_lock);
-+	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+ 	return NETDEV_TX_OK;
+diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
+index fbf92d442c1b2..d59bb96c5a02c 100644
+--- a/include/net/dropreason-core.h
++++ b/include/net/dropreason-core.h
+@@ -96,7 +96,9 @@
+ 	FN(VXLAN_VNI_NOT_FOUND)		\
+ 	FN(MAC_INVALID_SOURCE)		\
+ 	FN(VXLAN_ENTRY_EXISTS)		\
++	FN(VXLAN_NO_REMOTE)		\
+ 	FN(IP_TUNNEL_ECN)		\
++	FN(TUNNEL_TXINFO)		\
+ 	FN(LOCAL_MAC)			\
+ 	FNe(MAX)
  
- 	/* This is a hard error, log it. */
- 	if (CIRC_SPACE(queue->tx_head, queue->tx_tail,
-@@ -2396,15 +2400,15 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	wmb();
- 	skb_tx_timestamp(skb);
- 
--	spin_lock_irq(&bp->lock);
-+	spin_lock(&bp->lock);
- 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
--	spin_unlock_irq(&bp->lock);
-+	spin_unlock(&bp->lock);
- 
- 	if (CIRC_SPACE(queue->tx_head, queue->tx_tail, bp->tx_ring_size) < 1)
- 		netif_stop_subqueue(dev, queue_index);
- 
- unlock:
--	spin_unlock_bh(&queue->tx_ptr_lock);
-+	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
- 
- 	return ret;
- }
+@@ -439,11 +441,18 @@ enum skb_drop_reason {
+ 	 * entry or an entry pointing to a nexthop.
+ 	 */
+ 	SKB_DROP_REASON_VXLAN_ENTRY_EXISTS,
++	/** @SKB_DROP_REASON_VXLAN_NO_REMOTE: no remote found for xmit */
++	SKB_DROP_REASON_VXLAN_NO_REMOTE,
+ 	/**
+ 	 * @SKB_DROP_REASON_IP_TUNNEL_ECN: skb is dropped according to
+ 	 * RFC 6040 4.2, see __INET_ECN_decapsulate() for detail.
+ 	 */
+ 	SKB_DROP_REASON_IP_TUNNEL_ECN,
++	/**
++	 * @SKB_DROP_REASON_TUNNEL_TXINFO: packet without necessary metadata
++	 * reached a device which is in "external" mode.
++	 */
++	SKB_DROP_REASON_TUNNEL_TXINFO,
+ 	/**
+ 	 * @SKB_DROP_REASON_LOCAL_MAC: the source MAC address is equal to
+ 	 * the MAC address of the local netdev.
 -- 
 2.50.1
 
