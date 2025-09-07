@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-178205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB301B47DAB
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:15:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E565B47E85
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A66EE3C0B7D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1BF87A1B61
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5713284B59;
-	Sun,  7 Sep 2025 20:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508AA1D88D0;
+	Sun,  7 Sep 2025 20:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNXPgHSD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPlgXg+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8357A1C8605;
-	Sun,  7 Sep 2025 20:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E22BD528;
+	Sun,  7 Sep 2025 20:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276098; cv=none; b=QilT2WwCy4F4YkSqXC7Vx0L+sPWfDVKE33yjJHfItw/yq7Q8bM1D2EH3ZYgqYA4neY8gex+R6CZEiOxHpJG2BWuK3wbV6OvH3Q12VldDhzyPDribDGl4ICaJ06pvxDzcpzpsYXo+OPDtmBLJ6hGxjYjADWg8/hdsMh/KDG0KVdc=
+	t=1757276723; cv=none; b=bOJdHnhXA7cwg60M73hL9t8/EhOOhtgXj+bCQplSUmqD9c1IHwdHUrCV+fWmRINYK4CChistjBAfwwRqSXl0f3q/I/iVCbtO3l0eA1WetWsXHqH0mD9oDf6ZI2wUKvpluwx+M0XYkQ1vimewC0IwvfyGZCEUIHXbczEED1ijcJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276098; c=relaxed/simple;
-	bh=w68W5OSEpr8ekZhhAThcgTY+RKgJY7mjskxtjsbeBQQ=;
+	s=arc-20240116; t=1757276723; c=relaxed/simple;
+	bh=LpdZbKNv/5DZ8rSrGz+X6y7/ySoynVrvpAFmECHCdDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nK04sD47czmALZlmNJyS2c8dcI2VTd3+cYqwsxTtUw5u5hlfvLOxo97TUYuEyk3r2ixfPh5BkGHc6DMi8ko2bSJ4ogB786cFwkWmZBpEIVEA8kV+2vcEKhDyYr7JavcDij/gtDfbQ28/vNrMnc8JIBUgUg2Wfl1h7O+xJNLtcoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNXPgHSD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5DFC4CEF0;
-	Sun,  7 Sep 2025 20:14:57 +0000 (UTC)
+	 MIME-Version; b=iLWWi8C8lpZiUspUxQotuc1pGM1rsdmNDP2lpEMUN99Rd2pM0CGTMUEUqPi6kRtcn471m0/AhK7N6AAyNs/ACLpm6t/B9c/kwmGVm0TkvLRJ7vD/XM32JDgsxfjwllHTdz6jydPzgXoFjU28m0nNpO/O4SwawQ7L7aXx0Uj/1fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPlgXg+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324F2C4CEF0;
+	Sun,  7 Sep 2025 20:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276098;
-	bh=w68W5OSEpr8ekZhhAThcgTY+RKgJY7mjskxtjsbeBQQ=;
+	s=korg; t=1757276720;
+	bh=LpdZbKNv/5DZ8rSrGz+X6y7/ySoynVrvpAFmECHCdDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wNXPgHSDWcVt2MZyofQl57OR/3xhI/4KUprLEl47n/fLucoxCpH2NPuzhB4i2mD2o
-	 GlFFUUyRCxY+aHHmGD30rOTQ1aB45pA7DsbskWNGRvIv9dYuEcyGO4SLzeqKFj7vHM
-	 S9cKU2JIBNCpC4SjD8dy3rRsIX672F2iV88JN9zc=
+	b=gPlgXg+WgN1Xa6PuHEo8UgCB+5ZJSav0ZBceRXeNF5kyzQ/BZ4yfSOL0jLdEXVf56
+	 3OVux+8mUAs4T/uZrctPKoj8SPP3WuVoy+EvSjlqJ8slyaxvBPL38HACkytbo6BKRO
+	 bbtbAo/FE2sLA9IOvz6JEtNYLgA5ia/4vGI2dH/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Ian Rogers <irogers@google.com>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 61/64] perf bpf-event: Fix use-after-free in synthesis
+Subject: [PATCH 6.6 087/121] ALSA: hda/realtek: Add support for HP Agusta using CS35L41 HDA
 Date: Sun,  7 Sep 2025 21:58:43 +0200
-Message-ID: <20250907195605.101006699@linuxfoundation.org>
+Message-ID: <20250907195612.073072327@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,152 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit d7b67dd6f9db7bd2c49b415e901849b182ff0735 ]
+[ Upstream commit 7150d57c370f9e61b7d0e82c58002f1c5a205ac4 ]
 
-Calls to perf_env__insert_bpf_prog_info may fail as a sideband thread
-may already have inserted the bpf_prog_info. Such failures may yield
-info_linear being freed which then causes use-after-free issues with
-the internal bpf_prog_info info struct. Make it so that
-perf_env__insert_bpf_prog_info trigger early non-error paths and fix
-the use-after-free in perf_event__synthesize_one_bpf_prog. Add proper
-return error handling to perf_env__add_bpf_info (that calls
-perf_env__insert_bpf_prog_info) and propagate the return value in its
-callers.
+Add support for HP Agusta.
 
-Closes: https://lore.kernel.org/lkml/CAP-5=fWJQcmUOP7MuCA2ihKnDAHUCOBLkQFEkQES-1ZZTrgf8Q@mail.gmail.com/
-Fixes: 03edb7020bb9 ("perf bpf: Fix two memory leakages when calling perf_env__insert_bpf_prog_info()")
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250902181713.309797-2-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Laptops use 2 CS35L41 Amps with HDA, using Internal boost, with I2C
+
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250520124757.12597-1-sbinding@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/bpf-event.c | 39 +++++++++++++++++++++++++------------
- 1 file changed, 27 insertions(+), 12 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/util/bpf-event.c b/tools/perf/util/bpf-event.c
-index 41b889ab4d6ab..e96a7fdfe283b 100644
---- a/tools/perf/util/bpf-event.c
-+++ b/tools/perf/util/bpf-event.c
-@@ -301,9 +301,15 @@ static int perf_event__synthesize_one_bpf_prog(struct perf_session *session,
- 
- 		info_node->info_linear = info_linear;
- 		if (!perf_env__insert_bpf_prog_info(env, info_node)) {
--			free(info_linear);
-+			/*
-+			 * Insert failed, likely because of a duplicate event
-+			 * made by the sideband thread. Ignore synthesizing the
-+			 * metadata.
-+			 */
- 			free(info_node);
-+			goto out;
- 		}
-+		/* info_linear is now owned by info_node and shouldn't be freed below. */
- 		info_linear = NULL;
- 
- 		/*
-@@ -459,18 +465,18 @@ int perf_event__synthesize_bpf_events(struct perf_session *session,
- 	return err;
- }
- 
--static void perf_env__add_bpf_info(struct perf_env *env, u32 id)
-+static int perf_env__add_bpf_info(struct perf_env *env, u32 id)
- {
- 	struct bpf_prog_info_linear *info_linear;
- 	struct bpf_prog_info_node *info_node;
- 	struct btf *btf = NULL;
- 	u64 arrays;
- 	u32 btf_id;
--	int fd;
-+	int fd, err = 0;
- 
- 	fd = bpf_prog_get_fd_by_id(id);
- 	if (fd < 0)
--		return;
-+		return -EINVAL;
- 
- 	arrays = 1UL << BPF_PROG_INFO_JITED_KSYMS;
- 	arrays |= 1UL << BPF_PROG_INFO_JITED_FUNC_LENS;
-@@ -483,6 +489,7 @@ static void perf_env__add_bpf_info(struct perf_env *env, u32 id)
- 	info_linear = bpf_program__get_prog_info_linear(fd, arrays);
- 	if (IS_ERR_OR_NULL(info_linear)) {
- 		pr_debug("%s: failed to get BPF program info. aborting\n", __func__);
-+		err = PTR_ERR(info_linear);
- 		goto out;
- 	}
- 
-@@ -492,38 +499,46 @@ static void perf_env__add_bpf_info(struct perf_env *env, u32 id)
- 	if (info_node) {
- 		info_node->info_linear = info_linear;
- 		if (!perf_env__insert_bpf_prog_info(env, info_node)) {
-+			pr_debug("%s: duplicate add bpf info request for id %u\n",
-+				 __func__, btf_id);
- 			free(info_linear);
- 			free(info_node);
-+			goto out;
- 		}
--	} else
-+	} else {
- 		free(info_linear);
-+		err = -ENOMEM;
-+		goto out;
-+	}
- 
- 	if (btf_id == 0)
- 		goto out;
- 
- 	btf = btf__load_from_kernel_by_id(btf_id);
--	if (libbpf_get_error(btf)) {
--		pr_debug("%s: failed to get BTF of id %u, aborting\n",
--			 __func__, btf_id);
--		goto out;
-+	if (!btf) {
-+		err = -errno;
-+		pr_debug("%s: failed to get BTF of id %u %d\n", __func__, btf_id, err);
-+	} else {
-+		perf_env__fetch_btf(env, btf_id, btf);
- 	}
--	perf_env__fetch_btf(env, btf_id, btf);
- 
- out:
- 	btf__free(btf);
- 	close(fd);
-+	return err;
- }
- 
- static int bpf_event__sb_cb(union perf_event *event, void *data)
- {
- 	struct perf_env *env = data;
-+	int ret = 0;
- 
- 	if (event->header.type != PERF_RECORD_BPF_EVENT)
- 		return -1;
- 
- 	switch (event->bpf.type) {
- 	case PERF_BPF_EVENT_PROG_LOAD:
--		perf_env__add_bpf_info(env, event->bpf.id);
-+		ret = perf_env__add_bpf_info(env, event->bpf.id);
- 
- 	case PERF_BPF_EVENT_PROG_UNLOAD:
- 		/*
-@@ -537,7 +552,7 @@ static int bpf_event__sb_cb(union perf_event *event, void *data)
- 		break;
- 	}
- 
--	return 0;
-+	return ret;
- }
- 
- int evlist__add_bpf_sb_event(struct evlist *evlist, struct perf_env *env)
--- 
-2.51.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10249,6 +10249,8 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x8e18, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e19, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8e3a, "HP Agusta", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x103c, 0x8e3b, "HP Agusta", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
+ 	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
 
 
 
