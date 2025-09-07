@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC78EB47F4C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0789B47E89
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:25:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CE2D3B4CFF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:35:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F0C03B20CA
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3A71A704B;
-	Sun,  7 Sep 2025 20:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20221E1C1A;
+	Sun,  7 Sep 2025 20:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4mPJ3Ij"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgButk0k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF8820E00B;
-	Sun,  7 Sep 2025 20:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5C8D528;
+	Sun,  7 Sep 2025 20:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277340; cv=none; b=M/B2N/jcDSRY5N7Mntd92VFkagPl9lHtVgW6BEM5LaeDotKY1RLxZZ/3hJdCCz4KThyciuGcSQOEEW/PKMaEIZk1gUWkRSZMpvUWbIxYZpqy4pHfQsO4lWX9A32Egwpv3emeU8zYATs0ZnKEWTLMnFXNzlD/BWWzucV8OS3vqQA=
+	t=1757276737; cv=none; b=YE/RrOtfqZdCvtPIw5tSzTVcLJfmp42gHn8En+pZ9nZ+y0dWyQYc63Gdu3jtj2iON+J9JhCuMFOpaLWMDSsIup7U4/dON1hPf3xz4sYRvkljJdNbp0TjR2oq7pnh0KacS2Ch2XtVpZflNDYjO+X+UMDGS3wC+Mho0Ym/TUtGKFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277340; c=relaxed/simple;
-	bh=joO7CPmeZR3qOHftT3jbxMnZETGr1OR1p7PtW/M4sRg=;
+	s=arc-20240116; t=1757276737; c=relaxed/simple;
+	bh=aRom7zeGvHFJ1H9qcMZehFAR5y+d9taatrVXYXbPN6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AdaXeUMtoM3IRkPEhNZXAmeTiQYoGyd6i0Jy/WIt0+XNLpsFKGomoOADKwJaM8Dlr4k2UjxNz8gehBUpe0XB1ewqVQCOp8IU4irEcKbbJbPXOT7CZBa4DZfrPP6pCTm4uyFvU83p+8lVn4iHQgAuz0eXPIUvui8BRngE05TFvWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4mPJ3Ij; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D128C4CEF0;
-	Sun,  7 Sep 2025 20:35:39 +0000 (UTC)
+	 MIME-Version; b=L+kBQH7Gy6q2uDn3XMlTkeiLJSyfM8jX51y3NeMucskrxalYeaXgLkh+iVPNDY1HhiJynJGoO0+E3TwAg2s2ULHY/c2k4GB2evOuQpNg871cSDCqUsRUxfyyth5MNblC2q4FebYjRpc56t1hQR1O9BBHpGw0Y5q0PUXNd5KdlO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgButk0k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22507C4CEF0;
+	Sun,  7 Sep 2025 20:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277339;
-	bh=joO7CPmeZR3qOHftT3jbxMnZETGr1OR1p7PtW/M4sRg=;
+	s=korg; t=1757276737;
+	bh=aRom7zeGvHFJ1H9qcMZehFAR5y+d9taatrVXYXbPN6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P4mPJ3Ij6pD7kvhqCbaC0QSTYMqhgUFUOOR08S5/RJEABOBcKdfduMZ40afrDxRvj
-	 DQ1dv7xraFtJ17DMQmp/WGkA6cERVqjCXGMBWt2Rn1HWwOL5ynSZU3v5AzMvVhP1yZ
-	 mpeHfd1XbIWhs9Uq9lfWYjZvL94c3XFsDZp9CfCM=
+	b=MgButk0kGHTwIrOYIQ8LJNdD9qim4ISuKqu7ph3bRTBozq2PfFPOnTTNtV01OFShx
+	 EmlZYCAUKoco0jn363SSYAgkeUB+kIWC/tlxWJmeQGN/3UFv5wno+frn5eUXdrjaRN
+	 JgdblkiFq/zpeZa91XYGvFboE0gKkPhLGJxPpASQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wen Gong <quic_wgong@quicinc.com>,
-	Kang Yang <quic_kangyang@quicinc.com>,
-	Aditya Kumar Singh <quic_adisi@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 133/175] wifi: ath11k: update channel list in reg notifier instead reg worker
+	Ronak Doshi <ronak.doshi@broadcom.com>,
+	Guolin Yang <guolin.yang@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 092/121] vmxnet3: update MTU after device quiesce
 Date: Sun,  7 Sep 2025 21:58:48 +0200
-Message-ID: <20250907195618.000338611@linuxfoundation.org>
+Message-ID: <20250907195612.211648073@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Gong <quic_wgong@quicinc.com>
+From: Ronak Doshi <ronak.doshi@broadcom.com>
 
-commit 933ab187e679e6fbdeea1835ae39efcc59c022d2 upstream.
+[ Upstream commit 43f0999af011fba646e015f0bb08b6c3002a0170 ]
 
-Currently when ath11k gets a new channel list, it will be processed
-according to the following steps:
-1. update new channel list to cfg80211 and queue reg_work.
-2. cfg80211 handles new channel list during reg_work.
-3. update cfg80211's handled channel list to firmware by
-ath11k_reg_update_chan_list().
+Currently, when device mtu is updated, vmxnet3 updates netdev mtu, quiesces
+the device and then reactivates it for the ESXi to know about the new mtu.
+So, technically the OS stack can start using the new mtu before ESXi knows
+about the new mtu.
 
-But ath11k will immediately execute step 3 after reg_work is just
-queued. Since step 2 is asynchronous, cfg80211 may not have completed
-handling the new channel list, which may leading to an out-of-bounds
-write error:
-BUG: KASAN: slab-out-of-bounds in ath11k_reg_update_chan_list
-Call Trace:
-    ath11k_reg_update_chan_list+0xbfe/0xfe0 [ath11k]
-    kfree+0x109/0x3a0
-    ath11k_regd_update+0x1cf/0x350 [ath11k]
-    ath11k_regd_update_work+0x14/0x20 [ath11k]
-    process_one_work+0xe35/0x14c0
+This can lead to issues for TSO packets which use mss as per the new mtu
+configured. This patch fixes this issue by moving the mtu write after
+device quiesce.
 
-Should ensure step 2 is completely done before executing step 3. Thus
-Wen raised patch[1]. When flag NL80211_REGDOM_SET_BY_DRIVER is set,
-cfg80211 will notify ath11k after step 2 is done.
-
-So enable the flag NL80211_REGDOM_SET_BY_DRIVER then cfg80211 will
-notify ath11k after step 2 is done. At this time, there will be no
-KASAN bug during the execution of the step 3.
-
-[1] https://patchwork.kernel.org/project/linux-wireless/patch/20230201065313.27203-1-quic_wgong@quicinc.com/
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
-
-Fixes: f45cb6b29cd3 ("wifi: ath11k: avoid deadlock during regulatory update in ath11k_regd_update()")
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Reviewed-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Link: https://patch.msgid.link/20250117061737.1921-2-quic_kangyang@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: stable@vger.kernel.org
+Fixes: d1a890fa37f2 ("net: VMware virtual Ethernet NIC driver: vmxnet3")
+Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
+Acked-by: Guolin Yang <guolin.yang@broadcom.com>
+Changes v1-> v2:
+  Moved MTU write after destroy of rx rings
+Link: https://patch.msgid.link/20250515190457.8597-1-ronak.doshi@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ no WRITE_ONCE() in older trees ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/reg.c |   22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ drivers/net/vmxnet3/vmxnet3_drv.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/ath/ath11k/reg.c
-+++ b/drivers/net/wireless/ath/ath11k/reg.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- #include <linux/rtnetlink.h>
+--- a/drivers/net/vmxnet3/vmxnet3_drv.c
++++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+@@ -3483,8 +3483,6 @@ vmxnet3_change_mtu(struct net_device *ne
+ 	struct vmxnet3_adapter *adapter = netdev_priv(netdev);
+ 	int err = 0;
  
-@@ -55,6 +55,19 @@ ath11k_reg_notifier(struct wiphy *wiphy,
- 	ath11k_dbg(ar->ab, ATH11K_DBG_REG,
- 		   "Regulatory Notification received for %s\n", wiphy_name(wiphy));
- 
-+	if (request->initiator == NL80211_REGDOM_SET_BY_DRIVER) {
-+		ath11k_dbg(ar->ab, ATH11K_DBG_REG,
-+			   "driver initiated regd update\n");
-+		if (ar->state != ATH11K_STATE_ON)
-+			return;
-+
-+		ret = ath11k_reg_update_chan_list(ar, true);
-+		if (ret)
-+			ath11k_warn(ar->ab, "failed to update channel list: %d\n", ret);
-+
-+		return;
-+	}
-+
- 	/* Currently supporting only General User Hints. Cell base user
- 	 * hints to be handled later.
- 	 * Hints from other sources like Core, Beacons are not expected for
-@@ -293,12 +306,6 @@ int ath11k_regd_update(struct ath11k *ar
- 	if (ret)
- 		goto err;
- 
--	if (ar->state == ATH11K_STATE_ON) {
--		ret = ath11k_reg_update_chan_list(ar, true);
--		if (ret)
--			goto err;
--	}
+-	netdev->mtu = new_mtu;
 -
- 	return 0;
- err:
- 	ath11k_warn(ab, "failed to perform regd update : %d\n", ret);
-@@ -977,6 +984,7 @@ void ath11k_regd_update_work(struct work
- void ath11k_reg_init(struct ath11k *ar)
- {
- 	ar->hw->wiphy->regulatory_flags = REGULATORY_WIPHY_SELF_MANAGED;
-+	ar->hw->wiphy->flags |= WIPHY_FLAG_NOTIFY_REGDOM_BY_DRIVER;
- 	ar->hw->wiphy->reg_notifier = ath11k_reg_notifier;
- }
+ 	/*
+ 	 * Reset_work may be in the middle of resetting the device, wait for its
+ 	 * completion.
+@@ -3498,6 +3496,7 @@ vmxnet3_change_mtu(struct net_device *ne
  
+ 		/* we need to re-create the rx queue based on the new mtu */
+ 		vmxnet3_rq_destroy_all(adapter);
++		netdev->mtu = new_mtu;
+ 		vmxnet3_adjust_rx_ring_size(adapter);
+ 		err = vmxnet3_rq_create_all(adapter);
+ 		if (err) {
+@@ -3514,6 +3513,8 @@ vmxnet3_change_mtu(struct net_device *ne
+ 				   "Closing it\n", err);
+ 			goto out;
+ 		}
++	} else {
++		netdev->mtu = new_mtu;
+ 	}
+ 
+ out:
 
 
 
