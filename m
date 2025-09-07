@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6526B47FBA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:41:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 502FAB47E0B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF4BD7AC3C6
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:39:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A3833C1298
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EDA269CE6;
-	Sun,  7 Sep 2025 20:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CAE1C6FFA;
+	Sun,  7 Sep 2025 20:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYUNQm1X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4ovvUc1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083734315A;
-	Sun,  7 Sep 2025 20:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523D220D51C;
+	Sun,  7 Sep 2025 20:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277688; cv=none; b=Rsy6+FB7h/srTGEyAn83c9oEiFgvtcjFRm3ePR5ZJfuNJf938U1stHnU5wKrnuwgPGzp6gOkvFyN7TTuaTbc+qqRd3D5v3Yj6C4IAC13/Y3zOJLc9IEYQYt2D35KeYO0HKKrPl3KZhMQmvU/AupJSM1Dc/5j/YtT26ItpOlWBWA=
+	t=1757276366; cv=none; b=YYNhfUIZwgMu/D1AJ+BYamb/tcYtkFKLI8kNy9PijkcM2c6KXijUBQmxkYc7J52g9hU6DA6AeeZmrq80GGREjqtkX0H4xm3Lv5WQ4C1AuSxbYxgrVCN2T11hSICLY6asSqyBFxc9TeUq7JjN4S8HWSKfyHafKgPeBGPExE70N6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277688; c=relaxed/simple;
-	bh=SA+cSo8Ivf/Ah5zroxICVqCDZtasi48g0SgCzjEYoCo=;
+	s=arc-20240116; t=1757276366; c=relaxed/simple;
+	bh=W13sKvlfBXyTWNQTs99ooQOyEvcXk4fAA18XF9EZSvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Flg1azEqmrNw9xCj1VW3WQFEZZ7JSghRTT4KpxoxKAZoQp8zs+oajuRhbKfqXI45FEdrUjfUgqPM+GSliqQwIOhgL3xJgInn8opfTZYJCFVoi0/ZnHnHZlBD0WATDzSqXB19r9beTn6sWRvIFoLvs/U3Mm4sHBoXEOdLRz4zg50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYUNQm1X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C882C4CEF8;
-	Sun,  7 Sep 2025 20:41:27 +0000 (UTC)
+	 MIME-Version; b=IUMCEPUGOqRsk4rUFwBNvxKO6kXaDGCSITpeEUd1wdX9URwmOyvV3zQvCGWXWyaWeJQDkjbQwA5gJcovm4qBBoyhyaZ62AkngyZHEU5KOV5tj5EZDWUxHQLb3otvuw4qMltFlbD1uyexTKZGbU2xhMbLKhO+gjW+rE787481+Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4ovvUc1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82168C4CEF0;
+	Sun,  7 Sep 2025 20:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277687;
-	bh=SA+cSo8Ivf/Ah5zroxICVqCDZtasi48g0SgCzjEYoCo=;
+	s=korg; t=1757276365;
+	bh=W13sKvlfBXyTWNQTs99ooQOyEvcXk4fAA18XF9EZSvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MYUNQm1XLIk/AmCVqYYanVMDQl7mIFNpGvZghxCuQCMPw95DMR6DqBwLKMXnKVdr3
-	 /hv0yGLJLpyIeOpzADQkwBRjKYBneXZFev37UUmPcKeqKH24S0prQoSfZj407MQp9z
-	 eKF5gE5zNifbI/U9GJZiG9ZsGxL4FqPG8YfOP758=
+	b=E4ovvUc1IJGqgbciSbqu5bUTGjfGHckKaX+39eDM03/rf+VVEFMpJTFwrD+no6kOM
+	 ZoqorkLt1oleREyHx/RSIrr2M7FZMbJBVzkPXyLUr75I4YWFNJoeC6Cq+JnY75301c
+	 37ubRhZExcBHM3hjddU3UkXDa0uuEaubyVvPxUks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abin Joseph <abin.joseph@amd.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	James Clark <james.clark@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 092/183] net: xilinx: axienet: Add error handling for RX metadata pointer retrieval
+Subject: [PATCH 6.1 082/104] spi: spi-fsl-lpspi: Fix transmissions when using CONT
 Date: Sun,  7 Sep 2025 21:58:39 +0200
-Message-ID: <20250907195617.976148556@linuxfoundation.org>
+Message-ID: <20250907195609.799895802@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abin Joseph <abin.joseph@amd.com>
+From: Larisa Grigore <larisa.grigore@nxp.com>
 
-[ Upstream commit 8bbceba7dc5090c00105e006ce28d1292cfda8dd ]
+[ Upstream commit 782a7c73078e1301c0c427f21c06377d77dfa541 ]
 
-Add proper error checking for dmaengine_desc_get_metadata_ptr() which
-can return an error pointer and lead to potential crashes or undefined
-behaviour if the pointer retrieval fails.
+Commit 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use
+CONT") breaks transmissions when CONT is used. The TDIE interrupt should
+not be disabled in all cases. If CONT is used and the TX transfer is not
+yet completed yet, but the interrupt handler is called because there are
+characters to be received, TDIE is replaced with FCIE. When the transfer
+is finally completed, SR_TDF is set but the interrupt handler isn't
+called again.
 
-Properly handle the error by unmapping DMA buffer, freeing the skb and
-returning early to prevent further processing with invalid data.
-
-Fixes: 6a91b846af85 ("net: axienet: Introduce dmaengine support")
-Signed-off-by: Abin Joseph <abin.joseph@amd.com>
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://patch.msgid.link/20250903025213.3120181-1-abin.joseph@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use CONT")
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250828-james-nxp-lpspi-v2-1-6262b9aa9be4@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/spi/spi-fsl-lpspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 0d8a05fe541af..ec6d47dc984aa 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -1168,6 +1168,15 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
- 						       &meta_max_len);
- 	dma_unmap_single(lp->dev, skbuf_dma->dma_address, lp->max_frm_size,
- 			 DMA_FROM_DEVICE);
-+
-+	if (IS_ERR(app_metadata)) {
-+		if (net_ratelimit())
-+			netdev_err(lp->ndev, "Failed to get RX metadata pointer\n");
-+		dev_kfree_skb_any(skb);
-+		lp->ndev->stats.rx_dropped++;
-+		goto rx_submit;
-+	}
-+
- 	/* TODO: Derive app word index programmatically */
- 	rx_len = (app_metadata[LEN_APP] & 0xFFFF);
- 	skb_put(skb, rx_len);
-@@ -1180,6 +1189,7 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
- 	u64_stats_add(&lp->rx_bytes, rx_len);
- 	u64_stats_update_end(&lp->rx_stat_sync);
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 246d133238822..e8d915a8914c7 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -3,7 +3,7 @@
+ // Freescale i.MX7ULP LPSPI driver
+ //
+ // Copyright 2016 Freescale Semiconductor, Inc.
+-// Copyright 2018 NXP Semiconductors
++// Copyright 2018, 2023, 2025 NXP
  
-+rx_submit:
- 	for (i = 0; i < CIRC_SPACE(lp->rx_ring_head, lp->rx_ring_tail,
- 				   RX_BUF_NUM_DEFAULT); i++)
- 		axienet_rx_submit_desc(lp->ndev);
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+@@ -755,7 +755,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
+ 	if (temp_SR & SR_MBF ||
+ 	    readl(fsl_lpspi->base + IMX7ULP_FSR) & FSR_TXCOUNT) {
+ 		writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
+-		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE);
++		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE | (temp_IER & IER_TDIE));
+ 		return IRQ_HANDLED;
+ 	}
+ 
 -- 
-2.50.1
+2.51.0
 
 
 
