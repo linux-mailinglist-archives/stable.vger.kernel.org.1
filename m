@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-178176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B929DB47D8D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30EEEB47D25
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:08:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5354F7A5423
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:11:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AA717AFB8B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D290826FA67;
-	Sun,  7 Sep 2025 20:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEAA27F754;
+	Sun,  7 Sep 2025 20:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPl1bWjn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PeiK9FYa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB781B424F;
-	Sun,  7 Sep 2025 20:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6D81CDFAC;
+	Sun,  7 Sep 2025 20:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276006; cv=none; b=DydG/cbgnjKIUzNruAdnkE9X4ppoXSF/UWdLJ29xuBF7o3/k8VGvz5LjKgrbx4CTQV03Ah2Sr0kV1D5LskhGUeFsQm0qAqYYNFxRdVrDmuknI7tAzHCoZufVxp/4ODuY6KomlxIve7oFwWz47Em3+s+Ijupl9ESPaIn0Ktnd5Ek=
+	t=1757275688; cv=none; b=vAQW9bd5P+8orWuewR3JcElkdsOO2r8hBe+IOiyw8YGnrV1dfLzgzdTGcSzIxNRf5w+ClGNVS2BEvQJxvDR30SOSzs/+oItxB0UKJcFTlP818SEoyvhDwP/CvamKl5t/DtpW4prMPA00zkMeBAXFhXQiluNaOUVblZhVFWS9QXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276006; c=relaxed/simple;
-	bh=aGaADDwWa/0I1A5ZpdXVUgoQqcK8zuiFJCuPcLYybcE=;
+	s=arc-20240116; t=1757275688; c=relaxed/simple;
+	bh=IsikHnmjKBUqadZ8jsEjELmZrufHK1y2J8J6YqodZKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SveNVl174SpEms9iFfFe4a6Hq6NErgmx//fG2jABdRc5RlS9GGX+du0xQEt/mknjlW+117i7C3lVqaHV5eo5YmSexgdX9Oebhq0OzcVsyguhd11yAHVQEGK378Zq9BjyXMQhAca/tcyDVHC/eyfLSHw/d19YjHuhMoNeJmRy9Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPl1bWjn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C53C4CEFA;
-	Sun,  7 Sep 2025 20:13:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GbTRN2oAi3GdWirr4lNKwr6WSGENADIH30tM3hIBf07h75yBXoyk5yS8hSo/e9+V8g+vIzQZ2dm/td7NQ6rS5h80rJK4tLbXrnWHozlZZwt7FH1RukX1/K2NmF6Ikzd06nwoPXNN1/KtL/0Pr6Cl5TvLo57MCz7XCqSahfmAq64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PeiK9FYa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE25C4CEF0;
+	Sun,  7 Sep 2025 20:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276006;
-	bh=aGaADDwWa/0I1A5ZpdXVUgoQqcK8zuiFJCuPcLYybcE=;
+	s=korg; t=1757275687;
+	bh=IsikHnmjKBUqadZ8jsEjELmZrufHK1y2J8J6YqodZKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oPl1bWjnbxm4t+HvJPtGOfh6JtDxR6bTyNCfV075RVZpg/SLmXfKpFsX2j9I0VlTV
-	 uhzUbJqE1E2MLMJTRsgR0tbCFSMNcAlF45jMi2fhl0p0F77aeVvmOwO0lg/MJLGDU0
-	 KYJ2XL8AnDckfAuaWZ9AF1YxmFXJ3HHb0HT9+fSM=
+	b=PeiK9FYa+vHbvPZvu31LoP8g5LskAbiIs3JyR4a9SqTcagxqQjsHH0jV7WuU0HLHt
+	 Ati2CC2ZAy2kDbtylEv4UjnYyzOhoV/E4W/3rLX2v3ry1IXGyf11Z3Cvs29p33dM4F
+	 pCTSq/93aCwJlMzgSdFvGpMH0u5lWWF2cLi+L9Y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+30754ca335e6fb7e3092@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 09/64] wifi: cfg80211: fix use-after-free in cmp_bss()
+Subject: [PATCH 5.10 31/52] iio: chemical: pms7003: use aligned_s64 for timestamp
 Date: Sun,  7 Sep 2025 21:57:51 +0200
-Message-ID: <20250907195603.661140385@linuxfoundation.org>
+Message-ID: <20250907195602.887062180@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 26e84445f02ce6b2fe5f3e0e28ff7add77f35e08 ]
+[ Upstream commit 6ffa698674053e82e811520642db2650d00d2c01 ]
 
-Following bss_free() quirk introduced in commit 776b3580178f
-("cfg80211: track hidden SSID networks properly"), adjust
-cfg80211_update_known_bss() to free the last beacon frame
-elements only if they're not shared via the corresponding
-'hidden_beacon_bss' pointer.
+Follow the pattern of other drivers and use aligned_s64 for the
+timestamp. This will ensure that the timestamp is correctly aligned on
+all architectures.
 
-Reported-by: syzbot+30754ca335e6fb7e3092@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=30754ca335e6fb7e3092
-Fixes: 3ab8227d3e7d ("cfg80211: refactor cfg80211_bss_update")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20250813135236.799384-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Also move the unaligned.h header while touching this since it was the
+only one not in alphabetical order.
+
+Fixes: 13e945631c2f ("iio:chemical:pms7003: Fix timestamp alignment and prevent data leak.")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250417-iio-more-timestamp-alignment-v1-4-eafac1e22318@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ linux/unaligned.h => asm/unaligned.h ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/scan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/chemical/pms7003.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index d977d7a7675e1..e2b4149e5ff43 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1768,7 +1768,8 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
- 			 */
+--- a/drivers/iio/chemical/pms7003.c
++++ b/drivers/iio/chemical/pms7003.c
+@@ -5,7 +5,6 @@
+  * Copyright (c) Tomasz Duszynski <tduszyns@gmail.com>
+  */
  
- 			f = rcu_access_pointer(new->pub.beacon_ies);
--			kfree_rcu((struct cfg80211_bss_ies *)f, rcu_head);
-+			if (!new->pub.hidden_beacon_bss)
-+				kfree_rcu((struct cfg80211_bss_ies *)f, rcu_head);
- 			return false;
- 		}
+-#include <asm/unaligned.h>
+ #include <linux/completion.h>
+ #include <linux/device.h>
+ #include <linux/errno.h>
+@@ -19,6 +18,8 @@
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/serdev.h>
++#include <linux/types.h>
++#include <asm/unaligned.h>
  
--- 
-2.50.1
-
+ #define PMS7003_DRIVER_NAME "pms7003"
+ 
+@@ -76,7 +77,7 @@ struct pms7003_state {
+ 	/* Used to construct scan to push to the IIO buffer */
+ 	struct {
+ 		u16 data[3]; /* PM1, PM2P5, PM10 */
+-		s64 ts;
++		aligned_s64 ts;
+ 	} scan;
+ };
+ 
 
 
 
