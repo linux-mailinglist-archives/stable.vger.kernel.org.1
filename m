@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FFBFB47D76
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:12:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E62B1B47EFB
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC62F179833
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:12:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E48871B20ADD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996D027F754;
-	Sun,  7 Sep 2025 20:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FAA41DE8AF;
+	Sun,  7 Sep 2025 20:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KARu9hmG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOlYS64n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582761CDFAC;
-	Sun,  7 Sep 2025 20:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D022F15C158;
+	Sun,  7 Sep 2025 20:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275934; cv=none; b=chWDD/Wi5VS8yVnbSpvNEZr2uuWW2NizLNpTH4ThjZKRC0aBXIsY5qg6kNFzkVM/9FkzHdnf0OQkK+71Qt5QQNqSPvPsxMFOn4mRLnJHlbKHn1UxwqCispPMEE9VHuOhPeXWO6vKCd2NOAZF7kxmBAxMl5h8kCwm9h7GHzp72JE=
+	t=1757277082; cv=none; b=cTrccymREQkD/1vsHuF4+JGyvG7qJxWmk4vsKvMXELkd5aowY0JWrjn5JLwZUzrT6RcstQtwqgIgPL5wbrnOuXmrbgMU97an9vCyarU+eV5GHF3vAh3nc52omPsayiUDAv4il1nMFz/GrxjyIA8fAwOZBoSNSkgVuv02GceY7UI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275934; c=relaxed/simple;
-	bh=PM+ENQZLkulpFeLxq4rK9e5+wwOFtxxA//qxHHYRrOA=;
+	s=arc-20240116; t=1757277082; c=relaxed/simple;
+	bh=IBT/JDhAm/kcsNBSvCqmcPUCuJarHnxxqbfZIg5mCKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A42fMXkHGP+7+PrFPF227qFXIbSS6DCpmP3w97oPe95s0mrM1wa7CoeHBgJtMiCtchOXkMKRvFm2wRcVEH64hwV3brlta9xxFmUF4lwyrTUG80VCwZvA762huGt5oGl88UZRK42/JULpjnsDzuX7ekwlnggs/0z3wczmlsRuZ1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KARu9hmG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B77C4CEF0;
-	Sun,  7 Sep 2025 20:12:13 +0000 (UTC)
+	 MIME-Version; b=NsJ8hUGD/hO4tZjeITk9tF4fxegNELT8h2kPXZBmdjyxL8c/VgLbm6Xni05JhW1TYUCXHLOrm7/fTF/9TKIC/rGE7BeC66LEadL03kYHaZciqqWY1jG3RADFa8x3cX/hhAc+IOv0omO+HAJSM+dZqoKTsXgHcf4IDvRtDfNLelA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOlYS64n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D601C4CEF0;
+	Sun,  7 Sep 2025 20:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275933;
-	bh=PM+ENQZLkulpFeLxq4rK9e5+wwOFtxxA//qxHHYRrOA=;
+	s=korg; t=1757277082;
+	bh=IBT/JDhAm/kcsNBSvCqmcPUCuJarHnxxqbfZIg5mCKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KARu9hmGpMF3G6jQlfpCW7W1/nNzelqpupTdc92dByTxXE6VR7SWIslSbsvgjXzu9
-	 1ytC+4SVDZNPndI12bAntloRVK2bCevBiyhqirvN/0x9cZ/HxtWfN3L1O7c9eqUuOV
-	 vr9GhtLlme9ye1+7jJyyDhyEv9atQmM+5XaQeQvo=
+	b=XOlYS64nYRo7tX//VycH2SXznASJT3M+GxnIv3sTQpO3wVN7lpFpzXy4NeIVZfwTz
+	 oavusn0TwGtxQ3cvfG+Jrc8SIT7cMredMn23b6AKexOHP034dPUn06PuzoUcvSLjbm
+	 G18Q24TET0hO0UKaha/HdpRjlOKfaGmIM8lS5lkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Phil Sutter <phil@nwl.cc>,
-	Florian Westphal <fw@strlen.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 11/64] netfilter: conntrack: helper: Replace -EEXIST by -EBUSY
+Subject: [PATCH 6.12 078/175] wifi: libertas: cap SSID len in lbs_associate()
 Date: Sun,  7 Sep 2025 21:57:53 +0200
-Message-ID: <20250907195603.717309185@linuxfoundation.org>
+Message-ID: <20250907195616.682929288@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 54416fd76770bd04fc3c501810e8d673550bab26 ]
+[ Upstream commit c786794bd27b0d7a5fd9063695df83206009be59 ]
 
-The helper registration return value is passed-through by module_init
-callbacks which modprobe confuses with the harmless -EEXIST returned
-when trying to load an already loaded module.
+If the ssid_eid[1] length is more that 32 it leads to memory corruption.
 
-Make sure modprobe fails so users notice their helper has not been
-registered and won't work.
-
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/2a40f5ec7617144aef412034c12919a4927d90ad.1756456951.git.dan.carpenter@linaro.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/marvell/libertas/cfg.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
-index 41c9708b50575..de5ac9f431031 100644
---- a/net/netfilter/nf_conntrack_helper.c
-+++ b/net/netfilter/nf_conntrack_helper.c
-@@ -418,7 +418,7 @@ int nf_conntrack_helper_register(struct nf_conntrack_helper *me)
- 			    (cur->tuple.src.l3num == NFPROTO_UNSPEC ||
- 			     cur->tuple.src.l3num == me->tuple.src.l3num) &&
- 			    cur->tuple.dst.protonum == me->tuple.dst.protonum) {
--				ret = -EEXIST;
-+				ret = -EBUSY;
- 				goto out;
- 			}
- 		}
-@@ -429,7 +429,7 @@ int nf_conntrack_helper_register(struct nf_conntrack_helper *me)
- 		hlist_for_each_entry(cur, &nf_ct_helper_hash[h], hnode) {
- 			if (nf_ct_tuple_src_mask_cmp(&cur->tuple, &me->tuple,
- 						     &mask)) {
--				ret = -EEXIST;
-+				ret = -EBUSY;
- 				goto out;
- 			}
- 		}
+diff --git a/drivers/net/wireless/marvell/libertas/cfg.c b/drivers/net/wireless/marvell/libertas/cfg.c
+index afe9bcd3ad46d..37bb788f83e36 100644
+--- a/drivers/net/wireless/marvell/libertas/cfg.c
++++ b/drivers/net/wireless/marvell/libertas/cfg.c
+@@ -1150,10 +1150,13 @@ static int lbs_associate(struct lbs_private *priv,
+ 	/* add SSID TLV */
+ 	rcu_read_lock();
+ 	ssid_eid = ieee80211_bss_get_ie(bss, WLAN_EID_SSID);
+-	if (ssid_eid)
+-		pos += lbs_add_ssid_tlv(pos, ssid_eid + 2, ssid_eid[1]);
+-	else
++	if (ssid_eid) {
++		u32 ssid_len = min(ssid_eid[1], IEEE80211_MAX_SSID_LEN);
++
++		pos += lbs_add_ssid_tlv(pos, ssid_eid + 2, ssid_len);
++	} else {
+ 		lbs_deb_assoc("no SSID\n");
++	}
+ 	rcu_read_unlock();
+ 
+ 	/* add DS param TLV */
 -- 
 2.50.1
 
