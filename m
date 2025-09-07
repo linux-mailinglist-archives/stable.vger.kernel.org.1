@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-178567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A7FB47F30
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:34:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD81EB47D37
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7976C17F827
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:34:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3107517BEB5
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BECA211A14;
-	Sun,  7 Sep 2025 20:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C7629C351;
+	Sun,  7 Sep 2025 20:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4JjNTg8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCmP9Jzm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198441A0BFD;
-	Sun,  7 Sep 2025 20:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D1C22F74D;
+	Sun,  7 Sep 2025 20:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277249; cv=none; b=ZIv9/Nw4SLkixR+M/1k27fB/BSnq3SlNxf9lVIU55uc/XVLr/ZwJPECb1rIPBWxBR2wFYyj41L5V4tob1HgFfDhwVpjODhLCE3xmj/yCGkwWYfqKjyjOl8Yqj4GklG9Y1jg8SwDBRNMY2wZ6AHqeHqVpF5dV8czJU30pVfWrQU8=
+	t=1757275735; cv=none; b=CCIr+TPn8IIK6sUelR1Z4H0gz6B0sR3ebqctDZZcr6whi/4q3z73bqxEUaceVA5wUQN+sjxqyg9ASb7enjmSnRZVjiuxGviZeuFdIar3V00EnelfcCxaw5/iSIzwP4PVApugjdDOjOOqfD9/lS9Y8iDEWvuCGWXJ7j7EpKcPuQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277249; c=relaxed/simple;
-	bh=9Lbg2U0uZHKNMqXBvM2TKntcL4skhtLGi0v5B8hEnwo=;
+	s=arc-20240116; t=1757275735; c=relaxed/simple;
+	bh=JHXI5DOjm/mDkLeQ3IOQWKnRd+GIPAUGWtkK2jLkxJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HVoe1r1zRGNBe5LfUUlVy1HGzebPxMoUWoNVbmoFjhOsurCs3/csoKqy+DHI98zlRjkQg8o6Is33UhZOFQDlu+ORpG3YsMG0DUgvb6r9pG8DRUdCH/Is6+zI1V1pDrtIL4Cqksifvz9XodhFjd8pomdkoVh4DoK9dwKSsLkUUjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4JjNTg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDCFC4CEF0;
-	Sun,  7 Sep 2025 20:34:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e6rT/5ZkxAhCUCtxeOgiNdtsOzh+V8MdbP/nEXrdxg+J6GYqvje42Snq1HqOUP7UJvP0QIHinqwxIe1ZnxRJyvb2dvA8RjakIIeHzlCDsgaCFVEq7/1rwEUEVc/bHrxTfXQzqGEwpkbdgF2WlWtRdQruTsyla2LwRQXIyNdcO+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCmP9Jzm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0E1C4CEF8;
+	Sun,  7 Sep 2025 20:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277249;
-	bh=9Lbg2U0uZHKNMqXBvM2TKntcL4skhtLGi0v5B8hEnwo=;
+	s=korg; t=1757275735;
+	bh=JHXI5DOjm/mDkLeQ3IOQWKnRd+GIPAUGWtkK2jLkxJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e4JjNTg8xuF/EPKEuYAphK118OHzGALfMuleAN0OfhXd1wCmce5if8EokqH8EG68+
-	 jgKSOJvKEkGY2GW4u8lDp+Ua++omNGyM3BL/8SjwTotnF2KSu/3pbNU0rn5lPvigCM
-	 6XzpR9eEZ8sO12VifVkqZKj7P4qDJ/PdpA0LLDVk=
+	b=TCmP9JzmlrldaZ/qhrz0PiK9RdcdxkgcykpRIu3YzlkFlxi5M4oK5AHawu89jwPJp
+	 UBFsIiItSzHU2CdeeypSQnfamqIS2gDrS1o2MzzHAvt/MgRSOnuS7W/0ByDqkdHRWs
+	 wiyVbTaEQ/E72x3v/natEkSSmj68i+PTTWkqXbEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernard Pidoux <f6bvp@free.fr>,
-	Eric Dumazet <edumazet@google.com>,
-	Joerg Reuter <jreuter@yaina.de>,
-	David Ranch <dranch@trinnet.net>,
-	Folkert van Heusden <folkert@vanheusden.com>,
-	Dan Cross <crossd@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Mark Brown <broonie@kernel.org>,
+	WangYuli <wangyuli@uniontech.com>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/175] ax25: properly unshare skbs in ax25_kiss_rcv()
+Subject: [PATCH 5.10 40/52] randstruct: gcc-plugin: Remove bogus void member
 Date: Sun,  7 Sep 2025 21:58:00 +0200
-Message-ID: <20250907195616.847803733@linuxfoundation.org>
+Message-ID: <20250907195603.133313000@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +62,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 8156210d36a43e76372312c87eb5ea3dbb405a85 ]
+[ Upstream commit e136a4062174a9a8d1c1447ca040ea81accfa6a8 ]
 
-Bernard Pidoux reported a regression apparently caused by commit
-c353e8983e0d ("net: introduce per netns packet chains").
+When building the randomized replacement tree of struct members, the
+randstruct GCC plugin would insert, as the first member, a 0-sized void
+member. This appears as though it was done to catch non-designated
+("unnamed") static initializers, which wouldn't be stable since they
+depend on the original struct layout order.
 
-skb->dev becomes NULL and we crash in __netif_receive_skb_core().
+This was accomplished by having the side-effect of the "void member"
+tripping an assert in GCC internals (count_type_elements) if the member
+list ever needed to be counted (e.g. for figuring out the order of members
+during a non-designated initialization), which would catch impossible type
+(void) in the struct:
 
-Before above commit, different kind of bugs or corruptions could happen
-without a major crash.
+security/landlock/fs.c: In function ‘hook_file_ioctl_common’:
+security/landlock/fs.c:1745:61: internal compiler error: in count_type_elements, at expr.cc:7075
+ 1745 |                         .u.op = &(struct lsm_ioctlop_audit) {
+      |                                                             ^
 
-But the root cause is that ax25_kiss_rcv() can queue/mangle input skb
-without checking if this skb is shared or not.
+static HOST_WIDE_INT
+count_type_elements (const_tree type, bool for_ctor_p)
+{
+  switch (TREE_CODE (type))
+...
+    case VOID_TYPE:
+    default:
+      gcc_unreachable ();
+    }
+}
 
-Many thanks to Bernard Pidoux for his help, diagnosis and tests.
+However this is a redundant safety measure since randstruct uses the
+__designated_initializer attribute both internally and within the
+__randomized_layout attribute macro so that this would be enforced
+by the compiler directly even when randstruct was not enabled (via
+-Wdesignated-init).
 
-We had a similar issue years ago fixed with commit 7aaed57c5c28
-("phonet: properly unshare skbs in phonet_rcv()").
+A recent change in Landlock ended up tripping the same member counting
+routine when using a full-struct copy initializer as part of an anonymous
+initializer. This, however, is a false positive as the initializer is
+copying between identical structs (and hence identical layouts). The
+"path" member is "struct path", a randomized struct, and is being copied
+to from another "struct path", the "f_path" member:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Bernard Pidoux <f6bvp@free.fr>
-Closes: https://lore.kernel.org/netdev/1713f383-c538-4918-bc64-13b3288cd542@free.fr/
-Tested-by: Bernard Pidoux <f6bvp@free.fr>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Joerg Reuter <jreuter@yaina.de>
-Cc: David Ranch <dranch@trinnet.net>
-Cc: Folkert van Heusden <folkert@vanheusden.com>
-Reviewed-by: Dan Cross <crossd@gmail.com>
-Link: https://patch.msgid.link/20250902124642.212705-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+        landlock_log_denial(landlock_cred(file->f_cred), &(struct landlock_request) {
+                .type = LANDLOCK_REQUEST_FS_ACCESS,
+                .audit = {
+                        .type = LSM_AUDIT_DATA_IOCTL_OP,
+                        .u.op = &(struct lsm_ioctlop_audit) {
+                                .path = file->f_path,
+                                .cmd = cmd,
+                        },
+                },
+	...
+
+As can be seen with the coming randstruct KUnit test, there appears to
+be no behavioral problems with this kind of initialization when the void
+member is removed from the randstruct GCC plugin, so remove it.
+
+Reported-by: "Dr. David Alan Gilbert" <linux@treblig.org>
+Closes: https://lore.kernel.org/lkml/Z_PRaKx7q70MKgCA@gallifrey/
+Reported-by: Mark Brown <broonie@kernel.org>
+Closes: https://lore.kernel.org/lkml/20250407-kbuild-disable-gcc-plugins-v1-1-5d46ae583f5e@kernel.org/
+Reported-by: WangYuli <wangyuli@uniontech.com>
+Closes: https://lore.kernel.org/lkml/337D5D4887277B27+3c677db3-a8b9-47f0-93a4-7809355f1381@uniontech.com/
+Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Stable-dep-of: f39f18f3c353 ("randstruct: gcc-plugin: Fix attribute addition")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ax25/ax25_in.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ scripts/gcc-plugins/randomize_layout_plugin.c |   18 +-----------------
+ 1 file changed, 1 insertion(+), 17 deletions(-)
 
-diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
-index 1cac25aca6378..f2d66af863595 100644
---- a/net/ax25/ax25_in.c
-+++ b/net/ax25/ax25_in.c
-@@ -433,6 +433,10 @@ static int ax25_rcv(struct sk_buff *skb, struct net_device *dev,
- int ax25_kiss_rcv(struct sk_buff *skb, struct net_device *dev,
- 		  struct packet_type *ptype, struct net_device *orig_dev)
- {
-+	skb = skb_share_check(skb, GFP_ATOMIC);
-+	if (!skb)
-+		return NET_RX_DROP;
-+
- 	skb_orphan(skb);
+--- a/scripts/gcc-plugins/randomize_layout_plugin.c
++++ b/scripts/gcc-plugins/randomize_layout_plugin.c
+@@ -377,29 +377,13 @@ static int relayout_struct(tree type)
  
- 	if (!net_eq(dev_net(dev), &init_net)) {
--- 
-2.50.1
-
+ 	shuffle(type, (tree *)newtree, shuffle_length);
+ 
+-	/*
+-	 * set up a bogus anonymous struct field designed to error out on unnamed struct initializers
+-	 * as gcc provides no other way to detect such code
+-	 */
+-	list = make_node(FIELD_DECL);
+-	TREE_CHAIN(list) = newtree[0];
+-	TREE_TYPE(list) = void_type_node;
+-	DECL_SIZE(list) = bitsize_zero_node;
+-	DECL_NONADDRESSABLE_P(list) = 1;
+-	DECL_FIELD_BIT_OFFSET(list) = bitsize_zero_node;
+-	DECL_SIZE_UNIT(list) = size_zero_node;
+-	DECL_FIELD_OFFSET(list) = size_zero_node;
+-	DECL_CONTEXT(list) = type;
+-	// to satisfy the constify plugin
+-	TREE_READONLY(list) = 1;
+-
+ 	for (i = 0; i < num_fields - 1; i++)
+ 		TREE_CHAIN(newtree[i]) = newtree[i+1];
+ 	TREE_CHAIN(newtree[num_fields - 1]) = NULL_TREE;
+ 
+ 	main_variant = TYPE_MAIN_VARIANT(type);
+ 	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant)) {
+-		TYPE_FIELDS(variant) = list;
++		TYPE_FIELDS(variant) = newtree[0];
+ 		TYPE_ATTRIBUTES(variant) = copy_list(TYPE_ATTRIBUTES(variant));
+ 		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("randomize_performed"), NULL_TREE, TYPE_ATTRIBUTES(variant));
+ 		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("designated_init"), NULL_TREE, TYPE_ATTRIBUTES(variant));
 
 
 
