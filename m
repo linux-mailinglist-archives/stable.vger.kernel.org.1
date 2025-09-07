@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-178680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE54B47FA2
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:40:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE16B47D59
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:10:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79FBD200463
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:40:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C99C17C198
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E381421ADAE;
-	Sun,  7 Sep 2025 20:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB791F09A5;
+	Sun,  7 Sep 2025 20:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDRuKs2/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIlHF+mK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F22D4315A;
-	Sun,  7 Sep 2025 20:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6F91CDFAC;
+	Sun,  7 Sep 2025 20:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277612; cv=none; b=oHIGT6qpZBd60t/d2BZ06QLstpzrBfyuomMwt9pAfWX0ndY9sFSAP+PKqE1sU98Q//HxyJzKJRXm8XySWmEiv5ULyNeZXNiOzhpHojLb7I+17FXs/Sgx4AjQnCqKuXV/CHSeHVBbL0BZTEno4czU5GTlX7OeRVFoZbzsW0p1LxM=
+	t=1757275844; cv=none; b=NadA6fFvbFKDQBPvlziKTiiFA33boDcFY/2OAM4kSpuAVkk4ZJ2yXrqHA6JlLINEyUvy1rZ/ZoOLNTTDez+8htntPd7QRKLJQQs/4NXaTxdzH2lN4gwtEfhc13Sx4MJ7SqZfypfZoIkbcCPyXWww+za9p1VlW/PI42Zy4xlcdr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277612; c=relaxed/simple;
-	bh=ho54NgqyZjkjWOoRUaTPB2T5rQ8iNQNyysN3GaJOcVY=;
+	s=arc-20240116; t=1757275844; c=relaxed/simple;
+	bh=bJfV83o661DJSftCwJP6kQy/P+cHU5gi//4G+5IPHCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PR8HeSojkDFEgoOP/HDnlol2ZhI6SUMgnxz7TCGOaABzvhME6TudcM0Cm00/WsWPh4JTYt30BHG6AZpnmVuU6YdNcDmgG4mGYHgMPa0RcVvyNSwBEEflqhfuO//hdgCnH4jOlfEFtskNHquG8Xn9A6PQNIEbID+gPPTPSYwVfxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDRuKs2/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1845CC4CEF0;
-	Sun,  7 Sep 2025 20:40:11 +0000 (UTC)
+	 MIME-Version; b=qOyq3MF+XyRU4n+wLC6+rKvdEoZ36v2Sv9QoKYxtdTRPSNoEp9H7GCCunMI9ufO6gqKVHpJ3ssHTgWLdHgQ9s9/o3UrbInuJtUVl5Fuzy5cSt2xGL+5vp1mcpZSrAlu5uKih4FT6akI3qd1Fm3xI4e6Y0SuroYC58FcQPat3qAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIlHF+mK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E91AC4CEF0;
+	Sun,  7 Sep 2025 20:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277612;
-	bh=ho54NgqyZjkjWOoRUaTPB2T5rQ8iNQNyysN3GaJOcVY=;
+	s=korg; t=1757275844;
+	bh=bJfV83o661DJSftCwJP6kQy/P+cHU5gi//4G+5IPHCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fDRuKs2/f9PQEvEpYWWoDc29mOYe4HOIbr8lLscSR9/zofRP+Xxy29kTKdw1Hpz9q
-	 FfvhhaBCAAIP1DtNYaW4+dJ3ZqEakY6jaSClCKD1Wx+7M65Stsz1dY6iHna52qkW7x
-	 iZynakJLA20GqGXT/WKplcgldgIo6Q5NRMd/zR+s=
+	b=GIlHF+mK9E2KrXZmXeUcvyANHmjWTu39U4tQtAmFq8MNH9kEdF9kGH50Ngd4/UdNl
+	 988l+8Q1zKq4iKpHlildnLOIcHrZCA/YF0liJOpAhG6vjLfDprOueG8WBO+0CQOVCB
+	 f+LFKvzo3TgqRgJkGd71s5M8JIvefkP0LeAPq+jI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Liu <jianliu@redhat.com>,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Simon Horman <horms@kernel.org>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 067/183] idpf: set mac type when adding and removing MAC filters
+Subject: [PATCH 5.4 28/45] KVM: x86: Take irqfds.lock when adding/deleting IRQ bypass producer
 Date: Sun,  7 Sep 2025 21:58:14 +0200
-Message-ID: <20250907195617.386542393@linuxfoundation.org>
+Message-ID: <20250907195601.789753353@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,121 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit acf3a5c8be80fe238c1a7629db1c21c74a1f9dd4 ]
+[ Upstream commit f1fb088d9cecde5c3066d8ff8846789667519b7d ]
 
-On control planes that allow changing the MAC address of the interface,
-the driver must provide a MAC type to avoid errors such as:
+Take irqfds.lock when adding/deleting an IRQ bypass producer to ensure
+irqfd->producer isn't modified while kvm_irq_routing_update() is running.
+The only lock held when a producer is added/removed is irqbypass's mutex.
 
-idpf 0000:0a:00.0: Transaction failed (op 535)
-idpf 0000:0a:00.0: Received invalid MAC filter payload (op 535) (len 0)
-idpf 0000:0a:00.0: Transaction failed (op 536)
-
-These errors occur during driver load or when changing the MAC via:
-ip link set <iface> address <mac>
-
-Add logic to set the MAC type when sending ADD/DEL (opcodes 535/536) to
-the control plane. Since only one primary MAC is supported per vport, the
-driver only needs to send an ADD opcode when setting it. Remove the old
-address by calling __idpf_del_mac_filter(), which skips the message and
-just clears the entry from the internal list. This avoids an error on DEL
-as it attempts to remove an address already cleared by the preceding ADD
-opcode.
-
-Fixes: ce1b75d0635c ("idpf: add ptypes and MAC filter support")
-Reported-by: Jian Liu <jianliu@redhat.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 872768800652 ("KVM: x86: select IRQ_BYPASS_MANAGER")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-5-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_lib.c      |  9 ++++++---
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 12 ++++++++++++
- 2 files changed, 18 insertions(+), 3 deletions(-)
+ arch/x86/kvm/x86.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index e9f8da9f7979b..5fc6147ecd93c 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -2277,6 +2277,7 @@ static int idpf_set_mac(struct net_device *netdev, void *p)
- 	struct idpf_netdev_priv *np = netdev_priv(netdev);
- 	struct idpf_vport_config *vport_config;
- 	struct sockaddr *addr = p;
-+	u8 old_mac_addr[ETH_ALEN];
- 	struct idpf_vport *vport;
- 	int err = 0;
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10394,11 +10394,18 @@ int kvm_arch_irq_bypass_add_producer(str
+ {
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
++	struct kvm *kvm = irqfd->kvm;
++	int ret;
  
-@@ -2300,17 +2301,19 @@ static int idpf_set_mac(struct net_device *netdev, void *p)
- 	if (ether_addr_equal(netdev->dev_addr, addr->sa_data))
- 		goto unlock_mutex;
++	spin_lock_irq(&kvm->irqfds.lock);
+ 	irqfd->producer = prod;
  
-+	ether_addr_copy(old_mac_addr, vport->default_mac_addr);
-+	ether_addr_copy(vport->default_mac_addr, addr->sa_data);
- 	vport_config = vport->adapter->vport_config[vport->idx];
- 	err = idpf_add_mac_filter(vport, np, addr->sa_data, false);
- 	if (err) {
- 		__idpf_del_mac_filter(vport_config, addr->sa_data);
-+		ether_addr_copy(vport->default_mac_addr, netdev->dev_addr);
- 		goto unlock_mutex;
- 	}
- 
--	if (is_valid_ether_addr(vport->default_mac_addr))
--		idpf_del_mac_filter(vport, np, vport->default_mac_addr, false);
-+	if (is_valid_ether_addr(old_mac_addr))
-+		__idpf_del_mac_filter(vport_config, old_mac_addr);
- 
--	ether_addr_copy(vport->default_mac_addr, addr->sa_data);
- 	eth_hw_addr_set(netdev, addr->sa_data);
- 
- unlock_mutex:
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 24febaaa8fbb8..cb9a27307670e 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -3507,6 +3507,16 @@ u32 idpf_get_vport_id(struct idpf_vport *vport)
- 	return le32_to_cpu(vport_msg->vport_id);
+-	return kvm_x86_ops->update_pi_irte(irqfd->kvm,
++	ret = kvm_x86_ops->update_pi_irte(irqfd->kvm,
+ 					   prod->irq, irqfd->gsi, 1);
++
++	spin_unlock_irq(&kvm->irqfds.lock);
++
++	return ret;
  }
  
-+static void idpf_set_mac_type(struct idpf_vport *vport,
-+			      struct virtchnl2_mac_addr *mac_addr)
-+{
-+	bool is_primary;
+ void kvm_arch_irq_bypass_del_producer(struct irq_bypass_consumer *cons,
+@@ -10407,9 +10414,9 @@ void kvm_arch_irq_bypass_del_producer(st
+ 	int ret;
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
++	struct kvm *kvm = irqfd->kvm;
+ 
+ 	WARN_ON(irqfd->producer != prod);
+-	irqfd->producer = NULL;
+ 
+ 	/*
+ 	 * When producer of consumer is unregistered, we change back to
+@@ -10417,10 +10424,15 @@ void kvm_arch_irq_bypass_del_producer(st
+ 	 * when the irq is masked/disabled or the consumer side (KVM
+ 	 * int this case doesn't want to receive the interrupts.
+ 	*/
++	spin_lock_irq(&kvm->irqfds.lock);
++	irqfd->producer = NULL;
 +
-+	is_primary = ether_addr_equal(vport->default_mac_addr, mac_addr->addr);
-+	mac_addr->type = is_primary ? VIRTCHNL2_MAC_ADDR_PRIMARY :
-+				      VIRTCHNL2_MAC_ADDR_EXTRA;
-+}
+ 	ret = kvm_x86_ops->update_pi_irte(irqfd->kvm, prod->irq, irqfd->gsi, 0);
+ 	if (ret)
+ 		printk(KERN_INFO "irq bypass consumer (token %p) unregistration"
+ 		       " fails: %d\n", irqfd->consumer.token, ret);
 +
- /**
-  * idpf_mac_filter_async_handler - Async callback for mac filters
-  * @adapter: private data struct
-@@ -3636,6 +3646,7 @@ int idpf_add_del_mac_filters(struct idpf_vport *vport,
- 			    list) {
- 		if (add && f->add) {
- 			ether_addr_copy(mac_addr[i].addr, f->macaddr);
-+			idpf_set_mac_type(vport, &mac_addr[i]);
- 			i++;
- 			f->add = false;
- 			if (i == total_filters)
-@@ -3643,6 +3654,7 @@ int idpf_add_del_mac_filters(struct idpf_vport *vport,
- 		}
- 		if (!add && f->remove) {
- 			ether_addr_copy(mac_addr[i].addr, f->macaddr);
-+			idpf_set_mac_type(vport, &mac_addr[i]);
- 			i++;
- 			f->remove = false;
- 			if (i == total_filters)
--- 
-2.50.1
-
++	spin_unlock_irq(&kvm->irqfds.lock);
+ }
+ 
+ int kvm_arch_update_irqfd_routing(struct kvm *kvm, unsigned int host_irq,
 
 
 
