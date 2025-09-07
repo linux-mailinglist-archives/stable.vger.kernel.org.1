@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0D4B47FDA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF00BB47EA1
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:26:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E04F3C3B45
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C983C1B201A6
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C9921ADAE;
-	Sun,  7 Sep 2025 20:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF418212560;
+	Sun,  7 Sep 2025 20:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvvGkgPw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgyWmysR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CC84315A;
-	Sun,  7 Sep 2025 20:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D733D528;
+	Sun,  7 Sep 2025 20:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277790; cv=none; b=XplfacgUV62Kxu+rMpigNYljJoJ4uxlhnkjzHPkYqHA1q4d2Dmu8rZHmJo23o6IOaig+mS3AfAHuTZo0MBiivopFie+kauEOY+3nGDhtSy9LNq0Zij/p4+m6ogc63Q35rcwK/i1TWEZvZhGtABio/sskwDr9e7bjSCyNUVt/gJU=
+	t=1757276810; cv=none; b=p/qPBhdIDBeOI8nd40hwdGdJwOM3AiQqdf09plPnEZ6J0kiFbPDCvU6qgr76iQv2I3GpL9eTchEPB6UkejsspICLPJjqNojDGF+MCdpfaWkNGDkwEL8Rsz6eh/SJumiR6YqZ4oJXDgxU2HZaRI+zJjJ9bU8+nJVL824XAfa3N7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277790; c=relaxed/simple;
-	bh=KX3nbM39NPj5WSYM/mG/vqfy3MsDs/Aif/xN8HsOA2w=;
+	s=arc-20240116; t=1757276810; c=relaxed/simple;
+	bh=KkcU8VqnrAHzCfARl4gFaTvB8CvuklKt/pGilt9Dm4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s6EmqAEmM6+EHd6GsUxFdeFVjzH+oKS371IU+043dd5hrhHh3tq5LSm2m6Qgvp3rDTVJ58vuEY2pWvfwcH+SNNvXxD8601s/LGsglAdtVEULr6E+yRd4yRhUW8BiMbFEfjczSrxz1VL5yl8Lzh5LuMk1J3FUiEZoyadn4mqgDak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvvGkgPw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A93C4CEF0;
-	Sun,  7 Sep 2025 20:43:09 +0000 (UTC)
+	 MIME-Version; b=cVxQLeCeR7SSgy5MoxSwqraMGylgB/v7xMStlFefL2rIoFho3bTwJXk/TYgMC6Zr/j+NXzV81DyaF8J/tNr8Ruze6U26/jQVzLz0OR9hJ5cq/Z3FhA7I5/CKThTPHiCD4v+LXZi/MIo9IFWCQe0oS5peAAU4ZjUOytBqyOXs9+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgyWmysR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231EBC4CEF0;
+	Sun,  7 Sep 2025 20:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277790;
-	bh=KX3nbM39NPj5WSYM/mG/vqfy3MsDs/Aif/xN8HsOA2w=;
+	s=korg; t=1757276810;
+	bh=KkcU8VqnrAHzCfARl4gFaTvB8CvuklKt/pGilt9Dm4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvvGkgPwlN0+SvnTFXSxQa5r4sNfs0e+Ii1SUzYUHXXqGBNqCgFF67g1O7v7qo6QS
-	 sKRttqvwQpYgo+x0ZWNfPIWJAcQdxyQ+/YXKv6CiSxvgkDpA3QwgSwxI7aGusS/E/E
-	 JdxWNn19ZpuZU5+2he/vsYa/rmVVXEB0gwq8ahuY=
+	b=ZgyWmysRR49TODsARk3wXHpmYKGrWKBg+PMk9xlQ1vbCpqtnFLMPHQ5mAVe41jwoR
+	 gqoJofOMLv98CqdF+AaRS8Gz4P2Hd90w8NaLhFe5vrN/rKYSqty1Klc9F96ZbduHk4
+	 Pep13mXjxLdZlRGdCb54OfOKH2Ucmu+dIX8Dtnk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.16 125/183] drm/xe: Fix incorrect migration of backed-up object to VRAM
-Date: Sun,  7 Sep 2025 21:59:12 +0200
-Message-ID: <20250907195618.760629865@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 117/121] cpufreq: intel_pstate: Rearrange show_no_turbo() and store_no_turbo()
+Date: Sun,  7 Sep 2025 21:59:13 +0200
+Message-ID: <20250907195612.852263034@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 379b3c983fc0257c183052278832ac68e3ccd33b upstream.
+[ Upstream commit c626a438452079824139f97137f17af47b1a8989 ]
 
-If an object is backed up to shmem it is incorrectly identified
-as not having valid data by the move code. This means moving
-to VRAM skips the -EMULTIHOP step and the bo is cleared. This
-causes all sorts of weird behaviour on DGFX if an already evicted
-object is targeted by the shrinker.
+Now that global.turbo_disabled can only change at the cpufreq driver
+registration time, initialize global.no_turbo at that time too so they
+are in sync to start with (if the former is set, the latter cannot be
+updated later anyway).
 
-Fix this by using ttm_tt_is_swapped() to identify backed-up
-objects.
+That allows show_no_turbo() to be simlified because it does not need
+to check global.turbo_disabled and store_no_turbo() can be rearranged
+to avoid doing anything if the new value of global.no_turbo is equal
+to the current one and only return an error on attempts to clear
+global.no_turbo when global.turbo_disabled.
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5996
-Fixes: 00c8efc3180f ("drm/xe: Add a shrinker for xe bos")
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: <stable@vger.kernel.org> # v6.15+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://lore.kernel.org/r/20250828134837.5709-1-thomas.hellstrom@linux.intel.com
-(cherry picked from commit 1047bd82794a1eab64d643f196d09171ce983f44)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While at it, eliminate the redundant ret variable from store_no_turbo().
+
+No intentional functional impact.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Stable-dep-of: 350cbb5d2f67 ("cpufreq: intel_pstate: Check turbo_is_disabled() in store_no_turbo()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/cpufreq/intel_pstate.c | 34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -803,8 +803,7 @@ static int xe_bo_move(struct ttm_buffer_
- 		return ret;
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index abba45b1bcf2b..8bac7afb13a3d 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -1263,10 +1263,7 @@ static ssize_t show_no_turbo(struct kobject *kobj,
+ 		return -EAGAIN;
  	}
  
--	tt_has_data = ttm && (ttm_tt_is_populated(ttm) ||
--			      (ttm->page_flags & TTM_TT_FLAG_SWAPPED));
-+	tt_has_data = ttm && (ttm_tt_is_populated(ttm) || ttm_tt_is_swapped(ttm));
+-	if (global.turbo_disabled)
+-		ret = sprintf(buf, "%u\n", global.turbo_disabled);
+-	else
+-		ret = sprintf(buf, "%u\n", global.no_turbo);
++	ret = sprintf(buf, "%u\n", global.no_turbo);
  
- 	move_lacks_source = !old_mem || (handle_system_ccs ? (!bo->ccs_cleared) :
- 					 (!mem_type_is_vram(old_mem_type) && !tt_has_data));
+ 	mutex_unlock(&intel_pstate_driver_lock);
+ 
+@@ -1277,31 +1274,34 @@ static ssize_t store_no_turbo(struct kobject *a, struct kobj_attribute *b,
+ 			      const char *buf, size_t count)
+ {
+ 	unsigned int input;
+-	int ret;
++	bool no_turbo;
+ 
+-	ret = sscanf(buf, "%u", &input);
+-	if (ret != 1)
++	if (sscanf(buf, "%u", &input) != 1)
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&intel_pstate_driver_lock);
+ 
+ 	if (!intel_pstate_driver) {
+-		mutex_unlock(&intel_pstate_driver_lock);
+-		return -EAGAIN;
++		count = -EAGAIN;
++		goto unlock_driver;
+ 	}
+ 
+-	mutex_lock(&intel_pstate_limits_lock);
++	no_turbo = !!clamp_t(int, input, 0, 1);
++
++	if (no_turbo == global.no_turbo)
++		goto unlock_driver;
+ 
+ 	if (global.turbo_disabled) {
+ 		pr_notice_once("Turbo disabled by BIOS or unavailable on processor\n");
+-		mutex_unlock(&intel_pstate_limits_lock);
+-		mutex_unlock(&intel_pstate_driver_lock);
+-		return -EPERM;
++		count = -EPERM;
++		goto unlock_driver;
+ 	}
+ 
+-	global.no_turbo = clamp_t(int, input, 0, 1);
++	global.no_turbo = no_turbo;
++
++	mutex_lock(&intel_pstate_limits_lock);
+ 
+-	if (global.no_turbo) {
++	if (no_turbo) {
+ 		struct cpudata *cpu = all_cpu_data[0];
+ 		int pct = cpu->pstate.max_pstate * 100 / cpu->pstate.turbo_pstate;
+ 
+@@ -1313,8 +1313,9 @@ static ssize_t store_no_turbo(struct kobject *a, struct kobj_attribute *b,
+ 	mutex_unlock(&intel_pstate_limits_lock);
+ 
+ 	intel_pstate_update_policies();
+-	arch_set_max_freq_ratio(global.no_turbo);
++	arch_set_max_freq_ratio(no_turbo);
+ 
++unlock_driver:
+ 	mutex_unlock(&intel_pstate_driver_lock);
+ 
+ 	return count;
+@@ -3113,6 +3114,7 @@ static int intel_pstate_register_driver(struct cpufreq_driver *driver)
+ 	memset(&global, 0, sizeof(global));
+ 	global.max_perf_pct = 100;
+ 	global.turbo_disabled = turbo_is_disabled();
++	global.no_turbo = global.turbo_disabled;
+ 
+ 	arch_set_max_freq_ratio(global.turbo_disabled);
+ 
+-- 
+2.51.0
+
 
 
 
