@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 403CBB47F7C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 027D9B47DC4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE7C93C308E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:38:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3A2F3C0591
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2716285056;
-	Sun,  7 Sep 2025 20:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E4620E029;
+	Sun,  7 Sep 2025 20:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NydZi+YJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzMrMVvo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68677275AF6;
-	Sun,  7 Sep 2025 20:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649081E0DE8;
+	Sun,  7 Sep 2025 20:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277487; cv=none; b=WvHNxwR9WT8sBtZAUIOGTD+0nk2SJTe4Hir5j3+/vJmA9+XZtLZB/dj5nGmfAQoLDjtXHHhPCoCyJvT6HSft4YVp+SSnc7hcZqyCcofq7S9/8ErS8ifKXrIoUOVZPZ6y8lKIta46ZIoQnRWEpVVMkTOweEMqjUUIKeYbYX7qBNA=
+	t=1757276172; cv=none; b=Q3QjXX4Z4D21sxeeuq0Bi+HpZVkxgrpZiV8mX94ugBo1NtJ/vXps6hco1hDy9JoRwat92il8RrrR8XTh9MLYZ9nQyZrD6xgwKyKfQ47Q+PPdjP1tkRI+kTUgrC6dlSc1s2If6+k3XwDAQWdpJ5ngTirOd5gIGeHepdwlSkiRSBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277487; c=relaxed/simple;
-	bh=Rnw6kzMrfhv1IAeyOA9YAS/7LXp77XINH6rn5v2l/rE=;
+	s=arc-20240116; t=1757276172; c=relaxed/simple;
+	bh=181bgDtRwH+aTUX9PpIovI9fL7yQe3gyhSMqWNgbTHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CRyALsy6squHc4vgbfePtU+lkSdabramVHaLlGSVs02AcxEdGt47knlWYb1lVwyi9mT0pLf6OLjMbLujKLAlk7EyWoAc29MMFAL4RTeV4YzvH56AwRDecarMj6FZgMiDiuon2+gUQO6hDEY1noPca/vFgM1awFrVBkj8kljc8mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NydZi+YJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B39C4CEF8;
-	Sun,  7 Sep 2025 20:38:06 +0000 (UTC)
+	 MIME-Version; b=py9aZVrFWLgElZLhaUAZtOr3+6G92Pr363KMSuBcl71Sd6Gv1cregGOLHiparehWDSnbypuYtXkjnCY3lVSKr241+tV8EQUnVfwcwByCWX43uDauneSFeNLCLFJDAoCvd03vUtJMuct6S3DRArB4+2Rrani8sUflQlNtFQRTYVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzMrMVvo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5FCC4CEF9;
+	Sun,  7 Sep 2025 20:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277487;
-	bh=Rnw6kzMrfhv1IAeyOA9YAS/7LXp77XINH6rn5v2l/rE=;
+	s=korg; t=1757276172;
+	bh=181bgDtRwH+aTUX9PpIovI9fL7yQe3gyhSMqWNgbTHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NydZi+YJ3qmP8S4rVazUM5yyu05x23fcRz1sRoCiBPvCPA6IqOPXbYK4GXQsxKRwj
-	 PsNZ/v++N/YwTyKXqrD5ilugntbmEXWSLRwIL+YmV0EbJJrPpHHLJ5+LShjUyZiuNL
-	 zAM3sF4fhmjDkdgEjh0DXvLZrPFyexvpNalXdyQM=
+	b=IzMrMVvoVE6EWlUY5MxJHELU6iv9nnXQuWU4x8ZnkRIqrHX0UzM25jg5KYjPSsLGX
+	 QC0gWyxOmiSh9L4jHNr55uX59D6CDz2Y9I6Afcp4IJduCFlw5Ny6JMyB1cfN1bONCM
+	 khqN6TsS4+WIJAd5TuLEMAk+lXPtHtAB5TN8A+LI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 031/183] wifi: brcmfmac: fix use-after-free when rescheduling brcmf_btcoex_info work
+Subject: [PATCH 6.1 021/104] mISDN: Fix memory leak in dsp_hwec_enable()
 Date: Sun,  7 Sep 2025 21:57:38 +0200
-Message-ID: <20250907195616.516145664@linuxfoundation.org>
+Message-ID: <20250907195608.240924290@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,107 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 9cb83d4be0b9b697eae93d321e0da999f9cdfcfc ]
+[ Upstream commit 0704a3da7ce50f972e898bbda88d2692a22922d9 ]
 
-The brcmf_btcoex_detach() only shuts down the btcoex timer, if the
-flag timer_on is false. However, the brcmf_btcoex_timerfunc(), which
-runs as timer handler, sets timer_on to false. This creates critical
-race conditions:
+dsp_hwec_enable() allocates dup pointer by kstrdup(arg),
+but then it updates dup variable by strsep(&dup, ",").
+As a result when it calls kfree(dup), the dup variable may be
+a modified pointer that no longer points to the original allocated
+memory, causing a memory leak.
 
-1.If brcmf_btcoex_detach() is called while brcmf_btcoex_timerfunc()
-is executing, it may observe timer_on as false and skip the call to
-timer_shutdown_sync().
+The issue is the same pattern as fixed in commit c6a502c22999
+("mISDN: Fix memory leak in dsp_pipeline_build()").
 
-2.The brcmf_btcoex_timerfunc() may then reschedule the brcmf_btcoex_info
-worker after the cancel_work_sync() has been executed, resulting in
-use-after-free bugs.
-
-The use-after-free bugs occur in two distinct scenarios, depending on
-the timing of when the brcmf_btcoex_info struct is freed relative to
-the execution of its worker thread.
-
-Scenario 1: Freed before the worker is scheduled
-
-The brcmf_btcoex_info is deallocated before the worker is scheduled.
-A race condition can occur when schedule_work(&bt_local->work) is
-called after the target memory has been freed. The sequence of events
-is detailed below:
-
-CPU0                           | CPU1
-brcmf_btcoex_detach            | brcmf_btcoex_timerfunc
-                               |   bt_local->timer_on = false;
-  if (cfg->btcoex->timer_on)   |
-    ...                        |
-  cancel_work_sync();          |
-  ...                          |
-  kfree(cfg->btcoex); // FREE  |
-                               |   schedule_work(&bt_local->work); // USE
-
-Scenario 2: Freed after the worker is scheduled
-
-The brcmf_btcoex_info is freed after the worker has been scheduled
-but before or during its execution. In this case, statements within
-the brcmf_btcoex_handler() — such as the container_of macro and
-subsequent dereferences of the brcmf_btcoex_info object will cause
-a use-after-free access. The following timeline illustrates this
-scenario:
-
-CPU0                            | CPU1
-brcmf_btcoex_detach             | brcmf_btcoex_timerfunc
-                                |   bt_local->timer_on = false;
-  if (cfg->btcoex->timer_on)    |
-    ...                         |
-  cancel_work_sync();           |
-  ...                           |   schedule_work(); // Reschedule
-                                |
-  kfree(cfg->btcoex); // FREE   |   brcmf_btcoex_handler() // Worker
-  /*                            |     btci = container_of(....); // USE
-   The kfree() above could      |     ...
-   also occur at any point      |     btci-> // USE
-   during the worker's execution|
-   */                           |
-
-To resolve the race conditions, drop the conditional check and call
-timer_shutdown_sync() directly. It can deactivate the timer reliably,
-regardless of its current state. Once stopped, the timer_on state is
-then set to false.
-
-Fixes: 61730d4dfffc ("brcmfmac: support critical protocol API for DHCP")
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Link: https://patch.msgid.link/20250822050839.4413-1-duoming@zju.edu.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 9a4381618262 ("mISDN: Remove VLAs")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250828081457.36061-1-linmq006@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/isdn/mISDN/dsp_hwec.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-index 69ef8cf203d24..67c0c5a92f998 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
-@@ -393,10 +393,8 @@ void brcmf_btcoex_detach(struct brcmf_cfg80211_info *cfg)
- 	if (!cfg->btcoex)
- 		return;
+diff --git a/drivers/isdn/mISDN/dsp_hwec.c b/drivers/isdn/mISDN/dsp_hwec.c
+index 0b3f29195330a..0cd216e28f009 100644
+--- a/drivers/isdn/mISDN/dsp_hwec.c
++++ b/drivers/isdn/mISDN/dsp_hwec.c
+@@ -51,14 +51,14 @@ void dsp_hwec_enable(struct dsp *dsp, const char *arg)
+ 		goto _do;
  
--	if (cfg->btcoex->timer_on) {
--		cfg->btcoex->timer_on = false;
--		timer_shutdown_sync(&cfg->btcoex->timer);
--	}
-+	timer_shutdown_sync(&cfg->btcoex->timer);
-+	cfg->btcoex->timer_on = false;
+ 	{
+-		char *dup, *tok, *name, *val;
++		char *dup, *next, *tok, *name, *val;
+ 		int tmp;
  
- 	cancel_work_sync(&cfg->btcoex->work);
+-		dup = kstrdup(arg, GFP_ATOMIC);
++		dup = next = kstrdup(arg, GFP_ATOMIC);
+ 		if (!dup)
+ 			return;
  
+-		while ((tok = strsep(&dup, ","))) {
++		while ((tok = strsep(&next, ","))) {
+ 			if (!strlen(tok))
+ 				continue;
+ 			name = strsep(&tok, "=");
 -- 
 2.50.1
 
