@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E35B47D29
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:08:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED13AB47DD9
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:17:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C649717BCA2
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A32CC3B5196
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38162836A0;
-	Sun,  7 Sep 2025 20:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB5E1AF0B6;
+	Sun,  7 Sep 2025 20:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHZdfUZ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqS3nwnh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A2C1CDFAC;
-	Sun,  7 Sep 2025 20:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641E01B424F;
+	Sun,  7 Sep 2025 20:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757275703; cv=none; b=Z/L2qhvq6reFxVxs+v1QZiKRSC++CIJAnXHoMq657+lkNiLFzLqwBBMslyLMKcPWh8EwlI8Cu4DKd+d+ZHeK5EokOOTGN2+D/PzLHCVMT9JnX2EKOs9QDVC6wspgZXmrWk35jC8M+OvPKqBLyOts6tvtRut5NF3QBvS7cg3pH2A=
+	t=1757276231; cv=none; b=qGyf9i81uHrDB974jd3GgXcefUvzFRkbwX9wppdRotvD/Me6ZtzJCKRkGyoCqF1+NiLZxQ8AdynN7IaKJOvbyyQ4C/uQWrGm1TvGgZm7mFrS+2PfiA3Hs6yQ4OyCSdRZG106bHQ1IwmIUfFUo9+FwkuRuA8m33r+SA3ki+mXSJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757275703; c=relaxed/simple;
-	bh=8Ggx4srDd65c3qKcH2lnU8f8CENK3Kt8uZmqPQx806c=;
+	s=arc-20240116; t=1757276231; c=relaxed/simple;
+	bh=HMmWwcc7XpWnN2U7Q9qu35NJCFQjBSlT8JLdDJcB1Dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVJpXMIQHXvVlsweyL0PBdZ7+JiaOtNF9yYRflag9TFOOjCvg8yVZv/cydmeAVRInnhjyAD/KVQdElQFgED6x8389k8ttFyLWJMjywIhxuZtOAB2Ac0TK4EhsIYoj8wXMANbgZ2yLvzMPesgt+8qyT6KJIROfhPC/L8cb/iG7f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHZdfUZ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4960C4CEF0;
-	Sun,  7 Sep 2025 20:08:22 +0000 (UTC)
+	 MIME-Version; b=RwP3AbZ4Nlc/MEY2rZgMIZx+YfDW6/BRy1Sl4JHxcburwC7ERfbSvmLBBUn3abepV8JprGtZFdK50RVYvuD7XK1AzFF+FZyTRzlM3Zt8+gHVj+ATPKZnGPZwmQ2aVHh3+yqpYuf/ETHwop0Rd/z46nzp2nEOMTBKMD3akS9yfvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqS3nwnh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE87CC4CEF0;
+	Sun,  7 Sep 2025 20:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757275703;
-	bh=8Ggx4srDd65c3qKcH2lnU8f8CENK3Kt8uZmqPQx806c=;
+	s=korg; t=1757276231;
+	bh=HMmWwcc7XpWnN2U7Q9qu35NJCFQjBSlT8JLdDJcB1Dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cHZdfUZ0cLN9DP6Cds85YzaViAFDA/oSKu/Tk/1QO2tVDyMGNgx8fDT+32HuHBC9V
-	 NbBED8HV628ngGzjvNL9cnn3Q7CuQA7Zf+nsxH+krm51sJqiVzab80/CQsniGYfMyW
-	 rbsHEGxBmZdZYCcoVG1JQ7Oxu2UKLKshyVpJutNo=
+	b=eqS3nwnhIU9GNNpiOD1mauFCFQhU3M2bjcf+VuICeoKkgGP7NBqLyYsiUNNX4sw5e
+	 wo61Fq213+1wIpltYd3DflfqKzZEqIliTRa+cX+bzGs5kzSKWt8zEylynYLpFGGIGM
+	 K8rF4IpfWb0fsRaZjbg2T6zG/Z8EvBVPBmJru25c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pieter Van Trappen <pieter.van.trappen@cern.ch>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 36/52] net: dsa: microchip: update tag_ksz masks for KSZ9477 family
+Subject: [PATCH 6.1 039/104] phy: mscc: Stop taking ts_lock for tx_queue and use its own lock
 Date: Sun,  7 Sep 2025 21:57:56 +0200
-Message-ID: <20250907195603.022489208@linuxfoundation.org>
+Message-ID: <20250907195608.711815874@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pieter Van Trappen <pieter.van.trappen@cern.ch>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 3f464b193d40e49299dcd087b10cc3b77cbbea68 ]
+[ Upstream commit 9b2bfdbf43adb9929c5ddcdd96efedbf1c88cf53 ]
 
-Remove magic number 7 by introducing a GENMASK macro instead.
-Remove magic number 0x80 by using the BIT macro instead.
+When transmitting a PTP frame which is timestamp using 2 step, the
+following warning appears if CONFIG_PROVE_LOCKING is enabled:
+=============================
+[ BUG: Invalid wait context ]
+6.17.0-rc1-00326-ge6160462704e #427 Not tainted
+-----------------------------
+ptp4l/119 is trying to lock:
+c2a44ed4 (&vsc8531->ts_lock){+.+.}-{3:3}, at: vsc85xx_txtstamp+0x50/0xac
+other info that might help us debug this:
+context-{4:4}
+4 locks held by ptp4l/119:
+ #0: c145f068 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0x58/0x1440
+ #1: c29df974 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_queue_xmit+0x5c4/0x1440
+ #2: c2aaaad0 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x108/0x350
+ #3: c2aac170 (&lan966x->tx_lock){+.-.}-{2:2}, at: lan966x_port_xmit+0xd0/0x350
+stack backtrace:
+CPU: 0 UID: 0 PID: 119 Comm: ptp4l Not tainted 6.17.0-rc1-00326-ge6160462704e #427 NONE
+Hardware name: Generic DT based system
+Call trace:
+ unwind_backtrace from show_stack+0x10/0x14
+ show_stack from dump_stack_lvl+0x7c/0xac
+ dump_stack_lvl from __lock_acquire+0x8e8/0x29dc
+ __lock_acquire from lock_acquire+0x108/0x38c
+ lock_acquire from __mutex_lock+0xb0/0xe78
+ __mutex_lock from mutex_lock_nested+0x1c/0x24
+ mutex_lock_nested from vsc85xx_txtstamp+0x50/0xac
+ vsc85xx_txtstamp from lan966x_fdma_xmit+0xd8/0x3a8
+ lan966x_fdma_xmit from lan966x_port_xmit+0x1bc/0x350
+ lan966x_port_xmit from dev_hard_start_xmit+0xc8/0x2c0
+ dev_hard_start_xmit from sch_direct_xmit+0x8c/0x350
+ sch_direct_xmit from __dev_queue_xmit+0x680/0x1440
+ __dev_queue_xmit from packet_sendmsg+0xfa4/0x1568
+ packet_sendmsg from __sys_sendto+0x110/0x19c
+ __sys_sendto from sys_send+0x18/0x20
+ sys_send from ret_fast_syscall+0x0/0x1c
+Exception stack(0xf0b05fa8 to 0xf0b05ff0)
+5fa0:                   00000001 0000000e 0000000e 0004b47a 0000003a 00000000
+5fc0: 00000001 0000000e 00000000 00000121 0004af58 00044874 00000000 00000000
+5fe0: 00000001 bee9d420 00025a10 b6e75c7c
 
-Signed-off-by: Pieter Van Trappen <pieter.van.trappen@cern.ch>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20240909134301.75448-1-vtpieter@gmail.com
+So, instead of using the ts_lock for tx_queue, use the spinlock that
+skb_buff_head has.
+
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://patch.msgid.link/20250902121259.3257536-1-horatiu.vultur@microchip.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: ba54bce747fa ("net: dsa: microchip: linearize skb for tail-tagging switches")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dsa/tag_ksz.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/phy/mscc/mscc_ptp.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
---- a/net/dsa/tag_ksz.c
-+++ b/net/dsa/tag_ksz.c
-@@ -103,8 +103,9 @@ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROT
+diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
+index 1f6237705b44b..939a8a17595ef 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.c
++++ b/drivers/net/phy/mscc/mscc_ptp.c
+@@ -455,12 +455,12 @@ static void vsc85xx_dequeue_skb(struct vsc85xx_ptp *ptp)
+ 		*p++ = (reg >> 24) & 0xff;
+ 	}
  
- #define KSZ9477_INGRESS_TAG_LEN		2
- #define KSZ9477_PTP_TAG_LEN		4
--#define KSZ9477_PTP_TAG_INDICATION	0x80
-+#define KSZ9477_PTP_TAG_INDICATION	BIT(7)
+-	len = skb_queue_len(&ptp->tx_queue);
++	len = skb_queue_len_lockless(&ptp->tx_queue);
+ 	if (len < 1)
+ 		return;
  
-+#define KSZ9477_TAIL_TAG_EG_PORT_M	GENMASK(2, 0)
- #define KSZ9477_TAIL_TAG_OVERRIDE	BIT(9)
- #define KSZ9477_TAIL_TAG_LOOKUP		BIT(10)
+ 	while (len--) {
+-		skb = __skb_dequeue(&ptp->tx_queue);
++		skb = skb_dequeue(&ptp->tx_queue);
+ 		if (!skb)
+ 			return;
  
-@@ -135,7 +136,7 @@ static struct sk_buff *ksz9477_rcv(struc
- {
- 	/* Tag decoding */
- 	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
--	unsigned int port = tag[0] & 7;
-+	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
- 	unsigned int len = KSZ_EGRESS_TAG_LEN;
+@@ -485,7 +485,7 @@ static void vsc85xx_dequeue_skb(struct vsc85xx_ptp *ptp)
+ 		 * packet in the FIFO right now, reschedule it for later
+ 		 * packets.
+ 		 */
+-		__skb_queue_tail(&ptp->tx_queue, skb);
++		skb_queue_tail(&ptp->tx_queue, skb);
+ 	}
+ }
  
- 	/* Extra 4-bytes PTP timestamp */
+@@ -1067,6 +1067,7 @@ static int vsc85xx_hwtstamp(struct mii_timestamper *mii_ts, struct ifreq *ifr)
+ 	case HWTSTAMP_TX_ON:
+ 		break;
+ 	case HWTSTAMP_TX_OFF:
++		skb_queue_purge(&vsc8531->ptp->tx_queue);
+ 		break;
+ 	default:
+ 		return -ERANGE;
+@@ -1091,9 +1092,6 @@ static int vsc85xx_hwtstamp(struct mii_timestamper *mii_ts, struct ifreq *ifr)
+ 
+ 	mutex_lock(&vsc8531->ts_lock);
+ 
+-	__skb_queue_purge(&vsc8531->ptp->tx_queue);
+-	__skb_queue_head_init(&vsc8531->ptp->tx_queue);
+-
+ 	/* Disable predictor while configuring the 1588 block */
+ 	val = vsc85xx_ts_read_csr(phydev, PROCESSOR,
+ 				  MSCC_PHY_PTP_INGR_PREDICTOR);
+@@ -1179,9 +1177,7 @@ static void vsc85xx_txtstamp(struct mii_timestamper *mii_ts,
+ 
+ 	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
+ 
+-	mutex_lock(&vsc8531->ts_lock);
+-	__skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
+-	mutex_unlock(&vsc8531->ts_lock);
++	skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
+ 	return;
+ 
+ out:
+@@ -1547,6 +1543,7 @@ void vsc8584_ptp_deinit(struct phy_device *phydev)
+ 	if (vsc8531->ptp->ptp_clock) {
+ 		ptp_clock_unregister(vsc8531->ptp->ptp_clock);
+ 		skb_queue_purge(&vsc8531->rx_skbs_list);
++		skb_queue_purge(&vsc8531->ptp->tx_queue);
+ 	}
+ }
+ 
+@@ -1570,7 +1567,7 @@ irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev)
+ 	if (rc & VSC85XX_1588_INT_FIFO_ADD) {
+ 		vsc85xx_get_tx_ts(priv->ptp);
+ 	} else if (rc & VSC85XX_1588_INT_FIFO_OVERFLOW) {
+-		__skb_queue_purge(&priv->ptp->tx_queue);
++		skb_queue_purge(&priv->ptp->tx_queue);
+ 		vsc85xx_ts_reset_fifo(phydev);
+ 	}
+ 
+@@ -1590,6 +1587,7 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
+ 	mutex_init(&vsc8531->phc_lock);
+ 	mutex_init(&vsc8531->ts_lock);
+ 	skb_queue_head_init(&vsc8531->rx_skbs_list);
++	skb_queue_head_init(&vsc8531->ptp->tx_queue);
+ 
+ 	/* Retrieve the shared load/save GPIO. Request it as non exclusive as
+ 	 * the same GPIO can be requested by all the PHYs of the same package.
+-- 
+2.50.1
+
 
 
 
