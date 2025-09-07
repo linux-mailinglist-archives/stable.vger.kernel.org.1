@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-178502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEEABB47EEE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DDD1B47DC7
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BA3A3B114E
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:30:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6670616367B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7B31FECCD;
-	Sun,  7 Sep 2025 20:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA7F1C6FFA;
+	Sun,  7 Sep 2025 20:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taltiNxS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzn1r2jY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA8515C158;
-	Sun,  7 Sep 2025 20:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD4B1AF0B6;
+	Sun,  7 Sep 2025 20:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277042; cv=none; b=sx9tYFHaHVAhRVIxcrY41YtkNH+NatSBmD4qiVqrpWW7ql6YxnDFTik9sxgb+UoECP9x/Q1paluMzSs1OpGlBYJJ1S9dnKTjAdwgux5ycsDVwCnRjktzBJXCneB16soSqfmm/Nrl1mDXbwlxQJqBAyBLYwNokhIv++Vyh4BgL8A=
+	t=1757276181; cv=none; b=BV7c7dkAImO9esJ3Qj59O7Ze8joRKSEEPhBwcc6A0hB0Bhs8BPTBz1Mt5jataXtj5v4o799J3erVOmQ+ACudauHfgyTmOismGm5j/jm91PmANgoYm4DU3W/PWHxvwykef2PI+uFVD+o+RpnNWl5KAMbLO9B8qr9w+7XFPaeDb38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277042; c=relaxed/simple;
-	bh=+PYN3QyNLYXuxCIt3NLE6vIN65lk5sE3OJGwsrVNA/Y=;
+	s=arc-20240116; t=1757276181; c=relaxed/simple;
+	bh=e9t3VRtqQDI366+OOGfNXqn/rh/1HFITj4OFIzUDJHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P2PvuCIVg3fXCJip+Rk18Ey+TY3C/K1kyc/Cjc4V0J17JlHC4qrssT8MUiZlxrgAGPCuWtN09fOPnfaTVpJQYMZQgDqUriZo2nuqvUNSzDs6S8mj3WS9E/OifnzYMkw8S9VnhaTZ4UWBiN1nncwhqblXqg8s7qM1ttHpvX9uN8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taltiNxS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D15C4CEF0;
-	Sun,  7 Sep 2025 20:30:41 +0000 (UTC)
+	 MIME-Version; b=CNE2K6q0YCfW4fVCIZ37gqSp7yHwlBx9d2vY0fXk2kxm5Ey30/zn0mehb/zH09RBRsMKsQarevj0h8Kp2uz6MvZ8Hl238+tEHXq6D0cFveVfZb29NQrxdyl6jwPLR7R6FvrXWqokN8Xl/GUyXCkRSOjXNpW5748wBPd+7hqk8hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzn1r2jY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E45EC4CEF0;
+	Sun,  7 Sep 2025 20:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277041;
-	bh=+PYN3QyNLYXuxCIt3NLE6vIN65lk5sE3OJGwsrVNA/Y=;
+	s=korg; t=1757276181;
+	bh=e9t3VRtqQDI366+OOGfNXqn/rh/1HFITj4OFIzUDJHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=taltiNxSNIjuCNWzWYqe0mo/4JeDvRcqRW5xaI/NZ0YSS8t+t/kiddx2Bt1/9ZYnj
-	 VcX9fmNMYp73498eiDDdJ1yTMkUFN5vm8JoHbSBm9cSbMql0CDTAhyVaT1gSOJ/vBs
-	 DBqq9cTwGcndmwtdyeztj99FhIgFp/yHra9IJ2CY=
+	b=nzn1r2jY7RMZNh/6CUpIAfRaWymItdE+qxGCayQdzNrm2i8mYPF4AhOcnS5WWPUhO
+	 +XElu9nZvxUnZVH9U8rOn7hf9XftgkEa8/z0DBSLjZoDY73CUhNUyncfYvak5rvldX
+	 diE1xCDU2uwPDwL8LCN6f+S5P8QlOKxUNbGuRh8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Liu Jian <liujian56@huawei.com>,
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/175] net: vxlan: make vxlan_snoop() return drop reasons
+Subject: [PATCH 6.1 024/104] net/smc: fix one NULL pointer dereference in smc_ib_is_sg_need_sync()
 Date: Sun,  7 Sep 2025 21:57:41 +0200
-Message-ID: <20250907195616.398456905@linuxfoundation.org>
+Message-ID: <20250907195608.319493883@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit 289fd4e75219a96f77c5d679166035cd5118d139 ]
+[ Upstream commit ba1e9421cf1a8369d25c3832439702a015d6b5f9 ]
 
-Change the return type of vxlan_snoop() from bool to enum
-skb_drop_reason. In this commit, two drop reasons are introduced:
+BUG: kernel NULL pointer dereference, address: 00000000000002ec
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP PTI
+CPU: 28 UID: 0 PID: 343 Comm: kworker/28:1 Kdump: loaded Tainted: G        OE       6.17.0-rc2+ #9 NONE
+Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+Workqueue: smc_hs_wq smc_listen_work [smc]
+RIP: 0010:smc_ib_is_sg_need_sync+0x9e/0xd0 [smc]
+...
+Call Trace:
+ <TASK>
+ smcr_buf_map_link+0x211/0x2a0 [smc]
+ __smc_buf_create+0x522/0x970 [smc]
+ smc_buf_create+0x3a/0x110 [smc]
+ smc_find_rdma_v2_device_serv+0x18f/0x240 [smc]
+ ? smc_vlan_by_tcpsk+0x7e/0xe0 [smc]
+ smc_listen_find_device+0x1dd/0x2b0 [smc]
+ smc_listen_work+0x30f/0x580 [smc]
+ process_one_work+0x18c/0x340
+ worker_thread+0x242/0x360
+ kthread+0xe7/0x220
+ ret_from_fork+0x13a/0x160
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-  SKB_DROP_REASON_MAC_INVALID_SOURCE
-  SKB_DROP_REASON_VXLAN_ENTRY_EXISTS
+If the software RoCE device is used, ibdev->dma_device is a null pointer.
+As a result, the problem occurs. Null pointer detection is added to
+prevent problems.
 
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 6ead38147ebb ("vxlan: Fix NPD when refreshing an FDB entry with a nexthop object")
+Fixes: 0ef69e788411c ("net/smc: optimize for smc_sndbuf_sync_sg_for_device and smc_rmb_sync_sg_for_cpu")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Reviewed-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
+Link: https://patch.msgid.link/20250828124117.2622624-1-liujian56@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 17 +++++++++--------
- include/net/dropreason-core.h  |  9 +++++++++
- 2 files changed, 18 insertions(+), 8 deletions(-)
+ net/smc/smc_ib.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index efd5e99808935..c4ce577eb0908 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1437,9 +1437,10 @@ static int vxlan_fdb_get(struct sk_buff *skb,
-  * and Tunnel endpoint.
-  * Return true if packet is bogus and should be dropped.
-  */
--static bool vxlan_snoop(struct net_device *dev,
--			union vxlan_addr *src_ip, const u8 *src_mac,
--			u32 src_ifindex, __be32 vni)
-+static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
-+					union vxlan_addr *src_ip,
-+					const u8 *src_mac, u32 src_ifindex,
-+					__be32 vni)
- {
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
- 	struct vxlan_fdb *f;
-@@ -1447,7 +1448,7 @@ static bool vxlan_snoop(struct net_device *dev,
+diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
+index 6de53431629ca..8e41034d8d96f 100644
+--- a/net/smc/smc_ib.c
++++ b/net/smc/smc_ib.c
+@@ -743,6 +743,9 @@ bool smc_ib_is_sg_need_sync(struct smc_link *lnk,
+ 	unsigned int i;
+ 	bool ret = false;
  
- 	/* Ignore packets from invalid src-address */
- 	if (!is_valid_ether_addr(src_mac))
--		return true;
-+		return SKB_DROP_REASON_MAC_INVALID_SOURCE;
- 
- #if IS_ENABLED(CONFIG_IPV6)
- 	if (src_ip->sa.sa_family == AF_INET6 &&
-@@ -1461,15 +1462,15 @@ static bool vxlan_snoop(struct net_device *dev,
- 
- 		if (likely(vxlan_addr_equal(&rdst->remote_ip, src_ip) &&
- 			   rdst->remote_ifindex == ifindex))
--			return false;
-+			return SKB_NOT_DROPPED_YET;
- 
- 		/* Don't migrate static entries, drop packets */
- 		if (f->state & (NUD_PERMANENT | NUD_NOARP))
--			return true;
-+			return SKB_DROP_REASON_VXLAN_ENTRY_EXISTS;
- 
- 		/* Don't override an fdb with nexthop with a learnt entry */
- 		if (rcu_access_pointer(f->nh))
--			return true;
-+			return SKB_DROP_REASON_VXLAN_ENTRY_EXISTS;
- 
- 		if (net_ratelimit())
- 			netdev_info(dev,
-@@ -1497,7 +1498,7 @@ static bool vxlan_snoop(struct net_device *dev,
- 		spin_unlock(&vxlan->hash_lock[hash_index]);
- 	}
- 
--	return false;
-+	return SKB_NOT_DROPPED_YET;
- }
- 
- static bool __vxlan_sock_release_prep(struct vxlan_sock *vs)
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index 98259d2b3e926..1cb8d7c953beb 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -94,6 +94,8 @@
- 	FN(TC_RECLASSIFY_LOOP)		\
- 	FN(VXLAN_INVALID_HDR)		\
- 	FN(VXLAN_VNI_NOT_FOUND)		\
-+	FN(MAC_INVALID_SOURCE)		\
-+	FN(VXLAN_ENTRY_EXISTS)		\
- 	FN(IP_TUNNEL_ECN)		\
- 	FNe(MAX)
- 
-@@ -429,6 +431,13 @@ enum skb_drop_reason {
- 	SKB_DROP_REASON_VXLAN_INVALID_HDR,
- 	/** @SKB_DROP_REASON_VXLAN_VNI_NOT_FOUND: no VXLAN device found for VNI */
- 	SKB_DROP_REASON_VXLAN_VNI_NOT_FOUND,
-+	/** @SKB_DROP_REASON_MAC_INVALID_SOURCE: source mac is invalid */
-+	SKB_DROP_REASON_MAC_INVALID_SOURCE,
-+	/**
-+	 * @SKB_DROP_REASON_VXLAN_ENTRY_EXISTS: trying to migrate a static
-+	 * entry or an entry pointing to a nexthop.
-+	 */
-+	SKB_DROP_REASON_VXLAN_ENTRY_EXISTS,
- 	/**
- 	 * @SKB_DROP_REASON_IP_TUNNEL_ECN: skb is dropped according to
- 	 * RFC 6040 4.2, see __INET_ECN_decapsulate() for detail.
++	if (!lnk->smcibdev->ibdev->dma_device)
++		return ret;
++
+ 	/* for now there is just one DMA address */
+ 	for_each_sg(buf_slot->sgt[lnk->link_idx].sgl, sg,
+ 		    buf_slot->sgt[lnk->link_idx].nents, i) {
 -- 
 2.50.1
 
