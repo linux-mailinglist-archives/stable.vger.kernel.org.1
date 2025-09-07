@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-178340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70FC9B47E42
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63538B47EF0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ECBA189F535
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:22:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C17617EE9B
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 974511A2389;
-	Sun,  7 Sep 2025 20:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9BB1F63CD;
+	Sun,  7 Sep 2025 20:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i320sIIl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BH2T1H3A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545541A9FAA;
-	Sun,  7 Sep 2025 20:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F1715C158;
+	Sun,  7 Sep 2025 20:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276525; cv=none; b=OLsHK8qKy+Vsl4UgeXLmUYo7QwGPPR/iDRe9d+FC5zKL/3JdGr/l6ivikFOYTnaAXPqcIHykMmBoKC7g/vsWNY/V1cmWRkhX1XRy2m6IctgffQrfHW/cZw6YnlZFnxohR6GSpjWuljUO8BM7YR7nnItEtVsdcORDoAfgghkCLP0=
+	t=1757277048; cv=none; b=JFAxKhNxd7nxSPiJTKCDhoIna/erq4PkeqhtGPFyqpcewUug98I4HbqtYfvtYFJ3+iLriJCIN3uGS9m5ZKvuUIysNBFHYz2gpHiAf36YEsYMZN3h96U6ZsqIBO7SeYr5IVGaMuUsomFAt28PCRM72rLUEHD/p52dYA9Iq932T1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276525; c=relaxed/simple;
-	bh=Yzq2krh9Lf+gzcObw0PkbuAUY5761xWsPOFZBgiK5FM=;
+	s=arc-20240116; t=1757277048; c=relaxed/simple;
+	bh=/SzOusGzzTof5H22YrgPmRncnZaAqXfDyksb+dwaNgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mee9zO46CgQyXpOXqSYj8oga3T5WHVyFwElZiT7Z7eZM/D3s6a52V0x3kbXeaUTrZcVH/oHmuH10KOLA2H+OL2FvGCqNIadf5D2UddGd+7jPu0JUBEd+oBc6r/7yP5U9qSawo5Mh/S43wZjcig2BfANYRr9/ptMvradaxcNg5J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i320sIIl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD952C4CEF0;
-	Sun,  7 Sep 2025 20:22:04 +0000 (UTC)
+	 MIME-Version; b=Q7W70G9k/fVG/qL8ioRuMJVXb0aRVTYmaueTSu1PQzhLP0VxGJBxB/P/rWPOWaRams56ECkzMLz1jtEEivlXf+AhPBFtnKO/Xx/+1pZNOmYYpwcbqOymj70C4lisukYeg5ha3e/WY3ptCQnGlSrYtO3uRs76DPlEzhfyVGEShYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BH2T1H3A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0818C4CEF0;
+	Sun,  7 Sep 2025 20:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276525;
-	bh=Yzq2krh9Lf+gzcObw0PkbuAUY5761xWsPOFZBgiK5FM=;
+	s=korg; t=1757277048;
+	bh=/SzOusGzzTof5H22YrgPmRncnZaAqXfDyksb+dwaNgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i320sIIlrN4xe+HqtYBgyxyPiBIMEPHP+3kwunQ4TgMHlffGrgADdCaSSy+oa+Xw/
-	 X3hlOfnWb8zQ1edqSRV2ZYNedb69UjF8nk9zt4ermroE8eXyaBklEznTxzoYjG9KeY
-	 5+X1qqjFVmQXYfe4FMLPHA9K/hjfbLPmFSs3B5SM=
+	b=BH2T1H3AkBAGm2xKLo07nbMqXAvQjKiJNcb+OxteUvougV1d1SS8ZkPRcGEMsOhGf
+	 Sj95S+sqei71LGQFYsSBt7eLl9V8O7VQl32p43U6bX5C76tUd1iroyq4hzyMLO7Val
+	 AcL7PsE2Vrctmp/VjMH9KjJB7N/zhnWjPb2Y6+M8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Fabian=20Bl=C3=A4se?= <fabian@blaese.de>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Menglong Dong <dongml2@chinatelecom.cn>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/121] icmp: fix icmp_ndo_send address translation for reply direction
+Subject: [PATCH 6.12 068/175] net: vxlan: make vxlan_set_mac() return drop reasons
 Date: Sun,  7 Sep 2025 21:57:43 +0200
-Message-ID: <20250907195610.520502744@linuxfoundation.org>
+Message-ID: <20250907195616.446034399@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +61,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabian Bläse <fabian@blaese.de>
+From: Menglong Dong <menglong8.dong@gmail.com>
 
-[ Upstream commit c6dd1aa2cbb72b33e0569f3e71d95792beab5042 ]
+[ Upstream commit d209706f562ee4fa81bdf24cf6b679c3222aa06c ]
 
-The icmp_ndo_send function was originally introduced to ensure proper
-rate limiting when icmp_send is called by a network device driver,
-where the packet's source address may have already been transformed
-by SNAT.
+Change the return type of vxlan_set_mac() from bool to enum
+skb_drop_reason. In this commit, the drop reason
+"SKB_DROP_REASON_LOCAL_MAC" is introduced for the case that the source
+mac of the packet is a local mac.
 
-However, the original implementation only considers the
-IP_CT_DIR_ORIGINAL direction for SNAT and always replaced the packet's
-source address with that of the original-direction tuple. This causes
-two problems:
-
-1. For SNAT:
-   Reply-direction packets were incorrectly translated using the source
-   address of the CT original direction, even though no translation is
-   required.
-
-2. For DNAT:
-   Reply-direction packets were not handled at all. In DNAT, the original
-   direction's destination is translated. Therefore, in the reply
-   direction the source address must be set to the reply-direction
-   source, so rate limiting works as intended.
-
-Fix this by using the connection direction to select the correct tuple
-for source address translation, and adjust the pre-checks to handle
-reply-direction packets in case of DNAT.
-
-Additionally, wrap the `ct->status` access in READ_ONCE(). This avoids
-possible KCSAN reports about concurrent updates to `ct->status`.
-
-Fixes: 0b41713b6066 ("icmp: introduce helper for nat'd source address in network device context")
-Signed-off-by: Fabian Bläse <fabian@blaese.de>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 1f5d2fd1ca04 ("vxlan: Fix NPD in {arp,neigh}_reduce() when using nexthop objects")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/icmp.c     | 6 ++++--
- net/ipv6/ip6_icmp.c | 6 ++++--
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/vxlan/vxlan_core.c | 19 ++++++++++---------
+ include/net/dropreason-core.h  |  6 ++++++
+ 2 files changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 94501bb30c431..b17549c4e5de8 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -801,11 +801,12 @@ void icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __be32 info)
- 	struct sk_buff *cloned_skb = NULL;
- 	struct ip_options opts = { 0 };
- 	enum ip_conntrack_info ctinfo;
-+	enum ip_conntrack_dir dir;
- 	struct nf_conn *ct;
- 	__be32 orig_ip;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 58590ddbc6a15..d9077698c5a89 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1605,9 +1605,9 @@ static void vxlan_parse_gbp_hdr(struct vxlanhdr *unparsed,
+ 	unparsed->vx_flags &= ~VXLAN_GBP_USED_BITS;
+ }
  
- 	ct = nf_ct_get(skb_in, &ctinfo);
--	if (!ct || !(ct->status & IPS_SRC_NAT)) {
-+	if (!ct || !(READ_ONCE(ct->status) & IPS_NAT_MASK)) {
- 		__icmp_send(skb_in, type, code, info, &opts);
- 		return;
+-static bool vxlan_set_mac(struct vxlan_dev *vxlan,
+-			  struct vxlan_sock *vs,
+-			  struct sk_buff *skb, __be32 vni)
++static enum skb_drop_reason vxlan_set_mac(struct vxlan_dev *vxlan,
++					  struct vxlan_sock *vs,
++					  struct sk_buff *skb, __be32 vni)
+ {
+ 	union vxlan_addr saddr;
+ 	u32 ifindex = skb->dev->ifindex;
+@@ -1618,7 +1618,7 @@ static bool vxlan_set_mac(struct vxlan_dev *vxlan,
+ 
+ 	/* Ignore packet loops (and multicast echo) */
+ 	if (ether_addr_equal(eth_hdr(skb)->h_source, vxlan->dev->dev_addr))
+-		return false;
++		return SKB_DROP_REASON_LOCAL_MAC;
+ 
+ 	/* Get address from the outer IP header */
+ 	if (vxlan_get_sk_family(vs) == AF_INET) {
+@@ -1631,11 +1631,11 @@ static bool vxlan_set_mac(struct vxlan_dev *vxlan,
+ #endif
  	}
-@@ -820,7 +821,8 @@ void icmp_ndo_send(struct sk_buff *skb_in, int type, int code, __be32 info)
- 		goto out;
  
- 	orig_ip = ip_hdr(skb_in)->saddr;
--	ip_hdr(skb_in)->saddr = ct->tuplehash[0].tuple.src.u3.ip;
-+	dir = CTINFO2DIR(ctinfo);
-+	ip_hdr(skb_in)->saddr = ct->tuplehash[dir].tuple.src.u3.ip;
- 	__icmp_send(skb_in, type, code, info, &opts);
- 	ip_hdr(skb_in)->saddr = orig_ip;
- out:
-diff --git a/net/ipv6/ip6_icmp.c b/net/ipv6/ip6_icmp.c
-index 9e3574880cb03..233914b63bdb8 100644
---- a/net/ipv6/ip6_icmp.c
-+++ b/net/ipv6/ip6_icmp.c
-@@ -54,11 +54,12 @@ void icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 code, __u32 info)
- 	struct inet6_skb_parm parm = { 0 };
- 	struct sk_buff *cloned_skb = NULL;
- 	enum ip_conntrack_info ctinfo;
-+	enum ip_conntrack_dir dir;
- 	struct in6_addr orig_ip;
- 	struct nf_conn *ct;
+-	if ((vxlan->cfg.flags & VXLAN_F_LEARN) &&
+-	    vxlan_snoop(skb->dev, &saddr, eth_hdr(skb)->h_source, ifindex, vni))
+-		return false;
++	if (!(vxlan->cfg.flags & VXLAN_F_LEARN))
++		return SKB_NOT_DROPPED_YET;
  
- 	ct = nf_ct_get(skb_in, &ctinfo);
--	if (!ct || !(ct->status & IPS_SRC_NAT)) {
-+	if (!ct || !(READ_ONCE(ct->status) & IPS_NAT_MASK)) {
- 		__icmpv6_send(skb_in, type, code, info, &parm);
- 		return;
+-	return true;
++	return vxlan_snoop(skb->dev, &saddr, eth_hdr(skb)->h_source,
++			   ifindex, vni);
+ }
+ 
+ static bool vxlan_ecn_decapsulate(struct vxlan_sock *vs, void *oiph,
+@@ -1768,7 +1768,8 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
  	}
-@@ -73,7 +74,8 @@ void icmpv6_ndo_send(struct sk_buff *skb_in, u8 type, u8 code, __u32 info)
- 		goto out;
  
- 	orig_ip = ipv6_hdr(skb_in)->saddr;
--	ipv6_hdr(skb_in)->saddr = ct->tuplehash[0].tuple.src.u3.in6;
-+	dir = CTINFO2DIR(ctinfo);
-+	ipv6_hdr(skb_in)->saddr = ct->tuplehash[dir].tuple.src.u3.in6;
- 	__icmpv6_send(skb_in, type, code, info, &parm);
- 	ipv6_hdr(skb_in)->saddr = orig_ip;
- out:
+ 	if (!raw_proto) {
+-		if (!vxlan_set_mac(vxlan, vs, skb, vni))
++		reason = vxlan_set_mac(vxlan, vs, skb, vni);
++		if (reason)
+ 			goto drop;
+ 	} else {
+ 		skb_reset_mac_header(skb);
+diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
+index 1cb8d7c953beb..fbf92d442c1b2 100644
+--- a/include/net/dropreason-core.h
++++ b/include/net/dropreason-core.h
+@@ -97,6 +97,7 @@
+ 	FN(MAC_INVALID_SOURCE)		\
+ 	FN(VXLAN_ENTRY_EXISTS)		\
+ 	FN(IP_TUNNEL_ECN)		\
++	FN(LOCAL_MAC)			\
+ 	FNe(MAX)
+ 
+ /**
+@@ -443,6 +444,11 @@ enum skb_drop_reason {
+ 	 * RFC 6040 4.2, see __INET_ECN_decapsulate() for detail.
+ 	 */
+ 	SKB_DROP_REASON_IP_TUNNEL_ECN,
++	/**
++	 * @SKB_DROP_REASON_LOCAL_MAC: the source MAC address is equal to
++	 * the MAC address of the local netdev.
++	 */
++	SKB_DROP_REASON_LOCAL_MAC,
+ 	/**
+ 	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
+ 	 * shouldn't be used as a real 'reason' - only for tracing code gen
 -- 
 2.50.1
 
