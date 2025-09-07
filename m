@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B4EB47D90
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:13:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0AFB47FA0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:40:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 872F13C0937
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:13:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6D3D188C49E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E6D29BDB1;
-	Sun,  7 Sep 2025 20:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A621F63CD;
+	Sun,  7 Sep 2025 20:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1q8reaa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lc7+HMDH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44BF29BDAC;
-	Sun,  7 Sep 2025 20:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D4F1A704B;
+	Sun,  7 Sep 2025 20:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276013; cv=none; b=l634iA2XMpImFhVpdTezNZTVovDayr5J/KgoWT4xPWxGZmI4UyGU3mHR6Gz5yndcdkvlmmNZrkKGuMTl7vF/Zf8sZx7foHqMMzjruTo9dl9x5GQD6SxzLa/5ODBRpdYj7TAaIZDtQsJLXmLV1mweBq57iYwcGtAl7oO8ckha7F8=
+	t=1757277599; cv=none; b=gNQoiPzjBRR7a3kgDvUe2bKFAGSzEqaXjwQStMOt2g8fMXR6Ts4qMtDisPCWK9s+x3rHW/oFY9o1sl6juR/oKVcCjNmUzz77iuxWaWyxapBoDACXQT1LN0HbDs8m2igZZ/FXSO2jT2gtzbOlMjzJfYrO67Je50qlqpXkGemDo9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276013; c=relaxed/simple;
-	bh=TEgiLEcsET2hmuA+OjYQG7jY6892kjclx//r6PXLFR8=;
+	s=arc-20240116; t=1757277599; c=relaxed/simple;
+	bh=mKgtjXX73+PL8ybNZko9+OeSstLmstQ72an+WoTXlSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t8b+LKSde7sYofU0fpoQqEZ7GgnbO1NvrDC8Vga6jeKAvquWurqgDa0OhozXvMYlqOt2A9QkZKY1Pl+QrrVrwvIFSk5RAeB+56SIyhNWK/QiR2BPzYXrZJcN/FxlIP+xCsnhJ5L7GgRn8+59XOA7HuOojsb17MEhf92t0/D+65g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1q8reaa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4196BC4CEF8;
-	Sun,  7 Sep 2025 20:13:32 +0000 (UTC)
+	 MIME-Version; b=IZF2tPa2zrPCco7ORKS/eq+qFnzUlx4mH7SMkwwL3y36jb7OqQ4zMM/Pztr+ZbSR3E+seHdDVINHYpqU98ZmqozjDlFhEr9deJHUQ9GJev2TdIbC9wRrkRlEHEPupp79NWsbWvgl2XWBLTyi3dQDHhW02NI8ZIX+twotnC5ng/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lc7+HMDH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54355C4CEF0;
+	Sun,  7 Sep 2025 20:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276012;
-	bh=TEgiLEcsET2hmuA+OjYQG7jY6892kjclx//r6PXLFR8=;
+	s=korg; t=1757277599;
+	bh=mKgtjXX73+PL8ybNZko9+OeSstLmstQ72an+WoTXlSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s1q8reaa5ni2vuCgJAvw33LPLMmNZ7g1Gpcx7ibJ+GEf9SnlMwgz6K0utMwcsTRj/
-	 F56WivHxmponB/7TrNlhEcA3odExiyaqF6XJxs/X3/Dzk8iKIW0ocaKte8FgGblOIv
-	 +LKxixhSiPxg6IZ0VV4qm0HwFweM/d52GaIJ0NQY=
+	b=lc7+HMDHgIhmwyVVB57EXd7al9NC+hkavti7RfALrBgERE0MHwThrT9RmgGBglILE
+	 cm9O7WmklEgNsE8zhOGuergXmNhSIS/vwI7JhoXoL3Rswc8FvFSaT/Q1XwoWsqsy2z
+	 MbIqttT/XRIA2ZkW6smMPkkkdrRBtmCxr6NjMIAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 28/64] phy: mscc: Stop taking ts_lock for tx_queue and use its own lock
+Subject: [PATCH 6.16 063/183] net: mctp: usb: initialise mac header in RX path
 Date: Sun,  7 Sep 2025 21:58:10 +0200
-Message-ID: <20250907195604.169027062@linuxfoundation.org>
+Message-ID: <20250907195617.288781281@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,149 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Jeremy Kerr <jk@codeconstruct.com.au>
 
-[ Upstream commit 9b2bfdbf43adb9929c5ddcdd96efedbf1c88cf53 ]
+[ Upstream commit e27e34bc99413a29cafae02ad572ea3c9beba2ce ]
 
-When transmitting a PTP frame which is timestamp using 2 step, the
-following warning appears if CONFIG_PROVE_LOCKING is enabled:
-=============================
-[ BUG: Invalid wait context ]
-6.17.0-rc1-00326-ge6160462704e #427 Not tainted
------------------------------
-ptp4l/119 is trying to lock:
-c2a44ed4 (&vsc8531->ts_lock){+.+.}-{3:3}, at: vsc85xx_txtstamp+0x50/0xac
-other info that might help us debug this:
-context-{4:4}
-4 locks held by ptp4l/119:
- #0: c145f068 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0x58/0x1440
- #1: c29df974 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_queue_xmit+0x5c4/0x1440
- #2: c2aaaad0 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x108/0x350
- #3: c2aac170 (&lan966x->tx_lock){+.-.}-{2:2}, at: lan966x_port_xmit+0xd0/0x350
-stack backtrace:
-CPU: 0 UID: 0 PID: 119 Comm: ptp4l Not tainted 6.17.0-rc1-00326-ge6160462704e #427 NONE
-Hardware name: Generic DT based system
-Call trace:
- unwind_backtrace from show_stack+0x10/0x14
- show_stack from dump_stack_lvl+0x7c/0xac
- dump_stack_lvl from __lock_acquire+0x8e8/0x29dc
- __lock_acquire from lock_acquire+0x108/0x38c
- lock_acquire from __mutex_lock+0xb0/0xe78
- __mutex_lock from mutex_lock_nested+0x1c/0x24
- mutex_lock_nested from vsc85xx_txtstamp+0x50/0xac
- vsc85xx_txtstamp from lan966x_fdma_xmit+0xd8/0x3a8
- lan966x_fdma_xmit from lan966x_port_xmit+0x1bc/0x350
- lan966x_port_xmit from dev_hard_start_xmit+0xc8/0x2c0
- dev_hard_start_xmit from sch_direct_xmit+0x8c/0x350
- sch_direct_xmit from __dev_queue_xmit+0x680/0x1440
- __dev_queue_xmit from packet_sendmsg+0xfa4/0x1568
- packet_sendmsg from __sys_sendto+0x110/0x19c
- __sys_sendto from sys_send+0x18/0x20
- sys_send from ret_fast_syscall+0x0/0x1c
-Exception stack(0xf0b05fa8 to 0xf0b05ff0)
-5fa0:                   00000001 0000000e 0000000e 0004b47a 0000003a 00000000
-5fc0: 00000001 0000000e 00000000 00000121 0004af58 00044874 00000000 00000000
-5fe0: 00000001 bee9d420 00025a10 b6e75c7c
+We're not currently setting skb->mac_header on ingress, and the netdev
+core rx path expects it. Without it, we'll hit a warning on DEBUG_NETDEV
+from commit 1e4033b53db4 ("net: skb_reset_mac_len() must check if
+mac_header was set")
 
-So, instead of using the ts_lock for tx_queue, use the spinlock that
-skb_buff_head has.
+Initialise the mac_header to refer to the USB transport header.
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://patch.msgid.link/20250902121259.3257536-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0791c0327a6e ("net: mctp: Add MCTP USB transport driver")
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Link: https://patch.msgid.link/20250829-mctp-usb-mac-header-v1-1-338ad725e183@codeconstruct.com.au
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mscc/mscc_ptp.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/net/mctp/mctp-usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index 717435562f1c5..7b73b78ac9b35 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -455,12 +455,12 @@ static void vsc85xx_dequeue_skb(struct vsc85xx_ptp *ptp)
- 		*p++ = (reg >> 24) & 0xff;
- 	}
+diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
+index 775a386d0aca1..36ccc53b17975 100644
+--- a/drivers/net/mctp/mctp-usb.c
++++ b/drivers/net/mctp/mctp-usb.c
+@@ -183,6 +183,7 @@ static void mctp_usb_in_complete(struct urb *urb)
+ 		struct mctp_usb_hdr *hdr;
+ 		u8 pkt_len; /* length of MCTP packet, no USB header */
  
--	len = skb_queue_len(&ptp->tx_queue);
-+	len = skb_queue_len_lockless(&ptp->tx_queue);
- 	if (len < 1)
- 		return;
- 
- 	while (len--) {
--		skb = __skb_dequeue(&ptp->tx_queue);
-+		skb = skb_dequeue(&ptp->tx_queue);
- 		if (!skb)
- 			return;
- 
-@@ -485,7 +485,7 @@ static void vsc85xx_dequeue_skb(struct vsc85xx_ptp *ptp)
- 		 * packet in the FIFO right now, reschedule it for later
- 		 * packets.
- 		 */
--		__skb_queue_tail(&ptp->tx_queue, skb);
-+		skb_queue_tail(&ptp->tx_queue, skb);
- 	}
- }
- 
-@@ -1070,6 +1070,7 @@ static int vsc85xx_hwtstamp(struct mii_timestamper *mii_ts, struct ifreq *ifr)
- 	case HWTSTAMP_TX_ON:
- 		break;
- 	case HWTSTAMP_TX_OFF:
-+		skb_queue_purge(&vsc8531->ptp->tx_queue);
- 		break;
- 	default:
- 		return -ERANGE;
-@@ -1094,9 +1095,6 @@ static int vsc85xx_hwtstamp(struct mii_timestamper *mii_ts, struct ifreq *ifr)
- 
- 	mutex_lock(&vsc8531->ts_lock);
- 
--	__skb_queue_purge(&vsc8531->ptp->tx_queue);
--	__skb_queue_head_init(&vsc8531->ptp->tx_queue);
--
- 	/* Disable predictor while configuring the 1588 block */
- 	val = vsc85xx_ts_read_csr(phydev, PROCESSOR,
- 				  MSCC_PHY_PTP_INGR_PREDICTOR);
-@@ -1182,9 +1180,7 @@ static void vsc85xx_txtstamp(struct mii_timestamper *mii_ts,
- 
- 	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
- 
--	mutex_lock(&vsc8531->ts_lock);
--	__skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
--	mutex_unlock(&vsc8531->ts_lock);
-+	skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
- 	return;
- 
- out:
-@@ -1550,6 +1546,7 @@ void vsc8584_ptp_deinit(struct phy_device *phydev)
- 	if (vsc8531->ptp->ptp_clock) {
- 		ptp_clock_unregister(vsc8531->ptp->ptp_clock);
- 		skb_queue_purge(&vsc8531->rx_skbs_list);
-+		skb_queue_purge(&vsc8531->ptp->tx_queue);
- 	}
- }
- 
-@@ -1573,7 +1570,7 @@ irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev)
- 	if (rc & VSC85XX_1588_INT_FIFO_ADD) {
- 		vsc85xx_get_tx_ts(priv->ptp);
- 	} else if (rc & VSC85XX_1588_INT_FIFO_OVERFLOW) {
--		__skb_queue_purge(&priv->ptp->tx_queue);
-+		skb_queue_purge(&priv->ptp->tx_queue);
- 		vsc85xx_ts_reset_fifo(phydev);
- 	}
- 
-@@ -1593,6 +1590,7 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
- 	mutex_init(&vsc8531->phc_lock);
- 	mutex_init(&vsc8531->ts_lock);
- 	skb_queue_head_init(&vsc8531->rx_skbs_list);
-+	skb_queue_head_init(&vsc8531->ptp->tx_queue);
- 
- 	/* Retrieve the shared load/save GPIO. Request it as non exclusive as
- 	 * the same GPIO can be requested by all the PHYs of the same package.
++		skb_reset_mac_header(skb);
+ 		hdr = skb_pull_data(skb, sizeof(*hdr));
+ 		if (!hdr)
+ 			break;
 -- 
 2.50.1
 
