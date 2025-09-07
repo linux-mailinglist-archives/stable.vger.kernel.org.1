@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-178286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FCC5B47E07
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:19:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664FCB47F27
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F046189EF43
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:20:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 215243C29DC
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026C92139C9;
-	Sun,  7 Sep 2025 20:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C631A212B3D;
+	Sun,  7 Sep 2025 20:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vG6E3xtE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUsVoL/X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B382414BFA2;
-	Sun,  7 Sep 2025 20:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8245C1A0BFD;
+	Sun,  7 Sep 2025 20:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276353; cv=none; b=hn1rskrIlHzLGjN9rUaDDIFonTuGidm/NHcv3sO8fGsnPQFLyRzg8t6ZBNJlOxWsbV8bVrBt7pMiOPOw6BRQaLpvqHQ1kw01Y1/ODsYSnVmwi1wtyzbBKyvqXcYhghUL/qrgSwLIOdLf2U85o37v4a/T34/4BxwZ2fH5kXLn2Nw=
+	t=1757277220; cv=none; b=G9fyUIvUt+z6A/OWQVuNXQWTTbpeamnKP3uVScg3uADxmehx9D1teOC8OR4H8yaUZapt0GeXqFYwOmz5Uc4yuGSEsqIsUgoT/dwBadh61zamprPpTikEX1K9JC6SBVBjfvPN1FAXcW7TqwyjbegON5zurq9Zc47Sd5/1pPlirGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276353; c=relaxed/simple;
-	bh=YcsWqAWqOtWX2eTSJqyb8qdhyzSGW5eKL2Vid9t1Gug=;
+	s=arc-20240116; t=1757277220; c=relaxed/simple;
+	bh=gJxVOj3zgu9y0zSJJwO+3vrwHZDHWNDTLxqPf3XcfCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHKn+18u0DgBlEULPfPq0zdfNn43zKpKE0HHqnIMvZRJ+7ZgHH0EsWhXtpAb0NAiTQhVSUFBPDr+IcM0MRCOr1BFIZwWhTHUR4pwFNnIzqJMg8M6wre+KpHMFdaFzwv/snXcIc1+J0teBFdzO7ItXhD/kKdiXOw5nxgjgB9x4Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vG6E3xtE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367DBC4CEF0;
-	Sun,  7 Sep 2025 20:19:13 +0000 (UTC)
+	 MIME-Version; b=WFmCvOQd2iIEXjWAV4BXaQUqCcxJ4OMPD6ySCtal0RDEMHpQuzLIO2CWociADkCM88bYorpXKBlDlM4lLzdQMf2qLhoQLXDb/6yxx3NCPhEkqx7Wnd2rlwLhlC6pkCSpCeFnxbU2gGYrCBdI15m/WCme+1AKsbGiPrcp8r4Wah8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUsVoL/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B1FC4CEF0;
+	Sun,  7 Sep 2025 20:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276353;
-	bh=YcsWqAWqOtWX2eTSJqyb8qdhyzSGW5eKL2Vid9t1Gug=;
+	s=korg; t=1757277220;
+	bh=gJxVOj3zgu9y0zSJJwO+3vrwHZDHWNDTLxqPf3XcfCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vG6E3xtE8vkqt3Mfgfg/bVNfQ7MiBLVSi3iNlh1+vj3M1l5OoONjJn/uCw6VPmQcr
-	 ZGFmVh4TW9G8ZPlVBGhOfTQKM2+MddFKM7CXOovPnNONbo/Vlys7df3OvolbBGg2Oj
-	 qrdLo7ydtKoSKynNMw5iidIJzxCT2PkkAxO1Y8/M=
+	b=GUsVoL/XB6E7tkFe32FFt0FcukZkp9sXp+7AbX4Q9kKhdmKslIUih1RfwBupsYErg
+	 EdAGcCsx49MvV9Bt7M8gcYVsM26ue/gdCt5wcIdfo2CDWC/W4j+TsCSFpERwa+udbi
+	 aBBNYzylbb617WmFLB0X7TWvnTAU3BYNRse8nRjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Dominik Brodowski <linux@dominikbrodowski.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/104] pcmcia: omap: Add missing check for platform_get_resource
+	Stefan Wahren <wahrenst@gmx.net>,
+	stable@kernel.org,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 121/175] microchip: lan865x: Fix module autoloading
 Date: Sun,  7 Sep 2025 21:58:36 +0200
-Message-ID: <20250907195609.723190270@linuxfoundation.org>
+Message-ID: <20250907195617.722079371@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit ecef14f70ec9344a10c817248d2ac6cddee5921e ]
+commit c7217963eb779be0a7627dd2121152fa6786ecf7 upstream.
 
-Add missing check for platform_get_resource() and return error if it fails
-to catch the error.
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
+based on the alias from spi_device_id table. While at this, fix
+the misleading variable name (spidev is unrelated to this driver).
 
-Fixes: d87d44f7ab35 ("ARM: omap1: move CF chipselect setup to board file")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5cd2340cb6a3 ("microchip: lan865x: add driver support for Microchip's LAN865X MAC-PHY")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Cc: stable@kernel.org
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250827115341.34608-3-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pcmcia/omap_cf.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/microchip/lan865x/lan865x.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pcmcia/omap_cf.c b/drivers/pcmcia/omap_cf.c
-index d3f827d4224a3..e22a752052f2f 100644
---- a/drivers/pcmcia/omap_cf.c
-+++ b/drivers/pcmcia/omap_cf.c
-@@ -215,6 +215,8 @@ static int __init omap_cf_probe(struct platform_device *pdev)
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
+index 84c41f193561..9d94c8fb8b91 100644
+--- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
++++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
+@@ -423,10 +423,11 @@ static void lan865x_remove(struct spi_device *spi)
+ 	free_netdev(priv->netdev);
+ }
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res)
-+		return -EINVAL;
+-static const struct spi_device_id spidev_spi_ids[] = {
++static const struct spi_device_id lan865x_ids[] = {
+ 	{ .name = "lan8650" },
+ 	{},
+ };
++MODULE_DEVICE_TABLE(spi, lan865x_ids);
  
- 	cf = kzalloc(sizeof *cf, GFP_KERNEL);
- 	if (!cf)
+ static const struct of_device_id lan865x_dt_ids[] = {
+ 	{ .compatible = "microchip,lan8650" },
+@@ -441,7 +442,7 @@ static struct spi_driver lan865x_driver = {
+ 	 },
+ 	.probe = lan865x_probe,
+ 	.remove = lan865x_remove,
+-	.id_table = spidev_spi_ids,
++	.id_table = lan865x_ids,
+ };
+ module_spi_driver(lan865x_driver);
+ 
 -- 
 2.51.0
 
