@@ -1,96 +1,56 @@
-Return-Path: <stable+bounces-178719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C510B47FCA
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:42:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72FCBB47F62
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9D772006ED
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:42:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E5B93C23B4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A96B2139C9;
-	Sun,  7 Sep 2025 20:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D314B26B2AD;
+	Sun,  7 Sep 2025 20:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvf1QQWL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUbo8bB0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4861E4315A;
-	Sun,  7 Sep 2025 20:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908944315A;
+	Sun,  7 Sep 2025 20:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277739; cv=none; b=UCwfWmbSuZgWRLyoryN/bnOrGOW3N8p549MI3ZVPQjsMocTQBglp3CpcnRpOb/i5ugTVmMjXtvSOtgwwMECeu+azyk2ILh6IY58z0bmrqm2tlG0kZNw7t7TfbiAzEmW3v9nGe3SEeRyBMEXZZQRbB8Ap/7jUMNIO3hK2vFR1mes=
+	t=1757277410; cv=none; b=HEwXmqbChbBDcMVm4PFhKLZjFUC3tPAGZxTWEWVjAmoW15PcVvuOz1jMLnV/E9T0dcOJpEBHqfhe3qUIiTeKfKzsjRIYRSvh+8APWQ7PI1e0Of+07OAbzQqNOfbHuteedZ1IkSo/YuBDktdiRkUX+XHI5yxvHPsQ4YifXf+UJNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277739; c=relaxed/simple;
-	bh=dCQSrWqkEWcEX+myU5d5iRoSrVtD1PTF9slktUyM2og=;
+	s=arc-20240116; t=1757277410; c=relaxed/simple;
+	bh=vRHH4DYwVEEEZPqglbwfhAivtUuHXF2zMw6Uy6sg9WM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cjfuufewlgF1wYkc/CHC3LYANAhvDtV36kesm7TJ/DRrdbBG1BRk9eIsdlB5K8GxIRgF+hgfcCEmIU6nuz+fOLARuh9em149XNmSppiNc/uMnEAgHOHSaE/NEZhs8Z/ywRl33iEkCH6+OQ95qnlVo/aZstIeDCiHYxwUevRWW5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvf1QQWL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50902C4CEF0;
-	Sun,  7 Sep 2025 20:42:18 +0000 (UTC)
+	 MIME-Version; b=nbePltd6mI5HTBcLPejKpgzke91ymxoDKwCS7ZASKu2gqbQ83gbyehVIEyEDCABR4ijv7pjVCgGNhCOTrKBVk87nm49PUdt+i7xMBusXPE4xXOT09w5NtcyS/vh3hVvW2zgzvYSFP9HpQ6WKL/M6/EnA/QRMXRoVBhVOv+thVic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUbo8bB0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B831C4CEF0;
+	Sun,  7 Sep 2025 20:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277739;
-	bh=dCQSrWqkEWcEX+myU5d5iRoSrVtD1PTF9slktUyM2og=;
+	s=korg; t=1757277410;
+	bh=vRHH4DYwVEEEZPqglbwfhAivtUuHXF2zMw6Uy6sg9WM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yvf1QQWLLXnRtXmBHGsBd59+Hyq6O4Wzw049+3xoVPoSL9Jyoixx/8LjERIpSfD9p
-	 UYmQH7X/Xc8ucIgkBu4myexYy8d/VHZORIUyxX9r/awuQA3T4Phj2/CMcxRY5x4Bzj
-	 8f4DYt8f7WEBlt8F5hAYrncx2FMmNYLHlQilmY3o=
+	b=aUbo8bB0sVaqcGCEK2vdufDUag5ONsIr8U8t8PfzunKBJ6Sw2y4CzRrODNur9lHY9
+	 dzE39pzL0XFLms54OuowQEg5nElyCUVmaXBBx17ZxA1By9EPbPn5iQFhOXsy/lTlhe
+	 ZzKLmJJbzep5r4gobunEcWkAN6KowBozoJW3E2G8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	bibo mao <maobibo@loongson.cn>,
-	Borislav Betkov <bp@alien8.de>,
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Thomas Huth <thuth@redhat.com>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 107/183] mm: introduce and use {pgd,p4d}_populate_kernel()
+	Harry Yoo <harry.yoo@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 139/175] mm, slab: cleanup slab_bug() parameters
 Date: Sun,  7 Sep 2025 21:58:54 +0200
-Message-ID: <20250907195618.333159045@linuxfoundation.org>
+Message-ID: <20250907195618.138904857@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -102,288 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Yoo <harry.yoo@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-commit f2d2f9598ebb0158a3fe17cda0106d7752e654a2 upstream.
+[ Upstream commit 4b183dd9359d5772446cb634b12a383bed98c4fc ]
 
-Introduce and use {pgd,p4d}_populate_kernel() in core MM code when
-populating PGD and P4D entries for the kernel address space.  These
-helpers ensure proper synchronization of page tables when updating the
-kernel portion of top-level page tables.
+slab_err() has variadic printf arguments but instead of passing them to
+slab_bug() it does vsnprintf() to a buffer and passes %s, buf.
 
-Until now, the kernel has relied on each architecture to handle
-synchronization of top-level page tables in an ad-hoc manner.  For
-example, see commit 9b861528a801 ("x86-64, mem: Update all PGDs for direct
-mapping and vmemmap mapping changes").
+To allow passing them directly, turn slab_bug() to __slab_bug() with a
+va_list parameter, and slab_bug() a wrapper with fmt, ... parameters.
+Then slab_err() can call __slab_bug() without the intermediate buffer.
 
-However, this approach has proven fragile for following reasons:
+Also constify fmt everywhere, which also simplifies object_err()'s
+call to slab_bug().
 
-  1) It is easy to forget to perform the necessary page table
-     synchronization when introducing new changes.
-     For instance, commit 4917f55b4ef9 ("mm/sparse-vmemmap: improve memory
-     savings for compound devmaps") overlooked the need to synchronize
-     page tables for the vmemmap area.
-
-  2) It is also easy to overlook that the vmemmap and direct mapping areas
-     must not be accessed before explicit page table synchronization.
-     For example, commit 8d400913c231 ("x86/vmemmap: handle unpopulated
-     sub-pmd ranges")) caused crashes by accessing the vmemmap area
-     before calling sync_global_pgds().
-
-To address this, as suggested by Dave Hansen, introduce _kernel() variants
-of the page table population helpers, which invoke architecture-specific
-hooks to properly synchronize page tables.  These are introduced in a new
-header file, include/linux/pgalloc.h, so they can be called from common
-code.
-
-They reuse existing infrastructure for vmalloc and ioremap.
-Synchronization requirements are determined by ARCH_PAGE_TABLE_SYNC_MASK,
-and the actual synchronization is performed by
-arch_sync_kernel_mappings().
-
-This change currently targets only x86_64, so only PGD and P4D level
-helpers are introduced.  Currently, these helpers are no-ops since no
-architecture sets PGTBL_{PGD,P4D}_MODIFIED in ARCH_PAGE_TABLE_SYNC_MASK.
-
-In theory, PUD and PMD level helpers can be added later if needed by other
-architectures.  For now, 32-bit architectures (x86-32 and arm) only handle
-PGTBL_PMD_MODIFIED, so p*d_populate_kernel() will never affect them unless
-we introduce a PMD level helper.
-
-[harry.yoo@oracle.com: fix KASAN build error due to p*d_populate_kernel()]
-  Link: https://lkml.kernel.org/r/20250822020727.202749-1-harry.yoo@oracle.com
-Link: https://lkml.kernel.org/r/20250818020206.4517-3-harry.yoo@oracle.com
-Fixes: 8d400913c231 ("x86/vmemmap: handle unpopulated sub-pmd ranges")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Kiryl Shutsemau <kas@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: bibo mao <maobibo@loongson.cn>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Christoph Lameter (Ampere) <cl@gentwo.org>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Joao Martins <joao.m.martins@oracle.com>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: Thomas Huth <thuth@redhat.com>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Stable-dep-of: b4efccec8d06 ("mm/slub: avoid accessing metadata when pointer is invalid in object_err()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/pgalloc.h |   29 +++++++++++++++++++++++++++++
- include/linux/pgtable.h |   13 +++++++------
- mm/kasan/init.c         |   12 ++++++------
- mm/percpu.c             |    6 +++---
- mm/sparse-vmemmap.c     |    6 +++---
- 5 files changed, 48 insertions(+), 18 deletions(-)
- create mode 100644 include/linux/pgalloc.h
+ mm/slub.c |   28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
---- /dev/null
-+++ b/include/linux/pgalloc.h
-@@ -0,0 +1,29 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_PGALLOC_H
-+#define _LINUX_PGALLOC_H
-+
-+#include <linux/pgtable.h>
-+#include <asm/pgalloc.h>
-+
-+/*
-+ * {pgd,p4d}_populate_kernel() are defined as macros to allow
-+ * compile-time optimization based on the configured page table levels.
-+ * Without this, linking may fail because callers (e.g., KASAN) may rely
-+ * on calls to these functions being optimized away when passing symbols
-+ * that exist only for certain page table levels.
-+ */
-+#define pgd_populate_kernel(addr, pgd, p4d)				\
-+	do {								\
-+		pgd_populate(&init_mm, pgd, p4d);			\
-+		if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_PGD_MODIFIED)	\
-+			arch_sync_kernel_mappings(addr, addr);		\
-+	} while (0)
-+
-+#define p4d_populate_kernel(addr, p4d, pud)				\
-+	do {								\
-+		p4d_populate(&init_mm, p4d, pud);			\
-+		if (ARCH_PAGE_TABLE_SYNC_MASK & PGTBL_P4D_MODIFIED)	\
-+			arch_sync_kernel_mappings(addr, addr);		\
-+	} while (0)
-+
-+#endif /* _LINUX_PGALLOC_H */
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1697,8 +1697,8 @@ static inline int pmd_protnone(pmd_t pmd
- 
- /*
-  * Architectures can set this mask to a combination of PGTBL_P?D_MODIFIED values
-- * and let generic vmalloc and ioremap code know when arch_sync_kernel_mappings()
-- * needs to be called.
-+ * and let generic vmalloc, ioremap and page table update code know when
-+ * arch_sync_kernel_mappings() needs to be called.
-  */
- #ifndef ARCH_PAGE_TABLE_SYNC_MASK
- #define ARCH_PAGE_TABLE_SYNC_MASK 0
-@@ -1831,10 +1831,11 @@ static inline bool arch_has_pfn_modify_c
- /*
-  * Page Table Modification bits for pgtbl_mod_mask.
-  *
-- * These are used by the p?d_alloc_track*() set of functions an in the generic
-- * vmalloc/ioremap code to track at which page-table levels entries have been
-- * modified. Based on that the code can better decide when vmalloc and ioremap
-- * mapping changes need to be synchronized to other page-tables in the system.
-+ * These are used by the p?d_alloc_track*() and p*d_populate_kernel()
-+ * functions in the generic vmalloc, ioremap and page table update code
-+ * to track at which page-table levels entries have been modified.
-+ * Based on that the code can better decide when page table changes need
-+ * to be synchronized to other page-tables in the system.
-  */
- #define		__PGTBL_PGD_MODIFIED	0
- #define		__PGTBL_P4D_MODIFIED	1
---- a/mm/kasan/init.c
-+++ b/mm/kasan/init.c
-@@ -13,9 +13,9 @@
- #include <linux/mm.h>
- #include <linux/pfn.h>
- #include <linux/slab.h>
-+#include <linux/pgalloc.h>
- 
- #include <asm/page.h>
--#include <asm/pgalloc.h>
- 
- #include "kasan.h"
- 
-@@ -191,7 +191,7 @@ static int __ref zero_p4d_populate(pgd_t
- 			pud_t *pud;
- 			pmd_t *pmd;
- 
--			p4d_populate(&init_mm, p4d,
-+			p4d_populate_kernel(addr, p4d,
- 					lm_alias(kasan_early_shadow_pud));
- 			pud = pud_offset(p4d, addr);
- 			pud_populate(&init_mm, pud,
-@@ -212,7 +212,7 @@ static int __ref zero_p4d_populate(pgd_t
- 			} else {
- 				p = early_alloc(PAGE_SIZE, NUMA_NO_NODE);
- 				pud_init(p);
--				p4d_populate(&init_mm, p4d, p);
-+				p4d_populate_kernel(addr, p4d, p);
- 			}
- 		}
- 		zero_pud_populate(p4d, addr, next);
-@@ -251,10 +251,10 @@ int __ref kasan_populate_early_shadow(co
- 			 * puds,pmds, so pgd_populate(), pud_populate()
- 			 * is noops.
- 			 */
--			pgd_populate(&init_mm, pgd,
-+			pgd_populate_kernel(addr, pgd,
- 					lm_alias(kasan_early_shadow_p4d));
- 			p4d = p4d_offset(pgd, addr);
--			p4d_populate(&init_mm, p4d,
-+			p4d_populate_kernel(addr, p4d,
- 					lm_alias(kasan_early_shadow_pud));
- 			pud = pud_offset(p4d, addr);
- 			pud_populate(&init_mm, pud,
-@@ -273,7 +273,7 @@ int __ref kasan_populate_early_shadow(co
- 				if (!p)
- 					return -ENOMEM;
- 			} else {
--				pgd_populate(&init_mm, pgd,
-+				pgd_populate_kernel(addr, pgd,
- 					early_alloc(PAGE_SIZE, NUMA_NO_NODE));
- 			}
- 		}
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -3108,7 +3108,7 @@ out_free:
- #endif /* BUILD_EMBED_FIRST_CHUNK */
- 
- #ifdef BUILD_PAGE_FIRST_CHUNK
--#include <asm/pgalloc.h>
-+#include <linux/pgalloc.h>
- 
- #ifndef P4D_TABLE_SIZE
- #define P4D_TABLE_SIZE PAGE_SIZE
-@@ -3134,13 +3134,13 @@ void __init __weak pcpu_populate_pte(uns
- 
- 	if (pgd_none(*pgd)) {
- 		p4d = memblock_alloc_or_panic(P4D_TABLE_SIZE, P4D_TABLE_SIZE);
--		pgd_populate(&init_mm, pgd, p4d);
-+		pgd_populate_kernel(addr, pgd, p4d);
- 	}
- 
- 	p4d = p4d_offset(pgd, addr);
- 	if (p4d_none(*p4d)) {
- 		pud = memblock_alloc_or_panic(PUD_TABLE_SIZE, PUD_TABLE_SIZE);
--		p4d_populate(&init_mm, p4d, pud);
-+		p4d_populate_kernel(addr, p4d, pud);
- 	}
- 
- 	pud = pud_offset(p4d, addr);
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -27,9 +27,9 @@
- #include <linux/spinlock.h>
- #include <linux/vmalloc.h>
- #include <linux/sched.h>
-+#include <linux/pgalloc.h>
- 
- #include <asm/dma.h>
--#include <asm/pgalloc.h>
- #include <asm/tlbflush.h>
- 
- #include "hugetlb_vmemmap.h"
-@@ -229,7 +229,7 @@ p4d_t * __meminit vmemmap_p4d_populate(p
- 		if (!p)
- 			return NULL;
- 		pud_init(p);
--		p4d_populate(&init_mm, p4d, p);
-+		p4d_populate_kernel(addr, p4d, p);
- 	}
- 	return p4d;
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -1027,12 +1027,12 @@ void skip_orig_size_check(struct kmem_ca
+ 	set_orig_size(s, (void *)object, s->object_size);
  }
-@@ -241,7 +241,7 @@ pgd_t * __meminit vmemmap_pgd_populate(u
- 		void *p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
- 		if (!p)
- 			return NULL;
--		pgd_populate(&init_mm, pgd, p);
-+		pgd_populate_kernel(addr, pgd, p);
- 	}
- 	return pgd;
+ 
+-static void slab_bug(struct kmem_cache *s, char *fmt, ...)
++static void __slab_bug(struct kmem_cache *s, const char *fmt, va_list argsp)
+ {
+ 	struct va_format vaf;
+ 	va_list args;
+ 
+-	va_start(args, fmt);
++	va_copy(args, argsp);
+ 	vaf.fmt = fmt;
+ 	vaf.va = &args;
+ 	pr_err("=============================================================================\n");
+@@ -1041,8 +1041,17 @@ static void slab_bug(struct kmem_cache *
+ 	va_end(args);
  }
+ 
++static void slab_bug(struct kmem_cache *s, const char *fmt, ...)
++{
++	va_list args;
++
++	va_start(args, fmt);
++	__slab_bug(s, fmt, args);
++	va_end(args);
++}
++
+ __printf(2, 3)
+-static void slab_fix(struct kmem_cache *s, char *fmt, ...)
++static void slab_fix(struct kmem_cache *s, const char *fmt, ...)
+ {
+ 	struct va_format vaf;
+ 	va_list args;
+@@ -1098,12 +1107,12 @@ static void print_trailer(struct kmem_ca
+ }
+ 
+ static void object_err(struct kmem_cache *s, struct slab *slab,
+-			u8 *object, char *reason)
++			u8 *object, const char *reason)
+ {
+ 	if (slab_add_kunit_errors())
+ 		return;
+ 
+-	slab_bug(s, "%s", reason);
++	slab_bug(s, reason);
+ 	print_trailer(s, slab, object);
+ 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
+ 
+@@ -1139,15 +1148,14 @@ static __printf(3, 4) void slab_err(stru
+ 			const char *fmt, ...)
+ {
+ 	va_list args;
+-	char buf[100];
+ 
+ 	if (slab_add_kunit_errors())
+ 		return;
+ 
+ 	va_start(args, fmt);
+-	vsnprintf(buf, sizeof(buf), fmt, args);
++	__slab_bug(s, fmt, args);
+ 	va_end(args);
+-	slab_bug(s, "%s", buf);
++
+ 	__slab_err(slab);
+ }
+ 
+@@ -1185,7 +1193,7 @@ static void init_object(struct kmem_cach
+ 					  s->inuse - poison_size);
+ }
+ 
+-static void restore_bytes(struct kmem_cache *s, char *message, u8 data,
++static void restore_bytes(struct kmem_cache *s, const char *message, u8 data,
+ 						void *from, void *to)
+ {
+ 	slab_fix(s, "Restoring %s 0x%p-0x%p=0x%x", message, from, to - 1, data);
+@@ -1200,7 +1208,7 @@ static void restore_bytes(struct kmem_ca
+ 
+ static pad_check_attributes int
+ check_bytes_and_report(struct kmem_cache *s, struct slab *slab,
+-		       u8 *object, char *what, u8 *start, unsigned int value,
++		       u8 *object, const char *what, u8 *start, unsigned int value,
+ 		       unsigned int bytes, bool slab_obj_print)
+ {
+ 	u8 *fault;
 
 
 
