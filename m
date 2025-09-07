@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-178211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35AA5B47DB0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:15:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2599B47DF1
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F046A17CDFE
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B0A37B0AEE
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DAE20D51C;
-	Sun,  7 Sep 2025 20:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2151B424F;
+	Sun,  7 Sep 2025 20:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jczSSfrz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Om+GRxLN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F5D1A2389;
-	Sun,  7 Sep 2025 20:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BE114BFA2;
+	Sun,  7 Sep 2025 20:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276119; cv=none; b=brMM1X4hPWg0zZgUqgkYgJn6dwgVkHzXgRYEK/+Drqz/o/OZ+rqSYArGxRtqfD2Ji8zf5DbPfQgoxE3WAbOwI5gIJZiBWk979TXFiZ5fsZVIhfx6+A5Y8YODELjuJTLAS67Ot1D8579/KgK8KldjswoQp11ZG0ybMUfy2hbzGyw=
+	t=1757276300; cv=none; b=XA8MuRNw6JL3iUoXe1x7fWOO8GU3MtgDfYtg1SDb4rQT8w30nDskmMO5n/lv2TOOrCEqeJgC5DaPOei4czqF7kfX9q2TPEUzelXZlHsYXs8efqnUIf0mtzUETgPkAPbilzORZjw8Obm2RUQ2aLeksm/xPFdM2HsiXINFLHlrqGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276119; c=relaxed/simple;
-	bh=OLRTeC1G4ocszApvu7kshzthOarFWux2c8M85g2RzRY=;
+	s=arc-20240116; t=1757276300; c=relaxed/simple;
+	bh=zmWNxX8seFWkJU3DAwubtQKX4hpd4V5tWBkAWNS54cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9EThAtLEHo66yp7w/b0MCk6vQTH7hq1jDqjzOvuSZKv/h11hHPuJFik7Qj2dAnj9sZNHAoOIt8EZQyk8X/ROGKVT4khm2aRK7eB0G9emLU/rEc0EPXFEDqqYA/cpd5/0tDicGD6fsXAJUsjOcOewusEN/3eTFiuD12OL6BqqS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jczSSfrz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D561C4CEF0;
-	Sun,  7 Sep 2025 20:15:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hYlWoLa7sTvO5grNE7GIuKNiok6YHfgaGrPhANnnbZj5uPFoshxI8BYTNngO3leWtGc+xGklWlpW+qMj6M7TawiYZ4mjn94x7+USsxqqOC6VHUNPWU7r2POUzGsjEs7m0T/9g+Ad2Hb5jK+3gRjZ7qOI8Rem2p83gU1TauM05AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Om+GRxLN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA04BC4CEF0;
+	Sun,  7 Sep 2025 20:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276118;
-	bh=OLRTeC1G4ocszApvu7kshzthOarFWux2c8M85g2RzRY=;
+	s=korg; t=1757276300;
+	bh=zmWNxX8seFWkJU3DAwubtQKX4hpd4V5tWBkAWNS54cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jczSSfrzny/ZTvecwOVr+AP5J3215T9A5gfYsEjCp+wlvyMBSMjAI1rSmSAv6wVGY
-	 6ZunMxh/GMAiCf4kmGLIAkorxDoV+aHvbMvxnUrvYDnlSUnsMPnl2KO6eemhw9WXyb
-	 bqWJD1oOQCczI+9AjKCLp4ygMYbkpVVYy1d5rXdw=
+	b=Om+GRxLNBcFOeisHzeYH5ao5DtaV4k8IxYiz6KbpbH5M7yB7E410UvpNtoMoRZn0V
+	 e0IIySsOtcOtPfpUzxd78vAGM26AJOUIZNKRxAyIm1A+VbFENc2hyoQhd/Sd87TAGg
+	 1VIxlMI6kmCb3+6b605MrnB6arZSmzEK8qVh9tLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Qianfeng Rong <rongqianfeng@vivo.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 33/64] wifi: mwifiex: Initialize the chan_stats array to zero
-Date: Sun,  7 Sep 2025 21:58:15 +0200
-Message-ID: <20250907195604.317937071@linuxfoundation.org>
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 059/104] iio: chemical: pms7003: use aligned_s64 for timestamp
+Date: Sun,  7 Sep 2025 21:58:16 +0200
+Message-ID: <20250907195609.213764858@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +62,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianfeng Rong <rongqianfeng@vivo.com>
+From: David Lechner <dlechner@baylibre.com>
 
-commit 0e20450829ca3c1dbc2db536391537c57a40fe0b upstream.
+[ Upstream commit 6ffa698674053e82e811520642db2650d00d2c01 ]
 
-The adapter->chan_stats[] array is initialized in
-mwifiex_init_channel_scan_gap() with vmalloc(), which doesn't zero out
-memory.  The array is filled in mwifiex_update_chan_statistics()
-and then the user can query the data in mwifiex_cfg80211_dump_survey().
+Follow the pattern of other drivers and use aligned_s64 for the
+timestamp. This will ensure that the timestamp is correctly aligned on
+all architectures.
 
-There are two potential issues here.  What if the user calls
-mwifiex_cfg80211_dump_survey() before the data has been filled in.
-Also the mwifiex_update_chan_statistics() function doesn't necessarily
-initialize the whole array.  Since the array was not initialized at
-the start that could result in an information leak.
+Also move the unaligned.h header while touching this since it was the
+only one not in alphabetical order.
 
-Also this array is pretty small.  It's a maximum of 900 bytes so it's
-more appropriate to use kcalloc() instead vmalloc().
-
-Cc: stable@vger.kernel.org
-Fixes: bf35443314ac ("mwifiex: channel statistics support for mwifiex")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Qianfeng Rong <rongqianfeng@vivo.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20250815023055.477719-1-rongqianfeng@vivo.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 13e945631c2f ("iio:chemical:pms7003: Fix timestamp alignment and prevent data leak.")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250417-iio-more-timestamp-alignment-v1-4-eafac1e22318@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ linux/unaligned.h => asm/unaligned.h ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c |    5 +++--
- drivers/net/wireless/marvell/mwifiex/main.c     |    4 ++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/iio/chemical/pms7003.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -4282,8 +4282,9 @@ int mwifiex_init_channel_scan_gap(struct
- 	 * additional active scan request for hidden SSIDs on passive channels.
- 	 */
- 	adapter->num_in_chan_stats = 2 * (n_channels_bg + n_channels_a);
--	adapter->chan_stats = vmalloc(array_size(sizeof(*adapter->chan_stats),
--						 adapter->num_in_chan_stats));
-+	adapter->chan_stats = kcalloc(adapter->num_in_chan_stats,
-+				      sizeof(*adapter->chan_stats),
-+				      GFP_KERNEL);
+--- a/drivers/iio/chemical/pms7003.c
++++ b/drivers/iio/chemical/pms7003.c
+@@ -5,7 +5,6 @@
+  * Copyright (c) Tomasz Duszynski <tduszyns@gmail.com>
+  */
  
- 	if (!adapter->chan_stats)
- 		return -ENOMEM;
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -640,7 +640,7 @@ static int _mwifiex_fw_dpc(const struct
- 	goto done;
+-#include <asm/unaligned.h>
+ #include <linux/completion.h>
+ #include <linux/device.h>
+ #include <linux/errno.h>
+@@ -19,6 +18,8 @@
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/serdev.h>
++#include <linux/types.h>
++#include <asm/unaligned.h>
  
- err_add_intf:
--	vfree(adapter->chan_stats);
-+	kfree(adapter->chan_stats);
- err_init_chan_scan:
- 	wiphy_unregister(adapter->wiphy);
- 	wiphy_free(adapter->wiphy);
-@@ -1462,7 +1462,7 @@ static void mwifiex_uninit_sw(struct mwi
- 	wiphy_free(adapter->wiphy);
- 	adapter->wiphy = NULL;
+ #define PMS7003_DRIVER_NAME "pms7003"
  
--	vfree(adapter->chan_stats);
-+	kfree(adapter->chan_stats);
- 	mwifiex_free_cmd_buffers(adapter);
- }
+@@ -76,7 +77,7 @@ struct pms7003_state {
+ 	/* Used to construct scan to push to the IIO buffer */
+ 	struct {
+ 		u16 data[3]; /* PM1, PM2P5, PM10 */
+-		s64 ts;
++		aligned_s64 ts;
+ 	} scan;
+ };
  
 
 
