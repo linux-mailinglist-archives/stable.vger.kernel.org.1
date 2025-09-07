@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F59B47F49
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:35:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26EAEB47FD8
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5EDE17FCAB
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:35:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC7883C3B40
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:43:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FC020E00B;
-	Sun,  7 Sep 2025 20:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906F3269CE6;
+	Sun,  7 Sep 2025 20:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00VqISR7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1wGKxfp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA961DF246;
-	Sun,  7 Sep 2025 20:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFB94315A;
+	Sun,  7 Sep 2025 20:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277326; cv=none; b=Tv/XkTsAdITRtLfrjTig9bWRtBgEI7hRhkMmmBrKdc9WHSqHorNmQaWWNQwZF4mCwzw1egcpMgO0c+yQvJsnLvXq62zk8gUFTQqJzmvJJjYaePwDb/yytR/Ai8G59wwgNchczMdCmuKMYTuc8FmQV9XdeMXtpVGms3JvuPPj/ug=
+	t=1757277787; cv=none; b=Cty5WYtOwzoA/iK7yKcCLIT+ZNNrDOJyuSxWAQcNNDy/Cm+cOdVtEpNukIFQNXU7Bz9Oa2fXSykTcG+2attsIcyWe7tQ+ZKBAqgVMuLLAC9SlWvCX/ii2KBHAq6kTTbao8ZOK00Msp5cpLrcTn7qyEEv4tEzi3790dZ7i3yHbO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277326; c=relaxed/simple;
-	bh=s2s+Le9BmIgncpaMsBieYJPsVlLR1qrne/Ed9xKgV6w=;
+	s=arc-20240116; t=1757277787; c=relaxed/simple;
+	bh=ldyay+VKRnGPd0zILKcxYdCI+6Xchs3CMxIBm5kP/CA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rZVoNR//hZ8soqoYewC6ewUfk6vrHWB77PmqauMI7Qyfyr1g0LDZ+M2HSfIhhKghNQHYComVg8Irjton0rWiMZpPrKlwH+irjxbLPlOhelWLAvdv9ZjPtqHljCZkJmfZDSwIp6Tg23uP0+rq7MqEKKby0QoCm5jpLHV5OvF50Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00VqISR7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9898AC4CEF0;
-	Sun,  7 Sep 2025 20:35:25 +0000 (UTC)
+	 MIME-Version; b=DARLW8XGN/bVkQdwjCO6pKgAU8vnuOl1uocDixlvkCGLx7JKTUJmdyuQuX1l2VfhAzxDiL1SaN6jc/zOh0we16enNorQeo6x5ZamU8FQVVpm9h5cjuxMDYjvHy7xu/OF1MWzGvkuz6EdM3siqDrrXL4XaNQAEmHQrIbv4le7fNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1wGKxfp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C72BC4CEF0;
+	Sun,  7 Sep 2025 20:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277326;
-	bh=s2s+Le9BmIgncpaMsBieYJPsVlLR1qrne/Ed9xKgV6w=;
+	s=korg; t=1757277787;
+	bh=ldyay+VKRnGPd0zILKcxYdCI+6Xchs3CMxIBm5kP/CA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00VqISR7SNxMaHN48YlSe9S125OaIkPAH0ZwXOCKqxIFM3je3e4/Xfsc6pGoEv+05
-	 Th4o0pyQfkatT3UNQFz5AYwRU4l3rgucVJNvBpO6u5LFHiJW5f71IM/9l/Dh3kajju
-	 LSuT82T6VBeRY8QV8ur67a0iZCdWpZTNCm8bQaBs=
+	b=r1wGKxfpvUkOBcog6QS9DWA9iG0cOtBeG5L6ICASOOLykRFVMDVt1hZQ4NvJkFq+G
+	 QYted3IW/lLwE/DKKYGfUgpKFxgb0avUGunuE1/3j/KPAfpj7lgz+dVcEY6x5rcHt3
+	 +T8JiYhIH8unMrmXVlFdPh+lVVhuUzlOwYLmCjtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 156/175] scsi: sr: Reinstate rotational media flag
+	Valentina Fernandez <valentina.fernandezalanis@microchip.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.16 124/183] spi: microchip-core-qspi: stop checking viability of op->max_freq in supports_op callback
 Date: Sun,  7 Sep 2025 21:59:11 +0200
-Message-ID: <20250907195618.547160410@linuxfoundation.org>
+Message-ID: <20250907195618.736898108@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-[ Upstream commit 708e2371f77a9d3f2f1d54d1ec835d71b9d0dafe ]
+commit 89e7353f522f5cf70cb48c01ce2dcdcb275b8022 upstream.
 
-Reinstate the rotational media flag for the CD-ROM driver. The flag has
-been cleared since commit bd4a633b6f7c ("block: move the nonrot flag to
-queue_limits") and this breaks some applications.
+In commit 13529647743d9 ("spi: microchip-core-qspi: Support per spi-mem
+operation frequency switches") the logic for checking the viability of
+op->max_freq in mchp_coreqspi_setup_clock() was copied into
+mchp_coreqspi_supports_op(). Unfortunately, op->max_freq is not valid
+when this function is called during probe but is instead zero.
+Accordingly, baud_rate_val is calculated to be INT_MAX due to division
+by zero, causing probe of the attached memory device to fail.
 
-Move queue limit configuration from get_sectorsize() to
-sr_revalidate_disk() and set the rotational flag.
+Seemingly spi-microchip-core-qspi was the only driver that had such a
+modification made to its supports_op callback when the per_op_freq
+capability was added, so just remove it to restore prior functionality.
 
-Cc: Christoph Hellwig <hch@lst.de>
-Fixes: bd4a633b6f7c ("block: move the nonrot flag to queue_limits")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250827113550.2614535-1-ming.lei@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Reported-by: Valentina Fernandez <valentina.fernandezalanis@microchip.com>
+Fixes: 13529647743d9 ("spi: microchip-core-qspi: Support per spi-mem operation frequency switches")
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Message-ID: <20250825-during-ploy-939bdd068593@spud>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sr.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/spi/spi-microchip-core-qspi.c |   12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/drivers/scsi/sr.c b/drivers/scsi/sr.c
-index b17796d5ee665..add13e3068983 100644
---- a/drivers/scsi/sr.c
-+++ b/drivers/scsi/sr.c
-@@ -475,13 +475,21 @@ static blk_status_t sr_init_command(struct scsi_cmnd *SCpnt)
+--- a/drivers/spi/spi-microchip-core-qspi.c
++++ b/drivers/spi/spi-microchip-core-qspi.c
+@@ -458,10 +458,6 @@ error:
  
- static int sr_revalidate_disk(struct scsi_cd *cd)
+ static bool mchp_coreqspi_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
  {
-+	struct request_queue *q = cd->device->request_queue;
- 	struct scsi_sense_hdr sshdr;
-+	struct queue_limits lim;
-+	int sector_size;
+-	struct mchp_coreqspi *qspi = spi_controller_get_devdata(mem->spi->controller);
+-	unsigned long clk_hz;
+-	u32 baud_rate_val;
+-
+ 	if (!spi_mem_default_supports_op(mem, op))
+ 		return false;
  
- 	/* if the unit is not ready, nothing more to do */
- 	if (scsi_test_unit_ready(cd->device, SR_TIMEOUT, MAX_RETRIES, &sshdr))
- 		return 0;
- 	sr_cd_check(&cd->cdi);
--	return get_sectorsize(cd);
-+	sector_size = get_sectorsize(cd);
-+
-+	lim = queue_limits_start_update(q);
-+	lim.logical_block_size = sector_size;
-+	lim.features |= BLK_FEAT_ROTATIONAL;
-+	return queue_limits_commit_update_frozen(q, &lim);
- }
- 
- static int sr_block_open(struct gendisk *disk, blk_mode_t mode)
-@@ -721,10 +729,8 @@ static int sr_probe(struct device *dev)
- 
- static int get_sectorsize(struct scsi_cd *cd)
- {
--	struct request_queue *q = cd->device->request_queue;
- 	static const u8 cmd[10] = { READ_CAPACITY };
- 	unsigned char buffer[8] = { };
--	struct queue_limits lim;
- 	int err;
- 	int sector_size;
- 	struct scsi_failure failure_defs[] = {
-@@ -795,9 +801,7 @@ static int get_sectorsize(struct scsi_cd *cd)
- 		set_capacity(cd->disk, cd->capacity);
+@@ -484,14 +480,6 @@ static bool mchp_coreqspi_supports_op(st
+ 			return false;
  	}
  
--	lim = queue_limits_start_update(q);
--	lim.logical_block_size = sector_size;
--	return queue_limits_commit_update_frozen(q, &lim);
-+	return sector_size;
+-	clk_hz = clk_get_rate(qspi->clk);
+-	if (!clk_hz)
+-		return false;
+-
+-	baud_rate_val = DIV_ROUND_UP(clk_hz, 2 * op->max_freq);
+-	if (baud_rate_val > MAX_DIVIDER || baud_rate_val < MIN_DIVIDER)
+-		return false;
+-
+ 	return true;
  }
  
- static int get_capabilities(struct scsi_cd *cd)
--- 
-2.51.0
-
 
 
 
