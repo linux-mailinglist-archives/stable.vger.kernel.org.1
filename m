@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-178193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17FB6B47DA0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:14:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32937B47F22
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:33:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C44D617CA3C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:14:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 312E41B212B2
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0C527FB21;
-	Sun,  7 Sep 2025 20:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238BC211A14;
+	Sun,  7 Sep 2025 20:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWcT59m4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGw3trjZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DCE61B424F;
-	Sun,  7 Sep 2025 20:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D384F1A0BFD;
+	Sun,  7 Sep 2025 20:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276060; cv=none; b=QJ/whZjvqqJrq7NQ2MxgaRl0NbuMcdIE6HaVE3iKQosM7bdpgD4NgqX1mVGbljrbDys9b4cyFYnqnyBDe9CnDFQAzp/reBHcqfp9WFyDHheeIptRg9+ht0kTwWS/zjEE5ezpVFEfj4ktGho1Qhgmix9OXNiVZP5HCSMpByB5yTU=
+	t=1757277204; cv=none; b=UB3NikvVL7WAQOJx3eberOTIA0Ta6CL0i+xTbGvTyR3NbBjvNRKH273FiWdlb+CcPRMWj7M7ysWOm2L5gW37rxF3AaDutcIaUzxrRgfbdjlxfXvLzGmgQAd+atJoJSGGfbnGE+Ern2P+ZFNmdX17zuXbupWqU9CWlGih1Az6Ks0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276060; c=relaxed/simple;
-	bh=l5NOygkF8W5Ukg9SvatM2/gVwnxdR1IESTB5ciDO3FY=;
+	s=arc-20240116; t=1757277204; c=relaxed/simple;
+	bh=DRdKA+mAM4cT60PctQOV96VY7BLF9NlPvslN5KTYsQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dcR33qINB5zKsgkJ5qWDtESWh6VO14fxfQVHfvYh+1iQf55uORRL1IQZIVHxEHVChiP5eb8ylI8/f71up4yscMQrqOZG6qz6PIteBfWzoWTCH9mUI2FgmVL8v/ovLoCuIGUHbJthbmPkL6/jQ2SM37fNuq9RpQWP/SZhpQenojo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWcT59m4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541CCC4CEF0;
-	Sun,  7 Sep 2025 20:14:19 +0000 (UTC)
+	 MIME-Version; b=jMBK+tFsn/GeRKMz/g3CDeKCrcGDP9WGNzo09NWDqbTuqJGiIJpnCmhWTXlEh9qLgKvh/73yTr21KXF2XHDn7DxwSSduWSk3oJZuyWUl+LAa57vPErwoO/X1P+EW0q24gcikfL3olfTcW8bDtwNSk43bkqiKmoF/YT1ryehV1N4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGw3trjZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0202EC4CEF0;
+	Sun,  7 Sep 2025 20:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276059;
-	bh=l5NOygkF8W5Ukg9SvatM2/gVwnxdR1IESTB5ciDO3FY=;
+	s=korg; t=1757277204;
+	bh=DRdKA+mAM4cT60PctQOV96VY7BLF9NlPvslN5KTYsQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TWcT59m4ImqE+1+O5fDRDrGzcnXKFg9EnY1Bezy5kTEgh7AHPi7/sxlQ4EKFBTBw+
-	 vFtAbhYzxswZQqfCqTf9s04KHoe1yY3e7XD1Pt2KS+tABi9IyMGY8HLlssl7tfzlYQ
-	 n7WYSO29rnK/dv1UOm1Sg+fPHl4nsuLMQOeKhdU4=
+	b=lGw3trjZYVnrwkX8U0eH+OMIO1OTnjxzaW2Lfzxyw+6xAVmYBnVHixX8Zi4JqnyrT
+	 AH0Y2VAnrHUi5gvK3rCOkn2GHOVs17CRNDyR03f/hDRouhBqJGkayCXWvaupCj+FOq
+	 Zc9NH+uDz1r/fpbyJLQxi33PD9ra3vPmy8gdZTms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronak Doshi <ronak.doshi@broadcom.com>,
-	Guolin Yang <guolin.yang@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 50/64] vmxnet3: update MTU after device quiesce
+	Stanislav Fort <disclosure@aisle.com>,
+	Stanislav Fort <stanislav.fort@aisle.com>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.12 117/175] batman-adv: fix OOB read/write in network-coding decode
 Date: Sun,  7 Sep 2025 21:58:32 +0200
-Message-ID: <20250907195604.790183369@linuxfoundation.org>
+Message-ID: <20250907195617.626065964@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronak Doshi <ronak.doshi@broadcom.com>
+From: Stanislav Fort <stanislav.fort@aisle.com>
 
-[ Upstream commit 43f0999af011fba646e015f0bb08b6c3002a0170 ]
+commit d77b6ff0ce35a6d0b0b7b9581bc3f76d041d4087 upstream.
 
-Currently, when device mtu is updated, vmxnet3 updates netdev mtu, quiesces
-the device and then reactivates it for the ESXi to know about the new mtu.
-So, technically the OS stack can start using the new mtu before ESXi knows
-about the new mtu.
+batadv_nc_skb_decode_packet() trusts coded_len and checks only against
+skb->len. XOR starts at sizeof(struct batadv_unicast_packet), reducing
+payload headroom, and the source skb length is not verified, allowing an
+out-of-bounds read and a small out-of-bounds write.
 
-This can lead to issues for TSO packets which use mss as per the new mtu
-configured. This patch fixes this issue by moving the mtu write after
-device quiesce.
+Validate that coded_len fits within the payload area of both destination
+and source sk_buffs before XORing.
 
+Fixes: 2df5278b0267 ("batman-adv: network coding - receive coded packets and decode them")
 Cc: stable@vger.kernel.org
-Fixes: d1a890fa37f2 ("net: VMware virtual Ethernet NIC driver: vmxnet3")
-Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
-Acked-by: Guolin Yang <guolin.yang@broadcom.com>
-Changes v1-> v2:
-  Moved MTU write after destroy of rx rings
-Link: https://patch.msgid.link/20250515190457.8597-1-ronak.doshi@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ no WRITE_ONCE() in older trees ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Stanislav Fort <disclosure@aisle.com>
+Signed-off-by: Stanislav Fort <stanislav.fort@aisle.com>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vmxnet3/vmxnet3_drv.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/batman-adv/network-coding.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/net/vmxnet3/vmxnet3_drv.c
-+++ b/drivers/net/vmxnet3/vmxnet3_drv.c
-@@ -3175,8 +3175,6 @@ vmxnet3_change_mtu(struct net_device *ne
- 	struct vmxnet3_adapter *adapter = netdev_priv(netdev);
- 	int err = 0;
+--- a/net/batman-adv/network-coding.c
++++ b/net/batman-adv/network-coding.c
+@@ -1687,7 +1687,12 @@ batadv_nc_skb_decode_packet(struct batad
  
--	netdev->mtu = new_mtu;
--
- 	/*
- 	 * Reset_work may be in the middle of resetting the device, wait for its
- 	 * completion.
-@@ -3190,6 +3188,7 @@ vmxnet3_change_mtu(struct net_device *ne
+ 	coding_len = ntohs(coded_packet_tmp.coded_len);
  
- 		/* we need to re-create the rx queue based on the new mtu */
- 		vmxnet3_rq_destroy_all(adapter);
-+		netdev->mtu = new_mtu;
- 		vmxnet3_adjust_rx_ring_size(adapter);
- 		err = vmxnet3_rq_create_all(adapter);
- 		if (err) {
-@@ -3206,6 +3205,8 @@ vmxnet3_change_mtu(struct net_device *ne
- 				   "Closing it\n", err);
- 			goto out;
- 		}
-+	} else {
-+		netdev->mtu = new_mtu;
- 	}
+-	if (coding_len > skb->len)
++	/* ensure dst buffer is large enough (payload only) */
++	if (coding_len + h_size > skb->len)
++		return NULL;
++
++	/* ensure src buffer is large enough (payload only) */
++	if (coding_len + h_size > nc_packet->skb->len)
+ 		return NULL;
  
- out:
+ 	/* Here the magic is reversed:
 
 
 
