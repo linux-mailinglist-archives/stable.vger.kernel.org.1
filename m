@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A521B47F87
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:38:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF558B47D46
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67F1C1B20300
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:39:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCDE87A6B9C
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944DF20E00B;
-	Sun,  7 Sep 2025 20:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4DE27FB21;
+	Sun,  7 Sep 2025 20:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hchcnZcD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D2S11x2X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5082E4315A;
-	Sun,  7 Sep 2025 20:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B68A1CDFAC;
+	Sun,  7 Sep 2025 20:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277523; cv=none; b=Z7Lzd5uJvx71IEijM3a0PbY197xwoFMknJQVY9OFZIBa/+fX4SFSwbYYihNo3m+mxpDEMRFrHzn9mLjaKm+dy00LblZnRUJtCda56sliqLEDSnnhIFwFIPr3dcdiF1q9WESfFLjhJQv3K28Q/2ltVH2GRLSCh7E9nhc9652PqbI=
+	t=1757275783; cv=none; b=FU3MmrkkAD/2K0fG8KPa/tyf3FsaMCOmKfhtrflhdahMPX+3/CbIv+RmNHBL9HsuC426d8R9zIQohnqypBwrSINFnVUJqVnzicymRS7IkSTVVZV67pBb3cooj134TkUR5PESnMWapZjSXQgOLAfQigi0F6+xZ8kU9I5cghoDMLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277523; c=relaxed/simple;
-	bh=u40WAeNJHSsSxpHAZfVS20Be6DfP4w8zYgw3LV9t4C8=;
+	s=arc-20240116; t=1757275783; c=relaxed/simple;
+	bh=OD0sTUu25y3+ootuC0lhucnd+FOaovkJMb363jIfOO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MfElhNCFyij0ZDhADCNjuz34C4+Ese/3Mq9ZuWaOokILzMLviu7vJ+OBiYxst3wltn6J4hzKc9TxFt6lvjevqx1DMUnUsv9AIn5gzlc4z8qwPVdM0zJHtm/O03ib6ZftxFPO/39jwnS2MRkoCS6tnmmWqmiEMKQMrNYC65qj9Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hchcnZcD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B371C4CEF0;
-	Sun,  7 Sep 2025 20:38:42 +0000 (UTC)
+	 MIME-Version; b=Ge3XNkTL6oubCvoG50En7DPtAX2olUjiH2bhzwcP8SOpLSPtZDW9N3hT3UuDTXGiDvDd/kDGTvKuJwNTxGzRBJMWmhe4ePc2g05z9WEeMXkxNArkSZ6HUOaq4bmPUkZ9iKL73eBGaQhPdhACR1UToY5wNCIpx7R3RM4Ea6rMKLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D2S11x2X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B87C4CEF0;
+	Sun,  7 Sep 2025 20:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277522;
-	bh=u40WAeNJHSsSxpHAZfVS20Be6DfP4w8zYgw3LV9t4C8=;
+	s=korg; t=1757275782;
+	bh=OD0sTUu25y3+ootuC0lhucnd+FOaovkJMb363jIfOO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hchcnZcDFkNXfhEPQVz5/TtE0cTQoisj0bif/JuuJ81brGqJ1WOEckglN3lkYKSt9
-	 WRRkRX+/NH85hyL9OyxkKF4FOaQ4y05tDdyV0FskpDkE4U6sv63FE9n9iQamzqWt9c
-	 iu1JxVI8kLhRPOcchECCrUjUxKWj/EwU0rfvRb9Y=
+	b=D2S11x2XxByv0NBPG80f4QPLmAWSBEcMqZ8g6bPmfYrEDrwiF85PHt1ABCNzMqvUo
+	 A0SEEbxOapj1Djh943QU1oRtOBPfG5fybn3PN5frUK30bKeORTIJTOuBP4eIz7gE/p
+	 nOQ5C0bIi1dbHs50jlq5cTZwCvQs82WiaRZBbCUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Wang Liang <wangliang74@huawei.com>,
+	syzbot+30754ca335e6fb7e3092@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 041/183] netfilter: br_netfilter: do not check confirmed bit in br_nf_local_in() after confirm
+Subject: [PATCH 5.4 02/45] wifi: cfg80211: fix use-after-free in cmp_bss()
 Date: Sun,  7 Sep 2025 21:57:48 +0200
-Message-ID: <20250907195616.750402372@linuxfoundation.org>
+Message-ID: <20250907195601.029529752@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 479a54ab92087318514c82428a87af2d7af1a576 ]
+[ Upstream commit 26e84445f02ce6b2fe5f3e0e28ff7add77f35e08 ]
 
-When send a broadcast packet to a tap device, which was added to a bridge,
-br_nf_local_in() is called to confirm the conntrack. If another conntrack
-with the same hash value is added to the hash table, which can be
-triggered by a normal packet to a non-bridge device, the below warning
-may happen.
+Following bss_free() quirk introduced in commit 776b3580178f
+("cfg80211: track hidden SSID networks properly"), adjust
+cfg80211_update_known_bss() to free the last beacon frame
+elements only if they're not shared via the corresponding
+'hidden_beacon_bss' pointer.
 
-  ------------[ cut here ]------------
-  WARNING: CPU: 1 PID: 96 at net/bridge/br_netfilter_hooks.c:632 br_nf_local_in+0x168/0x200
-  CPU: 1 UID: 0 PID: 96 Comm: tap_send Not tainted 6.17.0-rc2-dirty #44 PREEMPT(voluntary)
-  RIP: 0010:br_nf_local_in+0x168/0x200
-  Call Trace:
-   <TASK>
-   nf_hook_slow+0x3e/0xf0
-   br_pass_frame_up+0x103/0x180
-   br_handle_frame_finish+0x2de/0x5b0
-   br_nf_hook_thresh+0xc0/0x120
-   br_nf_pre_routing_finish+0x168/0x3a0
-   br_nf_pre_routing+0x237/0x5e0
-   br_handle_frame+0x1ec/0x3c0
-   __netif_receive_skb_core+0x225/0x1210
-   __netif_receive_skb_one_core+0x37/0xa0
-   netif_receive_skb+0x36/0x160
-   tun_get_user+0xa54/0x10c0
-   tun_chr_write_iter+0x65/0xb0
-   vfs_write+0x305/0x410
-   ksys_write+0x60/0xd0
-   do_syscall_64+0xa4/0x260
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   </TASK>
-  ---[ end trace 0000000000000000 ]---
-
-To solve the hash conflict, nf_ct_resolve_clash() try to merge the
-conntracks, and update skb->_nfct. However, br_nf_local_in() still use the
-old ct from local variable 'nfct' after confirm(), which leads to this
-warning.
-
-If confirm() does not insert the conntrack entry and return NF_DROP, the
-warning may also occur. There is no need to reserve the WARN_ON_ONCE, just
-remove it.
-
-Link: https://lore.kernel.org/netdev/20250820043329.2902014-1-wangliang74@huawei.com/
-Fixes: 62e7151ae3eb ("netfilter: bridge: confirm multicast packets before passing them up the stack")
-Suggested-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Reported-by: syzbot+30754ca335e6fb7e3092@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=30754ca335e6fb7e3092
+Fixes: 3ab8227d3e7d ("cfg80211: refactor cfg80211_bss_update")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20250813135236.799384-1-dmantipov@yandex.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_netfilter_hooks.c | 3 ---
- 1 file changed, 3 deletions(-)
+ net/wireless/scan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index 94cbe967d1c16..083e2fe96441d 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -626,9 +626,6 @@ static unsigned int br_nf_local_in(void *priv,
- 		break;
- 	}
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 18398968b3ed7..33e6f41035506 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1219,7 +1219,8 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
+ 			 */
  
--	ct = container_of(nfct, struct nf_conn, ct_general);
--	WARN_ON_ONCE(!nf_ct_is_confirmed(ct));
--
- 	return ret;
- }
- #endif
+ 			f = rcu_access_pointer(new->pub.beacon_ies);
+-			kfree_rcu((struct cfg80211_bss_ies *)f, rcu_head);
++			if (!new->pub.hidden_beacon_bss)
++				kfree_rcu((struct cfg80211_bss_ies *)f, rcu_head);
+ 			return false;
+ 		}
+ 
 -- 
 2.50.1
 
