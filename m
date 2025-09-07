@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-178717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1C5B47FC8
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8ADB47F61
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:36:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AA0F2006AD
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:42:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E782516EA90
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA4126B2AD;
-	Sun,  7 Sep 2025 20:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D7D212B3D;
+	Sun,  7 Sep 2025 20:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3rZImXv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q2YjS/U6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3364315A;
-	Sun,  7 Sep 2025 20:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840371A704B;
+	Sun,  7 Sep 2025 20:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277732; cv=none; b=ZnIsKi34ka8McRGCd6ZRwBHic6XJHT1LK+F5i9A/5ukFtn25xmAH6EQjqjUDuvyvK+lXgV0fqOsn//8mQqP1Z5Wz2kKXnKnVAvB1051qvgN/DSME7YmMhNBQJK/lUq9/DZbu1+eUJNdFdDv4aDPPdZ8bVHH/hnjYOZpfS1garGg=
+	t=1757277407; cv=none; b=haDZckB94RONo3UhgCo+/nzXJ5NALjCG1JcUhm/xCOIOYNPPc2kM+KNh1YJ3vcnxfsXzRFtBVa6hLExyyItXNqGu1CW1Xwbz0vbapcR05oPZ0N/NcX7qpn1iwg7w116FVfI69EYxYocbNhltsIDDASjKM1+k1ziY6vqhIvNYe8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277732; c=relaxed/simple;
-	bh=wjUSVw+VFuxpb0Lm9pK+rSIQG+R/3SjGaqrf7zD0B1o=;
+	s=arc-20240116; t=1757277407; c=relaxed/simple;
+	bh=dE/k1xIctG58nRFz7cy3Y2+KHm5uHjy4Wjhd/pAAlu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lU3C5oypACHaZj+fcSMjuTcvSHY49FmqEIBcKXyGYeyJDcklU6RGHqs/9AMGrzCAqyDFUUNPSmx5YEbYM7vHDTC/JF4ZCKr3OVfbbKbZeygKgnJjv48ZL/lGZ8qSBxuJckhKyMO/kVPkpuiU2VGYf/SNrc1VrrHrwl+53Hl6xCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3rZImXv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF89C4CEF0;
-	Sun,  7 Sep 2025 20:42:11 +0000 (UTC)
+	 MIME-Version; b=IaxXgsmPzmzHtQFqdd6N3s69Ubdp8sAmzgUi+UxduB+labUBsvxZAlB2N2sZykVAV1pfqbt5rhjVt+Xfi9ZQVX7oChrYSZPoC6aggAvt3+3u5Q8pGNZFwVCtX0MWF+uQ1Z72k0w6spgBdwkgaAHY74WyxxBjUvN0ZoiuoLjnHR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q2YjS/U6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BF3C4CEF0;
+	Sun,  7 Sep 2025 20:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277732;
-	bh=wjUSVw+VFuxpb0Lm9pK+rSIQG+R/3SjGaqrf7zD0B1o=;
+	s=korg; t=1757277407;
+	bh=dE/k1xIctG58nRFz7cy3Y2+KHm5uHjy4Wjhd/pAAlu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3rZImXvCcKKDA2Q6iWN694+6jbLHCtq3Uc20iqSk8rgB9nmlM37UxZeZ2QRyA0AC
-	 9uV06ZEIN1ieQHsp1VnRrdpBwfBwnlScv/ZzZV7U4kPHMWfrMx9P2LOe5ofjCKPCT5
-	 ccg3XDwdvy6irxn8P09wi9Wa11EsWPg5N0gCYubw=
+	b=q2YjS/U6d6mLZ6y4nWfE1hJWcS3/93UKZ6PP/kcatKIvUoXfpZaiGCv+V5XpOsBfO
+	 lDfzH9O5FnzwLIIF9MWhXHLBl73lOywK8v0ctJLasQKFXiYNiiuqoAK4cjCS1I4UCR
+	 dY1AlNdBMT+dqQE42Vq2CSijUlYPtLqwZHSveW8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.16 105/183] mm: fix accounting of memmap pages
-Date: Sun,  7 Sep 2025 21:58:52 +0200
-Message-ID: <20250907195618.285804763@linuxfoundation.org>
+	Hyesoo Yu <hyesoo.yu@samsung.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 138/175] mm: slub: call WARN() when detecting a slab corruption
+Date: Sun,  7 Sep 2025 21:58:53 +0200
+Message-ID: <20250907195618.113509693@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,114 +63,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+From: Hyesoo Yu <hyesoo.yu@samsung.com>
 
-commit c3576889d87b603cb66b417e08844a53c1077a37 upstream.
+[ Upstream commit 3f6f32b14ab35452d2ed52f7821cf2829923c98d ]
 
-For !CONFIG_SPARSEMEM_VMEMMAP, memmap page accounting is currently done
-upfront in sparse_buffer_init().  However, sparse_buffer_alloc() may
-return NULL in failure scenario.
+If a slab object is corrupted or an error occurs in its internal
+validation, continuing after restoration may cause other side effects.
+At this point, it is difficult to debug because the problem occurred in
+the past. It is useful to use WARN() to catch errors at the point of
+issue because WARN() could trigger panic for system debugging when
+panic_on_warn is enabled. WARN() is added where to detect the error on
+slab_err and object_err.
 
-Also, memmap pages may be allocated either from the memblock allocator
-during early boot or from the buddy allocator.  When removed via
-arch_remove_memory(), accounting of memmap pages must reflect the original
-allocation source.
+It makes sense to only do the WARN() after printing the logs. slab_err
+is splited to __slab_err that calls the WARN() and it is called after
+printing logs.
 
-To ensure correctness:
-* Account memmap pages after successful allocation in sparse_init_nid()
-  and section_activate().
-* Account memmap pages in section_deactivate() based on allocation
-  source.
-
-Link: https://lkml.kernel.org/r/20250807183545.1424509-1-sumanthk@linux.ibm.com
-Fixes: 15995a352474 ("mm: report per-page metadata information")
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Hyesoo Yu <hyesoo.yu@samsung.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Stable-dep-of: b4efccec8d06 ("mm/slub: avoid accessing metadata when pointer is invalid in object_err()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/sparse-vmemmap.c |    5 -----
- mm/sparse.c         |   15 +++++++++------
- 2 files changed, 9 insertions(+), 11 deletions(-)
+ mm/slub.c |   47 +++++++++++++++++++++++++++++------------------
+ 1 file changed, 29 insertions(+), 18 deletions(-)
 
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -578,11 +578,6 @@ struct page * __meminit __populate_secti
- 	if (r < 0)
- 		return NULL;
- 
--	if (system_state == SYSTEM_BOOTING)
--		memmap_boot_pages_add(DIV_ROUND_UP(end - start, PAGE_SIZE));
--	else
--		memmap_pages_add(DIV_ROUND_UP(end - start, PAGE_SIZE));
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -1036,7 +1036,7 @@ static void slab_bug(struct kmem_cache *
+ 	vaf.fmt = fmt;
+ 	vaf.va = &args;
+ 	pr_err("=============================================================================\n");
+-	pr_err("BUG %s (%s): %pV\n", s->name, print_tainted(), &vaf);
++	pr_err("BUG %s (%s): %pV\n", s ? s->name : "<unknown>", print_tainted(), &vaf);
+ 	pr_err("-----------------------------------------------------------------------------\n\n");
+ 	va_end(args);
+ }
+@@ -1095,8 +1095,6 @@ static void print_trailer(struct kmem_ca
+ 		/* Beginning of the filler is the free pointer */
+ 		print_section(KERN_ERR, "Padding  ", p + off,
+ 			      size_from_object(s) - off);
 -
- 	return pfn_to_page(pfn);
+-	dump_stack();
  }
  
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -454,9 +454,6 @@ static void __init sparse_buffer_init(un
- 	 */
- 	sparsemap_buf = memmap_alloc(size, section_map_size(), addr, nid, true);
- 	sparsemap_buf_end = sparsemap_buf + size;
--#ifndef CONFIG_SPARSEMEM_VMEMMAP
--	memmap_boot_pages_add(DIV_ROUND_UP(size, PAGE_SIZE));
--#endif
+ static void object_err(struct kmem_cache *s, struct slab *slab,
+@@ -1108,6 +1106,8 @@ static void object_err(struct kmem_cache
+ 	slab_bug(s, "%s", reason);
+ 	print_trailer(s, slab, object);
+ 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
++
++	WARN_ON(1);
  }
  
- static void __init sparse_buffer_fini(void)
-@@ -567,6 +564,8 @@ static void __init sparse_init_nid(int n
- 				sparse_buffer_fini();
- 				goto failed;
- 			}
-+			memmap_boot_pages_add(DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct page),
-+							   PAGE_SIZE));
- 			sparse_init_early_section(nid, map, pnum, 0);
+ static bool freelist_corrupted(struct kmem_cache *s, struct slab *slab,
+@@ -1124,6 +1124,17 @@ static bool freelist_corrupted(struct km
+ 	return false;
+ }
+ 
++static void __slab_err(struct slab *slab)
++{
++	if (slab_in_kunit_test())
++		return;
++
++	print_slab_info(slab);
++	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
++
++	WARN_ON(1);
++}
++
+ static __printf(3, 4) void slab_err(struct kmem_cache *s, struct slab *slab,
+ 			const char *fmt, ...)
+ {
+@@ -1137,9 +1148,7 @@ static __printf(3, 4) void slab_err(stru
+ 	vsnprintf(buf, sizeof(buf), fmt, args);
+ 	va_end(args);
+ 	slab_bug(s, "%s", buf);
+-	print_slab_info(slab);
+-	dump_stack();
+-	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
++	__slab_err(slab);
+ }
+ 
+ static void init_object(struct kmem_cache *s, void *object, u8 val)
+@@ -1312,9 +1321,10 @@ slab_pad_check(struct kmem_cache *s, str
+ 	while (end > fault && end[-1] == POISON_INUSE)
+ 		end--;
+ 
+-	slab_err(s, slab, "Padding overwritten. 0x%p-0x%p @offset=%tu",
+-			fault, end - 1, fault - start);
++	slab_bug(s, "Padding overwritten. 0x%p-0x%p @offset=%tu",
++		 fault, end - 1, fault - start);
+ 	print_section(KERN_ERR, "Padding ", pad, remainder);
++	__slab_err(slab);
+ 
+ 	restore_bytes(s, "slab padding", POISON_INUSE, fault, end);
+ }
+@@ -1630,12 +1640,12 @@ static inline int free_consistency_check
+ 			slab_err(s, slab, "Attempt to free object(0x%p) outside of slab",
+ 				 object);
+ 		} else if (!slab->slab_cache) {
+-			pr_err("SLUB <none>: no slab for object 0x%p.\n",
+-			       object);
+-			dump_stack();
+-		} else
++			slab_err(NULL, slab, "No slab cache for object 0x%p",
++				 object);
++		} else {
+ 			object_err(s, slab, object,
+-					"page slab pointer corrupt.");
++				   "page slab pointer corrupt.");
++		}
+ 		return 0;
+ 	}
+ 	return 1;
+@@ -5450,14 +5460,14 @@ static int calculate_sizes(struct kmem_c
+ 	return !!oo_objects(s->oo);
+ }
+ 
+-static void list_slab_objects(struct kmem_cache *s, struct slab *slab,
+-			      const char *text)
++static void list_slab_objects(struct kmem_cache *s, struct slab *slab)
+ {
+ #ifdef CONFIG_SLUB_DEBUG
+ 	void *addr = slab_address(slab);
+ 	void *p;
+ 
+-	slab_err(s, slab, text, s->name);
++	if (!slab_add_kunit_errors())
++		slab_bug(s, "Objects remaining on __kmem_cache_shutdown()");
+ 
+ 	spin_lock(&object_map_lock);
+ 	__fill_map(object_map, s, slab);
+@@ -5472,6 +5482,8 @@ static void list_slab_objects(struct kme
  		}
  	}
-@@ -680,7 +679,6 @@ static void depopulate_section_memmap(un
- 	unsigned long start = (unsigned long) pfn_to_page(pfn);
- 	unsigned long end = start + nr_pages * sizeof(struct page);
- 
--	memmap_pages_add(-1L * (DIV_ROUND_UP(end - start, PAGE_SIZE)));
- 	vmemmap_free(start, end, altmap);
+ 	spin_unlock(&object_map_lock);
++
++	__slab_err(slab);
+ #endif
  }
- static void free_map_bootmem(struct page *memmap)
-@@ -856,10 +854,14 @@ static void section_deactivate(unsigned
- 	 * The memmap of early sections is always fully populated. See
- 	 * section_activate() and pfn_valid() .
- 	 */
--	if (!section_is_early)
-+	if (!section_is_early) {
-+		memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
- 		depopulate_section_memmap(pfn, nr_pages, altmap);
--	else if (memmap)
-+	} else if (memmap) {
-+		memmap_boot_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page),
-+							  PAGE_SIZE)));
- 		free_map_bootmem(memmap);
-+	}
  
- 	if (empty)
- 		ms->section_mem_map = (unsigned long)NULL;
-@@ -904,6 +906,7 @@ static struct page * __meminit section_a
- 		section_deactivate(pfn, nr_pages, altmap);
- 		return ERR_PTR(-ENOMEM);
+@@ -5492,8 +5504,7 @@ static void free_partial(struct kmem_cac
+ 			remove_partial(n, slab);
+ 			list_add(&slab->slab_list, &discard);
+ 		} else {
+-			list_slab_objects(s, slab,
+-			  "Objects remaining in %s on __kmem_cache_shutdown()");
++			list_slab_objects(s, slab);
+ 		}
  	}
-+	memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
- 
- 	return memmap;
- }
+ 	spin_unlock_irq(&n->list_lock);
 
 
 
