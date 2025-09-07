@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-178487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4878EB47EDF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:29:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E25A5B47E2E
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:21:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 061BF17EC8D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:29:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DD8A3A8F77
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D539420E005;
-	Sun,  7 Sep 2025 20:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FED61B4247;
+	Sun,  7 Sep 2025 20:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PthDbuxq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiYLfIdN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9211B1E5B94;
-	Sun,  7 Sep 2025 20:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C98014BFA2;
+	Sun,  7 Sep 2025 20:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276992; cv=none; b=qa4UpgsiuD5Ph+9+pYz50CBojYIOEExBGgJ77NfYyfvCyIdF6kNyTti6ivmAD0ORU1XI+c0bT3kv+ocZc3LfSl1LsX4F0p5qGyhaE4JBeJIUjF/2iwkY+po/5iBQ0vOAy1jmfzEa00yiDn/QBMp/uMwahmdFB8bA9Nr+b+oVixk=
+	t=1757276472; cv=none; b=GGeidulCyejVt5vFEQS5OinFwTpG2CySZV6nRWAhdjVqksJjTXxC3U443OfKRFNrSvm3UIUD4srxDXks4ab028dmbnqrtWJ5vg35KFte9q6UFycIHTcfnAbdBaHBA9vMpf3cm3oremWl1ZeFVlqcpWdXCTO9L8bymrPcd6imKW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276992; c=relaxed/simple;
-	bh=N1NCvyy+Kt7uoZ3LEY0XtqPIbtKv+zXztWqWxLX4prA=;
+	s=arc-20240116; t=1757276472; c=relaxed/simple;
+	bh=L1b/rinwP5r9jFAHWTc2DC6B4u34boWC4kj+WpVuUGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OjjHkim+MWpxjGkuoArDrSBsfvEvyPCBiE9D4pEzJHqT5wA4vOrpUz/UpN0WRhWn0Iy8L6799HTbjDmzxPiK4kU8sFDoVS8JflE7z52NfzDqaYn2DV4juSXf9tE7E6KU/G8BhAmXmB1Ylj39CkhV0bitzroksdAaBAqanAr7sT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PthDbuxq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14263C4CEF0;
-	Sun,  7 Sep 2025 20:29:51 +0000 (UTC)
+	 MIME-Version; b=gcdCW1AlPET1UmjvxXUYboI5Y28yuAe6oWI3KGBeQwsHDPJjZgrOOo0Ma8/AZEoqpJr2eI1cksNa0xmDa4JMrth1LxRHLcbpQC8NIOz/FfA3kFm27Cq29oTY8DNMrFowus/saC4MOZZww+6Cyvg7Zz0Xmmx/EJXMYGTm58P4ioU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiYLfIdN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64074C4CEF0;
+	Sun,  7 Sep 2025 20:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276992;
-	bh=N1NCvyy+Kt7uoZ3LEY0XtqPIbtKv+zXztWqWxLX4prA=;
+	s=korg; t=1757276471;
+	bh=L1b/rinwP5r9jFAHWTc2DC6B4u34boWC4kj+WpVuUGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PthDbuxqdG9H4nJop9TQorI0DfZ5l9BUhMDIZXRv1+KFLOgrgBwdnpznS00/aQRj6
-	 9KwmbgaUwolN7STLfO0B/gZKUL8H7drFDTjovP3thcEjaIzilGfel2I45LcdLFyuhd
-	 XM4KhylqyP+JTcbczZn2p95Bf2T4WFEk2dunB1Eo=
+	b=tiYLfIdNWUZHQJ3yC6lG76Mwl8gwYZOUSfRx68goWjkGKOjaDU0B730eZ3hyzIils
+	 kc6uB56X2j6NsHG3zNGyUjOVPpM3ma4dZyjyTEPfTWKcZRZCp3TW1S0j/xa82/KOGz
+	 +XA1CMXHnPSygS5tClnlwg0SlUWi27q42cHj9rkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shinji Nomoto <fj5851bi@fujitsu.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/175] macsec: read MACSEC_SA_ATTR_PN with nla_get_uint
+Subject: [PATCH 6.6 011/121] cpupower: Fix a bug where the -t option of the set subcommand was not working.
 Date: Sun,  7 Sep 2025 21:57:27 +0200
-Message-ID: <20250907195616.072645103@linuxfoundation.org>
+Message-ID: <20250907195610.103771049@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
+References: <20250907195609.817339617@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Shinji Nomoto <fj5851bi@fujitsu.com>
 
-[ Upstream commit 030e1c45666629f72d0fc1d040f9d2915680de8e ]
+[ Upstream commit b3eaf14f4c63fd6abc7b68c6d7a07c5680a6d8e5 ]
 
-The code currently reads both U32 attributes and U64 attributes as
-U64, so when a U32 attribute is provided by userspace (ie, when not
-using XPN), on big endian systems, we'll load that value into the
-upper 32bits of the next_pn field instead of the lower 32bits. This
-means that the value that userspace provided is ignored (we only care
-about the lower 32bits for non-XPN), and we'll start using PNs from 0.
+The set subcommand's -t option is documented as being available for boost
+configuration, but it was not actually functioning due to a bug
+in the option handling.
 
-Switch to nla_get_uint, which will read the value correctly on all
-arches, whether it's 32b or 64b.
-
-Fixes: 48ef50fa866a ("macsec: Netlink support of XPN cipher suites (IEEE 802.1AEbw)")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/1c1df1661b89238caf5beefb84a10ebfd56c66ea.1756459839.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20250522061122.2149188-2-fj5851bi@fujitsu.com
+Signed-off-by: Shinji Nomoto <fj5851bi@fujitsu.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/power/cpupower/utils/cpupower-set.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 090a56a5e456a..8b10112c30dc1 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -1843,7 +1843,7 @@ static int macsec_add_rxsa(struct sk_buff *skb, struct genl_info *info)
+diff --git a/tools/power/cpupower/utils/cpupower-set.c b/tools/power/cpupower/utils/cpupower-set.c
+index 0677b58374abf..59ace394cf3ef 100644
+--- a/tools/power/cpupower/utils/cpupower-set.c
++++ b/tools/power/cpupower/utils/cpupower-set.c
+@@ -62,8 +62,8 @@ int cmd_set(int argc, char **argv)
  
- 	if (tb_sa[MACSEC_SA_ATTR_PN]) {
- 		spin_lock_bh(&rx_sa->lock);
--		rx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
-+		rx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
- 		spin_unlock_bh(&rx_sa->lock);
- 	}
- 
-@@ -2085,7 +2085,7 @@ static int macsec_add_txsa(struct sk_buff *skb, struct genl_info *info)
- 	}
- 
- 	spin_lock_bh(&tx_sa->lock);
--	tx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
-+	tx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
- 	spin_unlock_bh(&tx_sa->lock);
- 
- 	if (tb_sa[MACSEC_SA_ATTR_ACTIVE])
-@@ -2397,7 +2397,7 @@ static int macsec_upd_txsa(struct sk_buff *skb, struct genl_info *info)
- 
- 		spin_lock_bh(&tx_sa->lock);
- 		prev_pn = tx_sa->next_pn_halves;
--		tx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
-+		tx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
- 		spin_unlock_bh(&tx_sa->lock);
- 	}
- 
-@@ -2495,7 +2495,7 @@ static int macsec_upd_rxsa(struct sk_buff *skb, struct genl_info *info)
- 
- 		spin_lock_bh(&rx_sa->lock);
- 		prev_pn = rx_sa->next_pn_halves;
--		rx_sa->next_pn = nla_get_u64(tb_sa[MACSEC_SA_ATTR_PN]);
-+		rx_sa->next_pn = nla_get_uint(tb_sa[MACSEC_SA_ATTR_PN]);
- 		spin_unlock_bh(&rx_sa->lock);
- 	}
- 
+ 	params.params = 0;
+ 	/* parameter parsing */
+-	while ((ret = getopt_long(argc, argv, "b:e:m:",
+-						set_opts, NULL)) != -1) {
++	while ((ret = getopt_long(argc, argv, "b:e:m:t:",
++				  set_opts, NULL)) != -1) {
+ 		switch (ret) {
+ 		case 'b':
+ 			if (params.perf_bias)
 -- 
 2.50.1
 
