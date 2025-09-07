@@ -1,73 +1,76 @@
-Return-Path: <stable+bounces-178038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A241CB47B33
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 14:11:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F330B47B35
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 14:11:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98B6F189A64A
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 12:11:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14A443C49D0
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 12:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2020025D540;
-	Sun,  7 Sep 2025 12:11:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ls4oxy4n"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8334F2690C0;
+	Sun,  7 Sep 2025 12:11:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AE721C9EA
-	for <stable@vger.kernel.org>; Sun,  7 Sep 2025 12:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A3D1F790F;
+	Sun,  7 Sep 2025 12:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757247059; cv=none; b=UILHpCBUqfID1JxdBRpLih1rSatsMfiG2e66SGxeC94R//t1miOcl9kft4xaRsTik5qiEb0oLN+R5N5sHyCwNf2PvlLyTfcvr0Vum+xAKHirDNFOXYflYRD/Rvc6NOVl+Gxznv9UsKgepFP5uglV/RMRyEZrqaA220xmbnLsCFI=
+	t=1757247108; cv=none; b=UKcTTQsmraHRmljd+hTriXesqacJz7st5gDEWPfIzBfFogh3rWzwtQBu8cvw1kqbXPMwlyi8iv7tkNTXVJeZyN56w0CGt5ucRPlJkYvsXLN9fPANukiv7ikruda4DteR7akYD/KFA2GcsR/BrGHv260Zgy76WbGNgMHGs3znudc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757247059; c=relaxed/simple;
-	bh=WG7AhbdZMm8SOpmKKP4nk6rqmCaJcdWj6HTZT3QG2es=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LzVHNuejhBuDOZvemqY2rpHgPssu5c+CFcJZWnOAnlL4OMGTHLKkE2B6szpvP8Hw2NJ6YCPjvJnpD2bXUSb2OuDBSWkT/dxTYbY7v3YIbUO7T3LiYfxYxOsgnBtJ/G6FbL1B5cdrHJ4g9esG12dLubDTKyIcn+NYeOF6gNn42vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ls4oxy4n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67B8C4CEF0;
-	Sun,  7 Sep 2025 12:10:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757247059;
-	bh=WG7AhbdZMm8SOpmKKP4nk6rqmCaJcdWj6HTZT3QG2es=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ls4oxy4nTp/rKWYMEYWQXxJiZHgSmcPRJ/sqnpFRL2ou+k7opgUCJjDALsK3lg2Ox
-	 5LqYaBuvf9vysd5dRtRfbNrxNCCI2qtYllnowPZ+sDO5KMLlxXYGfM9cY3Yzxh5y8h
-	 U4SWxV9/PcOROP8CdQeGE6utm3tSTnLhn0uN8zB8=
-Date: Sun, 7 Sep 2025 14:09:44 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Subject: Re: Apply 8851e27d2cb9 for 6.12.y and later
-Message-ID: <2025090738-rearview-retry-9626@gregkh>
-References: <CANiq72mp-t40F0scCVT1ew_xRdaG=8x-0xx1qQabUrEjS1mQvw@mail.gmail.com>
+	s=arc-20240116; t=1757247108; c=relaxed/simple;
+	bh=cgAxQBAtlyy5G8nvniEuTZ4LNLKZCNhktySPWsin7J8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gkMWF85P4AVa7O5C6W7HUk37YSe9TzU7knI0rBDOXwNjg0V5ZWC6pua7QNCaIH8M6NZYIXFGRXjRnYrfHYBqS1+WgV+0PhWt1zm0rAyUbGmSR5nPHqkVp5cDdcgur5YKuNrWNr2H2ZOKWEo6FlbVrC77eL6UXeJtyURUgTHPf44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46EC6C4CEF0;
+	Sun,  7 Sep 2025 12:11:47 +0000 (UTC)
+Message-ID: <27d10a83-903b-4ffc-976b-10973f72a617@kernel.og>
+Date: Sun, 7 Sep 2025 07:11:47 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72mp-t40F0scCVT1ew_xRdaG=8x-0xx1qQabUrEjS1mQvw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ARM: dts: socfpga: sodia: Fix mdio bus probe and PHY
+ address
+To: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>, dinguyen@kernel.org,
+ robh+dt@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241121071325.2148854-1-iwamatsu@nigauri.org>
+ <CABMQnVJVTmnsx3RNYK01ikZ-jnn_y4pbrNAeZaKPzz0N_YFz5g@mail.gmail.com>
+ <CABMQnVJsK3wNRQfGjomggKcwL5zaqBchoAKajbVb+ZXmrwn2iQ@mail.gmail.com>
+Content-Language: en-US
+From: Dinh Nguyen <dinguyen@kernel.og>
+In-Reply-To: <CABMQnVJsK3wNRQfGjomggKcwL5zaqBchoAKajbVb+ZXmrwn2iQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sun, Sep 07, 2025 at 01:08:03PM +0200, Miguel Ojeda wrote:
-> Hi Greg, Sasha,
-> 
-> Please consider applying the following commit for 6.12.y and later:
-> 
->     8851e27d2cb9 ("rust: support Rust >= 1.91.0 target spec")
-> 
-> It should apply cleanly.
-> 
-> It is not urgent, but will be needed in some weeks to support the
-> upcoming Rust compiler versions.
 
-Now queued up, thanks.
 
-greg k-h
+On 9/5/25 10:12, Nobuhiro Iwamatsu wrote:
+> ping?
+> 
+> 2025年1月14日(火) 22:50 Nobuhiro Iwamatsu <iwamatsu@nigauri.org>:
+>>
+>> Hi Dinh,
+>>
+>> Could you check and apply this patch?
+>>
+>> Thanks,
+>>    Nobuhiro
+>>
+
+Sorry I missed this. I've applied it.
+
+Dinh
+
 
