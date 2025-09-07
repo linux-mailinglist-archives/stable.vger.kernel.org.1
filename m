@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01898B47E4C
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:22:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296B9B47D48
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:09:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACFD13C17C5
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:22:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD77217C052
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A68212B2F;
-	Sun,  7 Sep 2025 20:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA92327FB21;
+	Sun,  7 Sep 2025 20:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMghdp3R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnQ9RbqL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4E7189BB0;
-	Sun,  7 Sep 2025 20:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683161CDFAC;
+	Sun,  7 Sep 2025 20:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276547; cv=none; b=t1/j43BDo7zYhQrYdGXZ5vnBUcJseTlfSTZqNFTyZTNBrBeMkF8j8/DRWmHPuoOG5pn7HPDs0yNR7x+M0mBZoIHbhNlcv1kamyA0QEXlcGHJxE7NGu/svbl32mKTFR7J+ThawOd47f2dBHPho9BPf+2hHGIrZUbbKqxwS/3dCOg=
+	t=1757275789; cv=none; b=qfsygKsTB6BgMOH6hv5IwLhhdcCNayYJNxfg0HdT4jeNholp8ulfTBxd6zC08vITJGzdDWAjsQFiy74tt6oK+2MIbPBhDlU3Co7h+ubAA4byNw6LXqyacHdSPiNMItudM2whBojnduIIzuTRX8mxNG6z1KEf/rnkQpxUFhjjpzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276547; c=relaxed/simple;
-	bh=G42ymxdQXahjy1PD1fGlcqyXxvyIkHFjmASPmZbRqdc=;
+	s=arc-20240116; t=1757275789; c=relaxed/simple;
+	bh=NNT3shMF8ejOInz+DnvguARXIei6FPYsFiOee11dfbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tF0ZqiBabjpb9dDN4+j+WoI7BBBJLs8xklIkAa/oz3oV/8EfQ0YIxTqkWBxhysKfVWWXVAd6+jwklv9XQ3RKj8cEwmumfRt5hkB3BpEBtZfqi/EJbthgGAuWIUaIK8WwLuywBgQOoN5fIXqBtQ6H1cY5LTAGsDgqGpzoXYjnO78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMghdp3R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061ABC4CEF0;
-	Sun,  7 Sep 2025 20:22:26 +0000 (UTC)
+	 MIME-Version; b=QmwF623WfxbFDZC49BCEPM3JHFRsoW9HKlTA0EfK0UzdmxUgNP3+AmoWbCx6l/2iuZZPvmGlbM7WZNxbJLVni8A1L+V+PprOL5SPH20sV3MMAbb/1YKVhDE66U6Kel4XEYyZgVs3CoRhZDyEHCRPox6KNBP8MeOkSa+t90CmXIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnQ9RbqL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F2CC4CEF0;
+	Sun,  7 Sep 2025 20:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276547;
-	bh=G42ymxdQXahjy1PD1fGlcqyXxvyIkHFjmASPmZbRqdc=;
+	s=korg; t=1757275789;
+	bh=NNT3shMF8ejOInz+DnvguARXIei6FPYsFiOee11dfbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UMghdp3RTnGs6/rhPOE3hfGdfzh/UPbUPAz6OIBYssfsod5cCdcVbcvpvRKxKD1AS
-	 tdlkpC++/0Pmo99DwwcyFEsQfTkmgACIY1IdEyKstiQJ9BDaa7bYBwkdTxc+E91/P3
-	 DwWOnpvnFdpMju23xu18V7a2MU25MSJFuUsQD9RI=
+	b=hnQ9RbqL3wWfzylw0gvKFd3StPuwRLmZC9jMSz99EJBKf4ShJWJ2iPKbDTxZ8nKEl
+	 vpo1LQpo5NUyQTjRjR6ZCm+rbz8dEoebHeBFuHKkhGlkCwSuYmfhSmfuwqEpau9DOQ
+	 MaPzqK5MRMyUhop26n+U7KCQhUp7/mVOeyTLcSuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	syzbot+e5e64cdf8e92046dd3e1@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/121] wifi: ath11k: Introduce and use ath11k_sta_to_arsta()
-Date: Sun,  7 Sep 2025 21:57:49 +0200
-Message-ID: <20250907195610.681237075@linuxfoundation.org>
+Subject: [PATCH 5.4 04/45] Bluetooth: Fix use-after-free in l2cap_sock_cleanup_listen()
+Date: Sun,  7 Sep 2025 21:57:50 +0200
+Message-ID: <20250907195601.088010226@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,411 +63,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 10c65f97b424fcee439463f933140df2a0022f98 ]
+[ Upstream commit 862c628108562d8c7a516a900034823b381d3cba ]
 
-Currently, the logic to return an ath11k_sta pointer, given a
-ieee80211_sta pointer, uses typecasting throughout the driver. In
-general, conversion functions are preferable to typecasting since
-using a conversion function allows the compiler to validate the types
-of both the input and output parameters.
+syzbot reported the splat below without a repro.
 
-ath11k already defines a conversion function ath11k_vif_to_arvif() for
-a similar conversion. So introduce ath11k_sta_to_arsta() for this use
-case, and convert all of the existing typecasting to use this
-function.
+In the splat, a single thread calling bt_accept_dequeue() freed sk
+and touched it after that.
 
-No functional changes, compile tested only.
+The root cause would be the racy l2cap_sock_cleanup_listen() call
+added by the cited commit.
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231009-ath11k_sta_to_arsta-v1-1-1563e3a307e8@quicinc.com
-Stable-dep-of: 97acb0259cc9 ("wifi: ath11k: fix group data packet drops during rekey")
+bt_accept_dequeue() is called under lock_sock() except for
+l2cap_sock_release().
+
+Two threads could see the same socket during the list iteration
+in bt_accept_dequeue():
+
+  CPU1                        CPU2 (close())
+  ----                        ----
+  sock_hold(sk)               sock_hold(sk);
+  lock_sock(sk)   <-- block close()
+  sock_put(sk)
+  bt_accept_unlink(sk)
+    sock_put(sk)  <-- refcnt by bt_accept_enqueue()
+  release_sock(sk)
+                              lock_sock(sk)
+                              sock_put(sk)
+                              bt_accept_unlink(sk)
+                                sock_put(sk)        <-- last refcnt
+                              bt_accept_unlink(sk)  <-- UAF
+
+Depending on the timing, the other thread could show up in the
+"Freed by task" part.
+
+Let's call l2cap_sock_cleanup_listen() under lock_sock() in
+l2cap_sock_release().
+
+[0]:
+BUG: KASAN: slab-use-after-free in debug_spin_lock_before kernel/locking/spinlock_debug.c:86 [inline]
+BUG: KASAN: slab-use-after-free in do_raw_spin_lock+0x26f/0x2b0 kernel/locking/spinlock_debug.c:115
+Read of size 4 at addr ffff88803b7eb1c4 by task syz.5.3276/16995
+CPU: 3 UID: 0 PID: 16995 Comm: syz.5.3276 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xcd/0x630 mm/kasan/report.c:482
+ kasan_report+0xe0/0x110 mm/kasan/report.c:595
+ debug_spin_lock_before kernel/locking/spinlock_debug.c:86 [inline]
+ do_raw_spin_lock+0x26f/0x2b0 kernel/locking/spinlock_debug.c:115
+ spin_lock_bh include/linux/spinlock.h:356 [inline]
+ release_sock+0x21/0x220 net/core/sock.c:3746
+ bt_accept_dequeue+0x505/0x600 net/bluetooth/af_bluetooth.c:312
+ l2cap_sock_cleanup_listen+0x5c/0x2a0 net/bluetooth/l2cap_sock.c:1451
+ l2cap_sock_release+0x5c/0x210 net/bluetooth/l2cap_sock.c:1425
+ __sock_release+0xb3/0x270 net/socket.c:649
+ sock_close+0x1c/0x30 net/socket.c:1439
+ __fput+0x3ff/0xb70 fs/file_table.c:468
+ task_work_run+0x14d/0x240 kernel/task_work.c:227
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop+0xeb/0x110 kernel/entry/common.c:43
+ exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
+ syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
+ do_syscall_64+0x3f6/0x4c0 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f2accf8ebe9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffdb6cb1378 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
+RAX: 0000000000000000 RBX: 00000000000426fb RCX: 00007f2accf8ebe9
+RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
+RBP: 00007f2acd1b7da0 R08: 0000000000000001 R09: 00000012b6cb166f
+R10: 0000001b30e20000 R11: 0000000000000246 R12: 00007f2acd1b609c
+R13: 00007f2acd1b6090 R14: ffffffffffffffff R15: 00007ffdb6cb1490
+ </TASK>
+
+Allocated by task 5326:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:388 [inline]
+ __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:405
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __do_kmalloc_node mm/slub.c:4365 [inline]
+ __kmalloc_noprof+0x223/0x510 mm/slub.c:4377
+ kmalloc_noprof include/linux/slab.h:909 [inline]
+ sk_prot_alloc+0x1a8/0x2a0 net/core/sock.c:2239
+ sk_alloc+0x36/0xc20 net/core/sock.c:2295
+ bt_sock_alloc+0x3b/0x3a0 net/bluetooth/af_bluetooth.c:151
+ l2cap_sock_alloc.constprop.0+0x33/0x1d0 net/bluetooth/l2cap_sock.c:1894
+ l2cap_sock_new_connection_cb+0x101/0x240 net/bluetooth/l2cap_sock.c:1482
+ l2cap_connect_cfm+0x4c4/0xf80 net/bluetooth/l2cap_core.c:7287
+ hci_connect_cfm include/net/bluetooth/hci_core.h:2050 [inline]
+ hci_remote_features_evt+0x4dd/0x970 net/bluetooth/hci_event.c:3712
+ hci_event_func net/bluetooth/hci_event.c:7519 [inline]
+ hci_event_packet+0xa0d/0x11c0 net/bluetooth/hci_event.c:7573
+ hci_rx_work+0x2c5/0x16b0 net/bluetooth/hci_core.c:4071
+ process_one_work+0x9cf/0x1b70 kernel/workqueue.c:3236
+ process_scheduled_works kernel/workqueue.c:3319 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
+ kthread+0x3c2/0x780 kernel/kthread.c:463
+ ret_from_fork+0x5d7/0x6f0 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Freed by task 16995:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+ kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:576
+ poison_slab_object mm/kasan/common.c:243 [inline]
+ __kasan_slab_free+0x60/0x70 mm/kasan/common.c:275
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2417 [inline]
+ slab_free mm/slub.c:4680 [inline]
+ kfree+0x2b4/0x4d0 mm/slub.c:4879
+ sk_prot_free net/core/sock.c:2278 [inline]
+ __sk_destruct+0x75f/0x9a0 net/core/sock.c:2373
+ sk_destruct+0xc2/0xf0 net/core/sock.c:2401
+ __sk_free+0xf4/0x3e0 net/core/sock.c:2412
+ sk_free+0x6a/0x90 net/core/sock.c:2423
+ sock_put include/net/sock.h:1960 [inline]
+ bt_accept_unlink+0x245/0x2e0 net/bluetooth/af_bluetooth.c:262
+ bt_accept_dequeue+0x517/0x600 net/bluetooth/af_bluetooth.c:308
+ l2cap_sock_cleanup_listen+0x5c/0x2a0 net/bluetooth/l2cap_sock.c:1451
+ l2cap_sock_release+0x5c/0x210 net/bluetooth/l2cap_sock.c:1425
+ __sock_release+0xb3/0x270 net/socket.c:649
+ sock_close+0x1c/0x30 net/socket.c:1439
+ __fput+0x3ff/0xb70 fs/file_table.c:468
+ task_work_run+0x14d/0x240 kernel/task_work.c:227
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop+0xeb/0x110 kernel/entry/common.c:43
+ exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
+ syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
+ do_syscall_64+0x3f6/0x4c0 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 1728137b33c0 ("Bluetooth: L2CAP: Fix use-after-free in l2cap_sock_ready_cb")
+Reported-by: syzbot+e5e64cdf8e92046dd3e1@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-bluetooth/68af6b9d.a70a0220.3cafd4.0032.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.h        |  5 ++++
- drivers/net/wireless/ath/ath11k/debugfs.c     |  4 +--
- drivers/net/wireless/ath/ath11k/debugfs_sta.c | 30 +++++++++----------
- drivers/net/wireless/ath/ath11k/dp_rx.c       |  8 ++---
- drivers/net/wireless/ath/ath11k/dp_tx.c       |  4 +--
- drivers/net/wireless/ath/ath11k/mac.c         | 18 +++++------
- drivers/net/wireless/ath/ath11k/peer.c        |  2 +-
- drivers/net/wireless/ath/ath11k/wmi.c         |  6 ++--
- 8 files changed, 41 insertions(+), 36 deletions(-)
+ net/bluetooth/l2cap_sock.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 812a174f74c0b..fea96620e0672 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -1234,6 +1234,11 @@ static inline struct ath11k_vif *ath11k_vif_to_arvif(struct ieee80211_vif *vif)
- 	return (struct ath11k_vif *)vif->drv_priv;
- }
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index 93df53f2b76e3..dfffc5bb292dd 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1226,7 +1226,10 @@ static int l2cap_sock_release(struct socket *sock)
+ 	if (!sk)
+ 		return 0;
  
-+static inline struct ath11k_sta *ath11k_sta_to_arsta(struct ieee80211_sta *sta)
-+{
-+	return (struct ath11k_sta *)sta->drv_priv;
-+}
++	lock_sock_nested(sk, L2CAP_NESTING_PARENT);
+ 	l2cap_sock_cleanup_listen(sk);
++	release_sock(sk);
 +
- static inline struct ath11k *ath11k_ab_to_ar(struct ath11k_base *ab,
- 					     int mac_id)
- {
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-index 50bc17127e68a..4304fed44d583 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-@@ -1452,7 +1452,7 @@ static void ath11k_reset_peer_ps_duration(void *data,
- 					  struct ieee80211_sta *sta)
- {
- 	struct ath11k *ar = data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
+ 	bt_sock_unlink(&l2cap_sk_list, sk);
  
- 	spin_lock_bh(&ar->data_lock);
- 	arsta->ps_total_duration = 0;
-@@ -1503,7 +1503,7 @@ static void ath11k_peer_ps_state_disable(void *data,
- 					 struct ieee80211_sta *sta)
- {
- 	struct ath11k *ar = data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 
- 	spin_lock_bh(&ar->data_lock);
- 	arsta->peer_ps_state = WMI_PEER_PS_STATE_DISABLED;
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs_sta.c b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-index 168879a380cb2..f56a24b6c8da2 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-@@ -137,7 +137,7 @@ static ssize_t ath11k_dbg_sta_dump_tx_stats(struct file *file,
- 					    size_t count, loff_t *ppos)
- {
- 	struct ieee80211_sta *sta = file->private_data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	struct ath11k_htt_data_stats *stats;
- 	static const char *str_name[ATH11K_STATS_TYPE_MAX] = {"succ", "fail",
-@@ -244,7 +244,7 @@ static ssize_t ath11k_dbg_sta_dump_rx_stats(struct file *file,
- 					    size_t count, loff_t *ppos)
- {
- 	struct ieee80211_sta *sta = file->private_data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	struct ath11k_rx_peer_stats *rx_stats = arsta->rx_stats;
- 	int len = 0, i, retval = 0;
-@@ -341,7 +341,7 @@ static int
- ath11k_dbg_sta_open_htt_peer_stats(struct inode *inode, struct file *file)
- {
- 	struct ieee80211_sta *sta = inode->i_private;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	struct debug_htt_stats_req *stats_req;
- 	int type = ar->debug.htt_stats.type;
-@@ -377,7 +377,7 @@ static int
- ath11k_dbg_sta_release_htt_peer_stats(struct inode *inode, struct file *file)
- {
- 	struct ieee80211_sta *sta = inode->i_private;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 
- 	mutex_lock(&ar->conf_mutex);
-@@ -414,7 +414,7 @@ static ssize_t ath11k_dbg_sta_write_peer_pktlog(struct file *file,
- 						size_t count, loff_t *ppos)
- {
- 	struct ieee80211_sta *sta = file->private_data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	int ret, enable;
- 
-@@ -454,7 +454,7 @@ static ssize_t ath11k_dbg_sta_read_peer_pktlog(struct file *file,
- 					       size_t count, loff_t *ppos)
- {
- 	struct ieee80211_sta *sta = file->private_data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	char buf[32] = {0};
- 	int len;
-@@ -481,7 +481,7 @@ static ssize_t ath11k_dbg_sta_write_delba(struct file *file,
- 					  size_t count, loff_t *ppos)
- {
- 	struct ieee80211_sta *sta = file->private_data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	u32 tid, initiator, reason;
- 	int ret;
-@@ -532,7 +532,7 @@ static ssize_t ath11k_dbg_sta_write_addba_resp(struct file *file,
- 					       size_t count, loff_t *ppos)
- {
- 	struct ieee80211_sta *sta = file->private_data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	u32 tid, status;
- 	int ret;
-@@ -582,7 +582,7 @@ static ssize_t ath11k_dbg_sta_write_addba(struct file *file,
- 					  size_t count, loff_t *ppos)
- {
- 	struct ieee80211_sta *sta = file->private_data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	u32 tid, buf_size;
- 	int ret;
-@@ -633,7 +633,7 @@ static ssize_t ath11k_dbg_sta_read_aggr_mode(struct file *file,
- 					     size_t count, loff_t *ppos)
- {
- 	struct ieee80211_sta *sta = file->private_data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	char buf[64];
- 	int len = 0;
-@@ -653,7 +653,7 @@ static ssize_t ath11k_dbg_sta_write_aggr_mode(struct file *file,
- 					      size_t count, loff_t *ppos)
- {
- 	struct ieee80211_sta *sta = file->private_data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	u32 aggr_mode;
- 	int ret;
-@@ -698,7 +698,7 @@ ath11k_write_htt_peer_stats_reset(struct file *file,
- 				  size_t count, loff_t *ppos)
- {
- 	struct ieee80211_sta *sta = file->private_data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	struct htt_ext_stats_cfg_params cfg_params = { 0 };
- 	int ret;
-@@ -757,7 +757,7 @@ static ssize_t ath11k_dbg_sta_read_peer_ps_state(struct file *file,
- 						 size_t count, loff_t *ppos)
- {
- 	struct ieee80211_sta *sta = file->private_data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	char buf[20];
- 	int len;
-@@ -784,7 +784,7 @@ static ssize_t ath11k_dbg_sta_read_current_ps_duration(struct file *file,
- 						       loff_t *ppos)
- {
- 	struct ieee80211_sta *sta = file->private_data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	u64 time_since_station_in_power_save;
- 	char buf[20];
-@@ -818,7 +818,7 @@ static ssize_t ath11k_dbg_sta_read_total_ps_duration(struct file *file,
- 						     size_t count, loff_t *ppos)
- {
- 	struct ieee80211_sta *sta = file->private_data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	char buf[20];
- 	u64 power_save_duration;
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 33b9764eaa916..8cc51ab699de7 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -1100,7 +1100,7 @@ int ath11k_dp_rx_ampdu_start(struct ath11k *ar,
- 			     struct ieee80211_ampdu_params *params)
- {
- 	struct ath11k_base *ab = ar->ab;
--	struct ath11k_sta *arsta = (void *)params->sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(params->sta);
- 	int vdev_id = arsta->arvif->vdev_id;
- 	int ret;
- 
-@@ -1118,7 +1118,7 @@ int ath11k_dp_rx_ampdu_stop(struct ath11k *ar,
- {
- 	struct ath11k_base *ab = ar->ab;
- 	struct ath11k_peer *peer;
--	struct ath11k_sta *arsta = (void *)params->sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(params->sta);
- 	int vdev_id = arsta->arvif->vdev_id;
- 	dma_addr_t paddr;
- 	bool active;
-@@ -1460,7 +1460,7 @@ ath11k_update_per_peer_tx_stats(struct ath11k *ar,
- 	}
- 
- 	sta = peer->sta;
--	arsta = (struct ath11k_sta *)sta->drv_priv;
-+	arsta = ath11k_sta_to_arsta(sta);
- 
- 	memset(&arsta->txrate, 0, sizeof(arsta->txrate));
- 
-@@ -5269,7 +5269,7 @@ int ath11k_dp_rx_process_mon_status(struct ath11k_base *ab, int mac_id,
- 			goto next_skb;
- 		}
- 
--		arsta = (struct ath11k_sta *)peer->sta->drv_priv;
-+		arsta = ath11k_sta_to_arsta(peer->sta);
- 		ath11k_dp_rx_update_peer_stats(arsta, ppdu_info);
- 
- 		if (ath11k_debugfs_is_pktlog_peer_valid(ar, peer->addr))
-diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-index 7dd1ee5898017..c1072e66e3e8f 100644
---- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-@@ -467,7 +467,7 @@ void ath11k_dp_tx_update_txcompl(struct ath11k *ar, struct hal_tx_status *ts)
- 	}
- 
- 	sta = peer->sta;
--	arsta = (struct ath11k_sta *)sta->drv_priv;
-+	arsta = ath11k_sta_to_arsta(sta);
- 
- 	memset(&arsta->txrate, 0, sizeof(arsta->txrate));
- 	pkt_type = FIELD_GET(HAL_TX_RATE_STATS_INFO0_PKT_TYPE,
-@@ -627,7 +627,7 @@ static void ath11k_dp_tx_complete_msdu(struct ath11k *ar,
- 		ieee80211_free_txskb(ar->hw, msdu);
- 		return;
- 	}
--	arsta = (struct ath11k_sta *)peer->sta->drv_priv;
-+	arsta = ath11k_sta_to_arsta(peer->sta);
- 	status.sta = peer->sta;
- 	status.skb = msdu;
- 	status.info = info;
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 9df3f6449f768..cc9c09d05f63f 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -2828,7 +2828,7 @@ static void ath11k_peer_assoc_prepare(struct ath11k *ar,
- 
- 	lockdep_assert_held(&ar->conf_mutex);
- 
--	arsta = (struct ath11k_sta *)sta->drv_priv;
-+	arsta = ath11k_sta_to_arsta(sta);
- 
- 	memset(arg, 0, sizeof(*arg));
- 
-@@ -4311,7 +4311,7 @@ static int ath11k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 		ath11k_warn(ab, "peer %pM disappeared!\n", peer_addr);
- 
- 	if (sta) {
--		arsta = (struct ath11k_sta *)sta->drv_priv;
-+		arsta = ath11k_sta_to_arsta(sta);
- 
- 		switch (key->cipher) {
- 		case WLAN_CIPHER_SUITE_TKIP:
-@@ -4902,7 +4902,7 @@ static int ath11k_mac_station_add(struct ath11k *ar,
- {
- 	struct ath11k_base *ab = ar->ab;
- 	struct ath11k_vif *arvif = ath11k_vif_to_arvif(vif);
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct peer_create_params peer_param;
- 	int ret;
- 
-@@ -5026,7 +5026,7 @@ static int ath11k_mac_op_sta_state(struct ieee80211_hw *hw,
- {
- 	struct ath11k *ar = hw->priv;
- 	struct ath11k_vif *arvif = ath11k_vif_to_arvif(vif);
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k_peer *peer;
- 	int ret = 0;
- 
-@@ -5192,7 +5192,7 @@ static void ath11k_mac_op_sta_set_4addr(struct ieee80211_hw *hw,
- 					struct ieee80211_sta *sta, bool enabled)
- {
- 	struct ath11k *ar = hw->priv;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 
- 	if (enabled && !arsta->use_4addr_set) {
- 		ieee80211_queue_work(ar->hw, &arsta->set_4addr_wk);
-@@ -5206,7 +5206,7 @@ static void ath11k_mac_op_sta_rc_update(struct ieee80211_hw *hw,
- 					u32 changed)
- {
- 	struct ath11k *ar = hw->priv;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k_vif *arvif = ath11k_vif_to_arvif(vif);
- 	struct ath11k_peer *peer;
- 	u32 bw, smps;
-@@ -6204,7 +6204,7 @@ static void ath11k_mac_op_tx(struct ieee80211_hw *hw,
- 	}
- 
- 	if (control->sta)
--		arsta = (struct ath11k_sta *)control->sta->drv_priv;
-+		arsta = ath11k_sta_to_arsta(control->sta);
- 
- 	ret = ath11k_dp_tx(ar, arvif, arsta, skb);
- 	if (unlikely(ret)) {
-@@ -8228,7 +8228,7 @@ static void ath11k_mac_set_bitrate_mask_iter(void *data,
- 					     struct ieee80211_sta *sta)
- {
- 	struct ath11k_vif *arvif = data;
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arvif->ar;
- 
- 	spin_lock_bh(&ar->data_lock);
-@@ -8632,7 +8632,7 @@ static void ath11k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 					 struct ieee80211_sta *sta,
- 					 struct station_info *sinfo)
- {
--	struct ath11k_sta *arsta = (struct ath11k_sta *)sta->drv_priv;
-+	struct ath11k_sta *arsta = ath11k_sta_to_arsta(sta);
- 	struct ath11k *ar = arsta->arvif->ar;
- 	s8 signal;
- 	bool db2dbm = test_bit(WMI_TLV_SERVICE_HW_DB2DBM_CONVERSION_SUPPORT,
-diff --git a/drivers/net/wireless/ath/ath11k/peer.c b/drivers/net/wireless/ath/ath11k/peer.c
-index ca719eb3f7f82..6d0126c393018 100644
---- a/drivers/net/wireless/ath/ath11k/peer.c
-+++ b/drivers/net/wireless/ath/ath11k/peer.c
-@@ -446,7 +446,7 @@ int ath11k_peer_create(struct ath11k *ar, struct ath11k_vif *arvif,
- 	peer->sec_type_grp = HAL_ENCRYPT_TYPE_OPEN;
- 
- 	if (sta) {
--		arsta = (struct ath11k_sta *)sta->drv_priv;
-+		arsta = ath11k_sta_to_arsta(sta);
- 		arsta->tcl_metadata |= FIELD_PREP(HTT_TCL_META_DATA_TYPE, 0) |
- 				       FIELD_PREP(HTT_TCL_META_DATA_PEER_ID,
- 						  peer->peer_id);
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 9a829b8282420..31dbabc9eaf33 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -6452,7 +6452,7 @@ static int ath11k_wmi_tlv_rssi_chain_parse(struct ath11k_base *ab,
- 		goto exit;
- 	}
- 
--	arsta = (struct ath11k_sta *)sta->drv_priv;
-+	arsta = ath11k_sta_to_arsta(sta);
- 
- 	BUILD_BUG_ON(ARRAY_SIZE(arsta->chain_signal) >
- 		     ARRAY_SIZE(stats_rssi->rssi_avg_beacon));
-@@ -6540,7 +6540,7 @@ static int ath11k_wmi_tlv_fw_stats_data_parse(struct ath11k_base *ab,
- 							   arvif->bssid,
- 							   NULL);
- 			if (sta) {
--				arsta = (struct ath11k_sta *)sta->drv_priv;
-+				arsta = ath11k_sta_to_arsta(sta);
- 				arsta->rssi_beacon = src->beacon_snr;
- 				ath11k_dbg(ab, ATH11K_DBG_WMI,
- 					   "stats vdev id %d snr %d\n",
-@@ -7469,7 +7469,7 @@ static void ath11k_wmi_event_peer_sta_ps_state_chg(struct ath11k_base *ab,
- 		goto exit;
- 	}
- 
--	arsta = (struct ath11k_sta *)sta->drv_priv;
-+	arsta = ath11k_sta_to_arsta(sta);
- 
- 	spin_lock_bh(&ar->data_lock);
- 
+ 	err = l2cap_sock_shutdown(sock, 2);
 -- 
 2.50.1
 
