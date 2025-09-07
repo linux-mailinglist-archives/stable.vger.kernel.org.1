@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-178539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D32B47F13
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:32:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D39B47FCB
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F7A717EFB4
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:32:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B68121B21C16
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D73C1FECCD;
-	Sun,  7 Sep 2025 20:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128782139C9;
+	Sun,  7 Sep 2025 20:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpk7ciXT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6nPCc7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FFB15C158;
-	Sun,  7 Sep 2025 20:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C6020E00B;
+	Sun,  7 Sep 2025 20:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277160; cv=none; b=MoGFB6FFITc9dA3+d7xAAvMyDnFq1OuCJZSRQmXCUeW9aMtgVgtm3FGRareNl/ehZbDzO1AhA/2XPeNza5f3jfpUFEKp2q4woQaS+yw4eqUXLnTCQJ9QEbYB+ZpBmBZPDn+7FyfUGHAdBcO+zok2ESLpPcYf2/7fLC8qC9FV45o=
+	t=1757277742; cv=none; b=IqQ77kuYg77fN4ojctbfUTscB/bmG21fzg4Oxo6ZoqIkP1i0YxrdJwlmCH5mVgq6nA44ZSjLBew9c432fPJb2Z2IOl3awFInWYaX2ryBolXIG/YN3exo5MPg9sQoq8/URlQlQaTlUGVJ0bwF6+eb93QbmeLMSmqgJo3DX3UyY5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277160; c=relaxed/simple;
-	bh=14Kd7xQisqnWiQTD0ho6LyY1iqXyoR/pYsk4lQBvSQ8=;
+	s=arc-20240116; t=1757277742; c=relaxed/simple;
+	bh=FnDzg6VE5koStBJ1Iau/1+qXL7WSnu3QExtHwwjKxco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KghRoDJuB3E/LF11lMAOelXmR1r1z4COV4xn8HmVSNh9xcwMZF9V0G2kKDVk9KUN8CQSajj6lN19uk4nd6uavh8B9ZrqKHyOdHANNLp6y610VQnicQIcqQ+OsT4f01nGDoEyRopv1Nt5SKarCkBfd52CzYwlIEpfeK3weReMKE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpk7ciXT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C12AC4CEF0;
-	Sun,  7 Sep 2025 20:32:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gudR47nrpoOBjXTpKJYtvUpWFyr8vjFVY3KcTC3Emd53ms4VCIYw6SE538PT3PR02R5Z99a3au7IhJ72KdEUQ2ZxNQF2g7c14CLg+5gE9MuMua73dLulYUmBxhxU7XootnznH+40nkiI/1SWDGg+glgBaAzQ4LO15OpGwsN3EOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6nPCc7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC6EAC4CEF0;
+	Sun,  7 Sep 2025 20:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277159;
-	bh=14Kd7xQisqnWiQTD0ho6LyY1iqXyoR/pYsk4lQBvSQ8=;
+	s=korg; t=1757277742;
+	bh=FnDzg6VE5koStBJ1Iau/1+qXL7WSnu3QExtHwwjKxco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lpk7ciXTRARaQw6kc6qKeS+402cqMfHjhQXkRjpmPxvKVYRTAiASKrXVFxy1rzHYX
-	 5EjN14N/Ri4rIzr88JYowk871qII0dGRr5cQMaXn9fm4o5zjm22nL+8ZeWtY+roaI0
-	 jJhu2qBJkrG4ijBU6PGDrPwqFB2BUFTvGPEQOopY=
+	b=V6nPCc7HAt0Jmn8r8Ke3FzBtgs3SNdG++aJp5vsaMzgyLnZKNyjz8lkKrHUE5XCAH
+	 HYVN1lolW6s+07uCzh6SPtH8DLjGj4U3YkNF67OjTXQNaTEq1q4wzBqg2kqwSk6COg
+	 MDVme/5a6t01Tx5iSFzhEvKlhgaiGhS1MBTxao10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com,
-	Mark Tinguely <mark.tinguely@oracle.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 104/175] ocfs2: prevent release journal inode after journal shutdown
+	Steffen Moser <lists@steffen-moser.de>,
+	Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.16 072/183] wifi: ath11k: fix group data packet drops during rekey
 Date: Sun,  7 Sep 2025 21:58:19 +0200
-Message-ID: <20250907195617.311674803@linuxfoundation.org>
+Message-ID: <20250907195617.508390265@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
-References: <20250907195614.892725141@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,65 +63,249 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
 
-commit f46e8ef8bb7b452584f2e75337b619ac51a7cadf upstream.
+[ Upstream commit 97acb0259cc9cbfbd7ab689e25684f3d8ce10e26 ]
 
-Before calling ocfs2_delete_osb(), ocfs2_journal_shutdown() has already
-been executed in ocfs2_dismount_volume(), so osb->journal must be NULL.
-Therefore, the following calltrace will inevitably fail when it reaches
-jbd2_journal_release_jbd_inode().
+During GTK rekey, mac80211 issues a clear key (if the old key exists)
+followed by an install key operation in the same context. This causes
+ath11k to send two WMI commands in quick succession: one to clear the
+old key and another to install the new key in the same slot.
 
-ocfs2_dismount_volume()->
-  ocfs2_delete_osb()->
-    ocfs2_free_slot_info()->
-      __ocfs2_free_slot_info()->
-        evict()->
-          ocfs2_evict_inode()->
-            ocfs2_clear_inode()->
-	      jbd2_journal_release_jbd_inode(osb->journal->j_journal,
+Under certain conditions—especially under high load or time sensitive
+scenarios, firmware may process these commands asynchronously in a way
+that firmware assumes the key is cleared whereas hardware has a valid key.
+This inconsistency between hardware and firmware leads to group addressed
+packet drops. Only setting the same key again can restore a valid key in
+firmware and allow packets to be transmitted.
 
-Adding osb->journal checks will prevent null-ptr-deref during the above
-execution path.
+This issue remained latent because the host's clear key commands were
+not effective in firmware until commit 436a4e886598 ("ath11k: clear the
+keys properly via DISABLE_KEY"). That commit enabled the host to
+explicitly clear group keys, which inadvertently exposed the race.
 
-Link: https://lkml.kernel.org/r/tencent_357489BEAEE4AED74CBD67D246DBD2C4C606@qq.com
-Fixes: da5e7c87827e ("ocfs2: cleanup journal init and shutdown")
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reported-by: syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=47d8cb2f2cc1517e515a
-Tested-by: syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com
-Reviewed-by: Mark Tinguely <mark.tinguely@oracle.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To mitigate this, restrict group key clearing across all modes (AP, STA,
+MESH). During rekey, the new key can simply be set on top of the previous
+one, avoiding the need for a clear followed by a set.
+
+However, in AP mode specifically, permit group key clearing when no
+stations are associated. This exception supports transitions from secure
+modes (e.g., WPA2/WPA3) to open mode, during which all associated peers
+are removed and the group key is cleared as part of the transition.
+
+Add a per-BSS station counter to track the presence of stations during
+set key operations. Also add a reset_group_keys flag to track the key
+re-installation state and avoid repeated installation of the same key
+when the number of connected stations transitions to non-zero within a
+rekey period.
+
+Additionally, for AP and Mesh modes, when the first station associates,
+reinstall the same group key that was last set. This ensures that the
+firmware recovers from any race that may have occurred during a previous
+key clear when no stations were associated.
+
+This change ensures that key clearing is permitted only when no clients
+are connected, avoiding packet loss while enabling dynamic security mode
+transitions.
+
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.9.0.1-02146-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+
+Reported-by: Steffen Moser <lists@steffen-moser.de>
+Closes: https://lore.kernel.org/linux-wireless/c6366409-9928-4dd7-bf7b-ba7fcf20eabf@steffen-moser.de
+Fixes: 436a4e886598 ("ath11k: clear the keys properly via DISABLE_KEY")
+Signed-off-by: Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
+Tested-by: Nicolas Escande <nico.escande@gmail.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250810170018.1124014-1-rameshkumar.sundaram@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/inode.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath11k/core.h |   2 +
+ drivers/net/wireless/ath/ath11k/mac.c  | 111 +++++++++++++++++++++++--
+ 2 files changed, 104 insertions(+), 9 deletions(-)
 
---- a/fs/ocfs2/inode.c
-+++ b/fs/ocfs2/inode.c
-@@ -1205,6 +1205,9 @@ static void ocfs2_clear_inode(struct ino
- 	 * the journal is flushed before journal shutdown. Thus it is safe to
- 	 * have inodes get cleaned up after journal shutdown.
- 	 */
-+	if (!osb->journal)
-+		return;
-+
- 	jbd2_journal_release_jbd_inode(osb->journal->j_journal,
- 				       &oi->ip_jinode);
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index 6b2f207975e33..5d0210953fa30 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -410,6 +410,8 @@ struct ath11k_vif {
+ 	bool do_not_send_tmpl;
+ 	struct ath11k_arp_ns_offload arp_ns_offload;
+ 	struct ath11k_rekey_data rekey_data;
++	u32 num_stations;
++	bool reinstall_group_keys;
+ 
+ 	struct ath11k_reg_tpc_power_info reg_tpc_info;
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index 977f370fd6de4..5f6cc763c86ac 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -4317,6 +4317,40 @@ static int ath11k_clear_peer_keys(struct ath11k_vif *arvif,
+ 	return first_errno;
  }
+ 
++static int ath11k_set_group_keys(struct ath11k_vif *arvif)
++{
++	struct ath11k *ar = arvif->ar;
++	struct ath11k_base *ab = ar->ab;
++	const u8 *addr = arvif->bssid;
++	int i, ret, first_errno = 0;
++	struct ath11k_peer *peer;
++
++	spin_lock_bh(&ab->base_lock);
++	peer = ath11k_peer_find(ab, arvif->vdev_id, addr);
++	spin_unlock_bh(&ab->base_lock);
++
++	if (!peer)
++		return -ENOENT;
++
++	for (i = 0; i < ARRAY_SIZE(peer->keys); i++) {
++		struct ieee80211_key_conf *key = peer->keys[i];
++
++		if (!key || (key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
++			continue;
++
++		ret = ath11k_install_key(arvif, key, SET_KEY, addr,
++					 WMI_KEY_GROUP);
++		if (ret < 0 && first_errno == 0)
++			first_errno = ret;
++
++		if (ret < 0)
++			ath11k_warn(ab, "failed to set group key of idx %d for vdev %d: %d\n",
++				    i, arvif->vdev_id, ret);
++	}
++
++	return first_errno;
++}
++
+ static int ath11k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 				 struct ieee80211_vif *vif, struct ieee80211_sta *sta,
+ 				 struct ieee80211_key_conf *key)
+@@ -4326,6 +4360,7 @@ static int ath11k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	struct ath11k_vif *arvif = ath11k_vif_to_arvif(vif);
+ 	struct ath11k_peer *peer;
+ 	struct ath11k_sta *arsta;
++	bool is_ap_with_no_sta;
+ 	const u8 *peer_addr;
+ 	int ret = 0;
+ 	u32 flags = 0;
+@@ -4386,16 +4421,57 @@ static int ath11k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	else
+ 		flags |= WMI_KEY_GROUP;
+ 
+-	ret = ath11k_install_key(arvif, key, cmd, peer_addr, flags);
+-	if (ret) {
+-		ath11k_warn(ab, "ath11k_install_key failed (%d)\n", ret);
+-		goto exit;
+-	}
++	ath11k_dbg(ar->ab, ATH11K_DBG_MAC,
++		   "%s for peer %pM on vdev %d flags 0x%X, type = %d, num_sta %d\n",
++		   cmd == SET_KEY ? "SET_KEY" : "DEL_KEY", peer_addr, arvif->vdev_id,
++		   flags, arvif->vdev_type, arvif->num_stations);
++
++	/* Allow group key clearing only in AP mode when no stations are
++	 * associated. There is a known race condition in firmware where
++	 * group addressed packets may be dropped if the key is cleared
++	 * and immediately set again during rekey.
++	 *
++	 * During GTK rekey, mac80211 issues a clear key (if the old key
++	 * exists) followed by an install key operation for same key
++	 * index. This causes ath11k to send two WMI commands in quick
++	 * succession: one to clear the old key and another to install the
++	 * new key in the same slot.
++	 *
++	 * Under certain conditions—especially under high load or time
++	 * sensitive scenarios, firmware may process these commands
++	 * asynchronously in a way that firmware assumes the key is
++	 * cleared whereas hardware has a valid key. This inconsistency
++	 * between hardware and firmware leads to group addressed packet
++	 * drops after rekey.
++	 * Only setting the same key again can restore a valid key in
++	 * firmware and allow packets to be transmitted.
++	 *
++	 * There is a use case where an AP can transition from Secure mode
++	 * to open mode without a vdev restart by just deleting all
++	 * associated peers and clearing key, Hence allow clear key for
++	 * that case alone. Mark arvif->reinstall_group_keys in such cases
++	 * and reinstall the same key when the first peer is added,
++	 * allowing firmware to recover from the race if it had occurred.
++	 */
+ 
+-	ret = ath11k_dp_peer_rx_pn_replay_config(arvif, peer_addr, cmd, key);
+-	if (ret) {
+-		ath11k_warn(ab, "failed to offload PN replay detection %d\n", ret);
+-		goto exit;
++	is_ap_with_no_sta = (vif->type == NL80211_IFTYPE_AP &&
++			     !arvif->num_stations);
++	if ((flags & WMI_KEY_PAIRWISE) || cmd == SET_KEY || is_ap_with_no_sta) {
++		ret = ath11k_install_key(arvif, key, cmd, peer_addr, flags);
++		if (ret) {
++			ath11k_warn(ab, "ath11k_install_key failed (%d)\n", ret);
++			goto exit;
++		}
++
++		ret = ath11k_dp_peer_rx_pn_replay_config(arvif, peer_addr, cmd, key);
++		if (ret) {
++			ath11k_warn(ab, "failed to offload PN replay detection %d\n",
++				    ret);
++			goto exit;
++		}
++
++		if ((flags & WMI_KEY_GROUP) && cmd == SET_KEY && is_ap_with_no_sta)
++			arvif->reinstall_group_keys = true;
+ 	}
+ 
+ 	spin_lock_bh(&ab->base_lock);
+@@ -4994,6 +5070,7 @@ static int ath11k_mac_inc_num_stations(struct ath11k_vif *arvif,
+ 		return -ENOBUFS;
+ 
+ 	ar->num_stations++;
++	arvif->num_stations++;
+ 
+ 	return 0;
+ }
+@@ -5009,6 +5086,7 @@ static void ath11k_mac_dec_num_stations(struct ath11k_vif *arvif,
+ 		return;
+ 
+ 	ar->num_stations--;
++	arvif->num_stations--;
+ }
+ 
+ static u32 ath11k_mac_ieee80211_sta_bw_to_wmi(struct ath11k *ar,
+@@ -9536,6 +9614,21 @@ static int ath11k_mac_station_add(struct ath11k *ar,
+ 		goto exit;
+ 	}
+ 
++	/* Driver allows the DEL KEY followed by SET KEY sequence for
++	 * group keys for only when there is no clients associated, if at
++	 * all firmware has entered the race during that window,
++	 * reinstalling the same key when the first sta connects will allow
++	 * firmware to recover from the race.
++	 */
++	if (arvif->num_stations == 1 && arvif->reinstall_group_keys) {
++		ath11k_dbg(ab, ATH11K_DBG_MAC, "set group keys on 1st station add for vdev %d\n",
++			   arvif->vdev_id);
++		ret = ath11k_set_group_keys(arvif);
++		if (ret)
++			goto dec_num_station;
++		arvif->reinstall_group_keys = false;
++	}
++
+ 	arsta->rx_stats = kzalloc(sizeof(*arsta->rx_stats), GFP_KERNEL);
+ 	if (!arsta->rx_stats) {
+ 		ret = -ENOMEM;
+-- 
+2.50.1
+
 
 
 
