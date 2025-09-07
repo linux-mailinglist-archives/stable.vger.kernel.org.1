@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-178684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B1BB47FA7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:40:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBE2B47DF4
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFC432004C0
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:40:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 654FD189EC98
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA51D269CE6;
-	Sun,  7 Sep 2025 20:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929481D88D0;
+	Sun,  7 Sep 2025 20:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fT5/bPpI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kwbc+wW+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860221F63CD;
-	Sun,  7 Sep 2025 20:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFCE14BFA2;
+	Sun,  7 Sep 2025 20:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757277625; cv=none; b=qicExepqvbIvzzU4l1h20FRe+79Knhlbzuca3G+c/V1cingECsUtoMRJRwar8Nqqskg2Y3kYz3aT+KXFe3BWp3wRM5JTelrdijrkWlZ9NXIjDf8Vf9ySBzHE2NoND7IXpyRTJGz9FMFEEP4eq2zfWMDbPYjdcrXe+RuHhRzqBWw=
+	t=1757276316; cv=none; b=iDqU3aq6u1+ybKCDG6zYUoNXXRHbNYJu59HkkSrzfjzqD6bHSCFZvRDaqZnQsgNBhfD5/tnGwrLwcwqhgRDc1tleFOBTI8msifNuzVphmvLRlXTQk0rM2HIJlrWXGREZkTtu0jKxkPvxDS7/5wakUNLMlpGnu4BBeRZDHA6VaAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757277625; c=relaxed/simple;
-	bh=F0iX5oX9EWX6wxQThbz6RqreE9OCml6hRmGKaF9S69A=;
+	s=arc-20240116; t=1757276316; c=relaxed/simple;
+	bh=2JkCv590iNQphYE+dJSExbgMSYmB4EcmUWlzpvvMm1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DoEOk5yT3IPUcM1SWCfTJGLs0IvPVsrDnzSpXMEAG1HKX3W8KPQqYjr7Embf/sVoYQ05Uy2aXftXA6GTIkVDy8I4l1s/gHpPL7aV3+MVnOqZ4+FQbE7an81ERr3dZsFSZoVRTYToTeBC2uA3KxPV9wafBEzV31vRkbnOYy4InwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fT5/bPpI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7BDAC4CEF0;
-	Sun,  7 Sep 2025 20:40:24 +0000 (UTC)
+	 MIME-Version; b=Xm/qMYAjfsW+d9lwWvtRlcQYJn502YgLa0pe+3KJd1NDAWKLpzoLUOd2elOEd6EU6nqtaGXZQR1R6X1AFbnvEMVyuqCpWGaKRDLWMihTEuaGt6kSHKMd5kM4FG74HmpAjMHvYmIPoYZG5jcILuh8oRCLwloLDZtTiXMPcthqtf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kwbc+wW+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F4DC4CEF0;
+	Sun,  7 Sep 2025 20:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757277625;
-	bh=F0iX5oX9EWX6wxQThbz6RqreE9OCml6hRmGKaF9S69A=;
+	s=korg; t=1757276316;
+	bh=2JkCv590iNQphYE+dJSExbgMSYmB4EcmUWlzpvvMm1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fT5/bPpIMoyzNGR8QUzoBrbxipOUYyCAKj3eOWbyagWSpMLjxZXJ7LrcRwujtXKWS
-	 WDOZErHdO5X80yRKttvy4nu14QDUWbcYm5EMYX4M3uC9t8phSgU/jsSxBEEcx/cLDU
-	 Rl0vBv625P6nMbfTY4cJ+/9PGl84EYf2Gs/Iq7Z8=
+	b=Kwbc+wW+NyYOXj8B+tELZnZenIGvxo+d0FwOm+zplZbZC7XGeMyXQ8y8qx6LOAxKL
+	 3ayDjv9mBD2fFKHoEqmXKnByC6Y56uBK5M13xv1MSKoY3GVTbPFp/TVXfiUIBdzfri
+	 J/PhIWkQ+ccZAND7gZwZyaumOU/XTHTUE3KiX7fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wens@csie.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Phil Sutter <phil@nwl.cc>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.16 028/183] arm64: dts: rockchip: Add supplies for eMMC on rk3588-orangepi-5
+Subject: [PATCH 6.1 018/104] netfilter: conntrack: helper: Replace -EEXIST by -EBUSY
 Date: Sun,  7 Sep 2025 21:57:35 +0200
-Message-ID: <20250907195616.446030837@linuxfoundation.org>
+Message-ID: <20250907195608.157765781@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
+References: <20250907195607.664912704@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wens@csie.org>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit 2dea24df234940b27d378f786933dc10f33de6b8 ]
+[ Upstream commit 54416fd76770bd04fc3c501810e8d673550bab26 ]
 
-The eMMC description is missing both vmmc and vqmmc supplies.
+The helper registration return value is passed-through by module_init
+callbacks which modprobe confuses with the harmless -EEXIST returned
+when trying to load an already loaded module.
 
-Add them to complete the description.
+Make sure modprobe fails so users notice their helper has not been
+registered and won't work.
 
-Fixes: 236d225e1ee7 ("arm64: dts: rockchip: Add board device tree for rk3588-orangepi-5-plus")
-Fixes: ea63f4666e48 ("arm64: dts: rockchip: refactor common rk3588-orangepi-5.dtsi")
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
-Link: https://lore.kernel.org/r/20250821052939.1869171-1-wens@kernel.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-orangepi-5.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/nf_conntrack_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-orangepi-5.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-orangepi-5.dtsi
-index 91d56c34a1e45..8a8f3b26754d7 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-orangepi-5.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-orangepi-5.dtsi
-@@ -365,6 +365,8 @@ &sdhci {
- 	max-frequency = <200000000>;
- 	mmc-hs400-1_8v;
- 	mmc-hs400-enhanced-strobe;
-+	vmmc-supply = <&vcc_3v3_s3>;
-+	vqmmc-supply = <&vcc_1v8_s3>;
- 	status = "okay";
- };
- 
+diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
+index bf09a1e062481..5545016c107db 100644
+--- a/net/netfilter/nf_conntrack_helper.c
++++ b/net/netfilter/nf_conntrack_helper.c
+@@ -371,7 +371,7 @@ int nf_conntrack_helper_register(struct nf_conntrack_helper *me)
+ 			    (cur->tuple.src.l3num == NFPROTO_UNSPEC ||
+ 			     cur->tuple.src.l3num == me->tuple.src.l3num) &&
+ 			    cur->tuple.dst.protonum == me->tuple.dst.protonum) {
+-				ret = -EEXIST;
++				ret = -EBUSY;
+ 				goto out;
+ 			}
+ 		}
+@@ -382,7 +382,7 @@ int nf_conntrack_helper_register(struct nf_conntrack_helper *me)
+ 		hlist_for_each_entry(cur, &nf_ct_helper_hash[h], hnode) {
+ 			if (nf_ct_tuple_src_mask_cmp(&cur->tuple, &me->tuple,
+ 						     &mask)) {
+-				ret = -EEXIST;
++				ret = -EBUSY;
+ 				goto out;
+ 			}
+ 		}
 -- 
 2.50.1
 
