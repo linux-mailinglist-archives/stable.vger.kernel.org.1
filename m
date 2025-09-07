@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-178239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB46B47DCF
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:16:50 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49560B47EF6
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:31:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B6F77AB8C7
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:15:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 042664E11B3
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1847B1B424F;
-	Sun,  7 Sep 2025 20:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8281DE8AF;
+	Sun,  7 Sep 2025 20:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWun+iuq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FfxG8qn2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD2414BFA2;
-	Sun,  7 Sep 2025 20:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C83115C158;
+	Sun,  7 Sep 2025 20:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276206; cv=none; b=JJmhj+/R1bI/v+wOYwTZ27+0NDAlsegIuCDHjhPvTbpACZKT5m47arskJwXnFMwntJnMN/TXBsB0jFqu4lbJJYCXIwBzaGyg3j2w35Bl3dja87HMN2Tt9N+CmwI80ObctXWaIKL+3u9PRtH6hkN3hropbD+yzJ/dkHIH2kj5oWQ=
+	t=1757277067; cv=none; b=UYO/jO8qqszBLhH3uZ4KbLxuLyzRPrE8ltrvDNpwgTMWgfC5+MzzpfChOeUGQelEM/yGDqPZHQ07NbgYLVURorieWQ6wR7BJg3GYbCid8xfgVFA21rzGSWelI7lpp3rfgRrM1Tj/HcGFrubwJa+g5g7uM2G8NtSlCZaaV5Hl7dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276206; c=relaxed/simple;
-	bh=iCDmeULOKN+TlPV7mKg1M9qoJAR5Q6ATOMf5BqfAhBg=;
+	s=arc-20240116; t=1757277067; c=relaxed/simple;
+	bh=GkXiaD/STlOLfTcfsGT5W7OGeOLT7gZuuxm21mS/w/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CR4/m28bET2f2e54iklgPJeMf1uJZEQ12IkwIgk2v9ibKsLqJCMm2dppmq/oqtM9ay2abYntOrnEhnzKf82baxU8kzCiAk48/+kjPmg8eQGS/y5Yx8oenUXdPHO1J2zhXGh8ssYSpUAXkv/2rdiyqJ/yROrpJQdHcqZ81Awzmbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWun+iuq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB72C4CEF0;
-	Sun,  7 Sep 2025 20:16:45 +0000 (UTC)
+	 MIME-Version; b=gc1ZT7lVR4m73DKAGjrJ2rBkH75M+K6vvhOaDi4TwHg8OPCsluNR67aC+rzulvuWie7Rpm8GF0izIwfrxohgmGB20V1Tizy5k0X4VYPWixYCwHOT97OgK4LnGibsosl8hjbM66zrjvAYwZiIId0olIK8ao9bL2ByOROB/aeC0e4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FfxG8qn2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68D6C4CEF0;
+	Sun,  7 Sep 2025 20:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276206;
-	bh=iCDmeULOKN+TlPV7mKg1M9qoJAR5Q6ATOMf5BqfAhBg=;
+	s=korg; t=1757277067;
+	bh=GkXiaD/STlOLfTcfsGT5W7OGeOLT7gZuuxm21mS/w/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hWun+iuqn/+qGWnClzQ9d9x/M7FM69XtOs/wh6h9sa+4LZR/JGjapk1gi+iU0PSzn
-	 M3mGQNrNhThqgm+DA7mBLIlOMQGfQTE5xdMY62ecll/8OrK4Y6pczdhCFmk3QqXQrY
-	 m2++CigqNljMFSZdv3XxoZ22tN2v4p2lhdiEQ6b4=
+	b=FfxG8qn2dpK4SZMjnMF/ubBkcVUYb2cB+IvATC5MeOkWM/3hsthdWGjjngAsSmIyr
+	 r085yFZWjKiSL5f7B1XTII6uKgpP6kNymdi2dPTHBlAXvcMQ2CR1bR/yDJyOUelfae
+	 gEfVV9EBLsEOGqKu2y0mWgwt2kuGEGG+4aKA2EPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Simon Horman <horms@kernel.org>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/104] net: thunder_bgx: decrement cleanup index before use
+Subject: [PATCH 6.12 073/175] vxlan: Avoid unnecessary updates to FDB used time
 Date: Sun,  7 Sep 2025 21:57:48 +0200
-Message-ID: <20250907195608.508098900@linuxfoundation.org>
+Message-ID: <20250907195616.561987326@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195614.892725141@linuxfoundation.org>
+References: <20250907195614.892725141@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 9e3d71a92e561ccc77025689dab25d201fee7a3e ]
+[ Upstream commit 9722f834fe9a7c583591defa2cab3f652f50a5f0 ]
 
-All paths in probe that call goto defer do so before assigning phydev
-and thus it makes sense to cleanup the prior index. It also fixes a bug
-where index 0 does not get cleaned up.
+Now that the VXLAN driver ages out FDB entries based on their 'updated'
+time we can remove unnecessary updates of the 'used' time from the Rx
+path and the control path, so that the 'used' time is only updated by
+the Tx path.
 
-Fixes: b7d3e3d3d21a ("net: thunderx: Don't leak phy device references on -EPROBE_DEFER condition.")
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250901213314.48599-1-rosenp@gmail.com
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250204145549.1216254-8-idosch@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 1f5d2fd1ca04 ("vxlan: Fix NPD in {arp,neigh}_reduce() when using nexthop objects")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cavium/thunder/thunder_bgx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/vxlan/vxlan_core.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-index d054c519cd617..bb70afae10c4c 100644
---- a/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-+++ b/drivers/net/ethernet/cavium/thunder/thunder_bgx.c
-@@ -1518,11 +1518,11 @@ static int bgx_init_of_phy(struct bgx *bgx)
- 	 * for phy devices we may have already found.
- 	 */
- 	while (lmac) {
-+		lmac--;
- 		if (bgx->lmac[lmac].phydev) {
- 			put_device(&bgx->lmac[lmac].phydev->mdio.dev);
- 			bgx->lmac[lmac].phydev = NULL;
- 		}
--		lmac--;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index ce9c979080bb4..8853fcb7eb7f2 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1047,10 +1047,8 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 		notify |= rc;
  	}
- 	of_node_put(node);
- 	return -EPROBE_DEFER;
+ 
+-	if (ndm_flags & NTF_USE) {
+-		WRITE_ONCE(f->used, jiffies);
++	if (ndm_flags & NTF_USE)
+ 		WRITE_ONCE(f->updated, jiffies);
+-	}
+ 
+ 	if (notify) {
+ 		if (rd == NULL)
+@@ -1294,7 +1292,7 @@ int __vxlan_fdb_delete(struct vxlan_dev *vxlan,
+ 	struct vxlan_fdb *f;
+ 	int err = -ENOENT;
+ 
+-	f = vxlan_find_mac(vxlan, addr, src_vni);
++	f = __vxlan_find_mac(vxlan, addr, src_vni);
+ 	if (!f)
+ 		return err;
+ 
+@@ -1458,7 +1456,7 @@ static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
+ 		ifindex = src_ifindex;
+ #endif
+ 
+-	f = vxlan_find_mac(vxlan, src_mac, vni);
++	f = __vxlan_find_mac(vxlan, src_mac, vni);
+ 	if (likely(f)) {
+ 		struct vxlan_rdst *rdst = first_remote_rcu(f);
+ 
+@@ -4718,7 +4716,7 @@ vxlan_fdb_offloaded_set(struct net_device *dev,
+ 
+ 	spin_lock_bh(&vxlan->hash_lock[hash_index]);
+ 
+-	f = vxlan_find_mac(vxlan, fdb_info->eth_addr, fdb_info->vni);
++	f = __vxlan_find_mac(vxlan, fdb_info->eth_addr, fdb_info->vni);
+ 	if (!f)
+ 		goto out;
+ 
+@@ -4774,7 +4772,7 @@ vxlan_fdb_external_learn_del(struct net_device *dev,
+ 	hash_index = fdb_head_index(vxlan, fdb_info->eth_addr, fdb_info->vni);
+ 	spin_lock_bh(&vxlan->hash_lock[hash_index]);
+ 
+-	f = vxlan_find_mac(vxlan, fdb_info->eth_addr, fdb_info->vni);
++	f = __vxlan_find_mac(vxlan, fdb_info->eth_addr, fdb_info->vni);
+ 	if (!f)
+ 		err = -ENOENT;
+ 	else if (f->flags & NTF_EXT_LEARNED)
 -- 
 2.50.1
 
