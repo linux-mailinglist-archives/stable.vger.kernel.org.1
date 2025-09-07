@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-178317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8048B47E29
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D88BAB47D68
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:11:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09857188B79D
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:21:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6B7C1887DDD
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DED1D88D0;
-	Sun,  7 Sep 2025 20:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1145A27F754;
+	Sun,  7 Sep 2025 20:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y06nVsQt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWByrM0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F354B14BFA2;
-	Sun,  7 Sep 2025 20:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C497D1CDFAC;
+	Sun,  7 Sep 2025 20:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276453; cv=none; b=gYKaXuwQm/8BKYOTv7Tt868U2TmlY6UNOzoHhohu0zWwj4CiQnmZytbdEslNHm0yT0ZF1AW/Zu4zcpDImTq8vBjGxTQ0YtOmmQXowBW4Q2ySmbcPwC5URRRZTgx0+uSNdTFK7veqXgbpgFOr0kvVPHIn9G/kp1FGepjftRqa2Tk=
+	t=1757275889; cv=none; b=hE+gPv0a7vUkQ2k5Py1Xvx3IrU/bhukGRlWC7CIXI+9gK0OtLgL7iujsEmiv49aI5kFXden1kmHDt62JWwvi0VKDzuRkGNmcf+kuhY0pYg/XsBJPhjrD0suea1UNfAt9VWipgiGcdpydd3NKMoe4PY3P3U3mUGmHQpmWjBlJEdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276453; c=relaxed/simple;
-	bh=JDcHFHwQ+zk92n0MrhE02tSS74CaETD4vw98tQMZcS4=;
+	s=arc-20240116; t=1757275889; c=relaxed/simple;
+	bh=yq4WpluKe2Z8ubFQbyIDirKXt2I9jX9ECo0+v0RWpU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/Czc9bItcv3R5/9hEySBoZSrpuFoIVtmzWUWWiCKKt1P6xx42vtI2HHqSg0w7Fqd/siIW/C76p+SKHTCL2zhkVLA/fTHEECc+RAkuXT0faG76IY3/TmB8mlaNRs6Z3NWyKXXIx/Uhzw74tMJEf4Zs+GzexiRFX/PWWrLeIsD3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y06nVsQt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B26EC4CEF0;
-	Sun,  7 Sep 2025 20:20:52 +0000 (UTC)
+	 MIME-Version; b=m9+qLLWDB5CZQGWP4K0c4VJrTfemAjTPqg69QU/Ny07G74VtJ4HlEH6Zgc+bhuiuDf0UZiAO62kMnvRTVF5ztot7sQx5/4xJ8slSBGc6eERyPfraoVUxQLOA0dUN7FhjpO8EtKiOKMqS0DrNPS8DEAkUKGoYjQw0L9wo3tVlGBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWByrM0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E53C4CEF0;
+	Sun,  7 Sep 2025 20:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276452;
-	bh=JDcHFHwQ+zk92n0MrhE02tSS74CaETD4vw98tQMZcS4=;
+	s=korg; t=1757275889;
+	bh=yq4WpluKe2Z8ubFQbyIDirKXt2I9jX9ECo0+v0RWpU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y06nVsQtj6yMbNAYKGdOfdg/41Hp7g7J72UAX6fYHS1PmTwfpXReIxipX8ns2a4ht
-	 J0z3QNvuD9/HELST6r6xmZfuFKOO3iNISJdQ+FxgbkW4tLrJd47DeuLAvc7xU4HPJ1
-	 18dbIyS4YCXkYMlDHx2750Ittc/ntulLm7efX84M=
+	b=KWByrM0T64Yfv+8/a87FPYze3R9XuEWAM2EVJBnHvK6vdiPg/YWS20NagpRY2mP9/
+	 TmQjg+uF132hUJk3Up7WQXJ5zV2wj9c/CP2eUn3qDFK2NHhcGbtsJQPWtAv4EjpL/5
+	 gCiv6quVu+4uCS8qg4E9aPOSFDlL8+HObjnsmsu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	James Clark <james.clark@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/104] cpufreq: intel_pstate: Revise global turbo disable check
-Date: Sun,  7 Sep 2025 21:58:26 +0200
-Message-ID: <20250907195609.468573735@linuxfoundation.org>
+Subject: [PATCH 5.4 41/45] spi: spi-fsl-lpspi: Fix transmissions when using CONT
+Date: Sun,  7 Sep 2025 21:58:27 +0200
+Message-ID: <20250907195602.198058785@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195607.664912704@linuxfoundation.org>
-References: <20250907195607.664912704@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Larisa Grigore <larisa.grigore@nxp.com>
 
-[ Upstream commit 37b6ddba967c601479bea418a7ac6ff16b6232b7 ]
+[ Upstream commit 782a7c73078e1301c0c427f21c06377d77dfa541 ]
 
-Setting global turbo flag based on CPU 0 P-state limits is problematic
-as it limits max P-state request on every CPU on the system just based
-on its P-state limits.
+Commit 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use
+CONT") breaks transmissions when CONT is used. The TDIE interrupt should
+not be disabled in all cases. If CONT is used and the TX transfer is not
+yet completed yet, but the interrupt handler is called because there are
+characters to be received, TDIE is replaced with FCIE. When the transfer
+is finally completed, SR_TDF is set but the interrupt handler isn't
+called again.
 
-There are two cases in which global.turbo_disabled flag is set:
-- When the MSR_IA32_MISC_ENABLE_TURBO_DISABLE bit is set to 1
-in the MSR MSR_IA32_MISC_ENABLE. This bit can be only changed by
-the system BIOS before power up.
-- When the max non turbo P-state is same as max turbo P-state for CPU 0.
-
-The second check is not a valid to decide global turbo state based on
-the CPU 0. CPU 0 max turbo P-state can be same as max non turbo P-state,
-but for other CPUs this may not be true.
-
-There is no guarantee that max P-state limits are same for every CPU. This
-is possible that during fusing max P-state for a CPU is constrained. Also
-with the Intel Speed Select performance profile, CPU 0 may not be present
-in all profiles. In this case the max non turbo and turbo P-state can be
-set to the lowest possible P-state by the hardware when switched to
-such profile. Since max non turbo and turbo P-state is same,
-global.turbo_disabled flag will be set.
-
-Once global.turbo_disabled is set, any scaling max and min frequency
-update for any CPU will result in its max P-state constrained to the max
-non turbo P-state.
-
-Hence remove the check of max non turbo P-state equal to max turbo P-state
-of CPU 0 to set global turbo disabled flag.
-
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-[ rjw: Subject edit ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: ac4e04d9e378 ("cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode")
+Fixes: 6a130448498c ("spi: lpspi: Fix wrong transmission when don't use CONT")
+Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+Signed-off-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20250828-james-nxp-lpspi-v2-1-6262b9aa9be4@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/intel_pstate.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -562,13 +562,9 @@ static void intel_pstate_hybrid_hwp_adju
- static inline void update_turbo_state(void)
- {
- 	u64 misc_en;
--	struct cpudata *cpu;
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 2708bf15e1263..8a4925469dfb9 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -3,7 +3,7 @@
+ // Freescale i.MX7ULP LPSPI driver
+ //
+ // Copyright 2016 Freescale Semiconductor, Inc.
+-// Copyright 2018 NXP Semiconductors
++// Copyright 2018, 2023, 2025 NXP
  
--	cpu = all_cpu_data[0];
- 	rdmsrl(MSR_IA32_MISC_ENABLE, misc_en);
--	global.turbo_disabled =
--		(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE ||
--		 cpu->pstate.max_pstate == cpu->pstate.turbo_pstate);
-+	global.turbo_disabled = misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE;
- }
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+@@ -772,7 +772,7 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
+ 	if (temp_SR & SR_MBF ||
+ 	    readl(fsl_lpspi->base + IMX7ULP_FSR) & FSR_TXCOUNT) {
+ 		writel(SR_FCF, fsl_lpspi->base + IMX7ULP_SR);
+-		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE);
++		fsl_lpspi_intctrl(fsl_lpspi, IER_FCIE | (temp_IER & IER_TDIE));
+ 		return IRQ_HANDLED;
+ 	}
  
- static int min_perf_pct_min(void)
+-- 
+2.51.0
+
 
 
 
