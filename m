@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-178440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70289B47EAB
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:27:27 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCEFB47FD1
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 22:42:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A43A3C1ED2
-	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:27:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 910904E1354
+	for <lists+stable@lfdr.de>; Sun,  7 Sep 2025 20:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA96189BB0;
-	Sun,  7 Sep 2025 20:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD572139C9;
+	Sun,  7 Sep 2025 20:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hi1GJVV5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ob+dMgcU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C13A1D88D0;
-	Sun,  7 Sep 2025 20:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD61A4315A;
+	Sun,  7 Sep 2025 20:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757276842; cv=none; b=lvfAZZATAjNiYHPwJMP38+XUPE2me3eQGxQl3bomeuc8LSH7XvYHK9D+tShIKa2JQAuJ14nWhZivaUrqgP/1xaMCjOKecY7xo2BIClcArzUCe3E5cY14jCxCRCbv5ujg/d8VBszPMERkUWRHpHYsQqPj2tlfERcQsoD3Sko/7SA=
+	t=1757277761; cv=none; b=XxYssC9BPGifUYBs5xfmK8v8925jh8pdRepPDYLAGE/Y41dKMWmM6oSLVrmcTUvd72sKDR4+knUHUsXDt9zPi7qA4xqmniInYKr60doLcdP1B2kgvKmJAl4mkLGrqN4OI/B2fce4sjcVFj+vmNiH/a7spJYT4M1h6ELN94atv8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757276842; c=relaxed/simple;
-	bh=O1nzX3F6VN/Ei87rOZM8cKeszaJF3x1jhf+mVGZKAmc=;
+	s=arc-20240116; t=1757277761; c=relaxed/simple;
+	bh=C18SIJQxLsJQcTXN4siFQ5W0LHEUnLv9Gf26K9ZXqxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGhN8e/pZbdMTfSnQhvMbJhtcRpX+8zkEuOMJB/yc55X/XPTmPN3IwFBM75TggHmTCD36jMcMn1b4viD7/1QBiTzRMKpo526NIejY0NF8MHZZDKl07iACLiLxoCTSfFZCIZFHucjdveQ5r0FuWduyEzigiQc7SFBwMfL41O6Nbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hi1GJVV5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15645C4CEF0;
-	Sun,  7 Sep 2025 20:27:21 +0000 (UTC)
+	 MIME-Version; b=LPLpMG1U9PLzzMYq4TF6yMAzmEuNkKWhdbl7ie2suVih2zVkw1TctAydlH0ifSHUAZcDgfU5/e5VBdKcOOHlLKpMLBUTOO1bTFk8vzbdvHoUoxQ4e9OJyXLwUrObsZD8Q61vi43FPFfb9lZWMX/gpnFqs2Mb7y22kc2VJ6PsWDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ob+dMgcU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A81C4CEF0;
+	Sun,  7 Sep 2025 20:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757276842;
-	bh=O1nzX3F6VN/Ei87rOZM8cKeszaJF3x1jhf+mVGZKAmc=;
+	s=korg; t=1757277761;
+	bh=C18SIJQxLsJQcTXN4siFQ5W0LHEUnLv9Gf26K9ZXqxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hi1GJVV5XQaSbUujwkl8zqS9KlAn8HLj/OsCTAtOXjfYB1DsYMk8A8Fs9QMUprKiH
-	 80JtRX8zgMdyQXG3OeFUV8F4TFOSJ6roUmNmlq0w8+xtcwhs6+T2w8u8PaOcWrAyIV
-	 khFItn4Od5xQqIJHbIefi04ipJdjsMiJRZymp9Zs=
+	b=Ob+dMgcUC8QjI2VBPMrFoQpKMdxfWYuzYofnccUzr8cMsjZbQhRTk5YYJ2xCl3qaT
+	 4gUowdYGjNlQFF1PvJgzJF5fgeFncGxdkh/NsBHNtgA8iO7bsfIyvxWGqq9v6ouxad
+	 24+8Ofa0/sBwW7PsMfrYUUhoMn62LMO1SW+pAalo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	James Clark <james.clark@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/121] spi: spi-fsl-lpspi: Reset FIFO and disable module on transfer abort
+	Edward Adam Davis <eadavis@qq.com>,
+	syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com,
+	Mark Tinguely <mark.tinguely@oracle.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.16 113/183] ocfs2: prevent release journal inode after journal shutdown
 Date: Sun,  7 Sep 2025 21:59:00 +0200
-Message-ID: <20250907195612.518241048@linuxfoundation.org>
+Message-ID: <20250907195618.477125132@linuxfoundation.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907195609.817339617@linuxfoundation.org>
-References: <20250907195609.817339617@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+References: <20250907195615.802693401@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +69,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.16-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larisa Grigore <larisa.grigore@nxp.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit e811b088a3641861fc9d2b2b840efc61a0f1907d ]
+commit f46e8ef8bb7b452584f2e75337b619ac51a7cadf upstream.
 
-In DMA mode fsl_lpspi_reset() is always called at the end, even when the
-transfer is aborted. In PIO mode aborts skip the reset leaving the FIFO
-filled and the module enabled.
+Before calling ocfs2_delete_osb(), ocfs2_journal_shutdown() has already
+been executed in ocfs2_dismount_volume(), so osb->journal must be NULL.
+Therefore, the following calltrace will inevitably fail when it reaches
+jbd2_journal_release_jbd_inode().
 
-Fix it by always calling fsl_lpspi_reset().
+ocfs2_dismount_volume()->
+  ocfs2_delete_osb()->
+    ocfs2_free_slot_info()->
+      __ocfs2_free_slot_info()->
+        evict()->
+          ocfs2_evict_inode()->
+            ocfs2_clear_inode()->
+	      jbd2_journal_release_jbd_inode(osb->journal->j_journal,
 
-Fixes: a15dc3d657fa ("spi: lpspi: Fix CLK pin becomes low before one transfer")
-Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: James Clark <james.clark@linaro.org>
-Link: https://patch.msgid.link/20250828-james-nxp-lpspi-v2-3-6262b9aa9be4@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Adding osb->journal checks will prevent null-ptr-deref during the above
+execution path.
+
+Link: https://lkml.kernel.org/r/tencent_357489BEAEE4AED74CBD67D246DBD2C4C606@qq.com
+Fixes: da5e7c87827e ("ocfs2: cleanup journal init and shutdown")
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Reported-by: syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=47d8cb2f2cc1517e515a
+Tested-by: syzbot+47d8cb2f2cc1517e515a@syzkaller.appspotmail.com
+Reviewed-by: Mark Tinguely <mark.tinguely@oracle.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/ocfs2/inode.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index b1ed34d237948..d437ed1349edb 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -730,12 +730,10 @@ static int fsl_lpspi_pio_transfer(struct spi_controller *controller,
- 	fsl_lpspi_write_tx_fifo(fsl_lpspi);
- 
- 	ret = fsl_lpspi_wait_for_completion(controller);
--	if (ret)
--		return ret;
- 
- 	fsl_lpspi_reset(fsl_lpspi);
- 
--	return 0;
-+	return ret;
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -1219,6 +1219,9 @@ static void ocfs2_clear_inode(struct ino
+ 	 * the journal is flushed before journal shutdown. Thus it is safe to
+ 	 * have inodes get cleaned up after journal shutdown.
+ 	 */
++	if (!osb->journal)
++		return;
++
+ 	jbd2_journal_release_jbd_inode(osb->journal->j_journal,
+ 				       &oi->ip_jinode);
  }
- 
- static int fsl_lpspi_transfer_one(struct spi_controller *controller,
--- 
-2.51.0
-
 
 
 
