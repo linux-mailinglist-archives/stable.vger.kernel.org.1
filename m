@@ -1,112 +1,115 @@
-Return-Path: <stable+bounces-178874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70789B4899E
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 12:09:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0677AB489AE
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 12:13:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E7FF3AEEA7
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 10:09:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B602B3A643E
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 10:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18772F3631;
-	Mon,  8 Sep 2025 10:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE032F6574;
+	Mon,  8 Sep 2025 10:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IMyNksgN"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ADC71FE47C
-	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 10:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655D02192E3;
+	Mon,  8 Sep 2025 10:13:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757326159; cv=none; b=DYxJFxiUoPDcP9xK5Ls4Km+BibimwY95IzBkn7mef4MPG87VNk6zSU8fRmUvq3En7lwlOyhFvjnm54aNTmeJaeHDqu6/Om4lH8PdvNHq80+E3o2rxWClrOyxY8RBvP9hcVvEq7FIpSyEU6zaZNhLpEkUPR3rqvhBKTyVilhOIdQ=
+	t=1757326383; cv=none; b=YnCJo79yKOgbV5514tpEquSYpkrNZnouI2QqmaV9XPH7G8rVSNWiKTk6fPuOS0X4wWGCecFMtvQZkql7qwcGLIMhMVXugaEBQ0pdFg/y+MA7rBhMDjNmmXSH5ivb93NCOmOYYTXZHtJh+d2oS8RtTEnFc0MAmxJZngi+Wa++CM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757326159; c=relaxed/simple;
-	bh=vD3+dpqPgBEASDG8Bsx0Ksn+v2A2N41QWGtbk/qLQcg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aHgQpECeibVgPtUaC8q3x0pGuKpsqXaWYpaw99n18KF6HLdEaqkIj/Co35hWgMQsqUPtpZmwsCGWJRwiLsq6b6HSMaQLNZSem/bNb4huGCcNt3XcY4tAcWOdQ4zt4FAhrXzc7NbxAXxjlqioguyd5aqIz/rQ9diPDDSTWxXIiPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B0DDF1692;
-	Mon,  8 Sep 2025 03:09:07 -0700 (PDT)
-Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9CBCE3F66E;
-	Mon,  8 Sep 2025 03:09:14 -0700 (PDT)
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: stable@vger.kernel.org
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12.y] kunit: kasan_test: disable fortify string checker on kasan_strings() test
-Date: Mon,  8 Sep 2025 11:08:53 +0100
-Message-Id: <20250908100852.2182536-2-yeoreum.yun@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2025090612-washhouse-palpitate-525c@gregkh>
-References: <2025090612-washhouse-palpitate-525c@gregkh>
+	s=arc-20240116; t=1757326383; c=relaxed/simple;
+	bh=P7Gdx6jHyS2mhrerthEgKNkM8QnFvFV6K6JPItqOAl8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZYHOjjskQxBO/hLlPX5QlxbcPy+O5cOkjJrdrB373NQdc2bFTYylsSO39RCDjgmqHn0VwssRDxBMpTHxYWcD1355BZR08pskqMmbYT3uYeO7+gZ8CdOA4aDd2OHmCwmI/Fr46ZwnTedx5N7wIvLeORWfq4Q8DWmk11sNSXR4ZVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IMyNksgN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C337CC4CEF1;
+	Mon,  8 Sep 2025 10:12:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757326381;
+	bh=P7Gdx6jHyS2mhrerthEgKNkM8QnFvFV6K6JPItqOAl8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IMyNksgNqwSaz0M8/qJ7RUcdg2+SEgAlXLw9tD5aE2Yektd3dshrDvUpm/ptL3pg9
+	 nGLYOcjGlKPlH5hru8EJ0nezbjomR74/hWQiVeja5fu1KIudPAO3Z5mgv02jd4XK8B
+	 +tAI3eX+weLj18dlWAKsH1U4phxE1ojIZiD+iWNv8baMGcVgdeNAbsHpENNzlztqXR
+	 zgRelmHQ4nIdb7LnoGugUQ93aa6MjoimFEJ40J9L2C2xfe8abBDbe9pjG1cFlCV1fW
+	 rQJLHivQA6b8BcLnAvGKRMR10uQVwB/o84T4oe6mEzoFN6734OJmAx59NYe4POXmE/
+	 aC35kKBsy5gLw==
+Date: Mon, 8 Sep 2025 11:12:56 +0100
+From: Simon Horman <horms@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, david decotigny <decot@googlers.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de,
+	calvin@wbinvd.org, kernel-team@meta.com, stable@vger.kernel.org,
+	jv@jvosburgh.net
+Subject: Re: [PATCH net v3 1/3] netpoll: fix incorrect refcount handling
+ causing incorrect cleanup
+Message-ID: <20250908101256.GA2015@horms.kernel.org>
+References: <20250905-netconsole_torture-v3-0-875c7febd316@debian.org>
+ <20250905-netconsole_torture-v3-1-875c7febd316@debian.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250905-netconsole_torture-v3-1-875c7febd316@debian.org>
 
-Similar to commit 09c6304e38e4 ("kasan: test: fix compatibility with
-FORTIFY_SOURCE") the kernel is panicing in kasan_string().
+On Fri, Sep 05, 2025 at 10:25:07AM -0700, Breno Leitao wrote:
+> commit efa95b01da18 ("netpoll: fix use after free") incorrectly
+> ignored the refcount and prematurely set dev->npinfo to NULL during
+> netpoll cleanup, leading to improper behavior and memory leaks.
+> 
+> Scenario causing lack of proper cleanup:
+> 
+> 1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
+>    allocated, and refcnt = 1
+>    - Keep in mind that npinfo is shared among all netpoll instances. In
+>      this case, there is just one.
+> 
+> 2) Another netpoll is also associated with the same NIC and
+>    npinfo->refcnt += 1.
+>    - Now dev->npinfo->refcnt = 2;
+>    - There is just one npinfo associated to the netdev.
+> 
+> 3) When the first netpolls goes to clean up:
+>    - The first cleanup succeeds and clears np->dev->npinfo, ignoring
+>      refcnt.
+>      - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
+>    - Set dev->npinfo = NULL, without proper cleanup
+>    - No ->ndo_netpoll_cleanup() is either called
+> 
+> 4) Now the second target tries to clean up
+>    - The second cleanup fails because np->dev->npinfo is already NULL.
+>      * In this case, ops->ndo_netpoll_cleanup() was never called, and
+>        the skb pool is not cleaned as well (for the second netpoll
+>        instance)
+>   - This leaks npinfo and skbpool skbs, which is clearly reported by
+>     kmemleak.
+> 
+> Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
+> clarifying comments emphasizing that npinfo cleanup should only happen
+> once the refcount reaches zero, ensuring stable and correct netpoll
+> behavior.
+> 
+> Cc: stable@vger.kernel.org
+> Cc: jv@jvosburgh.net
+> Fixes: efa95b01da18 ("netpoll: fix use after free")
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-This is due to the `src` and `ptr` not being hidden from the optimizer
-which would disable the runtime fortify string checker.
-
-Call trace:
-  __fortify_panic+0x10/0x20 (P)
-  kasan_strings+0x980/0x9b0
-  kunit_try_run_case+0x68/0x190
-  kunit_generic_run_threadfn_adapter+0x34/0x68
-  kthread+0x1c4/0x228
-  ret_from_fork+0x10/0x20
- Code: d503233f a9bf7bfd 910003fd 9424b243 (d4210000)
- ---[ end trace 0000000000000000 ]---
- note: kunit_try_catch[128] exited with irqs disabled
- note: kunit_try_catch[128] exited with preempt_count 1
-     # kasan_strings: try faulted: last
-** replaying previous printk message **
-     # kasan_strings: try faulted: last line seen mm/kasan/kasan_test_c.c:1600
-     # kasan_strings: internal error occurred preventing test case from running: -4
-
-Link: https://lkml.kernel.org/r/20250801120236.2962642-1-yeoreum.yun@arm.com
-Fixes: 73228c7ecc5e ("KASAN: port KASAN Tests to KUnit")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 7a19afee6fb39df63ddea7ce78976d8c521178c6)
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
- mm/kasan/kasan_test_c.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
-index d8fb281e439d..d4ac26ad1d3e 100644
---- a/mm/kasan/kasan_test_c.c
-+++ b/mm/kasan/kasan_test_c.c
-@@ -1548,6 +1548,7 @@ static void kasan_strings(struct kunit *test)
-
- 	ptr = kmalloc(size, GFP_KERNEL | __GFP_ZERO);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
-+	OPTIMIZER_HIDE_VAR(ptr);
-
- 	kfree(ptr);
-
---
-LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+Reviewed-by: Simon Horman <horms@kernel.org>
 
 
