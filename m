@@ -1,590 +1,279 @@
-Return-Path: <stable+bounces-178936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9047CB494B9
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 18:06:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86517B494D9
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 18:14:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37DE8161DBA
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 16:06:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C4021BC4D33
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 16:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD4130E0D2;
-	Mon,  8 Sep 2025 16:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D9B30DD32;
+	Mon,  8 Sep 2025 16:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCfiaECo"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YEjiPNB/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15AA30DED4;
-	Mon,  8 Sep 2025 16:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222A01FF603
+	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 16:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757347557; cv=none; b=AG9g3ePgrjGKeozvZRDNyiXsrZ4JeLptbfxn58juObr3a7xWxdjzzHlIY6hiFMs/ThTnCt3uBEgD2Y55M8d2CR/jCYidlE1msLAM6LbR//Q0A5QoE+r5neIHWNADW0v2+1E+FMto/aqEVXszmVqv9n5yTb0OTF/p6WpKs/gIRTE=
+	t=1757348080; cv=none; b=VzKozB30G59cUa2ZczGoxqLYm4y6dCXQ6XAblOAIxTiJFhinxir6XeGoSAr2g8PMBAvTHgEG6gO7jNNXtg5jqVxrFCJl5tHPhnP5FvXzGuJes0etjkLlVolyXMcD6uNvRZzn5syLyj+a1x96uUoNMpfeQ2lcgqESFj+54wk3L+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757347557; c=relaxed/simple;
-	bh=6UCIdIDhmDU5BH/PrMq3CKkzuoPNH+25dzdeihdwhV0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WinlPIQZB2mDR4mRzb4IxDxU/RQqRLIH3Dm7E2o7iIW2vN781wMLPUVIMwDdRhuQn+wC3NVS4qVulhWulc6RFEYWbEoqdcro4BTO1DJAvw8rShgysIH6RCIz14oG2FLDlQy96qdEC8ZdqgT2/bPUccIEXgblzdx66oDK4M4z3LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCfiaECo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D58FC4CEF1;
-	Mon,  8 Sep 2025 16:05:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757347557;
-	bh=6UCIdIDhmDU5BH/PrMq3CKkzuoPNH+25dzdeihdwhV0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=kCfiaECo6ltdWlGLvPsmQTKTo0c3PoFU+0qYo7u/MTuIfxyV1TASFP7vcf7BBGqr9
-	 gmUXfBxiyUGlvOr+Ci3t/1ZNBo+M4rStjMHiiiTj/hcjFVGd3miCmu7JzCPYgq94I6
-	 TDuSUCA8ee/YaOcDCqW7XkK01pCRo7IyyJ1Ln244=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org
-Subject: [PATCH 6.6 000/118] 6.6.105-rc2 review
-Date: Mon,  8 Sep 2025 18:05:07 +0200
-Message-ID: <20250908151836.822240062@linuxfoundation.org>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1757348080; c=relaxed/simple;
+	bh=eELHbab1pARrbClGXme+CovIgP1gERd4crFqe/JFhEU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=o2bes/KAmvwBsQbDcg2cWkAY/iCw5Vcm/wi0hGXRNmcveent9radf7gsSmYqC/gTGLSCewOkbwzPSfsLkSqAdTUGyGna5npz7WTGb6HmvNgbIP6bqm7rlSWnapMufjJKlMs0oL9+PaShFFIaVB92QUWlDUVZgfI5CNgKeN/zi6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YEjiPNB/; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-24c9e2213f8so62514375ad.2
+        for <stable@vger.kernel.org>; Mon, 08 Sep 2025 09:14:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757348078; x=1757952878; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8rBFCSqM8yS3/NCAxHSF50velNu8qIwnhk2Bn2P2ZhM=;
+        b=YEjiPNB/L8cLSe6u0cEJHAtOVjPeG7rqz3DKeRu33DzCdI302PwkW3tVYl0J1ReZxI
+         34722D2XIKPEIOIO2qXbrzAwuaJRnEKRjHoXtir31ltSwHPLx0edaUpO/3+2lSW17phL
+         DsiP4RyIsJ6Qi/4vgN5zehcPOq//b+9EK29NRrPlRLJXkBSCmQxEPXI5dYX6zb9/F79D
+         7Wwm8Ykv0/6wydaBb3U2Dgs/ttu2ywQriFJpw02vvMULZ9cQzHrE7pdssXUNKRYwVLQB
+         Z+qC28WELqAL6kJddaUC1ds6dD4OcfpnrpJ+8rCsHVT+ecqf9nhwTWcZO4vz/hzMkSu/
+         T1sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757348078; x=1757952878;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8rBFCSqM8yS3/NCAxHSF50velNu8qIwnhk2Bn2P2ZhM=;
+        b=V37nb8GmTOZB+/jJhgS1CqRqz1lyvhz+RoimrOx9aq7cql6KDAGsgN40gDEQv9z7Tc
+         yVryPS9ton+O7UUwWGb62P2u+MV6xGicbSegoGBgh4GgswAHcX0x0SNee7E/YMy1+IjS
+         CPUNFYsayslCCb9GMJZKrq8iSVKanhm9QGNeoZz+eCdvpsR0uLLgBn0EgLnXB8LygOh2
+         lCyaxd733KdbYs6YyiGlQ3kipAnwwmxah7qp2o1UE2M869TcKgYrt3O2Gtr7KKuNsLtp
+         eN4XcYeQuP9tfnmXkj/H5gG/VrFeimiYP5YPsBhCKPFMcwEoqJVMeh49VFp15MW0tSTK
+         UuRw==
+X-Forwarded-Encrypted: i=1; AJvYcCWCw0bJzHXja6GZDpxk30nWpPfH1H7C6gj5SSklq71CTvaW3UiNiU3nd70dRs9iNow4WzjhEks=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4EHW4eSeLUiTZLh6ztNLDCzeNiOMnJ0qsGJ42HTqPbyJdbcAq
+	UFCngkZdy43/ivH8lUabZ+iDA3qEouPC9QGRh4XryfgXegv6wUFWQelWdTPuitz2XUc+31up52Q
+	DysOmcw==
+X-Google-Smtp-Source: AGHT+IEWAzA8mTwC3tCgvZzD5LQvveK/68x7NMUTFfM4rJzeR2Wz0YuzOB9GFrf9zLgodQ76Jjl9ikWAVBo=
+X-Received: from plbjw17.prod.google.com ([2002:a17:903:2791:b0:24c:863e:86a3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e943:b0:24c:9309:587d
+ with SMTP id d9443c01a7336-251714fa774mr120638105ad.29.1757348078384; Mon, 08
+ Sep 2025 09:14:38 -0700 (PDT)
+Date: Mon, 8 Sep 2025 09:14:37 -0700
+In-Reply-To: <c2979c40-0cf9-4238-9fb5-5cef6dd9f411@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.105-rc2.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.6.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.6.105-rc2
-X-KernelTest-Deadline: 2025-09-10T15:18+00:00
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-This is the start of the stable review cycle for the 6.6.105 release.
-There are 118 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
-
-Responses should be made by Wed, 10 Sep 2025 15:18:22 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.105-rc2.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.6.105-rc2
-
-Kevin Hao <haokexin@gmail.com>
-    spi: fsl-qspi: Fix double cleanup in probe error path
-
-Qiu-ji Chen <chenqiuji666@gmail.com>
-    dmaengine: mediatek: Fix a flag reuse error in mtk_cqdma_tx_status()
-
-Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-    cpufreq: intel_pstate: Check turbo_is_disabled() in store_no_turbo()
-
-Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-    cpufreq: intel_pstate: Read global.no_turbo under READ_ONCE()
-
-Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-    cpufreq: intel_pstate: Rearrange show_no_turbo() and store_no_turbo()
-
-Radim Krčmář <rkrcmar@ventanamicro.com>
-    riscv: use lw when reading int cpu in asm_per_cpu
-
-yangshiguang <yangshiguang@xiaomi.com>
-    mm: slub: avoid wake up kswapd in set_track_prepare
-
-Chengming Zhou <zhouchengming@bytedance.com>
-    slub: Reflow ___slab_alloc()
-
-zhang jiao <zhangjiao2@cmss.chinamobile.com>
-    tools: gpio: remove the include directory on make clean
-
-zhangjiao <zhangjiao2@cmss.chinamobile.com>
-    tools: gpio: rm .*.cmd on make clean
-
-Colin Ian King <colin.i.king@gmail.com>
-    drm/amd/amdgpu: Fix missing error return on kzalloc failure
-
-Hawking Zhang <Hawking.Zhang@amd.com>
-    drm/amdgpu: Replace DRM_* with dev_* in amdgpu_psp.c
-
-Ian Rogers <irogers@google.com>
-    perf bpf-event: Fix use-after-free in synthesis
-
-Michael Walle <mwalle@kernel.org>
-    drm/bridge: ti-sn65dsi86: fix REFCLK setting
-
-Larisa Grigore <larisa.grigore@nxp.com>
-    spi: spi-fsl-lpspi: Clear status register after disabling the module
-
-Larisa Grigore <larisa.grigore@nxp.com>
-    spi: spi-fsl-lpspi: Reset FIFO and disable module on transfer abort
-
-Larisa Grigore <larisa.grigore@nxp.com>
-    spi: spi-fsl-lpspi: Set correct chip-select polarity bit
-
-Larisa Grigore <larisa.grigore@nxp.com>
-    spi: spi-fsl-lpspi: Fix transmissions when using CONT
-
-Vadim Pasternak <vadimp@nvidia.com>
-    hwmon: mlxreg-fan: Prevent fans from getting stuck at 0 RPM
-
-Wentao Liang <vulab@iscas.ac.cn>
-    pcmcia: Add error handling for add_interval() in do_validate_mem()
-
-Chen Ni <nichen@iscas.ac.cn>
-    pcmcia: omap: Add missing check for platform_get_resource
-
-Alex Deucher <alexander.deucher@amd.com>
-    Revert "drm/amdgpu: Avoid extra evict-restore process."
-
-Aaron Erhardt <aer@tuxedocomputers.com>
-    ALSA: hda/realtek: Fix headset mic for TongFang X6[AF]R5xxY
-
-Takashi Iwai <tiwai@suse.de>
-    ALSA: hda/hdmi: Add pin fix for another HP EliteDesk 800 G4 model
-
-Ma Ke <make24@iscas.ac.cn>
-    drm/mediatek: Fix device/node reference count leaks in mtk_drm_get_all_drm_priv
-
-Jason-JH.Lin <jason-jh.lin@mediatek.com>
-    drm/mediatek: Fix using wrong drm private data to bind mediatek-drm
-
-Jason-JH.Lin <jason-jh.lin@mediatek.com>
-    drm/mediatek: Add crtc path enum for all_drm_priv array
-
-Ronak Doshi <ronak.doshi@broadcom.com>
-    vmxnet3: update MTU after device quiesce
-
-Jakob Unterwurzacher <jakobunt@gmail.com>
-    net: dsa: microchip: linearize skb for tail-tagging switches
-
-Pieter Van Trappen <pieter.van.trappen@cern.ch>
-    net: dsa: microchip: update tag_ksz masks for KSZ9477 family
-
-Qiu-ji Chen <chenqiuji666@gmail.com>
-    dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()
-
-Chris Chiu <chris.chiu@canonical.com>
-    ALSA: hda/realtek - Add new HP ZBook laptop with micmute led fixup
-
-Stefan Binding <sbinding@opensource.cirrus.com>
-    ALSA: hda/realtek: Add support for HP Agusta using CS35L41 HDA
-
-David Lechner <dlechner@baylibre.com>
-    iio: pressure: mprls0025pa: use aligned_s64 for timestamp
-
-Luca Ceresoli <luca.ceresoli@bootlin.com>
-    iio: light: opt3001: fix deadlock due to concurrent flag access
-
-David Lechner <dlechner@baylibre.com>
-    iio: chemical: pms7003: use aligned_s64 for timestamp
-
-David Lechner <dlechner@baylibre.com>
-    iio: imu: inv_mpu6050: align buffer for timestamp
-
-Josef Bacik <josef@toxicpanda.com>
-    btrfs: adjust subpage bit start based on sectorsize
-
-Jonathan Currier <dullfire@yahoo.com>
-    PCI/MSI: Add an option to write MSIX ENTRY_DATA before any reads
-
-Nícolas F. R. A. Prado <nfraprado@collabora.com>
-    thermal/drivers/mediatek/lvts: Disable low offset IRQ for minimum threshold
-
-Han Xu <han.xu@nxp.com>
-    spi: fsl-qspi: use devm function instead of driver remove
-
-Li Qiong <liqiong@nfschina.com>
-    mm/slub: avoid accessing metadata when pointer is invalid in object_err()
-
-Dave Airlie <airlied@redhat.com>
-    nouveau: fix disabling the nonstall irq due to storm code
-
-Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-    cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode
-
-Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-    cpufreq: intel_pstate: Do not update global.turbo_disabled after initialization
-
-Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-    cpufreq: intel_pstate: Fold intel_pstate_max_within_limits() into caller
-
-Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-    cpufreq: intel_pstate: Revise global turbo disable check
-
-Jinfeng Wang <jinfeng.wang.cn@windriver.com>
-    Revert "spi: spi-cadence-quadspi: Fix pm runtime unbalance"
-
-Jinfeng Wang <jinfeng.wang.cn@windriver.com>
-    Revert "spi: cadence-quadspi: fix cleanup of rx_chan on failure paths"
-
-Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-    net: pcs: rzn1-miic: Correct MODCTRL register offset
-
-Vitaly Lifshits <vitaly.lifshits@intel.com>
-    e1000e: fix heap overflow in e1000_set_eeprom
-
-Makar Semyonov <m.semenov@tssltd.ru>
-    cifs: prevent NULL pointer dereference in UTF16 conversion
-
-Stanislav Fort <stanislav.fort@aisle.com>
-    batman-adv: fix OOB read/write in network-coding decode
-
-John Evans <evans1210144@gmail.com>
-    scsi: lpfc: Fix buffer free/clear order in deferred receive path
-
-Christoffer Sandberg <cs@tuxedo.de>
-    platform/x86/amd/pmc: Add TUXEDO IB Pro Gen10 AMD to spurious 8042 quirks list
-
-Alex Deucher <alexander.deucher@amd.com>
-    drm/amdgpu: drop hw access in non-DC audio fini
-
-Nathan Chancellor <nathan@kernel.org>
-    wifi: mt76: mt7996: Initialize hdr before passing to skb_put_data()
-
-Qianfeng Rong <rongqianfeng@vivo.com>
-    wifi: mwifiex: Initialize the chan_stats array to zero
-
-Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-    soc: qcom: mdt_loader: Deal with zero e_shentsize
-
-wangzijie <wangzijie1@honor.com>
-    proc: fix missing pde_set_flags() for net proc files
-
-Edward Adam Davis <eadavis@qq.com>
-    ocfs2: prevent release journal inode after journal shutdown
-
-Christian Loehle <christian.loehle@arm.com>
-    sched: Fix sched_numa_find_nth_cpu() if mask offline
-
-Harry Yoo <harry.yoo@oracle.com>
-    mm: move page table sync declarations to linux/pgtable.h
-
-Harry Yoo <harry.yoo@oracle.com>
-    x86/mm/64: define ARCH_PAGE_TABLE_SYNC_MASK and arch_sync_kernel_mappings()
-
-Ma Ke <make24@iscas.ac.cn>
-    pcmcia: Fix a NULL pointer dereference in __iodyn_find_io_region()
-
-panfan <panfan@qti.qualcomm.com>
-    arm64: ftrace: fix unreachable PLT for ftrace_caller in init_module with CONFIG_DYNAMIC_FTRACE
-
-Miaoqian Lin <linmq006@gmail.com>
-    ACPI/IORT: Fix memory leak in iort_rmr_alloc_sids()
-
-Cryolitia PukNgae <cryolitia@uniontech.com>
-    ALSA: usb-audio: Add mute TLV for playback volumes on some devices
-
-Horatiu Vultur <horatiu.vultur@microchip.com>
-    phy: mscc: Stop taking ts_lock for tx_queue and use its own lock
-
-Kuniyuki Iwashima <kuniyu@google.com>
-    selftest: net: Fix weird setsockopt() in bind_bhash.c.
-
-Qingfang Deng <dqfext@gmail.com>
-    ppp: fix memory leak in pad_compress_skb
-
-Wang Liang <wangliang74@huawei.com>
-    net: atm: fix memory leak in atm_register_sysfs when device_register fail
-
-Eric Dumazet <edumazet@google.com>
-    ax25: properly unshare skbs in ax25_kiss_rcv()
-
-Alok Tiwari <alok.a.tiwari@oracle.com>
-    mctp: return -ENOPROTOOPT for unknown getsockopt options
-
-Mahanta Jambigi <mjambigi@linux.ibm.com>
-    net/smc: Remove validation of reserved bits in CLC Decline message
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    ipv4: Fix NULL vs error pointer check in inet_blackhole_dev_init()
-
-Rosen Penev <rosenp@gmail.com>
-    net: thunder_bgx: decrement cleanup index before use
-
-Rosen Penev <rosenp@gmail.com>
-    net: thunder_bgx: add a missing of_node_put
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    wifi: cfg80211: sme: cap SSID length in __cfg80211_connect_result()
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    wifi: libertas: cap SSID len in lbs_associate()
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    wifi: cw1200: cap SSID length in cw1200_do_join()
-
-Felix Fietkau <nbd@nbd.name>
-    net: ethernet: mtk_eth_soc: fix tx vlan tag for llc packets
-
-Rameshkumar Sundaram <rameshkumar.sundaram@oss.qualcomm.com>
-    wifi: ath11k: fix group data packet drops during rekey
-
-Baochen Qiang <quic_bqiang@quicinc.com>
-    wifi: ath11k: avoid forward declaration of ath11k_mac_start_vdev_delay()
-
-Baochen Qiang <quic_bqiang@quicinc.com>
-    wifi: ath11k: rename ath11k_start_vdev_delay()
-
-Jeff Johnson <quic_jjohnson@quicinc.com>
-    wifi: ath11k: Introduce and use ath11k_sta_to_arsta()
-
-Zhen Ni <zhen.ni@easystack.cn>
-    i40e: Fix potential invalid access when MAC list is empty
-
-Liu Jian <liujian56@huawei.com>
-    net/smc: fix one NULL pointer dereference in smc_ib_is_sg_need_sync()
-
-Sabrina Dubroca <sd@queasysnail.net>
-    macsec: read MACSEC_SA_ATTR_PN with nla_get_uint
-
-Jakub Kicinski <kuba@kernel.org>
-    netlink: add variable-length / auto integers
-
-Sean Anderson <sean.anderson@linux.dev>
-    net: macb: Fix tx_ptr_lock locking
-
-Fabian Bläse <fabian@blaese.de>
-    icmp: fix icmp_ndo_send address translation for reply direction
-
-Miaoqian Lin <linmq006@gmail.com>
-    mISDN: Fix memory leak in dsp_hwec_enable()
-
-Alok Tiwari <alok.a.tiwari@oracle.com>
-    xirc2ps_cs: fix register access when enabling FullDuplex
-
-Kuniyuki Iwashima <kuniyu@google.com>
-    Bluetooth: Fix use-after-free in l2cap_sock_cleanup_listen()
-
-Ivan Pravdin <ipravdin.official@gmail.com>
-    Bluetooth: vhci: Prevent use-after-free by removing debugfs files early
-
-Phil Sutter <phil@nwl.cc>
-    netfilter: conntrack: helper: Replace -EEXIST by -EBUSY
-
-Wang Liang <wangliang74@huawei.com>
-    netfilter: br_netfilter: do not check confirmed bit in br_nf_local_in() after confirm
-
-Duoming Zhou <duoming@zju.edu.cn>
-    wifi: brcmfmac: fix use-after-free when rescheduling brcmf_btcoex_info work
-
-Dmitry Antipov <dmantipov@yandex.ru>
-    wifi: cfg80211: fix use-after-free in cmp_bss()
-
-Marek Vasut <marek.vasut@mailbox.org>
-    arm64: dts: imx8mp: Fix missing microSD slot vqmmc on Data Modul i.MX8M Plus eDM SBC
-
-Marek Vasut <marek.vasut@mailbox.org>
-    arm64: dts: imx8mp: Fix missing microSD slot vqmmc on DH electronics i.MX8M Plus DHCOM
-
-Sungbae Yoo <sungbaey@nvidia.com>
-    tee: optee: ffa: fix a typo of "optee_ffa_api_is_compatible"
-
-Peter Robinson <pbrobinson@gmail.com>
-    arm64: dts: rockchip: Add vcc-supply to SPI flash on rk3399-pinebook-pro
-
-Pei Xiao <xiaopei01@kylinos.cn>
-    tee: fix NULL pointer dereference in tee_shm_put
-
-Jiufei Xue <jiufei.xue@samsung.com>
-    fs: writeback: fix use-after-free in __mark_inode_dirty()
-
-Yang Li <yang.li@amlogic.com>
-    Bluetooth: hci_sync: Avoid adding default advertising on startup
-
-Shinji Nomoto <fj5851bi@fujitsu.com>
-    cpupower: Fix a bug where the -t option of the set subcommand was not working.
-
-Timur Kristóf <timur.kristof@gmail.com>
-    drm/amd/display: Don't warn when missing DCE encoder caps
-
-Lubomir Rintel <lkundrak@v3.sk>
-    cdc_ncm: Flag Intel OEM version of Fibocom L850-GL as WWAN
-
-Huacai Chen <chenhuacai@kernel.org>
-    LoongArch: Save LBT before FPU in setup_sigcontext()
-
-Filipe Manana <fdmanana@suse.com>
-    btrfs: avoid load/store tearing races when checking if an inode was logged
-
-Filipe Manana <fdmanana@suse.com>
-    btrfs: fix race between setting last_dir_index_offset and inode logging
-
-Filipe Manana <fdmanana@suse.com>
-    btrfs: fix race between logging inode and checking if it was logged before
-
-Daniel Borkmann <daniel@iogearbox.net>
-    bpf: Fix oob access in cgroup local storage
-
-Daniel Borkmann <daniel@iogearbox.net>
-    bpf: Move bpf map owner out of common struct
-
-Daniel Borkmann <daniel@iogearbox.net>
-    bpf: Move cgroup iterator helpers to bpf.h
-
-Daniel Borkmann <daniel@iogearbox.net>
-    bpf: Add cookie object to bpf maps
-
-
--------------
-
-Diffstat:
-
- Documentation/userspace-api/netlink/specs.rst      |  18 +-
- Makefile                                           |   4 +-
- .../dts/freescale/imx8mp-data-modul-edm-sbc.dts    |   1 +
- .../arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi |   1 +
- .../boot/dts/rockchip/rk3399-pinebook-pro.dts      |   1 +
- arch/arm64/include/asm/module.h                    |   1 +
- arch/arm64/include/asm/module.lds.h                |   1 +
- arch/arm64/kernel/ftrace.c                         |  13 +-
- arch/arm64/kernel/module-plts.c                    |  12 +-
- arch/arm64/kernel/module.c                         |  11 +
- arch/loongarch/kernel/signal.c                     |  10 +-
- arch/riscv/include/asm/asm.h                       |   2 +-
- arch/x86/include/asm/pgtable_64_types.h            |   3 +
- arch/x86/mm/init_64.c                              |  18 +
- drivers/acpi/arm64/iort.c                          |   4 +-
- drivers/bluetooth/hci_vhci.c                       |  57 +-
- drivers/cpufreq/intel_pstate.c                     | 126 ++---
- drivers/dma/mediatek/mtk-cqdma.c                   |  10 +-
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c            | 146 ++---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c             |   6 +-
- drivers/gpu/drm/amd/amdgpu/dce_v10_0.c             |   5 -
- drivers/gpu/drm/amd/amdgpu/dce_v11_0.c             |   5 -
- drivers/gpu/drm/amd/amdgpu/dce_v6_0.c              |   5 -
- drivers/gpu/drm/amd/amdgpu/dce_v8_0.c              |   5 -
- .../gpu/drm/amd/display/dc/dce/dce_link_encoder.c  |   8 +-
- drivers/gpu/drm/bridge/ti-sn65dsi86.c              |  11 +
- drivers/gpu/drm/mediatek/mtk_drm_drv.c             |  42 +-
- drivers/gpu/drm/mediatek/mtk_drm_drv.h             |   8 +-
- drivers/gpu/drm/nouveau/nvkm/engine/fifo/base.c    |   2 +
- drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga100.c   |  23 +-
- drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga102.c   |   1 +
- drivers/gpu/drm/nouveau/nvkm/engine/fifo/priv.h    |   2 +
- drivers/hwmon/mlxreg-fan.c                         |   5 +-
- drivers/iio/chemical/pms7003.c                     |   5 +-
- drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c         |   2 +-
- drivers/iio/light/opt3001.c                        |   5 +-
- drivers/iio/pressure/mprls0025pa.c                 |  10 +-
- drivers/isdn/mISDN/dsp_hwec.c                      |   6 +-
- drivers/net/ethernet/cadence/macb_main.c           |  28 +-
- drivers/net/ethernet/cavium/thunder/thunder_bgx.c  |  20 +-
- drivers/net/ethernet/intel/e1000e/ethtool.c        |  10 +-
- drivers/net/ethernet/intel/i40e/i40e_client.c      |   4 +-
- drivers/net/ethernet/mediatek/mtk_eth_soc.c        |  10 +-
- drivers/net/ethernet/xircom/xirc2ps_cs.c           |   2 +-
- drivers/net/macsec.c                               |   8 +-
- drivers/net/pcs/pcs-rzn1-miic.c                    |   2 +-
- drivers/net/phy/mscc/mscc_ptp.c                    |  18 +-
- drivers/net/ppp/ppp_generic.c                      |   6 +-
- drivers/net/usb/cdc_ncm.c                          |   7 +
- drivers/net/vmxnet3/vmxnet3_drv.c                  |   5 +-
- drivers/net/wireless/ath/ath11k/core.h             |   7 +
- drivers/net/wireless/ath/ath11k/debugfs.c          |   4 +-
- drivers/net/wireless/ath/ath11k/debugfs_sta.c      |  30 +-
- drivers/net/wireless/ath/ath11k/dp_rx.c            |   8 +-
- drivers/net/wireless/ath/ath11k/dp_tx.c            |   4 +-
- drivers/net/wireless/ath/ath11k/mac.c              | 588 ++++++++++++---------
- drivers/net/wireless/ath/ath11k/peer.c             |   2 +-
- drivers/net/wireless/ath/ath11k/wmi.c              |   6 +-
- .../wireless/broadcom/brcm80211/brcmfmac/btcoex.c  |   6 +-
- drivers/net/wireless/marvell/libertas/cfg.c        |   9 +-
- drivers/net/wireless/marvell/mwifiex/cfg80211.c    |   5 +-
- drivers/net/wireless/marvell/mwifiex/main.c        |   4 +-
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    |   4 +-
- drivers/net/wireless/st/cw1200/sta.c               |   2 +-
- drivers/pci/msi/msi.c                              |   3 +
- drivers/pcmcia/omap_cf.c                           |   2 +
- drivers/pcmcia/rsrc_iodyn.c                        |   3 +
- drivers/pcmcia/rsrc_nonstatic.c                    |   4 +-
- drivers/platform/x86/amd/pmc/pmc-quirks.c          |  14 +
- drivers/scsi/lpfc/lpfc_nvmet.c                     |  10 +-
- drivers/soc/qcom/mdt_loader.c                      |  12 +-
- drivers/spi/spi-cadence-quadspi.c                  |   6 +-
- drivers/spi/spi-fsl-lpspi.c                        |  24 +-
- drivers/spi/spi-fsl-qspi.c                         |  36 +-
- drivers/tee/optee/ffa_abi.c                        |   4 +-
- drivers/tee/tee_shm.c                              |   6 +-
- drivers/thermal/mediatek/lvts_thermal.c            |  50 +-
- fs/btrfs/btrfs_inode.h                             |   2 +-
- fs/btrfs/extent_io.c                               |   2 +-
- fs/btrfs/inode.c                                   |   1 +
- fs/btrfs/tree-log.c                                |  78 ++-
- fs/fs-writeback.c                                  |   9 +-
- fs/ocfs2/inode.c                                   |   3 +
- fs/proc/generic.c                                  |  38 +-
- fs/smb/client/cifs_unicode.c                       |   3 +
- include/linux/bpf-cgroup.h                         |   5 -
- include/linux/bpf.h                                |  60 ++-
- include/linux/pci.h                                |   2 +
- include/linux/pgtable.h                            |  16 +
- include/linux/vmalloc.h                            |  16 -
- include/net/netlink.h                              |  69 ++-
- include/uapi/linux/netlink.h                       |   5 +
- kernel/bpf/core.c                                  |  50 +-
- kernel/bpf/syscall.c                               |  20 +-
- kernel/sched/topology.c                            |   2 +
- lib/nlattr.c                                       |  22 +
- mm/slub.c                                          |  66 ++-
- net/atm/resources.c                                |   6 +-
- net/ax25/ax25_in.c                                 |   4 +
- net/batman-adv/network-coding.c                    |   7 +-
- net/bluetooth/hci_sync.c                           |   2 +-
- net/bluetooth/l2cap_sock.c                         |   3 +
- net/bridge/br_netfilter_hooks.c                    |   3 -
- net/dsa/tag_ksz.c                                  |  22 +-
- net/ipv4/devinet.c                                 |   7 +-
- net/ipv4/icmp.c                                    |   6 +-
- net/ipv6/ip6_icmp.c                                |   6 +-
- net/mctp/af_mctp.c                                 |   2 +-
- net/netfilter/nf_conntrack_helper.c                |   4 +-
- net/netlink/policy.c                               |  14 +-
- net/smc/smc_clc.c                                  |   2 -
- net/smc/smc_ib.c                                   |   3 +
- net/wireless/scan.c                                |   3 +-
- net/wireless/sme.c                                 |   5 +-
- sound/pci/hda/patch_hdmi.c                         |   1 +
- sound/pci/hda/patch_realtek.c                      |   5 +
- sound/usb/mixer_quirks.c                           |   2 +
- tools/gpio/Makefile                                |   4 +-
- tools/perf/util/bpf-event.c                        |  39 +-
- tools/power/cpupower/utils/cpupower-set.c          |   4 +-
- tools/testing/selftests/net/bind_bhash.c           |   4 +-
- 121 files changed, 1357 insertions(+), 838 deletions(-)
-
-
+Mime-Version: 1.0
+References: <20250827152754.12481-1-lifei.shirley@bytedance.com>
+ <aK8r11trXDjBnRON@google.com> <CABgObfYqVTK3uB00pAyZAdX=Vx1Xx_M0MOwUzm+D1C04mrVfig@mail.gmail.com>
+ <f904b674-98ba-4e13-a64c-fd30b6ac4a2e@bytedance.com> <CABgObfb4ocYcaZixoPD_VZL5Z_SieTGJW3GBCFB-_LuOH5Ut2g@mail.gmail.com>
+ <d686f056-180c-4a22-a359-81eadb062629@bytedance.com> <c2979c40-0cf9-4238-9fb5-5cef6dd9f411@bytedance.com>
+Message-ID: <aL8A7WKHfAsAkPlh@google.com>
+Subject: Re: [External] Re: [PATCH] KVM: x86: Latch INITs only in specific CPU
+ states in KVM_SET_VCPU_EVENTS
+From: Sean Christopherson <seanjc@google.com>
+To: Fei Li <lifei.shirley@bytedance.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, liran.alon@oracle.com, hpa@zytor.com, 
+	wanpeng.li@hotmail.com, kvm@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Sep 08, 2025, Fei Li wrote:
+>=20
+> On 9/5/25 10:59 PM, Fei Li wrote:
+> >=20
+> > On 8/29/25 12:44 AM, Paolo Bonzini wrote:
+> > > On Thu, Aug 28, 2025 at 5:13=E2=80=AFPM Fei Li <lifei.shirley@bytedan=
+ce.com>
+> > > wrote:
+> > > > Actually this is a bug triggered by one monitor tool in our product=
+ion
+> > > > environment. This monitor executes 'info registers -a' hmp at a fix=
+ed
+> > > > frequency, even during VM startup process, which makes some AP stay=
+ in
+> > > > KVM_MP_STATE_UNINITIALIZED forever. But this race only occurs with
+> > > > extremely low probability, about 1~2 VM hangs per week.
+> > > >=20
+> > > > Considering other emulators, like cloud-hypervisor and
+> > > > firecracker maybe
+> > > > also have similar potential race issues, I think KVM had better do =
+some
+> > > > handling. But anyway, I will check Qemu code to avoid such race. Th=
+anks
+> > > > for both of your comments. =F0=9F=99=82
+> > > If you can check whether other emulators invoke KVM_SET_VCPU_EVENTS i=
+n
+> > > similar cases, that of course would help understanding the situation
+> > > better.
+> > >=20
+> > > In QEMU, it is possible to delay KVM_GET_VCPU_EVENTS until after all
+> > > vCPUs have halted.
+> > >=20
+> > > Paolo
+> > >=20
+
+Replacing the original message with a decently formatted version.  Please t=
+ry to
+format your emails for plain text, I assume something in your mail system i=
+nserted
+a pile of line wraps and made the entire thing all but unreadable.
+
+> > `info registers -a` hmp per 2ms[1]
+> >                AP(vcpu1) thread[2]
+> >       BSP(vcpu0) send INIT/SIPI[3]
+> >=20
+> > [1] for each cpu: cpu_synchronize_state
+> >     if !qemu_thread_is_self()
+> >         1. insert to cpu->work_list, and handle asynchronously
+> >         2. then kick the AP(vcpu1) by sending SIG_IPI/SIGUSR1 signal
+> >=20
+> > [2] KVM: KVM_RUN and then schedule() in kvm_vcpu_block() loop
+> >          KVM: checks signal_pending, breaks loop and  returns -EINTR
+> >     Qemu: break kvm_cpu_exec loop, run
+> >        1. qemu_wait_io_event()
+> >           =3D> process_queued_cpu_work =3D> cpu->work_list.func()
+> >              e.i. do_kvm_cpu_synchronize_state() callback
+> >           =3D> kvm_arch_get_registers
+> >              =3D> kvm_get_mp_state
+> >                 /* KVM: get_mpstate also calls kvm_apic_accept_events()=
+ to handle INIT and SIPI */
+> >                 =3D> cpu->vcpu_dirty =3D true;
+> >           // end of qemu_wait_io_event
+> >=20
+> > [3] SeaBIOS: BSP enters non-root mode and runs reset_vector() in SeaBIO=
+S.
+> >     send INIT and then SIPI by writing APIC_ICR during smp_scan
+> >     KVM: BSP(vcpu0) exits, then=20
+> >     =3D> handle_apic_write
+> >        =3D> kvm_lapic_reg_write
+> >           =3D> kvm_apic_send_ipi to all APs
+> >              =3D> for each AP: __apic_accept_irq, e.g. for AP(vcpu1)
+> >                 =3D> case APIC_DM_INIT:
+> >                    apic->pending_events =3D (1UL << KVM_APIC_INIT) (not=
+ kick the AP yet)
+> >                 =3D> case APIC_DM_STARTUP:
+> >                    set_bit(KVM_APIC_SIPI, &apic->pending_events) (not k=
+ick the AP yet)
+> >=20
+> > [2] 2. kvm_cpu_exec()
+> >        =3D> if (cpu->vcpu_dirty):
+> >           =3D> kvm_arch_put_registers
+> >              =3D> kvm_put_vcpu_events
+> >                 KVM: kvm_vcpu_ioctl_x86_set_vcpu_events
+> >                 =3D> clear_bit(KVM_APIC_INIT, &vcpu->arch.apic->pending=
+_events);
+> >                    e.i. pending_events changes from 11b to 10b
+> >                 // end of kvm_vcpu_ioctl_x86_set_vcpu_events
+
+Qemu is clearly "putting" stale data here.
+
+> >     Qemu: =3D> after put_registers, cpu->vcpu_dirty =3D false;
+> >           =3D> kvm_vcpu_ioctl(cpu, KVM_RUN, 0)
+> >              KVM: KVM_RUN
+> >              =3D> schedule() in kvm_vcpu_block() until Qemu's next SIG_=
+IPI/SIGUSR1 signal
+> >              /* But AP(vcpu1)'s mp_state will never change from KVM_MP_=
+STATE_UNINITIALIZED
+> >                 to KVM_MP_STATE_INIT_RECEIVED, even then to KVM_MP_STAT=
+E_RUNNABLE without
+> >                 handling INIT inside kvm_apic_accept_events(), consider=
+ing BSP will never
+> >                 send INIT/SIPI again during smp_scan. Then AP(vcpu1) wi=
+ll never enter
+> >                 non-root mode */
+> >=20
+> > [3] SeaBIOS: waits CountCPUs =3D=3D expected_cpus_count and loops forev=
+er
+> >     e.i. the AP(vcpu1) stays: EIP=3D0000fff0 && CS =3Df000 ffff0000
+> >     and BSP(vcpu0) appears 100%  utilized as it is in a while loop.
+
+> By the way, this doesn't seem to be a Qemu bug, since calling "info
+> registers -a" is allowed regardless of the vcpu state (including when the=
+ VM
+> is in the bootloader). Thus the INIT should not be latched in this case.
+
+No, this is a Qemu bug.  It is the VMM's responsibility to ensure it doesn'=
+t load
+stale data into a vCPU.  There is simply no way for KVM to do the right thi=
+ng,
+because KVM can't know if userspace _wants_ to clobber events versus when u=
+serspace
+is racing, as in this case.
+
+E.g. the exact same race exists with NMIs.
+
+  1. kvm_vcpu_ioctl_x86_get_vcpu_events()=20
+       vcpu->arch.nmi_queued   =3D 0
+       vcpu->arch.nmi_pending  =3D 0
+       kvm_vcpu_events.pending =3D 0
+
+  2. kvm_inject_nmi()
+       vcpu->arch.nmi_queued   =3D 1
+       vcpu->arch.nmi_pending  =3D 0
+       kvm_vcpu_events.pending =3D 0
+
+  3. kvm_vcpu_ioctl_x86_set_vcpu_events()
+       vcpu->arch.nmi_queued   =3D 0 // Moved to nmi_pending by process_nmi=
+()
+       vcpu->arch.nmi_pending  =3D 0 // Explicitly cleared after process_nm=
+i() when KVM_VCPUEVENT_VALID_NMI_PENDING
+       kvm_vcpu_events.pending =3D 0 // Stale data
+
+But for NMI, Qemu avoids clobbering state thinks to a 15+ year old commit t=
+hat
+specifically avoids clobbering NMI *and SIPI* when not putting "reset" stat=
+e:
+
+  commit ea64305139357e89f58fc05ff5d48dc233d44d87
+  Author:     Jan Kiszka <jan.kiszka@siemens.com>
+  AuthorDate: Mon Mar 1 19:10:31 2010 +0100
+  Commit:     Marcelo Tosatti <mtosatti@redhat.com>
+  CommitDate: Thu Mar 4 00:29:30 2010 -0300
+
+    KVM: x86: Restrict writeback of VCPU state
+   =20
+    Do not write nmi_pending, sipi_vector, and mpstate unless we at least g=
+o
+    through a reset. And TSC as well as KVM wallclocks should only be
+    written on full sync, otherwise we risk to drop some time on state
+    read-modify-write.
+
+    if (level >=3D KVM_PUT_RESET_STATE) {  <=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+        events.flags |=3D KVM_VCPUEVENT_VALID_NMI_PENDING;
+        if (env->mp_state =3D=3D KVM_MP_STATE_SIPI_RECEIVED) {
+            events.flags |=3D KVM_VCPUEVENT_VALID_SIPI_VECTOR;
+        }
+    }
+
+Presumably "SMIs" need the same treatment, e.g.
+
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index 6c749d4ee8..f5bc0f9327 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -5033,7 +5033,7 @@ static int kvm_put_vcpu_events(X86CPU *cpu, int level=
+)
+=20
+     events.sipi_vector =3D env->sipi_vector;
+=20
+-    if (has_msr_smbase) {
++    if (has_msr_smbase && level >=3D KVM_PUT_RESET_STATE) {
+         events.flags |=3D KVM_VCPUEVENT_VALID_SMM;
+         events.smi.smm =3D !!(env->hflags & HF_SMM_MASK);
+         events.smi.smm_inside_nmi =3D !!(env->hflags2 & HF2_SMM_INSIDE_NMI=
+_MASK);
 
