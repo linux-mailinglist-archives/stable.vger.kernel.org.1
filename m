@@ -1,108 +1,112 @@
-Return-Path: <stable+bounces-178873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A81B4899C
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 12:09:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70789B4899E
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 12:09:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A93041B24054
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 10:09:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E7FF3AEEA7
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 10:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7B12F5306;
-	Mon,  8 Sep 2025 10:09:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L0G+E4S8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18772F3631;
+	Mon,  8 Sep 2025 10:09:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6612EA752
-	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 10:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ADC71FE47C
+	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 10:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757326139; cv=none; b=XZTjCpJka30iPcjiSxNBj1B23/v0DiZ0bQ2Y0a2U+pT6u7ytVp3bel7Icm6/mfgQmBFUpOBCP+LDTApXIebjfrV2uNgQyojb8ZUyTFYgGMvXVaryeoeKoEYqYaNIs4vZfacltO+wwZQTrsxKU2T7txa+upCe90hwwmyF8K0aPL8=
+	t=1757326159; cv=none; b=DYxJFxiUoPDcP9xK5Ls4Km+BibimwY95IzBkn7mef4MPG87VNk6zSU8fRmUvq3En7lwlOyhFvjnm54aNTmeJaeHDqu6/Om4lH8PdvNHq80+E3o2rxWClrOyxY8RBvP9hcVvEq7FIpSyEU6zaZNhLpEkUPR3rqvhBKTyVilhOIdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757326139; c=relaxed/simple;
-	bh=yv0ynS2pz5WJLY5xudp0NhwfkIIneS8CGj18mEWX4bQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=lLQIaofSCP10uvH6lihW8z0cc0zwqJ0JZQVqBVo0wy8Kfd221SgZsXn0ffrCjGW4gaK1doA8j/It/c6UFByOjozXxquhapwdGF2/N8Vob5SSV7/uoDFJUlioSzbx4F5S2b6gQJ0SKR89z9WcQVx7trJZoJAsNi96uTkjNCsBWBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L0G+E4S8; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757326138; x=1788862138;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version:content-transfer-encoding;
-  bh=yv0ynS2pz5WJLY5xudp0NhwfkIIneS8CGj18mEWX4bQ=;
-  b=L0G+E4S8e9NRCdhCE4zagYq9gYSbzfapjNPwvbSjANLQQ19kn3wbvktl
-   9USrjQOgcObIkXL/CpfrW9pRyDj1Y+0YBQd3mG3L9nZgiAcsRrCd4S2Cp
-   +uRS0eH5Srzlsxau8DoVufp+YRZv7mzuHjtvBxN/tmH6fkADM1XADWQUF
-   hJnFtBtPhgmoSI7EHQdcjo1eXimgi9H/ibk2cYPpnVlZ45I5zZdDEW3BZ
-   cRXt83RH9cNV4Q48YclsVOsXnPAqP8lGlxsUe9CYVJaDXrBKxxvp3svXg
-   7wpFW4AOgk6cBfzHve+1B4GqQ77zeH/MN+fkbOqvWc1IhRVDWs4+cT9K6
-   Q==;
-X-CSE-ConnectionGUID: QbDe3l2bQZq8Zb3UaP8i/A==
-X-CSE-MsgGUID: QwqTSgQ3Qgyhwgj3RFlsTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11546"; a="62212049"
-X-IronPort-AV: E=Sophos;i="6.18,248,1751266800"; 
-   d="scan'208";a="62212049"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 03:08:58 -0700
-X-CSE-ConnectionGUID: sXhkcXAKShqz3zv+gpRAxA==
-X-CSE-MsgGUID: x7CfLfZzTdGAkl46eLNy9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,248,1751266800"; 
-   d="scan'208";a="173216543"
-Received: from carterle-desk.ger.corp.intel.com (HELO localhost) ([10.245.246.204])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 03:08:56 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Matt Roper <matthew.d.roper@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, Ville
- =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] drm/i915/power: fix size for for_each_set_bit() in abox
- iteration
-In-Reply-To: <20250905155523.GC5752@mdroper-desk1.amr.corp.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20250905104149.1144751-1-jani.nikula@intel.com>
- <20250905155523.GC5752@mdroper-desk1.amr.corp.intel.com>
-Date: Mon, 08 Sep 2025 13:08:52 +0300
-Message-ID: <ba480c6e5ab4971fcaec64d74545289b04f1ad3f@intel.com>
+	s=arc-20240116; t=1757326159; c=relaxed/simple;
+	bh=vD3+dpqPgBEASDG8Bsx0Ksn+v2A2N41QWGtbk/qLQcg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=aHgQpECeibVgPtUaC8q3x0pGuKpsqXaWYpaw99n18KF6HLdEaqkIj/Co35hWgMQsqUPtpZmwsCGWJRwiLsq6b6HSMaQLNZSem/bNb4huGCcNt3XcY4tAcWOdQ4zt4FAhrXzc7NbxAXxjlqioguyd5aqIz/rQ9diPDDSTWxXIiPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B0DDF1692;
+	Mon,  8 Sep 2025 03:09:07 -0700 (PDT)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 9CBCE3F66E;
+	Mon,  8 Sep 2025 03:09:14 -0700 (PDT)
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: stable@vger.kernel.org
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12.y] kunit: kasan_test: disable fortify string checker on kasan_strings() test
+Date: Mon,  8 Sep 2025 11:08:53 +0100
+Message-Id: <20250908100852.2182536-2-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2025090612-washhouse-palpitate-525c@gregkh>
+References: <2025090612-washhouse-palpitate-525c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, 05 Sep 2025, Matt Roper <matthew.d.roper@intel.com> wrote:
-> On Fri, Sep 05, 2025 at 01:41:49PM +0300, Jani Nikula wrote:
->> for_each_set_bit() expects size to be in bits, not bytes. The abox mask
->> iteration uses bytes, but it works by coincidence, because the local
->> variable holding the mask is unsigned long, and the mask only ever has
->> bit 2 as the highest bit. Using a smaller type could lead to subtle and
->> very hard to track bugs.
->>=20
->> Fixes: 62afef2811e4 ("drm/i915/rkl: RKL uses ABOX0 for pixel transfers")
->> Cc: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
->> Cc: Matt Roper <matthew.d.roper@intel.com>
->> Cc: <stable@vger.kernel.org> # v5.9+
->> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->
-> Good catch.
->
-> Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Similar to commit 09c6304e38e4 ("kasan: test: fix compatibility with
+FORTIFY_SOURCE") the kernel is panicing in kasan_string().
 
-Thanks, pushed to din.
+This is due to the `src` and `ptr` not being hidden from the optimizer
+which would disable the runtime fortify string checker.
 
-BR,
-Jani.
+Call trace:
+  __fortify_panic+0x10/0x20 (P)
+  kasan_strings+0x980/0x9b0
+  kunit_try_run_case+0x68/0x190
+  kunit_generic_run_threadfn_adapter+0x34/0x68
+  kthread+0x1c4/0x228
+  ret_from_fork+0x10/0x20
+ Code: d503233f a9bf7bfd 910003fd 9424b243 (d4210000)
+ ---[ end trace 0000000000000000 ]---
+ note: kunit_try_catch[128] exited with irqs disabled
+ note: kunit_try_catch[128] exited with preempt_count 1
+     # kasan_strings: try faulted: last
+** replaying previous printk message **
+     # kasan_strings: try faulted: last line seen mm/kasan/kasan_test_c.c:1600
+     # kasan_strings: internal error occurred preventing test case from running: -4
 
---=20
-Jani Nikula, Intel
+Link: https://lkml.kernel.org/r/20250801120236.2962642-1-yeoreum.yun@arm.com
+Fixes: 73228c7ecc5e ("KASAN: port KASAN Tests to KUnit")
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 7a19afee6fb39df63ddea7ce78976d8c521178c6)
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+---
+ mm/kasan/kasan_test_c.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
+index d8fb281e439d..d4ac26ad1d3e 100644
+--- a/mm/kasan/kasan_test_c.c
++++ b/mm/kasan/kasan_test_c.c
+@@ -1548,6 +1548,7 @@ static void kasan_strings(struct kunit *test)
+
+ 	ptr = kmalloc(size, GFP_KERNEL | __GFP_ZERO);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
++	OPTIMIZER_HIDE_VAR(ptr);
+
+ 	kfree(ptr);
+
+--
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+
 
