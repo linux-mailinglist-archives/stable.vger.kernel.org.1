@@ -1,166 +1,336 @@
-Return-Path: <stable+bounces-178947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67499B4980C
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 20:16:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA81B49810
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 20:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4F61890558
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 18:15:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93CD818859C2
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 18:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67F2314B69;
-	Mon,  8 Sep 2025 18:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C265C2E8DEF;
+	Mon,  8 Sep 2025 18:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KulParVi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZSnWHH0u"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1FB3126D2
-	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 18:14:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B4619A288
+	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 18:16:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757355279; cv=none; b=LVxC35YeZB75HbRrOX+lUeYV5EpRkeI8z15f8KhPShZVmCc47TagMRWl3NVOJ6q3H+LiUbT5O0i8nRZ8f67A3wCuYJZ0kAnRAAwxBDCelCFC35qjhmeW49agK7Q6angBeHbojZV3EmIbmlc7Vh1BPTk8YwQ2WoArhwLFPZ2g8D8=
+	t=1757355363; cv=none; b=AwfCtJ5mbBin5f8EaToeYdxE4N38RKINkbptBgi0LHuYo9aDvNk4RwhJcKkq2Dy+kM/OZBjBA/RudjGZF/0RjpXtoSgAV7m5uq7/5C3BeqCvJZWyxBUq5U38lE7zmhX8MaKqWUWwObFgJ4ODowxCw+6d5QcQs/v24/FGIXXcT2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757355279; c=relaxed/simple;
-	bh=Dd+pgApASQAzgj9X3zonS77Lm1GUV+22MQ9r9kA15iE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ft6QpqF6LA1XkfNfvsxlwredmVdj6X+poRcyKkIYmBwJkU35ElO+Tw4LvVoRHxMOAx4Sd/HkxrAxGyi3MEUWpVAXKdSBr0Rg1Xo2GpQyCxUAeXaHFZsCcVLL4ZhgtFP6NiWOWykqXPYJo3dBBlczjPkdXMICW9HjKv40s3W6UhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KulParVi; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7704f3c46ceso3716964b3a.2
-        for <stable@vger.kernel.org>; Mon, 08 Sep 2025 11:14:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757355277; x=1757960077; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Aa8ggLlyMVJh/eLNB7/vORTWXIRxgODsZo7MWhmnGSU=;
-        b=KulParViFVt05a2wk3gGZhfcS3CXTQZ3E75p2wuhDJxuOZrKXGjCg+ZbJw07NoqnJY
-         YxM2vkpiO0Cb7BcqPB7AEApIqaEPnwwZZMQczSChnKdv08nC+E8OT1YNF2U+rX2wzffe
-         mXLRqYYe4akc0bFoUNelA3SaTxhqyPAMeiKyzvQuJRqBQH3hM1EN3f3o6JVzTgHjyKwn
-         KIMqj/dZdr/tzG2MufEmnkeBjszB0cdcrtRYBa5SJwJYsJgUI6YTS52zqxIf7Rx4Pbo2
-         SPgD4UJk/1xxtHtw2eot+LpALr5Aq+9HIS8CMEB2kUfKrxz+P1QQkQnf52kW9ztcL4Po
-         hdgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757355277; x=1757960077;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Aa8ggLlyMVJh/eLNB7/vORTWXIRxgODsZo7MWhmnGSU=;
-        b=DPdi31z51S4P0GMSgppyTAj/lQTJzgaODmNyU92arbxeqrGCVGDvLdYnnxS3kb2jd2
-         SzhsqpW789Ub18rk0JLNsS7pgvJblQr1/OQxRxqMIW2YVW7clZZgUAxtueaipUfFkvyj
-         n/7EW89F8xTFD8Vhwj0oRXKjeVi6razJQHzAMSJvXWUFm+1ar4mZwe2AYx7N2wi14RCW
-         MjfDLwi30Bep5el7PMLICVR90Q4z91ktH5EepRoFLDgUzJk8GCo/IecLGfCfPVnBovXA
-         ilhg5vdyeVB4fej07PM1749/pRp7nq90PJPSIX5qFToiaTwnY4I4nWdBugEB1/PKNBpf
-         TE5A==
-X-Gm-Message-State: AOJu0YzyBLMg8jJkDrT9cS2yTGt83s/QNaYqr3ZmYZChEfDTxKau6pf5
-	BlRWsHzo8fgGdsSAttxEsYot0KqCoHS5HC/sd11AIBAEIp7NNmoXqMKR0ZztJEdBQE8BEPqrnq+
-	JiQI7poPZ6arIRBRsK6HYf3A6rj7FbBLr9qwfPhXDrg==
-X-Gm-Gg: ASbGncuS5IjIhTzhh6iWBJoRAzOELwbKoEiQJG/xzhbZ41fMcOW5j6nY8V79X49LYZm
-	8ryXOMMftOquI/uy4XMdWwwD6Tpr/R3qWEzOqjY1OSK/nku7OKfxOV8u4HI6MssGZ952p2Plne6
-	nfefnrwX7Uw+IdUMMIotogXZWIGxzJ05CycoEMEQEDHrw+admekWJEv5qM5VxEuYKsjrL0xXzPj
-	m35kL3+3wu3d7DZt/2+SpR56YdNdZwKHYmZtPXvY4lS9MqwVEs2auOsiK4ld3fnqKEUvjuMOqoA
-	ZfYMyiI=
-X-Google-Smtp-Source: AGHT+IErypQRC4wzGQeAuOgUtnwtBi2ya2m51s0FvrrM40iFGJDv512kzAJrOm36DfnNRSDLy6uFdTKbm3aJAXKiWZI=
-X-Received: by 2002:a17:903:19c6:b0:24c:e3d0:c802 with SMTP id
- d9443c01a7336-2516c896521mr127705465ad.1.1757355276936; Mon, 08 Sep 2025
- 11:14:36 -0700 (PDT)
+	s=arc-20240116; t=1757355363; c=relaxed/simple;
+	bh=lyAWkjLcoFPGYaMp4ZfgXmn0ajNMujIBKplM9LcWJiU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Lna+FprKgyUOJQL7r21U0OF0ddqEcjUgyW9w1ICJ3JIfc9G5jvhKNw2f9RwQks2CSXxMFrUNowQmyQN3RUBLBjPD+idKMbTYf+EWrkHvgotoxrkwQC2G7MXEFZrsbdsBDLPKpl5gzge34TLbcACfQnsjqXLL5nMQHxK56dH/pCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZSnWHH0u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C10C4CEF5;
+	Mon,  8 Sep 2025 18:16:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757355363;
+	bh=lyAWkjLcoFPGYaMp4ZfgXmn0ajNMujIBKplM9LcWJiU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZSnWHH0uWhyRovPy19YiuwwSoBiv1BhlcP+Dfwf8mdKLGocsPVoVRWkSc/40jXIPA
+	 XqIR1jutEVZn1Euu4Rtb/sxmv7x5CceLlSz9CYOf9gnqckNIcWl04dtGvH5dZC+8YP
+	 8WaCMugZJNKkKo7muZHL4fgODFXg4FtdHlCqXOOkNud6rnJkYDRXeozHGdZMCHZAOk
+	 4uYtSp0u9F2aIO5okzuYu8oivOHhK+ZhZOPJBFhguS37Nhc0N1EhpdD1BX7eh3pEid
+	 1KKXRQ9LUggvNLFNiMVFzDjfxAiDW2pBvFy7ubj3wZ+ibUSenlxr88Iah1SjJEAxGg
+	 M/enhunAZ1k9g==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] net: Fix null-ptr-deref by sock_lock_init_class_and_name() and rmmod.
+Date: Mon,  8 Sep 2025 14:16:00 -0400
+Message-ID: <20250908181600.1342061-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025041742-unfasten-cargo-ed99@gregkh>
+References: <2025041742-unfasten-cargo-ed99@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250907195601.957051083@linuxfoundation.org>
-In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Mon, 8 Sep 2025 23:44:25 +0530
-X-Gm-Features: AS18NWCueKZLivBwekubKSawy9W-Z7KRPjuA564ID06uBm9Hh6QXYlMBZZtS8_g
-Message-ID: <CA+G9fYsX_CrcywkDJDYBqHijE1d5gBNV=3RF=cUVdVj9BKuFzw@mail.gmail.com>
-Subject: Re: [PATCH 5.10 00/52] 5.10.243-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org, Netdev <netdev@vger.kernel.org>, 
-	Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Ben Copeland <benjamin.copeland@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, 8 Sept 2025 at 01:38, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.10.243 release.
-> There are 52 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Tue, 09 Sep 2025 19:55:53 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.243-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
+[ Upstream commit 0bb2f7a1ad1f11d861f58e5ee5051c8974ff9569 ]
 
-While building Linux stable-rc 5.10.243-rc1 the arm64 allyesconfig
-builds failed.
+When I ran the repro [0] and waited a few seconds, I observed two
+LOCKDEP splats: a warning immediately followed by a null-ptr-deref. [1]
 
-* arm64, build
-  - gcc-12-allyesconfig
+Reproduction Steps:
 
-Regression Analysis:
-- New regression? yes
-- Reproducibility? yes
+  1) Mount CIFS
+  2) Add an iptables rule to drop incoming FIN packets for CIFS
+  3) Unmount CIFS
+  4) Unload the CIFS module
+  5) Remove the iptables rule
 
+At step 3), the CIFS module calls sock_release() for the underlying
+TCP socket, and it returns quickly.  However, the socket remains in
+FIN_WAIT_1 because incoming FIN packets are dropped.
 
-Build regression: stable-rc 5.10.243-rc1 arm64 allyesconfig
-qede_main.c:204:17: error: field name not in record or union
-initializer
+At this point, the module's refcnt is 0 while the socket is still
+alive, so the following rmmod command succeeds.
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+  # ss -tan
+  State      Recv-Q Send-Q Local Address:Port  Peer Address:Port
+  FIN-WAIT-1 0      477        10.0.2.15:51062   10.0.0.137:445
 
-### build log
-drivers/net/ethernet/qlogic/qede/qede_main.c:204:17: error: field name
-not in record or union initializer
-  204 |                 .arfs_filter_op = qede_arfs_filter_op,
-      |                 ^
+  # lsmod | grep cifs
+  cifs                 1159168  0
 
-This was reported on the Linux next-20250428 tag,
-https://lore.kernel.org/all/CA+G9fYs+7-Jut2PM1Z8fXOkBaBuGt0WwTUvU=4cu2O8iQdwUYw@mail.gmail.com/
+This highlights a discrepancy between the lifetime of the CIFS module
+and the underlying TCP socket.  Even after CIFS calls sock_release()
+and it returns, the TCP socket does not die immediately in order to
+close the connection gracefully.
 
-## Build
-* kernel: 5.10.243-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-* git commit: 910e092353351549f4857c48c68cc154c84305e8
-* git describe: v5.10.241-89-g910e09235335
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10.241-89-g910e09235335
+While this is generally fine, it causes an issue with LOCKDEP because
+CIFS assigns a different lock class to the TCP socket's sk->sk_lock
+using sock_lock_init_class_and_name().
 
-## Test Regressions (compared to v5.10.241-35-g4576ee67df7a)
-* arm64, build
-  - gcc-12-allyesconfig
+Once an incoming packet is processed for the socket or a timer fires,
+sk->sk_lock is acquired.
 
-Build log: https://qa-reports.linaro.org/api/testruns/29791464/log_file/
-Build details: https://regressions.linaro.org/lkft/linux-stable-rc-linux-5.10.y/v5.10.241-89-g910e09235335/build/gcc-12-allyesconfig/
-Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/32O3Hlq8fZQUSOfU5gyju24xQit/
-Build config: https://storage.tuxsuite.com/public/linaro/lkft/builds/32O3Hlq8fZQUSOfU5gyju24xQit/config
+Then, LOCKDEP checks the lock context in check_wait_context(), where
+hlock_class() is called to retrieve the lock class.  However, since
+the module has already been unloaded, hlock_class() logs a warning
+and returns NULL, triggering the null-ptr-deref.
 
---
-Linaro LKFT
-https://lkft.linaro.org
+If LOCKDEP is enabled, we must ensure that a module calling
+sock_lock_init_class_and_name() (CIFS, NFS, etc) cannot be unloaded
+while such a socket is still alive to prevent this issue.
+
+Let's hold the module reference in sock_lock_init_class_and_name()
+and release it when the socket is freed in sk_prot_free().
+
+Note that sock_lock_init() clears sk->sk_owner for svc_create_socket()
+that calls sock_lock_init_class_and_name() for a listening socket,
+which clones a socket by sk_clone_lock() without GFP_ZERO.
+
+[0]:
+CIFS_SERVER="10.0.0.137"
+CIFS_PATH="//${CIFS_SERVER}/Users/Administrator/Desktop/CIFS_TEST"
+DEV="enp0s3"
+CRED="/root/WindowsCredential.txt"
+
+MNT=$(mktemp -d /tmp/XXXXXX)
+mount -t cifs ${CIFS_PATH} ${MNT} -o vers=3.0,credentials=${CRED},cache=none,echo_interval=1
+
+iptables -A INPUT -s ${CIFS_SERVER} -j DROP
+
+for i in $(seq 10);
+do
+    umount ${MNT}
+    rmmod cifs
+    sleep 1
+done
+
+rm -r ${MNT}
+
+iptables -D INPUT -s ${CIFS_SERVER} -j DROP
+
+[1]:
+DEBUG_LOCKS_WARN_ON(1)
+WARNING: CPU: 10 PID: 0 at kernel/locking/lockdep.c:234 hlock_class (kernel/locking/lockdep.c:234 kernel/locking/lockdep.c:223)
+Modules linked in: cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
+CPU: 10 UID: 0 PID: 0 Comm: swapper/10 Not tainted 6.14.0 #36
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:hlock_class (kernel/locking/lockdep.c:234 kernel/locking/lockdep.c:223)
+...
+Call Trace:
+ <IRQ>
+ __lock_acquire (kernel/locking/lockdep.c:4853 kernel/locking/lockdep.c:5178)
+ lock_acquire (kernel/locking/lockdep.c:469 kernel/locking/lockdep.c:5853 kernel/locking/lockdep.c:5816)
+ _raw_spin_lock_nested (kernel/locking/spinlock.c:379)
+ tcp_v4_rcv (./include/linux/skbuff.h:1678 ./include/net/tcp.h:2547 net/ipv4/tcp_ipv4.c:2350)
+...
+
+BUG: kernel NULL pointer dereference, address: 00000000000000c4
+ PF: supervisor read access in kernel mode
+ PF: error_code(0x0000) - not-present page
+PGD 0
+Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 10 UID: 0 PID: 0 Comm: swapper/10 Tainted: G        W          6.14.0 #36
+Tainted: [W]=WARN
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:__lock_acquire (kernel/locking/lockdep.c:4852 kernel/locking/lockdep.c:5178)
+Code: 15 41 09 c7 41 8b 44 24 20 25 ff 1f 00 00 41 09 c7 8b 84 24 a0 00 00 00 45 89 7c 24 20 41 89 44 24 24 e8 e1 bc ff ff 4c 89 e7 <44> 0f b6 b8 c4 00 00 00 e8 d1 bc ff ff 0f b6 80 c5 00 00 00 88 44
+RSP: 0018:ffa0000000468a10 EFLAGS: 00010046
+RAX: 0000000000000000 RBX: ff1100010091cc38 RCX: 0000000000000027
+RDX: ff1100081f09ca48 RSI: 0000000000000001 RDI: ff1100010091cc88
+RBP: ff1100010091c200 R08: ff1100083fe6e228 R09: 00000000ffffbfff
+R10: ff1100081eca0000 R11: ff1100083fe10dc0 R12: ff1100010091cc88
+R13: 0000000000000001 R14: 0000000000000000 R15: 00000000000424b1
+FS:  0000000000000000(0000) GS:ff1100081f080000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000000000c4 CR3: 0000000002c4a003 CR4: 0000000000771ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <IRQ>
+ lock_acquire (kernel/locking/lockdep.c:469 kernel/locking/lockdep.c:5853 kernel/locking/lockdep.c:5816)
+ _raw_spin_lock_nested (kernel/locking/spinlock.c:379)
+ tcp_v4_rcv (./include/linux/skbuff.h:1678 ./include/net/tcp.h:2547 net/ipv4/tcp_ipv4.c:2350)
+ ip_protocol_deliver_rcu (net/ipv4/ip_input.c:205 (discriminator 1))
+ ip_local_deliver_finish (./include/linux/rcupdate.h:878 net/ipv4/ip_input.c:234)
+ ip_sublist_rcv_finish (net/ipv4/ip_input.c:576)
+ ip_list_rcv_finish (net/ipv4/ip_input.c:628)
+ ip_list_rcv (net/ipv4/ip_input.c:670)
+ __netif_receive_skb_list_core (net/core/dev.c:5939 net/core/dev.c:5986)
+ netif_receive_skb_list_internal (net/core/dev.c:6040 net/core/dev.c:6129)
+ napi_complete_done (./include/linux/list.h:37 ./include/net/gro.h:519 ./include/net/gro.h:514 net/core/dev.c:6496)
+ e1000_clean (drivers/net/ethernet/intel/e1000/e1000_main.c:3815)
+ __napi_poll.constprop.0 (net/core/dev.c:7191)
+ net_rx_action (net/core/dev.c:7262 net/core/dev.c:7382)
+ handle_softirqs (kernel/softirq.c:561)
+ __irq_exit_rcu (kernel/softirq.c:596 kernel/softirq.c:435 kernel/softirq.c:662)
+ irq_exit_rcu (kernel/softirq.c:680)
+ common_interrupt (arch/x86/kernel/irq.c:280 (discriminator 14))
+  </IRQ>
+ <TASK>
+ asm_common_interrupt (./arch/x86/include/asm/idtentry.h:693)
+RIP: 0010:default_idle (./arch/x86/include/asm/irqflags.h:37 ./arch/x86/include/asm/irqflags.h:92 arch/x86/kernel/process.c:744)
+Code: 4c 01 c7 4c 29 c2 e9 72 ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa eb 07 0f 00 2d c3 2b 15 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90
+RSP: 0018:ffa00000000ffee8 EFLAGS: 00000202
+RAX: 000000000000640b RBX: ff1100010091c200 RCX: 0000000000061aa4
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff812f30c5
+RBP: 000000000000000a R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000002 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ ? do_idle (kernel/sched/idle.c:186 kernel/sched/idle.c:325)
+ default_idle_call (./include/linux/cpuidle.h:143 kernel/sched/idle.c:118)
+ do_idle (kernel/sched/idle.c:186 kernel/sched/idle.c:325)
+ cpu_startup_entry (kernel/sched/idle.c:422 (discriminator 1))
+ start_secondary (arch/x86/kernel/smpboot.c:315)
+ common_startup_64 (arch/x86/kernel/head_64.S:421)
+ </TASK>
+Modules linked in: cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
+CR2: 00000000000000c4
+
+Fixes: ed07536ed673 ("[PATCH] lockdep: annotate nfs/nfsd in-kernel sockets")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250407163313.22682-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/net/sock.h | 40 ++++++++++++++++++++++++++++++++++++++--
+ net/core/sock.c    |  5 +++++
+ 2 files changed, 43 insertions(+), 2 deletions(-)
+
+diff --git a/include/net/sock.h b/include/net/sock.h
+index b5f7208a9ec38..f8e029cc48ccc 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -353,6 +353,8 @@ struct sk_filter;
+   *	@sk_txtime_unused: unused txtime flags
+   *	@ns_tracker: tracker for netns reference
+   *	@sk_bind2_node: bind node in the bhash2 table
++  *	@sk_owner: reference to the real owner of the socket that calls
++  *		   sock_lock_init_class_and_name().
+   */
+ struct sock {
+ 	/*
+@@ -545,6 +547,10 @@ struct sock {
+ 	struct rcu_head		sk_rcu;
+ 	netns_tracker		ns_tracker;
+ 	struct hlist_node	sk_bind2_node;
++
++#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
++	struct module		*sk_owner;
++#endif
+ };
+ 
+ enum sk_pacing {
+@@ -1699,6 +1705,35 @@ static inline void sk_mem_uncharge(struct sock *sk, int size)
+ 	sk_mem_reclaim(sk);
+ }
+ 
++#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
++static inline void sk_owner_set(struct sock *sk, struct module *owner)
++{
++	__module_get(owner);
++	sk->sk_owner = owner;
++}
++
++static inline void sk_owner_clear(struct sock *sk)
++{
++	sk->sk_owner = NULL;
++}
++
++static inline void sk_owner_put(struct sock *sk)
++{
++	module_put(sk->sk_owner);
++}
++#else
++static inline void sk_owner_set(struct sock *sk, struct module *owner)
++{
++}
++
++static inline void sk_owner_clear(struct sock *sk)
++{
++}
++
++static inline void sk_owner_put(struct sock *sk)
++{
++}
++#endif
+ /*
+  * Macro so as to not evaluate some arguments when
+  * lockdep is not enabled.
+@@ -1708,13 +1743,14 @@ static inline void sk_mem_uncharge(struct sock *sk, int size)
+  */
+ #define sock_lock_init_class_and_name(sk, sname, skey, name, key)	\
+ do {									\
++	sk_owner_set(sk, THIS_MODULE);					\
+ 	sk->sk_lock.owned = 0;						\
+ 	init_waitqueue_head(&sk->sk_lock.wq);				\
+ 	spin_lock_init(&(sk)->sk_lock.slock);				\
+ 	debug_check_no_locks_freed((void *)&(sk)->sk_lock,		\
+-			sizeof((sk)->sk_lock));				\
++				   sizeof((sk)->sk_lock));		\
+ 	lockdep_set_class_and_name(&(sk)->sk_lock.slock,		\
+-				(skey), (sname));				\
++				   (skey), (sname));			\
+ 	lockdep_init_map(&(sk)->sk_lock.dep_map, (name), (key), 0);	\
+ } while (0)
+ 
+diff --git a/net/core/sock.c b/net/core/sock.c
+index b74bc8175937e..9918a9a337b61 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2029,6 +2029,8 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
+  */
+ static inline void sock_lock_init(struct sock *sk)
+ {
++	sk_owner_clear(sk);
++
+ 	if (sk->sk_kern_sock)
+ 		sock_lock_init_class_and_name(
+ 			sk,
+@@ -2124,6 +2126,9 @@ static void sk_prot_free(struct proto *prot, struct sock *sk)
+ 	cgroup_sk_free(&sk->sk_cgrp_data);
+ 	mem_cgroup_sk_free(sk);
+ 	security_sk_free(sk);
++
++	sk_owner_put(sk);
++
+ 	if (slab != NULL)
+ 		kmem_cache_free(slab, sk);
+ 	else
+-- 
+2.51.0
+
 
