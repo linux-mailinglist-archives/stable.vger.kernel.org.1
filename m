@@ -1,100 +1,129 @@
-Return-Path: <stable+bounces-178849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68984B483B1
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 07:40:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 701BCB484B0
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 09:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FCC57A12BA
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 05:38:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 108093B6DC7
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 07:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0BA1BC41;
-	Mon,  8 Sep 2025 05:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0695D2E3AF2;
+	Mon,  8 Sep 2025 07:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eHYWqqKg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iheKU/Em"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1EB1B0437
-	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 05:39:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE0B156C40;
+	Mon,  8 Sep 2025 07:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757309996; cv=none; b=DWaxLAk9/oMKvpzla9f4+s6z0NGFWPR/LAhZvAwP7vkOdLWUpXTlDtV1uL2j7Sg/viOSNZr/r6wZS/ISrT9w93j5wXfgPzwXgAHt2M0pWeDheIplOe0nnHrH0DCHAyZMBX8yulqaiwf8rYTYKvOybtJmUOE5M9bHCtJdhrIR1Ko=
+	t=1757314969; cv=none; b=W+yr86HdVvgcto1Ea3o9o7LT1uePUHtm1chNQ/mU6kAtUEddM6b5WCIk8Fjz3N5XLnDF3YmlYNHaZyOiaEWiEITVRKiRbaiJUrbJnvgeAdvsqMPl7iWNUHJrrkhxW7BNno0yY5DDpgYkpmXt8aiE6rYKzL+XAudLyRuXnuV3bCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757309996; c=relaxed/simple;
-	bh=9UirNUjPJtdVex0c3sdBlSNioP2vpZReRtQYL3XxdMI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=JLv8xjqL4hnQqx/0yjMuQ9eaY0Nh6tzkUcYCKS4EwHaL33anaWdFc3qYLMRcWbwi8Ote7NBPNrYIZpGpNGxToKmjs4K+Brynl6JzyNKxNBNL9VGdEOj3N7grg5uiPZDqo9YBURkq3j8mF2ab/esWeEQwOGNxkMSLFhtq5hQQDtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eHYWqqKg; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757309994; x=1788845994;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=9UirNUjPJtdVex0c3sdBlSNioP2vpZReRtQYL3XxdMI=;
-  b=eHYWqqKgLvyWDAukeR9X+EHf57vyxsY6vHAy5gaTCL83HRUQYjHyYV7Y
-   b6QYduP1xepuJ1aWqTLfXdAXDnEHV/qywD0S4+0I2AOSmgu7LTtacfI1h
-   ZgYRA2oKzPXa4DgWGLjZ0oM4ukYigbhWtSyQZqezW+8VQw2GjDoFJYRGm
-   MHkKUHNebZe4uZEuL9/Xm9TXu3L+Ew15V7Fl3c4qRbd3LVDO+55IbnhJA
-   u1qedFQMvtZh0hNchCpDUNHzuh4ljLOdwKlqzaHrBS7JSI4P+4kPx4aRC
-   ZwakXh/xOucpqHVgYacpG+BGXeTLZA0anAA7n/xjc3qL/5VwwN2JFj1oK
-   A==;
-X-CSE-ConnectionGUID: C/OmDQ58To+PsAIO9UO0wQ==
-X-CSE-MsgGUID: WYZqnhVkQqixBHcydFVQOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11546"; a="70657151"
-X-IronPort-AV: E=Sophos;i="6.18,247,1751266800"; 
-   d="scan'208";a="70657151"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2025 22:39:54 -0700
-X-CSE-ConnectionGUID: zNJFz7BKR7K7i0gzIF2AYw==
-X-CSE-MsgGUID: P5xnksVCRJim3KsPyRPo9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,247,1751266800"; 
-   d="scan'208";a="172815477"
-Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 07 Sep 2025 22:39:53 -0700
-Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uvUbW-0003XP-20;
-	Mon, 08 Sep 2025 05:39:50 +0000
-Date: Mon, 8 Sep 2025 13:39:16 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v4 3/3] ASoC: qcom: sc8280xp: Enable DAI format
- configuration for MI2S interfaces
-Message-ID: <aL5sBHUqOcdItTqG@af736d05e5f8>
+	s=arc-20240116; t=1757314969; c=relaxed/simple;
+	bh=tJ3tW3rPouUnWRUNVy/3YiPSCc20vhp++5etn/Azlrs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Nvjgx7FckpK+uB2cCWClMa3HXOrXx3ZwLL/qwnqYdV1LceB2gOaC7LwJcYAcuBJDVG8ljSgRjGq7axOdGxon6EhXV2U4wV118/lIY1GJfZweliQkBqcGoy6IlFg2FsEEZG6d1ZV0lhufTaGt64hc8OA7X0gm1tJHZ11DiTGNR94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iheKU/Em; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB66C4CEF5;
+	Mon,  8 Sep 2025 07:02:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757314969;
+	bh=tJ3tW3rPouUnWRUNVy/3YiPSCc20vhp++5etn/Azlrs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iheKU/Em9p3OpQAI2r7Q//GKkgKlNO4dqfwfbgVSPIwB/SORPtUbxA/0dPI7MAA0p
+	 1P/Yst8R+C081lZE5lwfFaB0Apr8QGwDFw4yvZBLM7PkAqe8Pva2E9ylSqLgfzXxQl
+	 xxd0pyo+RbZfsgi7+TTdpNKne5yz+eBiGTVYadrC5yeYPjOU1m8GkWQsyS3UOF7K7r
+	 Jl81o4m7w9HyaGGZgeNTtcQV6jKWcA2ibkbxgZ/hk8w31IAsCFE28da3L9NkpzcviU
+	 zahRf93ET9A5+Ixx0QMmCHiQ+MPyRVKCX3NP2hsR1/BwTPKtKGhKfKJSLhGezVqv/Q
+	 /Dd7nFBOSP6iQ==
+Message-ID: <edc840e1-44ed-4397-8e5f-2f5e468ec030@kernel.org>
+Date: Mon, 8 Sep 2025 09:02:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250908053631.70978-4-mohammad.rafi.shaik@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/4] dt-bindings: trivial-devices: Add sht2x sensors
+To: Kurt Borja <kuurtb@gmail.com>, Jean Delvare <jdelvare@suse.com>,
+ Guenter Roeck <linux@roeck-us.net>, Jonathan Corbet <corbet@lwn.net>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250907-sht2x-v3-0-bf846bd1534b@gmail.com>
+ <20250907-sht2x-v3-4-bf846bd1534b@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250907-sht2x-v3-4-bf846bd1534b@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 08/09/2025 03:33, Kurt Borja wrote:
+> Add sensirion,sht2x trivial sensors.
+> 
+> Cc: stable@vger.kernel.org
 
-Thanks for your patch.
+No, drop. No bug to fix here.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v4 3/3] ASoC: qcom: sc8280xp: Enable DAI format configuration for MI2S interfaces
-Link: https://lore.kernel.org/stable/20250908053631.70978-4-mohammad.rafi.shaik%40oss.qualcomm.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Please organize the patch documenting compatible (DT bindings) before
+their user.
+See also:
+https://elixir.bootlin.com/linux/v6.14-rc6/source/Documentation/devicetree/bindings/submitting-patches.rst#L46
+> 
 
 
-
+Best regards,
+Krzysztof
 
