@@ -1,96 +1,49 @@
-Return-Path: <stable+bounces-178973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7F6B49BC7
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 23:23:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D87BFB49BDC
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 23:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4C8C4472E3
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 21:23:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9D181BC6C49
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 21:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263F22DAFC2;
-	Mon,  8 Sep 2025 21:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408DA2DE6F4;
+	Mon,  8 Sep 2025 21:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="qmZ97XLJ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="d4uCOw7Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jF7kfvvr"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF9220C001;
-	Mon,  8 Sep 2025 21:23:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A4921FF39;
+	Mon,  8 Sep 2025 21:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757366616; cv=none; b=Yti1ix4YmIkx4ik5KmJrJzPtT2sUBBWU8Kwu+1Y9VzMOFCyWgp4s2l+FnDOVrU0lUVT/bJuAaizpOx/7lagbImmYFAJ4jnmUnyu4mcW6WSnIRgnTuSwOIJ+YtCRnLh9IfcSyjkMp2Crrq+jm6iXzThNOFJopZnxZE7O09MmZ2e8=
+	t=1757366873; cv=none; b=I2CdJzrtp7cb74f8Q2PMUDUY05bQ1fNvuUsneo7cBx5DjjfN92vg8bBvFzy9+Z+ER42X6oyDS1m7OTUv3HKXzCih4lU+CzFBUHmAkB5WRmDfeyV+Mz5IINvA90H7j7olSROOMLps4h3tTjAfVyG53oj9W0QK+rOsVzzodMUkobs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757366616; c=relaxed/simple;
-	bh=D4fTDyKt7m0DoPEY7fyNBQ/mWmRv3ZrJQMo02fP1EYA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KKcFnWH1cwyi1f6wEf5AHj2Q8VyTeGYxr7fCSYCEp5sDM/v5bj3c5nZAhvjM6vwy+PRpgnSZAsBiegSLsQD1OUS//aqlEGOqHe3nyW6JpUuEpdYGZ5WubBUs3S9AGWe6BfgavG3chedtXV6LDdd+lxyrMZxepCVdryfKolTrcvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=qmZ97XLJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=d4uCOw7Y; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.phl.internal (Postfix) with ESMTP id 75F41EC023B;
-	Mon,  8 Sep 2025 17:23:33 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 08 Sep 2025 17:23:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm3; t=1757366613; x=1757453013; bh=5/
-	TBrTrTItocQ3nnjkaRH6zdwedtJCQEVNvNg9qx5Q4=; b=qmZ97XLJdloRyumrIw
-	Oxt+m34ISc7FHdPXrgmOcXRHhVglLtZSsXwB7e0WYLo8hyGoX0X8lczADoGPHZW4
-	rnaBCikBdgpJ+lqC5FLFBBRU2QQLY2gyIwbdB+cN8FhZanRpO3yNpn8oM/C9OJlv
-	A6WP5u5P4laczDTmlIDkQP7X5ce43Z640e0aFFQJaBo7Et7gx3xwHSXWkr0NbKec
-	ctiCDyHzQ1R3AeTD8ITOTF8YUhZr8QgFp5kDraBeCXmTzSbeKz9Dp+1d9EgPO0kU
-	6MNOOgHydUvJ/VPCTpxHDa8eoewQN/9JC1UD89ZfEFCQjHTCOwJVLyL9CGCU5amC
-	TzwQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1757366613; x=1757453013; bh=5/TBrTrTItocQ3nnjkaRH6zdwedt
-	JCQEVNvNg9qx5Q4=; b=d4uCOw7YzHNyv8UPAZoKxElX694g2rnRsTdH92+w4XkD
-	BfCG+EitL54pFz1ql4tyP6/F8dudihZJSmPKy71EHKQPbF5KidSE7Ze6pof8Rg/p
-	TMQXTZxVvN+ajukcE/6fO6KrpthidZDk+g+DXZcfQyE2ZWu1lhZpAJG1JOeaP27z
-	Y4XeYESJSj3SbjUEhB8yvN8BoZZZq9fsFECg9WmtkPENQABJk/jxtfwdmMjxmxf7
-	qmiiNTqh+1eyFBrPtUhiDVazSmsANsdWYgwxJ+y7wPzp1XRlqqUu9JOmKL9ewK4W
-	VOfRTPChi6bNHYVgKibo9bJA26FbaebSmvJttPFewQ==
-X-ME-Sender: <xms:VEm_aLi-ZkujrJ6Wy2A_sy9lUkIt8JXQ3FUAeu1Xp5hwGIT1voTkYw>
-    <xme:VEm_aLGFLfxNWbCiI36tLbKxaStbfsdubBCCk6PmNuS6aMS46neqU4Z92Pbcz4f3X
-    hMcTTwA2DLSillcWk8>
-X-ME-Received: <xmr:VEm_aFvKyF75JxPiQ5jivAjN9MWXpIS1x-7vT5w1HdD7oS176Ngwc-I1FFvwmleKahgTKdTO38vg6I3ecM_ryaLIEhsjEannYvV6EA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddukeeitdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhfffugggtgffkvfevofesthejredtredtjeenucfhrhhomheplfgrnhhnvgcuifhr
-    uhhnrghuuceojhesjhgrnhhnrghurdhnvghtqeenucggtffrrghtthgvrhhnpeefheeltd
-    ehfeetjeefvdehteeutddtteelgeduueetjeevteeifeeuvdefffdvieenucffohhmrghi
-    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepjhesjhgrnhhnrghurdhnvghtpdhnsggprhgtphhtthhopeelpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopeguvghllhgvrhesghhmgidruggvpdhrtg
-    hpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    hhgrnhhsgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqfhgsuggvvh
-    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgv
-    lhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtvggthhesthhoohhtrg
-    hirdhnvghtpdhrtghpthhtohepughrihdquggvvhgvlheslhhishhtshdrfhhrvggvuggv
-    shhkthhophdrohhrghdprhgtphhtthhopehtrhgvughinhhgsehnvhhiughirgdrtghomh
-    dprhgtphhtthhopehjsehjrghnnhgruhdrnhgvth
-X-ME-Proxy: <xmx:VEm_aEdiMhAf4m9hPbzH4KvAf3lI0H4JSYvSGGbYKkf80ufRgKlsuQ>
-    <xmx:VEm_aDkL9Og7D86exAuH0p0SEjpgp9ksgr0bA8A_jFWOo_hugpRtvA>
-    <xmx:VEm_aPAN_Pq2T-rdHTzxwb0gqegkJpYYWx7TzHqEWpXkJMbB3ihbRg>
-    <xmx:VEm_aFNRktRRcsXutrasiaxH4DIObpYuquWnVrDbXKylX2mbocDgOA>
-    <xmx:VUm_aNTdIbhYWKLMBCMflulYoBDsy1LWveIaEbFpQH4QzSpBHiwqiQJq>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 8 Sep 2025 17:23:32 -0400 (EDT)
-From: Janne Grunau <j@jannau.net>
-Date: Mon, 08 Sep 2025 23:23:28 +0200
-Subject: [PATCH v2] fbdev/simplefb: Fix use after free in
- simplefb_detach_genpds()
+	s=arc-20240116; t=1757366873; c=relaxed/simple;
+	bh=qfRK48mSlifn6pDY8w/IKVSEqIOAxhjI6tl2ICFaCGA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=F4xwbpRXvSWR9nFh16pBjYKmEE1k0nxMTolqqEpcILps8RvDYUf3L+iMdroI1JrxXTjRbTboJOZ4Lm8aQxyQ8D+pqhLiIKmPtBk9vP/fOGKyph369fVSP2T75WHpch3jmt5gLPIAxis369SX8NXb2H6WvM7C5sko0lRSz3ClVBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jF7kfvvr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404A5C4CEF1;
+	Mon,  8 Sep 2025 21:27:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757366872;
+	bh=qfRK48mSlifn6pDY8w/IKVSEqIOAxhjI6tl2ICFaCGA=;
+	h=From:Subject:Date:To:Cc:From;
+	b=jF7kfvvrhNiLaTSaxlM7ex0NV6i0IciSnTU/uciel6N5pozuxrJ5BlVCjc5wk4vkV
+	 j9F/bwIym88rTm5fx4u1sSJMYX4yPCxp16uOv13vVZiDrf041YckBOi5qkW412i6FB
+	 qsVK+KwcfQUO1WP9P+igNX41Uqgk7NZqQXUUy8uuH13KrxGEiWVt9R7fWetxc84Xp4
+	 8klkUsHsdoEhqNV7LocT7kTRww2erMQ/rgEaWMGdVz6jJqBGPh7xW4mAF1dQIHSrPB
+	 C/iNbChL8mr+tO/7h7Vz/Mdw0B20rEedwHC1NEzYy3ZB+C2qRkPwMquGAU9DxKOmMa
+	 fTXvHGAOyyKDA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/3] mptcp: misc fixes for v6.17-rc6
+Date: Mon, 08 Sep 2025 23:27:26 +0200
+Message-Id: <20250908-net-mptcp-misc-fixes-6-17-rc5-v1-0-5f2168a66079@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,203 +52,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250908-simplefb-genpd-uaf-v2-1-f88a0d9d880f@jannau.net>
-X-B4-Tracking: v=1; b=H4sIAE9Jv2gC/32NQQ6CMBBFr0Jm7Zi2FEldcQ/DotIpjNFCWiAaw
- t2tHMDle8l/f4NEkSnBtdgg0sqJx5BBnQroBht6QnaZQQlVCSMkJn5NT/J37ClMDhfrsaxULXR
- 9kVYZyMMpkuf3Eb21mQdO8xg/x8cqf/ZvbpUoUTjjS1vqTruuedgQ7HIONEO77/sXlNKqD7UAA
- AA=
-X-Change-ID: 20250901-simplefb-genpd-uaf-352704761a29
-To: Hans de Goede <hansg@kernel.org>, Helge Deller <deller@gmx.de>, 
- Thierry Reding <treding@nvidia.com>
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, Daniel Huhardeaux <tech@tootai.net>, 
- stable@vger.kernel.org, Janne Grunau <j@jannau.net>
+X-B4-Tracking: v=1; b=H4sIAD5Kv2gC/x2MQQqDQAwAvyI5NxCFrNqvlB7smm1zcF02IoL49
+ waPAzNzgklVMXg2J1TZ1XTNDu2jgfib8ldQZ2foqGMaacAsGy5liwUXtYhJDzEM2PZYI2PPTIn
+ TSJ8QwB+lym344gWewvu6/u89mlh0AAAA
+X-Change-ID: 20250908-net-mptcp-misc-fixes-6-17-rc5-7550f5f90b66
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, 
+ Davide Caratti <dcaratti@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6883; i=j@jannau.net;
- s=yk2024; h=from:subject:message-id;
- bh=D4fTDyKt7m0DoPEY7fyNBQ/mWmRv3ZrJQMo02fP1EYA=;
- b=owGbwMvMwCW2UNrmdq9+ahrjabUkhoz9nkEuCXVfUh2O/YlsNjCsNXz3tvCydKo2l+2ktmtf1
- r7h61/cUcrCIMbFICumyJKk/bKDYXWNYkztgzCYOaxMIEMYuDgFYCLxPxkZTnpw8UbfCjq+Jfa5
- XfnS7+9TI/bJS2WHXPb56fJpe8/s74wMs3+5bjq7z1L0ydVzofWsFowOfU/llvXu5z27/mmM5vQ
- d/AA=
-X-Developer-Key: i=j@jannau.net; a=openpgp;
- fpr=8B336A6BE4E5695E89B8532B81E806F586338419
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1487; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=qfRK48mSlifn6pDY8w/IKVSEqIOAxhjI6tl2ICFaCGA=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDL2ewVU84tvmD1x1qXl/q4BEUdTsnySTjj2i17kTvsll
+ 3k9Oi63o5SFQYyLQVZMkUW6LTJ/5vMq3hIvPwuYOaxMIEMYuDgFYCJqbQz/dFO5mOd4aAn/aHjy
+ xWDREe317mbRxZpvlLesbLROSg/8z8iw/aBClf6LjDmuPTyF1eHrP995V2jZU7HyaY7WwdsXqjc
+ wAgA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-The pm_domain cleanup can not be devres managed as it uses struct
-simplefb_par which is allocated within struct fb_info by
-framebuffer_alloc(). This allocation is explicitly freed by
-unregister_framebuffer() in simplefb_remove().
-Devres managed cleanup runs after the device remove call and thus can no
-longer access struct simplefb_par.
-Call simplefb_detach_genpds() explicitly from simplefb_destroy() like
-the cleanup functions for clocks and regulators.
+Here are various unrelated fixes:
 
-Fixes an use after free on M2 Mac mini during
-aperture_remove_conflicting_devices() using the downstream asahi kernel
-with Debian's kernel config. For unknown reasons this started to
-consistently dereference an invalid pointer in v6.16.3 based kernels.
+- Patch 1: Fix a wrong attribute type in the MPTCP Netlink specs. A fix
+  for v6.7.
 
-[    6.736134] BUG: KASAN: slab-use-after-free in simplefb_detach_genpds+0x58/0x220
-[    6.743545] Read of size 4 at addr ffff8000304743f0 by task (udev-worker)/227
-[    6.750697]
-[    6.752182] CPU: 6 UID: 0 PID: 227 Comm: (udev-worker) Tainted: G S                  6.16.3-asahi+ #16 PREEMPTLAZY
-[    6.752186] Tainted: [S]=CPU_OUT_OF_SPEC
-[    6.752187] Hardware name: Apple Mac mini (M2, 2023) (DT)
-[    6.752189] Call trace:
-[    6.752190]  show_stack+0x34/0x98 (C)
-[    6.752194]  dump_stack_lvl+0x60/0x80
-[    6.752197]  print_report+0x17c/0x4d8
-[    6.752201]  kasan_report+0xb4/0x100
-[    6.752206]  __asan_report_load4_noabort+0x20/0x30
-[    6.752209]  simplefb_detach_genpds+0x58/0x220
-[    6.752213]  devm_action_release+0x50/0x98
-[    6.752216]  release_nodes+0xd0/0x2c8
-[    6.752219]  devres_release_all+0xfc/0x178
-[    6.752221]  device_unbind_cleanup+0x28/0x168
-[    6.752224]  device_release_driver_internal+0x34c/0x470
-[    6.752228]  device_release_driver+0x20/0x38
-[    6.752231]  bus_remove_device+0x1b0/0x380
-[    6.752234]  device_del+0x314/0x820
-[    6.752238]  platform_device_del+0x3c/0x1e8
-[    6.752242]  platform_device_unregister+0x20/0x50
-[    6.752246]  aperture_detach_platform_device+0x1c/0x30
-[    6.752250]  aperture_detach_devices+0x16c/0x290
-[    6.752253]  aperture_remove_conflicting_devices+0x34/0x50
-...
-[    6.752343]
-[    6.967409] Allocated by task 62:
-[    6.970724]  kasan_save_stack+0x3c/0x70
-[    6.974560]  kasan_save_track+0x20/0x40
-[    6.978397]  kasan_save_alloc_info+0x40/0x58
-[    6.982670]  __kasan_kmalloc+0xd4/0xd8
-[    6.986420]  __kmalloc_noprof+0x194/0x540
-[    6.990432]  framebuffer_alloc+0xc8/0x130
-[    6.994444]  simplefb_probe+0x258/0x2378
-...
-[    7.054356]
-[    7.055838] Freed by task 227:
-[    7.058891]  kasan_save_stack+0x3c/0x70
-[    7.062727]  kasan_save_track+0x20/0x40
-[    7.066565]  kasan_save_free_info+0x4c/0x80
-[    7.070751]  __kasan_slab_free+0x6c/0xa0
-[    7.074675]  kfree+0x10c/0x380
-[    7.077727]  framebuffer_release+0x5c/0x90
-[    7.081826]  simplefb_destroy+0x1b4/0x2c0
-[    7.085837]  put_fb_info+0x98/0x100
-[    7.089326]  unregister_framebuffer+0x178/0x320
-[    7.093861]  simplefb_remove+0x3c/0x60
-[    7.097611]  platform_remove+0x60/0x98
-[    7.101361]  device_remove+0xb8/0x160
-[    7.105024]  device_release_driver_internal+0x2fc/0x470
-[    7.110256]  device_release_driver+0x20/0x38
-[    7.114529]  bus_remove_device+0x1b0/0x380
-[    7.118628]  device_del+0x314/0x820
-[    7.122116]  platform_device_del+0x3c/0x1e8
-[    7.126302]  platform_device_unregister+0x20/0x50
-[    7.131012]  aperture_detach_platform_device+0x1c/0x30
-[    7.136157]  aperture_detach_devices+0x16c/0x290
-[    7.140779]  aperture_remove_conflicting_devices+0x34/0x50
-...
+- Patch 2: Avoid mentioning a deprecated MPTCP sysctl knob in the doc. A
+  fix for v6.15.
 
-Reported-by: Daniel Huhardeaux <tech@tootai.net>
-Cc: stable@vger.kernel.org
-Fixes: 92a511a568e44 ("fbdev/simplefb: Add support for generic power-domains")
-Signed-off-by: Janne Grunau <j@jannau.net>
+- Patch 3: Handle new warnings from ShellCheck v0.11.0. This prevents
+  some warnings reported by some CIs. If it is not a good material for
+  'net', please drop it and I can resend it later, targeting 'net-next'.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
-Changes in v2:
-- reworked change due to missed use of `par->num_genpds` before setting
-  it. Missed in testing due to FB_SIMPLE vs. SYSFB_SIMPLEFB.
-- Link to v1: https://lore.kernel.org/r/20250901-simplefb-genpd-uaf-v1-1-0d9f3a34c4dc@jannau.net
----
- drivers/video/fbdev/simplefb.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+Matthieu Baerts (NGI0) (3):
+      netlink: specs: mptcp: fix if-idx attribute type
+      doc: mptcp: net.mptcp.pm_type is deprecated
+      selftests: mptcp: shellcheck: support v0.11.0
 
-diff --git a/drivers/video/fbdev/simplefb.c b/drivers/video/fbdev/simplefb.c
-index 1893815dc67f4c1403eea42c0e10a7ead4d96ba9..2f3e5449509d1824a3d26f73e103af82d56d558a 100644
---- a/drivers/video/fbdev/simplefb.c
-+++ b/drivers/video/fbdev/simplefb.c
-@@ -93,6 +93,7 @@ struct simplefb_par {
- 
- static void simplefb_clocks_destroy(struct simplefb_par *par);
- static void simplefb_regulators_destroy(struct simplefb_par *par);
-+static void simplefb_detach_genpds(void *res);
- 
- /*
-  * fb_ops.fb_destroy is called by the last put_fb_info() call at the end
-@@ -105,6 +106,7 @@ static void simplefb_destroy(struct fb_info *info)
- 
- 	simplefb_regulators_destroy(info->par);
- 	simplefb_clocks_destroy(info->par);
-+	simplefb_detach_genpds(info->par);
- 	if (info->screen_base)
- 		iounmap(info->screen_base);
- 
-@@ -451,7 +453,7 @@ static int simplefb_attach_genpds(struct simplefb_par *par,
- 				  struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
--	unsigned int i;
-+	unsigned int i, num_genpds;
- 	int err;
- 
- 	err = of_count_phandle_with_args(dev->of_node, "power-domains",
-@@ -465,26 +467,33 @@ static int simplefb_attach_genpds(struct simplefb_par *par,
- 		return err;
- 	}
- 
--	par->num_genpds = err;
-+	num_genpds = err;
- 
- 	/*
- 	 * Single power-domain devices are handled by the driver core, so
- 	 * nothing to do here.
- 	 */
--	if (par->num_genpds <= 1)
-+	if (num_genpds <= 1)
- 		return 0;
- 
--	par->genpds = devm_kcalloc(dev, par->num_genpds, sizeof(*par->genpds),
-+	par->genpds = devm_kcalloc(dev, num_genpds, sizeof(*par->genpds),
- 				   GFP_KERNEL);
- 	if (!par->genpds)
- 		return -ENOMEM;
- 
--	par->genpd_links = devm_kcalloc(dev, par->num_genpds,
-+	par->genpd_links = devm_kcalloc(dev, num_genpds,
- 					sizeof(*par->genpd_links),
- 					GFP_KERNEL);
- 	if (!par->genpd_links)
- 		return -ENOMEM;
- 
-+	/*
-+	 * Set par->num_genpds only after genpds and genpd_links are allocated
-+	 * to exit early from simplefb_detach_genpds() without full
-+	 * initialisation.
-+	 */
-+	par->num_genpds = num_genpds;
-+
- 	for (i = 0; i < par->num_genpds; i++) {
- 		par->genpds[i] = dev_pm_domain_attach_by_id(dev, i);
- 		if (IS_ERR(par->genpds[i])) {
-@@ -506,9 +515,10 @@ static int simplefb_attach_genpds(struct simplefb_par *par,
- 			dev_warn(dev, "failed to link power-domain %u\n", i);
- 	}
- 
--	return devm_add_action_or_reset(dev, simplefb_detach_genpds, par);
-+	return 0;
- }
- #else
-+static void simplefb_detach_genpds(void *res) { }
- static int simplefb_attach_genpds(struct simplefb_par *par,
- 				  struct platform_device *pdev)
- {
-
+ Documentation/netlink/specs/mptcp_pm.yaml          | 2 +-
+ Documentation/networking/mptcp.rst                 | 8 ++++----
+ tools/testing/selftests/net/mptcp/diag.sh          | 2 +-
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh | 2 +-
+ tools/testing/selftests/net/mptcp/mptcp_join.sh    | 2 +-
+ tools/testing/selftests/net/mptcp/mptcp_sockopt.sh | 2 +-
+ tools/testing/selftests/net/mptcp/pm_netlink.sh    | 5 +++--
+ tools/testing/selftests/net/mptcp/simult_flows.sh  | 2 +-
+ tools/testing/selftests/net/mptcp/userspace_pm.sh  | 2 +-
+ 9 files changed, 14 insertions(+), 13 deletions(-)
 ---
-base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
-change-id: 20250901-simplefb-genpd-uaf-352704761a29
+base-commit: e2a10daba84968f6b5777d150985fd7d6abc9c84
+change-id: 20250908-net-mptcp-misc-fixes-6-17-rc5-7550f5f90b66
 
 Best regards,
 -- 
-Janne Grunau <j@jannau.net>
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
 
