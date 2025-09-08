@@ -1,124 +1,218 @@
-Return-Path: <stable+bounces-178980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF71B49CE2
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 00:36:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB57EB49CF6
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 00:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 555023BB302
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 22:36:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A79B41B27271
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 22:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BF62F0C6C;
-	Mon,  8 Sep 2025 22:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25122FB98E;
+	Mon,  8 Sep 2025 22:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpHirkak"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="nUlNfPGc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805F82EB87F
-	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 22:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707B52F83A3;
+	Mon,  8 Sep 2025 22:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757370938; cv=none; b=N5L1YEdVaUpXCCIG+eoMY7zdAZbclRFcSIjLloCUgyI/tOgxnVYUYYdlAJl/bldCr1eXqHdHLWIeHxNF6xWJKJRELaOcPvw7YADbJvf6A2cbvMjGFyw97HHqz/RHjZ9zOOo1+68rCh2PB+WvzP6DVgKgUjYHhyk3TcitEWU3KIQ=
+	t=1757370983; cv=none; b=NZT1wrLl8uPNyc5NN2KPPXNCAA1EPJRC4T7L66GpxWtGmEbCIWINYJl+fPswoyvF7WOzM2ihnkG92XY6TkMcJubwehuC6mUCFteAdkhaVVfh5j6EivEGeoI4GD78dxhZpRP2Zqknlpt6KKiJFjys4shxaDn6tEAhbNemYJZ5ljs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757370938; c=relaxed/simple;
-	bh=jokPdzy+QFXUQhnXK24Nqj86DGGIIehQPhNMfk587v0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BJ8yfvtEFgEH4K3VsA+YhIuT7Mf81JNyn4AaL74uJxaES+VJOEUkV9SPgpfO7BKSpN34Zf4qpZouZhGowJly8poCkK+ypSQYeKrlep5p3La7AVgOedsh4/OgjNBFhsmSY8e6c3F6M+7W41sR0fMR3RELszYY/K2snojrx37PwM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpHirkak; arc=none smtp.client-ip=209.85.166.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-88c347db574so40770539f.0
-        for <stable@vger.kernel.org>; Mon, 08 Sep 2025 15:35:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1757370935; x=1757975735; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9bjV+b3hh2hO3TSHHe7wU0vMi5wwisl90Tr3zOtLYr0=;
-        b=NpHirkak2Q5dLEaisU0foSDso301k3+q0qjpu/W8/T5qxPTJLoo9n/SehqiMFieuHG
-         ORpzJoIeVYrpQ2g/SBIdDzC0MymBva0ogcHUszr/1WFcuGmcVDGUIk3rX9G2GvTKGJ/b
-         /pQftPq99rG6u7umG+SuiAS4GNkADoNQeexMs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757370935; x=1757975735;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9bjV+b3hh2hO3TSHHe7wU0vMi5wwisl90Tr3zOtLYr0=;
-        b=nirnlVyhY2DboGoGDMov1noKMfD9/H78vWOih6Y/y/bkAWS94apHqpitWySB+Cs+Wg
-         cKKDAvPTc2Ta9GYVi/7SpumQhPS48NuwxVZBDJVKsln2lzGJVvmMkQkCyh5lUDhwmd1W
-         WORpG2RcuEwmLFpD3MDzdso+hMsnK+rlrnhXI8qUJ9KLQYTA79geonWWXj98T44X46H0
-         U7mWXyp7AW0DYsAyRZudcQW/OhfjeQ5xbwbGgAcxRV6Me+hplhg207AEzTETDJhHLR1b
-         yDzbrNqJzLi8yir7tKk6LrfKQojz4cwjs5VilqO9nsATIYGqejC13zJegQb5NgEYLfoe
-         DPPA==
-X-Forwarded-Encrypted: i=1; AJvYcCUeygu4cR1Q6Zb27uUG39ge5u5D0G0OgcpCwarTyG/Fb5kJHSb+hn3YIePLwAPR1+4u06R4CrM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvAFQkHDlo2hpQRO24xGGxPd2igVSkJ6WjhVH3QJvgFZbsMrNf
-	PCZkQu00hHNVuMGChGMbwdDxlSPEYShvP497szi8pratN15DGJKjdwPwUpHdJ93Xn/Y=
-X-Gm-Gg: ASbGnctREjyoNbG3Teo53YI0vFobFe7RAOSwcA+2aVJLXeUQhMSGelNEHDEYooX5KXN
-	krsGJumhU3bO13aZMqVu1a+cS/eTEWojTsTNJSOaACJ/Rs2/sbe/qoNcSrc/LlY/q4K7O2fZDno
-	M3J1r4eBHqiqx+uRV+TUrmJJCNtNPmc6/a/yryKgx5ZdI+q3QIJhrajRhX7Cqa847XfuwgvC2Nb
-	hvPnV2gbWKayaLMBhGfrJDHuWOMVQNFjNDE1jIApmnvqKwrSmkXHs0CGvxg3HPujv7n/da5P79N
-	Zmvru+jYe/at5nvWkK0zUncDjalU997IPtsMpyrwS95Ey/fwd4TFz6E/NSploFXKIdNjgNGqAw8
-	xOwO5BHrRSlDA3gMH2DYXOiMi5U9jqEp9+Vo=
-X-Google-Smtp-Source: AGHT+IFkKB76IaSWWVxO1VqoPC1DAvppF9S5WYqdz/wBv8g28ZnA54hUe3zUoEpuXFiSeVDiy/Dncg==
-X-Received: by 2002:a05:6e02:164f:b0:3f3:82da:29f2 with SMTP id e9e14a558f8ab-3fd877813e7mr117569685ab.24.1757370935586;
-        Mon, 08 Sep 2025 15:35:35 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3f3de24e723sm112127645ab.7.2025.09.08.15.35.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Sep 2025 15:35:35 -0700 (PDT)
-Message-ID: <76c82c3c-9d76-4f74-ad44-a6ecad0e6590@linuxfoundation.org>
-Date: Mon, 8 Sep 2025 16:35:34 -0600
+	s=arc-20240116; t=1757370983; c=relaxed/simple;
+	bh=RfkCEJNwIHm+v8c8xmM6iTGfKSH+gVwC+9QZjpVBqKo=;
+	h=Date:To:From:Subject:Message-Id; b=TEIpoeZxonocXzNSurlt4TZs0l+s7tiDvf7jDsDyo3PM7C+8mcamLSvVk6pknyuY9wyymhwf1RyWcaiZtV5uiBKl2wTbp/njcnq78FhocIeStJBZq61Yzveys8he/FqVQDRTXWoluSfvI6urdQEsMgFX//B3zgNPQygkIK2wi+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=nUlNfPGc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A6CC4CEF1;
+	Mon,  8 Sep 2025 22:36:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757370983;
+	bh=RfkCEJNwIHm+v8c8xmM6iTGfKSH+gVwC+9QZjpVBqKo=;
+	h=Date:To:From:Subject:From;
+	b=nUlNfPGcfMwsrD71ttBz+iPrNZjGNYJF1ZNwFEaSvOBoF5l1JhoHuQ7kozFguzk0L
+	 aWEatXTysrYurUjZnATfzZvMbvurZseYL8pmx30FMeOBJkAz1+Mk1/ZVjDVNgs3WN+
+	 ebo0deqKv7JuMkbUR9IpgcTbNqglDWlr8IHtR3gI=
+Date: Mon, 08 Sep 2025 15:36:21 -0700
+To: mm-commits@vger.kernel.org,yuzhao@google.com,yuanchu@google.com,yangge1116@126.com,willy@infradead.org,will@kernel.org,weixugc@google.com,vbabka@suse.cz,stable@vger.kernel.org,shivankg@amd.com,riel@surriel.com,peterx@redhat.com,lizhe.67@bytedance.com,koct9i@gmail.com,keirf@google.com,jhubbard@nvidia.com,jgg@ziepe.ca,hch@infradead.org,hannes@cmpxchg.org,david@redhat.com,chrisl@kernel.org,axelrasmussen@google.com,aneesh.kumar@kernel.org,hughd@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-gup-check-ref_count-instead-of-lru-before-migration.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250908223622.D5A6CC4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.16 000/183] 6.16.6-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 9/7/25 13:57, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.16.6 release.
-> There are 183 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Tue, 09 Sep 2025 19:55:53 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.16.6-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.16.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
 
-Compiled and booted on my test system. No dmesg regressions.
+The patch titled
+     Subject: mm/gup: check ref_count instead of lru before migration
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-gup-check-ref_count-instead-of-lru-before-migration.patch
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-gup-check-ref_count-instead-of-lru-before-migration.patch
 
-thanks,
--- Shuah
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Hugh Dickins <hughd@google.com>
+Subject: mm/gup: check ref_count instead of lru before migration
+Date: Mon, 8 Sep 2025 15:15:03 -0700 (PDT)
+
+Patch series "mm: better GUP pin lru_add_drain_all()", v2.
+
+Series of lru_add_drain_all()-related patches, arising from recent mm/gup
+migration report from Will Deacon.
+
+
+This patch (of 6):
+
+Will Deacon reports:-
+
+When taking a longterm GUP pin via pin_user_pages(),
+__gup_longterm_locked() tries to migrate target folios that should not be
+longterm pinned, for example because they reside in a CMA region or
+movable zone.  This is done by first pinning all of the target folios
+anyway, collecting all of the longterm-unpinnable target folios into a
+list, dropping the pins that were just taken and finally handing the list
+off to migrate_pages() for the actual migration.
+
+It is critically important that no unexpected references are held on the
+folios being migrated, otherwise the migration will fail and
+pin_user_pages() will return -ENOMEM to its caller.  Unfortunately, it is
+relatively easy to observe migration failures when running pKVM (which
+uses pin_user_pages() on crosvm's virtual address space to resolve stage-2
+page faults from the guest) on a 6.15-based Pixel 6 device and this
+results in the VM terminating prematurely.
+
+In the failure case, 'crosvm' has called mlock(MLOCK_ONFAULT) on its
+mapping of guest memory prior to the pinning.  Subsequently, when
+pin_user_pages() walks the page-table, the relevant 'pte' is not present
+and so the faulting logic allocates a new folio, mlocks it with
+mlock_folio() and maps it in the page-table.
+
+Since commit 2fbb0c10d1e8 ("mm/munlock: mlock_page() munlock_page() batch
+by pagevec"), mlock/munlock operations on a folio (formerly page), are
+deferred.  For example, mlock_folio() takes an additional reference on the
+target folio before placing it into a per-cpu 'folio_batch' for later
+processing by mlock_folio_batch(), which drops the refcount once the
+operation is complete.  Processing of the batches is coupled with the LRU
+batch logic and can be forcefully drained with lru_add_drain_all() but as
+long as a folio remains unprocessed on the batch, its refcount will be
+elevated.
+
+This deferred batching therefore interacts poorly with the pKVM pinning
+scenario as we can find ourselves in a situation where the migration code
+fails to migrate a folio due to the elevated refcount from the pending
+mlock operation.
+
+Hugh Dickins adds:-
+
+!folio_test_lru() has never been a very reliable way to tell if an
+lru_add_drain_all() is worth calling, to remove LRU cache references to
+make the folio migratable: the LRU flag may be set even while the folio is
+held with an extra reference in a per-CPU LRU cache.
+
+5.18 commit 2fbb0c10d1e8 may have made it more unreliable.  Then 6.11
+commit 33dfe9204f29 ("mm/gup: clear the LRU flag of a page before adding
+to LRU batch") tried to make it reliable, by moving LRU flag clearing; but
+missed the mlock/munlock batches, so still unreliable as reported.
+
+And it turns out to be difficult to extend 33dfe9204f29's LRU flag
+clearing to the mlock/munlock batches: if they do benefit from batching,
+mlock/munlock cannot be so effective when easily suppressed while !LRU.
+
+Instead, switch to an expected ref_count check, which was more reliable
+all along: some more false positives (unhelpful drains) than before, and
+never a guarantee that the folio will prove migratable, but better.
+
+Note on PG_private_2: ceph and nfs are still using the deprecated
+PG_private_2 flag, with the aid of netfs and filemap support functions. 
+Although it is consistently matched by an increment of folio ref_count,
+folio_expected_ref_count() intentionally does not recognize it, and ceph
+folio migration currently depends on that for PG_private_2 folios to be
+rejected.  New references to the deprecated flag are discouraged, so do
+not add it into the collect_longterm_unpinnable_folios() calculation: but
+longterm pinning of transiently PG_private_2 ceph and nfs folios (an
+uncommon case) may invoke a redundant lru_add_drain_all().  And this makes
+easy the backport to earlier releases: up to and including 6.12, btrfs
+also used PG_private_2, but without a ref_count increment.
+
+Note for stable backports: requires 6.16 commit 86ebd50224c0 ("mm:
+add folio_expected_ref_count() for reference count calculation").
+
+Link: https://lkml.kernel.org/r/41395944-b0e3-c3ac-d648-8ddd70451d28@google.com
+Link: https://lkml.kernel.org/r/bd1f314a-fca1-8f19-cac0-b936c9614557@google.com
+Fixes: 9a4e9f3b2d73 ("mm: update get_user_pages_longterm to migrate pages allocated from CMA region")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Reported-by: Will Deacon <will@kernel.org>
+Closes: https://lore.kernel.org/linux-mm/20250815101858.24352-1-will@kernel.org/
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Keir Fraser <keirf@google.com>
+Cc: Konstantin Khlebnikov <koct9i@gmail.com>
+Cc: Li Zhe <lizhe.67@bytedance.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Shivank Garg <shivankg@amd.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Wei Xu <weixugc@google.com>
+Cc: yangge <yangge1116@126.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/gup.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/mm/gup.c~mm-gup-check-ref_count-instead-of-lru-before-migration
++++ a/mm/gup.c
+@@ -2307,7 +2307,8 @@ static unsigned long collect_longterm_un
+ 			continue;
+ 		}
+ 
+-		if (!folio_test_lru(folio) && drain_allow) {
++		if (drain_allow && folio_ref_count(folio) !=
++				   folio_expected_ref_count(folio) + 1) {
+ 			lru_add_drain_all();
+ 			drain_allow = false;
+ 		}
+_
+
+Patches currently in -mm which might be from hughd@google.com are
+
+mm-gup-check-ref_count-instead-of-lru-before-migration.patch
+mm-gup-local-lru_add_drain-to-avoid-lru_add_drain_all.patch
+mm-revert-mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch
+mm-revert-mm-vmscanc-fix-oom-on-swap-stress-test.patch
+mm-folio_may_be_lru_cached-unless-folio_test_large.patch
+mm-lru_add_drain_all-do-local-lru_add_drain-first.patch
+
 
