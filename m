@@ -1,93 +1,112 @@
-Return-Path: <stable+bounces-178877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9B3B489C1
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 12:14:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54206B489D1
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 12:15:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F1093C26D0
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 10:14:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EE591887623
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 10:16:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3368B2F3C1A;
-	Mon,  8 Sep 2025 10:13:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qe9MpACX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C912EC543;
+	Mon,  8 Sep 2025 10:15:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD71E2F7468;
-	Mon,  8 Sep 2025 10:13:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF09F510
+	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 10:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757326438; cv=none; b=UOwcO2RMIfpcLO9tYLoOFf1vzWrXHSZNHY97N0Ksfuz49+ZyULFZ9/Y7RVV8E6uwCoBkgEx81t2a6cPajn/wvXomTFfkx+zXHl3QCM8UmmzR+zFkroN+K83bMiPG/fpR4XpSif6HpNwlu4EiYp8zUaR86Nx71y+EDrE07UMmGcE=
+	t=1757326543; cv=none; b=iBKzI8fP1JHMrD/QaPAthw9vG+GNbVd0FNWj/UQPRcArxM/RfGceJ+a06W3bsWTDEJQAgwwdqvUWJosb+S28EIiacib4qbf4cxETnoMAtxpu47aozYU6mzZS+oYeg60S1JtfKQtB7NZbz2YMD/FhGfCz2JyeEaiRGxwTk69Olc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757326438; c=relaxed/simple;
-	bh=V94qzqT6EmHCxPQT3ZN6FCJ70fG56TOb8lu9nQhI4D8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AE1fGZnYJCjxcJr7oMFwdqFiqXPPqXh3IQZBxIx3N67Wyydtm7MwMHWsqc8/JZglOWsntihS6J0HmIhAE5B2Al+J7wRhJQuE4j+K/S6v6wrRhM0tSdOdxki4Ic6bmvXuJV67r2rl++LXuSj/n3fMWPlLWswAVQlWErGVxODEiCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qe9MpACX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983A0C4CEF9;
-	Mon,  8 Sep 2025 10:13:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757326438;
-	bh=V94qzqT6EmHCxPQT3ZN6FCJ70fG56TOb8lu9nQhI4D8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qe9MpACXkeUd9jHlN1j//64hnAQuYMHeyAldfY/FEO6qlFulWpVjw3Nk153/wETUO
-	 2dPXGI7kveHUxJ28u890X2oP8hoyFTsgwp1l5TZIZyFNHXYZuIlLlu7Wp7bns6FHXM
-	 pYIfPBGlcf6p1d17B/9C18KfZfsrpwpXCaKxYGhAXkFiVm8Rv6U6gnpqxe+P3sksSD
-	 uw5NpW/o6wI81YtfEzn1uuENY5rLBZmH+YfZqIZ7Xur2xWS8uOzYqfPVPUSYJEdX2I
-	 skWkN5WUW0VquYPE6/6rWoJf7AXD6KJKWc+WYiDht8R1KkGeeocCNurcgjdjc0PRzm
-	 22Doa8LY3Wmpw==
-Date: Mon, 8 Sep 2025 11:13:53 +0100
-From: Simon Horman <horms@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, david decotigny <decot@googlers.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de,
-	calvin@wbinvd.org, kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH net v3 3/3] selftest: netcons: create a torture test
-Message-ID: <20250908101353.GC2015@horms.kernel.org>
-References: <20250905-netconsole_torture-v3-0-875c7febd316@debian.org>
- <20250905-netconsole_torture-v3-3-875c7febd316@debian.org>
+	s=arc-20240116; t=1757326543; c=relaxed/simple;
+	bh=ycVUpcXTYQR0Q2Vc8ivcDnIY4lH1zsQjabtXfnTzHLY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Whlr5IZncor7IkpY3n5UNBdEqRcsxuEznwBn5nV9QBq6c20Ovg8eapVN4NRFANvupI0njHiWjwiuiiQBdHlsuWvhZNfxXyVzxjjAp2lTdA/No2JXPZdHDZPknTriOG5EnL/Sg4xQ4eUp6zKbL2o+R82C7K2FHVJVLjK6sngyezs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 94FBE1692;
+	Mon,  8 Sep 2025 03:15:31 -0700 (PDT)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 712333F66E;
+	Mon,  8 Sep 2025 03:15:38 -0700 (PDT)
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: stable@vger.kernel.org
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6.y] kunit: kasan_test: disable fortify string checker on kasan_strings() test
+Date: Mon,  8 Sep 2025 11:15:20 +0100
+Message-Id: <20250908101519.2184527-2-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2025090614-jaws-chihuahua-c86c@gregkh>
+References: <2025090614-jaws-chihuahua-c86c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250905-netconsole_torture-v3-3-875c7febd316@debian.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 05, 2025 at 10:25:09AM -0700, Breno Leitao wrote:
-> Create a netconsole test that puts a lot of pressure on the netconsole
-> list manipulation. Do it by creating dynamic targets and deleting
-> targets while messages are being sent. Also put interface down while the
-> messages are being sent, as creating parallel targets.
-> 
-> The code launches three background jobs on distinct schedules:
-> 
->  * Toggle netcons target every 30 iterations
->  * create and delete random_target every 50 iterations
->  * toggle iface every 70 iterations
-> 
-> This creates multiple concurrency sources that interact with netconsole
-> states. This is good practice to simulate stress, and exercise netpoll
-> and netconsole locks.
-> 
-> This test already found an issue as reported in [1]
-> 
-> Link: https://lore.kernel.org/all/20250901-netpoll_memleak-v1-1-34a181977dfc@debian.org/ [1]
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> Reviewed-by: Andre Carvalho <asantostc@gmail.com>
+Similar to commit 09c6304e38e4 ("kasan: test: fix compatibility with
+FORTIFY_SOURCE") the kernel is panicing in kasan_string().
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+This is due to the `src` and `ptr` not being hidden from the optimizer
+which would disable the runtime fortify string checker.
+
+Call trace:
+  __fortify_panic+0x10/0x20 (P)
+  kasan_strings+0x980/0x9b0
+  kunit_try_run_case+0x68/0x190
+  kunit_generic_run_threadfn_adapter+0x34/0x68
+  kthread+0x1c4/0x228
+  ret_from_fork+0x10/0x20
+ Code: d503233f a9bf7bfd 910003fd 9424b243 (d4210000)
+ ---[ end trace 0000000000000000 ]---
+ note: kunit_try_catch[128] exited with irqs disabled
+ note: kunit_try_catch[128] exited with preempt_count 1
+     # kasan_strings: try faulted: last
+** replaying previous printk message **
+     # kasan_strings: try faulted: last line seen mm/kasan/kasan_test_c.c:1600
+     # kasan_strings: internal error occurred preventing test case from running: -4
+
+Link: https://lkml.kernel.org/r/20250801120236.2962642-1-yeoreum.yun@arm.com
+Fixes: 73228c7ecc5e ("KASAN: port KASAN Tests to KUnit")
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 7a19afee6fb39df63ddea7ce78976d8c521178c6)
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+---
+ mm/kasan/kasan_test.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/mm/kasan/kasan_test.c b/mm/kasan/kasan_test.c
+index ecf9f5aa3520..9ca21d1e10ac 100644
+--- a/mm/kasan/kasan_test.c
++++ b/mm/kasan/kasan_test.c
+@@ -1053,6 +1053,7 @@ static void kasan_strings(struct kunit *test)
+
+ 	ptr = kmalloc(size, GFP_KERNEL | __GFP_ZERO);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr);
++	OPTIMIZER_HIDE_VAR(ptr);
+
+ 	kfree(ptr);
+
+--
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
 
