@@ -1,159 +1,125 @@
-Return-Path: <stable+bounces-178896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9417DB48C55
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 13:37:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 983D2B48CB1
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 13:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E715176594
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 11:37:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B04ED1B279EA
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 11:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5A52EB856;
-	Mon,  8 Sep 2025 11:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756592EDD6C;
+	Mon,  8 Sep 2025 11:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ExPoEner"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="lmeVY484"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120C72EA752;
-	Mon,  8 Sep 2025 11:37:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B462DE71C;
+	Mon,  8 Sep 2025 11:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757331455; cv=none; b=WXsrH09Jorgen5PDeEBCru5gIq6AtN6VWb1txKohcv5YI+1YCO4b0o+uIm0A5Xovq2Zil4ZZiaifoPsONq6BAphLXExszJJBbCbDoLAs2jVQXSe3MkmJqbBx2c7G46eElVHTwzDqZbGKXGicIz6SfPMJ/RfEbE8hFZCNFDAGq2o=
+	t=1757332738; cv=none; b=jknfEKUQklfATKmOPkfmWM5ILW15V4OUvE3TSHtZ3EEYQrrDpTfsu2dEN/oKoVxl/gKyaCaJRQNymPdAigRhKep9zQ9TKT/70MuH0cvYfV3wHS1aeWInowNX8r3deTlxuLaubRkkdCTtcmm35gbLS9H9YwFGM2y438OvDXcFbWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757331455; c=relaxed/simple;
-	bh=MVlqy3slV3y6ZjiaqPiDqOaBDefxpITHFzQvxKK8Xzg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aivjZU27cfoVG8KLECeAFC9vQ4Y5pKKaL2oYkUiZaRHVgl3c0RzGpks0vi4rQPSabosyK2LYbGjc6bo/bVdeAEUHJJEylCASqYQaiarMFkVnARkCmRGzsCIDYEsyFOPJGqvu0Uhmg/8QRqUeqoRE9QT67+hmp8kuVI23jNZtnHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ExPoEner; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3dae49b117bso3735264f8f.1;
-        Mon, 08 Sep 2025 04:37:33 -0700 (PDT)
+	s=arc-20240116; t=1757332738; c=relaxed/simple;
+	bh=6QOPQOr+MMPkIBn3rM6zrLTI8GvkuF3KweTHN1ROwhg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KYXv9pqOFazD/JNkyjh2JbCGYpQlqOlt0S1hVGMyojz0GT8HQShPCOJ1/8CzJ3tjmL5WkqZxDE4HThlswN2IRMEErSbP/QP7rnLpLunslYXc/rHuQVTyctb1criSOcMoYkY0fama2gGOlIY63fcvfg/spyjeDZgOU24WzXRpLmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=lmeVY484; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45ddddbe31fso11140985e9.1;
+        Mon, 08 Sep 2025 04:58:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757331452; x=1757936252; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0BqDeeLR0uUmM7C0k54IlZeBl9ozo62JGf6aTcx1wuY=;
-        b=ExPoEnerwOlu6R3mdtWPxDqoQwiE8YD4NgHpha7pas0plGznDzuOFj88U/759jeroL
-         8Uq2NFVtHnv3UN+7Ni2H6rXYqoC5/MO3e8qOeh5zzKp4ZKlJZ3ovMDIrkrR3+ym5KIs9
-         VSoAeDddgGJdH7Y6Uzz14Dk+OHhGFmeiFaXTfhgbC0KXEwrXGXiYJPydUUaD20vygim3
-         cI677N2H1jtNHxvP2EkC3eJ9Vno8xxIhSPFAZsUlw5uA55IuaNuq45mcTC0lDH08KbJM
-         NQDAknuTi4VkXuHkvcLd6PDEkcYe5WqKu2pf7AvWG/lWgdTujT2W6C/sOneZT8Jr4Njl
-         FOVw==
+        d=googlemail.com; s=20230601; t=1757332735; x=1757937535; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eRM+uyebU2Rj5lbvmGYz/DfavkBeN9Z38pQmhJrF7OY=;
+        b=lmeVY484HGXcZQ0G64EO2Z3nWZkGneRA80NdcIdEB/6h0WbEjgHFOM72b5Cb1wlK40
+         V6EA2CRscC+lhGQ+EFTbsaE0edHKpIo1R1y0S3/SIu0wRdpsNDeVXcyYSZrEAmf42DwI
+         EvieD7P6jte7ilqhbvFurCW0elvV8lCM7lIHJN5IO0d1uCwMHpduiZwSNyBnvXn+jyfc
+         OVMJ/K/92XgO/4hmD0pazBTL5pbUfEC5WTX63AkXQOJUf+AfQyomjHe2Ut6P4uUzsGA6
+         3byVje/5XlT4jlZzx74d2EYItgSDQuG0wQlHd/BvZ+CSgSoFKwJZLLCI8XICGyW84/e8
+         Vc6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757331452; x=1757936252;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0BqDeeLR0uUmM7C0k54IlZeBl9ozo62JGf6aTcx1wuY=;
-        b=Xyd4Fj95Q8itRegLUYXfDalo4hUkOh+hZu9P4Qaibl+WKZJHxrWWwL8Nj/l7BzGf+y
-         56dI5XPmBrwgr7vVfy8qvBfvkGWXaBitnH0ZK7WWNVdXRZacuH1axbZ3ilUgtWtXREE8
-         YQtFxsHoyxqoAMS+tbTIPp9dNEYV6jXlL+jxZTSVdbp84L1Eme5dCjt8FhXfnWD75zM+
-         cfNTnwDucc6qi8tVUdNls1xgBuZigbGo9xbc+FFk/CYvN9K+JSV+WHiifsQfcHo63Vsh
-         MgPp7vL0mKHKVSeIzPy0GQmkvrb0a2DRFhKnZb3c8iXwh0xCTKXd0UBqhKDbCuGPTwl3
-         aU+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWij0IP0STZF7uhma9p/c4wqqTGd9D+aqivRVvPIbDSkmo169utb76Jkn1qC2N/KIebLQxxN//qWRAS@vger.kernel.org, AJvYcCX+tmtOH6xRMY+PMNlAyOEt2+fUoZ+6eplbn/ULiNqdAMeP463suRTxsiAkutoFFS+WIQHMjMoOCo1nruSs@vger.kernel.org, AJvYcCXRUaI16DGvibuNpZu8KEx1NxMznP0sGV54bdWjr/PmoMvfMulSnMDaeGdtlDCXzVIUi7RLnZ8B@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+KxAP61Nw4vQFG0lV4zNAF/ec1XP7kSxSP+GTCTj06FoKTTtw
-	vpQKcUIY6U8X7aN3AYsr8BSK8mdAospLRCUJXT98B+TVza/SZxuvsQJe
-X-Gm-Gg: ASbGncvqkU3XVHExOIMD3sq4hWzU6JQPv+1b3xvQpp3M6I4HrodFNJKtMR/60KNCDcS
-	5yQEFLsU0ivyM9VE48M291xVKXgkbxfhIzc77aZPSjbXL0KqJNCXAtxth/85SfdX/+HduVHmDor
-	4Bz0adTgPCj7Ot1wkMxBWFgehTzpvbTKl4YlNiONAn/6SZ+tgM06RuIjW3ytiLMqZMD1lyiMCPz
-	N3dbaFOsn9OSGAF/IuOkzfIqTSTPNFTx1CBhgdSNnCjnvHET7kfwEu3IHT/ZeGQ+jkzbB+OoEBQ
-	FL20b7dsR/jp7pUAlVg9q+KutxxT8LgDfeeOy4EYtjhplWZg5wY0I383JCFAa2iA29Yrs59yUag
-	kh62ts23v5eH/KgFCV+V9Al9xNwIfg18TBZf83GRye3h1DDVpmNN3I9I0pBRcljTVL6DPF9md3X
-	8SB8qKNQ==
-X-Google-Smtp-Source: AGHT+IFrUOxvTJ9AYf/YKS8fAGRSCkemugao7SAvxFhArk8O3Bfk9qqs7HkwmxNa2NacfsANFOZUEQ==
-X-Received: by 2002:a05:6000:178e:b0:3d8:3eca:a978 with SMTP id ffacd0b85a97d-3e642e99b04mr5127314f8f.21.1757331451640;
-        Mon, 08 Sep 2025 04:37:31 -0700 (PDT)
-Received: from Ansuel-XPS24 (host-95-249-236-54.retail.telecomitalia.it. [95.249.236.54])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-45b7e8ab14esm476249525e9.21.2025.09.08.04.37.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 04:37:31 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Sean Wang <sean.wang@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Benjamin Larsson <benjamin.larsson@genexis.eu>,
-	linux-mediatek@lists.infradead.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] pinctrl: airoha: fix wrong MDIO function bitmaks
-Date: Mon,  8 Sep 2025 13:37:19 +0200
-Message-ID: <20250908113723.31559-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.51.0
+        d=1e100.net; s=20230601; t=1757332735; x=1757937535;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eRM+uyebU2Rj5lbvmGYz/DfavkBeN9Z38pQmhJrF7OY=;
+        b=kMiWqNld08kiJlwIm8fIexBuG0k03GG0JxBIz+o6eSU26FekfmbLr6etifZoK310UY
+         RfwrYkkPuP0GtrwDiG+W9LDDPR8SNANpJqUVujjCscA0QTOurylILQi+oDy2uEXe/Aju
+         Q5RXlIua4f8/rinta1kTOqsft6Pm9kFIbMgjg2At8U5eow7RiMKzUIzwkmdGnCeS2uPA
+         MEuC8YuQuXe8pVbTP0P5K0oOWyX7ITuTXmLK0uXOelnK4sURxd/7E5uuRO3UGoDfPN1B
+         KkE8dJ5Q5IJbrV9w8tMmQ4/G/gDWIneJw9zaj/pLGHzx4z6gw+0JkxkvpYdBU6wbuhQk
+         HXAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVhMlMu27QGNAnMIClsXb9e5FDSN74xwQO7D/caoLxm1Yfdgg5bbI1kCxUtfAss0MLDjePN/FsQ4FwfHKg=@vger.kernel.org, AJvYcCWvAjOcQ/0YCKVnU2/xPf0JRCTlN/MO2MxTMvdFHLRBCNTzV37NnJ/HJHHBAFv5EUTywfSu+TPk@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrCNUnT2EPDFpJvkfA9Uaji1aCaGTJ17HuJoSYYwzenpGNgWBA
+	cG9FTuazmZBAjRODhllA6s1mzVeUTjtxjhkYxIOuZMWoCeVWJBHQt2o=
+X-Gm-Gg: ASbGncv9yotBEhwh7Mzu3r23W/Sf4I+40DHX9Vol3E2eE5XgznpoOWtTOfbFat59qYQ
+	XoVALg00zvfKp9fEPeCerHDGXC52G+mWlCnVdDQR2WOXLvH0O38QgPdyLbcfH0ZT7bTeKK234Zh
+	hPsgWVgVEt3zKOY/mgghOpjbwaCep29iaUlCOkQJxTNy/DKM3Rm03uvDrTKR28RHXcWRGXwNPMb
+	aKWlNM/WAJVug/ZzZYiOoz11dCck3KopxWE+wIZTfzPTyrTeGMCB8RNU6Pqtrc43G2VkClMd8kQ
+	1GK8vQAjEjJlnXyu8l//c6Expg3diksuAaqvj21DGY/l+YZg5pTE2ksFiqnRJe7TrXT7KqaPKRF
+	/QML+xPCLrXCwDM38K5jLm7Ra/b/q3VhFQLd/USdIpHvUtt3J0OYoaSfF1znsSEB8u/z2AMKEdx
+	ahCwqKN9837A==
+X-Google-Smtp-Source: AGHT+IFZgWcpxr6NhhjmxZvbiZnvCl/sZZdpHsCBeK240GnMFcxyIzd1XotzPDvdvGrx0kcUWiMGQw==
+X-Received: by 2002:a05:600c:1f90:b0:45b:8f11:8e00 with SMTP id 5b1f17b1804b1-45dddee8f49mr54141185e9.37.1757332734483;
+        Mon, 08 Sep 2025 04:58:54 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2ac262.dip0.t-ipconnect.de. [91.42.194.98])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e12444de96sm16556416f8f.19.2025.09.08.04.58.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Sep 2025 04:58:54 -0700 (PDT)
+Message-ID: <09016717-6ae6-43d8-8985-54562dbbf956@googlemail.com>
+Date: Mon, 8 Sep 2025 13:58:52 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.16 000/183] 6.16.6-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org
+References: <20250907195615.802693401@linuxfoundation.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-With further testing with an attached Aeonsemi it was discovered that
-the pinctrl MDIO function applied the wrong bitmask. The error was
-probably caused by the confusing documentation related to these bits.
+Am 07.09.2025 um 21:57 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.16.6 release.
+> There are 183 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Inspecting what the bootloader actually configure, the SGMII_MDIO_MODE
-is never actually set but instead it's set force enable to the 2 GPIO
-(gpio 1-2) for MDC and MDIO pin.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-Applying this configuration permits correct functionality of any
-externally attached PHY.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Cc: stable@vger.kernel.org
-Fixes: 1c8ace2d0725 ("pinctrl: airoha: Add support for EN7581 SoC")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/pinctrl/mediatek/pinctrl-airoha.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pinctrl/mediatek/pinctrl-airoha.c b/drivers/pinctrl/mediatek/pinctrl-airoha.c
-index f7f8fd2f35fc..d89da9581c55 100644
---- a/drivers/pinctrl/mediatek/pinctrl-airoha.c
-+++ b/drivers/pinctrl/mediatek/pinctrl-airoha.c
-@@ -108,6 +108,9 @@
- #define JTAG_UDI_EN_MASK			BIT(4)
- #define JTAG_DFD_EN_MASK			BIT(3)
- 
-+#define REG_FORCE_GPIO_EN			0x0228
-+#define FORCE_GPIO_EN(n)			BIT(n)
-+
- /* LED MAP */
- #define REG_LAN_LED0_MAPPING			0x027c
- #define REG_LAN_LED1_MAPPING			0x0280
-@@ -718,17 +721,17 @@ static const struct airoha_pinctrl_func_group mdio_func_group[] = {
- 	{
- 		.name = "mdio",
- 		.regmap[0] = {
--			AIROHA_FUNC_MUX,
--			REG_GPIO_PON_MODE,
--			GPIO_SGMII_MDIO_MODE_MASK,
--			GPIO_SGMII_MDIO_MODE_MASK
--		},
--		.regmap[1] = {
- 			AIROHA_FUNC_MUX,
- 			REG_GPIO_2ND_I2C_MODE,
- 			GPIO_MDC_IO_MASTER_MODE_MODE,
- 			GPIO_MDC_IO_MASTER_MODE_MODE
- 		},
-+		.regmap[1] = {
-+			AIROHA_FUNC_MUX,
-+			REG_FORCE_GPIO_EN,
-+			FORCE_GPIO_EN(1) | FORCE_GPIO_EN(2),
-+			FORCE_GPIO_EN(1) | FORCE_GPIO_EN(2)
-+		},
- 		.regmap_size = 2,
- 	},
- };
+Beste Grüße,
+Peter Schneider
+
 -- 
-2.51.0
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
