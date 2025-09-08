@@ -1,81 +1,59 @@
-Return-Path: <stable+bounces-178971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF32B49B8E
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 23:09:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B503B49B91
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 23:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBF821897586
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 21:09:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E54647A6B6B
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 21:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A04B2DD60E;
-	Mon,  8 Sep 2025 21:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C891E2DCF61;
+	Mon,  8 Sep 2025 21:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="E2CMeczk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eDPw6/la"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com [50.112.246.219])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361A92C1587;
-	Mon,  8 Sep 2025 21:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=50.112.246.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8718047F4A
+	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 21:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757365757; cv=none; b=LuU+d/xvtngvHZdC/wMVsfIXdjgPZTCCYoMAgBL5S4Y2pdN2L54/nOB1a//k+i3Q0PlC3zgmywF1fns0KVFH/yy8vUizfrJs5oj+RslRHOIRtXvxFe402i+fU7TObNEDH14yiY0MsdUQKZ//f33sJi+YgfZjERNDsvLZw7b4JT4=
+	t=1757365857; cv=none; b=C6tnnNHrjgNvDBoDbiAZe7lwU+TcP/lZ2LtUtK/KRgyy4nynEC12D2ezNeyuLlY3AMV66VUvC1S3RpyR55kpUzyKN232soEz3NYcFGTBo+w6R7DX2kRxpWDH9ecb5AbATF+jrboSkt5TyxIPbSk9L2aq2WaDrtAjGJB+NEHJcOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757365757; c=relaxed/simple;
-	bh=/P0P7qBcbcYDutF7YAaxCs97+nxv2gaQfytGlpB/5p8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f96FcZkrrjlmKOGFNQQNyYnkkVYREbbzq71XyGePuc3W+IbhGtY8jgevNqlrOU/aDaT2q1MDdn3ZnKK5UECkFqGOadocGU0GyAMthJLd2AnOen/ijvZLex19sBxAnGUYzNqhQFmdO6IiAzw2T9+u4NJVsgW/TXaKVEDKd45fkuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=E2CMeczk; arc=none smtp.client-ip=50.112.246.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1757365756; x=1788901756;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gQiAiwFq2l0plLev52Qgg3ckSPW1kQUzFe2aH9v9SLY=;
-  b=E2CMeczkDyHjG7+TbixoqKAC+6RRcaAS2F8g0KHBbVXW4dUeaZB7flCb
-   wCI2UWlEeKXJmY0QDj3lMRLZPNSPYQ2fZ/Cp52LJLdH3CBN1u5HMlT5PG
-   JiDknlGzYcsm0q2ocIpABJHeOoA7yRn60o8863ow5OfIxxnioKRcE5VkL
-   wQh4yB/a+baEwWSu1nORfeVujcWycMdxeHNo85nimM0lVLeOl8ZNZusRj
-   NzIZreyix+G2ZtJNIalCUfJj8lNijDUTW4OyhI/SiJhmUyj/3wgGaNvx5
-   Qk1f2+zoPRdcFFB5QZnvhnVw4473rXjuNLsOFA5jZrl4cMua/jzWVNTSt
-   Q==;
-X-CSE-ConnectionGUID: HNW4PmLhTby4S2UJFDMUVg==
-X-CSE-MsgGUID: NyZMZRApT9qBGIzBV4tvyA==
-X-IronPort-AV: E=Sophos;i="6.18,249,1751241600"; 
-   d="scan'208";a="2524191"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 21:09:15 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.38.20:23813]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.47.90:2525] with esmtp (Farcaster)
- id a7cc81e2-07cb-4676-b62c-df1fbd09d378; Mon, 8 Sep 2025 21:09:15 +0000 (UTC)
-X-Farcaster-Flow-ID: a7cc81e2-07cb-4676-b62c-df1fbd09d378
-Received: from EX19D032UWA001.ant.amazon.com (10.13.139.62) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Mon, 8 Sep 2025 21:09:15 +0000
-Received: from dev-dsk-ajgja-2a-6a9b5603.us-west-2.amazon.com (172.22.68.79)
- by EX19D032UWA001.ant.amazon.com (10.13.139.62) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Mon, 8 Sep 2025 21:09:15 +0000
-From: Andrew Guerrero <ajgja@amazon.com>
-To: <gregkh@linuxfoundation.org>
-CC: <ajgja@amazon.com>, <akpm@linux-foundation.org>,
-	<cgroups@vger.kernel.org>, <gunnarku@amazon.com>, <guro@fb.com>,
-	<hannes@cmpxchg.org>, <roman.gushchin@linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <mhocko@kernel.org>,
-	<shakeel.butt@linux.dev>, <muchun.song@linux.dev>, <stable@vger.kernel.org>,
-	<vdavydov.dev@gmail.com>
-Subject: Re: [PATCH] mm: memcontrol: fix memcg accounting during cpu hotplug
-Date: Mon, 8 Sep 2025 21:09:00 +0000
-Message-ID: <20250908210900.24088-1-ajgja@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2025090735-glade-paralegal-cdd1@gregkh>
-References: <2025090735-glade-paralegal-cdd1@gregkh>
+	s=arc-20240116; t=1757365857; c=relaxed/simple;
+	bh=4sC2KbBI3ayiLkgTJYedDXF7MLDMV8qLrOYLLtjooPg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ik/4SiYZRfNZoni1kbthIxVYvYb0Epw33fgzodReCYbabMuT6XvmoVYaG7CpzBT9Yke1z0tq4xPo4RaZRUCK8pXkGVh52sASUWYn+WhkFsjxZ1yvaEUjBerzOVpQ7kapTQ3DZiUSCcUY1SPKm5ys/XsFYXg+WiP3obTfjWhRD3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eDPw6/la; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384D0C4CEF1;
+	Mon,  8 Sep 2025 21:10:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757365857;
+	bh=4sC2KbBI3ayiLkgTJYedDXF7MLDMV8qLrOYLLtjooPg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eDPw6/lauL4guH0InD0GevsPeAakCysKGFrrkT+YsoNcHn7A7NOzrQskFh8Y7YQ+h
+	 Zk21eige5X1nO6lAuoBdjOn0VvF1UKZIKM9PEz8iicxvxSItRGit9pHMnmESR1ipTW
+	 nQesFdZlhRbBKybvY9mvHIW0PIiIJq74BdXpqfaZUYFtBeDfwbxGODDbAKClRq/YyN
+	 J7wcUVaXdWTb7uLchwE+IvgTRkNaXWahJP18axXbvtLusAm7bH2u/Bss8TPyCmn+i6
+	 nBki8LIkMKQ8AxL1EFdThVkw4eqBF3Vcs9BWPlEUjrmNZcCzc/DPotJgAK2XKSNfjw
+	 AcFtqwlDDCowg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Alexandre Courbot <acourbot@google.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] media: mtk-vcodec: venc: avoid -Wenum-compare-conditional warning
+Date: Mon,  8 Sep 2025 17:10:54 -0400
+Message-ID: <20250908211054.2351463-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025041752-utensil-affront-c113@gregkh>
+References: <2025041752-utensil-affront-c113@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,47 +61,50 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D036UWB002.ant.amazon.com (10.13.139.139) To
- EX19D032UWA001.ant.amazon.com (10.13.139.62)
 
-On 2025-09-07 13:10 UTC, Greg KH wrote:
-> On Sat, Sep 06, 2025 at 03:21:08AM +0000, Andrew Guerrero wrote:
-> > This patch is intended for the 5.10 longterm release branch. It will not apply
-> > cleanly to mainline and is inadvertantly fixed by a larger series of changes in 
-> > later release branches:
-> > a3d4c05a4474 ("mm: memcontrol: fix cpuhotplug statistics flushing").
-> 
-> Why can't we take those instead?
-> 
-> > In 5.15, the counter flushing code is completely removed. This may be another
-> > viable option here too, though it's a larger change.
-> 
-> If it's not needed anymore, why not just remove it with the upstream
-> commits as well?
+From: Arnd Bergmann <arnd@arndb.de>
 
-Yeah, my understanding is the typical flow is to pull commits from upstream into
-stable branches. However, I'm not confident I know the the answer to "which
-upstream commits?" To get started,
+[ Upstream commit 07df4f23ef3ffe6fee697cd2e03623ad27108843 ]
 
-`git log -L :memcg_hotplug_cpu_dead:mm/memcontrol.c linux-5.10.y..linux-5.15.y`
+This is one of three clang warnings about incompatible enum types
+in a conditional expression:
 
-tells me that the upstream changes to pull are:
+drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c:597:29: error: conditional expression between different enumeration types ('enum scp_ipi_id' and 'enum ipi_id') [-Werror,-Wenum-compare-conditional]
+  597 |         inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
+      |                                    ^ ~~~~~~~~~~~~~~~~~   ~~~~~~~~~~~~~
 
-- https://lore.kernel.org/all/20210209163304.77088-1-hannes@cmpxchg.org/T/#u
-- https://lore.kernel.org/all/20210716212137.1391164-1-shakeelb@google.com/T/#u
+The code is correct, so just rework it to avoid the warning.
 
-However, these are substantial features that "fix" the issue indirectly by
-transitioning the memcg accounting system over to rstats. I can pick these 10
-upstream commits, but I'm worried I may overlook some additional patches from
-5.15.y that need to go along with them. I may need some guidance if we go this
-route.
+Fixes: 0dc4b3286125 ("media: mtk-vcodec: venc: support SCP firmware")
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Alexandre Courbot <acourbot@google.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[ Adapted file path ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/media/platform/mtk-vcodec/venc/venc_h264_if.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Another reasonable option is to take neither route. We can maintain this patch
-internally and then drop it once we upgrade to a new kernel version.
+diff --git a/drivers/media/platform/mtk-vcodec/venc/venc_h264_if.c b/drivers/media/platform/mtk-vcodec/venc/venc_h264_if.c
+index b6a4f2074fa57..97c9fa0b7ff13 100644
+--- a/drivers/media/platform/mtk-vcodec/venc/venc_h264_if.c
++++ b/drivers/media/platform/mtk-vcodec/venc/venc_h264_if.c
+@@ -513,7 +513,11 @@ static int h264_enc_init(struct mtk_vcodec_ctx *ctx)
+ 
+ 	inst->ctx = ctx;
+ 	inst->vpu_inst.ctx = ctx;
+-	inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
++	if (is_ext)
++		inst->vpu_inst.id = SCP_IPI_VENC_H264;
++	else
++		inst->vpu_inst.id = IPI_VENC_H264;
++
+ 	inst->hw_base = mtk_vcodec_get_reg_addr(inst->ctx, VENC_SYS);
+ 
+ 	mtk_vcodec_debug_enter(inst);
+-- 
+2.51.0
 
-Let me know how you would like to proceed.
-
-Thanks!
-Andrew
 
