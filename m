@@ -1,443 +1,424 @@
-Return-Path: <stable+bounces-178886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F81B48A45
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 12:36:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80EBBB48AB7
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 12:57:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35F911665AC
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 10:36:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B6C6189382D
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 10:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876D52FA0EE;
-	Mon,  8 Sep 2025 10:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD739224B12;
+	Mon,  8 Sep 2025 10:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="VZVi2V2+"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="N+TcfAKX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6482F90CE
-	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 10:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBF3189
+	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 10:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757327747; cv=none; b=gO+wLDMnPXtiyM8U7sIc2p67x3JTdKoqjihhMhEEWG/gkbmle7jaEX1H60XX3fhAKDJEHxSXb6TGlvAKRjp//g2D+pBeLiPBsPnv2yx8kGg1+XKh8m3dwiheo/vcSalvTxOwNWX/9gEw6SJfctyPxDj68F9AEmwW9zpbIQGX0O8=
+	t=1757329041; cv=none; b=c0ldql3W+xbQiLLKAfL3uci4RBPcSCxuGcPQuWmC2GNrDzUKCuZamr5nlzma69tPkLP90if19UGEqqnznGPrYaZ72YQjNzjmr+Eme9vwUucmHrjuW5T0zK+JE8yXc/LI4E9RCioXuE4eiDqSyt9WauUCNBGumxH6YGa3GZqiczQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757327747; c=relaxed/simple;
-	bh=0vpTaONNsXDvEHxLYnAi/l4GqqNBsDXzZ6dXnppbnHc=;
+	s=arc-20240116; t=1757329041; c=relaxed/simple;
+	bh=J3w6qY9PCZFjaNyyeVoNuwpwGMJhg0OcYAWzgUdhM/s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JRTC30XbeqrAOGU5dHGxeXleyeoMoxCpkIy5aWI5b+q2tavYg8v6NHgg7usSRugl4TL+iGmvxuo1oY3oHGzo5AlWLs1Tr/ApXaSLcY060VlT/K5k/YhKEYZHqBY2cB++n87Rhs0i8k4SFUghuEumFYIMIaKuBPuzhDJ3VoYMwq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=VZVi2V2+; arc=none smtp.client-ip=209.85.167.41
+	 To:Cc:Content-Type; b=h5PmAUAAUX6Dg5hF+0AlfbdfKbfMtWO+iH1ysYtpzGPHdM5Q1ITkN1J5P2nnoXhvy3HWX95tbRJr+qHN05TXCsoJfgHCQBAk/6Vwc7M685rXhjjnXSSRBSm7fc29DiWNBIF+kJSm9GAVic8xyZPs9TT13EE/4K0aZYDDK4jXhVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=N+TcfAKX; arc=none smtp.client-ip=209.85.167.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-55f6f434c96so3870690e87.2
-        for <stable@vger.kernel.org>; Mon, 08 Sep 2025 03:35:44 -0700 (PDT)
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-55f6507bd53so4463572e87.3
+        for <stable@vger.kernel.org>; Mon, 08 Sep 2025 03:57:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1757327742; x=1757932542; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1757329037; x=1757933837; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=H0OjuamAg1AYYzYDT7KWHOcNN/ieOqYf9J7+RttcE7k=;
-        b=VZVi2V2+oOlqxCSDA2v4dr05+WPJ43NYRJgi+7hdCBFASZSaFf2+1zG6yO3vcrBMGr
-         fX1Z5iBkQfxJ3Hn/ZFqNP52aAp1fG1DAc8QJPEAohqwrEBSJ4TScj7iMoBDBlQ8+UIsm
-         Q12feM/OzMtqlpXwd9NWMt1if0OC+5oxs0a+w=
+        bh=hGcenF+YC/5XFuCP7OyiZ6NB2gbp5SRf9ysb23eymnc=;
+        b=N+TcfAKXvrJrqF3mAYDiVjx/TE9aSBjMtGEdRWDPdR55j95khfHNjdkch8AVNk63Iu
+         rtoyCI3Ygc27SJK0V0qDU//84DvxD15Hn5oSEdnN4ply/YJB3NxkakesSrF7qF/EZth2
+         1vH5WLNzpX65D5WQokWejFAu6u01K/iYfGUAs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757327742; x=1757932542;
+        d=1e100.net; s=20230601; t=1757329037; x=1757933837;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=H0OjuamAg1AYYzYDT7KWHOcNN/ieOqYf9J7+RttcE7k=;
-        b=wZ6STMAi3mY85u3yrf3p+3lkfPu1vov1kiL+HsLxbE9b6kIdGOSUhpxaUA/xIh1zp4
-         ftR5meFMVP7YzcJMgu8CylTliHCLf3FrgOFyksygrLQb8tADDJSwxrfuX6j/kbbC8mvm
-         XPfAuYXtjWWPwa1dNhECo80002eosJ8dQ3Dw6bxF4D750gbBs/TaHUlIirAQ7SiLjUts
-         xfZSMIdV8cGOaZ1PHCK1zQSBvBNNDOLn1nNztN6XvgHeS2XCegkH6vnBI/Kka9EpKkKC
-         X1nypcanc/Rdkn999T2hk0QGPHKEMBZyBwCwfkCv9ai9fhbXynbRuDjcpUs3l4T73e85
-         Qefg==
-X-Forwarded-Encrypted: i=1; AJvYcCURNGZfgFM9brTE4l5b2yRUtvjUcJm5XMCiuAahF1CvrXws94KPh3h0Fg3kvDT3Nt4eiATP0D4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8DylnYOOvP3tlWWYS6CCQmB2Oq3qLnbWYlco+J/3xGNNc0nhM
-	tcDEeccQ/XLHx24O+12WKurMESppqIQQlTKuxzGl09OXBDcxNjylUK6Ky6PNJ5EXcUlw2U6F6cs
-	TOEg=
-X-Gm-Gg: ASbGncuyiVXGxqvDAzaEQL1ukSX9C8I6OOQ6ZsMZAPM6eiePohlS6M2BPge6T/HJIT5
-	0HdWWLk0TsTQDmo5A9jA3wieFjNg2NaNCKsfc/E57eKwlQjfhKi1vFafqEpocdhFuqZjm8UqIpF
-	fbrY6uamoN58woPWO1Jw+mZLDHXgy+YF0nk172rKjV0zEhhGByHWMxDw/gcykm09RFQiXozXdL4
-	moNu3uKtR1yJd2YWI7r30GV67iZC0BVH9Yq0eVkxxFuvm2YFxeKQXB0bTUpclvlKiAv9oe1XxqC
-	36vve1d/NGCqYTOmM20hgDmmzb16hgb6RtF7pjSCYWJx/adJCaTM3j0RM9Ndi6aIzccPJ2hVRs8
-	TAfdS+zRiSLAU1VfghpZQ6VvhYKXzN7CX296QZVNzDtCXIPrAccLCEFjQi3L8B/ZonU8Po34=
-X-Google-Smtp-Source: AGHT+IEIP+q7Z1ZaSsfZmmgCYg2yT7XfC1dybwWf+hTjMnoph6pAAswJi7iX7+xi8mm35zYulurDaA==
-X-Received: by 2002:a05:6512:6404:b0:55f:3f00:a837 with SMTP id 2adb3069b0e04-56262e1c31bmr1889443e87.40.1757327742338;
-        Mon, 08 Sep 2025 03:35:42 -0700 (PDT)
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com. [209.85.167.49])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5608acfd2ffsm3526982e87.107.2025.09.08.03.35.41
+        bh=hGcenF+YC/5XFuCP7OyiZ6NB2gbp5SRf9ysb23eymnc=;
+        b=c09X0iXBhv+d10AVDks4alQlx/IWqhsYat3sjytABYu2yslSlgnRDDyxmz723/5bac
+         Lfv/ZR3pAGkZXUiR4boqzEk2VK9YFk8CdRLipyvAwsQvowL7E4/9esGv49FmONZa+qN1
+         LI2i4cENSUcJqTx2if96Rbif6LdsTmHuHectD8sHxkBgvDhYK4vhJsMwM11qQxaUuoT2
+         SaGpoPMkjM+eWQcyLM6L+834cegW85u+PLXr14CpKElo04tAS1oPP7veRWgZbhzRr8vn
+         Wu3tGydYQSRNoNEqI9EJHEtLrZ9+DF6Up6KWTjftJ+0sPYP22PngMUW8NS83RHL7gjj5
+         pr9w==
+X-Forwarded-Encrypted: i=1; AJvYcCUUJrqVsY5qxIj25kXXt3fnBgveaX3r+y/JmyI+/ZDUR6GDg1mHavI6ZUzVW462J1v8OHSvriQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYljOvyn4qPz2o7OGMVW4yqC7VHvScmM1Dbw8ADRrzQ2mMVSlr
+	hOlbaoEovLK3BdoDlSs+egpwlZfCyrjPOWbhjjABdhPXlwnMbvHRU9zdekhlE5wAH8UDQayaNHI
+	F/FHYbA==
+X-Gm-Gg: ASbGncsWKIkE4MR+QuoDiav+exKzJcpXWS1jxj4CS6DcFO9Z9IGRKoHUqvVITy0eysB
+	/STMEZbdMgNBL61AncDWMUYQK7VZxJVQDFrAbdGV8aAR9/q8RISOXj0HbvOKeFVs3nvM9kVOGQT
+	ortCM34V/Tq14teuaLg+1HP4NxuzE5fuSYJL+pgFFmWroRLEjKpf2pI0In5GJZJI9bXf9VfMBv8
+	0dkWFFcqSw7aoLRk5SPwkc76Pxy0mos+qlNMoI+zNuXN0I5+o0ZfQ36fJlhCZHIf8wr2kZUnwTK
+	62C2raHzaVeP5gRvBwix8/X6y8536eAxBGJqkPkP0IcEL+JvRx/TCExIqhD8nYbecMUl/ga4EDk
+	63t4R/kVsNjPYpqesZh6VPkoF+cpVyIg5hflvYaBOxmxTCZ43XrFVe11U61K/PnQKCf74p54=
+X-Google-Smtp-Source: AGHT+IHt7znRFi/m5ziD0kbsSbMr6OAyfTdY3cVXWYp5PQTyT2bs0bnwbUZZmcE0uWfsVk6gwNRIqA==
+X-Received: by 2002:a05:6512:1546:10b0:562:d04d:fa07 with SMTP id 2adb3069b0e04-562d04dfadbmr1638565e87.32.1757329037257;
+        Mon, 08 Sep 2025 03:57:17 -0700 (PDT)
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com. [209.85.167.43])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5608ab5c266sm3545671e87.4.2025.09.08.03.57.16
         for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Sep 2025 03:35:41 -0700 (PDT)
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-560880bb751so4303949e87.3
-        for <stable@vger.kernel.org>; Mon, 08 Sep 2025 03:35:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVJeDnz/ZYSAJNpIoU/RVCuVCVbnDEYSe2jakI27jrLeztc5zNed5EeLxNJsmoyAg4BYavg8s4=@vger.kernel.org
-X-Received: by 2002:a05:6512:1507:10b0:562:d04d:fa0a with SMTP id
- 2adb3069b0e04-562d04dfb44mr2000620e87.31.1757327740719; Mon, 08 Sep 2025
- 03:35:40 -0700 (PDT)
+        Mon, 08 Sep 2025 03:57:16 -0700 (PDT)
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-55f646b1db8so4891255e87.0
+        for <stable@vger.kernel.org>; Mon, 08 Sep 2025 03:57:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWEz/d9+o+77ge/h0SCPhHhp3J2m8EEXFPZKUSDFsjqU5X4T0nQd9ieBcHDr6Tq9znjqYnLVII=@vger.kernel.org
+X-Received: by 2002:a05:6512:2349:b0:55f:43ab:b218 with SMTP id
+ 2adb3069b0e04-5626310bd87mr1890684e87.42.1757329035833; Mon, 08 Sep 2025
+ 03:57:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250820-uvc-thadeu2-v1-1-a04a7cc8fc76@chromium.org> <20250908103306.GD26062@pendragon.ideasonboard.com>
-In-Reply-To: <20250908103306.GD26062@pendragon.ideasonboard.com>
+References: <20250714-uvc-racemeta-v1-1-360de2e15a9a@chromium.org> <20250908102532.GC26062@pendragon.ideasonboard.com>
+In-Reply-To: <20250908102532.GC26062@pendragon.ideasonboard.com>
 From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 8 Sep 2025 12:35:27 +0200
-X-Gmail-Original-Message-ID: <CANiDSCvJjqczwLRH7TNqO7mocPfJeFeFVbKErXsDNX-qj1NwDA@mail.gmail.com>
-X-Gm-Features: Ac12FXx-tZDxRPG0HD-FdSc9X6vVC9nlrw4wr3Q1WEkqH9s7ID8PO9T15kSvMcI
-Message-ID: <CANiDSCvJjqczwLRH7TNqO7mocPfJeFeFVbKErXsDNX-qj1NwDA@mail.gmail.com>
-Subject: Re: [PATCH] media: uvcvideo: Mark invalid entities with id UVC_INVALID_ENTITY_ID
+Date: Mon, 8 Sep 2025 12:57:03 +0200
+X-Gmail-Original-Message-ID: <CANiDSCsFCADj9NHURG8FV-1mTj8XhtksEqtk75-i3C3e6YyXUQ@mail.gmail.com>
+X-Gm-Features: Ac12FXzHMMOUkBQJEV3GlBjOuzsp9XIgqy62IuL2jhQw2NGVfsg1PIqjcOL1gbY
+Message-ID: <CANiDSCsFCADj9NHURG8FV-1mTj8XhtksEqtk75-i3C3e6YyXUQ@mail.gmail.com>
+Subject: Re: [PATCH] media: uvcvideo: Fix race condition for meta buffer list
 To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Tomasz Sikora <sikora.tomus@gmail.com>, 
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, Hans de Goede <hansg@kernel.org>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, 
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	syzbot+0584f746fde3d52b4675@syzkaller.appspotmail.com, 
-	syzbot+dd320d114deb3f5bb79b@syzkaller.appspotmail.com
+Cc: Hans de Goede <hansg@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 8 Sept 2025 at 12:33, Laurent Pinchart
+Hi Laurent
+
+On Mon, 8 Sept 2025 at 12:25, Laurent Pinchart
 <laurent.pinchart@ideasonboard.com> wrote:
 >
-> Hello Ricardo,
+> Hi Ricardo,
 >
 > Thank you for the patch.
 >
-> On Wed, Aug 20, 2025 at 04:08:16PM +0000, Ricardo Ribalda wrote:
-> > From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> On Mon, Jul 14, 2025 at 10:23:45AM +0000, Ricardo Ribalda wrote:
+> > queue->irqueue contains a list of the buffers owned by the driver. The
+> > list is protected by queue->irqlock. uvc_queue_get_current_buffer()
+> > returns a pointer to the current buffer in that list, but does not
+> > remove the buffer from it. This can lead to race conditions.
 > >
-> > Per UVC 1.1+ specification 3.7.2, units and terminals must have a non-zero
-> > unique ID.
+> > Inspecting the code, it seems that the candidate for such race is
+> > uvc_queue_return_buffers(). For the capture queue, that function is
+> > called with the device streamoff, so no race can occur. On the other
+> > hand, the metadata queue, could trigger a race condition, because
+> > stop_streaming can be called with the device in any streaming state.
 > >
-> > ```
-> > Each Unit and Terminal within the video function is assigned a unique
-> > identification number, the Unit ID (UID) or Terminal ID (TID), contained in
-> > the bUnitID or bTerminalID field of the descriptor. The value 0x00 is
-> > reserved for undefined ID,
-> > ```
+> > We can solve this issue modifying the way the metadata buffer
+> > lifetime works. We can keep the queue->irqlock while the use the current
+> > metadata buffer.
 > >
-> > If we add a new entity with id 0 or a duplicated ID, it will be marked
-> > as UVC_INVALID_ENTITY_ID.
+> > The core of this change is uvc_video_decode_meta(), it now obtains the
+> > buffer and holds the spinlock instead of getting the buffer as an
+> > argument.
 > >
-> > In a previous attempt commit 3dd075fe8ebb ("media: uvcvideo: Require
-> > entities to have a non-zero unique ID"), we ignored all the invalid units,
-> > this broke a lot of non-compatible cameras. Hopefully we are more lucky
-> > this time.
-> >
-> > This also prevents some syzkaller reproducers from triggering warnings due
-> > to a chain of entities referring to themselves. In one particular case, an
-> > Output Unit is connected to an Input Unit, both with the same ID of 1. But
-> > when looking up for the source ID of the Output Unit, that same entity is
-> > found instead of the input entity, which leads to such warnings.
-> >
-> > In another case, a backward chain was considered finished as the source ID
-> > was 0. Later on, that entity was found, but its pads were not valid.
-> >
-> > Here is a sample stack trace for one of those cases.
-> >
-> > [   20.650953] usb 1-1: new high-speed USB device number 2 using dummy_hcd
-> > [   20.830206] usb 1-1: Using ep0 maxpacket: 8
-> > [   20.833501] usb 1-1: config 0 descriptor??
-> > [   21.038518] usb 1-1: string descriptor 0 read error: -71
-> > [   21.038893] usb 1-1: Found UVC 0.00 device <unnamed> (2833:0201)
-> > [   21.039299] uvcvideo 1-1:0.0: Entity type for entity Output 1 was not initialized!
-> > [   21.041583] uvcvideo 1-1:0.0: Entity type for entity Input 1 was not initialized!
-> > [   21.042218] ------------[ cut here ]------------
-> > [   21.042536] WARNING: CPU: 0 PID: 9 at drivers/media/mc/mc-entity.c:1147 media_create_pad_link+0x2c4/0x2e0
-> > [   21.043195] Modules linked in:
-> > [   21.043535] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:1 Not tainted 6.11.0-rc7-00030-g3480e43aeccf #444
-> > [   21.044101] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-> > [   21.044639] Workqueue: usb_hub_wq hub_event
-> > [   21.045100] RIP: 0010:media_create_pad_link+0x2c4/0x2e0
-> > [   21.045508] Code: fe e8 20 01 00 00 b8 f4 ff ff ff 48 83 c4 30 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 0f 0b eb e9 0f 0b eb 0a 0f 0b eb 06 <0f> 0b eb 02 0f 0b b8 ea ff ff ff eb d4 66 2e 0f 1f 84 00 00 00 00
-> > [   21.046801] RSP: 0018:ffffc9000004b318 EFLAGS: 00010246
-> > [   21.047227] RAX: ffff888004e5d458 RBX: 0000000000000000 RCX: ffffffff818fccf1
-> > [   21.047719] RDX: 000000000000007b RSI: 0000000000000000 RDI: ffff888004313290
-> > [   21.048241] RBP: ffff888004313290 R08: 0001ffffffffffff R09: 0000000000000000
-> > [   21.048701] R10: 0000000000000013 R11: 0001888004313290 R12: 0000000000000003
-> > [   21.049138] R13: ffff888004313080 R14: ffff888004313080 R15: 0000000000000000
-> > [   21.049648] FS:  0000000000000000(0000) GS:ffff88803ec00000(0000) knlGS:0000000000000000
-> > [   21.050271] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > [   21.050688] CR2: 0000592cc27635b0 CR3: 000000000431c000 CR4: 0000000000750ef0
-> > [   21.051136] PKRU: 55555554
-> > [   21.051331] Call Trace:
-> > [   21.051480]  <TASK>
-> > [   21.051611]  ? __warn+0xc4/0x210
-> > [   21.051861]  ? media_create_pad_link+0x2c4/0x2e0
-> > [   21.052252]  ? report_bug+0x11b/0x1a0
-> > [   21.052540]  ? trace_hardirqs_on+0x31/0x40
-> > [   21.052901]  ? handle_bug+0x3d/0x70
-> > [   21.053197]  ? exc_invalid_op+0x1a/0x50
-> > [   21.053511]  ? asm_exc_invalid_op+0x1a/0x20
-> > [   21.053924]  ? media_create_pad_link+0x91/0x2e0
-> > [   21.054364]  ? media_create_pad_link+0x2c4/0x2e0
-> > [   21.054834]  ? media_create_pad_link+0x91/0x2e0
-> > [   21.055131]  ? _raw_spin_unlock+0x1e/0x40
-> > [   21.055441]  ? __v4l2_device_register_subdev+0x202/0x210
-> > [   21.055837]  uvc_mc_register_entities+0x358/0x400
-> > [   21.056144]  uvc_register_chains+0x1fd/0x290
-> > [   21.056413]  uvc_probe+0x380e/0x3dc0
-> > [   21.056676]  ? __lock_acquire+0x5aa/0x26e0
-> > [   21.056946]  ? find_held_lock+0x33/0xa0
-> > [   21.057196]  ? kernfs_activate+0x70/0x80
-> > [   21.057533]  ? usb_match_dynamic_id+0x1b/0x70
-> > [   21.057811]  ? find_held_lock+0x33/0xa0
-> > [   21.058047]  ? usb_match_dynamic_id+0x55/0x70
-> > [   21.058330]  ? lock_release+0x124/0x260
-> > [   21.058657]  ? usb_match_one_id_intf+0xa2/0x100
-> > [   21.058997]  usb_probe_interface+0x1ba/0x330
-> > [   21.059399]  really_probe+0x1ba/0x4c0
-> > [   21.059662]  __driver_probe_device+0xb2/0x180
-> > [   21.059944]  driver_probe_device+0x5a/0x100
-> > [   21.060170]  __device_attach_driver+0xe9/0x160
-> > [   21.060427]  ? __pfx___device_attach_driver+0x10/0x10
-> > [   21.060872]  bus_for_each_drv+0xa9/0x100
-> > [   21.061312]  __device_attach+0xed/0x190
-> > [   21.061812]  device_initial_probe+0xe/0x20
-> > [   21.062229]  bus_probe_device+0x4d/0xd0
-> > [   21.062590]  device_add+0x308/0x590
-> > [   21.062912]  usb_set_configuration+0x7b6/0xaf0
-> > [   21.063403]  usb_generic_driver_probe+0x36/0x80
-> > [   21.063714]  usb_probe_device+0x7b/0x130
-> > [   21.063936]  really_probe+0x1ba/0x4c0
-> > [   21.064111]  __driver_probe_device+0xb2/0x180
-> > [   21.064577]  driver_probe_device+0x5a/0x100
-> > [   21.065019]  __device_attach_driver+0xe9/0x160
-> > [   21.065403]  ? __pfx___device_attach_driver+0x10/0x10
-> > [   21.065820]  bus_for_each_drv+0xa9/0x100
-> > [   21.066094]  __device_attach+0xed/0x190
-> > [   21.066535]  device_initial_probe+0xe/0x20
-> > [   21.066992]  bus_probe_device+0x4d/0xd0
-> > [   21.067250]  device_add+0x308/0x590
-> > [   21.067501]  usb_new_device+0x347/0x610
-> > [   21.067817]  hub_event+0x156b/0x1e30
-> > [   21.068060]  ? process_scheduled_works+0x48b/0xaf0
-> > [   21.068337]  process_scheduled_works+0x5a3/0xaf0
-> > [   21.068668]  worker_thread+0x3cf/0x560
-> > [   21.068932]  ? kthread+0x109/0x1b0
-> > [   21.069133]  kthread+0x197/0x1b0
-> > [   21.069343]  ? __pfx_worker_thread+0x10/0x10
-> > [   21.069598]  ? __pfx_kthread+0x10/0x10
-> > [   21.069908]  ret_from_fork+0x32/0x40
-> > [   21.070169]  ? __pfx_kthread+0x10/0x10
-> > [   21.070424]  ret_from_fork_asm+0x1a/0x30
-> > [   21.070737]  </TASK>
-> >
+> > Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > Closes: https://lore.kernel.org/linux-media/20250630141707.GG20333@pendragon.ideasonboard.com/
 > > Cc: stable@vger.kernel.org
-> > Reported-by: syzbot+0584f746fde3d52b4675@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=0584f746fde3d52b4675
-> > Reported-by: syzbot+dd320d114deb3f5bb79b@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=dd320d114deb3f5bb79b
-> > Fixes: a3fbc2e6bb05 ("media: mc-entity.c: use WARN_ON, validate link pads")
-> > Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> > Co-developed-by: Ricardo Ribalda <ribalda@chromium.org>
+> > Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
 > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 > > ---
-> > This is a new attempt to land a Thadeu's patch, but being a bit more
-> > benevolent on the non-compliant cameras.
+> >  drivers/media/usb/uvc/uvc_isight.c |  3 +-
+> >  drivers/media/usb/uvc/uvc_queue.c  |  4 +-
+> >  drivers/media/usb/uvc/uvc_video.c  | 92 ++++++++++++++++++++++----------------
+> >  drivers/media/usb/uvc/uvcvideo.h   |  8 ++--
+> >  4 files changed, 62 insertions(+), 45 deletions(-)
 > >
-> > I have kept most of Thadeu's code, but instead of returning an error
-> > when trying to allocate an invalid entity, I replace its id with a
-> > special ID.
+> > diff --git a/drivers/media/usb/uvc/uvc_isight.c b/drivers/media/usb/uvc/uvc_isight.c
+> > index 43cda5e760a345af56186603e2f0594b814cdbcb..f0e71744d25cab98184335b46569b31ba1346e12 100644
+> > --- a/drivers/media/usb/uvc/uvc_isight.c
+> > +++ b/drivers/media/usb/uvc/uvc_isight.c
+> > @@ -98,8 +98,7 @@ static int isight_decode(struct uvc_video_queue *queue, struct uvc_buffer *buf,
+> >       return 0;
+> >  }
 > >
-> > Thadeu can you validate this new version?
-> >
-> > Tomasz can you also check this patch with your non compliant camera?
-> >
-> > Thanks!
-> > ---
-> >  drivers/media/usb/uvc/uvc_driver.c | 73 ++++++++++++++++++++++++--------------
-> >  drivers/media/usb/uvc/uvcvideo.h   |  2 ++
-> >  2 files changed, 48 insertions(+), 27 deletions(-)
-> >
-> > diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-> > index 775bede0d93d9b3e5391914aa395326d3de6a3b1..46923cd85f0b6790f01ae6b393571ca7660900f7 100644
-> > --- a/drivers/media/usb/uvc/uvc_driver.c
-> > +++ b/drivers/media/usb/uvc/uvc_driver.c
-> > @@ -137,6 +137,9 @@ struct uvc_entity *uvc_entity_by_id(struct uvc_device *dev, int id)
+> > -void uvc_video_decode_isight(struct uvc_urb *uvc_urb, struct uvc_buffer *buf,
+> > -                     struct uvc_buffer *meta_buf)
+> > +void uvc_video_decode_isight(struct uvc_urb *uvc_urb, struct uvc_buffer *buf)
 > >  {
-> >       struct uvc_entity *entity;
-> >
-> > +     if (id == UVC_INVALID_ENTITY_ID)
-> > +             return NULL;
-> > +
-> >       list_for_each_entry(entity, &dev->entities, list) {
-> >               if (entity->id == id)
-> >                       return entity;
-> > @@ -795,14 +798,27 @@ static const u8 uvc_media_transport_input_guid[16] =
-> >       UVC_GUID_UVC_MEDIA_TRANSPORT_INPUT;
-> >  static const u8 uvc_processing_guid[16] = UVC_GUID_UVC_PROCESSING;
-> >
-> > -static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
-> > -             unsigned int num_pads, unsigned int extra_size)
-> > +static struct uvc_entity *uvc_alloc_new_entity(struct uvc_device *dev, u16 type,
-> > +                                            u16 id, unsigned int num_pads,
-> > +                                            unsigned int extra_size)
+> >       struct urb *urb = uvc_urb->urb;
+> >       struct uvc_streaming *stream = uvc_urb->stream;
+> > diff --git a/drivers/media/usb/uvc/uvc_queue.c b/drivers/media/usb/uvc/uvc_queue.c
+> > index 790184c9843d211d34fa7d66801631d5a07450bd..e184e3ae0f59f142a683263168724bca64509628 100644
+> > --- a/drivers/media/usb/uvc/uvc_queue.c
+> > +++ b/drivers/media/usb/uvc/uvc_queue.c
+> > @@ -310,9 +310,11 @@ void uvc_queue_cancel(struct uvc_video_queue *queue, int disconnect)
+> >   * Buffers may span multiple packets, and even URBs, therefore the active buffer
+> >   * remains on the queue until the EOF marker.
+> >   */
+> > -static struct uvc_buffer *
+> > +struct uvc_buffer *
+> >  __uvc_queue_get_current_buffer(struct uvc_video_queue *queue)
 > >  {
-> >       struct uvc_entity *entity;
-> >       unsigned int num_inputs;
-> >       unsigned int size;
-> >       unsigned int i;
-> >
-> > +     /* Per UVC 1.1+ spec 3.7.2, the ID should be non-zero. */
-> > +     if (id == 0) {
-> > +             dev_err(&dev->intf->dev, "Found Unit with invalid ID 0.\n");
->
-> s/0./0/
->
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
->
-> Should I wait for Thadeu and Tomasz to check this new patch before
-> applying it ?
-
-It has been almost 3 weeks of radio-silence... I'd recommend to apply it.
-
-We can always fix it afterwards.
-
->
-> > +             id = UVC_INVALID_ENTITY_ID;
-> > +     }
+> > +     lockdep_assert_held(&queue->irqlock);
 > > +
-> > +     /* Per UVC 1.1+ spec 3.7.2, the ID is unique. */
-> > +     if (uvc_entity_by_id(dev, id)) {
-> > +             dev_err(&dev->intf->dev, "Found multiple Units with ID %u\n", id);
-> > +             id = UVC_INVALID_ENTITY_ID;
-> > +     }
+> >       if (list_empty(&queue->irqqueue))
+> >               return NULL;
+> >
+> > diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
+> > index 2e377e7b9e81599aca19b800a171cc16a09c1e8a..d6777090d0f892ffe93696c915acd4ec171ca798 100644
+> > --- a/drivers/media/usb/uvc/uvc_video.c
+> > +++ b/drivers/media/usb/uvc/uvc_video.c
+> > @@ -1428,9 +1428,11 @@ static int uvc_video_encode_data(struct uvc_streaming *stream,
+> >   * previous header.
+> >   */
+> >  static void uvc_video_decode_meta(struct uvc_streaming *stream,
+> > -                               struct uvc_buffer *meta_buf,
+> >                                 const u8 *mem, unsigned int length)
+> >  {
+> > +     struct vb2_queue *vb2_qmeta = stream->meta.vdev.queue;
+> > +     struct uvc_video_queue *qmeta = &stream->meta.queue;
+> > +     struct uvc_buffer *meta_buf;
+> >       struct uvc_meta_buf *meta;
+> >       size_t len_std = 2;
+> >       bool has_pts, has_scr;
+> > @@ -1439,7 +1441,13 @@ static void uvc_video_decode_meta(struct uvc_streaming *stream,
+> >       ktime_t time;
+> >       const u8 *scr;
+> >
+> > -     if (!meta_buf || length == 2)
+> > +     if (!vb2_qmeta || length <= 2)
+> > +             return;
 > > +
-> >       extra_size = roundup(extra_size, sizeof(*entity->pads));
-> >       if (num_pads)
-> >               num_inputs = type & UVC_TERM_OUTPUT ? num_pads : num_pads - 1;
-> > @@ -812,7 +828,7 @@ static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
-> >            + num_inputs;
-> >       entity = kzalloc(size, GFP_KERNEL);
-> >       if (entity == NULL)
-> > -             return NULL;
-> > +             return ERR_PTR(-ENOMEM);
-> >
-> >       entity->id = id;
-> >       entity->type = type;
-> > @@ -924,10 +940,10 @@ static int uvc_parse_vendor_control(struct uvc_device *dev,
-> >                       break;
-> >               }
-> >
-> > -             unit = uvc_alloc_entity(UVC_VC_EXTENSION_UNIT, buffer[3],
-> > -                                     p + 1, 2*n);
-> > -             if (unit == NULL)
-> > -                     return -ENOMEM;
-> > +             unit = uvc_alloc_new_entity(dev, UVC_VC_EXTENSION_UNIT,
-> > +                                         buffer[3], p + 1, 2 * n);
-> > +             if (IS_ERR(unit))
-> > +                     return PTR_ERR(unit);
-> >
-> >               memcpy(unit->guid, &buffer[4], 16);
-> >               unit->extension.bNumControls = buffer[20];
-> > @@ -1036,10 +1052,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
-> >                       return -EINVAL;
-> >               }
-> >
-> > -             term = uvc_alloc_entity(type | UVC_TERM_INPUT, buffer[3],
-> > -                                     1, n + p);
-> > -             if (term == NULL)
-> > -                     return -ENOMEM;
-> > +             term = uvc_alloc_new_entity(dev, type | UVC_TERM_INPUT,
-> > +                                         buffer[3], 1, n + p);
-> > +             if (IS_ERR(term))
-> > +                     return PTR_ERR(term);
-> >
-> >               if (UVC_ENTITY_TYPE(term) == UVC_ITT_CAMERA) {
-> >                       term->camera.bControlSize = n;
-> > @@ -1095,10 +1111,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
-> >                       return 0;
-> >               }
-> >
-> > -             term = uvc_alloc_entity(type | UVC_TERM_OUTPUT, buffer[3],
-> > -                                     1, 0);
-> > -             if (term == NULL)
-> > -                     return -ENOMEM;
-> > +             term = uvc_alloc_new_entity(dev, type | UVC_TERM_OUTPUT,
-> > +                                         buffer[3], 1, 0);
-> > +             if (IS_ERR(term))
-> > +                     return PTR_ERR(term);
-> >
-> >               memcpy(term->baSourceID, &buffer[7], 1);
-> >
-> > @@ -1117,9 +1133,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
-> >                       return -EINVAL;
-> >               }
-> >
-> > -             unit = uvc_alloc_entity(buffer[2], buffer[3], p + 1, 0);
-> > -             if (unit == NULL)
-> > -                     return -ENOMEM;
-> > +             unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3],
-> > +                                         p + 1, 0);
-> > +             if (IS_ERR(unit))
-> > +                     return PTR_ERR(unit);
-> >
-> >               memcpy(unit->baSourceID, &buffer[5], p);
-> >
-> > @@ -1139,9 +1156,9 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
-> >                       return -EINVAL;
-> >               }
-> >
-> > -             unit = uvc_alloc_entity(buffer[2], buffer[3], 2, n);
-> > -             if (unit == NULL)
-> > -                     return -ENOMEM;
-> > +             unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3], 2, n);
-> > +             if (IS_ERR(unit))
-> > +                     return PTR_ERR(unit);
-> >
-> >               memcpy(unit->baSourceID, &buffer[4], 1);
-> >               unit->processing.wMaxMultiplier =
-> > @@ -1168,9 +1185,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
-> >                       return -EINVAL;
-> >               }
-> >
-> > -             unit = uvc_alloc_entity(buffer[2], buffer[3], p + 1, n);
-> > -             if (unit == NULL)
-> > -                     return -ENOMEM;
-> > +             unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3],
-> > +                                         p + 1, n);
-> > +             if (IS_ERR(unit))
-> > +                     return PTR_ERR(unit);
-> >
-> >               memcpy(unit->guid, &buffer[4], 16);
-> >               unit->extension.bNumControls = buffer[20];
-> > @@ -1315,9 +1333,10 @@ static int uvc_gpio_parse(struct uvc_device *dev)
-> >               return dev_err_probe(&dev->intf->dev, irq,
-> >                                    "No IRQ for privacy GPIO\n");
-> >
-> > -     unit = uvc_alloc_entity(UVC_EXT_GPIO_UNIT, UVC_EXT_GPIO_UNIT_ID, 0, 1);
-> > -     if (!unit)
-> > -             return -ENOMEM;
-> > +     unit = uvc_alloc_new_entity(dev, UVC_EXT_GPIO_UNIT,
-> > +                                 UVC_EXT_GPIO_UNIT_ID, 0, 1);
-> > +     if (IS_ERR(unit))
-> > +             return PTR_ERR(unit);
-> >
-> >       unit->gpio.gpio_privacy = gpio_privacy;
-> >       unit->gpio.irq = irq;
-> > diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-> > index 70dc80e2b213dff333665022b3410b175d072793..881bfa0caab22714c26a3260cc843bda8e2706a4 100644
-> > --- a/drivers/media/usb/uvc/uvcvideo.h
-> > +++ b/drivers/media/usb/uvc/uvcvideo.h
-> > @@ -41,6 +41,8 @@
-> >  #define UVC_EXT_GPIO_UNIT            0x7ffe
-> >  #define UVC_EXT_GPIO_UNIT_ID         0x100
-> >
-> > +#define UVC_INVALID_ENTITY_ID          0xffff
+> > +     guard(spinlock_irqsave)(&qmeta->irqlock);
+>
+> This keeps the spinlock held for longer than I would like. We should
+> really try to minimize the amount of work performed with a spinlock
+> held.
+
+We are using meta_buf the whole function, which can disappear if  the
+user closes the metadata file descriptor.
+
+Besides memcopying meta_buf, how would you suggest reducing the
+spinlock held time?
+
+Regards!
+
+
+>
 > > +
-> >  /* ------------------------------------------------------------------------
-> >   * Driver specific constants.
+> > +     meta_buf = __uvc_queue_get_current_buffer(qmeta);
+> > +     if (!meta_buf)
+> >               return;
+> >
+> >       has_pts = mem[1] & UVC_STREAM_PTS;
+> > @@ -1512,30 +1520,48 @@ static void uvc_video_validate_buffer(const struct uvc_streaming *stream,
+> >   * Completion handler for video URBs.
 > >   */
 > >
+> > -static void uvc_video_next_buffers(struct uvc_streaming *stream,
+> > -             struct uvc_buffer **video_buf, struct uvc_buffer **meta_buf)
+> > +static void uvc_video_next_meta(struct uvc_streaming *stream,
+> > +                             struct uvc_buffer *video_buf)
+> >  {
+> > -     uvc_video_validate_buffer(stream, *video_buf);
+> > +     struct vb2_queue *vb2_qmeta = stream->meta.vdev.queue;
+> > +     struct uvc_video_queue *qmeta = &stream->meta.queue;
+> > +     struct uvc_buffer *meta_buf;
+> > +     struct vb2_v4l2_buffer *vb2_meta;
+> > +     const struct vb2_v4l2_buffer *vb2_video;
+> >
+> > -     if (*meta_buf) {
+> > -             struct vb2_v4l2_buffer *vb2_meta = &(*meta_buf)->buf;
+> > -             const struct vb2_v4l2_buffer *vb2_video = &(*video_buf)->buf;
+> > +     if (!vb2_qmeta)
+> > +             return;
+> >
+> > -             vb2_meta->sequence = vb2_video->sequence;
+> > -             vb2_meta->field = vb2_video->field;
+> > -             vb2_meta->vb2_buf.timestamp = vb2_video->vb2_buf.timestamp;
+> > +     guard(spinlock_irqsave)(&qmeta->irqlock);
+> >
+> > -             (*meta_buf)->state = UVC_BUF_STATE_READY;
+> > -             if (!(*meta_buf)->error)
+> > -                     (*meta_buf)->error = (*video_buf)->error;
+> > -             *meta_buf = uvc_queue_next_buffer(&stream->meta.queue,
+> > -                                               *meta_buf);
+> > -     }
+> > -     *video_buf = uvc_queue_next_buffer(&stream->queue, *video_buf);
+> > +     meta_buf = __uvc_queue_get_current_buffer(qmeta);
+> > +     if (!meta_buf)
+> > +             return;
+> > +     list_del(&meta_buf->queue);
+> > +
+> > +     vb2_meta = &meta_buf->buf;
+> > +     vb2_video = &video_buf->buf;
+> > +
+> > +     vb2_meta->sequence = vb2_video->sequence;
+> > +     vb2_meta->field = vb2_video->field;
+> > +     vb2_meta->vb2_buf.timestamp = vb2_video->vb2_buf.timestamp;
+> > +     meta_buf->state = UVC_BUF_STATE_READY;
+> > +     if (!meta_buf->error)
+> > +             meta_buf->error = video_buf->error;
+> > +
+> > +     uvc_queue_buffer_release(meta_buf);
+> > +}
+> > +
+> > +static struct uvc_buffer *uvc_video_next_buffer(struct uvc_streaming *stream,
+> > +                                             struct uvc_buffer *video_buf)
+> > +{
+> > +     uvc_video_validate_buffer(stream, video_buf);
+> > +     uvc_video_next_meta(stream, video_buf);
+> > +     return uvc_queue_next_buffer(&stream->queue, video_buf);
+> >  }
+> >
+> >  static void uvc_video_decode_isoc(struct uvc_urb *uvc_urb,
+> > -                     struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
+> > +                               struct uvc_buffer *buf)
+> >  {
+> >       struct urb *urb = uvc_urb->urb;
+> >       struct uvc_streaming *stream = uvc_urb->stream;
+> > @@ -1559,13 +1585,13 @@ static void uvc_video_decode_isoc(struct uvc_urb *uvc_urb,
+> >                       ret = uvc_video_decode_start(stream, buf, mem,
+> >                               urb->iso_frame_desc[i].actual_length);
+> >                       if (ret == -EAGAIN)
+> > -                             uvc_video_next_buffers(stream, &buf, &meta_buf);
+> > +                             buf = uvc_video_next_buffer(stream, buf);
+> >               } while (ret == -EAGAIN);
+> >
+> >               if (ret < 0)
+> >                       continue;
+> >
+> > -             uvc_video_decode_meta(stream, meta_buf, mem, ret);
+> > +             uvc_video_decode_meta(stream, mem, ret);
+> >
+> >               /* Decode the payload data. */
+> >               uvc_video_decode_data(uvc_urb, buf, mem + ret,
+> > @@ -1576,12 +1602,12 @@ static void uvc_video_decode_isoc(struct uvc_urb *uvc_urb,
+> >                       urb->iso_frame_desc[i].actual_length);
+> >
+> >               if (buf->state == UVC_BUF_STATE_READY)
+> > -                     uvc_video_next_buffers(stream, &buf, &meta_buf);
+> > +                     buf = uvc_video_next_buffer(stream, buf);
+> >       }
+> >  }
+> >
+> >  static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
+> > -                     struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
+> > +                               struct uvc_buffer *buf)
+> >  {
+> >       struct urb *urb = uvc_urb->urb;
+> >       struct uvc_streaming *stream = uvc_urb->stream;
+> > @@ -1607,7 +1633,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
+> >               do {
+> >                       ret = uvc_video_decode_start(stream, buf, mem, len);
+> >                       if (ret == -EAGAIN)
+> > -                             uvc_video_next_buffers(stream, &buf, &meta_buf);
+> > +                             buf = uvc_video_next_buffer(stream, buf);
+> >               } while (ret == -EAGAIN);
+> >
+> >               /* If an error occurred skip the rest of the payload. */
+> > @@ -1617,7 +1643,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
+> >                       memcpy(stream->bulk.header, mem, ret);
+> >                       stream->bulk.header_size = ret;
+> >
+> > -                     uvc_video_decode_meta(stream, meta_buf, mem, ret);
+> > +                     uvc_video_decode_meta(stream, mem, ret);
+> >
+> >                       mem += ret;
+> >                       len -= ret;
+> > @@ -1644,7 +1670,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
+> >                       uvc_video_decode_end(stream, buf, stream->bulk.header,
+> >                               stream->bulk.payload_size);
+> >                       if (buf->state == UVC_BUF_STATE_READY)
+> > -                             uvc_video_next_buffers(stream, &buf, &meta_buf);
+> > +                             buf = uvc_video_next_buffer(stream, buf);
+> >               }
+> >
+> >               stream->bulk.header_size = 0;
+> > @@ -1654,7 +1680,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
+> >  }
+> >
+> >  static void uvc_video_encode_bulk(struct uvc_urb *uvc_urb,
+> > -     struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
+> > +                               struct uvc_buffer *buf)
+> >  {
+> >       struct urb *urb = uvc_urb->urb;
+> >       struct uvc_streaming *stream = uvc_urb->stream;
+> > @@ -1707,8 +1733,6 @@ static void uvc_video_complete(struct urb *urb)
+> >       struct uvc_video_queue *qmeta = &stream->meta.queue;
+> >       struct vb2_queue *vb2_qmeta = stream->meta.vdev.queue;
+> >       struct uvc_buffer *buf = NULL;
+> > -     struct uvc_buffer *buf_meta = NULL;
+> > -     unsigned long flags;
+> >       int ret;
+> >
+> >       switch (urb->status) {
+> > @@ -1734,14 +1758,6 @@ static void uvc_video_complete(struct urb *urb)
+> >
+> >       buf = uvc_queue_get_current_buffer(queue);
+> >
+> > -     if (vb2_qmeta) {
+> > -             spin_lock_irqsave(&qmeta->irqlock, flags);
+> > -             if (!list_empty(&qmeta->irqqueue))
+> > -                     buf_meta = list_first_entry(&qmeta->irqqueue,
+> > -                                                 struct uvc_buffer, queue);
+> > -             spin_unlock_irqrestore(&qmeta->irqlock, flags);
+> > -     }
+> > -
+> >       /* Re-initialise the URB async work. */
+> >       uvc_urb->async_operations = 0;
+> >
+> > @@ -1755,7 +1771,7 @@ static void uvc_video_complete(struct urb *urb)
+> >        * Process the URB headers, and optionally queue expensive memcpy tasks
+> >        * to be deferred to a work queue.
+> >        */
+> > -     stream->decode(uvc_urb, buf, buf_meta);
+> > +     stream->decode(uvc_urb, buf);
+> >
+> >       /* If no async work is needed, resubmit the URB immediately. */
+> >       if (!uvc_urb->async_operations) {
+> > diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> > index 757254fc4fe930ae61c9d0425f04d4cd074a617e..bb41477ce4ff5cdbf27bc9d830b63a60645e3fa1 100644
+> > --- a/drivers/media/usb/uvc/uvcvideo.h
+> > +++ b/drivers/media/usb/uvc/uvcvideo.h
+> > @@ -479,8 +479,7 @@ struct uvc_streaming {
+> >       unsigned int frozen : 1;
+> >       struct uvc_video_queue queue;
+> >       struct workqueue_struct *async_wq;
+> > -     void (*decode)(struct uvc_urb *uvc_urb, struct uvc_buffer *buf,
+> > -                    struct uvc_buffer *meta_buf);
+> > +     void (*decode)(struct uvc_urb *uvc_urb, struct uvc_buffer *buf);
+> >
+> >       struct {
+> >               struct video_device vdev;
+> > @@ -694,6 +693,8 @@ int uvc_queue_init(struct uvc_video_queue *queue, enum v4l2_buf_type type);
+> >  void uvc_queue_cancel(struct uvc_video_queue *queue, int disconnect);
+> >  struct uvc_buffer *uvc_queue_next_buffer(struct uvc_video_queue *queue,
+> >                                        struct uvc_buffer *buf);
+> > +struct uvc_buffer *
+> > +__uvc_queue_get_current_buffer(struct uvc_video_queue *queue);
+> >  struct uvc_buffer *uvc_queue_get_current_buffer(struct uvc_video_queue *queue);
+> >  void uvc_queue_buffer_release(struct uvc_buffer *buf);
+> >  static inline int uvc_queue_streaming(struct uvc_video_queue *queue)
+> > @@ -802,8 +803,7 @@ u16 uvc_endpoint_max_bpi(struct usb_device *dev, struct usb_host_endpoint *ep);
+> >
+> >  /* Quirks support */
+> >  void uvc_video_decode_isight(struct uvc_urb *uvc_urb,
+> > -                          struct uvc_buffer *buf,
+> > -                          struct uvc_buffer *meta_buf);
+> > +                          struct uvc_buffer *buf);
+> >
+> >  /* debugfs and statistics */
+> >  void uvc_debugfs_init(void);
+> >
 > > ---
-> > base-commit: a75b8d198c55e9eb5feb6f6e155496305caba2dc
-> > change-id: 20250820-uvc-thadeu2-25723a961bd8
+> > base-commit: d968e50b5c26642754492dea23cbd3592bde62d8
+> > change-id: 20250714-uvc-racemeta-fee2e69bbfcd
 >
 > --
 > Regards,
