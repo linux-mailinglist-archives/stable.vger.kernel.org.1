@@ -1,159 +1,203 @@
-Return-Path: <stable+bounces-178912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE97BB48FA7
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 15:32:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91BEDB49013
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 15:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC46E3C60BF
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 13:31:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EB9C164ADA
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 13:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBBB30AD1B;
-	Mon,  8 Sep 2025 13:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66DDC2FF153;
+	Mon,  8 Sep 2025 13:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kLo08wZi"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lKfMG8a1";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QfCzh9S6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531812EFD86;
-	Mon,  8 Sep 2025 13:31:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B1C1E5B64;
+	Mon,  8 Sep 2025 13:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757338313; cv=none; b=hOKGwBf5jO9X52tewyX7NAY2rK3ZCG7Ubat/zLhsCJR2v1D65abij2ORYdorunHEtwAvDhxOYkpvNKhkmjtn11VoWLan8MDt0CkL7cYWVMTaMNzaGBqXV3OWiTjfDQr/D7817YMZ0y/7jUl4C20lHxQT+AuRbmbp9i3WxnZE0Ho=
+	t=1757339281; cv=none; b=kjXltj6CESE7DJrx54L1I6kYJth1JEUcthO6Vp2kv9hg8ymiE9vB6NEVOmHyLqhR1XaAMI8W7Meo/aqbc9mE3FObJiqEmoXCAlJ0VUXCDZPUbCOf2fOlkIU24qmBMbeH8CU5z7QpNthYC0MV6zFAG994cB0W1dtBAv4k9/pMXVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757338313; c=relaxed/simple;
-	bh=XFpcrUgCAAnn+5N6WDRSRAoI/KMeWCd6gX4KF7ThquQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nsl/ZuvLiAPXZbyRRe10ZDYii+HOzZBfK+AsDE3eGdwMujIQs7lRCf8lTtlxR4hC13JJciF0VSFvFQyYwkpnTSS7FC/DbjVvr2g/77+m1KLU5kxSBezdCw7KvD3VCndkHTAZrfhdkVcPnUiyDCAZhWBdlF/H9lqpMhX2Vy3wtjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kLo08wZi; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-77264a94031so3045918b3a.2;
-        Mon, 08 Sep 2025 06:31:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757338311; x=1757943111; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=0VRxysBWR4+1ubG2BRwz4IYmQyW3YuwNfLayCI3GgPU=;
-        b=kLo08wZiCUIbYPuAtcNNIJqOGugUVy4xa/hWO1L7nzf3RZDDVf0YVtvuN3yFGIt3Vp
-         leNuWHgsBwHlz/uaRXrWWxyICd5Y6W0uSzjk+RiIhQ2idVSKIC59S8KFGuZPVk+TsJyw
-         5qNdarYlo4xlzjgSUnOYRXbLeGXWE2lXfcO0HRjJhPEoikCBv5D3+ivLMyA17glqQ6gr
-         IuU6gxGRVQImXB8X5fiNxNQmfuxhcUCAi3jwctf1cCkt47jEky9y6J85ZPSqdZxEYrYM
-         Nv8Zg4q8V635SZFKPB8rtvq4gQsfGsmMAPQXiq/sQOGlD0HLZn3pBjc3+oKUiQompWsm
-         v3Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757338311; x=1757943111;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0VRxysBWR4+1ubG2BRwz4IYmQyW3YuwNfLayCI3GgPU=;
-        b=QV9cbzz3ZZ9maqLs3DNH9aTuOWL73GvW93AHj2k36Yo0AgIo+dCPPhwZkbcf0xHQb7
-         b2N4fuCkNHyLM/rIpwAq64I32dUVWKx0vEnASO49fuAPy9vU55Qw4FXDQYZVN8eMJ7Et
-         JVKGuO+jV+OL8bTf/0h49+huNQPkKnk9gZcDmtRagEDjSQ1cLmdK3tQcjUkqvAsthEmH
-         vJaq2UtHvbmQ2YHUJSew7MvGq1r2GQTHkM0te/CGPXDF2FaY0aqWg+t4zgrd91B6ivFU
-         IxYVmhFJNJZNBe+4ExfxFl8snobFtUiO77+T7YHWY0tMLDbH6kMBcse9XjpLNA1RBH+n
-         AbpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU1Q5HGxDywspGjXpX5DE4kkdliPPWULabrXrNWpunvsUJVugN89Wjf0oyAD6e5AV5V4gySPcNKx6Y7@vger.kernel.org, AJvYcCUALjlkMO0edfH/gWXkrml+hJn9L/9P/MehHRQO6cL91+DT5K2llL1/q7y735t1x9XyG3OrbNSj@vger.kernel.org, AJvYcCUVsvHrosBVmK4SOTRIJ+yJ7nRs8TwOjivlu58yjTHgBfLBuS6+RMYLCw41WqfPf9uegKEk4hKnANqOV64d@vger.kernel.org, AJvYcCUs1zExYpAYcwl4pMIRxmB2sujIQRn61EIwn8eA5PnJ1zaW22HsFWDmRdQ+2t02EGOXL4LTbuzQK3jv@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMFx03mf4XlHQGYEWJSqmBx5KdLqXTsPNSMzxBsV2/tBM61OA5
-	mXd9g5H7B/8aJpD8iw6nnPDjq+33WhwaCcwJIuZA6u7bh3r4jsefEMNq
-X-Gm-Gg: ASbGncusenCT5sKQvZ8bkuAEbxf+7VV8pJVdt3xd0O/H56zYsGO3iELCR5FONxw/d+5
-	ADSnpXQ3njKKrP/m8bWi5a9TVzqskAvFANCpRwZOyeYC/BrTiBPhqLLerC7RSv3F93IvKlaXwvh
-	DtAdj/bslC4L0K+REHFCmIYeIFRWqX/UFD6kQChXAogUIdniIhiiDjqJC16n4dADAzyKzl/Kkya
-	YVw3xkO9fRecbG+N7NKzeZZvNIdf+gI96wi0Kq6B5yL0Tz+0L8fy7Wl6+0fynUCow55zHTfEPfX
-	dIzlDhn5YETz3plQFiIJHec+0OBbM8DAWRgObaqX9rhRmQPhKc0O/0UZtLAzY3oybVstQx97QlQ
-	rAEPKjpP4vAH7xwQhiFLgCn8PT9dg8QBC7eXZBZwjIOPDaah9FlAfsKJsd8VZTgETMMt703Y=
-X-Google-Smtp-Source: AGHT+IFHxpOI9zw8ViQQBt2bv0fmbzjwjCKonJOpVHHtbawBcf7zvtU8dcDIKtWbgtSTokjP6MN1Ag==
-X-Received: by 2002:a17:902:ecc6:b0:251:259a:23eb with SMTP id d9443c01a7336-2516da05ddemr114592935ad.20.1757338311400;
-        Mon, 08 Sep 2025 06:31:51 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24ced597370sm97949445ad.128.2025.09.08.06.31.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Sep 2025 06:31:50 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <c596e196-7e5f-4600-ada1-7c96af8c0a38@roeck-us.net>
-Date: Mon, 8 Sep 2025 06:31:49 -0700
+	s=arc-20240116; t=1757339281; c=relaxed/simple;
+	bh=U7IqCyU23/VAExA6N48clU4WBs9N/sB4w7Za04VZNv8=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=V7YqyAqc1PlxokpPhSwjQfM17aWoh6QL70zB1mwT635pb51gvLupuxRHdWwQ54gWY4wJBIH3SQtKSuIW0lSDEJcLQikOwrdUUFD9V5a6HmpPy0fx2k811ZGuBezRny5LD3gzt5NY1wOCSTZ3zGKySJSN771s5MV7X7eubZdNGMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lKfMG8a1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QfCzh9S6; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 08 Sep 2025 13:47:51 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1757339275;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=ennO6DFYiDanYyZ3yCUIBSy72hcmz7WE43LpKjrUOaw=;
+	b=lKfMG8a1wxV4KTljJ1mN4jvE2y2uxQ1/SlaYIcXr/jay24X7IbEBkeGZ5YZlw6a98msKbc
+	gdoKEuZD4uh1TcqUSM8oaSPjT7W+D7zRoRPHhiBKGkg/23yvICxXP4Yg7ft2KajcStnrXn
+	wqHuVHPcD/Hc6AIW33N3gH+c0V1CtRC9cyUpYlKC5Wl9tWDVSLeN9/D2oHHydAcZTUM+qm
+	LGAqXZl9c/odAl9iqjgnIvuFM0ecH2IJnyz9bt1KH/k/Q4VXOyzj8Zn/tJxuoLp53VPWcD
+	TO3TK+7wqCJlmBjDHhSzK6v6AtYNEOpS6FSE2ZPtMavFOj3ZlsNmuZA/W2Bjcg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1757339275;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=ennO6DFYiDanYyZ3yCUIBSy72hcmz7WE43LpKjrUOaw=;
+	b=QfCzh9S6U09MmOfDi4r+70DSf5ts4xwip3VMagy9KM3IKnwTCB3SL7sdYPnl+nXuTzTULi
+	I6Ih7itNDNQ/lnCQ==
+From: "tip-bot2 for K Prateek Nayak" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/cpu/topology: Always try
+ cpu_parse_topology_ext() on AMD/Hygon
+Cc: "Naveen N Rao (AMD)" <naveen@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
+	#@tip-bot2.tec.linutronix.de, Only@tip-bot2.tec.linutronix.de,
+	v6.9@tip-bot2.tec.linutronix.de, and@tip-bot2.tec.linutronix.de,
+	above@tip-bot2.tec.linutronix.de;,
+	depends@tip-bot2.tec.linutronix.de, on@tip-bot2.tec.linutronix.de,
+	x86@tip-bot2.tec.linutronix.de, topology@tip-bot2.tec.linutronix.de,
+	rewrite@tip-bot2.tec.linutronix.de, x86@kernel.org,
+	linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/4] hwmon: (sht21) Add support for SHT20, SHT25 chips
-To: Kurt Borja <kuurtb@gmail.com>, Jean Delvare <jdelvare@suse.com>,
- Jonathan Corbet <corbet@lwn.net>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250907-sht2x-v3-0-bf846bd1534b@gmail.com>
- <20250907-sht2x-v3-2-bf846bd1534b@gmail.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20250907-sht2x-v3-2-bf846bd1534b@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Message-ID: <175733927167.1920.13029463870144392599.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/7/25 18:33, Kurt Borja wrote:
-> All sht2x chips share the same communication protocol so add support for
-> them.
-> 
-> Cc: stable@vger.kernel.org
+The following commit has been merged into the x86/urgent branch of tip:
 
-FWIW, I am going to drop this when applying. I don't add stable tags
-for patches which are not bug fixes. Anyone who wants such patches
-backported can request that separately after the patch is upstream.
+Commit-ID:     cba4262a19afae21665ee242b3404bcede5a94d7
+Gitweb:        https://git.kernel.org/tip/cba4262a19afae21665ee242b3404bcede5=
+a94d7
+Author:        K Prateek Nayak <kprateek.nayak@amd.com>
+AuthorDate:    Mon, 01 Sep 2025 17:04:15=20
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 08 Sep 2025 11:37:49 +02:00
 
-Guenter
+x86/cpu/topology: Always try cpu_parse_topology_ext() on AMD/Hygon
 
+Support for parsing the topology on AMD/Hygon processors using CPUID leaf 0xb
+was added in
+
+  3986a0a805e6 ("x86/CPU/AMD: Derive CPU topology from CPUID function 0xB whe=
+n available").
+
+In an effort to keep all the topology parsing bits in one place, this commit
+also introduced a pseudo dependency on the TOPOEXT feature to parse the CPUID
+leaf 0xb.
+
+The TOPOEXT feature (CPUID 0x80000001 ECX[22]) advertises the support for
+Cache Properties leaf 0x8000001d and the CPUID leaf 0x8000001e EAX for
+"Extended APIC ID" however support for 0xb was introduced alongside the x2APIC
+support not only on AMD [1], but also historically on x86 [2].
+
+Similar to 0xb, the support for extended CPU topology leaf 0x80000026 too does
+not depend on the TOPOEXT feature.
+
+The support for these leaves is expected to be confirmed by ensuring
+
+  leaf <=3D {extended_}cpuid_level
+
+and then parsing the level 0 of the respective leaf to confirm EBX[15:0]
+(LogProcAtThisLevel) is non-zero as stated in the definition of
+"CPUID_Fn0000000B_EAX_x00 [Extended Topology Enumeration]
+(Core::X86::Cpuid::ExtTopEnumEax0)" in Processor Programming Reference (PPR)
+for AMD Family 19h Model 01h Rev B1 Vol1 [3] Sec. 2.1.15.1 "CPUID Instruction
+Functions".
+
+This has not been a problem on baremetal platforms since support for TOPOEXT
+(Fam 0x15 and later) predates the support for CPUID leaf 0xb (Fam 0x17[Zen2]
+and later), however, for AMD guests on QEMU, the "x2apic" feature can be
+enabled independent of the "topoext" feature where QEMU expects topology and
+the initial APICID to be parsed using the CPUID leaf 0xb (especially when
+number of cores > 255) which is populated independent of the "topoext" feature
+flag.
+
+Unconditionally call cpu_parse_topology_ext() on AMD and Hygon processors to
+first parse the topology using the XTOPOLOGY leaves (0x80000026 / 0xb) before
+using the TOPOEXT leaf (0x8000001e).
+
+While at it, break down the single large comment in parse_topology_amd() to
+better highlight the purpose of each CPUID leaf.
+
+Fixes: 3986a0a805e6 ("x86/CPU/AMD: Derive CPU topology from CPUID function 0x=
+B when available")
+Suggested-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org # Only v6.9 and above; depends on x86 topology rew=
+rite
+Link: https://lore.kernel.org/lkml/1529686927-7665-1-git-send-email-suravee.s=
+uthikulpanit@amd.com/ [1]
+Link: https://lore.kernel.org/lkml/20080818181435.523309000@linux-os.sc.intel=
+.com/ [2]
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D206537 [3]
+---
+ arch/x86/kernel/cpu/topology_amd.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/topology_amd.c b/arch/x86/kernel/cpu/topolog=
+y_amd.c
+index 827dd0d..c79ebbb 100644
+--- a/arch/x86/kernel/cpu/topology_amd.c
++++ b/arch/x86/kernel/cpu/topology_amd.c
+@@ -175,27 +175,30 @@ static void topoext_fixup(struct topo_scan *tscan)
+=20
+ static void parse_topology_amd(struct topo_scan *tscan)
+ {
+-	bool has_topoext =3D false;
+-
+ 	/*
+-	 * If the extended topology leaf 0x8000_001e is available
+-	 * try to get SMT, CORE, TILE, and DIE shifts from extended
++	 * Try to get SMT, CORE, TILE, and DIE shifts from extended
+ 	 * CPUID leaf 0x8000_0026 on supported processors first. If
+ 	 * extended CPUID leaf 0x8000_0026 is not supported, try to
+-	 * get SMT and CORE shift from leaf 0xb first, then try to
+-	 * get the CORE shift from leaf 0x8000_0008.
++	 * get SMT and CORE shift from leaf 0xb. If either leaf is
++	 * available, cpu_parse_topology_ext() will return true.
+ 	 */
+-	if (cpu_feature_enabled(X86_FEATURE_TOPOEXT))
+-		has_topoext =3D cpu_parse_topology_ext(tscan);
++	bool has_xtopology =3D cpu_parse_topology_ext(tscan);
+=20
+ 	if (cpu_feature_enabled(X86_FEATURE_AMD_HTR_CORES))
+ 		tscan->c->topo.cpu_type =3D cpuid_ebx(0x80000026);
+=20
+-	if (!has_topoext && !parse_8000_0008(tscan))
++	/*
++	 * If XTOPOLOGY leaves (0x26/0xb) are not available, try to
++	 * get the CORE shift from leaf 0x8000_0008 first.
++	 */
++	if (!has_xtopology && !parse_8000_0008(tscan))
+ 		return;
+=20
+-	/* Prefer leaf 0x8000001e if available */
+-	if (parse_8000_001e(tscan, has_topoext))
++	/*
++	 * Prefer leaf 0x8000001e if available to get the SMT shift and
++	 * the initial APIC ID if XTOPOLOGY leaves are not available.
++	 */
++	if (parse_8000_001e(tscan, has_xtopology))
+ 		return;
+=20
+ 	/* Try the NODEID MSR */
 
