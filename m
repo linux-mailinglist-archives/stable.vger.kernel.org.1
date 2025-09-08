@@ -1,388 +1,216 @@
-Return-Path: <stable+bounces-178914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A54B4909C
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 16:01:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D97EFB490A3
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 16:02:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1F0E7AC217
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 13:59:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2C5E16CF71
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 14:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5BA2F7453;
-	Mon,  8 Sep 2025 14:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7BC30C623;
+	Mon,  8 Sep 2025 14:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="sFLQsMnM"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="M+u6bYE0"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2BC2F4A;
-	Mon,  8 Sep 2025 14:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259352FE05D
+	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 14:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757340060; cv=none; b=Fu07q8y34GMd0HqKZRn6uqpZMK7v6b19dGePRMD9sKmW6p9UDuwab2PVHQey2cwKH/a6/zCTHqAoIBeZeyEB9sM4+X5UR8rOipECm0pt+61OgYghoV3icEbVBH1yeXl7SUpTajV1uexSlnvlfR0wSc49+bRZ8+AVzq1luS+Y1DE=
+	t=1757340131; cv=none; b=gxtacTcjvfOWUokJNSs4LfeNH7Eb8QSLaxvKtrQue++tXNSfeIEGMJLe30aizIX3BpH4Zbc2PlFesDBdqOkJJstG5BCi8DTgO2RbT+iXEsQKGFmEVOkRrpwk3qixYgMNPXhXR3qQTd7e16yJeCRPbz0VWYLyYzq2XyyhubRvldI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757340060; c=relaxed/simple;
-	bh=0RTSZ8Puev6F5ikHsoys6+ygNbDXFglEdduPSpoKxWo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m4OZOyIoszBWdi6wWXMvLkOXxoJka7utoFoseIMTj0sANvJTHwI2uxYliXZYgMomfM06J0wDiA6/z+oqFuWTD7F5OgQbnC6hH3dlzyRzRnMK9suOytQ9sSXzBzhbWSOFaYBBcmg1+23HcILCw44GmLXvrhsjTmEL0+ohIXXyneM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=sFLQsMnM; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (85-76-134-76-nat.elisa-mobile.fi [85.76.134.76])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id B13A299F;
-	Mon,  8 Sep 2025 15:59:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1757339985;
-	bh=0RTSZ8Puev6F5ikHsoys6+ygNbDXFglEdduPSpoKxWo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sFLQsMnMi9E6GIj4f0vYaX6/d41/Pn09D6nMW3nlleNz/iHsMnzE28D5liXolESD/
-	 nY6xCICix6dOP6RorwEK2I67DmkTKdCVIxM/UQgr4+lHxWSkMM6QnQkPj9vKsHhU0C
-	 U/I2x6hIwx8uZBhNFIq9QN0tJsIqxLHGwFKPieH0=
-Date: Mon, 8 Sep 2025 16:00:34 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Hans de Goede <hansg@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] media: uvcvideo: Fix race condition for meta buffer list
-Message-ID: <20250908140034.GH26062@pendragon.ideasonboard.com>
-References: <20250714-uvc-racemeta-v1-1-360de2e15a9a@chromium.org>
- <20250908102532.GC26062@pendragon.ideasonboard.com>
- <CANiDSCsFCADj9NHURG8FV-1mTj8XhtksEqtk75-i3C3e6YyXUQ@mail.gmail.com>
+	s=arc-20240116; t=1757340131; c=relaxed/simple;
+	bh=UPzFrmYlehQ67lOfCOXqNsyB4OmdijU+Qi/kEZAQkKQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TQYSFbxvFT1lTzrF6ld1kzIEZxWUw7WXrRNuwcaTyHnQ4GBn9ORfbZtsn6ihZcyM1ZgNCnoUcqn3aVHFx0cqBaiv7YaCNxCLoYLmXxd7Ul30j3q7x4xnUhTEVOg4w6eP9CgbNauZk2Db/4PF8D+EBO17xeARc54FNpAtG4NMIXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=M+u6bYE0; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45dd5e24d16so29945845e9.3
+        for <stable@vger.kernel.org>; Mon, 08 Sep 2025 07:02:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757340126; x=1757944926; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5RQZ/QOE9TZDV7pIc1NrwTekYlZsnd5jalWbAXr12tY=;
+        b=M+u6bYE0J+wcICA4RCJ7EDuNmHHYT/O4ApFrYIGqBL0xDpZA5qKldcEnMnUPVPbI3p
+         KzSoo6HNmXF2L0+lm4DaOhMg/yB8+842lrEEoJ1EIjkxrsnXL6Z+TFjoNPjo8XZJDlZq
+         e6/DkfmE0yqMglJarqxZn8foV5sxv9lCkf9nhQdLPEYlUYC8dgkNlnXGjzo5Np7U0jsU
+         5SLMmucJYhs37EZbmIBp1AbBxz4bNgULaUrQ8e7boCIxQEuLkHDqgz4aMgGP5IEA9vHx
+         QfKbM0vwVNQS0Dif1zNWQcuiod9TCaO+Lxddvq4ubP+FdHMA+D5Oip2FL1ad5rKuA6G7
+         UaxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757340126; x=1757944926;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5RQZ/QOE9TZDV7pIc1NrwTekYlZsnd5jalWbAXr12tY=;
+        b=nOqXfxdqGE082/U62bodWzenXJum0UjHQNbc3HSfO+jf5O9cg+k25nldj01b+nVLIF
+         7tTHpqAvu2Q7M5IY0z0Bk5tHrkKfYvWgR8mTNmIH7mIlSiTGaP8Nb+Vg1gUInPXEnKEd
+         3M6U5O9IFqHlv3GNmNUGu4EOxY3mZUUSVV35SphwI+V4FbLTacKGdb7UACm/GwAqS0gI
+         F0QIShHrAFw4pNjNLGTGc0lefsQnX7Fa1Z3OtosrWLP1n8a6bTRl1BvWDyYd8xDgfX7S
+         yPXmaITs0WctRWCTF5AbDpKgKlnwBtIcx53zRm6ylHbfGFH2Iv85EnEOOYzmIWuO3Wa8
+         2QSg==
+X-Forwarded-Encrypted: i=1; AJvYcCXWGw3hjLmq59x6mgapxAAbMIP5Y5RnZsTiSizRdF2L4vGUeJwkLZQ6lQazyaOK7l7qY8Yv5hc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy68vSn3UpA7P2kYNTcDikA30cIJQcTJ/mfk5BCXqcbA0w+crGn
+	f5DaWDtnMAvMZqxjqS99PmZg8eFU5JGjVEADja/ajmBLMKs1WMyRpU5oCLmRtISnXWg=
+X-Gm-Gg: ASbGncvN5D80dhtqCZlT5JosYBu1Cc0Yl/tPknYBHhBHjSDi24xW+ChNh15rkNGeMc3
+	p/3dV/WRoKdaz2eu8s1LQ2eNErR58J+agniOX/F+BVZbtUYcuq+DpRZgnAFPl/h/GGf1pS3Ks7Q
+	orYPVAf22WP8NwHdncg6MrPilJ6TmzYQEL/gbkT8+Nvk5rar4bnrisPbGWSeyXwwAAXCJctD97f
+	3uL92kyJoXLm1nJtkF58YWZfKsNkVu6YMv++wufpm5siYX++eeeUXqGUWLD8cz2uIHcLTmH+8BM
+	BHSB74jLe+SCIVNcMjT7Dgf0gndieGTEGl6tcAF7fbF1vW8uJMSiUTLL8nkFUGvbqniOBPirCOr
+	DsLLee+vW/QTBZv/urMrln3hziYpyeQGWu3mKOyoybDnjWZDc0pwbLveUXDcyWH0LjzHOHZ8Uiv
+	nWfC4ixCxtnWGZKKMFITJ2y3o=
+X-Google-Smtp-Source: AGHT+IGzcGQ+F2OqmZfoK8PvEKQf84hVehr3slGK6Le4o9R+uV9RGVF4+iDIn2UYKe3BWKulhajCOg==
+X-Received: by 2002:a05:6000:2f87:b0:3e4:a51e:5d0d with SMTP id ffacd0b85a97d-3e641e3aaabmr5830362f8f.1.1757340124783;
+        Mon, 08 Sep 2025 07:02:04 -0700 (PDT)
+Received: from ta2.c.googlers.com (219.43.233.35.bc.googleusercontent.com. [35.233.43.219])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf276d5e5fsm42013031f8f.27.2025.09.08.07.02.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Sep 2025 07:02:03 -0700 (PDT)
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+Date: Mon, 08 Sep 2025 14:02:00 +0000
+Subject: [PATCH v2] firmware: exynos-acpm: fix PMIC returned errno
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CANiDSCsFCADj9NHURG8FV-1mTj8XhtksEqtk75-i3C3e6YyXUQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250908-acpm-pmix-fix-errno-v2-1-bcc537cf3f17@linaro.org>
+X-B4-Tracking: v=1; b=H4sIANfhvmgC/22NQQ6CQAxFr0K6toYOAuLKexgWA1RoIjOkY4iGz
+ N0dSdy56OL9n/+6QWAVDnDJNlBeJYh3Ccwhg36ybmSUITGY3JT52eRo+2XGZZYX3tOxqvPYmK7
+ giqkeqIO0XJRTuVtvbeJJwtPre3+y0jf9+eivbyUkrGuyZVM1hTn114c4q/7odYQ2xvgBemn44
+ bcAAAA=
+X-Change-ID: 20250820-acpm-pmix-fix-errno-92b3e6e17d1b
+To: Krzysztof Kozlowski <krzk@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, peter.griffin@linaro.org, 
+ andre.draszik@linaro.org, willmcvicker@google.com, kernel-team@android.com, 
+ Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757340123; l=3824;
+ i=tudor.ambarus@linaro.org; s=20241212; h=from:subject:message-id;
+ bh=UPzFrmYlehQ67lOfCOXqNsyB4OmdijU+Qi/kEZAQkKQ=;
+ b=sef6R5CI8KayC5IctCl4Gh9igxFmkW38rf9t41t2Ip8vfbeaJX4QKiwtWpHjWvLTVGRyOqsVd
+ gXz+n3EAdEsCW05os9o2JYGiSLRvMXvrrWOYgPQ5wySZ7T7i5wZO7eQ
+X-Developer-Key: i=tudor.ambarus@linaro.org; a=ed25519;
+ pk=uQzE0NXo3dIjeowMTOPCpIiPHEz12IA/MbyzrZVh9WI=
 
-On Mon, Sep 08, 2025 at 12:57:03PM +0200, Ricardo Ribalda wrote:
-> On Mon, 8 Sept 2025 at 12:25, Laurent Pinchart wrote:
-> > On Mon, Jul 14, 2025 at 10:23:45AM +0000, Ricardo Ribalda wrote:
-> > > queue->irqueue contains a list of the buffers owned by the driver. The
-> > > list is protected by queue->irqlock. uvc_queue_get_current_buffer()
-> > > returns a pointer to the current buffer in that list, but does not
-> > > remove the buffer from it. This can lead to race conditions.
-> > >
-> > > Inspecting the code, it seems that the candidate for such race is
-> > > uvc_queue_return_buffers(). For the capture queue, that function is
-> > > called with the device streamoff, so no race can occur. On the other
-> > > hand, the metadata queue, could trigger a race condition, because
-> > > stop_streaming can be called with the device in any streaming state.
-> > >
-> > > We can solve this issue modifying the way the metadata buffer
-> > > lifetime works. We can keep the queue->irqlock while the use the current
-> > > metadata buffer.
-> > >
-> > > The core of this change is uvc_video_decode_meta(), it now obtains the
-> > > buffer and holds the spinlock instead of getting the buffer as an
-> > > argument.
-> > >
-> > > Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > > Closes: https://lore.kernel.org/linux-media/20250630141707.GG20333@pendragon.ideasonboard.com/
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
-> > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > > ---
-> > >  drivers/media/usb/uvc/uvc_isight.c |  3 +-
-> > >  drivers/media/usb/uvc/uvc_queue.c  |  4 +-
-> > >  drivers/media/usb/uvc/uvc_video.c  | 92 ++++++++++++++++++++++----------------
-> > >  drivers/media/usb/uvc/uvcvideo.h   |  8 ++--
-> > >  4 files changed, 62 insertions(+), 45 deletions(-)
-> > >
-> > > diff --git a/drivers/media/usb/uvc/uvc_isight.c b/drivers/media/usb/uvc/uvc_isight.c
-> > > index 43cda5e760a345af56186603e2f0594b814cdbcb..f0e71744d25cab98184335b46569b31ba1346e12 100644
-> > > --- a/drivers/media/usb/uvc/uvc_isight.c
-> > > +++ b/drivers/media/usb/uvc/uvc_isight.c
-> > > @@ -98,8 +98,7 @@ static int isight_decode(struct uvc_video_queue *queue, struct uvc_buffer *buf,
-> > >       return 0;
-> > >  }
-> > >
-> > > -void uvc_video_decode_isight(struct uvc_urb *uvc_urb, struct uvc_buffer *buf,
-> > > -                     struct uvc_buffer *meta_buf)
-> > > +void uvc_video_decode_isight(struct uvc_urb *uvc_urb, struct uvc_buffer *buf)
-> > >  {
-> > >       struct urb *urb = uvc_urb->urb;
-> > >       struct uvc_streaming *stream = uvc_urb->stream;
-> > > diff --git a/drivers/media/usb/uvc/uvc_queue.c b/drivers/media/usb/uvc/uvc_queue.c
-> > > index 790184c9843d211d34fa7d66801631d5a07450bd..e184e3ae0f59f142a683263168724bca64509628 100644
-> > > --- a/drivers/media/usb/uvc/uvc_queue.c
-> > > +++ b/drivers/media/usb/uvc/uvc_queue.c
-> > > @@ -310,9 +310,11 @@ void uvc_queue_cancel(struct uvc_video_queue *queue, int disconnect)
-> > >   * Buffers may span multiple packets, and even URBs, therefore the active buffer
-> > >   * remains on the queue until the EOF marker.
-> > >   */
-> > > -static struct uvc_buffer *
-> > > +struct uvc_buffer *
-> > >  __uvc_queue_get_current_buffer(struct uvc_video_queue *queue)
-> > >  {
-> > > +     lockdep_assert_held(&queue->irqlock);
-> > > +
-> > >       if (list_empty(&queue->irqqueue))
-> > >               return NULL;
-> > >
-> > > diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-> > > index 2e377e7b9e81599aca19b800a171cc16a09c1e8a..d6777090d0f892ffe93696c915acd4ec171ca798 100644
-> > > --- a/drivers/media/usb/uvc/uvc_video.c
-> > > +++ b/drivers/media/usb/uvc/uvc_video.c
-> > > @@ -1428,9 +1428,11 @@ static int uvc_video_encode_data(struct uvc_streaming *stream,
-> > >   * previous header.
-> > >   */
-> > >  static void uvc_video_decode_meta(struct uvc_streaming *stream,
-> > > -                               struct uvc_buffer *meta_buf,
-> > >                                 const u8 *mem, unsigned int length)
-> > >  {
-> > > +     struct vb2_queue *vb2_qmeta = stream->meta.vdev.queue;
-> > > +     struct uvc_video_queue *qmeta = &stream->meta.queue;
-> > > +     struct uvc_buffer *meta_buf;
-> > >       struct uvc_meta_buf *meta;
-> > >       size_t len_std = 2;
-> > >       bool has_pts, has_scr;
-> > > @@ -1439,7 +1441,13 @@ static void uvc_video_decode_meta(struct uvc_streaming *stream,
-> > >       ktime_t time;
-> > >       const u8 *scr;
-> > >
-> > > -     if (!meta_buf || length == 2)
-> > > +     if (!vb2_qmeta || length <= 2)
-> > > +             return;
-> > > +
-> > > +     guard(spinlock_irqsave)(&qmeta->irqlock);
-> >
-> > This keeps the spinlock held for longer than I would like. We should
-> > really try to minimize the amount of work performed with a spinlock
-> > held.
-> 
-> We are using meta_buf the whole function, which can disappear if  the
-> user closes the metadata file descriptor.
-> 
-> Besides memcopying meta_buf, how would you suggest reducing the
-> spinlock held time?
+ACPM PMIC command handlers returned a u8 value when they should
+have returned either zero or negative error codes.
+Translate the APM PMIC errno to linux errno.
 
-I'm thinking about a handshake with .stop_streaming(). The
-.stop_streaming() operation can sleep, so we can just guard with a
-spinlock the operation that acquires a metadata buffer, if we ensure
-that .stop_streaming() waits until it completes.
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-input/aElHlTApXj-W_o1r@stanley.mountain/
+Fixes: a88927b534ba ("firmware: add Exynos ACPM protocol driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+---
+Changes in v2:
+- remove `enum acpm_pmic_error_codes`. use designated initializers in
+  the array instead.
+- constify acpm_pmic_linux_errmap
+- drop inline from acpm_pmic_to_linux_errno
+- s/errno/err
+- Link to v1: https://lore.kernel.org/r/20250821-acpm-pmix-fix-errno-v1-1-771a5969324c@linaro.org
+---
+ drivers/firmware/samsung/exynos-acpm-pmic.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-> > > +
-> > > +     meta_buf = __uvc_queue_get_current_buffer(qmeta);
-> > > +     if (!meta_buf)
-> > >               return;
-> > >
-> > >       has_pts = mem[1] & UVC_STREAM_PTS;
-> > > @@ -1512,30 +1520,48 @@ static void uvc_video_validate_buffer(const struct uvc_streaming *stream,
-> > >   * Completion handler for video URBs.
-> > >   */
-> > >
-> > > -static void uvc_video_next_buffers(struct uvc_streaming *stream,
-> > > -             struct uvc_buffer **video_buf, struct uvc_buffer **meta_buf)
-> > > +static void uvc_video_next_meta(struct uvc_streaming *stream,
-> > > +                             struct uvc_buffer *video_buf)
-> > >  {
-> > > -     uvc_video_validate_buffer(stream, *video_buf);
-> > > +     struct vb2_queue *vb2_qmeta = stream->meta.vdev.queue;
-> > > +     struct uvc_video_queue *qmeta = &stream->meta.queue;
-> > > +     struct uvc_buffer *meta_buf;
-> > > +     struct vb2_v4l2_buffer *vb2_meta;
-> > > +     const struct vb2_v4l2_buffer *vb2_video;
-> > >
-> > > -     if (*meta_buf) {
-> > > -             struct vb2_v4l2_buffer *vb2_meta = &(*meta_buf)->buf;
-> > > -             const struct vb2_v4l2_buffer *vb2_video = &(*video_buf)->buf;
-> > > +     if (!vb2_qmeta)
-> > > +             return;
-> > >
-> > > -             vb2_meta->sequence = vb2_video->sequence;
-> > > -             vb2_meta->field = vb2_video->field;
-> > > -             vb2_meta->vb2_buf.timestamp = vb2_video->vb2_buf.timestamp;
-> > > +     guard(spinlock_irqsave)(&qmeta->irqlock);
-> > >
-> > > -             (*meta_buf)->state = UVC_BUF_STATE_READY;
-> > > -             if (!(*meta_buf)->error)
-> > > -                     (*meta_buf)->error = (*video_buf)->error;
-> > > -             *meta_buf = uvc_queue_next_buffer(&stream->meta.queue,
-> > > -                                               *meta_buf);
-> > > -     }
-> > > -     *video_buf = uvc_queue_next_buffer(&stream->queue, *video_buf);
-> > > +     meta_buf = __uvc_queue_get_current_buffer(qmeta);
-> > > +     if (!meta_buf)
-> > > +             return;
-> > > +     list_del(&meta_buf->queue);
-> > > +
-> > > +     vb2_meta = &meta_buf->buf;
-> > > +     vb2_video = &video_buf->buf;
-> > > +
-> > > +     vb2_meta->sequence = vb2_video->sequence;
-> > > +     vb2_meta->field = vb2_video->field;
-> > > +     vb2_meta->vb2_buf.timestamp = vb2_video->vb2_buf.timestamp;
-> > > +     meta_buf->state = UVC_BUF_STATE_READY;
-> > > +     if (!meta_buf->error)
-> > > +             meta_buf->error = video_buf->error;
-> > > +
-> > > +     uvc_queue_buffer_release(meta_buf);
-> > > +}
-> > > +
-> > > +static struct uvc_buffer *uvc_video_next_buffer(struct uvc_streaming *stream,
-> > > +                                             struct uvc_buffer *video_buf)
-> > > +{
-> > > +     uvc_video_validate_buffer(stream, video_buf);
-> > > +     uvc_video_next_meta(stream, video_buf);
-> > > +     return uvc_queue_next_buffer(&stream->queue, video_buf);
-> > >  }
-> > >
-> > >  static void uvc_video_decode_isoc(struct uvc_urb *uvc_urb,
-> > > -                     struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
-> > > +                               struct uvc_buffer *buf)
-> > >  {
-> > >       struct urb *urb = uvc_urb->urb;
-> > >       struct uvc_streaming *stream = uvc_urb->stream;
-> > > @@ -1559,13 +1585,13 @@ static void uvc_video_decode_isoc(struct uvc_urb *uvc_urb,
-> > >                       ret = uvc_video_decode_start(stream, buf, mem,
-> > >                               urb->iso_frame_desc[i].actual_length);
-> > >                       if (ret == -EAGAIN)
-> > > -                             uvc_video_next_buffers(stream, &buf, &meta_buf);
-> > > +                             buf = uvc_video_next_buffer(stream, buf);
-> > >               } while (ret == -EAGAIN);
-> > >
-> > >               if (ret < 0)
-> > >                       continue;
-> > >
-> > > -             uvc_video_decode_meta(stream, meta_buf, mem, ret);
-> > > +             uvc_video_decode_meta(stream, mem, ret);
-> > >
-> > >               /* Decode the payload data. */
-> > >               uvc_video_decode_data(uvc_urb, buf, mem + ret,
-> > > @@ -1576,12 +1602,12 @@ static void uvc_video_decode_isoc(struct uvc_urb *uvc_urb,
-> > >                       urb->iso_frame_desc[i].actual_length);
-> > >
-> > >               if (buf->state == UVC_BUF_STATE_READY)
-> > > -                     uvc_video_next_buffers(stream, &buf, &meta_buf);
-> > > +                     buf = uvc_video_next_buffer(stream, buf);
-> > >       }
-> > >  }
-> > >
-> > >  static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
-> > > -                     struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
-> > > +                               struct uvc_buffer *buf)
-> > >  {
-> > >       struct urb *urb = uvc_urb->urb;
-> > >       struct uvc_streaming *stream = uvc_urb->stream;
-> > > @@ -1607,7 +1633,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
-> > >               do {
-> > >                       ret = uvc_video_decode_start(stream, buf, mem, len);
-> > >                       if (ret == -EAGAIN)
-> > > -                             uvc_video_next_buffers(stream, &buf, &meta_buf);
-> > > +                             buf = uvc_video_next_buffer(stream, buf);
-> > >               } while (ret == -EAGAIN);
-> > >
-> > >               /* If an error occurred skip the rest of the payload. */
-> > > @@ -1617,7 +1643,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
-> > >                       memcpy(stream->bulk.header, mem, ret);
-> > >                       stream->bulk.header_size = ret;
-> > >
-> > > -                     uvc_video_decode_meta(stream, meta_buf, mem, ret);
-> > > +                     uvc_video_decode_meta(stream, mem, ret);
-> > >
-> > >                       mem += ret;
-> > >                       len -= ret;
-> > > @@ -1644,7 +1670,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
-> > >                       uvc_video_decode_end(stream, buf, stream->bulk.header,
-> > >                               stream->bulk.payload_size);
-> > >                       if (buf->state == UVC_BUF_STATE_READY)
-> > > -                             uvc_video_next_buffers(stream, &buf, &meta_buf);
-> > > +                             buf = uvc_video_next_buffer(stream, buf);
-> > >               }
-> > >
-> > >               stream->bulk.header_size = 0;
-> > > @@ -1654,7 +1680,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
-> > >  }
-> > >
-> > >  static void uvc_video_encode_bulk(struct uvc_urb *uvc_urb,
-> > > -     struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
-> > > +                               struct uvc_buffer *buf)
-> > >  {
-> > >       struct urb *urb = uvc_urb->urb;
-> > >       struct uvc_streaming *stream = uvc_urb->stream;
-> > > @@ -1707,8 +1733,6 @@ static void uvc_video_complete(struct urb *urb)
-> > >       struct uvc_video_queue *qmeta = &stream->meta.queue;
-> > >       struct vb2_queue *vb2_qmeta = stream->meta.vdev.queue;
-> > >       struct uvc_buffer *buf = NULL;
-> > > -     struct uvc_buffer *buf_meta = NULL;
-> > > -     unsigned long flags;
-> > >       int ret;
-> > >
-> > >       switch (urb->status) {
-> > > @@ -1734,14 +1758,6 @@ static void uvc_video_complete(struct urb *urb)
-> > >
-> > >       buf = uvc_queue_get_current_buffer(queue);
-> > >
-> > > -     if (vb2_qmeta) {
-> > > -             spin_lock_irqsave(&qmeta->irqlock, flags);
-> > > -             if (!list_empty(&qmeta->irqqueue))
-> > > -                     buf_meta = list_first_entry(&qmeta->irqqueue,
-> > > -                                                 struct uvc_buffer, queue);
-> > > -             spin_unlock_irqrestore(&qmeta->irqlock, flags);
-> > > -     }
-> > > -
-> > >       /* Re-initialise the URB async work. */
-> > >       uvc_urb->async_operations = 0;
-> > >
-> > > @@ -1755,7 +1771,7 @@ static void uvc_video_complete(struct urb *urb)
-> > >        * Process the URB headers, and optionally queue expensive memcpy tasks
-> > >        * to be deferred to a work queue.
-> > >        */
-> > > -     stream->decode(uvc_urb, buf, buf_meta);
-> > > +     stream->decode(uvc_urb, buf);
-> > >
-> > >       /* If no async work is needed, resubmit the URB immediately. */
-> > >       if (!uvc_urb->async_operations) {
-> > > diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-> > > index 757254fc4fe930ae61c9d0425f04d4cd074a617e..bb41477ce4ff5cdbf27bc9d830b63a60645e3fa1 100644
-> > > --- a/drivers/media/usb/uvc/uvcvideo.h
-> > > +++ b/drivers/media/usb/uvc/uvcvideo.h
-> > > @@ -479,8 +479,7 @@ struct uvc_streaming {
-> > >       unsigned int frozen : 1;
-> > >       struct uvc_video_queue queue;
-> > >       struct workqueue_struct *async_wq;
-> > > -     void (*decode)(struct uvc_urb *uvc_urb, struct uvc_buffer *buf,
-> > > -                    struct uvc_buffer *meta_buf);
-> > > +     void (*decode)(struct uvc_urb *uvc_urb, struct uvc_buffer *buf);
-> > >
-> > >       struct {
-> > >               struct video_device vdev;
-> > > @@ -694,6 +693,8 @@ int uvc_queue_init(struct uvc_video_queue *queue, enum v4l2_buf_type type);
-> > >  void uvc_queue_cancel(struct uvc_video_queue *queue, int disconnect);
-> > >  struct uvc_buffer *uvc_queue_next_buffer(struct uvc_video_queue *queue,
-> > >                                        struct uvc_buffer *buf);
-> > > +struct uvc_buffer *
-> > > +__uvc_queue_get_current_buffer(struct uvc_video_queue *queue);
-> > >  struct uvc_buffer *uvc_queue_get_current_buffer(struct uvc_video_queue *queue);
-> > >  void uvc_queue_buffer_release(struct uvc_buffer *buf);
-> > >  static inline int uvc_queue_streaming(struct uvc_video_queue *queue)
-> > > @@ -802,8 +803,7 @@ u16 uvc_endpoint_max_bpi(struct usb_device *dev, struct usb_host_endpoint *ep);
-> > >
-> > >  /* Quirks support */
-> > >  void uvc_video_decode_isight(struct uvc_urb *uvc_urb,
-> > > -                          struct uvc_buffer *buf,
-> > > -                          struct uvc_buffer *meta_buf);
-> > > +                          struct uvc_buffer *buf);
-> > >
-> > >  /* debugfs and statistics */
-> > >  void uvc_debugfs_init(void);
-> > >
-> > > ---
-> > > base-commit: d968e50b5c26642754492dea23cbd3592bde62d8
-> > > change-id: 20250714-uvc-racemeta-fee2e69bbfcd
+diff --git a/drivers/firmware/samsung/exynos-acpm-pmic.c b/drivers/firmware/samsung/exynos-acpm-pmic.c
+index 39b33a356ebd240506b6390163229a70a2d1fe68..961d7599e4224ef6ebe64dfa2fcb441a4dbd78a3 100644
+--- a/drivers/firmware/samsung/exynos-acpm-pmic.c
++++ b/drivers/firmware/samsung/exynos-acpm-pmic.c
+@@ -4,7 +4,9 @@
+  * Copyright 2020 Google LLC.
+  * Copyright 2024 Linaro Ltd.
+  */
++#include <linux/array_size.h>
+ #include <linux/bitfield.h>
++#include <linux/errno.h>
+ #include <linux/firmware/samsung/exynos-acpm-protocol.h>
+ #include <linux/ktime.h>
+ #include <linux/types.h>
+@@ -33,6 +35,19 @@ enum exynos_acpm_pmic_func {
+ 	ACPM_PMIC_BULK_WRITE,
+ };
+ 
++static const int acpm_pmic_linux_errmap[] = {
++	[0] = 0, /* ACPM_PMIC_SUCCESS */
++	[1] = -EACCES, /* Read register can't be accessed or issues to access it. */
++	[2] = -EACCES, /* Write register can't be accessed or issues to access it. */
++};
++
++static int acpm_pmic_to_linux_err(int err)
++{
++	if (err >= 0 && err < ARRAY_SIZE(acpm_pmic_linux_errmap))
++		return acpm_pmic_linux_errmap[err];
++	return -EIO;
++}
++
+ static inline u32 acpm_pmic_set_bulk(u32 data, unsigned int i)
+ {
+ 	return (data & ACPM_PMIC_BULK_MASK) << (ACPM_PMIC_BULK_SHIFT * i);
+@@ -79,7 +94,7 @@ int acpm_pmic_read_reg(const struct acpm_handle *handle,
+ 
+ 	*buf = FIELD_GET(ACPM_PMIC_VALUE, xfer.rxd[1]);
+ 
+-	return FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
++	return acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
+ }
+ 
+ static void acpm_pmic_init_bulk_read_cmd(u32 cmd[4], u8 type, u8 reg, u8 chan,
+@@ -110,7 +125,7 @@ int acpm_pmic_bulk_read(const struct acpm_handle *handle,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
++	ret = acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
+ 	if (ret)
+ 		return ret;
+ 
+@@ -150,7 +165,7 @@ int acpm_pmic_write_reg(const struct acpm_handle *handle,
+ 	if (ret)
+ 		return ret;
+ 
+-	return FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
++	return acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
+ }
+ 
+ static void acpm_pmic_init_bulk_write_cmd(u32 cmd[4], u8 type, u8 reg, u8 chan,
+@@ -190,7 +205,7 @@ int acpm_pmic_bulk_write(const struct acpm_handle *handle,
+ 	if (ret)
+ 		return ret;
+ 
+-	return FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
++	return acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
+ }
+ 
+ static void acpm_pmic_init_update_cmd(u32 cmd[4], u8 type, u8 reg, u8 chan,
+@@ -220,5 +235,5 @@ int acpm_pmic_update_reg(const struct acpm_handle *handle,
+ 	if (ret)
+ 		return ret;
+ 
+-	return FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]);
++	return acpm_pmic_to_linux_err(FIELD_GET(ACPM_PMIC_RETURN, xfer.rxd[1]));
+ }
 
+---
+base-commit: c17b750b3ad9f45f2b6f7e6f7f4679844244f0b9
+change-id: 20250820-acpm-pmix-fix-errno-92b3e6e17d1b
+
+Best regards,
 -- 
-Regards,
+Tudor Ambarus <tudor.ambarus@linaro.org>
 
-Laurent Pinchart
 
