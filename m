@@ -1,146 +1,166 @@
-Return-Path: <stable+bounces-178946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83863B497CA
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 20:01:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67499B4980C
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 20:16:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 404554E08ED
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 18:01:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4F61890558
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 18:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF7F201266;
-	Mon,  8 Sep 2025 18:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67F2314B69;
+	Mon,  8 Sep 2025 18:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kNDMwXAJ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KulParVi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C333A145B16
-	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 18:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1FB3126D2
+	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 18:14:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757354514; cv=none; b=K/SGSbKBfFwrq+q0ri3uScngcipUZGoftszmQ1c/DB4b23dV9r0A3kJlgXl0VJos+fCuVJmEkW9rbEhruyydrx3uf04X7wkD/6DKi3xEkJa0eWSR5Mye1WBKLmUno0HCvLa4hVO9dJY7ExhH6qZ1QlM9pSyLrc9rLH2beYLvQ1s=
+	t=1757355279; cv=none; b=LVxC35YeZB75HbRrOX+lUeYV5EpRkeI8z15f8KhPShZVmCc47TagMRWl3NVOJ6q3H+LiUbT5O0i8nRZ8f67A3wCuYJZ0kAnRAAwxBDCelCFC35qjhmeW49agK7Q6angBeHbojZV3EmIbmlc7Vh1BPTk8YwQ2WoArhwLFPZ2g8D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757354514; c=relaxed/simple;
-	bh=4thEBXIa4uUqL/v7E2V1NhZ3Ku7M+ncqan2REiybOR4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tz38PumWfoM5zLOrIzUb/80JwkYd/NeQnJ5WtHuRyz4UYSfeXzYT7mEdLbsc3arlf2kCxG3QUno3UkT4z+XJvxomUvY1Wup1jqtDdQu75CQH01NGRNkBJs5ug4gRG1OULgDMyB7ohJPQUuUmSz0LMbmb0fw41ynukXUa0WhLegs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kNDMwXAJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA030C4CEF1;
-	Mon,  8 Sep 2025 18:01:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757354514;
-	bh=4thEBXIa4uUqL/v7E2V1NhZ3Ku7M+ncqan2REiybOR4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kNDMwXAJHL19y/A4mdy9aAJ2zDUG3EdYd5iWJiB4pitncnIor+jE5IN/iw4/7x9ZS
-	 hxzqEKhDzqJ2DXifpw7f1AcdkU3u0QA/ubSK+muXn8FkdpuxjjU/haHgS5ck5KLycl
-	 59vDqEZrIzr/uQS8q8HefWdBYB3QPWV2GcXfOWC1j9Hc13UKQIJ0VJFvvsD5PDCsuY
-	 RruI9i4/jNhQChSICGLGYssFNWJz1+dOhVqLiCZfTIOA4l+BTJ1WzWbxcYPlV8mSUO
-	 c1gi/qmz9WQ6bQjR/fDkJyaQT4QO0yDN4YqzTaFO1P6gwA/9bjCP/LxuR4mSwDQwVp
-	 BMJ8AIv4cPz1A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Mimi Zohar <zohar@linux.ibm.com>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Petr Vorel <pvorel@suse.cz>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] ima: limit the number of ToMToU integrity violations
-Date: Mon,  8 Sep 2025 14:01:51 -0400
-Message-ID: <20250908180151.1333407-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025041739-props-huff-8deb@gregkh>
-References: <2025041739-props-huff-8deb@gregkh>
+	s=arc-20240116; t=1757355279; c=relaxed/simple;
+	bh=Dd+pgApASQAzgj9X3zonS77Lm1GUV+22MQ9r9kA15iE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ft6QpqF6LA1XkfNfvsxlwredmVdj6X+poRcyKkIYmBwJkU35ElO+Tw4LvVoRHxMOAx4Sd/HkxrAxGyi3MEUWpVAXKdSBr0Rg1Xo2GpQyCxUAeXaHFZsCcVLL4ZhgtFP6NiWOWykqXPYJo3dBBlczjPkdXMICW9HjKv40s3W6UhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KulParVi; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7704f3c46ceso3716964b3a.2
+        for <stable@vger.kernel.org>; Mon, 08 Sep 2025 11:14:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757355277; x=1757960077; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Aa8ggLlyMVJh/eLNB7/vORTWXIRxgODsZo7MWhmnGSU=;
+        b=KulParViFVt05a2wk3gGZhfcS3CXTQZ3E75p2wuhDJxuOZrKXGjCg+ZbJw07NoqnJY
+         YxM2vkpiO0Cb7BcqPB7AEApIqaEPnwwZZMQczSChnKdv08nC+E8OT1YNF2U+rX2wzffe
+         mXLRqYYe4akc0bFoUNelA3SaTxhqyPAMeiKyzvQuJRqBQH3hM1EN3f3o6JVzTgHjyKwn
+         KIMqj/dZdr/tzG2MufEmnkeBjszB0cdcrtRYBa5SJwJYsJgUI6YTS52zqxIf7Rx4Pbo2
+         SPgD4UJk/1xxtHtw2eot+LpALr5Aq+9HIS8CMEB2kUfKrxz+P1QQkQnf52kW9ztcL4Po
+         hdgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757355277; x=1757960077;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Aa8ggLlyMVJh/eLNB7/vORTWXIRxgODsZo7MWhmnGSU=;
+        b=DPdi31z51S4P0GMSgppyTAj/lQTJzgaODmNyU92arbxeqrGCVGDvLdYnnxS3kb2jd2
+         SzhsqpW789Ub18rk0JLNsS7pgvJblQr1/OQxRxqMIW2YVW7clZZgUAxtueaipUfFkvyj
+         n/7EW89F8xTFD8Vhwj0oRXKjeVi6razJQHzAMSJvXWUFm+1ar4mZwe2AYx7N2wi14RCW
+         MjfDLwi30Bep5el7PMLICVR90Q4z91ktH5EepRoFLDgUzJk8GCo/IecLGfCfPVnBovXA
+         ilhg5vdyeVB4fej07PM1749/pRp7nq90PJPSIX5qFToiaTwnY4I4nWdBugEB1/PKNBpf
+         TE5A==
+X-Gm-Message-State: AOJu0YzyBLMg8jJkDrT9cS2yTGt83s/QNaYqr3ZmYZChEfDTxKau6pf5
+	BlRWsHzo8fgGdsSAttxEsYot0KqCoHS5HC/sd11AIBAEIp7NNmoXqMKR0ZztJEdBQE8BEPqrnq+
+	JiQI7poPZ6arIRBRsK6HYf3A6rj7FbBLr9qwfPhXDrg==
+X-Gm-Gg: ASbGncuS5IjIhTzhh6iWBJoRAzOELwbKoEiQJG/xzhbZ41fMcOW5j6nY8V79X49LYZm
+	8ryXOMMftOquI/uy4XMdWwwD6Tpr/R3qWEzOqjY1OSK/nku7OKfxOV8u4HI6MssGZ952p2Plne6
+	nfefnrwX7Uw+IdUMMIotogXZWIGxzJ05CycoEMEQEDHrw+admekWJEv5qM5VxEuYKsjrL0xXzPj
+	m35kL3+3wu3d7DZt/2+SpR56YdNdZwKHYmZtPXvY4lS9MqwVEs2auOsiK4ld3fnqKEUvjuMOqoA
+	ZfYMyiI=
+X-Google-Smtp-Source: AGHT+IErypQRC4wzGQeAuOgUtnwtBi2ya2m51s0FvrrM40iFGJDv512kzAJrOm36DfnNRSDLy6uFdTKbm3aJAXKiWZI=
+X-Received: by 2002:a17:903:19c6:b0:24c:e3d0:c802 with SMTP id
+ d9443c01a7336-2516c896521mr127705465ad.1.1757355276936; Mon, 08 Sep 2025
+ 11:14:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250907195601.957051083@linuxfoundation.org>
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 8 Sep 2025 23:44:25 +0530
+X-Gm-Features: AS18NWCueKZLivBwekubKSawy9W-Z7KRPjuA564ID06uBm9Hh6QXYlMBZZtS8_g
+Message-ID: <CA+G9fYsX_CrcywkDJDYBqHijE1d5gBNV=3RF=cUVdVj9BKuFzw@mail.gmail.com>
+Subject: Re: [PATCH 5.10 00/52] 5.10.243-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org, Netdev <netdev@vger.kernel.org>, 
+	Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Ben Copeland <benjamin.copeland@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Mimi Zohar <zohar@linux.ibm.com>
+On Mon, 8 Sept 2025 at 01:38, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.10.243 release.
+> There are 52 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 09 Sep 2025 19:55:53 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.243-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-[ Upstream commit a414016218ca97140171aa3bb926b02e1f68c2cc ]
 
-Each time a file in policy, that is already opened for read, is opened
-for write, a Time-of-Measure-Time-of-Use (ToMToU) integrity violation
-audit message is emitted and a violation record is added to the IMA
-measurement list.  This occurs even if a ToMToU violation has already
-been recorded.
+While building Linux stable-rc 5.10.243-rc1 the arm64 allyesconfig
+builds failed.
 
-Limit the number of ToMToU integrity violations per file open for read.
+* arm64, build
+  - gcc-12-allyesconfig
 
-Note: The IMA_MAY_EMIT_TOMTOU atomic flag must be set from the reader
-side based on policy.  This may result in a per file open for read
-ToMToU violation.
+Regression Analysis:
+- New regression? yes
+- Reproducibility? yes
 
-Since IMA_MUST_MEASURE is only used for violations, rename the atomic
-IMA_MUST_MEASURE flag to IMA_MAY_EMIT_TOMTOU.
 
-Cc: stable@vger.kernel.org # applies cleanly up to linux-6.6
-Tested-by: Stefan Berger <stefanb@linux.ibm.com>
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-Tested-by: Petr Vorel <pvorel@suse.cz>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-[ adapted IMA flag definitions location from ima.h to integrity.h ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- security/integrity/ima/ima_main.c | 16 +++++++++++-----
- security/integrity/integrity.h    |  3 ++-
- 2 files changed, 13 insertions(+), 6 deletions(-)
+Build regression: stable-rc 5.10.243-rc1 arm64 allyesconfig
+qede_main.c:204:17: error: field name not in record or union
+initializer
 
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index 068edb0d79f73..3b734a4dfcbe4 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -128,16 +128,22 @@ static void ima_rdwr_violation_check(struct file *file,
- 		if (atomic_read(&inode->i_readcount) && IS_IMA(inode)) {
- 			if (!iint)
- 				iint = integrity_iint_find(inode);
-+
- 			/* IMA_MEASURE is set from reader side */
--			if (iint && test_bit(IMA_MUST_MEASURE,
--						&iint->atomic_flags))
-+			if (iint && test_and_clear_bit(IMA_MAY_EMIT_TOMTOU,
-+						       &iint->atomic_flags))
- 				send_tomtou = true;
- 		}
- 	} else {
- 		if (must_measure)
--			set_bit(IMA_MUST_MEASURE, &iint->atomic_flags);
--		if (inode_is_open_for_write(inode) && must_measure)
--			send_writers = true;
-+			set_bit(IMA_MAY_EMIT_TOMTOU, &iint->atomic_flags);
-+
-+		/* Limit number of open_writers violations */
-+		if (inode_is_open_for_write(inode) && must_measure) {
-+			if (!test_and_set_bit(IMA_EMITTED_OPENWRITERS,
-+					      &iint->atomic_flags))
-+				send_writers = true;
-+		}
- 	}
- 
- 	if (!send_tomtou && !send_writers)
-diff --git a/security/integrity/integrity.h b/security/integrity/integrity.h
-index ad20ff7f5dfaa..a007edae938ae 100644
---- a/security/integrity/integrity.h
-+++ b/security/integrity/integrity.h
-@@ -74,7 +74,8 @@
- #define IMA_UPDATE_XATTR	1
- #define IMA_CHANGE_ATTR		2
- #define IMA_DIGSIG		3
--#define IMA_MUST_MEASURE	4
-+#define IMA_MAY_EMIT_TOMTOU	4
-+#define IMA_EMITTED_OPENWRITERS	5
- 
- enum evm_ima_xattr_type {
- 	IMA_XATTR_DIGEST = 0x01,
--- 
-2.51.0
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+### build log
+drivers/net/ethernet/qlogic/qede/qede_main.c:204:17: error: field name
+not in record or union initializer
+  204 |                 .arfs_filter_op = qede_arfs_filter_op,
+      |                 ^
+
+This was reported on the Linux next-20250428 tag,
+https://lore.kernel.org/all/CA+G9fYs+7-Jut2PM1Z8fXOkBaBuGt0WwTUvU=4cu2O8iQdwUYw@mail.gmail.com/
+
+## Build
+* kernel: 5.10.243-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+* git commit: 910e092353351549f4857c48c68cc154c84305e8
+* git describe: v5.10.241-89-g910e09235335
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10.241-89-g910e09235335
+
+## Test Regressions (compared to v5.10.241-35-g4576ee67df7a)
+* arm64, build
+  - gcc-12-allyesconfig
+
+Build log: https://qa-reports.linaro.org/api/testruns/29791464/log_file/
+Build details: https://regressions.linaro.org/lkft/linux-stable-rc-linux-5.10.y/v5.10.241-89-g910e09235335/build/gcc-12-allyesconfig/
+Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/32O3Hlq8fZQUSOfU5gyju24xQit/
+Build config: https://storage.tuxsuite.com/public/linaro/lkft/builds/32O3Hlq8fZQUSOfU5gyju24xQit/config
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
