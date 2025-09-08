@@ -1,152 +1,109 @@
-Return-Path: <stable+bounces-178960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C69B49A54
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 21:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE96FB49AAE
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 22:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C66741B26F09
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 19:50:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD9B11BC526E
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 20:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7442D3754;
-	Mon,  8 Sep 2025 19:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0A22D7DD4;
+	Mon,  8 Sep 2025 20:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FG/LUr8Q"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="BHl1k5w/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDC92BE629
-	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 19:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278722D59FA;
+	Mon,  8 Sep 2025 20:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757360976; cv=none; b=QyilNmyXt50hO3DLLmRqaxn/OzXhpVE0hxfA9nBiLb6HRT7vRgJsB9ruXO2TM+U9qL4uE+0eZMpu4GM8Y1qCr2mx4cOkXyNY4p8jT73dgxCgvwTzoPiTaEuvRWGtTX8ehSJ8HkmWTJH/AozLbQczGCNKznJDI0J+HtC6djxJRUY=
+	t=1757362065; cv=none; b=oeamte24X/2w6iuqlODlfcFZpcfmpybW9GvmFy+iNSI2/DX6c/dQeYLDXS8/RnSEfPo9sJlBvpeE7ziDrK54JGiIpH8mE6AmObFriaB3sd/pDSjwsMkJXKEHei2k9Og6eumFSr4n6TDz8Tkvb7pIIqbhNFH9injTPwVWZstXWtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757360976; c=relaxed/simple;
-	bh=cb6akyQH5L0SDKpUhza3jmB2OvQV0WZ5MkuRVbL3kl8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o+cBra9z8jpzgw+eRkl/9XvfQjG9/qwVKJ3yN++gq6bDuYYiyDL7TUaMLguPUEWqT4F91lvaCfY8iDpDqV5LQbl2Qk1epDUvItYASiVjkraCqRpENGGcsYoKfTTZ3x5VKxZlBEHzq/paBuUEpzJvC75JNkAMdKvO0xZd2I9ZbJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FG/LUr8Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF08C4CEF1;
-	Mon,  8 Sep 2025 19:49:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757360975;
-	bh=cb6akyQH5L0SDKpUhza3jmB2OvQV0WZ5MkuRVbL3kl8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FG/LUr8QIPX+uxhSpi4GFYpTycfDJiMsNHxrZlo53h1vG/f4oVShZfNlO9tO9ZlMv
-	 Z8WrBUKfh5F3ramQVO1z5tCrpCZaIA2jbIfrsfDWMvxmWPPaZcFEjlVdhDelSwo/jV
-	 b2JQOROY8A44XmER1K45WoHVMVi8sPKT4TKx6kYQKRlGkGZw3GTIHrOY/z86YyupEq
-	 PXmOZfVLCPoFn/um3Ustuks6Gz8EmR/XUeV1//dQifLcjUJ1CsNm+A0b4e4xA0JiTR
-	 9DXestaZH14woiNimmjJ3dDEjz2T64ua7UHFpZc6DqdZ+q4muQtl2NtJbD7i9jZU9l
-	 gkyaAXsTqWbOA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] media: i2c: imx214: Fix link frequency validation
-Date: Mon,  8 Sep 2025 15:49:31 -0400
-Message-ID: <20250908194931.2306968-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025041713-patchwork-breeder-db17@gregkh>
-References: <2025041713-patchwork-breeder-db17@gregkh>
+	s=arc-20240116; t=1757362065; c=relaxed/simple;
+	bh=LeZJP+pU9gKNfJpiPKIUW2+w0mvYsmt/t2VSk2lm2sk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NGcyCokekN2kcSmEc5JLks1aFW/4DvwGA3jp6UOWGe7uCoSjK5jlCY032ckmcz1hwhKO64Z7JHPM8S2/h2XJGuY/UQFlIuJdFPeaawGUAD50k702+arAMauSudA3SeDd1/vMsuzUrB9CmJKhmBp+3MCYj7G+P++1rt9BjzMSyGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=BHl1k5w/; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=w1EwyTie/h44Yv/fBjzwXChmTw4VRBobXct3dwrWQS4=; b=BHl1k5w/fsuK6Mj33b29YF4MIw
+	eA1CdklxrPNPohLDsJNrwVCyvYiOGdUefvcSJaltG3XQdjFwwLrye4/96faDnNb+OvaQncNEehOXE
+	ffqq3hE9ySuCYsdNheSOwmCJ3V0O04HYoBIw4O86rpReEGHhVUlBJI3xmtrcRfXESDvQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uvi9E-007iQO-Dl; Mon, 08 Sep 2025 22:07:32 +0200
+Date: Mon, 8 Sep 2025 22:07:32 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Benjamin Larsson <benjamin.larsson@genexis.eu>,
+	linux-mediatek@lists.infradead.org, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] pinctrl: airoha: fix wrong MDIO function bitmaks
+Message-ID: <f271a9bf-e6c2-45ca-afc7-7f6ac683572a@lunn.ch>
+References: <20250908113723.31559-1-ansuelsmth@gmail.com>
+ <583981f9-b2ed-45fe-a327-4fd8218dc23e@lunn.ch>
+ <68bf16e5.df0a0220.2e182c.b822@mx.google.com>
+ <d1bc3887-5b88-4fb9-8f89-4b520427ccdc@lunn.ch>
+ <68bf2b2d.050a0220.7d5a6.b11c@mx.google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <68bf2b2d.050a0220.7d5a6.b11c@mx.google.com>
 
-From: André Apitzsch <git@apitzsch.eu>
+On Mon, Sep 08, 2025 at 09:14:49PM +0200, Christian Marangi wrote:
+> On Mon, Sep 08, 2025 at 09:06:03PM +0200, Andrew Lunn wrote:
+> > On Mon, Sep 08, 2025 at 07:48:17PM +0200, Christian Marangi wrote:
+> > > On Mon, Sep 08, 2025 at 06:54:15PM +0200, Andrew Lunn wrote:
+> > > > On Mon, Sep 08, 2025 at 01:37:19PM +0200, Christian Marangi wrote:
+> > > > > With further testing with an attached Aeonsemi it was discovered that
+> > > > > the pinctrl MDIO function applied the wrong bitmask. The error was
+> > > > > probably caused by the confusing documentation related to these bits.
+> > > > > 
+> > > > > Inspecting what the bootloader actually configure, the SGMII_MDIO_MODE
+> > > > > is never actually set but instead it's set force enable to the 2 GPIO
+> > > > > (gpio 1-2) for MDC and MDIO pin.
+> > > > 
+> > > > Is the MDIO bus implemented using the GPIO bitbanging driver?
+> > > > 
+> > > 
+> > > No it does use the MDIO bus integrated in the MT7530 Switch. It's just
+> > > that the MDIO pin can be muxed as GPIO usage.
+> > 
+> > Then i do not understand this patch. Why configure the pinmux for GPIO
+> > when you want it connected to the MDIO bus device?
+> >
+> 
+> The usage of GPIO might be confusing but this is just to instruct the
+> SoC to not mess with those 2 PIN and as Benjamin reported it's also an
+> Errata of 7581. The FORCE_GPIO_EN doesn't set them as GPIO function
+> (that is configured by a different register) but it's really to actually
+> ""enable"" those lines.
 
-[ Upstream commit acc294519f1749041e1b8c74d46bbf6c57d8b061 ]
+So please extent the commit message: FORCE_GPIO_EN does not actually
+force the pin to GPIO, but really means....
 
-The driver defines IMX214_DEFAULT_LINK_FREQ 480000000, and then
-IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10),
-which works out as 384MPix/s. (The 8 is 4 lanes and DDR.)
+The commit message is the correct place to try to explain why the
+patch makes no sense, because FORCE_GPIO_EN is wrongly named.
 
-Parsing the PLL registers with the defined 24MHz input. We're in single
-PLL mode, so MIPI frequency is directly linked to pixel rate.  VTCK ends
-up being 1200MHz, and VTPXCK and OPPXCK both are 120MHz.  Section 5.3
-"Frame rate calculation formula" says "Pixel rate
-[pixels/s] = VTPXCK [MHz] * 4", so 120 * 4 = 480MPix/s, which basically
-agrees with my number above.
-
-3.1.4. MIPI global timing setting says "Output bitrate = OPPXCK * reg
-0x113[7:0]", so 120MHz * 10, or 1200Mbit/s. That would be a link
-frequency of 600MHz due to DDR.
-That also matches to 480MPix/s * 10bpp / 4 lanes / 2 for DDR.
-
-Keep the previous link frequency for backward compatibility.
-
-Acked-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
-Fixes: 436190596241 ("media: imx214: Add imx214 camera sensor driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[ changed dev_err() to dev_err_probe() for the final error case ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/media/i2c/imx214.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-index 2f9c8582f9401..db40008f31cf1 100644
---- a/drivers/media/i2c/imx214.c
-+++ b/drivers/media/i2c/imx214.c
-@@ -20,7 +20,9 @@
- #include <media/v4l2-subdev.h>
- 
- #define IMX214_DEFAULT_CLK_FREQ	24000000
--#define IMX214_DEFAULT_LINK_FREQ 480000000
-+#define IMX214_DEFAULT_LINK_FREQ	600000000
-+/* Keep wrong link frequency for backward compatibility */
-+#define IMX214_DEFAULT_LINK_FREQ_LEGACY	480000000
- #define IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10)
- #define IMX214_FPS 30
- #define IMX214_MBUS_CODE MEDIA_BUS_FMT_SRGGB10_1X10
-@@ -892,17 +894,26 @@ static int imx214_parse_fwnode(struct device *dev)
- 		goto done;
- 	}
- 
--	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++)
-+	if (bus_cfg.nr_of_link_frequencies != 1)
-+		dev_warn(dev, "Only one link-frequency supported, please review your DT. Continuing anyway\n");
-+
-+	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++) {
- 		if (bus_cfg.link_frequencies[i] == IMX214_DEFAULT_LINK_FREQ)
- 			break;
--
--	if (i == bus_cfg.nr_of_link_frequencies) {
--		dev_err(dev, "link-frequencies %d not supported, Please review your DT\n",
--			IMX214_DEFAULT_LINK_FREQ);
--		ret = -EINVAL;
--		goto done;
-+		if (bus_cfg.link_frequencies[i] ==
-+		    IMX214_DEFAULT_LINK_FREQ_LEGACY) {
-+			dev_warn(dev,
-+				 "link-frequencies %d not supported, please review your DT. Continuing anyway\n",
-+				 IMX214_DEFAULT_LINK_FREQ);
-+			break;
-+		}
- 	}
- 
-+	if (i == bus_cfg.nr_of_link_frequencies)
-+		ret = dev_err_probe(dev, -EINVAL,
-+				    "link-frequencies %d not supported, please review your DT\n",
-+				    IMX214_DEFAULT_LINK_FREQ);
-+
- done:
- 	v4l2_fwnode_endpoint_free(&bus_cfg);
- 	fwnode_handle_put(endpoint);
--- 
-2.51.0
-
+	 Andrew
 
