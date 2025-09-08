@@ -1,137 +1,336 @@
-Return-Path: <stable+bounces-178958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5ECEB49997
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 21:15:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F36B49A4D
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 21:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B98D7A797E
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 19:13:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8A21B26DB7
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 19:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1EF4238C0F;
-	Mon,  8 Sep 2025 19:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1C72D3758;
+	Mon,  8 Sep 2025 19:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JChBP4GH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X8oh4PVp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3008238C26;
-	Mon,  8 Sep 2025 19:14:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3EE2D3754
+	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 19:48:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757358897; cv=none; b=eU8VCxLUnsJPtE6CipphjvFweHDvef/9i3oIYgiC6Oz5J0BtiH0yHAIXf9dnCyta6EkYFzR4gfSSrtvarcCZ5TiYM9BS2IHllofgbizyyZ7sHZT2Wsn/t3aLTa3JCOZmHGM9iMOtJGGVlmM1M5qch5rQGWoVpRfd3hI24AS1BPY=
+	t=1757360894; cv=none; b=nQz84AlntH6kDZ8oYlOhT65Qqjj6yp/r1b0vrAVP0gfNBvr3XpgTWsUW9GB/Py9dpi8DowBe7txRM6C1RCZCWbg6dKGxjuJauOxaIZa4PmN/FxG84yaYbfHWW7SKx1vrKW6ivuxsxelpJKpffVVdVyE32GTfrQYTqF4axH7+N60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757358897; c=relaxed/simple;
-	bh=QXGuf1VVAykG+B3ZsO/oBKnwI0j3Mud9gIZCGS/X+ic=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L2u6uGPkLgLv2ZPkSkK652wuwCjOTxj4XYPAoTQJMSuJ5ofABTvNWdPhQNmIXZPXD9BKv1Nsb0LJEmHJTsvzI4IJSsQnsg+vik/gbIPCC3pB3J4gjuICJ564GDHX5O28suPjGho3dcrMRzd3yFRS7cYK2WD6oTZyaBOb9v1Dhos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JChBP4GH; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3e07ffffb87so2239091f8f.2;
-        Mon, 08 Sep 2025 12:14:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757358894; x=1757963694; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=srx4MAFwGWE7Nwzpo2SsNjXaK3mzSAkkPEoW4/Hw/ic=;
-        b=JChBP4GHSqB58LNwIbhm+xuf3HYtWJ53IzupCXneqbP7mOJSqPTK2LtkeBwBCf6mGd
-         yniUnGkfRCb3Syvqa/ZAnGYq+kgg1yPHD3oRNnPR9szSQnIWZwrQDRawy1Nt4Wr9prh5
-         MIEP4j8xmwoxNQ5/D9ycQbILdIvu9Ayv/fXl6qd7ecTGYvwdovqrBofE608CC5DX08Qn
-         LRNta5QdPt1EctvJ8WGSqWqoKW4EomkWelqGPrTc0+7BvJPuDbuetyeiyUXInJzLPvo7
-         pEKLqNjztHIeg7Pcsq4YaeRhtPtTimJ+F82tBKCCH5p21LQ+YQhbg6iMbSOXAzdyCmi1
-         c2DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757358894; x=1757963694;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=srx4MAFwGWE7Nwzpo2SsNjXaK3mzSAkkPEoW4/Hw/ic=;
-        b=H3SZrw1PBaYmTR/m089b10lxJNn1uIzM7D/wkVEJhWlWWiGl4eRXX4i7xNjIgIyHGJ
-         RQ10ojQYa2kAL6fMsud/HDNvfSUKH8Qqt2apnsVkqbPIvT5l7Ugwv/h0zvvM9h+TD5eg
-         v9Ksx+yshcRtUA4lcEo2AEhBQlHVIjqvbJYo8qt2C/BdRFQ/dehU/wcd8IQtkDXAG7rF
-         ttANoc8EoaPQFgMLmCYgGmrDxaWKpgen1UHqV+mBYKIbeAsm7bQ+svI3Ci1oPhPMyvmm
-         fTefqWyrlhEuy1ryc70vkOqwq+W0rAFFv6p8FVvG0X/HuKoU4yZh9bSz/upt1Pgj6DKO
-         0r5A==
-X-Forwarded-Encrypted: i=1; AJvYcCURRk4YY4yBfPZ0wnPJmM6a5FFgXl++Df+O4Cpv23RDP/d3jaokTT1zNFI9p0KAXmdYau36ddmTgXt5InpW@vger.kernel.org, AJvYcCWC8PhT5lyCsB26g5YaEIWv4duFH/2LVlcm2sLLyBac3DKTjr99/BVIng/umpwXOCmhMXt1belzR4hg@vger.kernel.org, AJvYcCX00y1kps7rnDDt13BlmqcaRgqwNFecPssntlTSCRe8gVGfo5BwagczSGeHqrJqmYXk8sIaXd2F@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0N+HAhPD9RyA5UAIJ9cGXVkPaEWnhMsWa10pJKyguLE9Aw1KE
-	PzGzWeW+9oCr17tpuzpLTLGwOzwwrKidf851BEkuqQLyXMWLoVNOg2Tx
-X-Gm-Gg: ASbGncvwMZUXmwPk6gHJjY6ofuABOuCTn0jUhMIkq6hk5o0sRDp9YfMkQ0LvyKCVP7T
-	PPlv4QSWCAPZXCukQwya9yymmukdLglDGnKiLRy8AokG2A6Bo2ESoU2oS/m2+X+kEbtHc/T+fNw
-	Yd+8aqPTyp9XzjtNs+L9ifl6ndCKFfM38Ugp3iYE6EjSiDzkMph5208dNCTXAFAh6DM9hUdj8X/
-	A4h8IXR3pwfclPYX3rxk6tQtpvlkL1oCZ8XD/AI0sthRl16sNmKSr62gbloc34TZoeFhvm+UVAE
-	TqsMwb7iRY06NHx7rF4mWURCNHcFgTRK+fg/20UIAvUw81ZdQ18/SLDXhUkSv3hbZJve/zv8eYN
-	enEXvudGFklk7wiNegnI6mHGxUINw1+4RGfmX01UjZy2pygInjc9H4vABmg/fiL67c1v2Bs6myL
-	NGLazz
-X-Google-Smtp-Source: AGHT+IFziGLQzNAImKhYRQ8IDTrD1/2WSj934yaWV0EXCVxUAxpFR9rChLUkdsHXYck7WZfp1SktZA==
-X-Received: by 2002:a05:6000:2389:b0:3c9:f4a3:f145 with SMTP id ffacd0b85a97d-3e64355556bmr7434762f8f.27.1757358893920;
-        Mon, 08 Sep 2025 12:14:53 -0700 (PDT)
-Received: from Ansuel-XPS. (host-95-249-236-54.retail.telecomitalia.it. [95.249.236.54])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45dd2304e16sm202559135e9.7.2025.09.08.12.14.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 12:14:53 -0700 (PDT)
-Message-ID: <68bf2b2d.050a0220.7d5a6.b11c@mx.google.com>
-X-Google-Original-Message-ID: <aL8rKX72YDo7iU_V@Ansuel-XPS.>
-Date: Mon, 8 Sep 2025 21:14:49 +0200
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Sean Wang <sean.wang@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Benjamin Larsson <benjamin.larsson@genexis.eu>,
-	linux-mediatek@lists.infradead.org, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] pinctrl: airoha: fix wrong MDIO function bitmaks
-References: <20250908113723.31559-1-ansuelsmth@gmail.com>
- <583981f9-b2ed-45fe-a327-4fd8218dc23e@lunn.ch>
- <68bf16e5.df0a0220.2e182c.b822@mx.google.com>
- <d1bc3887-5b88-4fb9-8f89-4b520427ccdc@lunn.ch>
+	s=arc-20240116; t=1757360894; c=relaxed/simple;
+	bh=fdxX4YvxRubWUZNWnOP0Dkwq66UqPLG82KMToGEFV7w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hvvhcHY9NMljz/ZGS8NWyx1X2pTK0qh0RIiNGkqkeUoR5cEecb3egcSpa4ZIxZOS7XprCyNlnsXUwZM0dE3ItgWj26xZM8wHrqiXmnlPkUHr0m4DruFuMSyf/Q+pIEG5WS+Z8Hz4H0dZsuxLEINHhjWGjfF22fb1qi9UC8Q710A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X8oh4PVp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D814C4CEF8;
+	Mon,  8 Sep 2025 19:48:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757360894;
+	bh=fdxX4YvxRubWUZNWnOP0Dkwq66UqPLG82KMToGEFV7w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=X8oh4PVpYHT7Air3BQXJILvdatbvXcJzBcWQ4RChtG6t48oUGgLBc6uceg4X5+w7x
+	 ZFiGGx08oQQHYGxJVbAFRL4mNqMkPzHAHsc2hOK/lnw/UhgWaGKZ0TqXG+uy9M9WHt
+	 i+pd6io5wi3QDX5Mok3YcMS0+LKEAhAzkRxNc0ai9gxb3GRUXdpsm6fyRbjgKcLjfn
+	 N7X2e+UoKz5OY1zWFCrUcYkMEKfP2jGALRE4aq8kXtWVCegS0hRJmDSwp3ys53Ptfv
+	 ae1hPWnIfdlXTnmQ07iQUy+ONpT4pwYfT8yDPtbFwNazwxp9gkkK5D7B2/ES8qUE3w
+	 teNmhGMyL69BA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] net: Fix null-ptr-deref by sock_lock_init_class_and_name() and rmmod.
+Date: Mon,  8 Sep 2025 15:48:11 -0400
+Message-ID: <20250908194811.2306166-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025041747-recast-siren-a46c@gregkh>
+References: <2025041747-recast-siren-a46c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d1bc3887-5b88-4fb9-8f89-4b520427ccdc@lunn.ch>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 08, 2025 at 09:06:03PM +0200, Andrew Lunn wrote:
-> On Mon, Sep 08, 2025 at 07:48:17PM +0200, Christian Marangi wrote:
-> > On Mon, Sep 08, 2025 at 06:54:15PM +0200, Andrew Lunn wrote:
-> > > On Mon, Sep 08, 2025 at 01:37:19PM +0200, Christian Marangi wrote:
-> > > > With further testing with an attached Aeonsemi it was discovered that
-> > > > the pinctrl MDIO function applied the wrong bitmask. The error was
-> > > > probably caused by the confusing documentation related to these bits.
-> > > > 
-> > > > Inspecting what the bootloader actually configure, the SGMII_MDIO_MODE
-> > > > is never actually set but instead it's set force enable to the 2 GPIO
-> > > > (gpio 1-2) for MDC and MDIO pin.
-> > > 
-> > > Is the MDIO bus implemented using the GPIO bitbanging driver?
-> > > 
-> > 
-> > No it does use the MDIO bus integrated in the MT7530 Switch. It's just
-> > that the MDIO pin can be muxed as GPIO usage.
-> 
-> Then i do not understand this patch. Why configure the pinmux for GPIO
-> when you want it connected to the MDIO bus device?
->
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-The usage of GPIO might be confusing but this is just to instruct the
-SoC to not mess with those 2 PIN and as Benjamin reported it's also an
-Errata of 7581. The FORCE_GPIO_EN doesn't set them as GPIO function
-(that is configured by a different register) but it's really to actually
-""enable"" those lines.
+[ Upstream commit 0bb2f7a1ad1f11d861f58e5ee5051c8974ff9569 ]
 
-Normally the SoC should autodetect this by HW but it seems AN7581 have
-problem with this and require this workaround to force enable the 2 pin.
+When I ran the repro [0] and waited a few seconds, I observed two
+LOCKDEP splats: a warning immediately followed by a null-ptr-deref. [1]
 
+Reproduction Steps:
+
+  1) Mount CIFS
+  2) Add an iptables rule to drop incoming FIN packets for CIFS
+  3) Unmount CIFS
+  4) Unload the CIFS module
+  5) Remove the iptables rule
+
+At step 3), the CIFS module calls sock_release() for the underlying
+TCP socket, and it returns quickly.  However, the socket remains in
+FIN_WAIT_1 because incoming FIN packets are dropped.
+
+At this point, the module's refcnt is 0 while the socket is still
+alive, so the following rmmod command succeeds.
+
+  # ss -tan
+  State      Recv-Q Send-Q Local Address:Port  Peer Address:Port
+  FIN-WAIT-1 0      477        10.0.2.15:51062   10.0.0.137:445
+
+  # lsmod | grep cifs
+  cifs                 1159168  0
+
+This highlights a discrepancy between the lifetime of the CIFS module
+and the underlying TCP socket.  Even after CIFS calls sock_release()
+and it returns, the TCP socket does not die immediately in order to
+close the connection gracefully.
+
+While this is generally fine, it causes an issue with LOCKDEP because
+CIFS assigns a different lock class to the TCP socket's sk->sk_lock
+using sock_lock_init_class_and_name().
+
+Once an incoming packet is processed for the socket or a timer fires,
+sk->sk_lock is acquired.
+
+Then, LOCKDEP checks the lock context in check_wait_context(), where
+hlock_class() is called to retrieve the lock class.  However, since
+the module has already been unloaded, hlock_class() logs a warning
+and returns NULL, triggering the null-ptr-deref.
+
+If LOCKDEP is enabled, we must ensure that a module calling
+sock_lock_init_class_and_name() (CIFS, NFS, etc) cannot be unloaded
+while such a socket is still alive to prevent this issue.
+
+Let's hold the module reference in sock_lock_init_class_and_name()
+and release it when the socket is freed in sk_prot_free().
+
+Note that sock_lock_init() clears sk->sk_owner for svc_create_socket()
+that calls sock_lock_init_class_and_name() for a listening socket,
+which clones a socket by sk_clone_lock() without GFP_ZERO.
+
+[0]:
+CIFS_SERVER="10.0.0.137"
+CIFS_PATH="//${CIFS_SERVER}/Users/Administrator/Desktop/CIFS_TEST"
+DEV="enp0s3"
+CRED="/root/WindowsCredential.txt"
+
+MNT=$(mktemp -d /tmp/XXXXXX)
+mount -t cifs ${CIFS_PATH} ${MNT} -o vers=3.0,credentials=${CRED},cache=none,echo_interval=1
+
+iptables -A INPUT -s ${CIFS_SERVER} -j DROP
+
+for i in $(seq 10);
+do
+    umount ${MNT}
+    rmmod cifs
+    sleep 1
+done
+
+rm -r ${MNT}
+
+iptables -D INPUT -s ${CIFS_SERVER} -j DROP
+
+[1]:
+DEBUG_LOCKS_WARN_ON(1)
+WARNING: CPU: 10 PID: 0 at kernel/locking/lockdep.c:234 hlock_class (kernel/locking/lockdep.c:234 kernel/locking/lockdep.c:223)
+Modules linked in: cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
+CPU: 10 UID: 0 PID: 0 Comm: swapper/10 Not tainted 6.14.0 #36
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:hlock_class (kernel/locking/lockdep.c:234 kernel/locking/lockdep.c:223)
+...
+Call Trace:
+ <IRQ>
+ __lock_acquire (kernel/locking/lockdep.c:4853 kernel/locking/lockdep.c:5178)
+ lock_acquire (kernel/locking/lockdep.c:469 kernel/locking/lockdep.c:5853 kernel/locking/lockdep.c:5816)
+ _raw_spin_lock_nested (kernel/locking/spinlock.c:379)
+ tcp_v4_rcv (./include/linux/skbuff.h:1678 ./include/net/tcp.h:2547 net/ipv4/tcp_ipv4.c:2350)
+...
+
+BUG: kernel NULL pointer dereference, address: 00000000000000c4
+ PF: supervisor read access in kernel mode
+ PF: error_code(0x0000) - not-present page
+PGD 0
+Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 10 UID: 0 PID: 0 Comm: swapper/10 Tainted: G        W          6.14.0 #36
+Tainted: [W]=WARN
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:__lock_acquire (kernel/locking/lockdep.c:4852 kernel/locking/lockdep.c:5178)
+Code: 15 41 09 c7 41 8b 44 24 20 25 ff 1f 00 00 41 09 c7 8b 84 24 a0 00 00 00 45 89 7c 24 20 41 89 44 24 24 e8 e1 bc ff ff 4c 89 e7 <44> 0f b6 b8 c4 00 00 00 e8 d1 bc ff ff 0f b6 80 c5 00 00 00 88 44
+RSP: 0018:ffa0000000468a10 EFLAGS: 00010046
+RAX: 0000000000000000 RBX: ff1100010091cc38 RCX: 0000000000000027
+RDX: ff1100081f09ca48 RSI: 0000000000000001 RDI: ff1100010091cc88
+RBP: ff1100010091c200 R08: ff1100083fe6e228 R09: 00000000ffffbfff
+R10: ff1100081eca0000 R11: ff1100083fe10dc0 R12: ff1100010091cc88
+R13: 0000000000000001 R14: 0000000000000000 R15: 00000000000424b1
+FS:  0000000000000000(0000) GS:ff1100081f080000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000000000c4 CR3: 0000000002c4a003 CR4: 0000000000771ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <IRQ>
+ lock_acquire (kernel/locking/lockdep.c:469 kernel/locking/lockdep.c:5853 kernel/locking/lockdep.c:5816)
+ _raw_spin_lock_nested (kernel/locking/spinlock.c:379)
+ tcp_v4_rcv (./include/linux/skbuff.h:1678 ./include/net/tcp.h:2547 net/ipv4/tcp_ipv4.c:2350)
+ ip_protocol_deliver_rcu (net/ipv4/ip_input.c:205 (discriminator 1))
+ ip_local_deliver_finish (./include/linux/rcupdate.h:878 net/ipv4/ip_input.c:234)
+ ip_sublist_rcv_finish (net/ipv4/ip_input.c:576)
+ ip_list_rcv_finish (net/ipv4/ip_input.c:628)
+ ip_list_rcv (net/ipv4/ip_input.c:670)
+ __netif_receive_skb_list_core (net/core/dev.c:5939 net/core/dev.c:5986)
+ netif_receive_skb_list_internal (net/core/dev.c:6040 net/core/dev.c:6129)
+ napi_complete_done (./include/linux/list.h:37 ./include/net/gro.h:519 ./include/net/gro.h:514 net/core/dev.c:6496)
+ e1000_clean (drivers/net/ethernet/intel/e1000/e1000_main.c:3815)
+ __napi_poll.constprop.0 (net/core/dev.c:7191)
+ net_rx_action (net/core/dev.c:7262 net/core/dev.c:7382)
+ handle_softirqs (kernel/softirq.c:561)
+ __irq_exit_rcu (kernel/softirq.c:596 kernel/softirq.c:435 kernel/softirq.c:662)
+ irq_exit_rcu (kernel/softirq.c:680)
+ common_interrupt (arch/x86/kernel/irq.c:280 (discriminator 14))
+  </IRQ>
+ <TASK>
+ asm_common_interrupt (./arch/x86/include/asm/idtentry.h:693)
+RIP: 0010:default_idle (./arch/x86/include/asm/irqflags.h:37 ./arch/x86/include/asm/irqflags.h:92 arch/x86/kernel/process.c:744)
+Code: 4c 01 c7 4c 29 c2 e9 72 ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa eb 07 0f 00 2d c3 2b 15 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90
+RSP: 0018:ffa00000000ffee8 EFLAGS: 00000202
+RAX: 000000000000640b RBX: ff1100010091c200 RCX: 0000000000061aa4
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff812f30c5
+RBP: 000000000000000a R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000002 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ ? do_idle (kernel/sched/idle.c:186 kernel/sched/idle.c:325)
+ default_idle_call (./include/linux/cpuidle.h:143 kernel/sched/idle.c:118)
+ do_idle (kernel/sched/idle.c:186 kernel/sched/idle.c:325)
+ cpu_startup_entry (kernel/sched/idle.c:422 (discriminator 1))
+ start_secondary (arch/x86/kernel/smpboot.c:315)
+ common_startup_64 (arch/x86/kernel/head_64.S:421)
+ </TASK>
+Modules linked in: cifs_arc4 nls_ucs2_utils cifs_md4 [last unloaded: cifs]
+CR2: 00000000000000c4
+
+Fixes: ed07536ed673 ("[PATCH] lockdep: annotate nfs/nfsd in-kernel sockets")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250407163313.22682-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ no ns_tracker and sk_user_frags fields ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/net/sock.h | 40 ++++++++++++++++++++++++++++++++++++++--
+ net/core/sock.c    |  5 +++++
+ 2 files changed, 43 insertions(+), 2 deletions(-)
+
+diff --git a/include/net/sock.h b/include/net/sock.h
+index fd68fd0adae7f..3158cf0269ac9 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -349,6 +349,8 @@ struct bpf_local_storage;
+   *	@sk_txtime_deadline_mode: set deadline mode for SO_TXTIME
+   *	@sk_txtime_report_errors: set report errors mode for SO_TXTIME
+   *	@sk_txtime_unused: unused txtime flags
++  *	@sk_owner: reference to the real owner of the socket that calls
++  *		   sock_lock_init_class_and_name().
+   */
+ struct sock {
+ 	/*
+@@ -537,6 +539,10 @@ struct sock {
+ 	struct bpf_local_storage __rcu	*sk_bpf_storage;
+ #endif
+ 	struct rcu_head		sk_rcu;
++
++#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
++	struct module		*sk_owner;
++#endif
+ };
+ 
+ enum sk_pacing {
+@@ -1662,6 +1668,35 @@ static inline void sock_release_ownership(struct sock *sk)
+ 	}
+ }
+ 
++#if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
++static inline void sk_owner_set(struct sock *sk, struct module *owner)
++{
++	__module_get(owner);
++	sk->sk_owner = owner;
++}
++
++static inline void sk_owner_clear(struct sock *sk)
++{
++	sk->sk_owner = NULL;
++}
++
++static inline void sk_owner_put(struct sock *sk)
++{
++	module_put(sk->sk_owner);
++}
++#else
++static inline void sk_owner_set(struct sock *sk, struct module *owner)
++{
++}
++
++static inline void sk_owner_clear(struct sock *sk)
++{
++}
++
++static inline void sk_owner_put(struct sock *sk)
++{
++}
++#endif
+ /*
+  * Macro so as to not evaluate some arguments when
+  * lockdep is not enabled.
+@@ -1671,13 +1706,14 @@ static inline void sock_release_ownership(struct sock *sk)
+  */
+ #define sock_lock_init_class_and_name(sk, sname, skey, name, key)	\
+ do {									\
++	sk_owner_set(sk, THIS_MODULE);					\
+ 	sk->sk_lock.owned = 0;						\
+ 	init_waitqueue_head(&sk->sk_lock.wq);				\
+ 	spin_lock_init(&(sk)->sk_lock.slock);				\
+ 	debug_check_no_locks_freed((void *)&(sk)->sk_lock,		\
+-			sizeof((sk)->sk_lock));				\
++				   sizeof((sk)->sk_lock));		\
+ 	lockdep_set_class_and_name(&(sk)->sk_lock.slock,		\
+-				(skey), (sname));				\
++				   (skey), (sname));			\
+ 	lockdep_init_map(&(sk)->sk_lock.dep_map, (name), (key), 0);	\
+ } while (0)
+ 
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 3634a4f1f76c6..3569e1a5f1387 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1799,6 +1799,8 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
+  */
+ static inline void sock_lock_init(struct sock *sk)
+ {
++	sk_owner_clear(sk);
++
+ 	if (sk->sk_kern_sock)
+ 		sock_lock_init_class_and_name(
+ 			sk,
+@@ -1894,6 +1896,9 @@ static void sk_prot_free(struct proto *prot, struct sock *sk)
+ 	cgroup_sk_free(&sk->sk_cgrp_data);
+ 	mem_cgroup_sk_free(sk);
+ 	security_sk_free(sk);
++
++	sk_owner_put(sk);
++
+ 	if (slab != NULL)
+ 		kmem_cache_free(slab, sk);
+ 	else
 -- 
-	Ansuel
+2.51.0
+
 
