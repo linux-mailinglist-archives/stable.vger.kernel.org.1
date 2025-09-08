@@ -1,377 +1,210 @@
-Return-Path: <stable+bounces-178882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249C1B48A22
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 12:26:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 684A5B48A38
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 12:32:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3D12342720
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 10:26:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5431F1B2521F
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 10:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D761EF510;
-	Mon,  8 Sep 2025 10:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EB12EAB8E;
+	Mon,  8 Sep 2025 10:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="v5ZyeOd6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AUmEndsA"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE321CAA65;
-	Mon,  8 Sep 2025 10:25:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BCD2139C9;
+	Mon,  8 Sep 2025 10:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757327158; cv=none; b=sTk+OvAu/4CQKk2hWCH/7b9pm/BxK2rdvWKJRkc5j3FGzmCICRsCPQy3UVAwodnVv5hdo/TGVTz0teBabroLItgZ4lLf16ZtEVaz0mRt2Tojbx4wAnE23/Y/BVpqfqz4MWKrRVpMmMhqSIkdLbiXhXLuxqopBWw70ST0oIa7zBs=
+	t=1757327566; cv=none; b=ueGSkdzxoWDQIahbQsxDihP5LnN3kF4Xjher9lTmsgG+dGGiBcJxxZuB7TclCZLlk43gt+ynQnPNgjumBUtKFN7ZUDBuaE7oxVheFUvnGZqk661DcItA7YGga0ZJXR2KhSSpxPOu/zl2co7th/CQfQIgx0rsbtbwABPwWpXT5Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757327158; c=relaxed/simple;
-	bh=21K8KcR1MCrMWqs8uGKEa0hkEr38n6EV34+F/YkbVgA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ud/COlWPaZai4lEr7SlOxCdIfcUz/CS3xKR6p2V9NzRP3llQIlrkNnpyc6PyVB8WVqLY9cnQlqfTzvEXCnUoGKcPyRY8GWJnUWoSD0ZG+ZssTLShbXBFW5z+vciQBHUX2xHaNLEYhoWLxP2QZACTv2wQ+59ajKEnMrrcBRs6vy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=v5ZyeOd6; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (230.215-178-91.adsl-dyn.isp.belgacom.be [91.178.215.230])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 5A6CBC71;
-	Mon,  8 Sep 2025 12:24:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1757327081;
-	bh=21K8KcR1MCrMWqs8uGKEa0hkEr38n6EV34+F/YkbVgA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=v5ZyeOd647ETC8Gf8bPcBCBKrRxwoUh2pbqJM25AnaU8bJLSCBwetn6FMcH1UNmsI
-	 bjTt5HlWkyBG7oiIWiCcg1JG/vuCVgTXrB0DmLl+Ii+RDux6t1cL6HkfNYBrY78srX
-	 WwIydoHwOfoX0vxIn7P5GXCouTRjeeyEjLBnU02o=
-Date: Mon, 8 Sep 2025 12:25:32 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Hans de Goede <hansg@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] media: uvcvideo: Fix race condition for meta buffer list
-Message-ID: <20250908102532.GC26062@pendragon.ideasonboard.com>
-References: <20250714-uvc-racemeta-v1-1-360de2e15a9a@chromium.org>
+	s=arc-20240116; t=1757327566; c=relaxed/simple;
+	bh=+4XO0knlLrDUm9FG6npOceWMdlhrXtwcdX+lziaslZU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m2fsYo5Fd4ApabJXC1g1FyC2MSQAC0rXKMS6dATRCtPSnd4Pow1wECydYE36ashth2ACQN3hW9EjFIvIRMC2n89EfOmTDa1qUb24D8aKW6MviNU/jMwyvR6ifFHmZNenbmlm6/LjrYsLpyZIXzX+1NPM3IYVh1pvC8KYg6SGhSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AUmEndsA; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b4f7053cc38so2612270a12.2;
+        Mon, 08 Sep 2025 03:32:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757327564; x=1757932364; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3cF6c5wTxHhL2DgZqdn/ZJz8KkLWRy+JzuRme29y/+g=;
+        b=AUmEndsAI9xRz/FWuYArd0SJQl7H51eaVsm+1RV15OmHDLxCvjGfd59ia3mt07cb1l
+         4Bd+1rJikwVCBOt5SdVxoFPO4Aq6ch+aY2DJphDc7861JhKw9z0pzOUadFt7SW9r00gE
+         ofaKxZuNn9qg/e0uz4RhRFh06UwDLNJhGEVcSKP6UD9GUdYv4mK9agCd7qxIDSCJPvnl
+         u7SNTd0pSnRtlLCvV5z9GNI8NBBwhW1nFmauF9R06PF1Lut6ETPzK7S999ILnJR27Utl
+         rWksrvj0dI9c0TsqSNX24D9E4vUhB3lzjQp3TLfHnV0AZAZeGOA8GZwH1r1fJOo1tdIT
+         Y//w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757327564; x=1757932364;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3cF6c5wTxHhL2DgZqdn/ZJz8KkLWRy+JzuRme29y/+g=;
+        b=MqTrxM/M5c2ER8mNXYsEpQ87nVToPe3AhyKNHhuFKU5G0K3vpgH++/N4itNFc38CYe
+         UzxgGmivXMRUcm8p1gtrO0g3OSFkuuvE98HOFrsR8seust3OD7dVeScrPyKhHFbmMZbe
+         kbMu6XqLRlddEtC8Zo+KuoACtygGiLPyOT3ckENbBjeJJb4d5ByZ2ISdFSnLZU8jzFqc
+         WbkvNlFf0B8rgujHbNHL7J/XdYVSLxwQzAZC7vUg2X2wzTQeR7uBKIMPCyU7+MfHPCzK
+         IDg5Ot//m4bWgV5MlaYYl9UoL/m82vPGBs7OQ7LMdIFwBVmcqLJoKNS5wZXNW4WgAcok
+         /yEA==
+X-Forwarded-Encrypted: i=1; AJvYcCU4D/63nATBpd4qBwFO6ih547mpST/CETw76sVc8RU5oY1EKX6HxogCY2AqJahTTIQXZV41nNCN@vger.kernel.org, AJvYcCUEg38JnAA7y83oMW7X/HCr07FlivaBmvKO7OcpHTalpzIxGls6O/MZbaSSlnraH3ncZaIKMgiSYDaE9hKn@vger.kernel.org, AJvYcCVpNp61pBQuwnY0bIWPhMj+1yTzlvv0DkBx5oHTJDAt0XRDYVOYDtVx9PGC6QIXBthdOJp5srrUME7w@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKSdB14J0eLM3PHywrcZOLHnTGLQ/d/fpJc9D0zfHmOtv9twwx
+	GEAYrKbsvKt6Cp+MUSQiBVg92dvXIvCOYC6vkkAXwPjWcFo0azCg2sarcx7lpQGtFJ/79UEzimC
+	rWnneZnMQ48AmN++dYtmUzEeJKmLYVV8=
+X-Gm-Gg: ASbGncs9N5TwPO1zBtT5tXJzwhYF2+qUxPRWMxah4ZfeEwtUdRYIKhIOX0VrhjvmhAf
+	PPgPwR5cueD6t8QQqHDCam2NOKyeJEzVkfXj9oOHOUE+vtayduoaqkSmDnyV+15igeu1YthM+XZ
+	dGcG6rjO97DYD2oVLd77eDL3V6fQ2xb2xgA12lu1+YMJg1sAruO1jOFM/w1pa1skNhgxBrFo4L/
+	A83BL4Xm+9BPLNWGQ==
+X-Google-Smtp-Source: AGHT+IHnJH0N3/loIyJTaAozc9HWxoZ/j+TmmvLppTeugA1WCtp61zAydIK8CV2uDM+K4H8jhTvQGAx7KS+i3dGnUm8=
+X-Received: by 2002:a17:90b:3904:b0:32b:6132:5f94 with SMTP id
+ 98e67ed59e1d1-32d43f95d02mr10710949a91.21.1757327563647; Mon, 08 Sep 2025
+ 03:32:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250714-uvc-racemeta-v1-1-360de2e15a9a@chromium.org>
+References: <20250827181708.314248-1-max.kellermann@ionos.com>
+In-Reply-To: <20250827181708.314248-1-max.kellermann@ionos.com>
+From: Ilya Dryomov <idryomov@gmail.com>
+Date: Mon, 8 Sep 2025 12:32:31 +0200
+X-Gm-Features: Ac12FXybpA5tBFjqghr21v3E3Fpl48u7LFv5vyCLmT49bpExp3yxEYVGfIZVWc4
+Message-ID: <CAOi1vP-uiSHW-3vTQXdBCWH25sUgiWVK4UvF2APsGM1QNpNqFw@mail.gmail.com>
+Subject: Re: [PATCH] fs/ceph/addr: always call ceph_shift_unused_folios_left()
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: Slava.Dubeyko@ibm.com, xiubli@redhat.com, amarkuze@redhat.com, 
+	ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Ricardo,
-
-Thank you for the patch.
-
-On Mon, Jul 14, 2025 at 10:23:45AM +0000, Ricardo Ribalda wrote:
-> queue->irqueue contains a list of the buffers owned by the driver. The
-> list is protected by queue->irqlock. uvc_queue_get_current_buffer()
-> returns a pointer to the current buffer in that list, but does not
-> remove the buffer from it. This can lead to race conditions.
-> 
-> Inspecting the code, it seems that the candidate for such race is
-> uvc_queue_return_buffers(). For the capture queue, that function is
-> called with the device streamoff, so no race can occur. On the other
-> hand, the metadata queue, could trigger a race condition, because
-> stop_streaming can be called with the device in any streaming state.
-> 
-> We can solve this issue modifying the way the metadata buffer
-> lifetime works. We can keep the queue->irqlock while the use the current
-> metadata buffer.
-> 
-> The core of this change is uvc_video_decode_meta(), it now obtains the
-> buffer and holds the spinlock instead of getting the buffer as an
-> argument.
-> 
-> Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Closes: https://lore.kernel.org/linux-media/20250630141707.GG20333@pendragon.ideasonboard.com/
+On Wed, Aug 27, 2025 at 8:17=E2=80=AFPM Max Kellermann <max.kellermann@iono=
+s.com> wrote:
+>
+> The function ceph_process_folio_batch() sets folio_batch entries to
+> NULL, which is an illegal state.  Before folio_batch_release() crashes
+> due to this API violation, the function
+> ceph_shift_unused_folios_left() is supposed to remove those NULLs from
+> the array.
+>
+> However, since commit ce80b76dd327 ("ceph: introduce
+> ceph_process_folio_batch() method"), this shifting doesn't happen
+> anymore because the "for" loop got moved to
+> ceph_process_folio_batch(), and now the `i` variable that remains in
+> ceph_writepages_start() doesn't get incremented anymore, making the
+> shifting effectively unreachable much of the time.
+>
+> Later, commit 1551ec61dc55 ("ceph: introduce ceph_submit_write()
+> method") added more preconditions for doing the shift, replacing the
+> `i` check (with something that is still just as broken):
+>
+> - if ceph_process_folio_batch() fails, shifting never happens
+>
+> - if ceph_move_dirty_page_in_page_array() was never called (because
+>   ceph_process_folio_batch() has returned early for some of various
+>   reasons), shifting never happens
+>
+> - if `processed_in_fbatch` is zero (because ceph_process_folio_batch()
+>   has returned early for some of the reasons mentioned above or
+>   because ceph_move_dirty_page_in_page_array() has failed), shifting
+>   never happens
+>
+> Since those two commits, any problem in ceph_process_folio_batch()
+> could crash the kernel, e.g. this way:
+>
+>  BUG: kernel NULL pointer dereference, address: 0000000000000034
+>  #PF: supervisor write access in kernel mode
+>  #PF: error_code(0x0002) - not-present page
+>  PGD 0 P4D 0
+>  Oops: Oops: 0002 [#1] SMP NOPTI
+>  CPU: 172 UID: 0 PID: 2342707 Comm: kworker/u778:8 Not tainted 6.15.10-cm=
+4all1-es #714 NONE
+>  Hardware name: Dell Inc. PowerEdge R7615/0G9DHV, BIOS 1.6.10 12/08/2023
+>  Workqueue: writeback wb_workfn (flush-ceph-1)
+>  RIP: 0010:folios_put_refs+0x85/0x140
+>  Code: 83 c5 01 39 e8 7e 76 48 63 c5 49 8b 5c c4 08 b8 01 00 00 00 4d 85 =
+ed 74 05 41 8b 44 ad 00 48 8b 15 b0 >
+>  RSP: 0018:ffffb880af8db778 EFLAGS: 00010207
+>  RAX: 0000000000000001 RBX: 0000000000000000 RCX: 0000000000000003
+>  RDX: ffffe377cc3b0000 RSI: 0000000000000000 RDI: ffffb880af8db8c0
+>  RBP: 0000000000000000 R08: 000000000000007d R09: 000000000102b86f
+>  R10: 0000000000000001 R11: 00000000000000ac R12: ffffb880af8db8c0
+>  R13: 0000000000000000 R14: 0000000000000000 R15: ffff9bd262c97000
+>  FS:  0000000000000000(0000) GS:ffff9c8efc303000(0000) knlGS:000000000000=
+0000
+>  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>  CR2: 0000000000000034 CR3: 0000000160958004 CR4: 0000000000770ef0
+>  PKRU: 55555554
+>  Call Trace:
+>   <TASK>
+>   ceph_writepages_start+0xeb9/0x1410
+>
+> The crash can be reproduced easily by changing the
+> ceph_check_page_before_write() return value to `-E2BIG`.
+>
+> (Interestingly, the crash happens only if `huge_zero_folio` has
+> already been allocated; without `huge_zero_folio`,
+> is_huge_zero_folio(NULL) returns true and folios_put_refs() skips NULL
+> entries instead of dereferencing them.  That makes reproducing the bug
+> somewhat unreliable.  See
+> https://lore.kernel.org/20250826231626.218675-1-max.kellermann@ionos.com
+> for a discussion of this detail.)
+>
+> My suggestion is to move the ceph_shift_unused_folios_left() to right
+> after ceph_process_folio_batch() to ensure it always gets called to
+> fix up the illegal folio_batch state.
+>
+> Fixes: ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method")
+> Link: https://lore.kernel.org/ceph-devel/aK4v548CId5GIKG1@swift.blarg.de/
 > Cc: stable@vger.kernel.org
-> Fixes: 088ead255245 ("media: uvcvideo: Add a metadata device node")
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 > ---
->  drivers/media/usb/uvc/uvc_isight.c |  3 +-
->  drivers/media/usb/uvc/uvc_queue.c  |  4 +-
->  drivers/media/usb/uvc/uvc_video.c  | 92 ++++++++++++++++++++++----------------
->  drivers/media/usb/uvc/uvcvideo.h   |  8 ++--
->  4 files changed, 62 insertions(+), 45 deletions(-)
-> 
-> diff --git a/drivers/media/usb/uvc/uvc_isight.c b/drivers/media/usb/uvc/uvc_isight.c
-> index 43cda5e760a345af56186603e2f0594b814cdbcb..f0e71744d25cab98184335b46569b31ba1346e12 100644
-> --- a/drivers/media/usb/uvc/uvc_isight.c
-> +++ b/drivers/media/usb/uvc/uvc_isight.c
-> @@ -98,8 +98,7 @@ static int isight_decode(struct uvc_video_queue *queue, struct uvc_buffer *buf,
->  	return 0;
->  }
->  
-> -void uvc_video_decode_isight(struct uvc_urb *uvc_urb, struct uvc_buffer *buf,
-> -			struct uvc_buffer *meta_buf)
-> +void uvc_video_decode_isight(struct uvc_urb *uvc_urb, struct uvc_buffer *buf)
->  {
->  	struct urb *urb = uvc_urb->urb;
->  	struct uvc_streaming *stream = uvc_urb->stream;
-> diff --git a/drivers/media/usb/uvc/uvc_queue.c b/drivers/media/usb/uvc/uvc_queue.c
-> index 790184c9843d211d34fa7d66801631d5a07450bd..e184e3ae0f59f142a683263168724bca64509628 100644
-> --- a/drivers/media/usb/uvc/uvc_queue.c
-> +++ b/drivers/media/usb/uvc/uvc_queue.c
-> @@ -310,9 +310,11 @@ void uvc_queue_cancel(struct uvc_video_queue *queue, int disconnect)
->   * Buffers may span multiple packets, and even URBs, therefore the active buffer
->   * remains on the queue until the EOF marker.
->   */
-> -static struct uvc_buffer *
-> +struct uvc_buffer *
->  __uvc_queue_get_current_buffer(struct uvc_video_queue *queue)
->  {
-> +	lockdep_assert_held(&queue->irqlock);
-> +
->  	if (list_empty(&queue->irqqueue))
->  		return NULL;
->  
-> diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-> index 2e377e7b9e81599aca19b800a171cc16a09c1e8a..d6777090d0f892ffe93696c915acd4ec171ca798 100644
-> --- a/drivers/media/usb/uvc/uvc_video.c
-> +++ b/drivers/media/usb/uvc/uvc_video.c
-> @@ -1428,9 +1428,11 @@ static int uvc_video_encode_data(struct uvc_streaming *stream,
->   * previous header.
->   */
->  static void uvc_video_decode_meta(struct uvc_streaming *stream,
-> -				  struct uvc_buffer *meta_buf,
->  				  const u8 *mem, unsigned int length)
->  {
-> +	struct vb2_queue *vb2_qmeta = stream->meta.vdev.queue;
-> +	struct uvc_video_queue *qmeta = &stream->meta.queue;
-> +	struct uvc_buffer *meta_buf;
->  	struct uvc_meta_buf *meta;
->  	size_t len_std = 2;
->  	bool has_pts, has_scr;
-> @@ -1439,7 +1441,13 @@ static void uvc_video_decode_meta(struct uvc_streaming *stream,
->  	ktime_t time;
->  	const u8 *scr;
->  
-> -	if (!meta_buf || length == 2)
-> +	if (!vb2_qmeta || length <= 2)
-> +		return;
-> +
-> +	guard(spinlock_irqsave)(&qmeta->irqlock);
-
-This keeps the spinlock held for longer than I would like. We should
-really try to minimize the amount of work performed with a spinlock
-held.
-
-> +
-> +	meta_buf = __uvc_queue_get_current_buffer(qmeta);
-> +	if (!meta_buf)
->  		return;
->  
->  	has_pts = mem[1] & UVC_STREAM_PTS;
-> @@ -1512,30 +1520,48 @@ static void uvc_video_validate_buffer(const struct uvc_streaming *stream,
->   * Completion handler for video URBs.
->   */
->  
-> -static void uvc_video_next_buffers(struct uvc_streaming *stream,
-> -		struct uvc_buffer **video_buf, struct uvc_buffer **meta_buf)
-> +static void uvc_video_next_meta(struct uvc_streaming *stream,
-> +				struct uvc_buffer *video_buf)
->  {
-> -	uvc_video_validate_buffer(stream, *video_buf);
-> +	struct vb2_queue *vb2_qmeta = stream->meta.vdev.queue;
-> +	struct uvc_video_queue *qmeta = &stream->meta.queue;
-> +	struct uvc_buffer *meta_buf;
-> +	struct vb2_v4l2_buffer *vb2_meta;
-> +	const struct vb2_v4l2_buffer *vb2_video;
->  
-> -	if (*meta_buf) {
-> -		struct vb2_v4l2_buffer *vb2_meta = &(*meta_buf)->buf;
-> -		const struct vb2_v4l2_buffer *vb2_video = &(*video_buf)->buf;
-> +	if (!vb2_qmeta)
-> +		return;
->  
-> -		vb2_meta->sequence = vb2_video->sequence;
-> -		vb2_meta->field = vb2_video->field;
-> -		vb2_meta->vb2_buf.timestamp = vb2_video->vb2_buf.timestamp;
-> +	guard(spinlock_irqsave)(&qmeta->irqlock);
->  
-> -		(*meta_buf)->state = UVC_BUF_STATE_READY;
-> -		if (!(*meta_buf)->error)
-> -			(*meta_buf)->error = (*video_buf)->error;
-> -		*meta_buf = uvc_queue_next_buffer(&stream->meta.queue,
-> -						  *meta_buf);
-> -	}
-> -	*video_buf = uvc_queue_next_buffer(&stream->queue, *video_buf);
-> +	meta_buf = __uvc_queue_get_current_buffer(qmeta);
-> +	if (!meta_buf)
-> +		return;
-> +	list_del(&meta_buf->queue);
-> +
-> +	vb2_meta = &meta_buf->buf;
-> +	vb2_video = &video_buf->buf;
-> +
-> +	vb2_meta->sequence = vb2_video->sequence;
-> +	vb2_meta->field = vb2_video->field;
-> +	vb2_meta->vb2_buf.timestamp = vb2_video->vb2_buf.timestamp;
-> +	meta_buf->state = UVC_BUF_STATE_READY;
-> +	if (!meta_buf->error)
-> +		meta_buf->error = video_buf->error;
-> +
-> +	uvc_queue_buffer_release(meta_buf);
-> +}
-> +
-> +static struct uvc_buffer *uvc_video_next_buffer(struct uvc_streaming *stream,
-> +						struct uvc_buffer *video_buf)
-> +{
-> +	uvc_video_validate_buffer(stream, video_buf);
-> +	uvc_video_next_meta(stream, video_buf);
-> +	return uvc_queue_next_buffer(&stream->queue, video_buf);
->  }
->  
->  static void uvc_video_decode_isoc(struct uvc_urb *uvc_urb,
-> -			struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
-> +				  struct uvc_buffer *buf)
->  {
->  	struct urb *urb = uvc_urb->urb;
->  	struct uvc_streaming *stream = uvc_urb->stream;
-> @@ -1559,13 +1585,13 @@ static void uvc_video_decode_isoc(struct uvc_urb *uvc_urb,
->  			ret = uvc_video_decode_start(stream, buf, mem,
->  				urb->iso_frame_desc[i].actual_length);
->  			if (ret == -EAGAIN)
-> -				uvc_video_next_buffers(stream, &buf, &meta_buf);
-> +				buf = uvc_video_next_buffer(stream, buf);
->  		} while (ret == -EAGAIN);
->  
->  		if (ret < 0)
->  			continue;
->  
-> -		uvc_video_decode_meta(stream, meta_buf, mem, ret);
-> +		uvc_video_decode_meta(stream, mem, ret);
->  
->  		/* Decode the payload data. */
->  		uvc_video_decode_data(uvc_urb, buf, mem + ret,
-> @@ -1576,12 +1602,12 @@ static void uvc_video_decode_isoc(struct uvc_urb *uvc_urb,
->  			urb->iso_frame_desc[i].actual_length);
->  
->  		if (buf->state == UVC_BUF_STATE_READY)
-> -			uvc_video_next_buffers(stream, &buf, &meta_buf);
-> +			buf = uvc_video_next_buffer(stream, buf);
->  	}
->  }
->  
->  static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
-> -			struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
-> +				  struct uvc_buffer *buf)
->  {
->  	struct urb *urb = uvc_urb->urb;
->  	struct uvc_streaming *stream = uvc_urb->stream;
-> @@ -1607,7 +1633,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
->  		do {
->  			ret = uvc_video_decode_start(stream, buf, mem, len);
->  			if (ret == -EAGAIN)
-> -				uvc_video_next_buffers(stream, &buf, &meta_buf);
-> +				buf = uvc_video_next_buffer(stream, buf);
->  		} while (ret == -EAGAIN);
->  
->  		/* If an error occurred skip the rest of the payload. */
-> @@ -1617,7 +1643,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
->  			memcpy(stream->bulk.header, mem, ret);
->  			stream->bulk.header_size = ret;
->  
-> -			uvc_video_decode_meta(stream, meta_buf, mem, ret);
-> +			uvc_video_decode_meta(stream, mem, ret);
->  
->  			mem += ret;
->  			len -= ret;
-> @@ -1644,7 +1670,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
->  			uvc_video_decode_end(stream, buf, stream->bulk.header,
->  				stream->bulk.payload_size);
->  			if (buf->state == UVC_BUF_STATE_READY)
-> -				uvc_video_next_buffers(stream, &buf, &meta_buf);
-> +				buf = uvc_video_next_buffer(stream, buf);
->  		}
->  
->  		stream->bulk.header_size = 0;
-> @@ -1654,7 +1680,7 @@ static void uvc_video_decode_bulk(struct uvc_urb *uvc_urb,
->  }
->  
->  static void uvc_video_encode_bulk(struct uvc_urb *uvc_urb,
-> -	struct uvc_buffer *buf, struct uvc_buffer *meta_buf)
-> +				  struct uvc_buffer *buf)
->  {
->  	struct urb *urb = uvc_urb->urb;
->  	struct uvc_streaming *stream = uvc_urb->stream;
-> @@ -1707,8 +1733,6 @@ static void uvc_video_complete(struct urb *urb)
->  	struct uvc_video_queue *qmeta = &stream->meta.queue;
->  	struct vb2_queue *vb2_qmeta = stream->meta.vdev.queue;
->  	struct uvc_buffer *buf = NULL;
-> -	struct uvc_buffer *buf_meta = NULL;
-> -	unsigned long flags;
->  	int ret;
->  
->  	switch (urb->status) {
-> @@ -1734,14 +1758,6 @@ static void uvc_video_complete(struct urb *urb)
->  
->  	buf = uvc_queue_get_current_buffer(queue);
->  
-> -	if (vb2_qmeta) {
-> -		spin_lock_irqsave(&qmeta->irqlock, flags);
-> -		if (!list_empty(&qmeta->irqqueue))
-> -			buf_meta = list_first_entry(&qmeta->irqqueue,
-> -						    struct uvc_buffer, queue);
-> -		spin_unlock_irqrestore(&qmeta->irqlock, flags);
-> -	}
+>  fs/ceph/addr.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+> index 8b202d789e93..8bc66b45dade 100644
+> --- a/fs/ceph/addr.c
+> +++ b/fs/ceph/addr.c
+> @@ -1687,6 +1687,7 @@ static int ceph_writepages_start(struct address_spa=
+ce *mapping,
+>
+>  process_folio_batch:
+>                 rc =3D ceph_process_folio_batch(mapping, wbc, &ceph_wbc);
+> +               ceph_shift_unused_folios_left(&ceph_wbc.fbatch);
+>                 if (rc)
+>                         goto release_folios;
+>
+> @@ -1695,8 +1696,6 @@ static int ceph_writepages_start(struct address_spa=
+ce *mapping,
+>                         goto release_folios;
+>
+>                 if (ceph_wbc.processed_in_fbatch) {
+> -                       ceph_shift_unused_folios_left(&ceph_wbc.fbatch);
 > -
->  	/* Re-initialise the URB async work. */
->  	uvc_urb->async_operations = 0;
->  
-> @@ -1755,7 +1771,7 @@ static void uvc_video_complete(struct urb *urb)
->  	 * Process the URB headers, and optionally queue expensive memcpy tasks
->  	 * to be deferred to a work queue.
->  	 */
-> -	stream->decode(uvc_urb, buf, buf_meta);
-> +	stream->decode(uvc_urb, buf);
->  
->  	/* If no async work is needed, resubmit the URB immediately. */
->  	if (!uvc_urb->async_operations) {
-> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-> index 757254fc4fe930ae61c9d0425f04d4cd074a617e..bb41477ce4ff5cdbf27bc9d830b63a60645e3fa1 100644
-> --- a/drivers/media/usb/uvc/uvcvideo.h
-> +++ b/drivers/media/usb/uvc/uvcvideo.h
-> @@ -479,8 +479,7 @@ struct uvc_streaming {
->  	unsigned int frozen : 1;
->  	struct uvc_video_queue queue;
->  	struct workqueue_struct *async_wq;
-> -	void (*decode)(struct uvc_urb *uvc_urb, struct uvc_buffer *buf,
-> -		       struct uvc_buffer *meta_buf);
-> +	void (*decode)(struct uvc_urb *uvc_urb, struct uvc_buffer *buf);
->  
->  	struct {
->  		struct video_device vdev;
-> @@ -694,6 +693,8 @@ int uvc_queue_init(struct uvc_video_queue *queue, enum v4l2_buf_type type);
->  void uvc_queue_cancel(struct uvc_video_queue *queue, int disconnect);
->  struct uvc_buffer *uvc_queue_next_buffer(struct uvc_video_queue *queue,
->  					 struct uvc_buffer *buf);
-> +struct uvc_buffer *
-> +__uvc_queue_get_current_buffer(struct uvc_video_queue *queue);
->  struct uvc_buffer *uvc_queue_get_current_buffer(struct uvc_video_queue *queue);
->  void uvc_queue_buffer_release(struct uvc_buffer *buf);
->  static inline int uvc_queue_streaming(struct uvc_video_queue *queue)
-> @@ -802,8 +803,7 @@ u16 uvc_endpoint_max_bpi(struct usb_device *dev, struct usb_host_endpoint *ep);
->  
->  /* Quirks support */
->  void uvc_video_decode_isight(struct uvc_urb *uvc_urb,
-> -			     struct uvc_buffer *buf,
-> -			     struct uvc_buffer *meta_buf);
-> +			     struct uvc_buffer *buf);
->  
->  /* debugfs and statistics */
->  void uvc_debugfs_init(void);
-> 
-> ---
-> base-commit: d968e50b5c26642754492dea23cbd3592bde62d8
-> change-id: 20250714-uvc-racemeta-fee2e69bbfcd
+>                         if (folio_batch_count(&ceph_wbc.fbatch) =3D=3D 0 =
+&&
+>                             ceph_wbc.locked_pages < ceph_wbc.max_pages) {
+>                                 doutc(cl, "reached end fbatch, trying for=
+ more\n");
+> --
+> 2.47.2
+>
 
--- 
-Regards,
+Queued up for 6.17-rc6.
 
-Laurent Pinchart
+Thanks,
+
+                Ilya
 
