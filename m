@@ -1,264 +1,159 @@
-Return-Path: <stable+bounces-178911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0BA4B48F57
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 15:24:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE97BB48FA7
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 15:32:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 573BE3C2D59
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 13:24:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC46E3C60BF
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 13:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88672F8BF5;
-	Mon,  8 Sep 2025 13:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBBB30AD1B;
+	Mon,  8 Sep 2025 13:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sap.com header.i=@sap.com header.b="Jnp+sLxp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kLo08wZi"
 X-Original-To: stable@vger.kernel.org
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011019.outbound.protection.outlook.com [40.107.130.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DBD22F757
-	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 13:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757337893; cv=fail; b=Nn2+UGQ9zFVB91Zsl+d8Itnb81OUzBMUVeQFyhhddaVTgt7av8Bn7SB+oH49ZZzZ9TVHVywg4udLpXrZ7ni29X9nA6vVhtwGFVckYaUHBuAHrCKH2nj1tRgke2AXaZH9/IvUmlA3xORjkmkhQfinOpQyhNiOuPblVLDxcn1/Lp8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757337893; c=relaxed/simple;
-	bh=006WdgZyy18ZTzaGE4bDPggHqfR65cRXi0uRnQ98f/c=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=HZGuqhu+ep3iGfrDOtIEM4tWQZK5DKdz3i8TyCrdsE0bwrgaYHH1bHtxJDm230MGQARfzNuKjBXKtcevd7kDCA9ZfCbdC+BC8Ngd+sMbFKDp0ebL49gynk5pilTIWhkhKFPpipu4JdyHowtaq2oVBnf6sBEJ2ZT/mhpQTI6OU6U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sap.com; spf=pass smtp.mailfrom=sap.com; dkim=pass (2048-bit key) header.d=sap.com header.i=@sap.com header.b=Jnp+sLxp; arc=fail smtp.client-ip=40.107.130.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sap.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sap.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Tcn/KSxEpuBwCQNtAIyHjjpimKph+ga/j0WBYWtVvFui1CbhBwRTI/3oym6P50EFfOb6NXdNnLgi7wBMyc/ox8O3CiBQwK8SH1v3PZwalFdDAq6bes8Hm/oP3dyQA2k8/vZA3eGp6tusM89FxJtLdYZ2dw44/FgxG5dSZdHiRgbdNY+R6yoVYZcby/st4uxEMPx0voK5Zw53KKPLm7nXsLgmZtoSxBwgaQf0X+q4GfU+9cPFoin+VrB/5zwHyYRyoG0zwprvrZ5ZWmItD3X16p7PvATi1AgSJhR+L8g/dZUrB7Nyi94YLn0mTWbBvhmHps/X4Utf/TpTHilJfxRYlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4x2rgbaSDf8Bi9qEqmz9t0BWWjMQk/v3l8px9yRL5+s=;
- b=gAfr7SZwR7x+1aF9Zkl8EdAW57AAEZNBJSTTdnxRFfjbj7X1+ArzveawDoITGw5UvZWiaGteDYWfZLFYdnRrYxRPyRzjfdsuCt9qUZsnIEzRWUWkPvshnFmGtvyN9dgcj2oakiOvoPlq0DNEfzqpaylL7BqwZv6KMvcYYFTh5AxMex/QQbTcmN9d5TYPOkT+aJ3/1DkdLC5zAu4ejTA9KeAZ2L5FqguxLX9yW79U6ROsVgqE9DT8RdQ51qonHRCa3KyM6g+fe1/i847a5mZZ2GzrwL1RvJkPs8Ir92TI1GOR1OVbhgy+IqNJdIDtR5R1lYHQEhqxo17YUKwaHFhrsQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=sap.com; dmarc=pass action=none header.from=sap.com; dkim=pass
- header.d=sap.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sap.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4x2rgbaSDf8Bi9qEqmz9t0BWWjMQk/v3l8px9yRL5+s=;
- b=Jnp+sLxpsJW+YGfT9ou1VzLtXQA8A38mh60ifCsMyIqtdKZG5+2NOg9V+99Pi6xk93AUWnVq+fKGqip1Pro0G/5lspwTRbbDejZUESIJfxBgMPG68DmfPUPv+VpNaRJp05EtVgxhNvHy47q/WpyZULgk8XxgrP704/a4IkG7/A41XITmtAsQ0YmB7/bJB+cqYqWxi920rbiw2Msi2Kgx5520dVw8myuI9j/aUK5n7XUHXiZlcAtCzWjfpSRLAbMth1ahPB26KSs2UufE9US34z26G3Dv6c2FCHU7Jx69VAFW1Q4dP5wE7WenTLr8/JEdonm8BUZ5y1dzN9V+siTSfQ==
-Received: from GVXPR02MB8399.eurprd02.prod.outlook.com (2603:10a6:150:3::19)
- by AS8PR02MB6904.eurprd02.prod.outlook.com (2603:10a6:20b:2b7::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Mon, 8 Sep
- 2025 13:24:47 +0000
-Received: from GVXPR02MB8399.eurprd02.prod.outlook.com
- ([fe80::e6cc:a47a:35a2:f6d2]) by GVXPR02MB8399.eurprd02.prod.outlook.com
- ([fe80::e6cc:a47a:35a2:f6d2%5]) with mapi id 15.20.9094.018; Mon, 8 Sep 2025
- 13:24:47 +0000
-From: "Subramaniam, Sujana" <sujana.subramaniam@sap.com>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC: "Subramaniam, Sujana" <sujana.subramaniam@sap.com>, Yevgeny Kliteynik
-	<kliteyn@nvidia.com>, Itamar Gozlan <igozlan@nvidia.com>, Mark Bloch
-	<mbloch@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Jakub Kicinski
-	<kuba@kernel.org>, Jan Alexander Preissler <akendo@akendo.eu>
-Subject: [PATCH 6.12.y] net/mlx5: HWS, change error flow on matcher disconnect
-Thread-Topic: [PATCH 6.12.y] net/mlx5: HWS, change error flow on matcher
- disconnect
-Thread-Index: AQHcIMPyWhxWJ+R48ke3Uy485VOFGQ==
-Date: Mon, 8 Sep 2025 13:24:47 +0000
-Message-ID: <20250908132419.97268-1-sujana.subramaniam@sap.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=sap.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GVXPR02MB8399:EE_|AS8PR02MB6904:EE_
-x-ms-office365-filtering-correlation-id: 38b32ec0-c513-456b-591b-08ddeedb1519
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?Hb3hd5bT2S5WOTeCd0mA0HPBziGWefeOxbARiSEAaOOtd8YQX09id5cnXq?=
- =?iso-8859-1?Q?uCkftlJYfE4giQ3cawcRgEQX2qEH67BlakNW3CEdKtDdhvDPOj+cj5FbS/?=
- =?iso-8859-1?Q?wAdT0Klt31wBi79H+7yeAhmXwmB1pvOVo+gNDqgpt4uG8MLrre/+eWP+t7?=
- =?iso-8859-1?Q?xRWx/6bhW/U5Ct24/G5kHt38w21AHF2A+GLrBqpz8MlhX5uCd7LNT9HnWM?=
- =?iso-8859-1?Q?e1VB+hd8sTk3kyyGYO5oXchvmLvwMcPOuy+d5tcl9vxuz9b34o4olyCJR7?=
- =?iso-8859-1?Q?u7BDnJYwcBGDoRKvfHlbdv9RHti1uWMBejeOyEz+UKkakc7Gvh+JFVoR6S?=
- =?iso-8859-1?Q?jM0RwKrlGfwmvTlt8CKPT/gSQCzrEgazZLroHUmkb3kjvPn2v/s0OIpRHz?=
- =?iso-8859-1?Q?G5CERnZTwdy7PZOEEcKuW4DiOgkTbSe4V1rNhX0KNhU4EOfMIpAl3v1JGu?=
- =?iso-8859-1?Q?0DwV2DbaZEgkMeuGsEP7PUbw38pi69nHIdEAeLHcbcevhvRFeapc73dFsQ?=
- =?iso-8859-1?Q?q0eWQEY/y9LHY9tepfYHUcm/MbNjt/Yq2osBcHGP2MXsZvIhLBKhofacsO?=
- =?iso-8859-1?Q?TlCJyX9xJVsD9b+lJs5bSxdGcNS3RkN9jEFlyIK0U3TqxMUXixulqMZXGn?=
- =?iso-8859-1?Q?PUQpifI5O4DiRnxu42zYGiWYKcsPM1zL44uie/c6fcV43Gp/ppjiPoTX3q?=
- =?iso-8859-1?Q?jrVkQNxNvlEneBykWlczTZW9PhGOGyFkh7BhSiyoWHwDZujPcvIFIo3kzl?=
- =?iso-8859-1?Q?yiCUPn7R3wWCrrZdK/+UGvjccRoSYbf0/Qlf1fZitx4X0NS9HehzwGJJRf?=
- =?iso-8859-1?Q?FoYr2Go5PljmrNFOyygvUKNhyOA4rm1mw0NmjjFeROxcHrJDzjn9HQwNif?=
- =?iso-8859-1?Q?N2pKzmcFMa/+vnf3RlTLdCnokXjabo57JyVRPmuvosPAllX5ogYfbYFBU2?=
- =?iso-8859-1?Q?l7+o+kUJXqNiz701ZvwDxrdWXm2X9KVac8ncw/u7oT16ZKzMa8MH4Hiun/?=
- =?iso-8859-1?Q?uFMXwAzphg2PDAQAp6L+hrzjtxNBgQuRTs1PgFvvBvNa6b+7GB2AOtTtJk?=
- =?iso-8859-1?Q?OHUNw7CeDRB1akxXrPtDVufs+Swn32G/37kYlgnWD1yEmm0oh9+W5nUP1V?=
- =?iso-8859-1?Q?R/3hBBHQLm06O9tL0jj3aXbl60DOGZVfQtQ/4Y2F+IZA4b+We0h75vkdBp?=
- =?iso-8859-1?Q?MBRbiYdUyMyjgvgZSCfWQ3SHIjuYCmijzpqHE06fVBAHPY/vhs0uOufM5e?=
- =?iso-8859-1?Q?Uif8pmy+PJngaXAywJt3dYeYQFjYvkbDB02YTrO1Q+0dQzc2IYWVi3AaBJ?=
- =?iso-8859-1?Q?bD3uQ0a1jPMr7HIYH7JNnpn8DnXdUQYl6lFdukWd2+X6EI/RCR0Rsau21X?=
- =?iso-8859-1?Q?+XILYikTEji/LkZmr9w3BYcjDJPzegcQzwdN465qp9Di6dehMUKU+xGPsK?=
- =?iso-8859-1?Q?YuO+rFwisDCUYlW0RaGzdrmVpkYbutKducjpdFRG6sUVOgJb79zUrY+at8?=
- =?iso-8859-1?Q?I=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR02MB8399.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?5H6w67NI/P57cbtez0uNlxGJlAKhnSy2EYD9K8pIPqPoML2UQmA9SPFwfu?=
- =?iso-8859-1?Q?EZUUJxQBSJw1Y/9yc0Dyzbn6w55/hJgZoKpeGCy1LszEMAlInyVk9yxAud?=
- =?iso-8859-1?Q?dperYVwLu9/0hpgaVjqpeLTwV4f63CLtc4k0wzDT6P8NvaA30RGNKFJql1?=
- =?iso-8859-1?Q?c3PEQZiqnpzkS8CaZpXwRGOu+S0C/q6dgI3QAsbPhxncdzHebS7LiFn2+w?=
- =?iso-8859-1?Q?zOy6hQZ+v+tqiptXRM36Bv3Io++/2AWg8GzYMZFTW0gP38zHBNoaTJYHm7?=
- =?iso-8859-1?Q?bf7AmaXF2cFFAJRYfW9Gpz6nIA2cqGh5fcM0Wx8BERLNbWfSGifA2T/i0x?=
- =?iso-8859-1?Q?yYwh/+a3MfFvYP1lPXf4e15KPgKAlG+2Tpwt5ZStFJWeYgxJLiUSfAcIoc?=
- =?iso-8859-1?Q?iiX+9MIn9/qONsXJDXfu/0qiEU2YsKZTltOqv5PUrYT3R21CQkwRObr68r?=
- =?iso-8859-1?Q?WImr2MbQ77hBLDURCoQk/2RBvYxJAZssrhXFuDiYeDrS7pqPEqrgZDfj2o?=
- =?iso-8859-1?Q?drivMHUbrfG0Z/z9RuidHQLaFcmEAGXhgfqf82CW4nqbqCanmFDKKYEKTP?=
- =?iso-8859-1?Q?+qfkMJ3Myhx3QWqQ4hUea9a8XFvbjOi3Hp42CFtW5hkOo3c25wzcScfbQR?=
- =?iso-8859-1?Q?Du0qwaFZq+qJOB+3079LK9AaXfmUJExmZxLYmvTAm1xjvtzhjcmDwwSnFH?=
- =?iso-8859-1?Q?bNjB9Tb09663voi3kjqXTNlVfpkM24ITHxM5LfXfg0gvTSWub+Xrs7mTzr?=
- =?iso-8859-1?Q?MgPvOAeB0Q0VEqsCx2p5JLfIGkVe/We9m8JKi9rxU+4HSYysFkQ/4URVL3?=
- =?iso-8859-1?Q?57UTswLm/+ks1Rpvwz8X6aINih7Oeeaaaur+Ca0zrW1A455HuuTo5fiOYo?=
- =?iso-8859-1?Q?ryGG3h9o5UjZeFfiR+M0Md8b3BNt/DRKgVeT+rTJGtiGcmYoQczpoDUQ/c?=
- =?iso-8859-1?Q?eAyydeUiyQoeA52EQQOfo+utxvn0Nlp8xLQsiPdWJN3k/GgIXoDr1EzQXz?=
- =?iso-8859-1?Q?o+0rgkud5wLw6/elx6V7M9dTbTlaiET2JEarYX9xCKVy7GmsScEXo9SJe0?=
- =?iso-8859-1?Q?pJC4jCyr1C+78/9r0Nn1FLn6jGlyZdOdhbEKw0PHWnxurO0HKoUzmO4A08?=
- =?iso-8859-1?Q?AzJy2dxxymGTU2jHIzoSZELiidm1WaBW0ebayYDyXBBJTmOguEsVJQYN6a?=
- =?iso-8859-1?Q?fknNHdR0jnVQEoZ7Pq3KgwhLFGWUbQ1HA91dbbayUNUaWQQnigjuwzbd/W?=
- =?iso-8859-1?Q?Zcuf2kdB9IZu4nk6++5EmVrXzrByXQhIzzD5fvdCeA+nUeSAkUn5FoAOw5?=
- =?iso-8859-1?Q?Ju/Z3ju/Pi7mFwwkseMs74m6ASEabqtFa4TfWs/cvUxDY0IBJsFo/00/y3?=
- =?iso-8859-1?Q?oOKG+ZkPr4V3YSTXM0CsgZeQVYtfqz4MQh1beaHrpEDM5WP9ZXNS4t7Y1D?=
- =?iso-8859-1?Q?NUwRhy5nbGEZavfS+Bkn1Ozs+PgMxH/UB8fNXhlqHwC54l9FE+IPQIbkN0?=
- =?iso-8859-1?Q?uHYJsPlkjDRjsYsl/0xB3hB/3UuEUgQE3nledBUULun3Tdss6OmffPmFY8?=
- =?iso-8859-1?Q?DHBUJQHFT2NwveCKPzcOHsxdoCozj8a8DwkgP0N2imJC5LvoQLAqNy8OnX?=
- =?iso-8859-1?Q?aNPE5aTto0i5A8r8ZqMuUqYOSwHeyNCwqo?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531812EFD86;
+	Mon,  8 Sep 2025 13:31:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757338313; cv=none; b=hOKGwBf5jO9X52tewyX7NAY2rK3ZCG7Ubat/zLhsCJR2v1D65abij2ORYdorunHEtwAvDhxOYkpvNKhkmjtn11VoWLan8MDt0CkL7cYWVMTaMNzaGBqXV3OWiTjfDQr/D7817YMZ0y/7jUl4C20lHxQT+AuRbmbp9i3WxnZE0Ho=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757338313; c=relaxed/simple;
+	bh=XFpcrUgCAAnn+5N6WDRSRAoI/KMeWCd6gX4KF7ThquQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Nsl/ZuvLiAPXZbyRRe10ZDYii+HOzZBfK+AsDE3eGdwMujIQs7lRCf8lTtlxR4hC13JJciF0VSFvFQyYwkpnTSS7FC/DbjVvr2g/77+m1KLU5kxSBezdCw7KvD3VCndkHTAZrfhdkVcPnUiyDCAZhWBdlF/H9lqpMhX2Vy3wtjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kLo08wZi; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-77264a94031so3045918b3a.2;
+        Mon, 08 Sep 2025 06:31:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757338311; x=1757943111; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=0VRxysBWR4+1ubG2BRwz4IYmQyW3YuwNfLayCI3GgPU=;
+        b=kLo08wZiCUIbYPuAtcNNIJqOGugUVy4xa/hWO1L7nzf3RZDDVf0YVtvuN3yFGIt3Vp
+         leNuWHgsBwHlz/uaRXrWWxyICd5Y6W0uSzjk+RiIhQ2idVSKIC59S8KFGuZPVk+TsJyw
+         5qNdarYlo4xlzjgSUnOYRXbLeGXWE2lXfcO0HRjJhPEoikCBv5D3+ivLMyA17glqQ6gr
+         IuU6gxGRVQImXB8X5fiNxNQmfuxhcUCAi3jwctf1cCkt47jEky9y6J85ZPSqdZxEYrYM
+         Nv8Zg4q8V635SZFKPB8rtvq4gQsfGsmMAPQXiq/sQOGlD0HLZn3pBjc3+oKUiQompWsm
+         v3Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757338311; x=1757943111;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0VRxysBWR4+1ubG2BRwz4IYmQyW3YuwNfLayCI3GgPU=;
+        b=QV9cbzz3ZZ9maqLs3DNH9aTuOWL73GvW93AHj2k36Yo0AgIo+dCPPhwZkbcf0xHQb7
+         b2N4fuCkNHyLM/rIpwAq64I32dUVWKx0vEnASO49fuAPy9vU55Qw4FXDQYZVN8eMJ7Et
+         JVKGuO+jV+OL8bTf/0h49+huNQPkKnk9gZcDmtRagEDjSQ1cLmdK3tQcjUkqvAsthEmH
+         vJaq2UtHvbmQ2YHUJSew7MvGq1r2GQTHkM0te/CGPXDF2FaY0aqWg+t4zgrd91B6ivFU
+         IxYVmhFJNJZNBe+4ExfxFl8snobFtUiO77+T7YHWY0tMLDbH6kMBcse9XjpLNA1RBH+n
+         AbpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU1Q5HGxDywspGjXpX5DE4kkdliPPWULabrXrNWpunvsUJVugN89Wjf0oyAD6e5AV5V4gySPcNKx6Y7@vger.kernel.org, AJvYcCUALjlkMO0edfH/gWXkrml+hJn9L/9P/MehHRQO6cL91+DT5K2llL1/q7y735t1x9XyG3OrbNSj@vger.kernel.org, AJvYcCUVsvHrosBVmK4SOTRIJ+yJ7nRs8TwOjivlu58yjTHgBfLBuS6+RMYLCw41WqfPf9uegKEk4hKnANqOV64d@vger.kernel.org, AJvYcCUs1zExYpAYcwl4pMIRxmB2sujIQRn61EIwn8eA5PnJ1zaW22HsFWDmRdQ+2t02EGOXL4LTbuzQK3jv@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMFx03mf4XlHQGYEWJSqmBx5KdLqXTsPNSMzxBsV2/tBM61OA5
+	mXd9g5H7B/8aJpD8iw6nnPDjq+33WhwaCcwJIuZA6u7bh3r4jsefEMNq
+X-Gm-Gg: ASbGncusenCT5sKQvZ8bkuAEbxf+7VV8pJVdt3xd0O/H56zYsGO3iELCR5FONxw/d+5
+	ADSnpXQ3njKKrP/m8bWi5a9TVzqskAvFANCpRwZOyeYC/BrTiBPhqLLerC7RSv3F93IvKlaXwvh
+	DtAdj/bslC4L0K+REHFCmIYeIFRWqX/UFD6kQChXAogUIdniIhiiDjqJC16n4dADAzyKzl/Kkya
+	YVw3xkO9fRecbG+N7NKzeZZvNIdf+gI96wi0Kq6B5yL0Tz+0L8fy7Wl6+0fynUCow55zHTfEPfX
+	dIzlDhn5YETz3plQFiIJHec+0OBbM8DAWRgObaqX9rhRmQPhKc0O/0UZtLAzY3oybVstQx97QlQ
+	rAEPKjpP4vAH7xwQhiFLgCn8PT9dg8QBC7eXZBZwjIOPDaah9FlAfsKJsd8VZTgETMMt703Y=
+X-Google-Smtp-Source: AGHT+IFHxpOI9zw8ViQQBt2bv0fmbzjwjCKonJOpVHHtbawBcf7zvtU8dcDIKtWbgtSTokjP6MN1Ag==
+X-Received: by 2002:a17:902:ecc6:b0:251:259a:23eb with SMTP id d9443c01a7336-2516da05ddemr114592935ad.20.1757338311400;
+        Mon, 08 Sep 2025 06:31:51 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24ced597370sm97949445ad.128.2025.09.08.06.31.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Sep 2025 06:31:50 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <c596e196-7e5f-4600-ada1-7c96af8c0a38@roeck-us.net>
+Date: Mon, 8 Sep 2025 06:31:49 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: sap.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR02MB8399.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 38b32ec0-c513-456b-591b-08ddeedb1519
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Sep 2025 13:24:47.5237
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 42f7676c-f455-423c-82f6-dc2d99791af7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: f9XOSjWoFjimyYvMB2xlBCuLrMlnmR8T7PG84w3UUVUqCqfYrT1MvUWNbw9vabtRiwXU1Jsz+v+8uc7E6kXwrG31leV2WP1BGtkbI18f4Es=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR02MB6904
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/4] hwmon: (sht21) Add support for SHT20, SHT25 chips
+To: Kurt Borja <kuurtb@gmail.com>, Jean Delvare <jdelvare@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-hwmon@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250907-sht2x-v3-0-bf846bd1534b@gmail.com>
+ <20250907-sht2x-v3-2-bf846bd1534b@gmail.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20250907-sht2x-v3-2-bf846bd1534b@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Sujana Subramaniam <sujana.subramaniam@sap.com>=0A=
-=0A=
-[ Upstream commit 1ce840c7a659aa53a31ef49f0271b4fd0dc10296 ]=0A=
-=0A=
-Currently, when firmware failure occurs during matcher disconnect flow,=0A=
-the error flow of the function reconnects the matcher back and returns=0A=
-an error, which continues running the calling function and eventually=0A=
-frees the matcher that is being disconnected.=0A=
-This leads to a case where we have a freed matcher on the matchers list,=0A=
-which in turn leads to use-after-free and eventual crash.=0A=
-=0A=
-This patch fixes that by not trying to reconnect the matcher back when=0A=
-some FW command fails during disconnect.=0A=
-=0A=
-Note that we're dealing here with FW error. We can't overcome this=0A=
-problem. This might lead to bad steering state (e.g. wrong connection=0A=
-between matchers), and will also lead to resource leakage, as it is=0A=
-the case with any other error handling during resource destruction.=0A=
-=0A=
-However, the goal here is to allow the driver to continue and not crash=0A=
-the machine with use-after-free error.=0A=
-=0A=
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>=0A=
-Signed-off-by: Itamar Gozlan <igozlan@nvidia.com>=0A=
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>=0A=
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>=0A=
-Link: https://patch.msgid.link/20250102181415.1477316-7-tariqt@nvidia.com=
-=0A=
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>=0A=
-Signed-off-by: Jan Alexander Preissler <akendo@akendo.eu>=0A=
-Signed-off-by: Sujana Subramaniam <sujana.subramaniam@sap.com>=0A=
----=0A=
- .../mlx5/core/steering/hws/mlx5hws_matcher.c  | 24 +++++++------------=0A=
- 1 file changed, 8 insertions(+), 16 deletions(-)=0A=
-=0A=
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_m=
-atcher.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_mat=
-cher.c=0A=
-index 61a1155d4b4f..ce541c60c5b4 100644=0A=
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_matcher.=
-c=0A=
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_matcher.=
-c=0A=
-@@ -165,14 +165,14 @@ static int hws_matcher_disconnect(struct mlx5hws_matc=
-her *matcher)=0A=
- 						    next->match_ste.rtc_0_id,=0A=
- 						    next->match_ste.rtc_1_id);=0A=
- 		if (ret) {=0A=
--			mlx5hws_err(tbl->ctx, "Failed to disconnect matcher\n");=0A=
--			goto matcher_reconnect;=0A=
-+			mlx5hws_err(tbl->ctx, "Fatal error, failed to disconnect matcher\n");=
-=0A=
-+			return ret;=0A=
- 		}=0A=
- 	} else {=0A=
- 		ret =3D mlx5hws_table_connect_to_miss_table(tbl, tbl->default_miss.miss_=
-tbl);=0A=
- 		if (ret) {=0A=
--			mlx5hws_err(tbl->ctx, "Failed to disconnect last matcher\n");=0A=
--			goto matcher_reconnect;=0A=
-+			mlx5hws_err(tbl->ctx, "Fatal error, failed to disconnect last matcher\n=
-");=0A=
-+			return ret;=0A=
- 		}=0A=
- 	}=0A=
- =0A=
-@@ -180,27 +180,19 @@ static int hws_matcher_disconnect(struct mlx5hws_matc=
-her *matcher)=0A=
- 	if (prev_ft_id =3D=3D tbl->ft_id) {=0A=
- 		ret =3D mlx5hws_table_update_connected_miss_tables(tbl);=0A=
- 		if (ret) {=0A=
--			mlx5hws_err(tbl->ctx, "Fatal error, failed to update connected miss tab=
-le\n");=0A=
--			goto matcher_reconnect;=0A=
-+			mlx5hws_err(tbl->ctx,=0A=
-+				    "Fatal error, failed to update connected miss table\n");=0A=
-+			return ret;=0A=
- 		}=0A=
- 	}=0A=
- =0A=
- 	ret =3D mlx5hws_table_ft_set_default_next_ft(tbl, prev_ft_id);=0A=
- 	if (ret) {=0A=
- 		mlx5hws_err(tbl->ctx, "Fatal error, failed to restore matcher ft default=
- miss\n");=0A=
--		goto matcher_reconnect;=0A=
-+		return ret;=0A=
- 	}=0A=
- =0A=
- 	return 0;=0A=
--=0A=
--matcher_reconnect:=0A=
--	if (list_empty(&tbl->matchers_list) || !prev)=0A=
--		list_add(&matcher->list_node, &tbl->matchers_list);=0A=
--	else=0A=
--		/* insert after prev matcher */=0A=
--		list_add(&matcher->list_node, &prev->list_node);=0A=
--=0A=
--	return ret;=0A=
- }=0A=
- =0A=
- static void hws_matcher_set_rtc_attr_sz(struct mlx5hws_matcher *matcher,=
-=0A=
--- =0A=
-2.39.5 (Apple Git-154)=0A=
-=0A=
+On 9/7/25 18:33, Kurt Borja wrote:
+> All sht2x chips share the same communication protocol so add support for
+> them.
+> 
+> Cc: stable@vger.kernel.org
+
+FWIW, I am going to drop this when applying. I don't add stable tags
+for patches which are not bug fixes. Anyone who wants such patches
+backported can request that separately after the patch is upstream.
+
+Guenter
+
 
