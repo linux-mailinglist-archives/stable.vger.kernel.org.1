@@ -1,135 +1,216 @@
-Return-Path: <stable+bounces-178917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62230B491D8
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 16:40:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82AC1B491EE
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 16:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A5E11731A7
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 14:37:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10DB816244C
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 14:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02AE30EF8E;
-	Mon,  8 Sep 2025 14:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D609221546;
+	Mon,  8 Sep 2025 14:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dq9uiiLA"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="Aqm6jvxd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280E230EF6D
-	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 14:36:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58022F3631
+	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 14:42:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757342185; cv=none; b=H/xUKRNaYGSOIfzojwCr7SzutZCxfE0RGpfu+24UKw4brApHcRwQqGLkfgj2cPEQcNyKuMUabhA/Laew+Rddtpyym2PD2YmaTH/e/C5LnWO98Kbyk/MN7nUBb2Zkdep/DLN3aCemWzgJoaPJ/6ad3bDV9PsmndxcHdELKMU3mFM=
+	t=1757342578; cv=none; b=t6HTeI0jp9PjQq2hfZoJLanRXbWLrjWezqr2Y6bKilijJpmUPHfonOEOLdaToWTRdISc+aD7lpA4J5A2qu65hX0q5cDASEkhk9MJLxPP6B0nsxdYhlk9NTdUC5JRmX/PYLNprFibQL8s+GOcOXbn9wT/+/2tY460AHmczb2PEmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757342185; c=relaxed/simple;
-	bh=FIVWf3bpKmjp75cp07PUchurcybMcPfdUSIyZqVIJkQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=chasSbeZwA3uaaYJbS95UfuUAgXuqdsW/EtmRWNtFrbKxdVfVa7px6FXVfE6YlNnk1x9E0gUhNNE2rR7Qtgmo1lorqt9ybWM3YVwS60Yt7V3jFFVFT8jMR4Hks2LB1tByRB3HuCqND1IPDOreRjXCvfI7s9ZALTr9pD6JrHb7dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dq9uiiLA; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-24aacdf40a2so11979305ad.1
-        for <stable@vger.kernel.org>; Mon, 08 Sep 2025 07:36:23 -0700 (PDT)
+	s=arc-20240116; t=1757342578; c=relaxed/simple;
+	bh=Pef8ZcIRSGjQdN3RhxwI1HY6z7sTeqMIr56CfJQxRck=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jPlImA1g4aM3V4HHhlPc/QIJf5bt5OxH794FoftTmX9Uf0VhZz1TKHoSUzLEk8TvgqIQd7yXzgTBhhFhTjStZFMio927bFKEVuIU45PCLzOJSnjRSWoRXiNLRBsGHhBuKbgQ5BQjWPEVE1ILL0/tK9ZbPgH4zOWMuZ8aKCYYs6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=Aqm6jvxd; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3df35a67434so2791946f8f.3
+        for <stable@vger.kernel.org>; Mon, 08 Sep 2025 07:42:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757342183; x=1757946983; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FIVWf3bpKmjp75cp07PUchurcybMcPfdUSIyZqVIJkQ=;
-        b=dq9uiiLAjR/CbvAOQQzSo1VK+g0xTKHqekzCU6+IC80BGopFl9ZKRmA9n4BkaBZe1N
-         JXhT0BeV+NUavAhsksV4vEs6kR9vsmVqy14DnyW2gJvJBkSKOkSlVFrXiUnL2gPz5qf+
-         TQxMe3CvNto7wI40jFEk5ANiNIZTaZPJXhJ7ORss7R0mZacGtxbc+zZ7nEf1XN8Uq/HT
-         87KGhX/Bv60blIu+Sp58DhbJU+BKPaetIvjfgsuaB17ZRxtaBObE3wc8vRVChuOsJyDf
-         9+dVudcAsuwEwqacU4CtCtznaMXOuBcHbS6wBg6IUt0tk5p2fQRVOiAkjHTO9WWRZfHL
-         WzZw==
+        d=tuxon.dev; s=google; t=1757342574; x=1757947374; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2XT49uZBrmoanoEg2rzPnpC/Ye8Mq5+fec+QKzWs6q0=;
+        b=Aqm6jvxdMcyw+GW4Q6WxSg9UPCDFjzKopnMDhj0U/JPc5IuohOVDEyupkiqaawFhdH
+         +d1K961rEPcJIygQGuqSLkQSTtFrYGSu3hBQUpn6N/mrMAzq17mn4WpLM59R5phtEFnp
+         Vf+fPnLo0ae/2Z2ZmxDub3dOXL9CGswv9RdAUAiZHwqphhpvgHtN9sRqQeLMxSTShYQ2
+         jyyATCyqkF+1w5DsWI3TePwi/ZIJ7h/locMyhalRS6lMYmZzQ1WCVqrXFy/6H2QvXwUL
+         urUUofXvG0ed5fQixLO0YDsxIULh/be0icANn6B+Eh1Q7SxaqFQ6ws1yjEiVtnqGoUlB
+         iQbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757342183; x=1757946983;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FIVWf3bpKmjp75cp07PUchurcybMcPfdUSIyZqVIJkQ=;
-        b=faHN1XI5GKIwwjdno/XMI2bpXDepo8KF/Pj9MODiCK76q3rPUvja7xtg1dP4QS2DDB
-         GQ3QEP3mPqbLP+3mEIYx9GQQxq8wFAvQh/VY1T3lMoQ+NXfWZBW5o5In0vkNzpL1WMYx
-         NBweedjlcUMSM5Y2EdNHWK7rvkxNvsDhdFtmvRy4lCQmNJh3tlB4wf5beoobUaVOdWeb
-         F1s58ITFp1+9rIimLkV+uVoEXGcMH0EMoMbbJBjlYAjC7dcZyilEFxpvKdKhRk9Jr5+U
-         SH4HPVeszdGrnBHjuwpmkcZfLfpnZU1jfScbTVgNSIiVEGbf8u2N0d1dS7AVjSuUOoIB
-         XEMw==
-X-Forwarded-Encrypted: i=1; AJvYcCWCjIKw2qqSi78BOBPK3oGVq+MwK+FQ1P/KdUellxkAJks5X0eZCBkpaGqxBiQriuPLK03eX20=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyal5kLzdD5pFkSOnrvNgCuerCwN/LFAdaSWqtHuMPSS5MhIYq2
-	pmc/ri4V6CKJy+dWHXLxPKybNF9+egEo6BcgguyWHJJzqULyVZunITCvzQy25rtj1iSXsTBzKZS
-	HPqnGriY+8UepWkDwyfEwqYSYTYk5jig=
-X-Gm-Gg: ASbGnctWBJW6+fNtFaux2r9/cdr0rPLYT3rS9Ze7D3uh8kALaHiiX2TX5goD76rJrM+
-	MWAgbxbb+XhgNEe//4Oj+ohPo8HTFMXv0r1WivU7wF/5+duWl2B+lREzxuZdmU7nhn1ainlYtUY
-	Af+x21gL/VwHOje88kJKcfk6Q+xJocghDtwuMsCIhNOuUdJBB9iRDwC+JggKz5G/zbTqR2dRSEh
-	m/LS0q1rELD+dhFFBO4c4AwEg/1yNRHmYVINRCTjEOhVNgbb/aQwei1RsHYVt3V40+cs47fmMHk
-	5Km8AEyoXPYVQD5NFM6vr6MYSg==
-X-Google-Smtp-Source: AGHT+IEds3iCyTuDUwiTjHRJ7lLf/Q2xjxTJDIKMpnFx1aFKpliIcBsGFm3iFx+addcMcQGerU8ggQutMgqEUUjcd3Y=
-X-Received: by 2002:a17:903:18c:b0:24c:cc2c:9da5 with SMTP id
- d9443c01a7336-25173ea24a3mr62209635ad.6.1757342183075; Mon, 08 Sep 2025
- 07:36:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757342574; x=1757947374;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2XT49uZBrmoanoEg2rzPnpC/Ye8Mq5+fec+QKzWs6q0=;
+        b=cSD00KZoTGcZZICzndQUKyiovPy2VDhxDsE2hRhCzxvazpYJLJY9zsuAhpDrvZSvGX
+         p4tTyc7RRkndlYurhBC7GcFWPkGHl0/5p+jU0m/JHtR96tOMLQ9HYi2UoBGfEfdrstyA
+         LvDDWXGxbeC3oADw3BnPY91x3pv8FHaikj66dZ7RTqTnFNcKVP/Z0QUE6QMCNxe/VM34
+         NTUG1vEW1L1u8Mp6jNgQkJfFqNQ2a0qPnfMLQR53Z0U8LXBiayZEH1sg89pH7af3JSFn
+         nsQ/ILJIcy99eQSMFRmyhc2iPyz6e7O5WOA1cXMkKOGsv38l/IeQoQYkGV/qEhO3U8oi
+         78FQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUjIW1x4dT1XWG47MxhpLDzIzBETCbqGvhoTVR/NX8W7Vw0coQlolcnvc8QTOTtEoQddmtamy8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzX/F29lLclOxgav3E41hzkWk5VBAA7v3MgnSOPPVGVkDevvHYw
+	DLbrT2lF7Awt5UyLcmRcrQrnRGgIcNWcH41BBllf8HhqdVpqaJ8SvsDmVta3TLn8AnDjk0knALp
+	XGHXI
+X-Gm-Gg: ASbGncv1wWnO6rOxDQYPY70ePtIYGUzjALel+CuUtaAetOZjMJBo9J/IO0RyoDBsUUH
+	EKCGYZEfZC0ou+0cU5L5haloHFd/N6mYD5Bl4oUiWNETqSeuhzfnx5+UOW1baV8tZDhP9Qy7lbn
+	CMcsSTTFYj/HZeEP9LjxXEmtKtihdCg3pa+BCxcxzDMZpLw08wLO7o6iZdNDwDePN4VNvIv8/0m
+	XDw6Qc1vi8VY/C33MgXw/h/ErgOzCU0ndRNTQK3ig7LX0vx+m5bUaH/FGXpwbAF2uleTMZI/ZNv
+	SASTISGiEbJ38FR4KBg+2OEEq46TXL35+2s76ZLVKweP+r1cFAsJNOM6R3IrXIjK+EreX+Ng5TH
+	VUjo+xDiLrPbEoWCLRPv5DjR2u3tQVYs=
+X-Google-Smtp-Source: AGHT+IEOxn2MkD1hAjHpmR6MdeAdLkCUCAnBGHQm7CrSlP/CiF2CFQfIFjgfSaAHRzVDFcv4n5/zhg==
+X-Received: by 2002:a05:6000:2210:b0:3de:e787:5d7b with SMTP id ffacd0b85a97d-3e643eff2f6mr6483640f8f.46.1757342574139;
+        Mon, 08 Sep 2025 07:42:54 -0700 (PDT)
+Received: from claudiu-X670E-Pro-RS.. ([82.78.167.139])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e115c4f755sm17086101f8f.39.2025.09.08.07.42.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Sep 2025 07:42:53 -0700 (PDT)
+From: Claudiu <claudiu.beznea@tuxon.dev>
+X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com
+To: geert+renesas@glider.be,
+	linus.walleij@linaro.org,
+	biju.das.jz@bp.renesas.com
+Cc: claudiu.beznea@tuxon.dev,
+	linux-renesas-soc@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] pinctrl: renesas: rzg2l: Fix ISEL restore on resume
+Date: Mon,  8 Sep 2025 17:42:50 +0300
+Message-ID: <20250908144250.1269294-1-claudiu.beznea.uj@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250908-distill-lint-1ae78bcf777c@spud>
-In-Reply-To: <20250908-distill-lint-1ae78bcf777c@spud>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 8 Sep 2025 16:36:09 +0200
-X-Gm-Features: AS18NWB-MWPE9egfDgR8swoEM8VNIC5oT99W_zIRlpTR_s6ZNeMwU8I66RyA-sw
-Message-ID: <CANiq72mw36RzCtNVax650fJ=+cYjuGNF722_Mn2Oy1FAvxWc8Q@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: cfi: only 64-bit arm and x86 support CFI_CLANG
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>, 
-	stable@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Ghiti <alex@ghiti.fr>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Matthew Maurer <mmaurer@google.com>, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, linux-riscv@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 8, 2025 at 3:13=E2=80=AFPM Conor Dooley <conor@kernel.org> wrot=
-e:
->
-> From: Conor Dooley <conor.dooley@microchip.com>
->
-> The kernel uses the standard rustc targets for non-x86 targets, and out
-> of those only 64-bit arm's target has kcfi support enabled. For x86, the
-> custom 64-bit target enables kcfi.
->
-> The HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC config option that allows
-> CFI_CLANG to be used in combination with RUST does not check whether the
-> rustc target supports kcfi. This breaks the build on riscv (and
-> presumably 32-bit arm) when CFI_CLANG and RUST are enabled at the same
-> time.
->
-> Ordinarily, a rustc-option check would be used to detect target support
-> but unfortunately rustc-option filters out the target for reasons given
-> in commit 46e24a545cdb4 ("rust: kasan/kbuild: fix missing flags on first
-> build"). As a result, if the host supports kcfi but the target does not,
-> e.g. when building for riscv on x86_64, the build would remain broken.
->
-> Instead, make HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC depend on the only
-> two architectures where the target used supports it to fix the build.
->
-> CC: stable@vger.kernel.org
-> Fixes: ca627e636551e ("rust: cfi: add support for CFI_CLANG with Rust")
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-If you are taking this through RISC-V:
+Commit 1d2da79708cb ("pinctrl: renesas: rzg2l: Avoid configuring ISEL in
+gpio_irq_{en,dis}able*()") dropped the configuration of ISEL from
+rzg2l_gpio_irq_enable()/rzg2l_gpio_irq_disable() and moved it to
+rzg2l_gpio_child_to_parent_hwirq()/rzg2l_gpio_irq_domain_free() to fix
+spurious IRQs.
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+The resume code used rzg2l_gpio_irq_enable() (called from
+rzg2l_gpio_irq_restore()) to reconfigure the wakeup interrupts. Some
+drivers (e.g. Ethernet) may also reconfigure interrupts in their own code,
+eventually calling rzg2l_gpio_irq_enable(), when these are not wakeup
+interrupts.
 
-Cheers,
-Miguel
+After commit 1d2da79708cb ("pinctrl: renesas: rzg2l: Avoid configuring ISEL
+in gpio_irq_{en,dis}able*()"), ISEL was no longer configured properly after
+resume.
+
+Fix this by adding rzg2l_gpio_irq_endisable() back into
+rzg2l_gpio_irq_enable(), and by using its unlocked variant in
+rzg2l_gpio_irq_restore(). Having IRQs enable in rzg2l_gpio_irq_enable()
+should be safe with respect to spurious IRQs, as in the probe case IRQs are
+enabled anyway in rzg2l_gpio_child_to_parent_hwirq(). No spurious IRQs
+were detected on suspend/resume tests (executed on RZ/G3S).
+
+Fixes: 1d2da79708cb ("pinctrl: renesas: rzg2l: Avoid configuring ISEL in gpio_irq_{en,dis}able*(")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+---
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index b182b3b8a542..6ae1ee3ffc81 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -2428,7 +2428,7 @@ static int rzg2l_gpio_get_gpioint(unsigned int virq, struct rzg2l_pinctrl *pctrl
+ }
+ 
+ static void rzg2l_gpio_irq_endisable(struct rzg2l_pinctrl *pctrl,
+-				     unsigned int hwirq, bool enable)
++				     unsigned int hwirq, bool enable, bool lock)
+ {
+ 	const struct pinctrl_pin_desc *pin_desc = &pctrl->desc.pins[hwirq];
+ 	u64 *pin_data = pin_desc->drv_data;
+@@ -2443,12 +2443,16 @@ static void rzg2l_gpio_irq_endisable(struct rzg2l_pinctrl *pctrl,
+ 		addr += 4;
+ 	}
+ 
+-	spin_lock_irqsave(&pctrl->lock, flags);
++	if (lock)
++		spin_lock_irqsave(&pctrl->lock, flags);
++
+ 	if (enable)
+ 		writel(readl(addr) | BIT(bit * 8), addr);
+ 	else
+ 		writel(readl(addr) & ~BIT(bit * 8), addr);
+-	spin_unlock_irqrestore(&pctrl->lock, flags);
++
++	if (lock)
++		spin_unlock_irqrestore(&pctrl->lock, flags);
+ }
+ 
+ static void rzg2l_gpio_irq_disable(struct irq_data *d)
+@@ -2460,15 +2464,22 @@ static void rzg2l_gpio_irq_disable(struct irq_data *d)
+ 	gpiochip_disable_irq(gc, hwirq);
+ }
+ 
+-static void rzg2l_gpio_irq_enable(struct irq_data *d)
++static void rzg2l_gpio_irq_enable_helper(struct irq_data *d, bool lock)
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
++	struct rzg2l_pinctrl *pctrl = container_of(gc, struct rzg2l_pinctrl, gpio_chip);
+ 	unsigned int hwirq = irqd_to_hwirq(d);
+ 
+ 	gpiochip_enable_irq(gc, hwirq);
++	rzg2l_gpio_irq_endisable(pctrl, hwirq, true, lock);
+ 	irq_chip_enable_parent(d);
+ }
+ 
++static void rzg2l_gpio_irq_enable(struct irq_data *d)
++{
++	rzg2l_gpio_irq_enable_helper(d, true);
++}
++
+ static int rzg2l_gpio_irq_set_type(struct irq_data *d, unsigned int type)
+ {
+ 	return irq_chip_set_type_parent(d, type);
+@@ -2570,7 +2581,7 @@ static int rzg2l_gpio_child_to_parent_hwirq(struct gpio_chip *gc,
+ 		goto err;
+ 	}
+ 
+-	rzg2l_gpio_irq_endisable(pctrl, child, true);
++	rzg2l_gpio_irq_endisable(pctrl, child, true, true);
+ 	pctrl->hwirq[irq] = child;
+ 	irq += pctrl->data->hwcfg->tint_start_index;
+ 
+@@ -2617,7 +2628,7 @@ static void rzg2l_gpio_irq_restore(struct rzg2l_pinctrl *pctrl)
+ 		spin_lock_irqsave(&pctrl->lock, flags);
+ 		ret = rzg2l_gpio_irq_set_type(data, irqd_get_trigger_type(data));
+ 		if (!ret && !irqd_irq_disabled(data))
+-			rzg2l_gpio_irq_enable(data);
++			rzg2l_gpio_irq_enable_helper(data, false);
+ 		spin_unlock_irqrestore(&pctrl->lock, flags);
+ 
+ 		if (ret)
+@@ -2640,7 +2651,7 @@ static void rzg2l_gpio_irq_domain_free(struct irq_domain *domain, unsigned int v
+ 
+ 		for (i = 0; i < RZG2L_TINT_MAX_INTERRUPT; i++) {
+ 			if (pctrl->hwirq[i] == hwirq) {
+-				rzg2l_gpio_irq_endisable(pctrl, hwirq, false);
++				rzg2l_gpio_irq_endisable(pctrl, hwirq, false, true);
+ 				rzg2l_gpio_free(gc, hwirq);
+ 				spin_lock_irqsave(&pctrl->bitmap_lock, flags);
+ 				bitmap_release_region(pctrl->tint_slot, i, get_order(1));
+-- 
+2.43.0
+
 
