@@ -1,112 +1,122 @@
-Return-Path: <stable+bounces-178853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E0EB4851A
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 09:26:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A09B48535
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 09:29:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB1DC3B5FAC
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 07:25:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83AAC17BACF
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 07:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2197A2E4252;
-	Mon,  8 Sep 2025 07:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A544E2E764C;
+	Mon,  8 Sep 2025 07:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="GjtJDYMx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P8/g5uyV"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E2D13B5A9;
-	Mon,  8 Sep 2025 07:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFC72DEA6A;
+	Mon,  8 Sep 2025 07:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757316338; cv=none; b=bFtmS38zvoxiaiB8kKIqNj+OU8p3NXcymOorz47VInxIDWXya4A8CSlQxOv6TM+2u1gbuxvL4ViK6vkNOykUNhy8NNZ058BVygtkspNqm0wBGoG2M/daUuXUirDH9onBGM/UvnYC1+efhTzWFzO2tnuek8ELPG8zuu3m+KTzH5U=
+	t=1757316539; cv=none; b=R/0/D1/f88pqn9VFM/7b7s5FA63Q7SGhOnTjt/3P6IncvfXIdHGcdHlfru9qdnlHzULCadCaTB06itTFTJo8/QfRHjIL+DyNJZtveoXqWOeDiRhRA6o3UHJSbMmT7+4WDAj4jnC0K0e0xWE/cZBn/DD1vjk2M2OUTIM4MoMf6Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757316338; c=relaxed/simple;
-	bh=vXLhg4p2HJ/hAKMDRlchZwNn6+waVINrGjrM8ypMtrs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qXF51F2ZDLz436wPfbyM042okwjNML6Y4qnd9pe1NB+nStkeFDQtes84LmQjsN4HBqQV6OlJu7DrV3RaHZ8Qq8NAnLm8laH0T6REBFmV1VUbdBmdmXOITlxcWMEdCXma8Uwkpax/9I5/JtZwjf8k3qaDd/SDCb/ZOUQxClWBKsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=GjtJDYMx; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: ff5bd6fc8c8411f0b33aeb1e7f16c2b6-20250908
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=JzvTKSBojOyOHfeUH4od6Fjnx/Xmw/ekzsIFLVMxL68=;
-	b=GjtJDYMxCzfz8SN1+4kUj70+uZAPIxs9twzRV1h6hOdE9EbpxXPIW2ZB890iWnhszSKfGoRsfd9DGbKHfFC04zhBvywrZT2eKcHuLVtmtrKDpFRlAcJfxNU1ejgzNRa4ZM3W4Ll4EeEgAs4af/9+/cYD5jRNN+bAQKF8yRiqD/g=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.3,REQID:598e7c82-80ee-48b2-b154-06b01b45c306,IP:0,UR
-	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:-5
-X-CID-META: VersionHash:f1326cf,CLOUDID:bde10ef8-ebfe-43c9-88c9-80cb93f22ca4,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:-5,Content:0|15|50,EDM:-3,IP:
-	nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,L
-	ES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: ff5bd6fc8c8411f0b33aeb1e7f16c2b6-20250908
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 988733491; Mon, 08 Sep 2025 15:25:29 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.39; Mon, 8 Sep 2025 15:25:27 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1258.39 via Frontend Transport; Mon, 8 Sep 2025 15:25:27 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
-	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
-Subject: [PATCH] wifi: mt76: mt7925: fix incorrect length field in txpower command
-Date: Mon, 8 Sep 2025 15:25:26 +0800
-Message-ID: <20250908072526.1833938-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1757316539; c=relaxed/simple;
+	bh=RDvvo3xdx4TsaQjK5xSMvu9RP3KZphhm9dRO9PYFaHE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CY60jocSqb4vHmxusTFp2p1s/fRSSuo1oWiKwsvW/N6DWQcJND35g8wM5BmC24bN+nAaLLpKrK4gvDXU3NJoaBEhPBMrII0rRoTcrq0fOK3tm7fIWBXpXoBr2hvpLwTzRiodLXvqMfUtu+rKRpd9guwa16EBdDlPgJ0ZoOHmj50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P8/g5uyV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0EB2C4CEF1;
+	Mon,  8 Sep 2025 07:28:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757316538;
+	bh=RDvvo3xdx4TsaQjK5xSMvu9RP3KZphhm9dRO9PYFaHE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=P8/g5uyVIQHXN0e5mPL9I3N+5Fn6il5f2SU5KOSKgX89LWRmezpwmscDnBQlomDrA
+	 aEBCNkVUN1lBdnEclWHE3VhOKuYCntWCldDEu7gJ74ZJ9iay1o8qfCECrOKrtsjbGl
+	 bGirtqLfDtyXx11f2dN0SAZzmnwm/DDg3vBpdgF0GvG6VOktkr+VY9TvNLQVO7esmr
+	 j0srYDy770j88l60UxOBdJi20ZbMBqydj40KYf73dg1BBvfz7YVDkKQ6iQegnXPX/f
+	 9y4eynU6UU84qnbeQYveWvRhShVUzT4Fb/JsxJgLihah1qp66vbvLIcB1kCz9GfyQ9
+	 RYU+pKsc7qzsg==
+Date: Mon, 8 Sep 2025 12:58:51 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, 
+	bhelgaas@google.com, helgaas@kernel.org, kishon@kernel.org, vigneshr@ti.com, 
+	stable@vger.kernel.org, linux-pci@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, srk@ti.com
+Subject: Re: [PATCH v3] PCI: j721e: Fix programming sequence of "strap"
+ settings
+Message-ID: <wvrouqouhrpoexmggwbc6vjz4xflnylzxrb2ffw3ai7656ehrt@keb53gb2tm2o>
+References: <oztilfun77apxtjxumx4tydkcd2gsalsak4m2rvsry2oooqjna@2yvcx6cnuemm>
+ <b2fb9252-6bfc-45da-973a-31cdfcc86b3d@ti.com>
+ <z3ubracmtlq23yicbrhqjgnzrfoqheffm6cvhfnawlvbu4cmmp@ddu2o7xhw5tz>
+ <48e9d897-2cd3-48ef-b46a-635ae75f5ac6@ti.com>
+ <3wc3t6y5gzzspgfeklsqo3bupfp6gsfy6mls6t66hflcqlqsfk@cu26wv3sow4y>
+ <9d2bba15-52e4-432a-8f7f-a0f5d7c2e4ad@ti.com>
+ <7hxdcjm7evlphkldct7seytno4is7rjkx5vquvtfhpdkzxdhu6@yocrjgzciwu3>
+ <08b87b5f-838b-4f40-ae90-10ded134356e@ti.com>
+ <whinfqhjgqbbvlnuzgbukklqi6gocjji4gakqyycovrse4qq6s@6xq5imqbzvux>
+ <a0e1d273-239b-44e5-8ccc-0ba83b2b5839@ti.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+In-Reply-To: <a0e1d273-239b-44e5-8ccc-0ba83b2b5839@ti.com>
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+On Thu, Sep 04, 2025 at 11:33:00AM GMT, Siddharth Vadapalli wrote:
+> On Wed, Sep 03, 2025 at 06:51:14PM +0530, Manivannan Sadhasivam wrote:
+> 
+> [...]
+> 
+> > 
+> > I thought put_noidle() will just reduce the refcount and not invoke the
+> > idle/suspend callbacks, but I seem to be wrong here.
+> > 
+> > Anyway, I guess we have no option here other than to drop the
+> > pm_runtime_put_noidle() call. This will keep refcount as 1 and will prevent the
+> > parent (genpd) to not enter runtime suspend, but we have to live with it (this
+> > was also the previous beahvior as well).
+> > 
+> > Btw, pm_runtime_set_active/enable change belongs to a separate patch.
+> 
+> I will work on and post the v4 patch with the following change:
+> - The commit message and the comment in the code will be updated to
+>   indicate that the runtime PM APIs are used to cause 'genpd' to power off
+>   and power on the controller.
+> 
+> I assume that the driver changes can remain as they are in this patch given
+> that the existing behavior has to be preserved. As j721e_pcie_ctrl_init()
+> programs the strap settings, powering off the controller via
+> pm_runtime_put_sync() and powering it on via pm_runtime_get_sync() shall
+> be implemented within j721e_pcie_ctrl_init() itself leaving the rest of the
+> probe function as-is. To summarize, the driver changes will be:
+> 
+> 	j721e_pcie_ctrl_init()
+> 		...Existing code...
+> 	+	Add pm_runtime_put_sync() here to power off controller
+> 		...Existing code to program strap settings...
+> 	+	Add pm_runtime_get_sync() here to power on controller
+> 		...Existing code...
+> 
+> Please let me know what you think.
 
-Set `tx_power_tlv->len` to `msg_len` instead of `sizeof(*tx_power_tlv)`
-to ensure the correct message length is sent to firmware.
+I would've preferred changing the runtime PM calls as I suggested initially, but
+still we would keep it incremented which brings the net effect to the same.
 
-Cc: stable@vger.kernel.org
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+So you can drop my initial comment and post just this patch with improved patch
+description.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 484bf11070c9..930a8cb83701 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -3940,7 +3940,7 @@ mt7925_mcu_rate_txpower_band(struct mt76_phy *phy,
- 		memcpy(tx_power_tlv->alpha2, dev->alpha2, sizeof(dev->alpha2));
- 		tx_power_tlv->n_chan = num_ch;
- 		tx_power_tlv->tag = cpu_to_le16(0x1);
--		tx_power_tlv->len = cpu_to_le16(sizeof(*tx_power_tlv));
-+		tx_power_tlv->len = cpu_to_le16(msg_len);
- 
- 		switch (band) {
- 		case NL80211_BAND_2GHZ:
+- Mani
+
 -- 
-2.34.1
-
+மணிவண்ணன் சதாசிவம்
 
