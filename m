@@ -1,152 +1,129 @@
-Return-Path: <stable+bounces-178970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C86AB49B7F
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 23:06:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBF32B49B8E
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 23:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B5821BC43DD
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 21:06:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBF821897586
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 21:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845432DA76D;
-	Mon,  8 Sep 2025 21:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A04B2DD60E;
+	Mon,  8 Sep 2025 21:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sSG3ujFK"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="E2CMeczk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com [50.112.246.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43ADF210FB
-	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 21:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361A92C1587;
+	Mon,  8 Sep 2025 21:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=50.112.246.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757365564; cv=none; b=jstygd1mZ3GquHRy/3wJ9vqPVQ09J6HwopbDMKKpXFcW0UPzxagH+WZDVN1LCoesR89Un2AuVYwHw0TfwYk/2AtbbaZTTKvFPanDBex+Jd0ffvJ6VSM3BYHXwoOhP9pku5PiQelw8iC8IwZw5jHQankI+ieNr9AA/eKJjhntuBA=
+	t=1757365757; cv=none; b=LuU+d/xvtngvHZdC/wMVsfIXdjgPZTCCYoMAgBL5S4Y2pdN2L54/nOB1a//k+i3Q0PlC3zgmywF1fns0KVFH/yy8vUizfrJs5oj+RslRHOIRtXvxFe402i+fU7TObNEDH14yiY0MsdUQKZ//f33sJi+YgfZjERNDsvLZw7b4JT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757365564; c=relaxed/simple;
-	bh=wBD+50DrWX1uXxTvaD4c9zWh0BXIk6MAbZ6ZuQOIHUo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k/dna2SHH6M1fH9IfiWSX0joK4341ns8Dq5RFBVeiMlwiPceLkekl/FuUHQl40yu4u29LFxWo9F4pp0qbttETjImPybLbbXh/tus09PwVdFub+Qpi/rCWW7CedyeOtTFCC9dQfZsH+cVp4XhBllCwnFhojGK0oUu2V/Dvo5+sBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sSG3ujFK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37863C4CEF1;
-	Mon,  8 Sep 2025 21:06:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757365563;
-	bh=wBD+50DrWX1uXxTvaD4c9zWh0BXIk6MAbZ6ZuQOIHUo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sSG3ujFKBLjtoDo3074egF3dO/QMMsJ5PjZCvZ/J5hej1B1wD42+atvSoJtP6onPW
-	 pZ2sp7hGNEFtd4tK7lfZpvGQ2kEBO0wFAUfhXZnRAU4TrEg+c7DOtO5EZGdSFkkuIa
-	 7yYOiNFxAqB+7hZUv7jM+n7w7vWz6pV2s8EEKW4nJzDv6GG8IB7yo5Bz1UV/w38f+P
-	 ErLrdtsEbWNWbzlreq49nLbeS8guvMbBhmVBFaB7Yq+NF9yaIj0yaK33RuHJRFej9O
-	 adO+xZL3V6dlPBJ5sukYT8OOtuKvd4EL2W8JkObDfETY7BHSk8PSauokelES/dNbwk
-	 0QxBu/jxJ/IAg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] media: i2c: imx214: Fix link frequency validation
-Date: Mon,  8 Sep 2025 17:06:01 -0400
-Message-ID: <20250908210601.2345440-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025041717-tapestry-degrading-b2ed@gregkh>
-References: <2025041717-tapestry-degrading-b2ed@gregkh>
+	s=arc-20240116; t=1757365757; c=relaxed/simple;
+	bh=/P0P7qBcbcYDutF7YAaxCs97+nxv2gaQfytGlpB/5p8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f96FcZkrrjlmKOGFNQQNyYnkkVYREbbzq71XyGePuc3W+IbhGtY8jgevNqlrOU/aDaT2q1MDdn3ZnKK5UECkFqGOadocGU0GyAMthJLd2AnOen/ijvZLex19sBxAnGUYzNqhQFmdO6IiAzw2T9+u4NJVsgW/TXaKVEDKd45fkuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=E2CMeczk; arc=none smtp.client-ip=50.112.246.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1757365756; x=1788901756;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=gQiAiwFq2l0plLev52Qgg3ckSPW1kQUzFe2aH9v9SLY=;
+  b=E2CMeczkDyHjG7+TbixoqKAC+6RRcaAS2F8g0KHBbVXW4dUeaZB7flCb
+   wCI2UWlEeKXJmY0QDj3lMRLZPNSPYQ2fZ/Cp52LJLdH3CBN1u5HMlT5PG
+   JiDknlGzYcsm0q2ocIpABJHeOoA7yRn60o8863ow5OfIxxnioKRcE5VkL
+   wQh4yB/a+baEwWSu1nORfeVujcWycMdxeHNo85nimM0lVLeOl8ZNZusRj
+   NzIZreyix+G2ZtJNIalCUfJj8lNijDUTW4OyhI/SiJhmUyj/3wgGaNvx5
+   Qk1f2+zoPRdcFFB5QZnvhnVw4473rXjuNLsOFA5jZrl4cMua/jzWVNTSt
+   Q==;
+X-CSE-ConnectionGUID: HNW4PmLhTby4S2UJFDMUVg==
+X-CSE-MsgGUID: NyZMZRApT9qBGIzBV4tvyA==
+X-IronPort-AV: E=Sophos;i="6.18,249,1751241600"; 
+   d="scan'208";a="2524191"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-015.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 21:09:15 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [10.0.38.20:23813]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.47.90:2525] with esmtp (Farcaster)
+ id a7cc81e2-07cb-4676-b62c-df1fbd09d378; Mon, 8 Sep 2025 21:09:15 +0000 (UTC)
+X-Farcaster-Flow-ID: a7cc81e2-07cb-4676-b62c-df1fbd09d378
+Received: from EX19D032UWA001.ant.amazon.com (10.13.139.62) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Mon, 8 Sep 2025 21:09:15 +0000
+Received: from dev-dsk-ajgja-2a-6a9b5603.us-west-2.amazon.com (172.22.68.79)
+ by EX19D032UWA001.ant.amazon.com (10.13.139.62) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Mon, 8 Sep 2025 21:09:15 +0000
+From: Andrew Guerrero <ajgja@amazon.com>
+To: <gregkh@linuxfoundation.org>
+CC: <ajgja@amazon.com>, <akpm@linux-foundation.org>,
+	<cgroups@vger.kernel.org>, <gunnarku@amazon.com>, <guro@fb.com>,
+	<hannes@cmpxchg.org>, <roman.gushchin@linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <mhocko@kernel.org>,
+	<shakeel.butt@linux.dev>, <muchun.song@linux.dev>, <stable@vger.kernel.org>,
+	<vdavydov.dev@gmail.com>
+Subject: Re: [PATCH] mm: memcontrol: fix memcg accounting during cpu hotplug
+Date: Mon, 8 Sep 2025 21:09:00 +0000
+Message-ID: <20250908210900.24088-1-ajgja@amazon.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2025090735-glade-paralegal-cdd1@gregkh>
+References: <2025090735-glade-paralegal-cdd1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D036UWB002.ant.amazon.com (10.13.139.139) To
+ EX19D032UWA001.ant.amazon.com (10.13.139.62)
 
-From: André Apitzsch <git@apitzsch.eu>
+On 2025-09-07 13:10 UTC, Greg KH wrote:
+> On Sat, Sep 06, 2025 at 03:21:08AM +0000, Andrew Guerrero wrote:
+> > This patch is intended for the 5.10 longterm release branch. It will not apply
+> > cleanly to mainline and is inadvertantly fixed by a larger series of changes in 
+> > later release branches:
+> > a3d4c05a4474 ("mm: memcontrol: fix cpuhotplug statistics flushing").
+> 
+> Why can't we take those instead?
+> 
+> > In 5.15, the counter flushing code is completely removed. This may be another
+> > viable option here too, though it's a larger change.
+> 
+> If it's not needed anymore, why not just remove it with the upstream
+> commits as well?
 
-[ Upstream commit acc294519f1749041e1b8c74d46bbf6c57d8b061 ]
+Yeah, my understanding is the typical flow is to pull commits from upstream into
+stable branches. However, I'm not confident I know the the answer to "which
+upstream commits?" To get started,
 
-The driver defines IMX214_DEFAULT_LINK_FREQ 480000000, and then
-IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10),
-which works out as 384MPix/s. (The 8 is 4 lanes and DDR.)
+`git log -L :memcg_hotplug_cpu_dead:mm/memcontrol.c linux-5.10.y..linux-5.15.y`
 
-Parsing the PLL registers with the defined 24MHz input. We're in single
-PLL mode, so MIPI frequency is directly linked to pixel rate.  VTCK ends
-up being 1200MHz, and VTPXCK and OPPXCK both are 120MHz.  Section 5.3
-"Frame rate calculation formula" says "Pixel rate
-[pixels/s] = VTPXCK [MHz] * 4", so 120 * 4 = 480MPix/s, which basically
-agrees with my number above.
+tells me that the upstream changes to pull are:
 
-3.1.4. MIPI global timing setting says "Output bitrate = OPPXCK * reg
-0x113[7:0]", so 120MHz * 10, or 1200Mbit/s. That would be a link
-frequency of 600MHz due to DDR.
-That also matches to 480MPix/s * 10bpp / 4 lanes / 2 for DDR.
+- https://lore.kernel.org/all/20210209163304.77088-1-hannes@cmpxchg.org/T/#u
+- https://lore.kernel.org/all/20210716212137.1391164-1-shakeelb@google.com/T/#u
 
-Keep the previous link frequency for backward compatibility.
+However, these are substantial features that "fix" the issue indirectly by
+transitioning the memcg accounting system over to rstats. I can pick these 10
+upstream commits, but I'm worried I may overlook some additional patches from
+5.15.y that need to go along with them. I may need some guidance if we go this
+route.
 
-Acked-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
-Fixes: 436190596241 ("media: imx214: Add imx214 camera sensor driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[ changed dev_err() to dev_err_probe() for the final error case ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/media/i2c/imx214.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+Another reasonable option is to take neither route. We can maintain this patch
+internally and then drop it once we upgrade to a new kernel version.
 
-diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
-index cee1a4817af99..9df760f1f6994 100644
---- a/drivers/media/i2c/imx214.c
-+++ b/drivers/media/i2c/imx214.c
-@@ -20,7 +20,9 @@
- #include <media/v4l2-subdev.h>
- 
- #define IMX214_DEFAULT_CLK_FREQ	24000000
--#define IMX214_DEFAULT_LINK_FREQ 480000000
-+#define IMX214_DEFAULT_LINK_FREQ	600000000
-+/* Keep wrong link frequency for backward compatibility */
-+#define IMX214_DEFAULT_LINK_FREQ_LEGACY	480000000
- #define IMX214_DEFAULT_PIXEL_RATE ((IMX214_DEFAULT_LINK_FREQ * 8LL) / 10)
- #define IMX214_FPS 30
- #define IMX214_MBUS_CODE MEDIA_BUS_FMT_SRGGB10_1X10
-@@ -891,17 +893,26 @@ static int imx214_parse_fwnode(struct device *dev)
- 		goto done;
- 	}
- 
--	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++)
-+	if (bus_cfg.nr_of_link_frequencies != 1)
-+		dev_warn(dev, "Only one link-frequency supported, please review your DT. Continuing anyway\n");
-+
-+	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++) {
- 		if (bus_cfg.link_frequencies[i] == IMX214_DEFAULT_LINK_FREQ)
- 			break;
--
--	if (i == bus_cfg.nr_of_link_frequencies) {
--		dev_err(dev, "link-frequencies %d not supported, Please review your DT\n",
--			IMX214_DEFAULT_LINK_FREQ);
--		ret = -EINVAL;
--		goto done;
-+		if (bus_cfg.link_frequencies[i] ==
-+		    IMX214_DEFAULT_LINK_FREQ_LEGACY) {
-+			dev_warn(dev,
-+				 "link-frequencies %d not supported, please review your DT. Continuing anyway\n",
-+				 IMX214_DEFAULT_LINK_FREQ);
-+			break;
-+		}
- 	}
- 
-+	if (i == bus_cfg.nr_of_link_frequencies)
-+		ret = dev_err_probe(dev, -EINVAL,
-+				    "link-frequencies %d not supported, please review your DT\n",
-+				    IMX214_DEFAULT_LINK_FREQ);
-+
- done:
- 	v4l2_fwnode_endpoint_free(&bus_cfg);
- 	fwnode_handle_put(endpoint);
--- 
-2.51.0
+Let me know how you would like to proceed.
 
+Thanks!
+Andrew
 
