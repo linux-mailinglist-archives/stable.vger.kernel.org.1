@@ -1,210 +1,405 @@
-Return-Path: <stable+bounces-178883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684A5B48A38
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 12:32:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED7CB48A3A
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 12:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5431F1B2521F
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 10:33:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 721CA1B25302
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 10:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EB12EAB8E;
-	Mon,  8 Sep 2025 10:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CF02EC55F;
+	Mon,  8 Sep 2025 10:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AUmEndsA"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="PegrHtNt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BCD2139C9;
-	Mon,  8 Sep 2025 10:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990E71C4A13;
+	Mon,  8 Sep 2025 10:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757327566; cv=none; b=ueGSkdzxoWDQIahbQsxDihP5LnN3kF4Xjher9lTmsgG+dGGiBcJxxZuB7TclCZLlk43gt+ynQnPNgjumBUtKFN7ZUDBuaE7oxVheFUvnGZqk661DcItA7YGga0ZJXR2KhSSpxPOu/zl2co7th/CQfQIgx0rsbtbwABPwWpXT5Zk=
+	t=1757327613; cv=none; b=c1IHgO967G42PdVq8rTTSkY1M8yi/o2BItAyO6WN75mgDVEteH+NQff08qByPf8pj57sGE634l4KnZYCMAncTAvDqaInFSGnxbw3EAwUhoH+Mn2CJRQxcYeoCmNiKwwKZJhKI2D5AwlhHSxL3BADNLu0Vm+Z3d8leeD9sN1IMHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757327566; c=relaxed/simple;
-	bh=+4XO0knlLrDUm9FG6npOceWMdlhrXtwcdX+lziaslZU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m2fsYo5Fd4ApabJXC1g1FyC2MSQAC0rXKMS6dATRCtPSnd4Pow1wECydYE36ashth2ACQN3hW9EjFIvIRMC2n89EfOmTDa1qUb24D8aKW6MviNU/jMwyvR6ifFHmZNenbmlm6/LjrYsLpyZIXzX+1NPM3IYVh1pvC8KYg6SGhSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AUmEndsA; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b4f7053cc38so2612270a12.2;
-        Mon, 08 Sep 2025 03:32:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757327564; x=1757932364; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3cF6c5wTxHhL2DgZqdn/ZJz8KkLWRy+JzuRme29y/+g=;
-        b=AUmEndsAI9xRz/FWuYArd0SJQl7H51eaVsm+1RV15OmHDLxCvjGfd59ia3mt07cb1l
-         4Bd+1rJikwVCBOt5SdVxoFPO4Aq6ch+aY2DJphDc7861JhKw9z0pzOUadFt7SW9r00gE
-         ofaKxZuNn9qg/e0uz4RhRFh06UwDLNJhGEVcSKP6UD9GUdYv4mK9agCd7qxIDSCJPvnl
-         u7SNTd0pSnRtlLCvV5z9GNI8NBBwhW1nFmauF9R06PF1Lut6ETPzK7S999ILnJR27Utl
-         rWksrvj0dI9c0TsqSNX24D9E4vUhB3lzjQp3TLfHnV0AZAZeGOA8GZwH1r1fJOo1tdIT
-         Y//w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757327564; x=1757932364;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3cF6c5wTxHhL2DgZqdn/ZJz8KkLWRy+JzuRme29y/+g=;
-        b=MqTrxM/M5c2ER8mNXYsEpQ87nVToPe3AhyKNHhuFKU5G0K3vpgH++/N4itNFc38CYe
-         UzxgGmivXMRUcm8p1gtrO0g3OSFkuuvE98HOFrsR8seust3OD7dVeScrPyKhHFbmMZbe
-         kbMu6XqLRlddEtC8Zo+KuoACtygGiLPyOT3ckENbBjeJJb4d5ByZ2ISdFSnLZU8jzFqc
-         WbkvNlFf0B8rgujHbNHL7J/XdYVSLxwQzAZC7vUg2X2wzTQeR7uBKIMPCyU7+MfHPCzK
-         IDg5Ot//m4bWgV5MlaYYl9UoL/m82vPGBs7OQ7LMdIFwBVmcqLJoKNS5wZXNW4WgAcok
-         /yEA==
-X-Forwarded-Encrypted: i=1; AJvYcCU4D/63nATBpd4qBwFO6ih547mpST/CETw76sVc8RU5oY1EKX6HxogCY2AqJahTTIQXZV41nNCN@vger.kernel.org, AJvYcCUEg38JnAA7y83oMW7X/HCr07FlivaBmvKO7OcpHTalpzIxGls6O/MZbaSSlnraH3ncZaIKMgiSYDaE9hKn@vger.kernel.org, AJvYcCVpNp61pBQuwnY0bIWPhMj+1yTzlvv0DkBx5oHTJDAt0XRDYVOYDtVx9PGC6QIXBthdOJp5srrUME7w@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKSdB14J0eLM3PHywrcZOLHnTGLQ/d/fpJc9D0zfHmOtv9twwx
-	GEAYrKbsvKt6Cp+MUSQiBVg92dvXIvCOYC6vkkAXwPjWcFo0azCg2sarcx7lpQGtFJ/79UEzimC
-	rWnneZnMQ48AmN++dYtmUzEeJKmLYVV8=
-X-Gm-Gg: ASbGncs9N5TwPO1zBtT5tXJzwhYF2+qUxPRWMxah4ZfeEwtUdRYIKhIOX0VrhjvmhAf
-	PPgPwR5cueD6t8QQqHDCam2NOKyeJEzVkfXj9oOHOUE+vtayduoaqkSmDnyV+15igeu1YthM+XZ
-	dGcG6rjO97DYD2oVLd77eDL3V6fQ2xb2xgA12lu1+YMJg1sAruO1jOFM/w1pa1skNhgxBrFo4L/
-	A83BL4Xm+9BPLNWGQ==
-X-Google-Smtp-Source: AGHT+IHnJH0N3/loIyJTaAozc9HWxoZ/j+TmmvLppTeugA1WCtp61zAydIK8CV2uDM+K4H8jhTvQGAx7KS+i3dGnUm8=
-X-Received: by 2002:a17:90b:3904:b0:32b:6132:5f94 with SMTP id
- 98e67ed59e1d1-32d43f95d02mr10710949a91.21.1757327563647; Mon, 08 Sep 2025
- 03:32:43 -0700 (PDT)
+	s=arc-20240116; t=1757327613; c=relaxed/simple;
+	bh=5WgSjfBPrsq8fgYbix6h/y26IEJf5iIqjW0ETGvAsoM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qTa8mJZ6YzNzhTkAUrGYX5YDmEbl4wlVSFhSkhB2rCD7LwrFk0JAa88qsXomMAVAoufCHaKKUV3uhwETPVCQ1ZzjS4Atbn8oeu22DNbt5MpRiqpyU4SH78dsbPDHvyMi+qmsTtzTzZsUMEWt8PrK+f8qcLyI4KF6h3ymQp9Q1/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=PegrHtNt; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (230.215-178-91.adsl-dyn.isp.belgacom.be [91.178.215.230])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 6DD68C71;
+	Mon,  8 Sep 2025 12:32:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1757327535;
+	bh=5WgSjfBPrsq8fgYbix6h/y26IEJf5iIqjW0ETGvAsoM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PegrHtNtLPKZm5+7qmcBg5v91Dluju2Dj9o5Ido2O5IbXXUTk6p7KlIoH72pz8Adi
+	 vKdk6yYC4MqlAtQxQuX8DXjG3ZllJ6z+U/2zzTehu10SZt0jOxmVgsefNNwX3JsBaj
+	 OE5eohqPX2cglX88QNYi1p5978ANsHnzMz37zhM8=
+Date: Mon, 8 Sep 2025 12:33:06 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Tomasz Sikora <sikora.tomus@gmail.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	syzbot+0584f746fde3d52b4675@syzkaller.appspotmail.com,
+	syzbot+dd320d114deb3f5bb79b@syzkaller.appspotmail.com
+Subject: Re: [PATCH] media: uvcvideo: Mark invalid entities with id
+ UVC_INVALID_ENTITY_ID
+Message-ID: <20250908103306.GD26062@pendragon.ideasonboard.com>
+References: <20250820-uvc-thadeu2-v1-1-a04a7cc8fc76@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250827181708.314248-1-max.kellermann@ionos.com>
-In-Reply-To: <20250827181708.314248-1-max.kellermann@ionos.com>
-From: Ilya Dryomov <idryomov@gmail.com>
-Date: Mon, 8 Sep 2025 12:32:31 +0200
-X-Gm-Features: Ac12FXybpA5tBFjqghr21v3E3Fpl48u7LFv5vyCLmT49bpExp3yxEYVGfIZVWc4
-Message-ID: <CAOi1vP-uiSHW-3vTQXdBCWH25sUgiWVK4UvF2APsGM1QNpNqFw@mail.gmail.com>
-Subject: Re: [PATCH] fs/ceph/addr: always call ceph_shift_unused_folios_left()
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: Slava.Dubeyko@ibm.com, xiubli@redhat.com, amarkuze@redhat.com, 
-	ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250820-uvc-thadeu2-v1-1-a04a7cc8fc76@chromium.org>
 
-On Wed, Aug 27, 2025 at 8:17=E2=80=AFPM Max Kellermann <max.kellermann@iono=
-s.com> wrote:
->
-> The function ceph_process_folio_batch() sets folio_batch entries to
-> NULL, which is an illegal state.  Before folio_batch_release() crashes
-> due to this API violation, the function
-> ceph_shift_unused_folios_left() is supposed to remove those NULLs from
-> the array.
->
-> However, since commit ce80b76dd327 ("ceph: introduce
-> ceph_process_folio_batch() method"), this shifting doesn't happen
-> anymore because the "for" loop got moved to
-> ceph_process_folio_batch(), and now the `i` variable that remains in
-> ceph_writepages_start() doesn't get incremented anymore, making the
-> shifting effectively unreachable much of the time.
->
-> Later, commit 1551ec61dc55 ("ceph: introduce ceph_submit_write()
-> method") added more preconditions for doing the shift, replacing the
-> `i` check (with something that is still just as broken):
->
-> - if ceph_process_folio_batch() fails, shifting never happens
->
-> - if ceph_move_dirty_page_in_page_array() was never called (because
->   ceph_process_folio_batch() has returned early for some of various
->   reasons), shifting never happens
->
-> - if `processed_in_fbatch` is zero (because ceph_process_folio_batch()
->   has returned early for some of the reasons mentioned above or
->   because ceph_move_dirty_page_in_page_array() has failed), shifting
->   never happens
->
-> Since those two commits, any problem in ceph_process_folio_batch()
-> could crash the kernel, e.g. this way:
->
->  BUG: kernel NULL pointer dereference, address: 0000000000000034
->  #PF: supervisor write access in kernel mode
->  #PF: error_code(0x0002) - not-present page
->  PGD 0 P4D 0
->  Oops: Oops: 0002 [#1] SMP NOPTI
->  CPU: 172 UID: 0 PID: 2342707 Comm: kworker/u778:8 Not tainted 6.15.10-cm=
-4all1-es #714 NONE
->  Hardware name: Dell Inc. PowerEdge R7615/0G9DHV, BIOS 1.6.10 12/08/2023
->  Workqueue: writeback wb_workfn (flush-ceph-1)
->  RIP: 0010:folios_put_refs+0x85/0x140
->  Code: 83 c5 01 39 e8 7e 76 48 63 c5 49 8b 5c c4 08 b8 01 00 00 00 4d 85 =
-ed 74 05 41 8b 44 ad 00 48 8b 15 b0 >
->  RSP: 0018:ffffb880af8db778 EFLAGS: 00010207
->  RAX: 0000000000000001 RBX: 0000000000000000 RCX: 0000000000000003
->  RDX: ffffe377cc3b0000 RSI: 0000000000000000 RDI: ffffb880af8db8c0
->  RBP: 0000000000000000 R08: 000000000000007d R09: 000000000102b86f
->  R10: 0000000000000001 R11: 00000000000000ac R12: ffffb880af8db8c0
->  R13: 0000000000000000 R14: 0000000000000000 R15: ffff9bd262c97000
->  FS:  0000000000000000(0000) GS:ffff9c8efc303000(0000) knlGS:000000000000=
-0000
->  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->  CR2: 0000000000000034 CR3: 0000000160958004 CR4: 0000000000770ef0
->  PKRU: 55555554
->  Call Trace:
->   <TASK>
->   ceph_writepages_start+0xeb9/0x1410
->
-> The crash can be reproduced easily by changing the
-> ceph_check_page_before_write() return value to `-E2BIG`.
->
-> (Interestingly, the crash happens only if `huge_zero_folio` has
-> already been allocated; without `huge_zero_folio`,
-> is_huge_zero_folio(NULL) returns true and folios_put_refs() skips NULL
-> entries instead of dereferencing them.  That makes reproducing the bug
-> somewhat unreliable.  See
-> https://lore.kernel.org/20250826231626.218675-1-max.kellermann@ionos.com
-> for a discussion of this detail.)
->
-> My suggestion is to move the ceph_shift_unused_folios_left() to right
-> after ceph_process_folio_batch() to ensure it always gets called to
-> fix up the illegal folio_batch state.
->
-> Fixes: ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method")
-> Link: https://lore.kernel.org/ceph-devel/aK4v548CId5GIKG1@swift.blarg.de/
+Hello Ricardo,
+
+Thank you for the patch.
+
+On Wed, Aug 20, 2025 at 04:08:16PM +0000, Ricardo Ribalda wrote:
+> From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> 
+> Per UVC 1.1+ specification 3.7.2, units and terminals must have a non-zero
+> unique ID.
+> 
+> ```
+> Each Unit and Terminal within the video function is assigned a unique
+> identification number, the Unit ID (UID) or Terminal ID (TID), contained in
+> the bUnitID or bTerminalID field of the descriptor. The value 0x00 is
+> reserved for undefined ID,
+> ```
+> 
+> If we add a new entity with id 0 or a duplicated ID, it will be marked
+> as UVC_INVALID_ENTITY_ID.
+> 
+> In a previous attempt commit 3dd075fe8ebb ("media: uvcvideo: Require
+> entities to have a non-zero unique ID"), we ignored all the invalid units,
+> this broke a lot of non-compatible cameras. Hopefully we are more lucky
+> this time.
+> 
+> This also prevents some syzkaller reproducers from triggering warnings due
+> to a chain of entities referring to themselves. In one particular case, an
+> Output Unit is connected to an Input Unit, both with the same ID of 1. But
+> when looking up for the source ID of the Output Unit, that same entity is
+> found instead of the input entity, which leads to such warnings.
+> 
+> In another case, a backward chain was considered finished as the source ID
+> was 0. Later on, that entity was found, but its pads were not valid.
+> 
+> Here is a sample stack trace for one of those cases.
+> 
+> [   20.650953] usb 1-1: new high-speed USB device number 2 using dummy_hcd
+> [   20.830206] usb 1-1: Using ep0 maxpacket: 8
+> [   20.833501] usb 1-1: config 0 descriptor??
+> [   21.038518] usb 1-1: string descriptor 0 read error: -71
+> [   21.038893] usb 1-1: Found UVC 0.00 device <unnamed> (2833:0201)
+> [   21.039299] uvcvideo 1-1:0.0: Entity type for entity Output 1 was not initialized!
+> [   21.041583] uvcvideo 1-1:0.0: Entity type for entity Input 1 was not initialized!
+> [   21.042218] ------------[ cut here ]------------
+> [   21.042536] WARNING: CPU: 0 PID: 9 at drivers/media/mc/mc-entity.c:1147 media_create_pad_link+0x2c4/0x2e0
+> [   21.043195] Modules linked in:
+> [   21.043535] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:1 Not tainted 6.11.0-rc7-00030-g3480e43aeccf #444
+> [   21.044101] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+> [   21.044639] Workqueue: usb_hub_wq hub_event
+> [   21.045100] RIP: 0010:media_create_pad_link+0x2c4/0x2e0
+> [   21.045508] Code: fe e8 20 01 00 00 b8 f4 ff ff ff 48 83 c4 30 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 0f 0b eb e9 0f 0b eb 0a 0f 0b eb 06 <0f> 0b eb 02 0f 0b b8 ea ff ff ff eb d4 66 2e 0f 1f 84 00 00 00 00
+> [   21.046801] RSP: 0018:ffffc9000004b318 EFLAGS: 00010246
+> [   21.047227] RAX: ffff888004e5d458 RBX: 0000000000000000 RCX: ffffffff818fccf1
+> [   21.047719] RDX: 000000000000007b RSI: 0000000000000000 RDI: ffff888004313290
+> [   21.048241] RBP: ffff888004313290 R08: 0001ffffffffffff R09: 0000000000000000
+> [   21.048701] R10: 0000000000000013 R11: 0001888004313290 R12: 0000000000000003
+> [   21.049138] R13: ffff888004313080 R14: ffff888004313080 R15: 0000000000000000
+> [   21.049648] FS:  0000000000000000(0000) GS:ffff88803ec00000(0000) knlGS:0000000000000000
+> [   21.050271] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   21.050688] CR2: 0000592cc27635b0 CR3: 000000000431c000 CR4: 0000000000750ef0
+> [   21.051136] PKRU: 55555554
+> [   21.051331] Call Trace:
+> [   21.051480]  <TASK>
+> [   21.051611]  ? __warn+0xc4/0x210
+> [   21.051861]  ? media_create_pad_link+0x2c4/0x2e0
+> [   21.052252]  ? report_bug+0x11b/0x1a0
+> [   21.052540]  ? trace_hardirqs_on+0x31/0x40
+> [   21.052901]  ? handle_bug+0x3d/0x70
+> [   21.053197]  ? exc_invalid_op+0x1a/0x50
+> [   21.053511]  ? asm_exc_invalid_op+0x1a/0x20
+> [   21.053924]  ? media_create_pad_link+0x91/0x2e0
+> [   21.054364]  ? media_create_pad_link+0x2c4/0x2e0
+> [   21.054834]  ? media_create_pad_link+0x91/0x2e0
+> [   21.055131]  ? _raw_spin_unlock+0x1e/0x40
+> [   21.055441]  ? __v4l2_device_register_subdev+0x202/0x210
+> [   21.055837]  uvc_mc_register_entities+0x358/0x400
+> [   21.056144]  uvc_register_chains+0x1fd/0x290
+> [   21.056413]  uvc_probe+0x380e/0x3dc0
+> [   21.056676]  ? __lock_acquire+0x5aa/0x26e0
+> [   21.056946]  ? find_held_lock+0x33/0xa0
+> [   21.057196]  ? kernfs_activate+0x70/0x80
+> [   21.057533]  ? usb_match_dynamic_id+0x1b/0x70
+> [   21.057811]  ? find_held_lock+0x33/0xa0
+> [   21.058047]  ? usb_match_dynamic_id+0x55/0x70
+> [   21.058330]  ? lock_release+0x124/0x260
+> [   21.058657]  ? usb_match_one_id_intf+0xa2/0x100
+> [   21.058997]  usb_probe_interface+0x1ba/0x330
+> [   21.059399]  really_probe+0x1ba/0x4c0
+> [   21.059662]  __driver_probe_device+0xb2/0x180
+> [   21.059944]  driver_probe_device+0x5a/0x100
+> [   21.060170]  __device_attach_driver+0xe9/0x160
+> [   21.060427]  ? __pfx___device_attach_driver+0x10/0x10
+> [   21.060872]  bus_for_each_drv+0xa9/0x100
+> [   21.061312]  __device_attach+0xed/0x190
+> [   21.061812]  device_initial_probe+0xe/0x20
+> [   21.062229]  bus_probe_device+0x4d/0xd0
+> [   21.062590]  device_add+0x308/0x590
+> [   21.062912]  usb_set_configuration+0x7b6/0xaf0
+> [   21.063403]  usb_generic_driver_probe+0x36/0x80
+> [   21.063714]  usb_probe_device+0x7b/0x130
+> [   21.063936]  really_probe+0x1ba/0x4c0
+> [   21.064111]  __driver_probe_device+0xb2/0x180
+> [   21.064577]  driver_probe_device+0x5a/0x100
+> [   21.065019]  __device_attach_driver+0xe9/0x160
+> [   21.065403]  ? __pfx___device_attach_driver+0x10/0x10
+> [   21.065820]  bus_for_each_drv+0xa9/0x100
+> [   21.066094]  __device_attach+0xed/0x190
+> [   21.066535]  device_initial_probe+0xe/0x20
+> [   21.066992]  bus_probe_device+0x4d/0xd0
+> [   21.067250]  device_add+0x308/0x590
+> [   21.067501]  usb_new_device+0x347/0x610
+> [   21.067817]  hub_event+0x156b/0x1e30
+> [   21.068060]  ? process_scheduled_works+0x48b/0xaf0
+> [   21.068337]  process_scheduled_works+0x5a3/0xaf0
+> [   21.068668]  worker_thread+0x3cf/0x560
+> [   21.068932]  ? kthread+0x109/0x1b0
+> [   21.069133]  kthread+0x197/0x1b0
+> [   21.069343]  ? __pfx_worker_thread+0x10/0x10
+> [   21.069598]  ? __pfx_kthread+0x10/0x10
+> [   21.069908]  ret_from_fork+0x32/0x40
+> [   21.070169]  ? __pfx_kthread+0x10/0x10
+> [   21.070424]  ret_from_fork_asm+0x1a/0x30
+> [   21.070737]  </TASK>
+> 
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+> Reported-by: syzbot+0584f746fde3d52b4675@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=0584f746fde3d52b4675
+> Reported-by: syzbot+dd320d114deb3f5bb79b@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=dd320d114deb3f5bb79b
+> Fixes: a3fbc2e6bb05 ("media: mc-entity.c: use WARN_ON, validate link pads")
+> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> Co-developed-by: Ricardo Ribalda <ribalda@chromium.org>
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 > ---
->  fs/ceph/addr.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-> index 8b202d789e93..8bc66b45dade 100644
-> --- a/fs/ceph/addr.c
-> +++ b/fs/ceph/addr.c
-> @@ -1687,6 +1687,7 @@ static int ceph_writepages_start(struct address_spa=
-ce *mapping,
->
->  process_folio_batch:
->                 rc =3D ceph_process_folio_batch(mapping, wbc, &ceph_wbc);
-> +               ceph_shift_unused_folios_left(&ceph_wbc.fbatch);
->                 if (rc)
->                         goto release_folios;
->
-> @@ -1695,8 +1696,6 @@ static int ceph_writepages_start(struct address_spa=
-ce *mapping,
->                         goto release_folios;
->
->                 if (ceph_wbc.processed_in_fbatch) {
-> -                       ceph_shift_unused_folios_left(&ceph_wbc.fbatch);
-> -
->                         if (folio_batch_count(&ceph_wbc.fbatch) =3D=3D 0 =
-&&
->                             ceph_wbc.locked_pages < ceph_wbc.max_pages) {
->                                 doutc(cl, "reached end fbatch, trying for=
- more\n");
-> --
-> 2.47.2
->
+> This is a new attempt to land a Thadeu's patch, but being a bit more
+> benevolent on the non-compliant cameras.
+> 
+> I have kept most of Thadeu's code, but instead of returning an error
+> when trying to allocate an invalid entity, I replace its id with a
+> special ID.
+> 
+> Thadeu can you validate this new version?
+> 
+> Tomasz can you also check this patch with your non compliant camera?
+> 
+> Thanks!
+> ---
+>  drivers/media/usb/uvc/uvc_driver.c | 73 ++++++++++++++++++++++++--------------
+>  drivers/media/usb/uvc/uvcvideo.h   |  2 ++
+>  2 files changed, 48 insertions(+), 27 deletions(-)
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+> index 775bede0d93d9b3e5391914aa395326d3de6a3b1..46923cd85f0b6790f01ae6b393571ca7660900f7 100644
+> --- a/drivers/media/usb/uvc/uvc_driver.c
+> +++ b/drivers/media/usb/uvc/uvc_driver.c
+> @@ -137,6 +137,9 @@ struct uvc_entity *uvc_entity_by_id(struct uvc_device *dev, int id)
+>  {
+>  	struct uvc_entity *entity;
+>  
+> +	if (id == UVC_INVALID_ENTITY_ID)
+> +		return NULL;
+> +
+>  	list_for_each_entry(entity, &dev->entities, list) {
+>  		if (entity->id == id)
+>  			return entity;
+> @@ -795,14 +798,27 @@ static const u8 uvc_media_transport_input_guid[16] =
+>  	UVC_GUID_UVC_MEDIA_TRANSPORT_INPUT;
+>  static const u8 uvc_processing_guid[16] = UVC_GUID_UVC_PROCESSING;
+>  
+> -static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
+> -		unsigned int num_pads, unsigned int extra_size)
+> +static struct uvc_entity *uvc_alloc_new_entity(struct uvc_device *dev, u16 type,
+> +					       u16 id, unsigned int num_pads,
+> +					       unsigned int extra_size)
+>  {
+>  	struct uvc_entity *entity;
+>  	unsigned int num_inputs;
+>  	unsigned int size;
+>  	unsigned int i;
+>  
+> +	/* Per UVC 1.1+ spec 3.7.2, the ID should be non-zero. */
+> +	if (id == 0) {
+> +		dev_err(&dev->intf->dev, "Found Unit with invalid ID 0.\n");
 
-Queued up for 6.17-rc6.
+s/0./0/
 
-Thanks,
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-                Ilya
+Should I wait for Thadeu and Tomasz to check this new patch before
+applying it ?
+
+> +		id = UVC_INVALID_ENTITY_ID;
+> +	}
+> +
+> +	/* Per UVC 1.1+ spec 3.7.2, the ID is unique. */
+> +	if (uvc_entity_by_id(dev, id)) {
+> +		dev_err(&dev->intf->dev, "Found multiple Units with ID %u\n", id);
+> +		id = UVC_INVALID_ENTITY_ID;
+> +	}
+> +
+>  	extra_size = roundup(extra_size, sizeof(*entity->pads));
+>  	if (num_pads)
+>  		num_inputs = type & UVC_TERM_OUTPUT ? num_pads : num_pads - 1;
+> @@ -812,7 +828,7 @@ static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
+>  	     + num_inputs;
+>  	entity = kzalloc(size, GFP_KERNEL);
+>  	if (entity == NULL)
+> -		return NULL;
+> +		return ERR_PTR(-ENOMEM);
+>  
+>  	entity->id = id;
+>  	entity->type = type;
+> @@ -924,10 +940,10 @@ static int uvc_parse_vendor_control(struct uvc_device *dev,
+>  			break;
+>  		}
+>  
+> -		unit = uvc_alloc_entity(UVC_VC_EXTENSION_UNIT, buffer[3],
+> -					p + 1, 2*n);
+> -		if (unit == NULL)
+> -			return -ENOMEM;
+> +		unit = uvc_alloc_new_entity(dev, UVC_VC_EXTENSION_UNIT,
+> +					    buffer[3], p + 1, 2 * n);
+> +		if (IS_ERR(unit))
+> +			return PTR_ERR(unit);
+>  
+>  		memcpy(unit->guid, &buffer[4], 16);
+>  		unit->extension.bNumControls = buffer[20];
+> @@ -1036,10 +1052,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+>  			return -EINVAL;
+>  		}
+>  
+> -		term = uvc_alloc_entity(type | UVC_TERM_INPUT, buffer[3],
+> -					1, n + p);
+> -		if (term == NULL)
+> -			return -ENOMEM;
+> +		term = uvc_alloc_new_entity(dev, type | UVC_TERM_INPUT,
+> +					    buffer[3], 1, n + p);
+> +		if (IS_ERR(term))
+> +			return PTR_ERR(term);
+>  
+>  		if (UVC_ENTITY_TYPE(term) == UVC_ITT_CAMERA) {
+>  			term->camera.bControlSize = n;
+> @@ -1095,10 +1111,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+>  			return 0;
+>  		}
+>  
+> -		term = uvc_alloc_entity(type | UVC_TERM_OUTPUT, buffer[3],
+> -					1, 0);
+> -		if (term == NULL)
+> -			return -ENOMEM;
+> +		term = uvc_alloc_new_entity(dev, type | UVC_TERM_OUTPUT,
+> +					    buffer[3], 1, 0);
+> +		if (IS_ERR(term))
+> +			return PTR_ERR(term);
+>  
+>  		memcpy(term->baSourceID, &buffer[7], 1);
+>  
+> @@ -1117,9 +1133,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+>  			return -EINVAL;
+>  		}
+>  
+> -		unit = uvc_alloc_entity(buffer[2], buffer[3], p + 1, 0);
+> -		if (unit == NULL)
+> -			return -ENOMEM;
+> +		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3],
+> +					    p + 1, 0);
+> +		if (IS_ERR(unit))
+> +			return PTR_ERR(unit);
+>  
+>  		memcpy(unit->baSourceID, &buffer[5], p);
+>  
+> @@ -1139,9 +1156,9 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+>  			return -EINVAL;
+>  		}
+>  
+> -		unit = uvc_alloc_entity(buffer[2], buffer[3], 2, n);
+> -		if (unit == NULL)
+> -			return -ENOMEM;
+> +		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3], 2, n);
+> +		if (IS_ERR(unit))
+> +			return PTR_ERR(unit);
+>  
+>  		memcpy(unit->baSourceID, &buffer[4], 1);
+>  		unit->processing.wMaxMultiplier =
+> @@ -1168,9 +1185,10 @@ static int uvc_parse_standard_control(struct uvc_device *dev,
+>  			return -EINVAL;
+>  		}
+>  
+> -		unit = uvc_alloc_entity(buffer[2], buffer[3], p + 1, n);
+> -		if (unit == NULL)
+> -			return -ENOMEM;
+> +		unit = uvc_alloc_new_entity(dev, buffer[2], buffer[3],
+> +					    p + 1, n);
+> +		if (IS_ERR(unit))
+> +			return PTR_ERR(unit);
+>  
+>  		memcpy(unit->guid, &buffer[4], 16);
+>  		unit->extension.bNumControls = buffer[20];
+> @@ -1315,9 +1333,10 @@ static int uvc_gpio_parse(struct uvc_device *dev)
+>  		return dev_err_probe(&dev->intf->dev, irq,
+>  				     "No IRQ for privacy GPIO\n");
+>  
+> -	unit = uvc_alloc_entity(UVC_EXT_GPIO_UNIT, UVC_EXT_GPIO_UNIT_ID, 0, 1);
+> -	if (!unit)
+> -		return -ENOMEM;
+> +	unit = uvc_alloc_new_entity(dev, UVC_EXT_GPIO_UNIT,
+> +				    UVC_EXT_GPIO_UNIT_ID, 0, 1);
+> +	if (IS_ERR(unit))
+> +		return PTR_ERR(unit);
+>  
+>  	unit->gpio.gpio_privacy = gpio_privacy;
+>  	unit->gpio.irq = irq;
+> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> index 70dc80e2b213dff333665022b3410b175d072793..881bfa0caab22714c26a3260cc843bda8e2706a4 100644
+> --- a/drivers/media/usb/uvc/uvcvideo.h
+> +++ b/drivers/media/usb/uvc/uvcvideo.h
+> @@ -41,6 +41,8 @@
+>  #define UVC_EXT_GPIO_UNIT		0x7ffe
+>  #define UVC_EXT_GPIO_UNIT_ID		0x100
+>  
+> +#define UVC_INVALID_ENTITY_ID          0xffff
+> +
+>  /* ------------------------------------------------------------------------
+>   * Driver specific constants.
+>   */
+> 
+> ---
+> base-commit: a75b8d198c55e9eb5feb6f6e155496305caba2dc
+> change-id: 20250820-uvc-thadeu2-25723a961bd8
+
+-- 
+Regards,
+
+Laurent Pinchart
 
