@@ -1,231 +1,201 @@
-Return-Path: <stable+bounces-178919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B5DB49220
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 16:55:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5ADCB49251
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 17:02:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D6C117B82A
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 14:55:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABAF73A5986
+	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 15:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25DC130AD09;
-	Mon,  8 Sep 2025 14:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42CE9226D0F;
+	Mon,  8 Sep 2025 15:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="WrFz8aU8"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="OKSIP+Wt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2064.outbound.protection.outlook.com [40.107.93.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5271C07C4
-	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 14:55:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757343322; cv=none; b=eCoVrIc9aSNtKIgpZb6LZ1O/h/rwSsHvqCpJtYEuOiw+VWH5yD+awUkyLTCote8jbgd41aW2Id+kbhD9FuhCHwOPIlvoGOyR35XUUEDRKCBb9pN2STFR4tNv7IvbfMvtMcqxUXcTErLTIaKpZbapzXk08cTx1aLNnpD6O3ylJGc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757343322; c=relaxed/simple;
-	bh=Ee3FEGF3xAzaNWyedS6bEV11L5ZuNpo5FfZvcXJOKIQ=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=CJtR7uTK+z6juAslMPoh0ON+gaNLCBJGl0qbI/CAzRf2btIAFnB8bj3gJnRpn4iG7YlwqTra9O5iWK5VKCyMVyZZi4pIroIf59VkLFbZteiRi3iujXmRDhnxOUCHv6D7y3yMiLRnOdR12edCfqBBrntl2LRiv6ufv/YGsMQcfNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=WrFz8aU8; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b4fa6cd2377so2918561a12.2
-        for <stable@vger.kernel.org>; Mon, 08 Sep 2025 07:55:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1757343320; x=1757948120; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=VWM7u6gzgr9T/MqWNSjboANbXNdcmY+DYtZN3CoqJLg=;
-        b=WrFz8aU8p7aB1ILxDWI832H5VvrsRdjoiaPxI1Myvd/5fDN0aXYJLu52zkjUg0rJOT
-         Md9oyxrt4MO5Dgla+NaN1did9fnTXMeebdHzKIpRDYcPx+QXlgM7JHH/BLV1esb2DMNh
-         GiMlOrw0BS/dWnq9hHt/I89LlGUJHpsShqwswRjFOfupir+OR1qMDfIZK4umAS3MR4/m
-         LtmQy+fnuQ6nMCM261lYz48JLiNKmxSEi0yipkurgIDDZYAVV1sRdFRtOpSbCq0t0CXN
-         NrIlK0DgarI/JwxeQVOufonJNzFcw3CnzZmiQvFrMomnzEc7EI1s4SSlhaQz5DPXMl0A
-         0XPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757343320; x=1757948120;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VWM7u6gzgr9T/MqWNSjboANbXNdcmY+DYtZN3CoqJLg=;
-        b=verfi5YYxZU+CxxTMKtw8BW7X9R0myuKhD1183zqy7QgCzkzPByGx5GDXiAaRyiq6j
-         eBU2Pr8SlidMuEhM3zlIZwU6B8M6P/q7Wla+bsLlzofF6iIjZieaBThbDacnGfNntPcb
-         jx+swtldxZm6zm1Qkgf2Lx4UyN5K+jYFVXTkRR5o+j+CTmRl7EjGVAOGx53a3vBmKxSb
-         ISGrdOzyizmN/6JTegnPhmX/ghSQAEomIJ6qs6ZSPmJUYZXG+EyPkePyj72GkYWGSURR
-         q0XCVU8W7qQvDtZ9zh10jKIOabNHyUCbgkr1jcea9SulMj6ylElGM3/NG24F+WFp5FEx
-         r20A==
-X-Forwarded-Encrypted: i=1; AJvYcCV6uOmCZMKKlcYDpsEb+hihFNpQqtip97k8PIPsfWYsizsSgmWrj/E6nLYudtdm8R8G6x7E+wQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywl6HEgVO35McZAl7YHQjFnpUdkvRQhIR8bza+LgWuM/V5DKLuh
-	mSzB7hIKddfuzG8JPJ7Gr0/Avtz0MVPIikFmg8PWkCGPGz/J1+Nhc9k1aQ5I6mVbgm8=
-X-Gm-Gg: ASbGncuJaYviq0DRTaNg1R0WN1GWmNZFfiADbyYrAS3SHatBMd9GBCLtCIGnbl1ebuX
-	QNi9qq4OY4MwEuYBnqklfT5HGb0nbVMVeUbVRcH7dJQ3tVROe/VfLQyrHkfufcr7CFfEXrb+ZPp
-	uWz0csuSb/WOshQdu3TzUnInmb2sMNT4ojajaDMeRTgIby5dRL3yfl3ptSBH7mIG2gu0Uh5Ao1W
-	qwtlJRcFjNqXGP1+pajg5zTYP7QXgu2tSKiQZx9rGeebxQsDWoJCtzNPpAY9DnxrL08fRp9uSv6
-	R9bCYCJzahhoIVViLtV+GbQemDJ1ZUzlW2SDEtWLOwoFoYhFbL0iX7Z5zIxS4z41OUOoXGD6ZtO
-	UYlIz8tJsO6thz6NBHMaOWwa4agaM/fOnTzLMBLuWYFn6dEk6qVDCtM9HnkHmzBQ=
-X-Google-Smtp-Source: AGHT+IHQQxVqMdGburuSqybk1K9hiDqhGVVKjqoe0QgNVws6jTvHrNuDup3Nz5V5FroJtX3PJ2Ck5A==
-X-Received: by 2002:a17:90b:530b:b0:31f:ca:63cd with SMTP id 98e67ed59e1d1-32d43ef0790mr9924165a91.2.1757343320170;
-        Mon, 08 Sep 2025 07:55:20 -0700 (PDT)
-Received: from [10.4.109.2] ([139.177.225.231])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32d7d4074b4sm3854864a91.4.2025.09.08.07.55.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Sep 2025 07:55:19 -0700 (PDT)
-Message-ID: <c2979c40-0cf9-4238-9fb5-5cef6dd9f411@bytedance.com>
-Date: Mon, 8 Sep 2025 22:55:07 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A81306B34;
+	Mon,  8 Sep 2025 15:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757343742; cv=fail; b=Adpo/TDh+0KNav8Xoi+VnpLXmMTqY0yI1SGMQdqRRjBdalirQOo89BOQO6+ZuvoIsNMUca6NXDeJhgN+YlsuiPs6hemInK9+X/80WIyHHD+fsgcD5itMON+oIUmkDSgVixXte8OONsPCfaBThCjEso0YYMeAUtP30YOYStGTBmg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757343742; c=relaxed/simple;
+	bh=VBh1MVuwOvrzYcJkVAdDFX1PW/2oLuToOilhP5xGHoQ=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=MDCpAuLF7h2rnkRfK/qG2tGpBdE2G1KezrDv1GtcveHWN8p/8G7an6a2Oz+6vph51ySYvWzRpbGKS2Mm97wm0d8lezAHoEIPV2rKOafzMsffoUKbAbQhiozm8vvKGk/18WSvaCezHjtWA/r1Kpg7pVwmMGPngy4Kyx5wdMdLtI4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=OKSIP+Wt; arc=fail smtp.client-ip=40.107.93.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WhNOCgrpCVjJ18zbE+Dh95LiFN1BhWQ9sN4QUc0KVhB/msJOpn70wHaWYFFUNX5GgCZkVuaJsvSWSOxu7Fpum/AlCPqUPVM6hqbtvMb/5t3QwZg3cecZpNiZPtFnhpws3a+YwOLnqaZBfn5zbqOl5GAvcRXE0xOVpS/TBsf4saV7HDs80cSVy/RoE8fgMQylafJ5/u+6ssa2fTm3q4SLe6a6DFHOCMp+SgTUgdhAwt25jJFoYgkVKqAJGh9lkCT+0vCsRIQvSVdop2vf/1PgVHSBi1twZCOt02oTzPc3FiqyBV4VnRoN8PQWNSji0TnokQEkLvqiKXIBX5FbTyoCPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NxJLCyaUCc+tfPMznmnuH5SbyCjMyEnRfuKhMDRM+z4=;
+ b=TX3sNy84qd7mvqZU2G4WT6oe2GpQTxiwvVX0QijC8sEJMY7iwojlhtq83Lrki0sJwSyqf9PMkg7B1t0DE78liCCqpWKNDM/TMeIlRrKYIj61SMU7Emz3gExcpxt2j8LbJLoc+COd1g7l1uB/rnEtG0VGayMq9Eo2Y6i0AIhmjwGgMPgYSUXR5Uoa2TXP3Un63okrytoch4Z5zW+eC70jsvylrJIu1FSmLRhjlAA9cVO9ItE+wmCC07Ni2zmPitXcpXOcda0YFQYNxwAkAVzE0CqSzkKEMlCWoL+Awq5C8BAGHthhL9GK00AWg7dyHcbjsJdoHMFKPxjEY8L5exwDBw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NxJLCyaUCc+tfPMznmnuH5SbyCjMyEnRfuKhMDRM+z4=;
+ b=OKSIP+WtLq32PwsDwB+2en2q6GqgOrpu+cXCmr9Gag9cJAQjq5WMhTZGejws2h9NM8v6aVsaGpEA/rRHLURMHHhyoSu8esGhOIx+o+SsZiT51H+AqpXELaKm9tWrG12Ug8RsaNyuBvqRXUw+lDzQwNVdCtA0USbPJ6+77kzigJZoJpCRXsDBGHoUE/JDVOrzN39evexQBbqTrfxU+leE3iRnaYT/nLzSu8oGmKt/QJ8f4lNBY86CgGaQYTJeHSvy/XwURQeH7w4FTZ5DHqUYQ7hx2Iu4lpmL7RMeOSCFUSqTzAp1HjqJDRJ54N9CKRbgqQLMKccf1IXXDhaNLzXLug==
+Received: from BLAPR03CA0133.namprd03.prod.outlook.com (2603:10b6:208:32e::18)
+ by IA1PR12MB7615.namprd12.prod.outlook.com (2603:10b6:208:428::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Mon, 8 Sep
+ 2025 15:01:47 +0000
+Received: from BL6PEPF0001AB57.namprd02.prod.outlook.com
+ (2603:10b6:208:32e:cafe::3e) by BLAPR03CA0133.outlook.office365.com
+ (2603:10b6:208:32e::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9094.22 via Frontend Transport; Mon,
+ 8 Sep 2025 15:01:47 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BL6PEPF0001AB57.mail.protection.outlook.com (10.167.241.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9115.13 via Frontend Transport; Mon, 8 Sep 2025 15:01:46 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 8 Sep
+ 2025 08:01:08 -0700
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 8 Sep
+ 2025 08:01:07 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Mon, 8 Sep 2025 08:01:07 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
+	<broonie@kernel.org>, <achill@achill.org>, <linux-tegra@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH 5.4 00/45] 5.4.299-rc1 review
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+References: <20250907195600.953058118@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [External] Re: [PATCH] KVM: x86: Latch INITs only in specific CPU
- states in KVM_SET_VCPU_EVENTS
-From: Fei Li <lifei.shirley@bytedance.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, liran.alon@oracle.com, hpa@zytor.com,
- wanpeng.li@hotmail.com, kvm@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250827152754.12481-1-lifei.shirley@bytedance.com>
- <aK8r11trXDjBnRON@google.com>
- <CABgObfYqVTK3uB00pAyZAdX=Vx1Xx_M0MOwUzm+D1C04mrVfig@mail.gmail.com>
- <f904b674-98ba-4e13-a64c-fd30b6ac4a2e@bytedance.com>
- <CABgObfb4ocYcaZixoPD_VZL5Z_SieTGJW3GBCFB-_LuOH5Ut2g@mail.gmail.com>
- <d686f056-180c-4a22-a359-81eadb062629@bytedance.com>
-Content-Language: en-US
-In-Reply-To: <d686f056-180c-4a22-a359-81eadb062629@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Message-ID: <0ddc28dc-7757-47a8-ab6e-405d6b99f53a@rnnvmail202.nvidia.com>
+Date: Mon, 8 Sep 2025 08:01:07 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB57:EE_|IA1PR12MB7615:EE_
+X-MS-Office365-Filtering-Correlation-Id: f9daeac7-6d72-498f-44e3-08ddeee8a1b9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QklLSXQ1VHlQU3EzZlczMGVCODIyclJjRjgrVklzOXkwQm83eWtoVXVOcmpT?=
+ =?utf-8?B?enAxYnl2cTM1Uk5MbzlmYXozbTk2Umpod3BCNndqNFkvUlFITVA5dlVrQ29S?=
+ =?utf-8?B?Nml4VzhaUWZnOHhGay83MGhLZWlJWGF4SlZxbFNnbDJjTlFMazRwM2dIemV6?=
+ =?utf-8?B?Y25IejRMMmxEaExwSGJISi9ZN3pOeG9mS3hLdVdEWU1qUUVCdXc0SWRmYjN2?=
+ =?utf-8?B?aC9rdWM0U3k4Znl3cHlYaWNicUs5Ym1RQmdiQkpYL1pZdlhqRHpDZi96c2Qx?=
+ =?utf-8?B?L0NWMGVmSkJvUFM2MllDQi9kUnI3b2V5emVxRnFkM1RvY05Lb0REamlKejE5?=
+ =?utf-8?B?Q05mRmUyQW9tSkRCUVlZRFhpU3gyNWtWMWUvMGhvR1o2U1hmaDBWTkFlZkVu?=
+ =?utf-8?B?Nmc0R2t5Mmt1WHAvdjJxVVQwRG92NWFxQm9RQ0ZNN1EwQTYzYUFTS2ZVVkh3?=
+ =?utf-8?B?UUQ2ZXhNU3FMZGpwRXRmVjl0Y09TU3FTZXRuRXhNOVJpN2l6UGV5eGVTbUZX?=
+ =?utf-8?B?U051bnZvOHJhNndRNmhLRktnbVdYNFpiK3F2MnpwY2U4ZlVRSGswWkxDZm40?=
+ =?utf-8?B?SU13T0pKNElXcWNHRzgrdVd2aWNFdURscWp3WTZqQ3loRDBHSTNCSmIrU3By?=
+ =?utf-8?B?cmV0dUwvNUw1a0tQd0FoRDBjTnlQcEJaUlQ2U29nY3p6RDRoSEZmVFZiUDJT?=
+ =?utf-8?B?MGppdVhVWm16bDZDMGxEUmtIWjZvemxBakRxaTVwT0J0VGRYN3o1K3c3cnZs?=
+ =?utf-8?B?bE1JbFlYUHBQL1lQcmdzUGZQY29CRFBjVExPMnB2d3ZlaWthNWw1NENad1A4?=
+ =?utf-8?B?Y3Fpek80SWJ1dDJGWG5LbUxiVTZrczIvZVdLcnBMUktEVjE4b084LzhCNmJp?=
+ =?utf-8?B?STh0OEQyQnF3R0RUNWdCb0xRMTRQRW4vRWZoRGpMN2JTM3hzL1kwaE0rTU91?=
+ =?utf-8?B?M1BUUEFlWjVqVVIxekRqMzB5THhNUnBkbk9WWkc4bVJmSUJmZXk2MVpibVNl?=
+ =?utf-8?B?T0FvS1NmRkg5aFZGTTRoN2ppSDBRYzVUb3Fua2lYNHJybVZYbzZiTDR2MXZr?=
+ =?utf-8?B?WlJwNXl0Q0VFVGtJVFhiVXhDZ2NLbG44TDFPU2lCb0NCL3ZLMGd3S05wQ0Yr?=
+ =?utf-8?B?ME5IWjNIN1NZVDdCdXlBenpMNGZKeGt3ZkVhTDVjWDhSRWlTZUtDNllDV3dH?=
+ =?utf-8?B?aityTHhBa2RWMGw5SkVZUm5BdTArVFJ6dCtOd2J2TEE5QngrNXVtcldmc2Jv?=
+ =?utf-8?B?RWpNaWhMYVZjT3ZpbmIwZXFrR29GdzcyN1NpTUpLdXdRaGM5ZmlQWFo0Uk9O?=
+ =?utf-8?B?cVhQbFpQQVpJeWlZb1d1RzY5WTMwMlFxU002L3g2QVJhM2dUZlhFeFMzWUdK?=
+ =?utf-8?B?ZEVIcmVmdkF0M0pQbWVDTFFVOHo4MjhNeEZabGh5cnVucTQvTjd0Y3ZrR2dC?=
+ =?utf-8?B?endxNmw3MDhSU3VKQTdQSGF5dVhSZ0MveW5yWWNURzhwdStZTFpnb3Jsd1Fp?=
+ =?utf-8?B?c3d3SlRDeUdvaGdBTUNzNXh4QmhZUDdaaEdxU0J0UjVqVVFqVnVjSUM4WEhP?=
+ =?utf-8?B?eUVNQmp3SndHVjJUMjhEUDRXcDZkbSsrV2JETFk4L0IrbWIrSTdvQTZBd24z?=
+ =?utf-8?B?alZ5QmxuMy83QWt5UFNnZDVCbkxIeTVkMUlrMTdZaVdQNFV5dURYOUQzSWVW?=
+ =?utf-8?B?cWQzVEtYNnBoK0Izb3Vya2l3V2JvSVlVOWIxRWRWOXlRdTlKNlpyUDFRaDNM?=
+ =?utf-8?B?cVVhOEljR29sY2xZZkpYdmRDVXZRdm9rTERPdmRWRTQ1aHBBTUZaeERBVDNh?=
+ =?utf-8?B?S2pCbzlIUUhCTkw5N1V1U0pLMHE5VXA5cHFGTGtidDhHckNIcldkd251RUZF?=
+ =?utf-8?B?dnZVaDYxMm1WMzA2NXBleFBrOGQ0YytKQmxmZ1RMUE1SNjdvb09MU3VtU3hT?=
+ =?utf-8?B?YzV6VHg1eGJnRjkwbVZ3bmozMHkzVFhqdlAxVHZveGswaHc0NWlKNEppMjFS?=
+ =?utf-8?B?bnBvZXZaR01mYTZlNElkWmpxQnJuYmdwak1USlIyT0pkUWp1aC9Ed2RIejdz?=
+ =?utf-8?B?ZTdTTFFSV3Y2OFhhYkhUaTFRSGpHVXBNVzMyQT09?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 15:01:46.6259
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9daeac7-6d72-498f-44e3-08ddeee8a1b9
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB57.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7615
 
+On Sun, 07 Sep 2025 21:57:46 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.299 release.
+> There are 45 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Tue, 09 Sep 2025 19:55:53 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.299-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-On 9/5/25 10:59 PM, Fei Li wrote:
->
-> On 8/29/25 12:44 AM, Paolo Bonzini wrote:
->> On Thu, Aug 28, 2025 at 5:13 PM Fei Li <lifei.shirley@bytedance.com> 
->> wrote:
->>> Actually this is a bug triggered by one monitor tool in our production
->>> environment. This monitor executes 'info registers -a' hmp at a fixed
->>> frequency, even during VM startup process, which makes some AP stay in
->>> KVM_MP_STATE_UNINITIALIZED forever. But this race only occurs with
->>> extremely low probability, about 1~2 VM hangs per week.
->>>
->>> Considering other emulators, like cloud-hypervisor and firecracker 
->>> maybe
->>> also have similar potential race issues, I think KVM had better do some
->>> handling. But anyway, I will check Qemu code to avoid such race. Thanks
->>> for both of your comments. 🙂
->> If you can check whether other emulators invoke KVM_SET_VCPU_EVENTS in
->> similar cases, that of course would help understanding the situation
->> better.
->>
->> In QEMU, it is possible to delay KVM_GET_VCPU_EVENTS until after all
->> vCPUs have halted.
->>
->> Paolo
->>
-> Hi Paolo and Sean,
->
->
-> Sorry for the late response, I have been a little busy with other 
-> things recently. The complete calling processes for the bad case are 
-> as follows:
->
-> `info registers -a` hmp per 2ms[1]      AP(vcpu1) thread[2]           
-> BSP(vcpu0) send INIT/SIPI[3]
->
->                                  [2]
->                                  KVM: KVM_RUN and then
->                           schedule() in kvm_vcpu_block() loop
->
-> [1]
-> for each cpu: cpu_synchronize_state
-> if !qemu_thread_is_self()
-> 1. insert to cpu->work_list, and handle asynchronously
-> 2. then kick the AP(vcpu1) by sending SIG_IPI/SIGUSR1 signal
->
->                       [2]
->                       KVM: checks signal_pending, breaks loop and 
-> returns -EINTR
-> Qemu: break kvm_cpu_exec loop, run
->   1. qemu_wait_io_event()
->   => process_queued_cpu_work => cpu->work_list.func()
->        e.i. do_kvm_cpu_synchronize_state() callback
->        => kvm_arch_get_registers
->             => kvm_get_mp_state /* KVM: get_mpstate also calls
->            kvm_apic_accept_events() to handle INIT and SIPI */
->        => cpu->vcpu_dirty = true;
->   // end of qemu_wait_io_event
->
->                                   [3]
->                                   SeaBIOS: BSP enters non-root mode 
-> and runs reset_vector() in SeaBIOS.
->                                            send INIT and then SIPI by 
-> writing APIC_ICR during smp_scan
->                                   KVM: BSP(vcpu0) exits, then => 
-> handle_apic_write
->                                        => kvm_lapic_reg_write => 
-> kvm_apic_send_ipi to all APs
->                                        => for each AP: 
-> __apic_accept_irq, e.g. for AP(vcpu1)
->                                             => case APIC_DM_INIT: 
-> apic->pending_events = (1UL << KVM_APIC_INIT)
->                                                  (not kick the AP yet)
->                                             => case APIC_DM_STARTUP: 
-> set_bit(KVM_APIC_SIPI, &apic->pending_events)
->                                                  (not kick the AP yet)
->
->   [2]
->   2. kvm_cpu_exec()
->   => if (cpu->vcpu_dirty):
->      => kvm_arch_put_registers
->         => kvm_put_vcpu_events
->                       KVM: kvm_vcpu_ioctl_x86_set_vcpu_events
->  => clear_bit(KVM_APIC_INIT, &vcpu->arch.apic->pending_events);
->       e.i. pending_events changes from 11b to 10b
->  // end of kvm_vcpu_ioctl_x86_set_vcpu_events
-> Qemu: => after put_registers, cpu->vcpu_dirty = false;
->         => kvm_vcpu_ioctl(cpu, KVM_RUN, 0)
->                       KVM: KVM_RUN
->  => schedule() in kvm_vcpu_block() until Qemu's next SIG_IPI/SIGUSR1 
-> signal
->  /* But AP(vcpu1)'s mp_state will never change from 
-> KVM_MP_STATE_UNINITIALIZED
->    to KVM_MP_STATE_INIT_RECEIVED, even then to KVM_MP_STATE_RUNNABLE
-> without handling INIT inside kvm_apic_accept_events(), considering BSP 
-> will never
->    send INIT/SIPI again during smp_scan. Then AP(vcpu1) will never enter
->    non-root mode */
->
->                                   [3]
->                                   SeaBIOS: waits CountCPUs == 
-> expected_cpus_count and loops forever
->                                   e.i. the AP(vcpu1) stays: 
-> EIP=0000fff0 && CS =f000 ffff0000
->                                         and BSP(vcpu0) appears 100% 
-> utilized as it is in a while loop.
->
-> As for other emulators (like cloud-hypervisor and firecracker), there 
-> is no interactive command like 'info registers -a'.
-> But sorry again that I haven't had time to check code to confirm 
-> whether they invoke KVM_SET_VCPU_EVENTS in similar cases, maybe later. :)
->
->
-> Have a nice day, thanks
-> Fei
->
+All tests passing for Tegra ...
 
-By the way, this doesn't seem to be a Qemu bug, since calling "info 
-registers -a" is allowed regardless of the vcpu state (including when 
-the VM is in the bootloader). Thus the INIT should not be latched in 
-this case. To fix this, I think we need add the 
-kvm_apic_init_sipi_allowed() condition: only latch INITs in specific CPU 
-states. Or change mp_state to KVM_MP_STATE_INIT_RECEIVED and then clear 
-INIT here. Should I send a v2 patch with a clearer commit message?
-Have a nice day, thanks
-Fei
+Test results for stable-v5.4:
+    10 builds:	10 pass, 0 fail
+    24 boots:	24 pass, 0 fail
+    54 tests:	54 pass, 0 fail
+
+Linux version:	5.4.299-rc1-gf858bf548429
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra30-cardhu-a04
+
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+
+Jon
 
