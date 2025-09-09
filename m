@@ -1,82 +1,90 @@
-Return-Path: <stable+bounces-179129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8B2B504A6
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 19:49:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2A6EB505C7
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 21:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49850165984
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 17:49:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4459E5E2BF4
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 19:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BAE340DA3;
-	Tue,  9 Sep 2025 17:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C23E3002BD;
+	Tue,  9 Sep 2025 19:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="PNfwpsID"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FqbAnY7/"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7A6289805;
-	Tue,  9 Sep 2025 17:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD1C24BCF5
+	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 19:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757440136; cv=none; b=H7rU9TrLYYFlnUcvoYLlm5GPfbqd7vw7wpdqpLNIlWg0dYdP/yfW20dPZITJcID/AVvU08cQtETE2YRn9YLQkfUo2yiEQCtNQ899QIq6RGxPIgOYVUn5TzZgrl0oO/PyXhMvLRQj8ny5qz9EpggHpVOHDZePUGH9aCf8M+dBGgo=
+	t=1757444568; cv=none; b=WrfBpNNghQ2mNnrCsQXKxxAKr+Rg1dzMFlo8Rv5/fhHNarr2VGw9eQGoEpLzVuiK8Tkkp6Pv3gKXPkfSqylb0+Dfu6OdPnyYYJuqfuCdunAvWc/W110zEG1240vnzGTzp5UsSVFp8fOosBvnOv27OW51+HQWgMeGpdmjXPDNFAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757440136; c=relaxed/simple;
-	bh=HXQhWtuEecKNJ1jLqq8OlzqmkH1O+LQX/OpFaicZzSE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=o3yzNFEt33/z62AxttMeMgj/PTmbPj80NzP/whi17JB1ELdwzDCkrBVxgYNdQZPFXb+DBasbCuzwCHC1/NLOeaaGp0EDQBwKq7AXbAuZ63s+82X0qSDnynNIx12sWSUVSYLGAjlBFJ3XyUk8+cKqGBe3GDyj+mTIAb/ipMTbBGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=PNfwpsID; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1158)
-	id A3CC721199D0; Tue,  9 Sep 2025 10:48:54 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A3CC721199D0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1757440134;
-	bh=HXQhWtuEecKNJ1jLqq8OlzqmkH1O+LQX/OpFaicZzSE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PNfwpsIDVquO+eEnJ5nmQI1xsZitBqSIXm2VUvbUT5gvJ3Yqbq3txldzAREGRD/BW
-	 MoN4QmndYoI4MIOGllNwMowdQnWuQv8xyIgkojyf8McANZVKxc+AhaZGtOSGuCu+bp
-	 VCLbjJS8681/lM6BZsZASsNTLoLAMyYA3yNdG0Is=
-From: Hardik Garg <hargar@linux.microsoft.com>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	srw@sladewatkins.net,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org
-Subject: Re: [PATCH 6.16 000/183] 6.16.6-rc1 review
-Date: Tue,  9 Sep 2025 10:48:54 -0700
-Message-Id: <1757440134-17880-1-git-send-email-hargar@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-References: <20250907195615.802693401@linuxfoundation.org>
+	s=arc-20240116; t=1757444568; c=relaxed/simple;
+	bh=X8wJTRgJGLcEi9EtsflCMYhUpaaTBt8jRFbpTb/kMqw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KRAjbfVOOfu6bQ255gs+2Ga85xv7XtNQXUAMbW7FVWaeaZ5szA8hfQe2ULSzUWrKsmNBuRm7ZQpS/2bJw5nxp2uwRaZY2F3n/bUh5h72wDNGs/FN9RnmSGaTcHYBW9JDs/ZNosC2PjT1ynLo2qdJB3Ds/goOzcz6kX+GBpqWa64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FqbAnY7/; arc=none smtp.client-ip=95.215.58.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Tue, 9 Sep 2025 15:02:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757444554;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zYkMx8WK7lNjK14p/mD7ZsSlCCvdjLO/g0ftEbN00Ho=;
+	b=FqbAnY7/cSsNsdhVXzuR+mxDtHEbOopdB0fMwWrrxDIES6D63rfoHQWMSSXbZWbdSN4Egw
+	pRxy7NJRo3xJmJE39gu7rSxVx7X4znt0sgNZtqNKSHMS24/iWyImwifoUq2e8Yz5ya8yTS
+	3eT+8Ilj6QecDDEIjp1F+XC87lgKEHQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, 
+	amaindex@outlook.com, anna.schumaker@oracle.com, boqun.feng@gmail.com, 
+	fthain@linux-m68k.org, geert@linux-m68k.org, ioworker0@gmail.com, 
+	joel.granados@kernel.org, jstultz@google.com, leonylgao@tencent.com, 
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, longman@redhat.com, 
+	mhiramat@kernel.org, mingo@redhat.com, mingzhe.yang@ly.com, oak@helsinkinet.fi, 
+	peterz@infradead.org, rostedt@goodmis.org, senozhatsky@chromium.org, 
+	tfiga@chromium.org, will@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock
+ pointers
+Message-ID: <z7652ickjbgkcdtxcmr35yjmk3c3yokwnstfs5ym4vtqar56tz@c4lcrvzjashs>
+References: <20250909145243.17119-1-lance.yang@linux.dev>
+ <yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
+ <b7db49106e6e7985ea949594f2e43cd53050d839.camel@physik.fu-berlin.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b7db49106e6e7985ea949594f2e43cd53050d839.camel@physik.fu-berlin.de>
+X-Migadu-Flow: FLOW_OUT
 
-The kernel, bpf tool, perf tool, and kselftest builds fine for v6.16.6-rc1 on x86 and arm64 Azure VM.
+On Tue, Sep 09, 2025 at 06:55:42PM +0200, John Paul Adrian Glaubitz wrote:
+> On Tue, 2025-09-09 at 12:46 -0400, Kent Overstreet wrote:
+> > On Tue, Sep 09, 2025 at 10:52:43PM +0800, Lance Yang wrote:
+> > > From: Lance Yang <lance.yang@linux.dev>
+> > > 
+> > > The blocker tracking mechanism assumes that lock pointers are at least
+> > > 4-byte aligned to use their lower bits for type encoding.
+> > > 
+> > > However, as reported by Eero Tamminen, some architectures like m68k
+> > > only guarantee 2-byte alignment of 32-bit values. This breaks the
+> > > assumption and causes two related WARN_ON_ONCE checks to trigger.
+> > 
+> > Isn't m68k the only architecture that's weird like this?
+> 
+> Yes, and it does this on Linux only. I have been trying to change it upstream
+> though as the official SysV ELF ABI for m68k requires a 4-byte natural alignment [1].
 
-
-Tested-by: Hardik Garg <hargar@linux.microsoft.com>
-
-
-Thanks,
-Hardik
+Better to make it an explicit ifdef on the architecture, then...
 
