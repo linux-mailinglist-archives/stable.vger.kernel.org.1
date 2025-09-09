@@ -1,98 +1,120 @@
-Return-Path: <stable+bounces-179069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE4F9B4ABAC
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 13:24:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7249CB4AB9E
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 13:22:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A9C4165348
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 11:21:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B7047BAB7E
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 11:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE62332142C;
-	Tue,  9 Sep 2025 11:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8592F0661;
+	Tue,  9 Sep 2025 11:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="otpGLfTQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7hUoAlx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805BB32039E;
-	Tue,  9 Sep 2025 11:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1F12472A8
+	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 11:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757416886; cv=none; b=njHF3qeBLQDk6cDzkmF2fwPXH2P3qiFxkoO3F7uIrP7uCyP8Wf5YYXlN7mPhvpR4UaI83blRCabQYGsj166MbqQ3oAu1eAqUyu2Y+luf4iieboJnFI/cIs3mGJv0j6g05yqoGOSzYXLm8rlxSY5vlaW7lSbXCb/iZQp74IR4IvI=
+	t=1757416921; cv=none; b=DQpWy4Kyj0QNC+Vi+GhgefhsB0bhzyEKjHXE8EOolRS9rAP3EFhhNAIWYl8W9Ok+fVLwxg9Mmp/pT8Fg5NUPROr1Q/J6qQ0ZbFsFVsElc1kf9hJ7QeZmtT6vuwSDrXPxuu9JPpZ8WKCr02cLWVr7UQqqHMlZa1L4/le16Z2zfRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757416886; c=relaxed/simple;
-	bh=nvzb1Lrog6KFya3P8bFG+W+kS1eOa6Dc9362cZxvL8Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QQXI4/5DlZFulGlhgtI3CqzDCNqALk9UD42zza44MOw8hPBU0Z9QoBlLS5qxraKQIfss02hIRgJJMK7mV9Rc4aBjUT0/hX0JWBomAAs3NAWtkbxOUIgRLOBvqr1LqOBipvbImjWM3CrulsisES9Tk3PwfVk3oEW1vy8mEKtGtzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=otpGLfTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD44C4CEF4;
-	Tue,  9 Sep 2025 11:21:22 +0000 (UTC)
+	s=arc-20240116; t=1757416921; c=relaxed/simple;
+	bh=uLKgh/YTOEG7lRDETZIjV9MdddGsqfjptEVnUVoo7HA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g4Gk5MU3RdxuUJ+JB8IL2A8ML6ZZLfeI/EEbbumVouVtsW0Sf9k3zco0VKxD02PJPgAET+aZgxpypykz6maP4HbvONaPDGIiwMJGKCTao/VeWaFivgEVJxoo8LQERfxc5Z5LyM6PPnRY4PrfLXnKbvew4mZMcYtPdkSdgWxcPQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7hUoAlx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED62C4CEF4;
+	Tue,  9 Sep 2025 11:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757416886;
-	bh=nvzb1Lrog6KFya3P8bFG+W+kS1eOa6Dc9362cZxvL8Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=otpGLfTQdb/Ve1vlpJY4gn9XqzwuGKs9DhRlYhbnetcMNxS2sOoE2na6DOLz5eTds
-	 15p0LEEf+9jRMweaqwWKbsEqm3ruCPV4PyFMFZMX3jVT1U5WdMy254jDlc3h0zT1G+
-	 nd5ksqkVceZXVYqa1CMkL1qJMY7XlSg6A5Nal6cJz1ust4UWf/e26VwyJq29lEMLk1
-	 0BgPMCmecREu4P628h5HR0rt6YiWs96mjA7UthGxFe5VTw6oOHoM3fKTRAuJkPGiOc
-	 42dqeF6zhfGg85lbnngVuLWN0a7QfEyK/HAZX82TCDqrH2SZ/kV420s0HiR+TSOFrN
-	 FOFP2ZQNhtmRA==
-Date: Tue, 9 Sep 2025 12:21:19 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, achill@achill.org
-Subject: Re: [PATCH 6.16 000/183] 6.16.6-rc1 review
-Message-ID: <89b8c0bf-3879-40f3-a078-0112ea9334d1@sirena.org.uk>
-References: <20250907195615.802693401@linuxfoundation.org>
+	s=k20201202; t=1757416920;
+	bh=uLKgh/YTOEG7lRDETZIjV9MdddGsqfjptEVnUVoo7HA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=T7hUoAlxbo7MUfZQYudnsB+f6wi6/pWj8K9MLJXg4Kb9+F7DnOVtTQg3dOBhqAVVh
+	 zzgaMsvWBfxcLkY0/uixL+4jpX1hTR/OeaK4xAkcYSF/a0g2ANVzLEozqTt4Y4yJ0/
+	 1Rx5hVIdD40Eaf3uk6CimQ+KQuDRPkRmSi1Xt2u4102VBbxGu9gyjsgAbQSmRRCRg2
+	 hQjoKsaLcwmnSEDZlpsHI9VYj6NPueE4ac5jpWPKkEbNiVhxk5WN4UMzGsM7y2e1uI
+	 hYwthxe5jHXq9UjvYlrfsg8bCXYtTffM2FH6EChAd0UXM6C2JfyL6TMIWYttOXxjhK
+	 uLcnECUE8A2Lw==
+From: Niklas Cassel <cassel@kernel.org>
+To: Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Cc: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	stable@vger.kernel.org,
+	Niklas Cassel <cassel@kernel.org>,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH] nvmet: pci-epf: Move DMA initialization to EPC init callback
+Date: Tue,  9 Sep 2025 13:21:22 +0200
+Message-ID: <20250909112121.682086-2-cassel@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="A3RAOnqIS4luGgUQ"
-Content-Disposition: inline
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-X-Cookie: Ma Bell is a mean mother!
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1657; i=cassel@kernel.org; h=from:subject; bh=pX/MpTonHapCoD9Ys3C3UTZE9fwAxfHE3GCmLlJrJrU=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGDIO8G5cyxlyMGeK0IJdny9WnuiaL1LzJXUdp+k9G2HPO fVr5y0L6ShlYRDjYpAVU2Tx/eGyv7jbfcpxxTs2MHNYmUCGMHBxCsBEykMYGc63ynDnz1/60Ceo VIVn0qsLLQYFFQdUq3zv/t/yS7Haxovhf/ap+2d80kT4Tc5PfpqomtxsynPlkOCjzL3MGaXTZq9 mZQEA
+X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
+Content-Transfer-Encoding: 8bit
 
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
---A3RAOnqIS4luGgUQ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+For DMA initialization to work across all EPC drivers, the DMA
+initialization has to be done in the .init() callback.
 
-On Sun, Sep 07, 2025 at 09:57:07PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.16.6 release.
-> There are 183 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+This is because not all EPC drivers will have a refclock (which is often
+needed to access registers of a DMA controller embedded in a PCIe
+controller) at the time the .bind() callback is called.
 
-Tested-by: Mark Brown <broonie@kernel.org>
+However, all EPC drivers are guaranteed to have a refclock by the time
+the .init() callback is called.
 
---A3RAOnqIS4luGgUQ
-Content-Type: application/pgp-signature; name="signature.asc"
+Thus, move the DMA initialization to the .init() callback.
 
------BEGIN PGP SIGNATURE-----
+This change was already done for other EPF drivers in
+commit 60bd3e039aa2 ("PCI: endpoint: pci-epf-{mhi/test}: Move DMA
+initialization to EPC init callback").
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmjADa4ACgkQJNaLcl1U
-h9Dhowf9Eb1w7U3LavnuZEd7/dX4zcwNYL3PCLoCIQ8xRjhxEwUiWp1xoTZD6ijt
-NDK8KGyqHCr2apiRpnbqG8WcqHcqsBwleNSsSUY6xoApxUAWV22bBWXLoO265YI2
-SeS3FTs9BKWii0/inbXclRX8+O+9+IMP1DP3bNPsoczcp7yLXuVfhioUaC8cI8d/
-x/4ufnzuNzs6YMhveCHpndifbMCWgZlXycLFLhFHK5m/s1xY5oPqsuviwp0KIL8W
-aWRPlFSTIXjPrHw0L64eHeLU6iV8WwrpzRZzVChum21VXVZVaBUENyqjcFELq15X
-BBPec7TeMuYM36ipX9zPfBX0x9ObQQ==
-=nP4s
------END PGP SIGNATURE-----
+Cc: stable@vger.kernel.org
+Fixes: 0faa0fe6f90e ("nvmet: New NVMe PCI endpoint function target driver")
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+---
+ drivers/nvme/target/pci-epf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---A3RAOnqIS4luGgUQ--
+diff --git a/drivers/nvme/target/pci-epf.c b/drivers/nvme/target/pci-epf.c
+index 2e78397a7373a..9c5b0f78ce8df 100644
+--- a/drivers/nvme/target/pci-epf.c
++++ b/drivers/nvme/target/pci-epf.c
+@@ -2325,6 +2325,8 @@ static int nvmet_pci_epf_epc_init(struct pci_epf *epf)
+ 		return ret;
+ 	}
+ 
++	nvmet_pci_epf_init_dma(nvme_epf);
++
+ 	/* Set device ID, class, etc. */
+ 	epf->header->vendorid = ctrl->tctrl->subsys->vendor_id;
+ 	epf->header->subsys_vendor_id = ctrl->tctrl->subsys->subsys_vendor_id;
+@@ -2422,8 +2424,6 @@ static int nvmet_pci_epf_bind(struct pci_epf *epf)
+ 	if (ret)
+ 		return ret;
+ 
+-	nvmet_pci_epf_init_dma(nvme_epf);
+-
+ 	return 0;
+ }
+ 
+-- 
+2.51.0
+
 
