@@ -1,126 +1,98 @@
-Return-Path: <stable+bounces-179068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD25B4AAF9
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 12:56:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4F9B4ABAC
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 13:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A68E4461AD
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 10:56:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A9C4165348
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 11:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01FB31E117;
-	Tue,  9 Sep 2025 10:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE62332142C;
+	Tue,  9 Sep 2025 11:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qoq4x5pF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="otpGLfTQ"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005BB280A5F
-	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 10:56:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805BB32039E;
+	Tue,  9 Sep 2025 11:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757415363; cv=none; b=ShCfdkeiQHo9vlALgmAlGBh7u0ys12O5TfhnLPEcbjq3g9NgqvQt7C+oqk/olObpZOLubZNc5wrP8dZ2zAtIrcnxgA49Y+69qpIz0yJRitA7fA9/2YBgtc/ROlW7qwQfBPURIf9TqD6ZMf2EvE4yeZ0HdpRr2s7zH7o3YauvB6o=
+	t=1757416886; cv=none; b=njHF3qeBLQDk6cDzkmF2fwPXH2P3qiFxkoO3F7uIrP7uCyP8Wf5YYXlN7mPhvpR4UaI83blRCabQYGsj166MbqQ3oAu1eAqUyu2Y+luf4iieboJnFI/cIs3mGJv0j6g05yqoGOSzYXLm8rlxSY5vlaW7lSbXCb/iZQp74IR4IvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757415363; c=relaxed/simple;
-	bh=P+FQuJhA1PrMmXPlKv+nsJEpTrgwiKcfidU0cZC6Aa4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fmhTuIo32bG5qMjE4l/9H1xlQ/SjKl6BRWgdhfN1xdVoYvTL4c6x8//O9YzSXpdLq3ALSJmWuQaYseWhattKiGwjP76O4F5G8Skzw9wRtJaHocyPbY5whiv3MGAFxhq8H+aUp0pWK9GmZiS9aI91zZLz8AxSzs/VRRXUTt4eAsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qoq4x5pF; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757415361;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9T1K7vaX+eZEVLfGul1pBfoS3Sr2T++RNF7So0hyGuo=;
-	b=Qoq4x5pFUGU1DykoFGTXoEO2idhvA2xzWejA//KVtC1m3k7lmMMrjEfxCOath5aZGXAP4v
-	kK8DPAj+J0KVpln3nIQLps5jqmMcX41I7cMvuuCr/SQIHUhV8BJEFnT+dkdnlnqOULffOB
-	cuoixur8veIJNZfK4w2EsFj3yT7VUK0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-227-5ZuOPtpBP4Wb0eujPlLOtg-1; Tue, 09 Sep 2025 06:55:59 -0400
-X-MC-Unique: 5ZuOPtpBP4Wb0eujPlLOtg-1
-X-Mimecast-MFC-AGG-ID: 5ZuOPtpBP4Wb0eujPlLOtg_1757415358
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3d3d2472b92so3108573f8f.1
-        for <stable@vger.kernel.org>; Tue, 09 Sep 2025 03:55:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757415358; x=1758020158;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9T1K7vaX+eZEVLfGul1pBfoS3Sr2T++RNF7So0hyGuo=;
-        b=lklgpF8Nc1IiCY0S27LJWZl22A82J3eEp+V9lC0nkOgK6V0qx4O8nF6LDbBdRfbYO3
-         nxL63fPnC6ZtZ/rNgwtnzKeY6QVhMgElvFQ/zQYQTQpB1yW48BoSBpvaLDTXhjcJX0cG
-         KBRfV7zOiJf06zkv1F10BBvKZ6xRjPQStzVQiupkg0bmIyR4WkeBKtIITqYliNQBdiGn
-         T9sUmGbzz2NiULDg2pcBQv3/KE3XzWkTU7iTTNlGIoOB1lDBOSRZbImbKrTYLf5iDW+W
-         zqVDzY93vaNAATSgFPEWJ0Cntd/DubQrDT7W2KWsK56TvgHun5eHRbYaTIJ4pCXub8+Y
-         k9IQ==
-X-Gm-Message-State: AOJu0YzdcLI2ucf+AbD6Zgypds9+ne4XuMkW2zebdfQeFJIyg7JE9yHV
-	aQ7wvWluI/LMmRv6AYE/9XXWO5vd9VOgAQQDKZ2B+PopOd8p3ZF/oaW+JWalcrlIoiLYoEtkcCl
-	wHKnOx8KotjZ0mrkcMrKpWvqK3KKizHbT6pOsjb/w9bDZJ4gvDxVgciccXw==
-X-Gm-Gg: ASbGncsPpAwePG1z3lax0s0uAXWGyoRLveLQpErUYA5P6lAegaLiPKUzgai3TZjm6CV
-	z4TTI8cLz44up4YO+NQxqggtv5gutDP0+ZE+6uKpq4ieHRVJ3nCLwmHesfKl759CDcmc37iqqHX
-	dZpGneSlOAZ1BncfpYeISXw+XgvV18Dq2mk/dqhl2ak7K0jdrmZSasiyYtIdaq8wvR6H4sYFL/N
-	WRkJCpp2OZeCzlXlyXdfhljDm34mEG62ZbRj/RsImlisztXe139guHV4ONRzFbozfLQAOiNjCtj
-	O42tYjuwQEaFS96za7+zx1yVJALzriRjWT/KKAao4WOZ1alpvxa07ZX3P6Z8WTh3UaxR6Cu8V/Y
-	rLfDz9U2UyEA=
-X-Received: by 2002:a05:6000:2383:b0:3d9:70cc:6dce with SMTP id ffacd0b85a97d-3e641e3ac00mr9036209f8f.12.1757415357959;
-        Tue, 09 Sep 2025 03:55:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEnmvFRwe+aQHJSfIB96YNcsk+I5KT04KIyycuSAFbcSbi1qXb6O4cvvbjLLpNmJLmEpECY3Q==
-X-Received: by 2002:a05:6000:2383:b0:3d9:70cc:6dce with SMTP id ffacd0b85a97d-3e641e3ac00mr9036184f8f.12.1757415357529;
-        Tue, 09 Sep 2025 03:55:57 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e75224eb27sm2177631f8f.62.2025.09.09.03.55.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Sep 2025 03:55:57 -0700 (PDT)
-Message-ID: <d7026515-433f-4c45-9d24-ea529d5f04b4@redhat.com>
-Date: Tue, 9 Sep 2025 12:55:55 +0200
+	s=arc-20240116; t=1757416886; c=relaxed/simple;
+	bh=nvzb1Lrog6KFya3P8bFG+W+kS1eOa6Dc9362cZxvL8Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QQXI4/5DlZFulGlhgtI3CqzDCNqALk9UD42zza44MOw8hPBU0Z9QoBlLS5qxraKQIfss02hIRgJJMK7mV9Rc4aBjUT0/hX0JWBomAAs3NAWtkbxOUIgRLOBvqr1LqOBipvbImjWM3CrulsisES9Tk3PwfVk3oEW1vy8mEKtGtzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=otpGLfTQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD44C4CEF4;
+	Tue,  9 Sep 2025 11:21:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757416886;
+	bh=nvzb1Lrog6KFya3P8bFG+W+kS1eOa6Dc9362cZxvL8Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=otpGLfTQdb/Ve1vlpJY4gn9XqzwuGKs9DhRlYhbnetcMNxS2sOoE2na6DOLz5eTds
+	 15p0LEEf+9jRMweaqwWKbsEqm3ruCPV4PyFMFZMX3jVT1U5WdMy254jDlc3h0zT1G+
+	 nd5ksqkVceZXVYqa1CMkL1qJMY7XlSg6A5Nal6cJz1ust4UWf/e26VwyJq29lEMLk1
+	 0BgPMCmecREu4P628h5HR0rt6YiWs96mjA7UthGxFe5VTw6oOHoM3fKTRAuJkPGiOc
+	 42dqeF6zhfGg85lbnngVuLWN0a7QfEyK/HAZX82TCDqrH2SZ/kV420s0HiR+TSOFrN
+	 FOFP2ZQNhtmRA==
+Date: Tue, 9 Sep 2025 12:21:19 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, achill@achill.org
+Subject: Re: [PATCH 6.16 000/183] 6.16.6-rc1 review
+Message-ID: <89b8c0bf-3879-40f3-a078-0112ea9334d1@sirena.org.uk>
+References: <20250907195615.802693401@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] rds: ib: Increment i_fastreg_wrs before bailing
- out
-To: =?UTF-8?Q?H=C3=A5kon_Bugge?= <haakon.bugge@oracle.com>,
- Allison Henderson <allison.henderson@oracle.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>
-Cc: stable@vger.kernel.org, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
- linux-kernel@vger.kernel.org
-References: <20250904115030.3940649-1-haakon.bugge@oracle.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250904115030.3940649-1-haakon.bugge@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="A3RAOnqIS4luGgUQ"
+Content-Disposition: inline
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+X-Cookie: Ma Bell is a mean mother!
 
-On 9/4/25 1:50 PM, Håkon Bugge wrote:
-> We need to increment i_fastreg_wrs before we bail out from
-> rds_ib_post_reg_frmr().
-> 
-> Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
-> Fixes: 3a2886cca703 ("net/rds: Keep track of and wait for FRWR segments in use upon shutdown")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
 
-whoops, I replied to v1 by mistake:
+--A3RAOnqIS4luGgUQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-https://lore.kernel.org/netdev/d918e832-c2ef-4fc8-864f-407bbcf06073@redhat.com/T/#mb92f279c773d443313f9e0951a2107060078802c
+On Sun, Sep 07, 2025 at 09:57:07PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.16.6 release.
+> There are 183 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-But the comments apply here as well.
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Thanks,
+--A3RAOnqIS4luGgUQ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Paolo
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmjADa4ACgkQJNaLcl1U
+h9Dhowf9Eb1w7U3LavnuZEd7/dX4zcwNYL3PCLoCIQ8xRjhxEwUiWp1xoTZD6ijt
+NDK8KGyqHCr2apiRpnbqG8WcqHcqsBwleNSsSUY6xoApxUAWV22bBWXLoO265YI2
+SeS3FTs9BKWii0/inbXclRX8+O+9+IMP1DP3bNPsoczcp7yLXuVfhioUaC8cI8d/
+x/4ufnzuNzs6YMhveCHpndifbMCWgZlXycLFLhFHK5m/s1xY5oPqsuviwp0KIL8W
+aWRPlFSTIXjPrHw0L64eHeLU6iV8WwrpzRZzVChum21VXVZVaBUENyqjcFELq15X
+BBPec7TeMuYM36ipX9zPfBX0x9ObQQ==
+=nP4s
+-----END PGP SIGNATURE-----
+
+--A3RAOnqIS4luGgUQ--
 
