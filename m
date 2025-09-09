@@ -1,131 +1,118 @@
-Return-Path: <stable+bounces-179045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B37B4A297
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 08:46:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F372FB4A34A
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 09:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7221C4E14A4
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 06:46:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B46A33A44FF
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 07:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355BF30595C;
-	Tue,  9 Sep 2025 06:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="1g/RIuqf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A001F63CD;
+	Tue,  9 Sep 2025 07:17:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46F97263E;
-	Tue,  9 Sep 2025 06:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53B4238C29
+	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 07:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757400351; cv=none; b=L0gQC4kP3OXninIRlXvcBif3hPHSzyfr5RBatcFeE18Tk0m6BEd2eptBQS9zv0oCjTzXduD5hKwiQHQioqhhnvCy86dHg+SDTSscY+knGtkvgpECmyJOk0CfSz+RGv2dqcXsYda7YjYqssPflNCvNUqyjqgKeCMO4ae8UU7lix0=
+	t=1757402261; cv=none; b=FdQffXF1Lnm5z4HR5hgIar6AG7U1R8tXcVVXinYnqpWrphtAQo2sNzJbyOSUHihx7yXLg7JTPtBpya6RpICSBsuqn33Mf4b/Y18usCbCNiJlP1gRF8DJh5/wKBouqINgA1Zz0r2IE89MpQ3ZWhf6tyqBm1L6mwol1KSrWl96+Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757400351; c=relaxed/simple;
-	bh=pdbDf0pdQcQsFH4vU2nKhQ0xvN63zntAP19irykXRGg=;
-	h=Date:To:From:Subject:Message-Id; b=dJ24+CGxwoGC28b9Y6ZL9E4IDaoc+hGtRd1yHEUaD9a4BB+WO0a1VdLqdM3iI5lfyYqyLwi3/Qa5u5PzhKNLBpBmnF+QpgiMnJGRd6IuCDwTfM8p3VvIumAmw5amcEfeRJFNT5X0N1dnxsjiH+ZKatppXrjCHnQpY+HM561rkXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=1g/RIuqf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C465C4CEF8;
-	Tue,  9 Sep 2025 06:45:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757400350;
-	bh=pdbDf0pdQcQsFH4vU2nKhQ0xvN63zntAP19irykXRGg=;
-	h=Date:To:From:Subject:From;
-	b=1g/RIuqfZILiDyH3BHV3tm92lxbuxabATiojd1vqidA/mWd8UW8HK0UjakSVyw8Sq
-	 KVQorMPrOICXHH05viLUC/x1ii88za8y6wdIjpZdnJPl+1hmOYrafhHu30Ly2OxoCK
-	 x7nK6nTh2WNaW4rhx+XbUJikIVeR/eQ+WK25j/hg=
-Date: Mon, 08 Sep 2025 23:45:49 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,disclosure@aisle.com,stanislav.fort@aisle.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-damon-sysfs-fix-use-after-free-in-state_show.patch removed from -mm tree
-Message-Id: <20250909064550.9C465C4CEF8@smtp.kernel.org>
+	s=arc-20240116; t=1757402261; c=relaxed/simple;
+	bh=xcbuBAIcV7PYG4iVvgt6Hx4JudC8RwH/H+Q+eNBFY44=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CfmfBwIzSWytLzvLO7NDCFeyu9OfVn2eeNStY2FWzYg2kc1kqOZNF1CfJFavcpQwqn2ip4DWFj1iWxkEoz/1h4ZksmWBaYGqN76tJhMm761Fc63SlS27IIKX3fqQyM4ZOBzS0jd8Hku6mEcnkNxMkVRQB4IsF1cdKrAyzS900Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uvsbO-0003x4-SX; Tue, 09 Sep 2025 09:17:18 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uvsbN-000Nkg-0l;
+	Tue, 09 Sep 2025 09:17:17 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uvsbN-00DwzJ-0J;
+	Tue, 09 Sep 2025 09:17:17 +0200
+Date: Tue, 9 Sep 2025 09:17:17 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Hubert =?utf-8?Q?Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	stable@vger.kernel.org, kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Lukas Wunner <lukas@wunner.de>,
+	Russell King <linux@armlinux.org.uk>, Xu Yang <xu.yang_2@nxp.com>,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH net v1 1/1] net: usb: asix: ax88772: drop phylink use in
+ PM to avoid MDIO runtime PM wakeups
+Message-ID: <aL_UfST0Q3HrSEtM@pengutronix.de>
+References: <20250908112619.2900723-1-o.rempel@pengutronix.de>
+ <DCNKVCWI6VEQ.30M6YA786ZIX2@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DCNKVCWI6VEQ.30M6YA786ZIX2@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
+On Mon, Sep 08, 2025 at 07:00:09PM +0200, Hubert Wiśniewski wrote:
+> On Mon Sep 8, 2025 at 1:26 PM CEST, Oleksij Rempel wrote:
+> > Drop phylink_{suspend,resume}() from ax88772 PM callbacks.
+> >
+> > MDIO bus accesses have their own runtime-PM handling and will try to
+> > wake the device if it is suspended. Such wake attempts must not happen
+> > from PM callbacks while the device PM lock is held. Since phylink
+> > {sus|re}sume may trigger MDIO, it must not be called in PM context.
+> >
+> > No extra phylink PM handling is required for this driver:
+> > - .ndo_open/.ndo_stop control the phylink start/stop lifecycle.
+> > - ethtool/phylib entry points run in process context, not PM.
+> > - phylink MAC ops program the MAC on link changes after resume.
+> 
+> Thanks for the patch! Applied to v6.17-rc5, it fixes the problem for me.
+> 
+> Tested-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
 
-The quilt patch titled
-     Subject: mm/damon/sysfs: fix use-after-free in state_show()
-has been removed from the -mm tree.  Its filename was
-     mm-damon-sysfs-fix-use-after-free-in-state_show.patch
+Thank you for testing!
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> > Fixes: e0bffe3e6894 ("net: asix: ax88772: migrate to phylink")
+> 
+> It does, but v5.15 (including v5.15.191 LTS) is affected as well, from
+> 4a2c7217cd5a ("net: usb: asix: ax88772: manage PHY PM from MAC"). I think
+> it could also use a patch, but I won't insist.
 
-------------------------------------------------------
-From: Stanislav Fort <stanislav.fort@aisle.com>
-Subject: mm/damon/sysfs: fix use-after-free in state_show()
-Date: Fri, 5 Sep 2025 13:10:46 +0300
+Ack, I'll try do address it later.
 
-state_show() reads kdamond->damon_ctx without holding damon_sysfs_lock. 
-This allows a use-after-free race:
-
-CPU 0                         CPU 1
------                         -----
-state_show()                  damon_sysfs_turn_damon_on()
-ctx = kdamond->damon_ctx;     mutex_lock(&damon_sysfs_lock);
-                              damon_destroy_ctx(kdamond->damon_ctx);
-                              kdamond->damon_ctx = NULL;
-                              mutex_unlock(&damon_sysfs_lock);
-damon_is_running(ctx);        /* ctx is freed */
-mutex_lock(&ctx->kdamond_lock); /* UAF */
-
-(The race can also occur with damon_sysfs_kdamonds_rm_dirs() and
-damon_sysfs_kdamond_release(), which free or replace the context under
-damon_sysfs_lock.)
-
-Fix by taking damon_sysfs_lock before dereferencing the context, mirroring
-the locking used in pid_show().
-
-The bug has existed since state_show() first accessed kdamond->damon_ctx.
-
-Link: https://lkml.kernel.org/r/20250905101046.2288-1-disclosure@aisle.com
-Fixes: a61ea561c871 ("mm/damon/sysfs: link DAMON for virtual address spaces monitoring")
-Signed-off-by: Stanislav Fort <disclosure@aisle.com>
-Reported-by: Stanislav Fort <disclosure@aisle.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/damon/sysfs.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
-
---- a/mm/damon/sysfs.c~mm-damon-sysfs-fix-use-after-free-in-state_show
-+++ a/mm/damon/sysfs.c
-@@ -1260,14 +1260,18 @@ static ssize_t state_show(struct kobject
- {
- 	struct damon_sysfs_kdamond *kdamond = container_of(kobj,
- 			struct damon_sysfs_kdamond, kobj);
--	struct damon_ctx *ctx = kdamond->damon_ctx;
--	bool running;
-+	struct damon_ctx *ctx;
-+	bool running = false;
- 
--	if (!ctx)
--		running = false;
--	else
-+	if (!mutex_trylock(&damon_sysfs_lock))
-+		return -EBUSY;
-+
-+	ctx = kdamond->damon_ctx;
-+	if (ctx)
- 		running = damon_is_running(ctx);
- 
-+	mutex_unlock(&damon_sysfs_lock);
-+
- 	return sysfs_emit(buf, "%s\n", running ?
- 			damon_sysfs_cmd_strs[DAMON_SYSFS_CMD_ON] :
- 			damon_sysfs_cmd_strs[DAMON_SYSFS_CMD_OFF]);
-_
-
-Patches currently in -mm which might be from stanislav.fort@aisle.com are
-
-mm-memcg-v1-account-event-registrations-and-drop-world-writable-cgroupevent_control.patch
-
+Best Regards,
+Oleksij
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
