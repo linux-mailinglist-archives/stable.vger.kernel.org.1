@@ -1,75 +1,60 @@
-Return-Path: <stable+bounces-179016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39ED7B49FEC
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 05:21:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81752B4A05D
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 05:51:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D91534E0711
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 03:21:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45D0C3AEAED
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 03:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C74265CA7;
-	Tue,  9 Sep 2025 03:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24FF264636;
+	Tue,  9 Sep 2025 03:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b5CzIOOR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eBxgxzOE"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3782D515;
-	Tue,  9 Sep 2025 03:21:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774AD255F27;
+	Tue,  9 Sep 2025 03:51:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757388114; cv=none; b=MCohgG1vQcSOuLfwggT4ob4gEaDuq4Beer0X5D5iiwbGOkWlGUuyIntFEziEI4Yi4mZug5IxQNlUQOvJhjb86vjYgtR6g9XXmHLQ+2aTf+uOHdJ9tfGLzN1lmLeYTUvdYGGga+nSYexZ3FgMMLarv9GYGpsfmKucqu0YrWQqLiw=
+	t=1757389905; cv=none; b=Cz/S9K2NbyEWBs976eTj8nF3hy+FSMOo9ynw3OVsD7wZzbD4eEAEKhWozeUKEIPZHuwAFLkqfRHH+F4fAGnCZjOX7t6tZjAxwH0rcTk0hQIFL3iBfL99+35RJRXVjrRTA4pLAd3+xvHWwESJzm5898h4XTVaMJ7FEbnhzBRUusQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757388114; c=relaxed/simple;
-	bh=vnzfxFj2O/5YxWypX4/WDVz9mxhboZuyTOkVwJBP5CU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XeTi6mEPfbeN6gGrjE6FqgKDrV+CXNpp8LqYmk2PXm33VgINmguwjZ9cCWobOPwdPGTiQKiDuwaTxXWh2/X4FXsC2WNIPsWez9q0nbX1WR9BqlN6odnZmXB6W2gYAoDtTbrnUN/VQWhi1tDlBFD9ctrMuKG+IHH3Ok5+66YwJIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b5CzIOOR; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757388112; x=1788924112;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vnzfxFj2O/5YxWypX4/WDVz9mxhboZuyTOkVwJBP5CU=;
-  b=b5CzIOORFuw/CYEJvqPElyKZDICzosYssB0zMWQfWqr/uOuBXxKJ9VOO
-   2pCutAJFEnw5JG4pi0xNFcsbjmQQGKDycknA0VYPg/Vc+8DmEEy23sGoR
-   dVKO6ceboqKmlpCiYwLcXBLE3wZUsbrvWxdIYI8S4l0b0gDdo/ICpp/AE
-   h6IwQKnAQYZafJEoqVctCQY8G8OBEUgDgiMrN58mv0nK2C1g5SkMTVPka
-   ejNdn728ZjTpPYrM1eNOhh6mEc82Q8KWDXodPtGcHlg+e1+yXkNaO3cRn
-   ATQzXN1V2dqb7eMq5ojIb5SOfF25Ho7KiZJCzD3khLYEBbmI3A4eQ/yek
-   A==;
-X-CSE-ConnectionGUID: MZ6e//mUTE2jt7IK5ev/Kg==
-X-CSE-MsgGUID: CX4ol2MiSRGnUf0EYxnFuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="77274616"
-X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; 
-   d="scan'208";a="77274616"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 20:21:51 -0700
-X-CSE-ConnectionGUID: Tl6XxJ5JQ8OW4R4HrzpUfQ==
-X-CSE-MsgGUID: 2Bx0iFD4Qtm7q0K1nIhGCQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; 
-   d="scan'208";a="172898402"
-Received: from vtg-chrome.bj.intel.com ([10.240.202.157])
-  by fmviesa006.fm.intel.com with ESMTP; 08 Sep 2025 20:21:49 -0700
-From: bingbu.cao@intel.com
-To: linux-media@vger.kernel.org,
-	sakari.ailus@linux.intel.com,
-	laurent.pinchart@ideasonboard.com
-Cc: tomi.valkeinen@ideasonboard.com,
-	hans@jjverkuil.nl,
-	stable@vger.kernel.org,
-	bingbu.cao@intel.com,
-	bingbu.cao@linux.intel.com
-Subject: [PATCH] media: staging/ipu7: fix isys device runtime PM usage in firmware closing
-Date: Tue,  9 Sep 2025 11:21:48 +0800
-Message-Id: <20250909032148.2019162-1-bingbu.cao@intel.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1757389905; c=relaxed/simple;
+	bh=hDFSqIoDGm+oeOAZ9q443ZWBkCIE3hQkRhHMZyq47fQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Q3sIqudagcJbYvIO2Sco37fHqiZ5Nrdc1GgRrxpzTdOu2myJP2R5GPEfKoagffIggrWkpLZKqFKMWCBZz8IgOAufkKznu5YS496H4H2TDnIRaXZVjzRMc09uyS3aF/Mk+D1Unv47qTDeflxw07yvv8VJIoyzWgzeeeLayTZuc1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eBxgxzOE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6069C4CEF4;
+	Tue,  9 Sep 2025 03:51:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757389905;
+	bh=hDFSqIoDGm+oeOAZ9q443ZWBkCIE3hQkRhHMZyq47fQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eBxgxzOEa8Ac6u4NfIJZg7uvYs9srT6Cy6snFEvxalwi+d2+6suPkVf9VfqXgfDcc
+	 JlcT0Q2YpAFnYky/zbHUDTmhp4KPF5M/taeWvmOUGamiJuPnnxVp7A7ydYwx6Ze8Z3
+	 BFTHiDwU/RdL3NfWk9uT3DMra1l/NgC50To6cwWVdqfyEO+jEwKlSEIsZvz7qvo7PR
+	 +P+WMi8LelFiKdOv04IW/kXl50UZsCYPBmiTg+jaKTruDc4//pRE6p6OZ0aoTz1eky
+	 K+xL55w8cQw6Pvkk95z9e69KgSjNLDJEWHMcRI1opEaT5utpHCwFqL/biZlW8AeBlz
+	 HCctCpmAXk01Q==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 17-rc1" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	kernel-team@meta.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 0/3] samples/damon: fix boot time enable handling fixup merge mistakes
+Date: Mon,  8 Sep 2025 20:51:41 -0700
+Message-Id: <20250909035141.7545-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250908193548.a153ef39d85cc54816950f71@linux-foundation.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,33 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+On Mon, 8 Sep 2025 19:35:48 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-The PM usage counter of isys was bumped up when start camera stream
-(opening firmware) but it was not dropped after stream stop(closing
-firmware), it forbids system fail to suspend due to the wrong PM state
-of ISYS. This patch drop the PM usage counter in firmware close to fix
-it.
+> On Mon,  8 Sep 2025 19:22:35 -0700 SeongJae Park <sj@kernel.org> wrote:
+> 
+> > First three patches of the patch series "mm/damon: fix misc bugs in
+> > DAMON modules" [1] was trying to fix boot time DAMON sample modules
+> > enabling issues by avoiding starting DAMON before the module
+> > initialization phase.  However, probably by a mistake during a merge,
+> > only half of the change is merged, and the part for avoiding the
+> > starting of DAMON before the module initialized is missed.  So the
+> > problem is not solved.  Fix those.
+> > 
+> > Note that the broken commits are merged into 6.17-rc1, but also
+> > backported to relevant stable kernels.  So this series also need to be
+> > merged into the stable kernels.  Hence Cc-ing stable@.
+> 
+> That's unfortunate, but the about doesn't actually tell us what this
+> series does.  
 
-Cc: Stable@vger.kernel.org
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
----
- drivers/staging/media/ipu7/ipu7-isys-video.c | 1 +
- 1 file changed, 1 insertion(+)
+Good point.  The issue is that the sample modules can crash if those are
+enabled at boot time before DAMON is initialized, via kernel command line.
 
-diff --git a/drivers/staging/media/ipu7/ipu7-isys-video.c b/drivers/staging/media/ipu7/ipu7-isys-video.c
-index 8756da3a8fb0..173afd405d9b 100644
---- a/drivers/staging/media/ipu7/ipu7-isys-video.c
-+++ b/drivers/staging/media/ipu7/ipu7-isys-video.c
-@@ -946,6 +946,7 @@ void ipu7_isys_fw_close(struct ipu7_isys *isys)
- 		ipu7_fw_isys_close(isys);
- 
- 	mutex_unlock(&isys->mutex);
-+	pm_runtime_put(&isys->adev->auxdev.dev);
- }
- 
- int ipu7_isys_setup_video(struct ipu7_isys_video *av,
--- 
-2.34.1
+Would you prefer me sending another version of this patch series with an
+elaborated cover letter?
 
+> 
+> > [1] https://lore.kernel.org/20250706193207.39810-1-sj@kernel.org
+> 
+> Presumably it's in there somewhere?
+
+You're right.  Both the cover letter and the individual fix patches (first
+three of the series) describes the issue and origin broken commit.
+
+Please let me know if there is anything I can help for this patch series from
+my side :)
+
+
+Thanks,
+SJ
 
