@@ -1,140 +1,94 @@
-Return-Path: <stable+bounces-179058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE523B4A7CA
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 11:29:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90432B4A87B
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 11:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AB707B7505
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 09:27:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6AFC18841D3
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 09:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126DA29A9C9;
-	Tue,  9 Sep 2025 09:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59DF12D9EC8;
+	Tue,  9 Sep 2025 09:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nFUVy3sy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qnz8YkpL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4F2285C9F;
-	Tue,  9 Sep 2025 09:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F420A2D77E4;
+	Tue,  9 Sep 2025 09:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757409485; cv=none; b=uAlA5W+2hvW9QiMH56rW2D3wbiDOc3aEW0f5P5P+mUm8jLL7/hAQAEIzpnBVAgZ/6UfgOmTFA4z/2MnW4uhPEI1u879FHUuEcBPK5iRkFbGwsK3CFWy0+hvPOz94BgZlnUmKhBH0nBAEePho/bFxRDaXgqIuSckRx5AXne2yxMc=
+	t=1757410803; cv=none; b=C5LDLH3OY6Alakako8MHiKp5YK0fKo6oVcutPXtyXb12vxfzUWkoOoW6tuEuG1ZVx5eN02FSPQ/CdULZMqyq5FKBVOsOH8dsinJfv9Z+RFeNzbYg4shY2vkyZlKNwpphKdu4GU8Dxcc5nEdH4vXVnMWLoOo5CaaeJADUNVE5y1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757409485; c=relaxed/simple;
-	bh=CU91bXNdN1IkMGBsQW0jgZTzv5C9aSTraFaZ1oVTurw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ODaQqU5XZr0t6+kkz4MeyjJ1GcADdqrLFVq/eYAhHMm3OFGsWd5B774QPr1/Tp0W5cMoH+ripwo4tbfL01I3QBgPMPK6bS/O5nQdYwKCW1KWJOKDfq9nJaeh3eKUOP3Z4Le7Y9+zwGp7ERKUx9C+9uk8v7R4lsnHpyiNvLhXsdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nFUVy3sy; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757409484; x=1788945484;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=CU91bXNdN1IkMGBsQW0jgZTzv5C9aSTraFaZ1oVTurw=;
-  b=nFUVy3syc6J8rwt1QFSaOXsjNOqf/uIN0M8ZWZLuWGnTqoLolc9J/UDK
-   apBHYi4bjoiRFCdfm8joM+BD/FBWwlcwHJmzqiYO0CGP2qjyterpJFoi9
-   EsKEm0CItT9jL0tpDtkjbDCbxKT5PIv8stih8Z2axxRXEfTXIJHO7foPw
-   Bqe2W6YbRSSBa5gnHb+rH7IG/Zfn5VMO7kuP2zVsb+MKVF/d9RU9Xz0Af
-   4UnwMY4VdAxvqmR7aZZUgg8M4sXh7R68zout7d4jDy3Lfwr+obF/ZeYe8
-   3DeYM4wWWQ5J/4fag+VXIYAzIanHynFQ01PZGaI0A4tVhYzL4/OJeKlEG
-   w==;
-X-CSE-ConnectionGUID: zsdNWLaZRlmt45WVzRf2Bw==
-X-CSE-MsgGUID: ZajDO/wRR9+cxG3JQBj8IQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="71104159"
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
-   d="scan'208";a="71104159"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 02:18:03 -0700
-X-CSE-ConnectionGUID: ORwDCc2cQDujUSNWKpusxg==
-X-CSE-MsgGUID: WJDu20uDQGO2TqRCPRtObQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,251,1751266800"; 
-   d="scan'208";a="173500726"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 02:18:01 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH iwlwifi-fixes] wifi: iwlwifi: fix 130/1030 configs
-Date: Tue,  9 Sep 2025 12:17:34 +0300
-Message-Id: <20250909121728.8e4911f12528.I3aa7194012a4b584fbd5ddaa3a77e483280f1de4@changeid>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1757410803; c=relaxed/simple;
+	bh=aY9mymuwZMku/84zDRe1CskabLwrW4TRMe/r70bdkrQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=geLXJ+r87bZM389XSj31/uMfn69seLY8fBOnf3SV+TjtT/ojhqvYn+jZugzNEkkIwRm8lyTmzzxF4iFHqDuIItOF23z+NOdk/q2RXzHhA1lQCcMmo76Os24tAWMVxNzMP5oOd1zgYcmjKlmlkldAsmRmlzMEMcUqHdYnPYv/pqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qnz8YkpL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810D0C4CEF4;
+	Tue,  9 Sep 2025 09:40:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757410802;
+	bh=aY9mymuwZMku/84zDRe1CskabLwrW4TRMe/r70bdkrQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Qnz8YkpL1QUz5svfQehlNV62+k84mYjBunSpaZXO7t9Np9E99csJEgm24Z6MGlHEe
+	 /Y7dG98xA4J/nJWecaUfQASFfbSiaa2XQvE1UxqMQjf6c87yDO7Z6GivUdjFRDGvQQ
+	 lOzh7LkC3U+Pwm6AoNNqxk398i4GMQYtz51peGZoUu0tGuTdGwP5y/NEvxKlCPP1Ly
+	 sqKu5/t1+g4cn01L708OPlUt2BLM4O+1pZvXrLanGfaLQz+zVXzYJ10bX1S7HGHLQW
+	 zTmzWdhb/Hc8x1UafiSXAX34+BbCCBJGAXDHOTWwRHWfCy02nCsmhj4aPna4PSFBuP
+	 Ai6LKJZQrHybw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EADDE383BF69;
+	Tue,  9 Sep 2025 09:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v5] selftests: net: add test for destination in
+ broadcast
+ packets
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175741080575.600517.6688973064003089963.git-patchwork-notify@kernel.org>
+Date: Tue, 09 Sep 2025 09:40:05 +0000
+References: <20250902150240.4272-1-oscmaes92@gmail.com>
+In-Reply-To: <20250902150240.4272-1-oscmaes92@gmail.com>
+To: Oscar Maes <oscmaes92@gmail.com>
+Cc: netdev@vger.kernel.org, bacs@librecast.net, brett@librecast.net,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, davem@davemloft.net,
+ dsahern@kernel.org, stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+Hello:
 
-The 130/1030 devices are really derivatives of 6030,
-with some small differences not pertaining to the MAC,
-so they must use the 6030 MAC config.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220472
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220517
-Fixes: 35ac275ebe0c ("wifi: iwlwifi: cfg: finish config split")
-Cc: stable@vger.kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 26 +++++++++----------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+On Tue,  2 Sep 2025 17:02:40 +0200 you wrote:
+> Add test to check the broadcast ethernet destination field is set
+> correctly.
+> 
+> This test sends a broadcast ping, captures it using tcpdump and
+> ensures that all bits of the 6 octet ethernet destination address
+> are correctly set by examining the output capture file.
+> 
+> [...]
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index f9e2095d6490..7e56e4ff7642 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -124,13 +124,13 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct pci_device_id iwl_hw_card_ids[] = {
- 	{IWL_PCI_DEVICE(0x0082, 0x1304, iwl6005_mac_cfg)},/* low 5GHz active */
- 	{IWL_PCI_DEVICE(0x0082, 0x1305, iwl6005_mac_cfg)},/* high 5GHz active */
- 
--/* 6x30 Series */
--	{IWL_PCI_DEVICE(0x008A, 0x5305, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x008A, 0x5307, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x008A, 0x5325, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x008A, 0x5327, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x008B, 0x5315, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x008B, 0x5317, iwl1000_mac_cfg)},
-+/* 1030/6x30 Series */
-+	{IWL_PCI_DEVICE(0x008A, 0x5305, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x008A, 0x5307, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x008A, 0x5325, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x008A, 0x5327, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x008B, 0x5315, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x008B, 0x5317, iwl6030_mac_cfg)},
- 	{IWL_PCI_DEVICE(0x0090, 0x5211, iwl6030_mac_cfg)},
- 	{IWL_PCI_DEVICE(0x0090, 0x5215, iwl6030_mac_cfg)},
- 	{IWL_PCI_DEVICE(0x0090, 0x5216, iwl6030_mac_cfg)},
-@@ -181,12 +181,12 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct pci_device_id iwl_hw_card_ids[] = {
- 	{IWL_PCI_DEVICE(0x08AE, 0x1027, iwl1000_mac_cfg)},
- 
- /* 130 Series WiFi */
--	{IWL_PCI_DEVICE(0x0896, 0x5005, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x0896, 0x5007, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x0897, 0x5015, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x0897, 0x5017, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x0896, 0x5025, iwl1000_mac_cfg)},
--	{IWL_PCI_DEVICE(0x0896, 0x5027, iwl1000_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x0896, 0x5005, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x0896, 0x5007, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x0897, 0x5015, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x0897, 0x5017, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x0896, 0x5025, iwl6030_mac_cfg)},
-+	{IWL_PCI_DEVICE(0x0896, 0x5027, iwl6030_mac_cfg)},
- 
- /* 2x00 Series */
- 	{IWL_PCI_DEVICE(0x0890, 0x4022, iwl2000_mac_cfg)},
+Here is the summary with links:
+  - [net,v5] selftests: net: add test for destination in broadcast packets
+    https://git.kernel.org/netdev/net/c/bf59028ea8d4
+
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
