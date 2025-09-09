@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-179130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2A6EB505C7
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 21:02:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3016B505CE
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 21:03:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4459E5E2BF4
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 19:02:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EED70165613
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 19:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C23E3002BD;
-	Tue,  9 Sep 2025 19:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25236303A0F;
+	Tue,  9 Sep 2025 19:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FqbAnY7/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jYicwdvO"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD1C24BCF5
-	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 19:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C103D3009F7;
+	Tue,  9 Sep 2025 19:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757444568; cv=none; b=WrfBpNNghQ2mNnrCsQXKxxAKr+Rg1dzMFlo8Rv5/fhHNarr2VGw9eQGoEpLzVuiK8Tkkp6Pv3gKXPkfSqylb0+Dfu6OdPnyYYJuqfuCdunAvWc/W110zEG1240vnzGTzp5UsSVFp8fOosBvnOv27OW51+HQWgMeGpdmjXPDNFAw=
+	t=1757444610; cv=none; b=pZmFyp1pWMUX68UeyefVkKQnNpttK2FWJazZXnF8p5ZB3bgN1qUpN3FpL6ETo+KUgtLNYIJbpmWurjxvsym9dCUoTPzHlE2Z/0W94wv+2JCnQecfxkPgfZWijbMa5vUWEsX8UqDWgr5hj8wejFhg1Ct/OtbzPTCjSRFh7dVCo0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757444568; c=relaxed/simple;
-	bh=X8wJTRgJGLcEi9EtsflCMYhUpaaTBt8jRFbpTb/kMqw=;
+	s=arc-20240116; t=1757444610; c=relaxed/simple;
+	bh=iQ2hGEIaFfNxNx3BhJMnrqdW4TZqrof8lMc5P3dIvXQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KRAjbfVOOfu6bQ255gs+2Ga85xv7XtNQXUAMbW7FVWaeaZ5szA8hfQe2ULSzUWrKsmNBuRm7ZQpS/2bJw5nxp2uwRaZY2F3n/bUh5h72wDNGs/FN9RnmSGaTcHYBW9JDs/ZNosC2PjT1ynLo2qdJB3Ds/goOzcz6kX+GBpqWa64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FqbAnY7/; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Tue, 9 Sep 2025 15:02:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757444554;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zYkMx8WK7lNjK14p/mD7ZsSlCCvdjLO/g0ftEbN00Ho=;
-	b=FqbAnY7/cSsNsdhVXzuR+mxDtHEbOopdB0fMwWrrxDIES6D63rfoHQWMSSXbZWbdSN4Egw
-	pRxy7NJRo3xJmJE39gu7rSxVx7X4znt0sgNZtqNKSHMS24/iWyImwifoUq2e8Yz5ya8yTS
-	3eT+8Ilj6QecDDEIjp1F+XC87lgKEHQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, 
-	amaindex@outlook.com, anna.schumaker@oracle.com, boqun.feng@gmail.com, 
-	fthain@linux-m68k.org, geert@linux-m68k.org, ioworker0@gmail.com, 
-	joel.granados@kernel.org, jstultz@google.com, leonylgao@tencent.com, 
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, longman@redhat.com, 
-	mhiramat@kernel.org, mingo@redhat.com, mingzhe.yang@ly.com, oak@helsinkinet.fi, 
-	peterz@infradead.org, rostedt@goodmis.org, senozhatsky@chromium.org, 
-	tfiga@chromium.org, will@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock
- pointers
-Message-ID: <z7652ickjbgkcdtxcmr35yjmk3c3yokwnstfs5ym4vtqar56tz@c4lcrvzjashs>
-References: <20250909145243.17119-1-lance.yang@linux.dev>
- <yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
- <b7db49106e6e7985ea949594f2e43cd53050d839.camel@physik.fu-berlin.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=YUom5EtfvgVzMDhCXJ9ZPaNIxE2Y6c8M/M+531tTHy5IGeStaMagFQ4AxWnSLEA+W6hgwE59f3pUVW0ERRSKSpJDovFYGs2gpLdaYvWZvtgyzgzIpZTJu+qmtf5J2erBPrs8eS+hy5GzafppNLZOgDI+cKskBxlcKxxBdrrN1es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jYicwdvO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4089C4CEF4;
+	Tue,  9 Sep 2025 19:03:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757444610;
+	bh=iQ2hGEIaFfNxNx3BhJMnrqdW4TZqrof8lMc5P3dIvXQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jYicwdvOmjWT1Dq6UAJeXBSgJ4KfbqCpNC5tMrV0G0JnCHKUnYLD6mytrDTZYigFo
+	 uJnodv7UqXfrHLM+NhKk3qrg72hH0morH0BJa0NifP/yLE1avYHJ1znVwil2fug2RL
+	 h6zo3VI+on5W5891blflhISF98niUWJ4dPEDM9UJ2orO3gv1rodLea9kznEbeI1Yew
+	 uhWC0k2rdlBBDgc6769JCQiyaJ0Mg2e3g9R754PYEfIrDJd8CKSOJJ3rtUN5oXX5rc
+	 55hCYGuhYlC63fWKQUo3SVyCFQ8IK4lJHtL2TBjhFGFZjTYsi5qqvE6cDWZRbszoSC
+	 5WUOfF4u6JfDQ==
+Date: Tue, 9 Sep 2025 20:03:24 +0100
+From: Simon Horman <horms@kernel.org>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org, mptcp@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net 2/3] doc: mptcp: net.mptcp.pm_type is deprecated
+Message-ID: <20250909190324.GE20205@horms.kernel.org>
+References: <20250908-net-mptcp-misc-fixes-6-17-rc5-v1-0-5f2168a66079@kernel.org>
+ <20250908-net-mptcp-misc-fixes-6-17-rc5-v1-2-5f2168a66079@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,25 +66,20 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b7db49106e6e7985ea949594f2e43cd53050d839.camel@physik.fu-berlin.de>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20250908-net-mptcp-misc-fixes-6-17-rc5-v1-2-5f2168a66079@kernel.org>
 
-On Tue, Sep 09, 2025 at 06:55:42PM +0200, John Paul Adrian Glaubitz wrote:
-> On Tue, 2025-09-09 at 12:46 -0400, Kent Overstreet wrote:
-> > On Tue, Sep 09, 2025 at 10:52:43PM +0800, Lance Yang wrote:
-> > > From: Lance Yang <lance.yang@linux.dev>
-> > > 
-> > > The blocker tracking mechanism assumes that lock pointers are at least
-> > > 4-byte aligned to use their lower bits for type encoding.
-> > > 
-> > > However, as reported by Eero Tamminen, some architectures like m68k
-> > > only guarantee 2-byte alignment of 32-bit values. This breaks the
-> > > assumption and causes two related WARN_ON_ONCE checks to trigger.
-> > 
-> > Isn't m68k the only architecture that's weird like this?
+On Mon, Sep 08, 2025 at 11:27:28PM +0200, Matthieu Baerts (NGI0) wrote:
+> The net.mptcp.pm_type sysctl knob has been deprecated in v6.15,
+> net.mptcp.path_manager should be used instead.
 > 
-> Yes, and it does this on Linux only. I have been trying to change it upstream
-> though as the official SysV ELF ABI for m68k requires a 4-byte natural alignment [1].
+> Adapt the section about path managers to suggest using the new sysctl
+> knob instead of the deprecated one.
+> 
+> Fixes: 595c26d122d1 ("mptcp: sysctl: set path manager by name")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Geliang Tang <geliang@kernel.org>
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-Better to make it an explicit ifdef on the architecture, then...
+Reviewed-by: Simon Horman <horms@kernel.org>
+
 
