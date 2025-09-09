@@ -1,183 +1,126 @@
-Return-Path: <stable+bounces-179089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55ADB4FEAF
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 16:05:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4294CB4FEE8
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 16:11:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8910D4E2EB9
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 14:05:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED95A1734A7
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 14:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E6223278D;
-	Tue,  9 Sep 2025 14:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8AC34DCF5;
+	Tue,  9 Sep 2025 14:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Cgozukb3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C7F219A8A;
-	Tue,  9 Sep 2025 14:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E7134AB11;
+	Tue,  9 Sep 2025 14:08:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757426727; cv=none; b=Nbid1huvmeec1LUsvBhXbrbbRcysRQXgqRu7c0+6Y3C3gaAkZCXe84993WzTRpOVTSjifS+GQp1kRuncSWG4Ivi/iVeJ9MGhoW2nYEjgphXv+zqL5G6N6NcOkrgiJOXWm//fGgVzXDOYQg3InkYKEdvVuNUgaPXBa8yG7QokvPY=
+	t=1757426934; cv=none; b=Umkc/2NBlr0RVGenfzkmIVH5MLBXqA7ihckv0cQ/Yc4DYmmOmO5f5Y+8CcpS0d68gQbePpuPSuJItiHMrq8gLadbPnS5D1ovdj+10itAc9clJcj/A6J8xfMx6/PjW/A1woVcpMeRa18QTEk9kfIbt62J28QnLrAc8VexQUd9F+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757426727; c=relaxed/simple;
-	bh=Ef/o63fa0masGVW6LXLDrfhVG0E3d9qRlWy+TXcJK/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FJGbOS17g6GCaJTZ1tH4IMyl5Gj7HtGTAPnySPd7LNPjzJabPkDIrL+aiAQbhqgpulhlOiWXYTyz/E76T65lo3INsQPHzmt5tjUUbs1TlkbKJwQGkFh0axyHSB8mJJPe89XGqgPmrMje8ztparWuOLc5maZF3H1HOPWH15StSYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b0449b1b56eso830188666b.1;
-        Tue, 09 Sep 2025 07:05:25 -0700 (PDT)
+	s=arc-20240116; t=1757426934; c=relaxed/simple;
+	bh=sNnWLL29rUT0pKNPRkt2AG3hxp/8N4KzCnviTWEG84A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EOPUfTsbICTGjSGhmxxAEnJ1pdk7JYpu3wQs37oOc1zuuJyOL6JFhHdz5hyfMNrZrHp03hshOSwqpfkFuwoY5bNZJor1kdc4dG2LXm2l3VAqwGZ0zZRavgDjXtKbJ0oyDZP/WIiHTVgvGmMOtuCZ8o6aDlY/2Bxd8Wh8kVwy8rE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Cgozukb3; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3c68ac7e18aso3591380f8f.2;
+        Tue, 09 Sep 2025 07:08:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1757426931; x=1758031731; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FcsCbWoN3iCLFYC0GWMkt8bPrGz8pyO9oA3ZfhNfrEA=;
+        b=Cgozukb38vMXe1iSrc/Kt800INoYXblpnCby3Xur/6z1IPWkWC3Hr0iQuVylnyC3KJ
+         ZJeAPcc2QndmkqfshWEU5PaL9fPRIGoWAWismXpUaCU5mEHpVyfIVsB2Te9LV7/grvC6
+         Vx87Qrz8SNvLtM8+CvQX+o+r+2GSBLkC05BFxes3emNTokyMn0m5ivPyF6HDaaabFDJ7
+         5g0sgxA34rL9pcTnFalkz+4wQnug59VhzWNfy5R+Gf3xGCnJ5fjoTs++fwd9CFyZBHvA
+         VhCYPgMZF7HRd7bIyijtkhPxu0nKxqE0cn5wvl1JyJ7ciIm1dFpj1vsxoHavjgUjDlfb
+         ouow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757426724; x=1758031524;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vqchANUIGE/sj6VRIfAwwJ44T5VmasDpNHPpYvqds6g=;
-        b=hKZR/rxZaBbGcm6530GkqbTrDQfrwPOyStD2PoiMGOT0PqLy3i3DYyk9Zl8sZc5VJO
-         cLn7RZx8l6DGQFRDOlUo9uMp7sw2Gv8yOtLeK8XjnuVxMmIyz9BxgLjiDhrxrJLqiOYi
-         IrOYLCGL280WC1HO3VpTK4euZp1tYihz1KZYxnhbNzdGJjqerpBzS2znPQEL9IEFoAsD
-         UbILmwOj1Zd+U2WiISaZDHuqd8oHSGnLNoenr4O+MFD/XsyskhyBUvEYQSVfoLsNIme/
-         SOlz4y4gk86sgKU9EALOUTFZjNthG9W6FjQtmC42mGwBKESMzfFI9XIrjgfNXqtvQumw
-         YbNg==
-X-Forwarded-Encrypted: i=1; AJvYcCVcfxYOPAmj1k0gbBHDEn+x+lJmfQlxJtUNc8dr6j4n6VdDwo33d1LYGoqpVXVAngbsxtT7jsOI@vger.kernel.org, AJvYcCVo2m7+AtHUPXF8RAwVmMAzQWYIMPDhtBWRwnK5nvqp8BvsNNL/LM8mIiKOoJUhScs2SovBulbVVyKA6Zo=@vger.kernel.org, AJvYcCW74FKMmJKBw3qI+SqrSA+c7kukPb3/5yqdCGItTVBIizqL1ncifP2JrlgHAT4cDs+BZuM2Zyz9@vger.kernel.org, AJvYcCWY7V4lVj/8AjxQGcrcHp8euJwy39H+ZHnKSVuwsOyuKevL1hkaNMp25I9ySoSHMEcYpgSNU9oLvTJb8f9KyLpl@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxc6sscIHnU5f1uzBs1Esq5Abujfyf82G5YP+5d+IWHrgIAshFW
-	P91mcTgxvlkQryVt0M7HVDTSG0dGWW/18RnQoBueC8PIQvryUBIhwGoP
-X-Gm-Gg: ASbGnctt6UDgVCf7K6m8U1KvM3oGvzuImXyFdPY1TxWHWf2Vcrq5EFessZWC6eE8I+w
-	L0+MCmIxusUQEfDXNBkTw13BTcZu4xkVarj7MHAv4lvA65Hu47yHysUGMntCKzsx+tUb4xGLQCy
-	YADTo3JZZp6z3gC/7BYIT4kLkF5FBLV6vwuCW/kGKfYybIh+HkIPR3WxeBKF2uxJ3mH0AOObc0U
-	k4ITpS3BohelWV73ry6UrysNcghuYSIi+8p1EZ/NCBpneuBOZSMEdpvH09DkPW5dGY1dTdOiOH/
-	/PYRiqZQM4LkEv7InZSZhALfAYRO0Fk3BzxnfemKEMrUsHkD4P7+R2H6FrHJZHu4K161BJo8JGA
-	FCowl58NSGaSMFZ44yEs9Fm+u
-X-Google-Smtp-Source: AGHT+IGhqT2I7DdCypovpU7ZJAPVGBYA2DJkn7hBqzx4iz5C75D/6jcLz61ZT4q4xwwX5sS3AHf/aA==
-X-Received: by 2002:a17:907:25c6:b0:b04:5895:fe8e with SMTP id a640c23a62f3a-b04b16c4aa5mr1005811966b.36.1757426723359;
-        Tue, 09 Sep 2025 07:05:23 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:71::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b042fcae867sm2062997366b.58.2025.09.09.07.05.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 07:05:22 -0700 (PDT)
-Date: Tue, 9 Sep 2025 07:05:20 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Calvin Owens <calvin@wbinvd.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Simon Horman <horms@kernel.org>, david decotigny <decot@googlers.com>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	asantostc@gmail.com, efault@gmx.de, kernel-team@meta.com, stable@vger.kernel.org, 
-	jv@jvosburgh.net
-Subject: Re: [PATCH net v3 1/3] netpoll: fix incorrect refcount handling
- causing incorrect cleanup
-Message-ID: <frxhoevr2fd4rdkhiix4z2agnqaglf4ho2rj6p6ncjwmseplg7@gknjhh23px4o>
-References: <20250905-netconsole_torture-v3-0-875c7febd316@debian.org>
- <20250905-netconsole_torture-v3-1-875c7febd316@debian.org>
- <aL9A3JDyx3TxAzLf@mozart.vkv.me>
+        d=1e100.net; s=20230601; t=1757426931; x=1758031731;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FcsCbWoN3iCLFYC0GWMkt8bPrGz8pyO9oA3ZfhNfrEA=;
+        b=jPH8R5slSjjONlXJ0DHT/NrlV9kh1PhH/mVBIdqszJN+YAm8tpG31TuZcMIzgW/X4x
+         ONTEm27pLlH6/z0W84+Ol2oguynczKhDFKpnHhhgnjbb9ZzwKJ3Dyhz2eJroYVAPLS1K
+         7dP3OB4jvRhjTWK8Er5DRfGIVw9RLXj2hzaDq+4ff0vX+26zRDBBhDIiSYN7D5gVCGro
+         8Q1s3YM98nifxthAKEiWo60QMivxP0r/0xcSV3VnMzBCmX6ehvnIATACQfVkg5Cefi6h
+         KrVN2/aYlo1cCIRl0HhQZaUmsBDbKlSErdpqtR6TyrFrDY27C4E1C83oJ9uysH4ESzHy
+         xc7w==
+X-Forwarded-Encrypted: i=1; AJvYcCUhdHYPk+F4MefoVfCIysLrXhyzRipBmA+kdhfbZlMm+zH7ktAMy1QVDf1jYTAJwVg4iSBfN06hSJriQIo=@vger.kernel.org, AJvYcCVpsRop+5MYttxUYEqUWzh4/DOaUv9bBgspHII6Ud1GoC8CJcREmkmx8WYydids3eG0qAIHavdc@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQPKio76JDQjc+NX5aIByUFY1bDNJbeJZm39V34CxXgLO9a1yg
+	eU6L79XlKUj0LgYLIHIjEeqMH02xcIOJrIuw4IFWVCROJ4xjWI9JeAo=
+X-Gm-Gg: ASbGncsXhTuDzzi4iCNclug/KwWfNhbam31+Z/AaraDxQZakt/YPsRLCqZ10ge1Dlf/
+	Bsplwxt89M7+Llf11juSHtKU2jLWgDb9e4ZKmAi08nlcuPUQZwYk2p958QNB4O5P3P006NL6mg2
+	iRfr+hOVMMKuDHZEds4dRUVpYgSffxX4WqrI7X1JVcevrOPchT9ABHfw+oq0SyJKQghfEp9G8HS
+	/Lay5Go8IK2eqoiTC4WtRF+DuytKFKdXokgnGxkWj582Hg9aPbgNJ4sEmX9nGpN6Y2JmRiziMg1
+	UXSsEoYytwUvK9uNyDXdvLww7FN0BY6p4jalTELFTDXA2bocT7cebojh5cOv8L3kyLXabkLxdkR
+	4BdbV2ObbruPvBaKsFkFXsw+12wZUsXxz5Mb1/UaIuWxdUrHlHsgdotQGz1TbGV+B8DJfpNKDRQ
+	==
+X-Google-Smtp-Source: AGHT+IEWWpTkOQ1mRMXr+JVzPNgGbgKVdcKr6veRQ6y6ofzrdD9M/cpyO4YaQuUO8aZE+eAwdHTpUA==
+X-Received: by 2002:a05:6000:1846:b0:3e7:44c7:4bc5 with SMTP id ffacd0b85a97d-3e744c74d83mr9153674f8f.25.1757426931164;
+        Tue, 09 Sep 2025 07:08:51 -0700 (PDT)
+Received: from [192.168.1.3] (p5b057250.dip0.t-ipconnect.de. [91.5.114.80])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7521bf610sm2814855f8f.9.2025.09.09.07.08.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Sep 2025 07:08:50 -0700 (PDT)
+Message-ID: <a423706e-b5da-42b0-a759-1aced1775402@googlemail.com>
+Date: Tue, 9 Sep 2025 16:08:49 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aL9A3JDyx3TxAzLf@mozart.vkv.me>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 000/118] 6.6.105-rc2 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org
+References: <20250908151836.822240062@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250908151836.822240062@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 08, 2025 at 01:47:24PM -0700, Calvin Owens wrote:
-> On Friday 09/05 at 10:25 -0700, Breno Leitao wrote:
-> > commit efa95b01da18 ("netpoll: fix use after free") incorrectly
-> > ignored the refcount and prematurely set dev->npinfo to NULL during
-> > netpoll cleanup, leading to improper behavior and memory leaks.
-> > 
-> > Scenario causing lack of proper cleanup:
-> > 
-> > 1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
-> >    allocated, and refcnt = 1
-> >    - Keep in mind that npinfo is shared among all netpoll instances. In
-> >      this case, there is just one.
-> > 
-> > 2) Another netpoll is also associated with the same NIC and
-> >    npinfo->refcnt += 1.
-> >    - Now dev->npinfo->refcnt = 2;
-> >    - There is just one npinfo associated to the netdev.
-> > 
-> > 3) When the first netpolls goes to clean up:
-> >    - The first cleanup succeeds and clears np->dev->npinfo, ignoring
-> >      refcnt.
-> >      - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
-> >    - Set dev->npinfo = NULL, without proper cleanup
-> >    - No ->ndo_netpoll_cleanup() is either called
-> > 
-> > 4) Now the second target tries to clean up
-> >    - The second cleanup fails because np->dev->npinfo is already NULL.
-> >      * In this case, ops->ndo_netpoll_cleanup() was never called, and
-> >        the skb pool is not cleaned as well (for the second netpoll
-> >        instance)
-> >   - This leaks npinfo and skbpool skbs, which is clearly reported by
-> >     kmemleak.
-> > 
-> > Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
-> > clarifying comments emphasizing that npinfo cleanup should only happen
-> > once the refcount reaches zero, ensuring stable and correct netpoll
-> > behavior.
-> 
-> This makes sense to me.
-> 
-> Just curious, did you try the original OOPS reproducer?
-> https://lore.kernel.org/lkml/96b940137a50e5c387687bb4f57de8b0435a653f.1404857349.git.decot@googlers.com/
+Am 08.09.2025 um 18:05 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.105 release.
+> There are 118 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Yes, but I have not been able to reproduce the problem at all.
-I've have tested it using netdevsim, and here is a quick log of what I
-run:
+Just like rc1, rc2 builds, boots and works fine on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or 
+regressions found.
 
-	+ modprobe netconsole
-	+ modprobe bonding mode=4
-	[   86.540950] Warning: miimon must be specified, otherwise bonding will not detect link failure, speed and duplex which are essential for 802.3ad operation
-	[   86.541617] Forcing miimon to 100msec
-	[   86.541893] MII link monitoring set to 100 ms
-	+ echo +bond0
-	[   86.547802] bonding: bond0 is being created...
-	+ ifconfig bond0 192.168.56.3 up
-	+ mkdir /sys/kernel/config/netconsole/blah
-	+ echo 0
-	[   86.614772] netconsole: network logging has already stopped
-	./run.sh: line 19: echo: write error: Invalid argument
-	+ echo bond0
-	+ echo 192.168.56.42
-	+ echo 1
-	[   86.622318] netconsole: netconsole: local port 6665
-	[   86.622550] netconsole: netconsole: local IPv4 address 0.0.0.0
-	[   86.622819] netconsole: netconsole: interface name 'bond0'
-	[   86.623038] netconsole: netconsole: local ethernet address '00:00:00:00:00:00'
-	[   86.623466] netconsole: netconsole: remote port 6666
-	[   86.623675] netconsole: netconsole: remote IPv4 address 192.168.56.42
-	[   86.623924] netconsole: netconsole: remote ethernet address ff:ff:ff:ff:ff:ff
-	[   86.624264] netpoll: netconsole: local IP 192.168.56.3
-	[   86.643174] netconsole: network logging started
-	+ ifenslave bond0 eth1
-	[   86.659899] bond0: (slave eth1): Enslaving as a backup interface with a down link
-	+ ifenslave bond0 eth2
-	[   86.687630] bond0: (slave eth2): Enslaving as a backup interface with a down link
-	+ sleep 3
-	+ ifenslave -d bond0 eth1
-	[   89.735701] bond0: (slave eth1): Releasing backup interface
-	[   89.737239] bond0: (slave eth1): the permanent HWaddr of slave - 06:44:84:94:87:c7 - is still in use by bond - set the HWaddr of slave to a different address to avoid conflicts
-	+ sleep 1
-	+ echo -bond0
-	[   90.798676] bonding: bond0 is being deleted...
-	[   90.815595] netconsole: network logging stopped on interface bond0 as it unregistered
-	[   90.816416] bond0 (unregistering): (slave eth2): Releasing backup interface
-	[   90.863054] bond0 (unregistering): Released all slaves
-	+ ls -lR /
-	+ tail -30
-	<snip>
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-	+ echo +bond0
-	./run.sh: line 39: /sys/class/net/bonding_masters: Permission denied
-	+ ifconfig bond0 192.168.56.3 up
-	SIOCSIFADDR: No such device
-	bond0: ERROR while getting interface flags: No such device
-	bond0: ERROR while
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
