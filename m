@@ -1,157 +1,139 @@
-Return-Path: <stable+bounces-179055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35105B4A55D
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 10:34:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB17B4A64A
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 11:00:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 603877A43C2
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 08:32:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58AD2541ECE
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 09:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED16242D6B;
-	Tue,  9 Sep 2025 08:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38FD7277CAB;
+	Tue,  9 Sep 2025 09:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="kEGqlLdD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U/WezDBF"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930BA22D9E9
-	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 08:34:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3BE246335;
+	Tue,  9 Sep 2025 09:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757406850; cv=none; b=FNWffFboR4tCjXIJgFhUX+Upx8PKZWebESOfTDQ/59xalz+oCl1U+ocyUrLjRsfMtlkcaPLn7ricK+pNPh4rvgvzLnE7glPXB7czWNTV3ZRQWuPXryoRNMyJ5jt0C68hyLhOqJOBaygQ6wVnfiiwqqT6LbTvV3lwWKdzeMzr3ig=
+	t=1757408408; cv=none; b=i6v1ZdxDPKDwJVCwO2ZfFK85R59xX7t2NGViyqtR22w7Iv0wamPaDI6uXLuIqfy/cuRSsEgxI/h7EXPU+WLDcYXRxpyS50XjwGfnUpUq5qKwI6+RAmsojfrI2CSs32WsQcpg5kn/xeOjRgXU64l9UxFWOveuW2lJu0BlsFBg3kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757406850; c=relaxed/simple;
-	bh=upmujvJfvnWBaiiN0ti0rvQTX7eUdmtsYcwo6llGIhA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YoqqojRzQYeKvL/OSVnh8dvoQd77Q7oVdnzNYGM2IFoovcK9n76apgTOdGKIrEC5a4gc9utADZbUtIRp90U0X7LXo/TgaDIi8OuvKCInxcIqpB7wkCbEUSaJeTs+0bFCBbqekV7EJk8WEO9UXPq5LYhQlXZhpKYr+tL4VZ4Uj3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=kEGqlLdD; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5896SXuI012323
-	for <stable@vger.kernel.org>; Tue, 9 Sep 2025 08:34:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	upmujvJfvnWBaiiN0ti0rvQTX7eUdmtsYcwo6llGIhA=; b=kEGqlLdDFAhiru0H
-	ACVzBaGIQxIbrhuhxQvqDUjDKI7LXobCRsLJlvv/eU+ZwKXY7CVCs+gBdB6uDHkj
-	qXhF7Lu5bPbwYtrxSZDhqYCDZLiexhxip3pHpbVAZsGVkGFkGdNgrcMAz4+sdMXd
-	+/ldYAvtd6esKQu6D/i2/hu7utMp3vnXbC7ngi6PNOqRUXk2fKGIwFXGKanDXLmi
-	5j5zsi/XpvIpW5gDA1dXqOvoJmshNVGDwhxJCWa2N7NyomvkRxgkij304lz+Xa0y
-	+tduKnMc6pjiRm9Bg7IDvKcdv2QfTFfQRIq6W2JBWPDqVj7P596v5RA68m/ucCbX
-	Ax7WzQ==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 490e8a7e7p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 09 Sep 2025 08:34:08 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-32bc286bc1eso7366278a91.0
-        for <stable@vger.kernel.org>; Tue, 09 Sep 2025 01:34:08 -0700 (PDT)
+	s=arc-20240116; t=1757408408; c=relaxed/simple;
+	bh=aFSUmCti6MLTcqlgBbhF05M3cBauzcyYGq99VlvOS14=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=PsHfGZ1Ldy7ppZ3DP94OHY5WF84Xwa2r7qiSq1CIctW5YOhvFO3246xQCws6EhTyeslb3QqEaayVxFBoBvCFAVPToh9ZS1n2dCCCm26vueaNv+TFYi1+A6m8bEPjk0cuuvrSUPMkgQpCrA5qWOJNzMCOLlnznfo1/ycJDvg7vuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U/WezDBF; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45df0cde41bso2109395e9.3;
+        Tue, 09 Sep 2025 02:00:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757408404; x=1758013204; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2iATGGckum8OfAaFEr19Bj8rW51tZDxYm72q6WM1MEA=;
+        b=U/WezDBFrg3etBTmZiSynRRgOiqCSS2cJD9DhdII6LTeT2IBu8xCS3aaUj65ZBMXlI
+         Z26jOCdPmUmq8fv0HrVr/uOjkGe5ruB4ouDV+MgRFUQdIOrGTB4/q6QyOWz9H4nORCp8
+         rGK6t31Wt8k+HGC3Z778CI2KkWMnPaHxXIYLQd1dQI6+iwSWoR9yGOlkKCm+qZ6gpvH5
+         jgaWMShYKGMqzSmfr2YGoc4kksFMSgAcC8xObFNGBAh1dToiI1c/VwY7psEM31fEcVQN
+         gYL1w55mbfqacGZRjXjMvptPY4wQTY50shLqskmYwXWyydt/1lBLPnMvVcaTHMwZIg6F
+         UUCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757406848; x=1758011648;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=upmujvJfvnWBaiiN0ti0rvQTX7eUdmtsYcwo6llGIhA=;
-        b=O7NJLjKYdyRFtqCGMgjVNb4fjVvseiA63AP7C65gKSvzBMG0Ll1+1WW2B21NKz/DNF
-         S28KwtwzMYNWUjkOnsuafACDwOysPAKuvFUgecV5bVGTBrZqxFa9ZgeOzgwwhBhoyeup
-         0M740DCimdWyZkGrJkXgAgzzNS/8139oOTN8b4NamkuZWmsdU0VC1DjnZZjGN+ueF3fv
-         uUmEQOP8h0HmH7K8te6Xc01F4GI8fMpCnJ2oE3N6VJxTa2inV7ZOjgs/r+xxePoM2VsS
-         wyvcvxsv1KhxN7aXaH2tJonn5uvC9SJZ+y9J8oGJd519WZYp9boekv/sD6K5uQkJeHv6
-         idgg==
-X-Forwarded-Encrypted: i=1; AJvYcCUp9mba34yMwubOxke5CKyCDARtM3Xsoj1sF5abXXvaT1BaNxzV2kRKhz+biEv63TgjA1vU2Go=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRhRRi+e4RgCblBGel9kq09SBBYNExpX8LxTSuInDsez3Of+rQ
-	fSa4IWPQZTLf2OtJP9fzXYWIORXlDWKLAcVoNI4le+EIPfxVozL8RmTm4GlzG1wd5t3pBLuAwnb
-	ArQL5phEtn+g8LGSRUYKASqDgyoQpnyfQ+ROujOZZTuOwwHuO2MLEVmRvBkw=
-X-Gm-Gg: ASbGncujFjlvQOTU5xad9TvWgGtq7+jR8opdicaCARl9xMidJJpKH284CcItwU/u0t9
-	dKbT9wDKJx3L+YdYBB8WRgxfIYfcIRA3Fh8b6yrgjDG7LfjBtEBF32WCoFfmXXCLm89pgzMeQ6x
-	eYHjjnWNNuVvDGVt0xXsLwRW7lVp1cfZfaBV5et/PnWNBLtHitTAwon7HPuvnGsDc4lz3xEMliF
-	ISxiGA24H4nwnVcwnIgOSFOxyOYA4Jqr8BSTfVue9soC1ovo0iYzmYiq4IgTEWQ0Pf+I4S7XjKA
-	NQG/+34BTsLxajrTIJllf6yin6e6AGa3zA9hZKfbk00IERPPwo6osjIZjoDEaCOqRj2RiZ/WFw2
-	ihtw6AQZP
-X-Received: by 2002:a17:90b:2f4d:b0:32b:7d2f:2ee5 with SMTP id 98e67ed59e1d1-32d43f53f7fmr15226195a91.16.1757406847991;
-        Tue, 09 Sep 2025 01:34:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFFVYaSNpwmTtzVm52pLe74SQM+AQgVs52r6EibYNw4s3M1qPfrL9xKm/fTur78uRMs2Z/xFA==
-X-Received: by 2002:a17:90b:2f4d:b0:32b:7d2f:2ee5 with SMTP id 98e67ed59e1d1-32d43f53f7fmr15226163a91.16.1757406847633;
-        Tue, 09 Sep 2025 01:34:07 -0700 (PDT)
-Received: from [10.151.37.217] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4fb15f50d6sm14836433a12.0.2025.09.09.01.34.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Sep 2025 01:34:07 -0700 (PDT)
-Message-ID: <1bed21ff-ca0d-4436-9d40-acf26dfda362@oss.qualcomm.com>
-Date: Tue, 9 Sep 2025 14:04:02 +0530
+        d=1e100.net; s=20230601; t=1757408404; x=1758013204;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2iATGGckum8OfAaFEr19Bj8rW51tZDxYm72q6WM1MEA=;
+        b=kICHzJ4iSsgkdJzaXI6p5CM3FgpVfRvIPoK8nOmXisZWup4eDU/ZTi4OzHS6uRo+Li
+         m3095Ah0FRbD0d+IxjpDVxqwnLRfKnDMsQv43Qc0bqeV5dsXsO+EqxhSg5mqSlmR8U7V
+         dKCRUau1muF14xsykaWwl1035RWsTW7IRv4V/jh5Umvnt4QPyWt+bGNjU1xsp97rxlh3
+         fj1QvY2xGhmXaMXXdsDCMGJJc8xXTawbu4Iozizm+Dl6NTSZUbx/TtvZ6HnQufq3u6p1
+         6wgQ9j6UtiDXKQ91ZKyL6Y4mKmaZNmuuSGGJIVd00+ZGPw0w9cOtSPaze+RoliebR/8m
+         Ba4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUUtUFaDP5+MZ9VgUxw4hiPym1HYGCsvzXwvX0TkftC9WOLGrb2XgJ2EI6QCk+EY123hEurqu+q@vger.kernel.org, AJvYcCV+S6KKug1uXm0SZVz06pbdR1I3vzTTPtb7sP7aLyZqxHYL15ebj47K8iR1A2zMasDhCUtN+R8/JZI=@vger.kernel.org, AJvYcCVx1kxi6KRV3xfBigFFzuTC56J+JO3gjBF8lSHHpDbAVq6HghcHW4CtDg9NEldMOodfaV3bK5CyR66mAEGU@vger.kernel.org, AJvYcCWqnf6WP9jbH2sTij8XAEa/6/x/aAysro/F15vs+K+MTGqwFrU+FzBgVvVwvDT0bOIUDDY3AZ4LpyVqV6pGbnfc@vger.kernel.org, AJvYcCXRyU2tT+sKQyJy2b6Z5IzzDnSVHUjyb5O5oh31tHb05HNJ7FdIbeSzWEp8gZyg/v5RE32x8yWN@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUmn8NxYBnC1iU5r6vCKeadQmkxPmuDi/o4rFZ40ADBVMjZPMz
+	/7mIhtvP2PZas2f+gbQAcgVbElw+boLvMCKh0WmHTuJO08xQa8rjW+ja8oZ3DRB/8LA=
+X-Gm-Gg: ASbGncvTh80qvvRpZ/eMbkcu1MrI7WiJoCJd1IwFGoFAI7hMSj5KjYqcJ2QqKC1aP9z
+	t7wJ8xF0BVrR4h3QDnj1701Ev2j8GlVX5mdjCOG0n9DSsS/eQldjk5vOnbVYhQmNNBVmxrrmJI0
+	8r5mbIH73CHvU0npR9PXNVUikG8UwviPzvDQLRqwvVAA6t8dC2OibnxcXjvsvfO4CjYvKwglOxR
+	C43A5GyMb0F9sverrol4vxans2cTlU5pmscH0W8lyYe9pYdsbJ7H7pM0OY+JZXrE7HKBzmdJDG7
+	Zc973sEXAw9IlAicASdziKNBPCl9td+kfgd2GJuTMSNVRJEAWyKV9euKi/jy4A1tCQKmNtfq1UH
+	WhgVi8ZfU8Ra48oySlYuV256HZoUhn/5KZA==
+X-Google-Smtp-Source: AGHT+IHi9nXrfKJGYALDvRRmSRzYypfCt5Kl/21MQbCCiY/bILW7ZiySngyv35dAVzFjI0zhrcNddA==
+X-Received: by 2002:a05:600c:1389:b0:45c:b580:f795 with SMTP id 5b1f17b1804b1-45dddedf80fmr83035805e9.34.1757408403794;
+        Tue, 09 Sep 2025 02:00:03 -0700 (PDT)
+Received: from imac ([2a02:8010:60a0:0:837:bf58:2f3c:aa2c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e92a42asm477565115e9.20.2025.09.09.02.00.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Sep 2025 02:00:03 -0700 (PDT)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>,  Geliang Tang
+ <geliang@kernel.org>,  "David S. Miller" <davem@davemloft.net>,  Eric
+ Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo
+ Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Davide
+ Caratti <dcaratti@redhat.com>,  Jonathan Corbet <corbet@lwn.net>,  Shuah
+ Khan <shuah@kernel.org>,  netdev@vger.kernel.org,  mptcp@lists.linux.dev,
+  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
+  linux-kselftest@vger.kernel.org,  stable@vger.kernel.org
+Subject: Re: [PATCH net 1/3] netlink: specs: mptcp: fix if-idx attribute type
+In-Reply-To: <20250908-net-mptcp-misc-fixes-6-17-rc5-v1-1-5f2168a66079@kernel.org>
+Date: Tue, 09 Sep 2025 09:44:40 +0100
+Message-ID: <m2plc0ui9z.fsf@gmail.com>
+References: <20250908-net-mptcp-misc-fixes-6-17-rc5-v1-0-5f2168a66079@kernel.org>
+	<20250908-net-mptcp-misc-fixes-6-17-rc5-v1-1-5f2168a66079@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] phy: qcom-qmp-usb: fix NULL pointer dereference in PM
- callbacks
-To: Vinod Koul <vkoul@kernel.org>
-Cc: Kishon Vijay Abraham I <kishon@kernel.org>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Poovendhan Selvaraj <quic_poovendh@quicinc.com>,
-        stable@vger.kernel.org
-References: <20250825-qmp-null-deref-on-pm-v1-0-bbd3ca330849@oss.qualcomm.com>
- <20250825-qmp-null-deref-on-pm-v1-1-bbd3ca330849@oss.qualcomm.com>
- <aLWllyKvag-BAXjn@vaman>
-Content-Language: en-US
-From: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
-In-Reply-To: <aLWllyKvag-BAXjn@vaman>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=H7Dbw/Yi c=1 sm=1 tr=0 ts=68bfe680 cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=zK7o3jtn9Y8dKal1iDgA:9
- a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10 a=rl5im9kqc5Lf4LNbBjHf:22
- a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: RKhuAOxXrwrvth5w8pnX0FVQQyEANAkk
-X-Proofpoint-ORIG-GUID: RKhuAOxXrwrvth5w8pnX0FVQQyEANAkk
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAzOSBTYWx0ZWRfX+7tZHyz8GmTr
- 08Yjvtd7yl+B2TpbclF2kmdMMiY07kIAHJ9GfPRemvDSXkklhErWJe6kaoXgdQnS0NdugcWiGwV
- KdCTBdEV2MWqoDA5v6iAWUo3X40ess3QlQkLGkZNpxeqzcpKnbgAjNSqmTuNHYcyt29zEZHPB5p
- /MlBFPZwLVzI+MCJXUzHt07yE6G0eahgbqZplY6hepiYK+AynmgHtvDNOC/tJ6k8lOIxcIrgs1p
- 9hdqpVMl/KtxboZBdldp60vTN2Xg8htnUIEMLWF8imAueYGRmAHEjlSZSs7tcibt1ZOa/28GF6c
- UsueF8atBS2xVWFadVF5JX/TtVTMpet3TmKVxq0h82ivTX4xSDSE90E7IOxRXhioqXXQea5H+iU
- p/08wVhi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-08_06,2025-09-08_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 impostorscore=0 adultscore=0 phishscore=0
- clxscore=1015 suspectscore=0 priorityscore=1501 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060039
+Content-Type: text/plain
+
+"Matthieu Baerts (NGI0)" <matttbe@kernel.org> writes:
+
+> This attribute is used as a signed number in the code in pm_netlink.c:
+>
+>   nla_put_s32(skb, MPTCP_ATTR_IF_IDX, ssk->sk_bound_dev_if))
+>
+> The specs should then reflect that. Note that other 'if-idx' attributes
+> from the same .yaml file use a signed number as well.
+
+Note that mptcp_pm_parse_entry has this, which should maybe be fixed at
+the same time:
+
+	u32 val = nla_get_s32(tb[MPTCP_PM_ADDR_ATTR_IF_IDX]);
 
 
-On 9/1/2025 7:24 PM, Vinod Koul wrote:
-> On 25-08-25, 17:22, Kathiravan Thirumoorthy wrote:
->> From: Poovendhan Selvaraj<quic_poovendh@quicinc.com>
->>
->> The pm ops are enabled before qmp phy create which causes
->> a NULL pointer dereference when accessing qmp->phy->init_count
->> in the qmp_usb_runtime_suspend.
->>
->> So if qmp->phy is NULL, bail out early in suspend / resume callbacks
->> to avoid the NULL pointer dereference in qmp_usb_runtime_suspend and
->> qmp_usb_runtime_resume.
-> That is a band-aid. we should enable pm only when ready...
-> Why not do that instead?
+https://elixir.bootlin.com/linux/v6.16.5/source/net/mptcp/pm_netlink.c#L116
 
-Thanks Vinod. Sorry for the delay, I'm just back from my vacation.
-
-Sure, let me check why the PM is getting enabled before its ready.
-
-Thanks,
-
-Kathiravan T.
-
+>
+> Fixes: bc8aeb2045e2 ("Documentation: netlink: add a YAML spec for mptcp")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Geliang Tang <geliang@kernel.org>
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> ---
+>  Documentation/netlink/specs/mptcp_pm.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/netlink/specs/mptcp_pm.yaml b/Documentation/netlink/specs/mptcp_pm.yaml
+> index 02f1ddcfbf1cfd81a398dd03c52bb9f281c1aa08..d15335684ec3d6256505f2b3887ce5818eb57462 100644
+> --- a/Documentation/netlink/specs/mptcp_pm.yaml
+> +++ b/Documentation/netlink/specs/mptcp_pm.yaml
+> @@ -256,7 +256,7 @@ attribute-sets:
+>          type: u32
+>        -
+>          name: if-idx
+> -        type: u32
+> +        type: s32
+>        -
+>          name: reset-reason
+>          type: u32
 
