@@ -1,97 +1,96 @@
-Return-Path: <stable+bounces-179002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01919B49EB8
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 03:30:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD70AB49ED3
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 03:45:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E774189C250
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 01:31:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1AD6189CFB2
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 01:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDAD9225A24;
-	Tue,  9 Sep 2025 01:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CD3191493;
+	Tue,  9 Sep 2025 01:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l+R6dEIz"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ukuaZCim"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730A8211499;
-	Tue,  9 Sep 2025 01:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56BDA189;
+	Tue,  9 Sep 2025 01:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757381435; cv=none; b=P7EFEIFUQDWwH2A4/AAP4EZLWAFxugK2Jzrr+gLqioxpBJ+pNN+81kTREr21/XogUCphARF8pFHr+SAjgIDn5QT7743+2q/dwpAQIqSwKLR6c4+nxb2rAbOF8GgTAWSml/PXtKTkmYzbZckAkaKBLlNG1foQiDRZLeBNCpep7S8=
+	t=1757382352; cv=none; b=DuynYR0vfz7rly7aa1pYS1zIakfX3uBd0eT7Dy/Oa4Tkwm2qRFi8X3uAB9XWvkGbpWGa2uEOAc5A4s4zvfRlfNLa3aeX3uRT0t27T/7xlu9obwPTmR2FWcZV4XhlIHescLFQkMfNF1WwclZwlUH+Y1BOF31WHiL3ffzSuTQ2h6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757381435; c=relaxed/simple;
-	bh=g59nEI9rKVm3g34j4uFi3DXaOMima9O+BE+j4HH4QPU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BUg25wPwKSQ9GPIbJLIQA8+R5T7GsXp+UxUVB9A42ecCjIcLWbiw4thFVqja/EeFoIezLdPLNzSK+hnGZiwP1FvVGPlVbv3f5LhIn5dskndRUyqEazidCXQHTQTJJIS5gFDoEBIuMTn8WSNQIRMCI0WOiEcn4gFMLJwpmt4PS08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l+R6dEIz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D73C4CEF1;
-	Tue,  9 Sep 2025 01:30:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757381435;
-	bh=g59nEI9rKVm3g34j4uFi3DXaOMima9O+BE+j4HH4QPU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=l+R6dEIzS5bkBR42oF1Uj+OMANFVBhv1MI58ZBnupxGlNG4BMtFycVz4CgKB0C+hA
-	 +goRtlrG6eAKsN2eZ75LNZHQw4JnViVzPAxoEKI8G6WySuh85f3MQx7jNN2TlEUUxb
-	 eJGMGIhwKVMI3O3dV5Mgb2+Rb9i6qx6dlQTgI7mIk6EtXi4NKhy6U9KZHLCC9f0bqO
-	 AFkre/ReN+hfQUYFUC5QV7QGiZQYOMRFKa5GnooY4EG3+sYRgpeY9ydNHGAhPWXZ53
-	 vXKKXLTuzSz8uHJ+6H2bpjcGbO6SvzBcRBS+CyuOGdpRyirLjDTnA0OFLRxF2U4hMZ
-	 L6s8JoQOzYYKg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADCC6383BF69;
-	Tue,  9 Sep 2025 01:30:39 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1757382352; c=relaxed/simple;
+	bh=ZgCqQQVVaT1tXTjoHJ8xmUkArsEXgxQem7raZ145drw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dA2bjtsC/Mn2xrH15oT28JPTLbXBQcYbQJpzMb+QjTtTuDlcFl1yMoWxZwSKtNK/bQhycruGGU2PXJ0jZjLema4d0ss/lIqs5TLoilymFKP16qZIDVepHfRoL4+8L9uOq1SsSXFFXeeFw3iLo5MAsMtWCIEp5svUhwVFNoQur4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ukuaZCim; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 9D12614C2D3;
+	Tue,  9 Sep 2025 03:45:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1757382341;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/Xw7SABNGPMz6aX5X+eb4rCblJuDgRXrn0YRZIePfJA=;
+	b=ukuaZCim4ngin9PTttErJ8KrOrClzwECxYsrhFACzEyZ6ISdyFTMzvxvXmZl9Sf/2rkW8T
+	8eD3n7bvgzQIT1ccliiO77ivBKti+q1crdZsiWIg3mqLZXEIbFbKR7DTloiasUuCKozsS+
+	lMzI8h1HhL1kTpNvYWb79fnyPF65SxVS9SuTxAvG4Gqe7VylFCA+BVS5IZTk/pBaUrvehh
+	+xjNa/OkyuEpobUWB8w39OhOJSdtd+NPzeJlCEJF+c1WQLK+LcLjAi1H5k/mvRFeedUSN8
+	Z3RjQrsPzvdJSMG7O43ocNlT/hxMYqCT+X035A0MF20dYtUNDcdzH+UsIip5Ug==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 31cf2fdc;
+	Tue, 9 Sep 2025 01:45:33 +0000 (UTC)
+Date: Tue, 9 Sep 2025 10:45:18 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	achill@achill.org
+Subject: Re: [PATCH 5.10 00/52] 5.10.243-rc1 review
+Message-ID: <aL-Grp-b6MvxXgl5@codewreck.org>
+References: <20250907195601.957051083@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v4] rds: ib: Remove unused extern definition
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175738143824.108077.16911055038125503100.git-patchwork-notify@kernel.org>
-Date: Tue, 09 Sep 2025 01:30:38 +0000
-References: <20250905101958.4028647-1-haakon.bugge@oracle.com>
-In-Reply-To: <20250905101958.4028647-1-haakon.bugge@oracle.com>
-To: =?utf-8?q?H=C3=A5kon_Bugge_=3Chaakon=2Ebugge=40oracle=2Ecom=3E?=@codeaurora.org
-Cc: allison.henderson@oracle.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, stable@vger.kernel.org,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250907195601.957051083@linuxfoundation.org>
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri,  5 Sep 2025 12:19:57 +0200 you wrote:
-> In the old days, RDS used FMR (Fast Memory Registration) to register
-> IB MRs to be used by RDMA. A newer and better verbs based
-> registration/de-registration method called FRWR (Fast Registration
-> Work Request) was added to RDS by commit 1659185fb4d0 ("RDS: IB:
-> Support Fastreg MR (FRMR) memory registration mode") in 2016.
+Greg Kroah-Hartman wrote on Sun, Sep 07, 2025 at 09:57:20PM +0200:
+> This is the start of the stable review cycle for the 5.10.243 release.
+> There are 52 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Detection and enablement of FRWR was done in commit 2cb2912d6563
-> ("RDS: IB: add Fastreg MR (FRMR) detection support"). But said commit
-> added an extern bool prefer_frmr, which was not used by said commit -
-> nor used by later commits. Hence, remove it.
+> Responses should be made by Tue, 09 Sep 2025 19:55:53 +0000.
+> Anything received after that time might be too late.
 > 
-> [...]
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.243-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
-Here is the summary with links:
-  - [net-next,v4] rds: ib: Remove unused extern definition
-    https://git.kernel.org/netdev/net-next/c/9f0730b063b4
+Tested 910e09235335 ("Linux 5.10.243-rc1") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
 
-You are awesome, thank you!
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Dominique Martinet
 
