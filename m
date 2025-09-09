@@ -1,175 +1,249 @@
-Return-Path: <stable+bounces-179049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD7AB4A3E6
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 09:39:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2B5B4A43B
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 09:53:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6403018801DB
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 07:38:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 084D71886CAF
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 07:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE53311C13;
-	Tue,  9 Sep 2025 07:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788E523D2B4;
+	Tue,  9 Sep 2025 07:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fkWxPlvT"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="M0EyHL3g"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E34631158D
-	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 07:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC12239E7D
+	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 07:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757403256; cv=none; b=VOzXfnj6pkkS7XeFOJtTGfpxwIxZXYjSJCb5VyRDv1JuJoN7s2tLf0HAldSVWtifMmZU0f2ab1+ezIxT+KgdZAsytgVj8IQ9tPip1OPSdwVB5/RTU0N3lYF95skD7EwVYy7orimqo0Mi1D7+9FbQKB/KxoKSidZp4tBpRjBVHXk=
+	t=1757404376; cv=none; b=gm9xKG1hDFCd4UIn0jixnF3GSLRS4Wk7vwEitAc6eXGFTFUIxbt7uiBJlnDAvHP/VvYRqUgtsLobQuuAYMJYUvutWd0uvEzmsVpKSGSL9+/8OoZlOR1bXO+O7j7Yy+NXTu8etmodTh3ZpgU4NkiFL3Uc8ztF0EMgZk/CkFryKY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757403256; c=relaxed/simple;
-	bh=jhpfAllvRjUQlvp/6puQsgbTZIwx8t1Hc8Kbpiklwqg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mC9yfrBVSkoXjpiweoDwSX78cGtiDpNvYl222wCqvten73BygdOGqVhHVvFAJyE96Dm60uE/rXORL8OQ4w2kwixYk9fRVob8SJIoxyVuJla+oKysiZqK9pz6tYtZt7Thy9jw17WikeiFiMQ6QQ5va/uwdNp3V7EyLGoWohnwvUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fkWxPlvT; arc=none smtp.client-ip=209.85.208.53
+	s=arc-20240116; t=1757404376; c=relaxed/simple;
+	bh=inPUrZMsfA2VY/R1OZIP0EMwvOmiWnfNcCAy3+3kvw0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HqhJjx31KQY22N24cERTJjqp3eDw/TXHCAc/nTpagMHiLsqJs0iEG/g7jw8aQJsPVXrGM0p52NWKyNABu1cyac1o/lQhVnAuk4L9bfuwDCIOdfbg4XGfKkUo1K7nuq66Y2IiXLXVdAVSDR9wikR+E3Tpv59GPKf+qbSXdMw3NzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=M0EyHL3g; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6229f5ed47fso4341344a12.1
-        for <stable@vger.kernel.org>; Tue, 09 Sep 2025 00:34:14 -0700 (PDT)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-24b21006804so56692795ad.3
+        for <stable@vger.kernel.org>; Tue, 09 Sep 2025 00:52:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1757403253; x=1758008053; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xIWkj5abBOD5CGfZVD0eUu8lpneYawl7S35HHz5a778=;
-        b=fkWxPlvTk8Yz5W28fD5Ou8a5rKWK+aBNnAElaRHKB0Aw3LdVivejDErxjksLcUN1S/
-         R6pHuPv6wyRi/uaZQ1CqpWBaD6L0BlYHnmUbSeHOe1Ont785OMU7vS9tl1QBaPcX07Ka
-         jHQVT4A0mXgWOI8WJlBk8Ll2oTXbRSkhvARWyKzjleBx2D9tUzhcmVlD05rW6ZdgHuZw
-         J9LCMVZoHI77z6Mypi0AvfuXat6qzFsuGXLhrEZv+4CTJFyQNyjYU5QFU52tkiNklMFd
-         KueBig/sO+11xU0NNcMy3lhNhor2c1be+ejrqf4rwnozug4h9+N8qU037Q11Zc+aiyoA
-         gvqw==
+        d=linaro.org; s=google; t=1757404374; x=1758009174; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MMOBMpJlH1unyBv3NyBv5FS3WF4ll7Y30j2iPvk3MmY=;
+        b=M0EyHL3gLF+YBlvibUSof1qM9bkiH1mtWbKw9g5U17pYWVE28g2P/3Y+7jm4PXkp8m
+         RM30LA7jyh3SdJLXUAwlnbKWpHfZbNFcifGGc9PvNgMCkG3a4t7h843LUw4e/bT3nAqv
+         k7mKVgjIw/iJiLYWHVY+cdi384EgY2spC4oBH/eIQwAwuDX80HDS+mJLRokrFsP9CorE
+         kIWtJhX89+0wNuaUW0l7IvZblprl1bcW34UxZuKvYUrMzLLon2ZT+jigipzbsc2Nd/BS
+         MNZ6opwPfoD5E46zVBnQ/6wigX/TLVXbIo0Zd9YfrPBSg4lQ330+ujjRkfsVBjkaww+t
+         A36w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757403253; x=1758008053;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1757404374; x=1758009174;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xIWkj5abBOD5CGfZVD0eUu8lpneYawl7S35HHz5a778=;
-        b=ZBsVTW7kooCWYS25VKpXy9DO+PwKzJwTYsVfBl7JRscWW7S8dtkrkjPvCRyqDaaKEm
-         wUUYS/QhqHtb3MZsl2Rci1BewPSApiK4gU2nuzXbifz1xQqtLVZxbGstlgka7HtZeESp
-         A05r0TgvHvTZD7mxkFMGzQh8X8XrK0MtN9Rd4PKd2Sp7TnDsjMNpnYwSaRcVv9HXPbYP
-         VIE6f3GbcJsB8EFty92gJLvKCNFZKIzaL0WjLWt/8h+aYjh8G1zolCWXz5HnwTZoCoyW
-         /hPVZBdI+kbe+bimyok79WEOAQKOVToLZwQ8d//bYMsB6cbjabL9Pw9zYl8jUqp79GZE
-         mlxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVmCKck+8vTL/dUQ/uHwx0viTBhHEHDKjYnfPu7X1j8R/kiKl5wsQ9j+KZq6PwVg+LcqVPLy3o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDRqfg2Q6hNIpiirEJtO+AHWBUigcYu9BGm6UeT/bYJoaBDHAz
-	EQOiAkdXUDxqxal5X8Vo6u/TdBaefeenStEzdgmb3/KsiFc9h0x3HMwtuT23Lpu1QFc=
-X-Gm-Gg: ASbGncvLn/YxgObbTg17FGx3do0W8LXQF059mu2J3Nxs6C/EXSFR5gb/iwfolI/HILU
-	HeRtywy0P8cpgUnYWhDZ8CBg1sj06RguCCL0+Mwh1efPw7bx7OlShr/nNDhqwc4R2XRmzWrd5XU
-	oSJEgbwpVGjgbqrd4swz6jQWC/hJ5FWwxidxZM+B0rF2h9tHmUJLPd0rxXRWPzP8pTrBPDXZIyN
-	RkZx3AktnRaAhiIrBIAih878l39aWE6RfrOMws3W5TfKWGDNT/aSX0S8+Rv5fgiS+Jb5NEB+TT9
-	Svfs3UozHdAXJhPJ9Nm3Q7YcNdlv3gatV/nvIYRvo1hk+9ThgJjMeXNpKeqg7uGwVW+DIL17kpt
-	nyJv054kiBfsmdV52WYyXYQcr9yuyXhnydg==
-X-Google-Smtp-Source: AGHT+IE0JfJPrysG+ilt1P6XQou5Dh9p7qghCInAMInYwMKKh6nyr5AwYwkSehYOlA2CdaSMSROzTg==
-X-Received: by 2002:a05:6402:3549:b0:62a:91d5:8844 with SMTP id 4fb4d7f45d1cf-62a91e4cee2mr3840644a12.21.1757403252689;
-        Tue, 09 Sep 2025 00:34:12 -0700 (PDT)
-Received: from hackbox.lan ([86.121.170.194])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-62c6a264285sm226976a12.2.2025.09.09.00.34.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 00:34:11 -0700 (PDT)
-From: Abel Vesa <abel.vesa@linaro.org>
-Date: Tue, 09 Sep 2025 10:33:35 +0300
-Subject: [PATCH v3 3/3] arm64: dts: qcom: Add missing TCSR ref clock to the
- DP PHYs
+        bh=MMOBMpJlH1unyBv3NyBv5FS3WF4ll7Y30j2iPvk3MmY=;
+        b=fPoAopG48A3yybDuzMZGkSsEYn26FpUoid11s64fY+QdS024NSgnFDj3sjwwShjPmf
+         N/dTcEeZNL/Xx9KxvtdbumIh6zyDOYr5YvS5WMQhxqp4Tih+DCaatPKFZBo6eMfw1V6o
+         1ZBFtrDRFb7IRXTY9SoTOEU+E/sDu3Ag0RM/Ofgudes9A+y1tah0/xuxAj68iRZpNGYe
+         lyxGivRNDmI37zjc9TBfcNkgcOzltQ9VsOI7BoWYQ9rOLskAykK0zVlWUImvGp7K4hHH
+         16hjyjesZeRO+sQwScw/rV+dENZJL2I6p30QtRRIT0R0eBmhYHL9IdSfQVa//v1Wy1sB
+         zkIg==
+X-Gm-Message-State: AOJu0YzcaZGZYyXYaTvzl1vA9td1Yd3adRIown+gcy3MW3+0FFRxeCAG
+	YlgokxdjP3+dVVscBTpiNz6gQJHJwatv9E86ueZCLXxJHbgfkikbDRQnICPCvfKD1F/MQy6JZG3
+	y9Vnj49q8oV10QPKK2ur5KvZZIGhDDUDwS8NTNgtlTg==
+X-Gm-Gg: ASbGncvbN2UCWZGdi3OTOkuI8h9nGigeMV25nj02N7cNJoVB7hc9uQZKm5egvtYSI/w
+	41hTEnvLh/VYdWbNlMt6dzG6/ilc5fQ3tcKT5/nn9qyZ6cRTn4QvYOElhdRq9W6kvjZ0RXbKZW6
+	wTEkobpcXgrVPnOxkHoi3xairjq63nBGkGQx8uTLKLr3zGBmJVT9bRFlgz7rF2Ge7ACqdPOVD7Q
+	esbhSAbO0QQjM93l1uaneYQtbfIpMAyL0Q2KX/GY3Tl0eChDYsc6OGiiQx49Lwz72q2JwA=
+X-Google-Smtp-Source: AGHT+IHKMwwuJuV9mWv+A5szEpOumIuvlZcVWUqldPFr6JIn3jDsrrgM3BJF5KeyNQI945RkqqnfgQuc2lOpuPGqW0g=
+X-Received: by 2002:a17:902:d2c7:b0:24c:e6a6:9e50 with SMTP id
+ d9443c01a7336-25174a2e860mr141006125ad.45.1757404373705; Tue, 09 Sep 2025
+ 00:52:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250909-phy-qcom-edp-add-missing-refclk-v3-3-4ec55a0512ab@linaro.org>
-References: <20250909-phy-qcom-edp-add-missing-refclk-v3-0-4ec55a0512ab@linaro.org>
-In-Reply-To: <20250909-phy-qcom-edp-add-missing-refclk-v3-0-4ec55a0512ab@linaro.org>
-To: Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Dmitry Baryshkov <lumag@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
- Sibi Sankar <quic_sibis@quicinc.com>, 
- Rajendra Nayak <quic_rjendra@quicinc.com>
-Cc: Johan Hovold <johan@kernel.org>, Taniya Das <quic_tdas@quicinc.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Abel Vesa <abel.vesa@linaro.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-dedf8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1849; i=abel.vesa@linaro.org;
- h=from:subject:message-id; bh=jhpfAllvRjUQlvp/6puQsgbTZIwx8t1Hc8Kbpiklwqg=;
- b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBov9ho+JLGxomLt25iZX5/tjQqlJECZ8uFp2zeL
- Cl7wISPeSSJAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCaL/YaAAKCRAbX0TJAJUV
- VuLyD/9OQNNgomIbCRgZHuDmHgU7/hgXhVD19B2LyP53pmSJQuX9lemU59oQC9bdFE/7V6xdrh1
- Z50yP88jFTTR8lZyOOOJs53p2XvAUO6nhURGYwqcpp/Ff+2LCif1YmjDJ0XkElCQhvXG5g3mcsh
- HjOmNn0Doqa/WPo3nqrD3glt629ywhGJL+V1knazqdHeYKxD1itncWZhZV9JL2hp69N6d6q4w8Y
- FIVRbk2x9LsLnwi55yBFBc9TyyP1VGLvdj0sfXiK40neFOlm1m7gEP7i1gZ4cxApLy3Pb6bTuc9
- x8WcopxeCZQk0CPms2xx1fGJHs/ehMnWi6CGx6aPpKuRMvGPE5NfqIVqwpXg3HqJaPjOohYDXmR
- cbnjjvSHe00nDQKfc78qogtuXwzW1R9eYpj26kqhETBxBoYDghOIbyOMOOcx3lmIoLySh9ai62x
- I2FSYg0aDEyudcMjNoD5xLQ9C60Y7cVFvUogx3f1OpTgchckqxoJ5yakVGSEfPwR+52kndrDKLH
- gc9Y/7V5NKRoNL1GLatG8VOfVfds/6XHyoxQnhINTP2p0Q55vt2UgELkNvY6dH7HquMumMQwVI7
- T8fy5Tc/tpV0oAfqEJYExzKYTC3leASB7xzYx4u4YU2QpDWdojmziwVDU0xazZuqLF6Dhdd+5wk
- QLJVT9BLUrxd+Iw==
-X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
- fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
+References: <20250907195600.953058118@linuxfoundation.org>
+In-Reply-To: <20250907195600.953058118@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 9 Sep 2025 13:22:42 +0530
+X-Gm-Features: AS18NWB51GMfdNxH5F_7y6R9Phs7xYbSJja9zt2vDLfRVbapihqj_C3CM63O-h0
+Message-ID: <CA+G9fYt3xc6DmR+EYZD1cAiBSf0VxH6jqbdf0PK-8uGPivw8ew@mail.gmail.com>
+Subject: Re: [PATCH 5.4 00/45] 5.4.299-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org, Netdev <netdev@vger.kernel.org>, 
+	linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The DP PHYs on X1E80100 need the ref clock which is provided by the
-TCSR CC.
+On Mon, 8 Sept 2025 at 01:40, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.4.299 release.
+> There are 45 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 09 Sep 2025 19:55:53 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.4.299-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.4.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-The current X Elite devices supported upstream work fine without this
-clock, because the boot firmware leaves this clock enabled. But we should
-not rely on that. Also, even though this change breaks the ABI, it is
-needed in order to make the driver disables this clock along with the
-other ones, for a proper bring-down of the entire PHY.
 
-So lets attach it to each of the DP PHYs in order to do that.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Cc: stable@vger.kernel.org # v6.9
-Fixes: 1940c25eaa63 ("arm64: dts: qcom: x1e80100: Add display nodes")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
----
- arch/arm64/boot/dts/qcom/x1e80100.dtsi | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-index 737c5dbd1c808300041cc8897ca1f7450e16e019..551fa270e6ecbe6462ebc1736a36be65534d3ae0 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -5670,9 +5670,11 @@ mdss_dp2_phy: phy@aec2a00 {
- 			      <0 0x0aec2000 0 0x1c8>;
- 
- 			clocks = <&dispcc DISP_CC_MDSS_DPTX2_AUX_CLK>,
--				 <&dispcc DISP_CC_MDSS_AHB_CLK>;
-+				 <&dispcc DISP_CC_MDSS_AHB_CLK>,
-+				 <&tcsr TCSR_EDP_CLKREF_EN>;
- 			clock-names = "aux",
--				      "cfg_ahb";
-+				      "cfg_ahb",
-+				      "ref";
- 
- 			power-domains = <&rpmhpd RPMHPD_MX>;
- 
-@@ -5690,9 +5692,11 @@ mdss_dp3_phy: phy@aec5a00 {
- 			      <0 0x0aec5000 0 0x1c8>;
- 
- 			clocks = <&dispcc DISP_CC_MDSS_DPTX3_AUX_CLK>,
--				 <&dispcc DISP_CC_MDSS_AHB_CLK>;
-+				 <&dispcc DISP_CC_MDSS_AHB_CLK>,
-+				 <&tcsr TCSR_EDP_CLKREF_EN>;
- 			clock-names = "aux",
--				      "cfg_ahb";
-+				      "cfg_ahb",
-+				      "ref";
- 
- 			power-domains = <&rpmhpd RPMHPD_MX>;
- 
+NOTE:
+Following list of new build warnings noticed on arm build with gcc-12 and c=
+lang.
 
--- 
-2.45.2
+drivers/net/wireless/marvell/libertas/cfg.c: In function 'lbs_associate':
+include/linux/kernel.h:843:43: warning: comparison of distinct pointer
+types lacks a cast
+  843 |                 (!!(sizeof((typeof(x) *)1 =3D=3D (typeof(y) *)1)))
+      |                                           ^~
 
+drivers/net/wireless/st/cw1200/sta.c:1292:20: warning: comparison of
+distinct pointer types ('typeof (ssidie[1]) *' (aka 'const unsigned
+char *') and 'typeof (32) *' (aka 'int *'))
+[-Wcompare-distinct-pointer-types]
+ 1292 |                         join.ssid_len =3D min(ssidie[1],
+IEEE80211_MAX_SSID_LEN);
+      |
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+drivers/net/wireless/marvell/libertas/cfg.c:1106:18: warning:
+comparison of distinct pointer types ('typeof (ssid_eid[1]) *' (aka
+'const unsigned char *') and 'typeof (32) *' (aka 'int *'))
+[-Wcompare-distinct-pointer-types]
+ 1106 |                 u32 ssid_len =3D min(ssid_eid[1], IEEE80211_MAX_SSI=
+D_LEN);
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~
+
+## Build
+* kernel: 5.4.299-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: f858bf5484295b4f9ee720b49c5348ce54eceae3
+* git describe: v5.4.297-70-gf858bf548429
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.2=
+97-70-gf858bf548429
+
+## Test Regressions (compared to v5.4.297-24-g79c1b3cebd7a)
+
+## Metric Regressions (compared to v5.4.297-24-g79c1b3cebd7a)
+
+## Test Fixes (compared to v5.4.297-24-g79c1b3cebd7a)
+
+## Metric Fixes (compared to v5.4.297-24-g79c1b3cebd7a)
+
+## Test result summary
+total: 39701, pass: 30356, fail: 2171, skip: 7026, xfail: 148
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 131 total, 131 passed, 0 failed
+* arm64: 31 total, 29 passed, 2 failed
+* i386: 18 total, 13 passed, 5 failed
+* mips: 25 total, 25 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 26 total, 26 passed, 0 failed
+* riscv: 9 total, 3 passed, 6 failed
+* s390: 6 total, 6 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 27 total, 27 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-exec
+* kselftest-fpu
+* kselftest-futex
+* kselftest-intel_pstate
+* kselftest-kcmp
+* kselftest-membarrier
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* lava
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
