@@ -1,232 +1,107 @@
-Return-Path: <stable+bounces-179076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73F6CB4BD0B
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 14:07:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE7CB4ADB4
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 14:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73D307B4D43
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 12:04:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F4E4172064
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 12:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A37C2E11DC;
-	Tue,  9 Sep 2025 12:04:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="EiwjHNzo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC57322767;
+	Tue,  9 Sep 2025 12:04:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2057.outbound.protection.outlook.com [40.107.220.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0562FF679
-	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 12:04:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757419484; cv=fail; b=IHBtwcer3vV6zI9RYyCMu8DwayJ07De6paSvThGP+TSIwFvJ5KuBrCGv9qiIanzVIyWDQVeOXQm23BTbpiQeDCNNGziXNiUKHwFX5RaN5L6Ee5R/MRrBx6DdGFw3xEadGNB1HJZ8vi3+0J7svE87YAdw1WYW7FB5BJU0exNQhaE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757419484; c=relaxed/simple;
-	bh=uzCcuPzDK3GPsADDJW6pI5i/GWOvdVCM577IE+gOfKY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=BIAtzKqnZx9LzCEJCWKB4NstMCpUqnTSOw+VnaeHqNJYaoFvkLilgZcGZR9inNCdCehrcjexa5AWZPa+XAcVsHe3DQpyKrHO9cgA9jE2laJ42pHUwzffbNsOwyJ+Pnm6k1oZAL483jqj5Dcyxcb4cNl12DVT+Jo/A087cgz51MI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=EiwjHNzo; arc=fail smtp.client-ip=40.107.220.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vByXJ2pWcJGDPKejxJJIpoez0awgqjPX0TGcb6KpLhFWZJLifFc03jugUGMvSI5oN0FykBTHdrmAWztztGRYvlSo/paCZa9FscTR5i/mxZ3BkUmjIHJfA5fzNu5iv49yIESSJo9ETTvZ966OT4fbvd25G8+VCuKl3TnjwF9UiBt0ED44fVrc4+BpDw2DPJqb6bNp9VckJzAiSaHIJNeBk0lsbwkhwV7K7lwYMPouRr56T87caJaK5vn12/AaT+xY49NneRc7UPkKcof4hMXq7rhT/g7BS9sb6OlwiT3mESPbYqkkxVYI3xKk80JJn//zPgmp+ZD+BoCXB30YJ8IVZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kdf74tiPhOAPZ4Q75XrdlD4eYdsu8zgqcvlSj1r4vsc=;
- b=XqFqFODcyWrvs3xNDYxvDquP8wDMnfhGunn/U0p7XfELyicnVArpNcoEEAjkxgpvG+lY20rgtD0ALPJ9DpX3xwwenrV7koW5+EgWeQvmFj8mHMRNMrdigNaYbek4nPYhM7E0W57qHozDCOaao2vAMhfVF43Fy0YYH8Zgt+E7mf7Kl0UaS9sHtNPb+Vqab7DnLuvfNDFFZqMgWTS8bkccXnqu7kbYGV2sIpgb4aASLzU4HH9xV+aoRv90uzcvsrOP4Otx4wi2IwsoDAu5ZXzp51AlYElqJsbX26HSvxKmijJA5laX6VIOJ/C0OOomzYlndJUEOcXI7aWanAH50q0J6g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kdf74tiPhOAPZ4Q75XrdlD4eYdsu8zgqcvlSj1r4vsc=;
- b=EiwjHNzoP0kJfdkJYiWcwtA+3yqmTjfj71cCwxOB+PNK53aq5LJymLHYCmf4FvcBw6KVJxOoy8LE+0htCcAJZ35m4fYtOShnt8pqkkpU27Ay/BwWvMRsQLgX7hi6eqj986dGwL2SnEbkh5bg0jML4E9D1qVjApPzX7j3r6CkurM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by SN7PR12MB6910.namprd12.prod.outlook.com (2603:10b6:806:262::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Tue, 9 Sep
- 2025 12:04:38 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%5]) with mapi id 15.20.9094.021; Tue, 9 Sep 2025
- 12:04:38 +0000
-Message-ID: <6f6841a7-57bd-49de-9b55-b5b0514a2749@amd.com>
-Date: Tue, 9 Sep 2025 14:04:30 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/3] drm/buddy: Optimize free block management with RB
- tree
-To: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
- matthew.auld@intel.com, jani.nikula@linux.intel.com, peterz@infradead.org,
- samuel.pitoiset@gmail.com, dri-devel@lists.freedesktop.org,
- amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org
-Cc: alexander.deucher@amd.com, stable@vger.kernel.org
-References: <20250909095621.489833-1-Arunpravin.PaneerSelvam@amd.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20250909095621.489833-1-Arunpravin.PaneerSelvam@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BL1P221CA0036.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:5b5::6) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7812FF679
+	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 12:04:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757419479; cv=none; b=gDrkqVV/8MKIqwE1Sl+/AF6LsNo79VLNPSHzHUQr2BxEwdbQhF1oiso5fTlpkoLM8QrmunefFJikE8nx8rspzNJFOUgKKOESMS4AROQ1nM5ErnKfYQm5LBqLIajtPV0j2hmpVoSJLm5foI9lgPKTa6NKO/2bpddt63Ii+OfUbA8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757419479; c=relaxed/simple;
+	bh=KgsAb4NxrALmbompHqpXbboMITyx05x9hO3+CceDcR8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rALJNk/DqMB37KGH0MWg8ejkowIPM0IXR3DYkYlkv1ahCuKDQNyLuJcvJ/ZaQ9pKhAEKqbZNpFP9F32qQajm6MxEGaO48g8poGbZzAblU9PtPQabegIUQeAt0G/IkQRnQ+MI2w6SutPkI5t6RlPQUkTgUtQC/6Tt3qJi6zcTofc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CDBEE1424;
+	Tue,  9 Sep 2025 05:04:28 -0700 (PDT)
+Received: from [10.1.26.104] (e132430.arm.com [10.1.26.104])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D9CDE3F66E;
+	Tue,  9 Sep 2025 05:04:35 -0700 (PDT)
+Message-ID: <c49ae320-b73e-42b3-b41a-4f71560a6431@arm.com>
+Date: Tue, 9 Sep 2025 13:04:33 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SN7PR12MB6910:EE_
-X-MS-Office365-Filtering-Correlation-Id: aca461ac-7ba8-49d6-cb79-08ddef990cb6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SXF1VnVZZGxsekU2dm10RzJTMFVDUndka1lYNHdxRVFzUVpoVm1CcEZNNTFU?=
- =?utf-8?B?QkNqdG5EcW9jemhoYWIzenhDc3A3cTZqQm9FeWlvTWtvMkJhbS8xdS8xMjZH?=
- =?utf-8?B?dHVBa3l3a1QwL0JXSXhpNWlHOGxpeTZyWjhMMTNxY0xvN2dZUG12VjdBVlY5?=
- =?utf-8?B?Y2hiaHVidld1RU9NeWJJMXdraHE2MW9ydjJNY3Z6dnkyTW5nL0RFWm9VTUwy?=
- =?utf-8?B?dTV2Mit3YXgvblVJQWhzeEEwMHVub0p2RDBsTGtDc0NRNktwdHl3MWxOeldV?=
- =?utf-8?B?WXBvQXozVUFJeEpWcVVaZE1qY1Q3UDVCbWlJNHpvSWZBN25wWHo1K0tFTXJU?=
- =?utf-8?B?SGR6OWI1ZkRBRjFaVHIreHFoSWNzSk56bkhCNjhmMnpER3pmZUxEeTFSMkR0?=
- =?utf-8?B?Z0lvZnVvd3AveCtPanYrMHdFaU5yQjl3dy80RmdiWlZ0ZVN0dS85N3Y0Y1Vq?=
- =?utf-8?B?SURxNXlJQ3hFNDRidUNET0ljdWRHbndKdEdiNmpkbFNnYVR1Mk1hdXlvNld5?=
- =?utf-8?B?d0VybUl1c1BuTUdiZW14ekNJOEFnVG50NWRiT0F2UHNlQVlKRENjZTZWaGND?=
- =?utf-8?B?VmVRV3Q5YlNNaE1Fc2hhVHZhWFE3ZjgrcnhaWGlBMURkVFVzSzZZL25NTW9R?=
- =?utf-8?B?Ti9KYmFmSjNqVFhkS3FLZTlHZk5RS0FLYnI3YU5tSTljY2VmSFBqaDRIR3pZ?=
- =?utf-8?B?SGRVU2E2NzlmT21PcmhYNmEwam8ySzVpYW1JQWdSNHd3a1h4M29JVDlNZDRF?=
- =?utf-8?B?d2tqdmw3Si9tak1ORjRvMTJyZ0hYOHZzV0E1Z1IyWWJSRERBekZ6NFRoTDlr?=
- =?utf-8?B?d3JocnF1bVZHeDhWQ1hLMGdjdEJPUWFnMnQ0VGZqT255Q2kvbDZUT2ErWXFn?=
- =?utf-8?B?ZU1qdHFrU2Q3NkhvZmhEWDhaZkZCMHB2Tm5ObTRrMkdYditna1BFdFNOUnpx?=
- =?utf-8?B?ZVMxZ3FaaVhlVEJ1MnU1WEpNVW0wZTEzQWZRZDZ6N1EyUFBDTm1qeXhzcmM0?=
- =?utf-8?B?TFNFb1UrUmo5M3dIRzlVK0k4N0ZkNzVUSUdaZThPeEk4eCthSFJrbE8vdS9R?=
- =?utf-8?B?eVdFc3FoR1kwYzhUMVdXdkpmaHlrdjVSR1dtcE5pNkt2TS9xRVFMQ1VMcCtW?=
- =?utf-8?B?MEFYWGg0VEZBZndYTExEZzU0dDVndnU1KzRyRkluTURqajZneTFmUmJKa2Rw?=
- =?utf-8?B?dGtlaXcvYkh0YmFycEtISjlreXg3a2oxaHphZ1hXa1lXbjArVFF2MThCRk9j?=
- =?utf-8?B?MHZRQVVYRGw5RDVGVDY3anpBYXpzbDAwYVY3b0pvdEQvQ0piempZczM5Q2d3?=
- =?utf-8?B?UnhicmgybW04UFhaSzY5aXlPMkdMVmljU1lLV283aFNFOVlYdUdGTEhaNFlk?=
- =?utf-8?B?TUFqUUZSM01UeTBjMTBsTElQcThTSzZxMjNhZ3JqcEZiVjViZnczbGx5dnpy?=
- =?utf-8?B?NEdxUng4TDNsSHJxNVliQnNtemFES2ovd1RJWEE3R0VMa0lFQTZadnp6RlYy?=
- =?utf-8?B?b0F5OUNWZlBZTnMvMlg1citaZ0ZGWVhPVG1zNHp3U2NQS0lOdnlueE1KZndn?=
- =?utf-8?B?UlYrb0NDUit6dysrWHhtWUFRUFRFdkR3Qk80UkxQbytxREFBeElWaUgxWmU5?=
- =?utf-8?B?YXR2S2hGM0JielZqZHlGUGMyMk5qdmRGd2o2MlZSL28yRnh2T0NYWW5BMFpS?=
- =?utf-8?B?bXl3eTBKYmxXdGdpd3hoZjQvOHNHak1oaHRkZ2YwdWtnZU9pMCtKelZJdFh1?=
- =?utf-8?B?YndFWXBhMktxR2g2OUlEb0s3b1h4b0hoZWFtbTRDUzVOK1VTNU5yVzlISmxx?=
- =?utf-8?B?K213VjdRdUhQZzUyelZBVC9jNHdvTlg4WmUzMk5zbGFVbVVrRnZnYmt2NlpP?=
- =?utf-8?B?ZWxkVFlRNTVrZ2RRQThlY01ra0ptcUlOYUZvck5OR0daNXNKUHhlN29jYnNC?=
- =?utf-8?Q?uFhF2mbsvf0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Sy9ycmI5c2lXQ1ZucnF3OXlLK0FzLzliV0dqaldnUFk0dWh6L25BNjlmWWJB?=
- =?utf-8?B?cCtVakNPYUpnVlMvaVN5ZGFvNVF4QXBWSDZsZmJmdE10RXl1KzRvTUM2T2M4?=
- =?utf-8?B?N2FPdERHOWZHbUZTNHliT2FBTTh6cFJzMjdMdm1zWDlFeDA2ZE96REtHZGVk?=
- =?utf-8?B?K2ZGK3h2eXBXS0Z0MytaT2R2OW5hVmFYNldORG05Vm9pVmU0bzVZcXZETXRa?=
- =?utf-8?B?WjRTS2NBU21TNmxyZlQzc0JEVzg2Tjd5QVM2bm1RS1EyUGMvOTY5L21tdXd2?=
- =?utf-8?B?YjM4VENGK2k0bTNqMXcybFNKWHZpemdORGZwUGgxRUpia0JQL1A3d0diRGVC?=
- =?utf-8?B?ZWtaMDQ0UGdUUlIva0pMVDNzUStHYWRUc3RMcFh3Q2c2MU1FV2xURnRNN1pE?=
- =?utf-8?B?STVVSVNoTjUrVjlYcVBTb1VVZkQwQjhlZTNLRXRTdjRGUTYybnJ1MXR4dkJ5?=
- =?utf-8?B?Vmh1Ni9NRDRCTWV5anl1WXpBZ0hZenlIYnlJWXpCVmovTmtpMHYzUjJ4K2xt?=
- =?utf-8?B?Q0F6dWRURFo0UDQ2cEkxaG95cmhUQnMzemxWY0l5QVlmZ3Rvc2RrWVdIcjBM?=
- =?utf-8?B?OHA4Q21YcjM3UmxGeitIclo1enc3S0FrbnZMbG9VQ0UvbjNVcVhXdVQ1ZEtY?=
- =?utf-8?B?VXhKWVRwUThNTHdFVDZSYm5nZEswMmIyYkpMakgwc21Yclh6WFVOdlc2NTRp?=
- =?utf-8?B?TW5UZE4zQURxTzdCRE1KTjNucjV1NFJtQU8yRTNzUEpCSTF4OFJ4VG9qVkJh?=
- =?utf-8?B?N2V0bHFhT1I0dVE2bkJBVCttTU11ZHFTUmJDcmdLTjRUeVo4cWNDSDZPS2lN?=
- =?utf-8?B?YjdqZ1FBS212MXQ5QTRQanl3TU1kRmticnhsUU5ib0xmYmE1QnNGcjVIWkc0?=
- =?utf-8?B?NzFPbSs4Q2JIRThCSXE5OGZCb3JwZ3RkN1FaSU9nSXc1ZGREQjRBT2RsWTgy?=
- =?utf-8?B?Y1Q4TFZwY2tqbmFkQ1Mrd21ueUFzQmRsMVBycVI0WVhFOTRuRU8zdklzL3Az?=
- =?utf-8?B?ajIxbFM2RmQrdm5yNytFcWE3QStJdHREL2pjUTNkajdTaEVNZ1Q5cjBBdmt0?=
- =?utf-8?B?NVNGcHNQU05FQ3NJZzMxeHFOMWljaThyY3dIK0pVV2tZQlJjdGdzQ1JyN05R?=
- =?utf-8?B?YVVlRXdZakYvUFYwQTFOaWtCOFIwaittVUFZOXJ3a1VsOWx0S0tKUDIzRnlW?=
- =?utf-8?B?NkxzT2lBOHBVUG4zU0daV3pQVE1ScGNlclk1Zy9TdzRaRS9JUnExNHIrbVR3?=
- =?utf-8?B?eDFsd2c1Qm9tczRqMWdCcktBRGpRek9uVk1XcTAxVDRmbTRWUVdNaXdtRG8r?=
- =?utf-8?B?c3d1R2NlL0lsOXJ6VFNXVTVXRmlqWURGbmxRY0YyNFIxbUZESkc4Zm9TVFJW?=
- =?utf-8?B?L2JTUHNBMEgySmdFRGt5aVZWTk9rdlZFcVdsb010a1VaWWEvMHdObFBQZVkr?=
- =?utf-8?B?dmJKWlZWTnRROTRubnFwbWNvSTJ6WDllNUNPYkFuVFBpYlN6UnNVL3VNeFRi?=
- =?utf-8?B?VUNzOVI1WmxHellZVEFUWHVqeGtienFYa2F0T3hFNmhUdjBRUEdDbFpPbTRU?=
- =?utf-8?B?c0lvbUU3WThzRUlkYXpRbmlxVWhGdDFMeXhPeVNqSWhSZWVnekQxV2EzdGVB?=
- =?utf-8?B?WFE1dGJpNDcyY2grUExJTVhpODJ2N1NYMHVVbzNJYzFJRUZNbCswMHVVeVlX?=
- =?utf-8?B?UnpEVEx4blNEV25BR1BuVlM5TVB1a1VxakN2Rk1wbm82WE5YdmpDbUl4MXFZ?=
- =?utf-8?B?QzZWcXlWZE1FTTBaemRHWTNFMVkvSjd2YlBVZEc0aUJKYi9MRzFVNVpUUUVj?=
- =?utf-8?B?RnpYa1oyZmZTR3p3b0NYTjdvUk9TN2tiK1dHNmJiMnNXQTNHM0dFTkJuZkdZ?=
- =?utf-8?B?RHdhdTl1UDd4WWdWSC8wM2JLY0tuS2RrZHJGTUdkRnQzMTh3UnNQc1I1ZVhy?=
- =?utf-8?B?UWN2VTBpOVpoZ0hDMm9HM1BzdmZQRnJBbm01ZnR0VWw1NkVKV1QvVDFNQXlm?=
- =?utf-8?B?NHNaRkY2bEJ2eEdTbWwrSlZmbGdHNTczWENRcDg3bTdKRUdwRDIyMXdGNGls?=
- =?utf-8?B?My96eDRzbjFhd0RWUkc0U3dmRS9ablBhYVdicUVWTDR6SWMza0kwYjJkVE1X?=
- =?utf-8?Q?nMmwpJ20NX3ixaBev3yxygTDd?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: aca461ac-7ba8-49d6-cb79-08ddef990cb6
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2025 12:04:38.0664
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L8WQTGIl0ktysYXpVwihctD91IapJ5qCfH8FFuGmytGw4jzOuI8nSGkyuyPRgPTa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6910
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1.y] tracing: Do not add length to print format in
+ synthetic events
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Tom Zanussi <zanussi@kernel.org>,
+ "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+References: <2025041706-ambiance-zen-5f4e@gregkh>
+ <20250907222532.932220-1-sashal@kernel.org>
+Content-Language: en-US
+From: Douglas Raillard <douglas.raillard@arm.com>
+In-Reply-To: <20250907222532.932220-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Arun,
+Hi Sasha,
 
-On 09.09.25 11:56, Arunpravin Paneer Selvam wrote:
-[SNIP]
-
-> +/**
-> + * rbtree_for_each_entry_safe - iterate in-order over rb_root safe against removal
-> + *
-> + * @pos:	the 'type *' to use as a loop cursor
-> + * @n:		another 'type *' to use as temporary storage
-> + * @root:	'rb_root *' of the rbtree
-> + * @member:	the name of the rb_node field within 'type'
-> + */
-> +#define rbtree_for_each_entry_safe(pos, n, root, member) \
-> +	for ((pos) = rb_entry_safe(rb_first(root), typeof(*(pos)), member), \
-> +	     (n) = (pos) ? rb_entry_safe(rb_next(&(pos)->member), typeof(*(pos)), member) : NULL; \
-> +	     (pos); \
-> +	     (pos) = (n), \
-> +	     (n) = (pos) ? rb_entry_safe(rb_next(&(pos)->member), typeof(*(pos)), member) : NULL)
-
-As far as I know exactly that operation does not work on an R/B tree.
-
-See the _safe() variants of the for_each_ macros are usually used to iterate over a container while being able to remove entries.
-
-But because of the potential re-balance storing just the next entry is not sufficient for an R/B tree to do that as far as I know.
-
-Please explain how exactly you want to use this macro.
-
-Regards,
-Christian.
-
-
-> +
-> +/**
-> + * rbtree_reverse_for_each_entry_safe - iterate in reverse in-order over rb_root
-> + * safe against removal
-> + *
-> + * @pos:	the struct type * to use as a loop cursor.
-> + * @n:		another struct type * to use as temporary storage.
-> + * @root:	pointer to struct rb_root to iterate.
-> + * @member:	name of the rb_node field within the struct.
-> + */
-> +#define rbtree_reverse_for_each_entry_safe(pos, n, root, member) \
-> +	for ((pos) = rb_entry_safe(rb_last(root), typeof(*(pos)), member), \
-> +	     (n) = (pos) ? rb_entry_safe(rb_prev(&(pos)->member), typeof(*(pos)), member) : NULL; \
-> +	     (pos); \
-> +	     (pos) = (n), \
-> +	     (n) = (pos) ? rb_entry_safe(rb_prev(&(pos)->member), typeof(*(pos)), member) : NULL)
-> +
->  /**
->   * rbtree_postorder_for_each_entry_safe - iterate in post-order over rb_root of
->   * given type allowing the backing memory of @pos to be invalidated
+On 07-09-2025 23:25, Sasha Levin wrote:
+>   1 file changed, 2 deletions(-)
 > 
-> base-commit: 7156602d56e5ad689ae11e03680ab6326238b5e3
+> diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
+> index 385e9fbbfbe7c..c2817d0c05b69 100644
+> --- a/kernel/trace/trace_events_synth.c
+> +++ b/kernel/trace/trace_events_synth.c
+> @@ -383,13 +383,11 @@ static enum print_line_t print_synth_event(struct trace_iterator *iter,
+>   				str_field = (char *)entry + data_offset;
+>   
+>   				trace_seq_printf(s, print_fmt, se->fields[i]->name,
+> -						 STR_VAR_LEN_MAX,
+>   						 str_field,
+>   						 i == se->n_fields - 1 ? "" : " ");
+>   				n_u64++;
+>   			} else {
+>   				trace_seq_printf(s, print_fmt, se->fields[i]->name,
+> -						 STR_VAR_LEN_MAX,
+>   						 (char *)&entry->fields[n_u64],
+>   						 i == se->n_fields - 1 ? "" : " ");
+>   				n_u64 += STR_VAR_LEN_MAX / sizeof(u64);
+
+This looks consistent to me with that patch:
+[PATCH v2] tracing: Fix synth event printk format for str fields
+
+diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
+index e3f7d09e5512..f71e49cd35b0 100644
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -305,7 +305,7 @@ static const char *synth_field_fmt(char *type)
+         else if (strcmp(type, "gfp_t") == 0)
+                 fmt = "%x";
+         else if (synth_field_is_string(type))
+-               fmt = "%.*s";
++               fmt = "%s";
+         else if (synth_field_is_stack(type))
+                 fmt = "%s";
+  
+I only tested the trace.dat route when writing it, thanks for catching this case.
+
+
+Cheers,
+
+Douglas
 
 
