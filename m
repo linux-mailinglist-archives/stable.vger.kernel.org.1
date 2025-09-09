@@ -1,139 +1,146 @@
-Return-Path: <stable+bounces-179056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB17B4A64A
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 11:00:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70789B4A6D5
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 11:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58AD2541ECE
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 09:00:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70E114E7995
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 09:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38FD7277CAB;
-	Tue,  9 Sep 2025 09:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B90927AC28;
+	Tue,  9 Sep 2025 09:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U/WezDBF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qjDu9fUK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3BE246335;
-	Tue,  9 Sep 2025 09:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D3D275AF6;
+	Tue,  9 Sep 2025 09:08:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757408408; cv=none; b=i6v1ZdxDPKDwJVCwO2ZfFK85R59xX7t2NGViyqtR22w7Iv0wamPaDI6uXLuIqfy/cuRSsEgxI/h7EXPU+WLDcYXRxpyS50XjwGfnUpUq5qKwI6+RAmsojfrI2CSs32WsQcpg5kn/xeOjRgXU64l9UxFWOveuW2lJu0BlsFBg3kc=
+	t=1757408933; cv=none; b=NNLVc+mCKYxAT1zCUEBApy5aF6SZidTZSNddojCkVcxInRzJ2wjumgD6e/Bv9vi9TrqssD7MzBVeTtvxDi/lCs2yhJJVHb+JNJQwnWhxgkQ/Aq/Aws3I5bPoNaD4BK849c8ZHzOvGwJKzZRcDwZ3wJoPaEPfiO2GS1MbuhCsJas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757408408; c=relaxed/simple;
-	bh=aFSUmCti6MLTcqlgBbhF05M3cBauzcyYGq99VlvOS14=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=PsHfGZ1Ldy7ppZ3DP94OHY5WF84Xwa2r7qiSq1CIctW5YOhvFO3246xQCws6EhTyeslb3QqEaayVxFBoBvCFAVPToh9ZS1n2dCCCm26vueaNv+TFYi1+A6m8bEPjk0cuuvrSUPMkgQpCrA5qWOJNzMCOLlnznfo1/ycJDvg7vuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U/WezDBF; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45df0cde41bso2109395e9.3;
-        Tue, 09 Sep 2025 02:00:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757408404; x=1758013204; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2iATGGckum8OfAaFEr19Bj8rW51tZDxYm72q6WM1MEA=;
-        b=U/WezDBFrg3etBTmZiSynRRgOiqCSS2cJD9DhdII6LTeT2IBu8xCS3aaUj65ZBMXlI
-         Z26jOCdPmUmq8fv0HrVr/uOjkGe5ruB4ouDV+MgRFUQdIOrGTB4/q6QyOWz9H4nORCp8
-         rGK6t31Wt8k+HGC3Z778CI2KkWMnPaHxXIYLQd1dQI6+iwSWoR9yGOlkKCm+qZ6gpvH5
-         jgaWMShYKGMqzSmfr2YGoc4kksFMSgAcC8xObFNGBAh1dToiI1c/VwY7psEM31fEcVQN
-         gYL1w55mbfqacGZRjXjMvptPY4wQTY50shLqskmYwXWyydt/1lBLPnMvVcaTHMwZIg6F
-         UUCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757408404; x=1758013204;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2iATGGckum8OfAaFEr19Bj8rW51tZDxYm72q6WM1MEA=;
-        b=kICHzJ4iSsgkdJzaXI6p5CM3FgpVfRvIPoK8nOmXisZWup4eDU/ZTi4OzHS6uRo+Li
-         m3095Ah0FRbD0d+IxjpDVxqwnLRfKnDMsQv43Qc0bqeV5dsXsO+EqxhSg5mqSlmR8U7V
-         dKCRUau1muF14xsykaWwl1035RWsTW7IRv4V/jh5Umvnt4QPyWt+bGNjU1xsp97rxlh3
-         fj1QvY2xGhmXaMXXdsDCMGJJc8xXTawbu4Iozizm+Dl6NTSZUbx/TtvZ6HnQufq3u6p1
-         6wgQ9j6UtiDXKQ91ZKyL6Y4mKmaZNmuuSGGJIVd00+ZGPw0w9cOtSPaze+RoliebR/8m
-         Ba4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUUtUFaDP5+MZ9VgUxw4hiPym1HYGCsvzXwvX0TkftC9WOLGrb2XgJ2EI6QCk+EY123hEurqu+q@vger.kernel.org, AJvYcCV+S6KKug1uXm0SZVz06pbdR1I3vzTTPtb7sP7aLyZqxHYL15ebj47K8iR1A2zMasDhCUtN+R8/JZI=@vger.kernel.org, AJvYcCVx1kxi6KRV3xfBigFFzuTC56J+JO3gjBF8lSHHpDbAVq6HghcHW4CtDg9NEldMOodfaV3bK5CyR66mAEGU@vger.kernel.org, AJvYcCWqnf6WP9jbH2sTij8XAEa/6/x/aAysro/F15vs+K+MTGqwFrU+FzBgVvVwvDT0bOIUDDY3AZ4LpyVqV6pGbnfc@vger.kernel.org, AJvYcCXRyU2tT+sKQyJy2b6Z5IzzDnSVHUjyb5O5oh31tHb05HNJ7FdIbeSzWEp8gZyg/v5RE32x8yWN@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUmn8NxYBnC1iU5r6vCKeadQmkxPmuDi/o4rFZ40ADBVMjZPMz
-	/7mIhtvP2PZas2f+gbQAcgVbElw+boLvMCKh0WmHTuJO08xQa8rjW+ja8oZ3DRB/8LA=
-X-Gm-Gg: ASbGncvTh80qvvRpZ/eMbkcu1MrI7WiJoCJd1IwFGoFAI7hMSj5KjYqcJ2QqKC1aP9z
-	t7wJ8xF0BVrR4h3QDnj1701Ev2j8GlVX5mdjCOG0n9DSsS/eQldjk5vOnbVYhQmNNBVmxrrmJI0
-	8r5mbIH73CHvU0npR9PXNVUikG8UwviPzvDQLRqwvVAA6t8dC2OibnxcXjvsvfO4CjYvKwglOxR
-	C43A5GyMb0F9sverrol4vxans2cTlU5pmscH0W8lyYe9pYdsbJ7H7pM0OY+JZXrE7HKBzmdJDG7
-	Zc973sEXAw9IlAicASdziKNBPCl9td+kfgd2GJuTMSNVRJEAWyKV9euKi/jy4A1tCQKmNtfq1UH
-	WhgVi8ZfU8Ra48oySlYuV256HZoUhn/5KZA==
-X-Google-Smtp-Source: AGHT+IHi9nXrfKJGYALDvRRmSRzYypfCt5Kl/21MQbCCiY/bILW7ZiySngyv35dAVzFjI0zhrcNddA==
-X-Received: by 2002:a05:600c:1389:b0:45c:b580:f795 with SMTP id 5b1f17b1804b1-45dddedf80fmr83035805e9.34.1757408403794;
-        Tue, 09 Sep 2025 02:00:03 -0700 (PDT)
-Received: from imac ([2a02:8010:60a0:0:837:bf58:2f3c:aa2c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e92a42asm477565115e9.20.2025.09.09.02.00.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 02:00:03 -0700 (PDT)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: Mat Martineau <martineau@kernel.org>,  Geliang Tang
- <geliang@kernel.org>,  "David S. Miller" <davem@davemloft.net>,  Eric
- Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo
- Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Davide
- Caratti <dcaratti@redhat.com>,  Jonathan Corbet <corbet@lwn.net>,  Shuah
- Khan <shuah@kernel.org>,  netdev@vger.kernel.org,  mptcp@lists.linux.dev,
-  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
-  linux-kselftest@vger.kernel.org,  stable@vger.kernel.org
-Subject: Re: [PATCH net 1/3] netlink: specs: mptcp: fix if-idx attribute type
-In-Reply-To: <20250908-net-mptcp-misc-fixes-6-17-rc5-v1-1-5f2168a66079@kernel.org>
-Date: Tue, 09 Sep 2025 09:44:40 +0100
-Message-ID: <m2plc0ui9z.fsf@gmail.com>
-References: <20250908-net-mptcp-misc-fixes-6-17-rc5-v1-0-5f2168a66079@kernel.org>
-	<20250908-net-mptcp-misc-fixes-6-17-rc5-v1-1-5f2168a66079@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1757408933; c=relaxed/simple;
+	bh=xLTgjOJF7T21LC8sF0nxtV8tQ0ng117cCSlpwqQDozc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hFXr4M9YINku3a1hpvW/hmuKU6v8osXn6D0kqa3dpHJ/tOmrTCJ8rQuocH2OmzBLf1fk0wIEPktJYFwr6F99csi16xGhyn9Pfi3Qtfxru/UhNdo7Dghgxr4NaW0GSdiskrPif8AD445GT55Sg9O5lZvjqFhFKo+h+ECWzjTaFOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qjDu9fUK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3EFC4CEF4;
+	Tue,  9 Sep 2025 09:08:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757408933;
+	bh=xLTgjOJF7T21LC8sF0nxtV8tQ0ng117cCSlpwqQDozc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qjDu9fUKJ/wZbf7niBEGb/jhHURFT5XxYb+rNU8sRzhm6tK8o3/+I0Qof2L4S/PWN
+	 4OI6jMeUYorQ2qm8yfFkP3bQ1MRcdjrxVVs3lt8VyV2v4apwp29RzvmmIDMghTiOLW
+	 m3TvgHx96VN8A1BrK0MULUCJQkXrdOKDk8rf5Pe/UHoEh/hyshF9FifPD9qlQbiTeh
+	 rop8E1xtwDzR9M3hzzF7RGElJptHl0MG72eJozuYeoZD8yp7dwu2sumPLUpCgU4sKs
+	 pxChowa4nlh/wRvkgJdteDZXUV6lXlmIRvTJtXccvQjSr5RYmftuM3iyHWLA7DRoru
+	 i47/RlekHBdKg==
+Message-ID: <8f0bc70f-1657-4938-88e8-532ffb7c1a12@kernel.org>
+Date: Tue, 9 Sep 2025 11:08:46 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net 1/3] netlink: specs: mptcp: fix if-idx attribute type
+Content-Language: en-GB, fr-BE
+To: Donald Hunter <donald.hunter@gmail.com>
+Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Davide Caratti <dcaratti@redhat.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250908-net-mptcp-misc-fixes-6-17-rc5-v1-0-5f2168a66079@kernel.org>
+ <20250908-net-mptcp-misc-fixes-6-17-rc5-v1-1-5f2168a66079@kernel.org>
+ <m2plc0ui9z.fsf@gmail.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <m2plc0ui9z.fsf@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-"Matthieu Baerts (NGI0)" <matttbe@kernel.org> writes:
+Hi Donald,
 
-> This attribute is used as a signed number in the code in pm_netlink.c:
->
->   nla_put_s32(skb, MPTCP_ATTR_IF_IDX, ssk->sk_bound_dev_if))
->
-> The specs should then reflect that. Note that other 'if-idx' attributes
-> from the same .yaml file use a signed number as well.
+On 09/09/2025 10:44, Donald Hunter wrote:
+> "Matthieu Baerts (NGI0)" <matttbe@kernel.org> writes:
+> 
+>> This attribute is used as a signed number in the code in pm_netlink.c:
+>>
+>>   nla_put_s32(skb, MPTCP_ATTR_IF_IDX, ssk->sk_bound_dev_if))
+>>
+>> The specs should then reflect that. Note that other 'if-idx' attributes
+>> from the same .yaml file use a signed number as well.
+> 
+> Note that mptcp_pm_parse_entry has this, which should maybe be fixed at
+> the same time:
+> 
+> 	u32 val = nla_get_s32(tb[MPTCP_PM_ADDR_ATTR_IF_IDX]);
 
-Note that mptcp_pm_parse_entry has this, which should maybe be fixed at
-the same time:
+Good catch!
 
-	u32 val = nla_get_s32(tb[MPTCP_PM_ADDR_ATTR_IF_IDX]);
+This should be fixed in a dedicated patch, because this fixes commit:
+ef0da3b8a2f1 ("mptcp: move address attribute into mptcp_addr_info"), a
+different commit than the one being fixed here.
 
+I can send that separately later on if that's OK.
 
-https://elixir.bootlin.com/linux/v6.16.5/source/net/mptcp/pm_netlink.c#L116
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
->
-> Fixes: bc8aeb2045e2 ("Documentation: netlink: add a YAML spec for mptcp")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Geliang Tang <geliang@kernel.org>
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> ---
->  Documentation/netlink/specs/mptcp_pm.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/Documentation/netlink/specs/mptcp_pm.yaml b/Documentation/netlink/specs/mptcp_pm.yaml
-> index 02f1ddcfbf1cfd81a398dd03c52bb9f281c1aa08..d15335684ec3d6256505f2b3887ce5818eb57462 100644
-> --- a/Documentation/netlink/specs/mptcp_pm.yaml
-> +++ b/Documentation/netlink/specs/mptcp_pm.yaml
-> @@ -256,7 +256,7 @@ attribute-sets:
->          type: u32
->        -
->          name: if-idx
-> -        type: u32
-> +        type: s32
->        -
->          name: reset-reason
->          type: u32
 
