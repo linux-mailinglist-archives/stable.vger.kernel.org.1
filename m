@@ -1,169 +1,124 @@
-Return-Path: <stable+bounces-179026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0CE2B4A0ED
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 06:52:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E97B4A0F6
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 06:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64A1F177176
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 04:52:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E823C4E1385
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 04:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFEED2EB851;
-	Tue,  9 Sep 2025 04:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53ED345945;
+	Tue,  9 Sep 2025 04:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="kfjGtuh3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N4tBE+dK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8942DECDD
-	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 04:52:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71090211706;
+	Tue,  9 Sep 2025 04:57:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757393525; cv=none; b=fe6ksDofhLAJ9v4Fe/h4mjA53gjQD0iKCKWGordkxE+g0zWDFdbAHcobhmJITMxEqCFOZWaNXwFifaSZqaZIctBfr6E+IqnyzFmUrc/69wdKlBbbj0iJFOnYNzqgUZ7urbY2ONmcyGpoOD0rfm6NlWfxnxatdsR8keP6HlmB8zo=
+	t=1757393880; cv=none; b=NkP0kewKpzDN6VJ27hLWe+YzUQpq9qsXA4u7qEW9FeE4+BfDuIGex1s0u/iyOH2NpoiC8GGundflLTAYFxY4XqZPJX+EHkJYD6XuZrd6kR/T5aUUFagrHiH+6Sl0nBvWYl6CbSvtYExYv2qJL49bHnvJDPPG/X6fspPYVMd0C64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757393525; c=relaxed/simple;
-	bh=x8VD93zI//O173NdJM5LXc5a35t6Bki9+AMpcHxEaOw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hg6rkle04qIWVVGXDa5UD+Qry4xKXBg2wlVn7z4u+c4j9QR4A2OGTG8Kp0lmE8PbARN2FPrvB4LL7pbbs9BZD5Ip02a/h8Ky6mUkMiReij7thGvmtjraaIookPK//4AKskfVKvC8aHScwm1Hw5s3bQQhqCLei7qQlQJAtuQXc44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=kfjGtuh3; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b4c72885c8bso4242155a12.0
-        for <stable@vger.kernel.org>; Mon, 08 Sep 2025 21:52:03 -0700 (PDT)
+	s=arc-20240116; t=1757393880; c=relaxed/simple;
+	bh=Tb/9I9r3+HRBGBPJda2/t0vKpz6/1fF1C/OCaKN9U4g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RP11KVaXDb6glsXLVLzDa/WI95EBBYasK6fbeW0CeDi/j/4HbaTPBbZMTE1J69fl4mN8oqITtzeTPQxUePKt3Iq+pL1VPAUbObqR7Va6hAcgehlaOaRm4WCI2nfO8b5+KxmFEBC4oZjnFPUToy3C++muNjW2QVDVyWq/smqAAXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N4tBE+dK; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55f6507bd53so5522048e87.3;
+        Mon, 08 Sep 2025 21:57:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1757393523; x=1757998323; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RxTekYZw4n/8+pZjM2Wb4q6TEJbbwCkXd1Sr0QZaf6U=;
-        b=kfjGtuh3QAS1aGpIO0f+Z1dM2OfZm7/NMiPiaRpY7lsH/vOkGB+pjyUy4pOx/RABV4
-         MGlcOD8k8k92FVVuc2vMqWFzeTW4+q77QIOGqItk4d4eaH94FpZCN/owoH5wBZRPk35H
-         t1FeNfbl9+J6mKlgca6AAYx75hx6CrYrmHbDI=
+        d=gmail.com; s=20230601; t=1757393876; x=1757998676; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l25NFxExAUe1eqmMOMVfFw3dzd2Dt4hw0Sr3RoaXfRE=;
+        b=N4tBE+dK6nYiF0Gpw5GX8MtBisOEt0oJ6IUgmgkvSGgJ+Wxg1XnY+fO9PC8KOUak3X
+         7W7czGjcIT9tgpDydc8U73gNdZkeneS5mkxOYZIHVeV1CSZtrKKD5rxOtNPfqrMQUEmf
+         d2UYgnojmhhVu5BQXC0sg0CPUczAD90j/wOHPz6jFHvwLsu+E9DsV8twHoKArM/VnrUl
+         9QGvB6C7qh5rG73crEWQrb3sbCkIaw/IE38yYTKkRfQzH/ezFWvTO496Tb3DC8MWaIjg
+         yuFZic310cN6nSYiKRF5unYmnJCd0kGfpbVeQSCAn/L3GW+cKhJ6GunvVKWcvyEzKxfW
+         uY1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757393523; x=1757998323;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RxTekYZw4n/8+pZjM2Wb4q6TEJbbwCkXd1Sr0QZaf6U=;
-        b=qcvSicUgK7UlJA4LheH+zCIHh7/BF4V0Ip+suHhUFNS8MrfdGcQy9nWrhuCVaqp13e
-         AFWAs9ig86X3G/54cO/lJIyeePsybqH1U27g25ySaKDy0r8U4mn3DofSRsaeqy/YBsm2
-         IUgjnFrasVs5HVvVCn0Wgf98CHeUD0IJ/HhWV6O8VbX/DV5BYrhpSusLm6ZvlCQePVs+
-         QGY4606k+Qdk/tDiiuwEu4U9K4/cnh8PXMe8k0cRxZUdzntDCpoIvAcbRN6iZlSy9MDY
-         FqT5Oqz3DjnmWXvaeqpbogVl0Iw8xuBHL0sgSMyC1sDffS2YUk9AJxjmZm5on2j7eA/9
-         Q6sw==
-X-Forwarded-Encrypted: i=1; AJvYcCW8CGLCT4NPX2nGMo1MgRtpqYHZFaQnCsVVKEvCjU7BaGSGmXxgUh4d99sYlkqaTQJt/rHQAhg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4UKbWiBuM25e1bjtk6cro8vciQAYkCzqvTAO4d21/YMXd9MsC
-	SbjUmdMtWZiiJHKWG5rHbhyHpeopJYsbYxyW0SgCszYpgX0bjET7y60BK0FCt2YQwQ==
-X-Gm-Gg: ASbGnctxLOwlEI15OF7HRw3bLuBGTAPUrYodKZ6o5e2A4AvuPsU7nz8XcsnwMME+/CC
-	pR4/ZAJ2CY4qW9dPhlLXV4OIT5eianmTC9W7fAtHPN0K+8RjEFRJHqOu0hzMAA+yGR4G/7cseTh
-	QpvAzp/p3e7xiXSIIhZ2RjhGs1Bngd+TSCCysUURBW7A28N0uGULfcBF/Zu0U+hQbO0kNWnSKJA
-	j9AIhtcTQDO8XIoXol8UY5PM6tViAem5A7zTDyrDrxl5wmJGnmoskhNbEmuK7SU5UC3Hs0kX+lv
-	d61Hage7Sqpn8vtKuT3VpXWRt6s6zLhOFOqX4mPXsnJMVI58WWj282kYEi1sRyiUXFoFm/z8/Nd
-	d70kYJa153AqlkIMsCtoJM8+mLT34qUodAdnAS8Aqo1gq16v3
-X-Google-Smtp-Source: AGHT+IHELyfgjQV2lzS3L+EPdr6RMiKi7ZVHtI7OWwvlxUWsJr5Q80qDuYZaQ1tDaB9WjaWbwYFEhQ==
-X-Received: by 2002:a17:903:2287:b0:24c:82ad:a503 with SMTP id d9443c01a7336-2517446f905mr133387135ad.41.1757393523236;
-        Mon, 08 Sep 2025 21:52:03 -0700 (PDT)
-Received: from tigerii.tok.corp.google.com ([2401:fa00:8f:203:337f:225a:40ef:5a60])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24af8ab7e7bsm199723815ad.138.2025.09.08.21.52.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 21:52:02 -0700 (PDT)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Changhui Zhong <czhong@redhat.com>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Minchan Kim <minchan@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	stable@vger.kernel.org
-Subject: [PATCHv2] zram: fix slot write race condition
-Date: Tue,  9 Sep 2025 13:48:35 +0900
-Message-ID: <20250909045150.635345-1-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
+        d=1e100.net; s=20230601; t=1757393876; x=1757998676;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=l25NFxExAUe1eqmMOMVfFw3dzd2Dt4hw0Sr3RoaXfRE=;
+        b=L6+03xiBwLC3XdRN3ALalLzbexoNXNGr+2cf17A+QlDLvkUJiwg1P76WfslUFR6Nhm
+         gweRNH0tc9c3sDdmssU+mQ3ov8LSWNayYZHOxTpji9fNGhDBh2UiaTTRn/QUiHJe0pZV
+         YqJZxWMqiSKNle6+SAGPppcvOUwBTLP5S+DQoPIzoCXbwclh6vq28rDc+V5qVzMaApVs
+         FRkNjtOsPzlmzqTULML8HJ9/jibMGhjX7Gs4+I5KtQY7lxaCkpZw3sV44Xf2YLJ26O2/
+         48d7+X6COBypTtCN7dpOWNrwJbsQJ8s1l/Bq4kAi3/KcnTgDs2K1Clz1IGLCcvS1cMp3
+         WA7A==
+X-Forwarded-Encrypted: i=1; AJvYcCUOXCRbYCCQvtZIleBENIZazFsXTODlS5MfYc+/9lsVWg/cnrGzQ9LXnp+AZMao5oUKRu05PZ27n+zw8b0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYKGMuHE/Mi+IZCHRrBp5NN6CYrQc9+jBBcc0qRZJ8Q8CiBUR5
+	NJnKAcWUkxlvT9ypBAQaBRwsQaiKtVW4QHx6OGJyQIqJq6hBP9+lzk/Rg3SFb80MOCMRG1ki6Ls
+	He9cu6wu71XUR6yCExLP+4hfAUKvL5mU=
+X-Gm-Gg: ASbGncvJotXXShk2DTg/DHLA7PtZRA6dSAtN9mNqHVlYO7FRkJoesiugOWXPbcZolbS
+	SGpQtsPj1QJbrjRhMQAyMVpH1hJ6d8UYPt063a19PlLQTwJ6RnclHZ82eC/YScFQdeLg6GdrTXZ
+	DrEfUltWou8PAZSQUqTxJYbYTYpDxIoMQA8//UYPpl/+JHhEMtqstAaW/BHkVC7lhQt0RdPUcCu
+	uxHchB1ka63wF0k65XiwkUzkut05cDpssxG6MRniX4lmtOaypDrSggXfOjZ/FAL3l0bmanh
+X-Google-Smtp-Source: AGHT+IE4aJVhuUj7txtOnsYYhZRub3AWkInGLQh7N4cBU32Yoh4aAHd3WHdXBY7fRpvJ76Yz+6786ilhvVSEk1wTKAY=
+X-Received: by 2002:a05:6512:3b94:b0:55f:3ddb:2306 with SMTP id
+ 2adb3069b0e04-5626310e5bdmr2842619e87.45.1757393876318; Mon, 08 Sep 2025
+ 21:57:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250907195615.802693401@linuxfoundation.org>
+In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
+From: Dileep malepu <dileep.debian@gmail.com>
+Date: Tue, 9 Sep 2025 10:27:44 +0530
+X-Gm-Features: AS18NWC-8lpDwDSXRJI-52ZPSz8rigrQ13cs8hdUtHhPutYSVIO0pan4rBPN_Ww
+Message-ID: <CAC-m1rqeq33V5JU2HuQ+4iw4j41CZqCpocgKG2uLjnuTnf4w0A@mail.gmail.com>
+Subject: Re: [PATCH 6.16 000/183] 6.16.6-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Parallel concurrent writes to the same zram index result in
-leaked zsmalloc handles.  Schematically we can have something
-like this:
+On Mon, Sep 8, 2025 at 2:08=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.16.6 release.
+> There are 183 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 09 Sep 2025 19:55:53 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.16.6-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.16.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-CPU0                              CPU1
-zram_slot_lock()
-zs_free(handle)
-zram_slot_lock()
-				zram_slot_lock()
-				zs_free(handle)
-				zram_slot_lock()
+Build and boot tested 6.16.6-rc1 using qemu-x86_64. The kernel was
+successfully built and booted in a virtualized environment without
+issues.
 
-compress			compress
-handle = zs_malloc()		handle = zs_malloc()
-zram_slot_lock
-zram_set_handle(handle)
-zram_slot_lock
-				zram_slot_lock
-				zram_set_handle(handle)
-				zram_slot_lock
-
-Either CPU0 or CPU1 zsmalloc handle will leak because zs_free()
-is done too early.  In fact, we need to reset zram entry right
-before we set its new handle, all under the same slot lock scope.
-
-Cc: stable@vger.kernel.org
-Reported-by: Changhui Zhong <czhong@redhat.com>
-Closes: https://lore.kernel.org/all/CAGVVp+UtpGoW5WEdEU7uVTtsSCjPN=ksN6EcvyypAtFDOUf30A@mail.gmail.com/
-Fixes: 71268035f5d73 ("zram: free slot memory early during write")
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- drivers/block/zram/zram_drv.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 9ac271b82780..78b56cd7698e 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1788,6 +1788,7 @@ static int write_same_filled_page(struct zram *zram, unsigned long fill,
- 				  u32 index)
- {
- 	zram_slot_lock(zram, index);
-+	zram_free_page(zram, index);
- 	zram_set_flag(zram, index, ZRAM_SAME);
- 	zram_set_handle(zram, index, fill);
- 	zram_slot_unlock(zram, index);
-@@ -1825,6 +1826,7 @@ static int write_incompressible_page(struct zram *zram, struct page *page,
- 	kunmap_local(src);
- 
- 	zram_slot_lock(zram, index);
-+	zram_free_page(zram, index);
- 	zram_set_flag(zram, index, ZRAM_HUGE);
- 	zram_set_handle(zram, index, handle);
- 	zram_set_obj_size(zram, index, PAGE_SIZE);
-@@ -1848,11 +1850,6 @@ static int zram_write_page(struct zram *zram, struct page *page, u32 index)
- 	unsigned long element;
- 	bool same_filled;
- 
--	/* First, free memory allocated to this slot (if any) */
--	zram_slot_lock(zram, index);
--	zram_free_page(zram, index);
--	zram_slot_unlock(zram, index);
--
- 	mem = kmap_local_page(page);
- 	same_filled = page_same_filled(mem, &element);
- 	kunmap_local(mem);
-@@ -1894,6 +1891,7 @@ static int zram_write_page(struct zram *zram, struct page *page, u32 index)
- 	zcomp_stream_put(zstrm);
- 
- 	zram_slot_lock(zram, index);
-+	zram_free_page(zram, index);
- 	zram_set_handle(zram, index, handle);
- 	zram_set_obj_size(zram, index, comp_len);
- 	zram_slot_unlock(zram, index);
--- 
-2.51.0.384.g4c02a37b29-goog
-
+Tested-by: Dileep Malepu <dileep.debian@gmail.com>
 
