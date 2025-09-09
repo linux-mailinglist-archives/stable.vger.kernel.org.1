@@ -1,81 +1,139 @@
-Return-Path: <stable+bounces-179009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3091AB49F44
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 04:35:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 799DEB49F4B
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 04:37:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFF2F3B8C2F
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 02:35:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 399E13AB011
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 02:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7141F24679E;
-	Tue,  9 Sep 2025 02:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26B52522BE;
+	Tue,  9 Sep 2025 02:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GD/hCEEp"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VhhZZjYu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A51D23D29F;
-	Tue,  9 Sep 2025 02:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9037024C076;
+	Tue,  9 Sep 2025 02:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757385349; cv=none; b=SsJlUjXXmonfgahOXqdL7S8ZGyEEvpPaosoeZBBlNZYEsHCEBE1d6MJKgTHmAKInxWlDeRo0Kpbq/BjQbubv+1kgz35v4BBaJ5DYWY7VOQqxKSDyx1L64tmb4e+HhmA0FWNRfcaA27xUSBNnXUzb8bK+Ne8oJRTP8hEpyxmf3E0=
+	t=1757385460; cv=none; b=rE6ZQRCU3HPcwi03L5K4i472u/0gUtGU6kabszGPuS5xn0/3iTLY876wUlgdirlUmc3+Vt434tin1tSIEAT9JmwvSrp2ZwC5ifJ6iHlwwq8N4EhE0Q1bI8qtlvauMCxG22+9BVWk0o928AIajvouu+uNf3v8U4pEy9ix3zHSTT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757385349; c=relaxed/simple;
-	bh=cZfhit3GglnSzityCsrp1a+znZusyvIgBXCsdOzHIjk=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=FgwM0nmELGKkzmXVC+Jxap+wlR0nanzjUjT0aJF/RhYyVy0YxetN2INHJ6+3DJpshRcPOZtbJmkvPERuMVtQCE3NPfaUnS1CKwmkSqk65Y97/CKqePRXgaXplj7meaK6YWJJ2wiJ5MTsL6CBTZ5bhiwLzKpSuNL3dLFarAnQ47k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GD/hCEEp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A124FC4CEF1;
-	Tue,  9 Sep 2025 02:35:48 +0000 (UTC)
+	s=arc-20240116; t=1757385460; c=relaxed/simple;
+	bh=lVT8AX3kS1qX54o5tlezahaqWT/wDdWWbM7RGCvhXeU=;
+	h=Date:To:From:Subject:Message-Id; b=EPSfF14/kY/BkYisXUZZ7QtqBBB1NoPVrqQqkwB4qza6nF3G0A8han5LyKFYvvWg0QGDLPneD2AykAWbjlnobsFKpXwvkTGZ/YCmI0Q59iWmzE5gl0gPw5fN48GAuhTMOgup6NtXcbUiSOB9pAgvGxqL1au7q7t6UuODnvaN0sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VhhZZjYu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DFDC4CEF1;
+	Tue,  9 Sep 2025 02:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757385348;
-	bh=cZfhit3GglnSzityCsrp1a+znZusyvIgBXCsdOzHIjk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GD/hCEEp1s2INnkmtrSAcc+zYBtJH/pBF3LTNFDTrsZ0R+g/QXl6aJtMiG/Qp4IPB
-	 4J8iWMfZwt5ezrsBu79fw2bzRLZgle5UHb6evyvUzMionuuQHZkPpVkLgGMIWsNapm
-	 id94aOdJixFJ4SMt1hB5LoHQPf2wBHWTfBKd/H7o=
-Date: Mon, 8 Sep 2025 19:35:48 -0700
+	s=korg; t=1757385460;
+	bh=lVT8AX3kS1qX54o5tlezahaqWT/wDdWWbM7RGCvhXeU=;
+	h=Date:To:From:Subject:From;
+	b=VhhZZjYum2XFNkqD2ZziIeFqshQFwz6mX4+kYa9RZUzAZ45aSwseFl/qtXgfe4+N9
+	 /+uRwghPBgAezzn+6OVfO5Dpv4DmZWH47CJ4qtIqYjEIIOolZE0ZqzMYGgOSv3Ofpo
+	 6fC6nupaznv5l7TWphHxPQTSNk8I3YvzH1vRWq9w=
+Date: Mon, 08 Sep 2025 19:37:39 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: "# 6 . 17-rc1" <stable@vger.kernel.org>, damon@lists.linux.dev,
- kernel-team@meta.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 0/3] samples/damon: fix boot time enable handling fixup
- merge mistakes
-Message-Id: <20250908193548.a153ef39d85cc54816950f71@linux-foundation.org>
-In-Reply-To: <20250909022238.2989-1-sj@kernel.org>
-References: <20250909022238.2989-1-sj@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Subject: + samples-damon-wsse-avoid-starting-damon-before-initialization.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250909023739.F2DFDC4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Mon,  8 Sep 2025 19:22:35 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> First three patches of the patch series "mm/damon: fix misc bugs in
-> DAMON modules" [1] was trying to fix boot time DAMON sample modules
-> enabling issues by avoiding starting DAMON before the module
-> initialization phase.  However, probably by a mistake during a merge,
-> only half of the change is merged, and the part for avoiding the
-> starting of DAMON before the module initialized is missed.  So the
-> problem is not solved.  Fix those.
-> 
-> Note that the broken commits are merged into 6.17-rc1, but also
-> backported to relevant stable kernels.  So this series also need to be
-> merged into the stable kernels.  Hence Cc-ing stable@.
+The patch titled
+     Subject: samples/damon/wsse: avoid starting DAMON before initialization
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     samples-damon-wsse-avoid-starting-damon-before-initialization.patch
 
-That's unfortunate, but the about doesn't actually tell us what this
-series does.  
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/samples-damon-wsse-avoid-starting-damon-before-initialization.patch
 
-> [1] https://lore.kernel.org/20250706193207.39810-1-sj@kernel.org
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Presumably it's in there somewhere?
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: SeongJae Park <sj@kernel.org>
+Subject: samples/damon/wsse: avoid starting DAMON before initialization
+Date: Mon, 8 Sep 2025 19:22:36 -0700
+
+Patch series "samples/damon: fix boot time enable handling fixup merge
+mistakes".
+
+This patch (of 3):
+
+Commit 0ed1165c3727 ("samples/damon/wsse: fix boot time enable handling")
+is somehow incompletely applying the origin patch [1].  It is missing the
+part that avoids starting DAMON before module initialization.  Probably a
+mistake during a merge has happened.  Fix it by applying the missed part
+again.
+
+Link: https://lkml.kernel.org/r/20250909022238.2989-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20250909022238.2989-2-sj@kernel.org
+Link: https://lore.kernel.org/20250706193207.39810-2-sj@kernel.org [1]
+Fixes: 0ed1165c3727 ("samples/damon/wsse: fix boot time enable handling")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ samples/damon/wsse.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+--- a/samples/damon/wsse.c~samples-damon-wsse-avoid-starting-damon-before-initialization
++++ a/samples/damon/wsse.c
+@@ -118,6 +118,9 @@ static int damon_sample_wsse_enable_stor
+ 		return 0;
+ 
+ 	if (enabled) {
++		if (!init_called)
++			return 0;
++
+ 		err = damon_sample_wsse_start();
+ 		if (err)
+ 			enabled = false;
+_
+
+Patches currently in -mm which might be from sj@kernel.org are
+
+mm-damon-core-introduce-damon_call_control-dealloc_on_cancel.patch
+mm-damon-sysfs-use-dynamically-allocated-repeat-mode-damon_call_control.patch
+samples-damon-wsse-avoid-starting-damon-before-initialization.patch
+samples-damon-prcl-avoid-starting-damon-before-initialization.patch
+samples-damon-mtier-avoid-starting-damon-before-initialization.patch
+mm-zswap-store-page_size-compression-failed-page-as-is.patch
+mm-zswap-store-page_size-compression-failed-page-as-is-fix.patch
+mm-zswap-store-page_size-compression-failed-page-as-is-v5.patch
+mm-zswap-store-page_size-compression-failed-page-as-is-fix-2.patch
+mm-damon-core-add-damon_ctx-addr_unit.patch
+mm-damon-paddr-support-addr_unit-for-access-monitoring.patch
+mm-damon-paddr-support-addr_unit-for-damos_pageout.patch
+mm-damon-paddr-support-addr_unit-for-damos_lru_prio.patch
+mm-damon-paddr-support-addr_unit-for-migrate_hotcold.patch
+mm-damon-paddr-support-addr_unit-for-damos_stat.patch
+mm-damon-sysfs-implement-addr_unit-file-under-context-dir.patch
+docs-mm-damon-design-document-address-unit-parameter.patch
+docs-admin-guide-mm-damon-usage-document-addr_unit-file.patch
+docs-abi-damon-document-addr_unit-file.patch
+
 
