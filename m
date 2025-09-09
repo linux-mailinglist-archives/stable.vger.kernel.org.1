@@ -1,236 +1,225 @@
-Return-Path: <stable+bounces-179104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C96B50286
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 18:26:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF0EDB50293
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 18:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2071188F8A5
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 16:26:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF6701686E3
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 16:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6330E350D52;
-	Tue,  9 Sep 2025 16:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D9A352FCB;
+	Tue,  9 Sep 2025 16:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="A4KyBlEy"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="G26Ppfwu";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="uhcLEw+F"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2057.outbound.protection.outlook.com [40.107.92.57])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A056026B759
-	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 16:25:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757435158; cv=fail; b=dO9JTVBNDE/48WDEobkdLUeeUcAZLA9t0Kh4SW5Pn64/MOOHEGBBsj/wdCVQqjP17437NLijCYiqXrNZFpTK+8zgfgT1vfZEBQvuaJTV21NmHxv9bO9GB7T9jEVdoVorGQUcBodiOLMk5tZvKngcbD8qqaA71MHKkGk45GGBLrc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757435158; c=relaxed/simple;
-	bh=1hTnn7RVOQ0PtRPQF8xSvBzRYjStsvYRWZ6Ins4clgw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=VLqdR/KTp/eTvFxpa0KK2It3ffLcJztEEEj7aStDNpnWtmFXsBBQ+Be+1BdJopA9pzPn30iHUxbHat4faGyjimWCAfhChtwkPEDQQhiBZaycUAxmUD+NeptqzGwWWt9h9V1GDy06uHUBbgpcMAg+b8WnYu1Ml5BHo7+cBw9rRqQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=A4KyBlEy; arc=fail smtp.client-ip=40.107.92.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=f3DO8BwNWHZBHttnSU7Hku0GWMuQgXxuMURBwJCcuabPBb3i9tOauDEIa+tXWz/ZgDkojtXGIAeLad/LMColemCEwAdH4uPZZ6F4cYzK+21APy5BWbtmNa+zm6QYDYNid4F+wYu3Xrisl0234TEhj+tp2zqzaBs6V53ZhBIBWjCmsH+k4NZMKhrDnMXZmh2pyZR39iyFh2tL3UYyKYv0PQaFb3Jv5aIpwhe0iobCKIfrws6sedeZi2lZM76/0ZI0qQa2ZlRyRRDpQSkxyeCTGIX3uGYLfss866YFv26L106khDoLV6eAUctFqeF5FHjbmsexifontuXkDvZo5LXPqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rxpwI8wYntfJY3GrsLqE/9DjY77DvJseZ+wu4Do5R5k=;
- b=nfuFDeHcJ0L8fysPk+qxdE0dZt6vNgzBYDd8LjKnOnD3CxKJeJKckjodiWJc+RWJ7YtTcrSm53zyzBw7XcApneQCCPYCArDAbuSzAHCDnkS5rWWkudU+FyrXV2sRRzQJrnlgby9GRrguhnbhQeoqrHE5sjiT5+BwGCyJHC1oN6lTkZ03TkiHVH04bBwvPlqrVElJBZloj+7u9hBkJDaUWdzDORe8Yg92pAdivImL2ucHKxDHIBi3jc1W5pe3ys60T1jkdnDwuckPq+GqqKHLD3b/e3wyZ7JvqBcyA+bxhEjfpJ/xozsg0E+OqhZlChrq+u4BIrf0U7mT7K3UIIFfgA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rxpwI8wYntfJY3GrsLqE/9DjY77DvJseZ+wu4Do5R5k=;
- b=A4KyBlEycdic6onlpaMuPGtE/n8YU38sXi8QO+0o13iZ9A+RtXvZoSxvfw/RQI7MbVavtZRXhPhqHUILLKnrTPDf4tQxfHtiRMFjkDZdv6ZKULekiyQ04FO3x6ms1vT/dF2+WvKuol95wmd/QFiL52euuhrWhuPj+8YuwSwRSXk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by SN7PR12MB6715.namprd12.prod.outlook.com (2603:10b6:806:271::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Tue, 9 Sep
- 2025 16:25:53 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%5]) with mapi id 15.20.9094.021; Tue, 9 Sep 2025
- 16:25:53 +0000
-Message-ID: <106c1a36-c104-4eb8-b928-d11b8ca9b599@amd.com>
-Date: Tue, 9 Sep 2025 18:25:48 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/3] drm/buddy: Optimize free block management with RB
- tree
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
- matthew.auld@intel.com, jani.nikula@linux.intel.com,
- samuel.pitoiset@gmail.com, dri-devel@lists.freedesktop.org,
- amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, alexander.deucher@amd.com,
- stable@vger.kernel.org
-References: <20250909095621.489833-1-Arunpravin.PaneerSelvam@amd.com>
- <6f6841a7-57bd-49de-9b55-b5b0514a2749@amd.com>
- <20250909140519.GK4067720@noisy.programming.kicks-ass.net>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20250909140519.GK4067720@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0352.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f4::6) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D2D352FEF;
+	Tue,  9 Sep 2025 16:27:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757435252; cv=none; b=jjjdrqVQesFAzJr3uNfUt2fpjajmFyXtiGOkAdodKhJmVQUzv1wutMie/KOo7bfwY658K6NnZbIY+f44yNNQJKD+dqAEJR6t5ryUaOAPSUPMJxkvP13CkqzW77J73h/Rc8KhLsAEmJjXf7FgID3Ej2e16txAXK0JP8srAqfYLo4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757435252; c=relaxed/simple;
+	bh=hIHfuHkwoJ7qCIeTm7eB7xTst6Uf1IQG1UI8dacbT6s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZNSGsVAzR2oEz5kYU/WXTC99lRAOeIJztE997t0PpQsxI/VBsc06dJ6ld90EZIqpkampv/1OPf+Qa6XpmFeWdbra4NUVrgEHL/VlbYAlLqIRth54Pj/Sa4FwZWEOsk/Tp/Nkp01gT3uNQfRYOj6khukcVaEbypO6DVphSiysaT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=G26Ppfwu; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=uhcLEw+F; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4cLq3h2098z9t2s;
+	Tue,  9 Sep 2025 18:27:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1757435248;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=BKNOBb0vwxlazoow05NYqUcT4q1UWwsxterBmE83so8=;
+	b=G26PpfwubzL7DFj7xyo5PxTWePQCkcJHyP6T7irTXzUUBEHwDZz6OQAeZhiTYA1Si+tV9O
+	VLdzCllNgfPgHDu4adevmjyZ8eZO/Bcr7INB9VWjtpwPDwwi5nsJjUtncGzRIFMMy5VpIZ
+	J2QLqXu8MKZgsb0YG/qKIlEZOuQd0VCRe8sTVoiV0FQ71b0xzUwGqpS7BQ6YNhekClkCjQ
+	+JP6e9FU8PziRJrnu0MbFTRpJR3XnYPoFlou8+nSckai1Ppwo48Vp8vf5Ea3Bfnex/+j1M
+	obwr71fFZXM0OKzUn71cqeMZlPX5ucX4CSK2nfs9PHBFxefJmfp72+HdPKY21w==
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1757435246;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=BKNOBb0vwxlazoow05NYqUcT4q1UWwsxterBmE83so8=;
+	b=uhcLEw+FbEuvCQozDjoL8osIwEQ8FsxXgInQv7nX/uoImdJWPl1MhInmpFJT53GqkEei6+
+	Ms41X0PSvswZvh8/BVOIZ8vbdAa79Ndsg1MMKl+5CmvD6VDWKFbl8pqLqkR/axdM0Ewl/p
+	wOEMxF2yGD54AjFstESPQ8jEutFMIaL42xCxfj3bDea/WDaskmhxIapn+co6x2Pah/GwYZ
+	A6CGmeMxYjhs4oIkExbnbU5EpJuEGY4/k1s8W+dHQEQbvOUZlkaXb629LKmmUuNX8eby3S
+	SxcyhnazvNpbvKEHKr+voxmFd9a1mV8TlfQqsKyObMYToxktu01FoffFbY2VjA==
+To: linux-pci@vger.kernel.org
+Cc: Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Duy Nguyen <duy.nguyen.rh@renesas.com>,
+	Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>,
+	stable@vger.kernel.org,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	linux-renesas-soc@vger.kernel.org
+Subject: [PATCH 1/2] PCI: rcar-host: Drop PMSR spinlock
+Date: Tue,  9 Sep 2025 18:26:24 +0200
+Message-ID: <20250909162707.13927-1-marek.vasut+renesas@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SN7PR12MB6715:EE_
-X-MS-Office365-Filtering-Correlation-Id: fe6bb420-f0f0-475b-d803-08ddefbd8c2e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MFBqekJ2QVdFTUx5UDRGbDlxSGJHWFU5eElmMUtOV01RK2ovZExuS0VTNGtm?=
- =?utf-8?B?Rk5DaGZTdW9KeU1IazY4R2Qvb0JnNnVSczRiQU9wbnFiWTFXeFFBSFNhSVow?=
- =?utf-8?B?ZW5uWWpYK1VIajhHK05xYjhncE94Vml1eTFUSTZ2S2VBT3Bjemg5bWxrUFpP?=
- =?utf-8?B?empjZ3FJWkhRcG8vZzEzUFFhaUZoekhUNU9ZSitjVGxMdFltdnlOc3J5ZHRJ?=
- =?utf-8?B?SXYrNXByWnBxMi9sbm9KV1k0S3lMTnFORVFtcEJtWWZyUCs5NUJsTE44Yjha?=
- =?utf-8?B?NTNHdFVxSjJkN1U5SXNSbUhrNmcyY2FPZ0ZzemRYNDhmZDdXZ0hYLzZQSUpy?=
- =?utf-8?B?UEsxOTFxcWRBand3UGwrclh5REJWTE85b2k5TDdKcGlIdkNEcmVORVVzWCtH?=
- =?utf-8?B?bWpWTkVMUkM2c2VKZHhlWmdDVysxRURLZEZOL0VYT090NmNOWFVRVGdNd3dh?=
- =?utf-8?B?aGFlNEhSWkV1Zkx4d1o1a2hFR0krZmMyVlRhWlMxR0hZaEZqM0lYSWZoZ2Uz?=
- =?utf-8?B?Y0FQVS9HdzNkTlZpVHh1Wm5SZ0tQejk4VjY0NlZRVlBMZ295aUd0ZnlRcS9h?=
- =?utf-8?B?N040Zldsdk1ZWW1YRTM4bHZ3Z1A4L3JOd2xYU2l4TitPVEhKMTFXVDFRZGVL?=
- =?utf-8?B?TTFrSUJ0eFJ4bnlzYTN4dnpqbjZHMUxuME8yaExpcW1NTHEyVVdVeVZiNWRP?=
- =?utf-8?B?YUxIRkpEM0xSU08rMFBOaU5ZbGhBc2c3Z2dWU0k0Z3V5cy9ISGJvZjZFL2JF?=
- =?utf-8?B?Z3hYWkRBWWFIQ0dkVVBCRUZaVk9WT3djeGo0RkdsZlo0TWd0U1NkaGZMeW5D?=
- =?utf-8?B?R2lDMGRkdFd1UlV4Smx3UG9ETXphcnZhQ3k4NmFUbWl4QXZiVFNHc1ZvdXlq?=
- =?utf-8?B?UmxqcklLWUdEaW5SNWkxeWttWjE2cnB5aGZVZlo5NFFUU0FvV1BkZUliZHZX?=
- =?utf-8?B?cWswN0E4REZvaDN1dWpQWmE0c0VrTFhDcThoR1Avazd5SUFJTGdaSVZ5eHRE?=
- =?utf-8?B?UFRPODdsZWZIR013YlY4Ym0zaStPRFlUc09oNnNsMkNEZklEMUFTWGJxcGgw?=
- =?utf-8?B?eXlxRTh1WGc1Nk5qQWJvL2ZIcmtySkF5YzRsblRJSlNhdVBiSDQxT1prK0pJ?=
- =?utf-8?B?RjI2NkEyMXFGb25BYWRSTEdTWEtibzNQSnVneUFseEFiMG0rR05SRStIV29G?=
- =?utf-8?B?elc2Q3k1YlJQUnNFdXBSZXdmMTdOeHk4Z2o2akxPVWZxRTVNUEZ5SVM5Vis3?=
- =?utf-8?B?bWlRTkhjam9uQnMxZ2RwUVFZMFRzRTRiN0hNQmxZRCtEQ2FSMTkwZ1ZEczVL?=
- =?utf-8?B?MzhoNEZRckRxcU43Tk9rVzNRSlNQQmw4MUJzVkdyS3pacUVwUUcwd3dBQ1Y0?=
- =?utf-8?B?cGhGQVJDb3hHVk1aUFpEM0pBMGVKZGZhMXRUaldlV1NtUWhZMHRuVjBqOFhL?=
- =?utf-8?B?LzNNT3VyOWJvenVudXBUOHQ4dWdoUXkzbU5UcHgyN3hCeFJmbHJOZ1d2em4z?=
- =?utf-8?B?bDZMbUVkTUtvS2pwOE9GOGxrUitVbHJHaVJMTEE2Q0tVbkhzbHdYMGxzVnhB?=
- =?utf-8?B?a3NLL25PMFBHbUtXOEFWQ2hXc0luTjJuTjFudjhPc2l4MVI0Ym1hSmRkdW53?=
- =?utf-8?B?bTdES1pPQkhMRjl5TG9zdEhSdWFGQkZ0Q1E5M3piNkU0cmdoZVRLQW1CZUJy?=
- =?utf-8?B?SEF6bzU1YUE5dGU2VUt2bU84b0JHRUh3bWx0VUVKZlc2ODgzWEcwS0RRT3A3?=
- =?utf-8?B?YllLMXJqeXdqb2JFVmNzTEVSWkF4TUxLeTNueGdQVy9VbC9CQ2FLNXdtQXFs?=
- =?utf-8?B?MFNsWDh0MGoyU0E3VkI1VlFFNkpJbEJid0ZLSVc3anJ5K3hQcjNKWVowbjhv?=
- =?utf-8?B?c2JJd2dod1A1Tjgyd2JraHk1QzdGN2VJSU1YcVdaTE8rVk5HeldGQWpLS3dC?=
- =?utf-8?Q?SuicIDJuFik=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ellIMlUxb01YOWg5aDM1WHZhaVZINlpxQkxMVWEvTEVPSW4rejlCZXA3K21j?=
- =?utf-8?B?R1RSdEk5VkhRWG9BaGRudnRRbWF4Tmp3NVNRbE1FTVRrNFB4dFMvYXZhMGpQ?=
- =?utf-8?B?YU1vM3lnOGpoWUJKMW1MMUJtRFUzU3hjaU9vV3JoVFBmdmJkRU5JYURRYzAx?=
- =?utf-8?B?Y2V5RkZTSnNGdVNSY1pkWFBYUzBuaHBKRnFubzlRbFhnK2Z2dGFmYWZ3aUVq?=
- =?utf-8?B?aytkcUxBb1ltUDdmdy80OFFqN3lhREs4Nk1CUkpGM3dHMzBDTzZBbkRoS1Iz?=
- =?utf-8?B?bFZGR3Bia0tPTW1CR3pBM0Vha0tOekd4Wk83QjNBd3NSY0JyM3B5WkhqakxF?=
- =?utf-8?B?SEUrUlI5T1BLMnZ6UWo0UGxzdHBIMUZ1dmI4Y3J3a2pJaDB2N1lkbDFSMXh0?=
- =?utf-8?B?NWhRTkQzZTZKbno3K0NXT2lubEpLdm9EMUlGNHJiYTJveGtUWGFwc0tMditG?=
- =?utf-8?B?RmJxVFl6ZGt5ZjhKSWV5RWQreWFrSndxcnlhVkpLMm5KeGJpN1FEL0EzWjVn?=
- =?utf-8?B?NDB5YW5USFdBL3hSYjJGYVg2bS9YZGN3cENUb1VkYW9uL0FDK1Z4ZWs1Mklq?=
- =?utf-8?B?RmN2cS9xZEhYL3djSWxuSUNPVGdPaldsTGU4Y21ZT2FVeXpLVm1OK3hsUFh5?=
- =?utf-8?B?M2FBZExtWFZiVWN2OHo1amFub0dWZHQ1ZHJvdmR0WUplR3QxUURDNEdJMWI2?=
- =?utf-8?B?QUxXT0s2enZLLzVqZG5pQms5VGFVWktlcUFHWnhjQ1l3QWt3cVdKREtNaEc5?=
- =?utf-8?B?b1ZZcGN4MnRyejBaVzlGU3BNVzg5ZXpza3Nxa2I4eWZJR0QvVGRCTzhWNksv?=
- =?utf-8?B?U2NSbmw0d3BwK1VsdTRxTjl2cHA0NE0vOVZ2c2tDQ0JEUDArTnhlYkFBejZP?=
- =?utf-8?B?VWZCempndE9pc3pjQTVpVU53eGlRbVZJMVJLZnVLNDc1M1lqWEdqaUQxZUcv?=
- =?utf-8?B?OXFESm8zSFowWVQ0b3A3cnc2VExJKzhUajA1dGRLcjlIaGJONnFYTHJiMDc5?=
- =?utf-8?B?c2h2NFRWV25LSUg4RXp3RzVpQ2tiUkhuTzNVRmJIOXlVRkNJcFkzSUVrdkFw?=
- =?utf-8?B?ME5Lck9BbmtDRmVuWHgxdzR2VU1Ga3BTdFoyeW9iQm80RE5rdENzVnJpYmd2?=
- =?utf-8?B?TlBtemFuR052bmpRMUFmaGk2dklySVRhdlRTZDN2aUFvUm85NWt5OW5kQzhW?=
- =?utf-8?B?YlFXZGpXaVJTWUZyaTJRTUl0NmJRSk4raExZL1RRbm5mYXNNTjlpUk5EOEgw?=
- =?utf-8?B?Z29EVHZJRXRkQmRBMU93S1NwWnFIVHBFcGZzYzNsNDJoaUgvNCtjSDVNejVP?=
- =?utf-8?B?ajlaemNmTm9naG56SVRjMG5KVHJBbEZqaE1HeTRyTGhlSWlra2JUbjBNeGdL?=
- =?utf-8?B?ZXFkMExLTmxxdFV4bHV5d0ZjeDBQckJOTWc1YjdyOFRMSElKN25TUEJ2N21k?=
- =?utf-8?B?L1Z2cWtRUWhqandZYnhhRm1lcDAzc0M1czZ5TkFmYkJxaDl2ZkoyUTl0TnYz?=
- =?utf-8?B?dmoxYTNtcWpiYnVoQTBENjR3ajdkakd6dU90aXZvVWt2MzZKTEM0SVZMZmt2?=
- =?utf-8?B?blFzanBHWC9sWVFpSVNxM3EzRjRYSnkxRTh0QWFPZ0wvVXhXOWpISk9Ockpz?=
- =?utf-8?B?ZEYvS05KN3ZNSHhORnFDb2FxWmU3Qmk2UklWTjUrZUM5dGVLSEZ2TEd6Qkpk?=
- =?utf-8?B?WTc3UVFSUHcwRDhNRlRyTWV4QXBPMFdzY3VjSWIxRnJxaFBKM0doeGJDcjlL?=
- =?utf-8?B?aWJCVHhab1hPWjZaQVUzSmhKV003VW1xcEVTblhRLzlubmZBMGVPS1BRUno4?=
- =?utf-8?B?VUI0VEhaRHhkSHNnbjk1d3dlUmlvWHhCSDNKUnFNOE92cjh3NkRnaWdocEhT?=
- =?utf-8?B?VHNFQkgvRFllZTcvakNmUzZZdGN0T2tyS1JmcG9ZNXBmSVdvNldsdFpBUUww?=
- =?utf-8?B?ZDRlZnUrN2pNYlVIYk0xSGJPdWdBcksxOFEwUFJOSGZraXFRd2o3YWJoNWt2?=
- =?utf-8?B?VSswSm5WZWxKSDMrTG9SSmNLb3ZibGpJcG55c2h3b21GVVd2V3BTNmgwaUZs?=
- =?utf-8?B?Yk9ZZEp5MGxUa2luWXlxOGkzUS9DRjIwNHNTMzNKZC9jdDZnSmdBZlg5Z2FV?=
- =?utf-8?Q?gq1ZPwJi+qdqejjuLWAwiC/TS?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe6bb420-f0f0-475b-d803-08ddefbd8c2e
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2025 16:25:53.7912
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Lw723v3Q/ZGwPDSUUnJG1TevqOxLKKvxPgfqb5rY9r+nrx33Cs1vbGy2vI6+uQqQ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6715
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: a9bpr95hgxcnqfggiudz43wic4k3fx1e
+X-MBO-RS-ID: 06807477ab19596fa15
 
-On 09.09.25 16:05, Peter Zijlstra wrote:
-> On Tue, Sep 09, 2025 at 02:04:30PM +0200, Christian König wrote:
->> Hi Arun,
->>
->> On 09.09.25 11:56, Arunpravin Paneer Selvam wrote:
->> [SNIP]
->>
->>> +/**
->>> + * rbtree_for_each_entry_safe - iterate in-order over rb_root safe against removal
->>> + *
->>> + * @pos:	the 'type *' to use as a loop cursor
->>> + * @n:		another 'type *' to use as temporary storage
->>> + * @root:	'rb_root *' of the rbtree
->>> + * @member:	the name of the rb_node field within 'type'
->>> + */
->>> +#define rbtree_for_each_entry_safe(pos, n, root, member) \
->>> +	for ((pos) = rb_entry_safe(rb_first(root), typeof(*(pos)), member), \
->>> +	     (n) = (pos) ? rb_entry_safe(rb_next(&(pos)->member), typeof(*(pos)), member) : NULL; \
->>> +	     (pos); \
->>> +	     (pos) = (n), \
->>> +	     (n) = (pos) ? rb_entry_safe(rb_next(&(pos)->member), typeof(*(pos)), member) : NULL)
->>
->> As far as I know exactly that operation does not work on an R/B tree.
->>
->> See the _safe() variants of the for_each_ macros are usually used to iterate over a container while being able to remove entries.
->>
->> But because of the potential re-balance storing just the next entry is not sufficient for an R/B tree to do that as far as I know.
->>
->> Please explain how exactly you want to use this macro.
-> 
-> So I don't much like these iterators; I've said so before. Either we
-> should introduce a properly threaded rb-tree (where the NULL child
-> pointers encode a linked list), or simply keep a list_head next to the
-> rb_node and use that.
+The pmsr_lock spinlock used to be necessary to synchronize access to the
+PMSR register, because that access could have been triggered from either
+config space access in rcar_pcie_config_access() or an exception handler
+rcar_pcie_aarch32_abort_handler().
 
-I agree, something is clearly fishy here.
+The rcar_pcie_aarch32_abort_handler() case is no longer applicable since
+commit 6e36203bc14c ("PCI: rcar: Use PCI_SET_ERROR_RESPONSE after read
+which triggered an exception"), which performs more accurate, controlled
+invocation of the exception, and a fixup.
 
-> The rb_{next,prev}() things are O(ln n), in the worst case they do a
-> full traversal up the tree and a full traversal down the other branch.
+This leaves rcar_pcie_config_access() as the only call site from which
+rcar_pcie_wakeup() is called. The rcar_pcie_config_access() can only be
+called from the controller struct pci_ops .read and .write callbacks,
+and those are serialized in drivers/pci/access.c using raw spinlock
+'pci_lock' . CONFIG_PCI_LOCKLESS_CONFIG is never set on this platform.
 
-Yeah from the logic that is exactly what is supposed to happen in the __force_merge() function.
+Since the 'pci_lock' is a raw spinlock , and the 'pmsr_lock' is not a
+raw spinlock, this constellation triggers 'BUG: Invalid wait context'
+with CONFIG_PROVE_RAW_LOCK_NESTING=y .
 
-The question is rather why does that function exists in the first place? The operation doesn't look logical to me.
+Remove the pmsr_lock to fix the locking.
 
-For drm_buddy_reset_clear() and drm_buddy_fini() we should use rbtree_postorder_for_each_entry_safe() instead.
+Fixes: a115b1bd3af0 ("PCI: rcar: Add L1 link state fix into data abort hook")
+Reported-by: Duy Nguyen <duy.nguyen.rh@renesas.com>
+Reported-by: Thuan Nguyen <thuan.nguyen-hong@banvien.com.vn>
+Cc: stable@vger.kernel.org
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+---
+=============================
+[ BUG: Invalid wait context ]
+6.17.0-rc4-next-20250905-00048-ga08e553145e7-dirty #1116 Not tainted
+-----------------------------
+swapper/0/1 is trying to lock:
+ffffffd92cf69c30 (pmsr_lock){....}-{3:3}, at: rcar_pcie_config_access+0x48/0x260
+other info that might help us debug this:
+context-{5:5}
+3 locks held by swapper/0/1:
+ #0: ffffff84c0f890f8 (&dev->mutex){....}-{4:4}, at: device_lock+0x14/0x1c
+ #1: ffffffd92cf675b0 (pci_rescan_remove_lock){+.+.}-{4:4}, at: pci_lock_rescan_remove+0x18/0x20
+ #2: ffffffd92cf674a0 (pci_lock){....}-{2:2}, at: pci_bus_read_config_dword+0x54/0xd8
+stack backtrace:
+CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.17.0-rc4-next-20250905-00048-ga08e553145e7-dirty #1116 PREEMPT
+Hardware name: Renesas Salvator-X 2nd version board based on r8a77951 (DT)
+Call trace:
+ dump_backtrace+0x6c/0x7c (C)
+ show_stack+0x14/0x1c
+ dump_stack_lvl+0x68/0x8c
+ dump_stack+0x14/0x1c
+ __lock_acquire+0x3e8/0x1064
+ lock_acquire+0x17c/0x2ac
+ _raw_spin_lock_irqsave+0x54/0x70
+ rcar_pcie_config_access+0x48/0x260
+ rcar_pcie_read_conf+0x44/0xd8
+ pci_bus_read_config_dword+0x78/0xd8
+ pci_bus_generic_read_dev_vendor_id+0x30/0x138
+ pci_bus_read_dev_vendor_id+0x60/0x68
+ pci_scan_single_device+0x11c/0x1ec
+ pci_scan_slot+0x7c/0x170
+ pci_scan_child_bus_extend+0x5c/0x29c
+ pci_scan_child_bus+0x10/0x18
+ pci_scan_root_bus_bridge+0x90/0xc8
+ pci_host_probe+0x24/0xc4
+ rcar_pcie_probe+0x5e8/0x650
+ platform_probe+0x58/0x88
+ really_probe+0x190/0x350
+ __driver_probe_device+0x120/0x138
+ driver_probe_device+0x38/0xec
+ __driver_attach+0x158/0x168
+ bus_for_each_dev+0x7c/0xd0
+ driver_attach+0x20/0x28
+ bus_add_driver+0xe0/0x1d8
+ driver_register+0xac/0xe8
+ __platform_driver_register+0x1c/0x24
+ rcar_pcie_driver_init+0x18/0x20
+ do_one_initcall+0xd4/0x220
+ kernel_init_freeable+0x308/0x30c
+ kernel_init+0x20/0x11c
+ ret_from_fork+0x10/0x20
+---
+Cc: "Krzysztof Wilczyński" <kwilczynski@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Magnus Damm <magnus.damm@gmail.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc: linux-pci@vger.kernel.org
+Cc: linux-renesas-soc@vger.kernel.org
+---
+ drivers/pci/controller/pcie-rcar-host.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-And during normal allocation __force_merge() should never be used.
+diff --git a/drivers/pci/controller/pcie-rcar-host.c b/drivers/pci/controller/pcie-rcar-host.c
+index 4780e0109e583..625a00f3b2230 100644
+--- a/drivers/pci/controller/pcie-rcar-host.c
++++ b/drivers/pci/controller/pcie-rcar-host.c
+@@ -52,20 +52,13 @@ struct rcar_pcie_host {
+ 	int			(*phy_init_fn)(struct rcar_pcie_host *host);
+ };
+ 
+-static DEFINE_SPINLOCK(pmsr_lock);
+-
+ static int rcar_pcie_wakeup(struct device *pcie_dev, void __iomem *pcie_base)
+ {
+-	unsigned long flags;
+ 	u32 pmsr, val;
+ 	int ret = 0;
+ 
+-	spin_lock_irqsave(&pmsr_lock, flags);
+-
+-	if (!pcie_base || pm_runtime_suspended(pcie_dev)) {
+-		ret = -EINVAL;
+-		goto unlock_exit;
+-	}
++	if (!pcie_base || pm_runtime_suspended(pcie_dev))
++		return -EINVAL;
+ 
+ 	pmsr = readl(pcie_base + PMSR);
+ 
+@@ -87,8 +80,6 @@ static int rcar_pcie_wakeup(struct device *pcie_dev, void __iomem *pcie_base)
+ 		writel(L1FAEG | PMEL1RX, pcie_base + PMSR);
+ 	}
+ 
+-unlock_exit:
+-	spin_unlock_irqrestore(&pmsr_lock, flags);
+ 	return ret;
+ }
+ 
+-- 
+2.51.0
 
-> That said; given 'next' will remain an existing node, only the 'pos'
-> node gets removed, rb_next() will still work correctly, even in the face
-> of rebalance.
-
-Good to know!
-
-Regards,
-Christian.
 
