@@ -1,131 +1,408 @@
-Return-Path: <stable+bounces-179038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E045CB4A1D7
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 08:14:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5083BB4A220
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 08:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 967A24E6D33
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 06:14:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B2974E2B49
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 06:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C702FFDC4;
-	Tue,  9 Sep 2025 06:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6E7303A15;
+	Tue,  9 Sep 2025 06:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="LpfGQQoo"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="3FDO3d86"
 X-Original-To: stable@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2050.outbound.protection.outlook.com [40.107.102.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2454B2FE049
-	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 06:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757398486; cv=none; b=TV8Zq1FMMYdn6hff19HSC5xz4XEnbZXClS6PZj37FITCdUYQUbZ2N9PvtYd5/flyx/oZEbkUXyhA3Db6P3hySo4qqyxiabUz35Yn21C4VawSET/yUHz6+D3lVgjoF/x0XA5Yl5T3+vnwFZ0tlMj3/a7lP8o3+C7fZo+56BjDNHc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757398486; c=relaxed/simple;
-	bh=v/89VcX40cv5rPYAFtiLWLHb0FrP3KYzt/dEt23vyU0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J79B+7Wj+mhLS6GEKATB1ZBGeZudjtHUJ2vLgkWGJbb0/cey/YburKVmtnbL0M12JS6qkcr+OqZPYEVUR3RiclTeUarIlnW1eAwuOAcqH0kqhZ0yeNiasykwK9xpkFMsU6lssRHuTLE9k1DNHhV0f9syDntk9chlUTf+vTigqKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=LpfGQQoo; arc=none smtp.client-ip=44.202.169.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6001b.ext.cloudfilter.net ([10.0.30.143])
-	by cmsmtp with ESMTPS
-	id vaXUuulLtSkcfvrcpulSqc; Tue, 09 Sep 2025 06:14:43 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id vrcouk0YBVWxmvrcounnEh; Tue, 09 Sep 2025 06:14:42 +0000
-X-Authority-Analysis: v=2.4 cv=Q43S452a c=1 sm=1 tr=0 ts=68bfc5d2
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=Wh1V8bzkS9CpCxOpQUxp:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=QpNAaOlFSb97IArHZxEccTBaMZ5vk2xWmyRwpRZ8vfw=; b=LpfGQQooYL56yFLsa0r+lO0wsW
-	30ZNQHdqrZr1Yr96lIEXwgUSS7QKb/uP5ultvqXj4SSoPQq9htN9TYy/GWtBZFjSl62e+zv08Hzl7
-	O30mOyTn9VF/OiiPwanfxlXhtLjIh7yk/GI4u3NQCFEvsGVOsf1YazNF7ZKgZOpm4DTmQl9yqCS1N
-	JpyhD9I06HRrWNYBzp4JP1BhG/zsUzWW4JVIoiTVxxR2XQRpxXpXWUESDIzEIph4tO4rzwVD/QK4U
-	kJVixIhH/+dj0G0hcw665ItfiZLklWo/IyploENghEVTHAzTxU5TjTyRcm5iGGeGPqRXOjUnlPskB
-	ZqUt6FYw==;
-Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:36498 helo=[10.0.1.116])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.1)
-	(envelope-from <re@w6rz.net>)
-	id 1uvrcn-00000001x4y-2szu;
-	Tue, 09 Sep 2025 00:14:41 -0600
-Message-ID: <6612a382-b5dd-422f-beb8-5f20459972ec@w6rz.net>
-Date: Mon, 8 Sep 2025 23:14:39 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CC6302771;
+	Tue,  9 Sep 2025 06:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757398952; cv=fail; b=kQhb+duJH5xgrgblASsXI0xKwLWOGzHvrplQIuZWQj88Oo7Ku2Q29xwQloWemDHpriv5xiTCUjyU23F1VH6z/y2eYOX6Kmb0y4T+nEcjFrnGCQt60XoG4JxBcHaCn3NdC+ecjpLxPSPZzIRmwMDk6SJ7eoR+axw+lHDFzquuOds=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757398952; c=relaxed/simple;
+	bh=1iReGAEjo+zq/nf+9dGqVHs8pHXfI2x1nWETwV/yYEs=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=DMz3bkhNdETid/zGZqKTgePoeSQTmGYnOT0xQ4B4iqkQqie6VtShsduFVk9ZklKYBQGDGbwO3DXOjWah5RhKO9/tc7JAZvtfRU8Mbg7LZLCFmLffNzYb9ZjlIDelenHhJArAvDvvtf3Bj1UWAsBh0BBmvWVuQROaRZXeAfKMig4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=3FDO3d86; arc=fail smtp.client-ip=40.107.102.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jFI6vym/4x4fUu2cjsAkYmwe9O7f9A0w7fr/oGgOEdN+1tyo4zj82uJEjJ3lmA2IrEzym5qLoL4ffHTzsJSdGAaR9mvMdbMflTm2szZJ/F4kIr5ekspXf1LH8b8yYIKLmWkwIVoG3xHv1B04MKX+3SpfiiggR+AedLefLttF5UHf1fmtvpgCdqctYtPrNLbdsv0uyWZsEEqUcYWpDJPFSSde/BCZ2nxLJqmXpI18xA55/BU+2rj1sRk2T5dHeImx7AQvy7gc9j8bDjy0EwsgEK3JRFzgT9xatcTS6vyq9iUNKYKAwYzkl7iLKpAh9V6jDumEXIWnKc4xwYW43cRPTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tVF2ZrFRm25jha5Xm3qlXVaAjZIDSkZjVbumTHoKOmg=;
+ b=bAMLM6BHTLpQJF/I5ch/A7inXzBKacrpB2ikAQWwFJM8FNh1u+S0tRPTcFR4F1ordDTTqQvsCWolDovyCeC1ELCoUDcqxath9VXnx7CJnJ/1qIrMWJp6Vi0SnO8BMWHcTlVtbFWQvXF/F834Y67nHojnXCDAg9mT7KODekFiinUeIVdxak4fwCDloBOGINYnBmxeNSjN8Ew0V9P/9wA4qXUdXVYIlPi/29WeC2j6trWLyZNhcaucP6/P63WA/0vSrf0ohTbEXBMqpOV4KoIxRL4BetWD2r6+AHTimTYvRTmvSlpdNIssoV4Lz4X2TrTi7OeQOK2A+Md3m0WSYGZCiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tVF2ZrFRm25jha5Xm3qlXVaAjZIDSkZjVbumTHoKOmg=;
+ b=3FDO3d86czlGJ9L4QKknmO3NgLZTVeba9PQhQoYDSBUeXqtdEElkgyC5biC/pqq5qppctIH0RSQQA8yrgKSvPSV9Bsv9HQDKB240gYFVuNBePFxtzQC3EV+g/Wrp7JPMSSqBv/xOX4/uzWW96C45ilKRklisbmwlhsps6ltB1Bw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH8PR12MB7301.namprd12.prod.outlook.com (2603:10b6:510:222::12)
+ by DM3PR12MB9352.namprd12.prod.outlook.com (2603:10b6:0:4a::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Tue, 9 Sep
+ 2025 06:22:27 +0000
+Received: from PH8PR12MB7301.namprd12.prod.outlook.com
+ ([fe80::a929:e8eb:ef22:6350]) by PH8PR12MB7301.namprd12.prod.outlook.com
+ ([fe80::a929:e8eb:ef22:6350%6]) with mapi id 15.20.9094.021; Tue, 9 Sep 2025
+ 06:22:27 +0000
+Message-ID: <a31fb1e1-517f-41e7-9a13-5518d66f971d@amd.com>
+Date: Tue, 9 Sep 2025 11:52:18 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/2] drm/buddy: Optimize free block management with RB
+ tree
+From: Arunpravin Paneer Selvam <arunpravin.paneerselvam@amd.com>
+To: Peter Zijlstra <peterz@infradead.org>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Matthew Auld <matthew.auld@intel.com>
+Cc: christian.koenig@amd.com, matthew.auld@intel.com,
+ dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ alexander.deucher@amd.com
+References: <20250901185604.2222-1-Arunpravin.PaneerSelvam@amd.com>
+ <20250901194151.GJ4067720@noisy.programming.kicks-ass.net>
+ <5f999a32-db26-4964-8152-ac06da8beea4@amd.com>
+Content-Language: en-US
+In-Reply-To: <5f999a32-db26-4964-8152-ac06da8beea4@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN4PR01CA0081.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:26d::10) To PH8PR12MB7301.namprd12.prod.outlook.com
+ (2603:10b6:510:222::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 00/64] 5.15.192-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org
-References: <20250907195603.394640159@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.92.56.26
-X-Source-L: No
-X-Exim-ID: 1uvrcn-00000001x4y-2szu
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.116]) [73.92.56.26]:36498
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 39
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfAgXbDc+rYBClh8Za7y9aXjnp4fz1xCHWJJJ4ByxezxFhQ65LWKZA3ovt6rIlv1OAv2SLlChJ4MxYen1LUQtzk9FOeBAEen/GucOJ92Okb0dEKfG3dv7
- GkXdBKmO2JR7MTj4ZiPx2rnrGD/VgbZ8g3CZyf9yXc2Sq0lbXn+RnYaBuBF8/SWtgwRhEB7KRaQmWg==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR12MB7301:EE_|DM3PR12MB9352:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8a459037-a612-49fb-0b04-08ddef693f3b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UGxLLzNiZE5Oc3gya0w2WWp5bE51MVpTc3ZEV0puU1Eyb2FQejVrUzUzREd3?=
+ =?utf-8?B?Zng1TmZub2dZWHo4YXhCTXc1aGZudTdEVkF2VW1ObHRuaXRERFB2N2xZekFy?=
+ =?utf-8?B?emhhSkFkZ3p0VWNXM2JkLzRLT205TzRvdHVHdk9jdWFGQ0sxQTRVKytJOEJo?=
+ =?utf-8?B?K3VEeWgybnRvOFovUWRUckVpSmFpenljcUhsMmZ1cWhhNDBqVjhOclhxVU41?=
+ =?utf-8?B?QzFVZkNxYnBYYzM2Zkl4eGxzMlZVaVVybkJWSHdZcHJCVTNhZ3J6bGY2RjRC?=
+ =?utf-8?B?L2d5WCsvUDNHS2hUMng4OGhIanR2aHZiYzlaYXRxTmxSbDhNVm9lOVlYTFdD?=
+ =?utf-8?B?QWx0c3FhaXJpMGJNdjZyNmZ3dTVMYS9yb2txYkxCL2RUSGpLZzhtZnNHbEpO?=
+ =?utf-8?B?bjVvVUwzOXB0WjJRVTZEcGg3blVuWnNDMy9xTVRnTVhRTytiMXpwaitEbllC?=
+ =?utf-8?B?MktDN3pTWk9tTE11STg5OUdZM3RSb0ZBdFFDd3RwNEUvdy9aUUxSb1pPckRs?=
+ =?utf-8?B?RlNjNDBPZ3lkRHozclFMaWZUbk5EQitYWTBqc2c1aWRPMkdPaDVUUGJWRER5?=
+ =?utf-8?B?QUk2TDc3UUpqZUZYNEVFbU95a0cwQlV1OGtOanMvYUpOUFBSUk9DNnFXYUND?=
+ =?utf-8?B?dDdjTktreFRHdEpkVjhWQ1ZiR2NaMGJ6cEw4UkZjTUlOTHFRSUhoY0YxZ3VX?=
+ =?utf-8?B?cDBNL2xpREhyODB3RjBQdUJLT0tKRlhDVXZrclMrYlp0NEY1a3MvcFlZN3Rz?=
+ =?utf-8?B?ejJGWDBIRXRBUlRnRERsWTZ1ei9lcnAzYzhqQjJkc3BRN1dwUEpWQzIzME55?=
+ =?utf-8?B?bWZRajBpR2QzQ05zNDREbXloZU90Zit2ZGNqQUtKb3djMU5GSmVPZ1E2bk9B?=
+ =?utf-8?B?NWhPdEV4VVB4ampuT2laQTJFbEpwWDRtUm5CK1l4aHBVcGNyVHZzbFdJODRQ?=
+ =?utf-8?B?bEdJcStYN0o5U1JaUXZRbVZKVEUxRlNSUXZkS1VMK3hqSFlIZCs3SWVvSi93?=
+ =?utf-8?B?MXdtZEV4SEo3K3lVRDF2b2NJaS8vWEFYaXpZQ1o5dzJvMm9oTUJVa2FHN01Y?=
+ =?utf-8?B?bW1VNFVmMExRV2RKZ09ROWpXQmpMeWR5TG92MjJYTjFXcC8wazJWYTVUM0Jh?=
+ =?utf-8?B?T0FrR3M0eWVZVzUvcU9TUERwYkNkYkdldWVack9XaTM1bmQ3SmFySkNxY296?=
+ =?utf-8?B?Y2dxZlhRNTJlcnZ2RjFEUTNFNEVMcHl6MWpBNmVWQktla2dvaGlnQ3p5bHZs?=
+ =?utf-8?B?L21wb0F6dmo2QWt0dk0wL1p1dGk3aGtaSmpEeU9nMlBhRXMrcS93aHpJN0RV?=
+ =?utf-8?B?czUxbE9rRGNjTC9xclIzQlI5d0ZOdmxzdVNYbUxzZW1KQkw2dlhvNk1ETDFN?=
+ =?utf-8?B?MS8zMlp3aDNDTlFQekhobkNZbE1hbmo5WFBRazdKZCtnUURGdFllTjVtSkh0?=
+ =?utf-8?B?RzlmVkpGWGJ4MHRpd2RjVTJ5ekNIUUhCTXV0YkRxY0RZNHJ2WGc4NkxJTjVl?=
+ =?utf-8?B?TWxyRFVjN3VIVk5OUlQ3b1E5c3BXVWU2ZndmWW9uK0RVYzNVbjNCNlFqSlpu?=
+ =?utf-8?B?ZTN4VWZ4M2ZpYy9CbCtQZXNKaDZoRTRCWHdzNnhxMEoyTU5ZNS9pbGsrWjBm?=
+ =?utf-8?B?dUlTSWZNR2pDaU1zOTVtNDQ3TXpsMC9uZUNPMlJyMkRocG1mSy9udmluUjhz?=
+ =?utf-8?B?Z0xaNjNjQjdRRGVod084RlJ5SEN5UjArNmUxa3RyWmNWaW82T1MxSWFDN25U?=
+ =?utf-8?B?U0tydWszRFJDcGxoUk04L0pNKzdQemVhLzczc29uQzZOVVMzanZIaHBKYUZG?=
+ =?utf-8?B?bXNqZ3VyY1VpSkF6YVU5ZzgvUk9YUy9RcnpvTk8vRitlbUxqRy9nT0ZhOTNp?=
+ =?utf-8?B?anRCOWhiYmlpbks2ZmVvKzVZbFNIZGcyTzZlVGJGOVhyM21ZZXpPZitFZU1D?=
+ =?utf-8?Q?sssKacIEZgk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7301.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cm1wY3NScXM5VVd4Z1ZyY0tXdCtNUjZyS1dPMjB0S2FUak5qMHlpUkJtVGha?=
+ =?utf-8?B?MnQxUmFaUWFMRlpvT0x4TGx4WHRhUzFsYWNTTW5QVUtmNmF5ZEhZN3E1aHZT?=
+ =?utf-8?B?QWVxWVY0eml2Ynh2elFPNVorOEtDQkd0Z2lWNlpxWndLQWt4b0YyQTNxNWl2?=
+ =?utf-8?B?UU9zZmtIR2drUEpZbXZyQkpxVXBnUnVhVjBMZnVubFNsSkwxdWpNWDBaK3pX?=
+ =?utf-8?B?eGlqWlVsbWNkQ2ZSNExDZG5yZDR1cmpUR1UzeWJHUWhQRWRxMi8yQ2s2Q3JV?=
+ =?utf-8?B?UndHYVZmTGVORm9zc2xFcjB4KzR5cXBGWnhSU1FXTGlSblZ6Qy9Zd0ZVVmRz?=
+ =?utf-8?B?S3pPcHZXaUV6WG9Ic0YxL0xyUWpJeFhMVWFyNnhVdThDYW82K1NyQVVaSDlU?=
+ =?utf-8?B?MXdiZ3pMMFRzeXBITzNwV3YrN0k5MkpycVIxL0doVVhSdGV3WWFMV0Jna3FU?=
+ =?utf-8?B?aXZDSExxT2gwY0pDSkpZSVRPMFhyb0hFaS9SSnhHOHV2bzE0VkEwbUdKV3V3?=
+ =?utf-8?B?RFVpaDRXczYxNmQvbFNUeFhYRzlHNWcra0ZIbEtPbUZQcndWdVF5REJqM3FT?=
+ =?utf-8?B?OXl0K1VqQm5jQWxjczY2QXVKK2Z2OGdUdlVyZk1YR3R5Y3h1RVZsMVhMT2N4?=
+ =?utf-8?B?UlVVT2pST3NZMVc5REMrbFNOb3hSZFNNT3pORTE0R1lCOXR5amFQc25ONFd1?=
+ =?utf-8?B?MC9KMmswcnFpWkRMbXpoaTlSYXZJSVNIWXl1Ty9iYlhHNmVmSzNKMTBzSnoy?=
+ =?utf-8?B?cnB4SHNtL2RyaGlhZWtyTllGNjJUSmU2cUlBbTE4Mk9paW92SUtxVVNTWG1w?=
+ =?utf-8?B?bkx5V29sK1p2QTBZWCszaVdjNzRmRlNRa2JUNHovK1pGNm5CQkI4RytqQnFN?=
+ =?utf-8?B?ZUJoS2hXSFBZdG01OHNlcHJYK1A4WW0zTC9JaStiTjZXK1g4cjVDMDIxY1Az?=
+ =?utf-8?B?ZDVJSU1GUHZRelZPR0xqaXBsNDNYRUJ6Nmg0ekFXZmpweWdTeHFZd1dvQi9j?=
+ =?utf-8?B?TVg1VDNuZUhFRW5BZitncGJuTWpaVVNnNTgxQkp5L0U3OTh6NDArL01naWFS?=
+ =?utf-8?B?L0NKVEpYVFQxaEd3SjVmWWJCb1N5ZTZ4U2RaU210TXdJNHAvcTZqK2V3VGN5?=
+ =?utf-8?B?SE02WU1tWk1BL3ZqNnhOZHk0YjEvV0hnZEtlVkJVanNVSndJaWljdExMeHhH?=
+ =?utf-8?B?SmZLb1RKTU1OZnlGelUvelR6Ykt0dE05eTVYRkdITnEramR0NDBCajBtUXV4?=
+ =?utf-8?B?ZDRLRnJwWnp5VTVLK1RLNVZKdUNDM3piL2ZhVlAreVNxYjdyOExmNHREQnUr?=
+ =?utf-8?B?YVNNVWxnL1RuVzkrSVdYOXQvUXZZNjRhQlFzWTU2enF2UUtuSjJwbDcvcXBB?=
+ =?utf-8?B?TWhycjFiSVpLeVh4Y2VINVRUYVlEeFpVV3BGQ1BaSnFkOFlQL0VibldtejRn?=
+ =?utf-8?B?dDB1c3dqYlhBUDdXUEhyNnpLRGhaUUNrZWVuMFRRc0NvRGlCSHRzRU1sTERK?=
+ =?utf-8?B?RUcxQ2p4REhlaU9tVVVsWkc4MldrU0FpUDhjNUFTdlRiWEhTTEZybmRyMXpL?=
+ =?utf-8?B?aTR2RDU1TXlab00xbi8zMXY1RGVwSDVQOGhXdGhRV0FCKzRIZ3U0VlFOYnlw?=
+ =?utf-8?B?U3lBZ1UyV0Q5eENuOExWTFh1eVZlV2VCeG4vN2kxQk1nbkM2bGo1K2V5UTFB?=
+ =?utf-8?B?M1IwT2hTK1VWWDdsVW1Qd2ZMOXFpZmJZbnJmcGpBalB5bGRLZVU0V1NJM01Z?=
+ =?utf-8?B?UTlFVzk3OHJWK29qempHVWV3bWx0V25DOVU3Q01QYkF6d3RZRzc2bGF0bUZV?=
+ =?utf-8?B?MmpJbnY1WVlIMWh5djNib3pQamhLaUJydituWFVzZ0lSaUVxQnNtajcrenlO?=
+ =?utf-8?B?eFF0bHFLVDdSc1FiRllocXYyVHZxY0d6U3BBN2pvZmZhWStpVXovcWg5ZlBN?=
+ =?utf-8?B?K0VjMzFuTFI0M1huU0M5Y0U0clVqREZxQUlpZEQxQWdscVBxNWlWdnA0eWhx?=
+ =?utf-8?B?d2FDNTFaV25iYk9WK04xZEhaUEY0elpNM0d5UWlCUjdoblh2Wjc1QzFaM0tX?=
+ =?utf-8?B?TDFhYWx1VDdsd0pPSGE1OTdMYjBHQllsaUVnM1psMUNPMHJoaHNlb1J4TG5j?=
+ =?utf-8?Q?HUF5xkKq8R88SirkAo5s2OGx1?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a459037-a612-49fb-0b04-08ddef693f3b
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7301.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2025 06:22:27.2583
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CkWll/XYKdBnndtwT9IrZi+tm2kmQAUqTUE1PxzxqEnnWUlBwO4Dn696r4wGit8CBZ9v8YaE5ctMMancAZAe4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9352
 
-On 9/7/25 12:57, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.192 release.
-> There are 64 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Tue, 09 Sep 2025 19:55:53 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.192-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi Peter / Jani,
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+ From the measurements I have done, the difference between RBtree full 
+iteration and list full iteration
+is negligible, even under heavy fragmentation. Based on this, I think it 
+would be reasonable to include
+these macros in rbtree.h as a convenience for cases where a full walk is 
+required, similar to the helper
+macros that already exist in list.h. In situations where the tree is 
+small or only modestly populated, the
+overhead is insignificant, and the decision of whether to use them can 
+be left to the user based on their
+workload.
 
-Tested-by: Ron Economos <re@w6rz.net>
+If that still is not acceptable, I can move the macros into drm_buddy.c 
+instead. Please let me know your
+suggestion.
+
+Thanks,
+Arun.
+On 9/2/2025 11:39 AM, Arunpravin Paneer Selvam wrote:
+>
+> On 9/2/2025 1:11 AM, Peter Zijlstra wrote:
+>> On Tue, Sep 02, 2025 at 12:26:04AM +0530, Arunpravin Paneer Selvam 
+>> wrote:
+>>> Replace the freelist (O(n)) used for free block management with a
+>>> red-black tree, providing more efficient O(log n) search, insert,
+>>> and delete operations. This improves scalability and performance
+>>> when managing large numbers of free blocks per order (e.g., hundreds
+>>> or thousands).
+>> Did you consider the interval tree?
+>
+> In this allocator, free blocks are tracked individually by order and 
+> not as arbitrary ranges. The
+>
+> operations are keyed insert/delete/lookup, for which an rbtree is 
+> sufficient and simper, AFAIK.
+>
+>>
+>>
+>>> @@ -41,23 +43,53 @@ static void drm_block_free(struct drm_buddy *mm,
+>>>       kmem_cache_free(slab_blocks, block);
+>>>   }
+>>>   -static void list_insert_sorted(struct drm_buddy *mm,
+>>> -                   struct drm_buddy_block *block)
+>>> +static void rbtree_insert(struct drm_buddy *mm,
+>>> +              struct drm_buddy_block *block)
+>>>   {
+>>> +    struct rb_root *root = 
+>>> &mm->free_tree[drm_buddy_block_order(block)];
+>>> +    struct rb_node **link = &root->rb_node;
+>>> +    struct rb_node *parent = NULL;
+>>>       struct drm_buddy_block *node;
+>>> -    struct list_head *head;
+>>> +    u64 offset;
+>>> +
+>>> +    offset = drm_buddy_block_offset(block);
+>>>   -    head = &mm->free_list[drm_buddy_block_order(block)];
+>>> -    if (list_empty(head)) {
+>>> -        list_add(&block->link, head);
+>>> -        return;
+>>> +    while (*link) {
+>>> +        parent = *link;
+>>> +        node = rb_entry(parent, struct drm_buddy_block, rb);
+>>> +
+>>> +        if (offset < drm_buddy_block_offset(node))
+>>> +            link = &parent->rb_left;
+>>> +        else
+>>> +            link = &parent->rb_right;
+>>>       }
+>>>   -    list_for_each_entry(node, head, link)
+>>> -        if (drm_buddy_block_offset(block) < 
+>>> drm_buddy_block_offset(node))
+>>> -            break;
+>>> +    rb_link_node(&block->rb, parent, link);
+>>> +    rb_insert_color(&block->rb, root);
+>>> +}
+>> static inline bool __drm_bb_less(const struct drm_buddy_block *a,
+>>                  const struct drm_buddy_block *b)
+>> {
+>>     return drm_buddy_block_offset(a) < drm_buddy_block_offset(b);
+>> }
+>>
+>> #define __node_2_drm_bb(node) rb_entry((node), struct 
+>> drm_buddy_block, rb)
+>>
+>> static inline bool rb_drm_bb_less(struct rb_node *a, const struct 
+>> rb_node *b)
+>> {
+>>     return __drm_bb_less(__node_2_drm_bb(a), __node_2_drm_bb(b));
+>> }
+>>
+>> static void rbtree_insert(struct drm_buddy *mm, struct 
+>> drm_buddy_block *block)
+>> {
+>>     rb_add(block->rb, &mm->free_tree[drm_buddy_block_order(block)], 
+>> rb_drm_bb_less);
+>> }
+>>
+>>> +
+>>> +static void rbtree_remove(struct drm_buddy *mm,
+>>> +              struct drm_buddy_block *block)
+>>> +{
+>>> +    struct rb_root *root;
+>>> +
+>>> +    root = &mm->free_tree[drm_buddy_block_order(block)];
+>>> +    rb_erase(&block->rb, root);
+>>>   -    __list_add(&block->link, node->link.prev, &node->link);
+>>> +    RB_CLEAR_NODE(&block->rb);
+>>> +}
+>>> +
+>>> +static inline struct drm_buddy_block *
+>>> +rbtree_last_entry(struct drm_buddy *mm, unsigned int order)
+>>> +{
+>>> +    struct rb_node *node = rb_last(&mm->free_tree[order]);
+>>> +
+>>> +    return node ? rb_entry(node, struct drm_buddy_block, rb) : NULL;
+>>> +}
+>> rb_add_cached() caches the leftmost entry, if you invert the key, the
+>> last is first.
+>
+> With inversion, the in-tree ordering changes from natural ascending 
+> offsets to descending,
+>
+> which can break assumptions in existing buddy allocator code that 
+> expects ascending order.
+>
+>>
+>>> diff --git a/include/linux/rbtree.h b/include/linux/rbtree.h
+>>> index 8d2ba3749866..17190bb4837c 100644
+>>> --- a/include/linux/rbtree.h
+>>> +++ b/include/linux/rbtree.h
+>>> @@ -79,6 +79,62 @@ static inline void rb_link_node_rcu(struct 
+>>> rb_node *node, struct rb_node *parent
+>>>          ____ptr ? rb_entry(____ptr, type, member) : NULL; \
+>>>       })
+>>>   +/**
+>>> + * rbtree_for_each_entry - iterate in-order over rb_root of given type
+>>> + *
+>>> + * @pos:    the 'type *' to use as a loop cursor.
+>>> + * @root:    'rb_root *' of the rbtree.
+>>> + * @member:    the name of the rb_node field within 'type'.
+>>> + */
+>>> +#define rbtree_for_each_entry(pos, root, member) \
+>>> +    for ((pos) = rb_entry_safe(rb_first(root), typeof(*(pos)), 
+>>> member); \
+>>> +         (pos); \
+>>> +         (pos) = rb_entry_safe(rb_next(&(pos)->member), 
+>>> typeof(*(pos)), member))
+>>> +
+>>> +/**
+>>> + * rbtree_reverse_for_each_entry - iterate in reverse in-order over 
+>>> rb_root
+>>> + * of given type
+>>> + *
+>>> + * @pos:    the 'type *' to use as a loop cursor.
+>>> + * @root:    'rb_root *' of the rbtree.
+>>> + * @member:    the name of the rb_node field within 'type'.
+>>> + */
+>>> +#define rbtree_reverse_for_each_entry(pos, root, member) \
+>>> +    for ((pos) = rb_entry_safe(rb_last(root), typeof(*(pos)), 
+>>> member); \
+>>> +         (pos); \
+>>> +         (pos) = rb_entry_safe(rb_prev(&(pos)->member), 
+>>> typeof(*(pos)), member))
+>>> +
+>>> +/**
+>>> + * rbtree_for_each_entry_safe - iterate in-order over rb_root safe 
+>>> against removal
+>>> + *
+>>> + * @pos:    the 'type *' to use as a loop cursor
+>>> + * @n:        another 'type *' to use as temporary storage
+>>> + * @root:    'rb_root *' of the rbtree
+>>> + * @member:    the name of the rb_node field within 'type'
+>>> + */
+>>> +#define rbtree_for_each_entry_safe(pos, n, root, member) \
+>>> +    for ((pos) = rb_entry_safe(rb_first(root), typeof(*(pos)), 
+>>> member), \
+>>> +         (n) = (pos) ? rb_entry_safe(rb_next(&(pos)->member), 
+>>> typeof(*(pos)), member) : NULL; \
+>>> +         (pos); \
+>>> +         (pos) = (n), \
+>>> +         (n) = (pos) ? rb_entry_safe(rb_next(&(pos)->member), 
+>>> typeof(*(pos)), member) : NULL)
+>>> +
+>>> +/**
+>>> + * rbtree_reverse_for_each_entry_safe - iterate in reverse in-order 
+>>> over rb_root
+>>> + * safe against removal
+>>> + *
+>>> + * @pos:    the struct type * to use as a loop cursor.
+>>> + * @n:        another struct type * to use as temporary storage.
+>>> + * @root:    pointer to struct rb_root to iterate.
+>>> + * @member:    name of the rb_node field within the struct.
+>>> + */
+>>> +#define rbtree_reverse_for_each_entry_safe(pos, n, root, member) \
+>>> +    for ((pos) = rb_entry_safe(rb_last(root), typeof(*(pos)), 
+>>> member), \
+>>> +         (n) = (pos) ? rb_entry_safe(rb_prev(&(pos)->member), 
+>>> typeof(*(pos)), member) : NULL; \
+>>> +         (pos); \
+>>> +         (pos) = (n), \
+>>> +         (n) = (pos) ? rb_entry_safe(rb_prev(&(pos)->member), 
+>>> typeof(*(pos)), member) : NULL)
+>>> +
+>> Not really a fan of these. That's typically a sign you're doing it
+>> wrong. Full tree iteration is actually slower than linked list.
+>
+> I understand your concern about full-tree iteration being slower than 
+> a list walk. In our current use cases, though,
+>
+> the cost is not on the hot path and performance is comparable or even 
+> better to list traversal. We occasionally need
+>
+> to walk the full set of blocks to perform specific operations, and 
+> these macros make that code simpler and
+>
+> less error-prone. They aren't meant to replace targeted lookups or 
+> bounded walks, just to cover where a full
+>
+> traversal is necessary.
+>
+> Thanks,
+>
+> Arun.
+>
 
 
