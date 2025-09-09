@@ -1,408 +1,171 @@
-Return-Path: <stable+bounces-179039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5083BB4A220
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 08:24:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E78EB4A293
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 08:45:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B2974E2B49
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 06:23:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44EE94E3382
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 06:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6E7303A15;
-	Tue,  9 Sep 2025 06:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948C2304BCC;
+	Tue,  9 Sep 2025 06:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="3FDO3d86"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="bDI0RqMG"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2050.outbound.protection.outlook.com [40.107.102.50])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CC6302771;
-	Tue,  9 Sep 2025 06:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757398952; cv=fail; b=kQhb+duJH5xgrgblASsXI0xKwLWOGzHvrplQIuZWQj88Oo7Ku2Q29xwQloWemDHpriv5xiTCUjyU23F1VH6z/y2eYOX6Kmb0y4T+nEcjFrnGCQt60XoG4JxBcHaCn3NdC+ecjpLxPSPZzIRmwMDk6SJ7eoR+axw+lHDFzquuOds=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757398952; c=relaxed/simple;
-	bh=1iReGAEjo+zq/nf+9dGqVHs8pHXfI2x1nWETwV/yYEs=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=DMz3bkhNdETid/zGZqKTgePoeSQTmGYnOT0xQ4B4iqkQqie6VtShsduFVk9ZklKYBQGDGbwO3DXOjWah5RhKO9/tc7JAZvtfRU8Mbg7LZLCFmLffNzYb9ZjlIDelenHhJArAvDvvtf3Bj1UWAsBh0BBmvWVuQROaRZXeAfKMig4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=3FDO3d86; arc=fail smtp.client-ip=40.107.102.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jFI6vym/4x4fUu2cjsAkYmwe9O7f9A0w7fr/oGgOEdN+1tyo4zj82uJEjJ3lmA2IrEzym5qLoL4ffHTzsJSdGAaR9mvMdbMflTm2szZJ/F4kIr5ekspXf1LH8b8yYIKLmWkwIVoG3xHv1B04MKX+3SpfiiggR+AedLefLttF5UHf1fmtvpgCdqctYtPrNLbdsv0uyWZsEEqUcYWpDJPFSSde/BCZ2nxLJqmXpI18xA55/BU+2rj1sRk2T5dHeImx7AQvy7gc9j8bDjy0EwsgEK3JRFzgT9xatcTS6vyq9iUNKYKAwYzkl7iLKpAh9V6jDumEXIWnKc4xwYW43cRPTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tVF2ZrFRm25jha5Xm3qlXVaAjZIDSkZjVbumTHoKOmg=;
- b=bAMLM6BHTLpQJF/I5ch/A7inXzBKacrpB2ikAQWwFJM8FNh1u+S0tRPTcFR4F1ordDTTqQvsCWolDovyCeC1ELCoUDcqxath9VXnx7CJnJ/1qIrMWJp6Vi0SnO8BMWHcTlVtbFWQvXF/F834Y67nHojnXCDAg9mT7KODekFiinUeIVdxak4fwCDloBOGINYnBmxeNSjN8Ew0V9P/9wA4qXUdXVYIlPi/29WeC2j6trWLyZNhcaucP6/P63WA/0vSrf0ohTbEXBMqpOV4KoIxRL4BetWD2r6+AHTimTYvRTmvSlpdNIssoV4Lz4X2TrTi7OeQOK2A+Md3m0WSYGZCiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tVF2ZrFRm25jha5Xm3qlXVaAjZIDSkZjVbumTHoKOmg=;
- b=3FDO3d86czlGJ9L4QKknmO3NgLZTVeba9PQhQoYDSBUeXqtdEElkgyC5biC/pqq5qppctIH0RSQQA8yrgKSvPSV9Bsv9HQDKB240gYFVuNBePFxtzQC3EV+g/Wrp7JPMSSqBv/xOX4/uzWW96C45ilKRklisbmwlhsps6ltB1Bw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH8PR12MB7301.namprd12.prod.outlook.com (2603:10b6:510:222::12)
- by DM3PR12MB9352.namprd12.prod.outlook.com (2603:10b6:0:4a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Tue, 9 Sep
- 2025 06:22:27 +0000
-Received: from PH8PR12MB7301.namprd12.prod.outlook.com
- ([fe80::a929:e8eb:ef22:6350]) by PH8PR12MB7301.namprd12.prod.outlook.com
- ([fe80::a929:e8eb:ef22:6350%6]) with mapi id 15.20.9094.021; Tue, 9 Sep 2025
- 06:22:27 +0000
-Message-ID: <a31fb1e1-517f-41e7-9a13-5518d66f971d@amd.com>
-Date: Tue, 9 Sep 2025 11:52:18 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/2] drm/buddy: Optimize free block management with RB
- tree
-From: Arunpravin Paneer Selvam <arunpravin.paneerselvam@amd.com>
-To: Peter Zijlstra <peterz@infradead.org>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Matthew Auld <matthew.auld@intel.com>
-Cc: christian.koenig@amd.com, matthew.auld@intel.com,
- dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- alexander.deucher@amd.com
-References: <20250901185604.2222-1-Arunpravin.PaneerSelvam@amd.com>
- <20250901194151.GJ4067720@noisy.programming.kicks-ass.net>
- <5f999a32-db26-4964-8152-ac06da8beea4@amd.com>
-Content-Language: en-US
-In-Reply-To: <5f999a32-db26-4964-8152-ac06da8beea4@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PN4PR01CA0081.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:26d::10) To PH8PR12MB7301.namprd12.prod.outlook.com
- (2603:10b6:510:222::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500D630498F;
+	Tue,  9 Sep 2025 06:45:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757400344; cv=none; b=NLgliIrmR4deR0MxIcbkuhJZf4Hhk7eoCPNE4qHDei/UWl4tfoQ2XDmr2i78zjynH8NncL28zHZ4m+rPM8372WI0in8NKMh0N8CdxpXgqCkxJ0GLO39t1X9Sx8hOIfY4VJaN+T4QlEHTyRWdHE/MF5NQRlo17/WMmCRAlWvT6U0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757400344; c=relaxed/simple;
+	bh=Crgb5QvBDRsoW9YpXbLjwcuhBDIJY83x9aVUdJxSMuU=;
+	h=Date:To:From:Subject:Message-Id; b=NsTh5OHvJOrCip8Nve+t88TcLSZGXluXzG8UI+RUkrSyxIyroMXlVXpumuIL+OwL/Sv9vt3eSTkH1DdrjJSj+gtV4pUJh+szyW8FUSgV40Za9+ipco707BDzVUHisUAT0mayokm/4XwXTOrCcZyY/2CCRdLTDAHFIfeUW1yPjLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=bDI0RqMG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F27C4CEFC;
+	Tue,  9 Sep 2025 06:45:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757400343;
+	bh=Crgb5QvBDRsoW9YpXbLjwcuhBDIJY83x9aVUdJxSMuU=;
+	h=Date:To:From:Subject:From;
+	b=bDI0RqMGN0+YSBYMBpgi3UvqdsOoGUjuqPowNefjsTXPtbkIYhT9sIKXcoazvv+YX
+	 Iy2dhIWfCILvZpC3wrnhVfINIzQtQEObX5n8payXGRn6Er/HLZSeJpb+1aAaQeClO1
+	 SsdpkSuhW5CSGZoi8nLVjgYWdsHmCYCG+yjhoQn4=
+Date: Mon, 08 Sep 2025 23:45:43 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,nao.horiguchi@gmail.com,david@redhat.com,linmiaohe@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-memory-failure-fix-vm_bug_on_pagepagepoisonedpage-when-unpoison-memory.patch removed from -mm tree
+Message-Id: <20250909064543.B3F27C4CEFC@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7301:EE_|DM3PR12MB9352:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8a459037-a612-49fb-0b04-08ddef693f3b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UGxLLzNiZE5Oc3gya0w2WWp5bE51MVpTc3ZEV0puU1Eyb2FQejVrUzUzREd3?=
- =?utf-8?B?Zng1TmZub2dZWHo4YXhCTXc1aGZudTdEVkF2VW1ObHRuaXRERFB2N2xZekFy?=
- =?utf-8?B?emhhSkFkZ3p0VWNXM2JkLzRLT205TzRvdHVHdk9jdWFGQ0sxQTRVKytJOEJo?=
- =?utf-8?B?K3VEeWgybnRvOFovUWRUckVpSmFpenljcUhsMmZ1cWhhNDBqVjhOclhxVU41?=
- =?utf-8?B?QzFVZkNxYnBYYzM2Zkl4eGxzMlZVaVVybkJWSHdZcHJCVTNhZ3J6bGY2RjRC?=
- =?utf-8?B?L2d5WCsvUDNHS2hUMng4OGhIanR2aHZiYzlaYXRxTmxSbDhNVm9lOVlYTFdD?=
- =?utf-8?B?QWx0c3FhaXJpMGJNdjZyNmZ3dTVMYS9yb2txYkxCL2RUSGpLZzhtZnNHbEpO?=
- =?utf-8?B?bjVvVUwzOXB0WjJRVTZEcGg3blVuWnNDMy9xTVRnTVhRTytiMXpwaitEbllC?=
- =?utf-8?B?MktDN3pTWk9tTE11STg5OUdZM3RSb0ZBdFFDd3RwNEUvdy9aUUxSb1pPckRs?=
- =?utf-8?B?RlNjNDBPZ3lkRHozclFMaWZUbk5EQitYWTBqc2c1aWRPMkdPaDVUUGJWRER5?=
- =?utf-8?B?QUk2TDc3UUpqZUZYNEVFbU95a0cwQlV1OGtOanMvYUpOUFBSUk9DNnFXYUND?=
- =?utf-8?B?dDdjTktreFRHdEpkVjhWQ1ZiR2NaMGJ6cEw4UkZjTUlOTHFRSUhoY0YxZ3VX?=
- =?utf-8?B?cDBNL2xpREhyODB3RjBQdUJLT0tKRlhDVXZrclMrYlp0NEY1a3MvcFlZN3Rz?=
- =?utf-8?B?ejJGWDBIRXRBUlRnRERsWTZ1ei9lcnAzYzhqQjJkc3BRN1dwUEpWQzIzME55?=
- =?utf-8?B?bWZRajBpR2QzQ05zNDREbXloZU90Zit2ZGNqQUtKb3djMU5GSmVPZ1E2bk9B?=
- =?utf-8?B?NWhPdEV4VVB4ampuT2laQTJFbEpwWDRtUm5CK1l4aHBVcGNyVHZzbFdJODRQ?=
- =?utf-8?B?bEdJcStYN0o5U1JaUXZRbVZKVEUxRlNSUXZkS1VMK3hqSFlIZCs3SWVvSi93?=
- =?utf-8?B?MXdtZEV4SEo3K3lVRDF2b2NJaS8vWEFYaXpZQ1o5dzJvMm9oTUJVa2FHN01Y?=
- =?utf-8?B?bW1VNFVmMExRV2RKZ09ROWpXQmpMeWR5TG92MjJYTjFXcC8wazJWYTVUM0Jh?=
- =?utf-8?B?T0FrR3M0eWVZVzUvcU9TUERwYkNkYkdldWVack9XaTM1bmQ3SmFySkNxY296?=
- =?utf-8?B?Y2dxZlhRNTJlcnZ2RjFEUTNFNEVMcHl6MWpBNmVWQktla2dvaGlnQ3p5bHZs?=
- =?utf-8?B?L21wb0F6dmo2QWt0dk0wL1p1dGk3aGtaSmpEeU9nMlBhRXMrcS93aHpJN0RV?=
- =?utf-8?B?czUxbE9rRGNjTC9xclIzQlI5d0ZOdmxzdVNYbUxzZW1KQkw2dlhvNk1ETDFN?=
- =?utf-8?B?MS8zMlp3aDNDTlFQekhobkNZbE1hbmo5WFBRazdKZCtnUURGdFllTjVtSkh0?=
- =?utf-8?B?RzlmVkpGWGJ4MHRpd2RjVTJ5ekNIUUhCTXV0YkRxY0RZNHJ2WGc4NkxJTjVl?=
- =?utf-8?B?TWxyRFVjN3VIVk5OUlQ3b1E5c3BXVWU2ZndmWW9uK0RVYzNVbjNCNlFqSlpu?=
- =?utf-8?B?ZTN4VWZ4M2ZpYy9CbCtQZXNKaDZoRTRCWHdzNnhxMEoyTU5ZNS9pbGsrWjBm?=
- =?utf-8?B?dUlTSWZNR2pDaU1zOTVtNDQ3TXpsMC9uZUNPMlJyMkRocG1mSy9udmluUjhz?=
- =?utf-8?B?Z0xaNjNjQjdRRGVod084RlJ5SEN5UjArNmUxa3RyWmNWaW82T1MxSWFDN25U?=
- =?utf-8?B?U0tydWszRFJDcGxoUk04L0pNKzdQemVhLzczc29uQzZOVVMzanZIaHBKYUZG?=
- =?utf-8?B?bXNqZ3VyY1VpSkF6YVU5ZzgvUk9YUy9RcnpvTk8vRitlbUxqRy9nT0ZhOTNp?=
- =?utf-8?B?anRCOWhiYmlpbks2ZmVvKzVZbFNIZGcyTzZlVGJGOVhyM21ZZXpPZitFZU1D?=
- =?utf-8?Q?sssKacIEZgk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7301.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cm1wY3NScXM5VVd4Z1ZyY0tXdCtNUjZyS1dPMjB0S2FUak5qMHlpUkJtVGha?=
- =?utf-8?B?MnQxUmFaUWFMRlpvT0x4TGx4WHRhUzFsYWNTTW5QVUtmNmF5ZEhZN3E1aHZT?=
- =?utf-8?B?QWVxWVY0eml2Ynh2elFPNVorOEtDQkd0Z2lWNlpxWndLQWt4b0YyQTNxNWl2?=
- =?utf-8?B?UU9zZmtIR2drUEpZbXZyQkpxVXBnUnVhVjBMZnVubFNsSkwxdWpNWDBaK3pX?=
- =?utf-8?B?eGlqWlVsbWNkQ2ZSNExDZG5yZDR1cmpUR1UzeWJHUWhQRWRxMi8yQ2s2Q3JV?=
- =?utf-8?B?UndHYVZmTGVORm9zc2xFcjB4KzR5cXBGWnhSU1FXTGlSblZ6Qy9Zd0ZVVmRz?=
- =?utf-8?B?S3pPcHZXaUV6WG9Ic0YxL0xyUWpJeFhMVWFyNnhVdThDYW82K1NyQVVaSDlU?=
- =?utf-8?B?MXdiZ3pMMFRzeXBITzNwV3YrN0k5MkpycVIxL0doVVhSdGV3WWFMV0Jna3FU?=
- =?utf-8?B?aXZDSExxT2gwY0pDSkpZSVRPMFhyb0hFaS9SSnhHOHV2bzE0VkEwbUdKV3V3?=
- =?utf-8?B?RFVpaDRXczYxNmQvbFNUeFhYRzlHNWcra0ZIbEtPbUZQcndWdVF5REJqM3FT?=
- =?utf-8?B?OXl0K1VqQm5jQWxjczY2QXVKK2Z2OGdUdlVyZk1YR3R5Y3h1RVZsMVhMT2N4?=
- =?utf-8?B?UlVVT2pST3NZMVc5REMrbFNOb3hSZFNNT3pORTE0R1lCOXR5amFQc25ONFd1?=
- =?utf-8?B?MC9KMmswcnFpWkRMbXpoaTlSYXZJSVNIWXl1Ty9iYlhHNmVmSzNKMTBzSnoy?=
- =?utf-8?B?cnB4SHNtL2RyaGlhZWtyTllGNjJUSmU2cUlBbTE4Mk9paW92SUtxVVNTWG1w?=
- =?utf-8?B?bkx5V29sK1p2QTBZWCszaVdjNzRmRlNRa2JUNHovK1pGNm5CQkI4RytqQnFN?=
- =?utf-8?B?ZUJoS2hXSFBZdG01OHNlcHJYK1A4WW0zTC9JaStiTjZXK1g4cjVDMDIxY1Az?=
- =?utf-8?B?ZDVJSU1GUHZRelZPR0xqaXBsNDNYRUJ6Nmg0ekFXZmpweWdTeHFZd1dvQi9j?=
- =?utf-8?B?TVg1VDNuZUhFRW5BZitncGJuTWpaVVNnNTgxQkp5L0U3OTh6NDArL01naWFS?=
- =?utf-8?B?L0NKVEpYVFQxaEd3SjVmWWJCb1N5ZTZ4U2RaU210TXdJNHAvcTZqK2V3VGN5?=
- =?utf-8?B?SE02WU1tWk1BL3ZqNnhOZHk0YjEvV0hnZEtlVkJVanNVSndJaWljdExMeHhH?=
- =?utf-8?B?SmZLb1RKTU1OZnlGelUvelR6Ykt0dE05eTVYRkdITnEramR0NDBCajBtUXV4?=
- =?utf-8?B?ZDRLRnJwWnp5VTVLK1RLNVZKdUNDM3piL2ZhVlAreVNxYjdyOExmNHREQnUr?=
- =?utf-8?B?YVNNVWxnL1RuVzkrSVdYOXQvUXZZNjRhQlFzWTU2enF2UUtuSjJwbDcvcXBB?=
- =?utf-8?B?TWhycjFiSVpLeVh4Y2VINVRUYVlEeFpVV3BGQ1BaSnFkOFlQL0VibldtejRn?=
- =?utf-8?B?dDB1c3dqYlhBUDdXUEhyNnpLRGhaUUNrZWVuMFRRc0NvRGlCSHRzRU1sTERK?=
- =?utf-8?B?RUcxQ2p4REhlaU9tVVVsWkc4MldrU0FpUDhjNUFTdlRiWEhTTEZybmRyMXpL?=
- =?utf-8?B?aTR2RDU1TXlab00xbi8zMXY1RGVwSDVQOGhXdGhRV0FCKzRIZ3U0VlFOYnlw?=
- =?utf-8?B?U3lBZ1UyV0Q5eENuOExWTFh1eVZlV2VCeG4vN2kxQk1nbkM2bGo1K2V5UTFB?=
- =?utf-8?B?M1IwT2hTK1VWWDdsVW1Qd2ZMOXFpZmJZbnJmcGpBalB5bGRLZVU0V1NJM01Z?=
- =?utf-8?B?UTlFVzk3OHJWK29qempHVWV3bWx0V25DOVU3Q01QYkF6d3RZRzc2bGF0bUZV?=
- =?utf-8?B?MmpJbnY1WVlIMWh5djNib3pQamhLaUJydituWFVzZ0lSaUVxQnNtajcrenlO?=
- =?utf-8?B?eFF0bHFLVDdSc1FiRllocXYyVHZxY0d6U3BBN2pvZmZhWStpVXovcWg5ZlBN?=
- =?utf-8?B?K0VjMzFuTFI0M1huU0M5Y0U0clVqREZxQUlpZEQxQWdscVBxNWlWdnA0eWhx?=
- =?utf-8?B?d2FDNTFaV25iYk9WK04xZEhaUEY0elpNM0d5UWlCUjdoblh2Wjc1QzFaM0tX?=
- =?utf-8?B?TDFhYWx1VDdsd0pPSGE1OTdMYjBHQllsaUVnM1psMUNPMHJoaHNlb1J4TG5j?=
- =?utf-8?Q?HUF5xkKq8R88SirkAo5s2OGx1?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8a459037-a612-49fb-0b04-08ddef693f3b
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7301.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2025 06:22:27.2583
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CkWll/XYKdBnndtwT9IrZi+tm2kmQAUqTUE1PxzxqEnnWUlBwO4Dn696r4wGit8CBZ9v8YaE5ctMMancAZAe4A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9352
 
-Hi Peter / Jani,
 
- From the measurements I have done, the difference between RBtree full 
-iteration and list full iteration
-is negligible, even under heavy fragmentation. Based on this, I think it 
-would be reasonable to include
-these macros in rbtree.h as a convenience for cases where a full walk is 
-required, similar to the helper
-macros that already exist in list.h. In situations where the tree is 
-small or only modestly populated, the
-overhead is insignificant, and the decision of whether to use them can 
-be left to the user based on their
-workload.
+The quilt patch titled
+     Subject: mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
+has been removed from the -mm tree.  Its filename was
+     mm-memory-failure-fix-vm_bug_on_pagepagepoisonedpage-when-unpoison-memory.patch
 
-If that still is not acceptable, I can move the macros into drm_buddy.c 
-instead. Please let me know your
-suggestion.
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Thanks,
-Arun.
-On 9/2/2025 11:39 AM, Arunpravin Paneer Selvam wrote:
->
-> On 9/2/2025 1:11 AM, Peter Zijlstra wrote:
->> On Tue, Sep 02, 2025 at 12:26:04AM +0530, Arunpravin Paneer Selvam 
->> wrote:
->>> Replace the freelist (O(n)) used for free block management with a
->>> red-black tree, providing more efficient O(log n) search, insert,
->>> and delete operations. This improves scalability and performance
->>> when managing large numbers of free blocks per order (e.g., hundreds
->>> or thousands).
->> Did you consider the interval tree?
->
-> In this allocator, free blocks are tracked individually by order and 
-> not as arbitrary ranges. The
->
-> operations are keyed insert/delete/lookup, for which an rbtree is 
-> sufficient and simper, AFAIK.
->
->>
->>
->>> @@ -41,23 +43,53 @@ static void drm_block_free(struct drm_buddy *mm,
->>>       kmem_cache_free(slab_blocks, block);
->>>   }
->>>   -static void list_insert_sorted(struct drm_buddy *mm,
->>> -                   struct drm_buddy_block *block)
->>> +static void rbtree_insert(struct drm_buddy *mm,
->>> +              struct drm_buddy_block *block)
->>>   {
->>> +    struct rb_root *root = 
->>> &mm->free_tree[drm_buddy_block_order(block)];
->>> +    struct rb_node **link = &root->rb_node;
->>> +    struct rb_node *parent = NULL;
->>>       struct drm_buddy_block *node;
->>> -    struct list_head *head;
->>> +    u64 offset;
->>> +
->>> +    offset = drm_buddy_block_offset(block);
->>>   -    head = &mm->free_list[drm_buddy_block_order(block)];
->>> -    if (list_empty(head)) {
->>> -        list_add(&block->link, head);
->>> -        return;
->>> +    while (*link) {
->>> +        parent = *link;
->>> +        node = rb_entry(parent, struct drm_buddy_block, rb);
->>> +
->>> +        if (offset < drm_buddy_block_offset(node))
->>> +            link = &parent->rb_left;
->>> +        else
->>> +            link = &parent->rb_right;
->>>       }
->>>   -    list_for_each_entry(node, head, link)
->>> -        if (drm_buddy_block_offset(block) < 
->>> drm_buddy_block_offset(node))
->>> -            break;
->>> +    rb_link_node(&block->rb, parent, link);
->>> +    rb_insert_color(&block->rb, root);
->>> +}
->> static inline bool __drm_bb_less(const struct drm_buddy_block *a,
->>                  const struct drm_buddy_block *b)
->> {
->>     return drm_buddy_block_offset(a) < drm_buddy_block_offset(b);
->> }
->>
->> #define __node_2_drm_bb(node) rb_entry((node), struct 
->> drm_buddy_block, rb)
->>
->> static inline bool rb_drm_bb_less(struct rb_node *a, const struct 
->> rb_node *b)
->> {
->>     return __drm_bb_less(__node_2_drm_bb(a), __node_2_drm_bb(b));
->> }
->>
->> static void rbtree_insert(struct drm_buddy *mm, struct 
->> drm_buddy_block *block)
->> {
->>     rb_add(block->rb, &mm->free_tree[drm_buddy_block_order(block)], 
->> rb_drm_bb_less);
->> }
->>
->>> +
->>> +static void rbtree_remove(struct drm_buddy *mm,
->>> +              struct drm_buddy_block *block)
->>> +{
->>> +    struct rb_root *root;
->>> +
->>> +    root = &mm->free_tree[drm_buddy_block_order(block)];
->>> +    rb_erase(&block->rb, root);
->>>   -    __list_add(&block->link, node->link.prev, &node->link);
->>> +    RB_CLEAR_NODE(&block->rb);
->>> +}
->>> +
->>> +static inline struct drm_buddy_block *
->>> +rbtree_last_entry(struct drm_buddy *mm, unsigned int order)
->>> +{
->>> +    struct rb_node *node = rb_last(&mm->free_tree[order]);
->>> +
->>> +    return node ? rb_entry(node, struct drm_buddy_block, rb) : NULL;
->>> +}
->> rb_add_cached() caches the leftmost entry, if you invert the key, the
->> last is first.
->
-> With inversion, the in-tree ordering changes from natural ascending 
-> offsets to descending,
->
-> which can break assumptions in existing buddy allocator code that 
-> expects ascending order.
->
->>
->>> diff --git a/include/linux/rbtree.h b/include/linux/rbtree.h
->>> index 8d2ba3749866..17190bb4837c 100644
->>> --- a/include/linux/rbtree.h
->>> +++ b/include/linux/rbtree.h
->>> @@ -79,6 +79,62 @@ static inline void rb_link_node_rcu(struct 
->>> rb_node *node, struct rb_node *parent
->>>          ____ptr ? rb_entry(____ptr, type, member) : NULL; \
->>>       })
->>>   +/**
->>> + * rbtree_for_each_entry - iterate in-order over rb_root of given type
->>> + *
->>> + * @pos:    the 'type *' to use as a loop cursor.
->>> + * @root:    'rb_root *' of the rbtree.
->>> + * @member:    the name of the rb_node field within 'type'.
->>> + */
->>> +#define rbtree_for_each_entry(pos, root, member) \
->>> +    for ((pos) = rb_entry_safe(rb_first(root), typeof(*(pos)), 
->>> member); \
->>> +         (pos); \
->>> +         (pos) = rb_entry_safe(rb_next(&(pos)->member), 
->>> typeof(*(pos)), member))
->>> +
->>> +/**
->>> + * rbtree_reverse_for_each_entry - iterate in reverse in-order over 
->>> rb_root
->>> + * of given type
->>> + *
->>> + * @pos:    the 'type *' to use as a loop cursor.
->>> + * @root:    'rb_root *' of the rbtree.
->>> + * @member:    the name of the rb_node field within 'type'.
->>> + */
->>> +#define rbtree_reverse_for_each_entry(pos, root, member) \
->>> +    for ((pos) = rb_entry_safe(rb_last(root), typeof(*(pos)), 
->>> member); \
->>> +         (pos); \
->>> +         (pos) = rb_entry_safe(rb_prev(&(pos)->member), 
->>> typeof(*(pos)), member))
->>> +
->>> +/**
->>> + * rbtree_for_each_entry_safe - iterate in-order over rb_root safe 
->>> against removal
->>> + *
->>> + * @pos:    the 'type *' to use as a loop cursor
->>> + * @n:        another 'type *' to use as temporary storage
->>> + * @root:    'rb_root *' of the rbtree
->>> + * @member:    the name of the rb_node field within 'type'
->>> + */
->>> +#define rbtree_for_each_entry_safe(pos, n, root, member) \
->>> +    for ((pos) = rb_entry_safe(rb_first(root), typeof(*(pos)), 
->>> member), \
->>> +         (n) = (pos) ? rb_entry_safe(rb_next(&(pos)->member), 
->>> typeof(*(pos)), member) : NULL; \
->>> +         (pos); \
->>> +         (pos) = (n), \
->>> +         (n) = (pos) ? rb_entry_safe(rb_next(&(pos)->member), 
->>> typeof(*(pos)), member) : NULL)
->>> +
->>> +/**
->>> + * rbtree_reverse_for_each_entry_safe - iterate in reverse in-order 
->>> over rb_root
->>> + * safe against removal
->>> + *
->>> + * @pos:    the struct type * to use as a loop cursor.
->>> + * @n:        another struct type * to use as temporary storage.
->>> + * @root:    pointer to struct rb_root to iterate.
->>> + * @member:    name of the rb_node field within the struct.
->>> + */
->>> +#define rbtree_reverse_for_each_entry_safe(pos, n, root, member) \
->>> +    for ((pos) = rb_entry_safe(rb_last(root), typeof(*(pos)), 
->>> member), \
->>> +         (n) = (pos) ? rb_entry_safe(rb_prev(&(pos)->member), 
->>> typeof(*(pos)), member) : NULL; \
->>> +         (pos); \
->>> +         (pos) = (n), \
->>> +         (n) = (pos) ? rb_entry_safe(rb_prev(&(pos)->member), 
->>> typeof(*(pos)), member) : NULL)
->>> +
->> Not really a fan of these. That's typically a sign you're doing it
->> wrong. Full tree iteration is actually slower than linked list.
->
-> I understand your concern about full-tree iteration being slower than 
-> a list walk. In our current use cases, though,
->
-> the cost is not on the hot path and performance is comparable or even 
-> better to list traversal. We occasionally need
->
-> to walk the full set of blocks to perform specific operations, and 
-> these macros make that code simpler and
->
-> less error-prone. They aren't meant to replace targeted lookups or 
-> bounded walks, just to cover where a full
->
-> traversal is necessary.
->
-> Thanks,
->
-> Arun.
->
+------------------------------------------------------
+From: Miaohe Lin <linmiaohe@huawei.com>
+Subject: mm/memory-failure: fix VM_BUG_ON_PAGE(PagePoisoned(page)) when unpoison memory
+Date: Thu, 28 Aug 2025 10:46:18 +0800
+
+When I did memory failure tests, below panic occurs:
+
+page dumped because: VM_BUG_ON_PAGE(PagePoisoned(page))
+kernel BUG at include/linux/page-flags.h:616!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 3 PID: 720 Comm: bash Not tainted 6.10.0-rc1-00195-g148743902568 #40
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ unpoison_memory+0x2f3/0x590
+ simple_attr_write_xsigned.constprop.0.isra.0+0xb3/0x110
+ debugfs_attr_write+0x42/0x60
+ full_proxy_write+0x5b/0x80
+ vfs_write+0xd5/0x540
+ ksys_write+0x64/0xe0
+ do_syscall_64+0xb9/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f08f0314887
+RSP: 002b:00007ffece710078 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f08f0314887
+RDX: 0000000000000009 RSI: 0000564787a30410 RDI: 0000000000000001
+RBP: 0000564787a30410 R08: 000000000000fefe R09: 000000007fffffff
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000009
+R13: 00007f08f041b780 R14: 00007f08f0417600 R15: 00007f08f0416a00
+ </TASK>
+Modules linked in: hwpoison_inject
+---[ end trace 0000000000000000 ]---
+RIP: 0010:unpoison_memory+0x2f3/0x590
+RSP: 0018:ffffa57fc8787d60 EFLAGS: 00000246
+RAX: 0000000000000037 RBX: 0000000000000009 RCX: ffff9be25fcdc9c8
+RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff9be25fcdc9c0
+RBP: 0000000000300000 R08: ffffffffb4956f88 R09: 0000000000009ffb
+R10: 0000000000000284 R11: ffffffffb4926fa0 R12: ffffe6b00c000000
+R13: ffff9bdb453dfd00 R14: 0000000000000000 R15: fffffffffffffffe
+FS:  00007f08f04e4740(0000) GS:ffff9be25fcc0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564787a30410 CR3: 000000010d4e2000 CR4: 00000000000006f0
+Kernel panic - not syncing: Fatal exception
+Kernel Offset: 0x31c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+---[ end Kernel panic - not syncing: Fatal exception ]---
+
+The root cause is that unpoison_memory() tries to check the PG_HWPoison
+flags of an uninitialized page.  So VM_BUG_ON_PAGE(PagePoisoned(page)) is
+triggered.  This can be reproduced by below steps:
+
+1.Offline memory block:
+
+ echo offline > /sys/devices/system/memory/memory12/state
+
+2.Get offlined memory pfn:
+
+ page-types -b n -rlN
+
+3.Write pfn to unpoison-pfn
+
+ echo <pfn> > /sys/kernel/debug/hwpoison/unpoison-pfn
+
+This scenario can be identified by pfn_to_online_page() returning NULL. 
+And ZONE_DEVICE pages are never expected, so we can simply fail if
+pfn_to_online_page() == NULL to fix the bug.
+
+Link: https://lkml.kernel.org/r/20250828024618.1744895-1-linmiaohe@huawei.com
+Fixes: f1dd2cd13c4b ("mm, memory_hotplug: do not associate hotadded memory to zones until online")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Suggested-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memory-failure.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+--- a/mm/memory-failure.c~mm-memory-failure-fix-vm_bug_on_pagepagepoisonedpage-when-unpoison-memory
++++ a/mm/memory-failure.c
+@@ -2568,10 +2568,9 @@ int unpoison_memory(unsigned long pfn)
+ 	static DEFINE_RATELIMIT_STATE(unpoison_rs, DEFAULT_RATELIMIT_INTERVAL,
+ 					DEFAULT_RATELIMIT_BURST);
+ 
+-	if (!pfn_valid(pfn))
+-		return -ENXIO;
+-
+-	p = pfn_to_page(pfn);
++	p = pfn_to_online_page(pfn);
++	if (!p)
++		return -EIO;
+ 	folio = page_folio(p);
+ 
+ 	mutex_lock(&mf_mutex);
+_
+
+Patches currently in -mm which might be from linmiaohe@huawei.com are
+
+revert-hugetlb-make-hugetlb-depends-on-sysfs-or-sysctl.patch
+mm-hwpoison-decouple-hwpoison_filter-from-mm-memory-failurec.patch
 
 
