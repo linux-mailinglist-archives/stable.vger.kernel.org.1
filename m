@@ -1,105 +1,143 @@
-Return-Path: <stable+bounces-179017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81752B4A05D
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 05:51:50 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFEDCB4A070
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 05:58:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45D0C3AEAED
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 03:51:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A46614E1CC7
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 03:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24FF264636;
-	Tue,  9 Sep 2025 03:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20E72DECBD;
+	Tue,  9 Sep 2025 03:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eBxgxzOE"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="W+sGbsYs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774AD255F27;
-	Tue,  9 Sep 2025 03:51:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED05426F2BE;
+	Tue,  9 Sep 2025 03:57:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757389905; cv=none; b=Cz/S9K2NbyEWBs976eTj8nF3hy+FSMOo9ynw3OVsD7wZzbD4eEAEKhWozeUKEIPZHuwAFLkqfRHH+F4fAGnCZjOX7t6tZjAxwH0rcTk0hQIFL3iBfL99+35RJRXVjrRTA4pLAd3+xvHWwESJzm5898h4XTVaMJ7FEbnhzBRUusQ=
+	t=1757390259; cv=none; b=D8fE1eOQOOWegv9Nf55GKy+1UyMRd8LoCKzyr0Q+VNDpS6D9B0+qkOkNgBP3zfO0WhpDBJohQFnhBilYfSLqPlzu01S9tkT0nX7RCZ+2sN3xuXgJzSasKvgSwRmIONh+bOdCjsMEmc/PipHTzuibtQdiWCJioUAXGxO/3navKUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757389905; c=relaxed/simple;
-	bh=hDFSqIoDGm+oeOAZ9q443ZWBkCIE3hQkRhHMZyq47fQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Q3sIqudagcJbYvIO2Sco37fHqiZ5Nrdc1GgRrxpzTdOu2myJP2R5GPEfKoagffIggrWkpLZKqFKMWCBZz8IgOAufkKznu5YS496H4H2TDnIRaXZVjzRMc09uyS3aF/Mk+D1Unv47qTDeflxw07yvv8VJIoyzWgzeeeLayTZuc1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eBxgxzOE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6069C4CEF4;
-	Tue,  9 Sep 2025 03:51:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757389905;
-	bh=hDFSqIoDGm+oeOAZ9q443ZWBkCIE3hQkRhHMZyq47fQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eBxgxzOEa8Ac6u4NfIJZg7uvYs9srT6Cy6snFEvxalwi+d2+6suPkVf9VfqXgfDcc
-	 JlcT0Q2YpAFnYky/zbHUDTmhp4KPF5M/taeWvmOUGamiJuPnnxVp7A7ydYwx6Ze8Z3
-	 BFTHiDwU/RdL3NfWk9uT3DMra1l/NgC50To6cwWVdqfyEO+jEwKlSEIsZvz7qvo7PR
-	 +P+WMi8LelFiKdOv04IW/kXl50UZsCYPBmiTg+jaKTruDc4//pRE6p6OZ0aoTz1eky
-	 K+xL55w8cQw6Pvkk95z9e69KgSjNLDJEWHMcRI1opEaT5utpHCwFqL/biZlW8AeBlz
-	 HCctCpmAXk01Q==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 17-rc1" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	kernel-team@meta.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/3] samples/damon: fix boot time enable handling fixup merge mistakes
-Date: Mon,  8 Sep 2025 20:51:41 -0700
-Message-Id: <20250909035141.7545-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250908193548.a153ef39d85cc54816950f71@linux-foundation.org>
-References: 
+	s=arc-20240116; t=1757390259; c=relaxed/simple;
+	bh=BNJgYDcqZUv7Fqxk1JnB4446WUyPE6iu0uKhE5nbFdo=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=FXll+rErbzFoU7vJrMYMgKM/UAA3d3iJWV4/Rvrjzhl5cwyw76nh42HfNZmAPSgyz4BbUSeurXwJwrRS9OWMEnvMQROWtegaJ9IWyBAKnUwC3F6/2nL+f/nh13epwyju/E8aGuNUb1RwAsJnLTjU9kqVkNzCt2NBdPabUg7MPJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=W+sGbsYs; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1127)
+	id 7C33221199D2; Mon,  8 Sep 2025 20:57:37 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7C33221199D2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1757390257;
+	bh=pr/GDTJTxmpsBp6NK0FZ1QXNX62XoPBETUfz4jeiPWc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=W+sGbsYsqbwADbpd/aHOMIBSsFuO6WR5HwcHBpLR4dh+kehKlO0wR3Jde2Ve6YeEz
+	 MJSLJKMpWc31KRftfOHL6FFUhNUXdpN/nNMO5zLicpNOFQuUWHXsIIfgPCac0R5Bro
+	 e95I2acMOG8vyK+6eavrS03du1n1oT41/9cWwPLY=
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shradhagupta@linux.microsoft.com,
+	ernis@linux.microsoft.com,
+	dipayanroy@linux.microsoft.com,
+	shirazsaleem@microsoft.com,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ssengar@microsoft.com,
+	stable@vger.kernel.org,
+	Saurabh Sengar <ssengar@linux.microsoft.com>
+Subject: [PATCH net v2] net: mana: Remove redundant netdev_lock_ops_to_full() calls
+Date: Mon,  8 Sep 2025 20:57:33 -0700
+Message-Id: <1757390253-6891-1-git-send-email-ssengar@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On Mon, 8 Sep 2025 19:35:48 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+NET_SHAPER is always selected for MANA driver. When NET_SHAPER is enabled,
+netdev_lock_ops_to_full() reduces effectively to only an assert for lock,
+which is always held in the path when NET_SHAPER is enabled.
 
-> On Mon,  8 Sep 2025 19:22:35 -0700 SeongJae Park <sj@kernel.org> wrote:
-> 
-> > First three patches of the patch series "mm/damon: fix misc bugs in
-> > DAMON modules" [1] was trying to fix boot time DAMON sample modules
-> > enabling issues by avoiding starting DAMON before the module
-> > initialization phase.  However, probably by a mistake during a merge,
-> > only half of the change is merged, and the part for avoiding the
-> > starting of DAMON before the module initialized is missed.  So the
-> > problem is not solved.  Fix those.
-> > 
-> > Note that the broken commits are merged into 6.17-rc1, but also
-> > backported to relevant stable kernels.  So this series also need to be
-> > merged into the stable kernels.  Hence Cc-ing stable@.
-> 
-> That's unfortunate, but the about doesn't actually tell us what this
-> series does.  
+Remove the redundant netdev_lock_ops_to_full() call.
 
-Good point.  The issue is that the sample modules can crash if those are
-enabled at boot time before DAMON is initialized, via kernel command line.
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+---
+[v2] - removed Fixes tag and stable CC
 
-Would you prefer me sending another version of this patch series with an
-elaborated cover letter?
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-> 
-> > [1] https://lore.kernel.org/20250706193207.39810-1-sj@kernel.org
-> 
-> Presumably it's in there somewhere?
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 550843e2164b..f0dbf4e82e0b 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -2100,10 +2100,8 @@ static void mana_destroy_txq(struct mana_port_context *apc)
+ 		napi = &apc->tx_qp[i].tx_cq.napi;
+ 		if (apc->tx_qp[i].txq.napi_initialized) {
+ 			napi_synchronize(napi);
+-			netdev_lock_ops_to_full(napi->dev);
+ 			napi_disable_locked(napi);
+ 			netif_napi_del_locked(napi);
+-			netdev_unlock_full_to_ops(napi->dev);
+ 			apc->tx_qp[i].txq.napi_initialized = false;
+ 		}
+ 		mana_destroy_wq_obj(apc, GDMA_SQ, apc->tx_qp[i].tx_object);
+@@ -2256,10 +2254,8 @@ static int mana_create_txq(struct mana_port_context *apc,
+ 		mana_create_txq_debugfs(apc, i);
+ 
+ 		set_bit(NAPI_STATE_NO_BUSY_POLL, &cq->napi.state);
+-		netdev_lock_ops_to_full(net);
+ 		netif_napi_add_locked(net, &cq->napi, mana_poll);
+ 		napi_enable_locked(&cq->napi);
+-		netdev_unlock_full_to_ops(net);
+ 		txq->napi_initialized = true;
+ 
+ 		mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
+@@ -2295,10 +2291,8 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
+ 	if (napi_initialized) {
+ 		napi_synchronize(napi);
+ 
+-		netdev_lock_ops_to_full(napi->dev);
+ 		napi_disable_locked(napi);
+ 		netif_napi_del_locked(napi);
+-		netdev_unlock_full_to_ops(napi->dev);
+ 	}
+ 	xdp_rxq_info_unreg(&rxq->xdp_rxq);
+ 
+@@ -2549,18 +2543,14 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
+ 
+ 	gc->cq_table[cq->gdma_id] = cq->gdma_cq;
+ 
+-	netdev_lock_ops_to_full(ndev);
+ 	netif_napi_add_weight_locked(ndev, &cq->napi, mana_poll, 1);
+-	netdev_unlock_full_to_ops(ndev);
+ 
+ 	WARN_ON(xdp_rxq_info_reg(&rxq->xdp_rxq, ndev, rxq_idx,
+ 				 cq->napi.napi_id));
+ 	WARN_ON(xdp_rxq_info_reg_mem_model(&rxq->xdp_rxq, MEM_TYPE_PAGE_POOL,
+ 					   rxq->page_pool));
+ 
+-	netdev_lock_ops_to_full(ndev);
+ 	napi_enable_locked(&cq->napi);
+-	netdev_unlock_full_to_ops(ndev);
+ 
+ 	mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
+ out:
+-- 
+2.43.0
 
-You're right.  Both the cover letter and the individual fix patches (first
-three of the series) describes the issue and origin broken commit.
-
-Please let me know if there is anything I can help for this patch series from
-my side :)
-
-
-Thanks,
-SJ
 
