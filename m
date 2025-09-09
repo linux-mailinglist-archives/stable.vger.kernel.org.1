@@ -1,124 +1,122 @@
-Return-Path: <stable+bounces-179027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E97B4A0F6
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 06:58:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 188C8B4A135
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 07:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E823C4E1385
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 04:58:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF80A4E6F8D
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 05:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53ED345945;
-	Tue,  9 Sep 2025 04:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB612DAFD6;
+	Tue,  9 Sep 2025 05:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N4tBE+dK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W8Rr3gWW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71090211706;
-	Tue,  9 Sep 2025 04:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289F51F63CD;
+	Tue,  9 Sep 2025 05:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757393880; cv=none; b=NkP0kewKpzDN6VJ27hLWe+YzUQpq9qsXA4u7qEW9FeE4+BfDuIGex1s0u/iyOH2NpoiC8GGundflLTAYFxY4XqZPJX+EHkJYD6XuZrd6kR/T5aUUFagrHiH+6Sl0nBvWYl6CbSvtYExYv2qJL49bHnvJDPPG/X6fspPYVMd0C64=
+	t=1757395228; cv=none; b=aXvlo/dqkIasMfRB+xM8SkR3FjtzTj/dfr6oisC0y2LGZCHJFq4fgrwOkMBZMAAQ2RmohFtK2vjdZwumvGXa4ZGkHvgGgvllfqc1MP+LFlKE0vIRJGFl+xhOjITAO+FPoIvRKed3CklTO5xGwaVIwcH+k35bk4wsR6UAU4OrDVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757393880; c=relaxed/simple;
-	bh=Tb/9I9r3+HRBGBPJda2/t0vKpz6/1fF1C/OCaKN9U4g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RP11KVaXDb6glsXLVLzDa/WI95EBBYasK6fbeW0CeDi/j/4HbaTPBbZMTE1J69fl4mN8oqITtzeTPQxUePKt3Iq+pL1VPAUbObqR7Va6hAcgehlaOaRm4WCI2nfO8b5+KxmFEBC4oZjnFPUToy3C++muNjW2QVDVyWq/smqAAXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N4tBE+dK; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55f6507bd53so5522048e87.3;
-        Mon, 08 Sep 2025 21:57:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757393876; x=1757998676; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l25NFxExAUe1eqmMOMVfFw3dzd2Dt4hw0Sr3RoaXfRE=;
-        b=N4tBE+dK6nYiF0Gpw5GX8MtBisOEt0oJ6IUgmgkvSGgJ+Wxg1XnY+fO9PC8KOUak3X
-         7W7czGjcIT9tgpDydc8U73gNdZkeneS5mkxOYZIHVeV1CSZtrKKD5rxOtNPfqrMQUEmf
-         d2UYgnojmhhVu5BQXC0sg0CPUczAD90j/wOHPz6jFHvwLsu+E9DsV8twHoKArM/VnrUl
-         9QGvB6C7qh5rG73crEWQrb3sbCkIaw/IE38yYTKkRfQzH/ezFWvTO496Tb3DC8MWaIjg
-         yuFZic310cN6nSYiKRF5unYmnJCd0kGfpbVeQSCAn/L3GW+cKhJ6GunvVKWcvyEzKxfW
-         uY1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757393876; x=1757998676;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l25NFxExAUe1eqmMOMVfFw3dzd2Dt4hw0Sr3RoaXfRE=;
-        b=L6+03xiBwLC3XdRN3ALalLzbexoNXNGr+2cf17A+QlDLvkUJiwg1P76WfslUFR6Nhm
-         gweRNH0tc9c3sDdmssU+mQ3ov8LSWNayYZHOxTpji9fNGhDBh2UiaTTRn/QUiHJe0pZV
-         YqJZxWMqiSKNle6+SAGPppcvOUwBTLP5S+DQoPIzoCXbwclh6vq28rDc+V5qVzMaApVs
-         FRkNjtOsPzlmzqTULML8HJ9/jibMGhjX7Gs4+I5KtQY7lxaCkpZw3sV44Xf2YLJ26O2/
-         48d7+X6COBypTtCN7dpOWNrwJbsQJ8s1l/Bq4kAi3/KcnTgDs2K1Clz1IGLCcvS1cMp3
-         WA7A==
-X-Forwarded-Encrypted: i=1; AJvYcCUOXCRbYCCQvtZIleBENIZazFsXTODlS5MfYc+/9lsVWg/cnrGzQ9LXnp+AZMao5oUKRu05PZ27n+zw8b0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYKGMuHE/Mi+IZCHRrBp5NN6CYrQc9+jBBcc0qRZJ8Q8CiBUR5
-	NJnKAcWUkxlvT9ypBAQaBRwsQaiKtVW4QHx6OGJyQIqJq6hBP9+lzk/Rg3SFb80MOCMRG1ki6Ls
-	He9cu6wu71XUR6yCExLP+4hfAUKvL5mU=
-X-Gm-Gg: ASbGncvJotXXShk2DTg/DHLA7PtZRA6dSAtN9mNqHVlYO7FRkJoesiugOWXPbcZolbS
-	SGpQtsPj1QJbrjRhMQAyMVpH1hJ6d8UYPt063a19PlLQTwJ6RnclHZ82eC/YScFQdeLg6GdrTXZ
-	DrEfUltWou8PAZSQUqTxJYbYTYpDxIoMQA8//UYPpl/+JHhEMtqstAaW/BHkVC7lhQt0RdPUcCu
-	uxHchB1ka63wF0k65XiwkUzkut05cDpssxG6MRniX4lmtOaypDrSggXfOjZ/FAL3l0bmanh
-X-Google-Smtp-Source: AGHT+IE4aJVhuUj7txtOnsYYhZRub3AWkInGLQh7N4cBU32Yoh4aAHd3WHdXBY7fRpvJ76Yz+6786ilhvVSEk1wTKAY=
-X-Received: by 2002:a05:6512:3b94:b0:55f:3ddb:2306 with SMTP id
- 2adb3069b0e04-5626310e5bdmr2842619e87.45.1757393876318; Mon, 08 Sep 2025
- 21:57:56 -0700 (PDT)
+	s=arc-20240116; t=1757395228; c=relaxed/simple;
+	bh=FgVYweKQjeosWEp0nTy0wAzvdTLwprY34zSw6dOuufo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gQRIbKfLSn3ee7itqSM3nTv0oAsnZESz2M9Tn4C/tmnBD/jE7aHfagQeglx1P26HrybgQagEhuFEr2Bg9FBhteZhbHQP3X177TKCnW4WWp+HZ2cdLVG0HSNrQgymeKZ4QFctHiauutQ8E66JMcKXS6fpt/plTyKI1A7PHXPY5RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W8Rr3gWW; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757395227; x=1788931227;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FgVYweKQjeosWEp0nTy0wAzvdTLwprY34zSw6dOuufo=;
+  b=W8Rr3gWW2Q6QMyT6SqOxIfPz1FGuTQWSKhd/qKZJ6pZ0xLgH30+RHs3V
+   Zaqncl0iHqu4UhpXsB4C7R+dTWJRwqPGxO7e+fpch44dJHB8/xmvDRUWp
+   yO7bWRPREXGoBgwy5scH53i8TOX652jr2lG7V9wpSoBGMiv9FLpAIvplq
+   5TOXYnV2W3Vq0CE2zfIomzgyDmq8pVkQz++mGSg59JGvzX6DD46++AzDF
+   BOYvHgCEKRnYbTnGY0zPqXJvPN543dKc1MPrfjM8RAOECSks39y2XF2pM
+   ZFxMWjxVytTj7ATW24/Ad90nh5x4orEqHr+ZzfgN73SLp7LysOaSB59O/
+   A==;
+X-CSE-ConnectionGUID: ggyaFNhxTgGw5yuUGaU69Q==
+X-CSE-MsgGUID: PhOTitd4QLGUABOpZdRF2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="59735669"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="59735669"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 22:20:26 -0700
+X-CSE-ConnectionGUID: wDey+M3hTs++QwOPkhtdYg==
+X-CSE-MsgGUID: jVfXzrTEReeaSAX/M8pqYw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; 
+   d="scan'208";a="177285755"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.86])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 22:20:23 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 7A83F11F818;
+	Tue, 09 Sep 2025 08:20:21 +0300 (EEST)
+Date: Tue, 9 Sep 2025 08:20:21 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: bingbu.cao@intel.com
+Cc: linux-media@vger.kernel.org, laurent.pinchart@ideasonboard.com,
+	tomi.valkeinen@ideasonboard.com, hans@jjverkuil.nl,
+	stable@vger.kernel.org, bingbu.cao@linux.intel.com
+Subject: Re: [PATCH] media: staging/ipu7: fix isys device runtime PM usage in
+ firmware closing
+Message-ID: <aL-5FY7-jL3k8rtd@kekkonen.localdomain>
+References: <20250909032148.2019162-1-bingbu.cao@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250907195615.802693401@linuxfoundation.org>
-In-Reply-To: <20250907195615.802693401@linuxfoundation.org>
-From: Dileep malepu <dileep.debian@gmail.com>
-Date: Tue, 9 Sep 2025 10:27:44 +0530
-X-Gm-Features: AS18NWC-8lpDwDSXRJI-52ZPSz8rigrQ13cs8hdUtHhPutYSVIO0pan4rBPN_Ww
-Message-ID: <CAC-m1rqeq33V5JU2HuQ+4iw4j41CZqCpocgKG2uLjnuTnf4w0A@mail.gmail.com>
-Subject: Re: [PATCH 6.16 000/183] 6.16.6-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909032148.2019162-1-bingbu.cao@intel.com>
 
-On Mon, Sep 8, 2025 at 2:08=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.16.6 release.
-> There are 183 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Tue, 09 Sep 2025 19:55:53 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.16.6-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.16.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi Bingbu,
 
-Build and boot tested 6.16.6-rc1 using qemu-x86_64. The kernel was
-successfully built and booted in a virtualized environment without
-issues.
+On Tue, Sep 09, 2025 at 11:21:48AM +0800, bingbu.cao@intel.com wrote:
+> From: Bingbu Cao <bingbu.cao@intel.com>
+> 
+> The PM usage counter of isys was bumped up when start camera stream
+> (opening firmware) but it was not dropped after stream stop(closing
+> firmware), it forbids system fail to suspend due to the wrong PM state
+> of ISYS. This patch drop the PM usage counter in firmware close to fix
+> it.
+> 
+> Cc: Stable@vger.kernel.org
 
-Tested-by: Dileep Malepu <dileep.debian@gmail.com>
+Can you provide a Fixes: tag, too?
+
+> Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
+> ---
+>  drivers/staging/media/ipu7/ipu7-isys-video.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/staging/media/ipu7/ipu7-isys-video.c b/drivers/staging/media/ipu7/ipu7-isys-video.c
+> index 8756da3a8fb0..173afd405d9b 100644
+> --- a/drivers/staging/media/ipu7/ipu7-isys-video.c
+> +++ b/drivers/staging/media/ipu7/ipu7-isys-video.c
+> @@ -946,6 +946,7 @@ void ipu7_isys_fw_close(struct ipu7_isys *isys)
+>  		ipu7_fw_isys_close(isys);
+>  
+>  	mutex_unlock(&isys->mutex);
+> +	pm_runtime_put(&isys->adev->auxdev.dev);
+>  }
+>  
+>  int ipu7_isys_setup_video(struct ipu7_isys_video *av,
+
+-- 
+Kind regards,
+
+Sakari Ailus
 
