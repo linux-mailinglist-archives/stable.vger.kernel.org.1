@@ -1,85 +1,117 @@
-Return-Path: <stable+bounces-179131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3016B505CE
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 21:03:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE42BB50707
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 22:27:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EED70165613
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 19:03:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55B145E7C69
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 20:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25236303A0F;
-	Tue,  9 Sep 2025 19:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jYicwdvO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F85632CF92;
+	Tue,  9 Sep 2025 20:25:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C103D3009F7;
-	Tue,  9 Sep 2025 19:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8643A30214B;
+	Tue,  9 Sep 2025 20:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757444610; cv=none; b=pZmFyp1pWMUX68UeyefVkKQnNpttK2FWJazZXnF8p5ZB3bgN1qUpN3FpL6ETo+KUgtLNYIJbpmWurjxvsym9dCUoTPzHlE2Z/0W94wv+2JCnQecfxkPgfZWijbMa5vUWEsX8UqDWgr5hj8wejFhg1Ct/OtbzPTCjSRFh7dVCo0o=
+	t=1757449520; cv=none; b=iCWLB3D0vbCgIKOgePn+Q5Esma39jp4nMvEBZRdNYIax3c8eDKcqu87Wh0C868EyK4hD0zKaTgxUbROjD+ibn/9+0qXqanhHPTEhuG8D9XHlkZQFckAxpOaV0C8WLVOAtSDJyNA8qecfdWQSQSunYAbQU47es23PjiRVQaWlcjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757444610; c=relaxed/simple;
-	bh=iQ2hGEIaFfNxNx3BhJMnrqdW4TZqrof8lMc5P3dIvXQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YUom5EtfvgVzMDhCXJ9ZPaNIxE2Y6c8M/M+531tTHy5IGeStaMagFQ4AxWnSLEA+W6hgwE59f3pUVW0ERRSKSpJDovFYGs2gpLdaYvWZvtgyzgzIpZTJu+qmtf5J2erBPrs8eS+hy5GzafppNLZOgDI+cKskBxlcKxxBdrrN1es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jYicwdvO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4089C4CEF4;
-	Tue,  9 Sep 2025 19:03:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757444610;
-	bh=iQ2hGEIaFfNxNx3BhJMnrqdW4TZqrof8lMc5P3dIvXQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jYicwdvOmjWT1Dq6UAJeXBSgJ4KfbqCpNC5tMrV0G0JnCHKUnYLD6mytrDTZYigFo
-	 uJnodv7UqXfrHLM+NhKk3qrg72hH0morH0BJa0NifP/yLE1avYHJ1znVwil2fug2RL
-	 h6zo3VI+on5W5891blflhISF98niUWJ4dPEDM9UJ2orO3gv1rodLea9kznEbeI1Yew
-	 uhWC0k2rdlBBDgc6769JCQiyaJ0Mg2e3g9R754PYEfIrDJd8CKSOJJ3rtUN5oXX5rc
-	 55hCYGuhYlC63fWKQUo3SVyCFQ8IK4lJHtL2TBjhFGFZjTYsi5qqvE6cDWZRbszoSC
-	 5WUOfF4u6JfDQ==
-Date: Tue, 9 Sep 2025 20:03:24 +0100
-From: Simon Horman <horms@kernel.org>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	netdev@vger.kernel.org, mptcp@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net 2/3] doc: mptcp: net.mptcp.pm_type is deprecated
-Message-ID: <20250909190324.GE20205@horms.kernel.org>
-References: <20250908-net-mptcp-misc-fixes-6-17-rc5-v1-0-5f2168a66079@kernel.org>
- <20250908-net-mptcp-misc-fixes-6-17-rc5-v1-2-5f2168a66079@kernel.org>
+	s=arc-20240116; t=1757449520; c=relaxed/simple;
+	bh=B05ab1H5adfOB8fknHXZFCe4sRqjE9IemtvtM0JGmVk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ND1wFBtKOYOTEWasGokbGJhdZurLODiwk5xcebk2sPxfoEFJfW7/1nbH+7GL5nDbSRswl66CNLFspvqzQcBE0H1fszvTxDnAGG7p58PYMHMdOIYOh2D2no80UCHjJkWUx3utHJ/NurZ2fMAjW/nUi6B5y246ImN3cPzU7FSmODE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1uw4Fr-001VTS-0h;
+	Tue, 09 Sep 2025 19:43:51 +0000
+Received: from ben by deadeye with local (Exim 4.98.2)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1uw4Fp-00000000Bq6-3Kra;
+	Tue, 09 Sep 2025 21:43:49 +0200
+Message-ID: <d2cadacb17dd4c96352f472ca10f656cd795b881.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 26/52] e1000e: fix heap overflow in e1000_set_eeprom
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Mikael Wessel <post@mikaelkw.online>, Vitaly
+ Lifshits <vitaly.lifshits@intel.com>, Mor Bar-Gabay
+ <morx.bar.gabay@intel.com>, Tony Nguyen	 <anthony.l.nguyen@intel.com>
+Date: Tue, 09 Sep 2025 21:43:44 +0200
+In-Reply-To: <20250907195602.752505443@linuxfoundation.org>
+References: <20250907195601.957051083@linuxfoundation.org>
+	 <20250907195602.752505443@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-2BHSEvwaaqnP3B5XN0n4"
+User-Agent: Evolution 3.56.2-2+b1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250908-net-mptcp-misc-fixes-6-17-rc5-v1-2-5f2168a66079@kernel.org>
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 
-On Mon, Sep 08, 2025 at 11:27:28PM +0200, Matthieu Baerts (NGI0) wrote:
-> The net.mptcp.pm_type sysctl knob has been deprecated in v6.15,
-> net.mptcp.path_manager should be used instead.
-> 
-> Adapt the section about path managers to suggest using the new sysctl
-> knob instead of the deprecated one.
-> 
-> Fixes: 595c26d122d1 ("mptcp: sysctl: set path manager by name")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Geliang Tang <geliang@kernel.org>
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+--=-2BHSEvwaaqnP3B5XN0n4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Sun, 2025-09-07 at 21:57 +0200, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+>=20
+> commit 90fb7db49c6dbac961c6b8ebfd741141ffbc8545 upstream.
+>=20
+> Fix a possible heap overflow in e1000_set_eeprom function by adding
+> input validation for the requested length of the change in the EEPROM.
+[...]
+
+I don't see this causing any problems, but the same check already
+existed in this function's caller ethtool_set_eeprom() so I don't think
+there was any vulnerability here.
+
+Ben.
+
+--=20
+Ben Hutchings
+Every program is either trivial or else contains at least one bug
+
+--=-2BHSEvwaaqnP3B5XN0n4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmjAg3EACgkQ57/I7JWG
+EQkapxAArsC3y87BgiSCVPLPyiqA9MDX0EcZzG+5OC+rEtybNGYhTOovldQKryM2
+bvSGoLUXPVSNsWJ0+IyAZyJBDDs7DEBC3DzN4XMm/1u99caLDp48j5fcpxeZ/JB6
+ynVvwn4hLCbFTLlRy3hHEJKdYjsI3Kmt0BVfF3uT3wXUCxaKXVMNU1AYOtehqzCz
+UyeKxGaWzQYjzkZPTdGZiGJkusfHyQcblouwMO2i1E7blXypz74WE+6088MPLkmT
+JoIPaNnCR7DMefBNRB3FkQg9ZKmZ6VY0UI9AI/vwTfAnyAG98BJyErOf0b51977m
+7Nnu1LBVqNjWN98CMlCQL+RH9aXUmgdTbbgbZlwRnPucFODwWt5jQJ1AxsHsxBiC
+kSyM1J8ge9uaNR5oxoy2s990iJQUqdCaihs7SqG5777W+ELmHU4sFMiw16T7lkxe
+tm6Wi41/kk5vJP7q67SPHaUrLE7cA6cfr6/uIPp1tUFCCdGLmKNG9gLu7IL9QKb6
+5mHtRnXmpA51k682gQqEn1xlmnssCSj94KLdGQG2wC2lgA+uPTJsjt7jXUCBz5S/
+QJYITlWO6SPzGe2H39ndgJmXueVilPYgDaKr1eDVFea3xfAL4p/Khhf+tM6ww8Uo
+rHDVf/JBfdtPAXTgBmpppKk6bOxsvXg31grkrIocEzOgeE0suOo=
+=I/be
+-----END PGP SIGNATURE-----
+
+--=-2BHSEvwaaqnP3B5XN0n4--
 
