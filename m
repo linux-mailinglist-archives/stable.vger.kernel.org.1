@@ -1,124 +1,207 @@
-Return-Path: <stable+bounces-178990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-178991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C724BB49D21
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 00:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E300B49DFA
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 02:30:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9D481B25D93
-	for <lists+stable@lfdr.de>; Mon,  8 Sep 2025 22:53:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A8C41B22A9A
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 00:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3982EDD41;
-	Mon,  8 Sep 2025 22:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F721E1E1B;
+	Tue,  9 Sep 2025 00:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfDkEkF7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fHhO1T62"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61902DCF4C
-	for <stable@vger.kernel.org>; Mon,  8 Sep 2025 22:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0B0199237;
+	Tue,  9 Sep 2025 00:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757371981; cv=none; b=Bml5Z6AUY/Jl3T2bo6j9kxZkVLvixCO+GLsUUkUHcnkPU8pdfzL0nu/yDVafOCWRLMjW3OqZ0n7xvQkIWhxBuTdEkbx0lfx1U0VRxWxJN87YqBtTVY+m1IX1bRUikBLmFXzDLo3sLK8lM82JyIMwip0guCPmdfheYmEYNnZk1Bc=
+	t=1757377828; cv=none; b=AG6q2F2qO1jIqvaUBQ9QFT43ca4o+O+mahr9EPodqV47sxNlEWL6mEri5B8VH3gQxLugjNxEw8M/GyWBOPuLNgEUgqLZHbzNntpWJPaSkBcGUJPjPV46Tk9tgwgdGQOPi3RNDA6x2gJsIWwvspRV4yFE3+fevTdua3WsU0qp63Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757371981; c=relaxed/simple;
-	bh=pP64zdSLYuawWGL6M9+/rStQBf+nMDaUB0PCbB3UWLc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OniQqnpVp+3utxGS+mlK4gMQ0JSJi5892LhDwlzjTLmqJFWv4/a+7hL2Gxjc1sXOymZwA1do71pA1p/xZbSuss+ATTeVprIfapKSV0uswZdTEB7OLQ0HIfKQZ9rgkNpNgIHYl42CusExvyizZ6yYEGhLVLb11KKn1mpF6lmoW88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfDkEkF7; arc=none smtp.client-ip=209.85.166.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-3f4d7feef27so31885655ab.3
-        for <stable@vger.kernel.org>; Mon, 08 Sep 2025 15:52:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1757371979; x=1757976779; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=x6g2ytjEOuNxZukcRm0gYsVtC6FSF5PRujJ//3LZSz4=;
-        b=IfDkEkF7OEll3uY2fGp4T5b6rIe8skiIt3GTTcSV1zdxek/+Gbld8yballygVi+SWV
-         LTQ46ZR9pvxhM044uoEvSSfDJ0Dp5NTGzNk2c1Ik5K+8iFCr3Bhzu7ILSJNDE2urTCp+
-         YvYgdOWNf5qwbsGIRMHaUgrJANyIT0qvbnvX8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757371979; x=1757976779;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x6g2ytjEOuNxZukcRm0gYsVtC6FSF5PRujJ//3LZSz4=;
-        b=LkQme4oPGh70/ZO7cQ5QKWsLa2jqYWNqaDEm4cCtFoT18diDzsh1nSqWAHFRIfW274
-         w9AYLpmwfezMGjmsxsPQD2AnwfyaVBFxoZD8yw6WyRy1W8myTBydCxBzqHTSKPbqxK7w
-         MzLYrVvxpHrO/AxpAy02vEzaw0EYOaqWohnD6ORuHKEruxdxKdBFPqrT2b6VLivZ7osB
-         JtUqZ5/Msw0+umKGiYFruskUp7trl/t371hddzTY/wQnhQ2ho/IdqVeoedjl4lQ/LeAH
-         kdgfejs13vw7qyrYrCxN5mw6pJlBF/DyV+Kp1yeLdg4KFgp0F/vx1GpoMzLQcrxC9W2t
-         17vA==
-X-Forwarded-Encrypted: i=1; AJvYcCWVc24onW0w73eCe7iA5JpBRG6iUj4pDjgNe3YoYhhd255SkLbSXsLrItqxG/By9PFSC9xHM8Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfqPGABX5TIv2iBjyM6kVBomrcP4fpBMqCztAcKEpQx54YD3Cs
-	IuOAuaSwJgMgpE7NR6lI/ajM2H/QxpN+y3iw27uOxkidpLYeg3PDHer6T+BAsY/MXSg=
-X-Gm-Gg: ASbGncvDFKsNiWycY4/jz6I2izSFmtY6wU4XsKyo0JZ/B3MfQtAbJ7Hae4dvVVmJ7q/
-	QxHE2dXkIH4K6i6amXc27RpNog8W9xKV0GHK/58gxmUGheABJ7WPhQKM7m5lROkgVYXb0vOELD1
-	Cf88WizUJ9eZhBp5wvLzKnIPWWPeHgN0nJe1NXXeIRVVralxVluwEiSUWdHxtdG5spAW3E1EJJY
-	+tf7ljJkl4eNtttLhKHkdiPOQpOl55eVNOMmKAPmNZejdSlzZqgcX5EXta9+vzLrL2Po4i6ku63
-	VhzWL1U5DIYWGFbhlqfO5I6MtIFkEdk6dUyY2uZMuExRSYWYtXCHX6ELW34UCjyZ/JnuOh2XCRV
-	7SXY3o6BwiXcqp1jc+WnvcdTxwTkLUIwUa5O6BJu277z9XQ==
-X-Google-Smtp-Source: AGHT+IGHlfDmvkZr5EsWyqNrB2Jpq9AoMeyzzheU0TqJZfe/YG8cZIrPRn1JB8n7L66+uFRG4iz1qw==
-X-Received: by 2002:a05:6e02:f90:b0:3fe:fa06:bfd6 with SMTP id e9e14a558f8ab-3fefa06bfffmr93467105ab.18.1757371978863;
-        Mon, 08 Sep 2025 15:52:58 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-50d8f0d594fsm9224126173.23.2025.09.08.15.52.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Sep 2025 15:52:58 -0700 (PDT)
-Message-ID: <e413e58b-f09d-415e-891e-832b58be1533@linuxfoundation.org>
-Date: Mon, 8 Sep 2025 16:52:57 -0600
+	s=arc-20240116; t=1757377828; c=relaxed/simple;
+	bh=z3yrPgah7DfTXR3m8YBbMtyTPrtwLo8PjdKgn9pWkZY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rtd863rTGTeIdI86KMeqvkrMzWR6IfEA6hXTFhlMFjLeF0Ei5MiG5qNDt6duAOwrK9xzRUylE5Jb1HszX02xE0gQ0Wc3u5NJWjphT4O72wFmHSCNcms2XVTP2JxLJinSyt+oNqSDnh58GSOd66xeiUH3t6q/T5sQ1jdGD051uOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fHhO1T62; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205C9C4CEF1;
+	Tue,  9 Sep 2025 00:30:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757377827;
+	bh=z3yrPgah7DfTXR3m8YBbMtyTPrtwLo8PjdKgn9pWkZY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=fHhO1T62IOcqZNX2uryEiEzD9j5PS4aZiTnt/HLy1GKylN6mvhF1LWzRKDhZyPfKg
+	 2xIyBSjgU/uRfBL/QJCrRLnwoLl2ugVGitL3mK9bfwQt5vp770aPX2cknaWN3+9xaJ
+	 WbNBzP103z/41HyGMS8rgm/UAMG7RbDUi5kcy3fDU8gqYUgdZIUs7m81SWu1aA1Ocu
+	 7IzvR3DLTQr8tve0bB5tawy3ZrhiXBIdt5/evFZ4Lh0eaVus8b94+V9gkubQddxhNq
+	 4B7yj/Utbda7v7NG8ppZBZ6vDgbUuNSNKtUD/uH+3CFwqwqETw01GokkpJEpmWmhl+
+	 9G7zL7zJesZRA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.16-6.1] wifi: mac80211: increase scan_ies_len for S1G
+Date: Mon,  8 Sep 2025 20:30:11 -0400
+Message-ID: <20250909003025.2493540-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 00/64] 5.15.192-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20250907195603.394640159@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20250907195603.394640159@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.16.5
+Content-Transfer-Encoding: 8bit
 
-On 9/7/25 13:57, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.192 release.
-> There are 64 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Tue, 09 Sep 2025 19:55:53 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.192-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
 
-Compiled and booted on my test system. No dmesg regressions.
+[ Upstream commit 7e2f3213e85eba00acb4cfe6d71647892d63c3a1 ]
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+Currently the S1G capability element is not taken into account
+for the scan_ies_len, which leads to a buffer length validation
+failure in ieee80211_prep_hw_scan() and subsequent WARN in
+__ieee80211_start_scan(). This prevents hw scanning from functioning.
+To fix ensure we accommodate for the S1G capability length.
 
-thanks,
--- Shuah
+Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+Link: https://patch.msgid.link/20250826085437.3493-1-lachlan.hodges@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+Perfect! Now I have all the context I need. Let me provide my analysis:
+
+## Backport Status: **YES**
+
+### Extensive Analysis:
+
+**This commit fixes a real bug that causes hardware scanning to fail for
+S1G (802.11ah) WiFi devices.**
+
+#### The Bug Details:
+
+1. **Root Cause**: When commit `0333a81bc8343` ("wifi: mac80211: S1G
+   capabilities information element in probe request") was merged in
+   February 2023, it added S1G capability elements to probe requests.
+   However, it failed to update the buffer size calculation
+   (`scan_ies_len`) to account for these additional 17 bytes (2 byte
+   element header + 15 byte `struct ieee80211_s1g_cap`).
+
+2. **Failure Mechanism**:
+   - In `__ieee80211_start_scan()` at net/mac80211/scan.c:755, the
+     buffer size is calculated as `local->scan_ies_len + req->ie_len`
+   - When `ieee80211_prep_hw_scan()` is called at line 870, it attempts
+     to build probe request IEs using `ieee80211_build_preq_ies()`
+   - The function `ieee80211_build_preq_ies_band()` checks buffer space
+     and adds S1G capability for S1G bands (lines 1963-1965 in util.c)
+   - Without the fix, the buffer is 17 bytes too small, causing
+     `-ENOBUFS` to be returned
+   - This triggers the `WARN_ON(!ieee80211_prep_hw_scan(sdata))` at line
+     870, producing a kernel warning and aborting the scan
+
+3. **User Impact**:
+   - Produces a visible kernel WARNING in dmesg
+   - Hardware scanning completely fails for S1G devices
+   - The device cannot perform network discovery
+   - This is a **functional regression** introduced in kernel 6.3 (when
+     commit 0333a81bc8343 was merged)
+
+#### Why This Should Be Backported:
+
+1. **Fixes a Real Bug**: This is not a theoretical issue - it causes
+   actual hardware scanning failures with kernel warnings for any
+   S1G-capable hardware.
+
+2. **Regression Fix**: This fixes a regression introduced by commit
+   0333a81bc8343 in kernel 6.3. Any stable kernel that includes that
+   commit needs this fix.
+
+3. **Small and Contained**: The fix is minimal - just 4 lines of actual
+   code changes:
+   - Adding `supp_s1g` boolean variable
+   - Setting it based on S1G capability presence
+   - Adding 17 bytes to buffer calculation when S1G is supported
+
+4. **No Side Effects**: The change only affects S1G-capable devices and
+   simply ensures adequate buffer space. It cannot negatively impact
+   non-S1G devices.
+
+5. **Clear Bug Pattern**: This is a classic "forgot to update buffer
+   size calculation" bug that's straightforward to understand and
+   verify.
+
+6. **Vendor Support**: MorseMicro is actively developing S1G hardware
+   and drivers, making this functionality important for emerging
+   IoT/long-range WiFi deployments.
+
+#### Stable Tree Considerations:
+
+- Should be backported to **kernel 6.3 and later** (where commit
+  0333a81bc8343 exists)
+- The fix applies cleanly as it only adds to existing initialization
+  code
+- No dependencies on other commits
+- Follows stable tree rules: fixes an important bug with minimal risk
+
+The commit message could have been clearer by mentioning this was a
+regression from commit 0333a81bc8343, but the fix itself is correct and
+necessary for S1G hardware to function properly.
+
+ net/mac80211/main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 1bad353d8a772..35c6755b817a8 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -1136,7 +1136,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	int result, i;
+ 	enum nl80211_band band;
+ 	int channels, max_bitrates;
+-	bool supp_ht, supp_vht, supp_he, supp_eht;
++	bool supp_ht, supp_vht, supp_he, supp_eht, supp_s1g;
+ 	struct cfg80211_chan_def dflt_chandef = {};
+ 
+ 	if (ieee80211_hw_check(hw, QUEUE_CONTROL) &&
+@@ -1252,6 +1252,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	supp_vht = false;
+ 	supp_he = false;
+ 	supp_eht = false;
++	supp_s1g = false;
+ 	for (band = 0; band < NUM_NL80211_BANDS; band++) {
+ 		const struct ieee80211_sband_iftype_data *iftd;
+ 		struct ieee80211_supported_band *sband;
+@@ -1299,6 +1300,7 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 			max_bitrates = sband->n_bitrates;
+ 		supp_ht = supp_ht || sband->ht_cap.ht_supported;
+ 		supp_vht = supp_vht || sband->vht_cap.vht_supported;
++		supp_s1g = supp_s1g || sband->s1g_cap.s1g;
+ 
+ 		for_each_sband_iftype_data(sband, i, iftd) {
+ 			u8 he_40_mhz_cap;
+@@ -1432,6 +1434,9 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 		local->scan_ies_len +=
+ 			2 + sizeof(struct ieee80211_vht_cap);
+ 
++	if (supp_s1g)
++		local->scan_ies_len += 2 + sizeof(struct ieee80211_s1g_cap);
++
+ 	/*
+ 	 * HE cap element is variable in size - set len to allow max size */
+ 	if (supp_he) {
+-- 
+2.51.0
+
 
