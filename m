@@ -1,181 +1,105 @@
-Return-Path: <stable+bounces-179083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6C1B4FDFF
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 15:49:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 391C9B4FE27
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 15:53:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4D753A2918
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 13:44:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E45E31B2302A
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 13:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7982635AAD1;
-	Tue,  9 Sep 2025 13:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B433469EC;
+	Tue,  9 Sep 2025 13:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XcKQPw8r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZn8Wgvj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1CB35A29C
-	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 13:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33A4345731
+	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 13:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757425289; cv=none; b=iTAPjTWw6KjtSu/4PPGmSEjMcZuImc4Aiy/VItc8hcCXYQDmOM60vnMSzck0azx5L887Nr0lmFm3n1yoi4/9/m67TWxS2vU8IVVJ5KKfyooK2zOxbZamFCZcaR+1xca42I37Ld3g31jvOaAzFxUxWZzzsWKoR16Uj4AtRkbRKG4=
+	t=1757425852; cv=none; b=OsJS4NdLiNkSoA+dFQrn7KaL92yW8WQmY6E1c/pp/vuF1Ib69FWdg3GE0xCqTxhKNu1IniOhjGny30Xqa8fzy41chs9tAqSAXBYLMRX+INdcpKyStSCI2vnPoUBzsqLui5BUqn724nXuJQorNnQT77sE22QazQ2yR9U601GVUTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757425289; c=relaxed/simple;
-	bh=hxrA1u0i3QdX2WF0YP/9Yngh01/0dr4Fi2cGW2VCD8E=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EdZjIuNB5r2cwPlVGpPtBRMUHA9Xgvni6GNrMRoOjOhgqKLD9blkkSL93/FY4MtuNkzSTWDVzuVfafwGtD34Vpj4UIKpnXXxPRQv9eXxQUcZPv/cjDP6IbKQg9LkFS6iKt7w1zJiE6BEGyFJQ57cBF94DJvnJ6Qi6WuoUgR8A0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XcKQPw8r; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3e751508f3aso481639f8f.0
-        for <stable@vger.kernel.org>; Tue, 09 Sep 2025 06:41:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757425285; x=1758030085; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vGCVFLl/bZU4VqXRso3PPgDeP8aVgDKQ3+zbC69nRRQ=;
-        b=XcKQPw8r/C6D5PvmnmJ556JFF0M9xQeWw2enHjc+itOEQlB7IZz4k2Ytdir556DluM
-         lc6BO/eQtitx1pV5po/LvND1m+2ZaHPjzF5O0BbLTikha7p0AfqD5XbsiPTRA4n8VE5Z
-         VyUw2lXwtNOrzeFGNw7f5SopgM3eP9Yqw21+YQYsnCG6VgqpzcxA9A+3kJLEkFcQvQIR
-         WsY8RJV2+8iSAifgTxjav6z0E37jlLvzd+cnYrldJfmw6VqhWAziKJ0SLxHwkGrYLT4v
-         W/aaGpIwEYbYkGMJYWzjnvTmoihy1l0cKXFO5XT72g7m7z6AXCeK5fhD+zvhxij2NuM4
-         2B6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757425285; x=1758030085;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vGCVFLl/bZU4VqXRso3PPgDeP8aVgDKQ3+zbC69nRRQ=;
-        b=wYr81c/hW4PPPOFzx7pvuNRzdww5QB4US7tvG/Kmop/k7DqyYF9JZltWXS/63D2jGE
-         X23w6aFhvA7TRcp+flUB3Z4PAafdPeZjC8H+9OwrjEshczMMVffUFK7QJkltq5KAncmY
-         8nygCckJu52TYQ5kKLrxOkB1XQQj/+/5LnEUw721fTXDjlAWsXjWhY9385UnNWd9hzC8
-         YM09OVP6BPKF3fMrIJoJQ/StUwoMLzeYRNl0wYNC9dTbpdOgQiELoPxbUBT5txmGl+v4
-         Yn+9Noq+GjPYuJsdC+uzxRUIT6IcNXkfuP6PQ12+JpjDJNRa2jN6bPhhgLQ0Ng6kL2wb
-         16WQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUOeFABx3AFqwmrYAdmVTOqvbyZ4PNLhaH4XXyLonVQVw8BVLa9z5lTUFmwdOb7Al9DZQBFc0g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLYjoDxzPXDYoOMSp1YRRmv2ZHZPCY97OitC0MUkccT9H5ZBQ4
-	bzbgLkVTfu1gd7kJyxRH5UznEOYi0SchW/E4gjIx/m+Ws9moG2BxDmKfhZbjYnTq66twu6o/7ix
-	2xoEEHtW8RM9C8xalYA==
-X-Google-Smtp-Source: AGHT+IE/mmAbQTOt8MvZZNGslJ2H2GmSSbN9MpzaubBetSPclclKq6OgKdnhJfvpCbHxNnnHv8DltcQ3KGr2Jow=
-X-Received: from wrwa18.prod.google.com ([2002:a5d:53d2:0:b0:3d7:c499:56f])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2f87:b0:3d7:df92:5e31 with SMTP id ffacd0b85a97d-3e641e3b09amr11045695f8f.16.1757425285136;
- Tue, 09 Sep 2025 06:41:25 -0700 (PDT)
-Date: Tue, 9 Sep 2025 13:41:24 +0000
-In-Reply-To: <202509082009.4A8DC97BD2@keescook>
+	s=arc-20240116; t=1757425852; c=relaxed/simple;
+	bh=dPXiKTwGidWwCU6mMaOwAs6wtdQoBJp4Fh/RORtGMgM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eBuIxezuIYMOVoyNhLGRsREhQ/eWSGtI07LPszdaHStH9ZyGWY0xfN49XEk3+y0YxQfRRIg75vEFydqJ77MZgHq0tGbse6yhoo7VpQG84NHrIAlMMOE+LGc/ZVQxOkG+k0E9MPODFVgL317FdgralomDFFHgDvTOX1TmktvMKOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZn8Wgvj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C36C4CEF4;
+	Tue,  9 Sep 2025 13:50:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1757425852;
+	bh=dPXiKTwGidWwCU6mMaOwAs6wtdQoBJp4Fh/RORtGMgM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SZn8WgvjtHj/PDNbbKTPEia2sRcmL9S7YBbQ4O0fhqfToiCOEiCVT1kQubg5kAEhM
+	 h4kMsxwrhcrlz4+Y7FwiUopIgb2DpTwIzwBvUaea01UU5OspfaTa1OkNC0+EB+e5kg
+	 6XaE5dRXwtnkG4jW/Eybotb4GNwg0Q4HvfX0YhRk=
+Date: Tue, 9 Sep 2025 15:50:49 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: stable@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+	Kiryl Shutsemau <kas@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	bibo mao <maobibo@loongson.cn>, Borislav Betkov <bp@alien8.de>,
+	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
+	Dev Jain <dev.jain@arm.com>, Dmitriy Vyukov <dvyukov@google.com>,
+	Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+	Ingo Molnar <mingo@redhat.com>, Jane Chu <jane.chu@oracle.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Joerg Roedel <joro@8bytes.org>, John Hubbard <jhubbard@nvidia.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Michal Hocko <mhocko@suse.com>, Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Thomas Huth <thuth@redhat.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Pedro Falcato <pfalcato@suse.de>
+Subject: Re: [PATCH 6.12.y] mm: introduce and use {pgd,p4d}_populate_kernel()
+Message-ID: <2025090921-jargon-quilt-224f@gregkh>
+References: <2025090602-bullwhip-runner-63fe@gregkh>
+ <20250908010931.5757-1-harry.yoo@oracle.com>
+ <aL7OmhMtdLTGiVSp@hyeyoo>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250908-distill-lint-1ae78bcf777c@spud> <202509082009.4A8DC97BD2@keescook>
-Message-ID: <aMAuhKfrYRlkTHSy@google.com>
-Subject: Re: [PATCH v1] rust: cfi: only 64-bit arm and x86 support CFI_CLANG
-From: Alice Ryhl <aliceryhl@google.com>
-To: Kees Cook <kees@kernel.org>
-Cc: Conor Dooley <conor@kernel.org>, linux-kernel@vger.kernel.org, 
-	Conor Dooley <conor.dooley@microchip.com>, stable@vger.kernel.org, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Matthew Maurer <mmaurer@google.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
-	linux-riscv@lists.infradead.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aL7OmhMtdLTGiVSp@hyeyoo>
 
-On Mon, Sep 08, 2025 at 08:11:48PM -0700, Kees Cook wrote:
-> On Mon, Sep 08, 2025 at 02:12:35PM +0100, Conor Dooley wrote:
-> > From: Conor Dooley <conor.dooley@microchip.com>
-> >=20
-> > The kernel uses the standard rustc targets for non-x86 targets, and out
-> > of those only 64-bit arm's target has kcfi support enabled. For x86, th=
-e
-> > custom 64-bit target enables kcfi.
-> >=20
-> > The HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC config option that allows
-> > CFI_CLANG to be used in combination with RUST does not check whether th=
-e
-> > rustc target supports kcfi. This breaks the build on riscv (and
-> > presumably 32-bit arm) when CFI_CLANG and RUST are enabled at the same
-> > time.
-> >=20
-> > Ordinarily, a rustc-option check would be used to detect target support
-> > but unfortunately rustc-option filters out the target for reasons given
-> > in commit 46e24a545cdb4 ("rust: kasan/kbuild: fix missing flags on firs=
-t
-> > build"). As a result, if the host supports kcfi but the target does not=
-,
-> > e.g. when building for riscv on x86_64, the build would remain broken.
-> >=20
-> > Instead, make HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC depend on the onl=
-y
-> > two architectures where the target used supports it to fix the build.
->=20
-> I'm generally fine with this, but normally we do arch-specific stuff
-> only in arch/$arch/Kconfig, and expose some kind of
-> ARCH_HAS_CFI_ICALL_NORMALIZE_INTEGERS that would get tested here. Should
-> we do that here too?
+On Mon, Sep 08, 2025 at 09:39:54PM +0900, Harry Yoo wrote:
+> Please don't apply this, I made a mistake while backporting.
+> (Thanks to Pedro for catching it!)
+> 
+> I'll resend the backport for v6.12, v6.6, v6.1, and v5.15 tomorrow.
 
-I'm thinking in this case it makes sense to keep this patch simple as
-it's a fix. Once rustc supports cfi on riscv (which should really just
-be changing the target to list it as supported), we can reorganize it to
-match what you're describing at that point.
+I do not see a v6.12 backport, did I miss it?
 
-> > CC: stable@vger.kernel.org
-> > Fixes: ca627e636551e ("rust: cfi: add support for CFI_CLANG with Rust")
-> > Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-> > ---
-> > CC: Paul Walmsley <paul.walmsley@sifive.com>
-> > CC: Palmer Dabbelt <palmer@dabbelt.com>
-> > CC: Alexandre Ghiti <alex@ghiti.fr>
-> > CC: Miguel Ojeda <ojeda@kernel.org>
-> > CC: Alex Gaynor <alex.gaynor@gmail.com>
-> > CC: Boqun Feng <boqun.feng@gmail.com>
-> > CC: Gary Guo <gary@garyguo.net>
-> > CC: "Bj=C3=B6rn Roy Baron" <bjorn3_gh@protonmail.com>
-> > CC: Benno Lossin <lossin@kernel.org>
-> > CC: Andreas Hindborg <a.hindborg@kernel.org>
-> > CC: Alice Ryhl <aliceryhl@google.com>
-> > CC: Trevor Gross <tmgross@umich.edu>
-> > CC: Danilo Krummrich <dakr@kernel.org>
-> > CC: Kees Cook <kees@kernel.org>
-> > CC: Sami Tolvanen <samitolvanen@google.com>
-> > CC: Matthew Maurer <mmaurer@google.com>
-> > CC: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-> > CC: linux-kernel@vger.kernel.org
-> > CC: linux-riscv@lists.infradead.org
-> > CC: rust-for-linux@vger.kernel.org
-> > ---
-> >  arch/Kconfig | 1 +
-> >  1 file changed, 1 insertion(+)
-> >=20
-> > diff --git a/arch/Kconfig b/arch/Kconfig
-> > index d1b4ffd6e0856..880cddff5eda7 100644
-> > --- a/arch/Kconfig
-> > +++ b/arch/Kconfig
-> > @@ -917,6 +917,7 @@ config HAVE_CFI_ICALL_NORMALIZE_INTEGERS_RUSTC
-> >  	def_bool y
-> >  	depends on HAVE_CFI_ICALL_NORMALIZE_INTEGERS_CLANG
-> >  	depends on RUSTC_VERSION >=3D 107900
-> > +	depends on ARM64 || X86_64
-> >  	# With GCOV/KASAN we need this fix: https://github.com/rust-lang/rust=
-/pull/129373
-> >  	depends on (RUSTC_LLVM_VERSION >=3D 190103 && RUSTC_VERSION >=3D 1082=
-00) || \
-> >  		(!GCOV_KERNEL && !KASAN_GENERIC && !KASAN_SW_TAGS)
-> > --=20
-> > 2.47.2
-> >=20
->=20
-> --=20
-> Kees Cook
+And what is the git id of this commit in Linus's tree?
+
+thanks,
+
+greg k-h
 
