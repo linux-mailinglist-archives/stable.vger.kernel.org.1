@@ -1,99 +1,170 @@
-Return-Path: <stable+bounces-179132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D2EEB506DE
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 22:17:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC7A8B507F5
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 23:17:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CE533ACDED
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 20:17:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED09A1C63C4D
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 21:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AABF287241;
-	Tue,  9 Sep 2025 20:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B8D2571DD;
+	Tue,  9 Sep 2025 21:17:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OXU+R5JK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E4D2222CB;
-	Tue,  9 Sep 2025 20:17:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A67247281
+	for <stable@vger.kernel.org>; Tue,  9 Sep 2025 21:17:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757449054; cv=none; b=WL8hb2F7nxwvmZygzGtllEF+L4SelE51xQDG4fB3Eps4OLnrvKi6NFCCcdng0N1Si/Guj8aukmDmTWPI7h+R59zOFNfwpzfhVPOOYj/YEnXUh+Bnrs4asY1SBkutRGO/q+pAW4S7QzniYRfhSiG6ZuRdGwlEY5cXjWNI3f8TKZ8=
+	t=1757452656; cv=none; b=GAAx+zEBQnm5gH96igp0MbKi55jgqvOPW5ByTjTzdSOQX31wUSEYjuqqvX/srzmy9zCr5x+l0MqK8XqOIjTz3X93srinTs9bfeW2uX6UEtW7XJoKVbvYJWJPfynpK0WfJOKuEX3utC+7XNEnBAQkXFy/z9lqH4zKF3vu5T7vwug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757449054; c=relaxed/simple;
-	bh=wC/CbOJ72UVbeJAbQqjNs2IoxTeIAOgQrzqhM2eyU7s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aOmeAX8+J+bI2E6EZkftrHvnkuLHsaMLhdgSigv6z/7duYZ0Vk3cIUqHez0dwW+1pTx541mwLVQTxNe3aU4wzstqHlX7F0uPW3pBlwPvs8AZ7tn9hw2GAgLRzC9dl0wm0W9m7N9sINgcNpbVWZIFksntISYbReRRKSRwvMgO9WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6188b5ad4f0so8604422a12.0;
-        Tue, 09 Sep 2025 13:17:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757449051; x=1758053851;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	s=arc-20240116; t=1757452656; c=relaxed/simple;
+	bh=HqYbrFUFeibsZnZKsMf9FgZ9s/maKdF08mAaV92ILmY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=NAtB/L0pqUHc3QSv8cBE/fCMzjDajkZ9hcKdNx/9Hjq2y6Ov5+tEPkhFUA+sUx+dn6Y/X3U9D5AqONPoFKhFEQbPHi5cmzyyqti8W5Hs5OnHaydIWWEOg5UzKuZjTQDXkFFmWsCt+lu7rjkek98ZPEOBz7lwLAPLOqeFh0B57vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OXU+R5JK; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-45cb6428c46so56484495e9.1
+        for <stable@vger.kernel.org>; Tue, 09 Sep 2025 14:17:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757452652; x=1758057452; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ous3mP2p8adCZ2Wa9WhDA9KVTHw1CaqTv41/zoKiID8=;
-        b=KWPvkdWk4v7iCw+L0QkTlyuN1WkLaGRlrbgOfrtikG4v+eqmtKjxmeg/9wPaUE+4n7
-         NCV8NT710WQ+Uk3r2ZDxQ240fyjPA9yyCKsnEzYxYNmLEXOpvpaJ3A2cXov4bJlQLrqe
-         B3rBQy7JgEP4mDkl/oiQtsLf1dIU/7FGwRl08f4UAi0AA6PQnORIju3OA6uKGXg/jDbN
-         N4i2Lhe8HRNWMtJ3vVIDB1phyj56w3cjIxhnp6BFn8s7aVw75TtueCtbHGud6XqJg1vb
-         NfkJ7tZ3nmtM/s5DLsnPqqueHywMi/fMWgWGpDurK6rjSHVpvbUusNax/AiWsslwEFcz
-         4MCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUfbX6VQOsIjzRBbHt4dQVGKCeAKSk6Iq0nGdY/28PKqa+FUqRQYhAr97e53sCqK8FOnpNdipoUI4Ll412zelca@vger.kernel.org, AJvYcCVr5eg2CrTL9DUZfO9Os3POlzrk/kZRxbBfPjukJGAuXUSxGuMe9rJa2LHGXVcjpitc0EP1/55+@vger.kernel.org, AJvYcCW445OfgR7zujU5XZc8vOl4rwX7sbXnLtdRt8dHNtu4ZGSqrnw6yj1rf8TED/kmUC3mFq5WW49oe9mqyDQ=@vger.kernel.org, AJvYcCWOQ1J8WnKdJiEzXsIn/4curiy23RHTzL4Hj5zynf4U+stW1q5q5lkvKJjucT6ssZfDp9aNVumj@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdxoSmDYD8jmMLNzAwKf/V7sooogLfAXj4lWYf3ZJSO6hKN+vu
-	fTGeysrDTN9p+uL3UeXEV62mmSwQl0usfn+pu0GT9ERPzIlZDXiX2nS4
-X-Gm-Gg: ASbGnctoiGMr1y/vqRIkQP3sLFO/ncWkSRT55LVCXNaiPMcBkpveDjHBODmfvZpZdoN
-	2RTgt4792tj+BaM5oomrakelnfoZO4FMjO1q8QKsEKxdM7ryVVZ8Mjq0ZF8IlIGzGalV0ckZV9k
-	W/P42Pk0pDivZqEMNnrTjufPv40q1X5LCZHvAK3sqRn5JeXPnu2Bl3GfHr2mR9J/yVRFau3gITd
-	OlENZ6MmcxtSBQDy5J88uSamXXKc2hUSHftRqj2B7Ab29SBHURvComBn5sPYJ+qrQeoLo5XVjG+
-	sOoD1ES419jUO0+ZRgGqJCZj/+c+t7JM7zw306KJyygkrWEmwZ+qN8T/m7/3bVpqimo+D+lOFWw
-	xWMX3x+ivstN6watMYYn/ASw=
-X-Google-Smtp-Source: AGHT+IFV5CRFWEp2fMevaM+6ovBkmyV3H9l9vbdnrIuK+4x4iQB7+nUypI7RMhnSsqpmtnAljijbBQ==
-X-Received: by 2002:a17:907:9305:b0:afe:ef8a:ac69 with SMTP id a640c23a62f3a-b04b16dd3ccmr1243959566b.43.1757449050399;
-        Tue, 09 Sep 2025 13:17:30 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:5::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b078345426fsm44716766b.106.2025.09.09.13.17.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 13:17:29 -0700 (PDT)
-Date: Tue, 9 Sep 2025 13:17:27 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Calvin Owens <calvin@wbinvd.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
-	david decotigny <decot@googlers.com>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, kernel-team@meta.com, 
-	stable@vger.kernel.org, jv@jvosburgh.net
-Subject: Re: [PATCH net v3 1/3] netpoll: fix incorrect refcount handling
- causing incorrect cleanup
-Message-ID: <kmvkrqkkrbfctpramlchpwqikg2x3btb3debshabqctt7azu2j@tv4ziqd4gldh>
-References: <20250905-netconsole_torture-v3-0-875c7febd316@debian.org>
- <20250905-netconsole_torture-v3-1-875c7febd316@debian.org>
- <aL9A3JDyx3TxAzLf@mozart.vkv.me>
- <20250908182958.23dc4ba0@kernel.org>
+        bh=0N1NCIdRK4PVMotSCtjNyyl/LP3BVDUFyoGUcQcV1nU=;
+        b=OXU+R5JKJCIPIgq3vU6oaf28l+4Q8BrC2mqKiprF2BIPhsStdF+nyMi/OstgDrjrhJ
+         Mn27jczsEfdUqpTtXRlljAE4ShnSfETnFiXjAGGeUt0Z27ts5QrzeVbFkHt2IcVna14b
+         fcmtV6alWLAGsQnYZSHVud5IYmU8Ul0G2ED91VNmjXZB1YcNHQRPaQ9JSLa8rF5uZ7Jv
+         Dmc3abjLtBNnbFSIgxTSJT+bXcykoIfJ29Qu8DmSmEl1nqXuIfRtpatFN9hTiAeVOj5+
+         6o7fb24yJHTZh51UYPPTiriW7PrkAUnHOolFIQPUDMryp7zrIQoVFUWjxXjdYUV5Zjc0
+         l/1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757452652; x=1758057452;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0N1NCIdRK4PVMotSCtjNyyl/LP3BVDUFyoGUcQcV1nU=;
+        b=pD08mzggPocxexY097BVOQis/t/fDa3Dfr6BOdMiJ1jknqKyXVmEjKPyXsrOvS49kt
+         0Qp9u2FVhw3kYwVsidcfBOEJBGDNAGIHYCQr6yoF43tQQBFmxMruTC5Bjer8mt5QFSeM
+         8wGTuFafttzP0BN4MHmtgVR9+ebibXnXBhhCtMBtNbZtDjuqNArfpyR3uO375/LoUc02
+         xA1enzRdedD7+vVE2MlYb/0QsHQJgecaWFF7GIcNN09G09UTTCT8KE3CqI/5X/QryvUp
+         1PkLWgsPYa7nWlhe4YHtgEdHI3aDUEpKs5wGetnF60l5N5F0KP0X6qaIC8tSRBzYNpUH
+         ahkA==
+X-Gm-Message-State: AOJu0Yzxk26eUrDI6WcSvxCNqiPB+58UT5HrTyalBfBXgHWAzkLn4LSJ
+	g8lCYF4oAov/Z3D8bfwn6TnFN352NUrGlmUAUSgYo7yROwY4+6Dq5mFvDPXQrry/L5D5o9H6Yz0
+	iJ3jb
+X-Gm-Gg: ASbGncuP3ro30padUkTMYTEix68lp1/Z9JiltOubSEMr+R8giN69IhsOIrwq5GFUzVZ
+	/VgDw6mKNk4z4ammEgL3vzdIisb0mG5eYFIegcBdCMSz5U3KlgS2Uh0Y09bc+T8SK1CBLGSy3RD
+	qD90CvqnKHsnkRohvtzjtdCOjBvWAQJp93VhTFv8/qb2zWII4USVLuIciYV05nZpmzKJMd9Oj/T
+	mbPWq/hm0vKKfjO2VVEft8npSWOd7HJ67OZ9iJFsnFtxJQ0aD7UPhAqVXBAYxOwtUtIxypzcrK4
+	1i1ohMiesmDPTvfMl7G9g8kG6CKCwjhtxUQmXeqaEeeIo4ZMOTmMB4p6RLCNdlcElnqx3v0qt4A
+	ZBXiaBwSr4/xI1r61qpjioHtLPmg=
+X-Google-Smtp-Source: AGHT+IFfPqt52sJ2bwTn8g9bFD7BIz/dicnzT8ODVk1qTowYr0C9FHz83+RjHbYNDSjICY3IUGu4cA==
+X-Received: by 2002:a05:600c:8010:b0:45b:9912:9f1e with SMTP id 5b1f17b1804b1-45df0e619afmr31135875e9.3.1757452652352;
+        Tue, 09 Sep 2025 14:17:32 -0700 (PDT)
+Received: from localhost ([2a02:c7c:7259:a00:c21d:84a2:1410:7b31])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45df81cbd13sm1712005e9.4.2025.09.09.14.17.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Sep 2025 14:17:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250908182958.23dc4ba0@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 09 Sep 2025 22:17:31 +0100
+Message-Id: <DCOKYY8GG7IP.1ABNFNTEIME4F@linaro.org>
+Subject: Re: [PATCH ath-current v2] wifi: ath10k: Fix connection after GTK
+ rekeying
+From: "Alexey Klimov" <alexey.klimov@linaro.org>
+To: "Loic Poulain" <loic.poulain@oss.qualcomm.com>, <jjohnson@kernel.org>
+Cc: <stable@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+ <ath10k@lists.infradead.org>, <johannes@sipsolutions.net>
+X-Mailer: aerc 0.20.0
+References: <20250902143225.837487-1-loic.poulain@oss.qualcomm.com>
+In-Reply-To: <20250902143225.837487-1-loic.poulain@oss.qualcomm.com>
 
-On Mon, Sep 08, 2025 at 06:29:58PM -0700, Jakub Kicinski wrote:
-> On Mon, 8 Sep 2025 13:47:24 -0700 Calvin Owens wrote:
-> > I wonder if there might be a demon lurking in bonding+netpoll that this
-> > was papering over? Not a reason not to fix the leaks IMO, I'm just
-> > curious, I don't want to spend time on it if you already did :)
-> 
-> +1, I also feel like it'd be good to have some bonding tests in place
-> when we're removing a hack added specifically for bonding.
+(add stable into c/c)
 
-Do you prefer to have a separated bonding selftest, or, is it better to
-add some bond operations in the torture selftest?
+
+On Tue Sep 2, 2025 at 3:32 PM BST, Loic Poulain wrote:
+> It appears that not all hardware/firmware implementations support
+> group key deletion correctly, which can lead to connection hangs
+> and deauthentication following GTK rekeying (delete and install).
+>
+> To avoid this issue, instead of attempting to delete the key using
+> the special WMI_CIPHER_NONE value, we now replace the key with an
+> invalid (random) value.
+>
+> This behavior has been observed with WCN39xx chipsets.
+>
+> Tested-on: WCN3990 hw1.0 WLAN.HL.3.3.7.c2-00931-QCAHLSWMTPLZ-1
+> Reported-by: "Alexey Klimov" <alexey.klimov@linaro.org>
+> Closes: https://lore.kernel.org/all/DAWJQ2NIKY28.1XOG35E4A682G@linaro.org
+> Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+
+The fix works great on RB1 board. Thank you.
+
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # QRB2210 RB1
+
+Difficult to say when this issue appeared initially. I'd say that around 6.=
+6
+it worked fine probably.
+But latest few kernel releases like 6.16, 6.15, 6.14 definetely had this is=
+sue.
+Maybe makes sense to add something like that:
+
+Cc: stable@vger.kernel.org # v6.14
+
+> ---
+>  v2: use random value instead of predictable zero value for key
+>      Add Tested-on tag
+>
+>  drivers/net/wireless/ath/ath10k/mac.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless=
+/ath/ath10k/mac.c
+> index 24dd794e31ea..154ac7a70982 100644
+> --- a/drivers/net/wireless/ath/ath10k/mac.c
+> +++ b/drivers/net/wireless/ath/ath10k/mac.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/acpi.h>
+>  #include <linux/of.h>
+>  #include <linux/bitfield.h>
+> +#include <linux/random.h>
+> =20
+>  #include "hif.h"
+>  #include "core.h"
+> @@ -290,8 +291,15 @@ static int ath10k_send_key(struct ath10k_vif *arvif,
+>  		key->flags |=3D IEEE80211_KEY_FLAG_GENERATE_IV;
+> =20
+>  	if (cmd =3D=3D DISABLE_KEY) {
+> -		arg.key_cipher =3D ar->wmi_key_cipher[WMI_CIPHER_NONE];
+> -		arg.key_data =3D NULL;
+> +		if (flags & WMI_KEY_GROUP) {
+> +			/* Not all hardware handles group-key deletion operation
+> +			 * correctly. Replace the key with a junk value to invalidate it.
+> +			 */
+> +			get_random_bytes(key->key, key->keylen);
+> +		} else {
+> +			arg.key_cipher =3D ar->wmi_key_cipher[WMI_CIPHER_NONE];
+> +			arg.key_data =3D NULL;
+> +		}
+>  	}
+> =20
+>  	return ath10k_wmi_vdev_install_key(arvif->ar, &arg);
+
+
+Best regards,
+Alexey
 
