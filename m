@@ -1,117 +1,99 @@
-Return-Path: <stable+bounces-179133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE42BB50707
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 22:27:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2EEB506DE
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 22:17:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55B145E7C69
-	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 20:26:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CE533ACDED
+	for <lists+stable@lfdr.de>; Tue,  9 Sep 2025 20:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F85632CF92;
-	Tue,  9 Sep 2025 20:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AABF287241;
+	Tue,  9 Sep 2025 20:17:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8643A30214B;
-	Tue,  9 Sep 2025 20:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E4D2222CB;
+	Tue,  9 Sep 2025 20:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757449520; cv=none; b=iCWLB3D0vbCgIKOgePn+Q5Esma39jp4nMvEBZRdNYIax3c8eDKcqu87Wh0C868EyK4hD0zKaTgxUbROjD+ibn/9+0qXqanhHPTEhuG8D9XHlkZQFckAxpOaV0C8WLVOAtSDJyNA8qecfdWQSQSunYAbQU47es23PjiRVQaWlcjo=
+	t=1757449054; cv=none; b=WL8hb2F7nxwvmZygzGtllEF+L4SelE51xQDG4fB3Eps4OLnrvKi6NFCCcdng0N1Si/Guj8aukmDmTWPI7h+R59zOFNfwpzfhVPOOYj/YEnXUh+Bnrs4asY1SBkutRGO/q+pAW4S7QzniYRfhSiG6ZuRdGwlEY5cXjWNI3f8TKZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757449520; c=relaxed/simple;
-	bh=B05ab1H5adfOB8fknHXZFCe4sRqjE9IemtvtM0JGmVk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ND1wFBtKOYOTEWasGokbGJhdZurLODiwk5xcebk2sPxfoEFJfW7/1nbH+7GL5nDbSRswl66CNLFspvqzQcBE0H1fszvTxDnAGG7p58PYMHMdOIYOh2D2no80UCHjJkWUx3utHJ/NurZ2fMAjW/nUi6B5y246ImN3cPzU7FSmODE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1uw4Fr-001VTS-0h;
-	Tue, 09 Sep 2025 19:43:51 +0000
-Received: from ben by deadeye with local (Exim 4.98.2)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1uw4Fp-00000000Bq6-3Kra;
-	Tue, 09 Sep 2025 21:43:49 +0200
-Message-ID: <d2cadacb17dd4c96352f472ca10f656cd795b881.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 26/52] e1000e: fix heap overflow in e1000_set_eeprom
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Mikael Wessel <post@mikaelkw.online>, Vitaly
- Lifshits <vitaly.lifshits@intel.com>, Mor Bar-Gabay
- <morx.bar.gabay@intel.com>, Tony Nguyen	 <anthony.l.nguyen@intel.com>
-Date: Tue, 09 Sep 2025 21:43:44 +0200
-In-Reply-To: <20250907195602.752505443@linuxfoundation.org>
-References: <20250907195601.957051083@linuxfoundation.org>
-	 <20250907195602.752505443@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-2BHSEvwaaqnP3B5XN0n4"
-User-Agent: Evolution 3.56.2-2+b1 
+	s=arc-20240116; t=1757449054; c=relaxed/simple;
+	bh=wC/CbOJ72UVbeJAbQqjNs2IoxTeIAOgQrzqhM2eyU7s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aOmeAX8+J+bI2E6EZkftrHvnkuLHsaMLhdgSigv6z/7duYZ0Vk3cIUqHez0dwW+1pTx541mwLVQTxNe3aU4wzstqHlX7F0uPW3pBlwPvs8AZ7tn9hw2GAgLRzC9dl0wm0W9m7N9sINgcNpbVWZIFksntISYbReRRKSRwvMgO9WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6188b5ad4f0so8604422a12.0;
+        Tue, 09 Sep 2025 13:17:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757449051; x=1758053851;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ous3mP2p8adCZ2Wa9WhDA9KVTHw1CaqTv41/zoKiID8=;
+        b=KWPvkdWk4v7iCw+L0QkTlyuN1WkLaGRlrbgOfrtikG4v+eqmtKjxmeg/9wPaUE+4n7
+         NCV8NT710WQ+Uk3r2ZDxQ240fyjPA9yyCKsnEzYxYNmLEXOpvpaJ3A2cXov4bJlQLrqe
+         B3rBQy7JgEP4mDkl/oiQtsLf1dIU/7FGwRl08f4UAi0AA6PQnORIju3OA6uKGXg/jDbN
+         N4i2Lhe8HRNWMtJ3vVIDB1phyj56w3cjIxhnp6BFn8s7aVw75TtueCtbHGud6XqJg1vb
+         NfkJ7tZ3nmtM/s5DLsnPqqueHywMi/fMWgWGpDurK6rjSHVpvbUusNax/AiWsslwEFcz
+         4MCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUfbX6VQOsIjzRBbHt4dQVGKCeAKSk6Iq0nGdY/28PKqa+FUqRQYhAr97e53sCqK8FOnpNdipoUI4Ll412zelca@vger.kernel.org, AJvYcCVr5eg2CrTL9DUZfO9Os3POlzrk/kZRxbBfPjukJGAuXUSxGuMe9rJa2LHGXVcjpitc0EP1/55+@vger.kernel.org, AJvYcCW445OfgR7zujU5XZc8vOl4rwX7sbXnLtdRt8dHNtu4ZGSqrnw6yj1rf8TED/kmUC3mFq5WW49oe9mqyDQ=@vger.kernel.org, AJvYcCWOQ1J8WnKdJiEzXsIn/4curiy23RHTzL4Hj5zynf4U+stW1q5q5lkvKJjucT6ssZfDp9aNVumj@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdxoSmDYD8jmMLNzAwKf/V7sooogLfAXj4lWYf3ZJSO6hKN+vu
+	fTGeysrDTN9p+uL3UeXEV62mmSwQl0usfn+pu0GT9ERPzIlZDXiX2nS4
+X-Gm-Gg: ASbGnctoiGMr1y/vqRIkQP3sLFO/ncWkSRT55LVCXNaiPMcBkpveDjHBODmfvZpZdoN
+	2RTgt4792tj+BaM5oomrakelnfoZO4FMjO1q8QKsEKxdM7ryVVZ8Mjq0ZF8IlIGzGalV0ckZV9k
+	W/P42Pk0pDivZqEMNnrTjufPv40q1X5LCZHvAK3sqRn5JeXPnu2Bl3GfHr2mR9J/yVRFau3gITd
+	OlENZ6MmcxtSBQDy5J88uSamXXKc2hUSHftRqj2B7Ab29SBHURvComBn5sPYJ+qrQeoLo5XVjG+
+	sOoD1ES419jUO0+ZRgGqJCZj/+c+t7JM7zw306KJyygkrWEmwZ+qN8T/m7/3bVpqimo+D+lOFWw
+	xWMX3x+ivstN6watMYYn/ASw=
+X-Google-Smtp-Source: AGHT+IFV5CRFWEp2fMevaM+6ovBkmyV3H9l9vbdnrIuK+4x4iQB7+nUypI7RMhnSsqpmtnAljijbBQ==
+X-Received: by 2002:a17:907:9305:b0:afe:ef8a:ac69 with SMTP id a640c23a62f3a-b04b16dd3ccmr1243959566b.43.1757449050399;
+        Tue, 09 Sep 2025 13:17:30 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:5::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b078345426fsm44716766b.106.2025.09.09.13.17.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Sep 2025 13:17:29 -0700 (PDT)
+Date: Tue, 9 Sep 2025 13:17:27 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Calvin Owens <calvin@wbinvd.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
+	david decotigny <decot@googlers.com>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, kernel-team@meta.com, 
+	stable@vger.kernel.org, jv@jvosburgh.net
+Subject: Re: [PATCH net v3 1/3] netpoll: fix incorrect refcount handling
+ causing incorrect cleanup
+Message-ID: <kmvkrqkkrbfctpramlchpwqikg2x3btb3debshabqctt7azu2j@tv4ziqd4gldh>
+References: <20250905-netconsole_torture-v3-0-875c7febd316@debian.org>
+ <20250905-netconsole_torture-v3-1-875c7febd316@debian.org>
+ <aL9A3JDyx3TxAzLf@mozart.vkv.me>
+ <20250908182958.23dc4ba0@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250908182958.23dc4ba0@kernel.org>
 
+On Mon, Sep 08, 2025 at 06:29:58PM -0700, Jakub Kicinski wrote:
+> On Mon, 8 Sep 2025 13:47:24 -0700 Calvin Owens wrote:
+> > I wonder if there might be a demon lurking in bonding+netpoll that this
+> > was papering over? Not a reason not to fix the leaks IMO, I'm just
+> > curious, I don't want to spend time on it if you already did :)
+> 
+> +1, I also feel like it'd be good to have some bonding tests in place
+> when we're removing a hack added specifically for bonding.
 
---=-2BHSEvwaaqnP3B5XN0n4
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Sun, 2025-09-07 at 21:57 +0200, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me kn=
-ow.
->=20
-> ------------------
->=20
-> From: Vitaly Lifshits <vitaly.lifshits@intel.com>
->=20
-> commit 90fb7db49c6dbac961c6b8ebfd741141ffbc8545 upstream.
->=20
-> Fix a possible heap overflow in e1000_set_eeprom function by adding
-> input validation for the requested length of the change in the EEPROM.
-[...]
-
-I don't see this causing any problems, but the same check already
-existed in this function's caller ethtool_set_eeprom() so I don't think
-there was any vulnerability here.
-
-Ben.
-
---=20
-Ben Hutchings
-Every program is either trivial or else contains at least one bug
-
---=-2BHSEvwaaqnP3B5XN0n4
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmjAg3EACgkQ57/I7JWG
-EQkapxAArsC3y87BgiSCVPLPyiqA9MDX0EcZzG+5OC+rEtybNGYhTOovldQKryM2
-bvSGoLUXPVSNsWJ0+IyAZyJBDDs7DEBC3DzN4XMm/1u99caLDp48j5fcpxeZ/JB6
-ynVvwn4hLCbFTLlRy3hHEJKdYjsI3Kmt0BVfF3uT3wXUCxaKXVMNU1AYOtehqzCz
-UyeKxGaWzQYjzkZPTdGZiGJkusfHyQcblouwMO2i1E7blXypz74WE+6088MPLkmT
-JoIPaNnCR7DMefBNRB3FkQg9ZKmZ6VY0UI9AI/vwTfAnyAG98BJyErOf0b51977m
-7Nnu1LBVqNjWN98CMlCQL+RH9aXUmgdTbbgbZlwRnPucFODwWt5jQJ1AxsHsxBiC
-kSyM1J8ge9uaNR5oxoy2s990iJQUqdCaihs7SqG5777W+ELmHU4sFMiw16T7lkxe
-tm6Wi41/kk5vJP7q67SPHaUrLE7cA6cfr6/uIPp1tUFCCdGLmKNG9gLu7IL9QKb6
-5mHtRnXmpA51k682gQqEn1xlmnssCSj94KLdGQG2wC2lgA+uPTJsjt7jXUCBz5S/
-QJYITlWO6SPzGe2H39ndgJmXueVilPYgDaKr1eDVFea3xfAL4p/Khhf+tM6ww8Uo
-rHDVf/JBfdtPAXTgBmpppKk6bOxsvXg31grkrIocEzOgeE0suOo=
-=I/be
------END PGP SIGNATURE-----
-
---=-2BHSEvwaaqnP3B5XN0n4--
+Do you prefer to have a separated bonding selftest, or, is it better to
+add some bond operations in the torture selftest?
 
