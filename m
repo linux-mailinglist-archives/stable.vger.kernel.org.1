@@ -1,160 +1,103 @@
-Return-Path: <stable+bounces-179213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE52B51F25
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 19:39:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E97C7B51F97
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 19:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B7A07B4369
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 17:38:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABF531C271F1
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 17:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D47335BB9;
-	Wed, 10 Sep 2025 17:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1D33376BF;
+	Wed, 10 Sep 2025 17:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dePJwE0+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aH+6MLhC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4535432ED52;
-	Wed, 10 Sep 2025 17:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C180335BD0;
+	Wed, 10 Sep 2025 17:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757525965; cv=none; b=L+4L4IngUHQ5fAcJB4fCclJGMkRQDRYYSY75YeZMfoS9zlffYaqJDfkif7Yu6X4W1Cxqx8X2PDsxqLlJi3qsyDCkEf93bK3JuvrDTA2TpsQ5l8FQz6KqqtOZ5ReGaYix0cGI+wnzd3U2nUntWW+ZF7sjucJbDs3ONGlWvJ+bBfc=
+	t=1757527140; cv=none; b=hDLhzEaSQ2iFqWg9t6FG0EM4M7yqvvntJz6uUeJtpT97aYHP4VTMU9bcCJqTj6KClPR7CoQTL4/C0UDpZaJujmh4fnDIWAu6x4CxXVxCNkx+A6F3RRjVVle/uNHx80IbkZINACNjxmtsFU5xR3mYgxRYgpJ94b0xtjUzKMqPPgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757525965; c=relaxed/simple;
-	bh=m0DNa4vBUCkxRtQp97NYT7gbXNH16n1jHXxeABD4H7U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=U2Gl8mNDYMXvrTdpctSmvY5q/5XLQoQuIXTeMF3Z/DQFyM3vqp7ji1RNRKxaa4lxdksIYuvCFojpg4q8Es1ke1c8BKVau6VLa1i9uktK54MSJELYct/PJwUsjRk4NJa9ySVTGuDoXBWx/7o2tIT+T48fgGWBIYVAJDuBSVU0W4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dePJwE0+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E55C9C4CEF7;
-	Wed, 10 Sep 2025 17:39:24 +0000 (UTC)
+	s=arc-20240116; t=1757527140; c=relaxed/simple;
+	bh=3OB/1/72wpDUqru7+1lTnbYAH1kOUgOBvd4nyep3M+c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tQxZfkUiMEGaPA6Lk3ptbSi2emN9FITCbmmUEZ8h1A5U3yUe/+qsaAu8/P55lhaaeVuSJPk6IlFIOmnJzOR4r2JL8nlv+0Ik++iid38sjMr3j/iBBqJwTaqxsGug+S3tZ4XZIcCOG2ygUtWpgn/KvZwPuUJyZtyDSYUSSDt9W9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aH+6MLhC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DE8C4CEF0;
+	Wed, 10 Sep 2025 17:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757525964;
-	bh=m0DNa4vBUCkxRtQp97NYT7gbXNH16n1jHXxeABD4H7U=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=dePJwE0+Nu+mvg08+eAXMYN8YFekuHEfh6Vi3atzF/Ty545uITzYxhpoPFiKw07OL
-	 6nKfVTT272uce/KB3s9Z0fEMt5BkAmxijHd996Bz2IRX9GhRg2bBy8AE422fTlh/uQ
-	 G8ZWOHy+H/ZTkOq+VXGkvSoQgOhQH5iEVw/P7XPzJJ79o3EOouG7VVICoVW4MNctrJ
-	 jPCD5NAh64Ducq//A2SqKwWxG4HnzFSelKIizm+eMW7S7xNpK/sZRgb2QNXQG932wD
-	 SNRj9HkjXUGhj621Rbbnle6pybEzYa1GrC1D+dYvmzHkFxhR/I4Ux/RK3ZgzQiCFiz
-	 7ovEbGU/Gsolg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D72CDCAC58D;
-	Wed, 10 Sep 2025 17:39:24 +0000 (UTC)
-From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
-Date: Wed, 10 Sep 2025 23:09:21 +0530
-Subject: [PATCH 2/2] iommu/of: Call pci_request_acs() before enumerating
- the Root Port device
+	s=k20201202; t=1757527139;
+	bh=3OB/1/72wpDUqru7+1lTnbYAH1kOUgOBvd4nyep3M+c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=aH+6MLhCiTLp+wcLENeAQnSaoWiN6EoIINKbn2FryQMIC5MHBxTg9XsVpuG+y7GzA
+	 oWI28v9zBjfAbjTne2el34PVx8v0MupyesTwYeZhTKwGvzTssG+BHPLKJkdRz+C3U/
+	 17LlR6pb1vKaDF3AVshE2WgLu5fJ8ec/z/zPbLyrCLYunvpwo9JkWXYZsg1Fuim65x
+	 AwLBuwwjUKLmaIKnuA3SN/rze55snN8nHAl3/0S4u8KCiTAGxtMnwg5qyxN70CQnBw
+	 cksIUSCtjCeCDlSY1AVCLLhvKip61op49hcNAVI1VWu8qhvkF8S8gMec1MdWss1SZC
+	 WdQlY6CasUVsA==
+Date: Wed, 10 Sep 2025 10:58:58 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Calvin Owens <calvin@wbinvd.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan
+ <shuah@kernel.org>, Simon Horman <horms@kernel.org>, david decotigny
+ <decot@googlers.com>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de,
+ kernel-team@meta.com, stable@vger.kernel.org, jv@jvosburgh.net
+Subject: Re: [PATCH net v3 1/3] netpoll: fix incorrect refcount handling
+ causing incorrect cleanup
+Message-ID: <20250910105858.083ca8df@kernel.org>
+In-Reply-To: <jibftqm5ihdgazmk3p5gsjhlc536itqaq7r5uag5fuiqtth6cp@abihzyykh4gy>
+References: <20250905-netconsole_torture-v3-0-875c7febd316@debian.org>
+	<20250905-netconsole_torture-v3-1-875c7febd316@debian.org>
+	<aL9A3JDyx3TxAzLf@mozart.vkv.me>
+	<20250908182958.23dc4ba0@kernel.org>
+	<kmvkrqkkrbfctpramlchpwqikg2x3btb3debshabqctt7azu2j@tv4ziqd4gldh>
+	<20250909161625.470d2835@kernel.org>
+	<jibftqm5ihdgazmk3p5gsjhlc536itqaq7r5uag5fuiqtth6cp@abihzyykh4gy>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250910-pci-acs-v1-2-fe9adb65ad7d@oss.qualcomm.com>
-References: <20250910-pci-acs-v1-0-fe9adb65ad7d@oss.qualcomm.com>
-In-Reply-To: <20250910-pci-acs-v1-0-fe9adb65ad7d@oss.qualcomm.com>
-To: Bjorn Helgaas <bhelgaas@google.com>, Joerg Roedel <joro@8bytes.org>, 
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Joerg Roedel <jroedel@suse.de>, iommu@lists.linux.dev, 
- Anders Roxell <anders.roxell@linaro.org>, 
- Naresh Kamboju <naresh.kamboju@linaro.org>, 
- Pavankumar Kondeti <quic_pkondeti@quicinc.com>, 
- Xingang Wang <wangxingang5@huawei.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2676;
- i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
- bh=s3IWPWrtmYAF1td5P6U9N7afV7EwajwvWtWy1fRfcR0=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBowbfLBKMpPRmXeHjCf82JrGyQlLaBTrURN4KsN
- QgzqkNRMXCJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaMG3ywAKCRBVnxHm/pHO
- 9cuaB/9aEE0RS60+8mmPH7waGER7/F4s9uVWLBpZtCDkWRZyWUdJ7SMdDR50TXthG97BiOw0ZEl
- 4e6l/R90xwaAnmLqpLJMEtBSGR9tGHIrcG+/CiSN5xNqV2SZBSFPxxdsp4DSywhRmXfHw1KShMd
- RC4g15WALpt1tcpI7nYLmC2Ice8R9lTycjTI23MvuU8H+F5CVsODjWbHUN+5xH1MGM0LoQnpdVd
- jH1+LY4a3TqtbeSVCGJPg8zBe/WRZzLLGB85PgXMKoINILTQu6Zxt/OlppSIEbwIL9KFB9nYhmW
- XWvmR+84jPDpHrO27Hyx7es3T68W6UA577cF56W8GUUtYQrl
-X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
- fpr=C668AEC3C3188E4C611465E7488550E901166008
-X-Endpoint-Received: by B4 Relay for
- manivannan.sadhasivam@oss.qualcomm.com/default with auth_id=461
-X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Reply-To: manivannan.sadhasivam@oss.qualcomm.com
 
-From: Xingang Wang <wangxingang5@huawei.com>
+On Wed, 10 Sep 2025 07:12:03 -0700 Breno Leitao wrote:
+> On Tue, Sep 09, 2025 at 04:16:25PM -0700, Jakub Kicinski wrote:
+> > On Tue, 9 Sep 2025 13:17:27 -0700 Breno Leitao wrote:  
+> > > On Mon, Sep 08, 2025 at 06:29:58PM -0700, Jakub Kicinski wrote:  
+> > > > On Mon, 8 Sep 2025 13:47:24 -0700 Calvin Owens wrote:    
+> > > > > I wonder if there might be a demon lurking in bonding+netpoll that this
+> > > > > was papering over? Not a reason not to fix the leaks IMO, I'm just
+> > > > > curious, I don't want to spend time on it if you already did :)    
+> > > > 
+> > > > +1, I also feel like it'd be good to have some bonding tests in place
+> > > > when we're removing a hack added specifically for bonding.    
+> > > 
+> > > Do you prefer to have a separated bonding selftest, or, is it better to
+> > > add some bond operations in the torture selftest?  
+> > 
+> > Normal test is preferable, given the flakiness rate and patch volume
+> > I'm a bit scared of randomized testing as part of CI.  
+> 
+> Ok, I will create a selftest to cover the netpoll part of bonding, as
+> soon as my understanding is good enough. I don't think it will be quick,
+> but, it is on my hi-pri todo list.
+> 
+> Do you want to have the selftest done before merging this patch, or, can
+> they go in parallel?
 
-When booting with devicetree, ACS is enabled for all ACS capable PCI
-devices except the first Root Port enumerated in the system. This is due to
-calling pci_request_acs() after the enumeration and initialization of the
-Root Port device. But afterwards, ACS is getting enabled for the rest of
-the PCI devices, since pci_request_acs() sets the 'pci_acs_enable' flag and
-the PCI core uses this flag to enable ACS for the rest of the ACS capable
-devices.
-
-Ideally, pci_request_acs() should only be called if the 'iommu-map' DT
-property is set for the host bridge device. Hence, call pci_request_acs()
-from devm_of_pci_bridge_init() if the 'iommu-map' property is present in
-the host bridge DT node. This aligns with the implementation of the ARM64
-ACPI driver (drivers/acpi/arm64/iort.c) as well.
-
-With this change, ACS will be enabled for all the PCI devices including the
-first Root Port device of the DT platforms.
-
-Cc: stable@vger.kernel.org # 5.6
-Fixes: 6bf6c24720d33 ("iommu/of: Request ACS from the PCI core when configuring IOMMU linkage")
-Signed-off-by: Xingang Wang <wangxingang5@huawei.com>
-Signed-off-by: Pavankumar Kondeti <quic_pkondeti@quicinc.com>
-[mani: reworded subject, description and comment]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
----
- drivers/iommu/of_iommu.c | 1 -
- drivers/pci/of.c         | 8 +++++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-index 6b989a62def20ecafd833f00a3a92ce8dca192e0..c31369924944d36a3afd3d4ff08c86fc6daf55de 100644
---- a/drivers/iommu/of_iommu.c
-+++ b/drivers/iommu/of_iommu.c
-@@ -141,7 +141,6 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
- 			.np = master_np,
- 		};
- 
--		pci_request_acs();
- 		err = pci_for_each_dma_alias(to_pci_dev(dev),
- 					     of_pci_iommu_init, &info);
- 		of_pci_check_device_ats(dev, master_np);
-diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-index 3579265f119845637e163d9051437c89662762f8..98c2523f898667b1618c37451d1759959d523da1 100644
---- a/drivers/pci/of.c
-+++ b/drivers/pci/of.c
-@@ -638,9 +638,15 @@ static int pci_parse_request_of_pci_ranges(struct device *dev,
- 
- int devm_of_pci_bridge_init(struct device *dev, struct pci_host_bridge *bridge)
- {
--	if (!dev->of_node)
-+	struct device_node *node = dev->of_node;
-+
-+	if (!node)
- 		return 0;
- 
-+	/* Enable ACS if IOMMU mapping is detected for the host bridge */
-+	if (of_property_read_bool(node, "iommu-map"))
-+		pci_request_acs();
-+
- 	bridge->swizzle_irq = pci_common_swizzle;
- 	bridge->map_irq = of_irq_parse_and_map_pci;
- 
-
--- 
-2.45.2
-
-
+I said "it'd be good to have some bonding tests in place when we're
+removing a hack added specifically for bonding."
+"In place" means part of CI when we're merging this fix.
+Please read emails more carefully.
 
