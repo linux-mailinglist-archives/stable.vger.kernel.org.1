@@ -1,270 +1,272 @@
-Return-Path: <stable+bounces-179200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E22B5171C
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 14:38:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA315B51723
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 14:41:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F3C717D775
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 12:38:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75D8148438C
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 12:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D60C29E115;
-	Wed, 10 Sep 2025 12:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6563131B13F;
+	Wed, 10 Sep 2025 12:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ML5XrCTC"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ar4eojs3"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2070.outbound.protection.outlook.com [40.107.212.70])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F53530DEBC
-	for <stable@vger.kernel.org>; Wed, 10 Sep 2025 12:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757507846; cv=fail; b=p9NNFmYJLkZ+ZmLOjOQCM9Lrn5+f6aSh8UpVmWnPQ5fBzRn2egj6Kt0Nz/O48NqU7uY0qP/nRkTmcWFG+Pz18usQWMHMGHTKDpjeuKp8DJ1cmAJC9xr9MGIX0ZByyoxxI1VI8uXp0A7smJVQLbdpdU7+STBryLmc4at1bfqxr4g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757507846; c=relaxed/simple;
-	bh=pNaoAydwBTKFT1Gzq4zJDlwvCEcFwQW0XAsQnN8ESZg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=OSzjoD65JDMXwLGsBl8DLi7u00U0aXzUkjoys4IXsHfRiu8jhajYvMdHH8+VuGXPACJv53z+3x99uo+39bvfnGskYj5YaP2i6Ezfu0dPgi1kj8fTwHxQNw6ZVBuXgO1JDvhq0sa/LFB1rIzCrTOP1iujudHFNrVM637N9cYetbw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ML5XrCTC; arc=fail smtp.client-ip=40.107.212.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tDXKF4uCTajS392UBfHRcX0iAjO//E+UMHalbbjyfjvV67Phh/u4LCqBngyRa2Alr0cEvrDsM6WYC/YenSU1Lv3sR9EWPAeuhXAwYNsmyevN7iI8LmXJylN8IZwUrztnBvsWRlerReDvya5wb5HyBUgRy3YuClpZhHJz+nJ89UCF6jP4QNn0OI5gRhy1oiXN9cQ0NFua6LkAg27DiujahDyMXchak6DztU7TP+buqDFNzuTLzBZaixyPFw8y/TNo7bcpldBR+YjdqrTbqYJrtnYs7oD3edPsoy/8cT3Hr4zwQZLogrJXmItOUmlFcf/B02FjLMF4c4OQyW0F5eM/nw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pezDzvrAEMX2SgWXu2ut3sqPut9VVMjycqpYjBPmwZU=;
- b=kDnNi6CUHcssaeO6n7e+Ve86HC3yNYJ3nhQOgyu+5BVmQQHM0Cwg2iTG6UiZvanJMvKDR3YGNryqCd3IWPWUO+C3MW6lrb4VM8GbseNnkZ+EBDwIBLufqEJFJ9YBAg3UHpt9hGREdrBSj49UTTRAI1mQKSh2kISGDjmOIs/5DvJZgD+0JuNGoQwQah+f2XAtIaKkQx4V6SICMrJIhMyUC40jmRwTqkllc1TfW4Mpbvcb9x1M8JU1xrBlv5LvVT9uV/VZKYpm5W7mAmFfq+Rn4uiwE8IH4B9DEDmkVQEY0AK5puqe/meWqHCXo66fsndNgRICAUKnB1DXJBwtH6qACg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pezDzvrAEMX2SgWXu2ut3sqPut9VVMjycqpYjBPmwZU=;
- b=ML5XrCTCrX/cMZKJ5w3GvW4pPJ+jG2Urtzobk8VBm8lYlDMPWROvH4bHlx4sBs3S1mBbc65huwqplTLnJzGOHRQ3CwDUJIhxWjDIrVwt3DIzkr/wHXMtFojCUaF7juzkr+6uWJPP9Zlku7+rbATf1NCvJfjacRUBsnd6imkLeW4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH8PR12MB7301.namprd12.prod.outlook.com (2603:10b6:510:222::12)
- by DS0PR12MB8766.namprd12.prod.outlook.com (2603:10b6:8:14e::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Wed, 10 Sep
- 2025 12:37:21 +0000
-Received: from PH8PR12MB7301.namprd12.prod.outlook.com
- ([fe80::a929:e8eb:ef22:6350]) by PH8PR12MB7301.namprd12.prod.outlook.com
- ([fe80::a929:e8eb:ef22:6350%6]) with mapi id 15.20.9094.021; Wed, 10 Sep 2025
- 12:37:21 +0000
-Message-ID: <fcbf6ae8-f9ab-4723-8df4-16d2f0f62c3f@amd.com>
-Date: Wed, 10 Sep 2025 18:07:13 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/3] drm/buddy: Optimize free block management with RB
- tree
-Content-Language: en-US
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Peter Zijlstra <peterz@infradead.org>
-Cc: matthew.auld@intel.com, jani.nikula@linux.intel.com,
- samuel.pitoiset@gmail.com, dri-devel@lists.freedesktop.org,
- amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, alexander.deucher@amd.com,
- stable@vger.kernel.org
-References: <20250909095621.489833-1-Arunpravin.PaneerSelvam@amd.com>
- <6f6841a7-57bd-49de-9b55-b5b0514a2749@amd.com>
- <20250909140519.GK4067720@noisy.programming.kicks-ass.net>
- <106c1a36-c104-4eb8-b928-d11b8ca9b599@amd.com>
-From: Arunpravin Paneer Selvam <arunpravin.paneerselvam@amd.com>
-In-Reply-To: <106c1a36-c104-4eb8-b928-d11b8ca9b599@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PN4P287CA0088.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:268::7) To PH8PR12MB7301.namprd12.prod.outlook.com
- (2603:10b6:510:222::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B52131A55A
+	for <stable@vger.kernel.org>; Wed, 10 Sep 2025 12:41:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757508081; cv=none; b=X3kIjlk/Hjv/2uA8On3R6DQha5/Adv9TRF/e0piTHAy4DABEcS1QrB5AOLZt7B6ARqXqhkXvxrfswMY4MTelnxddBdilICjP6Fx14LhjxA+XYfa0TF4FNOzRoNahInMQOK+TKtP2+PbMDpLwHBOZBmJrJvkBZPMb2g6/+fc+INA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757508081; c=relaxed/simple;
+	bh=HI+Wo58Xx8twVdr7BQzB/ScbaKtSqasqpDD7ddXTfSk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=kZ76fUkemmjRVRJHIakW2JaC+oO0GnfYKQMyv2vfiKOVy3GKpMzyRmHN3c6ZZtU0du2ijYLtf5yi6mb2VXEA3C703JTCxEmfkyKhfxKx0moZrEPrYUMiTtUkplZ7w6JYiQVCCF/FZ+9cV2V8yqfvyYwXVI8URIMn0LoER+XETGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ar4eojs3; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58AAF7Fm031874
+	for <stable@vger.kernel.org>; Wed, 10 Sep 2025 12:41:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=lHFZZKfkltFSPCpfngB13G
+	I5dV64wevesNshRHaYxIg=; b=ar4eojs3r8hn/9vGLuWOedDEZ4Qmb9RCI1W7pJ
+	SLMZBB6VbRBiy/a87sS/G8nJJB+WxQsl8SWY6zNU4kEyCdAQAS70V1gD1Ns71r8U
+	sLpjFp24hpvhGQEkBH3Odo+PRzzbuTc9xteQqn9Vo36EYxJ2hyiOTisg9QaozjR/
+	i5ql35Nkuw3udS4xCAKg5LKlG39NeEnaA0c6FyJi4j49mgpi4rNyK9SPvsV62e1U
+	+Rb7fKdXdwefLN/oxB+OGeVoleb9Qqwe3stWNMYLRsYWJzoc2LLtf6FeJo0UnIeT
+	G+ne0G2f1VQ7lb448ZkqbaCkNnGsdj4iVp/m3LVtBTEXNcFQ==
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 490by93ujp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 10 Sep 2025 12:41:18 +0000 (GMT)
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b549a25ade1so191862a12.3
+        for <stable@vger.kernel.org>; Wed, 10 Sep 2025 05:41:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757508077; x=1758112877;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lHFZZKfkltFSPCpfngB13GI5dV64wevesNshRHaYxIg=;
+        b=qYxIQJGZqO0HqrmDiLqbIafz/1m6xjYid0NY3jgi++LLSynAJ4ZZlAJqENdiPuO3II
+         QMXA1W6l5c8O1Rb4rX1DCtlLtQM6FKbXQzE15BUIeJp8BZbfvCS+eA6u9zk9zYJ61haL
+         QC6sPHNPq8Z7nxCfDIwGF8Ny+2QBdiNN1MvI7Vm58wZoZV0q5S/otfTkhQHbziJMi4V6
+         +ArsIefhxhzTKdi5ztvWpmAwX+dTM/hCi0hXxvSJfLKRHCycdRZfHycBoXflk92prN1g
+         udlq1Mhp41nKZMWIRLOz91t3UCo7Gs0vOM48foITa8PujLyLHnik8fWMxqw0gu/RaRdF
+         j1GQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW4Fa3GYZhwnjvVwQ32nZcKDDg2UkhtSdHhQTYFvcnbFyrjlciopBSbnsdBajRr5MpeawSZdbs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykF7YCeGkKe0SzId05cs/5uoy9Tb8sI1iPV6BWiTXiNb0Zrf4P
+	hDnMPW8dBLItbJCEAftz2xYkJZeL2vQ9k1/q3vE8Z04zSG1c5Oi4J1X3AHLch1JUAGM3OsmTH48
+	aLofn5wA5BKFtstxW6SAkiERV9n+UtT3REdDRLZyE8VWzPnBdUPAeDH175RE=
+X-Gm-Gg: ASbGnctZmMMFMcPKEwqrnmEQVggxKBy+gS/MuChfXob/OKjpTCDmUIlRn6v/0xuq8Oh
+	l3aD/a+DIOq+H/Y/W/AdA38nBLPp9u67xbCvtlHah9HKHPeimvXgdXsndatfmRpuRvI8fZLzVzl
+	BIjiOhjOAdMc/+m/8kEkpSJgDj90cza5JAkBvFQbQuBCB9s+oZpaR+nf2uFTyqokFdqbq0sOcnF
+	QLfoKpdczHyv1Vbn/dZgtcW4L/QZkal81kRGdkdPmI1a9t2KNyaDmwU4K1VVleqh5djM4Psr9fI
+	plafj/1Om30vroPIzk/vqdxbhzAV1LudWY/Zeze6UTY6o4JbTIC9KL3SRtBlPgUxbA==
+X-Received: by 2002:a05:6a21:6d9c:b0:250:f80d:b32d with SMTP id adf61e73a8af0-25335e6f177mr23586508637.0.1757508076803;
+        Wed, 10 Sep 2025 05:41:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGrftTS+0N2imH3IgPQLdHacgwBKP6X3z3IlpwLVR4e5eP/aF1fk05Jlwi7vkfwOHOoqKQMfA==
+X-Received: by 2002:a05:6a21:6d9c:b0:250:f80d:b32d with SMTP id adf61e73a8af0-25335e6f177mr23586444637.0.1757508076236;
+        Wed, 10 Sep 2025 05:41:16 -0700 (PDT)
+Received: from hu-sumk-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b548a6a7fd0sm2537399a12.32.2025.09.10.05.41.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Sep 2025 05:41:15 -0700 (PDT)
+From: Sumit Kumar <sumit.kumar@oss.qualcomm.com>
+Date: Wed, 10 Sep 2025 18:11:09 +0530
+Subject: [PATCH v3] bus: mhi: ep: Fix chained transfer handling in read
+ path
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7301:EE_|DS0PR12MB8766:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e2ca3ba-005f-4d6f-557f-08ddf066c947
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MFVkS1Z1endEQjlHenJiQ1dyK1pRSzU3SkF1cndRWDhObi9NcnB6bUJTRFFL?=
- =?utf-8?B?cWo4bmtITlZ1LzVYUDVqc1ZsNG5OZStKNHM2L0VMVHZxWWNER3k2bXlpbmZX?=
- =?utf-8?B?dk11V0o2d3RBd3A0U1pwWjJ6Z0RqSVhnQTZOUDFCWGlxU0UrQkd3dWxBc1lF?=
- =?utf-8?B?Q2o4VHlycEVvSG4wNGpocEwrOUx4NmE2dFY0UUt1My9OekltZEtONWRIZ2dN?=
- =?utf-8?B?TTFHcnM2c2x0K09YUGloNnM5NEpaeVJlY2xqUEU1Q093clhFeVhieERDa1Ja?=
- =?utf-8?B?Tzk0Vm45V21TUHBHcFdJOFlCRlplODVVZ2gyWlVCWnBmV1dVNEpLcXNhVVlD?=
- =?utf-8?B?Y3BkR29QU3gySVQwVEZ2U1ZFWVlicnBOZUo0dzluQisySjF3ampPSUhYRFZ2?=
- =?utf-8?B?RkpWSjJlczlhYkNjSlJhMFFNeVhERDN0NjRSVEF5djBvdnNVWllkRkVhZmEr?=
- =?utf-8?B?R29kTXVFclhlTkxUODhCdFkzZHQ3WmFpeFJjbG9RdUd6UXFiTGtMbHJqRllu?=
- =?utf-8?B?aVZBL2VuVHBEMEJtNTdCVHNTLytQS2ZUck0wZHNwZlpXd2lKcllXYVR5L0F0?=
- =?utf-8?B?QWZFR0diVHZoS3k3QW9PYU05c3RUZzFSSjJ2QlR1MGhyczV6R1BTeG9jY3Fw?=
- =?utf-8?B?TmhQYjZmekNNQ1NrMzk3am93RzVaaGNDekM4ekRKc1cveGVQNkVnT3hqWFZT?=
- =?utf-8?B?aUQrK0hQQVozSVlMM0Q4bGZNUlB1d2E0OVlZNEZlOUl0b004SGpIeVI4RHZV?=
- =?utf-8?B?NjM1Z3pHSDZodU1uQjdYd3VmbTNGZ01yalRGQUgyQ2tvaTBIUjRsMmx6WU1V?=
- =?utf-8?B?U1A1elVqQW1ZVFhyNTFlOTMwRzYwc0ljV3hSejRhcE9BR29tSmRqU3hWNmQ3?=
- =?utf-8?B?QVNmUzFGMkRDWENsdy9BR3JmRnZ3YkVNWEpDaCtvcEwwUzJ3S2pXZW5ocHBF?=
- =?utf-8?B?TjVQYUF4OUZYc010cW1VbndRWFh1aHh3WG8rTWg3L2pucTh3UDVId0l4Zjgy?=
- =?utf-8?B?UDRsYStlMnE4dHRNSFNVbmNUVFpjK3IybFVmWU1lM3RMc3paUGsrSDdCZUZU?=
- =?utf-8?B?OWoyUk5VUnVMWlkzYWtKbTRWb0ZjWWVPMGtkWEJIYWl3OEQ4RmdFUmRvY09E?=
- =?utf-8?B?b21tQ3ZNZUM1bVRuZE1pSk9MQ1VqUGxoTjBHZ05aT0s1bUhXeGJzZHVpdmlw?=
- =?utf-8?B?QkhYQ1lEaDRNeEJ0S0s1Y3VXL0xDMGptQVNRWUZFMWtod2E1Nnk0TUVxN0Fi?=
- =?utf-8?B?ZG5ORXNWWktHdlppaTdIVy9SUWdadmdIaWlHSjM3cFFoQTBldE5zNit0V3l1?=
- =?utf-8?B?bXZ5OHhCU0xDTUVZeWh2WEl2cXlHTG9CTnJ4THhnSW9IZXpaeWZMRzBtUlRS?=
- =?utf-8?B?YmdsejdDRkltcFAxRkk5ekpvMWNnekgvMTA2ZzdRV2lnd0pjalV4aWlSa2Jk?=
- =?utf-8?B?Y3hBWHJQVkRXSFZPbjRsSit6RmswMnp4ekorZUR2dnRLZ1MwNTVQTGhsL1ZU?=
- =?utf-8?B?N2RaRUwzcU05Q3VzMngzOXJhNHIxVG1YME9nYUtEMndUTHNRN0dqc1R6Wkx0?=
- =?utf-8?B?YWllWlcvUHRLL0JnUk9LaUt5em1nOEhsbW96VFRXd2tTNjRTc2NZU244bUY4?=
- =?utf-8?B?dzNJMVNQUS9UZVFYZThEZW40ekREcGUzeE5FTm5aRk5WMXpPSXFRcGpHRkZZ?=
- =?utf-8?B?MlFDSXJlWHhSdUxjV3NxRThzVjlNV01YdjNUR091MUUzelk4eTVZOFJRN2kr?=
- =?utf-8?B?bXVvZFpQTklVUlNQMUZaa3JCTWVVdTMzanlaYXR1dmdhY2FOak43cGwxZmQx?=
- =?utf-8?B?TG5iWENnWnBJVWxFbTJDUGhxRUs0dzRNZXFEUEgwYWtacVZ1SVRlc2o4dlcv?=
- =?utf-8?B?dXVXKzZBMDJvdDRXbGx6UUtDYXM1ZDVEd1FqeGZybXkzRnF3Nnk5bG5zaURq?=
- =?utf-8?Q?KNYU2sGC+To=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7301.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SzdpZ01JSVp4WksyVFNPblkrSVU0Ujk3RkNRbDY1L2JKcE5tYmUxN1NWTndF?=
- =?utf-8?B?OU1iRTJLWWV1R0tzN21JMW1DNEpFem1raFhoMXRTTlFRWUFUeTlrMVdoa3VZ?=
- =?utf-8?B?TGRVSUNJN1BDSW1qSlYwMWdUZVhHNmNhOUhoYmthV2M4d0lYNUxJcGZFNXly?=
- =?utf-8?B?bzB1L2J1eUJSVEpIUzZ3S2VkMG5Ra3NBQ3hGVlVneU12K1AwZThERFNsSDls?=
- =?utf-8?B?TjdRUXNWZm1WSXc4RmoyV0dNc2YrYXNCeVVvY0pkYS9WTXZJTXlGdS9TeWp4?=
- =?utf-8?B?UFVrbDBnWVZGRzVQUWw1WGtYMUdRV1ZCenphbGNtMzZlR0F3VGdMT1RpUW85?=
- =?utf-8?B?V0F6K24xUGI3bW1iTUF3ckxBaXBxQlkrVWdqcXpIVkZpdjUxczdqUzhMb3FQ?=
- =?utf-8?B?Vzl1ekZwelZ5ckdWVHdHYno0d3RCY2ZyY3BGUlBGbzBPS3kxMDN5cnFoOWJL?=
- =?utf-8?B?R2IrUXduZjlZMVp4S1NQT2lCUDQ1QUVHM3RwU0lCY3hpTUJDV21BamNTaHY4?=
- =?utf-8?B?ZUpGeXhCMitDZXgwMkNjUHRDY1dOdlNvQ081aktGcWcybTZ1M1YxSFlxQTFS?=
- =?utf-8?B?WUtId1RoTEhIMTg2Y1BxVTFEZFAzZDIyZURCaEthcmpSSjY0MHdLVlhyOHUw?=
- =?utf-8?B?aFNacXB0cTRacUwwVVZOYnpTYytlZ1dXeDQzaytjS00vS3lmMW91UVIwZWdV?=
- =?utf-8?B?ZHRvWitSWUtRMUZMYk9aKytoWnUxSkhwVVBiZk9WS0ZqWlNlcmtsSytGY0ZJ?=
- =?utf-8?B?V3o2TnRSYUx2VTlJeG13WmtNZkVYaXMwWDZ5TkZIU3orNE9RWlh2aHVyekpi?=
- =?utf-8?B?U2E5cEpZZVc0WTBsUVgzcm01WDdmQ1dPeWtHQXFZWXVrRHRlYTJweGhuYmsz?=
- =?utf-8?B?MnJ2am1nRW90RDRjZ09jUmEyZFhvNS9lQ3FzdHpPN0RYMkt3Y1VTNEE1S3lB?=
- =?utf-8?B?NTZXUGNZNE5vMW0zSGxwUlBkdWpDQ1lSUnNLdlN5WC9YeTZQdnFxWnVHMFFu?=
- =?utf-8?B?SVBSV3Y3VlpFYzZXRFA3MVRWaUtlQWtSM0tVRDdKRnN3UytLak9TVnVSd0dY?=
- =?utf-8?B?YWFkVVlwcHgwV3VSVVBQRndqaTR1aVFRL3FUVWs4UGQ5SWZLN2ROa0N0N1JO?=
- =?utf-8?B?cmd6NGlITVlRY1lvaUs4VitkV2xhamNBQlNJcnk4WWVvU0sySGZDcC9pbnZ4?=
- =?utf-8?B?TlNnVEZENHk4U2h5bDhWb1FzVjZURVVhcndYYnB0YmNOTE0rTzVFdzdwZE5I?=
- =?utf-8?B?RDRHbzNJN1pJazh1ZnFNeEt4bWZhK3hSUndEcHpCVFlpOVFwc29SVFJISWw5?=
- =?utf-8?B?R0hwUUtPR0RyMjhYNXZoaG9aOEl5RkZtUFY5NHdhRjNIbUc3WDlQRXJsdUND?=
- =?utf-8?B?UHlMVEFzd21KUzU4TjFrYS9oY3k4bXg0d1dkK0wzeS9POXltblNxTnBWQnY2?=
- =?utf-8?B?ZnVMM25BU252N3dORkphTXNQVU9qYnppTGZWQnBjZUdsenV5LzhpTmorSTkw?=
- =?utf-8?B?UVdPM0hoa1RCWDhTbmlsbnVpbWtncFVvRGw1T0FNeTlteWtheWkreDJoblBW?=
- =?utf-8?B?a2FEYWRRcE5sRFNWTCt1b3BlanJzbTBBZzlrTm9XeXMzMVhhM0RBMWpyTEwy?=
- =?utf-8?B?Z3lsTjdrb0NDUXlWbGduNGw5cUxYZ2lmM1V6OUhsOFBEcERZKzBSK0pLWUFr?=
- =?utf-8?B?bUNBc0tkSWp1bTlRVG1TVFl5ekZiNmQzODBHVFhMbGRoMWIrMXh3Ny80QzRC?=
- =?utf-8?B?VmRURHhEYkg1dmhlbUpEbkE4cS9rRmdUVE9wM2Q4TmF1a0M0dmNteTV4SUZh?=
- =?utf-8?B?OThwRHEzNlRiVWc0YVlXM1h6dTV2dHN0bFVlQ3cyWk41d0ZOUFNXRFFqNklt?=
- =?utf-8?B?MWN4SWp6OTEwVldpenovWVpwQjhQb0ZvbTJFRC9qSmdMOTNEMWdiL0tmcEJk?=
- =?utf-8?B?NytLTTNqTkN1UU0vQk5vVkJPY0dyK3ovWUxLQmhrcnMyQUhPekcwS2tSYUR4?=
- =?utf-8?B?UDN5d0p4cysrbEQ4dUJIdTNTbHE1ZWQzS2xoc2orQktBcndSTStyRlpVUHZt?=
- =?utf-8?B?Ykl1alZJb3VsMGFnSGYraFpzVVpEcXQ5ZnBoSkZnZm1LWXQwSWFWUStwK3FI?=
- =?utf-8?Q?m2a1YHS3kIX9Dsmoja+RKxbfr?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e2ca3ba-005f-4d6f-557f-08ddf066c947
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7301.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 12:37:21.4702
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: N4fEFTuscoNBxvjrUHSzv126Njes/YwYhdEU56qnbOhB8zXXQiqbPr1EpceyZCgumY2sDam81ee4Pog8uJaibw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8766
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250910-final_chained-v3-1-ec77c9d88ace@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAORxwWgC/x2MWwqAIBAAryL7neADkbpKRIiutRAWChGEd2/pc
+ xhmXmhYCRtM4oWKNzU6C4MdBMQ9lA0lJWYwyjg1aiUzlXCs7Khgkt6paLT1xmUN3FwVMz3/b15
+ 6/wCRNsOlXwAAAA==
+X-Change-ID: 20250910-final_chained-750c213725f1
+To: Manivannan Sadhasivam <mani@kernel.org>, Alex Elder <elder@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, quic_krichai@quicinc.com,
+        quic_akhvin@quicinc.com, quic_skananth@quicinc.com,
+        quic_vbadigan@quicinc.com, stable@vger.kernel.org,
+        Akhil Vinod <akhil.vinod@oss.qualcomm.com>,
+        Sumit Kumar <sumit.kumar@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757508072; l=5093;
+ i=sumit.kumar@oss.qualcomm.com; s=20250409; h=from:subject:message-id;
+ bh=HI+Wo58Xx8twVdr7BQzB/ScbaKtSqasqpDD7ddXTfSk=;
+ b=+vySGg6hSDSPdtqaNt11c7f34fgtcTWBAGEE+bsylMRErej8lEL6cMHyAt6isOoUosMNHYeHa
+ OXSaPqv8sO2DUERHBOgJK0YtIqiqUDsdG16/v29BruOHabdV10ImQjF
+X-Developer-Key: i=sumit.kumar@oss.qualcomm.com; a=ed25519;
+ pk=3cys6srXqLACgA68n7n7KjDeM9JiMK1w6VxzMxr0dnM=
+X-Authority-Analysis: v=2.4 cv=Yv8PR5YX c=1 sm=1 tr=0 ts=68c171ee cx=c_pps
+ a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
+ a=EUspDBNiAAAA:8 a=vLTmBYhAW2SDn_YjWJsA:9 a=QEXdDO2ut3YA:10
+ a=x9snwWr2DeNwDh03kgHS:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: oW3BTIALZ01_SIuj7AHdoVQ3sjPtCLU-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAxOCBTYWx0ZWRfX9QEME8Jut2rz
+ WCKis36U87cfETqBcFLL2/jW3h3IRlDTEUQGKE2kU4Dr0jylycGoNs6GhhBHrNGJ0DkcGL9xV0+
+ QVWEeQzaj0zv/MtEKGEKreZKbWWNN4werZidf0nUWTa0627pzIu1h1FIfJ8ARDaUdifqPi5iPIq
+ 18MLFI46xT/NFqG5bVdyB070Ex67M+i8yxPx73SigGqDfJFjdHiDRQ4as/Kx9rpdMqYv1A0YI+3
+ S5Pj2XAtrUx9qz2SeC5HgvT+cJ8YNVNooh7gNOZm+Y21IAIo7kMm3AOSntwNqKWJrw0r9sZzmgH
+ 3xcLo0FMaNx3PS7+20GujM0yNnXlO9uGaIJRJlIQNtIxAb3cd8/86cwzUoJqln+fBS2K3h0HWyX
+ MgCbUwPj
+X-Proofpoint-ORIG-GUID: oW3BTIALZ01_SIuj7AHdoVQ3sjPtCLU-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-10_01,2025-09-10_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 malwarescore=0 suspectscore=0 phishscore=0 clxscore=1011
+ spamscore=0 priorityscore=1501 impostorscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060018
 
-Hi Christian,
+The mhi_ep_read_channel function incorrectly assumes the End of Transfer
+(EOT) bit is received with the doorbell in chained transactions, causing
+it to advance mhi_chan->rd_offset beyond wr_offset during host-to-device
+transfers when EOT has not yet arrived, leading to access of unmapped host
+memory that causes IOMMU faults and processing of stale TREs.
 
-On 9/9/2025 9:55 PM, Christian König wrote:
-> On 09.09.25 16:05, Peter Zijlstra wrote:
->> On Tue, Sep 09, 2025 at 02:04:30PM +0200, Christian König wrote:
->>> Hi Arun,
->>>
->>> On 09.09.25 11:56, Arunpravin Paneer Selvam wrote:
->>> [SNIP]
->>>
->>>> +/**
->>>> + * rbtree_for_each_entry_safe - iterate in-order over rb_root safe against removal
->>>> + *
->>>> + * @pos:	the 'type *' to use as a loop cursor
->>>> + * @n:		another 'type *' to use as temporary storage
->>>> + * @root:	'rb_root *' of the rbtree
->>>> + * @member:	the name of the rb_node field within 'type'
->>>> + */
->>>> +#define rbtree_for_each_entry_safe(pos, n, root, member) \
->>>> +	for ((pos) = rb_entry_safe(rb_first(root), typeof(*(pos)), member), \
->>>> +	     (n) = (pos) ? rb_entry_safe(rb_next(&(pos)->member), typeof(*(pos)), member) : NULL; \
->>>> +	     (pos); \
->>>> +	     (pos) = (n), \
->>>> +	     (n) = (pos) ? rb_entry_safe(rb_next(&(pos)->member), typeof(*(pos)), member) : NULL)
->>> As far as I know exactly that operation does not work on an R/B tree.
->>>
->>> See the _safe() variants of the for_each_ macros are usually used to iterate over a container while being able to remove entries.
->>>
->>> But because of the potential re-balance storing just the next entry is not sufficient for an R/B tree to do that as far as I know.
->>>
->>> Please explain how exactly you want to use this macro.
-Thanks for the pointer, yes, this will not work on RB tree. We need a 
-reverse safe variant for use in the force_merge() function similar to the
-list_for_each_entry_safe_reverse() macro in list.h. The reason is that 
-in force_merge(), we remove the block from the free tree before invoking
-drm_buddy_free(), which merges and frees buddy blocks to form a larger 
-block.
->> So I don't much like these iterators; I've said so before. Either we
->> should introduce a properly threaded rb-tree (where the NULL child
->> pointers encode a linked list), or simply keep a list_head next to the
->> rb_node and use that.
-> I agree, something is clearly fishy here.
->
->> The rb_{next,prev}() things are O(ln n), in the worst case they do a
->> full traversal up the tree and a full traversal down the other branch.
-> Yeah from the logic that is exactly what is supposed to happen in the __force_merge() function.
->
-> The question is rather why does that function exists in the first place? The operation doesn't look logical to me.
->
-> For drm_buddy_reset_clear() and drm_buddy_fini() we should use rbtree_postorder_for_each_entry_safe() instead.
->
-> And during normal allocation __force_merge() should never be used.
-In normal allocation, the force_merge() function is used when no free 
-blocks of the requested order are available. In such cases,
-smaller blocks must be merged on demand to satisfy the allocation. 
-Mainly, this does not involve traversing the entire tree to
-merge all blocks, but only merging as needed. For example, if the 
-requested order is 6, and the minimum order is 5, drm_buddy_alloc_blocks()
-will first attempt to allocate an order-6 block. If none are available, 
-it will try to allocate two order-5 blocks. If those are also 
-unavailable, it will
-invoke force_merge() to merge lower order blocks (4, 3, 2, 1, 0) in 
-order to coalesce into a higher-order block of order 5.
+Modify the loop condition to ensure mhi_queue is not empty, allowing the
+function to process only valid TREs up to the current write pointer to
+prevent premature reads and ensure safe traversal of chained TREs.
+Remove buf_left from the while loop condition to avoid exiting prematurely
+before reading the ring completely, and remove write_offset since it will
+always be zero because the new cache buffer is allocated every time.
 
-In drm_buddy_fini(), force_merge() is called to ensure all blocks are 
-merged before tearing down the allocator. This guarantees that all
-mm->roots are freed and not held by the driver at shutdown. If any 
-blocks remain allocated, drm_buddy_fini() will issue a warning.
+Fixes: 5301258899773 ("bus: mhi: ep: Add support for reading from the host")
+Cc: stable@vger.kernel.org
+Co-developed-by: Akhil Vinod <akhil.vinod@oss.qualcomm.com>
+Signed-off-by: Akhil Vinod <akhil.vinod@oss.qualcomm.com>
+Signed-off-by: Sumit Kumar <sumit.kumar@oss.qualcomm.com>
+---
+Changes in v3:
+- Update commit message
+- Migrated to new mail
+- Link to v2: https://lore.kernel.org/r/20250822-chained_transfer-v2-1-7aeb5ac215b6@quicinc.com
 
-In drm_buddy_reset_clear(), which is invoked at device suspend/resume, 
-it is an ideal place to call force_merge(). This ensures that all
-possible blocks are merged before resetting the clear state, thereby 
-reducing fragmentation and improving allocation efficiency after resume.
+Changes in v2:
+- Use mhi_ep_queue_is_empty in while loop (Mani).
+- Remove do while loop in mhi_ep_process_ch_ring (Mani).
+- Remove buf_left, wr_offset, tr_done.
+- Haven't added Reviewed-by as there is change in logic.
+- Link to v1: https://lore.kernel.org/r/20250709-chained_transfer-v1-1-2326a4605c9c@quicinc.com
+---
+ drivers/bus/mhi/ep/main.c | 37 ++++++++++++-------------------------
+ 1 file changed, 12 insertions(+), 25 deletions(-)
 
-I tried using this rbtree_postorder_for_each_entry_safe() macro in the 
-force_merge() and it works, but we also a need a reverse variant
-since in normal allocation we dont want to disturb the lower addresses.
+diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
+index b3eafcf2a2c50d95e3efd3afb27038ecf55552a5..cdea24e9291959ae0a92487c1b9698dc8164d2f1 100644
+--- a/drivers/bus/mhi/ep/main.c
++++ b/drivers/bus/mhi/ep/main.c
+@@ -403,17 +403,13 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
+ {
+ 	struct mhi_ep_chan *mhi_chan = &mhi_cntrl->mhi_chan[ring->ch_id];
+ 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
+-	size_t tr_len, read_offset, write_offset;
++	size_t tr_len, read_offset;
+ 	struct mhi_ep_buf_info buf_info = {};
+ 	u32 len = MHI_EP_DEFAULT_MTU;
+ 	struct mhi_ring_element *el;
+-	bool tr_done = false;
+ 	void *buf_addr;
+-	u32 buf_left;
+ 	int ret;
+ 
+-	buf_left = len;
+-
+ 	do {
+ 		/* Don't process the transfer ring if the channel is not in RUNNING state */
+ 		if (mhi_chan->state != MHI_CH_STATE_RUNNING) {
+@@ -426,24 +422,23 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
+ 		/* Check if there is data pending to be read from previous read operation */
+ 		if (mhi_chan->tre_bytes_left) {
+ 			dev_dbg(dev, "TRE bytes remaining: %u\n", mhi_chan->tre_bytes_left);
+-			tr_len = min(buf_left, mhi_chan->tre_bytes_left);
++			tr_len = min(len, mhi_chan->tre_bytes_left);
+ 		} else {
+ 			mhi_chan->tre_loc = MHI_TRE_DATA_GET_PTR(el);
+ 			mhi_chan->tre_size = MHI_TRE_DATA_GET_LEN(el);
+ 			mhi_chan->tre_bytes_left = mhi_chan->tre_size;
+ 
+-			tr_len = min(buf_left, mhi_chan->tre_size);
++			tr_len = min(len, mhi_chan->tre_size);
+ 		}
+ 
+ 		read_offset = mhi_chan->tre_size - mhi_chan->tre_bytes_left;
+-		write_offset = len - buf_left;
+ 
+ 		buf_addr = kmem_cache_zalloc(mhi_cntrl->tre_buf_cache, GFP_KERNEL);
+ 		if (!buf_addr)
+ 			return -ENOMEM;
+ 
+ 		buf_info.host_addr = mhi_chan->tre_loc + read_offset;
+-		buf_info.dev_addr = buf_addr + write_offset;
++		buf_info.dev_addr = buf_addr;
+ 		buf_info.size = tr_len;
+ 		buf_info.cb = mhi_ep_read_completion;
+ 		buf_info.cb_buf = buf_addr;
+@@ -459,16 +454,12 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
+ 			goto err_free_buf_addr;
+ 		}
+ 
+-		buf_left -= tr_len;
+ 		mhi_chan->tre_bytes_left -= tr_len;
+ 
+-		if (!mhi_chan->tre_bytes_left) {
+-			if (MHI_TRE_DATA_GET_IEOT(el))
+-				tr_done = true;
+-
++		if (!mhi_chan->tre_bytes_left)
+ 			mhi_chan->rd_offset = (mhi_chan->rd_offset + 1) % ring->ring_size;
+-		}
+-	} while (buf_left && !tr_done);
++	/* Read until the some buffer is left or the ring becomes not empty */
++	} while (!mhi_ep_queue_is_empty(mhi_chan->mhi_dev, DMA_TO_DEVICE));
+ 
+ 	return 0;
+ 
+@@ -502,15 +493,11 @@ static int mhi_ep_process_ch_ring(struct mhi_ep_ring *ring)
+ 		mhi_chan->xfer_cb(mhi_chan->mhi_dev, &result);
+ 	} else {
+ 		/* UL channel */
+-		do {
+-			ret = mhi_ep_read_channel(mhi_cntrl, ring);
+-			if (ret < 0) {
+-				dev_err(&mhi_chan->mhi_dev->dev, "Failed to read channel\n");
+-				return ret;
+-			}
+-
+-			/* Read until the ring becomes empty */
+-		} while (!mhi_ep_queue_is_empty(mhi_chan->mhi_dev, DMA_TO_DEVICE));
++		ret = mhi_ep_read_channel(mhi_cntrl, ring);
++		if (ret < 0) {
++			dev_err(&mhi_chan->mhi_dev->dev, "Failed to read channel\n");
++			return ret;
++		}
+ 	}
+ 
+ 	return 0;
 
-Thanks,
-Arun.
->
->> That said; given 'next' will remain an existing node, only the 'pos'
->> node gets removed, rb_next() will still work correctly, even in the face
->> of rebalance.
-> Good to know!
->
-> Regards,
-> Christian.
+---
+base-commit: 4c06e63b92038fadb566b652ec3ec04e228931e8
+change-id: 20250910-final_chained-750c213725f1
+
+Best regards,
+-- 
+Sumit Kumar <sumit.kumar@oss.qualcomm.com>
 
 
