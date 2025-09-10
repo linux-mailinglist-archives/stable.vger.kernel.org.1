@@ -1,100 +1,77 @@
-Return-Path: <stable+bounces-179193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 282B9B51510
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 13:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4196AB5159F
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 13:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD4D2546C79
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 11:10:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6567171CF1
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 11:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4891A31B13F;
-	Wed, 10 Sep 2025 11:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JYONtoEZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE361268C73;
+	Wed, 10 Sep 2025 11:26:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C09031814C
-	for <stable@vger.kernel.org>; Wed, 10 Sep 2025 11:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E03313526;
+	Wed, 10 Sep 2025 11:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.18.0.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757502571; cv=none; b=jUcWAukn+G8OtAXkJP2qpfsERL1z49YWWfjNkBUFIPSL5h2l5KnNNCsKtdLW5Q/m9d1MBydF7kwsQbo88dFeDJQNg58DXFGue8RnqQZD6/diutK5JR5h7yr8EBXQ42WPeSI5ACKpmX/LaFWM6ubfsRXoADvG2Rr1S75vpes43f0=
+	t=1757503601; cv=none; b=RxArgqRGYcRFInArNmJRRbT21e++eWv4f5ENiFjhc2QgoiH6F5ib49hJBQyCOpG/jSAg7B4EjWXLdVph8Jgcnx9TDihOSifTsIdXRmIimHdpqKrGjLmJwiLDD1XUrmh0UtOTV7wRMECoNMxuxrlVg18s3aOY5EfQ37G8wzuHmtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757502571; c=relaxed/simple;
-	bh=BQ2XtYRwei+F/8LMUKBdKEm+z8pxUaNiGAkH40rNEKc=;
+	s=arc-20240116; t=1757503601; c=relaxed/simple;
+	bh=9A/+Jl1iaYTBA92IVzHH5LyJ1K62t4u/S6c38+cVgK8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=aAahDEdcxcGr/xj96moukanyU8tGe3EGuSvA1E5ttLawRz3Z5zh+ArUoHsbQrzkzn4XyUfALUOEZxi64mpN2r6hAPW11AupcPE9UqzMC+Xb1HqM32frzTEAQFKhR/JMynoLH/nK3a41rbXv2EBDXgc5/SYUfTiyEfaRvhn4UK6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JYONtoEZ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757502568;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EEfKAAgF77B0N35cHlVCZR8H3qoPVBq2FQNy2mJIamk=;
-	b=JYONtoEZ9+9kfTQXg5T9LNFeOUV5afuSWSIja66oCJoSl0HwnqC2MPn4sq5tZYkGCMcAw0
-	kkLwD5fhfCxrAGFVNZHJZFW3/9DrDo0gyUyOb+HZ3pChFiz7pgQ1WRt82VBlD/CV8rX3Ai
-	Ziq9RWwsE1+vICG+0ChuskRzGElGJaE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-661-phmbjhz0MliiW7LqofRrjg-1; Wed, 10 Sep 2025 07:09:25 -0400
-X-MC-Unique: phmbjhz0MliiW7LqofRrjg-1
-X-Mimecast-MFC-AGG-ID: phmbjhz0MliiW7LqofRrjg_1757502564
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b98de0e34so52180155e9.0
-        for <stable@vger.kernel.org>; Wed, 10 Sep 2025 04:09:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757502563; x=1758107363;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EEfKAAgF77B0N35cHlVCZR8H3qoPVBq2FQNy2mJIamk=;
-        b=cYAwLwZI/62rneI7Kn4FfPp56prWqlo3HmNuOvf5+jj3blwKjZ4pf00aa47gwUbPxN
-         nITyQzQRzNuo6m28tkpOtjhl99oWGDa+7ewtFPF4UqlsF1cXWL459DUVPR1vbqCYJ4dL
-         v+8/i84QjDlKI7sHm3cNBgMUzp6T0o9GZBYiqrm4lmHto3l2tIYKNomVGIcmQZ3F4TIh
-         k3yR0b2gXm5nmJbswSJqg/NMgM5ia0+Z+fDyMdiuoDUbbAauUXFc4cSM3T+pYYGODCXr
-         1sykYJHIM29jgRSt3wRfEg5qYy4Mk5H+CPyn34Zap9lwPMlk1vKjS4q30rMt1hZDM6f6
-         p6sw==
-X-Gm-Message-State: AOJu0YwJw9AR7UFp/+rzbQDZXwBI+ih74wroyGcWXCmKMtvl1U1Ornru
-	+AkAZfPxLYPkomyISSXNMEZRytn3ylDsggfv3Fxz+6VdifP6NlvYXF4o9lAOZHNswNal0bQOJkn
-	G4J+e2puOHBZs+3olkxByEvylEKtAewVVm1DCJyIhhmNoUQn5pxVTgwUYGug+Fou9UA==
-X-Gm-Gg: ASbGnctbrQI6RBRK+BiatKVjOAvA+7wzt0NRpIctSB8pEP1lYNbiV/Di99Zk+YjudWa
-	9GpU0MZTRu02HXmBvNA0m4ccc6Je6aoEF0dDoh0yknr+/bSfKHch4n0lu57dhgHPhX6/1+/0bqD
-	4tQ5b8y2neE4g/b1LHnm2+DVejkTjVe1c0gOgr7/IWn+8u7JsPKZwO9sALX5YsC8JDGAj9h6aXr
-	59JmSi95LrSCD9vUJoitWGzo9/709jjJ0CUIl8ytqiVZb6l3+XXJlTB3v5NUFsORFbxsLymAENJ
-	xeQR7Dn2KoMCjhAeiQL8NunHZYUmUJdR0jf6lqalLtOlO2cteIKkN8BDcvheAlEyhnSOo6cchi3
-	hv8wKA/OHZFabfLf/xAnbZg==
-X-Received: by 2002:a05:6000:2889:b0:3e5:50:e044 with SMTP id ffacd0b85a97d-3e643555859mr13543078f8f.45.1757502563469;
-        Wed, 10 Sep 2025 04:09:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEtsE6TP99LwCM9DefOr4NgVBIR7vSn0IU371t63+HnR3UaFYs5LDu32sAvz1H1Dto10pgN1g==
-X-Received: by 2002:a05:6000:2889:b0:3e5:50:e044 with SMTP id ffacd0b85a97d-3e643555859mr13543046f8f.45.1757502563021;
-        Wed, 10 Sep 2025 04:09:23 -0700 (PDT)
-Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45df1ba282dsm26332925e9.5.2025.09.10.04.09.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 04:09:22 -0700 (PDT)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: Brett A C Sheffield <bacs@librecast.net>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Simona Vetter <simona@ffwll.ch>, Helge
- Deller <deller@gmx.de>, Thomas Zimmermann <tzimmermann@suse.de>, Lee Jones
- <lee@kernel.org>, Murad Masimov <m.masimov@mt-integration.ru>, Yongzhen
- Zhang <zhangyongzhen@kylinos.cn>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 1/1] Revert "fbdev: Disable sysfb device registration
- when removing conflicting FBs"
-In-Reply-To: <aMFYeV4UdD7NnrSC@karahi.gladserv.com>
-References: <20250910095124.6213-3-bacs@librecast.net>
- <20250910095124.6213-5-bacs@librecast.net>
- <87frcuegb7.fsf@minerva.mail-host-address-is-not-set>
- <aMFYeV4UdD7NnrSC@karahi.gladserv.com>
-Date: Wed, 10 Sep 2025 13:09:20 +0200
-Message-ID: <87cy7yef8f.fsf@minerva.mail-host-address-is-not-set>
+	 MIME-Version:Content-Type; b=J/J14m+i8eLZUtZ+NJCtCUkbwp0TATEuHLoo5Y8CT4XN+y3oTikXLGAGNdYjM7lxfJYP1Uojhp9JAUScb7zxx3sN/QQY9ad1hxgj9MXM0exO5MZ9JM+p6KmCKrZWBtfswfVW7dO+BrUqDPUWPNJ1tnq4GYEQKdsR7aj1F3yMFP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=nefkom.net; arc=none smtp.client-ip=212.18.0.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nefkom.net
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4cMJKz31Ljz1r5hm;
+	Wed, 10 Sep 2025 13:26:31 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
+	by mail.m-online.net (Postfix) with ESMTP id 4cMJKz0m5Fz1qqlb;
+	Wed, 10 Sep 2025 13:26:31 +0200 (CEST)
+X-Virus-Scanned: amavis at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavis, port 10024)
+ with ESMTP id g6C75_oYFWsS; Wed, 10 Sep 2025 13:26:21 +0200 (CEST)
+X-Auth-Info: L8z1TJlNxCzTgyCseFs3gJOGQviCk5ZiscXQAcpoBPsvQ1tdp1edomGRnmNhfKfL
+Received: from igel.home (aftr-82-135-83-103.dynamic.mnet-online.de [82.135.83.103])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.mnet-online.de (Postfix) with ESMTPSA;
+	Wed, 10 Sep 2025 13:26:21 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+	id E70C32C1975; Wed, 10 Sep 2025 13:26:20 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Finn Thain <fthain@linux-m68k.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>,  Lance Yang
+ <lance.yang@linux.dev>,  akpm@linux-foundation.org,  amaindex@outlook.com,
+  anna.schumaker@oracle.com,  boqun.feng@gmail.com,  geert@linux-m68k.org,
+  ioworker0@gmail.com,  joel.granados@kernel.org,  jstultz@google.com,
+  leonylgao@tencent.com,  linux-kernel@vger.kernel.org,
+  linux-m68k@lists.linux-m68k.org,  longman@redhat.com,
+  mhiramat@kernel.org,  mingo@redhat.com,  mingzhe.yang@ly.com,
+  oak@helsinkinet.fi,  peterz@infradead.org,  rostedt@goodmis.org,
+  senozhatsky@chromium.org,  tfiga@chromium.org,  will@kernel.org,
+  stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock
+ pointers
+In-Reply-To: <cd9d62b4-addf-49c2-731c-ec7c89cbebc5@linux-m68k.org> (Finn
+	Thain's message of "Wed, 10 Sep 2025 18:02:43 +1000 (AEST)")
+References: <20250909145243.17119-1-lance.yang@linux.dev>
+	<yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
+	<99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org>
+	<875xdqsssz.fsf@igel.home>
+	<cd9d62b4-addf-49c2-731c-ec7c89cbebc5@linux-m68k.org>
+Date: Wed, 10 Sep 2025 13:26:20 +0200
+Message-ID: <871poesg4j.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -103,51 +80,15 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Brett A C Sheffield <bacs@librecast.net> writes:
+On Sep 10 2025, Finn Thain wrote:
 
-> On 2025-09-10 12:46, Javier Martinez Canillas wrote:
->> Brett A C Sheffield <bacs@librecast.net> writes:
->> 
->> Hello Brett,
->> 
->> > This reverts commit 13d28e0c79cbf69fc6f145767af66905586c1249.
->> >
->> > Commit ee7a69aa38d8 ("fbdev: Disable sysfb device registration when
->> > removing conflicting FBs") was backported to 5.15.y LTS. This causes a
->> > regression where all virtual consoles stop responding during boot at:
->> >
->> > "Populating /dev with existing devices through uevents ..."
->> >
->> > Reverting the commit fixes the regression.
->> >
->> > Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
->> > ---
->> 
->> In the other email you said:
->> 
->> > Newer stable kernels with this
->> > patch (6.1.y, 6.6.y, 6.12,y, 6.15.y, 6.16.y) and mainline are unaffected.
->> 
->> But are you proposing to revert the mentioned commit in mainline too
->> or just in the 5.15.y LTS tree ?
->
-> Only the 5.15.y tree. Sorry - that could have been clearer.  There's no
-> regression anywhere else. Mainline and other stable kernels are all ok.
->
+> So you'd have to patch the uapi headers at the same time. I think that's 
+> "feasible", no?
 
-That's what I thought but just wanted to confirm that was the case. Thanks!
-
-> Cheers,
->
->
-> Brett
->
-
+I would surely be a big task.
+ 
 -- 
-Best regards,
-
-Javier Martinez Canillas
-Core Platforms
-Red Hat
-
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
 
