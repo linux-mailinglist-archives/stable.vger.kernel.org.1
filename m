@@ -1,84 +1,56 @@
-Return-Path: <stable+bounces-179218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6178B5206B
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 20:50:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7CCB52165
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 21:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74ED81B25FC3
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 18:50:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19C585644F5
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 19:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B872D0614;
-	Wed, 10 Sep 2025 18:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9ADA2D0618;
+	Wed, 10 Sep 2025 19:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2QUeXsF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C701265CC9;
-	Wed, 10 Sep 2025 18:50:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA522192F5;
+	Wed, 10 Sep 2025 19:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757530222; cv=none; b=Z7JYaSaJAUHqkyNKFbVNdTHJ5YgbqZRpSFKLgSqYx+iEZMd7YL4yM+TviRK2OIJZOdPyxgBue3zw6r6U7Sg3PqHmbgfSF/AnGz6XbX9Fjh0vBsJa/c58ofxtXtP9UOS87YeZw8NSGENyCbxmwQMkeYpj4yxkGt76wnRtP/g73gY=
+	t=1757533763; cv=none; b=HbhkVOqUybgqetn+wPTzQ5e7t9V4hdwWpD0yZG7U7kV6d9D8weEGjvTDUTQ5T+VSw/qwRfpX2xCrJ/VOJYn8iaFuDspOSauAZ16leNcpkwacdLk9RlbBL6bqdMog3IZbWhvrMi+HJlnlWMFCDehOo7+b+ifpQSJgzJle5AHmJVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757530222; c=relaxed/simple;
-	bh=N4iea+SzKwrOKWR30vrkDfzE8zVNElUEfnxNB2wUOYU=;
+	s=arc-20240116; t=1757533763; c=relaxed/simple;
+	bh=VlR4T7W5WUcCl5jM8ND6VF21jkI4rqDyaEM8DrBDXtg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mAPwLXg4EedalWdjy8YvYR2t2hed7n0bFdahG+vXMTyzch5Hvjur3zVVvj2RUaw9K9Z4yl8Zh1DF52HOdtdtn2i2S6g131pUkdw8qPzv+r0P9PqBX7+YqGUTsQrd2hHa/7Du+TYOP2jsdTnfHjsiXFBmU9toPfZmsRT/HGkmV1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b04b55d5a2cso877750466b.2;
-        Wed, 10 Sep 2025 11:50:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757530219; x=1758135019;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LlQRz9kM9KvyAgrvvrHmaqoax/Y6SgW1dR4yAV7t1Yk=;
-        b=oNh/3/KOKpfXCLwue5oPqfazJh9oImJh/keva/Nl4XSOmK5+1LykecJVBIJM0nJTXj
-         gGIXKKgvBGFIFPQJESwIQ/lZIiQOcG0OuHJ4J5ZIANYM+DCJY+RNmq2zcqdffSOVOjz4
-         S5KwVbds3G6eBy4VrDzVvmPK6nnxMCBSclaqqJtspQ8j5TVY3qwcs8AU8eNsz3T6H+0i
-         1s6frJRWgdoVz38VcqM8XCK2coMuo2GQA9bMOymTuxc1nop80A+NJ3ebAL8vEKR54Jil
-         wcFC5ujom3xGZUOUyNbeH4IeRdpAVS0k+2hbBwGsDoKixfILtWv9hire5WEJhGMOQhnp
-         u5Gg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/xNxp85bZ7pnEF7BMzHbjNpkETUD3mKWX7cmZkIOKyWjyOX39YX1KG5/TxX1SJIqeLN64XgA6inQfbTo=@vger.kernel.org, AJvYcCVIZ9xz8VcobyyNXbhUXubjOE6OrEEVibOY2Zx44yOBk0czCQUiGH4yslQBc8vjXN6lPe2wLaLp@vger.kernel.org, AJvYcCXPGmLT7oUulRBIQaT9zYji/4r97Fw6fxS+u7M7T25kbupD4Zel7UxtQxDWd+jmbf5RDObZmY7K@vger.kernel.org, AJvYcCXkLOmoyDhS3OQMKBpUm5KNyC23Dx8N1PF8Bb0Cze020QtcE2LLjmC6sSUhUqf65FopFO+kBDWALViEfoXUi3yQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMtA87M/ZeY1/0QgUaFl9NxLdQgVH8ie0Dh9umwbCanQz+uw/B
-	2a0JzU7v8Bi4pjEwMdMMKaWR0k9W3wpoPcy18F3B7Uq1NeVwMj3Y4pn0
-X-Gm-Gg: ASbGncsMkDNQ/RMOJdzoKFd/Ciphp7R5wtNdBv7yUyfWks6VXWS8tgfCP9lM88duKcU
-	3zdG2JwSZXjuB4O2eJ9b7dAg8FP1pRBRQTDflwoCgdUfN+q/3lmPYHGvHZ6YL+/l/kaj7Cf2xOw
-	EtitjJ7ZXLmGNhPML0heidKgKZPwjcHcZXW1MsJ2bNSqyGEb+74/BKIZLWgQyol1H7eeANXr7gb
-	ap2mUD8NtE8TX6EzyJKvO0TcZNbkZvjRe0Mx3cL/Vze4qAgrbL05Or9nZbHb3SqzjKONqnTr6Vk
-	mtcTMHpNZRhZuEqYdRbDOxA2Ec3MmEZNQFmLDKdKBfMu+5cX/xMBvCcB0XfrXeESLBlXCk/dQK0
-	Ta2t2eMrd59lsIrBq9AgK
-X-Google-Smtp-Source: AGHT+IEkRY10yVM1hwOHiLwYxW9pXsSMDFJXPpBi8VhvamBnCRNvf9wpeUQLrVBNwxV8/KlGwf8kuw==
-X-Received: by 2002:a17:907:7290:b0:b04:32ff:5d3a with SMTP id a640c23a62f3a-b04b10081d8mr1617429166b.0.1757530218565;
-        Wed, 10 Sep 2025 11:50:18 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b078346526fsm207587866b.109.2025.09.10.11.50.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 11:50:18 -0700 (PDT)
-Date: Wed, 10 Sep 2025 11:50:15 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Calvin Owens <calvin@wbinvd.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
-	david decotigny <decot@googlers.com>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, kernel-team@meta.com, 
-	stable@vger.kernel.org, jv@jvosburgh.net
-Subject: Re: [PATCH net v3 1/3] netpoll: fix incorrect refcount handling
- causing incorrect cleanup
-Message-ID: <v6yjo7yfimoof3mws4ymzrb5lkqd2t3cv4d4zzmh2ljux6rna2@zyj2tn53gep6>
-References: <20250905-netconsole_torture-v3-0-875c7febd316@debian.org>
- <20250905-netconsole_torture-v3-1-875c7febd316@debian.org>
- <aL9A3JDyx3TxAzLf@mozart.vkv.me>
- <20250908182958.23dc4ba0@kernel.org>
- <kmvkrqkkrbfctpramlchpwqikg2x3btb3debshabqctt7azu2j@tv4ziqd4gldh>
- <20250909161625.470d2835@kernel.org>
- <jibftqm5ihdgazmk3p5gsjhlc536itqaq7r5uag5fuiqtth6cp@abihzyykh4gy>
- <20250910105858.083ca8df@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=DghsgMdM736q6HfBRcGh/qAnUWd+mP6LYgiqkhCtAGZSIAXdvd7WEeWYL6yz338YGVhIeSIS9Bs09Q5DZzGvSztW1J40w6BkMGxXTJM8MxxZ7916Er6tL1TAeYvPjZVEBO4o0yRHYel1L25h/Wz+j+8ObVdpo32s6agaS3bLu/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2QUeXsF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09E9C4CEEB;
+	Wed, 10 Sep 2025 19:49:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757533763;
+	bh=VlR4T7W5WUcCl5jM8ND6VF21jkI4rqDyaEM8DrBDXtg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B2QUeXsFP/8t9H+uXfCOPC9W7hJbSvaQzKCacm52pDLARWQhOaI6TMggUjJ3hlcOs
+	 +2ffNodYhLpM+Ry8vHv7i/kEUS92UQDOCNEw3cR7q6iPZ9fi7rINNkgfeKAA+9qLL1
+	 +YGHNXz9Jbu6yORdBXPyU+aiKz1zwAUJ9tdV7rlgVlPgvBAB3QdMiyr/dgnlVMi7ub
+	 jfhiSXOt77FKB+biQ8XCc9FFQAET7KoMtskxVOuwO376KJ1ca3Ido85CFZFbkgulub
+	 40SSo2ut9ZJD0mrol+e3Wx21uHB1djpQHebJ2CToEgpTLhWjMRUQbNfvqT+bp9tUOg
+	 iV4HGYvVU1D1g==
+Date: Wed, 10 Sep 2025 19:49:21 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+	kasan-dev@googlegroups.com
+Cc: Dmitry Vyukov <dvyukov@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] kmsan: Fix out-of-bounds access to shadow memory
+Message-ID: <20250910194921.GA3153735@google.com>
+References: <20250829164500.324329-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -87,45 +59,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250910105858.083ca8df@kernel.org>
+In-Reply-To: <20250829164500.324329-1-ebiggers@kernel.org>
 
-On Wed, Sep 10, 2025 at 10:58:58AM -0700, Jakub Kicinski wrote:
-> On Wed, 10 Sep 2025 07:12:03 -0700 Breno Leitao wrote:
-> > On Tue, Sep 09, 2025 at 04:16:25PM -0700, Jakub Kicinski wrote:
-> > > On Tue, 9 Sep 2025 13:17:27 -0700 Breno Leitao wrote:  
-> > > > On Mon, Sep 08, 2025 at 06:29:58PM -0700, Jakub Kicinski wrote:  
-> > > > > On Mon, 8 Sep 2025 13:47:24 -0700 Calvin Owens wrote:    
-> > > > > > I wonder if there might be a demon lurking in bonding+netpoll that this
-> > > > > > was papering over? Not a reason not to fix the leaks IMO, I'm just
-> > > > > > curious, I don't want to spend time on it if you already did :)    
-> > > > > 
-> > > > > +1, I also feel like it'd be good to have some bonding tests in place
-> > > > > when we're removing a hack added specifically for bonding.    
-> > > > 
-> > > > Do you prefer to have a separated bonding selftest, or, is it better to
-> > > > add some bond operations in the torture selftest?  
-> > > 
-> > > Normal test is preferable, given the flakiness rate and patch volume
-> > > I'm a bit scared of randomized testing as part of CI.  
-> > 
-> > Ok, I will create a selftest to cover the netpoll part of bonding, as
-> > soon as my understanding is good enough. I don't think it will be quick,
-> > but, it is on my hi-pri todo list.
-> > 
-> > Do you want to have the selftest done before merging this patch, or, can
-> > they go in parallel?
+On Fri, Aug 29, 2025 at 09:45:00AM -0700, Eric Biggers wrote:
+> Running sha224_kunit on a KMSAN-enabled kernel results in a crash in
+> kmsan_internal_set_shadow_origin():
 > 
-> I said "it'd be good to have some bonding tests in place when we're
-> removing a hack added specifically for bonding."
-> "In place" means part of CI when we're merging this fix.
-> Please read emails more carefully.
+>     BUG: unable to handle page fault for address: ffffbc3840291000
+>     #PF: supervisor read access in kernel mode
+>     #PF: error_code(0x0000) - not-present page
+>     PGD 1810067 P4D 1810067 PUD 192d067 PMD 3c17067 PTE 0
+>     Oops: 0000 [#1] SMP NOPTI
+>     CPU: 0 UID: 0 PID: 81 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc3 #10 PREEMPT(voluntary)
+>     Tainted: [N]=TEST
+>     Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+>     RIP: 0010:kmsan_internal_set_shadow_origin+0x91/0x100
+>     [...]
+>     Call Trace:
+>     <TASK>
+>     __msan_memset+0xee/0x1a0
+>     sha224_final+0x9e/0x350
+>     test_hash_buffer_overruns+0x46f/0x5f0
+>     ? kmsan_get_shadow_origin_ptr+0x46/0xa0
+>     ? __pfx_test_hash_buffer_overruns+0x10/0x10
+>     kunit_try_run_case+0x198/0xa00
 
-Apologies for the misunderstanding, It was unclear that the bonding
-selftest should come before the fix. Thanks for the clarification.
+Any thoughts on this patch from the KMSAN folks?  I'd love to add
+CONFIG_KMSAN=y to my crypto subsystem testing, but unfortunately the
+kernel crashes due to this bug :-(
 
-I am planning to create a selftest similar to the original reported to cause
-the issue[1], where I create a bond device with two netdevsim, and bind
-netconsole to it.
-
-[1] https://lore.kernel.org/lkml/96b940137a50e5c387687bb4f57de8b0435a653f.1404857349.git.decot@googlers.com/
+- Eric
 
