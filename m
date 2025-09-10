@@ -1,121 +1,101 @@
-Return-Path: <stable+bounces-179147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF82CB509FF
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 02:51:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E861B50A16
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 03:10:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BC5E5E11D9
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 00:51:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 433C41BC7A3C
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 01:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF481C700C;
-	Wed, 10 Sep 2025 00:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0D41E0DFE;
+	Wed, 10 Sep 2025 01:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vds3mBrW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MU/wT21q"
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABE713AD1C
-	for <stable@vger.kernel.org>; Wed, 10 Sep 2025 00:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956751DF98F
+	for <stable@vger.kernel.org>; Wed, 10 Sep 2025 01:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757465512; cv=none; b=Su0z1jUOsiwsWHoFrz3FmZdLg7YzRZf7ID6e34DMVtcsndekaFZTnmKxXf55qewlqx9HkrTkxafBT3VF2SnwExRIIR9ebEtH3pWjfn38/6vyOR9mbAY00hlyJpSGdQHISAgYMrkqyFbwHUTtntQQ5xPJW0QaBGzGPiRXeClyOpI=
+	t=1757466605; cv=none; b=HSOtmPrYmohtlgK0icd9/VIDtb+ryoWKUUPHziPvlIuk6WnkSLsK45YDRFHuSyOVvjhT5TvovMClRvuQzXxqB0Ikmo2RythVmG3DQqkOxpwQJeY5KCB7dw1xvNtwEkAuwt4FmqSaEzTmHVr8cBR48Bbk+LB3OQ6dE484aQ03Bes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757465512; c=relaxed/simple;
-	bh=QS0LPsV1AZdLXItNY4UDYirhob+/Y/E1e6f0lusByOU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IYh2icw3h8g55sYp907hERQTILW1EUY4/ZFZXRst03wdWIs1AhTU2hWlyMv/Nk/m8lJF/zM1PvjtO1oArVT30ec10VTb61+ZEnuAFlZt4ogfLcmBJbgi0wkondgzCqhyGKtNqYLY0uH6iccvx6CWhFHJX5mpODfq62BD5G+pGSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vds3mBrW; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Tue, 9 Sep 2025 20:51:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757465507;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NEcZ+4LpqvsoBpDv5Pc439qYu8Se1iA78e4Hvoihta0=;
-	b=vds3mBrWbGzaiZu0OCfI/rKaCgYv8OetxS5dZY0jlCMivaYJH8qD52ynDOFVFbh6PWcvsT
-	tRARO0VZCWV8zGYzMIXCrt5jbw5CZK/mWKYu2AFjOOy61wnzA55q6jL3DrTX4sShJulxwp
-	xa41t5sF1PKRk8gkRUvLQDgpsdxwK/I=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Finn Thain <fthain@linux-m68k.org>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, 
-	amaindex@outlook.com, anna.schumaker@oracle.com, boqun.feng@gmail.com, 
-	geert@linux-m68k.org, ioworker0@gmail.com, joel.granados@kernel.org, 
-	jstultz@google.com, leonylgao@tencent.com, linux-kernel@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, longman@redhat.com, mhiramat@kernel.org, mingo@redhat.com, 
-	mingzhe.yang@ly.com, oak@helsinkinet.fi, peterz@infradead.org, rostedt@goodmis.org, 
-	senozhatsky@chromium.org, tfiga@chromium.org, will@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock
- pointers
-Message-ID: <ufkr7rkg7rsfo6ovsnwz2gqf4mtmmevb3mququeukqlryzwzmz@x4chw22ojvnu>
-References: <20250909145243.17119-1-lance.yang@linux.dev>
- <yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
- <99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org>
+	s=arc-20240116; t=1757466605; c=relaxed/simple;
+	bh=C2k9MiDhguBj9/iGc24WyCBUOM1Yq/qbPPGVNZ1cbjI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YnS6exGXtOf3xPSM4/lLRGp4Ig51YvgA/kuAmu9dieEfkYKOj/5nr/BWW3Ipcy+ZwVsFH/8pMQ6vzgNkFV4z/VtAd6z14M3XQm5HpbW1AyWQRY/AYR+Z+WczL0mvIRbHCeJuOj31T7CRamIqbaiHBjhwL9jHFzclLFBHK/7VFlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MU/wT21q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46590C4CEF4;
+	Wed, 10 Sep 2025 01:10:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757466605;
+	bh=C2k9MiDhguBj9/iGc24WyCBUOM1Yq/qbPPGVNZ1cbjI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MU/wT21qyNV/bhIBvS6UUGsqUz7rYtzIgbTv/6/evmCJ5o8A793tbjUmmbK0hvJYR
+	 7l2EQ0lsGZ/5N/mHSrIJDzAEj3/7XX/hbAFU6mBIZ9s9KffKaf1a0tY6aoKrZcxKMP
+	 ky/s/Ws8OawTkXTkm5Ks9JgUY9l4Wwm+TcONmlVra00tshug0YDRXjsJFN9J/aF91o
+	 4O7za00iaVTBF7U54Jau9WXxolpauRX0Z1WQra9YVsboRwoGDwL+z2HVnop2Ne9T33
+	 9bWQW14gu/i4C8xai3uxa/AIwAuO5+APics6r/9W1GldbCy9YlVhG21h0F7dN4f15N
+	 5K6suluVGSa5A==
+Message-ID: <fcddf681-aa4f-4d62-a900-af96c1801fcf@kernel.org>
+Date: Wed, 10 Sep 2025 10:07:02 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] nvmet: pci-epf: Move DMA initialization to EPC init
+ callback
+To: Niklas Cassel <cassel@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>,
+ Keith Busch <kbusch@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Cc: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+ stable@vger.kernel.org, linux-nvme@lists.infradead.org
+References: <20250909112121.682086-2-cassel@kernel.org>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <20250909112121.682086-2-cassel@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 10, 2025 at 10:07:04AM +1000, Finn Thain wrote:
+On 9/9/25 8:21 PM, Niklas Cassel wrote:
+> From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 > 
-> On Tue, 9 Sep 2025, Kent Overstreet wrote:
+> For DMA initialization to work across all EPC drivers, the DMA
+> initialization has to be done in the .init() callback.
 > 
-> > On Tue, Sep 09, 2025 at 10:52:43PM +0800, Lance Yang wrote:
-> > > From: Lance Yang <lance.yang@linux.dev>
-> > > 
-> > > The blocker tracking mechanism assumes that lock pointers are at least
-> > > 4-byte aligned to use their lower bits for type encoding.
-> > > 
-> > > However, as reported by Eero Tamminen, some architectures like m68k
-> > > only guarantee 2-byte alignment of 32-bit values. This breaks the
-> > > assumption and causes two related WARN_ON_ONCE checks to trigger.
-> > 
-> > Isn't m68k the only architecture that's weird like this?
-> > 
+> This is because not all EPC drivers will have a refclock (which is often
+> needed to access registers of a DMA controller embedded in a PCIe
+> controller) at the time the .bind() callback is called.
 > 
-> No. Historically, Linux/CRIS did not naturally align integer types either. 
-> AFAIK, there's no standard that demands natural alignment of integer 
-> types. Linux ABIs differ significantly.
+> However, all EPC drivers are guaranteed to have a refclock by the time
+> the .init() callback is called.
 > 
-> For example, Linux/i386 does not naturally align long longs. Therefore, 
-> x86 may be expected to become the next m68k (or CRIS) unless such 
-> assumptions are avoided and alignment requirements are made explicit.
-
-That doesn't really apply; i386's long long is ugly but it's not as much
-of an issue in practice, because it's greater than a machine word.
-
-> The real problem here is the algorithm. Some under-resourced distros 
-> choose to blame the ABI instead of the algorithm, because in doing so, 
-> they are freed from having to work to improve upstream code bases.
-
-Hang on, let's avoid playing the blame game. It's perfectly reasonable
-to view standards not as holy religious texts that must be adhered to;
-these things were written down when specifications were much looser.
-
+> Thus, move the DMA initialization to the .init() callback.
 > 
-> IMHO, good C doesn't make alignment assumptions, because that hinders 
-> source code portability and reuse, as well as algorithm extensibility. 
-> We've seen it before. The issue here [1] is no different from the pointer 
-> abuse which we fixed in Cpython [2].
+> This change was already done for other EPF drivers in
+> commit 60bd3e039aa2 ("PCI: endpoint: pci-epf-{mhi/test}: Move DMA
+> initialization to EPC init callback").
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 0faa0fe6f90e ("nvmet: New NVMe PCI endpoint function target driver")
+> Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
 
-That kind of thinking really dates from before multithreaded and even
-lockless algorithms became absolutely pervasive, especially in the
-kernel.
+Looks good.
 
-These days, READ_ONCE() and WRITE_ONCE() are pervasive, and since C
-lacks any notion of atomics in the type system (the place this primarily
-comes up), it would go a long ways towards improving portability and
-eliminating nasty land mines.
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+
+
+-- 
+Damien Le Moal
+Western Digital Research
 
