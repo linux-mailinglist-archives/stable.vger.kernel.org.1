@@ -1,155 +1,169 @@
-Return-Path: <stable+bounces-179180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB93B5127C
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 11:29:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08119B512B9
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 11:39:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 121167B2CE2
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 09:27:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7C8B7B8455
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 09:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F327313556;
-	Wed, 10 Sep 2025 09:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C46313547;
+	Wed, 10 Sep 2025 09:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="ZhxPSqLj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LrFC/fE/"
 X-Original-To: stable@vger.kernel.org
-Received: from fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.72.182.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B18A313544;
-	Wed, 10 Sep 2025 09:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.72.182.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1003A285CAF;
+	Wed, 10 Sep 2025 09:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757496532; cv=none; b=ZE50O22Y3pZ657K3qQ9V327ZPZ2pgb1D0wbebPx0vpw4jvMtBn0Nmc8SgmX7wqajaUnJJxPtD1V1i0CN9gtOKXtrgmEjmkv2ec4w3qB3pTLLbvUzs95P5UK9ejltKZaUcR93TTzeSiqf9tjoXbFjvcHS5ww7C+7lJXzwWJH6HBE=
+	t=1757497034; cv=none; b=PNFY0hCVDnORwLBd33VA+ct3KDB/Kjf/uW5k/tBs1MTd+uWDwC0Opf3qXco2i80xpe8x9Y0+y5DK7TmA51Hgrs3LN7l+q3kKY6wexomVp9PxgeGwgazj38gPOpWhafjYH6O5iswmywFFR59/3UYVIwEMZKiNjI7kp7+Og9OfoFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757496532; c=relaxed/simple;
-	bh=8M1NClmvgIt+dhiZcZXDzCJ1AB1iwZ1egz2MFeaVKyw=;
-	h=From:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=QTUeqEE+xCD3eEvy0ovmbGp+KNRKgdBGoS3V/GnqlpgLSBqo3N9B+YpsMfjCq98Su63QDSJzWg4Nw21Mxk/v6EJVhVolFJERS3lXn5mMFCO3lrReAYT9UoHTTlAd62jKrzt6GpUFQrgTLZG9h8d3Koey004vwPqMgXtSH4joPvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=ZhxPSqLj; arc=none smtp.client-ip=3.72.182.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1757496529; x=1789032529;
-  h=from:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=UYBeIk1Sgl6VARFAnYk+1Npq0eTLyrVghsS0KiRYD80=;
-  b=ZhxPSqLjvcFSH7Nn25m6NEGkNESDX6JV2WbMCqIW7JBpVf88V6t6ypTu
-   cpxL9Q3Mpm3xH48feges+VAZ8Iw12VjVxhcRiLJxR3T9z3c/ireBMTVKa
-   BiOEL4xESeMyhlx580sNNcSfw+dQaVOIEkta9K2eKpmgBgIQ4eQIpX5FH
-   Ny7DDE2HRtkjiVOuxZ3rlWLTk6XrGb4FaaS2pQujxalWnWll8y9JalupK
-   nAPj1vpgkOwCXqNj0qGsO+au9OLYtamHOMVssjNw9WHn6Jwm6zZopGfVm
-   Pn9Z8YbYhirV1Gtb5kIO5GwmW9WQoTneIoWmoardngyEPsO9w8xzCM41F
-   A==;
-X-CSE-ConnectionGUID: u/IpeAocSuWjQ6qjoMuysA==
-X-CSE-MsgGUID: s0vP7LJQR2CHqKOPqmdAug==
-X-IronPort-AV: E=Sophos;i="6.18,214,1751241600"; 
-   d="scan'208";a="1890739"
-Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 09:28:38 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:14793]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.16.14:2525] with esmtp (Farcaster)
- id 2040ec64-2b97-42f5-bda1-4ba39ea8b2d5; Wed, 10 Sep 2025 09:28:38 +0000 (UTC)
-X-Farcaster-Flow-ID: 2040ec64-2b97-42f5-bda1-4ba39ea8b2d5
-Received: from EX19D008EUC003.ant.amazon.com (10.252.51.205) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 10 Sep 2025 09:28:38 +0000
-Received: from EX19D008EUC001.ant.amazon.com (10.252.51.165) by
- EX19D008EUC003.ant.amazon.com (10.252.51.205) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 10 Sep 2025 09:28:37 +0000
-Received: from EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1]) by
- EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1%3]) with mapi id
- 15.02.2562.020; Wed, 10 Sep 2025 09:28:37 +0000
-From: "Heyne, Maximilian" <mheyne@amazon.de>
-CC: "Heyne, Maximilian" <mheyne@amazon.de>, "Matthieu Baerts (NGI0)"
-	<matttbe@kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Thomas Dreibholz <dreibh@simula.no>, Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Mat Martineau
-	<mathew.j.martineau@linux.intel.com>, Matthieu Baerts
-	<matthieu.baerts@tessares.net>, "David S. Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "mptcp@lists.01.org" <mptcp@lists.01.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: [PATCH 5.10] mptcp: pm: kernel: flush: do not reset ADD_ADDR limit
-Thread-Topic: [PATCH 5.10] mptcp: pm: kernel: flush: do not reset ADD_ADDR
- limit
-Thread-Index: AQHcIjVJBuGE8H44G0WWr6MpfYiLLg==
-Date: Wed, 10 Sep 2025 09:28:37 +0000
-Message-ID: <20250910-nicety-alert-0e004251@mheyne-amazon>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="iso-8859-1"
+	s=arc-20240116; t=1757497034; c=relaxed/simple;
+	bh=28Z83TYU1HcXY9gGFlYZe5FSkvWNJL9vWbrzyGS+5pM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=doJN3gpdvbbUb//4eIH52v2gf2qkcsjNQXMn4kcz4uAZmehq45rgNzMGVYCBCqynlNbE+z4g5WgBqnbAN/eA8uQtfJ/l2py+xWiBxKdMLTrvE6AU83Ycy1wfdTGvqnp3FM3NljqTKEXkBV1FNu3lAi3BwAErFaaiwubLqcMmiH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LrFC/fE/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8B1C4CEF8;
+	Wed, 10 Sep 2025 09:37:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757497033;
+	bh=28Z83TYU1HcXY9gGFlYZe5FSkvWNJL9vWbrzyGS+5pM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LrFC/fE/oDv/+Dn6Np09etM9Npqz03ErTqdlyl7GKVA9kDhwpcpp4HvrUmXaxz6Lo
+	 PKnUha90vZwmj5z5nri8qBNVmZnEnuIEgLcKVUsy2EU7IHPyot8jgZRE3o2p2R6ujq
+	 wE1hGalT7vT8CI2atXShbN0g5NOIOz2S39qEtH5pvXqLSg6bY7SOvY33Q8bR8s0mSa
+	 umY/oqnMyLkWte8iHy9yhhP30C3FDhBGtjZjiPWDfPALd9LJ9diSrYxZPnyZbwMe5i
+	 SnowW6qqWGUwd34SGJReguDbIKG5SBEkYaR80Xp9JLIdXMPGRNa+AfwpUhyFq2kpeF
+	 /tOMZGmjuVLDw==
+Message-ID: <12816b79-c9b0-43d1-9b99-a1e7c7d73571@kernel.org>
+Date: Wed, 10 Sep 2025 11:37:10 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] ACPI: video: Fix missing backlight node creation on
+ Zhaoxin platforms
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>,
+ "Rafael J . wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>, Mario Limonciello
+ <mario.limonciello@amd.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250910074711.1511753-1-zhangzihuan@kylinos.cn>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <20250910074711.1511753-1-zhangzihuan@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Hi Zihuan,
 
-commit 68fc0f4b0d25692940cdc85c68e366cae63e1757 upstream.
+On 10-Sep-25 9:47 AM, Zihuan Zhang wrote:
+> Some recent Lenovo and Inspur machines with Zhaoxin CPUs fail to create
+> /sys/class/backlight/acpi_video0 on v6.6 kernels, while the same hardware
+> works correctly on v5.4.
+> 
+> Our analysis shows that the current implementation assumes the presence of a
+> GPU. The backlight registration is only triggered if a GPU is detected, but on
+> these platforms the backlight is handled purely by the EC without any GPU.
+> As a result, the detection path does not create the expected backlight node.
+> 
+> To fix this, move the following logic:
+> 
+> /* Use ACPI video if available, except when native should be preferred. */
+> if ((video_caps & ACPI_VIDEO_BACKLIGHT) &&
+>     !(native_available && prefer_native_over_acpi_video()))
+>         return acpi_backlight_video;
+> 
+> above the if (auto_detect) *auto_detect = true; statement.
+> 
+> This ensures that the ACPI video backlight node is created even when no GPU is
+> present, restoring the correct behavior observed on older kernels.
+> 
+> Fixes: 78dfc9d1d1ab ("ACPI: video: Add auto_detect arg to __acpi_video_get_backlight_type()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 
-A flush of the MPTCP endpoints should not affect the MPTCP limits. In
-other words, 'ip mptcp endpoint flush' should not change 'ip mptcp
-limits'.
+Thank you for your patch.
 
-But it was the case: the MPTCP_PM_ATTR_RCV_ADD_ADDRS (add_addr_accepted)
-limit was reset by accident. Removing the reset of this counter during a
-flush fixes this issue.
+> ---
+>  drivers/acpi/video_detect.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+> index d507d5e08435..c1bb22b57f56 100644
+> --- a/drivers/acpi/video_detect.c
+> +++ b/drivers/acpi/video_detect.c
+> @@ -1011,6 +1011,11 @@ enum acpi_backlight_type __acpi_video_get_backlight_type(bool native, bool *auto
+>  	if (acpi_backlight_dmi != acpi_backlight_undef)
+>  		return acpi_backlight_dmi;
+>  
+> +	/* Use ACPI video if available, except when native should be preferred. */
+> +	if ((video_caps & ACPI_VIDEO_BACKLIGHT) &&
+> +	     !(native_available && prefer_native_over_acpi_video()))
+> +		return acpi_backlight_video;
+> +
+>  	if (auto_detect)
+>  		*auto_detect = true;
+>  
+> @@ -1024,11 +1029,6 @@ enum acpi_backlight_type __acpi_video_get_backlight_type(bool native, bool *auto
+>  	if (dell_uart_present)
+>  		return acpi_backlight_dell_uart;
+>  
+> -	/* Use ACPI video if available, except when native should be preferred. */
+> -	if ((video_caps & ACPI_VIDEO_BACKLIGHT) &&
+> -	     !(native_available && prefer_native_over_acpi_video()))
+> -		return acpi_backlight_video;
+> -
+>  	/* Use native if available */
+>  	if (native_available)
+>  		return acpi_backlight_native;
 
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
-Cc: stable@vger.kernel.org
-Reported-by: Thomas Dreibholz <dreibh@simula.no>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/579
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250815-net-mptcp-misc-fixes-6-17-rc2-v1-2-=
-521fe9957892@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[adjusted patch by removing WRITE_ONCE to take into account the missing
- commit 72603d207d59 ("mptcp: use WRITE_ONCE for the pernet *_max")]
-Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
----
-For some reason only the corresponding selftest patch was backported and
-it's now failing on 5.10 kernels. I tested that with this patch the
-selftest is succeeding again.
----
- net/mptcp/pm_netlink.c | 1 -
- 1 file changed, 1 deletion(-)
+There is a very specific ordering, as the comment in the function says:
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 32379fc706cac..c31a1dc69f835 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -869,7 +869,6 @@ static void __flush_addrs(struct pm_nl_pernet *pernet)
- static void __reset_counters(struct pm_nl_pernet *pernet)
- {
- 	pernet->add_addr_signal_max =3D 0;
--	pernet->add_addr_accept_max =3D 0;
- 	pernet->local_addr_max =3D 0;
- 	pernet->addrs =3D 0;
- }
--- =
+        /*
+         * The below heuristics / detection steps are in order of descending
+         * presedence. The commandline takes presedence over anything else.
+         */
 
-2.47.3
+You cannot just move one fo the detect steps like this, this will break
+many many other systems.
 
+NACK for this patch, sorry.
 
+We will need to figure out some other way to fix your issue.
 
+For starters I do not understand how this patch helps.
 
-Amazon Web Services Development Center Germany GmbH
-Tamara-Danz-Str. 13
-10243 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-Sitz: Berlin
-Ust-ID: DE 365 538 597
+You are moving the:
+
+	/* Use ACPI video if available, except when native should be preferred. */
+	if ((video_caps & ACPI_VIDEO_BACKLIGHT) &&
+	     !(native_available && prefer_native_over_acpi_video()))
+		return acpi_backlight_video;
+
+Above the nvidia_wmi_ec_present, apple_gmux_present and dell_uart_present
+checks, but I would expect all of these to be false on Lenovo and Inspur
+machines with Zhaoxin CPUs ?  So this patch should not make a difference.
+
+Please double check that this patch fixes things for you.
+
+And if it does really fix things then please add printk()
+calls printing the value of nvidia_wmi_ec_present, apple_gmux_present 
+and dell_uart_present these should all be false, but maybe we get
+a false-positive and one of them is set to true ?
+
+Regards,
+
+Hans
+
 
 
