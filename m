@@ -1,175 +1,193 @@
-Return-Path: <stable+bounces-179209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0FFDB51E65
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 18:58:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA91B51EB1
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 19:15:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 019C43B2454
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 16:58:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9118C447EFA
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 17:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F6B2874E6;
-	Wed, 10 Sep 2025 16:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B0130F959;
+	Wed, 10 Sep 2025 17:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1gbJxRWG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rt4H8NEG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9050122EE5;
-	Wed, 10 Sep 2025 16:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94405314B89;
+	Wed, 10 Sep 2025 17:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757523474; cv=none; b=D1OR2RW4akAWM+g7csyHOkKgTKATq+gfJ8CXtN3LanC7YtUAeR7OMdoM4V4eH08B/UBTM13ZDDZa4ydfWXVAGBkUA7yvvwmB29FVLFS87uESrKtKEI+za1tjjJuETk/2wX9MXelh3UYc2MBv04Xyc948FeZ73IiVMNvAbcfH8pA=
+	t=1757524514; cv=none; b=ThlsdLPK0JGcWkZ9YhBrOTVYMPLToyhH02cJP6eM5eHsOO7c9p9zVZDGrn37Ibl1dR25SFqS+oFz4JgLuZQceVbvN7sggXi8Yu1TDi+t+t40nvpPKjjEMbZBEd10mnPq+gHFoPJS91FkvdG/ctBLKbtRuwB1TXHLKJIrdkzcrcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757523474; c=relaxed/simple;
-	bh=DtE9miUBQAJCy5AeiKeGehsF4pgnBKqNW9ryVVfwaFE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=uC8py6FxbqSB60BcP35rw2mwr/KN/d9SaAWVvzsfCTHOf2MQnQp94Lb86BNs6Cql0DOQaUN2kvIDyAFtQoHZhYOhD5lCbUJrdDmimZpk1zUqhecgtGr5FeaiaPRP4EFgF5brRwXht1J7dm4vtvC2sitfa4CthB51awc+mnN+OSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1gbJxRWG; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 10E411A0D5A;
-	Wed, 10 Sep 2025 16:57:51 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E6122606D4;
-	Wed, 10 Sep 2025 16:57:50 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E431C102F2833;
-	Wed, 10 Sep 2025 18:57:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1757523468; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=4szWPvO4QJK7QXpJTUGbKS9tON103WxwvOm5NDrmuMM=;
-	b=1gbJxRWG9xSsrPgDIudnpxMmPnmBcGhPlleMVERqlMGN5PBPGFylksL/5CZ5YKfw82vclr
-	pN87gSozbGFw7JoU0OsC2FGCzPXsr7nayyyqXutREb4U2rhCcW/hfNWsLCIbfxyEptcaJO
-	NpaaRyXPWzG3yhXSYCWajaowwzfZvQ/J7FrhkSeqfW1qJqtq9UD5LeU02UzPANnRlz/0mK
-	1O7Bfu4cKF4BdQdrWALzTiA6PlOw7Pp8hDf5Nbx9Oi7hLToIeQIjrZh4lbhSQXl1VSbcR5
-	7DjUCQbZcG2txaupiwFZ053mN+AWnhmbgdzfIKXGrpnwhz6tM3zRdIRxo8WOOA==
+	s=arc-20240116; t=1757524514; c=relaxed/simple;
+	bh=GSzpQXrVsGOkg9n0qjibU8nmSrVRvwep/b24SJElML0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=moDuRP8n8W1Zo4Ueygsh50FxvKNRBaSi06ERRWegVA36E9Sty6vGV3bsC6I4E0Px2P1V0bt9NhGRv9rXnmN4c8d4ECAXudsJ9QtJuouyr6kV45p8Vcdi6nd7Ne+VAjGI2IZ9tPgF2kvkPtwsLDIFwcxLaWPSakYFTAjkS9ug94g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rt4H8NEG; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757524511; x=1789060511;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=GSzpQXrVsGOkg9n0qjibU8nmSrVRvwep/b24SJElML0=;
+  b=Rt4H8NEGRTmLF2Lv7vX7giFJ4TAcydUiyGKKq0286mG9k16yJZm1wCqC
+   yThkn1sZq7C4VDRq4G199yAId+cyUyWxWq720cAZvSspMALUeQdDkcFps
+   7yJrnihPobuIe2fVHs+o6A6v/zNeUOP4O2tDus2jIY/UNRMVRHZx5VSUm
+   m9fAUotDQDMVQhOeulXWdeDEnm8mBgiBzgPxTx2n4BaZKlZV9rUeruAkk
+   P6ecuECKy0HMWigZX6p/dZlg1Ih3jnHJ0CkHe1cleBQ21UoGKWn0H8WyR
+   eHQQ2yxvAesJj5aUU7hC6qfpM/w6njT++mIJbhY6vS7znYKE7s/NliCM4
+   w==;
+X-CSE-ConnectionGUID: zr9FqOkmQ4ezvIReYoBdJw==
+X-CSE-MsgGUID: cGe9EZ6KQ0C7QBG4UwPoVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="85288843"
+X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; 
+   d="scan'208";a="85288843"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 10:15:10 -0700
+X-CSE-ConnectionGUID: nNE5Qo01SxGRSP+zTcxmuQ==
+X-CSE-MsgGUID: q8OXQ+HCTaiG0w0DZwOrAw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; 
+   d="scan'208";a="177480945"
+Received: from spandruv-desk.jf.intel.com ([10.54.55.20])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 10:15:10 -0700
+Message-ID: <dda1d8d23407623c99e2f22e60ada1872bca98fe.camel@linux.intel.com>
+Subject: Re: [REGRESSION] Intel Turbo Boost stuck disabled on some Clevo
+ machines (was: [PATCH] cpufreq: intel_pstate: Unchecked MSR aceess in
+ legacy mode)
+From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To: Aaron Rainbolt <arainbolt@kfocus.org>, "Rafael J. Wysocki"
+	 <rafael@kernel.org>
+Cc: viresh.kumar@linaro.org, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, mmikowski@kfocus.org
+Date: Wed, 10 Sep 2025 10:15:00 -0700
+In-Reply-To: <20250910113650.54eafc2b@kf-m2g5>
+References: <20250429210711.255185-1-srinivas.pandruvada@linux.intel.com>
+		<CAJZ5v0h99RFF26qAnJf07LS0t-6ATm9c2zrQVzdi96x3FAPXQg@mail.gmail.com>
+	 <20250910113650.54eafc2b@kf-m2g5>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 10 Sep 2025 18:57:23 +0200
-Message-Id: <DCPA2BR78XM8.HWKZZ8WQF3S8@bootlin.com>
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-rpi-kernel@lists.infradead.org>, "Broadcom internal kernel review
- list" <bcm-kernel-feedback-list@broadcom.com>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>, "Rob
- Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>, "Florian Fainelli"
- <florian.fainelli@broadcom.com>, "Andrea della Porta"
- <andrea.porta@suse.com>, "Claudiu Beznea" <claudiu.beznea@tuxon.dev>, "Phil
- Elwell" <phil@raspberrypi.com>, "Jonathan Bell" <jonathan@raspberrypi.com>,
- "Dave Stevenson" <dave.stevenson@raspberrypi.com>,
- <stable@vger.kernel.org>, "Andrew Lunn" <andrew@lunn.ch>
-To: "Nicolas Ferre" <nicolas.ferre@microchip.com>, "Jakub Kicinski"
- <kuba@kernel.org>, "Stanimir Varbanov" <svarbanov@suse.de>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH v2 1/5] net: cadence: macb: Set upper 32bits of DMA ring
- buffer
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250822093440.53941-1-svarbanov@suse.de>
- <20250822093440.53941-2-svarbanov@suse.de>
- <20250825165310.64027275@kernel.org>
- <3bccf773-abd6-4ade-a1c5-99f2a773b723@microchip.com>
-In-Reply-To: <3bccf773-abd6-4ade-a1c5-99f2a773b723@microchip.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
 
-Hello Nicolas, Jakub, Stanimir,
+On Wed, 2025-09-10 at 11:36 -0500, Aaron Rainbolt wrote:
+> On Wed, 30 Apr 2025 16:29:09 +0200
+> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+>=20
+> > On Tue, Apr 29, 2025 at 11:07=E2=80=AFPM Srinivas Pandruvada
+> > <srinivas.pandruvada@linux.intel.com> wrote:
+> > >=20
+> > > When turbo mode is unavailable on a Skylake-X system, executing
+> > > the
+> > > command:
+> > > "echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo"
+> > > results in an unchecked MSR access error: WRMSR to 0x199
+> > > (attempted to write 0x0000000100001300).
+> > >=20
+> > > This issue was reproduced on an OEM (Original Equipment
+> > > Manufacturer) system and is not a common problem across all
+> > > Skylake-X systems.
+> > >=20
+> > > This error occurs because the MSR 0x199 Turbo Engage Bit (bit 32)
+> > > is set when turbo mode is disabled. The issue arises when
+> > > intel_pstate fails to detect that turbo mode is disabled. Here
+> > > intel_pstate relies on MSR_IA32_MISC_ENABLE bit 38 to determine
+> > > the
+> > > status of turbo mode. However, on this system, bit 38 is not set
+> > > even when turbo mode is disabled.
+> > >=20
+> > > According to the Intel Software Developer's Manual (SDM), the
+> > > BIOS
+> > > sets this bit during platform initialization to enable or disable
+> > > opportunistic processor performance operations. Logically, this
+> > > bit
+> > > should be set in such cases. However, the SDM also specifies that
+> > > "OS and applications must use CPUID leaf 06H to detect processors
+> > > with opportunistic processor performance operations enabled."
+> > >=20
+> > > Therefore, in addition to checking MSR_IA32_MISC_ENABLE bit 38,
+> > > verify that CPUID.06H:EAX[1] is 0 to accurately determine if
+> > > turbo
+> > > mode is disabled.
+> > >=20
+> > > Fixes: 4521e1a0ce17 ("cpufreq: intel_pstate: Reflect current
+> > > no_turbo state correctly") Signed-off-by: Srinivas Pandruvada
+> > > <srinivas.pandruvada@linux.intel.com> Cc: stable@vger.kernel.org
+> > > ---
+> > > =C2=A0drivers/cpufreq/intel_pstate.c | 3 +++
+> > > =C2=A01 file changed, 3 insertions(+)
+> > >=20
+> > > diff --git a/drivers/cpufreq/intel_pstate.c
+> > > b/drivers/cpufreq/intel_pstate.c index f41ed0b9e610..ba9bf06f1c77
+> > > 100644 --- a/drivers/cpufreq/intel_pstate.c
+> > > +++ b/drivers/cpufreq/intel_pstate.c
+> > > @@ -598,6 +598,9 @@ static bool turbo_is_disabled(void)
+> > > =C2=A0{
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 misc_en;
+> > >=20
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!cpu_feature_enabled(X86_FE=
+ATURE_IDA))
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 return true;
+> > > +
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rdmsrl(MSR_IA32_MISC_ENABL=
+E, misc_en);
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return !!(misc_en & MSR_IA=
+32_MISC_ENABLE_TURBO_DISABLE);
+> > > --=C2=A0=20
+> >=20
+> > Applied as a fix for 6.15-rc, thanks!
+> >=20
+>=20
+> FYI, this seems to have broken turbo boost on some Clevo systems with
+> an Intel Core i9-14900HX CPU. These CPUs obviously support turbo
+> boost,
+> and kernels without this commit have turbo boost working properly,
+> but
+> after this commit turbo boost is stuck disabled and cannot be
+> enabled by writing to /sys/devices/system/cpu/intel_pstate/no_turbo.
+> I
+> made a bug report about this against Ubuntu's kernel at [1], which is
+> the only report I know that is able to point to this commit as having
+> broken things. However, it looks like an Arch Linux user [2] and a
+> Gentoo user [3] are running into the same thing.
+>=20
 
-On Tue Aug 26, 2025 at 11:14 AM CEST, Nicolas Ferre wrote:
-> On 26/08/2025 at 01:53, Jakub Kicinski wrote:
->> On Fri, 22 Aug 2025 12:34:36 +0300 Stanimir Varbanov wrote:
->>> In case of rx queue reset and 64bit capable hardware, set the upper
->>> 32bits of DMA ring buffer address.
->>>
->>> Cc: stable@vger.kernel.org # v4.6+
->>> Fixes: 9ba723b081a2 ("net: macb: remove BUG_ON() and reset the queue to=
- handle RX errors")
->>> Credits-to: Phil Elwell <phil@raspberrypi.com>
->>> Credits-to: Jonathan Bell <jonathan@raspberrypi.com>
->>> Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
->>> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
->>=20
->>> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/eth=
-ernet/cadence/macb_main.c
->>> index ce95fad8cedd..36717e7e5811 100644
->>> --- a/drivers/net/ethernet/cadence/macb_main.c
->>> +++ b/drivers/net/ethernet/cadence/macb_main.c
->>> @@ -1634,7 +1634,11 @@ static int macb_rx(struct macb_queue *queue, str=
-uct napi_struct *napi,
->>>                macb_writel(bp, NCR, ctrl & ~MACB_BIT(RE));
->>>
->>>                macb_init_rx_ring(queue);
->>> -             queue_writel(queue, RBQP, queue->rx_ring_dma);
->>> +             queue_writel(queue, RBQP, lower_32_bits(queue->rx_ring_dm=
-a));
->>> +#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
->>> +             if (bp->hw_dma_cap & HW_DMA_CAP_64B)
->>> +                     macb_writel(bp, RBQPH, upper_32_bits(queue->rx_ri=
-ng_dma));
->>> +#endif
->>>
->>>                macb_writel(bp, NCR, ctrl | MACB_BIT(RE));
->>>
->>=20
->> Looks like a subset of Th=C3=A9o Lebrun's work:
->> https://lore.kernel.org/all/20250820-macb-fixes-v4-0-23c399429164@bootli=
-n.com/
->> let's wait for his patches to get merged instead?
->
-> Yes, we can certainly wait. As RBOPH changes by Th=C3=A9o are key, they w=
-ill=20
-> probably remove the need for this fix altogether: but I count on you=20
-> Stanimir to monitor that (as I don't have a 64 bit capable platform at=20
-> hand).
+As the bug report suggested, the system boots with no turbo, it must be
+forcefully turned ON by writing to this attribute.
+I wonder if there is a BIOS option to turn ON turbo on this system?
 
-I when looking for where this patch came from.
-Commit in the raspberrypi downstream kernel:
-https://github.com/raspberrypi/linux/commit/e45c98decbb16e58a79c7ec6fbe4374=
-320e814f1
+This processor itself is capable of up to 5.8 GHz turbo.
 
-It is somewhat unreadable; the only part that seems related is the:
 
-> net: macb: Several patches for RP1
-> 64-bit RX fix
+I will try to find contact at Clevo.
 
- - Is there any MACB hardware (not GEM) that uses 64-bit DMA
-   descriptors? What platforms? RPi maybe?
-
- - Assuming such a platform exists, the next question is why does
-   macb_rx() need to reinit RBQPH/0x04D4. It reinits RBQP/0x0018
-   because it is the buffer pointer and increments as buffers get used.
-
-   To reinit RBQPH would be for the case of the increment overflowing
-   into the upper 32-bits. Sounds like a reasonable fix (for a really
-   rare bug) if that hardware actually exists.
-
-   This wouldn't be needed on GEM because RBQPH is shared across queues.
-   So of course RBQPH would not increment with the buffer pointer.
-
-If this patch is needed (does HW exist?), then my series doesn't address
-it. I can take the patch in a potential V6 if you want. V5 got posted
-today [0].
-
-[0]: https://lore.kernel.org/lkml/20250910-macb-fixes-v5-0-f413a3601ce4@boo=
-tlin.com/
+We can try to reduce scope of this change to non HWP only where there
+is unchecked MSR issue.
 
 Thanks,
-Have a nice day,
+Srinivas
 
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+> [1]
+> https://bugs.launchpad.net/ubuntu/+source/linux-hwe-6.14/+bug/2122531
+>=20
+> [2] https://bbs.archlinux.org/viewtopic.php?id=3D305564
+>=20
+> [3]
+> https://forums.gentoo.org/viewtopic-p-8866128.html?sid=3De97619cff0d9c79c=
+2eea2cfe8f60b0d3
 
 
