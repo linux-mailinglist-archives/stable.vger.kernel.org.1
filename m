@@ -1,350 +1,185 @@
-Return-Path: <stable+bounces-179191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FCDDB514B7
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 13:03:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE83EB514C2
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 13:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E7791C23550
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 11:03:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9689C17753A
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 11:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD9183019CB;
-	Wed, 10 Sep 2025 11:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9BA3164B4;
+	Wed, 10 Sep 2025 11:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CK/5TWwz"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="VtmIrCR5"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C363C2DCF55
-	for <stable@vger.kernel.org>; Wed, 10 Sep 2025 11:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49F031D370;
+	Wed, 10 Sep 2025 11:05:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757502184; cv=none; b=GNEIW8JVTuuilF9Ri7XvLg5SASWIVCs9sJBg0gknejIli+YOug11Dr+ktpQ2F7XVy7K7CoyGtBWOHSK+RavFjAY66WUvPmrHpMAXkh4+KLU1ar0DrIr08jGPVzAuY4pCppG3DuuWwJfYn3UdWeyCchdGAAniXDqELb40B6B97sI=
+	t=1757502317; cv=none; b=t5o8NQk/TyFI3Ptwe/KIet2qwqGSiyTI6eO5JlC+LEUN8/a/mSHdAre/0M8mFqa5BQITBSfwvaFJCy1/n0TxlZ2Y5hTjQfVXwizyBhWdM67UvXa0k1DtBQJEN3E+wPpcHxTqs6YvmoG2xHYfQFlHOGn/Fhu6FqjF5WLdmdQKeyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757502184; c=relaxed/simple;
-	bh=F5Ff0F97zNBa1WRwplnUihdUQW6RVE/gKGxNPbmp0Sw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rW/Zihx3TUOCI5Fp6maxE2xIdOqn2xb65DYH4ivv+s0ItTrRdnp9yL54VknxMlKi/99Kz190a3CWhkUC9rm2uWHnvgVztLgNcWw8gY5ejr6ihsUhXcRWmYG7CnvX0HnRxKpM+/N/qFZJTjHTQQpSWLVc9MNdRQ4dwNd1n+1MZVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CK/5TWwz; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58A8G2Z6007665;
-	Wed, 10 Sep 2025 11:02:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=+r/mwRsxjtP36e35ZO9Rhg5Tw2Q/9SwD/kals131p
-	3M=; b=CK/5TWwz9L2m26eVuixDSDXZjauAPUDcAWE2cyCFgryjTAg/PLVTcZ6hp
-	w2iSwfkRUGIiY4JIVxRoR+dEJB8IErihfmOXBynl/GFzpf8ZSGT+AIIxCUP7iwAN
-	sPrFrPw35henhFh0kWXkXlUN1zzXUMCs+Rw/UTP2XkXxl1URWRQgjnVgI+6IwC3R
-	HSMeY2hujJ9fKnEqTzu4yEMa7lzC6pEuAGmUKlz4GIVNYCmE27QJIj7r/C4d4Hon
-	UDH8ipP7fZlbGKoUW6G+i4UgwGzY7gkZYg50ZdfpiOwuirdzVALVzdc7LZFc0cK2
-	VtrD5ZZk6WuqSwh1NR+NkX6J9bIbg==
+	s=arc-20240116; t=1757502317; c=relaxed/simple;
+	bh=mr5VREO0zlgyp0+N3c6zL0+mdMv963Esrn8kaa2OT50=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LbwSgqXSw2C6STTs/Yyni0yl/gj8IUvaKkzmxo7+inIoL3xtJhvhA7B1z6OnlKH/AVXhnFGr4fpBEW0o0Eov/feh+qDlZswbRgEBuJCbHdj/6pJFX729tAD1RU2BeRW9Iu6nD9tbmG+lCRrWKaoIdarMYBgIy3vAxwnLNj3PHEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=VtmIrCR5; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58A9N7dO010083;
+	Wed, 10 Sep 2025 11:05:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=corp-2025-04-25; bh=OCpi8OJ5u07C66mC
+	VMY0WtQNKjYjRamzDj98hmn56E0=; b=VtmIrCR5mfkoC0194t0qVYs9PTo2r9ay
+	IJ8N91j4LP04+qlwAzXwOApjeIFiNEcgTJ2MMYwxbNhQGNtUAfYmft4fBH/ZDiEo
+	K9pTksHwabybMODAWd7U/s4Y39xt7o3u8nFFUOBReqTgVjZwhLU3PbXU1PAD8Kj+
+	q0rMtXMhlzRtBtsW/XDqpLid9mOcLjNyEF+LWX96PRdHZnxVel39e96S9wxvkMSS
+	WmF2ksXS05RLA8nI7dCylLrbt+VI9IibbiK1hiNiSv3Ooraw1QNdwFxhVVFq+Upb
+	RuEGN06ZheAJZWngd6AWnGByttTeJ0QvlX5UV4ilLa42LPKX+QRgXA==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4921d1m1xe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 10 Sep 2025 11:05:08 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58AAKsq2013588;
+	Wed, 10 Sep 2025 11:05:07 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490xyd2ffw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Sep 2025 11:02:55 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58AB2tmM028581;
-	Wed, 10 Sep 2025 11:02:55 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490xyd2fft-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Sep 2025 11:02:55 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58A9jXUi007895;
-	Wed, 10 Sep 2025 11:02:54 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49109pr379-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Sep 2025 11:02:53 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58AB2nF116056608
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Sep 2025 11:02:49 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 014492004E;
-	Wed, 10 Sep 2025 11:02:49 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 59CD02004D;
-	Wed, 10 Sep 2025 11:02:47 +0000 (GMT)
-Received: from aboo.ibm.com.com (unknown [9.150.16.221])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 10 Sep 2025 11:02:47 +0000 (GMT)
-From: Aboorva Devarajan <aboorvad@linux.ibm.com>
-To: stable@vger.kernel.org
-Cc: hbathini@linux.ibm.com, mpe@ellerman.id.au, ritesh.list@gmail.com,
-        aboorvad@linux.ibm.com
-Subject: [PATCH] powerpc/64s/radix/kfence: map __kfence_pool at page granularity
-Date: Wed, 10 Sep 2025 16:32:45 +0530
-Message-ID: <20250910110245.123817-1-aboorvad@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 490bdb2r97-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 10 Sep 2025 11:05:07 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58AB57Xd035490;
+	Wed, 10 Sep 2025 11:05:07 GMT
+Received: from lab61.no.oracle.com (lab61.no.oracle.com [10.172.144.82])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 490bdb2r4w-1;
+	Wed, 10 Sep 2025 11:05:06 +0000
+From: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>
+To: Allison Henderson <allison.henderson@oracle.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: stable@vger.kernel.org,
+        =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+        rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org
+Subject: [PATCH net v3] rds: ib: Increment i_fastreg_wrs before bailing out
+Date: Wed, 10 Sep 2025 13:04:59 +0200
+Message-ID: <20250910110501.350238-1-haakon.bugge@oracle.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: QDdQddnfZtJfBxaouOdRJmNFUaeZ8-tM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDIzNSBTYWx0ZWRfX/qgznd7n10hK
- uW33Os/TfV/zoabt7NXzLddLnWdBbPGLCusF6TGYFDdSypHV6ZM14sQPGzHt7ABYLilFlVjU+WV
- Bo5gbCf09bwmnhoCoWosT9wEPlZWCudChQpUmmYWOBrmPJLybz6zT8GpnVN0foRa0yZea0APCml
- Fd/3e2A1CCi4yUpfVnqoXxJVwKh03+WnymLmhRJ6mejDLVoCQEfiH5tttozMUmCIRPdBzpV6WDD
- ERZRKyNEXbfowQ7vOqsFMIt9RiNcoSRast5m1AMLWIgie09LfSf27Azil7MGTVItSHmttA5izxQ
- PS1GPdj3jsIgp4r0NsjNwHWmugqHJ3VsHfEAT9xkVrmIAoYsOLXxc8zUHVIipfsxhwq8pDKmvcO
- G+Qj/HvI
-X-Proofpoint-GUID: V6SNYzVGVm0ddeZML6h0eTiXNtb658eh
-X-Authority-Analysis: v=2.4 cv=F59XdrhN c=1 sm=1 tr=0 ts=68c15adf cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8 a=bC-a23v3AAAA:8
- a=VnNF1IyMAAAA:8 a=ZcE-8KfG9wawt0JmNZ8A:9 a=FO4_E8m0qiDe52t0p3_H:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-09_03,2025-09-10_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 suspectscore=0 phishscore=0 clxscore=1011
- impostorscore=0 bulkscore=0 adultscore=0 spamscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509060235
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 mlxscore=0
+ mlxlogscore=999 adultscore=0 phishscore=0 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
+ definitions=main-2509100101
+X-Proofpoint-ORIG-GUID: CYATfuSztpsdZXvqgwIgyX1ejF1u80s9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDE1MCBTYWx0ZWRfXx7LBPhpsEOSm
+ 3WPKCLsVnjog3w+4c3uG+lLK/xG+iIOfD77c81GubJlhaOzDV3PnZeQL9SQQOxWW76rvM1ME6Mg
+ c9IKmnxtpb6kyq9dlqplKWFvAP+BOE/SeloPGLZlw3B4WD08exGY0s4O3bgCHFnmw6jrJeQR52f
+ CXeIE8DiDhy6d0FhUDTsEQmglLhsFhCu42w80VSd4lHawJeE9diJKDeTMzp79/Q9buyvob3Q43b
+ +y4Ec/Tt6SK9pcVm5mLY66UMmv2WH6gbbZTNcNgtbCXMPM1Wdl/bPAX1kWye5ULHMDLr9mpUQhR
+ wI0tmtkiSWe+zpMFaq6EMujf1Y5LVO6ymVvTOXYFQJQnIncSmy0dAp+52UCahdsqg1J4fTDUTkk
+ GC1gtnTH
+X-Authority-Analysis: v=2.4 cv=d6P1yQjE c=1 sm=1 tr=0 ts=68c15b64 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=M51BFTxLslgA:10 a=VwQbUJbxAAAA:8
+ a=yPCof4ZbAAAA:8 a=9eyeeSo07tw-mEE3XcsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: CYATfuSztpsdZXvqgwIgyX1ejF1u80s9
 
-From: Hari Bathini <hbathini@linux.ibm.com>
+We need to increment i_fastreg_wrs before we bail out from
+rds_ib_post_reg_frmr().
 
-When KFENCE is enabled, total system memory is mapped at page level
-granularity. But in radix MMU mode, ~3GB additional memory is needed
-to map 100GB of system memory at page level granularity when compared
-to using 2MB direct mapping.This is not desired considering KFENCE is
-designed to be enabled in production kernels [1].
+We have a fixed budget of how many FRWR operations that can be
+outstanding using the dedicated QP used for memory registrations and
+de-registrations. This budget is enforced by the atomic_t
+i_fastreg_wrs. If we bail out early in rds_ib_post_reg_frmr(), we will
+"leak" the possibility of posting an FRWR operation, and if that
+accumulates, no FRWR operation can be carried out.
 
-Mapping only the memory allocated for KFENCE pool at page granularity is
-sufficient to enable KFENCE support. So, allocate __kfence_pool during
-bootup and map it at page granularity instead of mapping all system
-memory at page granularity.
-
-Without patch:
-  # cat /proc/meminfo
-  MemTotal:       101201920 kB
-
-With patch:
-  # cat /proc/meminfo
-  MemTotal:       104483904 kB
-
-Note that enabling KFENCE at runtime is disabled for radix MMU for now,
-as it depends on the ability to split page table mappings and such APIs
-are not currently implemented for radix MMU.
-
-All kfence_test.c testcases passed with this patch.
-
-[1] https://lore.kernel.org/all/20201103175841.3495947-2-elver@google.com/
-
-Fixes: a5edf9815dd7 ("powerpc/64s: Enable KFENCE on book3s64")
+Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
+Fixes: 3a2886cca703 ("net/rds: Keep track of and wait for FRWR segments in use upon shutdown")
 Cc: stable@vger.kernel.org
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Link: https://msgid.link/20240701130021.578240-1-hbathini@linux.ibm.com
+Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
 
 ---
 
-Upstream commit 353d7a84c214 ("powerpc/64s/radix/kfence: map __kfence_pool at page granularity")
+v2 -> v3:
+   * Amended commit message
+   * Removed indentation of this section
+   * Fixing error path from ib_post_send()
 
-This has already been merged upstream and is required in stable kernels as well.
-
+v1 -> v2: Added Cc: stable@vger.kernel.org
 ---
- arch/powerpc/include/asm/kfence.h        | 11 +++-
- arch/powerpc/mm/book3s64/radix_pgtable.c | 84 ++++++++++++++++++++++--
- arch/powerpc/mm/init-common.c            |  3 +
- 3 files changed, 93 insertions(+), 5 deletions(-)
+ net/rds/ib_frmr.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kfence.h b/arch/powerpc/include/asm/kfence.h
-index 424ceef82ae615..fab124ada1c7f2 100644
---- a/arch/powerpc/include/asm/kfence.h
-+++ b/arch/powerpc/include/asm/kfence.h
-@@ -15,10 +15,19 @@
- #define ARCH_FUNC_PREFIX "."
- #endif
+diff --git a/net/rds/ib_frmr.c b/net/rds/ib_frmr.c
+index 28c1b00221780..395a99b5a65ca 100644
+--- a/net/rds/ib_frmr.c
++++ b/net/rds/ib_frmr.c
+@@ -133,12 +133,15 @@ static int rds_ib_post_reg_frmr(struct rds_ib_mr *ibmr)
  
-+#ifdef CONFIG_KFENCE
-+extern bool kfence_disabled;
-+
-+static inline void disable_kfence(void)
-+{
-+	kfence_disabled = true;
-+}
-+
- static inline bool arch_kfence_init_pool(void)
- {
--	return true;
-+	return !kfence_disabled;
- }
-+#endif
+ 	ret = ib_map_mr_sg_zbva(frmr->mr, ibmr->sg, ibmr->sg_dma_len,
+ 				&off, PAGE_SIZE);
+-	if (unlikely(ret != ibmr->sg_dma_len))
+-		return ret < 0 ? ret : -EINVAL;
++	if (unlikely(ret != ibmr->sg_dma_len)) {
++		ret = ret < 0 ? ret : -EINVAL;
++		goto out_inc;
++	}
  
- #ifdef CONFIG_PPC64
- static inline bool kfence_protect_page(unsigned long addr, bool protect)
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 15e88f1439ec20..b0d927009af83c 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -17,6 +17,7 @@
- #include <linux/hugetlb.h>
- #include <linux/string_helpers.h>
- #include <linux/memory.h>
-+#include <linux/kfence.h>
+-	if (cmpxchg(&frmr->fr_state,
+-		    FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE)
+-		return -EBUSY;
++	if (cmpxchg(&frmr->fr_state, FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE) {
++		ret = -EBUSY;
++		goto out_inc;
++	}
  
- #include <asm/pgalloc.h>
- #include <asm/mmu_context.h>
-@@ -31,6 +32,7 @@
- #include <asm/uaccess.h>
- #include <asm/ultravisor.h>
- #include <asm/set_memory.h>
-+#include <asm/kfence.h>
+ 	atomic_inc(&ibmr->ic->i_fastreg_inuse_count);
  
- #include <trace/events/thp.h>
+@@ -166,11 +169,10 @@ static int rds_ib_post_reg_frmr(struct rds_ib_mr *ibmr)
+ 		/* Failure here can be because of -ENOMEM as well */
+ 		rds_transition_frwr_state(ibmr, FRMR_IS_INUSE, FRMR_IS_STALE);
  
-@@ -293,7 +295,8 @@ static unsigned long next_boundary(unsigned long addr, unsigned long end)
+-		atomic_inc(&ibmr->ic->i_fastreg_wrs);
+ 		if (printk_ratelimit())
+ 			pr_warn("RDS/IB: %s returned error(%d)\n",
+ 				__func__, ret);
+-		goto out;
++		goto out_inc;
+ 	}
  
- static int __meminit create_physical_mapping(unsigned long start,
- 					     unsigned long end,
--					     int nid, pgprot_t _prot)
-+					     int nid, pgprot_t _prot,
-+					     unsigned long mapping_sz_limit)
- {
- 	unsigned long vaddr, addr, mapping_size = 0;
- 	bool prev_exec, exec = false;
-@@ -301,7 +304,10 @@ static int __meminit create_physical_mapping(unsigned long start,
- 	int psize;
- 	unsigned long max_mapping_size = memory_block_size;
- 
--	if (debug_pagealloc_enabled_or_kfence())
-+	if (mapping_sz_limit < max_mapping_size)
-+		max_mapping_size = mapping_sz_limit;
-+
-+	if (debug_pagealloc_enabled())
- 		max_mapping_size = PAGE_SIZE;
- 
- 	start = ALIGN(start, PAGE_SIZE);
-@@ -356,8 +362,74 @@ static int __meminit create_physical_mapping(unsigned long start,
- 	return 0;
- }
- 
-+#ifdef CONFIG_KFENCE
-+static bool __ro_after_init kfence_early_init = !!CONFIG_KFENCE_SAMPLE_INTERVAL;
-+
-+static int __init parse_kfence_early_init(char *arg)
-+{
-+	int val;
-+
-+	if (get_option(&arg, &val))
-+		kfence_early_init = !!val;
-+	return 0;
-+}
-+early_param("kfence.sample_interval", parse_kfence_early_init);
-+
-+static inline phys_addr_t alloc_kfence_pool(void)
-+{
-+	phys_addr_t kfence_pool;
-+
-+	/*
-+	 * TODO: Support to enable KFENCE after bootup depends on the ability to
-+	 *       split page table mappings. As such support is not currently
-+	 *       implemented for radix pagetables, support enabling KFENCE
-+	 *       only at system startup for now.
-+	 *
-+	 *       After support for splitting mappings is available on radix,
-+	 *       alloc_kfence_pool() & map_kfence_pool() can be dropped and
-+	 *       mapping for __kfence_pool memory can be
-+	 *       split during arch_kfence_init_pool().
-+	 */
-+	if (!kfence_early_init)
-+		goto no_kfence;
-+
-+	kfence_pool = memblock_phys_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
-+	if (!kfence_pool)
-+		goto no_kfence;
-+
-+	memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
-+	return kfence_pool;
-+
-+no_kfence:
-+	disable_kfence();
-+	return 0;
-+}
-+
-+static inline void map_kfence_pool(phys_addr_t kfence_pool)
-+{
-+	if (!kfence_pool)
-+		return;
-+
-+	if (create_physical_mapping(kfence_pool, kfence_pool + KFENCE_POOL_SIZE,
-+				    -1, PAGE_KERNEL, PAGE_SIZE))
-+		goto err;
-+
-+	memblock_clear_nomap(kfence_pool, KFENCE_POOL_SIZE);
-+	__kfence_pool = __va(kfence_pool);
-+	return;
-+
-+err:
-+	memblock_phys_free(kfence_pool, KFENCE_POOL_SIZE);
-+	disable_kfence();
-+}
-+#else
-+static inline phys_addr_t alloc_kfence_pool(void) { return 0; }
-+static inline void map_kfence_pool(phys_addr_t kfence_pool) { }
-+#endif
-+
- static void __init radix_init_pgtable(void)
- {
-+	phys_addr_t kfence_pool;
- 	unsigned long rts_field;
- 	phys_addr_t start, end;
- 	u64 i;
-@@ -365,6 +437,8 @@ static void __init radix_init_pgtable(void)
- 	/* We don't support slb for radix */
- 	slb_set_size(0);
- 
-+	kfence_pool = alloc_kfence_pool();
-+
- 	/*
- 	 * Create the linear mapping
+ 	/* Wait for the registration to complete in order to prevent an invalid
+@@ -178,9 +180,11 @@ static int rds_ib_post_reg_frmr(struct rds_ib_mr *ibmr)
+ 	 * being accessed while registration is still pending.
  	 */
-@@ -381,9 +455,11 @@ static void __init radix_init_pgtable(void)
- 		}
+ 	wait_event(frmr->fr_reg_done, !frmr->fr_reg);
+-
+ out:
++	return ret;
  
- 		WARN_ON(create_physical_mapping(start, end,
--						-1, PAGE_KERNEL));
-+						-1, PAGE_KERNEL, ~0UL));
- 	}
- 
-+	map_kfence_pool(kfence_pool);
-+
- 	if (!cpu_has_feature(CPU_FTR_HVMODE) &&
- 			cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
- 		/*
-@@ -875,7 +951,7 @@ int __meminit radix__create_section_mapping(unsigned long start,
- 	}
- 
- 	return create_physical_mapping(__pa(start), __pa(end),
--				       nid, prot);
-+				       nid, prot, ~0UL);
++out_inc:
++	atomic_inc(&ibmr->ic->i_fastreg_wrs);
+ 	return ret;
  }
  
- int __meminit radix__remove_section_mapping(unsigned long start, unsigned long end)
-diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
-index d3a7726ecf512c..21131b96d20901 100644
---- a/arch/powerpc/mm/init-common.c
-+++ b/arch/powerpc/mm/init-common.c
-@@ -31,6 +31,9 @@ EXPORT_SYMBOL_GPL(kernstart_virt_addr);
- 
- bool disable_kuep = !IS_ENABLED(CONFIG_PPC_KUEP);
- bool disable_kuap = !IS_ENABLED(CONFIG_PPC_KUAP);
-+#ifdef CONFIG_KFENCE
-+bool __ro_after_init kfence_disabled;
-+#endif
- 
- static int __init parse_nosmep(char *p)
- {
+-- 
+2.43.5
 
 
