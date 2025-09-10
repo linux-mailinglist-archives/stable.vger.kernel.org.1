@@ -1,121 +1,94 @@
-Return-Path: <stable+bounces-179161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29357B50E61
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 08:46:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE84EB50EA3
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 09:00:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 554C71C809A6
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 06:46:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96E9D1BC503F
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 07:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937AA31076C;
-	Wed, 10 Sep 2025 06:40:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NMxKQyIq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410502C11F1;
+	Wed, 10 Sep 2025 07:00:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6829131076B;
-	Wed, 10 Sep 2025 06:40:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA4A1DF99C;
+	Wed, 10 Sep 2025 07:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.18.0.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757486445; cv=none; b=ok/29JjgxWi/L5vOypGSZUIjXxDyRh3uIj2Qc2kNcKvAZKqA3HQ2g2i6YW170ZnHIk2NuJ5LcV8VqPNBH7InbAxgDSx6NhFO4aD3nDY4m98+CcwrGdJ7XYOG8++OKjQZawhzIagPOqwXRaVrLtG8rWCSSVRI5wBajDrF4Bs1ok8=
+	t=1757487642; cv=none; b=mn1Rl9ey71i3Jp6PIG3KR2oMyxxohYdO3noiLfnpw4V7mz7XVHf+3s6VN9zQNY5VYAMwlL8mu3kez0494m4Mh/QNp8s1vl9lUEbqKQDikQQ1/ESnWgrzQiYPKTUCDMxQVt+TPU8PdzC4tmFzKNbcERZMM1d2bXA23e/OEgh5+4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757486445; c=relaxed/simple;
-	bh=7jjRD8BTevaY7rS1pWoOxLrH6ISRJVP/bKev31mEkng=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=KRouUt1i88Op6biTXfPwn7x6outKalu8RgHThZ3VcNpekV1cdjBrX1ryMC6l4f6WqGHKe44Pi0CC0Smmn75XyonWMsRBjmNWRoUpexHQozRjj6r74jUS5MsYX5Dc7oIGydjBVkEGk1uzSyZCkQT36lDfTHaNy7CaEnHdpujBn2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NMxKQyIq; arc=none smtp.client-ip=103.168.172.147
+	s=arc-20240116; t=1757487642; c=relaxed/simple;
+	bh=O5vcD4Ldjc71ve0d02RfmDHc6hlfFFueKhpbZB+vRrM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=WToCNDB6gbWmayAglbszjUULBzYCEYzh3lsqldJERpuBkGwyE/PyBUy5VGh83UEebqMiUoNxNXYqAd8VxdOi2z057TEQxK8VSmSe1U7FVJue/mwsKTFjfA9AL3Fy9fTcpAiqQaYRi2wdC7C+052zBjI+1eE77ciKMGLcrc5SSlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=nefkom.net; arc=none smtp.client-ip=212.18.0.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 722AEEC0278;
-	Wed, 10 Sep 2025 02:40:42 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 10 Sep 2025 02:40:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1757486442; x=1757572842; bh=OWQWCqJ4zr2cR9931ynOENBrPmoeSoM6f+s
-	8UfHmcZQ=; b=NMxKQyIqsV+4hmpmHYOHcVEue8A57DfTFChqozpiUOdBRDSNcJK
-	Qsc1tUH5rjX2YW9XnzJnSjXC2gbAiIF6afkMsmScV23ehGQdtRgfr/cfxR758cFj
-	PkVwvVFVyn3aQEoYttFuUgh154tVGIfomWcv4E9QKHkYyeYo8sZMjpv3ppzZvp1F
-	kA9unavSGGgyyiaToLWzWEuHdA1g8Qzszo6oIbZgCMvLAHTsaepZAW+daGNjnBr4
-	tcIpOg9JSaG1uhPU8C0a0wOV5GfB2wgfZfAQOBbY9wgAkL86cqZbQ472UvVvJAJy
-	+2xVW8r88/7zwxOZDUES839Egt44ha/tZqQ==
-X-ME-Sender: <xms:Zx3BaAZUsnSQ2E-K482BSo5TYgZ20eqXIipdRTCAN_zRlF6bOTjiKA>
-    <xme:Zx3BaMuDOy09feaelUwWxHImuVsfmjw8hQeL0UFE8Xq-ua-429qPzn-c-WOvx-oja
-    WlUMW8SIIa9wt3J9Ck>
-X-ME-Received: <xmr:Zx3BaNbGDRL2iXrCufwse8uqy117dtMdir0HgB2xrvgdtwLmGuYz-yCOkYoZfUmxvyn6-e-Rn0xgQqC9qQtaGCM2p0Jlw1uOkLw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvvdehlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefujgfkfhggtgesthdtredttddtvdenucfhrhhomhephfhinhhnucfvhhgr
-    ihhnuceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepleeuheelheekgfeuvedtveetjeekhfffkeeffffftdfgjeevkeegfedvueehueel
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepfhhthh
-    grihhnsehlihhnuhigqdhmieekkhdrohhrghdpnhgspghrtghpthhtohepvdegpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehkvghnthdrohhvvghrshhtrhgvvghtsehlih
-    hnuhigrdguvghvpdhrtghpthhtoheplhgrnhgtvgdrhigrnhhgsehlihhnuhigrdguvghv
-    pdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprh
-    gtphhtthhopegrmhgrihhnuggvgiesohhuthhlohhokhdrtghomhdprhgtphhtthhopegr
-    nhhnrgdrshgthhhumhgrkhgvrhesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepsghoqh
-    hunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgvvghrtheslhhinhhu
-    gidqmheikehkrdhorhhgpdhrtghpthhtohepihhofihorhhkvghrtdesghhmrghilhdrtg
-    homhdprhgtphhtthhopehjohgvlhdrghhrrghnrgguohhssehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:Zx3BaAQthzqmSYw39aO2VgYP9PxAdLi9hjYNcNQCGTj7FjplinTihg>
-    <xmx:Zx3BaIzTi8c062zBH73nzXMBPfWDn0UND5dKemdmI1BxsLzDE7nR_g>
-    <xmx:Zx3BaEctcdIo5UcSdZuTdSH2trc8Idp9vjrshCcy4XemvaIsV7QWZA>
-    <xmx:Zx3BaBojm5dPEyideLjqfC5hG2lP0DfwiGN0ZgoUmbEYtDXeR3xltw>
-    <xmx:ah3BaJqMfRY_qQLjBsH-3uDLhfe_dGA8I-vCOHl-krAinZNb0t6oyRVg>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 10 Sep 2025 02:40:38 -0400 (EDT)
-Date: Wed, 10 Sep 2025 16:40:53 +1000 (AEST)
-From: Finn Thain <fthain@linux-m68k.org>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, 
-    amaindex@outlook.com, anna.schumaker@oracle.com, boqun.feng@gmail.com, 
-    geert@linux-m68k.org, ioworker0@gmail.com, joel.granados@kernel.org, 
-    jstultz@google.com, leonylgao@tencent.com, linux-kernel@vger.kernel.org, 
-    linux-m68k@lists.linux-m68k.org, longman@redhat.com, mhiramat@kernel.org, 
-    mingo@redhat.com, mingzhe.yang@ly.com, oak@helsinkinet.fi, 
-    peterz@infradead.org, rostedt@goodmis.org, senozhatsky@chromium.org, 
-    tfiga@chromium.org, will@kernel.org, stable@vger.kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nefkom.net
+Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4cMBFy3BPqz1r5hQ;
+	Wed, 10 Sep 2025 08:52:38 +0200 (CEST)
+Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
+	by mail.m-online.net (Postfix) with ESMTP id 4cMBFy0d40z1qqlS;
+	Wed, 10 Sep 2025 08:52:38 +0200 (CEST)
+X-Virus-Scanned: amavis at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.8.182])
+ by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavis, port 10024)
+ with ESMTP id r6oSkNIfIRpU; Wed, 10 Sep 2025 08:52:28 +0200 (CEST)
+X-Auth-Info: GsbNNI76Sv79L7YvGPmcrwtzn4oM1W/t9R3+pP9F4xssEftMcVyEECTVPJd+4YJQ
+Received: from igel.home (aftr-82-135-83-103.dynamic.mnet-online.de [82.135.83.103])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.mnet-online.de (Postfix) with ESMTPSA;
+	Wed, 10 Sep 2025 08:52:28 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+	id 1C52A2C1920; Wed, 10 Sep 2025 08:52:28 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Finn Thain <fthain@linux-m68k.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>,  Lance Yang
+ <lance.yang@linux.dev>,  akpm@linux-foundation.org,  amaindex@outlook.com,
+  anna.schumaker@oracle.com,  boqun.feng@gmail.com,  geert@linux-m68k.org,
+  ioworker0@gmail.com,  joel.granados@kernel.org,  jstultz@google.com,
+  leonylgao@tencent.com,  linux-kernel@vger.kernel.org,
+  linux-m68k@lists.linux-m68k.org,  longman@redhat.com,
+  mhiramat@kernel.org,  mingo@redhat.com,  mingzhe.yang@ly.com,
+  oak@helsinkinet.fi,  peterz@infradead.org,  rostedt@goodmis.org,
+  senozhatsky@chromium.org,  tfiga@chromium.org,  will@kernel.org,
+  stable@vger.kernel.org
 Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock
  pointers
-In-Reply-To: <gtie7ylcuftmi2jgzviipxnvjzcds46eqce4fxxalbutwphbe4@erwrj3p7udrz>
-Message-ID: <e94499dc-0155-0268-60a4-f9a11ad298a6@linux-m68k.org>
-References: <20250909145243.17119-1-lance.yang@linux.dev> <yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov> <99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org> <ufkr7rkg7rsfo6ovsnwz2gqf4mtmmevb3mququeukqlryzwzmz@x4chw22ojvnu>
- <bea3d81c-2b33-a89d-ae26-7d565a5d2217@linux-m68k.org> <gtie7ylcuftmi2jgzviipxnvjzcds46eqce4fxxalbutwphbe4@erwrj3p7udrz>
+In-Reply-To: <99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org> (Finn
+	Thain's message of "Wed, 10 Sep 2025 10:07:04 +1000 (AEST)")
+References: <20250909145243.17119-1-lance.yang@linux.dev>
+	<yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
+	<99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org>
+Date: Wed, 10 Sep 2025 08:52:28 +0200
+Message-ID: <875xdqsssz.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain
 
+On Sep 10 2025, Finn Thain wrote:
 
-On Tue, 9 Sep 2025, Kent Overstreet wrote:
+> Linux is probably the only non-trivial program that could be feasibly 
+> rebuilt with -malign-int without ill effect (i.e. without breaking 
+> userland)
 
-> Err, I believe the topic was just alignment and the breaking of commonly 
-> held expectations :)
-> 
+No, you can't.  It would change the layout of basic user-level
+structures, breaking the syscall ABI.
 
-...
-
-> 
-> Also, grep for READ_ONCE/WRITE_ONCE in the kernel tree if you want to 
-> see how big the issue is
-
-I'm already aware of the comment in include/asm-generic/rwonce.h about 
-load tearing and 64-bit loads on 32-bit architectures. That's partly why I 
-mentioned long long alignment on i386. Perhaps, for being so common, i386 
-has generally lowered expectations?
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
 
