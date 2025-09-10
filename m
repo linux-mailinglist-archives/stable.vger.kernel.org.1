@@ -1,162 +1,194 @@
-Return-Path: <stable+bounces-179153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DF6B50AAF
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 04:04:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B90B50C16
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 05:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E72F1C62D6F
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 02:04:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC3C54E4FA0
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 03:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07273233134;
-	Wed, 10 Sep 2025 02:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A43253932;
+	Wed, 10 Sep 2025 03:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="W/frHJbb"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y+fV0Itr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF8622A4F6;
-	Wed, 10 Sep 2025 02:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B204315F
+	for <stable@vger.kernel.org>; Wed, 10 Sep 2025 03:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757469834; cv=none; b=e8qN9wFgDkDMtabbY3/FAuOsIgk5LQYwlwZtBlHvFiM5oP1wERc1RI9gxgQk7IN/uO0mkrLrKTtTyWBoq8ZJGVg45oCecfUjgueifUoGKw7sGMfTVOHeLYtSv+18A3w9EPuhZnOMZQwTScwZD09jOXYuxJNNf+jqSbOPTlwCW/o=
+	t=1757473457; cv=none; b=FongWhaWJW+ApQm2cWdC1PnEgX9UKO/Mp11e1OPsEuRrHLi/8/h5kzUN5daC/96JDRzocUApWjuKla03CxU0v8JG2KzzzuxrRzaJlQGWt/ZC+jladqAb/OMekztXd7IGGdP2MepeUpbmTTAqjrzPZ6eqR5I73Z9gcin2iAGo/v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757469834; c=relaxed/simple;
-	bh=FiYdGvg+d7amPCftkDvfEdnvVcG3DDzFXBr+XSwUNOo=;
-	h=Date:To:From:Subject:Message-Id; b=BC5azrVGFYMWiSBNWnwoLhzZJLLSRnhLwBtAAkg638fH3SAnWLJrUDTQzfW+CJdjjBxm+e/3fJS/+qmIesIjYhQYBcqcDt7wmLxxEr98pcMcIpbjE09mrxwLJI1BeHKak1/OXK1CiMqoIF9ialD4/6r+NAICnv7OMoGryFjW3UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=W/frHJbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21137C4CEF4;
-	Wed, 10 Sep 2025 02:03:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1757469834;
-	bh=FiYdGvg+d7amPCftkDvfEdnvVcG3DDzFXBr+XSwUNOo=;
-	h=Date:To:From:Subject:From;
-	b=W/frHJbbhg0nfbLIzGzu79x77RY/0a31KmizsJiXe//2Hg23KSbBbETRvq0ynbFp6
-	 hFw4yBdTLx5dYFCZgF4HKI0ukCI+Zw4i7G59+Qn4REw1EX6omAu0In2UF1DTfzZkWZ
-	 RB/zfm+ubMqBVob5kEFYpYWtO1/szWbhzfzP/0m4=
-Date: Tue, 09 Sep 2025 19:03:53 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,liushixin2@huawei.com,david@redhat.com,jane.chu@oracle.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb-fix-copy_hugetlb_page_range-to-use-pt_share_count.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250910020354.21137C4CEF4@smtp.kernel.org>
+	s=arc-20240116; t=1757473457; c=relaxed/simple;
+	bh=nhEfURgijinZhjIeDXDnCpQKyzGClfm2rB5uSbE2bUc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DaJ2/J7/dMEfa+psEB87iZNxoOYMp30l9NcxRxJOhESXQkOD+aO3/cwMpleRvi1nCNr1iSSt8nU2ZMnHyLYvfebHaZloFGyO1trxs93nq96NINYv4UqIf9OBtaCN0N7CWc353jsuoQIJwcC8mZm+QeJ5wrAXd3PObOMQaZBUMkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y+fV0Itr; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757473454;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1FXW/+HBhYk2zr4fhYSXPPsYBARrLzDG/6qntZFMVpo=;
+	b=Y+fV0ItrJFeeZthmSlMKxIMf/7NJ4VBe1KtevdozcWYQCdzhAtzzrWQS0799eeiUFvJbU4
+	o6f7NTVmbwnLwvcfAnmFHna83LmqqiRvBkLcGSdY7A51pfxSR0AFInuExjC4ll/1y97Oet
+	b1Qpalz7GMvYQspmhZVEAcwLK9VhA40=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-16-hz2_GMxMMTqI3AwVPHWnCw-1; Tue, 09 Sep 2025 23:04:12 -0400
+X-MC-Unique: hz2_GMxMMTqI3AwVPHWnCw-1
+X-Mimecast-MFC-AGG-ID: hz2_GMxMMTqI3AwVPHWnCw_1757473451
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-24457ef983fso140054765ad.0
+        for <stable@vger.kernel.org>; Tue, 09 Sep 2025 20:04:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757473451; x=1758078251;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1FXW/+HBhYk2zr4fhYSXPPsYBARrLzDG/6qntZFMVpo=;
+        b=kAwE6924uZpZzjNSWK+vMvDcriIunmctVs9CyBsrWhD6DwvnayNQ86U1J+GeM0YEAp
+         C7BZOz5tDBGUgKpm8xm2oSddrF6fbAr+5X+K3i51JGpJWgOPbXLCR7uDzT9SxfZBNZEs
+         ZvRpjTqDTZgZcjjZIJ7rbrAMeH5zog21Dcalo/H5Niam6SbV5VoWCdEogWWS/GtaZ/q3
+         FsEQ9E0fg1in41U9PwrzYKJhxYN0x4slGiFnnsPaNZC6k9fCjAm9IrqJA9PIEj/RXWne
+         z6EVYZlHpKukHBSo+wv+MUZCzkFhGQDr3TTwF25ZEpnT/wbYtWq1g16PCf0HyAXRHSaT
+         JoFw==
+X-Forwarded-Encrypted: i=1; AJvYcCWvNYxUrLujxJKI2pmsML1OzGbW32t6qSSxFlAd6vVtjcETN5GJknXBKyyDF29xxEe8GZ/RIp0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUYpcUvkvgWXz64bxMijUGjj5C8cf+J3Ky6eyBYOpjyYx2+LDF
+	ZwzqGJ+SGtDil2ukzR3pJWgQojdRy10XIzPttdgODIA38R2cYSWzG2RzReD1bjRNPg19xpULlh7
+	nWtKjrQWu2ztPum5yWuClkfS6J9hpxMaFjIOkSifK1nojhq0hWyCGDvFMR/GVs4UONAsPXZQ4LO
+	QwmX/n5GFHQoxgmQ/UphoLyOdSt4tJ9kSE
+X-Gm-Gg: ASbGnctgjAV7kyLOgZiAF5Zcuji+pLD0GCSE0fhZUsiUhjN4qJo+/GvXJrqFKV2OnXH
+	Cl9ZdoRcqXBWvYfUFNfY8ixv9oEVP3seiNUjWDeuXxzvSheYEP/VlcDFTgS8RG5pKuOIHQlt1Jy
+	xDvfXCFdE4kgIv0Lh11pbElw==
+X-Received: by 2002:a17:902:d2c7:b0:24e:3cf2:2453 with SMTP id d9443c01a7336-25174379a44mr156803575ad.61.1757473451286;
+        Tue, 09 Sep 2025 20:04:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGoONmeblID+bbqEAMuFoJ5+Ea8yfSh04sJMH6nD19i7912llMFc2WtXUtmsm3rCCJweVbSCHScx/GFYeunpuc=
+X-Received: by 2002:a17:902:d2c7:b0:24e:3cf2:2453 with SMTP id
+ d9443c01a7336-25174379a44mr156803275ad.61.1757473450771; Tue, 09 Sep 2025
+ 20:04:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20250909045150.635345-1-senozhatsky@chromium.org>
+In-Reply-To: <20250909045150.635345-1-senozhatsky@chromium.org>
+From: Changhui Zhong <czhong@redhat.com>
+Date: Wed, 10 Sep 2025 11:03:59 +0800
+X-Gm-Features: AS18NWB6rxPU7nJp7LtkjRqh_fDdk-M3Q2gkXOetkwTl8ftzFeeehDhcc74570w
+Message-ID: <CAGVVp+VMHxz2OAooS_t=H0tiNM9_C0zm6kn-d0DP_U14km8a8g@mail.gmail.com>
+Subject: Re: [PATCHv2] zram: fix slot write race condition
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jens Axboe <axboe@kernel.dk>, 
+	Minchan Kim <minchan@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-block@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Sep 9, 2025 at 12:52=E2=80=AFPM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
+>
+> Parallel concurrent writes to the same zram index result in
+> leaked zsmalloc handles.  Schematically we can have something
+> like this:
+>
+> CPU0                              CPU1
+> zram_slot_lock()
+> zs_free(handle)
+> zram_slot_lock()
+>                                 zram_slot_lock()
+>                                 zs_free(handle)
+>                                 zram_slot_lock()
+>
+> compress                        compress
+> handle =3D zs_malloc()            handle =3D zs_malloc()
+> zram_slot_lock
+> zram_set_handle(handle)
+> zram_slot_lock
+>                                 zram_slot_lock
+>                                 zram_set_handle(handle)
+>                                 zram_slot_lock
+>
+> Either CPU0 or CPU1 zsmalloc handle will leak because zs_free()
+> is done too early.  In fact, we need to reset zram entry right
+> before we set its new handle, all under the same slot lock scope.
+>
+> Cc: stable@vger.kernel.org
+> Reported-by: Changhui Zhong <czhong@redhat.com>
+> Closes: https://lore.kernel.org/all/CAGVVp+UtpGoW5WEdEU7uVTtsSCjPN=3DksN6=
+EcvyypAtFDOUf30A@mail.gmail.com/
+> Fixes: 71268035f5d73 ("zram: free slot memory early during write")
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> ---
+>  drivers/block/zram/zram_drv.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.=
+c
+> index 9ac271b82780..78b56cd7698e 100644
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -1788,6 +1788,7 @@ static int write_same_filled_page(struct zram *zram=
+, unsigned long fill,
+>                                   u32 index)
+>  {
+>         zram_slot_lock(zram, index);
+> +       zram_free_page(zram, index);
+>         zram_set_flag(zram, index, ZRAM_SAME);
+>         zram_set_handle(zram, index, fill);
+>         zram_slot_unlock(zram, index);
+> @@ -1825,6 +1826,7 @@ static int write_incompressible_page(struct zram *z=
+ram, struct page *page,
+>         kunmap_local(src);
+>
+>         zram_slot_lock(zram, index);
+> +       zram_free_page(zram, index);
+>         zram_set_flag(zram, index, ZRAM_HUGE);
+>         zram_set_handle(zram, index, handle);
+>         zram_set_obj_size(zram, index, PAGE_SIZE);
+> @@ -1848,11 +1850,6 @@ static int zram_write_page(struct zram *zram, stru=
+ct page *page, u32 index)
+>         unsigned long element;
+>         bool same_filled;
+>
+> -       /* First, free memory allocated to this slot (if any) */
+> -       zram_slot_lock(zram, index);
+> -       zram_free_page(zram, index);
+> -       zram_slot_unlock(zram, index);
+> -
+>         mem =3D kmap_local_page(page);
+>         same_filled =3D page_same_filled(mem, &element);
+>         kunmap_local(mem);
+> @@ -1894,6 +1891,7 @@ static int zram_write_page(struct zram *zram, struc=
+t page *page, u32 index)
+>         zcomp_stream_put(zstrm);
+>
+>         zram_slot_lock(zram, index);
+> +       zram_free_page(zram, index);
+>         zram_set_handle(zram, index, handle);
+>         zram_set_obj_size(zram, index, comp_len);
+>         zram_slot_unlock(zram, index);
+> --
+> 2.51.0.384.g4c02a37b29-goog
+>
 
-The patch titled
-     Subject: mm/hugetlb: fix copy_hugetlb_page_range() to use ->pt_share_count
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-hugetlb-fix-copy_hugetlb_page_range-to-use-pt_share_count.patch
+Hi, Sergey
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-fix-copy_hugetlb_page_range-to-use-pt_share_count.patch
+Thanks for the patch, I re-ran my test with your patch and confirmed
+that your patch fixed this issue.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Tested-by: Changhui Zhong <czhong@redhat.com>
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Jane Chu <jane.chu@oracle.com>
-Subject: mm/hugetlb: fix copy_hugetlb_page_range() to use ->pt_share_count
-Date: Tue, 9 Sep 2025 12:43:57 -0600
-
-commit 59d9094df3d79 introduced ->pt_share_count dedicated to hugetlb PMD
-share count tracking, but omitted fixing copy_hugetlb_page_range(),
-leaving the function relying on page_count() for tracking that no longer
-works.
-
-When lazy page table copy for hugetlb is disabled (commit bcd51a3c679d),
-fork()'ing with hugetlb PMD sharing quickly locks up -
-
-[  239.446559] watchdog: BUG: soft lockup - CPU#75 stuck for 27s!
-[  239.446611] RIP: 0010:native_queued_spin_lock_slowpath+0x7e/0x2e0
-[  239.446631] Call Trace:
-[  239.446633]  <TASK>
-[  239.446636]  _raw_spin_lock+0x3f/0x60
-[  239.446639]  copy_hugetlb_page_range+0x258/0xb50
-[  239.446645]  copy_page_range+0x22b/0x2c0
-[  239.446651]  dup_mmap+0x3e2/0x770
-[  239.446654]  dup_mm.constprop.0+0x5e/0x230
-[  239.446657]  copy_process+0xd17/0x1760
-[  239.446660]  kernel_clone+0xc0/0x3e0
-[  239.446661]  __do_sys_clone+0x65/0xa0
-[  239.446664]  do_syscall_64+0x82/0x930
-[  239.446668]  ? count_memcg_events+0xd2/0x190
-[  239.446671]  ? syscall_trace_enter+0x14e/0x1f0
-[  239.446676]  ? syscall_exit_work+0x118/0x150
-[  239.446677]  ? arch_exit_to_user_mode_prepare.constprop.0+0x9/0xb0
-[  239.446681]  ? clear_bhb_loop+0x30/0x80
-[  239.446684]  ? clear_bhb_loop+0x30/0x80
-[  239.446686]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-There are two options to resolve the potential latent issue:
-  1. remove the PMD sharing awareness from copy_hugetlb_page_range(),
-  2. fix it.
-This patch opts for the second option.
-
-Link: https://lkml.kernel.org/r/20250909184357.569259-1-jane.chu@oracle.com
-Fixes: 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared
-count")
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
-Cc:
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
-
---- a/mm/hugetlb.c~mm-hugetlb-fix-copy_hugetlb_page_range-to-use-pt_share_count
-+++ a/mm/hugetlb.c
-@@ -5594,18 +5594,13 @@ int copy_hugetlb_page_range(struct mm_st
- 			break;
- 		}
- 
--		/*
--		 * If the pagetables are shared don't copy or take references.
--		 *
--		 * dst_pte == src_pte is the common case of src/dest sharing.
--		 * However, src could have 'unshared' and dst shares with
--		 * another vma. So page_count of ptep page is checked instead
--		 * to reliably determine whether pte is shared.
--		 */
--		if (page_count(virt_to_page(dst_pte)) > 1) {
-+#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-+		/* If the pagetables are shared don't copy or take references. */
-+		if (ptdesc_pmd_pts_count(virt_to_ptdesc(dst_pte)) > 0) {
- 			addr |= last_addr_mask;
- 			continue;
- 		}
-+#endif
- 
- 		dst_ptl = huge_pte_lock(h, dst, dst_pte);
- 		src_ptl = huge_pte_lockptr(h, src, src_pte);
-_
-
-Patches currently in -mm which might be from jane.chu@oracle.com are
-
-mm-hugetlb-fix-copy_hugetlb_page_range-to-use-pt_share_count.patch
+Thanks,
 
 
