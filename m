@@ -1,100 +1,164 @@
-Return-Path: <stable+bounces-179158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27012B50CEB
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 06:48:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7344DB50D15
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 07:21:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FA763BADD0
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 04:48:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E9991B276D3
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 05:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3FF277CB1;
-	Wed, 10 Sep 2025 04:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7EB926FDB2;
+	Wed, 10 Sep 2025 05:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bZkX+ifZ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="gV+ij2uD"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF37825A655
-	for <stable@vger.kernel.org>; Wed, 10 Sep 2025 04:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B8031D39F;
+	Wed, 10 Sep 2025 05:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757479710; cv=none; b=uunE+BDD6bU5Mb4xrXuG2RrcsZ2ZSHYPPpoQJhJaXoRH0GsvVvDZ8D5ww+cSl2J/ZLE4BKTXLlY1hzfiK4C87tzg/gj+TALms1RPuKRvbFBtmWPcQ3O6y/uyarl23N7/V2uw235UDUNyVCWJcvNwyPTY2BP7b1ckvH7Mrb/Rbfg=
+	t=1757481697; cv=none; b=hZFyOBAXYPkclNrD1qY6sefIiMo3vBaRG+8grfTlNQxL/8M9Zn6VjYu9rsI3Nlkb2r9m8nGli0lyurWmDAGh6DXZVrRBssuhag3T2KktkB3UaM2Au1mfGMeiB/29kCg6yJuoX4ttwfHUEzvZ6DX44aPditwB29uGukVu9qi+DyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757479710; c=relaxed/simple;
-	bh=f0SpJ2IrPwZF1LhmP94iC36OsdGVQ2ocyhgP3YokeuI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=K9BWBiB1wZyHU3Ug5rNWZe0z/jR+l0dO6gr4ucNSdg0aToVmz+bQOzS/rPjVPWKym4tLKXQXL6ual/JvykDk8l2m8vWdObD9oM1vny4WCBeC50NysG5JKB2rqz5BmcFVYtms3SZ2fo+vcUUTfVWKayhKn2wDqd5ZR0n8DmHJN1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bZkX+ifZ; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757479709; x=1789015709;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=f0SpJ2IrPwZF1LhmP94iC36OsdGVQ2ocyhgP3YokeuI=;
-  b=bZkX+ifZepX0/gVW69s6cdx4/eestBGQymD14v8VMHh0Y1xLIGLv/kc9
-   u23HttCt3foGFUeeOpl0OA4gEW0MaLJLluqiD1x/agg2ic9F2RFLNsTqR
-   +HBpTggQ/N+YK8mMNq4VS5XO8dDWFTYf01HFjtnHt/q3tTHSXFhrTXHHT
-   gdTgArYEz77Soy0VZ8L+8n29sPnJQkmXnyA89EiX5zb8w6R0tzWsvCey1
-   aHpsfKNeEN/TmQ1/5/Q7DBVsMZU5nuXfXq+hHw/gWD30hrjcqm4hKfGCP
-   SEjfNFJ3FQO+HLSXv6xYAfE2ijOdwRcvr9jwo+FKIwjKUAWtb+lHRSsdA
-   A==;
-X-CSE-ConnectionGUID: kU1Phl6pRyyEen2ePKCXEg==
-X-CSE-MsgGUID: uiPrTSFnQzCSQpfLf8GiSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="59635719"
-X-IronPort-AV: E=Sophos;i="6.18,253,1751266800"; 
-   d="scan'208";a="59635719"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2025 21:48:29 -0700
-X-CSE-ConnectionGUID: 4I4ADdzVShmn+0auIfXTWQ==
-X-CSE-MsgGUID: HKsfmBk0S4SmV4ZzdJ33xQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,253,1751266800"; 
-   d="scan'208";a="173726420"
-Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 09 Sep 2025 21:48:27 -0700
-Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uwCkr-0005XP-0O;
-	Wed, 10 Sep 2025 04:48:25 +0000
-Date: Wed, 10 Sep 2025 12:47:29 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v1] arm64: dts: qcom: monaco-evk: Use correct sound card
- compatible to match SoC
-Message-ID: <aMEC4SyU7c2jZ3Pi@03ba77cd577f>
+	s=arc-20240116; t=1757481697; c=relaxed/simple;
+	bh=Fz6AZ9q22o6YTknitqE7AJ1zoBuxdqIeg6d6j2vOfJo=;
+	h=Date:To:From:Subject:Message-Id; b=c+zTssW1oxj4bzVPf3g5+bcKSNJPO4h/K08kTbAv7ueoDpuy40rvgOzNzn21UW+2TbNZr9sBEQirFDpHZSPvoJOAq8rwY/iYVwurPCTZL5NJ3wtp415S6WbJHz6K3DNg6X8GfGnv/BliQUX4lTaeh8JpQE0DN1Jtj32LoKonwQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=gV+ij2uD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBED4C4CEF0;
+	Wed, 10 Sep 2025 05:21:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757481696;
+	bh=Fz6AZ9q22o6YTknitqE7AJ1zoBuxdqIeg6d6j2vOfJo=;
+	h=Date:To:From:Subject:From;
+	b=gV+ij2uDHRmXYVX3cE53VNnfz4PsqVx0D9bsHJT+rg0ng4zviW0D1eiOnFFSeBMyd
+	 nbUtB1DIA45trl3ydf0JpkOYkeNsP+sXH8PkJE9+adXYZQf5xJeDhu3gesDwgk8QOQ
+	 3NnzJOJUPeVLgLdZDcvSRthqIfbPUtX1F2UIqm2c=
+Date: Tue, 09 Sep 2025 22:21:36 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,minchan@kernel.org,czhong@redhat.com,axboe@kernel.dk,senozhatsky@chromium.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + zram-fix-slot-write-race-condition.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250910052136.DBED4C4CEF0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910044512.1369640-1-mohammad.rafi.shaik@oss.qualcomm.com>
-
-Hi,
-
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v1] arm64: dts: qcom: monaco-evk: Use correct sound card compatible to match SoC
-Link: https://lore.kernel.org/stable/20250910044512.1369640-1-mohammad.rafi.shaik%40oss.qualcomm.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
 
+The patch titled
+     Subject: zram: fix slot write race condition
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     zram-fix-slot-write-race-condition.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/zram-fix-slot-write-race-condition.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: zram: fix slot write race condition
+Date: Tue, 9 Sep 2025 13:48:35 +0900
+
+Parallel concurrent writes to the same zram index result in leaked
+zsmalloc handles.  Schematically we can have something like this:
+
+CPU0                              CPU1
+zram_slot_lock()
+zs_free(handle)
+zram_slot_lock()
+				zram_slot_lock()
+				zs_free(handle)
+				zram_slot_lock()
+
+compress			compress
+handle = zs_malloc()		handle = zs_malloc()
+zram_slot_lock
+zram_set_handle(handle)
+zram_slot_lock
+				zram_slot_lock
+				zram_set_handle(handle)
+				zram_slot_lock
+
+Either CPU0 or CPU1 zsmalloc handle will leak because zs_free() is done
+too early.  In fact, we need to reset zram entry right before we set its
+new handle, all under the same slot lock scope.
+
+Link: https://lkml.kernel.org/r/20250909045150.635345-1-senozhatsky@chromium.org
+Fixes: 71268035f5d73 ("zram: free slot memory early during write")
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reported-by: Changhui Zhong <czhong@redhat.com>
+Closes: https://lore.kernel.org/all/CAGVVp+UtpGoW5WEdEU7uVTtsSCjPN=ksN6EcvyypAtFDOUf30A@mail.gmail.com/
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ drivers/block/zram/zram_drv.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+--- a/drivers/block/zram/zram_drv.c~zram-fix-slot-write-race-condition
++++ a/drivers/block/zram/zram_drv.c
+@@ -1795,6 +1795,7 @@ static int write_same_filled_page(struct
+ 				  u32 index)
+ {
+ 	zram_slot_lock(zram, index);
++	zram_free_page(zram, index);
+ 	zram_set_flag(zram, index, ZRAM_SAME);
+ 	zram_set_handle(zram, index, fill);
+ 	zram_slot_unlock(zram, index);
+@@ -1832,6 +1833,7 @@ static int write_incompressible_page(str
+ 	kunmap_local(src);
+ 
+ 	zram_slot_lock(zram, index);
++	zram_free_page(zram, index);
+ 	zram_set_flag(zram, index, ZRAM_HUGE);
+ 	zram_set_handle(zram, index, handle);
+ 	zram_set_obj_size(zram, index, PAGE_SIZE);
+@@ -1855,11 +1857,6 @@ static int zram_write_page(struct zram *
+ 	unsigned long element;
+ 	bool same_filled;
+ 
+-	/* First, free memory allocated to this slot (if any) */
+-	zram_slot_lock(zram, index);
+-	zram_free_page(zram, index);
+-	zram_slot_unlock(zram, index);
+-
+ 	mem = kmap_local_page(page);
+ 	same_filled = page_same_filled(mem, &element);
+ 	kunmap_local(mem);
+@@ -1901,6 +1898,7 @@ static int zram_write_page(struct zram *
+ 	zcomp_stream_put(zstrm);
+ 
+ 	zram_slot_lock(zram, index);
++	zram_free_page(zram, index);
+ 	zram_set_handle(zram, index, handle);
+ 	zram_set_obj_size(zram, index, comp_len);
+ 	zram_slot_unlock(zram, index);
+_
+
+Patches currently in -mm which might be from senozhatsky@chromium.org are
+
+zram-fix-slot-write-race-condition.patch
+zram-protect-recomp_algorithm_show-with-init_lock.patch
+panic-remove-redundant-panic-cpu-backtrace.patch
 
 
