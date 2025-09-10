@@ -1,158 +1,137 @@
-Return-Path: <stable+bounces-179187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0308AB513A6
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 12:16:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A45B51451
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 12:47:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADEB3485BDF
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 10:16:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48FEA3BB681
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 10:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3D83064BA;
-	Wed, 10 Sep 2025 10:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 217533168E0;
+	Wed, 10 Sep 2025 10:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lnR/9MSC"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xr012LlV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFD0214813;
-	Wed, 10 Sep 2025 10:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA48262FE7
+	for <stable@vger.kernel.org>; Wed, 10 Sep 2025 10:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757499400; cv=none; b=lNrhJnShwAvZt39Jh6aLhI6EZfYzkyXzxIvKzU78wV7mODyAdbLUvvldZsqJn9T1STpOEH5e8z3yew9/1cDIVBxrZQMdIYadtMfgxTv7ufveQIfsnRyCuRPkuHabDDv+krOcD0+n679WstfUfYctIIIIVSY0epmBUbkb8+Yjg5Q=
+	t=1757501174; cv=none; b=qsZFwRCmbr+BsIevZ3cIERF5qdI4xbg+MvyYQ8EDJFafRoEMVyNkexKYZNrL4Bs1enD+0LV0Ww505HPYbj0vybBdERwiy7+e2LGc3IUGwuafe8mo3Ddyt/6cG7/1cZ4I8umXO2ysmoumHXi3F53Ji9yNOXjzLO7O3QSCMk4KQGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757499400; c=relaxed/simple;
-	bh=5WsgoPr0lo5Uw7hXAvjxByjhveCqbww9xMVYrqCn8eE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ummuceoLJiNuUPbm5JOByO4ZC6c6x+Grv7C0nfpz20wWOEYIpbVL2qzR8PAuIRsc+nCkBtKs/9Ur5WfgOodmVrF6XzNGY3d4IBSiZKxCfK4wI3qn+RXG8G8ObCigjztuRt8ZvVkc2clUXjgzCOcQ+Bp+9FC2jxgeKTGsgS5ioIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lnR/9MSC; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6188b5ad4f0so9389617a12.0;
-        Wed, 10 Sep 2025 03:16:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757499397; x=1758104197; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qRSKGpmEYN0/srwW2TqbHPJvdZQo8vau4eyQfT3Zgnw=;
-        b=lnR/9MSCsEbC7QbgnU49zsRt3OT5dAVh1U1gP7IaO/tMgqOuR/Lf3tT02dqN6kkeQG
-         NWtrELkXYbOqQX7VmhM2ji/SEYZTTXaKCw6uEMNh8xoVTMVdHSpQUeSKFry72MwpCOj6
-         J2xsd2KmlL6LdmomUP933AwnB5VR9aJJb3xy0uEF0+4rK6Cn+JmdOlmbmE1hHLv+Z8DE
-         IM3KMCNc0DyYZpxVSI0khzsXTh2kk66kaMP5iA2E/WP7wyJgPREo84JUIMawz/8ucZB3
-         Yck/6I1/yPreGIPJpkImm/FAB2pBPbDcUhYG+HR/qoagGO0DQFnYGKXZkL+LgkG26L8i
-         GlCA==
+	s=arc-20240116; t=1757501174; c=relaxed/simple;
+	bh=YdQDjKnCp0fZZEDL6h7rSAoz3IU0LZop9X2eKSzS2tg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=V3WtyfZkDlmy+MsBXmmLU3Erpm7NhImqm8Y16UBpqFJTJB4Frq1T5CzMJQ56xKaBED9gTxmOpMlgntJGvQ7mHy0lvdRyQhGuuwCM318xN4gdq62+v5z3+oJou3MIDaW9hvqM/2cmEBf/31IUKZ5nMRNwxw164wrkiDGcXFFzkO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xr012LlV; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757501170;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ish3TOdF5itkEce/x1a+uOeE11uGbtv2vXkIso/jAMo=;
+	b=Xr012LlVME+G5KE53VkVKcXsTgQr7rHHsplHBscAVTHICNCy0lKfEu0DfpSAbIHhkRFyPd
+	TC2RW59ixnnXpAahfQOPEFfEyUFq792/LkiOY6hD14X5ovve2ons0pgQDqTz8pV3YBjI6e
+	VwH0UgRG9v/g2qWFeFDhWAgnynxC7/M=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-137-u7kwmt7ANIC4ClUO6UdXGg-1; Wed, 10 Sep 2025 06:46:09 -0400
+X-MC-Unique: u7kwmt7ANIC4ClUO6UdXGg-1
+X-Mimecast-MFC-AGG-ID: u7kwmt7ANIC4ClUO6UdXGg_1757501168
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45de07b831dso22745755e9.1
+        for <stable@vger.kernel.org>; Wed, 10 Sep 2025 03:46:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757499397; x=1758104197;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qRSKGpmEYN0/srwW2TqbHPJvdZQo8vau4eyQfT3Zgnw=;
-        b=WnVqHj5ISVybSttahBvcZrZb0W4s1Rq14X9gm5rv0PpAZw64XsrUwUPVKI7rJzQybG
-         vivd13w8IxD/2K/wN4v36bJ0VRqXceIE1jLotzN06EJ90mrLfWS+bca05T1sTol7erwX
-         7RDmHFTSZAQemPtTtq5GtQV+r/MpunwdHyvAPihxYe79hGPIHLajK0g6hOq/YkBn9CD+
-         +1fAxvnhlx8Yd0gDeXJETCL8PExrii12s/mlFlBfxveW7Ri0NYtt617Gm4CfeOU2FbbM
-         Zng94k9dmdylQb+e9sKMcP+/HbokpADX7rCArUkExVRIbvs1geg0kXXF2Tc3EcMN0NhI
-         3yIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUhOm5V4HQb7Uxgotyiwv5K3JHugWmnCgKQ/kTxN9BusLddpqT75Kcp/kw1yd3UxS/zW24q4/8i@vger.kernel.org, AJvYcCXkxPio8aWy7CSOEiqsjWKqZvFq6Ub7uMpzVOBN+r4icG6mlS7DQi01sA7VnVAj25eOGF+k5VLqbkg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKj4tZqAomlacgq4GnsF5pkWs4KDavM/PY4rTZgB+nxGH9KozV
-	fbb+56ImxzsOTvQtuScQWgYTDWMfN0vE74HrRNpKtJEwFxKrRYvvsQBR
-X-Gm-Gg: ASbGncu5hTes0R+2H9PP7P3qPQQoVcBX0iJNpuVGG/tWquDCbqA6X7IvbMQDJXkas9B
-	i0FOwS/ykgteJFdE8S7x9ArMY3UAgLGtBsIUJ1jAOTxTTJRMxhE0khtI3MTo56MBoGhnJiUyr6t
-	jtrBB+Y152mUISp02v+e1+GLSJKEmTZVAjHjzydr80KDALTehw5PMntkv8702dxo5kuFC2WHTcr
-	pzrIQofqNfDgp0hQvl+llVQYXMdwiLyrb8rLFeMpkcZdFp7KCX/nY9PUvD/e40LU3spg/9GD00q
-	OvVfYMZKlxM63ScRxBdDtjwfF2oninxCRB+ZhQy/ZArD8X4xuKimVAZbjeSykWf6RW3J4EGjhFU
-	KT1UX84i7HK6K8KbYHDL5UtRI9l7fGRmxnaEWQJjihK/gJMB8Y+/wSprOAvyzTUHS3wZpe8RvGJ
-	8YEELIcI9DHWDxBfh+ErKC/FY=
-X-Google-Smtp-Source: AGHT+IETz6aYbUrg7xHdL0EENiwLIIjsRcj8whMW8ha58M9dft6Hjh22MfrHDC/KjHwDc+SdJx0Q8w==
-X-Received: by 2002:a05:6402:2347:b0:628:7d38:9ff with SMTP id 4fb4d7f45d1cf-6287d380cf7mr9161856a12.37.1757499397039;
-        Wed, 10 Sep 2025 03:16:37 -0700 (PDT)
-Received: from amir-ThinkPad-T480.ctera.local (92-109-99-123.cable.dynamic.v4.ziggo.nl. [92.109.99.123])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-62bff34919dsm2872569a12.23.2025.09.10.03.16.36
+        d=1e100.net; s=20230601; t=1757501168; x=1758105968;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ish3TOdF5itkEce/x1a+uOeE11uGbtv2vXkIso/jAMo=;
+        b=UQUAu36lmil/BEU8cFRpBb5qp60uTEKWLU8WGTchiq+IwFo/R7ADmluuXP187X0WNB
+         YJ5pOsjwkp2JpM1H7+0R0/wrpeDQD2Rk741zR54KN3O8uu0Sp7As1opEo8TQ5epy2fB7
+         OFsCnUFYjbJD18BqCFIOxeb1eyhvHIv3cfrlf08P5bDRf+M2j+z1DYa8eC/3Y+ubU6yw
+         x0S/yHfmnn6zODtwKd6CfU3LpUD/6sOCBltrTkDaLqMc7WyZQdDNvVAcMfGQCkEKFR2b
+         H2qyK+vGsMLKvlw0vmc/rTobhKZL784uNwKATkiudPk69zbNSJmEEScfqt5OwOhfWB1K
+         ziMA==
+X-Forwarded-Encrypted: i=1; AJvYcCVgqrmQ6xWDdoM+dnhTmOhK+wqtRHKrnUfodmc6BPOHTHE+UvyP/vXNkoStbs1nvgnF1s9KnjQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoOQ7ER/bSTbP6P58+hxsDjfjdceet51uE3WWm0jHicNzimy7T
+	NwC8QhivjqkG7FRwzhKwwZG7zHlDxo+J6cjB6MyBaqcZsACOYmDlIqvuwStvZiYeR+KZY2j7xpi
+	FliJRda1LANNVvHau189yzBtvWoDz3InB+8BSsbSAVYhFvRmtDTagjowD0Q==
+X-Gm-Gg: ASbGncssK3dk8L6ym88kKreXakm5wR8TMhyriZuTCOmCXSNsQdE5AxHQEQUi/qStvdH
+	GRDi1l7abk3qao3xh41U2CD63EB0fYW/N3W5lZRrKxvnVPQCaoeoczl6gQXn0B373yH9yBa7zVB
+	Byh5VRDXKqX8eMJdp2e9VE/txtPnQCVPR8Ge3zNiOCm1Bm14LMz5xyiJKQYF5SuVggHo27sHaV2
+	nco/BcsDwXbyFzawyhkbexnuh65Xxb+Wff4i7ACAKicDNSlLsDPQIyGG3L7aMOj4h8gMoH0NW1F
+	85t4+pd1hk1QjGHrUEx0Lep8UvJxLO1CmH++02ngX7NjISpKUUiJ2HJrpj9QHUu/M+kN8sRS+Ku
+	mNvM/iWFLlgYuKHaFFYuVIg==
+X-Received: by 2002:a05:600c:45cc:b0:459:dde3:1a55 with SMTP id 5b1f17b1804b1-45dddec78d3mr134563055e9.24.1757501168132;
+        Wed, 10 Sep 2025 03:46:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE41It7Gch3Cc7HmzlNTf33KcOKcEcqR+1x/JRLAyd/4r51Mnyjg/51A7Gwi/T9TvTKWE/bSA==
+X-Received: by 2002:a05:600c:45cc:b0:459:dde3:1a55 with SMTP id 5b1f17b1804b1-45dddec78d3mr134562745e9.24.1757501167668;
+        Wed, 10 Sep 2025 03:46:07 -0700 (PDT)
+Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45df81d193esm23564835e9.6.2025.09.10.03.46.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 03:16:36 -0700 (PDT)
-From: Amir Goldstein <amir73il@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Leah Rumancik <leah.rumancik@gmail.com>,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	stable@vger.kernel.org,
-	linux-xfs@vger.kernel.org,
-	Eric Sandeen <sandeen@redhat.com>,
-	Chandan Babu R <chandanbabu@kernel.org>
-Subject: [PATCH 5.15] xfs: short circuit xfs_growfs_data_private() if delta is zero
-Date: Wed, 10 Sep 2025 12:16:21 +0200
-Message-ID: <20250910101622.1967077-1-amir73il@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        Wed, 10 Sep 2025 03:46:05 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Brett A C Sheffield <bacs@librecast.net>, stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, Simona
+ Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, Thomas Zimmermann
+ <tzimmermann@suse.de>, Lee Jones <lee@kernel.org>, Murad Masimov
+ <m.masimov@mt-integration.ru>, Yongzhen Zhang <zhangyongzhen@kylinos.cn>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin
+ <sashal@kernel.org>, Brett A C Sheffield <bacs@librecast.net>
+Subject: Re: [PATCH 1/1] Revert "fbdev: Disable sysfb device registration
+ when removing conflicting FBs"
+In-Reply-To: <20250910095124.6213-5-bacs@librecast.net>
+References: <20250910095124.6213-3-bacs@librecast.net>
+ <20250910095124.6213-5-bacs@librecast.net>
+Date: Wed, 10 Sep 2025 12:46:04 +0200
+Message-ID: <87frcuegb7.fsf@minerva.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-From: Eric Sandeen <sandeen@redhat.com>
+Brett A C Sheffield <bacs@librecast.net> writes:
 
-[ Upstream commit 84712492e6dab803bf595fb8494d11098b74a652 ]
+Hello Brett,
 
-Although xfs_growfs_data() doesn't call xfs_growfs_data_private()
-if in->newblocks == mp->m_sb.sb_dblocks, xfs_growfs_data_private()
-further massages the new block count so that we don't i.e. try
-to create a too-small new AG.
+> This reverts commit 13d28e0c79cbf69fc6f145767af66905586c1249.
+>
+> Commit ee7a69aa38d8 ("fbdev: Disable sysfb device registration when
+> removing conflicting FBs") was backported to 5.15.y LTS. This causes a
+> regression where all virtual consoles stop responding during boot at:
+>
+> "Populating /dev with existing devices through uevents ..."
+>
+> Reverting the commit fixes the regression.
+>
+> Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
+> ---
 
-This may lead to a delta of "0" in xfs_growfs_data_private(), so
-we end up in the shrink case and emit the EXPERIMENTAL warning
-even if we're not changing anything at all.
+In the other email you said:
 
-Fix this by returning straightaway if the block delta is zero.
+> Newer stable kernels with this
+> patch (6.1.y, 6.6.y, 6.12,y, 6.15.y, 6.16.y) and mainline are unaffected.
 
-(nb: in older kernels, the result of entering the shrink case
-with delta == 0 may actually let an -ENOSPC escape to userspace,
-which is confusing for users.)
+But are you proposing to revert the mentioned commit in mainline too
+or just in the 5.15.y LTS tree ?
 
-Fixes: fb2fc1720185 ("xfs: support shrinking unused space in the last AG")
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
----
-
-Greg,
-
-This fixes fstests failure in xfs/606.
-
-The upstream fix applies cleanly to 5.15.y and was already backported
-to 6.6.y and 6.1.y by Leah:
-https://lore.kernel.org/linux-xfs/20240501184112.3799035-24-leah.rumancik@gmail.com/
-
-Wasn't sure if you'd prefer to keep Leah's SOB and Darrick's ACK from
-the 6.1.y backport, so did not keep them.
-
-This is tested and running on our production 5.15 kernel for a while.
-
-Thanks,
-Amir.
-
- fs/xfs/xfs_fsops.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/fs/xfs/xfs_fsops.c b/fs/xfs/xfs_fsops.c
-index 5b5b68affe66..2d7467be2a48 100644
---- a/fs/xfs/xfs_fsops.c
-+++ b/fs/xfs/xfs_fsops.c
-@@ -126,6 +126,10 @@ xfs_growfs_data_private(
- 	if (delta < 0 && nagcount < 2)
- 		return -EINVAL;
- 
-+	/* No work to do */
-+	if (delta == 0)
-+		return 0;
-+
- 	oagcount = mp->m_sb.sb_agcount;
- 
- 	/* allocate the new per-ag structures */
 -- 
-2.47.1
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
 
