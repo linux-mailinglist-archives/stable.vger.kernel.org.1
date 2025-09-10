@@ -1,92 +1,114 @@
-Return-Path: <stable+bounces-179219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7CCB52165
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 21:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9511B52197
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 22:10:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19C585644F5
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 19:49:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8508A5656EF
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 20:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9ADA2D0618;
-	Wed, 10 Sep 2025 19:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDA62EDD64;
+	Wed, 10 Sep 2025 20:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2QUeXsF"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KFXwlq//";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="9cIp2XSP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA522192F5;
-	Wed, 10 Sep 2025 19:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5252BB1D;
+	Wed, 10 Sep 2025 20:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757533763; cv=none; b=HbhkVOqUybgqetn+wPTzQ5e7t9V4hdwWpD0yZG7U7kV6d9D8weEGjvTDUTQ5T+VSw/qwRfpX2xCrJ/VOJYn8iaFuDspOSauAZ16leNcpkwacdLk9RlbBL6bqdMog3IZbWhvrMi+HJlnlWMFCDehOo7+b+ifpQSJgzJle5AHmJVY=
+	t=1757535021; cv=none; b=iDJ0ZI98y2TCJySuF0l9iTgVzuoQMjdJTidMItU5+S5WBC5I5P7HYYfEHIS1gPjrtrKnhLj5UxU56SPOe0hS94J2FARNduOhfpos9jLAYawoAX07HdiC1lXJD/RcklvFBHhFKtd+5tkqxDgJ4LMgevtIQDQ4hDk9HS1qY8aSZzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757533763; c=relaxed/simple;
-	bh=VlR4T7W5WUcCl5jM8ND6VF21jkI4rqDyaEM8DrBDXtg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DghsgMdM736q6HfBRcGh/qAnUWd+mP6LYgiqkhCtAGZSIAXdvd7WEeWYL6yz338YGVhIeSIS9Bs09Q5DZzGvSztW1J40w6BkMGxXTJM8MxxZ7916Er6tL1TAeYvPjZVEBO4o0yRHYel1L25h/Wz+j+8ObVdpo32s6agaS3bLu/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2QUeXsF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09E9C4CEEB;
-	Wed, 10 Sep 2025 19:49:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757533763;
-	bh=VlR4T7W5WUcCl5jM8ND6VF21jkI4rqDyaEM8DrBDXtg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B2QUeXsFP/8t9H+uXfCOPC9W7hJbSvaQzKCacm52pDLARWQhOaI6TMggUjJ3hlcOs
-	 +2ffNodYhLpM+Ry8vHv7i/kEUS92UQDOCNEw3cR7q6iPZ9fi7rINNkgfeKAA+9qLL1
-	 +YGHNXz9Jbu6yORdBXPyU+aiKz1zwAUJ9tdV7rlgVlPgvBAB3QdMiyr/dgnlVMi7ub
-	 jfhiSXOt77FKB+biQ8XCc9FFQAET7KoMtskxVOuwO376KJ1ca3Ido85CFZFbkgulub
-	 40SSo2ut9ZJD0mrol+e3Wx21uHB1djpQHebJ2CToEgpTLhWjMRUQbNfvqT+bp9tUOg
-	 iV4HGYvVU1D1g==
-Date: Wed, 10 Sep 2025 19:49:21 +0000
-From: Eric Biggers <ebiggers@kernel.org>
-To: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
-	kasan-dev@googlegroups.com
-Cc: Dmitry Vyukov <dvyukov@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] kmsan: Fix out-of-bounds access to shadow memory
-Message-ID: <20250910194921.GA3153735@google.com>
-References: <20250829164500.324329-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1757535021; c=relaxed/simple;
+	bh=mjnlmH46vqpUybfgGI0GS2mBSC0pyBMO3eFuAUlJV7U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=pa0paYQx7W81ePzKtD48iXAheb8JC++Pw1rwudYNSat6K4QM9dGIakX+9w3nB0Ltjr5q3H4lSPk1+zbGu+Ofpdst4bINzMC6QmrWLoZVX3e+Up9niYCbAI5M/9GEXZiE2sDI6Ye4Y71hbhGDnw9M1tSYwXwDxRLYNKD59gemDmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KFXwlq//; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=9cIp2XSP; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1757535016;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U6mXI0MTVp+bH+g5mA/2NKnCLozHXgMVpvTCY2YWC3M=;
+	b=KFXwlq//dUndcehlpb7inmHGwD1eHjIW42/VrrODS7bVJHHTp342kxF5EFXbIQn51ulmZT
+	arD+8qvvbdeuWYzJx7Bb1DsHeulrrVJX9T04IIfa8DyXcVuafQogDKdCDLA9JTEL+cfz52
+	4JA25jbkgFjzQEqbmZhNl3eX8FoocLxWPX//lqjhHUvtzu7KG0Gq7O/4jyGhQTDctwpt3e
+	N+7Q9xZO97I621SvXSO/vSjkkhzsaYkKZB+uNo7T1dv0lctARoP1MH/LRs09OskEUW8Wem
+	+uRxsDlVJeTpw2Qnz2deHiMUL+8JVpK+liKPUBATeaKGuUrP0lPHO3sdQWac/Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1757535016;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U6mXI0MTVp+bH+g5mA/2NKnCLozHXgMVpvTCY2YWC3M=;
+	b=9cIp2XSP1UIAp4oO9SV5sxJh/Ku64vQiWZeqLjc7gqy1cXzCvd7jQkABSMMjXxo4i20v9j
+	k/BcSLjVuzI115CQ==
+To: K Prateek Nayak <kprateek.nayak@amd.com>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ x86@kernel.org
+Cc: Naveen rao <naveen.rao@amd.com>, Sairaj Kodilkar <sarunkod@amd.com>, "H.
+ Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)"
+ <peterz@infradead.org>, "Xin Li (Intel)" <xin@zytor.com>, Pawan Gupta
+ <pawan.kumar.gupta@linux.intel.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, Mario Limonciello <mario.limonciello@amd.com>,
+ "Gautham R. Shenoy" <gautham.shenoy@amd.com>, Babu Moger
+ <babu.moger@amd.com>, Suravee Suthikulpanit
+ <suravee.suthikulpanit@amd.com>, K Prateek Nayak <kprateek.nayak@amd.com>,
+ stable@vger.kernel.org, Naveen N
+ Rao <naveen@kernel.org>
+Subject: Re: [PATCH v5 1/4] x86/cpu/topology: Always try
+ cpu_parse_topology_ext() on AMD/Hygon
+In-Reply-To: <20250901170418.4314-2-kprateek.nayak@amd.com>
+References: <20250901170418.4314-1-kprateek.nayak@amd.com>
+ <20250901170418.4314-2-kprateek.nayak@amd.com>
+Date: Wed, 10 Sep 2025 22:10:15 +0200
+Message-ID: <87o6rirrvc.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250829164500.324329-1-ebiggers@kernel.org>
+Content-Type: text/plain
 
-On Fri, Aug 29, 2025 at 09:45:00AM -0700, Eric Biggers wrote:
-> Running sha224_kunit on a KMSAN-enabled kernel results in a crash in
-> kmsan_internal_set_shadow_origin():
-> 
->     BUG: unable to handle page fault for address: ffffbc3840291000
->     #PF: supervisor read access in kernel mode
->     #PF: error_code(0x0000) - not-present page
->     PGD 1810067 P4D 1810067 PUD 192d067 PMD 3c17067 PTE 0
->     Oops: 0000 [#1] SMP NOPTI
->     CPU: 0 UID: 0 PID: 81 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc3 #10 PREEMPT(voluntary)
->     Tainted: [N]=TEST
->     Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
->     RIP: 0010:kmsan_internal_set_shadow_origin+0x91/0x100
->     [...]
->     Call Trace:
->     <TASK>
->     __msan_memset+0xee/0x1a0
->     sha224_final+0x9e/0x350
->     test_hash_buffer_overruns+0x46f/0x5f0
->     ? kmsan_get_shadow_origin_ptr+0x46/0xa0
->     ? __pfx_test_hash_buffer_overruns+0x10/0x10
->     kunit_try_run_case+0x198/0xa00
+On Mon, Sep 01 2025 at 17:04, K. Prateek Nayak wrote:
+> Unconditionally call cpu_parse_topology_ext() on AMD and Hygon
+> processors to first parse the topology using the XTOPOLOGY leaves
+> (0x80000026 / 0xb) before using the TOPOEXT leaf (0x8000001e).
+>
+> While at it, break down the single large comment in parse_topology_amd()
+> to better highlight the purpose of each CPUID leaf.
+>
+> Cc: stable@vger.kernel.org # Only v6.9 and above; Depends on x86 topology rewrite
+> Link: https://lore.kernel.org/lkml/1529686927-7665-1-git-send-email-suravee.suthikulpanit@amd.com/ [1]
+> Link: https://lore.kernel.org/lkml/20080818181435.523309000@linux-os.sc.intel.com/ [2]
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 [3]
+> Suggested-by: Naveen N Rao (AMD) <naveen@kernel.org>
+> Fixes: 3986a0a805e6 ("x86/CPU/AMD: Derive CPU topology from CPUID function 0xB when available")
+> Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+> ---
+> Changelog v4..v5:
+>
+> o Made a note on only targeting versions >= v6.9 for stable backports
+>   since the fix depends on the x86 topology rewrite. (Boris)
 
-Any thoughts on this patch from the KMSAN folks?  I'd love to add
-CONFIG_KMSAN=y to my crypto subsystem testing, but unfortunately the
-kernel crashes due to this bug :-(
+Shouldn't that be backported? I think so, so leave that v6.9 and above
+comment out. The stable folks will notice that it does not apply to pre
+6.9 kernels and send you a nice email asking you to provide a solution
+for pre 6.9 stable kernels.
 
-- Eric
+Thanks,
+
+        tglx
 
