@@ -1,103 +1,82 @@
-Return-Path: <stable+bounces-179214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97C7B51F97
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 19:59:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3EB8B51F9D
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 20:00:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABF531C271F1
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 17:59:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1888A7BCB8A
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 17:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1D33376BF;
-	Wed, 10 Sep 2025 17:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aH+6MLhC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E2B335BCC;
+	Wed, 10 Sep 2025 17:59:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C180335BD0;
-	Wed, 10 Sep 2025 17:58:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8581732ED52;
+	Wed, 10 Sep 2025 17:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757527140; cv=none; b=hDLhzEaSQ2iFqWg9t6FG0EM4M7yqvvntJz6uUeJtpT97aYHP4VTMU9bcCJqTj6KClPR7CoQTL4/C0UDpZaJujmh4fnDIWAu6x4CxXVxCNkx+A6F3RRjVVle/uNHx80IbkZINACNjxmtsFU5xR3mYgxRYgpJ94b0xtjUzKMqPPgA=
+	t=1757527189; cv=none; b=kzAjSHZdM9a+LnMUm6pR5FNdOg8WyUEsdOngPsamQ8eveYGc2Yc1fFFIo1Dc4kRWO4wCND/drBB7Cu73d6Mu/AXY7w6f6EwZbXBqVYPi9j/lgeUZlsTr9m5O1+T3jsG15boYaixApEQZLASHwESI6Cemg9mTH0OBy6bVRav2C+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757527140; c=relaxed/simple;
-	bh=3OB/1/72wpDUqru7+1lTnbYAH1kOUgOBvd4nyep3M+c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tQxZfkUiMEGaPA6Lk3ptbSi2emN9FITCbmmUEZ8h1A5U3yUe/+qsaAu8/P55lhaaeVuSJPk6IlFIOmnJzOR4r2JL8nlv+0Ik++iid38sjMr3j/iBBqJwTaqxsGug+S3tZ4XZIcCOG2ygUtWpgn/KvZwPuUJyZtyDSYUSSDt9W9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aH+6MLhC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DE8C4CEF0;
-	Wed, 10 Sep 2025 17:58:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757527139;
-	bh=3OB/1/72wpDUqru7+1lTnbYAH1kOUgOBvd4nyep3M+c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aH+6MLhCiTLp+wcLENeAQnSaoWiN6EoIINKbn2FryQMIC5MHBxTg9XsVpuG+y7GzA
-	 oWI28v9zBjfAbjTne2el34PVx8v0MupyesTwYeZhTKwGvzTssG+BHPLKJkdRz+C3U/
-	 17LlR6pb1vKaDF3AVshE2WgLu5fJ8ec/z/zPbLyrCLYunvpwo9JkWXYZsg1Fuim65x
-	 AwLBuwwjUKLmaIKnuA3SN/rze55snN8nHAl3/0S4u8KCiTAGxtMnwg5qyxN70CQnBw
-	 cksIUSCtjCeCDlSY1AVCLLhvKip61op49hcNAVI1VWu8qhvkF8S8gMec1MdWss1SZC
-	 WdQlY6CasUVsA==
-Date: Wed, 10 Sep 2025 10:58:58 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Calvin Owens <calvin@wbinvd.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan
- <shuah@kernel.org>, Simon Horman <horms@kernel.org>, david decotigny
- <decot@googlers.com>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de,
- kernel-team@meta.com, stable@vger.kernel.org, jv@jvosburgh.net
-Subject: Re: [PATCH net v3 1/3] netpoll: fix incorrect refcount handling
- causing incorrect cleanup
-Message-ID: <20250910105858.083ca8df@kernel.org>
-In-Reply-To: <jibftqm5ihdgazmk3p5gsjhlc536itqaq7r5uag5fuiqtth6cp@abihzyykh4gy>
-References: <20250905-netconsole_torture-v3-0-875c7febd316@debian.org>
-	<20250905-netconsole_torture-v3-1-875c7febd316@debian.org>
-	<aL9A3JDyx3TxAzLf@mozart.vkv.me>
-	<20250908182958.23dc4ba0@kernel.org>
-	<kmvkrqkkrbfctpramlchpwqikg2x3btb3debshabqctt7azu2j@tv4ziqd4gldh>
-	<20250909161625.470d2835@kernel.org>
-	<jibftqm5ihdgazmk3p5gsjhlc536itqaq7r5uag5fuiqtth6cp@abihzyykh4gy>
+	s=arc-20240116; t=1757527189; c=relaxed/simple;
+	bh=HL0DnVqY9mi1Yf4iFASas8LQH3XJXyuPD2ZIlWC4U1s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bjffTCJy68DObIJZT561aVY2FVvw8TO/zmYDMg21g7NxmVJF39ToNH5sdP0cnOqUx3c14CHqupsp8KFBKLDWrruI6QZWPSmEKLuwT5vFtElsQjp7pq57hIaC58LsYBY7nRiSd/gxLut6740Mf+zdfdS8G8+wyX+jezwDOCUn3M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+X-CSE-ConnectionGUID: +ra5r6mqRTSvFDWVBbzDTg==
+X-CSE-MsgGUID: irbc+wiWTeiMHtqvzd/txg==
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie5.idc.renesas.com with ESMTP; 11 Sep 2025 02:59:44 +0900
+Received: from demon-pc.localdomain (unknown [10.226.92.32])
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 5A25440528E4;
+	Thu, 11 Sep 2025 02:59:42 +0900 (JST)
+From: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+To: 
+Cc: Lee Jones <lee@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	linux-kernel@vger.kernel.org,
+	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mfd: rz-mtu3: fix MTU5 NFCR register offset
+Date: Wed, 10 Sep 2025 20:59:06 +0300
+Message-ID: <20250910175914.12956-1-cosmin-gabriel.tanislav.xa@renesas.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 10 Sep 2025 07:12:03 -0700 Breno Leitao wrote:
-> On Tue, Sep 09, 2025 at 04:16:25PM -0700, Jakub Kicinski wrote:
-> > On Tue, 9 Sep 2025 13:17:27 -0700 Breno Leitao wrote:  
-> > > On Mon, Sep 08, 2025 at 06:29:58PM -0700, Jakub Kicinski wrote:  
-> > > > On Mon, 8 Sep 2025 13:47:24 -0700 Calvin Owens wrote:    
-> > > > > I wonder if there might be a demon lurking in bonding+netpoll that this
-> > > > > was papering over? Not a reason not to fix the leaks IMO, I'm just
-> > > > > curious, I don't want to spend time on it if you already did :)    
-> > > > 
-> > > > +1, I also feel like it'd be good to have some bonding tests in place
-> > > > when we're removing a hack added specifically for bonding.    
-> > > 
-> > > Do you prefer to have a separated bonding selftest, or, is it better to
-> > > add some bond operations in the torture selftest?  
-> > 
-> > Normal test is preferable, given the flakiness rate and patch volume
-> > I'm a bit scared of randomized testing as part of CI.  
-> 
-> Ok, I will create a selftest to cover the netpoll part of bonding, as
-> soon as my understanding is good enough. I don't think it will be quick,
-> but, it is on my hi-pri todo list.
-> 
-> Do you want to have the selftest done before merging this patch, or, can
-> they go in parallel?
+The NFCR register for MTU5 is at 0x1a95 offset according to Datasheet
+Page 725, Table 16.4. The address of all registers is offset by 0x1200,
+making the proper address of MTU5 NFCR register be 0x895.
 
-I said "it'd be good to have some bonding tests in place when we're
-removing a hack added specifically for bonding."
-"In place" means part of CI when we're merging this fix.
-Please read emails more carefully.
+Cc: stable@vger.kernel.org
+Fixes: 654c293e1687 ("mfd: Add Renesas RZ/G2L MTU3a core driver")
+Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+---
+ drivers/mfd/rz-mtu3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mfd/rz-mtu3.c b/drivers/mfd/rz-mtu3.c
+index f3dac4a29a83..9cdfef610398 100644
+--- a/drivers/mfd/rz-mtu3.c
++++ b/drivers/mfd/rz-mtu3.c
+@@ -32,7 +32,7 @@ static const unsigned long rz_mtu3_8bit_ch_reg_offs[][13] = {
+ 	[RZ_MTU3_CHAN_2] = MTU_8BIT_CH_1_2(0x204, 0x092, 0x205, 0x200, 0x20c, 0x201, 0x202),
+ 	[RZ_MTU3_CHAN_3] = MTU_8BIT_CH_3_4_6_7(0x008, 0x093, 0x02c, 0x000, 0x04c, 0x002, 0x004, 0x005, 0x038),
+ 	[RZ_MTU3_CHAN_4] = MTU_8BIT_CH_3_4_6_7(0x009, 0x094, 0x02d, 0x001, 0x04d, 0x003, 0x006, 0x007, 0x039),
+-	[RZ_MTU3_CHAN_5] = MTU_8BIT_CH_5(0xab2, 0x1eb, 0xab4, 0xab6, 0xa84, 0xa85, 0xa86, 0xa94, 0xa95, 0xa96, 0xaa4, 0xaa5, 0xaa6),
++	[RZ_MTU3_CHAN_5] = MTU_8BIT_CH_5(0xab2, 0x895, 0xab4, 0xab6, 0xa84, 0xa85, 0xa86, 0xa94, 0xa95, 0xa96, 0xaa4, 0xaa5, 0xaa6),
+ 	[RZ_MTU3_CHAN_6] = MTU_8BIT_CH_3_4_6_7(0x808, 0x893, 0x82c, 0x800, 0x84c, 0x802, 0x804, 0x805, 0x838),
+ 	[RZ_MTU3_CHAN_7] = MTU_8BIT_CH_3_4_6_7(0x809, 0x894, 0x82d, 0x801, 0x84d, 0x803, 0x806, 0x807, 0x839),
+ 	[RZ_MTU3_CHAN_8] = MTU_8BIT_CH_8(0x404, 0x098, 0x400, 0x406, 0x401, 0x402, 0x403)
+-- 
+2.51.0
+
 
