@@ -1,128 +1,129 @@
-Return-Path: <stable+bounces-179167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08E10B50ECA
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 09:11:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86CDAB50F29
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 09:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 360EF1C224F8
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 07:12:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C3DC545C13
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 07:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76BB93074AF;
-	Wed, 10 Sep 2025 07:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 287C8309EFB;
+	Wed, 10 Sep 2025 07:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Hcv50php"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RZYRWBc4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8411302CBA;
-	Wed, 10 Sep 2025 07:11:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16BA264A86;
+	Wed, 10 Sep 2025 07:25:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757488298; cv=none; b=MEivGjQy+yfvHxq1JZ2WqGcKN+CjpgUhjXlDBuLaDbd9GDU8LQxAKBC6sAv+UXRfFV1TXOC/YzMnBM53S6Zao3iLhfABT8nwy3s/K7Ekzlw7khNG0s290cUlyoNZ3lONXfJyrp1M6MdiW8QQ9VYOO4JbvX3SeTnuf8cUeZeplWM=
+	t=1757489102; cv=none; b=D1rrAHZPF9h2lR62GHK72SggX8UU5zfNJSIF7zRqnRsK5RUXOitowvnQDpR6vGgMh06pS/itZnO3YD6vAzZcFH3BTAN9bIsEbWI9pLNDRpghfovDEdG55iy7f6Lae1y7xQVXZQV8pAHC8XYHf+oUSpSl3iTjgJX+FMCS6705SNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757488298; c=relaxed/simple;
-	bh=MKPZxIH3taedtreJ88sBf96nUf/AxnC4Xzi7CyUCBfA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IIP1l5Z+e7MCpaNYz2UTIRthkuYIL0H8EExQflHLfpcdEALasEsGjnZ4LZSn3N5A/rOA9BtsjIuqhncM1VWHKikMialhE5+GFR3pXZyVpzTx0Yfo3LiiBXz2KdzwmaCBR/RpWDOCkxTGMc8YKOCc/HcX7s2dgfHUTFN24Z8ZnrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Hcv50php; arc=none smtp.client-ip=220.197.32.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=t7wTohui/fSOqceO9w1DSGUSUx0VNZ73a2duW9lrSKo=;
-	b=Hcv50phpoOajJxbARmNcO0WvCsTJtq4C7IfOmJ8OZLgyW0IFhyB0A4Y6ItRei6
-	Xf4lkIMHdU+qed1jSS0LjNJQoZ54W+anj2ZwoSxIoUbkCRPYBxvErNceISvMERK2
-	DmicX94zFN4bLE0jsNRicBQoOl9wybl7xt8Gz34Z7qIgo=
-Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgBHBW+MJMFo0Ow7BA--.40818S3;
-	Wed, 10 Sep 2025 15:11:10 +0800 (CST)
-Date: Wed, 10 Sep 2025 15:11:08 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Qais Yousef <qyousef@layalina.io>, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] cpufreq: cap the default transition delay at 10 ms
-Message-ID: <aMEkjGN9HlwURISR@dragon>
-References: <20250910065312.176934-1-shawnguo2@yeah.net>
+	s=arc-20240116; t=1757489102; c=relaxed/simple;
+	bh=PGy4c01e9F0jYlX/Gu6iE6kpU78+Mus1Z7EYy2E8UIA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JgcCALMpkx/l8miTZBaSt4ioqLHtK3zKFmovoRWe15YYZlIp+fVV3cfJdnExqNgrXwDYxUkT4/edt9X9Hrv8eTP6ddyPpmryYg0Pe0O66bBOr4AMtgoDXVulLi6uBgO5dP9HVIuw7GXdgc/vBhrfkvAu8XrvDA36SukQxaT10Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RZYRWBc4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 364F9C4CEF5;
+	Wed, 10 Sep 2025 07:24:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757489101;
+	bh=PGy4c01e9F0jYlX/Gu6iE6kpU78+Mus1Z7EYy2E8UIA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RZYRWBc4bM8uZWyP8pkT1nboIscSthT/VVjjHHYki5vw8WgOSLEF++8eCqfbgu9F1
+	 rscl9BLyX+/Hjusv95/aPj7uW8aYaN/z4re8AFAT0jPZ6EneN5ILX9KgiuH8Btmb/0
+	 KtnxxPTAG3VwViJuKJhunFucjzbfY2xnZm3eRGvvdzyKhsdoVxwunGajZ2nPNyTrfp
+	 ZlX7wSsWPzBhUBESmxRLD+QzwMFDf6DU2J1L13LT7GWf5lItAGDRAjudq98n2czlEQ
+	 6MNMuBp4Kb80WWuwFgifrdkZj2PWnypOolXwDaJf93FQOy71MTVHxORIY0smYw//oB
+	 Jkv1fe85JAo4w==
+Message-ID: <9a4e50f3-cb4e-40cc-a722-b17d136a7062@kernel.org>
+Date: Wed, 10 Sep 2025 09:24:56 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910065312.176934-1-shawnguo2@yeah.net>
-X-CM-TRANSID:M88vCgBHBW+MJMFo0Ow7BA--.40818S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uryfKF13JF17Jw4rWw48WFg_yoW8Kr4kpF
-	W5uay2yr48Xayqywn2kw48ua4Fva1DA3y2kFyqywnYv3y3J3WF93WUKayUK3yrAr4DGa15
-	XF1Ut3ZrJF48ArUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Ut9N3UUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIQ62HGjBJI49ZAAA3f
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] arm64: dts: qcom: monaco-evk: Use correct sound card
+ compatible to match SoC
+To: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ kernel@oss.qualcomm.com, prasad.kumpatla@oss.qualcomm.com,
+ ajay.nandam@oss.qualcomm.com
+References: <20250910044512.1369640-1-mohammad.rafi.shaik@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250910044512.1369640-1-mohammad.rafi.shaik@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 10, 2025 at 02:53:12PM +0800, Shawn Guo wrote:
-> From: Shawn Guo <shawnguo@kernel.org>
-> 
-> A regression is seen with 6.6 -> 6.12 kernel upgrade on platforms where
-> cpufreq-dt driver sets cpuinfo.transition_latency as CPUFREQ_ETERNAL (-1),
-> due to that platform's DT doesn't provide the optional property
-> 'clock-latency-ns'.  The dbs sampling_rate was 10000 us on 6.6 and
-> suddently becomes 6442450 us (4294967295 / 1000 * 1.5) on 6.12 for these
-> platforms, because that the 10 ms cap for transition_delay_us was
-> accidentally dropped by the commits below.
-> 
->   commit 37c6dccd6837 ("cpufreq: Remove LATENCY_MULTIPLIER")
->   commit a755d0e2d41b ("cpufreq: Honour transition_latency over transition_delay_us")
->   commit e13aa799c2a6 ("cpufreq: Change default transition delay to 2ms")
-> 
-> It slows down dbs governor's reacting to CPU loading change
-> dramatically.  Also, as transition_delay_us is used by schedutil governor
-> as rate_limit_us, it shows a negative impact on device idle power
-> consumption, because the device gets slightly less time in the lowest OPP.
-> 
-> Fix the regressions by adding the 10 ms cap on transition delay back.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 37c6dccd6837 ("cpufreq: Remove LATENCY_MULTIPLIER")
-> Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-> ---
->  drivers/cpufreq/cpufreq.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-> index fc7eace8b65b..36e0c85cb4e0 100644
-> --- a/drivers/cpufreq/cpufreq.c
-> +++ b/drivers/cpufreq/cpufreq.c
-> @@ -551,8 +551,13 @@ unsigned int cpufreq_policy_transition_delay_us(struct cpufreq_policy *policy)
->  
->  	latency = policy->cpuinfo.transition_latency / NSEC_PER_USEC;
->  	if (latency)
-> -		/* Give a 50% breathing room between updates */
-> -		return latency + (latency >> 1);
-> +		/*
-> +		 * Give a 50% breathing room between updates.
-> +		 * And cap the transition delay to 10 ms for platforms
-> +		 * where the latency is too high to be reasonable for
-> +		 * reevaluating frequency.
-> +		 */
-> +		return min(latency + (latency >> 1), 10 * MSEC_PER_SEC);
+On 10/09/2025 06:45, Mohammad Rafi Shaik wrote:
+> The Monaco-EVK board is based on Qualcomm's QCS8300 SoC. The DTS
+> previously reused the sound card compatible as "qcom,qcs8275-sndcard",
 
-I guess it's more correct to use USEC_PER_MSEC instead, even if both
-have the value 1000.  Will fix in v2.
+So who is going to use qcom,qcs8275-sndcard compatible? I don't see any
+DTS using it.
 
-Shawn
-
->  
->  	return USEC_PER_MSEC;
->  }
-> -- 
-> 2.43.0
+> which is based on existing coverage. To maintain clarity and consistency,
+> the naming conventions for the compatible should reflect actual SoC
+> rather than the board. Therefore, update the sound card compatible as
+> "qcom,qcs8300-sndcard" to avoid potential confusion.
 > 
+> Signed-off-by: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
 
+Best regards,
+Krzysztof
 
