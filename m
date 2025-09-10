@@ -1,94 +1,119 @@
-Return-Path: <stable+bounces-179165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE84EB50EA3
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 09:00:54 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82551B50EB1
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 09:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96E9D1BC503F
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 07:01:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6A0A54E2A1F
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 07:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410502C11F1;
-	Wed, 10 Sep 2025 07:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43EA301462;
+	Wed, 10 Sep 2025 07:04:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="FGTa1YfD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA4A1DF99C;
-	Wed, 10 Sep 2025 07:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.18.0.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DEC1798F;
+	Wed, 10 Sep 2025 07:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757487642; cv=none; b=mn1Rl9ey71i3Jp6PIG3KR2oMyxxohYdO3noiLfnpw4V7mz7XVHf+3s6VN9zQNY5VYAMwlL8mu3kez0494m4Mh/QNp8s1vl9lUEbqKQDikQQ1/ESnWgrzQiYPKTUCDMxQVt+TPU8PdzC4tmFzKNbcERZMM1d2bXA23e/OEgh5+4k=
+	t=1757487859; cv=none; b=hgxVeHzeFRtgVSjr5friIKSgZ7MBNvDRgl47p/DVvUVQuOqaT9rS71kuqSNcbe8s2H8kZNORsoYJIxUwWR+6yY9YOU7ielwnvMm5m4a1zpUgaW6trZMvaCWSouw9Vs5Cg8ZHGj4f7Qo8w9YuTcmp9Zy2v76zKc+zYv9HHdydyUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757487642; c=relaxed/simple;
-	bh=O5vcD4Ldjc71ve0d02RfmDHc6hlfFFueKhpbZB+vRrM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WToCNDB6gbWmayAglbszjUULBzYCEYzh3lsqldJERpuBkGwyE/PyBUy5VGh83UEebqMiUoNxNXYqAd8VxdOi2z057TEQxK8VSmSe1U7FVJue/mwsKTFjfA9AL3Fy9fTcpAiqQaYRi2wdC7C+052zBjI+1eE77ciKMGLcrc5SSlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=nefkom.net; arc=none smtp.client-ip=212.18.0.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nefkom.net
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-	by mail-out.m-online.net (Postfix) with ESMTP id 4cMBFy3BPqz1r5hQ;
-	Wed, 10 Sep 2025 08:52:38 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
-	by mail.m-online.net (Postfix) with ESMTP id 4cMBFy0d40z1qqlS;
-	Wed, 10 Sep 2025 08:52:38 +0200 (CEST)
-X-Virus-Scanned: amavis at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
- by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavis, port 10024)
- with ESMTP id r6oSkNIfIRpU; Wed, 10 Sep 2025 08:52:28 +0200 (CEST)
-X-Auth-Info: GsbNNI76Sv79L7YvGPmcrwtzn4oM1W/t9R3+pP9F4xssEftMcVyEECTVPJd+4YJQ
-Received: from igel.home (aftr-82-135-83-103.dynamic.mnet-online.de [82.135.83.103])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.mnet-online.de (Postfix) with ESMTPSA;
-	Wed, 10 Sep 2025 08:52:28 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 1000)
-	id 1C52A2C1920; Wed, 10 Sep 2025 08:52:28 +0200 (CEST)
-From: Andreas Schwab <schwab@linux-m68k.org>
-To: Finn Thain <fthain@linux-m68k.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,  Lance Yang
- <lance.yang@linux.dev>,  akpm@linux-foundation.org,  amaindex@outlook.com,
-  anna.schumaker@oracle.com,  boqun.feng@gmail.com,  geert@linux-m68k.org,
-  ioworker0@gmail.com,  joel.granados@kernel.org,  jstultz@google.com,
-  leonylgao@tencent.com,  linux-kernel@vger.kernel.org,
-  linux-m68k@lists.linux-m68k.org,  longman@redhat.com,
-  mhiramat@kernel.org,  mingo@redhat.com,  mingzhe.yang@ly.com,
-  oak@helsinkinet.fi,  peterz@infradead.org,  rostedt@goodmis.org,
-  senozhatsky@chromium.org,  tfiga@chromium.org,  will@kernel.org,
-  stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock
- pointers
-In-Reply-To: <99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org> (Finn
-	Thain's message of "Wed, 10 Sep 2025 10:07:04 +1000 (AEST)")
-References: <20250909145243.17119-1-lance.yang@linux.dev>
-	<yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
-	<99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org>
-Date: Wed, 10 Sep 2025 08:52:28 +0200
-Message-ID: <875xdqsssz.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1757487859; c=relaxed/simple;
+	bh=zM3tYwg3Esfkyecquj5JgIVI41Ms90wXl7Y4pNYPqPI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UPD5byMNHJ5wkvYisn31o6lMTF4DmWWP9jxx3zdDQ0kqmRSl2guwwDfYvjAoZrl0LAZjbstM3qhuMBKxmOZIwkgG4YzJ7R1y4jY2rRAcRV5T4qbagr/TZjoJlmYKK/G5GPPvfiVVPmWXpnOY+vZVRTnD1DDdoVLKhJzZwi9KJFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=FGTa1YfD; arc=none smtp.client-ip=1.95.21.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=5Z
+	ZPzeDrpMYxgza36PsQIam3kvrpjmthexLESEAuMpY=; b=FGTa1YfDvwqofxGC2V
+	Vu+jHroYvAKZp2+GibLSM6Xem2Ss/GVhEqNjQ0tF9rromIc03viww0F112QNTR5f
+	6SBadZFv/OVvYtYr2wiSIDZIolm3ss3tF5+CZJcwZTjNsKq4KeMXq0SStY9DJcOi
+	5D7F9Cm1DOiuV4eIaFuPxJ/to=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgBHu3tdIMFoTs1DBA--.44176S2;
+	Wed, 10 Sep 2025 14:53:18 +0800 (CST)
+From: Shawn Guo <shawnguo2@yeah.net>
+To: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Qais Yousef <qyousef@layalina.io>,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Shawn Guo <shawnguo@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] cpufreq: cap the default transition delay at 10 ms
+Date: Wed, 10 Sep 2025 14:53:12 +0800
+Message-ID: <20250910065312.176934-1-shawnguo2@yeah.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Mc8vCgBHu3tdIMFoTs1DBA--.44176S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Aw4UKw48Aw4UZF4UWr13CFg_yoW8urykpF
+	W5W3y2yr18Xa1ktws2vw48u34Fva1DA34akFyjkwnYv3y3J3ZYvF1UKFWUKrZ5Zr4DGan0
+	qF1jy3ZrJF48Ar7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UtwIgUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEgDEZWjA+a16GgAAsv
 
-On Sep 10 2025, Finn Thain wrote:
+From: Shawn Guo <shawnguo@kernel.org>
 
-> Linux is probably the only non-trivial program that could be feasibly 
-> rebuilt with -malign-int without ill effect (i.e. without breaking 
-> userland)
+A regression is seen with 6.6 -> 6.12 kernel upgrade on platforms where
+cpufreq-dt driver sets cpuinfo.transition_latency as CPUFREQ_ETERNAL (-1),
+due to that platform's DT doesn't provide the optional property
+'clock-latency-ns'.  The dbs sampling_rate was 10000 us on 6.6 and
+suddently becomes 6442450 us (4294967295 / 1000 * 1.5) on 6.12 for these
+platforms, because that the 10 ms cap for transition_delay_us was
+accidentally dropped by the commits below.
 
-No, you can't.  It would change the layout of basic user-level
-structures, breaking the syscall ABI.
+  commit 37c6dccd6837 ("cpufreq: Remove LATENCY_MULTIPLIER")
+  commit a755d0e2d41b ("cpufreq: Honour transition_latency over transition_delay_us")
+  commit e13aa799c2a6 ("cpufreq: Change default transition delay to 2ms")
 
+It slows down dbs governor's reacting to CPU loading change
+dramatically.  Also, as transition_delay_us is used by schedutil governor
+as rate_limit_us, it shows a negative impact on device idle power
+consumption, because the device gets slightly less time in the lowest OPP.
+
+Fix the regressions by adding the 10 ms cap on transition delay back.
+
+Cc: stable@vger.kernel.org
+Fixes: 37c6dccd6837 ("cpufreq: Remove LATENCY_MULTIPLIER")
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+---
+ drivers/cpufreq/cpufreq.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index fc7eace8b65b..36e0c85cb4e0 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -551,8 +551,13 @@ unsigned int cpufreq_policy_transition_delay_us(struct cpufreq_policy *policy)
+ 
+ 	latency = policy->cpuinfo.transition_latency / NSEC_PER_USEC;
+ 	if (latency)
+-		/* Give a 50% breathing room between updates */
+-		return latency + (latency >> 1);
++		/*
++		 * Give a 50% breathing room between updates.
++		 * And cap the transition delay to 10 ms for platforms
++		 * where the latency is too high to be reasonable for
++		 * reevaluating frequency.
++		 */
++		return min(latency + (latency >> 1), 10 * MSEC_PER_SEC);
+ 
+ 	return USEC_PER_MSEC;
+ }
 -- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+2.43.0
+
 
