@@ -1,185 +1,153 @@
-Return-Path: <stable+bounces-179192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE83EB514C2
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 13:05:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 282B9B51510
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 13:11:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9689C17753A
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 11:05:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD4D2546C79
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 11:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9BA3164B4;
-	Wed, 10 Sep 2025 11:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4891A31B13F;
+	Wed, 10 Sep 2025 11:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="VtmIrCR5"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JYONtoEZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49F031D370;
-	Wed, 10 Sep 2025 11:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C09031814C
+	for <stable@vger.kernel.org>; Wed, 10 Sep 2025 11:09:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757502317; cv=none; b=t5o8NQk/TyFI3Ptwe/KIet2qwqGSiyTI6eO5JlC+LEUN8/a/mSHdAre/0M8mFqa5BQITBSfwvaFJCy1/n0TxlZ2Y5hTjQfVXwizyBhWdM67UvXa0k1DtBQJEN3E+wPpcHxTqs6YvmoG2xHYfQFlHOGn/Fhu6FqjF5WLdmdQKeyo=
+	t=1757502571; cv=none; b=jUcWAukn+G8OtAXkJP2qpfsERL1z49YWWfjNkBUFIPSL5h2l5KnNNCsKtdLW5Q/m9d1MBydF7kwsQbo88dFeDJQNg58DXFGue8RnqQZD6/diutK5JR5h7yr8EBXQ42WPeSI5ACKpmX/LaFWM6ubfsRXoADvG2Rr1S75vpes43f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757502317; c=relaxed/simple;
-	bh=mr5VREO0zlgyp0+N3c6zL0+mdMv963Esrn8kaa2OT50=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LbwSgqXSw2C6STTs/Yyni0yl/gj8IUvaKkzmxo7+inIoL3xtJhvhA7B1z6OnlKH/AVXhnFGr4fpBEW0o0Eov/feh+qDlZswbRgEBuJCbHdj/6pJFX729tAD1RU2BeRW9Iu6nD9tbmG+lCRrWKaoIdarMYBgIy3vAxwnLNj3PHEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=VtmIrCR5; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58A9N7dO010083;
-	Wed, 10 Sep 2025 11:05:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=OCpi8OJ5u07C66mC
-	VMY0WtQNKjYjRamzDj98hmn56E0=; b=VtmIrCR5mfkoC0194t0qVYs9PTo2r9ay
-	IJ8N91j4LP04+qlwAzXwOApjeIFiNEcgTJ2MMYwxbNhQGNtUAfYmft4fBH/ZDiEo
-	K9pTksHwabybMODAWd7U/s4Y39xt7o3u8nFFUOBReqTgVjZwhLU3PbXU1PAD8Kj+
-	q0rMtXMhlzRtBtsW/XDqpLid9mOcLjNyEF+LWX96PRdHZnxVel39e96S9wxvkMSS
-	WmF2ksXS05RLA8nI7dCylLrbt+VI9IibbiK1hiNiSv3Ooraw1QNdwFxhVVFq+Upb
-	RuEGN06ZheAJZWngd6AWnGByttTeJ0QvlX5UV4ilLa42LPKX+QRgXA==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4921d1m1xe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Sep 2025 11:05:08 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58AAKsq2013588;
-	Wed, 10 Sep 2025 11:05:07 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 490bdb2r97-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Sep 2025 11:05:07 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58AB57Xd035490;
-	Wed, 10 Sep 2025 11:05:07 GMT
-Received: from lab61.no.oracle.com (lab61.no.oracle.com [10.172.144.82])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 490bdb2r4w-1;
-	Wed, 10 Sep 2025 11:05:06 +0000
-From: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>
-To: Allison Henderson <allison.henderson@oracle.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: stable@vger.kernel.org,
-        =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-        rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org
-Subject: [PATCH net v3] rds: ib: Increment i_fastreg_wrs before bailing out
-Date: Wed, 10 Sep 2025 13:04:59 +0200
-Message-ID: <20250910110501.350238-1-haakon.bugge@oracle.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1757502571; c=relaxed/simple;
+	bh=BQ2XtYRwei+F/8LMUKBdKEm+z8pxUaNiGAkH40rNEKc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=aAahDEdcxcGr/xj96moukanyU8tGe3EGuSvA1E5ttLawRz3Z5zh+ArUoHsbQrzkzn4XyUfALUOEZxi64mpN2r6hAPW11AupcPE9UqzMC+Xb1HqM32frzTEAQFKhR/JMynoLH/nK3a41rbXv2EBDXgc5/SYUfTiyEfaRvhn4UK6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JYONtoEZ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757502568;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EEfKAAgF77B0N35cHlVCZR8H3qoPVBq2FQNy2mJIamk=;
+	b=JYONtoEZ9+9kfTQXg5T9LNFeOUV5afuSWSIja66oCJoSl0HwnqC2MPn4sq5tZYkGCMcAw0
+	kkLwD5fhfCxrAGFVNZHJZFW3/9DrDo0gyUyOb+HZ3pChFiz7pgQ1WRt82VBlD/CV8rX3Ai
+	Ziq9RWwsE1+vICG+0ChuskRzGElGJaE=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-661-phmbjhz0MliiW7LqofRrjg-1; Wed, 10 Sep 2025 07:09:25 -0400
+X-MC-Unique: phmbjhz0MliiW7LqofRrjg-1
+X-Mimecast-MFC-AGG-ID: phmbjhz0MliiW7LqofRrjg_1757502564
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b98de0e34so52180155e9.0
+        for <stable@vger.kernel.org>; Wed, 10 Sep 2025 04:09:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757502563; x=1758107363;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EEfKAAgF77B0N35cHlVCZR8H3qoPVBq2FQNy2mJIamk=;
+        b=cYAwLwZI/62rneI7Kn4FfPp56prWqlo3HmNuOvf5+jj3blwKjZ4pf00aa47gwUbPxN
+         nITyQzQRzNuo6m28tkpOtjhl99oWGDa+7ewtFPF4UqlsF1cXWL459DUVPR1vbqCYJ4dL
+         v+8/i84QjDlKI7sHm3cNBgMUzp6T0o9GZBYiqrm4lmHto3l2tIYKNomVGIcmQZ3F4TIh
+         k3yR0b2gXm5nmJbswSJqg/NMgM5ia0+Z+fDyMdiuoDUbbAauUXFc4cSM3T+pYYGODCXr
+         1sykYJHIM29jgRSt3wRfEg5qYy4Mk5H+CPyn34Zap9lwPMlk1vKjS4q30rMt1hZDM6f6
+         p6sw==
+X-Gm-Message-State: AOJu0YwJw9AR7UFp/+rzbQDZXwBI+ih74wroyGcWXCmKMtvl1U1Ornru
+	+AkAZfPxLYPkomyISSXNMEZRytn3ylDsggfv3Fxz+6VdifP6NlvYXF4o9lAOZHNswNal0bQOJkn
+	G4J+e2puOHBZs+3olkxByEvylEKtAewVVm1DCJyIhhmNoUQn5pxVTgwUYGug+Fou9UA==
+X-Gm-Gg: ASbGnctbrQI6RBRK+BiatKVjOAvA+7wzt0NRpIctSB8pEP1lYNbiV/Di99Zk+YjudWa
+	9GpU0MZTRu02HXmBvNA0m4ccc6Je6aoEF0dDoh0yknr+/bSfKHch4n0lu57dhgHPhX6/1+/0bqD
+	4tQ5b8y2neE4g/b1LHnm2+DVejkTjVe1c0gOgr7/IWn+8u7JsPKZwO9sALX5YsC8JDGAj9h6aXr
+	59JmSi95LrSCD9vUJoitWGzo9/709jjJ0CUIl8ytqiVZb6l3+XXJlTB3v5NUFsORFbxsLymAENJ
+	xeQR7Dn2KoMCjhAeiQL8NunHZYUmUJdR0jf6lqalLtOlO2cteIKkN8BDcvheAlEyhnSOo6cchi3
+	hv8wKA/OHZFabfLf/xAnbZg==
+X-Received: by 2002:a05:6000:2889:b0:3e5:50:e044 with SMTP id ffacd0b85a97d-3e643555859mr13543078f8f.45.1757502563469;
+        Wed, 10 Sep 2025 04:09:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEtsE6TP99LwCM9DefOr4NgVBIR7vSn0IU371t63+HnR3UaFYs5LDu32sAvz1H1Dto10pgN1g==
+X-Received: by 2002:a05:6000:2889:b0:3e5:50:e044 with SMTP id ffacd0b85a97d-3e643555859mr13543046f8f.45.1757502563021;
+        Wed, 10 Sep 2025 04:09:23 -0700 (PDT)
+Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45df1ba282dsm26332925e9.5.2025.09.10.04.09.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Sep 2025 04:09:22 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Brett A C Sheffield <bacs@librecast.net>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, Simona Vetter <simona@ffwll.ch>, Helge
+ Deller <deller@gmx.de>, Thomas Zimmermann <tzimmermann@suse.de>, Lee Jones
+ <lee@kernel.org>, Murad Masimov <m.masimov@mt-integration.ru>, Yongzhen
+ Zhang <zhangyongzhen@kylinos.cn>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 1/1] Revert "fbdev: Disable sysfb device registration
+ when removing conflicting FBs"
+In-Reply-To: <aMFYeV4UdD7NnrSC@karahi.gladserv.com>
+References: <20250910095124.6213-3-bacs@librecast.net>
+ <20250910095124.6213-5-bacs@librecast.net>
+ <87frcuegb7.fsf@minerva.mail-host-address-is-not-set>
+ <aMFYeV4UdD7NnrSC@karahi.gladserv.com>
+Date: Wed, 10 Sep 2025 13:09:20 +0200
+Message-ID: <87cy7yef8f.fsf@minerva.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-09_03,2025-09-10_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 mlxscore=0
- mlxlogscore=999 adultscore=0 phishscore=0 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509100101
-X-Proofpoint-ORIG-GUID: CYATfuSztpsdZXvqgwIgyX1ejF1u80s9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDE1MCBTYWx0ZWRfXx7LBPhpsEOSm
- 3WPKCLsVnjog3w+4c3uG+lLK/xG+iIOfD77c81GubJlhaOzDV3PnZeQL9SQQOxWW76rvM1ME6Mg
- c9IKmnxtpb6kyq9dlqplKWFvAP+BOE/SeloPGLZlw3B4WD08exGY0s4O3bgCHFnmw6jrJeQR52f
- CXeIE8DiDhy6d0FhUDTsEQmglLhsFhCu42w80VSd4lHawJeE9diJKDeTMzp79/Q9buyvob3Q43b
- +y4Ec/Tt6SK9pcVm5mLY66UMmv2WH6gbbZTNcNgtbCXMPM1Wdl/bPAX1kWye5ULHMDLr9mpUQhR
- wI0tmtkiSWe+zpMFaq6EMujf1Y5LVO6ymVvTOXYFQJQnIncSmy0dAp+52UCahdsqg1J4fTDUTkk
- GC1gtnTH
-X-Authority-Analysis: v=2.4 cv=d6P1yQjE c=1 sm=1 tr=0 ts=68c15b64 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=M51BFTxLslgA:10 a=VwQbUJbxAAAA:8
- a=yPCof4ZbAAAA:8 a=9eyeeSo07tw-mEE3XcsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: CYATfuSztpsdZXvqgwIgyX1ejF1u80s9
+Content-Type: text/plain
 
-We need to increment i_fastreg_wrs before we bail out from
-rds_ib_post_reg_frmr().
+Brett A C Sheffield <bacs@librecast.net> writes:
 
-We have a fixed budget of how many FRWR operations that can be
-outstanding using the dedicated QP used for memory registrations and
-de-registrations. This budget is enforced by the atomic_t
-i_fastreg_wrs. If we bail out early in rds_ib_post_reg_frmr(), we will
-"leak" the possibility of posting an FRWR operation, and if that
-accumulates, no FRWR operation can be carried out.
+> On 2025-09-10 12:46, Javier Martinez Canillas wrote:
+>> Brett A C Sheffield <bacs@librecast.net> writes:
+>> 
+>> Hello Brett,
+>> 
+>> > This reverts commit 13d28e0c79cbf69fc6f145767af66905586c1249.
+>> >
+>> > Commit ee7a69aa38d8 ("fbdev: Disable sysfb device registration when
+>> > removing conflicting FBs") was backported to 5.15.y LTS. This causes a
+>> > regression where all virtual consoles stop responding during boot at:
+>> >
+>> > "Populating /dev with existing devices through uevents ..."
+>> >
+>> > Reverting the commit fixes the regression.
+>> >
+>> > Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
+>> > ---
+>> 
+>> In the other email you said:
+>> 
+>> > Newer stable kernels with this
+>> > patch (6.1.y, 6.6.y, 6.12,y, 6.15.y, 6.16.y) and mainline are unaffected.
+>> 
+>> But are you proposing to revert the mentioned commit in mainline too
+>> or just in the 5.15.y LTS tree ?
+>
+> Only the 5.15.y tree. Sorry - that could have been clearer.  There's no
+> regression anywhere else. Mainline and other stable kernels are all ok.
+>
 
-Fixes: 1659185fb4d0 ("RDS: IB: Support Fastreg MR (FRMR) memory registration mode")
-Fixes: 3a2886cca703 ("net/rds: Keep track of and wait for FRWR segments in use upon shutdown")
-Cc: stable@vger.kernel.org
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+That's what I thought but just wanted to confirm that was the case. Thanks!
 
----
+> Cheers,
+>
+>
+> Brett
+>
 
-v2 -> v3:
-   * Amended commit message
-   * Removed indentation of this section
-   * Fixing error path from ib_post_send()
-
-v1 -> v2: Added Cc: stable@vger.kernel.org
----
- net/rds/ib_frmr.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
-
-diff --git a/net/rds/ib_frmr.c b/net/rds/ib_frmr.c
-index 28c1b00221780..395a99b5a65ca 100644
---- a/net/rds/ib_frmr.c
-+++ b/net/rds/ib_frmr.c
-@@ -133,12 +133,15 @@ static int rds_ib_post_reg_frmr(struct rds_ib_mr *ibmr)
- 
- 	ret = ib_map_mr_sg_zbva(frmr->mr, ibmr->sg, ibmr->sg_dma_len,
- 				&off, PAGE_SIZE);
--	if (unlikely(ret != ibmr->sg_dma_len))
--		return ret < 0 ? ret : -EINVAL;
-+	if (unlikely(ret != ibmr->sg_dma_len)) {
-+		ret = ret < 0 ? ret : -EINVAL;
-+		goto out_inc;
-+	}
- 
--	if (cmpxchg(&frmr->fr_state,
--		    FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE)
--		return -EBUSY;
-+	if (cmpxchg(&frmr->fr_state, FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE) {
-+		ret = -EBUSY;
-+		goto out_inc;
-+	}
- 
- 	atomic_inc(&ibmr->ic->i_fastreg_inuse_count);
- 
-@@ -166,11 +169,10 @@ static int rds_ib_post_reg_frmr(struct rds_ib_mr *ibmr)
- 		/* Failure here can be because of -ENOMEM as well */
- 		rds_transition_frwr_state(ibmr, FRMR_IS_INUSE, FRMR_IS_STALE);
- 
--		atomic_inc(&ibmr->ic->i_fastreg_wrs);
- 		if (printk_ratelimit())
- 			pr_warn("RDS/IB: %s returned error(%d)\n",
- 				__func__, ret);
--		goto out;
-+		goto out_inc;
- 	}
- 
- 	/* Wait for the registration to complete in order to prevent an invalid
-@@ -178,9 +180,11 @@ static int rds_ib_post_reg_frmr(struct rds_ib_mr *ibmr)
- 	 * being accessed while registration is still pending.
- 	 */
- 	wait_event(frmr->fr_reg_done, !frmr->fr_reg);
--
- out:
-+	return ret;
- 
-+out_inc:
-+	atomic_inc(&ibmr->ic->i_fastreg_wrs);
- 	return ret;
- }
- 
 -- 
-2.43.5
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
 
