@@ -1,186 +1,259 @@
-Return-Path: <stable+bounces-179206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A00DB51951
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 16:28:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E5FCB51B07
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 17:11:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F2441C26965
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 14:28:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C65A1172A1C
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 15:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9949326D75;
-	Wed, 10 Sep 2025 14:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A6925BF18;
+	Wed, 10 Sep 2025 15:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="huwaecfn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DgnE+HzF"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B51921ABD7;
-	Wed, 10 Sep 2025 14:27:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F891329F12;
+	Wed, 10 Sep 2025 15:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757514457; cv=none; b=MWZ6HhaIzx9QluyqpiQ6H1Db7+oC2HvAip3PaUVSvTkhN14USwrAc//L9bgkdoWQEN86pC7IM5SnAB4MKJ/JFblPMSURO2XorhlwmwBPWPfA2UBrBDIZY/lZGh+H5NibNeLBFQWbb8FObHngIX01ixoY4N/3Z89vvbDoxvO7qQI=
+	t=1757516854; cv=none; b=TmAI2z1UM91CdQ8VPazSojGAnYw5x1irI7RJzMJIWG0MbTZNE259W0VqWHI40aG7cfzi80jDzYrSMb5bUm47wLeHtlKOrkEZgNtk+7eLqb1OirEAm4H5H+gWDFTShwPsUbzoaLwGN8h1DtxOle9pMRsgBuF1/Mq4IstLyXNsHqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757514457; c=relaxed/simple;
-	bh=F+54nyJoOaeW+YO7b5fh/pn2Rb9lPRUq7jAkB4/h54U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EsM5hUNh/8maRdcHR/20KBuqxXSOiaHhYkisYdrRtHB1lYz5yMqF5PtmnRySsZDu4TFHoghw2tibX15BrQHdS9vVVlcKBqoErJZ7+bHyUYDXm8GMCIt26JzBxBTQa1gVJ8+sTBUt/CImfaFDO+EiaDrsFj0GGPKj4hGHNYxxZTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=huwaecfn; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=gk
-	aLOONp2OfwA99Mnop3EmvMXcoEsDECzL1MSv7/DgI=; b=huwaecfnZ1MLoojV4c
-	UC/hfX4oC3UyxonBZewJjVc8EeGCEdpN6QdVKVIGn7qKebkbf9upDjvk8Y2dQlUl
-	wIZ7NE8Np+IrDYzG+/gSwojUD20Er7M2mdswyKh3B8CWK1EjEiWjUS5f2snkvzYn
-	/QVbG8HUIJbqs/LbdIZSHFya4=
-Received: from MS-CMFLBWVCLQRG.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3XxuyisFoZggUAQ--.49759S2;
-	Wed, 10 Sep 2025 22:27:00 +0800 (CST)
-From: GuangFei Luo <luogf2025@163.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	luogf2025@163.com,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH v2] ACPI: battery: prevent sysfs_add_battery re-entry on rapid events
-Date: Wed, 10 Sep 2025 22:26:53 +0800
-Message-ID: <20250910142653.313360-1-luogf2025@163.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1757516854; c=relaxed/simple;
+	bh=umxHN0eSqhWGYImhBQzS1cHIh4vrTZ/y67rXoJWxDJE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mz7HwYL+aKkxbgFwkiig5tF94uQWIXhKShTQFpiLQSkNKR5T4uu4WBHh6U45gWrRqzizRPUFV0dBuHfDUe1p61fwojBYgdxevqgaccTMY2BB33zfJRD2th3CTCPwLJFh+Eeybmhslhw2OoMzWU8IYw2CYWCkS13s4WwReFF6Pok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DgnE+HzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDA4C4CEEB;
+	Wed, 10 Sep 2025 15:07:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757516853;
+	bh=umxHN0eSqhWGYImhBQzS1cHIh4vrTZ/y67rXoJWxDJE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DgnE+HzF4jsYdoJvzQQmArzEeAF8hOnexC6z7f9yZs3esjDd916767upJxvCjl8LW
+	 U0AQfZEescGT4PbF2LvrnNB1yyShHOlPWBPMuVOnalW/MlDEQ74+W+ZWBvH3S/YgqO
+	 0pmmMJyWC1qerXbM+OYXNGx3xy+4XufahXq7D+b1b68srydRB5mIYXBGC6DQxGm6Jx
+	 WT2tnuEj96CEbrPqawb7l4Gl3x+bzoehX06l6UFjs4GYAGkbVDWeW//HfBn46saLPV
+	 93Mh4g2tMAsBt+m+ZwHGOXXkTCqnni+zvYW9yHNmaA/R6SC2EI0nSSViEMGm1LksPl
+	 pdwsN0dnaYosA==
+Message-ID: <0f358cc9-c8cf-4fd9-80d5-b524cc5b6c3c@kernel.org>
+Date: Wed, 10 Sep 2025 17:07:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3XxuyisFoZggUAQ--.49759S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3AF43ur1kWw4fWF43uF18Grg_yoW7Cr1xpa
-	yrKa1UKrW8GF4kJwsF9F1jgFyxWan0qF9rWr95Jrn2kasruw1DAryxZFyUXFsrGrykZ3y8
-	ZF1kt3Wrtw1xWw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U2Q6AUUUUU=
-X-CM-SenderInfo: poxrwwisqskqqrwthudrp/1tbizRrEmWjBgQHokwAAsY
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] fbdev/simplefb: Fix use after free in
+ simplefb_detach_genpds()
+To: Janne Grunau <j@jannau.net>, Helge Deller <deller@gmx.de>,
+ Thierry Reding <treding@nvidia.com>
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, Daniel Huhardeaux <tech@tootai.net>,
+ stable@vger.kernel.org
+References: <20250908-simplefb-genpd-uaf-v2-1-f88a0d9d880f@jannau.net>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <20250908-simplefb-genpd-uaf-v2-1-f88a0d9d880f@jannau.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-v2:
- - Fix missing mutex_unlock in acpi_battery_update()
-   (Reported-by: kernel test robot)
+Hi Janne,
 
-When removing and reinserting the laptop battery, ACPI can trigger
-two notifications in quick succession:
+On 8-Sep-25 11:23 PM, Janne Grunau wrote:
+> The pm_domain cleanup can not be devres managed as it uses struct
+> simplefb_par which is allocated within struct fb_info by
+> framebuffer_alloc(). This allocation is explicitly freed by
+> unregister_framebuffer() in simplefb_remove().
+> Devres managed cleanup runs after the device remove call and thus can no
+> longer access struct simplefb_par.
+> Call simplefb_detach_genpds() explicitly from simplefb_destroy() like
+> the cleanup functions for clocks and regulators.
+> 
+> Fixes an use after free on M2 Mac mini during
+> aperture_remove_conflicting_devices() using the downstream asahi kernel
+> with Debian's kernel config. For unknown reasons this started to
+> consistently dereference an invalid pointer in v6.16.3 based kernels.
 
-  - ACPI_BATTERY_NOTIFY_STATUS (0x80)
-  - ACPI_BATTERY_NOTIFY_INFO   (0x81)
+Thank you for your patch.
 
-Both notifications call acpi_battery_update(). Because the events
-happen very close in time, sysfs_add_battery() can be re-entered
-before battery->bat is set, causing a duplicate sysfs entry error.
+This patch seems to miss adding a simplefb_detach_genpds()
+on error-exit from simplefb_probe() after a successful
+simplefb_attach_genpds() call ?
 
-This patch ensures that sysfs_add_battery() is not re-entered
-when battery->bat is already non-NULL, preventing the duplicate
-sysfs creation and stabilizing battery hotplug handling.
+Regards,
 
-[  476.117945] sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
-[  476.118896] CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
-[  476.118903] Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
-[  476.118906] Workqueue: kacpi_notify acpi_os_execute_deferred
-[  476.118917] Call Trace:
-[  476.118922]  <TASK>
-[  476.118929]  dump_stack_lvl+0x5d/0x80
-[  476.118938]  sysfs_warn_dup.cold+0x17/0x23
-[  476.118943]  sysfs_create_dir_ns+0xce/0xe0
-[  476.118952]  kobject_add_internal+0xba/0x250
-[  476.118959]  kobject_add+0x96/0xc0
-[  476.118964]  ? get_device_parent+0xde/0x1e0
-[  476.118970]  device_add+0xe2/0x870
-[  476.118975]  __power_supply_register.part.0+0x20f/0x3f0
-[  476.118981]  ? wake_up_q+0x4e/0x90
-[  476.118990]  sysfs_add_battery+0xa4/0x1d0 [battery]
-[  476.118998]  acpi_battery_update+0x19e/0x290 [battery]
-[  476.119002]  acpi_battery_notify+0x50/0x120 [battery]
-[  476.119006]  acpi_ev_notify_dispatch+0x49/0x70
-[  476.119012]  acpi_os_execute_deferred+0x1a/0x30
-[  476.119015]  process_one_work+0x177/0x330
-[  476.119022]  worker_thread+0x251/0x390
-[  476.119026]  ? __pfx_worker_thread+0x10/0x10
-[  476.119030]  kthread+0xd2/0x100
-[  476.119033]  ? __pfx_kthread+0x10/0x10
-[  476.119035]  ret_from_fork+0x34/0x50
-[  476.119040]  ? __pfx_kthread+0x10/0x10
-[  476.119042]  ret_from_fork_asm+0x1a/0x30
-[  476.119049]  </TASK>
-[  476.142552] kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
-[  476.415022] ata1.00: unexpected _GTF length (8)
-[  476.428076] sd 0:0:0:0: [sda] Starting disk
-[  476.835035] ata1.00: unexpected _GTF length (8)
-[  476.839720] ata1.00: configured for UDMA/133
-[  491.328831] sysfs: cannot create duplicate filename '/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT1'
-[  491.329720] CPU: 1 UID: 0 PID: 185 Comm: kworker/1:4 Kdump: loaded Not tainted 6.12.38+deb13-amd64 #1  Debian 6.12.38-1
-[  491.329727] Hardware name: Gateway          NV44             /SJV40-MV        , BIOS V1.3121 04/08/2009
-[  491.329731] Workqueue: kacpi_notify acpi_os_execute_deferred
-[  491.329741] Call Trace:
-[  491.329745]  <TASK>
-[  491.329751]  dump_stack_lvl+0x5d/0x80
-[  491.329758]  sysfs_warn_dup.cold+0x17/0x23
-[  491.329762]  sysfs_create_dir_ns+0xce/0xe0
-[  491.329770]  kobject_add_internal+0xba/0x250
-[  491.329775]  kobject_add+0x96/0xc0
-[  491.329779]  ? get_device_parent+0xde/0x1e0
-[  491.329784]  device_add+0xe2/0x870
-[  491.329790]  __power_supply_register.part.0+0x20f/0x3f0
-[  491.329797]  sysfs_add_battery+0xa4/0x1d0 [battery]
-[  491.329805]  acpi_battery_update+0x19e/0x290 [battery]
-[  491.329809]  acpi_battery_notify+0x50/0x120 [battery]
-[  491.329812]  acpi_ev_notify_dispatch+0x49/0x70
-[  491.329817]  acpi_os_execute_deferred+0x1a/0x30
-[  491.329820]  process_one_work+0x177/0x330
-[  491.329826]  worker_thread+0x251/0x390
-[  491.329830]  ? __pfx_worker_thread+0x10/0x10
-[  491.329833]  kthread+0xd2/0x100
-[  491.329836]  ? __pfx_kthread+0x10/0x10
-[  491.329838]  ret_from_fork+0x34/0x50
-[  491.329842]  ? __pfx_kthread+0x10/0x10
-[  491.329844]  ret_from_fork_asm+0x1a/0x30
-[  491.329850]  </TASK>
-[  491.329855] kobject: kobject_add_internal failed for BAT1 with -EEXIST, don't try to register things with the same name in the same directory.
+Hans
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202509101620.yI0HZ5gT-lkp@intel.com/
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202509101620.yI0HZ5gT-lkp@intel.com/
-Fixes: 508df92d1f8d ("ACPI: battery: register power_supply subdevice only when battery is present")
-Signed-off-by: GuangFei Luo <luogf2025@163.com>
-Cc: stable@vger.kernel.org
----
- drivers/acpi/battery.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 6905b56bf3e4..649185f7a3b1 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -1026,11 +1026,15 @@ static int acpi_battery_update(struct acpi_battery *battery, bool resume)
- 		return result;
- 	acpi_battery_quirks(battery);
- 
-+	mutex_lock(&battery->sysfs_lock);
- 	if (!battery->bat) {
- 		result = sysfs_add_battery(battery);
--		if (result)
-+		if (result) {
-+			mutex_unlock(&battery->sysfs_lock);
- 			return result;
-+		}
- 	}
-+	mutex_unlock(&battery->sysfs_lock);
- 
- 	/*
- 	 * Wakeup the system if battery is critical low
--- 
-2.43.0
+
+
+> 
+> [    6.736134] BUG: KASAN: slab-use-after-free in simplefb_detach_genpds+0x58/0x220
+> [    6.743545] Read of size 4 at addr ffff8000304743f0 by task (udev-worker)/227
+> [    6.750697]
+> [    6.752182] CPU: 6 UID: 0 PID: 227 Comm: (udev-worker) Tainted: G S                  6.16.3-asahi+ #16 PREEMPTLAZY
+> [    6.752186] Tainted: [S]=CPU_OUT_OF_SPEC
+> [    6.752187] Hardware name: Apple Mac mini (M2, 2023) (DT)
+> [    6.752189] Call trace:
+> [    6.752190]  show_stack+0x34/0x98 (C)
+> [    6.752194]  dump_stack_lvl+0x60/0x80
+> [    6.752197]  print_report+0x17c/0x4d8
+> [    6.752201]  kasan_report+0xb4/0x100
+> [    6.752206]  __asan_report_load4_noabort+0x20/0x30
+> [    6.752209]  simplefb_detach_genpds+0x58/0x220
+> [    6.752213]  devm_action_release+0x50/0x98
+> [    6.752216]  release_nodes+0xd0/0x2c8
+> [    6.752219]  devres_release_all+0xfc/0x178
+> [    6.752221]  device_unbind_cleanup+0x28/0x168
+> [    6.752224]  device_release_driver_internal+0x34c/0x470
+> [    6.752228]  device_release_driver+0x20/0x38
+> [    6.752231]  bus_remove_device+0x1b0/0x380
+> [    6.752234]  device_del+0x314/0x820
+> [    6.752238]  platform_device_del+0x3c/0x1e8
+> [    6.752242]  platform_device_unregister+0x20/0x50
+> [    6.752246]  aperture_detach_platform_device+0x1c/0x30
+> [    6.752250]  aperture_detach_devices+0x16c/0x290
+> [    6.752253]  aperture_remove_conflicting_devices+0x34/0x50
+> ...
+> [    6.752343]
+> [    6.967409] Allocated by task 62:
+> [    6.970724]  kasan_save_stack+0x3c/0x70
+> [    6.974560]  kasan_save_track+0x20/0x40
+> [    6.978397]  kasan_save_alloc_info+0x40/0x58
+> [    6.982670]  __kasan_kmalloc+0xd4/0xd8
+> [    6.986420]  __kmalloc_noprof+0x194/0x540
+> [    6.990432]  framebuffer_alloc+0xc8/0x130
+> [    6.994444]  simplefb_probe+0x258/0x2378
+> ...
+> [    7.054356]
+> [    7.055838] Freed by task 227:
+> [    7.058891]  kasan_save_stack+0x3c/0x70
+> [    7.062727]  kasan_save_track+0x20/0x40
+> [    7.066565]  kasan_save_free_info+0x4c/0x80
+> [    7.070751]  __kasan_slab_free+0x6c/0xa0
+> [    7.074675]  kfree+0x10c/0x380
+> [    7.077727]  framebuffer_release+0x5c/0x90
+> [    7.081826]  simplefb_destroy+0x1b4/0x2c0
+> [    7.085837]  put_fb_info+0x98/0x100
+> [    7.089326]  unregister_framebuffer+0x178/0x320
+> [    7.093861]  simplefb_remove+0x3c/0x60
+> [    7.097611]  platform_remove+0x60/0x98
+> [    7.101361]  device_remove+0xb8/0x160
+> [    7.105024]  device_release_driver_internal+0x2fc/0x470
+> [    7.110256]  device_release_driver+0x20/0x38
+> [    7.114529]  bus_remove_device+0x1b0/0x380
+> [    7.118628]  device_del+0x314/0x820
+> [    7.122116]  platform_device_del+0x3c/0x1e8
+> [    7.126302]  platform_device_unregister+0x20/0x50
+> [    7.131012]  aperture_detach_platform_device+0x1c/0x30
+> [    7.136157]  aperture_detach_devices+0x16c/0x290
+> [    7.140779]  aperture_remove_conflicting_devices+0x34/0x50
+> ...
+> 
+> Reported-by: Daniel Huhardeaux <tech@tootai.net>
+> Cc: stable@vger.kernel.org
+> Fixes: 92a511a568e44 ("fbdev/simplefb: Add support for generic power-domains")
+> Signed-off-by: Janne Grunau <j@jannau.net>
+> ---
+> Changes in v2:
+> - reworked change due to missed use of `par->num_genpds` before setting
+>   it. Missed in testing due to FB_SIMPLE vs. SYSFB_SIMPLEFB.
+> - Link to v1: https://lore.kernel.org/r/20250901-simplefb-genpd-uaf-v1-1-0d9f3a34c4dc@jannau.net
+> ---
+>  drivers/video/fbdev/simplefb.c | 22 ++++++++++++++++------
+>  1 file changed, 16 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/simplefb.c b/drivers/video/fbdev/simplefb.c
+> index 1893815dc67f4c1403eea42c0e10a7ead4d96ba9..2f3e5449509d1824a3d26f73e103af82d56d558a 100644
+> --- a/drivers/video/fbdev/simplefb.c
+> +++ b/drivers/video/fbdev/simplefb.c
+> @@ -93,6 +93,7 @@ struct simplefb_par {
+>  
+>  static void simplefb_clocks_destroy(struct simplefb_par *par);
+>  static void simplefb_regulators_destroy(struct simplefb_par *par);
+> +static void simplefb_detach_genpds(void *res);
+>  
+>  /*
+>   * fb_ops.fb_destroy is called by the last put_fb_info() call at the end
+> @@ -105,6 +106,7 @@ static void simplefb_destroy(struct fb_info *info)
+>  
+>  	simplefb_regulators_destroy(info->par);
+>  	simplefb_clocks_destroy(info->par);
+> +	simplefb_detach_genpds(info->par);
+>  	if (info->screen_base)
+>  		iounmap(info->screen_base);
+>  
+> @@ -451,7 +453,7 @@ static int simplefb_attach_genpds(struct simplefb_par *par,
+>  				  struct platform_device *pdev)
+>  {
+>  	struct device *dev = &pdev->dev;
+> -	unsigned int i;
+> +	unsigned int i, num_genpds;
+>  	int err;
+>  
+>  	err = of_count_phandle_with_args(dev->of_node, "power-domains",
+> @@ -465,26 +467,33 @@ static int simplefb_attach_genpds(struct simplefb_par *par,
+>  		return err;
+>  	}
+>  
+> -	par->num_genpds = err;
+> +	num_genpds = err;
+>  
+>  	/*
+>  	 * Single power-domain devices are handled by the driver core, so
+>  	 * nothing to do here.
+>  	 */
+> -	if (par->num_genpds <= 1)
+> +	if (num_genpds <= 1)
+>  		return 0;
+>  
+> -	par->genpds = devm_kcalloc(dev, par->num_genpds, sizeof(*par->genpds),
+> +	par->genpds = devm_kcalloc(dev, num_genpds, sizeof(*par->genpds),
+>  				   GFP_KERNEL);
+>  	if (!par->genpds)
+>  		return -ENOMEM;
+>  
+> -	par->genpd_links = devm_kcalloc(dev, par->num_genpds,
+> +	par->genpd_links = devm_kcalloc(dev, num_genpds,
+>  					sizeof(*par->genpd_links),
+>  					GFP_KERNEL);
+>  	if (!par->genpd_links)
+>  		return -ENOMEM;
+>  
+> +	/*
+> +	 * Set par->num_genpds only after genpds and genpd_links are allocated
+> +	 * to exit early from simplefb_detach_genpds() without full
+> +	 * initialisation.
+> +	 */
+> +	par->num_genpds = num_genpds;
+> +
+>  	for (i = 0; i < par->num_genpds; i++) {
+>  		par->genpds[i] = dev_pm_domain_attach_by_id(dev, i);
+>  		if (IS_ERR(par->genpds[i])) {
+> @@ -506,9 +515,10 @@ static int simplefb_attach_genpds(struct simplefb_par *par,
+>  			dev_warn(dev, "failed to link power-domain %u\n", i);
+>  	}
+>  
+> -	return devm_add_action_or_reset(dev, simplefb_detach_genpds, par);
+> +	return 0;
+>  }
+>  #else
+> +static void simplefb_detach_genpds(void *res) { }
+>  static int simplefb_attach_genpds(struct simplefb_par *par,
+>  				  struct platform_device *pdev)
+>  {
+> 
+> ---
+> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+> change-id: 20250901-simplefb-genpd-uaf-352704761a29
+> 
+> Best regards,
 
 
