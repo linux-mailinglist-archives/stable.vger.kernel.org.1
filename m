@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-179169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF42B50F88
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 09:34:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 869A6B50F94
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 09:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9DDB1C81FF0
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 07:34:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93B233B6B43
+	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 07:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E77D30BB92;
-	Wed, 10 Sep 2025 07:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9264C30BF54;
+	Wed, 10 Sep 2025 07:36:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC3630B532;
-	Wed, 10 Sep 2025 07:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F7330C35D;
+	Wed, 10 Sep 2025 07:36:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757489659; cv=none; b=N05B1plaEZz0tIbVgRM3RWZ6Ia46iGGehlVWCanMG3s0/ddTVJ3vuTGKDXNq8QFVjza5fGeKqVyUc5RDhlp7261ht6Jqc8YFrfZjLTd5yfb5NZsfZ1hszkIvgfISdeC2BPfsSKsOyJ1qRJaA8odkp610fNayWrE2WshliiWL+mg=
+	t=1757489808; cv=none; b=KGqlh3P2sMa0STIqmTWuDMeTVNs+qvp9WCKnhb8kGrnYa71tSrx01V+opY2fezYMHNMRPWvXshMY/4CanpaV9NNhfXPlsxB0Uuv9JA38fGLnfA3EchzyvbH4fna7mMai0RtEyn+fhuQx0TPlX7eYWT29tHjQPVq+ugyWkKLRKKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757489659; c=relaxed/simple;
-	bh=7JVCTuxNSSrD3gp30fd3z1ICk15oPmTaX7Cu1euHSkM=;
+	s=arc-20240116; t=1757489808; c=relaxed/simple;
+	bh=TmOayCIKSed+U3pftMVxB4RfTilR+32vHekUHfTlPq0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DRPr85UAK/YcO6oxGYusnEE7xtMg4b62fyc1coAumKWNGKXCvVohovsfFRpX4/kySXSpAyHygeJi5PaKS1et7DiGCI1yQXLXwmCvtnCXKmMseiXlOsWMFt/l59N+LbTd94fQ1VQuY05tmLUAjlxD/aAcTbjuPN7UJpLQh9eyl3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.49
+	 To:Cc:Content-Type; b=QTtAtXSwfEtOOVlQLP7piXXZ59J0/+dfG7HueP5h/qihlVrCmK3ZRx2mR9E5LIehgd8/eVkBJOfp9+sDT9Xd6+dAA0j7Gbdn+leVyKrovDTp3daT6rCEupzh+Lw+T9L3RfXAcDh9hqyt51PPbvM1SJfHKJ8OKOdMnoxK3whIQzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-53410d0f4e7so5084178137.0;
-        Wed, 10 Sep 2025 00:34:14 -0700 (PDT)
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-54492cc6eb1so4412298e0c.2;
+        Wed, 10 Sep 2025 00:36:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757489654; x=1758094454;
+        d=1e100.net; s=20230601; t=1757489805; x=1758094605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=FmLXE0lZ84N+xSM1hxrqEkto2TV6tPUT28zoISyt35g=;
-        b=weyEneUHM33R3yV32qjP2qwivB4PTMVD6SxasglWcIjARU5TWVLFSHoQJJCq+bYHzO
-         5hWZOew3ooLSo/BaRgLPQSNdKKisL6zIGqUt1oLDnlwG89SMGJ9j8kn0gS0fLd73qsqM
-         Sc3dnX0TqjKJpbEULlSLt5eiJ9flGG2MZnMdWaeXsmVY4iaBzj75QgCg8u1guBd/+y0G
-         HQxuopcalB48R+tCb19o2+HAbS4e75wZkLRw7FDmknYM9FZaXq/ehtFHFx1YHV4JEKpX
-         ymCledvhwBgiilfim4slXnhmlyj2io5zX5WVh4+rMKMsOYeGYGq1Q1KMf4M/p3+Ovpre
-         pvQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUIy1fT6huDQfQrPjo7pZrD/UaDsiLdVci0vXqpMR6N0ahR6li2mZbMMHCVRfYqo0T9qocgdcXJR5x4358=@vger.kernel.org, AJvYcCVzPsezo66BiUcyhThd5tjMMcL8eOk0sNGDL+HhtMluQTRJ1WunMaYfdxNa+TzSvIExMecqx7pS@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKCjGk15SfTCsFqxEzN0PMNrvmi2A9NE+X+lLPBceJBEXugBFy
-	l0frsb+37cHHiJo2/jXn2otqkVrRPNxiJAGmomqHc0hdd/SdqcQ1XuzMCOWujfW9
-X-Gm-Gg: ASbGncvNfWJXTBtUUi1+GxBhXi5NIioLjgNIsLbZ5n0psx+GbH2xIe5DO5ef/lzU9Um
-	BYeWy0sgcOiWiPekiJWRE0Z50yM+AWtLBcvs4KGvW3YyHt24mAbQzaUwq09Qu0iC+ArSviItLEu
-	bZFHVBxr/GHS7C64M9wxL5eRRN7KZGVvOvkbxXVTKuDBtriBz9IpzCMZ4ELkKyNcHEBVxegs61J
-	xrGw8mlZKtKuo5mDr09HeIpjuzHp5wkSdV/5grY0dkLStlPctOvu3eUfuOwvi3zxLMpk7xlCpjI
-	M8S3I5TrfJFXT1dAD3/uX0QXxd3LcMx3mCrHXPEtdlqxJ3Au0expUc5c/uV03zCaje9PY8AOzef
-	lhEzX6XmIVS/L1p4F8DkOHYi/l9pROPv0gQBEqSjU2ypV7k8lMOi7s9fBgfn4Vsr8lKxzqSA=
-X-Google-Smtp-Source: AGHT+IF1pdYJmL8lY5Um+FQWAdWQl1HNKnEQ6zcaLTAcKPk7CCZJPvcMokltoiFUPNY7CEvqDDTe1w==
-X-Received: by 2002:a05:6102:1612:b0:521:d81:6dc2 with SMTP id ada2fe7eead31-53d2490eb0bmr4921349137.33.1757489653959;
-        Wed, 10 Sep 2025 00:34:13 -0700 (PDT)
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com. [209.85.222.52])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-8943b7f2516sm11692667241.7.2025.09.10.00.34.13
+        bh=Q4ZPB9cLoxkxbaM7F/g702qjjiFbhLGJdP74V/VQO3M=;
+        b=TWU29+1/XRebZ1reyHvsT5lnkiwejDM7cNIkO5dj++2CeKRrlvAzI78IMbN7VEclwj
+         m1ey/gsFKERoiOm/Gv3ehfJxhuA1weS6bnKjOk+6fXCOtpjT/8jWE1h0GXyDrhL+mh/B
+         HlknnCwmgUk8kpYxuH4REGz8J6Vk30qySCvfsWLDVWX77OL0oVSb9X0N1C3VNg4M1Qk1
+         Aot2G4aK4fqy4+SJz73w6rVus5WJMbQ8mJ2YYVPuH1MSzKS7Vwh5Y9meYxiV5kbxeqQR
+         8jrIJ+IdBy0FPEJe3zrIkVazaJyGmIpFkIAWnHBTVdfB6eT59ZLPaF19faQt8MQQ2lkA
+         P5oQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVd6uRL2GhV11hi4O4PrpOXQoP3MKRbZzbH48OaGX37O1aedCXLZwOckVk940JjIkethkcpIGJT@vger.kernel.org, AJvYcCXy04zY3ZYfuz+nIXbI7GoDqczBXRXWQoxpTdxgsE/V9UXlU8dHrpR1dkOYdHpdmWrew6zPfvUxmZyg9Zw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbZe6tTgQuZLt1vNYjC3Qd5VEow6/bAUMCdZmK3njcovWe9O0/
+	tb27Mx2yXh0vBp7MCuZ4rbzYA+iNxr9wljbipc3jPlDB6c0CmQHDk/MIXeZd0bat
+X-Gm-Gg: ASbGncuGTv6z90sIKbMv1v0Y2Kjtv7/DduOH6WP/6oII8sHMkmR0S5VYj9DKsQM5bW/
+	Blf59O71MxfxLFhRLP1LEVwUrCTH1wqnyz7t7cXsYK9jHFg7v3nPiY1DpphSrPlD/BCym3rs7qV
+	jWGH9txXdoDQoeSvP6OiPWWalwim8zEbWhpdEa87Wvg3as+37L0ePoUwElt2dyNRoXy88qAwVLw
+	hsBjcHWFzUoeRGJGc9bhY0B9fONr1ZPvVPurtc3iBFLjQF72YbFpYh/Fusmzn5hjwj8gQTby4Z0
+	BzjWXgoQANaJA0RSA3QQpBI3Wn0VOa3hbulIIj+ZGt1TScqdfzZoDcp22CbwiXBkXyw0U/uhl4s
+	siWlPq0E9Cw5HTBJ1fMaPQGQdH5MUFjpF79BvnM7XxVKc8o+cA37ZL0lOn163ZZHmleovMGg=
+X-Google-Smtp-Source: AGHT+IG+e8sxjfMstEQ/h0SSAawby6HdebEO0x3qlZcLae3bXLN/9yP4BTh3lXqTRy8m5O9clYDQOA==
+X-Received: by 2002:a05:6122:168a:b0:544:9f73:9b46 with SMTP id 71dfb90a1353d-54737c557d4mr5238663e0c.16.1757489805465;
+        Wed, 10 Sep 2025 00:36:45 -0700 (PDT)
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com. [209.85.217.48])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-54521bac78bsm8720770e0c.30.2025.09.10.00.36.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Sep 2025 00:34:13 -0700 (PDT)
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-890190d9f89so3349541241.2;
-        Wed, 10 Sep 2025 00:34:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUVBXCId7mZeFfVDUB4Z3CXS6Y4s1h05lmsjrlHT5YVRwLCsYPbLFYURf1AV8OSgusCvU1xxJBuGtgLjn8=@vger.kernel.org, AJvYcCUqbD+rbOEvecRI8URtb6xSkld4D5XrUmS8145t0qN5incxv3Q7W+fA/ujJKnIhlIUVaiwFXqMM@vger.kernel.org
-X-Received: by 2002:a67:e7cc:0:b0:51c:77b:2999 with SMTP id
- ada2fe7eead31-53d1aead9a3mr4809500137.2.1757489653635; Wed, 10 Sep 2025
- 00:34:13 -0700 (PDT)
+        Wed, 10 Sep 2025 00:36:45 -0700 (PDT)
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-52dd67b03c8so4586792137.2;
+        Wed, 10 Sep 2025 00:36:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUGmJiyJNWCBi/EIUu/9FbFE5gSXMdVmybzLQ8RLBMDhqtCUaT/sJFLsga3wtGOYv45TlMRJaC7@vger.kernel.org, AJvYcCV04nBzmjpIxuyQSYkZVWMuvqa+Yvz9SfRbGLqX0M3wO2m0tHeuslG7ojtomzcigj/LGkp48PSh9QOu/nc=@vger.kernel.org
+X-Received: by 2002:a05:6102:1612:b0:524:2917:61aa with SMTP id
+ ada2fe7eead31-53d2490d7a8mr5170926137.32.1757489804939; Wed, 10 Sep 2025
+ 00:36:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,29 +72,27 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250909145243.17119-1-lance.yang@linux.dev> <yqjkjxg25gh4bdtftsdngj5suturft2b4hjbfxwe6hehbg4ctq@6i55py3jaiov>
- <b7db49106e6e7985ea949594f2e43cd53050d839.camel@physik.fu-berlin.de>
-In-Reply-To: <b7db49106e6e7985ea949594f2e43cd53050d839.camel@physik.fu-berlin.de>
+ <99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org>
+In-Reply-To: <99410857-0e72-23e4-c60f-dea96427b85a@linux-m68k.org>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 10 Sep 2025 09:34:02 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVMw3nUMtXhfhB5mgmsEZNuagna=6ywOuRsRRMFXHYwbA@mail.gmail.com>
-X-Gm-Features: AS18NWB-ENOaKkolta8T4p93QhD1mf7fceGRiGIwhtOyM-0RvPLUO80okR5zeVM
-Message-ID: <CAMuHMdVMw3nUMtXhfhB5mgmsEZNuagna=6ywOuRsRRMFXHYwbA@mail.gmail.com>
+Date: Wed, 10 Sep 2025 09:36:34 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVYiSLOk-zVopXV8i7OZdO7PAK7stZSJNJDMw=ZEqtktA@mail.gmail.com>
+X-Gm-Features: AS18NWBjsCg0nVfXhXD258JRfHuut4V1EOs3ikA4pxJOAq5hXrzJ1s5v9rh0wsw
+Message-ID: <CAMuHMdVYiSLOk-zVopXV8i7OZdO7PAK7stZSJNJDMw=ZEqtktA@mail.gmail.com>
 Subject: Re: [PATCH v2 1/1] hung_task: fix warnings caused by unaligned lock pointers
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Finn Thain <fthain@linux-m68k.org>
 Cc: Kent Overstreet <kent.overstreet@linux.dev>, Lance Yang <lance.yang@linux.dev>, 
 	akpm@linux-foundation.org, amaindex@outlook.com, anna.schumaker@oracle.com, 
-	boqun.feng@gmail.com, fthain@linux-m68k.org, ioworker0@gmail.com, 
-	joel.granados@kernel.org, jstultz@google.com, leonylgao@tencent.com, 
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	longman@redhat.com, mhiramat@kernel.org, mingo@redhat.com, 
-	mingzhe.yang@ly.com, oak@helsinkinet.fi, peterz@infradead.org, 
-	rostedt@goodmis.org, senozhatsky@chromium.org, tfiga@chromium.org, 
-	will@kernel.org, stable@vger.kernel.org
+	boqun.feng@gmail.com, ioworker0@gmail.com, joel.granados@kernel.org, 
+	jstultz@google.com, leonylgao@tencent.com, linux-kernel@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, longman@redhat.com, mhiramat@kernel.org, 
+	mingo@redhat.com, mingzhe.yang@ly.com, oak@helsinkinet.fi, 
+	peterz@infradead.org, rostedt@goodmis.org, senozhatsky@chromium.org, 
+	tfiga@chromium.org, will@kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 9 Sept 2025 at 18:55, John Paul Adrian Glaubitz
-<glaubitz@physik.fu-berlin.de> wrote:
-> On Tue, 2025-09-09 at 12:46 -0400, Kent Overstreet wrote:
+On Wed, 10 Sept 2025 at 02:07, Finn Thain <fthain@linux-m68k.org> wrote:
+> On Tue, 9 Sep 2025, Kent Overstreet wrote:
 > > On Tue, Sep 09, 2025 at 10:52:43PM +0800, Lance Yang wrote:
 > > > From: Lance Yang <lance.yang@linux.dev>
 > > >
@@ -107,18 +105,31 @@ On Tue, 9 Sept 2025 at 18:55, John Paul Adrian Glaubitz
 > >
 > > Isn't m68k the only architecture that's weird like this?
 >
-> Yes, and it does this on Linux only. I have been trying to change it upstream
-> though as the official SysV ELF ABI for m68k requires a 4-byte natural alignment [1].
+> No. Historically, Linux/CRIS did not naturally align integer types either.
+> AFAIK, there's no standard that demands natural alignment of integer
+> types. Linux ABIs differ significantly.
+>
+> For example, Linux/i386 does not naturally align long longs. Therefore,
+> x86 may be expected to become the next m68k (or CRIS) unless such
+> assumptions are avoided and alignment requirements are made explicit.
+>
+> The real problem here is the algorithm. Some under-resourced distros
+> choose to blame the ABI instead of the algorithm, because in doing so,
+> they are freed from having to work to improve upstream code bases.
+>
+> IMHO, good C doesn't make alignment assumptions, because that hinders
+> source code portability and reuse, as well as algorithm extensibility.
+> We've seen it before. The issue here [1] is no different from the pointer
+> abuse which we fixed in Cpython [2].
+>
+> Linux is probably the only non-trivial program that could be feasibly
+> rebuilt with -malign-int without ill effect (i.e. without breaking
+> userland) but that sort of workaround would not address the root cause
+> (i.e. algorithms with bad assumptions).
 
-M68k does this on various OSes and ABIs that predate or are not
-explicitly compatible with the SysV ELF ABI.
-
-Other architectures like CRIS (1-byte alignment!) are no longer supported
-by Linux.
-
-FWIW, doubles (and doublewords) are not naturally aligned in the
-SysV ELF ABI for i386, while doubles (no mention of doublewords)
-are naturally aligned in the SysV ELF ABI for m68k.
+The first step to preserve compatibility with userland would be to
+properly annotate the few uapi definitions that would change with
+-malign-int otherwise.  I am still waiting for these patches...
 
 Gr{oetje,eeting}s,
 
