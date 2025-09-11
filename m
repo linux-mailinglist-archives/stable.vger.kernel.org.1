@@ -1,259 +1,286 @@
-Return-Path: <stable+bounces-179299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1E9B53AC7
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 19:53:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAFA0B53AF8
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 20:03:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95A897B25CE
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 17:51:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57D19563B60
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 18:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68134362980;
-	Thu, 11 Sep 2025 17:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2784822759C;
+	Thu, 11 Sep 2025 18:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bkf3Wnkq"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="oxu6pCAB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14338362092;
-	Thu, 11 Sep 2025 17:53:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5117A1990A7;
+	Thu, 11 Sep 2025 18:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757613187; cv=none; b=bZuhp0aLC7yp5KBNAfdTw8x8Eh5X3jZ05/ymr7UVdUYkzRE6aFGi/6bm/wO8fyOwatEzZZw1Z29o6OX0SjUr67YZ63/ue5AOgmiQ6Aioa/mupdmaZs+XEEupB2MndnvqAD0XCZ8IhJXZnOe+74wkrFW0g7a5eBIyTiR7mB1f354=
+	t=1757613802; cv=none; b=gJzY83P3+LzAoY2zWcydWcBYLJXkchVuYqHYV4/8Ext7pLkON9q5i18JfHZEkEQXph83wQ6yEpOKraw/SYHqhGhxM/BtIVEmGVtf1IU6YyDiptJkxktYLnNsfoeduMtkqoJZhXMhU0MT2IKmwBcKHoZiWHr+XR7BmlrnmU+StC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757613187; c=relaxed/simple;
-	bh=Z2+nBVkWPIG88TqQQAQmMSXJogs17OhTvk+WeLYH5XY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ec+DqISJgnY5v2YF+wVZwncqjcsdpNh0jWwX2oqK+g96WXV4/qijORmVhmEbCgkceOdAtdNqrVvLyy20JcfPKvA2WNMp2A6+n3DZYDP0XsndTt33O7m5jo8gagIdl/mV5++eeED2oKHqV4Lwn6INe+35g2FQYviu2brH2aM03Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bkf3Wnkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 520F5C4CEF0;
-	Thu, 11 Sep 2025 17:53:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757613186;
-	bh=Z2+nBVkWPIG88TqQQAQmMSXJogs17OhTvk+WeLYH5XY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Bkf3WnkqmhSBMwSLyzsGZ4azoGtNd8x/AeMvYcXme2KsLCIEMQZtg0JCCc0qUpn1v
-	 z+u3JV55OoKd/cRJ6z1iBNauxJ8IY3vgnqPeeCjoP6Me9/aABeN2uwINlWrmbuDTwg
-	 2ZAEVKEL4LaW+BUqXN5EXd9Z3vxEV7T36Ngf2dwKRUpV2qo0xtn+0oBYPXaDxpFMKo
-	 oi5aJWCkp7UljPT7nxxCFxB4+IUEG/RoY+2H0P0xN4n5nIPexb1NlE92bPoInX0VtG
-	 r4ZnCaWOYjkUaGV2sCttM3XsoIt94mqYpPGnYpbPB5uyczrJ7QqVvd3/6z+a1xgSi3
-	 HCnY4YKUgLeQA==
-Date: Thu, 11 Sep 2025 10:51:45 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Alexander Potapenko <glider@google.com>
-Cc: Marco Elver <elver@google.com>, kasan-dev@googlegroups.com,
-	Dmitry Vyukov <dvyukov@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] kmsan: Fix out-of-bounds access to shadow memory
-Message-ID: <20250911175145.GA1376@sol>
-References: <20250829164500.324329-1-ebiggers@kernel.org>
- <20250910194921.GA3153735@google.com>
- <CAG_fn=W_7o6ANs94GwoYjyjvY5kSFYHB6DwfE+oXM7TP1eP5dw@mail.gmail.com>
+	s=arc-20240116; t=1757613802; c=relaxed/simple;
+	bh=PwhxmfDekPmUZUyYdzB3qFebg83wezD65fwG7FDANpo=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=eSR9t7Tds4xM9q65EaAh/G/81lHGovEYUJqqZx18p0uZ3DCLOfYVHyw5f3fplHThkRqX9alNO86l3UYsaidda4okUDPTeOwTnBiEpvEtBPBRNzHXfkZJl1egXqkeWaUdF5/mQU8ZuwMIE4/gXDbsnYo6ZgfNj+P5cyTiu/c34vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=oxu6pCAB; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1757613795; x=1758218595; i=rwarsow@gmx.de;
+	bh=uQl1CyALVfwIfWqEP9JDHNYXvtT+xC0tvRU9U7pmnbE=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:Subject:To:
+	 Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=oxu6pCAB1EQ6Q36dgw4Gf1gAvSdFcUNXihXVYkMFOdGKtMvQFRn2URbUviaK+4ep
+	 LqBVV5/5EcmDWcIBGxYDMET/es3fWrO1d6AtFjqhzwH8TXXeIFi2saEVh0yjFXIpd
+	 VBX3Xj4LZ61ZiJVeQLHz4+cw8owLWfPaP+xViNM3Jv9dyheEJ+VPWDE8fvpuU+uyY
+	 tepn58imJbov0X//CPkkBs92AeYhOfVAXgHVdC3ggr07SG62alTzhiGc5J1LFke+k
+	 Jwy6gfDkk7XtAZ2GcR0Y+vDMijYyfOuP98eAR9xfvQADfrz1eREVCsj5tppLx5BIg
+	 +IGgfZzPHv3Y8aLBsA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.32.170]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mwfai-1uCESv1sja-018Grf; Thu, 11
+ Sep 2025 20:03:15 +0200
+Message-ID: <6f7f2b44-1629-4a0c-9bdf-def1eaf3d1e0@gmx.de>
+Date: Thu, 11 Sep 2025 20:03:14 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG_fn=W_7o6ANs94GwoYjyjvY5kSFYHB6DwfE+oXM7TP1eP5dw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Content-Language: de-DE, en-US
+From: Ronald Warsow <rwarsow@gmx.de>
+Subject: Re: Linux 6.16.7
+To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:3xT5lnxtyolnlFsZAssDSuBdVxB7EktQWA/NB3HOuad1+GDHaoV
+ +vd4HjQ69yXwfGOOZ7zpM2Zx4HwIi3XWLejcFfF/Y4kAxUPWEXxDoYR625AmvTbnZMO9jsi
+ jbGNJYc1nFK4oJ7ytvF7M0Mc1a6g/cZo0WgTLL99uP/MsQA6zVSyw/GjUqRTw0Caja9a1nS
+ LjRw+DdJ/KmWdZSsU7TsA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:UA1WgDGs+js=;BFbqyjo7xx5Ci7wLI7k1pPe+P+H
+ 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
+ KPZR0DAs70Id8vWo=
 
-On Thu, Sep 11, 2025 at 11:09:17AM +0200, Alexander Potapenko wrote:
-> On Wed, Sep 10, 2025 at 9:49 PM Eric Biggers <ebiggers@kernel.org> wrote:
-> >
-> > On Fri, Aug 29, 2025 at 09:45:00AM -0700, Eric Biggers wrote:
-> > > Running sha224_kunit on a KMSAN-enabled kernel results in a crash in
-> > > kmsan_internal_set_shadow_origin():
-> > >
-> > >     BUG: unable to handle page fault for address: ffffbc3840291000
-> > >     #PF: supervisor read access in kernel mode
-> > >     #PF: error_code(0x0000) - not-present page
-> > >     PGD 1810067 P4D 1810067 PUD 192d067 PMD 3c17067 PTE 0
-> > >     Oops: 0000 [#1] SMP NOPTI
-> > >     CPU: 0 UID: 0 PID: 81 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc3 #10 PREEMPT(voluntary)
-> > >     Tainted: [N]=TEST
-> > >     Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-> > >     RIP: 0010:kmsan_internal_set_shadow_origin+0x91/0x100
-> > >     [...]
-> > >     Call Trace:
-> > >     <TASK>
-> > >     __msan_memset+0xee/0x1a0
-> > >     sha224_final+0x9e/0x350
-> > >     test_hash_buffer_overruns+0x46f/0x5f0
-> > >     ? kmsan_get_shadow_origin_ptr+0x46/0xa0
-> > >     ? __pfx_test_hash_buffer_overruns+0x10/0x10
-> > >     kunit_try_run_case+0x198/0xa00
-> >
-> > Any thoughts on this patch from the KMSAN folks?  I'd love to add
-> > CONFIG_KMSAN=y to my crypto subsystem testing, but unfortunately the
-> > kernel crashes due to this bug :-(
-> >
-> > - Eric
-> 
-> Sorry, I was out in August and missed this email when digging through my inbox.
-> 
-> Curiously, I couldn't find any relevant crashes on the KMSAN syzbot
-> instance, but the issue is legit.
-> Thank you so much for fixing this!
-> 
-> Any chance you can add a test case for it to mm/kmsan/kmsan_test.c?
+Hallo
 
-Unfortunately most of the KMSAN test cases already fail on upstream,
-which makes it difficult to develop new ones:
+6.16.7 does not compile here
 
-[    1.322395] KTAP version 1
-[    1.322899] 1..1
-[    1.323644]     KTAP version 1
-[    1.324142]     # Subtest: kmsan
-[    1.324650]     # module: kmsan_test
-[    1.324667]     1..24
-[    1.325990]     # test_uninit_kmalloc: uninitialized kmalloc test (UMR report)
-[    1.327078] *ptr is true
-[    1.327525]     # test_uninit_kmalloc: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:173
-                   Expected report_matches(&expect) to be true, but is false
-[    1.330117]     not ok 1 test_uninit_kmalloc
-[    1.330474]     # test_init_kmalloc: initialized kmalloc test (no reports)
-[    1.332129] *ptr is false
-[    1.333384]     ok 2 test_init_kmalloc
-[    1.333729]     # test_init_kzalloc: initialized kzalloc test (no reports)
-[    1.335285] *ptr is false
-[    1.339418]     ok 3 test_init_kzalloc
-[    1.339791]     # test_uninit_stack_var: uninitialized stack variable (UMR report)
-[    1.341484] cond is false
-[    1.341927]     # test_uninit_stack_var: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:211
-                   Expected report_matches(&expect) to be true, but is false
-[    1.344844]     not ok 4 test_uninit_stack_var
-[    1.345262]     # test_init_stack_var: initialized stack variable (no reports)
-[    1.347083] cond is true
-[    1.347847]     ok 5 test_init_stack_var
-[    1.348145]     # test_params: uninit passed through a function parameter (UMR report)
-[    1.349926] arg1 is false
-[    1.350338] arg2 is false
-[    1.350746] arg is false
-[    1.351154] arg1 is false
-[    1.351561] arg2 is true
-[    1.351987]     # test_params: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:262
-                   Expected report_matches(&expect) to be true, but is false
-[    1.354751]     not ok 6 test_params
-[    1.355229]     # test_uninit_multiple_params: uninitialized local passed to fn (UMR report)
-[    1.357056] signed_sum3(a, b, c) is true
-[    1.357677]     # test_uninit_multiple_params: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:282
-                   Expected report_matches(&expect) to be true, but is false
-[    1.360393]     not ok 7 test_uninit_multiple_params
-[    1.360676]     # test_uninit_kmsan_check_memory: kmsan_check_memory() called on uninit local (UMR report)
-[    1.362916]     # test_uninit_kmsan_check_memory: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:309
-                   Expected report_matches(&expect) to be true, but is false
-[    1.365946]     not ok 8 test_uninit_kmsan_check_memory
-[    1.366415]     # test_init_kmsan_vmap_vunmap: pages initialized via vmap (no reports)
-[    1.368805]     ok 9 test_init_kmsan_vmap_vunmap
-[    1.369223]     # test_init_vmalloc: vmalloc buffer can be initialized (no reports)
-[    1.371106] buf[0] is true
-[    1.371937]     ok 10 test_init_vmalloc
-[    1.372396]     # test_uaf: use-after-free in kmalloc-ed buffer (UMR report)
-[    1.374021] value is true
-[    1.374463]     # test_uaf: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:378
-                   Expected report_matches(&expect) to be true, but is false
-[    1.376867]     not ok 11 test_uaf
-[    1.377229]     # test_percpu_propagate: uninit local stored to per_cpu memory (UMR report)
-[    1.378951] check is false
-[    1.379432]     # test_percpu_propagate: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:396
-                   Expected report_matches(&expect) to be true, but is false
-[    1.382201]     not ok 12 test_percpu_propagate
-[    1.382625]     # test_printk: uninit local passed to pr_info() (UMR report)
-[    1.384329] ffffc900002bfcd4 contains 0
-[    1.384933]     # test_printk: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:418
-                   Expected report_matches(&expect) to be true, but is false
-[    1.387474]     not ok 13 test_printk
-[    1.387824]     # test_init_memcpy: memcpy()ing aligned initialized src to aligned dst (no reports)
-[    1.390061]     ok 14 test_init_memcpy
-[    1.390327]     # test_memcpy_aligned_to_aligned: memcpy()ing aligned uninit src to aligned dst (UMR report)
-[    1.392359]     # test_memcpy_aligned_to_aligned: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:459
-                   Expected report_matches(&expect) to be true, but is false
-[    1.395181]     not ok 15 test_memcpy_aligned_to_aligned
-[    1.395467]     # test_memcpy_aligned_to_unaligned: memcpy()ing aligned uninit src to unaligned dst (UMR report)
-[    1.397845]     # test_memcpy_aligned_to_unaligned: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:483
-                   Expected report_matches(&expect) to be true, but is false
-[    1.400221]     # test_memcpy_aligned_to_unaligned: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:486
-                   Expected report_matches(&expect) to be true, but is false
-[    1.403059]     not ok 16 test_memcpy_aligned_to_unaligned
-[    1.403437]     # test_memcpy_initialized_gap: unaligned 4-byte initialized value gets a nonzero origin after memcpy() - (2 UMR reports)
-[    1.406077]     # test_memcpy_initialized_gap: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:532
-                   Expected report_matches(&expect) to be true, but is false
-[    1.408340]     # test_memcpy_initialized_gap: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:538
-                   Expected report_matches(&expect) to be true, but is false
-[    1.411063]     not ok 17 test_memcpy_initialized_gap
-[    1.411338]     # test_memset16: memset16() should initialize memory
-[    1.413393]     ok 18 test_memset16
-[    1.413651]     # test_memset32: memset32() should initialize memory
-[    1.415427]     ok 19 test_memset32
-[    1.415739]     # test_memset64: memset64() should initialize memory
-[    1.417513]     ok 20 test_memset64
-[    1.417783]     # test_long_origin_chain: origin chain exceeding KMSAN_MAX_ORIGIN_DEPTH (UMR report)
-[    1.419805]     # test_long_origin_chain: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:584
-                   Expected report_matches(&expect) to be true, but is false
-[    1.422415]     not ok 21 test_long_origin_chain
-[    1.422752]     # test_stackdepot_roundtrip: testing stackdepot roundtrip (no reports)
-[    1.424598]  kunit_try_run_case+0x19d/0xa50
-[    1.425243]  kunit_generic_run_threadfn_adapter+0x62/0xe0
-[    1.426252]  kthread+0x8cd/0xb40
-[    1.426747]  ret_from_fork+0x189/0x2b0
-[    1.427320]  ret_from_fork_asm+0x1a/0x30
-[    1.428245]     ok 22 test_stackdepot_roundtrip
-[    1.428519]     # test_unpoison_memory: unpoisoning via the instrumentation vs. kmsan_unpoison_memory() (2 UMR reports)
-[    1.430771] =====================================================
-[    1.431682] BUG: KMSAN: uninit-value in test_unpoison_memory+0x146/0x3e0
-[    1.432705]  test_unpoison_memory+0x146/0x3e0
-[    1.433356]  kunit_try_run_case+0x19d/0xa50
-[    1.433979]  kunit_generic_run_threadfn_adapter+0x62/0xe0
-[    1.434773]  kthread+0x8cd/0xb40
-[    1.435263]  ret_from_fork+0x189/0x2b0
-[    1.435846]  ret_from_fork_asm+0x1a/0x30
+config is the same as with 6.16.6
 
-[    1.436692] Local variable a created at:
-[    1.437270]  test_unpoison_memory+0x41/0x3e0
-[    1.437903]  kunit_try_run_case+0x19d/0xa50
+any advice ?
 
-[    1.438766] Bytes 0-2 of 3 are uninitialized
-[    1.439433] Memory access of size 3 starts at ffffc90000347cd5
+=3D=3D=3D
 
-[    1.440517] CPU: 3 UID: 0 PID: 99 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc5-00110-ge59a039119c3 #3 PREEMPT(none) 
-[    1.442247] Tainted: [N]=TEST
-[    1.442725] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-[    1.444376] =====================================================
-[    1.445263] Disabling lock debugging due to kernel taint
-[    1.446103] =====================================================
-[    1.447007] BUG: KMSAN: uninit-value in test_unpoison_memory+0x23f/0x3e0
-[    1.447996]  test_unpoison_memory+0x23f/0x3e0
-[    1.448650]  kunit_try_run_case+0x19d/0xa50
-[    1.449319]  kunit_generic_run_threadfn_adapter+0x62/0xe0
-[    1.450122]  kthread+0x8cd/0xb40
-[    1.450611]  ret_from_fork+0x189/0x2b0
-[    1.451181]  ret_from_fork_asm+0x1a/0x30
+...
 
-[    1.452010] Local variable b created at:
-[    1.452894]  test_unpoison_memory+0x56/0x3e0
-[    1.453537]  kunit_try_run_case+0x19d/0xa50
+   CC      init/initramfs.o
+   AS      arch/x86/realmode/rm/wakeup_asm.o
+   CC      arch/x86/entry/vdso/vdso32/vclock_gettime.o
+   CC      arch/x86/realmode/rm/wakemain.o
+In file included from ./include/uapi/linux/posix_types.h:5,
+                  from ./include/uapi/linux/types.h:14,
+                  from ./include/linux/types.h:6,
+                  from arch/x86/realmode/rm/wakeup.h:11,
+                  from arch/x86/realmode/rm/wakemain.c:2:
+./include/linux/stddef.h:11:9: error: cannot use keyword =E2=80=98false=E2=
+=80=99 as=20
+enumeration constant
+    11 |         false   =3D 0,
+       |         ^~~~~
+./include/linux/stddef.h:11:9: note: =E2=80=98false=E2=80=99 is a keyword =
+with=20
+=E2=80=98-std=3Dc23=E2=80=99 onwards
+./include/linux/types.h:35:33: error: =E2=80=98bool=E2=80=99 cannot be def=
+ined via =E2=80=98typedef=E2=80=99
+    35 | typedef _Bool                   bool;
+       |                                 ^~~~
+./include/linux/types.h:35:33: note: =E2=80=98bool=E2=80=99 is a keyword w=
+ith =E2=80=98-std=3Dc23=E2=80=99=20
+onwards
+./include/linux/types.h:35:1: warning: useless type name in empty=20
+declaration
+    35 | typedef _Bool                   bool;
+       | ^~~~~~~
+   CC      init/calibrate.o
+make[5]: *** [scripts/Makefile.build:243:=20
+arch/x86/realmode/rm/wakemain.o] Error 1
 
-[    1.454407] Bytes 0-2 of 3 are uninitialized
-[    1.455043] Memory access of size 3 starts at ffffc90000347cd1
+...
 
-[    1.456182] CPU: 3 UID: 0 PID: 99 Comm: kunit_try_catch Tainted: G    B            N  6.17.0-rc5-00110-ge59a039119c3 #3 PREEMPT(none) 
-[    1.457925] Tainted: [B]=BAD_PAGE, [N]=TEST
-[    1.458545] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-[    1.460239] =====================================================
-[    1.461617]     ok 23 test_unpoison_memory
-[    1.462056]     # test_copy_from_kernel_nofault: testing copy_from_kernel_nofault with uninitialized memory
-[    1.464122] ret is false
-[    1.464538]     # test_copy_from_kernel_nofault: EXPECTATION FAILED at mm/kmsan/kmsan_test.c:656
-                   Expected report_matches(&expect) to be true, but is false
-[    1.467250]     not ok 24 test_copy_from_kernel_nofault
-[    1.482563] # kmsan: pass:11 fail:13 skip:0 total:24
-[    1.483790] # Totals: pass:11 fail:13 skip:0 total:24
-[    1.484532] not ok 1 kmsan
+
+   CC      kernel/bpf/trampoline.o
+   CC      fs/smb/client/readdir.o
+fs/btrfs/print-tree.c:29:49: warning: initializer-string for array of=20
+=E2=80=98char=E2=80=99 truncates NUL terminator but destination lacks =E2=
+=80=98nonstring=E2=80=99=20
+attribute (17 chars into 16 available)=20
+[-Wunterminated-string-initialization]
+    29 |         { BTRFS_BLOCK_GROUP_TREE_OBJECTID,=20
+"BLOCK_GROUP_TREE"      },
+       |                                                 ^~~~~~~~~~~~~~~~~=
+~
+   CC      fs/btrfs/root-tree.o
+   CC      fs/efivarfs/inode.o
+   CC      kernel/trace/trace_probe.o
+   CC [M]  fs/pstore/ram_core.o
+In file included from ./include/linux/string.h:294,
+                  from ./include/linux/bitmap.h:11,
+                  from ./include/linux/inetdevice.h:7,
+                  from fs/smb/server/smb2pdu.c:7:
+In function =E2=80=98fortify_memset_chk=E2=80=99,
+     inlined from =E2=80=98ntlm_negotiate=E2=80=99 at fs/smb/server/smb2pd=
+u.c:1354:2,
+     inlined from =E2=80=98smb2_sess_setup=E2=80=99 at fs/smb/server/smb2p=
+du.c:1828:10:
+./include/linux/fortify-string.h:493:25: warning: call to=20
+=E2=80=98__write_overflow_field=E2=80=99 declared with attribute warning: =
+detected write=20
+beyond size of field (1st parameter); maybe use struct_group()?=20
+[-Wattribute-warning]
+   493 |                         __write_overflow_field(p_size_field, size=
+);
+       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~
+   CC      fs/smb/server/ksmbd_spnego_negtokeninit.asn1.o
+
+
+...
+
+   CC      fs/btrfs/discard.o
+In file included from ./include/linux/string.h:294,
+                  from ./include/linux/bitmap.h:11,
+                  from ./include/linux/cpumask.h:12,
+                  from ./arch/x86/include/asm/cpumask.h:5,
+                  from ./arch/x86/include/asm/msr.h:11,
+                  from ./arch/x86/include/asm/processor.h:23,
+                  from ./arch/x86/include/asm/cpufeature.h:5,
+                  from ./arch/x86/include/asm/thread_info.h:53,
+                  from ./include/linux/thread_info.h:60,
+                  from ./arch/x86/include/asm/preempt.h:9,
+                  from ./include/linux/preempt.h:79,
+                  from ./include/linux/spinlock.h:56,
+                  from ./include/linux/wait.h:9,
+                  from ./include/linux/wait_bit.h:8,
+                  from ./include/linux/fs.h:6,
+                  from fs/smb/client/cifssmb.c:17:
+In function =E2=80=98fortify_memcpy_chk=E2=80=99,
+     inlined from =E2=80=98CIFSSMBSetPathInfo=E2=80=99 at fs/smb/client/ci=
+fssmb.c:5375:2:
+./include/linux/fortify-string.h:583:25: warning: call to=20
+=E2=80=98__write_overflow_field=E2=80=99 declared with attribute warning: =
+detected write=20
+beyond size of field (1st parameter); maybe use struct_group()?=20
+[-Wattribute-warning]
+   583 |                         __write_overflow_field(p_size_field, size=
+);
+       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~
+   AR      fs/smb/client/built-in.a
+   AR      fs/smb/built-in.a
+   CC      fs/btrfs/reflink.o
+   CC      fs/btrfs/subpage.o
+   CC      fs/btrfs/tree-mod-log.o
+   CC      fs/btrfs/extent-io-tree.o
+   CC      fs/btrfs/fs.o
+   CC      fs/btrfs/messages.o
+   CC      fs/btrfs/bio.o
+   CC      fs/btrfs/lru_cache.o
+   CC      fs/btrfs/acl.o
+   CC      fs/btrfs/zoned.o
+   CC      fs/btrfs/verity.o
+fs/btrfs/send.c: In function =E2=80=98btrfs_ioctl_send=E2=80=99:
+fs/btrfs/send.c:8208:44: warning: =E2=80=98kvcalloc=E2=80=99 sizes specifi=
+ed with=20
+=E2=80=98sizeof=E2=80=99 in the earlier argument and not in the later argu=
+ment=20
+[-Wcalloc-transposed-args]
+  8208 |         sctx->clone_roots =3D kvcalloc(sizeof(*sctx->clone_roots)=
+,
+       |                                            ^
+fs/btrfs/send.c:8208:44: note: earlier argument should specify number of=
+=20
+elements, later size of each element
+   AR      fs/btrfs/built-in.a
+   AR      fs/built-in.a
+make[1]: *** [/home/DATA/DEVEL/linux-6.6.17/Makefile:1913: .] Error 2
+make: *** [Makefile:234: __sub-make] Error 2
+
+  error in make
+
+
+
+
 
