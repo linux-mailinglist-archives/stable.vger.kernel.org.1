@@ -1,194 +1,170 @@
-Return-Path: <stable+bounces-179241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBB3B529C4
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 09:22:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A185FB52A64
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 09:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9716B1B27CAC
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 07:23:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AE3B3BA40A
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 07:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B770626E701;
-	Thu, 11 Sep 2025 07:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BP0dghcv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0580286893;
+	Thu, 11 Sep 2025 07:46:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384C8329F2D;
-	Thu, 11 Sep 2025 07:22:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5232B672;
+	Thu, 11 Sep 2025 07:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757575343; cv=none; b=eA8oI01suS2GZDZK9/rJhppvdBBhAHqUB+rYhCiQkp9zJV4KDEsQtZawxaYAObAaBdVwWT2ttPR5h7XOXSRPqFjFNXX3A5rK2ydi6Tce8KVr5chmwJx+ouORqLsQca40wRs2heY2oqsZYZwQdct7gkf01ApjxwMNAhW3wBL+xrU=
+	t=1757576761; cv=none; b=SUyk5nEDKyvElT8BVCSWjEBCn7V8CCputAi4qYyBcZB0fbMwxMuFnzhgcXggsLJsOcUgDZ9cHRosIWqGfdP0T9vLkJ0kvPbuXo0yUAsCgbkOWCHlSV8iqXt+jvrO+YDy+Z1kS4Mw3ELxk1Jpfjq4CJl0JAzcfJLSYWWdagLTuvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757575343; c=relaxed/simple;
-	bh=MLuilW7Tf9Dno/7YBATXESI/1zTrs/0ck7+Glf2DvQc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=O2DCD5sdtWDTzNh3wSOMqvW3yvr+nUMPN3+9TqNaVeLbdELfoXYuAtBsATE3bhuUnZoXLyg5UBRo/Wzf1EVntN3/1RRx8qQkBipZa8ZFjBmwYKS/pvbN8qIGlntV9/2OGws4Yah1k/FUG6Rlp4p9It0umGlIJCmxbAxfpmdjNUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BP0dghcv; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 8941EC6B3AB;
-	Thu, 11 Sep 2025 07:22:02 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5C391606BB;
-	Thu, 11 Sep 2025 07:22:18 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 96128102F2882;
-	Thu, 11 Sep 2025 09:21:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1757575334; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ymIxetTWocC2/T6DcUZLUqfBudVyTjFDiSDhCwPR4IA=;
-	b=BP0dghcvk2HqRbfKQS3O7ySBOrhO100W9n5AqVrR5PeKtATxfQw0Fg34/tSl45/GNCqkB5
-	4YDn3TU+esRYKH/S7xLXUPXNvWIRKopAHuqEnYhzTqOUVbkXD55NDWUtJs2pjGQaJesftt
-	4UyhJvGAks1d4dAvYXnQCbrr99n+3bCVBOl1UC9ecNzEoDjWRsI8lWbZQqgdjHlJEaAybm
-	wVUUwXjiHFuXkBHSHLPSqCRtPjtCqbF4BeojkAze1q8uA62pIfkwavllHdygrvVrct1wTr
-	rgMfHHXK5dOG9RdqE9rA5g4ojdhyInfMVW5tD3BRfmQ2KzRRrXlhsvcwN2UlPA==
+	s=arc-20240116; t=1757576761; c=relaxed/simple;
+	bh=vkIGQbHkugE0tGswCHkXzir8pJjgyHbVzjLHSc/Y/U8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=C6IiXEZtpSs82/9yJ8jVex6xVii9S16JaRmA2MtFnR60p2J/rJ30tDtJEUl/sRk3WyFrw7C8VzFiwIUYmYKCmCTX97FgxtGpMRZomVxbVjHaJqOMV3tVDGyN9eUGBwJTzEOzyVkqUzBMmcojiHrTp5+ux/8mdCjTmmIth4fnCHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 534404b48ee311f0b29709d653e92f7d-20250911
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:c5962ed0-bfaf-437b-91dc-b5969a4463ea,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:c29d9a1ff7d9b3695e5edbfa991638e4,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|817|850,TC:nil,Content:-
+	10|-8|-5|50,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,CO
+	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 1,FCT|NGT
+X-CID-BAS: 1,FCT|NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 534404b48ee311f0b29709d653e92f7d-20250911
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 149988089; Thu, 11 Sep 2025 15:45:45 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 2870BE009008;
+	Thu, 11 Sep 2025 15:45:45 +0800 (CST)
+X-ns-mid: postfix-68C27E29-117221580
+Received: from localhost.localdomain (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 29335E009007;
+	Thu, 11 Sep 2025 15:45:44 +0800 (CST)
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+To: hansg@kernel.org
+Cc: lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mario.limonciello@amd.com,
+	rafael@kernel.org,
+	stable@vger.kernel.org,
+	zhangzihuan@kylinos.cn
+Subject: Re: [PATCH v1] ACPI: video: Fix missing backlight node creation on
+Date: Thu, 11 Sep 2025 15:45:43 +0800
+Message-Id: <20250911074543.106620-1-zhangzihuan@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <de4b5ec6-1e42-44b8-b5d3-5a452d7401ef@kernel.org>
+References: <de4b5ec6-1e42-44b8-b5d3-5a452d7401ef@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 11 Sep 2025 09:21:34 +0200
-Message-Id: <DCPSFZLWJLG7.1B4NISSDKLWBQ@bootlin.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH v2 1/5] net: cadence: macb: Set upper 32bits of DMA ring
- buffer
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-rpi-kernel@lists.infradead.org>, "Broadcom internal kernel review
- list" <bcm-kernel-feedback-list@broadcom.com>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>, "Rob
- Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>, "Florian Fainelli"
- <florian.fainelli@broadcom.com>, "Andrea della Porta"
- <andrea.porta@suse.com>, "Claudiu Beznea" <claudiu.beznea@tuxon.dev>, "Phil
- Elwell" <phil@raspberrypi.com>, "Jonathan Bell" <jonathan@raspberrypi.com>,
- "Dave Stevenson" <dave.stevenson@raspberrypi.com>,
- <stable@vger.kernel.org>, "Andrew Lunn" <andrew@lunn.ch>
-To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, "Nicolas Ferre"
- <nicolas.ferre@microchip.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Stanimir Varbanov" <svarbanov@suse.de>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250822093440.53941-1-svarbanov@suse.de>
- <20250822093440.53941-2-svarbanov@suse.de>
- <20250825165310.64027275@kernel.org>
- <3bccf773-abd6-4ade-a1c5-99f2a773b723@microchip.com>
- <DCPA2BR78XM8.HWKZZ8WQF3S8@bootlin.com>
-In-Reply-To: <DCPA2BR78XM8.HWKZZ8WQF3S8@bootlin.com>
-X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed Sep 10, 2025 at 6:57 PM CEST, Th=C3=A9o Lebrun wrote:
-> Hello Nicolas, Jakub, Stanimir,
->
-> On Tue Aug 26, 2025 at 11:14 AM CEST, Nicolas Ferre wrote:
->> On 26/08/2025 at 01:53, Jakub Kicinski wrote:
->>> On Fri, 22 Aug 2025 12:34:36 +0300 Stanimir Varbanov wrote:
->>>> In case of rx queue reset and 64bit capable hardware, set the upper
->>>> 32bits of DMA ring buffer address.
->>>>
->>>> Cc: stable@vger.kernel.org # v4.6+
->>>> Fixes: 9ba723b081a2 ("net: macb: remove BUG_ON() and reset the queue t=
-o handle RX errors")
->>>> Credits-to: Phil Elwell <phil@raspberrypi.com>
->>>> Credits-to: Jonathan Bell <jonathan@raspberrypi.com>
->>>> Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
->>>> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
->>>=20
->>>> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/et=
-hernet/cadence/macb_main.c
->>>> index ce95fad8cedd..36717e7e5811 100644
->>>> --- a/drivers/net/ethernet/cadence/macb_main.c
->>>> +++ b/drivers/net/ethernet/cadence/macb_main.c
->>>> @@ -1634,7 +1634,11 @@ static int macb_rx(struct macb_queue *queue, st=
-ruct napi_struct *napi,
->>>>                macb_writel(bp, NCR, ctrl & ~MACB_BIT(RE));
->>>>
->>>>                macb_init_rx_ring(queue);
->>>> -             queue_writel(queue, RBQP, queue->rx_ring_dma);
->>>> +             queue_writel(queue, RBQP, lower_32_bits(queue->rx_ring_d=
-ma));
->>>> +#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
->>>> +             if (bp->hw_dma_cap & HW_DMA_CAP_64B)
->>>> +                     macb_writel(bp, RBQPH, upper_32_bits(queue->rx_r=
-ing_dma));
->>>> +#endif
->>>>
->>>>                macb_writel(bp, NCR, ctrl | MACB_BIT(RE));
->>>>
->>>=20
->>> Looks like a subset of Th=C3=A9o Lebrun's work:
->>> https://lore.kernel.org/all/20250820-macb-fixes-v4-0-23c399429164@bootl=
-in.com/
->>> let's wait for his patches to get merged instead?
->>
->> Yes, we can certainly wait. As RBOPH changes by Th=C3=A9o are key, they =
-will=20
->> probably remove the need for this fix altogether: but I count on you=20
->> Stanimir to monitor that (as I don't have a 64 bit capable platform at=
-=20
->> hand).
->
-> I when looking for where this patch came from.
-> Commit in the raspberrypi downstream kernel:
-> https://github.com/raspberrypi/linux/commit/e45c98decbb16e58a79c7ec6fbe43=
-74320e814f1
->
-> It is somewhat unreadable; the only part that seems related is the:
->
->> net: macb: Several patches for RP1
->> 64-bit RX fix
->
->  - Is there any MACB hardware (not GEM) that uses 64-bit DMA
->    descriptors? What platforms? RPi maybe?
->
->  - Assuming such a platform exists, the next question is why does
->    macb_rx() need to reinit RBQPH/0x04D4. It reinits RBQP/0x0018
->    because it is the buffer pointer and increments as buffers get used.
->
->    To reinit RBQPH would be for the case of the increment overflowing
->    into the upper 32-bits. Sounds like a reasonable fix (for a really
->    rare bug) if that hardware actually exists.
->
->    This wouldn't be needed on GEM because RBQPH is shared across queues.
->    So of course RBQPH would not increment with the buffer pointer.
->
-> If this patch is needed (does HW exist?), then my series doesn't address
-> it. I can take the patch in a potential V6 if you want. V5 got posted
-> today [0].
->
-> [0]: https://lore.kernel.org/lkml/20250910-macb-fixes-v5-0-f413a3601ce4@b=
-ootlin.com/
+>  Oh wait, now I understand the trick is that you now return
+>  acpi_backlight_video without setting *auto_detect =3D true.
+> =20
+>  Which in turn causes this code in drivers/acpi/acpi_video.c:
+> =20
+>          /*
+>           * If backlight-type auto-detection is used then a native back=
+light may
+>           * show up later and this may change the result from video to =
+native.
+>           * Therefor normally the userspace visible /sys/class/backligh=
+t device
+>           * gets registered separately by the GPU driver calling
+>           * acpi_video_register_backlight() when an internal panel is d=
+etected.
+>           * Register the backlight now when not using auto-detection, s=
+o that
+>           * when the kernel cmdline or DMI-quirks are used the backligh=
+t will
+>           * get registered even if acpi_video_register_backlight() is n=
+ot called.
+>           */
+>          acpi_video_run_bcl_for_osi(video);
+>          if (__acpi_video_get_backlight_type(false, &auto_detect) =3D=3D=
+ acpi_backlight_video &&
+>              !auto_detect)
+>                  acpi_video_bus_register_backlight(video);
+> =20
+>  To immediately register the backlight rather then waiting for the nati=
+ve
+>  GPU driver to call acpi_video_register_backlight() after the native GP=
+U
+>  driver has completed probing for native GPU backlight control which is
+>  often preferred.
+> =20
+>  So as you say the issue is that you have no native GPU driver calling
+>  acpi_video_register_backlight().
 
-Coming back after some sleep: my series does address this.
-It updates macb_alloc_consistent() so allocs look like:
+I'm very happy that you got it.
 
-   size =3D bp->num_queues * macb_tx_ring_size_per_queue(bp);
-   tx =3D dma_alloc_coherent(dev, size, &tx_dma, GFP_KERNEL);
-   if (!tx || upper_32_bits(tx_dma) !=3D upper_32_bits(tx_dma + size - 1))
-      goto out_err;
+> First of all I assume that there is some sort of builtin GPU on these
+> Lenovo and Inspur machines with Zhaoxin CPUs. Even if the GPU driver
+> is not in the mainline kernel then I assume there is some out of tree
+> driver. Can that driver not call acpi_video_register_backlight() ?
 
-   // same for rx
+We are currently working with Zhaoxin on this matter, and we expect to ha=
+ve some results in a few days.
+I will keep you updated once we have progress.
 
-In the MACB (!GEM) case, bp->num_queues=3D1 so we will check that the
-start and end of the DMA descriptor ring buffer have the same upper
-32-bits.
+> If this is not possible then we will need to add some quirk based
+> on CPUID matching e.g. something like this:
+>=20
+> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+> index d507d5e08435..24dd79ec1b72 100644
+> --- a/drivers/acpi/video_detect.c
+> +++ b/drivers/acpi/video_detect.c
+> @@ -1011,6 +1011,18 @@ enum acpi_backlight_type __acpi_video_get_backli=
+ght_type(bool native, bool *auto
+>  	if (acpi_backlight_dmi !=3D acpi_backlight_undef)
+>  		return acpi_backlight_dmi;
+> =20
+> +	/*
+> +	 * ATM Zhaoxin CPU systems have no native GPU driver, instead ACPI vi=
+deo
+> +	 * should be used to control the backlight. The lack of a GPU driver
+> +	 * means that acpi_video_register_backlight() will never get called
+> +	 * causing things to not work.
+> +	 * This special case for these systems returns acpi_backlight_video
+> +	 * without setting auto_detect =3D true, causing acpi_video.c to
+> +	 * immediately register the backlight, working around this issue.
+> +	 */
+> +	if ((video_caps & ACPI_VIDEO_BACKLIGHT) && cpu_is_zhaoxin())
+> +		return acpi_backlight_video;
+> +
+>  	if (auto_detect)
+>  		*auto_detect =3D true;
+> =20
+>=20
+> Note you will need to provide a cpu_is_zhaoxin() helper for this.
 
-That implies macb_rx() doesn't have to reinit RBQPH/0x04D4.
+Thanks a lot for your patch and for looking into this issue.
 
-Thanks,
+At the moment, we are still confirming with Zhaoxin whether this behavior=
+ is consistent across all their platforms,
+so we are not sure if the special handling should always apply.
 
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Also, on kernel 5.4 these machines seem to work fine without requiring a =
+native GPU driver, while on 6.6+ the backlight node is missing.=20
+Could you please clarify what design change or intention caused this beha=
+vioral difference between 5.4 and newer kernels?
 
 
