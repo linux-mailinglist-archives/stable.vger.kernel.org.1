@@ -1,195 +1,163 @@
-Return-Path: <stable+bounces-179251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39150B52E45
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 12:27:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B663B52EBD
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 12:39:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50AA41BC73E7
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 10:27:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9E533A3223
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 10:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06D630FF39;
-	Thu, 11 Sep 2025 10:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F6030FC3D;
+	Thu, 11 Sep 2025 10:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UBxOZIft"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FI4IStw+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35E22206A9
-	for <stable@vger.kernel.org>; Thu, 11 Sep 2025 10:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032102E7BAD;
+	Thu, 11 Sep 2025 10:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757586447; cv=none; b=B3xOv49xX9TShZY6178n5s420AHyDfgVDANZeZ8wYL/DcCu76dJt3ID7NAmRIENuGj6mYerI7bo3Dvvnpoe4u17+nIEG2MlPHFWYI/Q95LLKp8Hf7phtBxA+MZp8Ie+Oi/pPkPzx9qOyuxGhtYy91ei10qgeFQdE7uVPSc/kNzQ=
+	t=1757587136; cv=none; b=lnXv6d803k0ljaHMi7af4km2127wCqgvfZPu1sfg3jQ1BOZ7F2mQLWglvY0/VmX5ZrM1bqULmA9KGLkTJ3DyEAvR0R/N8TQQj/MeAnYLBmntUaAPmAuxduD1QoKUmdJGsl9hqw11ibJjXB8j0goGjDLc8zZp5Bk/zyydL5nGyqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757586447; c=relaxed/simple;
-	bh=Tpy4ickjdhJAzfF7JuSSTmpsyKbM8CngMtPyuvm7yJs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jDmc3eoFpQhxtvIAbP1WXS19eYpUNjljtT7AN6IwA631hlVrrApbrIHrlFjspIt++SYCVXVYy7QNrNok1yGVFy4xe5LnPUXb+eSYUjhEgGGsCcH/CsvHe6RcXSbhj5iNXaWLe+uJR9nwRoKYkqAi56FalTZ8stpwpnryrGF6JKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UBxOZIft; arc=none smtp.client-ip=209.85.160.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-30ccea94438so409097fac.2
-        for <stable@vger.kernel.org>; Thu, 11 Sep 2025 03:27:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757586445; x=1758191245; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=96fqw7FRePezKm4ZHE0s+atlWdvNKcIU7VIxvyArpWE=;
-        b=UBxOZIfthuV7sVv5+eUIT/+p6yEZDTsq637ffZkWQ0fdZaIzM6BDgXpjJe7Sb8L2wt
-         J+HagiNkKkL3uSm8MSs+9c2l89XUhZiipInoS4PrKgigZ24W0OnyGCW1xJdi9BTZaXas
-         imBEtY54WLHPlzwAVOWd5735Zu6oFI+rkfwnZBcNZZIoZ7vNkqwLCP3rGEmdkuOl6gcf
-         twC1PVv1ZAMiJV1zRyZZdGKzMZYpul7bhfvhDzVgRz0JP2SytqBrR0nf+XnZ9Y+NqzY0
-         r0OxeKy8kSGTePAmDThqRRUC/Q/U3U3RQs8jqPpcK8K9xtP/cgwPHQUePBZ2vKEXP5D3
-         +bIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757586445; x=1758191245;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=96fqw7FRePezKm4ZHE0s+atlWdvNKcIU7VIxvyArpWE=;
-        b=xAUdmp0HcC/3YqR0M/vr9xkXE2wS5hGByGOiQjhZysAj61A/Hr0+HHXECeBHaRI5Nj
-         yVd70Z3zZIwu5nqmYtQg5f4/yEAJg78YBVtjp3tzk12bVjbxzMiu+8WywVfmn/qVmngy
-         o3askEFHgkIVtG4kKAjzX906OfsfFCXY1iCm4ZF/sS7JpiXS1JJslGswEakOrYOcIfTp
-         f2h0n3qBakRd3+e6f7ZNqOYULKO52CbimMN4A9k4AG00DioAVUFC8lX8hVy81rxCgwH+
-         sXkHs5Ggz3d6pmWZJp51XECice2VsVt0ZoURos3Etm80i6DQLxz2MqCi45P6uwxb7et7
-         ivOA==
-X-Forwarded-Encrypted: i=1; AJvYcCWdGr5K4eivZVXQA36Ue8UlhtMrwO/C5xZXfGoTMtoEzQbnf2JIPygLkxMNTTzenDhGPQh5D+o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzM/bGnWEHoOF7SDGlBKWHWrPi6EOiU2ociW9x8ZDavVzBqx4e3
-	3W+NjWHVpXWqvS49K4FhI+I4NnrvPwGZ3rBD0p+8KLB6Qt2TG6jCdwOmj5pZa1mkVoBBvYS3MkP
-	qgX5Sden5cJ69e4zuBBaSNx0n7EiPFFE=
-X-Gm-Gg: ASbGncv0U8bc0jZLw0tudvPg5+B3ztKcvQZwqpRzbVxVXgdQVYv9hqwPadq//W0oeN2
-	MWXmVQd5UWppiKoTyvgLQcqGF2hLNU1MXTnDyN0yaPw6ldqYECEPkfiA45Mmcd37k4ItkBawNcc
-	NiLM9p+XF2B8m06cX+WlNJs3dduAX7zLl6GrhnV47R44sq3bwdexQc7PRsRa1a6rgGP4Y3YVA6D
-	4kA9PcbMCySF9+sGtcvU6WU9AlZYpWaJ+5rswU9ZB2QXyHM03/9
-X-Google-Smtp-Source: AGHT+IE4MxF4RYLSz3jRLkFx5Ayjj1pHxWl3khJ1WiEqbT36/vwUWAFgikfKQDh/MXK8MXX7T0Al64looMU2mCsWhEU=
-X-Received: by 2002:a05:6870:7025:b0:321:2680:2f77 with SMTP id
- 586e51a60fabf-32264e267fdmr9565513fac.35.1757586444894; Thu, 11 Sep 2025
- 03:27:24 -0700 (PDT)
+	s=arc-20240116; t=1757587136; c=relaxed/simple;
+	bh=CxQe3bX/MQqLYiit7yd0xARE4Y3X2J6l2HzXxwQDNqU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sss2Hg+uWCY5GYZKtRtCocsgWa16mHL9NQLnuT/EBCpbau8qFstIs58ADzt3NyNMXTcGZr+SPHjlxUwFZ2iPMLplNwQ+U/n5N+VTv4zTcz8JhD90PKmUnoopfn3JS14Qst0EB5HUxN0ZQ1cg4g8cUnIv2i/IebC9jW1IkeUQWYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FI4IStw+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4D7C4CEF1;
+	Thu, 11 Sep 2025 10:38:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757587135;
+	bh=CxQe3bX/MQqLYiit7yd0xARE4Y3X2J6l2HzXxwQDNqU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FI4IStw+oqeL2m9Z2FcATjKpiFh6btP6e6+DFXG7rkp4aXj/+yFIjc8RlM95tljKf
+	 bqei/Q+AWWcqg/UPAT4fHc8zVQLXOsMcc/YZpL3/nQRd5ug287ZjJvPC/HjADCyVVW
+	 opEN6U3VKv4AwI/qJWMcg4N8CMJxhrYS/u9UaKk4zN9wN8kDKj9f3aE56Mw24IDpZf
+	 E87e+pH5uw/DkD3qJdqKeNXkUWvFqqBS4NHLAc5B6gHz9ltCLHj4yIb8cxvp3SlZWA
+	 +O5NrKwI6zmnwPYdOFLkhHHqHrWVpUkXMQt6Q8oroyg0EtDcuIyUA5ibbT9YkoxpRo
+	 jbXctAdHrFuGA==
+Message-ID: <ae7b139f-dc25-413d-bfc3-3be187ab3a73@kernel.org>
+Date: Thu, 11 Sep 2025 12:38:52 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20221122140222.1541731-1-dimitri.ledkov@canonical.com>
- <8802b5d1-abf1-4ceb-8532-7d8f393f1be6@molgen.mpg.de> <bd507f6c-cea9-41aa-98f7-a5cc81dd77e4@molgen.mpg.de>
-In-Reply-To: <bd507f6c-cea9-41aa-98f7-a5cc81dd77e4@molgen.mpg.de>
-From: Daan De Meyer <daan.j.demeyer@gmail.com>
-Date: Thu, 11 Sep 2025 12:27:13 +0200
-X-Gm-Features: AS18NWCsxdmkiek6CKdhB1-2Fin5CE0lrEyAmKjT6Yhi_E1lwFN6LnPki4ySguA
-Message-ID: <CAO8sHcnTzioN=WMAf35EQ-4iEwuUmmeEPQ9L=WsxzeF1_rn3XQ@mail.gmail.com>
-Subject: Re: [PATCH v5 RESEND] Bluetooth: btintel: Correctly declare all
- module firmware files
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: linux-bluetooth@vger.kernel.org, stable@vger.kernel.org, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Marcel Holtmann <marcel@holtmann.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] ACPI: video: Fix missing backlight node creation on
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: lenb@kernel.org, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, mario.limonciello@amd.com, rafael@kernel.org,
+ stable@vger.kernel.org
+References: <de4b5ec6-1e42-44b8-b5d3-5a452d7401ef@kernel.org>
+ <20250911074543.106620-1-zhangzihuan@kylinos.cn>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <20250911074543.106620-1-zhangzihuan@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Paul,
+Hi Zihuan,
 
-Was this patch applied in the end? If not, is there anything else I should =
-do?
+On 11-Sep-25 9:45 AM,  Zhang wrote:
 
-Cheers,
+...
 
-Daan De Meyer
+>>  So as you say the issue is that you have no native GPU driver calling
+>>  acpi_video_register_backlight().
+> 
+> I'm very happy that you got it.
+> 
+>> First of all I assume that there is some sort of builtin GPU on these
+>> Lenovo and Inspur machines with Zhaoxin CPUs. Even if the GPU driver
+>> is not in the mainline kernel then I assume there is some out of tree
+>> driver. Can that driver not call acpi_video_register_backlight() ?
+> 
+> We are currently working with Zhaoxin on this matter, and we expect to have some results in a few days.
+> I will keep you updated once we have progress.
+
+Ok.
+
+...
+
+> Thanks a lot for your patch and for looking into this issue.
+
+You're welcome.
+
+> At the moment, we are still confirming with Zhaoxin whether this behavior is consistent across all their platforms,
+> so we are not sure if the special handling should always apply.
+> 
+> Also, on kernel 5.4 these machines seem to work fine without requiring a native GPU driver, while on 6.6+ the backlight node is missing. 
+> Could you please clarify what design change or intention caused this behavioral difference between 5.4 and newer kernels?
+
+The main problem is that on x86 laptops there are too much different
+ways to control the backlight:
+
+enum acpi_backlight_type {
+        acpi_backlight_undef = -1,
+        acpi_backlight_none = 0,
+        acpi_backlight_video,
+        acpi_backlight_vendor,
+        acpi_backlight_native,
+        acpi_backlight_nvidia_wmi_ec,
+        acpi_backlight_apple_gmux,
+        acpi_backlight_dell_uart,
+};
+
+With video, vendor and native all 3 being quite normal to have
+around on a single laptop.
+
+A long time ago the kernel just used to register all
+backlight handlers for which there seemed to be support,
+so "ls /sys/class/backlight" would e.g. output:
+
+acpi_video0
+intel_backlight
+dell_laptop
+
+And then userspace would pick one to use, typically
+checking for different backlight types (raw/platform/firmware)
+in descending order of preference and picking the first
+backlight interface matching the highest preference type.
+
+But even though multiple types may be advertised by
+the firmware, they do not necessarily actually work.
+
+So the simple userspace pick based on preferred type
+solution did not work on all laptop models and
+drivers/acpi/video_detect.c starting growing heuristics
++ quirks to let the kernel pick one and hide the others.
+
+At first for acpi_video# backlights they would get
+registered and then later if a native backlight
+(e.g. intel_backlight) showed up and the heuristics /
+quirks set that should be preferred then the
+acpi_video# backlight would be unregistered again.
+
+But this is racy (and ugly) and caused issues for userspace
+trying to open the already unregistered backlight.
+
+So the code was changed to delay registering the
+acpi_video backlights till after the GPU driver has
+loaded so that it is known if native backlight
+control is supported or not.
+
+Long story short: The design goal is to only
+register 1 backlight handler, so that userspace
+does not has to guess and to only register this
+once and not do a register + unregister dance
+of a potentially unwanted acpi_video backlight.
+
+Regards,
+
+Hans
 
 
-On Wed, 27 Aug 2025 at 07:31, Paul Menzel <pmenzel@molgen.mpg.de> wrote:
->
-> [Cc: Remove Dimitri=E2=80=99s bouncing address]
->
-> Am 27.08.25 um 07:29 schrieb Paul Menzel:
-> > Dear Daan,
-> >
-> >
-> > Thank you for the patch.
-> >
-> > Am 26.08.25 um 22:29 schrieb DaanDeMeyer:
-> >> From: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-> >>
-> >> Strictly encode patterns of supported hw_variants of firmware files
-> >> the kernel driver supports requesting. This now includes many missing
-> >> and previously undeclared module firmware files for 0x07, 0x08,
-> >> 0x11-0x14, 0x17-0x1b hw_variants.
-> >>
-> >> This especially affects environments that only install firmware files
-> >> declared and referenced by the kernel modules. In such environments,
-> >> only the declared firmware files are copied resulting in most Intel
-> >> Bluetooth devices not working. I.e. host-only dracut-install initrds,
-> >> or Ubuntu Core kernel snaps.
-> >>
-> >> BugLink: https://bugs.launchpad.net/bugs/1970819
-> >> Cc: stable@vger.kernel.org # 4.15+
-> >> Signed-off-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-> >> ---
-> >> Notes:
-> >>      Changes since v4:
-> >>      - Add missing "intel/" prefix for 0x17+ firmware
-> >>      - Add Cc stable for v4.15+ kernels
-> >>      Changes since v3:
-> >>      - Hopefully pacify trailing whitespace from GitLint in this optio=
-nal
-> >>        portion of the commit.
-> >>      Changes since v2:
-> >>      - encode patterns for 0x17 0x18 0x19 0x1b hw_variants
-> >>      - rebase on top of latest rc tag
-> >>      Changes since v1:
-> >>      - encode strict patterns of supported firmware files for each of =
-the
-> >>        supported hw_variant generations.
-> >>
-> >>   drivers/bluetooth/btintel.c | 26 ++++++++++++++++++++++----
-> >>   1 file changed, 22 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
-> >> index a657e9a3e96a..d0e22fe09567 100644
-> >> --- a/drivers/bluetooth/btintel.c
-> >> +++ b/drivers/bluetooth/btintel.c
-> >> @@ -2656,7 +2656,25 @@ MODULE_AUTHOR("Marcel Holtmann
-> >> <marcel@holtmann.org>");
-> >>   MODULE_DESCRIPTION("Bluetooth support for Intel devices ver " VERSIO=
-N);
-> >>   MODULE_VERSION(VERSION);
-> >>   MODULE_LICENSE("GPL");
-> >> -MODULE_FIRMWARE("intel/ibt-11-5.sfi");
-> >> -MODULE_FIRMWARE("intel/ibt-11-5.ddc");
-> >> -MODULE_FIRMWARE("intel/ibt-12-16.sfi");
-> >> -MODULE_FIRMWARE("intel/ibt-12-16.ddc");
-> >> +/* hw_variant 0x07 0x08 */
-> >> +MODULE_FIRMWARE("intel/ibt-hw-37.7.*-fw-*.*.*.*.*.bseq");
-> >> +MODULE_FIRMWARE("intel/ibt-hw-37.7.bseq");
-> >> +MODULE_FIRMWARE("intel/ibt-hw-37.8.*-fw-*.*.*.*.*.bseq");
-> >> +MODULE_FIRMWARE("intel/ibt-hw-37.8.bseq");
-> >> +/* hw_variant 0x0b 0x0c */
-> >> +MODULE_FIRMWARE("intel/ibt-11-*.sfi");
-> >> +MODULE_FIRMWARE("intel/ibt-12-*.sfi");
-> >> +MODULE_FIRMWARE("intel/ibt-11-*.ddc");
-> >> +MODULE_FIRMWARE("intel/ibt-12-*.ddc");
-> >> +/* hw_variant 0x11 0x12 0x13 0x14 */
-> >> +MODULE_FIRMWARE("intel/ibt-17-*-*.sfi");
-> >> +MODULE_FIRMWARE("intel/ibt-18-*-*.sfi");
-> >> +MODULE_FIRMWARE("intel/ibt-19-*-*.sfi");
-> >> +MODULE_FIRMWARE("intel/ibt-20-*-*.sfi");
-> >> +MODULE_FIRMWARE("intel/ibt-17-*-*.ddc");
-> >> +MODULE_FIRMWARE("intel/ibt-18-*-*.ddc");
-> >> +MODULE_FIRMWARE("intel/ibt-19-*-*.ddc");
-> >> +MODULE_FIRMWARE("intel/ibt-20-*-*.ddc");
-> >> +/* hw_variant 0x17 0x18 0x19 0x1b, read and use cnvi/cnvr */
-> >> +MODULE_FIRMWARE("intel/ibt-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9].=
-sfi");
-> >> +MODULE_FIRMWARE("intel/ibt-[0-9][0-9][0-9][0-9]-[0-9][0-9][0-9][0-9].=
-ddc");
-> >
-> > Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-> >
-> >
-> > Kind regards,
-> >
-> > Paul
+
 
