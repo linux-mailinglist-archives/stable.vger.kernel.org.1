@@ -1,156 +1,121 @@
-Return-Path: <stable+bounces-179261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95287B53318
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 15:03:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DDA1B53325
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 15:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B0EA7B56B1
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 13:01:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D106A7B2DC7
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 13:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4078B322A1F;
-	Thu, 11 Sep 2025 13:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBC5324B2A;
+	Thu, 11 Sep 2025 13:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/RqLoLg"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EE223372C;
-	Thu, 11 Sep 2025 13:02:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97521320CC7;
+	Thu, 11 Sep 2025 13:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757595779; cv=none; b=oXlTDjgrMTmAaJIe1iImihYt8S1qb91lQqm4iZIlAC2D+cBoD+tBi3vQx6F5lNhNu3+5qGYSy1NGFTSZWA3SViyYSlvPl6X/YKiy5S6CVcuTdHENUf8nyNAG2k1/dIa9U3zJNhf0xxBk1JHgjMp1FmEHdPeJA0ANnRXkxvOeh50=
+	t=1757595842; cv=none; b=f0t/WKTkqYjoffyOIbKwaNG6dJ4dY4gCEtvlaGfiu2fgB1SNB9WCNQr9NAICqLEKlVxXtw+iVPq8dOrEzJzEjBQbxwWMcMXNvgpJjgDVprGawg4/nwBLprJWBdMhwMSGPO3L7iyuidOz0Zz+1RQGnRo4YclRa1VLRuJd9ZnUuyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757595779; c=relaxed/simple;
-	bh=Q8HC4qTRRvMcQRcQMDurHWGgEqmrFIeONgvGafBory0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=C3/aJ0TVyWu7iCsq4RHphs3GofEevCnSgIYQjeHfBLIUQK2zXmdLuDVf4HUL5U8qn5iRnPN6IOYBrjlj29JnwyCryLUF6UnoBjaCvYHU2+LJS42d/WjTUmirG4Bk8PRgvMdM1deiZd7VQKDFdPCaefFF/roVK3WnkW8iqCvfFQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4cMyKS6M4jzdcdx;
-	Thu, 11 Sep 2025 20:58:20 +0800 (CST)
-Received: from dggpemf100009.china.huawei.com (unknown [7.185.36.128])
-	by mail.maildlp.com (Postfix) with ESMTPS id D451C140278;
-	Thu, 11 Sep 2025 21:02:53 +0800 (CST)
-Received: from [10.67.109.25] (10.67.109.25) by dggpemf100009.china.huawei.com
- (7.185.36.128) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 11 Sep
- 2025 21:02:52 +0800
-Message-ID: <d53faa91-ed55-4b91-8147-fbf24ff088ef@huawei.com>
-Date: Thu, 11 Sep 2025 21:02:52 +0800
+	s=arc-20240116; t=1757595842; c=relaxed/simple;
+	bh=GwqAHVRPsszIE7g35d/vmUuyVRMTwBHaHgAjeOkpHK0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=TbVLX6ksC/eIzF/9ldXsgkf3KA2YCh3uiDjTmEU/0kx3IzbTpCQsdOBj4KloT5JX9OLL7VkqvCjs/nw19/oZYGuKxSitG3BJzdPq2W8y8zJiYowf6sfw0yll0UFqUzK1c5gDDEay98GZjKugmTS5mASyvLY7ovi0rwVwhoVbv6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/RqLoLg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D88C4CEF0;
+	Thu, 11 Sep 2025 13:03:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757595842;
+	bh=GwqAHVRPsszIE7g35d/vmUuyVRMTwBHaHgAjeOkpHK0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=b/RqLoLgtL3sgmIEZ1Vld4VoMBD9bicGqKbkFUhP4M/7ZzlxS2U+K3cS+udDxmCLQ
+	 RJ6bzdG4i5o0cQp/b0Vbv44OXcEhW87PiaCKxPen2uxh2Vr5cYcirgUl5n9j0HuaKR
+	 A/9iTmMryZRKPBUD++2wtt4LeTRYshF3/tmZNVRybSROgOK9mDg/WTgLVAAOc4JHnV
+	 o8ah2TicKR/FyOaZ3W0lC+PJO0fYXIEKMcaSUSldVZeGsk/AMoLfy08PaMg8Vzdnrw
+	 ew5Si9T1xsPX6M6IgdaEs6RkYbKTe66jt9HAD82onoPrRKtHL6U+NKSAXl/i7PBxoU
+	 2Fb5jROE0frIg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Gabor Juhos <j4g8y7@gmail.com>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,  Santhosh Kumar K
+ <s-k6@ti.com>,  Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
+ <vigneshr@ti.com>,  linux-mtd@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  stable@vger.kernel.org,  Daniel Golle
+ <daniel@makrotopia.org>
+Subject: Re: [PATCH v2] mtd: core: always verify OOB offset in
+ mtd_check_oob_ops()
+In-Reply-To: <a208824c-acf6-4a48-8fde-f9926a6e4db5@gmail.com>
+References: <20250901-mtd-validate-ooboffs-v2-1-c1df86a16743@gmail.com>
+	<175708415877.334139.11409801733118104229.b4-ty@bootlin.com>
+	<454e092d-5b75-4758-a0e9-dfbb7bf271d7@ti.com> <87348tbeqg.fsf@bootlin.com>
+	<a208824c-acf6-4a48-8fde-f9926a6e4db5@gmail.com>
+Date: Thu, 11 Sep 2025 15:03:58 +0200
+Message-ID: <mafs0v7lpi1j5.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH stable/linux-5.10.y] sched/core: Fix potential deadlock on
- rq lock
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>, <mingo@redhat.com>, <peterz@infradead.org>,
-	<juri.lelli@redhat.com>, <vincent.guittot@linaro.org>,
-	<dietmar.eggemann@arm.com>, <rostedt@goodmis.org>, <bsegall@google.com>,
-	<mgorman@suse.de>, <bristot@redhat.com>, <tglx@linutronix.de>,
-	<frederic@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<tanghui20@huawei.com>, <zhangqiao22@huawei.com>
-References: <20250908084230.848195-1-wangtao554@huawei.com>
- <2025091123-unsterile-why-ca1e@gregkh>
- <0614bb1c-3dc9-4ad1-9135-19662e20163b@huawei.com>
- <2025091146-gyration-venue-01c3@gregkh>
-From: "wangtao (EQ)" <wangtao554@huawei.com>
-In-Reply-To: <2025091146-gyration-venue-01c3@gregkh>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf100009.china.huawei.com (7.185.36.128)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Sep 11 2025, Gabor Juhos wrote:
 
-在 2025/9/11 20:53, Greg KH 写道:
-> On Thu, Sep 11, 2025 at 08:30:44PM +0800, wangtao (EQ) wrote:
->> 在 2025/9/11 20:20, Greg KH 写道:
->>> On Mon, Sep 08, 2025 at 08:42:30AM +0000, Wang Tao wrote:
->>>> When CPU 1 enters the nohz_full state, and the kworker on CPU 0 executes
->>>> the function sched_tick_remote, holding the lock on CPU1's rq
->>>> and triggering the warning WARN_ON_ONCE(delta > (u64)NSEC_PER_SEC * 3).
->>>> This leads to the process of printing the warning message, where the
->>>> console_sem semaphore is held. At this point, the print task on the
->>>> CPU1's rq cannot acquire the console_sem and joins the wait queue,
->>>> entering the UNINTERRUPTIBLE state. It waits for the console_sem to be
->>>> released and then wakes up. After the task on CPU 0 releases
->>>> the console_sem, it wakes up the waiting console_sem task.
->>>> In try_to_wake_up, it attempts to acquire the lock on CPU1's rq again,
->>>> resulting in a deadlock.
->>>>
->>>> The triggering scenario is as follows:
->>>>
->>>> CPU 0								CPU1
->>>> sched_tick_remote
->>>> WARN_ON_ONCE(delta > (u64)NSEC_PER_SEC * 3)
->>>>
->>>> report_bug							con_write
->>>> printk
->>>>
->>>> console_unlock
->>>> 								do_con_write
->>>> 								console_lock
->>>> 								down(&console_sem)
->>>> 								list_add_tail(&waiter.list, &sem->wait_list);
->>>> up(&console_sem)
->>>> wake_up_q(&wake_q)
->>>> try_to_wake_up
->>>> __task_rq_lock
->>>> _raw_spin_lock
->>>>
->>>> This patch fixes the issue by deffering all printk console printing
->>>> during the lock holding period.
->>>>
->>>> Fixes: d84b31313ef8 ("sched/isolation: Offload residual 1Hz scheduler tick")
->>>> Signed-off-by: Wang Tao <wangtao554@huawei.com>
->>>> ---
->>>>    kernel/sched/core.c | 2 ++
->>>>    1 file changed, 2 insertions(+)
->>>>
->>>> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
->>>> index 40f40f359c5d..fd2c83058ec2 100644
->>>> --- a/kernel/sched/core.c
->>>> +++ b/kernel/sched/core.c
->>>> @@ -4091,6 +4091,7 @@ static void sched_tick_remote(struct work_struct *work)
->>>>    		goto out_requeue;
->>>>    	rq_lock_irq(rq, &rf);
->>>> +	printk_deferred_enter();
->>>>    	curr = rq->curr;
->>>>    	if (cpu_is_offline(cpu))
->>>>    		goto out_unlock;
->>>> @@ -4109,6 +4110,7 @@ static void sched_tick_remote(struct work_struct *work)
->>>>    	calc_load_nohz_remote(rq);
->>>>    out_unlock:
->>>> +	printk_deferred_exit();
->>>>    	rq_unlock_irq(rq, &rf);
->>>>    out_requeue:
->>>> -- 
->>>> 2.34.1
->>>>
->>>>
->> Sorry, we initially discovered the issue while testing the stable branch,
->> and it seems that the mainline has the same problem, but I haven't submitted
->> a patch yet.
-> That is required for us to be able to take a patch into the stable
-> trees, thanks.
+> Hi Miquel, Santhosh,
 >
-> greg k-h
-I have resent this patch for linus's tree.
+> 2025. 09. 11. 10:00 keltez=C3=A9ssel, Miquel Raynal =C3=ADrta:
+>> Hello,
+>>=20
+>> On 11/09/2025 at 11:52:27 +0530, Santhosh Kumar K <s-k6@ti.com> wrote:
+>>=20
+>>> Hello,
+>>>
+>>> On 05/09/25 20:25, Miquel Raynal wrote:
+>>>> On Mon, 01 Sep 2025 16:24:35 +0200, Gabor Juhos wrote:
+>>>>> Using an OOB offset past end of the available OOB data is invalid,
+>>>>> irregardless of whether the 'ooblen' is set in the ops or not. Move
+>>>>> the relevant check out from the if statement to always verify that.
+>>>>>
+>>>>> The 'oobtest' module executes four tests to verify how reading/writing
+>>>>> OOB data past end of the devices is handled. It expects errors in case
+>>>>> of these tests, but this expectation fails in the last two tests on
+>>>>> MTD devices, which have no OOB bytes available.
+>>>>>
+>>>>> [...]
+>>>> Applied to mtd/next, thanks!
+>>>> [1/1] mtd: core: always verify OOB offset in mtd_check_oob_ops()
+>>>>        commit: bf7d0543b2602be5cb450d8ec5a8710787806f88
+>>>
+>>> I'm seeing a failure in SPI NOR flashes due to this patch:
+>>> (Tested on AM62x SK with S28HS512T OSPI NOR flash)
+>
+> Sorry for the inconvenience.
+>
+>> Gabor, can you check what happens with mtdblock?
 
-Please review on the following thread:
+My guess from a quick look at the code is that NOR devices have
+mtd->oobsize =3D=3D 0 and mtd_read() sets ops->ooboffs and ops->ooblen to 0.
+So now that this check is not guarded by if (ops->ooblen), it gets
+triggered for NOR devices on the mtd_read() path and essentially turns
+into an if (0 >=3D 0), returning -EINVAL.
 
+Maybe a better check is if ((ops->ooboffs + ops->ooblen) > mtd_oobavail())?
 
-Link: 
-https://lore.kernel.org/all/20250911124249.1154043-1-wangtao554@huawei.com/
+Note that the equality is not an error in this case. I haven't worked
+with the OOB code much so I am not sure if this condition makes sense,
+but seems to do so at first glance at least.
 
+[...]
 
-Thanks.
-
+--=20
+Regards,
+Pratyush Yadav
 
