@@ -1,187 +1,114 @@
-Return-Path: <stable+bounces-179268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A9FB5348B
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 15:55:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B159B53497
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 15:56:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5B21B634DC
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 13:52:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E888BB6315B
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 13:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C605E345722;
-	Thu, 11 Sep 2025 13:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE4B54763;
+	Thu, 11 Sep 2025 13:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="A8TDZ5kV"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="nhf6kjYt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DEC338F45
-	for <stable@vger.kernel.org>; Thu, 11 Sep 2025 13:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1493D32A3D1;
+	Thu, 11 Sep 2025 13:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757598669; cv=none; b=TurVS399uHHoqZOfhrGjZ1pjJd8hGxCryFlRieKUSmtafwZE0fcMbIyA9ukAdRefWIq6y5czw6PjHNcvbEKJ/z4QV4qKEqpV2tRV9NL2nCHGbo+y8fSwF7tyvYVNeFFCmNfVRaP2cQe3YLeT9YDlzxl1jdon0IGVlLqswCM5OmI=
+	t=1757598856; cv=none; b=oM5By2mhz2JyE24qVGaK1esR7dBpxNrpCtpFdCpXBO5xpU3NBnCp2vZjgnjBbtZnHlNpgCU6gVjPNus2NnnA6SzkZd56JaulEmvTbakg+uUDESH8iUhBoNokBg2bcfiQtWH7oh8Qgn0/8mPqNZJOzYEYpQdj7hIFmzsROTW+t50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757598669; c=relaxed/simple;
-	bh=aKsAZFYuBd/AQWpaWEX8ThXsjnBnZ6NLciQvyn21cDo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bfffpWuYoSnbfRY8wlBlz8Tj0KJMPjDZoCLOu0cjeEvdSKKzp3x39watw8stXrWky1YxEDz8kG9FShTHgS5esSkkjU194Wt+HCmqYxem3UKKd2oBTl3BN1G3HCVdc+RGal1lvb7h0YRCyi3qyoHlkatcKGx+eeAeUFOWGIENT60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=A8TDZ5kV; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-45cb5492350so5894315e9.1
-        for <stable@vger.kernel.org>; Thu, 11 Sep 2025 06:51:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1757598666; x=1758203466; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZcWiaBosOtX/ctQvR+tRX52W6WE3mA+pedyBvnIGg6w=;
-        b=A8TDZ5kV11UbCt3NHOV+1GQTg+lKHzi4he8QUaloh0hCRiIUjuxJi08CRZ+drTR9UM
-         NHFHRpqQzX1XmjjJFnos2DekiqfR/Ve4VOw+PgJVfcrb3OaCtFpkhfGM51oZS+aG+QEp
-         cfXBRpJGuKI/u2nPU3h39S1zh3IJMx8vjgGPIiEhb8j/O/LDkj9ilGuKnHi2Cnf7P1dX
-         ayn/P+uBK8NPVM/gFEGUQu7fiAPdKn4l9TNwsBjoKEzbzc4unerT42JaPiExX4shnpO4
-         8tPLmNU4lQK24ATh5IgzEO+3upLfNO9yDs7KTJDmzHPJxjJFLdxcxLGpRLDK5Tt9IOVu
-         n9hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757598666; x=1758203466;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZcWiaBosOtX/ctQvR+tRX52W6WE3mA+pedyBvnIGg6w=;
-        b=LbtSdnRD4wpGGRnMSxTdjiTXv0/Ys9A1zGQ1/CjY+ngH3jD8upMlfU+zFMFqi6k80p
-         qmO1JQa8Mwy6ZJA+gpSVw6SRfz4DO7L71uq8SdIs/2Rnm0GooiWEs74H5e2EKZpm18u5
-         0mBrY/M7HQcC9cffsInPd4yzQyxlO0fAie6DsE80e5WpivPxUG+5Zs3rMxvj+at4g9lm
-         rgWQXlwjGmG9QRj9bGcnnsmcFyR8MsvnIrwUUSBeNnEed671jL91pQScZRSELHeHlZs6
-         z0Vi6xJJ+T/CjhW/tlQsezYqnrf8TxwJCdFWGSJgMzu9lk6a4BsB4ySH+ay+DDQ6/DyF
-         dmpw==
-X-Forwarded-Encrypted: i=1; AJvYcCWZjbDZBD2SNk6tUg7jpLpYknEunTUGaJd2AAu7svSVxgQ2T3Nh36s0pA89CA3k60CeTf+0xHI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVPXAq9LcabXYze2JIAc+7Fb4wBfJqCeuwOsfoAtepvTX9ZQUs
-	apiq5YnuvJtfEpapG3kG3DwysjAtPvaEOpTogH1pc6pa7uUTcO5AUpDx2nBZuOWblGw=
-X-Gm-Gg: ASbGnct81qOaDpsDdY6pPNU8Q/oz/BGdCpgGm2M2BzWUW1MjW/2lFnQcaBo951owomE
-	QGHD6BHrs7fuHipT/qnlm1J4Ej3qNaShN3FpKuKZkNccSGWOdjj+0lTU7mtxZXaI3VDkK73NxIg
-	dhtG1bpBawQQnV9s5EMy21nFjGPfZZKK9U2i3pPY788rPIXmCOQ98Zhn9axn5aYSjTYltxD2e5B
-	U7ysxobLAPcgmkI0aPRsLY/3GSxsvktRto8IjLzFfTTsavp4E15zhNATIYt2/Y0Q4k/f8KyE/Pb
-	m9O9NdWCJe+79FuxxtSUh7dQ1OOJpXtCmPfqrrhtllgxUBGVF1Surjl1pEyhKNMgAFXN0OpqyH5
-	o5ejmwkjfTbZFQAb9w85axk6UMjWO3MXh6OaNwW1xpA==
-X-Google-Smtp-Source: AGHT+IHq9qlr5SVbxPXrHpqCsoSxO3Cd+428J/sKOCg7NzkP9nlaNJcC4VfpZGPRxO+l3VOLPYaElQ==
-X-Received: by 2002:a05:6000:240c:b0:3df:c5e3:55fe with SMTP id ffacd0b85a97d-3e64392d4bemr15907531f8f.29.1757598665615;
-        Thu, 11 Sep 2025 06:51:05 -0700 (PDT)
-Received: from [192.168.50.4] ([82.78.167.139])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e760787604sm2596615f8f.24.2025.09.11.06.51.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Sep 2025 06:51:04 -0700 (PDT)
-Message-ID: <0d0aeb02-aff4-4932-b785-ce156cc4902d@tuxon.dev>
-Date: Thu, 11 Sep 2025 16:51:03 +0300
+	s=arc-20240116; t=1757598856; c=relaxed/simple;
+	bh=MkgK8zijQnIqEOvxVvaq/XaLhpCfm2O6xkeWtBMnz8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eDZEVjubydHxN2ekI7EdM2qIfqNzbTUoBXY8ow644k+rE7iiUpd4vnP+SOnwtYNwJNKxp68+1iSbn2sZF0fOJ/WyiZDdBds7XOuuef4YtyPEzzGPtUit7B35WxHeIkMz1N6NMIWAb+lFXPJOXxLs8NCQDGeWsPO8GHYZlhV5cuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=nhf6kjYt; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=SRJiyiI6ytrZMmaJR5EAXcNbx7SPoMoFmIxt/R7qzT8=; b=nhf6kjYtE1tj+zIMTqd/MiKFim
+	M3qMVPLa1cluZBHk1UrAugKIzOpFuD/BpkVc4zpsvTJggQqvprNEM4uzYYeARbnnq2SUgyHnJ56WR
+	CrULT+ydgTJrUWp7J9f/pM5mpQri5KyZ9a837+eye8Jo3czVHqmf6vnKUgycUN7/NIEcWnXcE9jIJ
+	41TlslCSHmcxKZY77fDgqmep8X3XSLiJug/ULXlfcYMNWw6VzdH+Y8sCtOUVSNdJ1qq0KWZLIlGC9
+	mee0fM/LtA+HdVs22/vkeVRj3+z1LGA113Ykiaxb4ySqfrl/M+5KmsdQgZ0/rPUHHA3OqBZqEkvTQ
+	t9tpOHcw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uwhkO-000000065xd-1fb3;
+	Thu, 11 Sep 2025 13:54:00 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id DD709300579; Thu, 11 Sep 2025 15:53:58 +0200 (CEST)
+Date: Thu, 11 Sep 2025 15:53:58 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Wang Tao <wangtao554@huawei.com>
+Cc: stable@vger.kernel.org, mingo@redhat.com, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+	bristot@redhat.com, tglx@linutronix.de, frederic@kernel.org,
+	linux-kernel@vger.kernel.org, tanghui20@huawei.com,
+	zhangqiao22@huawei.com
+Subject: Re: [PATCH] sched/core: Fix potential deadlock on rq lock
+Message-ID: <20250911135358.GY3245006@noisy.programming.kicks-ass.net>
+References: <20250911124249.1154043-1-wangtao554@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] pinctrl: renesas: rzg2l: Fix ISEL restore on resume
-To: Biju Das <biju.das.jz@bp.renesas.com>,
- "geert+renesas@glider.be" <geert+renesas@glider.be>,
- "linus.walleij@linaro.org" <linus.walleij@linaro.org>
-Cc: "linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
- "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20250908144250.1269294-1-claudiu.beznea.uj@bp.renesas.com>
- <TY3PR01MB113460BE4B4D20305021D85328609A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
- <54d7c3b2-762f-4f61-af21-02247a471251@tuxon.dev>
- <TY3PR01MB113469D5FBD53A8B507E5DC4A8609A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Content-Language: en-US
-In-Reply-To: <TY3PR01MB113469D5FBD53A8B507E5DC4A8609A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250911124249.1154043-1-wangtao554@huawei.com>
 
-
-
-On 9/11/25 16:39, Biju Das wrote:
-> HI Caludiu,
+On Thu, Sep 11, 2025 at 12:42:49PM +0000, Wang Tao wrote:
+> When CPU 1 enters the nohz_full state, and the kworker on CPU 0 executes
+> the function sched_tick_remote, holding the lock on CPU1's rq
+> and triggering the warning WARN_ON_ONCE(delta > (u64)NSEC_PER_SEC * 3).
+> This leads to the process of printing the warning message, where the
+> console_sem semaphore is held. At this point, the print task on the
+> CPU1's rq cannot acquire the console_sem and joins the wait queue,
+> entering the UNINTERRUPTIBLE state. It waits for the console_sem to be
+> released and then wakes up. After the task on CPU 0 releases
+> the console_sem, it wakes up the waiting console_sem task.
+> In try_to_wake_up, it attempts to acquire the lock on CPU1's rq again,
+> resulting in a deadlock.
 > 
->> -----Original Message-----
->> From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
->> Sent: 11 September 2025 14:24
->> Subject: Re: [PATCH] pinctrl: renesas: rzg2l: Fix ISEL restore on resume
->>
->> Hi, Biju,
->>
->> On 9/11/25 13:43, Biju Das wrote:
->>> Hi Claudiu,
->>>
->>>> -----Original Message-----
->>>> From: Claudiu <claudiu.beznea@tuxon.dev>
->>>> Sent: 08 September 2025 15:43
->>>> Subject: [PATCH] pinctrl: renesas: rzg2l: Fix ISEL restore on resume
->>>>
->>>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->>>>
->>>> Commit 1d2da79708cb ("pinctrl: renesas: rzg2l: Avoid configuring ISEL
->>>> in
->>>> gpio_irq_{en,dis}able*()") dropped the configuration of ISEL from
->>>> rzg2l_gpio_irq_enable()/rzg2l_gpio_irq_disable() and moved it to
->>>> rzg2l_gpio_child_to_parent_hwirq()/rzg2l_gpio_irq_domain_free() to fix spurious IRQs.
->>>>
->>>> The resume code used rzg2l_gpio_irq_enable() (called from
->>>> rzg2l_gpio_irq_restore()) to reconfigure the wakeup interrupts. Some
->>>> drivers (e.g. Ethernet) may also reconfigure interrupts in their own
->>>> code, eventually calling rzg2l_gpio_irq_enable(), when these are not wakeup interrupts.
->>>>
->>>> After commit 1d2da79708cb ("pinctrl: renesas: rzg2l: Avoid
->>>> configuring ISEL in gpio_irq_{en,dis}able*()"), ISEL was no longer configured properly after resume.
->>>>
->>>> Fix this by adding rzg2l_gpio_irq_endisable() back into
->>>> rzg2l_gpio_irq_enable(), and by using its unlocked variant in
->>>> rzg2l_gpio_irq_restore(). Having IRQs enable in
->>>> rzg2l_gpio_irq_enable() should be safe with respect to spurious IRQs,
->>>> as in the probe case IRQs are enabled anyway in rzg2l_gpio_child_to_parent_hwirq(). No spurious IRQs
->> were detected on suspend/resume tests (executed on RZ/G3S).
->>>
->>> IIRC, I believe the issue is ISEL is not restored during resume.
->>
->> Yes
->>
->>> Can we restore this register just like Schmitt register
->>> suspend/restore[1]
->>
->> The IA55 would have to be configured for interrupts as well. Doing it in other order will lead to
->> spurious interrupts while resuming. The commit 254203f9a94c ("pinctrl: renesas: rzg2l: Add
->> suspend/resume support") that introduced this approach, mentions the following:
->>
->>     Because interrupt signals are routed to IA55 interrupt controller and
->>     IA55 interrupt controller resumes before pin controller, patch restores
->>     also the configured interrupts just after pin settings are restored to
->>     avoid invalid interrupts while resuming.
+> The triggering scenario is as follows:
 > 
-> OK. So enable/disable Keep ISEL configuration as it is, so the pin gpio int always.
+> CPU0								CPU1
+> sched_tick_remote
+> WARN_ON_ONCE(delta > (u64)NSEC_PER_SEC * 3)
+> 
+> report_bug							con_write
+> printk
+> 
+> console_unlock
+> 								do_con_write
+> 								console_lock
+> 								down(&console_sem)
+> 								list_add_tail(&waiter.list, &sem->wait_list);
+> up(&console_sem)
+> wake_up_q(&wake_q)
+> try_to_wake_up
+> __task_rq_lock
+> _raw_spin_lock
+> 
+> This patch fixes the issue by deffering all printk console printing
+> during the lock holding period.
+> 
+> Fixes: d84b31313ef8 ("sched/isolation: Offload residual 1Hz scheduler tick")
+> Signed-off-by: Wang Tao <wangtao554@huawei.com>
 
-Yes
+I fundamentally hate that deferred thing and consider it a printk bug.
 
-> Which commit 1d2da79708cb ("pinctrl: renesas: rzg2l: Avoidconfiguring ISEL in gpio_irq_{en,dis}able*()")
-> is doing.
-> 
-> The new addition is suspend/resume restores ISEL along with reconfiguring interrupts.
-> 
-> Is it correct?
-
-This commit only fixes the ISEL restore on resume. The rest of interrupt
-reconfiguration on resume was in place from previous commits.
-
-Thank you,
-Claudiu
-
-> 
-> Cheers,
-> Biju
-> 
-> 
-> 
-
+But really, if you trip that WARN, fix it and the problem goes away.
 
