@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-179312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A5CEB53E90
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 00:13:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F99FB53EAB
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 00:27:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E57C57BD58F
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 22:11:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B49481BC33C5
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 22:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9277134AAEE;
-	Thu, 11 Sep 2025 22:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26EF2EE5FE;
+	Thu, 11 Sep 2025 22:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="RUSWSziV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RvcrFw3u"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF38C342C9D;
-	Thu, 11 Sep 2025 22:12:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69072EE5E1;
+	Thu, 11 Sep 2025 22:27:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757628781; cv=none; b=qb2qWdlQowmpcjMyJdTcokX/Btns8lE09ZII2e3J82NRW4OxwCI65qPu0mdLOl+1WfKIC+2sJrLryCCt6bK9KAjCYZTP8uhuI3fMIm2+g0rWUQvbSoNHOVpH1dMr1PVdCTuAV3RfkGPwXd3IImN/SC7choRQIMgtwI1Nqwg7o4s=
+	t=1757629621; cv=none; b=max8wVqcbEokTp6M9jqsc1eCNbErmhqf5mak5f25ug2ESonodKvaBToQIhnWnXqIFJCksOgy7s37uOpQYca8B1smKXn3e8+AmgQdkUrPupg7ZPrTotpgLgs5zWbBNgrY22F8KQ5HzlFHPZX0ZHETeGz+DnitQVNDRsAXnNGojAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757628781; c=relaxed/simple;
-	bh=8qAW7k+pdxj330R+9BUzLfefS6+eHgrjIwHtht4fASY=;
+	s=arc-20240116; t=1757629621; c=relaxed/simple;
+	bh=Lghux1Bntyb2GrRrZ11EdHGNaGs6O2s/wGDMZaWtbuE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YUMK5KIthjZ5Mm/e4CxunImaOagY2Jj3hkHd9d8z96n3/CW271fBpw0qE9arUY6cyezgLP5ErE+kYY4H/PKL4MG/+SMnZ9X387o7Der8B462LskygHtZ4e6ZYCcy0c/Rkv2dLj+TCy2jxek0tiWoYuOAdQmtwLxFwl2e0Dyldzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=RUSWSziV; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=k38r4YA5840dqQerOX6ASJvj7ltULIdsb+/xx7kZDp4=; b=RUSWSziVQseGJ3SzEMC5DuSIof
-	xSJSdXq3E10/hf6iFm61jJPQi3jJswsp5oxz3zVxrfjSr1J+Fj4l0qv7VTcMtkWc3f4O/Crfd6iS1
-	Hf7hA9A83Kwc+SfQwLkSz19rrepirv6/5Kt8JLN/PLhz6IcJge/qJUMMLi3dNf6wkFxc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uwpX6-0088t2-RU; Fri, 12 Sep 2025 00:12:48 +0200
-Date: Fri, 12 Sep 2025 00:12:48 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Josua Mayer <josua@solid-run.com>
-Cc: Gregory Clement <gregory.clement@bootlin.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Wunderlich <frank-w@public-files.de>,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] arm64: dts: marvell: cn9132-clearfog: fix
- multi-lane pci x2 and x4 ports
-Message-ID: <9272b233-b710-4e57-b3ff-735f45c03c74@lunn.ch>
-References: <20250911-cn913x-sr-fix-sata-v2-0-0d79319105f8@solid-run.com>
- <20250911-cn913x-sr-fix-sata-v2-3-0d79319105f8@solid-run.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ebgl1BIseJJQsBf32DcldRxTgFUXcDuBsLLbqulLPlOWR9FyoJfudMbcUZMnUnHHmq5m8xXhLe1gyEjUIfgiUeOoiUSH1nn4djkExWexKInc9UQ+i5u0uIb/xZ4PzrN4bYM/T7RQFcjdWMtQ/Uza1meQKmo4ufS9+urmId4Cleo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RvcrFw3u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFABC4CEF0;
+	Thu, 11 Sep 2025 22:27:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757629621;
+	bh=Lghux1Bntyb2GrRrZ11EdHGNaGs6O2s/wGDMZaWtbuE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RvcrFw3uEAk4eWJ2JHg9mcCkmvXQlDvmE9tCwfVxdrEHJmyuI7FD3jlKNBegeK7pG
+	 sZf2uG3a41+6i79c9F6LJu93KnzoWycEdZ3Rm/t2jbvurzwTQKv7pGBTbYEDj4H7Uc
+	 r/blz9x5vwQLb14UJQYP4PW5pIZiKMr5l6ijSTj+PHPcUWm24z9jH+4Qr5F/uFe3gj
+	 HEJufOLIsvp8h1WUpv3+FQImv772fx56qRIu4ixNNG5znYVD+UOhgQL8PdSTdhoD90
+	 4a3X7ZhIhb8zZSwNXW2JwdC0kJU45LYtUHu9yscxGYwcyonlqHZa/F+2T5ocr2kGSW
+	 W19PLch3Hjqnw==
+Date: Thu, 11 Sep 2025 15:27:00 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: tytso@mit.edu
+Cc: linux-ext4@vger.kernel.org, linux-api@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] ext4: avoid potential buffer over-read in
+ parse_apply_sb_mount_options()
+Message-ID: <20250911222700.GC8084@frogsfrogsfrogs>
+References: <20250908-tune2fs-v1-0-e3a6929f3355@mit.edu>
+ <20250908-tune2fs-v1-1-e3a6929f3355@mit.edu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,24 +59,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250911-cn913x-sr-fix-sata-v2-3-0d79319105f8@solid-run.com>
+In-Reply-To: <20250908-tune2fs-v1-1-e3a6929f3355@mit.edu>
 
-On Thu, Sep 11, 2025 at 08:28:06PM +0200, Josua Mayer wrote:
-> The mvebu-comphy driver does not currently know how to pass correct
-> lane-count to ATF while configuring the serdes lanes.
+On Mon, Sep 08, 2025 at 11:15:48PM -0400, Theodore Ts'o via B4 Relay wrote:
+> From: Theodore Ts'o <tytso@mit.edu>
 > 
-> This causes the system to hard reset during reconfiguration, if a pci
-> card is present and has established a link during bootloader.
-> 
-> Remove the comphy handles from the respective pci nodes to avoid runtime
-> reconfiguration, relying solely on bootloader configuration - while
-> avoiding the hard reset.
-> 
-> When bootloader has configured the lanes correctly, the pci ports are
-> functional under Linux.
+> Unlike other strings in the ext4 superblock, we rely on tune2fs to
+> make sure s_mount_opts is NUL terminated.  Harden
+> parse_apply_sb_mount_options() by treating s_mount_opts as a potential
+> __nonstring.
 
-Does this require a specific bootloader? Can i use mainline grub or
-bareboot?
+Uh.... does that mean that a filesystem with exactly 64 bytes worth of
+mount option string (and no trailing null) could do something malicious?
 
-	Andrew
+My guess is that s_usr_quota_inum mostly saves us, but a nastycrafted
+filesystem with more than 2^24 inodes could cause an out of bounds
+memory access?  But that most likely will just fail the mount option
+parser anyway?
+
+--D
+
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 8b67f04ab9de ("ext4: Add mount options in superblock")
+> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+> ---
+>  fs/ext4/super.c | 17 +++++------------
+>  1 file changed, 5 insertions(+), 12 deletions(-)
+> 
+> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+> index 699c15db28a82f26809bf68533454a242596f0fd..94c98446c84f9a4614971d246ca7f001de610a8a 100644
+> --- a/fs/ext4/super.c
+> +++ b/fs/ext4/super.c
+> @@ -2460,7 +2460,7 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
+>  					struct ext4_fs_context *m_ctx)
+>  {
+>  	struct ext4_sb_info *sbi = EXT4_SB(sb);
+> -	char *s_mount_opts = NULL;
+> +	char s_mount_opts[65];
+>  	struct ext4_fs_context *s_ctx = NULL;
+>  	struct fs_context *fc = NULL;
+>  	int ret = -ENOMEM;
+> @@ -2468,15 +2468,11 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
+>  	if (!sbi->s_es->s_mount_opts[0])
+>  		return 0;
+>  
+> -	s_mount_opts = kstrndup(sbi->s_es->s_mount_opts,
+> -				sizeof(sbi->s_es->s_mount_opts),
+> -				GFP_KERNEL);
+> -	if (!s_mount_opts)
+> -		return ret;
+> +	strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts);
+>  
+>  	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL);
+>  	if (!fc)
+> -		goto out_free;
+> +		return -ENOMEM;
+>  
+>  	s_ctx = kzalloc(sizeof(struct ext4_fs_context), GFP_KERNEL);
+>  	if (!s_ctx)
+> @@ -2508,11 +2504,8 @@ static int parse_apply_sb_mount_options(struct super_block *sb,
+>  	ret = 0;
+>  
+>  out_free:
+> -	if (fc) {
+> -		ext4_fc_free(fc);
+> -		kfree(fc);
+> -	}
+> -	kfree(s_mount_opts);
+> +	ext4_fc_free(fc);
+> +	kfree(fc);
+>  	return ret;
+>  }
+>  
+> 
+> -- 
+> 2.51.0
+> 
+> 
+> 
 
