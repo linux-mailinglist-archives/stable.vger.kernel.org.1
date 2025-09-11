@@ -1,43 +1,42 @@
-Return-Path: <stable+bounces-179292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56992B53913
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 18:24:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CF1B53905
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 18:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DBA4B64EE4
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 16:20:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F8B1485726
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 16:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4787235FC18;
-	Thu, 11 Sep 2025 16:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F01636209A;
+	Thu, 11 Sep 2025 16:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNloi4Rv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KB5ySTpW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FFD35A2AF;
-	Thu, 11 Sep 2025 16:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7FA35AAB7;
+	Thu, 11 Sep 2025 16:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757607678; cv=none; b=Jmxx3HaOEyDqlapZKQt9PVD7c8fu4DFukpgCbJ/OUBz3s5NQ1bLEtEqA3kS+h8qkWOJwyO2ytN6y3+Y9vTtvHs09SE6mRJnVa9Clp6SzgABnZIJcABOzqKI7X9Dex7apd6oBNH3OtOpURLTda3oHaQ8JIyccg8hhG6LseqwoBL8=
+	t=1757607693; cv=none; b=LssJZsgIyAe0IDSHVwvC5zHawyYtP3EtgskZ9xZzLphykFBai+SaAIY1lFB5ETkt27bFqmRAqw0TrALzFlnv1XUTVcZ4BqYSJJiYE5cCSD+ItXojWCeqERy876Z3bLV1kGXJQlzQRwOIfJpwty/Md4Yvc5GsQZ06jn0KxEdd5Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757607678; c=relaxed/simple;
-	bh=m64hhvpZUnFb66PtsmkOTFSKj+OjjOX1/8A2fenSFc4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d2fhcq92OW8m3HCQtxnb2I+U/aODr0cq10KNzZcu2XubnFWuItbd5gvAtjfCkmX2r/uRW6Qlj0276Haxe4gQfOh9X73aBCZgvXuuX1//5NrA0OToTBSo72qeZ1xDtkT1YfA9qKGb56z7YrCXI/mUBO44s96r8psya40ZlsbvZPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNloi4Rv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02752C4CEF0;
-	Thu, 11 Sep 2025 16:21:16 +0000 (UTC)
+	s=arc-20240116; t=1757607693; c=relaxed/simple;
+	bh=5NlXwf34cSTaXuh9eG5LWAv3foKGH4k9yBS1eDxzSQE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k2tOD1FYYn91XhSPg1fUr52m45H3/2ZBWjXhjNefIIr9umlunRkz9TVvwsGTHurgCZBiaaz3M0rUh94Qr6lnSTNOVH7mc2GJRi/lwQSTgB6DCaWykCexdM6hpRRBlIB5FMZqqpmhr2iFH5idRfm2r8WWC8R8yNrZgzCvryHel8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KB5ySTpW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B56C4CEF5;
+	Thu, 11 Sep 2025 16:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757607677;
-	bh=m64hhvpZUnFb66PtsmkOTFSKj+OjjOX1/8A2fenSFc4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eNloi4Rv/EcrsfCQnGWLC0IE3o9MT3coNAcn3nMIxHC7TIyJjvS53q5L5xmqpMYQT
-	 mCyDTeMR0blo4FxVCDi4pdD6Ggw5+eElfkRE/1mh3Cay4Xn/xrtxu6UIdHQPFc66AD
-	 HVyD3sDxRV8eIKZljuyHZKsaQZppM3tUh0zszdpw=
+	s=korg; t=1757607692;
+	bh=5NlXwf34cSTaXuh9eG5LWAv3foKGH4k9yBS1eDxzSQE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KB5ySTpWjPF21vOJA/Uhvta7ttj2LPANINt/513Pq4xuESZYOLhdgrEKNyvRnbdJG
+	 iYVSpu0Ffn13xJeiYobgKzeHfqrq9NLg2k1S8RPBAfF4p+d6Ks1RUV3kKrjAtk9Hfu
+	 gwoTI99gudHPV4S1En9TpZ/Hg6uWEnENaSmKIUMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
@@ -46,763 +45,59 @@ To: linux-kernel@vger.kernel.org,
 Cc: lwn@lwn.net,
 	jslaby@suse.cz,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 6.6.106
-Date: Thu, 11 Sep 2025 18:21:11 +0200
-Message-ID: <2025091111-nervous-creative-9f82@gregkh>
+Subject: Linux 6.12.47
+Date: Thu, 11 Sep 2025 18:21:18 +0200
+Message-ID: <2025091119-credible-mule-c80c@gregkh>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025091111-stopwatch-grieving-d276@gregkh>
-References: <2025091111-stopwatch-grieving-d276@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
-index 868ec736a9d2..cfa393c51f4d 100644
---- a/Documentation/ABI/testing/sysfs-devices-system-cpu
-+++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
-@@ -528,6 +528,7 @@ What:		/sys/devices/system/cpu/vulnerabilities
- 		/sys/devices/system/cpu/vulnerabilities/srbds
- 		/sys/devices/system/cpu/vulnerabilities/tsa
- 		/sys/devices/system/cpu/vulnerabilities/tsx_async_abort
-+		/sys/devices/system/cpu/vulnerabilities/vmscape
- Date:		January 2018
- Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
- Description:	Information about CPU vulnerabilities
-diff --git a/Documentation/admin-guide/hw-vuln/index.rst b/Documentation/admin-guide/hw-vuln/index.rst
-index d2caa390395e..5d6c001b8a98 100644
---- a/Documentation/admin-guide/hw-vuln/index.rst
-+++ b/Documentation/admin-guide/hw-vuln/index.rst
-@@ -23,3 +23,4 @@ are configurable at compile, boot or run time.
-    gather_data_sampling
-    reg-file-data-sampling
-    indirect-target-selection
-+   vmscape
-diff --git a/Documentation/admin-guide/hw-vuln/vmscape.rst b/Documentation/admin-guide/hw-vuln/vmscape.rst
-new file mode 100644
-index 000000000000..d9b9a2b6c114
---- /dev/null
-+++ b/Documentation/admin-guide/hw-vuln/vmscape.rst
-@@ -0,0 +1,110 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+VMSCAPE
-+=======
-+
-+VMSCAPE is a vulnerability that may allow a guest to influence the branch
-+prediction in host userspace. It particularly affects hypervisors like QEMU.
-+
-+Even if a hypervisor may not have any sensitive data like disk encryption keys,
-+guest-userspace may be able to attack the guest-kernel using the hypervisor as
-+a confused deputy.
-+
-+Affected processors
-+-------------------
-+
-+The following CPU families are affected by VMSCAPE:
-+
-+**Intel processors:**
-+  - Skylake generation (Parts without Enhanced-IBRS)
-+  - Cascade Lake generation - (Parts affected by ITS guest/host separation)
-+  - Alder Lake and newer (Parts affected by BHI)
-+
-+Note that, BHI affected parts that use BHB clearing software mitigation e.g.
-+Icelake are not vulnerable to VMSCAPE.
-+
-+**AMD processors:**
-+  - Zen series (families 0x17, 0x19, 0x1a)
-+
-+** Hygon processors:**
-+ - Family 0x18
-+
-+Mitigation
-+----------
-+
-+Conditional IBPB
-+----------------
-+
-+Kernel tracks when a CPU has run a potentially malicious guest and issues an
-+IBPB before the first exit to userspace after VM-exit. If userspace did not run
-+between VM-exit and the next VM-entry, no IBPB is issued.
-+
-+Note that the existing userspace mitigation against Spectre-v2 is effective in
-+protecting the userspace. They are insufficient to protect the userspace VMMs
-+from a malicious guest. This is because Spectre-v2 mitigations are applied at
-+context switch time, while the userspace VMM can run after a VM-exit without a
-+context switch.
-+
-+Vulnerability enumeration and mitigation is not applied inside a guest. This is
-+because nested hypervisors should already be deploying IBPB to isolate
-+themselves from nested guests.
-+
-+SMT considerations
-+------------------
-+
-+When Simultaneous Multi-Threading (SMT) is enabled, hypervisors can be
-+vulnerable to cross-thread attacks. For complete protection against VMSCAPE
-+attacks in SMT environments, STIBP should be enabled.
-+
-+The kernel will issue a warning if SMT is enabled without adequate STIBP
-+protection. Warning is not issued when:
-+
-+- SMT is disabled
-+- STIBP is enabled system-wide
-+- Intel eIBRS is enabled (which implies STIBP protection)
-+
-+System information and options
-+------------------------------
-+
-+The sysfs file showing VMSCAPE mitigation status is:
-+
-+  /sys/devices/system/cpu/vulnerabilities/vmscape
-+
-+The possible values in this file are:
-+
-+ * 'Not affected':
-+
-+   The processor is not vulnerable to VMSCAPE attacks.
-+
-+ * 'Vulnerable':
-+
-+   The processor is vulnerable and no mitigation has been applied.
-+
-+ * 'Mitigation: IBPB before exit to userspace':
-+
-+   Conditional IBPB mitigation is enabled. The kernel tracks when a CPU has
-+   run a potentially malicious guest and issues an IBPB before the first
-+   exit to userspace after VM-exit.
-+
-+ * 'Mitigation: IBPB on VMEXIT':
-+
-+   IBPB is issued on every VM-exit. This occurs when other mitigations like
-+   RETBLEED or SRSO are already issuing IBPB on VM-exit.
-+
-+Mitigation control on the kernel command line
-+----------------------------------------------
-+
-+The mitigation can be controlled via the ``vmscape=`` command line parameter:
-+
-+ * ``vmscape=off``:
-+
-+   Disable the VMSCAPE mitigation.
-+
-+ * ``vmscape=ibpb``:
-+
-+   Enable conditional IBPB mitigation (default when CONFIG_MITIGATION_VMSCAPE=y).
-+
-+ * ``vmscape=force``:
-+
-+   Force vulnerability detection and mitigation even on processors that are
-+   not known to be affected.
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index bcfa49019c3f..60d48ebbc2cb 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3368,6 +3368,7 @@
- 					       srbds=off [X86,INTEL]
- 					       ssbd=force-off [ARM64]
- 					       tsx_async_abort=off [X86]
-+					       vmscape=off [X86]
- 
- 				Exceptions:
- 					       This does not have any effect on
-@@ -7074,6 +7075,16 @@
- 	vmpoff=		[KNL,S390] Perform z/VM CP command after power off.
- 			Format: <command>
- 
-+	vmscape=	[X86] Controls mitigation for VMscape attacks.
-+			VMscape attacks can leak information from a userspace
-+			hypervisor to a guest via speculative side-channels.
-+
-+			off		- disable the mitigation
-+			ibpb		- use Indirect Branch Prediction Barrier
-+					  (IBPB) mitigation (default)
-+			force		- force vulnerability detection even on
-+					  unaffected processors
-+
- 	vsyscall=	[X86-64]
- 			Controls the behavior of vsyscalls (i.e. calls to
- 			fixed addresses of 0xffffffffff600x00 from legacy
-diff --git a/Makefile b/Makefile
-index 2b7f67d7b641..b934846659ee 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 6
- PATCHLEVEL = 6
--SUBLEVEL = 105
-+SUBLEVEL = 106
- EXTRAVERSION =
- NAME = Pinguïn Aangedreven
- 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 2b5b7d9a24e9..37e22efbd1e1 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2630,6 +2630,15 @@ config MITIGATION_TSA
- 	  security vulnerability on AMD CPUs which can lead to forwarding of
- 	  invalid info to subsequent instructions and thus can affect their
- 	  timing and thereby cause a leakage.
-+
-+config MITIGATION_VMSCAPE
-+	bool "Mitigate VMSCAPE"
-+	depends on KVM
-+	default y
-+	help
-+	  Enable mitigation for VMSCAPE attacks. VMSCAPE is a hardware security
-+	  vulnerability on Intel and AMD CPUs that may allow a guest to do
-+	  Spectre v2 style attacks on userspace hypervisor.
- endif
- 
- config ARCH_HAS_ADD_PAGES
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 199441d11fbb..ae4ea1f9594f 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -475,6 +475,7 @@
- #define X86_FEATURE_TSA_SQ_NO          (21*32+11) /* "" AMD CPU not vulnerable to TSA-SQ */
- #define X86_FEATURE_TSA_L1_NO          (21*32+12) /* "" AMD CPU not vulnerable to TSA-L1 */
- #define X86_FEATURE_CLEAR_CPU_BUF_VM   (21*32+13) /* "" Clear CPU buffers using VERW before VMRUN */
-+#define X86_FEATURE_IBPB_EXIT_TO_USER  (21*32+14) /* Use IBPB on exit-to-userspace, see VMSCAPE bug */
- 
- /*
-  * BUG word(s)
-@@ -528,4 +529,5 @@
- #define X86_BUG_ITS			X86_BUG(1*32 + 5) /* CPU is affected by Indirect Target Selection */
- #define X86_BUG_ITS_NATIVE_ONLY		X86_BUG(1*32 + 6) /* CPU is affected by ITS, VMX is not affected */
- #define X86_BUG_TSA			X86_BUG(1*32+ 9) /* "tsa" CPU is affected by Transient Scheduler Attacks */
-+#define X86_BUG_VMSCAPE			X86_BUG( 1*32+10) /* "vmscape" CPU is affected by VMSCAPE attacks from guests */
- #endif /* _ASM_X86_CPUFEATURES_H */
-diff --git a/arch/x86/include/asm/entry-common.h b/arch/x86/include/asm/entry-common.h
-index fb2809b20b0a..bb0a5ecc807f 100644
---- a/arch/x86/include/asm/entry-common.h
-+++ b/arch/x86/include/asm/entry-common.h
-@@ -83,6 +83,13 @@ static inline void arch_exit_to_user_mode_prepare(struct pt_regs *regs,
- 	 * 8 (ia32) bits.
- 	 */
- 	choose_random_kstack_offset(rdtsc());
-+
-+	/* Avoid unnecessary reads of 'x86_ibpb_exit_to_user' */
-+	if (cpu_feature_enabled(X86_FEATURE_IBPB_EXIT_TO_USER) &&
-+	    this_cpu_read(x86_ibpb_exit_to_user)) {
-+		indirect_branch_prediction_barrier();
-+		this_cpu_write(x86_ibpb_exit_to_user, false);
-+	}
- }
- #define arch_exit_to_user_mode_prepare arch_exit_to_user_mode_prepare
- 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 04f5a41c3a04..fb469ace3839 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -559,6 +559,8 @@ void alternative_msr_write(unsigned int msr, u64 val, unsigned int feature)
- 
- extern u64 x86_pred_cmd;
- 
-+DECLARE_PER_CPU(bool, x86_ibpb_exit_to_user);
-+
- static inline void indirect_branch_prediction_barrier(void)
- {
- 	alternative_msr_write(MSR_IA32_PRED_CMD, x86_pred_cmd, X86_FEATURE_USE_IBPB);
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 332c6f24280d..315926ccea0f 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -51,6 +51,7 @@ static void __init srso_select_mitigation(void);
- static void __init gds_select_mitigation(void);
- static void __init its_select_mitigation(void);
- static void __init tsa_select_mitigation(void);
-+static void __init vmscape_select_mitigation(void);
- 
- /* The base value of the SPEC_CTRL MSR without task-specific bits set */
- u64 x86_spec_ctrl_base;
-@@ -60,6 +61,14 @@ EXPORT_SYMBOL_GPL(x86_spec_ctrl_base);
- DEFINE_PER_CPU(u64, x86_spec_ctrl_current);
- EXPORT_SYMBOL_GPL(x86_spec_ctrl_current);
- 
-+/*
-+ * Set when the CPU has run a potentially malicious guest. An IBPB will
-+ * be needed to before running userspace. That IBPB will flush the branch
-+ * predictor content.
-+ */
-+DEFINE_PER_CPU(bool, x86_ibpb_exit_to_user);
-+EXPORT_PER_CPU_SYMBOL_GPL(x86_ibpb_exit_to_user);
-+
- u64 x86_pred_cmd __ro_after_init = PRED_CMD_IBPB;
- EXPORT_SYMBOL_GPL(x86_pred_cmd);
- 
-@@ -186,6 +195,7 @@ void __init cpu_select_mitigations(void)
- 	gds_select_mitigation();
- 	its_select_mitigation();
- 	tsa_select_mitigation();
-+	vmscape_select_mitigation();
- }
- 
- /*
-@@ -2182,80 +2192,6 @@ static void __init tsa_select_mitigation(void)
- 	pr_info("%s\n", tsa_strings[tsa_mitigation]);
- }
- 
--void cpu_bugs_smt_update(void)
--{
--	mutex_lock(&spec_ctrl_mutex);
--
--	if (sched_smt_active() && unprivileged_ebpf_enabled() &&
--	    spectre_v2_enabled == SPECTRE_V2_EIBRS_LFENCE)
--		pr_warn_once(SPECTRE_V2_EIBRS_LFENCE_EBPF_SMT_MSG);
--
--	switch (spectre_v2_user_stibp) {
--	case SPECTRE_V2_USER_NONE:
--		break;
--	case SPECTRE_V2_USER_STRICT:
--	case SPECTRE_V2_USER_STRICT_PREFERRED:
--		update_stibp_strict();
--		break;
--	case SPECTRE_V2_USER_PRCTL:
--	case SPECTRE_V2_USER_SECCOMP:
--		update_indir_branch_cond();
--		break;
--	}
--
--	switch (mds_mitigation) {
--	case MDS_MITIGATION_FULL:
--	case MDS_MITIGATION_VMWERV:
--		if (sched_smt_active() && !boot_cpu_has(X86_BUG_MSBDS_ONLY))
--			pr_warn_once(MDS_MSG_SMT);
--		update_mds_branch_idle();
--		break;
--	case MDS_MITIGATION_OFF:
--		break;
--	}
--
--	switch (taa_mitigation) {
--	case TAA_MITIGATION_VERW:
--	case TAA_MITIGATION_UCODE_NEEDED:
--		if (sched_smt_active())
--			pr_warn_once(TAA_MSG_SMT);
--		break;
--	case TAA_MITIGATION_TSX_DISABLED:
--	case TAA_MITIGATION_OFF:
--		break;
--	}
--
--	switch (mmio_mitigation) {
--	case MMIO_MITIGATION_VERW:
--	case MMIO_MITIGATION_UCODE_NEEDED:
--		if (sched_smt_active())
--			pr_warn_once(MMIO_MSG_SMT);
--		break;
--	case MMIO_MITIGATION_OFF:
--		break;
--	}
--
--	switch (tsa_mitigation) {
--	case TSA_MITIGATION_USER_KERNEL:
--	case TSA_MITIGATION_VM:
--	case TSA_MITIGATION_FULL:
--	case TSA_MITIGATION_UCODE_NEEDED:
--		/*
--		 * TSA-SQ can potentially lead to info leakage between
--		 * SMT threads.
--		 */
--		if (sched_smt_active())
--			static_branch_enable(&cpu_buf_idle_clear);
--		else
--			static_branch_disable(&cpu_buf_idle_clear);
--		break;
--	case TSA_MITIGATION_NONE:
--		break;
--	}
--
--	mutex_unlock(&spec_ctrl_mutex);
--}
--
- #undef pr_fmt
- #define pr_fmt(fmt)	"Speculative Store Bypass: " fmt
- 
-@@ -2941,9 +2877,169 @@ static void __init srso_select_mitigation(void)
- 		x86_pred_cmd = PRED_CMD_SBPB;
- }
- 
-+#undef pr_fmt
-+#define pr_fmt(fmt)	"VMSCAPE: " fmt
-+
-+enum vmscape_mitigations {
-+	VMSCAPE_MITIGATION_NONE,
-+	VMSCAPE_MITIGATION_AUTO,
-+	VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER,
-+	VMSCAPE_MITIGATION_IBPB_ON_VMEXIT,
-+};
-+
-+static const char * const vmscape_strings[] = {
-+	[VMSCAPE_MITIGATION_NONE]		= "Vulnerable",
-+	/* [VMSCAPE_MITIGATION_AUTO] */
-+	[VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER]	= "Mitigation: IBPB before exit to userspace",
-+	[VMSCAPE_MITIGATION_IBPB_ON_VMEXIT]	= "Mitigation: IBPB on VMEXIT",
-+};
-+
-+static enum vmscape_mitigations vmscape_mitigation __ro_after_init =
-+	IS_ENABLED(CONFIG_MITIGATION_VMSCAPE) ? VMSCAPE_MITIGATION_AUTO : VMSCAPE_MITIGATION_NONE;
-+
-+static int __init vmscape_parse_cmdline(char *str)
-+{
-+	if (!str)
-+		return -EINVAL;
-+
-+	if (!strcmp(str, "off")) {
-+		vmscape_mitigation = VMSCAPE_MITIGATION_NONE;
-+	} else if (!strcmp(str, "ibpb")) {
-+		vmscape_mitigation = VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER;
-+	} else if (!strcmp(str, "force")) {
-+		setup_force_cpu_bug(X86_BUG_VMSCAPE);
-+		vmscape_mitigation = VMSCAPE_MITIGATION_AUTO;
-+	} else {
-+		pr_err("Ignoring unknown vmscape=%s option.\n", str);
-+	}
-+
-+	return 0;
-+}
-+early_param("vmscape", vmscape_parse_cmdline);
-+
-+static void __init vmscape_select_mitigation(void)
-+{
-+	if (cpu_mitigations_off() ||
-+	    !boot_cpu_has_bug(X86_BUG_VMSCAPE) ||
-+	    !boot_cpu_has(X86_FEATURE_IBPB)) {
-+		vmscape_mitigation = VMSCAPE_MITIGATION_NONE;
-+		return;
-+	}
-+
-+	if (vmscape_mitigation == VMSCAPE_MITIGATION_AUTO)
-+		vmscape_mitigation = VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER;
-+
-+	if (retbleed_mitigation == RETBLEED_MITIGATION_IBPB ||
-+	    srso_mitigation == SRSO_MITIGATION_IBPB_ON_VMEXIT)
-+		vmscape_mitigation = VMSCAPE_MITIGATION_IBPB_ON_VMEXIT;
-+
-+	if (vmscape_mitigation == VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER)
-+		setup_force_cpu_cap(X86_FEATURE_IBPB_EXIT_TO_USER);
-+
-+	pr_info("%s\n", vmscape_strings[vmscape_mitigation]);
-+}
-+
- #undef pr_fmt
- #define pr_fmt(fmt) fmt
- 
-+#define VMSCAPE_MSG_SMT "VMSCAPE: SMT on, STIBP is required for full protection. See https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/vmscape.html for more details.\n"
-+
-+void cpu_bugs_smt_update(void)
-+{
-+	mutex_lock(&spec_ctrl_mutex);
-+
-+	if (sched_smt_active() && unprivileged_ebpf_enabled() &&
-+	    spectre_v2_enabled == SPECTRE_V2_EIBRS_LFENCE)
-+		pr_warn_once(SPECTRE_V2_EIBRS_LFENCE_EBPF_SMT_MSG);
-+
-+	switch (spectre_v2_user_stibp) {
-+	case SPECTRE_V2_USER_NONE:
-+		break;
-+	case SPECTRE_V2_USER_STRICT:
-+	case SPECTRE_V2_USER_STRICT_PREFERRED:
-+		update_stibp_strict();
-+		break;
-+	case SPECTRE_V2_USER_PRCTL:
-+	case SPECTRE_V2_USER_SECCOMP:
-+		update_indir_branch_cond();
-+		break;
-+	}
-+
-+	switch (mds_mitigation) {
-+	case MDS_MITIGATION_FULL:
-+	case MDS_MITIGATION_VMWERV:
-+		if (sched_smt_active() && !boot_cpu_has(X86_BUG_MSBDS_ONLY))
-+			pr_warn_once(MDS_MSG_SMT);
-+		update_mds_branch_idle();
-+		break;
-+	case MDS_MITIGATION_OFF:
-+		break;
-+	}
-+
-+	switch (taa_mitigation) {
-+	case TAA_MITIGATION_VERW:
-+	case TAA_MITIGATION_UCODE_NEEDED:
-+		if (sched_smt_active())
-+			pr_warn_once(TAA_MSG_SMT);
-+		break;
-+	case TAA_MITIGATION_TSX_DISABLED:
-+	case TAA_MITIGATION_OFF:
-+		break;
-+	}
-+
-+	switch (mmio_mitigation) {
-+	case MMIO_MITIGATION_VERW:
-+	case MMIO_MITIGATION_UCODE_NEEDED:
-+		if (sched_smt_active())
-+			pr_warn_once(MMIO_MSG_SMT);
-+		break;
-+	case MMIO_MITIGATION_OFF:
-+		break;
-+	}
-+
-+	switch (tsa_mitigation) {
-+	case TSA_MITIGATION_USER_KERNEL:
-+	case TSA_MITIGATION_VM:
-+	case TSA_MITIGATION_FULL:
-+	case TSA_MITIGATION_UCODE_NEEDED:
-+		/*
-+		 * TSA-SQ can potentially lead to info leakage between
-+		 * SMT threads.
-+		 */
-+		if (sched_smt_active())
-+			static_branch_enable(&cpu_buf_idle_clear);
-+		else
-+			static_branch_disable(&cpu_buf_idle_clear);
-+		break;
-+	case TSA_MITIGATION_NONE:
-+		break;
-+	}
-+
-+	switch (vmscape_mitigation) {
-+	case VMSCAPE_MITIGATION_NONE:
-+	case VMSCAPE_MITIGATION_AUTO:
-+		break;
-+	case VMSCAPE_MITIGATION_IBPB_ON_VMEXIT:
-+	case VMSCAPE_MITIGATION_IBPB_EXIT_TO_USER:
-+		/*
-+		 * Hypervisors can be attacked across-threads, warn for SMT when
-+		 * STIBP is not already enabled system-wide.
-+		 *
-+		 * Intel eIBRS (!AUTOIBRS) implies STIBP on.
-+		 */
-+		if (!sched_smt_active() ||
-+		    spectre_v2_user_stibp == SPECTRE_V2_USER_STRICT ||
-+		    spectre_v2_user_stibp == SPECTRE_V2_USER_STRICT_PREFERRED ||
-+		    (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
-+		     !boot_cpu_has(X86_FEATURE_AUTOIBRS)))
-+			break;
-+		pr_warn_once(VMSCAPE_MSG_SMT);
-+		break;
-+	}
-+
-+	mutex_unlock(&spec_ctrl_mutex);
-+}
-+
- #ifdef CONFIG_SYSFS
- 
- #define L1TF_DEFAULT_MSG "Mitigation: PTE Inversion"
-@@ -3187,6 +3283,11 @@ static ssize_t tsa_show_state(char *buf)
- 	return sysfs_emit(buf, "%s\n", tsa_strings[tsa_mitigation]);
- }
- 
-+static ssize_t vmscape_show_state(char *buf)
-+{
-+	return sysfs_emit(buf, "%s\n", vmscape_strings[vmscape_mitigation]);
-+}
-+
- static ssize_t cpu_show_common(struct device *dev, struct device_attribute *attr,
- 			       char *buf, unsigned int bug)
- {
-@@ -3251,6 +3352,9 @@ static ssize_t cpu_show_common(struct device *dev, struct device_attribute *attr
- 	case X86_BUG_TSA:
- 		return tsa_show_state(buf);
- 
-+	case X86_BUG_VMSCAPE:
-+		return vmscape_show_state(buf);
-+
- 	default:
- 		break;
- 	}
-@@ -3340,4 +3444,9 @@ ssize_t cpu_show_tsa(struct device *dev, struct device_attribute *attr, char *bu
- {
- 	return cpu_show_common(dev, attr, buf, X86_BUG_TSA);
- }
-+
-+ssize_t cpu_show_vmscape(struct device *dev, struct device_attribute *attr, char *buf)
-+{
-+	return cpu_show_common(dev, attr, buf, X86_BUG_VMSCAPE);
-+}
- #endif
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index f66c71bffa6d..cf455968f27b 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1279,54 +1279,68 @@ static const __initconst struct x86_cpu_id cpu_vuln_whitelist[] = {
- #define ITS_NATIVE_ONLY	BIT(9)
- /* CPU is affected by Transient Scheduler Attacks */
- #define TSA		BIT(10)
-+/* CPU is affected by VMSCAPE */
-+#define VMSCAPE		BIT(11)
- 
- static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
--	VULNBL_INTEL_STEPPINGS(IVYBRIDGE,	X86_STEPPING_ANY,		SRBDS),
--	VULNBL_INTEL_STEPPINGS(HASWELL,		X86_STEPPING_ANY,		SRBDS),
--	VULNBL_INTEL_STEPPINGS(HASWELL_L,	X86_STEPPING_ANY,		SRBDS),
--	VULNBL_INTEL_STEPPINGS(HASWELL_G,	X86_STEPPING_ANY,		SRBDS),
--	VULNBL_INTEL_STEPPINGS(HASWELL_X,	X86_STEPPING_ANY,		MMIO),
--	VULNBL_INTEL_STEPPINGS(BROADWELL_D,	X86_STEPPING_ANY,		MMIO),
--	VULNBL_INTEL_STEPPINGS(BROADWELL_G,	X86_STEPPING_ANY,		SRBDS),
--	VULNBL_INTEL_STEPPINGS(BROADWELL_X,	X86_STEPPING_ANY,		MMIO),
--	VULNBL_INTEL_STEPPINGS(BROADWELL,	X86_STEPPING_ANY,		SRBDS),
--	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPINGS(0x0, 0x5),	MMIO | RETBLEED | GDS),
--	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
--	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
--	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
--	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPINGS(0x0, 0xb),	MMIO | RETBLEED | GDS | SRBDS),
--	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
--	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPINGS(0x0, 0xc),	MMIO | RETBLEED | GDS | SRBDS),
--	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
--	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
-+	VULNBL_INTEL_STEPPINGS(SANDYBRIDGE_X,	X86_STEPPING_ANY,		VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(SANDYBRIDGE,	X86_STEPPING_ANY,		VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(IVYBRIDGE_X,	X86_STEPPING_ANY,		VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(IVYBRIDGE,	X86_STEPPING_ANY,		SRBDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(HASWELL,		X86_STEPPING_ANY,		SRBDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(HASWELL_L,	X86_STEPPING_ANY,		SRBDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(HASWELL_G,	X86_STEPPING_ANY,		SRBDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(HASWELL_X,	X86_STEPPING_ANY,		MMIO | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(BROADWELL_D,	X86_STEPPING_ANY,		MMIO | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(BROADWELL_X,	X86_STEPPING_ANY,		MMIO | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(BROADWELL_G,	X86_STEPPING_ANY,		SRBDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(BROADWELL,	X86_STEPPING_ANY,		SRBDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPINGS(0x0, 0x5),	MMIO | RETBLEED | GDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPINGS(0x0, 0xb),	MMIO | RETBLEED | GDS | SRBDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPINGS(0x0, 0xc),	MMIO | RETBLEED | GDS | SRBDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED | VMSCAPE),
- 	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS | ITS_NATIVE_ONLY),
- 	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS | ITS_NATIVE_ONLY),
- 	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS | ITS_NATIVE_ONLY),
--	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
--	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED | ITS),
--	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED | ITS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS | VMSCAPE),
- 	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS | ITS_NATIVE_ONLY),
- 	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS | ITS_NATIVE_ONLY),
- 	VULNBL_INTEL_STEPPINGS(LAKEFIELD,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED),
- 	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS | ITS_NATIVE_ONLY),
--	VULNBL_INTEL_STEPPINGS(ALDERLAKE,	X86_STEPPING_ANY,		RFDS),
--	VULNBL_INTEL_STEPPINGS(ALDERLAKE_L,	X86_STEPPING_ANY,		RFDS),
--	VULNBL_INTEL_STEPPINGS(RAPTORLAKE,	X86_STEPPING_ANY,		RFDS),
--	VULNBL_INTEL_STEPPINGS(RAPTORLAKE_P,	X86_STEPPING_ANY,		RFDS),
--	VULNBL_INTEL_STEPPINGS(RAPTORLAKE_S,	X86_STEPPING_ANY,		RFDS),
--	VULNBL_INTEL_STEPPINGS(ATOM_GRACEMONT,	X86_STEPPING_ANY,		RFDS),
-+	VULNBL_INTEL_STEPPINGS(ALDERLAKE,	X86_STEPPING_ANY,		RFDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(ALDERLAKE_L,	X86_STEPPING_ANY,		RFDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(RAPTORLAKE,	X86_STEPPING_ANY,		RFDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(RAPTORLAKE_P,	X86_STEPPING_ANY,		RFDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(RAPTORLAKE_S,	X86_STEPPING_ANY,		RFDS | VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(METEORLAKE_L,	X86_STEPPING_ANY,		VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(ARROWLAKE_H,	X86_STEPPING_ANY,		VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(ARROWLAKE,	X86_STEPPING_ANY,		VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(ARROWLAKE_U,	X86_STEPPING_ANY,		VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(LUNARLAKE_M,	X86_STEPPING_ANY,		VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(SAPPHIRERAPIDS_X,X86_STEPPING_ANY,		VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(GRANITERAPIDS_X, X86_STEPPING_ANY,		VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(EMERALDRAPIDS_X, X86_STEPPING_ANY,		VMSCAPE),
-+	VULNBL_INTEL_STEPPINGS(ATOM_GRACEMONT,	X86_STEPPING_ANY,		RFDS | VMSCAPE),
- 	VULNBL_INTEL_STEPPINGS(ATOM_TREMONT,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RFDS),
- 	VULNBL_INTEL_STEPPINGS(ATOM_TREMONT_D,	X86_STEPPING_ANY,		MMIO | RFDS),
- 	VULNBL_INTEL_STEPPINGS(ATOM_TREMONT_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RFDS),
- 	VULNBL_INTEL_STEPPINGS(ATOM_GOLDMONT,	X86_STEPPING_ANY,		RFDS),
- 	VULNBL_INTEL_STEPPINGS(ATOM_GOLDMONT_D,	X86_STEPPING_ANY,		RFDS),
- 	VULNBL_INTEL_STEPPINGS(ATOM_GOLDMONT_PLUS, X86_STEPPING_ANY,		RFDS),
-+	VULNBL_INTEL_STEPPINGS(ATOM_CRESTMONT_X, X86_STEPPING_ANY,		VMSCAPE),
- 
- 	VULNBL_AMD(0x15, RETBLEED),
- 	VULNBL_AMD(0x16, RETBLEED),
--	VULNBL_AMD(0x17, RETBLEED | SMT_RSB | SRSO),
--	VULNBL_HYGON(0x18, RETBLEED | SMT_RSB | SRSO),
--	VULNBL_AMD(0x19, SRSO | TSA),
-+	VULNBL_AMD(0x17, RETBLEED | SMT_RSB | SRSO | VMSCAPE),
-+	VULNBL_HYGON(0x18, RETBLEED | SMT_RSB | SRSO | VMSCAPE),
-+	VULNBL_AMD(0x19, SRSO | TSA | VMSCAPE),
- 	{}
- };
- 
-@@ -1541,6 +1555,14 @@ static void __init cpu_set_bug_bits(struct cpuinfo_x86 *c)
- 		}
- 	}
- 
-+	/*
-+	 * Set the bug only on bare-metal. A nested hypervisor should already be
-+	 * deploying IBPB to isolate itself from nested guests.
-+	 */
-+	if (cpu_matches(cpu_vuln_blacklist, VMSCAPE) &&
-+	    !boot_cpu_has(X86_FEATURE_HYPERVISOR))
-+		setup_force_cpu_bug(X86_BUG_VMSCAPE);
-+
- 	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
- 		return;
- 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 5088065ac704..7238686a49bb 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10864,6 +10864,15 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 	if (vcpu->arch.guest_fpu.xfd_err)
- 		wrmsrl(MSR_IA32_XFD_ERR, 0);
- 
-+	/*
-+	 * Mark this CPU as needing a branch predictor flush before running
-+	 * userspace. Must be done before enabling preemption to ensure it gets
-+	 * set for the CPU that actually ran the guest, and not the CPU that it
-+	 * may migrate to.
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_IBPB_EXIT_TO_USER))
-+		this_cpu_write(x86_ibpb_exit_to_user, true);
-+
- 	/*
- 	 * Consume any pending interrupts, including the possible source of
- 	 * VM-Exit on SVM and any ticks that occur between VM-Exit and now.
-diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
-index a3aea3c1431a..801a4b4f9026 100644
---- a/drivers/base/cpu.c
-+++ b/drivers/base/cpu.c
-@@ -568,6 +568,7 @@ CPU_SHOW_VULN_FALLBACK(gds);
- CPU_SHOW_VULN_FALLBACK(reg_file_data_sampling);
- CPU_SHOW_VULN_FALLBACK(indirect_target_selection);
- CPU_SHOW_VULN_FALLBACK(tsa);
-+CPU_SHOW_VULN_FALLBACK(vmscape);
- 
- static DEVICE_ATTR(meltdown, 0444, cpu_show_meltdown, NULL);
- static DEVICE_ATTR(spectre_v1, 0444, cpu_show_spectre_v1, NULL);
-@@ -585,6 +586,7 @@ static DEVICE_ATTR(gather_data_sampling, 0444, cpu_show_gds, NULL);
- static DEVICE_ATTR(reg_file_data_sampling, 0444, cpu_show_reg_file_data_sampling, NULL);
- static DEVICE_ATTR(indirect_target_selection, 0444, cpu_show_indirect_target_selection, NULL);
- static DEVICE_ATTR(tsa, 0444, cpu_show_tsa, NULL);
-+static DEVICE_ATTR(vmscape, 0444, cpu_show_vmscape, NULL);
- 
- static struct attribute *cpu_root_vulnerabilities_attrs[] = {
- 	&dev_attr_meltdown.attr,
-@@ -603,6 +605,7 @@ static struct attribute *cpu_root_vulnerabilities_attrs[] = {
- 	&dev_attr_reg_file_data_sampling.attr,
- 	&dev_attr_indirect_target_selection.attr,
- 	&dev_attr_tsa.attr,
-+	&dev_attr_vmscape.attr,
- 	NULL
- };
- 
-diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-index 6b4f9f169688..1e3d1b2ac4c1 100644
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -80,6 +80,7 @@ extern ssize_t cpu_show_reg_file_data_sampling(struct device *dev,
- extern ssize_t cpu_show_indirect_target_selection(struct device *dev,
- 						  struct device_attribute *attr, char *buf);
- extern ssize_t cpu_show_tsa(struct device *dev, struct device_attribute *attr, char *buf);
-+extern ssize_t cpu_show_vmscape(struct device *dev, struct device_attribute *attr, char *buf);
- 
- extern __printf(4, 5)
- struct device *cpu_device_create(struct device *parent, void *drvdata,
+I'm announcing the release of the 6.12.47 kernel.
+
+All users of the 6.12 kernel series must upgrade.
+
+The updated 6.12.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.12.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+
+thanks,
+
+greg k-h
+
+------------
+
+ Documentation/ABI/testing/sysfs-devices-system-cpu |    1 
+ Documentation/admin-guide/hw-vuln/index.rst        |    1 
+ Documentation/admin-guide/hw-vuln/vmscape.rst      |  110 ++++++++
+ Documentation/admin-guide/kernel-parameters.txt    |   11 
+ Makefile                                           |    2 
+ arch/x86/Kconfig                                   |    9 
+ arch/x86/include/asm/cpufeatures.h                 |    2 
+ arch/x86/include/asm/entry-common.h                |    7 
+ arch/x86/include/asm/nospec-branch.h               |    2 
+ arch/x86/kernel/cpu/bugs.c                         |  257 ++++++++++++++-------
+ arch/x86/kernel/cpu/common.c                       |   84 ++++--
+ arch/x86/kvm/x86.c                                 |    9 
+ drivers/base/cpu.c                                 |    3 
+ include/linux/cpu.h                                |    1 
+ 14 files changed, 394 insertions(+), 105 deletions(-)
+
+Greg Kroah-Hartman (1):
+      Linux 6.12.47
+
+Pawan Gupta (7):
+      Documentation/hw-vuln: Add VMSCAPE documentation
+      x86/vmscape: Enumerate VMSCAPE bug
+      x86/vmscape: Add conditional IBPB mitigation
+      x86/vmscape: Enable the mitigation
+      x86/bugs: Move cpu_bugs_smt_update() down
+      x86/vmscape: Warn when STIBP is disabled with SMT
+      x86/vmscape: Add old Intel CPUs to affected list
+
 
