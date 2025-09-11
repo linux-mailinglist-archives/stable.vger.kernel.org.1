@@ -1,74 +1,123 @@
-Return-Path: <stable+bounces-179258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97F3B53258
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 14:34:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D64B532FA
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 15:00:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FD677B74B0
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 12:32:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76152188E245
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 13:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E76321F5A;
-	Thu, 11 Sep 2025 12:33:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04ujhs6L"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E1F320CDD;
+	Thu, 11 Sep 2025 13:00:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554323218A8
-	for <stable@vger.kernel.org>; Thu, 11 Sep 2025 12:33:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545C9322DB0;
+	Thu, 11 Sep 2025 13:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757594030; cv=none; b=ZFTTNklQfjSz0ZX/YQEEd6lKCBeCSI2S9nEtn4L9VyWv+2BI4fJY2gEAJbogD9F9CK+xxDy5zN6+D/IsMtpny7ETXw89kK/m3enOY84nqVs6JS1JD9AVtuNK651m78GZIdpbCI8sJpCXvlx6oP+IwDBwA/q+ZTzuJ8CCbRHj3K4=
+	t=1757595608; cv=none; b=gXF/f+U7OzSt64BfQV0IQTykhhVKu1wruvEZrnilgiR+E8hLtrx/D0aVE0uDtjd6rkbvF0Rtn0ukBQ8hkWxTwjdpTya8n5GYzj5rWGG6npLarysZO6tn5isGmu2kZDF92t4tq1Ao8bP2SYKodzSMpv6ar65WkLRc/Cp6HS2toFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757594030; c=relaxed/simple;
-	bh=+zZDoU3RMVfY7CmmHvEQ+55FKorNCfzqosyGDwrK99g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i8MDRfvSawJ376fm86U5+mutOD/wL8VRe/8L8aocTQJcnHR/I/4FCVbw1GA+MVSUbXIhR0+6AqKw/RUASzfyKHKRmXMOfsp2A893T4TohdlgXonPqz1kDUbctSlKPczP3bllBjVJRil58QNn6g2PD/DdyNV+7QQIYWUo7WqmMS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04ujhs6L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E5DC4CEF0;
-	Thu, 11 Sep 2025 12:33:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757594029;
-	bh=+zZDoU3RMVfY7CmmHvEQ+55FKorNCfzqosyGDwrK99g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=04ujhs6L6oeC3C29iSP0XkrTznQLFRB6bW/nOT5IDOdUpni8rf+O7KusGXbj2TiP+
-	 8X5+WSviExTP7CoEcSnJPN/n+8saeASRxoyb/11ofC6p2JQ+OgXCgPtqmF3z+zz85Q
-	 n/t7RKEGetHTghb5V5GpuuLegK1ELsVFjzIk6Qrg=
-Date: Thu, 11 Sep 2025 14:33:46 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Cc: stable@vger.kernel.org, sashal@kernel.org, bp@alien8.de
-Subject: Re: [PATCH v3 5.15.y 1/3] KVM: x86: Move open-coded CPUID leaf
- 0x80000021 EAX bit propagation code
-Message-ID: <2025091158-cloak-murky-d3bd@gregkh>
-References: <20250910002826.3010884-1-boris.ostrovsky@oracle.com>
- <20250910002826.3010884-2-boris.ostrovsky@oracle.com>
+	s=arc-20240116; t=1757595608; c=relaxed/simple;
+	bh=dSQIkuFLrVeNIYU8GjhDduUU6G0rUWLuGLNdc+idMjk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sxj1wcTNgQ4JCt1s1n4qI+HsRi46PwBIOqSzsv0GJjughi6CWUf+3jfl45OM9XjSAWBTgUdpD+wFfwIZjZZ6ep9Nd+EEKAh91okucmqKP28JuFFTAs9cgZsJZZHoYdSYE2EksPTnioHs8ftjbLAXh1qo7iAUHNS4fqEGH1TWx5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4cMyHc6MtCz2VRjF;
+	Thu, 11 Sep 2025 20:56:44 +0800 (CST)
+Received: from dggpemf100009.china.huawei.com (unknown [7.185.36.128])
+	by mail.maildlp.com (Postfix) with ESMTPS id 464471402CC;
+	Thu, 11 Sep 2025 21:00:02 +0800 (CST)
+Received: from huawei.com (10.67.175.29) by dggpemf100009.china.huawei.com
+ (7.185.36.128) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 11 Sep
+ 2025 21:00:01 +0800
+From: Wang Tao <wangtao554@huawei.com>
+To: <stable@vger.kernel.org>
+CC: <mingo@redhat.com>, <peterz@infradead.org>, <juri.lelli@redhat.com>,
+	<vincent.guittot@linaro.org>, <dietmar.eggemann@arm.com>,
+	<rostedt@goodmis.org>, <bsegall@google.com>, <mgorman@suse.de>,
+	<bristot@redhat.com>, <tglx@linutronix.de>, <frederic@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tanghui20@huawei.com>,
+	<zhangqiao22@huawei.com>
+Subject: [PATCH] sched/core: Fix potential deadlock on rq lock
+Date: Thu, 11 Sep 2025 12:42:49 +0000
+Message-ID: <20250911124249.1154043-1-wangtao554@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910002826.3010884-2-boris.ostrovsky@oracle.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf100009.china.huawei.com (7.185.36.128)
 
-On Tue, Sep 09, 2025 at 08:28:24PM -0400, Boris Ostrovsky wrote:
-> From: Kim Phillips <kim.phillips@amd.com>
-> 
-> Commit c35ac8c4bf600ee23bacb20f863aa7830efb23fb upstream
+When CPU 1 enters the nohz_full state, and the kworker on CPU 0 executes
+the function sched_tick_remote, holding the lock on CPU1's rq
+and triggering the warning WARN_ON_ONCE(delta > (u64)NSEC_PER_SEC * 3).
+This leads to the process of printing the warning message, where the
+console_sem semaphore is held. At this point, the print task on the
+CPU1's rq cannot acquire the console_sem and joins the wait queue,
+entering the UNINTERRUPTIBLE state. It waits for the console_sem to be
+released and then wakes up. After the task on CPU 0 releases
+the console_sem, it wakes up the waiting console_sem task.
+In try_to_wake_up, it attempts to acquire the lock on CPU1's rq again,
+resulting in a deadlock.
 
-This isn't in 6.1.y, so backporting it only to 5.15.y feels "odd" and
-will trigger our scripts trying to figure out why.
+The triggering scenario is as follows:
 
-Why is only needed here?  Things were fixed differently in 6.1.y, or is
-6.1.y not affected here?
+CPU0								CPU1
+sched_tick_remote
+WARN_ON_ONCE(delta > (u64)NSEC_PER_SEC * 3)
 
-thanks,
+report_bug							con_write
+printk
 
-greg k-h
+console_unlock
+								do_con_write
+								console_lock
+								down(&console_sem)
+								list_add_tail(&waiter.list, &sem->wait_list);
+up(&console_sem)
+wake_up_q(&wake_q)
+try_to_wake_up
+__task_rq_lock
+_raw_spin_lock
+
+This patch fixes the issue by deffering all printk console printing
+during the lock holding period.
+
+Fixes: d84b31313ef8 ("sched/isolation: Offload residual 1Hz scheduler tick")
+Signed-off-by: Wang Tao <wangtao554@huawei.com>
+---
+ kernel/sched/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index be00629f0ba4..8b2d5b5bfb93 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -5723,8 +5723,10 @@ static void sched_tick_remote(struct work_struct *work)
+ 				 * Make sure the next tick runs within a
+ 				 * reasonable amount of time.
+ 				 */
++				printk_deferred_enter();
+ 				u64 delta = rq_clock_task(rq) - curr->se.exec_start;
+ 				WARN_ON_ONCE(delta > (u64)NSEC_PER_SEC * 3);
++				printk_deferred_exit();
+ 			}
+ 			curr->sched_class->task_tick(rq, curr, 0);
+ 
+-- 
+2.34.1
+
 
