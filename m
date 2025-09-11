@@ -1,211 +1,128 @@
-Return-Path: <stable+bounces-179308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D536EB53CCD
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 22:01:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74647B53D23
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 22:26:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97F153BDFC1
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 20:01:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B13F21CC7192
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 20:26:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25EFF23D289;
-	Thu, 11 Sep 2025 20:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72A927877F;
+	Thu, 11 Sep 2025 20:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ewFZ9qag"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PVjxgDun"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDA22F5B;
-	Thu, 11 Sep 2025 20:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A273279334;
+	Thu, 11 Sep 2025 20:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757620884; cv=none; b=HD3rDiYHEUqu6fDDtk1LnqurZ5RYyMBiwGoHHgmb1swHZDWiLk7Jhttf03rU59ogWFKaVWbGkUAJXdI+4uxPYOvUYmrin/XcuIqRQod7U2z1LaBvM7NRSMPI34EapBWKGEyx5kB5Um1GW/XeL+uwOAQBjZXwUCUyFwLNyikJjrU=
+	t=1757622299; cv=none; b=GU2khXoN6vy7fl9jhwvNuaIsDmJdzMdxKw+HitTN2Zesyx0odZX87EHFuk/RhD8HH7f8aXnwWsh7QBrip/Cp26qeywmQ/lb/Q9wSIJAM5v/neO4sSXfFpo741IFhMjKorIhmvJ7cyWlBmLnIGJ1RuQTwENgOyGOMilebq/Lc98w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757620884; c=relaxed/simple;
-	bh=Qzr8/A76jVpLTPp7Q8t0kpdacUM2Z39JWFofjP91B14=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bp9+DDJtBqtTLwgTfN0Rlh8QaRkYqr43XqrWnE68Zgg9rLspp+JizoE63c7W2DP9LLXQW0I7qo8BFeINBL4/RYu8cBZsHO/pavtB5t7f8BPY3zRkx8QjnUXxC56AsyYjW6AC8fSaqzwp3OC3S/gGBuVbJ9Fpy+Um/YLM5bv+Huo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ewFZ9qag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD03C4CEF0;
-	Thu, 11 Sep 2025 20:01:24 +0000 (UTC)
+	s=arc-20240116; t=1757622299; c=relaxed/simple;
+	bh=22VCHFy4KNRQGaf9uaDJFhGbMiUhnhRsXF9X0lLDmRI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=OAiIme8IQ0zkq3RpEi/Tp8QOe1vRSpRK5tkWUeLNvyNJtcPKT6KtgTpjAeVW961V+ic56gvkwv/1rAokSq7bi1nN25F6Jjv3RprHzebn5WcLrONdgr8l+LMTzBmd8ZezFBzWIH57MJ3XL5QERsVYv/uk9CXtyxDCAydlCIflGYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PVjxgDun; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2ECC4CEF0;
+	Thu, 11 Sep 2025 20:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757620884;
-	bh=Qzr8/A76jVpLTPp7Q8t0kpdacUM2Z39JWFofjP91B14=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ewFZ9qagCkWWOHKPaGk6FaTxU5ux9FIoq6PyNr8Fy6dPmX9Plw+T+vEF0IKs2Yk21
-	 FwwZK3n1I1YgZ4ads7hk4DkckZABdgaO5XH36n/HGWnejFWMxAe/Mb9bnCgtDkPL6p
-	 np1pp99COBJ126YsrmYi+16heXaWI2WG5aDeF5jOJN7RRrACiIcOmKPwoWTpIA+kyF
-	 a62IfYq6Nsa/IoelpYUTHQRBJdRJPSI9ICwPOsYP9PVy4GqP1zq9qhg7jlJ3i1pDSD
-	 VQ0syg/ISBnCURXztv8dh3/qAfsUzkRmaqahJOKEnwzmq3d5cdpm3KF+QpYDyja32y
-	 5Z6xup9Vn60Gw==
-From: Eric Biggers <ebiggers@kernel.org>
-To: Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	kasan-dev@googlegroups.com
-Cc: Dmitry Vyukov <dvyukov@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] kmsan: Fix out-of-bounds access to shadow memory
-Date: Thu, 11 Sep 2025 12:58:58 -0700
-Message-ID: <20250911195858.394235-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	s=k20201202; t=1757622299;
+	bh=22VCHFy4KNRQGaf9uaDJFhGbMiUhnhRsXF9X0lLDmRI=;
+	h=From:Date:Subject:To:Cc:From;
+	b=PVjxgDun/nBFFjYBgdawOyp86YFHQXxV7QXbbULLBIZ4dVAZyDxSRoVim2nsg8CTT
+	 g0KfqpySU62vHHbKSJzDwcgSU4VxJj9tAV2pBHM48YIweNtWHs7COz7qGmFzsqowP2
+	 K6FhR8PZpR8Jiv/srq5SZ058rvCCEWjNGr5MKmq3xlXRbTHXHHgxKgHkjfi+dlPlz5
+	 1XV6sjI97eyPAHPoBLv84ORmTNif1Wfni6sQRYhqUh+gE1nYJCDnf2AeIUg/CLfceI
+	 aMFuBBxmWs53YI/9a+dB+0E+mRsoHMFK/vJMIK1TyNILII18Yfdjq0Azw6+MSlG2PB
+	 vWuF9N3uWEX5Q==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Thu, 11 Sep 2025 13:24:42 -0700
+Subject: [PATCH] drm/omap: Mark dispc_save_context() with
+ noinline_for_stack
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250911-omapdrm-reduce-clang-stack-usage-pt-2-v1-1-5ab6b5d34760@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAkww2gC/x2NQQrCQAwAv1JyNtBdUYhfEQ/pbtSgbZekFaH07
+ waPA8PMBi6m4nDpNjD5qOs8BaRDB+XJ00NQazDkPp96SgnnkVu1EU3qWgTLOyT0hcsLV+fw24I
+ ZiYmF8vk4UIJoNZO7fv+f623ffw0tGOF3AAAA
+X-Change-ID: 20250911-omapdrm-reduce-clang-stack-usage-pt-2-9a9ae9263b91
+To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ Arnd Bergmann <arnd@arndb.de>, dri-devel@lists.freedesktop.org, 
+ llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2203; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=22VCHFy4KNRQGaf9uaDJFhGbMiUhnhRsXF9X0lLDmRI=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDBmHDST8z4jMDLDKfqKZ6vBvynr32y9bzK3mme6InOd85
+ +k5d32ejlIWBjEuBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjARdS9GhgVOCW4v/t60St8+
+ NeW7U4G//nfmnwFOe8NXZ8ibBu61XcrwvySlpq1a2Ktwj5vr368PFx2S9t0+f9oSvihNOY0rwdL
+ B/AA=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-Running sha224_kunit on a KMSAN-enabled kernel results in a crash in
-kmsan_internal_set_shadow_origin():
+A recent innocuous internal optimization change in LLVM [1] causes the
+same issue that necessitated commit 660942f2441d ("drm: omapdrm: reduce
+clang stack usage") to occur in dispc_runtime_suspend() from inlinling
+dispc_save_context().
 
-    BUG: unable to handle page fault for address: ffffbc3840291000
-    #PF: supervisor read access in kernel mode
-    #PF: error_code(0x0000) - not-present page
-    PGD 1810067 P4D 1810067 PUD 192d067 PMD 3c17067 PTE 0
-    Oops: 0000 [#1] SMP NOPTI
-    CPU: 0 UID: 0 PID: 81 Comm: kunit_try_catch Tainted: G                 N  6.17.0-rc3 #10 PREEMPT(voluntary)
-    Tainted: [N]=TEST
-    Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-    RIP: 0010:kmsan_internal_set_shadow_origin+0x91/0x100
-    [...]
-    Call Trace:
-    <TASK>
-    __msan_memset+0xee/0x1a0
-    sha224_final+0x9e/0x350
-    test_hash_buffer_overruns+0x46f/0x5f0
-    ? kmsan_get_shadow_origin_ptr+0x46/0xa0
-    ? __pfx_test_hash_buffer_overruns+0x10/0x10
-    kunit_try_run_case+0x198/0xa00
+  drivers/gpu/drm/omapdrm/dss/dispc.c:4720:27: error: stack frame size (2272) exceeds limit (2048) in 'dispc_runtime_suspend' [-Werror,-Wframe-larger-than]
+   4720 | static __maybe_unused int dispc_runtime_suspend(struct device *dev)
+        |                           ^
 
-This occurs when memset() is called on a buffer that is not 4-byte
-aligned and extends to the end of a guard page, i.e. the next page is
-unmapped.
+There is an unfortunate interaction between the inner loops of
+dispc_save_context() getting unrolled and the calculation of the index
+into the ctx array being spilled to the stack when sanitizers are
+enabled [2].
 
-The bug is that the loop at the end of
-kmsan_internal_set_shadow_origin() accesses the wrong shadow memory
-bytes when the address is not 4-byte aligned.  Since each 4 bytes are
-associated with an origin, it rounds the address and size so that it can
-access all the origins that contain the buffer.  However, when it checks
-the corresponding shadow bytes for a particular origin, it incorrectly
-uses the original unrounded shadow address.  This results in reads from
-shadow memory beyond the end of the buffer's shadow memory, which
-crashes when that memory is not mapped.
+While this should obviously be addressed on the LLVM side, such a fix
+may not be easy to craft and it is simple enough to work around the
+issue in the same manner as before by marking dispc_save_context() with
+noinline_for_stack, which makes it use the same amount of stack as
+dispc_restore_context() does after the same change.
 
-To fix this, correctly align the shadow address before accessing the 4
-shadow bytes corresponding to each origin.
-
-Fixes: 2ef3cec44c60 ("kmsan: do not wipe out origin when doing partial unpoisoning")
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://github.com/llvm/llvm-project/commit/055bfc027141bbfafd51fb43f5ab81ba3b480649 [1]
+Link: https://llvm.org/pr143908 [2]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
+ drivers/gpu/drm/omapdrm/dss/dispc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v2: Added test case to kmsan_test.
-
- mm/kmsan/core.c       | 10 +++++++---
- mm/kmsan/kmsan_test.c | 16 ++++++++++++++++
- 2 files changed, 23 insertions(+), 3 deletions(-)
-
-diff --git a/mm/kmsan/core.c b/mm/kmsan/core.c
-index 1ea711786c522..8bca7fece47f0 100644
---- a/mm/kmsan/core.c
-+++ b/mm/kmsan/core.c
-@@ -193,11 +193,12 @@ depot_stack_handle_t kmsan_internal_chain_origin(depot_stack_handle_t id)
+diff --git a/drivers/gpu/drm/omapdrm/dss/dispc.c b/drivers/gpu/drm/omapdrm/dss/dispc.c
+index cf055815077cffad554a4ae58cfd7b81edcbb0d4..d079f557c8f24d1afd0bc182edd13165cb9c356c 100644
+--- a/drivers/gpu/drm/omapdrm/dss/dispc.c
++++ b/drivers/gpu/drm/omapdrm/dss/dispc.c
+@@ -417,7 +417,7 @@ static bool dispc_has_feature(struct dispc_device *dispc,
+ #define RR(dispc, reg) \
+ 	dispc_write_reg(dispc, DISPC_##reg, dispc->ctx[DISPC_##reg / sizeof(u32)])
  
- void kmsan_internal_set_shadow_origin(void *addr, size_t size, int b,
- 				      u32 origin, bool checked)
+-static void dispc_save_context(struct dispc_device *dispc)
++static noinline_for_stack void dispc_save_context(struct dispc_device *dispc)
  {
- 	u64 address = (u64)addr;
--	u32 *shadow_start, *origin_start;
-+	void *shadow_start;
-+	u32 *aligned_shadow, *origin_start;
- 	size_t pad = 0;
+ 	int i, j;
  
- 	KMSAN_WARN_ON(!kmsan_metadata_is_contiguous(addr, size));
- 	shadow_start = kmsan_get_metadata(addr, KMSAN_META_SHADOW);
- 	if (!shadow_start) {
-@@ -212,13 +213,16 @@ void kmsan_internal_set_shadow_origin(void *addr, size_t size, int b,
- 		}
- 		return;
- 	}
- 	__memset(shadow_start, b, size);
- 
--	if (!IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
-+	if (IS_ALIGNED(address, KMSAN_ORIGIN_SIZE)) {
-+		aligned_shadow = shadow_start;
-+	} else {
- 		pad = address % KMSAN_ORIGIN_SIZE;
- 		address -= pad;
-+		aligned_shadow = shadow_start - pad;
- 		size += pad;
- 	}
- 	size = ALIGN(size, KMSAN_ORIGIN_SIZE);
- 	origin_start =
- 		(u32 *)kmsan_get_metadata((void *)address, KMSAN_META_ORIGIN);
-@@ -228,11 +232,11 @@ void kmsan_internal_set_shadow_origin(void *addr, size_t size, int b,
- 	 * and unconditionally overwrite the old origin slot.
- 	 * If the new origin is zero, overwrite the old origin slot iff the
- 	 * corresponding shadow slot is zero.
- 	 */
- 	for (int i = 0; i < size / KMSAN_ORIGIN_SIZE; i++) {
--		if (origin || !shadow_start[i])
-+		if (origin || !aligned_shadow[i])
- 			origin_start[i] = origin;
- 	}
- }
- 
- struct page *kmsan_vmalloc_to_page_or_null(void *vaddr)
-diff --git a/mm/kmsan/kmsan_test.c b/mm/kmsan/kmsan_test.c
-index c6c5b2bbede0c..902ec48b1e3e6 100644
---- a/mm/kmsan/kmsan_test.c
-+++ b/mm/kmsan/kmsan_test.c
-@@ -554,10 +554,25 @@ static void test_memcpy_initialized_gap(struct kunit *test)
- 
- DEFINE_TEST_MEMSETXX(16)
- DEFINE_TEST_MEMSETXX(32)
- DEFINE_TEST_MEMSETXX(64)
- 
-+/* Test case: ensure that KMSAN does not access shadow memory out of bounds. */
-+static void test_memset_on_guarded_buffer(struct kunit *test)
-+{
-+	void *buf = vmalloc(PAGE_SIZE);
-+
-+	kunit_info(test,
-+		   "memset() on ends of guarded buffer should not crash\n");
-+
-+	for (size_t size = 0; size <= 128; size++) {
-+		memset(buf, 0xff, size);
-+		memset(buf + PAGE_SIZE - size, 0xff, size);
-+	}
-+	vfree(buf);
-+}
-+
- static noinline void fibonacci(int *array, int size, int start)
- {
- 	if (start < 2 || (start == size))
- 		return;
- 	array[start] = array[start - 1] + array[start - 2];
-@@ -675,10 +690,11 @@ static struct kunit_case kmsan_test_cases[] = {
- 	KUNIT_CASE(test_memcpy_aligned_to_unaligned),
- 	KUNIT_CASE(test_memcpy_initialized_gap),
- 	KUNIT_CASE(test_memset16),
- 	KUNIT_CASE(test_memset32),
- 	KUNIT_CASE(test_memset64),
-+	KUNIT_CASE(test_memset_on_guarded_buffer),
- 	KUNIT_CASE(test_long_origin_chain),
- 	KUNIT_CASE(test_stackdepot_roundtrip),
- 	KUNIT_CASE(test_unpoison_memory),
- 	KUNIT_CASE(test_copy_from_kernel_nofault),
- 	{},
 
-base-commit: e59a039119c3ec241228adf12dca0dd4398104d0
+---
+base-commit: 76eeb9b8de9880ca38696b2fb56ac45ac0a25c6c
+change-id: 20250911-omapdrm-reduce-clang-stack-usage-pt-2-9a9ae9263b91
+
+Best regards,
 -- 
-2.51.0
+Nathan Chancellor <nathan@kernel.org>
 
 
