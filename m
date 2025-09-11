@@ -1,97 +1,145 @@
-Return-Path: <stable+bounces-179275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12AAB535F7
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 16:42:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1EAB53636
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 16:48:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BF5D487883
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 14:42:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAB86188C668
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 14:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E8E340DAB;
-	Thu, 11 Sep 2025 14:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148F131E11F;
+	Thu, 11 Sep 2025 14:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBT8hQwq"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ea6KHcxp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A61530DD3F;
-	Thu, 11 Sep 2025 14:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E591E1DE9
+	for <stable@vger.kernel.org>; Thu, 11 Sep 2025 14:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757601777; cv=none; b=Y6SFkTLCVRtiR3JQVHgnrEEWSp73qQHT1fgGA3TZdqpHMR2lzzaWPnX9kYlXRq4XK9xRohUWCi9wSHR3b3NgLZPk2+2fmvdsrNG8Yl6cAfYQQ5Okin93A4xBlgov6lA7mcuE7tJI9IoWvZzLoUUsPgNeUnFVVOL8m1FCZYE7Yyo=
+	t=1757602119; cv=none; b=hI70zU9SYHVk6gW5fecVcoklynjgqe7Rzv7At8H4ui4QGwAZgUtN3NxRZetCFk5nXXry0ZKcZSnJcGcVmbSmg+uCklqvrk03IpyWnrMQGLfv6dVVMYiNuyXiBe0ibgiORbNoLeWIXYjfkay6XeNgZuLj0j1Uo94PaN9Mz5Tipms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757601777; c=relaxed/simple;
-	bh=02AVT6CAPbGP5VMxs27iRmrgwy+I8yTvzBgVHYALK9A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iIXLliBvlCsaoIKcY9/RSeOedhiEOkbyAV9IYp4fDfseXz6z5801s63BhzNlnIcfR0fUSQFrDzE3QK1ymBAw59/UcQGPvg+pDB6OLSMsYDAEBDRoLOcq8gbwlrHCk60v8Svse9kyGPVdL53v+mUoQn9cL1ebLSZVMsjK3keY+rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBT8hQwq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE93C4CEF0;
-	Thu, 11 Sep 2025 14:42:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757601777;
-	bh=02AVT6CAPbGP5VMxs27iRmrgwy+I8yTvzBgVHYALK9A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UBT8hQwqmPMmGijDyv13CmGH0TKwLENZXm3vXdnIZ8t2u612evrEN83gntQUHpkco
-	 3Q/zxXQolg74wj8nP0nLQtYjLyPRpCXovypVd1q/Ex0bLRrUnOkfxHjbQQp8B/7+tM
-	 ZWGN1D3eiHKEwBLZqExGYXQqzlv3diVB/G+1vL70=
-Date: Thu, 11 Sep 2025 16:42:53 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jun Eeo <jeeo@janestreet.com>
-Cc: hch@lst.de, martin.petersen@oracle.com, patches@lists.linux.dev,
-	riel@surriel.com, sashal@kernel.org, stable@vger.kernel.org,
-	tsi@tuyoix.net
-Subject: Re: [PATCH 6.1 035/198] scsi: core: Use GFP_NOIO to avoid circular
- locking dependency
-Message-ID: <2025091136-aside-tissue-59a7@gregkh>
-References: <20250325122157.561309561@linuxfoundation.org>
- <20250911143517.525874-1-jeeo@janestreet.com>
+	s=arc-20240116; t=1757602119; c=relaxed/simple;
+	bh=4AxZOzPYQRg37ToRKQvaG5KcDRZSTy0OrAfqI6weJKQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SeLXDJmf/cP3X635+h2IhKK2WpZtHYBZpJppV7Ba/vLz1coWTp5HtOOA2JY4ZKbhGKgJkn7pzA555ubgj4MWKMTgnKZDhRwe89fqXVRNUumWM9kdjWSrr7C3XiQFBoUdt5gfREagJtRkONVgSPzPkKul9RJ3F/fTapNFi0QtXDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ea6KHcxp; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5608bfae95eso900189e87.1
+        for <stable@vger.kernel.org>; Thu, 11 Sep 2025 07:48:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757602116; x=1758206916; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MIfjxfI8fjF/JltWwvv161P4lPdGyzyNYzNbvTF3UwM=;
+        b=Ea6KHcxpHrFAgCFgvzV/nJ9CgyDXmNGmfHiXTFzOkY2kcMiilL//Ako7ePhccAeJgH
+         wbWaLuOofPWduuAjtXzZmEOxpvdwsQYPR29W+8DT1SW8r5G9LIBT81/9V/E28uymeYsc
+         2N3K5ScGULucve3VSTc3Oc+9kRh3FniVjWUS4sC+gDjXzzNTlOG6kICFOG7BJes1GY3/
+         gzW616iI2qvsykPIUVghYFtuet33vM0xkHzD4xfex8Z78JZUf7gD1jwtPH/lVgtlCaPg
+         3mFTVCHppuF/Dhxbks62PPUQme1NefGDlpGmolldwPE6dq3HD2vjA2JVJ7xbrrAYKYrQ
+         3Aaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757602116; x=1758206916;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MIfjxfI8fjF/JltWwvv161P4lPdGyzyNYzNbvTF3UwM=;
+        b=B+o9u2SrPuOxgLFx/4TIBzjRyYgboDoQDR3MarTJsGDJvQeUXGOR/Fd0ygAYf/Q/SM
+         WirZ26Or+ZKxNptsiHjXOQZ9mrDB7BflfZT4UXfH5J3dbuPis4B3Ik53xQeinyuIsHsn
+         HpTf8Mm0mGmJNPgV2Lpye0GnugBOwu9zOz6LN9KUiz6CpYv5fMvV/hbA6FvJ1R4eqycg
+         Xre3wVSOG+9AFzkmFP2P1mCkRzVH5osb6R4fHTbLxSATQf7bNAZqteOpQJn/f5Gdh+JX
+         Qt090HMp+XzGFoXZ+wqyR+Xt8cFybePyjDsFQhakyZpXjzEJKKUtEi6MF+rATnEjUsX8
+         wmXg==
+X-Forwarded-Encrypted: i=1; AJvYcCWAwpTuFWSm7hHVNK9MNvaP5+4Pp4MBZlOZ/KdxTbTELhTzZCOVP9LOcO3Al8Oa3wWaMCmNtvU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrDzK1EP29Dni8SPakFyfglao2j07gft6+Pc80R4e025RrHdHx
+	dW0qQpdY3v3Qkcm2W19uWdG36ASBr4Jgs5McpIcTXgHWy+icM/a1Z/OD9/toxp7Gh0Xf6qSdU7O
+	e2aAq0BgSvg==
+X-Gm-Gg: ASbGnctlP0iF2/HpB4gytQ8kTRPtqGR3X9nOj1cs817LRfIh+A9t+dhuK75G0+ymtFK
+	GZZ0wuBe0CsC2g7fg92/xL3fYcE4F7PoEGPND3IaR1WbvY07YNJ+X83B1icnRZKdDCq9+fXzKc9
+	vGbfbg8b3bc0RDK/TEXu4bl2fkTA5ECTibXoWLvlERyk3LYqsahw42ndrViuvqZkSF3vL4bwNVW
+	iw/61kGhPO/d2WfAWevuG9tM6y86jaA3PjOccdOVLe4WTxpe3S1AknaKc6gI2uyUYfyuoyGGxbV
+	GfHGBEqLt1Cs43joSH/QuJSHzwMZ1XWwGy8SOszn3WwzXUXWdwPAw7CTtSK3l97yVk3N9zsfn0w
+	SzfXizDS8r4tLlGW+CpIjwpsDxfxPPNCPbFND4zAWGjdLXfVrLGUmfyaAkdmv1mCrsg==
+X-Google-Smtp-Source: AGHT+IHy6/1NqtnV9by+dmtQKMm6p40le7KhEDevJduhHCh2PDA/H9OMZ7vx2vMMLyLbvjYYlENfWg==
+X-Received: by 2002:a05:6512:63c5:20b0:563:3ac3:1ec1 with SMTP id 2adb3069b0e04-5633ac31f71mr5579784e87.54.1757602116035;
+        Thu, 11 Sep 2025 07:48:36 -0700 (PDT)
+Received: from nuoska (87-100-249-247.bb.dnainternet.fi. [87.100.249.247])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-56e5c3b6116sm473294e87.24.2025.09.11.07.48.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Sep 2025 07:48:35 -0700 (PDT)
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
+To: linux-arm-kernel@lists.infradead.org,
+	catalin.marinas@arm.com,
+	will@kernel.org
+Cc: krzysztof.kozlowski@linaro.org,
+	arnd@arndb.de,
+	Mikko Rapeli <mikko.rapeli@linaro.org>,
+	stable@vger.kernel.org,
+	Jon Mason <jon.mason@arm.com>,
+	Ross Burton <ross.burton@arm.com>,
+	bruce.ashfield@gmail.com
+Subject: [PATCH] arm64 defconfig: remove CONFIG_SCHED_DEBUG reference
+Date: Thu, 11 Sep 2025 17:47:14 +0300
+Message-ID: <20250911144714.2774539-1-mikko.rapeli@linaro.org>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250911143517.525874-1-jeeo@janestreet.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 11, 2025 at 03:35:17PM +0100, Jun Eeo wrote:
-> Hi -
-> 
-> With this patch, we've been seeing a small number of machines in our
-> fleet boot up but are not able to register a SCSI device:
-> 
-> [    6.290992] scsi_alloc_sdev: Allocation failure during SCSI scanning, some SCSI devices might not be configured
-> 
-> It usually goes away upon another reboot. I don't have a reliable
-> reproducer except for rebooting some servers repeatedly on 6.1.132.
-> 
-> I added a couple of printks around the various cases where scsi_alloc_sdev
-> fails, as there are 3 allocation sites, and also pulled in f7d77dfc91
-> ("mm/percpu.c: print error message too if atomic alloc failed"),
-> and isolated it to a failed percpcu allocation:
-> 
-> [    5.431189] percpu: allocation failed, size=4 align=4 atomic=1, atomic alloc failed, no space left
-> [    5.440383] sbitmap_init_node: init_alloc_hint failed.
-> [    5.440383] scsi_realloc_sdev_budget_map: sbitmap_init_node failed with -12
-> 
-> Which kind of makes sense, as __alloc_percpu_gfp says:
-> 
-> > If @gfp doesn't contain %GFP_KERNEL, the allocation doesn't block
-> > and can be called from any context but is a lot more likely to fail.
-> 
-> Reverting this patch in our environment made the initial SCSI scan
-> reliably work, and we no longer see issues with the SCSI drive
-> disappearing.
-> 
+It has been completely removed since v6.14-rc6 by
 
-Is this also a problem for you in newer kernels, like 6.16.y?
+commit dd5bdaf2b72da81d57f4f99e518af80002b6562e
+Author:     Ingo Molnar <mingo@kernel.org>
+AuthorDate: Mon Mar 17 11:42:54 2025 +0100
+Commit:     Ingo Molnar <mingo@kernel.org>
+CommitDate: Wed Mar 19 22:20:53 2025 +0100
 
-thanks,
+    sched/debug: Make CONFIG_SCHED_DEBUG functionality unconditional
 
-greg k-h
+Fixes yocto meta-arm sbsa-ref kernel config warning which
+uses kernel.org arm64 defconfig:
+
+DEBUG: Executing python function do_kernel_configcheck
+WARNING: [kernel config]: This BSP contains fragments with warnings:
+
+[INFO]: the following symbols were not found in the active
+configuration:
+     - CONFIG_SCHED_DEBUG
+
+DEBUG: Python function do_kernel_configcheck finished
+
+Fixes: dd5bdaf2b72d ("sched/debug: Make CONFIG_SCHED_DEBUG functionality unconditional")
+Cc: <stable@vger.kernel.org>
+Cc: Jon Mason <jon.mason@arm.com>
+Cc: Ross Burton <ross.burton@arm.com>
+Cc: bruce.ashfield@gmail.com
+Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+---
+ arch/arm64/configs/defconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 58f87d09366cd..4126281665bf2 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -1798,7 +1798,6 @@ CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_DEBUG_INFO_REDUCED=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DEBUG_FS=y
+-# CONFIG_SCHED_DEBUG is not set
+ # CONFIG_DEBUG_PREEMPT is not set
+ # CONFIG_FTRACE is not set
+ CONFIG_CORESIGHT=m
+-- 
+2.34.1
+
 
