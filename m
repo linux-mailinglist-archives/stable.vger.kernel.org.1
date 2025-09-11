@@ -1,128 +1,93 @@
-Return-Path: <stable+bounces-179309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74647B53D23
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 22:26:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A73B53D30
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 22:35:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B13F21CC7192
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 20:26:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 905A11B25D58
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 20:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72A927877F;
-	Thu, 11 Sep 2025 20:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA02A28A731;
+	Thu, 11 Sep 2025 20:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PVjxgDun"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="K+g+U+5w"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A273279334;
-	Thu, 11 Sep 2025 20:24:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500E923F40D
+	for <stable@vger.kernel.org>; Thu, 11 Sep 2025 20:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757622299; cv=none; b=GU2khXoN6vy7fl9jhwvNuaIsDmJdzMdxKw+HitTN2Zesyx0odZX87EHFuk/RhD8HH7f8aXnwWsh7QBrip/Cp26qeywmQ/lb/Q9wSIJAM5v/neO4sSXfFpo741IFhMjKorIhmvJ7cyWlBmLnIGJ1RuQTwENgOyGOMilebq/Lc98w=
+	t=1757622931; cv=none; b=HhT+Xb69Fy4xOfcSEQefi9Nx3tOzsz3m1bISNwynsdhMcVk/dhWuk/7oYIUADBA5gk7+EdyGp3HR3slpbJq9YjvXInuqkspKfftoJVE0SL5duqxgFp3SmmP6+QQqSQRaJMwxklrS/qmuWmGf7wM8TjEuAygNpthytzk5XIT1nEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757622299; c=relaxed/simple;
-	bh=22VCHFy4KNRQGaf9uaDJFhGbMiUhnhRsXF9X0lLDmRI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=OAiIme8IQ0zkq3RpEi/Tp8QOe1vRSpRK5tkWUeLNvyNJtcPKT6KtgTpjAeVW961V+ic56gvkwv/1rAokSq7bi1nN25F6Jjv3RprHzebn5WcLrONdgr8l+LMTzBmd8ZezFBzWIH57MJ3XL5QERsVYv/uk9CXtyxDCAydlCIflGYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PVjxgDun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2ECC4CEF0;
-	Thu, 11 Sep 2025 20:24:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757622299;
-	bh=22VCHFy4KNRQGaf9uaDJFhGbMiUhnhRsXF9X0lLDmRI=;
-	h=From:Date:Subject:To:Cc:From;
-	b=PVjxgDun/nBFFjYBgdawOyp86YFHQXxV7QXbbULLBIZ4dVAZyDxSRoVim2nsg8CTT
-	 g0KfqpySU62vHHbKSJzDwcgSU4VxJj9tAV2pBHM48YIweNtWHs7COz7qGmFzsqowP2
-	 K6FhR8PZpR8Jiv/srq5SZ058rvCCEWjNGr5MKmq3xlXRbTHXHHgxKgHkjfi+dlPlz5
-	 1XV6sjI97eyPAHPoBLv84ORmTNif1Wfni6sQRYhqUh+gE1nYJCDnf2AeIUg/CLfceI
-	 aMFuBBxmWs53YI/9a+dB+0E+mRsoHMFK/vJMIK1TyNILII18Yfdjq0Azw6+MSlG2PB
-	 vWuF9N3uWEX5Q==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Thu, 11 Sep 2025 13:24:42 -0700
-Subject: [PATCH] drm/omap: Mark dispc_save_context() with
- noinline_for_stack
+	s=arc-20240116; t=1757622931; c=relaxed/simple;
+	bh=yFNSilNHL8JuECHouCrZpRSMJcwNfp6ZFDROPRhkbfg=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=BUjBVwt6ZrdLEskCTwp3TVTgOjbjQadIcRrPKNgcchWREht2LW880IzGLkK5b0XRfAMFzx0ikbiVTqrIb19haynqPMZbwMwyTdp+1vSfWcYT+2/jjFrUARIrT5CvmlCqb1HsR0+/3RgK8lKCq5JZvNW7X6RW+xejLafro5E333s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=K+g+U+5w; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.131.143.15] (unknown [167.220.82.15])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 8CDEB2110801
+	for <stable@vger.kernel.org>; Thu, 11 Sep 2025 13:35:29 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8CDEB2110801
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1757622929;
+	bh=b+5Ob1LblBDvQPzZVL9dVWH6v22GKN3EgjOSS1/Slpg=;
+	h=Date:From:Subject:To:From;
+	b=K+g+U+5wgUEarfzc9rRzGWPl9VOBgRjvs3H0In6yktFoKV1Kp6hdXLW9eYG+eEd7A
+	 syqRsGTxX+o3g0MSpa5GfjtQZhtvdYhquRrKnaE/PSKZreaMPUFt+xQNflgNpgtNe9
+	 t8O+uO8LnGNDo/SMoL24cpuFrwETQQuEuAB29eac=
+Message-ID: <38f790d0-aae5-467f-bb1e-c7bd33ddffe7@linux.microsoft.com>
+Date: Thu, 11 Sep 2025 13:35:33 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250911-omapdrm-reduce-clang-stack-usage-pt-2-v1-1-5ab6b5d34760@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAkww2gC/x2NQQrCQAwAv1JyNtBdUYhfEQ/pbtSgbZekFaH07
- waPA8PMBi6m4nDpNjD5qOs8BaRDB+XJ00NQazDkPp96SgnnkVu1EU3qWgTLOyT0hcsLV+fw24I
- ZiYmF8vk4UIJoNZO7fv+f623ffw0tGOF3AAAA
-X-Change-ID: 20250911-omapdrm-reduce-clang-stack-usage-pt-2-9a9ae9263b91
-To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- Arnd Bergmann <arnd@arndb.de>, dri-devel@lists.freedesktop.org, 
- llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2203; i=nathan@kernel.org;
- h=from:subject:message-id; bh=22VCHFy4KNRQGaf9uaDJFhGbMiUhnhRsXF9X0lLDmRI=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDBmHDST8z4jMDLDKfqKZ6vBvynr32y9bzK3mme6InOd85
- +k5d32ejlIWBjEuBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjARdS9GhgVOCW4v/t60St8+
- NeW7U4G//nfmnwFOe8NXZ8ibBu61XcrwvySlpq1a2Ktwj5vr368PFx2S9t0+f9oSvihNOY0rwdL
- B/AA=
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+User-Agent: Mozilla Thunderbird
+From: Tahera Fahimi <taherafahimi@linux.microsoft.com>
+Subject: Backport rcu-tasks fix to stable kernel version 6.6.y
+To: stable@vger.kernel.org
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-A recent innocuous internal optimization change in LLVM [1] causes the
-same issue that necessitated commit 660942f2441d ("drm: omapdrm: reduce
-clang stack usage") to occur in dispc_runtime_suspend() from inlinling
-dispc_save_context().
+Dear Stable Kernel Maintainers,
 
-  drivers/gpu/drm/omapdrm/dss/dispc.c:4720:27: error: stack frame size (2272) exceeds limit (2048) in 'dispc_runtime_suspend' [-Werror,-Wframe-larger-than]
-   4720 | static __maybe_unused int dispc_runtime_suspend(struct device *dev)
-        |                           ^
+I am writing to request the backport of the following patches to stable kernel versions 6.6.y,
+addressing a deadlock issue in RCU Tasks related to do_exit() on preemptible systems.
 
-There is an unfortunate interaction between the inner loops of
-dispc_save_context() getting unrolled and the calculation of the index
-into the ctx array being spilled to the stack when sanitizers are
-enabled [2].
+Issue Description:
+The kernel may experience deadlocks due to shared locking between exit_tasks_rcu_start() and
+rcu_tasks_postscan() via synchronize_srcu(), when multiple processes exit concurrently. The problem
+manifests as stalls in the RCU tasks grace period. This issue manifest as a deadlock in WSL kernel
+which uses the stable kernel 6.6.87 (Please see the issue on https://github.com/microsoft/WSL/issues/13480)
 
-While this should obviously be addressed on the LLVM side, such a fix
-may not be easy to craft and it is simple enough to work around the
-issue in the same manner as before by marking dispc_save_context() with
-noinline_for_stack, which makes it use the same amount of stack as
-dispc_restore_context() does after the same change.
+Patches to Apply:
+Patch 1:
+	Subject: rcu-tasks: Maintain lists to eliminate RCU-tasks/do_exit() deadlocks
+	Commit ID: 6b70399f9ef3809f6e308fd99dd78b072c1bd05c
+	Justification: Introduces per-CPU lists for exiting tasks, replacing SRCU-based waits and
+	eliminating deadlocks during concurrent exits.
+Patch 2:
+	Subject: rcu-tasks: Eliminate deadlocks involving do_exit() and RCU tasks
+	Commit ID: 1612160b91272f5b1596f499584d6064bf5be794
+	Justification: Ensures all exiting tasks are properly gathered and synchronized, preventing
+	missed synchronizations and further deadlocks.
+Patch 3:
+	Subject: rcu-tasks: Maintain real-time response in rcu_tasks_postscan()
+	Commit ID: 0bb11a372fc8d7006b4d0f42a2882939747bdbff
+	Justification: Periodically enables interrupts during per-CPU list traversal to maintain
+	system responsiveness, especially when many tasks are present.
 
-Cc: stable@vger.kernel.org
-Link: https://github.com/llvm/llvm-project/commit/055bfc027141bbfafd51fb43f5ab81ba3b480649 [1]
-Link: https://llvm.org/pr143908 [2]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- drivers/gpu/drm/omapdrm/dss/dispc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Kernel version: latest kernel version in 6.6.y branch
 
-diff --git a/drivers/gpu/drm/omapdrm/dss/dispc.c b/drivers/gpu/drm/omapdrm/dss/dispc.c
-index cf055815077cffad554a4ae58cfd7b81edcbb0d4..d079f557c8f24d1afd0bc182edd13165cb9c356c 100644
---- a/drivers/gpu/drm/omapdrm/dss/dispc.c
-+++ b/drivers/gpu/drm/omapdrm/dss/dispc.c
-@@ -417,7 +417,7 @@ static bool dispc_has_feature(struct dispc_device *dispc,
- #define RR(dispc, reg) \
- 	dispc_write_reg(dispc, DISPC_##reg, dispc->ctx[DISPC_##reg / sizeof(u32)])
- 
--static void dispc_save_context(struct dispc_device *dispc)
-+static noinline_for_stack void dispc_save_context(struct dispc_device *dispc)
- {
- 	int i, j;
- 
-
----
-base-commit: 76eeb9b8de9880ca38696b2fb56ac45ac0a25c6c
-change-id: 20250911-omapdrm-reduce-clang-stack-usage-pt-2-9a9ae9263b91
+Thank you for your consideration.
 
 Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
+Tahera Fahimi
 
 
