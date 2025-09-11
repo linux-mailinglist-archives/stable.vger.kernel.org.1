@@ -1,145 +1,195 @@
-Return-Path: <stable+bounces-179222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21033B524FD
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 02:32:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7244B52524
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 02:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60CB41B24F81
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 00:32:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7422B1C2062A
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 00:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A295835949;
-	Thu, 11 Sep 2025 00:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF4E1F428C;
+	Thu, 11 Sep 2025 00:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kxv8q+2j"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wl5+Y0WJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2772717D2;
-	Thu, 11 Sep 2025 00:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D841B87E8;
+	Thu, 11 Sep 2025 00:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757550716; cv=none; b=msN8WlsZm9b7IFS3PFh31w9RfKLCSIqXohDohLHAHHJT2VDFFZloUbDBabDoozUIj2kjWwtldNNKlRqud/a96rjyQilXerDI2YOM8bCthaVijzWh3zb8THfqpCGGx/wxqiunv+XmbkeUKVXi7piysTVaR7Td2Iq1Cpsg0Zz+fJA=
+	t=1757551827; cv=none; b=qcUNAoMqjERU9jyVfDUw1pGK5/qRsXjF+S14vohg+mrPC3LSAjT4MyjYMvmatlO3iVb7h2SZSQvVS1bGCYduZQV8jBWahlfN79QanRjErsgVTAf0D4imArlpQePA3yb51+VGPPn34OpTtoav+5g1LXgbt6Jt+nrQKu3buzQPXFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757550716; c=relaxed/simple;
-	bh=yXmCe0eO/MGZamsjfTzYUhWk0GYiWGiszqdYPvI3hSE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fdoSmT6xOe1HyJT6+hWcSLO8AOMkaY8kY/HFKhMJZVPbKjs+qRz9ttmLvSzO/ewMvzXYY6XYQUaN7v3VnvtHneCAeWRUCseX6ldDJzVG/IGfzJLEH2ssn5iLVR25grHQEtoUMqzOGBLihl9hfPgjJ9UT8tYbHB1nEt3Y9A4GF/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kxv8q+2j; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6228de28242so284354a12.0;
-        Wed, 10 Sep 2025 17:31:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757550712; x=1758155512; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lSwpihcUfwJPnP2twrhHg4lAoNTw6Z1GE9b1kjNX6d8=;
-        b=kxv8q+2j1gpz0Gb6u+MAp0OBRI9jiXqBPC06ujnK7Ac9aEH33ObYJ+3E6KVflCFn3O
-         i6bF+85hxcbSiOjVT7z59ruzj8gCSD5Js8xP6y7zURdxhMOBOVP6/AiSGQhNlMbqydgD
-         5tmxtu/AdEg7pjIg0jKA6Y9vyeiwzSJoQDAxQOoLThz7tjEhEiwTY1WKj4q/55nVEU+S
-         tLh4hjEhI9dn1NXgEmzMsAHCe4vFrcXkXolNKG5AbxLRSppBD2qctuGEXFUHt+tUIPfl
-         NFWKd/buy0i6KfupSqluZOxSqSAXnCNQaSCO84vqzVDgpHSint0XdRi1BCbZNWBUlLAY
-         oP4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757550712; x=1758155512;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lSwpihcUfwJPnP2twrhHg4lAoNTw6Z1GE9b1kjNX6d8=;
-        b=toU7NMPKD7E8zklwhMxe9l8xcZjHCyCtVg1aOn/NIGem7CSwop8eDAZcKnmG5pzMQo
-         Q58y5X9wQC2xEP/mAT1Mjc6BorblHmgmDE2L5t6bj/0Yh/8KBuiJ5+UUz3c6fyrmND59
-         5Tnzle37xjhkqjGAG8ezPP6Ms/SBRlFDWwM3uEe1o4cBjmSzNJy70zDYXdVwXS6OltJ7
-         NpYnzhILRapeyXuUym5RCZWtAmfxD5ke/NOdxYMF0Ij1/qgVeXUVkcqFP1yDlbEzQBPR
-         76GAwxq9nu5aLZEMAECm55OvMkdCkej4O+GYOjbHeDPWLMvOQCxtwZKwYaEqsRAsOIHn
-         IKzw==
-X-Forwarded-Encrypted: i=1; AJvYcCWY/T+1bUsXmpk9C8fp12EHZ0TH3Z6tqXIF5l8+XUu+gPGhMJUapjAo/n2Ch42PQwiIT+Fdjlrj@vger.kernel.org, AJvYcCWiR2OnOu8LVsAnA2isfa9xIll/odSVc/DDcp2fO2l/LdXaNrQ4XWiGEum0JeAsLx1wcQ6gIML2Si4T@vger.kernel.org, AJvYcCX8ppb2sJdlFx7VYj0O9rm2at6lQOmnteEA7Wdwsoxs7+Mzw44WIiOqWi3nQSeiMyhpXdmA9sjVwrq0Y7Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmLAeR0M9jnaGS1qgvMt53cEPC6Ecys7I7B09w3jX+wFO/jxP2
-	HY90ONygZZmeAM4aOC07yqatTG+S5GkmKLjUuLMhJa6UH07XUgW20j61JQp8p+6uaC10nol+ie1
-	SYbkb1a1LSpchrbBsRYbv3fdDmXaIlek=
-X-Gm-Gg: ASbGnct0Sgd1BiZ0OCLbx5K1O6GFP+ifFWdhW1whccwq1CeJIt45xn7a22Obwrtw6eo
-	oBfVUI461ONFQ1TV8/hJvMjh5EmMvWCnJi8wLo0hCfsDoxyphATwywO0sHV5MrC6z0IoD5rF/C+
-	vtNo3bD3DY0hm5UYGD3B+PU7vGXhRx2bSGQ4V9F0hqpJL9rZgCWDnJ4hAhL3sm4vlacEZwW76Vd
-	sMHmFM=
-X-Google-Smtp-Source: AGHT+IG1XqFJ1otj8Vpfd6NEZMsXGp0V8er0kO9gouhW/ATeLKIBH9kMlg3YcwtitzuwaBb1+rjZShFy2l8ww5xn6D8=
-X-Received: by 2002:a05:6402:2b9b:b0:61a:7385:29e3 with SMTP id
- 4fb4d7f45d1cf-62e7b009d54mr1414666a12.18.1757550712216; Wed, 10 Sep 2025
- 17:31:52 -0700 (PDT)
+	s=arc-20240116; t=1757551827; c=relaxed/simple;
+	bh=A76aGIR2EwfWFfUwX1es0QXy0rQMc78ou968n8hgkac=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ofiNo99xS9Ilj8AFHC5cSkL5shf4lfK76JYxxw7ga6HqTW9Ak/+egkOaja8SToI78DpP1k3LHtyrI++Tkx81bdLJh1LQDhNYgklR+1qm/eVEhYzc4NJd3EOu+QlY2cD1dfwnCAxXHyV9Ue3bTKbMtZUew4NBYRFxlFG8CRZUTto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wl5+Y0WJ; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757551825; x=1789087825;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=A76aGIR2EwfWFfUwX1es0QXy0rQMc78ou968n8hgkac=;
+  b=Wl5+Y0WJfJT4KUjZpNOyJf4NEaLCx3smEjSqb7ZqnTXnPFoYZZLRMEmM
+   rKj9Fzn48h86J15p/ODbeEN+G6ZYx7tF/nFkC2OTt6637odhEwTSqd/yS
+   yd5ETHp2TqUCRzR2MiRKu9dIHZfiYIFEpzyk3a02IDJwW0TsmUL7/98c0
+   lHHydL6Wjt3U0WIh3DooniPi+z5Yco4gBglM0E6ObNcSKyIHsV3LYuJto
+   dZYk0+QpyAkjNl0sfxBUitKTMTX81oKQjRCnYmWDyPq3I41oqrMA3bDGD
+   pYKpev8EgO3dTbkcYc0NhTuYLEGfWP73zkmVkl+0Yt7Ht1qKXbOSU3+cV
+   g==;
+X-CSE-ConnectionGUID: CpF9ZIJvQRSYFT09dsq1wQ==
+X-CSE-MsgGUID: NKonsyTdQvqcAPbJ/x98iw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="63510129"
+X-IronPort-AV: E=Sophos;i="6.18,255,1751266800"; 
+   d="scan'208";a="63510129"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 17:50:25 -0700
+X-CSE-ConnectionGUID: GbBlypPeTR6UCAhNfBb1iQ==
+X-CSE-MsgGUID: DIFdLX4ZRg+tvq9EN3HS0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,255,1751266800"; 
+   d="scan'208";a="204534546"
+Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 10 Sep 2025 17:50:22 -0700
+Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uwVVz-0006OJ-2R;
+	Thu, 11 Sep 2025 00:50:19 +0000
+Date: Thu, 11 Sep 2025 08:49:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: =?iso-8859-1?Q?H=E5kon?= Bugge <haakon.bugge@oracle.com>,
+	Allison Henderson <allison.henderson@oracle.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	=?iso-8859-1?Q?H=E5kon?= Bugge <haakon.bugge@oracle.com>,
+	linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3] rds: ib: Increment i_fastreg_wrs before bailing
+ out
+Message-ID: <202509110810.t8tVEIDs-lkp@intel.com>
+References: <20250910110501.350238-1-haakon.bugge@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <8772b633bd936791c2adcfbc1e161a37305a8b08.1757056421.git.benchuanggli@gmail.com>
- <a9fdc8f66a2d928cf83a3a050e5bdb7aff4d40db.1757056421.git.benchuanggli@gmail.com>
- <76616ed2-ae07-4e1a-a275-e43e43fd65f6@intel.com>
-In-Reply-To: <76616ed2-ae07-4e1a-a275-e43e43fd65f6@intel.com>
-From: Ben Chuang <benchuanggli@gmail.com>
-Date: Thu, 11 Sep 2025 08:31:40 +0800
-X-Gm-Features: AS18NWCdC9PaSKUpY8PZUq71NICxFNvKt1aGrR9LrRkoFvCuJe6WWUG--PQgK-s
-Message-ID: <CACT4zj-WAayp_egCOWHf8yyNa72UReJxTpL6+YosAOQvwqqjpQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] mmc: sdhci-uhs2: Fix calling incorrect
- sdhci_set_clock() function
-To: Adrian Hunter <adrian.hunter@intel.com>
-Cc: victor.shih@genesyslogic.com.tw, ben.chuang@genesyslogic.com.tw, 
-	HL.Liu@genesyslogic.com.tw, SeanHY.Chen@genesyslogic.com.tw, 
-	victorshihgli@gmail.com, linux-mmc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, ulf.hansson@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250910110501.350238-1-haakon.bugge@oracle.com>
 
-On Wed, Sep 10, 2025 at 2:55=E2=80=AFPM Adrian Hunter <adrian.hunter@intel.=
-com> wrote:
->
-> On 05/09/2025 11:00, Ben Chuang wrote:
-> > From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> >
-> > Fix calling incorrect sdhci_set_clock() in __sdhci_uhs2_set_ios() when =
-the
-> > vendor defines its own sdhci_set_clock().
-> >
-> > Fixes: 10c8298a052b ("mmc: sdhci-uhs2: add set_ios()")
-> > Cc: stable@vger.kernel.org # v6.13+
-> > Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-> > ---
-> > v2:
-> >  * remove the "if (host->ops->set_clock)" statement
-> >  * add "host->clock =3D ios->clock;"
-> >
-> > v1:
-> >  * https://lore.kernel.org/all/20250901094046.3903-1-benchuanggli@gmail=
-.com/
-> > ---
-> >  drivers/mmc/host/sdhci-uhs2.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/mmc/host/sdhci-uhs2.c b/drivers/mmc/host/sdhci-uhs=
-2.c
-> > index 0efeb9d0c376..c459a08d01da 100644
-> > --- a/drivers/mmc/host/sdhci-uhs2.c
-> > +++ b/drivers/mmc/host/sdhci-uhs2.c
-> > @@ -295,7 +295,8 @@ static void __sdhci_uhs2_set_ios(struct mmc_host *m=
-mc, struct mmc_ios *ios)
-> >       else
-> >               sdhci_uhs2_set_power(host, ios->power_mode, ios->vdd);
-> >
-> > -     sdhci_set_clock(host, host->clock);
-> > +     host->ops->set_clock(host, ios->clock);
-> > +     host->clock =3D ios->clock;
->
-> The change that host->clock has not yet been
-> set to ios->clock needs to be part of patch 1.
-> i.e. put the following in patch 1
->
-> -       sdhci_set_clock(host, host->clock);
-> +       sdhci_set_clock(host, ios->clock);
-> +       host->clock =3D ios->clock;
->
+Hi Håkon,
 
-I will update it in the next series. Thanks.
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on net/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/H-kon-Bugge/rds-ib-Increment-i_fastreg_wrs-before-bailing-out/20250910-190558
+base:   net/main
+patch link:    https://lore.kernel.org/r/20250910110501.350238-1-haakon.bugge%40oracle.com
+patch subject: [PATCH net v3] rds: ib: Increment i_fastreg_wrs before bailing out
+config: x86_64-buildonly-randconfig-001-20250911 (https://download.01.org/0day-ci/archive/20250911/202509110810.t8tVEIDs-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250911/202509110810.t8tVEIDs-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509110810.t8tVEIDs-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   net/rds/ib_frmr.c: In function 'rds_ib_post_reg_frmr':
+>> net/rds/ib_frmr.c:183:1: warning: label 'out' defined but not used [-Wunused-label]
+     183 | out:
+         | ^~~
+
+
+vim +/out +183 net/rds/ib_frmr.c
+
+1659185fb4d002 Avinash Repaka    2016-03-01  122  
+1659185fb4d002 Avinash Repaka    2016-03-01  123  static int rds_ib_post_reg_frmr(struct rds_ib_mr *ibmr)
+1659185fb4d002 Avinash Repaka    2016-03-01  124  {
+1659185fb4d002 Avinash Repaka    2016-03-01  125  	struct rds_ib_frmr *frmr = &ibmr->u.frmr;
+1659185fb4d002 Avinash Repaka    2016-03-01  126  	struct ib_reg_wr reg_wr;
+3e56c2f856d7ab Santosh Shilimkar 2016-12-04  127  	int ret, off = 0;
+1659185fb4d002 Avinash Repaka    2016-03-01  128  
+1659185fb4d002 Avinash Repaka    2016-03-01  129  	while (atomic_dec_return(&ibmr->ic->i_fastreg_wrs) <= 0) {
+1659185fb4d002 Avinash Repaka    2016-03-01  130  		atomic_inc(&ibmr->ic->i_fastreg_wrs);
+1659185fb4d002 Avinash Repaka    2016-03-01  131  		cpu_relax();
+1659185fb4d002 Avinash Repaka    2016-03-01  132  	}
+1659185fb4d002 Avinash Repaka    2016-03-01  133  
+fb4b1373dcab08 Gerd Rausch       2021-08-17  134  	ret = ib_map_mr_sg_zbva(frmr->mr, ibmr->sg, ibmr->sg_dma_len,
+3e56c2f856d7ab Santosh Shilimkar 2016-12-04  135  				&off, PAGE_SIZE);
+cc67d6c0924d12 Håkon Bugge       2025-09-10  136  	if (unlikely(ret != ibmr->sg_dma_len)) {
+cc67d6c0924d12 Håkon Bugge       2025-09-10  137  		ret = ret < 0 ? ret : -EINVAL;
+cc67d6c0924d12 Håkon Bugge       2025-09-10  138  		goto out_inc;
+cc67d6c0924d12 Håkon Bugge       2025-09-10  139  	}
+1659185fb4d002 Avinash Repaka    2016-03-01  140  
+cc67d6c0924d12 Håkon Bugge       2025-09-10  141  	if (cmpxchg(&frmr->fr_state, FRMR_IS_FREE, FRMR_IS_INUSE) != FRMR_IS_FREE) {
+cc67d6c0924d12 Håkon Bugge       2025-09-10  142  		ret = -EBUSY;
+cc67d6c0924d12 Håkon Bugge       2025-09-10  143  		goto out_inc;
+cc67d6c0924d12 Håkon Bugge       2025-09-10  144  	}
+3a2886cca703fd Gerd Rausch       2019-07-16  145  
+3a2886cca703fd Gerd Rausch       2019-07-16  146  	atomic_inc(&ibmr->ic->i_fastreg_inuse_count);
+3a2886cca703fd Gerd Rausch       2019-07-16  147  
+1659185fb4d002 Avinash Repaka    2016-03-01  148  	/* Perform a WR for the fast_reg_mr. Each individual page
+1659185fb4d002 Avinash Repaka    2016-03-01  149  	 * in the sg list is added to the fast reg page list and placed
+1659185fb4d002 Avinash Repaka    2016-03-01  150  	 * inside the fast_reg_mr WR.  The key used is a rolling 8bit
+1659185fb4d002 Avinash Repaka    2016-03-01  151  	 * counter, which should guarantee uniqueness.
+1659185fb4d002 Avinash Repaka    2016-03-01  152  	 */
+1659185fb4d002 Avinash Repaka    2016-03-01  153  	ib_update_fast_reg_key(frmr->mr, ibmr->remap_count++);
+5f33141d2fc05a Gerd Rausch       2019-07-16  154  	frmr->fr_reg = true;
+1659185fb4d002 Avinash Repaka    2016-03-01  155  
+1659185fb4d002 Avinash Repaka    2016-03-01  156  	memset(&reg_wr, 0, sizeof(reg_wr));
+1659185fb4d002 Avinash Repaka    2016-03-01  157  	reg_wr.wr.wr_id = (unsigned long)(void *)ibmr;
+1659185fb4d002 Avinash Repaka    2016-03-01  158  	reg_wr.wr.opcode = IB_WR_REG_MR;
+1659185fb4d002 Avinash Repaka    2016-03-01  159  	reg_wr.wr.num_sge = 0;
+1659185fb4d002 Avinash Repaka    2016-03-01  160  	reg_wr.mr = frmr->mr;
+1659185fb4d002 Avinash Repaka    2016-03-01  161  	reg_wr.key = frmr->mr->rkey;
+1659185fb4d002 Avinash Repaka    2016-03-01  162  	reg_wr.access = IB_ACCESS_LOCAL_WRITE |
+1659185fb4d002 Avinash Repaka    2016-03-01  163  			IB_ACCESS_REMOTE_READ |
+1659185fb4d002 Avinash Repaka    2016-03-01  164  			IB_ACCESS_REMOTE_WRITE;
+1659185fb4d002 Avinash Repaka    2016-03-01  165  	reg_wr.wr.send_flags = IB_SEND_SIGNALED;
+1659185fb4d002 Avinash Repaka    2016-03-01  166  
+f112d53b435692 Bart Van Assche   2018-07-18  167  	ret = ib_post_send(ibmr->ic->i_cm_id->qp, &reg_wr.wr, NULL);
+1659185fb4d002 Avinash Repaka    2016-03-01  168  	if (unlikely(ret)) {
+1659185fb4d002 Avinash Repaka    2016-03-01  169  		/* Failure here can be because of -ENOMEM as well */
+3a2886cca703fd Gerd Rausch       2019-07-16  170  		rds_transition_frwr_state(ibmr, FRMR_IS_INUSE, FRMR_IS_STALE);
+3a2886cca703fd Gerd Rausch       2019-07-16  171  
+1659185fb4d002 Avinash Repaka    2016-03-01  172  		if (printk_ratelimit())
+1659185fb4d002 Avinash Repaka    2016-03-01  173  			pr_warn("RDS/IB: %s returned error(%d)\n",
+1659185fb4d002 Avinash Repaka    2016-03-01  174  				__func__, ret);
+cc67d6c0924d12 Håkon Bugge       2025-09-10  175  		goto out_inc;
+1659185fb4d002 Avinash Repaka    2016-03-01  176  	}
+5f33141d2fc05a Gerd Rausch       2019-07-16  177  
+5f33141d2fc05a Gerd Rausch       2019-07-16  178  	/* Wait for the registration to complete in order to prevent an invalid
+5f33141d2fc05a Gerd Rausch       2019-07-16  179  	 * access error resulting from a race between the memory region already
+5f33141d2fc05a Gerd Rausch       2019-07-16  180  	 * being accessed while registration is still pending.
+5f33141d2fc05a Gerd Rausch       2019-07-16  181  	 */
+5f33141d2fc05a Gerd Rausch       2019-07-16  182  	wait_event(frmr->fr_reg_done, !frmr->fr_reg);
+5f33141d2fc05a Gerd Rausch       2019-07-16 @183  out:
+cc67d6c0924d12 Håkon Bugge       2025-09-10  184  	return ret;
+5f33141d2fc05a Gerd Rausch       2019-07-16  185  
+cc67d6c0924d12 Håkon Bugge       2025-09-10  186  out_inc:
+cc67d6c0924d12 Håkon Bugge       2025-09-10  187  	atomic_inc(&ibmr->ic->i_fastreg_wrs);
+1659185fb4d002 Avinash Repaka    2016-03-01  188  	return ret;
+1659185fb4d002 Avinash Repaka    2016-03-01  189  }
+1659185fb4d002 Avinash Repaka    2016-03-01  190  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
