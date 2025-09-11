@@ -1,231 +1,343 @@
-Return-Path: <stable+bounces-179230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4FAB526A0
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 04:42:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386B5B527C7
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 06:38:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94FBF480A96
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 02:42:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC2A916646B
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 04:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BB22153ED;
-	Thu, 11 Sep 2025 02:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1D0235072;
+	Thu, 11 Sep 2025 04:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R70vLNmj"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="kx9AmEWR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2070.outbound.protection.outlook.com [40.107.223.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B68A74BE1;
-	Thu, 11 Sep 2025 02:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757558572; cv=none; b=YjLj41FdaeT59fqoXFQAzj962VNSRqYWuosw10JRNbNxpwDKTXD5D5nYVLuASm46TwHm9OL8MLmWMpCYacGLrE1gt7gSdtSZQtP2Vj+QhgmLbLlp4lBuJopygDj05DDWbwd8/T8BiJgKd9k0dFcTpjNxKf1R0TfHxtZryX3C99A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757558572; c=relaxed/simple;
-	bh=4IzelWXwLIIiLQ7QUAppKHUk/ucXT8lKxeNiTvMOliU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAI2j/dgwGXX5Abzy9tjs52tgUYn6jkQeZ9I0BwopsZclXNeYf1L1+pRFZLkBeOf3poXCKbi7XWX9P9ggwq8nU3wb+jC0OyjaKS97wzFu+bpFThUFUDFIl3hlHbs/a72UwyjGs/XyVftA1Ba9aB5C7DdihhLj/U8uvOV8Lc97OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R70vLNmj; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7722bcb989aso154549b3a.1;
-        Wed, 10 Sep 2025 19:42:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757558570; x=1758163370; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lTdLtSNrCO8di/hrRDk4RHof2WOK3gGHgKy96JVEeLY=;
-        b=R70vLNmjRLKs6MUBPv4IxdD1tGNVX26WBhLcYE8ow9vkcU9cq1/4ZkYhirYhnXxci/
-         ssWfDf2RsaT6DmoZHaE6oDgPpnkt4eeuxO3ELnPydXpaCXbBUU3NHaQXqGfyUW80xtIT
-         C/rq/0rV3J53NczMzOicYrTuMvd9mOK/+emCa+K7kiWtxwYBD58Apt6B1XeDHVZu+DvG
-         d5k1rH8AyRk9pTDy1mMya1OlttxlSsoAT9hjP/udJK02tk/dRzSb7QcRCNQMbJ6CJksn
-         G7qPLM/x9SzzfjS2e88S+ZiRFv4h+MCI8GH6FDg1lEZaWvwDhmEFKqlmiSbr0/gXC8Ff
-         m4+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757558570; x=1758163370;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lTdLtSNrCO8di/hrRDk4RHof2WOK3gGHgKy96JVEeLY=;
-        b=V6YsaeLkxmslI4Qvk9A23h6JXujTsi1SHZ4hPI2KVzNTawIIzB3jqxRLTZt0JORPHo
-         eowsYLYGkqbGYKHgIqcyA56P8hVZY810wvfblWq5LIA15SGpaSYdc2erF35ZgRsqo22U
-         hOjl+n+gCpMbzyI/QE6t74X/6WQy3WdB3CmnGjXp5hkMnnyUga1AeXfrKysUYahSKTVF
-         2AQ0V40W2RQdYHxO/dAX2dt/zZ4+umc8PJBg/fpCtPtRrEy54t1s+5729+1gDkD8LjZC
-         zCk+qh4F4T/LfyZ6cDT2darFz83fhMPw4rq7tKib2eS9OzxV8KcjgbIdNozVJ7U4gIhI
-         BZ/A==
-X-Forwarded-Encrypted: i=1; AJvYcCUosoEL7UQ8wPWBxWlGq/pKCXVP3xW222BnIccTvI7eiHwoTqCpJmJzcOz7e4yytH5PDrcWi59c@vger.kernel.org, AJvYcCWyZOfvDyxdu0FJyAUnhOsQ6psSuy9CPbDSVysolacYAzc5AKYGtdc6MKnFh5vu1/E+96ytFsXTvtxlfL4=@vger.kernel.org, AJvYcCXTPWBehbZSjncD7+vm8t9SCZeLc7viciL0NDW4a5p0k131R+nw263ZEJXcsFNVq81tXIxjWV4hxGwt@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz26rP4I/nuhzKNDSXtZAyjyLhnolS+ltrbOyW6j36kZAcGb9hL
-	m/mhPjTH0jTcUqThiVOfkh82UyvV4UP6bRrDMxxIQTzvgK6XJffZZc5U
-X-Gm-Gg: ASbGnct4FqtuC4bCHW52a9MSjmEcwKVGamk6kPFFEpa71WFWi0D8uin8Yk9B1Rdi4Mg
-	vd+6uO6aowzaQNgIZoBu91q5CxcXBRT8QX/alqNDdggEa5p1b7iBFcepxl6ZF32kleq15MS6gPE
-	A5o+QKhEhsvLkwGclv3MNB2yItCDv9tJ8q5SarqvaX4t06rlIieUnWUvO40WCKK/+JEsLdmWYdj
-	13rRfpRKesnThFAwZ3B/JWayawYISDUBrQ8FribLmuTdaaFXb6xa+X3Dx8x8aWHvrDxYYilCJ8y
-	B/jiKI6w4Fh8iqm/sjXUXZZb7r0EKWySPCc7uOSd6+ME7tF387CdhNo/wEUtafxuV2UqULpBDrd
-	Mjh35S155VXYFgd/bGBB+KYOjw5BR0jmn2Io81Zi3HRB7FfZpJdIWS1OQr9OGCmF0RuO7BUJKVg
-	uEPmks6ZLImaEvmIx2jF7B2hChKb2TaNhTdwEIc2I=
-X-Google-Smtp-Source: AGHT+IHlACGIGryGMo2klTca88UIiOwYdyASTSgAXWNl/iX9K5HSASXRhDKLI5yRH5C8WKr28ms/jQ==
-X-Received: by 2002:a05:6a00:1a8b:b0:771:fc48:7c1a with SMTP id d2e1a72fcca58-7742de3ee2amr18270677b3a.27.1757558569717;
-        Wed, 10 Sep 2025 19:42:49 -0700 (PDT)
-Received: from arch-pc.genesyslogic.com.tw (60-251-58-169.hinet-ip.hinet.net. [60.251.58.169])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7760793b4dcsm318840b3a.13.2025.09.10.19.42.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 19:42:49 -0700 (PDT)
-From: Ben Chuang <benchuanggli@gmail.com>
-To: adrian.hunter@intel.com,
-	ulf.hansson@linaro.org
-Cc: victor.shih@genesyslogic.com.tw,
-	ben.chuang@genesyslogic.com.tw,
-	HL.Liu@genesyslogic.com.tw,
-	SeanHY.Chen@genesyslogic.com.tw,
-	benchuanggli@gmail.com,
-	victorshihgli@gmail.com,
-	linux-mmc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v3 3/3] mmc: sdhci-pci-gli: GL9767: Fix initializing the UHS-II interface during a power-on
-Date: Thu, 11 Sep 2025 10:42:42 +0800
-Message-ID: <f687912419cdaf198b2430ea8d2c704c9016962f.1757557996.git.benchuanggli@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <736d7edd2d361f2a8fc01b112802f7c4dd68b7d6.1757557996.git.benchuanggli@gmail.com>
-References: <736d7edd2d361f2a8fc01b112802f7c4dd68b7d6.1757557996.git.benchuanggli@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD4C329F3C;
+	Thu, 11 Sep 2025 04:37:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757565482; cv=fail; b=C5xIiNX/K7LTdcIZNq85BgTt/zMAg7Jrim7MNdYIZIQtVxMf7yek+EcDvOjYW7nko5PwvQsxhO3s2dwaD1ZkTTZ0qfIejiyirhEUaKI+sBaHXEbSHAPwlm2sCx7rMl6il+cR2QeKA3oeMYedeFBq5Hprrs2O982cistyi8datW8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757565482; c=relaxed/simple;
+	bh=3hDYoxkyVgQHOkYcoI7Z1Ln8LrwTkf4HmSbi5sNYcko=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ULDVDyvQZYDkFTVZaRjo17qQqeo3hFXY0i78yY2iERab2VLCRMgiQUc7BPiJz4akj7ajiWaWmRAOb7KXLorn5sr6Z+72VQqVjUmQCeccWZY9QAQUOhWzoYgXUdt+yABk5XWw8OGpneHRuRlxT4ej4DzHWCdbjbVhC8lF0HHKT4g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=kx9AmEWR; arc=fail smtp.client-ip=40.107.223.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TCyGj6USZT2RFbbVHDO0n2usmXk/j9r3ik09H4I6Qtu8uewSZ9mkHPUp1Po1EpcecgT3jmiY6tFrgDdW+oBga/NelA06BV2EaVWiBWPwHAVVnODXc8eQX6O8zSuhGSnOPFAnz22Lf65bCaLNtOYhEgJykW18nWWbM3zLXKx5hs08vHkoRsGVciugp6YkYjV8tlQaZCnavXRhbcV0ZL9OvnP9+3JyjGj9DgTBmFC9gIbRZoCDE2m1qVCg3Upv861/hqoSnLsN8abO5bZAqALaJyLbUMT2r+u5bh+e8qlNS+PUU1d0wYF+0kZHZkrHZ/46hkoUIUma1zGqJKOKRhoxyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zoHePVqIWxrtYnkox6Kj7fWxAnUVHjkCBKfIygL1ZYY=;
+ b=m2kf7EWtRszEjp+fVVhhg23Jb6bS+kbmyT8ubup3Im0QKsXk26vkhTtnI3D/Atfdymhqk2LIiMlq7rErXFPWp2ILNnGJUnHJFXAj/WcHc9J4oA+qHYfFINeKcaGjDwuWxrjKiUkaINN3NwLWOJQfiEapRX8svT0J3PNAM1owSPgtfPBhqlCLAgHEaIj6dUZspXtrFnJE9+at7s49W+NCcWC2q+069frQtU5NKnu9N7882OXe2VPSW1xABgIV5J3LNAY4hpPvS/uP24bEb1FUIuGS1ozwoXHDKlnHRDIBIIw6vs6ReBOQCkseQPe5U6bZE2SGZfUKx3F/sbLzV4Lu+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linutronix.de smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zoHePVqIWxrtYnkox6Kj7fWxAnUVHjkCBKfIygL1ZYY=;
+ b=kx9AmEWRS8gbi2a0Q6Iyll40gm4fLqIWlrs533UuuNdi3xDNHortDnFeFyF8OFBlSMI03EM6t0Itn5vH7KWNZ5vGNuCvNbdf/4x0Ky7dEZgM3nkW4PSfFUMor2YhwS8pQH6+feyeLklOZ8M0gy3Zvd5SXpXT241pdsGG7vcYPKM=
+Received: from BY5PR17CA0058.namprd17.prod.outlook.com (2603:10b6:a03:167::35)
+ by DM4PR12MB8500.namprd12.prod.outlook.com (2603:10b6:8:190::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Thu, 11 Sep
+ 2025 04:37:54 +0000
+Received: from SJ5PEPF000001CB.namprd05.prod.outlook.com
+ (2603:10b6:a03:167:cafe::9b) by BY5PR17CA0058.outlook.office365.com
+ (2603:10b6:a03:167::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.25 via Frontend Transport; Thu,
+ 11 Sep 2025 04:37:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ5PEPF000001CB.mail.protection.outlook.com (10.167.242.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9115.13 via Frontend Transport; Thu, 11 Sep 2025 04:37:53 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 10 Sep
+ 2025 21:37:53 -0700
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 10 Sep
+ 2025 21:37:52 -0700
+Received: from [172.31.178.191] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Wed, 10 Sep 2025 21:37:46 -0700
+Message-ID: <8a4272f7-0d22-43f0-993b-6d53172b7f65@amd.com>
+Date: Thu, 11 Sep 2025 10:07:39 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/4] x86/cpu/topology: Always try
+ cpu_parse_topology_ext() on AMD/Hygon
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, <x86@kernel.org>
+CC: Naveen rao <naveen.rao@amd.com>, Sairaj Kodilkar <sarunkod@amd.com>, "H.
+ Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)"
+	<peterz@infradead.org>, "Xin Li (Intel)" <xin@zytor.com>, Pawan Gupta
+	<pawan.kumar.gupta@linux.intel.com>, <linux-kernel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, Mario Limonciello <mario.limonciello@amd.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>, Babu Moger
+	<babu.moger@amd.com>, Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	<stable@vger.kernel.org>, Naveen N Rao <naveen@kernel.org>
+References: <20250901170418.4314-1-kprateek.nayak@amd.com>
+ <20250901170418.4314-2-kprateek.nayak@amd.com> <87o6rirrvc.ffs@tglx>
+Content-Language: en-US
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+In-Reply-To: <87o6rirrvc.ffs@tglx>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CB:EE_|DM4PR12MB8500:EE_
+X-MS-Office365-Filtering-Correlation-Id: f8c6feff-a299-4ff7-3ba1-08ddf0ecf914
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|30052699003|376014|7416014|36860700013|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eEJadjFKWGRDaVhpQUhMVHA3UklyUmYveGwzeHVjbTZuOU5Takl1VUFNdUlj?=
+ =?utf-8?B?QnFpR1FSbFIwR0NYbS9rMlJ1SGxCM21pWUNqYkdSV1lhTjFHdFpCWDB6WFNr?=
+ =?utf-8?B?a052bTYyU1hoSktVRGJiUWJJd0NYOWxUT2hOa0tHV29ubUl0M3ArWlBUU1Ez?=
+ =?utf-8?B?UHlMSGt4a3VPK1ZwNzdGc2l6N0ZJdmN2akpFdmc5TUxQZjMwOUR4SC9wdSto?=
+ =?utf-8?B?UjBjdWUyTkJoeFI5cVJaczdZNHZ2enlzUFZKdVFqeHhHZVZXM0g5YkpkVk5u?=
+ =?utf-8?B?MDF2ZldJU09semc5RlFUM3pYSlQzLy9Lb0ZOL3I0aWk1emRDbmtFZ2JmWkpM?=
+ =?utf-8?B?a1JOVGtQSzExY0hTL1FJOFZaL3IrMFljRmNFSHMxTVpCUS9iYit4azZqbmNT?=
+ =?utf-8?B?WldIdktsNkk2d29Sa0FHQmthc2Y1Z2hHbTlkOWV2T3Z5SVIwUjE3L2Mrc0lz?=
+ =?utf-8?B?U2p5RlhnbFBDaXNIbW1EUUVESVFyMVRWbDZFSnFqSkl2S1pzUzZVUnZ3alEz?=
+ =?utf-8?B?L1NaYzRYcStkR2ZZSk14ZUZYdTFqWkRmMG1SUlhZL3hVWHl1UTdxK0lXVWpY?=
+ =?utf-8?B?dlRZb2RJRGxCaEZPZTRKOCtLOFdtQStsK3R5Rzg4cmtZN3MrOE5PYkZvNkJB?=
+ =?utf-8?B?TnNlMzYxa2tIVEk0TzBmMFp2TWJMc29aRGR3eG9VNXJaK1NjVG1RZTltMDZ6?=
+ =?utf-8?B?aWJKRHdmWXhPZC9DdjFEd2VHTTJZdmhtc2l1ejBzU1lDelovUkIrYjNjVm9H?=
+ =?utf-8?B?UXhsaUllWnBRTFZOeVpXeURxZDFEVXNNVVU2c2ttTS9KY1dJUkQ1WmJ2SHdQ?=
+ =?utf-8?B?SE9ycUROZFk5S3RyYVFHVG5yMHFCUEQ3YWx4dUtUQkNRQ1lsa0hCaDBiLzR6?=
+ =?utf-8?B?aHpmRFRsRVJESEJWVmQwYUVJNXdQNVA0TVFpT3M3UW41am5CeXRJM2ZDZWlX?=
+ =?utf-8?B?djB4NG1oak10cU13Rko1dmhrWEYyamFrcFcvWCtPSjlQaXFCSEVMTjdJbVVS?=
+ =?utf-8?B?a21WeDFRQjdvUVhDMVRpVzNtL3NTd09YNEtvZzg2TGpEemhqVVlHTTJnRG0z?=
+ =?utf-8?B?aE54WDhQK2tuREE5aGdpMExBRWNHdWlUY2hJWkZtSWttbmluaXFxUTNCNWdR?=
+ =?utf-8?B?dzZSK0JEVXU5VnR6MlI1c3hZQ2dJN2xrQlhsUXV0RGZsU3AyMUdmSW5nc3BF?=
+ =?utf-8?B?MHJ3WlRJbm9rZlJnQWN5ZXU1aVNjVWduVGJDOU5Za1BYdmQ0RjQ4ejVzZVBv?=
+ =?utf-8?B?dWJJZDNoZURGNWYzaUV6RlMrLzNtL2xCazJKSDJOVTAzUDU4YU0wM1Z0UVUw?=
+ =?utf-8?B?RmtUQjdRMFJnbVh2Y0R3Y1dhSGZYUUxIWm1SVi9IdmNuTUZWcFIxbmxWZEVX?=
+ =?utf-8?B?a3pjNG9CTzRlUzY3eVVsbVpvSlBHVjhXOGpLY1h6TzRBZDV0OUNCZ3pRdTlS?=
+ =?utf-8?B?S2w2VUtaSmhJTWI2RWZacmxuWHVucXVIUjVRUEhRYlluRWRwQ3lwRkgzUXBs?=
+ =?utf-8?B?Rzg5dmlVaXBpTkNTS0N5REh1b2FHQVdESHVldkFRczczY0FMeG1DUm4xdnRC?=
+ =?utf-8?B?UWpEZ2I2VnRaWXdqck5uMzRrNVN3elJJTUlpeUN2NzFKVG1neWNDT1MzNXVN?=
+ =?utf-8?B?aVl1UFZOL1BXYWFzRm1CSUZVbHBPN0hOM2JjQ3lEVkpxeitYZ0pIVm9IUmlV?=
+ =?utf-8?B?R1ZaMkNUaEZFN0dFVENBT256b1dNb0lacnJ6RG1YM1RoUSs5YktJTGRQTHZy?=
+ =?utf-8?B?YnBJY3IwZnU1MWh0VTQ0N3d1dCtoME5wYVRBcmZTckplanBQMjZLNHpXK0hr?=
+ =?utf-8?B?MEF0N0xyaDlVMDVlWkFxTjBLSkJoKzZXSUV4UTF4ZnROY3l6bnRBL2VKL1I5?=
+ =?utf-8?B?S1AzWEFpeml3b1FteHRiSm53d2x0VnJSQ1NWRkp4bDhnRlgyQVVxUjhFOGwz?=
+ =?utf-8?B?bXhCY0JWTEZLR2xibG05U0psYm5pRGFmVEpWbTI5OEdYOEhNeGFveUNnOW41?=
+ =?utf-8?Q?Hs/PvbZaycHcHrw2z/ahB/QfDMieaw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(30052699003)(376014)(7416014)(36860700013)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2025 04:37:53.6938
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f8c6feff-a299-4ff7-3ba1-08ddf0ecf914
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001CB.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8500
 
-From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+Hello Thomas,
 
-According to the power structure of IC hardware design for UHS-II
-interface, reset control and timing must be added to the initialization
-process of powering on the UHS-II interface.
+On 9/11/2025 1:40 AM, Thomas Gleixner wrote:
+> On Mon, Sep 01 2025 at 17:04, K. Prateek Nayak wrote:
+>> Unconditionally call cpu_parse_topology_ext() on AMD and Hygon
+>> processors to first parse the topology using the XTOPOLOGY leaves
+>> (0x80000026 / 0xb) before using the TOPOEXT leaf (0x8000001e).
+>>
+>> While at it, break down the single large comment in parse_topology_amd()
+>> to better highlight the purpose of each CPUID leaf.
+>>
+>> Cc: stable@vger.kernel.org # Only v6.9 and above; Depends on x86 topology rewrite
+>> Link: https://lore.kernel.org/lkml/1529686927-7665-1-git-send-email-suravee.suthikulpanit@amd.com/ [1]
+>> Link: https://lore.kernel.org/lkml/20080818181435.523309000@linux-os.sc.intel.com/ [2]
+>> Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 [3]
+>> Suggested-by: Naveen N Rao (AMD) <naveen@kernel.org>
+>> Fixes: 3986a0a805e6 ("x86/CPU/AMD: Derive CPU topology from CPUID function 0xB when available")
+>> Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+>> ---
+>> Changelog v4..v5:
+>>
+>> o Made a note on only targeting versions >= v6.9 for stable backports
+>>   since the fix depends on the x86 topology rewrite. (Boris)
+> 
+> Shouldn't that be backported? I think so, so leave that v6.9 and above
+> comment out. The stable folks will notice that it does not apply to pre
+> 6.9 kernels and send you a nice email asking you to provide a solution
+> for pre 6.9 stable kernels.
 
-Fixes: 27dd3b82557a ("mmc: sdhci-pci-gli: enable UHS-II mode for GL9767")
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Ack! Since this is already in tip:x86/urgent as commit cba4262a19af
+("x86/cpu/topology: Always try cpu_parse_topology_ext() on AMD/Hygon")
+let me know if I should resend it or that comment can be zapped
+in-place.
+
+I can also send out a separate patch targeting stable with the intended
+changes. Since we are on the topic, here is the patch I would have sent
+out to stable:
+
+(Note: Only tested on top of v6.6.105 stable on a Zen3 machine; no
+ changes found in /sys/devices/system/cpu/cpu*/topology/* with the patch
+ applied on top)
+
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: [PATCH stable] x86/cpu/amd: Always try detect_extended_topology()
+ on AMD processors
+
+commit cba4262a19afae21665ee242b3404bcede5a94d7 upstream.
+
+Support for parsing the topology on AMD/Hygon processors using CPUID leaf 0xb
+was added in
+
+  3986a0a805e6 ("x86/CPU/AMD: Derive CPU topology from CPUID function 0xB when available").
+
+In an effort to keep all the topology parsing bits in one place, this commit
+also introduced a pseudo dependency on the TOPOEXT feature to parse the CPUID
+leaf 0xb.
+
+The TOPOEXT feature (CPUID 0x80000001 ECX[22]) advertises the support for
+Cache Properties leaf 0x8000001d and the CPUID leaf 0x8000001e EAX for
+"Extended APIC ID" however support for 0xb was introduced alongside the x2APIC
+support not only on AMD [1], but also historically on x86 [2].
+
+The support for the 0xb leaf is expected to be confirmed by ensuring
+
+  leaf <= max supported cpuid_level
+
+and then parsing the level 0 of the leaf to confirm EBX[15:0]
+(LogProcAtThisLevel) is non-zero as stated in the definition of
+"CPUID_Fn0000000B_EAX_x00 [Extended Topology Enumeration]
+(Core::X86::Cpuid::ExtTopEnumEax0)" in Processor Programming Reference (PPR)
+for AMD Family 19h Model 01h Rev B1 Vol1 [3] Sec. 2.1.15.1 "CPUID Instruction
+Functions".
+
+This has not been a problem on baremetal platforms since support for TOPOEXT
+(Fam 0x15 and later) predates the support for CPUID leaf 0xb (Fam 0x17[Zen2]
+and later), however, for AMD guests on QEMU, the "x2apic" feature can be
+enabled independent of the "topoext" feature where QEMU expects topology and
+the initial APICID to be parsed using the CPUID leaf 0xb (especially when
+number of cores > 255) which is populated independent of the "topoext" feature
+flag.
+
+Unconditionally call detect_extended_topology() on AMD processors to first
+parse the topology using the extended topology leaf 0xb before using the
+TOPOEXT leaf (0x8000001e).
+
+Fixes: 3986a0a805e6 ("x86/CPU/AMD: Derive CPU topology from CPUID function 0xB when available")
+Suggested-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Link: https://lore.kernel.org/lkml/1529686927-7665-1-git-send-email-suravee.suthikulpanit@amd.com/ [1]
+Link: https://lore.kernel.org/lkml/20080818181435.523309000@linux-os.sc.intel.com/ [2]
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=206537 [3]
 ---
-v3: add Acked-by tag.
-v2:
- * use sdhci_gl9767_uhs2_phy_reset() instead of
-   sdhci_gl9767_uhs2_phy_reset_assert() and sdhci_gl9767_uhs2_phy_reset_deassert()
- * add comments for set/clean PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN and
-   PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN_VALUE
- * use usleep_range() instead of mdelay()
+For stable maintainers,
 
-v1:
- * https://lore.kernel.org/all/20250901094224.3920-1-benchuanggli@gmail.com/
+The original changes from commit cba4262a19af ("x86/cpu/topology: Always try
+cpu_parse_topology_ext() on AMD/Hygon") cannot be easily backported due to the
+extensive x86 topology rewrite in v6.9.
+
+This patch cleanly applies on top of all stable kernels from v6.6.y to v5.4.y.
+Boris' S-o-b from commit commit cba4262a19af has been dropped since the changes
+on top of the stable kernels are slightly different.
 ---
- drivers/mmc/host/sdhci-pci-gli.c | 68 +++++++++++++++++++++++++++++++-
- 1 file changed, 67 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/amd.c | 37 ++++++++++++++++++++++---------------
+ 1 file changed, 22 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-index 3a1de477e9af..b0f91cc9e40e 100644
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -283,6 +283,8 @@
- #define   PCIE_GLI_9767_UHS2_CTL2_ZC_VALUE	  0xb
- #define   PCIE_GLI_9767_UHS2_CTL2_ZC_CTL	  BIT(6)
- #define   PCIE_GLI_9767_UHS2_CTL2_ZC_CTL_VALUE	  0x1
-+#define   PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN	BIT(13)
-+#define   PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE	BIT(14)
- 
- #define GLI_MAX_TUNING_LOOP 40
- 
-@@ -1179,6 +1181,65 @@ static void gl9767_set_low_power_negotiation(struct pci_dev *pdev, bool enable)
- 	gl9767_vhs_read(pdev);
- }
- 
-+static void sdhci_gl9767_uhs2_phy_reset(struct sdhci_host *host, bool assert)
-+{
-+	struct sdhci_pci_slot *slot = sdhci_priv(host);
-+	struct pci_dev *pdev = slot->chip->pdev;
-+	u32 value, set, clr;
-+
-+	if (assert) {
-+		/* Assert reset, set RESETN and clean RESETN_VALUE */
-+		set = PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN;
-+		clr = PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE;
-+	} else {
-+		/* De-assert reset, clean RESETN and set RESETN_VALUE */
-+		set = PCIE_GLI_9767_UHS2_CTL2_FORCE_RESETN_VALUE;
-+		clr = PCIE_GLI_9767_UHS2_CTL2_FORCE_PHY_RESETN;
-+	}
-+
-+	gl9767_vhs_write(pdev);
-+	pci_read_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, &value);
-+	value |= set;
-+	pci_write_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, value);
-+	value &= ~clr;
-+	pci_write_config_dword(pdev, PCIE_GLI_9767_UHS2_CTL2, value);
-+	gl9767_vhs_read(pdev);
-+}
-+
-+static void __gl9767_uhs2_set_power(struct sdhci_host *host, unsigned char mode, unsigned short vdd)
-+{
-+	u8 pwr = 0;
-+
-+	if (mode != MMC_POWER_OFF) {
-+		pwr = sdhci_get_vdd_value(vdd);
-+		if (!pwr)
-+			WARN(1, "%s: Invalid vdd %#x\n",
-+			     mmc_hostname(host->mmc), vdd);
-+		pwr |= SDHCI_VDD2_POWER_180;
-+	}
-+
-+	if (host->pwr == pwr)
-+		return;
-+
-+	host->pwr = pwr;
-+
-+	if (pwr == 0) {
-+		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
-+	} else {
-+		sdhci_writeb(host, 0, SDHCI_POWER_CONTROL);
-+
-+		pwr |= SDHCI_POWER_ON;
-+		sdhci_writeb(host, pwr & 0xf, SDHCI_POWER_CONTROL);
-+		usleep_range(5000, 6250);
-+
-+		/* Assert reset */
-+		sdhci_gl9767_uhs2_phy_reset(host, true);
-+		pwr |= SDHCI_VDD2_POWER_ON;
-+		sdhci_writeb(host, pwr, SDHCI_POWER_CONTROL);
-+		usleep_range(5000, 6250);
-+	}
-+}
-+
- static void sdhci_gl9767_set_clock(struct sdhci_host *host, unsigned int clock)
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 864d62e94614..33d8bbdd7b69 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -391,34 +391,41 @@ static void legacy_fixup_core_id(struct cpuinfo_x86 *c)
+  */
+ static void amd_get_topology(struct cpuinfo_x86 *c)
  {
- 	struct sdhci_pci_slot *slot = sdhci_priv(host);
-@@ -1205,6 +1266,11 @@ static void sdhci_gl9767_set_clock(struct sdhci_host *host, unsigned int clock)
- 	}
++	/*
++	 * Try to get the topology information from the 0xb leaf first.
++	 * If detect_extended_topology() returns 0, parsing was successful
++	 * and APIC ID, cpu_core_id, cpu_die_id, phys_proc_id, and
++	 * __max_die_per_package are already populated.
++	 */
++	bool has_extended_topology = !detect_extended_topology(c);
+ 	int cpu = smp_processor_id();
  
- 	sdhci_enable_clk(host, clk);
++	if (has_extended_topology)
++		c->x86_coreid_bits = get_count_order(c->x86_max_cores);
 +
-+	if (mmc_card_uhs2(host->mmc))
-+		/* De-assert reset */
-+		sdhci_gl9767_uhs2_phy_reset(host, false);
+ 	/* get information required for multi-node processors */
+ 	if (boot_cpu_has(X86_FEATURE_TOPOEXT)) {
+-		int err;
+ 		u32 eax, ebx, ecx, edx;
+ 
+ 		cpuid(0x8000001e, &eax, &ebx, &ecx, &edx);
+ 
+-		c->cpu_die_id  = ecx & 0xff;
+-
+ 		if (c->x86 == 0x15)
+ 			c->cu_id = ebx & 0xff;
+ 
+-		if (c->x86 >= 0x17) {
+-			c->cpu_core_id = ebx & 0xff;
+-
+-			if (smp_num_siblings > 1)
+-				c->x86_max_cores /= smp_num_siblings;
+-		}
+-
+ 		/*
+-		 * In case leaf B is available, use it to derive
+-		 * topology information.
++		 * If the extended topology leaf 0xb leaf doesn't exits,
++		 * derive CORE and DIE information from the 0x8000001e leaf.
+ 		 */
+-		err = detect_extended_topology(c);
+-		if (!err)
+-			c->x86_coreid_bits = get_count_order(c->x86_max_cores);
++		if (!has_extended_topology) {
++			c->cpu_die_id  = ecx & 0xff;
 +
- 	gl9767_set_low_power_negotiation(pdev, true);
- }
++			if (c->x86 >= 0x17) {
++				c->cpu_core_id = ebx & 0xff;
++
++				if (smp_num_siblings > 1)
++					c->x86_max_cores /= smp_num_siblings;
++			}
++		}
  
-@@ -1476,7 +1542,7 @@ static void sdhci_gl9767_set_power(struct sdhci_host *host, unsigned char mode,
- 		gl9767_vhs_read(pdev);
+ 		cacheinfo_amd_init_llc_id(c, cpu);
  
- 		sdhci_gli_overcurrent_event_enable(host, false);
--		sdhci_uhs2_set_power(host, mode, vdd);
-+		__gl9767_uhs2_set_power(host, mode, vdd);
- 		sdhci_gli_overcurrent_event_enable(host, true);
- 	} else {
- 		gl9767_vhs_write(pdev);
+
+base-commit: fe9731e100041bb2cc186717bde3e05ca175623b
+--
+
+Let me know what you think.
+
 -- 
-2.51.0
+Thanks and Regards,
+Prateek
 
 
