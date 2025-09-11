@@ -1,224 +1,145 @@
-Return-Path: <stable+bounces-179221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16FB8B52258
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 22:33:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21033B524FD
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 02:32:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF5C44851A8
-	for <lists+stable@lfdr.de>; Wed, 10 Sep 2025 20:33:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60CB41B24F81
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 00:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA952EFDAE;
-	Wed, 10 Sep 2025 20:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A295835949;
+	Thu, 11 Sep 2025 00:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b="x0VoysvS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kxv8q+2j"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF172EFD92
-	for <stable@vger.kernel.org>; Wed, 10 Sep 2025 20:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2772717D2;
+	Thu, 11 Sep 2025 00:31:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757536419; cv=none; b=F3JA4KUlNeWRX0jB9zsFOgnNgqfjuevktrmg5b1+D/pORpHKuvzEfVxgxzpLXjO+DUkD/JaVduEfLJjA1KLkTvhgFOgyxhM+Na+6X8PyksAB4RjMmyN+A1eyscMa6ubcpn4M7oFBXUAG9jYWz9euCE74W6s5zYlSLakmpAcKPkk=
+	t=1757550716; cv=none; b=msN8WlsZm9b7IFS3PFh31w9RfKLCSIqXohDohLHAHHJT2VDFFZloUbDBabDoozUIj2kjWwtldNNKlRqud/a96rjyQilXerDI2YOM8bCthaVijzWh3zb8THfqpCGGx/wxqiunv+XmbkeUKVXi7piysTVaR7Td2Iq1Cpsg0Zz+fJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757536419; c=relaxed/simple;
-	bh=YhHcGR6NcktdDika/H79AEJwmn9xeexlbfC0CIPF2GQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WHiwcR91mVTnc8YrfR8khPHU1tFWhC089U3nLe/7cTjIpPWiIn2N4qAho2I+RsWwuHcZRH7bfNeYxrISiG88XNg/bdeAx8/VH7m2gZaKBj9jLxUMvllCxKj79jMggRxpjDsdF+hrWgVOZMqd3UM+DLJ7ZGyh+Av+ix2ZhHLXEks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org; spf=pass smtp.mailfrom=kfocus.org; dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b=x0VoysvS; arc=none smtp.client-ip=209.85.166.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kfocus.org
-Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-8877677dbaeso398039f.0
-        for <stable@vger.kernel.org>; Wed, 10 Sep 2025 13:33:37 -0700 (PDT)
+	s=arc-20240116; t=1757550716; c=relaxed/simple;
+	bh=yXmCe0eO/MGZamsjfTzYUhWk0GYiWGiszqdYPvI3hSE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fdoSmT6xOe1HyJT6+hWcSLO8AOMkaY8kY/HFKhMJZVPbKjs+qRz9ttmLvSzO/ewMvzXYY6XYQUaN7v3VnvtHneCAeWRUCseX6ldDJzVG/IGfzJLEH2ssn5iLVR25grHQEtoUMqzOGBLihl9hfPgjJ9UT8tYbHB1nEt3Y9A4GF/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kxv8q+2j; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6228de28242so284354a12.0;
+        Wed, 10 Sep 2025 17:31:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kfocus-org.20230601.gappssmtp.com; s=20230601; t=1757536416; x=1758141216; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:organization:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZC/n9aPRKkY1e246SyhB/Q8BzMW4BNCrjlHrCKsg/4Q=;
-        b=x0VoysvStrMaIlndpVjY3ix2GqeW/1mfjunZQzmzcpriHQWch0fhIOXQr6ds5OT8lS
-         0LfcsQFACVbaqIRFTZLrbOHzzhqyK6XHbHXMVEVKyXqPW03w13T2Lu/SFneNhoZirELH
-         vQk+0MHOsdT+xpo2ja8GhC1YwonVCXeMVesXFhHAo7WV9qf/EmAwRcpI+ISdQxZqWVLu
-         5msDyFr+zoQB19lmMLNWt9pWgLm0WfpPTzH1COWHiBiCA4Vq+1GW1cyzSBwOWb1bp2jd
-         m5vm+PQO5PpFqj25eReYrRbbNztrmnuSU9x6L09b4b5TrPTargwAj0oG58MVuz75NYE/
-         hJGA==
+        d=gmail.com; s=20230601; t=1757550712; x=1758155512; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lSwpihcUfwJPnP2twrhHg4lAoNTw6Z1GE9b1kjNX6d8=;
+        b=kxv8q+2j1gpz0Gb6u+MAp0OBRI9jiXqBPC06ujnK7Ac9aEH33ObYJ+3E6KVflCFn3O
+         i6bF+85hxcbSiOjVT7z59ruzj8gCSD5Js8xP6y7zURdxhMOBOVP6/AiSGQhNlMbqydgD
+         5tmxtu/AdEg7pjIg0jKA6Y9vyeiwzSJoQDAxQOoLThz7tjEhEiwTY1WKj4q/55nVEU+S
+         tLh4hjEhI9dn1NXgEmzMsAHCe4vFrcXkXolNKG5AbxLRSppBD2qctuGEXFUHt+tUIPfl
+         NFWKd/buy0i6KfupSqluZOxSqSAXnCNQaSCO84vqzVDgpHSint0XdRi1BCbZNWBUlLAY
+         oP4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757536416; x=1758141216;
-        h=content-transfer-encoding:mime-version:organization:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZC/n9aPRKkY1e246SyhB/Q8BzMW4BNCrjlHrCKsg/4Q=;
-        b=n2XpkuXitCYY9tJgyPAuCJ5jy8YUom8yDqD89lnZDMMUwOTVSlI9sE8OGJTfEC1lho
-         Rh0pZ4vtfDk8fcJkNY+YMT0vPiHDMan+dOBxLaeaUoT6BmZIPKw/xiB2/UQy8tlI8xFn
-         U39ZE85a8GA9xqG/rH2/HFQyaaNpfw1uPvpR5J1xBVf9skDl+yRUD6dmQ1PlabWRY2M7
-         Aw6Z1oCicM9+QWvd2d2JjZ5qsbFcFhT2OAOUCdTXCABlWpR+S6TCS7uELqJtOkk99NHr
-         rCWoI3AwTVfP7Xfw4dTm84PADPwHG7kTvgv4R+1Hzv+31gF6AYTfR8lv8csB7HV7zqh+
-         1qPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXHgjp7J/O9WlZtmBXHRUGy8PI1peB3XyjqntK0m0Iai0Za/J20RO6x85ntHOi72N6JC33Zosk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBdI6I8C+lM1i0EHh9tlZswBW2+1E9zbjfoITJcDaFB6xodRLV
-	6OjTpOXwlj4J/IzemDrW645dwkp6XbtWAW6GxwdccbWDYw0uhlWefCn+e/ZbkDIZfnc=
-X-Gm-Gg: ASbGncuJkhWhk0GCQr9640jdXQsW2AQ4aRDtxPj7MOsXQXIdcAOqu1yy9fpZIxu3qwV
-	1dGQA4GpYTmygvQl/djtqqytL7pSxqnyuCtE5TRIfRNc4uQTnoQ2SeSvFZAMfk33dXUwee+Ixoy
-	hdJpTxX3+hypeaM255SddT0kxuzGKoR2sT5qIA7Q4gXQgVqZcBO3cuvmLF1+evS3uQvHL8xVD1S
-	vltsoE7y+JytngglnzpvBoTEq79ca381sHliAWu0mngebuvbLzSlX0yaRkr5Rb62DWJ5DdidPao
-	ut82DFf3aXQ+Om5StsiPnyQLSPD0YeQHeVzGuWMYjAVCr+UX7Ubl9cP6So7wwJqDau1S+I3y1vo
-	3p0IE3CEJaEfadx8uISsKm0rg84vqxQ==
-X-Google-Smtp-Source: AGHT+IFUIt/o0aTDvAKsDPoZqNCzU+WEORCP4SO4/NIgvZhEvVZboD+hqTS72AUl6+6DUmBYDzCqDg==
-X-Received: by 2002:a05:6602:36ce:b0:88d:9dce:2916 with SMTP id ca18e2360f4ac-88d9dce2a43mr691914239f.8.1757536416124;
-        Wed, 10 Sep 2025 13:33:36 -0700 (PDT)
-Received: from kf-m2g5 ([2607:fb90:cfaa:41d:2536:6680:5b26:e8b0])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-511ee8f8e5csm129110173.10.2025.09.10.13.33.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 13:33:35 -0700 (PDT)
-Date: Wed, 10 Sep 2025 15:33:29 -0500
-From: Aaron Rainbolt <arainbolt@kfocus.org>
-To: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: "Rafael J. Wysocki"  <rafael@kernel.org>, viresh.kumar@linaro.org,
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, mmikowski@kfocus.org
-Subject: Re: [REGRESSION] Intel Turbo Boost stuck disabled on some Clevo
- machines (was: [PATCH] cpufreq: intel_pstate: Unchecked MSR aceess in
- legacy mode)
-Message-ID: <20250910153329.10dcef9d@kf-m2g5>
-In-Reply-To: <dda1d8d23407623c99e2f22e60ada1872bca98fe.camel@linux.intel.com>
-References: <20250429210711.255185-1-srinivas.pandruvada@linux.intel.com>
-	<CAJZ5v0h99RFF26qAnJf07LS0t-6ATm9c2zrQVzdi96x3FAPXQg@mail.gmail.com>
-	<20250910113650.54eafc2b@kf-m2g5>
-	<dda1d8d23407623c99e2f22e60ada1872bca98fe.camel@linux.intel.com>
-Organization: Kubuntu Focus
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.41; x86_64-pc-linux-gnu)
+        d=1e100.net; s=20230601; t=1757550712; x=1758155512;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lSwpihcUfwJPnP2twrhHg4lAoNTw6Z1GE9b1kjNX6d8=;
+        b=toU7NMPKD7E8zklwhMxe9l8xcZjHCyCtVg1aOn/NIGem7CSwop8eDAZcKnmG5pzMQo
+         Q58y5X9wQC2xEP/mAT1Mjc6BorblHmgmDE2L5t6bj/0Yh/8KBuiJ5+UUz3c6fyrmND59
+         5Tnzle37xjhkqjGAG8ezPP6Ms/SBRlFDWwM3uEe1o4cBjmSzNJy70zDYXdVwXS6OltJ7
+         NpYnzhILRapeyXuUym5RCZWtAmfxD5ke/NOdxYMF0Ij1/qgVeXUVkcqFP1yDlbEzQBPR
+         76GAwxq9nu5aLZEMAECm55OvMkdCkej4O+GYOjbHeDPWLMvOQCxtwZKwYaEqsRAsOIHn
+         IKzw==
+X-Forwarded-Encrypted: i=1; AJvYcCWY/T+1bUsXmpk9C8fp12EHZ0TH3Z6tqXIF5l8+XUu+gPGhMJUapjAo/n2Ch42PQwiIT+Fdjlrj@vger.kernel.org, AJvYcCWiR2OnOu8LVsAnA2isfa9xIll/odSVc/DDcp2fO2l/LdXaNrQ4XWiGEum0JeAsLx1wcQ6gIML2Si4T@vger.kernel.org, AJvYcCX8ppb2sJdlFx7VYj0O9rm2at6lQOmnteEA7Wdwsoxs7+Mzw44WIiOqWi3nQSeiMyhpXdmA9sjVwrq0Y7Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmLAeR0M9jnaGS1qgvMt53cEPC6Ecys7I7B09w3jX+wFO/jxP2
+	HY90ONygZZmeAM4aOC07yqatTG+S5GkmKLjUuLMhJa6UH07XUgW20j61JQp8p+6uaC10nol+ie1
+	SYbkb1a1LSpchrbBsRYbv3fdDmXaIlek=
+X-Gm-Gg: ASbGnct0Sgd1BiZ0OCLbx5K1O6GFP+ifFWdhW1whccwq1CeJIt45xn7a22Obwrtw6eo
+	oBfVUI461ONFQ1TV8/hJvMjh5EmMvWCnJi8wLo0hCfsDoxyphATwywO0sHV5MrC6z0IoD5rF/C+
+	vtNo3bD3DY0hm5UYGD3B+PU7vGXhRx2bSGQ4V9F0hqpJL9rZgCWDnJ4hAhL3sm4vlacEZwW76Vd
+	sMHmFM=
+X-Google-Smtp-Source: AGHT+IG1XqFJ1otj8Vpfd6NEZMsXGp0V8er0kO9gouhW/ATeLKIBH9kMlg3YcwtitzuwaBb1+rjZShFy2l8ww5xn6D8=
+X-Received: by 2002:a05:6402:2b9b:b0:61a:7385:29e3 with SMTP id
+ 4fb4d7f45d1cf-62e7b009d54mr1414666a12.18.1757550712216; Wed, 10 Sep 2025
+ 17:31:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <8772b633bd936791c2adcfbc1e161a37305a8b08.1757056421.git.benchuanggli@gmail.com>
+ <a9fdc8f66a2d928cf83a3a050e5bdb7aff4d40db.1757056421.git.benchuanggli@gmail.com>
+ <76616ed2-ae07-4e1a-a275-e43e43fd65f6@intel.com>
+In-Reply-To: <76616ed2-ae07-4e1a-a275-e43e43fd65f6@intel.com>
+From: Ben Chuang <benchuanggli@gmail.com>
+Date: Thu, 11 Sep 2025 08:31:40 +0800
+X-Gm-Features: AS18NWCdC9PaSKUpY8PZUq71NICxFNvKt1aGrR9LrRkoFvCuJe6WWUG--PQgK-s
+Message-ID: <CACT4zj-WAayp_egCOWHf8yyNa72UReJxTpL6+YosAOQvwqqjpQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] mmc: sdhci-uhs2: Fix calling incorrect
+ sdhci_set_clock() function
+To: Adrian Hunter <adrian.hunter@intel.com>
+Cc: victor.shih@genesyslogic.com.tw, ben.chuang@genesyslogic.com.tw, 
+	HL.Liu@genesyslogic.com.tw, SeanHY.Chen@genesyslogic.com.tw, 
+	victorshihgli@gmail.com, linux-mmc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, ulf.hansson@linaro.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 10 Sep 2025 10:15:00 -0700
-srinivas pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
+On Wed, Sep 10, 2025 at 2:55=E2=80=AFPM Adrian Hunter <adrian.hunter@intel.=
+com> wrote:
+>
+> On 05/09/2025 11:00, Ben Chuang wrote:
+> > From: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+> >
+> > Fix calling incorrect sdhci_set_clock() in __sdhci_uhs2_set_ios() when =
+the
+> > vendor defines its own sdhci_set_clock().
+> >
+> > Fixes: 10c8298a052b ("mmc: sdhci-uhs2: add set_ios()")
+> > Cc: stable@vger.kernel.org # v6.13+
+> > Signed-off-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+> > ---
+> > v2:
+> >  * remove the "if (host->ops->set_clock)" statement
+> >  * add "host->clock =3D ios->clock;"
+> >
+> > v1:
+> >  * https://lore.kernel.org/all/20250901094046.3903-1-benchuanggli@gmail=
+.com/
+> > ---
+> >  drivers/mmc/host/sdhci-uhs2.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/mmc/host/sdhci-uhs2.c b/drivers/mmc/host/sdhci-uhs=
+2.c
+> > index 0efeb9d0c376..c459a08d01da 100644
+> > --- a/drivers/mmc/host/sdhci-uhs2.c
+> > +++ b/drivers/mmc/host/sdhci-uhs2.c
+> > @@ -295,7 +295,8 @@ static void __sdhci_uhs2_set_ios(struct mmc_host *m=
+mc, struct mmc_ios *ios)
+> >       else
+> >               sdhci_uhs2_set_power(host, ios->power_mode, ios->vdd);
+> >
+> > -     sdhci_set_clock(host, host->clock);
+> > +     host->ops->set_clock(host, ios->clock);
+> > +     host->clock =3D ios->clock;
+>
+> The change that host->clock has not yet been
+> set to ios->clock needs to be part of patch 1.
+> i.e. put the following in patch 1
+>
+> -       sdhci_set_clock(host, host->clock);
+> +       sdhci_set_clock(host, ios->clock);
+> +       host->clock =3D ios->clock;
+>
 
-> On Wed, 2025-09-10 at 11:36 -0500, Aaron Rainbolt wrote:
-> > On Wed, 30 Apr 2025 16:29:09 +0200
-> > "Rafael J. Wysocki" <rafael@kernel.org> wrote:
-> >  =20
-> > > On Tue, Apr 29, 2025 at 11:07=E2=80=AFPM Srinivas Pandruvada
-> > > <srinivas.pandruvada@linux.intel.com> wrote: =20
-> > > >=20
-> > > > When turbo mode is unavailable on a Skylake-X system, executing
-> > > > the
-> > > > command:
-> > > > "echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo"
-> > > > results in an unchecked MSR access error: WRMSR to 0x199
-> > > > (attempted to write 0x0000000100001300).
-> > > >=20
-> > > > This issue was reproduced on an OEM (Original Equipment
-> > > > Manufacturer) system and is not a common problem across all
-> > > > Skylake-X systems.
-> > > >=20
-> > > > This error occurs because the MSR 0x199 Turbo Engage Bit (bit
-> > > > 32) is set when turbo mode is disabled. The issue arises when
-> > > > intel_pstate fails to detect that turbo mode is disabled. Here
-> > > > intel_pstate relies on MSR_IA32_MISC_ENABLE bit 38 to determine
-> > > > the
-> > > > status of turbo mode. However, on this system, bit 38 is not set
-> > > > even when turbo mode is disabled.
-> > > >=20
-> > > > According to the Intel Software Developer's Manual (SDM), the
-> > > > BIOS
-> > > > sets this bit during platform initialization to enable or
-> > > > disable opportunistic processor performance operations.
-> > > > Logically, this bit
-> > > > should be set in such cases. However, the SDM also specifies
-> > > > that "OS and applications must use CPUID leaf 06H to detect
-> > > > processors with opportunistic processor performance operations
-> > > > enabled."
-> > > >=20
-> > > > Therefore, in addition to checking MSR_IA32_MISC_ENABLE bit 38,
-> > > > verify that CPUID.06H:EAX[1] is 0 to accurately determine if
-> > > > turbo
-> > > > mode is disabled.
-> > > >=20
-> > > > Fixes: 4521e1a0ce17 ("cpufreq: intel_pstate: Reflect current
-> > > > no_turbo state correctly") Signed-off-by: Srinivas Pandruvada
-> > > > <srinivas.pandruvada@linux.intel.com> Cc: stable@vger.kernel.org
-> > > > ---
-> > > > =C2=A0drivers/cpufreq/intel_pstate.c | 3 +++
-> > > > =C2=A01 file changed, 3 insertions(+)
-> > > >=20
-> > > > diff --git a/drivers/cpufreq/intel_pstate.c
-> > > > b/drivers/cpufreq/intel_pstate.c index
-> > > > f41ed0b9e610..ba9bf06f1c77 100644 ---
-> > > > a/drivers/cpufreq/intel_pstate.c +++
-> > > > b/drivers/cpufreq/intel_pstate.c @@ -598,6 +598,9 @@ static
-> > > > bool turbo_is_disabled(void) {
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 misc_en;
-> > > >=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!cpu_feature_enabled(X86_=
-FEATURE_IDA))
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 return true;
-> > > > +
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rdmsrl(MSR_IA32_MISC_ENA=
-BLE, misc_en);
-> > > >=20
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return !!(misc_en & MSR_=
-IA32_MISC_ENABLE_TURBO_DISABLE);
-> > > > --=C2=A0  =20
-> > >=20
-> > > Applied as a fix for 6.15-rc, thanks!
-> > >  =20
-> >=20
-> > FYI, this seems to have broken turbo boost on some Clevo systems
-> > with an Intel Core i9-14900HX CPU. These CPUs obviously support
-> > turbo boost,
-> > and kernels without this commit have turbo boost working properly,
-> > but
-> > after this commit turbo boost is stuck disabled and cannot be
-> > enabled by writing to /sys/devices/system/cpu/intel_pstate/no_turbo.
-> > I
-> > made a bug report about this against Ubuntu's kernel at [1], which
-> > is the only report I know that is able to point to this commit as
-> > having broken things. However, it looks like an Arch Linux user [2]
-> > and a Gentoo user [3] are running into the same thing.
-> >  =20
->=20
-> As the bug report suggested, the system boots with no turbo, it must
-> be forcefully turned ON by writing to this attribute.
-> I wonder if there is a BIOS option to turn ON turbo on this system?
-
-I just double-checked the BIOS settings, there does not appear to be
-any setting related to turbo boost there. The closest there is, is
-overclocking settings, which comes with warnings about possibly causing
-the system to become unbootable, thus I think those settings are for
-true overclocking and not turbo boost.
-
-> This processor itself is capable of up to 5.8 GHz turbo.
->=20
->=20
-> I will try to find contact at Clevo.
->=20
-> We can try to reduce scope of this change to non HWP only where there
-> is unchecked MSR issue.
-
-That sounds like a good idea to me.
-
-> Thanks,
-> Srinivas
->=20
-> > [1]
-> > https://bugs.launchpad.net/ubuntu/+source/linux-hwe-6.14/+bug/2122531
-> >=20
-> > [2] https://bbs.archlinux.org/viewtopic.php?id=3D305564
-> >=20
-> > [3]
-> > https://forums.gentoo.org/viewtopic-p-8866128.html?sid=3De97619cff0d9c7=
-9c2eea2cfe8f60b0d3
-> > =20
->=20
-
+I will update it in the next series. Thanks.
 
