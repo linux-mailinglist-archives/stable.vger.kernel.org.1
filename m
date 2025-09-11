@@ -1,156 +1,194 @@
-Return-Path: <stable+bounces-179240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2612CB52916
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 08:40:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBB3B529C4
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 09:22:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD501883365
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 06:40:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9716B1B27CAC
+	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 07:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9240B28369A;
-	Thu, 11 Sep 2025 06:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B770626E701;
+	Thu, 11 Sep 2025 07:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nd27h2G/"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BP0dghcv"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4900B280CFA
-	for <stable@vger.kernel.org>; Thu, 11 Sep 2025 06:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384C8329F2D;
+	Thu, 11 Sep 2025 07:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757572606; cv=none; b=d0t167mFNUB6XdEzo6FWjdbWS7QWJOQLWot5EpWfDwKttN/RgfHq3DRcoLRs0DZaEHa0Qjen6ned5WbdLabpnZNlnzyJEeXCtyQi6Js/x/8hu5IGcxUGytO/njjZzzbsiaPlx9HKp8l2WqMOBBE+IR/gPIVeKLGZ0kGDUfYMUeI=
+	t=1757575343; cv=none; b=eA8oI01suS2GZDZK9/rJhppvdBBhAHqUB+rYhCiQkp9zJV4KDEsQtZawxaYAObAaBdVwWT2ttPR5h7XOXSRPqFjFNXX3A5rK2ydi6Tce8KVr5chmwJx+ouORqLsQca40wRs2heY2oqsZYZwQdct7gkf01ApjxwMNAhW3wBL+xrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757572606; c=relaxed/simple;
-	bh=RhOFMO390kD6vVPQk+wsaIHxpEh7Rl6s/uQ6K6nB+Bo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bbl7lhS5RlMfWUMSbKLwHW8fQUPGIdjgt4RIcgx+XSbZBoSI8S3kvYu70Q0v620luXS5+JSmOBDC51b4JOp5njAhAih1ao8crA0NCfQ0PU6b/GyCQsaWYd1fFdB5EsrUZ6ldBsTWMjZqLQe5UlwUXvumH6diN9htF/F1DwM0hT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nd27h2G/; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58B2J0Cs005772
-	for <stable@vger.kernel.org>; Thu, 11 Sep 2025 06:36:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=HWX0jsMcz+X
-	znw8DUFwCpjh9opKGeTSObz3aq0hQzb4=; b=nd27h2G/WdRY0aTMKSaIH9KhQbN
-	QOrIe8F7m+di12OOyT7nEXM8i5lZ2STbxnPSLDsR9iXaF3tnvCNk8eX6z+fMxHrb
-	3x5bSPVRgNMwAvjxgFdNWwszOplU/P7C1hwlpQ2ygNb5Bt87Zvon3Llu/Q+yzYsq
-	8Fgq6IJ+lpbjtzGL66m/wbme7IJrYZ5CyQrFQvN/fEm7b1wtAZC9Bk8ywi+9Shpr
-	8vjcL2rK07zNAlgddRYr70hWh8yA1Ur7JqAa09iRd2bDuDUMv2n3gq56WIE53LCq
-	SLoE24Hm37w3vfjOo4D1CctroAjK2+DTc+7sUBk/3xQR/EllA0sL4KAaL1g==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 491vc2ak74-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 11 Sep 2025 06:36:43 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-b522c35db5fso327745a12.0
-        for <stable@vger.kernel.org>; Wed, 10 Sep 2025 23:36:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757572602; x=1758177402;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HWX0jsMcz+Xznw8DUFwCpjh9opKGeTSObz3aq0hQzb4=;
-        b=OS55TwwyWpoJex5VF2i5Vv8le5zsSy6c/gkK/4QoaVN6IvbqgmVFoikD9Is//Bi714
-         nKGnNLqHoDXu6ADraSsE8uwjTH+y7zNLvNixDvU4VVvE0Xq5EeJ6NVRqUhivjwhOJSaG
-         hiFPC3ReOt/b6RBAcaoEdBcUZVtzVIJssqURJA6yanCx0YFkNTAlsp4p8nqMMOT2L6rj
-         R+W0TbArEuNrQP+/ksTcHxk+67lKIMifDubbJOIXLsEHDTz6uWYvIyFU+BQfiDZjX0kw
-         l5OlzJlTuolu8tREBlH6O5sRrKBV38Rk8nKxmS8+9n4yxxSrOUYxzaOeJLDtbKizvKAn
-         oC/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUGjXRLN4Ni3cTa7SrWGlLUctbrqBVpM0QzBI7XYN1ZKTft8NNOg2T8XKreZPl2nIwUHazQYYA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTtY26V88EvJqMHcAXLnslq7OieSj2RaTQSEimWBcuXEQlrlPJ
-	SPhZdnAOOUr2zG96aVkBqBeRU1MdYLg+4y7mMM1SHI3QvqzfGlK8lt7XgZPhBVWbDeACrQ30wM6
-	OSStowzp8tmwcH4H3fZoTUs8x7lBUw7OQNqEnip07lqmTReOFUa/6/Qf4p0AkszOUuJQ=
-X-Gm-Gg: ASbGncuwj6iyzUHKTBBGPfyUW3TydkXrZda85BZ1airdEZ/p9HzK0ks8YHZ5yrF0n27
-	IDQs5ExXTvWMVpkYlphXPgGvCJfj2bVys+Xsun27vTzONMWJRI7Zb4bCnba2vctUIIKTv54DZAv
-	PkVxf/7EkgzRRiI0YeYiFUdzeHcgjDqFU7N+e59AjWa0+dtYdcaNFPPoGkX79SgrDoaXXQpimIG
-	B0wozp1ZCEBTms5oxoNE1oa0V+yGpZa8n+IrZRykzSqH4tBxJYzm2MW+rpNgAYdpDtJcDM2ah8+
-	v/ndWSDhH+OBjFSffugR7B1qXcbMn6ktoXmMUJHu53ySyIRwrPOtyUkL844XQd8UEFXAtvZzbNk
-	X
-X-Received: by 2002:a05:6a21:6d8a:b0:251:5160:f6c5 with SMTP id adf61e73a8af0-2534347f671mr26157977637.37.1757572601476;
-        Wed, 10 Sep 2025 23:36:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGQ+PJd2BseHqXuEekWx1mlj2LglhTy48gVjDdZnPnheJmB4iWw19sNj3aiXoyLJBORiykMfw==
-X-Received: by 2002:a05:6a21:6d8a:b0:251:5160:f6c5 with SMTP id adf61e73a8af0-2534347f671mr26157951637.37.1757572601004;
-        Wed, 10 Sep 2025 23:36:41 -0700 (PDT)
-Received: from hu-mohs-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25c3a84f72fsm7739125ad.72.2025.09.10.23.36.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 23:36:40 -0700 (PDT)
-From: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
-To: Srinivas Kandagatla <srini@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-Cc: linux-sound@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@oss.qualcomm.com,
-        prasad.kumpatla@oss.qualcomm.com, ajay.nandam@oss.qualcomm.com,
-        stable@vger.kernel.org,
-        Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Subject: [RESEND PATCH v4 2/3] ASoC: qcom: q6apm-lpass-dais: Fix missing set_fmt DAI op for I2S
-Date: Thu, 11 Sep 2025 12:06:11 +0530
-Message-Id: <20250911063612.2242184-3-mohammad.rafi.shaik@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250911063612.2242184-1-mohammad.rafi.shaik@oss.qualcomm.com>
-References: <20250911063612.2242184-1-mohammad.rafi.shaik@oss.qualcomm.com>
+	s=arc-20240116; t=1757575343; c=relaxed/simple;
+	bh=MLuilW7Tf9Dno/7YBATXESI/1zTrs/0ck7+Glf2DvQc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=O2DCD5sdtWDTzNh3wSOMqvW3yvr+nUMPN3+9TqNaVeLbdELfoXYuAtBsATE3bhuUnZoXLyg5UBRo/Wzf1EVntN3/1RRx8qQkBipZa8ZFjBmwYKS/pvbN8qIGlntV9/2OGws4Yah1k/FUG6Rlp4p9It0umGlIJCmxbAxfpmdjNUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BP0dghcv; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 8941EC6B3AB;
+	Thu, 11 Sep 2025 07:22:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5C391606BB;
+	Thu, 11 Sep 2025 07:22:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 96128102F2882;
+	Thu, 11 Sep 2025 09:21:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1757575334; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ymIxetTWocC2/T6DcUZLUqfBudVyTjFDiSDhCwPR4IA=;
+	b=BP0dghcvk2HqRbfKQS3O7ySBOrhO100W9n5AqVrR5PeKtATxfQw0Fg34/tSl45/GNCqkB5
+	4YDn3TU+esRYKH/S7xLXUPXNvWIRKopAHuqEnYhzTqOUVbkXD55NDWUtJs2pjGQaJesftt
+	4UyhJvGAks1d4dAvYXnQCbrr99n+3bCVBOl1UC9ecNzEoDjWRsI8lWbZQqgdjHlJEaAybm
+	wVUUwXjiHFuXkBHSHLPSqCRtPjtCqbF4BeojkAze1q8uA62pIfkwavllHdygrvVrct1wTr
+	rgMfHHXK5dOG9RdqE9rA5g4ojdhyInfMVW5tD3BRfmQ2KzRRrXlhsvcwN2UlPA==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=FN4bx/os c=1 sm=1 tr=0 ts=68c26dfb cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=VUbThP3hI7wIHPtXhhgA:9
- a=3WC7DwWrALyhR5TkjVHa:22
-X-Proofpoint-ORIG-GUID: ukaUJS-2jxZlwfp1l1fm9jCqye54RCIx
-X-Proofpoint-GUID: ukaUJS-2jxZlwfp1l1fm9jCqye54RCIx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDA5NCBTYWx0ZWRfX2WE/oGVoBjY6
- czVfTDbk45Ov9DKfH9Da1FxDCU5umslyw3rdbKPZLRGJHWOKo+7/qI6vEIidLSJTL9cFAFu9HcC
- L6hm4bAEkimuyIMGo4AQLF9iJ/omXq0b6C7V7eGKoLD8F8TAg5QPlE4X5WtLc6qwdaPIsp62Nz+
- CRlBw2jCgYglyvMofd/HWrAxlmyaPrwgSxt00tzxc9mQO16SLWJmgEfqYM7RWWPNVZS9Cd3hZfg
- wHAaQ/aZI8uBXevlJ1BVAUEuWOuN6BIrablNHWR7AtzyGipTq49CFj0SpYh5yv/+oD86eTUz9Fv
- /UslaxSLmyAsXaG5AZDK0SthpXc+oWvCAA/A0fZMZ5PMCLzlvhk0ah4pnUHiFY2sEbJutVYMh/K
- oM85l40/
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-10_04,2025-09-10_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 clxscore=1015 phishscore=0 adultscore=0
- bulkscore=0 impostorscore=0 malwarescore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509080094
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 11 Sep 2025 09:21:34 +0200
+Message-Id: <DCPSFZLWJLG7.1B4NISSDKLWBQ@bootlin.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH v2 1/5] net: cadence: macb: Set upper 32bits of DMA ring
+ buffer
+Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-rpi-kernel@lists.infradead.org>, "Broadcom internal kernel review
+ list" <bcm-kernel-feedback-list@broadcom.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Florian Fainelli"
+ <florian.fainelli@broadcom.com>, "Andrea della Porta"
+ <andrea.porta@suse.com>, "Claudiu Beznea" <claudiu.beznea@tuxon.dev>, "Phil
+ Elwell" <phil@raspberrypi.com>, "Jonathan Bell" <jonathan@raspberrypi.com>,
+ "Dave Stevenson" <dave.stevenson@raspberrypi.com>,
+ <stable@vger.kernel.org>, "Andrew Lunn" <andrew@lunn.ch>
+To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, "Nicolas Ferre"
+ <nicolas.ferre@microchip.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Stanimir Varbanov" <svarbanov@suse.de>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250822093440.53941-1-svarbanov@suse.de>
+ <20250822093440.53941-2-svarbanov@suse.de>
+ <20250825165310.64027275@kernel.org>
+ <3bccf773-abd6-4ade-a1c5-99f2a773b723@microchip.com>
+ <DCPA2BR78XM8.HWKZZ8WQF3S8@bootlin.com>
+In-Reply-To: <DCPA2BR78XM8.HWKZZ8WQF3S8@bootlin.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-The q6i2s_set_fmt() function was defined but never linked into the
-I2S DAI operations, resulting DAI format settings is being ignored
-during stream setup. This change fixes the issue by properly linking
-the .set_fmt handler within the DAI ops.
+On Wed Sep 10, 2025 at 6:57 PM CEST, Th=C3=A9o Lebrun wrote:
+> Hello Nicolas, Jakub, Stanimir,
+>
+> On Tue Aug 26, 2025 at 11:14 AM CEST, Nicolas Ferre wrote:
+>> On 26/08/2025 at 01:53, Jakub Kicinski wrote:
+>>> On Fri, 22 Aug 2025 12:34:36 +0300 Stanimir Varbanov wrote:
+>>>> In case of rx queue reset and 64bit capable hardware, set the upper
+>>>> 32bits of DMA ring buffer address.
+>>>>
+>>>> Cc: stable@vger.kernel.org # v4.6+
+>>>> Fixes: 9ba723b081a2 ("net: macb: remove BUG_ON() and reset the queue t=
+o handle RX errors")
+>>>> Credits-to: Phil Elwell <phil@raspberrypi.com>
+>>>> Credits-to: Jonathan Bell <jonathan@raspberrypi.com>
+>>>> Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+>>>> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+>>>=20
+>>>> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/et=
+hernet/cadence/macb_main.c
+>>>> index ce95fad8cedd..36717e7e5811 100644
+>>>> --- a/drivers/net/ethernet/cadence/macb_main.c
+>>>> +++ b/drivers/net/ethernet/cadence/macb_main.c
+>>>> @@ -1634,7 +1634,11 @@ static int macb_rx(struct macb_queue *queue, st=
+ruct napi_struct *napi,
+>>>>                macb_writel(bp, NCR, ctrl & ~MACB_BIT(RE));
+>>>>
+>>>>                macb_init_rx_ring(queue);
+>>>> -             queue_writel(queue, RBQP, queue->rx_ring_dma);
+>>>> +             queue_writel(queue, RBQP, lower_32_bits(queue->rx_ring_d=
+ma));
+>>>> +#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+>>>> +             if (bp->hw_dma_cap & HW_DMA_CAP_64B)
+>>>> +                     macb_writel(bp, RBQPH, upper_32_bits(queue->rx_r=
+ing_dma));
+>>>> +#endif
+>>>>
+>>>>                macb_writel(bp, NCR, ctrl | MACB_BIT(RE));
+>>>>
+>>>=20
+>>> Looks like a subset of Th=C3=A9o Lebrun's work:
+>>> https://lore.kernel.org/all/20250820-macb-fixes-v4-0-23c399429164@bootl=
+in.com/
+>>> let's wait for his patches to get merged instead?
+>>
+>> Yes, we can certainly wait. As RBOPH changes by Th=C3=A9o are key, they =
+will=20
+>> probably remove the need for this fix altogether: but I count on you=20
+>> Stanimir to monitor that (as I don't have a 64 bit capable platform at=
+=20
+>> hand).
+>
+> I when looking for where this patch came from.
+> Commit in the raspberrypi downstream kernel:
+> https://github.com/raspberrypi/linux/commit/e45c98decbb16e58a79c7ec6fbe43=
+74320e814f1
+>
+> It is somewhat unreadable; the only part that seems related is the:
+>
+>> net: macb: Several patches for RP1
+>> 64-bit RX fix
+>
+>  - Is there any MACB hardware (not GEM) that uses 64-bit DMA
+>    descriptors? What platforms? RPi maybe?
+>
+>  - Assuming such a platform exists, the next question is why does
+>    macb_rx() need to reinit RBQPH/0x04D4. It reinits RBQP/0x0018
+>    because it is the buffer pointer and increments as buffers get used.
+>
+>    To reinit RBQPH would be for the case of the increment overflowing
+>    into the upper 32-bits. Sounds like a reasonable fix (for a really
+>    rare bug) if that hardware actually exists.
+>
+>    This wouldn't be needed on GEM because RBQPH is shared across queues.
+>    So of course RBQPH would not increment with the buffer pointer.
+>
+> If this patch is needed (does HW exist?), then my series doesn't address
+> it. I can take the patch in a potential V6 if you want. V5 got posted
+> today [0].
+>
+> [0]: https://lore.kernel.org/lkml/20250910-macb-fixes-v5-0-f413a3601ce4@b=
+ootlin.com/
 
-Fixes: 30ad723b93ade ("ASoC: qdsp6: audioreach: add q6apm lpass dai support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Signed-off-by: Mohammad Rafi Shaik <mohammad.rafi.shaik@oss.qualcomm.com>
----
- sound/soc/qcom/qdsp6/q6apm-lpass-dais.c | 1 +
- 1 file changed, 1 insertion(+)
+Coming back after some sleep: my series does address this.
+It updates macb_alloc_consistent() so allocs look like:
 
-diff --git a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-index 20974f10406b..528756f1332b 100644
---- a/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-lpass-dais.c
-@@ -262,6 +262,7 @@ static const struct snd_soc_dai_ops q6i2s_ops = {
- 	.shutdown	= q6apm_lpass_dai_shutdown,
- 	.set_channel_map  = q6dma_set_channel_map,
- 	.hw_params        = q6dma_hw_params,
-+	.set_fmt	= q6i2s_set_fmt,
- };
- 
- static const struct snd_soc_dai_ops q6hdmi_ops = {
--- 
-2.34.1
+   size =3D bp->num_queues * macb_tx_ring_size_per_queue(bp);
+   tx =3D dma_alloc_coherent(dev, size, &tx_dma, GFP_KERNEL);
+   if (!tx || upper_32_bits(tx_dma) !=3D upper_32_bits(tx_dma + size - 1))
+      goto out_err;
+
+   // same for rx
+
+In the MACB (!GEM) case, bp->num_queues=3D1 so we will check that the
+start and end of the DMA descriptor ring buffer have the same upper
+32-bits.
+
+That implies macb_rx() doesn't have to reinit RBQPH/0x04D4.
+
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
