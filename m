@@ -1,120 +1,133 @@
-Return-Path: <stable+bounces-179327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16C6B543F7
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 09:33:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24840B54546
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 10:27:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C44C5684AAF
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 07:33:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E1521CC2A55
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 08:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386F52D062A;
-	Fri, 12 Sep 2025 07:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CFCD2D63E2;
+	Fri, 12 Sep 2025 08:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TEa+pBRi"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZUL9c3e8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AEB2C3251;
-	Fri, 12 Sep 2025 07:33:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52B5287513
+	for <stable@vger.kernel.org>; Fri, 12 Sep 2025 08:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757662408; cv=none; b=BwaPyfNADNTHIdQp6NIyVmr2Minb7DudGPw+6fQ1MS6nm1gMGJ+GIon7bplx4qTdasTOR/9hsyszwZgaSVr1XtrPh36v+dI4IzggmN42f3huZ1cs5E3A+Dy6GqwwoAHl5hO9hpJPyISX2X5QUbF5/yIFzdlJwZX468c8S/33hXw=
+	t=1757665637; cv=none; b=rztUXwSaULLpNo9ghJ1hEgnQFYddP4J2P4OZt/JyvTaktW2RFU5dGYQWdSRPNBo/8W4b4xEkiINCcbS+/+4WMAbuy1a4L8+1xrJlDQsNQJdawWwOlp/WOmhRA6WgNVHN++mVs9Mj3QQA3pAOYptbFaGBoS/tWLWrxbQc8tyrkwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757662408; c=relaxed/simple;
-	bh=NdE5KtAR7ZliEyved7DehbeG3L9Siu9U6prX+k2jfCc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FJc9pKHRo19Nxh0fhh+w6l03fbi3+9r7HSpS3niqQEU/PrIoEL8Cu3F1Lc0KK1PepOW7Pc/ze8iZFvu3otMQUu2T0DwsZh30pvK2mBevAg1eDMeX+1wRgtxBhJWibEH5y/hW7lVvqH/w9NPv7+cEiaF1SnMsSYKgcJY4i3Q5iTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TEa+pBRi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CE6C4CEF5;
-	Fri, 12 Sep 2025 07:33:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757662407;
-	bh=NdE5KtAR7ZliEyved7DehbeG3L9Siu9U6prX+k2jfCc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TEa+pBRiWrjiLgiMU5+yCwmhHkH4SBlvGLORxHSTmk24Ou2u/ouHR1WWp1i9eXCMT
-	 otnpLGlL5e+RZIXi2Ti73Irqvih47qp/nB33Jjh9lOrob+dbMZv/gipUflAhzFJzpM
-	 7Mvcgrha4qWCl4x1faA6Eu3rvafKVL7+SUNtqcks+g/yJZKjxK1HgsYsJ0i+7taLzw
-	 lVWEt/LXl6yr6nCAegaOPGtxdAt2WZte06cmejaHtBJhPPC1FnGeOPaKhMmSHTx6Fb
-	 pFAl8n/nEkhIAmz9+E6HwnHRULibWuaSOToB1XlWDQ15D9+FrFBgZVIqewp/Wm2fqe
-	 ezQ+VsCR6sX9w==
-Date: Fri, 12 Sep 2025 09:33:23 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Nick <morrownr@gmail.com>
-Cc: Autumn Dececco <autumndececco@gmail.com>, Felix Fietkau <nbd@nbd.name>,
-	linux-wireless <linux-wireless@vger.kernel.org>,
+	s=arc-20240116; t=1757665637; c=relaxed/simple;
+	bh=OhkrDdrpf9K9Y/Vcut/XZzSkCyLD31va3Wprom2uduE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZhUrh/C+2j2hui18G5aGG264X4OjXbUSvxg6OXyf3Es/YPYQnkOtMCgm9xcMbom9Qbqp7Th2gtFmBqt/H2KC/BiTCptJi5kUG9JPZb40bL3KAEe+5YesLVINe0yHQxWbwU4FbtO1BiVpSsqkgjVAkp/WgKwQs2eI64z80tl4qLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZUL9c3e8; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757665633;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FHPTlBuTNvdrb4eYoAaIH5z9IayKPbhwWYepGjVwam4=;
+	b=ZUL9c3e896lg+Sult8/7UNY0XccbVQKn0FusMzzEiH+rRec+5FwGmFJx+mvCRcMXFAR2Dz
+	xd+phRqf/Q/GPmoH48aEYpPUVxi5BX8WFdsc17MYwsdRjKGHXj48tzZJp8Q/BhejGpZrCB
+	I9EwSND2Bq8wzbLQs0MT/pqu0eL47Oc=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-398-RJeBKFiIMPSsbgahKilthg-1; Fri,
+ 12 Sep 2025 04:27:08 -0400
+X-MC-Unique: RJeBKFiIMPSsbgahKilthg-1
+X-Mimecast-MFC-AGG-ID: RJeBKFiIMPSsbgahKilthg_1757665627
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 54EC1195FD30;
+	Fri, 12 Sep 2025 08:27:07 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.72.112.167])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B990118004D8;
+	Fri, 12 Sep 2025 08:27:01 +0000 (UTC)
+From: Jason Wang <jasowang@redhat.com>
+To: mst@redhat.com,
+	jasowang@redhat.com,
+	eperezma@redhat.com
+Cc: jonah.palmer@oracle.com,
+	kuba@kernel.org,
+	jon@nutanix.com,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH wireless-next] wifi: mt76: mt7921u: Add VID/PID for
- Netgear A7500
-Message-ID: <aMPMw_q8bSZtJK9-@lore-rh-laptop>
-References: <CAFktD2fBPP_RQQ6OpL6NZy8rqn9jF=BCGOSiEMQNtw5c6MzwPg@mail.gmail.com>
+Subject: [PATCH net 1/2] vhost-net: unbreak busy polling
+Date: Fri, 12 Sep 2025 16:26:57 +0800
+Message-ID: <20250912082658.2262-1-jasowang@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ciJWrHNi9IC3WZC7"
-Content-Disposition: inline
-In-Reply-To: <CAFktD2fBPP_RQQ6OpL6NZy8rqn9jF=BCGOSiEMQNtw5c6MzwPg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
+Commit 67a873df0c41 ("vhost: basic in order support") pass the number
+of used elem to vhost_net_rx_peek_head_len() to make sure it can
+signal the used correctly before trying to do busy polling. But it
+forgets to clear the count, this would cause the count run out of sync
+with handle_rx() and break the busy polling.
 
---ciJWrHNi9IC3WZC7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixing this by passing the pointer of the count and clearing it after
+the signaling the used.
 
-> Add VID/PID 0846/9065 for Netgear A7500.
->=20
-> Reported-by: Autumn Dececco <autumndececco@gmail.com>
-> Tested-by: Autumn Dececco <autumndececco@gmail.com>
-> Signed-off-by: Nick Morrow <morrownr@gmail.com>
-> Cc: stable@vger.kernel.org
+Cc: stable@vger.kernel.org
+Fixes: 67a873df0c41 ("vhost: basic in order support")
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+---
+ drivers/vhost/net.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Addressing the nit below, you can add:
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index c6508fe0d5c8..16e39f3ab956 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -1014,7 +1014,7 @@ static int peek_head_len(struct vhost_net_virtqueue *rvq, struct sock *sk)
+ }
+ 
+ static int vhost_net_rx_peek_head_len(struct vhost_net *net, struct sock *sk,
+-				      bool *busyloop_intr, unsigned int count)
++				      bool *busyloop_intr, unsigned int *count)
+ {
+ 	struct vhost_net_virtqueue *rnvq = &net->vqs[VHOST_NET_VQ_RX];
+ 	struct vhost_net_virtqueue *tnvq = &net->vqs[VHOST_NET_VQ_TX];
+@@ -1024,7 +1024,8 @@ static int vhost_net_rx_peek_head_len(struct vhost_net *net, struct sock *sk,
+ 
+ 	if (!len && rvq->busyloop_timeout) {
+ 		/* Flush batched heads first */
+-		vhost_net_signal_used(rnvq, count);
++		vhost_net_signal_used(rnvq, *count);
++		*count = 0;
+ 		/* Both tx vq and rx socket were polled here */
+ 		vhost_net_busy_poll(net, rvq, tvq, busyloop_intr, true);
+ 
+@@ -1180,7 +1181,7 @@ static void handle_rx(struct vhost_net *net)
+ 
+ 	do {
+ 		sock_len = vhost_net_rx_peek_head_len(net, sock->sk,
+-						      &busyloop_intr, count);
++						      &busyloop_intr, &count);
+ 		if (!sock_len)
+ 			break;
+ 		sock_len += sock_hlen;
+-- 
+2.34.1
 
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7921/usb.c | 3 +++
->  1 file changed, 3 insertions(+)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-> b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-> index fe9751851ff7..100bdba32ba5 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-> @@ -21,6 +21,9 @@ static const struct usb_device_id mt7921u_device_table[=
-] =3D {
->   /* Netgear, Inc. [A8000,AXE3000] */
->   { USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9060, 0xff, 0xff, 0xff),
->   .driver_info =3D (kernel_ulong_t)MT7921_FIRMWARE_WM },
-> + /* Netgear, Inc. A7500 */
-> + { USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9065, 0xff, 0xff, 0xff),
-
-please add a tab here.
-
-> + .driver_info =3D (kernel_ulong_t)MT7921_FIRMWARE_WM },
->   /* TP-Link TXE50UH */
->   { USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0107, 0xff, 0xff, 0xff),
->   .driver_info =3D (kernel_ulong_t)MT7921_FIRMWARE_WM },
-> --=20
-> 2.47.3
->=20
-
---ciJWrHNi9IC3WZC7
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaMPMwQAKCRA6cBh0uS2t
-rLZUAQCvFrbIh41Y243Tgfe6tgemxlN59aMOokMOMIVFYP9rxQD+I5H4J7ADjv+y
-guO/VWfOoiZSzR1Hq2ZlyQ0wQPun8g0=
-=r1P7
------END PGP SIGNATURE-----
-
---ciJWrHNi9IC3WZC7--
 
