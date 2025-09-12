@@ -1,198 +1,153 @@
-Return-Path: <stable+bounces-179317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F71B53FAE
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 03:11:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 860ECB53FC9
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 03:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FD741B26E37
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 01:11:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41488169F73
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 01:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499B5548EE;
-	Fri, 12 Sep 2025 01:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5E313BC0C;
+	Fri, 12 Sep 2025 01:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="dCLCoZ0C"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEDE168BD;
-	Fri, 12 Sep 2025 01:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77CC76026
+	for <stable@vger.kernel.org>; Fri, 12 Sep 2025 01:21:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757639477; cv=none; b=CejFA6Drgu6Mxzu3m1oPNyA4dk0yJi4V9dOgLkNMITOh4YIogK+QyGeG5ko07x7E7T9CS52nvRf1pt+TA6nz3AIvuWaBYSwzsXjfQopeGNGqTyN3YD5qxGc+FSPeO7I9zEaxSX+rOdQFO9JOYVHKUHfRt8mGGzkQUk32EBT6faA=
+	t=1757640085; cv=none; b=YhhBiO0YwD5H+BNglicFW4qUm9vGNj0I1DXHlh36HsyP6SjkG6Fx1w8ZxpAQsCPoewHvaJGf260szlPQapexkFVgJ/S/HA8pn6lK7SzSHxJtwCEGXM6lHlIuj2H6C5XN0jx8Qgany0vkovjOKoYWbe+s1V2nXQitA1jyC14/Q0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757639477; c=relaxed/simple;
-	bh=vV9IcXnxbwOyZ8l1SQmnYpbR2lc+Z9Ae+far9EGwBBI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NqXYUC//auVqiNTJ+EdqDDSh7G0uQLFSZHAHTP9NuG59S9QuuLqXfWKmj89hNsgo2wqqw3EEgAOB8pS77Z0GKKhbvd0ydKCWe5kC9CD5q4GBgR1tbc2Tu1cNR+vZxNlXMgf7v3Y4pnZPouWHsf+EaCPPyE6Y9hGr55rhdvU3MGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 5c0e01c08f7511f0b29709d653e92f7d-20250912
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:d7750f67-295c-450f-86ba-968d43d9bad1,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:ef6f51f2fe3759adf93d1299e6ece788,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 5c0e01c08f7511f0b29709d653e92f7d-20250912
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1210366386; Fri, 12 Sep 2025 09:11:06 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 7E747E009007;
-	Fri, 12 Sep 2025 09:11:06 +0800 (CST)
-X-ns-mid: postfix-68C3732A-41695370
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 8C08CE009007;
-	Fri, 12 Sep 2025 09:11:05 +0800 (CST)
-Message-ID: <365c42f5-56a1-4a2c-9244-7943c3600fa2@kylinos.cn>
-Date: Fri, 12 Sep 2025 09:11:04 +0800
+	s=arc-20240116; t=1757640085; c=relaxed/simple;
+	bh=Xa0YEpz+3VPo1Hi6V+S19t8JxtGYU5nJ3wnyT2oaneo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bq0CNu4q8LBun8IPEP9MKF1Pm1vXwfTnkan7j8f/Yg9KwA+GFZHvgbWSzi/auzNUxKvqXLo0D7mvA5OifRGd6qjX9pMucWcVoO/461Y0F85n+6BBw8/QAlE23KXNrhKzdS/TVVpCZl/TyXrzMgsbcq+k4F8MPGv6TDC1JpW1MtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=dCLCoZ0C; arc=none smtp.client-ip=209.85.160.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-30cce534a91so508908fac.0
+        for <stable@vger.kernel.org>; Thu, 11 Sep 2025 18:21:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1757640082; x=1758244882; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LNvn8dwm9/jQPmmYOQXAYSn+9iI7uf/gD/WC7z1WFd0=;
+        b=dCLCoZ0CHYFlRTIp1Tp8FynzOhdJE5IL5HB4omBIzrOfMxy8nycuRlSMGoCAcgK0Js
+         EHnXc0mkWhDfdHDaDqc8DJHlJ/AumuElk7qaVpk6sgM8tqGGZTIAtKKHEWGb82sZbwTQ
+         eB/8kgNQ3CsLtMgfrQ+Tg5xjYiPJxufSYDSQr7W7Z5RInDQNxc8ecoMppPzvHcXYrGr+
+         AZ8o5JkyoL04kvVY0avUKk2XRNRDlNtAMaNaCO+0UlvtMkrTaI5B3RZ9+Bf3WXZ/gmlZ
+         PzRDzPYb66BRJ6l3NVj6q8UTCrnPoudoUUxjL5zFhYUy/0ZSz4oKN5Ch/qImYDwTComD
+         CHrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757640082; x=1758244882;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LNvn8dwm9/jQPmmYOQXAYSn+9iI7uf/gD/WC7z1WFd0=;
+        b=bZYrZtvIMfDkwgLwnKajnB/JvSGKeWQMBjs9XsevMUtIJoSm4givAjbGiuxQtqA6Rf
+         rrmlNPmaCxx2EKv0H9Sv7++O+4C3s/AjExryP1WH4vtMmcwhQ9ssiPlEzpOGDro7aEKu
+         0b32t/1FVSKk3KFrptRA+EGm/TAWij/SsZ6RTadnbIGfeiKDjyvY4nigRjWLpK+hZH6R
+         K4FtrTWL14OLHAoZaxOeAix56uRdtQRlD1DfGwsW0GBOPvqNkL8F2he3/kXZNoKtffbn
+         Sgl9sIyUUC24ZRGoswW31upDtCMc+klELzmzxg0+wtg6LdYXLmNLCaC6ves3MiXSiGS5
+         BS4g==
+X-Forwarded-Encrypted: i=1; AJvYcCWVny5C4o04RWiHGm+GNoHTVPObDY6fmpAH2KGTtPse+sLMy/xiqWkXVzN+2h8tgR3wdmfipLw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzkO1A2El9ZiOVDC/V063dqY81mjhk8MbU4KX8SrUHZwraJzvJt
+	NMRbotYIWUJeKMAk2Be5vP9Il+Q5B0VcGAqSkWzB78LFZ6TU7NvcMKbWGJq0LBUA8a8T2d+RBbv
+	SsgowSS1Mgss64NGa05EYYu9gzPMw4xUwgn7jbVA6dA==
+X-Gm-Gg: ASbGncv95NzUS7cpndszALoKjNMklukghvSrc/GEKGDI9faYSkkE6RAQrzn3zEPPTt3
+	FPsO0ERv3Sc1+HtRY2BHYzP2q2dxiyvbFYP0/XKPtYnM7e8fh7Jl8f6LztHZeWUrIopfKryqw/n
+	q6NISgIeqDFISmBZbAAdoGO/oeM3hyMokYEsTpndD7sGyZntecBxQLmDylYVLR3+niixHh+KZdZ
+	5GLjScx8Fr6YFIfrna2qGldYGI=
+X-Google-Smtp-Source: AGHT+IENe4W9BbK++7qiIojSfDqtbC6lEInbLpk22z8JE7+q3Y0xd1PU0fHFZPk4jPzlcQVIVGB2YJM40b6QZIBc6fw=
+X-Received: by 2002:a05:6870:c69a:b0:316:9864:8d0b with SMTP id
+ 586e51a60fabf-32e54575db6mr492849fac.12.1757640081657; Thu, 11 Sep 2025
+ 18:21:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ACPI: video: Fix missing backlight node creation on
-To: Hans de Goede <hansg@kernel.org>
-Cc: lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, mario.limonciello@amd.com, rafael@kernel.org,
- stable@vger.kernel.org
-References: <de4b5ec6-1e42-44b8-b5d3-5a452d7401ef@kernel.org>
- <20250911074543.106620-1-zhangzihuan@kylinos.cn>
- <ae7b139f-dc25-413d-bfc3-3be187ab3a73@kernel.org>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <ae7b139f-dc25-413d-bfc3-3be187ab3a73@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20250912000609.1429966-1-max.kellermann@ionos.com>
+In-Reply-To: <20250912000609.1429966-1-max.kellermann@ionos.com>
+From: Fengnan Chang <changfengnan@bytedance.com>
+Date: Fri, 12 Sep 2025 09:21:10 +0800
+X-Gm-Features: Ac12FXzZE38Za4CCeCuscUYLW8mPPYr98VRNgPC9wOUJh37TNzG7c12rb6_jwOA
+Message-ID: <CAPFOzZujMZg14Ljp-YsgPqqcJhMFnU68e7XOf09pc=jwoTPytA@mail.gmail.com>
+Subject: Re: [External] [PATCH] io_uring/io-wq: fix `max_workers` breakage and
+ `nr_workers` underflow
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>, 
+	Diangang Li <lidiangang@bytedance.com>, io-uring@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
+Max Kellermann <max.kellermann@ionos.com> =E4=BA=8E2025=E5=B9=B49=E6=9C=881=
+2=E6=97=A5=E5=91=A8=E4=BA=94 08:06=E5=86=99=E9=81=93=EF=BC=9A
+>
+> Commit 88e6c42e40de ("io_uring/io-wq: add check free worker before
+> create new worker") reused the variable `do_create` for something
+> else, abusing it for the free worker check.
+>
+> This caused the value to effectively always be `true` at the time
+> `nr_workers < max_workers` was checked, but it should really be
+> `false`.  This means the `max_workers` setting was ignored, and worse:
+> if the limit had already been reached, incrementing `nr_workers` was
+> skipped even though another worker would be created.
+>
+> When later lots of workers exit, the `nr_workers` field could easily
+> underflow, making the problem worse because more and more workers
+> would be created without incrementing `nr_workers`.
 
-=E5=9C=A8 2025/9/11 18:38, Hans de Goede =E5=86=99=E9=81=93:
-> Hi Zihuan,
->
-> On 11-Sep-25 9:45 AM,  Zhang wrote:
->
-> ...
->
->>>   So as you say the issue is that you have no native GPU driver calli=
-ng
->>>   acpi_video_register_backlight().
->> I'm very happy that you got it.
->>
->>> First of all I assume that there is some sort of builtin GPU on these
->>> Lenovo and Inspur machines with Zhaoxin CPUs. Even if the GPU driver
->>> is not in the mainline kernel then I assume there is some out of tree
->>> driver. Can that driver not call acpi_video_register_backlight() ?
->> We are currently working with Zhaoxin on this matter, and we expect to=
- have some results in a few days.
->> I will keep you updated once we have progress.
-> Ok.
->
-> ...
->
->> Thanks a lot for your patch and for looking into this issue.
-> You're welcome.
->
->> At the moment, we are still confirming with Zhaoxin whether this behav=
-ior is consistent across all their platforms,
->> so we are not sure if the special handling should always apply.
->>
->> Also, on kernel 5.4 these machines seem to work fine without requiring=
- a native GPU driver, while on 6.6+ the backlight node is missing.
->> Could you please clarify what design change or intention caused this b=
-ehavioral difference between 5.4 and newer kernels?
-> The main problem is that on x86 laptops there are too much different
-> ways to control the backlight:
->
-> enum acpi_backlight_type {
->          acpi_backlight_undef =3D -1,
->          acpi_backlight_none =3D 0,
->          acpi_backlight_video,
->          acpi_backlight_vendor,
->          acpi_backlight_native,
->          acpi_backlight_nvidia_wmi_ec,
->          acpi_backlight_apple_gmux,
->          acpi_backlight_dell_uart,
-> };
->
-> With video, vendor and native all 3 being quite normal to have
-> around on a single laptop.
->
-> A long time ago the kernel just used to register all
-> backlight handlers for which there seemed to be support,
-> so "ls /sys/class/backlight" would e.g. output:
->
-> acpi_video0
-> intel_backlight
-> dell_laptop
->
-> And then userspace would pick one to use, typically
-> checking for different backlight types (raw/platform/firmware)
-> in descending order of preference and picking the first
-> backlight interface matching the highest preference type.
->
-> But even though multiple types may be advertised by
-> the firmware, they do not necessarily actually work.
->
-> So the simple userspace pick based on preferred type
-> solution did not work on all laptop models and
-> drivers/acpi/video_detect.c starting growing heuristics
-> + quirks to let the kernel pick one and hide the others.
->
-> At first for acpi_video# backlights they would get
-> registered and then later if a native backlight
-> (e.g. intel_backlight) showed up and the heuristics /
-> quirks set that should be preferred then the
-> acpi_video# backlight would be unregistered again.
->
-> But this is racy (and ugly) and caused issues for userspace
-> trying to open the already unregistered backlight.
->
-> So the code was changed to delay registering the
-> acpi_video backlights till after the GPU driver has
-> loaded so that it is known if native backlight
-> control is supported or not.
->
-> Long story short: The design goal is to only
-> register 1 backlight handler, so that userspace
-> does not has to guess and to only register this
-> once and not do a register + unregister dance
-> of a potentially unwanted acpi_video backlight.
+Thanks, my mistake.
+Reviewed-by: Fengnan Chang <changfengnan@bytedance.com>
 
-
-Thank you for the very detailed explanation!
-
-One concern, however, is that the current approach seems to assume the=20
-presence of a GPU driver, which may not always be the case. Would it be=20
-possible to consider a more generic fallback?
-
-
-For example, if no GPU driver is available, we could still register the=20
-acpi_video backlight node.
-
- =C2=A0This way we can at least ensure that a backlight device is exposed=
- to=20
-userspace instead of leaving the system without any backlight control=20
-interface.
-
-Do you think such a fallback could be a reasonable option?
-
-Thanks again for your insights!
-
-
-> Regards,
 >
-> Hans
+> The simple solution is to use a different variable for the free worker
+> check instead of using one variable for two different things.
 >
+> Cc: stable@vger.kernel.org
+> Fixes: 88e6c42e40de ("io_uring/io-wq: add check free worker before create=
+ new worker")
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+> ---
+>  io_uring/io-wq.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
+> diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
+> index 17dfaa0395c4..1d03b2fc4b25 100644
+> --- a/io_uring/io-wq.c
+> +++ b/io_uring/io-wq.c
+> @@ -352,16 +352,16 @@ static void create_worker_cb(struct callback_head *=
+cb)
+>         struct io_wq *wq;
+>
+>         struct io_wq_acct *acct;
+> -       bool do_create =3D false;
+> +       bool activated_free_worker, do_create =3D false;
+>
+>         worker =3D container_of(cb, struct io_worker, create_work);
+>         wq =3D worker->wq;
+>         acct =3D worker->acct;
+>
+>         rcu_read_lock();
+> -       do_create =3D !io_acct_activate_free_worker(acct);
+> +       activated_free_worker =3D io_acct_activate_free_worker(acct);
+>         rcu_read_unlock();
+> -       if (!do_create)
+> +       if (activated_free_worker)
+>                 goto no_need_create;
+>
+>         raw_spin_lock(&acct->workers_lock);
+> --
+> 2.47.3
 >
 
