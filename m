@@ -1,148 +1,139 @@
-Return-Path: <stable+bounces-179397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 370A3B5574B
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 21:58:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 300CBB557A9
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 22:35:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C216B625E8
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 19:56:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF2653BF13E
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 20:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E820D2BF00D;
-	Fri, 12 Sep 2025 19:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=oscillator.se header.i=@oscillator.se header.b="Dji0bKfm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC113221FCA;
+	Fri, 12 Sep 2025 20:35:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sv9.manufrog.com (sv9.manufrog.com [46.246.119.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C012848B0;
-	Fri, 12 Sep 2025 19:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.246.119.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B3F2DC76D;
+	Fri, 12 Sep 2025 20:35:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757707038; cv=none; b=Be0gLfL4lQ18TwxaS1C6i8PMc8qu5uGLL/fGbHk982cY0FDIsOZ8zdx71ECcZNyE/lSLr282IqHemKGs7tWRZ1RyDzeSynUcinHQ0Subiei9Dpl4rphX9wl1bLg8MEDLfe+3vUOH+1mPffOOJ2uREWIqIglugNfx2+v82ugWvYg=
+	t=1757709329; cv=none; b=OmaD9LrWQNWuUlBp/4vMPJUatUX9JIWTuqEopjEAWL87nItzUR+0ORtaWcsilOA43L4XxkWRPOZiq/xXVkKmS0zMwkBnGSOirk2WHPXt/5U2lczt/6Ptqabd7fjCy1ICJncwge517DjYIhBzqaZiP+iRfdw5eXSOrVtWGPkIKZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757707038; c=relaxed/simple;
-	bh=RuV43at9oIUzSJcsK485G4uQ64nYxSvVDGjhkRb7P5A=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Oq4Ie1Rp9U5uc/RhUjCv+wpz6PBrpxSbHv+NScSZnUbICJcLxe1Q1V2drpQMnonmAFpZB+GZAhH9lJp7mvdCCPoWYsMPAE8oMKveRbv/oZvo/VJutMsreWVBQrponxCGtcZZn+xPoP9rPunG5eckjiIlpZV8DzYxKCf4OYB1SMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=oscillator.se; spf=pass smtp.mailfrom=oscillator.se; dkim=pass (2048-bit key) header.d=oscillator.se header.i=@oscillator.se header.b=Dji0bKfm; arc=none smtp.client-ip=46.246.119.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=oscillator.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oscillator.se
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oscillator.se; s=default; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=9g4tINQ3Nuz9BImuzc0dqyBpOKAEGiLicPpQhPXc8pk=; b=Dji0bKfmqJiUkwVgBmJmsWAB/L
-	tffBxTLVA5K2FGhBefgPhkphycN/gKjMZyv73ZA9EVqF8Mxl+O/72ZlrVVkzQ0prW/nuXIzv9Fo+m
-	u6CZAc7AoqFRMBmUbfmuGCUfDfPD6waroHkYNoEHW2SZjKa0ttcimM5RYimQJxuPGuouqsXPOXFor
-	IIlSfMvzAJ5Mf1V9rlKQRL3amtWWMjREakspeL764lE/Ix7fhdK6oSZR7CTxnYkkD3gi7H+JqOi90
-	DYiYzuzwunAcGHGiddd4T4UK1jDvX40p7Rfob6hWDGLg4J7pPL72y8kj3DCR/XgkrRwc110PIGyYf
-	4WJbqYWg==;
-Received: from [::1] (port=51882 helo=sv9.manufrog.com)
-	by sv9.manufrog.com with esmtpa (Exim 4.98.2)
-	(envelope-from <staffan.melin@oscillator.se>)
-	id 1ux9tP-0000000AD8S-1vEg;
-	Fri, 12 Sep 2025 21:57:06 +0200
+	s=arc-20240116; t=1757709329; c=relaxed/simple;
+	bh=pI2xXThVA2j/bMJn7Qrz6ZQIqgg27DQdVGJLHXZHBxs=;
+	h=Message-ID:Date:MIME-Version:To:CC:From:Subject:Content-Type; b=oLddCUsoq2/I5YRHU9COVhBrVbdpm8OKVWzZw8/6HVwtbhh5UBZSGiK73BuxYcXEWfNIthMK6KHQ6c+2iWhRVeTr0qTZnFc7ni6Y8A1E3wqcyAS/6hlvOEoFwl4efam4mkQrQOdAFzshY7CC/2vkjBFjf046Tbtdl9eLybwt9JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from [192.168.2.102] (213.87.146.251) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Fri, 12 Sep
+ 2025 23:35:07 +0300
+Message-ID: <b6ebf19c-8328-44de-a695-157061a9d8a8@omp.ru>
+Date: Fri, 12 Sep 2025 23:35:07 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 12 Sep 2025 21:57:04 +0200
-From: Staffan Melin <staffan.melin@oscillator.se>
-To: zhangheng <zhangheng@kylinos.cn>
-Cc: Salvatore Bonaccorso <carnil@debian.org>, Jiri Kosina
- <jkosina@suse.com>, Benjamin Tissoires <bentiss@kernel.org>,
- linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
- regressions@lists.linux.dev, stable@vger.kernel.org, 1114557@bugs.debian.org
-Subject: Re: [regression] 1a8953f4f774 ("HID: Add IGNORE quirk for
- SMARTLINKTECHNOLOGY") causes issue with ID 4c4a:4155 Jieli Technology USB
- Composite Device
-In-Reply-To: <c8f3d402-e0ec-4767-b925-d7764aec3d93@kylinos.cn>
-References: <aL2gYJaXoB6p_oyM@eldamar.lan>
- <c8f3d402-e0ec-4767-b925-d7764aec3d93@kylinos.cn>
-User-Agent: Roundcube Webmail/1.6.11
-Message-ID: <e81e8d68cb33c7de7b0e353791e21e53@oscillator.se>
-X-Sender: staffan.melin@oscillator.se
-Organization: Oscillator
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - sv9.manufrog.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oscillator.se
-X-Get-Message-Sender-Via: sv9.manufrog.com: authenticated_id: staffan.melin@oscillator.se
-X-Authenticated-Sender: sv9.manufrog.com: staffan.melin@oscillator.se
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Henry Martin <bsdhenrymartin@gmail.com>, Sudeep Holla
+	<sudeep.holla@arm.com>, Viresh Kumar <viresh.kumar@linaro.org>,
+	<lvc-project@linuxtesting.org>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
+Subject: [PATCH 5.10.y] cpufreq: scmi: Fix null-ptr-deref in
+ scmi_cpufreq_get_rate()
+Organization: Open Mobile Platform
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 09/12/2025 20:12:11
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 19
+X-KSE-AntiSpam-Info: Lua profiles 196228 [Sep 12 2025]
+X-KSE-AntiSpam-Info: Version: 6.1.1.11
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 66 0.3.66
+ fc5dda3b6b70d34b3701db39319eece2aeb510fb
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info:
+	d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;127.0.0.199:7.1.2;213.87.146.251:7.1.2
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: ApMailHostAddress: 213.87.146.251
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 19
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/12/2025 20:14:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 9/12/2025 6:07:00 PM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-Thank you,
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-I tried to apply this patch to 6.12.39, the first problematic kernel, as 
-well as 6.12.41, the first bad I tried, and on both I got an error 
-message:
+[ Upstream commit 484d3f15cc6cbaa52541d6259778e715b2c83c54 ]
 
-Applying: HID: quirks: Add device descriptor for 4c4a:4155
-error: patch failed: drivers/hid/hid-quirks.c:1068
-error: drivers/hid/hid-quirks.c: patch does not apply
-Patch failed at 0001 HID: quirks: Add device descriptor for 4c4a:4155
+cpufreq_cpu_get_raw() can return NULL when the target CPU is not present
+in the policy->cpus mask. scmi_cpufreq_get_rate() does not check for
+this case, which results in a NULL pointer dereference.
 
-To which kernel version should I apply the patch?
+Add NULL check after cpufreq_cpu_get_raw() to prevent this issue.
 
-I used the command
-git am < <file>
+[Sergey: resolved reject (reordering the local variables).]
 
-Best regards,
+Fixes: 99d6bdf33877 ("cpufreq: add support for CPU DVFS based on SCMI message protocol")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-Staffan
+---
+ drivers/cpufreq/scmi-cpufreq.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-
-On 2025-09-12 14:49, zhangheng wrote:
-> I am currently working on resolving this issue by limiting the original 
-> patch
-> 
-> based on the information in the device descriptor to avoid affecting 
-> your device,
-> 
-> You can try this patch and look forward to your reply.
-> 
-> 
-> 在 2025/9/7 23:10, Salvatore Bonaccorso 写道:
->> Hi Zhang, hi Jiri,
->> 
->> In Debian Staffan Melin reported that after an update containing the
->> commit 1a8953f4f774 ("HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY"),
->> the input device with same idVendor and idProduct, the Jieli
->> Technology USB Composite Device, does not get recognized anymore.
->> 
->> The full Debian report is at: https://bugs.debian.org/1114557
->> 
->> The issue is not specific to the 6.12.y series and confirmed in 6.16.3
->> as well.
->> 
->> Staffan Melin did bisect the kernels between 6.12.38 (which was still
->> working) and 6.1.41 (which was not), confirming by bisection that the
->> offending commit is
->> 
->> 1a8953f4f774 ("HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY")
->> 
->> #regzbot introduced: 1a8953f4f774
->> #regzbot monitor: https://bugs.debian.org/1114557
->> 
->> So it looks that the quirk applied is unfortunately affecting
->> negatively as well Staffan Melin case.
->> 
->> Can you have a look?
->> 
->> Regards,
->> Salvatore
+Index: linux-stable/drivers/cpufreq/scmi-cpufreq.c
+===================================================================
+--- linux-stable.orig/drivers/cpufreq/scmi-cpufreq.c
++++ linux-stable/drivers/cpufreq/scmi-cpufreq.c
+@@ -29,12 +29,18 @@ static const struct scmi_handle *handle;
+ 
+ static unsigned int scmi_cpufreq_get_rate(unsigned int cpu)
+ {
+-	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
+ 	const struct scmi_perf_ops *perf_ops = handle->perf_ops;
+-	struct scmi_data *priv = policy->driver_data;
++	struct cpufreq_policy *policy;
++	struct scmi_data *priv;
+ 	unsigned long rate;
+ 	int ret;
+ 
++	policy = cpufreq_cpu_get_raw(cpu);
++	if (unlikely(!policy))
++		return 0;
++
++	priv = policy->driver_data;
++
+ 	ret = perf_ops->freq_get(handle, priv->domain_id, &rate, false);
+ 	if (ret)
+ 		return 0;
 
