@@ -1,100 +1,51 @@
-Return-Path: <stable+bounces-179320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ABA8B5405D
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 04:30:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5A9B54219
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 07:37:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 800E21C85F8F
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 02:30:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DB6C56628C
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 05:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7501EE7C6;
-	Fri, 12 Sep 2025 02:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CDA23BCEE;
+	Fri, 12 Sep 2025 05:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="Wfq4yWJ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euhe+BKr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E3A13B7AE
-	for <stable@vger.kernel.org>; Fri, 12 Sep 2025 02:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A1A4207A
+	for <stable@vger.kernel.org>; Fri, 12 Sep 2025 05:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757644216; cv=none; b=FcOTcxa1HPXSDWAMCNR61UKmfLm6SUntdY5fytKCk2LAyizQDQ6t1U8j9am2hqj44pvQTcm/td2Tsfg/zZLKHcV20C9vgkjiXlaKwaUH59VxDqfXNplyDgX0Tvf2RHQ8Ui2Fvdt6NoRjxJYILYEiy/TYAhI4FR2AroA4NTihwSc=
+	t=1757655424; cv=none; b=S4EL/ipILVsxWbB7WP4qehtMhot74243/UqwujISJ4FVbYM/NnbFIJmwJAp2aZQHVq1vA2sAPo3bdxiHn9eWgCIrsj4GbRGF0dJEcQbjjIFyaWeqxxzxA83kj0GhDXajNfVvUI0JN+R+d/+TICiAp16hoJTqgMWumStvLjowpRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757644216; c=relaxed/simple;
-	bh=vQQIU6ckHc2+RvHHnlo2eleJNpXZev81qLhetlXEw2Y=;
+	s=arc-20240116; t=1757655424; c=relaxed/simple;
+	bh=3O9EryjgMr711548abAwUsZubJEliuPr5cV+nvQOhKQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K2CJnfuzkIAkB63I636GzHoZhBiDGboVKsAdujZnMBF6PU6fXJ2C8eiz6RDi3nGNDjjwfef+4C94raAf1O/fljQTJx/sLWUj8+8f3Hs2GMW67ZZLrCTIqdfTjUoRtRfPZyL9OmWc96GOfAeH7CmnID1UmTsFIeBTbpXUD4U1jwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=Wfq4yWJ/; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-7211b09f639so15255946d6.3
-        for <stable@vger.kernel.org>; Thu, 11 Sep 2025 19:30:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1757644214; x=1758249014; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bOcBl4BVZOSZI/RGkDZyOTuzjiM4ERqznZpinFtbvyg=;
-        b=Wfq4yWJ/5fRvTYXWHplP2tcJqgI4K5WhBq7exprxaW8O9GnbMVmnQ+WyHtXgyGfoZm
-         qFaaMQ3X/vTI0zZA/7YyhB6ZxyrqgXvEr495XVxOxW0xNtX/Bh+JDkwP4P+neeOQQiHi
-         dXPIgz9l7wEbaiUNqzp+UbdFXOlWSiLmBnjtVwHpkga+6vplDydwiVbt1v323n9qIixg
-         /mzQlk81GgqKDqfrYI7Z3150UXzl6iBlAUkgNfY8oO0K/hz9Mf4vGjCd77NKUlo9MFkU
-         trZdi5ItiDQeB4+ODoTvYS9SJtB1+4dqL7oyaYH3kSDQcHLFwh0/eNK9g9fviC2SVJZs
-         q6Vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757644214; x=1758249014;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bOcBl4BVZOSZI/RGkDZyOTuzjiM4ERqznZpinFtbvyg=;
-        b=ZzJ5fc0LmWnrqMYBq9jAxoJ7FZh71TK2dpn2BDLCpQxWn3MP/EZxKb4Qe4TAj3gRVT
-         //GpheYjiX/i4aMTSBN4Zz52JQezBV9mts2voldQVtvX7+w782QVLLAsjaasqm2d5ojM
-         +/fVZZvonv62l+Tjg9K5CeGfmRtDnfnzof9aXbcRU0gxQxB7LiCmmmmr4QCDPJHh31rb
-         VpHZ/OO7jbNc+eQVnTetmAthpy8pSiDwqmC/3lvdTQhSziH++MpL2cTYfbjKYEpnXAyZ
-         vZUOQQi60yA0H1Ak3dFopu0nur+2dEabPM4XheVand6PBaivM6pZlnkh4XiYfHBm/Hms
-         C6Lg==
-X-Forwarded-Encrypted: i=1; AJvYcCVNRfSiHG2vneejuR3BtSr+euaCCtpmxHFDI2DZA515tbhjCa3zenQb6T11/YrM3xHZUqvxzxY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLwpfOib+2mMXSNVfM1Wh6ZYVs+oLla9Xr+8NhPgqbg9tHQO8z
-	LDP/WqJUvg0N41mi7NJa8vCWC8tsIJyrwkZ5Z5sJNMQe+jsc9fT+dmQY05Skqoi4dg==
-X-Gm-Gg: ASbGncvKvAoSZlwQcM5OiYutQrVsqMl8XxVgAbxSCjzHO/Z/QeD1MnqbeZxAbloUSpd
-	56WvLQ+KXmfSKcpUFg6SZEnueeEAa7lmi1nauGZVGdjBZsJVkn7y6mW1fuz83+akd5y9MQuDw/H
-	S3i1Nzt8lPZGPjRiUqbiww5obHcsDoy5s5C+H5Xn8JEzFUbhioeqpm0vt6jw2mXIOBMk7UPPcWQ
-	GGbrAeEhpY40CNkOJjQ8RiQHA049qi3mfXH6NtiUl/vPGpEWNPytJKggS+3O/mwTjt5wYslnVyy
-	SsnkMPl0I/L4rdS5so2cC5K59vsOTaiZyaBp/AVL3e79g40zPCiTo/vNBnNTa69IaFHMqzc/8FY
-	g9mwUD5aefqInOR4b5I4LkrjQA998UniDgGY=
-X-Google-Smtp-Source: AGHT+IF3YJcN8fftkWAXBvp5e8ChiQTwvDs2PYP+e/p5pRC3qGnSYo/pJ7OVH35ncvR4Bc8YEDrv+A==
-X-Received: by 2002:a05:6214:230c:b0:70d:b2cb:d015 with SMTP id 6a1803df08f44-767c88fae6bmr22357036d6.67.1757644213876;
-        Thu, 11 Sep 2025 19:30:13 -0700 (PDT)
-Received: from rowland.harvard.edu ([2601:19b:d03:1700::6aa9])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-763bdd3773bsm19545826d6.36.2025.09.11.19.30.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Sep 2025 19:30:13 -0700 (PDT)
-Date: Thu, 11 Sep 2025 22:30:09 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Hubert =?utf-8?Q?Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
-	stable@vger.kernel.org, kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	Lukas Wunner <lukas@wunner.de>, Xu Yang <xu.yang_2@nxp.com>,
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH net v1 1/1] net: usb: asix: ax88772: drop phylink use in
- PM to avoid MDIO runtime PM wakeups
-Message-ID: <22773d93-cbad-41c5-9e79-4d7f6b9e5ec0@rowland.harvard.edu>
-References: <20250908112619.2900723-1-o.rempel@pengutronix.de>
- <CGME20250911135853eucas1p283b1afd37287b715403cd2cdbfa03a94@eucas1p2.samsung.com>
- <b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com>
- <aMLfGPIpWKwZszrY@shell.armlinux.org.uk>
- <20250911075513.1d90f8b0@kernel.org>
- <aMM1K_bkk4clt5WD@shell.armlinux.org.uk>
+	 Content-Type:Content-Disposition:In-Reply-To; b=JoIAIf6q7NND48twatYbm2DzZ2jv1f/CNf1V0KNJ84yqsoV5gpZmwWhZ2P5c86Y5LI2QWvCfw6KmEOvL1yFH4HPZnosxBBl6FXjdizsDE7DNpLRioxK6zyreLC1sGe4yoSqWxoOziFACMCqD3+0aF3RsupIdZKo8N+SB23IIbAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euhe+BKr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD9BC4CEF4;
+	Fri, 12 Sep 2025 05:37:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1757655423;
+	bh=3O9EryjgMr711548abAwUsZubJEliuPr5cV+nvQOhKQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=euhe+BKrBg1AO1uU1jWNDuzCV0ejhjtD6VolKHG77OXRKyZtw3JVSyqaI2bZ22for
+	 9juzJNkYfugyv4nklbc+fPCsDzwS8vgiU7cwwwbmn91PkLpIJMB0s0ic0UrpildwVQ
+	 o5z/v3vEgPsTWAb6HZQvor0kiQk7HMDdOANEtIhY=
+Date: Fri, 12 Sep 2025 07:36:59 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: stable@vger.kernel.org
+Subject: Re: Fwd: [PATCH] fs/netfs: fix reference leak
+Message-ID: <2025091220-agony-sporty-c547@gregkh>
+References: <20250911222501.1417765-1-max.kellermann@ionos.com>
+ <CAKPOu+9CjL-=xsT48k+PfQme2zCr1HnoWh5jcJgpp-BzPhqoDw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -103,29 +54,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aMM1K_bkk4clt5WD@shell.armlinux.org.uk>
+In-Reply-To: <CAKPOu+9CjL-=xsT48k+PfQme2zCr1HnoWh5jcJgpp-BzPhqoDw@mail.gmail.com>
 
-On Thu, Sep 11, 2025 at 09:46:35PM +0100, Russell King (Oracle) wrote:
-> On Thu, Sep 11, 2025 at 07:55:13AM -0700, Jakub Kicinski wrote:
-> > We keep having issues with rtnl_lock taken from resume.
-> > Honestly, I'm not sure anyone has found a good solution, yet.
-> > Mostly people just don't implement runtime PM.
-> > 
-> > If we were able to pass optional context to suspend/resume
-> > we could implement conditional locking. We'd lose a lot of
-> > self-respect but it'd make fixing such bugs easier..
-> 
-> Normal drivers have the option of separate callbacks for runtime PM
-> vs system suspend/resume states. It seems USB doesn't, just munging
-> everything into one pair of suspend and resume ops without any way
-> of telling them apart. I suggest that is part of the problem here.
-> 
-> However, I'm not a USB expert, so...
+On Fri, Sep 12, 2025 at 12:27:23AM +0200, Max Kellermann wrote:
+> Hi Greg, sorry I mistyped the "stable" email address, so I'm
+> forwarding this patch to you.
+> Here's the original email:
+> https://lore.kernel.org/lkml/20250911222501.1417765-1-max.kellermann@ionos.com/
 
-The USB subsystem uses only one pair of callbacks for suspend and resume 
-because USB hardware has only one suspend state.  However, the callbacks 
-do get an extra pm_message_t parameter which they can use to distinguish 
-between system sleep transitions and runtime PM transitions.
+What is the commit id of this in Linus's tree?  If it's not there yet,
+there's no need for us to worry about it until then, so perhaps just
+send it to us when that happens?
 
-Alan Stern
+thanks,
+
+greg k-h
 
