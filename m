@@ -1,68 +1,68 @@
-Return-Path: <stable+bounces-179393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED6AB5569E
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 20:56:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 932AAB556A1
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 20:56:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49D7A1D62827
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 18:56:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B5B55648B8
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 18:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4458A3375AB;
-	Fri, 12 Sep 2025 18:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F3933EAE2;
+	Fri, 12 Sep 2025 18:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="GbBYEK4m"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="bkH8ht8k"
 X-Original-To: stable@vger.kernel.org
-Received: from fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.158.153.154])
+Received: from fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.156.205.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3853375CD;
-	Fri, 12 Sep 2025 18:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.158.153.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B60F337694;
+	Fri, 12 Sep 2025 18:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.156.205.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757703360; cv=none; b=j9rnHqkZbtvCag3ogsD8pIlFbYIfd/tN6Z2i6leb6eTNbpg0GF2BX3to9sBW8/8KvfF7aQ3xx5Amc453so5w40PnpPGfye5k0dMZlONXf7a1RYFA+wr7GOvif3q4Q3mppKbP6YMGUmtOgJSBWemGaA41yt6bb9IdRRnXHbfegAo=
+	t=1757703364; cv=none; b=aCByGL2G+FtHzmd1Ai2ydU4z+mhtm8oykUNTkFCYt2Q7t6ZP+0KCibQFQ5kLCtaHMFyu1rd9HlmCLMnOS2kuIzwudP5/w5B7S+EjXaDKxETqcGJ+5vGltn+H2f+8bfVtMm4PhcGfetTe/jV2a4tqqXmbbL55C3GvEeY20A5mCAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757703360; c=relaxed/simple;
-	bh=zIHVFRU7JOl0bYpSHV7NTHXlYG3ByO+E7astzdMeXcQ=;
+	s=arc-20240116; t=1757703364; c=relaxed/simple;
+	bh=0ZAuq1AeP2txNQ7DcSKMbLVlk6LKgVQRz0GMnBaYbvU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FkTIyLGXibRbHFwv08Rw0XkRcc4daurQQ6RmOFlqPm5ooe79pJWIP/Wk3U+RiHi31nnY3XuS6Z4iVHsoJf2ExQ8kSEldeJP+1cX1lNY1fvGTdnWzcJWjAw6J75S1zQYu+c0yc7o2/V/G28nnlih7oMuAeJLUe+7rUozigidSAb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=GbBYEK4m; arc=none smtp.client-ip=18.158.153.154
+	 MIME-Version:Content-Type; b=kuvUdxopSvfmzO0UmDwiwLC+b+ELtza/7YyArt+g6Y4RqICWXcR75GrshsE0IrrpmcZGZi9CGBa5iAw0KavOvxad30pqvWyino2nXgV6GJjIFPLSSioaY84CJHM270pLpgJ/6e4VlqsNW01LXYO2nhA6ZlTYYvmgdwIZ8GWlG3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=bkH8ht8k; arc=none smtp.client-ip=18.156.205.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1757703357; x=1789239357;
+  t=1757703362; x=1789239362;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=d96GNjWBbnS29dz3XYCBT3ot4b9kYSMNELBZmlAyWgg=;
-  b=GbBYEK4mfWBm3OluWKkUygle7OdZBoseZWaw09a1Rgq6FfNdhUxuvp49
-   Gf5+tQVk5bEF1b8vCLjw56tdlyd1Ra5mVGF+F/ApDNAtQ+AofWq7zsmIE
-   F748rq8i+l7qjyFUXwKLr3bo/VKKJQbTGKJgvndrWqZvG6ZL/u0JYDMHD
-   3Pqe6omoF6uwXpLTZym0/+b8n4RAcOQXbn+4ZJw7pNeSnd40p4e5ufigM
-   ieN49bgjHQFRRYMFWJAHGogG2piX2QYCFTC8CAgYrLu5NJhiTb12tdAdA
-   XzHmuS+LNlQCV4DujqhJFQp12AYO0MfwEXZPIOOGLKUZQSoZswIyqtxDZ
-   Q==;
-X-CSE-ConnectionGUID: W6Mo6hC7QaO0fjwB2iOOkw==
-X-CSE-MsgGUID: CRLr2vfHTmCF+1Ai3mxXfw==
+  bh=mNZQBQctKZfrpwn21cF3GKidAAjq4amyeXpqNxgoRJI=;
+  b=bkH8ht8kCmpkPnccnBVKDSyr8hjqrqSGpllyuB2CSBEeeEbTXcLUnWWT
+   mmJ+4t6UAXZgCO6+7V8JKEaTJwFNbUqkaejNHtl5c1/zRJ2FPMJ6b/fQT
+   iBPhVMiptDFdIYqR4o9cb54/JFyGfi72loufZttFgOAvCyOr6LbXX4jmL
+   FHLfb3BIyOhbxBTHj4hPLaZQwPAryMf+o8bwd0aLXGt2ndmwZlW1D0ywZ
+   tJlDmkMWSnMLnGh0GTbs4vNfx+xK6uJ7rNCPOmxtYgRL3LvRSHImKbTiY
+   2h1rRV61lZXVzCGJs27S8VFd42qDhl5Y7nACqTYqcz6GO6NWUkdnsj8IY
+   A==;
+X-CSE-ConnectionGUID: nDIF5dbKTfWceOOdhg4FEw==
+X-CSE-MsgGUID: gdPDVpDjRouU7JRSMELRTA==
 X-IronPort-AV: E=Sophos;i="6.18,259,1751241600"; 
-   d="scan'208";a="1923448"
+   d="scan'208";a="2035514"
 Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 18:55:45 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:23939]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.27.75:2525] with esmtp (Farcaster)
- id 162dab27-391a-492f-bf52-fdc1ee0d0a43; Fri, 12 Sep 2025 18:55:45 +0000 (UTC)
-X-Farcaster-Flow-ID: 162dab27-391a-492f-bf52-fdc1ee0d0a43
+  by internal-fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 18:55:52 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:24025]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.11.107:2525] with esmtp (Farcaster)
+ id e5ae6cb8-934c-4b30-b89c-9832205aefa6; Fri, 12 Sep 2025 18:55:52 +0000 (UTC)
+X-Farcaster-Flow-ID: e5ae6cb8-934c-4b30-b89c-9832205aefa6
 Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
+ EX19MTAEUA001.ant.amazon.com (10.252.50.223) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 12 Sep 2025 18:55:44 +0000
+ Fri, 12 Sep 2025 18:55:51 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 12 Sep 2025
- 18:55:37 +0000
+ 18:55:44 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <mingo@redhat.com>,
 	<natechancellor@gmail.com>, <ndesaulniers@google.com>,
@@ -73,10 +73,12 @@ To: <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <mingo@redhat.com>,
 	<linux-sparse@vger.kernel.org>, <clang-built-linux@googlegroups.com>,
 	<stable@vger.kernel.org>
 CC: <jonnyc@amazon.com>, <farbere@amazon.com>, Rasmus Villemoes
-	<linux@rasmusvillemoes.dk>, Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH v3 2/4 5.10.y] compiler.h: drop fallback overflow checkers
-Date: Fri, 12 Sep 2025 18:55:14 +0000
-Message-ID: <20250912185518.39980-3-farbere@amazon.com>
+	<linux@rasmusvillemoes.dk>, Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	<linux-hardening@vger.kernel.org>, Andrzej Hajda <andrzej.hajda@intel.com>
+Subject: [PATCH v3 3/4 5.10.y] overflow: Allow mixed type arguments
+Date: Fri, 12 Sep 2025 18:55:15 +0000
+Message-ID: <20250912185518.39980-4-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250912185518.39980-1-farbere@amazon.com>
 References: <20250912185518.39980-1-farbere@amazon.com>
@@ -91,409 +93,126 @@ Content-Type: text/plain
 X-ClientProxiedBy: EX19D045UWA001.ant.amazon.com (10.13.139.83) To
  EX19D018EUA004.ant.amazon.com (10.252.50.85)
 
-From: Nick Desaulniers <ndesaulniers@google.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 4eb6bd55cfb22ffc20652732340c4962f3ac9a91 ]
+commit d219d2a9a92e39aa92799efe8f2aa21259b6dd82 upstream.
 
-Once upgrading the minimum supported version of GCC to 5.1, we can drop
-the fallback code for !COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW.
+When the check_[op]_overflow() helpers were introduced, all arguments
+were required to be the same type to make the fallback macros simpler.
+However, now that the fallback macros have been removed[1], it is fine
+to allow mixed types, which makes using the helpers much more useful,
+as they can be used to test for type-based overflows (e.g. adding two
+large ints but storing into a u8), as would be handy in the drm core[2].
 
-This is effectively a revert of commit f0907827a8a9 ("compiler.h: enable
-builtin overflow checkers and add fallback code")
+Remove the restriction, and add additional self-tests that exercise
+some of the mixed-type overflow cases, and double-check for accidental
+macro side-effects.
 
-Link: https://github.com/ClangBuiltLinux/linux/issues/1438#issuecomment-916745801
-Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Acked-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[1] https://git.kernel.org/linus/4eb6bd55cfb22ffc20652732340c4962f3ac9a91
+[2] https://lore.kernel.org/lkml/20220824084514.2261614-2-gwan-gyeong.mun@intel.com
+
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: linux-hardening@vger.kernel.org
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Tested-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+[ dropped the test portion of the commit as that doesn't apply to
+  5.15.y - gregkh]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 ---
- include/linux/compiler-clang.h     |  13 ---
- include/linux/compiler-gcc.h       |   4 -
- include/linux/overflow.h           | 138 +---------------------------
- tools/include/linux/compiler-gcc.h |   4 -
- tools/include/linux/overflow.h     | 140 +----------------------------
- 5 files changed, 6 insertions(+), 293 deletions(-)
+ include/linux/overflow.h | 72 +++++++++++++++++++++++-----------------
+ 1 file changed, 41 insertions(+), 31 deletions(-)
 
-diff --git a/include/linux/compiler-clang.h b/include/linux/compiler-clang.h
-index 9ba951e3a6c2..928ec5c7776d 100644
---- a/include/linux/compiler-clang.h
-+++ b/include/linux/compiler-clang.h
-@@ -72,19 +72,6 @@
- #define __no_sanitize_coverage
- #endif
- 
--/*
-- * Not all versions of clang implement the type-generic versions
-- * of the builtin overflow checkers. Fortunately, clang implements
-- * __has_builtin allowing us to avoid awkward version
-- * checks. Unfortunately, we don't know which version of gcc clang
-- * pretends to be, so the macro may or may not be defined.
-- */
--#if __has_builtin(__builtin_mul_overflow) && \
--    __has_builtin(__builtin_add_overflow) && \
--    __has_builtin(__builtin_sub_overflow)
--#define COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW 1
--#endif
--
- #if __has_feature(shadow_call_stack)
- # define __noscs	__attribute__((__no_sanitize__("shadow-call-stack")))
- #endif
-diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
-index 5b481a22b5fe..ae9a8e17287c 100644
---- a/include/linux/compiler-gcc.h
-+++ b/include/linux/compiler-gcc.h
-@@ -140,10 +140,6 @@
- #define __no_sanitize_coverage
- #endif
- 
--#if GCC_VERSION >= 50100
--#define COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW 1
--#endif
--
- /*
-  * Turn individual warnings and errors on and off locally, depending
-  * on version.
 diff --git a/include/linux/overflow.h b/include/linux/overflow.h
-index d1dd039fe1c3..59d7228104d0 100644
+index 59d7228104d0..73bc67ec2136 100644
 --- a/include/linux/overflow.h
 +++ b/include/linux/overflow.h
-@@ -6,12 +6,9 @@
- #include <linux/limits.h>
- 
- /*
-- * In the fallback code below, we need to compute the minimum and
-- * maximum values representable in a given type. These macros may also
-- * be useful elsewhere, so we provide them outside the
-- * COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW block.
-- *
-- * It would seem more obvious to do something like
-+ * We need to compute the minimum and maximum values representable in a given
-+ * type. These macros may also be useful elsewhere. It would seem more obvious
-+ * to do something like:
-  *
-  * #define type_min(T) (T)(is_signed_type(T) ? (T)1 << (8*sizeof(T)-1) : 0)
-  * #define type_max(T) (T)(is_signed_type(T) ? ((T)1 << (8*sizeof(T)-1)) - 1 : ~(T)0)
-@@ -54,7 +51,6 @@ static inline bool __must_check __must_check_overflow(bool overflow)
+@@ -51,40 +51,50 @@ static inline bool __must_check __must_check_overflow(bool overflow)
  	return unlikely(overflow);
  }
  
--#ifdef COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW
- /*
-  * For simplicity and code hygiene, the fallback code below insists on
-  * a, b and *d having the same type (similar to the min() and max()
-@@ -90,134 +86,6 @@ static inline bool __must_check __must_check_overflow(bool overflow)
- 	__builtin_mul_overflow(__a, __b, __d);	\
- }))
+-/*
+- * For simplicity and code hygiene, the fallback code below insists on
+- * a, b and *d having the same type (similar to the min() and max()
+- * macros), whereas gcc's type-generic overflow checkers accept
+- * different types. Hence we don't just make check_add_overflow an
+- * alias for __builtin_add_overflow, but add type checks similar to
+- * below.
++/** check_add_overflow() - Calculate addition with overflow checking
++ *
++ * @a: first addend
++ * @b: second addend
++ * @d: pointer to store sum
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted addition, but is not considered
++ * "safe for use" on a non-zero return value, which indicates that the
++ * sum has overflowed or been truncated.
+  */
+-#define check_add_overflow(a, b, d) __must_check_overflow(({	\
+-	typeof(a) __a = (a);			\
+-	typeof(b) __b = (b);			\
+-	typeof(d) __d = (d);			\
+-	(void) (&__a == &__b);			\
+-	(void) (&__a == __d);			\
+-	__builtin_add_overflow(__a, __b, __d);	\
+-}))
++#define check_add_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_add_overflow(a, b, d))
  
--#else
--
--
--/* Checking for unsigned overflow is relatively easy without causing UB. */
--#define __unsigned_add_overflow(a, b, d) ({	\
+-#define check_sub_overflow(a, b, d) __must_check_overflow(({	\
 -	typeof(a) __a = (a);			\
 -	typeof(b) __b = (b);			\
 -	typeof(d) __d = (d);			\
 -	(void) (&__a == &__b);			\
 -	(void) (&__a == __d);			\
--	*__d = __a + __b;			\
--	*__d < __a;				\
--})
--#define __unsigned_sub_overflow(a, b, d) ({	\
+-	__builtin_sub_overflow(__a, __b, __d);	\
+-}))
++/** check_sub_overflow() - Calculate subtraction with overflow checking
++ *
++ * @a: minuend; value to subtract from
++ * @b: subtrahend; value to subtract from @a
++ * @d: pointer to store difference
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted subtraction, but is not considered
++ * "safe for use" on a non-zero return value, which indicates that the
++ * difference has underflowed or been truncated.
++ */
++#define check_sub_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_sub_overflow(a, b, d))
+ 
+-#define check_mul_overflow(a, b, d) __must_check_overflow(({	\
 -	typeof(a) __a = (a);			\
 -	typeof(b) __b = (b);			\
 -	typeof(d) __d = (d);			\
 -	(void) (&__a == &__b);			\
 -	(void) (&__a == __d);			\
--	*__d = __a - __b;			\
--	__a < __b;				\
--})
--/*
-- * If one of a or b is a compile-time constant, this avoids a division.
-- */
--#define __unsigned_mul_overflow(a, b, d) ({		\
--	typeof(a) __a = (a);				\
--	typeof(b) __b = (b);				\
--	typeof(d) __d = (d);				\
--	(void) (&__a == &__b);				\
--	(void) (&__a == __d);				\
--	*__d = __a * __b;				\
--	__builtin_constant_p(__b) ?			\
--	  __b > 0 && __a > type_max(typeof(__a)) / __b : \
--	  __a > 0 && __b > type_max(typeof(__b)) / __a;	 \
--})
--
--/*
-- * For signed types, detecting overflow is much harder, especially if
-- * we want to avoid UB. But the interface of these macros is such that
-- * we must provide a result in *d, and in fact we must produce the
-- * result promised by gcc's builtins, which is simply the possibly
-- * wrapped-around value. Fortunately, we can just formally do the
-- * operations in the widest relevant unsigned type (u64) and then
-- * truncate the result - gcc is smart enough to generate the same code
-- * with and without the (u64) casts.
-- */
--
--/*
-- * Adding two signed integers can overflow only if they have the same
-- * sign, and overflow has happened iff the result has the opposite
-- * sign.
-- */
--#define __signed_add_overflow(a, b, d) ({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	*__d = (u64)__a + (u64)__b;		\
--	(((~(__a ^ __b)) & (*__d ^ __a))	\
--		& type_min(typeof(__a))) != 0;	\
--})
--
--/*
-- * Subtraction is similar, except that overflow can now happen only
-- * when the signs are opposite. In this case, overflow has happened if
-- * the result has the opposite sign of a.
-- */
--#define __signed_sub_overflow(a, b, d) ({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	*__d = (u64)__a - (u64)__b;		\
--	((((__a ^ __b)) & (*__d ^ __a))		\
--		& type_min(typeof(__a))) != 0;	\
--})
--
--/*
-- * Signed multiplication is rather hard. gcc always follows C99, so
-- * division is truncated towards 0. This means that we can write the
-- * overflow check like this:
-- *
-- * (a > 0 && (b > MAX/a || b < MIN/a)) ||
-- * (a < -1 && (b > MIN/a || b < MAX/a) ||
-- * (a == -1 && b == MIN)
-- *
-- * The redundant casts of -1 are to silence an annoying -Wtype-limits
-- * (included in -Wextra) warning: When the type is u8 or u16, the
-- * __b_c_e in check_mul_overflow obviously selects
-- * __unsigned_mul_overflow, but unfortunately gcc still parses this
-- * code and warns about the limited range of __b.
-- */
--
--#define __signed_mul_overflow(a, b, d) ({				\
--	typeof(a) __a = (a);						\
--	typeof(b) __b = (b);						\
--	typeof(d) __d = (d);						\
--	typeof(a) __tmax = type_max(typeof(a));				\
--	typeof(a) __tmin = type_min(typeof(a));				\
--	(void) (&__a == &__b);						\
--	(void) (&__a == __d);						\
--	*__d = (u64)__a * (u64)__b;					\
--	(__b > 0   && (__a > __tmax/__b || __a < __tmin/__b)) ||	\
--	(__b < (typeof(__b))-1  && (__a > __tmin/__b || __a < __tmax/__b)) || \
--	(__b == (typeof(__b))-1 && __a == __tmin);			\
--})
--
--
--#define check_add_overflow(a, b, d)	__must_check_overflow(		\
--	__builtin_choose_expr(is_signed_type(typeof(a)),		\
--			__signed_add_overflow(a, b, d),			\
--			__unsigned_add_overflow(a, b, d)))
--
--#define check_sub_overflow(a, b, d)	__must_check_overflow(		\
--	__builtin_choose_expr(is_signed_type(typeof(a)),		\
--			__signed_sub_overflow(a, b, d),			\
--			__unsigned_sub_overflow(a, b, d)))
--
--#define check_mul_overflow(a, b, d)	__must_check_overflow(		\
--	__builtin_choose_expr(is_signed_type(typeof(a)),		\
--			__signed_mul_overflow(a, b, d),			\
--			__unsigned_mul_overflow(a, b, d)))
--
--#endif /* COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW */
--
+-	__builtin_mul_overflow(__a, __b, __d);	\
+-}))
++/** check_mul_overflow() - Calculate multiplication with overflow checking
++ *
++ * @a: first factor
++ * @b: second factor
++ * @d: pointer to store product
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted multiplication, but is not
++ * considered "safe for use" on a non-zero return value, which indicates
++ * that the product has overflowed or been truncated.
++ */
++#define check_mul_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_mul_overflow(a, b, d))
+ 
  /** check_shl_overflow() - Calculate a left-shifted value and check overflow
-  *
-  * @a: Value to be shifted
-diff --git a/tools/include/linux/compiler-gcc.h b/tools/include/linux/compiler-gcc.h
-index 95c072b70d0e..a590a1dfafd9 100644
---- a/tools/include/linux/compiler-gcc.h
-+++ b/tools/include/linux/compiler-gcc.h
-@@ -38,7 +38,3 @@
- #endif
- #define __printf(a, b)	__attribute__((format(printf, a, b)))
- #define __scanf(a, b)	__attribute__((format(scanf, a, b)))
--
--#if GCC_VERSION >= 50100
--#define COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW 1
--#endif
-diff --git a/tools/include/linux/overflow.h b/tools/include/linux/overflow.h
-index 8712ff70995f..dcb0c1bf6866 100644
---- a/tools/include/linux/overflow.h
-+++ b/tools/include/linux/overflow.h
-@@ -5,12 +5,9 @@
- #include <linux/compiler.h>
- 
- /*
-- * In the fallback code below, we need to compute the minimum and
-- * maximum values representable in a given type. These macros may also
-- * be useful elsewhere, so we provide them outside the
-- * COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW block.
-- *
-- * It would seem more obvious to do something like
-+ * We need to compute the minimum and maximum values representable in a given
-+ * type. These macros may also be useful elsewhere. It would seem more obvious
-+ * to do something like:
-  *
-  * #define type_min(T) (T)(is_signed_type(T) ? (T)1 << (8*sizeof(T)-1) : 0)
-  * #define type_max(T) (T)(is_signed_type(T) ? ((T)1 << (8*sizeof(T)-1)) - 1 : ~(T)0)
-@@ -36,8 +33,6 @@
- #define type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
- #define type_min(T) ((T)((T)-type_max(T)-(T)1))
- 
--
--#ifdef COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW
- /*
-  * For simplicity and code hygiene, the fallback code below insists on
-  * a, b and *d having the same type (similar to the min() and max()
-@@ -73,135 +68,6 @@
- 	__builtin_mul_overflow(__a, __b, __d);	\
- })
- 
--#else
--
--
--/* Checking for unsigned overflow is relatively easy without causing UB. */
--#define __unsigned_add_overflow(a, b, d) ({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	*__d = __a + __b;			\
--	*__d < __a;				\
--})
--#define __unsigned_sub_overflow(a, b, d) ({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	*__d = __a - __b;			\
--	__a < __b;				\
--})
--/*
-- * If one of a or b is a compile-time constant, this avoids a division.
-- */
--#define __unsigned_mul_overflow(a, b, d) ({		\
--	typeof(a) __a = (a);				\
--	typeof(b) __b = (b);				\
--	typeof(d) __d = (d);				\
--	(void) (&__a == &__b);				\
--	(void) (&__a == __d);				\
--	*__d = __a * __b;				\
--	__builtin_constant_p(__b) ?			\
--	  __b > 0 && __a > type_max(typeof(__a)) / __b : \
--	  __a > 0 && __b > type_max(typeof(__b)) / __a;	 \
--})
--
--/*
-- * For signed types, detecting overflow is much harder, especially if
-- * we want to avoid UB. But the interface of these macros is such that
-- * we must provide a result in *d, and in fact we must produce the
-- * result promised by gcc's builtins, which is simply the possibly
-- * wrapped-around value. Fortunately, we can just formally do the
-- * operations in the widest relevant unsigned type (u64) and then
-- * truncate the result - gcc is smart enough to generate the same code
-- * with and without the (u64) casts.
-- */
--
--/*
-- * Adding two signed integers can overflow only if they have the same
-- * sign, and overflow has happened iff the result has the opposite
-- * sign.
-- */
--#define __signed_add_overflow(a, b, d) ({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	*__d = (u64)__a + (u64)__b;		\
--	(((~(__a ^ __b)) & (*__d ^ __a))	\
--		& type_min(typeof(__a))) != 0;	\
--})
--
--/*
-- * Subtraction is similar, except that overflow can now happen only
-- * when the signs are opposite. In this case, overflow has happened if
-- * the result has the opposite sign of a.
-- */
--#define __signed_sub_overflow(a, b, d) ({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	*__d = (u64)__a - (u64)__b;		\
--	((((__a ^ __b)) & (*__d ^ __a))		\
--		& type_min(typeof(__a))) != 0;	\
--})
--
--/*
-- * Signed multiplication is rather hard. gcc always follows C99, so
-- * division is truncated towards 0. This means that we can write the
-- * overflow check like this:
-- *
-- * (a > 0 && (b > MAX/a || b < MIN/a)) ||
-- * (a < -1 && (b > MIN/a || b < MAX/a) ||
-- * (a == -1 && b == MIN)
-- *
-- * The redundant casts of -1 are to silence an annoying -Wtype-limits
-- * (included in -Wextra) warning: When the type is u8 or u16, the
-- * __b_c_e in check_mul_overflow obviously selects
-- * __unsigned_mul_overflow, but unfortunately gcc still parses this
-- * code and warns about the limited range of __b.
-- */
--
--#define __signed_mul_overflow(a, b, d) ({				\
--	typeof(a) __a = (a);						\
--	typeof(b) __b = (b);						\
--	typeof(d) __d = (d);						\
--	typeof(a) __tmax = type_max(typeof(a));				\
--	typeof(a) __tmin = type_min(typeof(a));				\
--	(void) (&__a == &__b);						\
--	(void) (&__a == __d);						\
--	*__d = (u64)__a * (u64)__b;					\
--	(__b > 0   && (__a > __tmax/__b || __a < __tmin/__b)) ||	\
--	(__b < (typeof(__b))-1  && (__a > __tmin/__b || __a < __tmax/__b)) || \
--	(__b == (typeof(__b))-1 && __a == __tmin);			\
--})
--
--
--#define check_add_overflow(a, b, d)					\
--	__builtin_choose_expr(is_signed_type(typeof(a)),		\
--			__signed_add_overflow(a, b, d),			\
--			__unsigned_add_overflow(a, b, d))
--
--#define check_sub_overflow(a, b, d)					\
--	__builtin_choose_expr(is_signed_type(typeof(a)),		\
--			__signed_sub_overflow(a, b, d),			\
--			__unsigned_sub_overflow(a, b, d))
--
--#define check_mul_overflow(a, b, d)					\
--	__builtin_choose_expr(is_signed_type(typeof(a)),		\
--			__signed_mul_overflow(a, b, d),			\
--			__unsigned_mul_overflow(a, b, d))
--
--
--#endif /* COMPILER_HAS_GENERIC_BUILTIN_OVERFLOW */
--
- /**
-  * array_size() - Calculate size of 2-dimensional array.
   *
 -- 
 2.47.3
