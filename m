@@ -1,175 +1,157 @@
-Return-Path: <stable+bounces-179329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36123B5454B
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 10:27:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97EB8B54585
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 10:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD9AB1CC2A29
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 08:28:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A8B2173079
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 08:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575D61B042E;
-	Fri, 12 Sep 2025 08:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD29274B39;
+	Fri, 12 Sep 2025 08:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DE4K/4QD"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="IMcAcadQ"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6A72D73B5
-	for <stable@vger.kernel.org>; Fri, 12 Sep 2025 08:27:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0F9221FA8;
+	Fri, 12 Sep 2025 08:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757665639; cv=none; b=Lm9I+4ncM8u6bRiXZAAOI3Ijc6nCFKn5F2wGIpI0bTmCMvHIGPJ8/RAXU9ZXhqri8am1RGRheZVSwqLEOwO2B//7pJ2Shh+1rAz0ohj31EVyfk1OGSvVaEGpjnR6gh0G3f9CGZOn3a/okZdjEwHcEX6gNC54jN9IP9pvIgHKlKM=
+	t=1757666002; cv=none; b=fY6QEtr/v3xgF5Tu7wYlOagWn1i0sknsaqM1edxjaK4jPE39xQo/lXhUfsRKSRxdSU7bsq0asKLqhEPPfsuiQqDkiE7dEgdh8mYzs9Nf23YbAj/+tpUUzfpe4hu+nClSFS/tDGwhjppZkaKaNGyn8lQzr6uZ3jOgIR3orcpjWbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757665639; c=relaxed/simple;
-	bh=cdktJ5hQga6TJBt/8XcxZ813/Z5QetZ2cirJ3rE9jpo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzH5HB4EP0NbIKmNudcCQgggkjsjDf/zx16DM/m1khNTq1fLdZHjTd6fvZbl0BCMeod97FKOoy9FlJN0mtCQphaUjGquUOtQwuOlpdhM0j3msa6pZW4npyJzrT744JVaFdv7w8m/uJrV4qKVqTtZc5lmfDiEItR6eI1cMoGwanE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DE4K/4QD; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757665636;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t7o7vby/KR5wn11gpagftAl16EWhc4sdyEwdRY+lx+0=;
-	b=DE4K/4QD9YR+Q5DycvNZWDmYppmBrk1IW/D6TVNoLg4f9l1hX8DZN+aLtFOLbKiiJPd9Wg
-	HMwcbKgPUFysbfyoM1QfVUWL0UZYJ/UaL1CArWQIlbHaQtjnql5Ta+DMtsshAF7V3q6pJv
-	uS6h5Uk+/jLqtFxZyXdr215zUB8QAj4=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-wQjGMYgIOXWPrFAm0QbnYw-1; Fri,
- 12 Sep 2025 04:27:14 -0400
-X-MC-Unique: wQjGMYgIOXWPrFAm0QbnYw-1
-X-Mimecast-MFC-AGG-ID: wQjGMYgIOXWPrFAm0QbnYw_1757665633
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 267A71955D62;
-	Fri, 12 Sep 2025 08:27:13 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.72.112.167])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 14D93180035E;
-	Fri, 12 Sep 2025 08:27:07 +0000 (UTC)
-From: Jason Wang <jasowang@redhat.com>
-To: mst@redhat.com,
-	jasowang@redhat.com,
-	eperezma@redhat.com
-Cc: jonah.palmer@oracle.com,
-	kuba@kernel.org,
-	jon@nutanix.com,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net 2/2] vhost-net: correctly flush batched packet before enabling notification
-Date: Fri, 12 Sep 2025 16:26:58 +0800
-Message-ID: <20250912082658.2262-2-jasowang@redhat.com>
-In-Reply-To: <20250912082658.2262-1-jasowang@redhat.com>
-References: <20250912082658.2262-1-jasowang@redhat.com>
+	s=arc-20240116; t=1757666002; c=relaxed/simple;
+	bh=Mxr62HmVtfbP4jbUBdHvnIYP+nC/oO9ivF+eEK18zmI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CKnPf+/9XGA0g0OHuK0UXFT1CCf63aLqtobaYLJduDjZSJXjYPuclqIVytzPhyiiZWvf0LjKXrUQRWiT9D16LNHyaaqZm6dV2sRMs/v9RFxFnfpr38H8nmZDUH8YQkGKagYSugOhxEhNOSu1RM5wX//LbrAeZKyOtozshP+SANA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=IMcAcadQ; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=q2YkID527W7lqOrFnU+Vj4fmcAikRXDTUil4ImrM08E=; b=IMcAcadQP51YLAcZorEteZBCmA
+	kHyIwUIejCR7dqhdjIASnNPssJcKRtuhf4SADoBZxqMzdh/7ToTfXtHTaaPOTmXFfym56ush1FBpJ
+	J3+/oxD3+I4CJh3Eao7/oApSfPGhWbuY1zg7DQAkC2nf9N1BHvwCOkt5bIy8gDCgQUKorJdAwbBp7
+	KMkcZrGZr6ekvAqrDC7d4OJOON2/b12yqXXz8EN+5UXla65O81da5qCqHxdlPUja2hIxO+N2qSYit
+	zaaHMFzGGzb+4rD4mCRKKW5/hf+BIva2+eca3tYmQ0QsTWcJuliso1abBiaCBphTFeFm8vX0IqI2F
+	KrJF13xA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:52752)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uwzDQ-000000004AH-2Pau;
+	Fri, 12 Sep 2025 09:33:08 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uwzDN-000000003N7-0zes;
+	Fri, 12 Sep 2025 09:33:05 +0100
+Date: Fri, 12 Sep 2025 09:33:05 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Hubert =?utf-8?Q?Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>,
+	stable@vger.kernel.org, kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Lukas Wunner <lukas@wunner.de>, Xu Yang <xu.yang_2@nxp.com>,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH net v1 1/1] net: usb: asix: ax88772: drop phylink use in
+ PM to avoid MDIO runtime PM wakeups
+Message-ID: <aMPawXCxlFmz6MaC@shell.armlinux.org.uk>
+References: <20250908112619.2900723-1-o.rempel@pengutronix.de>
+ <CGME20250911135853eucas1p283b1afd37287b715403cd2cdbfa03a94@eucas1p2.samsung.com>
+ <b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com>
+ <aMLfGPIpWKwZszrY@shell.armlinux.org.uk>
+ <20250911075513.1d90f8b0@kernel.org>
+ <aMM1K_bkk4clt5WD@shell.armlinux.org.uk>
+ <22773d93-cbad-41c5-9e79-4d7f6b9e5ec0@rowland.harvard.edu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <22773d93-cbad-41c5-9e79-4d7f6b9e5ec0@rowland.harvard.edu>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Commit 8c2e6b26ffe2 ("vhost/net: Defer TX queue re-enable until after
-sendmsg") tries to defer the notification enabling by moving the logic
-out of the loop after the vhost_tx_batch() when nothing new is
-spotted. This will bring side effects as the new logic would be reused
-for several other error conditions.
+On Thu, Sep 11, 2025 at 10:30:09PM -0400, Alan Stern wrote:
+> On Thu, Sep 11, 2025 at 09:46:35PM +0100, Russell King (Oracle) wrote:
+> > On Thu, Sep 11, 2025 at 07:55:13AM -0700, Jakub Kicinski wrote:
+> > > We keep having issues with rtnl_lock taken from resume.
+> > > Honestly, I'm not sure anyone has found a good solution, yet.
+> > > Mostly people just don't implement runtime PM.
+> > > 
+> > > If we were able to pass optional context to suspend/resume
+> > > we could implement conditional locking. We'd lose a lot of
+> > > self-respect but it'd make fixing such bugs easier..
+> > 
+> > Normal drivers have the option of separate callbacks for runtime PM
+> > vs system suspend/resume states. It seems USB doesn't, just munging
+> > everything into one pair of suspend and resume ops without any way
+> > of telling them apart. I suggest that is part of the problem here.
+> > 
+> > However, I'm not a USB expert, so...
+> 
+> The USB subsystem uses only one pair of callbacks for suspend and resume 
+> because USB hardware has only one suspend state.  However, the callbacks 
+> do get an extra pm_message_t parameter which they can use to distinguish 
+> between system sleep transitions and runtime PM transitions.
 
-One example is the IOTLB: when there's an IOTLB miss, get_tx_bufs()
-might return -EAGAIN and exit the loop and see there's still available
-buffers, so it will queue the tx work again until userspace feed the
-IOTLB entry correctly. This will slowdown the tx processing and may
-trigger the TX watchdog in the guest.
+Unfortunately, this isn't the case. While a struct usb_device_driver's
+suspend()/resume() methods get the pm_message_t, a struct usb_driver's
+suspend()/resume() methods do not:
 
-Fixing this by stick the notificaiton enabling logic inside the loop
-when nothing new is spotted and flush the batched before.
+static int usb_resume_interface(struct usb_device *udev,
+                struct usb_interface *intf, pm_message_t msg, int reset_resume)
+{
+        struct usb_driver       *driver;
+...
+        if (reset_resume) {
+                if (driver->reset_resume) {
+                        status = driver->reset_resume(intf);
+...
+        } else {
+                status = driver->resume(intf);
 
-Reported-by: Jon Kohler <jon@nutanix.com>
-Cc: stable@vger.kernel.org
-Fixes: 8c2e6b26ffe2 ("vhost/net: Defer TX queue re-enable until after sendmsg")
-Signed-off-by: Jason Wang <jasowang@redhat.com>
----
- drivers/vhost/net.c | 33 +++++++++++++--------------------
- 1 file changed, 13 insertions(+), 20 deletions(-)
+vs
 
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 16e39f3ab956..3611b7537932 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -765,11 +765,11 @@ static void handle_tx_copy(struct vhost_net *net, struct socket *sock)
- 	int err;
- 	int sent_pkts = 0;
- 	bool sock_can_batch = (sock->sk->sk_sndbuf == INT_MAX);
--	bool busyloop_intr;
- 	bool in_order = vhost_has_feature(vq, VIRTIO_F_IN_ORDER);
- 
- 	do {
--		busyloop_intr = false;
-+		bool busyloop_intr = false;
-+
- 		if (nvq->done_idx == VHOST_NET_BATCH)
- 			vhost_tx_batch(net, nvq, sock, &msg);
- 
-@@ -780,10 +780,18 @@ static void handle_tx_copy(struct vhost_net *net, struct socket *sock)
- 			break;
- 		/* Nothing new?  Wait for eventfd to tell us they refilled. */
- 		if (head == vq->num) {
--			/* Kicks are disabled at this point, break loop and
--			 * process any remaining batched packets. Queue will
--			 * be re-enabled afterwards.
-+			/* Flush batched packets before enabling
-+			 * virqtueue notification to reduce
-+			 * unnecssary virtqueue kicks.
- 			 */
-+			vhost_tx_batch(net, nvq, sock, &msg);
-+			if (unlikely(busyloop_intr)) {
-+				vhost_poll_queue(&vq->poll);
-+			} else if (unlikely(vhost_enable_notify(&net->dev,
-+								vq))) {
-+				vhost_disable_notify(&net->dev, vq);
-+				continue;
-+			}
- 			break;
- 		}
- 
-@@ -839,22 +847,7 @@ static void handle_tx_copy(struct vhost_net *net, struct socket *sock)
- 		++nvq->done_idx;
- 	} while (likely(!vhost_exceeds_weight(vq, ++sent_pkts, total_len)));
- 
--	/* Kicks are still disabled, dispatch any remaining batched msgs. */
- 	vhost_tx_batch(net, nvq, sock, &msg);
--
--	if (unlikely(busyloop_intr))
--		/* If interrupted while doing busy polling, requeue the
--		 * handler to be fair handle_rx as well as other tasks
--		 * waiting on cpu.
--		 */
--		vhost_poll_queue(&vq->poll);
--	else
--		/* All of our work has been completed; however, before
--		 * leaving the TX handler, do one last check for work,
--		 * and requeue handler if necessary. If there is no work,
--		 * queue will be reenabled.
--		 */
--		vhost_net_busy_poll_try_queue(net, vq);
- }
- 
- static void handle_tx_zerocopy(struct vhost_net *net, struct socket *sock)
+static int usb_resume_device(struct usb_device *udev, pm_message_t msg)
+{
+        struct usb_device_driver        *udriver;
+...
+        if (status == 0 && udriver->resume)
+                status = udriver->resume(udev, msg);
+
+and in drivers/net/usb/asix_devices.c:
+
+static struct usb_driver asix_driver = {
+...
+        .suspend =      asix_suspend,
+        .resume =       asix_resume,
+        .reset_resume = asix_resume,
+
+where asix_resume() only takes one argument:
+
+static int asix_resume(struct usb_interface *intf)
+{
+
+Thanks.
+
 -- 
-2.34.1
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
