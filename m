@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-179346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48307B54CF5
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 14:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 533E0B54CF1
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 14:15:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAC9D5C0294
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 12:11:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B08B165C02
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 12:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC5B30E83D;
-	Fri, 12 Sep 2025 12:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64783074AE;
+	Fri, 12 Sep 2025 12:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="Izuw2V1j"
+	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="XoAxeWzT"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EFB307ACA;
-	Fri, 12 Sep 2025 12:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC743074AC;
+	Fri, 12 Sep 2025 12:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.188.205.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757678668; cv=none; b=fiMrWx2g9R1fsJJX1zcPE0M2HV41yfr/wrivLEEO5gT4RADJVJpNLyQQqxS0rPg24idM8tM9hNzTaF5tiRENrykeklD+nh6TdKXHBECQXx1qboOdlF1yGWFrwp1rSPuZ1ZmqhKMVw5w4ylCMTzmGCmExnk8jPoGCgvUO/56efGQ=
+	t=1757678655; cv=none; b=bc+QFX/QrWpdIQqU4ix3tCvMuoNI1u7Abb53F2IkTh+cupI/iizSFbmoRKzXJRdoDEX9sfvTM6Zp2vYiyw7lfY6ve7pIpIsRi2dJApOcprsqYG+1ZfxH/oDHSp+fCp66UHHC1GDioLqRJUV7343sgAIuPKlBY/YlxU2q8c6dC6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757678668; c=relaxed/simple;
-	bh=ebEdQM9PsSFQ7ItLpYWwcNK8uCk7q2IsBEMnpwDG+ek=;
+	s=arc-20240116; t=1757678655; c=relaxed/simple;
+	bh=2KXka414fCOALlXKBNLhsY7WlMq13LlLKLbzudZG4YY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fv6MbARZBvTUcKP13VXEMes7kKA4yn5V9OfeGvS04jWRDT3IDyu9FvtZ6giidbhL2z+WDHy3H4d11ySt13wx4k0qXX18hz9xxx61fShd6lIj+6N6FhhF4Gem5Fw5cB8IjqJJ+7xojXDwI4IqrZ7BwBJWLPRWOE3cNCFBTb1aRmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=Izuw2V1j; arc=none smtp.client-ip=93.188.205.243
+	 MIME-Version; b=I1FGJkUxoSIxvz803QM9cb6F8F8S++Rq02/JWi+IMq34ubQiIpCZs6yQLc1OsxaZH6tJ37nvUb76VaVtbOG+i9xvGj9XnkyTmU+nihU6ZUq3V979Jl3Wbujp8GBkVKhHSPbm13YCMBvCMNvDMZoAfh8MIVam8LOEr4XKwwTMPTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=XoAxeWzT; arc=none smtp.client-ip=93.188.205.243
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1757678663;
-	bh=ebEdQM9PsSFQ7ItLpYWwcNK8uCk7q2IsBEMnpwDG+ek=;
+	s=mail; t=1757678651;
+	bh=2KXka414fCOALlXKBNLhsY7WlMq13LlLKLbzudZG4YY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Izuw2V1jNfMWHloM7KZh10Jif55JHY2rR1LXI6fOosRlMp/YCY4yAqT+AW1G30QXr
-	 qw1ekYasQXpOmTPdsSA2Mrq+dE/7WrhWGl7HKv8XkzB5wVnHWoy3CtgHoZ8a9rgt5x
-	 M2wMQLPixDhztcWSXCz8tWqaITxB39XH6vlQq7oYsWbwgZMq3pXl6tK036GXiKTyz6
-	 8myuPPtvMauVUGPWiLefqgTBDmQqRKWSQ+K4JGzGHFeu9pL0kFZ/Hjo1pa8uCRrCub
-	 sFcAh3S0lPBSvWAFnKwP+M7cJ3Y/oKduiAaL0vDVov5mFDaSGoRsgV9NEXVq+Gk7PS
-	 YZ/3JyFe+HhuA==
+	b=XoAxeWzTyG7Fb4pSfurGCFfrQ13WWrJip9p79kBrYizQGDaTITvKoSi2csSV4RHWU
+	 g7Rr3E22WsqDOtDBvVA5ZY7rHLeruKv0a7EWNEU2JJMABOjI6ztICpXXuLLer1nCvr
+	 M0lJvNJhebt090fXVRrQVPTKnCcTHVwWg4mv7h8pVRfG5aMjQOccv5j8+K4VF8f08c
+	 5S15s7qpRjFVgQ5reAV1XA9CHSMG5EIb+QBQR1KeEBUve+by63lOh7SGDwufu2eVqc
+	 pi/qekhPKRxhGj3xcRLH/ownpoX6adQxVtsqD0moD+vtdI1kNQ85zSMEb+VgpsghBl
+	 C/ok8gI7ZVkCA==
 Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw02.astralinux.ru (Postfix) with ESMTP id F17981FA00;
-	Fri, 12 Sep 2025 15:04:23 +0300 (MSK)
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 5294A1FA00;
+	Fri, 12 Sep 2025 15:04:11 +0300 (MSK)
 Received: from new-mail.astralinux.ru (unknown [10.177.185.199])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
-	Fri, 12 Sep 2025 15:04:23 +0300 (MSK)
+	Fri, 12 Sep 2025 15:04:10 +0300 (MSK)
 Received: from rbta-msk-lt-169874.astralinux.site (unknown [10.198.57.215])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4cNY474Kqyz2xCh;
-	Fri, 12 Sep 2025 15:03:51 +0300 (MSK)
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4cNY4R041sz2xDf;
+	Fri, 12 Sep 2025 15:04:06 +0300 (MSK)
 From: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -69,10 +69,11 @@ Cc: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>,
 	intel-xe@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH v2 6.12 2/3] drm/xe/hw_engine_group: Fix potential leak
-Date: Fri, 12 Sep 2025 15:02:00 +0300
-Message-Id: <20250912120202.240305-2-mdmitrichenko@astralinux.ru>
+	lvc-project@linuxtesting.org,
+	Shuicheng Lin <shuicheng.lin@intel.com>
+Subject: [PATCH v2 6.12 3/3] drm/xe/hw_engine_group: Avoid call kfree() for drmm_kzalloc()
+Date: Fri, 12 Sep 2025 15:02:01 +0300
+Message-Id: <20250912120202.240305-3-mdmitrichenko@astralinux.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250912120202.240305-1-mdmitrichenko@astralinux.ru>
 References: <20250912120202.240305-1-mdmitrichenko@astralinux.ru>
@@ -86,7 +87,7 @@ Content-Transfer-Encoding: 8bit
 X-KSMG-AntiPhishing: NotDetected, bases: 2025/09/12 10:31:00
 X-KSMG-AntiSpam-Auth: dkim=none
 X-KSMG-AntiSpam-Envelope-From: mdmitrichenko@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 66 0.3.66 fc5dda3b6b70d34b3701db39319eece2aeb510fb, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, {Tracking_spam_in_reply_from_match_msgid}, d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;new-mail.astralinux.ru:7.1.1;lore.kernel.org:7.1.1;astralinux.ru:7.1.1;127.0.0.199:7.1.2, FromAlignment: s
+X-KSMG-AntiSpam-Info: LuaCore: 66 0.3.66 fc5dda3b6b70d34b3701db39319eece2aeb510fb, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, {Tracking_spam_in_reply_from_match_msgid}, astralinux.ru:7.1.1;new-mail.astralinux.ru:7.1.1;127.0.0.199:7.1.2;lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s
 X-KSMG-AntiSpam-Interceptor-Info: scan successful
 X-KSMG-AntiSpam-Lua-Profiles: 196220 [Sep 12 2025]
 X-KSMG-AntiSpam-Method: none
@@ -99,73 +100,87 @@ X-KSMG-LinksScanning: NotDetected, bases: 2025/09/12 11:18:00
 X-KSMG-Message-Action: skipped
 X-KSMG-Rule-ID: 1
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-commit 67979060740f7f978c8cb580ccea6c91154150f9 upstream.
+commit 4846856c3a4afa882b6d1b842ed2fad6f3781f4d upstream.
 
-If we fail to allocate a workqueue we will leak kzalloc'ed group
-object since it was designed to be kfree'ed in the drmm cleanup
-action, but we didn't have a chance to register this action yet.
+Memory allocated with drmm_kzalloc() should not be freed using
+kfree(), as it is managed by the DRM subsystem. The memory will
+be automatically freed when the associated drm_device is released.
+These 3 group pointers are allocated using drmm_kzalloc() in
+hw_engine_group_alloc(), so they don't require manual deallocation.
 
-To avoid this leak allocate a group object using drmm_kzalloc()
-and start using predefined drmm action to release the workqueue.
-
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Fixes: 67979060740f ("drm/xe/hw_engine_group: Fix potential leak")
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20250627184143.1480-1-michal.wajdeczko@intel.com
+Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Link: https://lore.kernel.org/r/20250724193854.1124510-2-shuicheng.lin@intel.com
+(cherry picked from commit f98de826b418885a21ece67f0f5b921ae759b7bf)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
 ---
- drivers/gpu/drm/xe/xe_hw_engine_group.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+v2: upstream commit 67979060740f7f978c8cb580ccea6c91154150f9 was
+included in PATCH v2 2/3 because it also doesn't present in 6.12 
+and commit 4846856c3a4afa882b6d1b842ed2fad6f3781f4d fixes
+issue from 67979060740f7f978c8cb580ccea6c91154150f9. Upstream
+commit c367b772e6d89d8c7b560c7df7e3803ce6b8bcea was included
+in PATCH v2 1/3 because changes from 
+67979060740f7f978c8cb580ccea6c91154150f9 require __drmm_workqueue_release.
+ drivers/gpu/drm/xe/xe_hw_engine_group.c | 28 ++++++-------------------
+ 1 file changed, 6 insertions(+), 22 deletions(-)
 
 diff --git a/drivers/gpu/drm/xe/xe_hw_engine_group.c b/drivers/gpu/drm/xe/xe_hw_engine_group.c
-index 82750520a90a..9ace3993caee 100644
+index 9ace3993caee..eef3a6479bfd 100644
 --- a/drivers/gpu/drm/xe/xe_hw_engine_group.c
 +++ b/drivers/gpu/drm/xe/xe_hw_engine_group.c
-@@ -12,15 +12,6 @@
- #include "xe_hw_engine_group.h"
- #include "xe_vm.h"
+@@ -75,25 +75,18 @@ int xe_hw_engine_setup_groups(struct xe_gt *gt)
+ 	enum xe_hw_engine_id id;
+ 	struct xe_hw_engine_group *group_rcs_ccs, *group_bcs, *group_vcs_vecs;
+ 	struct xe_device *xe = gt_to_xe(gt);
+-	int err;
  
--static void
--hw_engine_group_free(struct drm_device *drm, void *arg)
--{
--	struct xe_hw_engine_group *group = arg;
+ 	group_rcs_ccs = hw_engine_group_alloc(xe);
+-	if (IS_ERR(group_rcs_ccs)) {
+-		err = PTR_ERR(group_rcs_ccs);
+-		goto err_group_rcs_ccs;
+-	}
++	if (IS_ERR(group_rcs_ccs))
++		return PTR_ERR(group_rcs_ccs);
+ 
+ 	group_bcs = hw_engine_group_alloc(xe);
+-	if (IS_ERR(group_bcs)) {
+-		err = PTR_ERR(group_bcs);
+-		goto err_group_bcs;
+-	}
++	if (IS_ERR(group_bcs))
++		return PTR_ERR(group_bcs);
+ 
+ 	group_vcs_vecs = hw_engine_group_alloc(xe);
+-	if (IS_ERR(group_vcs_vecs)) {
+-		err = PTR_ERR(group_vcs_vecs);
+-		goto err_group_vcs_vecs;
+-	}
++	if (IS_ERR(group_vcs_vecs))
++		return PTR_ERR(group_vcs_vecs);
+ 
+ 	for_each_hw_engine(hwe, gt, id) {
+ 		switch (hwe->class) {
+@@ -116,15 +109,6 @@ int xe_hw_engine_setup_groups(struct xe_gt *gt)
+ 	}
+ 
+ 	return 0;
 -
--	destroy_workqueue(group->resume_wq);
--	kfree(group);
--}
+-err_group_vcs_vecs:
+-	kfree(group_vcs_vecs);
+-err_group_bcs:
+-	kfree(group_bcs);
+-err_group_rcs_ccs:
+-	kfree(group_rcs_ccs);
 -
- static void
- hw_engine_group_resume_lr_jobs_func(struct work_struct *w)
- {
-@@ -53,7 +44,7 @@ hw_engine_group_alloc(struct xe_device *xe)
- 	struct xe_hw_engine_group *group;
- 	int err;
- 
--	group = kzalloc(sizeof(*group), GFP_KERNEL);
-+	group = drmm_kzalloc(&xe->drm, sizeof(*group), GFP_KERNEL);
- 	if (!group)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -61,14 +52,14 @@ hw_engine_group_alloc(struct xe_device *xe)
- 	if (!group->resume_wq)
- 		return ERR_PTR(-ENOMEM);
- 
-+	err = drmm_add_action_or_reset(&xe->drm, __drmm_workqueue_release, group->resume_wq);
-+	if (err)
-+		return ERR_PTR(err);
-+
- 	init_rwsem(&group->mode_sem);
- 	INIT_WORK(&group->resume_work, hw_engine_group_resume_lr_jobs_func);
- 	INIT_LIST_HEAD(&group->exec_queue_list);
- 
--	err = drmm_add_action_or_reset(&xe->drm, hw_engine_group_free, group);
--	if (err)
--		return ERR_PTR(err);
--
- 	return group;
+-	return err;
  }
  
+ /**
 -- 
 2.39.2
 
