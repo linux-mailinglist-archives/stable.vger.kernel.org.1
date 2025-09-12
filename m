@@ -1,275 +1,143 @@
-Return-Path: <stable+bounces-179376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEBE1B55394
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 17:30:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1864CB553A2
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 17:32:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3DFF3B79BC
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 15:30:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A44CDAC7A54
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 15:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA50B312817;
-	Fri, 12 Sep 2025 15:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CBB314A92;
+	Fri, 12 Sep 2025 15:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fejmX1cB"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="kdKFwO9D"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.65.3.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0889420E702
-	for <stable@vger.kernel.org>; Fri, 12 Sep 2025 15:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C1D31354D;
+	Fri, 12 Sep 2025 15:31:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.65.3.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757691023; cv=none; b=TFnHPCVwXl+GHElfd0OGNf6O6nDkn+SvLpXZfaxYBianfjCs+0CuPiYTVSOt+Iafc5cZL3+XhZ35lP+S3GPfuEgr4QH90h0JYQ1aAVl4HSSB0/f2i4bsX44FifrYU0HxylNfTgQV3YOGY7gcvGBAzyZK/x+eN7SZ9ChvabiSoAM=
+	t=1757691068; cv=none; b=AQzHR720Rq0guHpyE/94B5FPpG8x+pd1I7E9qY6AoDgZxSn6PgMdQiat0/vX/IJBlW6cHdDDy8Y7YjBgupfgFLVXaLaM6nlRHM1al0VNtf+oLgdhtAs51aIVcjcDxemJYjvmDRLJOvMkFI+72Hf9AnPQ63A6q/XomJW8ZGyJ8wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757691023; c=relaxed/simple;
-	bh=xG0xQio8EPzsul4Ghf8rz0UL2N3MlY4xJdVEYnW3vwk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=loHTQkj+bXtRK8gQdoRXOzbrgehIhsMa4Z0R93cMQS4b6G1VBboHY8RGbGvAZCt0P2lFoeteeRihElKO23m3UelgMV4C9DXOtbIZ155giU/t4WXUjELmL1i7zWtKnfXrBE4VYu8NmALDj+AGucgrDO91WD8NX2Gxg8AO9x+/D7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fejmX1cB; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757691020;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P1U2VojtPokeUk+tdxQA3A5MwzgzqZJ7HiBkhr5RCN8=;
-	b=fejmX1cBqkzun5uJyEGLHjXSM49MfWVISG6NvgqVjQbISgE2/Qmp7pzkMYtspEcopwtCH9
-	q1nBMLUEOdvGwaq7DUY4+9+TPUN5C4hU+uMnLlWNSBh1W/xRQBeufBuG1btEaVG21bNyYH
-	pjMAutAQ4XV8Ga80TW7hiiwVtX1sIUo=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-507-jNuftEcTNeuVy6bv2cmxbw-1; Fri, 12 Sep 2025 11:30:18 -0400
-X-MC-Unique: jNuftEcTNeuVy6bv2cmxbw-1
-X-Mimecast-MFC-AGG-ID: jNuftEcTNeuVy6bv2cmxbw_1757691017
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45df7e734e0so13017415e9.0
-        for <stable@vger.kernel.org>; Fri, 12 Sep 2025 08:30:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757691017; x=1758295817;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P1U2VojtPokeUk+tdxQA3A5MwzgzqZJ7HiBkhr5RCN8=;
-        b=IdHgOHq3cMjSNUk+lM1J4lJsUf0R3CN19PJJpAh5DMaxrzr39mMn79Hq4xBaibgMSK
-         cekIaytWOmHBHkwECB2d2zUFDOP6LuzZp5p3FzTIWyWy3sBNnsFOtt5+UXbj8P9/hox7
-         tYCbL4qrtMGKOQ4PDuLdawsA/rzNA9GI3CPTxueOnGRWsIMPEls9lJDW/ynpUmzZnhAt
-         GpAIAIfdYIlt/lTy87u1zGrhXE+j0D9XgLOc156SlUh3Ic0N/dVztM9c2+FNNo0wUAiJ
-         8jZarXsEkoooCU5FkwDVv6T0pQPiLblcE2Dmkyc1XEqnNGbQkI4MbhjMniAp0tRNP+sr
-         e5mg==
-X-Forwarded-Encrypted: i=1; AJvYcCXTxYtZR/nVVRJcLzQsEnJXGbM3nsz5XRCOQHRWcCP7NbxfsZZdgBr/DIFYuF4k2TvVAIqZXnw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZZUoHumkditjBI2od9Di1s2iVooNwfSsjisNQ/pYYQ5Pw0jF5
-	8D5yMe+/M9dKQ7CufWRP4xYThgDUborWfSL7NqBLNRLSTqdom/hfC0FBYvd1+7IY0fEYVxOMZuq
-	kbOd4Xm+qbrHCs+flUZnOpkX0FrxYSqEN4fQtcc/dXbwp1ymkUUlLS5ZQRovZBCumvw==
-X-Gm-Gg: ASbGnctXr4sRV1ponWwMAMBXJ6z165wSZYybBXot2dKFTDOLdfkrWY85QrSq57jhHjE
-	e2fPLFRXd+K7a9DE3FNJMSchg049bQOKnS+EmFaNZgU3WbrweCxZUo6nF3hI2H0XB3MsZBUyGmn
-	XZiW4sz3WzVLtVxS9CXSn3n7JKsXIs61r/KCl0NYhOSz/FMvpolBZGcnoXTJym82beXVMVYTNip
-	Bd9kfmuCiBCE924hskg+VC4rLJxV6zA6KqbvnFJG4WinAIeUGIELXUKP6FmcE9SCR8yNJzXcUYz
-	y7IlifptxJYz3z4W64SdBoyssSWzBspTu0k=
-X-Received: by 2002:a05:600c:c4aa:b0:45d:f7f9:9ac7 with SMTP id 5b1f17b1804b1-45f211c4cf0mr42590735e9.6.1757691017205;
-        Fri, 12 Sep 2025 08:30:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHuVm8pd2LL97DReTjaXXQ9ger3Xdm5br919kQs5cKISKVwPT+FYYKJCNez4asltdGHaL4cTA==
-X-Received: by 2002:a05:600c:c4aa:b0:45d:f7f9:9ac7 with SMTP id 5b1f17b1804b1-45f211c4cf0mr42590345e9.6.1757691016755;
-        Fri, 12 Sep 2025 08:30:16 -0700 (PDT)
-Received: from redhat.com ([2a06:c701:73e7:4d00:2294:2331:c6cf:2fde])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e015bf73csm34789585e9.11.2025.09.12.08.30.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Sep 2025 08:30:16 -0700 (PDT)
-Date: Fri, 12 Sep 2025 11:30:12 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jon Kohler <jon@nutanix.com>
-Cc: Jason Wang <jasowang@redhat.com>,
-	"eperezma@redhat.com" <eperezma@redhat.com>,
-	"jonah.palmer@oracle.com" <jonah.palmer@oracle.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH net 2/2] vhost-net: correctly flush batched packet before
- enabling notification
-Message-ID: <20250912112726-mutt-send-email-mst@kernel.org>
-References: <20250912082658.2262-1-jasowang@redhat.com>
- <20250912082658.2262-2-jasowang@redhat.com>
- <20250912044523-mutt-send-email-mst@kernel.org>
- <63426904-881F-4725-96F5-3343389ED170@nutanix.com>
+	s=arc-20240116; t=1757691068; c=relaxed/simple;
+	bh=7TA3xc19CvF3ExK6/0kUO1lbjqcgIkmvqrZHzJNZXo4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AFf18P5pyN+rYSseCUYe3zf/U+W0sLTmUjjodxCOzl7BVS9Iu6pqbJVx5OHo+UuIxz5bEl5+IOBaVZcApGfiLrXLtcHTzm22Nxccz0Ghs9vvTnYIz98H9JYm3gg/ONc93x+PxpPRZyn3stJMCqW+CKqKP9I6mOljvhORYqfuIt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=kdKFwO9D; arc=none smtp.client-ip=3.65.3.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1757691066; x=1789227066;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=FvMhpA+UyxM428Kyi4yOOoUDP/xqifkcOGmJkfBcvpE=;
+  b=kdKFwO9DCAVx9V1P6LHYjufeHnO9vIjPG+i6aEcHHstPHHA/3fHMVyW2
+   D8mGmUFZ7jBriVrItH486SwI5mp9sqIie7T+WUZKkbez6M+ZFsBUyzJnP
+   MBch1CNPqcywWyLUf3QF0ETpa5PaRogyJI6X4MzqT+W4ihzMSwQnldDqX
+   CgrZGywJ3aLp/VIQ+VKOSuyoNjLSrVX9fTP7HfDVxOy42VAlo9DeEb7CC
+   MSx+qqXv8PWjemfUdFqE1G5zvD42YTIJF+S5SqQfciDFP6+Nt7bPux5LD
+   haOYrksEWJFSFfs53c0Nf2uBIPAcMp/hymSzru5BVIteTDaoVeFZDK8S0
+   Q==;
+X-CSE-ConnectionGUID: A6dI1L0RToOFypwEEZ9CPg==
+X-CSE-MsgGUID: UGYZ00eMRb6jee7h+ESh+A==
+X-IronPort-AV: E=Sophos;i="6.18,259,1751241600"; 
+   d="scan'208";a="2031910"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 15:30:55 +0000
+Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.232:3432]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.1.255:2525] with esmtp (Farcaster)
+ id f0285c8b-2da1-427e-9ebe-cdcdb5fa3926; Fri, 12 Sep 2025 15:30:54 +0000 (UTC)
+X-Farcaster-Flow-ID: f0285c8b-2da1-427e-9ebe-cdcdb5fa3926
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19MTAEUB002.ant.amazon.com (10.252.51.79) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Fri, 12 Sep 2025 15:30:52 +0000
+Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
+ (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 12 Sep 2025
+ 15:30:46 +0000
+From: Eliav Farber <farbere@amazon.com>
+To: <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <mingo@redhat.com>,
+	<natechancellor@gmail.com>, <ndesaulniers@google.com>,
+	<keescook@chromium.org>, <sashal@kernel.org>, <akpm@linux-foundation.org>,
+	<ojeda@kernel.org>, <elver@google.com>, <gregkh@linuxfoundation.org>,
+	<kbusch@kernel.org>, <sj@kernel.org>, <bvanassche@acm.org>,
+	<leon@kernel.org>, <jgg@ziepe.ca>, <linux-kernel@vger.kernel.org>,
+	<linux-sparse@vger.kernel.org>, <clang-built-linux@googlegroups.com>,
+	<stable@vger.kernel.org>
+CC: <jonnyc@amazon.com>, <farbere@amazon.com>
+Subject: [PATCH v2 0/4 5.10.y] overflow: Allow mixed type arguments in overflow macros
+Date: Fri, 12 Sep 2025 15:30:34 +0000
+Message-ID: <20250912153040.26691-1-farbere@amazon.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <63426904-881F-4725-96F5-3343389ED170@nutanix.com>
+X-ClientProxiedBy: EX19D044UWA004.ant.amazon.com (10.13.139.7) To
+ EX19D018EUA004.ant.amazon.com (10.252.50.85)
 
-On Fri, Sep 12, 2025 at 03:24:42PM +0000, Jon Kohler wrote:
-> 
-> 
-> > On Sep 12, 2025, at 4:50 AM, Michael S. Tsirkin <mst@redhat.com> wrote:
-> > 
-> > !-------------------------------------------------------------------|
-> >  CAUTION: External Email
-> > 
-> > |-------------------------------------------------------------------!
-> > 
-> > On Fri, Sep 12, 2025 at 04:26:58PM +0800, Jason Wang wrote:
-> >> Commit 8c2e6b26ffe2 ("vhost/net: Defer TX queue re-enable until after
-> >> sendmsg") tries to defer the notification enabling by moving the logic
-> >> out of the loop after the vhost_tx_batch() when nothing new is
-> >> spotted. This will bring side effects as the new logic would be reused
-> >> for several other error conditions.
-> >> 
-> >> One example is the IOTLB: when there's an IOTLB miss, get_tx_bufs()
-> >> might return -EAGAIN and exit the loop and see there's still available
-> >> buffers, so it will queue the tx work again until userspace feed the
-> >> IOTLB entry correctly. This will slowdown the tx processing and may
-> >> trigger the TX watchdog in the guest.
-> > 
-> > It's not that it might.
-> > Pls clarify that it *has been reported* to do exactly that,
-> > and add a link to the report.
-> > 
-> > 
-> >> Fixing this by stick the notificaiton enabling logic inside the loop
-> >> when nothing new is spotted and flush the batched before.
-> >> 
-> >> Reported-by: Jon Kohler <jon@nutanix.com>
-> >> Cc: stable@vger.kernel.org
-> >> Fixes: 8c2e6b26ffe2 ("vhost/net: Defer TX queue re-enable until after sendmsg")
-> >> Signed-off-by: Jason Wang <jasowang@redhat.com>
-> > 
-> > So this is mostly a revert, but with
-> >                     vhost_tx_batch(net, nvq, sock, &msg);
-> > added in to avoid regressing performance.
-> > 
-> > If you do not want to structure it like this (revert+optimization),
-> > then pls make that clear in the message.
-> > 
-> > 
-> >> ---
-> >> drivers/vhost/net.c | 33 +++++++++++++--------------------
-> >> 1 file changed, 13 insertions(+), 20 deletions(-)
-> >> 
-> >> diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-> >> index 16e39f3ab956..3611b7537932 100644
-> >> --- a/drivers/vhost/net.c
-> >> +++ b/drivers/vhost/net.c
-> >> @@ -765,11 +765,11 @@ static void handle_tx_copy(struct vhost_net *net, struct socket *sock)
-> >> int err;
-> >> int sent_pkts = 0;
-> >> bool sock_can_batch = (sock->sk->sk_sndbuf == INT_MAX);
-> >> - bool busyloop_intr;
-> >> bool in_order = vhost_has_feature(vq, VIRTIO_F_IN_ORDER);
-> >> 
-> >> do {
-> >> - busyloop_intr = false;
-> >> + bool busyloop_intr = false;
-> >> +
-> >> if (nvq->done_idx == VHOST_NET_BATCH)
-> >> vhost_tx_batch(net, nvq, sock, &msg);
-> >> 
-> >> @@ -780,10 +780,18 @@ static void handle_tx_copy(struct vhost_net *net, struct socket *sock)
-> >> break;
-> >> /* Nothing new?  Wait for eventfd to tell us they refilled. */
-> >> if (head == vq->num) {
-> >> - /* Kicks are disabled at this point, break loop and
-> >> - * process any remaining batched packets. Queue will
-> >> - * be re-enabled afterwards.
-> >> + /* Flush batched packets before enabling
-> >> + * virqtueue notification to reduce
-> >> + * unnecssary virtqueue kicks.
-> > 
-> > typos: virtqueue, unnecessary
-> > 
-> >> */
-> >> + vhost_tx_batch(net, nvq, sock, &msg);
-> >> + if (unlikely(busyloop_intr)) {
-> >> + vhost_poll_queue(&vq->poll);
-> >> + } else if (unlikely(vhost_enable_notify(&net->dev,
-> >> + vq))) {
-> >> + vhost_disable_notify(&net->dev, vq);
-> >> + continue;
-> >> + }
-> >> break;
-> >> }
-> 
-> See my comment below, but how about something like this?
->  		if (head == vq->num) {
-> 			/* Flush batched packets before enabling
-> 			 * virtqueue notification to reduce
-> 			 * unnecessary virtqueue kicks.
-> 			 */
-> 			vhost_tx_batch(net, nvq, sock, &msg);
-> 			if (unlikely(busyloop_intr))
-> 				/* If interrupted while doing busy polling,
-> 				 * requeue the handler to be fair handle_rx
-> 				 * as well as other tasks waiting on cpu.
-> 				 */
-> 				vhost_poll_queue(&vq->poll);
-> 			else
-> 				/* All of our work has been completed;
-> 				 * however, before leaving the TX handler,
-> 				 * do one last check for work, and requeue
-> 				 * handler if necessary. If there is no work,
-> 				 * queue will be reenabled.
-> 				 */
-> 				vhost_net_busy_poll_try_queue(net, vq);
+This series backports four commits to bring include/linux/overflow.h in
+line with v5.15.193:
+ - 2541be80b1a2 ("overflow: Correct check_shl_overflow() comment")
+ - 564e84663d25 ("compiler.h: drop fallback overflow checkers")
+ - 1d1ac8244c22 ("overflow: Allow mixed type arguments")
+ - f96cfe3e05b0 ("tracing: Define the is_signed_type() macro once")
 
+The motivation is to fix build failures such as:
 
-I mean it's functionally equivalent, but vhost_net_busy_poll_try_queue 
-checks the avail ring again and we just checked it.
-Why is this a good idea?
-This happens on good path so I dislike unnecessary work like this.
+drivers/net/ethernet/intel/e1000e/ethtool.c: In function ‘e1000_set_eeprom’:
+./include/linux/overflow.h:71:15: error: comparison of distinct pointer types lacks a cast [-Werror]
+   71 |  (void) (&__a == __d);   \
+      |               ^~
+drivers/net/ethernet/intel/e1000e/ethtool.c:582:6: note: in expansion of macro ‘check_add_overflow’
+  582 |  if (check_add_overflow(eeprom->offset, eeprom->len, &total_len) ||
+      |      ^~~~~~~~~~~~~~~~~~
 
+This regression was triggered by commit ce8829d3d44b ("e1000e: fix heap
+overflow in e1000_set_eeprom").
 
->  			break;
->  		}
-> 
-> 
-> >> 
-> >> @@ -839,22 +847,7 @@ static void handle_tx_copy(struct vhost_net *net, struct socket *sock)
-> >> ++nvq->done_idx;
-> >> } while (likely(!vhost_exceeds_weight(vq, ++sent_pkts, total_len)));
-> >> 
-> >> - /* Kicks are still disabled, dispatch any remaining batched msgs. */
-> >> vhost_tx_batch(net, nvq, sock, &msg);
-> >> -
-> >> - if (unlikely(busyloop_intr))
-> >> - /* If interrupted while doing busy polling, requeue the
-> >> - * handler to be fair handle_rx as well as other tasks
-> >> - * waiting on cpu.
-> >> - */
-> >> - vhost_poll_queue(&vq->poll);
-> >> - else
-> >> - /* All of our work has been completed; however, before
-> >> - * leaving the TX handler, do one last check for work,
-> >> - * and requeue handler if necessary. If there is no work,
-> >> - * queue will be reenabled.
-> >> - */
-> >> - vhost_net_busy_poll_try_queue(net, vq);
-> 
-> Note: the use of vhost_net_busy_poll_try_queue was intentional in my
-> patch as it was checking to see both conditionals.
-> 
-> Can we simply hoist my logic up instead?
-> 
-> >> }
-> >> 
-> >> static void handle_tx_zerocopy(struct vhost_net *net, struct socket *sock)
-> >> -- 
-> >> 2.34.1
-> > 
-> 
-> Tested-by: Jon Kohler <jon@nutanix.com <mailto:jon@nutanix.com>>
-> 
-> Tried this out on a 6.16 host / guest that locked up with iotlb miss loop,
-> applied this patch and all was well. 
+check_add_overflow() requires the first two operands and the result
+pointer to be of identical type. On 64-bit builds, using size_t for the
+result conflicted with the u32 fields eeprom->offset and eeprom->len,
+resulting in type check failures.
+
+BarteVan Assche (1):
+  tracing: Define the is_signed_type() macro once
+
+Kees Cook (1):
+  overflow: Allow mixed type arguments
+
+Keith Busch (1):
+  overflow: Correct check_shl_overflow() comment
+
+Nick Desaulniers (1):
+  compiler.h: drop fallback overflow checkers
+
+ include/linux/compiler-clang.h     |  13 --
+ include/linux/compiler-gcc.h       |   4 -
+ include/linux/compiler.h           |   6 +
+ include/linux/overflow.h           | 209 ++++++-----------------------
+ include/linux/trace_events.h       |   2 -
+ tools/include/linux/compiler-gcc.h |   4 -
+ tools/include/linux/overflow.h     | 140 +------------------
+ 7 files changed, 52 insertions(+), 326 deletions(-)
+
+---
+Changes in v2:
+ - Added missing sign-off in all patches
+
+-- 
+2.47.3
 
 
