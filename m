@@ -1,111 +1,147 @@
-Return-Path: <stable+bounces-179315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5B7B53EB7
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 00:33:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1C8B53F62
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 02:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB0C13BBDDB
-	for <lists+stable@lfdr.de>; Thu, 11 Sep 2025 22:33:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EC3A1B2574F
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 00:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B662E3B11;
-	Thu, 11 Sep 2025 22:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0B43207;
+	Fri, 12 Sep 2025 00:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TePLdTuG"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="hiEsnjSn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F1F1EA7DD
-	for <stable@vger.kernel.org>; Thu, 11 Sep 2025 22:33:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E411114
+	for <stable@vger.kernel.org>; Fri, 12 Sep 2025 00:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757630000; cv=none; b=EAKbikE4hyByhHtuzhMXe8+wnHlBK+mLjbHf7hLar39hd2/hbVbMDl8jBh3KPFeEQ6Eo8Zc3sG2QX1ESvg7HXVUOtgO1Xm9dDYrprVemjryAuSjXTOfE4bPjuApNqraFp3eCryp+IVn2J0IiMW/1DUCLI4fT8F7UY2pWG5O1DMw=
+	t=1757635582; cv=none; b=AH7S3ZQz6mlyqh75kvn5s04WpSqx+I/jdUnADEO3JbDc4TU7ZXh/aw6rq+c9CCwcR+Ks280umCOyoCyum2PJguSXMY2b/4HMsWigLuUIx5s8qUSKP5Z6E+fPOH8uJma9/TUj8zw3wtdaxBteYZpbvAezBAVmythDxpk/HmSFukE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757630000; c=relaxed/simple;
-	bh=tfwVIX/6aF8q+dXSD+qNcn/V3k9oPkh8n78oVHGeNbU=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=PmYY+qWVtZS9AhBSt0br4r6lpjBoXQPM7/PCQKwAKPxBzot+5YUI9xj62cTYlq0vo/pimOzra69/qnV/iJpOSRTLtvyUhiJF7tTIK9IhaFdgN9nqFX4zjB7WDnmFhO87fSANVzg50HnSDYWm8ofRAyjB/vVk2TKuj6j+L1njFxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TePLdTuG; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4b48eabaef3so12473091cf.1
-        for <stable@vger.kernel.org>; Thu, 11 Sep 2025 15:33:18 -0700 (PDT)
+	s=arc-20240116; t=1757635582; c=relaxed/simple;
+	bh=+6OPioA90E5nzaoCC+gocHUjf3q9Y81ZBY0L3e9+kGc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TtrwfOsLemDXhhAk0Rpa5Cw21DAQTxM4oGfaRhubcnrkD5SbsK5rNGslbCx5XNchHuLlqYqFVoCf4ua4ldOM+nvV9iD8aPn6+D9RzofbykMoHcQP0pDWdDtBcGunODmFMsWVUVQl3Nje5YUj9fmfOTov0iLox//Wh0am3agS5Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=hiEsnjSn; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-45e03730f83so5693205e9.0
+        for <stable@vger.kernel.org>; Thu, 11 Sep 2025 17:06:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757629997; x=1758234797; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=O9RiA6yXEHDHT8h+ndmxEz5Ynac297GR1p7HFDs94Z0=;
-        b=TePLdTuGEshyYmddTAszPfWzqDPyxccgfD32gSteopy+nYUsc+Cl4SRSgo+PzLiaxV
-         h2Pjl7/Ofhdo/4AMtV5WH2EfX/Sdk2N0EEeCUXkplRw0HP+rUfErGTXckvtcW3WaPCal
-         za2bsu5x00/6dgHQjkSnesL+Pc3UqW/TtJvN/CpGqYLPU9J9nqQVSWzaXKt3MjPi9Q9Y
-         j31TGNZ/3WdKnGgKALldPjRhmIHOTRL230ZZIxUD1e/n0LyOpNdi28ZwJWAg4sanzOnx
-         zATNaqdjho75dgYt1suTBFB+84aRdsSIA+od276gxyOfgYKvopgRfwa1gcY4CK6hFnHW
-         YTOA==
+        d=ionos.com; s=google; t=1757635579; x=1758240379; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XQ+S/AjoUpa12H97dfICorV7t0bCnG6lmMpJwiBX4/M=;
+        b=hiEsnjSnXJkdG+/RtNT366LSZzvjAwyUEGkOMnZJ6N1n5L/VoAgcfYKXOJokKU/XVC
+         /70FCgZhpTNpgyRefQykB6jpm8eDsSZULJVIlhYJufSFdjVV85bCKRHAulVYIDdf7bwV
+         iwYVXw35L+T5HpnUTIui7eGYv6e4prsMqf75NTUTAlsXHX/cdP++uLmZ9PDj2oiU/oRq
+         VephEKI37yD6OhpB5ItMEav7c05y0YuG6Ls2RfyiJIknh00RNOnMiQ4T0aPKiLECc5w5
+         Oudhz7JDhkhkwbvn2PxyaatsnP0v8eAMlS1D5HzGig1pOSSg9KKRJFK3RRfVwi6aAR4M
+         EGFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757629997; x=1758234797;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=O9RiA6yXEHDHT8h+ndmxEz5Ynac297GR1p7HFDs94Z0=;
-        b=gdqQPsF0qqsZidS/vGsMqPTcFwoUeHMwvthu6phzaBo64RxJiq2JCI3HEzYRYKbcG3
-         904pwqV1am91go1izbK3GjEH81Oa3lmIx/HJqN9c9nEHGDPjQNK0FWZLKNVUiLRghv0e
-         ntnC8DhOavOFABLZ4Hq5qy9BtWj1tqbZe323Hj3Afb7rLRu3q3vhRPMFs47am2Bmy49K
-         UOjTeM7eJ0rROE9HuXWTVqZV/959DZpF3Tlu5ZYpc1pknGNVyaF/4efvIm2e9Ikh5wAA
-         C5Tcx7HgMokM3JbT3GFWFBIz6PjGcBSclPXL0c5ScJBSuRwgZEMlbsFJYtVDSdM0hsfy
-         U1QQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUmupZYCLdUf7LQJlnNz5TDmEirwiQgMOinqvPtQypPM57UJ5N6U3AefZhiUMb6JrOmukYkxRU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgOQl1n/w+tn7wItOq4J0lv/qrAnyCPJao0zzl4DE//UYHaAy1
-	GQR/SbOit/r8FXPi6xFRgFm6TsETcyBd8YgfvV5kzFA9qPqdg9Z4yzXQsCt6QnxSdHftDb7TyYM
-	U24FAqLMbBwze2oQh2AbBhnOURmI2NQ==
-X-Gm-Gg: ASbGncv60P9GIxH943p6lo+uRxvWitn/6ZQsnkgq0g0E0rCMIg6ETRzGfm9FNTLx28U
-	qPdpKw1LpdytswwMVr+n0jhsf0iWRVs8yll1ZF8F40JTzu7FPdefgzT8yhKn/FVPvEz0caT2oaT
-	JWHNcEYYrwCWVV4CYowa1Mw57u6o8OivjPyDAC9jiIa2aXgti0pypT+0o4cK0n1856RaWAYQppP
-	Ob3Emi1dhDQysUz5W1YRRKBAeWI2W5ot+E2Xg==
-X-Google-Smtp-Source: AGHT+IEnrDVO4+lV8w6iWfIZCxXDIuclhgzZoIttDg43rhxpZYOb0colikAb9y8fqVSyqkYQMbfLyxBIW6oIo8EZuZg=
-X-Received: by 2002:ac8:5882:0:b0:4b6:33e6:bc04 with SMTP id
- d75a77b69052e-4b77d05a075mr10977771cf.60.1757629997478; Thu, 11 Sep 2025
- 15:33:17 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1757635579; x=1758240379;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XQ+S/AjoUpa12H97dfICorV7t0bCnG6lmMpJwiBX4/M=;
+        b=GAhNWXiX3VpKAnPnuGZ2Hi/cvotxRRhN3LXbQY3l3QFOEBWgGXxF5OMsCNOYSI2EXH
+         tE6+Zgwa8z06z0fy4FSpsnZLsPAGTGPwOAywhdhquZ6W9awSs1JBEat419xUojLPT3GD
+         mLWeV7jqRcMjtPDwX8kZNEokiezdPsHAtVfCnMph9aivx/oWf//r6GGy/QwwlG7odyPw
+         EigVOxdev8pxkDaYzAa38xkFhmBST78yhFRUz1dxUr6tU83gPOKTtG34zWKiadF1yWr/
+         yjoWiylViVFeLm3Cgq3Fu1pQfm0xr3F4mj6vGquDCRkagrp/kbME+pNRSOqq+0rvMuXD
+         IhvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXt2ep5MAwmBojCpznCxrEQ19k9EToDRRr4phkvIl5tYR3OlMYl92wOlODYxwWVivTdlhQp/k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx60ySDL/B7vcKbkItueSfmG0IN5ORCCk9jRDjE2RjCWL9Qe/dt
+	rEabY5l8DelwmFWJaLPGZRD8JigJjv35YjnhgMHpqPEVgCG6tjqFyKMEKqVgKxQn3iA=
+X-Gm-Gg: ASbGncv2529GWURWa/IttSxmXJeAB3uLdY6JemK44Zq0PvxAFM9rtB26tZWWObbK7KM
+	7uYP4JZYl/qf9iW5ovZIjWU2s1gmzzKEBefCxmVLEdcXOKogh7zl3B7oZvj954JH+d7Ruu/vqEs
+	scAkXBr50MwzGqY5AQshjoGtAKiMNNvGnRP9qOvWXQ/MX4KjduSZh1AGBbEFPKYdztXhUCfDPUy
+	g/7TRa4030oO7mclc5miz77bQqiVK/WxaSzrb7bSnxxa7m591wiyvRxW1erkzhVyMRl2Te1v2/2
+	GyNgQzuyA01aikqiUSHiz1KJbCPwyraIptsW/f8LCNMwC4OJauFWZ+Kg/swEYd6W2hDj9vaZ3SD
+	25dg2XO5yG6/sWsBxZypclZ/O5nUWTEqwi7Wy86gQ2UC8JYtEpbY8XDZaQS8WLrjrEnnXvUizPr
+	xz3oWH9kCYg7/8fmo+4qzIhV0oUS60QvUSo/lip8Pie9lP
+X-Google-Smtp-Source: AGHT+IFskXhj3JotjTK7+H0Jl9VGIBaJvG/P81CDfESkKjEB2nYSiqffBM8TrVpfVHiNaEyyyaOlqA==
+X-Received: by 2002:a05:600c:1f8b:b0:45b:47e1:ef71 with SMTP id 5b1f17b1804b1-45f21221db1mr10323485e9.36.1757635578608;
+        Thu, 11 Sep 2025 17:06:18 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f31f700023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f31:f700:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e0157cc84sm22899865e9.7.2025.09.11.17.06.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Sep 2025 17:06:18 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: Jens Axboe <axboe@kernel.dk>,
+	Fengnan Chang <changfengnan@bytedance.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Diangang Li <lidiangang@bytedance.com>,
+	io-uring@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] io_uring/io-wq: fix `max_workers` breakage and `nr_workers` underflow
+Date: Fri, 12 Sep 2025 02:06:09 +0200
+Message-ID: <20250912000609.1429966-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Nick <morrownr@gmail.com>
-Date: Thu, 11 Sep 2025 17:32:51 -0500
-X-Gm-Features: Ac12FXygJeDcVZEzEZ6tNZ2GzztUR_Iy_WRSM8Yz3VrsyLOEDAY53SZuAkdFCf4
-Message-ID: <CAFktD2fBPP_RQQ6OpL6NZy8rqn9jF=BCGOSiEMQNtw5c6MzwPg@mail.gmail.com>
-Subject: [PATCH wireless-next] wifi: mt76: mt7921u: Add VID/PID for Netgear A7500
-To: Autumn Dececco <autumndececco@gmail.com>, Felix Fietkau <nbd@nbd.name>, 
-	linux-wireless <linux-wireless@vger.kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Add VID/PID 0846/9065 for Netgear A7500.
+Commit 88e6c42e40de ("io_uring/io-wq: add check free worker before
+create new worker") reused the variable `do_create` for something
+else, abusing it for the free worker check.
 
-Reported-by: Autumn Dececco <autumndececco@gmail.com>
-Tested-by: Autumn Dececco <autumndececco@gmail.com>
-Signed-off-by: Nick Morrow <morrownr@gmail.com>
+This caused the value to effectively always be `true` at the time
+`nr_workers < max_workers` was checked, but it should really be
+`false`.  This means the `max_workers` setting was ignored, and worse:
+if the limit had already been reached, incrementing `nr_workers` was
+skipped even though another worker would be created.
+
+When later lots of workers exit, the `nr_workers` field could easily
+underflow, making the problem worse because more and more workers
+would be created without incrementing `nr_workers`.
+
+The simple solution is to use a different variable for the free worker
+check instead of using one variable for two different things.
+
 Cc: stable@vger.kernel.org
+Fixes: 88e6c42e40de ("io_uring/io-wq: add check free worker before create new worker")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/usb.c | 3 +++
- 1 file changed, 3 insertions(+)
+ io_uring/io-wq.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-index fe9751851ff7..100bdba32ba5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
-@@ -21,6 +21,9 @@ static const struct usb_device_id mt7921u_device_table[] = {
-  /* Netgear, Inc. [A8000,AXE3000] */
-  { USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9060, 0xff, 0xff, 0xff),
-  .driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
-+ /* Netgear, Inc. A7500 */
-+ { USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9065, 0xff, 0xff, 0xff),
-+ .driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
-  /* TP-Link TXE50UH */
-  { USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0107, 0xff, 0xff, 0xff),
-  .driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
+index 17dfaa0395c4..1d03b2fc4b25 100644
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -352,16 +352,16 @@ static void create_worker_cb(struct callback_head *cb)
+ 	struct io_wq *wq;
+ 
+ 	struct io_wq_acct *acct;
+-	bool do_create = false;
++	bool activated_free_worker, do_create = false;
+ 
+ 	worker = container_of(cb, struct io_worker, create_work);
+ 	wq = worker->wq;
+ 	acct = worker->acct;
+ 
+ 	rcu_read_lock();
+-	do_create = !io_acct_activate_free_worker(acct);
++	activated_free_worker = io_acct_activate_free_worker(acct);
+ 	rcu_read_unlock();
+-	if (!do_create)
++	if (activated_free_worker)
+ 		goto no_need_create;
+ 
+ 	raw_spin_lock(&acct->workers_lock);
 -- 
 2.47.3
+
 
