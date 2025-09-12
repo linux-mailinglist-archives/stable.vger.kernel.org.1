@@ -1,95 +1,156 @@
-Return-Path: <stable+bounces-179407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EEFAB559EB
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 01:12:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 125BAB55A73
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 01:46:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FE771D62BFE
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 23:12:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9BB37BE2F1
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 23:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB8B2737E3;
-	Fri, 12 Sep 2025 23:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A5F28469B;
+	Fri, 12 Sep 2025 23:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HdPbYmdq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp112.iad3b.emailsrvr.com (smtp112.iad3b.emailsrvr.com [146.20.161.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9AFA26C38D
-	for <stable@vger.kernel.org>; Fri, 12 Sep 2025 23:11:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=146.20.161.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F055D19258E;
+	Fri, 12 Sep 2025 23:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757718720; cv=none; b=njhwHcuMbOa24I1vS4SnQFXaWkZAeoEguTZyNUndd0avw1m230FE514VT90uAUEGfjQOWUYpck5uQiEoGfhUTlc7RKxBkw1ABV3e3YpWuOGU09PkSfEkh+91aPiYvdwAa/dBrQv0n5R+4hfGZHyoSwwoRqP/VMCBwuWEpeax0ww=
+	t=1757720754; cv=none; b=eWSwM5Jd6IYqoGbioqJmWTAA4J83yV/jwJEfgdeyp1HZ2Aaq26hHtKgm9OPFBf1xvfc2qKAziG8bai+3+roCr+E7hC4N5q1vdgGXXu33J/N7ODXE2f0jBsIuwiLghjs5NkGJQDHDVjSZutSwQbCEOAN7pOX7ni3uEwaoFmYbiSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757718720; c=relaxed/simple;
-	bh=hE+fyc17Us+8QSOLwzpmXRK0Fk55uV0gwwS1mmAUMjM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GTrTCseKqU8AeflpYp8ARTruYoDX2pxLw8iHxxTmjI8kHZkPBUqLxiMs+5glH07WiBJJIKW1zAIcu0jyyViOcxEuIqEmvt276Jv0w1IUV4vh8Nq/mQd+a/nbtJvcq1mq9n9MWDtlDsPUJDxJG5M4ysTJ40W454Qif+YcWpl/n7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=whitecape.org; spf=pass smtp.mailfrom=whitecape.org; arc=none smtp.client-ip=146.20.161.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=whitecape.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=whitecape.org
-X-Auth-ID: kenneth@whitecape.org
-Received: by smtp23.relay.iad3b.emailsrvr.com (Authenticated sender: kenneth-AT-whitecape.org) with ESMTPSA id D7C1DA0290;
-	Fri, 12 Sep 2025 18:32:59 -0400 (EDT)
-From: Kenneth Graunke <kenneth@whitecape.org>
-To: intel-xe@lists.freedesktop.org
-Cc: Kenneth Graunke <kenneth@whitecape.org>,
-	stable@vger.kernel.org,
-	Maarten Lankhorst <dev@lankhorst.se>
-Subject: [PATCH] drm/xe: Increase global invalidation timeout to 1000us
-Date: Fri, 12 Sep 2025 15:31:45 -0700
-Message-ID: <20250912223254.147940-1-kenneth@whitecape.org>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1757720754; c=relaxed/simple;
+	bh=SOVAzC1jMb7cNXpuMxdlDIX2YS5nXeUAkLHtZaFcXVg=;
+	h=Date:To:From:Subject:Message-Id; b=p4LYhRBuuhUO+jJ8cDu6MjMgEM3RL05zRoItrT2/SUuLdCL7R81bRN0VItVid1r/M+9uQ5HbwNAZCDgT3dqpYGG4qe5MRjRjSWBvnL5jrtiMXb/Gf9uCuQ5anVi3YqtUBAaXZOSov49Mc21Kvt7TVdno3q65q7ZhsqBJwHPqmIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HdPbYmdq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657CFC4CEF1;
+	Fri, 12 Sep 2025 23:45:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757720753;
+	bh=SOVAzC1jMb7cNXpuMxdlDIX2YS5nXeUAkLHtZaFcXVg=;
+	h=Date:To:From:Subject:From;
+	b=HdPbYmdqSZvMukJDvKiS/0t2ialGvtOy2x4UMMFp7ZpHXlimDAlZlYxBp/RI0MRUd
+	 gQPB2WIFhH5OEEWG6GM+dsBfem4wTvtgYqNhDWw90jivczelyOG8d202IduT/vX+eO
+	 WX/Z4zFmWfC6NT43551I8EPBvX7KbNqh1Vw06o+U=
+Date: Fri, 12 Sep 2025 16:45:52 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,wangkefeng.wang@huawei.com,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@redhat.com,tujinjiang@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-hugetlb-fix-folio-is-still-mapped-when-deleted.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250912234553.657CFC4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Classification-ID: 0c9dd40c-3302-4f88-900b-9c1781919b47-1-1
 
-The previous timeout of 500us seems to be too small; panning the map in
-the Roll20 VTT in Firefox on a KDE/Wayland desktop reliably triggered
-timeouts within a few seconds of usage, causing the monitor to freeze
-and the following to be printed to dmesg:
 
-[Jul30 13:44] xe 0000:03:00.0: [drm] *ERROR* GT0: Global invalidation timeout
-[Jul30 13:48] xe 0000:03:00.0: [drm] *ERROR* [CRTC:82:pipe A] flip_done timed out
+The patch titled
+     Subject: mm/hugetlb: fix folio is still mapped when deleted
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-hugetlb-fix-folio-is-still-mapped-when-deleted.patch
 
-I haven't hit a single timeout since increasing it to 1000us even after
-several multi-hour testing sessions.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-fix-folio-is-still-mapped-when-deleted.patch
 
-Fixes: c0114fdf6d4a ("drm/xe: Move DSB l2 flush to a more sensible place")
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5710
-Signed-off-by: Kenneth Graunke <kenneth@whitecape.org>
-Cc: stable@vger.kernel.org
-Cc: Maarten Lankhorst <dev@lankhorst.se>
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Jinjiang Tu <tujinjiang@huawei.com>
+Subject: mm/hugetlb: fix folio is still mapped when deleted
+Date: Fri, 12 Sep 2025 15:41:39 +0800
+
+Migration may be raced with fallocating hole.  remove_inode_single_folio
+will unmap the folio if the folio is still mapped.  However, it's called
+without folio lock.  If the folio is migrated and the mapped pte has been
+converted to migration entry, folio_mapped() returns false, and won't
+unmap it.  Due to extra refcount held by remove_inode_single_folio,
+migration fails, restores migration entry to normal pte, and the folio is
+mapped again.  As a result, we triggered BUG in filemap_unaccount_folio.
+
+The log is as follows:
+ BUG: Bad page cache in process hugetlb  pfn:156c00
+ page: refcount:515 mapcount:0 mapping:0000000099fef6e1 index:0x0 pfn:0x156c00
+ head: order:9 mapcount:1 entire_mapcount:1 nr_pages_mapped:0 pincount:0
+ aops:hugetlbfs_aops ino:dcc dentry name(?):"my_hugepage_file"
+ flags: 0x17ffffc00000c1(locked|waiters|head|node=0|zone=2|lastcpupid=0x1fffff)
+ page_type: f4(hugetlb)
+ page dumped because: still mapped when deleted
+ CPU: 1 UID: 0 PID: 395 Comm: hugetlb Not tainted 6.17.0-rc5-00044-g7aac71907bde-dirty #484 NONE
+ Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 0.0.0 02/06/2015
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x4f/0x70
+  filemap_unaccount_folio+0xc4/0x1c0
+  __filemap_remove_folio+0x38/0x1c0
+  filemap_remove_folio+0x41/0xd0
+  remove_inode_hugepages+0x142/0x250
+  hugetlbfs_fallocate+0x471/0x5a0
+  vfs_fallocate+0x149/0x380
+
+Hold folio lock before checking if the folio is mapped to avold race with
+migration.
+
+Link: https://lkml.kernel.org/r/20250912074139.3575005-1-tujinjiang@huawei.com
+Fixes: 4aae8d1c051e ("mm/hugetlbfs: unmap pages if page fault raced with hole punch")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/gpu/drm/xe/xe_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This fixes my desktop which has been broken since 6.15.  Given that
-https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6097 was recently
-filed and they seem to need a timeout of 2000 (and are having somewhat
-different issues), maybe more work's needed here...but I figured I'd
-send out the fix for my system and let xe folks figure out what they'd
-like to do.  Thanks :)
+ fs/hugetlbfs/inode.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index a4d12ee7d575..6339b8800914 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -1064,7 +1064,7 @@ void xe_device_l2_flush(struct xe_device *xe)
- 	spin_lock(&gt->global_invl_lock);
+--- a/fs/hugetlbfs/inode.c~mm-hugetlb-fix-folio-is-still-mapped-when-deleted
++++ a/fs/hugetlbfs/inode.c
+@@ -517,14 +517,16 @@ static bool remove_inode_single_folio(st
  
- 	xe_mmio_write32(&gt->mmio, XE2_GLOBAL_INVAL, 0x1);
--	if (xe_mmio_wait32(&gt->mmio, XE2_GLOBAL_INVAL, 0x1, 0x0, 500, NULL, true))
-+	if (xe_mmio_wait32(&gt->mmio, XE2_GLOBAL_INVAL, 0x1, 0x0, 1000, NULL, true))
- 		xe_gt_err_once(gt, "Global invalidation timeout\n");
+ 	/*
+ 	 * If folio is mapped, it was faulted in after being
+-	 * unmapped in caller.  Unmap (again) while holding
+-	 * the fault mutex.  The mutex will prevent faults
+-	 * until we finish removing the folio.
++	 * unmapped in caller or hugetlb_vmdelete_list() skips
++	 * unmapping it due to fail to grab lock.  Unmap (again)
++	 * while holding the fault mutex.  The mutex will prevent
++	 * faults until we finish removing the folio.  Hold folio
++	 * lock to guarantee no concurrent migration.
+ 	 */
++	folio_lock(folio);
+ 	if (unlikely(folio_mapped(folio)))
+ 		hugetlb_unmap_file_folio(h, mapping, folio, index);
  
- 	spin_unlock(&gt->global_invl_lock);
--- 
-2.51.0
+-	folio_lock(folio);
+ 	/*
+ 	 * We must remove the folio from page cache before removing
+ 	 * the region/ reserve map (hugetlb_unreserve_pages).  In
+_
+
+Patches currently in -mm which might be from tujinjiang@huawei.com are
+
+mm-hugetlb-fix-folio-is-still-mapped-when-deleted.patch
+filemap-optimize-folio-refount-update-in-filemap_map_pages.patch
 
 
