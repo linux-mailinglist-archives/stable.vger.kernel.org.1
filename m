@@ -1,187 +1,132 @@
-Return-Path: <stable+bounces-179345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533E0B54CF1
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 14:15:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E45B54DCF
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 14:32:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B08B165C02
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 12:11:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 066EB17067A
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 12:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64783074AE;
-	Fri, 12 Sep 2025 12:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3843064A3;
+	Fri, 12 Sep 2025 12:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="XoAxeWzT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sXL3nQyy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC743074AC;
-	Fri, 12 Sep 2025 12:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.188.205.243
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A03D303A13;
+	Fri, 12 Sep 2025 12:26:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757678655; cv=none; b=bc+QFX/QrWpdIQqU4ix3tCvMuoNI1u7Abb53F2IkTh+cupI/iizSFbmoRKzXJRdoDEX9sfvTM6Zp2vYiyw7lfY6ve7pIpIsRi2dJApOcprsqYG+1ZfxH/oDHSp+fCp66UHHC1GDioLqRJUV7343sgAIuPKlBY/YlxU2q8c6dC6o=
+	t=1757679969; cv=none; b=Js5T49fTQp/mBOWNyxhMZi8WjgXCoBGMfEsz/eFLP2DL4tevye40iWvgtJGnWaetP1Gi8uiPVKj+8aRF8tGgPiS456qqpRWhZj8hjOm/g/JBtgAVkyfMf8u9I16TQiAGZZ3oGEj25BRYDQgHNP/6UJuKz5wjHL8Z/+hdOJLoaE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757678655; c=relaxed/simple;
-	bh=2KXka414fCOALlXKBNLhsY7WlMq13LlLKLbzudZG4YY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=I1FGJkUxoSIxvz803QM9cb6F8F8S++Rq02/JWi+IMq34ubQiIpCZs6yQLc1OsxaZH6tJ37nvUb76VaVtbOG+i9xvGj9XnkyTmU+nihU6ZUq3V979Jl3Wbujp8GBkVKhHSPbm13YCMBvCMNvDMZoAfh8MIVam8LOEr4XKwwTMPTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=XoAxeWzT; arc=none smtp.client-ip=93.188.205.243
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1757678651;
-	bh=2KXka414fCOALlXKBNLhsY7WlMq13LlLKLbzudZG4YY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XoAxeWzTyG7Fb4pSfurGCFfrQ13WWrJip9p79kBrYizQGDaTITvKoSi2csSV4RHWU
-	 g7Rr3E22WsqDOtDBvVA5ZY7rHLeruKv0a7EWNEU2JJMABOjI6ztICpXXuLLer1nCvr
-	 M0lJvNJhebt090fXVRrQVPTKnCcTHVwWg4mv7h8pVRfG5aMjQOccv5j8+K4VF8f08c
-	 5S15s7qpRjFVgQ5reAV1XA9CHSMG5EIb+QBQR1KeEBUve+by63lOh7SGDwufu2eVqc
-	 pi/qekhPKRxhGj3xcRLH/ownpoX6adQxVtsqD0moD+vtdI1kNQ85zSMEb+VgpsghBl
-	 C/ok8gI7ZVkCA==
-Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 5294A1FA00;
-	Fri, 12 Sep 2025 15:04:11 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.177.185.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
-	Fri, 12 Sep 2025 15:04:10 +0300 (MSK)
-Received: from rbta-msk-lt-169874.astralinux.site (unknown [10.198.57.215])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4cNY4R041sz2xDf;
-	Fri, 12 Sep 2025 15:04:06 +0300 (MSK)
-From: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Francois Dugast <francois.dugast@intel.com>,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Shuicheng Lin <shuicheng.lin@intel.com>
-Subject: [PATCH v2 6.12 3/3] drm/xe/hw_engine_group: Avoid call kfree() for drmm_kzalloc()
-Date: Fri, 12 Sep 2025 15:02:01 +0300
-Message-Id: <20250912120202.240305-3-mdmitrichenko@astralinux.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250912120202.240305-1-mdmitrichenko@astralinux.ru>
-References: <20250912120202.240305-1-mdmitrichenko@astralinux.ru>
+	s=arc-20240116; t=1757679969; c=relaxed/simple;
+	bh=V39Rz+1RHwUbOx8EKfTfq2XSOPa4SX/Yzry+drXGDGk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TU3BJfdj4hKN4IeYN3d2BOIogut2EfLmoQ5Arjx63EQ+EQXr10puTc91BKe8/XOorP6Ism3Til3PjkKGzmnjVgFg3Om1JJO//SIEfw9z+6b2o/93qwyaiMeEVFIAmpvYcf2BrmbrzvhV+JQjlU+qcP0K9kP0gNso1NCAk9WdYD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sXL3nQyy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA65EC4CEF1;
+	Fri, 12 Sep 2025 12:26:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757679969;
+	bh=V39Rz+1RHwUbOx8EKfTfq2XSOPa4SX/Yzry+drXGDGk=;
+	h=From:Subject:Date:To:Cc:From;
+	b=sXL3nQyyiODekMqyUC/PMc+/0S5c+Ri2nfG74xqfpgZrviRepbJnUkosMtqTxDmwe
+	 M/a7HwXuoJuPhPb89c77ItJjF3fhuSVnET9ylIJcmkwDfRLEZPWnLgAFuKq7l+dpq2
+	 UoyM2gu9aqst6EF7ObH5tjnxkWUl1qYXlxJyBHaJ2L4k49MHxM01UMyTA0jb9thWog
+	 gQACrqKfqnz1CHwTtV74X0Pft9zVSQVsVhrK0ruf56QwAue0RNtfN5D1TuZbnLG+my
+	 WewJ1f6g/KveqhmTMYNTor+mvm6mdHQEw1vS3hBuHvl+ZvkzW+eJgMqumDQNfx1pxm
+	 69BZazdmcKuQg==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/5] selftests: mptcp: avoid spurious errors on TCP
+ disconnect
+Date: Fri, 12 Sep 2025 14:25:49 +0200
+Message-Id: <20250912-net-mptcp-fix-sft-connect-v1-0-d40e77cbbf02@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected, bases: 2025/09/12 10:31:00
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: mdmitrichenko@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 66 0.3.66 fc5dda3b6b70d34b3701db39319eece2aeb510fb, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, {Tracking_spam_in_reply_from_match_msgid}, astralinux.ru:7.1.1;new-mail.astralinux.ru:7.1.1;127.0.0.199:7.1.2;lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 196220 [Sep 12 2025]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.11
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2025/09/12 09:49:00 #27811571
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2025/09/12 11:18:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAE0RxGgC/x2MQQqAMAzAviI9W5gTFf2KeBiz0x6sYxsiiH+3e
+ AwkeSBTYsowVQ8kujjzKQpNXYHfnWyEvCqDNbYzY2NRqOARi48Y+MYcCvpThHzBYMbOrYPrqe1
+ B+5hIlf89g2awvO8HGTzwiXAAAAA=
+X-Change-ID: 20250912-net-mptcp-fix-sft-connect-f095ad7a6e36
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2680; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=V39Rz+1RHwUbOx8EKfTfq2XSOPa4SX/Yzry+drXGDGk=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKOCIavPKjm/fuz+brPSrw7en4IObgFn088st/qeu29l
+ Cl6/rZtHaUsDGJcDLJiiizSbZH5M59X8ZZ4+VnAzGFlAhnCwMUpABPxsmVkuDzrBp/nKmaVVQXO
+ HqHX1dh2XFirunuScHj4x00BK6dX3WVkmLZdaPoT7cx5Gy/vmC+3jG3Oa+fSlOmXNs1d0NVn03C
+ yjxEA
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+This series should fix the recent instabilities seen by MPTCP and NIPA
+CIs where the 'mptcp_connect.sh' tests fail regularly when running the
+'disconnect' subtests with "plain" TCP sockets, e.g.
 
-commit 4846856c3a4afa882b6d1b842ed2fad6f3781f4d upstream.
+  # INFO: disconnect
+  # 63 ns1 MPTCP -> ns1 (10.0.1.1:20001      ) MPTCP     (duration   996ms) [ OK ]
+  # 64 ns1 MPTCP -> ns1 (10.0.1.1:20002      ) TCP       (duration   851ms) [ OK ]
+  # 65 ns1 TCP   -> ns1 (10.0.1.1:20003      ) MPTCP     Unexpected revents: POLLERR/POLLNVAL(19)
+  # (duration   896ms) [FAIL] file received by server does not match (in, out):
+  # -rw-r--r-- 1 root root 11112852 Aug 19 09:16 /tmp/tmp.hlJe5DoMoq.disconnect
+  # Trailing bytes are:
+  # /{ga 6@=#.8:-rw------- 1 root root 10085368 Aug 19 09:16 /tmp/tmp.blClunilxx
+  # Trailing bytes are:
+  # /{ga 6@=#.8:66 ns1 MPTCP -> ns1 (dead:beef:1::1:20004) MPTCP     (duration   987ms) [ OK ]
+  # 67 ns1 MPTCP -> ns1 (dead:beef:1::1:20005) TCP       (duration   911ms) [ OK ]
+  # 68 ns1 TCP   -> ns1 (dead:beef:1::1:20006) MPTCP     (duration   980ms) [ OK ]
+  # [FAIL] Tests of the full disconnection have failed
 
-Memory allocated with drmm_kzalloc() should not be freed using
-kfree(), as it is managed by the DRM subsystem. The memory will
-be automatically freed when the associated drm_device is released.
-These 3 group pointers are allocated using drmm_kzalloc() in
-hw_engine_group_alloc(), so they don't require manual deallocation.
+These issues started to be visible after some behavioural changes in
+TCP, where too quick re-connections after a shutdown() can now be more
+easily rejected. Patch 3 modifies the selftests to wait, but this
+resolution revealed an issue in MPTCP which is fixed by patch 1 (a fix
+for v5.9 kernel).
 
-Fixes: 67979060740f ("drm/xe/hw_engine_group: Fix potential leak")
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Link: https://lore.kernel.org/r/20250724193854.1124510-2-shuicheng.lin@intel.com
-(cherry picked from commit f98de826b418885a21ece67f0f5b921ae759b7bf)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
+Patches 2 and 4 improve some errors reported by the selftests, and patch
+5 helps with the debugging of such issues.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
-v2: upstream commit 67979060740f7f978c8cb580ccea6c91154150f9 was
-included in PATCH v2 2/3 because it also doesn't present in 6.12 
-and commit 4846856c3a4afa882b6d1b842ed2fad6f3781f4d fixes
-issue from 67979060740f7f978c8cb580ccea6c91154150f9. Upstream
-commit c367b772e6d89d8c7b560c7df7e3803ce6b8bcea was included
-in PATCH v2 1/3 because changes from 
-67979060740f7f978c8cb580ccea6c91154150f9 require __drmm_workqueue_release.
- drivers/gpu/drm/xe/xe_hw_engine_group.c | 28 ++++++-------------------
- 1 file changed, 6 insertions(+), 22 deletions(-)
+Note: The last two patches are not strictly fixes, but they are useful
+in case similar issues happen again. That's why they have been added
+here in this series for -net. If that's an issue, please drop them, and
+I can re-send them later on.
 
-diff --git a/drivers/gpu/drm/xe/xe_hw_engine_group.c b/drivers/gpu/drm/xe/xe_hw_engine_group.c
-index 9ace3993caee..eef3a6479bfd 100644
---- a/drivers/gpu/drm/xe/xe_hw_engine_group.c
-+++ b/drivers/gpu/drm/xe/xe_hw_engine_group.c
-@@ -75,25 +75,18 @@ int xe_hw_engine_setup_groups(struct xe_gt *gt)
- 	enum xe_hw_engine_id id;
- 	struct xe_hw_engine_group *group_rcs_ccs, *group_bcs, *group_vcs_vecs;
- 	struct xe_device *xe = gt_to_xe(gt);
--	int err;
- 
- 	group_rcs_ccs = hw_engine_group_alloc(xe);
--	if (IS_ERR(group_rcs_ccs)) {
--		err = PTR_ERR(group_rcs_ccs);
--		goto err_group_rcs_ccs;
--	}
-+	if (IS_ERR(group_rcs_ccs))
-+		return PTR_ERR(group_rcs_ccs);
- 
- 	group_bcs = hw_engine_group_alloc(xe);
--	if (IS_ERR(group_bcs)) {
--		err = PTR_ERR(group_bcs);
--		goto err_group_bcs;
--	}
-+	if (IS_ERR(group_bcs))
-+		return PTR_ERR(group_bcs);
- 
- 	group_vcs_vecs = hw_engine_group_alloc(xe);
--	if (IS_ERR(group_vcs_vecs)) {
--		err = PTR_ERR(group_vcs_vecs);
--		goto err_group_vcs_vecs;
--	}
-+	if (IS_ERR(group_vcs_vecs))
-+		return PTR_ERR(group_vcs_vecs);
- 
- 	for_each_hw_engine(hwe, gt, id) {
- 		switch (hwe->class) {
-@@ -116,15 +109,6 @@ int xe_hw_engine_setup_groups(struct xe_gt *gt)
- 	}
- 
- 	return 0;
--
--err_group_vcs_vecs:
--	kfree(group_vcs_vecs);
--err_group_bcs:
--	kfree(group_bcs);
--err_group_rcs_ccs:
--	kfree(group_rcs_ccs);
--
--	return err;
- }
- 
- /**
+---
+Matthieu Baerts (NGI0) (5):
+      mptcp: propagate shutdown to subflows when possible
+      selftests: mptcp: connect: catch IO errors on listen side
+      selftests: mptcp: avoid spurious errors on TCP disconnect
+      selftests: mptcp: print trailing bytes with od
+      selftests: mptcp: connect: print pcap prefix
+
+ net/mptcp/protocol.c                               | 16 ++++++++++++++++
+ tools/testing/selftests/net/mptcp/mptcp_connect.c  | 11 ++++++-----
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh |  6 +++++-
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh     |  2 +-
+ 4 files changed, 28 insertions(+), 7 deletions(-)
+---
+base-commit: 2690cb089502b80b905f2abdafd1bf2d54e1abef
+change-id: 20250912-net-mptcp-fix-sft-connect-f095ad7a6e36
+
+Best regards,
 -- 
-2.39.2
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
 
