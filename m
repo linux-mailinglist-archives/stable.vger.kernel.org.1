@@ -1,68 +1,68 @@
-Return-Path: <stable+bounces-179380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC0DB553A8
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 17:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 238CCB553A7
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 17:32:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CA88BA35B2
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 15:30:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 568B7BA2C88
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 15:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70602312817;
-	Fri, 12 Sep 2025 15:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E1C31AF27;
+	Fri, 12 Sep 2025 15:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="Z7hdhhrm"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="TbTjTqdw"
 X-Original-To: stable@vger.kernel.org
-Received: from fra-out-014.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-014.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.199.210.3])
+Received: from fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.156.205.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966A3317708;
-	Fri, 12 Sep 2025 15:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.199.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E85931AF0E;
+	Fri, 12 Sep 2025 15:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.156.205.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757691086; cv=none; b=YVA6seFQvLkpBQMaMZT6eBpMiOpW7guRWSVT4cNQTNFXlQJ6HaYcfAjM1Iyuqk5IejEJ7aujO1F/DFIuXtCUgs/LsOHk/G7/uduNK7cpEeb5VvaJBkOR0pxJsJyNWqkwTyVmkR9baLjm6No00zbdtOFuUjszFdLTYzoQ3PqWpfI=
+	t=1757691092; cv=none; b=YtU/IPn2aXjkZDUwqy4vtEc4tg4UIs6S4zTfzExo+10EDhj6Mri7f++aBNkR0ZL0uGlzI7fWgJBP1H1Fm6GXmqJBUuUajEwVAIDqx7QKgC1/iPDkGMVVLooMD5eTVVRRqbvrXy/f14ahdywEMbDePLa5PSvJK/L7icGx5cMcgOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757691086; c=relaxed/simple;
-	bh=0ZAuq1AeP2txNQ7DcSKMbLVlk6LKgVQRz0GMnBaYbvU=;
+	s=arc-20240116; t=1757691092; c=relaxed/simple;
+	bh=NSzvNrJAMUb9GfFJEBhQ9uNIUWa7KeQFbp7whiUmZTc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FJRDqjrH10xN3yW49tqRCvIYmSbc65xy8wYx6qmSqBo2UARhEIDiB3J/1BJAf1OA5CBGaeErDHhived21GDsYK2aD4KfjxdxkaMzEhxTwulKEIZYTc88eQD8dngcH3csxtBjrHRlJeY2i4aPukwT5KOcCQEAhW/3CP6vY9N40bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=Z7hdhhrm; arc=none smtp.client-ip=18.199.210.3
+	 MIME-Version:Content-Type; b=nk8lXse75mXeDM75J4a7ZhlAK0obv5OK2MGVEdD+R7maTUecvSIenG8HKn9kHeyPbMcM/7wlsanI/bkzhycP9c8SRNPuLnNzmPpt2bpRf/N15IVicw8qIYZqSVFDXAm0z76ZcIQlwMSjuxkVFtYmlQR9XTh1ZMrDUCIhBfOW9Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=TbTjTqdw; arc=none smtp.client-ip=18.156.205.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1757691084; x=1789227084;
+  t=1757691090; x=1789227090;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=mNZQBQctKZfrpwn21cF3GKidAAjq4amyeXpqNxgoRJI=;
-  b=Z7hdhhrm5eB78M+9Fto5jg35y35OUyluwb1tX6tSEnHTZpVd66sOndAK
-   Confvzb95hQUth316ldM75XMVj2uoHcU0zvkwg6cl44DFP802pQ5q4Ome
-   Qage0YLFpVKubhZQlPsy6LPqNnGAgZ+TYNAlYucnS+5p+nZh3lD9Oegnk
-   LRMX6lM98ie0gpY8kj0hKlsfWxthaDC8g63xnsFRHsDokq18ennd7iG92
-   DKEVTQCOjbxIuo2Y9LBxgiihPCs9Dk1rTQLVy0ExuB4L7Dclq+Qo/ehpO
-   3mP+ynwaokVq7x6/yrE4NXkkC8Fn3PJItT66xR+QhjsQKG11JPjI+Znuh
-   w==;
-X-CSE-ConnectionGUID: 7HJlotdaQDe9hzRxj9Xhgg==
-X-CSE-MsgGUID: vzmFUeFfTLq6JhAyVvL6eQ==
+  bh=x1XW1KMO+D5uSaQ8WeTblJJV7MJ293yX+nAqnx5MTkY=;
+  b=TbTjTqdw2g0Bp1lq0r4wC3m3JRNj8q+7jwTpvBko7d0/rnzaW1UW2q2c
+   bWwxxyDIcZ7CBGm8Sde73nPpDTx071vqRp/RhRLp7X21yuv3qBsUD0Aa5
+   JQ+Ver68ecB9ooZi51AfTi5qQHY5Vls8FhweFf+93DKcDD5avuIRukqsV
+   Q2AKZidLLJSOx8K5nrlB6FzWTt00MfZBk0iSPaXrvxl7YfBR7wnJsF5PJ
+   jD4zQ63Xp21BUbXNv6Pej7M5QQlmxNxrqZE9armB10nQ/UXh00uADbaEa
+   WgdmWksie9MNXFonvYdFtS8L0CCuTwS5y2bipcMdJAdqbr+crjvPEUFii
+   A==;
+X-CSE-ConnectionGUID: /yGqciskQ5qMFX1+5dZ7eg==
+X-CSE-MsgGUID: 9owVXk/KQpGgux3b9jlKhA==
 X-IronPort-AV: E=Sophos;i="6.18,259,1751241600"; 
-   d="scan'208";a="1926629"
+   d="scan'208";a="2028376"
 Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-014.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 15:31:13 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:20571]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.20.211:2525] with esmtp (Farcaster)
- id 90cf4a3a-92b1-40c8-8a77-c06977ed7ddd; Fri, 12 Sep 2025 15:31:13 +0000 (UTC)
-X-Farcaster-Flow-ID: 90cf4a3a-92b1-40c8-8a77-c06977ed7ddd
+  by internal-fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 15:31:19 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:29994]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.32.129:2525] with esmtp (Farcaster)
+ id e80810c2-caec-4488-8f15-2e0fa38b0b4f; Fri, 12 Sep 2025 15:31:19 +0000 (UTC)
+X-Farcaster-Flow-ID: e80810c2-caec-4488-8f15-2e0fa38b0b4f
 Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
+ EX19MTAEUA001.ant.amazon.com (10.252.50.223) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 12 Sep 2025 15:31:13 +0000
+ Fri, 12 Sep 2025 15:31:19 +0000
 Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
  (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 12 Sep 2025
- 15:31:05 +0000
+ 15:31:13 +0000
 From: Eliav Farber <farbere@amazon.com>
 To: <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <mingo@redhat.com>,
 	<natechancellor@gmail.com>, <ndesaulniers@google.com>,
@@ -73,12 +73,10 @@ To: <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <mingo@redhat.com>,
 	<linux-sparse@vger.kernel.org>, <clang-built-linux@googlegroups.com>,
 	<stable@vger.kernel.org>
 CC: <jonnyc@amazon.com>, <farbere@amazon.com>, Rasmus Villemoes
-	<linux@rasmusvillemoes.dk>, Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	<linux-hardening@vger.kernel.org>, Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: [PATCH v2 3/4 5.10.y] overflow: Allow mixed type arguments
-Date: Fri, 12 Sep 2025 15:30:37 +0000
-Message-ID: <20250912153040.26691-4-farbere@amazon.com>
+	<linux@rasmusvillemoes.dk>
+Subject: [PATCH v2 4/4 5.10.y] tracing: Define the is_signed_type() macro once
+Date: Fri, 12 Sep 2025 15:30:38 +0000
+Message-ID: <20250912153040.26691-5-farbere@amazon.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250912153040.26691-1-farbere@amazon.com>
 References: <20250912153040.26691-1-farbere@amazon.com>
@@ -93,127 +91,77 @@ Content-Type: text/plain
 X-ClientProxiedBy: EX19D044UWA004.ant.amazon.com (10.13.139.7) To
  EX19D018EUA004.ant.amazon.com (10.252.50.85)
 
-From: Kees Cook <keescook@chromium.org>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit d219d2a9a92e39aa92799efe8f2aa21259b6dd82 upstream.
+commit a49a64b5bf195381c09202c524f0f84b5f3e816f upstream.
 
-When the check_[op]_overflow() helpers were introduced, all arguments
-were required to be the same type to make the fallback macros simpler.
-However, now that the fallback macros have been removed[1], it is fine
-to allow mixed types, which makes using the helpers much more useful,
-as they can be used to test for type-based overflows (e.g. adding two
-large ints but storing into a u8), as would be handy in the drm core[2].
+There are two definitions of the is_signed_type() macro: one in
+<linux/overflow.h> and a second definition in <linux/trace_events.h>.
 
-Remove the restriction, and add additional self-tests that exercise
-some of the mixed-type overflow cases, and double-check for accidental
-macro side-effects.
+As suggested by Linus, move the definition of the is_signed_type() macro
+into the <linux/compiler.h> header file.  Change the definition of the
+is_signed_type() macro to make sure that it does not trigger any sparse
+warnings with future versions of sparse for bitwise types.
 
-[1] https://git.kernel.org/linus/4eb6bd55cfb22ffc20652732340c4962f3ac9a91
-[2] https://lore.kernel.org/lkml/20220824084514.2261614-2-gwan-gyeong.mun@intel.com
-
+Link: https://lore.kernel.org/all/CAHk-=whjH6p+qzwUdx5SOVVHjS3WvzJQr6mDUwhEyTf6pJWzaQ@mail.gmail.com/
+Link: https://lore.kernel.org/all/CAHk-=wjQGnVfb4jehFR0XyZikdQvCZouE96xR_nnf5kqaM5qqQ@mail.gmail.com/
 Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: linux-hardening@vger.kernel.org
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Tested-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-[ dropped the test portion of the commit as that doesn't apply to
-  5.15.y - gregkh]
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Acked-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+(cherry picked from commit a49a64b5bf195381c09202c524f0f84b5f3e816f)
+Signed-off-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Eliav Farber <farbere@amazon.com>
 ---
- include/linux/overflow.h | 72 +++++++++++++++++++++++-----------------
- 1 file changed, 41 insertions(+), 31 deletions(-)
+ include/linux/compiler.h     | 6 ++++++
+ include/linux/overflow.h     | 1 -
+ include/linux/trace_events.h | 2 --
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index bbd74420fa21..004a030d5ad2 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -245,6 +245,12 @@ static inline void *offset_to_ptr(const int *off)
+ /* &a[0] degrades to a pointer: a different type from an array */
+ #define __must_be_array(a)	BUILD_BUG_ON_ZERO(__same_type((a), &(a)[0]))
+ 
++/*
++ * Whether 'type' is a signed type or an unsigned type. Supports scalar types,
++ * bool and also pointer types.
++ */
++#define is_signed_type(type) (((type)(-1)) < (__force type)1)
++
+ /*
+  * This is needed in functions which generate the stack canary, see
+  * arch/x86/kernel/smpboot.c::start_secondary() for an example.
 diff --git a/include/linux/overflow.h b/include/linux/overflow.h
-index 59d7228104d0..73bc67ec2136 100644
+index 73bc67ec2136..e6bf14f462e9 100644
 --- a/include/linux/overflow.h
 +++ b/include/linux/overflow.h
-@@ -51,40 +51,50 @@ static inline bool __must_check __must_check_overflow(bool overflow)
- 	return unlikely(overflow);
- }
- 
--/*
-- * For simplicity and code hygiene, the fallback code below insists on
-- * a, b and *d having the same type (similar to the min() and max()
-- * macros), whereas gcc's type-generic overflow checkers accept
-- * different types. Hence we don't just make check_add_overflow an
-- * alias for __builtin_add_overflow, but add type checks similar to
-- * below.
-+/** check_add_overflow() - Calculate addition with overflow checking
-+ *
-+ * @a: first addend
-+ * @b: second addend
-+ * @d: pointer to store sum
-+ *
-+ * Returns 0 on success.
-+ *
-+ * *@d holds the results of the attempted addition, but is not considered
-+ * "safe for use" on a non-zero return value, which indicates that the
-+ * sum has overflowed or been truncated.
+@@ -29,7 +29,6 @@
+  * https://mail-index.netbsd.org/tech-misc/2007/02/05/0000.html -
+  * credit to Christian Biere.
   */
--#define check_add_overflow(a, b, d) __must_check_overflow(({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	__builtin_add_overflow(__a, __b, __d);	\
--}))
-+#define check_add_overflow(a, b, d)	\
-+	__must_check_overflow(__builtin_add_overflow(a, b, d))
+-#define is_signed_type(type)       (((type)(-1)) < (type)1)
+ #define __type_half_max(type) ((type)1 << (8*sizeof(type) - 1 - is_signed_type(type)))
+ #define type_max(T) ((T)((__type_half_max(T) - 1) + __type_half_max(T)))
+ #define type_min(T) ((T)((T)-type_max(T)-(T)1))
+diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
+index 5af2acb9fb7d..0c8c3cf36f96 100644
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -700,8 +700,6 @@ extern int trace_add_event_call(struct trace_event_call *call);
+ extern int trace_remove_event_call(struct trace_event_call *call);
+ extern int trace_event_get_offsets(struct trace_event_call *call);
  
--#define check_sub_overflow(a, b, d) __must_check_overflow(({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	__builtin_sub_overflow(__a, __b, __d);	\
--}))
-+/** check_sub_overflow() - Calculate subtraction with overflow checking
-+ *
-+ * @a: minuend; value to subtract from
-+ * @b: subtrahend; value to subtract from @a
-+ * @d: pointer to store difference
-+ *
-+ * Returns 0 on success.
-+ *
-+ * *@d holds the results of the attempted subtraction, but is not considered
-+ * "safe for use" on a non-zero return value, which indicates that the
-+ * difference has underflowed or been truncated.
-+ */
-+#define check_sub_overflow(a, b, d)	\
-+	__must_check_overflow(__builtin_sub_overflow(a, b, d))
- 
--#define check_mul_overflow(a, b, d) __must_check_overflow(({	\
--	typeof(a) __a = (a);			\
--	typeof(b) __b = (b);			\
--	typeof(d) __d = (d);			\
--	(void) (&__a == &__b);			\
--	(void) (&__a == __d);			\
--	__builtin_mul_overflow(__a, __b, __d);	\
--}))
-+/** check_mul_overflow() - Calculate multiplication with overflow checking
-+ *
-+ * @a: first factor
-+ * @b: second factor
-+ * @d: pointer to store product
-+ *
-+ * Returns 0 on success.
-+ *
-+ * *@d holds the results of the attempted multiplication, but is not
-+ * considered "safe for use" on a non-zero return value, which indicates
-+ * that the product has overflowed or been truncated.
-+ */
-+#define check_mul_overflow(a, b, d)	\
-+	__must_check_overflow(__builtin_mul_overflow(a, b, d))
- 
- /** check_shl_overflow() - Calculate a left-shifted value and check overflow
-  *
+-#define is_signed_type(type)	(((type)(-1)) < (type)1)
+-
+ int ftrace_set_clr_event(struct trace_array *tr, char *buf, int set);
+ int trace_set_clr_event(const char *system, const char *event, int set);
+ int trace_array_set_clr_event(struct trace_array *tr, const char *system,
 -- 
 2.47.3
 
