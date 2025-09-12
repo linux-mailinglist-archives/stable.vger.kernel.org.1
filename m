@@ -1,123 +1,148 @@
-Return-Path: <stable+bounces-179396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8138DB556B0
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 20:58:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 370A3B5574B
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 21:58:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0397E1D62D8B
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 18:58:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C216B625E8
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 19:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D101933471B;
-	Fri, 12 Sep 2025 18:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E820D2BF00D;
+	Fri, 12 Sep 2025 19:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="fAeHE267"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=oscillator.se header.i=@oscillator.se header.b="Dji0bKfm"
 X-Original-To: stable@vger.kernel.org
-Received: from fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.65.3.180])
+Received: from sv9.manufrog.com (sv9.manufrog.com [46.246.119.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B163009F0;
-	Fri, 12 Sep 2025 18:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.65.3.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C012848B0;
+	Fri, 12 Sep 2025 19:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.246.119.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757703426; cv=none; b=cKlD9JQzCJvHfGWnR5xLMp1etxxLB+41jleK6EqoxAX8RP+nDif07DFNq0fKraqrnp5+FtBggTcFN3zra8BeeNV3fvhHBFgGqgkhfMYluLRKZmzs+kXFt04ryZeCz3hcsD9nqva77kGaqVp2/o9/mGwHEIMwHO4nnT043lfbSlU=
+	t=1757707038; cv=none; b=Be0gLfL4lQ18TwxaS1C6i8PMc8qu5uGLL/fGbHk982cY0FDIsOZ8zdx71ECcZNyE/lSLr282IqHemKGs7tWRZ1RyDzeSynUcinHQ0Subiei9Dpl4rphX9wl1bLg8MEDLfe+3vUOH+1mPffOOJ2uREWIqIglugNfx2+v82ugWvYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757703426; c=relaxed/simple;
-	bh=N6IEPKkPlcIcHL4w87Dmwga9t6buCmp04U4z0XGo0rs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jBsdvRq45PfI1EXdLkqF5N4JGhtZvuQopkTjY3dufX2mJB5PRH1Y189RvhcYsA013J6jahr7MvFiWG2/8vUJwwYVJLuL+1bIA1ykE7SfBFrGQ42Mtf0cq2+Ydtx0s6WCqXCwh76HxT1Z/Acs6cjHkCi9f5q199755oAXgx9j2h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=fAeHE267; arc=none smtp.client-ip=3.65.3.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1757703425; x=1789239425;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=N6IEPKkPlcIcHL4w87Dmwga9t6buCmp04U4z0XGo0rs=;
-  b=fAeHE267vGfui+dcBaruWgWohcQ91UR3qGA4WkENWjfm9ocnpR9MDVP3
-   Dk9OF9d0dzKPhX1BoJFc4vQykf+YuLnrmsb42U40TQNu5DyqZwws1/IBb
-   9fiF5D5tqtWMtfQgw3YZmPmKjYD/g8Af5l4miFA6g3Rem2X93tIC+2Zj6
-   JLycXHrcTtg1o8R6YGUJ1u6twAh3BHghkGgoFgNqIXQyLNeBn6a1gu2q3
-   4U6YujHU6LEmVHKXZaNiaK/Lj2zoz45yO+8MKEeBdWp1uKijrRGYQippv
-   H0RdJh3fnf8215ZANMTBuL4KO2YV+bULHsrbDZFdWEQFmNEP+g8r8tpgz
-   w==;
-X-CSE-ConnectionGUID: TYSMQi+hRyORnDTNtWzSVQ==
-X-CSE-MsgGUID: 5EQNxFGHTreeDE4eahjckA==
-X-IronPort-AV: E=Sophos;i="6.18,259,1751241600"; 
-   d="scan'208";a="2039152"
-Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
-  by internal-fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 18:56:52 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [54.240.197.232:4208]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.27.75:2525] with esmtp (Farcaster)
- id 5bbe4fcc-b042-435b-ae23-0636ea2841e9; Fri, 12 Sep 2025 18:56:52 +0000 (UTC)
-X-Farcaster-Flow-ID: 5bbe4fcc-b042-435b-ae23-0636ea2841e9
-Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.79) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 12 Sep 2025 18:56:51 +0000
-Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19D018EUA004.ant.amazon.com (10.252.50.85) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 12 Sep 2025 18:56:50 +0000
-Received: from EX19D018EUA004.ant.amazon.com ([fe80::e53:84f8:3456:a97d]) by
- EX19D018EUA004.ant.amazon.com ([fe80::e53:84f8:3456:a97d%3]) with mapi id
- 15.02.2562.020; Fri, 12 Sep 2025 18:56:50 +0000
-From: "Farber, Eliav" <farbere@amazon.com>
-To: Sasha Levin <sashal@kernel.org>
-CC: "luc.vanoostenryck@gmail.com" <luc.vanoostenryck@gmail.com>,
-	"rostedt@goodmis.org" <rostedt@goodmis.org>, "mingo@redhat.com"
-	<mingo@redhat.com>, "natechancellor@gmail.com" <natechancellor@gmail.com>,
-	"ndesaulniers@google.com" <ndesaulniers@google.com>, "keescook@chromium.org"
-	<keescook@chromium.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "ojeda@kernel.org" <ojeda@kernel.org>,
-	"elver@google.com" <elver@google.com>, "gregkh@linuxfoundation.org"
-	<gregkh@linuxfoundation.org>, "kbusch@kernel.org" <kbusch@kernel.org>,
-	"sj@kernel.org" <sj@kernel.org>, "bvanassche@acm.org" <bvanassche@acm.org>,
-	"leon@kernel.org" <leon@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-sparse@vger.kernel.org" <linux-sparse@vger.kernel.org>,
-	"clang-built-linux@googlegroups.com" <clang-built-linux@googlegroups.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "Chocron, Jonathan"
-	<jonnyc@amazon.com>
-Subject: RE: [PATCH v2 0/4 5.10.y] overflow: Allow mixed type arguments in
- overflow macros
-Thread-Topic: [PATCH v2 0/4 5.10.y] overflow: Allow mixed type arguments in
- overflow macros
-Thread-Index: AQHcJBb/hwKEbqodcEOOyWaCx0hteA==
-Date: Fri, 12 Sep 2025 18:56:50 +0000
-Message-ID: <278538a1b67d48e1912a23b91536c505@amazon.com>
-References: <20250912153040.26691-1-farbere@amazon.com>
- <aMRPueS-kkgjHec4@laps>
-In-Reply-To: <aMRPueS-kkgjHec4@laps>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1757707038; c=relaxed/simple;
+	bh=RuV43at9oIUzSJcsK485G4uQ64nYxSvVDGjhkRb7P5A=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=Oq4Ie1Rp9U5uc/RhUjCv+wpz6PBrpxSbHv+NScSZnUbICJcLxe1Q1V2drpQMnonmAFpZB+GZAhH9lJp7mvdCCPoWYsMPAE8oMKveRbv/oZvo/VJutMsreWVBQrponxCGtcZZn+xPoP9rPunG5eckjiIlpZV8DzYxKCf4OYB1SMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=oscillator.se; spf=pass smtp.mailfrom=oscillator.se; dkim=pass (2048-bit key) header.d=oscillator.se header.i=@oscillator.se header.b=Dji0bKfm; arc=none smtp.client-ip=46.246.119.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=oscillator.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oscillator.se
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oscillator.se; s=default; h=Content-Transfer-Encoding:Content-Type:
+	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=9g4tINQ3Nuz9BImuzc0dqyBpOKAEGiLicPpQhPXc8pk=; b=Dji0bKfmqJiUkwVgBmJmsWAB/L
+	tffBxTLVA5K2FGhBefgPhkphycN/gKjMZyv73ZA9EVqF8Mxl+O/72ZlrVVkzQ0prW/nuXIzv9Fo+m
+	u6CZAc7AoqFRMBmUbfmuGCUfDfPD6waroHkYNoEHW2SZjKa0ttcimM5RYimQJxuPGuouqsXPOXFor
+	IIlSfMvzAJ5Mf1V9rlKQRL3amtWWMjREakspeL764lE/Ix7fhdK6oSZR7CTxnYkkD3gi7H+JqOi90
+	DYiYzuzwunAcGHGiddd4T4UK1jDvX40p7Rfob6hWDGLg4J7pPL72y8kj3DCR/XgkrRwc110PIGyYf
+	4WJbqYWg==;
+Received: from [::1] (port=51882 helo=sv9.manufrog.com)
+	by sv9.manufrog.com with esmtpa (Exim 4.98.2)
+	(envelope-from <staffan.melin@oscillator.se>)
+	id 1ux9tP-0000000AD8S-1vEg;
+	Fri, 12 Sep 2025 21:57:06 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Date: Fri, 12 Sep 2025 21:57:04 +0200
+From: Staffan Melin <staffan.melin@oscillator.se>
+To: zhangheng <zhangheng@kylinos.cn>
+Cc: Salvatore Bonaccorso <carnil@debian.org>, Jiri Kosina
+ <jkosina@suse.com>, Benjamin Tissoires <bentiss@kernel.org>,
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ regressions@lists.linux.dev, stable@vger.kernel.org, 1114557@bugs.debian.org
+Subject: Re: [regression] 1a8953f4f774 ("HID: Add IGNORE quirk for
+ SMARTLINKTECHNOLOGY") causes issue with ID 4c4a:4155 Jieli Technology USB
+ Composite Device
+In-Reply-To: <c8f3d402-e0ec-4767-b925-d7764aec3d93@kylinos.cn>
+References: <aL2gYJaXoB6p_oyM@eldamar.lan>
+ <c8f3d402-e0ec-4767-b925-d7764aec3d93@kylinos.cn>
+User-Agent: Roundcube Webmail/1.6.11
+Message-ID: <e81e8d68cb33c7de7b0e353791e21e53@oscillator.se>
+X-Sender: staffan.melin@oscillator.se
+Organization: Oscillator
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - sv9.manufrog.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oscillator.se
+X-Get-Message-Sender-Via: sv9.manufrog.com: authenticated_id: staffan.melin@oscillator.se
+X-Authenticated-Sender: sv9.manufrog.com: staffan.melin@oscillator.se
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-> On Fri, Sep 12, 2025 at 03:30:34PM +0000, Eliav Farber wrote:
-> >This series backports four commits to bring include/linux/overflow.h in=
-=20
-> >line with v5.15.193:
-> > - 2541be80b1a2 ("overflow: Correct check_shl_overflow() comment")
-> > - 564e84663d25 ("compiler.h: drop fallback overflow checkers")
-> > - 1d1ac8244c22 ("overflow: Allow mixed type arguments")
-> > - f96cfe3e05b0 ("tracing: Define the is_signed_type() macro once")
->
-> None of these SHA1s match with what's actually in v5.15.193. What's going=
- on here?
-Fixed in v3.
+Thank you,
 
----
-Thanks, Eliav
+I tried to apply this patch to 6.12.39, the first problematic kernel, as 
+well as 6.12.41, the first bad I tried, and on both I got an error 
+message:
+
+Applying: HID: quirks: Add device descriptor for 4c4a:4155
+error: patch failed: drivers/hid/hid-quirks.c:1068
+error: drivers/hid/hid-quirks.c: patch does not apply
+Patch failed at 0001 HID: quirks: Add device descriptor for 4c4a:4155
+
+To which kernel version should I apply the patch?
+
+I used the command
+git am < <file>
+
+Best regards,
+
+Staffan
+
+
+On 2025-09-12 14:49, zhangheng wrote:
+> I am currently working on resolving this issue by limiting the original 
+> patch
+> 
+> based on the information in the device descriptor to avoid affecting 
+> your device,
+> 
+> You can try this patch and look forward to your reply.
+> 
+> 
+> 在 2025/9/7 23:10, Salvatore Bonaccorso 写道:
+>> Hi Zhang, hi Jiri,
+>> 
+>> In Debian Staffan Melin reported that after an update containing the
+>> commit 1a8953f4f774 ("HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY"),
+>> the input device with same idVendor and idProduct, the Jieli
+>> Technology USB Composite Device, does not get recognized anymore.
+>> 
+>> The full Debian report is at: https://bugs.debian.org/1114557
+>> 
+>> The issue is not specific to the 6.12.y series and confirmed in 6.16.3
+>> as well.
+>> 
+>> Staffan Melin did bisect the kernels between 6.12.38 (which was still
+>> working) and 6.1.41 (which was not), confirming by bisection that the
+>> offending commit is
+>> 
+>> 1a8953f4f774 ("HID: Add IGNORE quirk for SMARTLINKTECHNOLOGY")
+>> 
+>> #regzbot introduced: 1a8953f4f774
+>> #regzbot monitor: https://bugs.debian.org/1114557
+>> 
+>> So it looks that the quirk applied is unfortunately affecting
+>> negatively as well Staffan Melin case.
+>> 
+>> Can you have a look?
+>> 
+>> Regards,
+>> Salvatore
 
