@@ -1,176 +1,442 @@
-Return-Path: <stable+bounces-179334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86B9B5464F
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 11:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE23B54867
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 11:53:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49D347B24F0
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 08:58:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB9607B1245
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 09:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A9927B330;
-	Fri, 12 Sep 2025 08:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED812857CD;
+	Fri, 12 Sep 2025 09:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPBHNmrd"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="DmBxXmlW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B076276028;
-	Fri, 12 Sep 2025 08:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215E72877C1
+	for <stable@vger.kernel.org>; Fri, 12 Sep 2025 09:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757667564; cv=none; b=O7E8xC0y0fjWvG+X/U4Fg7Yt0t/OpYu7VTbSdCF2W5BWkTX7pjnXjqnK76UKqTy58NiU6ZzteJv/TgzTUeNW7V0LzRyYP8n8IouJgDDlbkxhXcijWqzotjMAsnKgZbdEjwwGCh4F+/pDYqj2ehF1lKpGUaYjJXXIowDBKowgs8M=
+	t=1757670801; cv=none; b=KTrxhB78w31YAUMBr8RsGbL52RKVo24BOCgqCZGlBi2TUN+4Q3BQdrIPTN1oSWqWmOhE+wNoGOqJ7B921Xmk1a/zVrv/whig1QQnlH0KKRtvBobzo/E/Wa1cnbmYR5DCR3TMnYCd4YX6fG5bR9Rv6cnjVyIGfjSs7VFDZ50v93I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757667564; c=relaxed/simple;
-	bh=T1coyMeV9iN8hoV6MthKaTMIgaPUm4XsdaRfs4UcZSo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CbtNA8yPDBoW0REuVCpvLc1piEA0bZjbp1qRaps+G6x+2chU5ecxijBL2PeRl05jw4MTZsihQ00sd5ixoiG+E74Th2EIkzc3JGPLRBhkutZCOcY8nUmUu0RfukcKNaISKwV/Oa29HUGuJLUZO68vECu60YVQdSaZRNplW7YMK9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPBHNmrd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3711C4CEF1;
-	Fri, 12 Sep 2025 08:59:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757667564;
-	bh=T1coyMeV9iN8hoV6MthKaTMIgaPUm4XsdaRfs4UcZSo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oPBHNmrd6KwaWO/WvKaH/rkKXkhtkBqt1Nw56tHijMzDqnDWb3HrTLAaXYlO+qYQT
-	 nbYqOA5+VFOUf9FrgXs4WTrizhVjuzd+TRClYtH3NBj1+0EyD2k2PDRHUzDLL1Hq5S
-	 RH1hsLWTTY4Bb9dt+REoWCxbzrpinbBWgTudjC1GDOMeX0EBVxQ/YMgNOXSVlMFfnl
-	 1Z1vUraycgNLWVEXvvzupiL1M/MUedtVvG06ZPUDmzwRXtosJdfu07tu1/8oBbD7Lt
-	 64a1aki+LPdF9He9PKupXrfQv7+n7+Jo3bOnOMwFTIdcRJzAgu7YLr7s5uTftYzkqG
-	 tHe8VwBuV+wGg==
-Message-ID: <17cc74d6-2e49-4370-ae37-39cddfe67d7d@kernel.org>
-Date: Fri, 12 Sep 2025 10:59:21 +0200
+	s=arc-20240116; t=1757670801; c=relaxed/simple;
+	bh=8k//oqODeNvjTEYYKfAncLtadxTJvZSm20dDhdVFxmE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XixteHox7yYDFUZr9VDMr2y79JvVTwD7Hu8bIeoGeVqC7pq2kGDYvUIJTHOYyBr0q7LWAQRCo7Pc6l3M80GS3DDBfcUWCUr40xVcRMTC7mWx6FpRt0ew/8awUQzqOdzmE9OJzyQxcj52IO6tZXP0x1Fo/wV0sTTYFDKGw9qitXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=DmBxXmlW; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3b9edf4cf6cso1325176f8f.3
+        for <stable@vger.kernel.org>; Fri, 12 Sep 2025 02:53:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1757670797; x=1758275597; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=F7XfxhScw5K/pNKiOE5XDa0/rE5syTRmPjNymm4IZEw=;
+        b=DmBxXmlWtt16JCdtZH+eM0Tew5ponkvIT1kaunaM3ls33aCriu8eyMO7AxAyQEL8lW
+         lD1zjKTZSr8Uy8Vq9+HEOT76n98HHDmpIY5LPj8YdmanlWFIx01/dUEG47Q3mElYUuFL
+         kNiLexvCoovNjeVd99TdqF3J1dZxA2YNTHtSuJwmrgU1AUvdMKfqpzn2ILyroSk8jpsz
+         PBZn1rPzAnVyTMZUGVCgzbxWf7O8XNoOu5Pf2Stdx1U537V4DMTtHcmmP1abmx7l6QS4
+         tm1PY1Re0CAA9qmbgITr4A6UwfCwwkepAV5SpdVxSdS3kHuMRfATt1NVGjjRM+GrZriR
+         ebQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757670797; x=1758275597;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F7XfxhScw5K/pNKiOE5XDa0/rE5syTRmPjNymm4IZEw=;
+        b=kocys0E7hOJF9cbuX0HTxcU0fEZUhvrAH/ArfiDdKB2RX/P1t/YCTG+v6fEyM4D01T
+         ysSPT3AcC81bnxiztDO0G23XTiPcYrpG8hpkr+sBiOhIIju/0xUBMHahH03A4sK3zQQY
+         ZDA2T2JyT37Xb8gt7sG9YBW8Mvj/mmRPq/Ppo4mL8ghzng1C11YzqP1KwEgIUOT2KCvk
+         TcWqPRpEtGvXrZRt9ralmskeHd6vLkSIL6XQGR0+Y0zpIpGKverkEukIGJWv8M7SW1T+
+         b9NhzZK8DjTpeWSUZgxBm4cme/ZFFp5A9kD6d2U/qW1oKTiq9XdUGiztnf9z7WYKUMQj
+         SQWw==
+X-Forwarded-Encrypted: i=1; AJvYcCUPNossJJPo+Cl6uiLszOCEOMBw1xuMdqJBXOhLQQ1j03o5VlsXY9tOd13XvdQ4VHzRNoV03Eg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+bX9NUSydiS2WRM2hltJL5yWPxp75n4ozljavGF94tuRWd8sv
+	0iTkeEhlKkJo/dZxL3tGefZnjhu3fLV1fcVDkzarTQArQ6zTE4YT7Xu3lDLio3C+0iU=
+X-Gm-Gg: ASbGnctrUZTgPLfeMDTudKnwKxZQy8rg/ZhwAwTSys0FD/uTDpkFg0r2KBt+MRsiHvz
+	31EoZYnAD19j3NpZCqLsRGbJEH93CxdXvJSVXnoV8rmLfl1ch9YjQyyva/cTigkjWZC0jHWN4TM
+	282epRCZ2RPOCivLVMSTu46lWj7SUxQCz+W7zZilgPzWE//e7wy4fQmP2MvQzDKZvGr6YUBs+6X
+	ISJ3BPLF3TGBGc/rksAX8CI1m/aHUrb60EImGBnXNFsdmeUvdMlvDqTmuJeHaDrA0+4WMiTFEg2
+	4jCi9rpdivVEOztMUyLIo8YwqPAbs46qVh5m7m3frar0LoiaQMgzZTE+vmlzuOIE27tpGaHuMK5
+	105Y1H9xUuYLRSdj1l4gkuZQdNlEurlYNYrdLMGGmFvdbFYu+m6LB
+X-Google-Smtp-Source: AGHT+IHMKrVsenUpeia7t70Vufz+9EjifL1rICmtpRyfLfre57PvL5rJHcwpotRE8pRDh7ZjAgDWiw==
+X-Received: by 2002:a05:6000:18a4:b0:3e4:f194:288f with SMTP id ffacd0b85a97d-3e765a56cf5mr2010478f8f.62.1757670797296;
+        Fri, 12 Sep 2025 02:53:17 -0700 (PDT)
+Received: from claudiu-X670E-Pro-RS.. ([82.78.167.153])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7607d7ff9sm5865231f8f.51.2025.09.12.02.53.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Sep 2025 02:53:16 -0700 (PDT)
+From: Claudiu <claudiu.beznea@tuxon.dev>
+X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
+To: geert+renesas@glider.be,
+	linus.walleij@linaro.org,
+	biju.das.jz@bp.renesas.com
+Cc: claudiu.beznea@tuxon.dev,
+	linux-renesas-soc@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] pinctrl: renesas: rzg2l: Fix ISEL restore on resume
+Date: Fri, 12 Sep 2025 12:53:08 +0300
+Message-ID: <20250912095308.3603704-1-claudiu.beznea.uj@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ACPI: video: Fix missing backlight node creation on
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, mario.limonciello@amd.com, rafael@kernel.org,
- stable@vger.kernel.org
-References: <de4b5ec6-1e42-44b8-b5d3-5a452d7401ef@kernel.org>
- <20250911074543.106620-1-zhangzihuan@kylinos.cn>
- <ae7b139f-dc25-413d-bfc3-3be187ab3a73@kernel.org>
- <365c42f5-56a1-4a2c-9244-7943c3600fa2@kylinos.cn>
-From: Hans de Goede <hansg@kernel.org>
-Content-Language: en-US, nl
-In-Reply-To: <365c42f5-56a1-4a2c-9244-7943c3600fa2@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-On 12-Sep-25 3:11 AM, Zihuan Zhang wrote:
-> 
-> 在 2025/9/11 18:38, Hans de Goede 写道:
->> Hi Zihuan,
->>
->> On 11-Sep-25 9:45 AM,  Zhang wrote:
+Commit 1d2da79708cb ("pinctrl: renesas: rzg2l: Avoid configuring ISEL in
+gpio_irq_{en,dis}able*()") dropped the configuration of ISEL from
+struct irq_chip::{irq_enable, irq_disable} APIs and moved it to
+struct gpio_chip::irq::{child_to_parent_hwirq,
+child_irq_domain_ops::free} APIs to fix spurious IRQs.
 
-...
+After commit 1d2da79708cb ("pinctrl: renesas: rzg2l: Avoid configuring ISEL
+in gpio_irq_{en,dis}able*()"), ISEL was no longer configured properly on
+resume. This is because the pinctrl resume code used
+struct irq_chip::irq_enable  (called from rzg2l_gpio_irq_restore()) to
+reconfigure the wakeup interrupts. Some drivers (e.g. Ethernet) may also
+reconfigure non-wakeup interrupts on resume through their own code,
+eventually calling struct irq_chip::irq_enable.
 
->>> Also, on kernel 5.4 these machines seem to work fine without requiring a native GPU driver, while on 6.6+ the backlight node is missing.
->>> Could you please clarify what design change or intention caused this behavioral difference between 5.4 and newer kernels?
+Fix this by adding ISEL configuration back into the
+struct irq_chip::irq_enable API and on resume path for wakeup interrupts.
 
-...
+As struct irq_chip::irq_enable needs now to lock to update the ISEL,
+convert the struct rzg2l_pinctrl::lock to a raw spinlock and replace the
+locking API calls with the raw variants. Otherwise the lockdep reports
+invalid wait context when probing the adv7511 module on RZ/G2L:
 
->> Long story short: The design goal is to only
->> register 1 backlight handler, so that userspace
->> does not has to guess and to only register this
->> once and not do a register + unregister dance
->> of a potentially unwanted acpi_video backlight.
-> 
-> Thank you for the very detailed explanation!
+ [ BUG: Invalid wait context ]
+ 6.17.0-rc5-next-20250911-00001-gfcfac22533c9 #18 Not tainted
+ -----------------------------
+ (udev-worker)/165 is trying to lock:
+ ffff00000e3664a8 (&pctrl->lock){....}-{3:3}, at: rzg2l_gpio_irq_enable+0x38/0x78
+ other info that might help us debug this:
+ context-{5:5}
+ 3 locks held by (udev-worker)/165:
+ #0: ffff00000e890108 (&dev->mutex){....}-{4:4}, at: __driver_attach+0x90/0x1ac
+ #1: ffff000011c07240 (request_class){+.+.}-{4:4}, at: __setup_irq+0xb4/0x6dc
+ #2: ffff000011c070c8 (lock_class){....}-{2:2}, at: __setup_irq+0xdc/0x6dc
+ stack backtrace:
+ CPU: 1 UID: 0 PID: 165 Comm: (udev-worker) Not tainted 6.17.0-rc5-next-20250911-00001-gfcfac22533c9 #18 PREEMPT
+ Hardware name: Renesas SMARC EVK based on r9a07g044l2 (DT)
+ Call trace:
+ show_stack+0x18/0x24 (C)
+ dump_stack_lvl+0x90/0xd0
+ dump_stack+0x18/0x24
+ __lock_acquire+0xa14/0x20b4
+ lock_acquire+0x1c8/0x354
+ _raw_spin_lock_irqsave+0x60/0x88
+ rzg2l_gpio_irq_enable+0x38/0x78
+ irq_enable+0x40/0x8c
+ __irq_startup+0x78/0xa4
+ irq_startup+0x108/0x16c
+ __setup_irq+0x3c0/0x6dc
+ request_threaded_irq+0xec/0x1ac
+ devm_request_threaded_irq+0x80/0x134
+ adv7511_probe+0x928/0x9a4 [adv7511]
+ i2c_device_probe+0x22c/0x3dc
+ really_probe+0xbc/0x2a0
+ __driver_probe_device+0x78/0x12c
+ driver_probe_device+0x40/0x164
+ __driver_attach+0x9c/0x1ac
+ bus_for_each_dev+0x74/0xd0
+ driver_attach+0x24/0x30
+ bus_add_driver+0xe4/0x208
+ driver_register+0x60/0x128
+ i2c_register_driver+0x48/0xd0
+ adv7511_init+0x5c/0x1000 [adv7511]
+ do_one_initcall+0x64/0x30c
+ do_init_module+0x58/0x23c
+ load_module+0x1bcc/0x1d40
+ init_module_from_file+0x88/0xc4
+ idempotent_init_module+0x188/0x27c
+ __arm64_sys_finit_module+0x68/0xac
+ invoke_syscall+0x48/0x110
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x4c/0x160
+ el0t_64_sync_handler+0xa0/0xe4
+ el0t_64_sync+0x198/0x19c
 
-You're welcome.
+Having ISEL configuration back into the struct irq_chip::irq_enable API
+should be safe with respect to spurious IRQs, as in the probe case IRQs
+are enabled anyway in struct gpio_chip::irq::child_to_parent_hwirq. No
+spurious IRQs were detected on suspend/resume, boot, ethernet link
+insert/remove tests (executed on RZ/G3S). Boot, ethernet link
+insert/remove tests were also executed successfully on RZ/G2L.
 
-> One concern, however, is that the current approach seems to assume the presence of a GPU driver, which may not always be the case. Would it be possible to consider a more generic fallback?
+Fixes: 1d2da79708cb ("pinctrl: renesas: rzg2l: Avoid configuring ISEL in gpio_irq_{en,dis}able*(")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+---
 
-Well x86/ACPI laptops without a GPU are not really
-something which exists anymore. A GPU is a must have
-for a good user experience with modern OS-es.
-
-And now a days we have in kernel drivers for all main
-GPU vendors.
-
-This new way of doing things has been around for
-quite a while now without causing problems.
-
-To me it seems the issue here is that GPU driver
-for the (CPU/chipset integrated?) GPU on these
-laptops is missing from the mainline kernel.
-
-There are many good reasons to have a GPU driver
-in the mainline kernel. So ideally this would be
-fixed by mainlining the GPU driver for these
-laptops.
-
-> For example, if no GPU driver is available, we could still register the acpi_video backlight node.
-
-The problem is how do we know that no GPU driver is
-available ?
-
-Note that the DMI quirk check happens before
-setting *auto_detect = true; So besides doing
-a CPU check another option would be to do
-a DMI check. DMI checks can use substring matches
-(they do a strstr match by default) so if there
-is some common DMI string (part) on the affected
-laptops which is not found on other laptops
-then we can also just DMI quirk these.
-
-As long as it does not end up being an ever
-growing list then adding a bunch of DMI entries
-for this should be fine.
-
-> 
->  This way we can at least ensure that a backlight device is exposed to userspace instead of leaving the system without any backlight control interface.
-> 
-> Do you think such a fallback could be a reasonable option?
-
-The problem is the kernel does not know if there
-is a GPU driver for the GPU. If it is e.g. the
-nvidia binary driver it may need to first get
-build by dkms, so even using say a timeout is
-tricky and a timeout is always racy so I would
-like to avoid that.
-
-My preferred way of handling this would be:
-
-1. There must be a GPU driver for these laptops somewhere?
-Even if out of tree using a laptop without a GPU these days
-just does not give a good user experience. So fix the GPU
-driver to call acpi_video_register_backlight().
-
-Note acpi_video_register_backlight() is deliberately exported
-without requiring the consuming out of tree kernel module to
-be GPL to allow this.
-
-Other options would be:
-
-2. Add some special heuristics for Zhaoxin CPUs,
-the kernel already has a CPUID match mechanism for
-things like this. This could potentially be combined
-with a DMI system-vendor check to only do this special
-case handling on e.g. Lenovo and Inspur laptops.
-
-3. Instead of adding the CPU-id based special case
-just outright use DMI quirks. In this case lets try
-to use substring matches to cover multiple models
-with a single entry so as to not grow the quirk
-table too much.
-
-Regards,
-
-Hans
+Changes in v2:
+- changed the implementation approach by dropping the spinlock in
+  rzg2l_gpio_irq_endisable(), renaming it to
+  __rzg2l_gpio_irq_endisable() and using it in
+  rzg2l_gpio_irq_endisable(), the newly introduced
+  __rzg2l_gpio_irq_enable() and rzg2l_gpio_irq_restore()
+- convert struct rzg2l_pinctrl::lock to raw_spinlock_t
 
 
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 71 +++++++++++++++----------
+ 1 file changed, 44 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index f524af6f586f..c360e473488c 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -359,7 +359,7 @@ struct rzg2l_pinctrl {
+ 	spinlock_t			bitmap_lock; /* protect tint_slot bitmap */
+ 	unsigned int			hwirq[RZG2L_TINT_MAX_INTERRUPT];
+ 
+-	spinlock_t			lock; /* lock read/write registers */
++	raw_spinlock_t			lock; /* lock read/write registers */
+ 	struct mutex			mutex; /* serialize adding groups and functions */
+ 
+ 	struct rzg2l_pinctrl_pin_settings *settings;
+@@ -543,7 +543,7 @@ static void rzg2l_pinctrl_set_pfc_mode(struct rzg2l_pinctrl *pctrl,
+ 	unsigned long flags;
+ 	u32 reg;
+ 
+-	spin_lock_irqsave(&pctrl->lock, flags);
++	raw_spin_lock_irqsave(&pctrl->lock, flags);
+ 
+ 	/* Set pin to 'Non-use (Hi-Z input protection)'  */
+ 	reg = readw(pctrl->base + PM(off));
+@@ -567,7 +567,7 @@ static void rzg2l_pinctrl_set_pfc_mode(struct rzg2l_pinctrl *pctrl,
+ 
+ 	pctrl->data->pwpr_pfc_lock_unlock(pctrl, true);
+ 
+-	spin_unlock_irqrestore(&pctrl->lock, flags);
++	raw_spin_unlock_irqrestore(&pctrl->lock, flags);
+ };
+ 
+ static int rzg2l_pinctrl_set_mux(struct pinctrl_dev *pctldev,
+@@ -882,10 +882,10 @@ static void rzg2l_rmw_pin_config(struct rzg2l_pinctrl *pctrl, u32 offset,
+ 		addr += 4;
+ 	}
+ 
+-	spin_lock_irqsave(&pctrl->lock, flags);
++	raw_spin_lock_irqsave(&pctrl->lock, flags);
+ 	reg = readl(addr) & ~(mask << (bit * 8));
+ 	writel(reg | (val << (bit * 8)), addr);
+-	spin_unlock_irqrestore(&pctrl->lock, flags);
++	raw_spin_unlock_irqrestore(&pctrl->lock, flags);
+ }
+ 
+ static int rzg2l_caps_to_pwr_reg(const struct rzg2l_register_offsets *regs, u32 caps)
+@@ -1121,7 +1121,7 @@ static int rzg2l_write_oen(struct rzg2l_pinctrl *pctrl, unsigned int _pin, u8 oe
+ 	if (bit < 0)
+ 		return -EINVAL;
+ 
+-	spin_lock_irqsave(&pctrl->lock, flags);
++	raw_spin_lock_irqsave(&pctrl->lock, flags);
+ 	val = readb(pctrl->base + oen_offset);
+ 	if (oen)
+ 		val &= ~BIT(bit);
+@@ -1134,7 +1134,7 @@ static int rzg2l_write_oen(struct rzg2l_pinctrl *pctrl, unsigned int _pin, u8 oe
+ 	writeb(val, pctrl->base + oen_offset);
+ 	if (pctrl->data->hwcfg->oen_pwpr_lock)
+ 		writeb(pwpr & ~PWPR_REGWE_B, pctrl->base + regs->pwpr);
+-	spin_unlock_irqrestore(&pctrl->lock, flags);
++	raw_spin_unlock_irqrestore(&pctrl->lock, flags);
+ 
+ 	return 0;
+ }
+@@ -1687,14 +1687,14 @@ static int rzg2l_gpio_request(struct gpio_chip *chip, unsigned int offset)
+ 	if (ret)
+ 		return ret;
+ 
+-	spin_lock_irqsave(&pctrl->lock, flags);
++	raw_spin_lock_irqsave(&pctrl->lock, flags);
+ 
+ 	/* Select GPIO mode in PMC Register */
+ 	reg8 = readb(pctrl->base + PMC(off));
+ 	reg8 &= ~BIT(bit);
+ 	pctrl->data->pmc_writeb(pctrl, reg8, PMC(off));
+ 
+-	spin_unlock_irqrestore(&pctrl->lock, flags);
++	raw_spin_unlock_irqrestore(&pctrl->lock, flags);
+ 
+ 	return 0;
+ }
+@@ -1709,7 +1709,7 @@ static void rzg2l_gpio_set_direction(struct rzg2l_pinctrl *pctrl, u32 offset,
+ 	unsigned long flags;
+ 	u16 reg16;
+ 
+-	spin_lock_irqsave(&pctrl->lock, flags);
++	raw_spin_lock_irqsave(&pctrl->lock, flags);
+ 
+ 	reg16 = readw(pctrl->base + PM(off));
+ 	reg16 &= ~(PM_MASK << (bit * 2));
+@@ -1717,7 +1717,7 @@ static void rzg2l_gpio_set_direction(struct rzg2l_pinctrl *pctrl, u32 offset,
+ 	reg16 |= (output ? PM_OUTPUT : PM_INPUT) << (bit * 2);
+ 	writew(reg16, pctrl->base + PM(off));
+ 
+-	spin_unlock_irqrestore(&pctrl->lock, flags);
++	raw_spin_unlock_irqrestore(&pctrl->lock, flags);
+ }
+ 
+ static int rzg2l_gpio_get_direction(struct gpio_chip *chip, unsigned int offset)
+@@ -1761,7 +1761,7 @@ static int rzg2l_gpio_set(struct gpio_chip *chip, unsigned int offset,
+ 	unsigned long flags;
+ 	u8 reg8;
+ 
+-	spin_lock_irqsave(&pctrl->lock, flags);
++	raw_spin_lock_irqsave(&pctrl->lock, flags);
+ 
+ 	reg8 = readb(pctrl->base + P(off));
+ 
+@@ -1770,7 +1770,7 @@ static int rzg2l_gpio_set(struct gpio_chip *chip, unsigned int offset,
+ 	else
+ 		writeb(reg8 & ~BIT(bit), pctrl->base + P(off));
+ 
+-	spin_unlock_irqrestore(&pctrl->lock, flags);
++	raw_spin_unlock_irqrestore(&pctrl->lock, flags);
+ 
+ 	return 0;
+ }
+@@ -2429,14 +2429,13 @@ static int rzg2l_gpio_get_gpioint(unsigned int virq, struct rzg2l_pinctrl *pctrl
+ 	return gpioint;
+ }
+ 
+-static void rzg2l_gpio_irq_endisable(struct rzg2l_pinctrl *pctrl,
+-				     unsigned int hwirq, bool enable)
++static void __rzg2l_gpio_irq_endisable(struct rzg2l_pinctrl *pctrl,
++				       unsigned int hwirq, bool enable)
+ {
+ 	const struct pinctrl_pin_desc *pin_desc = &pctrl->desc.pins[hwirq];
+ 	u64 *pin_data = pin_desc->drv_data;
+ 	u32 off = RZG2L_PIN_CFG_TO_PORT_OFFSET(*pin_data);
+ 	u8 bit = RZG2L_PIN_ID_TO_PIN(hwirq);
+-	unsigned long flags;
+ 	void __iomem *addr;
+ 
+ 	addr = pctrl->base + ISEL(off);
+@@ -2445,12 +2444,20 @@ static void rzg2l_gpio_irq_endisable(struct rzg2l_pinctrl *pctrl,
+ 		addr += 4;
+ 	}
+ 
+-	spin_lock_irqsave(&pctrl->lock, flags);
+ 	if (enable)
+ 		writel(readl(addr) | BIT(bit * 8), addr);
+ 	else
+ 		writel(readl(addr) & ~BIT(bit * 8), addr);
+-	spin_unlock_irqrestore(&pctrl->lock, flags);
++}
++
++static void rzg2l_gpio_irq_endisable(struct rzg2l_pinctrl *pctrl,
++				     unsigned int hwirq, bool enable)
++{
++	unsigned long flags;
++
++	raw_spin_lock_irqsave(&pctrl->lock, flags);
++	__rzg2l_gpio_irq_endisable(pctrl, hwirq, enable);
++	raw_spin_unlock_irqrestore(&pctrl->lock, flags);
+ }
+ 
+ static void rzg2l_gpio_irq_disable(struct irq_data *d)
+@@ -2462,15 +2469,25 @@ static void rzg2l_gpio_irq_disable(struct irq_data *d)
+ 	gpiochip_disable_irq(gc, hwirq);
+ }
+ 
+-static void rzg2l_gpio_irq_enable(struct irq_data *d)
++static void __rzg2l_gpio_irq_enable(struct irq_data *d, bool lock)
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
++	struct rzg2l_pinctrl *pctrl = container_of(gc, struct rzg2l_pinctrl, gpio_chip);
+ 	unsigned int hwirq = irqd_to_hwirq(d);
+ 
+ 	gpiochip_enable_irq(gc, hwirq);
++	if (lock)
++		rzg2l_gpio_irq_endisable(pctrl, hwirq, true);
++	else
++		__rzg2l_gpio_irq_endisable(pctrl, hwirq, true);
+ 	irq_chip_enable_parent(d);
+ }
+ 
++static void rzg2l_gpio_irq_enable(struct irq_data *d)
++{
++	__rzg2l_gpio_irq_enable(d, true);
++}
++
+ static int rzg2l_gpio_irq_set_type(struct irq_data *d, unsigned int type)
+ {
+ 	return irq_chip_set_type_parent(d, type);
+@@ -2616,11 +2633,11 @@ static void rzg2l_gpio_irq_restore(struct rzg2l_pinctrl *pctrl)
+ 		 * This has to be atomically executed to protect against a concurrent
+ 		 * interrupt.
+ 		 */
+-		spin_lock_irqsave(&pctrl->lock, flags);
++		raw_spin_lock_irqsave(&pctrl->lock, flags);
+ 		ret = rzg2l_gpio_irq_set_type(data, irqd_get_trigger_type(data));
+ 		if (!ret && !irqd_irq_disabled(data))
+-			rzg2l_gpio_irq_enable(data);
+-		spin_unlock_irqrestore(&pctrl->lock, flags);
++			__rzg2l_gpio_irq_enable(data, false);
++		raw_spin_unlock_irqrestore(&pctrl->lock, flags);
+ 
+ 		if (ret)
+ 			dev_crit(pctrl->dev, "Failed to set IRQ type for virq=%u\n", virq);
+@@ -2950,7 +2967,7 @@ static int rzg2l_pinctrl_probe(struct platform_device *pdev)
+ 				     "failed to enable GPIO clk\n");
+ 	}
+ 
+-	spin_lock_init(&pctrl->lock);
++	raw_spin_lock_init(&pctrl->lock);
+ 	spin_lock_init(&pctrl->bitmap_lock);
+ 	mutex_init(&pctrl->mutex);
+ 	atomic_set(&pctrl->wakeup_path, 0);
+@@ -3093,7 +3110,7 @@ static void rzg2l_pinctrl_pm_setup_pfc(struct rzg2l_pinctrl *pctrl)
+ 	u32 nports = pctrl->data->n_port_pins / RZG2L_PINS_PER_PORT;
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&pctrl->lock, flags);
++	raw_spin_lock_irqsave(&pctrl->lock, flags);
+ 	pctrl->data->pwpr_pfc_lock_unlock(pctrl, false);
+ 
+ 	/* Restore port registers. */
+@@ -3138,7 +3155,7 @@ static void rzg2l_pinctrl_pm_setup_pfc(struct rzg2l_pinctrl *pctrl)
+ 	}
+ 
+ 	pctrl->data->pwpr_pfc_lock_unlock(pctrl, true);
+-	spin_unlock_irqrestore(&pctrl->lock, flags);
++	raw_spin_unlock_irqrestore(&pctrl->lock, flags);
+ }
+ 
+ static int rzg2l_pinctrl_suspend_noirq(struct device *dev)
+@@ -3187,14 +3204,14 @@ static int rzg2l_pinctrl_resume_noirq(struct device *dev)
+ 
+ 	writeb(cache->qspi, pctrl->base + QSPI);
+ 	if (pctrl->data->hwcfg->oen_pwpr_lock) {
+-		spin_lock_irqsave(&pctrl->lock, flags);
++		raw_spin_lock_irqsave(&pctrl->lock, flags);
+ 		pwpr = readb(pctrl->base + regs->pwpr);
+ 		writeb(pwpr | PWPR_REGWE_B, pctrl->base + regs->pwpr);
+ 	}
+ 	writeb(cache->oen, pctrl->base + pctrl->data->hwcfg->regs.oen);
+ 	if (pctrl->data->hwcfg->oen_pwpr_lock) {
+ 		writeb(pwpr & ~PWPR_REGWE_B, pctrl->base + regs->pwpr);
+-		spin_unlock_irqrestore(&pctrl->lock, flags);
++		raw_spin_unlock_irqrestore(&pctrl->lock, flags);
+ 	}
+ 	for (u8 i = 0; i < 2; i++) {
+ 		if (regs->sd_ch)
+-- 
+2.43.0
 
 
