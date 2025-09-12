@@ -1,206 +1,139 @@
-Return-Path: <stable+bounces-179355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206A1B54E8D
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 14:55:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E9DB54E97
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 14:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1ADD583490
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 12:55:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 396317C2757
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 12:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667243074A1;
-	Fri, 12 Sep 2025 12:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2136F306480;
+	Fri, 12 Sep 2025 12:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="10fdBOnu"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="knYGKiuC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from fra-out-009.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-009.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.64.237.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8F8305068;
-	Fri, 12 Sep 2025 12:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC823064A3;
+	Fri, 12 Sep 2025 12:56:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.64.237.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757681749; cv=none; b=VZAIdI/9CBODzVlvrEpJ71tjkmoukhXkJgZEaLDLg9DSCd53vXm0upus4pZToUzMVXQHBlMcknvhQTFrZ8omY9jq1yAWwXCKv1elpOzSzmIZynZAJysW3BcA8lPoVUZMpub9ZxSgsajia4lJb6FkAq3s38oQa6EA2SVUAqXHt8c=
+	t=1757681793; cv=none; b=Q73dtS1fQOrwSHCbHoNa4diHoG0njyx8Pp5m1dO2Qed0exF+HinkjuocrOEeGSuMFr8oC1rur29jMsIFy+zbSxgCqYakfITdvaDY2WoZTQpO07feU2HZhOHOc2D5StKRIBb7NtztZRkkucvGIjBQW0rwZpecCy0RmdKiMEJS25c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757681749; c=relaxed/simple;
-	bh=q+VSZLrpz80ouQvK3/q/bvIQunD0Ui4quCLTryMzXak=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=dcNnMTyqGz3JzbS663Q+QNz+mkj2WrJ1cRiXV6j8TGRVq/rpdxu2pxGZ6eQQHug3x/pTuV0pa7IgyQZ32Q2ImxZwuXhv/8gTZ61DSAV19i4NAcPqAHtfH9oV/N4BGnje9PlTJVP18nWK/Xco993fiK+x7ofnPtdHXh0ax7Jy5HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=10fdBOnu; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 072721A0DD2;
-	Fri, 12 Sep 2025 12:55:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D111C60638;
-	Fri, 12 Sep 2025 12:55:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5CAF9102F28D5;
-	Fri, 12 Sep 2025 14:55:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1757681743; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=jsX+ssrACzBNObLTnlh8OdW9eS/lR9QUnQa2VKVvgho=;
-	b=10fdBOnuIf9+TVb81hqwJj3lBVctWbHP/drlzP4YF8djSP0qBOtdyRjAQQ2TXTb668LYDl
-	ERqXEk45aSNq7G70RdaPsxMcVzRvgm8K1YieTHpMssjR8kMF9ZwRLChMlmnwwnsWkq5Lm5
-	MiLHpR97JcRbFjSWK/ZaQqHFTy5jYaFslBZX5IltHF964cqUxImiwVgO3fRFLbSsXanywt
-	PAsyIg9SAoOsINqhaFNdQR/5ll4wPk52At8E++uhEHT4awsqsCKwvfVzmNJ1RGtjbJxXQz
-	X7EERm9cfp7gqy6Ck90KN3/QPuLZ1wVlqOUWZ3WiyxDzl1/QqIiufA7IWX0Ftg==
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
-To: Josua Mayer <josua@solid-run.com>, Andrew Lunn <andrew@lunn.ch>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Wunderlich <frank-w@public-files.de>
-Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Josua Mayer
- <josua@solid-run.com>
-Subject: Re: [PATCH] arm64: dts: marvell: cn913x-solidrun: fix sata ports
- status
-In-Reply-To: <87tt17oms0.fsf@BLaptop.bootlin.com>
-References: <20250911-cn913x-sr-fix-sata-v1-1-9e72238d0988@solid-run.com>
- <87tt17oms0.fsf@BLaptop.bootlin.com>
-Date: Fri, 12 Sep 2025 14:55:40 +0200
-Message-ID: <87qzwbomnn.fsf@BLaptop.bootlin.com>
+	s=arc-20240116; t=1757681793; c=relaxed/simple;
+	bh=6JbAF9nqJVcH7dtb3TDCpTTXE428ZAiVfhu9toRIJXw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=j1ix1OvOxo4y9W31uVKoq6Cgk1LacNUXlsSs9hHfEcZXcHULFOZMPi1ZuzHLBxr2rbpliGLn+zLsVpDZ99wL68YRx+aO7SWttMFA64ESlhSD/2dUULgAv4GhMaQY7MWPNgP9M1iIdsff86ZmU286ypBe+jo7EdNN6TRKLBn2CwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=knYGKiuC; arc=none smtp.client-ip=3.64.237.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1757681792; x=1789217792;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=8XPAlSPEA8VS5QX5oda/u8IFY9M8nwVCg+rKWmjuFh4=;
+  b=knYGKiuC7B9SDRNgHCVs4qanBoXy1OT2u4fPYV0J6TQoXZQBHlXFZZ5G
+   Py4fKWSkAcDqVvnRB1oEVybXRXf0Bn88oG9AKlkgJoMe7utsjJ/PVNMkz
+   qeSn24BaXDjvNTayEO5WGTwUxj4wME6zTINelHjPCXYchjTgi0aX+pGA5
+   IK7qHUCRtvj6NJwRod5GUhQCl1DPJdq55L1I09yNo5EQUbEbHY23dhlfu
+   2ScRolncMXZy9WseaZyocADBq4L9JHgAdoB33XvkaocCcbHZKVJDLXukF
+   q62nkBjvgyaPuKK7uTDitZ5ec1AXWFO4WnHXOUjsMO3NdFHAsID27WBVD
+   g==;
+X-CSE-ConnectionGUID: zAQgLpVSSwG3eDQ8VcEhJQ==
+X-CSE-MsgGUID: xGDH0KX9RNmV55FnoxGsaQ==
+X-IronPort-AV: E=Sophos;i="6.18,259,1751241600"; 
+   d="scan'208";a="1919948"
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-009.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 12:56:21 +0000
+Received: from EX19MTAEUB001.ant.amazon.com [54.240.197.234:19396]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.1.255:2525] with esmtp (Farcaster)
+ id ba462319-b15f-4b93-81f5-879fc8889bb4; Fri, 12 Sep 2025 12:56:21 +0000 (UTC)
+X-Farcaster-Flow-ID: ba462319-b15f-4b93-81f5-879fc8889bb4
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19MTAEUB001.ant.amazon.com (10.252.51.28) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Fri, 12 Sep 2025 12:56:19 +0000
+Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
+ (172.19.116.181) by EX19D018EUA004.ant.amazon.com (10.252.50.85) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 12 Sep 2025
+ 12:56:13 +0000
+From: Eliav Farber <farbere@amazon.com>
+To: <luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <mingo@redhat.com>,
+	<natechancellor@gmail.com>, <ndesaulniers@google.com>,
+	<keescook@chromium.org>, <sashal@kernel.org>, <akpm@linux-foundation.org>,
+	<ojeda@kernel.org>, <elver@google.com>, <gregkh@linuxfoundation.org>,
+	<kbusch@kernel.org>, <sj@kernel.org>, <bvanassche@acm.org>,
+	<leon@kernel.org>, <jgg@ziepe.ca>, <linux-kernel@vger.kernel.org>,
+	<linux-sparse@vger.kernel.org>, <clang-built-linux@googlegroups.com>,
+	<stable@vger.kernel.org>
+CC: <jonnyc@amazon.com>, <farbere@amazon.com>
+Subject: [PATCH 0/4 5.10.y] overflow: Allow mixed type arguments in overflow macros
+Date: Fri, 12 Sep 2025 12:56:01 +0000
+Message-ID: <20250912125606.13262-1-farbere@amazon.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EX19D038UWC001.ant.amazon.com (10.13.139.213) To
+ EX19D018EUA004.ant.amazon.com (10.252.50.85)
 
-Gregory CLEMENT <gregory.clement@bootlin.com> writes:
+This series backports four commits to bring include/linux/overflow.h in
+line with v5.15.193:
+ - 2541be80b1a2 ("overflow: Correct check_shl_overflow() comment")
+ - 564e84663d25 ("compiler.h: drop fallback overflow checkers")
+ - 1d1ac8244c22 ("overflow: Allow mixed type arguments")
+ - f96cfe3e05b0 ("tracing: Define the is_signed_type() macro once")
 
-> Josua Mayer <josua@solid-run.com> writes:
->
->> Commit "arm64: dts: marvell: only enable complete sata nodes" changed
->> armada-cp11x.dtsi disabling all sata ports status by default.
->>
->> The author missed some dts which relied on the dtsi enabling all ports,
->> and just disabled unused ones instead.
->>
->> Update dts for SolidRun cn913x based boards to enable the available
->> ports, rather than disabling the unvavailable one.
->>
->> Further according to dt bindings the serdes phys are to be specified in
->> the port node, not the controller node.
->> Move those phys properties accordingly in clearfog base/pro/solidwan.
->>
->> Fixes: 30023876aef4 ("arm64: dts: marvell: only enable complete sata nod=
-es")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Josua Mayer <josua@solid-run.com>
->
-> Applied on mvebu/fixes
-Actually this version not was not applied
+The motivation is to fix build failures such as:
 
->
-> Thanks,
->
-> Gregory
->
->
->> ---
->>  arch/arm64/boot/dts/marvell/cn9130-cf.dtsi         | 7 ++++---
->>  arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts | 6 ++++--
->>  arch/arm64/boot/dts/marvell/cn9132-clearfog.dts    | 6 ++----
->>  3 files changed, 10 insertions(+), 9 deletions(-)
->>
->> diff --git a/arch/arm64/boot/dts/marvell/cn9130-cf.dtsi b/arch/arm64/boo=
-t/dts/marvell/cn9130-cf.dtsi
->> index ad0ab34b66028c53b8a18b3e8ee0c0aec869759f..bd42bfbe408bbe2a4d58dbd4=
-0204bcfb3c126312 100644
->> --- a/arch/arm64/boot/dts/marvell/cn9130-cf.dtsi
->> +++ b/arch/arm64/boot/dts/marvell/cn9130-cf.dtsi
->> @@ -152,11 +152,12 @@ expander0_pins: cp0-expander0-pins {
->>=20=20
->>  /* SRDS #0 - SATA on M.2 connector */
->>  &cp0_sata0 {
->> -	phys =3D <&cp0_comphy0 1>;
->>  	status =3D "okay";
->>=20=20
->> -	/* only port 1 is available */
->> -	/delete-node/ sata-port@0;
->> +	sata-port@1 {
->> +		phys =3D <&cp0_comphy0 1>;
->> +		status =3D "okay";
->> +	};
->>  };
->>=20=20
->>  /* microSD */
->> diff --git a/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts b/arch/a=
-rm64/boot/dts/marvell/cn9131-cf-solidwan.dts
->> index 47234d0858dd2195bb1485f25768ad3c757b7ac2..338853d3b179bb5cb742e975=
-bb830fdb9d62d4cc 100644
->> --- a/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
->> +++ b/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
->> @@ -563,11 +563,13 @@ &cp1_rtc {
->>=20=20
->>  /* SRDS #1 - SATA on M.2 (J44) */
->>  &cp1_sata0 {
->> -	phys =3D <&cp1_comphy1 0>;
->>  	status =3D "okay";
->>=20=20
->>  	/* only port 0 is available */
->> -	/delete-node/ sata-port@1;
->> +	sata-port@0 {
->> +		phys =3D <&cp1_comphy1 0>;
->> +		status =3D "okay";
->> +	};
->>  };
->>=20=20
->>  &cp1_syscon0 {
->> diff --git a/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts b/arch/arm6=
-4/boot/dts/marvell/cn9132-clearfog.dts
->> index 0f53745a6fa0d8cbd3ab9cdc28a972ed748c275f..115c55d73786e2b9265e1caa=
-4c62ee26f498fb41 100644
->> --- a/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts
->> +++ b/arch/arm64/boot/dts/marvell/cn9132-clearfog.dts
->> @@ -512,10 +512,9 @@ &cp1_sata0 {
->>  	status =3D "okay";
->>=20=20
->>  	/* only port 1 is available */
->> -	/delete-node/ sata-port@0;
->> -
->>  	sata-port@1 {
->>  		phys =3D <&cp1_comphy3 1>;
->> +		status =3D "okay";
->>  	};
->>  };
->>=20=20
->> @@ -631,9 +630,8 @@ &cp2_sata0 {
->>  	status =3D "okay";
->>=20=20
->>  	/* only port 1 is available */
->> -	/delete-node/ sata-port@0;
->> -
->>  	sata-port@1 {
->> +		status =3D "okay";
->>  		phys =3D <&cp2_comphy3 1>;
->>  	};
->>  };
->>
->> ---
->> base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
->> change-id: 20250911-cn913x-sr-fix-sata-5c737ebdb97f
->>
->> Best regards,
->> --=20
->> Josua Mayer <josua@solid-run.com>
->>
->>
->
-> --=20
-> Gr=C3=A9gory CLEMENT, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
+drivers/net/ethernet/intel/e1000e/ethtool.c: In function ‘e1000_set_eeprom’:
+./include/linux/overflow.h:71:15: error: comparison of distinct pointer types lacks a cast [-Werror]
+   71 |  (void) (&__a == __d);   \
+      |               ^~
+drivers/net/ethernet/intel/e1000e/ethtool.c:582:6: note: in expansion of macro ‘check_add_overflow’
+  582 |  if (check_add_overflow(eeprom->offset, eeprom->len, &total_len) ||
+      |      ^~~~~~~~~~~~~~~~~~
 
---=20
-Gr=C3=A9gory CLEMENT, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+This regression was triggered by commit ce8829d3d44b ("e1000e: fix heap
+overflow in e1000_set_eeprom").
+
+check_add_overflow() requires the first two operands and the result
+pointer to be of identical type. On 64-bit builds, using size_t for the
+result conflicted with the u32 fields eeprom->offset and eeprom->len,
+resulting in type check failures.
+
+BarteVan Assche (1):
+  tracing: Define the is_signed_type() macro once
+
+Kees Cook (1):
+  overflow: Allow mixed type arguments
+
+Keith Busch (1):
+  overflow: Correct check_shl_overflow() comment
+
+Nick Desaulniers (1):
+  compiler.h: drop fallback overflow checkers
+
+ include/linux/compiler-clang.h     |  13 --
+ include/linux/compiler-gcc.h       |   4 -
+ include/linux/compiler.h           |   6 +
+ include/linux/overflow.h           | 209 ++++++-----------------------
+ include/linux/trace_events.h       |   2 -
+ tools/include/linux/compiler-gcc.h |   4 -
+ tools/include/linux/overflow.h     | 140 +------------------
+ 7 files changed, 52 insertions(+), 326 deletions(-)
+
+-- 
+2.47.3
+
 
