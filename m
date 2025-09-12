@@ -1,39 +1,80 @@
-Return-Path: <stable+bounces-179398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300CBB557A9
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 22:35:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72534B557D3
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 22:46:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF2653BF13E
-	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 20:35:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00380AC404E
+	for <lists+stable@lfdr.de>; Fri, 12 Sep 2025 20:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC113221FCA;
-	Fri, 12 Sep 2025 20:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C412D3EDD;
+	Fri, 12 Sep 2025 20:46:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZRkAZYZC"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B3F2DC76D;
-	Fri, 12 Sep 2025 20:35:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBCC2868B4
+	for <stable@vger.kernel.org>; Fri, 12 Sep 2025 20:45:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757709329; cv=none; b=OmaD9LrWQNWuUlBp/4vMPJUatUX9JIWTuqEopjEAWL87nItzUR+0ORtaWcsilOA43L4XxkWRPOZiq/xXVkKmS0zMwkBnGSOirk2WHPXt/5U2lczt/6Ptqabd7fjCy1ICJncwge517DjYIhBzqaZiP+iRfdw5eXSOrVtWGPkIKZY=
+	t=1757709960; cv=none; b=MRxDPH05FmaR/2x6UBbSaZYxMnBu3Ysi4JuJKeu4rXKsG/f2sy+aKV/Dn2S/m/d3xZt9wzwgfTGN+S82v5zspSVz9tPL1xUfX7qFDhaAyBfNEJAP0UEb9nwptc9vhoZm6gAOaWfTVcrU8wikj1xG8YkJXmMOgyHjSgupY0wNIGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757709329; c=relaxed/simple;
-	bh=pI2xXThVA2j/bMJn7Qrz6ZQIqgg27DQdVGJLHXZHBxs=;
-	h=Message-ID:Date:MIME-Version:To:CC:From:Subject:Content-Type; b=oLddCUsoq2/I5YRHU9COVhBrVbdpm8OKVWzZw8/6HVwtbhh5UBZSGiK73BuxYcXEWfNIthMK6KHQ6c+2iWhRVeTr0qTZnFc7ni6Y8A1E3wqcyAS/6hlvOEoFwl4efam4mkQrQOdAFzshY7CC/2vkjBFjf046Tbtdl9eLybwt9JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from [192.168.2.102] (213.87.146.251) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Fri, 12 Sep
- 2025 23:35:07 +0300
-Message-ID: <b6ebf19c-8328-44de-a695-157061a9d8a8@omp.ru>
-Date: Fri, 12 Sep 2025 23:35:07 +0300
+	s=arc-20240116; t=1757709960; c=relaxed/simple;
+	bh=pRQDPtc98XZXPyJsfYq1WEyLesiYNBiwIFGSQ2eZrTo=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=boiXhqvUST0BLlrKC4vohdXi1BJt6NBtYd+xs2+mDVsWXk3gVg3GgNLrLcyHpXIZ0CbuOs2ryE5jVOCP4syjzQ/Oj3a6/0OPFesz3QUJJ+qkmlPFA9b792/STLr6elk3mosAJlZu1cpmoCfBWBrsweOjZpIJ4gmLZw0Jj3tlbkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZRkAZYZC; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7459d088020so1208862a34.3
+        for <stable@vger.kernel.org>; Fri, 12 Sep 2025 13:45:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757709958; x=1758314758; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9bZDPRfL8I496CAzITwBcmgDccZDsjO0kPZ35dZpbKU=;
+        b=ZRkAZYZC/Go9YHv5iYKS3dGwb2UAoKKjnKbYfRL9uEKVag6jwpKxRYPkWH5CpnhMjv
+         TvUW3HasVTCtdvgLPZPGsu+o7yXYKs02iH7hmTBSFUnQ4A48yK7VXI/PpI9OePlF4adQ
+         vOcJwMvLicOswhMjrFUPQCjGzyPB9bIXgPGyBVYitUpc6f0MykAKhWrv64hJ+6Ps+V1V
+         bvY76grQjD5847esOVFX+yb3W1bS0OIRz67JVRn7UYAIYzphgSdrBQyeXCoKkcHruaSV
+         Ef+ymRAArnH0EVGzFvrrZNuk3rz43SjaqP+J27F3wXRZtTZrBrWC1Or5nK5W49BiUH8x
+         BhMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757709958; x=1758314758;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=9bZDPRfL8I496CAzITwBcmgDccZDsjO0kPZ35dZpbKU=;
+        b=kkMTBH7QDOfLCq/Oyy83MkqcB5oZ7Uf6BRJ4Ot/NDZrTMfiWZQ6h/X8J0qEPaf32uw
+         guGpwlb5BmPpOZpPGXZpCJbB90PwUptbWdEe97Z7l+SGd7S0OWc5tnv8GpF7ENIBlq9w
+         hj5XxprfN5lBqU2YtaepVLPxO41rGZax2SVM+2jEF6cI2koBsTkqoaCuZMClfCKxkd8Q
+         StKhdEAiXY5nk3iH9OgiTpVof8SoPPXsWhSYjneQ0+cKO+tajXIdMXO/QHgN29f4lIwu
+         Pfaj6+GPA1vukHuDlXPUbR1Zc5dDcSTgh5KI34ru6fRf6ySTYSP3G163QrT6hbUFR32c
+         xqtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXIHkwJkyfd0oBB2JJSJdGsB/40p1eKY3XXcIWmRE4g9DpqUIfRzvyXBaftm8BNn1YECMZPgyc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFYdVVh+3WGveHJLdmFaZvEiFfbnlHN5ze9/HWua0f9Wfob7g2
+	1GEU6Cn2BcU0Vdopiw2ShmOMBs/jioN8GWvBs4qSWLQoQoMQBdMFLS0=
+X-Gm-Gg: ASbGnctGultYV4lNretDWVAu1hFsX/xiZEObFD7kSAFbGjoxG742o38FatBPKKalDHu
+	K4dSlFi9FZ/JxIskHrRnGLYVOoRpdvStxEmu2w8UXCwKKUwaN0Zy5Z7IvRJq2S11NRcMX04iCZb
+	QbmS032csHUVZCH3Trdq7rwHIe8cugJlx/2+ex5XKWeKX4IpUTu5+KseNPgzdHDVg8YVxwQxesk
+	ZvCvyXWGqWrPTxkW+VzaiJ8WiV/IS2XP4ew08bpnDppK9B5tezKz0qdaYxVv3EMolhUxXYAXV9b
+	pgIpU0mFievhVvT067G4LSReIt9OMFnOQkvG6JqZ7ozuz9JH2WRlrMS+riUnd4tw29rd5xCKGFu
+	ur7h3oSLjrSf3CRFw46oYeyzOUDs95bKdYph8u9tJazM2Z1fwwBJQM1rOE/Al+5aC3YDFBYYVDz
+	8=
+X-Google-Smtp-Source: AGHT+IEm1gTbQxjO8LE+RY3w2iaAsCuuqbHiw9gMqHoXCsgjRZ47DUQ8KukdsPyjfgulgrRK1ZU78Q==
+X-Received: by 2002:a05:6830:490a:b0:748:8b42:779e with SMTP id 46e09a7af769-75355ac0c4bmr2565621a34.27.1757709957857;
+        Fri, 12 Sep 2025 13:45:57 -0700 (PDT)
+Received: from ?IPV6:2600:8804:8c40:ef:8da2:cce2:d418:6b9d? ([2600:8804:8c40:ef:8da2:cce2:d418:6b9d])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7524b8a39ecsm1221296a34.23.2025.09.12.13.45.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Sep 2025 13:45:57 -0700 (PDT)
+Message-ID: <80bacfd6-6073-4ce5-be32-ae9580832337@gmail.com>
+Date: Fri, 12 Sep 2025 15:45:56 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,98 +83,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-To: <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Henry Martin <bsdhenrymartin@gmail.com>, Sudeep Holla
-	<sudeep.holla@arm.com>, Viresh Kumar <viresh.kumar@linaro.org>,
-	<lvc-project@linuxtesting.org>
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
-Subject: [PATCH 5.10.y] cpufreq: scmi: Fix null-ptr-deref in
- scmi_cpufreq_get_rate()
-Organization: Open Mobile Platform
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 09/12/2025 20:12:11
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 19
-X-KSE-AntiSpam-Info: Lua profiles 196228 [Sep 12 2025]
-X-KSE-AntiSpam-Info: Version: 6.1.1.11
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 66 0.3.66
- fc5dda3b6b70d34b3701db39319eece2aeb510fb
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info:
-	d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;127.0.0.199:7.1.2;213.87.146.251:7.1.2
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 213.87.146.251
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 19
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 09/12/2025 20:14:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 9/12/2025 6:07:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+To: Autumn Dececco <autumndececco@gmail.com>, Felix Fietkau <nbd@nbd.name>,
+ linux-wireless <linux-wireless@vger.kernel.org>, stable@vger.kernel.org,
+ Lorenzo Bianconi <lorenzo@kernel.org>
+From: Nick Morrow <morrownr@gmail.com>
+Subject: [PATCH wireless-next v2] wifi: mt76: mt7921u: Add VID/PID for Netgear
+ A7500
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit 484d3f15cc6cbaa52541d6259778e715b2c83c54 ]
+Add VID/PID 0846/9065 for Netgear A7500.
 
-cpufreq_cpu_get_raw() can return NULL when the target CPU is not present
-in the policy->cpus mask. scmi_cpufreq_get_rate() does not check for
-this case, which results in a NULL pointer dereference.
-
-Add NULL check after cpufreq_cpu_get_raw() to prevent this issue.
-
-[Sergey: resolved reject (reordering the local variables).]
-
-Fixes: 99d6bdf33877 ("cpufreq: add support for CPU DVFS based on SCMI message protocol")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reported-by: Autumn Dececco <autumndececco@gmail.com>
+Tested-by: Autumn Dececco <autumndececco@gmail.com>
+Signed-off-by: Nick Morrow <morrownr@gmail.com>
+Cc: stable@vger.kernel.org
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes in v2:
+ - added missing tab in patch
 
 ---
- drivers/cpufreq/scmi-cpufreq.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/usb.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Index: linux-stable/drivers/cpufreq/scmi-cpufreq.c
-===================================================================
---- linux-stable.orig/drivers/cpufreq/scmi-cpufreq.c
-+++ linux-stable/drivers/cpufreq/scmi-cpufreq.c
-@@ -29,12 +29,18 @@ static const struct scmi_handle *handle;
- 
- static unsigned int scmi_cpufreq_get_rate(unsigned int cpu)
- {
--	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
- 	const struct scmi_perf_ops *perf_ops = handle->perf_ops;
--	struct scmi_data *priv = policy->driver_data;
-+	struct cpufreq_policy *policy;
-+	struct scmi_data *priv;
- 	unsigned long rate;
- 	int ret;
- 
-+	policy = cpufreq_cpu_get_raw(cpu);
-+	if (unlikely(!policy))
-+		return 0;
-+
-+	priv = policy->driver_data;
-+
- 	ret = perf_ops->freq_get(handle, priv->domain_id, &rate, false);
- 	if (ret)
- 		return 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+index fe9751851ff7..100bdba32ba5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/usb.c
+@@ -21,6 +21,9 @@ static const struct usb_device_id mt7921u_device_table[] = {
+     /* Netgear, Inc. [A8000,AXE3000] */
+     { USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9060, 0xff, 0xff, 0xff),
+         .driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
++    /* Netgear, Inc. A7500 */
++    { USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9065, 0xff, 0xff, 0xff),
++        .driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+     /* TP-Link TXE50UH */
+     { USB_DEVICE_AND_INTERFACE_INFO(0x35bc, 0x0107, 0xff, 0xff, 0xff),
+         .driver_info = (kernel_ulong_t)MT7921_FIRMWARE_WM },
+-- 
+2.47.3
+
 
