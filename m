@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-179466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7FCB560CC
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:26:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7553B560CE
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4FCB174233
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:26:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7802A3BB83C
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F9E2798F5;
-	Sat, 13 Sep 2025 12:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6672E7BBD;
+	Sat, 13 Sep 2025 12:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PF8OiIYE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVyeNaRF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D81DDD2
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D9DDDD2
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757766404; cv=none; b=m0dUox7OTf9vVyeHPv9NfYTRgYNMt49/3PoqYEVkO8xxN2UJfcqa8Pd/tMvh/o96GFt/3Y9rBQt/YgOhsZMpU0Gzb3PbU2P8Y+1bJ75R8YplcsuDPaS/tr3HIPiaJ5yPSOZP1TrRGcUeokpKya8emytVXl/idxb2PDW/oVRWKbo=
+	t=1757766418; cv=none; b=gjckRERbpYgr32o2NjmPisVYkeZnpSKWnnLl0tVwhiYIXsYvl3OuD0TW8IkvqOZndzeZ4yX52+weTGMN6UhYR18MkE9NYdVD8IwCBmiqzKsozfVbJTF0L6ul/pnns28jt2HaoS3mQkCOHis4lPhxVj+3H/rwFNPK0CToQo1zlDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757766404; c=relaxed/simple;
-	bh=INZHYoAg4W6W4Alzo7CfKH0Bn6eXvRhjyEaec7NohFc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BfT4pYumP7I4Y9/NJgMlhpKzR6sy1Ah6cunXRIMC0cQ4Cn/F2Mo1TfevaUNTXswAVOPV0fuEh9Ba8sfufXFZcbMJiwNk3M8VsLNzx8+ywN0ZknHl6CM/LbtNAkXlOsIiK48B1rrysDcpT2HpNzKXpkm9J+kaH9lmTbbTZRskWxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PF8OiIYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA81DC4CEEB;
-	Sat, 13 Sep 2025 12:26:43 +0000 (UTC)
+	s=arc-20240116; t=1757766418; c=relaxed/simple;
+	bh=d8qR2dMPnKIweV9JwlWLA4bIjogc8r5BlQ2C27Qs6/8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TNLSJwSRxV5EjYUoxNwXSZOqC9KXEJzc/DyiHEg44Pm/LaQD7Q/92emB8wcsc5rva7gjKJPh9enz/Kt+Xe4ob6yxqlgRIj65/kyqVvx6px4bjlB46EzUHNLzpsiFWxHRR1Re5IRvQM0cJ0z9E+VoG+5qNiyWuRTuWS1R/wIwQMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVyeNaRF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25DDC4CEEB;
+	Sat, 13 Sep 2025 12:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757766404;
-	bh=INZHYoAg4W6W4Alzo7CfKH0Bn6eXvRhjyEaec7NohFc=;
+	s=korg; t=1757766418;
+	bh=d8qR2dMPnKIweV9JwlWLA4bIjogc8r5BlQ2C27Qs6/8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=PF8OiIYEXHw5tHQGlpbLti3DHcFU7HI4Tm0w0QcnsyBHxkSl5htWRGVXcAZZLbZ9x
-	 wBdzZ+4G32OPOwAc3O6pk39f2gC0BiX+Vy+XmT/l9S2Os9VnJJ0xG/QW64qvPQUFkt
-	 us4SsQJ8g0CzqeKG++WAmF4Kosf+U96As/ChU7cI=
-Subject: FAILED: patch "[PATCH] mm/damon/reclaim: avoid divide-by-zero in" failed to apply to 6.1-stable tree
-To: yanquanmin1@huawei.com,akpm@linux-foundation.org,sj@kernel.org,stable@vger.kernel.org,wangkefeng.wang@huawei.com,zuoze1@huawei.com
+	b=NVyeNaRFnkVqiQS6XID+SceOlFdOPnrBW7AdGRcEtLC9Nws6JQq0mCnP89Aeh7oXZ
+	 n9BgMTXrWjOUawrUrCnGVbgFO1XK34h7AenKHSPxmg234fT+BoYGr3+1TPNKuRW7dR
+	 h7hWL+wJ7NdHT67oekocgCBT+qXPv4E6xgODulTA=
+Subject: FAILED: patch "[PATCH] drm/i915/power: fix size for for_each_set_bit() in abox" failed to apply to 6.12-stable tree
+To: jani.nikula@intel.com,matthew.d.roper@intel.com,tursulin@ursulin.net,ville.syrjala@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 13 Sep 2025 14:26:28 +0200
-Message-ID: <2025091328-batboy-overexert-6511@gregkh>
+Date: Sat, 13 Sep 2025 14:26:54 +0200
+Message-ID: <2025091354-plenty-unlined-c98e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x e6b543ca9806d7bced863f43020e016ee996c057
+git cherry-pick -x cfa7b7659757f8d0fc4914429efa90d0d2577dd7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091328-batboy-overexert-6511@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091354-plenty-unlined-c98e@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,41 +77,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e6b543ca9806d7bced863f43020e016ee996c057 Mon Sep 17 00:00:00 2001
-From: Quanmin Yan <yanquanmin1@huawei.com>
-Date: Wed, 27 Aug 2025 19:58:58 +0800
-Subject: [PATCH] mm/damon/reclaim: avoid divide-by-zero in
- damon_reclaim_apply_parameters()
+From cfa7b7659757f8d0fc4914429efa90d0d2577dd7 Mon Sep 17 00:00:00 2001
+From: Jani Nikula <jani.nikula@intel.com>
+Date: Fri, 5 Sep 2025 13:41:49 +0300
+Subject: [PATCH] drm/i915/power: fix size for for_each_set_bit() in abox
+ iteration
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-When creating a new scheme of DAMON_RECLAIM, the calculation of
-'min_age_region' uses 'aggr_interval' as the divisor, which may lead to
-division-by-zero errors.  Fix it by directly returning -EINVAL when such a
-case occurs.
+for_each_set_bit() expects size to be in bits, not bytes. The abox mask
+iteration uses bytes, but it works by coincidence, because the local
+variable holding the mask is unsigned long, and the mask only ever has
+bit 2 as the highest bit. Using a smaller type could lead to subtle and
+very hard to track bugs.
 
-Link: https://lkml.kernel.org/r/20250827115858.1186261-3-yanquanmin1@huawei.com
-Fixes: f5a79d7c0c87 ("mm/damon: introduce struct damos_access_pattern")
-Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: ze zuo <zuoze1@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.1+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 62afef2811e4 ("drm/i915/rkl: RKL uses ABOX0 for pixel transfers")
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: stable@vger.kernel.org # v5.9+
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://lore.kernel.org/r/20250905104149.1144751-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 7ea3baa6efe4bb93d11e1c0e6528b1468d7debf6)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 3c71b4596676..fb7c982a0018 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -194,6 +194,11 @@ static int damon_reclaim_apply_parameters(void)
- 	if (err)
- 		return err;
+diff --git a/drivers/gpu/drm/i915/display/intel_display_power.c b/drivers/gpu/drm/i915/display/intel_display_power.c
+index 273054c22325..c92f3e736228 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_power.c
++++ b/drivers/gpu/drm/i915/display/intel_display_power.c
+@@ -1172,7 +1172,7 @@ static void icl_mbus_init(struct intel_display *display)
+ 	if (DISPLAY_VER(display) == 12)
+ 		abox_regs |= BIT(0);
  
-+	if (!damon_reclaim_mon_attrs.aggr_interval) {
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
- 	err = damon_set_attrs(param_ctx, &damon_reclaim_mon_attrs);
- 	if (err)
- 		goto out;
+-	for_each_set_bit(i, &abox_regs, sizeof(abox_regs))
++	for_each_set_bit(i, &abox_regs, BITS_PER_TYPE(abox_regs))
+ 		intel_de_rmw(display, MBUS_ABOX_CTL(i), mask, val);
+ }
+ 
+@@ -1629,11 +1629,11 @@ static void tgl_bw_buddy_init(struct intel_display *display)
+ 	if (table[config].page_mask == 0) {
+ 		drm_dbg_kms(display->drm,
+ 			    "Unknown memory configuration; disabling address buddy logic.\n");
+-		for_each_set_bit(i, &abox_mask, sizeof(abox_mask))
++		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask))
+ 			intel_de_write(display, BW_BUDDY_CTL(i),
+ 				       BW_BUDDY_DISABLE);
+ 	} else {
+-		for_each_set_bit(i, &abox_mask, sizeof(abox_mask)) {
++		for_each_set_bit(i, &abox_mask, BITS_PER_TYPE(abox_mask)) {
+ 			intel_de_write(display, BW_BUDDY_PAGE_MASK(i),
+ 				       table[config].page_mask);
+ 
 
 
