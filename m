@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-179443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDBAFB560AF
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:23:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 178BBB560B1
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7245D5656F5
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:23:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 771041B24E45
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE442EC565;
-	Sat, 13 Sep 2025 12:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64EF2E8DE6;
+	Sat, 13 Sep 2025 12:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejTS02EZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RiocSERf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2F72EC098
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D9E26057A
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757766203; cv=none; b=ujnbqiBSWFsiPXO4nwx7nMxIDXcCycagVkKjUz8MFtOgM9Wz5BoYzGN4k2ojt16g5llcypQrrBaCUZcFvrkb8Y/ol461++jMWt2jZ2QljYbXm77aYDYxZ6LPbFQ4RakZbxBFG3DlCSPp+nLuKDmq0n63nsFhTmXTwEkKEWe7FZo=
+	t=1757766226; cv=none; b=WxpLpelVy3libSzuqYTyxwtaN5IDO7mNe54szibrgnfNNBSMtXj3C4q2X+DPQWFvJVDv+Ce3V9JyRrULjAReE6RW4dD2P8PJujh0lb0RPDzTaL6n4W7rDFaKXuR/avg39800Bh1VWqdbA4zt+KK6ZlLU0IQGDw/pqIKIHSV9gGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757766203; c=relaxed/simple;
-	bh=vhMFqZ8mcS9jjK73RdHgJdVd7QwEGdQq/KYsMlHAKsI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AspqmceHqBDtBcip7wC7n8ocPzDAtR2cnE09xN7cfYf+vLZbFMMeCin8YmOYMN8jgwfXGzNGfg4no9/zBGP+uBueYXHdBCm1njS/iYoZFORjqsJsOa/tFpJQ0h02He43mses+mHdmzuzqutLyYzzsbtNGDZQxUd73amdHMFlmUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejTS02EZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A60C4CEEB;
-	Sat, 13 Sep 2025 12:23:22 +0000 (UTC)
+	s=arc-20240116; t=1757766226; c=relaxed/simple;
+	bh=/wxcFbY8OK7YkQGFUXP6YgN2SfWpEhFa/UAvMK15DiQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RWK65F0dc4lbZiwxViIr3pTqeDcid3c9McIzvAGgZfytt55zutdPoeKHp7WsK0WQIWyU5zwHwwWmjGRGYDwDLaH2EpyH90MPJFMYQJ/ngO3hvFqcI5ACNqRZzxD6w9ES9dLqmDjrFVtOmvIf9D+RHpqJYfHEGrHPfNiMYt2Seaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RiocSERf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F091C4CEEB;
+	Sat, 13 Sep 2025 12:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757766203;
-	bh=vhMFqZ8mcS9jjK73RdHgJdVd7QwEGdQq/KYsMlHAKsI=;
+	s=korg; t=1757766226;
+	bh=/wxcFbY8OK7YkQGFUXP6YgN2SfWpEhFa/UAvMK15DiQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ejTS02EZgzsuBVDSYApSNE7GcbU0yXfnnnNyeCQbk3B1Tp+yeA90dfdTH8J/Y4esG
-	 LDlD7k5Bcu/lxdpBdqF5FRzwp7n0ZocFgSMGMoRZCI+FcG3PvYtPTMStxIQLLG5HSP
-	 ZO7gyhmuAH2PgzTgdaBYHQYJQJSY7ctd+y1xOJT0=
-Subject: FAILED: patch "[PATCH] mtd: rawnand: stm32_fmc2: avoid overlapping mappings on ECC" failed to apply to 5.10-stable tree
-To: christophe.kerello@foss.st.com,miquel.raynal@bootlin.com
+	b=RiocSERfJhAax55ZWbF67ZlVHOjgUOu1fdG2TPzvk8YBzc8yxIbOT6csYD5lccgAw
+	 IQoNY4ERRkCNsNeRJEAbKDJ3yoctulRVAnAxYrdPrXKyvU7f3SvNWRfk945pZkSJXe
+	 eAVB6CNoyRm0K3S4yVhc+NayGnqffo7vcCsv6qrs=
+Subject: FAILED: patch "[PATCH] mtd: spinand: winbond: Fix oob_layout for W25N01JW" failed to apply to 6.16-stable tree
+To: s-k6@ti.com,miquel.raynal@bootlin.com,quic_sridsn@quicinc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 13 Sep 2025 14:23:09 +0200
-Message-ID: <2025091309-quote-graves-e875@gregkh>
+Date: Sat, 13 Sep 2025 14:23:43 +0200
+Message-ID: <2025091343-unmade-clapped-31e9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.16-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.16.y
 git checkout FETCH_HEAD
-git cherry-pick -x 513c40e59d5a414ab763a9c84797534b5e8c208d
+git cherry-pick -x 4550d33e18112a11a740424c4eec063cd58e918c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091309-quote-graves-e875@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091343-unmade-clapped-31e9@gregkh' --subject-prefix 'PATCH 6.16.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,134 +77,82 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 513c40e59d5a414ab763a9c84797534b5e8c208d Mon Sep 17 00:00:00 2001
-From: Christophe Kerello <christophe.kerello@foss.st.com>
-Date: Tue, 12 Aug 2025 09:26:58 +0200
-Subject: [PATCH] mtd: rawnand: stm32_fmc2: avoid overlapping mappings on ECC
- buffer
+From 4550d33e18112a11a740424c4eec063cd58e918c Mon Sep 17 00:00:00 2001
+From: Santhosh Kumar K <s-k6@ti.com>
+Date: Thu, 4 Sep 2025 18:47:41 +0530
+Subject: [PATCH] mtd: spinand: winbond: Fix oob_layout for W25N01JW
 
-Avoid below overlapping mappings by using a contiguous
-non-cacheable buffer.
+Fix the W25N01JW's oob_layout according to the datasheet [1]
 
-[    4.077708] DMA-API: stm32_fmc2_nfc 48810000.nand-controller: cacheline tracking EEXIST,
-overlapping mappings aren't supported
-[    4.089103] WARNING: CPU: 1 PID: 44 at kernel/dma/debug.c:568 add_dma_entry+0x23c/0x300
-[    4.097071] Modules linked in:
-[    4.100101] CPU: 1 PID: 44 Comm: kworker/u4:2 Not tainted 6.1.82 #1
-[    4.106346] Hardware name: STMicroelectronics STM32MP257F VALID1 SNOR / MB1704 (LPDDR4 Power discrete) + MB1703 + MB1708 (SNOR MB1730) (DT)
-[    4.118824] Workqueue: events_unbound deferred_probe_work_func
-[    4.124674] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    4.131624] pc : add_dma_entry+0x23c/0x300
-[    4.135658] lr : add_dma_entry+0x23c/0x300
-[    4.139792] sp : ffff800009dbb490
-[    4.143016] x29: ffff800009dbb4a0 x28: 0000000004008022 x27: ffff8000098a6000
-[    4.150174] x26: 0000000000000000 x25: ffff8000099e7000 x24: ffff8000099e7de8
-[    4.157231] x23: 00000000ffffffff x22: 0000000000000000 x21: ffff8000098a6a20
-[    4.164388] x20: ffff000080964180 x19: ffff800009819ba0 x18: 0000000000000006
-[    4.171545] x17: 6361727420656e69 x16: 6c6568636163203a x15: 72656c6c6f72746e
-[    4.178602] x14: 6f632d646e616e2e x13: ffff800009832f58 x12: 00000000000004ec
-[    4.185759] x11: 00000000000001a4 x10: ffff80000988af58 x9 : ffff800009832f58
-[    4.192916] x8 : 00000000ffffefff x7 : ffff80000988af58 x6 : 80000000fffff000
-[    4.199972] x5 : 000000000000bff4 x4 : 0000000000000000 x3 : 0000000000000000
-[    4.207128] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000812d2c40
-[    4.214185] Call trace:
-[    4.216605]  add_dma_entry+0x23c/0x300
-[    4.220338]  debug_dma_map_sg+0x198/0x350
-[    4.224373]  __dma_map_sg_attrs+0xa0/0x110
-[    4.228411]  dma_map_sg_attrs+0x10/0x2c
-[    4.232247]  stm32_fmc2_nfc_xfer.isra.0+0x1c8/0x3fc
-[    4.237088]  stm32_fmc2_nfc_seq_read_page+0xc8/0x174
-[    4.242127]  nand_read_oob+0x1d4/0x8e0
-[    4.245861]  mtd_read_oob_std+0x58/0x84
-[    4.249596]  mtd_read_oob+0x90/0x150
-[    4.253231]  mtd_read+0x68/0xac
+[1] https://www.winbond.com/hq/product/code-storage-flash-memory/qspinand-flash/?__locale=en&partNo=W25N01JW
 
-Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Fixes: 6a804fb72de5 ("mtd: spinand: winbond: add support for serial NAND flash")
+Cc: Sridharan S N <quic_sridsn@quicinc.com>
 Cc: stable@vger.kernel.org
-Fixes: 2cd457f328c1 ("mtd: rawnand: stm32_fmc2: add STM32 FMC2 NAND flash controller driver")
+Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-diff --git a/drivers/mtd/nand/raw/stm32_fmc2_nand.c b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-index a960403081f1..222c3c3b6848 100644
---- a/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-+++ b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
-@@ -272,6 +272,7 @@ struct stm32_fmc2_nfc {
- 	struct sg_table dma_data_sg;
- 	struct sg_table dma_ecc_sg;
- 	u8 *ecc_buf;
-+	dma_addr_t dma_ecc_addr;
- 	int dma_ecc_len;
- 	u32 tx_dma_max_burst;
- 	u32 rx_dma_max_burst;
-@@ -902,17 +903,10 @@ static int stm32_fmc2_nfc_xfer(struct nand_chip *chip, const u8 *buf,
+diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+index 87053389a1fc..4870b2d5edb2 100644
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -176,6 +176,36 @@ static const struct mtd_ooblayout_ops w25n02kv_ooblayout = {
+ 	.free = w25n02kv_ooblayout_free,
+ };
  
- 	if (!write_data && !raw) {
- 		/* Configure DMA ECC status */
--		p = nfc->ecc_buf;
- 		for_each_sg(nfc->dma_ecc_sg.sgl, sg, eccsteps, s) {
--			sg_set_buf(sg, p, nfc->dma_ecc_len);
--			p += nfc->dma_ecc_len;
--		}
--
--		ret = dma_map_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
--				 eccsteps, dma_data_dir);
--		if (!ret) {
--			ret = -EIO;
--			goto err_unmap_data;
-+			sg_dma_address(sg) = nfc->dma_ecc_addr +
-+					     s * nfc->dma_ecc_len;
-+			sg_dma_len(sg) = nfc->dma_ecc_len;
- 		}
++static int w25n01jw_ooblayout_ecc(struct mtd_info *mtd, int section,
++				  struct mtd_oob_region *region)
++{
++	if (section > 3)
++		return -ERANGE;
++
++	region->offset = (16 * section) + 12;
++	region->length = 4;
++
++	return 0;
++}
++
++static int w25n01jw_ooblayout_free(struct mtd_info *mtd, int section,
++				   struct mtd_oob_region *region)
++{
++	if (section > 3)
++		return -ERANGE;
++
++	region->offset = (16 * section);
++	region->length = 12;
++
++	/* Extract BBM */
++	if (!section) {
++		region->offset += 2;
++		region->length -= 2;
++	}
++
++	return 0;
++}
++
+ static int w35n01jw_ooblayout_ecc(struct mtd_info *mtd, int section,
+ 				  struct mtd_oob_region *region)
+ {
+@@ -206,6 +236,11 @@ static int w35n01jw_ooblayout_free(struct mtd_info *mtd, int section,
+ 	return 0;
+ }
  
- 		desc_ecc = dmaengine_prep_slave_sg(nfc->dma_ecc_ch,
-@@ -921,7 +915,7 @@ static int stm32_fmc2_nfc_xfer(struct nand_chip *chip, const u8 *buf,
- 						   DMA_PREP_INTERRUPT);
- 		if (!desc_ecc) {
- 			ret = -ENOMEM;
--			goto err_unmap_ecc;
-+			goto err_unmap_data;
- 		}
- 
- 		reinit_completion(&nfc->dma_ecc_complete);
-@@ -929,7 +923,7 @@ static int stm32_fmc2_nfc_xfer(struct nand_chip *chip, const u8 *buf,
- 		desc_ecc->callback_param = &nfc->dma_ecc_complete;
- 		ret = dma_submit_error(dmaengine_submit(desc_ecc));
- 		if (ret)
--			goto err_unmap_ecc;
-+			goto err_unmap_data;
- 
- 		dma_async_issue_pending(nfc->dma_ecc_ch);
- 	}
-@@ -949,7 +943,7 @@ static int stm32_fmc2_nfc_xfer(struct nand_chip *chip, const u8 *buf,
- 		if (!write_data && !raw)
- 			dmaengine_terminate_all(nfc->dma_ecc_ch);
- 		ret = -ETIMEDOUT;
--		goto err_unmap_ecc;
-+		goto err_unmap_data;
- 	}
- 
- 	/* Wait DMA data transfer completion */
-@@ -969,11 +963,6 @@ static int stm32_fmc2_nfc_xfer(struct nand_chip *chip, const u8 *buf,
- 		}
- 	}
- 
--err_unmap_ecc:
--	if (!write_data && !raw)
--		dma_unmap_sg(nfc->dev, nfc->dma_ecc_sg.sgl,
--			     eccsteps, dma_data_dir);
--
- err_unmap_data:
- 	dma_unmap_sg(nfc->dev, nfc->dma_data_sg.sgl, eccsteps, dma_data_dir);
- 
-@@ -1610,7 +1599,8 @@ static int stm32_fmc2_nfc_dma_setup(struct stm32_fmc2_nfc *nfc)
- 		return ret;
- 
- 	/* Allocate a buffer to store ECC status registers */
--	nfc->ecc_buf = devm_kzalloc(nfc->dev, FMC2_MAX_ECC_BUF_LEN, GFP_KERNEL);
-+	nfc->ecc_buf = dmam_alloc_coherent(nfc->dev, FMC2_MAX_ECC_BUF_LEN,
-+					   &nfc->dma_ecc_addr, GFP_KERNEL);
- 	if (!nfc->ecc_buf)
- 		return -ENOMEM;
- 
++static const struct mtd_ooblayout_ops w25n01jw_ooblayout = {
++	.ecc = w25n01jw_ooblayout_ecc,
++	.free = w25n01jw_ooblayout_free,
++};
++
+ static const struct mtd_ooblayout_ops w35n01jw_ooblayout = {
+ 	.ecc = w35n01jw_ooblayout_ecc,
+ 	.free = w35n01jw_ooblayout_free,
+@@ -394,7 +429,7 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
++		     SPINAND_ECCINFO(&w25n01jw_ooblayout, NULL),
+ 		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg)),
+ 	SPINAND_INFO("W25N01KV", /* 3.3V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xae, 0x21),
 
 
