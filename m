@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-179451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85DE5B560BA
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:25:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 001CEB560BE
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E76C2565AB3
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:25:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 839E57B4294
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939942ECD1A;
-	Sat, 13 Sep 2025 12:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D942EC573;
+	Sat, 13 Sep 2025 12:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aODQDHvB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0H0YDgL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A0F2ECD07
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4B22EC572
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757766305; cv=none; b=hy6Tw4kGnC8SQ2L9FNqd99IC8n0Hmk+BPwe+4f462L1ymNOM7vKQg47n8LfOM62zu/NBOW0dkvhGEECdnaem4BPyVZBJMNmXY8DiLSQkKn1n88vdTpzOYE0ovBMeL+6vo+p9h3TrqgzWAIwMZOUM+NdxjS0wuRYXG3X5aOjbykE=
+	t=1757766317; cv=none; b=o3EMSXNfWc6ZY2bOSfw3oR2GzILpAnp/Fw6k2ZiZC1saDv8vZJvG01nZD84weopXiPNm7ZsUZ3XEFRIPF2YVH7f/cgvMbTv2ByaXfb1e4k7f26R1TyQ7wXioMX2EWh8fSaYwR5nIU5gjw0ZwBaxCHb0Wlapwghn532ywt5n3RZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757766305; c=relaxed/simple;
-	bh=oB8lMRUbb8ByNYffu5CAD3Lo/IaNG8+KBJbbh65g8z4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZAVP0EGKLhepou0bjimdDJ/leHMcVNG6QTHdmrhtxkW2d/mJ3am+R4TpIiBADeJ9mfxqPI4OJEq2dUkOsS2xAi3jfUMDSuHxb5rau9MHx8NEGjPaKih79pn4aXpj1dVs805w2VpTqbOT67TtDV5x05+AXNgs+nx7o8LebAE2muI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aODQDHvB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89389C4CEEB;
-	Sat, 13 Sep 2025 12:25:04 +0000 (UTC)
+	s=arc-20240116; t=1757766317; c=relaxed/simple;
+	bh=yHd7+anhT5Zkoe+ejihL+BAUtMOa5E2/CC+vv1kZQ5E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tb0PXJRfeYsoi+Oanp8iVBDrpf3+Ut/y0Cd3bSV41Q0c0xpK4JbvoTKkIzEOmN1iuyAgKnWlp0BPAHvGOrV3RlD4rhWfZgC2uOe/O9LsHlCZ6TOCAR6kdSxRrxG2ZOUYZpyp6m+ftrC+lUZ95h0PSkb6oXfkbBt0Y7pQsPK5jws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0H0YDgL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE882C4CEEB;
+	Sat, 13 Sep 2025 12:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757766304;
-	bh=oB8lMRUbb8ByNYffu5CAD3Lo/IaNG8+KBJbbh65g8z4=;
+	s=korg; t=1757766315;
+	bh=yHd7+anhT5Zkoe+ejihL+BAUtMOa5E2/CC+vv1kZQ5E=;
 	h=Subject:To:Cc:From:Date:From;
-	b=aODQDHvB3xAvudrLIfm1HpsCgugltC3Klq3dhRE+4Nfqze3Zqnc3XUa0ZRpDGiuj/
-	 jwcg5HnBXuxX5cNc9tcNg1a4FCHHX9LlWLamkCDnN37CuVWcCpNFPcenYXc8SDrwxT
-	 bjd6jgBmGM7RHEiCLsVs2xnpcdSLDZwAz6axm0Yw=
-Subject: FAILED: patch "[PATCH] mm/khugepaged: fix the address passed to notifier on testing" failed to apply to 5.4-stable tree
-To: richard.weiyang@gmail.com,Liam.Howlett@oracle.com,akpm@linux-foundation.org,baohua@kernel.org,baolin.wang@linux.alibaba.com,david@redhat.com,dev.jain@arm.com,lorenzo.stoakes@oracle.com,npache@redhat.com,ryan.roberts@arm.com,stable@vger.kernel.org,ziy@nvidia.com
+	b=y0H0YDgLOMRua5qOuoC7SfIHuLxlGaJi5DfYP6s626aWP1R88gGA1tMREY8h/sJD/
+	 a1Zh1GbVeGnRXMcU3XAMRZkWSYTSJLa957ntVYrW5lgt8AH58KU38J9SPwydv3Nqi5
+	 SD5Um2xwNQ18hlrlE5G4Dt+Mu8UB/hbW9hTl3dA4=
+Subject: FAILED: patch "[PATCH] mm/vmalloc, mm/kasan: respect gfp mask in" failed to apply to 6.12-stable tree
+To: urezki@gmail.com,akpm@linux-foundation.org,andreyknvl@gmail.com,bhe@redhat.com,dvyukov@google.com,glider@google.com,mhocko@kernel.org,ryabinin.a.a@gmail.com,stable@vger.kernel.org,vincenzo.frascino@arm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 13 Sep 2025 14:24:46 +0200
-Message-ID: <2025091346-ambition-mangle-6099@gregkh>
+Date: Sat, 13 Sep 2025 14:25:03 +0200
+Message-ID: <2025091303-hush-compactor-2f22@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 394bfac1c7f7b701c2c93834c5761b9c9ceeebcf
+git cherry-pick -x 79357cd06d41d0f5a11b17d7c86176e395d10ef2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091346-ambition-mangle-6099@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091303-hush-compactor-2f22@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,49 +77,202 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 394bfac1c7f7b701c2c93834c5761b9c9ceeebcf Mon Sep 17 00:00:00 2001
-From: Wei Yang <richard.weiyang@gmail.com>
-Date: Fri, 22 Aug 2025 06:33:18 +0000
-Subject: [PATCH] mm/khugepaged: fix the address passed to notifier on testing
- young
+From 79357cd06d41d0f5a11b17d7c86176e395d10ef2 Mon Sep 17 00:00:00 2001
+From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Date: Sun, 31 Aug 2025 14:10:58 +0200
+Subject: [PATCH] mm/vmalloc, mm/kasan: respect gfp mask in
+ kasan_populate_vmalloc()
 
-Commit 8ee53820edfd ("thp: mmu_notifier_test_young") introduced
-mmu_notifier_test_young(), but we are passing the wrong address.
-In xxx_scan_pmd(), the actual iteration address is "_address" not
-"address".  We seem to misuse the variable on the very beginning.
+kasan_populate_vmalloc() and its helpers ignore the caller's gfp_mask and
+always allocate memory using the hardcoded GFP_KERNEL flag.  This makes
+them inconsistent with vmalloc(), which was recently extended to support
+GFP_NOFS and GFP_NOIO allocations.
 
-Change it to the right one.
+Page table allocations performed during shadow population also ignore the
+external gfp_mask.  To preserve the intended semantics of GFP_NOFS and
+GFP_NOIO, wrap the apply_to_page_range() calls into the appropriate
+memalloc scope.
 
-[akpm@linux-foundation.org fix whitespace, per everyone]
-Link: https://lkml.kernel.org/r/20250822063318.11644-1-richard.weiyang@gmail.com
-Fixes: 8ee53820edfd ("thp: mmu_notifier_test_young")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Barry Song <baohua@kernel.org>
+xfs calls vmalloc with GFP_NOFS, so this bug could lead to deadlock.
+
+There was a report here
+https://lkml.kernel.org/r/686ea951.050a0220.385921.0016.GAE@google.com
+
+This patch:
+ - Extends kasan_populate_vmalloc() and helpers to take gfp_mask;
+ - Passes gfp_mask down to alloc_pages_bulk() and __get_free_page();
+ - Enforces GFP_NOFS/NOIO semantics with memalloc_*_save()/restore()
+   around apply_to_page_range();
+ - Updates vmalloc.c and percpu allocator call sites accordingly.
+
+Link: https://lkml.kernel.org/r/20250831121058.92971-1-urezki@gmail.com
+Fixes: 451769ebb7e7 ("mm/vmalloc: alloc GFP_NO{FS,IO} for vmalloc")
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Reported-by: syzbot+3470c9ffee63e4abafeb@syzkaller.appspotmail.com
+Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 6b40bdfd224c..b486c1d19b2d 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1417,8 +1417,8 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
- 		 */
- 		if (cc->is_khugepaged &&
- 		    (pte_young(pteval) || folio_test_young(folio) ||
--		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
--								     address)))
-+		     folio_test_referenced(folio) ||
-+		     mmu_notifier_test_young(vma->vm_mm, _address)))
- 			referenced++;
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index 890011071f2b..fe5ce9215821 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -562,7 +562,7 @@ static inline void kasan_init_hw_tags(void) { }
+ #if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
+ 
+ void kasan_populate_early_vm_area_shadow(void *start, unsigned long size);
+-int kasan_populate_vmalloc(unsigned long addr, unsigned long size);
++int kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mask);
+ void kasan_release_vmalloc(unsigned long start, unsigned long end,
+ 			   unsigned long free_region_start,
+ 			   unsigned long free_region_end,
+@@ -574,7 +574,7 @@ static inline void kasan_populate_early_vm_area_shadow(void *start,
+ 						       unsigned long size)
+ { }
+ static inline int kasan_populate_vmalloc(unsigned long start,
+-					unsigned long size)
++					unsigned long size, gfp_t gfp_mask)
+ {
+ 	return 0;
+ }
+@@ -610,7 +610,7 @@ static __always_inline void kasan_poison_vmalloc(const void *start,
+ static inline void kasan_populate_early_vm_area_shadow(void *start,
+ 						       unsigned long size) { }
+ static inline int kasan_populate_vmalloc(unsigned long start,
+-					unsigned long size)
++					unsigned long size, gfp_t gfp_mask)
+ {
+ 	return 0;
+ }
+diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+index e2ceebf737ef..11d472a5c4e8 100644
+--- a/mm/kasan/shadow.c
++++ b/mm/kasan/shadow.c
+@@ -336,13 +336,13 @@ static void ___free_pages_bulk(struct page **pages, int nr_pages)
  	}
- 	if (!writable) {
+ }
+ 
+-static int ___alloc_pages_bulk(struct page **pages, int nr_pages)
++static int ___alloc_pages_bulk(struct page **pages, int nr_pages, gfp_t gfp_mask)
+ {
+ 	unsigned long nr_populated, nr_total = nr_pages;
+ 	struct page **page_array = pages;
+ 
+ 	while (nr_pages) {
+-		nr_populated = alloc_pages_bulk(GFP_KERNEL, nr_pages, pages);
++		nr_populated = alloc_pages_bulk(gfp_mask, nr_pages, pages);
+ 		if (!nr_populated) {
+ 			___free_pages_bulk(page_array, nr_total - nr_pages);
+ 			return -ENOMEM;
+@@ -354,25 +354,42 @@ static int ___alloc_pages_bulk(struct page **pages, int nr_pages)
+ 	return 0;
+ }
+ 
+-static int __kasan_populate_vmalloc(unsigned long start, unsigned long end)
++static int __kasan_populate_vmalloc(unsigned long start, unsigned long end, gfp_t gfp_mask)
+ {
+ 	unsigned long nr_pages, nr_total = PFN_UP(end - start);
+ 	struct vmalloc_populate_data data;
++	unsigned int flags;
+ 	int ret = 0;
+ 
+-	data.pages = (struct page **)__get_free_page(GFP_KERNEL | __GFP_ZERO);
++	data.pages = (struct page **)__get_free_page(gfp_mask | __GFP_ZERO);
+ 	if (!data.pages)
+ 		return -ENOMEM;
+ 
+ 	while (nr_total) {
+ 		nr_pages = min(nr_total, PAGE_SIZE / sizeof(data.pages[0]));
+-		ret = ___alloc_pages_bulk(data.pages, nr_pages);
++		ret = ___alloc_pages_bulk(data.pages, nr_pages, gfp_mask);
+ 		if (ret)
+ 			break;
+ 
+ 		data.start = start;
++
++		/*
++		 * page tables allocations ignore external gfp mask, enforce it
++		 * by the scope API
++		 */
++		if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
++			flags = memalloc_nofs_save();
++		else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
++			flags = memalloc_noio_save();
++
+ 		ret = apply_to_page_range(&init_mm, start, nr_pages * PAGE_SIZE,
+ 					  kasan_populate_vmalloc_pte, &data);
++
++		if ((gfp_mask & (__GFP_FS | __GFP_IO)) == __GFP_IO)
++			memalloc_nofs_restore(flags);
++		else if ((gfp_mask & (__GFP_FS | __GFP_IO)) == 0)
++			memalloc_noio_restore(flags);
++
+ 		___free_pages_bulk(data.pages, nr_pages);
+ 		if (ret)
+ 			break;
+@@ -386,7 +403,7 @@ static int __kasan_populate_vmalloc(unsigned long start, unsigned long end)
+ 	return ret;
+ }
+ 
+-int kasan_populate_vmalloc(unsigned long addr, unsigned long size)
++int kasan_populate_vmalloc(unsigned long addr, unsigned long size, gfp_t gfp_mask)
+ {
+ 	unsigned long shadow_start, shadow_end;
+ 	int ret;
+@@ -415,7 +432,7 @@ int kasan_populate_vmalloc(unsigned long addr, unsigned long size)
+ 	shadow_start = PAGE_ALIGN_DOWN(shadow_start);
+ 	shadow_end = PAGE_ALIGN(shadow_end);
+ 
+-	ret = __kasan_populate_vmalloc(shadow_start, shadow_end);
++	ret = __kasan_populate_vmalloc(shadow_start, shadow_end, gfp_mask);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 6dbcdceecae1..5edd536ba9d2 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2026,6 +2026,8 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
+ 	if (unlikely(!vmap_initialized))
+ 		return ERR_PTR(-EBUSY);
+ 
++	/* Only reclaim behaviour flags are relevant. */
++	gfp_mask = gfp_mask & GFP_RECLAIM_MASK;
+ 	might_sleep();
+ 
+ 	/*
+@@ -2038,8 +2040,6 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
+ 	 */
+ 	va = node_alloc(size, align, vstart, vend, &addr, &vn_id);
+ 	if (!va) {
+-		gfp_mask = gfp_mask & GFP_RECLAIM_MASK;
+-
+ 		va = kmem_cache_alloc_node(vmap_area_cachep, gfp_mask, node);
+ 		if (unlikely(!va))
+ 			return ERR_PTR(-ENOMEM);
+@@ -2089,7 +2089,7 @@ static struct vmap_area *alloc_vmap_area(unsigned long size,
+ 	BUG_ON(va->va_start < vstart);
+ 	BUG_ON(va->va_end > vend);
+ 
+-	ret = kasan_populate_vmalloc(addr, size);
++	ret = kasan_populate_vmalloc(addr, size, gfp_mask);
+ 	if (ret) {
+ 		free_vmap_area(va);
+ 		return ERR_PTR(ret);
+@@ -4826,7 +4826,7 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+ 
+ 	/* populate the kasan shadow space */
+ 	for (area = 0; area < nr_vms; area++) {
+-		if (kasan_populate_vmalloc(vas[area]->va_start, sizes[area]))
++		if (kasan_populate_vmalloc(vas[area]->va_start, sizes[area], GFP_KERNEL))
+ 			goto err_free_shadow;
+ 	}
+ 
 
 
