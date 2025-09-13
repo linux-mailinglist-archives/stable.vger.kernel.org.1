@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-179514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 902AEB56295
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 20:43:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461D6B5629F
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 20:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 431427B68D7
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 18:41:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA7A97A617B
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 18:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111ED221F00;
-	Sat, 13 Sep 2025 18:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C1F2376F8;
+	Sat, 13 Sep 2025 18:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F/iWz7Su"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BpuVayd2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF231223328;
-	Sat, 13 Sep 2025 18:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708A51E3DFE
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 18:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757788994; cv=none; b=dini9ULuh5Zh5UPnLagzBbSdRAVcl43hKqmlVL1Z6zsiK2mRgcdo6XmuA/9skMgLsi2Oj/dBZ+ped1x0HPpVMz7WgUc1CeF4x3X9okQqNB16mCTq3MU9oRtKOTvSawS/WnAabpWTQwzuv5Pq7BEXjmo3NCS61vpCROtsGedfjY4=
+	t=1757789955; cv=none; b=ZimiVz6ru0SU1OPSAoT8eNmkrBVthSMs3CvltzTj+CByo9oSKDzdD0FX8qKlJudiBRcBNERa3JO7rtUFdLWGTmnLvRyc+QH3QEa0UpzElUf5FJaO4lJP/7fYjPGD/PZOMszc9HAJtRE0b85DAJSteaq/r4GpHRXx7vuny287k5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757788994; c=relaxed/simple;
-	bh=P9zNQbpjM4dOEm9L47SJ7SlA7XkHbYy8y+w+FSmxEEg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LfHCZR1EWyvgSgb5P4pnjAGcARzzX/5aIu50cDeVSnRtJPDhweadLMbxcT+wVw55CRes0ctl8dEHsAOJR1+3r5qBjLrwq+CSmr6Un5qm7p7ecN2SuvxxFoXz+4XORfajY8dyJnjb/A4TtW9gP/1eUSq33cmIA7cGCcwQk6CG1oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F/iWz7Su; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7289BC4CEEB;
-	Sat, 13 Sep 2025 18:43:11 +0000 (UTC)
+	s=arc-20240116; t=1757789955; c=relaxed/simple;
+	bh=GoNbj/YRMK954xHzo03UXCeqaV2O7noarkYGCQA6mX0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Or777acT9d2Jki9bk1j44Ur1nsP0ssfJZiNne3ECDAjkbUJ00RUOxL4dC3KkV5Muob2tirwj68DDCCnJmymXiXLWXvsNHdEJUOUbpWk9MiD1cE5E59mLALO3P7wyVqU1wMK0Kij7u/KySM7FnnKPGdUY2HUOJGWR3/XIhPD4dsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BpuVayd2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D3EC4CEEB;
+	Sat, 13 Sep 2025 18:59:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757788993;
-	bh=P9zNQbpjM4dOEm9L47SJ7SlA7XkHbYy8y+w+FSmxEEg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=F/iWz7SuNQX4joEzsoFgw1MA8IBqB6MnC+FQE7eJiBjF0+St84rmnIb99Qfrk2A2B
-	 M/yhi4MEvjF5aHjlP0+AUDBHVO2AOX+oroVrsVn6/jfjLV1WYXKrn/GCHwrFNk76hu
-	 ESTwsDWueEa1a3/XquIOw1ztx+B/NEZmEDHemAkPXIg452MiLUNdDmSRSC8NCuZfLx
-	 sJrea/IvYvsombP0GOg5v6pu6Va0zlkQwKkXvu7F7oRVQwwEfJW9UiVDNqj3Km/IBt
-	 IlBY02pUhRU9nxwZknfO0kELDyTiDqzUANje13kmHoN3eZbsivYxPwRhWR0za9dFrd
-	 L6LkKJu4TFLwA==
-From: Hans de Goede <hansg@kernel.org>
-To: Mika Westerberg <westeri@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Linus Walleij <linus.walleij@linaro.org>
-Cc: Hans de Goede <hansg@kernel.org>,
-	linux-gpio@vger.kernel.org,
-	stable@vger.kernel.org,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH] gpiolib: Extend software-node support to support secondary software-nodes
-Date: Sat, 13 Sep 2025 20:43:09 +0200
-Message-ID: <20250913184309.81881-1-hansg@kernel.org>
+	s=k20201202; t=1757789955;
+	bh=GoNbj/YRMK954xHzo03UXCeqaV2O7noarkYGCQA6mX0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BpuVayd23ry9qtmk3QE1s5SXvjJncNxjxvLZ7b0uR+d/4egAUYUCo/Y+knCBbrOKm
+	 0OP+6EsJJozC4jnGFdWpDaHiNxnd9XtQB4AA+Psm1GI1AUAbOmEndkkT1Gpuly3A8g
+	 Lih2SK1+3SCZ+RpmCVW6ZdrDppHJqCwHcW4F6SdV2AJfGyki6NxyQjMa3rQRbMGmls
+	 If0hazWCh0J7JOE5q5KOAZePofYwpBZCZnTQMlEuj5/Mfo52mL98Uc11DS+KEABNcP
+	 kJk80Tvwvv2IhIjLEZ1TNUgnu0nPUzBmE5ppiEo70hU7tbBs0bsqfNclqum0m8Ecwz
+	 B8EK1l/IenIGg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Rik van Riel <riel@surriel.com>,
+	Yang Shi <shy828301@gmail.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] mm/khugepaged: convert hpage_collapse_scan_pmd() to use folios
+Date: Sat, 13 Sep 2025 14:59:11 -0400
+Message-ID: <20250913185912.1514325-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025091344-purist-tattle-13ba@gregkh>
+References: <2025091344-purist-tattle-13ba@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,47 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When a software-node gets added to a device which already has another
-fwnode as primary node it will become the secondary fwnode for that
-device.
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 
-Currently if a software-node with GPIO properties ends up as the secondary
-fwnode then gpiod_find_by_fwnode() will fail to find the GPIOs.
+[ Upstream commit 5c07ebb372d66423e508ecfb8e00324f8797f072 ]
 
-Add a check to gpiod_find_by_fwnode() to try a software-node lookup on
-the secondary fwnode if the GPIO was not found in the primary fwnode.
+Replaces 5 calls to compound_head(), and removes 1385 bytes of kernel
+text.
 
-Fixes: e7f9ff5dc90c ("gpiolib: add support for software nodes")
-Cc: stable@vger.kernel.org
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://lkml.kernel.org/r/20231020183331.10770-3-vishal.moola@gmail.com
+Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Yang Shi <shy828301@gmail.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 394bfac1c7f7 ("mm/khugepaged: fix the address passed to notifier on testing young")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-I found this issue while testing "platform/x86: x86-android-tablets:
-convert wm1502 devices to GPIO references":
-https://lore.kernel.org/platform-driver-x86/20250810-x86-andoroid-tablet-v2-7-9c7a1b3c32b2@gmail.com/
-which adds a software node with GPIO lookup info the a spi-10WM5102:00
-device which has an ACPI fwnode as primary fwnode.
----
- drivers/gpio/gpiolib.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ mm/khugepaged.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 0d2b470a252e..b619fea498c8 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -4601,6 +4601,12 @@ static struct gpio_desc *gpiod_find_by_fwnode(struct fwnode_handle *fwnode,
- 		desc = swnode_find_gpio(fwnode, con_id, idx, lookupflags);
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index f227b39ae4cf7..63e268c61e827 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1240,6 +1240,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 	int result = SCAN_FAIL, referenced = 0;
+ 	int none_or_zero = 0, shared = 0;
+ 	struct page *page = NULL;
++	struct folio *folio = NULL;
+ 	unsigned long _address;
+ 	spinlock_t *ptl;
+ 	int node = NUMA_NO_NODE, unmapped = 0;
+@@ -1326,29 +1327,28 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 			}
+ 		}
+ 
+-		page = compound_head(page);
+-
++		folio = page_folio(page);
+ 		/*
+ 		 * Record which node the original page is from and save this
+ 		 * information to cc->node_load[].
+ 		 * Khugepaged will allocate hugepage from the node has the max
+ 		 * hit record.
+ 		 */
+-		node = page_to_nid(page);
++		node = folio_nid(folio);
+ 		if (hpage_collapse_scan_abort(node, cc)) {
+ 			result = SCAN_SCAN_ABORT;
+ 			goto out_unmap;
+ 		}
+ 		cc->node_load[node]++;
+-		if (!PageLRU(page)) {
++		if (!folio_test_lru(folio)) {
+ 			result = SCAN_PAGE_LRU;
+ 			goto out_unmap;
+ 		}
+-		if (PageLocked(page)) {
++		if (folio_test_locked(folio)) {
+ 			result = SCAN_PAGE_LOCK;
+ 			goto out_unmap;
+ 		}
+-		if (!PageAnon(page)) {
++		if (!folio_test_anon(folio)) {
+ 			result = SCAN_PAGE_ANON;
+ 			goto out_unmap;
+ 		}
+@@ -1363,7 +1363,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 		 * has excessive GUP pins (i.e. 512).  Anyway the same check
+ 		 * will be done again later the risk seems low.
+ 		 */
+-		if (!is_refcount_suitable(page)) {
++		if (!is_refcount_suitable(&folio->page)) {
+ 			result = SCAN_PAGE_COUNT;
+ 			goto out_unmap;
+ 		}
+@@ -1373,8 +1373,8 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 		 * enough young pte to justify collapsing the page
+ 		 */
+ 		if (cc->is_khugepaged &&
+-		    (pte_young(pteval) || page_is_young(page) ||
+-		     PageReferenced(page) || mmu_notifier_test_young(vma->vm_mm,
++		    (pte_young(pteval) || folio_test_young(folio) ||
++		     folio_test_referenced(folio) || mmu_notifier_test_young(vma->vm_mm,
+ 								     address)))
+ 			referenced++;
  	}
- 
-+	if (desc == ERR_PTR(-ENOENT) && fwnode && is_software_node(fwnode->secondary)) {
-+		dev_dbg(consumer, "using secondary-swnode '%pfw' for '%s' GPIO lookup\n",
-+			fwnode->secondary, name);
-+		desc = swnode_find_gpio(fwnode->secondary, con_id, idx, lookupflags);
-+	}
-+
- 	return desc;
+@@ -1396,7 +1396,7 @@ static int hpage_collapse_scan_pmd(struct mm_struct *mm,
+ 		*mmap_locked = false;
+ 	}
+ out:
+-	trace_mm_khugepaged_scan_pmd(mm, page, writable, referenced,
++	trace_mm_khugepaged_scan_pmd(mm, &folio->page, writable, referenced,
+ 				     none_or_zero, result, unmapped);
+ 	return result;
  }
- 
 -- 
 2.51.0
 
