@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-179445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE5B4B560B2
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:24:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7DB7B560B3
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:24:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FCB65656B2
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:24:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2028B1B24E3E
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 12:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF7A2E8DE6;
-	Sat, 13 Sep 2025 12:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F31BB2EC085;
+	Sat, 13 Sep 2025 12:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyhZlLil"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U42VF06z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303D526057A
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF77726057A
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 12:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757766235; cv=none; b=Avt2NmIGfOIkg5LbyQV6LaleyFGvI9ezBxie5r6q5UJH8LSrmHQRuVmsxlHIzkeHUd6MDJPtYthM07euUVnuNTsrX9bqqAXqpmvqVe7z/z6xv1OF0Tqz1QvIJPkQZSbiDhRJvNBLjSTqjpCgXTJXQhp0JV/KauYiCL/7qKW1E20=
+	t=1757766275; cv=none; b=eV1B7lKJiLJE3Oe9ud5k1DKfG4CKoFVHnFMI6dqQv6ppYX/qRfA20HPuhOdaLNx2F87JdNK3qJC0/7nnpQ/dOLA+5EYrwWAeKAJ4HI80H3Imc55/Y8CtxvPUGkjQoIToNjcZYI8q1NtqFVfgehEH/r2Wj2lsFWHoJhxQNYnBh6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757766235; c=relaxed/simple;
-	bh=px9J579pbnJEdMwxGmXwWRGxRh/bKuS+l8agMluIWl0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fgzpjqFon7KXBAJcU6Tna8C5+9kLx/lmGBt8h7AgXoeEXw7Hu2T4XTS6V00hzq7au6xEEnUoZ49ZeOrpW3nTx5bZzJ/8bkf5kpzsES+zRNylysE+Xo1+N1G+XBm/KwinX2VqR8IT2+k233qabmTp3Gjwfg2015ZLr99T5QsNwy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyhZlLil; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DAE9C4CEEB;
-	Sat, 13 Sep 2025 12:23:54 +0000 (UTC)
+	s=arc-20240116; t=1757766275; c=relaxed/simple;
+	bh=44HYysHQs5dt1HfheDBnsc1t6uIo9Jh8z1+VCIpx5OE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gwf4/UN6xRSRA0n05kjS1Wn/3B1wlA5fAvpXzPY4PKji/ufg0uqlSAIOTh2du0bfwUuz/qL6+uBeHHpaFQh4UIdNBFWexryzSPPxVi45wsA1DsaZP3hSehEs8FKA/s3CiROC92Bo7FFz6KiG/y3l0TWLTAY/elPGYKaeYYpOdaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U42VF06z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D85B3C4CEEB;
+	Sat, 13 Sep 2025 12:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1757766234;
-	bh=px9J579pbnJEdMwxGmXwWRGxRh/bKuS+l8agMluIWl0=;
+	s=korg; t=1757766275;
+	bh=44HYysHQs5dt1HfheDBnsc1t6uIo9Jh8z1+VCIpx5OE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=JyhZlLil82nvlgdpoRrsgoKRSqhTFVr9tAzVincXybvKk8Ovd7CDJu4dd+ScGc1n7
-	 MPBxbqZ2E/s/bp+c260eNOdkOkybnX15WC++wDN1cmKu/t1RxXxfnEYNKf/tRHVqDW
-	 +2HAmy1D5dt6O53QDXKqqFaYBGdXonVliZDIk2js=
-Subject: FAILED: patch "[PATCH] mtd: spinand: winbond: Fix oob_layout for W25N01JW" failed to apply to 6.12-stable tree
-To: s-k6@ti.com,miquel.raynal@bootlin.com,quic_sridsn@quicinc.com
+	b=U42VF06zIXoAgcdRnsaoIb93s0Xs10/pAkhd+yn/4wXCegKJ4Hwt4QOxk+Yxp+NSY
+	 dKHisK7LTzO0pjrq4/kGHWjBNnbcBQuPBvZ1sZF4Y0ZWUskKLtlxr2RCPtfVd65tCG
+	 LVuxssPKGIprF83YKh3BhdUJEhHSEYZlx9hyYiB8=
+Subject: FAILED: patch "[PATCH] mm/hugetlb: add missing hugetlb_lock in" failed to apply to 6.12-stable tree
+To: aha310510@gmail.com,akpm@linux-foundation.org,david@redhat.com,leitao@debian.org,muchun.song@linux.dev,osalvador@suse.de,sidhartha.kumar@oracle.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 13 Sep 2025 14:23:43 +0200
-Message-ID: <2025091343-refund-bullseye-601a@gregkh>
+Date: Sat, 13 Sep 2025 14:24:32 +0200
+Message-ID: <2025091332-pretzel-gating-6744@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4550d33e18112a11a740424c4eec063cd58e918c
+git cherry-pick -x 21cc2b5c5062a256ae9064442d37ebbc23f5aef7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091343-refund-bullseye-601a@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025091332-pretzel-gating-6744@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,82 +77,84 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4550d33e18112a11a740424c4eec063cd58e918c Mon Sep 17 00:00:00 2001
-From: Santhosh Kumar K <s-k6@ti.com>
-Date: Thu, 4 Sep 2025 18:47:41 +0530
-Subject: [PATCH] mtd: spinand: winbond: Fix oob_layout for W25N01JW
+From 21cc2b5c5062a256ae9064442d37ebbc23f5aef7 Mon Sep 17 00:00:00 2001
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Sun, 24 Aug 2025 03:21:15 +0900
+Subject: [PATCH] mm/hugetlb: add missing hugetlb_lock in
+ __unmap_hugepage_range()
 
-Fix the W25N01JW's oob_layout according to the datasheet [1]
+When restoring a reservation for an anonymous page, we need to check to
+freeing a surplus.  However, __unmap_hugepage_range() causes data race
+because it reads h->surplus_huge_pages without the protection of
+hugetlb_lock.
 
-[1] https://www.winbond.com/hq/product/code-storage-flash-memory/qspinand-flash/?__locale=en&partNo=W25N01JW
+And adjust_reservation is a boolean variable that indicates whether
+reservations for anonymous pages in each folio should be restored.
+Therefore, it should be initialized to false for each round of the loop.
+However, this variable is not initialized to false except when defining
+the current adjust_reservation variable.
 
-Fixes: 6a804fb72de5 ("mtd: spinand: winbond: add support for serial NAND flash")
-Cc: Sridharan S N <quic_sridsn@quicinc.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+This means that once adjust_reservation is set to true even once within
+the loop, reservations for anonymous pages will be restored
+unconditionally in all subsequent rounds, regardless of the folio's state.
 
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index 87053389a1fc..4870b2d5edb2 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -176,6 +176,36 @@ static const struct mtd_ooblayout_ops w25n02kv_ooblayout = {
- 	.free = w25n02kv_ooblayout_free,
- };
+To fix this, we need to add the missing hugetlb_lock, unlock the
+page_table_lock earlier so that we don't lock the hugetlb_lock inside the
+page_table_lock lock, and initialize adjust_reservation to false on each
+round within the loop.
+
+Link: https://lkml.kernel.org/r/20250823182115.1193563-1-aha310510@gmail.com
+Fixes: df7a6d1f6405 ("mm/hugetlb: restore the reservation if needed")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reported-by: syzbot+417aeb05fd190f3a6da9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=417aeb05fd190f3a6da9
+Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 753f99b4c718..eed59cfb5d21 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5851,7 +5851,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	spinlock_t *ptl;
+ 	struct hstate *h = hstate_vma(vma);
+ 	unsigned long sz = huge_page_size(h);
+-	bool adjust_reservation = false;
++	bool adjust_reservation;
+ 	unsigned long last_addr_mask;
+ 	bool force_flush = false;
  
-+static int w25n01jw_ooblayout_ecc(struct mtd_info *mtd, int section,
-+				  struct mtd_oob_region *region)
-+{
-+	if (section > 3)
-+		return -ERANGE;
-+
-+	region->offset = (16 * section) + 12;
-+	region->length = 4;
-+
-+	return 0;
-+}
-+
-+static int w25n01jw_ooblayout_free(struct mtd_info *mtd, int section,
-+				   struct mtd_oob_region *region)
-+{
-+	if (section > 3)
-+		return -ERANGE;
-+
-+	region->offset = (16 * section);
-+	region->length = 12;
-+
-+	/* Extract BBM */
-+	if (!section) {
-+		region->offset += 2;
-+		region->length -= 2;
-+	}
-+
-+	return 0;
-+}
-+
- static int w35n01jw_ooblayout_ecc(struct mtd_info *mtd, int section,
- 				  struct mtd_oob_region *region)
- {
-@@ -206,6 +236,11 @@ static int w35n01jw_ooblayout_free(struct mtd_info *mtd, int section,
- 	return 0;
- }
+@@ -5944,6 +5944,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 					sz);
+ 		hugetlb_count_sub(pages_per_huge_page(h), mm);
+ 		hugetlb_remove_rmap(folio);
++		spin_unlock(ptl);
  
-+static const struct mtd_ooblayout_ops w25n01jw_ooblayout = {
-+	.ecc = w25n01jw_ooblayout_ecc,
-+	.free = w25n01jw_ooblayout_free,
-+};
+ 		/*
+ 		 * Restore the reservation for anonymous page, otherwise the
+@@ -5951,14 +5952,16 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		 * If there we are freeing a surplus, do not set the restore
+ 		 * reservation bit.
+ 		 */
++		adjust_reservation = false;
 +
- static const struct mtd_ooblayout_ops w35n01jw_ooblayout = {
- 	.ecc = w35n01jw_ooblayout_ecc,
- 	.free = w35n01jw_ooblayout_free,
-@@ -394,7 +429,7 @@ static const struct spinand_info winbond_spinand_table[] = {
- 					      &write_cache_variants,
- 					      &update_cache_variants),
- 		     0,
--		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
-+		     SPINAND_ECCINFO(&w25n01jw_ooblayout, NULL),
- 		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg)),
- 	SPINAND_INFO("W25N01KV", /* 3.3V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xae, 0x21),
++		spin_lock_irq(&hugetlb_lock);
+ 		if (!h->surplus_huge_pages && __vma_private_lock(vma) &&
+ 		    folio_test_anon(folio)) {
+ 			folio_set_hugetlb_restore_reserve(folio);
+ 			/* Reservation to be adjusted after the spin lock */
+ 			adjust_reservation = true;
+ 		}
+-
+-		spin_unlock(ptl);
++		spin_unlock_irq(&hugetlb_lock);
+ 
+ 		/*
+ 		 * Adjust the reservation for the region that will have the
 
 
