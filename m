@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-179485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE077B56158
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 16:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E91E9B56159
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 16:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67EAA584A6B
-	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:10:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C1E8584D0B
+	for <lists+stable@lfdr.de>; Sat, 13 Sep 2025 14:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0EAD2EFDB9;
-	Sat, 13 Sep 2025 14:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DDD52EBDFD;
+	Sat, 13 Sep 2025 14:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UbbyMugD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yua2qvor"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716831E515
-	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 14:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFAD2E88B2
+	for <stable@vger.kernel.org>; Sat, 13 Sep 2025 14:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757772621; cv=none; b=s44ubrtgD69yyRxSMYKkkwpatUhraYyFzDR6E+MRm3j+cmwweSQVgBsRr8TvyAWI6RihnrSkv+erGOS2Rfs6ItWb5wHta178Upv2W6O3B3uaChJqsh3lYWmn7h7SCXdZLk8X9hSpps0lbBtAkZAITh27vkIgVM8B1T8kEaF6fNM=
+	t=1757772629; cv=none; b=udt3bkiFdJ2ypC6xbIXrgJC1W95xhzC4g2FzmSz0nArQiOJClQ/WXyKJA8OqOh+nYYtuNjD1Gg3V1RlHyWxL7aObmeNFN/OZpDOxP/2FF2mUaf9oj2V3UPMer5ehf3VCkM3U1ZWf+XTIAGxnfTwf/zXTSMzk0dVjm9vyhszxvzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757772621; c=relaxed/simple;
-	bh=hu7IZppgnjMfQWi40Dg44wKmiy+SGW9k+fHdqMCNIiw=;
+	s=arc-20240116; t=1757772629; c=relaxed/simple;
+	bh=QL+Kclrc3uy+iFP86FyHoOltUSSC8s+GRLu5mAo7LNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccjUiIPHiKQv9QyTsPla2eLCuyunQrfFd4FmrxoRCmnWdyD58OcwSNtpLFqmGPm99WmxV/9wUKXBsdvNPe5wmvD4ewaw/ktNGZqmShUmLEDJbMnIYWFXTf5uG/AttpZYmseuA7m3AGal/QS10Hl8vwxzVsk/skUTlZAg9eh+34M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UbbyMugD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E979C4CEF4;
-	Sat, 13 Sep 2025 14:10:20 +0000 (UTC)
+	 MIME-Version; b=p+yI/5HqLxiaen3TGZF7czE9+xgSdwP81ZqniOFu5fzGDpLXyK2/swiRfsIUJ0r2VCZC0tfSUePF/QFh3+m8SwaYzXs2ktcJiVoBRYKQ9lkv78ZsvC9HKelJtgRdQXt//WGTQdfRpmn05kG0V3wdrz1BxMKjPC8mkVyRkiEQ8IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yua2qvor; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CA7C4CEEB;
+	Sat, 13 Sep 2025 14:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757772621;
-	bh=hu7IZppgnjMfQWi40Dg44wKmiy+SGW9k+fHdqMCNIiw=;
+	s=k20201202; t=1757772628;
+	bh=QL+Kclrc3uy+iFP86FyHoOltUSSC8s+GRLu5mAo7LNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UbbyMugDslJk6Bul6E0OmO7j8ezP5tVRM/BCmS8PQDSx8CU6/ZcX5CkTIlK4a4yuh
-	 iY71t5+oqDND4ROuAXCm0r1p5Fa6tOJjU+xuMHQD22lQ1GYGFNnQnxkSHmjIhimxH8
-	 ULK1pGnmUQlPliDdGM9eyXmO1jZVDKlDZ1GgI0kzck7mCRMHtfn2rcXHa9ymvH0meX
-	 UddTOQwIOQFOzh09QfQB0fCwZkBkcDruoHpeHKlJ3EGblnzivBUpfXsLge9gPnfEhq
-	 LB5x+LSMutTCcLXUOvmPTcRS0Hkc1D0jZT9gPmLjuW4xGoGNbuWAYymcH+RSnKic9M
-	 S3Cl0ObLUxhiA==
+	b=Yua2qvoroyjxTWq0iyAQhoLreOU2GvSTOLEOzgIz51+aICOCqPiGlrxSMqH/E5Jps
+	 W6zIp92VRgcSlV8IV1XqDudnjIg6gZea1CTJz9pOtjZ8mE8Chckd92N/1VZzThl39G
+	 SUNorDk+hDKABlt+6/rAWUlZaziKOYJqbNJmiXfbOOZwWvN1vD5o7wT9Bf/8MqPS3j
+	 scQtPbgEczIvoh+13Wj8p060KRoy0ejjWblVvfSCcCL5I/kRmFA7095zWXW/UUGLWC
+	 SfLCR3oM1+PGYMDvhB48jpbD+SrdBVuiuiXH7LlWzVKZdmX9iMeClg6Vu/7OGuLpvQ
+	 6X0gM+29XNfEw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Alexander Dahl <ada@thorsis.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] mtd: nand: raw: atmel: Respect tAR, tCLR in read setup timing
-Date: Sat, 13 Sep 2025 10:10:17 -0400
-Message-ID: <20250913141017.1361840-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/4] netlink: specs: mptcp: add missing 'server-side' attr
+Date: Sat, 13 Sep 2025 10:10:23 -0400
+Message-ID: <20250913141026.1362030-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250913141017.1361840-1-sashal@kernel.org>
-References: <2025091345-disinfect-afterlife-38dd@gregkh>
- <20250913141017.1361840-1-sashal@kernel.org>
+In-Reply-To: <2025091346-avenue-afterglow-5b42@gregkh>
+References: <2025091346-avenue-afterglow-5b42@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,62 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit fd779eac2d659668be4d3dbdac0710afd5d6db12 ]
+[ Upstream commit 6b830c6a023ff6e8fe05dbe47a9e5cd276df09ee ]
 
-Having setup time 0 violates tAR, tCLR of some chips, for instance
-TOSHIBA TC58NVG2S3ETAI0 cannot be detected successfully (first ID byte
-being read duplicated, i.e. 98 98 dc 90 15 76 14 03 instead of
-98 dc 90 15 76 ...).
+This attribute is added with the 'created' and 'established' events, but
+the documentation didn't mention it.
 
-Atmel Application Notes postulated 1 cycle NRD_SETUP without explanation
-[1], but it looks more appropriate to just calculate setup time properly.
+The documentation in the UAPI header has been auto-generated by:
 
-[1] Link: https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/ApplicationNotes/ApplicationNotes/doc6255.pdf
+  ./tools/net/ynl/ynl-regen.sh
 
-Cc: stable@vger.kernel.org
-Fixes: f9ce2eddf176 ("mtd: nand: atmel: Add ->setup_data_interface() hooks")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Tested-by: Alexander Dahl <ada@thorsis.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241221-net-mptcp-netlink-specs-pm-doc-fixes-v2-1-e54f2db3f844@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 7094b84863e5 ("netlink: specs: mptcp: fix if-idx attribute type")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/atmel/nand-controller.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ Documentation/netlink/specs/mptcp_pm.yaml |  6 ++++--
+ include/uapi/linux/mptcp_pm.h             | 11 ++++++-----
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
-index 6e4a0c6c7cb4d..c5aff27ec4a89 100644
---- a/drivers/mtd/nand/raw/atmel/nand-controller.c
-+++ b/drivers/mtd/nand/raw/atmel/nand-controller.c
-@@ -1377,14 +1377,24 @@ static int atmel_smc_nand_prepare_smcconf(struct atmel_nand *nand,
- 	if (ret)
- 		return ret;
- 
-+	/*
-+	 * Read setup timing depends on the operation done on the NAND:
-+	 *
-+	 * NRD_SETUP = max(tAR, tCLR)
-+	 */
-+	timeps = max(conf->timings.sdr.tAR_min, conf->timings.sdr.tCLR_min);
-+	ncycles = DIV_ROUND_UP(timeps, mckperiodps);
-+	totalcycles += ncycles;
-+	ret = atmel_smc_cs_conf_set_setup(smcconf, ATMEL_SMC_NRD_SHIFT, ncycles);
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * The read cycle timing is directly matching tRC, but is also
- 	 * dependent on the setup and hold timings we calculated earlier,
- 	 * which gives:
- 	 *
--	 * NRD_CYCLE = max(tRC, NRD_PULSE + NRD_HOLD)
--	 *
--	 * NRD_SETUP is always 0.
-+	 * NRD_CYCLE = max(tRC, NRD_SETUP + NRD_PULSE + NRD_HOLD)
- 	 */
- 	ncycles = DIV_ROUND_UP(conf->timings.sdr.tRC_min, mckperiodps);
- 	ncycles = max(totalcycles, ncycles);
+diff --git a/Documentation/netlink/specs/mptcp_pm.yaml b/Documentation/netlink/specs/mptcp_pm.yaml
+index dc190bf838fec..fc0603f51665a 100644
+--- a/Documentation/netlink/specs/mptcp_pm.yaml
++++ b/Documentation/netlink/specs/mptcp_pm.yaml
+@@ -23,7 +23,8 @@ definitions:
+      -
+       name: created
+       doc:
+-        token, family, saddr4 | saddr6, daddr4 | daddr6, sport, dport
++        token, family, saddr4 | saddr6, daddr4 | daddr6, sport, dport,
++        server-side
+         A new MPTCP connection has been created. It is the good time to
+         allocate memory and send ADD_ADDR if needed. Depending on the
+         traffic-patterns it can take a long time until the
+@@ -31,7 +32,8 @@ definitions:
+      -
+       name: established
+       doc:
+-        token, family, saddr4 | saddr6, daddr4 | daddr6, sport, dport
++        token, family, saddr4 | saddr6, daddr4 | daddr6, sport, dport,
++        server-side
+         A MPTCP connection is established (can start new subflows).
+      -
+       name: closed
+diff --git a/include/uapi/linux/mptcp_pm.h b/include/uapi/linux/mptcp_pm.h
+index 50589e5dd6a38..b34fd95b6f841 100644
+--- a/include/uapi/linux/mptcp_pm.h
++++ b/include/uapi/linux/mptcp_pm.h
+@@ -13,12 +13,13 @@
+  * enum mptcp_event_type
+  * @MPTCP_EVENT_UNSPEC: unused event
+  * @MPTCP_EVENT_CREATED: token, family, saddr4 | saddr6, daddr4 | daddr6,
+- *   sport, dport A new MPTCP connection has been created. It is the good time
+- *   to allocate memory and send ADD_ADDR if needed. Depending on the
+- *   traffic-patterns it can take a long time until the MPTCP_EVENT_ESTABLISHED
+- *   is sent.
++ *   sport, dport, server-side A new MPTCP connection has been created. It is
++ *   the good time to allocate memory and send ADD_ADDR if needed. Depending on
++ *   the traffic-patterns it can take a long time until the
++ *   MPTCP_EVENT_ESTABLISHED is sent.
+  * @MPTCP_EVENT_ESTABLISHED: token, family, saddr4 | saddr6, daddr4 | daddr6,
+- *   sport, dport A MPTCP connection is established (can start new subflows).
++ *   sport, dport, server-side A MPTCP connection is established (can start new
++ *   subflows).
+  * @MPTCP_EVENT_CLOSED: token A MPTCP connection has stopped.
+  * @MPTCP_EVENT_ANNOUNCED: token, rem_id, family, daddr4 | daddr6 [, dport] A
+  *   new address has been announced by the peer.
 -- 
 2.51.0
 
